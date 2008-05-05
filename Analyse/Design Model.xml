@@ -23,7 +23,7 @@
 						<UML:TaggedValue tag="owner" value="Johan Vervloet"/>
 						<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
 						<UML:TaggedValue tag="logxml" value="0"/>
-						<UML:TaggedValue tag="packageFlags" value="isModel=1;VICON=3;VCCFG=ChiroGroep-EA-Subversion;CheckedOutTo=VervlJo;CRC=0;"/>
+						<UML:TaggedValue tag="packageFlags" value="isModel=1;VICON=3;VCCFG=ChiroGroep-EA-Subversion;CheckedOutOffline=0;CRC=0;"/>
 						<UML:TaggedValue tag="batchsave" value="0"/>
 						<UML:TaggedValue tag="batchload" value="0"/>
 						<UML:TaggedValue tag="phase" value="1.0"/>
@@ -14959,7 +14959,7 @@
 				<UML:TaggedValue tag="version" value="1.0"/>
 				<UML:TaggedValue tag="author" value="Johan Vervloet"/>
 				<UML:TaggedValue tag="created_date" value="2008-05-05 21:48:59"/>
-				<UML:TaggedValue tag="modified_date" value="2008-05-05 22:05:40"/>
+				<UML:TaggedValue tag="modified_date" value="2008-05-05 22:18:40"/>
 				<UML:TaggedValue tag="package" value="EAPK_677616A9_9423_4942_ADC3_8ABB7A01DE87"/>
 				<UML:TaggedValue tag="type" value="Logical"/>
 				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;;cls=0;"/>
@@ -14982,8 +14982,8 @@
 				<UML:DiagramElement geometry="Left=2421;Top=885;Right=2659;Bottom=1043;" subject="EAID_731F90FF_403D_4533_A6FC_7ACCB228BDFF" seqno="11" style="DUID=3E7E3543;"/>
 				<UML:DiagramElement geometry="Left=3207;Top=65;Right=3354;Bottom=180;" subject="EAID_0FA8414B_467C_497d_96E7_628D7DE5AAE9" seqno="12" style="DUID=EE1FA3D9;"/>
 				<UML:DiagramElement geometry="Left=1695;Top=1125;Right=1945;Bottom=1322;" subject="EAID_7A0D14CE_D941_45b3_91FD_EF65AF68C0A1" seqno="13" style="DUID=15143BE9;"/>
-				<UML:DiagramElement geometry="Left=3003;Top=225;Right=3197;Bottom=396;" subject="EAID_AADD25DF_B6DB_4314_9D8B_65E82A45E87A" seqno="14" style="DUID=61BB8969;"/>
-				<UML:DiagramElement geometry="Left=1657;Top=1316;Right=1864;Bottom=1444;" subject="EAID_EB3B03DB_4C40_48f4_AA60_7B3502AAC76E" seqno="15" style="DUID=8C94B050;"/>
+				<UML:DiagramElement geometry="Left=3226;Top=243;Right=3420;Bottom=414;" subject="EAID_AADD25DF_B6DB_4314_9D8B_65E82A45E87A" seqno="14" style="DUID=61BB8969;"/>
+				<UML:DiagramElement geometry="Left=1588;Top=1460;Right=1795;Bottom=1588;" subject="EAID_EB3B03DB_4C40_48f4_AA60_7B3502AAC76E" seqno="15" style="DUID=8C94B050;"/>
 				<UML:DiagramElement geometry="Left=2298;Top=1096;Right=2502;Bottom=1224;" subject="EAID_05345F90_EB63_4236_988A_39FC255BB125" seqno="16" style="DUID=BBD0ED75;"/>
 				<UML:DiagramElement geometry="Left=1590;Top=405;Right=1730;Bottom=598;" subject="EAID_20369017_ED48_4e0c_AAA9_2D1AD7D42957" seqno="17" style="DUID=105FB523;"/>
 				<UML:DiagramElement geometry="Left=745;Top=885;Right=896;Bottom=1000;" subject="EAID_3E24C6C8_02F8_42fa_8BC6_245C87C889D7" seqno="18" style="DUID=FEF794F6;"/>
@@ -14996,7 +14996,7 @@
 				<UML:DiagramElement geometry="Left=1000;Top=1345;Right=1160;Bottom=1503;" subject="EAID_9AC92F7F_369B_4e9a_B3E9_8BA39FCA4057" seqno="25" style="DUID=841FDE9E;"/>
 				<UML:DiagramElement geometry="Left=931;Top=885;Right=1109;Bottom=1043;" subject="EAID_00A8B777_080C_475a_82B7_356E10FEFE4A" seqno="26" style="DUID=3A5E0D0A;"/>
 				<UML:DiagramElement geometry="Left=1862;Top=856;Right=1979;Bottom=984;" subject="EAID_396A3BCE_C6AC_4f75_844E_A1DD0192227E" seqno="27" style="DUID=DB3BB423;"/>
-				<UML:DiagramElement geometry="Left=1460;Top=645;Right=1620;Bottom=855;" subject="EAID_64E11CF8_A983_4810_A6D3_91CEC979BABC" seqno="28" style="DUID=F00D05A9;"/>
+				<UML:DiagramElement geometry="Left=1460;Top=645;Right=1620;Bottom=889;" subject="EAID_64E11CF8_A983_4810_A6D3_91CEC979BABC" seqno="28" style="DUID=F00D05A9;"/>
 				<UML:DiagramElement geometry="Left=480;Top=65;Right=601;Bottom=171;" subject="EAID_A40E62F4_1461_4048_8844_44163AFD3A60" seqno="29" style="DUID=1DE7B6D1;"/>
 				<UML:DiagramElement geometry="Left=2664;Top=65;Right=2816;Bottom=171;" subject="EAID_E9CB6F97_3FA1_4915_97F0_AE0620028ED2" seqno="30" style="DUID=6F2DF3A0;"/>
 				<UML:DiagramElement geometry="Left=2499;Top=65;Right=2622;Bottom=180;" subject="EAID_18CE2FCD_51D5_4722_9B08_E48A07A26586" seqno="31" style="DUID=E81354BF;"/>
