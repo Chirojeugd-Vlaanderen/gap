@@ -1,0 +1,591 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[dutch]{babel}
+\usepackage[pdftex]{graphicx}
+\usepackage{multirow}
+\usepackage[absolute]{textpos}
+\usepackage{enumitem}
+\usepackage{listings}
+\lstloadlanguages{[Sharp]C}
+
+\newcommand{\opmerking}[1]{\marginpar{\scriptsize #1}}
+
+\setlength{\TPHorizModule}{25mm}
+\setlength{\TPVertModule}{\TPHorizModule}
+\textblockorigin{15mm}{15mm}
+
+% Sans-serif font, volgens huisstijl
+%
+\renewcommand{\familydefault}{\sfdefault}
+
+\begin{document}
+
+%% algemene instellingen voor listings
+\lstset{language=[Sharp]C, tabsize=3, frame=single, basicstyle=\small, texcl=true}
+
+%%
+%% Eerst een blok rommel voor de 'huisstijlheader'
+%%
+
+\begin{textblock}{2}(0,0)
+\includegraphics[height=32mm]{chiro-grijs.jpg} \\
+\end{textblock}
+
+\begin{textblock}{4.1}(3,0)
+\textbf
+{
+\begin{tabular}{|p{65mm}|p{10mm}|r|}
+\multicolumn{3}{r}{\Large Chirojeugd-Vlaanderen vzw} \\
+\multicolumn{3}{r}{\,} \\
+\hline
+\multicolumn{2}{|l|}{Werkgroep Informatica} & 271 \\
+\hline
+25 april 2008 & Doc. & 2 \\
+\hline
+\end{tabular} 
+}
+\end{textblock}
+
+\vspace*{4mm}
+
+%%
+%% HIER BEGINT HET DOCUMENT
+%%
+
+
+\noindent {\Large \bf CODING STANDARD C\#, doc. v. 0.2}
+
+\tableofcontents
+
+\section{Over dit document}
+
+Dit document geeft een aantal richtlijnen voor de ontwikkeling van C\#-applicaties, zowel over
+opmaak en naamgeving als over de manier van dingen implementeren.
+
+Het document is opgesteld naar aanleiding van de ontwikkeling van een nieuw Chirogroepprogramma.
+De bedoeling is dat de richtlijnen in dit document (en zijn opvolgers) toegepast zullen worden
+in alle C\#-projecten die nog voor de Chiro ontwikkeld zullen worden.
+
+\section{Architectuur}
+
+\begin{enumerate}
+\item We gebruiken een lagenmodel; iedere laag staat op zich, en communiceert slechts met de
+andere lagen via publieke klasses en interfaces.\opmerking{Of enkel interfaces?}
+\begin{itemize}
+\item Data Access Layer
+\item Business Layer
+\item User Interface
+\end{itemize}
+\item Groepeer gerelateerde klasses in class libraries.
+\item Gebruik namespaces met een zinvolle naam.
+\end{enumerate}
+
+\section{`Opmaak' van cs-bestanden}
+
+\subsection{Gegenereerde code}
+
+\begin{enumerate}[resume]
+\item Wijzig geen automatisch gegenereerde code.  Gebruik partial classes als je automatisch
+gegenereerde code moet aanpassen.
+\end{enumerate}
+
+\subsection{Opbouw}
+
+Zie listing \ref{lblLstOpbouw} voor voorbeelden.
+
+\begin{enumerate}[resume]
+\item Elke source file begint met een blokje commentaar met daarin\opmerking{Dit hebben we niet
+afgesproken, maar het lijkt me een zinvol idee.}
+\begin{itemize}
+\item een korte omschrijving van wat er in de code staat
+\item een `copyright notice'
+\item een verwijzing naar de licentievoorwaarden (?)
+\item contactinfo van de verantwoordelijke voor het bestand
+\end{itemize}
+\item Groepeer de imports van namespaces bovenaan
+\item Hoogstens \'e\'en klasse en hoogstens \'e\'en namespace in een source file.
+\item Gebruik \lstinline !#region! \ldots \lstinline !#endregion!-constructies om stukken code
+die bij elkaar horen te groeperen.
+\item Vermijd files van meer dan 500 lijnen code.\footnote{Uitzondering is automatisch gegenereerde
+code}
+\item Vermijd lijnen die langer zijn dan 120 karakters.
+\end{enumerate}
+
+\begin{lstlisting}[float, caption=Opbouw, texcl=false, label=lblLstOpbouw]
+// Groep.cs - basisklasse voor ChiroGroep en Satelliet
+// Copyright (C) 2008, Chirojeugd Vlaanderen
+//
+// (licentievoorwaarden iemand?)
+//
+// Contact: Johan Vervloet <johan.vervloet@chiro.be>
+//
+
+import System.Data;
+import System.Data.Linq;
+import System.Data.Linq.Mapping;
+import Kipadmin.StamNrTools; 
+
+namespace ChiroData
+{
+	public class Groep
+	{
+#region Constructors
+		// definieer hier de constructors
+#endregion
+
+		// nog meer definities...
+	}
+}
+\end{lstlisting}
+
+\subsection{Whitespace en indentatie}
+
+Voorbeelden in listing \ref{lblLstWhitespace}.
+
+\begin{enumerate}[resume]
+\item Geen spaties na een (rond) haakje-open of voor een (rond) haakje-toe
+\item Scheid blokken gerelateerde code van elkaar door \'e\'en lege lijn.
+\item Gebruik tabs voor indentatie
+\item Indenteer ook commentaar
+\item Voor `blokken' code tussen accolades, zijn de accolades ge\"indenteerd op het niveau van
+de bovenliggende structuur.  Op een regel met een accolade staat enkel die accolade.  Wat binnen de accolades staat, is ge\"indenteerd.
+\item Een spatie tussen \lstinline !if!, \lstinline !for!, \lstinline !while! en het haakje-open
+daarna.  Bijv: \lstinline !if (voorwaarde)!
+\item Geen spatie tussen de naam van een method en het haakje daarna.  Wel een spatie na de komma's tussen verschillende argumenten.  
+
+Bijv.: \lstinline
+!DoeIets(argument, tweedeArgument)!.
+\end{enumerate}
+
+\begin{lstlisting}[float, caption=Indentatie, label=lblLstWhitespace]
+public static void Main(string[] argumenten)
+{
+	Console.WriteLine("Hallo wereld!");
+
+	if (argumenten.Count() == 0)
+	{
+		// Commentaar is mee ge\"indenteerd.
+		// Let op de positie van de accolades!
+
+		Console.WriteLine("Geen argumenten.");
+	}
+}	
+\end{lstlisting}
+
+\subsection{Controlestructuren en method calls}
+
+\begin{enumerate}[resume]
+\item Gebruik steeds accolades bij een \lstinline !if!, \lstinline !while!, \lstinline
+!for!,\ldots, ook als er maar 1 (of geen) statement moet staan.  Zie listing
+\ref{lblLstControle}.
+\begin{lstlisting}[float, caption=Controlestructuren, label=lblLstControle]
+// FOUT want verwarrend:
+for (i = 0; i < N; a[i++] = 0);
+while (eenOfAnder());
+
+// GOED:
+for (i = 0; i < N; i++)
+{
+	a[i] = 0;
+}
+while (eenOfAnder())
+{
+	// doe niets
+}
+\end{lstlisting}
+\item Voorzie steeds een \lstinline !default! case bij een \lstinline !switch!-constructie.  Zie
+listing \ref{lblLstDefault}
+\begin{lstlisting}[float, caption=Steeds een `default', label=lblLstDefault]
+switch (isnschrijver.Soort)
+{
+	InschrijvingsType.Deelnemer:
+	{
+		// doe het een
+	}
+	InschrijvingsType.Begeleider:
+	{
+		// doe het ander
+	}
+	default:
+	{
+		// handel onverwachte situatie af
+	}
+}
+\end{lstlisting}
+\item Voorzie steeds een \lstinline !else! zonder voorwaarde in een \lstinline !if! \ldots
+\lstinline !else if! \ldots constructie.
+\end{enumerate}
+
+\subsection{Commentaar}
+
+\begin{enumerate}[resume]
+\item Plaats vlak voor elke method een blok xml-commentaar die de werking van de method
+omschrijft.\footnote{Visual Studio maakt automatisch een template aan als je op de lijn voor de
+methoddeclaratie \lstinline !///! intikt.}
+\item Zet in methods enkel commentaar waar het nodig is, om de werking van je code te
+verduidelijken.  Als je leesbare code schrijft, kan je de hoeveelheid commentaar beperken.
+Complexe code moet goed gedocumenteerd zijn.
+\item Gebruik \lstinline !//! of \lstinline !///! (voor XML-commentaar) voor `structureel'
+commentaar in je code.  \lstinline !/*! en \lstinline !*/! kan je dan nog gebruiken om tijdelijk
+een stuk code uit te commentari\"eren.
+\item Schrijf commentaar in duidelijk en correct Nederlands :)
+\item Gebruik 'TODO:' om aan te geven dat er nog iets moet gebeuren.\footnote{De typeische
+dingen die achterwege blijven als de deadline eigenlijk voorbij is ;)}
+\end{enumerate}
+
+\section{Naamgeving}
+
+\subsection{Namen kiezen}
+
+\begin{enumerate}[resume]
+\item Alle eigen gekozen namen zijn in het Nederlands. 
+\item Indien een naam uit meerdere woorden bestaat, worden de woorden aan elkaar geschreven,
+waarbij elk nieuw woord met een hoofdletter begint.  Ook in samenstellingen start elk
+`deelwoord' met een hoofdletter.\footnote{Deze laatste regel is niet absoluut; zo kan bijv. in
+\lstinline !leeftijd! de `t' een kleine letter blijven, hoewel dit een samenstelling is.  Het is moeilijk om hier een regel op te
+plakken.}
+\begin{itemize}
+\item \lstinline !geboorteDatum!
+\item \lstinline !groepsLeiding!
+\end{itemize}
+\item Geen hoofdletters in het midden van letterwoorden of afkortingen
+\begin{itemize}
+\item \lstinline !isVzw!
+\item \lstinline !adNr!
+\end{itemize}
+\end{enumerate}
+
+\subsection{Klasses algemeen}
+
+\begin{enumerate}[resume]
+\item Namen van klasses zijn in het enkelvoud, en beginnen met een hoofdletter.
+\item Namen van member variabelen beginnen met een kleine letter.\opmerking{Mogelijk
+voegen we hier aan toe dat ze het prefix 'm' of '\_' moeten krijgen, om ze te kunnen
+onderscheiden van lokale variabelen.}
+\item Als een klasse een identificatienummer heeft, dan krijgt die de naam van de klasse,
+gevolgd door het suffix \lstinline !ID!.
+\item Property's hebben dezelfde naam als de members (zonder eventueel prefix) die ze `accessen', maar dan met een
+hoofdletter.
+\item Namen van methods beginnen met een hoofdletter, en zijn van de vorm `(lijdend voorwerp +)
+infitnitief'.\footnote{Op die manier worden methods die op hetzelfde betrekking hebben
+door `intellisense' gegroepeerd.}  `Get' en `Set' kunnen in het Engels blijven.
+\item Argumenten van een method krijgen namen met een kleine letter.
+\end{enumerate}
+
+\begin{lstlisting}[float,caption=Naamgeving klasses]
+public class Cursus
+{
+	public void Annuleer()
+	{
+		// Doe vanalles...
+	}
+
+	public void DeelnemerInschrijven(Deelnemer inschrijver)
+	{
+		// Boeiende code weggelaten...
+	}
+
+	public decimal CursusID()
+	{
+		get
+		{
+			return cursusID;
+		}
+	}
+
+	private int cursusID;
+};
+\end{lstlisting}
+
+\subsection{Speciale klasses}
+
+\begin{enumerate}[resume]
+\item Namen van exceptieklasses krijgen het suffix `\lstinline !Exception!'.
+\item Namen van interfaces krijgen het prefix `\lstinline !I!'.
+\item Namen van attribuutklasses krijgen het suffix `\lstinline !Attribute!'.
+\item Arrays en collecties hebben een naam in het meervoud.
+\end{enumerate}
+
+\subsection{Overig}
+
+\begin{enumerate}[resume]
+\item Namen van \lstinline !namespace!s beginnen met een hoofdletter.
+\item Zowel naam als waarden van een \lstinline !enum! krijgen een hoofdletter.
+\item Namen van \lstinline !struct!s beginnen met een hoofdletter.
+\item Lokale variabelen beginnen met een kleine letter.
+\item Vermijd variabelenamen van 1 letter.
+\end{enumerate}
+
+\section{Declaraties}
+
+\subsection{Algemeen}
+
+\begin{enumerate}[resume]
+\item Gebruik kleine letters voor de system data types
+\begin{itemize}
+\item \lstinline !int!
+\item \lstinline !bool!
+\item \lstinline !string!
+\item \ldots
+\end{itemize}
+\item E\'en variabeledeclaratie per lijn.
+\end{enumerate}
+
+\begin{lstlisting}[float,caption=Declaraties algemeen]
+string Naam;
+string Voornaam;  // een nieuwe lijn voor een nieuwe declaratie
+\end{lstlisting}
+
+\subsection{Klasses}
+
+\begin{enumerate}[resume]
+\item Klasses die niet zichtbaar mogen zijn buiten de assembly, krijgen de \lstinline !internal!
+access modifier.
+\item Klasses met statische members hebben een statische default constructor.
+\item Klasses met enkel statische members krijgen een \lstinline !private! constructor.
+\item Ieder class member heeft een access modifier.\footnote{\lstinline !public!, \lstinline
+!protected!, \lstinline !private!, \ldots}
+\item In een klassedeclaratie zet je de member variabelen vooraan.\footnote{Op die manier is het direct duidelijk of de klasse stateful of stateless
+is.}
+\item Member variabelen zijn altijd \lstinline !private! of \lstinline !protected!.  Als ze van
+buitenaf lees- of schrijfbaar moeten zijn, dan moet dit via property's gebeuren.
+\item Gebruik geen member variabelen voor iets dat je ook in een lokale variabele kwijt kan.
+\end{enumerate}
+
+\subsection{Methods}
+
+\begin{enumerate}[resume]
+\item Niet meer dan 5 argumenten voor een method.  Maak zo nodig een \lstinline !struct! als
+er meer informatie doorgespeeld moet worden.
+\item Niet meer dan 200 lijnen code in \'e\'en method.
+\end{enumerate}
+
+\section{Implementatie}
+
+
+\subsection{Assignaties}
+
+\begin{enumerate}[resume]
+\item Gebruik geen `magic numbers', maar \lstinline !enum!s of \lstinline !const!s.  (Zie listing
+\ref{lstMagNum}.)
+\begin{lstlisting}[float,caption=Geen magic numbers,label=lstMagNum]
+// FOUT:
+if (lid.HeeftFunctie(170))
+{
+	// doe iets
+}
+
+// GOED:
+if (lid.HeeftFunctie(Functie.Vb))
+{
+	// doe iets
+}
+\end{lstlisting}
+\item Geen letterlijke strings in programmacode.  Declareer ze ergens apart als constante, of
+gebruik een resource file.  (Zie listing \ref{lstStrLit}.)
+\begin{lstlisting}[float,caption=Geen letterlijke strings,label=lstStrLit]
+// FOUT:
+Console.WriteLine("Bent u zeker dat u '{1}' wil "
+                  + "verwijderen?", Naam);
+
+// GOED:
+Console.WriteLine(Teksten.BevestigVerwijderenPersoon
+                  , Naam);
+\end{lstlisting}
+\item Gebruik de return value van een assignatie niet direct opnieuw.  (Zie listing
+\ref{lstAssRet}.)
+\begin{lstlisting}[float,caption=Geen hergebruik return value van assignatie,label=lstAssRet]
+// FOUT want zeer verwarrend:
+if (i = j)
+{
+	// Deze code wordt enkel uitgevoerd als 
+	// $j$ verschilt van 0.
+}
+
+// GOED:
+i = j;
+if (j != 0)
+{
+	// enz.
+}
+\end{lstlisting}
+\item Vermijd het gebruik van \lstinline !null!.  Gebruik \lstinline !String.Empty!, \lstinline
+!List<T>.Empty!, \ldots om een `leeg' resultaat voor te stellen.
+\item Gebruik generics in plaats van instanties van de klasse `\lstinline
+!Object!'.\footnote{Uitgezonderd bij het locken voor threading.}
+\end{enumerate}
+
+\subsection{Strings}
+
+\begin{enumerate}[resume]
+\item Gebruik de klasse `\lstinline !StringBuilder!' als je een groot aantal stringmanipulaties
+moet uitvoeren op performantiekritsche plaatsen.
+\item Gebruik `\lstinline !String.Compare!' om strings te vergelijken.
+\item Stel de lege string voor door `\lstinline !String.Empty!' (en niet door \lstinline !null!).
+\item Gebruik het prefix `@' voor een letterlijke string, in plaats van te escapen.
+Bijvoorbeeld: \lstinline !@"Backslashes (\) zijn cool."!
+\end{enumerate}
+
+\subsection{Loops}
+
+\begin{enumerate}[resume]
+\item Roep dezelfde property niet herhaaldelijk aan.
+\item Vermijd `dure' operaties in loops.
+\item Vermijd recursieve functie-aanroepen waar mogelijk.
+\end{enumerate}
+
+\subsection{Arrays en collecties}
+
+\begin{enumerate}[resume]
+\item Gebruik waar mogelijk (begrensd aantal elementen met volgnummer) arrays.\footnote{Arrays zijn sneller dan collecties}
+\item Gebruik de generieke collecties uit \lstinline !System.Collections.Generic!.
+\item Gebruik de juiste collectie voor het juiste doel
+
+\begin{tabular}{|c|l|}
+\hline
+elementen met index & \lstinline !List<T>! \\
+zoeken mogelijk & \lstinline !Dictionary<TKey, TValue>! \\
+gesorteerd & \lstinline !SortedDictionary<TKey, TValue>! \\
+FIFO & \lstinline !Queue<T>! \\
+LIFO & \lstinline !Stack<T>! \\
+\hline
+\end{tabular}
+\end{enumerate}
+
+\subsection{ASP.NET}
+
+\begin{enumerate}[resume]
+\item Vermijd het gebruik van sessievariabelen.
+\item Genereer correct XHTML 1.1 (strict).
+\item Gebruik style sheets (css) om de look en feel van een pagina te defini\"eren.
+\item Gebruik nooit user input in een client side javascript.\opmerking{en plaats ook nooit
+niet-gevalideerde userinput in een gegenereerde webpagina.}
+\end{enumerate}
+
+\subsection{Exception handling}
+
+\begin{enumerate}[resume]
+\item Vermijd excepties door op voorhand checks in te bouwen in de code.  Enkel om excepties op
+te vangen waarop je geen vat hebt, gebruik je \lstinline !try! \ldots \lstinline
+!catch!.\footnote{Dit is typisch het geval als je externe hardware of het netwerk aanspreekt.
+In deze situaties moet je exception handling implementeren.}\footnote{Key-violations moet
+je enkel op voorhand opvangen als je de gebruiker een zinvolle foutmelding kan geven.}
+\item Maak zo weinig mogelijk gebruik van custom exceptions.  Als je er toch implementeert, erf
+dan van `\lstinline !ApplicationException!', en maak ze \lstinline ![Serializable]!.
+\item Als er zich een exceptie voordoet, geef je een verstaanbare boodschap voor de gebruiker,
+en log je de technische details.
+\item Catch enkel specifieke excepties.\footnote{Laat het programma gerust crashen op onverwachte
+excepties, zo zie je ze bij het debuggen zeker niet over het hoofd.  In gereleaste versies mag
+je generieke excepties opvangen op het hoogste niveau.}
+\item Om in een \lstinline !catch!-blok de `gecatchte' exceptie opnieuw te `throwen', gebruik je
+\lstinline !throw! zonder argumenten.\footnote{Op die manier wordt de volledige stack trace
+behouden.}
+\item Beperk de grootte van \lstinline !try! \ldots \lstinline !catch! structuren.  Liever
+meerdere blokken dan \'e\'en groot blok.\footnote{Op die manier is het duidelijker in welk deel
+van de code een exceptie optreedt.}
+\end{enumerate}
+
+\begin{lstlisting}[float,caption=Exception handling]
+try
+{
+	// lees uit bestand
+}
+catch (FileIOException ex)
+{
+	// catch enkel specifieke excepties
+	// log error
+	// geef duidelijke informatie aan gebruiker
+	// throw zo nodig exceptie opnieuw:
+
+	throw;
+}
+finally
+{
+	// `dispose' bestand
+}
+\end{lstlisting}
+
+\subsection{Garbage collection}
+
+\begin{enumerate}[resume]
+\item Implementeer de interface `\lstinline !IDisposable!' als je externe resources (connecties,
+files) gebruikt.
+\item Zorg ervoor dat de method `\lstinline !Dispose!' aangeroepen wordt van ieder disposable
+object dat je gebruikt.
+\item Gebruik geen unsafe code.
+\item Roep de garbage collector zelf niet expliciet aan.
+\end{enumerate}
+
+\subsection{ADO.NET}\opmerking{Ik heb deze sectie laten staan, maar vermoedelijk gaan we LINQ to
+SQL en Entity Classes gebruiken i.p.v. ADO.NET}
+
+\begin{enumerate}[resume]
+\item Connecties zo laat mogelijk openen en zo vroeg mogelijk opnieuw sluiten.\footnote{.NET is
+zelf verantwoordelijk voor connection pooling.}
+\item Zorg ervoor dat de connectie altijd gesloten wordt, ofwel in een \lstinline!finally!-blok, ofwel via een \lstinline !using!-constructie.
+\item Gebruik een `Data Provider Factory' om connecties, commando's, \ldots te
+genereren.\opmerking{Komt niet voor in Tommy's docs, maar lijkt me interessant als geen LINQ
+gebruikt wordt.}
+\item Gebruik de klasse \lstinline !DbParameter! om query's te parameterizeren.
+\item Bewaar connection strings en data provider in het configuratiebestand.
+\item Bij excepties log je de volgende zaken:
+\begin{itemize}
+\item Naam van het commando
+\item Het commando zelf
+\item De parameters
+\item De connection string
+\end{itemize}
+\end{enumerate}
+
+\begin{lstlisting}[float, caption=ADO.NET]
+try
+{
+	// factory is de provider factory.
+
+	DbConnection connectie = factory.CreateConnection();
+	connectie.ConnectionString = connStr;
+
+	DbCommand commando = factory.CreateCommand();
+	commando.Connection = connectie;
+	commando.CommandText = InschrijvingsQuery;
+	
+	DbParameter parameter = factory.CreateParameter();
+	parameter.ParameterName = "@AdNr";
+	parameter.Value = adNr;
+
+	commando.Parameters.Add(parameter);
+	commando.ExecuteNonQuery();
+}
+// handel hier exceptions af
+finally
+{
+	commando.Dispose();
+	connectie.Dispose();
+}
+\end{lstlisting}
+
+\subsection{Overig}
+
+\begin{enumerate}[resume]
+\item Lock enkel objecten van het type `\lstinline !Object!'
+\item Event handlers zijn kort, en roepen andere methods op.
+\item Event handlers worden enkel gebruikt om hun event(s) af te handelen, en worden voor de rest
+niet aangeroepen.
+\item Gebruik liever geen late binding.
+\end{enumerate}
+
+\section{Gedrag van de software}
+
+\begin{enumerate}[resume]
+\item Geef steeds verstaanbare foutmeldingen voor de gebruiker.
+\item Voer deze checks uit bij het starten van het programma:
+\begin{enumerate}
+\item Zijn alle files/resources/connecties beschikbaar?
+\item Bestaat het configuratiebestand? Zo nee: maak het aan met standaardwaarden.
+\item Is het configuratiebestand correct?
+\end{enumerate}
+\item Ga er niet vanuit dat het programma op een bepaalde schijf of in een bepaalde directory
+ge\"installeerd is.
+\item Gebruik `isolated storage' als je gebruikersspecifieke informatie moet bewaren.
+\end{enumerate}
+
+\end{document}

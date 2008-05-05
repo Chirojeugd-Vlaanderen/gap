@@ -1,0 +1,317 @@
+\documentclass[chiro,pdf]{prosper}
+
+% Toegegeven, LaTeX is misschien niet de meest laagdrempelige manier
+% om slides te maken, maar het laat zich wel heel gemakkelijk
+% in versiecontrole gieten.
+
+
+\title{Naar een nieuw Chirogroepprogramma}
+\author{Werkgroep Chirogroep}
+\email{informatica@chiro.be}
+\institution{
+	Chirojeugd Vlaanderen \\
+	Kipdorp 30 \\
+	2000 Antwerpen
+}
+
+\slideCaption{\textit{Naar een nieuw Chirogroepprogramma}}
+\Logo{\includegraphics[height=15mm]{images/logo.eps}}
+
+
+\begin{document}
+
+\maketitle
+
+%
+% OVERZICHT
+%
+
+\overlays{7}
+{
+\begin{slide}{Overzicht}
+
+\begin{itemstep}
+\item Het Chirogroepprogramma nu
+\item Informatiestroom
+\item Problemen
+\item Afbakening van het project
+\item Belangrijkste doelstellingen
+\item Een greep uit de nieuwigheden
+\item Voordelen voor de Chiro
+\end{itemstep}
+
+\end{slide}
+}
+
+%
+% HET CHIROGROEPPROGRAMMA NU
+%
+
+\overlays{3}
+{
+\begin{slide}{Het huidige Chirogroepprogramma}
+
+Volgens \texttt{http://www.chiro.be/cg}:
+
+\fromSlide{2}
+{
+\begin{quotation}
+Chirogroep is het programma waarmee je Chirogroepen, leden en leiding kunt aansluiten.
+Je kunt er ook je ledenadministratie mee bijhouden.
+\end{quotation}
+}
+
+\fromSlide{3}
+{
+\begin{quotation}
+Naast het beheren van de ledengegevens, vind je een hele hoop nuttige info en adressen. Je kunt er Dubbelpunt mee bestellen en mensen bijkomend verzekeren. Ook de bivakaangifte stuur je met dit programma elektronisch door.
+\end{quotation}
+}
+
+\end{slide}
+}
+
+%
+% OVERBRENGEN VAN GEGEVENS
+%
+
+\overlays{6}
+{
+\begin{slide}{Informatiestroom}
+
+\begin{center}
+\includegraphics[height=15mm]{images/chirogroep-vroeger.eps}
+\end{center}
+
+\begin{itemize}
+\item Aansluitingsgegevens, bijkomende verzekeringen
+\item Dubbelpuntaanvraag
+\item Bivakaangifte
+\fromSlide{2}{\item Informatie verhuur lokalen en materiaal}
+\fromSlide{3}{\item Enqu\^etes (lokalen, toegankelijkheid, gewest)}
+\fromSlide{4}{\item Cursusinschrijvingen}
+\fromSlide{5}{\item Inschrijven snelleberichtenlijst}
+\fromSlide{6}{\item \ldots}
+\end{itemize}
+
+\end{slide}
+}
+
+
+%
+% PROBLEMEN
+%
+
+\overlays{11}
+{
+\begin{slide}{Problemen met het programma}
+
+\begin{itemize}
+\fromSlide{2}{\item Verouderde technologie}
+\onlySlide*{3}
+{
+\begin{itemize}
+\item problemen met Vista
+\item problemen met installatie op niet-standaardlocatie
+\item \ldots
+\end{itemize}
+}
+\fromSlide{4}{\item Onvoldoende gebruiksvriendelijk}
+\fromSlide{5}
+{
+\begin{itemize}
+\item omslachtig
+\item weinig flexibiliteit
+\item[$\rightarrow$] Groepen gebruiken Excel in plaats van het programma
+\end{itemize}
+}
+\fromSlide{6}{\item Inconsistenties in gedecentraliseerde gegevens}
+\onlySlide*{7}
+{
+\begin{itemize}
+\item Kipadmin
+\item een kopie van een groepsdatabase per e-mailbestand
+\item bij de gebruiker
+\item bij de gebruiker in een Exceldocument
+\item eventueel bij een medeleid(st)er
+\item \ldots
+\end{itemize}
+}
+\fromSlide{8}{\item Overdracht van gegevens via e-mail}
+\onlySlide*{9}
+{
+\begin{itemize}
+\item gaat soms verloren (spamfilters, \ldots)
+\item gebruikers vinden het bestand niet
+\item beveiligingsproblemen
+\item onmogelijk na te gaan of alle verstuurde mails toekomen
+\item problemen met codering bijlages
+\item \ldots
+\end{itemize}
+}
+\fromSlide{10}{\item Basisfunctionaliteit en `extra's' zitten elkaar in de weg}
+\onlySlide*{11}
+{
+\begin{itemize}
+\item Aansluiting geraakt niet weg omdat enqu\^ete niet is ingevuld
+\item Enqu\^etes worden onnauwkeurig ingevuld om aansluiting in orde te brengen
+\end{itemize}
+}
+\end{itemize}
+\end{slide}
+}
+
+%
+% 12 JAAR LATER
+%
+
+\overlays{8}
+{
+\begin{slide}{Projectafbakening}
+
+\begin{itemize}
+\item Vaststellingen
+\begin{itemize}
+\fromSlide{2}{\item Basisfunctionaliteit en `extra's' zitten elkaar in de weg}
+\fromSlide{3}{\item De komst van het WWW maakt het opvragen van informatie veel gemakkelijker}
+\onlySlide*{4}
+{
+\begin{enumerate}
+\item `Traditioneel' doorgestuurde gegevens zijn zo omslachtig in te lezen dat ze niet verwerkt of gebruikt worden
+\item Verschuiving naar nieuwe applicaties op het extranet
+\end{enumerate}
+}
+\end{itemize}
+\fromSlide{5}{\item De functionaliteit van het nieuwe programma wordt teruggebracht tot de essentie}
+\onlySlide*{6}
+{
+\begin{itemize}
+\item Beheer van leden voor de groep
+\item Aansluiten, verzekeren, dubbelpunt, bivak
+\end{itemize}
+}
+\fromSlide{7}{\item Bijkomende gegevens kunnen via een andere weg opgevraagd worden (extranet, \ldots)}
+\onlySlide*{7}
+{
+\begin{itemize}
+\item Informatie verhuur lokalen en materiaal
+\item Enqu\^etes (lokalen, toegankelijkheid, gewest)
+\item Cursusinschrijvingen
+\item Inschrijven snelle-berichtenlijst
+\end{itemize}
+}
+\fromSlide{8}{\item Vanuit het Chirogroepprogramma kan gemakkelijk naar deze (losstaande) toepassingen gelinkt worden}
+\end{itemize}
+
+\end{slide}
+}
+
+%
+% BELANGRIJKSTE DOELSTELLINGEN
+%
+
+\overlays{13}
+{
+\begin{slide}{Belangrijkste doelstellingen}
+
+Groepen kunnen gemakkelijk\ldots
+
+\begin{itemize}
+\fromSlide{2}{\item leden aansluiten, verzekeren, \ldots}
+\fromSlide{3}{\item controleren wie aangesloten, verzekerd,\ldots is}
+\fromSlide{4}{\item lijsten en etiketten maken}
+\fromSlide{5}{\item het programma aanpassen aan hun wensen}
+\onlySlide*{6}{
+\begin{itemize}
+\item vrije velden op persoons- of lidniveau (bijnaam, vegetari\"er, \ldots)
+\item eigen categorie\"en maken (sympathisant, \ldots)
+\item eigen functies maken (oudercomit\'e, \ldots)
+\end{itemize}
+}%
+\fromSlide{7}{\item inschrijvingen voor bivakken en activiteiten beheren}
+\fromSlide{8}{\item gezinnen beheren}
+\onlySlide*{9}{
+\begin{itemize}
+\item broertjes en zusjes maken
+\item een heel gezin tegelijk verhuizen
+\end{itemize}
+}%
+\end{itemize}
+\fromSlide{10}{En verder\ldots}
+\begin{itemize}
+\fromSlide{11}{\item meerdere personen kunnen tegelijk werken}
+\fromSlide{12}{\item platformonafhankelijk (Windows, Linux, Mac)}
+\fromSlide{13}{\item overal toegankelijk via Internet}
+\end{itemize}
+
+\end{slide}
+}
+
+%
+% BIJKOMENDE NIEUWIGHEDEN
+%
+
+\overlays{9}
+{
+\begin{slide}{Een greep uit de nieuwigheden}
+
+\begin{itemize}
+\fromSlide{2}{\item Een persoon kan 1, 2, of meer adressen hebben}
+\fromSlide{3}{\item Het programma bevat een volledige stratenlijst van Belgi\"e}
+\onlySlide*{4}
+{
+\begin{itemize}
+\item Geen schrijffouten in adressen
+\item Dezelfde adressen makkelijk herkenbaar
+\end{itemize}
+}
+\fromSlide{5}{\item Afdelingen}
+\fromSlide{6}
+{
+\begin{itemize}
+\item Eigen afdelingsverdeling mogelijk (steeds gekoppeld aan de offici\"ele afdelingen)
+\item Semi-automatische overgang leden bij nieuw werkjaar
+\end{itemize}
+}
+\fromSlide{7}{\item Groepsgegevens gaan niet verloren}
+\fromSlide{8}{\item Gebruiksvriendelijkheid}
+\fromSlide{9}{\item Hedendaagse technologie}
+\end{itemize}
+
+\end{slide}
+}
+
+
+%
+% VOORDELEN VOOR HET SECRETARIAAT
+%
+
+\overlays{8}
+{
+\begin{slide}{Voordelen voor de Chiro}
+
+\begin{itemize}
+\fromSlide{2}
+{\item `Zuiverdere' gegevens}
+\fromSlide{3}
+{
+\begin{itemize}
+\item Wijzigingen door het secretariaat propageren automatisch naar de betrokken groepen
+\begin{itemize}
+\fromSlide{4}{\item [$\rightarrow$] jaarlijks opnieuw importeren van dezelfde foute data wordt vermeden}
+\end{itemize}
+\fromSlide{5}{\item Minder kans op foute adressen, omdat het programma alle bestaande straten kent}
+\fromSlide{6}{\item [$\rightarrow$] Minder dubbele personen in Kipadmin}
+\end{itemize}
+}
+\fromSlide{7}{\item Geen problemen meer met versturen en inlezen van e-mailbestanden}
+\fromSlide{8}{\item Datamodel van het Chirogroepprogramma wordt als basis gebruikt voor een vernieuwde Kipadmin}
+
+\end{itemize}
+
+\end{slide}
+}
+
+
+
+\end{document}
