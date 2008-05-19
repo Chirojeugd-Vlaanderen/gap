@@ -10,28 +10,22 @@
 		<UML:Model name="EA Model" xmi.id="MX_EAID_A756D10A_2D89_4b3e_9F6F_86594D824F3C">
 			<UML:Namespace.ownedElement>
 				<UML:Class name="EARootClass" xmi.id="EAID_11111111_5487_4080_A7F4_41526CB0AA00" isRoot="true" isLeaf="false" isAbstract="false"/>
-				<UML:Package name="Model" xmi.id="EAPK_A756D10A_2D89_4b3e_9F6F_86594D824F3C" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+				<UML:Package name="Model" xmi.id="EAPK_A756D10A_2D89_4b3e_9F6F_86594D824F3C" isRoot="true" isLeaf="false" isAbstract="false" visibility="public">
 					<UML:ModelElement.taggedValue>
 						<UML:TaggedValue tag="created" value="2008-02-20 00:00:00"/>
 						<UML:TaggedValue tag="modified" value="2008-02-20 00:00:00"/>
-						<UML:TaggedValue tag="iscontrolled" value="1"/>
+						<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
 						<UML:TaggedValue tag="xmlpath" value="Model.xml"/>
-						<UML:TaggedValue tag="lastloaddate" value="2006-11-21 22:02:29"/>
-						<UML:TaggedValue tag="isprotected" value="0"/>
-						<UML:TaggedValue tag="usedtd" value="0"/>
-						<UML:TaggedValue tag="owner" value="VervlJo"/>
+						<UML:TaggedValue tag="lastloaddate" value="2008-05-19 18:37:35"/>
+						<UML:TaggedValue tag="lastsavedate" value="2008-05-19 18:37:32"/>
+						<UML:TaggedValue tag="isprotected" value="FALSE"/>
+						<UML:TaggedValue tag="usedtd" value="FALSE"/>
 						<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
-						<UML:TaggedValue tag="logxml" value="0"/>
-						<UML:TaggedValue tag="packageFlags" value="VCCFG=ChiroGroep-EA-Subversion;CheckedOutOffline=0;CRC=0;isModel=1;"/>
+						<UML:TaggedValue tag="logxml" value="FALSE"/>
+						<UML:TaggedValue tag="tpos" value="0"/>
+						<UML:TaggedValue tag="packageFlags" value="CheckedOutOffline=0;isModel=1;VCCFG=chiro;CRC=0;"/>
 						<UML:TaggedValue tag="batchsave" value="0"/>
 						<UML:TaggedValue tag="batchload" value="0"/>
-						<UML:TaggedValue tag="phase" value="1.0"/>
-						<UML:TaggedValue tag="status" value="Proposed"/>
-						<UML:TaggedValue tag="author" value="VervlJo"/>
-						<UML:TaggedValue tag="complexity" value="1"/>
-						<UML:TaggedValue tag="ea_stype" value="Public"/>
-						<UML:TaggedValue tag="tpos" value="0"/>
-						<UML:TaggedValue tag="gentype" value="&lt;none&gt;"/>
 					</UML:ModelElement.taggedValue>
 					<UML:Namespace.ownedElement>
 						<UML:Collaboration xmi.id="EAID_A756D10A_2D89_4b3e_9F6F_86594D824F3C_Collaboration" name="Collaborations">
@@ -53,9 +47,9 @@
 										<UML:TaggedValue tag="complexity" value="1"/>
 										<UML:TaggedValue tag="status" value="Validated"/>
 										<UML:TaggedValue tag="tpos" value="3"/>
-										<UML:TaggedValue tag="ea_localid" value="13"/>
+										<UML:TaggedValue tag="ea_localid" value="5"/>
 										<UML:TaggedValue tag="ea_eleType" value="package"/>
-										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
+										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
 									</UML:ModelElement.taggedValue>
 								</UML:ClassifierRole>
 								<UML:ClassifierRole name="Requirements Model" xmi.id="EAID_9E5685F9_9A43_405c_9323_E31E88484D0A" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
@@ -74,9 +68,9 @@
 										<UML:TaggedValue tag="complexity" value="1"/>
 										<UML:TaggedValue tag="status" value="Validated"/>
 										<UML:TaggedValue tag="tpos" value="2"/>
-										<UML:TaggedValue tag="ea_localid" value="24"/>
+										<UML:TaggedValue tag="ea_localid" value="4"/>
 										<UML:TaggedValue tag="ea_eleType" value="package"/>
-										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
+										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
 									</UML:ModelElement.taggedValue>
 								</UML:ClassifierRole>
 								<UML:ClassifierRole name="Domain Model" xmi.id="EAID_B23AB2BC_74FF_4956_9C3E_BA397E7A7E1C" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
@@ -96,9 +90,9 @@
 										<UML:TaggedValue tag="complexity" value="1"/>
 										<UML:TaggedValue tag="status" value="Validated"/>
 										<UML:TaggedValue tag="tpos" value="4"/>
-										<UML:TaggedValue tag="ea_localid" value="16"/>
+										<UML:TaggedValue tag="ea_localid" value="6"/>
 										<UML:TaggedValue tag="ea_eleType" value="package"/>
-										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
+										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
 									</UML:ModelElement.taggedValue>
 								</UML:ClassifierRole>
 								<UML:ClassifierRole name="Design Model" xmi.id="EAID_C4690CB0_5D09_4b4c_974D_1317BF5EC8BA" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
@@ -119,9 +113,9 @@
 										<UML:TaggedValue tag="complexity" value="1"/>
 										<UML:TaggedValue tag="status" value="Proposed"/>
 										<UML:TaggedValue tag="tpos" value="0"/>
-										<UML:TaggedValue tag="ea_localid" value="37"/>
+										<UML:TaggedValue tag="ea_localid" value="3"/>
 										<UML:TaggedValue tag="ea_eleType" value="package"/>
-										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
+										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
 									</UML:ModelElement.taggedValue>
 								</UML:ClassifierRole>
 							</UML:Namespace.ownedElement>
@@ -129,19 +123,22 @@
 						</UML:Collaboration>
 						<UML:Package name="Design Model" xmi.id="EAPK_C4690CB0_5D09_4b4c_974D_1317BF5EC8BA" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="parent" value="EAID_9E5685F9_9A43_405c_9323_E31E88484D0A"/>
 								<UML:TaggedValue tag="created" value="2008-05-05 00:00:00"/>
 								<UML:TaggedValue tag="modified" value="2008-05-05 00:00:00"/>
-								<UML:TaggedValue tag="iscontrolled" value="1"/>
+								<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
 								<UML:TaggedValue tag="xmlpath" value="Design Model.xml"/>
+								<UML:TaggedValue tag="lastloaddate" value="2008-05-19 18:37:33"/>
+								<UML:TaggedValue tag="lastsavedate" value="2008-05-19 18:37:33"/>
 								<UML:TaggedValue tag="version" value="1.0"/>
-								<UML:TaggedValue tag="isprotected" value="0"/>
-								<UML:TaggedValue tag="usedtd" value="0"/>
+								<UML:TaggedValue tag="isprotected" value="FALSE"/>
+								<UML:TaggedValue tag="usedtd" value="FALSE"/>
 								<UML:TaggedValue tag="owner" value="Johan Vervloet"/>
 								<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
-								<UML:TaggedValue tag="logxml" value="0"/>
+								<UML:TaggedValue tag="logxml" value="FALSE"/>
 								<UML:TaggedValue tag="batchsave" value="0"/>
 								<UML:TaggedValue tag="batchload" value="0"/>
-								<UML:TaggedValue tag="packageFlags" value="isModel=1;VICON=3;VCCFG=ChiroGroep-EA-Subversion;CheckedOutTo=VervlJo;"/>
+								<UML:TaggedValue tag="packageFlags" value="isModel=1;VICON=3;VCCFG=ChiroGroep-EA-Subversion;"/>
 								<UML:TaggedValue tag="phase" value="1.0"/>
 								<UML:TaggedValue tag="status" value="Proposed"/>
 								<UML:TaggedValue tag="author" value="VervlJo"/>
@@ -151,16 +148,17 @@
 						</UML:Package>
 						<UML:Package name="Requirements Model" xmi.id="EAPK_9E5685F9_9A43_405c_9323_E31E88484D0A" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="parent" value="EAID_9E5685F9_9A43_405c_9323_E31E88484D0A"/>
 								<UML:TaggedValue tag="created" value="2005-11-19 09:02:21"/>
 								<UML:TaggedValue tag="modified" value="2005-11-19 09:02:21"/>
-								<UML:TaggedValue tag="iscontrolled" value="1"/>
+								<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
 								<UML:TaggedValue tag="xmlpath" value="Requirements Model.xml"/>
 								<UML:TaggedValue tag="lastloaddate" value="2008-05-05 21:33:58"/>
 								<UML:TaggedValue tag="lastsavedate" value="2005-11-19 09:26:01"/>
-								<UML:TaggedValue tag="isprotected" value="0"/>
-								<UML:TaggedValue tag="usedtd" value="0"/>
+								<UML:TaggedValue tag="isprotected" value="FALSE"/>
+								<UML:TaggedValue tag="usedtd" value="FALSE"/>
 								<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
-								<UML:TaggedValue tag="logxml" value="0"/>
+								<UML:TaggedValue tag="logxml" value="FALSE"/>
 								<UML:TaggedValue tag="tpos" value="2"/>
 								<UML:TaggedValue tag="batchsave" value="0"/>
 								<UML:TaggedValue tag="batchload" value="0"/>
@@ -173,17 +171,18 @@
 						</UML:Package>
 						<UML:Package name="Use Case Model" xmi.id="EAPK_996799A4_F01C_4ba5_B1E9_4840EE852217" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="parent" value="EAID_9E5685F9_9A43_405c_9323_E31E88484D0A"/>
 								<UML:TaggedValue tag="created" value="2006-11-21 22:02:25"/>
 								<UML:TaggedValue tag="modified" value="2006-11-21 22:02:25"/>
-								<UML:TaggedValue tag="iscontrolled" value="1"/>
+								<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
 								<UML:TaggedValue tag="xmlpath" value="Use Case Model.xml"/>
 								<UML:TaggedValue tag="lastloaddate" value="2006-11-21 22:02:25"/>
 								<UML:TaggedValue tag="lastsavedate" value="2006-11-21 22:02:25"/>
-								<UML:TaggedValue tag="isprotected" value="0"/>
-								<UML:TaggedValue tag="usedtd" value="0"/>
+								<UML:TaggedValue tag="isprotected" value="FALSE"/>
+								<UML:TaggedValue tag="usedtd" value="FALSE"/>
 								<UML:TaggedValue tag="owner" value="VervlJo"/>
 								<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
-								<UML:TaggedValue tag="logxml" value="0"/>
+								<UML:TaggedValue tag="logxml" value="FALSE"/>
 								<UML:TaggedValue tag="tpos" value="3"/>
 								<UML:TaggedValue tag="batchsave" value="0"/>
 								<UML:TaggedValue tag="batchload" value="0"/>
@@ -196,22 +195,23 @@
 						</UML:Package>
 						<UML:Package name="Domain Model" xmi.id="EAPK_B23AB2BC_74FF_4956_9C3E_BA397E7A7E1C" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="parent" value="EAID_9E5685F9_9A43_405c_9323_E31E88484D0A"/>
 								<UML:TaggedValue tag="created" value="2006-11-21 22:02:27"/>
 								<UML:TaggedValue tag="modified" value="2006-11-21 22:02:27"/>
-								<UML:TaggedValue tag="iscontrolled" value="1"/>
+								<UML:TaggedValue tag="iscontrolled" value="TRUE"/>
 								<UML:TaggedValue tag="isnamespace" value="1"/>
 								<UML:TaggedValue tag="xmlpath" value="Domain Model.xml"/>
 								<UML:TaggedValue tag="lastloaddate" value="2006-11-21 22:02:27"/>
 								<UML:TaggedValue tag="lastsavedate" value="2006-11-21 22:02:27"/>
-								<UML:TaggedValue tag="isprotected" value="0"/>
-								<UML:TaggedValue tag="usedtd" value="0"/>
+								<UML:TaggedValue tag="isprotected" value="FALSE"/>
+								<UML:TaggedValue tag="usedtd" value="FALSE"/>
 								<UML:TaggedValue tag="owner" value="VervlJo"/>
 								<UML:TaggedValue tag="xmiver" value="Enterprise Architect XMI/UML 1.3"/>
-								<UML:TaggedValue tag="logxml" value="0"/>
+								<UML:TaggedValue tag="logxml" value="FALSE"/>
 								<UML:TaggedValue tag="tpos" value="4"/>
 								<UML:TaggedValue tag="batchsave" value="0"/>
 								<UML:TaggedValue tag="batchload" value="0"/>
-								<UML:TaggedValue tag="packageFlags" value="isModel=1;VICON=3;VCCFG=ChiroGroep-EA-Subversion;CheckedOutOffline=0;CheckedOutTo=VervlJo;"/>
+								<UML:TaggedValue tag="packageFlags" value="isModel=1;VICON=3;VCCFG=ChiroGroep-EA-Subversion;CheckedOutOffline=0;"/>
 								<UML:TaggedValue tag="phase" value="1.0"/>
 								<UML:TaggedValue tag="status" value="Validated"/>
 								<UML:TaggedValue tag="complexity" value="1"/>
