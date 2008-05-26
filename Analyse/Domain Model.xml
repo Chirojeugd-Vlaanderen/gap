@@ -5340,8 +5340,9 @@
 										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={F3953396-123B-4a6a-878C-0690C273FC9C}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={F15FD72D-E23F-47f7-B616-F9820E8FBD85}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 									</UML:ModelElement.taggedValue>
 								</UML:Class>
-								<UML:Association name="GroepsSatellieten" xmi.id="EAID_90FF92BB_8CCB_4bac_B7D9_56E43E89B1A5" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+								<UML:Association name="GroepsSatelliet" xmi.id="EAID_90FF92BB_8CCB_4bac_B7D9_56E43E89B1A5" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
 									<UML:ModelElement.taggedValue>
+										<UML:TaggedValue tag="documentation" value="Tabelnamen in het enkelvoud."/>
 										<UML:TaggedValue tag="style" value="3"/>
 										<UML:TaggedValue tag="ea_type" value="Association"/>
 										<UML:TaggedValue tag="direction" value="Unspecified"/>
@@ -5363,7 +5364,7 @@
 										<UML:TaggedValue tag="$ea_dst_xref_property" value="$XREFPROP=$XID={EA4CA4EA-B8CE-4f2f-B767-C8FB1559D8B1}$XID;$NAM=CustomProperties$NAM;$TYP=connectorDestEnd property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isDerivedUnion@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=isDerived@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=isReadOnly@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=default@ENDNAME;@TYPE=String@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=isComposite@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=aggregation@ENDNAME;@TYPE=AggregationKind@ENDTYPE;@VALU=none@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={90FF92BB-8CCB-4bac-B7D9-56E43E89B1A5}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 										<UML:TaggedValue tag="virtualInheritance" value="0"/>
 										<UML:TaggedValue tag="lb" value="*"/>
-										<UML:TaggedValue tag="mt" value="GroepsSatellieten"/>
+										<UML:TaggedValue tag="mt" value="GroepsSatelliet"/>
 										<UML:TaggedValue tag="rb" value="*"/>
 									</UML:ModelElement.taggedValue>
 									<UML:Association.connection>
