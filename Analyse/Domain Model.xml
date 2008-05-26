@@ -199,7 +199,7 @@
 										<UML:TaggedValue tag="lineStyle" value="0"/>
 										<UML:TaggedValue tag="ea_localid" value="890"/>
 										<UML:TaggedValue tag="ea_sourceName" value="PersoonsVerzekering"/>
-										<UML:TaggedValue tag="ea_targetName" value="VerzekeringType"/>
+										<UML:TaggedValue tag="ea_targetName" value="VerzekeringsType"/>
 										<UML:TaggedValue tag="ea_sourceType" value="Class"/>
 										<UML:TaggedValue tag="ea_targetType" value="Class"/>
 										<UML:TaggedValue tag="ea_sourceID" value="939"/>
@@ -364,7 +364,7 @@
 										</UML:Attribute>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Class name="VerzekeringType" xmi.id="EAID_02FFE5AB_3BC2_4d38_9B17_DACBD69819A5" visibility="public" namespace="EAPK_5C15E41F_34C0_45f6_8825_84A62770CD96" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+								<UML:Class name="VerzekeringsType" xmi.id="EAID_02FFE5AB_3BC2_4d38_9B17_DACBD69819A5" visibility="public" namespace="EAPK_5C15E41F_34C0_45f6_8825_84A62770CD96" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 									<UML:ModelElement.taggedValue>
 										<UML:TaggedValue tag="documentation" value="Type verzekering dat men kan nemen, bijv. burgerlijke aansprakelijkheid, ongevallen, overlijden/invaliditeit, beperkte periode, auto-omnium,..."/>
 										<UML:TaggedValue tag="isSpecification" value="false"/>
@@ -373,7 +373,7 @@
 										<UML:TaggedValue tag="version" value="1.0"/>
 										<UML:TaggedValue tag="package" value="EAPK_5C15E41F_34C0_45f6_8825_84A62770CD96"/>
 										<UML:TaggedValue tag="date_created" value="2007-07-12 22:13:01"/>
-										<UML:TaggedValue tag="date_modified" value="2008-05-26 10:05:45"/>
+										<UML:TaggedValue tag="date_modified" value="2008-05-26 16:42:20"/>
 										<UML:TaggedValue tag="gentype" value="C++"/>
 										<UML:TaggedValue tag="tagged" value="0"/>
 										<UML:TaggedValue tag="package_name" value="Domain Objects"/>
@@ -482,7 +482,7 @@
 										<UML:TaggedValue tag="privatedata1" value="949"/>
 										<UML:TaggedValue tag="ea_localid" value="887"/>
 										<UML:TaggedValue tag="ea_sourceName" value="Persoon"/>
-										<UML:TaggedValue tag="ea_targetName" value="VerzekeringType"/>
+										<UML:TaggedValue tag="ea_targetName" value="VerzekeringsType"/>
 										<UML:TaggedValue tag="ea_sourceType" value="Class"/>
 										<UML:TaggedValue tag="ea_targetType" value="Class"/>
 										<UML:TaggedValue tag="ea_sourceID" value="962"/>
