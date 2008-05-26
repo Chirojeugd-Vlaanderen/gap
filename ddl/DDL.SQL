@@ -4,26 +4,10 @@
 --   DBMS       : SQL Server 2000 
 --   -------------------------------------------------- 
 
-USE Cg2
+USE ChiroGroep
 GO
 
 --  Drop Foreign Key Constraints 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_EigenFunctie_Groep') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE EigenFunctie DROP CONSTRAINT FK_EigenFunctie_Groep
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_EigenFunctie_Functie') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE EigenFunctie DROP CONSTRAINT FK_EigenFunctie_Functie
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Adres') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE JoinGroepToAdres DROP CONSTRAINT Adres
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Groep') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE JoinGroepToAdres DROP CONSTRAINT Groep
-GO
-
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Woonplaats_Gemeente') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
 ALTER TABLE Woonplaats DROP CONSTRAINT FK_Woonplaats_Gemeente
 GO
@@ -56,14 +40,6 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_PersoonVrijVeld
 ALTER TABLE PersoonVrijVeldType DROP CONSTRAINT FK_PersoonVrijVeldType_VrijVeldType
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Persoonsverzekering_GroepsWerkjaar') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE PersoonsVerzekering DROP CONSTRAINT FK_Persoonsverzekering_GroepsWerkjaar
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Persoonsverzekering_Verzekeringstype') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE PersoonsVerzekering DROP CONSTRAINT FK_Persoonsverzekering_Verzekeringstype
-GO
-
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_PersoonsVerzekering_GroepsWerkjaar') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
 ALTER TABLE PersoonsVerzekering DROP CONSTRAINT FK_PersoonsVerzekering_GroepsWerkjaar
 GO
@@ -72,16 +48,16 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_PersoonsVerzeke
 ALTER TABLE PersoonsVerzekering DROP CONSTRAINT FK_PersoonsVerzekering_VerzekeringType
 GO
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_PersoonsVerzekering_GroepsWerkjaar') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
+ALTER TABLE PersoonsVerzekering DROP CONSTRAINT FK_PersoonsVerzekering_GroepsWerkjaar
+GO
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_PersoonsAdres_AdresType') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
 ALTER TABLE PersoonsAdres DROP CONSTRAINT FK_PersoonsAdres_AdresType
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Persoon') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
 ALTER TABLE JoinPersoonsVerzekeringToPersoon DROP CONSTRAINT Persoon
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Persoonsverzekering') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE JoinPersoonsVerzekeringToPersoon DROP CONSTRAINT Persoonsverzekering
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('PersoonsVerzekering') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
@@ -94,6 +70,14 @@ GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('PersoonVrijVeldType') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
 ALTER TABLE JoinPersoonVrijVeldTypeToPersoon DROP CONSTRAINT PersoonVrijVeldType
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('VerzekeringType') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
+ALTER TABLE JoinPersoonToVerzekeringType DROP CONSTRAINT VerzekeringType
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Persoon') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
+ALTER TABLE JoinPersoonToVerzekeringType DROP CONSTRAINT Persoon
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_LidVrijVeldType_VrijVeldType') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
@@ -124,16 +108,12 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Land_Gemeente')
 ALTER TABLE Land DROP CONSTRAINT FK_Land_Gemeente
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Kind_Afdelingsjaar') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE Kind DROP CONSTRAINT FK_Kind_Afdelingsjaar
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Kind_AfdelingsJaar') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
+ALTER TABLE Kind DROP CONSTRAINT FK_Kind_AfdelingsJaar
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Kind_Lid') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
 ALTER TABLE Kind DROP CONSTRAINT FK_Kind_Lid
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Kind_AfdelingsJaar') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE Kind DROP CONSTRAINT FK_Kind_AfdelingsJaar
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_GroepsWerkjaar_Groep') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
@@ -152,20 +132,12 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Groep_Woonplaat
 ALTER TABLE Groep DROP CONSTRAINT FK_Groep_Woonplaats
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('GAV') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE JoinGroepToGav DROP CONSTRAINT GAV
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Groep') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE JoinGroepToGav DROP CONSTRAINT Groep
-GO
-
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Gav') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
 ALTER TABLE JoinGroepToGav DROP CONSTRAINT Gav
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_GAV_Persoon') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE Gav DROP CONSTRAINT FK_GAV_Persoon
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Groep') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
+ALTER TABLE JoinGroepToGav DROP CONSTRAINT Groep
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Gav_Persoon') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
@@ -173,15 +145,19 @@ ALTER TABLE Gav DROP CONSTRAINT FK_Gav_Persoon
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Lid') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE JoinFunctieToLid DROP CONSTRAINT Lid
+ALTER TABLE LidFunctie DROP CONSTRAINT Lid
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Functie') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE JoinFunctieToLid DROP CONSTRAINT Functie
+ALTER TABLE LidFunctie DROP CONSTRAINT Functie
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Functie_Groep') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE Functie DROP CONSTRAINT FK_Functie_Groep
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_EigenFunctie_Functie') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
+ALTER TABLE EigenFunctie DROP CONSTRAINT FK_EigenFunctie_Functie
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_EigenFunctie_Groep') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
+ALTER TABLE EigenFunctie DROP CONSTRAINT FK_EigenFunctie_Groep
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_CursusSoort_Attest') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
@@ -208,32 +184,20 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_CommunicatieVor
 ALTER TABLE CommunicatieVorm DROP CONSTRAINT FK_CommunicatieVorm_Persoon
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Chirogroep') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE JoinSatellietToChiroGroep DROP CONSTRAINT Chirogroep
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('ChiroGroep') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
+ALTER TABLE GroepsSattelieten DROP CONSTRAINT ChiroGroep
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Satelliet') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE JoinSatellietToChiroGroep DROP CONSTRAINT Satelliet
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('ChiroGroep') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE JoinSatellietToChiroGroep DROP CONSTRAINT ChiroGroep
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Chirogroep_Groep') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE ChiroGroep DROP CONSTRAINT FK_Chirogroep_Groep
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Chirogroep_StamNummer') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE ChiroGroep DROP CONSTRAINT FK_Chirogroep_StamNummer
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_ChiroGroep_Groep') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE ChiroGroep DROP CONSTRAINT FK_ChiroGroep_Groep
+ALTER TABLE GroepsSattelieten DROP CONSTRAINT Satelliet
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_ChiroGroep_StamNummer') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
 ALTER TABLE ChiroGroep DROP CONSTRAINT FK_ChiroGroep_StamNummer
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_ChiroGroep_Groep') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
+ALTER TABLE ChiroGroep DROP CONSTRAINT FK_ChiroGroep_Groep
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Chirocursus_Cursus') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
@@ -241,11 +205,11 @@ ALTER TABLE Chirocursus DROP CONSTRAINT FK_Chirocursus_Cursus
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Persoon') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE JoinCategorieToPersoon DROP CONSTRAINT Persoon
+ALTER TABLE PersoonsCategorie DROP CONSTRAINT Persoon
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Categorie') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE JoinCategorieToPersoon DROP CONSTRAINT Categorie
+ALTER TABLE PersoonsCategorie DROP CONSTRAINT Categorie
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Bivak') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
@@ -272,40 +236,24 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Persoon') AND OBJE
 ALTER TABLE JoinPersoonToAttest DROP CONSTRAINT Persoon
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Afdelingsjaar') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE JoinLeidingToAfdelingsJaar DROP CONSTRAINT Afdelingsjaar
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('AfdelingsJaar') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
+ALTER TABLE LeidingInAfdelingsJaar DROP CONSTRAINT AfdelingsJaar
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Leiding') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE JoinLeidingToAfdelingsJaar DROP CONSTRAINT Leiding
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('AfdelingsJaar') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE JoinLeidingToAfdelingsJaar DROP CONSTRAINT AfdelingsJaar
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Afdelingsjaar_Afdeling') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE AfdelingsJaar DROP CONSTRAINT FK_Afdelingsjaar_Afdeling
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Afdelingsjaar_GroepsWerkjaar') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE AfdelingsJaar DROP CONSTRAINT FK_Afdelingsjaar_GroepsWerkjaar
-GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Afdelingsjaar_OfficieleAfdeling') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE AfdelingsJaar DROP CONSTRAINT FK_Afdelingsjaar_OfficieleAfdeling
+ALTER TABLE LeidingInAfdelingsJaar DROP CONSTRAINT Leiding
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_AfdelingsJaar_Afdeling') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
 ALTER TABLE AfdelingsJaar DROP CONSTRAINT FK_AfdelingsJaar_Afdeling
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_AfdelingsJaar_OfficieleAfdeling') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
-ALTER TABLE AfdelingsJaar DROP CONSTRAINT FK_AfdelingsJaar_OfficieleAfdeling
-GO
-
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_AfdelingsJaar_GroepsWerkjaar') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
 ALTER TABLE AfdelingsJaar DROP CONSTRAINT FK_AfdelingsJaar_GroepsWerkjaar
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_AfdelingsJaar_OfficieleAfdeling') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
+ALTER TABLE AfdelingsJaar DROP CONSTRAINT FK_AfdelingsJaar_OfficieleAfdeling
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Persoon') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
@@ -314,6 +262,14 @@ GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Adres') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
 ALTER TABLE JoinAdresToPersoon DROP CONSTRAINT Adres
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Adres') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
+ALTER TABLE GroepsAdres DROP CONSTRAINT Adres
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('Groep') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
+ALTER TABLE GroepsAdres DROP CONSTRAINT Groep
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Adres_Woonplaats') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
@@ -326,14 +282,6 @@ GO
 
 
 --  Drop Tables, Stored Procedures and Views 
-IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('EigenFunctie') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
-DROP TABLE EigenFunctie
-GO
-
-IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('JoinGroepToAdres') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
-DROP TABLE JoinGroepToAdres
-GO
-
 IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('Woonplaats') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
 DROP TABLE Woonplaats
 GO
@@ -386,6 +334,10 @@ IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('PersoonsVerzekerin
 DROP TABLE PersoonsVerzekering
 GO
 
+IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('PersoonsVerzekering') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
+DROP TABLE PersoonsVerzekering
+GO
+
 IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('PersoonsAdres') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
 DROP TABLE PersoonsAdres
 GO
@@ -396,6 +348,10 @@ GO
 
 IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('JoinPersoonVrijVeldTypeToPersoon') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
 DROP TABLE JoinPersoonVrijVeldTypeToPersoon
+GO
+
+IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('JoinPersoonToVerzekeringType') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
+DROP TABLE JoinPersoonToVerzekeringType
 GO
 
 IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('Persoon') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
@@ -466,12 +422,16 @@ IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('Gav') AND  OBJECTP
 DROP TABLE Gav
 GO
 
-IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('JoinFunctieToLid') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
-DROP TABLE JoinFunctieToLid
+IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('LidFunctie') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
+DROP TABLE LidFunctie
 GO
 
 IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('Functie') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
 DROP TABLE Functie
+GO
+
+IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('EigenFunctie') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
+DROP TABLE EigenFunctie
 GO
 
 IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('CursusSoort') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
@@ -498,8 +458,8 @@ IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('Communicatie') AND
 DROP TABLE Communicatie
 GO
 
-IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('JoinSatellietToChiroGroep') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
-DROP TABLE JoinSatellietToChiroGroep
+IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('GroepsSattelieten') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
+DROP TABLE GroepsSattelieten
 GO
 
 IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('ChiroGroep') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
@@ -510,8 +470,8 @@ IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('Chirocursus') AND 
 DROP TABLE Chirocursus
 GO
 
-IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('JoinCategorieToPersoon') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
-DROP TABLE JoinCategorieToPersoon
+IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('PersoonsCategorie') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
+DROP TABLE PersoonsCategorie
 GO
 
 IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('Categorie') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
@@ -538,8 +498,8 @@ IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('Attest') AND  OBJE
 DROP TABLE Attest
 GO
 
-IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('JoinLeidingToAfdelingsJaar') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
-DROP TABLE JoinLeidingToAfdelingsJaar
+IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('LeidingInAfdelingsJaar') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
+DROP TABLE LeidingInAfdelingsJaar
 GO
 
 IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('AfdelingsJaar') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
@@ -558,6 +518,10 @@ IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('JoinAdresToPersoon
 DROP TABLE JoinAdresToPersoon
 GO
 
+IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('GroepsAdres') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
+DROP TABLE GroepsAdres
+GO
+
 IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE id = object_id('Adres') AND  OBJECTPROPERTY(id, 'IsUserTable') = 1)
 DROP TABLE Adres
 GO
@@ -566,18 +530,6 @@ GO
 
 
 --  Create Tables 
-CREATE TABLE EigenFunctie ( 
-	eigenFunctieID int NOT NULL,
-	groepID int NULL
-)
-GO
-
-CREATE TABLE JoinGroepToAdres ( 
-	adresID int NULL,
-	groepID int NULL
-)
-GO
-
 CREATE TABLE Woonplaats ( 
 	PlaatsNaam char(10) NULL,
 	PostNr int NULL,
@@ -665,10 +617,17 @@ GO
 CREATE TABLE PersoonsVerzekering ( 
 	Tot smalldatetime NULL,
 	Van smalldatetime NULL,
-	groepsWerkjaarID int NULL,
 	persoonsVerzekeringID int NOT NULL,
-	verzekeringstypeID int NULL,
+	groepsWerkjaarID int NULL,
 	verzekeringTypeID int NULL
+)
+GO
+
+CREATE TABLE PersoonsVerzekering ( 
+	Van smalldatetime NULL,
+	Tot smalldatetime NULL,
+	persoonsVerzekeringID int NOT NULL,
+	groepsWerkjaarID int NULL
 )
 GO
 
@@ -682,7 +641,6 @@ GO
 
 CREATE TABLE JoinPersoonsVerzekeringToPersoon ( 
 	persoonID int NULL,
-	persoonsverzekeringID int NULL,
 	persoonsVerzekeringID int NULL
 )
 GO
@@ -690,6 +648,12 @@ GO
 CREATE TABLE JoinPersoonVrijVeldTypeToPersoon ( 
 	persoonID int NULL,
 	persoonVrijVeldTypeID int NULL
+)
+GO
+
+CREATE TABLE JoinPersoonToVerzekeringType ( 
+	verzekeringTypeID int NULL,
+	persoonID int NULL
 )
 GO
 
@@ -756,7 +720,6 @@ GO
 
 CREATE TABLE Kind ( 
 	kindID int NOT NULL,
-	afdelingsjaarID int NULL,
 	afdelingsJaarID int NULL
 )
 GO
@@ -780,7 +743,7 @@ CREATE TABLE Groep (
 	OprichtingsJaar int NULL,
 	WebSite char(10) NULL,
 	Logo image NULL,
-	groepID int identity(1,1)  NOT NULL,
+	groepID int NOT NULL,
 	woonplaatsID int NULL
 )
 GO
@@ -803,9 +766,8 @@ CREATE TABLE GavSchap (
 GO
 
 CREATE TABLE JoinGroepToGav ( 
-	gAVID int NULL,
-	groepID int NULL,
-	gavID int NULL
+	gavID int NULL,
+	groepID int NULL
 )
 GO
 
@@ -816,7 +778,7 @@ CREATE TABLE Gav (
 )
 GO
 
-CREATE TABLE JoinFunctieToLid ( 
+CREATE TABLE LidFunctie ( 
 	lidID int NULL,
 	functieID int NULL
 )
@@ -829,7 +791,12 @@ CREATE TABLE Functie (
 	Naam char(10) NULL,    --  Naam van de functie 
 	WerkJaarVan int NULL,    --  Vanaf wanneer deze functie beschikbaar gemaakt is voor de groep 
 	WerkJaarTot int NULL,    --  Tot wanneer deze functie beschikbaar blijft voor de groep. Niet opgegeven = voor altijd. 
-	functieID int NOT NULL,
+	functieID int NOT NULL
+)
+GO
+
+CREATE TABLE EigenFunctie ( 
+	eigenFunctieID int NOT NULL,
 	groepID int NULL
 )
 GO
@@ -877,10 +844,9 @@ CREATE TABLE Communicatie (
 )
 GO
 
-CREATE TABLE JoinSatellietToChiroGroep ( 
-	chirogroepID int NULL,
-	satellietID int NULL,
-	chiroGroepID int NULL
+CREATE TABLE GroepsSattelieten ( 
+	chiroGroepID int NULL,
+	satellietID int NULL
 )
 GO
 
@@ -895,7 +861,7 @@ CREATE TABLE Chirocursus (
 )
 GO
 
-CREATE TABLE JoinCategorieToPersoon ( 
+CREATE TABLE PersoonsCategorie ( 
 	persoonID int NULL,
 	categorieID int NULL
 )
@@ -942,10 +908,9 @@ CREATE TABLE Attest (
 )
 GO
 
-CREATE TABLE JoinLeidingToAfdelingsJaar ( 
-	afdelingsjaarID int NULL,
-	leidingID int NULL,
-	afdelingsJaarID int NULL
+CREATE TABLE LeidingInAfdelingsJaar ( 
+	afdelingsJaarID int NULL,
+	leidingID int NULL
 )
 GO
 
@@ -978,6 +943,12 @@ CREATE TABLE JoinAdresToPersoon (
 )
 GO
 
+CREATE TABLE GroepsAdres ( 
+	adresID int NULL,
+	groepID int NULL
+)
+GO
+
 CREATE TABLE Adres ( 
 	Bus char(10) NULL,
 	HuisNr int NULL,
@@ -990,10 +961,6 @@ GO
 
 
 --  Create Primary Key Constraints 
-ALTER TABLE EigenFunctie ADD CONSTRAINT PK_EigenFunctie 
-	PRIMARY KEY CLUSTERED (eigenFunctieID)
-GO
-
 ALTER TABLE Woonplaats ADD CONSTRAINT PK_Woonplaats 
 	PRIMARY KEY CLUSTERED (woonplaatsID)
 GO
@@ -1036,6 +1003,10 @@ GO
 
 ALTER TABLE PersoonVrijVeld ADD CONSTRAINT PK_PersoonVrijVeld 
 	PRIMARY KEY CLUSTERED (persoonVrijVeldID)
+GO
+
+ALTER TABLE PersoonsVerzekering ADD CONSTRAINT PK_PersoonsVerzekering 
+	PRIMARY KEY CLUSTERED (persoonsVerzekeringID)
 GO
 
 ALTER TABLE PersoonsVerzekering ADD CONSTRAINT PK_PersoonsVerzekering 
@@ -1106,6 +1077,10 @@ ALTER TABLE Functie ADD CONSTRAINT PK_Functie
 	PRIMARY KEY CLUSTERED (functieID)
 GO
 
+ALTER TABLE EigenFunctie ADD CONSTRAINT PK_EigenFunctie 
+	PRIMARY KEY CLUSTERED (eigenFunctieID)
+GO
+
 ALTER TABLE CursusSoort ADD CONSTRAINT PK_CursusSoort 
 	PRIMARY KEY CLUSTERED (cursusSoortID)
 GO
@@ -1167,29 +1142,8 @@ ALTER TABLE Adres ADD CONSTRAINT PK_Adres
 GO
 
 
---  Create Indexes 
-ALTER TABLE Groep
-	ADD CONSTRAINT UQ_Groep_Code UNIQUE (Code)
-GO
-
 
 --  Create Foreign Key Constraints 
-ALTER TABLE EigenFunctie ADD CONSTRAINT FK_EigenFunctie_Groep 
-	FOREIGN KEY (groepID) REFERENCES Groep (groepID)
-GO
-
-ALTER TABLE EigenFunctie ADD CONSTRAINT FK_EigenFunctie_Functie 
-	FOREIGN KEY (eigenFunctieID) REFERENCES Functie (functieID)
-GO
-
-ALTER TABLE JoinGroepToAdres ADD CONSTRAINT Adres 
-	FOREIGN KEY (adresID) REFERENCES Adres (adresID)
-GO
-
-ALTER TABLE JoinGroepToAdres ADD CONSTRAINT Groep 
-	FOREIGN KEY (groepID) REFERENCES Groep (groepID)
-GO
-
 ALTER TABLE Woonplaats ADD CONSTRAINT FK_Woonplaats_Gemeente 
 	FOREIGN KEY (gemeenteID) REFERENCES Gemeente (gemeenteID)
 GO
@@ -1230,6 +1184,10 @@ ALTER TABLE PersoonsVerzekering ADD CONSTRAINT FK_PersoonsVerzekering_Verzekerin
 	FOREIGN KEY (verzekeringTypeID) REFERENCES VerzekeringType (verzekeringTypeID)
 GO
 
+ALTER TABLE PersoonsVerzekering ADD CONSTRAINT FK_PersoonsVerzekering_GroepsWerkjaar 
+	FOREIGN KEY (groepsWerkjaarID) REFERENCES GroepsWerkjaar (groepsWerkjaarID)
+GO
+
 ALTER TABLE PersoonsAdres ADD CONSTRAINT FK_PersoonsAdres_AdresType 
 	FOREIGN KEY (adresTypeID) REFERENCES AdresType (adresTypeID)
 GO
@@ -1248,6 +1206,14 @@ GO
 
 ALTER TABLE JoinPersoonVrijVeldTypeToPersoon ADD CONSTRAINT PersoonVrijVeldType 
 	FOREIGN KEY (persoonVrijVeldTypeID) REFERENCES PersoonVrijVeldType (persoonVrijVeldTypeID)
+GO
+
+ALTER TABLE JoinPersoonToVerzekeringType ADD CONSTRAINT VerzekeringType 
+	FOREIGN KEY (verzekeringTypeID) REFERENCES VerzekeringType (verzekeringTypeID)
+GO
+
+ALTER TABLE JoinPersoonToVerzekeringType ADD CONSTRAINT Persoon 
+	FOREIGN KEY (persoonID) REFERENCES Persoon (persoonID)
 GO
 
 ALTER TABLE LidVrijVeldType ADD CONSTRAINT FK_LidVrijVeldType_VrijVeldType 
@@ -1278,12 +1244,12 @@ ALTER TABLE Land ADD CONSTRAINT FK_Land_Gemeente
 	FOREIGN KEY (gemeenteID) REFERENCES Gemeente (gemeenteID)
 GO
 
-ALTER TABLE Kind ADD CONSTRAINT FK_Kind_Lid 
-	FOREIGN KEY (kindID) REFERENCES Lid (lidID)
-GO
-
 ALTER TABLE Kind ADD CONSTRAINT FK_Kind_AfdelingsJaar 
 	FOREIGN KEY (afdelingsJaarID) REFERENCES AfdelingsJaar (afdelingsJaarID)
+GO
+
+ALTER TABLE Kind ADD CONSTRAINT FK_Kind_Lid 
+	FOREIGN KEY (kindID) REFERENCES Lid (lidID)
 GO
 
 ALTER TABLE GroepsWerkjaar ADD CONSTRAINT FK_GroepsWerkjaar_Groep 
@@ -1302,24 +1268,32 @@ ALTER TABLE Groep ADD CONSTRAINT FK_Groep_Woonplaats
 	FOREIGN KEY (woonplaatsID) REFERENCES Woonplaats (woonplaatsID)
 GO
 
-ALTER TABLE JoinGroepToGav ADD CONSTRAINT Groep 
-	FOREIGN KEY (groepID) REFERENCES Groep (groepID)
-GO
-
 ALTER TABLE JoinGroepToGav ADD CONSTRAINT Gav 
 	FOREIGN KEY (gavID) REFERENCES Gav (gavID)
+GO
+
+ALTER TABLE JoinGroepToGav ADD CONSTRAINT Groep 
+	FOREIGN KEY (groepID) REFERENCES Groep (groepID)
 GO
 
 ALTER TABLE Gav ADD CONSTRAINT FK_Gav_Persoon 
 	FOREIGN KEY (gavID) REFERENCES Persoon (persoonID)
 GO
 
-ALTER TABLE JoinFunctieToLid ADD CONSTRAINT Lid 
+ALTER TABLE LidFunctie ADD CONSTRAINT Lid 
 	FOREIGN KEY (lidID) REFERENCES Lid (lidID)
 GO
 
-ALTER TABLE JoinFunctieToLid ADD CONSTRAINT Functie 
+ALTER TABLE LidFunctie ADD CONSTRAINT Functie 
 	FOREIGN KEY (functieID) REFERENCES Functie (functieID)
+GO
+
+ALTER TABLE EigenFunctie ADD CONSTRAINT FK_EigenFunctie_Functie 
+	FOREIGN KEY (eigenFunctieID) REFERENCES Functie (functieID)
+GO
+
+ALTER TABLE EigenFunctie ADD CONSTRAINT FK_EigenFunctie_Groep 
+	FOREIGN KEY (groepID) REFERENCES Groep (groepID)
 GO
 
 ALTER TABLE CursusSoort ADD CONSTRAINT FK_CursusSoort_Attest 
@@ -1346,31 +1320,31 @@ ALTER TABLE CommunicatieVorm ADD CONSTRAINT FK_CommunicatieVorm_Persoon
 	FOREIGN KEY (persoonID) REFERENCES Persoon (persoonID)
 GO
 
-ALTER TABLE JoinSatellietToChiroGroep ADD CONSTRAINT Satelliet 
-	FOREIGN KEY (satellietID) REFERENCES Satelliet (satellietID)
-GO
-
-ALTER TABLE JoinSatellietToChiroGroep ADD CONSTRAINT ChiroGroep 
+ALTER TABLE GroepsSattelieten ADD CONSTRAINT ChiroGroep 
 	FOREIGN KEY (chiroGroepID) REFERENCES ChiroGroep (chiroGroepID)
 GO
 
-ALTER TABLE ChiroGroep ADD CONSTRAINT FK_ChiroGroep_Groep 
-	FOREIGN KEY (chiroGroepID) REFERENCES Groep (groepID)
+ALTER TABLE GroepsSattelieten ADD CONSTRAINT Satelliet 
+	FOREIGN KEY (satellietID) REFERENCES Satelliet (satellietID)
 GO
 
 ALTER TABLE ChiroGroep ADD CONSTRAINT FK_ChiroGroep_StamNummer 
 	FOREIGN KEY (stamNummerID) REFERENCES StamNummer (stamNummerID)
 GO
 
+ALTER TABLE ChiroGroep ADD CONSTRAINT FK_ChiroGroep_Groep 
+	FOREIGN KEY (chiroGroepID) REFERENCES Groep (groepID)
+GO
+
 ALTER TABLE Chirocursus ADD CONSTRAINT FK_Chirocursus_Cursus 
 	FOREIGN KEY (chirocursusID) REFERENCES Cursus (cursusID)
 GO
 
-ALTER TABLE JoinCategorieToPersoon ADD CONSTRAINT Persoon 
+ALTER TABLE PersoonsCategorie ADD CONSTRAINT Persoon 
 	FOREIGN KEY (persoonID) REFERENCES Persoon (persoonID)
 GO
 
-ALTER TABLE JoinCategorieToPersoon ADD CONSTRAINT Categorie 
+ALTER TABLE PersoonsCategorie ADD CONSTRAINT Categorie 
 	FOREIGN KEY (categorieID) REFERENCES Categorie (categorieID)
 GO
 
@@ -1398,24 +1372,24 @@ ALTER TABLE JoinPersoonToAttest ADD CONSTRAINT Persoon
 	FOREIGN KEY (persoonID) REFERENCES Persoon (persoonID)
 GO
 
-ALTER TABLE JoinLeidingToAfdelingsJaar ADD CONSTRAINT Leiding 
-	FOREIGN KEY (leidingID) REFERENCES Leiding (leidingID)
+ALTER TABLE LeidingInAfdelingsJaar ADD CONSTRAINT AfdelingsJaar 
+	FOREIGN KEY (afdelingsJaarID) REFERENCES AfdelingsJaar (afdelingsJaarID)
 GO
 
-ALTER TABLE JoinLeidingToAfdelingsJaar ADD CONSTRAINT AfdelingsJaar 
-	FOREIGN KEY (afdelingsJaarID) REFERENCES AfdelingsJaar (afdelingsJaarID)
+ALTER TABLE LeidingInAfdelingsJaar ADD CONSTRAINT Leiding 
+	FOREIGN KEY (leidingID) REFERENCES Leiding (leidingID)
 GO
 
 ALTER TABLE AfdelingsJaar ADD CONSTRAINT FK_AfdelingsJaar_Afdeling 
 	FOREIGN KEY (afdelingID) REFERENCES Afdeling (afdelingID)
 GO
 
-ALTER TABLE AfdelingsJaar ADD CONSTRAINT FK_AfdelingsJaar_OfficieleAfdeling 
-	FOREIGN KEY (officieleAfdelingID) REFERENCES OfficieleAfdeling (officieleAfdelingID)
-GO
-
 ALTER TABLE AfdelingsJaar ADD CONSTRAINT FK_AfdelingsJaar_GroepsWerkjaar 
 	FOREIGN KEY (groepsWerkjaarID) REFERENCES GroepsWerkjaar (groepsWerkjaarID)
+GO
+
+ALTER TABLE AfdelingsJaar ADD CONSTRAINT FK_AfdelingsJaar_OfficieleAfdeling 
+	FOREIGN KEY (officieleAfdelingID) REFERENCES OfficieleAfdeling (officieleAfdelingID)
 GO
 
 ALTER TABLE JoinAdresToPersoon ADD CONSTRAINT Persoon 
@@ -1426,6 +1400,14 @@ ALTER TABLE JoinAdresToPersoon ADD CONSTRAINT Adres
 	FOREIGN KEY (adresID) REFERENCES Adres (adresID)
 GO
 
+ALTER TABLE GroepsAdres ADD CONSTRAINT Adres 
+	FOREIGN KEY (adresID) REFERENCES Adres (adresID)
+GO
+
+ALTER TABLE GroepsAdres ADD CONSTRAINT Groep 
+	FOREIGN KEY (groepID) REFERENCES Groep (groepID)
+GO
+
 ALTER TABLE Adres ADD CONSTRAINT FK_Adres_Woonplaats 
 	FOREIGN KEY (woonplaatsID) REFERENCES Woonplaats (woonplaatsID)
 GO
@@ -1433,10 +1415,6 @@ GO
 ALTER TABLE Adres ADD CONSTRAINT FK_Adres_Straat 
 	FOREIGN KEY (straatID) REFERENCES Straat (straatID)
 GO
-
-
-
-
 
 
 
@@ -1511,9 +1489,15 @@ GO
 
 
 
+EXEC sp_addextendedproperty 'MS_Description', 'Een persoon kan een bepaalde verzekering afsluiten voor een bepaalde periode.', 'User', dbo, 'table', PersoonsVerzekering
+GO
+
+
+
 
 EXEC sp_addextendedproperty 'MS_Description', 'Geeft extra informatie over de koppeling persoon-adres.  Is dit het standaardadres? Om wat voor adrestype gaat het? Ook opmerkingen bij het adres (enkel in het weekend,...) kunnen meegegeven worden.', 'User', dbo, 'table', PersoonsAdres
 GO
+
 
 
 
@@ -1579,7 +1563,6 @@ EXEC sp_addextendedproperty 'MS_Description', 'Een ''Kind'' is een lid dat geen 
 GO
 
 
-
 EXEC sp_addextendedproperty 'MS_Description', 'Een werkjaar loopt bvb van september t/m augustus.', 'User', dbo, 'table', GroepsWerkjaar
 GO
 EXEC sp_addextendedproperty 'MS_Description', 'Een werkjaar wordt geidentificeerd via het eerste van de twee kalender jaren.  Zo heeft bijv. voor 2007-2008 het veld ''Jaar'' de waarde 2007, en voor 2008-2009 de waarde 2008.', 'User', dbo, 'table', GroepsWerkjaar, 'column', WerkJaar
@@ -1615,7 +1598,6 @@ GO
 
 
 
-
 EXEC sp_addextendedproperty 'MS_Description', 'Een GAV (groepsadministratieverantwoordelijke) is een speciaal geval van een persoon, namelijk een gebruiker van het programma.
 
 Een GAV kan andere personen mee promoveren tot GAV.  Hij kan z''n GAV-schap zelf hoogstens een jaar verlengen.', 'User', dbo, 'table', Gav
@@ -1644,6 +1626,7 @@ GO
 
 EXEC sp_addextendedproperty 'MS_Description', 'Tot wanneer deze functie beschikbaar blijft voor de groep. Niet opgegeven = voor altijd.', 'User', dbo, 'table', Functie, 'column', WerkJaarTot
 GO
+
 
 
 
@@ -1684,7 +1667,6 @@ GO
 
 
 
-
 EXEC sp_addextendedproperty 'MS_Description', 'De klasse Chirogroep is er om het onderscheid te maken tussen ''echte'' Chirogroepen en ''Satellieten'' (oud-leidingsploegen,...)', 'User', dbo, 'table', ChiroGroep
 GO
 
@@ -1721,7 +1703,6 @@ GO
 
 
 
-
 EXEC sp_addextendedproperty 'MS_Description', 'De velden ''van'' en ''tot'' geven aan welke leden er standaard in deze afdeling terecht komen.
 
 Als voor ''ketiranten 2007-2008'' van=1991 en tot=1993, dan zullen leden die geboren zijn van 1991 t/m 1993 automatisch ''ketirant'' worden als ze zich aansluiten voor 2007-2008', 'User', dbo, 'table', AfdelingsJaar
@@ -1743,6 +1724,8 @@ GO
 
 EXEC sp_addextendedproperty 'MS_Description', 'Kotadres, thuisadres, bivakadres, werkadres,...', 'User', dbo, 'table', AdresType
 GO
+
+
 
 
 
