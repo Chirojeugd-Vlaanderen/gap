@@ -1613,14 +1613,14 @@
 								</UML:UseCase>
 								<UML:UseCase name="Doorvoeren Jaarovergang" xmi.id="EAID_7D952699_AEC8_4e45_9D78_C38EF2E94913" visibility="public" namespace="EAPK_54E069B4_02DA_4687_91FB_26A48A4C3D99" isRoot="false" isLeaf="false" isAbstract="false">
 									<UML:ModelElement.taggedValue>
-										<UML:TaggedValue tag="documentation" value="Deze functionaliteit laat toe om na het overschrijden van het werkjaar de leden van vorig jaar over te nemen als nieuwe leden van het huidige werkjaar. De gebruiker bepaalt wie over gaat. &#xA;&#xA;Het systeem berekent de nieuwe afdeling gebaseerd op de indeling in afdelingen, en de chiroleeftijd van de leden.&#xA;Uiteindelijk worden de nieuwe leden automatisch verzekerd.&#xA;&#xA;Van leiding worden afdelingen en functies behouden."/>
+										<UML:TaggedValue tag="documentation" value="Deze functionaliteit laat toe om na het overschrijden van het werkjaar de leden van vorig jaar over te nemen als nieuwe leden van het huidige werkjaar. De gebruiker bepaalt wie over gaat. &#xA;&#xA;Het systeem berekent de nieuwe afdeling gebaseerd op de indeling in afdelingen, en de chiroleeftijd van de leden.&#xA;Uiteindelijk worden de nieuwe leden automatisch verzekerd.&#xA;&#xA;Van leiding worden afdelingen en functies behouden.&#xA;&#xA;&#xA;Deze functionaliteit mag maar gebruikt worden in het begin van het werkjaar."/>
 										<UML:TaggedValue tag="isSpecification" value="false"/>
 										<UML:TaggedValue tag="ea_stype" value="UseCase"/>
 										<UML:TaggedValue tag="ea_ntype" value="0"/>
 										<UML:TaggedValue tag="version" value="1.0"/>
 										<UML:TaggedValue tag="package" value="EAPK_54E069B4_02DA_4687_91FB_26A48A4C3D99"/>
 										<UML:TaggedValue tag="date_created" value="2005-11-20 08:34:49"/>
-										<UML:TaggedValue tag="date_modified" value="2007-12-06 20:53:46"/>
+										<UML:TaggedValue tag="date_modified" value="2008-05-26 21:36:39"/>
 										<UML:TaggedValue tag="gentype" value="&lt;none&gt;"/>
 										<UML:TaggedValue tag="tagged" value="0"/>
 										<UML:TaggedValue tag="package_name" value="Primary Use Cases"/>
@@ -1709,6 +1709,29 @@
 										<UML:TaggedValue tag="virtualInheritance" value="0"/>
 									</UML:ModelElement.taggedValue>
 								</UML:Dependency>
+								<UML:UseCase name="Pronostiek 'nieuwe afdeling'" xmi.id="EAID_7F9A3ED7_91EE_4dbf_A38A_B641EA5FA196" visibility="public" namespace="EAPK_54E069B4_02DA_4687_91FB_26A48A4C3D99" isRoot="false" isLeaf="false" isAbstract="false">
+									<UML:ModelElement.taggedValue>
+										<UML:TaggedValue tag="documentation" value="Bijv:&#xA;&#xA;Lijst maken voor de nieuwe rakwileiding zodat ze weten bij wie ze op huisbezoek moeten gaan."/>
+										<UML:TaggedValue tag="isSpecification" value="false"/>
+										<UML:TaggedValue tag="ea_stype" value="UseCase"/>
+										<UML:TaggedValue tag="ea_ntype" value="0"/>
+										<UML:TaggedValue tag="version" value="1.0"/>
+										<UML:TaggedValue tag="package" value="EAPK_54E069B4_02DA_4687_91FB_26A48A4C3D99"/>
+										<UML:TaggedValue tag="date_created" value="2008-05-26 21:21:12"/>
+										<UML:TaggedValue tag="date_modified" value="2008-05-26 21:23:45"/>
+										<UML:TaggedValue tag="gentype" value="&lt;none&gt;"/>
+										<UML:TaggedValue tag="tagged" value="0"/>
+										<UML:TaggedValue tag="package_name" value="Primary Use Cases"/>
+										<UML:TaggedValue tag="phase" value="1.0"/>
+										<UML:TaggedValue tag="author" value="Johan Vervloet"/>
+										<UML:TaggedValue tag="complexity" value="1"/>
+										<UML:TaggedValue tag="status" value="Proposed"/>
+										<UML:TaggedValue tag="tpos" value="0"/>
+										<UML:TaggedValue tag="ea_localid" value="1039"/>
+										<UML:TaggedValue tag="ea_eleType" value="element"/>
+										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+									</UML:ModelElement.taggedValue>
+								</UML:UseCase>
 								<UML:UseCase name="Beheren van een Lid" xmi.id="EAID_91A68DD7_EA85_481e_AB7C_B7466EE8D3CC" visibility="public" namespace="EAPK_54E069B4_02DA_4687_91FB_26A48A4C3D99" isRoot="false" isLeaf="false" isAbstract="false">
 									<UML:ModelElement.taggedValue>
 										<UML:TaggedValue tag="documentation" value="Deze functionaliteit laat toe om de informatie i.v.m. het lidmaatschap van een persoon te beheren.&#xA;Een GAV kan personen lid maken voor het huidige werkjaar.  Het systeem zal standaard een afdeling voorstellen. Van dit voorstel kan occasioneel of structureel (wijzigen Chiroleeftijd) afgeweken worden. Aan het lidmaatschap kunnen functies verbonden worden."/>
@@ -2009,7 +2032,7 @@
 				<UML:TaggedValue tag="styleex" value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=1;MatrixActive=0;SwimlanesActive=1;MatrixLineWidth=1;MatrixLocked=0;TConnectorNotation=UML 2.1;TExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;ProfileData=;MDGDgm=;STBLDgm=;ShowNotes=0;VisibleAttributeDetail=0;ShowOpRetType=1;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;"/>
 			</UML:ModelElement.taggedValue>
 			<UML:Diagram.element>
-				<UML:DiagramElement geometry="Left=142;Top=285;Right=314;Bottom=409;" subject="EAID_54E069B4_02DA_4687_91FB_26A48A4C3D99" seqno="1" style="DUID=74ED1616;"/>
+				<UML:DiagramElement geometry="Left=142;Top=285;Right=314;Bottom=441;" subject="EAID_54E069B4_02DA_4687_91FB_26A48A4C3D99" seqno="1" style="DUID=74ED1616;"/>
 				<UML:DiagramElement geometry="Left=156;Top=79;Right=296;Bottom=169;" subject="EAID_46BB7A53_BC47_4ba9_A6EF_B715C79F7924" seqno="2" style="DUID=C898EFE4;"/>
 			</UML:Diagram.element>
 		</UML:Diagram>
@@ -2076,7 +2099,7 @@
 				<UML:TaggedValue tag="version" value="1.0"/>
 				<UML:TaggedValue tag="author" value="Tom Haepers"/>
 				<UML:TaggedValue tag="created_date" value="2005-11-19 00:00:00"/>
-				<UML:TaggedValue tag="modified_date" value="2008-05-22 10:13:16"/>
+				<UML:TaggedValue tag="modified_date" value="2008-05-26 21:21:12"/>
 				<UML:TaggedValue tag="package" value="EAPK_54E069B4_02DA_4687_91FB_26A48A4C3D99"/>
 				<UML:TaggedValue tag="type" value="Use Case"/>
 				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;;cls=0;"/>
@@ -2101,19 +2124,19 @@
 				<UML:DiagramElement geometry="Left=88;Top=457;Right=138;Bottom=557;" subject="EAID_F206E41D_2B2D_4ff0_A4F0_DE1A601D7B39" seqno="13" style="DUID=54917710;"/>
 				<UML:DiagramElement geometry="Left=302;Top=67;Right=422;Bottom=147;" subject="EAID_91A68DD7_EA85_481e_AB7C_B7466EE8D3CC" seqno="14" style="DUID=7705308B;"/>
 				<UML:DiagramElement geometry="Left=245;Top=34;Right=582;Bottom=1055;" subject="EAID_16F5F197_EC63_491b_9D4E_027D5154C9E2" seqno="15" style="DUID=5F8E1D34;"/>
-				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=1;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_31966AC9_AC08_4456_A138_80C2B43697ED" style="Mode=3;EOID=B73984A0;SOID=C6EC380D;Color=-1;LWidth=0;Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_6C7064D1_2288_40c7_BDE1_52262267336C" style="Mode=3;EOID=0474DD3B;SOID=54917710;Color=-1;LWidth=0;Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=4;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_62541291_ECB5_4fdf_91F8_A5A0E0831929" style="Mode=3;EOID=0474DD3B;SOID=B73984A0;Color=-1;LWidth=0;Hidden=0;"/>
-				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_A41A1A91_502A_45ad_A6A2_02B05879A569" style="Mode=3;EOID=4FD83A3F;SOID=99481CEE;Color=-1;LWidth=1;Hidden=0;"/>
-				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_4E9C5B73_EE6C_4a1c_837C_9ED02C9C4B4C" style="Mode=3;EOID=4FD83A3F;SOID=7705308B;Color=-1;LWidth=1;Hidden=0;"/>
 				<UML:DiagramElement geometry="EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_B9F16816_4920_4f3f_988F_F5CA4B2D6FFF" style="Mode=3;EOID=99481CEE;SOID=54917710;Color=-1;LWidth=0;Hidden=0;"/>
 				<UML:DiagramElement geometry="EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_BD50EDBB_3E45_4d55_90D0_FCF53920911E" style="Mode=3;EOID=7705308B;SOID=54917710;Color=-1;LWidth=0;Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_62A248E4_A1F6_4dbe_9883_7998F8ECAE7E" style="Mode=3;EOID=94ED9323;SOID=54917710;Color=-1;LWidth=0;Hidden=0;"/>
+				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_A41A1A91_502A_45ad_A6A2_02B05879A569" style="Mode=3;EOID=4FD83A3F;SOID=99481CEE;Color=-1;LWidth=1;Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=-7;SY=14;EX=17;EY=8;EDGE=4;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_AE2D6879_9BB4_4e69_968C_D3C7F0CC0370" style="Mode=3;EOID=94ED9323;SOID=B73984A0;Color=-1;LWidth=1;Hidden=0;"/>
-				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_13D002DD_65F4_4ec8_8829_51C21380DCF0" style="Mode=3;EOID=AEC8499E;SOID=54917710;Color=-1;LWidth=0;Hidden=0;"/>
 				<UML:DiagramElement geometry="EDGE=3;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_0C0C0AF1_6FDC_42d5_95F5_A4179A4001E3" style="Mode=3;EOID=1FCBE9C9;SOID=B73984A0;Color=-1;LWidth=0;Hidden=0;"/>
+				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=1;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_31966AC9_AC08_4456_A138_80C2B43697ED" style="Mode=3;EOID=B73984A0;SOID=C6EC380D;Color=-1;LWidth=0;Hidden=0;"/>
+				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_13D002DD_65F4_4ec8_8829_51C21380DCF0" style="Mode=3;EOID=AEC8499E;SOID=54917710;Color=-1;LWidth=0;Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_2DE52AE9_2296_454e_934E_246EA4EBCAD1" style="Mode=3;EOID=DF9A1E27;SOID=54917710;Color=-1;LWidth=0;Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=4;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_0F3CF6E3_7C77_4d80_8619_916FBB462DCA" style="Mode=3;EOID=DF9A1E27;SOID=B73984A0;Color=-1;LWidth=0;Hidden=0;"/>
+				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_4E9C5B73_EE6C_4a1c_837C_9ED02C9C4B4C" style="Mode=3;EOID=4FD83A3F;SOID=7705308B;Color=-1;LWidth=1;Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_837B9063_B2CE_4df0_8615_33193B4DFBD5" style="Mode=3;EOID=E624963E;SOID=0474DD3B;Color=-1;LWidth=1;Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=4;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_E24C1A6D_C74E_4628_864E_A08D17D08331" style="Mode=3;EOID=F1016BB7;SOID=B73984A0;Color=-1;LWidth=1;Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_C07A931D_47F6_4fdc_8606_572842AF5415" style="Mode=3;EOID=F1016BB7;SOID=54917710;Color=-1;LWidth=1;Hidden=0;"/>
