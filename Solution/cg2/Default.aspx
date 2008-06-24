@@ -2,14 +2,17 @@
 
 <asp:Content ID="overzichtPersonen" ContentPlaceHolderID="PaginaInhoud" 
     runat="server">
-<h2>Dit is een testpagina</h2>
+<h2>Personen CHIRO
+    <asp:Label ID="groepsLabel" runat="server" Text="Label"></asp:Label>
+    </h2>
 
 <p>
 Dit is de geweldige testapplicatie.
-    <asp:Label ID="groepsNaamLabel" runat="server" Text="Label"></asp:Label>
+    <asp:GridView ID="lijst" runat="server">
+    </asp:GridView>
 </p>
 
-    <asp:ListBox ID="lijst" runat="server"></asp:ListBox>
+    <asp:Label ID="domLabel" runat="server" Text="Label"></asp:Label>
     <br />
 
 

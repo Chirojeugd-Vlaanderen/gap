@@ -24,11 +24,28 @@ namespace cg2
         {
             chiroGroepContext = new ChiroGroepEntities();
 
-            ObjectQuery<Persoon> query = chiroGroepContext.Persoon.Include("Groep");
+            ObjectQuery<Groep> query = chiroGroepContext.Groep.Include("Persoon");
 
-            lijst.DataSource = query;
-            lijst.DataTextField = "Naam";
+            var mijnGroep = from g in query
+                            where g.GroepID == DommeConstanten.TestGroepId
+                            select g;
+
+            groepsLabel.Text = mijnGroep.First().Naam;
+
+            var mijnPersonen = mijnGroep.First().Persoon;
+
+            var teTonenInfo = from p in mijnPersonen
+                              orderby p.Naam
+                              select new { VoorNaam = p.VoorNaam, Naam = p.Naam };
+
+            lijst.DataSource = teTonenInfo;
             lijst.DataBind();
         }
+
+        protected void lijst_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            domLabel.Text = "HALLO!";
+        }
+
     }
 }

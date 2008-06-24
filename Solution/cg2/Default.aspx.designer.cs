@@ -14,13 +14,13 @@ namespace cg2 {
     public partial class _Default {
         
         /// <summary>
-        /// groepsNaamLabel control.
+        /// groepsLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label groepsNaamLabel;
+        protected global::System.Web.UI.WebControls.Label groepsLabel;
         
         /// <summary>
         /// lijst control.
@@ -29,6 +29,15 @@ namespace cg2 {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox lijst;
+        protected global::System.Web.UI.WebControls.GridView lijst;
+        
+        /// <summary>
+        /// domLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label domLabel;
     }
 }
