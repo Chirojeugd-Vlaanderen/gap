@@ -57,6 +57,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChiroGroep.Master.cs">
+      <DependentUpon>ChiroGroep.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ChiroGroep.Master.designer.cs">
+      <DependentUpon>ChiroGroep.Master</DependentUpon>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>Default.aspx</DependentUpon>
@@ -65,6 +72,10 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ChiroGroep.css" />
+    <Content Include="ChiroGroep.Master" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
