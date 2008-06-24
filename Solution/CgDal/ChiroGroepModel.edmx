@@ -1,0 +1,903 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="CopyToOutputDirectory" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <edmx:ReverseEngineer />
+    <edmx:Diagrams ><Diagram Name="ChiroGroepModel"><EntityTypeShape EntityType="ChiroGroepModel.Adres" PointX="0.75" PointY="4.5" Width="1.5" Height="1.843455765843391" IsExpanded="true" /><EntityTypeShape EntityType="ChiroGroepModel.Categorie" PointX="6" PointY="4.375" Width="1.5" Height="1.5319933734337496" IsExpanded="true" /><EntityTypeShape EntityType="ChiroGroepModel.VrijVeldType" PointX="3" PointY="10.375" Width="1.5" Height="1.5319933734337496" IsExpanded="true" /><EntityTypeShape EntityType="ChiroGroepModel.Groep" PointX="3" PointY="7" Width="1.5" Height="2.3106493544578548" IsExpanded="true" /><EntityTypeShape EntityType="ChiroGroepModel.AdresType" PointX="0.75" PointY="1.5" Width="1.5" Height="1.3762621772289274" IsExpanded="true" /><EntityTypeShape EntityType="ChiroGroepModel.CommunicatieType" PointX="8.25" PointY="3.25" Width="1.5" Height="1.6877245696385703" IsExpanded="true" /><EntityTypeShape EntityType="ChiroGroepModel.CommunicatieVorm" PointX="10.5" PointY="4.25" Width="1.5" Height="1.6877245696385703" IsExpanded="true" /><EntityTypeShape EntityType="ChiroGroepModel.Persoon" PointX="8.25" PointY="6.625" Width="1.5" Height="3.0893053354819626" IsExpanded="true" /><EntityTypeShape EntityType="ChiroGroepModel.PersoonsAdres" PointX="3" PointY="3.375" Width="1.5" Height="1.9991869620482135" IsExpanded="true" /><EntityTypeShape EntityType="ChiroGroepModel.PersoonVrijVeld" PointX="10.5" PointY="7.25" Width="1.5" Height="1.6877245696385712" IsExpanded="true" /><EntityTypeShape EntityType="ChiroGroepModel.PersoonVrijVeldType" PointX="5.25" PointY="7.375" Width="1.5" Height="1.5319933734337496" IsExpanded="true" /><AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_Adres" ManuallyRouted="false"><ConnectorPoint PointX="2.25" PointY="4.9370934810241067" /><ConnectorPoint PointX="3" PointY="4.9370934810241067" /></AssociationConnector><AssociationConnector Association="ChiroGroepModel.FK_PersoonVrijVeldType_VrijVeldType" ManuallyRouted="false"><ConnectorPoint PointX="4.5" PointY="11.140996686716875" /><ConnectorPoint PointX="6" PointY="11.140996686716875" /><ConnectorPoint PointX="6" PointY="8.90699337343375" /></AssociationConnector><AssociationConnector Association="ChiroGroepModel.FK_PersoonVrijVeldType_Groep" ManuallyRouted="false"><ConnectorPoint PointX="4.5" PointY="8.1409966867168748" /><ConnectorPoint PointX="5.25" PointY="8.1409966867168748" /></AssociationConnector><AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_AdresType" ManuallyRouted="false"><ConnectorPoint PointX="2.25" PointY="2.1881310886144636" /><ConnectorPoint PointX="3.75" PointY="2.1881310886144636" /><ConnectorPoint PointX="3.75" PointY="3.375" /></AssociationConnector><AssociationConnector Association="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" ManuallyRouted="false"><ConnectorPoint PointX="9.75" PointY="4.5938622848192852" /><ConnectorPoint PointX="10.5" PointY="4.5938622848192852" /></AssociationConnector><AssociationConnector Association="ChiroGroepModel.FK_CommunicatieVorm_Persoon" ManuallyRouted="false"><ConnectorPoint PointX="9" PointY="6.625" /><ConnectorPoint PointX="9" PointY="6.25" /><ConnectorPoint PointX="11.25" PointY="6.25" /><ConnectorPoint PointX="11.25" PointY="5.93772456963857" /></AssociationConnector><AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_Persoon" ManuallyRouted="false"><ConnectorPoint PointX="8.593748" PointY="6.625" /><ConnectorPoint PointX="8.593748" PointY="6.25" /><ConnectorPoint PointX="7.239583333333333" PointY="6.2499999999999991" /><ConnectorPoint PointX="7.072916666666667" PointY="6.25" /><ConnectorPoint PointX="3.75" PointY="6.25" /><ConnectorPoint PointX="3.75" PointY="5.3741869620482134" /></AssociationConnector><AssociationConnector Association="ChiroGroepModel.FK_PersoonVrijVeld_Persoon" ManuallyRouted="false"><ConnectorPoint PointX="9.75" PointY="8.093862284819286" /><ConnectorPoint PointX="10.5" PointY="8.093862284819286" /></AssociationConnector><AssociationConnector Association="ChiroGroepModel.FK_Persoon_PersoonVrijVeldType" ManuallyRouted="false"><ConnectorPoint PointX="6.75" PointY="8.1409966867168748" /><ConnectorPoint PointX="8" PointY="8.1409966867168748" /><ConnectorPoint PointX="8" PointY="6.375" /><ConnectorPoint PointX="8.5104146666666658" PointY="6.3749999999999991" /><ConnectorPoint PointX="8.6770813333333336" PointY="6.375" /><ConnectorPoint PointX="8.9166666666666661" PointY="6.3749999999999991" /><ConnectorPoint PointX="9.0833333333333339" PointY="6.375" /><ConnectorPoint PointX="11.25" PointY="6.375" /><ConnectorPoint PointX="11.25" PointY="7.25" /></AssociationConnector><AssociationConnector Association="ChiroGroepModel.GroepsAdres" ManuallyRouted="false"><ConnectorPoint PointX="1.5" PointY="6.343455765843391" /><ConnectorPoint PointX="1.5" PointY="8.1553246772289274" /><ConnectorPoint PointX="3" PointY="8.1553246772289274" /></AssociationConnector><AssociationConnector Association="ChiroGroepModel.GelieerdePersoon" ManuallyRouted="false"><ConnectorPoint PointX="4.5" PointY="9.1400713639458022" /><ConnectorPoint PointX="5.916666666666667" PointY="9.1400713639458022" /><ConnectorPoint PointX="6.083333333333333" PointY="9.1400713639458022" /><ConnectorPoint PointX="8.25" PointY="9.1400713639458022" /></AssociationConnector><AssociationConnector Association="ChiroGroepModel.PersoonsCategorie" ManuallyRouted="false"><ConnectorPoint PointX="7.15625" PointY="5.90699337343375" /><ConnectorPoint PointX="7.15625" PointY="6.96875" /><ConnectorPoint PointX="7.916666666666667" PointY="6.9687499999999991" /><ConnectorPoint PointX="8.0833333333333339" PointY="6.96875" /><ConnectorPoint PointX="8.25" PointY="6.96875" /></AssociationConnector></Diagram></edmx:Diagrams>
+  </edmx:Designer>
+  <edmx:Runtime>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ChiroGroepModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityContainer Name="ChiroGroepEntities">
+          <EntitySet Name="Adres" EntityType="ChiroGroepModel.Adres" />
+          <EntitySet Name="Categorie" EntityType="ChiroGroepModel.Categorie" />
+          <EntitySet Name="VrijVeldType" EntityType="ChiroGroepModel.VrijVeldType" />
+          <EntitySet Name="Groep" EntityType="ChiroGroepModel.Groep" />
+          <EntitySet Name="AdresType" EntityType="ChiroGroepModel.AdresType" />
+          <EntitySet Name="CommunicatieType" EntityType="ChiroGroepModel.CommunicatieType" />
+          <EntitySet Name="CommunicatieVorm" EntityType="ChiroGroepModel.CommunicatieVorm" />
+          <EntitySet Name="Persoon" EntityType="ChiroGroepModel.Persoon" />
+          <EntitySet Name="PersoonsAdres" EntityType="ChiroGroepModel.PersoonsAdres" />
+          <EntitySet Name="PersoonVrijVeld" EntityType="ChiroGroepModel.PersoonVrijVeld" />
+          <EntitySet Name="PersoonVrijVeldType" EntityType="ChiroGroepModel.PersoonVrijVeldType" />
+          <AssociationSet Name="FK_PersoonsAdres_Adres" Association="ChiroGroepModel.FK_PersoonsAdres_Adres">
+            <End Role="Adres" EntitySet="Adres" />
+            <End Role="PersoonsAdres" EntitySet="PersoonsAdres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersoonVrijVeldType_VrijVeldType" Association="ChiroGroepModel.FK_PersoonVrijVeldType_VrijVeldType">
+            <End Role="VrijVeldType" EntitySet="VrijVeldType" />
+            <End Role="PersoonVrijVeldType" EntitySet="PersoonVrijVeldType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersoonVrijVeldType_Groep" Association="ChiroGroepModel.FK_PersoonVrijVeldType_Groep">
+            <End Role="Groep" EntitySet="Groep" />
+            <End Role="PersoonVrijVeldType" EntitySet="PersoonVrijVeldType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersoonsAdres_AdresType" Association="ChiroGroepModel.FK_PersoonsAdres_AdresType">
+            <End Role="AdresType" EntitySet="AdresType" />
+            <End Role="PersoonsAdres" EntitySet="PersoonsAdres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommunicatieVorm_CommunicatieType" Association="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType">
+            <End Role="CommunicatieType" EntitySet="CommunicatieType" />
+            <End Role="CommunicatieVorm" EntitySet="CommunicatieVorm" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommunicatieVorm_Persoon" Association="ChiroGroepModel.FK_CommunicatieVorm_Persoon">
+            <End Role="Persoon" EntitySet="Persoon" />
+            <End Role="CommunicatieVorm" EntitySet="CommunicatieVorm" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersoonsAdres_Persoon" Association="ChiroGroepModel.FK_PersoonsAdres_Persoon">
+            <End Role="Persoon" EntitySet="Persoon" />
+            <End Role="PersoonsAdres" EntitySet="PersoonsAdres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersoonVrijVeld_Persoon" Association="ChiroGroepModel.FK_PersoonVrijVeld_Persoon">
+            <End Role="Persoon" EntitySet="Persoon" />
+            <End Role="PersoonVrijVeld" EntitySet="PersoonVrijVeld" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persoon_PersoonVrijVeldType" Association="ChiroGroepModel.FK_Persoon_PersoonVrijVeldType">
+            <End Role="PersoonVrijVeldType" EntitySet="PersoonVrijVeldType" />
+            <End Role="PersoonVrijVeld" EntitySet="PersoonVrijVeld" />
+          </AssociationSet>
+          <AssociationSet Name="GroepsAdres" Association="ChiroGroepModel.GroepsAdres">
+            <End Role="Adres" EntitySet="Adres" />
+            <End Role="Groep" EntitySet="Groep" />
+          </AssociationSet>
+          <AssociationSet Name="GelieerdePersoon" Association="ChiroGroepModel.GelieerdePersoon">
+            <End Role="Groep" EntitySet="Groep" />
+            <End Role="Persoon" EntitySet="Persoon" />
+          </AssociationSet>
+          <AssociationSet Name="PersoonsCategorie" Association="ChiroGroepModel.PersoonsCategorie">
+            <End Role="Categorie" EntitySet="Categorie" />
+            <End Role="Persoon" EntitySet="Persoon" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Adres">
+          <Key>
+            <PropertyRef Name="AdresID" />
+          </Key>
+          <Property Name="Bus" Type="String" MaxLength="10" Unicode="false" />
+          <Property Name="HuisNr" Type="Int32" />
+          <Property Name="PostCode" Type="String" MaxLength="10" Unicode="false" />
+          <Property Name="AdresID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PersoonsAdres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Adres" FromRole="Adres" ToRole="PersoonsAdres" />
+          <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.GroepsAdres" FromRole="Adres" ToRole="Groep" />
+        </EntityType>
+        <EntityType Name="Categorie">
+          <Key>
+            <PropertyRef Name="CategorieID" />
+          </Key>
+          <Property Name="Naam" Type="String" MaxLength="80" Unicode="false" />
+          <Property Name="Code" Type="String" MaxLength="10" Unicode="false" />
+          <Property Name="CategorieID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.PersoonsCategorie" FromRole="Categorie" ToRole="Persoon" />
+        </EntityType>
+        <EntityType Name="VrijVeldType">
+          <Key>
+            <PropertyRef Name="VrijVeldTypeID" />
+          </Key>
+          <Property Name="Naam" Type="String" MaxLength="80" Unicode="false" />
+          <Property Name="DataType" Type="Int32" Nullable="false" />
+          <Property Name="VrijVeldTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PersoonVrijVeldType" Relationship="ChiroGroepModel.FK_PersoonVrijVeldType_VrijVeldType" FromRole="VrijVeldType" ToRole="PersoonVrijVeldType" />
+        </EntityType>
+        <EntityType Name="Groep">
+          <Key>
+            <PropertyRef Name="GroepID" />
+          </Key>
+          <Property Name="Naam" Type="String" Nullable="false" MaxLength="160" Unicode="false" />
+          <Property Name="Code" Type="String" MaxLength="10" Unicode="false" FixedLength="true" />
+          <Property Name="OprichtingsJaar" Type="Int32" />
+          <Property Name="WebSite" Type="String" MaxLength="160" Unicode="false" />
+          <Property Name="Logo" Type="Binary" MaxLength="2147483647" />
+          <Property Name="GroepID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PersoonVrijVeldType" Relationship="ChiroGroepModel.FK_PersoonVrijVeldType_Groep" FromRole="Groep" ToRole="PersoonVrijVeldType" />
+          <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.GroepsAdres" FromRole="Groep" ToRole="Adres" />
+          <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.GelieerdePersoon" FromRole="Groep" ToRole="Persoon" />
+        </EntityType>
+        <EntityType Name="AdresType">
+          <Key>
+            <PropertyRef Name="AdresTypeID" />
+          </Key>
+          <Property Name="Omschrijving" Type="String" MaxLength="80" Unicode="false" />
+          <Property Name="AdresTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PersoonsAdres" Relationship="ChiroGroepModel.FK_PersoonsAdres_AdresType" FromRole="AdresType" ToRole="PersoonsAdres" />
+        </EntityType>
+        <EntityType Name="CommunicatieType">
+          <Key>
+            <PropertyRef Name="CommunicatieTypeID" />
+          </Key>
+          <Property Name="Omschrijving" Type="String" MaxLength="80" Unicode="false" />
+          <Property Name="Validatie" Type="String" MaxLength="160" Unicode="false" />
+          <Property Name="IsGezinsGebonden" Type="Boolean" />
+          <Property Name="CommunicatieTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CommunicatieVorm" Relationship="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" FromRole="CommunicatieType" ToRole="CommunicatieVorm" />
+        </EntityType>
+        <EntityType Name="CommunicatieVorm">
+          <Key>
+            <PropertyRef Name="CommunicatieVormID" />
+          </Key>
+          <Property Name="Nota" Type="String" MaxLength="320" Unicode="false" />
+          <Property Name="Nummer" Type="String" MaxLength="160" Unicode="false" />
+          <Property Name="CommunicatieVormID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CommunicatieType" Relationship="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" FromRole="CommunicatieVorm" ToRole="CommunicatieType" />
+          <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_CommunicatieVorm_Persoon" FromRole="CommunicatieVorm" ToRole="Persoon" />
+        </EntityType>
+        <EntityType Name="Persoon">
+          <Key>
+            <PropertyRef Name="PersoonID" />
+          </Key>
+          <Property Name="AdNummer" Type="Int32" />
+          <Property Name="Naam" Type="String" Nullable="false" MaxLength="160" Unicode="false" />
+          <Property Name="VoorNaam" Type="String" MaxLength="60" Unicode="false" />
+          <Property Name="GeboorteDatum" Type="DateTime" PreserveSeconds="false" />
+          <Property Name="Geslacht" Type="Int32" Nullable="false" />
+          <Property Name="ChiroLeefTijd" Type="Int32" Nullable="false" />
+          <Property Name="SterfDatum" Type="DateTime" PreserveSeconds="false" />
+          <Property Name="Guid" Type="Guid" />
+          <Property Name="PersoonID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CommunicatieVorm" Relationship="ChiroGroepModel.FK_CommunicatieVorm_Persoon" FromRole="Persoon" ToRole="CommunicatieVorm" />
+          <NavigationProperty Name="PersoonsAdres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Persoon" FromRole="Persoon" ToRole="PersoonsAdres" />
+          <NavigationProperty Name="PersoonVrijVeld" Relationship="ChiroGroepModel.FK_PersoonVrijVeld_Persoon" FromRole="Persoon" ToRole="PersoonVrijVeld" />
+          <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.GelieerdePersoon" FromRole="Persoon" ToRole="Groep" />
+          <NavigationProperty Name="Categorie" Relationship="ChiroGroepModel.PersoonsCategorie" FromRole="Persoon" ToRole="Categorie" />
+        </EntityType>
+        <EntityType Name="PersoonsAdres">
+          <Key>
+            <PropertyRef Name="PersoonID" />
+            <PropertyRef Name="AdresID" />
+          </Key>
+          <Property Name="IsStandaard" Type="Boolean" Nullable="false" />
+          <Property Name="Opmerking" Type="String" MaxLength="2147483647" Unicode="false" />
+          <Property Name="PersoonID" Type="Int32" Nullable="false" />
+          <Property Name="AdresID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Adres" FromRole="PersoonsAdres" ToRole="Adres" />
+          <NavigationProperty Name="AdresType" Relationship="ChiroGroepModel.FK_PersoonsAdres_AdresType" FromRole="PersoonsAdres" ToRole="AdresType" />
+          <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_PersoonsAdres_Persoon" FromRole="PersoonsAdres" ToRole="Persoon" />
+        </EntityType>
+        <EntityType Name="PersoonVrijVeld">
+          <Key>
+            <PropertyRef Name="PersoonID" />
+            <PropertyRef Name="PersoonVrijVeldTypeID" />
+          </Key>
+          <Property Name="Waarde" Type="String" Nullable="false" MaxLength="320" Unicode="false" />
+          <Property Name="PersoonID" Type="Int32" Nullable="false" />
+          <Property Name="PersoonVrijVeldTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_PersoonVrijVeld_Persoon" FromRole="PersoonVrijVeld" ToRole="Persoon" />
+          <NavigationProperty Name="PersoonVrijVeldType" Relationship="ChiroGroepModel.FK_Persoon_PersoonVrijVeldType" FromRole="PersoonVrijVeld" ToRole="PersoonVrijVeldType" />
+        </EntityType>
+        <EntityType Name="PersoonVrijVeldType">
+          <Key>
+            <PropertyRef Name="PersoonVrijVeldTypeID" />
+          </Key>
+          <Property Name="PersoonVrijVeldTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="VrijVeldType" Relationship="ChiroGroepModel.FK_PersoonVrijVeldType_VrijVeldType" FromRole="PersoonVrijVeldType" ToRole="VrijVeldType" />
+          <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_PersoonVrijVeldType_Groep" FromRole="PersoonVrijVeldType" ToRole="Groep" />
+          <NavigationProperty Name="PersoonVrijVeld" Relationship="ChiroGroepModel.FK_Persoon_PersoonVrijVeldType" FromRole="PersoonVrijVeldType" ToRole="PersoonVrijVeld" />
+        </EntityType>
+        <Association Name="FK_PersoonsAdres_Adres">
+          <End Role="Adres" Type="ChiroGroepModel.Adres" Multiplicity="1" />
+          <End Role="PersoonsAdres" Type="ChiroGroepModel.PersoonsAdres" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Adres">
+              <PropertyRef Name="AdresID" />
+            </Principal>
+            <Dependent Role="PersoonsAdres">
+              <PropertyRef Name="AdresID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersoonVrijVeldType_VrijVeldType">
+          <End Role="VrijVeldType" Type="ChiroGroepModel.VrijVeldType" Multiplicity="1" />
+          <End Role="PersoonVrijVeldType" Type="ChiroGroepModel.PersoonVrijVeldType" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="VrijVeldType">
+              <PropertyRef Name="VrijVeldTypeID" />
+            </Principal>
+            <Dependent Role="PersoonVrijVeldType">
+              <PropertyRef Name="PersoonVrijVeldTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersoonVrijVeldType_Groep">
+          <End Role="Groep" Type="ChiroGroepModel.Groep" Multiplicity="0..1" />
+          <End Role="PersoonVrijVeldType" Type="ChiroGroepModel.PersoonVrijVeldType" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_PersoonsAdres_AdresType">
+          <End Role="AdresType" Type="ChiroGroepModel.AdresType" Multiplicity="1" />
+          <End Role="PersoonsAdres" Type="ChiroGroepModel.PersoonsAdres" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_CommunicatieVorm_CommunicatieType">
+          <End Role="CommunicatieType" Type="ChiroGroepModel.CommunicatieType" Multiplicity="0..1" />
+          <End Role="CommunicatieVorm" Type="ChiroGroepModel.CommunicatieVorm" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_CommunicatieVorm_Persoon">
+          <End Role="Persoon" Type="ChiroGroepModel.Persoon" Multiplicity="0..1" />
+          <End Role="CommunicatieVorm" Type="ChiroGroepModel.CommunicatieVorm" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_PersoonsAdres_Persoon">
+          <End Role="Persoon" Type="ChiroGroepModel.Persoon" Multiplicity="1" />
+          <End Role="PersoonsAdres" Type="ChiroGroepModel.PersoonsAdres" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persoon">
+              <PropertyRef Name="PersoonID" />
+            </Principal>
+            <Dependent Role="PersoonsAdres">
+              <PropertyRef Name="PersoonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersoonVrijVeld_Persoon">
+          <End Role="Persoon" Type="ChiroGroepModel.Persoon" Multiplicity="1" />
+          <End Role="PersoonVrijVeld" Type="ChiroGroepModel.PersoonVrijVeld" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persoon">
+              <PropertyRef Name="PersoonID" />
+            </Principal>
+            <Dependent Role="PersoonVrijVeld">
+              <PropertyRef Name="PersoonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Persoon_PersoonVrijVeldType">
+          <End Role="PersoonVrijVeldType" Type="ChiroGroepModel.PersoonVrijVeldType" Multiplicity="1" />
+          <End Role="PersoonVrijVeld" Type="ChiroGroepModel.PersoonVrijVeld" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersoonVrijVeldType">
+              <PropertyRef Name="PersoonVrijVeldTypeID" />
+            </Principal>
+            <Dependent Role="PersoonVrijVeld">
+              <PropertyRef Name="PersoonVrijVeldTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GroepsAdres">
+          <End Role="Adres" Type="ChiroGroepModel.Adres" Multiplicity="*" />
+          <End Role="Groep" Type="ChiroGroepModel.Groep" Multiplicity="*" />
+        </Association>
+        <Association Name="GelieerdePersoon">
+          <End Role="Groep" Type="ChiroGroepModel.Groep" Multiplicity="*" />
+          <End Role="Persoon" Type="ChiroGroepModel.Persoon" Multiplicity="*" />
+        </Association>
+        <Association Name="PersoonsCategorie">
+          <End Role="Categorie" Type="ChiroGroepModel.Categorie" Multiplicity="*" />
+          <End Role="Persoon" Type="ChiroGroepModel.Persoon" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ChiroGroepModel.Store" Alias="Self" ProviderManifestToken="09.00.1399" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+        <EntityContainer Name="pers">
+          <EntitySet Name="Adres" EntityType="ChiroGroepModel.Store.Adres" Schema="adr" />
+          <EntitySet Name="Categorie" EntityType="ChiroGroepModel.Store.Categorie" Schema="core" />
+          <EntitySet Name="VrijVeldType" EntityType="ChiroGroepModel.Store.VrijVeldType" Schema="core" />
+          <EntitySet Name="Groep" EntityType="ChiroGroepModel.Store.Groep" Schema="grp" />
+          <EntitySet Name="GroepsAdres" EntityType="ChiroGroepModel.Store.GroepsAdres" Schema="grp" />
+          <EntitySet Name="AdresType" EntityType="ChiroGroepModel.Store.AdresType" />
+          <EntitySet Name="CommunicatieType" EntityType="ChiroGroepModel.Store.CommunicatieType" />
+          <EntitySet Name="CommunicatieVorm" EntityType="ChiroGroepModel.Store.CommunicatieVorm" />
+          <EntitySet Name="GelieerdePersoon" EntityType="ChiroGroepModel.Store.GelieerdePersoon" />
+          <EntitySet Name="Persoon" EntityType="ChiroGroepModel.Store.Persoon" />
+          <EntitySet Name="PersoonsAdres" EntityType="ChiroGroepModel.Store.PersoonsAdres" />
+          <EntitySet Name="PersoonsCategorie" EntityType="ChiroGroepModel.Store.PersoonsCategorie" />
+          <EntitySet Name="PersoonVrijVeld" EntityType="ChiroGroepModel.Store.PersoonVrijVeld" />
+          <EntitySet Name="PersoonVrijVeldType" EntityType="ChiroGroepModel.Store.PersoonVrijVeldType" />
+          <AssociationSet Name="FK_CommunicatieVorm_CommunicatieType" Association="ChiroGroepModel.Store.FK_CommunicatieVorm_CommunicatieType">
+            <End Role="CommunicatieType" EntitySet="CommunicatieType" />
+            <End Role="CommunicatieVorm" EntitySet="CommunicatieVorm" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommunicatieVorm_Persoon" Association="ChiroGroepModel.Store.FK_CommunicatieVorm_Persoon">
+            <End Role="Persoon" EntitySet="Persoon" />
+            <End Role="CommunicatieVorm" EntitySet="CommunicatieVorm" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GelieerdePersoon_Groep" Association="ChiroGroepModel.Store.FK_GelieerdePersoon_Groep">
+            <End Role="Groep" EntitySet="Groep" />
+            <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GelieerdePersoon_Persoon" Association="ChiroGroepModel.Store.FK_GelieerdePersoon_Persoon">
+            <End Role="Persoon" EntitySet="Persoon" />
+            <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GroepsAdres_Adres" Association="ChiroGroepModel.Store.FK_GroepsAdres_Adres">
+            <End Role="Adres" EntitySet="Adres" />
+            <End Role="GroepsAdres" EntitySet="GroepsAdres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GroepsAdres_Groep" Association="ChiroGroepModel.Store.FK_GroepsAdres_Groep">
+            <End Role="Groep" EntitySet="Groep" />
+            <End Role="GroepsAdres" EntitySet="GroepsAdres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persoon_PersoonVrijVeldType" Association="ChiroGroepModel.Store.FK_Persoon_PersoonVrijVeldType">
+            <End Role="PersoonVrijVeldType" EntitySet="PersoonVrijVeldType" />
+            <End Role="PersoonVrijVeld" EntitySet="PersoonVrijVeld" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersoonsAdres_Adres" Association="ChiroGroepModel.Store.FK_PersoonsAdres_Adres">
+            <End Role="Adres" EntitySet="Adres" />
+            <End Role="PersoonsAdres" EntitySet="PersoonsAdres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersoonsAdres_AdresType" Association="ChiroGroepModel.Store.FK_PersoonsAdres_AdresType">
+            <End Role="AdresType" EntitySet="AdresType" />
+            <End Role="PersoonsAdres" EntitySet="PersoonsAdres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersoonsAdres_Persoon" Association="ChiroGroepModel.Store.FK_PersoonsAdres_Persoon">
+            <End Role="Persoon" EntitySet="Persoon" />
+            <End Role="PersoonsAdres" EntitySet="PersoonsAdres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersoonsCategorie_Categorie" Association="ChiroGroepModel.Store.FK_PersoonsCategorie_Categorie">
+            <End Role="Categorie" EntitySet="Categorie" />
+            <End Role="PersoonsCategorie" EntitySet="PersoonsCategorie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersoonsCategorie_Persoon" Association="ChiroGroepModel.Store.FK_PersoonsCategorie_Persoon">
+            <End Role="Persoon" EntitySet="Persoon" />
+            <End Role="PersoonsCategorie" EntitySet="PersoonsCategorie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersoonVrijVeld_Persoon" Association="ChiroGroepModel.Store.FK_PersoonVrijVeld_Persoon">
+            <End Role="Persoon" EntitySet="Persoon" />
+            <End Role="PersoonVrijVeld" EntitySet="PersoonVrijVeld" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersoonVrijVeldType_Groep" Association="ChiroGroepModel.Store.FK_PersoonVrijVeldType_Groep">
+            <End Role="Groep" EntitySet="Groep" />
+            <End Role="PersoonVrijVeldType" EntitySet="PersoonVrijVeldType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersoonVrijVeldType_VrijVeldType" Association="ChiroGroepModel.Store.FK_PersoonVrijVeldType_VrijVeldType">
+            <End Role="VrijVeldType" EntitySet="VrijVeldType" />
+            <End Role="PersoonVrijVeldType" EntitySet="PersoonVrijVeldType" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Adres">
+          <Key>
+            <PropertyRef Name="AdresID" />
+          </Key>
+          <Property Name="Bus" Type="varchar" MaxLength="10" />
+          <Property Name="HuisNr" Type="int" />
+          <Property Name="PostCode" Type="varchar" MaxLength="10" />
+          <Property Name="AdresID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categorie">
+          <Key>
+            <PropertyRef Name="CategorieID" />
+          </Key>
+          <Property Name="Naam" Type="varchar" MaxLength="80" />
+          <Property Name="Code" Type="varchar" MaxLength="10" />
+          <Property Name="CategorieID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VrijVeldType">
+          <Key>
+            <PropertyRef Name="VrijVeldTypeID" />
+          </Key>
+          <Property Name="Naam" Type="varchar" MaxLength="80" />
+          <Property Name="DataType" Type="int" Nullable="false" />
+          <Property Name="VrijVeldTypeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Groep">
+          <Key>
+            <PropertyRef Name="GroepID" />
+          </Key>
+          <Property Name="Naam" Type="varchar" Nullable="false" MaxLength="160" />
+          <Property Name="Code" Type="char" MaxLength="10" />
+          <Property Name="OprichtingsJaar" Type="int" />
+          <Property Name="WebSite" Type="varchar" MaxLength="160" />
+          <Property Name="Logo" Type="image" />
+          <Property Name="GroepID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="GroepsAdres">
+          <Key>
+            <PropertyRef Name="GroepID" />
+            <PropertyRef Name="AdresID" />
+          </Key>
+          <Property Name="AdresID" Type="int" Nullable="false" />
+          <Property Name="GroepID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AdresType">
+          <Key>
+            <PropertyRef Name="AdresTypeID" />
+          </Key>
+          <Property Name="Omschrijving" Type="varchar" MaxLength="80" />
+          <Property Name="AdresTypeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CommunicatieType">
+          <Key>
+            <PropertyRef Name="CommunicatieTypeID" />
+          </Key>
+          <Property Name="Omschrijving" Type="varchar" MaxLength="80" />
+          <Property Name="Validatie" Type="varchar" MaxLength="160" />
+          <Property Name="IsGezinsGebonden" Type="bit" />
+          <Property Name="CommunicatieTypeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CommunicatieVorm">
+          <Key>
+            <PropertyRef Name="CommunicatieVormID" />
+          </Key>
+          <Property Name="Nota" Type="varchar" MaxLength="320" />
+          <Property Name="Nummer" Type="varchar" MaxLength="160" />
+          <Property Name="CommunicatieVormID" Type="int" Nullable="false" />
+          <Property Name="CommunicatieTypeID" Type="int" />
+          <Property Name="PersoonID" Type="int" />
+        </EntityType>
+        <EntityType Name="GelieerdePersoon">
+          <Key>
+            <PropertyRef Name="GroepID" />
+            <PropertyRef Name="PersoonID" />
+          </Key>
+          <Property Name="GroepID" Type="int" Nullable="false" />
+          <Property Name="PersoonID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Persoon">
+          <Key>
+            <PropertyRef Name="PersoonID" />
+          </Key>
+          <Property Name="AdNummer" Type="int" />
+          <Property Name="Naam" Type="varchar" Nullable="false" MaxLength="160" />
+          <Property Name="VoorNaam" Type="varchar" MaxLength="60" />
+          <Property Name="GeboorteDatum" Type="smalldatetime" />
+          <Property Name="Geslacht" Type="int" Nullable="false" />
+          <Property Name="ChiroLeefTijd" Type="int" Nullable="false" />
+          <Property Name="SterfDatum" Type="smalldatetime" />
+          <Property Name="Guid" Type="uniqueidentifier" />
+          <Property Name="PersoonID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="PersoonsAdres">
+          <Key>
+            <PropertyRef Name="PersoonID" />
+            <PropertyRef Name="AdresID" />
+          </Key>
+          <Property Name="IsStandaard" Type="bit" Nullable="false" />
+          <Property Name="Opmerking" Type="text" />
+          <Property Name="PersoonID" Type="int" Nullable="false" />
+          <Property Name="AdresID" Type="int" Nullable="false" />
+          <Property Name="AdresTypeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PersoonsCategorie">
+          <Key>
+            <PropertyRef Name="PersoonID" />
+            <PropertyRef Name="CategorieID" />
+          </Key>
+          <Property Name="PersoonID" Type="int" Nullable="false" />
+          <Property Name="CategorieID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PersoonVrijVeld">
+          <Key>
+            <PropertyRef Name="PersoonID" />
+            <PropertyRef Name="PersoonVrijVeldTypeID" />
+          </Key>
+          <Property Name="Waarde" Type="varchar" Nullable="false" MaxLength="320" />
+          <Property Name="PersoonID" Type="int" Nullable="false" />
+          <Property Name="PersoonVrijVeldTypeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PersoonVrijVeldType">
+          <Key>
+            <PropertyRef Name="PersoonVrijVeldTypeID" />
+          </Key>
+          <Property Name="PersoonVrijVeldTypeID" Type="int" Nullable="false" />
+          <Property Name="GroepID" Type="int" />
+        </EntityType>
+        <Association Name="FK_CommunicatieVorm_CommunicatieType">
+          <End Role="CommunicatieType" Type="ChiroGroepModel.Store.CommunicatieType" Multiplicity="0..1" />
+          <End Role="CommunicatieVorm" Type="ChiroGroepModel.Store.CommunicatieVorm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CommunicatieType">
+              <PropertyRef Name="CommunicatieTypeID" />
+            </Principal>
+            <Dependent Role="CommunicatieVorm">
+              <PropertyRef Name="CommunicatieTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CommunicatieVorm_Persoon">
+          <End Role="Persoon" Type="ChiroGroepModel.Store.Persoon" Multiplicity="0..1" />
+          <End Role="CommunicatieVorm" Type="ChiroGroepModel.Store.CommunicatieVorm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persoon">
+              <PropertyRef Name="PersoonID" />
+            </Principal>
+            <Dependent Role="CommunicatieVorm">
+              <PropertyRef Name="PersoonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GelieerdePersoon_Groep">
+          <End Role="Groep" Type="ChiroGroepModel.Store.Groep" Multiplicity="1" />
+          <End Role="GelieerdePersoon" Type="ChiroGroepModel.Store.GelieerdePersoon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groep">
+              <PropertyRef Name="GroepID" />
+            </Principal>
+            <Dependent Role="GelieerdePersoon">
+              <PropertyRef Name="GroepID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GelieerdePersoon_Persoon">
+          <End Role="Persoon" Type="ChiroGroepModel.Store.Persoon" Multiplicity="1" />
+          <End Role="GelieerdePersoon" Type="ChiroGroepModel.Store.GelieerdePersoon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persoon">
+              <PropertyRef Name="PersoonID" />
+            </Principal>
+            <Dependent Role="GelieerdePersoon">
+              <PropertyRef Name="PersoonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GroepsAdres_Adres">
+          <End Role="Adres" Type="ChiroGroepModel.Store.Adres" Multiplicity="1" />
+          <End Role="GroepsAdres" Type="ChiroGroepModel.Store.GroepsAdres" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Adres">
+              <PropertyRef Name="AdresID" />
+            </Principal>
+            <Dependent Role="GroepsAdres">
+              <PropertyRef Name="AdresID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GroepsAdres_Groep">
+          <End Role="Groep" Type="ChiroGroepModel.Store.Groep" Multiplicity="1" />
+          <End Role="GroepsAdres" Type="ChiroGroepModel.Store.GroepsAdres" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groep">
+              <PropertyRef Name="GroepID" />
+            </Principal>
+            <Dependent Role="GroepsAdres">
+              <PropertyRef Name="GroepID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Persoon_PersoonVrijVeldType">
+          <End Role="PersoonVrijVeldType" Type="ChiroGroepModel.Store.PersoonVrijVeldType" Multiplicity="1" />
+          <End Role="PersoonVrijVeld" Type="ChiroGroepModel.Store.PersoonVrijVeld" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersoonVrijVeldType">
+              <PropertyRef Name="PersoonVrijVeldTypeID" />
+            </Principal>
+            <Dependent Role="PersoonVrijVeld">
+              <PropertyRef Name="PersoonVrijVeldTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersoonsAdres_Adres">
+          <End Role="Adres" Type="ChiroGroepModel.Store.Adres" Multiplicity="1" />
+          <End Role="PersoonsAdres" Type="ChiroGroepModel.Store.PersoonsAdres" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Adres">
+              <PropertyRef Name="AdresID" />
+            </Principal>
+            <Dependent Role="PersoonsAdres">
+              <PropertyRef Name="AdresID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersoonsAdres_AdresType">
+          <End Role="AdresType" Type="ChiroGroepModel.Store.AdresType" Multiplicity="1" />
+          <End Role="PersoonsAdres" Type="ChiroGroepModel.Store.PersoonsAdres" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdresType">
+              <PropertyRef Name="AdresTypeID" />
+            </Principal>
+            <Dependent Role="PersoonsAdres">
+              <PropertyRef Name="AdresTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersoonsAdres_Persoon">
+          <End Role="Persoon" Type="ChiroGroepModel.Store.Persoon" Multiplicity="1" />
+          <End Role="PersoonsAdres" Type="ChiroGroepModel.Store.PersoonsAdres" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persoon">
+              <PropertyRef Name="PersoonID" />
+            </Principal>
+            <Dependent Role="PersoonsAdres">
+              <PropertyRef Name="PersoonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersoonsCategorie_Categorie">
+          <End Role="Categorie" Type="ChiroGroepModel.Store.Categorie" Multiplicity="1" />
+          <End Role="PersoonsCategorie" Type="ChiroGroepModel.Store.PersoonsCategorie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categorie">
+              <PropertyRef Name="CategorieID" />
+            </Principal>
+            <Dependent Role="PersoonsCategorie">
+              <PropertyRef Name="CategorieID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersoonsCategorie_Persoon">
+          <End Role="Persoon" Type="ChiroGroepModel.Store.Persoon" Multiplicity="1" />
+          <End Role="PersoonsCategorie" Type="ChiroGroepModel.Store.PersoonsCategorie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persoon">
+              <PropertyRef Name="PersoonID" />
+            </Principal>
+            <Dependent Role="PersoonsCategorie">
+              <PropertyRef Name="PersoonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersoonVrijVeld_Persoon">
+          <End Role="Persoon" Type="ChiroGroepModel.Store.Persoon" Multiplicity="1" />
+          <End Role="PersoonVrijVeld" Type="ChiroGroepModel.Store.PersoonVrijVeld" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persoon">
+              <PropertyRef Name="PersoonID" />
+            </Principal>
+            <Dependent Role="PersoonVrijVeld">
+              <PropertyRef Name="PersoonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersoonVrijVeldType_Groep">
+          <End Role="Groep" Type="ChiroGroepModel.Store.Groep" Multiplicity="0..1" />
+          <End Role="PersoonVrijVeldType" Type="ChiroGroepModel.Store.PersoonVrijVeldType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groep">
+              <PropertyRef Name="GroepID" />
+            </Principal>
+            <Dependent Role="PersoonVrijVeldType">
+              <PropertyRef Name="GroepID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersoonVrijVeldType_VrijVeldType">
+          <End Role="VrijVeldType" Type="ChiroGroepModel.Store.VrijVeldType" Multiplicity="1" />
+          <End Role="PersoonVrijVeldType" Type="ChiroGroepModel.Store.PersoonVrijVeldType" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="VrijVeldType">
+              <PropertyRef Name="VrijVeldTypeID" />
+            </Principal>
+            <Dependent Role="PersoonVrijVeldType">
+              <PropertyRef Name="PersoonVrijVeldTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="pers" CdmEntityContainer="ChiroGroepEntities">
+          <EntitySetMapping Name="Adres">
+            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Adres)">
+              <MappingFragment StoreEntitySet="Adres">
+                <ScalarProperty Name="Bus" ColumnName="Bus" />
+                <ScalarProperty Name="HuisNr" ColumnName="HuisNr" />
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="AdresID" ColumnName="AdresID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categorie">
+            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Categorie)">
+              <MappingFragment StoreEntitySet="Categorie">
+                <ScalarProperty Name="Naam" ColumnName="Naam" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CategorieID" ColumnName="CategorieID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VrijVeldType">
+            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.VrijVeldType)">
+              <MappingFragment StoreEntitySet="VrijVeldType">
+                <ScalarProperty Name="Naam" ColumnName="Naam" />
+                <ScalarProperty Name="DataType" ColumnName="DataType" />
+                <ScalarProperty Name="VrijVeldTypeID" ColumnName="VrijVeldTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Groep">
+            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Groep)">
+              <MappingFragment StoreEntitySet="Groep">
+                <ScalarProperty Name="Naam" ColumnName="Naam" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="OprichtingsJaar" ColumnName="OprichtingsJaar" />
+                <ScalarProperty Name="WebSite" ColumnName="WebSite" />
+                <ScalarProperty Name="Logo" ColumnName="Logo" />
+                <ScalarProperty Name="GroepID" ColumnName="GroepID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdresType">
+            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.AdresType)">
+              <MappingFragment StoreEntitySet="AdresType">
+                <ScalarProperty Name="Omschrijving" ColumnName="Omschrijving" />
+                <ScalarProperty Name="AdresTypeID" ColumnName="AdresTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CommunicatieType">
+            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.CommunicatieType)">
+              <MappingFragment StoreEntitySet="CommunicatieType">
+                <ScalarProperty Name="Omschrijving" ColumnName="Omschrijving" />
+                <ScalarProperty Name="Validatie" ColumnName="Validatie" />
+                <ScalarProperty Name="IsGezinsGebonden" ColumnName="IsGezinsGebonden" />
+                <ScalarProperty Name="CommunicatieTypeID" ColumnName="CommunicatieTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CommunicatieVorm">
+            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.CommunicatieVorm)">
+              <MappingFragment StoreEntitySet="CommunicatieVorm">
+                <ScalarProperty Name="Nota" ColumnName="Nota" />
+                <ScalarProperty Name="Nummer" ColumnName="Nummer" />
+                <ScalarProperty Name="CommunicatieVormID" ColumnName="CommunicatieVormID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Persoon">
+            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Persoon)">
+              <MappingFragment StoreEntitySet="Persoon">
+                <ScalarProperty Name="AdNummer" ColumnName="AdNummer" />
+                <ScalarProperty Name="Naam" ColumnName="Naam" />
+                <ScalarProperty Name="VoorNaam" ColumnName="VoorNaam" />
+                <ScalarProperty Name="GeboorteDatum" ColumnName="GeboorteDatum" />
+                <ScalarProperty Name="Geslacht" ColumnName="Geslacht" />
+                <ScalarProperty Name="ChiroLeefTijd" ColumnName="ChiroLeefTijd" />
+                <ScalarProperty Name="SterfDatum" ColumnName="SterfDatum" />
+                <ScalarProperty Name="Guid" ColumnName="Guid" />
+                <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersoonsAdres">
+            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.PersoonsAdres)">
+              <MappingFragment StoreEntitySet="PersoonsAdres">
+                <ScalarProperty Name="IsStandaard" ColumnName="IsStandaard" />
+                <ScalarProperty Name="Opmerking" ColumnName="Opmerking" />
+                <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+                <ScalarProperty Name="AdresID" ColumnName="AdresID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersoonVrijVeld">
+            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.PersoonVrijVeld)">
+              <MappingFragment StoreEntitySet="PersoonVrijVeld">
+                <ScalarProperty Name="Waarde" ColumnName="Waarde" />
+                <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+                <ScalarProperty Name="PersoonVrijVeldTypeID" ColumnName="PersoonVrijVeldTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersoonVrijVeldType">
+            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.PersoonVrijVeldType)">
+              <MappingFragment StoreEntitySet="PersoonVrijVeldType">
+                <ScalarProperty Name="PersoonVrijVeldTypeID" ColumnName="PersoonVrijVeldTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_PersoonsAdres_Adres" TypeName="ChiroGroepModel.FK_PersoonsAdres_Adres" StoreEntitySet="PersoonsAdres">
+            <EndProperty Name="Adres">
+              <ScalarProperty Name="AdresID" ColumnName="AdresID" />
+            </EndProperty>
+            <EndProperty Name="PersoonsAdres">
+              <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+              <ScalarProperty Name="AdresID" ColumnName="AdresID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_PersoonVrijVeldType_VrijVeldType" TypeName="ChiroGroepModel.FK_PersoonVrijVeldType_VrijVeldType" StoreEntitySet="PersoonVrijVeldType">
+            <EndProperty Name="VrijVeldType">
+              <ScalarProperty Name="VrijVeldTypeID" ColumnName="PersoonVrijVeldTypeID" />
+            </EndProperty>
+            <EndProperty Name="PersoonVrijVeldType">
+              <ScalarProperty Name="PersoonVrijVeldTypeID" ColumnName="PersoonVrijVeldTypeID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_PersoonVrijVeldType_Groep" TypeName="ChiroGroepModel.FK_PersoonVrijVeldType_Groep" StoreEntitySet="PersoonVrijVeldType">
+            <EndProperty Name="Groep">
+              <ScalarProperty Name="GroepID" ColumnName="GroepID" />
+            </EndProperty>
+            <EndProperty Name="PersoonVrijVeldType">
+              <ScalarProperty Name="PersoonVrijVeldTypeID" ColumnName="PersoonVrijVeldTypeID" />
+            </EndProperty>
+            <Condition ColumnName="GroepID" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_PersoonsAdres_AdresType" TypeName="ChiroGroepModel.FK_PersoonsAdres_AdresType" StoreEntitySet="PersoonsAdres">
+            <EndProperty Name="AdresType">
+              <ScalarProperty Name="AdresTypeID" ColumnName="AdresTypeID" />
+            </EndProperty>
+            <EndProperty Name="PersoonsAdres">
+              <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+              <ScalarProperty Name="AdresID" ColumnName="AdresID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_CommunicatieVorm_CommunicatieType" TypeName="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" StoreEntitySet="CommunicatieVorm">
+            <EndProperty Name="CommunicatieType">
+              <ScalarProperty Name="CommunicatieTypeID" ColumnName="CommunicatieTypeID" />
+            </EndProperty>
+            <EndProperty Name="CommunicatieVorm">
+              <ScalarProperty Name="CommunicatieVormID" ColumnName="CommunicatieVormID" />
+            </EndProperty>
+            <Condition ColumnName="CommunicatieTypeID" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_CommunicatieVorm_Persoon" TypeName="ChiroGroepModel.FK_CommunicatieVorm_Persoon" StoreEntitySet="CommunicatieVorm">
+            <EndProperty Name="Persoon">
+              <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+            </EndProperty>
+            <EndProperty Name="CommunicatieVorm">
+              <ScalarProperty Name="CommunicatieVormID" ColumnName="CommunicatieVormID" />
+            </EndProperty>
+            <Condition ColumnName="PersoonID" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_PersoonsAdres_Persoon" TypeName="ChiroGroepModel.FK_PersoonsAdres_Persoon" StoreEntitySet="PersoonsAdres">
+            <EndProperty Name="Persoon">
+              <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+            </EndProperty>
+            <EndProperty Name="PersoonsAdres">
+              <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+              <ScalarProperty Name="AdresID" ColumnName="AdresID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_PersoonVrijVeld_Persoon" TypeName="ChiroGroepModel.FK_PersoonVrijVeld_Persoon" StoreEntitySet="PersoonVrijVeld">
+            <EndProperty Name="Persoon">
+              <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+            </EndProperty>
+            <EndProperty Name="PersoonVrijVeld">
+              <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+              <ScalarProperty Name="PersoonVrijVeldTypeID" ColumnName="PersoonVrijVeldTypeID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Persoon_PersoonVrijVeldType" TypeName="ChiroGroepModel.FK_Persoon_PersoonVrijVeldType" StoreEntitySet="PersoonVrijVeld">
+            <EndProperty Name="PersoonVrijVeldType">
+              <ScalarProperty Name="PersoonVrijVeldTypeID" ColumnName="PersoonVrijVeldTypeID" />
+            </EndProperty>
+            <EndProperty Name="PersoonVrijVeld">
+              <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+              <ScalarProperty Name="PersoonVrijVeldTypeID" ColumnName="PersoonVrijVeldTypeID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="GroepsAdres" TypeName="ChiroGroepModel.GroepsAdres" StoreEntitySet="GroepsAdres">
+            <EndProperty Name="Adres">
+              <ScalarProperty Name="AdresID" ColumnName="AdresID" />
+            </EndProperty>
+            <EndProperty Name="Groep">
+              <ScalarProperty Name="GroepID" ColumnName="GroepID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="GelieerdePersoon" TypeName="ChiroGroepModel.GelieerdePersoon" StoreEntitySet="GelieerdePersoon">
+            <EndProperty Name="Groep">
+              <ScalarProperty Name="GroepID" ColumnName="GroepID" />
+            </EndProperty>
+            <EndProperty Name="Persoon">
+              <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="PersoonsCategorie" TypeName="ChiroGroepModel.PersoonsCategorie" StoreEntitySet="PersoonsCategorie">
+            <EndProperty Name="Categorie">
+              <ScalarProperty Name="CategorieID" ColumnName="CategorieID" />
+            </EndProperty>
+            <EndProperty Name="Persoon">
+              <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+</edmx:Edmx>
