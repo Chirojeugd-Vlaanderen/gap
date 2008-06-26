@@ -14,6 +14,6 @@ namespace cg2
 {
     public class DommeConstanten
     {
-        public const int TestGroepId = 300;
+        public const int TestGroepId = 301;
     }
 }

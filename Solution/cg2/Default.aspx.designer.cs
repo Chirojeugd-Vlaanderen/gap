@@ -23,6 +23,15 @@ namespace cg2 {
         protected global::System.Web.UI.WebControls.Label groepsLabel;
         
         /// <summary>
+        /// domLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label domLabel;
+        
+        /// <summary>
         /// lijst control.
         /// </summary>
         /// <remarks>
@@ -32,12 +41,12 @@ namespace cg2 {
         protected global::System.Web.UI.WebControls.GridView lijst;
         
         /// <summary>
-        /// domLabel control.
+        /// Button1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label domLabel;
+        protected global::System.Web.UI.WebControls.Button Button1;
     }
 }
