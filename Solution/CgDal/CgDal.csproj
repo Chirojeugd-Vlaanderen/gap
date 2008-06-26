@@ -57,6 +57,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChiroGroepModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Persoon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

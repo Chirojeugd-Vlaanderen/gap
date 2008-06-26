@@ -23,7 +23,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "PersoonsCategorie", "Categorie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ChiroGroepModel.Categorie), "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ChiroGroepModel.Persoon))]
 
 // Original file name:
-// Generation date: 24/06/2008 14:57:25
+// Generation date: 24/06/2008 21:53:20
 namespace ChiroGroepModel
 {
     
