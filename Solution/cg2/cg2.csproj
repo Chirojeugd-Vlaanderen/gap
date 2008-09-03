@@ -56,7 +56,7 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Default1.aspx" />
+    <Content Include="oud\Default1.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -67,18 +67,25 @@
     <Compile Include="CG.Master.designer.cs">
       <DependentUpon>CG.Master</DependentUpon>
     </Compile>
-    <Compile Include="ChiroGroep.Master.cs">
+    <Compile Include="groep.aspx.cs">
+      <DependentUpon>groep.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="groep.aspx.designer.cs">
+      <DependentUpon>groep.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="oud\ChiroGroep.Master.cs">
       <DependentUpon>ChiroGroep.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ChiroGroep.Master.designer.cs">
+    <Compile Include="oud\ChiroGroep.Master.designer.cs">
       <DependentUpon>ChiroGroep.Master</DependentUpon>
     </Compile>
-    <Compile Include="Default1.aspx.cs">
+    <Compile Include="oud\Default1.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>Default1.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Default1.aspx.designer.cs">
+    <Compile Include="oud\Default1.aspx.designer.cs">
       <DependentUpon>Default1.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
@@ -99,8 +106,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ChiroGroep.css" />
-    <Content Include="ChiroGroep.Master" />
+    <Content Include="oud\ChiroGroep.css" />
+    <Content Include="oud\ChiroGroep.Master" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CgDal\CgDal.csproj">
@@ -114,6 +121,7 @@
     <Content Include="Default.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="groep.aspx" />
     <Content Include="Usercontrols\footer.ascx" />
   </ItemGroup>
   <ItemGroup>
@@ -134,7 +142,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>1898</DevelopmentServerPort>
+          <DevelopmentServerPort>4124</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

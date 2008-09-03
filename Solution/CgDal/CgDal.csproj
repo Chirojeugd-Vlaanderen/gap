@@ -57,6 +57,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChiroGroepModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DBFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

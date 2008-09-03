@@ -12,7 +12,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using CgDal;
+using ChiroGroepModel;
 
 namespace cg2
 {

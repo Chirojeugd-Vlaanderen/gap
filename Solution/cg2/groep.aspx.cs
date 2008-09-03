@@ -10,19 +10,14 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
-using CgDal;
-using ChiroGroepModel;
 
 namespace cg2
 {
-    public partial class Default : System.Web.UI.Page
+    public partial class groep : System.Web.UI.Page
     {
-        private ChiroGroepEntities db;
         protected void Page_Load(object sender, EventArgs e)
         {
-            db = DBFactory.Databaseinstance;
-            GridView1.DataSource = db.Persoon;
-            GridView1.DataBind();
+            //Request.QueryString.
         }
     }
 }
