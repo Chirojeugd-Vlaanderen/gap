@@ -24,8 +24,6 @@ Dit is de geweldige testapplicatie.</p>
             <asp:BoundField DataField="ChiroLeefTijd" HeaderText="Chiroleeftijd" />
         </Columns>
     </asp:GridView>
-    <asp:Button ID="Button1" runat="server" onclick="Button1_Click" 
-        Text="Klik hier" />
 </p>
 
     <br />
