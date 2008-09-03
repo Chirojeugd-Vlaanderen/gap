@@ -8,36 +8,36 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace cg2 {
+namespace cg2.Usercontrols.persoon {
     
     
-    public partial class CG {
+    public partial class geldigadres {
         
         /// <summary>
-        /// head control.
+        /// postcode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder head;
+        protected global::System.Web.UI.WebControls.TextBox postcode;
         
         /// <summary>
-        /// form1 control.
+        /// gemeente control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.TextBox gemeente;
         
         /// <summary>
-        /// PaginaInhoud control.
+        /// straat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder PaginaInhoud;
+        protected global::System.Web.UI.WebControls.TextBox straat;
     }
 }

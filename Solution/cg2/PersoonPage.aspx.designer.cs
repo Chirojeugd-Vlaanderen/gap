@@ -11,33 +11,42 @@
 namespace cg2 {
     
     
-    public partial class CG {
+    public partial class PersoonPage {
         
         /// <summary>
-        /// head control.
+        /// titel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder head;
+        protected global::System.Web.UI.WebControls.Label titel;
         
         /// <summary>
-        /// form1 control.
+        /// naam control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.Label naam;
         
         /// <summary>
-        /// PaginaInhoud control.
+        /// voornaam control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder PaginaInhoud;
+        protected global::System.Web.UI.WebControls.Label voornaam;
+        
+        /// <summary>
+        /// adresgegevens control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder adresgegevens;
     }
 }

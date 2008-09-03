@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{13D6D7C5-79BE-448E-ACB7-7BC6A34B4D0F}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -67,12 +67,12 @@
     <Compile Include="CG.Master.designer.cs">
       <DependentUpon>CG.Master</DependentUpon>
     </Compile>
-    <Compile Include="groep.aspx.cs">
-      <DependentUpon>groep.aspx</DependentUpon>
+    <Compile Include="Detail.aspx.cs">
+      <DependentUpon>Detail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="groep.aspx.designer.cs">
-      <DependentUpon>groep.aspx</DependentUpon>
+    <Compile Include="Detail.aspx.designer.cs">
+      <DependentUpon>Detail.aspx</DependentUpon>
     </Compile>
     <Compile Include="oud\ChiroGroep.Master.cs">
       <DependentUpon>ChiroGroep.Master</DependentUpon>
@@ -96,13 +96,34 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="DommeConstanten.cs" />
+    <Compile Include="PersoonPage.aspx.cs">
+      <DependentUpon>PersoonPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PersoonPage.aspx.designer.cs">
+      <DependentUpon>PersoonPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Usercontrols\footer.ascx.cs">
+    <Compile Include="Usercontrols\global\footer.ascx.cs">
       <DependentUpon>footer.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Usercontrols\footer.ascx.designer.cs">
+    <Compile Include="Usercontrols\global\footer.ascx.designer.cs">
       <DependentUpon>footer.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\global\header.ascx.cs">
+      <DependentUpon>header.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\global\header.ascx.designer.cs">
+      <DependentUpon>header.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\persoon\geldigadres.ascx.cs">
+      <DependentUpon>geldigadres.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\persoon\geldigadres.ascx.designer.cs">
+      <DependentUpon>geldigadres.ascx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -121,8 +142,11 @@
     <Content Include="Default.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="groep.aspx" />
-    <Content Include="Usercontrols\footer.ascx" />
+    <Content Include="Detail.aspx" />
+    <Content Include="PersoonPage.aspx" />
+    <Content Include="Usercontrols\global\footer.ascx" />
+    <Content Include="Usercontrols\global\header.ascx" />
+    <Content Include="Usercontrols\persoon\geldigadres.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -147,6 +171,9 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

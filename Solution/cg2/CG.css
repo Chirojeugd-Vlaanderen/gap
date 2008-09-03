@@ -37,11 +37,15 @@
 	left:500px;
 	top:4px;
 
+
 }
 
 #header #titel .tekst
 {
+	width:490px;
 	font-size:80px;
+	font-weight:normal;
+	text-align:right;
 }
 
 #header #zoeken
@@ -99,9 +103,10 @@
 	border-right:5px solid #333333;
 	width:790px;
 	float:left;
-	height:500px;
+	/*height:500px;*/
 	margin-left:10px;
 	margin-right:10px;
+	font-size:11px;
 }
 
 h1
@@ -138,4 +143,40 @@ h1
 {
 	color:#FFCC00;
 	text-decoration:none;
+}
+
+#content a:link, #content a:visited
+{
+	color:#CC0000;
+	text-decoration:underline;
+}
+
+#content a:hover
+{
+	color:#CC0000;
+	text-decoration:none;
+}
+
+/* tabellen */
+
+.tabel
+{
+
+}
+
+.tabel .normal
+{
+	background-color:#ffffff;
+}
+
+.tabel .alternating
+{
+	background-color:#eeeeee;
+}
+
+.tabel .header
+{
+	background-color:#cc0000;
+	color:#ffffff;
+	border:1px solid #FFCC00;
 }

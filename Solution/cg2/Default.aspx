@@ -1,21 +1,20 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/CG.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="cg2.Default" %>
 
 <asp:Content ID="overzichtPersonen" ContentPlaceHolderID="PaginaInhoud" runat="server">
-<h1>Lijst met personen</h1>
-    <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False">
+    <h1>Lijst met groepen</h1>
+    <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" 
+    CssClass="tabel" GridLines="None" 
+    onselectedindexchanged="GridView1_SelectedIndexChanged">
+        <RowStyle CssClass="normal" />
         <Columns>
-            <asp:BoundField DataField="Voornaam" HeaderText="Voornaam"></asp:BoundField>
+            <asp:BoundField DataField="Code" HeaderText="StamNr"></asp:BoundField>
+            <asp:HyperLinkField DataNavigateUrlFields="Code" 
+                DataNavigateUrlFormatString="Detail.aspx?stamnr={0}" DataTextField="Naam" 
+                DataTextFormatString="{0}" HeaderText="Naam" />
         </Columns>
+        <HeaderStyle CssClass="header" />
+        <AlternatingRowStyle CssClass="alternating" />
     </asp:GridView>
-&nbsp;</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="InlogInfo" runat="server">
-<div class="tekst">Ingelogd als Mattias Michaux <a href="#">[uitloggen]</a></div>
-</asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="werkjaar" runat="server">
-<div class="huidig">Werkjaar: 2008 - 2009</div> <a href="#">[ander werkjaar]</a>
-</asp:Content>
-<asp:Content ID="Content4" ContentPlaceHolderID="titel" runat="server">
-<div class="tekst">Chirogroep</a></div>
 </asp:Content>
 
 

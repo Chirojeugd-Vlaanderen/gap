@@ -18,11 +18,17 @@ namespace cg2
     public partial class Default : System.Web.UI.Page
     {
         private ChiroGroepEntities db;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             db = DBFactory.Databaseinstance;
-            GridView1.DataSource = db.Persoon;
+            GridView1.DataSource = db.Groep;
             GridView1.DataBind();
+        }
+
+        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
