@@ -1,0 +1,31 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="CG.master.cs" Inherits="cg2.CG" %>
+<%@ Register TagPrefix="UC" TagName="Footer" Src="/Usercontrols/footer.ascx" %> 
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+
+<head runat="server">
+    <title>Chirogroep 2010</title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <link href="CG.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <form id="form1" runat="server">
+            <div id="header">
+                <div id="loginInfo"><asp:ContentPlaceHolder ID="InlogInfo" runat="server" /></div>
+                <div id="werkjaar"><asp:ContentPlaceHolder ID="werkjaar" runat="server" /></div>
+                <div id="titel"><asp:ContentPlaceHolder ID="titel" runat="server" /></div>
+                <div id="zoeken"><div class="tekst">
+                    <asp:textbox runat="server"></asp:textbox> <a href="#">[zoeken]</a></div></div>
+            </div>
+            
+            <div id="content">
+                <div id="leftmenu">a</div>
+                <div id="pagecontent"><asp:ContentPlaceHolder ID="PaginaInhoud" runat="server" /></div>
+            <div id="footer"><UC:Footer runat="server" /></div>
+    </form>
+</body>
+</html>

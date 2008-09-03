@@ -56,10 +56,17 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Default.aspx" />
+    <Content Include="Default1.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CG.Master.cs">
+      <DependentUpon>CG.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CG.Master.designer.cs">
+      <DependentUpon>CG.Master</DependentUpon>
+    </Compile>
     <Compile Include="ChiroGroep.Master.cs">
       <DependentUpon>ChiroGroep.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -67,15 +74,29 @@
     <Compile Include="ChiroGroep.Master.designer.cs">
       <DependentUpon>ChiroGroep.Master</DependentUpon>
     </Compile>
-    <Compile Include="Default.aspx.cs">
+    <Compile Include="Default1.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>Default1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default1.aspx.designer.cs">
+      <DependentUpon>Default1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="DommeConstanten.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Usercontrols\footer.ascx.cs">
+      <DependentUpon>footer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\footer.ascx.designer.cs">
+      <DependentUpon>footer.ascx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ChiroGroep.css" />
@@ -86,6 +107,14 @@
       <Project>{21304177-3F24-4A4B-9A75-EBBA5DEC9732}</Project>
       <Name>CgDal</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CG.css" />
+    <Content Include="CG.Master" />
+    <Content Include="Default.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Usercontrols\footer.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

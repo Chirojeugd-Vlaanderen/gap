@@ -10,17 +10,14 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
-using ChiroGroepModel;
 
-namespace cg2
+namespace cg2.Usercontrols
 {
-    public partial class Default : System.Web.UI.Page
+    public partial class footer : System.Web.UI.UserControl
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ChiroGroepEntities chiroGroepContext = new ChiroGroepEntities();
-            GridView1.DataSource = chiroGroepContext.Persoon;
-            GridView1.DataBind();
+
         }
     }
 }
