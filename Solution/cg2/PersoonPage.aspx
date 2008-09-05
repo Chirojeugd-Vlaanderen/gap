@@ -4,6 +4,5 @@
 <h1><asp:Label ID="titel" runat="server" Text="Label"></asp:Label></h1>
     Naam: <asp:Label ID="naam" runat="server" Text="Label"></asp:Label><br />
     Voornaam: <asp:Label ID="voornaam" runat="server" Text="Label"></asp:Label><br /><br />
-    <asp:ContentPlaceHolder ID="adresgegevens" runat="server"></asp:ContentPlaceHolder>
     
 </asp:Content>

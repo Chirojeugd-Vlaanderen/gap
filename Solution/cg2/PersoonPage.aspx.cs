@@ -26,7 +26,7 @@ namespace cg2
             if (!Page.IsPostBack)
             {
                 int id = int.Parse(Request.QueryString["id"]);
-                if (id != null)
+                if (id != 0)
                 {
                     persoon = db.Persoon.FirstOrDefault(p => p.PersoonID == id);
 
@@ -43,7 +43,6 @@ namespace cg2
                         {
                             geldigadres UC = new geldigadres();
                             UC.Persoon = persoon;
-                            adresgegevens.Controls.Add(UC); 
                         }
                         else
                         {
