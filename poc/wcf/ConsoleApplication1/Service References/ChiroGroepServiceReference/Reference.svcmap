@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="037625e2-ef59-4ad2-ad41-f4c6ad8699a3" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:2469/CgService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="CgService.xsd" MetadataType="Schema" ID="d3f5d60c-5ebd-4f2b-8b28-d5b214b327c0" SourceId="1" SourceUrl="http://localhost:2469/CgService.svc?xsd=xsd3" />
+    <MetadataFile FileName="CgService1.xsd" MetadataType="Schema" ID="b147125f-230d-4303-b078-4da4de21b735" SourceId="1" SourceUrl="http://localhost:2469/CgService.svc?xsd=xsd0" />
+    <MetadataFile FileName="CgService2.xsd" MetadataType="Schema" ID="e9d3ca93-b77f-49d7-97b6-67ee83e10b7b" SourceId="1" SourceUrl="http://localhost:2469/CgService.svc?xsd=xsd2" />
+    <MetadataFile FileName="CgService.disco" MetadataType="Disco" ID="2be89a17-95b7-46a6-aed8-f7fb016dc388" SourceId="1" SourceUrl="http://localhost:2469/CgService.svc?disco" />
+    <MetadataFile FileName="CgService.wsdl" MetadataType="Wsdl" ID="5d4aa8c4-a320-44e8-8fc4-511f4ca7be60" SourceId="1" SourceUrl="http://localhost:2469/CgService.svc?wsdl" />
+    <MetadataFile FileName="CgService3.xsd" MetadataType="Schema" ID="fb4c2dba-68d3-44e7-98d0-02fcebebcf99" SourceId="1" SourceUrl="http://localhost:2469/CgService.svc?xsd=xsd4" />
+    <MetadataFile FileName="CgService4.xsd" MetadataType="Schema" ID="473f0c4a-5a3c-4d01-926f-87c712fcb9a5" SourceId="1" SourceUrl="http://localhost:2469/CgService.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

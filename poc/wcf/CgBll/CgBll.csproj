@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3632AE4D-1D6C-438E-9EF0-939F415AC431}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{236368B3-3661-4122-9F78-4FE13E0A5EBA}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ConsoleApplication1</RootNamespace>
-    <AssemblyName>ConsoleApplication1</AssemblyName>
+    <RootNamespace>CgBll</RootNamespace>
+    <AssemblyName>CgBll</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -35,11 +35,8 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Runtime.Serialization">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.ServiceModel">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    <Reference Include="System.Data.Entity">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -51,46 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="PersoonBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\ChiroGroepServiceReference\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Service References\ChiroGroepServiceReference\CgService.xsd" />
-    <None Include="Service References\ChiroGroepServiceReference\CgService1.xsd" />
-    <None Include="Service References\ChiroGroepServiceReference\CgService2.xsd" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\ChiroGroepServiceReference\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ChiroGroepServiceReference\CgService.disco" />
-    <None Include="Service References\ChiroGroepServiceReference\CgService.wsdl" />
-    <None Include="Service References\ChiroGroepServiceReference\CgService3.xsd" />
-    <None Include="Service References\ChiroGroepServiceReference\CgService4.xsd" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ChiroGroepServiceReference\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ChiroGroepServiceReference\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ChiroGroepServiceReference\ConsoleApplication1.ChiroGroepServiceReference.Persoon.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\ChiroGroepServiceReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
+    <ProjectReference Include="..\CgDal\CgDal.csproj">
+      <Project>{21304177-3F24-4A4B-9A75-EBBA5DEC9732}</Project>
+      <Name>CgDal</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -9,10 +9,12 @@ namespace ConsoleApplication1
     {
         static void Main(string[] args)
         {
-            ServiceReference1.IService1 service = new ServiceReference1.Service1Client();
+            ChiroGroepServiceReference.CgServiceClient service = new ChiroGroepServiceReference.CgServiceClient();
 
-            Console.WriteLine(service.GetData(4));
-            Console.WriteLine(service.GetDataUsingDataContract(new ConsoleApplication1.ServiceReference1.CompositeType()));
+            var p = service.PersoonGet(1893);
+
+            Console.WriteLine(service.Hello());
+            Console.WriteLine(p.VoorNaam + ' ' + p.Naam);
 
             Console.ReadLine();
         }
