@@ -15,6 +15,8 @@ namespace CgService
         [OperationContract]
         Persoon PersoonGet(int persoonID);
         [OperationContract]
+        void PersoonUpdaten(Persoon bijgewerktePersoon, Persoon oorspronkelijkePersoon);
+        [OperationContract]
         String Hello();
     }
 

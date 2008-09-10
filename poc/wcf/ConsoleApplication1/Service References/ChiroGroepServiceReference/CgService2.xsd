@@ -19,6 +19,7 @@
           <xs:element minOccurs="0" name="PersoonVrijVeld" nillable="true" type="tns:ArrayOfPersoonVrijVeld" />
           <xs:element minOccurs="0" name="PersoonsAdres" nillable="true" type="tns:ArrayOfPersoonsAdres" />
           <xs:element minOccurs="0" name="SterfDatum" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Versie" nillable="true" type="xs:base64Binary" />
           <xs:element minOccurs="0" name="VoorNaam" nillable="true" type="xs:string" />
         </xs:sequence>
       </xs:extension>

@@ -58,6 +58,7 @@
       <DependentUpon>ChiroGroepModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="DBFactory.cs" />
+    <Compile Include="EfExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

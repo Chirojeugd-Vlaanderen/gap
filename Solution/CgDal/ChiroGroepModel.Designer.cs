@@ -28,7 +28,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "PersoonsCategorie", "Categorie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Categorie), "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Persoon))]
 
 // Original file name:
-// Generation date: 8/09/2008 13:32:33
+// Generation date: 10/09/2008 8:55:22
 namespace CgDal
 {
     
@@ -2218,6 +2218,29 @@ namespace CgDal
         private int _PersoonID;
         partial void OnPersoonIDChanging(int value);
         partial void OnPersoonIDChanged();
+        /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
         /// <summary>
         /// There are no comments for CommunicatieVorm in the schema.
         /// </summary>
