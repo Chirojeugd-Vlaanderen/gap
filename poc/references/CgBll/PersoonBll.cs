@@ -39,17 +39,8 @@ namespace CgBll
         /// <returns>een List met adressen</returns>
         public List<PersoonsAdres> PersoonsAdressenGet(int persoonID)
         {
-            List<PersoonsAdres> result = new List<PersoonsAdres>();
-
             var q = from a in context.PersoonsAdres where a.PersoonID == persoonID select a;
-
-            foreach (PersoonsAdres a in q)
-            {
-                result.Add(a);
-                context.Detach(a);
-            }
-
-            return result;
+            return q.ToList();
         }
 
         /// <summary>
