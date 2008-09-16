@@ -58,8 +58,12 @@ namespace CgDal
         /// geen referenties mee.  Vandaar deze extentiemethode, die
         /// de referenties van oud naar nieuw moet kopieren.
         /// 
-        /// OPMERKING: Deze functie past enkel referenties naar objecten 
-        /// aan, geen collecties.
+        /// <remarks>
+        /// Deze functie past enkel referenties naar objecten aan, geen
+        /// collecties.
+        /// 
+        /// Verder denk ik dat de parameter 'context' voor niks nodig is.
+        /// </remarks>
         /// 
         /// </summary>
         /// <param name="context">Objectcontext</param>

@@ -42,6 +42,67 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="PersoonsAdresUpdaten">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/CgDal" minOccurs="0" name="bijgewerktAdres" nillable="true" type="q5:PersoonsAdres" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/CgDal" minOccurs="0" name="oorspronkelijkAdres" nillable="true" type="q6:PersoonsAdres" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PersoonsAdresUpdatenResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WerkAdresType">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WerkAdresTypeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/CgDal" minOccurs="0" name="WerkAdresTypeResult" nillable="true" type="q7:AdresType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="KotAdresType">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="KotAdresTypeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/CgDal" minOccurs="0" name="KotAdresTypeResult" nillable="true" type="q8:AdresType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ThuisAdresType">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ThuisAdresTypeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/CgDal" minOccurs="0" name="ThuisAdresTypeResult" nillable="true" type="q9:AdresType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OnbekendAdresType">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OnbekendAdresTypeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/CgDal" minOccurs="0" name="OnbekendAdresTypeResult" nillable="true" type="q10:AdresType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="Hello">
     <xs:complexType>
       <xs:sequence />

@@ -12,13 +12,32 @@ namespace CgService
     [ServiceContract]
     public interface ICgService
     {
+        #region Persoonsdingen
         [OperationContract]
         Persoon PersoonGet(int persoonID);
         [OperationContract]
         List<PersoonsAdres> PersoonsAdressenGet(int persoonID);
         [OperationContract]
         void PersoonUpdaten(Persoon bijgewerktePersoon, Persoon oorspronkelijkePersoon);
+        #endregion
+
+        #region Adressen
         [OperationContract]
+        void PersoonsAdresUpdaten(PersoonsAdres bijgewerktAdres, PersoonsAdres oorspronkelijkAdres);
+        #endregion
+
+        #region Adrestypes
+        [OperationContract]
+        AdresType WerkAdresType();
+        [OperationContract]
+        AdresType KotAdresType();
+        [OperationContract]
+        AdresType ThuisAdresType();
+        [OperationContract]
+        AdresType OnbekendAdresType();
+        [OperationContract]
+        #endregion
+
         String Hello();
     }
 

@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using CgBll;
 using CgDal;
+using System.Diagnostics;
 
 namespace CgService
 {
@@ -26,6 +27,7 @@ namespace CgService
             return "Hallo, service!";
         }
 
+        #region Personen
         /// <summary>
         /// Haalt persoonsgegevens op
         /// </summary>
@@ -57,5 +59,57 @@ namespace CgService
         {
             new PersoonBll().PersoonUpdaten(bijgewerktePersoon, oorspronkelijkePersoon);
         }
+        #endregion
+
+        #region Adressen
+        /// <summary>
+        /// Updatet een object van het type PersoonsAdres
+        /// </summary>
+        /// <param name="bijgewerktAdres">bijgewerkt object</param>
+        /// <param name="oorspronkelijkAdres">oorspronkelijk object</param>
+        public void PersoonsAdresUpdaten(PersoonsAdres bijgewerktAdres, PersoonsAdres oorspronkelijkAdres)
+        {
+            Debug.WriteLine("AdresTypeID van bijgewerktAdres: " + bijgewerktAdres.AdresType.AdresTypeID);
+            new PersoonsAdresBll().PersoonsAdresUpdaten(bijgewerktAdres, oorspronkelijkAdres);
+        }
+        #endregion
+
+        #region AdresTypes
+        /// <summary>
+        /// Levert het adrestype 'thuis' af
+        /// </summary>
+        /// <returns>adrestype 'thuis'</returns>
+        public AdresType ThuisAdresType()
+        {
+            return new AdresTypeBll().Thuis;
+        }
+
+        /// <summary>
+        /// Levert het adrestype 'werk' af
+        /// </summary>
+        /// <returns>adrestype 'werk'</returns>
+        public AdresType WerkAdresType()
+        {
+            return new AdresTypeBll().Werk;
+        }
+
+        /// <summary>
+        /// Levert het adrestype 'kot' af
+        /// </summary>
+        /// <returns>adrestype 'kot'</returns>
+        public AdresType KotAdresType()
+        {
+            return new AdresTypeBll().Kot;
+        }
+
+        /// <summary>
+        /// Levert het adrestype 'onbekend' af
+        /// </summary>
+        /// <returns>adrestype 'onbekend'</returns>
+        public AdresType OnbekendAdresType()
+        {
+            return new AdresTypeBll().Overig;
+        }
+        #endregion
     }
 }

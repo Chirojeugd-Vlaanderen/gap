@@ -26,20 +26,30 @@ namespace CgBll
         /// <returns>Gedetacht entityobject voor gevraagde persoon</returns>
         public Persoon PersoonGet(int persoonID)
         {
-            var q = from p in context.Persoon where p.PersoonID == persoonID select p;
+            var q = from p in context.Persoon where p.PersoonID == persoonID 
+                    select p;
             var result = q.First();
             context.Detach(result);
             return result;
         }
 
         /// <summary>
-        /// Haal lijst met persoonsadressen van gegeven persoon op
+        /// Haal lijst met persoonsadressen van gegeven persoon op, inclusief 
+        /// adrestype
         /// </summary>
-        /// <param name="persoonID">ID van persoon waarvan adressen opgevraagd moeten worden</param>
+        /// <param name="persoonID">ID van persoon waarvan adressen opgevraagd 
+        /// moeten worden</param>
         /// <returns>een List met adressen</returns>
         public List<PersoonsAdres> PersoonsAdressenGet(int persoonID)
         {
-            var q = from a in context.PersoonsAdres where a.PersoonID == persoonID select a;
+            var q = from a in context.PersoonsAdres 
+                    where a.PersoonID == persoonID select a;
+
+            foreach (PersoonsAdres a in q)
+            {
+                a.AdresTypeReference.Load();
+                context.Detach(a);
+            }
             return q.ToList();
         }
 
@@ -55,9 +65,11 @@ namespace CgBll
         ///    merkt
         ///  * Uiteindelijk bewaart de data context de wijzigingen
         /// </summary>
-        /// <param name="bijgewerktePersoon">Persoon met toe te passen wijzigingen</param>
+        /// <param name="bijgewerktePersoon">Persoon met toe te passen 
+        /// wijzigingen</param>
         /// <param name="oorspronkelijkePersoon">Oorspronkelijk persoon</param>
-        public void PersoonUpdaten(Persoon bijgewerktePersoon, Persoon oorspronkelijkePersoon)
+        public void PersoonUpdaten(Persoon bijgewerktePersoon
+            , Persoon oorspronkelijkePersoon)
         {
             try
             {
@@ -82,8 +94,9 @@ namespace CgBll
                 // Ik ben er niet uit hoe deze method nu weet dat hij de
                 // gegevens van oorspronkelijkePersoon moet overschrijven.
 
-                context.ApplyPropertyChanges(bijgewerktePersoon.EntityKey.EntitySetName
-                                             , bijgewerktePersoon);
+                context.ApplyPropertyChanges(
+                    bijgewerktePersoon.EntityKey.EntitySetName
+                    , bijgewerktePersoon);
 
                 context.SaveChanges();
             }

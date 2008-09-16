@@ -24,6 +24,21 @@ namespace ConsoleApplication1.ChiroGroepServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICgService/PersoonUpdaten", ReplyAction="http://tempuri.org/ICgService/PersoonUpdatenResponse")]
         void PersoonUpdaten(CgDal.Persoon bijgewerktePersoon, CgDal.Persoon oorspronkelijkePersoon);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICgService/PersoonsAdresUpdaten", ReplyAction="http://tempuri.org/ICgService/PersoonsAdresUpdatenResponse")]
+        void PersoonsAdresUpdaten(CgDal.PersoonsAdres bijgewerktAdres, CgDal.PersoonsAdres oorspronkelijkAdres);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICgService/WerkAdresType", ReplyAction="http://tempuri.org/ICgService/WerkAdresTypeResponse")]
+        CgDal.AdresType WerkAdresType();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICgService/KotAdresType", ReplyAction="http://tempuri.org/ICgService/KotAdresTypeResponse")]
+        CgDal.AdresType KotAdresType();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICgService/ThuisAdresType", ReplyAction="http://tempuri.org/ICgService/ThuisAdresTypeResponse")]
+        CgDal.AdresType ThuisAdresType();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICgService/OnbekendAdresType", ReplyAction="http://tempuri.org/ICgService/OnbekendAdresTypeResponse")]
+        CgDal.AdresType OnbekendAdresType();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICgService/Hello", ReplyAction="http://tempuri.org/ICgService/HelloResponse")]
         string Hello();
     }
@@ -65,6 +80,26 @@ namespace ConsoleApplication1.ChiroGroepServiceReference {
         
         public void PersoonUpdaten(CgDal.Persoon bijgewerktePersoon, CgDal.Persoon oorspronkelijkePersoon) {
             base.Channel.PersoonUpdaten(bijgewerktePersoon, oorspronkelijkePersoon);
+        }
+        
+        public void PersoonsAdresUpdaten(CgDal.PersoonsAdres bijgewerktAdres, CgDal.PersoonsAdres oorspronkelijkAdres) {
+            base.Channel.PersoonsAdresUpdaten(bijgewerktAdres, oorspronkelijkAdres);
+        }
+        
+        public CgDal.AdresType WerkAdresType() {
+            return base.Channel.WerkAdresType();
+        }
+        
+        public CgDal.AdresType KotAdresType() {
+            return base.Channel.KotAdresType();
+        }
+        
+        public CgDal.AdresType ThuisAdresType() {
+            return base.Channel.ThuisAdresType();
+        }
+        
+        public CgDal.AdresType OnbekendAdresType() {
+            return base.Channel.OnbekendAdresType();
         }
         
         public string Hello() {
