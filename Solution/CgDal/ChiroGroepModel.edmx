@@ -254,6 +254,7 @@
           <Property Name="PersoonID" Type="int" Nullable="false" />
           <Property Name="AdresID" Type="int" Nullable="false" />
           <Property Name="AdresTypeID" Type="int" Nullable="false" />
+          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="PersoonsCategorie">
           <Key>
@@ -761,7 +762,7 @@
           <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Adres" FromRole="PersoonsAdres" ToRole="Adres" />
           <NavigationProperty Name="AdresType" Relationship="ChiroGroepModel.FK_PersoonsAdres_AdresType" FromRole="PersoonsAdres" ToRole="AdresType" />
           <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_PersoonsAdres_Persoon" FromRole="PersoonsAdres" ToRole="Persoon" />
-        </EntityType>
+          <Property Name="Versie" Type="Binary" Nullable="false" ConcurrencyMode="Fixed" /></EntityType>
         <EntityType Name="PersoonVrijVeld">
           <Key>
             <PropertyRef Name="PersoonID" />
@@ -1015,6 +1016,7 @@
           <EntitySetMapping Name="PersoonsAdres">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.PersoonsAdres)">
               <MappingFragment StoreEntitySet="PersoonsAdres">
+                <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="IsStandaard" ColumnName="IsStandaard" />
                 <ScalarProperty Name="Opmerking" ColumnName="Opmerking" />
                 <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />

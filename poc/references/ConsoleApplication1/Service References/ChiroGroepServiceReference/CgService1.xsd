@@ -15,11 +15,25 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="PersoonsAdressenGet">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="persoonID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PersoonsAdressenGetResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CgDal" minOccurs="0" name="PersoonsAdressenGetResult" nillable="true" type="q2:ArrayOfPersoonsAdres" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="PersoonUpdaten">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CgDal" minOccurs="0" name="bijgewerktePersoon" nillable="true" type="q2:Persoon" />
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/CgDal" minOccurs="0" name="oorspronkelijkePersoon" nillable="true" type="q3:Persoon" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/CgDal" minOccurs="0" name="bijgewerktePersoon" nillable="true" type="q3:Persoon" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/CgDal" minOccurs="0" name="oorspronkelijkePersoon" nillable="true" type="q4:Persoon" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

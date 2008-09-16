@@ -37,6 +37,16 @@ namespace CgService
         }
 
         /// <summary>
+        /// Haalt persoonsadressen op van de persoon met het gegeven ID
+        /// </summary>
+        /// <param name="persoonID">ID van de persoon waarvan de adressen opgevraagd moeten worden</param>
+        /// <returns>Een lijst met objecten van het type PersoonsAdres</returns>
+        public List<PersoonsAdres> PersoonsAdressenGet(int persoonID)
+        {
+            return new PersoonBll().PersoonsAdressenGet(persoonID);
+        }
+
+        /// <summary>
         /// Updatet persoonsgegevens.  Het oorspronkelijk persoonsobject is nodig om na te gaan
         /// welke persoon geupdatet moet worden, en of er ondertussen wijzigingen gebeurden in de
         /// database.

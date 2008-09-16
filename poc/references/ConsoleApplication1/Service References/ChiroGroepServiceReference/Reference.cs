@@ -18,6 +18,9 @@ namespace ConsoleApplication1.ChiroGroepServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICgService/PersoonGet", ReplyAction="http://tempuri.org/ICgService/PersoonGetResponse")]
         CgDal.Persoon PersoonGet(int persoonID);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICgService/PersoonsAdressenGet", ReplyAction="http://tempuri.org/ICgService/PersoonsAdressenGetResponse")]
+        CgDal.PersoonsAdres[] PersoonsAdressenGet(int persoonID);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICgService/PersoonUpdaten", ReplyAction="http://tempuri.org/ICgService/PersoonUpdatenResponse")]
         void PersoonUpdaten(CgDal.Persoon bijgewerktePersoon, CgDal.Persoon oorspronkelijkePersoon);
         
@@ -54,6 +57,10 @@ namespace ConsoleApplication1.ChiroGroepServiceReference {
         
         public CgDal.Persoon PersoonGet(int persoonID) {
             return base.Channel.PersoonGet(persoonID);
+        }
+        
+        public CgDal.PersoonsAdres[] PersoonsAdressenGet(int persoonID) {
+            return base.Channel.PersoonsAdressenGet(persoonID);
         }
         
         public void PersoonUpdaten(CgDal.Persoon bijgewerktePersoon, CgDal.Persoon oorspronkelijkePersoon) {

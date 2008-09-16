@@ -33,6 +33,26 @@ namespace CgBll
         }
 
         /// <summary>
+        /// Haal lijst met persoonsadressen van gegeven persoon op
+        /// </summary>
+        /// <param name="persoonID">ID van persoon waarvan adressen opgevraagd moeten worden</param>
+        /// <returns>een List met adressen</returns>
+        public List<PersoonsAdres> PersoonsAdressenGet(int persoonID)
+        {
+            List<PersoonsAdres> result = new List<PersoonsAdres>();
+
+            var q = from a in context.PersoonsAdres where a.PersoonID == persoonID select a;
+
+            foreach (PersoonsAdres a in q)
+            {
+                result.Add(a);
+                context.Detach(a);
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Updatet een persoonsentityobject.  Hiervoor is een oorspronkelijke
         /// niet-gewijzigde kloon van het object nodig.
         /// 

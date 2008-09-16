@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\DataSources\CgDal.Persoon.datasource" />
+    <None Include="Properties\DataSources\CgDal.PersoonsAdres.datasource" />
     <None Include="Service References\ChiroGroepServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

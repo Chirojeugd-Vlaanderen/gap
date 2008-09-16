@@ -156,6 +156,7 @@
           <xs:element minOccurs="0" name="Persoon" nillable="true" type="tns:Persoon" />
           <xs:element minOccurs="0" name="PersoonID" type="xs:int" />
           <xs:element minOccurs="0" name="PersoonReference" nillable="true" type="q7:EntityReferenceOfPersoonX7FIntyW" />
+          <xs:element minOccurs="0" name="Versie" nillable="true" type="xs:base64Binary" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

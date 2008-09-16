@@ -13,33 +13,13 @@ namespace ConsoleApplication1
         {
             ChiroGroepServiceReference.CgServiceClient service = new ChiroGroepServiceReference.CgServiceClient();
 
-            // Gegevens persoon p zullen gewijzigd worden, persoon q is kloon.
-            Persoon p = service.PersoonGet(1894);
-            Persoon q = p.CloneSerializing();
+            var lijst = service.PersoonsAdressenGet(1893);
+            var eerste = lijst.First();
 
-            // Haal tegelijk kopie van persoon p op, zodat we een exceptie
-            // kunnen veroorzaken.
+            Console.WriteLine("PersoonID: " + eerste.PersoonID);
+            Console.WriteLine("AdresID:" + eerste.AdresID);
 
-            Persoon a = service.PersoonGet(1894);
-            Persoon b = a.CloneSerializing();
-
-
-            String nieuweVoornaam;
-
-            Console.WriteLine(service.Hello());
-            Console.WriteLine("Persoon opgehaald: " + p.VoorNaam + ' ' + p.Naam);
-
-            Console.WriteLine("Geef nieuwe voornaam in:");
-            nieuweVoornaam = Console.ReadLine();
-
-            p.VoorNaam = nieuweVoornaam;
-
-            service.PersoonUpdaten(p, q);
-
-            // Veroorzaak exceptie door gewijzigd persoon te overschrijven.
-
-            a.VoorNaam = "Marsipulami.";
-            service.PersoonUpdaten(a, b);
+            Console.ReadLine();
 
         }
     }
