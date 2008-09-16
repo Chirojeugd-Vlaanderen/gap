@@ -465,3 +465,11 @@ GO
 
 EXEC sp_addextendedproperty 'MS_Description', 'Niet te verwarren met postnummer.  Het postnummer is onlosmakelijk verbonden met de gemeente.  Het veld ''postcode'' wordt gebruikt voor adressen in Nederland, waar er nog een niveau tussen adres en gemeente zit.', 'User', adr, 'table', Adres, 'column', PostCode
 GO
+
+
+-- Achteraf toegevoegde kolommen
+
+ALTER TABLE pers.Persoon ADD
+	Versie timestamp NULL
+GO
+
