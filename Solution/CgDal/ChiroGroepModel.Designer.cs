@@ -28,7 +28,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "PersoonsCategorie", "Categorie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Categorie), "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Persoon))]
 
 // Original file name:
-// Generation date: 16/09/2008 12:08:27
+// Generation date: 16/09/2008 23:59:40
 namespace CgDal
 {
     

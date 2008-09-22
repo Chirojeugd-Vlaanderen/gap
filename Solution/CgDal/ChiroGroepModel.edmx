@@ -1202,7 +1202,7 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram Name="ChiroGroepModel">
+      <Diagram Name="ChiroGroepModel" ZoomLevel="86">
         <EntityTypeShape EntityType="ChiroGroepModel.Adres" Width="1.5" PointX="7.5" PointY="5.75" Height="2.2496956380208335" IsExpanded="true" />
         <EntityTypeShape EntityType="ChiroGroepModel.Gemeente" Width="1.5" PointX="0.75" PointY="6" Height="1.7566536458333335" IsExpanded="true" />
         <EntityTypeShape EntityType="ChiroGroepModel.PostCode" Width="1.5" PointX="3" PointY="6" Height="1.5923063151041657" IsExpanded="true" />

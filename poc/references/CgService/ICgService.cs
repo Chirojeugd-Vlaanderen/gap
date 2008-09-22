@@ -13,10 +13,13 @@ namespace CgService
     public interface ICgService
     {
         #region Persoonsdingen
+        
         [OperationContract]
         Persoon PersoonGet(int persoonID);
+        
         [OperationContract]
-        List<PersoonsAdres> PersoonsAdressenGet(int persoonID);
+        IList<PersoonsAdres> PersoonsAdressenGet(int persoonID);
+
         [OperationContract]
         void PersoonUpdaten(Persoon bijgewerktePersoon, Persoon oorspronkelijkePersoon);
         #endregion

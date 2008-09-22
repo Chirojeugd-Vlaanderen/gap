@@ -16,7 +16,6 @@ namespace CgBll
 
         public PersoonBll()
         {
-            context = new ChiroGroepEntities();
         }
 
         /// <summary>
@@ -26,11 +25,16 @@ namespace CgBll
         /// <returns>Gedetacht entityobject voor gevraagde persoon</returns>
         public Persoon PersoonGet(int persoonID)
         {
-            var q = from p in context.Persoon where p.PersoonID == persoonID 
-                    select p;
-            var result = q.First();
-            context.Detach(result);
-            return result;
+            using (context = new ChiroGroepEntities())
+            {
+                var q = from p in context.Persoon
+                        where p.PersoonID == persoonID
+                        select p;
+                var result = q.First();
+                context.Detach(result);
+                return result;
+            }
+
         }
 
         /// <summary>
@@ -40,17 +44,29 @@ namespace CgBll
         /// <param name="persoonID">ID van persoon waarvan adressen opgevraagd 
         /// moeten worden</param>
         /// <returns>een List met adressen</returns>
-        public List<PersoonsAdres> PersoonsAdressenGet(int persoonID)
+        public IList<PersoonsAdres> PersoonsAdressenGet(int persoonID)
         {
-            var q = from a in context.PersoonsAdres 
-                    where a.PersoonID == persoonID select a;
-
-            foreach (PersoonsAdres a in q)
+            using (context = new ChiroGroepEntities())
             {
-                a.AdresTypeReference.Load();
-                context.Detach(a);
+
+                var q = from a in context.PersoonsAdres
+                        where a.PersoonID == persoonID
+                        select a;
+
+                foreach (PersoonsAdres a in q)
+                {
+                    // Expliciete Load van AdresTypeReference, omdat dit anders
+                    // niet meekomt
+
+                    a.AdresTypeReference.Load();
+                    context.Detach(a);
+
+                    // Als je a.AdresType ook detacht, dan werkt het niet meer.
+                }
+                
+                
+                return q.ToList(); 
             }
-            return q.ToList();
         }
 
         /// <summary>

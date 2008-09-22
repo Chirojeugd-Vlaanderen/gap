@@ -43,7 +43,7 @@ namespace CgService
         /// </summary>
         /// <param name="persoonID">ID van de persoon waarvan de adressen opgevraagd moeten worden</param>
         /// <returns>Een lijst met objecten van het type PersoonsAdres</returns>
-        public List<PersoonsAdres> PersoonsAdressenGet(int persoonID)
+        public IList<PersoonsAdres> PersoonsAdressenGet(int persoonID)
         {
             return new PersoonBll().PersoonsAdressenGet(persoonID);
         }
