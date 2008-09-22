@@ -470,6 +470,9 @@ GO
 -- Achteraf toegevoegde kolommen
 
 ALTER TABLE pers.Persoon ADD
-	Versie timestamp NULL
+	Versie timestamp NOT NULL
 GO
 
+ALTER TABLE	pers.PersoonsAdres ADD
+	Versie timestamp NOT NULL
+GO
