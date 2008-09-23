@@ -18,10 +18,12 @@ namespace CgDal
 	using System.Reflection;
 	using System.Linq;
 	using System.Linq.Expressions;
+	using System.Runtime.Serialization;
 	using System.ComponentModel;
 	using System;
 	
 	
+	[System.Data.Linq.Mapping.DatabaseAttribute(Name="ChiroGroep")]
 	public partial class ChiroGroepClassesDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -29,7 +31,22 @@ namespace CgDal
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
+    partial void InsertPersoon(Persoon instance);
+    partial void UpdatePersoon(Persoon instance);
+    partial void DeletePersoon(Persoon instance);
+    partial void InsertPersoonsAdre(PersoonsAdre instance);
+    partial void UpdatePersoonsAdre(PersoonsAdre instance);
+    partial void DeletePersoonsAdre(PersoonsAdre instance);
+    partial void InsertAdresType(AdresType instance);
+    partial void UpdateAdresType(AdresType instance);
+    partial void DeleteAdresType(AdresType instance);
     #endregion
+		
+		public ChiroGroepClassesDataContext() : 
+				base(global::CgDal.Properties.Settings.Default.ChiroGroepConnectionString, mappingSource)
+		{
+			OnCreated();
+		}
 		
 		public ChiroGroepClassesDataContext(string connection) : 
 				base(connection, mappingSource)
@@ -53,6 +70,815 @@ namespace CgDal
 				base(connection, mappingSource)
 		{
 			OnCreated();
+		}
+		
+		public System.Data.Linq.Table<Persoon> Persoons
+		{
+			get
+			{
+				return this.GetTable<Persoon>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PersoonsAdre> PersoonsAdres
+		{
+			get
+			{
+				return this.GetTable<PersoonsAdre>();
+			}
+		}
+		
+		public System.Data.Linq.Table<AdresType> AdresTypes
+		{
+			get
+			{
+				return this.GetTable<AdresType>();
+			}
+		}
+	}
+	
+	[Table(Name="pers.Persoon")]
+	[DataContract()]
+	public partial class Persoon : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Nullable<int> _AdNummer;
+		
+		private string _Naam;
+		
+		private string _VoorNaam;
+		
+		private System.Nullable<System.DateTime> _GeboorteDatum;
+		
+		private int _Geslacht;
+		
+		private int _ChiroLeefTijd;
+		
+		private System.Nullable<System.DateTime> _SterfDatum;
+		
+		private System.Nullable<System.Guid> _Guid;
+		
+		private int _PersoonID;
+		
+		private System.Data.Linq.Binary _Versie;
+		
+		private EntitySet<PersoonsAdre> _PersoonsAdres;
+		
+		private bool serializing;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnAdNummerChanging(System.Nullable<int> value);
+    partial void OnAdNummerChanged();
+    partial void OnNaamChanging(string value);
+    partial void OnNaamChanged();
+    partial void OnVoorNaamChanging(string value);
+    partial void OnVoorNaamChanged();
+    partial void OnGeboorteDatumChanging(System.Nullable<System.DateTime> value);
+    partial void OnGeboorteDatumChanged();
+    partial void OnGeslachtChanging(int value);
+    partial void OnGeslachtChanged();
+    partial void OnChiroLeefTijdChanging(int value);
+    partial void OnChiroLeefTijdChanged();
+    partial void OnSterfDatumChanging(System.Nullable<System.DateTime> value);
+    partial void OnSterfDatumChanged();
+    partial void OnGuidChanging(System.Nullable<System.Guid> value);
+    partial void OnGuidChanged();
+    partial void OnPersoonIDChanging(int value);
+    partial void OnPersoonIDChanged();
+    partial void OnVersieChanging(System.Data.Linq.Binary value);
+    partial void OnVersieChanged();
+    #endregion
+		
+		public Persoon()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Storage="_AdNummer", DbType="Int", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=1)]
+		public System.Nullable<int> AdNummer
+		{
+			get
+			{
+				return this._AdNummer;
+			}
+			set
+			{
+				if ((this._AdNummer != value))
+				{
+					this.OnAdNummerChanging(value);
+					this.SendPropertyChanging();
+					this._AdNummer = value;
+					this.SendPropertyChanged("AdNummer");
+					this.OnAdNummerChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Naam", DbType="VarChar(160) NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=2)]
+		public string Naam
+		{
+			get
+			{
+				return this._Naam;
+			}
+			set
+			{
+				if ((this._Naam != value))
+				{
+					this.OnNaamChanging(value);
+					this.SendPropertyChanging();
+					this._Naam = value;
+					this.SendPropertyChanged("Naam");
+					this.OnNaamChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_VoorNaam", DbType="VarChar(60)", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=3)]
+		public string VoorNaam
+		{
+			get
+			{
+				return this._VoorNaam;
+			}
+			set
+			{
+				if ((this._VoorNaam != value))
+				{
+					this.OnVoorNaamChanging(value);
+					this.SendPropertyChanging();
+					this._VoorNaam = value;
+					this.SendPropertyChanged("VoorNaam");
+					this.OnVoorNaamChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_GeboorteDatum", DbType="SmallDateTime", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=4)]
+		public System.Nullable<System.DateTime> GeboorteDatum
+		{
+			get
+			{
+				return this._GeboorteDatum;
+			}
+			set
+			{
+				if ((this._GeboorteDatum != value))
+				{
+					this.OnGeboorteDatumChanging(value);
+					this.SendPropertyChanging();
+					this._GeboorteDatum = value;
+					this.SendPropertyChanged("GeboorteDatum");
+					this.OnGeboorteDatumChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Geslacht", DbType="Int NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=5)]
+		public int Geslacht
+		{
+			get
+			{
+				return this._Geslacht;
+			}
+			set
+			{
+				if ((this._Geslacht != value))
+				{
+					this.OnGeslachtChanging(value);
+					this.SendPropertyChanging();
+					this._Geslacht = value;
+					this.SendPropertyChanged("Geslacht");
+					this.OnGeslachtChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_ChiroLeefTijd", DbType="Int NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=6)]
+		public int ChiroLeefTijd
+		{
+			get
+			{
+				return this._ChiroLeefTijd;
+			}
+			set
+			{
+				if ((this._ChiroLeefTijd != value))
+				{
+					this.OnChiroLeefTijdChanging(value);
+					this.SendPropertyChanging();
+					this._ChiroLeefTijd = value;
+					this.SendPropertyChanged("ChiroLeefTijd");
+					this.OnChiroLeefTijdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SterfDatum", DbType="SmallDateTime", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=7)]
+		public System.Nullable<System.DateTime> SterfDatum
+		{
+			get
+			{
+				return this._SterfDatum;
+			}
+			set
+			{
+				if ((this._SterfDatum != value))
+				{
+					this.OnSterfDatumChanging(value);
+					this.SendPropertyChanging();
+					this._SterfDatum = value;
+					this.SendPropertyChanged("SterfDatum");
+					this.OnSterfDatumChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Guid", DbType="UniqueIdentifier", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=8)]
+		public System.Nullable<System.Guid> Guid
+		{
+			get
+			{
+				return this._Guid;
+			}
+			set
+			{
+				if ((this._Guid != value))
+				{
+					this.OnGuidChanging(value);
+					this.SendPropertyChanging();
+					this._Guid = value;
+					this.SendPropertyChanged("Guid");
+					this.OnGuidChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PersoonID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true, UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=9)]
+		public int PersoonID
+		{
+			get
+			{
+				return this._PersoonID;
+			}
+			set
+			{
+				if ((this._PersoonID != value))
+				{
+					this.OnPersoonIDChanging(value);
+					this.SendPropertyChanging();
+					this._PersoonID = value;
+					this.SendPropertyChanged("PersoonID");
+					this.OnPersoonIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Versie", AutoSync=AutoSync.Always, DbType="rowversion", IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=10)]
+		public System.Data.Linq.Binary Versie
+		{
+			get
+			{
+				return this._Versie;
+			}
+			set
+			{
+				if ((this._Versie != value))
+				{
+					this.OnVersieChanging(value);
+					this.SendPropertyChanging();
+					this._Versie = value;
+					this.SendPropertyChanged("Versie");
+					this.OnVersieChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Persoon_PersoonsAdre", Storage="_PersoonsAdres", ThisKey="PersoonID", OtherKey="PersoonID")]
+		[DataMember(Order=11, EmitDefaultValue=false)]
+		public EntitySet<PersoonsAdre> PersoonsAdres
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._PersoonsAdres.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._PersoonsAdres;
+			}
+			set
+			{
+				this._PersoonsAdres.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_PersoonsAdres(PersoonsAdre entity)
+		{
+			this.SendPropertyChanging();
+			entity.Persoon = this;
+		}
+		
+		private void detach_PersoonsAdres(PersoonsAdre entity)
+		{
+			this.SendPropertyChanging();
+			entity.Persoon = null;
+		}
+		
+		private void Initialize()
+		{
+			this._PersoonsAdres = new EntitySet<PersoonsAdre>(new Action<PersoonsAdre>(this.attach_PersoonsAdres), new Action<PersoonsAdre>(this.detach_PersoonsAdres));
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[OnSerializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[OnSerialized()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
+		}
+	}
+	
+	[Table(Name="pers.PersoonsAdres")]
+	[DataContract()]
+	public partial class PersoonsAdre : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private bool _IsStandaard;
+		
+		private string _Opmerking;
+		
+		private int _PersoonID;
+		
+		private int _AdresID;
+		
+		private int _AdresTypeID;
+		
+		private System.Data.Linq.Binary _Versie;
+		
+		private EntityRef<Persoon> _Persoon;
+		
+		private EntityRef<AdresType> _AdresType;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIsStandaardChanging(bool value);
+    partial void OnIsStandaardChanged();
+    partial void OnOpmerkingChanging(string value);
+    partial void OnOpmerkingChanged();
+    partial void OnPersoonIDChanging(int value);
+    partial void OnPersoonIDChanged();
+    partial void OnAdresIDChanging(int value);
+    partial void OnAdresIDChanged();
+    partial void OnAdresTypeIDChanging(int value);
+    partial void OnAdresTypeIDChanged();
+    partial void OnVersieChanging(System.Data.Linq.Binary value);
+    partial void OnVersieChanged();
+    #endregion
+		
+		public PersoonsAdre()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Storage="_IsStandaard", DbType="Bit NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=1)]
+		public bool IsStandaard
+		{
+			get
+			{
+				return this._IsStandaard;
+			}
+			set
+			{
+				if ((this._IsStandaard != value))
+				{
+					this.OnIsStandaardChanging(value);
+					this.SendPropertyChanging();
+					this._IsStandaard = value;
+					this.SendPropertyChanged("IsStandaard");
+					this.OnIsStandaardChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Opmerking", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=2)]
+		public string Opmerking
+		{
+			get
+			{
+				return this._Opmerking;
+			}
+			set
+			{
+				if ((this._Opmerking != value))
+				{
+					this.OnOpmerkingChanging(value);
+					this.SendPropertyChanging();
+					this._Opmerking = value;
+					this.SendPropertyChanged("Opmerking");
+					this.OnOpmerkingChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PersoonID", DbType="Int NOT NULL", IsPrimaryKey=true, UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=3)]
+		public int PersoonID
+		{
+			get
+			{
+				return this._PersoonID;
+			}
+			set
+			{
+				if ((this._PersoonID != value))
+				{
+					if (this._Persoon.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPersoonIDChanging(value);
+					this.SendPropertyChanging();
+					this._PersoonID = value;
+					this.SendPropertyChanged("PersoonID");
+					this.OnPersoonIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_AdresID", DbType="Int NOT NULL", IsPrimaryKey=true, UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=4)]
+		public int AdresID
+		{
+			get
+			{
+				return this._AdresID;
+			}
+			set
+			{
+				if ((this._AdresID != value))
+				{
+					this.OnAdresIDChanging(value);
+					this.SendPropertyChanging();
+					this._AdresID = value;
+					this.SendPropertyChanged("AdresID");
+					this.OnAdresIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_AdresTypeID", DbType="Int NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=5)]
+		public int AdresTypeID
+		{
+			get
+			{
+				return this._AdresTypeID;
+			}
+			set
+			{
+				if ((this._AdresTypeID != value))
+				{
+					if (this._AdresType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnAdresTypeIDChanging(value);
+					this.SendPropertyChanging();
+					this._AdresTypeID = value;
+					this.SendPropertyChanged("AdresTypeID");
+					this.OnAdresTypeIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Versie", AutoSync=AutoSync.Always, DbType="rowversion NOT NULL", CanBeNull=false, IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=6)]
+		public System.Data.Linq.Binary Versie
+		{
+			get
+			{
+				return this._Versie;
+			}
+			set
+			{
+				if ((this._Versie != value))
+				{
+					this.OnVersieChanging(value);
+					this.SendPropertyChanging();
+					this._Versie = value;
+					this.SendPropertyChanged("Versie");
+					this.OnVersieChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Persoon_PersoonsAdre", Storage="_Persoon", ThisKey="PersoonID", OtherKey="PersoonID", IsForeignKey=true)]
+		public Persoon Persoon
+		{
+			get
+			{
+				return this._Persoon.Entity;
+			}
+			set
+			{
+				Persoon previousValue = this._Persoon.Entity;
+				if (((previousValue != value) 
+							|| (this._Persoon.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Persoon.Entity = null;
+						previousValue.PersoonsAdres.Remove(this);
+					}
+					this._Persoon.Entity = value;
+					if ((value != null))
+					{
+						value.PersoonsAdres.Add(this);
+						this._PersoonID = value.PersoonID;
+					}
+					else
+					{
+						this._PersoonID = default(int);
+					}
+					this.SendPropertyChanged("Persoon");
+				}
+			}
+		}
+		
+		[Association(Name="AdresType_PersoonsAdre", Storage="_AdresType", ThisKey="AdresTypeID", OtherKey="AdresTypeID", IsForeignKey=true)]
+		public AdresType AdresType
+		{
+			get
+			{
+				return this._AdresType.Entity;
+			}
+			set
+			{
+				AdresType previousValue = this._AdresType.Entity;
+				if (((previousValue != value) 
+							|| (this._AdresType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._AdresType.Entity = null;
+						previousValue.PersoonsAdres.Remove(this);
+					}
+					this._AdresType.Entity = value;
+					if ((value != null))
+					{
+						value.PersoonsAdres.Add(this);
+						this._AdresTypeID = value.AdresTypeID;
+					}
+					else
+					{
+						this._AdresTypeID = default(int);
+					}
+					this.SendPropertyChanged("AdresType");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._Persoon = default(EntityRef<Persoon>);
+			this._AdresType = default(EntityRef<AdresType>);
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+	}
+	
+	[Table(Name="pers.AdresType")]
+	[DataContract()]
+	public partial class AdresType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _Omschrijving;
+		
+		private int _AdresTypeID;
+		
+		private EntitySet<PersoonsAdre> _PersoonsAdres;
+		
+		private bool serializing;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnOmschrijvingChanging(string value);
+    partial void OnOmschrijvingChanged();
+    partial void OnAdresTypeIDChanging(int value);
+    partial void OnAdresTypeIDChanged();
+    #endregion
+		
+		public AdresType()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Storage="_Omschrijving", DbType="VarChar(80)")]
+		[DataMember(Order=1)]
+		public string Omschrijving
+		{
+			get
+			{
+				return this._Omschrijving;
+			}
+			set
+			{
+				if ((this._Omschrijving != value))
+				{
+					this.OnOmschrijvingChanging(value);
+					this.SendPropertyChanging();
+					this._Omschrijving = value;
+					this.SendPropertyChanged("Omschrijving");
+					this.OnOmschrijvingChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_AdresTypeID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[DataMember(Order=2)]
+		public int AdresTypeID
+		{
+			get
+			{
+				return this._AdresTypeID;
+			}
+			set
+			{
+				if ((this._AdresTypeID != value))
+				{
+					this.OnAdresTypeIDChanging(value);
+					this.SendPropertyChanging();
+					this._AdresTypeID = value;
+					this.SendPropertyChanged("AdresTypeID");
+					this.OnAdresTypeIDChanged();
+				}
+			}
+		}
+		
+		[Association(Name="AdresType_PersoonsAdre", Storage="_PersoonsAdres", ThisKey="AdresTypeID", OtherKey="AdresTypeID")]
+		[DataMember(Order=3, EmitDefaultValue=false)]
+		public EntitySet<PersoonsAdre> PersoonsAdres
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._PersoonsAdres.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._PersoonsAdres;
+			}
+			set
+			{
+				this._PersoonsAdres.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_PersoonsAdres(PersoonsAdre entity)
+		{
+			this.SendPropertyChanging();
+			entity.AdresType = this;
+		}
+		
+		private void detach_PersoonsAdres(PersoonsAdre entity)
+		{
+			this.SendPropertyChanging();
+			entity.AdresType = null;
+		}
+		
+		private void Initialize()
+		{
+			this._PersoonsAdres = new EntitySet<PersoonsAdre>(new Action<PersoonsAdre>(this.attach_PersoonsAdres), new Action<PersoonsAdre>(this.detach_PersoonsAdres));
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[OnSerializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[OnSerialized()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
 		}
 	}
 }

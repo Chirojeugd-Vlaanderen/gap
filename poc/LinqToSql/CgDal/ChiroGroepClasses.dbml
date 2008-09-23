@@ -1,1 +1,38 @@
-﻿
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database Name="ChiroGroep" Class="ChiroGroepClassesDataContext" Serialization="Unidirectional" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DEVSERVER;Initial Catalog=ChiroGroep;Integrated Security=True" SettingsObjectName="CgDal.Properties.Settings" SettingsPropertyName="ChiroGroepConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="pers.Persoon" Member="Persoons">
+    <Type Name="Persoon">
+      <Column Name="AdNummer" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Naam" Type="System.String" DbType="VarChar(160) NOT NULL" CanBeNull="false" />
+      <Column Name="VoorNaam" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="GeboorteDatum" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="Geslacht" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ChiroLeefTijd" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SterfDatum" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="Guid" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="PersoonID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Versie" Type="System.Data.Linq.Binary" DbType="rowversion" CanBeNull="true" IsVersion="true" />
+      <Association Name="Persoon_PersoonsAdre" Member="PersoonsAdres" ThisKey="PersoonID" OtherKey="PersoonID" Type="PersoonsAdre" />
+    </Type>
+  </Table>
+  <Table Name="pers.PersoonsAdres" Member="PersoonsAdres">
+    <Type Name="PersoonsAdre">
+      <Column Name="IsStandaard" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Opmerking" Type="System.String" DbType="Text" CanBeNull="true" />
+      <Column Name="PersoonID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AdresID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AdresTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Versie" Type="System.Data.Linq.Binary" DbType="rowversion NOT NULL" CanBeNull="false" IsVersion="true" />
+      <Association Name="Persoon_PersoonsAdre" Member="Persoon" ThisKey="PersoonID" OtherKey="PersoonID" Type="Persoon" IsForeignKey="true" />
+      <Association Name="AdresType_PersoonsAdre" Member="AdresType" ThisKey="AdresTypeID" OtherKey="AdresTypeID" Type="AdresType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="pers.AdresType" Member="AdresTypes">
+    <Type Name="AdresType">
+      <Column Name="Omschrijving" Type="System.String" DbType="VarChar(80)" CanBeNull="true" />
+      <Column Name="AdresTypeID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="AdresType_PersoonsAdre" Member="PersoonsAdres" ThisKey="AdresTypeID" OtherKey="AdresTypeID" Type="PersoonsAdre" />
+    </Type>
+  </Table>
+</Database>
