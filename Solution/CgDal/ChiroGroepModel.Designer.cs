@@ -12,8 +12,6 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_Straat", "Straat", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CgDal.Straat), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Adres))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_Subgemeente", "Subgemeente", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CgDal.Subgemeente), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Adres))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsAdres_Adres", "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CgDal.Adres), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.PersoonsAdres))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Straat_PostCode", "PostCode", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CgDal.PostCode), "Straat", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Straat))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_SubGemeente_PostCode", "PostCode", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CgDal.PostCode), "Subgemeente", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Subgemeente))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonVrijVeldType_VrijVeldType", "VrijVeldType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CgDal.VrijVeldType), "PersoonVrijVeldType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CgDal.PersoonVrijVeldType))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonVrijVeldType_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CgDal.Groep), "PersoonVrijVeldType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.PersoonVrijVeldType))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsAdres_AdresType", "AdresType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CgDal.AdresType), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.PersoonsAdres))]
@@ -22,13 +20,15 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsAdres_Persoon", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CgDal.Persoon), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.PersoonsAdres))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonVrijVeld_Persoon", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CgDal.Persoon), "PersoonVrijVeld", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.PersoonVrijVeld))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Persoon_PersoonVrijVeldType", "PersoonVrijVeldType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CgDal.PersoonVrijVeldType), "PersoonVrijVeld", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.PersoonVrijVeld))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "PostCodeNaarGemeente", "Gemeente", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Gemeente), "PostCode", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.PostCode))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "GroepsAdres", "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Adres), "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Groep))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "GelieerdePersoon", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Groep), "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Persoon))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "PersoonsCategorie", "Categorie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Categorie), "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Persoon))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "PostNrNaarGemeente", "Gemeente", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Gemeente), "PostNr", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.PostNr))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Straat_PostCode", "PostNr", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CgDal.PostNr), "Straat", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Straat))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_SubGemeente_PostCode", "PostNr", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CgDal.PostNr), "Subgemeente", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CgDal.Subgemeente))]
 
 // Original file name:
-// Generation date: 16/09/2008 23:59:40
+// Generation date: 25/09/2008 8:43:48
 namespace CgDal
 {
     
@@ -92,21 +92,6 @@ namespace CgDal
             }
         }
         private global::System.Data.Objects.ObjectQuery<Gemeente> _Gemeente;
-        /// <summary>
-        /// There are no comments for PostCode in the schema.
-        /// </summary>
-        public global::System.Data.Objects.ObjectQuery<PostCode> PostCode
-        {
-            get
-            {
-                if ((this._PostCode == null))
-                {
-                    this._PostCode = base.CreateQuery<PostCode>("[PostCode]");
-                }
-                return this._PostCode;
-            }
-        }
-        private global::System.Data.Objects.ObjectQuery<PostCode> _PostCode;
         /// <summary>
         /// There are no comments for Straat in the schema.
         /// </summary>
@@ -288,6 +273,21 @@ namespace CgDal
         }
         private global::System.Data.Objects.ObjectQuery<PersoonVrijVeldType> _PersoonVrijVeldType;
         /// <summary>
+        /// There are no comments for PostNr in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<PostNr> PostNr
+        {
+            get
+            {
+                if ((this._PostNr == null))
+                {
+                    this._PostNr = base.CreateQuery<PostNr>("[PostNr]");
+                }
+                return this._PostNr;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<PostNr> _PostNr;
+        /// <summary>
         /// There are no comments for Adres in the schema.
         /// </summary>
         public void AddToAdres(Adres adres)
@@ -300,13 +300,6 @@ namespace CgDal
         public void AddToGemeente(Gemeente gemeente)
         {
             base.AddObject("Gemeente", gemeente);
-        }
-        /// <summary>
-        /// There are no comments for PostCode in the schema.
-        /// </summary>
-        public void AddToPostCode(PostCode postCode)
-        {
-            base.AddObject("PostCode", postCode);
         }
         /// <summary>
         /// There are no comments for Straat in the schema.
@@ -391,6 +384,13 @@ namespace CgDal
         public void AddToPersoonVrijVeldType(PersoonVrijVeldType persoonVrijVeldType)
         {
             base.AddObject("PersoonVrijVeldType", persoonVrijVeldType);
+        }
+        /// <summary>
+        /// There are no comments for PostNr in the schema.
+        /// </summary>
+        public void AddToPostNr(PostNr postNr)
+        {
+            base.AddObject("PostNr", postNr);
         }
     }
     /// <summary>
@@ -743,131 +743,23 @@ namespace CgDal
         partial void OnNaamChanging(string value);
         partial void OnNaamChanged();
         /// <summary>
-        /// There are no comments for PostCode in the schema.
+        /// There are no comments for PostNr in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "PostCodeNaarGemeente", "PostCode")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "PostNrNaarGemeente", "PostNr")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<PostCode> PostCode
+        public global::System.Data.Objects.DataClasses.EntityCollection<PostNr> PostNr
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<PostCode>("ChiroGroepModel.PostCodeNaarGemeente", "PostCode");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<PostNr>("ChiroGroepModel.PostNrNaarGemeente", "PostNr");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<PostCode>("ChiroGroepModel.PostCodeNaarGemeente", "PostCode", value);
-                }
-            }
-        }
-    }
-    /// <summary>
-    /// There are no comments for ChiroGroepModel.PostCode in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// PostCode1
-    /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="PostCode")]
-    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
-    [global::System.Serializable()]
-    public partial class PostCode : global::System.Data.Objects.DataClasses.EntityObject
-    {
-        /// <summary>
-        /// Create a new PostCode object.
-        /// </summary>
-        /// <param name="postCode1">Initial value of PostCode1.</param>
-        public static PostCode CreatePostCode(int postCode1)
-        {
-            PostCode postCode = new PostCode();
-            postCode.PostCode1 = postCode1;
-            return postCode;
-        }
-        /// <summary>
-        /// There are no comments for Property PostCode1 in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int PostCode1
-        {
-            get
-            {
-                return this._PostCode1;
-            }
-            set
-            {
-                this.OnPostCode1Changing(value);
-                this.ReportPropertyChanging("PostCode1");
-                this._PostCode1 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("PostCode1");
-                this.OnPostCode1Changed();
-            }
-        }
-        private int _PostCode1;
-        partial void OnPostCode1Changing(int value);
-        partial void OnPostCode1Changed();
-        /// <summary>
-        /// There are no comments for Straat in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Straat_PostCode", "Straat")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<Straat> Straat
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Straat>("ChiroGroepModel.FK_Straat_PostCode", "Straat");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Straat>("ChiroGroepModel.FK_Straat_PostCode", "Straat", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for Subgemeente in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_SubGemeente_PostCode", "Subgemeente")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<Subgemeente> Subgemeente
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Subgemeente>("ChiroGroepModel.FK_SubGemeente_PostCode", "Subgemeente");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Subgemeente>("ChiroGroepModel.FK_SubGemeente_PostCode", "Subgemeente", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for Gemeente in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "PostCodeNaarGemeente", "Gemeente")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<Gemeente> Gemeente
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Gemeente>("ChiroGroepModel.PostCodeNaarGemeente", "Gemeente");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Gemeente>("ChiroGroepModel.PostCodeNaarGemeente", "Gemeente", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<PostNr>("ChiroGroepModel.PostNrNaarGemeente", "PostNr", value);
                 }
             }
         }
@@ -963,39 +855,39 @@ namespace CgDal
             }
         }
         /// <summary>
-        /// There are no comments for PostCode in the schema.
+        /// There are no comments for PostNr in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Straat_PostCode", "PostCode")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Straat_PostCode", "PostNr")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public PostCode PostCode
+        public PostNr PostNr
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<PostCode>("ChiroGroepModel.FK_Straat_PostCode", "PostCode").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<PostNr>("ChiroGroepModel.FK_Straat_PostCode", "PostNr").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<PostCode>("ChiroGroepModel.FK_Straat_PostCode", "PostCode").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<PostNr>("ChiroGroepModel.FK_Straat_PostCode", "PostNr").Value = value;
             }
         }
         /// <summary>
-        /// There are no comments for PostCode in the schema.
+        /// There are no comments for PostNr in the schema.
         /// </summary>
         [global::System.ComponentModel.BrowsableAttribute(false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<PostCode> PostCodeReference
+        public global::System.Data.Objects.DataClasses.EntityReference<PostNr> PostNrReference
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<PostCode>("ChiroGroepModel.FK_Straat_PostCode", "PostCode");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<PostNr>("ChiroGroepModel.FK_Straat_PostCode", "PostNr");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<PostCode>("ChiroGroepModel.FK_Straat_PostCode", "PostCode", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<PostNr>("ChiroGroepModel.FK_Straat_PostCode", "PostNr", value);
                 }
             }
         }
@@ -1091,39 +983,39 @@ namespace CgDal
             }
         }
         /// <summary>
-        /// There are no comments for PostCode in the schema.
+        /// There are no comments for PostNr in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_SubGemeente_PostCode", "PostCode")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_SubGemeente_PostCode", "PostNr")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public PostCode PostCode
+        public PostNr PostNr
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<PostCode>("ChiroGroepModel.FK_SubGemeente_PostCode", "PostCode").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<PostNr>("ChiroGroepModel.FK_SubGemeente_PostCode", "PostNr").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<PostCode>("ChiroGroepModel.FK_SubGemeente_PostCode", "PostCode").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<PostNr>("ChiroGroepModel.FK_SubGemeente_PostCode", "PostNr").Value = value;
             }
         }
         /// <summary>
-        /// There are no comments for PostCode in the schema.
+        /// There are no comments for PostNr in the schema.
         /// </summary>
         [global::System.ComponentModel.BrowsableAttribute(false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<PostCode> PostCodeReference
+        public global::System.Data.Objects.DataClasses.EntityReference<PostNr> PostNrReference
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<PostCode>("ChiroGroepModel.FK_SubGemeente_PostCode", "PostCode");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<PostNr>("ChiroGroepModel.FK_SubGemeente_PostCode", "PostNr");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<PostCode>("ChiroGroepModel.FK_SubGemeente_PostCode", "PostCode", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<PostNr>("ChiroGroepModel.FK_SubGemeente_PostCode", "PostNr", value);
                 }
             }
         }
@@ -2908,6 +2800,114 @@ namespace CgDal
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<PersoonVrijVeld>("ChiroGroepModel.FK_Persoon_PersoonVrijVeldType", "PersoonVrijVeld", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.PostNr in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// PostCode
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="PostNr")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class PostNr : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new PostNr object.
+        /// </summary>
+        /// <param name="postCode">Initial value of PostCode.</param>
+        public static PostNr CreatePostNr(int postCode)
+        {
+            PostNr postNr = new PostNr();
+            postNr.PostCode = postCode;
+            return postNr;
+        }
+        /// <summary>
+        /// There are no comments for Property PostCode in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int PostCode
+        {
+            get
+            {
+                return this._PostCode;
+            }
+            set
+            {
+                this.OnPostCodeChanging(value);
+                this.ReportPropertyChanging("PostCode");
+                this._PostCode = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("PostCode");
+                this.OnPostCodeChanged();
+            }
+        }
+        private int _PostCode;
+        partial void OnPostCodeChanging(int value);
+        partial void OnPostCodeChanged();
+        /// <summary>
+        /// There are no comments for Gemeente in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "PostNrNaarGemeente", "Gemeente")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Gemeente> Gemeente
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Gemeente>("ChiroGroepModel.PostNrNaarGemeente", "Gemeente");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Gemeente>("ChiroGroepModel.PostNrNaarGemeente", "Gemeente", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Straat in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Straat_PostCode", "Straat")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Straat> Straat
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Straat>("ChiroGroepModel.FK_Straat_PostCode", "Straat");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Straat>("ChiroGroepModel.FK_Straat_PostCode", "Straat", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Subgemeente in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_SubGemeente_PostCode", "Subgemeente")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Subgemeente> Subgemeente
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Subgemeente>("ChiroGroepModel.FK_SubGemeente_PostCode", "Subgemeente");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Subgemeente>("ChiroGroepModel.FK_SubGemeente_PostCode", "Subgemeente", value);
                 }
             }
         }

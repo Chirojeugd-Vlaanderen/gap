@@ -8,8 +8,8 @@
         <EntityContainer Name="ChiroGroepModelStoreContainer">
           <EntitySet Name="Adres" EntityType="ChiroGroepModel.Store.Adres" store:Type="Tables" Schema="adr" />
           <EntitySet Name="Gemeente" EntityType="ChiroGroepModel.Store.Gemeente" store:Type="Tables" Schema="adr" />
-          <EntitySet Name="PostCode" EntityType="ChiroGroepModel.Store.PostCode" store:Type="Tables" Schema="adr" />
-          <EntitySet Name="PostCodeNaarGemeente" EntityType="ChiroGroepModel.Store.PostCodeNaarGemeente" store:Type="Tables" Schema="adr" />
+          <EntitySet Name="PostNr" EntityType="ChiroGroepModel.Store.PostNr" store:Type="Tables" Schema="adr" />
+          <EntitySet Name="PostNrNaarGemeente" EntityType="ChiroGroepModel.Store.PostNrNaarGemeente" store:Type="Tables" Schema="adr" />
           <EntitySet Name="Straat" EntityType="ChiroGroepModel.Store.Straat" store:Type="Tables" Schema="adr" />
           <EntitySet Name="Subgemeente" EntityType="ChiroGroepModel.Store.Subgemeente" store:Type="Tables" Schema="adr" />
           <EntitySet Name="Categorie" EntityType="ChiroGroepModel.Store.Categorie" store:Type="Tables" Schema="core" />
@@ -95,18 +95,18 @@
           </AssociationSet>
           <AssociationSet Name="FK_PostCodeNaarGemeente_Gemeente" Association="ChiroGroepModel.Store.FK_PostCodeNaarGemeente_Gemeente">
             <End Role="Gemeente" EntitySet="Gemeente" />
-            <End Role="PostCodeNaarGemeente" EntitySet="PostCodeNaarGemeente" />
+            <End Role="PostNrNaarGemeente" EntitySet="PostNrNaarGemeente" />
           </AssociationSet>
           <AssociationSet Name="FK_PostCodeNaarGemeentes_PostCode" Association="ChiroGroepModel.Store.FK_PostCodeNaarGemeentes_PostCode">
-            <End Role="PostCode" EntitySet="PostCode" />
-            <End Role="PostCodeNaarGemeente" EntitySet="PostCodeNaarGemeente" />
+            <End Role="PostNr" EntitySet="PostNr" />
+            <End Role="PostNrNaarGemeente" EntitySet="PostNrNaarGemeente" />
           </AssociationSet>
           <AssociationSet Name="FK_Straat_PostCode" Association="ChiroGroepModel.Store.FK_Straat_PostCode">
-            <End Role="PostCode" EntitySet="PostCode" />
+            <End Role="PostNr" EntitySet="PostNr" />
             <End Role="Straat" EntitySet="Straat" />
           </AssociationSet>
           <AssociationSet Name="FK_SubGemeente_PostCode" Association="ChiroGroepModel.Store.FK_SubGemeente_PostCode">
-            <End Role="PostCode" EntitySet="PostCode" />
+            <End Role="PostNr" EntitySet="PostNr" />
             <End Role="Subgemeente" EntitySet="Subgemeente" />
           </AssociationSet>
         </EntityContainer>
@@ -130,13 +130,13 @@
           <Property Name="Taal" Type="char" Nullable="false" MaxLength="2" />
           <Property Name="Naam" Type="varchar" Nullable="false" MaxLength="40" />
         </EntityType>
-        <EntityType Name="PostCode">
+        <EntityType Name="PostNr">
           <Key>
             <PropertyRef Name="PostCode" />
           </Key>
           <Property Name="PostCode" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="PostCodeNaarGemeente">
+        <EntityType Name="PostNrNaarGemeente">
           <Key>
             <PropertyRef Name="GemeenteID" />
             <PropertyRef Name="PostCode" />
@@ -486,33 +486,33 @@
         </Association>
         <Association Name="FK_PostCodeNaarGemeente_Gemeente">
           <End Role="Gemeente" Type="ChiroGroepModel.Store.Gemeente" Multiplicity="1" />
-          <End Role="PostCodeNaarGemeente" Type="ChiroGroepModel.Store.PostCodeNaarGemeente" Multiplicity="*" />
+          <End Role="PostNrNaarGemeente" Type="ChiroGroepModel.Store.PostNrNaarGemeente" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Gemeente">
               <PropertyRef Name="GemeenteID" />
             </Principal>
-            <Dependent Role="PostCodeNaarGemeente">
+            <Dependent Role="PostNrNaarGemeente">
               <PropertyRef Name="GemeenteID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PostCodeNaarGemeentes_PostCode">
-          <End Role="PostCode" Type="ChiroGroepModel.Store.PostCode" Multiplicity="1" />
-          <End Role="PostCodeNaarGemeente" Type="ChiroGroepModel.Store.PostCodeNaarGemeente" Multiplicity="*" />
+          <End Role="PostNr" Type="ChiroGroepModel.Store.PostNr" Multiplicity="1" />
+          <End Role="PostNrNaarGemeente" Type="ChiroGroepModel.Store.PostNrNaarGemeente" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="PostCode">
+            <Principal Role="PostNr">
               <PropertyRef Name="PostCode" />
             </Principal>
-            <Dependent Role="PostCodeNaarGemeente">
+            <Dependent Role="PostNrNaarGemeente">
               <PropertyRef Name="PostCode" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Straat_PostCode">
-          <End Role="PostCode" Type="ChiroGroepModel.Store.PostCode" Multiplicity="1" />
+          <End Role="PostNr" Type="ChiroGroepModel.Store.PostNr" Multiplicity="1" />
           <End Role="Straat" Type="ChiroGroepModel.Store.Straat" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="PostCode">
+            <Principal Role="PostNr">
               <PropertyRef Name="PostCode" />
             </Principal>
             <Dependent Role="Straat">
@@ -521,10 +521,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_SubGemeente_PostCode">
-          <End Role="PostCode" Type="ChiroGroepModel.Store.PostCode" Multiplicity="1" />
+          <End Role="PostNr" Type="ChiroGroepModel.Store.PostNr" Multiplicity="1" />
           <End Role="Subgemeente" Type="ChiroGroepModel.Store.Subgemeente" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="PostCode">
+            <Principal Role="PostNr">
               <PropertyRef Name="PostCode" />
             </Principal>
             <Dependent Role="Subgemeente">
@@ -539,7 +539,6 @@
         <EntityContainer Name="ChiroGroepEntities">
           <EntitySet Name="Adres" EntityType="ChiroGroepModel.Adres" />
           <EntitySet Name="Gemeente" EntityType="ChiroGroepModel.Gemeente" />
-          <EntitySet Name="PostCode" EntityType="ChiroGroepModel.PostCode" />
           <EntitySet Name="Straat" EntityType="ChiroGroepModel.Straat" />
           <EntitySet Name="Subgemeente" EntityType="ChiroGroepModel.Subgemeente" />
           <EntitySet Name="Categorie" EntityType="ChiroGroepModel.Categorie" />
@@ -563,14 +562,6 @@
           <AssociationSet Name="FK_PersoonsAdres_Adres" Association="ChiroGroepModel.FK_PersoonsAdres_Adres">
             <End Role="Adres" EntitySet="Adres" />
             <End Role="PersoonsAdres" EntitySet="PersoonsAdres" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Straat_PostCode" Association="ChiroGroepModel.FK_Straat_PostCode">
-            <End Role="PostCode" EntitySet="PostCode" />
-            <End Role="Straat" EntitySet="Straat" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SubGemeente_PostCode" Association="ChiroGroepModel.FK_SubGemeente_PostCode">
-            <End Role="PostCode" EntitySet="PostCode" />
-            <End Role="Subgemeente" EntitySet="Subgemeente" />
           </AssociationSet>
           <AssociationSet Name="FK_PersoonVrijVeldType_VrijVeldType" Association="ChiroGroepModel.FK_PersoonVrijVeldType_VrijVeldType">
             <End Role="VrijVeldType" EntitySet="VrijVeldType" />
@@ -604,10 +595,6 @@
             <End Role="PersoonVrijVeldType" EntitySet="PersoonVrijVeldType" />
             <End Role="PersoonVrijVeld" EntitySet="PersoonVrijVeld" />
           </AssociationSet>
-          <AssociationSet Name="PostCodeNaarGemeente" Association="ChiroGroepModel.PostCodeNaarGemeente">
-            <End Role="Gemeente" EntitySet="Gemeente" />
-            <End Role="PostCode" EntitySet="PostCode" />
-          </AssociationSet>
           <AssociationSet Name="GroepsAdres" Association="ChiroGroepModel.GroepsAdres">
             <End Role="Adres" EntitySet="Adres" />
             <End Role="Groep" EntitySet="Groep" />
@@ -620,7 +607,16 @@
             <End Role="Categorie" EntitySet="Categorie" />
             <End Role="Persoon" EntitySet="Persoon" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="PostNr" EntityType="ChiroGroepModel.PostNr" />
+          <AssociationSet Name="PostNrNaarGemeente" Association="ChiroGroepModel.PostNrNaarGemeente">
+            <End Role="Gemeente" EntitySet="Gemeente" />
+            <End Role="PostNr" EntitySet="PostNr" /></AssociationSet>
+          <AssociationSet Name="FK_Straat_PostCode" Association="ChiroGroepModel.FK_Straat_PostCode">
+            <End Role="PostNr" EntitySet="PostNr" />
+            <End Role="Straat" EntitySet="Straat" /></AssociationSet>
+          <AssociationSet Name="FK_SubGemeente_PostCode" Association="ChiroGroepModel.FK_SubGemeente_PostCode">
+            <End Role="PostNr" EntitySet="PostNr" />
+            <End Role="Subgemeente" EntitySet="Subgemeente" /></AssociationSet></EntityContainer>
         <EntityType Name="Adres">
           <Key>
             <PropertyRef Name="AdresID" />
@@ -642,17 +638,7 @@
           <Property Name="NisGemeenteCode" Type="Decimal" Nullable="false" Precision="5" Scale="0" />
           <Property Name="Taal" Type="String" Nullable="false" MaxLength="2" Unicode="false" FixedLength="true" />
           <Property Name="Naam" Type="String" Nullable="false" MaxLength="40" Unicode="false" FixedLength="false" />
-          <NavigationProperty Name="PostCode" Relationship="ChiroGroepModel.PostCodeNaarGemeente" FromRole="Gemeente" ToRole="PostCode" />
-        </EntityType>
-        <EntityType Name="PostCode">
-          <Key>
-            <PropertyRef Name="PostCode1" />
-          </Key>
-          <Property Name="PostCode1" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Straat" Relationship="ChiroGroepModel.FK_Straat_PostCode" FromRole="PostCode" ToRole="Straat" />
-          <NavigationProperty Name="Subgemeente" Relationship="ChiroGroepModel.FK_SubGemeente_PostCode" FromRole="PostCode" ToRole="Subgemeente" />
-          <NavigationProperty Name="Gemeente" Relationship="ChiroGroepModel.PostCodeNaarGemeente" FromRole="PostCode" ToRole="Gemeente" />
-        </EntityType>
+          <NavigationProperty Name="PostNr" Relationship="ChiroGroepModel.PostNrNaarGemeente" FromRole="Gemeente" ToRole="PostNr" /></EntityType>
         <EntityType Name="Straat">
           <Key>
             <PropertyRef Name="StraatID" />
@@ -660,8 +646,7 @@
           <Property Name="StraatID" Type="Int32" Nullable="false" />
           <Property Name="Naam" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_Adres_Straat" FromRole="Straat" ToRole="Adres" />
-          <NavigationProperty Name="PostCode" Relationship="ChiroGroepModel.FK_Straat_PostCode" FromRole="Straat" ToRole="PostCode" />
-        </EntityType>
+          <NavigationProperty Name="PostNr" Relationship="ChiroGroepModel.FK_Straat_PostCode" FromRole="Straat" ToRole="PostNr" /></EntityType>
         <EntityType Name="Subgemeente">
           <Key>
             <PropertyRef Name="SubgemeenteID" />
@@ -669,8 +654,7 @@
           <Property Name="SubgemeenteID" Type="Int32" Nullable="false" />
           <Property Name="Naam" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_Adres_Subgemeente" FromRole="Subgemeente" ToRole="Adres" />
-          <NavigationProperty Name="PostCode" Relationship="ChiroGroepModel.FK_SubGemeente_PostCode" FromRole="Subgemeente" ToRole="PostCode" />
-        </EntityType>
+          <NavigationProperty Name="PostNr" Relationship="ChiroGroepModel.FK_SubGemeente_PostCode" FromRole="Subgemeente" ToRole="PostNr" /></EntityType>
         <EntityType Name="Categorie">
           <Key>
             <PropertyRef Name="CategorieID" />
@@ -803,14 +787,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Straat_PostCode">
-          <End Role="PostCode" Type="ChiroGroepModel.PostCode" Multiplicity="1" />
-          <End Role="Straat" Type="ChiroGroepModel.Straat" Multiplicity="*" />
-        </Association>
-        <Association Name="FK_SubGemeente_PostCode">
-          <End Role="PostCode" Type="ChiroGroepModel.PostCode" Multiplicity="1" />
-          <End Role="Subgemeente" Type="ChiroGroepModel.Subgemeente" Multiplicity="*" />
-        </Association>
         <Association Name="FK_PersoonVrijVeldType_VrijVeldType">
           <End Role="VrijVeldType" Type="ChiroGroepModel.VrijVeldType" Multiplicity="1" />
           <End Role="PersoonVrijVeldType" Type="ChiroGroepModel.PersoonVrijVeldType" Multiplicity="0..1" />
@@ -875,10 +851,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="PostCodeNaarGemeente">
-          <End Role="Gemeente" Type="ChiroGroepModel.Gemeente" Multiplicity="*" />
-          <End Role="PostCode" Type="ChiroGroepModel.PostCode" Multiplicity="*" />
-        </Association>
         <Association Name="GroepsAdres">
           <End Role="Adres" Type="ChiroGroepModel.Adres" Multiplicity="*" />
           <End Role="Groep" Type="ChiroGroepModel.Groep" Multiplicity="*" />
@@ -891,7 +863,22 @@
           <End Role="Categorie" Type="ChiroGroepModel.Categorie" Multiplicity="*" />
           <End Role="Persoon" Type="ChiroGroepModel.Persoon" Multiplicity="*" />
         </Association>
-      </Schema>
+        <EntityType Name="PostNr">
+          <Key>
+            <PropertyRef Name="PostCode" /></Key>
+          <Property Name="PostCode" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Gemeente" Relationship="ChiroGroepModel.PostNrNaarGemeente" FromRole="PostNr" ToRole="Gemeente" />
+          <NavigationProperty Name="Straat" Relationship="ChiroGroepModel.FK_Straat_PostCode" FromRole="PostNr" ToRole="Straat" />
+          <NavigationProperty Name="Subgemeente" Relationship="ChiroGroepModel.FK_SubGemeente_PostCode" FromRole="PostNr" ToRole="Subgemeente" /></EntityType>
+        <Association Name="PostNrNaarGemeente">
+          <End Type="ChiroGroepModel.Gemeente" Role="Gemeente" Multiplicity="*" />
+          <End Type="ChiroGroepModel.PostNr" Role="PostNr" Multiplicity="*" /></Association>
+        <Association Name="FK_Straat_PostCode">
+          <End Type="ChiroGroepModel.PostNr" Role="PostNr" Multiplicity="1" />
+          <End Type="ChiroGroepModel.Straat" Role="Straat" Multiplicity="*" /></Association>
+        <Association Name="FK_SubGemeente_PostCode">
+          <End Type="ChiroGroepModel.PostNr" Role="PostNr" Multiplicity="1" />
+          <End Type="ChiroGroepModel.Subgemeente" Role="Subgemeente" Multiplicity="*" /></Association></Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -914,13 +901,6 @@
                 <ScalarProperty Name="NisGemeenteCode" ColumnName="NisGemeenteCode" />
                 <ScalarProperty Name="Taal" ColumnName="Taal" />
                 <ScalarProperty Name="Naam" ColumnName="Naam" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PostCode">
-            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.PostCode)">
-              <MappingFragment StoreEntitySet="PostCode">
-                <ScalarProperty Name="PostCode1" ColumnName="PostCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1065,22 +1045,6 @@
               <ScalarProperty Name="AdresID" ColumnName="AdresID" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Straat_PostCode" TypeName="ChiroGroepModel.FK_Straat_PostCode" StoreEntitySet="Straat">
-            <EndProperty Name="PostCode">
-              <ScalarProperty Name="PostCode1" ColumnName="PostCode" />
-            </EndProperty>
-            <EndProperty Name="Straat">
-              <ScalarProperty Name="StraatID" ColumnName="StraatID" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_SubGemeente_PostCode" TypeName="ChiroGroepModel.FK_SubGemeente_PostCode" StoreEntitySet="Subgemeente">
-            <EndProperty Name="PostCode">
-              <ScalarProperty Name="PostCode1" ColumnName="PostCode" />
-            </EndProperty>
-            <EndProperty Name="Subgemeente">
-              <ScalarProperty Name="SubgemeenteID" ColumnName="SubgemeenteID" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="FK_PersoonVrijVeldType_VrijVeldType" TypeName="ChiroGroepModel.FK_PersoonVrijVeldType_VrijVeldType" StoreEntitySet="PersoonVrijVeldType">
             <EndProperty Name="VrijVeldType">
               <ScalarProperty Name="VrijVeldTypeID" ColumnName="PersoonVrijVeldTypeID" />
@@ -1152,14 +1116,6 @@
               <ScalarProperty Name="PersoonVrijVeldTypeID" ColumnName="PersoonVrijVeldTypeID" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="PostCodeNaarGemeente" TypeName="ChiroGroepModel.PostCodeNaarGemeente" StoreEntitySet="PostCodeNaarGemeente">
-            <EndProperty Name="Gemeente">
-              <ScalarProperty Name="GemeenteID" ColumnName="GemeenteID" />
-            </EndProperty>
-            <EndProperty Name="PostCode">
-              <ScalarProperty Name="PostCode1" ColumnName="PostCode" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="GroepsAdres" TypeName="ChiroGroepModel.GroepsAdres" StoreEntitySet="GroepsAdres">
             <EndProperty Name="Adres">
               <ScalarProperty Name="AdresID" ColumnName="AdresID" />
@@ -1184,7 +1140,25 @@
               <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />
             </EndProperty>
           </AssociationSetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="PostNr">
+            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.PostNr)">
+              <MappingFragment StoreEntitySet="PostNr">
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <AssociationSetMapping Name="PostNrNaarGemeente" TypeName="ChiroGroepModel.PostNrNaarGemeente" StoreEntitySet="PostNrNaarGemeente">
+            <EndProperty Name="PostNr">
+              <ScalarProperty Name="PostCode" ColumnName="PostCode" /></EndProperty>
+            <EndProperty Name="Gemeente">
+              <ScalarProperty Name="GemeenteID" ColumnName="GemeenteID" /></EndProperty></AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Straat_PostCode" TypeName="ChiroGroepModel.FK_Straat_PostCode" StoreEntitySet="Straat">
+            <EndProperty Name="Straat">
+              <ScalarProperty Name="StraatID" ColumnName="StraatID" /></EndProperty>
+            <EndProperty Name="PostNr">
+              <ScalarProperty Name="PostCode" ColumnName="PostCode" /></EndProperty></AssociationSetMapping>
+          <AssociationSetMapping Name="FK_SubGemeente_PostCode" TypeName="ChiroGroepModel.FK_SubGemeente_PostCode" StoreEntitySet="Subgemeente">
+            <EndProperty Name="Subgemeente">
+              <ScalarProperty Name="SubgemeenteID" ColumnName="SubgemeenteID" /></EndProperty>
+            <EndProperty Name="PostNr">
+              <ScalarProperty Name="PostCode" ColumnName="PostCode" /></EndProperty></AssociationSetMapping></EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
@@ -1204,8 +1178,7 @@
     <edmx:Diagrams>
       <Diagram Name="ChiroGroepModel" ZoomLevel="86">
         <EntityTypeShape EntityType="ChiroGroepModel.Adres" Width="1.5" PointX="7.5" PointY="5.75" Height="2.2496956380208335" IsExpanded="true" />
-        <EntityTypeShape EntityType="ChiroGroepModel.Gemeente" Width="1.5" PointX="0.75" PointY="6" Height="1.7566536458333335" IsExpanded="true" />
-        <EntityTypeShape EntityType="ChiroGroepModel.PostCode" Width="1.5" PointX="3" PointY="6" Height="1.5923063151041657" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChiroGroepModel.Gemeente" Width="1.5" PointX="1.5" PointY="5.625" Height="1.7566536458333335" IsExpanded="true" />
         <EntityTypeShape EntityType="ChiroGroepModel.Straat" Width="1.5" PointX="5.25" PointY="4.875" Height="1.5923063151041674" IsExpanded="true" />
         <EntityTypeShape EntityType="ChiroGroepModel.Subgemeente" Width="1.5" PointX="5.25" PointY="7.25" Height="1.5923063151041674" IsExpanded="true" />
         <EntityTypeShape EntityType="ChiroGroepModel.Categorie" Width="1.5" PointX="12.75" PointY="5.875" Height="1.5923063151041674" IsExpanded="true" />
@@ -1219,20 +1192,14 @@
         <EntityTypeShape EntityType="ChiroGroepModel.PersoonVrijVeld" Width="1.5" PointX="17.25" PointY="8.75" Height="1.7566536458333317" IsExpanded="true" />
         <EntityTypeShape EntityType="ChiroGroepModel.PersoonVrijVeldType" Width="1.5" PointX="12" PointY="8.875" Height="1.5923063151041674" IsExpanded="true" />
         <AssociationConnector Association="ChiroGroepModel.FK_Adres_Straat" ManuallyRouted="false">
-          <ConnectorPoint PointX="6.75" PointY="6.1086531575520837" />
-          <ConnectorPoint PointX="7.5" PointY="6.1086531575520837" /></AssociationConnector>
+          <ConnectorPoint PointX="6.75" PointY="6.1086531575520828" />
+          <ConnectorPoint PointX="7.5" PointY="6.1086531575520828" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_Adres_Subgemeente" ManuallyRouted="false">
           <ConnectorPoint PointX="6.75" PointY="7.6248478190104167" />
           <ConnectorPoint PointX="7.5" PointY="7.6248478190104167" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_Adres" ManuallyRouted="false">
           <ConnectorPoint PointX="9" PointY="6.2926741536458337" />
           <ConnectorPoint PointX="9.75" PointY="6.2926741536458337" /></AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Straat_PostCode" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="6.2336531575520837" />
-          <ConnectorPoint PointX="5.25" PointY="6.2336531575520837" /></AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_SubGemeente_PostCode" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="7.4211531575520828" />
-          <ConnectorPoint PointX="5.25" PointY="7.4211531575520828" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_PersoonVrijVeldType_VrijVeldType" ManuallyRouted="false">
           <ConnectorPoint PointX="11.25" PointY="12.671153157552084" />
           <ConnectorPoint PointX="12.75" PointY="12.671153157552084" />
@@ -1268,9 +1235,6 @@
           <ConnectorPoint PointX="14.75" PointY="11.485779622395832" />
           <ConnectorPoint PointX="18" PointY="11.485779622395832" />
           <ConnectorPoint PointX="18" PointY="10.506653645833332" /></AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.PostCodeNaarGemeente" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="6.7961531575520828" />
-          <ConnectorPoint PointX="3" PointY="6.7961531575520828" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.GroepsAdres" ManuallyRouted="false">
           <ConnectorPoint PointX="8.25" PointY="7.9996956380208335" />
           <ConnectorPoint PointX="8.25" PointY="9.707021484375" />
@@ -1285,6 +1249,19 @@
         <AssociationConnector Association="ChiroGroepModel.PersoonsCategorie" ManuallyRouted="false">
           <ConnectorPoint PointX="14" PointY="7.4673063151041674" />
           <ConnectorPoint PointX="14" PointY="8.53125" />
-          <ConnectorPoint PointX="15" PointY="8.53125" /></AssociationConnector></Diagram></edmx:Diagrams>
+          <ConnectorPoint PointX="15" PointY="8.53125" /></AssociationConnector>
+        <EntityTypeShape EntityType="ChiroGroepModel.PostNr" Width="1.5" PointX="3.5" PointY="9" Height="1.2636116536458353" />
+        <AssociationConnector Association="ChiroGroepModel.PostNrNaarGemeente" >
+          <ConnectorPoint PointX="2.25" PointY="7.3816536458333335" />
+          <ConnectorPoint PointX="2.25" PointY="9.7961531575520837" />
+          <ConnectorPoint PointX="3.5" PointY="9.7961531575520837" /></AssociationConnector>
+        <AssociationConnector Association="ChiroGroepModel.FK_Straat_PostCode" >
+          <ConnectorPoint PointX="4.25" PointY="9" />
+          <ConnectorPoint PointX="4.25" PointY="5.6711531575520828" />
+          <ConnectorPoint PointX="5.25" PointY="5.6711531575520828" /></AssociationConnector>
+        <AssociationConnector Association="ChiroGroepModel.FK_SubGemeente_PostCode" >
+          <ConnectorPoint PointX="4.6562525" PointY="9" />
+          <ConnectorPoint PointX="4.6562525" PointY="8.0461531575520837" />
+          <ConnectorPoint PointX="5.25" PointY="8.0461531575520837" /></AssociationConnector></Diagram></edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
