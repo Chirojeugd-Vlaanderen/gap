@@ -51,6 +51,7 @@ namespace CgDal
 
         /// <summary>
         /// Persisteert eventuele wijzigingen in het persoonsobject in de database.
+        /// Ook wijzigingen in eventuele 'persoonsadressen' worden meegenomen.
         /// </summary>
         /// <param name="persoon">de persoon in kwestie</param>
         public void PersoonUpdaten(Persoon persoon)
@@ -65,12 +66,35 @@ namespace CgDal
                         break;
                     case EntityStatus.Nieuw:
                         context.Persoons.InsertOnSubmit(persoon);
+                        if (persoon.PersoonsAdres != null)
+                        {
+                            context.PersoonsAdres.InsertAllOnSubmit<PersoonsAdres>(persoon.PersoonsAdres);
+                        }
                         break;
                     case EntityStatus.Gewijzigd:
                         context.Persoons.Attach(persoon, true);
+                        if (persoon.PersoonsAdres != null)
+                        {
+                            // attach gewijzigde en verwijderde persoonsadressen
+                            context.PersoonsAdres.AttachAll<PersoonsAdres>(
+                                persoon.PersoonsAdres.Where<PersoonsAdres>(pa => pa.Status == EntityStatus.Gewijzigd || pa.Status == EntityStatus.Verwijderd));
+
+                            // markeer nieuwe persoonsadressen als 'toe te voegen'
+                            context.PersoonsAdres.InsertAllOnSubmit<PersoonsAdres>(
+                                persoon.PersoonsAdres.Where<PersoonsAdres>(pa => pa.Status == EntityStatus.Nieuw));
+
+                            // markeer (nu geattachte) te verwijderen adressen
+                            context.PersoonsAdres.DeleteAllOnSubmit<PersoonsAdres>(
+                                persoon.PersoonsAdres.Where<PersoonsAdres>(pa => pa.Status == EntityStatus.Verwijderd));
+                        }
                         break;
                     case EntityStatus.Verwijderd:
                         context.Persoons.Attach(persoon, true);
+
+                        // Ik ga hier geen children (PersoonsAdres,...) verwijderen.
+                        // Ik verwacht hier een exceptie als er afhankelijkheden
+                        // zijn naar de te verwijderen persoon.
+
                         context.Persoons.DeleteOnSubmit(persoon);
                         break;
                     default:

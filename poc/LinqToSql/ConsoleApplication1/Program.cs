@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CgDal;
 
 namespace ConsoleApplication1
 {
@@ -9,21 +10,63 @@ namespace ConsoleApplication1
     {
         static void Main(string[] args)
         {
+            bool einde = false;
+            int keuze, adres;
+
             PersonenServiceReference.PersonenServiceClient service = new ConsoleApplication1.PersonenServiceReference.PersonenServiceClient();
 
-            var persoon = service.PersoonMetAdressenGet(1894);
-
-            Console.WriteLine(String.Format("{0} {1}", persoon.VoorNaam, persoon.Naam));
-
-            if (persoon.PersoonsAdres != null)
+            do
             {
-                foreach (var persoonsadres in persoon.PersoonsAdres)
+                Persoon persoon = service.PersoonMetAdressenGet(1894);
+                Console.WriteLine(String.Format("{0} {1}", persoon.VoorNaam, persoon.Naam));
+
+                foreach (PersoonsAdres persoonsadres in persoon.PersoonsAdres)
                 {
-                    Console.WriteLine(String.Format("Adres: {0} - huisnummer {1}", persoonsadres.AdresID));
+                    Console.WriteLine(String.Format("Adres: {0}", persoonsadres.AdresID));
+
+                    // Als ik nu persoonsadres.Adres.HuisNr wil accessen, krijg ik toch
+                    // een null pointer dereference exception, wat ik niet goed begrijp.
+                    
+                }
+                Console.WriteLine("(1) Adres toekennen, (2) Toegekenning verwijderen, (0) einde: ");
+                keuze = int.Parse(Console.ReadLine());
+
+                if (keuze != 0)
+                {
+                    Console.WriteLine("AdresId: ");
+                    adres = int.Parse(Console.ReadLine());
+
+                    if (keuze == 1)
+                    {
+                        PersoonsAdres persoonsAdres = new PersoonsAdres();
+                        persoonsAdres.AdresID = adres;
+                        persoonsAdres.AdresTypeID = 1;
+                        persoonsAdres.IsStandaard = false;
+                        persoonsAdres.PersoonID = persoon.PersoonID;
+                        persoonsAdres.Status = EntityStatus.Nieuw;
+
+
+                        // Om onderstaande method op te roepen, moet ik CgDal referencen!
+
+                        persoon.PersoonsAdres.Add(persoonsAdres);
+                        persoonsAdres.Status = EntityStatus.Nieuw;
+                    }
+                    else if (keuze == 2)
+                    {
+                        PersoonsAdres persoonsAdres = persoon.PersoonsAdres.SingleOrDefault<PersoonsAdres>(
+                            a => a.AdresID == adres);
+                        persoonsAdres.Status = EntityStatus.Verwijderd;
+                    }
+
+                    persoon.Status = EntityStatus.Gewijzigd;
+                    service.PersoonUpdaten(persoon);
+                }
+                else
+                {
+                    einde = true;
                 }
             }
-
-            Console.ReadLine();
+            while (!einde);
         }
     }
 }

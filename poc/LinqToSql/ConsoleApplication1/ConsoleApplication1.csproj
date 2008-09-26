@@ -87,13 +87,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\DataSources\CgDal.Persoon.datasource" />
-    <None Include="Service References\PersonenServiceReference\ConsoleApplication1.PersonenServiceReference.Persoon.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Service References\PersonenServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CgDal\CgDal.csproj">
+      <Project>{06D21982-62D1-47B5-8AD9-D52159729E42}</Project>
+      <Name>CgDal</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
