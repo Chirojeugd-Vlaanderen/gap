@@ -10,7 +10,6 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
-using ChiroGroepModel;
 using CgDal;
 using cg2.Usercontrols.persoon;
 

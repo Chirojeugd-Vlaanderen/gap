@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using ChiroGroepModel;
 using CgDal;
 
 namespace cg2.Usercontrols.persoon
@@ -20,11 +19,11 @@ namespace cg2.Usercontrols.persoon
             //de nodige gegevens laden
             persoonsAdres.AdresReference.Load();
             persoonsAdres.Adres.SubgemeenteReference.Load();
-            persoonsAdres.Adres.Subgemeente.PostCodeReference.Load();
+            persoonsAdres.Adres.Subgemeente.PostNrReference.Load();
             persoonsAdres.Adres.StraatReference.Load();
 
             gemeente.Text = persoonsAdres.Adres.Subgemeente.Naam;
-            postcode.Text = persoonsAdres.Adres.Subgemeente.PostCode.PostCode1.ToString();
+            postcode.Text = persoonsAdres.Adres.Subgemeente.PostNr.PostNr1.ToString();
             straat.Text = persoonsAdres.Adres.Straat.Naam;
             //nr.Text = persoonsAdres.Adres.HuisNr.ToString();
         }

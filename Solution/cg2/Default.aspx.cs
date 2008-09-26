@@ -11,7 +11,6 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using CgDal;
-using ChiroGroepModel;
 
 namespace cg2
 {
