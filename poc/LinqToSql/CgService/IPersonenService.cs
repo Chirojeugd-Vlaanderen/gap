@@ -29,6 +29,14 @@ namespace PersonenService
         Persoon PersoonGet(int persoonID);
 
         /// <summary>
+        /// Haalt persoon met adressen op
+        /// </summary>
+        /// <param name="PersoonID">PersoonID van de gevraagde persoon</param>
+        /// <returns></returns>
+        [OperationContract]
+        Persoon PersoonMetAdressenGet(int PersoonID);
+
+        /// <summary>
         /// Persisteert de wijzigingen van het persoonsobject in de database.
         /// </summary>
         /// <param name="persoon">te persisteren persoonsobjec</param>

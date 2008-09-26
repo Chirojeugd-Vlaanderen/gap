@@ -34,12 +34,15 @@ namespace CgDal
     partial void InsertPersoon(Persoon instance);
     partial void UpdatePersoon(Persoon instance);
     partial void DeletePersoon(Persoon instance);
-    partial void InsertPersoonsAdre(PersoonsAdre instance);
-    partial void UpdatePersoonsAdre(PersoonsAdre instance);
-    partial void DeletePersoonsAdre(PersoonsAdre instance);
+    partial void InsertPersoonsAdres(PersoonsAdres instance);
+    partial void UpdatePersoonsAdres(PersoonsAdres instance);
+    partial void DeletePersoonsAdres(PersoonsAdres instance);
     partial void InsertAdresType(AdresType instance);
     partial void UpdateAdresType(AdresType instance);
     partial void DeleteAdresType(AdresType instance);
+    partial void InsertAdres(Adres instance);
+    partial void UpdateAdres(Adres instance);
+    partial void DeleteAdres(Adres instance);
     #endregion
 		
 		public ChiroGroepClassesDataContext() : 
@@ -80,11 +83,11 @@ namespace CgDal
 			}
 		}
 		
-		public System.Data.Linq.Table<PersoonsAdre> PersoonsAdres
+		public System.Data.Linq.Table<PersoonsAdres> PersoonsAdres
 		{
 			get
 			{
-				return this.GetTable<PersoonsAdre>();
+				return this.GetTable<PersoonsAdres>();
 			}
 		}
 		
@@ -93,6 +96,14 @@ namespace CgDal
 			get
 			{
 				return this.GetTable<AdresType>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Adres> Adres
+		{
+			get
+			{
+				return this.GetTable<Adres>();
 			}
 		}
 	}
@@ -124,7 +135,7 @@ namespace CgDal
 		
 		private System.Data.Linq.Binary _Versie;
 		
-		private EntitySet<PersoonsAdre> _PersoonsAdres;
+		private EntitySet<PersoonsAdres> _PersoonsAdres;
 		
 		private bool serializing;
 		
@@ -371,7 +382,7 @@ namespace CgDal
 		
 		[Association(Name="Persoon_PersoonsAdre", Storage="_PersoonsAdres", ThisKey="PersoonID", OtherKey="PersoonID")]
 		[DataMember(Order=11, EmitDefaultValue=false)]
-		public EntitySet<PersoonsAdre> PersoonsAdres
+		public EntitySet<PersoonsAdres> PersoonsAdres
 		{
 			get
 			{
@@ -408,13 +419,13 @@ namespace CgDal
 			}
 		}
 		
-		private void attach_PersoonsAdres(PersoonsAdre entity)
+		private void attach_PersoonsAdres(PersoonsAdres entity)
 		{
 			this.SendPropertyChanging();
 			entity.Persoon = this;
 		}
 		
-		private void detach_PersoonsAdres(PersoonsAdre entity)
+		private void detach_PersoonsAdres(PersoonsAdres entity)
 		{
 			this.SendPropertyChanging();
 			entity.Persoon = null;
@@ -422,7 +433,7 @@ namespace CgDal
 		
 		private void Initialize()
 		{
-			this._PersoonsAdres = new EntitySet<PersoonsAdre>(new Action<PersoonsAdre>(this.attach_PersoonsAdres), new Action<PersoonsAdre>(this.detach_PersoonsAdres));
+			this._PersoonsAdres = new EntitySet<PersoonsAdres>(new Action<PersoonsAdres>(this.attach_PersoonsAdres), new Action<PersoonsAdres>(this.detach_PersoonsAdres));
 			OnCreated();
 		}
 		
@@ -450,7 +461,7 @@ namespace CgDal
 	
 	[Table(Name="pers.PersoonsAdres")]
 	[DataContract()]
-	public partial class PersoonsAdre : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class PersoonsAdres : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -471,6 +482,8 @@ namespace CgDal
 		
 		private EntityRef<AdresType> _AdresType;
 		
+		private EntityRef<Adres> _Adres;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -489,7 +502,7 @@ namespace CgDal
     partial void OnVersieChanged();
     #endregion
 		
-		public PersoonsAdre()
+		public PersoonsAdres()
 		{
 			this.Initialize();
 		}
@@ -573,6 +586,10 @@ namespace CgDal
 			{
 				if ((this._AdresID != value))
 				{
+					if (this._Adres.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnAdresIDChanging(value);
 					this.SendPropertyChanging();
 					this._AdresID = value;
@@ -696,6 +713,40 @@ namespace CgDal
 			}
 		}
 		
+		[Association(Name="Adre_PersoonsAdre", Storage="_Adres", ThisKey="AdresID", OtherKey="AdresID", IsForeignKey=true)]
+		public Adres Adres
+		{
+			get
+			{
+				return this._Adres.Entity;
+			}
+			set
+			{
+				Adres previousValue = this._Adres.Entity;
+				if (((previousValue != value) 
+							|| (this._Adres.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Adres.Entity = null;
+						previousValue.PersoonsAdres.Remove(this);
+					}
+					this._Adres.Entity = value;
+					if ((value != null))
+					{
+						value.PersoonsAdres.Add(this);
+						this._AdresID = value.AdresID;
+					}
+					else
+					{
+						this._AdresID = default(int);
+					}
+					this.SendPropertyChanged("Adres");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -720,6 +771,7 @@ namespace CgDal
 		{
 			this._Persoon = default(EntityRef<Persoon>);
 			this._AdresType = default(EntityRef<AdresType>);
+			this._Adres = default(EntityRef<Adres>);
 			OnCreated();
 		}
 		
@@ -742,7 +794,7 @@ namespace CgDal
 		
 		private int _AdresTypeID;
 		
-		private EntitySet<PersoonsAdre> _PersoonsAdres;
+		private EntitySet<PersoonsAdres> _PersoonsAdres;
 		
 		private bool serializing;
 		
@@ -805,7 +857,7 @@ namespace CgDal
 		
 		[Association(Name="AdresType_PersoonsAdre", Storage="_PersoonsAdres", ThisKey="AdresTypeID", OtherKey="AdresTypeID")]
 		[DataMember(Order=3, EmitDefaultValue=false)]
-		public EntitySet<PersoonsAdre> PersoonsAdres
+		public EntitySet<PersoonsAdres> PersoonsAdres
 		{
 			get
 			{
@@ -842,13 +894,13 @@ namespace CgDal
 			}
 		}
 		
-		private void attach_PersoonsAdres(PersoonsAdre entity)
+		private void attach_PersoonsAdres(PersoonsAdres entity)
 		{
 			this.SendPropertyChanging();
 			entity.AdresType = this;
 		}
 		
-		private void detach_PersoonsAdres(PersoonsAdre entity)
+		private void detach_PersoonsAdres(PersoonsAdres entity)
 		{
 			this.SendPropertyChanging();
 			entity.AdresType = null;
@@ -856,7 +908,258 @@ namespace CgDal
 		
 		private void Initialize()
 		{
-			this._PersoonsAdres = new EntitySet<PersoonsAdre>(new Action<PersoonsAdre>(this.attach_PersoonsAdres), new Action<PersoonsAdre>(this.detach_PersoonsAdres));
+			this._PersoonsAdres = new EntitySet<PersoonsAdres>(new Action<PersoonsAdres>(this.attach_PersoonsAdres), new Action<PersoonsAdres>(this.detach_PersoonsAdres));
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[OnSerializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[OnSerialized()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
+		}
+	}
+	
+	[Table(Name="adr.Adres")]
+	[DataContract()]
+	public partial class Adres : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _Bus;
+		
+		private System.Nullable<int> _HuisNr;
+		
+		private string _PostCode;
+		
+		private int _AdresID;
+		
+		private int _StraatID;
+		
+		private int _SubgemeenteID;
+		
+		private EntitySet<PersoonsAdres> _PersoonsAdres;
+		
+		private bool serializing;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnBusChanging(string value);
+    partial void OnBusChanged();
+    partial void OnHuisNrChanging(System.Nullable<int> value);
+    partial void OnHuisNrChanged();
+    partial void OnPostCodeChanging(string value);
+    partial void OnPostCodeChanged();
+    partial void OnAdresIDChanging(int value);
+    partial void OnAdresIDChanged();
+    partial void OnStraatIDChanging(int value);
+    partial void OnStraatIDChanged();
+    partial void OnSubgemeenteIDChanging(int value);
+    partial void OnSubgemeenteIDChanged();
+    #endregion
+		
+		public Adres()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Storage="_Bus", DbType="VarChar(10)")]
+		[DataMember(Order=1)]
+		public string Bus
+		{
+			get
+			{
+				return this._Bus;
+			}
+			set
+			{
+				if ((this._Bus != value))
+				{
+					this.OnBusChanging(value);
+					this.SendPropertyChanging();
+					this._Bus = value;
+					this.SendPropertyChanged("Bus");
+					this.OnBusChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_HuisNr", DbType="Int")]
+		[DataMember(Order=2)]
+		public System.Nullable<int> HuisNr
+		{
+			get
+			{
+				return this._HuisNr;
+			}
+			set
+			{
+				if ((this._HuisNr != value))
+				{
+					this.OnHuisNrChanging(value);
+					this.SendPropertyChanging();
+					this._HuisNr = value;
+					this.SendPropertyChanged("HuisNr");
+					this.OnHuisNrChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PostCode", DbType="VarChar(10)")]
+		[DataMember(Order=3)]
+		public string PostCode
+		{
+			get
+			{
+				return this._PostCode;
+			}
+			set
+			{
+				if ((this._PostCode != value))
+				{
+					this.OnPostCodeChanging(value);
+					this.SendPropertyChanging();
+					this._PostCode = value;
+					this.SendPropertyChanged("PostCode");
+					this.OnPostCodeChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_AdresID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[DataMember(Order=4)]
+		public int AdresID
+		{
+			get
+			{
+				return this._AdresID;
+			}
+			set
+			{
+				if ((this._AdresID != value))
+				{
+					this.OnAdresIDChanging(value);
+					this.SendPropertyChanging();
+					this._AdresID = value;
+					this.SendPropertyChanged("AdresID");
+					this.OnAdresIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_StraatID", DbType="Int NOT NULL")]
+		[DataMember(Order=5)]
+		public int StraatID
+		{
+			get
+			{
+				return this._StraatID;
+			}
+			set
+			{
+				if ((this._StraatID != value))
+				{
+					this.OnStraatIDChanging(value);
+					this.SendPropertyChanging();
+					this._StraatID = value;
+					this.SendPropertyChanged("StraatID");
+					this.OnStraatIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SubgemeenteID", DbType="Int NOT NULL")]
+		[DataMember(Order=6)]
+		public int SubgemeenteID
+		{
+			get
+			{
+				return this._SubgemeenteID;
+			}
+			set
+			{
+				if ((this._SubgemeenteID != value))
+				{
+					this.OnSubgemeenteIDChanging(value);
+					this.SendPropertyChanging();
+					this._SubgemeenteID = value;
+					this.SendPropertyChanged("SubgemeenteID");
+					this.OnSubgemeenteIDChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Adre_PersoonsAdre", Storage="_PersoonsAdres", ThisKey="AdresID", OtherKey="AdresID")]
+		[DataMember(Order=7, EmitDefaultValue=false)]
+		public EntitySet<PersoonsAdres> PersoonsAdres
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._PersoonsAdres.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._PersoonsAdres;
+			}
+			set
+			{
+				this._PersoonsAdres.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_PersoonsAdres(PersoonsAdres entity)
+		{
+			this.SendPropertyChanging();
+			entity.Adres = this;
+		}
+		
+		private void detach_PersoonsAdres(PersoonsAdres entity)
+		{
+			this.SendPropertyChanging();
+			entity.Adres = null;
+		}
+		
+		private void Initialize()
+		{
+			this._PersoonsAdres = new EntitySet<PersoonsAdres>(new Action<PersoonsAdres>(this.attach_PersoonsAdres), new Action<PersoonsAdres>(this.detach_PersoonsAdres));
 			OnCreated();
 		}
 		

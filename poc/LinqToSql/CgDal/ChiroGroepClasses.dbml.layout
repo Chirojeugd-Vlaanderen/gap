@@ -2,35 +2,48 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="ChiroGroepClasses">
   <DataContextMoniker Name="/ChiroGroepClassesDataContext" />
   <nestedChildShapes>
-    <classShape Id="74b08ff5-be88-4bc9-a455-3dc6eb460ff4" absoluteBounds="5.875, 2.375, 2, 2.4109318033854166">
+    <classShape Id="74b08ff5-be88-4bc9-a455-3dc6eb460ff4" absoluteBounds="6.25, 1.125, 2, 2.4109318033854166">
       <DataClassMoniker Name="/ChiroGroepClassesDataContext/Persoon" />
       <nestedChildShapes>
-        <elementListCompartment Id="ecb6ef8e-66d5-4062-94af-5818507aadf4" absoluteBounds="5.89, 2.835, 1.9700000000000002, 1.8509318033854165" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="ecb6ef8e-66d5-4062-94af-5818507aadf4" absoluteBounds="6.265, 1.585, 1.9700000000000002, 1.8509318033854165" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="d2e3aa7d-44e3-4070-bd79-b4f251136a98" absoluteBounds="2.125, 0.625, 2, 1.75354248046875">
-      <DataClassMoniker Name="/ChiroGroepClassesDataContext/PersoonsAdre" />
+    <classShape Id="d2e3aa7d-44e3-4070-bd79-b4f251136a98" absoluteBounds="3, 0.75, 2, 1.75354248046875">
+      <DataClassMoniker Name="/ChiroGroepClassesDataContext/PersoonsAdres" />
       <nestedChildShapes>
-        <elementListCompartment Id="ff513b84-4034-4f89-842c-8944440c8d5d" absoluteBounds="2.14, 1.085, 1.9700000000000002, 1.19354248046875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="ff513b84-4034-4f89-842c-8944440c8d5d" absoluteBounds="3.015, 1.21, 1.9700000000000002, 1.19354248046875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(5.875 : 3.61348964192708); (3.3750025 : 3.61348964192708); (3.3750025 : 2.37854248046875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(6.25 : 1.81427124023438); (5 : 1.81427124023438)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/ChiroGroepClassesDataContext/Persoon/Persoon_PersoonsAdre" />
       <nodes>
         <classShapeMoniker Id="74b08ff5-be88-4bc9-a455-3dc6eb460ff4" />
         <classShapeMoniker Id="d2e3aa7d-44e3-4070-bd79-b4f251136a98" />
       </nodes>
     </associationConnector>
-    <classShape Id="b05a2797-a5fd-49c3-a742-bed2691ad0f8" absoluteBounds="1.5, 4.875, 2, 1.0961531575520833">
+    <classShape Id="b05a2797-a5fd-49c3-a742-bed2691ad0f8" absoluteBounds="4, 5, 2, 1.0961531575520833">
       <DataClassMoniker Name="/ChiroGroepClassesDataContext/AdresType" />
       <nestedChildShapes>
-        <elementListCompartment Id="475f39e7-6a26-4d7e-8396-d667041ea1c2" absoluteBounds="1.5150000000000001, 5.335, 1.9700000000000002, 0.53615315755208326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="475f39e7-6a26-4d7e-8396-d667041ea1c2" absoluteBounds="4.0150000000000006, 5.46, 1.9700000000000002, 0.53615315755208326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.5625 : 4.875); (2.5625 : 2.37854248046875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(4.5 : 5); (4.5 : 2.50354248046875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/ChiroGroepClassesDataContext/AdresType/AdresType_PersoonsAdre" />
       <nodes>
         <classShapeMoniker Id="b05a2797-a5fd-49c3-a742-bed2691ad0f8" />
+        <classShapeMoniker Id="d2e3aa7d-44e3-4070-bd79-b4f251136a98" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="d438109d-9eb7-4999-9d99-10568a7fb125" absoluteBounds="0.625, 2.875, 2, 1.75354248046875">
+      <DataClassMoniker Name="/ChiroGroepClassesDataContext/Adres" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0eceac8e-1e16-4e20-82c2-549cdbfcfa72" absoluteBounds="0.64000000000000012, 3.335, 1.9700000000000002, 1.19354248046875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.625 : 2.875); (3 : 2.50354248046875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/ChiroGroepClassesDataContext/Adres/Adre_PersoonsAdre" />
+      <nodes>
+        <classShapeMoniker Id="d438109d-9eb7-4999-9d99-10568a7fb125" />
         <classShapeMoniker Id="d2e3aa7d-44e3-4070-bd79-b4f251136a98" />
       </nodes>
     </associationConnector>

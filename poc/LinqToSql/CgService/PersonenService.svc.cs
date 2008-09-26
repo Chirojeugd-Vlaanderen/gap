@@ -27,6 +27,11 @@ namespace PersonenService
             return DataAccess.PersoonGet(persoonID);
         }
 
+        public Persoon PersoonMetAdressenGet(int persoonID)
+        {
+            return DataAccess.PersoonMetAdressenGet(persoonID);
+        }
+
         public void PersoonUpdaten(Persoon persoon)
         {
             DataAccess.PersoonUpdaten(persoon);

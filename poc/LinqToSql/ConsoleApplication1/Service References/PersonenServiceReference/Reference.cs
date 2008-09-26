@@ -17,6 +17,7 @@ namespace ConsoleApplication1.PersonenServiceReference {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BasisEntity", Namespace="http://schemas.datacontract.org/2004/07/CgDal")]
     [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(ConsoleApplication1.PersonenServiceReference.PersoonsAdres))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(ConsoleApplication1.PersonenServiceReference.Persoon))]
     public partial class BasisEntity : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -61,6 +62,109 @@ namespace ConsoleApplication1.PersonenServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="PersoonsAdres", Namespace="http://schemas.datacontract.org/2004/07/CgDal")]
+    [System.SerializableAttribute()]
+    public partial class PersoonsAdres : ConsoleApplication1.PersonenServiceReference.BasisEntity {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsStandaardField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string OpmerkingField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int PersoonIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int AdresIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int AdresTypeIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Data.Linq.Binary VersieField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsStandaard {
+            get {
+                return this.IsStandaardField;
+            }
+            set {
+                if ((this.IsStandaardField.Equals(value) != true)) {
+                    this.IsStandaardField = value;
+                    this.RaisePropertyChanged("IsStandaard");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Opmerking {
+            get {
+                return this.OpmerkingField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.OpmerkingField, value) != true)) {
+                    this.OpmerkingField = value;
+                    this.RaisePropertyChanged("Opmerking");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int PersoonID {
+            get {
+                return this.PersoonIDField;
+            }
+            set {
+                if ((this.PersoonIDField.Equals(value) != true)) {
+                    this.PersoonIDField = value;
+                    this.RaisePropertyChanged("PersoonID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+        public int AdresID {
+            get {
+                return this.AdresIDField;
+            }
+            set {
+                if ((this.AdresIDField.Equals(value) != true)) {
+                    this.AdresIDField = value;
+                    this.RaisePropertyChanged("AdresID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+        public int AdresTypeID {
+            get {
+                return this.AdresTypeIDField;
+            }
+            set {
+                if ((this.AdresTypeIDField.Equals(value) != true)) {
+                    this.AdresTypeIDField = value;
+                    this.RaisePropertyChanged("AdresTypeID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+        public System.Data.Linq.Binary Versie {
+            get {
+                return this.VersieField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.VersieField, value) != true)) {
+                    this.VersieField = value;
+                    this.RaisePropertyChanged("Versie");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Persoon", Namespace="http://schemas.datacontract.org/2004/07/CgDal")]
     [System.SerializableAttribute()]
     public partial class Persoon : ConsoleApplication1.PersonenServiceReference.BasisEntity {
@@ -93,10 +197,10 @@ namespace ConsoleApplication1.PersonenServiceReference {
         private int PersoonIDField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private ConsoleApplication1.PersonenServiceReference.Binary VersieField;
+        private System.Data.Linq.Binary VersieField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private ConsoleApplication1.PersonenServiceReference.PersoonsAdre[] PersoonsAdresField;
+        private ConsoleApplication1.PersonenServiceReference.PersoonsAdres[] PersoonsAdresField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Nullable<int> AdNummer {
@@ -216,7 +320,7 @@ namespace ConsoleApplication1.PersonenServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=9)]
-        public ConsoleApplication1.PersonenServiceReference.Binary Versie {
+        public System.Data.Linq.Binary Versie {
             get {
                 return this.VersieField;
             }
@@ -229,7 +333,7 @@ namespace ConsoleApplication1.PersonenServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=10)]
-        public ConsoleApplication1.PersonenServiceReference.PersoonsAdre[] PersoonsAdres {
+        public ConsoleApplication1.PersonenServiceReference.PersoonsAdres[] PersoonsAdres {
             get {
                 return this.PersoonsAdresField;
             }
@@ -259,176 +363,6 @@ namespace ConsoleApplication1.PersonenServiceReference {
         Verwijderd = 3,
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Binary", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Linq")]
-    [System.SerializableAttribute()]
-    public partial class Binary : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private byte[] BytesField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Bytes {
-            get {
-                return this.BytesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.BytesField, value) != true)) {
-                    this.BytesField = value;
-                    this.RaisePropertyChanged("Bytes");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="PersoonsAdre", Namespace="http://schemas.datacontract.org/2004/07/CgDal")]
-    [System.SerializableAttribute()]
-    public partial class PersoonsAdre : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool IsStandaardField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string OpmerkingField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int PersoonIDField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int AdresIDField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int AdresTypeIDField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private ConsoleApplication1.PersonenServiceReference.Binary VersieField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool IsStandaard {
-            get {
-                return this.IsStandaardField;
-            }
-            set {
-                if ((this.IsStandaardField.Equals(value) != true)) {
-                    this.IsStandaardField = value;
-                    this.RaisePropertyChanged("IsStandaard");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Opmerking {
-            get {
-                return this.OpmerkingField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.OpmerkingField, value) != true)) {
-                    this.OpmerkingField = value;
-                    this.RaisePropertyChanged("Opmerking");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int PersoonID {
-            get {
-                return this.PersoonIDField;
-            }
-            set {
-                if ((this.PersoonIDField.Equals(value) != true)) {
-                    this.PersoonIDField = value;
-                    this.RaisePropertyChanged("PersoonID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(Order=3)]
-        public int AdresID {
-            get {
-                return this.AdresIDField;
-            }
-            set {
-                if ((this.AdresIDField.Equals(value) != true)) {
-                    this.AdresIDField = value;
-                    this.RaisePropertyChanged("AdresID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(Order=4)]
-        public int AdresTypeID {
-            get {
-                return this.AdresTypeIDField;
-            }
-            set {
-                if ((this.AdresTypeIDField.Equals(value) != true)) {
-                    this.AdresTypeIDField = value;
-                    this.RaisePropertyChanged("AdresTypeID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(Order=5)]
-        public ConsoleApplication1.PersonenServiceReference.Binary Versie {
-            get {
-                return this.VersieField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.VersieField, value) != true)) {
-                    this.VersieField = value;
-                    this.RaisePropertyChanged("Versie");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="PersonenServiceReference.IPersonenService")]
     public interface IPersonenService {
@@ -438,6 +372,9 @@ namespace ConsoleApplication1.PersonenServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/PersoonGet", ReplyAction="http://tempuri.org/IPersonenService/PersoonGetResponse")]
         ConsoleApplication1.PersonenServiceReference.Persoon PersoonGet(int persoonID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/PersoonMetAdressenGet", ReplyAction="http://tempuri.org/IPersonenService/PersoonMetAdressenGetResponse")]
+        ConsoleApplication1.PersonenServiceReference.Persoon PersoonMetAdressenGet(int PersoonID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/PersoonUpdaten", ReplyAction="http://tempuri.org/IPersonenService/PersoonUpdatenResponse")]
         void PersoonUpdaten(ConsoleApplication1.PersonenServiceReference.Persoon persoon);
@@ -476,6 +413,10 @@ namespace ConsoleApplication1.PersonenServiceReference {
         
         public ConsoleApplication1.PersonenServiceReference.Persoon PersoonGet(int persoonID) {
             return base.Channel.PersoonGet(persoonID);
+        }
+        
+        public ConsoleApplication1.PersonenServiceReference.Persoon PersoonMetAdressenGet(int PersoonID) {
+            return base.Channel.PersoonMetAdressenGet(PersoonID);
         }
         
         public void PersoonUpdaten(ConsoleApplication1.PersonenServiceReference.Persoon persoon) {

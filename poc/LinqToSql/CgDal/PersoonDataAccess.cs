@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.Data.Linq;
 
 namespace CgDal
 {
@@ -23,6 +24,26 @@ namespace CgDal
                 context.ObjectTrackingEnabled = false;
                 // Het lagenmodel maakt objecttracking onmogelijk, dus zetten
                 // we dat hier alvast uit.
+
+                return context.Persoons.SingleOrDefault<Persoon>(p => p.PersoonID == persoonID);
+            }
+        }
+
+        /// <summary>
+        /// Haalt persoonsinfo inclusief adressen op
+        /// </summary>
+        /// <param name="persoonID">PersoonID van op te vragen persoon</param>
+        /// <returns>gegevens van de gevraagde persoon</returns>
+        public Persoon PersoonMetAdressenGet(int persoonID)
+        {
+            using (ChiroGroepClassesDataContext context = new ChiroGroepClassesDataContext())
+            {
+                DataLoadOptions options = new DataLoadOptions();
+                options.LoadWith<Persoon>(p => p.PersoonsAdres);
+                options.LoadWith<PersoonsAdres>(a => a.Adres);
+
+                context.LoadOptions = options;
+                context.ObjectTrackingEnabled = false;
 
                 return context.Persoons.SingleOrDefault<Persoon>(p => p.PersoonID == persoonID);
             }

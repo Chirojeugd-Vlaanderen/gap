@@ -13,11 +13,11 @@
       <Column Name="Guid" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
       <Column Name="PersoonID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Versie" Type="System.Data.Linq.Binary" DbType="rowversion" CanBeNull="true" IsVersion="true" />
-      <Association Name="Persoon_PersoonsAdre" Member="PersoonsAdres" ThisKey="PersoonID" OtherKey="PersoonID" Type="PersoonsAdre" />
+      <Association Name="Persoon_PersoonsAdre" Member="PersoonsAdres" ThisKey="PersoonID" OtherKey="PersoonID" Type="PersoonsAdres" />
     </Type>
   </Table>
   <Table Name="pers.PersoonsAdres" Member="PersoonsAdres">
-    <Type Name="PersoonsAdre">
+    <Type Name="PersoonsAdres">
       <Column Name="IsStandaard" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="Opmerking" Type="System.String" DbType="Text" CanBeNull="true" />
       <Column Name="PersoonID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -26,13 +26,25 @@
       <Column Name="Versie" Type="System.Data.Linq.Binary" DbType="rowversion NOT NULL" CanBeNull="false" IsVersion="true" />
       <Association Name="Persoon_PersoonsAdre" Member="Persoon" ThisKey="PersoonID" OtherKey="PersoonID" Type="Persoon" IsForeignKey="true" />
       <Association Name="AdresType_PersoonsAdre" Member="AdresType" ThisKey="AdresTypeID" OtherKey="AdresTypeID" Type="AdresType" IsForeignKey="true" />
+      <Association Name="Adre_PersoonsAdre" Member="Adres" ThisKey="AdresID" OtherKey="AdresID" Type="Adres" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="pers.AdresType" Member="AdresTypes">
     <Type Name="AdresType">
       <Column Name="Omschrijving" Type="System.String" DbType="VarChar(80)" CanBeNull="true" />
       <Column Name="AdresTypeID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Association Name="AdresType_PersoonsAdre" Member="PersoonsAdres" ThisKey="AdresTypeID" OtherKey="AdresTypeID" Type="PersoonsAdre" />
+      <Association Name="AdresType_PersoonsAdre" Member="PersoonsAdres" ThisKey="AdresTypeID" OtherKey="AdresTypeID" Type="PersoonsAdres" />
+    </Type>
+  </Table>
+  <Table Name="adr.Adres" Member="Adres">
+    <Type Name="Adres">
+      <Column Name="Bus" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="HuisNr" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PostCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="AdresID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StraatID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SubgemeenteID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Adre_PersoonsAdre" Member="PersoonsAdres" ThisKey="AdresID" OtherKey="AdresID" Type="PersoonsAdres" />
     </Type>
   </Table>
 </Database>

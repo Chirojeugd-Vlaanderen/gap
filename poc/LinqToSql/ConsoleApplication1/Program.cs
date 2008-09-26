@@ -10,21 +10,18 @@ namespace ConsoleApplication1
         static void Main(string[] args)
         {
             PersonenServiceReference.PersonenServiceClient service = new ConsoleApplication1.PersonenServiceReference.PersonenServiceClient();
-            string NieuweVoorNaam;
 
-            var persoon = service.PersoonGet(1894);
+            var persoon = service.PersoonMetAdressenGet(1894);
 
             Console.WriteLine(String.Format("{0} {1}", persoon.VoorNaam, persoon.Naam));
-            Console.WriteLine("Nieuwe voornaam:");
-            
-            NieuweVoorNaam = Console.ReadLine();
-            persoon.VoorNaam = NieuweVoorNaam;
-            persoon.Status = PersonenServiceReference.EntityStatus.Gewijzigd;
-            service.PersoonUpdaten(persoon);
 
-            Console.WriteLine("Opnieuw ophalen:");
-            persoon = service.PersoonGet(1894);
-            Console.WriteLine(String.Format("{0} {1}", persoon.VoorNaam, persoon.Naam));
+            if (persoon.PersoonsAdres != null)
+            {
+                foreach (var persoonsadres in persoon.PersoonsAdres)
+                {
+                    Console.WriteLine(String.Format("Adres: {0} - huisnummer {1}", persoonsadres.AdresID));
+                }
+            }
 
             Console.ReadLine();
         }

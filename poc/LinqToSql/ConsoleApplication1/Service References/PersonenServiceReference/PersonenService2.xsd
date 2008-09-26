@@ -16,7 +16,7 @@
           <xs:element minOccurs="0" name="Guid" nillable="true" type="ser:guid" />
           <xs:element minOccurs="0" name="PersoonID" type="xs:int" />
           <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/System.Data.Linq" minOccurs="0" name="Versie" nillable="true" type="q1:Binary" />
-          <xs:element minOccurs="0" name="PersoonsAdres" nillable="true" type="tns:ArrayOfPersoonsAdre">
+          <xs:element minOccurs="0" name="PersoonsAdres" nillable="true" type="tns:ArrayOfPersoonsAdres">
             <xs:annotation>
               <xs:appinfo>
                 <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
@@ -43,21 +43,25 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="EntityStatus" nillable="true" type="tns:EntityStatus" />
-  <xs:complexType name="ArrayOfPersoonsAdre">
+  <xs:complexType name="ArrayOfPersoonsAdres">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="PersoonsAdre" nillable="true" type="tns:PersoonsAdre" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PersoonsAdres" nillable="true" type="tns:PersoonsAdres" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfPersoonsAdre" nillable="true" type="tns:ArrayOfPersoonsAdre" />
-  <xs:complexType name="PersoonsAdre">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="IsStandaard" type="xs:boolean" />
-      <xs:element minOccurs="0" name="Opmerking" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="PersoonID" type="xs:int" />
-      <xs:element minOccurs="0" name="AdresID" type="xs:int" />
-      <xs:element minOccurs="0" name="AdresTypeID" type="xs:int" />
-      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/System.Data.Linq" minOccurs="0" name="Versie" nillable="true" type="q2:Binary" />
-    </xs:sequence>
+  <xs:element name="ArrayOfPersoonsAdres" nillable="true" type="tns:ArrayOfPersoonsAdres" />
+  <xs:complexType name="PersoonsAdres">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasisEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="IsStandaard" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Opmerking" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PersoonID" type="xs:int" />
+          <xs:element minOccurs="0" name="AdresID" type="xs:int" />
+          <xs:element minOccurs="0" name="AdresTypeID" type="xs:int" />
+          <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/System.Data.Linq" minOccurs="0" name="Versie" nillable="true" type="q2:Binary" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
-  <xs:element name="PersoonsAdre" nillable="true" type="tns:PersoonsAdre" />
+  <xs:element name="PersoonsAdres" nillable="true" type="tns:PersoonsAdres" />
 </xs:schema>
