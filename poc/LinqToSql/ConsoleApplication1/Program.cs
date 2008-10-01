@@ -12,6 +12,8 @@ namespace ConsoleApplication1
         {
             bool einde = false;
             int keuze, adres;
+            string voornaam;
+            PersoonsAdres persoonsAdres;
 
             PersonenServiceReference.PersonenServiceClient service = new ConsoleApplication1.PersonenServiceReference.PersonenServiceClient();
 
@@ -28,34 +30,46 @@ namespace ConsoleApplication1
                     // een null pointer dereference exception, wat ik niet goed begrijp.
                     
                 }
-                Console.WriteLine("(1) Adres toekennen, (2) Toegekenning verwijderen, (0) einde: ");
+                Console.WriteLine("(1) Adres toekennen, (2) Toegekenning verwijderen, (3) Voornaam Wijzigen, (0) einde: ");
                 keuze = int.Parse(Console.ReadLine());
 
                 if (keuze != 0)
                 {
-                    Console.WriteLine("AdresId: ");
-                    adres = int.Parse(Console.ReadLine());
-
-                    if (keuze == 1)
+                    switch (keuze)
                     {
-                        PersoonsAdres persoonsAdres = new PersoonsAdres();
-                        persoonsAdres.AdresID = adres;
-                        persoonsAdres.AdresTypeID = 1;
-                        persoonsAdres.IsStandaard = false;
-                        persoonsAdres.PersoonID = persoon.PersoonID;
-                        persoonsAdres.Status = EntityStatus.Nieuw;
+                        case 1:
+                            Console.WriteLine("AdresId: ");
+                            adres = int.Parse(Console.ReadLine());
+
+                            persoonsAdres = new PersoonsAdres();
+                            persoonsAdres.AdresID = adres;
+                            persoonsAdres.AdresTypeID = 1;
+                            persoonsAdres.IsStandaard = false;
+                            persoonsAdres.PersoonID = persoon.PersoonID;
+                            persoonsAdres.Status = EntityStatus.Nieuw;
 
 
-                        // Om onderstaande method op te roepen, moet ik CgDal referencen!
+                            // Om onderstaande method op te roepen, moet ik CgDal referencen!
 
-                        persoon.PersoonsAdres.Add(persoonsAdres);
-                        persoonsAdres.Status = EntityStatus.Nieuw;
-                    }
-                    else if (keuze == 2)
-                    {
-                        PersoonsAdres persoonsAdres = persoon.PersoonsAdres.SingleOrDefault<PersoonsAdres>(
-                            a => a.AdresID == adres);
-                        persoonsAdres.Status = EntityStatus.Verwijderd;
+                            persoon.PersoonsAdres.Add(persoonsAdres);
+                            persoonsAdres.Status = EntityStatus.Nieuw;
+                            break;
+                        case 2:
+                            Console.WriteLine("AdresId: ");
+                            adres = int.Parse(Console.ReadLine());
+
+                            persoonsAdres = persoon.PersoonsAdres.SingleOrDefault<PersoonsAdres>(
+                                a => a.AdresID == adres);
+                            persoonsAdres.Status = EntityStatus.Verwijderd;
+                            break;
+                        case 3:
+                            Console.WriteLine("Nieuwe Voornaam: ");
+                            voornaam = Console.ReadLine();
+                            persoon.VoorNaam = voornaam;
+                            break;
+                        default:
+                            Console.WriteLine("Huh?");
+                            break;
                     }
 
                     persoon.Status = EntityStatus.Gewijzigd;
