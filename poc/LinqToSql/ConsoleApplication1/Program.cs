@@ -8,7 +8,7 @@ namespace ConsoleApplication1
 {
     class Program
     {
-        static void Main(string[] args)
+        static void PersonenExperiment()
         {
             bool einde = false;
             int keuze, adres;
@@ -81,6 +81,25 @@ namespace ConsoleApplication1
                 }
             }
             while (!einde);
+        }
+
+        static void LijstExperiment()
+        {
+            PersonenServiceReference.PersonenServiceClient service = new ConsoleApplication1.PersonenServiceReference.PersonenServiceClient();
+
+            var lijst = service.GelieerdePersonenInfoGet(310);
+
+            foreach (vPersoonsInfo i in lijst)
+            {
+                Console.WriteLine(i.VoorNaam + ' ' + i.Naam + ';' + i.Categorieen + ';' + i.StraatNaam + ' ' + i.HuisNr
+                    + ';' + i.PostNr + ' ' + i.SubGemeente);
+            }
+            Console.ReadLine();
+        }
+
+        static void Main(string[] Arguments)
+        {
+            LijstExperiment();
         }
     }
 }

@@ -37,6 +37,15 @@ namespace PersonenService
         Persoon PersoonMetAdressenGet(int PersoonID);
 
         /// <summary>
+        /// Lijst opvragen met (basis)info van alle gelieerde personen uit
+        /// een groep.
+        /// </summary>
+        /// <param name="GroepID">ID van de betreffende groep</param>
+        /// <returns>Een lijst met objecten van het type vPersoonsInfo</returns>
+        [OperationContract]
+        IList<vPersoonsInfo> GelieerdePersonenInfoGet(int GroepID);
+
+        /// <summary>
         /// Persisteert de wijzigingen van het persoonsobject in de database.
         /// </summary>
         /// <param name="persoon">te persisteren persoonsobjec</param>

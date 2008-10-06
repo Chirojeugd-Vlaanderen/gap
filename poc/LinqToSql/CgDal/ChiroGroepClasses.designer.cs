@@ -43,6 +43,12 @@ namespace CgDal
     partial void InsertAdres(Adres instance);
     partial void UpdateAdres(Adres instance);
     partial void DeleteAdres(Adres instance);
+    partial void InsertGroep(Groep instance);
+    partial void UpdateGroep(Groep instance);
+    partial void DeleteGroep(Groep instance);
+    partial void InsertGelieerdePersoon(GelieerdePersoon instance);
+    partial void UpdateGelieerdePersoon(GelieerdePersoon instance);
+    partial void DeleteGelieerdePersoon(GelieerdePersoon instance);
     #endregion
 		
 		public ChiroGroepClassesDataContext() : 
@@ -106,6 +112,30 @@ namespace CgDal
 				return this.GetTable<Adres>();
 			}
 		}
+		
+		public System.Data.Linq.Table<Groep> Groeps
+		{
+			get
+			{
+				return this.GetTable<Groep>();
+			}
+		}
+		
+		public System.Data.Linq.Table<GelieerdePersoon> GelieerdePersoons
+		{
+			get
+			{
+				return this.GetTable<GelieerdePersoon>();
+			}
+		}
+		
+		public System.Data.Linq.Table<vPersoonsInfo> vPersoonsInfos
+		{
+			get
+			{
+				return this.GetTable<vPersoonsInfo>();
+			}
+		}
 	}
 	
 	[Table(Name="pers.Persoon")]
@@ -136,6 +166,8 @@ namespace CgDal
 		private System.Data.Linq.Binary _Versie;
 		
 		private EntitySet<PersoonsAdres> _PersoonsAdres;
+		
+		private EntitySet<GelieerdePersoon> _GelieerdePersoons;
 		
 		private bool serializing;
 		
@@ -380,7 +412,7 @@ namespace CgDal
 			}
 		}
 		
-		[Association(Name="Persoon_PersoonsAdre", Storage="_PersoonsAdres", ThisKey="PersoonID", OtherKey="PersoonID")]
+		[Association(Name="Persoon_PersoonsAdres", Storage="_PersoonsAdres", ThisKey="PersoonID", OtherKey="PersoonID")]
 		[DataMember(Order=11, EmitDefaultValue=false)]
 		public EntitySet<PersoonsAdres> PersoonsAdres
 		{
@@ -396,6 +428,25 @@ namespace CgDal
 			set
 			{
 				this._PersoonsAdres.Assign(value);
+			}
+		}
+		
+		[Association(Name="Persoon_GelieerdePersoon", Storage="_GelieerdePersoons", ThisKey="PersoonID", OtherKey="PersoonID")]
+		[DataMember(Order=12, EmitDefaultValue=false)]
+		public EntitySet<GelieerdePersoon> GelieerdePersoons
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._GelieerdePersoons.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._GelieerdePersoons;
+			}
+			set
+			{
+				this._GelieerdePersoons.Assign(value);
 			}
 		}
 		
@@ -431,9 +482,22 @@ namespace CgDal
 			entity.Persoon = null;
 		}
 		
+		private void attach_GelieerdePersoons(GelieerdePersoon entity)
+		{
+			this.SendPropertyChanging();
+			entity.Persoon = this;
+		}
+		
+		private void detach_GelieerdePersoons(GelieerdePersoon entity)
+		{
+			this.SendPropertyChanging();
+			entity.Persoon = null;
+		}
+		
 		private void Initialize()
 		{
 			this._PersoonsAdres = new EntitySet<PersoonsAdres>(new Action<PersoonsAdres>(this.attach_PersoonsAdres), new Action<PersoonsAdres>(this.detach_PersoonsAdres));
+			this._GelieerdePersoons = new EntitySet<GelieerdePersoon>(new Action<GelieerdePersoon>(this.attach_GelieerdePersoons), new Action<GelieerdePersoon>(this.detach_GelieerdePersoons));
 			OnCreated();
 		}
 		
@@ -645,7 +709,7 @@ namespace CgDal
 			}
 		}
 		
-		[Association(Name="Persoon_PersoonsAdre", Storage="_Persoon", ThisKey="PersoonID", OtherKey="PersoonID", IsForeignKey=true)]
+		[Association(Name="Persoon_PersoonsAdres", Storage="_Persoon", ThisKey="PersoonID", OtherKey="PersoonID", IsForeignKey=true)]
 		public Persoon Persoon
 		{
 			get
@@ -679,7 +743,7 @@ namespace CgDal
 			}
 		}
 		
-		[Association(Name="AdresType_PersoonsAdre", Storage="_AdresType", ThisKey="AdresTypeID", OtherKey="AdresTypeID", IsForeignKey=true)]
+		[Association(Name="AdresType_PersoonsAdres", Storage="_AdresType", ThisKey="AdresTypeID", OtherKey="AdresTypeID", IsForeignKey=true)]
 		public AdresType AdresType
 		{
 			get
@@ -713,7 +777,7 @@ namespace CgDal
 			}
 		}
 		
-		[Association(Name="Adre_PersoonsAdre", Storage="_Adres", ThisKey="AdresID", OtherKey="AdresID", IsForeignKey=true)]
+		[Association(Name="Adres_PersoonsAdres", Storage="_Adres", ThisKey="AdresID", OtherKey="AdresID", IsForeignKey=true)]
 		public Adres Adres
 		{
 			get
@@ -855,7 +919,7 @@ namespace CgDal
 			}
 		}
 		
-		[Association(Name="AdresType_PersoonsAdre", Storage="_PersoonsAdres", ThisKey="AdresTypeID", OtherKey="AdresTypeID")]
+		[Association(Name="AdresType_PersoonsAdres", Storage="_PersoonsAdres", ThisKey="AdresTypeID", OtherKey="AdresTypeID")]
 		[DataMember(Order=3, EmitDefaultValue=false)]
 		public EntitySet<PersoonsAdres> PersoonsAdres
 		{
@@ -1106,7 +1170,7 @@ namespace CgDal
 			}
 		}
 		
-		[Association(Name="Adre_PersoonsAdre", Storage="_PersoonsAdres", ThisKey="AdresID", OtherKey="AdresID")]
+		[Association(Name="Adres_PersoonsAdres", Storage="_PersoonsAdres", ThisKey="AdresID", OtherKey="AdresID")]
 		[DataMember(Order=7, EmitDefaultValue=false)]
 		public EntitySet<PersoonsAdres> PersoonsAdres
 		{
@@ -1182,6 +1246,621 @@ namespace CgDal
 		public void OnSerialized(StreamingContext context)
 		{
 			this.serializing = false;
+		}
+	}
+	
+	[Table(Name="grp.Groep")]
+	[DataContract()]
+	public partial class Groep : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _Naam;
+		
+		private string _Code;
+		
+		private System.Nullable<int> _OprichtingsJaar;
+		
+		private string _WebSite;
+		
+		private System.Data.Linq.Binary _Logo;
+		
+		private int _GroepID;
+		
+		private EntitySet<GelieerdePersoon> _GelieerdePersoons;
+		
+		private bool serializing;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnNaamChanging(string value);
+    partial void OnNaamChanged();
+    partial void OnCodeChanging(string value);
+    partial void OnCodeChanged();
+    partial void OnOprichtingsJaarChanging(System.Nullable<int> value);
+    partial void OnOprichtingsJaarChanged();
+    partial void OnWebSiteChanging(string value);
+    partial void OnWebSiteChanged();
+    partial void OnLogoChanging(System.Data.Linq.Binary value);
+    partial void OnLogoChanged();
+    partial void OnGroepIDChanging(int value);
+    partial void OnGroepIDChanged();
+    #endregion
+		
+		public Groep()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Storage="_Naam", DbType="VarChar(160) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=1)]
+		public string Naam
+		{
+			get
+			{
+				return this._Naam;
+			}
+			set
+			{
+				if ((this._Naam != value))
+				{
+					this.OnNaamChanging(value);
+					this.SendPropertyChanging();
+					this._Naam = value;
+					this.SendPropertyChanged("Naam");
+					this.OnNaamChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Code", DbType="Char(10)")]
+		[DataMember(Order=2)]
+		public string Code
+		{
+			get
+			{
+				return this._Code;
+			}
+			set
+			{
+				if ((this._Code != value))
+				{
+					this.OnCodeChanging(value);
+					this.SendPropertyChanging();
+					this._Code = value;
+					this.SendPropertyChanged("Code");
+					this.OnCodeChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_OprichtingsJaar", DbType="Int")]
+		[DataMember(Order=3)]
+		public System.Nullable<int> OprichtingsJaar
+		{
+			get
+			{
+				return this._OprichtingsJaar;
+			}
+			set
+			{
+				if ((this._OprichtingsJaar != value))
+				{
+					this.OnOprichtingsJaarChanging(value);
+					this.SendPropertyChanging();
+					this._OprichtingsJaar = value;
+					this.SendPropertyChanged("OprichtingsJaar");
+					this.OnOprichtingsJaarChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_WebSite", DbType="VarChar(160)")]
+		[DataMember(Order=4)]
+		public string WebSite
+		{
+			get
+			{
+				return this._WebSite;
+			}
+			set
+			{
+				if ((this._WebSite != value))
+				{
+					this.OnWebSiteChanging(value);
+					this.SendPropertyChanging();
+					this._WebSite = value;
+					this.SendPropertyChanged("WebSite");
+					this.OnWebSiteChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Logo", DbType="Image", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=5)]
+		public System.Data.Linq.Binary Logo
+		{
+			get
+			{
+				return this._Logo;
+			}
+			set
+			{
+				if ((this._Logo != value))
+				{
+					this.OnLogoChanging(value);
+					this.SendPropertyChanging();
+					this._Logo = value;
+					this.SendPropertyChanged("Logo");
+					this.OnLogoChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_GroepID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[DataMember(Order=6)]
+		public int GroepID
+		{
+			get
+			{
+				return this._GroepID;
+			}
+			set
+			{
+				if ((this._GroepID != value))
+				{
+					this.OnGroepIDChanging(value);
+					this.SendPropertyChanging();
+					this._GroepID = value;
+					this.SendPropertyChanged("GroepID");
+					this.OnGroepIDChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Groep_GelieerdePersoon", Storage="_GelieerdePersoons", ThisKey="GroepID", OtherKey="GroepID")]
+		[DataMember(Order=7, EmitDefaultValue=false)]
+		public EntitySet<GelieerdePersoon> GelieerdePersoons
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._GelieerdePersoons.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._GelieerdePersoons;
+			}
+			set
+			{
+				this._GelieerdePersoons.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_GelieerdePersoons(GelieerdePersoon entity)
+		{
+			this.SendPropertyChanging();
+			entity.Groep = this;
+		}
+		
+		private void detach_GelieerdePersoons(GelieerdePersoon entity)
+		{
+			this.SendPropertyChanging();
+			entity.Groep = null;
+		}
+		
+		private void Initialize()
+		{
+			this._GelieerdePersoons = new EntitySet<GelieerdePersoon>(new Action<GelieerdePersoon>(this.attach_GelieerdePersoons), new Action<GelieerdePersoon>(this.detach_GelieerdePersoons));
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[OnSerializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[OnSerialized()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
+		}
+	}
+	
+	[Table(Name="pers.GelieerdePersoon")]
+	[DataContract()]
+	public partial class GelieerdePersoon : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _GroepID;
+		
+		private int _PersoonID;
+		
+		private EntityRef<Groep> _Groep;
+		
+		private EntityRef<Persoon> _Persoon;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnGroepIDChanging(int value);
+    partial void OnGroepIDChanged();
+    partial void OnPersoonIDChanging(int value);
+    partial void OnPersoonIDChanged();
+    #endregion
+		
+		public GelieerdePersoon()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Storage="_GroepID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[DataMember(Order=1)]
+		public int GroepID
+		{
+			get
+			{
+				return this._GroepID;
+			}
+			set
+			{
+				if ((this._GroepID != value))
+				{
+					if (this._Groep.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnGroepIDChanging(value);
+					this.SendPropertyChanging();
+					this._GroepID = value;
+					this.SendPropertyChanged("GroepID");
+					this.OnGroepIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PersoonID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[DataMember(Order=2)]
+		public int PersoonID
+		{
+			get
+			{
+				return this._PersoonID;
+			}
+			set
+			{
+				if ((this._PersoonID != value))
+				{
+					if (this._Persoon.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPersoonIDChanging(value);
+					this.SendPropertyChanging();
+					this._PersoonID = value;
+					this.SendPropertyChanged("PersoonID");
+					this.OnPersoonIDChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Groep_GelieerdePersoon", Storage="_Groep", ThisKey="GroepID", OtherKey="GroepID", IsForeignKey=true)]
+		public Groep Groep
+		{
+			get
+			{
+				return this._Groep.Entity;
+			}
+			set
+			{
+				Groep previousValue = this._Groep.Entity;
+				if (((previousValue != value) 
+							|| (this._Groep.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Groep.Entity = null;
+						previousValue.GelieerdePersoons.Remove(this);
+					}
+					this._Groep.Entity = value;
+					if ((value != null))
+					{
+						value.GelieerdePersoons.Add(this);
+						this._GroepID = value.GroepID;
+					}
+					else
+					{
+						this._GroepID = default(int);
+					}
+					this.SendPropertyChanged("Groep");
+				}
+			}
+		}
+		
+		[Association(Name="Persoon_GelieerdePersoon", Storage="_Persoon", ThisKey="PersoonID", OtherKey="PersoonID", IsForeignKey=true)]
+		public Persoon Persoon
+		{
+			get
+			{
+				return this._Persoon.Entity;
+			}
+			set
+			{
+				Persoon previousValue = this._Persoon.Entity;
+				if (((previousValue != value) 
+							|| (this._Persoon.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Persoon.Entity = null;
+						previousValue.GelieerdePersoons.Remove(this);
+					}
+					this._Persoon.Entity = value;
+					if ((value != null))
+					{
+						value.GelieerdePersoons.Add(this);
+						this._PersoonID = value.PersoonID;
+					}
+					else
+					{
+						this._PersoonID = default(int);
+					}
+					this.SendPropertyChanged("Persoon");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._Groep = default(EntityRef<Groep>);
+			this._Persoon = default(EntityRef<Persoon>);
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+	}
+	
+	[Table(Name="pers.vPersoonsInfo")]
+	[DataContract()]
+	public partial class vPersoonsInfo
+	{
+		
+		private int _PersoonID;
+		
+		private string _VoorNaam;
+		
+		private string _Naam;
+		
+		private string _Categorieen;
+		
+		private string _StraatNaam;
+		
+		private System.Nullable<int> _HuisNr;
+		
+		private int _PostNr;
+		
+		private string _SubGemeente;
+		
+		private System.Nullable<System.DateTime> _GeboorteDatum;
+		
+		public vPersoonsInfo()
+		{
+		}
+		
+		[Column(Storage="_PersoonID", DbType="Int NOT NULL")]
+		[DataMember(Order=1)]
+		public int PersoonID
+		{
+			get
+			{
+				return this._PersoonID;
+			}
+			set
+			{
+				if ((this._PersoonID != value))
+				{
+					this._PersoonID = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_VoorNaam", DbType="VarChar(60)")]
+		[DataMember(Order=2)]
+		public string VoorNaam
+		{
+			get
+			{
+				return this._VoorNaam;
+			}
+			set
+			{
+				if ((this._VoorNaam != value))
+				{
+					this._VoorNaam = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_Naam", DbType="VarChar(160) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=3)]
+		public string Naam
+		{
+			get
+			{
+				return this._Naam;
+			}
+			set
+			{
+				if ((this._Naam != value))
+				{
+					this._Naam = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_Categorieen", DbType="VarChar(MAX)")]
+		[DataMember(Order=4)]
+		public string Categorieen
+		{
+			get
+			{
+				return this._Categorieen;
+			}
+			set
+			{
+				if ((this._Categorieen != value))
+				{
+					this._Categorieen = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_StraatNaam", DbType="VarChar(80) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=5)]
+		public string StraatNaam
+		{
+			get
+			{
+				return this._StraatNaam;
+			}
+			set
+			{
+				if ((this._StraatNaam != value))
+				{
+					this._StraatNaam = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_HuisNr", DbType="Int")]
+		[DataMember(Order=6)]
+		public System.Nullable<int> HuisNr
+		{
+			get
+			{
+				return this._HuisNr;
+			}
+			set
+			{
+				if ((this._HuisNr != value))
+				{
+					this._HuisNr = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_PostNr", DbType="Int NOT NULL")]
+		[DataMember(Order=7)]
+		public int PostNr
+		{
+			get
+			{
+				return this._PostNr;
+			}
+			set
+			{
+				if ((this._PostNr != value))
+				{
+					this._PostNr = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_SubGemeente", DbType="VarChar(80) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=8)]
+		public string SubGemeente
+		{
+			get
+			{
+				return this._SubGemeente;
+			}
+			set
+			{
+				if ((this._SubGemeente != value))
+				{
+					this._SubGemeente = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_GeboorteDatum", DbType="SmallDateTime")]
+		[DataMember(Order=9)]
+		public System.Nullable<System.DateTime> GeboorteDatum
+		{
+			get
+			{
+				return this._GeboorteDatum;
+			}
+			set
+			{
+				if ((this._GeboorteDatum != value))
+				{
+					this._GeboorteDatum = value;
+				}
+			}
 		}
 	}
 }

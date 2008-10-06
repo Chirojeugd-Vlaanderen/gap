@@ -50,6 +50,27 @@ namespace CgDal
         }
 
         /// <summary>
+        /// Ophalen persoonsinfo van alle personen uit een groep
+        /// </summary>
+        /// <param name="GroepID">ID van de gevraagde groep</param>
+        /// <returns>Een lijst met objecten van het type 'vPersoonsInfo'</returns>
+        public IList<vPersoonsInfo> GelieerdePersonenInfoGet(int GroepID)
+        {
+            using (ChiroGroepClassesDataContext context = new ChiroGroepClassesDataContext())
+            {
+                context.ObjectTrackingEnabled = false;
+
+                var lijst = from pi in context.vPersoonsInfos
+                            from gp in context.GelieerdePersoons
+                            where pi.PersoonID == gp.PersoonID && gp.GroepID == GroepID
+                            select pi;
+
+                return lijst.ToList<vPersoonsInfo>();
+            }
+        }
+
+
+        /// <summary>
         /// Persisteert eventuele wijzigingen in het persoonsobject in de database.
         /// Ook wijzigingen in eventuele 'persoonsadressen' worden meegenomen.
         /// </summary>

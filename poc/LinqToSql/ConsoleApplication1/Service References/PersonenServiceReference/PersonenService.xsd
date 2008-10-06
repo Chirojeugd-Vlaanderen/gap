@@ -41,10 +41,24 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="GelieerdePersonenInfoGet">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GroepID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GelieerdePersonenInfoGetResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/CgDal" minOccurs="0" name="GelieerdePersonenInfoGetResult" nillable="true" type="q3:ArrayOfvPersoonsInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="PersoonUpdaten">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/CgDal" minOccurs="0" name="persoon" nillable="true" type="q3:Persoon" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/CgDal" minOccurs="0" name="persoon" nillable="true" type="q4:Persoon" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
