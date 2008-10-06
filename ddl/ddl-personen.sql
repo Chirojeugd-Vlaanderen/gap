@@ -197,9 +197,10 @@ GO
 CREATE TABLE pers.CommunicatieVorm ( 
 	Nota varchar(320) NULL,    --  'in het weekend', 'onder de werkuren', ... Interessant voor bijv. telefoonnummers. 
 	Nummer varchar(160) NULL,    --  'nummer' is een misleidende naam, want het kan even goed gaan over een e-mailadres e.d. 
-	communicatieVormID int NOT NULL,
-	communicatieTypeID int NULL,
-	persoonID int NULL
+	CommunicatieVormID int NOT NULL,
+	CommunicatieTypeID int NULL,
+	Voorkeur bit not NULL default 0,
+	PersoonID int NULL
 )
 GO
 
@@ -212,7 +213,7 @@ CREATE TABLE pers.CommunicatieType (
 GO
 
 CREATE TABLE pers.PersoonsCategorie ( 
-	persoonID int NULL,
+	persoonID int NULL,	
 	categorieID int NULL
 )
 GO
@@ -220,7 +221,7 @@ GO
 CREATE TABLE core.Categorie ( 
 	Naam varchar(80) NULL,
 	Code varchar(10) NULL,
-	categorieID int NOT NULL
+	categorieID int IDENTITY(1,1) NOT NULL
 )
 GO
 
@@ -476,3 +477,4 @@ GO
 ALTER TABLE	pers.PersoonsAdres ADD
 	Versie timestamp NOT NULL
 GO
+
