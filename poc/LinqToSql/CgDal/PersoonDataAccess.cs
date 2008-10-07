@@ -53,8 +53,10 @@ namespace CgDal
         /// Ophalen persoonsinfo van alle personen uit een groep
         /// </summary>
         /// <param name="GroepID">ID van de gevraagde groep</param>
+        /// <param name="Page">Paginanummer, te beginnen van 0</param>
+        /// <param name="PageSize">Aantal records per pagina</param>
         /// <returns>Een lijst met objecten van het type 'vPersoonsInfo'</returns>
-        public IList<vPersoonsInfo> GelieerdePersonenInfoGet(int GroepID)
+        public IList<vPersoonsInfo> GelieerdePersonenInfoGet(int GroepID, int Page, int PageSize)
         {
             using (ChiroGroepClassesDataContext context = new ChiroGroepClassesDataContext())
             {
@@ -65,7 +67,7 @@ namespace CgDal
                             where pi.PersoonID == gp.PersoonID && gp.GroepID == GroepID
                             select pi;
 
-                return lijst.ToList<vPersoonsInfo>();
+                return lijst.ToList<vPersoonsInfo>().GetRange(Page * PageSize, PageSize);
             }
         }
 

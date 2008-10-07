@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.75" name="ChiroGroepClasses">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.375, 10.375" name="ChiroGroepClasses">
   <DataContextMoniker Name="/ChiroGroepClassesDataContext" />
   <nestedChildShapes>
     <classShape Id="74b08ff5-be88-4bc9-a455-3dc6eb460ff4" absoluteBounds="6.5, 2.5, 2, 2.4109318033854166">
@@ -26,14 +26,14 @@
         <elementListCompartment Id="0eceac8e-1e16-4e20-82c2-549cdbfcfa72" absoluteBounds="0.64000000000000012, 3.335, 1.9700000000000002, 1.19354248046875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(6.5 : 3.73848964192708); (4.0312525 : 3.73848964192708); (4.0312525 : 2.50354248046875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(6.5 : 3.73848964192708); (4.0312525 : 3.73848964192708); (4.0312525 : 2.50354248046875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ChiroGroepClassesDataContext/Persoon/Persoon_PersoonsAdres" />
       <nodes>
         <classShapeMoniker Id="74b08ff5-be88-4bc9-a455-3dc6eb460ff4" />
         <classShapeMoniker Id="d2e3aa7d-44e3-4070-bd79-b4f251136a98" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(7.75 : 1.12588562011719); (5 : 1.12588562011719)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(7.75 : 1.12588562011719); (5 : 1.12588562011719)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ChiroGroepClassesDataContext/AdresType/AdresType_PersoonsAdres" />
       <nodes>
         <classShapeMoniker Id="b05a2797-a5fd-49c3-a742-bed2691ad0f8" />
@@ -59,24 +59,24 @@
         <elementListCompartment Id="691d0499-9f20-456c-8c7d-497ae90a8ba9" absoluteBounds="5.015, 6.46, 1.9700000000000002, 0.53615315755208326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(3 : 6.54807657877604); (5 : 6.54807657877604)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(3 : 6.54807657877604); (5 : 6.54807657877604)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ChiroGroepClassesDataContext/Groep/Groep_GelieerdePersoon" />
       <nodes>
         <classShapeMoniker Id="e72d5562-3742-4737-af42-821a4a81a532" />
         <classShapeMoniker Id="992f5511-0e62-4ea7-9cc2-73b6b6d6ca39" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(6.75 : 4.91093180338542); (6.75 : 6)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(6.75 : 4.91093180338542); (6.75 : 6)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ChiroGroepClassesDataContext/Persoon/Persoon_GelieerdePersoon" />
       <nodes>
         <classShapeMoniker Id="74b08ff5-be88-4bc9-a455-3dc6eb460ff4" />
         <classShapeMoniker Id="992f5511-0e62-4ea7-9cc2-73b6b6d6ca39" />
       </nodes>
     </associationConnector>
-    <classShape Id="fce6d3e9-52d1-425d-8b43-20ebfa191300" absoluteBounds="8.125, 6.25, 2, 2.24658447265625">
+    <classShape Id="f97f7e3f-fcbe-4a33-8b24-c4af5aa5c4d9" absoluteBounds="9.125, 7.25, 2, 2.9039737955729166">
       <DataClassMoniker Name="/ChiroGroepClassesDataContext/vPersoonsInfo" />
       <nestedChildShapes>
-        <elementListCompartment Id="48fd88db-0b8c-4d6a-884e-71c67fddbaae" absoluteBounds="8.14, 6.7100000000000009, 1.9700000000000002, 1.68658447265625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="2b98ea36-2f0e-416f-bed9-c1d82c15377b" absoluteBounds="9.14, 7.71, 1.9700000000000002, 2.3439737955729165" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

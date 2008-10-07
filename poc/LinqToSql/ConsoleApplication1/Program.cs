@@ -87,12 +87,12 @@ namespace ConsoleApplication1
         {
             PersonenServiceReference.PersonenServiceClient service = new ConsoleApplication1.PersonenServiceReference.PersonenServiceClient();
 
-            var lijst = service.GelieerdePersonenInfoGet(310);
+            var lijst = service.GelieerdePersonenInfoGet(310,1,50); // eerste pagina, paginagrootte = 50
 
             foreach (vPersoonsInfo i in lijst)
             {
                 Console.WriteLine(i.VoorNaam + ' ' + i.Naam + ';' + i.Categorieen + ';' + i.StraatNaam + ' ' + i.HuisNr
-                    + ';' + i.PostNr + ' ' + i.SubGemeente);
+                    + ';' + i.PostNr + ' ' + i.SubGemeente + ';' + i.TelefoonNummer + ';' + i.EMail);
             }
             Console.ReadLine();
         }

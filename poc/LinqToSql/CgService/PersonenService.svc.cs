@@ -32,9 +32,9 @@ namespace PersonenService
             return DataAccess.PersoonMetAdressenGet(persoonID);
         }
 
-        public IList<vPersoonsInfo> GelieerdePersonenInfoGet(int GroepID)
+        public IList<vPersoonsInfo> GelieerdePersonenInfoGet(int GroepID, int Page, int PageSize)
         {
-            return DataAccess.GelieerdePersonenInfoGet(GroepID);
+            return DataAccess.GelieerdePersonenInfoGet(GroepID, Page, PageSize);
         }
 
         public void PersoonUpdaten(Persoon persoon)

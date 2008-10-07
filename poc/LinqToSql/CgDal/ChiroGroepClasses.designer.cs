@@ -1706,6 +1706,14 @@ namespace CgDal
 		
 		private System.Nullable<System.DateTime> _GeboorteDatum;
 		
+		private System.Nullable<System.DateTime> _EindeInstapPeriode;
+		
+		private System.Nullable<bool> _NonActief;
+		
+		private string _TelefoonNummer;
+		
+		private string _EMail;
+		
 		public vPersoonsInfo()
 		{
 		}
@@ -1859,6 +1867,74 @@ namespace CgDal
 				if ((this._GeboorteDatum != value))
 				{
 					this._GeboorteDatum = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_EindeInstapPeriode", DbType="DateTime")]
+		[DataMember(Order=10)]
+		public System.Nullable<System.DateTime> EindeInstapPeriode
+		{
+			get
+			{
+				return this._EindeInstapPeriode;
+			}
+			set
+			{
+				if ((this._EindeInstapPeriode != value))
+				{
+					this._EindeInstapPeriode = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_NonActief", DbType="Bit")]
+		[DataMember(Order=11)]
+		public System.Nullable<bool> NonActief
+		{
+			get
+			{
+				return this._NonActief;
+			}
+			set
+			{
+				if ((this._NonActief != value))
+				{
+					this._NonActief = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_TelefoonNummer", DbType="VarChar(160)")]
+		[DataMember(Order=12)]
+		public string TelefoonNummer
+		{
+			get
+			{
+				return this._TelefoonNummer;
+			}
+			set
+			{
+				if ((this._TelefoonNummer != value))
+				{
+					this._TelefoonNummer = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_EMail", DbType="VarChar(160)")]
+		[DataMember(Order=13)]
+		public string EMail
+		{
+			get
+			{
+				return this._EMail;
+			}
+			set
+			{
+				if ((this._EMail != value))
+				{
+					this._EMail = value;
 				}
 			}
 		}

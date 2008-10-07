@@ -41,9 +41,11 @@ namespace PersonenService
         /// een groep.
         /// </summary>
         /// <param name="GroepID">ID van de betreffende groep</param>
+        /// <param name="Page">paginanummer, 0-based</param>
+        /// <param name="PageSize">aantal records per pagina</param>
         /// <returns>Een lijst met objecten van het type vPersoonsInfo</returns>
         [OperationContract]
-        IList<vPersoonsInfo> GelieerdePersonenInfoGet(int GroepID);
+        IList<vPersoonsInfo> GelieerdePersonenInfoGet(int GroepID, int Page, int PageSize);
 
         /// <summary>
         /// Persisteert de wijzigingen van het persoonsobject in de database.

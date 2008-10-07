@@ -45,6 +45,8 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="GroepID" type="xs:int" />
+        <xs:element minOccurs="0" name="Page" type="xs:int" />
+        <xs:element minOccurs="0" name="PageSize" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

@@ -101,6 +101,10 @@
       <xs:element minOccurs="0" name="PostNr" type="xs:int" />
       <xs:element minOccurs="0" name="SubGemeente" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="GeboorteDatum" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="EindeInstapPeriode" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="NonActief" nillable="true" type="xs:boolean" />
+      <xs:element minOccurs="0" name="TelefoonNummer" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EMail" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="vPersoonsInfo" nillable="true" type="tns:vPersoonsInfo" />
