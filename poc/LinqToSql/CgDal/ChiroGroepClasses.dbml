@@ -69,6 +69,7 @@
   </Table>
   <Table Name="pers.vPersoonsInfo" Member="vPersoonsInfos">
     <Type Name="vPersoonsInfo">
+      <Column Name="GroepID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="PersoonID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="VoorNaam" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
       <Column Name="Naam" Type="System.String" DbType="VarChar(160) NOT NULL" CanBeNull="false" />

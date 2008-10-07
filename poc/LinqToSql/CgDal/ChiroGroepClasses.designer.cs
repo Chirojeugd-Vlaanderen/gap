@@ -1688,6 +1688,8 @@ namespace CgDal
 	public partial class vPersoonsInfo
 	{
 		
+		private int _GroepID;
+		
 		private int _PersoonID;
 		
 		private string _VoorNaam;
@@ -1718,8 +1720,25 @@ namespace CgDal
 		{
 		}
 		
-		[Column(Storage="_PersoonID", DbType="Int NOT NULL")]
+		[Column(Storage="_GroepID", DbType="Int NOT NULL")]
 		[DataMember(Order=1)]
+		public int GroepID
+		{
+			get
+			{
+				return this._GroepID;
+			}
+			set
+			{
+				if ((this._GroepID != value))
+				{
+					this._GroepID = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_PersoonID", DbType="Int NOT NULL")]
+		[DataMember(Order=2)]
 		public int PersoonID
 		{
 			get
@@ -1736,7 +1755,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_VoorNaam", DbType="VarChar(60)")]
-		[DataMember(Order=2)]
+		[DataMember(Order=3)]
 		public string VoorNaam
 		{
 			get
@@ -1753,7 +1772,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_Naam", DbType="VarChar(160) NOT NULL", CanBeNull=false)]
-		[DataMember(Order=3)]
+		[DataMember(Order=4)]
 		public string Naam
 		{
 			get
@@ -1770,7 +1789,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_Categorieen", DbType="VarChar(MAX)")]
-		[DataMember(Order=4)]
+		[DataMember(Order=5)]
 		public string Categorieen
 		{
 			get
@@ -1787,7 +1806,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_StraatNaam", DbType="VarChar(80) NOT NULL", CanBeNull=false)]
-		[DataMember(Order=5)]
+		[DataMember(Order=6)]
 		public string StraatNaam
 		{
 			get
@@ -1804,7 +1823,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_HuisNr", DbType="Int")]
-		[DataMember(Order=6)]
+		[DataMember(Order=7)]
 		public System.Nullable<int> HuisNr
 		{
 			get
@@ -1821,7 +1840,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_PostNr", DbType="Int NOT NULL")]
-		[DataMember(Order=7)]
+		[DataMember(Order=8)]
 		public int PostNr
 		{
 			get
@@ -1838,7 +1857,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_SubGemeente", DbType="VarChar(80) NOT NULL", CanBeNull=false)]
-		[DataMember(Order=8)]
+		[DataMember(Order=9)]
 		public string SubGemeente
 		{
 			get
@@ -1855,7 +1874,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_GeboorteDatum", DbType="SmallDateTime")]
-		[DataMember(Order=9)]
+		[DataMember(Order=10)]
 		public System.Nullable<System.DateTime> GeboorteDatum
 		{
 			get
@@ -1872,7 +1891,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_EindeInstapPeriode", DbType="DateTime")]
-		[DataMember(Order=10)]
+		[DataMember(Order=11)]
 		public System.Nullable<System.DateTime> EindeInstapPeriode
 		{
 			get
@@ -1889,7 +1908,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_NonActief", DbType="Bit")]
-		[DataMember(Order=11)]
+		[DataMember(Order=12)]
 		public System.Nullable<bool> NonActief
 		{
 			get
@@ -1906,7 +1925,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_TelefoonNummer", DbType="VarChar(160)")]
-		[DataMember(Order=12)]
+		[DataMember(Order=13)]
 		public string TelefoonNummer
 		{
 			get
@@ -1923,7 +1942,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_EMail", DbType="VarChar(160)")]
-		[DataMember(Order=13)]
+		[DataMember(Order=14)]
 		public string EMail
 		{
 			get

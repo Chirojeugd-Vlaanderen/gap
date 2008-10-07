@@ -63,8 +63,7 @@ namespace CgDal
                 context.ObjectTrackingEnabled = false;
 
                 var lijst = from pi in context.vPersoonsInfos
-                            from gp in context.GelieerdePersoons
-                            where pi.PersoonID == gp.PersoonID && gp.GroepID == GroepID
+                            where pi.GroepID == GroepID
                             select pi;
 
                 return lijst.ToList<vPersoonsInfo>().GetRange(Page * PageSize, PageSize);

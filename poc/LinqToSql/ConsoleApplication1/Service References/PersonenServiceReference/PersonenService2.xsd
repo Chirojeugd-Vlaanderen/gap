@@ -92,6 +92,7 @@
   <xs:element name="ArrayOfvPersoonsInfo" nillable="true" type="tns:ArrayOfvPersoonsInfo" />
   <xs:complexType name="vPersoonsInfo">
     <xs:sequence>
+      <xs:element minOccurs="0" name="GroepID" type="xs:int" />
       <xs:element minOccurs="0" name="PersoonID" type="xs:int" />
       <xs:element minOccurs="0" name="VoorNaam" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Naam" nillable="true" type="xs:string" />

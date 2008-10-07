@@ -8,6 +8,11 @@ namespace ConsoleApplication1
 {
     class Program
     {
+        /// <summary>
+        /// PersonenExperiment; doet een en ander met personen.
+        /// (Wordt niet gebruikt in de huidige applicatie, maar staat
+        /// er nog voor als het nog eens nodig is.)
+        /// </summary>
         static void PersonenExperiment()
         {
             bool einde = false;
@@ -83,6 +88,9 @@ namespace ConsoleApplication1
             while (!einde);
         }
 
+        /// <summary>
+        /// LijstExperiment - haalt lijst over, en drukt af
+        /// </summary>
         static void LijstExperiment()
         {
             PersonenServiceReference.PersonenServiceClient service = new ConsoleApplication1.PersonenServiceReference.PersonenServiceClient();
