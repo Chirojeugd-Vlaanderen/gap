@@ -221,7 +221,8 @@ GO
 CREATE TABLE core.Categorie ( 
 	Naam varchar(80) NULL,
 	Code varchar(10) NULL,
-	categorieID int IDENTITY(1,1) NOT NULL
+	CategorieID int IDENTITY(1,1) NOT NULL,
+	GroepID int NOT NULL
 )
 GO
 
@@ -366,11 +367,11 @@ REFERENCES [adr].[Straat] ([StraatID])
 GO
 ALTER TABLE [adr].[Adres]  WITH CHECK ADD  CONSTRAINT [FK_Adres_Subgemeente] FOREIGN KEY([SubgemeenteID])
 REFERENCES [adr].[Subgemeente] ([SubgemeenteID])
+GO
 
-
-
-
-
+ALTER TABLE core.Categorie ADD CONSTRAINT FK_Categorie_Groep
+	FOREIGN KEY(GroepID) REFERENCES grp.Groep(GroepID)
+GO
 
 
 
