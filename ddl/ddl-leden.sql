@@ -1,8 +1,8 @@
 USE ChiroGroep
 go
 
-CREATE SCHEMA lid
-go
+--CREATE SCHEMA lid
+--go
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id('FK_Lid_GroepsWerkjaar') AND OBJECTPROPERTY(id, 'IsForeignKey') = 1)
 ALTER TABLE lid.Lid DROP CONSTRAINT FK_Lid_GroepsWerkjaar
@@ -26,20 +26,20 @@ go
 
 CREATE TABLE lid.Lid ( 
 	EindeInstapPeriode datetime,
-	LidgeldBetaald bit,
-	NonActief bit,
-	Verwijderd bit,
-	VolgendWerkjaar integer,
+	LidgeldBetaald bit NOT NULL DEFAULT 0,
+	NonActief bit NOT NULL DEFAULT 0,
+	Verwijderd bit NOT NULL DEFAULT 0,
+	VolgendWerkjaar integer NOT NULL DEFAULT 0,
 	lidID Integer NOT NULL,
-	groepsWerkjaarID Integer,
-	persoonID Integer
+	GroepsWerkjaarID Integer NOT NULL,
+	PersoonID Integer NOT NULL
 )
 go
 
 CREATE TABLE grp.GroepsWerkJaar ( 
-	WerkJaar int,
-	groepsWerkjaarID Integer NOT NULL,
-	groepID Integer
+	WerkJaar int NOT NULL,
+	GroepsWerkjaarID Integer NOT NULL,
+	GroepID Integer IDENTITY (1,1) NOT NULL
 )
 go
 
@@ -63,3 +63,4 @@ go
 ALTER TABLE grp.GroepsWerkJaar ADD CONSTRAINT FK_GroepsWerkjaar_Groep 
 	FOREIGN KEY (groepID) REFERENCES grp.Groep (groepID)
 go
+

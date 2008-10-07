@@ -197,9 +197,10 @@ GO
 CREATE TABLE pers.CommunicatieVorm ( 
 	Nota varchar(320) NULL,    --  'in het weekend', 'onder de werkuren', ... Interessant voor bijv. telefoonnummers. 
 	Nummer varchar(160) NULL,    --  'nummer' is een misleidende naam, want het kan even goed gaan over een e-mailadres e.d. 
-	CommunicatieVormID int NOT NULL,
+	CommunicatieVormID int IDENTITY(1,1) NOT NULL,
 	CommunicatieTypeID int NULL,
 	Voorkeur bit not NULL default 0,
+	IsGezinsGebonden bit NOT NULL,    --  geeft aan of nummers/... van dit communicatietype gekopieerd moeten worden naar adresgenoten. 
 	PersoonID int NULL
 )
 GO
@@ -207,7 +208,6 @@ GO
 CREATE TABLE pers.CommunicatieType ( 
 	Omschrijving varchar(80) NULL,
 	Validatie varchar(160) NULL,    --  Reguliere expressie die aangeeft hoe een geldig nummer/adres/... er uitziet 
-	IsGezinsGebonden bit NULL,    --  geeft aan of nummers/... van dit communicatietype gekopieerd moeten worden naar adresgenoten. 
 	communicatieTypeID int NOT NULL
 )
 GO
