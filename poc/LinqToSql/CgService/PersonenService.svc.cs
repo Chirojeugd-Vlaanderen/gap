@@ -37,9 +37,9 @@ namespace PersonenService
             return DataAccess.GelieerdePersonenInfoGet(GroepID, Page, PageSize);
         }
 
-        public void PersoonUpdaten(Persoon persoon)
+        public void PersoonUpdaten(ref Persoon persoon)
         {
-            DataAccess.PersoonUpdaten(persoon);
+            DataAccess.PersoonUpdaten(ref persoon);
         }
     }
 }

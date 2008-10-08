@@ -8,34 +8,102 @@ namespace ConsoleApplication1
 {
     class Program
     {
+        static readonly int testPersoon = 1894;
+        static readonly int testGroep = 301;
+
+        static readonly PersonenServiceReference.PersonenServiceClient service
+            = new ConsoleApplication1.PersonenServiceReference.PersonenServiceClient();
+
         /// <summary>
-        /// PersonenExperiment; doet een en ander met personen.
+        /// Toont naam, voornaam en adresID's van een persoon op de stdout
+        /// </summary>
+        /// <param name="p">Persoon waarvan gegevens gevraagd</param>
+        static void PersoonTonen(Persoon p)
+        {
+            Console.WriteLine(String.Format("{2} - {0} {1}", p.VoorNaam, p.Naam, p.PersoonID));
+            foreach (PersoonsAdres pa in p.PersoonsAdres)
+            {
+                Console.WriteLine(String.Format("Adres: {0}", pa.AdresID));
+                //Console.WriteLine(String.Format("\tHuisNr: {0}"
+                //    , pa.Adres.HuisNr));
+            }
+        }
+
+        /// <summary>
+        /// Test: wijzigen van de voornaam van een persoon.
+        /// </summary>
+        static void PersoonWijzigenExperiment()
+        {
+            Persoon p = service.PersoonGet(testPersoon);
+            string nieuweVoornaam;
+
+            PersoonTonen(p);
+
+            Console.Write("Nieuwe voornaam: ");
+            nieuweVoornaam = Console.ReadLine();
+
+            p.VoorNaam = nieuweVoornaam;
+            p.Status = EntityStatus.Gewijzigd;
+            service.PersoonUpdaten(ref p);
+
+            Persoon q = service.PersoonGet(testPersoon);
+
+            PersoonTonen(q);
+
+        }
+
+        /// <summary>
+        /// Test: toevoegen van een nieuwe persoon, en opnieuw verwijderen
+        /// </summary>
+        static void PersoonToevoegenVerwijderenExperiment()
+        {
+            Persoon p = new Persoon();
+            
+            p.Naam = "Bosmans";
+            p.VoorNaam = "Jos";
+            p.Status = EntityStatus.Nieuw;
+            service.PersoonUpdaten(ref p);
+
+            PersoonTonen(p);
+
+            Persoon q = service.PersoonGet(p.PersoonID);
+            q.Status = EntityStatus.Verwijderd;
+            service.PersoonUpdaten(ref q);
+
+            Persoon r = service.PersoonGet(p.PersoonID);
+
+            if (r == null)
+            {
+                Console.WriteLine(String.Format(
+                    "Persoon met id {0} bestaat niet meer.", p.PersoonID));
+            }
+            else
+            {
+                PersoonTonen(r);
+            }
+        }
+          
+
+            
+
+        /// <summary>
+        /// Doet een en ander met personen.
         /// (Wordt niet gebruikt in de huidige applicatie, maar staat
         /// er nog voor als het nog eens nodig is.)
         /// </summary>
-        static void PersonenExperiment()
+        static void AdressenExperiment()
         {
             bool einde = false;
             int keuze, adres;
             string voornaam;
             PersoonsAdres persoonsAdres;
 
-            PersonenServiceReference.PersonenServiceClient service = new ConsoleApplication1.PersonenServiceReference.PersonenServiceClient();
-
             do
             {
-                Persoon persoon = service.PersoonMetAdressenGet(1894);
-                Console.WriteLine(String.Format("{0} {1}", persoon.VoorNaam, persoon.Naam));
+                Persoon persoon = service.PersoonMetAdressenGet(testPersoon);
+                PersoonTonen(persoon);
 
-                foreach (PersoonsAdres persoonsadres in persoon.PersoonsAdres)
-                {
-                    Console.WriteLine(String.Format("Adres: {0}", persoonsadres.AdresID));
-
-                    // Als ik nu persoonsadres.Adres.HuisNr wil accessen, krijg ik toch
-                    // een null pointer dereference exception, wat ik niet goed begrijp.
-                    
-                }
-                Console.WriteLine("(1) Adres toekennen, (2) Toegekenning verwijderen, (3) Voornaam Wijzigen, (0) einde: ");
+                Console.WriteLine("(1) Adres toekennen, (2) Toegekenning verwijderen, (0) einde: ");
                 keuze = int.Parse(Console.ReadLine());
 
                 if (keuze != 0)
@@ -67,18 +135,13 @@ namespace ConsoleApplication1
                                 a => a.AdresID == adres);
                             persoonsAdres.Status = EntityStatus.Verwijderd;
                             break;
-                        case 3:
-                            Console.WriteLine("Nieuwe Voornaam: ");
-                            voornaam = Console.ReadLine();
-                            persoon.VoorNaam = voornaam;
-                            break;
                         default:
                             Console.WriteLine("Huh?");
                             break;
                     }
 
                     persoon.Status = EntityStatus.Gewijzigd;
-                    service.PersoonUpdaten(persoon);
+                    service.PersoonUpdaten(ref persoon);
                 }
                 else
                 {
@@ -107,7 +170,12 @@ namespace ConsoleApplication1
 
         static void Main(string[] Arguments)
         {
-            LijstExperiment();
+            // PersoonWijzigenExperiment();
+            // PersoonToevoegenVerwijderenExperiment();
+
+            AdressenExperiment();
+
+            Console.ReadLine();
         }
     }
 }

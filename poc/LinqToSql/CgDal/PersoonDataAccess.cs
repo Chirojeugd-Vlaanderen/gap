@@ -76,7 +76,7 @@ namespace CgDal
         /// Ook wijzigingen in eventuele 'persoonsadressen' worden meegenomen.
         /// </summary>
         /// <param name="persoon">de persoon in kwestie</param>
-        public void PersoonUpdaten(Persoon persoon)
+        public void PersoonUpdaten(ref Persoon persoon)
         {
             Debug.Assert(persoon != null);
 
