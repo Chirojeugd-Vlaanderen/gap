@@ -42,10 +42,15 @@ namespace CgDal
                 options.LoadWith<Persoon>(p => p.PersoonsAdres);
                 options.LoadWith<PersoonsAdres>(a => a.Adres);
 
+                context.DeferredLoadingEnabled = false;
                 context.LoadOptions = options;
                 context.ObjectTrackingEnabled = false;
 
-                return context.Persoons.SingleOrDefault<Persoon>(p => p.PersoonID == persoonID);
+                var res = context.Persoons.SingleOrDefault<Persoon>(p => p.PersoonID == persoonID);
+
+                Debug.WriteLine(res.PersoonsAdres[0].Adres.HuisNr);
+
+                return res;
             }
         }
 
@@ -76,7 +81,8 @@ namespace CgDal
         /// Ook wijzigingen in eventuele 'persoonsadressen' worden meegenomen.
         /// </summary>
         /// <param name="persoon">de persoon in kwestie</param>
-        public void PersoonUpdaten(ref Persoon persoon)
+        /// <returns>ID van de geupdatete persoon (vooral interessant bij insert)</returns>
+        public int PersoonUpdaten(Persoon persoon)
         {
             Debug.Assert(persoon != null);
 
@@ -124,6 +130,7 @@ namespace CgDal
                 }
                 context.SubmitChanges();
             }
+            return persoon.PersoonID;
         }
     }
 }

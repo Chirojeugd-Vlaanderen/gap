@@ -28,7 +28,7 @@ namespace ConsoleApplication1.PersonenServiceReference {
         CgDal.vPersoonsInfo[] GelieerdePersonenInfoGet(int GroepID, int Page, int PageSize);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/PersoonUpdaten", ReplyAction="http://tempuri.org/IPersonenService/PersoonUpdatenResponse")]
-        void PersoonUpdaten(ref CgDal.Persoon persoon);
+        int PersoonUpdaten(CgDal.Persoon persoon);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -74,8 +74,8 @@ namespace ConsoleApplication1.PersonenServiceReference {
             return base.Channel.GelieerdePersonenInfoGet(GroepID, Page, PageSize);
         }
         
-        public void PersoonUpdaten(ref CgDal.Persoon persoon) {
-            base.Channel.PersoonUpdaten(ref persoon);
+        public int PersoonUpdaten(CgDal.Persoon persoon) {
+            return base.Channel.PersoonUpdaten(persoon);
         }
     }
 }

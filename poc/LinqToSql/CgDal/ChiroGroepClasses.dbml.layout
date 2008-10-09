@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.375, 10.25" name="ChiroGroepClasses">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="ChiroGroepClasses">
   <DataContextMoniker Name="/ChiroGroepClassesDataContext" />
   <nestedChildShapes>
     <classShape Id="74b08ff5-be88-4bc9-a455-3dc6eb460ff4" absoluteBounds="6.5, 2.5, 2, 2.4109318033854166">
@@ -73,10 +73,10 @@
         <classShapeMoniker Id="992f5511-0e62-4ea7-9cc2-73b6b6d6ca39" />
       </nodes>
     </associationConnector>
-    <classShape Id="01384038-3a07-4db7-bf94-32dc91c5bde8" absoluteBounds="9.125, 6.875, 2, 3.0683211263020831">
+    <classShape Id="01384038-3a07-4db7-bf94-32dc91c5bde8" absoluteBounds="8.625, 5.125, 2, 3.0683211263020831">
       <DataClassMoniker Name="/ChiroGroepClassesDataContext/vPersoonsInfo" />
       <nestedChildShapes>
-        <elementListCompartment Id="6efc18b0-9cdb-4c1a-ae96-d3d29dc88414" absoluteBounds="9.14, 7.335, 1.9700000000000002, 2.508321126302083" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="6efc18b0-9cdb-4c1a-ae96-d3d29dc88414" absoluteBounds="8.64, 5.585, 1.9700000000000002, 2.508321126302083" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

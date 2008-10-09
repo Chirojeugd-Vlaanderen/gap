@@ -51,12 +51,9 @@ namespace PersonenService
         /// Persisteert de wijzigingen van het persoonsobject in de database.
         /// </summary>
         /// <param name="persoon">te persisteren persoonsobjec</param>
-        /// <remarks>
-        /// Persoon is een ref parameter, want anders krijg ik het PersoonID
-        /// niet terug na een insert (?)
-        /// </remarks>
+        /// <returns>ID van de gewijzigde persoon</returns>
         [OperationContract]
-        void PersoonUpdaten(ref Persoon persoon);
+        int PersoonUpdaten(Persoon persoon);
 
     }
 

@@ -20,7 +20,8 @@ namespace ConsoleApplication1
         /// <param name="p">Persoon waarvan gegevens gevraagd</param>
         static void PersoonTonen(Persoon p)
         {
-            Console.WriteLine(String.Format("{2} - {0} {1}", p.VoorNaam, p.Naam, p.PersoonID));
+            Console.WriteLine(String.Format("{2} - {0} {1}", p.VoorNaam
+                , p.Naam, p.PersoonID));
             foreach (PersoonsAdres pa in p.PersoonsAdres)
             {
                 Console.WriteLine(String.Format("Adres: {0}", pa.AdresID));
@@ -44,7 +45,7 @@ namespace ConsoleApplication1
 
             p.VoorNaam = nieuweVoornaam;
             p.Status = EntityStatus.Gewijzigd;
-            service.PersoonUpdaten(ref p);
+            service.PersoonUpdaten(p);
 
             Persoon q = service.PersoonGet(testPersoon);
 
@@ -62,13 +63,13 @@ namespace ConsoleApplication1
             p.Naam = "Bosmans";
             p.VoorNaam = "Jos";
             p.Status = EntityStatus.Nieuw;
-            service.PersoonUpdaten(ref p);
+            p.PersoonID = service.PersoonUpdaten(p);
 
             PersoonTonen(p);
 
             Persoon q = service.PersoonGet(p.PersoonID);
             q.Status = EntityStatus.Verwijderd;
-            service.PersoonUpdaten(ref q);
+            service.PersoonUpdaten(q);
 
             Persoon r = service.PersoonGet(p.PersoonID);
 
@@ -95,7 +96,6 @@ namespace ConsoleApplication1
         {
             bool einde = false;
             int keuze, adres;
-            string voornaam;
             PersoonsAdres persoonsAdres;
 
             do
@@ -141,7 +141,7 @@ namespace ConsoleApplication1
                     }
 
                     persoon.Status = EntityStatus.Gewijzigd;
-                    service.PersoonUpdaten(ref persoon);
+                    service.PersoonUpdaten(persoon);
                 }
                 else
                 {
@@ -156,22 +156,22 @@ namespace ConsoleApplication1
         /// </summary>
         static void LijstExperiment()
         {
-            var lijst = service.GelieerdePersonenInfoGet(310,1,50); // eerste pagina, paginagrootte = 50
+            var lijst = service.GelieerdePersonenInfoGet(testGroep,1,50); // tweede pagina, paginagrootte = 50
 
             foreach (vPersoonsInfo i in lijst)
             {
-                Console.WriteLine(i.VoorNaam + ' ' + i.Naam + ';' + i.Categorieen + ';' + i.StraatNaam + ' ' + i.HuisNr
-                    + ';' + i.PostNr + ' ' + i.SubGemeente + ';' + i.TelefoonNummer + ';' + i.EMail);
+                Console.WriteLine(String.Format("{0} {1}; {2} {3}; {4} {5}; {6}; {7}; {8}"
+                    , i.VoorNaam, i.Naam, i.StraatNaam
+                    , i.HuisNr, i.PostNr, i.SubGemeente, i.TelefoonNummer
+                    , i.EMail, i.Categorieen));
             }
         }
 
         static void Main(string[] Arguments)
         {
             // PersoonWijzigenExperiment();
-            // PersoonToevoegenVerwijderenExperiment();
-
-            AdressenExperiment();
-
+            PersoonToevoegenVerwijderenExperiment();
+            // AdressenExperiment();
             // LijstExperiment();
 
             Console.ReadLine();
