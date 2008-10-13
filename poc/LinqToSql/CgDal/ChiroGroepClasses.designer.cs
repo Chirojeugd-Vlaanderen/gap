@@ -49,6 +49,9 @@ namespace CgDal
     partial void InsertGelieerdePersoon(GelieerdePersoon instance);
     partial void UpdateGelieerdePersoon(GelieerdePersoon instance);
     partial void DeleteGelieerdePersoon(GelieerdePersoon instance);
+    partial void InsertChiroGroep(ChiroGroep instance);
+    partial void UpdateChiroGroep(ChiroGroep instance);
+    partial void DeleteChiroGroep(ChiroGroep instance);
     #endregion
 		
 		public ChiroGroepClassesDataContext() : 
@@ -134,6 +137,14 @@ namespace CgDal
 			get
 			{
 				return this.GetTable<vPersoonsInfo>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ChiroGroep> ChiroGroeps
+		{
+			get
+			{
+				return this.GetTable<ChiroGroep>();
 			}
 		}
 	}
@@ -1270,6 +1281,8 @@ namespace CgDal
 		
 		private EntitySet<GelieerdePersoon> _GelieerdePersoons;
 		
+		private EntityRef<ChiroGroep> _ChiroGroep;
+		
 		private bool serializing;
 		
     #region Extensibility Method Definitions
@@ -1440,6 +1453,41 @@ namespace CgDal
 			}
 		}
 		
+		[Association(Name="Groep_ChiroGroep", Storage="_ChiroGroep", ThisKey="GroepID", OtherKey="chiroGroepID", IsUnique=true, IsForeignKey=false)]
+		[DataMember(Order=8, EmitDefaultValue=false)]
+		public ChiroGroep ChiroGroep
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._ChiroGroep.HasLoadedOrAssignedValue == false)))
+				{
+					return null;
+				}
+				return this._ChiroGroep.Entity;
+			}
+			set
+			{
+				ChiroGroep previousValue = this._ChiroGroep.Entity;
+				if (((previousValue != value) 
+							|| (this._ChiroGroep.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ChiroGroep.Entity = null;
+						previousValue.Groep = null;
+					}
+					this._ChiroGroep.Entity = value;
+					if ((value != null))
+					{
+						value.Groep = this;
+					}
+					this.SendPropertyChanged("ChiroGroep");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -1475,6 +1523,7 @@ namespace CgDal
 		private void Initialize()
 		{
 			this._GelieerdePersoons = new EntitySet<GelieerdePersoon>(new Action<GelieerdePersoon>(this.attach_GelieerdePersoons), new Action<GelieerdePersoon>(this.detach_GelieerdePersoons));
+			this._ChiroGroep = default(EntityRef<ChiroGroep>);
 			OnCreated();
 		}
 		
@@ -1956,6 +2005,123 @@ namespace CgDal
 					this._EMail = value;
 				}
 			}
+		}
+	}
+	
+	[Table(Name="grp.ChiroGroep")]
+	[DataContract()]
+	public partial class ChiroGroep : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _chiroGroepID;
+		
+		private EntityRef<Groep> _Groep;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnchiroGroepIDChanging(int value);
+    partial void OnchiroGroepIDChanged();
+    #endregion
+		
+		public ChiroGroep()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Storage="_chiroGroepID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[DataMember(Order=1)]
+		public int chiroGroepID
+		{
+			get
+			{
+				return this._chiroGroepID;
+			}
+			set
+			{
+				if ((this._chiroGroepID != value))
+				{
+					if (this._Groep.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnchiroGroepIDChanging(value);
+					this.SendPropertyChanging();
+					this._chiroGroepID = value;
+					this.SendPropertyChanged("chiroGroepID");
+					this.OnchiroGroepIDChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Groep_ChiroGroep", Storage="_Groep", ThisKey="chiroGroepID", OtherKey="GroepID", IsForeignKey=true)]
+		public Groep Groep
+		{
+			get
+			{
+				return this._Groep.Entity;
+			}
+			set
+			{
+				Groep previousValue = this._Groep.Entity;
+				if (((previousValue != value) 
+							|| (this._Groep.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Groep.Entity = null;
+						previousValue.ChiroGroep = null;
+					}
+					this._Groep.Entity = value;
+					if ((value != null))
+					{
+						value.ChiroGroep = this;
+						this._chiroGroepID = value.GroepID;
+					}
+					else
+					{
+						this._chiroGroepID = default(int);
+					}
+					this.SendPropertyChanged("Groep");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._Groep = default(EntityRef<Groep>);
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
 		}
 	}
 }

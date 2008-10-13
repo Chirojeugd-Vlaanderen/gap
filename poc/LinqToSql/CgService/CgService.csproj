@@ -8,7 +8,7 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PersonenService</RootNamespace>
+    <RootNamespace>CgService</RootNamespace>
     <AssemblyName>CgService</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -56,10 +56,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GroepenService.svc" />
     <Content Include="PersonenService.svc" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GroepenService.svc.cs">
+      <DependentUpon>GroepenService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="IGroepenService.cs" />
     <Compile Include="PersonenService.svc.cs">
       <DependentUpon>PersonenService.svc</DependentUpon>
     </Compile>

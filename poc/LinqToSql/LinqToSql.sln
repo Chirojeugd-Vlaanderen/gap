@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonenService", "CgService\PersonenService.csproj", "{7D4E0667-A44D-4AED-9227-3902D9412F9A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CgService", "CgService\CgService.csproj", "{7D4E0667-A44D-4AED-9227-3902D9412F9A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CgDal", "CgDal\CgDal.csproj", "{06D21982-62D1-47B5-8AD9-D52159729E42}"
 EndProject

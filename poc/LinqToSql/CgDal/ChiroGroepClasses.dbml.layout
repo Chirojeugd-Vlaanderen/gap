@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="ChiroGroepClasses">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 9.875" name="ChiroGroepClasses">
   <DataContextMoniker Name="/ChiroGroepClassesDataContext" />
   <nestedChildShapes>
     <classShape Id="74b08ff5-be88-4bc9-a455-3dc6eb460ff4" absoluteBounds="6.5, 2.5, 2, 2.4109318033854166">
@@ -79,5 +79,18 @@
         <elementListCompartment Id="6efc18b0-9cdb-4c1a-ae96-d3d29dc88414" absoluteBounds="8.64, 5.585, 1.9700000000000002, 2.508321126302083" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+    <classShape Id="ca584774-0c75-45cc-939e-11122cdab6d5" absoluteBounds="3.625, 8.75, 2, 0.93180582682291679">
+      <DataClassMoniker Name="/ChiroGroepClassesDataContext/ChiroGroep" />
+      <nestedChildShapes>
+        <elementListCompartment Id="169a0daa-7abb-48b3-bb46-a1a88ab0cd2b" absoluteBounds="3.64, 9.21, 1.9700000000000002, 0.37180582682291669" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2 : 7.25354248046875); (2 : 9.21590291341146); (3.625 : 9.21590291341146)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/ChiroGroepClassesDataContext/Groep/Groep_ChiroGroep" />
+      <nodes>
+        <classShapeMoniker Id="e72d5562-3742-4737-af42-821a4a81a532" />
+        <classShapeMoniker Id="ca584774-0c75-45cc-939e-11122cdab6d5" />
+      </nodes>
+    </associationConnector>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

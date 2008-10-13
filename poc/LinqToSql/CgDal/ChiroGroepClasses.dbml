@@ -57,6 +57,7 @@
       <Column Name="Logo" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
       <Column Name="GroepID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Association Name="Groep_GelieerdePersoon" Member="GelieerdePersoons" ThisKey="GroepID" OtherKey="GroepID" Type="GelieerdePersoon" />
+      <Association Name="Groep_ChiroGroep" Member="ChiroGroep" ThisKey="GroepID" OtherKey="chiroGroepID" Type="ChiroGroep" Cardinality="One" />
     </Type>
   </Table>
   <Table Name="pers.GelieerdePersoon" Member="GelieerdePersoons">
@@ -83,6 +84,12 @@
       <Column Name="NonActief" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="TelefoonNummer" Type="System.String" DbType="VarChar(160)" CanBeNull="true" />
       <Column Name="EMail" Type="System.String" DbType="VarChar(160)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="grp.ChiroGroep" Member="ChiroGroeps">
+    <Type Name="ChiroGroep">
+      <Column Name="chiroGroepID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Groep_ChiroGroep" Member="Groep" ThisKey="chiroGroepID" OtherKey="GroepID" Type="Groep" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

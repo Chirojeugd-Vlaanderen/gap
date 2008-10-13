@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/CgDal" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CgDal" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:2428/GroepenService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System.Data.Linq" />
+  <xs:complexType name="ChiroGroep">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="chiroGroepID" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ChiroGroep" nillable="true" type="tns:ChiroGroep" />
+  <xs:complexType name="Groep">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Naam" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OprichtingsJaar" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="WebSite" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/System.Data.Linq" minOccurs="0" name="Logo" nillable="true" type="q1:Binary" />
+      <xs:element minOccurs="0" name="GroepID" type="xs:int" />
+      <xs:element minOccurs="0" name="GelieerdePersoons" nillable="true" type="tns:ArrayOfGelieerdePersoon">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ChiroGroep" nillable="true" type="tns:ChiroGroep">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Groep" nillable="true" type="tns:Groep" />
+  <xs:complexType name="ArrayOfGelieerdePersoon">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="GelieerdePersoon" nillable="true" type="tns:GelieerdePersoon" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfGelieerdePersoon" nillable="true" type="tns:ArrayOfGelieerdePersoon" />
+  <xs:complexType name="GelieerdePersoon">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="GroepID" type="xs:int" />
+      <xs:element minOccurs="0" name="PersoonID" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GelieerdePersoon" nillable="true" type="tns:GelieerdePersoon" />
+</xs:schema>

@@ -9,7 +9,7 @@ namespace ConsoleApplication1
     class Program
     {
         static readonly int testPersoon = 1894;
-        static readonly int testGroep = 301;
+        static readonly int testGroep = 310;
 
         static readonly PersonenServiceReference.PersonenServiceClient service
             = new ConsoleApplication1.PersonenServiceReference.PersonenServiceClient();
@@ -29,6 +29,11 @@ namespace ConsoleApplication1
                 //    , pa.Adres.HuisNr));
             }
         }
+
+
+        // Hieronder een hele hoop experimenten, waarvan er 1 opgeroepen
+        // wordt in main().
+
 
         /// <summary>
         /// Test: wijzigen van de voornaam van een persoon.
@@ -83,9 +88,6 @@ namespace ConsoleApplication1
                 PersoonTonen(r);
             }
         }
-          
-
-            
 
         /// <summary>
         /// Doet een en ander met personen.
@@ -167,12 +169,49 @@ namespace ConsoleApplication1
             }
         }
 
+        /// <summary>
+        /// Wat is het probleem:
+        /// 
+        /// Er is een 1-op-1-relatie van Groep naar ChiroGroep.
+        /// De foreign key wijst van ChiroGroep naar Groep.
+        /// 
+        /// Een ChiroGroep ophalen, incl. zijn groepsgegevens, werkt niet.
+        /// De groepsgegevens komen niet mee over de lijn.
+        /// 
+        /// Een Groep ophalen, incl. gegevens van ChiroGroep werkt daarentegen
+        /// wel.
+        /// </summary>
+        static void Rariteit()
+        {
+            using (GroepenServiceReference.GroepenServiceClient service
+                = new ConsoleApplication1.GroepenServiceReference.GroepenServiceClient())
+            {
+                ChiroGroep cg = service.ChiroGroepGet(testGroep);
+                Groep g = service.ChiroGroepGroepGet(testGroep);
+
+                // werkt wel:
+                Console.WriteLine(String.Format("ID ChiroGroep: {0}", g.ChiroGroep.chiroGroepID));
+
+                if (cg.Groep == null)
+                {
+                    Console.WriteLine("Groepsgegevens niet doorgekomen!");
+                }
+                else
+                {
+                    // werkt niet:
+                    Console.WriteLine(String.Format("ID Groep: {0}", cg.Groep.GroepID));
+                }
+            }
+        }
+
         static void Main(string[] Arguments)
         {
             // PersoonWijzigenExperiment();
-            PersoonToevoegenVerwijderenExperiment();
+            // PersoonToevoegenVerwijderenExperiment();
             // AdressenExperiment();
             // LijstExperiment();
+
+            Rariteit();
 
             Console.ReadLine();
         }

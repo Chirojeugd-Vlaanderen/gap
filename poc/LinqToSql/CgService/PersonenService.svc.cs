@@ -6,7 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using CgDal;
 
-namespace PersonenService
+namespace CgService
 {
     public class PersonenService : IPersonenService
     {
