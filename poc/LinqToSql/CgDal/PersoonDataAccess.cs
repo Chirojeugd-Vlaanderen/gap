@@ -103,8 +103,7 @@ namespace CgDal
                     case EntityStatus.Gewijzigd:
                         context.Persoons.Attach(persoon, true);
 
-                        // Onderstaand blokje code dient enkel om eventueel gewijzigde
-                        // persoonsadressen te updaten
+                        #region zo nodig adresgegevens updaten
                         if (persoon.PersoonsAdres != null)
                         {
                             // attach gewijzigde en verwijderde persoonsadressen
@@ -119,6 +118,26 @@ namespace CgDal
                             context.PersoonsAdres.DeleteAllOnSubmit<PersoonsAdres>(
                                 persoon.PersoonsAdres.Where<PersoonsAdres>(pa => pa.Status == EntityStatus.Verwijderd));
                         }
+                        #endregion
+
+                        #region zo nodig communicatievormen updaten
+                        if (persoon.CommunicatieVorms != null)
+                        {
+                            // attach gewijzigde en verwijderde persoonsadressen
+                            context.CommunicatieVorms.AttachAll<CommunicatieVorm>(
+                                persoon.CommunicatieVorms.Where<CommunicatieVorm>(pa => pa.Status == EntityStatus.Gewijzigd || pa.Status == EntityStatus.Verwijderd));
+
+                            // markeer nieuwe persoonsadressen als 'toe te voegen'
+                            context.CommunicatieVorms.InsertAllOnSubmit<CommunicatieVorm>(
+                                persoon.CommunicatieVorms.Where<CommunicatieVorm>(pa => pa.Status == EntityStatus.Nieuw));
+
+                            // markeer (nu geattachte) te verwijderen adressen
+                            context.CommunicatieVorms.DeleteAllOnSubmit<CommunicatieVorm>(
+                                persoon.CommunicatieVorms.Where<CommunicatieVorm>(pa => pa.Status == EntityStatus.Verwijderd));
+                        }
+                        #endregion
+
+
                         break;
                     case EntityStatus.Verwijderd:
                         context.Persoons.Attach(persoon, true);

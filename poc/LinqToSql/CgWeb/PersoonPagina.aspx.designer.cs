@@ -11,7 +11,7 @@
 namespace CgWeb {
     
     
-    public partial class Persoon {
+    public partial class PersoonPagina {
         
         /// <summary>
         /// PersoonUserControl1 control.

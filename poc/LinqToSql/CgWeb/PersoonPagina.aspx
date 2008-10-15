@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="Persoon.aspx.cs" Inherits="CgWeb.Persoon" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="PersoonPagina.aspx.cs" Inherits="CgWeb.PersoonPagina" %>
 
 <%@ Register src="PersoonUserControl.ascx" tagname="PersoonUserControl" tagprefix="uc1" %>
 

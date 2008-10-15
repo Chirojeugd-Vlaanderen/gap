@@ -74,12 +74,12 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Persoon.aspx.cs">
-      <DependentUpon>Persoon.aspx</DependentUpon>
+    <Compile Include="PersoonPagina.aspx.cs">
+      <DependentUpon>PersoonPagina.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Persoon.aspx.designer.cs">
-      <DependentUpon>Persoon.aspx</DependentUpon>
+    <Compile Include="PersoonPagina.aspx.designer.cs">
+      <DependentUpon>PersoonPagina.aspx</DependentUpon>
     </Compile>
     <Compile Include="PersoonUserControl.ascx.cs">
       <DependentUpon>PersoonUserControl.ascx</DependentUpon>
@@ -110,7 +110,7 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <Content Include="Persoon.aspx" />
+    <Content Include="PersoonPagina.aspx" />
     <Content Include="PersoonUserControl.ascx" />
     <Content Include="Site1.Master" />
   </ItemGroup>
@@ -121,17 +121,19 @@
     <WCFMetadataStorage Include="Service References\PersonenServiceReference\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\PersonenServiceReference\CgWeb.PersonenServiceReference.Persoon.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\PersonenServiceReference\CgWeb.PersonenServiceReference.vPersoonsInfo.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
+    <None Include="Properties\DataSources\CgDal.Persoon.datasource" />
+    <None Include="Properties\DataSources\CgDal.vPersoonsInfo.datasource" />
     <None Include="Service References\PersonenServiceReference\PersonenService.wsdl" />
     <None Include="Service References\PersonenServiceReference\PersonenService.xsd" />
     <None Include="Service References\PersonenServiceReference\PersonenService1.xsd" />
     <None Include="Service References\PersonenServiceReference\PersonenService2.xsd" />
     <None Include="Service References\PersonenServiceReference\PersonenService3.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CgDal\CgDal.csproj">
+      <Project>{06D21982-62D1-47B5-8AD9-D52159729E42}</Project>
+      <Name>CgDal</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -6,7 +6,7 @@
     <asp:GridView ID="persoonsInfoGrid" runat="server" AutoGenerateColumns="False">
         <Columns>
             <asp:HyperLinkField DataNavigateUrlFields="PersoonID" 
-                DataNavigateUrlFormatString="Persoon.aspx?Id={0}" DataTextField="PersoonID" 
+                DataNavigateUrlFormatString="PersoonPagina.aspx?Id={0}" DataTextField="PersoonID" 
                 HeaderText="PersoonID" />
             <asp:BoundField DataField="VoorNaam" HeaderText="Voornaam" />
             <asp:BoundField DataField="Naam" HeaderText="Naam" />

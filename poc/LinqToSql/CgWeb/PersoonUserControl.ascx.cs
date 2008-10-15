@@ -4,14 +4,15 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using CgDal;
 
 namespace CgWeb
 {
     public partial class PersoonUserControl : System.Web.UI.UserControl
     {
-        private PersonenServiceReference.Persoon persoon;
+        private Persoon persoon;
 
-        public PersonenServiceReference.Persoon Persoon
+        public Persoon Persoon
         {
             get { return persoon; }
             set { persoon = value; }
@@ -47,18 +48,28 @@ namespace CgWeb
             persoon.Naam = naamTextBox.Text;
             persoon.VoorNaam = voorNaamTextBox.Text;
 
-            if (persoon.Status == CgWeb.PersonenServiceReference.EntityStatus.Geen)
+            if (persoon.Status == EntityStatus.Geen)
             {
-                persoon.Status = CgWeb.PersonenServiceReference.EntityStatus.Gewijzigd;
+                persoon.Status = EntityStatus.Gewijzigd;
             }
         }
 
         protected void toevoegenButton_Click(object sender, EventArgs e)
         {
-            PersonenServiceReference.CommunicatieVorm tel = new CgWeb.PersonenServiceReference.CommunicatieVorm();
-            tel.Status = CgWeb.PersonenServiceReference.EntityStatus.Nieuw;
+            CommunicatieVorm tel = new CommunicatieVorm();
+            tel.Status = EntityStatus.Nieuw;
             tel.Nummer = nieuwNrTextBox.Text;
-            //persoon.CommunicatieVorms.Add(tel);
+            tel.CommunicatieTypeID = 1;
+            tel.PersoonID = persoon.PersoonID;
+            tel.Voorkeur = false;
+            tel.Status = EntityStatus.Nieuw;
+            
+            persoon.CommunicatieVorms.Add(tel);
+
+            telefoonNrGrid.DataSource = from cv in persoon.CommunicatieVorms
+                                        where cv.CommunicatieTypeID == 1
+                                        select cv;
+
             telefoonNrGrid.DataBind();
         }
 
