@@ -11,13 +11,9 @@ namespace CgWeb
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-        }
-
-        protected void zoekenButton_Click(object sender, EventArgs e)
-        {
             using (PersonenServiceReference.PersonenServiceClient service = new CgWeb.PersonenServiceReference.PersonenServiceClient())
             {
-                persoonsInfoGrid.DataSource = service.GelieerdePersonenInfoGet(int.Parse(groepIdTextBox.Text));
+                persoonsInfoGrid.DataSource = service.GelieerdePersonenInfoGet(Constanten.standaardGroep);
                 persoonsInfoGrid.DataBind();
             }
         }

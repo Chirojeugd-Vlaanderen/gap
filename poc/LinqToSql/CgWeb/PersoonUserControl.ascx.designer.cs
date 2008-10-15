@@ -14,6 +14,15 @@ namespace CgWeb {
     public partial class PersoonUserControl {
         
         /// <summary>
+        /// persoonIDLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label persoonIDLabel;
+        
+        /// <summary>
         /// naamTextBox control.
         /// </summary>
         /// <remarks>
@@ -32,13 +41,13 @@ namespace CgWeb {
         protected global::System.Web.UI.WebControls.TextBox voorNaamTextBox;
         
         /// <summary>
-        /// geboorteDatumCalendar control.
+        /// geboorteDatumTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Calendar geboorteDatumCalendar;
+        protected global::System.Web.UI.WebControls.TextBox geboorteDatumTextBox;
         
         /// <summary>
         /// telefoonNrGrid control.

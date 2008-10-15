@@ -101,6 +101,9 @@ namespace CgDal
                         break;
                     case EntityStatus.Gewijzigd:
                         context.Persoons.Attach(persoon, true);
+
+                        // Onderstaand blokje code dient enkel om eventueel gewijzigde
+                        // persoonsadressen te updaten
                         if (persoon.PersoonsAdres != null)
                         {
                             // attach gewijzigde en verwijderde persoonsadressen

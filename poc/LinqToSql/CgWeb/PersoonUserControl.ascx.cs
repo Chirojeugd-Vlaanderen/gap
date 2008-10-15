@@ -14,23 +14,38 @@ namespace CgWeb
         public PersonenServiceReference.Persoon Persoon
         {
             get { return persoon; }
-            set { PersoonToekennen(value); }
+            set { persoon = value; }
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
         }
 
-        public void PersoonToekennen(PersonenServiceReference.Persoon persoon)
+        /// <summary>
+        /// Toont gegevens van gekoppelde persoon.
+        /// </summary>
+        public void GegevensBijwerken()
         {
-            this.persoon = persoon;
-            if (persoon.GeboorteDatum != null)
-            {
-                geboorteDatumCalendar.SelectedDate = (DateTime)persoon.GeboorteDatum;
-                geboorteDatumCalendar.VisibleDate = (DateTime)persoon.GeboorteDatum;
-            }
+            geboorteDatumTextBox.Text = persoon.GeboorteDatum.ToString();
             naamTextBox.Text = persoon.Naam;
             voorNaamTextBox.Text = persoon.VoorNaam;
+            persoonIDLabel.Text = String.Format("{0}", persoon.PersoonID);
         }
+
+        /// <summary>
+        /// Neemt formgegevens over in gekoppeld persoonsobject
+        /// </summary>
+        public void PersoonBijwerken()
+        {
+            persoon.GeboorteDatum = DateTime.Parse(geboorteDatumTextBox.Text);
+            persoon.Naam = naamTextBox.Text;
+            persoon.VoorNaam = voorNaamTextBox.Text;
+
+            if (persoon.Status == CgWeb.PersonenServiceReference.EntityStatus.Geen)
+            {
+                persoon.Status = CgWeb.PersonenServiceReference.EntityStatus.Gewijzigd;
+            }
+        }
+
     }
 }

@@ -1,15 +1,9 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="CgWeb._Default" %>
 
 <asp:Content ID="inhoud" ContentPlaceHolderID="mainContent" runat="server">
-    GroepID:
-<br />
-<asp:TextBox ID="groepIdTextBox" runat="server"></asp:TextBox>
-<asp:Button ID="zoekenButton" runat="server" Text="Zoeken" 
-    onclick="zoekenButton_Click" />
 <br />
 <br />
-Gelieerde personen:<asp:GridView ID="persoonsInfoGrid" runat="server" 
-        AutoGenerateColumns="False">
+    <asp:GridView ID="persoonsInfoGrid" runat="server" AutoGenerateColumns="False">
         <Columns>
             <asp:HyperLinkField DataNavigateUrlFields="PersoonID" 
                 DataNavigateUrlFormatString="Persoon.aspx?Id={0}" DataTextField="PersoonID" 
