@@ -103,7 +103,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\PersonenServiceReference\PersonenService.disco" />
     <None Include="Service References\PersonenServiceReference\configuration91.svcinfo" />
     <None Include="Service References\PersonenServiceReference\configuration.svcinfo" />
     <None Include="Service References\PersonenServiceReference\Reference.svcmap">
@@ -112,6 +111,7 @@
     </None>
     <Content Include="PersoonPagina.aspx" />
     <Content Include="PersoonUserControl.ascx" />
+    <None Include="Service References\PersonenServiceReference\PersonenService1.disco" />
     <Content Include="Site1.Master" />
   </ItemGroup>
   <ItemGroup>
@@ -123,11 +123,11 @@
   <ItemGroup>
     <None Include="Properties\DataSources\CgDal.Persoon.datasource" />
     <None Include="Properties\DataSources\CgDal.vPersoonsInfo.datasource" />
-    <None Include="Service References\PersonenServiceReference\PersonenService.wsdl" />
-    <None Include="Service References\PersonenServiceReference\PersonenService.xsd" />
-    <None Include="Service References\PersonenServiceReference\PersonenService1.xsd" />
-    <None Include="Service References\PersonenServiceReference\PersonenService2.xsd" />
-    <None Include="Service References\PersonenServiceReference\PersonenService3.xsd" />
+    <None Include="Service References\PersonenServiceReference\PersonenService1.wsdl" />
+    <None Include="Service References\PersonenServiceReference\PersonenService4.xsd" />
+    <None Include="Service References\PersonenServiceReference\PersonenService41.xsd" />
+    <None Include="Service References\PersonenServiceReference\PersonenService42.xsd" />
+    <None Include="Service References\PersonenServiceReference\PersonenService43.xsd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CgDal\CgDal.csproj">

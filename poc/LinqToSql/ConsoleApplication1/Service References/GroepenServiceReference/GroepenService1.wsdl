@@ -184,10 +184,10 @@
   </wsp:Policy>
   <wsdl:types>
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
-      <xsd:import schemaLocation="http://localhost:2428/GroepenService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
-      <xsd:import schemaLocation="http://localhost:2428/GroepenService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import schemaLocation="http://localhost:2428/GroepenService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CgDal" />
-      <xsd:import schemaLocation="http://localhost:2428/GroepenService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System.Data.Linq" />
+      <xsd:import schemaLocation="http://localhost:4227/GroepenService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:4227/GroepenService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:4227/GroepenService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CgDal" />
+      <xsd:import schemaLocation="http://localhost:4227/GroepenService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System.Data.Linq" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IGroepenService_ChiroGroepGet_InputMessage">
@@ -240,9 +240,9 @@
   </wsdl:binding>
   <wsdl:service name="GroepenService">
     <wsdl:port name="WSHttpBinding_IGroepenService" binding="tns:WSHttpBinding_IGroepenService">
-      <soap12:address location="http://localhost:2428/GroepenService.svc" />
+      <soap12:address location="http://localhost:4227/GroepenService.svc" />
       <wsa10:EndpointReference>
-        <wsa10:Address>http://localhost:2428/GroepenService.svc</wsa10:Address>
+        <wsa10:Address>http://localhost:4227/GroepenService.svc</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
           <Dns>localhost</Dns>
         </Identity>

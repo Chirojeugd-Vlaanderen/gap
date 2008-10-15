@@ -17,15 +17,15 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:2428/GroepenService.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:4227/GroepenService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="GroepenService.xsd" MetadataType="Schema" ID="302d6b09-fbb8-4a93-9b96-17b917b7c18f" SourceId="1" SourceUrl="http://localhost:2428/GroepenService.svc?xsd=xsd0" />
-    <MetadataFile FileName="GroepenService.wsdl" MetadataType="Wsdl" ID="fd645a20-1216-4c3c-a7f4-f431b20addeb" SourceId="1" SourceUrl="http://localhost:2428/GroepenService.svc?wsdl" />
-    <MetadataFile FileName="GroepenService.disco" MetadataType="Disco" ID="2a6c77df-3c57-47cc-8239-7911f438764f" SourceId="1" SourceUrl="http://localhost:2428/GroepenService.svc?disco" />
-    <MetadataFile FileName="GroepenService1.xsd" MetadataType="Schema" ID="91d12f11-09a6-4ef3-989a-b4fc11e13274" SourceId="1" SourceUrl="http://localhost:2428/GroepenService.svc?xsd=xsd3" />
-    <MetadataFile FileName="GroepenService2.xsd" MetadataType="Schema" ID="ea31487a-9862-4864-afb0-476175bcd796" SourceId="1" SourceUrl="http://localhost:2428/GroepenService.svc?xsd=xsd2" />
-    <MetadataFile FileName="GroepenService3.xsd" MetadataType="Schema" ID="b521a1ac-e685-44ec-8f90-033c6d798aee" SourceId="1" SourceUrl="http://localhost:2428/GroepenService.svc?xsd=xsd1" />
+    <MetadataFile FileName="GroepenService4.xsd" MetadataType="Schema" ID="937717c0-bd08-4a65-ab83-d0c84d596698" SourceId="1" SourceUrl="http://localhost:4227/GroepenService.svc?xsd=xsd1" />
+    <MetadataFile FileName="GroepenService41.xsd" MetadataType="Schema" ID="11b34ca4-3406-4f55-9c03-00f8a4387eb1" SourceId="1" SourceUrl="http://localhost:4227/GroepenService.svc?xsd=xsd2" />
+    <MetadataFile FileName="GroepenService42.xsd" MetadataType="Schema" ID="a273ff21-a55c-4bcf-b9d0-373da9fcf640" SourceId="1" SourceUrl="http://localhost:4227/GroepenService.svc?xsd=xsd3" />
+    <MetadataFile FileName="GroepenService1.disco" MetadataType="Disco" ID="1e53ff14-55c6-4fd9-b8fa-f31a22aa55b6" SourceId="1" SourceUrl="http://localhost:4227/GroepenService.svc?disco" />
+    <MetadataFile FileName="GroepenService1.wsdl" MetadataType="Wsdl" ID="9bd51e44-fef7-48d6-b339-41d4e34d03f9" SourceId="1" SourceUrl="http://localhost:4227/GroepenService.svc?wsdl" />
+    <MetadataFile FileName="GroepenService43.xsd" MetadataType="Schema" ID="3afc4809-c0dc-4b2a-9be6-5a6b523435f3" SourceId="1" SourceUrl="http://localhost:4227/GroepenService.svc?xsd=xsd0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

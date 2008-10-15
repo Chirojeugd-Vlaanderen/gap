@@ -21,19 +21,18 @@ namespace CgWeb
                 {
                     persoon = service.PersoonMetDetailsGet(int.Parse(Request["Id"]));
                     Session["persoon"] = persoon;
+                    PersoonUserControl1.Persoon = persoon;
+
+                    PersoonUserControl1.GegevensBijwerken();
+
                 }
             }
             else
             {
                 persoon = (Persoon)Session["persoon"];
+                PersoonUserControl1.Persoon = persoon;
+
             }
-            PersoonUserControl1.Persoon = persoon;
-
-            // Als geen postback: gegevens persoon tonen
-            // In het andere geval niet, want anders weten we
-            // niet meer wat de nieuw ingevulde gegevens zijn.
-
-            PersoonUserControl1.GegevensBijwerken();
 
         }
 

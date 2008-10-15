@@ -76,7 +76,6 @@
   <ItemGroup>
     <None Include="Properties\DataSources\CgDal.Persoon.datasource" />
     <None Include="Properties\DataSources\CgDal.vPersoonsInfo.datasource" />
-    <None Include="Service References\PersonenServiceReference\PersonenService.xsd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CgDal\CgDal.csproj">
@@ -87,13 +86,6 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\GroepenServiceReference\" />
     <WCFMetadataStorage Include="Service References\PersonenServiceReference\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\PersonenServiceReference\PersonenService.disco" />
-    <None Include="Service References\PersonenServiceReference\PersonenService.wsdl" />
-    <None Include="Service References\PersonenServiceReference\PersonenService1.xsd" />
-    <None Include="Service References\PersonenServiceReference\PersonenService2.xsd" />
-    <None Include="Service References\PersonenServiceReference\PersonenService3.xsd" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\PersonenServiceReference\configuration91.svcinfo" />
@@ -110,14 +102,6 @@
   <ItemGroup>
     <None Include="Properties\DataSources\CgDal.ChiroGroep.datasource" />
     <None Include="Properties\DataSources\CgDal.Groep.datasource" />
-    <None Include="Service References\GroepenServiceReference\GroepenService.wsdl" />
-    <None Include="Service References\GroepenServiceReference\GroepenService.xsd" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\GroepenServiceReference\GroepenService.disco" />
-    <None Include="Service References\GroepenServiceReference\GroepenService1.xsd" />
-    <None Include="Service References\GroepenServiceReference\GroepenService2.xsd" />
-    <None Include="Service References\GroepenServiceReference\GroepenService3.xsd" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\GroepenServiceReference\configuration91.svcinfo" />
@@ -126,10 +110,26 @@
     <None Include="Service References\GroepenServiceReference\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Service References\GroepenServiceReference\GroepenService4.xsd" />
+    <None Include="Service References\GroepenServiceReference\GroepenService41.xsd" />
+    <None Include="Service References\GroepenServiceReference\GroepenService42.xsd" />
     <None Include="Service References\GroepenServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\GroepenServiceReference\GroepenService1.disco" />
+    <None Include="Service References\GroepenServiceReference\GroepenService1.wsdl" />
+    <None Include="Service References\GroepenServiceReference\GroepenService43.xsd" />
+    <None Include="Service References\PersonenServiceReference\PersonenService4.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\PersonenServiceReference\PersonenService1.disco" />
+    <None Include="Service References\PersonenServiceReference\PersonenService1.wsdl" />
+    <None Include="Service References\PersonenServiceReference\PersonenService41.xsd" />
+    <None Include="Service References\PersonenServiceReference\PersonenService42.xsd" />
+    <None Include="Service References\PersonenServiceReference\PersonenService43.xsd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

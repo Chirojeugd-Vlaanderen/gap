@@ -17,15 +17,15 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:2428/PersonenService.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:4227/PersonenService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="PersonenService.xsd" MetadataType="Schema" ID="53d3120e-59f8-43bb-96bc-3fc8f93ec696" SourceId="1" SourceUrl="http://localhost:2428/PersonenService.svc?xsd=xsd0" />
-    <MetadataFile FileName="PersonenService.disco" MetadataType="Disco" ID="2ab98b6c-4ca2-4296-bd91-5b9919809c6d" SourceId="1" SourceUrl="http://localhost:2428/PersonenService.svc?disco" />
-    <MetadataFile FileName="PersonenService1.xsd" MetadataType="Schema" ID="023c67f0-dd68-41f1-a67f-4f76cd229f72" SourceId="1" SourceUrl="http://localhost:2428/PersonenService.svc?xsd=xsd1" />
-    <MetadataFile FileName="PersonenService2.xsd" MetadataType="Schema" ID="635c72c2-3cdb-4b94-82e1-0ab4413655aa" SourceId="1" SourceUrl="http://localhost:2428/PersonenService.svc?xsd=xsd2" />
-    <MetadataFile FileName="PersonenService3.xsd" MetadataType="Schema" ID="c2397715-8ae9-46a3-b3e6-941c91aa78b6" SourceId="1" SourceUrl="http://localhost:2428/PersonenService.svc?xsd=xsd3" />
-    <MetadataFile FileName="PersonenService.wsdl" MetadataType="Wsdl" ID="ca5ac50f-02e7-4b35-87d5-b6bc8dd90425" SourceId="1" SourceUrl="http://localhost:2428/PersonenService.svc?wsdl" />
+    <MetadataFile FileName="PersonenService4.xsd" MetadataType="Schema" ID="9e1513be-8ffa-49f3-aef5-b2afbf48face" SourceId="1" SourceUrl="http://localhost:4227/PersonenService.svc?xsd=xsd2" />
+    <MetadataFile FileName="PersonenService1.disco" MetadataType="Disco" ID="2e05af6f-3d3d-4fce-9272-da83a16461ff" SourceId="1" SourceUrl="http://localhost:4227/PersonenService.svc?disco" />
+    <MetadataFile FileName="PersonenService1.wsdl" MetadataType="Wsdl" ID="c0f4a37d-4071-4cae-870d-dcc7790ceb5e" SourceId="1" SourceUrl="http://localhost:4227/PersonenService.svc?wsdl" />
+    <MetadataFile FileName="PersonenService41.xsd" MetadataType="Schema" ID="4c4531ba-c021-4f95-afde-1ba343d0b070" SourceId="1" SourceUrl="http://localhost:4227/PersonenService.svc?xsd=xsd1" />
+    <MetadataFile FileName="PersonenService42.xsd" MetadataType="Schema" ID="ccb7e2bb-e474-46ee-93a2-a6b20b9b476e" SourceId="1" SourceUrl="http://localhost:4227/PersonenService.svc?xsd=xsd0" />
+    <MetadataFile FileName="PersonenService43.xsd" MetadataType="Schema" ID="ecbac1ff-cc6d-4ac1-843a-48f2638eaba1" SourceId="1" SourceUrl="http://localhost:4227/PersonenService.svc?xsd=xsd3" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

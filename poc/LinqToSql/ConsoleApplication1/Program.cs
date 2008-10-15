@@ -50,8 +50,10 @@ namespace ConsoleApplication1
 
             p.VoorNaam = nieuweVoornaam;
             p.Status = EntityStatus.Gewijzigd;
+
             service.PersoonUpdaten(p);
 
+            
             Persoon q = service.PersoonGet(testPersoon);
 
             PersoonTonen(q);
@@ -102,7 +104,7 @@ namespace ConsoleApplication1
 
             do
             {
-                Persoon persoon = service.PersoonMetAdressenGet(testPersoon);
+                Persoon persoon = service.PersoonMetDetailsGet(testPersoon);
                 PersoonTonen(persoon);
 
                 Console.WriteLine("(1) Adres toekennen, (2) Toegekenning verwijderen, (0) einde: ");
@@ -158,7 +160,7 @@ namespace ConsoleApplication1
         /// </summary>
         static void LijstExperiment()
         {
-            var lijst = service.GelieerdePersonenInfoGet(testGroep,1,50); // tweede pagina, paginagrootte = 50
+            var lijst = service.GelieerdePersonenInfoGet(testGroep); // tweede pagina, paginagrootte = 50
 
             foreach (vPersoonsInfo i in lijst)
             {
@@ -206,12 +208,12 @@ namespace ConsoleApplication1
 
         static void Main(string[] Arguments)
         {
-            // PersoonWijzigenExperiment();
+            PersoonWijzigenExperiment();
             // PersoonToevoegenVerwijderenExperiment();
             // AdressenExperiment();
             // LijstExperiment();
 
-            Rariteit();
+            //Rariteit();
 
             Console.ReadLine();
         }
