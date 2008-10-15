@@ -182,7 +182,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSHttpBinding_IPersonenService_PersoonMetAdressenGet_Input_policy">
+  <wsp:Policy wsu:Id="WSHttpBinding_IPersonenService_PersoonMetDetailsGet_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -201,7 +201,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSHttpBinding_IPersonenService_PersoonMetAdressenGet_output_policy">
+  <wsp:Policy wsu:Id="WSHttpBinding_IPersonenService_PersoonMetDetailsGet_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -316,11 +316,11 @@
   <wsdl:message name="IPersonenService_PersoonGet_OutputMessage">
     <wsdl:part name="parameters" element="tns:PersoonGetResponse" />
   </wsdl:message>
-  <wsdl:message name="IPersonenService_PersoonMetAdressenGet_InputMessage">
-    <wsdl:part name="parameters" element="tns:PersoonMetAdressenGet" />
+  <wsdl:message name="IPersonenService_PersoonMetDetailsGet_InputMessage">
+    <wsdl:part name="parameters" element="tns:PersoonMetDetailsGet" />
   </wsdl:message>
-  <wsdl:message name="IPersonenService_PersoonMetAdressenGet_OutputMessage">
-    <wsdl:part name="parameters" element="tns:PersoonMetAdressenGetResponse" />
+  <wsdl:message name="IPersonenService_PersoonMetDetailsGet_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PersoonMetDetailsGetResponse" />
   </wsdl:message>
   <wsdl:message name="IPersonenService_GelieerdePersonenInfoGet_InputMessage">
     <wsdl:part name="parameters" element="tns:GelieerdePersonenInfoGet" />
@@ -343,9 +343,9 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IPersonenService/PersoonGet" message="tns:IPersonenService_PersoonGet_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IPersonenService/PersoonGetResponse" message="tns:IPersonenService_PersoonGet_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="PersoonMetAdressenGet">
-      <wsdl:input wsaw:Action="http://tempuri.org/IPersonenService/PersoonMetAdressenGet" message="tns:IPersonenService_PersoonMetAdressenGet_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IPersonenService/PersoonMetAdressenGetResponse" message="tns:IPersonenService_PersoonMetAdressenGet_OutputMessage" />
+    <wsdl:operation name="PersoonMetDetailsGet">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPersonenService/PersoonMetDetailsGet" message="tns:IPersonenService_PersoonMetDetailsGet_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPersonenService/PersoonMetDetailsGetResponse" message="tns:IPersonenService_PersoonMetDetailsGet_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GelieerdePersonenInfoGet">
       <wsdl:input wsaw:Action="http://tempuri.org/IPersonenService/GelieerdePersonenInfoGet" message="tns:IPersonenService_GelieerdePersonenInfoGet_InputMessage" />
@@ -381,14 +381,14 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="PersoonMetAdressenGet">
-      <soap12:operation soapAction="http://tempuri.org/IPersonenService/PersoonMetAdressenGet" style="document" />
+    <wsdl:operation name="PersoonMetDetailsGet">
+      <soap12:operation soapAction="http://tempuri.org/IPersonenService/PersoonMetDetailsGet" style="document" />
       <wsdl:input>
-        <wsp:PolicyReference URI="#WSHttpBinding_IPersonenService_PersoonMetAdressenGet_Input_policy" />
+        <wsp:PolicyReference URI="#WSHttpBinding_IPersonenService_PersoonMetDetailsGet_Input_policy" />
         <soap12:body use="literal" />
       </wsdl:input>
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSHttpBinding_IPersonenService_PersoonMetAdressenGet_output_policy" />
+        <wsp:PolicyReference URI="#WSHttpBinding_IPersonenService_PersoonMetDetailsGet_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

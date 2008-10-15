@@ -18,6 +18,7 @@ namespace CgWeb.PersonenServiceReference {
     [System.Runtime.Serialization.DataContractAttribute(Name="BasisEntity", Namespace="http://schemas.datacontract.org/2004/07/CgDal")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(CgWeb.PersonenServiceReference.PersoonsAdres))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(CgWeb.PersonenServiceReference.CommunicatieVorm))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(CgWeb.PersonenServiceReference.Persoon))]
     public partial class BasisEntity : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -82,7 +83,7 @@ namespace CgWeb.PersonenServiceReference {
         private int AdresTypeIDField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private CgWeb.PersonenServiceReference.Binary VersieField;
+        private System.Data.Linq.Binary VersieField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsStandaard {
@@ -150,7 +151,142 @@ namespace CgWeb.PersonenServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=5)]
-        public CgWeb.PersonenServiceReference.Binary Versie {
+        public System.Data.Linq.Binary Versie {
+            get {
+                return this.VersieField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.VersieField, value) != true)) {
+                    this.VersieField = value;
+                    this.RaisePropertyChanged("Versie");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CommunicatieVorm", Namespace="http://schemas.datacontract.org/2004/07/CgDal")]
+    [System.SerializableAttribute()]
+    public partial class CommunicatieVorm : CgWeb.PersonenServiceReference.BasisEntity {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NotaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NummerField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int CommunicatieVormIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> CommunicatieTypeIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> PersoonIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsGezinsgebondenField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool VoorkeurField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Data.Linq.Binary VersieField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Nota {
+            get {
+                return this.NotaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NotaField, value) != true)) {
+                    this.NotaField = value;
+                    this.RaisePropertyChanged("Nota");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Nummer {
+            get {
+                return this.NummerField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NummerField, value) != true)) {
+                    this.NummerField = value;
+                    this.RaisePropertyChanged("Nummer");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+        public int CommunicatieVormID {
+            get {
+                return this.CommunicatieVormIDField;
+            }
+            set {
+                if ((this.CommunicatieVormIDField.Equals(value) != true)) {
+                    this.CommunicatieVormIDField = value;
+                    this.RaisePropertyChanged("CommunicatieVormID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+        public System.Nullable<int> CommunicatieTypeID {
+            get {
+                return this.CommunicatieTypeIDField;
+            }
+            set {
+                if ((this.CommunicatieTypeIDField.Equals(value) != true)) {
+                    this.CommunicatieTypeIDField = value;
+                    this.RaisePropertyChanged("CommunicatieTypeID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+        public System.Nullable<int> PersoonID {
+            get {
+                return this.PersoonIDField;
+            }
+            set {
+                if ((this.PersoonIDField.Equals(value) != true)) {
+                    this.PersoonIDField = value;
+                    this.RaisePropertyChanged("PersoonID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+        public bool IsGezinsgebonden {
+            get {
+                return this.IsGezinsgebondenField;
+            }
+            set {
+                if ((this.IsGezinsgebondenField.Equals(value) != true)) {
+                    this.IsGezinsgebondenField = value;
+                    this.RaisePropertyChanged("IsGezinsgebonden");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=6)]
+        public bool Voorkeur {
+            get {
+                return this.VoorkeurField;
+            }
+            set {
+                if ((this.VoorkeurField.Equals(value) != true)) {
+                    this.VoorkeurField = value;
+                    this.RaisePropertyChanged("Voorkeur");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=7)]
+        public System.Data.Linq.Binary Versie {
             get {
                 return this.VersieField;
             }
@@ -197,13 +333,16 @@ namespace CgWeb.PersonenServiceReference {
         private int PersoonIDField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private CgWeb.PersonenServiceReference.Binary VersieField;
+        private System.Data.Linq.Binary VersieField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private CgWeb.PersonenServiceReference.PersoonsAdres[] PersoonsAdresField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private CgWeb.PersonenServiceReference.GelieerdePersoon[] GelieerdePersoonsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private CgWeb.PersonenServiceReference.CommunicatieVorm[] CommunicatieVormsField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Nullable<int> AdNummer {
@@ -323,7 +462,7 @@ namespace CgWeb.PersonenServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=9)]
-        public CgWeb.PersonenServiceReference.Binary Versie {
+        public System.Data.Linq.Binary Versie {
             get {
                 return this.VersieField;
             }
@@ -360,6 +499,19 @@ namespace CgWeb.PersonenServiceReference {
                 }
             }
         }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=12)]
+        public CgWeb.PersonenServiceReference.CommunicatieVorm[] CommunicatieVorms {
+            get {
+                return this.CommunicatieVormsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CommunicatieVormsField, value) != true)) {
+                    this.CommunicatieVormsField = value;
+                    this.RaisePropertyChanged("CommunicatieVorms");
+                }
+            }
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
@@ -377,51 +529,6 @@ namespace CgWeb.PersonenServiceReference {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
         Verwijderd = 3,
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Binary", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Linq")]
-    [System.SerializableAttribute()]
-    public partial class Binary : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private byte[] BytesField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Bytes {
-            get {
-                return this.BytesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.BytesField, value) != true)) {
-                    this.BytesField = value;
-                    this.RaisePropertyChanged("Bytes");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -764,8 +871,8 @@ namespace CgWeb.PersonenServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/PersoonGet", ReplyAction="http://tempuri.org/IPersonenService/PersoonGetResponse")]
         CgWeb.PersonenServiceReference.Persoon PersoonGet(int persoonID);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/PersoonMetAdressenGet", ReplyAction="http://tempuri.org/IPersonenService/PersoonMetAdressenGetResponse")]
-        CgWeb.PersonenServiceReference.Persoon PersoonMetAdressenGet(int PersoonID);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/PersoonMetDetailsGet", ReplyAction="http://tempuri.org/IPersonenService/PersoonMetDetailsGetResponse")]
+        CgWeb.PersonenServiceReference.Persoon PersoonMetDetailsGet(int PersoonID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/GelieerdePersonenInfoGet", ReplyAction="http://tempuri.org/IPersonenService/GelieerdePersonenInfoGetResponse")]
         CgWeb.PersonenServiceReference.vPersoonsInfo[] GelieerdePersonenInfoGet(int GroepID);
@@ -809,8 +916,8 @@ namespace CgWeb.PersonenServiceReference {
             return base.Channel.PersoonGet(persoonID);
         }
         
-        public CgWeb.PersonenServiceReference.Persoon PersoonMetAdressenGet(int PersoonID) {
-            return base.Channel.PersoonMetAdressenGet(PersoonID);
+        public CgWeb.PersonenServiceReference.Persoon PersoonMetDetailsGet(int PersoonID) {
+            return base.Channel.PersoonMetDetailsGet(PersoonID);
         }
         
         public CgWeb.PersonenServiceReference.vPersoonsInfo[] GelieerdePersonenInfoGet(int GroepID) {

@@ -27,17 +27,17 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="PersoonMetAdressenGet">
+  <xs:element name="PersoonMetDetailsGet">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="PersoonID" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="PersoonMetAdressenGetResponse">
+  <xs:element name="PersoonMetDetailsGetResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CgDal" minOccurs="0" name="PersoonMetAdressenGetResult" nillable="true" type="q2:Persoon" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CgDal" minOccurs="0" name="PersoonMetDetailsGetResult" nillable="true" type="q2:Persoon" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

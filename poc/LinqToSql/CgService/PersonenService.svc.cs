@@ -27,9 +27,9 @@ namespace CgService
             return DataAccess.PersoonGet(persoonID);
         }
 
-        public Persoon PersoonMetAdressenGet(int persoonID)
+        public Persoon PersoonMetDetailsGet(int persoonID)
         {
-            return DataAccess.PersoonMetAdressenGet(persoonID);
+            return DataAccess.PersoonMetDetailsGet(persoonID);
         }
 
         public IList<vPersoonsInfo> GelieerdePersonenInfoGet(int GroepID)

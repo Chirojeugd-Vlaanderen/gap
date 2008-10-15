@@ -15,7 +15,7 @@ namespace CgWeb
         {
             using (PersonenServiceReference.PersonenServiceClient service = new CgWeb.PersonenServiceReference.PersonenServiceClient())
             {
-                persoon = service.PersoonGet(int.Parse(Request["Id"]));
+                persoon = service.PersoonMetDetailsGet(int.Parse(Request["Id"]));
             }
             PersoonUserControl1.Persoon = persoon;
 

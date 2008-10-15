@@ -30,6 +30,13 @@
               </xs:appinfo>
             </xs:annotation>
           </xs:element>
+          <xs:element minOccurs="0" name="CommunicatieVorms" nillable="true" type="tns:ArrayOfCommunicatieVorm">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -84,6 +91,29 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="GelieerdePersoon" nillable="true" type="tns:GelieerdePersoon" />
+  <xs:complexType name="ArrayOfCommunicatieVorm">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommunicatieVorm" nillable="true" type="tns:CommunicatieVorm" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommunicatieVorm" nillable="true" type="tns:ArrayOfCommunicatieVorm" />
+  <xs:complexType name="CommunicatieVorm">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasisEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Nota" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Nummer" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CommunicatieVormID" type="xs:int" />
+          <xs:element minOccurs="0" name="CommunicatieTypeID" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="PersoonID" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="IsGezinsgebonden" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Voorkeur" type="xs:boolean" />
+          <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/System.Data.Linq" minOccurs="0" name="Versie" nillable="true" type="q3:Binary" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommunicatieVorm" nillable="true" type="tns:CommunicatieVorm" />
   <xs:complexType name="ArrayOfvPersoonsInfo">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="vPersoonsInfo" nillable="true" type="tns:vPersoonsInfo" />

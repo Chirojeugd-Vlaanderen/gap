@@ -34,13 +34,14 @@ namespace CgDal
         /// </summary>
         /// <param name="persoonID">PersoonID van op te vragen persoon</param>
         /// <returns>gegevens van de gevraagde persoon</returns>
-        public Persoon PersoonMetAdressenGet(int persoonID)
+        public Persoon PersoonMetDetailsGet(int persoonID)
         {
             using (ChiroGroepClassesDataContext context = new ChiroGroepClassesDataContext())
             {
                 DataLoadOptions options = new DataLoadOptions();
                 options.LoadWith<Persoon>(p => p.PersoonsAdres);
                 options.LoadWith<PersoonsAdres>(a => a.Adres);
+                options.LoadWith<Persoon>(p => p.CommunicatieVorms);
 
                 context.DeferredLoadingEnabled = false;
                 context.LoadOptions = options;

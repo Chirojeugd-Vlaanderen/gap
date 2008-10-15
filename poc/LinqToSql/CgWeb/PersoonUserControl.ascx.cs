@@ -30,6 +30,12 @@ namespace CgWeb
             naamTextBox.Text = persoon.Naam;
             voorNaamTextBox.Text = persoon.VoorNaam;
             persoonIDLabel.Text = String.Format("{0}", persoon.PersoonID);
+
+            telefoonNrGrid.DataSource = from cv in persoon.CommunicatieVorms
+                                        where cv.CommunicatieTypeID == 1
+                                        select cv;
+
+            telefoonNrGrid.DataBind();
         }
 
         /// <summary>
@@ -45,6 +51,15 @@ namespace CgWeb
             {
                 persoon.Status = CgWeb.PersonenServiceReference.EntityStatus.Gewijzigd;
             }
+        }
+
+        protected void toevoegenButton_Click(object sender, EventArgs e)
+        {
+            PersonenServiceReference.CommunicatieVorm tel = new CgWeb.PersonenServiceReference.CommunicatieVorm();
+            tel.Status = CgWeb.PersonenServiceReference.EntityStatus.Nieuw;
+            tel.Nummer = nieuwNrTextBox.Text;
+            //persoon.CommunicatieVorms.Add(tel);
+            telefoonNrGrid.DataBind();
         }
 
     }

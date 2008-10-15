@@ -14,5 +14,13 @@
 <asp:TextBox ID="geboorteDatumTextBox" runat="server"></asp:TextBox>
 <p>
     Telefoonnummers:</p>
-<asp:GridView ID="telefoonNrGrid" runat="server">
+<asp:GridView ID="telefoonNrGrid" runat="server" AutoGenerateColumns="False">
+    <Columns>
+        <asp:BoundField DataField="Nummer" HeaderText="Nummer" />
+        <asp:BoundField DataField="Voorkeur" HeaderText="Voorkeur" />
+    </Columns>
 </asp:GridView>
+<asp:TextBox ID="nieuwNrTextBox" runat="server"></asp:TextBox>
+<asp:Button ID="toevoegenButton" runat="server" onclick="toevoegenButton_Click" 
+    Text="Nr. Toevoegen" />
+

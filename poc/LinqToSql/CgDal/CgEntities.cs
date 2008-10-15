@@ -11,4 +11,5 @@ namespace CgDal
     public partial class Persoon : BasisEntity { };
     public partial class PersoonsAdres : BasisEntity { };
     public partial class AdresType : BasisEntity { };
+    public partial class CommunicatieVorm : BasisEntity { };
 }

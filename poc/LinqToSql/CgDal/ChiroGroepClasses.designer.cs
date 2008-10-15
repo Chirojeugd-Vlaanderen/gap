@@ -52,6 +52,9 @@ namespace CgDal
     partial void InsertChiroGroep(ChiroGroep instance);
     partial void UpdateChiroGroep(ChiroGroep instance);
     partial void DeleteChiroGroep(ChiroGroep instance);
+    partial void InsertCommunicatieVorm(CommunicatieVorm instance);
+    partial void UpdateCommunicatieVorm(CommunicatieVorm instance);
+    partial void DeleteCommunicatieVorm(CommunicatieVorm instance);
     #endregion
 		
 		public ChiroGroepClassesDataContext() : 
@@ -147,6 +150,14 @@ namespace CgDal
 				return this.GetTable<vPersoonsInfo>();
 			}
 		}
+		
+		public System.Data.Linq.Table<CommunicatieVorm> CommunicatieVorms
+		{
+			get
+			{
+				return this.GetTable<CommunicatieVorm>();
+			}
+		}
 	}
 	
 	[Table(Name="pers.Persoon")]
@@ -179,6 +190,8 @@ namespace CgDal
 		private EntitySet<PersoonsAdres> _PersoonsAdres;
 		
 		private EntitySet<GelieerdePersoon> _GelieerdePersoons;
+		
+		private EntitySet<CommunicatieVorm> _CommunicatieVorms;
 		
 		private bool serializing;
 		
@@ -402,7 +415,7 @@ namespace CgDal
 			}
 		}
 		
-		[Column(Storage="_Versie", AutoSync=AutoSync.Always, DbType="rowversion", IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
+		[Column(Storage="_Versie", AutoSync=AutoSync.Always, DbType="rowversion", CanBeNull=true, IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
 		[DataMember(Order=10)]
 		public System.Data.Linq.Binary Versie
 		{
@@ -461,6 +474,25 @@ namespace CgDal
 			}
 		}
 		
+		[Association(Name="Persoon_CommunicatieVorm", Storage="_CommunicatieVorms", ThisKey="PersoonID", OtherKey="PersoonID")]
+		[DataMember(Order=13, EmitDefaultValue=false)]
+		public EntitySet<CommunicatieVorm> CommunicatieVorms
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._CommunicatieVorms.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._CommunicatieVorms;
+			}
+			set
+			{
+				this._CommunicatieVorms.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -505,10 +537,23 @@ namespace CgDal
 			entity.Persoon = null;
 		}
 		
+		private void attach_CommunicatieVorms(CommunicatieVorm entity)
+		{
+			this.SendPropertyChanging();
+			entity.Persoon = this;
+		}
+		
+		private void detach_CommunicatieVorms(CommunicatieVorm entity)
+		{
+			this.SendPropertyChanging();
+			entity.Persoon = null;
+		}
+		
 		private void Initialize()
 		{
 			this._PersoonsAdres = new EntitySet<PersoonsAdres>(new Action<PersoonsAdres>(this.attach_PersoonsAdres), new Action<PersoonsAdres>(this.detach_PersoonsAdres));
 			this._GelieerdePersoons = new EntitySet<GelieerdePersoon>(new Action<GelieerdePersoon>(this.attach_GelieerdePersoons), new Action<GelieerdePersoon>(this.detach_GelieerdePersoons));
+			this._CommunicatieVorms = new EntitySet<CommunicatieVorm>(new Action<CommunicatieVorm>(this.attach_CommunicatieVorms), new Action<CommunicatieVorm>(this.detach_CommunicatieVorms));
 			OnCreated();
 		}
 		
@@ -1392,7 +1437,7 @@ namespace CgDal
 			}
 		}
 		
-		[Column(Storage="_Logo", DbType="Image", UpdateCheck=UpdateCheck.Never)]
+		[Column(Storage="_Logo", DbType="Image", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
 		[DataMember(Order=5)]
 		public System.Data.Linq.Binary Logo
 		{
@@ -2141,6 +2186,298 @@ namespace CgDal
 					this._EMail = value;
 				}
 			}
+		}
+	}
+	
+	[Table(Name="pers.CommunicatieVorm")]
+	[DataContract()]
+	public partial class CommunicatieVorm : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _Nota;
+		
+		private string _Nummer;
+		
+		private int _CommunicatieVormID;
+		
+		private System.Nullable<int> _CommunicatieTypeID;
+		
+		private System.Nullable<int> _PersoonID;
+		
+		private bool _IsGezinsgebonden;
+		
+		private bool _Voorkeur;
+		
+		private System.Data.Linq.Binary _Versie;
+		
+		private EntityRef<Persoon> _Persoon;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnNotaChanging(string value);
+    partial void OnNotaChanged();
+    partial void OnNummerChanging(string value);
+    partial void OnNummerChanged();
+    partial void OnCommunicatieVormIDChanging(int value);
+    partial void OnCommunicatieVormIDChanged();
+    partial void OnCommunicatieTypeIDChanging(System.Nullable<int> value);
+    partial void OnCommunicatieTypeIDChanged();
+    partial void OnPersoonIDChanging(System.Nullable<int> value);
+    partial void OnPersoonIDChanged();
+    partial void OnIsGezinsgebondenChanging(bool value);
+    partial void OnIsGezinsgebondenChanged();
+    partial void OnVoorkeurChanging(bool value);
+    partial void OnVoorkeurChanged();
+    partial void OnVersieChanging(System.Data.Linq.Binary value);
+    partial void OnVersieChanged();
+    #endregion
+		
+		public CommunicatieVorm()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Storage="_Nota", DbType="VarChar(320)", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=1)]
+		public string Nota
+		{
+			get
+			{
+				return this._Nota;
+			}
+			set
+			{
+				if ((this._Nota != value))
+				{
+					this.OnNotaChanging(value);
+					this.SendPropertyChanging();
+					this._Nota = value;
+					this.SendPropertyChanged("Nota");
+					this.OnNotaChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Nummer", DbType="VarChar(160)", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=2)]
+		public string Nummer
+		{
+			get
+			{
+				return this._Nummer;
+			}
+			set
+			{
+				if ((this._Nummer != value))
+				{
+					this.OnNummerChanging(value);
+					this.SendPropertyChanging();
+					this._Nummer = value;
+					this.SendPropertyChanged("Nummer");
+					this.OnNummerChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_CommunicatieVormID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true, UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=3)]
+		public int CommunicatieVormID
+		{
+			get
+			{
+				return this._CommunicatieVormID;
+			}
+			set
+			{
+				if ((this._CommunicatieVormID != value))
+				{
+					this.OnCommunicatieVormIDChanging(value);
+					this.SendPropertyChanging();
+					this._CommunicatieVormID = value;
+					this.SendPropertyChanged("CommunicatieVormID");
+					this.OnCommunicatieVormIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_CommunicatieTypeID", DbType="Int", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=4)]
+		public System.Nullable<int> CommunicatieTypeID
+		{
+			get
+			{
+				return this._CommunicatieTypeID;
+			}
+			set
+			{
+				if ((this._CommunicatieTypeID != value))
+				{
+					this.OnCommunicatieTypeIDChanging(value);
+					this.SendPropertyChanging();
+					this._CommunicatieTypeID = value;
+					this.SendPropertyChanged("CommunicatieTypeID");
+					this.OnCommunicatieTypeIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PersoonID", DbType="Int", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=5)]
+		public System.Nullable<int> PersoonID
+		{
+			get
+			{
+				return this._PersoonID;
+			}
+			set
+			{
+				if ((this._PersoonID != value))
+				{
+					if (this._Persoon.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPersoonIDChanging(value);
+					this.SendPropertyChanging();
+					this._PersoonID = value;
+					this.SendPropertyChanged("PersoonID");
+					this.OnPersoonIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_IsGezinsgebonden", DbType="Bit NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=6)]
+		public bool IsGezinsgebonden
+		{
+			get
+			{
+				return this._IsGezinsgebonden;
+			}
+			set
+			{
+				if ((this._IsGezinsgebonden != value))
+				{
+					this.OnIsGezinsgebondenChanging(value);
+					this.SendPropertyChanging();
+					this._IsGezinsgebonden = value;
+					this.SendPropertyChanged("IsGezinsgebonden");
+					this.OnIsGezinsgebondenChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Voorkeur", DbType="Bit NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=7)]
+		public bool Voorkeur
+		{
+			get
+			{
+				return this._Voorkeur;
+			}
+			set
+			{
+				if ((this._Voorkeur != value))
+				{
+					this.OnVoorkeurChanging(value);
+					this.SendPropertyChanging();
+					this._Voorkeur = value;
+					this.SendPropertyChanged("Voorkeur");
+					this.OnVoorkeurChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Versie", AutoSync=AutoSync.Always, DbType="rowversion NOT NULL", CanBeNull=false, IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=8)]
+		public System.Data.Linq.Binary Versie
+		{
+			get
+			{
+				return this._Versie;
+			}
+			set
+			{
+				if ((this._Versie != value))
+				{
+					this.OnVersieChanging(value);
+					this.SendPropertyChanging();
+					this._Versie = value;
+					this.SendPropertyChanged("Versie");
+					this.OnVersieChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Persoon_CommunicatieVorm", Storage="_Persoon", ThisKey="PersoonID", OtherKey="PersoonID", IsForeignKey=true)]
+		public Persoon Persoon
+		{
+			get
+			{
+				return this._Persoon.Entity;
+			}
+			set
+			{
+				Persoon previousValue = this._Persoon.Entity;
+				if (((previousValue != value) 
+							|| (this._Persoon.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Persoon.Entity = null;
+						previousValue.CommunicatieVorms.Remove(this);
+					}
+					this._Persoon.Entity = value;
+					if ((value != null))
+					{
+						value.CommunicatieVorms.Add(this);
+						this._PersoonID = value.PersoonID;
+					}
+					else
+					{
+						this._PersoonID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Persoon");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._Persoon = default(EntityRef<Persoon>);
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
 		}
 	}
 }

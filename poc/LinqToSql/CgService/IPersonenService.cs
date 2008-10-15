@@ -29,12 +29,12 @@ namespace CgService
         Persoon PersoonGet(int persoonID);
 
         /// <summary>
-        /// Haalt persoon met adressen op
+        /// Haalt persoon met adressen en communicatie op
         /// </summary>
         /// <param name="PersoonID">PersoonID van de gevraagde persoon</param>
         /// <returns></returns>
         [OperationContract]
-        Persoon PersoonMetAdressenGet(int PersoonID);
+        Persoon PersoonMetDetailsGet(int PersoonID);
 
         /// <summary>
         /// Lijst opvragen met (basis)info van alle gelieerde personen uit
