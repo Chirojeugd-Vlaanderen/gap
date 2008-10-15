@@ -32,9 +32,9 @@ namespace CgService
             return DataAccess.PersoonMetAdressenGet(persoonID);
         }
 
-        public IList<vPersoonsInfo> GelieerdePersonenInfoGet(int GroepID, int Page, int PageSize)
+        public IList<vPersoonsInfo> GelieerdePersonenInfoGet(int GroepID)
         {
-            return DataAccess.GelieerdePersonenInfoGet(GroepID, Page, PageSize);
+            return DataAccess.GelieerdePersonenInfoGet(GroepID);
         }
 
         public int PersoonUpdaten(Persoon persoon)

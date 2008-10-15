@@ -45,7 +45,7 @@ namespace CgService
         /// <param name="PageSize">aantal records per pagina</param>
         /// <returns>Een lijst met objecten van het type vPersoonsInfo</returns>
         [OperationContract]
-        IList<vPersoonsInfo> GelieerdePersonenInfoGet(int GroepID, int Page, int PageSize);
+        IList<vPersoonsInfo> GelieerdePersonenInfoGet(int GroepID);
 
         /// <summary>
         /// Persisteert de wijzigingen van het persoonsobject in de database.

@@ -10,6 +10,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication1", "Cons
 		{7D4E0667-A44D-4AED-9227-3902D9412F9A} = {7D4E0667-A44D-4AED-9227-3902D9412F9A}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CgWeb", "CgWeb\CgWeb.csproj", "{424FB76D-3284-48E7-9D6F-BB19CC0054C7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7D4E0667-A44D-4AED-9227-3902D9412F9A} = {7D4E0667-A44D-4AED-9227-3902D9412F9A}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +33,10 @@ Global
 		{79015D65-7FED-4017-AE6A-9D7E6E9CE1BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79015D65-7FED-4017-AE6A-9D7E6E9CE1BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79015D65-7FED-4017-AE6A-9D7E6E9CE1BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{424FB76D-3284-48E7-9D6F-BB19CC0054C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{424FB76D-3284-48E7-9D6F-BB19CC0054C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{424FB76D-3284-48E7-9D6F-BB19CC0054C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{424FB76D-3284-48E7-9D6F-BB19CC0054C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

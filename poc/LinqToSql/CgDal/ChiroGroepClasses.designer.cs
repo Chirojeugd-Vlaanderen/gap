@@ -132,19 +132,19 @@ namespace CgDal
 			}
 		}
 		
-		public System.Data.Linq.Table<vPersoonsInfo> vPersoonsInfos
-		{
-			get
-			{
-				return this.GetTable<vPersoonsInfo>();
-			}
-		}
-		
 		public System.Data.Linq.Table<ChiroGroep> ChiroGroeps
 		{
 			get
 			{
 				return this.GetTable<ChiroGroep>();
+			}
+		}
+		
+		public System.Data.Linq.Table<vPersoonsInfo> vPersoonsInfos
+		{
+			get
+			{
+				return this.GetTable<vPersoonsInfo>();
 			}
 		}
 	}
@@ -1732,6 +1732,123 @@ namespace CgDal
 		}
 	}
 	
+	[Table(Name="grp.ChiroGroep")]
+	[DataContract()]
+	public partial class ChiroGroep : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _chiroGroepID;
+		
+		private EntityRef<Groep> _Groep;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnchiroGroepIDChanging(int value);
+    partial void OnchiroGroepIDChanged();
+    #endregion
+		
+		public ChiroGroep()
+		{
+			this.Initialize();
+		}
+		
+		[Column(Storage="_chiroGroepID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[DataMember(Order=1)]
+		public int chiroGroepID
+		{
+			get
+			{
+				return this._chiroGroepID;
+			}
+			set
+			{
+				if ((this._chiroGroepID != value))
+				{
+					if (this._Groep.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnchiroGroepIDChanging(value);
+					this.SendPropertyChanging();
+					this._chiroGroepID = value;
+					this.SendPropertyChanged("chiroGroepID");
+					this.OnchiroGroepIDChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Groep_ChiroGroep", Storage="_Groep", ThisKey="chiroGroepID", OtherKey="GroepID", IsForeignKey=true)]
+		public Groep Groep
+		{
+			get
+			{
+				return this._Groep.Entity;
+			}
+			set
+			{
+				Groep previousValue = this._Groep.Entity;
+				if (((previousValue != value) 
+							|| (this._Groep.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Groep.Entity = null;
+						previousValue.ChiroGroep = null;
+					}
+					this._Groep.Entity = value;
+					if ((value != null))
+					{
+						value.ChiroGroep = this;
+						this._chiroGroepID = value.GroepID;
+					}
+					else
+					{
+						this._chiroGroepID = default(int);
+					}
+					this.SendPropertyChanged("Groep");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._Groep = default(EntityRef<Groep>);
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+	}
+	
 	[Table(Name="pers.vPersoonsInfo")]
 	[DataContract()]
 	public partial class vPersoonsInfo
@@ -1750,6 +1867,8 @@ namespace CgDal
 		private string _StraatNaam;
 		
 		private System.Nullable<int> _HuisNr;
+		
+		private string _Bus;
 		
 		private int _PostNr;
 		
@@ -1888,8 +2007,25 @@ namespace CgDal
 			}
 		}
 		
-		[Column(Storage="_PostNr", DbType="Int NOT NULL")]
+		[Column(Storage="_Bus", DbType="VarChar(10)")]
 		[DataMember(Order=8)]
+		public string Bus
+		{
+			get
+			{
+				return this._Bus;
+			}
+			set
+			{
+				if ((this._Bus != value))
+				{
+					this._Bus = value;
+				}
+			}
+		}
+		
+		[Column(Storage="_PostNr", DbType="Int NOT NULL")]
+		[DataMember(Order=9)]
 		public int PostNr
 		{
 			get
@@ -1906,7 +2042,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_SubGemeente", DbType="VarChar(80) NOT NULL", CanBeNull=false)]
-		[DataMember(Order=9)]
+		[DataMember(Order=10)]
 		public string SubGemeente
 		{
 			get
@@ -1923,7 +2059,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_GeboorteDatum", DbType="SmallDateTime")]
-		[DataMember(Order=10)]
+		[DataMember(Order=11)]
 		public System.Nullable<System.DateTime> GeboorteDatum
 		{
 			get
@@ -1940,7 +2076,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_EindeInstapPeriode", DbType="DateTime")]
-		[DataMember(Order=11)]
+		[DataMember(Order=12)]
 		public System.Nullable<System.DateTime> EindeInstapPeriode
 		{
 			get
@@ -1957,7 +2093,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_NonActief", DbType="Bit")]
-		[DataMember(Order=12)]
+		[DataMember(Order=13)]
 		public System.Nullable<bool> NonActief
 		{
 			get
@@ -1974,7 +2110,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_TelefoonNummer", DbType="VarChar(160)")]
-		[DataMember(Order=13)]
+		[DataMember(Order=14)]
 		public string TelefoonNummer
 		{
 			get
@@ -1991,7 +2127,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_EMail", DbType="VarChar(160)")]
-		[DataMember(Order=14)]
+		[DataMember(Order=15)]
 		public string EMail
 		{
 			get
@@ -2005,123 +2141,6 @@ namespace CgDal
 					this._EMail = value;
 				}
 			}
-		}
-	}
-	
-	[Table(Name="grp.ChiroGroep")]
-	[DataContract()]
-	public partial class ChiroGroep : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _chiroGroepID;
-		
-		private EntityRef<Groep> _Groep;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnchiroGroepIDChanging(int value);
-    partial void OnchiroGroepIDChanged();
-    #endregion
-		
-		public ChiroGroep()
-		{
-			this.Initialize();
-		}
-		
-		[Column(Storage="_chiroGroepID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		[DataMember(Order=1)]
-		public int chiroGroepID
-		{
-			get
-			{
-				return this._chiroGroepID;
-			}
-			set
-			{
-				if ((this._chiroGroepID != value))
-				{
-					if (this._Groep.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnchiroGroepIDChanging(value);
-					this.SendPropertyChanging();
-					this._chiroGroepID = value;
-					this.SendPropertyChanged("chiroGroepID");
-					this.OnchiroGroepIDChanged();
-				}
-			}
-		}
-		
-		[Association(Name="Groep_ChiroGroep", Storage="_Groep", ThisKey="chiroGroepID", OtherKey="GroepID", IsForeignKey=true)]
-		public Groep Groep
-		{
-			get
-			{
-				return this._Groep.Entity;
-			}
-			set
-			{
-				Groep previousValue = this._Groep.Entity;
-				if (((previousValue != value) 
-							|| (this._Groep.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Groep.Entity = null;
-						previousValue.ChiroGroep = null;
-					}
-					this._Groep.Entity = value;
-					if ((value != null))
-					{
-						value.ChiroGroep = this;
-						this._chiroGroepID = value.GroepID;
-					}
-					else
-					{
-						this._chiroGroepID = default(int);
-					}
-					this.SendPropertyChanged("Groep");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void Initialize()
-		{
-			this._Groep = default(EntityRef<Groep>);
-			OnCreated();
-		}
-		
-		[OnDeserializing()]
-		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnDeserializing(StreamingContext context)
-		{
-			this.Initialize();
 		}
 	}
 }

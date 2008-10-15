@@ -61,7 +61,7 @@ namespace CgDal
         /// <param name="Page">Paginanummer, te beginnen van 0</param>
         /// <param name="PageSize">Aantal records per pagina</param>
         /// <returns>Een lijst met objecten van het type 'vPersoonsInfo'</returns>
-        public IList<vPersoonsInfo> GelieerdePersonenInfoGet(int GroepID, int Page, int PageSize)
+        public IList<vPersoonsInfo> GelieerdePersonenInfoGet(int GroepID)
         {
             using (ChiroGroepClassesDataContext context = new ChiroGroepClassesDataContext())
             {
@@ -71,7 +71,7 @@ namespace CgDal
                             where pi.GroepID == GroepID
                             select pi;
 
-                return lijst.ToList<vPersoonsInfo>().GetRange(Page * PageSize, PageSize);
+                return lijst.ToList<vPersoonsInfo>();
             }
         }
 

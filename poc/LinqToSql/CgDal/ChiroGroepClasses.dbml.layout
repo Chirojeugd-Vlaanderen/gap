@@ -66,31 +66,31 @@
         <classShapeMoniker Id="992f5511-0e62-4ea7-9cc2-73b6b6d6ca39" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(6.75 : 4.91093180338542); (6.75 : 6)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(6.75 : 4.91093180338542); (6.75 : 6)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/ChiroGroepClassesDataContext/Persoon/Persoon_GelieerdePersoon" />
       <nodes>
         <classShapeMoniker Id="74b08ff5-be88-4bc9-a455-3dc6eb460ff4" />
         <classShapeMoniker Id="992f5511-0e62-4ea7-9cc2-73b6b6d6ca39" />
       </nodes>
     </associationConnector>
-    <classShape Id="01384038-3a07-4db7-bf94-32dc91c5bde8" absoluteBounds="8.625, 5.125, 2, 3.0683211263020831">
-      <DataClassMoniker Name="/ChiroGroepClassesDataContext/vPersoonsInfo" />
-      <nestedChildShapes>
-        <elementListCompartment Id="6efc18b0-9cdb-4c1a-ae96-d3d29dc88414" absoluteBounds="8.64, 5.585, 1.9700000000000002, 2.508321126302083" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
     <classShape Id="ca584774-0c75-45cc-939e-11122cdab6d5" absoluteBounds="3.625, 8.75, 2, 0.93180582682291679">
       <DataClassMoniker Name="/ChiroGroepClassesDataContext/ChiroGroep" />
       <nestedChildShapes>
         <elementListCompartment Id="169a0daa-7abb-48b3-bb46-a1a88ab0cd2b" absoluteBounds="3.64, 9.21, 1.9700000000000002, 0.37180582682291669" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2 : 7.25354248046875); (2 : 9.21590291341146); (3.625 : 9.21590291341146)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2 : 7.25354248046875); (2 : 9.21590291341146); (3.625 : 9.21590291341146)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ChiroGroepClassesDataContext/Groep/Groep_ChiroGroep" />
       <nodes>
         <classShapeMoniker Id="e72d5562-3742-4737-af42-821a4a81a532" />
         <classShapeMoniker Id="ca584774-0c75-45cc-939e-11122cdab6d5" />
       </nodes>
     </associationConnector>
+    <classShape Id="f0e376e7-1192-48d6-9162-a1bfc60cd929" absoluteBounds="7.125, 5.625, 2, 3.23266845703125">
+      <DataClassMoniker Name="/ChiroGroepClassesDataContext/vPersoonsInfo" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c49f36a7-6b9c-4d2d-8faf-e3ce80251a30" absoluteBounds="7.1400000000000006, 6.085, 1.9700000000000002, 2.67266845703125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

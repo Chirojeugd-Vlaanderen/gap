@@ -68,6 +68,12 @@
       <Association Name="Persoon_GelieerdePersoon" Member="Persoon" ThisKey="PersoonID" OtherKey="PersoonID" Type="Persoon" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="grp.ChiroGroep" Member="ChiroGroeps">
+    <Type Name="ChiroGroep">
+      <Column Name="chiroGroepID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Groep_ChiroGroep" Member="Groep" ThisKey="chiroGroepID" OtherKey="GroepID" Type="Groep" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Table Name="pers.vPersoonsInfo" Member="vPersoonsInfos">
     <Type Name="vPersoonsInfo">
       <Column Name="GroepID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -77,6 +83,7 @@
       <Column Name="Categorieen" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
       <Column Name="StraatNaam" Type="System.String" DbType="VarChar(80) NOT NULL" CanBeNull="false" />
       <Column Name="HuisNr" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Bus" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
       <Column Name="PostNr" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="SubGemeente" Type="System.String" DbType="VarChar(80) NOT NULL" CanBeNull="false" />
       <Column Name="GeboorteDatum" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
@@ -84,12 +91,6 @@
       <Column Name="NonActief" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="TelefoonNummer" Type="System.String" DbType="VarChar(160)" CanBeNull="true" />
       <Column Name="EMail" Type="System.String" DbType="VarChar(160)" CanBeNull="true" />
-    </Type>
-  </Table>
-  <Table Name="grp.ChiroGroep" Member="ChiroGroeps">
-    <Type Name="ChiroGroep">
-      <Column Name="chiroGroepID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Association Name="Groep_ChiroGroep" Member="Groep" ThisKey="chiroGroepID" OtherKey="GroepID" Type="Groep" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>
