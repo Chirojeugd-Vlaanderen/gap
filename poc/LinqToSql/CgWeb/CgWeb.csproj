@@ -70,6 +70,20 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Persoon.aspx.cs">
+      <DependentUpon>Persoon.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Persoon.aspx.designer.cs">
+      <DependentUpon>Persoon.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PersoonUserControl.ascx.cs">
+      <DependentUpon>PersoonUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PersoonUserControl.ascx.designer.cs">
+      <DependentUpon>PersoonUserControl.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\PersonenServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -92,6 +106,8 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="Persoon.aspx" />
+    <Content Include="PersoonUserControl.ascx" />
     <Content Include="Site1.Master" />
   </ItemGroup>
   <ItemGroup>
