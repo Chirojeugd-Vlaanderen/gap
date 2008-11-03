@@ -23,10 +23,10 @@ namespace CgDal
             using (ChiroGroepClassesDataContext context = new ChiroGroepClassesDataContext())
             {
                 context.ObjectTrackingEnabled = true;
-                // Het lagenmodel maakt objecttracking onmogelijk, dus zetten
-                // we dat hier alvast uit.
 
-                return context.Persoons.SingleOrDefault<Persoon>(p => p.PersoonID == persoonID);
+                return (from p in context.Persoons
+                        where p.PersoonID == persoonID
+                        select p).SingleOrDefault<Persoon>();
             }
         }
 
@@ -48,11 +48,9 @@ namespace CgDal
                 context.LoadOptions = options;
                 context.ObjectTrackingEnabled = true;
 
-                var res = context.Persoons.SingleOrDefault<Persoon>(p => p.PersoonID == persoonID);
-
-                Debug.WriteLine(res.PersoonsAdres[0].Adres.HuisNr);
-
-                return res;
+                return (from p in context.Persoons
+                        where p.PersoonID == persoonID
+                        select p).SingleOrDefault<Persoon>();
             }
         }
 
