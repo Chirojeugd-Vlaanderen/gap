@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Data.Linq;
+using System.IO;
 
 namespace CgDal
 {
@@ -21,7 +22,7 @@ namespace CgDal
         {
             using (ChiroGroepClassesDataContext context = new ChiroGroepClassesDataContext())
             {
-                context.ObjectTrackingEnabled = false;
+                context.ObjectTrackingEnabled = true;
                 // Het lagenmodel maakt objecttracking onmogelijk, dus zetten
                 // we dat hier alvast uit.
 
@@ -45,7 +46,7 @@ namespace CgDal
 
                 context.DeferredLoadingEnabled = false;
                 context.LoadOptions = options;
-                context.ObjectTrackingEnabled = false;
+                context.ObjectTrackingEnabled = true;
 
                 var res = context.Persoons.SingleOrDefault<Persoon>(p => p.PersoonID == persoonID);
 
@@ -85,74 +86,46 @@ namespace CgDal
         /// <returns>ID van de geupdatete persoon (vooral interessant bij insert)</returns>
         public int PersoonUpdaten(Persoon persoon)
         {
+            StringBuilder sb = new StringBuilder();
+            StringWriter sw = new StringWriter(sb);
+
             Debug.Assert(persoon != null);
 
             using (ChiroGroepClassesDataContext context = new ChiroGroepClassesDataContext())
             {
-                switch (persoon.Status)
+                context.Log = sw;
+
+                if (persoon.PersoonID <= 0)
                 {
-                    case EntityStatus.Geen:
-                        break;
-                    case EntityStatus.Nieuw:
-                        context.Persoons.InsertOnSubmit(persoon);
-                        if (persoon.PersoonsAdres != null)
-                        {
-                            context.PersoonsAdres.InsertAllOnSubmit<PersoonsAdres>(persoon.PersoonsAdres);
-                        }
-                        break;
-                    case EntityStatus.Gewijzigd:
-                        context.Persoons.Attach(persoon, true);
-
-                        #region zo nodig adresgegevens updaten
-                        if (persoon.PersoonsAdres != null)
-                        {
-                            // attach gewijzigde en verwijderde persoonsadressen
-                            context.PersoonsAdres.AttachAll<PersoonsAdres>(
-                                persoon.PersoonsAdres.Where<PersoonsAdres>(pa => pa.Status == EntityStatus.Gewijzigd || pa.Status == EntityStatus.Verwijderd));
-
-                            // markeer nieuwe persoonsadressen als 'toe te voegen'
-                            context.PersoonsAdres.InsertAllOnSubmit<PersoonsAdres>(
-                                persoon.PersoonsAdres.Where<PersoonsAdres>(pa => pa.Status == EntityStatus.Nieuw));
-
-                            // markeer (nu geattachte) te verwijderen adressen
-                            context.PersoonsAdres.DeleteAllOnSubmit<PersoonsAdres>(
-                                persoon.PersoonsAdres.Where<PersoonsAdres>(pa => pa.Status == EntityStatus.Verwijderd));
-                        }
-                        #endregion
-
-                        #region zo nodig communicatievormen updaten
-                        if (persoon.CommunicatieVorms != null)
-                        {
-                            // attach gewijzigde en verwijderde persoonsadressen
-                            context.CommunicatieVorms.AttachAll<CommunicatieVorm>(
-                                persoon.CommunicatieVorms.Where<CommunicatieVorm>(pa => pa.Status == EntityStatus.Gewijzigd || pa.Status == EntityStatus.Verwijderd));
-
-                            // markeer nieuwe persoonsadressen als 'toe te voegen'
-                            context.CommunicatieVorms.InsertAllOnSubmit<CommunicatieVorm>(
-                                persoon.CommunicatieVorms.Where<CommunicatieVorm>(pa => pa.Status == EntityStatus.Nieuw));
-
-                            // markeer (nu geattachte) te verwijderen adressen
-                            context.CommunicatieVorms.DeleteAllOnSubmit<CommunicatieVorm>(
-                                persoon.CommunicatieVorms.Where<CommunicatieVorm>(pa => pa.Status == EntityStatus.Verwijderd));
-                        }
-                        #endregion
-
-
-                        break;
-                    case EntityStatus.Verwijderd:
-                        context.Persoons.Attach(persoon, true);
-
-                        // Ik ga hier geen children (PersoonsAdres,...) verwijderen.
-                        // Ik verwacht hier een exceptie als er afhankelijkheden
-                        // zijn naar de te verwijderen persoon.
-
-                        context.Persoons.DeleteOnSubmit(persoon);
-                        break;
-                    default:
-                        break;
+                    context.Persoons.InsertOnSubmit(persoon);
                 }
+                else
+                {
+                    context.Persoons.Attach(persoon, true);
+                }
+
+                // Bestaande telefoonnrs opnieuw attachen
+                context.CommunicatieVorms.AttachAll<CommunicatieVorm>
+                    (from cv in persoon.CommunicatieVorms
+                     where cv.CommunicatieVormID > 0
+                     select cv, true);
+
+                // Nieuwe telefoonnrs moeten geïnsert worden
+                context.CommunicatieVorms.InsertAllOnSubmit<CommunicatieVorm>
+                    (from cv in persoon.CommunicatieVorms
+                     where cv.CommunicatieVormID <= 0
+                     select cv);
+
+                // Verwijderde telefoonnrs
+                context.CommunicatieVorms.DeleteAllOnSubmit<CommunicatieVorm>
+                    (from cv in persoon.CommunicatieVorms
+                     where cv.CommunicatieVormID > 0 && cv.TeVerwijderen == true
+                     select cv);
+                
                 context.SubmitChanges();
             }
+
+            Debug.WriteLine(sb.ToString());
             return persoon.PersoonID;
         }
     }

@@ -8,11 +8,17 @@ namespace ConsoleApplication1
 {
     class Program
     {
-        static readonly int testPersoon = 1894;
-        static readonly int testGroep = 310;
+        static readonly int testPersoonID = 1894;
+        static readonly int testGroepID = 310;
 
-        static readonly PersonenServiceReference.PersonenServiceClient service
-            = new ConsoleApplication1.PersonenServiceReference.PersonenServiceClient();
+        static PersonenServiceReference.PersonenServiceClient service
+        {
+            get
+            {
+                return new ConsoleApplication1.PersonenServiceReference.PersonenServiceClient();
+            }
+        }
+
 
         /// <summary>
         /// Toont naam, voornaam en adresID's van een persoon op de stdout
@@ -28,11 +34,51 @@ namespace ConsoleApplication1
                 //Console.WriteLine(String.Format("\tHuisNr: {0}"
                 //    , pa.Adres.HuisNr));
             }
+            foreach (CommunicatieVorm cv in p.CommunicatieVorms)
+            {
+                Console.WriteLine(cv.Nummer);
+            }
         }
 
 
         // Hieronder een hele hoop experimenten, waarvan er 1 opgeroepen
         // wordt in main().
+
+        /// <summary>
+        /// Experiment met manipulaties van telefoonnrs.
+        /// </summary>
+        static void TelefoonNrExperiment()
+        {
+            Persoon p = service.PersoonMetDetailsGet(testPersoonID);
+
+            Console.WriteLine("Oorspronkelijke persoon:");
+            PersoonTonen(p);
+
+            // Laatste nummer wijzigen
+            p.CommunicatieVorms[p.CommunicatieVorms.Count - 1].Nummer = "015/339126";   //nummer wijzigen
+
+            CommunicatieVorm nieuwNr = new CommunicatieVorm();
+            nieuwNr.CommunicatieTypeID = 1; // telefoonnr.
+            nieuwNr.Nummer = String.Format("Test {0}", DateTime.Now.TimeOfDay);
+
+            p.CommunicatieVorms.Add(nieuwNr);
+
+            service.PersoonUpdaten(p);
+
+            Persoon q = service.PersoonMetDetailsGet(testPersoonID);
+
+            Console.WriteLine("\nNr gewijzigd en toegevoegd:");
+            PersoonTonen(q);
+
+            // eerste nummer verwijderen
+            q.CommunicatieVorms[0].TeVerwijderen = true;
+            service.PersoonUpdaten(q);
+
+            Persoon r = service.PersoonMetDetailsGet(testPersoonID);
+
+            Console.WriteLine("\nEerste nr verwijderd:");
+            PersoonTonen(r);
+        }
 
 
         /// <summary>
@@ -40,7 +86,16 @@ namespace ConsoleApplication1
         /// </summary>
         static void PersoonWijzigenExperiment()
         {
-            Persoon p = service.PersoonGet(testPersoon);
+            Persoon np = new Persoon();
+
+            //np.VoorNaam = "Jos";
+            //np.Naam = "Bosmans";
+            //np.GeslachtS = GeslachtsSoort.Man;
+            //service.PersoonUpdaten(np);
+
+
+            Persoon p = service.PersoonGet(testPersoonID);
+            Persoon q = service.PersoonGet(testPersoonID);
             string nieuweVoornaam;
 
             PersoonTonen(p);
@@ -49,14 +104,13 @@ namespace ConsoleApplication1
             nieuweVoornaam = Console.ReadLine();
 
             p.VoorNaam = nieuweVoornaam;
-            p.Status = EntityStatus.Gewijzigd;
+            q.VoorNaam = "blabla";
 
+            //service.PersoonUpdaten(q);
             service.PersoonUpdaten(p);
 
-            
-            Persoon q = service.PersoonGet(testPersoon);
 
-            PersoonTonen(q);
+
 
         }
 
@@ -66,16 +120,14 @@ namespace ConsoleApplication1
         static void PersoonToevoegenVerwijderenExperiment()
         {
             Persoon p = new Persoon();
-            
+
             p.Naam = "Bosmans";
             p.VoorNaam = "Jos";
-            p.Status = EntityStatus.Nieuw;
             p.PersoonID = service.PersoonUpdaten(p);
 
             PersoonTonen(p);
 
             Persoon q = service.PersoonGet(p.PersoonID);
-            q.Status = EntityStatus.Verwijderd;
             service.PersoonUpdaten(q);
 
             Persoon r = service.PersoonGet(p.PersoonID);
@@ -91,76 +143,13 @@ namespace ConsoleApplication1
             }
         }
 
-        /// <summary>
-        /// Doet een en ander met personen.
-        /// (Wordt niet gebruikt in de huidige applicatie, maar staat
-        /// er nog voor als het nog eens nodig is.)
-        /// </summary>
-        static void AdressenExperiment()
-        {
-            bool einde = false;
-            int keuze, adres;
-            PersoonsAdres persoonsAdres;
-
-            do
-            {
-                Persoon persoon = service.PersoonMetDetailsGet(testPersoon);
-                PersoonTonen(persoon);
-
-                Console.WriteLine("(1) Adres toekennen, (2) Toegekenning verwijderen, (0) einde: ");
-                keuze = int.Parse(Console.ReadLine());
-
-                if (keuze != 0)
-                {
-                    switch (keuze)
-                    {
-                        case 1:
-                            Console.WriteLine("AdresId: ");
-                            adres = int.Parse(Console.ReadLine());
-
-                            persoonsAdres = new PersoonsAdres();
-                            persoonsAdres.AdresID = adres;
-                            persoonsAdres.AdresTypeID = 1;
-                            persoonsAdres.IsStandaard = false;
-                            persoonsAdres.PersoonID = persoon.PersoonID;
-                            persoonsAdres.Status = EntityStatus.Nieuw;
-
-
-                            // Om onderstaande method op te roepen, moet ik CgDal referencen!
-
-                            persoon.PersoonsAdres.Add(persoonsAdres);
-                            persoonsAdres.Status = EntityStatus.Nieuw;
-                            break;
-                        case 2:
-                            Console.WriteLine("AdresId: ");
-                            adres = int.Parse(Console.ReadLine());
-
-                            persoonsAdres = persoon.PersoonsAdres.SingleOrDefault<PersoonsAdres>(
-                                a => a.AdresID == adres);
-                            persoonsAdres.Status = EntityStatus.Verwijderd;
-                            break;
-                        default:
-                            Console.WriteLine("Huh?");
-                            break;
-                    }
-
-                    persoon.Status = EntityStatus.Gewijzigd;
-                    service.PersoonUpdaten(persoon);
-                }
-                else
-                {
-                    einde = true;
-                }
-            }
-            while (!einde);
-        }
 
         /// <summary>
         /// LijstExperiment - haalt lijst over, en drukt af
         /// </summary>
         static void LijstExperiment()
         {
-            var lijst = service.GelieerdePersonenInfoGet(testGroep); // tweede pagina, paginagrootte = 50
+            var lijst = service.GelieerdePersonenInfoGet(testGroepID); // tweede pagina, paginagrootte = 50
 
             foreach (vPersoonsInfo i in lijst)
             {
@@ -188,8 +177,8 @@ namespace ConsoleApplication1
             using (GroepenServiceReference.GroepenServiceClient service
                 = new ConsoleApplication1.GroepenServiceReference.GroepenServiceClient())
             {
-                ChiroGroep cg = service.ChiroGroepGet(testGroep);
-                Groep g = service.ChiroGroepGroepGet(testGroep);
+                ChiroGroep cg = service.ChiroGroepGet(testGroepID);
+                Groep g = service.ChiroGroepGroepGet(testGroepID);
 
                 // werkt wel:
                 Console.WriteLine(String.Format("ID ChiroGroep: {0}", g.ChiroGroep.chiroGroepID));
@@ -208,12 +197,14 @@ namespace ConsoleApplication1
 
         static void Main(string[] Arguments)
         {
-            PersoonWijzigenExperiment();
+            // PersoonWijzigenExperiment();
             // PersoonToevoegenVerwijderenExperiment();
             // AdressenExperiment();
             // LijstExperiment();
 
-            //Rariteit();
+            // Rariteit();
+
+            TelefoonNrExperiment();
 
             Console.ReadLine();
         }

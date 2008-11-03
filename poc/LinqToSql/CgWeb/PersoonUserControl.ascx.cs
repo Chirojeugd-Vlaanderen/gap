@@ -48,10 +48,7 @@ namespace CgWeb
             persoon.Naam = naamTextBox.Text;
             persoon.VoorNaam = voorNaamTextBox.Text;
 
-            if (persoon.Status == EntityStatus.Geen)
-            {
-                persoon.Status = EntityStatus.Gewijzigd;
-            }
+
         }
 
         protected void toevoegenButton_Click(object sender, EventArgs e)

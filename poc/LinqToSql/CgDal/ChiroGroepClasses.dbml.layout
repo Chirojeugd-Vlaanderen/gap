@@ -26,7 +26,7 @@
         <elementListCompartment Id="0eceac8e-1e16-4e20-82c2-549cdbfcfa72" absoluteBounds="0.64000000000000012, 3.335, 1.9700000000000002, 1.19354248046875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(6.5 : 3.73848964192708); (5.48958333333333 : 3.73848964192708 : JumpStart); (5.32291666666667 : 3.73848964192708 : JumpEnd); (4.0312525 : 3.73848964192708); (4.0312525 : 2.50354248046875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(6.5 : 3.73848964192708); (4.0312525 : 3.73848964192708); (4.0312525 : 2.50354248046875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ChiroGroepClassesDataContext/Persoon/Persoon_PersoonsAdres" />
       <nodes>
         <classShapeMoniker Id="74b08ff5-be88-4bc9-a455-3dc6eb460ff4" />
@@ -98,7 +98,7 @@
         <elementListCompartment Id="946eede9-af28-4a31-85e2-f0526d60be1c" absoluteBounds="4.64, 7.46, 1.9700000000000002, 1.5222371419270833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(6.5 : 4.18174732096354); (6.1249975 : 4.18174732096354); (6.1249975 : 7)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(6.5 : 4.18174732096354); (6.1249975 : 4.18174732096354); (6.1249975 : 7)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ChiroGroepClassesDataContext/Persoon/Persoon_CommunicatieVorm" />
       <nodes>
         <classShapeMoniker Id="74b08ff5-be88-4bc9-a455-3dc6eb460ff4" />

@@ -3,60 +3,40 @@
   <xs:import schemaLocation="http://localhost:4227/PersonenService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:import schemaLocation="http://localhost:4227/PersonenService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System.Data.Linq" />
   <xs:complexType name="Persoon">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:BasisEntity">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="AdNummer" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="Naam" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="VoorNaam" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="GeboorteDatum" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="Geslacht" type="xs:int" />
-          <xs:element minOccurs="0" name="ChiroLeefTijd" type="xs:int" />
-          <xs:element minOccurs="0" name="SterfDatum" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="Guid" nillable="true" type="ser:guid" />
-          <xs:element minOccurs="0" name="PersoonID" type="xs:int" />
-          <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/System.Data.Linq" minOccurs="0" name="Versie" nillable="true" type="q1:Binary" />
-          <xs:element minOccurs="0" name="PersoonsAdres" nillable="true" type="tns:ArrayOfPersoonsAdres">
-            <xs:annotation>
-              <xs:appinfo>
-                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-              </xs:appinfo>
-            </xs:annotation>
-          </xs:element>
-          <xs:element minOccurs="0" name="GelieerdePersoons" nillable="true" type="tns:ArrayOfGelieerdePersoon">
-            <xs:annotation>
-              <xs:appinfo>
-                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-              </xs:appinfo>
-            </xs:annotation>
-          </xs:element>
-          <xs:element minOccurs="0" name="CommunicatieVorms" nillable="true" type="tns:ArrayOfCommunicatieVorm">
-            <xs:annotation>
-              <xs:appinfo>
-                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-              </xs:appinfo>
-            </xs:annotation>
-          </xs:element>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="Persoon" nillable="true" type="tns:Persoon" />
-  <xs:complexType name="BasisEntity">
     <xs:sequence>
-      <xs:element minOccurs="0" name="Status" type="tns:EntityStatus" />
+      <xs:element minOccurs="0" name="AdNummer" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Naam" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="VoorNaam" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="GeboorteDatum" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ChiroLeefTijd" type="xs:int" />
+      <xs:element minOccurs="0" name="SterfDatum" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Guid" nillable="true" type="ser:guid" />
+      <xs:element minOccurs="0" name="PersoonID" type="xs:int" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/System.Data.Linq" minOccurs="0" name="Versie" nillable="true" type="q1:Binary" />
+      <xs:element minOccurs="0" name="PersoonsAdres" nillable="true" type="tns:ArrayOfPersoonsAdres">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="GelieerdePersoons" nillable="true" type="tns:ArrayOfGelieerdePersoon">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CommunicatieVorms" nillable="true" type="tns:ArrayOfCommunicatieVorm">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="BasisEntity" nillable="true" type="tns:BasisEntity" />
-  <xs:simpleType name="EntityStatus">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Geen" />
-      <xs:enumeration value="Nieuw" />
-      <xs:enumeration value="Gewijzigd" />
-      <xs:enumeration value="Verwijderd" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="EntityStatus" nillable="true" type="tns:EntityStatus" />
+  <xs:element name="Persoon" nillable="true" type="tns:Persoon" />
   <xs:complexType name="ArrayOfPersoonsAdres">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="PersoonsAdres" nillable="true" type="tns:PersoonsAdres" />
@@ -78,6 +58,12 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="PersoonsAdres" nillable="true" type="tns:PersoonsAdres" />
+  <xs:complexType name="BasisEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TeVerwijderen" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BasisEntity" nillable="true" type="tns:BasisEntity" />
   <xs:complexType name="ArrayOfGelieerdePersoon">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="GelieerdePersoon" nillable="true" type="tns:GelieerdePersoon" />

@@ -207,8 +207,8 @@ namespace CgDal
     partial void OnVoorNaamChanged();
     partial void OnGeboorteDatumChanging(System.Nullable<System.DateTime> value);
     partial void OnGeboorteDatumChanged();
-    partial void OnGeslachtChanging(int value);
-    partial void OnGeslachtChanged();
+    partial void OnGeslachtIntChanging(int value);
+    partial void OnGeslachtIntChanged();
     partial void OnChiroLeefTijdChanging(int value);
     partial void OnChiroLeefTijdChanged();
     partial void OnSterfDatumChanging(System.Nullable<System.DateTime> value);
@@ -310,9 +310,8 @@ namespace CgDal
 			}
 		}
 		
-		[Column(Storage="_Geslacht", DbType="Int NOT NULL", UpdateCheck=UpdateCheck.Never)]
-		[DataMember(Order=5)]
-		public int Geslacht
+		[Column(Name="Geslacht", Storage="_Geslacht", DbType="Int NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		private int GeslachtInt
 		{
 			get
 			{
@@ -322,17 +321,17 @@ namespace CgDal
 			{
 				if ((this._Geslacht != value))
 				{
-					this.OnGeslachtChanging(value);
+					this.OnGeslachtIntChanging(value);
 					this.SendPropertyChanging();
 					this._Geslacht = value;
-					this.SendPropertyChanged("Geslacht");
-					this.OnGeslachtChanged();
+					this.SendPropertyChanged("GeslachtInt");
+					this.OnGeslachtIntChanged();
 				}
 			}
 		}
 		
 		[Column(Storage="_ChiroLeefTijd", DbType="Int NOT NULL", UpdateCheck=UpdateCheck.Never)]
-		[DataMember(Order=6)]
+		[DataMember(Order=5)]
 		public int ChiroLeefTijd
 		{
 			get
@@ -353,7 +352,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_SterfDatum", DbType="SmallDateTime", UpdateCheck=UpdateCheck.Never)]
-		[DataMember(Order=7)]
+		[DataMember(Order=6)]
 		public System.Nullable<System.DateTime> SterfDatum
 		{
 			get
@@ -374,7 +373,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_Guid", DbType="UniqueIdentifier", UpdateCheck=UpdateCheck.Never)]
-		[DataMember(Order=8)]
+		[DataMember(Order=7)]
 		public System.Nullable<System.Guid> Guid
 		{
 			get
@@ -395,7 +394,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_PersoonID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true, UpdateCheck=UpdateCheck.Never)]
-		[DataMember(Order=9)]
+		[DataMember(Order=8)]
 		public int PersoonID
 		{
 			get
@@ -416,7 +415,7 @@ namespace CgDal
 		}
 		
 		[Column(Storage="_Versie", AutoSync=AutoSync.Always, DbType="rowversion", CanBeNull=true, IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
-		[DataMember(Order=10)]
+		[DataMember(Order=9)]
 		public System.Data.Linq.Binary Versie
 		{
 			get
@@ -437,7 +436,7 @@ namespace CgDal
 		}
 		
 		[Association(Name="Persoon_PersoonsAdres", Storage="_PersoonsAdres", ThisKey="PersoonID", OtherKey="PersoonID")]
-		[DataMember(Order=11, EmitDefaultValue=false)]
+		[DataMember(Order=10, EmitDefaultValue=false)]
 		public EntitySet<PersoonsAdres> PersoonsAdres
 		{
 			get
@@ -456,7 +455,7 @@ namespace CgDal
 		}
 		
 		[Association(Name="Persoon_GelieerdePersoon", Storage="_GelieerdePersoons", ThisKey="PersoonID", OtherKey="PersoonID")]
-		[DataMember(Order=12, EmitDefaultValue=false)]
+		[DataMember(Order=11, EmitDefaultValue=false)]
 		public EntitySet<GelieerdePersoon> GelieerdePersoons
 		{
 			get
@@ -475,7 +474,7 @@ namespace CgDal
 		}
 		
 		[Association(Name="Persoon_CommunicatieVorm", Storage="_CommunicatieVorms", ThisKey="PersoonID", OtherKey="PersoonID")]
-		[DataMember(Order=13, EmitDefaultValue=false)]
+		[DataMember(Order=12, EmitDefaultValue=false)]
 		public EntitySet<CommunicatieVorm> CommunicatieVorms
 		{
 			get

@@ -7,17 +7,6 @@ using System.Runtime.Serialization;
 namespace CgDal
 {
     /// <summary>
-    /// Geeft aan of een entity nieuw, gewijzigd of verwijderd is.
-    /// </summary>
-    public enum EntityStatus
-    {
-        Geen = 0,
-        Nieuw = 1,
-        Gewijzigd = 2,
-        Verwijderd = 3
-    }
-
-    /// <summary>
     /// We zullen alle gegenereerde entity's laten erven van BasisEntity,
     /// zodat alle entity's weten welke status ze hebben.
     /// Via partial classes krijgen we dat wel in orde.
@@ -26,10 +15,11 @@ namespace CgDal
     public class BasisEntity
     {
         /// <summary>
-        /// De status van de entity: nieuw, gewijzigd of verwijderd
+        /// vlag om aan de service duidelijk te maken dat een entity
+        /// verwijderd moet worden.
         /// </summary>
 
         [DataMember]
-        public EntityStatus Status {get; set;}
+        public bool TeVerwijderen {get; set;}
     }
 }

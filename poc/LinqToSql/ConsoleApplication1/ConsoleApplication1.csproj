@@ -88,18 +88,6 @@
     <WCFMetadataStorage Include="Service References\PersonenServiceReference\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\PersonenServiceReference\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\PersonenServiceReference\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\PersonenServiceReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Properties\DataSources\CgDal.ChiroGroep.datasource" />
     <None Include="Properties\DataSources\CgDal.Groep.datasource" />
   </ItemGroup>
@@ -122,14 +110,26 @@
     <None Include="Service References\GroepenServiceReference\GroepenService1.disco" />
     <None Include="Service References\GroepenServiceReference\GroepenService1.wsdl" />
     <None Include="Service References\GroepenServiceReference\GroepenService43.xsd" />
-    <None Include="Service References\PersonenServiceReference\PersonenService4.xsd" />
+    <None Include="Service References\PersonenServiceReference\PersonenService.xsd" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\PersonenServiceReference\PersonenService1.disco" />
-    <None Include="Service References\PersonenServiceReference\PersonenService1.wsdl" />
-    <None Include="Service References\PersonenServiceReference\PersonenService41.xsd" />
-    <None Include="Service References\PersonenServiceReference\PersonenService42.xsd" />
-    <None Include="Service References\PersonenServiceReference\PersonenService43.xsd" />
+    <None Include="Service References\PersonenServiceReference\PersonenService.disco" />
+    <None Include="Service References\PersonenServiceReference\PersonenService.wsdl" />
+    <None Include="Service References\PersonenServiceReference\PersonenService1.xsd" />
+    <None Include="Service References\PersonenServiceReference\PersonenService2.xsd" />
+    <None Include="Service References\PersonenServiceReference\PersonenService3.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\PersonenServiceReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\PersonenServiceReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\PersonenServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

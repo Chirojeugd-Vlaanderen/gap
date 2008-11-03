@@ -7,7 +7,7 @@
       <Column Name="Naam" Type="System.String" DbType="VarChar(160) NOT NULL" CanBeNull="false" />
       <Column Name="VoorNaam" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
       <Column Name="GeboorteDatum" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
-      <Column Name="Geslacht" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Geslacht" Member="GeslachtInt" Storage="_Geslacht" AccessModifier="Private" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ChiroLeefTijd" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="SterfDatum" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
       <Column Name="Guid" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />

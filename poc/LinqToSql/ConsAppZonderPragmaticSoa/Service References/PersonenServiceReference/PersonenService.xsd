@@ -8,7 +8,6 @@
       <xs:element minOccurs="0" name="Naam" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="VoorNaam" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="GeboorteDatum" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="Geslacht" type="xs:int" />
       <xs:element minOccurs="0" name="ChiroLeefTijd" type="xs:int" />
       <xs:element minOccurs="0" name="SterfDatum" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="Guid" nillable="true" type="ser:guid" />
