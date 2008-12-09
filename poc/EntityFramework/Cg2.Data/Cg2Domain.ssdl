@@ -1,0 +1,25 @@
+<Schema Namespace="Cg2.Core.Domain.Store" Alias="Self"
+  Provider="System.Data.SqlClient" ProviderManifestToken="2005"
+  xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+  <EntityContainer Name="grp">
+    <EntitySet Name="Groep" EntityType="Cg2.Core.Domain.Store.Groep" />
+    <EntitySet Name="ChiroGroep" EntityType="Cg2.Core.Domain.Store.ChiroGroep" />
+  </EntityContainer>
+  <EntityType Name="Groep">
+    <Key>
+      <PropertyRef Name="GroepID" />
+    </Key>
+    <Property Name="Code" Type="nvarchar(max)" />
+    <Property Name="GroepID" Type="int" Nullable="false"
+      StoreGeneratedPattern="Identity" />
+    <Property Name="Naam" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="OprichtingsJaar" Type="int" />
+    <Property Name="WebSite" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="ChiroGroep">
+    <Key>
+      <PropertyRef Name="ChiroGroepID" />
+    </Key>
+    <Property Name="ChiroGroepID" Type="int" Nullable="false" />
+  </EntityType>
+</Schema>
