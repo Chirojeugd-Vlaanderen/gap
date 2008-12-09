@@ -8,10 +8,7 @@ namespace Cg2.Data
 {
     public class Cg2ObjectContext: global::System.Data.Objects.ObjectContext
     {
-        #region entiteitcontainers
         private global::System.Data.Objects.ObjectQuery<Groep> _groepen;
-        private global::System.Data.Objects.ObjectQuery<ChiroGroep> _chiroGroepen;
-        #endregion
 
         #region constructors
         public Cg2ObjectContext() : base("name=Cg2ObjectContext", "Cg2ObjectContext") { }
@@ -30,18 +27,5 @@ namespace Cg2.Data
                 return this._groepen;
             }
         }
-
-        public global::System.Data.Objects.ObjectQuery<ChiroGroep> ChiroGroepen
-        {
-            get
-            {
-                if (this._chiroGroepen == null)
-                {
-                    this._chiroGroepen = base.CreateQuery<ChiroGroep>("[ChiroGroep]");
-                }
-                return this._chiroGroepen;
-            }
-        }
-
     }
 }

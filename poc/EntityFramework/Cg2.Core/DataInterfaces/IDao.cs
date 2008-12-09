@@ -16,7 +16,7 @@ namespace Cg2.Core.DataInterfaces
     /// <typeparam name="IdT">Type van het ID van de entiteit</typeparam>
     public interface IDao<T, IdT>
     {
-        T Ophalen(IdT id, bool locken);
+        T Ophalen(IdT id);
         List<T> AllesOphalen();
         T Bewaren(T entiteit);
         void Verwijderen(T entiteit);
@@ -30,6 +30,8 @@ namespace Cg2.Core.DataInterfaces
     /// </summary>
     public interface IDaoFactory
     {
+        IGroepenDao GroepenDaoGet();
+        IChiroGroepenDao ChiroGroepenDaoGet();
         IPersonenDao PersonenDaoGet();
         ICommunicatieVormenDao CommunicatieVormenDaoGet();
     }
@@ -37,5 +39,7 @@ namespace Cg2.Core.DataInterfaces
     #region Inline interface declarations
     public interface IPersonenDao : IDao<Persoon, int> { }
     public interface ICommunicatieVormenDao : IDao<CommunicatieVorm, int> { }
+    public interface IGroepenDao : IDao<Groep, int> { }
+    public interface IChiroGroepenDao : IDao<ChiroGroep, int> { }
     #endregion
 }
