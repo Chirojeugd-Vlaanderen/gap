@@ -9,6 +9,7 @@ namespace Cg2.Core.Domain
     /// Een Chirogroep is een 'echte' groep met leden en leiding.
     /// </summary>
     ///
+    [Serializable]
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute
         (NamespaceName="Cg2.Core.Domain", Name="ChiroGroep")]
     public class ChiroGroep: Groep

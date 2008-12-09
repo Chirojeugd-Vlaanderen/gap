@@ -16,6 +16,7 @@ namespace Cg2.Core.Domain
     /// communicatievorm met dat telefoonnummer verschillende keren voor.
     /// </summary>
     /// 
+    [Serializable]
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute
         (NamespaceName="Cg2.Core.Domain",Name="CommunicatieVorm")]
     public class CommunicatieVorm: BasisEntiteit<int>

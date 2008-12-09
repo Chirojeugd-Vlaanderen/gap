@@ -19,6 +19,7 @@ namespace Cg2.Core.DataInterfaces
         T Ophalen(IdT id);
         List<T> AllesOphalen();
         T Bewaren(T entiteit);
+        T Updaten(T nieuweEntiteit, T oorspronkelijkeEntiteit);
         void Verwijderen(T entiteit);
         void Commit();
     }

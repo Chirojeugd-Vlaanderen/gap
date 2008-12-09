@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data.Objects.DataClasses;
 using System.Data;
+using System.Runtime.Serialization;
 
 namespace Cg2.Core.Domain
 {
@@ -19,6 +20,8 @@ namespace Cg2.Core.Domain
     /// </summary>
     /// <typeparam name="IdT">Type van het ID dat voor de klasse gebruikt zal
     /// worden (int, string, whatever,...). </typeparam>
+    ///
+    [DataContract]
     public abstract class BasisEntiteit<IdT>: IEntityWithRelationships, IEntityWithChangeTracker, IEntityWithKey
     {
         #region Entity Framework overhead
@@ -65,6 +68,7 @@ namespace Cg2.Core.Domain
             }
         }
 
+        [DataMember]
         System.Data.EntityKey IEntityWithKey.EntityKey
         {
             get
@@ -91,6 +95,7 @@ namespace Cg2.Core.Domain
 
         private IdT _id = default(IdT);
 
+        [DataMember]
         public virtual IdT ID
         {
             get { return _id; }

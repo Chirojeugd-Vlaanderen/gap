@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B863A1B0-5947-4A6C-9710-4111CDAB78B8}</ProjectGuid>
+    <ProjectGuid>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cg2.Core</RootNamespace>
-    <AssemblyName>Cg2.Core</AssemblyName>
+    <RootNamespace>Cg2.Workers</RootNamespace>
+    <AssemblyName>Cg2.Workers</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -38,9 +38,6 @@
     <Reference Include="System.Data.Entity">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Runtime.Serialization">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -51,16 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataInterfaces\IDao.cs" />
-    <Compile Include="Domain\BasisEntiteit.cs" />
-    <Compile Include="Domain\ChiroGroep.cs" />
-    <Compile Include="Domain\CommunicatieVorm.cs" />
-    <Compile Include="Domain\Groep.cs" />
-    <Compile Include="Domain\ICommunicatieVormenManager.cs" />
-    <Compile Include="Domain\IGroepenManager.cs" />
-    <Compile Include="Domain\IPersonenManager.cs" />
-    <Compile Include="Domain\Persoon.cs" />
+    <Compile Include="GroepenManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cg2.Core\Cg2.Core.csproj">
+      <Project>{B863A1B0-5947-4A6C-9710-4111CDAB78B8}</Project>
+      <Name>Cg2.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cg2.Util\Cg2.Util.csproj">
+      <Project>{1E2DCB4D-DA0D-4149-B90D-E036DEE38083}</Project>
+      <Name>Cg2.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

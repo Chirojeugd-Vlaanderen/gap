@@ -9,6 +9,7 @@ namespace Cg2.Core.Domain
     /// Algemene groepsklasse, parent voor zowel ChiroGroep als Satelliet.
     /// </summary>
     /// 
+    [Serializable]
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute
         (NamespaceName="Cg2.Core.Domain", Name="Groep")]
     public class Groep: BasisEntiteit<int>

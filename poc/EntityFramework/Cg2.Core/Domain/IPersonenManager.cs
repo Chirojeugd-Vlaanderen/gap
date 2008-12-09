@@ -12,12 +12,12 @@ namespace Cg2.Core.Domain
     public interface IPersonenManager
     {
         /// <summary>
-        /// Bewaart een persoon
+        /// Updatet een persoon
         /// </summary>
-        /// <param name="p">Te bewaren persoon</param>
+        /// <param name="p">Te updaten persoon</param>
         /// <param name="origineel">Originele persoon, als die beschikbaar is.
         /// Anders null.</param>
         /// <returns>De bewaarde persoon</returns>
-        Persoon Bewaren(Persoon p, Persoon origineel);
+        Persoon Updaten(Persoon p, Persoon origineel);
     }
 }
