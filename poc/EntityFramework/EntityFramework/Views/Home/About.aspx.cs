@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace EntityFramework.Views.Home
+namespace WebClient.Views.Home
 {
     public partial class About : ViewPage
     {

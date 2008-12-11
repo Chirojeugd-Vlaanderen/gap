@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EntityFramework.Views.Shared
+namespace WebClient.Views.Shared
 {
 
     public partial class LoginUserControl

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EntityFramework;
-using EntityFramework.Controllers;
+using WebClient;
+using WebClient.Controllers;
 
-namespace EntityFramework.Tests.Controllers
+namespace WebClient.Tests.Controllers
 {
     /// <summary>
     /// Summary description for HomeControllerTest

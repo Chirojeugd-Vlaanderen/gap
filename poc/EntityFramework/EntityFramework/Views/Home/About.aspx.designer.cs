@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EntityFramework.Views.Home
+namespace WebClient.Views.Home
 {
 
 

@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 
-namespace EntityFramework.Controllers
+namespace WebClient.Controllers
 {
     [HandleError]
     public class HomeController : Controller

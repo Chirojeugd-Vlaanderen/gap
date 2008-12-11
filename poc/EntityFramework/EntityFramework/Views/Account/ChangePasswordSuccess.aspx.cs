@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace EntityFramework.Views.Account
+namespace WebClient.Views.Account
 {
     public partial class ChangePasswordSuccess : ViewPage
     {
