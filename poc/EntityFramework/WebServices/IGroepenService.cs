@@ -23,5 +23,14 @@ namespace WebServices
         /// <returns>De persoon met eventueel gewijzigde informatie</returns>
         [OperationContract]
         Groep Updaten(Groep g, Groep origineel);
+
+        /// <summary>
+        /// Haalt groep op uit database
+        /// </summary>
+        /// <param name="groepID">ID van op te halen groep</param>
+        /// <returns>het gevraagde groepsobject, of null indien niet gevonden.
+        /// </returns>
+        [OperationContract]
+        Groep Ophalen(int groepID);
     }
 }

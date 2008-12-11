@@ -24,6 +24,14 @@ namespace WebServices
             return gm.Updaten(g, origineel);
         }
 
+        public Groep Ophalen(int groepID)
+        {
+            serviceFactory = new ClassServiceFactory();
+            IGroepenManager gm = (IGroepenManager)serviceFactory
+                .FindByServiceName("Cg2/Core/Domain/IGroepenManager");
+            return gm.Ophalen(groepID);
+        }
+
         #endregion
     }
 }

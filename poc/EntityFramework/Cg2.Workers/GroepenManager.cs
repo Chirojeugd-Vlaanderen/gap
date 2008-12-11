@@ -22,6 +22,15 @@ namespace Cg2.Workers
             return gd.Updaten(g, origineel);
         }
 
+        public Groep Ophalen(int groepID)
+        {
+            IServiceFactory serviceFactory = new ClassServiceFactory();
+            IDaoFactory df = (IDaoFactory)serviceFactory
+                .FindByServiceName("Cg2/Core/DataInterfaces/IDaoFactory");
+            IGroepenDao gd = df.GroepenDaoGet();
+            return gd.Ophalen(groepID);
+        }
+
         #endregion
     }
 }

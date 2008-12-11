@@ -11,6 +11,13 @@ namespace Cg2.Core.Domain
     public interface IGroepenManager
     {
         /// <summary>
+        /// Ophalen van een groep uit de database
+        /// </summary>
+        /// <param name="groepID">ID van de groep</param>
+        /// <returns></returns>
+        Groep Ophalen(int groepID);
+
+        /// <summary>
         /// Persisteert een groep in de database
         /// </summary>
         /// <param name="g">Groep met te persisteren info</param>
