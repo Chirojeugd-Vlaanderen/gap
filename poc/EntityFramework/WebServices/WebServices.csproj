@@ -36,6 +36,9 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Runtime.Serialization">
@@ -56,15 +59,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Service1.svc" />
+    <Content Include="GroepenService.svc" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Service1.svc.cs">
-      <DependentUpon>Service1.svc</DependentUpon>
+    <Compile Include="GroepenService.svc.cs">
+      <DependentUpon>GroepenService.svc</DependentUpon>
     </Compile>
-    <Compile Include="IService1.cs" />
+    <Compile Include="IGroepenService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cg2.Core\Cg2.Core.csproj">
+      <Project>{B863A1B0-5947-4A6C-9710-4111CDAB78B8}</Project>
+      <Name>Cg2.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cg2.Util\Cg2.Util.csproj">
+      <Project>{1E2DCB4D-DA0D-4149-B90D-E036DEE38083}</Project>
+      <Name>Cg2.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
