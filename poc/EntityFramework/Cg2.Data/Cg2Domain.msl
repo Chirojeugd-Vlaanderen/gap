@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
-  <EntityContainerMapping StorageEntityContainer="grp"
+  <EntityContainerMapping StorageEntityContainer="ChiroGroepStorage"
     CdmEntityContainer="Cg2ObjectContext">
     <EntitySetMapping Name="Groep">
       <EntityTypeMapping TypeName="IsTypeOf(Cg2.Core.Domain.Groep)">

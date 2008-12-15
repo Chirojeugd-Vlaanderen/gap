@@ -19,7 +19,7 @@ namespace Cg2.Data.Ef
 
         public IGroepenDao GroepenDaoGet()
         {
-            throw new NotImplementedException();
+            return new GroepenEfDao();
         }
 
         public IChiroGroepenDao ChiroGroepenDaoGet()

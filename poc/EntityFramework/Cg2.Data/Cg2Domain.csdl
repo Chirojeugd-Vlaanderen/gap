@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="Cg2.Core.Domain" Alias="Self"
-  xmlns="http://schemas.microsoft.com/ado/2006/04/edm/edm">
+  xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
   <EntityContainer Name="Cg2ObjectContext">
     <EntitySet Name="Groep" EntityType="Cg2.Core.Domain.Groep" />
     <EntitySet Name="ChiroGroep" EntityType="Cg2.Core.Domain.ChiroGroep" />
   </EntityContainer>
   <EntityType Name="Groep">
     <Key>
-      <PropertyRef Name="GroepID" />
+      <PropertyRef Name="ID" />
     </Key>
     <Property Name="Code" Type="String" MaxLength="10" />
-    <Property Name="GroepID" Type="Int32" Nullable="false"
-      StoreGeneratedPattern="Identity" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
     <Property Name="Naam" Type="String" MaxLength="160" Nullable="false" />
     <Property Name="OprichtingsJaar" Type="Int32" />
     <Property Name="WebSite" Type="String" MaxLength="160" />
