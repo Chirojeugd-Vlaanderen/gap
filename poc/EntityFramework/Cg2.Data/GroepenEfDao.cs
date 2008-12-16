@@ -16,6 +16,8 @@ namespace Cg2.Data.Ef
         /// <returns>gevonden groep, of null indien niet gevonden</returns>
         public override Groep Ophalen(int id)
         {
+            // TODO: Waarom is dit zo ingewikkeld?
+
             Groep resultaat;
             using (Cg2ObjectContext db = new Cg2ObjectContext())
             {

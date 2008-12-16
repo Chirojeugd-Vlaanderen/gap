@@ -7,6 +7,7 @@
         <MappingFragment StoreEntitySet="Groep">
           <ScalarProperty Name="ID" ColumnName="GroepID" />
           <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Naam" ColumnName="Naam" />
           <ScalarProperty Name="OprichtingsJaar" ColumnName="OprichtingsJaar" />
           <ScalarProperty Name="WebSite" ColumnName="WebSite" />
         </MappingFragment>

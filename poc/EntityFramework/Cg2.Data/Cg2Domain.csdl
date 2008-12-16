@@ -3,7 +3,8 @@
   xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
   <EntityContainer Name="Cg2ObjectContext">
     <EntitySet Name="Groep" EntityType="Cg2.Core.Domain.Groep" />
-    <EntitySet Name="ChiroGroep" EntityType="Cg2.Core.Domain.ChiroGroep" />
+    <!-- Voor ChiroGroep moet er geen EntitySet zijn, bij
+    'class per table' inheritance -->
   </EntityContainer>
   <EntityType Name="Groep">
     <Key>
