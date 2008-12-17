@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.Objects.DataClasses;
 
 namespace Cg2.Core.Domain
 {
@@ -22,8 +23,9 @@ namespace Cg2.Core.Domain
         #endregion
 
         #region Properties
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute
-            (EntityKeyProperty = true, IsNullable = false)]
+
+
+        [EdmScalarProperty(EntityKeyProperty = true, IsNullable = false)]
         public override int ID
         {
             get { return base.ID; }
