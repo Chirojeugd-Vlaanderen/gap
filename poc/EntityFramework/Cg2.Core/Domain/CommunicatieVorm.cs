@@ -22,13 +22,11 @@ namespace Cg2.Core.Domain
     public class CommunicatieVorm: BasisEntiteit<int>
     {
         #region private members
-        private CommunicatieType _type;
+        private int _type;
         private string _nummer;
         private bool _isGezinsGebonden;
         private bool _voorkeur;
         private string _nota;
-        private int _persoonID;
-        private Persoon _persoon;
         #endregion
 
         #region properties
@@ -50,9 +48,14 @@ namespace Cg2.Core.Domain
             }
         }
 
+        // Enums kunnen niet rechtstreeks gemapt worden.  Daarom gebruik ik
+        // de property 'TypeInt' voor het Entity framework, die met ints werkt,
+        // en de property 'Type' voor de applicatie; die werkt met 
+        // 'CommunicatieTypes'.
+
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute
             (IsNullable = false)]
-        public CommunicatieType Type
+        public int TypeInt
         {
             get { return _type; }
             set 
@@ -61,6 +64,12 @@ namespace Cg2.Core.Domain
                 _type = value;
                 this.PropertyChanged(System.Reflection.MethodInfo.GetCurrentMethod().Name);
             }
+        }
+
+        public CommunicatieType Type
+        {
+            get { return (CommunicatieType)this.TypeInt; }
+            set { this.TypeInt = (int)value; }
         }
 
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute
@@ -114,30 +123,23 @@ namespace Cg2.Core.Domain
             }
         }
 
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute
-            (IsNullable = false)]
-        public int PersoonID
-        {
-            get { return _persoonID; }
-            set
-            {
-                this.PropertyChanging(System.Reflection.MethodInfo.GetCurrentMethod().Name);
-                _persoonID = value;
-                this.PropertyChanged(System.Reflection.MethodInfo.GetCurrentMethod().Name);
-            }
-        }
-
-
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute
-            (IsNullable = false)]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute
+            ("Cg2.Core.Domain", "PersoonCommunicatieVorm", "Persoon")]
         public Persoon Persoon
         {
-            get { return _persoon; }
-            set 
+            get 
+            { 
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this))
+                    .RelationshipManager.GetRelatedReference<Persoon>
+                    ("Cg2.Core.Domain.PersoonCommunicatieVorm", "Persoon").Value; 
+            }
+            set
             {
-                this.PropertyChanging(System.Reflection.MethodInfo.GetCurrentMethod().Name);
-                _persoon = value;
-                this.PropertyChanged(System.Reflection.MethodInfo.GetCurrentMethod().Name);
+                // Hier blijkbaar geen 'PropertyChanging' en 'PropertyChanged'
+
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this))
+                    .RelationshipManager.GetRelatedReference<Persoon>
+                    ("Cg2.Core.Domain.PersoonCommunicatieVorm", "Persoon").Value = value;
             }
         }
         #endregion

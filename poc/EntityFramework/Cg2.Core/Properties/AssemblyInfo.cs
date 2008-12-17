@@ -34,3 +34,11 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
+[assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Cg2.Core.Domain"
+    , "PersoonCommunicatieVorm", "Persoon"
+    , global::System.Data.Metadata.Edm.RelationshipMultiplicity.One
+    , typeof(Cg2.Core.Domain.Persoon)
+    , "CommunicatieVorm", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many
+    , typeof(Cg2.Core.Domain.CommunicatieVorm))]

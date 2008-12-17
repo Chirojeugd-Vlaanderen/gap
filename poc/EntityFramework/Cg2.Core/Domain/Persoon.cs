@@ -24,7 +24,7 @@ namespace Cg2.Core.Domain
         private int? _adNummer;
         private string _naam;
         private string _voorNaam;
-        private GeslachtsType _geslacht;
+        private int _geslacht;
         private DateTime? _geboorteDatum;
         private DateTime? _sterfDatum;
         #endregion
@@ -85,9 +85,13 @@ namespace Cg2.Core.Domain
             }
         }
 
+        // Enums kunnen niet rechtstreeks gemapt worden door het EF.
+        // Vandaar een property 'GeslachtsInt' voor EF, en een property
+        // 'Geslacht' voor de applicatie.
+
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute
             (IsNullable=false)]
-        public GeslachtsType Geslacht
+        public int GeslachtsInt
         {
             get { return _geslacht; }
             set 
@@ -96,6 +100,12 @@ namespace Cg2.Core.Domain
                 _geslacht = value;
                 this.PropertyChanged(System.Reflection.MethodInfo.GetCurrentMethod().Name);
             }
+        }
+
+        public GeslachtsType Geslacht
+        {
+            get { return (GeslachtsType)this.GeslachtsInt; }
+            set { this.GeslachtsInt = (int)value; }
         }
 
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
@@ -124,7 +134,7 @@ namespace Cg2.Core.Domain
 
         [global::System.Data.Objects.DataClasses
             .EdmRelationshipNavigationPropertyAttribute("Cg2.Core.Domain"
-            , "PersoonNaarCommunicatieVorm", "CommunicatieVorm")]
+            , "PersoonCommunicatieVorm", "CommunicatieVorm")]
         public global::System.Data.Objects.DataClasses
             .EntityCollection<CommunicatieVorm> Communicatie
         {
@@ -133,7 +143,7 @@ namespace Cg2.Core.Domain
                 return
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)
                     this).RelationshipManager.GetRelatedCollection<CommunicatieVorm>
-                    ("Cg2.Core.Domain.PersoonNaarCommunicatieVorm"
+                    ("Cg2.Core.Domain.PersoonCommunicatieVorm"
                     , "CommunicatieVorm");
             }
         }
