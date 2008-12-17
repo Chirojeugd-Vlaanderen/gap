@@ -29,7 +29,9 @@ namespace WebServices
             serviceFactory = new ClassServiceFactory();
             IGroepenManager gm = (IGroepenManager)serviceFactory
                 .FindByServiceName("Cg2/Core/Domain/IGroepenManager");
-            return gm.Ophalen(groepID);
+
+            var result = gm.Ophalen(groepID);
+            return result;
         }
 
         #endregion

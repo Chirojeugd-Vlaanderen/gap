@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="5ab0f1a5-508c-4f10-bbaa-39e0a6490f49" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:4047/GroepenService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="GroepenService.xsd" MetadataType="Schema" ID="b7e513fa-c9dd-49b3-acaa-da8ca2dae29c" SourceId="1" SourceUrl="http://localhost:4047/GroepenService.svc?xsd=xsd0" />
+    <MetadataFile FileName="GroepenService1.xsd" MetadataType="Schema" ID="468a3540-d35c-4005-83d5-cb7f0e75be9d" SourceId="1" SourceUrl="http://localhost:4047/GroepenService.svc?xsd=xsd1" />
+    <MetadataFile FileName="GroepenService2.xsd" MetadataType="Schema" ID="f763e0fd-b682-4cc0-8236-61dcf87e6aac" SourceId="1" SourceUrl="http://localhost:4047/GroepenService.svc?xsd=xsd2" />
+    <MetadataFile FileName="GroepenService3.xsd" MetadataType="Schema" ID="7a279e5d-fdb5-4eac-954e-e795b3ebd9c6" SourceId="1" SourceUrl="http://localhost:4047/GroepenService.svc?xsd=xsd3" />
+    <MetadataFile FileName="GroepenService.wsdl" MetadataType="Wsdl" ID="baadab15-71a2-4118-97ac-637a885697e0" SourceId="1" SourceUrl="http://localhost:4047/GroepenService.svc?wsdl" />
+    <MetadataFile FileName="GroepenService.disco" MetadataType="Disco" ID="f43834ed-c585-42aa-bd20-b6c3abff2ac3" SourceId="1" SourceUrl="http://localhost:4047/GroepenService.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

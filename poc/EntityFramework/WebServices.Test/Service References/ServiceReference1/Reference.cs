@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApp.CgServiceReference {
+namespace WebServices.Test.ServiceReference1 {
     using System.Runtime.Serialization;
     using System;
     
@@ -26,7 +26,7 @@ namespace WebApp.CgServiceReference {
         private string EntityContainerNameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private WebApp.CgServiceReference.EntityKeyMember[] EntityKeyValuesField;
+        private WebServices.Test.ServiceReference1.EntityKeyMember[] EntityKeyValuesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string EntitySetNameField;
@@ -55,7 +55,7 @@ namespace WebApp.CgServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public WebApp.CgServiceReference.EntityKeyMember[] EntityKeyValues {
+        public WebServices.Test.ServiceReference1.EntityKeyMember[] EntityKeyValues {
             get {
                 return this.EntityKeyValuesField;
             }
@@ -96,8 +96,8 @@ namespace WebApp.CgServiceReference {
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.Groep))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.BasisEntiteit<int>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebApp.CgServiceReference.EntityKey))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebApp.CgServiceReference.EntityKeyMember[]))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.ServiceReference1.EntityKey))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.ServiceReference1.EntityKeyMember[]))]
     public partial class EntityKeyMember : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
@@ -156,7 +156,7 @@ namespace WebApp.CgServiceReference {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="CgServiceReference.IGroepenService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IGroepenService")]
     public interface IGroepenService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGroepenService/Updaten", ReplyAction="http://tempuri.org/IGroepenService/UpdatenResponse")]
@@ -167,12 +167,12 @@ namespace WebApp.CgServiceReference {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    public interface IGroepenServiceChannel : WebApp.CgServiceReference.IGroepenService, System.ServiceModel.IClientChannel {
+    public interface IGroepenServiceChannel : WebServices.Test.ServiceReference1.IGroepenService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    public partial class GroepenServiceClient : System.ServiceModel.ClientBase<WebApp.CgServiceReference.IGroepenService>, WebApp.CgServiceReference.IGroepenService {
+    public partial class GroepenServiceClient : System.ServiceModel.ClientBase<WebServices.Test.ServiceReference1.IGroepenService>, WebServices.Test.ServiceReference1.IGroepenService {
         
         public GroepenServiceClient() {
         }
