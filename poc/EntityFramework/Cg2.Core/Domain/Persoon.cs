@@ -18,7 +18,7 @@ namespace Cg2.Core.Domain
     [Serializable]
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute
         (NamespaceName="Cg2.Core.Domain", Name="Persoon")]
-    public class Persoon: BasisEntiteit<int>
+    public class Persoon: BasisEntiteit
     {
         #region Private members
         private int? _adNummer;
@@ -30,23 +30,6 @@ namespace Cg2.Core.Domain
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Voor het Entity Framework moeten we de ID-property expliciet
-        /// overriden, anders werkt het niet met de attributen.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute
-            (EntityKeyProperty = true, IsNullable = false)]
-        public override int ID
-        {
-            get { return base.ID; }
-            set
-            {
-                this.PropertyChanging("ID");
-                base.ID = value;
-                this.PropertyChanged("ID");
-            }
-        }
         
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         public int? AdNummer

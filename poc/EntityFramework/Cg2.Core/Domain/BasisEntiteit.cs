@@ -22,7 +22,7 @@ namespace Cg2.Core.Domain
     /// worden (int, string, whatever,...). </typeparam>
     ///
     [DataContract]
-    public abstract class BasisEntiteit<IdT>: IEntityWithRelationships, IEntityWithChangeTracker, IEntityWithKey
+    public abstract class BasisEntiteit: IEntityWithRelationships, IEntityWithChangeTracker, IEntityWithKey
     {
         #region Entity Framework overhead
 
@@ -93,13 +93,22 @@ namespace Cg2.Core.Domain
         }
         #endregion
 
-        private IdT _id = default(IdT);
+        protected const int _defaultID = -1;
+        protected int DefaultID { get { return _defaultID; } }
+
+        private int _id = _defaultID;
 
         [DataMember]
-        public virtual IdT ID
+        [EdmScalarProperty(EntityKeyProperty = true, IsNullable = false)]
+        public int ID
         {
             get { return _id; }
-            set { _id = value; }
+            set
+            {
+                this.PropertyChanging("ID");
+                _id = value;
+                this.PropertyChanged("ID");
+            }
         }
 
         public BasisEntiteit()
@@ -115,7 +124,7 @@ namespace Cg2.Core.Domain
         /// <returns>True indien deze entiteit dezlefde is als 'obj'.</returns>
         public sealed override bool Equals(object obj)
         {
-            BasisEntiteit<IdT> teVergelijken = obj as BasisEntiteit<IdT>;
+            BasisEntiteit teVergelijken = obj as BasisEntiteit;
 
             return (teVergelijken != null) 
                 && (HeeftZelfdeNietStandaardId(teVergelijken)
@@ -130,7 +139,7 @@ namespace Cg2.Core.Domain
         /// <returns>True voor transiente entiteiten</returns>
         public bool IsTransient()
         {
-            return ID == null || ID.Equals(default(IdT));
+            return ID.Equals(_defaultID);
         }
 
         /// <summary>
@@ -153,7 +162,7 @@ namespace Cg2.Core.Domain
         /// worden</param>
         /// <returns>true indien beide entiteiten dezelfde hashcode 
         /// hebben.</returns>
-        private bool HeeftZelfdeBusinessSignature(BasisEntiteit<IdT> teVergelijken)
+        private bool HeeftZelfdeBusinessSignature(BasisEntiteit teVergelijken)
         {
             return GetHashCode().Equals(teVergelijken.GetHashCode());
         }
@@ -165,10 +174,10 @@ namespace Cg2.Core.Domain
         /// <param name="teVergelijken">entiteit waarvan ID vergeleken moet
         /// worden</param>
         /// <returns>true indien ID's gelijk en niet 0/null zijn</returns>
-        private bool HeeftZelfdeNietStandaardId(BasisEntiteit<IdT> teVergelijken)
+        private bool HeeftZelfdeNietStandaardId(BasisEntiteit teVergelijken)
         {
-            return (ID != null && !ID.Equals(default(IdT)))
-                && (teVergelijken.ID != null && !teVergelijken.ID.Equals(default(IdT)))
+            return (!ID.Equals(_defaultID))
+                && !teVergelijken.ID.Equals(teVergelijken.DefaultID)
                 && ID.Equals(teVergelijken.ID);
         }
 
@@ -179,7 +188,7 @@ namespace Cg2.Core.Domain
         public override string ToString()
         {
             StringBuilder str = new StringBuilder();
-            str.Append(" Klasse: ").Append(GetType().FullName);
+            str.Append(" Klasse: ").Append(GetType().FullName).Append(ID.ToString());
             return str.ToString();
         }
     }

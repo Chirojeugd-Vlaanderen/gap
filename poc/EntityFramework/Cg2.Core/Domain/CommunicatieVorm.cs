@@ -19,7 +19,7 @@ namespace Cg2.Core.Domain
     [Serializable]
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute
         (NamespaceName="Cg2.Core.Domain",Name="CommunicatieVorm")]
-    public class CommunicatieVorm: BasisEntiteit<int>
+    public class CommunicatieVorm: BasisEntiteit
     {
         #region private members
         private int _type;
@@ -30,23 +30,6 @@ namespace Cg2.Core.Domain
         #endregion
 
         #region properties
-
-        /// <summary>
-        /// Voor het Entity Framework moeten we de ID-property expliciet
-        /// overriden, anders werkt het niet met de attributen.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute
-            (EntityKeyProperty = true, IsNullable = false)]
-        public override int ID
-        {
-            get { return base.ID; }
-            set
-            {
-                this.PropertyChanging("ID");
-                base.ID = value;
-                this.PropertyChanged("ID");
-            }
-        }
 
         // Enums kunnen niet rechtstreeks gemapt worden.  Daarom gebruik ik
         // de property 'TypeInt' voor het Entity framework, die met ints werkt,

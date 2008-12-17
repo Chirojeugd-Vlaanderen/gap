@@ -13,7 +13,7 @@ namespace Cg2.Core.Domain
     [Serializable]
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute
         (NamespaceName="Cg2.Core.Domain", Name="Groep")]
-    public class Groep: BasisEntiteit<int>
+    public class Groep: BasisEntiteit
     {
         #region Private members
         private string _code;
@@ -25,17 +25,7 @@ namespace Cg2.Core.Domain
         #region Properties
 
 
-        [EdmScalarProperty(EntityKeyProperty = true, IsNullable = false)]
-        public override int ID
-        {
-            get { return base.ID; }
-            set
-            {
-                this.PropertyChanging("ID");
-                base.ID = value;
-                this.PropertyChanged("ID");
-            }
-        }
+
 
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         public string Code

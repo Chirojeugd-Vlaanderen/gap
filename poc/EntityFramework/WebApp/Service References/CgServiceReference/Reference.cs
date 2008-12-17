@@ -95,7 +95,7 @@ namespace WebApp.CgServiceReference {
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityKeyMember", Namespace="http://schemas.datacontract.org/2004/07/System.Data")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.Groep))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.BasisEntiteit<int>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.BasisEntiteit))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebApp.CgServiceReference.EntityKey))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebApp.CgServiceReference.EntityKeyMember[]))]
     public partial class EntityKeyMember : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
