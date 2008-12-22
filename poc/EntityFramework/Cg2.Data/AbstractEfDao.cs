@@ -5,6 +5,7 @@ using System.Text;
 using Cg2.Core.DataInterfaces;
 using System.Data.Objects;
 using System.Data;
+using Cg2.Core.Domain;
 
 namespace Cg2.Data.Ef
 {
@@ -12,20 +13,29 @@ namespace Cg2.Data.Ef
     /// Algemene implementatie van IDao; generieke CRUD-operaties voor
     /// een DAO-object.
     /// </summary>
-    public class AbstractEfDao<T, TId>: IDao<T, TId> where T:class
+    public class Dao<T>: IDao<T> where T:BasisEntiteit
     {
-        #region IDao<T,TId> Members
+        #region IDao<T> Members
 
 
         /// <summary>
-        /// Dit doet echt niks, en moet door de descendants geimplementeerd
-        /// worden.
+        /// Ophalen van een entity op basis van ID
         /// </summary>
         /// <param name="id">ID van op te halen object</param>
         /// <returns></returns>
-        public virtual T Ophalen(TId id)
+        public virtual T Ophalen(int id)
         {
-            return default(T);
+            T result;
+
+            using (Cg2ObjectContext db = new Cg2ObjectContext())
+            {
+                ObjectQuery<T> oq = db.CreateQuery<T>("[" + typeof(T).Name + "]");
+                result = (
+                    from t in oq
+                    where t.ID == id
+                    select t).FirstOrDefault<T>();
+            }
+            return result;
         }
 
         /// <summary>

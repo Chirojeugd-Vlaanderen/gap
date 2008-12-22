@@ -54,9 +54,6 @@
   <ItemGroup>
     <Compile Include="AbstractEfDao.cs" />
     <Compile Include="Cg2ObjectContext.cs" />
-    <Compile Include="ChiroGroepenEfDao.cs" />
-    <Compile Include="EfDaoFactory.cs" />
-    <Compile Include="GroepenEfDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

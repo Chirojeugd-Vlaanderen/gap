@@ -16,16 +16,15 @@ namespace Cg2.Workers
 
         public Groep Updaten(Groep g, Groep origineel)
         {
-            IDaoFactory df = new EfDaoFactory();
-            IGroepenDao gd = df.GroepenDaoGet();
-            return gd.Updaten(g, origineel);
+            IDao<Groep> dao = new Dao<Groep>();
+            return dao.Updaten(g, origineel);
         }
 
         public Groep Ophalen(int groepID)
         {
-            IDaoFactory df = new EfDaoFactory();
-            IGroepenDao gd = df.GroepenDaoGet();
-            return gd.Ophalen(groepID);
+            IDao<Groep> dao = new Dao<Groep>();
+
+            return dao.Ophalen(groepID);
         }
 
         #endregion

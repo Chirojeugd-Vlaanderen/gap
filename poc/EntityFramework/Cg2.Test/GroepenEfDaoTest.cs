@@ -1,6 +1,7 @@
 ﻿using Cg2.Data.Ef;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Core.Domain;
+using Cg2.Core.DataInterfaces;
 
 namespace Cg2.Test
 {
@@ -70,7 +71,7 @@ namespace Cg2.Test
         [TestMethod()]
         public void OphalenTest()
         {
-            GroepenEfDao target = new GroepenEfDao(); 
+            IDao<Groep> target = new Dao<Groep>(); 
             int id = 310; 
             Groep actual;
             actual = target.Ophalen(id);

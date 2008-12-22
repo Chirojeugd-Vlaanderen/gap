@@ -23,7 +23,7 @@ namespace WebServices
 
         public Groep Ophalen(int groepID)
         {
-            IGroepenManager gm = new GroepenManager(;)
+            IGroepenManager gm = new GroepenManager();
 
             var result = gm.Ophalen(groepID);
             return result;
