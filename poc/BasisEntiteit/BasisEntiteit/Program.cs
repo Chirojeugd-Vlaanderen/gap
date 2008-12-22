@@ -15,7 +15,7 @@ namespace BasisEntiteit
 
             Groep g = (
                 from Groep grp in context.Groep
-                where grp.GroepID == 310
+                where grp.ID == 310
                 select grp
                 ).First();
 

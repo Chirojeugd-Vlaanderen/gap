@@ -14,8 +14,25 @@ namespace Core.Domain
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName = "Core.Domain", Name = "Groep")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference = true)]
     [global::System.Serializable()]
-    public partial class Groep : global::System.Data.Objects.DataClasses.EntityObject
+    public partial class Groep : BasisEntiteit
     {
+        /// <summary>
+        /// There are no comments for Property GroepID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty = true, IsNullable = false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public override int ID
+        {
+            get
+            {
+                return base.ID;
+            }
+            set
+            {
+                base.ID = value;
+            }
+        }
+
         /// <summary>
         /// Create a new Groep object.
         /// </summary>
@@ -26,7 +43,7 @@ namespace Core.Domain
         {
             Groep groep = new Groep();
             groep.Naam = naam;
-            groep.GroepID = groepID;
+            groep.ID = groepID;
             groep.Versie = versie;
             return groep;
         }
@@ -44,9 +61,9 @@ namespace Core.Domain
             set
             {
                 this.OnNaamChanging(value);
-                this.ReportPropertyChanging("Naam");
-                this._Naam = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
-                this.ReportPropertyChanged("Naam");
+                this.PropertyChanging("Naam");
+                this._Naam = value;
+                this.PropertyChanged("Naam");
                 this.OnNaamChanged();
             }
         }
@@ -67,9 +84,9 @@ namespace Core.Domain
             set
             {
                 this.OnCodeChanging(value);
-                this.ReportPropertyChanging("Code");
-                this._Code = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
-                this.ReportPropertyChanged("Code");
+                this.PropertyChanging("Code");
+                this._Code = value;
+                this.PropertyChanged("Code");
                 this.OnCodeChanged();
             }
         }
@@ -90,9 +107,9 @@ namespace Core.Domain
             set
             {
                 this.OnOprichtingsJaarChanging(value);
-                this.ReportPropertyChanging("OprichtingsJaar");
-                this._OprichtingsJaar = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("OprichtingsJaar");
+                this.PropertyChanging("OprichtingsJaar");
+                this._OprichtingsJaar = value;
+                this.PropertyChanged("OprichtingsJaar");
                 this.OnOprichtingsJaarChanged();
             }
         }
@@ -113,9 +130,9 @@ namespace Core.Domain
             set
             {
                 this.OnWebSiteChanging(value);
-                this.ReportPropertyChanging("WebSite");
-                this._WebSite = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
-                this.ReportPropertyChanged("WebSite");
+                this.PropertyChanging("WebSite");
+                this._WebSite = value;
+                this.PropertyChanged("WebSite");
                 this.OnWebSiteChanged();
             }
         }
@@ -131,43 +148,21 @@ namespace Core.Domain
         {
             get
             {
-                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Logo);
+                return this.Logo;
             }
             set
             {
                 this.OnLogoChanging(value);
-                this.ReportPropertyChanging("Logo");
-                this._Logo = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
-                this.ReportPropertyChanged("Logo");
+                this.PropertyChanging("Logo");
+                this._Logo = value;
+                this.PropertyChanged("Logo");
                 this.OnLogoChanged();
             }
         }
         private byte[] _Logo;
         partial void OnLogoChanging(byte[] value);
         partial void OnLogoChanged();
-        /// <summary>
-        /// There are no comments for Property GroepID in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty = true, IsNullable = false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int GroepID
-        {
-            get
-            {
-                return this._GroepID;
-            }
-            set
-            {
-                this.OnGroepIDChanging(value);
-                this.ReportPropertyChanging("GroepID");
-                this._GroepID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("GroepID");
-                this.OnGroepIDChanged();
-            }
-        }
-        private int _GroepID;
-        partial void OnGroepIDChanging(int value);
-        partial void OnGroepIDChanged();
+
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
@@ -177,14 +172,14 @@ namespace Core.Domain
         {
             get
             {
-                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+                return _Versie;
             }
             set
             {
                 this.OnVersieChanging(value);
-                this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
-                this.ReportPropertyChanged("Versie");
+                this.PropertyChanging("Versie");
+                this._Versie = value;
+                this.PropertyChanged("Versie");
                 this.OnVersieChanged();
             }
         }

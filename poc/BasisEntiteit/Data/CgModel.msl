@@ -9,7 +9,7 @@
           <ScalarProperty Name="OprichtingsJaar" ColumnName="OprichtingsJaar" />
           <ScalarProperty Name="WebSite" ColumnName="WebSite" />
           <ScalarProperty Name="Logo" ColumnName="Logo" />
-          <ScalarProperty Name="GroepID" ColumnName="GroepID" />
+          <ScalarProperty Name="ID" ColumnName="GroepID" />
           <ScalarProperty Name="Versie" ColumnName="Versie" />
         </MappingFragment>
       </EntityTypeMapping>

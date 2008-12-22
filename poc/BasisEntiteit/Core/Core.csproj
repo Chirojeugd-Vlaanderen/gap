@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Domain\BasisEntiteit.cs" />
     <Compile Include="Domain\Groep.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
