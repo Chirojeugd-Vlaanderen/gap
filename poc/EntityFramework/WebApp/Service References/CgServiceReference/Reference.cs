@@ -96,6 +96,7 @@ namespace WebApp.CgServiceReference {
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.Groep))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.BasisEntiteit))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.ChiroGroep))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebApp.CgServiceReference.EntityKey))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebApp.CgServiceReference.EntityKeyMember[]))]
     public partial class EntityKeyMember : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -160,10 +161,15 @@ namespace WebApp.CgServiceReference {
     public interface IGroepenService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGroepenService/Updaten", ReplyAction="http://tempuri.org/IGroepenService/UpdatenResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Core.Domain.ChiroGroep))]
         Cg2.Core.Domain.Groep Updaten(Cg2.Core.Domain.Groep g, Cg2.Core.Domain.Groep origineel);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGroepenService/Ophalen", ReplyAction="http://tempuri.org/IGroepenService/OphalenResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Core.Domain.ChiroGroep))]
         Cg2.Core.Domain.Groep Ophalen(int groepID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGroepenService/Hallo", ReplyAction="http://tempuri.org/IGroepenService/HalloResponse")]
+        string Hallo();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -199,6 +205,10 @@ namespace WebApp.CgServiceReference {
         
         public Cg2.Core.Domain.Groep Ophalen(int groepID) {
             return base.Channel.Ophalen(groepID);
+        }
+        
+        public string Hallo() {
+            return base.Channel.Hallo();
         }
     }
 }

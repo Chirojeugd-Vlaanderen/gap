@@ -182,6 +182,44 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_IGroepenService_Hallo_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_IGroepenService_Hallo_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsdl:types>
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import schemaLocation="http://localhost:4047/GroepenService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
@@ -202,6 +240,12 @@
   <wsdl:message name="IGroepenService_Ophalen_OutputMessage">
     <wsdl:part name="parameters" element="tns:OphalenResponse" />
   </wsdl:message>
+  <wsdl:message name="IGroepenService_Hallo_InputMessage">
+    <wsdl:part name="parameters" element="tns:Hallo" />
+  </wsdl:message>
+  <wsdl:message name="IGroepenService_Hallo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:HalloResponse" />
+  </wsdl:message>
   <wsdl:portType name="IGroepenService">
     <wsdl:operation name="Updaten">
       <wsdl:input wsaw:Action="http://tempuri.org/IGroepenService/Updaten" message="tns:IGroepenService_Updaten_InputMessage" />
@@ -210,6 +254,10 @@
     <wsdl:operation name="Ophalen">
       <wsdl:input wsaw:Action="http://tempuri.org/IGroepenService/Ophalen" message="tns:IGroepenService_Ophalen_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IGroepenService/OphalenResponse" message="tns:IGroepenService_Ophalen_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Hallo">
+      <wsdl:input wsaw:Action="http://tempuri.org/IGroepenService/Hallo" message="tns:IGroepenService_Hallo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IGroepenService/HalloResponse" message="tns:IGroepenService_Hallo_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="WSHttpBinding_IGroepenService" type="tns:IGroepenService">
@@ -234,6 +282,17 @@
       </wsdl:input>
       <wsdl:output>
         <wsp:PolicyReference URI="#WSHttpBinding_IGroepenService_Ophalen_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Hallo">
+      <soap12:operation soapAction="http://tempuri.org/IGroepenService/Hallo" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSHttpBinding_IGroepenService_Hallo_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSHttpBinding_IGroepenService_Hallo_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

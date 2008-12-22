@@ -10,7 +10,7 @@ namespace WebApp.Controllers
 {
     public class GroepenController : Controller
     {
-        public ActionResult Tonen(int groepID) 
+        public ActionResult Bekijken(int groepID) 
         {
             Groep g;
             using (var client = new CgServiceReference.GroepenServiceClient())

@@ -25,7 +25,7 @@
                 <ul id="menu">              
                     <li><%= Html.ActionLink("Home", "Index", "Home")%></li>
                     <li><%= Html.ActionLink("About Us", "About", "Home")%></li>
-                    <li><%= Html.ActionLink("Groepsinfo", "Tonen", "Groepen", new { groepID = 310 }, null)%></li>
+                    <li><%= Html.ActionLink("Groepsinfo", "Bekijken", "Groepen", new { groepID = 310 }, null)%></li>
                 </ul>
             
             </div>
