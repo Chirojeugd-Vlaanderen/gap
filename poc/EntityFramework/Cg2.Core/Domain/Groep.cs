@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data.Objects.DataClasses;
+using System.Runtime.Serialization;
 
 namespace Cg2.Core.Domain
 {
@@ -13,6 +14,10 @@ namespace Cg2.Core.Domain
     [Serializable]
     [EdmEntityTypeAttribute
         (NamespaceName="Cg2.Core.Domain", Name="Groep")]
+    // Als er ervende klasses zijn, moeten die hier als 'KnownType'
+    // gemarkeerd worden? (als dat er niet staat, krijg je een exception
+    // als een groep geserialiseerd moet worden.)
+    [KnownType(typeof(ChiroGroep))]
     public class Groep: BasisEntiteit
     {
         #region Private members

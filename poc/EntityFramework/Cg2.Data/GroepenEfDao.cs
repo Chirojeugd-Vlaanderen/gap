@@ -23,7 +23,9 @@ namespace Cg2.Data.Ef
             {
                 resultaat = (from g in db.Groepen
                              where g.ID == id
-                             select g).ToList<Groep>()[0];
+                             select g).First<Groep>();
+
+                db.Detach(resultaat);
             }
             return resultaat;
         }

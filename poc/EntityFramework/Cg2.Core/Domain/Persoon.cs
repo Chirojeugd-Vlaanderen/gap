@@ -6,6 +6,7 @@ using System.Data.Objects.DataClasses;
 
 namespace Cg2.Core.Domain
 {
+    [Serializable]
     public enum GeslachtsType {Man = 1, Vrouw = 2, Onbekend = 0};
 
     /// <summary>

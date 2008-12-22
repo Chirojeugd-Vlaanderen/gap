@@ -6,6 +6,7 @@ using System.Data.Objects.DataClasses;
 
 namespace Cg2.Core.Domain
 {
+    [Serializable]
     public enum CommunicatieType
     {
         Telefoon = 1, Fax = 2, EMail = 3, WebSite = 4, Msn = 5, Jabber = 6

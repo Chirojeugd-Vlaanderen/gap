@@ -34,6 +34,11 @@ namespace WebServices
             return result;
         }
 
+        public string Hallo()
+        {
+            return "Hallo GroepenService.";
+        }
+
         #endregion
     }
 }

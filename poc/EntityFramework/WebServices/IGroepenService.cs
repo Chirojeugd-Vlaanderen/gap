@@ -31,6 +31,14 @@ namespace WebServices
         /// <returns>het gevraagde groepsobject, of null indien niet gevonden.
         /// </returns>
         [OperationContract]
+        [ServiceKnownType(typeof(Groep))]
         Groep Ophalen(int groepID);
+
+        /// <summary>
+        /// Functie om de service te testen
+        /// </summary>
+        /// <returns>Een teststring</returns>
+        [OperationContract]
+        string Hallo();
     }
 }
