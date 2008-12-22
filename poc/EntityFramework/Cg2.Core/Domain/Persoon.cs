@@ -133,6 +133,18 @@ namespace Cg2.Core.Domain
         }
         #endregion
 
+        [EdmScalarPropertyAttribute(EntityKeyProperty = true, IsNullable = false)]
+        public override int ID
+        {
+            get
+            {
+                return base.ID;
+            }
+            set
+            {
+                base.ID = value;
+            }
+        }
 
         /// <summary>
         /// Nieuwe communicatievorm toevoegen voor een persoon

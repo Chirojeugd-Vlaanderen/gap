@@ -98,6 +98,7 @@ namespace Cg2.Core.Domain
         private int _id = DefaultID;
 
         [DataMember]
+        [EdmScalarPropertyAttribute(EntityKeyProperty = true, IsNullable = false)]
         public virtual int ID
         {
             get { return _id; }

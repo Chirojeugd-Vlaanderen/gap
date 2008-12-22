@@ -15,5 +15,6 @@ namespace Cg2.Core.Domain
         (NamespaceName="Cg2.Core.Domain", Name="ChiroGroep")]
     public class ChiroGroep: Groep
     {
+
     }
 }

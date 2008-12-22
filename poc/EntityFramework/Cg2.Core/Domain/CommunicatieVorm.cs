@@ -32,6 +32,19 @@ namespace Cg2.Core.Domain
 
         #region properties
 
+        [EdmScalarPropertyAttribute(EntityKeyProperty = true, IsNullable = false)]
+        public override int ID
+        {
+            get
+            {
+                return base.ID;
+            }
+            set
+            {
+                base.ID = value;
+            }
+        }
+
         // Enums kunnen niet rechtstreeks gemapt worden.  Daarom gebruik ik
         // de property 'TypeInt' voor het Entity framework, die met ints werkt,
         // en de property 'Type' voor de applicatie; die werkt met 
