@@ -148,7 +148,7 @@ namespace Core.Domain
         {
             get
             {
-                return this.Logo;
+                return this._Logo;
             }
             set
             {

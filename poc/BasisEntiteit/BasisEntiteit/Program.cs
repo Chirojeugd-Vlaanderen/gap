@@ -20,6 +20,10 @@ namespace BasisEntiteit
                 ).First();
 
             Console.WriteLine(g.Naam);
+
+            g.Naam = "Valentijn";
+            context.SaveChanges();
+
             Console.ReadLine();
         }
     }
