@@ -11,7 +11,7 @@ namespace Cg2.Core.Domain
     /// </summary>
     /// 
     [Serializable]
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute
+    [EdmEntityTypeAttribute
         (NamespaceName="Cg2.Core.Domain", Name="Groep")]
     public class Groep: BasisEntiteit
     {
@@ -24,10 +24,20 @@ namespace Cg2.Core.Domain
 
         #region Properties
 
+        [EdmScalarPropertyAttribute (EntityKeyProperty = true, IsNullable = false)]
+        public override int ID
+        {
+            get
+            {
+                return base.ID;
+            }
+            set
+            {
+                base.ID = value;
+            }
+        }
 
-
-
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [EdmScalarPropertyAttribute()]
         public string Code
         {
             get { return _code; }
@@ -39,8 +49,7 @@ namespace Cg2.Core.Domain
             }
         }
 
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute
-            (IsNullable=false)]
+        [EdmScalarPropertyAttribute (IsNullable=false)]
         public string Naam
         {
             get { return _naam; }
@@ -52,7 +61,7 @@ namespace Cg2.Core.Domain
             }
         }
 
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [EdmScalarPropertyAttribute()]
         public int? OprichtingsJaar
         {
             get { return _oprichtingsJaar; }
@@ -64,7 +73,7 @@ namespace Cg2.Core.Domain
             }
         }
 
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [EdmScalarPropertyAttribute()]
         public string WebSite
         {
             get { return _webSite; }

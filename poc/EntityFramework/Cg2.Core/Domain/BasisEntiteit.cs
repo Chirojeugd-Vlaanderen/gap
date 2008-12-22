@@ -93,14 +93,12 @@ namespace Cg2.Core.Domain
         }
         #endregion
 
-        protected const int _defaultID = -1;
-        protected int DefaultID { get { return _defaultID; } }
+        public const int DefaultID = 0;
 
-        private int _id = _defaultID;
+        private int _id = DefaultID;
 
         [DataMember]
-        [EdmScalarProperty(EntityKeyProperty = true, IsNullable = false)]
-        public int ID
+        public virtual int ID
         {
             get { return _id; }
             set
@@ -139,7 +137,7 @@ namespace Cg2.Core.Domain
         /// <returns>True voor transiente entiteiten</returns>
         public bool IsTransient()
         {
-            return ID.Equals(_defaultID);
+            return ID == DefaultID;
         }
 
         /// <summary>
@@ -176,9 +174,9 @@ namespace Cg2.Core.Domain
         /// <returns>true indien ID's gelijk en niet 0/null zijn</returns>
         private bool HeeftZelfdeNietStandaardId(BasisEntiteit teVergelijken)
         {
-            return (!ID.Equals(_defaultID))
-                && !teVergelijken.ID.Equals(teVergelijken.DefaultID)
-                && ID.Equals(teVergelijken.ID);
+            return (ID != DefaultID)
+                && (teVergelijken.ID != DefaultID)
+                && ID == teVergelijken.ID;
         }
 
         /// <summary>
@@ -188,6 +186,14 @@ namespace Cg2.Core.Domain
         public override string ToString()
         {
             StringBuilder str = new StringBuilder();
+
+            // FIXME: Onderstaande lijn is nog altijd niet goed genoeg,
+            // want deze ToString wordt bepaald aan de hand van de
+            // hashcode, en die wordt dan weer gebruikt om te kijken of
+            // objecten met ID 0 verschillend zijn.  Met onderstaande
+            // 'ToString' krijgen objecten met ID 0 steeds dezelfde
+            // hashcode.
+
             str.Append(" Klasse: ").Append(GetType().FullName).Append(ID.ToString());
             return str.ToString();
         }

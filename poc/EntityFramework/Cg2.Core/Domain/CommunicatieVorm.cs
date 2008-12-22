@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.Objects.DataClasses;
 
 namespace Cg2.Core.Domain
 {
@@ -17,7 +18,7 @@ namespace Cg2.Core.Domain
     /// </summary>
     /// 
     [Serializable]
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute
+    [EdmEntityTypeAttribute
         (NamespaceName="Cg2.Core.Domain",Name="CommunicatieVorm")]
     public class CommunicatieVorm: BasisEntiteit
     {
@@ -36,8 +37,7 @@ namespace Cg2.Core.Domain
         // en de property 'Type' voor de applicatie; die werkt met 
         // 'CommunicatieTypes'.
 
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute
-            (IsNullable = false)]
+        [EdmScalarPropertyAttribute (IsNullable = false)]
         public int TypeInt
         {
             get { return _type; }
@@ -55,8 +55,7 @@ namespace Cg2.Core.Domain
             set { this.TypeInt = (int)value; }
         }
 
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute
-            (IsNullable = false)]
+        [EdmScalarPropertyAttribute (IsNullable = false)]
         public string Nummer
         {
             get { return _nummer; }
@@ -68,8 +67,7 @@ namespace Cg2.Core.Domain
             }
         }
 
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute
-            (IsNullable = false)]
+        [EdmScalarPropertyAttribute (IsNullable = false)]
         public bool IsGezinsGebonden
         {
             get { return _isGezinsGebonden; }
@@ -81,8 +79,7 @@ namespace Cg2.Core.Domain
             }
         }
 
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute
-            (IsNullable = false)]
+        [EdmScalarPropertyAttribute (IsNullable = false)]
         public bool Voorkeur
         {
             get { return _voorkeur; }
@@ -94,7 +91,7 @@ namespace Cg2.Core.Domain
             }
         }
 
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [EdmScalarPropertyAttribute()]
         public string Nota
         {
             get { return _nota; }
@@ -106,7 +103,7 @@ namespace Cg2.Core.Domain
             }
         }
 
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute
+        [EdmRelationshipNavigationPropertyAttribute
             ("Cg2.Core.Domain", "PersoonCommunicatieVorm", "Persoon")]
         public Persoon Persoon
         {

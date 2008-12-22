@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.Objects.DataClasses;
 
 namespace Cg2.Core.Domain
 {
@@ -16,7 +17,7 @@ namespace Cg2.Core.Domain
     /// </summary>
     /// 
     [Serializable]
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute
+    [EdmEntityTypeAttribute
         (NamespaceName="Cg2.Core.Domain", Name="Persoon")]
     public class Persoon: BasisEntiteit
     {
@@ -30,7 +31,7 @@ namespace Cg2.Core.Domain
         #endregion
 
         #region Properties
-        
+
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         public int? AdNummer
         {

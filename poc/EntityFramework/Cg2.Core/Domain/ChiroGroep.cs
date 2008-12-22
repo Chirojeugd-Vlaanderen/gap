@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.Objects.DataClasses;
 
 namespace Cg2.Core.Domain
 {
@@ -10,7 +11,7 @@ namespace Cg2.Core.Domain
     /// </summary>
     ///
     [Serializable]
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute
+    [EdmEntityTypeAttribute
         (NamespaceName="Cg2.Core.Domain", Name="ChiroGroep")]
     public class ChiroGroep: Groep
     {
