@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.Objects.DataClasses;
+using System.Runtime.Serialization;
 
 namespace Core.Domain
 {
@@ -19,8 +21,8 @@ namespace Core.Domain
         /// <summary>
         /// There are no comments for Property GroepID in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty = true, IsNullable = false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [EdmScalarProperty(EntityKeyProperty = true, IsNullable = false)]
+        [DataMember]
         public override int ID
         {
             get
@@ -50,7 +52,7 @@ namespace Core.Domain
         /// <summary>
         /// There are no comments for Property Naam in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable = false)]
+        [EdmScalarPropertyAttribute(IsNullable = false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string Naam
         {
