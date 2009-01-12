@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="AbstractEfDao.cs" />
     <Compile Include="Cg2ObjectContext.cs" />
+    <Compile Include="PersonenDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

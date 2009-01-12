@@ -12,9 +12,8 @@ namespace Cg2.Test
     ///to contain all GroepenEfDaoTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class GroepenEfDaoTest
+    public class GroepenDaoTest
     {
-
 
         private TestContext testContextInstance;
 

@@ -54,7 +54,7 @@
     <Property Name="CommunicatieVormID" Type="int" Nullable="false"
               StoreGeneratedPattern="Identity" />
     <Property Name="CommunicatieTypeID" Type="int" Nullable="false" />
-    <Property Name="PersoonID" Type="int" Nullable="true" />
+    <Property Name="PersoonID" Type="int" Nullable="false" />
     <Property Name="Nummer" Type="varchar" MaxLength="160" Nullable="false" />
     <Property Name="IsGezinsGebonden" Type="bit" Nullable="false" />
     <Property Name="Voorkeur" Type="bit" Nullable="false" />
@@ -64,7 +64,7 @@
   </EntityType>
 
   <Association Name="FK_CommunicatieVorm_Persoon">
-    <End Role="Persoon" Type="Cg2.Core.Domain.Store.Persoon" Multiplicity="0..1" />
+    <End Role="Persoon" Type="Cg2.Core.Domain.Store.Persoon" Multiplicity="1" />
     <End Role="CommunicatieVorm" Type="Cg2.Core.Domain.Store.CommunicatieVorm" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Persoon">

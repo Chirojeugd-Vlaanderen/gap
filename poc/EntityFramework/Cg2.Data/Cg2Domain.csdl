@@ -65,7 +65,7 @@
   </EntityType>
 
   <Association Name="PersoonCommunicatieVorm">
-    <End Type="Cg2.Core.Domain.Persoon" Role="Persoon" Multiplicity="0..1" />
+    <End Type="Cg2.Core.Domain.Persoon" Role="Persoon" Multiplicity="1" />
     <End Type="Cg2.Core.Domain.CommunicatieVorm" Role="CommunicatieVorm"
          Multiplicity="*" />
   </Association>
