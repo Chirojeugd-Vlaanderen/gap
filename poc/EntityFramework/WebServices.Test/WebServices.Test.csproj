@@ -36,9 +36,6 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data.Entity">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -55,7 +52,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
@@ -78,15 +74,12 @@
     <None Include="Service References\GroepenServiceReference\GroepenService1.xsd" />
     <None Include="Service References\GroepenServiceReference\GroepenService2.xsd" />
     <None Include="Service References\GroepenServiceReference\GroepenService3.xsd" />
+    <None Include="Service References\GroepenServiceReference\WebServices.Test.GroepenServiceReference.Groep.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\GroepenServiceReference\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Cg2.Core\Cg2.Core.csproj">
-      <Project>{B863A1B0-5947-4A6C-9710-4111CDAB78B8}</Project>
-      <Name>Cg2.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

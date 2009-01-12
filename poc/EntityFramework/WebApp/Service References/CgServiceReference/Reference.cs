@@ -15,6 +15,69 @@ namespace WebApp.CgServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="BasisEntiteit", Namespace="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain")]
+    [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebApp.CgServiceReference.Groep))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebApp.CgServiceReference.ChiroGroep))]
+    public partial class BasisEntiteit : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private WebApp.CgServiceReference.EntityKey SystemDataObjectsDataClassesIEntityWithKeyEntityKeyField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ID {
+            get {
+                return this.IDField;
+            }
+            set {
+                if ((this.IDField.Equals(value) != true)) {
+                    this.IDField = value;
+                    this.RaisePropertyChanged("ID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Name="System.Data.Objects.DataClasses.IEntityWithKey.EntityKey")]
+        public WebApp.CgServiceReference.EntityKey SystemDataObjectsDataClassesIEntityWithKeyEntityKey {
+            get {
+                return this.SystemDataObjectsDataClassesIEntityWithKeyEntityKeyField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SystemDataObjectsDataClassesIEntityWithKeyEntityKeyField, value) != true)) {
+                    this.SystemDataObjectsDataClassesIEntityWithKeyEntityKeyField = value;
+                    this.RaisePropertyChanged("SystemDataObjectsDataClassesIEntityWithKeyEntityKey");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityKey", Namespace="http://schemas.datacontract.org/2004/07/System.Data", IsReference=true)]
     [System.SerializableAttribute()]
     public partial class EntityKey : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -26,7 +89,7 @@ namespace WebApp.CgServiceReference {
         private string EntityContainerNameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private WebApp.CgServiceReference.EntityKeyMember[] EntityKeyValuesField;
+        private System.Collections.Generic.List<WebApp.CgServiceReference.EntityKeyMember> EntityKeyValuesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string EntitySetNameField;
@@ -55,7 +118,7 @@ namespace WebApp.CgServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public WebApp.CgServiceReference.EntityKeyMember[] EntityKeyValues {
+        public System.Collections.Generic.List<WebApp.CgServiceReference.EntityKeyMember> EntityKeyValues {
             get {
                 return this.EntityKeyValuesField;
             }
@@ -92,13 +155,88 @@ namespace WebApp.CgServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Groep", Namespace="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain")]
+    [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebApp.CgServiceReference.ChiroGroep))]
+    public partial class Groep : WebApp.CgServiceReference.BasisEntiteit {
+        
+        private string _codeField;
+        
+        private string _naamField;
+        
+        private System.Nullable<int> _oprichtingsJaarField;
+        
+        private string _webSiteField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public string _code {
+            get {
+                return this._codeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this._codeField, value) != true)) {
+                    this._codeField = value;
+                    this.RaisePropertyChanged("_code");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public string _naam {
+            get {
+                return this._naamField;
+            }
+            set {
+                if ((object.ReferenceEquals(this._naamField, value) != true)) {
+                    this._naamField = value;
+                    this.RaisePropertyChanged("_naam");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public System.Nullable<int> _oprichtingsJaar {
+            get {
+                return this._oprichtingsJaarField;
+            }
+            set {
+                if ((this._oprichtingsJaarField.Equals(value) != true)) {
+                    this._oprichtingsJaarField = value;
+                    this.RaisePropertyChanged("_oprichtingsJaar");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public string _webSite {
+            get {
+                return this._webSiteField;
+            }
+            set {
+                if ((object.ReferenceEquals(this._webSiteField, value) != true)) {
+                    this._webSiteField = value;
+                    this.RaisePropertyChanged("_webSite");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ChiroGroep", Namespace="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain")]
+    [System.SerializableAttribute()]
+    public partial class ChiroGroep : WebApp.CgServiceReference.Groep {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityKeyMember", Namespace="http://schemas.datacontract.org/2004/07/System.Data")]
     [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.Groep))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.BasisEntiteit))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.ChiroGroep))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebApp.CgServiceReference.Groep))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebApp.CgServiceReference.BasisEntiteit))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebApp.CgServiceReference.ChiroGroep))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebApp.CgServiceReference.EntityKey))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebApp.CgServiceReference.EntityKeyMember[]))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.List<WebApp.CgServiceReference.EntityKeyMember>))]
     public partial class EntityKeyMember : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
@@ -161,12 +299,10 @@ namespace WebApp.CgServiceReference {
     public interface IGroepenService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGroepenService/Updaten", ReplyAction="http://tempuri.org/IGroepenService/UpdatenResponse")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Core.Domain.ChiroGroep))]
-        Cg2.Core.Domain.Groep Updaten(Cg2.Core.Domain.Groep g, Cg2.Core.Domain.Groep origineel);
+        WebApp.CgServiceReference.Groep Updaten(WebApp.CgServiceReference.Groep g, WebApp.CgServiceReference.Groep origineel);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGroepenService/Ophalen", ReplyAction="http://tempuri.org/IGroepenService/OphalenResponse")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Core.Domain.ChiroGroep))]
-        Cg2.Core.Domain.Groep Ophalen(int groepID);
+        WebApp.CgServiceReference.Groep Ophalen(int groepID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGroepenService/Hallo", ReplyAction="http://tempuri.org/IGroepenService/HalloResponse")]
         string Hallo();
@@ -199,11 +335,11 @@ namespace WebApp.CgServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public Cg2.Core.Domain.Groep Updaten(Cg2.Core.Domain.Groep g, Cg2.Core.Domain.Groep origineel) {
+        public WebApp.CgServiceReference.Groep Updaten(WebApp.CgServiceReference.Groep g, WebApp.CgServiceReference.Groep origineel) {
             return base.Channel.Updaten(g, origineel);
         }
         
-        public Cg2.Core.Domain.Groep Ophalen(int groepID) {
+        public WebApp.CgServiceReference.Groep Ophalen(int groepID) {
             return base.Channel.Ophalen(groepID);
         }
         

@@ -9,19 +9,304 @@
 //------------------------------------------------------------------------------
 
 namespace WebServices.Test.GroepenServiceReference {
+    using System.Runtime.Serialization;
+    using System;
     
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="BasisEntiteit", Namespace="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain")]
+    [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.GroepenServiceReference.Groep))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.GroepenServiceReference.ChiroGroep))]
+    public partial class BasisEntiteit : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private WebServices.Test.GroepenServiceReference.EntityKey SystemDataObjectsDataClassesIEntityWithKeyEntityKeyField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ID {
+            get {
+                return this.IDField;
+            }
+            set {
+                if ((this.IDField.Equals(value) != true)) {
+                    this.IDField = value;
+                    this.RaisePropertyChanged("ID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Name="System.Data.Objects.DataClasses.IEntityWithKey.EntityKey")]
+        public WebServices.Test.GroepenServiceReference.EntityKey SystemDataObjectsDataClassesIEntityWithKeyEntityKey {
+            get {
+                return this.SystemDataObjectsDataClassesIEntityWithKeyEntityKeyField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SystemDataObjectsDataClassesIEntityWithKeyEntityKeyField, value) != true)) {
+                    this.SystemDataObjectsDataClassesIEntityWithKeyEntityKeyField = value;
+                    this.RaisePropertyChanged("SystemDataObjectsDataClassesIEntityWithKeyEntityKey");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EntityKey", Namespace="http://schemas.datacontract.org/2004/07/System.Data", IsReference=true)]
+    [System.SerializableAttribute()]
+    public partial class EntityKey : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string EntityContainerNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.List<WebServices.Test.GroepenServiceReference.EntityKeyMember> EntityKeyValuesField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string EntitySetNameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string EntityContainerName {
+            get {
+                return this.EntityContainerNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.EntityContainerNameField, value) != true)) {
+                    this.EntityContainerNameField = value;
+                    this.RaisePropertyChanged("EntityContainerName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.List<WebServices.Test.GroepenServiceReference.EntityKeyMember> EntityKeyValues {
+            get {
+                return this.EntityKeyValuesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.EntityKeyValuesField, value) != true)) {
+                    this.EntityKeyValuesField = value;
+                    this.RaisePropertyChanged("EntityKeyValues");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string EntitySetName {
+            get {
+                return this.EntitySetNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.EntitySetNameField, value) != true)) {
+                    this.EntitySetNameField = value;
+                    this.RaisePropertyChanged("EntitySetName");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Groep", Namespace="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain")]
+    [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.GroepenServiceReference.ChiroGroep))]
+    public partial class Groep : WebServices.Test.GroepenServiceReference.BasisEntiteit {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CodeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NaamField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> OprichtingsJaarField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string WebSiteField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Code {
+            get {
+                return this.CodeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CodeField, value) != true)) {
+                    this.CodeField = value;
+                    this.RaisePropertyChanged("Code");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Naam {
+            get {
+                return this.NaamField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NaamField, value) != true)) {
+                    this.NaamField = value;
+                    this.RaisePropertyChanged("Naam");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> OprichtingsJaar {
+            get {
+                return this.OprichtingsJaarField;
+            }
+            set {
+                if ((this.OprichtingsJaarField.Equals(value) != true)) {
+                    this.OprichtingsJaarField = value;
+                    this.RaisePropertyChanged("OprichtingsJaar");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string WebSite {
+            get {
+                return this.WebSiteField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.WebSiteField, value) != true)) {
+                    this.WebSiteField = value;
+                    this.RaisePropertyChanged("WebSite");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ChiroGroep", Namespace="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain")]
+    [System.SerializableAttribute()]
+    public partial class ChiroGroep : WebServices.Test.GroepenServiceReference.Groep {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EntityKeyMember", Namespace="http://schemas.datacontract.org/2004/07/System.Data")]
+    [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.GroepenServiceReference.Groep))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.GroepenServiceReference.BasisEntiteit))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.GroepenServiceReference.ChiroGroep))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.GroepenServiceReference.EntityKey))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.List<WebServices.Test.GroepenServiceReference.EntityKeyMember>))]
+    public partial class EntityKeyMember : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string KeyField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private object ValueField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Key {
+            get {
+                return this.KeyField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.KeyField, value) != true)) {
+                    this.KeyField = value;
+                    this.RaisePropertyChanged("Key");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public object Value {
+            get {
+                return this.ValueField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ValueField, value) != true)) {
+                    this.ValueField = value;
+                    this.RaisePropertyChanged("Value");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="GroepenServiceReference.IGroepenService")]
     public interface IGroepenService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGroepenService/Updaten", ReplyAction="http://tempuri.org/IGroepenService/UpdatenResponse")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Core.Domain.ChiroGroep))]
-        Cg2.Core.Domain.Groep Updaten(Cg2.Core.Domain.Groep g, Cg2.Core.Domain.Groep origineel);
+        WebServices.Test.GroepenServiceReference.Groep Updaten(WebServices.Test.GroepenServiceReference.Groep g, WebServices.Test.GroepenServiceReference.Groep origineel);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGroepenService/Ophalen", ReplyAction="http://tempuri.org/IGroepenService/OphalenResponse")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Core.Domain.ChiroGroep))]
-        Cg2.Core.Domain.Groep Ophalen(int groepID);
+        WebServices.Test.GroepenServiceReference.Groep Ophalen(int groepID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGroepenService/Hallo", ReplyAction="http://tempuri.org/IGroepenService/HalloResponse")]
         string Hallo();
@@ -54,11 +339,11 @@ namespace WebServices.Test.GroepenServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public Cg2.Core.Domain.Groep Updaten(Cg2.Core.Domain.Groep g, Cg2.Core.Domain.Groep origineel) {
+        public WebServices.Test.GroepenServiceReference.Groep Updaten(WebServices.Test.GroepenServiceReference.Groep g, WebServices.Test.GroepenServiceReference.Groep origineel) {
             return base.Channel.Updaten(g, origineel);
         }
         
-        public Cg2.Core.Domain.Groep Ophalen(int groepID) {
+        public WebServices.Test.GroepenServiceReference.Groep Ophalen(int groepID) {
             return base.Channel.Ophalen(groepID);
         }
         

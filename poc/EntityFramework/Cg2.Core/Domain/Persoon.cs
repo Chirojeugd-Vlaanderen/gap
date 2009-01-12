@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data.Objects.DataClasses;
+using System.Runtime.Serialization;
 
 namespace Cg2.Core.Domain
 {
-    [Serializable]
+    [DataContract]
     public enum GeslachtsType {Man = 1, Vrouw = 2, Onbekend = 0};
 
     /// <summary>
@@ -33,6 +34,7 @@ namespace Cg2.Core.Domain
 
         #region Properties
 
+        [DataMember]
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         public int? AdNummer
         {
@@ -45,6 +47,7 @@ namespace Cg2.Core.Domain
             }
         }
 
+        [DataMember]
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute
             (IsNullable=false)]
         public string Naam
@@ -58,6 +61,7 @@ namespace Cg2.Core.Domain
             }
         }
 
+        [DataMember]
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         public string VoorNaam
         {
@@ -87,12 +91,14 @@ namespace Cg2.Core.Domain
             }
         }
 
+        [DataMember]
         public GeslachtsType Geslacht
         {
             get { return (GeslachtsType)this.GeslachtsInt; }
             set { this.GeslachtsInt = (int)value; }
         }
 
+        [DataMember]
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         public DateTime? GeboorteDatum
         {
@@ -105,6 +111,7 @@ namespace Cg2.Core.Domain
             }
         }
 
+        [DataMember]
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         public DateTime? SterfDatum
         {
@@ -117,6 +124,7 @@ namespace Cg2.Core.Domain
             }
         }
 
+        [DataMember]
         [global::System.Data.Objects.DataClasses
             .EdmRelationshipNavigationPropertyAttribute("Cg2.Core.Domain"
             , "PersoonCommunicatieVorm", "CommunicatieVorm")]

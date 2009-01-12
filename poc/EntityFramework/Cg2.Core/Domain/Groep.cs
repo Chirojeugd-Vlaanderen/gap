@@ -11,7 +11,7 @@ namespace Cg2.Core.Domain
     /// Algemene groepsklasse, parent voor zowel ChiroGroep als Satelliet.
     /// </summary>
     /// 
-    [Serializable]
+    [DataContract]
     [EdmEntityTypeAttribute
         (NamespaceName="Cg2.Core.Domain", Name="Groep")]
     // Als er ervende klasses zijn, moeten die hier als 'KnownType'
@@ -42,6 +42,7 @@ namespace Cg2.Core.Domain
             }
         }
 
+        [DataMember]
         [EdmScalarPropertyAttribute()]
         public string Code
         {
@@ -54,6 +55,7 @@ namespace Cg2.Core.Domain
             }
         }
 
+        [DataMember]
         [EdmScalarPropertyAttribute (IsNullable=false)]
         public string Naam
         {
@@ -66,6 +68,7 @@ namespace Cg2.Core.Domain
             }
         }
 
+        [DataMember]
         [EdmScalarPropertyAttribute()]
         public int? OprichtingsJaar
         {
@@ -78,6 +81,7 @@ namespace Cg2.Core.Domain
             }
         }
 
+        [DataMember]
         [EdmScalarPropertyAttribute()]
         public string WebSite
         {

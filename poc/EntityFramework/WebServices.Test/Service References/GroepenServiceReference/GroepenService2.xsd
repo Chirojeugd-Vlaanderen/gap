@@ -5,10 +5,10 @@
     <xs:complexContent mixed="false">
       <xs:extension base="tns:BasisEntiteit">
         <xs:sequence>
-          <xs:element name="_code" nillable="true" type="xs:string" />
-          <xs:element name="_naam" nillable="true" type="xs:string" />
-          <xs:element name="_oprichtingsJaar" nillable="true" type="xs:int" />
-          <xs:element name="_webSite" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Naam" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OprichtingsJaar" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="WebSite" nillable="true" type="xs:string" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

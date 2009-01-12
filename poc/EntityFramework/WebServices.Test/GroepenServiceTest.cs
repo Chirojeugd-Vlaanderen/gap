@@ -3,7 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Cg2.Core.Domain;
+using WebServices.Test.GroepenServiceReference;
 
 namespace WebServices.Test
 {

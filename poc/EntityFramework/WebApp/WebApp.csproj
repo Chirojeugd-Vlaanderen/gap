@@ -32,13 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.Entity">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Runtime.Serialization">
@@ -200,12 +194,6 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cg2.Core\Cg2.Core.csproj">
-      <Project>{B863A1B0-5947-4A6C-9710-4111CDAB78B8}</Project>
-      <Name>Cg2.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
@@ -218,6 +206,9 @@
     <None Include="Service References\CgServiceReference\GroepenService1.xsd" />
     <None Include="Service References\CgServiceReference\GroepenService2.xsd" />
     <None Include="Service References\CgServiceReference\GroepenService3.xsd" />
+    <None Include="Service References\CgServiceReference\WebApp.CgServiceReference.Groep.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
