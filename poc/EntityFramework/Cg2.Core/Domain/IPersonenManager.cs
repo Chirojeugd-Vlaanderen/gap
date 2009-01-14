@@ -19,5 +19,22 @@ namespace Cg2.Core.Domain
         /// Anders null.</param>
         /// <returns>De bewaarde persoon</returns>
         Persoon Updaten(Persoon p, Persoon origineel);
+
+        /// <summary>
+        /// Haalt persoonsinfo op uit database
+        /// </summary>
+        /// <param name="persoonID">ID van de persoon met de gevraagde info.
+        /// </param>
+        /// <returns>Gevonden persoonsobject, null als niet gevonden</returns>
+        Persoon Ophalen(int persoonID);
+
+        /// <summary>
+        /// Haalt persoonsinfo op uit database, incl. communicatievormen
+        /// </summary>
+        /// <param name="persoonID">ID op te halen persoon</param>
+        /// <returns>Gevraagde persoonsobject, inclusief communicatievormen
+        /// in member Communicatie.  Null indien de persoon niet gevonden.
+        /// </returns>
+        Persoon OphalenMetCommunicatie(int persoonID);
     }
 }

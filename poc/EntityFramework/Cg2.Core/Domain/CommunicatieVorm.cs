@@ -3,13 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data.Objects.DataClasses;
+using System.Runtime.Serialization;
 
 namespace Cg2.Core.Domain
 {
-    [Serializable]
+    [DataContract]
     public enum CommunicatieType
     {
-        Telefoon = 1, Fax = 2, EMail = 3, WebSite = 4, Msn = 5, Jabber = 6
+        [EnumMember]
+        Telefoon = 1, 
+        [EnumMember]
+        Fax = 2, 
+        [EnumMember]
+        EMail = 3, 
+        [EnumMember]
+        WebSite = 4, 
+        [EnumMember]
+        Msn = 5, 
+        [EnumMember]
+        Jabber = 6
     }
 
     /// <summary>
@@ -18,7 +30,7 @@ namespace Cg2.Core.Domain
     /// communicatievorm met dat telefoonnummer verschillende keren voor.
     /// </summary>
     /// 
-    [Serializable]
+    [DataContract]
     [EdmEntityTypeAttribute
         (NamespaceName="Cg2.Core.Domain",Name="CommunicatieVorm")]
     public class CommunicatieVorm: BasisEntiteit
@@ -33,6 +45,7 @@ namespace Cg2.Core.Domain
 
         #region properties
 
+        [DataMember]
         [EdmScalarPropertyAttribute(EntityKeyProperty = true, IsNullable = false)]
         public override int ID
         {
@@ -63,12 +76,14 @@ namespace Cg2.Core.Domain
             }
         }
 
+        [DataMember]
         public CommunicatieType Type
         {
             get { return (CommunicatieType)this.TypeInt; }
             set { this.TypeInt = (int)value; }
         }
 
+        [DataMember]
         [EdmScalarPropertyAttribute (IsNullable = false)]
         public string Nummer
         {
@@ -81,6 +96,7 @@ namespace Cg2.Core.Domain
             }
         }
 
+        [DataMember]
         [EdmScalarPropertyAttribute (IsNullable = false)]
         public bool IsGezinsGebonden
         {
@@ -93,6 +109,7 @@ namespace Cg2.Core.Domain
             }
         }
 
+        [DataMember]
         [EdmScalarPropertyAttribute (IsNullable = false)]
         public bool Voorkeur
         {
@@ -105,6 +122,7 @@ namespace Cg2.Core.Domain
             }
         }
 
+        [DataMember]
         [EdmScalarPropertyAttribute()]
         public string Nota
         {

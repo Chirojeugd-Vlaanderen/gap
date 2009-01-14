@@ -8,7 +8,15 @@ using System.Runtime.Serialization;
 namespace Cg2.Core.Domain
 {
     [DataContract]
-    public enum GeslachtsType {Man = 1, Vrouw = 2, Onbekend = 0};
+    public enum GeslachtsType 
+    {
+        [EnumMember]
+        Man = 1, 
+        [EnumMember]
+        Vrouw = 2, 
+        [EnumMember]
+        Onbekend = 0
+    };
 
     /// <summary>
     /// Klasse voor 'persoon'.  De bedoeling is dat elke individuele persoon
@@ -18,7 +26,7 @@ namespace Cg2.Core.Domain
     /// zodat ze daar de dubbele personen eventueel kunnen mergen.
     /// </summary>
     /// 
-    [Serializable]
+    [DataContract]
     [EdmEntityTypeAttribute
         (NamespaceName="Cg2.Core.Domain", Name="Persoon")]
     public class Persoon: BasisEntiteit
