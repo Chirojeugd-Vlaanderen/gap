@@ -30,6 +30,12 @@ namespace WebServices.Test.PersonenServiceReference {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private WebServices.Test.PersonenServiceReference.EntityKey SystemDataObjectsDataClassesIEntityWithKeyEntityKeyField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool TeVerwijderenField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private byte[] VersieField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -62,6 +68,32 @@ namespace WebServices.Test.PersonenServiceReference {
                 if ((object.ReferenceEquals(this.SystemDataObjectsDataClassesIEntityWithKeyEntityKeyField, value) != true)) {
                     this.SystemDataObjectsDataClassesIEntityWithKeyEntityKeyField = value;
                     this.RaisePropertyChanged("SystemDataObjectsDataClassesIEntityWithKeyEntityKey");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool TeVerwijderen {
+            get {
+                return this.TeVerwijderenField;
+            }
+            set {
+                if ((this.TeVerwijderenField.Equals(value) != true)) {
+                    this.TeVerwijderenField = value;
+                    this.RaisePropertyChanged("TeVerwijderen");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie {
+            get {
+                return this.VersieField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.VersieField, value) != true)) {
+                    this.VersieField = value;
+                    this.RaisePropertyChanged("Versie");
                 }
             }
         }

@@ -57,6 +57,7 @@
     <Compile Include="Domain\ChiroGroep.cs" />
     <Compile Include="Domain\CommunicatieVorm.cs" />
     <Compile Include="Domain\Groep.cs" />
+    <Compile Include="Domain\IChiroGroepenManager.cs" />
     <Compile Include="Domain\ICommunicatieVormenManager.cs" />
     <Compile Include="Domain\IGroepenManager.cs" />
     <Compile Include="Domain\IPersonenManager.cs" />
