@@ -25,6 +25,7 @@ namespace Cg2.Core.Domain
         private string _naam;
         private int? _oprichtingsJaar;
         private string _webSite;
+        private byte[] _versie;
         #endregion
 
         #region Properties
@@ -42,6 +43,13 @@ namespace Cg2.Core.Domain
             }
         }
 
+        [EdmScalarPropertyAttribute()]
+        public override byte[] Versie
+        {
+            get { return base.Versie; }
+            set { base.Versie = value; }
+        }
+
         [DataMember]
         [EdmScalarPropertyAttribute()]
         public string Code
@@ -49,9 +57,9 @@ namespace Cg2.Core.Domain
             get { return _code; }
             set
             {
-                this.PropertyChanging(System.Reflection.MethodInfo.GetCurrentMethod().Name);
+                this.PropertyChanging("Code");
                 _code = value;
-                this.PropertyChanged(System.Reflection.MethodInfo.GetCurrentMethod().Name);
+                this.PropertyChanged("Code");
             }
         }
 
@@ -62,9 +70,9 @@ namespace Cg2.Core.Domain
             get { return _naam; }
             set
             {
-                this.PropertyChanging(System.Reflection.MethodInfo.GetCurrentMethod().Name);
+                this.PropertyChanging("Naam");
                 _naam = value;
-                this.PropertyChanged(System.Reflection.MethodInfo.GetCurrentMethod().Name);
+                this.PropertyChanged("Naam");
             }
         }
 
@@ -75,9 +83,9 @@ namespace Cg2.Core.Domain
             get { return _oprichtingsJaar; }
             set
             {
-                this.PropertyChanging(System.Reflection.MethodInfo.GetCurrentMethod().Name);
+                this.PropertyChanging("OprichtingsJaar");
                 _oprichtingsJaar = value;
-                this.PropertyChanged(System.Reflection.MethodInfo.GetCurrentMethod().Name);
+                this.PropertyChanged("OprichtingsJaar");
             }
         }
 
@@ -88,9 +96,9 @@ namespace Cg2.Core.Domain
             get { return _webSite; }
             set
             {
-                this.PropertyChanging(System.Reflection.MethodInfo.GetCurrentMethod().Name);
+                this.PropertyChanging("WebSite");
                 _webSite = value;
-                this.PropertyChanged(System.Reflection.MethodInfo.GetCurrentMethod().Name);
+                this.PropertyChanged("WebSite");
             }
         }
         #endregion

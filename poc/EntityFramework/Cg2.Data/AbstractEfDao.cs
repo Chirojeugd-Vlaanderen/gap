@@ -34,7 +34,9 @@ namespace Cg2.Data.Ef
                     from t in oq
                     where t.ID == id
                     select t).FirstOrDefault<T>();
+                db.Detach(result);
             }
+            
             return result;
         }
 
@@ -105,22 +107,26 @@ namespace Cg2.Data.Ef
                 EntityKey sleutel;
                 if (oorspronkelijkeEntiteit == null)
                 {
-                    db.AttachTo(typeof(T).BaseType.Name, nieuweEntiteit as object);
-                    sleutel = db.CreateEntityKey(typeof(T).BaseType.Name, nieuweEntiteit);
+                    db.AttachTo(typeof(T).Name, nieuweEntiteit as object);
+                    sleutel = db.CreateEntityKey(typeof(T).Name, nieuweEntiteit);
                     ObjectStateEntry en = db.ObjectStateManager.GetObjectStateEntry(sleutel);
                     en.SetModified();
 
-                    // TODO: mogelijk is de refresh niet meer nodig, nu EF uit
-                    // beta is.
+                    // Die refresh komt uit het boek, maar als ik die uitvoer, worden
+                    // geen concurrency exceptions opgevangen.
+                    //
+                    // Als ik hem weg laat, wordt concurrency gesignaleerd, maar
+                    // geen update uitgevoerd.
 
                     db.Refresh(RefreshMode.ClientWins, nieuweEntiteit as object);
+
                 }
                 else
                 {
-                    sleutel = db.CreateEntityKey(typeof(T).BaseType.Name, oorspronkelijkeEntiteit);
+                    sleutel = db.CreateEntityKey(typeof(T).Name, oorspronkelijkeEntiteit);
                     if (sleutel == null)
                     {
-                        db.AttachTo(typeof(T).BaseType.Name, nieuweEntiteit as object);
+                        db.AttachTo(typeof(T).Name, nieuweEntiteit as object);
                     }
                     else
                     {
@@ -134,7 +140,11 @@ namespace Cg2.Data.Ef
                     // oorsrpnkelijke entity meegegeven is.
 
                     en.SetModified();
-                    db.Refresh(RefreshMode.ClientWins, oorspronkelijkeEntiteit as object);
+
+                    // Onderstaande lijn komt uit het boek, maar als ik die laat staan, worden
+                    // geen concurrency exceptions opgevangen.
+
+                    // db.Refresh(RefreshMode.ClientWins, oorspronkelijkeEntiteit as object);
 
                 }
                 db.SaveChanges();

@@ -29,6 +29,7 @@
     <Property Name="Naam" Type="String" MaxLength="160" Nullable="false" />
     <Property Name="OprichtingsJaar" Type="Int32" />
     <Property Name="WebSite" Type="String" MaxLength="160" />
+    <Property Name="Versie" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" />
   </EntityType>
   
   <EntityType Name="ChiroGroep" BaseType="Cg2.Core.Domain.Groep" />

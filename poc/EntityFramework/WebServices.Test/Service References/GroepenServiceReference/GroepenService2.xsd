@@ -18,6 +18,8 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="ID" type="xs:int" />
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/System.Data" minOccurs="0" name="System.Data.Objects.DataClasses.IEntityWithKey.EntityKey" nillable="true" type="q1:EntityKey" />
+      <xs:element minOccurs="0" name="TeVerwijderen" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Versie" nillable="true" type="xs:base64Binary" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="BasisEntiteit" nillable="true" type="tns:BasisEntiteit" />

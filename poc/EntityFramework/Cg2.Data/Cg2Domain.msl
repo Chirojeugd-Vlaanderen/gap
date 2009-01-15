@@ -11,6 +11,8 @@
           <ScalarProperty Name="Naam" ColumnName="Naam" />
           <ScalarProperty Name="OprichtingsJaar" ColumnName="OprichtingsJaar" />
           <ScalarProperty Name="WebSite" ColumnName="WebSite" />
+          <ScalarProperty Name="Versie" ColumnName="Versie"/>
+          <!-- Versie moet mee gemapt worden voor concurrency control -->
         </MappingFragment>
       </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(Cg2.Core.Domain.ChiroGroep)">

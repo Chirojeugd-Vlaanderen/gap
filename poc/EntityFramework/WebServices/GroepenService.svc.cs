@@ -18,7 +18,17 @@ namespace WebServices
         public Groep Updaten(Groep g, Groep origineel)
         {
             IGroepenManager gm = new GroepenManager();
-            return gm.Updaten(g, origineel);
+
+            try
+            {
+                return gm.Updaten(g, origineel);
+            }
+            catch (Exception e)
+            {
+                // TODO: fatsoenlijke exception handling
+
+                throw new FaultException(e.Message, new FaultCode("Optimistic Concurrency Exception"));
+            }
         }
 
         public Groep Ophalen(int groepID)

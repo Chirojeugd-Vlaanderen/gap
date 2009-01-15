@@ -96,6 +96,9 @@ namespace Cg2.Core.Domain
         public const int DefaultID = 0;
 
         private int _id = DefaultID;
+        private byte[] _versie;
+        private bool _teVerwijderen = false;
+        
 
         [DataMember]
         [EdmScalarPropertyAttribute(EntityKeyProperty = true, IsNullable = false)]
@@ -108,6 +111,31 @@ namespace Cg2.Core.Domain
                 _id = value;
                 this.PropertyChanged("ID");
             }
+        }
+
+        [DataMember]
+        [EdmScalarPropertyAttribute()]
+        public virtual byte[] Versie
+        {
+            get { return _versie; }
+            set
+            {
+                this.PropertyChanging("Versie");
+                _versie = value;
+                this.PropertyChanged("Versie");
+            }
+        }
+
+        [DataMember]
+        public bool TeVerwijderen
+        {
+            get { return _teVerwijderen; }
+            set { _teVerwijderen = value; }
+
+            // Hier geen 'PropertyChanging', want dit is enkel een
+            // vlaggetje dat aangeeft of het object verwijderd moet
+            // worden.  ('TeVerwijderen' wordt bijgevolg ook nooit
+            // gepersisteerd.)
         }
 
         public BasisEntiteit()

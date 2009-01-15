@@ -21,6 +21,7 @@ namespace WebServices
         /// gaat het ook; geef dan null mee als origineel.
         /// </param>
         /// <returns>De persoon met eventueel gewijzigde informatie</returns>
+        /// <remarks>FIXME: gedetailleerde exception</remarks>
         [OperationContract]
         Groep Updaten(Groep g, Groep origineel);
 
