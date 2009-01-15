@@ -102,56 +102,48 @@ namespace Cg2.Data.Ef
         /// <returns>De geupdatete entiteit</returns>
         public T Updaten(T nieuweEntiteit, T oorspronkelijkeEntiteit)
         {
+            // Code uit het boek aangepast, met dank aan
+            // http://msdn.microsoft.com/en-us/magazine/cc700340.aspx
+
             using (Cg2ObjectContext db = new Cg2ObjectContext())
             {
                 EntityKey sleutel;
                 if (oorspronkelijkeEntiteit == null)
                 {
-                    db.AttachTo(typeof(T).Name, nieuweEntiteit as object);
+                    db.Attach(nieuweEntiteit);
                     sleutel = db.CreateEntityKey(typeof(T).Name, nieuweEntiteit);
-                    ObjectStateEntry en = db.ObjectStateManager.GetObjectStateEntry(sleutel);
-                    en.SetModified();
-
-                    // Die refresh komt uit het boek, maar als ik die uitvoer, worden
-                    // geen concurrency exceptions opgevangen.
-                    //
-                    // Als ik hem weg laat, wordt concurrency gesignaleerd, maar
-                    // geen update uitgevoerd.
-
-                    db.Refresh(RefreshMode.ClientWins, nieuweEntiteit as object);
-
+                    SetAllModified(sleutel, db);
                 }
                 else
                 {
-                    sleutel = db.CreateEntityKey(typeof(T).Name, oorspronkelijkeEntiteit);
-                    if (sleutel == null)
-                    {
-                        db.AttachTo(typeof(T).Name, nieuweEntiteit as object);
-                    }
-                    else
-                    {
-                        db.Attach(oorspronkelijkeEntiteit as System.Data.Objects.DataClasses.IEntityWithKey);
-                        db.ApplyPropertyChanges(sleutel.EntitySetName, nieuweEntiteit as object);
-                    }
-
-                    ObjectStateEntry en = db.ObjectStateManager.GetObjectStateEntry(sleutel);
-
-                    // Ik zou denken dat de 'SetModified' niet nodig is als de
-                    // oorsrpnkelijke entity meegegeven is.
-
-                    en.SetModified();
-
-                    // Onderstaande lijn komt uit het boek, maar als ik die laat staan, worden
-                    // geen concurrency exceptions opgevangen.
-
-                    // db.Refresh(RefreshMode.ClientWins, oorspronkelijkeEntiteit as object);
-
+                    db.Attach(oorspronkelijkeEntiteit);
+                    sleutel = db.CreateEntityKey(typeof(T).Name, nieuweEntiteit);
+                    db.ApplyPropertyChanges(sleutel.EntitySetName, nieuweEntiteit as object);
                 }
                 db.SaveChanges();
             }
             return nieuweEntiteit;
         }
 
+        /// <summary>
+        /// Markeert entity als 'volledig gewijzigd'
+        /// </summary>
+        /// <param name="key">Key van te markeren entity</param>
+        /// <param name="context">Context om wijzigingen in te markeren</param>
+        /// <remarks>Deze functie staat hier mogelijk niet op zijn plaats</remarks>
+        private static void SetAllModified(EntityKey key, ObjectContext context)
+        {
+            var stateEntry = context.ObjectStateManager.GetObjectStateEntry(key);
+            var propertyNameList = stateEntry.CurrentValues.DataRecordInfo.FieldMetadata.Select
+              (pn => pn.FieldType.Name);
+            foreach (var propName in propertyNameList)
+                stateEntry.SetModifiedProperty(propName);
+        }
+
         #endregion
+
+
     }
+
+
 }
