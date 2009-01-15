@@ -1,0 +1,21 @@
+hoe zit het met het programma zelf?
+
+werkjaar => overal links leggen (tabel?)
+         werkjaar link naar lid en groep > extra klasse
+associerende klassen => stomme join?
+
+jaarovergang:
+	ofwel: geeft een groep in wanneer ze de overgang willen doen. Op
+		die dag zullen alle toekomstperspectieven overgezet worden
+		en worden de leden aangesloten
+		=> voordeel: saven van data en niet alles tegelijk moeten ingeven
+	ofwel: 1 grote knop: overgang
+		hij krijgt een grote lijst van iedereen van vorig jaar die zou kunnen overgaan
+		vanaf dan zijn de nieuwe ledenlijsten leeg behalve wa er is toegevoegd
+		wanneer hij overgaat, betaalt hij.
+
+er is een probleem met wanneer overgaan te betalen: nieuw lid opschrijven op startdag,
+maar komt daarna nooit meer en betalen geen lidgeld: dan problemen want moet wel aan nationaal
+betaald worden. 
+
+

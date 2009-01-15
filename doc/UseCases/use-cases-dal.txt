@@ -1,0 +1,128 @@
+Use cases Chirogroep
+====================
+
+Lijstje is opgesteld op basis van de UI-schetsen die Bart en ik eerder hadden voorbereid.
+
+
+
+* Weergeven lijst Personen
+Wat: lijst met alle personen gelieerd aan een groep.  
+Relevante velden: ID, Voornaam, Naam, Geboortedatum, Lidstatus (in huidig werkjaar: lid, kandidaatlid, non-actief lid, geen lid), Categorieën (alle categorieën waar de persoon in zit), Adres (voorkeuradres), Telefoon (voorkeur), E-mail (voorkeur)
+Parameters: Groep, HUIDIG werkjaar
+Varia: lijst wordt in UI gepagineerd per 50 personen, gesorteerd op Naam, Voornaam
+
+* Weergeven lijst Leden
+Wat: lijst met alle leden van een groep in een specifiek werkjaar
+Relevante velden: ID, Voornaam, Naam, Geboortedatum, Lidstatus, Afdeling, Functies (alle functies in opgegeven werkjaar), Categorieën (alle), Adres (voorkeuradres), Telefoon (voorkeur), E-mail (voorkeur)
+Parameters: Groep, werkjaar
+Varia: lijst wordt in UI gepagineerd per werkjaar, gesorteerd op Afdeling, Naam, Voornaam
+
+
+* Fiche weergeven van een Persoon in een bepaald werkjaar
+Wat: fiche met alle beschikbare info over een Persoon EN info over het bijhorende Lid in het opgegeven werkjaar
+Relevante velden: 
+  persoonsgegevens: Voornaam, Naam, Geboortedatum, Adres (alle), E-mail (alle), Telefoon (alle), Functies (alle), Groepsgedefinieerde Persoonsvelden
+  lidgegevens: Afdeling (KAN EEN LID IN MEERDERE AFDELINGEN ZITTEN OF ZIJN DAT DAN APARTE LEDEN?), Categorieën (alle), Chiroleeftijd, Lijst met alle werkjaren waarin deze persoon lid is, Groepseigen Lidvelden
+Parameters: Groep, werkjaar, Persoon
+Varia: als een persoon geen lid is, krijgt de gebruiker op de persoonsfiche toch een lijst met alle werkjaren waarin die persoon lid was en op die manier kan men snel de hele 'chirobiografie' opzoeken
+
+* Persoonsgegevens wijzigen / Voornaam, Naam, Geboortedatum of Groepseigen Persoonsvelden
+Parameters: Persoon, Groep, nieuwe voornaam, naam, geboortedatum, andere nieuwe waarden voor groepseigen velden
+Varia: wijzigen van deze gegevens kan rechtstreeks in de UI (simpele velden op een formulier)
+
+* Persoonsgegevens wijzigen / Adres verwijderen
+Parameters: Persoon, Groep, Adres
+Wat: koppeling tussen persoon en adres wordt verwijderd. (eventueel kan ook het Adres verwijderd worden als er niemand meer aan het adres gekoppeld is)
+Varia: in de UI voorzie ik dat alle adressen vermeld worden op de persoonsfiche en dat er naast elk van die adressen een 'verwijderen'-knop staat
+
+* Persoonsgegevens wijzigen / Adres voorkeuradres wijzigen
+Parameters: Persoon, Groep, Adres
+Wat: Adres instellen als voorkeuradres (uiteraard wordt het vlaggetje 'is voorkeuradres' verwijderd bij alle andere adressen)
+Varia: in de UI voorzie ik dat alle adressen vermeld worden op de persoonsfiche en dat er naast elk van die adressen een 'maak voorkeur'-knop staat
+
+* Persoonsgegevens wijzigen / Verhuizen / nieuw Adres toevoegen
+Parameters: 1 of meerdere Persoon, Groep, nieuwe adresvelden (straat/huisnummer/bus/postcode/gemeente/land)
+Wat: (1) op basis van de adresvelden wordt gecontroleerd of het adres al bestaat, (2) als het niet bestaat wordt een nieuw adres aangemaakt, (3) het adres wordt gekoppeld aan de perso(o)n(en)
+Varia: in de UI heb ik hiervoor een apart scherm 'Verhuizen' voorzien
+
+* Persoonsgegevens wijzigen / Verhuizen / Adres vervangen
+Parameters: 1 of meerdere Persoon, Groep, oud Adres, nieuwe adresvelden (straat/huisnummer/bus/postcode/gemeente/land)
+Wat: (1) op basis van de adresvelden wordt gecontroleerd of het nieuwe adres al bestaat, (2) als het niet bestaat wordt een nieuw Adres aangemaakt, (3) het adres wordt gekoppeld aan de perso(o)n(en) op die manier dat het nieuwe Adres het oude Adres vervangt (info als 'is voorkeuradres' moet per Persoon behouden blijven).
+Varia: in de UI heb ik hiervoor een apart scherm 'Verhuizen' voorzien
+
+* Persoonsgegevens wijzigen / Verhuizen / Adres vervangen / Gemeenschappelijke adressen
+Wat: als meerdere personen geselecteerd zijn moet er een lijst opgesteld worden van gemeenschappelijke adressen, als er 1 persoon is een lijst met al zijn adressen
+Varia: dit wordt gebruikt om in het scherm 'Verhuizen' een selectievak op te bouwen voor het geval 'nieuw adres vervangt oud adres', waar de gebruiker dus moet kiezen wel van de verschillende (gemeenschappelijke) oude adressen vervangen moet worden door het nieuw ingegeven adres.
+
+* Persoonsgegevens wijzigen / Verhuizen / Adres vervangen / Lijst
+Wat: er moet een lijst opgehaald worden met alle Personen (van de Groep) die ook wonen op hetzelfde adres
+Relevante velden: Persoon, Voornaam, Naam, Geboortedatum
+Parameters: Groep, Adres
+Varia: op het scherm 'Verhuizen' is er de mogelijkheid, als er nog maar 1 persoon geselecteerd is, om de selectie uit te breiden naar andere mensen die op eenzelfde adres wonen.  Hierbij moet eerst een adres van de Persoon geselecteerd worden.
+
+* Persoonsgegevens wijzigen / Communicatietypes / Wijzigen
+Wat: telefoon of e-mailadres wijzigen
+Parameters: Persoon, bestaand E-mailadres, nieuw E-mailadres
+
+* Persoonsgegevens wijzigen / Communicatietypes / Toevoegen
+Wat: nieuw telefoon of e-mailadres wijzigen
+Parameters: Persoon, nieuw E-mailadres
+
+* Persoonsgegevens wijzigen / Communicatietypes / Voorkeur
+Wat: voorkeur wijzigen naar opgegeven E-mailadres
+Parameters: Persoon, E-mailadres
+
+* Persoon toevoegen
+Wat: nieuwe persoon toevoegen
+Parameters: Groep, Voornaam, Naam, Geboortedatum, 1 adres, 1 telefoon, 1 e-mailadres, groepseigen Persoonsvelden
+Varia: eerste adres wordt al meteen gevraagd, andere adressen kunnen toegevoegd worden via persoonsfiche
+
+* Perso(o)n(en) lid maken
+Wat: perso(o)n(en) worden lid gemaakt in de afdeling die bij hun leeftijd hoort (einddatum kandidaatlidmaatschap wordt ingesteld, als ze al eerder kandidaat waren worden ze meteen definitief lid)
+Parameters: Groep, 1 of meerdere Persoon, HUIDIG werkjaar
+
+* Functie toevoegen
+Wat: Groepseigen functie wordt toegevoegd, startwerkjaar wordt ingesteld op HUIDIG werkjaar (als er al een functie bestond in het verleden met dezelfde naam, dan wordt die geheractiveerd (eindwerkjaar wordt verwijderd)).
+Parameters: Groep, naam van de nieuwe functie, HUIDIG werkjaar
+
+* Functie verwijderen
+Wat: Groepseigen functie wordt stopgezet, eindwerkjaar wordt ingesteld op (HUIDIG werkjaar - 1), koppeling tussen Leden van HUIDIG werkjaar en Functie wordt verwijderd
+Parameters: Groep, Functie, HUIDIG werkjaar
+
+
+* Categorie toevoegen
+Wat: Groepseigen categorie wordt toegevoegd
+Parameters: Groep, naam van de nieuwe categorie
+
+* Categorie verwijderen
+Wat: Groepseigen categorie wordt verwijderen, koppeling tussen Personen in deze categorie en de Categorie wordt verwijderd
+Parameters: Groep, naam van de nieuwe categorie
+
+* Functie toekennen aan Lid of meerdere Leden
+Wat: Koppeling wordt gelegd tussen de geselecteerde leden en de Functie
+Parameters: Groep, 1 of meerdere Lid, HUIDIG werkjaar, Functie
+
+* Functie verwijderen bij Lid of meerdere Leden
+Wat: Koppeling wordt verbroken tussen de geselecteerde leden en de Functie
+Parameters: Groep, 1 of meerdere Lid, HUIDIG werkjaar, Functie
+
+* Functie verwijderen / hulpquery
+Wat: opzoeken wat de gemeenschappelijke functies zijn tussen alle geselecteerde leden
+Relevante velden: Functie
+Parameters: Groep, meerdere Lid, HUIDIG werkjaar
+Varia: als er meerdere leden geselecteerd zijn, dan krijgt de gebruiker een selectievak met de mogelijkheid om een functie te selecteren om te verwijderen
+
+* Categorie toekennen aan Persoon of meerdere personen of Lid of meerdere Leden
+Wat: Koppeling wordt gelegd tussen de geselecteerde Personen (als leden geselecteerd zijn, moet de geassocieerde Persoon gebruikt worden) en de Categorie
+Parameters: Groep, 1 of meerdere Lid / Persoon, HUIDIG werkjaar, Categorie
+
+* Categorie verwijderen bij Persoon of meerdere personen of Lid of meerdere Leden
+Wat: Koppeling wordt verbroken tussen de geselecteerde Personen (als leden geselecteerd zijn, moet de geassocieerde Persoon gebruikt worden) en de Categorie
+Parameters: Groep, 1 of meerdere Lid / Persoon, HUIDIG werkjaar, Categorie
+
+* Categorie verwijderen / hulpquery
+Wat: opzoeken wat de gemeenschappelijke Categorieën zijn tussen alle geselecteerde Personen (als leden geselecteerd zijn, moet de geassocieerde Persoon gebruikt worden)
+Relevante velden: Categorie
+Parameters: Groep, meerdere Lid / Persoon, HUIDIG werkjaar
+Varia: als er meerdere personen/leden geselecteerd zijn, dan krijgt de gebruiker een selectievak met de mogelijkheid om een Categorie te selecteren om te verwijderen
+
