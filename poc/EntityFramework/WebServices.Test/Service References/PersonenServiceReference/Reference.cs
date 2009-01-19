@@ -15,101 +15,6 @@ namespace WebServices.Test.PersonenServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BasisEntiteit", Namespace="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain")]
-    [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.CommunicatieVorm))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.Persoon))]
-    public partial class BasisEntiteit : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int IDField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private WebServices.Test.PersonenServiceReference.EntityKey SystemDataObjectsDataClassesIEntityWithKeyEntityKeyField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool TeVerwijderenField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private byte[] VersieField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int ID {
-            get {
-                return this.IDField;
-            }
-            set {
-                if ((this.IDField.Equals(value) != true)) {
-                    this.IDField = value;
-                    this.RaisePropertyChanged("ID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(Name="System.Data.Objects.DataClasses.IEntityWithKey.EntityKey")]
-        public WebServices.Test.PersonenServiceReference.EntityKey SystemDataObjectsDataClassesIEntityWithKeyEntityKey {
-            get {
-                return this.SystemDataObjectsDataClassesIEntityWithKeyEntityKeyField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.SystemDataObjectsDataClassesIEntityWithKeyEntityKeyField, value) != true)) {
-                    this.SystemDataObjectsDataClassesIEntityWithKeyEntityKeyField = value;
-                    this.RaisePropertyChanged("SystemDataObjectsDataClassesIEntityWithKeyEntityKey");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool TeVerwijderen {
-            get {
-                return this.TeVerwijderenField;
-            }
-            set {
-                if ((this.TeVerwijderenField.Equals(value) != true)) {
-                    this.TeVerwijderenField = value;
-                    this.RaisePropertyChanged("TeVerwijderen");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Versie {
-            get {
-                return this.VersieField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.VersieField, value) != true)) {
-                    this.VersieField = value;
-                    this.RaisePropertyChanged("Versie");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityKey", Namespace="http://schemas.datacontract.org/2004/07/System.Data", IsReference=true)]
     [System.SerializableAttribute()]
     public partial class EntityKey : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -187,236 +92,16 @@ namespace WebServices.Test.PersonenServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CommunicatieVorm", Namespace="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain")]
-    [System.SerializableAttribute()]
-    public partial class CommunicatieVorm : WebServices.Test.PersonenServiceReference.BasisEntiteit {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool IsGezinsGebondenField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NotaField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NummerField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private WebServices.Test.PersonenServiceReference.CommunicatieType TypeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool VoorkeurField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool IsGezinsGebonden {
-            get {
-                return this.IsGezinsGebondenField;
-            }
-            set {
-                if ((this.IsGezinsGebondenField.Equals(value) != true)) {
-                    this.IsGezinsGebondenField = value;
-                    this.RaisePropertyChanged("IsGezinsGebonden");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Nota {
-            get {
-                return this.NotaField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NotaField, value) != true)) {
-                    this.NotaField = value;
-                    this.RaisePropertyChanged("Nota");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Nummer {
-            get {
-                return this.NummerField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NummerField, value) != true)) {
-                    this.NummerField = value;
-                    this.RaisePropertyChanged("Nummer");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public WebServices.Test.PersonenServiceReference.CommunicatieType Type {
-            get {
-                return this.TypeField;
-            }
-            set {
-                if ((this.TypeField.Equals(value) != true)) {
-                    this.TypeField = value;
-                    this.RaisePropertyChanged("Type");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool Voorkeur {
-            get {
-                return this.VoorkeurField;
-            }
-            set {
-                if ((this.VoorkeurField.Equals(value) != true)) {
-                    this.VoorkeurField = value;
-                    this.RaisePropertyChanged("Voorkeur");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Persoon", Namespace="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain")]
-    [System.SerializableAttribute()]
-    public partial class Persoon : WebServices.Test.PersonenServiceReference.BasisEntiteit {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<int> AdNummerField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.Generic.List<WebServices.Test.PersonenServiceReference.CommunicatieVorm> CommunicatieField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<System.DateTime> GeboorteDatumField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private WebServices.Test.PersonenServiceReference.GeslachtsType GeslachtField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NaamField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<System.DateTime> SterfDatumField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string VoorNaamField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<int> AdNummer {
-            get {
-                return this.AdNummerField;
-            }
-            set {
-                if ((this.AdNummerField.Equals(value) != true)) {
-                    this.AdNummerField = value;
-                    this.RaisePropertyChanged("AdNummer");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.List<WebServices.Test.PersonenServiceReference.CommunicatieVorm> Communicatie {
-            get {
-                return this.CommunicatieField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CommunicatieField, value) != true)) {
-                    this.CommunicatieField = value;
-                    this.RaisePropertyChanged("Communicatie");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> GeboorteDatum {
-            get {
-                return this.GeboorteDatumField;
-            }
-            set {
-                if ((this.GeboorteDatumField.Equals(value) != true)) {
-                    this.GeboorteDatumField = value;
-                    this.RaisePropertyChanged("GeboorteDatum");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public WebServices.Test.PersonenServiceReference.GeslachtsType Geslacht {
-            get {
-                return this.GeslachtField;
-            }
-            set {
-                if ((this.GeslachtField.Equals(value) != true)) {
-                    this.GeslachtField = value;
-                    this.RaisePropertyChanged("Geslacht");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Naam {
-            get {
-                return this.NaamField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NaamField, value) != true)) {
-                    this.NaamField = value;
-                    this.RaisePropertyChanged("Naam");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> SterfDatum {
-            get {
-                return this.SterfDatumField;
-            }
-            set {
-                if ((this.SterfDatumField.Equals(value) != true)) {
-                    this.SterfDatumField = value;
-                    this.RaisePropertyChanged("SterfDatum");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string VoorNaam {
-            get {
-                return this.VoorNaamField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.VoorNaamField, value) != true)) {
-                    this.VoorNaamField = value;
-                    this.RaisePropertyChanged("VoorNaam");
-                }
-            }
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="GeslachtsType", Namespace="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain")]
-    public enum GeslachtsType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Man = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Vrouw = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Onbekend = 0,
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityKeyMember", Namespace="http://schemas.datacontract.org/2004/07/System.Data")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.EntityKey))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.List<WebServices.Test.PersonenServiceReference.EntityKeyMember>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.CommunicatieVorm))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.BasisEntiteit))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.CommunicatieType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.GeslachtsType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.Persoon))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.List<WebServices.Test.PersonenServiceReference.CommunicatieVorm>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.CommunicatieVorm))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.BasisEntiteit))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.CommunicatieType))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.GeslachtsType))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.Persoon))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.List<Cg2.Core.Domain.CommunicatieVorm>))]
     public partial class EntityKeyMember : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
@@ -474,38 +159,15 @@ namespace WebServices.Test.PersonenServiceReference {
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CommunicatieType", Namespace="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain")]
-    public enum CommunicatieType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Telefoon = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Fax = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        EMail = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        WebSite = 4,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Msn = 5,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Jabber = 6,
-    }
-    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="PersonenServiceReference.IPersonenService")]
     public interface IPersonenService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/Ophalen", ReplyAction="http://tempuri.org/IPersonenService/OphalenResponse")]
-        WebServices.Test.PersonenServiceReference.Persoon Ophalen(int persoonID);
+        Cg2.Core.Domain.Persoon Ophalen(int persoonID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/OphalenMetCommunicatie", ReplyAction="http://tempuri.org/IPersonenService/OphalenMetCommunicatieResponse")]
-        WebServices.Test.PersonenServiceReference.Persoon OphalenMetCommunicatie(int persoonID);
+        Cg2.Core.Domain.Persoon OphalenMetCommunicatie(int persoonID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/Hallo", ReplyAction="http://tempuri.org/IPersonenService/HalloResponse")]
         string Hallo();
@@ -538,11 +200,11 @@ namespace WebServices.Test.PersonenServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public WebServices.Test.PersonenServiceReference.Persoon Ophalen(int persoonID) {
+        public Cg2.Core.Domain.Persoon Ophalen(int persoonID) {
             return base.Channel.Ophalen(persoonID);
         }
         
-        public WebServices.Test.PersonenServiceReference.Persoon OphalenMetCommunicatie(int persoonID) {
+        public Cg2.Core.Domain.Persoon OphalenMetCommunicatie(int persoonID) {
             return base.Channel.OphalenMetCommunicatie(persoonID);
         }
         

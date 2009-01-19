@@ -74,7 +74,7 @@ namespace Cg2.Test
             int id = 310; 
             Groep actual;
             actual = target.Ophalen(id);
-            Assert.IsTrue(actual.ID > 0);
+            Assert.IsTrue(actual.ID == 310);
         }
 
     }

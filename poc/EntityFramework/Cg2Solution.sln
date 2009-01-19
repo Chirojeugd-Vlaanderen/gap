@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServices.Test", "WebServ
 		{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975} = {96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Validatie", "Cg2.Validatie\Cg2.Validatie.csproj", "{853B7FDF-27B6-48BC-A220-F68CCE610B6B}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution.vsmdi
@@ -61,6 +63,10 @@ Global
 		{B9BFA04A-6E1B-4EF3-9E22-423C3B3AD6CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9BFA04A-6E1B-4EF3-9E22-423C3B3AD6CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9BFA04A-6E1B-4EF3-9E22-423C3B3AD6CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{853B7FDF-27B6-48BC-A220-F68CCE610B6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{853B7FDF-27B6-48BC-A220-F68CCE610B6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{853B7FDF-27B6-48BC-A220-F68CCE610B6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{853B7FDF-27B6-48BC-A220-F68CCE610B6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

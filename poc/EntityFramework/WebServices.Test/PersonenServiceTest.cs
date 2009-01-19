@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebServices.Test.PersonenServiceReference;
+using Cg2.Core.Domain;
 
 namespace WebServices.Test
 {
