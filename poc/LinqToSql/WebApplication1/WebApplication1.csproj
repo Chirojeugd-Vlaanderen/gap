@@ -104,12 +104,6 @@
     <None Include="Service References\PersonenServiceReference\PersonenService3.xsd" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CgDal\CgDal.csproj">
-      <Project>{06D21982-62D1-47B5-8AD9-D52159729E42}</Project>
-      <Name>CgDal</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

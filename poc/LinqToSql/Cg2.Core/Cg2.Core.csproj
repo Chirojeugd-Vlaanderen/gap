@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{06D21982-62D1-47B5-8AD9-D52159729E42}</ProjectGuid>
+    <ProjectGuid>{8FB8D7A0-3E4D-43D5-824C-1B6812EE581A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CgDal</RootNamespace>
-    <AssemblyName>CgDal</AssemblyName>
+    <RootNamespace>Cg2.Core</RootNamespace>
+    <AssemblyName>Cg2.Core</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -35,9 +35,6 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -51,45 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CgEntities.cs" />
-    <Compile Include="ChiroGroepClasses.cs">
-      <DependentUpon>ChiroGroepClasses.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="ChiroGroepClasses.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ChiroGroepClasses.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="BasisEntity.cs" />
-    <Compile Include="Enums.cs" />
-    <Compile Include="GroepsDataAccess.cs" />
-    <Compile Include="PersoonDataAccess.cs" />
+    <Compile Include="DataInterfaces\IDao.cs" />
+    <Compile Include="Domain\BasisEntiteit.cs" />
+    <Compile Include="Domain\CommunicatieVorm.cs" />
+    <Compile Include="Domain\IPersonenManager.cs" />
+    <Compile Include="Domain\Persoon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ChiroGroepClasses.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>ChiroGroepClasses.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="ChiroGroepClasses.dbml.layout">
-      <DependentUpon>ChiroGroepClasses.dbml</DependentUpon>
-    </None>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

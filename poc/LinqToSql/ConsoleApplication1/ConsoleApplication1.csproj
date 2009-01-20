@@ -78,12 +78,6 @@
     <None Include="Properties\DataSources\CgDal.vPersoonsInfo.datasource" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CgDal\CgDal.csproj">
-      <Project>{06D21982-62D1-47B5-8AD9-D52159729E42}</Project>
-      <Name>CgDal</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadataStorage Include="Service References\GroepenServiceReference\" />
     <WCFMetadataStorage Include="Service References\PersonenServiceReference\" />
   </ItemGroup>
