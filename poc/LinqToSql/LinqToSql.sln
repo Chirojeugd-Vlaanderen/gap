@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2Services.Tests", "Cg2Ser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2Services", "Cg2Services\Cg2Services.csproj", "{0D569263-A347-4428-9863-11FFE8D9CED8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Validatie", "Cg2.Validatie\Cg2.Validatie.csproj", "{2B7A95FC-9A3D-4B3B-8D09-5A5D83017770}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = LinqToSql.vsmdi
@@ -55,6 +57,10 @@ Global
 		{0D569263-A347-4428-9863-11FFE8D9CED8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D569263-A347-4428-9863-11FFE8D9CED8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D569263-A347-4428-9863-11FFE8D9CED8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B7A95FC-9A3D-4B3B-8D09-5A5D83017770}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B7A95FC-9A3D-4B3B-8D09-5A5D83017770}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B7A95FC-9A3D-4B3B-8D09-5A5D83017770}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B7A95FC-9A3D-4B3B-8D09-5A5D83017770}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Core.DataInterfaces;
 using Cg2.Data.LTS;
 using Cg2.Core.Domain;
+using Cg2.Validatie;
 
 namespace Cg2.Test
 {
@@ -69,12 +70,13 @@ namespace Cg2.Test
         public void OphalenTest()
         {
             IDao<Persoon> dao = new Dao<Persoon>();
+            IValidator<Persoon> validator = new PersonenValidator();
+
             int id = 1893;
 
             Persoon actual;
             actual = dao.Ophalen(id);
-            Assert.IsTrue(actual.ID == id);
-            Assert.IsTrue(actual.Naam != null);
+            Assert.IsTrue(validator.Valideer(actual));
             Assert.IsTrue(actual.Communicatie.Count == 0);
         }
     }

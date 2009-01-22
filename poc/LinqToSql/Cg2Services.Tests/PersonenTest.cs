@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Core.Domain;
+using Cg2.Validatie;
 
 namespace Cg2Services.Tests
 {
@@ -76,8 +77,9 @@ namespace Cg2Services.Tests
             using (PersonenServiceReference.PersonenServiceClient service = new PersonenServiceReference.PersonenServiceClient())
             {
                 Persoon resultaat = service.Ophalen(1893);
+                IValidator<Persoon> validator = new PersonenValidator();
 
-                Assert.IsTrue(resultaat.Naam.Length > 0);
+                Assert.IsTrue(validator.Valideer(resultaat));
                 Assert.IsTrue(resultaat.Communicatie == null);
             }
         }
