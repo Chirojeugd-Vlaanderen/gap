@@ -10,7 +10,8 @@ namespace Cg2.Validatie
     {
         public override bool Valideer(Persoon p)
         {
-            return (p.GeboorteDatum <= DateTime.Now) && base.Valideer(p);
+            return (p.GeboorteDatum <= DateTime.Now) && (p.Naam.Length > 0) 
+                && base.Valideer(p);
         }
     }
 }

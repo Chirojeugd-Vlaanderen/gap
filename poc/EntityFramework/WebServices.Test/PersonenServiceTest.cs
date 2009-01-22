@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebServices.Test.PersonenServiceReference;
 using Cg2.Core.Domain;
+using Cg2.Validatie;
 
 namespace WebServices.Test
 {
@@ -77,8 +78,9 @@ namespace WebServices.Test
             using (PersonenServiceReference.PersonenServiceClient service = new WebServices.Test.PersonenServiceReference.PersonenServiceClient())
             {
                 Persoon resultaat = service.Ophalen(1893);
+                PersonenValidator validator = new PersonenValidator();
 
-                Assert.IsTrue(resultaat.Naam.Length > 0);
+                Assert.IsTrue(validator.Valideer(resultaat));
                 Assert.IsTrue(resultaat.Communicatie.Count() == 0);
             }
         }
