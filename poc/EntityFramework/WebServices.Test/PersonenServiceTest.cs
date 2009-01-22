@@ -91,8 +91,9 @@ namespace WebServices.Test
             using (PersonenServiceReference.PersonenServiceClient service = new WebServices.Test.PersonenServiceReference.PersonenServiceClient())
             {
                 Persoon resultaat = service.OphalenMetCommunicatie(1893);
+                PersonenValidator validator = new PersonenValidator();
 
-                Assert.IsTrue(resultaat.Naam.Length > 0);
+                Assert.IsTrue(validator.Valideer(resultaat));
                 Assert.IsTrue(resultaat.Communicatie.Count() > 0);
             }
         }
