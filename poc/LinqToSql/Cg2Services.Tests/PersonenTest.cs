@@ -80,7 +80,7 @@ namespace Cg2Services.Tests
                 IValidator<Persoon> validator = new PersonenValidator();
 
                 Assert.IsTrue(validator.Valideer(resultaat));
-                Assert.IsTrue(resultaat.Communicatie == null);
+                Assert.IsTrue(resultaat.Communicatie.Count() == 0);
             }
         }
 

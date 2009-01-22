@@ -111,7 +111,19 @@ namespace Cg2.Core.Domain
         [DataMember]
         public List<CommunicatieVorm> Communicatie
         {
-            get { return _communicatie; }
+            get 
+            {
+                // Geval opvangen van een null-lijst, wat 
+                // blijkbaar soms voorkomt bij het 
+                // deserializen van een persoon.  (Gek genoeg,
+                // want in de constructor wordt _communicatie
+                // al geinitialiseerd.)
+                if (_communicatie == null)
+                {
+                    _communicatie = new List<CommunicatieVorm>();
+                }
+                return _communicatie; 
+            }
         }
         #endregion
 

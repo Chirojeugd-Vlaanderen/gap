@@ -24,7 +24,8 @@ namespace Cg2.Workers
 
         public Persoon OphalenMetCommunicatie(int persoonID)
         {
-            throw new NotImplementedException();
+            PersonenDao dao = new PersonenDao();
+            return dao.OphalenMetCommunicatie(persoonID);
         }
     }
 }
