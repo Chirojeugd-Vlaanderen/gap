@@ -10,17 +10,39 @@ namespace HelloNhibernate
 {
     class Program
     {
+        private static ISessionFactory _sessionFactory = null;
+
         /// <summary>
-        /// Maakt een nieuwe 'NHibernatesessie' aan.  Deze manier van werken
-        /// is niet geschikt voor een productieomgeving!
+        /// De SessionFactory is statisch, en moet 1 keer aangemaakt worden.
+        /// De SessionFactory zal o.a. zorgen voor caching.
+        /// </summary>
+        public static ISessionFactory SessionFactory
+        {
+            get
+            {
+                if (_sessionFactory == null)
+                {
+                    Configuration cfg = new Configuration();
+                    
+                    // Niet zeker of de twee volgende lijnen nodig zijn.
+                    cfg.Configure();
+                    cfg.AddXmlFile("Persoon.hbm.xml");
+
+                    _sessionFactory = cfg.BuildSessionFactory();
+                }
+                return _sessionFactory;
+            }
+        }
+
+        /// <summary>
+        /// Maakt een nieuwe 'NHibernatesessie' aan, nu via de
+        /// Session Factory (eigenlijk is er dus geen aparte
+        /// method meer voor nodig).
         /// </summary>
         /// <returns>NHibernatesessie</returns>
         static ISession NieuweSessie()
         {
-            Configuration c = new Configuration();
-            c.AddAssembly(Assembly.GetCallingAssembly());
-            ISessionFactory f = c.BuildSessionFactory();
-            return f.OpenSession();
+            return SessionFactory.OpenSession();
         }
 
 
@@ -38,7 +60,7 @@ namespace HelloNhibernate
                     session.Save(p);
                     transaction.Commit();
                 }
-                Console.WriteLine("Persoon 'Johan' aangemaakt en bewaard.");
+                Console.WriteLine("Persoon aangemaakt en bewaard.");
             }
         }
 
