@@ -93,12 +93,14 @@ namespace Cg2.Core.Domain
         }
         #endregion
 
+        #region Private members
         public const int DefaultID = 0;
 
         private int _id = DefaultID;
         private byte[] _versie;
         private bool _teVerwijderen = false;
-        
+        #endregion
+
 
         [DataMember]
         [EdmScalarPropertyAttribute(EntityKeyProperty = true, IsNullable = false)]

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true">
+  <class name="HelloNhibernate.Persoon, HelloNhibernate" table="pers.Persoon" lazy="false">
+    <id name="ID" access="property" column="PersoonID">
+      <generator class="native" />
+    </id>
+    <property name="GeslachtsInt" access="property" column="Geslacht" />
+    <property name="Naam" access="property" column="Naam" />
+    <property name="VoorNaam" access="property" column="VoorNaam" />
+  </class>
+</hibernate-mapping>
