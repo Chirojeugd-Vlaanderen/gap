@@ -26,7 +26,13 @@ namespace HelloNhibernate
                     
                     // Niet zeker of de twee volgende lijnen nodig zijn.
                     cfg.Configure();
-                    cfg.AddXmlFile("Persoon.hbm.xml");
+
+                    // Onderstaande voegt alle xml-files die geembed zijn
+                    // in de assembly toe aan de configuratie.  Je zou
+                    // de configuratiebestanden ook kunnen toevoegen
+                    // via cfg.AddXml()
+
+                    cfg.AddAssembly(Assembly.GetCallingAssembly());
 
                     _sessionFactory = cfg.BuildSessionFactory();
                 }
@@ -103,15 +109,22 @@ namespace HelloNhibernate
                     sessie.Flush();
                     transactie.Commit();
 
-                    Console.WriteLine("Persoon hernoemd als 'Johan'");
+                    Console.WriteLine("Persoon hernoemd");
                 }
             }
         }
         
         static void Main(string[] args)
         {
+            // log4net moet expliciet geconfigureerd worden,
+            // zie http://www.hibernate.org/364.html
+
+            log4net.Config.XmlConfigurator.Configure();
+
             MaakEnBewaarPersoon();
             WijzigPersoon();
+            Console.ReadLine();
+
             HalloPersonen();
 
             Console.ReadLine();
