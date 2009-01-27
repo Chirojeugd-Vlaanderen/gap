@@ -30,9 +30,12 @@ namespace HelloNhibernate
                     // Onderstaande voegt alle xml-files die geembed zijn
                     // in de assembly toe aan de configuratie.  Je zou
                     // de configuratiebestanden ook kunnen toevoegen
-                    // via cfg.AddXml()
+                    // via cfg.AddXmlFile()
 
-                    cfg.AddAssembly(Assembly.GetCallingAssembly());
+                    // cfg.AddAssembly(Assembly.GetCallingAssembly());
+
+                    cfg.AddXmlFile("Persoon.hbm.xml");
+                    cfg.AddXmlFile("CommunicatieVorm.hbm.xml");
 
                     _sessionFactory = cfg.BuildSessionFactory();
                 }
@@ -121,9 +124,9 @@ namespace HelloNhibernate
 
             log4net.Config.XmlConfigurator.Configure();
 
-            MaakEnBewaarPersoon();
-            WijzigPersoon();
-            Console.ReadLine();
+            //MaakEnBewaarPersoon();
+            //WijzigPersoon();
+            //Console.ReadLine();
 
             HalloPersonen();
 

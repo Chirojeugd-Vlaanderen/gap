@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true">
+  <class name="HelloNhibernate.CommunicatieVorm, HelloNhibernate" table="pers.CommunicatieVorm" lazy="false">
+    <id name="ID" access="property" column="CommunicatieVormID">
+      <generator class="native" />
+    </id>
+    <property name="Nummer" access="property" column="Nummer" />
+    <property name="TypeInt" access="property" column="Type" />
+    <property name="Voorkeur" access="property" column="Voorkeur" />
+    <many-to-one name="Persoon" access="property" column="PersoonID" cascade="all" />
+  </class>
+</hibernate-mapping>
