@@ -152,12 +152,14 @@ namespace Cg2.Core.Domain
 
             if (voorkeur)
             {
+                // oude voorkeur disablen
+
                 CommunicatieVorm bestaandeCv = (from CommunicatieVorm v in Communicatie
                                                 where v.Type == type && v.Voorkeur
                                                 select v).SingleOrDefault<CommunicatieVorm>();
                 if (bestaandeCv != null)
                 {
-                    bestaandeCv.Voorkeur = true;
+                    bestaandeCv.Voorkeur = false;
                 }
             }
 
