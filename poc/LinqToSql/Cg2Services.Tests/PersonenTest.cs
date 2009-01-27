@@ -108,16 +108,20 @@ namespace Cg2Services.Tests
             {
                 Persoon p = service.OphalenMetCommunicatie(1893);
                 int aantal = p.Communicatie.Count();
-                CommunicatieVorm v = new CommunicatieVorm();
 
-                v.Type = CommunicatieType.Telefoon;
-                v.Nummer = "1207";
-                v.Voorkeur = false;
-                v.IsGezinsGebonden = false;
+                // Om een communicatievorm toe te voegen, moeten zowel de 
+                // link persoon->communicatievorm als de link
+                // communicatievorm->persoon ok zijn.  Vandaar dat we hiervoor
+                // p.CommunicatieToevoegen gebruiken.
 
-                p.Communicatie.Add(v);
+                p.CommunicatieToevoegen(CommunicatieType.Telefoon, "1207", false);
 
                 Assert.IsTrue(p.Communicatie.Count() == aantal + 1);
+
+                foreach (CommunicatieVorm cv in p.Communicatie)
+                {
+                    Assert.IsTrue(cv.PersoonID == p.ID);
+                }
             }
         }
     }
