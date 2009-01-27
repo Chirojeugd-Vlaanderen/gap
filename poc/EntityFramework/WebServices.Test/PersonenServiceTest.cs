@@ -110,14 +110,8 @@ namespace WebServices.Test
             {
                 Persoon p = service.OphalenMetCommunicatie(1893);
                 int aantal = p.Communicatie.Count();
-                CommunicatieVorm v = new CommunicatieVorm();
 
-                v.Type = CommunicatieType.Telefoon;
-                v.Nummer = "1207";
-                v.Voorkeur = false;
-                v.IsGezinsGebonden = false;
-
-                p.Communicatie.Add(v);
+                p.CommunicatieToevoegen(CommunicatieType.Telefoon, "1207", false);
 
                 Assert.IsTrue(p.Communicatie.Count() == aantal+1);
             }

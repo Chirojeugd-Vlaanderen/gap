@@ -187,11 +187,13 @@ namespace Cg2.Core.Domain
                                                 select v).SingleOrDefault<CommunicatieVorm>();
                 if (bestaandeCv != null)
                 {
-                    bestaandeCv.Voorkeur = true;
+                    bestaandeCv.Voorkeur = false;
                 }
             }
 
             cv.Voorkeur = voorkeur;
+
+            this.Communicatie.Add(cv);
         }
 
     }
