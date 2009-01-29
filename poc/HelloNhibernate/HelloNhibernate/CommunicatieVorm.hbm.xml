@@ -3,7 +3,7 @@
                    schema="pers" assembly="HelloNhibernate"
                    namespace="HelloNhibernate">
   <class name="CommunicatieVorm" lazy="false">
-    <id name="ID" access="property" column="CommunicatieVormID">
+    <id name="ID" access="nosetter.lowercase-underscore" column="CommunicatieVormID">
       <generator class="native" />
     </id>
     <property name="Nummer" access="property" column="Nummer" not-null="true" />
