@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Iesi.Collections.Generic;
 
 namespace HelloNhibernate
 {
@@ -31,6 +32,7 @@ namespace HelloNhibernate
         private int _geslacht;
         private DateTime? _geboorteDatum;
         private DateTime? _sterfDatum;
+        private ISet<CommunicatieVorm> _communicatie = new HashedSet<CommunicatieVorm>();
         #endregion
 
         #region Properties
@@ -89,7 +91,31 @@ namespace HelloNhibernate
             set { _sterfDatum = value; }
         }
 
+        public ISet<CommunicatieVorm> Communicatie
+        {
+            get { return _communicatie; }
+        }
+        
         #endregion
+
+        /// <summary>
+        /// Nieuwe communicatievorm toevoegen voor een persoon
+        /// </summary>
+        /// <param name="type">communicatietype</param>
+        /// <param name="nr">nr/url/...</param>
+        /// <param name="voorkeur">true indien dit het voorkeursnummer voor
+        /// het gegeven type is.</param>
+        public void CommunicatieToevoegen(CommunicatieType type, string nr
+            , bool voorkeur)
+        {
+            CommunicatieVorm cv = new CommunicatieVorm();
+            cv.Nummer = nr;
+            cv.Type = type;
+            cv.Persoon = this;
+            cv.Voorkeur = voorkeur;
+
+            _communicatie.Add(cv);
+        }
 
         public string Hallo()
         {

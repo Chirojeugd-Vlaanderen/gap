@@ -1,11 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true">
-  <class name="HelloNhibernate.Persoon, HelloNhibernate" table="pers.Persoon" lazy="false">
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true" 
+                   schema="pers" assembly="HelloNhibernate"
+                   namespace="HelloNhibernate">
+  <class name="Persoon" lazy="false">
     <id name="ID" access="property" column="PersoonID">
       <generator class="native" />
     </id>
-    <property name="GeslachtsInt" access="property" column="Geslacht" />
-    <property name="Naam" access="property" column="Naam" />
-    <property name="VoorNaam" access="property" column="VoorNaam" />
+    <property name="GeslachtsInt" column="Geslacht" />
+    <property name="Naam" column="Naam"  not-null="true" />
+    <property name="VoorNaam" column="VoorNaam" />
+    <property name="Versie" column="Versie" insert="false" update="false" />
   </class>
 </hibernate-mapping>
