@@ -3,7 +3,10 @@
                    schema="pers" assembly="Cg2.Core"
                    namespace="Cg2.Core.Domain">
   <class name="Persoon" lazy="false">
-    <id name="ID" access="nosetter.lowercase-underscore" column="PersoonID">
+    <id name="ID" column="PersoonID">
+      <!-- voor NHibernate kan je de setter van ID disablen, en dan
+      moet hierboven access="nosetter.lowercase-underscore"  gezet worden.
+      Maar in dat geval ontstaan problemen met WCF -->
       <generator class="native" />
     </id>
     <property name="GeslachtsInt" column="Geslacht" />
