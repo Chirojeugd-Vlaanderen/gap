@@ -5,9 +5,9 @@ using System.Text;
 using Cg2.Core.DataInterfaces;
 using System.Data;
 using Cg2.Core.Domain;
-using System.Data.Linq;
+using NHibernate;
 
-namespace Cg2.Data.LTS
+namespace Cg2.Data.Nh
 {
     /// <summary>
     /// Algemene implementatie van IDao; generieke CRUD-operaties voor
@@ -26,15 +26,9 @@ namespace Cg2.Data.LTS
         public virtual T Ophalen(int id)
         {
             T result;
-
-            using (Cg2DataContext db = new Cg2DataContext())
+            using (ISession sessie = SessionFactory.Factory.OpenSession())
             {
-                Table<T> tabel = db.GetTable(typeof(T)) as Table<T>;
-
-                result = (
-                    from t in tabel
-                    where t.ID == id
-                    select t).FirstOrDefault<T>();
+                result = sessie.Load<T>(id);
             }
             return result;
         }
@@ -45,13 +39,7 @@ namespace Cg2.Data.LTS
         /// <returns>Een lijst met objecten</returns>
         public virtual List<T> AllesOphalen()
         {
-            List<T> result;
-            using (Cg2DataContext db = new Cg2DataContext())
-            {
-                Table<T> t = db.GetTable(typeof(T)) as Table<T>;
-                result = t.ToList<T>();
-            }
-            return result;
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -63,13 +51,7 @@ namespace Cg2.Data.LTS
         /// <remarks>Dit is nog geen update!</remarks>
         public T Bewaren(T entiteit)
         {
-            using (Cg2DataContext db = new Cg2DataContext())
-            {
-                ITable tab = db.GetTable(entiteit.GetType().BaseType);
-                tab.InsertOnSubmit(entiteit);
-                db.SubmitChanges();
-            }
-            return entiteit;
+            throw new NotImplementedException();
         }
         
         /// <summary>
@@ -78,14 +60,7 @@ namespace Cg2.Data.LTS
         /// <param name="entiteit">Te verwijderen entiteit</param>
         public void Verwijderen(T entiteit)
         {
-            using (Cg2DataContext db = new Cg2DataContext())
-            {
-                ITable tab = db.GetTable(entiteit.GetType().BaseType);
-                tab.Attach(entiteit);
-                tab.DeleteOnSubmit(entiteit);
-                db.SubmitChanges();
-            }
-
+            throw new NotImplementedException();
         }
 
         public void Commit()
@@ -102,20 +77,7 @@ namespace Cg2.Data.LTS
         /// <returns>De geupdatete entiteit</returns>
         public T Updaten(T nieuweEntiteit, T oorspronkelijkeEntiteit)
         {
-            using (Cg2DataContext db = new Cg2DataContext())
-            {
-                ITable tab = db.GetTable(nieuweEntiteit.GetType().BaseType);
-                if (oorspronkelijkeEntiteit == null)
-                {
-                    tab.Attach(nieuweEntiteit, true);
-                }
-                else
-                {
-                    tab.Attach(nieuweEntiteit, oorspronkelijkeEntiteit);
-                }
-                db.SubmitChanges();
-            }
-            return nieuweEntiteit;
+            throw new NotImplementedException();
         }
 
         #endregion
