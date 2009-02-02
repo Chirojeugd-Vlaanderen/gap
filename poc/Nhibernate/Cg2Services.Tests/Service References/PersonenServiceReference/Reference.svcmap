@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="c96c3571-12a2-4b6f-b450-a9c978b08f12" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
+    <ReferencedAssemblies>
+      <ReferencedAssembly AssemblyName="Cg2.Core" />
+    </ReferencedAssemblies>
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:1408/PersonenService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="PersonenService.xsd" MetadataType="Schema" ID="83c010a5-5ca4-4cd5-8f41-51e1490f887d" SourceId="1" SourceUrl="http://localhost:1408/PersonenService.svc?xsd=xsd1" />
+    <MetadataFile FileName="PersonenService1.xsd" MetadataType="Schema" ID="931dfcdd-c105-4d1a-909a-9540efe6ff56" SourceId="1" SourceUrl="http://localhost:1408/PersonenService.svc?xsd=xsd0" />
+    <MetadataFile FileName="PersonenService2.xsd" MetadataType="Schema" ID="e4a0cdb5-c74a-4685-abf6-d732b5aef9f5" SourceId="1" SourceUrl="http://localhost:1408/PersonenService.svc?xsd=xsd2" />
+    <MetadataFile FileName="PersonenService.wsdl" MetadataType="Wsdl" ID="05eb2059-d607-4f85-8d35-d87c767a7549" SourceId="1" SourceUrl="http://localhost:1408/PersonenService.svc?wsdl" />
+    <MetadataFile FileName="PersonenService.disco" MetadataType="Disco" ID="5f5cb0f6-1b69-4408-ba6c-74aa49972fad" SourceId="1" SourceUrl="http://localhost:1408/PersonenService.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
