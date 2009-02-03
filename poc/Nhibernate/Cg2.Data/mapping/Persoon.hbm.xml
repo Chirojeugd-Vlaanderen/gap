@@ -9,6 +9,7 @@
       Maar in dat geval ontstaan problemen met WCF -->
       <generator class="native" />
     </id>
+    <property name="BusinessKey" column="Guid" />
     <property name="GeslachtsInt" column="Geslacht" />
     <property name="Naam" column="Naam" not-null="true" />
     <property name="VoorNaam" column="VoorNaam" />

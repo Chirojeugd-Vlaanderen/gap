@@ -21,13 +21,20 @@ namespace Cg2.Core.Domain
         private int _id = DefaultID;
         private byte[] _versie;
         private bool _teVerwijderen = false;
+        private Guid _businessKey = new Guid();
         
-
         [DataMember]
         public virtual int ID
         {
             get { return _id; }
             set { _id = value; }
+        }
+
+        [DataMember]
+        public virtual Guid BusinessKey
+        {
+            get { return _businessKey; }
+            set { _businessKey = value; }
         }
 
         [DataMember]
@@ -76,16 +83,13 @@ namespace Cg2.Core.Domain
         }
 
         /// <summary>
-        /// Dit is overgenomen uit het boek.  Maar aangezien we iets verderop
-        /// 'ToString' overriden, denk ik dat alle entity's van hetzelfde type
-        /// zo dezelfde hashcode zullen krijgen.  Zou dat de bedoeling zijn?
-        /// 
-        /// Misschien moeten de entiteiten zelf ToString nog eens overriden...
+        /// Bepaal de hashcode die o.m. gebruikt wordt om entiteiten te
+        /// vergelijken.
         /// </summary>
         /// <returns>een hashcode voor deze entiteit.</returns>
         public override int GetHashCode()
         {
-            return this.ToString().GetHashCode();
+            return this.BusinessKey.GetHashCode();
         }
 
         /// <summary>
