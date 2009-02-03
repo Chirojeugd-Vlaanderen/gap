@@ -17,8 +17,8 @@ namespace Cg2.Core.Domain
         /// <param name="p">Te updaten persoon</param>
         /// <param name="origineel">Originele persoon, als die beschikbaar is.
         /// Anders null.</param>
-        /// <returns>De bewaarde persoon</returns>
-        Persoon Updaten(Persoon p, Persoon origineel);
+        /// <returns>ID van de bewaarde persoon</returns>
+        int Updaten(Persoon p, Persoon origineel);
 
         /// <summary>
         /// Haalt persoonsinfo op uit database
@@ -27,6 +27,14 @@ namespace Cg2.Core.Domain
         /// </param>
         /// <returns>Gevonden persoonsobject, null als niet gevonden</returns>
         Persoon Ophalen(int persoonID);
+
+        /// <summary>
+        /// Persisteert een transiente persoon
+        /// </summary>
+        /// <param name="p">Te persisteren persoon</param>
+        /// <returns>toegekend ID</returns>
+        int Bewaren(Persoon p);
+        
 
         /// <summary>
         /// Haalt persoonsinfo op uit database, incl. communicatievormen

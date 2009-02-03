@@ -25,6 +25,15 @@ namespace Cg2Services
         Persoon Ophalen(int persoonID);
 
         /// <summary>
+        /// Persisteert een transiente persoon
+        /// </summary>
+        /// <param name="p">te persisteren persoon</param>
+        /// <returns>Toegekend ID</returns>
+        [OperationContract]
+        int Bewaren(Persoon p);
+
+
+        /// <summary>
         /// Haalt persoon op uit database, inclusief communicatiegegevens
         /// </summary>
         /// <param name="persoonID">ID op te halen persoon</param>

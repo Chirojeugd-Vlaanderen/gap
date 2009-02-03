@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Core.Domain;
 using Cg2.Validatie;
+using System.ServiceModel;
 
 namespace Cg2Services.Tests
 {
@@ -83,6 +84,41 @@ namespace Cg2Services.Tests
                 Assert.IsTrue(resultaat.Communicatie.Count() == 0);
             }
         }
+
+        [TestMethod]
+        public void PersoonBewaren()
+        {
+            using (PersonenServiceReference.PersonenServiceClient service = new PersonenServiceReference.PersonenServiceClient())
+            {
+                Persoon nieuw = new Persoon { Naam = "Pienter", VoorNaam = "Piet", Geslacht = GeslachtsType.Man };
+
+                int toegekendId = service.Bewaren(nieuw);
+
+                Persoon opgehaald = service.Ophalen(toegekendId);
+
+                // Vergelijken zou moeten werken zoals verwacht, dankzij 
+                // aangepaste Equals in BasisEntiteit, die gebruik maakt
+                // van een GUID.
+
+                Assert.AreEqual(nieuw, opgehaald);
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(FaultException))]
+        public void VermijdDubbeleInsert()
+        {
+            using (PersonenServiceReference.PersonenServiceClient service = new PersonenServiceReference.PersonenServiceClient())
+            {
+                Persoon nieuw = new Persoon { Naam = "Pienter", VoorNaam = "Piet", Geslacht = GeslachtsType.Man };
+
+                int id1 = service.Bewaren(nieuw);
+                int id2 = service.Bewaren(nieuw);
+
+                Assert.IsFalse(id2 > id1);
+            }
+        }
+
 
         [TestMethod]
         public void PersoonOphalenMetCommunicatie()

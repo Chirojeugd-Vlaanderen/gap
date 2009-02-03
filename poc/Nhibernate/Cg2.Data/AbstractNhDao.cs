@@ -6,6 +6,7 @@ using Cg2.Core.DataInterfaces;
 using System.Data;
 using Cg2.Core.Domain;
 using NHibernate;
+using NHibernate.Exceptions;
 
 namespace Cg2.Data.Nh
 {

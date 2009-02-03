@@ -10,16 +10,22 @@ namespace Cg2.Workers
 {
     public class PersonenManager: IPersonenManager
     {
-        public Persoon Updaten(Persoon p, Persoon origineel)
+        public int Updaten(Persoon p, Persoon origineel)
         {
             Dao<Persoon> dao = new Dao<Persoon>();
-            return dao.Updaten(p, origineel);
+            return dao.Updaten(p, origineel).ID;
         }
 
         public Persoon Ophalen(int persoonID)
         {
             Dao<Persoon> dao = new Dao<Persoon>();
             return dao.Ophalen(persoonID);
+        }
+
+        public int Bewaren(Persoon p)
+        {
+            PersonenDao dao = new PersonenDao();
+            return dao.Bewaren(p).ID;
         }
 
         public Persoon OphalenMetCommunicatie(int persoonID)
