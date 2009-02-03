@@ -43,7 +43,7 @@ namespace Cg2.Data.Nh
         }
 
         /// <summary>
-        /// Entiteit persisteren in database
+        /// Persisteert een transiente entiteit
         /// </summary>
         /// <param name="entiteit">Te bewaren entiteit</param>
         /// <returns>Opnieuw de entiteit, met eventueel aangepast 
@@ -51,7 +51,16 @@ namespace Cg2.Data.Nh
         /// <remarks>Dit is nog geen update!</remarks>
         public T Bewaren(T entiteit)
         {
-            throw new NotImplementedException();
+            using (ISession sessie = SessionFactory.Factory.OpenSession())
+            {
+                using (sessie.BeginTransaction())
+                {
+                    sessie.Save(entiteit);
+                    sessie.Transaction.Commit();
+                }
+            }
+
+            return entiteit;
         }
         
         /// <summary>

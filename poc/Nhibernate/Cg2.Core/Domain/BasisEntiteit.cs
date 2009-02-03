@@ -21,7 +21,7 @@ namespace Cg2.Core.Domain
         private int _id = DefaultID;
         private byte[] _versie;
         private bool _teVerwijderen = false;
-        private Guid _businessKey = new Guid();
+        private Guid _businessKey = Guid.NewGuid();
         
         [DataMember]
         public virtual int ID

@@ -79,5 +79,18 @@ namespace Cg2.Test
             Assert.IsTrue(validator.Valideer(actual));
             Assert.IsTrue(actual.Communicatie.Count == 0);
         }
+
+        [TestMethod]
+        public void BewarenTest()
+        {
+            PersonenDao dao = new PersonenDao();
+
+            // Creeer een transiente persoon.
+            Persoon nieuw = new Persoon { Naam = "Bibber", VoorNaam = "Bert", Geslacht = GeslachtsType.Man };
+
+            dao.Bewaren(nieuw);
+
+            Assert.IsTrue(nieuw.ID > 0);
+        }
     }
 }
