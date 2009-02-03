@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractNhDao.cs" />
-    <Compile Include="DeepClone.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="IPersonenDao.cs" />
     <Compile Include="PersonenDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

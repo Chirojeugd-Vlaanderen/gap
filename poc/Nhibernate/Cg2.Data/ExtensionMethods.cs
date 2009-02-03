@@ -1,4 +1,8 @@
-﻿using System.Runtime.Serialization;
+﻿// Deze file bevat een aantal domme extension methods voor
+// cg2.data.
+
+using System.Runtime.Serialization;
+
 namespace Cg2.Data.Nh
 {
     /// <summary>

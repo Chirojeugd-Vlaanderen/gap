@@ -127,9 +127,18 @@ namespace Cg2Services.Tests
                 Persoon nieuw = new Persoon { Naam = "Kiekeboe", VoorNaam = "Fanny", Geslacht = GeslachtsType.Vrouw };
                 nieuw.ID = service.Bewaren(nieuw);
 
-                nieuw.VoorNaam = "Moemoe";
+                // Van zodra concurrency control werkt, ben ik verplicht
+                // om de persoon opnieuw op te halen, aangezien anders
+                // de 'rowversion' (timestamp) niet zal kloppen.
 
-                nieuw.Versie = service.Updaten(nieuw, null);
+                Persoon teUpdaten = service.Ophalen(nieuw.ID);
+
+                teUpdaten.VoorNaam = "Moemoe";
+
+                // Het zetten van de versie zoals hieronder, is eigenlijk
+                // ook niet proper.
+
+                teUpdaten.Versie = service.Updaten(teUpdaten, null);
 
                 Persoon opgehaald = service.Ophalen(nieuw.ID);
 
