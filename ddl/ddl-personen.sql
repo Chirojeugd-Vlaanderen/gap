@@ -479,3 +479,10 @@ ALTER TABLE	pers.PersoonsAdres ADD
 	Versie timestamp NOT NULL
 GO
 
+-- Indexes moeten nog gemaakt worden:
+
+-- Guid gaan we toch gebruiken
+
+UPDATE pers.Persoon SET Guid = NEWID();
+
+CREATE UNIQUE INDEX AK_Persoon_Guid ON pers.Persoon(Guid);
