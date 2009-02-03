@@ -89,6 +89,10 @@ namespace Cg2.Core.Domain
         /// <returns>een hashcode voor deze entiteit.</returns>
         public override int GetHashCode()
         {
+            // Om NHibernate te kunnen gebruiken, is het belangrijk dat
+            // de property 'BusinessKey' gebruikt wordt, en niet
+            // het field '_businessKey'.
+
             return this.BusinessKey.GetHashCode();
         }
 
