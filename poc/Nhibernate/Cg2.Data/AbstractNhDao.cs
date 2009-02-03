@@ -111,6 +111,10 @@ namespace Cg2.Data.Nh
                         // worden.
 
                         oorspronkelijkeEntiteit = nieuweEntiteit.DeepClone();
+
+                        throw new NotImplementedException("Voorlopig werkt update "
+                            + "enkel met null als oorspronkelijke entiteit.");
+
                     }
                     sessie.Transaction.Commit();
                 }
