@@ -119,6 +119,42 @@ namespace Cg2Services.Tests
             }
         }
 
+        [TestMethod]
+        public void PersoonUpdatenZonderOrigineel()
+        {
+            using (PersonenServiceReference.PersonenServiceClient service = new PersonenServiceReference.PersonenServiceClient())
+            {
+                Persoon nieuw = new Persoon { Naam = "Kiekeboe", VoorNaam = "Fanny", Geslacht = GeslachtsType.Vrouw };
+                nieuw.ID = service.Bewaren(nieuw);
+
+                nieuw.VoorNaam = "Moemoe";
+
+                nieuw.Versie = service.Updaten(nieuw, null);
+
+                Persoon opgehaald = service.Ophalen(nieuw.ID);
+
+                Assert.IsTrue(opgehaald.VoorNaam == "Moemoe");
+            }
+        }
+
+        [TestMethod]
+        public void PersoonUpdatenMetOrigineel()
+        {
+            using (PersonenServiceReference.PersonenServiceClient service = new PersonenServiceReference.PersonenServiceClient())
+            {
+                Persoon nieuw = new Persoon { Naam = "Kiekeboe", VoorNaam = "Fanny", Geslacht = GeslachtsType.Vrouw };
+                nieuw.ID = service.Bewaren(nieuw);
+
+                Persoon opgehaald = service.Ophalen(nieuw.ID);
+
+                nieuw.VoorNaam = "Moemoe";
+
+                nieuw.Versie = service.Updaten(nieuw, opgehaald);
+
+                Assert.IsTrue(opgehaald.VoorNaam == "Moemoe");
+            }
+        }
+
 
         [TestMethod]
         public void PersoonOphalenMetCommunicatie()

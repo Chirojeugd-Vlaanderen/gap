@@ -87,7 +87,35 @@ namespace Cg2.Data.Nh
         /// <returns>De geupdatete entiteit</returns>
         public T Updaten(T nieuweEntiteit, T oorspronkelijkeEntiteit)
         {
-            throw new NotImplementedException();
+            using (ISession sessie = SessionFactory.Factory.OpenSession())
+            {
+                using (sessie.BeginTransaction())
+                {
+                    if (oorspronkelijkeEntiteit == null)
+                    {
+                        // Attach entiteit als volledig 'dirty'
+                        sessie.Update(nieuweEntiteit);
+                    }
+                    else
+                    {
+                        // Attach oorspronkelijke entiteit, en 
+                        // update enkel indien gewijzigd
+                        sessie.Lock(oorspronkelijkeEntiteit, LockMode.None);
+
+                        // FIXME: wat hieronder staat, werkt niet, omdat
+                        // de property's van oorspronkelijkeEntiteit niet
+                        // overschreven worden.
+                        //
+                        // Misschien moet het updaten op basis van een
+                        // oorspronkelijke entiteit helemaal niet voorzien
+                        // worden.
+
+                        oorspronkelijkeEntiteit = nieuweEntiteit.DeepClone();
+                    }
+                    sessie.Transaction.Commit();
+                }
+            }
+            return nieuweEntiteit;
         }
 
         #endregion

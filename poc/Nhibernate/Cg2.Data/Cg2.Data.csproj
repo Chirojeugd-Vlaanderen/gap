@@ -40,6 +40,9 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -47,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractNhDao.cs" />
+    <Compile Include="DeepClone.cs" />
     <Compile Include="IPersonenDao.cs" />
     <Compile Include="PersonenDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

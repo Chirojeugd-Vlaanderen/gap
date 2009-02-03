@@ -32,6 +32,15 @@ namespace Cg2Services
         [OperationContract]
         int Bewaren(Persoon p);
 
+        /// <summary>
+        /// Updatet een persoon in de database
+        /// </summary>
+        /// <param name="nieuw">Te updaten persoon</param>
+        /// <param name="oorspronkelijk">Indien beschikbaar, is dit de 
+        /// oorspronkelijke persoon.  Mag null zijn.</param>
+        /// <returns>'Rowversion' (timestamp) van de nieuwe persoon</returns>
+        [OperationContract]
+        byte[] Updaten(Persoon nieuw, Persoon oorspronkelijk);
 
         /// <summary>
         /// Haalt persoon op uit database, inclusief communicatiegegevens

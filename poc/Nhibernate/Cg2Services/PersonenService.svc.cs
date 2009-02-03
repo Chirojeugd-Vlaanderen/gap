@@ -36,13 +36,19 @@ namespace Cg2Services
 
             try
             {
-                return pm.Bewaren(p);
+                return pm.Bewaren(p).ID;
             }
             catch (Exception)
             {
                 throw new FaultException("Persoon werd niet bewaard.");
             }
+        }
 
+        public byte[] Updaten(Persoon nieuw, Persoon oorspronkelijk)
+        {
+            IPersonenManager pm = new PersonenManager();
+
+            return pm.Updaten(nieuw, oorspronkelijk).Versie;
         }
 
         public Persoon OphalenMetCommunicatie(int persoonID)
