@@ -60,7 +60,6 @@ namespace Cg2.Data.Nh
                     sessie.Transaction.Commit();
                 }
             }
-
             return entiteit;
         }
         
@@ -69,11 +68,6 @@ namespace Cg2.Data.Nh
         /// </summary>
         /// <param name="entiteit">Te verwijderen entiteit</param>
         public void Verwijderen(T entiteit)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Commit()
         {
             throw new NotImplementedException();
         }
@@ -96,6 +90,7 @@ namespace Cg2.Data.Nh
                         // Attach entiteit als volledig 'dirty'
                         sessie.Update(nieuweEntiteit);
                     }
+                    #region Update met oorspronkelijke entiteit - nog niet geimplementeerd
                     else
                     {
                         // Attach oorspronkelijke entiteit, en 
@@ -116,10 +111,17 @@ namespace Cg2.Data.Nh
                             + "enkel met null als oorspronkelijke entiteit.");
 
                     }
+                    #endregion
+
                     sessie.Transaction.Commit();
                 }
             }
             return nieuweEntiteit;
+        }
+
+        public void Commit()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
