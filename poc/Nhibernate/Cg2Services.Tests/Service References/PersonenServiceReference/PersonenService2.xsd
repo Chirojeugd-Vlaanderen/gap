@@ -29,11 +29,23 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="Verwijderen">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain" minOccurs="0" name="p" nillable="true" type="q3:Persoon" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VerwijderenResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
   <xs:element name="Updaten">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain" minOccurs="0" name="nieuw" nillable="true" type="q3:Persoon" />
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain" minOccurs="0" name="oorspronkelijk" nillable="true" type="q4:Persoon" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain" minOccurs="0" name="nieuw" nillable="true" type="q4:Persoon" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain" minOccurs="0" name="oorspronkelijk" nillable="true" type="q5:Persoon" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -54,7 +66,7 @@
   <xs:element name="OphalenMetCommunicatieResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain" minOccurs="0" name="OphalenMetCommunicatieResult" nillable="true" type="q5:Persoon" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain" minOccurs="0" name="OphalenMetCommunicatieResult" nillable="true" type="q6:Persoon" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

@@ -51,6 +51,13 @@ namespace Cg2Services
             return pm.Updaten(nieuw, oorspronkelijk).Versie;
         }
 
+        public void Verwijderen(Persoon persoon)
+        {
+            IPersonenManager pm = new PersonenManager();
+
+            pm.Verwijderen(persoon);
+        }
+
         public Persoon OphalenMetCommunicatie(int persoonID)
         {
             IPersonenManager pm = new PersonenManager();

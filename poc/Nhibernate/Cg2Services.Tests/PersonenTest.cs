@@ -101,6 +101,8 @@ namespace Cg2Services.Tests
                 // van een GUID.
 
                 Assert.AreEqual(nieuw, opgehaald);
+
+                service.Verwijderen(opgehaald);
             }
         }
 
@@ -112,10 +114,13 @@ namespace Cg2Services.Tests
             {
                 Persoon nieuw = new Persoon { Naam = "Pienter", VoorNaam = "Piet", Geslacht = GeslachtsType.Man };
 
-                int id1 = service.Bewaren(nieuw);
+                int id1 = service.Bewaren(nieuw); 
                 int id2 = service.Bewaren(nieuw);
 
                 Assert.IsFalse(id2 > id1);
+
+                // Constructie hieronder om concurrencyproblemen te vermijden.
+                service.Verwijderen(service.Ophalen(id1));
             }
         }
 
@@ -143,6 +148,8 @@ namespace Cg2Services.Tests
                 Persoon opgehaald = service.Ophalen(nieuw.ID);
 
                 Assert.IsTrue(opgehaald.VoorNaam == "Moemoe");
+
+                service.Verwijderen(opgehaald);
             }
         }
 
@@ -161,6 +168,8 @@ namespace Cg2Services.Tests
                 nieuw.Versie = service.Updaten(nieuw, opgehaald);
 
                 Assert.IsTrue(opgehaald.VoorNaam == "Moemoe");
+
+                service.Verwijderen(nieuw);
             }
         }
 
@@ -176,6 +185,21 @@ namespace Cg2Services.Tests
                 Assert.IsTrue(resultaat.Communicatie.Count() > 0);
             }
         }
+
+        [TestMethod]
+        public void PersoonVerwijderen()
+        {
+            using (PersonenServiceReference.PersonenServiceClient service = new PersonenServiceReference.PersonenServiceClient())
+            {
+                Persoon nieuw = new Persoon { Naam = "Pienter", VoorNaam = "Piet", Geslacht = GeslachtsType.Man };
+                int toegekendId = service.Bewaren(nieuw);
+                service.Verwijderen(service.Ophalen(toegekendId));
+                Persoon opgehaald = service.Ophalen(toegekendId);
+                Assert.IsTrue(opgehaald == null);
+            }
+
+        }
+
 
         /// <summary>
         /// Deze test kijkt na of er extra communicatievormen toegevoegd

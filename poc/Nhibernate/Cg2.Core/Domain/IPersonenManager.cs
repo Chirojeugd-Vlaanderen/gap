@@ -34,7 +34,13 @@ namespace Cg2.Core.Domain
         /// <param name="p">Te persisteren persoon</param>
         /// <returns>Referentie naar geupdatete persoon</returns>
         Persoon Bewaren(Persoon p);
-        
+
+        /// <summary>
+        /// Maakt een persistent persoon opnieuw transient
+        /// </summary>
+        /// <param name="p">persoon die verwijderd moet worden uit
+        /// storage</param>
+        void Verwijderen(Persoon p);
 
         /// <summary>
         /// Haalt persoonsinfo op uit database, incl. communicatievormen

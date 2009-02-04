@@ -33,6 +33,14 @@ namespace Cg2Services
         int Bewaren(Persoon p);
 
         /// <summary>
+        /// Maakt een persistent persoon opnieuw transient
+        /// </summary>
+        /// <param name="p">persoon die uit storage verwijderd moet
+        /// worden</param>
+        [OperationContract]
+        void Verwijderen(Persoon p);
+
+        /// <summary>
         /// Updatet een persoon in de database
         /// </summary>
         /// <param name="nieuw">Te updaten persoon</param>

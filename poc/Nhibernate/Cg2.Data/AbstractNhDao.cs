@@ -29,7 +29,10 @@ namespace Cg2.Data.Nh
             T result;
             using (ISession sessie = SessionFactory.Factory.OpenSession())
             {
-                result = sessie.Load<T>(id);
+                using (sessie.BeginTransaction())
+                {
+                    result = sessie.Get<T>(id);
+                }
             }
             return result;
         }
@@ -69,7 +72,14 @@ namespace Cg2.Data.Nh
         /// <param name="entiteit">Te verwijderen entiteit</param>
         public void Verwijderen(T entiteit)
         {
-            throw new NotImplementedException();
+            using (ISession sessie = SessionFactory.Factory.OpenSession())
+            {
+                using (sessie.BeginTransaction())
+                {
+                    sessie.Delete(entiteit);
+                    sessie.Transaction.Commit();
+                }
+            }
         }
 
         /// <summary>
