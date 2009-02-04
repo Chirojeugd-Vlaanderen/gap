@@ -28,6 +28,12 @@ namespace Cg2.Workers
             return dao.Bewaren(p);
         }
 
+        public Persoon BewarenOfUpdaten(Persoon p)
+        {
+            PersonenDao dao = new PersonenDao();
+            return dao.BewarenOfUpdaten(p);
+        }
+
         public void Verwijderen(Persoon p)
         {
             PersonenDao dao = new PersonenDao();

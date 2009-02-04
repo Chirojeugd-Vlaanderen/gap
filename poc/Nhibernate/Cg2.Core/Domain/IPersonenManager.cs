@@ -36,6 +36,14 @@ namespace Cg2.Core.Domain
         Persoon Bewaren(Persoon p);
 
         /// <summary>
+        /// Persisteert een transiente persoon, of updatet een
+        /// gedetachete persoon.
+        /// </summary>
+        /// <param name="p">Te persisteren/updaten persoon</param>
+        /// <returns>Referentie naar bewaarde/geupdatete persoon</returns>
+        Persoon BewarenOfUpdaten(Persoon p);
+
+        /// <summary>
         /// Maakt een persistent persoon opnieuw transient
         /// </summary>
         /// <param name="p">persoon die verwijderd moet worden uit

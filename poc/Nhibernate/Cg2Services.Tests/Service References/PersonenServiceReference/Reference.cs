@@ -27,6 +27,9 @@ namespace Cg2Services.Tests.PersonenServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/Updaten", ReplyAction="http://tempuri.org/IPersonenService/UpdatenResponse")]
         byte[] Updaten(Cg2.Core.Domain.Persoon nieuw, Cg2.Core.Domain.Persoon oorspronkelijk);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/BewarenOfUpdaten", ReplyAction="http://tempuri.org/IPersonenService/BewarenOfUpdatenResponse")]
+        int BewarenOfUpdaten(Cg2.Core.Domain.Persoon p);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/OphalenMetCommunicatie", ReplyAction="http://tempuri.org/IPersonenService/OphalenMetCommunicatieResponse")]
         Cg2.Core.Domain.Persoon OphalenMetCommunicatie(int persoonID);
         
@@ -75,6 +78,10 @@ namespace Cg2Services.Tests.PersonenServiceReference {
         
         public byte[] Updaten(Cg2.Core.Domain.Persoon nieuw, Cg2.Core.Domain.Persoon oorspronkelijk) {
             return base.Channel.Updaten(nieuw, oorspronkelijk);
+        }
+        
+        public int BewarenOfUpdaten(Cg2.Core.Domain.Persoon p) {
+            return base.Channel.BewarenOfUpdaten(p);
         }
         
         public Cg2.Core.Domain.Persoon OphalenMetCommunicatie(int persoonID) {

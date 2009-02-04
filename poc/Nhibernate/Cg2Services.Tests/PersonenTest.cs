@@ -229,5 +229,30 @@ namespace Cg2Services.Tests
                 }
             }
         }
+
+        [TestMethod]
+        public void PersoonBewarenOfUpdaten()
+        {
+            Persoon p = new Persoon { VoorNaam = "Konstantinopel", Naam = "Kiekeboe", Geslacht = GeslachtsType.Man };
+
+            using (PersonenServiceReference.PersonenServiceClient service = new Cg2Services.Tests.PersonenServiceReference.PersonenServiceClient())
+            {
+                int id1 = service.BewarenOfUpdaten(p);
+                Persoon opgehaald = service.Ophalen(id1);
+
+                Assert.AreEqual(opgehaald, p);
+
+                opgehaald.VoorNaam = "Marcel";
+                int id2 = service.BewarenOfUpdaten(opgehaald);
+
+                Assert.AreEqual(id1, id2);
+                Assert.AreEqual(opgehaald.VoorNaam, service.Ophalen(id2).VoorNaam);
+
+                // Opnieuw ophalen om concurrencyproblemen te vermijden.
+
+                service.Verwijderen(service.Ophalen(id2));
+            }
+        }
+
     }
 }

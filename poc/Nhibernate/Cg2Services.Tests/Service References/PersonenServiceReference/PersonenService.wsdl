@@ -258,6 +258,44 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_IPersonenService_BewarenOfUpdaten_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_IPersonenService_BewarenOfUpdaten_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsp:Policy wsu:Id="WSHttpBinding_IPersonenService_OphalenMetCommunicatie_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -365,6 +403,12 @@
   <wsdl:message name="IPersonenService_Updaten_OutputMessage">
     <wsdl:part name="parameters" element="tns:UpdatenResponse" />
   </wsdl:message>
+  <wsdl:message name="IPersonenService_BewarenOfUpdaten_InputMessage">
+    <wsdl:part name="parameters" element="tns:BewarenOfUpdaten" />
+  </wsdl:message>
+  <wsdl:message name="IPersonenService_BewarenOfUpdaten_OutputMessage">
+    <wsdl:part name="parameters" element="tns:BewarenOfUpdatenResponse" />
+  </wsdl:message>
   <wsdl:message name="IPersonenService_OphalenMetCommunicatie_InputMessage">
     <wsdl:part name="parameters" element="tns:OphalenMetCommunicatie" />
   </wsdl:message>
@@ -393,6 +437,10 @@
     <wsdl:operation name="Updaten">
       <wsdl:input wsaw:Action="http://tempuri.org/IPersonenService/Updaten" message="tns:IPersonenService_Updaten_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IPersonenService/UpdatenResponse" message="tns:IPersonenService_Updaten_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="BewarenOfUpdaten">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPersonenService/BewarenOfUpdaten" message="tns:IPersonenService_BewarenOfUpdaten_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPersonenService/BewarenOfUpdatenResponse" message="tns:IPersonenService_BewarenOfUpdaten_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="OphalenMetCommunicatie">
       <wsdl:input wsaw:Action="http://tempuri.org/IPersonenService/OphalenMetCommunicatie" message="tns:IPersonenService_OphalenMetCommunicatie_InputMessage" />
@@ -447,6 +495,17 @@
       </wsdl:input>
       <wsdl:output>
         <wsp:PolicyReference URI="#WSHttpBinding_IPersonenService_Updaten_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BewarenOfUpdaten">
+      <soap12:operation soapAction="http://tempuri.org/IPersonenService/BewarenOfUpdaten" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSHttpBinding_IPersonenService_BewarenOfUpdaten_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSHttpBinding_IPersonenService_BewarenOfUpdaten_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

@@ -51,6 +51,15 @@ namespace Cg2Services
         byte[] Updaten(Persoon nieuw, Persoon oorspronkelijk);
 
         /// <summary>
+        /// Bewaart een transiente persoon, of updatet een detached
+        /// persoon.
+        /// </summary>
+        /// <param name="p">Te bewaren/updaten persoon</param>
+        /// <returns>Toegekend ID</returns>
+        [OperationContract]
+        int BewarenOfUpdaten(Persoon p);
+
+        /// <summary>
         /// Haalt persoon op uit database, inclusief communicatiegegevens
         /// </summary>
         /// <param name="persoonID">ID op te halen persoon</param>

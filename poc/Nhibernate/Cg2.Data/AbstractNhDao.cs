@@ -100,33 +100,34 @@ namespace Cg2.Data.Nh
                         // Attach entiteit als volledig 'dirty'
                         sessie.Update(nieuweEntiteit);
                     }
-                    #region Update met oorspronkelijke entiteit - nog niet geimplementeerd
                     else
                     {
-                        // Attach oorspronkelijke entiteit, en 
-                        // update enkel indien gewijzigd
-                        sessie.Lock(oorspronkelijkeEntiteit, LockMode.None);
-
-                        // FIXME: wat hieronder staat, werkt niet, omdat
-                        // de property's van oorspronkelijkeEntiteit niet
-                        // overschreven worden.
-                        //
-                        // Misschien moet het updaten op basis van een
-                        // oorspronkelijke entiteit helemaal niet voorzien
-                        // worden.
-
-                        oorspronkelijkeEntiteit = nieuweEntiteit.DeepClone();
-
-                        throw new NotImplementedException("Voorlopig werkt update "
-                            + "enkel met null als oorspronkelijke entiteit.");
-
+                        throw new NotImplementedException();
                     }
-                    #endregion
 
                     sessie.Transaction.Commit();
                 }
             }
             return nieuweEntiteit;
+        }
+
+        /// <summary>
+        /// Bewaart een transiente entiteit, of updatet een detached entiteit.
+        /// </summary>
+        /// <param name="entiteit">Te bewaren/updaten entiteit</param>
+        /// <returns>referentie naar bewaarde/geupdatete entiteit</returns>
+        public T BewarenOfUpdaten(T entiteit)
+        {
+            using (ISession sessie = SessionFactory.Factory.OpenSession())
+            {
+                using (sessie.BeginTransaction())
+                {
+                    sessie.SaveOrUpdate(entiteit);
+                    sessie.Transaction.Commit();
+                }
+            }
+            return entiteit;
+
         }
 
         public void Commit()

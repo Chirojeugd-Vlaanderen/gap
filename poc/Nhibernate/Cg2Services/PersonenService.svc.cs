@@ -44,6 +44,22 @@ namespace Cg2Services
             }
         }
 
+        public int BewarenOfUpdaten(Persoon p)
+        {
+            IPersonenManager pm = new PersonenManager();
+
+            // FIXME: deftige exception handling
+
+            try
+            {
+                return pm.BewarenOfUpdaten(p).ID;
+            }
+            catch (Exception)
+            {
+                throw new FaultException("Persoon werd niet bewaard/geupdatet.");
+            }
+        }
+
         public byte[] Updaten(Persoon nieuw, Persoon oorspronkelijk)
         {
             IPersonenManager pm = new PersonenManager();
