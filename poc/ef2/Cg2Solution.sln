@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Core", "Cg2.Core\Cg2.Core.csproj", "{B863A1B0-5947-4A6C-9710-4111CDAB78B8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Data", "Cg2.Data\Cg2.Data.csproj", "{F9197C38-63BC-4D2F-9F0A-8326C698B536}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Util", "Cg2.Util\Cg2.Util.csproj", "{1E2DCB4D-DA0D-4149-B90D-E036DEE38083}"
@@ -26,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServices.Test", "WebServ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Validatie", "Cg2.Validatie\Cg2.Validatie.csproj", "{853B7FDF-27B6-48BC-A220-F68CCE610B6B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Orm", "Cg2.Orm\Cg2.Orm.csproj", "{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution.vsmdi
@@ -35,10 +35,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B863A1B0-5947-4A6C-9710-4111CDAB78B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B863A1B0-5947-4A6C-9710-4111CDAB78B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B863A1B0-5947-4A6C-9710-4111CDAB78B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B863A1B0-5947-4A6C-9710-4111CDAB78B8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F9197C38-63BC-4D2F-9F0A-8326C698B536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F9197C38-63BC-4D2F-9F0A-8326C698B536}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9197C38-63BC-4D2F-9F0A-8326C698B536}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -67,6 +63,10 @@ Global
 		{853B7FDF-27B6-48BC-A220-F68CCE610B6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{853B7FDF-27B6-48BC-A220-F68CCE610B6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{853B7FDF-27B6-48BC-A220-F68CCE610B6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

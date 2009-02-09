@@ -37,6 +37,10 @@
     </Key>
     <Property Name="PersoonID" Type="int" Nullable="false"
               StoreGeneratedPattern="Identity" />
+    <Property Name="Guid" Type="uniqueidentifier" Nullable="false" 
+              StoreGeneratedPattern="None" />  
+    <!-- Guid wordt gegenereerd door de klasse Persoon zelf, om zo te
+    kunnen vergelijken vooraleer een persoon gepersisteerd wordt. -->
     <Property Name="AdNummer" Type="int" Nullable="true" />
     <Property Name="Naam" Type="varchar" MaxLength="160" Nullable="false"/>
     <Property Name="VoorNaam" Type="varchar" MaxLength="60" Nullable="true"/>

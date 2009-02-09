@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cg2.Core.DataInterfaces;
+using Cg2.Orm.DataInterfaces;
 using System.Data.Objects;
 using System.Data;
-using Cg2.Core.Domain;
+using Cg2.Orm;
 
 namespace Cg2.Data.Ef
 {

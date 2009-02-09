@@ -17,5 +17,9 @@
     <property name="GeboorteDatum" column="GeboorteDatum" />
     <property name="SterfDatum" column="SterfDatum" />
     <property name="BusinessKey" column="Guid" />
+    <bag name="Communicatie" inverse="true" lazy="false">
+      <key column="PersoonID" />
+      <one-to-many class="CommunicatieVorm" />
+    </bag>
   </class>
 </hibernate-mapping>

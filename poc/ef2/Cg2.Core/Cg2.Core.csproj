@@ -51,8 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataInterfaces\IDao.cs" />
-    <Compile Include="DataInterfaces\IPersonenDao.cs" />
     <Compile Include="Domain\BasisEntiteit.cs" />
     <Compile Include="Domain\ChiroGroep.cs" />
     <Compile Include="Domain\CommunicatieVorm.cs" />

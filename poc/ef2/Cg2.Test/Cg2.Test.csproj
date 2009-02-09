@@ -63,10 +63,6 @@
     <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cg2.Core\Cg2.Core.csproj">
-      <Project>{B863A1B0-5947-4A6C-9710-4111CDAB78B8}</Project>
-      <Name>Cg2.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Cg2.Data\Cg2.Data.csproj">
       <Project>{F9197C38-63BC-4D2F-9F0A-8326C698B536}</Project>
       <Name>Cg2.Data</Name>

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cg2.Core.Domain;
 
-namespace Cg2.Core.DataInterfaces
+namespace Cg2.Orm.DataInterfaces
 {
     /// <summary>
     /// De PersonenDAO moet meer kunnen dan de standaard-CRUD-operaties:

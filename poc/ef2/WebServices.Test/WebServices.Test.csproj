@@ -102,10 +102,6 @@
     <WCFMetadataStorage Include="Service References\PersonenServiceReference\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cg2.Core\Cg2.Core.csproj">
-      <Project>{B863A1B0-5947-4A6C-9710-4111CDAB78B8}</Project>
-      <Name>Cg2.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Cg2.Validatie\Cg2.Validatie.csproj">
       <Project>{853B7FDF-27B6-48BC-A220-F68CCE610B6B}</Project>
       <Name>Cg2.Validatie</Name>

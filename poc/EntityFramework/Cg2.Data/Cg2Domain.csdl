@@ -39,6 +39,7 @@
       <PropertyRef Name="ID"/>
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="BusinessKey" Type="Guid" Nullable="false" />
     <Property Name="AdNummer" Type="Int32" Nullable="true" />
     <Property Name="Naam" Type="String" MaxLength="160" Nullable="false" />
     <Property Name="VoorNaam" Type="String" MaxLength="60" Nullable="true" />

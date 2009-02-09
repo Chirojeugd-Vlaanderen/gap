@@ -32,6 +32,7 @@
           <ScalarProperty Name="GeslachtsInt" ColumnName="Geslacht"/>
           <ScalarProperty Name="GeboorteDatum" ColumnName="GeboorteDatum"/>
           <ScalarProperty Name="SterfDatum" ColumnName="SterfDatum"/>
+          <ScalarProperty Name="BusinessKey" ColumnName="Guid" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

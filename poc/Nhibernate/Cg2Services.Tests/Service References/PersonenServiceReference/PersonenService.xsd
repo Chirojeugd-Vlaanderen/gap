@@ -1,52 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain" xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:1408/PersonenService.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-  <xs:complexType name="Persoon">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:BasisEntiteit">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="AdNummer" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="Communicatie" nillable="true" type="tns:ArrayOfCommunicatieVorm" />
-          <xs:element minOccurs="0" name="GeboorteDatum" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="Geslacht" type="tns:GeslachtsType" />
-          <xs:element minOccurs="0" name="Naam" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="SterfDatum" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="VoorNaam" nillable="true" type="xs:string" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="Persoon" nillable="true" type="tns:Persoon" />
-  <xs:complexType name="BasisEntiteit">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="BusinessKey" type="ser:guid" />
-      <xs:element minOccurs="0" name="ID" type="xs:int" />
-      <xs:element minOccurs="0" name="TeVerwijderen" type="xs:boolean" />
-      <xs:element minOccurs="0" name="Versie" nillable="true" type="xs:base64Binary" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="BasisEntiteit" nillable="true" type="tns:BasisEntiteit" />
-  <xs:complexType name="ArrayOfCommunicatieVorm">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommunicatieVorm" nillable="true" type="tns:CommunicatieVorm" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCommunicatieVorm" nillable="true" type="tns:ArrayOfCommunicatieVorm" />
-  <xs:complexType name="CommunicatieVorm">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:BasisEntiteit">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="IsGezinsGebonden" type="xs:boolean" />
-          <xs:element minOccurs="0" name="Nota" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Nummer" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="PersoonID" type="xs:int" />
-          <xs:element minOccurs="0" name="Type" type="tns:CommunicatieType" />
-          <xs:element minOccurs="0" name="Voorkeur" type="xs:boolean" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="CommunicatieVorm" nillable="true" type="tns:CommunicatieVorm" />
   <xs:simpleType name="CommunicatieType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Telefoon">
@@ -94,6 +48,52 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="CommunicatieType" nillable="true" type="tns:CommunicatieType" />
+  <xs:complexType name="Persoon">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasisEntiteit">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AdNummer" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="Communicatie" nillable="true" type="tns:ArrayOfCommunicatieVorm" />
+          <xs:element minOccurs="0" name="GeboorteDatum" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Geslacht" type="tns:GeslachtsType" />
+          <xs:element minOccurs="0" name="Naam" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SterfDatum" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="VoorNaam" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Persoon" nillable="true" type="tns:Persoon" />
+  <xs:complexType name="BasisEntiteit">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BusinessKey" type="ser:guid" />
+      <xs:element minOccurs="0" name="ID" type="xs:int" />
+      <xs:element minOccurs="0" name="TeVerwijderen" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Versie" nillable="true" type="xs:base64Binary" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BasisEntiteit" nillable="true" type="tns:BasisEntiteit" />
+  <xs:complexType name="ArrayOfCommunicatieVorm">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommunicatieVorm" nillable="true" type="tns:CommunicatieVorm" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommunicatieVorm" nillable="true" type="tns:ArrayOfCommunicatieVorm" />
+  <xs:complexType name="CommunicatieVorm">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasisEntiteit">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="IsGezinsGebonden" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Nota" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Nummer" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Persoon" nillable="true" type="tns:Persoon" />
+          <xs:element minOccurs="0" name="Type" type="tns:CommunicatieType" />
+          <xs:element minOccurs="0" name="Voorkeur" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommunicatieVorm" nillable="true" type="tns:CommunicatieVorm" />
   <xs:simpleType name="GeslachtsType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Man">

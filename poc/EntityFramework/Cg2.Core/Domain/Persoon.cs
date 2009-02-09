@@ -163,6 +163,19 @@ namespace Cg2.Core.Domain
             }
         }
 
+        [EdmScalarPropertyAttribute(IsNullable = false)]
+        public override Guid BusinessKey
+        {
+            get
+            {
+                return base.BusinessKey;
+            }
+            set
+            {
+                base.BusinessKey = value;
+            }
+        }
+
         /// <summary>
         /// Nieuwe communicatievorm toevoegen voor een persoon
         /// </summary>
