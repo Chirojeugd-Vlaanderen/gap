@@ -16,6 +16,25 @@ namespace Cg2.Orm
 
     public partial class Persoon : IBasisEntiteit
     {
+        public Persoon()
+        {
+            BusinessKey = Guid.NewGuid();
+        }
+
+        public override bool Equals(object obj)
+        {
+            IBasisEntiteit gij = obj as IBasisEntiteit;
+
+            return (gij != null)
+                && (this.ID == gij.ID
+                || (this.ID == 0 || gij.ID == 0) && (this.BusinessKey == gij.BusinessKey));
+        }
+
+        public override int GetHashCode()
+        {
+            return BusinessKey.GetHashCode();
+        }
+
         public GeslachtsType Geslacht
         {
             get { return (GeslachtsType)this.GeslachtsInt; }

@@ -27,6 +27,20 @@ namespace WebServices
             return result;
         }
 
+        public int Bewaren(Persoon p)
+        {
+            PersonenManager pm = new PersonenManager();
+
+            return pm.Bewaren(p).ID;
+        }
+
+        public void Verwijderen(Persoon p)
+        {
+            PersonenManager pm = new PersonenManager();
+            pm.Verwijderen(p);
+        }
+
+
         public Persoon OphalenMetCommunicatie(int persoonID)
         {
             PersonenManager pm = new PersonenManager();

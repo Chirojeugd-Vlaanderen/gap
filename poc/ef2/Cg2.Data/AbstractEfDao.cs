@@ -83,6 +83,7 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
+                db.Attach(entiteit);
                 db.DeleteObject(entiteit as object);
                 db.SaveChanges();
             }

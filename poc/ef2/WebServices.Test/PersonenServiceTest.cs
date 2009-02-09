@@ -117,5 +117,24 @@ namespace WebServices.Test
             }
         }
 
+        [TestMethod]
+        public void ObjectIdentity()
+        {
+            using (PersonenServiceReference.PersonenServiceClient service = new WebServices.Test.PersonenServiceReference.PersonenServiceClient())
+            {
+                Persoon p = new Persoon { Naam = "Fluwijn", VoorNaam = "Piet", Geslacht = GeslachtsType.Man };
+
+                int newId = service.Bewaren(p);
+
+                Persoon q = service.Ophalen(newId);
+
+                Assert.IsTrue(p.BusinessKey == q.BusinessKey);
+                Assert.IsTrue(p.Equals(q));
+
+                service.Verwijderen(q);
+            }
+        }
+
+
     }
 }

@@ -29,6 +29,32 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="Bewaren">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Cg2.Orm" minOccurs="0" name="p" nillable="true" type="q3:Persoon" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BewarenResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="BewarenResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Verwijderen">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Cg2.Orm" minOccurs="0" name="p" nillable="true" type="q4:Persoon" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VerwijderenResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
   <xs:element name="Hallo">
     <xs:complexType>
       <xs:sequence />

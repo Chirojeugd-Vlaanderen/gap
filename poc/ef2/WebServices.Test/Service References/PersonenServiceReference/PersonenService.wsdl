@@ -182,6 +182,82 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_IPersonenService_Bewaren_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_IPersonenService_Bewaren_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_IPersonenService_Verwijderen_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_IPersonenService_Verwijderen_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsp:Policy wsu:Id="WSHttpBinding_IPersonenService_Hallo_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -241,6 +317,18 @@
   <wsdl:message name="IPersonenService_OphalenMetCommunicatie_OutputMessage">
     <wsdl:part name="parameters" element="tns:OphalenMetCommunicatieResponse" />
   </wsdl:message>
+  <wsdl:message name="IPersonenService_Bewaren_InputMessage">
+    <wsdl:part name="parameters" element="tns:Bewaren" />
+  </wsdl:message>
+  <wsdl:message name="IPersonenService_Bewaren_OutputMessage">
+    <wsdl:part name="parameters" element="tns:BewarenResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPersonenService_Verwijderen_InputMessage">
+    <wsdl:part name="parameters" element="tns:Verwijderen" />
+  </wsdl:message>
+  <wsdl:message name="IPersonenService_Verwijderen_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VerwijderenResponse" />
+  </wsdl:message>
   <wsdl:message name="IPersonenService_Hallo_InputMessage">
     <wsdl:part name="parameters" element="tns:Hallo" />
   </wsdl:message>
@@ -255,6 +343,14 @@
     <wsdl:operation name="OphalenMetCommunicatie">
       <wsdl:input wsaw:Action="http://tempuri.org/IPersonenService/OphalenMetCommunicatie" message="tns:IPersonenService_OphalenMetCommunicatie_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IPersonenService/OphalenMetCommunicatieResponse" message="tns:IPersonenService_OphalenMetCommunicatie_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Bewaren">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPersonenService/Bewaren" message="tns:IPersonenService_Bewaren_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPersonenService/BewarenResponse" message="tns:IPersonenService_Bewaren_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Verwijderen">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPersonenService/Verwijderen" message="tns:IPersonenService_Verwijderen_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPersonenService/VerwijderenResponse" message="tns:IPersonenService_Verwijderen_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="Hallo">
       <wsdl:input wsaw:Action="http://tempuri.org/IPersonenService/Hallo" message="tns:IPersonenService_Hallo_InputMessage" />
@@ -283,6 +379,28 @@
       </wsdl:input>
       <wsdl:output>
         <wsp:PolicyReference URI="#WSHttpBinding_IPersonenService_OphalenMetCommunicatie_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Bewaren">
+      <soap12:operation soapAction="http://tempuri.org/IPersonenService/Bewaren" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSHttpBinding_IPersonenService_Bewaren_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSHttpBinding_IPersonenService_Bewaren_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Verwijderen">
+      <soap12:operation soapAction="http://tempuri.org/IPersonenService/Verwijderen" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSHttpBinding_IPersonenService_Verwijderen_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSHttpBinding_IPersonenService_Verwijderen_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
