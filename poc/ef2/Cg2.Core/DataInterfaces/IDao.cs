@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Cg2.Orm.DataInterfaces
+using Cg2.Core.Domain;
+
+namespace Cg2.Core.DataInterfaces
 {
     /// <summary>
     /// Algemeen contract voor CRUD-operaties in de ORM-laag.

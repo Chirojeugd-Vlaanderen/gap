@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Cg2.Core.Domain" Alias="Self"
+  xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+  
+  <EntityContainer Name="Cg2ObjectContext">
+    <EntitySet Name="Groep" EntityType="Cg2.Core.Domain.Groep" />
+    <!-- Voor ChiroGroep moet er geen EntitySet zijn, bij
+    'class per table' inheritance -->
+    <EntitySet Name="Persoon" EntityType="Cg2.Core.Domain.Persoon" />
+    <EntitySet Name="CommunicatieVorm" EntityType="Cg2.Core.Domain.CommunicatieVorm" />
+    <AssociationSet Name="PersoonCommunicatieVorm"
+                    Association="Cg2.Core.Domain.PersoonCommunicatieVorm">
+      <End Role="Persoon" EntitySet="Persoon" />
+      <End Role="CommunicatieVorm" EntitySet="CommunicatieVorm" />
+    </AssociationSet>
+    <!-- ik heb de indruk dat als 'EntityType' zowel een associatie
+    uit de csdl als uit de ssdl kan gebruiken.  Als je je klasses laat
+    genereren door vs, dan wordt die van de ssdl gebruikt.  Het boek
+    gebruikt die van de csdl.  In het boek gaat men er dan ook vanuit dat
+    je eerst je conceptueel model opstelt, en dan pas het storage model.  -->
+  </EntityContainer>
+  
+  <EntityType Name="Groep">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Code" Type="String" MaxLength="10" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Naam" Type="String" MaxLength="160" Nullable="false" />
+    <Property Name="OprichtingsJaar" Type="Int32" />
+    <Property Name="WebSite" Type="String" MaxLength="160" />
+    <Property Name="Versie" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" />
+  </EntityType>
+  
+  <EntityType Name="ChiroGroep" BaseType="Cg2.Core.Domain.Groep" />
+
+  <EntityType Name="Persoon">
+    <Key>
+      <PropertyRef Name="ID"/>
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="AdNummer" Type="Int32" Nullable="true" />
+    <Property Name="Naam" Type="String" MaxLength="160" Nullable="false" />
+    <Property Name="VoorNaam" Type="String" MaxLength="60" Nullable="true" />
+    <Property Name="GeslachtsInt" Type="Int32" Nullable="false" />
+    <Property Name="GeboorteDatum" Type="DateTime" Nullable="true" />
+    <Property Name="SterfDatum" Type="DateTime" Nullable="false" />
+    <NavigationProperty Name="Communicatie"
+                        Relationship="Cg2.Core.Domain.PersoonCommunicatieVorm"
+                        FromRole="Persoon" ToRole="CommunicatieVorm" />
+  </EntityType>
+
+  <EntityType Name="CommunicatieVorm">
+    <Key>
+      <PropertyRef Name="ID"/>
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="TypeInt" Type="Int32" Nullable="false" />
+    <Property Name="Nummer" Type="String" MaxLength="160" Nullable="false" />
+    <Property Name="IsGezinsGebonden" Type="Boolean" Nullable="false" />
+    <Property Name="Voorkeur" Type="Boolean" Nullable="false" />
+    <Property Name="Nota" Type="String" MaxLength="320" Nullable="true" />
+    <NavigationProperty Name="Persoon"
+                        Relationship="Cg2.Core.Domain.PersoonCommunicatieVorm"
+                        FromRole="CommunicatieVorm" ToRole="Persoon" />
+  </EntityType>
+
+  <Association Name="PersoonCommunicatieVorm">
+    <End Type="Cg2.Core.Domain.Persoon" Role="Persoon" Multiplicity="1" />
+    <End Type="Cg2.Core.Domain.CommunicatieVorm" Role="CommunicatieVorm"
+         Multiplicity="*" />
+  </Association>
+  
+</Schema>
