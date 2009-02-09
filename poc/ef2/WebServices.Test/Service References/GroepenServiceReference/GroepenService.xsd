@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:4047/GroepenService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain" />
+  <xs:element name="Updaten">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain" minOccurs="0" name="g" nillable="true" type="q1:Groep" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain" minOccurs="0" name="origineel" nillable="true" type="q2:Groep" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdatenResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain" minOccurs="0" name="UpdatenResult" nillable="true" type="q3:Groep" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Ophalen">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="groepID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OphalenResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain" minOccurs="0" name="OphalenResult" nillable="true" type="q4:Groep" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Hallo">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HalloResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="HalloResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
