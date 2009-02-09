@@ -32,7 +32,6 @@ namespace Cg2.Data.Nh
                 using (sessie.BeginTransaction())
                 {
                     result = sessie.Get<T>(id);
-                    sessie.Transaction.Commit();
                 }
             }
             return result;

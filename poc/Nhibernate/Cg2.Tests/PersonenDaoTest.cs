@@ -77,21 +77,7 @@ namespace Cg2.Test
             Persoon actual;
             actual = dao.Ophalen(id);
             Assert.IsTrue(validator.Valideer(actual));
-        }
-
-        [TestMethod]
-        public void OphalenMetCommunicatieTest()
-        {
-            PersonenDao dao = new PersonenDao();
-            IValidator<Persoon> validator = new PersonenValidator();
-
-            int id = 1893;
-
-            Persoon actual;
-            actual = dao.OphalenMetCommunicatie(id);
-
-            Assert.IsTrue(validator.Valideer(actual));
-            Assert.IsTrue(actual.Communicatie.Count > 0);
+            Assert.IsTrue(actual.Communicatie.Count == 0);
         }
 
         [TestMethod]

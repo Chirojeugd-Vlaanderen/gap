@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
-using Iesi.Collections.Generic;
 
 namespace Cg2.Core.Domain
 {
@@ -18,7 +17,6 @@ namespace Cg2.Core.Domain
         Onbekend = 0
     };
 
-
     /// <summary>
     /// Klasse voor 'persoon'.  De bedoeling is dat elke individuele persoon
     /// slechts 1 keer bestaat.  Als een groep echter een nieuwe persoon
@@ -28,8 +26,6 @@ namespace Cg2.Core.Domain
     /// </summary>
     /// 
     [DataContract]
-    [KnownType(typeof(CommunicatieVorm))]
-    [KnownType(typeof(CommunicatieType))]
     public class Persoon: BasisEntiteit
     {
         #region Private members
@@ -39,7 +35,7 @@ namespace Cg2.Core.Domain
         private int _geslacht;
         private DateTime? _geboorteDatum;
         private DateTime? _sterfDatum;
-        private IList<CommunicatieVorm> _communicatie = new List<CommunicatieVorm>();
+        private List<CommunicatieVorm> _communicatie;
         #endregion
 
         #region Properties
@@ -113,23 +109,28 @@ namespace Cg2.Core.Domain
         }
 
         [DataMember]
-        public IList<CommunicatieVorm> Communicatie
+        public List<CommunicatieVorm> Communicatie
         {
             get 
             {
+                // Geval opvangen van een null-lijst, wat 
+                // blijkbaar soms voorkomt bij het 
+                // deserializen van een persoon.  (Gek genoeg,
+                // want in de constructor wordt _communicatie
+                // al geinitialiseerd.)
                 if (_communicatie == null)
                 {
                     _communicatie = new List<CommunicatieVorm>();
                 }
-
                 return _communicatie; 
-            }
-            set
-            {
-                _communicatie = value;
             }
         }
         #endregion
+
+        public Persoon()
+        {
+            _communicatie = new List<CommunicatieVorm>();
+        }
 
 
         /// <summary>
@@ -145,7 +146,7 @@ namespace Cg2.Core.Domain
             CommunicatieVorm cv = new CommunicatieVorm();
             cv.Nummer = nr;
             cv.Type = type;
-            cv.Persoon = this;
+            cv.PersoonID = this.ID;
 
             // TODO: validatie, en checken op dubbels
 

@@ -77,8 +77,7 @@ namespace Cg2Services
         public Persoon OphalenMetCommunicatie(int persoonID)
         {
             IPersonenManager pm = new PersonenManager();
-            Persoon result = pm.OphalenMetCommunicatie(persoonID);
-            return result;
+            return pm.OphalenMetCommunicatie(persoonID);
         }
 
         public string Hallo()

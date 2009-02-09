@@ -225,7 +225,7 @@ namespace Cg2Services.Tests
 
                 foreach (CommunicatieVorm cv in p.Communicatie)
                 {
-                    Assert.IsTrue(cv.Persoon == p);
+                    Assert.IsTrue(cv.PersoonID == p.ID);
                 }
             }
         }

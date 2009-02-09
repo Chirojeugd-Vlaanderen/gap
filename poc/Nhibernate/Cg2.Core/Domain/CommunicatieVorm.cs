@@ -38,7 +38,7 @@ namespace Cg2.Core.Domain
         private bool _isGezinsGebonden;
         private bool _voorkeur;
         private string _nota;
-        private Persoon _persoon;
+        private int _persoonID;
         #endregion
 
         #region properties
@@ -106,10 +106,10 @@ namespace Cg2.Core.Domain
         }
 
         [DataMember]
-        public Persoon Persoon
+        public int PersoonID
         {
-            get { return _persoon; }
-            set { _persoon = value; }
+            get { return _persoonID; }
+            set { _persoonID = value; }
         }
 
         #endregion

@@ -12,7 +12,6 @@ namespace Cg2Services
     [ServiceContract]
     [ServiceKnownType(typeof(Persoon))]
     [ServiceKnownType(typeof(GeslachtsType))]
-    [ServiceKnownType(typeof(CommunicatieType))]
     [ServiceKnownType(typeof(CommunicatieVorm))]
     public interface IPersonenService
     {
