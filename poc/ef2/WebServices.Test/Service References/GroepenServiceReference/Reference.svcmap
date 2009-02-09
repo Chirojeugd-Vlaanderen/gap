@@ -15,7 +15,7 @@
     <Serializer>Auto</Serializer>
     <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
     <ReferencedAssemblies>
-      <ReferencedAssembly AssemblyName="Cg2.Core" />
+      <ReferencedAssembly AssemblyName="Cg2.Orm" />
     </ReferencedAssemblies>
     <ReferencedDataContractTypes />
     <ServiceContractMappings />
@@ -24,12 +24,13 @@
     <MetadataSource Address="http://localhost:4047/GroepenService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
+    <MetadataFile FileName="GroepenService.disco" MetadataType="Disco" ID="3af5939d-3d2a-4201-bd11-d22ee8a239e1" SourceId="1" SourceUrl="http://localhost:4047/GroepenService.svc?disco" />
+    <MetadataFile FileName="GroepenService.wsdl" MetadataType="Wsdl" ID="67257a48-a2f4-4c5c-903f-f59a385c8f39" SourceId="1" SourceUrl="http://localhost:4047/GroepenService.svc?wsdl" />
+    <MetadataFile FileName="GroepenService4.xsd" MetadataType="Schema" ID="87745e7c-420b-48b3-8a7d-6b33f6e15429" SourceId="1" SourceUrl="http://localhost:4047/GroepenService.svc?xsd=xsd4" />
     <MetadataFile FileName="GroepenService.xsd" MetadataType="Schema" ID="7e108d50-b1f8-4615-afff-1a67823258a4" SourceId="1" SourceUrl="http://localhost:4047/GroepenService.svc?xsd=xsd0" />
     <MetadataFile FileName="GroepenService1.xsd" MetadataType="Schema" ID="495130a9-028f-4fe3-8f51-edb11500ce3d" SourceId="1" SourceUrl="http://localhost:4047/GroepenService.svc?xsd=xsd1" />
     <MetadataFile FileName="GroepenService2.xsd" MetadataType="Schema" ID="73d053a1-4d31-432e-9983-96b1f30d6044" SourceId="1" SourceUrl="http://localhost:4047/GroepenService.svc?xsd=xsd2" />
     <MetadataFile FileName="GroepenService3.xsd" MetadataType="Schema" ID="cfd8ddf0-5cdc-4164-b6d4-f9bebeae2805" SourceId="1" SourceUrl="http://localhost:4047/GroepenService.svc?xsd=xsd3" />
-    <MetadataFile FileName="GroepenService.wsdl" MetadataType="Wsdl" ID="67257a48-a2f4-4c5c-903f-f59a385c8f39" SourceId="1" SourceUrl="http://localhost:4047/GroepenService.svc?wsdl" />
-    <MetadataFile FileName="GroepenService.disco" MetadataType="Disco" ID="3af5939d-3d2a-4201-bd11-d22ee8a239e1" SourceId="1" SourceUrl="http://localhost:4047/GroepenService.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

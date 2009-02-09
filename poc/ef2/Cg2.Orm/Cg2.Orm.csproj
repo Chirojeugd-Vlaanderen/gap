@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B863A1B0-5947-4A6C-9710-4111CDAB78B8}</ProjectGuid>
+    <ProjectGuid>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cg2.Core</RootNamespace>
-    <AssemblyName>Cg2.Core</AssemblyName>
+    <RootNamespace>Cg2.Orm</RootNamespace>
+    <AssemblyName>Cg2.Orm</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,6 +41,7 @@
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -51,16 +52,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\BasisEntiteit.cs" />
-    <Compile Include="Domain\ChiroGroep.cs" />
-    <Compile Include="Domain\CommunicatieVorm.cs" />
-    <Compile Include="Domain\Groep.cs" />
-    <Compile Include="Domain\IChiroGroepenManager.cs" />
-    <Compile Include="Domain\ICommunicatieVormenManager.cs" />
-    <Compile Include="Domain\IGroepenManager.cs" />
-    <Compile Include="Domain\IPersonenManager.cs" />
-    <Compile Include="Domain\Persoon.cs" />
+    <Compile Include="ChiroGroepModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChiroGroepModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DataInterfaces\IDao.cs" />
+    <Compile Include="DataInterfaces\IPersonenDao.cs" />
+    <Compile Include="Groep.cs" />
+    <Compile Include="IBasisEntiteit.cs" />
+    <Compile Include="CommunicatieVorm.cs" />
+    <Compile Include="Persoon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <EntityDeploy Include="ChiroGroepModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ChiroGroepModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

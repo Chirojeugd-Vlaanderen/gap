@@ -75,13 +75,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cg2.Core\Cg2.Core.csproj">
-      <Project>{B863A1B0-5947-4A6C-9710-4111CDAB78B8}</Project>
-      <Name>Cg2.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Cg2.Data\Cg2.Data.csproj">
       <Project>{F9197C38-63BC-4D2F-9F0A-8326C698B536}</Project>
       <Name>Cg2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cg2.Orm\Cg2.Orm.csproj">
+      <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
+      <Name>Cg2.Orm</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cg2.Util\Cg2.Util.csproj">
       <Project>{1E2DCB4D-DA0D-4149-B90D-E036DEE38083}</Project>

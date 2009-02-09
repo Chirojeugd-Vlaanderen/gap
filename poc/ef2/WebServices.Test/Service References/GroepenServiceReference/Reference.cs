@@ -15,6 +15,63 @@ namespace WebServices.Test.GroepenServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="StructuralObject", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses", IsReference=true)]
+    [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.GroepenServiceReference.EntityObject))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Orm.Groep))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
+    public partial class StructuralObject : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EntityObject", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses", IsReference=true)]
+    [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Orm.Groep))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
+    public partial class EntityObject : WebServices.Test.GroepenServiceReference.StructuralObject {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private WebServices.Test.GroepenServiceReference.EntityKey EntityKeyField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public WebServices.Test.GroepenServiceReference.EntityKey EntityKey {
+            get {
+                return this.EntityKeyField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.EntityKeyField, value) != true)) {
+                    this.EntityKeyField = value;
+                    this.RaisePropertyChanged("EntityKey");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityKey", Namespace="http://schemas.datacontract.org/2004/07/System.Data", IsReference=true)]
     [System.SerializableAttribute()]
     public partial class EntityKey : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -94,11 +151,12 @@ namespace WebServices.Test.GroepenServiceReference {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityKeyMember", Namespace="http://schemas.datacontract.org/2004/07/System.Data")]
     [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.Groep))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.BasisEntiteit))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.ChiroGroep))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.GroepenServiceReference.EntityKey))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.List<WebServices.Test.GroepenServiceReference.EntityKeyMember>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Orm.Groep))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.GroepenServiceReference.EntityObject))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.GroepenServiceReference.StructuralObject))]
     public partial class EntityKeyMember : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
@@ -161,12 +219,12 @@ namespace WebServices.Test.GroepenServiceReference {
     public interface IGroepenService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGroepenService/Updaten", ReplyAction="http://tempuri.org/IGroepenService/UpdatenResponse")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Core.Domain.ChiroGroep))]
-        Cg2.Core.Domain.Groep Updaten(Cg2.Core.Domain.Groep g, Cg2.Core.Domain.Groep origineel);
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
+        Cg2.Orm.Groep Updaten(Cg2.Orm.Groep g, Cg2.Orm.Groep origineel);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGroepenService/Ophalen", ReplyAction="http://tempuri.org/IGroepenService/OphalenResponse")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Core.Domain.ChiroGroep))]
-        Cg2.Core.Domain.Groep Ophalen(int groepID);
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
+        Cg2.Orm.Groep Ophalen(int groepID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGroepenService/Hallo", ReplyAction="http://tempuri.org/IGroepenService/HalloResponse")]
         string Hallo();
@@ -199,11 +257,11 @@ namespace WebServices.Test.GroepenServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public Cg2.Core.Domain.Groep Updaten(Cg2.Core.Domain.Groep g, Cg2.Core.Domain.Groep origineel) {
+        public Cg2.Orm.Groep Updaten(Cg2.Orm.Groep g, Cg2.Orm.Groep origineel) {
             return base.Channel.Updaten(g, origineel);
         }
         
-        public Cg2.Core.Domain.Groep Ophalen(int groepID) {
+        public Cg2.Orm.Groep Ophalen(int groepID) {
             return base.Channel.Ophalen(groepID);
         }
         

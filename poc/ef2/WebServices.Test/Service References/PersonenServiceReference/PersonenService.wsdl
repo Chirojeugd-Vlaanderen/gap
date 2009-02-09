@@ -222,10 +222,11 @@
   </wsp:Policy>
   <wsdl:types>
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
-      <xsd:import schemaLocation="http://localhost:4047/PersonenService.svc?xsd=xsd3" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:4047/PersonenService.svc?xsd=xsd4" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:4047/PersonenService.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import schemaLocation="http://localhost:4047/PersonenService.svc?xsd=xsd1" namespace="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain" />
-      <xsd:import schemaLocation="http://localhost:4047/PersonenService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/System.Data" />
+      <xsd:import schemaLocation="http://localhost:4047/PersonenService.svc?xsd=xsd1" namespace="http://schemas.datacontract.org/2004/07/Cg2.Orm" />
+      <xsd:import schemaLocation="http://localhost:4047/PersonenService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" />
+      <xsd:import schemaLocation="http://localhost:4047/PersonenService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System.Data" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IPersonenService_Ophalen_InputMessage">

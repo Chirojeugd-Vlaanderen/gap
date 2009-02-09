@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cg2.Core.DataInterfaces;
+using Cg2.Orm.DataInterfaces;
 using System.Data.Objects;
 using System.Data;
-using Cg2.Core.Domain;
+using Cg2.Orm;
+using System.Data.Objects.DataClasses;
 
 namespace Cg2.Data.Ef
 {
@@ -13,7 +14,7 @@ namespace Cg2.Data.Ef
     /// Algemene implementatie van IDao; generieke CRUD-operaties voor
     /// een DAO-object.
     /// </summary>
-    public class Dao<T>: IDao<T> where T:BasisEntiteit
+    public class Dao<T>: IDao<T> where T:EntityObject, IBasisEntiteit
     {
         #region IDao<T> Members
 
@@ -23,11 +24,11 @@ namespace Cg2.Data.Ef
         /// </summary>
         /// <param name="id">ID van op te halen object</param>
         /// <returns></returns>
-        public virtual T Ophalen(int id)
+        public virtual T Ophalen(int id) 
         {
             T result;
 
-            using (Cg2ObjectContext db = new Cg2ObjectContext())
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
                 ObjectQuery<T> oq = db.CreateQuery<T>("[" + typeof(T).Name + "]");
                 result = (
@@ -47,7 +48,7 @@ namespace Cg2.Data.Ef
         public virtual List<T> AllesOphalen()
         {
             List<T> result;
-            using (Cg2ObjectContext db = new Cg2ObjectContext())
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
                 ObjectQuery<T> oq = db.CreateQuery<T>("[" + typeof(T).Name + "]");
                 result = oq.ToList<T>();
@@ -63,7 +64,7 @@ namespace Cg2.Data.Ef
         /// ID.</returns>
         public T Bewaren(T entiteit)
         {
-            using (Cg2ObjectContext db = new Cg2ObjectContext())
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
                 db.AddObject(typeof(T).Name, entiteit as object);
                 db.SaveChanges();
@@ -80,7 +81,7 @@ namespace Cg2.Data.Ef
             // TODO: dit gaat niet werken, omdat de entiteit niet
             // aan de context gekoppeld wordt.
 
-            using (Cg2ObjectContext db = new Cg2ObjectContext())
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
                 db.DeleteObject(entiteit as object);
                 db.SaveChanges();
@@ -105,7 +106,7 @@ namespace Cg2.Data.Ef
             // Code uit het boek aangepast, met dank aan
             // http://msdn.microsoft.com/en-us/magazine/cc700340.aspx
 
-            using (Cg2ObjectContext db = new Cg2ObjectContext())
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
                 EntityKey sleutel;
                 if (oorspronkelijkeEntiteit == null)

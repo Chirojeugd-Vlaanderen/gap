@@ -3,8 +3,8 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Cg2.Core.Domain;
 using Cg2.Validatie;
+using Cg2.Orm;
 
 namespace Cg2.Test
 {

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cg2.Core.Domain;
-using Cg2.Core.DataInterfaces;
+using Cg2.Orm.DataInterfaces;
 using Cg2.Data.Ef;
+using Cg2.Orm;
 
 namespace Cg2.Workers
 {
-    public class PersonenManager: IPersonenManager
+    public class PersonenManager
     {
         public Persoon Updaten(Persoon p, Persoon origineel)
         {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
-using Cg2.Core.Domain;
 using Cg2.Util;
 using Cg2.Workers;
+using Cg2.Orm;
 
 namespace WebServices
 {
@@ -17,7 +17,7 @@ namespace WebServices
 
         public Groep Updaten(Groep g, Groep origineel)
         {
-            IGroepenManager gm = new GroepenManager();
+            GroepenManager gm = new GroepenManager();
 
             try
             {
@@ -33,7 +33,7 @@ namespace WebServices
 
         public Groep Ophalen(int groepID)
         {
-            IGroepenManager gm = new GroepenManager();
+            GroepenManager gm = new GroepenManager();
 
             var result = gm.Ophalen(groepID);
             return result;

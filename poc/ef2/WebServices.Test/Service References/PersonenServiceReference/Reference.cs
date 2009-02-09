@@ -15,6 +15,63 @@ namespace WebServices.Test.PersonenServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="StructuralObject", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses", IsReference=true)]
+    [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.EntityObject))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Orm.CommunicatieVorm))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Orm.Persoon))]
+    public partial class StructuralObject : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EntityObject", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses", IsReference=true)]
+    [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Orm.CommunicatieVorm))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Orm.Persoon))]
+    public partial class EntityObject : WebServices.Test.PersonenServiceReference.StructuralObject {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private WebServices.Test.PersonenServiceReference.EntityKey EntityKeyField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public WebServices.Test.PersonenServiceReference.EntityKey EntityKey {
+            get {
+                return this.EntityKeyField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.EntityKeyField, value) != true)) {
+                    this.EntityKeyField = value;
+                    this.RaisePropertyChanged("EntityKey");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityKey", Namespace="http://schemas.datacontract.org/2004/07/System.Data", IsReference=true)]
     [System.SerializableAttribute()]
     public partial class EntityKey : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -94,14 +151,17 @@ namespace WebServices.Test.PersonenServiceReference {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityKeyMember", Namespace="http://schemas.datacontract.org/2004/07/System.Data")]
     [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.EntityObject))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.StructuralObject))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.EntityReferenceOfPersoonjQfcsukF))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.EntityReference))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.RelatedEnd))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Orm.CommunicatieVorm))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Orm.Persoon))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.List<Cg2.Orm.CommunicatieVorm>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Orm.GeslachtsType))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.EntityKey))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.List<WebServices.Test.PersonenServiceReference.EntityKeyMember>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.CommunicatieVorm))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.BasisEntiteit))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.CommunicatieType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.GeslachtsType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.Persoon))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.List<Cg2.Core.Domain.CommunicatieVorm>))]
     public partial class EntityKeyMember : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
@@ -159,15 +219,77 @@ namespace WebServices.Test.PersonenServiceReference {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EntityReferenceOfPersoonjQfcsukF", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses")]
+    [System.SerializableAttribute()]
+    public partial class EntityReferenceOfPersoonjQfcsukF : WebServices.Test.PersonenServiceReference.EntityReference {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EntityReference", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses")]
+    [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.EntityReferenceOfPersoonjQfcsukF))]
+    public partial class EntityReference : WebServices.Test.PersonenServiceReference.RelatedEnd {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private WebServices.Test.PersonenServiceReference.EntityKey EntityKeyField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public WebServices.Test.PersonenServiceReference.EntityKey EntityKey {
+            get {
+                return this.EntityKeyField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.EntityKeyField, value) != true)) {
+                    this.EntityKeyField = value;
+                    this.RaisePropertyChanged("EntityKey");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="RelatedEnd", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses")]
+    [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.EntityReference))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.EntityReferenceOfPersoonjQfcsukF))]
+    public partial class RelatedEnd : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="PersonenServiceReference.IPersonenService")]
     public interface IPersonenService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/Ophalen", ReplyAction="http://tempuri.org/IPersonenService/OphalenResponse")]
-        Cg2.Core.Domain.Persoon Ophalen(int persoonID);
+        Cg2.Orm.Persoon Ophalen(int persoonID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/OphalenMetCommunicatie", ReplyAction="http://tempuri.org/IPersonenService/OphalenMetCommunicatieResponse")]
-        Cg2.Core.Domain.Persoon OphalenMetCommunicatie(int persoonID);
+        Cg2.Orm.Persoon OphalenMetCommunicatie(int persoonID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/Hallo", ReplyAction="http://tempuri.org/IPersonenService/HalloResponse")]
         string Hallo();
@@ -200,11 +322,11 @@ namespace WebServices.Test.PersonenServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public Cg2.Core.Domain.Persoon Ophalen(int persoonID) {
+        public Cg2.Orm.Persoon Ophalen(int persoonID) {
             return base.Channel.Ophalen(persoonID);
         }
         
-        public Cg2.Core.Domain.Persoon OphalenMetCommunicatie(int persoonID) {
+        public Cg2.Orm.Persoon OphalenMetCommunicatie(int persoonID) {
             return base.Channel.OphalenMetCommunicatie(persoonID);
         }
         

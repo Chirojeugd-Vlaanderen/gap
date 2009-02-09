@@ -4,8 +4,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
-using Cg2.Core.Domain;
 using Cg2.Workers;
+using Cg2.Orm;
 
 namespace WebServices
 {
@@ -20,7 +20,7 @@ namespace WebServices
             // staat, is nog een overblijfsel van de IOC-achtige
             // implementatie uit de 'service factory'.
 
-            IPersonenManager pm = new PersonenManager();
+            PersonenManager pm = new PersonenManager();
 
             var result = pm.Ophalen(persoonID);
 
@@ -29,7 +29,7 @@ namespace WebServices
 
         public Persoon OphalenMetCommunicatie(int persoonID)
         {
-            IPersonenManager pm = new PersonenManager();
+            PersonenManager pm = new PersonenManager();
             return pm.OphalenMetCommunicatie(persoonID);
         }
 

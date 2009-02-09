@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cg2.Core.DataInterfaces;
-using Cg2.Core.Domain;
+using Cg2.Orm.DataInterfaces;
+using Cg2.Orm;
 
 namespace Cg2.Data.Ef
 {
@@ -16,10 +16,10 @@ namespace Cg2.Data.Ef
         {
             ChiroGroep result;
 
-            using (Cg2ObjectContext db = new Cg2ObjectContext())
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
                 result = (
-                    from g in db.Groepen.OfType<ChiroGroep>()
+                    from g in db.Groep.OfType<ChiroGroep>()
                     where g.ID == id
                     select g).FirstOrDefault<ChiroGroep>();
             }
@@ -30,10 +30,10 @@ namespace Cg2.Data.Ef
         {
             List<ChiroGroep> result;
 
-            using (Cg2ObjectContext db = new Cg2ObjectContext())
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
                 result = (
-                    from g in db.Groepen.OfType<ChiroGroep>()
+                    from g in db.Groep.OfType<ChiroGroep>()
                     select g).ToList<ChiroGroep>();
             }
             return result;
