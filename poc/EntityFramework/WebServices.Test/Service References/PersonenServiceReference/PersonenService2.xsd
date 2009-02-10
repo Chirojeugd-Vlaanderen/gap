@@ -2,6 +2,32 @@
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain" xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Cg2.Core.Domain" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:4047/PersonenService.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:import schemaLocation="http://localhost:4047/PersonenService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/System.Data" />
+  <xs:simpleType name="GeslachtsType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Man">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Vrouw">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Onbekend">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="GeslachtsType" nillable="true" type="tns:GeslachtsType" />
   <xs:complexType name="CommunicatieVorm">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:BasisEntiteit">
@@ -73,32 +99,6 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="CommunicatieType" nillable="true" type="tns:CommunicatieType" />
-  <xs:simpleType name="GeslachtsType">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Man">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="Vrouw">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="Onbekend">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="GeslachtsType" nillable="true" type="tns:GeslachtsType" />
   <xs:complexType name="Persoon">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:BasisEntiteit">

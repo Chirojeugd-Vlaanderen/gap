@@ -22,11 +22,25 @@ namespace Cg2.Workers
             return dao.Ophalen(persoonID);
         }
 
+        public Persoon Bewaren(Persoon p)
+        {
+            PersonenDao dao = new PersonenDao();
+            return dao.Bewaren(p);
+        }
+
+        public void Verwijderen(Persoon p)
+        {
+            PersonenDao dao = new PersonenDao();
+            dao.Verwijderen(p);
+        }
+
         public Persoon OphalenMetCommunicatie(int persoonID)
         {
             PersonenDao dao = new PersonenDao();
 
             return dao.OphalenMetCommunicatie(persoonID);
         }
+
+
     }
 }

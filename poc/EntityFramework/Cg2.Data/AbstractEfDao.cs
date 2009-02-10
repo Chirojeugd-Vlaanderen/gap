@@ -82,6 +82,7 @@ namespace Cg2.Data.Ef
 
             using (Cg2ObjectContext db = new Cg2ObjectContext())
             {
+                db.Attach(entiteit);
                 db.DeleteObject(entiteit as object);
                 db.SaveChanges();
             }

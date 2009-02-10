@@ -96,10 +96,10 @@ namespace WebServices.Test.PersonenServiceReference {
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(WebServices.Test.PersonenServiceReference.EntityKey))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.List<WebServices.Test.PersonenServiceReference.EntityKeyMember>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.GeslachtsType))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.CommunicatieVorm))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.BasisEntiteit))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.CommunicatieType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.GeslachtsType))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Cg2.Core.Domain.Persoon))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.List<Cg2.Core.Domain.CommunicatieVorm>))]
     public partial class EntityKeyMember : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -169,6 +169,12 @@ namespace WebServices.Test.PersonenServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/OphalenMetCommunicatie", ReplyAction="http://tempuri.org/IPersonenService/OphalenMetCommunicatieResponse")]
         Cg2.Core.Domain.Persoon OphalenMetCommunicatie(int persoonID);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/Bewaren", ReplyAction="http://tempuri.org/IPersonenService/BewarenResponse")]
+        int Bewaren(Cg2.Core.Domain.Persoon p);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/Verwijderen", ReplyAction="http://tempuri.org/IPersonenService/VerwijderenResponse")]
+        void Verwijderen(Cg2.Core.Domain.Persoon p);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPersonenService/Hallo", ReplyAction="http://tempuri.org/IPersonenService/HalloResponse")]
         string Hallo();
     }
@@ -206,6 +212,14 @@ namespace WebServices.Test.PersonenServiceReference {
         
         public Cg2.Core.Domain.Persoon OphalenMetCommunicatie(int persoonID) {
             return base.Channel.OphalenMetCommunicatie(persoonID);
+        }
+        
+        public int Bewaren(Cg2.Core.Domain.Persoon p) {
+            return base.Channel.Bewaren(p);
+        }
+        
+        public void Verwijderen(Cg2.Core.Domain.Persoon p) {
+            base.Channel.Verwijderen(p);
         }
         
         public string Hallo() {

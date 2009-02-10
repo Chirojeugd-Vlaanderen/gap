@@ -33,6 +33,19 @@ namespace WebServices
             return pm.OphalenMetCommunicatie(persoonID);
         }
 
+        public int Bewaren(Persoon p)
+        {
+            PersonenManager pm = new PersonenManager();
+
+            return pm.Bewaren(p).ID;
+        }
+
+        public void Verwijderen(Persoon p)
+        {
+            PersonenManager pm = new PersonenManager();
+            pm.Verwijderen(p);
+        }
+
         public string Hallo()
         {
             return "Hallo PersonenService.";

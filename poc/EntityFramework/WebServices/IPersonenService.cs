@@ -35,6 +35,21 @@ namespace WebServices
         Persoon OphalenMetCommunicatie(int persoonID);
 
         /// <summary>
+        /// Maakt een nieuwe persoon persistent
+        /// </summary>
+        /// <param name="p">Te bewaren persoon</param>
+        /// <returns>toegewezen ID</returns>
+        [OperationContract]
+        int Bewaren(Persoon p);
+
+        /// <summary>
+        /// 'Detacht' een gepersisteerde persoon
+        /// </summary>
+        /// <param name="p">Persoon uit database te verwijderen</param>
+        [OperationContract]
+        void Verwijderen(Persoon p);
+
+        /// <summary>
         /// Enkel om te testen
         /// </summary>
         /// <returns>Een teststring</returns>
