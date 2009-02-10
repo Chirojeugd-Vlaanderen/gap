@@ -23,22 +23,12 @@ namespace Cg2.Orm
 
         public override bool Equals(object obj)
         {
-            Persoon gij = obj as Persoon;
-            // Door te casten naar Persoon, en niet naar
-            // IBasisEntiteit, ben ik er meteen zeker van
-            // dat het te vergelijken object van dezelfde
-            // klasse is.
-            //
-            // (anders wordt gij null)
-
-            return (gij != null)
-                && (this.ID == gij.ID
-                || (this.ID == 0 || gij.ID == 0) && (this.BusinessKey == gij.BusinessKey));
+            return this.MyEquals(obj);
         }
 
         public override int GetHashCode()
         {
-            return BusinessKey.GetHashCode();
+            return this.MyGetHashCode();
         }
 
         public GeslachtsType Geslacht
