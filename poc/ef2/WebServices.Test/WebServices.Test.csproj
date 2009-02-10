@@ -102,10 +102,6 @@
     <None Include="Service References\PersonenServiceReference\PersonenService4.xsd" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\GroepenServiceReference\" />
-    <WCFMetadataStorage Include="Service References\PersonenServiceReference\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Cg2.Orm\Cg2.Orm.csproj">
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
       <Name>Cg2.Orm</Name>
@@ -114,6 +110,10 @@
       <Project>{853B7FDF-27B6-48BC-A220-F68CCE610B6B}</Project>
       <Name>Cg2.Validatie</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\GroepenServiceReference\" />
+    <WCFMetadataStorage Include="Service References\PersonenServiceReference\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -23,7 +23,13 @@ namespace Cg2.Orm
 
         public override bool Equals(object obj)
         {
-            IBasisEntiteit gij = obj as IBasisEntiteit;
+            Persoon gij = obj as Persoon;
+            // Door te casten naar Persoon, en niet naar
+            // IBasisEntiteit, ben ik er meteen zeker van
+            // dat het te vergelijken object van dezelfde
+            // klasse is.
+            //
+            // (anders wordt gij null)
 
             return (gij != null)
                 && (this.ID == gij.ID

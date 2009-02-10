@@ -3,7 +3,6 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WebServices.Test.PersonenServiceReference;
 using Cg2.Validatie;
 using Cg2.Orm;
 
@@ -138,6 +137,27 @@ namespace WebServices.Test
             }
         }
 
+        /// <summary>
+        /// Test of een persoon en een groep wel verschillend zijn
+        /// </summary>
+        [TestMethod]
+        public void ObjectIdentity2()
+        {
+            Persoon p;
+            Groep g;
+
+            using (PersonenServiceReference.PersonenServiceClient ps = new WebServices.Test.PersonenServiceReference.PersonenServiceClient())
+            {
+                p = ps.Ophalen(307);
+            }
+
+            using (GroepenServiceReference.GroepenServiceClient gs = new WebServices.Test.GroepenServiceReference.GroepenServiceClient())
+            {
+                g = gs.Ophalen(307);
+            }
+
+            Assert.IsTrue(!p.Equals(g));
+        }
 
     }
 }

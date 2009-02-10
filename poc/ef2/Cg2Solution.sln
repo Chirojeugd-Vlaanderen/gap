@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Data", "Cg2.Data\Cg2.Data.csproj", "{F9197C38-63BC-4D2F-9F0A-8326C698B536}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Util", "Cg2.Util\Cg2.Util.csproj", "{1E2DCB4D-DA0D-4149-B90D-E036DEE38083}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Workers", "Cg2.Workers\Cg2.Workers.csproj", "{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServices", "WebServices\WebServices.csproj", "{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}"
@@ -39,10 +37,6 @@ Global
 		{F9197C38-63BC-4D2F-9F0A-8326C698B536}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9197C38-63BC-4D2F-9F0A-8326C698B536}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9197C38-63BC-4D2F-9F0A-8326C698B536}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1E2DCB4D-DA0D-4149-B90D-E036DEE38083}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1E2DCB4D-DA0D-4149-B90D-E036DEE38083}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1E2DCB4D-DA0D-4149-B90D-E036DEE38083}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1E2DCB4D-DA0D-4149-B90D-E036DEE38083}.Release|Any CPU.Build.0 = Release|Any CPU
 		{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}.Release|Any CPU.ActiveCfg = Release|Any CPU
