@@ -117,6 +117,9 @@ namespace WebServices.Test
             }
         }
 
+        /// <summary>
+        /// Test op 'object identity' van 'detached' entity's
+        /// </summary>
         [TestMethod]
         public void ObjectIdentity()
         {
