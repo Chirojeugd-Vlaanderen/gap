@@ -198,7 +198,7 @@ namespace Cg2.Core.Domain
         /// hebben.</returns>
         private bool HeeftZelfdeBusinessSignature(BasisEntiteit teVergelijken)
         {
-            return GetHashCode().Equals(teVergelijken.GetHashCode());
+            return BusinessKey.Equals(teVergelijken.BusinessKey);
         }
 
         /// <summary>
