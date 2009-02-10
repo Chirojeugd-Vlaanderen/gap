@@ -212,7 +212,11 @@ namespace Cg2.Core.Domain
         {
             return (ID != DefaultID)
                 && (teVergelijken.ID != DefaultID)
+                && GetType() == teVergelijken.GetType() 
                 && ID == teVergelijken.ID;
+
+            // types moeten ook vergeleken worden, want ID's zijn niet uniek
+            // over de verschillende klasses.
         }
 
         /// <summary>

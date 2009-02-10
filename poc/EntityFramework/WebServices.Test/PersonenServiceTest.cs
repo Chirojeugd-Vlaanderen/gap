@@ -140,5 +140,27 @@ namespace WebServices.Test
             }
         }
 
+        /// <summary>
+        /// Test of een persoon en een groep wel verschillend zijn
+        /// </summary>
+        [TestMethod]
+        public void ObjectIdentity2()
+        {
+            Persoon p;
+            Groep g;
+
+            using (PersonenServiceReference.PersonenServiceClient ps = new WebServices.Test.PersonenServiceReference.PersonenServiceClient())
+            {
+                p = ps.Ophalen(307);
+            }
+
+            using (GroepenServiceReference.GroepenServiceClient gs = new WebServices.Test.GroepenServiceReference.GroepenServiceClient())
+            {
+                g = gs.Ophalen(307);
+            }
+
+            Assert.IsTrue(!p.Equals(g));
+        }
+
     }
 }
