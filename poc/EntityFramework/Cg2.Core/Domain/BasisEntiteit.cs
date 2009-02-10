@@ -164,7 +164,7 @@ namespace Cg2.Core.Domain
             BasisEntiteit teVergelijken = obj as BasisEntiteit;
 
             return (teVergelijken != null) 
-                && (HeeftZelfdeNietStandaardId(teVergelijken)
+                && (HeeftZelfdeNietStandaardId(teVergelijken) && GetType() == teVergelijken.GetType()
                 || ((IsTransient() || teVergelijken.IsTransient())
                     && HeeftZelfdeBusinessSignature(teVergelijken)));
         }
@@ -212,11 +212,7 @@ namespace Cg2.Core.Domain
         {
             return (ID != DefaultID)
                 && (teVergelijken.ID != DefaultID)
-                && GetType() == teVergelijken.GetType() 
                 && ID == teVergelijken.ID;
-
-            // types moeten ook vergeleken worden, want ID's zijn niet uniek
-            // over de verschillende klasses.
         }
 
         /// <summary>
@@ -227,14 +223,7 @@ namespace Cg2.Core.Domain
         {
             StringBuilder str = new StringBuilder();
 
-            // FIXME: Onderstaande lijn is nog altijd niet goed genoeg,
-            // want deze ToString wordt bepaald aan de hand van de
-            // hashcode, en die wordt dan weer gebruikt om te kijken of
-            // objecten met ID 0 verschillend zijn.  Met onderstaande
-            // 'ToString' krijgen objecten met ID 0 steeds dezelfde
-            // hashcode.
-
-            str.Append(" Klasse: ").Append(GetType().FullName).Append(ID.ToString());
+            str.Append("Klasse: ").Append(GetType().FullName).Append(" ").Append(BusinessKey.ToString());
             return str.ToString();
         }
     }
