@@ -5,7 +5,6 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using Cg2.Core.Domain;
-using Cg2.Util;
 using Cg2.Workers;
 
 namespace WebServices
