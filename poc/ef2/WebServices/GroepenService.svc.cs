@@ -4,8 +4,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
-using Cg2.Workers;
 using Cg2.Orm;
+using Cg2.Data.Ef;
 
 namespace WebServices
 {
@@ -16,26 +16,22 @@ namespace WebServices
 
         public Groep Updaten(Groep g, Groep origineel)
         {
-            GroepenManager gm = new GroepenManager();
+            Dao<Groep> dao = new Dao<Groep>();
 
             try
             {
-                return gm.Updaten(g, origineel);
+                return dao.Updaten(g, origineel);
             }
             catch (Exception e)
             {
                 // TODO: fatsoenlijke exception handling
-
                 throw new FaultException(e.Message, new FaultCode("Optimistic Concurrency Exception"));
             }
         }
 
         public Groep Ophalen(int groepID)
         {
-            GroepenManager gm = new GroepenManager();
-
-            var result = gm.Ophalen(groepID);
-            return result;
+            return new Dao<Groep>().Ophalen(groepID);
         }
 
         public string Hallo()
