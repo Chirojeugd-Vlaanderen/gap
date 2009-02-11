@@ -10,35 +10,26 @@ namespace Cg2.Workers
 {
     public class PersonenManager
     {
-        public Persoon Updaten(Persoon p, Persoon origineel)
+        private IPersonenDao _dao = new PersonenDao();
+
+        /// <summary>
+        /// Data Access Object dat aangesproken kan worden
+        /// voor CRUD-operaties
+        /// </summary>
+        public IPersonenDao Dao
         {
-            PersonenDao dao = new PersonenDao();
-            return dao.Updaten(p, origineel);
+            get { return _dao; }
         }
 
-        public Persoon Bewaren(Persoon p)
+        /// <summary>
+        /// Maak persoon lid
+        /// </summary>
+        /// <param name="p">Lid te maken persoon</param>
+        /// <param name="g">Groep waarvan persoon lid moet worden</param>
+        /// <returns>Persoon met bijhorend lidobject</returns>
+        public Persoon LidMaken(Persoon p, Groep g)
         {
-            PersonenDao dao = new PersonenDao();
-            return dao.Bewaren(p);
-        }
-
-        public void Verwijderen(Persoon p)
-        {
-            PersonenDao dao = new PersonenDao();
-            dao.Verwijderen(p);
-        }
-
-        public Persoon Ophalen(int persoonID)
-        {
-            PersonenDao dao = new PersonenDao();
-            return dao.Ophalen(persoonID);
-        }
-
-        public Persoon OphalenMetCommunicatie(int persoonID)
-        {
-            PersonenDao dao = new PersonenDao();
-
-            return dao.OphalenMetCommunicatie(persoonID);
+            throw new NotImplementedException();
         }
     }
 }

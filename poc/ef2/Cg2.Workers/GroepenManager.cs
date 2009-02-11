@@ -10,22 +10,14 @@ namespace Cg2.Workers
 {
     public class GroepenManager
     {
+        private IDao<Groep> _dao = new Dao<Groep>();
 
-        #region IGroepenManager Members
-
-        public Groep Updaten(Groep g, Groep origineel)
+        public IDao<Groep> Dao
         {
-            IDao<Groep> dao = new Dao<Groep>();
-            return dao.Updaten(g, origineel);
+            get { return _dao; }
         }
 
-        public Groep Ophalen(int groepID)
-        {
-            IDao<Groep> dao = new Dao<Groep>();
+        // Nog geen interessante functionaliteit
 
-            return dao.Ophalen(groepID);
-        }
-
-        #endregion
     }
 }

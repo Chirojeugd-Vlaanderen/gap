@@ -22,7 +22,7 @@ namespace WebServices
 
             PersonenManager pm = new PersonenManager();
 
-            var result = pm.Ophalen(persoonID);
+            var result = pm.Dao.Ophalen(persoonID);
 
             return result;
         }
@@ -31,20 +31,20 @@ namespace WebServices
         {
             PersonenManager pm = new PersonenManager();
 
-            return pm.Bewaren(p).ID;
+            return pm.Dao.Bewaren(p).ID;
         }
 
         public void Verwijderen(Persoon p)
         {
             PersonenManager pm = new PersonenManager();
-            pm.Verwijderen(p);
+            pm.Dao.Verwijderen(p);
         }
 
 
         public Persoon OphalenMetCommunicatie(int persoonID)
         {
             PersonenManager pm = new PersonenManager();
-            return pm.OphalenMetCommunicatie(persoonID);
+            return pm.Dao.OphalenMetCommunicatie(persoonID);
         }
 
         public string Hallo()

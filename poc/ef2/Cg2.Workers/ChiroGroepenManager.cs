@@ -10,15 +10,13 @@ namespace Cg2.Workers
 {
     public class ChiroGroepenManager
     {
-        #region IChiroGroepenManager Members
+        private IDao<ChiroGroep> _dao = new Dao<ChiroGroep>();
 
-        public ChiroGroep Ophalen(int groepID)
+        public IDao<ChiroGroep> Dao
         {
-            ChiroGroepenDao dao = new ChiroGroepenDao();
-
-            return dao.Ophalen(groepID);
+            get { return _dao; }
         }
 
-        #endregion
+        // Nog geen interessante functionaliteit
     }
 }

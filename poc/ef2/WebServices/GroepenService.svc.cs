@@ -20,7 +20,7 @@ namespace WebServices
 
             try
             {
-                return gm.Updaten(g, origineel);
+                return gm.Dao.Updaten(g, origineel);
             }
             catch (Exception e)
             {
@@ -34,7 +34,7 @@ namespace WebServices
         {
             GroepenManager gm = new GroepenManager();
 
-            var result = gm.Ophalen(groepID);
+            var result = gm.Dao.Ophalen(groepID);
             return result;
         }
 
