@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Validatie", "Cg2.Valida
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Orm", "Cg2.Orm\Cg2.Orm.csproj", "{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.ServiceContracts", "Cg2.ServiceInterfaces\Cg2.ServiceContracts.csproj", "{8FAF739D-1058-4240-9466-BCA5DB8525D4}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution.vsmdi
@@ -61,6 +63,10 @@ Global
 		{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FAF739D-1058-4240-9466-BCA5DB8525D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FAF739D-1058-4240-9466-BCA5DB8525D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FAF739D-1058-4240-9466-BCA5DB8525D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FAF739D-1058-4240-9466-BCA5DB8525D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

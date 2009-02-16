@@ -6,7 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using Cg2.Orm;
 
-namespace WebServices
+namespace Cg2.ServiceContracts
 {
     // NOTE: If you change the interface name "IPersonenService" here, you must also update the reference to "IPersonenService" in Web.config.
     [ServiceContract]

@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using Cg2.Workers;
 using Cg2.Orm;
+using Cg2.ServiceContracts;
 
 namespace WebServices
 {
