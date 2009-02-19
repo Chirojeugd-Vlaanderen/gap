@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
+using System.Configuration;
 
 namespace MvcWebApp.Controllers
 {
@@ -14,7 +15,7 @@ namespace MvcWebApp.Controllers
             using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new MvcWebApp.GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
             {
                 int aantal;
-                return View("PersonenLijst", service.PaginaOphalen(out aantal, 310, 1, 12));
+                return View("PersonenLijst", service.PaginaOphalen(out aantal, int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12));
             }
 
         }
