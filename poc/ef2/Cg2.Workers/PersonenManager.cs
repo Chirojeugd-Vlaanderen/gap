@@ -31,5 +31,39 @@ namespace Cg2.Workers
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// Voegt een CommunicatieVorm toe aan een persoon
+        /// </summary>
+        /// <param name="p">persoon</param>
+        /// <param name="type">communicatietype</param>
+        /// <param name="nr">telefoonnr, e-mailadres,...</param>
+        /// <param name="voorkeur">true indien voorkeur</param>
+        public void CommunicatieToevoegen(Persoon p, CommunicatieType type
+            , string nr, bool voorkeur)
+        {
+            CommunicatieVorm cv = new CommunicatieVorm();
+            cv.Nummer = nr;
+            cv.Type = type;
+            cv.Persoon = p;
+
+            // TODO: validatie, en checken op dubbels
+
+            if (voorkeur)
+            {
+                CommunicatieVorm bestaandeCv
+                    = (from CommunicatieVorm v in p.Communicatie
+                       where v.Type == type && v.Voorkeur
+                       select v).SingleOrDefault<CommunicatieVorm>();
+                if (bestaandeCv != null)
+                {
+                    bestaandeCv.Voorkeur = false;
+                }
+            }
+
+            cv.Voorkeur = voorkeur;
+
+            p.Communicatie.Add(cv);
+        }
     }
 }

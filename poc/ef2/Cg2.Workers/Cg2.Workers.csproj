@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChiroGroepenManager.cs" />
+    <Compile Include="GelieerdePersonenManager.cs" />
     <Compile Include="GroepenManager.cs" />
     <Compile Include="PersonenManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

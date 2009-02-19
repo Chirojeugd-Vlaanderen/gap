@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IGelieerdePersonenService.cs" />
     <Compile Include="IGroepenService.cs" />
     <Compile Include="IPersonenService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

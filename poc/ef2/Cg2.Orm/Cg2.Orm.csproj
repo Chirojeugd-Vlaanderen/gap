@@ -59,7 +59,9 @@
       <DependentUpon>ChiroGroepModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="DataInterfaces\IDao.cs" />
+    <Compile Include="DataInterfaces\IGelieerdePersonenDao.cs" />
     <Compile Include="DataInterfaces\IPersonenDao.cs" />
+    <Compile Include="GelieerdePersoon.cs" />
     <Compile Include="Groep.cs" />
     <Compile Include="IBasisEntiteit.cs" />
     <Compile Include="CommunicatieVorm.cs" />

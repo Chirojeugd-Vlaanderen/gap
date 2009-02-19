@@ -48,9 +48,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GelieerdePersonenServiceTest.cs" />
     <Compile Include="GroepenServiceTest.cs" />
     <Compile Include="PersonenServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\GelieerdePersonenServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\GroepenServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -64,6 +70,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
+    <None Include="Service References\GelieerdePersonenServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\GelieerdePersonenServiceReference\configuration.svcinfo" />
+    <None Include="Service References\GelieerdePersonenServiceReference\configuration91.svcinfo" />
+    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService.disco" />
     <None Include="Service References\PersonenServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -86,8 +99,15 @@
     <None Include="app.config" />
     <None Include="Properties\DataSources\Cg2.Core.Domain.Groep.datasource" />
     <None Include="Properties\DataSources\Cg2.Core.Domain.Persoon.datasource" />
+    <None Include="Properties\DataSources\Cg2.Orm.GelieerdePersoon.datasource" />
     <None Include="Properties\DataSources\Cg2.Orm.Groep.datasource" />
     <None Include="Properties\DataSources\Cg2.Orm.Persoon.datasource" />
+    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService.wsdl" />
+    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService.xsd" />
+    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService1.xsd" />
+    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService2.xsd" />
+    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService3.xsd" />
+    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService4.xsd" />
     <None Include="Service References\GroepenServiceReference\GroepenService.wsdl" />
     <None Include="Service References\GroepenServiceReference\GroepenService.xsd" />
     <None Include="Service References\GroepenServiceReference\GroepenService1.xsd" />
@@ -116,6 +136,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Service References\GelieerdePersonenServiceReference\" />
     <WCFMetadataStorage Include="Service References\GroepenServiceReference\" />
     <WCFMetadataStorage Include="Service References\PersonenServiceReference\" />
   </ItemGroup>

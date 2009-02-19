@@ -49,6 +49,7 @@ namespace Cg2.ServiceContracts
         [OperationContract]
         void Verwijderen(Persoon p);
 
+
         /// <summary>
         /// Enkel om te testen
         /// </summary>

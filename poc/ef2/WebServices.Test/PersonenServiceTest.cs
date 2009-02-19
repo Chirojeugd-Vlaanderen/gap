@@ -98,25 +98,6 @@ namespace WebServices.Test
         }
 
         /// <summary>
-        /// Deze test kijkt na of er extra communicatievormen toegevoegd
-        /// kunnen worden aan een persoon.  (Dit zou  niet werken als
-        /// collections als array worden doorgegeven ipv als lists.)
-        /// </summary>
-        [TestMethod]
-        public void CommunicatieManipuleren()
-        {
-            using (PersonenServiceReference.PersonenServiceClient service = new WebServices.Test.PersonenServiceReference.PersonenServiceClient())
-            {
-                Persoon p = service.OphalenMetCommunicatie(1893);
-                int aantal = p.Communicatie.Count();
-
-                p.CommunicatieToevoegen(CommunicatieType.Telefoon, "1207", false);
-
-                Assert.IsTrue(p.Communicatie.Count() == aantal+1);
-            }
-        }
-
-        /// <summary>
         /// Test op 'object identity' van 'detached' entity's
         /// </summary>
         [TestMethod]

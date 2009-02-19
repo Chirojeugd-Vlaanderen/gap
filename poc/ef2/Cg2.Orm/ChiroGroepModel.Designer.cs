@@ -10,9 +10,11 @@
 
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_CommunicatieVorm_Persoon", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.Persoon), "CommunicatieVorm", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.CommunicatieVorm))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GelieerdePersoon_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GelieerdePersoon))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GelieerdePersoon_Persoon", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Persoon), "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GelieerdePersoon))]
 
 // Original file name:
-// Generation date: 9/02/2009 14:34:31
+// Generation date: 17/02/2009 15:11:38
 namespace Cg2.Orm
 {
     
@@ -92,6 +94,21 @@ namespace Cg2.Orm
         }
         private global::System.Data.Objects.ObjectQuery<Persoon> _Persoon;
         /// <summary>
+        /// There are no comments for GelieerdePersoon in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<GelieerdePersoon> GelieerdePersoon
+        {
+            get
+            {
+                if ((this._GelieerdePersoon == null))
+                {
+                    this._GelieerdePersoon = base.CreateQuery<GelieerdePersoon>("[GelieerdePersoon]");
+                }
+                return this._GelieerdePersoon;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<GelieerdePersoon> _GelieerdePersoon;
+        /// <summary>
         /// There are no comments for Groep in the schema.
         /// </summary>
         public void AddToGroep(Groep groep)
@@ -111,6 +128,13 @@ namespace Cg2.Orm
         public void AddToPersoon(Persoon persoon)
         {
             base.AddObject("Persoon", persoon);
+        }
+        /// <summary>
+        /// There are no comments for GelieerdePersoon in the schema.
+        /// </summary>
+        public void AddToGelieerdePersoon(GelieerdePersoon gelieerdePersoon)
+        {
+            base.AddObject("GelieerdePersoon", gelieerdePersoon);
         }
     }
     /// <summary>
@@ -353,6 +377,27 @@ namespace Cg2.Orm
         private global::System.Guid _BusinessKey;
         partial void OnBusinessKeyChanging(global::System.Guid value);
         partial void OnBusinessKeyChanged();
+        /// <summary>
+        /// There are no comments for GelieerdePersoon in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_GelieerdePersoon_Groep", "GelieerdePersoon")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<GelieerdePersoon> GelieerdePersoon
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<GelieerdePersoon>("ChiroGroepModel.FK_GelieerdePersoon_Groep", "GelieerdePersoon");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<GelieerdePersoon>("ChiroGroepModel.FK_GelieerdePersoon_Groep", "GelieerdePersoon", value);
+                }
+            }
+        }
     }
     /// <summary>
     /// There are no comments for ChiroGroepModel.CommunicatieVorm in the schema.
@@ -596,15 +641,13 @@ namespace Cg2.Orm
         /// </summary>
         /// <param name="naam">Initial value of Naam.</param>
         /// <param name="geslachtsInt">Initial value of GeslachtsInt.</param>
-        /// <param name="chiroLeefTijd">Initial value of ChiroLeefTijd.</param>
         /// <param name="businessKey">Initial value of BusinessKey.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static Persoon CreatePersoon(string naam, int geslachtsInt, int chiroLeefTijd, global::System.Guid businessKey, int id)
+        public static Persoon CreatePersoon(string naam, int geslachtsInt, global::System.Guid businessKey, int id)
         {
             Persoon persoon = new Persoon();
             persoon.Naam = naam;
             persoon.GeslachtsInt = geslachtsInt;
-            persoon.ChiroLeefTijd = chiroLeefTijd;
             persoon.BusinessKey = businessKey;
             persoon.ID = id;
             return persoon;
@@ -725,29 +768,6 @@ namespace Cg2.Orm
         partial void OnGeslachtsIntChanging(int value);
         partial void OnGeslachtsIntChanged();
         /// <summary>
-        /// There are no comments for Property ChiroLeefTijd in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int ChiroLeefTijd
-        {
-            get
-            {
-                return this._ChiroLeefTijd;
-            }
-            set
-            {
-                this.OnChiroLeefTijdChanging(value);
-                this.ReportPropertyChanging("ChiroLeefTijd");
-                this._ChiroLeefTijd = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("ChiroLeefTijd");
-                this.OnChiroLeefTijdChanged();
-            }
-        }
-        private int _ChiroLeefTijd;
-        partial void OnChiroLeefTijdChanging(int value);
-        partial void OnChiroLeefTijdChanged();
-        /// <summary>
         /// There are no comments for Property SterfDatum in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
@@ -857,6 +877,272 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<CommunicatieVorm>("ChiroGroepModel.FK_CommunicatieVorm_Persoon", "CommunicatieVorm", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for GelieerdePersoon in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_GelieerdePersoon_Persoon", "GelieerdePersoon")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<GelieerdePersoon> GelieerdePersoon
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<GelieerdePersoon>("ChiroGroepModel.FK_GelieerdePersoon_Persoon", "GelieerdePersoon");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<GelieerdePersoon>("ChiroGroepModel.FK_GelieerdePersoon_Persoon", "GelieerdePersoon", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.GelieerdePersoon in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// GroepID
+    /// PersoonID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="GelieerdePersoon")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class GelieerdePersoon : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new GelieerdePersoon object.
+        /// </summary>
+        /// <param name="groepID">Initial value of GroepID.</param>
+        /// <param name="persoonID">Initial value of PersoonID.</param>
+        /// <param name="chiroLeefTijd">Initial value of ChiroLeefTijd.</param>
+        /// <param name="businessKey">Initial value of BusinessKey.</param>
+        /// <param name="id">Initial value of ID.</param>
+        /// <param name="versie">Initial value of Versie.</param>
+        public static GelieerdePersoon CreateGelieerdePersoon(int groepID, int persoonID, int chiroLeefTijd, global::System.Guid businessKey, int id, byte[] versie)
+        {
+            GelieerdePersoon gelieerdePersoon = new GelieerdePersoon();
+            gelieerdePersoon.GroepID = groepID;
+            gelieerdePersoon.PersoonID = persoonID;
+            gelieerdePersoon.ChiroLeefTijd = chiroLeefTijd;
+            gelieerdePersoon.BusinessKey = businessKey;
+            gelieerdePersoon.ID = id;
+            gelieerdePersoon.Versie = versie;
+            return gelieerdePersoon;
+        }
+        /// <summary>
+        /// There are no comments for Property GroepID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int GroepID
+        {
+            get
+            {
+                return this._GroepID;
+            }
+            set
+            {
+                this.OnGroepIDChanging(value);
+                this.ReportPropertyChanging("GroepID");
+                this._GroepID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("GroepID");
+                this.OnGroepIDChanged();
+            }
+        }
+        private int _GroepID;
+        partial void OnGroepIDChanging(int value);
+        partial void OnGroepIDChanged();
+        /// <summary>
+        /// There are no comments for Property PersoonID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int PersoonID
+        {
+            get
+            {
+                return this._PersoonID;
+            }
+            set
+            {
+                this.OnPersoonIDChanging(value);
+                this.ReportPropertyChanging("PersoonID");
+                this._PersoonID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("PersoonID");
+                this.OnPersoonIDChanged();
+            }
+        }
+        private int _PersoonID;
+        partial void OnPersoonIDChanging(int value);
+        partial void OnPersoonIDChanged();
+        /// <summary>
+        /// There are no comments for Property ChiroLeefTijd in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int ChiroLeefTijd
+        {
+            get
+            {
+                return this._ChiroLeefTijd;
+            }
+            set
+            {
+                this.OnChiroLeefTijdChanging(value);
+                this.ReportPropertyChanging("ChiroLeefTijd");
+                this._ChiroLeefTijd = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ChiroLeefTijd");
+                this.OnChiroLeefTijdChanged();
+            }
+        }
+        private int _ChiroLeefTijd;
+        partial void OnChiroLeefTijdChanging(int value);
+        partial void OnChiroLeefTijdChanged();
+        /// <summary>
+        /// There are no comments for Property BusinessKey in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Guid BusinessKey
+        {
+            get
+            {
+                return this._BusinessKey;
+            }
+            set
+            {
+                this.OnBusinessKeyChanging(value);
+                this.ReportPropertyChanging("BusinessKey");
+                this._BusinessKey = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("BusinessKey");
+                this.OnBusinessKeyChanged();
+            }
+        }
+        private global::System.Guid _BusinessKey;
+        partial void OnBusinessKeyChanging(global::System.Guid value);
+        partial void OnBusinessKeyChanged();
+        /// <summary>
+        /// There are no comments for Property ID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int ID
+        {
+            get
+            {
+                return this._ID;
+            }
+            set
+            {
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
+            }
+        }
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_GelieerdePersoon_Groep", "Groep")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Groep Groep
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_GelieerdePersoon_Groep", "Groep").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_GelieerdePersoon_Groep", "Groep").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Groep> GroepReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_GelieerdePersoon_Groep", "Groep");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Groep>("ChiroGroepModel.FK_GelieerdePersoon_Groep", "Groep", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Persoon in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_GelieerdePersoon_Persoon", "Persoon")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Persoon Persoon
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("ChiroGroepModel.FK_GelieerdePersoon_Persoon", "Persoon").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("ChiroGroepModel.FK_GelieerdePersoon_Persoon", "Persoon").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Persoon in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Persoon> PersoonReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("ChiroGroepModel.FK_GelieerdePersoon_Persoon", "Persoon");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("ChiroGroepModel.FK_GelieerdePersoon_Persoon", "Persoon", value);
                 }
             }
         }

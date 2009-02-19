@@ -41,7 +41,6 @@ namespace WebServices
             pm.Dao.Verwijderen(p);
         }
 
-
         public Persoon OphalenMetCommunicatie(int persoonID)
         {
             PersonenManager pm = new PersonenManager();
