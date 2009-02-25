@@ -69,7 +69,7 @@
           <Property Name="PersoonID" Type="int" Nullable="false" />
           <Property Name="ChiroLeefTijd" Type="int" Nullable="false" />
           <Property Name="Guid" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="GelieerdePersoonID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Persoon">
@@ -292,7 +292,7 @@
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.GelieerdePersoon)">
               <MappingFragment StoreEntitySet="GelieerdePersoon">
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID" ColumnName="GelieerdePersoonID" />
                 <ScalarProperty Name="BusinessKey" ColumnName="Guid" />
                 <ScalarProperty Name="ChiroLeefTijd" ColumnName="ChiroLeefTijd" />
                 <ScalarProperty Name="PersoonID" ColumnName="PersoonID" />

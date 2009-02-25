@@ -14,7 +14,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GelieerdePersoon_Persoon", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Persoon), "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GelieerdePersoon))]
 
 // Original file name:
-// Generation date: 17/02/2009 15:11:38
+// Generation date: 25/02/2009 14:09:27
 namespace Cg2.Orm
 {
     
