@@ -17,7 +17,7 @@ namespace Cg2.Data.Ef
             {
                 result = (
                     from gp in db.GelieerdePersoon.Include("Persoon")
-                    where gp.GroepID == groepID
+                    where gp.Groep.ID == groepID
                     select gp).ToList<GelieerdePersoon>();
             }
             return result;
@@ -31,13 +31,25 @@ namespace Cg2.Data.Ef
             {
                 result = (
                     from gp in db.GelieerdePersoon.Include("Persoon")
-                    where gp.GroepID == groepID
+                    where gp.Groep.ID == groepID
                     orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
                     select gp).Skip((pagina-1)*paginaGrootte).Take(paginaGrootte).ToList<GelieerdePersoon>();
             }
             aantalOpgehaald = result.Count;
 
             return result;
+        }
+
+        public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
+        {
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                return (
+                    from gp in db.GelieerdePersoon.Include("Persoon").Include("Communicatie").Include("PersoonsAdres.Adres.Straat").Include("PersoonsAdres.Adres.Subgemeente")
+                    where gp.ID == gelieerdePersoonID
+                    select gp).FirstOrDefault();
+            }
+
         }
 
     }

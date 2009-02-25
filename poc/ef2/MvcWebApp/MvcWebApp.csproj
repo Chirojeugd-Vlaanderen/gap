@@ -139,6 +139,20 @@
     <Compile Include="Views\Personen\PersonenLijst.aspx.designer.cs">
       <DependentUpon>PersonenLijst.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Personen\PersoonsDetails.aspx.cs">
+      <DependentUpon>PersoonsDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Personen\PersoonsDetails.aspx.designer.cs">
+      <DependentUpon>PersoonsDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\PersoonsDetailsUserControl.ascx.cs">
+      <DependentUpon>PersoonsDetailsUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Shared\PersoonsDetailsUserControl.ascx.designer.cs">
+      <DependentUpon>PersoonsDetailsUserControl.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Shared\PersoonsLink.ascx.cs">
       <DependentUpon>PersoonsLink.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -186,7 +200,9 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Content Include="Views\Personen\PersonenLijst.aspx" />
+    <Content Include="Views\Personen\PersoonsDetails.aspx" />
     <Content Include="Views\Shared\PersonenLijstUserControl.ascx" />
+    <Content Include="Views\Shared\PersoonsDetailsUserControl.ascx" />
     <Content Include="Views\Shared\PersoonsLink.ascx" />
     <Content Include="Web.config" />
     <Content Include="Content\Site.css" />

@@ -30,5 +30,13 @@ namespace WebServices
             return result;
         }
 
-}
+        public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
+        {
+            GelieerdePersonenManager pm = new GelieerdePersonenManager();
+
+            var result = pm.Dao.DetailsOphalen(gelieerdePersoonID);
+
+            return result;
+        }
+    }
 }

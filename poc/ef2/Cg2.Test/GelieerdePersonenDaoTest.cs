@@ -3,19 +3,18 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Cg2.Orm.DataInterfaces;
 using Cg2.Data.Ef;
 using Cg2.Orm;
 
 namespace Cg2.Test
 {
     /// <summary>
-    /// Summary description for PersonenDaoTest
+    /// Summary description for GelieerdePersonenDaoTest
     /// </summary>
     [TestClass]
-    public class PersonenDaoTest
+    public class GelieerdePersonenDaoTest
     {
-        public PersonenDaoTest()
+        public GelieerdePersonenDaoTest()
         {
             //
             // TODO: Add constructor logic here
@@ -62,31 +61,16 @@ namespace Cg2.Test
         //
         #endregion
 
-        /// <summary>
-        /// Personen ophalen
-        /// </summary>
         [TestMethod]
-        public void OphalenTest()
+        public void OphalenMetDetails()
         {
-            IPersonenDao dao = new PersonenDao();
-            int id = 1893;
+            GelieerdePersonenDao dao = new GelieerdePersonenDao();
 
-            Persoon actual;
-            actual = dao.Ophalen(id);
-            Assert.IsTrue(actual.ID > 0);
-            Assert.IsTrue(actual.Communicatie.Count == 0);
-        }
+            GelieerdePersoon p = dao.DetailsOphalen(373);
 
-        [TestMethod]
-        public void OphalenMetCommunicatieTest()
-        {
-            IPersonenDao dao = new PersonenDao();
-            int id = 1893;
-
-            Persoon actual;
-            actual = dao.OphalenMetCommunicatie(id);
-            Assert.IsTrue(actual.ID > 0);
-            Assert.IsTrue(actual.Communicatie.Count > 0);
+            Assert.IsTrue(p.Communicatie.Count > 0);
+            Assert.IsTrue(p.PersoonsAdres.Count > 0);
+            Assert.IsTrue(p.PersoonsAdres.First().Adres.Straat.Naam != "");
         }
     }
 }

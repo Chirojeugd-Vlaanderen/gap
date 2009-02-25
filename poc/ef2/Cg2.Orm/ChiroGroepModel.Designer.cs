@@ -9,12 +9,16 @@
 //------------------------------------------------------------------------------
 
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_CommunicatieVorm_Persoon", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.Persoon), "CommunicatieVorm", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.CommunicatieVorm))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GelieerdePersoon_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GelieerdePersoon))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_CommunicatieVorm_GelieerdePersoon", "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.GelieerdePersoon), "CommunicatieVorm", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.CommunicatieVorm))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GelieerdePersoon_Persoon", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Persoon), "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GelieerdePersoon))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_Straat", "Straat", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Straat), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Adres))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_Subgemeente", "Subgemeente", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Subgemeente), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Adres))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsAdres_Adres", "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Adres), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.PersoonsAdres))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.GelieerdePersoon), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.PersoonsAdres))]
 
 // Original file name:
-// Generation date: 25/02/2009 14:09:27
+// Generation date: 25/02/2009 15:03:16
 namespace Cg2.Orm
 {
     
@@ -64,21 +68,6 @@ namespace Cg2.Orm
         }
         private global::System.Data.Objects.ObjectQuery<Groep> _Groep;
         /// <summary>
-        /// There are no comments for CommunicatieVorm in the schema.
-        /// </summary>
-        public global::System.Data.Objects.ObjectQuery<CommunicatieVorm> CommunicatieVorm
-        {
-            get
-            {
-                if ((this._CommunicatieVorm == null))
-                {
-                    this._CommunicatieVorm = base.CreateQuery<CommunicatieVorm>("[CommunicatieVorm]");
-                }
-                return this._CommunicatieVorm;
-            }
-        }
-        private global::System.Data.Objects.ObjectQuery<CommunicatieVorm> _CommunicatieVorm;
-        /// <summary>
         /// There are no comments for Persoon in the schema.
         /// </summary>
         public global::System.Data.Objects.ObjectQuery<Persoon> Persoon
@@ -93,6 +82,21 @@ namespace Cg2.Orm
             }
         }
         private global::System.Data.Objects.ObjectQuery<Persoon> _Persoon;
+        /// <summary>
+        /// There are no comments for CommunicatieVorm in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<CommunicatieVorm> CommunicatieVorm
+        {
+            get
+            {
+                if ((this._CommunicatieVorm == null))
+                {
+                    this._CommunicatieVorm = base.CreateQuery<CommunicatieVorm>("[CommunicatieVorm]");
+                }
+                return this._CommunicatieVorm;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<CommunicatieVorm> _CommunicatieVorm;
         /// <summary>
         /// There are no comments for GelieerdePersoon in the schema.
         /// </summary>
@@ -109,18 +113,71 @@ namespace Cg2.Orm
         }
         private global::System.Data.Objects.ObjectQuery<GelieerdePersoon> _GelieerdePersoon;
         /// <summary>
+        /// There are no comments for Adres in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<Adres> Adres
+        {
+            get
+            {
+                if ((this._Adres == null))
+                {
+                    this._Adres = base.CreateQuery<Adres>("[Adres]");
+                }
+                return this._Adres;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<Adres> _Adres;
+        /// <summary>
+        /// There are no comments for Straat in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<Straat> Straat
+        {
+            get
+            {
+                if ((this._Straat == null))
+                {
+                    this._Straat = base.CreateQuery<Straat>("[Straat]");
+                }
+                return this._Straat;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<Straat> _Straat;
+        /// <summary>
+        /// There are no comments for Subgemeente in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<Subgemeente> Subgemeente
+        {
+            get
+            {
+                if ((this._Subgemeente == null))
+                {
+                    this._Subgemeente = base.CreateQuery<Subgemeente>("[Subgemeente]");
+                }
+                return this._Subgemeente;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<Subgemeente> _Subgemeente;
+        /// <summary>
+        /// There are no comments for PersoonsAdres in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<PersoonsAdres> PersoonsAdres
+        {
+            get
+            {
+                if ((this._PersoonsAdres == null))
+                {
+                    this._PersoonsAdres = base.CreateQuery<PersoonsAdres>("[PersoonsAdres]");
+                }
+                return this._PersoonsAdres;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<PersoonsAdres> _PersoonsAdres;
+        /// <summary>
         /// There are no comments for Groep in the schema.
         /// </summary>
         public void AddToGroep(Groep groep)
         {
             base.AddObject("Groep", groep);
-        }
-        /// <summary>
-        /// There are no comments for CommunicatieVorm in the schema.
-        /// </summary>
-        public void AddToCommunicatieVorm(CommunicatieVorm communicatieVorm)
-        {
-            base.AddObject("CommunicatieVorm", communicatieVorm);
         }
         /// <summary>
         /// There are no comments for Persoon in the schema.
@@ -130,11 +187,46 @@ namespace Cg2.Orm
             base.AddObject("Persoon", persoon);
         }
         /// <summary>
+        /// There are no comments for CommunicatieVorm in the schema.
+        /// </summary>
+        public void AddToCommunicatieVorm(CommunicatieVorm communicatieVorm)
+        {
+            base.AddObject("CommunicatieVorm", communicatieVorm);
+        }
+        /// <summary>
         /// There are no comments for GelieerdePersoon in the schema.
         /// </summary>
         public void AddToGelieerdePersoon(GelieerdePersoon gelieerdePersoon)
         {
             base.AddObject("GelieerdePersoon", gelieerdePersoon);
+        }
+        /// <summary>
+        /// There are no comments for Adres in the schema.
+        /// </summary>
+        public void AddToAdres(Adres adres)
+        {
+            base.AddObject("Adres", adres);
+        }
+        /// <summary>
+        /// There are no comments for Straat in the schema.
+        /// </summary>
+        public void AddToStraat(Straat straat)
+        {
+            base.AddObject("Straat", straat);
+        }
+        /// <summary>
+        /// There are no comments for Subgemeente in the schema.
+        /// </summary>
+        public void AddToSubgemeente(Subgemeente subgemeente)
+        {
+            base.AddObject("Subgemeente", subgemeente);
+        }
+        /// <summary>
+        /// There are no comments for PersoonsAdres in the schema.
+        /// </summary>
+        public void AddToPersoonsAdres(PersoonsAdres persoonsAdres)
+        {
+            base.AddObject("PersoonsAdres", persoonsAdres);
         }
     }
     /// <summary>
@@ -400,232 +492,6 @@ namespace Cg2.Orm
         }
     }
     /// <summary>
-    /// There are no comments for ChiroGroepModel.CommunicatieVorm in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// ID
-    /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="CommunicatieVorm")]
-    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
-    [global::System.Serializable()]
-    public partial class CommunicatieVorm : global::System.Data.Objects.DataClasses.EntityObject
-    {
-        /// <summary>
-        /// Create a new CommunicatieVorm object.
-        /// </summary>
-        /// <param name="id">Initial value of ID.</param>
-        /// <param name="isGezinsgebonden">Initial value of IsGezinsgebonden.</param>
-        /// <param name="voorkeur">Initial value of Voorkeur.</param>
-        /// <param name="versie">Initial value of Versie.</param>
-        public static CommunicatieVorm CreateCommunicatieVorm(int id, bool isGezinsgebonden, bool voorkeur, byte[] versie)
-        {
-            CommunicatieVorm communicatieVorm = new CommunicatieVorm();
-            communicatieVorm.ID = id;
-            communicatieVorm.IsGezinsgebonden = isGezinsgebonden;
-            communicatieVorm.Voorkeur = voorkeur;
-            communicatieVorm.Versie = versie;
-            return communicatieVorm;
-        }
-        /// <summary>
-        /// There are no comments for Property Nota in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Nota
-        {
-            get
-            {
-                return this._Nota;
-            }
-            set
-            {
-                this.OnNotaChanging(value);
-                this.ReportPropertyChanging("Nota");
-                this._Nota = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
-                this.ReportPropertyChanged("Nota");
-                this.OnNotaChanged();
-            }
-        }
-        private string _Nota;
-        partial void OnNotaChanging(string value);
-        partial void OnNotaChanged();
-        /// <summary>
-        /// There are no comments for Property Nummer in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Nummer
-        {
-            get
-            {
-                return this._Nummer;
-            }
-            set
-            {
-                this.OnNummerChanging(value);
-                this.ReportPropertyChanging("Nummer");
-                this._Nummer = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
-                this.ReportPropertyChanged("Nummer");
-                this.OnNummerChanged();
-            }
-        }
-        private string _Nummer;
-        partial void OnNummerChanging(string value);
-        partial void OnNummerChanged();
-        /// <summary>
-        /// There are no comments for Property ID in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int ID
-        {
-            get
-            {
-                return this._ID;
-            }
-            set
-            {
-                this.OnIDChanging(value);
-                this.ReportPropertyChanging("ID");
-                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("ID");
-                this.OnIDChanged();
-            }
-        }
-        private int _ID;
-        partial void OnIDChanging(int value);
-        partial void OnIDChanged();
-        /// <summary>
-        /// There are no comments for Property CommunicatieTypeInt in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Nullable<int> CommunicatieTypeInt
-        {
-            get
-            {
-                return this._CommunicatieTypeInt;
-            }
-            set
-            {
-                this.OnCommunicatieTypeIntChanging(value);
-                this.ReportPropertyChanging("CommunicatieTypeInt");
-                this._CommunicatieTypeInt = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("CommunicatieTypeInt");
-                this.OnCommunicatieTypeIntChanged();
-            }
-        }
-        private global::System.Nullable<int> _CommunicatieTypeInt;
-        partial void OnCommunicatieTypeIntChanging(global::System.Nullable<int> value);
-        partial void OnCommunicatieTypeIntChanged();
-        /// <summary>
-        /// There are no comments for Property IsGezinsgebonden in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public bool IsGezinsgebonden
-        {
-            get
-            {
-                return this._IsGezinsgebonden;
-            }
-            set
-            {
-                this.OnIsGezinsgebondenChanging(value);
-                this.ReportPropertyChanging("IsGezinsgebonden");
-                this._IsGezinsgebonden = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("IsGezinsgebonden");
-                this.OnIsGezinsgebondenChanged();
-            }
-        }
-        private bool _IsGezinsgebonden;
-        partial void OnIsGezinsgebondenChanging(bool value);
-        partial void OnIsGezinsgebondenChanged();
-        /// <summary>
-        /// There are no comments for Property Voorkeur in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public bool Voorkeur
-        {
-            get
-            {
-                return this._Voorkeur;
-            }
-            set
-            {
-                this.OnVoorkeurChanging(value);
-                this.ReportPropertyChanging("Voorkeur");
-                this._Voorkeur = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("Voorkeur");
-                this.OnVoorkeurChanged();
-            }
-        }
-        private bool _Voorkeur;
-        partial void OnVoorkeurChanging(bool value);
-        partial void OnVoorkeurChanged();
-        /// <summary>
-        /// There are no comments for Property Versie in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Versie
-        {
-            get
-            {
-                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
-            }
-            set
-            {
-                this.OnVersieChanging(value);
-                this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
-                this.ReportPropertyChanged("Versie");
-                this.OnVersieChanged();
-            }
-        }
-        private byte[] _Versie;
-        partial void OnVersieChanging(byte[] value);
-        partial void OnVersieChanged();
-        /// <summary>
-        /// There are no comments for Persoon in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_CommunicatieVorm_Persoon", "Persoon")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Persoon Persoon
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("ChiroGroepModel.FK_CommunicatieVorm_Persoon", "Persoon").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("ChiroGroepModel.FK_CommunicatieVorm_Persoon", "Persoon").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for Persoon in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Persoon> PersoonReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("ChiroGroepModel.FK_CommunicatieVorm_Persoon", "Persoon");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("ChiroGroepModel.FK_CommunicatieVorm_Persoon", "Persoon", value);
-                }
-            }
-        }
-    }
-    /// <summary>
     /// There are no comments for ChiroGroepModel.Persoon in the schema.
     /// </summary>
     /// <KeyProperties>
@@ -860,27 +726,6 @@ namespace Cg2.Orm
         partial void OnVersieChanging(byte[] value);
         partial void OnVersieChanged();
         /// <summary>
-        /// There are no comments for Communicatie in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_CommunicatieVorm_Persoon", "CommunicatieVorm")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<CommunicatieVorm> Communicatie
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<CommunicatieVorm>("ChiroGroepModel.FK_CommunicatieVorm_Persoon", "CommunicatieVorm");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<CommunicatieVorm>("ChiroGroepModel.FK_CommunicatieVorm_Persoon", "CommunicatieVorm", value);
-                }
-            }
-        }
-        /// <summary>
         /// There are no comments for GelieerdePersoon in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_GelieerdePersoon_Persoon", "GelieerdePersoon")]
@@ -903,11 +748,236 @@ namespace Cg2.Orm
         }
     }
     /// <summary>
+    /// There are no comments for ChiroGroepModel.CommunicatieVorm in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// CommunicatieVormID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="CommunicatieVorm")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class CommunicatieVorm : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new CommunicatieVorm object.
+        /// </summary>
+        /// <param name="communicatieVormID">Initial value of CommunicatieVormID.</param>
+        /// <param name="isGezinsgebonden">Initial value of IsGezinsgebonden.</param>
+        /// <param name="voorkeur">Initial value of Voorkeur.</param>
+        /// <param name="versie">Initial value of Versie.</param>
+        public static CommunicatieVorm CreateCommunicatieVorm(int communicatieVormID, bool isGezinsgebonden, bool voorkeur, byte[] versie)
+        {
+            CommunicatieVorm communicatieVorm = new CommunicatieVorm();
+            communicatieVorm.CommunicatieVormID = communicatieVormID;
+            communicatieVorm.IsGezinsgebonden = isGezinsgebonden;
+            communicatieVorm.Voorkeur = voorkeur;
+            communicatieVorm.Versie = versie;
+            return communicatieVorm;
+        }
+        /// <summary>
+        /// There are no comments for Property Nota in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Nota
+        {
+            get
+            {
+                return this._Nota;
+            }
+            set
+            {
+                this.OnNotaChanging(value);
+                this.ReportPropertyChanging("Nota");
+                this._Nota = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Nota");
+                this.OnNotaChanged();
+            }
+        }
+        private string _Nota;
+        partial void OnNotaChanging(string value);
+        partial void OnNotaChanged();
+        /// <summary>
+        /// There are no comments for Property Nummer in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Nummer
+        {
+            get
+            {
+                return this._Nummer;
+            }
+            set
+            {
+                this.OnNummerChanging(value);
+                this.ReportPropertyChanging("Nummer");
+                this._Nummer = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Nummer");
+                this.OnNummerChanged();
+            }
+        }
+        private string _Nummer;
+        partial void OnNummerChanging(string value);
+        partial void OnNummerChanged();
+        /// <summary>
+        /// There are no comments for Property CommunicatieVormID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int CommunicatieVormID
+        {
+            get
+            {
+                return this._CommunicatieVormID;
+            }
+            set
+            {
+                this.OnCommunicatieVormIDChanging(value);
+                this.ReportPropertyChanging("CommunicatieVormID");
+                this._CommunicatieVormID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("CommunicatieVormID");
+                this.OnCommunicatieVormIDChanged();
+            }
+        }
+        private int _CommunicatieVormID;
+        partial void OnCommunicatieVormIDChanging(int value);
+        partial void OnCommunicatieVormIDChanged();
+        /// <summary>
+        /// There are no comments for Property CommunicatieTypeInt in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> CommunicatieTypeInt
+        {
+            get
+            {
+                return this._CommunicatieTypeInt;
+            }
+            set
+            {
+                this.OnCommunicatieTypeIntChanging(value);
+                this.ReportPropertyChanging("CommunicatieTypeInt");
+                this._CommunicatieTypeInt = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("CommunicatieTypeInt");
+                this.OnCommunicatieTypeIntChanged();
+            }
+        }
+        private global::System.Nullable<int> _CommunicatieTypeInt;
+        partial void OnCommunicatieTypeIntChanging(global::System.Nullable<int> value);
+        partial void OnCommunicatieTypeIntChanged();
+        /// <summary>
+        /// There are no comments for Property IsGezinsgebonden in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsGezinsgebonden
+        {
+            get
+            {
+                return this._IsGezinsgebonden;
+            }
+            set
+            {
+                this.OnIsGezinsgebondenChanging(value);
+                this.ReportPropertyChanging("IsGezinsgebonden");
+                this._IsGezinsgebonden = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("IsGezinsgebonden");
+                this.OnIsGezinsgebondenChanged();
+            }
+        }
+        private bool _IsGezinsgebonden;
+        partial void OnIsGezinsgebondenChanging(bool value);
+        partial void OnIsGezinsgebondenChanged();
+        /// <summary>
+        /// There are no comments for Property Voorkeur in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Voorkeur
+        {
+            get
+            {
+                return this._Voorkeur;
+            }
+            set
+            {
+                this.OnVoorkeurChanging(value);
+                this.ReportPropertyChanging("Voorkeur");
+                this._Voorkeur = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Voorkeur");
+                this.OnVoorkeurChanged();
+            }
+        }
+        private bool _Voorkeur;
+        partial void OnVoorkeurChanging(bool value);
+        partial void OnVoorkeurChanged();
+        /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
+        /// <summary>
+        /// There are no comments for GelieerdePersoon in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_CommunicatieVorm_GelieerdePersoon", "GelieerdePersoon")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public GelieerdePersoon GelieerdePersoon
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon", "GelieerdePersoon").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon", "GelieerdePersoon").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for GelieerdePersoon in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<GelieerdePersoon> GelieerdePersoonReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon", "GelieerdePersoon");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon", "GelieerdePersoon", value);
+                }
+            }
+        }
+    }
+    /// <summary>
     /// There are no comments for ChiroGroepModel.GelieerdePersoon in the schema.
     /// </summary>
     /// <KeyProperties>
-    /// GroepID
-    /// PersoonID
+    /// ID
     /// </KeyProperties>
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="GelieerdePersoon")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
@@ -917,69 +987,19 @@ namespace Cg2.Orm
         /// <summary>
         /// Create a new GelieerdePersoon object.
         /// </summary>
-        /// <param name="groepID">Initial value of GroepID.</param>
-        /// <param name="persoonID">Initial value of PersoonID.</param>
         /// <param name="chiroLeefTijd">Initial value of ChiroLeefTijd.</param>
         /// <param name="businessKey">Initial value of BusinessKey.</param>
         /// <param name="id">Initial value of ID.</param>
         /// <param name="versie">Initial value of Versie.</param>
-        public static GelieerdePersoon CreateGelieerdePersoon(int groepID, int persoonID, int chiroLeefTijd, global::System.Guid businessKey, int id, byte[] versie)
+        public static GelieerdePersoon CreateGelieerdePersoon(int chiroLeefTijd, global::System.Guid businessKey, int id, byte[] versie)
         {
             GelieerdePersoon gelieerdePersoon = new GelieerdePersoon();
-            gelieerdePersoon.GroepID = groepID;
-            gelieerdePersoon.PersoonID = persoonID;
             gelieerdePersoon.ChiroLeefTijd = chiroLeefTijd;
             gelieerdePersoon.BusinessKey = businessKey;
             gelieerdePersoon.ID = id;
             gelieerdePersoon.Versie = versie;
             return gelieerdePersoon;
         }
-        /// <summary>
-        /// There are no comments for Property GroepID in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int GroepID
-        {
-            get
-            {
-                return this._GroepID;
-            }
-            set
-            {
-                this.OnGroepIDChanging(value);
-                this.ReportPropertyChanging("GroepID");
-                this._GroepID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("GroepID");
-                this.OnGroepIDChanged();
-            }
-        }
-        private int _GroepID;
-        partial void OnGroepIDChanging(int value);
-        partial void OnGroepIDChanged();
-        /// <summary>
-        /// There are no comments for Property PersoonID in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int PersoonID
-        {
-            get
-            {
-                return this._PersoonID;
-            }
-            set
-            {
-                this.OnPersoonIDChanging(value);
-                this.ReportPropertyChanging("PersoonID");
-                this._PersoonID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("PersoonID");
-                this.OnPersoonIDChanged();
-            }
-        }
-        private int _PersoonID;
-        partial void OnPersoonIDChanging(int value);
-        partial void OnPersoonIDChanged();
         /// <summary>
         /// There are no comments for Property ChiroLeefTijd in the schema.
         /// </summary>
@@ -1029,7 +1049,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property ID in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public int ID
         {
@@ -1110,6 +1130,27 @@ namespace Cg2.Orm
             }
         }
         /// <summary>
+        /// There are no comments for Communicatie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_CommunicatieVorm_GelieerdePersoon", "CommunicatieVorm")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<CommunicatieVorm> Communicatie
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<CommunicatieVorm>("ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon", "CommunicatieVorm");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<CommunicatieVorm>("ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon", "CommunicatieVorm", value);
+                }
+            }
+        }
+        /// <summary>
         /// There are no comments for Persoon in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_GelieerdePersoon_Persoon", "Persoon")]
@@ -1143,6 +1184,711 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("ChiroGroepModel.FK_GelieerdePersoon_Persoon", "Persoon", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for PersoonsAdres in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_PersoonsAdres_GelieerdePersoon", "PersoonsAdres")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<PersoonsAdres> PersoonsAdres
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<PersoonsAdres>("ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon", "PersoonsAdres");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<PersoonsAdres>("ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon", "PersoonsAdres", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.Adres in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// AdresID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Adres")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class Adres : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new Adres object.
+        /// </summary>
+        /// <param name="adresID">Initial value of AdresID.</param>
+        public static Adres CreateAdres(int adresID)
+        {
+            Adres adres = new Adres();
+            adres.AdresID = adresID;
+            return adres;
+        }
+        /// <summary>
+        /// There are no comments for Property Bus in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Bus
+        {
+            get
+            {
+                return this._Bus;
+            }
+            set
+            {
+                this.OnBusChanging(value);
+                this.ReportPropertyChanging("Bus");
+                this._Bus = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Bus");
+                this.OnBusChanged();
+            }
+        }
+        private string _Bus;
+        partial void OnBusChanging(string value);
+        partial void OnBusChanged();
+        /// <summary>
+        /// There are no comments for Property HuisNr in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> HuisNr
+        {
+            get
+            {
+                return this._HuisNr;
+            }
+            set
+            {
+                this.OnHuisNrChanging(value);
+                this.ReportPropertyChanging("HuisNr");
+                this._HuisNr = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("HuisNr");
+                this.OnHuisNrChanged();
+            }
+        }
+        private global::System.Nullable<int> _HuisNr;
+        partial void OnHuisNrChanging(global::System.Nullable<int> value);
+        partial void OnHuisNrChanged();
+        /// <summary>
+        /// There are no comments for Property PostCode in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string PostCode
+        {
+            get
+            {
+                return this._PostCode;
+            }
+            set
+            {
+                this.OnPostCodeChanging(value);
+                this.ReportPropertyChanging("PostCode");
+                this._PostCode = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("PostCode");
+                this.OnPostCodeChanged();
+            }
+        }
+        private string _PostCode;
+        partial void OnPostCodeChanging(string value);
+        partial void OnPostCodeChanged();
+        /// <summary>
+        /// There are no comments for Property AdresID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int AdresID
+        {
+            get
+            {
+                return this._AdresID;
+            }
+            set
+            {
+                this.OnAdresIDChanging(value);
+                this.ReportPropertyChanging("AdresID");
+                this._AdresID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("AdresID");
+                this.OnAdresIDChanged();
+            }
+        }
+        private int _AdresID;
+        partial void OnAdresIDChanging(int value);
+        partial void OnAdresIDChanged();
+        /// <summary>
+        /// There are no comments for Straat in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Adres_Straat", "Straat")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Straat Straat
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Straat>("ChiroGroepModel.FK_Adres_Straat", "Straat").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Straat>("ChiroGroepModel.FK_Adres_Straat", "Straat").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Straat in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Straat> StraatReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Straat>("ChiroGroepModel.FK_Adres_Straat", "Straat");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Straat>("ChiroGroepModel.FK_Adres_Straat", "Straat", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Subgemeente in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Adres_Subgemeente", "Subgemeente")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Subgemeente Subgemeente
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Subgemeente>("ChiroGroepModel.FK_Adres_Subgemeente", "Subgemeente").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Subgemeente>("ChiroGroepModel.FK_Adres_Subgemeente", "Subgemeente").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Subgemeente in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Subgemeente> SubgemeenteReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Subgemeente>("ChiroGroepModel.FK_Adres_Subgemeente", "Subgemeente");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Subgemeente>("ChiroGroepModel.FK_Adres_Subgemeente", "Subgemeente", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for PersoonsAdres in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_PersoonsAdres_Adres", "PersoonsAdres")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<PersoonsAdres> PersoonsAdres
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<PersoonsAdres>("ChiroGroepModel.FK_PersoonsAdres_Adres", "PersoonsAdres");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<PersoonsAdres>("ChiroGroepModel.FK_PersoonsAdres_Adres", "PersoonsAdres", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.Straat in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// StraatID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Straat")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class Straat : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new Straat object.
+        /// </summary>
+        /// <param name="straatID">Initial value of StraatID.</param>
+        /// <param name="postNr">Initial value of PostNr.</param>
+        /// <param name="naam">Initial value of Naam.</param>
+        public static Straat CreateStraat(int straatID, int postNr, string naam)
+        {
+            Straat straat = new Straat();
+            straat.StraatID = straatID;
+            straat.PostNr = postNr;
+            straat.Naam = naam;
+            return straat;
+        }
+        /// <summary>
+        /// There are no comments for Property StraatID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int StraatID
+        {
+            get
+            {
+                return this._StraatID;
+            }
+            set
+            {
+                this.OnStraatIDChanging(value);
+                this.ReportPropertyChanging("StraatID");
+                this._StraatID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("StraatID");
+                this.OnStraatIDChanged();
+            }
+        }
+        private int _StraatID;
+        partial void OnStraatIDChanging(int value);
+        partial void OnStraatIDChanged();
+        /// <summary>
+        /// There are no comments for Property PostNr in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int PostNr
+        {
+            get
+            {
+                return this._PostNr;
+            }
+            set
+            {
+                this.OnPostNrChanging(value);
+                this.ReportPropertyChanging("PostNr");
+                this._PostNr = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("PostNr");
+                this.OnPostNrChanged();
+            }
+        }
+        private int _PostNr;
+        partial void OnPostNrChanging(int value);
+        partial void OnPostNrChanged();
+        /// <summary>
+        /// There are no comments for Property Naam in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Naam
+        {
+            get
+            {
+                return this._Naam;
+            }
+            set
+            {
+                this.OnNaamChanging(value);
+                this.ReportPropertyChanging("Naam");
+                this._Naam = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Naam");
+                this.OnNaamChanged();
+            }
+        }
+        private string _Naam;
+        partial void OnNaamChanging(string value);
+        partial void OnNaamChanged();
+        /// <summary>
+        /// There are no comments for Adres in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Adres_Straat", "Adres")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Adres> Adres
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Adres>("ChiroGroepModel.FK_Adres_Straat", "Adres");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Adres>("ChiroGroepModel.FK_Adres_Straat", "Adres", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.Subgemeente in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// SubgemeenteID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Subgemeente")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class Subgemeente : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new Subgemeente object.
+        /// </summary>
+        /// <param name="subgemeenteID">Initial value of SubgemeenteID.</param>
+        /// <param name="postNr">Initial value of PostNr.</param>
+        /// <param name="naam">Initial value of Naam.</param>
+        public static Subgemeente CreateSubgemeente(int subgemeenteID, int postNr, string naam)
+        {
+            Subgemeente subgemeente = new Subgemeente();
+            subgemeente.SubgemeenteID = subgemeenteID;
+            subgemeente.PostNr = postNr;
+            subgemeente.Naam = naam;
+            return subgemeente;
+        }
+        /// <summary>
+        /// There are no comments for Property SubgemeenteID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int SubgemeenteID
+        {
+            get
+            {
+                return this._SubgemeenteID;
+            }
+            set
+            {
+                this.OnSubgemeenteIDChanging(value);
+                this.ReportPropertyChanging("SubgemeenteID");
+                this._SubgemeenteID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("SubgemeenteID");
+                this.OnSubgemeenteIDChanged();
+            }
+        }
+        private int _SubgemeenteID;
+        partial void OnSubgemeenteIDChanging(int value);
+        partial void OnSubgemeenteIDChanged();
+        /// <summary>
+        /// There are no comments for Property PostNr in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int PostNr
+        {
+            get
+            {
+                return this._PostNr;
+            }
+            set
+            {
+                this.OnPostNrChanging(value);
+                this.ReportPropertyChanging("PostNr");
+                this._PostNr = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("PostNr");
+                this.OnPostNrChanged();
+            }
+        }
+        private int _PostNr;
+        partial void OnPostNrChanging(int value);
+        partial void OnPostNrChanged();
+        /// <summary>
+        /// There are no comments for Property Naam in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Naam
+        {
+            get
+            {
+                return this._Naam;
+            }
+            set
+            {
+                this.OnNaamChanging(value);
+                this.ReportPropertyChanging("Naam");
+                this._Naam = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Naam");
+                this.OnNaamChanged();
+            }
+        }
+        private string _Naam;
+        partial void OnNaamChanging(string value);
+        partial void OnNaamChanged();
+        /// <summary>
+        /// There are no comments for Adres in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Adres_Subgemeente", "Adres")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Adres> Adres
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Adres>("ChiroGroepModel.FK_Adres_Subgemeente", "Adres");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Adres>("ChiroGroepModel.FK_Adres_Subgemeente", "Adres", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.PersoonsAdres in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// AdresID
+    /// GelieerdePersoonID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="PersoonsAdres")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class PersoonsAdres : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new PersoonsAdres object.
+        /// </summary>
+        /// <param name="isStandaard">Initial value of IsStandaard.</param>
+        /// <param name="adresID">Initial value of AdresID.</param>
+        /// <param name="adresTypeID">Initial value of AdresTypeID.</param>
+        /// <param name="versie">Initial value of Versie.</param>
+        /// <param name="gelieerdePersoonID">Initial value of GelieerdePersoonID.</param>
+        public static PersoonsAdres CreatePersoonsAdres(bool isStandaard, int adresID, int adresTypeID, byte[] versie, int gelieerdePersoonID)
+        {
+            PersoonsAdres persoonsAdres = new PersoonsAdres();
+            persoonsAdres.IsStandaard = isStandaard;
+            persoonsAdres.AdresID = adresID;
+            persoonsAdres.AdresTypeID = adresTypeID;
+            persoonsAdres.Versie = versie;
+            persoonsAdres.GelieerdePersoonID = gelieerdePersoonID;
+            return persoonsAdres;
+        }
+        /// <summary>
+        /// There are no comments for Property IsStandaard in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsStandaard
+        {
+            get
+            {
+                return this._IsStandaard;
+            }
+            set
+            {
+                this.OnIsStandaardChanging(value);
+                this.ReportPropertyChanging("IsStandaard");
+                this._IsStandaard = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("IsStandaard");
+                this.OnIsStandaardChanged();
+            }
+        }
+        private bool _IsStandaard;
+        partial void OnIsStandaardChanging(bool value);
+        partial void OnIsStandaardChanged();
+        /// <summary>
+        /// There are no comments for Property Opmerking in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Opmerking
+        {
+            get
+            {
+                return this._Opmerking;
+            }
+            set
+            {
+                this.OnOpmerkingChanging(value);
+                this.ReportPropertyChanging("Opmerking");
+                this._Opmerking = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Opmerking");
+                this.OnOpmerkingChanged();
+            }
+        }
+        private string _Opmerking;
+        partial void OnOpmerkingChanging(string value);
+        partial void OnOpmerkingChanged();
+        /// <summary>
+        /// There are no comments for Property AdresID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int AdresID
+        {
+            get
+            {
+                return this._AdresID;
+            }
+            set
+            {
+                this.OnAdresIDChanging(value);
+                this.ReportPropertyChanging("AdresID");
+                this._AdresID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("AdresID");
+                this.OnAdresIDChanged();
+            }
+        }
+        private int _AdresID;
+        partial void OnAdresIDChanging(int value);
+        partial void OnAdresIDChanged();
+        /// <summary>
+        /// There are no comments for Property AdresTypeID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int AdresTypeID
+        {
+            get
+            {
+                return this._AdresTypeID;
+            }
+            set
+            {
+                this.OnAdresTypeIDChanging(value);
+                this.ReportPropertyChanging("AdresTypeID");
+                this._AdresTypeID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("AdresTypeID");
+                this.OnAdresTypeIDChanged();
+            }
+        }
+        private int _AdresTypeID;
+        partial void OnAdresTypeIDChanging(int value);
+        partial void OnAdresTypeIDChanged();
+        /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
+        /// <summary>
+        /// There are no comments for Property GelieerdePersoonID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int GelieerdePersoonID
+        {
+            get
+            {
+                return this._GelieerdePersoonID;
+            }
+            set
+            {
+                this.OnGelieerdePersoonIDChanging(value);
+                this.ReportPropertyChanging("GelieerdePersoonID");
+                this._GelieerdePersoonID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("GelieerdePersoonID");
+                this.OnGelieerdePersoonIDChanged();
+            }
+        }
+        private int _GelieerdePersoonID;
+        partial void OnGelieerdePersoonIDChanging(int value);
+        partial void OnGelieerdePersoonIDChanged();
+        /// <summary>
+        /// There are no comments for Adres in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_PersoonsAdres_Adres", "Adres")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Adres Adres
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Adres>("ChiroGroepModel.FK_PersoonsAdres_Adres", "Adres").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Adres>("ChiroGroepModel.FK_PersoonsAdres_Adres", "Adres").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Adres in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Adres> AdresReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Adres>("ChiroGroepModel.FK_PersoonsAdres_Adres", "Adres");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Adres>("ChiroGroepModel.FK_PersoonsAdres_Adres", "Adres", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for GelieerdePersoon in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public GelieerdePersoon GelieerdePersoon
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for GelieerdePersoon in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<GelieerdePersoon> GelieerdePersoonReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon", value);
                 }
             }
         }

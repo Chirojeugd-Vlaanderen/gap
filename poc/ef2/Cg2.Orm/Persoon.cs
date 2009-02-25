@@ -37,5 +37,10 @@ namespace Cg2.Orm
             set { this.GeslachtsInt = (int)value; }
         }
 
+        public string VolledigeNaam
+        {
+            get { return String.Format("{0} {1}", VoorNaam, Naam); }
+        }
+
     }
 }

@@ -54,8 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChiroGroepenDaoTest.cs" />
+    <Compile Include="GelieerdePersonenDaoTest.cs" />
     <Compile Include="GroepenDaoTest.cs" />
-    <Compile Include="PersonenDaoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidatieTest.cs" />
   </ItemGroup>

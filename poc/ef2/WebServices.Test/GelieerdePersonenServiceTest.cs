@@ -61,7 +61,7 @@ namespace WebServices.Test
         #endregion
 
         [TestMethod]
-        public void AllenOphalen()
+        public void PaginaOphalen()
         {
             using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new WebServices.Test.GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
             {
@@ -71,5 +71,20 @@ namespace WebServices.Test
                 Assert.IsTrue(antwoord.Count > 0);
             }
         }
+
+        [TestMethod]
+        public void DetailsOphalen()
+        {
+            using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new WebServices.Test.GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
+            {
+                GelieerdePersoon p = service.DetailsOphalen(373);
+
+                Assert.IsTrue(p.Communicatie.Count > 0);
+                Assert.IsTrue(p.PersoonsAdres.Count > 0);
+                Assert.IsTrue(p.PersoonsAdres.First().Adres.Straat.Naam != "");
+            }
+
+        }
+
     }
 }

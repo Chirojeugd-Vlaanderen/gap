@@ -14,22 +14,46 @@
         <xs:sequence>
           <xs:element minOccurs="0" name="BusinessKey" type="ser:guid" />
           <xs:element minOccurs="0" name="ChiroLeefTijd" type="xs:int" />
+          <xs:element minOccurs="0" name="Communicatie" nillable="true" type="tns:ArrayOfCommunicatieVorm" />
           <xs:element minOccurs="0" name="Groep" nillable="true" type="tns:Groep" />
-          <xs:element minOccurs="0" name="GroepID" type="xs:int" />
           <xs:element minOccurs="0" name="GroepReference" nillable="true" type="q1:EntityReferenceOfGroepjQfcsukF" />
           <xs:element minOccurs="0" name="ID" type="xs:int" />
           <xs:element minOccurs="0" name="Persoon" nillable="true" type="tns:Persoon" />
-          <xs:element minOccurs="0" name="PersoonID" type="xs:int" />
           <xs:element minOccurs="0" name="PersoonReference" nillable="true" type="q1:EntityReferenceOfPersoonjQfcsukF" />
+          <xs:element minOccurs="0" name="PersoonsAdres" nillable="true" type="tns:ArrayOfPersoonsAdres" />
           <xs:element minOccurs="0" name="Versie" nillable="true" type="xs:base64Binary" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="GelieerdePersoon" nillable="true" type="tns:GelieerdePersoon" />
-  <xs:complexType name="Groep">
+  <xs:complexType name="ArrayOfCommunicatieVorm">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommunicatieVorm" nillable="true" type="tns:CommunicatieVorm" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommunicatieVorm" nillable="true" type="tns:ArrayOfCommunicatieVorm" />
+  <xs:complexType name="CommunicatieVorm">
     <xs:complexContent mixed="false">
       <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q2:EntityObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CommunicatieTypeInt" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="CommunicatieVormID" type="xs:int" />
+          <xs:element minOccurs="0" name="GelieerdePersoon" nillable="true" type="tns:GelieerdePersoon" />
+          <xs:element minOccurs="0" name="GelieerdePersoonReference" nillable="true" type="q2:EntityReferenceOfGelieerdePersoonjQfcsukF" />
+          <xs:element minOccurs="0" name="IsGezinsgebonden" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Nota" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Nummer" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Versie" nillable="true" type="xs:base64Binary" />
+          <xs:element minOccurs="0" name="Voorkeur" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommunicatieVorm" nillable="true" type="tns:CommunicatieVorm" />
+  <xs:complexType name="Groep">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q3="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q3:EntityObject">
         <xs:sequence>
           <xs:element minOccurs="0" name="BusinessKey" type="ser:guid" />
           <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
@@ -55,11 +79,10 @@
   <xs:element name="ChiroGroep" nillable="true" type="tns:ChiroGroep" />
   <xs:complexType name="Persoon">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q3="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q3:EntityObject">
+      <xs:extension xmlns:q4="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q4:EntityObject">
         <xs:sequence>
           <xs:element minOccurs="0" name="AdNummer" nillable="true" type="xs:int" />
           <xs:element minOccurs="0" name="BusinessKey" type="ser:guid" />
-          <xs:element minOccurs="0" name="Communicatie" nillable="true" type="tns:ArrayOfCommunicatieVorm" />
           <xs:element minOccurs="0" name="GeboorteDatum" nillable="true" type="xs:dateTime" />
           <xs:element minOccurs="0" name="GelieerdePersoon" nillable="true" type="tns:ArrayOfGelieerdePersoon" />
           <xs:element minOccurs="0" name="GeslachtsInt" type="xs:int" />
@@ -73,28 +96,79 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="Persoon" nillable="true" type="tns:Persoon" />
-  <xs:complexType name="ArrayOfCommunicatieVorm">
+  <xs:complexType name="ArrayOfPersoonsAdres">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommunicatieVorm" nillable="true" type="tns:CommunicatieVorm" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PersoonsAdres" nillable="true" type="tns:PersoonsAdres" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfCommunicatieVorm" nillable="true" type="tns:ArrayOfCommunicatieVorm" />
-  <xs:complexType name="CommunicatieVorm">
+  <xs:element name="ArrayOfPersoonsAdres" nillable="true" type="tns:ArrayOfPersoonsAdres" />
+  <xs:complexType name="PersoonsAdres">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q4="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q4:EntityObject">
+      <xs:extension xmlns:q5="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q5:EntityObject">
         <xs:sequence>
-          <xs:element minOccurs="0" name="CommunicatieTypeInt" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="ID" type="xs:int" />
-          <xs:element minOccurs="0" name="IsGezinsgebonden" type="xs:boolean" />
-          <xs:element minOccurs="0" name="Nota" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Nummer" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Persoon" nillable="true" type="tns:Persoon" />
-          <xs:element minOccurs="0" name="PersoonReference" nillable="true" type="q4:EntityReferenceOfPersoonjQfcsukF" />
+          <xs:element minOccurs="0" name="Adres" nillable="true" type="tns:Adres" />
+          <xs:element minOccurs="0" name="AdresID" type="xs:int" />
+          <xs:element minOccurs="0" name="AdresReference" nillable="true" type="q5:EntityReferenceOfAdresjQfcsukF" />
+          <xs:element minOccurs="0" name="AdresTypeID" type="xs:int" />
+          <xs:element minOccurs="0" name="GelieerdePersoon" nillable="true" type="tns:GelieerdePersoon" />
+          <xs:element minOccurs="0" name="GelieerdePersoonID" type="xs:int" />
+          <xs:element minOccurs="0" name="GelieerdePersoonReference" nillable="true" type="q5:EntityReferenceOfGelieerdePersoonjQfcsukF" />
+          <xs:element minOccurs="0" name="IsStandaard" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Opmerking" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="Versie" nillable="true" type="xs:base64Binary" />
-          <xs:element minOccurs="0" name="Voorkeur" type="xs:boolean" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="CommunicatieVorm" nillable="true" type="tns:CommunicatieVorm" />
+  <xs:element name="PersoonsAdres" nillable="true" type="tns:PersoonsAdres" />
+  <xs:complexType name="Adres">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q6="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q6:EntityObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AdresID" type="xs:int" />
+          <xs:element minOccurs="0" name="Bus" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="HuisNr" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="PersoonsAdres" nillable="true" type="tns:ArrayOfPersoonsAdres" />
+          <xs:element minOccurs="0" name="PostCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Straat" nillable="true" type="tns:Straat" />
+          <xs:element minOccurs="0" name="StraatReference" nillable="true" type="q6:EntityReferenceOfStraatjQfcsukF" />
+          <xs:element minOccurs="0" name="Subgemeente" nillable="true" type="tns:Subgemeente" />
+          <xs:element minOccurs="0" name="SubgemeenteReference" nillable="true" type="q6:EntityReferenceOfSubgemeentejQfcsukF" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Adres" nillable="true" type="tns:Adres" />
+  <xs:complexType name="Straat">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q7="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q7:EntityObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Adres" nillable="true" type="tns:ArrayOfAdres" />
+          <xs:element minOccurs="0" name="Naam" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PostNr" type="xs:int" />
+          <xs:element minOccurs="0" name="StraatID" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Straat" nillable="true" type="tns:Straat" />
+  <xs:complexType name="ArrayOfAdres">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Adres" nillable="true" type="tns:Adres" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAdres" nillable="true" type="tns:ArrayOfAdres" />
+  <xs:complexType name="Subgemeente">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q8="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q8:EntityObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Adres" nillable="true" type="tns:ArrayOfAdres" />
+          <xs:element minOccurs="0" name="Naam" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PostNr" type="xs:int" />
+          <xs:element minOccurs="0" name="SubgemeenteID" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Subgemeente" nillable="true" type="tns:Subgemeente" />
 </xs:schema>

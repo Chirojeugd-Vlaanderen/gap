@@ -18,6 +18,35 @@
     <xs:attribute ref="ser:Ref" />
   </xs:complexType>
   <xs:element name="StructuralObject" nillable="true" type="tns:StructuralObject" />
+  <xs:complexType name="EntityReferenceOfGelieerdePersoonjQfcsukF">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="EntityReferenceOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="GelieerdePersoon" Namespace="http://schemas.datacontract.org/2004/07/Cg2.Orm" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:EntityReference">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EntityReferenceOfGelieerdePersoonjQfcsukF" nillable="true" type="tns:EntityReferenceOfGelieerdePersoonjQfcsukF" />
+  <xs:complexType name="EntityReference">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RelatedEnd">
+        <xs:sequence>
+          <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/System.Data" minOccurs="0" name="EntityKey" nillable="true" type="q2:EntityKey" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EntityReference" nillable="true" type="tns:EntityReference" />
+  <xs:complexType name="RelatedEnd">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="RelatedEnd" nillable="true" type="tns:RelatedEnd" />
   <xs:complexType name="EntityReferenceOfGroepjQfcsukF">
     <xs:annotation>
       <xs:appinfo>
@@ -33,20 +62,6 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="EntityReferenceOfGroepjQfcsukF" nillable="true" type="tns:EntityReferenceOfGroepjQfcsukF" />
-  <xs:complexType name="EntityReference">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:RelatedEnd">
-        <xs:sequence>
-          <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/System.Data" minOccurs="0" name="EntityKey" nillable="true" type="q2:EntityKey" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="EntityReference" nillable="true" type="tns:EntityReference" />
-  <xs:complexType name="RelatedEnd">
-    <xs:sequence />
-  </xs:complexType>
-  <xs:element name="RelatedEnd" nillable="true" type="tns:RelatedEnd" />
   <xs:complexType name="EntityReferenceOfPersoonjQfcsukF">
     <xs:annotation>
       <xs:appinfo>
@@ -62,4 +77,49 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="EntityReferenceOfPersoonjQfcsukF" nillable="true" type="tns:EntityReferenceOfPersoonjQfcsukF" />
+  <xs:complexType name="EntityReferenceOfStraatjQfcsukF">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="EntityReferenceOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Straat" Namespace="http://schemas.datacontract.org/2004/07/Cg2.Orm" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:EntityReference">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EntityReferenceOfStraatjQfcsukF" nillable="true" type="tns:EntityReferenceOfStraatjQfcsukF" />
+  <xs:complexType name="EntityReferenceOfSubgemeentejQfcsukF">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="EntityReferenceOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Subgemeente" Namespace="http://schemas.datacontract.org/2004/07/Cg2.Orm" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:EntityReference">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EntityReferenceOfSubgemeentejQfcsukF" nillable="true" type="tns:EntityReferenceOfSubgemeentejQfcsukF" />
+  <xs:complexType name="EntityReferenceOfAdresjQfcsukF">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="EntityReferenceOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Adres" Namespace="http://schemas.datacontract.org/2004/07/Cg2.Orm" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:EntityReference">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EntityReferenceOfAdresjQfcsukF" nillable="true" type="tns:EntityReferenceOfAdresjQfcsukF" />
 </xs:schema>
