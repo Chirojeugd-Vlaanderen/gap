@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="BdXNxaLlCSlzu57cMpDNDDtjj2w=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="mQiDxgeoTTGWTIbYiVZ1f9pCEbY=">
   <bindingConfigurations>
-    <bindingConfiguration bindingType="wsHttpBinding" name="WSHttpBinding_IPersonenService1">
+    <bindingConfiguration bindingType="wsHttpBinding" name="WSHttpBinding_IPersonenService">
       <properties>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>WSHttpBinding_IPersonenService1</serializedValue>
+          <serializedValue>WSHttpBinding_IPersonenService</serializedValue>
         </property>
         <property path="/closeTimeout" isComplexType="false" isExplicitlyDefined="true" clrType="System.TimeSpan, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>00:01:00</serializedValue>
@@ -115,7 +115,7 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="WSHttpBinding_IPersonenService1" contract="PersonenServiceReference.IPersonenService" bindingType="wsHttpBinding" address="http://localhost:2733/PersonenService.svc" bindingConfiguration="WSHttpBinding_IPersonenService1">
+    <endpoint name="WSHttpBinding_IPersonenService" contract="PersonenServiceReference.IPersonenService" bindingType="wsHttpBinding" address="http://localhost:2733/PersonenService.svc" bindingConfiguration="WSHttpBinding_IPersonenService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>http://localhost:2733/PersonenService.svc</serializedValue>
@@ -127,7 +127,7 @@
           <serializedValue>wsHttpBinding</serializedValue>
         </property>
         <property path="/bindingConfiguration" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>WSHttpBinding_IPersonenService1</serializedValue>
+          <serializedValue>WSHttpBinding_IPersonenService</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>PersonenServiceReference.IPersonenService</serializedValue>
@@ -190,7 +190,7 @@
           <serializedValue>False</serializedValue>
         </property>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>WSHttpBinding_IPersonenService1</serializedValue>
+          <serializedValue>WSHttpBinding_IPersonenService</serializedValue>
         </property>
       </properties>
     </endpoint>

@@ -28,27 +28,9 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="GeslachtsType" nillable="true" type="tns:GeslachtsType" />
-  <xs:complexType name="CommunicatieVorm">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q1:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="CommunicatieTypeInt" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="ID" type="xs:int" />
-          <xs:element minOccurs="0" name="IsGezinsgebonden" type="xs:boolean" />
-          <xs:element minOccurs="0" name="Nota" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Nummer" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Persoon" nillable="true" type="tns:Persoon" />
-          <xs:element minOccurs="0" name="PersoonReference" nillable="true" type="q1:EntityReferenceOfPersoonjQfcsukF" />
-          <xs:element minOccurs="0" name="Versie" nillable="true" type="xs:base64Binary" />
-          <xs:element minOccurs="0" name="Voorkeur" type="xs:boolean" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="CommunicatieVorm" nillable="true" type="tns:CommunicatieVorm" />
   <xs:complexType name="Persoon">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q2:EntityObject">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q1:EntityObject">
         <xs:sequence>
           <xs:element minOccurs="0" name="AdNummer" nillable="true" type="xs:int" />
           <xs:element minOccurs="0" name="BusinessKey" type="ser:guid" />
@@ -72,6 +54,24 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfCommunicatieVorm" nillable="true" type="tns:ArrayOfCommunicatieVorm" />
+  <xs:complexType name="CommunicatieVorm">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q2:EntityObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CommunicatieTypeInt" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="ID" type="xs:int" />
+          <xs:element minOccurs="0" name="IsGezinsgebonden" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Nota" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Nummer" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Persoon" nillable="true" type="tns:Persoon" />
+          <xs:element minOccurs="0" name="PersoonReference" nillable="true" type="q2:EntityReferenceOfPersoonjQfcsukF" />
+          <xs:element minOccurs="0" name="Versie" nillable="true" type="xs:base64Binary" />
+          <xs:element minOccurs="0" name="Voorkeur" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommunicatieVorm" nillable="true" type="tns:CommunicatieVorm" />
   <xs:complexType name="ArrayOfGelieerdePersoon">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="GelieerdePersoon" nillable="true" type="tns:GelieerdePersoon" />

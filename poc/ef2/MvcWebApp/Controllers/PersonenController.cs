@@ -8,7 +8,7 @@ using System.Configuration;
 
 namespace MvcWebApp.Controllers
 {
-    public class LijstController : Controller
+    public class PersonenController : Controller
     {
         public ActionResult PersonenLijst() 
         {

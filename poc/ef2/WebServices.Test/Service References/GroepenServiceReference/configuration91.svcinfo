@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="pDEPijuea+0R7W3peKJA3jd3O0U=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="VQvMMZhNcms+S9ZdVUjSzz+J4R0=">
   <bindingConfigurations>
-    <bindingConfiguration bindingType="wsHttpBinding" name="WSHttpBinding_IGroepenService1">
+    <bindingConfiguration bindingType="wsHttpBinding" name="WSHttpBinding_IGroepenService">
       <properties>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>WSHttpBinding_IGroepenService1</serializedValue>
+          <serializedValue>WSHttpBinding_IGroepenService</serializedValue>
         </property>
         <property path="/closeTimeout" isComplexType="false" isExplicitlyDefined="true" clrType="System.TimeSpan, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>00:01:00</serializedValue>
@@ -115,7 +115,7 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="WSHttpBinding_IGroepenService1" contract="GroepenServiceReference.IGroepenService" bindingType="wsHttpBinding" address="http://localhost:2733/GroepenService.svc" bindingConfiguration="WSHttpBinding_IGroepenService1">
+    <endpoint name="WSHttpBinding_IGroepenService" contract="GroepenServiceReference.IGroepenService" bindingType="wsHttpBinding" address="http://localhost:2733/GroepenService.svc" bindingConfiguration="WSHttpBinding_IGroepenService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>http://localhost:2733/GroepenService.svc</serializedValue>
@@ -127,7 +127,7 @@
           <serializedValue>wsHttpBinding</serializedValue>
         </property>
         <property path="/bindingConfiguration" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>WSHttpBinding_IGroepenService1</serializedValue>
+          <serializedValue>WSHttpBinding_IGroepenService</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>GroepenServiceReference.IGroepenService</serializedValue>
@@ -190,7 +190,7 @@
           <serializedValue>False</serializedValue>
         </property>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>WSHttpBinding_IGroepenService1</serializedValue>
+          <serializedValue>WSHttpBinding_IGroepenService</serializedValue>
         </property>
       </properties>
     </endpoint>

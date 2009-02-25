@@ -76,7 +76,7 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LijstController.cs" />
+    <Compile Include="Controllers\PersonenController.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -132,12 +132,19 @@
     <Compile Include="Views\Home\Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Lijst\PersonenLijst.aspx.cs">
+    <Compile Include="Views\Personen\PersonenLijst.aspx.cs">
       <DependentUpon>PersonenLijst.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Lijst\PersonenLijst.aspx.designer.cs">
+    <Compile Include="Views\Personen\PersonenLijst.aspx.designer.cs">
       <DependentUpon>PersonenLijst.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\PersoonsLink.ascx.cs">
+      <DependentUpon>PersoonsLink.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Shared\PersoonsLink.ascx.designer.cs">
+      <DependentUpon>PersoonsLink.ascx</DependentUpon>
     </Compile>
     <Compile Include="Views\Shared\Error.aspx.cs">
       <DependentUpon>Error.aspx</DependentUpon>
@@ -153,11 +160,11 @@
     <Compile Include="Views\Shared\LoginUserControl.ascx.designer.cs">
       <DependentUpon>LoginUserControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Lijst\PersonenLijstUserControl.ascx.cs">
+    <Compile Include="Views\Shared\PersonenLijstUserControl.ascx.cs">
       <DependentUpon>PersonenLijstUserControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Lijst\PersonenLijstUserControl.ascx.designer.cs">
+    <Compile Include="Views\Shared\PersonenLijstUserControl.ascx.designer.cs">
       <DependentUpon>PersonenLijstUserControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="Views\Shared\Site.Master.cs">
@@ -178,8 +185,9 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <Content Include="Views\Lijst\PersonenLijst.aspx" />
-    <Content Include="Views\Lijst\PersonenLijstUserControl.ascx" />
+    <Content Include="Views\Personen\PersonenLijst.aspx" />
+    <Content Include="Views\Shared\PersonenLijstUserControl.ascx" />
+    <Content Include="Views\Shared\PersoonsLink.ascx" />
     <Content Include="Web.config" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\jquery-1.2.6.js" />
