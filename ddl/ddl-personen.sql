@@ -1,3 +1,8 @@
+-- OPGELET: deze file zal misschien nog wel werken, maar zou beter
+-- eens opnieuw gegenereerd worden
+
+
+
 -- OPGELET: de tabellen Straat en Subgemeente moeten al bestaan!
 -- (zie ddl-adressen.sql)
 
@@ -172,7 +177,7 @@ CREATE TABLE pers.Persoon (
 	Geslacht int NOT NULL,
 	ChiroLeefTijd int DEFAULT 0 NOT NULL,    --  Dit veld geeft weer of een lid 'op zijn leeftijd' zit voor de automatische berekening van de afdeling.  Standaard heeft het de waarde 0.  Als een lid een jaartje hoger zit dan zijn/haar geboortedatum doet vermoeden (bijv. omdat hij/zij een leerjaar oversloeg) , dan zal dit veld op +1 staan. 
 	SterfDatum smalldatetime NULL,
-	Guid UniqueIdentifier NULL,
+	Guid UniqueIdentifier NOT NULL Default NewID(),
 	persoonID int NOT NULL
 )
 GO
@@ -483,6 +488,342 @@ GO
 
 -- Guid gaan we toch gebruiken
 
-UPDATE pers.Persoon SET Guid = NEWID();
-
 CREATE UNIQUE INDEX AK_Persoon_Guid ON pers.Persoon(Guid);
+
+ALTER TABLE grp.Groep ADD
+	Guid uniqueidentifier NOT NULL CONSTRAINT DF_Groep_Guid DEFAULT NewID()
+
+CREATE UNIQUE INDEX AK_Groep_Guid ON grp.Groep(Guid);
+GO
+
+-- ChiroLeefTijd naar GelieerdePersoon
+
+ALTER TABLE pers.Persoon
+	DROP CONSTRAINT DF__Persoon__ChiroLe__56E8E7AB
+GO
+ALTER TABLE pers.Persoon
+	DROP COLUMN ChiroLeefTijd
+GO
+
+-- GelieerdePersoon GUIDk, Versie en ID geven --
+
+ALTER TABLE pers.GelieerdePersoon ADD
+	ChiroLeefTijd int NOT NULL CONSTRAINT DF_GelieerdePersoon_ChiroLeefTijd DEFAULT 0
+GO
+
+
+ALTER TABLE pers.GelieerdePersoon ADD
+	GelieerdePersoonID int NOT NULL IDENTITY (1, 1)
+GO
+
+ALTER TABLE pers.GelieerdePersoon ADD
+	Versie timestamp NOT NULL
+GO
+
+-- Communicatie koppelen aan GelieerdePersoon
+
+ALTER TABLE pers.CommunicatieVorm
+ADD GelieerdePersoonID INT
+GO
+
+ALTER TABLE pers.GelieerdePersoon
+	DROP CONSTRAINT PK_GelieerdePersoon
+GO
+
+ALTER TABLE pers.GelieerdePersoon ADD CONSTRAINT
+	PK_GelieerdePersoon PRIMARY KEY CLUSTERED (	GelieerdePersoonID	)
+GO
+
+UPDATE cv
+SET cv.GelieerdePersoonID = gp.GelieerdePersoonID
+FROM pers.CommunicatieVorm cv
+JOIN pers.Persoon p ON cv.PersoonID = p.PersoonID
+JOIN pers.GelieerdePersoon gp ON p.PersoonID = gp.PersoonID
+GO
+
+ALTER TABLE pers.CommunicatieVorm ADD CONSTRAINT
+	FK_CommunicatieVorm_GelieerdePersoon FOREIGN KEY
+	(
+	GelieerdePersoonID
+	) REFERENCES pers.GelieerdePersoon
+	(
+	GelieerdePersoonID
+	)
+GO
+
+ALTER TABLE pers.CommunicatieVorm DROP CONSTRAINT
+	FK_CommunicatieVorm_Persoon;
+GO
+
+ALTER TABLE pers.CommunicatieVorm DROP COLUMN PersoonID;
+GO
+
+
+ALTER TABLE pers.PersoonsAdres
+ADD GelieerdePersoonID INT
+GO
+
+UPDATE pa
+SET pa.GelieerdePersoonID = gp.GelieerdePersoonID
+FROM pers.PersoonsAdres pa
+JOIN pers.GelieerdePersoon gp ON pa.PersoonID = gp.PersoonID
+GO
+
+ALTER TABLE pers.PersoonsAdres 
+ADD CONSTRAINT FK_PersoonsAdres_GelieerdePersoon
+FOREIGN KEY (GelieerdePersoonID) 
+REFERENCES pers.GelieerdePersoon(GelieerdePersoonID)
+GO
+
+ALTER TABLE pers.PersoonsAdres
+DROP CONSTRAINT FK_PersoonsAdres_Persoon
+GO
+
+-- geprutst met gui, en script gegenereerd:
+
+BEGIN TRANSACTION
+SET QUOTED_IDENTIFIER ON
+SET ARITHABORT ON
+SET NUMERIC_ROUNDABORT OFF
+SET CONCAT_NULL_YIELDS_NULL ON
+SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+COMMIT
+BEGIN TRANSACTION
+GO
+ALTER TABLE pers.PersoonsAdres
+	DROP CONSTRAINT FK_PersoonsAdres_Adres
+GO
+COMMIT
+BEGIN TRANSACTION
+GO
+ALTER TABLE pers.PersoonsAdres
+	DROP CONSTRAINT FK_PersoonsAdres_GelieerdePersoon
+GO
+COMMIT
+BEGIN TRANSACTION
+GO
+ALTER TABLE pers.PersoonsAdres
+	DROP CONSTRAINT FK_PersoonsAdres_AdresType
+GO
+COMMIT
+BEGIN TRANSACTION
+GO
+CREATE TABLE pers.Tmp_PersoonsAdres
+	(
+	IsStandaard bit NOT NULL,
+	Opmerking text NULL,
+	PersoonID int NOT NULL,
+	AdresID int NOT NULL,
+	AdresTypeID int NOT NULL,
+	Versie timestamp NOT NULL,
+	GelieerdePersoonID int NOT NULL
+	)  ON [PRIMARY]
+	 TEXTIMAGE_ON [PRIMARY]
+GO
+IF EXISTS(SELECT * FROM pers.PersoonsAdres)
+	 EXEC('INSERT INTO pers.Tmp_PersoonsAdres (IsStandaard, Opmerking, PersoonID, AdresID, AdresTypeID, GelieerdePersoonID)
+		SELECT IsStandaard, Opmerking, PersoonID, AdresID, AdresTypeID, GelieerdePersoonID FROM pers.PersoonsAdres WITH (HOLDLOCK TABLOCKX)')
+GO
+DROP TABLE pers.PersoonsAdres
+GO
+EXECUTE sp_rename N'pers.Tmp_PersoonsAdres', N'PersoonsAdres', 'OBJECT' 
+GO
+ALTER TABLE pers.PersoonsAdres ADD CONSTRAINT
+	PK_PersoonsAdres PRIMARY KEY CLUSTERED 
+	(
+	AdresID,
+	GelieerdePersoonID
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+GO
+ALTER TABLE pers.PersoonsAdres ADD CONSTRAINT
+	FK_PersoonsAdres_AdresType FOREIGN KEY
+	(
+	AdresTypeID
+	) REFERENCES pers.AdresType
+	(
+	AdresTypeID
+	) ON UPDATE  NO ACTION 
+	 ON DELETE  NO ACTION 
+	
+GO
+ALTER TABLE pers.PersoonsAdres ADD CONSTRAINT
+	FK_PersoonsAdres_GelieerdePersoon FOREIGN KEY
+	(
+	GelieerdePersoonID
+	) REFERENCES pers.GelieerdePersoon
+	(
+	GelieerdePersoonID
+	) ON UPDATE  NO ACTION 
+	 ON DELETE  NO ACTION 
+	
+GO
+ALTER TABLE pers.PersoonsAdres ADD CONSTRAINT
+	FK_PersoonsAdres_Adres FOREIGN KEY
+	(
+	AdresID
+	) REFERENCES adr.Adres
+	(
+	AdresID
+	) ON UPDATE  NO ACTION 
+	 ON DELETE  NO ACTION 
+	
+GO
+COMMIT
+
+ALTER TABLE pers.PersoonsAdres DROP COLUMN PersoonID;
+go
+
+--- koppelen van vrije velden aan gelieerde personen
+
+/* To prevent any potential data loss issues, you should review this script in detail before running it outside the context of the database designer.*/
+BEGIN TRANSACTION
+SET QUOTED_IDENTIFIER ON
+SET ARITHABORT ON
+SET NUMERIC_ROUNDABORT OFF
+SET CONCAT_NULL_YIELDS_NULL ON
+SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+COMMIT
+BEGIN TRANSACTION
+GO
+COMMIT
+BEGIN TRANSACTION
+GO
+CREATE TABLE core.Tmp_VrijVeldType
+	(
+	Naam varchar(80) NULL,
+	DataType int NOT NULL,
+	VrijVeldTypeID int NOT NULL,
+	GroepID int NOT NULL
+	)  ON [PRIMARY]
+GO
+IF EXISTS(SELECT * FROM core.VrijVeldType)
+	 EXEC('INSERT INTO core.Tmp_VrijVeldType (Naam, DataType, VrijVeldTypeID)
+		SELECT Naam, DataType, VrijVeldTypeID FROM core.VrijVeldType WITH (HOLDLOCK TABLOCKX)')
+GO
+ALTER TABLE pers.PersoonVrijVeldType
+	DROP CONSTRAINT FK_PersoonVrijVeldType_VrijVeldType
+GO
+DROP TABLE core.VrijVeldType
+GO
+EXECUTE sp_rename N'core.Tmp_VrijVeldType', N'VrijVeldType', 'OBJECT' 
+GO
+ALTER TABLE core.VrijVeldType ADD CONSTRAINT
+	PK_VrijVeldType PRIMARY KEY CLUSTERED 
+	(
+	VrijVeldTypeID
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+GO
+ALTER TABLE core.VrijVeldType ADD CONSTRAINT
+	FK_VrijVeldType_Groep FOREIGN KEY
+	(
+	GroepID
+	) REFERENCES grp.Groep
+	(
+	GroepID
+	) ON UPDATE  NO ACTION 
+	 ON DELETE  NO ACTION 
+	
+GO
+COMMIT
+BEGIN TRANSACTION
+GO
+ALTER TABLE pers.PersoonVrijVeldType ADD CONSTRAINT
+	FK_PersoonVrijVeldType_VrijVeldType FOREIGN KEY
+	(
+	PersoonVrijVeldTypeID
+	) REFERENCES core.VrijVeldType
+	(
+	VrijVeldTypeID
+	) ON UPDATE  NO ACTION 
+	 ON DELETE  NO ACTION 
+	
+GO
+COMMIT
+
+/* To prevent any potential data loss issues, you should review this script in detail before running it outside the context of the database designer.*/
+BEGIN TRANSACTION
+SET QUOTED_IDENTIFIER ON
+SET ARITHABORT ON
+SET NUMERIC_ROUNDABORT OFF
+SET CONCAT_NULL_YIELDS_NULL ON
+SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+COMMIT
+BEGIN TRANSACTION
+GO
+ALTER TABLE pers.PersoonVrijVeldType
+	DROP CONSTRAINT FK_PersoonVrijVeldType_Groep
+GO
+COMMIT
+BEGIN TRANSACTION
+GO
+ALTER TABLE pers.PersoonVrijVeldType
+	DROP COLUMN GroepID
+GO
+COMMIT
+
+/* To prevent any potential data loss issues, you should review this script in detail before running it outside the context of the database designer.*/
+BEGIN TRANSACTION
+SET QUOTED_IDENTIFIER ON
+SET ARITHABORT ON
+SET NUMERIC_ROUNDABORT OFF
+SET CONCAT_NULL_YIELDS_NULL ON
+SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+COMMIT
+BEGIN TRANSACTION
+GO
+ALTER TABLE pers.PersoonVrijVeld
+	DROP CONSTRAINT FK_PersoonVrijVeld_Persoon
+GO
+COMMIT
+BEGIN TRANSACTION
+GO
+COMMIT
+BEGIN TRANSACTION
+GO
+EXECUTE sp_rename N'pers.PersoonVrijVeld.PersoonID', N'Tmp_GelieerdePersoonID', 'COLUMN' 
+GO
+EXECUTE sp_rename N'pers.PersoonVrijVeld.Tmp_GelieerdePersoonID', N'GelieerdePersoonID', 'COLUMN' 
+GO
+ALTER TABLE pers.PersoonVrijVeld ADD CONSTRAINT
+	FK_PersoonVrijVeld_GelieerdePersoon FOREIGN KEY
+	(
+	GelieerdePersoonID
+	) REFERENCES pers.GelieerdePersoon
+	(
+	GelieerdePersoonID
+	) ON UPDATE  NO ACTION 
+	 ON DELETE  NO ACTION 
+	
+GO
+COMMIT
+
+/* To prevent any potential data loss issues, you should review this script in detail before running it outside the context of the database designer.*/
+BEGIN TRANSACTION
+SET QUOTED_IDENTIFIER ON
+SET ARITHABORT ON
+SET NUMERIC_ROUNDABORT OFF
+SET CONCAT_NULL_YIELDS_NULL ON
+SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+COMMIT
+BEGIN TRANSACTION
+GO
+EXECUTE sp_rename N'pers.PersoonsCategorie.PersoonID', N'Tmp_GelieerdePersoonID_1', 'COLUMN' 
+GO
+EXECUTE sp_rename N'pers.PersoonsCategorie.Tmp_GelieerdePersoonID_1', N'GelieerdePersoonID', 'COLUMN' 
+GO
+COMMIT
+
+
+
