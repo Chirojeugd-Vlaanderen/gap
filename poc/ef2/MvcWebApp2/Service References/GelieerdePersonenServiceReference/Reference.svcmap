@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="c9875d26-20b8-4ae9-bdae-ac82b633314b" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:2733/GelieerdePersonenService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="GelieerdePersonenService.xsd" MetadataType="Schema" ID="5b19e2dd-0dea-4483-a958-f03b6e6bd163" SourceId="1" SourceUrl="http://localhost:2733/GelieerdePersonenService.svc?xsd=xsd4" />
+    <MetadataFile FileName="GelieerdePersonenService.disco" MetadataType="Disco" ID="0303cef5-d0c1-4bba-8ebc-65022ed15921" SourceId="1" SourceUrl="http://localhost:2733/GelieerdePersonenService.svc?disco" />
+    <MetadataFile FileName="GelieerdePersonenService1.xsd" MetadataType="Schema" ID="8dab54a3-7b90-448c-8778-abe3946a26ed" SourceId="1" SourceUrl="http://localhost:2733/GelieerdePersonenService.svc?xsd=xsd3" />
+    <MetadataFile FileName="GelieerdePersonenService2.xsd" MetadataType="Schema" ID="9874f405-08bc-4648-abaa-1227dbe42f74" SourceId="1" SourceUrl="http://localhost:2733/GelieerdePersonenService.svc?xsd=xsd0" />
+    <MetadataFile FileName="GelieerdePersonenService3.xsd" MetadataType="Schema" ID="062a6864-1311-4bea-8807-a8d18fe55591" SourceId="1" SourceUrl="http://localhost:2733/GelieerdePersonenService.svc?xsd=xsd1" />
+    <MetadataFile FileName="GelieerdePersonenService4.xsd" MetadataType="Schema" ID="1a2b14d5-9305-4021-8686-31a1a5fc7b1e" SourceId="1" SourceUrl="http://localhost:2733/GelieerdePersonenService.svc?xsd=xsd2" />
+    <MetadataFile FileName="GelieerdePersonenService.wsdl" MetadataType="Wsdl" ID="c2f432c7-86c8-4371-8e89-29d8d8b4061f" SourceId="1" SourceUrl="http://localhost:2733/GelieerdePersonenService.svc?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
