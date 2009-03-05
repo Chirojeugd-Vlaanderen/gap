@@ -9,6 +9,7 @@ namespace Cg2.Orm
     {
         int ID { get; set; }
         byte[] Versie { get; set; }
+        string VersieString { get; }
         Guid BusinessKey { get; set; }
     }
 }

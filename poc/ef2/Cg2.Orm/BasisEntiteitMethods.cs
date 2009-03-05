@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Cg2.Orm
 {
+    /// <summary>
+    /// Klasse met extension methods voor basisentiteiten.
+    /// </summary>
     public static class BasisEntiteitMethods
     {
         const int DefaultID = 0;
@@ -25,5 +28,16 @@ namespace Cg2.Orm
                         && ik.BusinessKey == gij.BusinessKey
                     ) && ik.GetType() == jij.GetType();
         }
+
+        public static string VersieStringGet(this IBasisEntiteit be)
+        {
+            return be.Versie == null ? "" : Convert.ToBase64String(be.Versie);
+        }
+
+        public static void VersieStringSet(this IBasisEntiteit be, String ver)
+        {
+            be.Versie = Convert.FromBase64String(ver);
+        }
+
     }
 }

@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Data", "Cg2.Data\Cg2.Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Workers", "Cg2.Workers\Cg2.Workers.csproj", "{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServices", "WebServices\WebServices.csproj", "{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Services", "WebServices\Cg2.Services.csproj", "{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{994E80C0-DD18-417A-A51C-F781D3B012AB}"
 	ProjectSection(SolutionItems) = preProject
@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Test", "Cg2.Test\Cg2.Test.csproj", "{82D3FCA5-58B1-4940-AEAF-7FE289CD821D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServices.Test", "WebServices.Test\WebServices.Test.csproj", "{B9BFA04A-6E1B-4EF3-9E22-423C3B3AD6CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Services.Test", "WebServices.Test\Cg2.Services.Test.csproj", "{B9BFA04A-6E1B-4EF3-9E22-423C3B3AD6CD}"
 	ProjectSection(ProjectDependencies) = postProject
 		{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975} = {96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}
 	EndProjectSection

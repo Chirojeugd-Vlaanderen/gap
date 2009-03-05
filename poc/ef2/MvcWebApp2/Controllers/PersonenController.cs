@@ -67,24 +67,31 @@ namespace MvcWebApp2.Controllers
  
         public ActionResult Edit(int id)
         {
-            return View();
+            using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
+            {
+                GelieerdePersoon p = service.DetailsOphalen(id);
+                return View("Edit", p);
+            }
         }
 
         //
         // POST: /Personen/Edit/5
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(GelieerdePersoon p)
         {
             try
             {
-                // TODO: Add update logic here
+                using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
+                {
+                    service.Bewaren(p);
+                }
  
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = p.ID });
             }
             catch
             {
-                return View();
+                return View("Edit" ,p);
             }
         }
 

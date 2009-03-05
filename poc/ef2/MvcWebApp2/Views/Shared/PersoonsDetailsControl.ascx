@@ -5,6 +5,7 @@
 <h3>Algemeen</h3>
 
 <table>
+<tr><td>Ad-nummer:</td><td><%=ViewData.Model.Persoon.AdNummer %></td></tr>
 <tr><td>Familienaam</td><td><%=Html.Encode(ViewData.Model.Persoon.Naam) %></td></tr>
 <tr><td>Voornaam</td><td><%=Html.Encode(ViewData.Model.Persoon.VoorNaam) %></td></tr>
 <tr><td>Geboortedatum</td><td><%=ViewData.Model.Persoon.GeboorteDatum == null ? "?" : ((DateTime)ViewData.Model.Persoon.GeboorteDatum).ToString("d") %></td></tr>

@@ -8,7 +8,7 @@ using Cg2.ServiceContracts;
 using Cg2.Workers;
 using Cg2.Orm;
 
-namespace WebServices
+namespace Cg2.Services
 {
     // NOTE: If you change the class name "GelieerdePersonenService" here, you must also update the reference to "GelieerdePersonenService" in Web.config.
     public class GelieerdePersonenService : IGelieerdePersonenService
@@ -37,6 +37,12 @@ namespace WebServices
             var result = pm.Dao.DetailsOphalen(gelieerdePersoonID);
 
             return result;
+        }
+
+        public void Bewaren(GelieerdePersoon persoon)
+        {
+            GelieerdePersonenManager pm = new GelieerdePersonenManager();
+            pm.Dao.Bewaren(persoon, null);
         }
     }
 }

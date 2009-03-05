@@ -3,10 +3,10 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WebServices.Test.GroepenServiceReference;
+using Cg2.Services.Test.GroepenServiceReference;
 using Cg2.Orm;
 
-namespace WebServices.Test
+namespace Cg2.Services.Test
 {
     /// <summary>
     /// Summary description for GroepenServiceTest

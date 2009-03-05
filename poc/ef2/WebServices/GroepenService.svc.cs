@@ -8,7 +8,7 @@ using Cg2.Workers;
 using Cg2.Orm;
 using Cg2.ServiceContracts;
 
-namespace WebServices
+namespace Cg2.Services
 {
     // NOTE: If you change the class name "GroepenService" here, you must also update the reference to "GroepenService" in Web.config.
     public class GroepenService : IGroepenService
@@ -21,7 +21,7 @@ namespace WebServices
 
             try
             {
-                return gm.Dao.Updaten(g, origineel);
+                return gm.Dao.Bewaren(g, origineel);
             }
             catch (Exception e)
             {

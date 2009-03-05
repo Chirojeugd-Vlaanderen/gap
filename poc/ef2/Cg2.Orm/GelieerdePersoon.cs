@@ -5,5 +5,27 @@ using System.Text;
 
 namespace Cg2.Orm
 {
-    public partial class GelieerdePersoon : IBasisEntiteit { }
+    public partial class GelieerdePersoon : IBasisEntiteit 
+    { 
+        public GelieerdePersoon()
+        {
+            BusinessKey = Guid.NewGuid();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.MyEquals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.MyGetHashCode();
+        }
+
+        public string VersieString
+        {
+            get { return this.VersieStringGet(); }
+            set { this.VersieStringSet(value); }
+        }
+    }
 }

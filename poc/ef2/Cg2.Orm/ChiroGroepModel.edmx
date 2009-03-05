@@ -293,13 +293,13 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="AdNummer" Type="Int32" />
+          <Property Name="AdNummer" Type="Int32" ConcurrencyMode="Fixed" />
           <Property Name="Naam" Type="String" Nullable="false" MaxLength="160" Unicode="false" FixedLength="false" />
           <Property Name="VoorNaam" Type="String" MaxLength="60" Unicode="false" FixedLength="false" />
           <Property Name="GeboorteDatum" Type="DateTime" />
           <Property Name="GeslachtsInt" Type="Int32" Nullable="false" />
           <Property Name="SterfDatum" Type="DateTime" />
-          <Property Name="BusinessKey" Type="Guid" Nullable="false" />
+          <Property Name="BusinessKey" Type="Guid" Nullable="false" ConcurrencyMode="Fixed" />
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Versie" Type="Binary" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_GelieerdePersoon_Persoon" FromRole="Persoon" ToRole="GelieerdePersoon" /></EntityType>
@@ -318,9 +318,9 @@
           <Key>
             <PropertyRef Name="ID" /></Key>
           <Property Name="ChiroLeefTijd" Type="Int32" Nullable="false" />
-          <Property Name="BusinessKey" Type="Guid" Nullable="false" />
+          <Property Name="BusinessKey" Type="Guid" Nullable="false" ConcurrencyMode="Fixed" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="false" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_GelieerdePersoon_Groep" FromRole="GelieerdePersoon" ToRole="Groep" />
           <NavigationProperty Name="Communicatie" Relationship="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" FromRole="GelieerdePersoon" ToRole="CommunicatieVorm" />
           <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_GelieerdePersoon_Persoon" FromRole="GelieerdePersoon" ToRole="Persoon" />

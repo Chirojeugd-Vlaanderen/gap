@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Orm;
 
-namespace WebServices.Test
+namespace Cg2.Services.Test
 {
     /// <summary>
     /// Summary description for GelieerdePersonenServiceTest
@@ -63,7 +63,7 @@ namespace WebServices.Test
         [TestMethod]
         public void PaginaOphalen()
         {
-            using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new WebServices.Test.GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
+            using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new Cg2.Services.Test.GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
             {
                 int aantalOpgehaald;
                 IList<GelieerdePersoon> antwoord = service.PaginaOphalen(out aantalOpgehaald, 310, 1, 12);
@@ -75,7 +75,7 @@ namespace WebServices.Test
         [TestMethod]
         public void DetailsOphalen()
         {
-            using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new WebServices.Test.GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
+            using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new Cg2.Services.Test.GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
             {
                 GelieerdePersoon p = service.DetailsOphalen(373);
 

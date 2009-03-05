@@ -21,6 +21,10 @@ namespace MvcWebApp2.GelieerdePersonenServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/DetailsOphalen", ReplyAction="http://tempuri.org/IGelieerdePersonenService/DetailsOphalenResponse")]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
         Cg2.Orm.GelieerdePersoon DetailsOphalen(int gelieerdePersoonID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/Bewaren", ReplyAction="http://tempuri.org/IGelieerdePersonenService/BewarenResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
+        void Bewaren(Cg2.Orm.GelieerdePersoon persoon);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -56,6 +60,10 @@ namespace MvcWebApp2.GelieerdePersonenServiceReference {
         
         public Cg2.Orm.GelieerdePersoon DetailsOphalen(int gelieerdePersoonID) {
             return base.Channel.DetailsOphalen(gelieerdePersoonID);
+        }
+        
+        public void Bewaren(Cg2.Orm.GelieerdePersoon persoon) {
+            base.Channel.Bewaren(persoon);
         }
     }
 }

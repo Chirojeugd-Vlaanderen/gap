@@ -31,6 +31,12 @@ namespace Cg2.Orm
             return this.MyGetHashCode();
         }
 
+        public string VersieString
+        {
+            get { return this.VersieStringGet(); }
+            set { this.VersieStringSet(value); }
+        }
+
         public GeslachtsType Geslacht
         {
             get { return (GeslachtsType)this.GeslachtsInt; }

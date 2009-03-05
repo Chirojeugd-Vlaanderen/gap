@@ -30,5 +30,12 @@ namespace Cg2.ServiceContracts
         /// <returns>GelieerdePersoon met persoonsgegevens, communicatievorm en adressen</returns>
         [OperationContract]
         GelieerdePersoon DetailsOphalen(int gelieerdePersoonID);
+
+        /// <summary>
+        /// Bewaart nieuwe/gewijzigde gelieerde persoon
+        /// </summary>
+        /// <param name="persoon">Te bewaren persoon</param>
+        [OperationContract]
+        void Bewaren(GelieerdePersoon persoon);
     }
 }

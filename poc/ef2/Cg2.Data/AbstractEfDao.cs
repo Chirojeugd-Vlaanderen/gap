@@ -57,12 +57,12 @@ namespace Cg2.Data.Ef
         }
 
         /// <summary>
-        /// Entiteit persisteren in database
+        /// Nieuwe entiteit persisteren in database
         /// </summary>
         /// <param name="entiteit">Te bewaren entiteit</param>
         /// <returns>Opnieuw de entiteit, met eventueel aangepast 
         /// ID.</returns>
-        public T Bewaren(T entiteit)
+        public T Creeren(T entiteit)
         {
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
@@ -96,35 +96,56 @@ namespace Cg2.Data.Ef
         }
 
         /// <summary>
-        /// Updatet entiteit in database
+        /// Bewaart/Updatet entiteit in database
         /// </summary>
         /// <param name="nieuweEntiteit">entiteit met nieuwe gegevens</param>
         /// <param name="oorspronkelijkeEntiteit">entiteit met oorspronkelijke
         /// gegevens, indien nog beschikbaar.  Anders null.</param>
         /// <returns>De geupdatete entiteit</returns>
-        public T Updaten(T nieuweEntiteit, T oorspronkelijkeEntiteit)
+        /// <remarks>Deze functie mag ook gebruikt worden voor het toevoegen
+        /// van een nieuwe entiteit.</remarks>
+        public T Bewaren(T nieuweEntiteit, T oorspronkelijkeEntiteit)
         {
             // Code uit het boek aangepast, met dank aan
             // http://msdn.microsoft.com/en-us/magazine/cc700340.aspx
 
-            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            if (nieuweEntiteit.ID == 0)
             {
-                EntityKey sleutel;
-                if (oorspronkelijkeEntiteit == null)
-                {
-                    db.Attach(nieuweEntiteit);
-                    sleutel = db.CreateEntityKey(typeof(T).Name, nieuweEntiteit);
-                    SetAllModified(sleutel, db);
-                }
-                else
-                {
-                    db.Attach(oorspronkelijkeEntiteit);
-                    sleutel = db.CreateEntityKey(typeof(T).Name, nieuweEntiteit);
-                    db.ApplyPropertyChanges(sleutel.EntitySetName, nieuweEntiteit as object);
-                }
-                db.SaveChanges();
+                return Creeren(nieuweEntiteit);
             }
-            return nieuweEntiteit;
+            else
+            {
+                using (ChiroGroepEntities db = new ChiroGroepEntities())
+                {
+                    // Als de entity key verloren is gegaan
+                    // (wat typisch gebeurt bij mvc)
+                    // dan moeten we hem terug genereren alvorens
+                    // de entity terug geattacht kan worden.
+
+                    if (nieuweEntiteit.EntityKey == null)
+                    {
+                        nieuweEntiteit.EntityKey = db.CreateEntityKey(typeof(T).Name
+                            , nieuweEntiteit);
+                    }
+                    EntityKey sleutel;
+                    if (oorspronkelijkeEntiteit == null)
+                    {
+                        db.Attach(nieuweEntiteit);
+                        sleutel = db.CreateEntityKey(typeof(T).Name, nieuweEntiteit);
+                        SetAllModified(sleutel, db);
+                    }
+                    else
+                    {
+                        db.Attach(oorspronkelijkeEntiteit);
+                        sleutel = db.CreateEntityKey(typeof(T).Name, nieuweEntiteit);
+                        db.ApplyPropertyChanges(sleutel.EntitySetName, nieuweEntiteit as object);
+                    }
+                    db.SaveChanges();
+                    
+
+                }
+                return nieuweEntiteit;
+            }
         }
 
         /// <summary>
