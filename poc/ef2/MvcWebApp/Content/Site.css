@@ -242,28 +242,3 @@ ul#menu li.selected a
     font-weight: bold;
     color: #ff0000;
 }
-
-/* eigen dings */
-
-
-.adres
-{
-    display:table-cell;
-    padding-right: 2ex;
-}
-
-.adreslijn
-{
-    display:table-row;
-}
-
-.standaardadres
-{
-    font-weight:bold;
-}
-
-.adresopmerking
-{
-    font-style:italic;
-    font-size:smaller;
-}
