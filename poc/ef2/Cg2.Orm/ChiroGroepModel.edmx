@@ -125,8 +125,11 @@
           <Property Name="NonActief" Type="bit" Nullable="false" />
           <Property Name="Verwijderd" Type="bit" Nullable="false" />
           <Property Name="VolgendWerkjaar" Type="int" Nullable="false" />
-          <Property Name="LidID" Type="int" Nullable="false" />
+          <Property Name="LidID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="GroepsWerkjaarID" Type="int" Nullable="false" />
+          <Property Name="GelieerdePersoonID" Type="int" Nullable="false" />
+          <Property Name="Guid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="CommunicatieVorm">
           <Key>
@@ -264,13 +267,13 @@
         </Association>
         <Association Name="FK_Lid_GelieerdePersoon">
           <End Role="GelieerdePersoon" Type="ChiroGroepModel.Store.GelieerdePersoon" Multiplicity="1" />
-          <End Role="Lid" Type="ChiroGroepModel.Store.Lid" Multiplicity="0..1" />
+          <End Role="Lid" Type="ChiroGroepModel.Store.Lid" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="GelieerdePersoon">
               <PropertyRef Name="GelieerdePersoonID" />
             </Principal>
             <Dependent Role="Lid">
-              <PropertyRef Name="LidID" />
+              <PropertyRef Name="GelieerdePersoonID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -345,13 +348,16 @@
             <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
             <End Role="PersoonsAdres" EntitySet="PersoonsAdres" /></AssociationSet>
           <EntitySet Name="GroepsWerkJaar" EntityType="ChiroGroepModel.GroepsWerkJaar" />
+          <EntitySet Name="Lid" EntityType="ChiroGroepModel.Lid" />
           <AssociationSet Name="FK_GroepsWerkjaar_Groep" Association="ChiroGroepModel.FK_GroepsWerkjaar_Groep">
             <End Role="Groep" EntitySet="Groep" />
             <End Role="GroepsWerkJaar" EntitySet="GroepsWerkJaar" /></AssociationSet>
           <AssociationSet Name="FK_Lid_GroepsWerkjaar" Association="ChiroGroepModel.FK_Lid_GroepsWerkjaar">
             <End Role="GroepsWerkJaar" EntitySet="GroepsWerkJaar" />
-            <End Role="Lid" EntitySet="GelieerdePersoon" /></AssociationSet>
-          </EntityContainer>
+            <End Role="Lid" EntitySet="Lid" /></AssociationSet>
+          <AssociationSet Name="FK_Lid_GelieerdePersoon" Association="ChiroGroepModel.FK_Lid_GelieerdePersoon">
+            <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+            <End Role="Lid" EntitySet="Lid" /></AssociationSet></EntityContainer>
         <EntityType Name="ChiroGroep" BaseType="ChiroGroepModel.Groep">
         </EntityType>
         <EntityType Name="Groep">
@@ -404,7 +410,7 @@
           <NavigationProperty Name="Communicatie" Relationship="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" FromRole="GelieerdePersoon" ToRole="CommunicatieVorm" />
           <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_GelieerdePersoon_Persoon" FromRole="GelieerdePersoon" ToRole="Persoon" />
           <NavigationProperty Name="PersoonsAdres" Relationship="ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon" FromRole="GelieerdePersoon" ToRole="PersoonsAdres" />
-          </EntityType>
+          <NavigationProperty Name="Lid" Relationship="ChiroGroepModel.FK_Lid_GelieerdePersoon" FromRole="GelieerdePersoon" ToRole="Lid" /></EntityType>
         <Association Name="FK_GelieerdePersoon_Groep">
           <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1" />
           <End Type="ChiroGroepModel.GelieerdePersoon" Role="GelieerdePersoon" Multiplicity="*" /></Association>
@@ -479,21 +485,28 @@
           <Property Name="GroepsWerkjaarID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_GroepsWerkjaar_Groep" FromRole="GroepsWerkJaar" ToRole="Groep" />
           <NavigationProperty Name="Lid" Relationship="ChiroGroepModel.FK_Lid_GroepsWerkjaar" FromRole="GroepsWerkJaar" ToRole="Lid" /></EntityType>
-        <EntityType Name="Lid" BaseType="ChiroGroepModel.GelieerdePersoon">
+        <EntityType Name="Lid">
+          <Key>
+            <PropertyRef Name="ID" /></Key>
           <Property Name="EindeInstapPeriode" Type="DateTime" Nullable="true" />
           <Property Name="LidgeldBetaald" Type="Boolean" Nullable="false" />
           <Property Name="NonActief" Type="Boolean" Nullable="false" />
           <Property Name="Verwijderd" Type="Boolean" Nullable="false" />
           <Property Name="VolgendWerkjaar" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="BusinessKey" Type="Guid" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="false" />
           <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_Lid_GroepsWerkjaar" FromRole="Lid" ToRole="GroepsWerkJaar" />
-          </EntityType>
+          <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_Lid_GelieerdePersoon" FromRole="Lid" ToRole="GelieerdePersoon" /></EntityType>
         <Association Name="FK_GroepsWerkjaar_Groep">
           <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1" />
           <End Type="ChiroGroepModel.GroepsWerkJaar" Role="GroepsWerkJaar" Multiplicity="*" /></Association>
         <Association Name="FK_Lid_GroepsWerkjaar">
           <End Type="ChiroGroepModel.GroepsWerkJaar" Role="GroepsWerkJaar" Multiplicity="1" />
           <End Type="ChiroGroepModel.Lid" Role="Lid" Multiplicity="*" /></Association>
-        </Schema>
+        <Association Name="FK_Lid_GelieerdePersoon">
+          <End Type="ChiroGroepModel.GelieerdePersoon" Role="GelieerdePersoon" Multiplicity="1" />
+          <End Type="ChiroGroepModel.Lid" Role="Lid" Multiplicity="*" /></Association></Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -548,14 +561,7 @@
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="ID" ColumnName="GelieerdePersoonID" />
                 <ScalarProperty Name="BusinessKey" ColumnName="Guid" />
-                <ScalarProperty Name="ChiroLeefTijd" ColumnName="ChiroLeefTijd" /></MappingFragment></EntityTypeMapping><EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Lid)">
-              <MappingFragment StoreEntitySet="Lid">
-                <ScalarProperty Name="ID" ColumnName="LidID" />
-                <ScalarProperty Name="VolgendWerkjaar" ColumnName="VolgendWerkjaar" />
-                <ScalarProperty Name="Verwijderd" ColumnName="Verwijderd" />
-                <ScalarProperty Name="NonActief" ColumnName="NonActief" />
-                <ScalarProperty Name="LidgeldBetaald" ColumnName="LidgeldBetaald" />
-                <ScalarProperty Name="EindeInstapPeriode" ColumnName="EindeInstapPeriode" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+                <ScalarProperty Name="ChiroLeefTijd" ColumnName="ChiroLeefTijd" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
           <AssociationSetMapping Name="FK_GelieerdePersoon_Groep" TypeName="ChiroGroepModel.FK_GelieerdePersoon_Groep" StoreEntitySet="GelieerdePersoon">
             <EndProperty Name="GelieerdePersoon">
               <ScalarProperty Name="ID" ColumnName="GelieerdePersoonID" /></EndProperty>
@@ -627,6 +633,17 @@
               <MappingFragment StoreEntitySet="GroepsWerkJaar">
                 <ScalarProperty Name="GroepsWerkjaarID" ColumnName="GroepsWerkjaarID" />
                 <ScalarProperty Name="WerkJaar" ColumnName="WerkJaar" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Lid">
+            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Lid)">
+              <MappingFragment StoreEntitySet="Lid">
+                <ScalarProperty Name="Versie" ColumnName="Versie" />
+                <ScalarProperty Name="BusinessKey" ColumnName="Guid" />
+                <ScalarProperty Name="ID" ColumnName="LidID" />
+                <ScalarProperty Name="VolgendWerkjaar" ColumnName="VolgendWerkjaar" />
+                <ScalarProperty Name="Verwijderd" ColumnName="Verwijderd" />
+                <ScalarProperty Name="NonActief" ColumnName="NonActief" />
+                <ScalarProperty Name="LidgeldBetaald" ColumnName="LidgeldBetaald" />
+                <ScalarProperty Name="EindeInstapPeriode" ColumnName="EindeInstapPeriode" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
           <AssociationSetMapping Name="FK_GroepsWerkjaar_Groep" TypeName="ChiroGroepModel.FK_GroepsWerkjaar_Groep" StoreEntitySet="GroepsWerkJaar">
             <EndProperty Name="GroepsWerkJaar">
               <ScalarProperty Name="GroepsWerkjaarID" ColumnName="GroepsWerkjaarID" /></EndProperty>
@@ -636,7 +653,12 @@
             <EndProperty Name="Lid">
               <ScalarProperty Name="ID" ColumnName="LidID" /></EndProperty>
             <EndProperty Name="GroepsWerkJaar">
-              <ScalarProperty Name="GroepsWerkjaarID" ColumnName="GroepsWerkjaarID" /></EndProperty></AssociationSetMapping></EntityContainerMapping>
+              <ScalarProperty Name="GroepsWerkjaarID" ColumnName="GroepsWerkjaarID" /></EndProperty></AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Lid_GelieerdePersoon" TypeName="ChiroGroepModel.FK_Lid_GelieerdePersoon" StoreEntitySet="Lid">
+            <EndProperty Name="Lid">
+              <ScalarProperty Name="ID" ColumnName="LidID" /></EndProperty>
+            <EndProperty Name="GelieerdePersoon">
+              <ScalarProperty Name="ID" ColumnName="GelieerdePersoonID" /></EndProperty></AssociationSetMapping></EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
@@ -698,18 +720,19 @@
           <ConnectorPoint PointX="5.875" PointY="6.732900390625" />
           <ConnectorPoint PointX="6.625" PointY="6.732900390625" />
           </AssociationConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.GroepsWerkJaar" Width="1.5" PointX="2.625" PointY="9.625" Height="1.7683317057291674" />
-        <EntityTypeShape EntityType="ChiroGroepModel.Lid" Width="1.5" PointX="5.25" PointY="9.5" Height="2.1473193359374996" />
+        <EntityTypeShape EntityType="ChiroGroepModel.GroepsWerkJaar" Width="1.5" PointX="3.25" PointY="9.25" Height="1.7683317057291674" />
+        <EntityTypeShape EntityType="ChiroGroepModel.Lid" Width="1.5" PointX="5.5" PointY="9.125" Height="2.9052945963541674" />
         <AssociationConnector Association="ChiroGroepModel.FK_GroepsWerkjaar_Groep" >
-          <ConnectorPoint PointX="3.1875" PointY="8.0302945963541656" />
-          <ConnectorPoint PointX="3.1875" PointY="9.625" />
+          <ConnectorPoint PointX="3.5" PointY="8.0302945963541656" />
+          <ConnectorPoint PointX="3.5" PointY="9.25" />
           </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_Lid_GroepsWerkjaar" >
-          <ConnectorPoint PointX="4.125" PointY="10.509165852864584" />
-          <ConnectorPoint PointX="5.25" PointY="10.509165852864584" />
+          <ConnectorPoint PointX="4.75" PointY="10.134165852864584" />
+          <ConnectorPoint PointX="5.5" PointY="10.134165852864584" />
           </AssociationConnector>
-        <InheritanceConnector EntityType="ChiroGroepModel.Lid">
-          <ConnectorPoint PointX="5.5625" PointY="7.5263069661458326" />
-          <ConnectorPoint PointX="5.5625" PointY="9.5" /></InheritanceConnector></Diagram></edmx:Diagrams>
+        <AssociationConnector Association="ChiroGroepModel.FK_Lid_GelieerdePersoon" >
+          <ConnectorPoint PointX="5.6875" PointY="7.71580078125" />
+          <ConnectorPoint PointX="5.6875" PointY="9.125" />
+          </AssociationConnector></Diagram></edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
