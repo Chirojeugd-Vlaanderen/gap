@@ -99,12 +99,10 @@ namespace Cg2.Data.Ef
         /// Bewaart/Updatet entiteit in database
         /// </summary>
         /// <param name="nieuweEntiteit">entiteit met nieuwe gegevens</param>
-        /// <param name="oorspronkelijkeEntiteit">entiteit met oorspronkelijke
-        /// gegevens, indien nog beschikbaar.  Anders null.</param>
         /// <returns>De geupdatete entiteit</returns>
         /// <remarks>Deze functie mag ook gebruikt worden voor het toevoegen
         /// van een nieuwe entiteit.</remarks>
-        public T Bewaren(T nieuweEntiteit, T oorspronkelijkeEntiteit)
+        public virtual T Bewaren(T nieuweEntiteit)
         {
             // Code uit het boek aangepast, met dank aan
             // http://msdn.microsoft.com/en-us/magazine/cc700340.aspx
@@ -122,27 +120,12 @@ namespace Cg2.Data.Ef
                     // dan moeten we hem terug genereren alvorens
                     // de entity terug geattacht kan worden.
 
-                    if (nieuweEntiteit.EntityKey == null)
-                    {
-                        nieuweEntiteit.EntityKey = db.CreateEntityKey(typeof(T).Name
-                            , nieuweEntiteit);
-                    }
-                    EntityKey sleutel;
-                    if (oorspronkelijkeEntiteit == null)
-                    {
-                        db.Attach(nieuweEntiteit);
-                        sleutel = db.CreateEntityKey(typeof(T).Name, nieuweEntiteit);
-                        SetAllModified(sleutel, db);
-                    }
-                    else
-                    {
-                        db.Attach(oorspronkelijkeEntiteit);
-                        sleutel = db.CreateEntityKey(typeof(T).Name, nieuweEntiteit);
-                        db.ApplyPropertyChanges(sleutel.EntitySetName, nieuweEntiteit as object);
-                    }
-                    db.SaveChanges();
-                    
+                    nieuweEntiteit.EntityKey = db.CreateEntityKey(typeof(T).Name, nieuweEntiteit);
 
+                    db.Attach(nieuweEntiteit);
+                    SetAllModified(nieuweEntiteit.EntityKey, db);
+
+                    db.SaveChanges();
                 }
                 return nieuweEntiteit;
             }
@@ -154,7 +137,7 @@ namespace Cg2.Data.Ef
         /// <param name="key">Key van te markeren entity</param>
         /// <param name="context">Context om wijzigingen in te markeren</param>
         /// <remarks>Deze functie staat hier mogelijk niet op zijn plaats</remarks>
-        private static void SetAllModified(EntityKey key, ObjectContext context)
+        protected static void SetAllModified(EntityKey key, ObjectContext context)
         {
             var stateEntry = context.ObjectStateManager.GetObjectStateEntry(key);
             var propertyNameList = stateEntry.CurrentValues.DataRecordInfo.FieldMetadata.Select

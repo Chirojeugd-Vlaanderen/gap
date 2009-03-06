@@ -15,13 +15,13 @@ namespace Cg2.Services
     {
         #region IGroepenService Members
 
-        public Groep Updaten(Groep g, Groep origineel)
+        public Groep Updaten(Groep g)
         {
             GroepenManager gm = new GroepenManager();
 
             try
             {
-                return gm.Dao.Bewaren(g, origineel);
+                return gm.Dao.Bewaren(g);
             }
             catch (Exception e)
             {

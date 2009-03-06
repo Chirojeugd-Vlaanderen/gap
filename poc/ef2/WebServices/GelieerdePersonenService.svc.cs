@@ -42,7 +42,7 @@ namespace Cg2.Services
         public void Bewaren(GelieerdePersoon persoon)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
-            pm.Dao.Bewaren(persoon, null);
+            pm.Dao.Bewaren(persoon);
         }
     }
 }

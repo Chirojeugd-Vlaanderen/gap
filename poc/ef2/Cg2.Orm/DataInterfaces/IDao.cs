@@ -16,7 +16,7 @@ namespace Cg2.Orm.DataInterfaces
         T Ophalen(int id);
         List<T> AllesOphalen();
         T Creeren(T entiteit);
-        T Bewaren(T nieuweEntiteit, T oorspronkelijkeEntiteit);
+        T Bewaren(T nieuweEntiteit);
         void Verwijderen(T entiteit);
         void Commit();
     }

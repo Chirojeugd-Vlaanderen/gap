@@ -16,14 +16,10 @@ namespace Cg2.ServiceContracts
         /// Persisteert een groep in de database
         /// </summary>
         /// <param name="g">Te persisteren groep</param>
-        /// <param name="origineel">Het bewaren zal sneller gaan als een
-        /// oorspronkelijk (ongewijzigd) object meegegeven wordt.  Zonder
-        /// gaat het ook; geef dan null mee als origineel.
-        /// </param>
         /// <returns>De persoon met eventueel gewijzigde informatie</returns>
         /// <remarks>FIXME: gedetailleerde exception</remarks>
         [OperationContract]
-        Groep Updaten(Groep g, Groep origineel);
+        Groep Updaten(Groep g);
 
         /// <summary>
         /// Haalt groep op uit database

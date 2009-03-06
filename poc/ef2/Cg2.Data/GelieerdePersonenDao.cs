@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Cg2.Orm;
 using Cg2.Orm.DataInterfaces;
+using System.Data;
+using System.Diagnostics;
 
 namespace Cg2.Data.Ef
 {
@@ -50,6 +52,34 @@ namespace Cg2.Data.Ef
                     select gp).FirstOrDefault();
             }
 
+        }
+
+        public override GelieerdePersoon Bewaren(GelieerdePersoon p)
+        {
+            if (p.ID == 0)
+            {
+                return Creeren(p);
+            }
+            else
+            {
+                using (ChiroGroepEntities db = new ChiroGroepEntities())
+                {
+                    Debug.Assert(p.Persoon != null);    // gelieerde persoon is niet nuttig zonder persoon
+                    Debug.Assert(p.Persoon.ID != 0);    // een bestaande gelieerde persoon is nooit gekoppeld aan een nieuwe persoon
+
+                    p.EntityKey = db.CreateEntityKey("GelieerdePersoon", p);
+                    p.Persoon.EntityKey = db.CreateEntityKey("Persoon", p.Persoon);
+
+                    db.Attach(p);
+                    db.Attach(p.Persoon);
+
+                    SetAllModified(p.EntityKey, db);
+                    SetAllModified(p.Persoon.EntityKey, db);
+
+                    db.SaveChanges();
+                }
+                return p;
+            }
         }
 
     }
