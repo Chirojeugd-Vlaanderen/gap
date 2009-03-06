@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Cg2.ServiceContracts</RootNamespace>
-    <AssemblyName>Cg2.ServiceInterfaces</AssemblyName>
+    <AssemblyName>Cg2.ServiceContracts</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
