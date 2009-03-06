@@ -25,19 +25,23 @@ namespace Cg2.Workers
         /// <returns></returns>
         public Lid LidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
         {
-            // Het plan:
-            //
-            // 1. kijken of er al een lid bestaat.
-            // 2. Zo ja:
-            //    2a Als dat lid verwijderd of nonactief is: opnieuw activeren
-            //       (weet niet meer precies wat 'nonactief' wil zeggen; op te zoeken)
-            //    2b Was al actief lid: exception
-            // 3. Zo nee:
-            //    Nieuw lidobject
-            //
-            // (Niet vergeten: probeerperiode berekenen)
+            // Kijken of er al een lid bestaat, moet nog gebeuren!
 
-            throw new NotImplementedException();
+            Lid l = new Lid();
+
+            l.GelieerdePersoon = gp;
+            l.GroepsWerkJaar = gwj;
+
+            gp.Lid.Add(l);
+            gwj.Lid.Add(l);
+
+            // Einde instapperiode moet ook nog berekend worden.
+            l.EindeInstapPeriode = DateTime.Now;
+
+            // Ik denk dat in deze method geen databasecall mag gebeuren.
+            // Dit moet via de Dao.
+
+            return l;
         }
     }
 }
