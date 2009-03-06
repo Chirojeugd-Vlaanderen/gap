@@ -51,6 +51,7 @@
     <Compile Include="ChiroGroepenManager.cs" />
     <Compile Include="GelieerdePersonenManager.cs" />
     <Compile Include="GroepenManager.cs" />
+    <Compile Include="LedenManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -16,9 +16,11 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_Subgemeente", "Subgemeente", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Subgemeente), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Adres))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsAdres_Adres", "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Adres), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.PersoonsAdres))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.GelieerdePersoon), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.PersoonsAdres))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GroepsWerkjaar_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "GroepsWerkJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GroepsWerkJaar))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Lid_GroepsWerkjaar", "GroepsWerkJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.GroepsWerkJaar), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Lid))]
 
 // Original file name:
-// Generation date: 5/03/2009 14:24:33
+// Generation date: 6/03/2009 13:29:17
 namespace Cg2.Orm
 {
     
@@ -173,6 +175,21 @@ namespace Cg2.Orm
         }
         private global::System.Data.Objects.ObjectQuery<PersoonsAdres> _PersoonsAdres;
         /// <summary>
+        /// There are no comments for GroepsWerkJaar in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<GroepsWerkJaar> GroepsWerkJaar
+        {
+            get
+            {
+                if ((this._GroepsWerkJaar == null))
+                {
+                    this._GroepsWerkJaar = base.CreateQuery<GroepsWerkJaar>("[GroepsWerkJaar]");
+                }
+                return this._GroepsWerkJaar;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<GroepsWerkJaar> _GroepsWerkJaar;
+        /// <summary>
         /// There are no comments for Groep in the schema.
         /// </summary>
         public void AddToGroep(Groep groep)
@@ -227,6 +244,13 @@ namespace Cg2.Orm
         public void AddToPersoonsAdres(PersoonsAdres persoonsAdres)
         {
             base.AddObject("PersoonsAdres", persoonsAdres);
+        }
+        /// <summary>
+        /// There are no comments for GroepsWerkJaar in the schema.
+        /// </summary>
+        public void AddToGroepsWerkJaar(GroepsWerkJaar groepsWerkJaar)
+        {
+            base.AddObject("GroepsWerkJaar", groepsWerkJaar);
         }
     }
     /// <summary>
@@ -487,6 +511,27 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<GelieerdePersoon>("ChiroGroepModel.FK_GelieerdePersoon_Groep", "GelieerdePersoon", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for GroepsWerkJaar in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_GroepsWerkjaar_Groep", "GroepsWerkJaar")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<GroepsWerkJaar> GroepsWerkJaar
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<GroepsWerkJaar>("ChiroGroepModel.FK_GroepsWerkjaar_Groep", "GroepsWerkJaar");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<GroepsWerkJaar>("ChiroGroepModel.FK_GroepsWerkjaar_Groep", "GroepsWerkJaar", value);
                 }
             }
         }
@@ -982,6 +1027,7 @@ namespace Cg2.Orm
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="GelieerdePersoon")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
+    [global::System.Runtime.Serialization.KnownTypeAttribute(typeof(global::Cg2.Orm.Lid))]
     public partial class GelieerdePersoon : global::System.Data.Objects.DataClasses.EntityObject
     {
         /// <summary>
@@ -1889,6 +1935,322 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.GroepsWerkJaar in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// GroepsWerkjaarID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="GroepsWerkJaar")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class GroepsWerkJaar : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new GroepsWerkJaar object.
+        /// </summary>
+        /// <param name="werkJaar">Initial value of WerkJaar.</param>
+        /// <param name="groepsWerkjaarID">Initial value of GroepsWerkjaarID.</param>
+        public static GroepsWerkJaar CreateGroepsWerkJaar(int werkJaar, int groepsWerkjaarID)
+        {
+            GroepsWerkJaar groepsWerkJaar = new GroepsWerkJaar();
+            groepsWerkJaar.WerkJaar = werkJaar;
+            groepsWerkJaar.GroepsWerkjaarID = groepsWerkjaarID;
+            return groepsWerkJaar;
+        }
+        /// <summary>
+        /// There are no comments for Property WerkJaar in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int WerkJaar
+        {
+            get
+            {
+                return this._WerkJaar;
+            }
+            set
+            {
+                this.OnWerkJaarChanging(value);
+                this.ReportPropertyChanging("WerkJaar");
+                this._WerkJaar = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("WerkJaar");
+                this.OnWerkJaarChanged();
+            }
+        }
+        private int _WerkJaar;
+        partial void OnWerkJaarChanging(int value);
+        partial void OnWerkJaarChanged();
+        /// <summary>
+        /// There are no comments for Property GroepsWerkjaarID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int GroepsWerkjaarID
+        {
+            get
+            {
+                return this._GroepsWerkjaarID;
+            }
+            set
+            {
+                this.OnGroepsWerkjaarIDChanging(value);
+                this.ReportPropertyChanging("GroepsWerkjaarID");
+                this._GroepsWerkjaarID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("GroepsWerkjaarID");
+                this.OnGroepsWerkjaarIDChanged();
+            }
+        }
+        private int _GroepsWerkjaarID;
+        partial void OnGroepsWerkjaarIDChanging(int value);
+        partial void OnGroepsWerkjaarIDChanged();
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_GroepsWerkjaar_Groep", "Groep")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Groep Groep
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_GroepsWerkjaar_Groep", "Groep").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_GroepsWerkjaar_Groep", "Groep").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Groep> GroepReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_GroepsWerkjaar_Groep", "Groep");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Groep>("ChiroGroepModel.FK_GroepsWerkjaar_Groep", "Groep", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Lid in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Lid_GroepsWerkjaar", "Lid")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Lid> Lid
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Lid>("ChiroGroepModel.FK_Lid_GroepsWerkjaar", "Lid");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Lid>("ChiroGroepModel.FK_Lid_GroepsWerkjaar", "Lid", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.Lid in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// ID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Lid")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class Lid : GelieerdePersoon
+    {
+        /// <summary>
+        /// Create a new Lid object.
+        /// </summary>
+        /// <param name="chiroLeefTijd">Initial value of ChiroLeefTijd.</param>
+        /// <param name="businessKey">Initial value of BusinessKey.</param>
+        /// <param name="id">Initial value of ID.</param>
+        /// <param name="versie">Initial value of Versie.</param>
+        /// <param name="lidgeldBetaald">Initial value of LidgeldBetaald.</param>
+        /// <param name="nonActief">Initial value of NonActief.</param>
+        /// <param name="verwijderd">Initial value of Verwijderd.</param>
+        /// <param name="volgendWerkjaar">Initial value of VolgendWerkjaar.</param>
+        public static Lid CreateLid(int chiroLeefTijd, global::System.Guid businessKey, int id, byte[] versie, bool lidgeldBetaald, bool nonActief, bool verwijderd, int volgendWerkjaar)
+        {
+            Lid lid = new Lid();
+            lid.ChiroLeefTijd = chiroLeefTijd;
+            lid.BusinessKey = businessKey;
+            lid.ID = id;
+            lid.Versie = versie;
+            lid.LidgeldBetaald = lidgeldBetaald;
+            lid.NonActief = nonActief;
+            lid.Verwijderd = verwijderd;
+            lid.VolgendWerkjaar = volgendWerkjaar;
+            return lid;
+        }
+        /// <summary>
+        /// There are no comments for Property EindeInstapPeriode in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<global::System.DateTime> EindeInstapPeriode
+        {
+            get
+            {
+                return this._EindeInstapPeriode;
+            }
+            set
+            {
+                this.OnEindeInstapPeriodeChanging(value);
+                this.ReportPropertyChanging("EindeInstapPeriode");
+                this._EindeInstapPeriode = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("EindeInstapPeriode");
+                this.OnEindeInstapPeriodeChanged();
+            }
+        }
+        private global::System.Nullable<global::System.DateTime> _EindeInstapPeriode;
+        partial void OnEindeInstapPeriodeChanging(global::System.Nullable<global::System.DateTime> value);
+        partial void OnEindeInstapPeriodeChanged();
+        /// <summary>
+        /// There are no comments for Property LidgeldBetaald in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public bool LidgeldBetaald
+        {
+            get
+            {
+                return this._LidgeldBetaald;
+            }
+            set
+            {
+                this.OnLidgeldBetaaldChanging(value);
+                this.ReportPropertyChanging("LidgeldBetaald");
+                this._LidgeldBetaald = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("LidgeldBetaald");
+                this.OnLidgeldBetaaldChanged();
+            }
+        }
+        private bool _LidgeldBetaald;
+        partial void OnLidgeldBetaaldChanging(bool value);
+        partial void OnLidgeldBetaaldChanged();
+        /// <summary>
+        /// There are no comments for Property NonActief in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public bool NonActief
+        {
+            get
+            {
+                return this._NonActief;
+            }
+            set
+            {
+                this.OnNonActiefChanging(value);
+                this.ReportPropertyChanging("NonActief");
+                this._NonActief = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("NonActief");
+                this.OnNonActiefChanged();
+            }
+        }
+        private bool _NonActief;
+        partial void OnNonActiefChanging(bool value);
+        partial void OnNonActiefChanged();
+        /// <summary>
+        /// There are no comments for Property Verwijderd in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Verwijderd
+        {
+            get
+            {
+                return this._Verwijderd;
+            }
+            set
+            {
+                this.OnVerwijderdChanging(value);
+                this.ReportPropertyChanging("Verwijderd");
+                this._Verwijderd = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Verwijderd");
+                this.OnVerwijderdChanged();
+            }
+        }
+        private bool _Verwijderd;
+        partial void OnVerwijderdChanging(bool value);
+        partial void OnVerwijderdChanged();
+        /// <summary>
+        /// There are no comments for Property VolgendWerkjaar in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int VolgendWerkjaar
+        {
+            get
+            {
+                return this._VolgendWerkjaar;
+            }
+            set
+            {
+                this.OnVolgendWerkjaarChanging(value);
+                this.ReportPropertyChanging("VolgendWerkjaar");
+                this._VolgendWerkjaar = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("VolgendWerkjaar");
+                this.OnVolgendWerkjaarChanged();
+            }
+        }
+        private int _VolgendWerkjaar;
+        partial void OnVolgendWerkjaarChanging(int value);
+        partial void OnVolgendWerkjaarChanged();
+        /// <summary>
+        /// There are no comments for GroepsWerkJaar in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Lid_GroepsWerkjaar", "GroepsWerkJaar")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public GroepsWerkJaar GroepsWerkJaar
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<GroepsWerkJaar>("ChiroGroepModel.FK_Lid_GroepsWerkjaar", "GroepsWerkJaar").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<GroepsWerkJaar>("ChiroGroepModel.FK_Lid_GroepsWerkjaar", "GroepsWerkJaar").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for GroepsWerkJaar in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<GroepsWerkJaar> GroepsWerkJaarReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<GroepsWerkJaar>("ChiroGroepModel.FK_Lid_GroepsWerkjaar", "GroepsWerkJaar");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<GroepsWerkJaar>("ChiroGroepModel.FK_Lid_GroepsWerkjaar", "GroepsWerkJaar", value);
                 }
             }
         }
