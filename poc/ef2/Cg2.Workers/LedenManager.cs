@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Cg2.Orm;
 using Cg2.Data.Ef;
+using Cg2.Orm.DataInterfaces;
 
 namespace Cg2.Workers
 {
@@ -16,7 +17,13 @@ namespace Cg2.Workers
             get { return _dao; }
         }
 
-        public Lid LidMaken(GelieerdePersoon p)
+        /// <summary>
+        /// 'Opwaarderen' van een gelieerd persoon tot een lid.
+        /// </summary>
+        /// <param name="gpid"></param>
+        /// <param name="GroepsWerkJaarID"></param>
+        /// <returns></returns>
+        public Lid LidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
         {
             // Het plan:
             //
@@ -26,8 +33,7 @@ namespace Cg2.Workers
             //       (weet niet meer precies wat 'nonactief' wil zeggen; op te zoeken)
             //    2b Was al actief lid: exception
             // 3. Zo nee:
-            //    Upgrade gelieerdPersoon naar lid via
-            //    (nog te schrijven) stored procedure
+            //    Nieuw lidobject
             //
             // (Niet vergeten: probeerperiode berekenen)
 

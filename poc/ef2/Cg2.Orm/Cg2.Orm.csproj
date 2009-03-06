@@ -64,6 +64,7 @@
     <Compile Include="Groep.cs" />
     <Compile Include="IBasisEntiteit.cs" />
     <Compile Include="CommunicatieVorm.cs" />
+    <Compile Include="Lid.cs" />
     <Compile Include="Persoon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
