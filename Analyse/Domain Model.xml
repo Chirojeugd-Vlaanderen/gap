@@ -18,7 +18,7 @@
 						<UML:TaggedValue tag="iscontrolled" value="1"/>
 						<UML:TaggedValue tag="isnamespace" value="1"/>
 						<UML:TaggedValue tag="xmlpath" value="Domain Model.xml"/>
-						<UML:TaggedValue tag="lastloaddate" value="2009-02-16 09:15:30"/>
+						<UML:TaggedValue tag="lastloaddate" value="2009-03-09 10:17:28"/>
 						<UML:TaggedValue tag="lastsavedate" value="2006-11-21 22:02:27"/>
 						<UML:TaggedValue tag="isprotected" value="0"/>
 						<UML:TaggedValue tag="usedtd" value="0"/>
@@ -4303,14 +4303,14 @@
 								</UML:Association>
 								<UML:Class name="GroepsWerkjaar" xmi.id="EAID_A4666AEC_4222_4f2a_9270_2604221BF009" visibility="public" namespace="EAPK_5C15E41F_34C0_45f6_8825_84A62770CD96" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 									<UML:ModelElement.taggedValue>
-										<UML:TaggedValue tag="documentation" value="Het object 'groepswerkjaar' geeft weer in welke jaren een groep werking heeft gehad.&#xA;&#xA;Een werkjaar loopt bvb van september t/m augustus."/>
+										<UML:TaggedValue tag="documentation" value="Het object 'groepswerkjaar' geeft weer in welke jaren een groep werking heeft gehad.&#xA;&#xA;Het 'meest recente' groepswerkjaar, is altijd het huidige.  Als er een nieuw groepswerkjaar wordt aangemaakt, dan worden ook automatisch de leden van het vorige werkjaar overgenomen, met een probeerperiode tot 15 oktober.&#xA;&#xA;Een werkjaar loopt bvb van september t/m augustus."/>
 										<UML:TaggedValue tag="isSpecification" value="false"/>
 										<UML:TaggedValue tag="ea_stype" value="Class"/>
 										<UML:TaggedValue tag="ea_ntype" value="0"/>
 										<UML:TaggedValue tag="version" value="1.0"/>
 										<UML:TaggedValue tag="package" value="EAPK_5C15E41F_34C0_45f6_8825_84A62770CD96"/>
 										<UML:TaggedValue tag="date_created" value="2006-12-12 17:34:32"/>
-										<UML:TaggedValue tag="date_modified" value="2008-05-26 20:40:39"/>
+										<UML:TaggedValue tag="date_modified" value="2009-03-09 10:18:59"/>
 										<UML:TaggedValue tag="tagged" value="0"/>
 										<UML:TaggedValue tag="package_name" value="Domain Objects"/>
 										<UML:TaggedValue tag="phase" value="1.0"/>
