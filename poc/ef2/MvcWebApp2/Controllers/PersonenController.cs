@@ -19,7 +19,7 @@ namespace MvcWebApp2.Controllers
             using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
             {
                 int aantal;
-                IList<GelieerdePersoon> personen = service.PaginaOphalen(out aantal, int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12);
+                IList<GelieerdePersoon> personen = service.PaginaOphalenMetLidInfo(out aantal, int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12);
                 return View(personen);
             }
         }

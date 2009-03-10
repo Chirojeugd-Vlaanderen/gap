@@ -30,6 +30,15 @@ namespace Cg2.Services
             return result;
         }
 
+        public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
+        {
+            GelieerdePersonenManager pm = new GelieerdePersonenManager();
+
+            var result = pm.Dao.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalOpgehaald);
+                          
+            return result;
+        }
+
         public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();

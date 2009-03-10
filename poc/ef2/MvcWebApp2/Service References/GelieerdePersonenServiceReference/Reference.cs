@@ -18,6 +18,9 @@ namespace MvcWebApp2.GelieerdePersonenServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/PaginaOphalen", ReplyAction="http://tempuri.org/IGelieerdePersonenService/PaginaOphalenResponse")]
         System.Collections.Generic.List<Cg2.Orm.GelieerdePersoon> PaginaOphalen(out int aantalOpgehaald, int groepID, int pagina, int paginaGrootte);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/PaginaOphalenMetLidInfo", ReplyAction="http://tempuri.org/IGelieerdePersonenService/PaginaOphalenMetLidInfoResponse")]
+        System.Collections.Generic.List<Cg2.Orm.GelieerdePersoon> PaginaOphalenMetLidInfo(out int aantalOpgehaald, int groepID, int pagina, int paginaGrootte);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/DetailsOphalen", ReplyAction="http://tempuri.org/IGelieerdePersonenService/DetailsOphalenResponse")]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
         Cg2.Orm.GelieerdePersoon DetailsOphalen(int gelieerdePersoonID);
@@ -56,6 +59,10 @@ namespace MvcWebApp2.GelieerdePersonenServiceReference {
         
         public System.Collections.Generic.List<Cg2.Orm.GelieerdePersoon> PaginaOphalen(out int aantalOpgehaald, int groepID, int pagina, int paginaGrootte) {
             return base.Channel.PaginaOphalen(out aantalOpgehaald, groepID, pagina, paginaGrootte);
+        }
+        
+        public System.Collections.Generic.List<Cg2.Orm.GelieerdePersoon> PaginaOphalenMetLidInfo(out int aantalOpgehaald, int groepID, int pagina, int paginaGrootte) {
+            return base.Channel.PaginaOphalenMetLidInfo(out aantalOpgehaald, groepID, pagina, paginaGrootte);
         }
         
         public Cg2.Orm.GelieerdePersoon DetailsOphalen(int gelieerdePersoonID) {

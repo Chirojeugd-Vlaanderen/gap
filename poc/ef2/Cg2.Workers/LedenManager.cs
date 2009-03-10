@@ -82,7 +82,7 @@ namespace Cg2.Workers
 
             if (gp.Groep == null)
             {
-                GelieerdePersonenManager gpm = new GelieerdePersonenManager(_gelPersDao);
+                GelieerdePersonenManager gpm = new GelieerdePersonenManager(_gelPersDao, _groepenDao);
                 gpm.Dao.GroepLaden(gp);
             }
 

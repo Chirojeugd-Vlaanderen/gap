@@ -62,6 +62,21 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="EntityReferenceOfGroepjQfcsukF" nillable="true" type="tns:EntityReferenceOfGroepjQfcsukF" />
+  <xs:complexType name="EntityReferenceOfGroepsWerkJaarjQfcsukF">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="EntityReferenceOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="GroepsWerkJaar" Namespace="http://schemas.datacontract.org/2004/07/Cg2.Orm" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:EntityReference">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EntityReferenceOfGroepsWerkJaarjQfcsukF" nillable="true" type="tns:EntityReferenceOfGroepsWerkJaarjQfcsukF" />
   <xs:complexType name="EntityReferenceOfPersoonjQfcsukF">
     <xs:annotation>
       <xs:appinfo>

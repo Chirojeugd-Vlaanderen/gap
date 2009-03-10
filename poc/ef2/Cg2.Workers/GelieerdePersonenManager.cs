@@ -10,6 +10,7 @@ namespace Cg2.Workers
     public class GelieerdePersonenManager
     {
         private IGelieerdePersonenDao _dao;
+        private IGroepenDao _groepenDao;
 
         public IGelieerdePersonenDao Dao
         {
@@ -21,9 +22,12 @@ namespace Cg2.Workers
             _dao = new GelieerdePersonenDao();
         }
 
-        public GelieerdePersonenManager(IGelieerdePersonenDao dao)
+        public GelieerdePersonenManager(IGelieerdePersonenDao dao, IGroepenDao groepenDao)
         {
             _dao = dao;
+            _groepenDao = groepenDao;
         }
+
+
     }
 }

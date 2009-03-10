@@ -14,7 +14,10 @@
     <td><%=p.Persoon.Geslacht.ToString() %></td>
     <td>
         <%=Html.ActionLink("Bewerken", "Edit", new { Controller = "Personen", id = p.ID }) %>
-        <%=Html.ActionLink("Lid maken", "LidMaken", new { Controller = "Personen", id = p.ID }) %>
+        <% if (p.Lid.Count == 0)
+           { %>
+        <%=Html.ActionLink("Lid maken", "LidMaken", new { Controller = "Personen", id = p.ID })%>
+        <% } %>
     </td>
 </tr>
 <% } %>

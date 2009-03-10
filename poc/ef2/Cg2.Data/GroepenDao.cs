@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Cg2.Orm;
 using Cg2.Orm.DataInterfaces;
-using System.Data.Objects;
 
 namespace Cg2.Data.Ef
 {
@@ -16,8 +15,6 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                // db.GroepsWerkJaar.MergeOption = MergeOption.NoTracking;
-
                 result = (
                     from wj in db.GroepsWerkJaar
                     where wj.Groep.ID == groepID
@@ -25,10 +22,6 @@ namespace Cg2.Data.Ef
                     select wj).FirstOrDefault<GroepsWerkJaar>();
 
                 db.Detach(result);
-
-                // Als ik de EntityKey niet op null zet, kan ik dit
-                // groepswerkjaar blijkbaar niet gebruiken voor een
-                // nieuw lid?
             }
             return result;
         }

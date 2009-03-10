@@ -45,6 +45,59 @@ namespace Cg2.Data.Ef
             return lijst;
         }
 
+        public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, int werkJaar, out int aantalOpgehaald)
+        {
+            int wj;
+            IList<GelieerdePersoon> lijst;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                // Als werkjaar = 0: neem huidig werkjaar
+
+                if (werkJaar == 0)
+                {
+                    wj = (
+                    from w in db.GroepsWerkJaar
+                    where w.Groep.ID == groepID
+                    orderby w.WerkJaar descending
+                    select w).FirstOrDefault<GroepsWerkJaar>().WerkJaar;
+                }
+                else
+                {
+                    wj = werkJaar;
+                }
+
+                // Selecteer eerst gelieerde personen
+
+                var result = (
+                    from gp in db.GelieerdePersoon.Include("Persoon")
+                    where gp.Groep.ID == groepID
+                    orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
+                    select gp).Skip((pagina-1)*paginaGrootte).Take(paginaGrootte);
+
+                // Dan een query die de lidinfo van het gevraagde werkjaar ophaalt,
+                // zodat (hopelijk) enkel die aan de context geattacht geraken.
+
+                // TODO: Kan dit echt niet op een properdere manier?
+
+                IList<Lid> alleLeden = (
+                    from l in db.Lid
+                    where l.GroepsWerkJaar.WerkJaar == wj && l.GelieerdePersoon.Groep.ID == groepID
+                    select l).ToList<Lid>();
+
+                lijst = result.ToList<GelieerdePersoon>();
+
+                aantalOpgehaald = lijst.Count;
+            }
+
+            return lijst;   // met wat change komt de relevante lidinfo mee.
+        }
+
+        public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
+        {
+            return PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, 0, out aantalOpgehaald);
+        }
+
         public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
         {
             using (ChiroGroepEntities db = new ChiroGroepEntities())
