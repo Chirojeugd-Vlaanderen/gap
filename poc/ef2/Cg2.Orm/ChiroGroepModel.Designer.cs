@@ -21,7 +21,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Lid_GelieerdePersoon", "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.GelieerdePersoon), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Lid))]
 
 // Original file name:
-// Generation date: 6/03/2009 22:23:06
+// Generation date: 10/03/2009 14:50:00
 namespace Cg2.Orm
 {
     
@@ -1986,7 +1986,7 @@ namespace Cg2.Orm
     /// There are no comments for ChiroGroepModel.GroepsWerkJaar in the schema.
     /// </summary>
     /// <KeyProperties>
-    /// GroepsWerkjaarID
+    /// ID
     /// </KeyProperties>
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="GroepsWerkJaar")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
@@ -1997,12 +1997,12 @@ namespace Cg2.Orm
         /// Create a new GroepsWerkJaar object.
         /// </summary>
         /// <param name="werkJaar">Initial value of WerkJaar.</param>
-        /// <param name="groepsWerkjaarID">Initial value of GroepsWerkjaarID.</param>
-        public static GroepsWerkJaar CreateGroepsWerkJaar(int werkJaar, int groepsWerkjaarID)
+        /// <param name="id">Initial value of ID.</param>
+        public static GroepsWerkJaar CreateGroepsWerkJaar(int werkJaar, int id)
         {
             GroepsWerkJaar groepsWerkJaar = new GroepsWerkJaar();
             groepsWerkJaar.WerkJaar = werkJaar;
-            groepsWerkJaar.GroepsWerkjaarID = groepsWerkjaarID;
+            groepsWerkJaar.ID = id;
             return groepsWerkJaar;
         }
         /// <summary>
@@ -2029,28 +2029,28 @@ namespace Cg2.Orm
         partial void OnWerkJaarChanging(int value);
         partial void OnWerkJaarChanged();
         /// <summary>
-        /// There are no comments for Property GroepsWerkjaarID in the schema.
+        /// There are no comments for Property ID in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int GroepsWerkjaarID
+        public int ID
         {
             get
             {
-                return this._GroepsWerkjaarID;
+                return this._ID;
             }
             set
             {
-                this.OnGroepsWerkjaarIDChanging(value);
-                this.ReportPropertyChanging("GroepsWerkjaarID");
-                this._GroepsWerkjaarID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("GroepsWerkjaarID");
-                this.OnGroepsWerkjaarIDChanged();
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
             }
         }
-        private int _GroepsWerkjaarID;
-        partial void OnGroepsWerkjaarIDChanging(int value);
-        partial void OnGroepsWerkjaarIDChanged();
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
         /// <summary>
         /// There are no comments for Groep in the schema.
         /// </summary>

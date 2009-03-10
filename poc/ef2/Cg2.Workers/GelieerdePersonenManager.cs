@@ -9,11 +9,21 @@ namespace Cg2.Workers
 {
     public class GelieerdePersonenManager
     {
-        private IGelieerdePersonenDao _dao = new GelieerdePersonenDao();
+        private IGelieerdePersonenDao _dao;
 
         public IGelieerdePersonenDao Dao
         {
             get { return _dao; }
+        }
+
+        public GelieerdePersonenManager()
+        {
+            _dao = new GelieerdePersonenDao();
+        }
+
+        public GelieerdePersonenManager(IGelieerdePersonenDao dao)
+        {
+            _dao = dao;
         }
     }
 }

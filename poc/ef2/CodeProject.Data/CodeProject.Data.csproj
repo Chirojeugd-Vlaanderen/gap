@@ -5,13 +5,15 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F9197C38-63BC-4D2F-9F0A-8326C698B536}</ProjectGuid>
+    <ProjectGuid>{72F61656-2949-4763-9381-678B2D07AE0B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cg2.Data</RootNamespace>
-    <AssemblyName>Cg2.Data</AssemblyName>
+    <RootNamespace>CodeProject.Data</RootNamespace>
+    <AssemblyName>CodeProject.Data</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>CodeProject.Data.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,35 +37,28 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Security" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractEfDao.cs" />
-    <Compile Include="ChiroGroepenDao.cs" />
-    <Compile Include="GelieerdePersonenDao.cs" />
-    <Compile Include="GroepenDao.cs" />
-    <Compile Include="LedenDao.cs" />
+    <Compile Include="Entity\AssociationEndBehaviorAttribute.cs" />
+    <Compile Include="Entity\EntityFrameworkHelper.cs" />
+    <Compile Include="Entity\ObjectContextExtension.cs" />
+    <Compile Include="Entity\ObjectQueryExtension.cs" />
+    <Compile Include="Entity\OptimisticConcurrencyAttribute.cs" />
+    <Compile Include="Entity\OptimisticConcurrencyManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReflectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cg2.Orm\Cg2.Orm.csproj">
-      <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
-      <Name>Cg2.Orm</Name>
-    </ProjectReference>
+    <None Include="CodeProject.Data.snk" />
+    <None Include="Entity\OptimisticConcurrencyDiagram.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

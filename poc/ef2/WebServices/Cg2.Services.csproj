@@ -61,6 +61,7 @@
   <ItemGroup>
     <Content Include="GelieerdePersonenService.svc" />
     <Content Include="GroepenService.svc" />
+    <Content Include="LedenService.svc" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +70,9 @@
     </Compile>
     <Compile Include="GroepenService.svc.cs">
       <DependentUpon>GroepenService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="LedenService.svc.cs">
+      <DependentUpon>LedenService.svc</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

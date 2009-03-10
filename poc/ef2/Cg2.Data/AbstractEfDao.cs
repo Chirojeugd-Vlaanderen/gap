@@ -62,7 +62,7 @@ namespace Cg2.Data.Ef
         /// <param name="entiteit">Te bewaren entiteit</param>
         /// <returns>Opnieuw de entiteit, met eventueel aangepast 
         /// ID.</returns>
-        public T Creeren(T entiteit)
+        public virtual T Creeren(T entiteit)
         {
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {

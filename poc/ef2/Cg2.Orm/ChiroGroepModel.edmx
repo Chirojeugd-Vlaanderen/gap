@@ -480,9 +480,9 @@
               <PropertyRef Name="GelieerdePersoonID" /></Dependent></ReferentialConstraint></Association>
         <EntityType Name="GroepsWerkJaar">
           <Key>
-            <PropertyRef Name="GroepsWerkjaarID" /></Key>
+            <PropertyRef Name="ID" /></Key>
           <Property Name="WerkJaar" Type="Int32" Nullable="false" />
-          <Property Name="GroepsWerkjaarID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_GroepsWerkjaar_Groep" FromRole="GroepsWerkJaar" ToRole="Groep" />
           <NavigationProperty Name="Lid" Relationship="ChiroGroepModel.FK_Lid_GroepsWerkjaar" FromRole="GroepsWerkJaar" ToRole="Lid" /></EntityType>
         <EntityType Name="Lid">
@@ -631,7 +631,7 @@
           <EntitySetMapping Name="GroepsWerkJaar">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.GroepsWerkJaar)">
               <MappingFragment StoreEntitySet="GroepsWerkJaar">
-                <ScalarProperty Name="GroepsWerkjaarID" ColumnName="GroepsWerkjaarID" />
+                <ScalarProperty Name="ID" ColumnName="GroepsWerkjaarID" />
                 <ScalarProperty Name="WerkJaar" ColumnName="WerkJaar" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Lid">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Lid)">
@@ -646,14 +646,14 @@
                 <ScalarProperty Name="EindeInstapPeriode" ColumnName="EindeInstapPeriode" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
           <AssociationSetMapping Name="FK_GroepsWerkjaar_Groep" TypeName="ChiroGroepModel.FK_GroepsWerkjaar_Groep" StoreEntitySet="GroepsWerkJaar">
             <EndProperty Name="GroepsWerkJaar">
-              <ScalarProperty Name="GroepsWerkjaarID" ColumnName="GroepsWerkjaarID" /></EndProperty>
+              <ScalarProperty Name="ID" ColumnName="GroepsWerkjaarID" /></EndProperty>
             <EndProperty Name="Groep">
               <ScalarProperty Name="ID" ColumnName="GroepID" /></EndProperty></AssociationSetMapping>
           <AssociationSetMapping Name="FK_Lid_GroepsWerkjaar" TypeName="ChiroGroepModel.FK_Lid_GroepsWerkjaar" StoreEntitySet="Lid">
             <EndProperty Name="Lid">
               <ScalarProperty Name="ID" ColumnName="LidID" /></EndProperty>
             <EndProperty Name="GroepsWerkJaar">
-              <ScalarProperty Name="GroepsWerkjaarID" ColumnName="GroepsWerkjaarID" /></EndProperty></AssociationSetMapping>
+              <ScalarProperty Name="ID" ColumnName="GroepsWerkjaarID" /></EndProperty></AssociationSetMapping>
           <AssociationSetMapping Name="FK_Lid_GelieerdePersoon" TypeName="ChiroGroepModel.FK_Lid_GelieerdePersoon" StoreEntitySet="Lid">
             <EndProperty Name="Lid">
               <ScalarProperty Name="ID" ColumnName="LidID" /></EndProperty>

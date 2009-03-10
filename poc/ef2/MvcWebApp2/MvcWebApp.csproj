@@ -85,6 +85,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\LedenServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
@@ -93,6 +98,13 @@
     <None Include="Service References\GelieerdePersonenServiceReference\configuration91.svcinfo" />
     <None Include="Service References\GelieerdePersonenServiceReference\configuration.svcinfo" />
     <None Include="Service References\GelieerdePersonenServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\LedenServiceReference\LedenService.disco" />
+    <None Include="Service References\LedenServiceReference\configuration91.svcinfo" />
+    <None Include="Service References\LedenServiceReference\configuration.svcinfo" />
+    <None Include="Service References\LedenServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
@@ -123,12 +135,19 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\DataSources\Cg2.Orm.GelieerdePersoon.datasource" />
+    <None Include="Properties\DataSources\Cg2.Orm.Lid.datasource" />
     <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService.wsdl" />
     <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService.xsd" />
     <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService1.xsd" />
     <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService2.xsd" />
     <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService3.xsd" />
     <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService4.xsd" />
+    <None Include="Service References\LedenServiceReference\LedenService.wsdl" />
+    <None Include="Service References\LedenServiceReference\LedenService.xsd" />
+    <None Include="Service References\LedenServiceReference\LedenService1.xsd" />
+    <None Include="Service References\LedenServiceReference\LedenService2.xsd" />
+    <None Include="Service References\LedenServiceReference\LedenService3.xsd" />
+    <None Include="Service References\LedenServiceReference\LedenService4.xsd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cg2.Orm\Cg2.Orm.csproj">
@@ -138,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\GelieerdePersonenServiceReference\" />
+    <WCFMetadataStorage Include="Service References\LedenServiceReference\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -158,7 +178,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>1938</DevelopmentServerPort>
+          <DevelopmentServerPort>3507</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

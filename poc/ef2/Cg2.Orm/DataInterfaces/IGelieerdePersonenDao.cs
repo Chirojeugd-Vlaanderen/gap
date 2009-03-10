@@ -34,5 +34,13 @@ namespace Cg2.Orm.DataInterfaces
         /// <param name="gelieerdePersoonID">ID van op te halen gelieerde persoon</param>
         /// <returns>Gelieerde persoon met persoonsgegevens, adressen en communicatievormen</returns>
         GelieerdePersoon DetailsOphalen(int gelieerdePersoonID);
+
+        /// <summary>
+        /// Laadt groepsgegevens in GelieerdePersoonsobject
+        /// </summary>
+        /// <param name="p">gelieerde persoon</param>
+        /// <returns>referentie naar p, nadat groepsgegevens
+        /// geladen zijn</returns>
+        GelieerdePersoon GroepLaden(GelieerdePersoon p);
     }
 }

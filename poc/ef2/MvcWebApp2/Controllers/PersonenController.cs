@@ -95,6 +95,17 @@ namespace MvcWebApp2.Controllers
             }
         }
 
+        public ActionResult LidMaken(int id)
+        {
+            using (LedenServiceReference.LedenServiceClient service = new MvcWebApp2.LedenServiceReference.LedenServiceClient())
+            {
+                service.LidMakenEnBewaren(id);
+            }
+
+            return RedirectToAction("Index");
+
+        }
+
         public ActionResult Hallo()
         {
             return View("Hallo");

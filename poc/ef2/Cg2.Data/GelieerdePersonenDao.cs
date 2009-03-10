@@ -6,6 +6,7 @@ using Cg2.Orm;
 using Cg2.Orm.DataInterfaces;
 using System.Data;
 using System.Diagnostics;
+using System.Data.Objects;
 
 namespace Cg2.Data.Ef
 {
@@ -27,19 +28,21 @@ namespace Cg2.Data.Ef
 
         public IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
         {
-            List<GelieerdePersoon> result;
+            IList<GelieerdePersoon> lijst;
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                result = (
+                var result = (
                     from gp in db.GelieerdePersoon.Include("Persoon")
                     where gp.Groep.ID == groepID
                     orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
-                    select gp).Skip((pagina-1)*paginaGrootte).Take(paginaGrootte).ToList<GelieerdePersoon>();
-            }
-            aantalOpgehaald = result.Count;
+                    select gp).Skip((pagina-1)*paginaGrootte).Take(paginaGrootte);
 
-            return result;
+                lijst = result.ToList<GelieerdePersoon>();
+                aantalOpgehaald = lijst.Count;
+            }
+            
+            return lijst;
         }
 
         public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
@@ -58,15 +61,19 @@ namespace Cg2.Data.Ef
         {
             if (p.ID == 0)
             {
+                // creeer nieuwe gelieerde persoon
+
                 return Creeren(p);
             }
             else
             {
+                // update bestaande gelieerde persoon
+
+                Debug.Assert(p.Persoon != null);    // gelieerde persoon is niet nuttig zonder persoon
+                Debug.Assert(p.Persoon.ID != 0);    // een bestaande gelieerde persoon is nooit gekoppeld aan een nieuwe persoon
+
                 using (ChiroGroepEntities db = new ChiroGroepEntities())
                 {
-                    Debug.Assert(p.Persoon != null);    // gelieerde persoon is niet nuttig zonder persoon
-                    Debug.Assert(p.Persoon.ID != 0);    // een bestaande gelieerde persoon is nooit gekoppeld aan een nieuwe persoon
-
                     p.EntityKey = db.CreateEntityKey("GelieerdePersoon", p);
                     p.Persoon.EntityKey = db.CreateEntityKey("Persoon", p.Persoon);
 
@@ -80,6 +87,40 @@ namespace Cg2.Data.Ef
                 }
                 return p;
             }
+        }
+
+        public GelieerdePersoon GroepLaden(GelieerdePersoon p)
+        {
+            Debug.Assert(p != null);
+
+            if (p.Groep == null)
+            {
+                Groep g;
+
+                Debug.Assert(p.ID != 0);
+                // Voor een nieuwe gelieerde persoon (p.ID == 0) moet 
+                // de groepsproperty altijd gezet zijn, anders kan hij
+                // niet bewaard worden.  Aangezien g.Groep == null,
+                // kan het dus niet om een nieuwe persoon gaan.
+
+                using (ChiroGroepEntities db = new ChiroGroepEntities())
+                {
+                    db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
+
+                    p.EntityKey = db.CreateEntityKey("GelieerdePersoon", p);
+                    db.Attach(p);
+
+                    p.GroepReference.Load();
+
+                    g = p.Groep;
+
+                    db.Detach(g);
+                    db.Detach(p);
+                }
+                p.Groep = g;
+            }
+
+            return p;
         }
 
     }

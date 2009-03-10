@@ -9,9 +9,6 @@ namespace Cg2.Data.Ef
 {
     public class ChiroGroepenDao: Dao<ChiroGroep>, IDao<ChiroGroep>
     {
-
-        #region IDao<ChiroGroep> Members
-
         ChiroGroep IDao<ChiroGroep>.Ophalen(int id)
         {
             ChiroGroep result;
@@ -38,7 +35,5 @@ namespace Cg2.Data.Ef
             }
             return result;
         }
-
-        #endregion
     }
 }
