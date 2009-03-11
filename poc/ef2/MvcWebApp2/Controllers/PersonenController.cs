@@ -20,7 +20,7 @@ namespace MvcWebApp2.Controllers
             {
                 int aantal;
                 IList<GelieerdePersoon> personen = service.PaginaOphalenMetLidInfo(out aantal, int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12);
-                return View(personen);
+                return View("Index", personen);
             }
         }
 

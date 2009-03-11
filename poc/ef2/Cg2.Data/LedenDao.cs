@@ -71,5 +71,24 @@ namespace Cg2.Data.Ef
             }
             return l;
         }
+
+        public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalOpgehaald)
+        {
+            IList<Lid> lijst;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                var result = (
+                    from l in db.Lid.Include("GelieerdePersoon.Persoon")
+                    where l.GroepsWerkJaar.ID == groepsWerkJaarID
+                    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+                    select l).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte);
+
+                lijst = result.ToList<Lid>();
+                aantalOpgehaald = lijst.Count;
+            }
+
+            return lijst;
+        }
     }
 }

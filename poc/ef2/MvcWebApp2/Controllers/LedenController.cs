@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
+using Cg2.Orm;
+using System.Configuration;
 
 namespace MvcWebApp2.Controllers
 {
@@ -14,7 +16,13 @@ namespace MvcWebApp2.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            IList<Lid> leden;
+            using (LedenServiceReference.LedenServiceClient service = new MvcWebApp2.LedenServiceReference.LedenServiceClient())
+            {
+                int aantal;
+                leden = service.PaginaOphalen(out aantal, int.Parse(ConfigurationSettings.AppSettings["TestGroepsWerkJaarID"]), 1, 12);
+            }
+            return View("Index", leden);
         }
 
         //

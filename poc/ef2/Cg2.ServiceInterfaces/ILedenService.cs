@@ -20,5 +20,18 @@ namespace Cg2.ServiceContracts
         /// <returns>nieuw lidobject</returns>
         [OperationContract]
         Lid LidMakenEnBewaren(int gelieerdePersoonID);
+
+        /// <summary>
+        /// Haalt pagina met leden op uit bepaald groepswerkjaar
+        /// </summary>
+        /// <param name="groepsWerkJaarID">gevraagde groepswerkjaar</param>
+        /// <param name="pagina">paginanr (1 of hoger)</param>
+        /// <param name="paginaGrootte">aantal leden per pagina</param>
+        /// <param name="aantalOpgehaald">hierin wordt bewaard hoeveel
+        /// records er effectief opgehaald zijn</param>
+        /// <returns>lijst met leden, inclusief info gelieerde personen
+        /// en personen</returns>
+        [OperationContract]
+        IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalOpgehaald);
     }
 }

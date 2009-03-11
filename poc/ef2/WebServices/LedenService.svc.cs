@@ -22,5 +22,14 @@ namespace Cg2.Services
             
             return lm.Dao.Bewaren(l);
         }
+
+        public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalOpgehaald)
+        {
+            LedenManager lm = new LedenManager();
+
+            IList<Lid> result = lm.Dao.PaginaOphalen(groepsWerkJaarID, pagina, paginaGrootte, out aantalOpgehaald);
+
+            return result;
+        }
     }
 }

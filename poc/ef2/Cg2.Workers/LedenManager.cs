@@ -14,7 +14,7 @@ namespace Cg2.Workers
         private IGroepenDao _groepenDao;
         private IGelieerdePersonenDao _gelPersDao;
 
-        public IDao<Lid> Dao
+        public ILedenDao Dao
         {
             get { return _dao; }
         }

@@ -18,6 +18,9 @@ namespace MvcWebApp2.LedenServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILedenService/LidMakenEnBewaren", ReplyAction="http://tempuri.org/ILedenService/LidMakenEnBewarenResponse")]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
         Cg2.Orm.Lid LidMakenEnBewaren(int gelieerdePersoonID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILedenService/PaginaOphalen", ReplyAction="http://tempuri.org/ILedenService/PaginaOphalenResponse")]
+        Cg2.Orm.Lid[] PaginaOphalen(out int aantalOpgehaald, int groepsWerkJaarID, int pagina, int paginaGrootte);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -49,6 +52,10 @@ namespace MvcWebApp2.LedenServiceReference {
         
         public Cg2.Orm.Lid LidMakenEnBewaren(int gelieerdePersoonID) {
             return base.Channel.LidMakenEnBewaren(gelieerdePersoonID);
+        }
+        
+        public Cg2.Orm.Lid[] PaginaOphalen(out int aantalOpgehaald, int groepsWerkJaarID, int pagina, int paginaGrootte) {
+            return base.Channel.PaginaOphalen(out aantalOpgehaald, groepsWerkJaarID, pagina, paginaGrootte);
         }
     }
 }

@@ -15,4 +15,21 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="PaginaOphalen">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="groepsWerkJaarID" type="xs:int" />
+        <xs:element minOccurs="0" name="pagina" type="xs:int" />
+        <xs:element minOccurs="0" name="paginaGrootte" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PaginaOphalenResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Cg2.Orm" minOccurs="0" name="PaginaOphalenResult" nillable="true" type="q2:ArrayOfLid" />
+        <xs:element minOccurs="0" name="aantalOpgehaald" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>
