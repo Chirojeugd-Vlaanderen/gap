@@ -61,6 +61,7 @@
     <Compile Include="DataInterfaces\IDao.cs" />
     <Compile Include="DataInterfaces\IGelieerdePersonenDao.cs" />
     <Compile Include="DataInterfaces\IGroepenDao.cs" />
+    <Compile Include="DataInterfaces\ILedenDao.cs" />
     <Compile Include="GelieerdePersoon.cs" />
     <Compile Include="Groep.cs" />
     <Compile Include="IBasisEntiteit.cs" />

@@ -99,6 +99,11 @@ namespace MvcWebApp2.Controllers
         {
             using (LedenServiceReference.LedenServiceClient service = new MvcWebApp2.LedenServiceReference.LedenServiceClient())
             {
+                // Beter zou zijn:
+                //  via de service de definitie van een lid ophalen
+                //  een view tonen met die lidgegevens, zodat ze aangepast kunnen worden
+                //  pas als de gebruiker dan bevestigt: bewaren
+
                 service.LidMakenEnBewaren(id);
             }
 

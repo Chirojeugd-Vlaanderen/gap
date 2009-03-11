@@ -6,11 +6,12 @@ using Cg2.Orm;
 using System.Diagnostics;
 using System.Data.Objects;
 using System.Data;
+using Cg2.Orm.DataInterfaces;
 
 
 namespace Cg2.Data.Ef
 {
-    public class LedenDao: Dao<Lid>
+    public class LedenDao: Dao<Lid>, ILedenDao
     {
         /// <summary>
         /// Creeert een nieuw lid

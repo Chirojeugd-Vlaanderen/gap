@@ -10,7 +10,7 @@ namespace Cg2.Workers
 {
     public class LedenManager
     {
-        private IDao<Lid> _dao = new Dao<Lid>();
+        private ILedenDao _dao;
         private IGroepenDao _groepenDao;
         private IGelieerdePersonenDao _gelPersDao;
 
@@ -28,7 +28,7 @@ namespace Cg2.Workers
             _gelPersDao = new GelieerdePersonenDao();
         }
 
-        public LedenManager(IDao<Lid> dao, IGroepenDao groepenDao, IGelieerdePersonenDao gelPersDao)
+        public LedenManager(ILedenDao dao, IGroepenDao groepenDao, IGelieerdePersonenDao gelPersDao)
         {
             _dao = dao;
             _groepenDao = groepenDao;

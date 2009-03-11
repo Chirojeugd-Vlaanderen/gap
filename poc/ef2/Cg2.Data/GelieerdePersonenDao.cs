@@ -45,6 +45,9 @@ namespace Cg2.Data.Ef
             return lijst;
         }
 
+        // TODO: onderstaande misschien doen via GroepsWerkJaar ipv via
+        // aparte persoon- en groepID?
+        //
         public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, int werkJaar, out int aantalOpgehaald)
         {
             int wj;
