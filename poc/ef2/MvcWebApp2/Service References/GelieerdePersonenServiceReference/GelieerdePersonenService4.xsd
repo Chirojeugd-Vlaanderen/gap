@@ -220,4 +220,16 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="Subgemeente" nillable="true" type="tns:Subgemeente" />
+  <xs:simpleType name="PersoonsInfo">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ADRESSEN" />
+      <xs:enumeration value="COMMUNICATIEVORMEN" />
+      <xs:enumeration value="VRIJEVELDEN" />
+      <xs:enumeration value="LIDINFO" />
+      <xs:enumeration value="CATEGORIEEN" />
+      <xs:enumeration value="CURSUSINFO" />
+      <xs:enumeration value="VERZEKERINGSINFO" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="PersoonsInfo" nillable="true" type="tns:PersoonsInfo" />
 </xs:schema>

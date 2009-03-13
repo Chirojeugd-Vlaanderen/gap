@@ -21,13 +21,25 @@ namespace MvcWebApp2.GelieerdePersonenServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/PaginaOphalenMetLidInfo", ReplyAction="http://tempuri.org/IGelieerdePersonenService/PaginaOphalenMetLidInfoResponse")]
         System.Collections.Generic.List<Cg2.Orm.GelieerdePersoon> PaginaOphalenMetLidInfo(out int aantalOpgehaald, int groepID, int pagina, int paginaGrootte);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/DetailsOphalen", ReplyAction="http://tempuri.org/IGelieerdePersonenService/DetailsOphalenResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/PersoonOphalenMetDetails", ReplyAction="http://tempuri.org/IGelieerdePersonenService/PersoonOphalenMetDetailsResponse")]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
-        Cg2.Orm.GelieerdePersoon DetailsOphalen(int gelieerdePersoonID);
+        Cg2.Orm.GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/Bewaren", ReplyAction="http://tempuri.org/IGelieerdePersonenService/BewarenResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/PersoonOphalenMetCustomDetails", ReplyAction="http://tempuri.org/IGelieerdePersonenService/PersoonOphalenMetCustomDetailsRespon" +
+            "se")]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
-        void Bewaren(Cg2.Orm.GelieerdePersoon persoon);
+        Cg2.Orm.GelieerdePersoon PersoonOphalenMetCustomDetails(int gelieerdePersoonID, Cg2.Orm.PersoonsInfo gevraagd);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/PersoonVerwijderenUitGroep", ReplyAction="http://tempuri.org/IGelieerdePersonenService/PersoonVerwijderenUitGroepResponse")]
+        void PersoonVerwijderenUitGroep(int gelieerdePersoonID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/PersoonAansluitenBijGroep", ReplyAction="http://tempuri.org/IGelieerdePersonenService/PersoonAansluitenBijGroepResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
+        void PersoonAansluitenBijGroep(Cg2.Orm.GelieerdePersoon p);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/PersoonBewaren", ReplyAction="http://tempuri.org/IGelieerdePersonenService/PersoonBewarenResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
+        void PersoonBewaren(Cg2.Orm.GelieerdePersoon persoon);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -65,12 +77,24 @@ namespace MvcWebApp2.GelieerdePersonenServiceReference {
             return base.Channel.PaginaOphalenMetLidInfo(out aantalOpgehaald, groepID, pagina, paginaGrootte);
         }
         
-        public Cg2.Orm.GelieerdePersoon DetailsOphalen(int gelieerdePersoonID) {
-            return base.Channel.DetailsOphalen(gelieerdePersoonID);
+        public Cg2.Orm.GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID) {
+            return base.Channel.PersoonOphalenMetDetails(gelieerdePersoonID);
         }
         
-        public void Bewaren(Cg2.Orm.GelieerdePersoon persoon) {
-            base.Channel.Bewaren(persoon);
+        public Cg2.Orm.GelieerdePersoon PersoonOphalenMetCustomDetails(int gelieerdePersoonID, Cg2.Orm.PersoonsInfo gevraagd) {
+            return base.Channel.PersoonOphalenMetCustomDetails(gelieerdePersoonID, gevraagd);
+        }
+        
+        public void PersoonVerwijderenUitGroep(int gelieerdePersoonID) {
+            base.Channel.PersoonVerwijderenUitGroep(gelieerdePersoonID);
+        }
+        
+        public void PersoonAansluitenBijGroep(Cg2.Orm.GelieerdePersoon p) {
+            base.Channel.PersoonAansluitenBijGroep(p);
+        }
+        
+        public void PersoonBewaren(Cg2.Orm.GelieerdePersoon persoon) {
+            base.Channel.PersoonBewaren(persoon);
         }
     }
 }

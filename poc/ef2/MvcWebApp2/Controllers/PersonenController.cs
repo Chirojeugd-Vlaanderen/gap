@@ -31,7 +31,7 @@ namespace MvcWebApp2.Controllers
         {
             using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
             {
-                GelieerdePersoon p = service.DetailsOphalen(id);
+                GelieerdePersoon p = service.PersoonOphalenMetDetails(id);
                 return View("Details", p);
             }
         }
@@ -69,7 +69,7 @@ namespace MvcWebApp2.Controllers
         {
             using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
             {
-                GelieerdePersoon p = service.DetailsOphalen(id);
+                GelieerdePersoon p = service.PersoonOphalenMetDetails(id);
                 return View("Edit", p);
             }
         }
@@ -84,7 +84,7 @@ namespace MvcWebApp2.Controllers
             {
                 using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
                 {
-                    service.Bewaren(p);
+                    service.PersoonBewaren(p);
                 }
  
                 return RedirectToAction("Details", new { id = p.ID });

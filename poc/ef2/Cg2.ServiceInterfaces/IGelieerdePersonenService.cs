@@ -58,7 +58,7 @@ namespace Cg2.ServiceContracts
         /// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>
         /// <param name="gevraagd">Stelt voor welke informatie opgehaald moet worden</param>
         /// <returns>GelieerdePersoon uitbreiden met meer info mbt het gevraagde onderwerp </returns>
-        [OperationContract]
+        [OperationContract(Name = "PersoonOphalenMetCustomDetails")]
         GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID, PersoonsInfo gevraagd);
 
         /// <summary>
