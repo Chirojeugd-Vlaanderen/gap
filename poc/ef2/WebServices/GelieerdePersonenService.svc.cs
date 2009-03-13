@@ -39,7 +39,19 @@ namespace Cg2.Services
             return result;
         }
 
-        public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
+        public void PersoonBewaren(GelieerdePersoon persoon)
+        {
+            GelieerdePersonenManager pm = new GelieerdePersonenManager();
+            pm.Dao.Bewaren(persoon);
+        }
+
+        public IList<GelieerdePersoon> zoekPersonen(string naamgedeelte, int pagina, int paginagrootte)
+        {
+            throw new NotImplementedException();
+        }
+        //... andere zoekmogelijkheden
+
+        public GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
 
@@ -48,10 +60,19 @@ namespace Cg2.Services
             return result;
         }
 
-        public void Bewaren(GelieerdePersoon persoon)
+        public GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID, PersoonsInfo gevraagd)
         {
-            GelieerdePersonenManager pm = new GelieerdePersonenManager();
-            pm.Dao.Bewaren(persoon);
+            throw new NotImplementedException();
+        }
+
+        public void PersoonVerwijderenUitGroep(int gelieerdePersoonID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PersoonAansluitenBijGroep(GelieerdePersoon p)
+        {
+            throw new NotImplementedException();
         }
     }
 }

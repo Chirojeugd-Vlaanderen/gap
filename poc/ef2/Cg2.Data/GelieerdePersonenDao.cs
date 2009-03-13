@@ -82,6 +82,7 @@ namespace Cg2.Data.Ef
                 // zodat (hopelijk) enkel die aan de context geattacht geraken.
 
                 // TODO: Kan dit echt niet op een properdere manier?
+                //TODO hier dan de enums setten dat lidinfo is toegevoegd
 
                 IList<Lid> alleLeden = (
                     from l in db.Lid

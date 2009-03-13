@@ -36,18 +36,51 @@ namespace Cg2.ServiceContracts
         IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald);
 
         /// <summary>
+        /// Zoekt alle personen die aan de criteria voldoen en geeft daarvan een bepaalde pagina weer
+        /// </summary>
+        /// <param name="?"></param>
+        /// <param name="?"></param>
+        /// <returns></returns>
+        IList<GelieerdePersoon> zoekPersonen(string naamgedeelte, int pagina, int paginagrootte);
+        //... andere zoekmogelijkheden
+
+        /// <summary>
         /// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen
         /// </summary>
         /// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>
         /// <returns>GelieerdePersoon met persoonsgegevens, communicatievorm en adressen</returns>
         [OperationContract]
-        GelieerdePersoon DetailsOphalen(int gelieerdePersoonID);
+        GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID);
+        
+        /// <summary>
+        /// Haalt gelieerd persoon op met extra gevraagde info.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>
+        /// <param name="gevraagd">Stelt voor welke informatie opgehaald moet worden</param>
+        /// <returns>GelieerdePersoon uitbreiden met meer info mbt het gevraagde onderwerp </returns>
+        [OperationContract]
+        GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID, PersoonsInfo gevraagd);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gelieerdePersoonID"></param>
+        [OperationContract]
+        void PersoonVerwijderenUitGroep(int gelieerdePersoonID);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="p"></param>
+        [OperationContract]
+        void PersoonAansluitenBijGroep(GelieerdePersoon p);
+
 
         /// <summary>
         /// Bewaart nieuwe/gewijzigde gelieerde persoon
         /// </summary>
         /// <param name="persoon">Te bewaren persoon</param>
         [OperationContract]
-        void Bewaren(GelieerdePersoon persoon);
+        void PersoonBewaren(GelieerdePersoon persoon);
     }
 }
