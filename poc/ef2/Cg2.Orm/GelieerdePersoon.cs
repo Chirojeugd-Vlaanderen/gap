@@ -18,7 +18,7 @@ namespace Cg2.Orm
         [EnumMember] ADRESSEN,
         [EnumMember] COMMUNICATIEVORMEN,
         [EnumMember] VRIJEVELDEN,
-        [EnumMember] LIDINFO,
+        [EnumMember] LIDINFO, //TODO maar lidmaken mag niet via persoon, moet via ledenservice
         [EnumMember] CATEGORIEEN,
         [EnumMember] CURSUSINFO,
         [EnumMember] VERZEKERINGSINFO

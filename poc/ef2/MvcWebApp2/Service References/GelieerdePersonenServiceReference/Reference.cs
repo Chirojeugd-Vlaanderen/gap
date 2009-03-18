@@ -30,13 +30,6 @@ namespace MvcWebApp2.GelieerdePersonenServiceReference {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
         Cg2.Orm.GelieerdePersoon PersoonOphalenMetCustomDetails(int gelieerdePersoonID, Cg2.Orm.PersoonsInfo gevraagd);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/PersoonVerwijderenUitGroep", ReplyAction="http://tempuri.org/IGelieerdePersonenService/PersoonVerwijderenUitGroepResponse")]
-        void PersoonVerwijderenUitGroep(int gelieerdePersoonID);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/PersoonAansluitenBijGroep", ReplyAction="http://tempuri.org/IGelieerdePersonenService/PersoonAansluitenBijGroepResponse")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
-        void PersoonAansluitenBijGroep(Cg2.Orm.GelieerdePersoon p);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/PersoonBewaren", ReplyAction="http://tempuri.org/IGelieerdePersonenService/PersoonBewarenResponse")]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
         void PersoonBewaren(Cg2.Orm.GelieerdePersoon persoon);
@@ -83,14 +76,6 @@ namespace MvcWebApp2.GelieerdePersonenServiceReference {
         
         public Cg2.Orm.GelieerdePersoon PersoonOphalenMetCustomDetails(int gelieerdePersoonID, Cg2.Orm.PersoonsInfo gevraagd) {
             return base.Channel.PersoonOphalenMetCustomDetails(gelieerdePersoonID, gevraagd);
-        }
-        
-        public void PersoonVerwijderenUitGroep(int gelieerdePersoonID) {
-            base.Channel.PersoonVerwijderenUitGroep(gelieerdePersoonID);
-        }
-        
-        public void PersoonAansluitenBijGroep(Cg2.Orm.GelieerdePersoon p) {
-            base.Channel.PersoonAansluitenBijGroep(p);
         }
         
         public void PersoonBewaren(Cg2.Orm.GelieerdePersoon persoon) {

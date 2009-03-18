@@ -13,8 +13,8 @@ namespace Cg2.ServiceContracts
     public interface ILedenService
     {
         /// <summary>
-        /// Maakt een GelieerdePersoon lid voor het huidige werkjaar
-        /// en bewaart in database.
+        /// Een gelieerde persoon ophalen en die lid in het huidige werkjaar
+        /// en bewaren in database.
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van de gelieerde persoon</param>
         /// <returns>nieuw lidobject</returns>
@@ -33,5 +33,46 @@ namespace Cg2.ServiceContracts
         /// en personen</returns>
         [OperationContract]
         IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalOpgehaald);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="?"></param>
+        /// <returns></returns>
+        [OperationContract]
+        IList<Lid> LedenOphalenMetInfo(string name, IList<LidInfo> gevraagd); //andere searcharg
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="?"></param>
+        /// <returns></returns>
+        [OperationContract]
+        IList<Lid> LidOphalenMetInfo(int lidID, string name, IList<LidInfo> gevraagd); //andere searcharg
+
+
+        /// <summary>
+        /// ook om te maken en te deleten
+        /// </summary>
+        /// <param name="persoon"></param>
+        [OperationContract]
+        void LidBewaren(Lid lid);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lid"></param>
+        [OperationContract]
+        void LidOpNonactiefZetten(Lid lid);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lid"></param>
+        [OperationContract]
+        void LidActiveren(Lid lid);
     }
 }

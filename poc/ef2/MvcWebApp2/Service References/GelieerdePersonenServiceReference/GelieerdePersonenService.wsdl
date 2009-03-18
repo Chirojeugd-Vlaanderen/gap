@@ -258,82 +258,6 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSHttpBinding_IGelieerdePersonenService_PersoonVerwijderenUitGroep_Input_policy">
-    <wsp:ExactlyOne>
-      <wsp:All>
-        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
-        </sp:SignedParts>
-        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-        </sp:EncryptedParts>
-      </wsp:All>
-    </wsp:ExactlyOne>
-  </wsp:Policy>
-  <wsp:Policy wsu:Id="WSHttpBinding_IGelieerdePersonenService_PersoonVerwijderenUitGroep_output_policy">
-    <wsp:ExactlyOne>
-      <wsp:All>
-        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
-        </sp:SignedParts>
-        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-        </sp:EncryptedParts>
-      </wsp:All>
-    </wsp:ExactlyOne>
-  </wsp:Policy>
-  <wsp:Policy wsu:Id="WSHttpBinding_IGelieerdePersonenService_PersoonAansluitenBijGroep_Input_policy">
-    <wsp:ExactlyOne>
-      <wsp:All>
-        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
-        </sp:SignedParts>
-        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-        </sp:EncryptedParts>
-      </wsp:All>
-    </wsp:ExactlyOne>
-  </wsp:Policy>
-  <wsp:Policy wsu:Id="WSHttpBinding_IGelieerdePersonenService_PersoonAansluitenBijGroep_output_policy">
-    <wsp:ExactlyOne>
-      <wsp:All>
-        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
-        </sp:SignedParts>
-        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-        </sp:EncryptedParts>
-      </wsp:All>
-    </wsp:ExactlyOne>
-  </wsp:Policy>
   <wsp:Policy wsu:Id="WSHttpBinding_IGelieerdePersonenService_PersoonBewaren_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -405,18 +329,6 @@
   <wsdl:message name="IGelieerdePersonenService_PersoonOphalenMetCustomDetails_OutputMessage">
     <wsdl:part name="parameters" element="tns:PersoonOphalenMetCustomDetailsResponse" />
   </wsdl:message>
-  <wsdl:message name="IGelieerdePersonenService_PersoonVerwijderenUitGroep_InputMessage">
-    <wsdl:part name="parameters" element="tns:PersoonVerwijderenUitGroep" />
-  </wsdl:message>
-  <wsdl:message name="IGelieerdePersonenService_PersoonVerwijderenUitGroep_OutputMessage">
-    <wsdl:part name="parameters" element="tns:PersoonVerwijderenUitGroepResponse" />
-  </wsdl:message>
-  <wsdl:message name="IGelieerdePersonenService_PersoonAansluitenBijGroep_InputMessage">
-    <wsdl:part name="parameters" element="tns:PersoonAansluitenBijGroep" />
-  </wsdl:message>
-  <wsdl:message name="IGelieerdePersonenService_PersoonAansluitenBijGroep_OutputMessage">
-    <wsdl:part name="parameters" element="tns:PersoonAansluitenBijGroepResponse" />
-  </wsdl:message>
   <wsdl:message name="IGelieerdePersonenService_PersoonBewaren_InputMessage">
     <wsdl:part name="parameters" element="tns:PersoonBewaren" />
   </wsdl:message>
@@ -439,14 +351,6 @@
     <wsdl:operation name="PersoonOphalenMetCustomDetails">
       <wsdl:input wsaw:Action="http://tempuri.org/IGelieerdePersonenService/PersoonOphalenMetCustomDetails" message="tns:IGelieerdePersonenService_PersoonOphalenMetCustomDetails_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IGelieerdePersonenService/PersoonOphalenMetCustomDetailsResponse" message="tns:IGelieerdePersonenService_PersoonOphalenMetCustomDetails_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="PersoonVerwijderenUitGroep">
-      <wsdl:input wsaw:Action="http://tempuri.org/IGelieerdePersonenService/PersoonVerwijderenUitGroep" message="tns:IGelieerdePersonenService_PersoonVerwijderenUitGroep_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IGelieerdePersonenService/PersoonVerwijderenUitGroepResponse" message="tns:IGelieerdePersonenService_PersoonVerwijderenUitGroep_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="PersoonAansluitenBijGroep">
-      <wsdl:input wsaw:Action="http://tempuri.org/IGelieerdePersonenService/PersoonAansluitenBijGroep" message="tns:IGelieerdePersonenService_PersoonAansluitenBijGroep_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IGelieerdePersonenService/PersoonAansluitenBijGroepResponse" message="tns:IGelieerdePersonenService_PersoonAansluitenBijGroep_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="PersoonBewaren">
       <wsdl:input wsaw:Action="http://tempuri.org/IGelieerdePersonenService/PersoonBewaren" message="tns:IGelieerdePersonenService_PersoonBewaren_InputMessage" />
@@ -497,28 +401,6 @@
       </wsdl:input>
       <wsdl:output>
         <wsp:PolicyReference URI="#WSHttpBinding_IGelieerdePersonenService_PersoonOphalenMetCustomDetails_output_policy" />
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="PersoonVerwijderenUitGroep">
-      <soap12:operation soapAction="http://tempuri.org/IGelieerdePersonenService/PersoonVerwijderenUitGroep" style="document" />
-      <wsdl:input>
-        <wsp:PolicyReference URI="#WSHttpBinding_IGelieerdePersonenService_PersoonVerwijderenUitGroep_Input_policy" />
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <wsp:PolicyReference URI="#WSHttpBinding_IGelieerdePersonenService_PersoonVerwijderenUitGroep_output_policy" />
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="PersoonAansluitenBijGroep">
-      <soap12:operation soapAction="http://tempuri.org/IGelieerdePersonenService/PersoonAansluitenBijGroep" style="document" />
-      <wsdl:input>
-        <wsp:PolicyReference URI="#WSHttpBinding_IGelieerdePersonenService_PersoonAansluitenBijGroep_Input_policy" />
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <wsp:PolicyReference URI="#WSHttpBinding_IGelieerdePersonenService_PersoonAansluitenBijGroep_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

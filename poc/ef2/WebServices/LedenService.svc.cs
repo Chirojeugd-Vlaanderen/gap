@@ -31,5 +31,53 @@ namespace Cg2.Services
 
             return result;
         }
+        
+        public IList<Lid> LedenOphalenMetInfo(string name, IList<LidInfo> gevraagd) //andere searcharg
+        {
+            LedenManager lm = new LedenManager();
+            return lm.LedenOphalenMetInfo(name, gevraagd);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="?"></param>
+        /// <returns></returns>
+        public IList<Lid> LidOphalenMetInfo(int lidID, string name, IList<LidInfo> gevraagd) //andere searcharg
+        {
+            LedenManager lm = new LedenManager();
+            return lm.LidOphalenMetInfo(lidID, name, gevraagd);
+        }
+
+        /// <summary>
+        /// ook om te maken en te deleten
+        /// </summary>
+        /// <param name="persoon"></param>
+        public void LidBewaren(Lid lid)
+        {
+            LedenManager lm = new LedenManager();
+            lm.LidBewaren(lid);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lid"></param>
+        public void LidOpNonactiefZetten(Lid lid)
+        {
+            LedenManager lm = new LedenManager();
+            lm.LidOpNonactiefZetten(lid);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lid"></param>
+        public void LidActiveren(Lid lid)
+        {
+            LedenManager lm = new LedenManager();
+            lm.LidActiveren(lid);
+        }
     }
 }

@@ -81,17 +81,5 @@ namespace Cg2.Services
         {
             throw new NotImplementedException();
         }
-
-        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
-        public void PersoonVerwijderenUitGroep(int gelieerdePersoonID)
-        {
-            throw new NotImplementedException();
-        }
-
-        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
-        public void PersoonAansluitenBijGroep(GelieerdePersoon p)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

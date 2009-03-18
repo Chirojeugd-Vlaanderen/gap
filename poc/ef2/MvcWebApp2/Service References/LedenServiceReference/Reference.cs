@@ -21,6 +21,24 @@ namespace MvcWebApp2.LedenServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILedenService/PaginaOphalen", ReplyAction="http://tempuri.org/ILedenService/PaginaOphalenResponse")]
         Cg2.Orm.Lid[] PaginaOphalen(out int aantalOpgehaald, int groepsWerkJaarID, int pagina, int paginaGrootte);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILedenService/LedenOphalenMetInfo", ReplyAction="http://tempuri.org/ILedenService/LedenOphalenMetInfoResponse")]
+        Cg2.Orm.Lid[] LedenOphalenMetInfo(string name, Cg2.Orm.LidInfo[] gevraagd);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILedenService/LidOphalenMetInfo", ReplyAction="http://tempuri.org/ILedenService/LidOphalenMetInfoResponse")]
+        Cg2.Orm.Lid[] LidOphalenMetInfo(int lidID, string name, Cg2.Orm.LidInfo[] gevraagd);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILedenService/LidBewaren", ReplyAction="http://tempuri.org/ILedenService/LidBewarenResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
+        void LidBewaren(Cg2.Orm.Lid lid);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILedenService/LidOpNonactiefZetten", ReplyAction="http://tempuri.org/ILedenService/LidOpNonactiefZettenResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
+        void LidOpNonactiefZetten(Cg2.Orm.Lid lid);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILedenService/LidActiveren", ReplyAction="http://tempuri.org/ILedenService/LidActiverenResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
+        void LidActiveren(Cg2.Orm.Lid lid);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -56,6 +74,26 @@ namespace MvcWebApp2.LedenServiceReference {
         
         public Cg2.Orm.Lid[] PaginaOphalen(out int aantalOpgehaald, int groepsWerkJaarID, int pagina, int paginaGrootte) {
             return base.Channel.PaginaOphalen(out aantalOpgehaald, groepsWerkJaarID, pagina, paginaGrootte);
+        }
+        
+        public Cg2.Orm.Lid[] LedenOphalenMetInfo(string name, Cg2.Orm.LidInfo[] gevraagd) {
+            return base.Channel.LedenOphalenMetInfo(name, gevraagd);
+        }
+        
+        public Cg2.Orm.Lid[] LidOphalenMetInfo(int lidID, string name, Cg2.Orm.LidInfo[] gevraagd) {
+            return base.Channel.LidOphalenMetInfo(lidID, name, gevraagd);
+        }
+        
+        public void LidBewaren(Cg2.Orm.Lid lid) {
+            base.Channel.LidBewaren(lid);
+        }
+        
+        public void LidOpNonactiefZetten(Cg2.Orm.Lid lid) {
+            base.Channel.LidOpNonactiefZetten(lid);
+        }
+        
+        public void LidActiveren(Cg2.Orm.Lid lid) {
+            base.Channel.LidActiveren(lid);
         }
     }
 }

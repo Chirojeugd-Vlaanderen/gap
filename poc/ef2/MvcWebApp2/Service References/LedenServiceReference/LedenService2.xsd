@@ -256,4 +256,20 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="Subgemeente" nillable="true" type="tns:Subgemeente" />
+  <xs:complexType name="ArrayOfLidInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="LidInfo" type="tns:LidInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfLidInfo" nillable="true" type="tns:ArrayOfLidInfo" />
+  <xs:simpleType name="LidInfo">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PERSOONSINFO" />
+      <xs:enumeration value="VRIJEVELDEN" />
+      <xs:enumeration value="AFDELINGSINFO" />
+      <xs:enumeration value="FUNCTIES" />
+      <xs:enumeration value="BIVAKINFO" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="LidInfo" nillable="true" type="tns:LidInfo" />
 </xs:schema>

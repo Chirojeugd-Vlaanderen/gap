@@ -62,21 +62,6 @@ namespace Cg2.ServiceContracts
         GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID, PersoonsInfo gevraagd);
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="gelieerdePersoonID"></param>
-        [OperationContract]
-        void PersoonVerwijderenUitGroep(int gelieerdePersoonID);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="p"></param>
-        [OperationContract]
-        void PersoonAansluitenBijGroep(GelieerdePersoon p);
-
-
-        /// <summary>
         /// Bewaart nieuwe/gewijzigde gelieerde persoon
         /// </summary>
         /// <param name="persoon">Te bewaren persoon</param>

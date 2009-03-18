@@ -37,5 +37,26 @@ namespace Cg2.ServiceContracts
         /// <returns>Een teststring</returns>
         [OperationContract]
         string Hallo();
+
+
+        /*
+            acties op GROEP g
+            groepophalen(searcharg)
+            groepupdate(g)
+            =>nieuwe groep
+            groepverwijderen(g)?
+            groepophalenmetadressen(g)
+            groepophalenmetpersonen(g) => alle standaardpersonen dus
+            groepophalenmetfuncties(g)
+            groepophalenmetvrijevelden(g)
+            bivakorganiseren(g, b)
+            stelGAVin
+            verwijderGAV
+            maaknieuwesatelliet(g, s)
+            afdelingsjaartoevoegen(g)
+            afdelingenreorganiseren(g)
+            afdelingsjaarverwijderen(g)
+            afdelingtoevoegen
+         */
     }
 }

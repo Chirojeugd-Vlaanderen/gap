@@ -88,5 +88,62 @@ namespace Cg2.Workers
 
             return LidMaken(gp, gm.Dao.HuidigWerkJaarGet(gp.Groep.ID));
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="gevraagd"></param>
+        /// <returns></returns>
+        public IList<Lid> LedenOphalenMetInfo(string name, IList<LidInfo> gevraagd) //andere searcharg
+        {
+            //TODO
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="?"></param>
+        /// <returns></returns>
+        public IList<Lid> LidOphalenMetInfo(int lidID, string name, IList<LidInfo> gevraagd) //andere searcharg
+        {
+            //TODO
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// ook om te maken en te deleten
+        /// </summary>
+        /// <param name="persoon"></param>
+        public void LidBewaren(Lid lid)
+        {
+            //TODO
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lid"></param>
+        public void LidOpNonactiefZetten(Lid lid)
+        {
+            lid.NonActief = true;
+            //TODO save
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lid"></param>
+        public void LidActiveren(Lid lid)
+        {
+            lid.NonActief = false;
+            //TODO er moet betaald worden + save
+            throw new NotImplementedException();
+        }
     }
 }
