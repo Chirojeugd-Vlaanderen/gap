@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractEfDao.cs" />
+    <Compile Include="AuthorisatieDao.cs" />
     <Compile Include="ChiroGroepenDao.cs" />
     <Compile Include="GelieerdePersonenDao.cs" />
     <Compile Include="GroepenDao.cs" />

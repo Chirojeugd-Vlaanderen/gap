@@ -95,7 +95,6 @@
   <ItemGroup>
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
-    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService.disco" />
     <None Include="Service References\GelieerdePersonenServiceReference\configuration91.svcinfo" />
     <None Include="Service References\GelieerdePersonenServiceReference\configuration.svcinfo" />
     <None Include="Service References\GelieerdePersonenServiceReference\Reference.svcmap">
@@ -109,6 +108,8 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService1.disco" />
+    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService.disco" />
     <Content Include="Views\Leden\Index.aspx" />
     <Content Include="Views\Personen\Details.aspx" />
     <Content Include="Views\Personen\Edit.aspx" />
@@ -141,10 +142,16 @@
     <None Include="Properties\DataSources\Cg2.Orm.Lid.datasource" />
     <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService.wsdl" />
     <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService.xsd" />
+    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService1.wsdl" />
     <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService1.xsd" />
     <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService2.xsd" />
     <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService3.xsd" />
     <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService4.xsd" />
+    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService5.xsd" />
+    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService51.xsd" />
+    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService52.xsd" />
+    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService53.xsd" />
+    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService54.xsd" />
     <None Include="Service References\LedenServiceReference\LedenService.wsdl" />
     <None Include="Service References\LedenServiceReference\LedenService.xsd" />
     <None Include="Service References\LedenServiceReference\LedenService1.xsd" />
@@ -183,9 +190,8 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>3507</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
+          <IISUrl>http://localhost/cgtest</IISUrl>
+          <NTLMAuthentication>True</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
           </CustomServerUrl>

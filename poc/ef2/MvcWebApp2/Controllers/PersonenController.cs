@@ -16,12 +16,14 @@ namespace MvcWebApp2.Controllers
 
         public ActionResult Index()
         {
+            IList<GelieerdePersoon> personen;
+
             using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
             {
                 int aantal;
-                IList<GelieerdePersoon> personen = service.PaginaOphalenMetLidInfo(out aantal, int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12);
-                return View("Index", personen);
+                personen = service.PaginaOphalenMetLidInfo(out aantal, int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12);
             }
+            return View("Index", personen);
         }
 
         //
@@ -64,7 +66,8 @@ namespace MvcWebApp2.Controllers
 
         //
         // GET: /Personen/Edit/5
- 
+
+        [Authorize]
         public ActionResult Edit(int id)
         {
             using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())

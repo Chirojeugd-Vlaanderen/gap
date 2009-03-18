@@ -19,9 +19,11 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GroepsWerkjaar_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "GroepsWerkJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GroepsWerkJaar))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Lid_GroepsWerkjaar", "GroepsWerkJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.GroepsWerkJaar), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Lid))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Lid_GelieerdePersoon", "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.GelieerdePersoon), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Lid))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GebruikersRecht_Gav", "Gav", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Gav), "GebruikersRecht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GebruikersRecht))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GebruikersRecht_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "GebruikersRecht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GebruikersRecht))]
 
 // Original file name:
-// Generation date: 10/03/2009 14:50:00
+// Generation date: 17/03/2009 21:06:38
 namespace Cg2.Orm
 {
     
@@ -206,6 +208,36 @@ namespace Cg2.Orm
         }
         private global::System.Data.Objects.ObjectQuery<Lid> _Lid;
         /// <summary>
+        /// There are no comments for Gav in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<Gav> Gav
+        {
+            get
+            {
+                if ((this._Gav == null))
+                {
+                    this._Gav = base.CreateQuery<Gav>("[Gav]");
+                }
+                return this._Gav;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<Gav> _Gav;
+        /// <summary>
+        /// There are no comments for GebruikersRecht in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<GebruikersRecht> GebruikersRecht
+        {
+            get
+            {
+                if ((this._GebruikersRecht == null))
+                {
+                    this._GebruikersRecht = base.CreateQuery<GebruikersRecht>("[GebruikersRecht]");
+                }
+                return this._GebruikersRecht;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<GebruikersRecht> _GebruikersRecht;
+        /// <summary>
         /// There are no comments for Groep in the schema.
         /// </summary>
         public void AddToGroep(Groep groep)
@@ -274,6 +306,20 @@ namespace Cg2.Orm
         public void AddToLid(Lid lid)
         {
             base.AddObject("Lid", lid);
+        }
+        /// <summary>
+        /// There are no comments for Gav in the schema.
+        /// </summary>
+        public void AddToGav(Gav gav)
+        {
+            base.AddObject("Gav", gav);
+        }
+        /// <summary>
+        /// There are no comments for GebruikersRecht in the schema.
+        /// </summary>
+        public void AddToGebruikersRecht(GebruikersRecht gebruikersRecht)
+        {
+            base.AddObject("GebruikersRecht", gebruikersRecht);
         }
     }
     /// <summary>
@@ -555,6 +601,27 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<GroepsWerkJaar>("ChiroGroepModel.FK_GroepsWerkjaar_Groep", "GroepsWerkJaar", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for GebruikersRecht in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_GebruikersRecht_Groep", "GebruikersRecht")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<GebruikersRecht> GebruikersRecht
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<GebruikersRecht>("ChiroGroepModel.FK_GebruikersRecht_Groep", "GebruikersRecht");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<GebruikersRecht>("ChiroGroepModel.FK_GebruikersRecht_Groep", "GebruikersRecht", value);
                 }
             }
         }
@@ -2398,6 +2465,289 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_Lid_GelieerdePersoon", "GelieerdePersoon", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.Gav in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// ID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Gav")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class Gav : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new Gav object.
+        /// </summary>
+        /// <param name="id">Initial value of ID.</param>
+        /// <param name="login">Initial value of Login.</param>
+        public static Gav CreateGav(int id, string login)
+        {
+            Gav gav = new Gav();
+            gav.ID = id;
+            gav.Login = login;
+            return gav;
+        }
+        /// <summary>
+        /// There are no comments for Property ID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int ID
+        {
+            get
+            {
+                return this._ID;
+            }
+            set
+            {
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
+            }
+        }
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        /// <summary>
+        /// There are no comments for Property Login in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Login
+        {
+            get
+            {
+                return this._Login;
+            }
+            set
+            {
+                this.OnLoginChanging(value);
+                this.ReportPropertyChanging("Login");
+                this._Login = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Login");
+                this.OnLoginChanged();
+            }
+        }
+        private string _Login;
+        partial void OnLoginChanging(string value);
+        partial void OnLoginChanged();
+        /// <summary>
+        /// There are no comments for GebruikersRecht in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_GebruikersRecht_Gav", "GebruikersRecht")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<GebruikersRecht> GebruikersRecht
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<GebruikersRecht>("ChiroGroepModel.FK_GebruikersRecht_Gav", "GebruikersRecht");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<GebruikersRecht>("ChiroGroepModel.FK_GebruikersRecht_Gav", "GebruikersRecht", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.GebruikersRecht in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// ID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="GebruikersRecht")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class GebruikersRecht : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new GebruikersRecht object.
+        /// </summary>
+        /// <param name="id">Initial value of ID.</param>
+        /// <param name="businessKey">Initial value of BusinessKey.</param>
+        /// <param name="versie">Initial value of Versie.</param>
+        public static GebruikersRecht CreateGebruikersRecht(int id, global::System.Guid businessKey, byte[] versie)
+        {
+            GebruikersRecht gebruikersRecht = new GebruikersRecht();
+            gebruikersRecht.ID = id;
+            gebruikersRecht.BusinessKey = businessKey;
+            gebruikersRecht.Versie = versie;
+            return gebruikersRecht;
+        }
+        /// <summary>
+        /// There are no comments for Property ID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int ID
+        {
+            get
+            {
+                return this._ID;
+            }
+            set
+            {
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
+            }
+        }
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        /// <summary>
+        /// There are no comments for Property VervalDatum in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<global::System.DateTime> VervalDatum
+        {
+            get
+            {
+                return this._VervalDatum;
+            }
+            set
+            {
+                this.OnVervalDatumChanging(value);
+                this.ReportPropertyChanging("VervalDatum");
+                this._VervalDatum = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("VervalDatum");
+                this.OnVervalDatumChanged();
+            }
+        }
+        private global::System.Nullable<global::System.DateTime> _VervalDatum;
+        partial void OnVervalDatumChanging(global::System.Nullable<global::System.DateTime> value);
+        partial void OnVervalDatumChanged();
+        /// <summary>
+        /// There are no comments for Property BusinessKey in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Guid BusinessKey
+        {
+            get
+            {
+                return this._BusinessKey;
+            }
+            set
+            {
+                this.OnBusinessKeyChanging(value);
+                this.ReportPropertyChanging("BusinessKey");
+                this._BusinessKey = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("BusinessKey");
+                this.OnBusinessKeyChanged();
+            }
+        }
+        private global::System.Guid _BusinessKey;
+        partial void OnBusinessKeyChanging(global::System.Guid value);
+        partial void OnBusinessKeyChanged();
+        /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
+        /// <summary>
+        /// There are no comments for Gav in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_GebruikersRecht_Gav", "Gav")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Gav Gav
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Gav>("ChiroGroepModel.FK_GebruikersRecht_Gav", "Gav").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Gav>("ChiroGroepModel.FK_GebruikersRecht_Gav", "Gav").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Gav in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Gav> GavReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Gav>("ChiroGroepModel.FK_GebruikersRecht_Gav", "Gav");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Gav>("ChiroGroepModel.FK_GebruikersRecht_Gav", "Gav", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_GebruikersRecht_Groep", "Groep")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Groep Groep
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_GebruikersRecht_Groep", "Groep").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_GebruikersRecht_Groep", "Groep").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Groep> GroepReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_GebruikersRecht_Groep", "Groep");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Groep>("ChiroGroepModel.FK_GebruikersRecht_Groep", "Groep", value);
                 }
             }
         }

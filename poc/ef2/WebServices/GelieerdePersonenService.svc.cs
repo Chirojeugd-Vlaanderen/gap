@@ -7,12 +7,15 @@ using System.Text;
 using Cg2.ServiceContracts;
 using Cg2.Workers;
 using Cg2.Orm;
+using Cg2.Orm.Exceptions;
+using System.Security.Permissions;
 
 namespace Cg2.Services
 {
     // NOTE: If you change the class name "GelieerdePersonenService" here, you must also update the reference to "GelieerdePersonenService" in Web.config.
     public class GelieerdePersonenService : IGelieerdePersonenService
     {
+        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
         public IList<GelieerdePersoon> AllenOphalen(int groepID)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
@@ -21,6 +24,7 @@ namespace Cg2.Services
             return result;
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
         public IList<GelieerdePersoon>  PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
@@ -30,27 +34,39 @@ namespace Cg2.Services
             return result;
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
         public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
+            AuthorisatieManager am = new AuthorisatieManager();
 
-            var result = pm.Dao.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalOpgehaald);
-                          
-            return result;
+            if (am.IsGav(ServiceSecurityContext.Current.WindowsIdentity.Name, groepID))
+            {
+                var result = pm.Dao.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalOpgehaald);
+
+                return result;
+            }
+            else
+            {
+                throw new GeenGavException("Je bent geen GAV van deze groep.");
+            }
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
         public void PersoonBewaren(GelieerdePersoon persoon)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
             pm.Dao.Bewaren(persoon);
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
         public IList<GelieerdePersoon> zoekPersonen(string naamgedeelte, int pagina, int paginagrootte)
         {
             throw new NotImplementedException();
         }
         //... andere zoekmogelijkheden
 
+        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
         public GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
@@ -60,16 +76,19 @@ namespace Cg2.Services
             return result;
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
         public GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID, PersoonsInfo gevraagd)
         {
             throw new NotImplementedException();
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
         public void PersoonVerwijderenUitGroep(int gelieerdePersoonID)
         {
             throw new NotImplementedException();
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
         public void PersoonAansluitenBijGroep(GelieerdePersoon p)
         {
             throw new NotImplementedException();
