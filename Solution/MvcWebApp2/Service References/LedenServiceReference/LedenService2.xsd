@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Cg2.Orm" xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Cg2.Orm" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:2733/LedenService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Cg2.Orm" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Cg2.Orm" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:2733/LedenService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" />
   <xs:complexType name="Lid">
     <xs:complexContent mixed="false">
       <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q1:EntityObject">
         <xs:sequence>
-          <xs:element minOccurs="0" name="BusinessKey" type="ser:guid" />
           <xs:element minOccurs="0" name="EindeInstapPeriode" nillable="true" type="xs:dateTime" />
           <xs:element minOccurs="0" name="GelieerdePersoon" nillable="true" type="tns:GelieerdePersoon" />
           <xs:element minOccurs="0" name="GelieerdePersoonReference" nillable="true" type="q1:EntityReferenceOfGelieerdePersoonjQfcsukF" />
@@ -27,7 +25,6 @@
     <xs:complexContent mixed="false">
       <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q2:EntityObject">
         <xs:sequence>
-          <xs:element minOccurs="0" name="BusinessKey" type="ser:guid" />
           <xs:element minOccurs="0" name="ChiroLeefTijd" type="xs:int" />
           <xs:element minOccurs="0" name="Communicatie" nillable="true" type="tns:ArrayOfCommunicatieVorm" />
           <xs:element minOccurs="0" name="Groep" nillable="true" type="tns:Groep" />
@@ -71,7 +68,6 @@
     <xs:complexContent mixed="false">
       <xs:extension xmlns:q4="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q4:EntityObject">
         <xs:sequence>
-          <xs:element minOccurs="0" name="BusinessKey" type="ser:guid" />
           <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="GebruikersRecht" nillable="true" type="tns:ArrayOfGebruikersRecht" />
           <xs:element minOccurs="0" name="GelieerdePersoon" nillable="true" type="tns:ArrayOfGelieerdePersoon" />
@@ -97,7 +93,6 @@
     <xs:complexContent mixed="false">
       <xs:extension xmlns:q5="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q5:EntityObject">
         <xs:sequence>
-          <xs:element minOccurs="0" name="BusinessKey" type="ser:guid" />
           <xs:element minOccurs="0" name="Gav" nillable="true" type="tns:Gav" />
           <xs:element minOccurs="0" name="GavReference" nillable="true" type="q5:EntityReferenceOfGavjQfcsukF" />
           <xs:element minOccurs="0" name="Groep" nillable="true" type="tns:Groep" />
@@ -167,7 +162,6 @@
       <xs:extension xmlns:q8="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q8:EntityObject">
         <xs:sequence>
           <xs:element minOccurs="0" name="AdNummer" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="BusinessKey" type="ser:guid" />
           <xs:element minOccurs="0" name="GeboorteDatum" nillable="true" type="xs:dateTime" />
           <xs:element minOccurs="0" name="GelieerdePersoon" nillable="true" type="tns:ArrayOfGelieerdePersoon" />
           <xs:element minOccurs="0" name="GeslachtsInt" type="xs:int" />

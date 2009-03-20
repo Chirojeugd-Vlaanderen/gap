@@ -19,10 +19,8 @@
     <p>
         <%=Html.Hidden("ID") %>
         <%=Html.Hidden("VersieString") %>
-        <%=Html.Hidden("BusinessKey") %>
         <%=Html.Hidden("Persoon.ID") %>
         <%=Html.Hidden("Persoon.VersieString") %>
-        <%=Html.Hidden("Persoon.BusinessKey") %>
         <%=Html.Hidden("Persoon.AdNummer") %>
         <%=Html.Hidden("EntityKey") %>
     

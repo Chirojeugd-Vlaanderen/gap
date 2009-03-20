@@ -28,20 +28,9 @@ namespace Cg2.Orm
     {
         private IList<PersoonsInfo> list;
 
-        public GelieerdePersoon()
+        public GelieerdePersoon(): base()
         {
-            BusinessKey = Guid.NewGuid();
             //TODO list = 
-        }
-
-        public override bool Equals(object obj)
-        {
-            return this.MyEquals(obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return this.MyGetHashCode();
         }
 
         public string VersieString

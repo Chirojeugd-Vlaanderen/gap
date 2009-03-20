@@ -23,7 +23,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GebruikersRecht_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "GebruikersRecht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GebruikersRecht))]
 
 // Original file name:
-// Generation date: 17/03/2009 21:06:38
+// Generation date: 20/03/2009 10:07:08
 namespace Cg2.Orm
 {
     
@@ -339,14 +339,12 @@ namespace Cg2.Orm
         /// <param name="naam">Initial value of Naam.</param>
         /// <param name="id">Initial value of ID.</param>
         /// <param name="versie">Initial value of Versie.</param>
-        /// <param name="businessKey">Initial value of BusinessKey.</param>
-        public static ChiroGroep CreateChiroGroep(string naam, int id, byte[] versie, global::System.Guid businessKey)
+        public static ChiroGroep CreateChiroGroep(string naam, int id, byte[] versie)
         {
             ChiroGroep chiroGroep = new ChiroGroep();
             chiroGroep.Naam = naam;
             chiroGroep.ID = id;
             chiroGroep.Versie = versie;
-            chiroGroep.BusinessKey = businessKey;
             return chiroGroep;
         }
     }
@@ -368,14 +366,12 @@ namespace Cg2.Orm
         /// <param name="naam">Initial value of Naam.</param>
         /// <param name="id">Initial value of ID.</param>
         /// <param name="versie">Initial value of Versie.</param>
-        /// <param name="businessKey">Initial value of BusinessKey.</param>
-        public static Groep CreateGroep(string naam, int id, byte[] versie, global::System.Guid businessKey)
+        public static Groep CreateGroep(string naam, int id, byte[] versie)
         {
             Groep groep = new Groep();
             groep.Naam = naam;
             groep.ID = id;
             groep.Versie = versie;
-            groep.BusinessKey = businessKey;
             return groep;
         }
         /// <summary>
@@ -540,29 +536,6 @@ namespace Cg2.Orm
         partial void OnVersieChanging(byte[] value);
         partial void OnVersieChanged();
         /// <summary>
-        /// There are no comments for Property BusinessKey in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Guid BusinessKey
-        {
-            get
-            {
-                return this._BusinessKey;
-            }
-            set
-            {
-                this.OnBusinessKeyChanging(value);
-                this.ReportPropertyChanging("BusinessKey");
-                this._BusinessKey = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("BusinessKey");
-                this.OnBusinessKeyChanged();
-            }
-        }
-        private global::System.Guid _BusinessKey;
-        partial void OnBusinessKeyChanging(global::System.Guid value);
-        partial void OnBusinessKeyChanged();
-        /// <summary>
         /// There are no comments for GelieerdePersoon in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_GelieerdePersoon_Groep", "GelieerdePersoon")]
@@ -642,14 +615,12 @@ namespace Cg2.Orm
         /// </summary>
         /// <param name="naam">Initial value of Naam.</param>
         /// <param name="geslachtsInt">Initial value of GeslachtsInt.</param>
-        /// <param name="businessKey">Initial value of BusinessKey.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static Persoon CreatePersoon(string naam, int geslachtsInt, global::System.Guid businessKey, int id)
+        public static Persoon CreatePersoon(string naam, int geslachtsInt, int id)
         {
             Persoon persoon = new Persoon();
             persoon.Naam = naam;
             persoon.GeslachtsInt = geslachtsInt;
-            persoon.BusinessKey = businessKey;
             persoon.ID = id;
             return persoon;
         }
@@ -791,29 +762,6 @@ namespace Cg2.Orm
         private global::System.Nullable<global::System.DateTime> _SterfDatum;
         partial void OnSterfDatumChanging(global::System.Nullable<global::System.DateTime> value);
         partial void OnSterfDatumChanged();
-        /// <summary>
-        /// There are no comments for Property BusinessKey in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Guid BusinessKey
-        {
-            get
-            {
-                return this._BusinessKey;
-            }
-            set
-            {
-                this.OnBusinessKeyChanging(value);
-                this.ReportPropertyChanging("BusinessKey");
-                this._BusinessKey = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("BusinessKey");
-                this.OnBusinessKeyChanged();
-            }
-        }
-        private global::System.Guid _BusinessKey;
-        partial void OnBusinessKeyChanging(global::System.Guid value);
-        partial void OnBusinessKeyChanged();
         /// <summary>
         /// There are no comments for Property ID in the schema.
         /// </summary>
@@ -1123,14 +1071,12 @@ namespace Cg2.Orm
         /// Create a new GelieerdePersoon object.
         /// </summary>
         /// <param name="chiroLeefTijd">Initial value of ChiroLeefTijd.</param>
-        /// <param name="businessKey">Initial value of BusinessKey.</param>
         /// <param name="id">Initial value of ID.</param>
         /// <param name="versie">Initial value of Versie.</param>
-        public static GelieerdePersoon CreateGelieerdePersoon(int chiroLeefTijd, global::System.Guid businessKey, int id, byte[] versie)
+        public static GelieerdePersoon CreateGelieerdePersoon(int chiroLeefTijd, int id, byte[] versie)
         {
             GelieerdePersoon gelieerdePersoon = new GelieerdePersoon();
             gelieerdePersoon.ChiroLeefTijd = chiroLeefTijd;
-            gelieerdePersoon.BusinessKey = businessKey;
             gelieerdePersoon.ID = id;
             gelieerdePersoon.Versie = versie;
             return gelieerdePersoon;
@@ -1158,29 +1104,6 @@ namespace Cg2.Orm
         private int _ChiroLeefTijd;
         partial void OnChiroLeefTijdChanging(int value);
         partial void OnChiroLeefTijdChanged();
-        /// <summary>
-        /// There are no comments for Property BusinessKey in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Guid BusinessKey
-        {
-            get
-            {
-                return this._BusinessKey;
-            }
-            set
-            {
-                this.OnBusinessKeyChanging(value);
-                this.ReportPropertyChanging("BusinessKey");
-                this._BusinessKey = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("BusinessKey");
-                this.OnBusinessKeyChanged();
-            }
-        }
-        private global::System.Guid _BusinessKey;
-        partial void OnBusinessKeyChanging(global::System.Guid value);
-        partial void OnBusinessKeyChanged();
         /// <summary>
         /// There are no comments for Property ID in the schema.
         /// </summary>
@@ -2196,9 +2119,8 @@ namespace Cg2.Orm
         /// <param name="verwijderd">Initial value of Verwijderd.</param>
         /// <param name="volgendWerkjaar">Initial value of VolgendWerkjaar.</param>
         /// <param name="id">Initial value of ID.</param>
-        /// <param name="businessKey">Initial value of BusinessKey.</param>
         /// <param name="versie">Initial value of Versie.</param>
-        public static Lid CreateLid(bool lidgeldBetaald, bool nonActief, bool verwijderd, int volgendWerkjaar, int id, global::System.Guid businessKey, byte[] versie)
+        public static Lid CreateLid(bool lidgeldBetaald, bool nonActief, bool verwijderd, int volgendWerkjaar, int id, byte[] versie)
         {
             Lid lid = new Lid();
             lid.LidgeldBetaald = lidgeldBetaald;
@@ -2206,7 +2128,6 @@ namespace Cg2.Orm
             lid.Verwijderd = verwijderd;
             lid.VolgendWerkjaar = volgendWerkjaar;
             lid.ID = id;
-            lid.BusinessKey = businessKey;
             lid.Versie = versie;
             return lid;
         }
@@ -2348,29 +2269,6 @@ namespace Cg2.Orm
         private int _ID;
         partial void OnIDChanging(int value);
         partial void OnIDChanged();
-        /// <summary>
-        /// There are no comments for Property BusinessKey in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Guid BusinessKey
-        {
-            get
-            {
-                return this._BusinessKey;
-            }
-            set
-            {
-                this.OnBusinessKeyChanging(value);
-                this.ReportPropertyChanging("BusinessKey");
-                this._BusinessKey = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("BusinessKey");
-                this.OnBusinessKeyChanged();
-            }
-        }
-        private global::System.Guid _BusinessKey;
-        partial void OnBusinessKeyChanging(global::System.Guid value);
-        partial void OnBusinessKeyChanged();
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
@@ -2575,13 +2473,11 @@ namespace Cg2.Orm
         /// Create a new GebruikersRecht object.
         /// </summary>
         /// <param name="id">Initial value of ID.</param>
-        /// <param name="businessKey">Initial value of BusinessKey.</param>
         /// <param name="versie">Initial value of Versie.</param>
-        public static GebruikersRecht CreateGebruikersRecht(int id, global::System.Guid businessKey, byte[] versie)
+        public static GebruikersRecht CreateGebruikersRecht(int id, byte[] versie)
         {
             GebruikersRecht gebruikersRecht = new GebruikersRecht();
             gebruikersRecht.ID = id;
-            gebruikersRecht.BusinessKey = businessKey;
             gebruikersRecht.Versie = versie;
             return gebruikersRecht;
         }
@@ -2631,29 +2527,6 @@ namespace Cg2.Orm
         private global::System.Nullable<global::System.DateTime> _VervalDatum;
         partial void OnVervalDatumChanging(global::System.Nullable<global::System.DateTime> value);
         partial void OnVervalDatumChanged();
-        /// <summary>
-        /// There are no comments for Property BusinessKey in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Guid BusinessKey
-        {
-            get
-            {
-                return this._BusinessKey;
-            }
-            set
-            {
-                this.OnBusinessKeyChanging(value);
-                this.ReportPropertyChanging("BusinessKey");
-                this._BusinessKey = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("BusinessKey");
-                this.OnBusinessKeyChanged();
-            }
-        }
-        private global::System.Guid _BusinessKey;
-        partial void OnBusinessKeyChanging(global::System.Guid value);
-        partial void OnBusinessKeyChanged();
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>

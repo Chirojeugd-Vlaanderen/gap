@@ -13,34 +13,6 @@ namespace Cg2.Orm
         const int DefaultID = 0;
 
         /// <summary>
-        /// Alternatieve hashcode, op basis van BusinessKey
-        /// </summary>
-        /// <param name="be">Basisentiteit</param>
-        /// <returns>Hashcode</returns>
-        public static int MyGetHashCode(this IBasisEntiteit be)
-        {
-            return be.BusinessKey.GetHashCode();
-        }
-
-        /// <summary>
-        /// Alternatieve equals, op basis van alternatieve hashcode
-        /// </summary>
-        /// <param name="ik">deze entiteit</param>
-        /// <param name="jij">andere entiteit</param>
-        /// <returns>true indien gelijk</returns>
-        public static bool MyEquals(this IBasisEntiteit ik, object jij)
-        {
-            IBasisEntiteit gij = jij as IBasisEntiteit;
-
-            return gij != null
-                && (
-                    ik.ID == gij.ID
-                    || (ik.ID == DefaultID || gij.ID == DefaultID)
-                        && ik.BusinessKey == gij.BusinessKey
-                    ) && ik.GetType() == jij.GetType();
-        }
-
-        /// <summary>
         /// Sql rowversion als string, om gemakkelijk te kunnen gebruiken
         /// met MVC model binding in forms
         /// </summary>
