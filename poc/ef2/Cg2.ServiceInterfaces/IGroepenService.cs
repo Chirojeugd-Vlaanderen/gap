@@ -44,18 +44,18 @@ namespace Cg2.ServiceContracts
             groepophalen(searcharg)
             groepupdate(g)
             =>nieuwe groep
-            groepverwijderen(g)?
+            groepverwijderen(g)? (JV: enkel nuttig voor eventueel admingedeelte)
             groepophalenmetadressen(g)
-            groepophalenmetpersonen(g) => alle standaardpersonen dus
+            groepophalenmetpersonen(g) => alle standaardpersonen dus (JV: wat zijn standaardpersonen? Alles lijkt me sowieso te veel)
             groepophalenmetfuncties(g)
             groepophalenmetvrijevelden(g)
             bivakorganiseren(g, b)
             stelGAVin
-            verwijderGAV
+            verwijderGAV (JV: ik zou hier de 'VervalDatum' op nu instellen, zodat geregistreerd blijft dat iemand ooit gav was)
             maaknieuwesatelliet(g, s)
             afdelingsjaartoevoegen(g)
-            afdelingenreorganiseren(g)
-            afdelingsjaarverwijderen(g)
+            afdelingenreorganiseren(g) (JV: bedoel je het bewaren van de afdelingen gekoppeld aan de groep?)
+            afdelingsjaarverwijderen(g) (JV: kan enkel als er geen leden in dat afdelingsjaar zijn/waren)
             afdelingtoevoegen
          */
     }
