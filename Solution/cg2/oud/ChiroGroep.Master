@@ -1,21 +1,0 @@
-<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="ChiroGroep.master.cs" Inherits="cg2.ChiroGroep" %>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" >
-<head runat="server">
-	<title>Chirogroep 2010</title>	<link rel="stylesheet" type="text/css" href="ChiroGroep.css" />
-</head>
-<body id="altbody">
-    <form id="form1" runat="server">        <div id="wrapper-header">        	<div id="header">        		<h1>Chirogroep 2010</h1>        	</div>        </div>
-        <div id="wrapper-menu">        	<div id="menu">        		<ul>        			<li><a href="#">leden</a></li>        			<li><a href="#">leiding</a></li>        			<li><a href="#">personen</a></li>        			<li><a href="#">lijsten</a></li>        			<li><a href="#">groepsinfo</a></li>        			<li><a href="#">instellingen</a></li>        		</ul>        	</div>        </div>                <div id="content">
-            <asp:ContentPlaceHolder ID="PaginaInhoud" runat="server">
-       
-            </asp:ContentPlaceHolder>
-        </div>
-        
-        <div id="footer">        	Copyright (C) 2008, Chirojeugd-Vlaanderen vzw
-        </div>    
-    </form>
-</body>
-</html>
