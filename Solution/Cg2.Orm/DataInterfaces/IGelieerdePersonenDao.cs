@@ -65,5 +65,16 @@ namespace Cg2.Orm.DataInterfaces
         /// <returns>referentie naar p, nadat groepsgegevens
         /// geladen zijn</returns>
         GelieerdePersoon GroepLaden(GelieerdePersoon p);
+
+        /// <summary>
+        /// Haalt een adres op, samen met de gekoppelde personen
+        /// </summary>
+        /// <param name="adresID">ID op te halen adres</param>
+        /// <param name="gelieerdAan">Als een lijst met groepID's gegeven,
+        /// dan worden enkel personen gelieerd aan groepen met ID's uit
+        /// de lijst meegeleverd.  Indien gelieerdAan null is, krijg
+        /// je alle bewoners mee</param>
+        /// <returns>Adresobject met gekoppelde personen</returns>
+        Adres AdresMetBewonersOphalen(int adresID, IList<int> gelieerdAan);
     }
 }

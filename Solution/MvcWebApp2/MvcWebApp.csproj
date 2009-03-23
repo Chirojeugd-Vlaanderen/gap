@@ -71,6 +71,7 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckBoxListHelper.cs" />
     <Compile Include="Controllers\LedenController.cs" />
     <Compile Include="Controllers\PersonenController.cs" />
     <Compile Include="Default.aspx.cs">
@@ -115,11 +116,11 @@
     <Content Include="Views\Personen\Edit.aspx" />
     <Content Include="Views\Personen\Hallo.aspx" />
     <Content Include="Views\Personen\Index.aspx" />
+    <Content Include="Views\Personen\AdresBewerken.aspx" />
     <Content Include="Views\Shared\LedenLijstControl.ascx" />
     <Content Include="Views\Shared\PersonenLijstControl.ascx" />
     <Content Include="Views\Shared\PersoonsDetailsControl.ascx" />
     <Content Include="Views\Shared\PersoonsLinkControl.ascx" />
-    <Content Include="Views\Shared\PersoonsUpdateControl.ascx" />
     <Content Include="Web.config" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\jquery-1.2.6.js" />
@@ -138,6 +139,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\DataSources\Cg2.Orm.Adres.datasource" />
     <None Include="Properties\DataSources\Cg2.Orm.GelieerdePersoon.datasource" />
     <None Include="Properties\DataSources\Cg2.Orm.Lid.datasource" />
     <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService.wsdl" />

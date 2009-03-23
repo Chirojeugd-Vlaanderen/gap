@@ -40,7 +40,22 @@ namespace Cg2.Workers
         /// <returns>true (enkel) als user gav is</returns>
         public bool IsGav(string login, int groepID)
         {
-            GebruikersRecht r = _dao.GebruikersRechtOphalen(login, groepID);
+            GebruikersRecht r = _dao.RechtenMbtGroepGet(login, groepID);
+
+            return r != null && (r.VervalDatum == null || r.VervalDatum > DateTime.Now);
+        }
+
+        /// <summary>
+        /// Geeft true als (en slechts als) de login overeenkomt
+        /// met een GAV van een groep gelieerd aan de gelieerde
+        /// persoon met gegeven ID
+        /// </summary>
+        /// <param name="login">username</param>
+        /// <param name="gelieerdePersoonID">ID van te checken gelieerde persoon</param>
+        /// <returns>true indien login de persoonsgegevens mag zien/bewerken</returns>
+        public bool IsGavGelieerdePersoon(string login, int gelieerdePersoonID)
+        {
+            GebruikersRecht r = _dao.RechtenMbtGelieerdePersoonGet(login, gelieerdePersoonID);
 
             return r != null && (r.VervalDatum == null || r.VervalDatum > DateTime.Now);
         }

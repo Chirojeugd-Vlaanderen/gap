@@ -67,5 +67,14 @@ namespace Cg2.ServiceContracts
         /// <param name="persoon">Te bewaren persoon</param>
         [OperationContract]
         void PersoonBewaren(GelieerdePersoon persoon);
+
+        /// <summary>
+        /// Haalt adres op, met daaraan gekoppeld de bewoners waarop de
+        /// gebruiker GAV-rechten heeft.
+        /// </summary>
+        /// <param name="adresID">ID op te halen adres</param>
+        /// <returns>Adresobject met gekoppelde personen</returns>
+        [OperationContract]
+        Adres AdresMetBewonersOphalen(int adresID);
     }
 }

@@ -13,7 +13,6 @@ namespace MvcWebApp2.Controllers
     {
         //
         // GET: /Personen/
-
         public ActionResult Index()
         {
             IList<GelieerdePersoon> personen;
@@ -28,7 +27,6 @@ namespace MvcWebApp2.Controllers
 
         //
         // GET: /Personen/Details/5
-
         public ActionResult Details(int id)
         {
             using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
@@ -40,7 +38,6 @@ namespace MvcWebApp2.Controllers
 
         //
         // GET: /Personen/Create
-
         public ActionResult Create()
         {
             return View();
@@ -48,7 +45,6 @@ namespace MvcWebApp2.Controllers
 
         //
         // POST: /Personen/Create
-
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create(FormCollection collection)
         {
@@ -66,8 +62,6 @@ namespace MvcWebApp2.Controllers
 
         //
         // GET: /Personen/Edit/5
-
-        [Authorize]
         public ActionResult Edit(int id)
         {
             using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
@@ -79,7 +73,6 @@ namespace MvcWebApp2.Controllers
 
         //
         // POST: /Personen/Edit/5
-
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(GelieerdePersoon p)
         {
@@ -90,7 +83,15 @@ namespace MvcWebApp2.Controllers
                     service.PersoonBewaren(p);
                 }
  
-                return RedirectToAction("Details", new { id = p.ID });
+                // Voorlopig opnieuw redirecten naar Edit;
+                // er zou wel gemeld moeten worden dat het wijzigen
+                // gelukt is.
+
+                // (er wordt hier geredirect ipv de view te tonen,
+                // zodat je bij een 'refresh' niet de vraag krijgt
+                // of je de gegevens opnieuw wil posten.)
+
+                return RedirectToAction("Edit", new { id = p.ID });
             }
             catch
             {
@@ -98,6 +99,7 @@ namespace MvcWebApp2.Controllers
             }
         }
 
+        // GET: /Personen/LidMaken/id
         public ActionResult LidMaken(int id)
         {
             using (LedenServiceReference.LedenServiceClient service = new MvcWebApp2.LedenServiceReference.LedenServiceClient())
@@ -111,7 +113,26 @@ namespace MvcWebApp2.Controllers
             }
 
             return RedirectToAction("Index");
+        }
 
+        // GET: /Personen/Verhuizen/adresID
+        public ActionResult Verhuizen(int id)
+        {
+            Adres a;
+
+            using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new MvcWebApp2.GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
+            {
+                a = service.AdresMetBewonersOphalen(id);
+            }
+
+            return View("AdresBewerken", a);
+        }
+
+        // POST: /Personen/Verhuizen/adresID
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Verhuizen()
+        {
+            throw new NotImplementedException();
         }
 
         public ActionResult Hallo()

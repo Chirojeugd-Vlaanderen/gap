@@ -33,6 +33,9 @@ namespace MvcWebApp2.GelieerdePersonenServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/PersoonBewaren", ReplyAction="http://tempuri.org/IGelieerdePersonenService/PersoonBewarenResponse")]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Cg2.Orm.ChiroGroep))]
         void PersoonBewaren(Cg2.Orm.GelieerdePersoon persoon);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/AdresMetBewonersOphalen", ReplyAction="http://tempuri.org/IGelieerdePersonenService/AdresMetBewonersOphalenResponse")]
+        Cg2.Orm.Adres AdresMetBewonersOphalen(int adresID);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -80,6 +83,10 @@ namespace MvcWebApp2.GelieerdePersonenServiceReference {
         
         public void PersoonBewaren(Cg2.Orm.GelieerdePersoon persoon) {
             base.Channel.PersoonBewaren(persoon);
+        }
+        
+        public Cg2.Orm.Adres AdresMetBewonersOphalen(int adresID) {
+            return base.Channel.AdresMetBewonersOphalen(adresID);
         }
     }
 }

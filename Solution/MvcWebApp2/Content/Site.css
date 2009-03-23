@@ -197,6 +197,7 @@ fieldset p
     margin: 2px 12px 10px 10px;
 }
 
+/*
 fieldset label 
 {
     display: block;
@@ -206,6 +207,7 @@ fieldset label.inline
 {
     display: inline;
 }
+*/
 
 legend 
 {
@@ -315,4 +317,25 @@ div#title
 {
     font-weight: bold;
     color: #ff0000;
+}
+
+/* EIGEN DINGEN */
+
+ul#acties
+{
+    float:right;
+    margin: 0;
+    text-align: right;
+}
+
+ul#acties li
+{
+    display: inline;
+    list-style: none;
+}
+
+fieldset label
+{
+    float: left;
+    width: 120px;
 }

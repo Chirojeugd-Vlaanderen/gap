@@ -70,16 +70,35 @@ namespace Cg2.Services
         public GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
+            AuthorisatieManager am = new AuthorisatieManager();
 
-            var result = pm.Dao.DetailsOphalen(gelieerdePersoonID);
+            if (am.IsGavGelieerdePersoon(ServiceSecurityContext.Current.WindowsIdentity.Name, gelieerdePersoonID))
+            {
+                var result = pm.Dao.DetailsOphalen(gelieerdePersoonID);
 
-            return result;
+                return result;
+            }
+            else
+            {
+                throw new GeenGavException("Deze persoon is niet gelieerd aan je groep(en).");
+            }
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
         public GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID, PersoonsInfo gevraagd)
         {
             throw new NotImplementedException();
+        }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
+        public Adres AdresMetBewonersOphalen(int adresID)
+        {
+            GelieerdePersonenManager pm = new GelieerdePersonenManager();
+            AuthorisatieManager am = new AuthorisatieManager();
+
+            IList<int> groepenLijst = am.Dao.GekoppeldeGroepenGet(ServiceSecurityContext.Current.WindowsIdentity.Name);
+
+            return pm.Dao.AdresMetBewonersOphalen(adresID, groepenLijst);
         }
     }
 }
