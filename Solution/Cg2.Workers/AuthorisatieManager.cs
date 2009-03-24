@@ -12,11 +12,6 @@ namespace Cg2.Workers
     {
         private IAuthorisatieDao _dao;
 
-        public IAuthorisatieDao Dao
-        {
-            get { return _dao; }
-        }
-
         #region Constructors
 
         public AuthorisatieManager()
@@ -38,7 +33,7 @@ namespace Cg2.Workers
         /// <param name="login">username</param>
         /// <param name="groepID">id van de groep</param>
         /// <returns>true (enkel) als user gav is</returns>
-        public bool IsGav(string login, int groepID)
+        public bool IsGavGroep(string login, int groepID)
         {
             GebruikersRecht r = _dao.RechtenMbtGroepGet(login, groepID);
 
@@ -58,6 +53,16 @@ namespace Cg2.Workers
             GebruikersRecht r = _dao.RechtenMbtGelieerdePersoonGet(login, gelieerdePersoonID);
 
             return r != null && (r.VervalDatum == null || r.VervalDatum > DateTime.Now);
+        }
+
+        /// <summary>
+        /// Ophalen van HUIDIGE gekoppelde groepen voor een GAV
+        /// </summary>
+        /// <param name="login">login van de betreffende GAV</param>
+        /// <returns>ID's van gekoppelde groepen</returns>
+        public IList<int> GekoppeldeGroepenGet(string login)
+        {
+            return _dao.GekoppeldeGroepenGet(login);
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Cg2.Services
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
             AuthorisatieManager am = new AuthorisatieManager();
 
-            if (am.IsGav(ServiceSecurityContext.Current.WindowsIdentity.Name, groepID))
+            if (am.IsGavGroep(ServiceSecurityContext.Current.WindowsIdentity.Name, groepID))
             {
                 var result = pm.Dao.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalOpgehaald);
 
@@ -96,7 +96,7 @@ namespace Cg2.Services
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
             AuthorisatieManager am = new AuthorisatieManager();
 
-            IList<int> groepenLijst = am.Dao.GekoppeldeGroepenGet(ServiceSecurityContext.Current.WindowsIdentity.Name);
+            IList<int> groepenLijst = am.GekoppeldeGroepenGet(ServiceSecurityContext.Current.WindowsIdentity.Name);
 
             return pm.Dao.AdresMetBewonersOphalen(adresID, groepenLijst);
         }

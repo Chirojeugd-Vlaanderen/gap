@@ -9,7 +9,7 @@ namespace Cg2.Orm.DataInterfaces
     {
         /// <summary>
         /// Haalt lijst groepID's op waaraan de GAV met gegeven
-        /// login gekoppeld is
+        /// login MOMENTEEL gekoppeld is
         /// </summary>
         /// <param name="login">Gebruikersnaam van de GAV</param>
         /// <returns>lijst met groepID's</returns>
