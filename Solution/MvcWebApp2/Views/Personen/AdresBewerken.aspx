@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Cg2.Orm.Adres>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<MvcWebApp2.Models.VerhuisInfo>" %>
 <%@ Import Namespace="Cg2.Orm" %>
 <%@ Import Namespace="MvcWebApp2" %>
 
@@ -26,37 +26,36 @@
                // CheckBoxListInfo kwakken
            
                List<CheckBoxListInfo> info
-                   = (from PersoonsAdres pa in ViewData.Model.PersoonsAdres
+                   = (from PersoonsAdres pa in Model.Adres.PersoonsAdres
                       select new CheckBoxListInfo(
                          pa.GelieerdePersoonID.ToString()
                          , Html.ActionLink(Html.Encode(pa.GelieerdePersoon.Persoon.VolledigeNaam), "Edit", new { Controller = "Personen", id = pa.GelieerdePersoonID })
-                         , true)).ToList<CheckBoxListInfo>();
+                         , Model.GelieerdePersoonIDs.Contains(pa.GelieerdePersoonID) )).ToList<CheckBoxListInfo>();
            
                // Zodat we ze kunnen gebruiken in onze custom
                // HtmlHelper 'CheckBoxList'
            %>
            
-           <%=Html.CheckBoxList("Bewoners", info) %>
+           <%=Html.CheckBoxList("GelieerdePersoonIDs", info) %>
                  
            </fieldset>
            
            <fieldset>
            <legend>Adresgegevens</legend>
            
-           <label for="Straat_Naam">Straat</label>
-           <%=Html.TextBox("Straat.Naam") %> <br />
+           <label for="Adres_Straat_Naam">Straat</label>
+           <%=Html.TextBox("Adres.Straat.Naam") %> <br />
            
-           <label for="HuisNr">Nr.</label>
-           <%=Html.TextBox("HuisNr") %> <br />
+           <label for="Adres_HuisNr">Nr.</label>
+           <%=Html.TextBox("Adres.HuisNr") %> <br />
            
-           <label for="Straat_PostNr">Postnr.</label>
-           <%=Html.TextBox("Straat.PostNr") %> <br />
+           <label for="Adres_Straat_PostNr">Postnr.</label>
+           <%=Html.TextBox("Adres.Straat.PostNr") %> <br />
            
-           <label for="Subgemeente_Naam">Gemeente</label>
-           <%=Html.TextBox("Subgemeente.Naam") %> <br />
+           <label for="Adres_Subgemeente_Naam">Gemeente</label>
+           <%=Html.TextBox("Adres.Subgemeente.Naam") %> <br />
            
-           <%=Html.Hidden("ID") %>
-           <%=Html.Hidden("VersieString") %>
+           <%=Html.Hidden("Adres.ID") %>
            
            </fieldset>
            

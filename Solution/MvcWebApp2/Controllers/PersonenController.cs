@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using System.Configuration;
 using Cg2.Orm;
+using MvcWebApp2.Models;
 
 namespace MvcWebApp2.Controllers
 {
@@ -118,14 +119,9 @@ namespace MvcWebApp2.Controllers
         // GET: /Personen/Verhuizen/adresID
         public ActionResult Verhuizen(int id)
         {
-            Adres a;
+            VerhuisInfo model = new VerhuisInfo(id);
 
-            using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new MvcWebApp2.GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
-            {
-                a = service.AdresMetBewonersOphalen(id);
-            }
-
-            return View("AdresBewerken", a);
+            return View("AdresBewerken", model);
         }
 
         // POST: /Personen/Verhuizen/adresID

@@ -2,7 +2,7 @@
 <%@ Import Namespace="Cg2.Orm" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-	<title>Gegevens bewerken: <%=ViewData.Model.Persoon.VolledigeNaam %></title>
+	<title>Gegevens bewerken: <%=Model.Persoon.VolledigeNaam %></title>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -14,13 +14,13 @@
         <li><input type="submit" value="Bewaren" /></li>        
     </ul>
     
-    <h2><%=ViewData.Model.Persoon.VolledigeNaam%></h2>
+    <h2><%=Model.Persoon.VolledigeNaam%></h2>
 
     <fieldset>
     <legend>Persoonlijke gegevens</legend>
     
     <label for="Persoon_AdNummer">Ad-nummer</label> 
-    <%=Html.TextBox("Persoon.AdNummer", ViewData.Model.Persoon.AdNummer, new {@readonly = "readonly"})%> <br />
+    <%=Html.TextBox("Persoon.AdNummer", Model.Persoon.AdNummer, new {@readonly = "readonly"})%> <br />
     
     <label for="Persoon_Naam">Familienaam</label> 
     <%=Html.TextBox("Persoon.Naam")%> <br />
@@ -63,7 +63,7 @@
     <h3>Communicatie</h3>
 
     <ul>
-    <% foreach (CommunicatieVorm cv in ViewData.Model.Communicatie)
+    <% foreach (CommunicatieVorm cv in Model.Communicatie)
     { %>
     <li>
             <%=cv.Type.ToString() %>:
