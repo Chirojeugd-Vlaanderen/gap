@@ -76,5 +76,20 @@ namespace Cg2.ServiceContracts
         /// <returns>Adresobject met gekoppelde personen</returns>
         [OperationContract]
         Adres AdresMetBewonersOphalen(int adresID);
+
+        /// <summary>
+        /// Verhuist gelieerde personen van een oud naar een nieuw
+        /// adres.
+        /// (De koppelingen GelieerdePersoon-Oudadres worden aangepast 
+        /// naar GelieerdePersoon-NieuwAdres.)
+        /// </summary>
+        /// <param name="verhuizers">ID's van te verhuizen gelieerde personen</param>
+        /// <param name="nieuwAdres">Adresobject met nieuwe adresgegevens</param>
+        /// <param name="oudAdresID">ID van het oude adres</param>
+        /// <remarks>nieuwAdres.ID wordt genegeerd.  Het adresID wordt altijd
+        /// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
+        /// dan krijgt het adres een nieuw ID.</remarks>
+        [OperationContract]
+        void Verhuizen(IList<int> gelieerdePersonen, Adres nieuwAdres, int oudAdresID);
     }
 }

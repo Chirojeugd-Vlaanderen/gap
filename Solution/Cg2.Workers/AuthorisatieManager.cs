@@ -64,5 +64,17 @@ namespace Cg2.Workers
         {
             return _dao.GekoppeldeGroepenGet(login);
         }
+
+        /// <summary>
+        /// Verwijdert uit een lijst van GelieerdePersoonID's de ID's
+        /// van GelieerdePersonen waarvoor de gebruiker geen GAV is.
+        /// </summary>
+        /// <param name="gelieerdePersonenIDs">lijst met ID's van gelieerde personen</param>
+        /// <param name="login">gebruikersnaam</param>
+        /// <returns>enkel de ID's van die personen waarvoor de gebruiker GAV is</returns>
+        public IList<int> EnkelMijnGelieerdePersonen(IList<int> gelieerdePersonenIDs, string login)
+        {
+            return _dao.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs, login);
+        }
     }
 }

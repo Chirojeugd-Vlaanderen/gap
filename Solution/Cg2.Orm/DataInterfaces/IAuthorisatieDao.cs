@@ -16,6 +16,16 @@ namespace Cg2.Orm.DataInterfaces
         IList<int> GekoppeldeGroepenGet(string login);
 
         /// <summary>
+        /// Verwijdert uit een lijst met GelieerdePersonenID's de ID's
+        /// waarvan een gegeven gebruiker geen GAV is
+        /// </summary>
+        /// <param name="gelieerdePersonenIDs">lijst met GelieerdePersonenID's</param>
+        /// <param name="login">gebruiker</param>
+        /// <returns>Een lijst met de ID's van GelieerdePersonen waar de gebruiker
+        /// GAV over is. (hoeveel indirectie kan er in 1 zin?)</returns>
+        IList<int> EnkelMijnGelieerdePersonen(IList<int> gelieerdePersonenIDs, string login);
+
+        /// <summary>
         /// Haalt rechten op die een gebruiker heeft op een groep.
         /// </summary>
         /// <param name="login">gebruikersnaam</param>

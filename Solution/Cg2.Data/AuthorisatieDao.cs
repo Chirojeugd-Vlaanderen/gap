@@ -75,5 +75,25 @@ namespace Cg2.Data.Ef
                      select r.Groep.ID).ToList<int>();
             }
         }
+
+        public IList<int> EnkelMijnGelieerdePersonen(IList<int> gelieerdePersonenIDs, string login)
+        {
+            List<int> resultaat;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                // Ook hier wordt rekening gehouden met de vervaldatum.
+
+                var query
+                    = db.GelieerdePersoon
+                    .Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.ID, gelieerdePersonenIDs))
+                    .Where(gp => gp.Groep.GebruikersRecht.Any(r => r.Gav.Login == login))
+                    .Select(gp => gp.ID);
+
+                resultaat = query.ToList<int>();
+            }
+
+            return resultaat;
+        }
     }
 }

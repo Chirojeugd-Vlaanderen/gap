@@ -18,7 +18,7 @@ namespace Cg2.Services
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
             LedenManager lm = new LedenManager();
 
-            Lid l = lm.LidMaken(pm.Dao.Ophalen(gelieerdePersoonID));
+            Lid l = lm.LidMaken(pm.Ophalen(gelieerdePersoonID));
             
             return lm.Dao.Bewaren(l);
         }

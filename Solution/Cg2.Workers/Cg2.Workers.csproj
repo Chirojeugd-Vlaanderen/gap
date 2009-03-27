@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdressenManager.cs" />
     <Compile Include="AuthorisatieManager.cs" />
     <Compile Include="ChiroGroepenManager.cs" />
     <Compile Include="GelieerdePersonenManager.cs" />

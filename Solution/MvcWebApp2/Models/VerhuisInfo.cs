@@ -35,6 +35,15 @@ namespace MvcWebApp2.Models
         public List<int> GelieerdePersoonIDs { get; set; }
 
         /// <summary>
+        /// Saaie standaardconstructor
+        /// </summary>
+        public VerhuisInfo()
+        {
+            Adres = new Adres();
+            GelieerdePersoonIDs = new List<int>();
+        }
+
+        /// <summary>
         /// Creeert verhuisinfo voor alle (zichtbare) bewoners van het
         /// adres met gegeven ID
         /// </summary>

@@ -20,7 +20,7 @@ namespace Cg2.Services
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
 
-            var result = pm.Dao.AllenOphalen(groepID);
+            var result = pm.AllenOphalen(groepID);
             return result;
         }
 
@@ -29,7 +29,7 @@ namespace Cg2.Services
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
 
-            var result = pm.Dao.PaginaOphalen(groepID, pagina, paginaGrootte, out aantalOpgehaald);
+            var result = pm.PaginaOphalen(groepID, pagina, paginaGrootte, out aantalOpgehaald);
 
             return result;
         }
@@ -42,7 +42,7 @@ namespace Cg2.Services
 
             if (am.IsGavGroep(ServiceSecurityContext.Current.WindowsIdentity.Name, groepID))
             {
-                var result = pm.Dao.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalOpgehaald);
+                var result = pm.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalOpgehaald);
 
                 return result;
             }
@@ -56,7 +56,7 @@ namespace Cg2.Services
         public void PersoonBewaren(GelieerdePersoon persoon)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
-            pm.Dao.Bewaren(persoon);
+            pm.Bewaren(persoon);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
@@ -74,7 +74,7 @@ namespace Cg2.Services
 
             if (am.IsGavGelieerdePersoon(ServiceSecurityContext.Current.WindowsIdentity.Name, gelieerdePersoonID))
             {
-                var result = pm.Dao.DetailsOphalen(gelieerdePersoonID);
+                var result = pm.DetailsOphalen(gelieerdePersoonID);
 
                 return result;
             }
@@ -93,12 +93,26 @@ namespace Cg2.Services
         [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
         public Adres AdresMetBewonersOphalen(int adresID)
         {
+            AdressenManager adm = new AdressenManager();
+            AuthorisatieManager aum = new AuthorisatieManager();
+
+            IList<int> groepenLijst = aum.GekoppeldeGroepenGet(ServiceSecurityContext.Current.WindowsIdentity.Name);
+
+            return adm.AdresMetBewonersOphalen(adresID, groepenLijst);
+        }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
+        public void Verhuizen(IList<int> gelieerdePersonen, Adres nieuwAdres, int oudAdresID)
+        {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
             AuthorisatieManager am = new AuthorisatieManager();
 
-            IList<int> groepenLijst = am.GekoppeldeGroepenGet(ServiceSecurityContext.Current.WindowsIdentity.Name);
+            // Om foeferen te vermijden: we werken enkel op de gelieerde
+            // personen waar de gebruiker GAV voor is.
 
-            return pm.Dao.AdresMetBewonersOphalen(adresID, groepenLijst);
+            IList<int> mijnGelieerdePersonen = am.EnkelMijnGelieerdePersonen(gelieerdePersonen, ServiceSecurityContext.Current.WindowsIdentity.Name);
+
+            throw new NotImplementedException();
         }
     }
 }

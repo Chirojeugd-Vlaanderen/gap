@@ -83,7 +83,7 @@ namespace Cg2.Workers
             if (gp.Groep == null)
             {
                 GelieerdePersonenManager gpm = new GelieerdePersonenManager(_gelPersDao, _groepenDao);
-                gpm.Dao.GroepLaden(gp);
+                gpm.GroepLaden(gp);
             }
 
             return LidMaken(gp, gm.Dao.HuidigWerkJaarGet(gp.Groep.ID));

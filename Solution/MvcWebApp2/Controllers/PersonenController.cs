@@ -126,7 +126,7 @@ namespace MvcWebApp2.Controllers
 
         // POST: /Personen/Verhuizen/adresID
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Verhuizen()
+        public ActionResult Verhuizen(VerhuisInfo model)
         {
             throw new NotImplementedException();
         }

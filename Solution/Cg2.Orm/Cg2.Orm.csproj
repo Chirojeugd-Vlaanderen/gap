@@ -52,12 +52,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adres.cs" />
     <Compile Include="BasisEntiteitMethods.cs" />
     <Compile Include="ChiroGroepModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ChiroGroepModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DataInterfaces\IAdressenDao.cs" />
     <Compile Include="DataInterfaces\IAuthorisatieDao.cs" />
     <Compile Include="DataInterfaces\IDao.cs" />
     <Compile Include="DataInterfaces\IGelieerdePersonenDao.cs" />

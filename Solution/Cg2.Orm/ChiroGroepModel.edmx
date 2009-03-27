@@ -82,6 +82,7 @@
           <Property Name="AdresID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="StraatID" Type="int" Nullable="false" />
           <Property Name="SubgemeenteID" Type="int" Nullable="false" />
+          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Straat">
           <Key>
@@ -475,25 +476,26 @@
           <End Type="ChiroGroepModel.GelieerdePersoon" Role="GelieerdePersoon" Multiplicity="*" /></Association>
         <EntityType Name="Adres">
           <Key>
-            <PropertyRef Name="AdresID" /></Key>
+            <PropertyRef Name="ID" /></Key>
           <Property Name="Bus" Type="String" Nullable="true" />
           <Property Name="HuisNr" Type="Int32" Nullable="true" />
           <Property Name="PostCode" Type="String" Nullable="true" />
-          <Property Name="AdresID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="Straat" Relationship="ChiroGroepModel.FK_Adres_Straat" FromRole="Adres" ToRole="Straat" />
           <NavigationProperty Name="Subgemeente" Relationship="ChiroGroepModel.FK_Adres_Subgemeente" FromRole="Adres" ToRole="Subgemeente" />
           <NavigationProperty Name="PersoonsAdres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Adres" FromRole="Adres" ToRole="PersoonsAdres" /></EntityType>
         <EntityType Name="Straat">
           <Key>
-            <PropertyRef Name="StraatID" /></Key>
-          <Property Name="StraatID" Type="Int32" Nullable="false" />
+            <PropertyRef Name="ID" /></Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="PostNr" Type="Int32" Nullable="false" />
           <Property Name="Naam" Type="String" Nullable="false" />
           <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_Adres_Straat" FromRole="Straat" ToRole="Adres" /></EntityType>
         <EntityType Name="Subgemeente">
           <Key>
-            <PropertyRef Name="SubgemeenteID" /></Key>
-          <Property Name="SubgemeenteID" Type="Int32" Nullable="false" />
+            <PropertyRef Name="ID" /></Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="PostNr" Type="Int32" Nullable="false" />
           <Property Name="Naam" Type="String" Nullable="false" />
           <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_Adres_Subgemeente" FromRole="Subgemeente" ToRole="Adres" /></EntityType>
@@ -520,7 +522,7 @@
           <End Type="ChiroGroepModel.PersoonsAdres" Role="PersoonsAdres" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Adres">
-              <PropertyRef Name="AdresID" /></Principal>
+              <PropertyRef Name="ID" /></Principal>
             <Dependent Role="PersoonsAdres">
               <PropertyRef Name="AdresID" /></Dependent></ReferentialConstraint></Association>
         <Association Name="FK_PersoonsAdres_GelieerdePersoon">
@@ -650,22 +652,23 @@
           <EntitySetMapping Name="Adres">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Adres)">
               <MappingFragment StoreEntitySet="Adres">
-                <ScalarProperty Name="AdresID" ColumnName="AdresID" />
+                <ScalarProperty Name="ID" ColumnName="AdresID" />
                 <ScalarProperty Name="PostCode" ColumnName="PostCode" />
                 <ScalarProperty Name="HuisNr" ColumnName="HuisNr" />
+                <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="Bus" ColumnName="Bus" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Straat">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Straat)">
               <MappingFragment StoreEntitySet="Straat">
                 <ScalarProperty Name="Naam" ColumnName="Naam" />
                 <ScalarProperty Name="PostNr" ColumnName="PostNr" />
-                <ScalarProperty Name="StraatID" ColumnName="StraatID" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+                <ScalarProperty Name="ID" ColumnName="StraatID" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Subgemeente">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Subgemeente)">
               <MappingFragment StoreEntitySet="Subgemeente">
                 <ScalarProperty Name="Naam" ColumnName="Naam" />
                 <ScalarProperty Name="PostNr" ColumnName="PostNr" />
-                <ScalarProperty Name="SubgemeenteID" ColumnName="SubgemeenteID" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+                <ScalarProperty Name="ID" ColumnName="SubgemeenteID" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="PersoonsAdres">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.PersoonsAdres)">
               <MappingFragment StoreEntitySet="PersoonsAdres">
@@ -677,20 +680,20 @@
                 <ScalarProperty Name="IsStandaard" ColumnName="IsStandaard" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
           <AssociationSetMapping Name="FK_Adres_Straat" TypeName="ChiroGroepModel.FK_Adres_Straat" StoreEntitySet="Adres">
             <EndProperty Name="Adres">
-              <ScalarProperty Name="AdresID" ColumnName="AdresID" /></EndProperty>
+              <ScalarProperty Name="ID" ColumnName="AdresID" /></EndProperty>
             <EndProperty Name="Straat">
-              <ScalarProperty Name="StraatID" ColumnName="StraatID" /></EndProperty></AssociationSetMapping>
+              <ScalarProperty Name="ID" ColumnName="StraatID" /></EndProperty></AssociationSetMapping>
           <AssociationSetMapping Name="FK_Adres_Subgemeente" TypeName="ChiroGroepModel.FK_Adres_Subgemeente" StoreEntitySet="Adres">
             <EndProperty Name="Adres">
-              <ScalarProperty Name="AdresID" ColumnName="AdresID" /></EndProperty>
+              <ScalarProperty Name="ID" ColumnName="AdresID" /></EndProperty>
             <EndProperty Name="Subgemeente">
-              <ScalarProperty Name="SubgemeenteID" ColumnName="SubgemeenteID" /></EndProperty></AssociationSetMapping>
+              <ScalarProperty Name="ID" ColumnName="SubgemeenteID" /></EndProperty></AssociationSetMapping>
           <AssociationSetMapping Name="FK_PersoonsAdres_Adres" TypeName="ChiroGroepModel.FK_PersoonsAdres_Adres" StoreEntitySet="PersoonsAdres">
             <EndProperty Name="PersoonsAdres">
               <ScalarProperty Name="GelieerdePersoonID" ColumnName="GelieerdePersoonID" />
               <ScalarProperty Name="AdresID" ColumnName="AdresID" /></EndProperty>
             <EndProperty Name="Adres">
-              <ScalarProperty Name="AdresID" ColumnName="AdresID" /></EndProperty></AssociationSetMapping>
+              <ScalarProperty Name="ID" ColumnName="AdresID" /></EndProperty></AssociationSetMapping>
           <AssociationSetMapping Name="FK_PersoonsAdres_GelieerdePersoon" TypeName="ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon" StoreEntitySet="PersoonsAdres">
             <EndProperty Name="PersoonsAdres">
               <ScalarProperty Name="GelieerdePersoonID" ColumnName="GelieerdePersoonID" />
