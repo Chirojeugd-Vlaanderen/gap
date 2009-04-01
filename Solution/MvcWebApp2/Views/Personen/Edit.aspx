@@ -53,7 +53,7 @@
             <%=Html.Encode(String.Format("{0} {1}", pa.Adres.Straat.Naam, pa.Adres.HuisNr))%>,
             <%=Html.Encode(String.Format("{0} {1} {2}", pa.Adres.Straat.PostNr, pa.Adres.PostCode, pa.Adres.Subgemeente.Naam))%>
             <%= pa.IsStandaard ? "(standaardadres)" : ""%>
-            <%=Html.ActionLink( "[verhuizen]", "Verhuizen", new {Controller="Personen", id = pa.AdresID} ) %>
+            <%=Html.ActionLink( "[verhuizen]", "Verhuizen", new {Controller="Personen", id = pa.Adres.ID} ) %>
         </li>
     <%} %>
         <li><%=Html.ActionLink( "[nieuw adres]", "NieuwAdres", new {Controller="Personen", gelieerdePersoonID = ViewData.Model.ID} ) %></li>

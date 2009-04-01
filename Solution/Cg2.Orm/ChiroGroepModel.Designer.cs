@@ -23,7 +23,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GebruikersRecht_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "GebruikersRecht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GebruikersRecht))]
 
 // Original file name:
-// Generation date: 1/04/2009 9:56:05
+// Generation date: 1/04/2009 13:35:20
 namespace Cg2.Orm
 {
     
@@ -1760,8 +1760,7 @@ namespace Cg2.Orm
     /// There are no comments for ChiroGroepModel.PersoonsAdres in the schema.
     /// </summary>
     /// <KeyProperties>
-    /// AdresID
-    /// GelieerdePersoonID
+    /// ID
     /// </KeyProperties>
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="PersoonsAdres")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
@@ -1772,18 +1771,16 @@ namespace Cg2.Orm
         /// Create a new PersoonsAdres object.
         /// </summary>
         /// <param name="isStandaard">Initial value of IsStandaard.</param>
-        /// <param name="adresID">Initial value of AdresID.</param>
         /// <param name="adresTypeID">Initial value of AdresTypeID.</param>
         /// <param name="versie">Initial value of Versie.</param>
-        /// <param name="gelieerdePersoonID">Initial value of GelieerdePersoonID.</param>
-        public static PersoonsAdres CreatePersoonsAdres(bool isStandaard, int adresID, int adresTypeID, byte[] versie, int gelieerdePersoonID)
+        /// <param name="id">Initial value of ID.</param>
+        public static PersoonsAdres CreatePersoonsAdres(bool isStandaard, int adresTypeID, byte[] versie, int id)
         {
             PersoonsAdres persoonsAdres = new PersoonsAdres();
             persoonsAdres.IsStandaard = isStandaard;
-            persoonsAdres.AdresID = adresID;
             persoonsAdres.AdresTypeID = adresTypeID;
             persoonsAdres.Versie = versie;
-            persoonsAdres.GelieerdePersoonID = gelieerdePersoonID;
+            persoonsAdres.ID = id;
             return persoonsAdres;
         }
         /// <summary>
@@ -1833,29 +1830,6 @@ namespace Cg2.Orm
         partial void OnOpmerkingChanging(string value);
         partial void OnOpmerkingChanged();
         /// <summary>
-        /// There are no comments for Property AdresID in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int AdresID
-        {
-            get
-            {
-                return this._AdresID;
-            }
-            set
-            {
-                this.OnAdresIDChanging(value);
-                this.ReportPropertyChanging("AdresID");
-                this._AdresID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("AdresID");
-                this.OnAdresIDChanged();
-            }
-        }
-        private int _AdresID;
-        partial void OnAdresIDChanging(int value);
-        partial void OnAdresIDChanged();
-        /// <summary>
         /// There are no comments for Property AdresTypeID in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
@@ -1902,28 +1876,28 @@ namespace Cg2.Orm
         partial void OnVersieChanging(byte[] value);
         partial void OnVersieChanged();
         /// <summary>
-        /// There are no comments for Property GelieerdePersoonID in the schema.
+        /// There are no comments for Property ID in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int GelieerdePersoonID
+        public int ID
         {
             get
             {
-                return this._GelieerdePersoonID;
+                return this._ID;
             }
             set
             {
-                this.OnGelieerdePersoonIDChanging(value);
-                this.ReportPropertyChanging("GelieerdePersoonID");
-                this._GelieerdePersoonID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("GelieerdePersoonID");
-                this.OnGelieerdePersoonIDChanged();
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
             }
         }
-        private int _GelieerdePersoonID;
-        partial void OnGelieerdePersoonIDChanging(int value);
-        partial void OnGelieerdePersoonIDChanged();
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
         /// <summary>
         /// There are no comments for Adres in the schema.
         /// </summary>

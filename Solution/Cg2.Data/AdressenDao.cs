@@ -74,7 +74,7 @@ namespace Cg2.Data.Ef
                     = db.PersoonsAdres.Include("Adres.Straat")
                     .Include("Adres.Subgemeente")
                     .Include("GelieerdePersoon.Persoon")
-                    .Where(pera => pera.AdresID == adresID);
+                    .Where(pera => pera.Adres.ID == adresID);
 
                 if (gelieerdAan != null)
                 {

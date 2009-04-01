@@ -119,7 +119,36 @@ namespace Cg2.Services
 
             IList<int> mijnGelieerdePersonen = aum.EnkelMijnGelieerdePersonen(gelieerdePersonen, ServiceSecurityContext.Current.WindowsIdentity.Name);
 
+            // Haal bronadres en alle bewoners op
+
+            Adres oudAdres = adm.AdresMetBewonersOphalen(oudAdresID, null);
+
+            // Selecteer enkel bewoners uit mijnGelieerdePersonen
+
+            var teVerhuizen =
+                from PersoonsAdres pa
+                in oudAdres.PersoonsAdres
+                where mijnGelieerdePersonen.Contains(pa.GelieerdePersoon.ID)
+                select pa.GelieerdePersoon;
+
+            // een voor een verhuizen
+
+            foreach (GelieerdePersoon verhuizer in teVerhuizen)
+            {
+                //pm.Verhuizen(gp, oudAdres, nieuwAdres);
+                throw new NotImplementedException();
+            }
+
+            // Persisteren
+
+            //adm.AdresMetBewonersBewaren(nieuwAdres);
             throw new NotImplementedException();
+
+            // Bij een verhuis, blijven de PersoonsAdresobjecten dezelfde,
+            // maar worden ze aan een ander adres gekoppeld.  Een post
+            // van het nieuwe adres (met persoonsadressen) koppelt bijgevolg
+            // de persoonsobjecten los van het oude adres.
+            // Bijgevolg moet het oudeAdres niet gepersisteerd worden.
         }
     }
 }

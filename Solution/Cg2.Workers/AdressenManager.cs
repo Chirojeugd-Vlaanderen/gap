@@ -36,6 +36,15 @@ namespace Cg2.Workers
 
         #region proxy naar data acces
 
+        /// <summary>
+        /// Haalt een adres op, samen met de gekoppelde personen
+        /// </summary>
+        /// <param name="adresID">ID op te halen adres</param>
+        /// <param name="gelieerdAan">Als een lijst met groepID's gegeven,
+        /// dan worden enkel personen gelieerd aan groepen met ID's uit
+        /// de lijst meegeleverd.  Indien gelieerdAan null is, krijg
+        /// je alle bewoners mee</param>
+        /// <returns>Adresobject met gekoppelde personen</returns>
         public Adres AdresMetBewonersOphalen(int adresID, IList<int> gelieerdAan)
         {
             return _dao.BewonersOphalen(adresID, gelieerdAan);

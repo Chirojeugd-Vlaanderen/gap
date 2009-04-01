@@ -28,9 +28,9 @@
                List<CheckBoxListInfo> info
                    = (from PersoonsAdres pa in Model.Adres.PersoonsAdres
                       select new CheckBoxListInfo(
-                         pa.GelieerdePersoonID.ToString()
-                         , Html.ActionLink(Html.Encode(pa.GelieerdePersoon.Persoon.VolledigeNaam), "Edit", new { Controller = "Personen", id = pa.GelieerdePersoonID })
-                         , Model.GelieerdePersoonIDs.Contains(pa.GelieerdePersoonID) )).ToList<CheckBoxListInfo>();
+                         pa.GelieerdePersoon.ID.ToString()
+                         , Html.ActionLink(Html.Encode(pa.GelieerdePersoon.Persoon.VolledigeNaam), "Edit", new { Controller = "Personen", id = pa.GelieerdePersoon.ID })
+                         , Model.GelieerdePersoonIDs.Contains(pa.GelieerdePersoon.ID) )).ToList<CheckBoxListInfo>();
            
                // Zodat we ze kunnen gebruiken in onze custom
                // HtmlHelper 'CheckBoxList'

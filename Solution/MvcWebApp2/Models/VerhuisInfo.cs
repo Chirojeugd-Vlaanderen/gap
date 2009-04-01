@@ -58,7 +58,7 @@ namespace MvcWebApp2.Models
             // Standaard verhuist iedereen mee.
             GelieerdePersoonIDs = (
                 from PersoonsAdres pa in Adres.PersoonsAdres
-                select pa.GelieerdePersoonID).ToList<int>();
+                select pa.GelieerdePersoon.ID).ToList<int>();
         }
     }
 }
