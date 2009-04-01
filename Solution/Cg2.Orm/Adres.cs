@@ -7,6 +7,16 @@ namespace Cg2.Orm
 {
     public partial class Adres: IBasisEntiteit
     {
+        public Adres(): base()
+        {
+            // Bus en PostCode zijn niet nullable.
+            // Als er geen bus/postcode is, dan moet er
+            // gewoon een lege string staan.
+
+            Bus = "";
+            PostCode = "";
+        }
+
         public string VersieString
         {
             get { return this.VersieStringGet(); }

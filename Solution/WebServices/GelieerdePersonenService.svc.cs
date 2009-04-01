@@ -105,12 +105,19 @@ namespace Cg2.Services
         public void Verhuizen(IList<int> gelieerdePersonen, Adres nieuwAdres, int oudAdresID)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
-            AuthorisatieManager am = new AuthorisatieManager();
+            AuthorisatieManager aum = new AuthorisatieManager();
+            AdressenManager adm = new AdressenManager();
 
-            // Om foeferen te vermijden: we werken enkel op de gelieerde
+            // Straat.ID, Subgemeente.ID,
+            // ID en Versie uit database halen; eventueel nieuw
+            // adres aanmaken.
+
+            adm.Syncen(ref nieuwAdres);
+
+            // Om foefelen te vermijden: we werken enkel op de gelieerde
             // personen waar de gebruiker GAV voor is.
 
-            IList<int> mijnGelieerdePersonen = am.EnkelMijnGelieerdePersonen(gelieerdePersonen, ServiceSecurityContext.Current.WindowsIdentity.Name);
+            IList<int> mijnGelieerdePersonen = aum.EnkelMijnGelieerdePersonen(gelieerdePersonen, ServiceSecurityContext.Current.WindowsIdentity.Name);
 
             throw new NotImplementedException();
         }

@@ -169,8 +169,13 @@ namespace Cg2.Data.Ef
 
                     p.GroepReference.Load();
 
-                    g = p.Groep;
+                    // Nog een entityframeworkrariteit:
+                    // Als ik nu gp zou detachen, wordt gp.Groep opnieuw
+                    // null.  Zelfs bij enkel detachen van gp.Groep, wordt
+                    // gp.Groep null.  Maar op deze manier lukt het
+                    // dan weer wel:
 
+                    g = p.Groep;
                     db.Detach(g);
                     db.Detach(p);
                 }

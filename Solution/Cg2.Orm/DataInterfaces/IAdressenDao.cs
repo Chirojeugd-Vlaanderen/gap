@@ -22,6 +22,18 @@ namespace Cg2.Orm.DataInterfaces
         /// de lijst meegeleverd.  Indien gelieerdAan null is, krijg
         /// je alle bewoners mee</param>
         /// <returns>Adresobject met gekoppelde personen</returns>
-        Adres AdresMetBewonersOphalen(int adresID, IList<int> gelieerdAan);
+        Adres BewonersOphalen(int adresID, IList<int> gelieerdAan);
+
+        /// <summary>
+        /// Haalt adres op, op basis van de adresgegevens
+        /// </summary>
+        /// <param name="straatNaam">naam van de straat</param>
+        /// <param name="huisNr">huisnummer</param>
+        /// <param name="bus">bus</param>
+        /// <param name="postNr">postnummer</param>
+        /// <param name="postCode">postcode (nt relevant in Belgie)</param>
+        /// <param name="gemeenteNaam">naam (sub)gemeente</param>
+        /// <returns>gevraagd adresobject</returns>
+        Adres Ophalen(string straatNaam, int? huisNr, string bus, int postNr, string postCode, string gemeenteNaam);
     }
 }

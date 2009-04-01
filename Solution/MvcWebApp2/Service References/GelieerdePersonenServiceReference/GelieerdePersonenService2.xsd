@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:2733/GelieerdePersonenService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Cg2.Orm" />
+  <xs:import schemaLocation="http://localhost:2733/GelieerdePersonenService.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:element name="PaginaOphalen">
     <xs:complexType>
       <xs:sequence>
@@ -88,6 +89,20 @@
       <xs:sequence>
         <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/Cg2.Orm" minOccurs="0" name="AdresMetBewonersOphalenResult" nillable="true" type="q7:Adres" />
       </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Verhuizen">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="gelieerdePersonen" nillable="true" type="q8:ArrayOfint" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/Cg2.Orm" minOccurs="0" name="nieuwAdres" nillable="true" type="q9:Adres" />
+        <xs:element minOccurs="0" name="oudAdresID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VerhuizenResponse">
+    <xs:complexType>
+      <xs:sequence />
     </xs:complexType>
   </xs:element>
 </xs:schema>

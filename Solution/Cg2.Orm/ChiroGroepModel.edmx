@@ -82,7 +82,7 @@
           <Property Name="AdresID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="StraatID" Type="int" Nullable="false" />
           <Property Name="SubgemeenteID" Type="int" Nullable="false" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Straat">
           <Key>
@@ -477,11 +477,11 @@
         <EntityType Name="Adres">
           <Key>
             <PropertyRef Name="ID" /></Key>
-          <Property Name="Bus" Type="String" Nullable="true" />
+          <Property Name="Bus" Type="String" Nullable="false" />
           <Property Name="HuisNr" Type="Int32" Nullable="true" />
-          <Property Name="PostCode" Type="String" Nullable="true" />
+          <Property Name="PostCode" Type="String" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" />
+          <Property Name="Versie" Type="Binary" Nullable="true" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="Straat" Relationship="ChiroGroepModel.FK_Adres_Straat" FromRole="Adres" ToRole="Straat" />
           <NavigationProperty Name="Subgemeente" Relationship="ChiroGroepModel.FK_Adres_Subgemeente" FromRole="Adres" ToRole="Subgemeente" />
           <NavigationProperty Name="PersoonsAdres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Adres" FromRole="Adres" ToRole="PersoonsAdres" /></EntityType>

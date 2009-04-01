@@ -7,6 +7,7 @@ using System.Web.Mvc.Ajax;
 using System.Configuration;
 using Cg2.Orm;
 using MvcWebApp2.Models;
+using System.Diagnostics;
 
 namespace MvcWebApp2.Controllers
 {
@@ -128,7 +129,30 @@ namespace MvcWebApp2.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Verhuizen(VerhuisInfo model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new MvcWebApp2.GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
+                {
+                    // De service zal het meegeleverder model.Adres.ID negeren, en 
+                    // opnieuw opzoeken.
+                    //
+                    // Adressen worden nooit gewijzigd, enkel bijgemaakt.  (en eventueel
+                    // verwijderd.)
+                    service.Verhuizen(model.GelieerdePersoonIDs, model.Adres, model.Adres.ID);
+                }
+
+                // FIXME: Dit is uiteraard niet de goede manier om de persoon te bepalen
+                // die bekeken moet worden.  Bovendien is het niet zeker of de gebruiker
+                // wel een persoon heeft aangevinkt.  Voorlopig ga ik er echter van uit
+                // dat dat wel het geval is.
+
+                Debug.Assert(model.GelieerdePersoonIDs.Count > 0);
+                return RedirectToAction("Edit", new { id = model.GelieerdePersoonIDs[0] });
+            }
+            catch
+            {
+                return View("Verhuizen", model);
+            }
         }
 
         public ActionResult Hallo()

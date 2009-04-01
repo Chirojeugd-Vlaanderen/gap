@@ -23,7 +23,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GebruikersRecht_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "GebruikersRecht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GebruikersRecht))]
 
 // Original file name:
-// Generation date: 27/03/2009 8:54:22
+// Generation date: 1/04/2009 9:56:05
 namespace Cg2.Orm
 {
     
@@ -1302,19 +1302,21 @@ namespace Cg2.Orm
         /// <summary>
         /// Create a new Adres object.
         /// </summary>
+        /// <param name="bus">Initial value of Bus.</param>
+        /// <param name="postCode">Initial value of PostCode.</param>
         /// <param name="id">Initial value of ID.</param>
-        /// <param name="versie">Initial value of Versie.</param>
-        public static Adres CreateAdres(int id, byte[] versie)
+        public static Adres CreateAdres(string bus, string postCode, int id)
         {
             Adres adres = new Adres();
+            adres.Bus = bus;
+            adres.PostCode = postCode;
             adres.ID = id;
-            adres.Versie = versie;
             return adres;
         }
         /// <summary>
         /// There are no comments for Property Bus in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string Bus
         {
@@ -1326,7 +1328,7 @@ namespace Cg2.Orm
             {
                 this.OnBusChanging(value);
                 this.ReportPropertyChanging("Bus");
-                this._Bus = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this._Bus = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
                 this.ReportPropertyChanged("Bus");
                 this.OnBusChanged();
             }
@@ -1360,7 +1362,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property PostCode in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string PostCode
         {
@@ -1372,7 +1374,7 @@ namespace Cg2.Orm
             {
                 this.OnPostCodeChanging(value);
                 this.ReportPropertyChanging("PostCode");
-                this._PostCode = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this._PostCode = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
                 this.ReportPropertyChanged("PostCode");
                 this.OnPostCodeChanged();
             }
@@ -1406,7 +1408,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -1418,7 +1420,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }

@@ -60,6 +60,8 @@
     <Compile Include="GroepenDao.cs" />
     <Compile Include="LedenDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StratenDao.cs" />
+    <Compile Include="SubgemeenteDao.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cg2.Orm\Cg2.Orm.csproj">
