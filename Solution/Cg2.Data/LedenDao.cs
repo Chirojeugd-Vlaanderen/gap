@@ -78,6 +78,8 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
+                db.Lid.MergeOption = MergeOption.NoTracking;
+
                 var result = (
                     from l in db.Lid.Include("GelieerdePersoon.Persoon")
                     where l.GroepsWerkJaar.ID == groepsWerkJaarID

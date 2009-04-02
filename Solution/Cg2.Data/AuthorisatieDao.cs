@@ -28,6 +28,7 @@ namespace Cg2.Data.Ef
                       select r;
 
                 resultaat = query.FirstOrDefault();
+                db.Detach(resultaat);
             }
 
             return resultaat;
@@ -47,12 +48,16 @@ namespace Cg2.Data.Ef
                 // businesslaag.
 
                 var query
-                    = from r in db.GebruikersRecht
-                      from gp in db.GelieerdePersoon
-                      where r.Groep.ID == gp.Groep.ID && r.Gav.Login == login && gp.ID == gelieerdePersoonID 
+                    = from GebruikersRecht r in db.GebruikersRecht
+                      where r.Gav.Login == login && r.Groep.GelieerdePersoon.Any(gp => gp.ID == gelieerdePersoonID)
                       select r;
 
                 resultaat = query.FirstOrDefault();
+
+                if (resultaat != null)
+                {
+                    db.Detach(resultaat);
+                }
             }
 
             return resultaat;
