@@ -5,6 +5,8 @@ using System.Text;
 using Cg2.Orm;
 using System.Diagnostics;
 using Cg2.Orm.DataInterfaces;
+using System.Data.Objects;
+using System.Data.Objects.DataClasses;
 
 namespace Cg2.Data.Ef
 {
@@ -65,11 +67,20 @@ namespace Cg2.Data.Ef
         public Adres BewonersOphalen(int adresID, IList<int> gelieerdAan)
         {
             Adres resultaat = null;
+            IList<PersoonsAdres> lijst = null;
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                // query opbouwen
+                db.PersoonsAdres.MergeOption = MergeOption.NoTracking;
 
+                // NoTracking schakelt object tracking uit.  Op die manier
+                // moet het resultaat niet gedetachet worden.  Detachen
+                // deed blijkbaar de navigation properties verdwijnen.
+                // (Voor entity framework moeten alle objecten in een
+                // graaf ofwel aan dezelfde context hangen, ofwel aan
+                // geen context hangen.  Het adres detachen, koppelt het
+                // los van al de rest.)
+                
                 var query
                     = db.PersoonsAdres.Include("Adres.Straat")
                     .Include("Adres.Subgemeente")
@@ -81,24 +92,31 @@ namespace Cg2.Data.Ef
                     query = query
                         .Where(Utility.BuildContainsExpression<PersoonsAdres, int>(pera => pera.GelieerdePersoon.Groep.ID, gelieerdAan));
                 }
-
                 query = query.Select(pera => pera);
 
-                // genereer lijst met alle persoonsadressen.
+                // Nadeel van de NoTracking is dat aan elk persoonsadres
+                // een identieke kopie van hetzelfde adres zal hangen.
+                // Dat moet sebiet manueel gefixt worden.
 
-                IList<PersoonsAdres> persoonsAdressen = query.ToList();
-
-
-                // deze zijn allemaal gekoppeld aan hetzelfde adres
-                // (met gegeven adresid).  Het eerste adres is dus al
-                // ok.  (Ik ga er voor het gemak even van uit dat
-                // er altijd een adres met een gekoppelde persoon
-                // gevonden wordt.)
-
-                Debug.Assert(persoonsAdressen.Count > 0);
-
-                resultaat = persoonsAdressen[0].Adres;
+                 lijst = query.ToList();
             }
+
+            // FIXME: Voor het gemak ga ik ervan uit dat er steeds minstens
+            // iemand op het gezochte adres woont.  Dat is uiteraard niet 
+            // noodzakelijk het geval.
+
+            Debug.Assert(lijst.Count > 0);
+            
+            // Koppel nu alle PersoonsAdressen aan dezelfde instantie van Adres.
+            // (lijst[0].Adres, vandaar dat we lijst[0] zelf niet moeten updaten)
+
+            for (int i = 1; i < lijst.Count; ++i)
+            {
+                lijst[i].Adres = lijst[0].Adres;
+                lijst[0].Adres.PersoonsAdres.Add(lijst[i]);
+            };
+
+            resultaat = lijst[0].Adres;
 
             return resultaat;
         }
@@ -111,42 +129,32 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
+                db.Adres.MergeOption = MergeOption.NoTracking;
+                // NoTracking, zodat we straks niet moeten detachen
+                // (op die manier spelen we geen navigation properties
+                // kwijt)
                 
                 resultaat = (
-                    from Adres a in db.Adres
+                    from Adres a in db.Adres.Include("Straat").Include("Subgemeente")
                     where (a.Straat.Naam == straatNaam && a.Subgemeente.Naam == gemeenteNaam
                     && a.Straat.PostNr == postNr
                     && a.HuisNr == huisNr && a.Bus == bus && a.PostCode == postCode)
                     select a).FirstOrDefault();
 
                 // Alweer een rariteit met entity framework:
+                // De 'eager loading' van Straat en Subgemeente werkt niet.
                 //
-                // Als ik de eerste lijn van de query vervang door
-                //   from Adres a in db.Adres.Include("Straat").Include("Subgemeente")
-                //
-                // dan zou je verwachten dat resultaat.Straat en resultaat.Subgemeente
-                // meteen mee opgehaald worden.  (Net zoals het bijvoorbeeld
-                // gebeurt in GelieerdePersonenDau.DetailsOphalen.
-                //
-                // Niet dus.  Vandaar dat ik de 'eager loading' maar op deze
-                // manier doe:
+                // Dan moet het maar zo:
 
-                resultaat.StraatReference.Load();
-                resultaat.SubgemeenteReference.Load();
+                if (resultaat != null)
+                {
+                    // Dit is uiteraard enkel zinvol als er iets gevonden is.
 
-                // Als ik nu resultaat zou detachen, zijn straat en subgemeente
-                // opnieuw null.  Begrijpe wie kan.  Maar via deze rare
-                // constructie lukt het dan weer wel:
+                    resultaat.StraatReference.Load();
+                    resultaat.SubgemeenteReference.Load();
 
-                s = resultaat.Straat;
-                sg = resultaat.Subgemeente;
-
-                db.Detach(s);
-                db.Detach(sg);
-                db.Detach(resultaat);
+                }
             }
-            resultaat.Straat = s;
-            resultaat.Subgemeente = sg;
 
             return resultaat;
         }

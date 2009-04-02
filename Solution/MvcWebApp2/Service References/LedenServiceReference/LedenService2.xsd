@@ -186,12 +186,11 @@
       <xs:extension xmlns:q9="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q9:EntityObject">
         <xs:sequence>
           <xs:element minOccurs="0" name="Adres" nillable="true" type="tns:Adres" />
-          <xs:element minOccurs="0" name="AdresID" type="xs:int" />
           <xs:element minOccurs="0" name="AdresReference" nillable="true" type="q9:EntityReferenceOfAdresjQfcsukF" />
           <xs:element minOccurs="0" name="AdresTypeID" type="xs:int" />
           <xs:element minOccurs="0" name="GelieerdePersoon" nillable="true" type="tns:GelieerdePersoon" />
-          <xs:element minOccurs="0" name="GelieerdePersoonID" type="xs:int" />
           <xs:element minOccurs="0" name="GelieerdePersoonReference" nillable="true" type="q9:EntityReferenceOfGelieerdePersoonjQfcsukF" />
+          <xs:element minOccurs="0" name="ID" type="xs:int" />
           <xs:element minOccurs="0" name="IsStandaard" type="xs:boolean" />
           <xs:element minOccurs="0" name="Opmerking" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="Versie" nillable="true" type="xs:base64Binary" />
@@ -204,15 +203,16 @@
     <xs:complexContent mixed="false">
       <xs:extension xmlns:q10="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q10:EntityObject">
         <xs:sequence>
-          <xs:element minOccurs="0" name="AdresID" type="xs:int" />
           <xs:element minOccurs="0" name="Bus" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="HuisNr" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="ID" type="xs:int" />
           <xs:element minOccurs="0" name="PersoonsAdres" nillable="true" type="tns:ArrayOfPersoonsAdres" />
           <xs:element minOccurs="0" name="PostCode" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="Straat" nillable="true" type="tns:Straat" />
           <xs:element minOccurs="0" name="StraatReference" nillable="true" type="q10:EntityReferenceOfStraatjQfcsukF" />
           <xs:element minOccurs="0" name="Subgemeente" nillable="true" type="tns:Subgemeente" />
           <xs:element minOccurs="0" name="SubgemeenteReference" nillable="true" type="q10:EntityReferenceOfSubgemeentejQfcsukF" />
+          <xs:element minOccurs="0" name="Versie" nillable="true" type="xs:base64Binary" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -223,9 +223,9 @@
       <xs:extension xmlns:q11="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q11:EntityObject">
         <xs:sequence>
           <xs:element minOccurs="0" name="Adres" nillable="true" type="tns:ArrayOfAdres" />
+          <xs:element minOccurs="0" name="ID" type="xs:int" />
           <xs:element minOccurs="0" name="Naam" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="PostNr" type="xs:int" />
-          <xs:element minOccurs="0" name="StraatID" type="xs:int" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -242,9 +242,9 @@
       <xs:extension xmlns:q12="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q12:EntityObject">
         <xs:sequence>
           <xs:element minOccurs="0" name="Adres" nillable="true" type="tns:ArrayOfAdres" />
+          <xs:element minOccurs="0" name="ID" type="xs:int" />
           <xs:element minOccurs="0" name="Naam" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="PostNr" type="xs:int" />
-          <xs:element minOccurs="0" name="SubgemeenteID" type="xs:int" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

@@ -63,5 +63,31 @@ namespace Cg2.Workers
 
         #endregion
 
+        /// <summary>
+        /// Verhuist een persoon van oudAdres naar nieuwAdres
+        /// </summary>
+        /// <param name="verhuizer">te verhuizen GelieerdePersoon</param>
+        /// <param name="oudAdres">oud adres</param>
+        /// <param name="nieuwAdres">nieuw adres</param>
+        /// <remarks>Als de persoon niet gekoppeld is aan het oude adres,
+        /// zal hij ook niet verhiuzen</remarks>
+        public void Verhuizen(GelieerdePersoon verhuizer, Adres oudAdres, Adres nieuwAdres)
+        {
+            PersoonsAdres persoonsadres
+                = (from PersoonsAdres pa in verhuizer.PersoonsAdres
+                  where pa.Adres.ID == oudAdres.ID
+                  select pa).FirstOrDefault();
+
+            if (oudAdres.PersoonsAdres != null)
+            {
+                oudAdres.PersoonsAdres.Remove(persoonsadres);
+            }
+            persoonsadres.Adres = nieuwAdres;
+
+            if (nieuwAdres.PersoonsAdres != null)
+            {
+                nieuwAdres.PersoonsAdres.Add(persoonsadres);
+            }
+        }
     }
 }

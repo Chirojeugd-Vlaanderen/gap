@@ -186,12 +186,11 @@
       <xs:extension xmlns:q9="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q9:EntityObject">
         <xs:sequence>
           <xs:element minOccurs="0" name="Adres" nillable="true" type="tns:Adres" />
-          <xs:element minOccurs="0" name="AdresID" type="xs:int" />
           <xs:element minOccurs="0" name="AdresReference" nillable="true" type="q9:EntityReferenceOfAdresjQfcsukF" />
           <xs:element minOccurs="0" name="AdresTypeID" type="xs:int" />
           <xs:element minOccurs="0" name="GelieerdePersoon" nillable="true" type="tns:GelieerdePersoon" />
-          <xs:element minOccurs="0" name="GelieerdePersoonID" type="xs:int" />
           <xs:element minOccurs="0" name="GelieerdePersoonReference" nillable="true" type="q9:EntityReferenceOfGelieerdePersoonjQfcsukF" />
+          <xs:element minOccurs="0" name="ID" type="xs:int" />
           <xs:element minOccurs="0" name="IsStandaard" type="xs:boolean" />
           <xs:element minOccurs="0" name="Opmerking" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="Versie" nillable="true" type="xs:base64Binary" />

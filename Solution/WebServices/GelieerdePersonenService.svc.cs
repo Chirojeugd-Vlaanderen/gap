@@ -125,18 +125,20 @@ namespace Cg2.Services
 
             // Selecteer enkel bewoners uit mijnGelieerdePersonen
 
-            var teVerhuizen =
-                from PersoonsAdres pa
+            IList<GelieerdePersoon> teVerhuizen =
+                (from PersoonsAdres pa
                 in oudAdres.PersoonsAdres
                 where mijnGelieerdePersonen.Contains(pa.GelieerdePersoon.ID)
-                select pa.GelieerdePersoon;
+                select pa.GelieerdePersoon).ToList();
 
-            // een voor een verhuizen
+            // Bovenstaande query meteen evalueren en resultaten in een lijst.
+            // Als ik dat niet doe, dan verandert het 'in' gedeelte van
+            // de foreach tijdens de loop, en daar kan .net niet mee
+            // lachen.
 
             foreach (GelieerdePersoon verhuizer in teVerhuizen)
             {
-                //pm.Verhuizen(gp, oudAdres, nieuwAdres);
-                throw new NotImplementedException();
+                pm.Verhuizen(verhuizer, oudAdres, nieuwAdres);
             }
 
             // Persisteren
