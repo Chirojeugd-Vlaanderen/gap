@@ -51,7 +51,7 @@ namespace CodeProject.Data.Entity
 		}
 	}
 
-	internal class ExtendedPropertyInfo
+	internal class ExtendedPropertyInfo : IEquatable<ExtendedPropertyInfo>
 	{
 		public ExtendedPropertyInfo(PropertyInfo propertyInfo)
 		{
@@ -64,8 +64,12 @@ namespace CodeProject.Data.Entity
 
 		public override bool Equals(object obj)
 		{
-			ExtendedPropertyInfo other = obj as ExtendedPropertyInfo;
-			if (obj == null)
+			return this.Equals(obj as ExtendedPropertyInfo);
+		}
+
+		public bool Equals(ExtendedPropertyInfo other)
+		{
+			if (Object.ReferenceEquals(other, null))
 				return false;
 			else
 				return (Object.Equals(this.PropertyInfo, other.PropertyInfo));

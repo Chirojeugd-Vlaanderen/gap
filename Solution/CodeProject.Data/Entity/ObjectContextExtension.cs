@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using Arebis.Reflection;
 using System.Text;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace CodeProject.Data.Entity
 {
@@ -91,20 +92,18 @@ namespace CodeProject.Data.Entity
 				for(int i=0; i<unattachedEntities.Length; i++)
 					attachedEntities[i] = (T)context.AddOrAttachInstance(unattachedEntities[i], true);
 
-				// Collect all properties in a unique set:
-				List<ExtendedPropertyInfo> propertyset = new List<ExtendedPropertyInfo>();
+				// Collect property paths into a tree:
+				TreeNode<ExtendedPropertyInfo> root = new TreeNode<ExtendedPropertyInfo>(null);
 				foreach (var path in paths)
 				{
 					List<ExtendedPropertyInfo> members = new List<ExtendedPropertyInfo>();
 					EntityFrameworkHelper.CollectRelationalMembers(path, members);
-					foreach (ExtendedPropertyInfo member in members)
-						if (!propertyset.Contains(member))
-							propertyset.Add(member);
+					root.AddPath(members);
 				}
 
 				// Navigate over all properties:
 				for(int i=0; i<unattachedEntities.Length; i++)
-					NavigatePropertySet(context, propertyset, unattachedEntities[i], attachedEntities[i]);
+					NavigatePropertySet(context, root, unattachedEntities[i], attachedEntities[i]);
 			}
 
 			// Return the attached root entities:
@@ -143,24 +142,49 @@ namespace CodeProject.Data.Entity
 		{
 			using (MemoryStream stream = new MemoryStream())
 			{
-				NetDataContractSerializer serializer = new NetDataContractSerializer();
-				serializer.Serialize(stream, entity);
+				//NetDataContractSerializer serializer = new NetDataContractSerializer();
+				//serializer.Serialize(stream, entity);
+				//stream.Position = 0;
+				//return (T)serializer.Deserialize(stream);
+				BinaryFormatter formatter = new BinaryFormatter();
+				formatter.Serialize(stream, entity);
 				stream.Position = 0;
-				return (T)serializer.Deserialize(stream);
+				return (T)formatter.Deserialize(stream);
 			}
 		}
 
-		/// <summary>
-		/// Returns the EntitySetName for the given entity type.
-		/// Courtesy of SCIP.be.
-		/// </summary>
-		public static string GetEntitySetName(this ObjectContext context, Type entityType)
-		{
-			var container = context.MetadataWorkspace.GetEntityContainer(context.DefaultContainerName, DataSpace.CSpace);
-			return (from meta in container.BaseEntitySets
-					where meta.ElementType.FullName == entityType.FullName
-					select meta.Name).FirstOrDefault();
-		}
+        /// <summary>
+        /// Returns the EntitySetName for the given entity type.
+        /// </summary>
+        public static string GetEntitySetName(this ObjectContext context, Type entityType)
+        {
+            Type type = entityType;
+
+            while (type != null)
+            {
+                // Use first EdmEntityTypeAttribute found:
+                foreach (EdmEntityTypeAttribute typeattr in type.GetCustomAttributes(typeof(EdmEntityTypeAttribute), false))
+                {
+                    // Retrieve the entity container for the conceptual model:
+                    var container = context.MetadataWorkspace.GetEntityContainer(context.DefaultContainerName, DataSpace.CSpace);
+
+                    // Retrieve the name of the entityset matching the given types EdmEntityTypeAttribute:
+                    string entitySetName = (from meta in container.BaseEntitySets
+                                            where meta.ElementType.FullName == typeattr.NamespaceName + "." + typeattr.Name
+                                            select meta.Name)
+                                            .FirstOrDefault();
+
+                    // If match, return the entitySetName:
+                    if (entitySetName != null) return entitySetName;
+                }
+
+                // If no matching attribute or entitySetName found, try basetype:
+                type = type.BaseType;
+            }
+
+            // Fail if no valid entitySetName was found:
+            throw new InvalidOperationException(String.Format("Unable to determine EntitySetName of type '{0}'.", entityType));
+        }
 
 		#region Entity path marker methods
 
@@ -189,14 +213,12 @@ namespace CodeProject.Data.Entity
 		/// <summary>
 		/// Navigates a property path on detached instance to translate into attached instance.
 		/// </summary>
-		private static void NavigatePropertySet(ObjectContext context, List<ExtendedPropertyInfo> propertyset, object owner, object attachedowner)
+		private static void NavigatePropertySet(ObjectContext context, TreeNode<ExtendedPropertyInfo> propertynode, object owner, object attachedowner)
 		{
 			// Try to navigate each of the properties:
-			foreach (ExtendedPropertyInfo property in propertyset)
+			foreach (TreeNode<ExtendedPropertyInfo> childnode in propertynode.Children)
 			{
-				// Skip if property does not apply on owner type:
-				if (!property.PropertyInfo.DeclaringType.IsAssignableFrom(owner.GetType()))
-					continue;
+				ExtendedPropertyInfo property = childnode.Item;
 
 				// Retrieve property value:
 				object related = property.PropertyInfo.GetValue(owner, null);
@@ -215,7 +237,7 @@ namespace CodeProject.Data.Entity
 					{
 						object attachedinstance = context.AddOrAttachInstance(relatedinstance, !property.NoUpdate);
 						newlist.Add(attachedinstance);
-						NavigatePropertySet(context, propertyset, relatedinstance, attachedinstance);
+						NavigatePropertySet(context, childnode, relatedinstance, attachedinstance);
 					}
 
 					// Synchronise lists:
@@ -244,7 +266,7 @@ namespace CodeProject.Data.Entity
 					else
 					{
 						attachedinstance = context.AddOrAttachInstance(related, !property.NoUpdate);
-						NavigatePropertySet(context, propertyset, related, attachedinstance);
+						NavigatePropertySet(context, childnode, related, attachedinstance);
 					}
 
 					// Synchronise value:

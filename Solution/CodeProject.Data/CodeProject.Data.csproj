@@ -55,6 +55,7 @@
     <Compile Include="Entity\OptimisticConcurrencyManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReflectionExtensions.cs" />
+    <Compile Include="TreeNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CodeProject.Data.snk" />
