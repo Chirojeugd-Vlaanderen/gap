@@ -8,6 +8,8 @@ using System.Configuration;
 using Cg2.Orm;
 using MvcWebApp2.Models;
 using System.Diagnostics;
+using System.ServiceModel;
+using MvcWebApp2.GelieerdePersonenServiceReference;
 
 namespace MvcWebApp2.Controllers
 {
@@ -138,7 +140,15 @@ namespace MvcWebApp2.Controllers
                     //
                     // Adressen worden nooit gewijzigd, enkel bijgemaakt.  (en eventueel
                     // verwijderd.)
-                    service.Verhuizen(model.GelieerdePersoonIDs, model.Adres, model.Adres.ID);
+
+                    try
+                    {
+                        service.Verhuizen(model.GelieerdePersoonIDs, model.Adres, model.Adres.ID);
+                    }
+                    catch (FaultException<CgFaultException> ex)
+                    {
+                        // Hoera, foute straat of gemeente
+                    }
                 }
 
                 // FIXME: Dit is uiteraard niet de goede manier om de persoon te bepalen

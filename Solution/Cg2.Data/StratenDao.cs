@@ -20,7 +20,10 @@ namespace Cg2.Data.Ef
                     where s.Naam == naam && s.PostNr == postNr
                     select s).FirstOrDefault<Straat>();
 
-                db.Detach(resultaat);
+                if (resultaat != null)
+                {
+                    db.Detach(resultaat);
+                }
             }
 
             return resultaat;

@@ -94,7 +94,7 @@ namespace Cg2.Workers
                 s = _stratenDao.Ophalen(adr.Straat.Naam, adr.Straat.PostNr);
                 if (s == null)
                 {
-                    throw new StraatNietGevondenException(String.Format("Straat {0} met postcode {1} niet gevonden.", adr.Straat.Naam, adr.Subgemeente.PostNr));
+                    throw new StraatNietGevondenException(String.Format("Straat {0} met postnummer {1} niet gevonden.", adr.Straat.Naam, adr.Straat.PostNr));
                 }
 
                 adr.Straat = s;
@@ -103,7 +103,7 @@ namespace Cg2.Workers
                 sg = _subgemeenteDao.Ophalen(adr.Subgemeente.Naam, adr.Straat.PostNr);
                 if (sg == null)
                 {
-                    throw new GemeenteNietGevondenException(String.Format("Deelgemeente {0} met postcode {1] niet gevonden.", adr.Subgemeente.Naam, adr.Subgemeente.PostNr));
+                    throw new GemeenteNietGevondenException(String.Format("Deelgemeente {0} met postnummer {1] niet gevonden.", adr.Subgemeente.Naam, adr.Straat.PostNr));
                 }
 
                 adr.Subgemeente = sg;

@@ -30,6 +30,7 @@
     <MetadataFile FileName="GelieerdePersonenService4.xsd" MetadataType="Schema" ID="1a2b14d5-9305-4021-8686-31a1a5fc7b1e" SourceId="1" SourceUrl="http://localhost:2733/GelieerdePersonenService.svc?xsd=xsd2" />
     <MetadataFile FileName="GelieerdePersonenService55.xsd" MetadataType="Schema" ID="e46ffb34-26fb-44ee-9e9b-611dfc457d9f" SourceId="1" SourceUrl="http://localhost:2733/GelieerdePersonenService.svc?xsd=xsd5" />
     <MetadataFile FileName="GelieerdePersonenService.wsdl" MetadataType="Wsdl" ID="c2f432c7-86c8-4371-8e89-29d8d8b4061f" SourceId="1" SourceUrl="http://localhost:2733/GelieerdePersonenService.svc?wsdl" />
+    <MetadataFile FileName="GelieerdePersonenService56.xsd" MetadataType="Schema" ID="ba22073a-39af-4ec9-bbcc-ef0066a26a02" SourceId="1" SourceUrl="http://localhost:2733/GelieerdePersonenService.svc?xsd=xsd6" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

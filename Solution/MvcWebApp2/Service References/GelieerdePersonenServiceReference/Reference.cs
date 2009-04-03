@@ -9,7 +9,81 @@
 //------------------------------------------------------------------------------
 
 namespace MvcWebApp2.GelieerdePersonenServiceReference {
+    using System.Runtime.Serialization;
+    using System;
     
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CgFaultException", Namespace="http://schemas.datacontract.org/2004/07/Cg2.ServiceContracts.FaultContracts")]
+    [System.SerializableAttribute()]
+    public partial class CgFaultException : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string BoodschapField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private MvcWebApp2.GelieerdePersonenServiceReference.FoutCode CodeField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Boodschap {
+            get {
+                return this.BoodschapField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.BoodschapField, value) != true)) {
+                    this.BoodschapField = value;
+                    this.RaisePropertyChanged("Boodschap");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public MvcWebApp2.GelieerdePersonenServiceReference.FoutCode Code {
+            get {
+                return this.CodeField;
+            }
+            set {
+                if ((this.CodeField.Equals(value) != true)) {
+                    this.CodeField = value;
+                    this.RaisePropertyChanged("Code");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="FoutCode", Namespace="http://schemas.datacontract.org/2004/07/Cg2.ServiceContracts.FaultContracts")]
+    public enum FoutCode : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        OnbekendeStraat = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        OnbekendeGemeente = 1,
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="GelieerdePersonenServiceReference.IGelieerdePersonenService")]
@@ -38,6 +112,7 @@ namespace MvcWebApp2.GelieerdePersonenServiceReference {
         Cg2.Orm.Adres AdresMetBewonersOphalen(int adresID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGelieerdePersonenService/Verhuizen", ReplyAction="http://tempuri.org/IGelieerdePersonenService/VerhuizenResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(MvcWebApp2.GelieerdePersonenServiceReference.CgFaultException), Action="http://tempuri.org/IGelieerdePersonenService/VerhuizenCgFaultExceptionFault", Name="CgFaultException", Namespace="http://schemas.datacontract.org/2004/07/Cg2.ServiceContracts.FaultContracts")]
         void Verhuizen(System.Collections.Generic.List<int> gelieerdePersonen, Cg2.Orm.Adres nieuwAdres, int oudAdresID);
     }
     

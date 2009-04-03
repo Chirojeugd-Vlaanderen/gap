@@ -252,13 +252,13 @@
   <xs:element name="Subgemeente" nillable="true" type="tns:Subgemeente" />
   <xs:simpleType name="PersoonsInfo">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="ADRESSEN" />
-      <xs:enumeration value="COMMUNICATIEVORMEN" />
-      <xs:enumeration value="VRIJEVELDEN" />
-      <xs:enumeration value="LIDINFO" />
-      <xs:enumeration value="CATEGORIEEN" />
-      <xs:enumeration value="CURSUSINFO" />
-      <xs:enumeration value="VERZEKERINGSINFO" />
+      <xs:enumeration value="Adressen" />
+      <xs:enumeration value="CommunicatieVormen" />
+      <xs:enumeration value="VrijeVelden" />
+      <xs:enumeration value="LidInfo" />
+      <xs:enumeration value="Categorieen" />
+      <xs:enumeration value="CursusInfo" />
+      <xs:enumeration value="VerzekeringsInfo" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="PersoonsInfo" nillable="true" type="tns:PersoonsInfo" />

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Cg2.ServiceContracts.FaultContracts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Cg2.ServiceContracts.FaultContracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="CgFaultException">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Boodschap" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Code" type="tns:FoutCode" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CgFaultException" nillable="true" type="tns:CgFaultException" />
+  <xs:simpleType name="FoutCode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OnbekendeStraat" />
+      <xs:enumeration value="OnbekendeGemeente" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="FoutCode" nillable="true" type="tns:FoutCode" />
+</xs:schema>

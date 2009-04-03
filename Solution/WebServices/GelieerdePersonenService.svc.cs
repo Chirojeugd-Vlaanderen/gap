@@ -9,6 +9,7 @@ using Cg2.Workers;
 using Cg2.Orm;
 using Cg2.Orm.Exceptions;
 using System.Security.Permissions;
+using Cg2.ServiceContracts.FaultContracts;
 
 namespace Cg2.Services
 {
@@ -110,7 +111,29 @@ namespace Cg2.Services
 
             // Zoek adres op in database, of maak een nieuw.
             // (als straat en gemeente gekend)
-            nieuwAdres = adm.ZoekenOfMaken(nieuwAdres);
+
+            try
+            {
+                nieuwAdres = adm.ZoekenOfMaken(nieuwAdres);
+            }
+            catch (StraatNietGevondenException ex)
+            {
+                CgFaultException fout = new CgFaultException();
+                fout.Code = FoutCode.OnbekendeStraat;
+                fout.Boodschap = ex.Message;
+                throw new FaultException<CgFaultException>(fout);
+            }
+            catch (GemeenteNietGevondenException ex)
+            {
+                CgFaultException fout = new CgFaultException();
+                fout.Code = FoutCode.OnbekendeGemeente;
+                fout.Boodschap = ex.Message;
+                throw new FaultException<CgFaultException>(fout);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             // Om foefelen te vermijden: we werken enkel op de gelieerde
             // personen waar de gebruiker GAV voor is.

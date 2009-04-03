@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using Cg2.Orm;
+using Cg2.ServiceContracts.FaultContracts;
 
 namespace Cg2.ServiceContracts
 {
@@ -90,6 +91,7 @@ namespace Cg2.ServiceContracts
         /// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
         /// dan krijgt het adres een nieuw ID.</remarks>
         [OperationContract]
+        [FaultContract(typeof(CgFaultException))]
         void Verhuizen(IList<int> gelieerdePersonen, Adres nieuwAdres, int oudAdresID);
     }
 }

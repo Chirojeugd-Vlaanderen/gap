@@ -156,6 +156,7 @@
     <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService53.xsd" />
     <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService54.xsd" />
     <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService55.xsd" />
+    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService56.xsd" />
     <None Include="Service References\LedenServiceReference\LedenService.wsdl" />
     <None Include="Service References\LedenServiceReference\LedenService.xsd" />
     <None Include="Service References\LedenServiceReference\LedenService1.xsd" />
