@@ -108,11 +108,9 @@ namespace Cg2.Services
             AuthorisatieManager aum = new AuthorisatieManager();
             AdressenManager adm = new AdressenManager();
 
-            // Straat.ID, Subgemeente.ID,
-            // ID en Versie uit database halen; eventueel nieuw
-            // adres aanmaken.
-
-            adm.Syncen(ref nieuwAdres);
+            // Zoek adres op in database, of maak een nieuw.
+            // (als straat en gemeente gekend)
+            nieuwAdres = adm.ZoekenOfMaken(nieuwAdres);
 
             // Om foefelen te vermijden: we werken enkel op de gelieerde
             // personen waar de gebruiker GAV voor is.
@@ -143,8 +141,7 @@ namespace Cg2.Services
 
             // Persisteren
 
-            //adm.AdresMetBewonersBewaren(nieuwAdres);
-            throw new NotImplementedException();
+            adm.Bewaren(nieuwAdres);
 
             // Bij een verhuis, blijven de PersoonsAdresobjecten dezelfde,
             // maar worden ze aan een ander adres gekoppeld.  Een post

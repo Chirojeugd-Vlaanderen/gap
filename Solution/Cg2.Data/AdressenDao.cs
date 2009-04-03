@@ -7,6 +7,7 @@ using System.Diagnostics;
 using Cg2.Orm.DataInterfaces;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
+using CodeProject.Data.Entity;
 
 namespace Cg2.Data.Ef
 {
@@ -15,7 +16,23 @@ namespace Cg2.Data.Ef
     /// </summary>
     public class AdressenDao: Dao<Adres>, IAdressenDao
     {
+        /// <summary>
+        /// Creeert nieuw adres, en bewaart gekoppelde
+        /// persoonsadressen.
+        /// </summary>
+        /// <param name="adr">Te creeren adres</param>
+        /// <returns>referentie naar gecreerde adres</returns>
         public override Adres Creeren(Adres adr)
+        {
+            return Bewaren(adr);
+        }
+
+        /// <summary>
+        /// Bewaart adres en eventuele gekoppelde persoonsadressen.
+        /// </summary>
+        /// <param name="nieuweEntiteit">Te bewaren adres</param>
+        /// <returns>referentie naar het bewaarde adres</returns>
+        public override Adres Bewaren(Adres adr)
         {
             // Deze assertions moeten eigenlijk afgedwongen worden
             // door de businesslaag.  En eigenlijk moet deze method ook
@@ -30,37 +47,9 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                // Ik ga ervan uit dat straat en subgemeente niet gewijzigd
-                // zijn.  Maar ik denk dat de DAO wel het wijzigen van
-                // straten moet toelaten (bijv voor een admingebruiker of zo)
-                // Maar voorlopig dus niet.
-
-                // Entity Framework heeft problemen met het koppelen van
-                // een combinatie van nieuwe en detached objecten aan de
-                // objectcontext.  In dit geval: het adres is nieuw,
-                // straat en subgemeente zijn gedetached.  Vandaar deze lelijke
-                // hack.
-
-                Straat s = adr.Straat;
-                Subgemeente sg = adr.Subgemeente;
-
-                adr.Straat = null;
-                adr.Subgemeente = null;
-
-                db.AddToAdres(adr);
-                db.Attach(s);
-                db.Attach(sg);
-
-                adr.Straat = s;
-                adr.Subgemeente = sg;
-
+                db.AttachObjectGraph(adr, dink=>dink.Straat.WithoutUpdate(), dink=>dink.Subgemeente.WithoutUpdate(), dink => dink.PersoonsAdres.First());
                 db.SaveChanges();
-                // Als er een dubbel adres wordt toegevoegd,
-                // krijg je hier een exceptie.
-                // FXIME: dat is momenteel wel een probleem,
-                // want syncen verloopt niet in 1 transactie
             }
-
             return adr;
         }
 
@@ -121,11 +110,22 @@ namespace Cg2.Data.Ef
             return resultaat;
         }
 
-        public Adres Ophalen(string straatNaam, int? huisNr, string bus, int postNr, string postCode, string gemeenteNaam)
+        /// <summary>
+        /// Haalt adres op op basis van criteria
+        /// </summary>
+        /// <param name="straatNaam"></param>
+        /// <param name="huisNr"></param>
+        /// <param name="bus"></param>
+        /// <param name="postNr"></param>
+        /// <param name="postCode"></param>
+        /// <param name="gemeenteNaam"></param>
+        /// <param name="metBewoners">indien true, worden ook de
+        /// persoonsadressen opgehaald (ALLEMAAL, dus niet zomaar
+        /// over de lijn sturen!)</param>
+        /// <returns>Een adres als gevonden, anders null</returns>
+        public Adres Ophalen(string straatNaam, int? huisNr, string bus, int postNr, string postCode, string gemeenteNaam, bool metBewoners)
         {
             Adres resultaat;
-            Straat s;
-            Subgemeente sg;
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
@@ -133,9 +133,16 @@ namespace Cg2.Data.Ef
                 // NoTracking, zodat we straks niet moeten detachen
                 // (op die manier spelen we geen navigation properties
                 // kwijt)
+
+                var adressentabel = db.Adres.Include("Straat").Include("Subgemeente");
+
+                if (metBewoners)
+                {
+                    adressentabel = adressentabel.Include("PersoonsAdres");
+                }
                 
                 resultaat = (
-                    from Adres a in db.Adres.Include("Straat").Include("Subgemeente")
+                    from Adres a in adressentabel
                     where (a.Straat.Naam == straatNaam && a.Subgemeente.Naam == gemeenteNaam
                     && a.Straat.PostNr == postNr
                     && a.HuisNr == huisNr && a.Bus == bus && a.PostCode == postCode)
@@ -152,6 +159,11 @@ namespace Cg2.Data.Ef
 
                     resultaat.StraatReference.Load();
                     resultaat.SubgemeenteReference.Load();
+
+                    if (metBewoners)
+                    {
+                        resultaat.PersoonsAdres.Load();
+                    }
 
                 }
             }

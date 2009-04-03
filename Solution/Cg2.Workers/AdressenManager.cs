@@ -50,22 +50,29 @@ namespace Cg2.Workers
             return _dao.BewonersOphalen(adresID, gelieerdAan);
         }
 
+        public Adres Bewaren(Adres adr)
+        {
+            return _dao.Bewaren(adr);
+        }
+
         #endregion
 
         /// <summary>
-        /// Haalt ID en Versie van het adres uit de database.
-        /// Indien dat nog niet gebeurd is, wordt het adres
-        /// eerst aan de database toegevoegd.
-        /// 
-        /// Verwacht wordt dat het volgende is ingevuld:
+        /// Zoekt adres (incl. straat en subgemeente), op basis
+        /// van
         ///  - straat.naam
         ///  - huisnummer
         ///  - straat.postnr
         ///  - subgemeente.naam
+        /// 
+        /// Als er zo geen adres bestaat, wordt het aangemaakt, op
+        /// voorwaarde dat de straat en subgemeente geidentificeerd
+        /// kunnen worden.  Als ook dat laatste niet het geval is,
+        /// krijg je een foutmelding.
         /// </summary>
-        /// <param name="adr">Te syncen adres</param>
-        /// <returns>Referentie naar het gesyncte adres</returns>
-        public Adres Syncen(ref Adres adr)
+        /// <param name="adr">Adresobject met zoekinfo</param>
+        /// <returns>Gevonden adres</returns>
+        public Adres ZoekenOfMaken(Adres adr)
         {
             Adres adresInDb;
 
@@ -75,7 +82,7 @@ namespace Cg2.Workers
 
             adr.ID = 0;
 
-            adresInDb = _dao.Ophalen(adr.Straat.Naam, adr.HuisNr, adr.Bus, adr.Straat.PostNr, adr.PostCode, adr.Subgemeente.Naam);
+            adresInDb = _dao.Ophalen(adr.Straat.Naam, adr.HuisNr, adr.Bus, adr.Straat.PostNr, adr.PostCode, adr.Subgemeente.Naam, true);
 
             if (adresInDb == null)
             {
@@ -104,16 +111,16 @@ namespace Cg2.Workers
 
                 adr = _dao.Bewaren(adr);
                 // bewaren brengt Versie en ID automatisch in orde.
+
+                return adr;
             }
             else
             {
                 Debug.Assert(adresInDb.Straat != null);
                 Debug.Assert(adresInDb.Subgemeente != null);
 
-                adr = adresInDb;
+                return adresInDb;
             }
-
-            return adr;
         }
     }
 }

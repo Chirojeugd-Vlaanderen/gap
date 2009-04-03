@@ -102,14 +102,14 @@ namespace Cg2.Data.Ef
         /// <returns>De geupdatete entiteit</returns>
         /// <remarks>Deze functie mag ook gebruikt worden voor het toevoegen
         /// van een nieuwe entiteit.</remarks>
-        public virtual T Bewaren(T nieuweEntiteit)
+        public virtual T Bewaren(T teBewaren)
         {
             // Code uit het boek aangepast, met dank aan
             // http://msdn.microsoft.com/en-us/magazine/cc700340.aspx
 
-            if (nieuweEntiteit.ID == 0)
+            if (teBewaren.ID == 0)
             {
-                return Creeren(nieuweEntiteit);
+                return Creeren(teBewaren);
             }
             else
             {
@@ -120,14 +120,14 @@ namespace Cg2.Data.Ef
                     // dan moeten we hem terug genereren alvorens
                     // de entity terug geattacht kan worden.
 
-                    nieuweEntiteit.EntityKey = db.CreateEntityKey(typeof(T).Name, nieuweEntiteit);
+                    teBewaren.EntityKey = db.CreateEntityKey(typeof(T).Name, teBewaren);
 
-                    db.Attach(nieuweEntiteit);
-                    SetAllModified(nieuweEntiteit.EntityKey, db);
+                    db.Attach(teBewaren);
+                    SetAllModified(teBewaren.EntityKey, db);
 
                     db.SaveChanges();
                 }
-                return nieuweEntiteit;
+                return teBewaren;
             }
         }
 

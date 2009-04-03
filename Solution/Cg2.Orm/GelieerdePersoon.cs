@@ -15,22 +15,22 @@ namespace Cg2.Orm
     /// </summary>
     [DataContract]
     public enum PersoonsInfo {
-        [EnumMember] ADRESSEN,
-        [EnumMember] COMMUNICATIEVORMEN,
-        [EnumMember] VRIJEVELDEN,
-        [EnumMember] LIDINFO, //TODO maar lidmaken mag niet via persoon, moet via ledenservice
-        [EnumMember] CATEGORIEEN,
-        [EnumMember] CURSUSINFO,
-        [EnumMember] VERZEKERINGSINFO
+        [EnumMember] Adressen,
+        [EnumMember] CommunicatieVormen,
+        [EnumMember] VrijeVelden,
+        [EnumMember] LidInfo, //TODO maar lidmaken mag niet via persoon, moet via ledenservice
+        [EnumMember] Categorieen,
+        [EnumMember] CursusInfo,
+        [EnumMember] VerzekeringsInfo
     }
 
     public partial class GelieerdePersoon : IBasisEntiteit 
     {
-        private IList<PersoonsInfo> list;
+        private IList<PersoonsInfo> _meeGeleverd;
 
         public GelieerdePersoon(): base()
         {
-            //TODO list = 
+            _meeGeleverd = null;
         }
 
         public string VersieString

@@ -33,7 +33,10 @@ namespace Cg2.Orm.DataInterfaces
         /// <param name="postNr">postnummer</param>
         /// <param name="postCode">postcode (nt relevant in Belgie)</param>
         /// <param name="gemeenteNaam">naam (sub)gemeente</param>
+        /// <param name="metBewoners">indien true, worden ook de PersoonsAdressen
+        /// opgehaald.  (ALLE persoonsadressen gekoppeld aan het adres; niet
+        /// zomaar over de lijn sturen dus)</param>
         /// <returns>gevraagd adresobject</returns>
-        Adres Ophalen(string straatNaam, int? huisNr, string bus, int postNr, string postCode, string gemeenteNaam);
+        Adres Ophalen(string straatNaam, int? huisNr, string bus, int postNr, string postCode, string gemeenteNaam, bool metBewoners);
     }
 }
