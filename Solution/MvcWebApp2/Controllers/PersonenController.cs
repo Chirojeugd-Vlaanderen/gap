@@ -143,11 +143,30 @@ namespace MvcWebApp2.Controllers
 
                     try
                     {
-                        service.Verhuizen(model.GelieerdePersoonIDs, model.Adres, model.Adres.ID);
+                        service.Verhuizen(model.GelieerdePersoonIDs, model.NaarAdres, model.VanAdresID);
                     }
                     catch (FaultException<CgFaultException> ex)
                     {
-                        // Hoera, foute straat of gemeente
+                        switch (ex.Detail.Code)
+                        {
+                            case FoutCode.OnbekendeStraat:
+                                ViewData.ModelState.AddModelError("NaarAdres.Straat.Naam", ex.Detail.Boodschap);
+                                break;
+                            case FoutCode.OnbekendeGemeente:
+                                ViewData.ModelState.AddModelError("NaarAdres.SubGemeente.Naam", ex.Detail.Boodschap);
+                                break;
+                        }
+
+                        // Als ik de bewoners van het 'Van-adres' niet had getoond in
+                        // de view, dan had ik de view meteen kunnen aanroepen met het
+                        // model dat terug 'gebind' is.
+
+                        // Maar ik toon de bewoners wel, dus moeten die hier opnieuw
+                        // uit de database gehaald worden:
+
+                        model.HerstelBewoners();
+
+                        return View("AdresBewerken", model);
                     }
                 }
 
@@ -161,7 +180,7 @@ namespace MvcWebApp2.Controllers
             }
             catch
             {
-                return View("Verhuizen", model);
+                return View("AdresBewerken", model);
             }
         }
 

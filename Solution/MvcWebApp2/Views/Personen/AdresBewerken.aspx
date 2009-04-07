@@ -26,7 +26,7 @@
                // CheckBoxListInfo kwakken
            
                List<CheckBoxListInfo> info
-                   = (from PersoonsAdres pa in Model.Adres.PersoonsAdres
+                   = (from PersoonsAdres pa in Model.NaarAdres.PersoonsAdres
                       select new CheckBoxListInfo(
                          pa.GelieerdePersoon.ID.ToString()
                          , Html.ActionLink(Html.Encode(pa.GelieerdePersoon.Persoon.VolledigeNaam), "Edit", new { Controller = "Personen", id = pa.GelieerdePersoon.ID })
@@ -43,19 +43,19 @@
            <fieldset>
            <legend>Adresgegevens</legend>
            
-           <label for="Adres_Straat_Naam">Straat</label>
-           <%=Html.TextBox("Adres.Straat.Naam") %> <br />
+           <label for="NaarAdres_Straat_Naam">Straat</label>
+           <%=Html.TextBox("NaarAdres.Straat.Naam") %> <%= Html.ValidationMessage("NaarAdres.Straat.Naam") %> <br />
            
-           <label for="Adres_HuisNr">Nr.</label>
-           <%=Html.TextBox("Adres.HuisNr") %> <br />
+           <label for="NaarAdres_HuisNr">Nr.</label>
+           <%=Html.TextBox("NaarAdres.HuisNr") %> <br />
            
-           <label for="Adres_Straat_PostNr">Postnr.</label>
-           <%=Html.TextBox("Adres.Straat.PostNr") %> <br />
+           <label for="NaarAdres_Straat_PostNr">Postnr.</label>
+           <%=Html.TextBox("NaarAdres.Straat.PostNr") %> <br />
            
-           <label for="Adres_Subgemeente_Naam">Gemeente</label>
-           <%=Html.TextBox("Adres.Subgemeente.Naam") %> <br />
+           <label for="NaarAdres_Subgemeente_Naam">Gemeente</label>
+           <%=Html.TextBox("NaarAdres.Subgemeente.Naam") %> <%= Html.ValidationMessage("NaarAdres.Subgemeente.Naam") %> <br />
            
-           <%=Html.Hidden("Adres.ID") %>
+           <%=Html.Hidden("VanAdresID") %>
            
            </fieldset>
            

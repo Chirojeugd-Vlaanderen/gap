@@ -103,7 +103,7 @@ namespace Cg2.Workers
                 sg = _subgemeenteDao.Ophalen(adr.Subgemeente.Naam, adr.Straat.PostNr);
                 if (sg == null)
                 {
-                    throw new GemeenteNietGevondenException(String.Format("Deelgemeente {0} met postnummer {1] niet gevonden.", adr.Subgemeente.Naam, adr.Straat.PostNr));
+                    throw new GemeenteNietGevondenException(String.Format("Deelgemeente {0} met postnummer {1} niet gevonden.", adr.Subgemeente.Naam, adr.Straat.PostNr));
                 }
 
                 adr.Subgemeente = sg;

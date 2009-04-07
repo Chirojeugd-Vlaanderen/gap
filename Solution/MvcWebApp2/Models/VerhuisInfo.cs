@@ -14,19 +14,20 @@ namespace MvcWebApp2.Models
     public class VerhuisInfo
     {
         /// <summary>
-        /// Adres bevat het AdresID van het oorspronkelijke adres,
-        /// en de adresgegevens van het nieuwe adres.
-        /// 
-        /// (Aan de UI kant kunnen we immers niet gemakkelijk adressen
-        /// opzoeken; ervoor zorgen dat AdresID goed zit, is iets dat
-        /// de service zal moeten doen.  Vandaar dit oneigenlijke gebruik
-        /// van AdresID)
-        /// 
-        /// Aan Adres zijn alle gelieerde personen gekoppeld die de
-        /// gebruiker mag zien.
-        /// 
+        /// VanAdresID bevat het AdresID van het oorspronkelijke
+        /// adres.
         /// </summary>
-        public Adres Adres { get; set; }
+        public int VanAdresID { get; set; }
+
+        /// <summary>
+        /// NaarAdres bevat adresgegevens van het nieuwe adres.
+        /// Aan NaarAdres zijn de bewoners van het VanAdres gekoppeld
+        /// die de gebruiker mag zien.
+        /// 
+        /// (Het AdresID van NaarAdres is van geen belang, want dat
+        /// kennen we niet aan de UI-kant)
+        /// </summary>
+        public Adres NaarAdres { get; set; }
 
         /// <summary>
         /// Het lijstje GelieerdePersoonIDs bevat de GelieerdePersoonID's van
@@ -39,7 +40,7 @@ namespace MvcWebApp2.Models
         /// </summary>
         public VerhuisInfo()
         {
-            Adres = new Adres();
+            NaarAdres = new Adres();
             GelieerdePersoonIDs = new List<int>();
         }
 
@@ -50,15 +51,39 @@ namespace MvcWebApp2.Models
         /// <param name="adresID">adresID waarvan sprake</param>
         public VerhuisInfo(int adresID)
         {
+            VanAdresID = adresID;
+
             using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new MvcWebApp2.GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
             {
-                Adres = service.AdresMetBewonersOphalen(adresID);
+                NaarAdres = service.AdresMetBewonersOphalen(adresID);
             }
 
             // Standaard verhuist iedereen mee.
             GelieerdePersoonIDs = (
-                from PersoonsAdres pa in Adres.PersoonsAdres
+                from PersoonsAdres pa in NaarAdres.PersoonsAdres
                 select pa.GelieerdePersoon.ID).ToList<int>();
+        }
+
+        /// <summary>
+        /// Haalt de bewoners van het VanAdres opnieuw op, en
+        /// plakt die aan het NaarAdres
+        /// </summary>
+        public void HerstelBewoners()
+        {
+            Adres vanAdres;
+            using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new MvcWebApp2.GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
+            {
+                vanAdres = service.AdresMetBewonersOphalen(VanAdresID);
+            }
+            
+            IList<PersoonsAdres> verhuizers = (from PersoonsAdres pa in vanAdres.PersoonsAdres
+                                              select pa).ToList();
+
+            foreach (PersoonsAdres v in verhuizers)
+            {
+                vanAdres.PersoonsAdres.Remove(v);
+                NaarAdres.PersoonsAdres.Add(v);
+            }
         }
     }
 }
