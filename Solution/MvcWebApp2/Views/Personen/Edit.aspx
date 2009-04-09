@@ -34,7 +34,7 @@
     <label for="Persoon_Geslacht">Geslacht</label> 
     <%=Html.TextBox("Persoon.Geslacht") %> <br />
     
-    <label for="Persoon_ChiroLeefTijd">Chiroleeftijd</label> 
+    <label for="ChiroLeefTijd">Chiroleeftijd</label> 
     <%=Html.TextBox("ChiroLeefTijd") %>
 
     <%=Html.Hidden("ID")%>

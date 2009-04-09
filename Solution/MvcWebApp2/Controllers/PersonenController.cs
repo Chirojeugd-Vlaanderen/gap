@@ -141,33 +141,7 @@ namespace MvcWebApp2.Controllers
                     // Adressen worden nooit gewijzigd, enkel bijgemaakt.  (en eventueel
                     // verwijderd.)
 
-                    try
-                    {
-                        service.Verhuizen(model.GelieerdePersoonIDs, model.NaarAdres, model.VanAdresID);
-                    }
-                    catch (FaultException<CgFaultException> ex)
-                    {
-                        switch (ex.Detail.Code)
-                        {
-                            case FoutCode.OnbekendeStraat:
-                                ViewData.ModelState.AddModelError("NaarAdres.Straat.Naam", ex.Detail.Boodschap);
-                                break;
-                            case FoutCode.OnbekendeGemeente:
-                                ViewData.ModelState.AddModelError("NaarAdres.SubGemeente.Naam", ex.Detail.Boodschap);
-                                break;
-                        }
-
-                        // Als ik de bewoners van het 'Van-adres' niet had getoond in
-                        // de view, dan had ik de view meteen kunnen aanroepen met het
-                        // model dat terug 'gebind' is.
-
-                        // Maar ik toon de bewoners wel, dus moeten die hier opnieuw
-                        // uit de database gehaald worden:
-
-                        model.HerstelBewoners();
-
-                        return View("AdresBewerken", model);
-                    }
+                    service.Verhuizen(model.GelieerdePersoonIDs, model.NaarAdres, model.VanAdresID);
                 }
 
                 // FIXME: Dit is uiteraard niet de goede manier om de persoon te bepalen
@@ -178,9 +152,34 @@ namespace MvcWebApp2.Controllers
                 Debug.Assert(model.GelieerdePersoonIDs.Count > 0);
                 return RedirectToAction("Edit", new { id = model.GelieerdePersoonIDs[0] });
             }
+            catch (FaultException<CgFaultException> ex)
+            {
+                switch (ex.Detail.Code)
+                {
+                    case FoutCode.OnbekendeStraat:
+                        ViewData.ModelState.AddModelError("NaarAdres.Straat.Naam", ex.Detail.Boodschap);
+                        break;
+                    case FoutCode.OnbekendeGemeente:
+                        ViewData.ModelState.AddModelError("NaarAdres.SubGemeente.Naam", ex.Detail.Boodschap);
+                        break;
+                    default:
+                        throw;  // onverwachte exceptie gewoon verder throwen
+                }
+
+                // Als ik de bewoners van het 'Van-adres' niet had getoond in
+                // de view, dan had ik de view meteen kunnen aanroepen met het
+                // model dat terug 'gebind' is.
+
+                // Maar ik toon de bewoners wel, dus moeten die hier opnieuw
+                // uit de database gehaald worden:
+
+                model.HerstelBewoners();
+
+                return View("AdresBewerken", model);
+            }
             catch
             {
-                return View("AdresBewerken", model);
+                throw;  // onverwachte exceptie gewoon verder throwen
             }
         }
 
