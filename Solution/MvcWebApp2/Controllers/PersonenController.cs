@@ -9,7 +9,7 @@ using Cg2.Orm;
 using MvcWebApp2.Models;
 using System.Diagnostics;
 using System.ServiceModel;
-using MvcWebApp2.GelieerdePersonenServiceReference;
+using Cg2.ServiceContracts.FaultContracts;
 
 namespace MvcWebApp2.Controllers
 {
@@ -19,13 +19,9 @@ namespace MvcWebApp2.Controllers
         // GET: /Personen/
         public ActionResult Index()
         {
-            IList<GelieerdePersoon> personen;
+            int aantal;
+            IList<GelieerdePersoon> personen = ServiceCalls.GelieerdePersonen.PaginaOphalenMetLidInfo(out aantal, int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12);
 
-            using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
-            {
-                int aantal;
-                personen = service.PaginaOphalenMetLidInfo(out aantal, int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12);
-            }
             return View("Index", personen);
         }
 
@@ -33,11 +29,8 @@ namespace MvcWebApp2.Controllers
         // GET: /Personen/Details/5
         public ActionResult Details(int id)
         {
-            using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
-            {
-                GelieerdePersoon p = service.PersoonOphalenMetDetails(id);
-                return View("Details", p);
-            }
+            GelieerdePersoon p = ServiceCalls.GelieerdePersonen.PersoonOphalenMetDetails(id);
+            return View("Details", p);
         }
 
         //
@@ -68,11 +61,8 @@ namespace MvcWebApp2.Controllers
         // GET: /Personen/Edit/5
         public ActionResult Edit(int id)
         {
-            using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
-            {
-                GelieerdePersoon p = service.PersoonOphalenMetDetails(id);
-                return View("Edit", p);
-            }
+            GelieerdePersoon p = ServiceCalls.GelieerdePersonen.PersoonOphalenMetDetails(id);
+            return View("Edit", p);
         }
 
         //
@@ -82,10 +72,7 @@ namespace MvcWebApp2.Controllers
         {
             try
             {
-                using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
-                {
-                    service.PersoonBewaren(p);
-                }
+                ServiceCalls.GelieerdePersonen.PersoonBewaren(p);
  
                 // Voorlopig opnieuw redirecten naar Edit;
                 // er zou wel gemeld moeten worden dat het wijzigen
@@ -106,15 +93,7 @@ namespace MvcWebApp2.Controllers
         // GET: /Personen/LidMaken/id
         public ActionResult LidMaken(int id)
         {
-            using (LedenServiceReference.LedenServiceClient service = new MvcWebApp2.LedenServiceReference.LedenServiceClient())
-            {
-                // Beter zou zijn:
-                //  via de service de definitie van een lid ophalen
-                //  een view tonen met die lidgegevens, zodat ze aangepast kunnen worden
-                //  pas als de gebruiker dan bevestigt: bewaren
-
-                service.LidMakenEnBewaren(id);
-            }
+            ServiceCalls.Leden.LidMakenEnBewaren(id);
 
             return RedirectToAction("Index");
         }
@@ -133,16 +112,13 @@ namespace MvcWebApp2.Controllers
         {
             try
             {
-                using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new MvcWebApp2.GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
-                {
-                    // De service zal het meegeleverder model.Adres.ID negeren, en 
-                    // opnieuw opzoeken.
-                    //
-                    // Adressen worden nooit gewijzigd, enkel bijgemaakt.  (en eventueel
-                    // verwijderd.)
+                // De service zal het meegeleverder model.Adres.ID negeren, en 
+                // opnieuw opzoeken.
+                //
+                // Adressen worden nooit gewijzigd, enkel bijgemaakt.  (en eventueel
+                // verwijderd.)
 
-                    service.Verhuizen(model.GelieerdePersoonIDs, model.NaarAdres, model.VanAdresID);
-                }
+                ServiceCalls.GelieerdePersonen.Verhuizen(model.GelieerdePersoonIDs, model.NaarAdres, model.VanAdresID);
 
                 // FIXME: Dit is uiteraard niet de goede manier om de persoon te bepalen
                 // die bekeken moet worden.  Bovendien is het niet zeker of de gebruiker

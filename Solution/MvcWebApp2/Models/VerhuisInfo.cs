@@ -52,11 +52,7 @@ namespace MvcWebApp2.Models
         public VerhuisInfo(int adresID)
         {
             VanAdresID = adresID;
-
-            using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new MvcWebApp2.GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
-            {
-                NaarAdres = service.AdresMetBewonersOphalen(adresID);
-            }
+            NaarAdres = ServiceCalls.GelieerdePersonen.AdresMetBewonersOphalen(adresID);
 
             // Standaard verhuist iedereen mee.
             GelieerdePersoonIDs = (
@@ -70,11 +66,7 @@ namespace MvcWebApp2.Models
         /// </summary>
         public void HerstelBewoners()
         {
-            Adres vanAdres;
-            using (GelieerdePersonenServiceReference.GelieerdePersonenServiceClient service = new MvcWebApp2.GelieerdePersonenServiceReference.GelieerdePersonenServiceClient())
-            {
-                vanAdres = service.AdresMetBewonersOphalen(VanAdresID);
-            }
+            Adres vanAdres = ServiceCalls.GelieerdePersonen.AdresMetBewonersOphalen(VanAdresID);
             
             IList<PersoonsAdres> verhuizers = (from PersoonsAdres pa in vanAdres.PersoonsAdres
                                               select pa).ToList();

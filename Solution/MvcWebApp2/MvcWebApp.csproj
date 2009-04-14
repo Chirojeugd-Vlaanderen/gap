@@ -83,35 +83,12 @@
     </Compile>
     <Compile Include="Models\VerhuisInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\GelieerdePersonenServiceReference\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\LedenServiceReference\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
+    <Compile Include="ServiceCalls\GelieerdePersonen.cs" />
+    <Compile Include="ServiceCalls\Leden.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
-    <None Include="Service References\GelieerdePersonenServiceReference\configuration91.svcinfo" />
-    <None Include="Service References\GelieerdePersonenServiceReference\configuration.svcinfo" />
-    <None Include="Service References\GelieerdePersonenServiceReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\LedenServiceReference\LedenService.disco" />
-    <None Include="Service References\LedenServiceReference\configuration91.svcinfo" />
-    <None Include="Service References\LedenServiceReference\configuration.svcinfo" />
-    <None Include="Service References\LedenServiceReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService1.disco" />
-    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService.disco" />
     <Content Include="Views\Leden\Index.aspx" />
     <Content Include="Views\Personen\Details.aspx" />
     <Content Include="Views\Personen\Edit.aspx" />
@@ -137,42 +114,19 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Properties\DataSources\Cg2.Orm.Adres.datasource" />
     <None Include="Properties\DataSources\Cg2.Orm.GelieerdePersoon.datasource" />
     <None Include="Properties\DataSources\Cg2.Orm.Lid.datasource" />
-    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService.wsdl" />
-    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService.xsd" />
-    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService1.wsdl" />
-    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService1.xsd" />
-    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService2.xsd" />
-    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService3.xsd" />
-    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService4.xsd" />
-    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService5.xsd" />
-    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService51.xsd" />
-    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService52.xsd" />
-    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService53.xsd" />
-    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService54.xsd" />
-    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService55.xsd" />
-    <None Include="Service References\GelieerdePersonenServiceReference\GelieerdePersonenService56.xsd" />
-    <None Include="Service References\LedenServiceReference\LedenService.wsdl" />
-    <None Include="Service References\LedenServiceReference\LedenService.xsd" />
-    <None Include="Service References\LedenServiceReference\LedenService1.xsd" />
-    <None Include="Service References\LedenServiceReference\LedenService2.xsd" />
-    <None Include="Service References\LedenServiceReference\LedenService3.xsd" />
-    <None Include="Service References\LedenServiceReference\LedenService4.xsd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cg2.Orm\Cg2.Orm.csproj">
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
       <Name>Cg2.Orm</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\GelieerdePersonenServiceReference\" />
-    <WCFMetadataStorage Include="Service References\LedenServiceReference\" />
+    <ProjectReference Include="..\Cg2.ServiceInterfaces\Cg2.ServiceContracts.csproj">
+      <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
+      <Name>Cg2.ServiceContracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

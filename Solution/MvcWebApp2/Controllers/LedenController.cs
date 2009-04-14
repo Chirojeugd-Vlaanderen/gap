@@ -16,12 +16,9 @@ namespace MvcWebApp2.Controllers
 
         public ActionResult Index()
         {
-            IList<Lid> leden;
-            using (LedenServiceReference.LedenServiceClient service = new MvcWebApp2.LedenServiceReference.LedenServiceClient())
-            {
-                int aantal;
-                leden = service.PaginaOphalen(out aantal, int.Parse(ConfigurationSettings.AppSettings["TestGroepsWerkJaarID"]), 1, 12);
-            }
+            int aantal;
+            IList<Lid> leden = ServiceCalls.Leden.PaginaOphalen(out aantal, int.Parse(ConfigurationSettings.AppSettings["TestGroepsWerkJaarID"]), 1, 12);
+
             return View("Index", leden);
         }
 
