@@ -115,6 +115,9 @@ namespace Cg2.Services
             // Zoek adres op in database, of maak een nieuw.
             // (als straat en gemeente gekend)
 
+            // efkes zonder try, om te kunnen blijven hangen op exceptions
+            nieuwAdres = adm.ZoekenOfMaken(nieuwAdres);
+
             try
             {
                 nieuwAdres = adm.ZoekenOfMaken(nieuwAdres);

@@ -47,15 +47,6 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                // Als adr geen EntityKey-property heeft, dan krijg je in sommige
-                // gevallen een exception bij AttachObjectGraph.
-                //
-                // Als een adres door de controller na een form post aan het 
-                // model gebind wordt, heb je geen entity key.  Vandaar dat ik
-                // er hier sowieso eentje creeer.
-
-                adr.EntityKey = db.CreateEntityKey(typeof(Adres).Name, adr);
-
                 db.AttachObjectGraph(adr, dink=>dink.Straat.WithoutUpdate(), dink=>dink.Subgemeente.WithoutUpdate(), dink => dink.PersoonsAdres.First());
                 db.SaveChanges();
             }
