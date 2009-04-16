@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Cg2.Orm
 {
     /// <summary>
-    /// stelt voor welke extra info er in een gelieerd persoon object opgeslagen is dat terug wordt gegeven.
+    /// stelt voor welke extra info er in met een GelieerdePersoon opgevraagd kan worden
     /// ADRESSEN: alle adressen van de persoon die zichtbaar zijn, zijn toegevoegd
     /// COMMUNICATIEVORMEN: alle communicatievormen
     /// LIDINFO: alle lidinfo van het huidige werkjaar en de huidige groep
@@ -26,11 +26,15 @@ namespace Cg2.Orm
 
     public partial class GelieerdePersoon : IBasisEntiteit 
     {
-        private IList<PersoonsInfo> _meeGeleverd;
+        // We gaan de lijst met PersoonsInfo niet opnemen in de
+        // klasse.  De programmeur moet te allen tijde maar weten
+        // welke informatie hij wel/niet opgevraagd heeft.
+
+        // private IList<PersoonsInfo> _meeGeleverd;
 
         public GelieerdePersoon(): base()
         {
-            _meeGeleverd = null;
+            // _meeGeleverd = null;
         }
 
         public string VersieString

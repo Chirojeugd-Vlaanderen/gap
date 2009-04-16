@@ -16,7 +16,7 @@ namespace Cg2.ServiceContracts.FaultContracts
     }
 
     [DataContract]
-    public class CgFaultException
+    public class VerhuisFault
     {
         [DataMember]
         public FoutCode Code;

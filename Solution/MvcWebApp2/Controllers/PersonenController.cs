@@ -106,7 +106,7 @@ namespace MvcWebApp2.Controllers
             return View("AdresBewerken", model);
         }
 
-        // POST: /Personen/Verhuizen/adresID
+        // POST: /Personen/Verhuizen
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Verhuizen(VerhuisInfo model)
         {
@@ -120,15 +120,20 @@ namespace MvcWebApp2.Controllers
 
                 ServiceCalls.GelieerdePersonen.Verhuizen(model.GelieerdePersoonIDs, model.NaarAdres, model.VanAdresID);
 
-                // FIXME: Dit is uiteraard niet de goede manier om de persoon te bepalen
-                // die bekeken moet worden.  Bovendien is het niet zeker of de gebruiker
-                // wel een persoon heeft aangevinkt.  Voorlopig ga ik er echter van uit
-                // dat dat wel het geval is.
+                // FIXME: Dit (onderstaand) is uiteraard niet de goede manier om 
+                // de persoon te bepalen die getoond moet worden.  
+                // Bovendien is het niet zeker of de gebruiker
+                // wel een persoon heeft aangevinkt.  Maar voorlopig trek ik me
+                // er nog niks van aan
 
                 Debug.Assert(model.GelieerdePersoonIDs.Count > 0);
+
+                // Toon een persoon die woont op het nieuwe adres.
+                // (wat hier moet gebeuren hangt voornamelijk af van de use case)
+
                 return RedirectToAction("Edit", new { id = model.GelieerdePersoonIDs[0] });
             }
-            catch (FaultException<CgFaultException> ex)
+            catch (FaultException<VerhuisFault> ex)
             {
                 switch (ex.Detail.Code)
                 {

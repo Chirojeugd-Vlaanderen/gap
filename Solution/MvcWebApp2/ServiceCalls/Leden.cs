@@ -10,7 +10,7 @@ namespace MvcWebApp2.ServiceCalls
 {
     public static class Leden
     {
-        private const string _endpointConfig = "WSHttpBinding_ILedenService";
+        private const string _endpointConfig = "LedenServiceEndPoint";
 
         /// <summary>
         /// Haalt persoonsinfo van leden van een bepaalde groep op

@@ -6,8 +6,8 @@ using System.Configuration;
 
 namespace Cg2.Services
 {
-    public static class Settings
+    internal static class SecurityGroepen
     {
-        public const string GebruikersGroep = @"KIPDORP\g-developers-chirogroep";
+        public const string Gebruikers = @"KIPDORP\g-developers-chirogroep";
     }
 }

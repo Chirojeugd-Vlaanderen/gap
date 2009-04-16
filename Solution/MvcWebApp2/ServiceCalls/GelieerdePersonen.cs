@@ -10,7 +10,7 @@ namespace MvcWebApp2.ServiceCalls
 {
     public static class GelieerdePersonen
     {
-        private const string _endpointConfig = "WSHttpBinding_IGelieerdePersonenService";
+        private const string _endpointConfig = "GelieerdePersonenServiceEndPoint";
 
         /// <summary>
         /// Haalt adres met bewonersinfo op van de service

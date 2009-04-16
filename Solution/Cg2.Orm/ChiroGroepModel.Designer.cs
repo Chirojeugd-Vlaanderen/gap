@@ -23,7 +23,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GebruikersRecht_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "GebruikersRecht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GebruikersRecht))]
 
 // Original file name:
-// Generation date: 1/04/2009 13:35:20
+// Generation date: 15/04/2009 23:12:32
 namespace Cg2.Orm
 {
     

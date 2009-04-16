@@ -16,7 +16,7 @@ namespace Cg2.Services
     // NOTE: If you change the class name "GelieerdePersonenService" here, you must also update the reference to "GelieerdePersonenService" in Web.config.
     public class GelieerdePersonenService : IGelieerdePersonenService
     {
-        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<GelieerdePersoon> AllenOphalen(int groepID)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
@@ -25,7 +25,7 @@ namespace Cg2.Services
             return result;
         }
 
-        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<GelieerdePersoon>  PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
@@ -35,7 +35,7 @@ namespace Cg2.Services
             return result;
         }
 
-        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
@@ -53,21 +53,21 @@ namespace Cg2.Services
             }
         }
 
-        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void PersoonBewaren(GelieerdePersoon persoon)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
             pm.Bewaren(persoon);
         }
 
-        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<GelieerdePersoon> zoekPersonen(string naamgedeelte, int pagina, int paginagrootte)
         {
             throw new NotImplementedException();
         }
         //... andere zoekmogelijkheden
 
-        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
@@ -85,24 +85,27 @@ namespace Cg2.Services
             }
         }
 
-        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID, PersoonsInfo gevraagd)
         {
             throw new NotImplementedException();
         }
 
-        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public Adres AdresMetBewonersOphalen(int adresID)
         {
             AdressenManager adm = new AdressenManager();
             AuthorisatieManager aum = new AuthorisatieManager();
+
+
+            // TODO: combineer onderstaande calls
 
             IList<int> groepenLijst = aum.GekoppeldeGroepenGet(ServiceSecurityContext.Current.WindowsIdentity.Name);
 
             return adm.AdresMetBewonersOphalen(adresID, groepenLijst);
         }
 
-        [PrincipalPermission(SecurityAction.Demand, Role = Settings.GebruikersGroep)]
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void Verhuizen(IList<int> gelieerdePersonen, Adres nieuwAdres, int oudAdresID)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
@@ -118,17 +121,15 @@ namespace Cg2.Services
             }
             catch (StraatNietGevondenException ex)
             {
-                CgFaultException fout = new CgFaultException();
-                fout.Code = FoutCode.OnbekendeStraat;
-                fout.Boodschap = ex.Message;
-                throw new FaultException<CgFaultException>(fout);
+                VerhuisFault fout = new VerhuisFault  {Code = FoutCode.OnbekendeStraat,  Boodschap = ex.Message};
+                throw new FaultException<VerhuisFault>(fout);
             }
             catch (GemeenteNietGevondenException ex)
             {
-                CgFaultException fout = new CgFaultException();
+                VerhuisFault fout = new VerhuisFault();
                 fout.Code = FoutCode.OnbekendeGemeente;
                 fout.Boodschap = ex.Message;
-                throw new FaultException<CgFaultException>(fout);
+                throw new FaultException<VerhuisFault>(fout);
             }
             catch (Exception)
             {
