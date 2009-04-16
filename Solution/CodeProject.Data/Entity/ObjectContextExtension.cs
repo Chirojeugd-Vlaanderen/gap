@@ -1,8 +1,3 @@
-// Code gevonden op http://www.codeproject.com/KB/architecture/attachobjectgraph.aspx
-// en aangepast voor gebruik met IBasisEntiteit
-// (waar ID == 0 <=> nieuwe entiteit)
-
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +13,6 @@ using System.Runtime.Serialization;
 using Arebis.Reflection;
 using System.Text;
 using System.Runtime.Serialization.Formatters.Binary;
-using Cg2.Orm;
 
 namespace CodeProject.Data.Entity
 {
@@ -30,7 +24,7 @@ namespace CodeProject.Data.Entity
 		/// <summary>
 		/// Attaches an entire objectgraph to the context.
 		/// </summary>
-		public static T AttachObjectGraph<T>(this ObjectContext context, T entity, params Expression<Func<T, object>>[] paths) where T: IBasisEntiteit
+		public static T AttachObjectGraph<T>(this ObjectContext context, T entity, params Expression<Func<T, object>>[] paths)
 		{
 			return AttachObjectGraphs(context, new T[] { entity }, paths)[0];
 		}
@@ -38,7 +32,7 @@ namespace CodeProject.Data.Entity
 		/// <summary>
 		/// Attaches multiple entire objectgraphs to the context.
 		/// </summary>
-		public static T[] AttachObjectGraphs<T>(this ObjectContext context, IEnumerable<T> entities, params Expression<Func<T, object>>[] paths) where T:IBasisEntiteit
+		public static T[] AttachObjectGraphs<T>(this ObjectContext context, IEnumerable<T> entities, params Expression<Func<T, object>>[] paths)
 		{
 			T[] unattachedEntities = entities.ToArray();
 			T[] attachedEntities = new T[unattachedEntities.Length];
@@ -60,42 +54,22 @@ namespace CodeProject.Data.Entity
 				foreach(T entity in unattachedEntities)
 				{
 					// If the entity has an entitykey:
-
-                    if (entity.ID != 0)
-                    {
-                        // Het zou kunnen dat de EntityKey verdwenen is, dus
-                        // voor alle zekerheid genereren we hem terug.
-                        //
-                        // (Entity key verdwijnt typisch als webformgegevens
-                        // aan een entity gebind worden.)
-
-                        entity.EntityKey = context.CreateEntityKey(typeof(T).Name, entity);
-
-                        where.Append(" OR ((1=1)");
-
-                        // Voor onze IBasisEntiteit bevat de EntityKey enkel 
-                        // ID als component, wat deze for-loop eigenlijk
-                        // overbodig maakt.
-
-                        foreach (EntityKeyMember keymember in entity.EntityKey.EntityKeyValues)
-                        {
-                            string pname = String.Format("p{0}", pid++);
-                            where.Append(" AND (it.[");
-                            where.Append(keymember.Key);
-                            where.Append("] = @");
-                            where.Append(pname);
-                            where.Append(")");
-                            pars.Add(new ObjectParameter(pname, keymember.Value));
-                        }
-                        where.Append(")");
-                    }
-                    else
-                    {
-                        // De rest van de code gaat ervan uit dat
-                        // de entity nieuw is ASA de key null is.
-
-                        entity.EntityKey = null;
-                    }
+					EntityKey entityKey = ((IEntityWithKey)entity).EntityKey;
+					if (entityKey != null)
+					{
+						where.Append(" OR ((1=1)");
+						foreach (EntityKeyMember keymember in entityKey.EntityKeyValues)
+						{
+							string pname = String.Format("p{0}", pid++);
+							where.Append(" AND (it.[");
+							where.Append(keymember.Key);
+							where.Append("] = @");
+							where.Append(pname);
+							where.Append(")");
+							pars.Add(new ObjectParameter(pname, keymember.Value));
+						}
+						where.Append(")");
+					}
 				}
 
 				// If WHERE clause not empty, construct and execute query:
