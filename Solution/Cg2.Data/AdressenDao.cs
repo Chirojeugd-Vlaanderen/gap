@@ -32,8 +32,12 @@ namespace Cg2.Data.Ef
         /// </summary>
         /// <param name="nieuweEntiteit">Te bewaren adres</param>
         /// <returns>referentie naar het bewaarde adres</returns>
+        /// <opmerking>ID en Versie worden aangepast in Adres, eventuele
+        /// gewijzigde velden in gerelateerde entity's niet!</opmerking>
         public override Adres Bewaren(Adres adr)
         {
+            Adres bewaardAdres;
+
             // Deze assertions moeten eigenlijk afgedwongen worden
             // door de businesslaag.  En eigenlijk moet deze method ook
             // werken zonder die asserties (en dan de juiste dingen
@@ -47,8 +51,20 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                db.AttachObjectGraph(adr, dink=>dink.Straat.WithoutUpdate(), dink=>dink.Subgemeente.WithoutUpdate(), dink => dink.PersoonsAdres.First());
+                bewaardAdres = db.AttachObjectGraph(adr, dink=>dink.Straat.WithoutUpdate(), dink=>dink.Subgemeente.WithoutUpdate(), dink => dink.PersoonsAdres.First());
+
+                // bewaardAdres is het geattachte adres.  Hiervan neem
+                // ik ID en versie over; de rest laat ik ongemoeid.
+                //
+                // (waardoor rowversies van gekoppelde entity's niet
+                // meer zullen kloppen :(.  Maar ik kan bewaardadres
+                // ook niet detachen zonder de navigation property's
+                // te verliezen :(.)
+
                 db.SaveChanges();
+
+                adr.ID = bewaardAdres.ID;
+                adr.Versie = bewaardAdres.Versie;
             }
             return adr;
         }
