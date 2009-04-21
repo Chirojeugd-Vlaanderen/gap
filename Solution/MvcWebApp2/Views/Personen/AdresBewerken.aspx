@@ -26,7 +26,7 @@
                // CheckBoxListInfo kwakken
            
                List<CheckBoxListInfo> info
-                   = (from PersoonsAdres pa in Model.NaarAdres.PersoonsAdres
+                   = (from PersoonsAdres pa in Model.VanAdresMetBewoners.PersoonsAdres
                       select new CheckBoxListInfo(
                          pa.GelieerdePersoon.ID.ToString()
                          , Html.ActionLink(Html.Encode(pa.GelieerdePersoon.Persoon.VolledigeNaam), "Edit", new { Controller = "Personen", id = pa.GelieerdePersoon.ID })
@@ -55,7 +55,7 @@
            <label for="NaarAdres_Subgemeente_Naam">Gemeente</label>
            <%=Html.TextBox("NaarAdres.Subgemeente.Naam") %> <%= Html.ValidationMessage("NaarAdres.Subgemeente.Naam") %> <br />
            
-           <%=Html.Hidden("VanAdresID") %>
+           <%=Html.Hidden("VanAdresMetBewoners.ID") %>
            
            </fieldset>
            

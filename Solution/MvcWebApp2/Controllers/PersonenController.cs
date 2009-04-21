@@ -112,13 +112,13 @@ namespace MvcWebApp2.Controllers
         {
             try
             {
-                // De service zal het meegeleverder model.Adres.ID negeren, en 
+                // De service zal het meegeleverder model.NaarAdres.ID negeren, en 
                 // opnieuw opzoeken.
                 //
                 // Adressen worden nooit gewijzigd, enkel bijgemaakt.  (en eventueel
                 // verwijderd.)
 
-                ServiceCalls.GelieerdePersonen.Verhuizen(model.GelieerdePersoonIDs, model.NaarAdres, model.VanAdresID);
+                ServiceCalls.GelieerdePersonen.Verhuizen(model.GelieerdePersoonIDs, model.NaarAdres, model.VanAdresMetBewoners.ID);
 
                 // FIXME: Dit (onderstaand) is uiteraard niet de goede manier om 
                 // de persoon te bepalen die getoond moet worden.  
@@ -141,6 +141,7 @@ namespace MvcWebApp2.Controllers
                         ViewData.ModelState.AddModelError("NaarAdres.Straat.Naam", ex.Detail.Boodschap);
                         break;
                     case FoutCode.OnbekendeGemeente:
+                        this.ModelState.AddModelError("NaarAdres.Straat.Naam", "oeps");
                         ViewData.ModelState.AddModelError("NaarAdres.SubGemeente.Naam", ex.Detail.Boodschap);
                         break;
                     default:
@@ -154,7 +155,7 @@ namespace MvcWebApp2.Controllers
                 // Maar ik toon de bewoners wel, dus moeten die hier opnieuw
                 // uit de database gehaald worden:
 
-                model.HerstelBewoners();
+                model.HerstelVanAdres();
 
                 return View("AdresBewerken", model);
             }

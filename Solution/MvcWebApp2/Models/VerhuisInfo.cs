@@ -14,18 +14,14 @@ namespace MvcWebApp2.Models
     public class VerhuisInfo
     {
         /// <summary>
-        /// VanAdresID bevat het AdresID van het oorspronkelijke
-        /// adres.
+        /// VanAdresMetBewoners bevat het adres waarvan verhuisd wordt,
+        /// met daaraan gekoppeld alle bewoners die de aangelogde gebruiker
+        /// mag zien.
         /// </summary>
-        public int VanAdresID { get; set; }
+        public Adres VanAdresMetBewoners { get; set; }
 
         /// <summary>
         /// NaarAdres bevat adresgegevens van het nieuwe adres.
-        /// Aan NaarAdres zijn de bewoners van het VanAdres gekoppeld
-        /// die de gebruiker mag zien.
-        /// 
-        /// (Het AdresID van NaarAdres is van geen belang, want dat
-        /// kennen we niet aan de UI-kant)
         /// </summary>
         public Adres NaarAdres { get; set; }
 
@@ -48,34 +44,32 @@ namespace MvcWebApp2.Models
         /// Creeert verhuisinfo voor alle (zichtbare) bewoners van het
         /// adres met gegeven ID
         /// </summary>
-        /// <param name="adresID">adresID waarvan sprake</param>
-        public VerhuisInfo(int adresID)
+        /// <param name="vanAdresID">relevante vanAdresID</param>
+        public VerhuisInfo(int vanAdresID)
         {
-            VanAdresID = adresID;
-            NaarAdres = ServiceCalls.GelieerdePersonen.AdresMetBewonersOphalen(adresID);
+            VanAdresMetBewoners = ServiceCalls.GelieerdePersonen.AdresMetBewonersOphalen(vanAdresID);
+
+            // Bij de constructie van verhuisinfo zijn vanadres naaradres
+            // dezelfde.  Van zodra er een postback gebeurt van het form,
+            // wordt NaarAdres gebind met de gegevens uit het form; op dat
+            // moment wordt een nieuwe instantie van het naaradres
+            // gemaakt.
+
+            NaarAdres = VanAdresMetBewoners;
 
             // Standaard verhuist iedereen mee.
             GelieerdePersoonIDs = (
-                from PersoonsAdres pa in NaarAdres.PersoonsAdres
+                from PersoonsAdres pa in VanAdresMetBewoners.PersoonsAdres
                 select pa.GelieerdePersoon.ID).ToList<int>();
         }
 
         /// <summary>
-        /// Haalt de bewoners van het VanAdres opnieuw op, en
-        /// plakt die aan het NaarAdres
+        /// Haalt de gegevens van het vanadres opnieuw op, op basis van
+        /// VanAdresMetBewoners.ID.
         /// </summary>
-        public void HerstelBewoners()
+        public void HerstelVanAdres()
         {
-            Adres vanAdres = ServiceCalls.GelieerdePersonen.AdresMetBewonersOphalen(VanAdresID);
-            
-            IList<PersoonsAdres> verhuizers = (from PersoonsAdres pa in vanAdres.PersoonsAdres
-                                              select pa).ToList();
-
-            foreach (PersoonsAdres v in verhuizers)
-            {
-                vanAdres.PersoonsAdres.Remove(v);
-                NaarAdres.PersoonsAdres.Add(v);
-            }
+            VanAdresMetBewoners = ServiceCalls.GelieerdePersonen.AdresMetBewonersOphalen(VanAdresMetBewoners.ID);          
         }
     }
 }
