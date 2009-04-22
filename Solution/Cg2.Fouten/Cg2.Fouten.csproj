@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{EE0DDF1D-CCDB-40BD-8309-5DAB06247BE2}</ProjectGuid>
+    <ProjectGuid>{D82C1286-8BC6-422C-8688-E178377D3EB6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Capgemini.Adf.ServiceModel.Tests</RootNamespace>
-    <AssemblyName>Capgemini.Adf.ServiceModel.Tests</AssemblyName>
+    <RootNamespace>Cg2.Fouten</RootNamespace>
+    <AssemblyName>Cg2.Fouten</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,18 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.2.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Runtime.Serialization">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.ServiceModel">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml.Linq">
@@ -55,15 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CallContextBehaviorTests.cs" />
+    <Compile Include="Exceptions\GeenGavException.cs" />
+    <Compile Include="Exceptions\VerhuisException.cs" />
+    <Compile Include="FaultContracts\BusinessFault.cs" />
+    <Compile Include="FaultContracts\FoutBericht.cs" />
+    <Compile Include="FaultContracts\VerhuisFault.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShieldExceptionsAttributeTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Capgemini.Adf.ServiceModel\Capgemini.Adf.ServiceModel.csproj">
-      <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
-      <Name>Capgemini.Adf.ServiceModel</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

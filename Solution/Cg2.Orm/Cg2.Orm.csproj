@@ -67,9 +67,6 @@
     <Compile Include="DataInterfaces\ILedenDao.cs" />
     <Compile Include="DataInterfaces\IStratenDao.cs" />
     <Compile Include="DataInterfaces\ISubgemeenteDao.cs" />
-    <Compile Include="Exceptions\GeenGavException.cs" />
-    <Compile Include="Exceptions\GemeenteNietGevondenException.cs" />
-    <Compile Include="Exceptions\StraatNietGevondenException.cs" />
     <Compile Include="GebruikersRecht.cs" />
     <Compile Include="GelieerdePersoon.cs" />
     <Compile Include="Groep.cs" />

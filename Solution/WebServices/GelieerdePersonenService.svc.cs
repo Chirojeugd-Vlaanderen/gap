@@ -7,9 +7,9 @@ using System.Text;
 using Cg2.ServiceContracts;
 using Cg2.Workers;
 using Cg2.Orm;
-using Cg2.Orm.Exceptions;
+using Cg2.Fouten.Exceptions;
 using System.Security.Permissions;
-using Cg2.ServiceContracts.FaultContracts;
+using Cg2.Fouten.FaultContracts;
 
 namespace Cg2.Services
 {
@@ -119,20 +119,13 @@ namespace Cg2.Services
             {
                 nieuwAdres = adm.ZoekenOfMaken(nieuwAdres);
             }
-            catch (StraatNietGevondenException ex)
+            catch (VerhuisException ex)
             {
-                VerhuisFault fout = new VerhuisFault  {Code = FoutCode.OnbekendeStraat,  Boodschap = ex.Message};
-                throw new FaultException<VerhuisFault>(fout);
-            }
-            catch (GemeenteNietGevondenException ex)
-            {
-                VerhuisFault fout = new VerhuisFault();
-                fout.Code = FoutCode.OnbekendeGemeente;
-                fout.Boodschap = ex.Message;
-                throw new FaultException<VerhuisFault>(fout);
+                throw new FaultException<VerhuisFault>(ex.Fault);
             }
             catch (Exception)
             {
+                // onverwachte exception gewoon opnieuw throwen.
                 throw;
             }
 

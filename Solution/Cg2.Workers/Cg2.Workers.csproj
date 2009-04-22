@@ -61,6 +61,10 @@
       <Project>{F9197C38-63BC-4D2F-9F0A-8326C698B536}</Project>
       <Name>Cg2.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Cg2.Fouten\Cg2.Fouten.csproj">
+      <Project>{D82C1286-8BC6-422C-8688-E178377D3EB6}</Project>
+      <Name>Cg2.Fouten</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cg2.Orm\Cg2.Orm.csproj">
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
       <Name>Cg2.Orm</Name>

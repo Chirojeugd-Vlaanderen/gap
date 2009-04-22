@@ -4,11 +4,13 @@ using System.Linq;
 using System.Web;
 using System.Runtime.Serialization;
 
-namespace Cg2.ServiceContracts.FaultContracts
+namespace Cg2.Fouten.FaultContracts
 {
     [DataContract]
-    public enum FoutCode
+    public enum VerhuisFoutCode
     {
+        [EnumMember]
+        AlgemeneFout = 0,   // standaardwaarde
         [EnumMember]
         OnbekendeStraat,
         [EnumMember]
@@ -16,11 +18,5 @@ namespace Cg2.ServiceContracts.FaultContracts
     }
 
     [DataContract]
-    public class VerhuisFault
-    {
-        [DataMember]
-        public FoutCode Code;
-        [DataMember]
-        public string Boodschap;
-    }
+    public class VerhuisFault : BusinessFault<VerhuisFoutCode> { }
 }

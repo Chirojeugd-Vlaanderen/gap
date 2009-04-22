@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using Cg2.Orm;
-using Cg2.ServiceContracts.FaultContracts;
+using Cg2.Fouten.FaultContracts;
 
 namespace Cg2.ServiceContracts
 {

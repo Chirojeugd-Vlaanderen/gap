@@ -6,7 +6,8 @@ using Cg2.Orm.DataInterfaces;
 using Cg2.Data.Ef;
 using Cg2.Orm;
 using System.Diagnostics;
-using Cg2.Orm.Exceptions;
+using Cg2.Fouten.Exceptions;
+using Cg2.Fouten.FaultContracts;
 
 namespace Cg2.Workers
 {
@@ -68,12 +69,18 @@ namespace Cg2.Workers
         /// Als er zo geen adres bestaat, wordt het aangemaakt, op
         /// voorwaarde dat de straat en subgemeente geidentificeerd
         /// kunnen worden.  Als ook dat laatste niet het geval is,
-        /// krijg je een foutmelding.
+        /// wordt een exception gethrowd.
         /// </summary>
         /// <param name="adr">Adresobject met zoekinfo</param>
         /// <returns>Gevonden adres</returns>
         public Adres ZoekenOfMaken(Adres adr)
         {
+            VerhuisFault vf = new VerhuisFault();
+
+            // Al maar preventief een VerhuisFault aanmaken.  Als daar uiteindelijk
+            // geen foutberichten inzitten, dan is er geen probleem.  Anders
+            // creer ik een exception met de verhuisfault daarin.
+
             Adres adresInDb;
 
             Debug.Assert(adr.Straat.Naam != String.Empty);
@@ -92,22 +99,43 @@ namespace Cg2.Workers
                 Subgemeente sg;
 
                 s = _stratenDao.Ophalen(adr.Straat.Naam, adr.Straat.PostNr);
-                if (s == null)
+                if (s != null)
                 {
-                    throw new StraatNietGevondenException(String.Format("Straat {0} met postnummer {1} niet gevonden.", adr.Straat.Naam, adr.Straat.PostNr));
-                }
+                    // Straat gevonden: aan adres koppelen
 
-                adr.Straat = s;
-                s.Adres.Add(adr);
+                    adr.Straat = s;
+                    s.Adres.Add(adr);
+                }
+                else
+                {
+                    // Straat niet gevonden: foutbericht toevoegen
+
+                    vf.BerichtToevoegen(VerhuisFoutCode.OnbekendeStraat, "Straat.Naam"
+                        , String.Format("Straat {0} met postnummer {1} niet gevonden."
+                        , adr.Straat.Naam, adr.Straat.PostNr));
+                }
 
                 sg = _subgemeenteDao.Ophalen(adr.Subgemeente.Naam, adr.Straat.PostNr);
-                if (sg == null)
+                if (sg != null)
                 {
-                    throw new GemeenteNietGevondenException(String.Format("Deelgemeente {0} met postnummer {1} niet gevonden.", adr.Subgemeente.Naam, adr.Straat.PostNr));
+                    // Gemeente gevonden: aan adres koppelen
+
+                    adr.Subgemeente = sg;
+                    sg.Adres.Add(adr);
+                }
+                else
+                {
+                    // Gemeente niet gevonden: foutbericht toevoegen
+
+                    vf.BerichtToevoegen(VerhuisFoutCode.OnbekendeGemeente, "SubGemeente.Naam"
+                        , String.Format("Deelgemeente {0} met postnummer {1} niet gevonden."
+                        , adr.Subgemeente.Naam, adr.Straat.PostNr));
                 }
 
-                adr.Subgemeente = sg;
-                sg.Adres.Add(adr);
+                if (vf.Berichten.Count != 0)
+                {
+                    throw new VerhuisException(vf);
+                }
 
                 adr = _dao.Bewaren(adr);
                 // bewaren brengt Versie en ID automatisch in orde.

@@ -9,9 +9,10 @@ using Cg2.Orm;
 using MvcWebApp2.Models;
 using System.Diagnostics;
 using System.ServiceModel;
-using Cg2.ServiceContracts.FaultContracts;
+using Cg2.Fouten.FaultContracts;
 using Capgemini.Adf.ServiceModel;
 using Cg2.ServiceContracts;
+using Cg2.Validatie;
 
 namespace MvcWebApp2.Controllers
 {
@@ -137,19 +138,9 @@ namespace MvcWebApp2.Controllers
             }
             catch (FaultException<VerhuisFault> ex)
             {
-                switch (ex.Detail.Code)
-                {
-                    case FoutCode.OnbekendeStraat:
-                        ViewData.ModelState.AddModelError("NaarAdres.Straat.Naam", ex.Detail.Boodschap);
-                        break;
-                    case FoutCode.OnbekendeGemeente:
-                        this.ModelState.AddModelError("NaarAdres.Straat.Naam", "oeps");
-                        ViewData.ModelState.AddModelError("NaarAdres.SubGemeente.Naam", ex.Detail.Boodschap);
-                        break;
-                    default:
-                        throw;  // onverwachte exceptie gewoon verder throwen
-                }
-
+                ModelStateWrapper msw = new ModelStateWrapper(ViewData.ModelState);
+                msw.BerichtenToevoegen(ex.Detail, "NaarAdres.");
+                
                 // Als ik de bewoners van het 'Van-adres' niet had getoond in
                 // de view, dan had ik de view meteen kunnen aanroepen met het
                 // model dat terug 'gebind' is.
