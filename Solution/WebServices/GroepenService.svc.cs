@@ -41,7 +41,7 @@ namespace Cg2.Services
 
         public string Hallo()
         {
-            return "Hallo GroepenService.";
+            return "Hallo";
         }
 
         #endregion

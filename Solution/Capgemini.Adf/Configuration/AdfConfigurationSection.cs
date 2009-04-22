@@ -3,11 +3,11 @@
 namespace Capgemini.Adf.Configuration
 {
 	/// <summary>
-	/// Represents the Capgemini.Adf confgiuration section named 'capgemini.Adf'.
+	/// Represents the confgiuration section named 'chiroGroep'.
 	/// </summary>
 	public class AdfConfigurationSection : ConfigurationSection
 	{
-		internal const string DefaultAdfConfigurationSectionName = "capgemini.Adf";
+		internal const string DefaultAdfConfigurationSectionName = "chiroGroep";
 		internal const string ServiceProvidersElementName = "serviceProviders";
         
 		/// <summary>

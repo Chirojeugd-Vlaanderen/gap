@@ -41,6 +41,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Capgemini.Adf.ServiceModel"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Capgemini.Adf.ServiceProviders.Unity", "Capgemini.Adf.ServiceProviders.Unity\Capgemini.Adf.ServiceProviders.Unity.csproj", "{BE04820F-B15A-45E3-BBBA-9FD72BFDDB5A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHelper.Test", "ServiceHelper.Test\ServiceHelper.Test.csproj", "{FF5B16C6-BC4B-4150-A266-7A6EE1BD914F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjecten", "TestProjecten", "{0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution.vsmdi
@@ -106,9 +110,18 @@ Global
 		{BE04820F-B15A-45E3-BBBA-9FD72BFDDB5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE04820F-B15A-45E3-BBBA-9FD72BFDDB5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE04820F-B15A-45E3-BBBA-9FD72BFDDB5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF5B16C6-BC4B-4150-A266-7A6EE1BD914F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF5B16C6-BC4B-4150-A266-7A6EE1BD914F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF5B16C6-BC4B-4150-A266-7A6EE1BD914F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF5B16C6-BC4B-4150-A266-7A6EE1BD914F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B9BFA04A-6E1B-4EF3-9E22-423C3B3AD6CD} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
+		{82D3FCA5-58B1-4940-AEAF-7FE289CD821D} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
+		{FF5B16C6-BC4B-4150-A266-7A6EE1BD914F} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		VisualSVNWorkingCopyRoot = .
