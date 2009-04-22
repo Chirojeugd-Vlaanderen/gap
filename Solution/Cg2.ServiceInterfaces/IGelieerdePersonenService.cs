@@ -91,7 +91,7 @@ namespace Cg2.ServiceContracts
         /// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
         /// dan krijgt het adres een nieuw ID.</remarks>
         [OperationContract]
-        [FaultContract(typeof(VerhuisFault))]
+        [FaultContract(typeof(AdresFault))]
         void Verhuizen(IList<int> gelieerdePersonen, Adres nieuwAdres, int oudAdresID);
     }
 }

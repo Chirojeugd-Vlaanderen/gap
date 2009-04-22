@@ -75,7 +75,7 @@ namespace Cg2.Workers
         /// <returns>Gevonden adres</returns>
         public Adres ZoekenOfMaken(Adres adr)
         {
-            VerhuisFault vf = new VerhuisFault();
+            AdresFault vf = new AdresFault();
 
             // Al maar preventief een VerhuisFault aanmaken.  Als daar uiteindelijk
             // geen foutberichten inzitten, dan is er geen probleem.  Anders
@@ -110,7 +110,7 @@ namespace Cg2.Workers
                 {
                     // Straat niet gevonden: foutbericht toevoegen
 
-                    vf.BerichtToevoegen(VerhuisFoutCode.OnbekendeStraat, "Straat.Naam"
+                    vf.BerichtToevoegen(AdresFaultCode.OnbekendeStraat, "Straat.Naam"
                         , String.Format("Straat {0} met postnummer {1} niet gevonden."
                         , adr.Straat.Naam, adr.Straat.PostNr));
                 }
@@ -127,14 +127,14 @@ namespace Cg2.Workers
                 {
                     // Gemeente niet gevonden: foutbericht toevoegen
 
-                    vf.BerichtToevoegen(VerhuisFoutCode.OnbekendeGemeente, "SubGemeente.Naam"
+                    vf.BerichtToevoegen(AdresFaultCode.OnbekendeGemeente, "SubGemeente.Naam"
                         , String.Format("Deelgemeente {0} met postnummer {1} niet gevonden."
                         , adr.Subgemeente.Naam, adr.Straat.PostNr));
                 }
 
                 if (vf.Berichten.Count != 0)
                 {
-                    throw new VerhuisException(vf);
+                    throw new AdresException(vf);
                 }
 
                 adr = _dao.Bewaren(adr);

@@ -49,10 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\GeenGavException.cs" />
-    <Compile Include="Exceptions\VerhuisException.cs" />
+    <Compile Include="Exceptions\AdresException.cs" />
     <Compile Include="FaultContracts\BusinessFault.cs" />
     <Compile Include="FaultContracts\FoutBericht.cs" />
-    <Compile Include="FaultContracts\VerhuisFault.cs" />
+    <Compile Include="FaultContracts\AdresFault.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

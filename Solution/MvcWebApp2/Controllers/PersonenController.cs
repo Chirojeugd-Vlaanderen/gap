@@ -136,7 +136,7 @@ namespace MvcWebApp2.Controllers
 
                 return RedirectToAction("Edit", new { id = model.GelieerdePersoonIDs[0] });
             }
-            catch (FaultException<VerhuisFault> ex)
+            catch (FaultException<AdresFault> ex)
             {
                 ModelStateWrapper msw = new ModelStateWrapper(ViewData.ModelState);
                 msw.BerichtenToevoegen(ex.Detail, "NaarAdres.");

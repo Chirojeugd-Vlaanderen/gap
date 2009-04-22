@@ -119,9 +119,9 @@ namespace Cg2.Services
             {
                 nieuwAdres = adm.ZoekenOfMaken(nieuwAdres);
             }
-            catch (VerhuisException ex)
+            catch (AdresException ex)
             {
-                throw new FaultException<VerhuisFault>(ex.Fault);
+                throw new FaultException<AdresFault>(ex.Fault);
             }
             catch (Exception)
             {

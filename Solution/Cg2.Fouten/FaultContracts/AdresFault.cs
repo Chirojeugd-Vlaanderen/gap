@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Cg2.Fouten.FaultContracts
 {
     [DataContract]
-    public enum VerhuisFoutCode
+    public enum AdresFaultCode
     {
         [EnumMember]
         AlgemeneFout = 0,   // standaardwaarde
@@ -18,5 +18,5 @@ namespace Cg2.Fouten.FaultContracts
     }
 
     [DataContract]
-    public class VerhuisFault : BusinessFault<VerhuisFoutCode> { }
+    public class AdresFault : BusinessFault<AdresFaultCode> { }
 }
