@@ -10,6 +10,8 @@ using MvcWebApp2.Models;
 using System.Diagnostics;
 using System.ServiceModel;
 using Cg2.ServiceContracts.FaultContracts;
+using Capgemini.Adf.ServiceModel;
+using Cg2.ServiceContracts;
 
 namespace MvcWebApp2.Controllers
 {
@@ -20,7 +22,7 @@ namespace MvcWebApp2.Controllers
         public ActionResult Index()
         {
             int aantal;
-            IList<GelieerdePersoon> personen = ServiceCalls.GelieerdePersonen.PaginaOphalenMetLidInfo(out aantal, int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12);
+            IList<GelieerdePersoon> personen = ServiceHelper.CallService<IGelieerdePersonenService, IList<GelieerdePersoon> >(l => l.PaginaOphalenMetLidInfo(int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12, out aantal));
 
             return View("Index", personen);
         }
@@ -29,7 +31,7 @@ namespace MvcWebApp2.Controllers
         // GET: /Personen/Details/5
         public ActionResult Details(int id)
         {
-            GelieerdePersoon p = ServiceCalls.GelieerdePersonen.PersoonOphalenMetDetails(id);
+            GelieerdePersoon p = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
             return View("Details", p);
         }
 
@@ -61,7 +63,7 @@ namespace MvcWebApp2.Controllers
         // GET: /Personen/Edit/5
         public ActionResult Edit(int id)
         {
-            GelieerdePersoon p = ServiceCalls.GelieerdePersonen.PersoonOphalenMetDetails(id);
+            GelieerdePersoon p = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
             return View("Edit", p);
         }
 
@@ -72,7 +74,7 @@ namespace MvcWebApp2.Controllers
         {
             try
             {
-                ServiceCalls.GelieerdePersonen.PersoonBewaren(p);
+                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersoonBewaren(p));
  
                 // Voorlopig opnieuw redirecten naar Edit;
                 // er zou wel gemeld moeten worden dat het wijzigen
@@ -93,7 +95,7 @@ namespace MvcWebApp2.Controllers
         // GET: /Personen/LidMaken/id
         public ActionResult LidMaken(int id)
         {
-            ServiceCalls.Leden.LidMakenEnBewaren(id);
+            ServiceHelper.CallService<ILedenService>(l => l.LidMakenEnBewaren(id));
 
             return RedirectToAction("Index");
         }
@@ -118,7 +120,7 @@ namespace MvcWebApp2.Controllers
                 // Adressen worden nooit gewijzigd, enkel bijgemaakt.  (en eventueel
                 // verwijderd.)
 
-                ServiceCalls.GelieerdePersonen.Verhuizen(model.GelieerdePersoonIDs, model.NaarAdres, model.VanAdresMetBewoners.ID);
+                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.Verhuizen(model.GelieerdePersoonIDs, model.NaarAdres, model.VanAdresMetBewoners.ID));
 
                 // FIXME: Dit (onderstaand) is uiteraard niet de goede manier om 
                 // de persoon te bepalen die getoond moet worden.  

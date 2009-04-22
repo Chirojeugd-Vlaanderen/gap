@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using Cg2.Orm;
 using System.Configuration;
+using Capgemini.Adf.ServiceModel;
+using Cg2.ServiceContracts;
 
 namespace MvcWebApp2.Controllers
 {
@@ -17,7 +19,7 @@ namespace MvcWebApp2.Controllers
         public ActionResult Index()
         {
             int aantal;
-            IList<Lid> leden = ServiceCalls.Leden.PaginaOphalen(out aantal, int.Parse(ConfigurationSettings.AppSettings["TestGroepsWerkJaarID"]), 1, 12);
+            IList<Lid> leden = ServiceHelper.CallService<ILedenService, IList<Lid>>(l => l.PaginaOphalen(int.Parse(ConfigurationSettings.AppSettings["TestGroepsWerkJaarID"]), 1, 12, out aantal));
 
             return View("Index", leden);
         }

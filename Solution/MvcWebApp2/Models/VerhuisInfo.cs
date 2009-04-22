@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Cg2.Orm;
+using Capgemini.Adf.ServiceModel;
+using Cg2.ServiceContracts;
 
 namespace MvcWebApp2.Models
 {
@@ -47,7 +49,7 @@ namespace MvcWebApp2.Models
         /// <param name="vanAdresID">relevante vanAdresID</param>
         public VerhuisInfo(int vanAdresID)
         {
-            VanAdresMetBewoners = ServiceCalls.GelieerdePersonen.AdresMetBewonersOphalen(vanAdresID);
+            VanAdresMetBewoners = ServiceHelper.CallService<IGelieerdePersonenService, Adres>(l => l.AdresMetBewonersOphalen(vanAdresID));
 
             // Bij de constructie van verhuisinfo zijn vanadres naaradres
             // dezelfde.  Van zodra er een postback gebeurt van het form,
@@ -69,7 +71,7 @@ namespace MvcWebApp2.Models
         /// </summary>
         public void HerstelVanAdres()
         {
-            VanAdresMetBewoners = ServiceCalls.GelieerdePersonen.AdresMetBewonersOphalen(VanAdresMetBewoners.ID);          
+            VanAdresMetBewoners = ServiceHelper.CallService<IGelieerdePersonenService, Adres>(l => l.AdresMetBewonersOphalen(VanAdresMetBewoners.ID));
         }
     }
 }
