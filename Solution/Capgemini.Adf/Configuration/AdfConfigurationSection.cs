@@ -7,7 +7,7 @@ namespace Capgemini.Adf.Configuration
 	/// </summary>
 	public class AdfConfigurationSection : ConfigurationSection
 	{
-		internal const string DefaultAdfConfigurationSectionName = "chiroGroep";
+		internal const string DefaultAdfConfigurationSectionName = "serviceHelper";
 		internal const string ServiceProvidersElementName = "serviceProviders";
         
 		/// <summary>
