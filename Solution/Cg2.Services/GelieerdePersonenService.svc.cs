@@ -41,7 +41,7 @@ namespace Cg2.Services
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
             AuthorisatieManager am = new AuthorisatieManager();
 
-            if (am.IsGavGroep(ServiceSecurityContext.Current.WindowsIdentity.Name, groepID))
+            if (am.IsGavGroep(groepID))
             {
                 var result = pm.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalOpgehaald);
 
@@ -73,7 +73,7 @@ namespace Cg2.Services
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
             AuthorisatieManager am = new AuthorisatieManager();
 
-            if (am.IsGavGelieerdePersoon(ServiceSecurityContext.Current.WindowsIdentity.Name, gelieerdePersoonID))
+            if (am.IsGavGelieerdePersoon(gelieerdePersoonID))
             {
                 var result = pm.DetailsOphalen(gelieerdePersoonID);
 

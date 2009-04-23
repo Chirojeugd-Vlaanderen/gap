@@ -5,6 +5,7 @@ using System.Text;
 using Cg2.Orm;
 using Cg2.Orm.DataInterfaces;
 using Cg2.Data.Ef;
+using System.ServiceModel;
 
 namespace Cg2.Workers
 {
@@ -27,32 +28,26 @@ namespace Cg2.Workers
         #endregion
 
         /// <summary>
-        /// IsGav geeft true als de user met gegeven login
+        /// IsGav geeft true als de aangelogde user
         /// gav is voor de groep met gegeven ID
         /// </summary>
-        /// <param name="login">username</param>
         /// <param name="groepID">id van de groep</param>
         /// <returns>true (enkel) als user gav is</returns>
-        public bool IsGavGroep(string login, int groepID)
+        public bool IsGavGroep(int groepID)
         {
-            GebruikersRecht r = _dao.RechtenMbtGroepGet(login, groepID);
-
-            return r != null && (r.VervalDatum == null || r.VervalDatum > DateTime.Now);
+            return _dao.IsGavGroep(ServiceSecurityContext.Current.WindowsIdentity.Name, groepID);
         }
 
         /// <summary>
-        /// Geeft true als (en slechts als) de login overeenkomt
+        /// Geeft true als (en slechts als) de ingelogde user correspondeert
         /// met een GAV van een groep gelieerd aan de gelieerde
         /// persoon met gegeven ID
         /// </summary>
-        /// <param name="login">username</param>
         /// <param name="gelieerdePersoonID">ID van te checken gelieerde persoon</param>
-        /// <returns>true indien login de persoonsgegevens mag zien/bewerken</returns>
-        public bool IsGavGelieerdePersoon(string login, int gelieerdePersoonID)
+        /// <returns>true indien de user de persoonsgegevens mag zien/bewerken</returns>
+        public bool IsGavGelieerdePersoon(int gelieerdePersoonID)
         {
-            GebruikersRecht r = _dao.RechtenMbtGelieerdePersoonGet(login, gelieerdePersoonID);
-
-            return r != null && (r.VervalDatum == null || r.VervalDatum > DateTime.Now);
+            return _dao.IsGavGelieerdePersoon(ServiceSecurityContext.Current.WindowsIdentity.Name, gelieerdePersoonID);
         }
 
         /// <summary>

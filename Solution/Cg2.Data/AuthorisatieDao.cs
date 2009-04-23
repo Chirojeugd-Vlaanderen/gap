@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Cg2.Orm;
 using Cg2.Orm.DataInterfaces;
+using System.Data.Objects;
 
 namespace Cg2.Data.Ef
 {
@@ -15,6 +16,8 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
+                db.GebruikersRecht.MergeOption = MergeOption.NoTracking;
+
                 // LET OP: Hier mag geen rekening gehouden worden
                 // met de vervaldatum; we willen ook rechten kunnen
                 // opvragen die vervallen zijn.
@@ -28,7 +31,6 @@ namespace Cg2.Data.Ef
                       select r;
 
                 resultaat = query.FirstOrDefault();
-                db.Detach(resultaat);
             }
 
             return resultaat;
@@ -40,6 +42,8 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
+                db.GebruikersRecht.MergeOption = MergeOption.NoTracking;
+
                 // LET OP: Hier mag geen rekening gehouden worden
                 // met de vervaldatum; we willen ook rechten kunnen
                 // opvragen die vervallen zijn.
@@ -53,15 +57,46 @@ namespace Cg2.Data.Ef
                       select r;
 
                 resultaat = query.FirstOrDefault();
-
-                if (resultaat != null)
-                {
-                    db.Detach(resultaat);
-                }
             }
 
             return resultaat;
         }
+
+        public bool IsGavGroep(string login, int groepID)
+        {
+            bool resultaat;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                var query
+                    = from r in db.GebruikersRecht
+                      where r.Groep.ID == groepID && r.Gav.Login == login
+                      && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
+                      select r;
+
+                resultaat = query.Count() > 0;
+            }
+
+            return resultaat;
+        }
+
+        public bool IsGavGelieerdePersoon(string login, int gelieerdePersoonID)
+        {
+            bool resultaat;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                var query
+                    = from GebruikersRecht r in db.GebruikersRecht
+                      where r.Gav.Login == login && r.Groep.GelieerdePersoon.Any(gp => gp.ID == gelieerdePersoonID)
+                      select r;
+
+                resultaat = query.Count() > 0;
+            }
+
+            return resultaat;
+        }
+
 
         public IList<int> GekoppeldeGroepenGet(string login)
         {
