@@ -125,7 +125,12 @@ namespace Cg2.Services
             }
             catch (Exception)
             {
-                // onverwachte exception gewoon opnieuw throwen.
+                // OPMERKING: Deze exceptie is verwacht als je een foute
+                // straat of gemeente hebt ingetikt.  Ze wordt gecatcht
+                // aan de kant van de UI.  Je kan de applicatie dus gewoon
+                // verder laten runnen in Visual Studio; druk hiervoor
+                // op F5 :-)
+
                 throw;
             }
 
