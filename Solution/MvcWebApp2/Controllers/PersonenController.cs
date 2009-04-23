@@ -138,8 +138,7 @@ namespace MvcWebApp2.Controllers
             }
             catch (FaultException<AdresFault> ex)
             {
-                ModelStateWrapper msw = new ModelStateWrapper(ViewData.ModelState);
-                msw.BerichtenToevoegen(ex.Detail, "NaarAdres.");
+                new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "NaarAdres.");
                 
                 // Als ik de bewoners van het 'Van-adres' niet had getoond in
                 // de view, dan had ik de view meteen kunnen aanroepen met het
