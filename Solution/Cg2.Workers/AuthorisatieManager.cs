@@ -51,25 +51,23 @@ namespace Cg2.Workers
         }
 
         /// <summary>
-        /// Ophalen van HUIDIGE gekoppelde groepen voor een GAV
+        /// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV
         /// </summary>
-        /// <param name="login">login van de betreffende GAV</param>
         /// <returns>ID's van gekoppelde groepen</returns>
-        public IList<int> GekoppeldeGroepenGet(string login)
+        public IList<int> GekoppeldeGroepenGet()
         {
-            return _dao.GekoppeldeGroepenGet(login);
+            return _dao.GekoppeldeGroepenGet(ServiceSecurityContext.Current.WindowsIdentity.Name);
         }
 
         /// <summary>
         /// Verwijdert uit een lijst van GelieerdePersoonID's de ID's
-        /// van GelieerdePersonen waarvoor de gebruiker geen GAV is.
+        /// van GelieerdePersonen waarvoor de aangemelde gebruiker geen GAV is.
         /// </summary>
         /// <param name="gelieerdePersonenIDs">lijst met ID's van gelieerde personen</param>
-        /// <param name="login">gebruikersnaam</param>
         /// <returns>enkel de ID's van die personen waarvoor de gebruiker GAV is</returns>
-        public IList<int> EnkelMijnGelieerdePersonen(IList<int> gelieerdePersonenIDs, string login)
+        public IList<int> EnkelMijnGelieerdePersonen(IList<int> gelieerdePersonenIDs)
         {
-            return _dao.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs, login);
+            return _dao.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs, ServiceSecurityContext.Current.WindowsIdentity.Name);
         }
     }
 }

@@ -8,6 +8,7 @@ using Cg2.Orm;
 using System.Diagnostics;
 using Cg2.Fouten.Exceptions;
 using Cg2.Fouten.FaultContracts;
+using System.ServiceModel;
 
 namespace Cg2.Workers
 {
@@ -38,17 +39,19 @@ namespace Cg2.Workers
         #region proxy naar data acces
 
         /// <summary>
-        /// Haalt een adres op, samen met de gekoppelde personen
+        /// Haalt een adres op, inclusief bewoners waar de ingelogde
+        /// user gebruikersrechten op heeft.
         /// </summary>
-        /// <param name="adresID">ID op te halen adres</param>
-        /// <param name="gelieerdAan">Als een lijst met groepID's gegeven,
-        /// dan worden enkel personen gelieerd aan groepen met ID's uit
-        /// de lijst meegeleverd.  Indien gelieerdAan null is, krijg
-        /// je alle bewoners mee</param>
-        /// <returns>Adresobject met gekoppelde personen</returns>
-        public Adres AdresMetBewonersOphalen(int adresID, IList<int> gelieerdAan)
+        /// <param name="adresID">ID van het gevraagde adres</param>
+        /// <returns>adres met daaraan gekoppeld de bewoners</returns>
+        public Adres AdresMetBewonersOphalen(int adresID)
         {
-            return _dao.BewonersOphalen(adresID, gelieerdAan);
+            // Adressen zitten vast in de database, en daar is niets
+            // interessants over te zeggen.  Voorlopig mag iedereen elk
+            // adres opzoeken.  Voor de bewonersgegevens worden de
+            // rechten uiteraard wel gecontroleerd.
+
+            return _dao.BewonersOphalen(adresID, ServiceSecurityContext.Current.WindowsIdentity.Name);
         }
 
         public Adres Bewaren(Adres adr)

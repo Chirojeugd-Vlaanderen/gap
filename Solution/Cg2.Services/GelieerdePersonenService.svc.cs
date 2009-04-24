@@ -39,18 +39,8 @@ namespace Cg2.Services
         public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
-            AuthorisatieManager am = new AuthorisatieManager();
 
-            if (am.IsGavGroep(groepID))
-            {
-                var result = pm.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalOpgehaald);
-
-                return result;
-            }
-            else
-            {
-                throw new GeenGavException("Je bent geen GAV van deze groep.");
-            }
+            return pm.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalOpgehaald);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
@@ -71,18 +61,7 @@ namespace Cg2.Services
         public GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
-            AuthorisatieManager am = new AuthorisatieManager();
-
-            if (am.IsGavGelieerdePersoon(gelieerdePersoonID))
-            {
-                var result = pm.DetailsOphalen(gelieerdePersoonID);
-
-                return result;
-            }
-            else
-            {
-                throw new GeenGavException("Deze persoon is niet gelieerd aan je groep(en).");
-            }
+            return pm.DetailsOphalen(gelieerdePersoonID);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
@@ -95,14 +74,7 @@ namespace Cg2.Services
         public Adres AdresMetBewonersOphalen(int adresID)
         {
             AdressenManager adm = new AdressenManager();
-            AuthorisatieManager aum = new AuthorisatieManager();
-
-
-            // TODO: combineer onderstaande calls
-
-            IList<int> groepenLijst = aum.GekoppeldeGroepenGet(ServiceSecurityContext.Current.WindowsIdentity.Name);
-
-            return adm.AdresMetBewonersOphalen(adresID, groepenLijst);
+            return adm.AdresMetBewonersOphalen(adresID);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
@@ -137,11 +109,11 @@ namespace Cg2.Services
             // Om foefelen te vermijden: we werken enkel op de gelieerde
             // personen waar de gebruiker GAV voor is.
 
-            IList<int> mijnGelieerdePersonen = aum.EnkelMijnGelieerdePersonen(gelieerdePersonen, ServiceSecurityContext.Current.WindowsIdentity.Name);
+            IList<int> mijnGelieerdePersonen = aum.EnkelMijnGelieerdePersonen(gelieerdePersonen);
 
             // Haal bronadres en alle bewoners op
 
-            Adres oudAdres = adm.AdresMetBewonersOphalen(oudAdresID, null);
+            Adres oudAdres = adm.AdresMetBewonersOphalen(oudAdresID);
 
             // Selecteer enkel bewoners uit mijnGelieerdePersonen
 

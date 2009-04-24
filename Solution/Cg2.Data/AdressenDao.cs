@@ -69,7 +69,7 @@ namespace Cg2.Data.Ef
             return adr;
         }
 
-        public Adres BewonersOphalen(int adresID, IList<int> gelieerdAan)
+        public Adres BewonersOphalen(int adresID, string user)
         {
             Adres resultaat = null;
             IList<PersoonsAdres> lijst = null;
@@ -91,11 +91,16 @@ namespace Cg2.Data.Ef
                     .Include("Adres.Subgemeente")
                     .Include("GelieerdePersoon.Persoon")
                     .Where(pera => pera.Adres.ID == adresID);
+                    
 
-                if (gelieerdAan != null)
+                if (user != "")
                 {
+                    // Controleer op niet-vervallen gebruikersrecht
+
                     query = query
-                        .Where(Utility.BuildContainsExpression<PersoonsAdres, int>(pera => pera.GelieerdePersoon.Groep.ID, gelieerdAan));
+                        .Where(pera => pera.GelieerdePersoon.Groep.GebruikersRecht.Any(
+                            gr => gr.Gav.Login == user && (gr.VervalDatum == null 
+                                || gr.VervalDatum < DateTime.Now)));
                 }
                 query = query.Select(pera => pera);
 
