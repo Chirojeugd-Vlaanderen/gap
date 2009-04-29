@@ -52,7 +52,7 @@
 %%
 
 
-\noindent {\Large \bf CODING STANDARD C\#, doc. v. 0.2}
+\noindent {\Large \bf CODING STANDARD C\#, doc. v. 0.3}
 
 \tableofcontents
 
@@ -68,15 +68,22 @@ in alle C\#-projecten die nog voor de Chiro ontwikkeld zullen worden.
 \section{Architectuur}
 
 \begin{enumerate}
-\item We gebruiken een lagenmodel; iedere laag staat op zich, en communiceert slechts met de
-andere lagen via publieke klasses en interfaces.\opmerking{Of enkel interfaces?}
+\item We werken met een lagenmodel; iedere laag staat op zich, en communiceert slechts met de
+andere lagen via publieke klasses/interfaces.  Het lagenmodel voor
+het Chirogroepproject ziet er als volgt uit:
 \begin{itemize}
-\item Data Access Layer
-\item Business Layer
-\item User Interface
+\item Backend
+\begin{itemize}
+\item Cg2.Orm -- alles wat met de Object Relational Mapping (ORM) te maken heeft, en de interfaces van de Data Access Objects (DAO's)
+\item Cg2.Fouten -- custom exceptions en faultcontracts
+\item Cg2.Data -- De Data Access Objects
+\item Cg2.Workers -- De businesslogica
+\item Cg2.Services -- Implementatie van de WCF-services
+\item Cg2.ServiceContracts -- Interfaces voor de WCF-services
 \end{itemize}
-\item Groepeer gerelateerde klasses in class libraries.
-\item Gebruik namespaces met een zinvolle naam.
+\item User Interface: MvcWebApp
+\item Unit Tests (todo!)
+\end{itemize}
 \end{enumerate}
 
 \section{`Opmaak' van cs-bestanden}
@@ -102,11 +109,11 @@ afgesproken, maar het lijkt me een zinvol idee.}
 \item contactinfo van de verantwoordelijke voor het bestand
 \end{itemize}
 \item Groepeer de imports van namespaces bovenaan
-\item Hoogstens \'e\'en klasse en hoogstens \'e\'en namespace in een source file.
+\item Hoogstens \'e\'en namespace in een source file.
+\item Vermijd om meer dan \'e\'en klasse in een source file te defini\"eren.
 \item Gebruik \lstinline !#region! \ldots \lstinline !#endregion!-constructies om stukken code
 die bij elkaar horen te groeperen.
-\item Vermijd files van meer dan 500 lijnen code.\footnote{Uitzondering is automatisch gegenereerde
-code}
+\item Vermijd files van meer dan 500 lijnen code.
 \item Vermijd lijnen die langer zijn dan 120 karakters.
 \end{enumerate}
 
@@ -218,7 +225,7 @@ switch (isnschrijver.Soort)
 \subsection{Commentaar}
 
 \begin{enumerate}[resume]
-\item Plaats vlak voor elke method een blok xml-commentaar die de werking van de method
+\item Plaats vlak voor elke method en voor elke klasse een blok xml-commentaar die de werking van de method
 omschrijft.\footnote{Visual Studio maakt automatisch een template aan als je op de lijn voor de
 methoddeclaratie \lstinline !///! intikt.}
 \item Zet in methods enkel commentaar waar het nodig is, om de werking van je code te
@@ -228,8 +235,8 @@ Complexe code moet goed gedocumenteerd zijn.
 commentaar in je code.  \lstinline !/*! en \lstinline !*/! kan je dan nog gebruiken om tijdelijk
 een stuk code uit te commentari\"eren.
 \item Schrijf commentaar in duidelijk en correct Nederlands :)
-\item Gebruik 'TODO:' om aan te geven dat er nog iets moet gebeuren.\footnote{De typeische
-dingen die achterwege blijven als de deadline eigenlijk voorbij is ;)}
+\item Gebruik 'TODO:' om aan te geven dat er nog iets moet gebeuren.\footnote{De typische
+dingen die onafgewerkt blijven als de deadline eigenlijk voorbij is ;)}
 \end{enumerate}
 
 \section{Naamgeving}
@@ -258,13 +265,11 @@ plakken.}
 
 \begin{enumerate}[resume]
 \item Namen van klasses zijn in het enkelvoud, en beginnen met een hoofdletter.
-\item Namen van member variabelen beginnen met een kleine letter.\opmerking{Mogelijk
-voegen we hier aan toe dat ze het prefix 'm' of '\_' moeten krijgen, om ze te kunnen
-onderscheiden van lokale variabelen.}
+\item Namen van membervariabelen beginnen met een prefix '\_' en een kleine letter.
+\item Property's hebben dezelfde naam als de members (zonder prefix) die ze `accessen', maar dan met een
+hoofdletter.
 \item Als een klasse een identificatienummer heeft, dan krijgt die de naam van de klasse,
 gevolgd door het suffix \lstinline !ID!.
-\item Property's hebben dezelfde naam als de members (zonder eventueel prefix) die ze `accessen', maar dan met een
-hoofdletter.
 \item Namen van methods beginnen met een hoofdletter, en zijn van de vorm `(lijdend voorwerp +)
 infitnitief'.\footnote{Op die manier worden methods die op hetzelfde betrekking hebben
 door `intellisense' gegroepeerd.}  `Get' en `Set' kunnen in het Engels blijven.
@@ -344,11 +349,11 @@ access modifier.
 \item Klasses met enkel statische members krijgen een \lstinline !private! constructor.
 \item Ieder class member heeft een access modifier.\footnote{\lstinline !public!, \lstinline
 !protected!, \lstinline !private!, \ldots}
-\item In een klassedeclaratie zet je de member variabelen vooraan.\footnote{Op die manier is het direct duidelijk of de klasse stateful of stateless
+\item In een klassedeclaratie zet je de membervariabelen vooraan.\footnote{Op die manier is het direct duidelijk of de klasse stateful of stateless
 is.}
-\item Member variabelen zijn altijd \lstinline !private! of \lstinline !protected!.  Als ze van
+\item Membervariabelen zijn altijd \lstinline !private! of \lstinline !protected!.  Als ze van
 buitenaf lees- of schrijfbaar moeten zijn, dan moet dit via property's gebeuren.
-\item Gebruik geen member variabelen voor iets dat je ook in een lokale variabele kwijt kan.
+\item Gebruik geen membervariabelen voor iets dat je ook in een lokale variabele kwijt kan.
 \end{enumerate}
 
 \subsection{Methods}
@@ -464,13 +469,13 @@ niet-gevalideerde userinput in een gegenereerde webpagina.}
 \subsection{Exception handling}
 
 \begin{enumerate}[resume]
-\item Vermijd excepties door op voorhand checks in te bouwen in de code.  Enkel om excepties op
-te vangen waarop je geen vat hebt, gebruik je \lstinline !try! \ldots \lstinline
-!catch!.\footnote{Dit is typisch het geval als je externe hardware of het netwerk aanspreekt.
-In deze situaties moet je exception handling implementeren.}\footnote{Key-violations moet
-je enkel op voorhand opvangen als je de gebruiker een zinvolle foutmelding kan geven.}
+\item Gebruik steeds een \lstinline !try! \ldots \lstinline !catch!-blok
+als je het netwerk of externe hardware aanspreekt.
+\item Probeer \lstinline !try! \ldots \lstinline !catch! in andere
+gevallen zo veel mogelijk te vermijden.
 \item Maak zo weinig mogelijk gebruik van custom exceptions.  Als je er toch implementeert, erf
-dan van `\lstinline !ApplicationException!', en maak ze \lstinline ![Serializable]!.
+dan van `\lstinline !ApplicationException!'\opmerking{Is dat nog steeds
+best practice? Op te zoeken.}, en maak ze \lstinline ![Serializable]!.
 \item Als er zich een exceptie voordoet, geef je een verstaanbare boodschap voor de gebruiker,
 en log je de technische details.
 \item Catch enkel specifieke excepties.\footnote{Laat het programma gerust crashen op onverwachte
@@ -515,51 +520,31 @@ object dat je gebruikt.
 \item Roep de garbage collector zelf niet expliciet aan.
 \end{enumerate}
 
-\subsection{ADO.NET}\opmerking{Ik heb deze sectie laten staan, maar vermoedelijk gaan we LINQ to
-SQL en Entity Classes gebruiken i.p.v. ADO.NET}
+\subsection{Entity Framework}
 
 \begin{enumerate}[resume]
-\item Connecties zo laat mogelijk openen en zo vroeg mogelijk opnieuw sluiten.\footnote{.NET is
+\item Een objectcontext zo laat mogelijk openen en zo vroeg mogelijk opnieuw sluiten.\footnote{.NET is
 zelf verantwoordelijk voor connection pooling.}
-\item Zorg ervoor dat de connectie altijd gesloten wordt, ofwel in een \lstinline!finally!-blok, ofwel via een \lstinline !using!-constructie.
-\item Gebruik een `Data Provider Factory' om connecties, commando's, \ldots te
-genereren.\opmerking{Komt niet voor in Tommy's docs, maar lijkt me interessant als geen LINQ
-gebruikt wordt.}
-\item Gebruik de klasse \lstinline !DbParameter! om query's te parameterizeren.
-\item Bewaar connection strings en data provider in het configuratiebestand.
-\item Bij excepties log je de volgende zaken:
-\begin{itemize}
-\item Naam van het commando
-\item Het commando zelf
-\item De parameters
-\item De connection string
-\end{itemize}
+\item Zorg ervoor dat de context altijd gesloten wordt, gebruik hiervoor een \lstinline !using!-constructie.
+\item Entity's die buiten de context gebruikt moeten worden, moeten
+gedetached zijn.  Gebruik hiervoor \lstinline !MergeOption.NoTracking! of
+\lstinline !Detach!.
+\item Gebruik linq to entities voor databasemanipulaties.
+\item Bewaar connection strings in \lstinline !app.Config! of \lstinline
+!web.Config!.
 \end{enumerate}
 
-\begin{lstlisting}[float, caption=ADO.NET]
-try
+\begin{lstlisting}[float, caption=Entity Framework]
+using (ChiroGroepEntities db = new ChiroGroepEntities())
 {
-	// factory is de provider factory.
-
-	DbConnection connectie = factory.CreateConnection();
-	connectie.ConnectionString = connStr;
-
-	DbCommand commando = factory.CreateCommand();
-	commando.Connection = connectie;
-	commando.CommandText = InschrijvingsQuery;
-	
-	DbParameter parameter = factory.CreateParameter();
-	parameter.ParameterName = "@AdNr";
-	parameter.Value = adNr;
-
-	commando.Parameters.Add(parameter);
-	commando.ExecuteNonQuery();
-}
-// handel hier exceptions af
-finally
-{
-	commando.Dispose();
-	connectie.Dispose();
+  db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
+  result = (
+    from gp in db.GelieerdePersoon.Include("Persoon")
+      .Include("Communicatie")
+      .Include("PersoonsAdres.Adres.Straat")
+      .Include("PersoonsAdres.Adres.Subgemeente")
+    where gp.ID == gelieerdePersoonID
+    select gp).FirstOrDefault();
 }
 \end{lstlisting}
 
