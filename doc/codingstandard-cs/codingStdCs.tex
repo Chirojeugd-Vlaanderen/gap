@@ -333,11 +333,18 @@ public class Cursus
 \item \ldots
 \end{itemize}
 \item E\'en variabeledeclaratie per lijn.
+\item Gebruik liever geen expliciete waarden voor enums
+\item Specifieer liever geen type voor een enum
 \end{enumerate}
 
 \begin{lstlisting}[float,caption=Declaraties algemeen]
 string Naam;
 string Voornaam;  // een nieuwe lijn voor een nieuwe declaratie
+
+public enum Kleur
+{
+  Rood, Groen, Blauw
+}
 \end{lstlisting}
 
 \subsection{Klasses}
@@ -345,6 +352,7 @@ string Voornaam;  // een nieuwe lijn voor een nieuwe declaratie
 \begin{enumerate}[resume]
 \item Klasses die niet zichtbaar mogen zijn buiten de assembly, krijgen de \lstinline !internal!
 access modifier.
+\item Gebruik de \lstinline !public! access modifier enkel als het strict noodzakelijk is.
 \item Klasses met statische members hebben een statische default constructor.
 \item Klasses met enkel statische members krijgen een \lstinline !private! constructor.
 \item Ieder class member heeft een access modifier.\footnote{\lstinline !public!, \lstinline
@@ -460,6 +468,8 @@ LIFO & \lstinline !Stack<T>! \\
 
 \begin{enumerate}[resume]
 \item Vermijd het gebruik van sessievariabelen.
+\item Als je sessievariabelen gebruikt, controleer dan steeds of ze
+niet \lstinline !null! zijn.
 \item Genereer correct XHTML 1.1 (strict).
 \item Gebruik style sheets (css) om de look en feel van een pagina te defini\"eren.
 \item Gebruik nooit user input in een client side javascript.\opmerking{en plaats ook nooit
@@ -474,8 +484,7 @@ als je het netwerk of externe hardware aanspreekt.
 \item Probeer \lstinline !try! \ldots \lstinline !catch! in andere
 gevallen zo veel mogelijk te vermijden.
 \item Maak zo weinig mogelijk gebruik van custom exceptions.  Als je er toch implementeert, erf
-dan van `\lstinline !ApplicationException!'\opmerking{Is dat nog steeds
-best practice? Op te zoeken.}, en maak ze \lstinline ![Serializable]!.
+dan van \lstinline !Exception!, en maak ze \lstinline ![Serializable]!.
 \item Als er zich een exceptie voordoet, geef je een verstaanbare boodschap voor de gebruiker,
 en log je de technische details.
 \item Catch enkel specifieke excepties.\footnote{Laat het programma gerust crashen op onverwachte
@@ -520,6 +529,107 @@ object dat je gebruikt.
 \item Roep de garbage collector zelf niet expliciet aan.
 \end{enumerate}
 
+\subsection{Overig}
+
+\begin{enumerate}[resume]
+\item Lock enkel objecten van het type `\lstinline !Object!'
+\item Event handlers zijn kort, en roepen andere methods op.
+\item Event handlers worden enkel gebruikt om hun event(s) af te handelen, en worden voor de rest
+niet aangeroepen.
+\item Gebruik liever geen late binding.
+\end{enumerate}
+
+\section{.NET 3}
+
+
+\subsection{Extension methods}
+
+\begin{enumerate}[resume]
+\item Vermijd het gebruik van extension methods als je de methods even goed rechtstreeks aan de klasse kan toevoegen.
+\item Definieer geen extension methods op \lstinline !object!.
+\item Extension methods mogen enkel in dezelfde namespace als het
+ge\"extende type gedefinieerd worden als je methods toevoegt aan een
+interface.  In andere gevallen definieer je ze in een andere namespace.
+\item Plaats extension methods in namespaces waarvan de naam aangeeft waar
+de extension method mee te maken heeft.
+\item Gebruik extension methods in deze gevallen
+\begin{itemize}
+\item Implementatie van methods die relevant zijn voor iedere
+implementatie van een bepaalde interface.
+\item Als je voor de implementatie van een method een dependency moet
+leggen die niet overeenkomt met het lagenmodel, implementeer die method
+dan ergens anders als extension method.
+\end{itemize}
+\end{enumerate}
+
+\begin{lstlisting}[float,caption=Extension methods]
+namespace Cg2.MvcEntities
+{
+  // Deze extension method zal van toepassing zijn op alle 
+  // implementaties van IBasisEntiteit.
+  public static string VersieStringGet(this IBasisEntiteit be)
+    {
+      return be.Versie == null ? "" 
+        : Convert.ToBase64String(be.Versie);
+    }	
+}
+\end{lstlisting}
+
+\subsection{Delegates en anonieme methods}
+
+\begin{enumerate}[resume]
+\item Gebruik \lstinline !Func<>! en \lstinline !Expression<>! in plaats van eigen delegatetypes.
+\item Definieer anonieme methods als lambda-expressies.
+\item Gebruik enkel inline lambda-expressies als ze slechts 1 statement bevatten.
+\item Complexere anonieme methods definieer je over meerdere lijnen.
+\end{enumerate}
+
+\begin{lstlisting}[float,caption=Delegates en anonieme methods]
+private static void DoeIets(Func<int, int> operatie)
+{
+  Console.WriteLine(operatie(5));
+}
+
+public static void Test()
+{
+  // inline lambda-expressie als ze maar 1 statement bevat
+
+  DoeIets(arg => arg * 2);
+
+  // Ingewikkelde delegates over meer lijnen declareren
+
+  Func<int, int> faculteit = arg =>
+    {
+      int res = 1;
+
+      for (int i = 2; i <= arg; ++i)
+      {
+        res *= i;
+      }
+      return res;
+    };
+
+  DoeIets(faculteit);
+}
+\end{lstlisting}
+
+\subsection{WCF}
+
+\begin{enumerate}[resume]
+\item Serivces zijn beveiligd.
+\item Na aanroep van een serviceoperatie is het systeem in een consistente toestand.
+\item Services zijn thread safe en kunnen gelijktijdig door verschillende
+clients aangeroepen worden.
+\item Gebruik \lstinline !ServiceHelper! om services aan te roepen.
+\item Gebruik steeds een interface als servicecontract.
+\item Een servicecontract biedt 3 tot 20 methods aan.
+\item Gebruik het \lstinline !DataContract! attribuut voor data
+contracts.\footnote{hoewel \lstinline !Serializable! ook zou werken.}
+\item Gebruik enkel property's of read-only members als \lstinline
+!DataMember!.
+\item Verwacht excepties bij een service call.
+\end{enumerate}
+
 \subsection{Entity Framework}
 
 \begin{enumerate}[resume]
@@ -547,16 +657,6 @@ using (ChiroGroepEntities db = new ChiroGroepEntities())
     select gp).FirstOrDefault();
 }
 \end{lstlisting}
-
-\subsection{Overig}
-
-\begin{enumerate}[resume]
-\item Lock enkel objecten van het type `\lstinline !Object!'
-\item Event handlers zijn kort, en roepen andere methods op.
-\item Event handlers worden enkel gebruikt om hun event(s) af te handelen, en worden voor de rest
-niet aangeroepen.
-\item Gebruik liever geen late binding.
-\end{enumerate}
 
 \section{Gedrag van de software}
 
