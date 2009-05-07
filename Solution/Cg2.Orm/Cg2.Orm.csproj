@@ -74,6 +74,7 @@
     <Compile Include="CommunicatieVorm.cs" />
     <Compile Include="Lid.cs" />
     <Compile Include="Persoon.cs" />
+    <Compile Include="PersoonsAdres.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Straat.cs" />
     <Compile Include="Subgemeente.cs" />

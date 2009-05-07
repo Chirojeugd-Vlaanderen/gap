@@ -7,6 +7,14 @@ namespace Cg2.Orm
 {
     public partial class Adres: IBasisEntiteit
     {
+        private bool _teVerwijderen = false;
+
+        public bool TeVerwijderen
+        {
+            get { return _teVerwijderen; }
+            set { _teVerwijderen = value; }
+        }
+
         public Adres(): base()
         {
             // Bus en PostCode zijn niet nullable.

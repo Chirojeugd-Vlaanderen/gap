@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Cg2.Orm
 {
-    public partial class GebruikersRecht: IBasisEntiteit
+    public partial class PersoonsAdres: IBasisEntiteit
     {
         private bool _teVerwijderen = false;
 

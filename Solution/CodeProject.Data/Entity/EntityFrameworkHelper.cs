@@ -8,6 +8,14 @@ namespace CodeProject.Data.Entity
 {
 	internal static class EntityFrameworkHelper
 	{
+        /// <summary>
+        /// Ik vermoed dat deze method een soort van tree genereert
+        /// met daarin de namen van de properties die de object
+        /// graph bepalen
+        /// </summary>
+        /// <param name="exp">1 path van de paths meegegeven aan 
+        /// AttachObjectGraphs</param>
+        /// <param name="members">Een lijst met ExtendedPropertyInfo</param>
 		internal static void CollectRelationalMembers(Expression exp, IList<ExtendedPropertyInfo> members)
 		{
 			if (exp.NodeType == ExpressionType.Lambda)

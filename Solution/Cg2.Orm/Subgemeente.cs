@@ -17,6 +17,14 @@ namespace Cg2.Orm
     {
         #region IBasisEntiteit Members
 
+        private bool _teVerwijderen = false;
+
+        public bool TeVerwijderen
+        {
+            get { return _teVerwijderen; }
+            set { _teVerwijderen = value; }
+        }
+
         public byte[] Versie
         {
             get

@@ -78,11 +78,14 @@ namespace Cg2.Data.Ef
         /// <param name="entiteit">Te verwijderen entiteit</param>
         public void Verwijderen(T entiteit)
         {
-            // TODO: dit gaat niet werken, omdat de entiteit niet
-            // aan de context gekoppeld wordt.
-
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
+                // ik gebruik BasisEntiteit.ID om entity's te identificeren.
+                // Omdat de echte entity key vaak verdwijnt, genereer ik
+                // hem hier opnieuw.
+
+                entiteit.EntityKey = db.CreateEntityKey(typeof(T).Name, entiteit);
+
                 db.Attach(entiteit);
                 db.DeleteObject(entiteit as object);
                 db.SaveChanges();
@@ -101,15 +104,21 @@ namespace Cg2.Data.Ef
         /// <param name="nieuweEntiteit">entiteit met nieuwe gegevens</param>
         /// <returns>De geupdatete entiteit</returns>
         /// <remarks>Deze functie mag ook gebruikt worden voor het toevoegen
-        /// van een nieuwe entiteit.</remarks>
-        public virtual T Bewaren(T teBewaren)
+        /// van een nieuwe entiteit, of het verwijderen van een bestaande.
+        /// In dat laatste geval is de terugkeerwaarde null.</remarks>
+        public virtual T Bewaren(T entiteit)
         {
             // Code uit het boek aangepast, met dank aan
             // http://msdn.microsoft.com/en-us/magazine/cc700340.aspx
 
-            if (teBewaren.ID == 0)
+            if (entiteit.ID == 0)
             {
-                return Creeren(teBewaren);
+                return Creeren(entiteit);
+            }
+            else if (entiteit.TeVerwijderen)
+            {
+                Verwijderen(entiteit);
+                return null;
             }
             else
             {
@@ -120,14 +129,14 @@ namespace Cg2.Data.Ef
                     // dan moeten we hem terug genereren alvorens
                     // de entity terug geattacht kan worden.
 
-                    teBewaren.EntityKey = db.CreateEntityKey(typeof(T).Name, teBewaren);
+                    entiteit.EntityKey = db.CreateEntityKey(typeof(T).Name, entiteit);
 
-                    db.Attach(teBewaren);
-                    SetAllModified(teBewaren.EntityKey, db);
+                    db.Attach(entiteit);
+                    SetAllModified(entiteit.EntityKey, db);
 
                     db.SaveChanges();
                 }
-                return teBewaren;
+                return entiteit;
             }
         }
 

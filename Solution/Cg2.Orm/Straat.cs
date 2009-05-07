@@ -16,6 +16,13 @@ namespace Cg2.Orm
     public partial class Straat: IBasisEntiteit
     {
         #region IBasisEntiteit Members
+        private bool _teVerwijderen = false;
+
+        public bool TeVerwijderen
+        {
+            get { return _teVerwijderen; }
+            set { _teVerwijderen = value; }
+        }
 
         public byte[] Versie
         {

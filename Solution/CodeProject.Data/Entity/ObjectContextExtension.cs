@@ -19,6 +19,7 @@ using Arebis.Reflection;
 using System.Text;
 using System.Runtime.Serialization.Formatters.Binary;
 using Cg2.Orm;
+using System.Diagnostics;
 
 namespace CodeProject.Data.Entity
 {
@@ -35,14 +36,30 @@ namespace CodeProject.Data.Entity
 			return AttachObjectGraphs(context, new T[] { entity }, paths)[0];
 		}
 
-		/// <summary>
-		/// Attaches multiple entire objectgraphs to the context.
-		/// </summary>
+        /// <summary>
+        /// Attacht objectgraphs aan de context
+        /// </summary>
+        /// <typeparam name="T">Type van de te attachen entiteit(en),
+        /// moet IBasisEntiteit implementeren.</typeparam>
+        /// <param name="context">Objectcontext waaraan te attachen</param>
+        /// <param name="entities">Collectie van entiteiten</param>
+        /// <param name="paths">Lambda-expressies die aangeven welke relaties
+        /// mee geattacht moeten worden.  
+        /// Bijvoorbeeld: p=>p.Naam, p=>p.PersoonsAdres.First().Adres.
+        /// (Die First staat er enkel om verder te kunnen navigeren, en
+        /// moet hier niet geinterpreteerd worden als het eerste element.
+        /// </param>
+        /// <returns>Een array met geattachte objectgraphs</returns>
+        /// <remarks>FIXME: de 'TeVerwijderen'-vlag voor de rootentity's
+        /// wordt nog genegeerd.</remarks>
 		public static T[] AttachObjectGraphs<T>(this ObjectContext context, IEnumerable<T> entities, params Expression<Func<T, object>>[] paths) where T:IBasisEntiteit
 		{
 			T[] unattachedEntities = entities.ToArray();
 			T[] attachedEntities = new T[unattachedEntities.Length];
 			Type entityType = typeof(T);
+
+            // Deze method doet enkel iets als er daadwerkelijk
+            // iets in unattachedEntities zit.
 
 			if (unattachedEntities.Length > 0)
 			{
@@ -50,6 +67,15 @@ namespace CodeProject.Data.Entity
 				// (see: https://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=3405138&SiteID=1)
 				try { context.MetadataWorkspace.LoadFromAssembly(entityType.Assembly); }
 				catch { }
+
+                // In onderstaande region worden de al bestaande root
+                // entity's gequery'd, om op die manier al in de
+                // object context terecht te komen.
+                //
+                // Dit is een optimalisatie voor als er meerdere root
+                // entity's zouden zijn.  Op die manier wordt de database
+                // niet iedere keer opnieuw bevraagd bij
+                // AddOrAttachInstance (zie na onderstaande region)
 
 				#region Automatic preload root entities
 
@@ -59,7 +85,7 @@ namespace CodeProject.Data.Entity
 				int pid = 0;
 				foreach(T entity in unattachedEntities)
 				{
-					// If the entity has an entitykey:
+					// If the entity has an ID:
 
                     if (entity.ID != 0)
                     {
@@ -71,32 +97,42 @@ namespace CodeProject.Data.Entity
 
                         entity.EntityKey = context.CreateEntityKey(typeof(T).Name, entity);
 
-                        where.Append(" OR ((1=1)");
+                        //where.Append(" OR ((1=1)");
+                        //foreach (EntityKeyMember keymember in entity.EntityKey.EntityKeyValues)
+                        //{
+                        //    string pname = String.Format("p{0}", pid++);
+                        //    where.Append(" AND (it.[");
+                        //    where.Append(keymember.Key);
+                        //    where.Append("] = @");
+                        //    where.Append(pname);
+                        //    where.Append(")");
+                        //    pars.Add(new ObjectParameter(pname, keymember.Value));
+                        //}
+                        //where.Append(")");
 
-                        // Voor onze IBasisEntiteit bevat de EntityKey enkel 
-                        // ID als component, wat deze for-loop eigenlijk
-                        // overbodig maakt.
+                        // Vervangen door:
 
-                        foreach (EntityKeyMember keymember in entity.EntityKey.EntityKeyValues)
-                        {
-                            string pname = String.Format("p{0}", pid++);
-                            where.Append(" AND (it.[");
-                            where.Append(keymember.Key);
-                            where.Append("] = @");
-                            where.Append(pname);
-                            where.Append(")");
-                            pars.Add(new ObjectParameter(pname, keymember.Value));
-                        }
-                        where.Append(")");
+                        string pname = String.Format("p{0}", pid++);
+                        where.Append(String.Format(" OR it.ID = @{0}", pname));
+                        pars.Add(new ObjectParameter(pname, entity.ID));
+
+                        // en nu maar hopen dat het werkt :)
+
                     }
                     else
                     {
-                        // De rest van de code gaat ervan uit dat
-                        // de entity nieuw is ASA de key null is.
+                        // In de oorspronkelijke code werd een nieuwe entiteit
+                        // gemarkeerd door de entity key null te maken.  Om
+                        // zeker te zijn, zet ik hem hier expliciet.
 
                         entity.EntityKey = null;
                     }
 				}
+
+                // Als er bestaande objecten waren, dan is er een where,
+                // en zijn er queryparameters.  In dat geval voeren we
+                // de query uit, zodat de bestaande objecten in de
+                // objectcontext terecht komen.
 
 				// If WHERE clause not empty, construct and execute query:
 				if (pars.Count > 0)
@@ -115,10 +151,19 @@ namespace CodeProject.Data.Entity
 				#endregion Automatic preload root entities
 
 				// Attach the root entities:
+
+                // De unattachedEntities (momenteel alles) worden geattacht
+                // of geadd.  De geattachte exemplaren komen in 
+                // attachedEntities terecht.
 				for(int i=0; i<unattachedEntities.Length; i++)
 					attachedEntities[i] = (T)context.AddOrAttachInstance(unattachedEntities[i], true);
 
 				// Collect property paths into a tree:
+
+                // Ik vermoed dat er een tree wordt gemaakt, waarbij
+                // de nodes de Properties zijn die de te attachen
+                // graaf bepalen.
+
 				TreeNode<ExtendedPropertyInfo> root = new TreeNode<ExtendedPropertyInfo>(null);
 				foreach (var path in paths)
 				{
@@ -128,6 +173,12 @@ namespace CodeProject.Data.Entity
 				}
 
 				// Navigate over all properties:
+
+                // root bevat de tree, die bepaalt via welke property's de
+                // graaf opgebouwd wordt.  NavigatePropertySet zal de graaf
+                // bekijken in unattachedEntities, en reconstrueren in
+                // attachedEntities.
+
 				for(int i=0; i<unattachedEntities.Length; i++)
 					NavigatePropertySet(context, root, unattachedEntities[i], attachedEntities[i]);
 			}
@@ -137,23 +188,34 @@ namespace CodeProject.Data.Entity
 		}
 
 		/// <summary>
-		/// Adds or attaches the entity to the context. If the entity has an EntityKey,
-		/// the entity is attached, otherwise a clone of it is added.
+        /// Adds or attaches the entity to the context. If the entity has an EntityKey,
+        /// the entity is attached, otherwise a clone of it is added.
 		/// </summary>
-		/// <returns>The attached entity.</returns>
-		public static object AddOrAttachInstance(this ObjectContext context, object entity, bool applyPropertyChanges)
+		/// <param name="context">context waaraan te attachen</param>
+		/// <param name="entity">te attachen entiteit</param>
+		/// <param name="applyPropertyChanges">geeft aan of property changes in de
+        /// context gemarkeerd moeten worden</param>
+		/// <returns>De geattachte entiteit</returns>
+		public static IBasisEntiteit AddOrAttachInstance(this ObjectContext context, IBasisEntiteit entity, bool applyPropertyChanges)
 		{
-			EntityKey entityKey = ((IEntityWithKey)entity).EntityKey;
-			if (entityKey == null)
+			if (entity.ID == 0)
 			{
-				object attachedEntity = GetShallowEntityClone(entity);
+				IBasisEntiteit attachedEntity = GetShallowEntityClone(entity) as IBasisEntiteit;
+
+                Debug.Assert(attachedEntity != null);
+
 				context.AddObject(context.GetEntitySetName(entity.GetType()), attachedEntity);
-				((IEntityWithKey)entity).EntityKey = ((IEntityWithKey)attachedEntity).EntityKey;
+				entity.EntityKey = attachedEntity.EntityKey;
 				return attachedEntity;
 			}
 			else
 			{
-				object attachedEntity = context.GetObjectByKey(entityKey);
+                EntityKey entityKey = entity.EntityKey;
+
+				IBasisEntiteit attachedEntity = context.GetObjectByKey(entityKey) as IBasisEntiteit;
+
+                Debug.Assert(attachedEntity != null);
+
 				if (applyPropertyChanges)
 					context.ApplyPropertyChanges(entityKey.EntitySetName, entity);
 				return attachedEntity;
@@ -236,39 +298,82 @@ namespace CodeProject.Data.Entity
 
 		#region Private implementation
 
-		/// <summary>
-		/// Navigates a property path on detached instance to translate into attached instance.
-		/// </summary>
-		private static void NavigatePropertySet(ObjectContext context, TreeNode<ExtendedPropertyInfo> propertynode, object owner, object attachedowner)
+        /// <summary>
+ 		/// Navigates a property path on detached instance to translate into attached instance.
+        /// </summary>
+        /// <param name="context">Objectcontext</param>
+        /// <param name="propertynode">tree met daarin de property's die de graaf bepalen</param>
+        /// <param name="owner">entiteit voor niet-geattachte graaf</param>
+        /// <param name="attachedowner">entiteit voor geattachte graaf;
+        /// bevat initieel enkel de parent.</param>
+		private static void NavigatePropertySet(ObjectContext context, TreeNode<ExtendedPropertyInfo> propertynode, IBasisEntiteit owner, IBasisEntiteit attachedowner)
 		{
 			// Try to navigate each of the properties:
+
+            // Dit is een recursieve functie.  Zolang er kinderen zijn in
+            // propertynode, worden alle overeenkomstige property's uit
+            // owner geattacht in attachedowner.
+
 			foreach (TreeNode<ExtendedPropertyInfo> childnode in propertynode.Children)
 			{
 				ExtendedPropertyInfo property = childnode.Item;
 
+                // property is de property van owner die we willen
+                // attachen aan attachedowner.
+
 				// Retrieve property value:
-				object related = property.PropertyInfo.GetValue(owner, null);
+                object related = property.PropertyInfo.GetValue(owner, null);
 
 				if (related is IEnumerable)
 				{
 					// Load current list in context:
+
+                    // Het gaat om een 1-op-veel-relatie.  Als dat niet het geval is,
+                    // wordt de veel-kant van attachedowner in de context geladen.
+
 					object attachedlist = property.PropertyInfo.GetValue(attachedowner, null);
 					RelatedEnd relatedEnd = (RelatedEnd)attachedlist;
 					if (((EntityObject)attachedowner).EntityState != EntityState.Added && !relatedEnd.IsLoaded)
 						relatedEnd.Load();
 
+                    // attachedlist bevat de gerelateerde entity's van 
+                    // het geattachte object
+
 					// Recursively navigate through new members:
-					List<object> newlist = new List<object>();
-					foreach (var relatedinstance in (IEnumerable)related)
+					List<IBasisEntiteit> newlist = new List<IBasisEntiteit>();
+                    
+					foreach (object relatedinstance in (IEnumerable)related)
 					{
-						object attachedinstance = context.AddOrAttachInstance(relatedinstance, !property.NoUpdate);
+                        IBasisEntiteit be = relatedinstance as IBasisEntiteit;
+
+                        // We gaan er in ons project van uit dat elke entiteit erft
+                        // van IBasisEntiteit.  Is dat niet het geval, dan is er iets mis.
+
+                        Debug.Assert(be != null);
+
+                        // Als bovenstaande assertie failt, dan kan ben je
+                        // waarschijnlijk vergeten een partial entityklasse
+                        // uit te breiden met de IBasisEntiteitdingen.
+                        // Kijk tijdens het debuggen naar het type van
+                        // relatedinstance, en je weet dewelke het is.
+
+                        // Attach of creeer gerelateerde entiteit van de
+                        // veel-kant, en bewaar dat in newlist
+
+						IBasisEntiteit attachedinstance = context.AddOrAttachInstance(be, !property.NoUpdate);
 						newlist.Add(attachedinstance);
-						NavigatePropertySet(context, childnode, relatedinstance, attachedinstance);
+
+                        // Recursief aanroepen van NavigatePropertySet op de
+                        // individuele entity's aan de veel-kant
+
+						NavigatePropertySet(context, childnode, be, attachedinstance);
 					}
 
 					// Synchronise lists:
-					List<object> removedItems;
-					SyncList(attachedlist, newlist, out removedItems);
+					IList<IBasisEntiteit> removedItems;
+
+                    Debug.Assert(attachedlist is IEnumerable);
+					SyncList((IEnumerable)attachedlist, newlist, out removedItems);
 
 					// Delete removed items if association is owned:
 					if (AssociationEndBehaviorAttribute.GetAttribute(property.PropertyInfo).Owned)
@@ -280,19 +385,28 @@ namespace CodeProject.Data.Entity
 				}
 				else if (!typeof(IEnumerable).IsAssignableFrom(property.PropertyInfo.PropertyType))
 				{
+                    // 1-op-1-relatie
+
+                    // Als dat nog niet het geval is, wordt de betreffende
+                    // property aan de context geattacht.
+
 					// Load reference of currently attached in context:
 					RelatedEnd relatedEnd = (RelatedEnd)attachedowner.PublicGetProperty(property.PropertyInfo.Name + "Reference");
 					if (((EntityObject)attachedowner).EntityState != EntityState.Added && !relatedEnd.IsLoaded)
 						relatedEnd.Load();
 
 					// Recursively navigate through new value (unless it's null):
-					object attachedinstance;
+					IBasisEntiteit attachedinstance;
 					if (related == null)
 						attachedinstance = null;
 					else
 					{
-						attachedinstance = context.AddOrAttachInstance(related, !property.NoUpdate);
-						NavigatePropertySet(context, childnode, related, attachedinstance);
+                        Debug.Assert(related is IBasisEntiteit);
+
+						attachedinstance = context.AddOrAttachInstance(related as IBasisEntiteit, !property.NoUpdate);
+
+                        // recursieve aanroep voor eventuele children van property
+						NavigatePropertySet(context, childnode, related as IBasisEntiteit, attachedinstance);
 					}
 
 					// Synchronise value:
@@ -325,40 +439,82 @@ namespace CodeProject.Data.Entity
 		}
 
 		/// <summary>
-		/// Synchronises a targetlist with a sourcelist by adding or removing items from the targetlist.
-		/// The targetlist is untyped and controlled through reflection.
+        /// Synchronises a targetlist with a sourcelist by adding or removing items from the targetlist.
+        /// The targetlist is untyped and controlled through reflection.
+        /// 
+        /// Oorspronkelijk werd er uit target verwijderd wat er niet
+        /// in source zit.  Maar nu kijk ik naar de TeVerwijderen property
+        /// van target zelf.
 		/// </summary>
-		private static void SyncList(object targetlist, List<object> sourcelist, out List<object> removedItems)
+		/// <param name="targetlist">een-op-veel property van een bestaande 
+        /// geattachte entiteit, zoals die uit de database gehaald is</param>
+		/// <param name="sourcelist">diezelfde een-op-veel property, maar
+        /// zoals het zou moeten zijn.  Ook hier zijn alle gerelateerde
+        /// entity' s geattacht</param>
+		/// <param name="removedItems">hierin zullen de te verwijderen objecten
+        /// bewaard worden</param>
+		private static void SyncList(IEnumerable targetlist, IList<IBasisEntiteit> sourcelist, out IList<IBasisEntiteit> removedItems)
 		{
-			List<object> localsourcelist = new List<object>(sourcelist);
-			List<object> toremove = new List<object>();
+			List<IBasisEntiteit> toremove = new List<IBasisEntiteit>();
 
-			// Compare both lists:
-			foreach (object item in (IEnumerable)targetlist)
-			{
-				bool found = false;
-				for (int i = 0; i < localsourcelist.Count; i++)
-				{
-					if (Object.ReferenceEquals(localsourcelist[i], item))
-					{
-						localsourcelist[i] = null;
-						found = true;
-					}
-				}
-				if (!found)
-					toremove.Add(item);
-			}
+            // targetlist: zo zit het nu in de database
+            // sourcelist: zo zouden we het willen
+            // bedoeling:
+            // targetlist: zelfde items als sourcelist
+            // toremove: de te verwijderen entity's
 
-			// Add members not in targetlist:
-			foreach (object item in localsourcelist)
-			{
-				if (Object.ReferenceEquals(item, null) == false)
-					targetlist.PublicInvokeMethod("Add", item);
-			}
+            // De oorspronkelijke code werkte niet met IBasisEntiteit,
+            // maar deze aangepaste code wel.  Daarom kan ik het
+            // oorspronkelijke (hieronder uitgecommentarieerd) op een
+            // gemakkelijkere manier realiseren.
 
-			// Remove members not in sourcelist:
-			foreach (object item in toremove)
-				targetlist.PublicInvokeMethod("Remove", item);
+            // List<IBasisEntiteit> localsourcelist = new List<IBasisEntiteit>(sourcelist);
+            //
+            //// Compare both lists:
+            //foreach (object item in targetlist)
+            //{
+            //    bool found = false;
+            //    for (int i = 0; i < localsourcelist.Count; i++)
+            //    {
+            //        if (Object.ReferenceEquals(localsourcelist[i], item))
+            //        {
+            //            localsourcelist[i] = null;
+            //            found = true;
+            //        }
+            //    }
+            //    if (!found)
+            //        toremove.Add(item);
+            //}
+            //
+            //// Add members not in targetlist:
+            //foreach (object item in localsourcelist)
+            //{
+            //    if (Object.ReferenceEquals(item, null) == false)
+            //        targetlist.PublicInvokeMethod("Add", item);
+            //}
+
+            //// Remove members not in sourcelist:
+            //foreach (object item in toremove)
+            //    targetlist.PublicInvokeMethod("Remove", item);
+
+            for (int i = 0; i < sourcelist.Count; ++i)
+            {
+                // Ik hoop dat de info in TeVerwijderen niet
+                // in de vlucht is verdwenen.
+
+                // FIXME: die Add en Remove moeten toch ook
+                // aangeroepen kunnen worden zonder reflectie.
+
+                if (sourcelist[i].TeVerwijderen)
+                {
+                    toremove.Add(sourcelist[i]);
+                    targetlist.PublicInvokeMethod("Remove", sourcelist[i]);
+                }
+                else if (sourcelist[i].ID != 0)
+                {
+                    targetlist.PublicInvokeMethod("Add", sourcelist[i]);
+                }
+            }
 
 			// Expose removed items:
 			removedItems = toremove;

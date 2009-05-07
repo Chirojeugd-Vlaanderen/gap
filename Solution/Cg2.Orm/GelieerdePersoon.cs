@@ -32,6 +32,14 @@ namespace Cg2.Orm
 
         // private IList<PersoonsInfo> _meeGeleverd;
 
+        private bool _teVerwijderen = false;
+
+        public bool TeVerwijderen
+        {
+            get { return _teVerwijderen; }
+            set { _teVerwijderen = value; }
+        }
+
         public GelieerdePersoon(): base()
         {
             // _meeGeleverd = null;
