@@ -53,7 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adres.cs" />
-    <Compile Include="BasisEntiteitMethods.cs" />
     <Compile Include="ChiroGroepModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -70,7 +69,6 @@
     <Compile Include="GebruikersRecht.cs" />
     <Compile Include="GelieerdePersoon.cs" />
     <Compile Include="Groep.cs" />
-    <Compile Include="IBasisEntiteit.cs" />
     <Compile Include="CommunicatieVorm.cs" />
     <Compile Include="Lid.cs" />
     <Compile Include="Persoon.cs" />
@@ -87,6 +85,12 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ChiroGroepModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cg2.EfWrapper\Cg2.EfWrapper.csproj">
+      <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
+      <Name>Cg2.EfWrapper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

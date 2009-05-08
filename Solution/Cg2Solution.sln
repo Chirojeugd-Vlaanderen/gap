@@ -31,8 +31,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcWebApp", "MvcWebApp2\Mvc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcWebApp.Tests", "MvcWebApp2.Tests\MvcWebApp.Tests.csproj", "{D9FF6AE7-5925-4A6D-9BD7-C4AC9D04C69F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeProject.Data", "CodeProject.Data\CodeProject.Data.csproj", "{72F61656-2949-4763-9381-678B2D07AE0B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Capgemini.Adf", "Capgemini.Adf\Capgemini.Adf.csproj", "{BAAC24EC-57C1-4108-94BA-40FC0977762A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Capgemini.Adf.ServiceModel", "Capgemini.Adf.ServiceModel\Capgemini.Adf.ServiceModel.csproj", "{174890F3-1F4C-4CFC-83A1-AA88F5748A67}"
@@ -44,6 +42,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Fouten", "Cg2.Fouten\Cg2.Fouten.csproj", "{D82C1286-8BC6-422C-8688-E178377D3EB6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Services", "Cg2.Services\Cg2.Services.csproj", "{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.EfWrapper", "Cg2.EfWrapper\Cg2.EfWrapper.csproj", "{72F61656-2949-4763-9381-678B2D07AE0B}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -90,10 +90,6 @@ Global
 		{D9FF6AE7-5925-4A6D-9BD7-C4AC9D04C69F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9FF6AE7-5925-4A6D-9BD7-C4AC9D04C69F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9FF6AE7-5925-4A6D-9BD7-C4AC9D04C69F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{72F61656-2949-4763-9381-678B2D07AE0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{72F61656-2949-4763-9381-678B2D07AE0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{72F61656-2949-4763-9381-678B2D07AE0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{72F61656-2949-4763-9381-678B2D07AE0B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAAC24EC-57C1-4108-94BA-40FC0977762A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -114,6 +110,10 @@ Global
 		{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72F61656-2949-4763-9381-678B2D07AE0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72F61656-2949-4763-9381-678B2D07AE0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72F61656-2949-4763-9381-678B2D07AE0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72F61656-2949-4763-9381-678B2D07AE0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

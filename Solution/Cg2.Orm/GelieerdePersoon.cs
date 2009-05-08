@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
+using Cg2.EfWrapper;
+
 namespace Cg2.Orm
 {
     /// <summary>

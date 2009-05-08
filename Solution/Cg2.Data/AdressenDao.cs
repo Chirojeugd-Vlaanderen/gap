@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cg2.Orm;
 using System.Diagnostics;
-using Cg2.Orm.DataInterfaces;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using CodeProject.Data.Entity;
+
+using Cg2.EfWrapper;
+using Cg2.EfWrapper.Entity;
+using Cg2.Orm;
+using Cg2.Orm.DataInterfaces;
+
+
 
 namespace Cg2.Data.Ef
 {

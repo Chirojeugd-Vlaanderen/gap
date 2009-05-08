@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Cg2.EfWrapper;
+
 namespace Cg2.Orm
 {
     public partial class Adres: IBasisEntiteit
