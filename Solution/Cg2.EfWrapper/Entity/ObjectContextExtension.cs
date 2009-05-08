@@ -158,29 +158,32 @@ namespace Cg2.EfWrapper.Entity
 				for(int i=0; i<unattachedEntities.Length; i++)
 					attachedEntities[i] = (T)context.AddOrAttachInstance(unattachedEntities[i], true);
 
-				// Collect property paths into a tree:
+                if (paths != null)
+                {
+                    // Collect property paths into a tree:
 
-                // Ik vermoed dat er een tree wordt gemaakt, waarbij
-                // de nodes de Properties zijn die de te attachen
-                // graaf bepalen.
+                    // Ik vermoed dat er een tree wordt gemaakt, waarbij
+                    // de nodes de Properties zijn die de te attachen
+                    // graaf bepalen.
 
-				TreeNode<ExtendedPropertyInfo> root = new TreeNode<ExtendedPropertyInfo>(null);
-				foreach (var path in paths)
-				{
-					List<ExtendedPropertyInfo> members = new List<ExtendedPropertyInfo>();
-					EntityFrameworkHelper.CollectRelationalMembers(path, members);
-					root.AddPath(members);
-				}
+                    TreeNode<ExtendedPropertyInfo> root = new TreeNode<ExtendedPropertyInfo>(null);
+                    foreach (var path in paths)
+                    {
+                        List<ExtendedPropertyInfo> members = new List<ExtendedPropertyInfo>();
+                        EntityFrameworkHelper.CollectRelationalMembers(path, members);
+                        root.AddPath(members);
+                    }
 
-				// Navigate over all properties:
+                    // Navigate over all properties:
 
-                // root bevat de tree, die bepaalt via welke property's de
-                // graaf opgebouwd wordt.  NavigatePropertySet zal de graaf
-                // bekijken in unattachedEntities, en reconstrueren in
-                // attachedEntities.
+                    // root bevat de tree, die bepaalt via welke property's de
+                    // graaf opgebouwd wordt.  NavigatePropertySet zal de graaf
+                    // bekijken in unattachedEntities, en reconstrueren in
+                    // attachedEntities.
 
-				for(int i=0; i<unattachedEntities.Length; i++)
-					NavigatePropertySet(context, root, unattachedEntities[i], attachedEntities[i]);
+                    for (int i = 0; i < unattachedEntities.Length; i++)
+                        NavigatePropertySet(context, root, unattachedEntities[i], attachedEntities[i]);
+                }
 			}
 
 			// Return the attached root entities:
@@ -206,6 +209,7 @@ namespace Cg2.EfWrapper.Entity
 
 				context.AddObject(context.GetEntitySetName(entity.GetType()), attachedEntity);
 				entity.EntityKey = attachedEntity.EntityKey;
+                
 				return attachedEntity;
 			}
 			else
