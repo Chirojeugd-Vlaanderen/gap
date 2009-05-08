@@ -62,17 +62,110 @@ namespace Cg2.EfWrapper.Test
         #endregion
 
         /// <summary>
+        /// Test op toevoegen van 1 entity via AttachEntityGraph
+        /// </summary>
+        [TestMethod]
+        public void EntityToevoegenViaAttachEntityGraph()
+        {
+            #region Arrange
+
+            GelieerdePersoon p = new GelieerdePersoon { ChiroLeefTijd = 1 };
+            int nieuwID;
+
+            #endregion
+            #region Act
+
+            using (Entities db = new Entities())
+            {
+                db.AttachObjectGraph(p, null);
+                db.SaveChanges();
+
+                nieuwID = p.ID;
+            }
+
+            #endregion
+            #region Assert
+
+            using (Entities db2 = new Entities())
+            {
+                GelieerdePersoon q = (from gp in db2.GelieerdePersoon
+                                      where gp.ID == nieuwID
+                                      select gp).FirstOrDefault();
+                Assert.AreEqual(p.ChiroLeefTijd, 1);
+            }
+
+            #endregion
+        }
+
+        /// <summary>
+        /// Test op toevoegen van graaf
+        /// 2 keer een 1 op veelrelatie toegevoegd,
+        /// van 'veel' naar '1'.
+        /// </summary>
+        [TestMethod]
+        public void VolledigeGraafToevoegen_VeelNaar1()
+        {
+            #region Arrange
+
+            GelieerdePersoon p = new GelieerdePersoon { ChiroLeefTijd = -1 };
+            Adres a1 = new Adres { Bus = "b", PostCode="" };
+
+            // In het echte programma wordt natuurlijk de
+            // PersonenManager gebruikt om adressen te koppelen,
+            // zodat je zelf niet moet wakker liggen van alle 
+            // referenties goed te leggen.  Maar in deze test
+            // werken we niet op de echte entities, maar op
+            // entities uit een testdatabase, vandaar dat het
+            // manueel moet.  (Ik doe niet graag automatische
+            // tests op de echte database.)
+
+            PersoonsAdres pa1 = new PersoonsAdres { GelieerdePersoon = p, Adres = a1, Opmerking = "Eerste adres", IsStandaard = true };
+
+            p.PersoonsAdres.Add(pa1);
+            a1.PersoonsAdres.Add(pa1);
+
+            int nieuwePersoonID;
+
+            #endregion
+            #region Act
+
+            using (Entities db = new Entities())
+            {
+                db.AttachObjectGraph(pa1, bla => bla.GelieerdePersoon, bla => bla.Adres);
+                db.SaveChanges();
+
+                nieuwePersoonID = p.ID;
+            }
+
+            #endregion
+            #region Assert
+
+            using (Entities db2 = new Entities())
+            {
+                GelieerdePersoon q = (from gp in db2.GelieerdePersoon.Include("PersoonsAdres").Include("PersoonsAdres.Adres")
+                                      where gp.ID == nieuwePersoonID
+                                      select gp).FirstOrDefault();
+
+                Assert.AreEqual(q.PersoonsAdres.Count(), 1);
+                Assert.AreEqual(q.PersoonsAdres.First().Opmerking, "Eerste adres");
+                Assert.AreEqual(q.PersoonsAdres.First().Adres.Bus, "b");
+            }
+
+            #endregion
+        }
+
+        /// <summary>
         /// Test op toevoegen van graaf met enkel nieuwe
         /// nodes.
         /// </summary>
         [TestMethod]
         public void VolledigeGraafToevoegen()
         {
-            // Arrange
+            #region Arrange
 
-            GelieerdePersoon p = new GelieerdePersoon { ChiroLeefTijd = 0 };
-            Adres a1 = new Adres();
-            Adres a2 = new Adres();
+            GelieerdePersoon p = new GelieerdePersoon { ChiroLeefTijd = -1 };
+            Adres a1 = new Adres { Bus = "", PostCode = "" };
+            Adres a2 = new Adres { Bus = "", PostCode = "" };
 
             // In het echte programma wordt natuurlijk de
             // PersonenManager gebruikt om adressen te koppelen,
@@ -93,7 +186,8 @@ namespace Cg2.EfWrapper.Test
 
             int nieuwePersoonID;
 
-            // Act
+            #endregion
+            #region Act
 
             using (Entities db = new Entities())
             {
@@ -103,7 +197,8 @@ namespace Cg2.EfWrapper.Test
                 nieuwePersoonID = p.ID;
             }
 
-            // Assert
+            #endregion
+            #region Assert
 
             using (Entities db2 = new Entities())
             {
@@ -111,13 +206,15 @@ namespace Cg2.EfWrapper.Test
                                       where gp.ID == nieuwePersoonID
                                       select gp).FirstOrDefault();
 
-                Assert.Equals(q.PersoonsAdres.Count(), 2);
+                Assert.AreEqual(q.PersoonsAdres.Count(), 2);
                 Assert.IsTrue((q.PersoonsAdres.First().Opmerking == "Eerste adres"
                     && q.PersoonsAdres.Last().Opmerking == "Tweede adres")
                     || (q.PersoonsAdres.First().Opmerking == "Tweede adres"
                     && q.PersoonsAdres.Last().Opmerking == "Eerste adres"));
                 Assert.AreNotEqual(q.PersoonsAdres.First().Adres, q.PersoonsAdres.Last().Adres);
             }
+
+            #endregion
         }
     }
 }
