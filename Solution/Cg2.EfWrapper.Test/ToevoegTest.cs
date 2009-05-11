@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Cg2.EfWrapper.Entity;
+using System.Data.Objects;
 
 namespace Cg2.EfWrapper.Test
 {
@@ -60,6 +61,47 @@ namespace Cg2.EfWrapper.Test
         // public void MyTestCleanup() { }
         //
         #endregion
+
+        /// <summary>
+        /// Stomme functie die een nieuwe persoon aanmaakt in de
+        /// DB met 2 adressen.
+        /// </summary>
+        /// <returns>GelieerdePersoonsID</returns>
+        private int PersoonMetTweeAdressenMaken()
+        {
+            GelieerdePersoon p = new GelieerdePersoon { ChiroLeefTijd = 2 };
+            Adres a1 = new Adres { Bus = "", PostCode = "" };
+            Adres a2 = new Adres { Bus = "", PostCode = "" };
+
+            // In het echte programma wordt natuurlijk de
+            // PersonenManager gebruikt om adressen te koppelen,
+            // zodat je zelf niet moet wakker liggen van alle 
+            // referenties goed te leggen.  Maar in deze test
+            // werken we niet op de echte entities, maar op
+            // entities uit een testdatabase, vandaar dat het
+            // manueel moet.  (Ik doe niet graag automatische
+            // tests op de echte database.)
+
+            PersoonsAdres pa1 = new PersoonsAdres { GelieerdePersoon = p, Adres = a1, Opmerking = "Eerste adres", IsStandaard = true };
+            PersoonsAdres pa2 = new PersoonsAdres { GelieerdePersoon = p, Adres = a2, Opmerking = "Tweede adres", IsStandaard = false };
+
+            p.PersoonsAdres.Add(pa1);
+            p.PersoonsAdres.Add(pa2);
+            a1.PersoonsAdres.Add(pa1);
+            a2.PersoonsAdres.Add(pa2);
+
+            int nieuwePersoonID;
+
+            using (Entities db = new Entities())
+            {
+                GelieerdePersoon geattacht = db.AttachObjectGraph(p, bla => bla.PersoonsAdres, bla => bla.PersoonsAdres.First().Adres);
+                db.SaveChanges();
+
+                nieuwePersoonID = geattacht.ID;
+            }
+
+            return nieuwePersoonID;
+        }
 
         /// <summary>
         /// Test op toevoegen van 1 entity via AttachEntityGraph
@@ -154,6 +196,7 @@ namespace Cg2.EfWrapper.Test
             #endregion
         }
 
+
         /// <summary>
         /// Test op toevoegen van graaf met enkel nieuwe
         /// nodes.
@@ -215,6 +258,53 @@ namespace Cg2.EfWrapper.Test
             }
 
             #endregion
+        }
+
+        /// <summary>
+        /// Test op toevoegen van 1 node in bestaande graaf
+        /// </summary>
+        [TestMethod]
+        public void AdresToevoegen()
+        {
+            #region Arrange
+            GelieerdePersoon p;
+            int persoonID = PersoonMetTweeAdressenMaken();
+
+            using (Entities db = new Entities())
+            {
+                db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
+
+                p = (from gp in db.GelieerdePersoon.Include("PersoonsAdres.Adres")
+                     where gp.ID == persoonID
+                     select gp).FirstOrDefault();
+            }
+            #endregion
+
+            #region Act
+            Adres a1 = new Adres { Bus = "a", PostCode = "" };
+            PersoonsAdres pa1 = new PersoonsAdres { GelieerdePersoon = p, Adres = a1, Opmerking = "Toegevoegd adres", IsStandaard = false };
+
+            p.PersoonsAdres.Add(pa1);
+            a1.PersoonsAdres.Add(pa1);
+
+            using (Entities db2 = new Entities())
+            {
+                db2.AttachObjectGraph(p, bla => bla.PersoonsAdres, bla => bla.PersoonsAdres.First().Adres);
+                db2.SaveChanges();
+            }
+            #endregion
+
+            #region Assert
+            using (Entities db3 = new Entities())
+            {
+                GelieerdePersoon q = (from gp in db3.GelieerdePersoon.Include("PersoonsAdres.Adres")
+                                      where gp.ID == persoonID
+                                      select gp).FirstOrDefault();
+
+                Assert.AreEqual(q.PersoonsAdres.Count, 3);
+            }
+            #endregion
+
         }
     }
 }
