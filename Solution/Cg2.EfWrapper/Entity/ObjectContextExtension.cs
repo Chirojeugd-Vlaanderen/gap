@@ -518,8 +518,12 @@ namespace Cg2.EfWrapper.Entity
                     toremove.Add(sourcelist[i]);
                     targetlist.PublicInvokeMethod("Remove", sourcelist[i]);
                 }
-                else if (sourcelist[i].ID != 0)
+                else
                 {
+                    // Zou ik moeten checken of sourcelist[i] al voorkomt
+                    // in targetlist? In het beste geval negeert EF
+                    // automatisch dubbele add's...
+
                     targetlist.PublicInvokeMethod("Add", sourcelist[i]);
                 }
             }
