@@ -5,6 +5,7 @@ using System.Text;
 using System.Runtime.Serialization;
 
 using Cg2.EfWrapper;
+using Cg2.EfWrapper.Entity;
 
 namespace Cg2.Orm
 {
@@ -26,6 +27,15 @@ namespace Cg2.Orm
         [EnumMember] VerzekeringsInfo
     }
 
+    // Als er een persoon met adressen over de service gestuurd wordt,
+    // en een PersoonsAdres is verdwenen, dan is het de bedoeling dat
+    // het persoonsobject mee verdwijnt uit de database.  Om daarvoor
+    // te zorgen, is onderstaand attribuut AssociationEndBehavior
+    // nodig.  (Als dat attribuut er niet zou staan, dan zou enkel
+    // de koppeling tussen Persoon en Persoonsadres verdwijnen, en
+    // dat heeft dan weer een key violation tot gevolg.)
+
+    [AssociationEndBehavior("PersoonsAdres", Owned = true)]
     public partial class GelieerdePersoon : IBasisEntiteit 
     {
         // We gaan de lijst met PersoonsInfo niet opnemen in de

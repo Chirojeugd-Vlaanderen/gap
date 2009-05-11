@@ -224,8 +224,11 @@ namespace Cg2.EfWrapper.Entity
 
                 Debug.Assert(attachedEntity != null);
 
-				if (applyPropertyChanges)
-					context.ApplyPropertyChanges(entityKey.EntitySetName, entity);
+                if (applyPropertyChanges)
+                {
+                    context.ApplyPropertyChanges(entityKey.EntitySetName, entity);
+                    attachedEntity.TeVerwijderen = entity.TeVerwijderen;
+                }
 				return attachedEntity;
 			}
 		}

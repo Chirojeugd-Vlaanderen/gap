@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Cg2.EfWrapper.Entity;
 
 namespace Cg2.EfWrapper.Test
 {
@@ -22,6 +23,7 @@ namespace Cg2.EfWrapper.Test
         }
     }
 
+    [AssociationEndBehavior("PersoonsAdres", Owned=true)]
     public partial class GelieerdePersoon : IBasisEntiteit
     {
         private bool _teVerwijderen = false;
