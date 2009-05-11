@@ -77,10 +77,10 @@ namespace Cg2.EfWrapper.Test
 
             using (Entities db = new Entities())
             {
-                db.AttachObjectGraph(p, null);
+                GelieerdePersoon geattacht = db.AttachObjectGraph(p, null);
                 db.SaveChanges();
 
-                nieuwID = p.ID;
+                nieuwID = geattacht.ID;
             }
 
             #endregion
@@ -131,10 +131,10 @@ namespace Cg2.EfWrapper.Test
 
             using (Entities db = new Entities())
             {
-                db.AttachObjectGraph(pa1, bla => bla.GelieerdePersoon, bla => bla.Adres);
+                PersoonsAdres geattacht = db.AttachObjectGraph(pa1, bla => bla.GelieerdePersoon, bla => bla.Adres);
                 db.SaveChanges();
 
-                nieuwePersoonID = p.ID;
+                nieuwePersoonID = geattacht.GelieerdePersoon.ID;
             }
 
             #endregion
@@ -191,10 +191,10 @@ namespace Cg2.EfWrapper.Test
 
             using (Entities db = new Entities())
             {
-                db.AttachObjectGraph(p, bla => bla.PersoonsAdres, bla => bla.PersoonsAdres.First().Adres);
+                GelieerdePersoon geattacht = db.AttachObjectGraph(p, bla => bla.PersoonsAdres, bla => bla.PersoonsAdres.First().Adres);
                 db.SaveChanges();
 
-                nieuwePersoonID = p.ID;
+                nieuwePersoonID = geattacht.ID;
             }
 
             #endregion

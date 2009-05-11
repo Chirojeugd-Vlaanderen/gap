@@ -31,6 +31,10 @@ namespace Cg2.EfWrapper.Entity
 		/// <summary>
 		/// Attaches an entire objectgraph to the context.
 		/// </summary>
+        /// <remarks>Als je achteraf context.SaveChanges aanroept,
+        /// en je wil op zoek naar nieuwe ID's, kijk dan niet in
+        /// je originele graaf, maar in de graaf van de return
+        /// value van deze functie!</remarks>
 		public static T AttachObjectGraph<T>(this ObjectContext context, T entity, params Expression<Func<T, object>>[] paths) where T: IBasisEntiteit
 		{
 			return AttachObjectGraphs(context, new T[] { entity }, paths)[0];
@@ -389,10 +393,10 @@ namespace Cg2.EfWrapper.Entity
 				}
 				else if (!typeof(IEnumerable).IsAssignableFrom(property.PropertyInfo.PropertyType))
 				{
-                    // 1-op-1-relatie
+                    // 1-op-1-relatie, of '1-kant' van 1-op-veelrelatie
 
-                    // Als dat nog niet het geval is, wordt de betreffende
-                    // property aan de context geattacht.
+                    // Als dat nog niet het geval is, en het 'child' is niet nieuw, 
+                    // wordt eerst de bestaande property aan de context geattacht,
 
 					// Load reference of currently attached in context:
 					RelatedEnd relatedEnd = (RelatedEnd)attachedowner.PublicGetProperty(property.PropertyInfo.Name + "Reference");
