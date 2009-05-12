@@ -10,6 +10,37 @@ namespace Cg2.Ioc
 {
     public static class Factory<T>
     {
+        private static object threadLock = new object();
+
+        private static IUnityContainer _container = null;
+
+        private static IUnityContainer Container
+        {
+            get
+            {
+                if (_container == null)
+                {
+                    InitContainer();
+                }
+                return _container;
+            }
+        }
+
+
+        private static void InitContainer()
+        {
+            lock (threadLock)
+            {
+                if (_container == null)
+                {
+                    _container = new UnityContainer();
+                    UnityConfigurationSection section
+                        = (UnityConfigurationSection)ConfigurationManager.GetSection("unity");
+                    section.Containers.Default.Configure(_container);
+                }
+            }
+        }
+        
         /// <summary>
         /// Gebruik Unity om een instantie van type/interface T
         /// te creeren.
@@ -17,18 +48,7 @@ namespace Cg2.Ioc
         /// <returns></returns>
         public static T Maak()
         {
-            T resultaat;
-
-            using (IUnityContainer container = new UnityContainer())
-            {
-                UnityConfigurationSection section
-                    = (UnityConfigurationSection)ConfigurationManager.GetSection("unity");
-                section.Containers.Default.Configure(container);
-
-                resultaat = container.Resolve<T>();
-            }
-
-            return resultaat;
+            return Container.Resolve<T>(); 
         }
     }
 }
