@@ -42,6 +42,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.ServiceContracts", "Cg2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.EfWrapper.Test", "Cg2.EfWrapper.Test\Cg2.EfWrapper.Test.csproj", "{58B08F00-2098-4227-8359-39CF68A6371B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Ioc", "Cg2.Ioc\Cg2.Ioc.csproj", "{C100E957-CEE2-4707-BF13-C64553C28C7B}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution.vsmdi
@@ -111,6 +113,10 @@ Global
 		{58B08F00-2098-4227-8359-39CF68A6371B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58B08F00-2098-4227-8359-39CF68A6371B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58B08F00-2098-4227-8359-39CF68A6371B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,12 +4,14 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using System.Security.Permissions;
+
 using Cg2.ServiceContracts;
 using Cg2.Workers;
 using Cg2.Orm;
 using Cg2.Fouten.Exceptions;
-using System.Security.Permissions;
 using Cg2.Fouten.FaultContracts;
+using Cg2.Ioc;
 
 namespace Cg2.Services
 {
@@ -81,7 +83,7 @@ namespace Cg2.Services
         public void Verhuizen(IList<int> gelieerdePersonen, Adres nieuwAdres, int oudAdresID)
         {
             GelieerdePersonenManager pm = new GelieerdePersonenManager();
-            AuthorisatieManager aum = new AuthorisatieManager();
+            AuthorisatieManager aum = Factory<AuthorisatieManager>.Maak();
             AdressenManager adm = new AdressenManager();
 
             // Zoek adres op in database, of maak een nieuw.

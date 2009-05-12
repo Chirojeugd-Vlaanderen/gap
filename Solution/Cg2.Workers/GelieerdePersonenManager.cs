@@ -6,6 +6,7 @@ using Cg2.Orm.DataInterfaces;
 using Cg2.Data.Ef;
 using Cg2.Orm;
 using Cg2.Fouten.Exceptions;
+using Cg2.Ioc;
 
 namespace Cg2.Workers
 {
@@ -34,7 +35,7 @@ namespace Cg2.Workers
 
         public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
         {
-            AuthorisatieManager am = new AuthorisatieManager();
+            AuthorisatieManager am = Factory<AuthorisatieManager>.Maak();
 
             if (am.IsGavGelieerdePersoon(gelieerdePersoonID))
             {
@@ -63,7 +64,7 @@ namespace Cg2.Workers
 
         public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
         {
-            AuthorisatieManager am = new AuthorisatieManager();
+            AuthorisatieManager am = Factory<AuthorisatieManager>.Maak();
 
             if (am.IsGavGroep(groepID))
             {

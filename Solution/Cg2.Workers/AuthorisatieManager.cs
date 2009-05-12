@@ -15,11 +15,6 @@ namespace Cg2.Workers
 
         #region Constructors
 
-        public AuthorisatieManager()
-        {
-            _dao = new AuthorisatieDao();
-        }
-
         public AuthorisatieManager(IAuthorisatieDao dao)
         {
             _dao = dao;
