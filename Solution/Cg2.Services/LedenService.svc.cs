@@ -7,6 +7,7 @@ using System.Text;
 using Cg2.ServiceContracts;
 using Cg2.Workers;
 using Cg2.Orm;
+using Cg2.Ioc;
 
 namespace Cg2.Services
 {
@@ -15,8 +16,8 @@ namespace Cg2.Services
     {
         public Lid LidMakenEnBewaren(int gelieerdePersoonID)
         {
-            GelieerdePersonenManager pm = new GelieerdePersonenManager();
-            LedenManager lm = new LedenManager();
+            GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
+            LedenManager lm = Factory.Maak<LedenManager>();
 
             Lid l = lm.LidMaken(pm.Ophalen(gelieerdePersoonID));
             
@@ -25,7 +26,7 @@ namespace Cg2.Services
 
         public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalOpgehaald)
         {
-            LedenManager lm = new LedenManager();
+            LedenManager lm = Factory.Maak<LedenManager>();
 
             IList<Lid> result = lm.Dao.PaginaOphalen(groepsWerkJaarID, pagina, paginaGrootte, out aantalOpgehaald);
 
@@ -34,7 +35,7 @@ namespace Cg2.Services
         
         public IList<Lid> LedenOphalenMetInfo(string name, IList<LidInfo> gevraagd) //andere searcharg
         {
-            LedenManager lm = new LedenManager();
+            LedenManager lm = Factory.Maak<LedenManager>();
             return lm.LedenOphalenMetInfo(name, gevraagd);
         }
 
@@ -46,7 +47,7 @@ namespace Cg2.Services
         /// <returns></returns>
         public IList<Lid> LidOphalenMetInfo(int lidID, string name, IList<LidInfo> gevraagd) //andere searcharg
         {
-            LedenManager lm = new LedenManager();
+            LedenManager lm = Factory.Maak<LedenManager>();
             return lm.LidOphalenMetInfo(lidID, name, gevraagd);
         }
 
@@ -56,7 +57,7 @@ namespace Cg2.Services
         /// <param name="persoon"></param>
         public void LidBewaren(Lid lid)
         {
-            LedenManager lm = new LedenManager();
+            LedenManager lm = Factory.Maak<LedenManager>();
             lm.LidBewaren(lid);
         }
 
@@ -66,7 +67,7 @@ namespace Cg2.Services
         /// <param name="lid"></param>
         public void LidOpNonactiefZetten(Lid lid)
         {
-            LedenManager lm = new LedenManager();
+            LedenManager lm = Factory.Maak<LedenManager>();
             lm.LidOpNonactiefZetten(lid);
         }
 
@@ -76,7 +77,7 @@ namespace Cg2.Services
         /// <param name="lid"></param>
         public void LidActiveren(Lid lid)
         {
-            LedenManager lm = new LedenManager();
+            LedenManager lm = Factory.Maak<LedenManager>();
             lm.LidActiveren(lid);
         }
     }

@@ -21,7 +21,7 @@ namespace Cg2.Services
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<GelieerdePersoon> AllenOphalen(int groepID)
         {
-            GelieerdePersonenManager pm = new GelieerdePersonenManager();
+            GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
 
             var result = pm.AllenOphalen(groepID);
             return result;
@@ -30,7 +30,7 @@ namespace Cg2.Services
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<GelieerdePersoon>  PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
         {
-            GelieerdePersonenManager pm = new GelieerdePersonenManager();
+            GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
 
             var result = pm.PaginaOphalen(groepID, pagina, paginaGrootte, out aantalOpgehaald);
 
@@ -40,7 +40,7 @@ namespace Cg2.Services
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
         {
-            GelieerdePersonenManager pm = new GelieerdePersonenManager();
+            GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
 
             return pm.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalOpgehaald);
         }
@@ -48,7 +48,7 @@ namespace Cg2.Services
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void PersoonBewaren(GelieerdePersoon persoon)
         {
-            GelieerdePersonenManager pm = new GelieerdePersonenManager();
+            GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
             pm.Bewaren(persoon);
         }
 
@@ -62,7 +62,7 @@ namespace Cg2.Services
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID)
         {
-            GelieerdePersonenManager pm = new GelieerdePersonenManager();
+            GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
             return pm.DetailsOphalen(gelieerdePersoonID);
         }
 
@@ -75,16 +75,16 @@ namespace Cg2.Services
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public Adres AdresMetBewonersOphalen(int adresID)
         {
-            AdressenManager adm = new AdressenManager();
+            AdressenManager adm = Factory.Maak<AdressenManager>();
             return adm.AdresMetBewonersOphalen(adresID);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void Verhuizen(IList<int> gelieerdePersonen, Adres nieuwAdres, int oudAdresID)
         {
-            GelieerdePersonenManager pm = new GelieerdePersonenManager();
-            AuthorisatieManager aum = Factory<AuthorisatieManager>.Maak();
-            AdressenManager adm = new AdressenManager();
+            GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
+            AuthorisatieManager aum = Factory.Maak<AuthorisatieManager>();
+            AdressenManager adm = Factory.Maak<AdressenManager>();
 
             // Zoek adres op in database, of maak een nieuw.
             // (als straat en gemeente gekend)

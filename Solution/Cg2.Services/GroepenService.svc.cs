@@ -7,6 +7,7 @@ using System.Text;
 using Cg2.Workers;
 using Cg2.Orm;
 using Cg2.ServiceContracts;
+using Cg2.Ioc;
 
 namespace Cg2.Services
 {
@@ -17,7 +18,7 @@ namespace Cg2.Services
 
         public Groep Updaten(Groep g)
         {
-            GroepenManager gm = new GroepenManager();
+            GroepenManager gm = Factory.Maak<GroepenManager>();
 
             try
             {
@@ -33,7 +34,7 @@ namespace Cg2.Services
 
         public Groep Ophalen(int groepID)
         {
-            GroepenManager gm = new GroepenManager();
+            GroepenManager gm = Factory.Maak<GroepenManager>();
 
             var result = gm.Dao.Ophalen(groepID);
             return result;

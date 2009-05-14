@@ -10,7 +10,12 @@ namespace Cg2.Workers
 {
     public class ChiroGroepenManager
     {
-        private IDao<ChiroGroep> _dao = new Dao<ChiroGroep>();
+        private IDao<ChiroGroep> _dao = null;
+
+        public ChiroGroepenManager(IDao<ChiroGroep> dao)
+        {
+            _dao = dao;
+        }
 
         public IDao<ChiroGroep> Dao
         {

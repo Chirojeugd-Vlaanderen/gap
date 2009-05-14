@@ -18,15 +18,6 @@ namespace Cg2.Workers
         }
 
         /// <summary>
-        /// In de standaardconstructor wordt een standaard repository
-        /// (GroepenDao) aangemaakt.
-        /// </summary>
-        public GroepenManager()
-        {
-            _dao = new GroepenDao();
-        }
-
-        /// <summary>
         /// Deze constructor laat toe om een alternatieve repository voor
         /// de groepen te gebruiken.  Nuttig voor mocking en testing.
         /// </summary>

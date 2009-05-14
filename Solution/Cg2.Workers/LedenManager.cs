@@ -21,13 +21,6 @@ namespace Cg2.Workers
 
         #region Constructors
 
-        public LedenManager()
-        {
-            _dao = new LedenDao();
-            _groepenDao = new GroepenDao();
-            _gelPersDao = new GelieerdePersonenDao();
-        }
-
         public LedenManager(ILedenDao dao, IGroepenDao groepenDao, IGelieerdePersonenDao gelPersDao)
         {
             _dao = dao;

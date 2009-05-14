@@ -15,11 +15,6 @@ namespace Cg2.Workers
         private IGelieerdePersonenDao _dao;
         private IGroepenDao _groepenDao;
 
-        public GelieerdePersonenManager()
-        {
-            _dao = new GelieerdePersonenDao();
-        }
-
         public GelieerdePersonenManager(IGelieerdePersonenDao dao, IGroepenDao groepenDao)
         {
             _dao = dao;
@@ -35,7 +30,7 @@ namespace Cg2.Workers
 
         public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
         {
-            AuthorisatieManager am = Factory<AuthorisatieManager>.Maak();
+            AuthorisatieManager am = Factory.Maak<AuthorisatieManager>();
 
             if (am.IsGavGelieerdePersoon(gelieerdePersoonID))
             {
@@ -64,7 +59,7 @@ namespace Cg2.Workers
 
         public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
         {
-            AuthorisatieManager am = Factory<AuthorisatieManager>.Maak();
+            AuthorisatieManager am = Factory.Maak<AuthorisatieManager>();
 
             if (am.IsGavGroep(groepID))
             {

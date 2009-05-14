@@ -20,13 +20,6 @@ namespace Cg2.Workers
 
         #region constructors
 
-        public AdressenManager()
-        {
-            _dao = new AdressenDao();
-            _stratenDao = new StratenDao();
-            _subgemeenteDao = new SubgemeenteDao();
-        }
-
         public AdressenManager(IAdressenDao dao, IStratenDao stratenDao, ISubgemeenteDao subgemeenteDao)
         {
             _dao = dao;
