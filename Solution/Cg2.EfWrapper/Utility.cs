@@ -22,7 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 
-namespace Cg2.Orm
+namespace Cg2.EfWrapper
 {
     public static class Utility
     {

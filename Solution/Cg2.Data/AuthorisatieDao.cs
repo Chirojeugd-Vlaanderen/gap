@@ -5,6 +5,7 @@ using System.Text;
 using Cg2.Orm;
 using Cg2.Orm.DataInterfaces;
 using System.Data.Objects;
+using Cg2.EfWrapper;
 
 namespace Cg2.Data.Ef
 {
