@@ -93,5 +93,25 @@ namespace Cg2.ServiceContracts
         [OperationContract]
         [FaultContract(typeof(AdresFault))]
         void Verhuizen(IList<int> gelieerdePersonen, Adres nieuwAdres, int oudAdresID);
+
+        /// <summary>
+        /// Haalt alle gelieerde personen op die een adres gemeen hebben met de
+        /// GelieerdePersoon bepaald door aanvragerID
+        /// </summary>
+        /// <param name="aanvragerID">ID van GelieerdePersoon</param>
+        /// <returns>lijst met GelieerdePersonen die huisgenoot zijn van gegeven gelieerde 
+        /// persoon</returns>
+        [OperationContract]
+        IList<GelieerdePersoon> HuisGenotenOphalen(int aanvragerID);
+
+        /// <summary>
+        /// Voegt een adres toe aan een verzameling gelieerde personen
+        /// </summary>
+        /// <param name="gelieerdePersonenIDs">ID's van gelieerde personen
+        /// waaraan het nieuwe adres toegevoegd moet worden.</param>
+        /// <param name="adres">Toe te voegen adres</param>
+        /// <returns></returns>
+        [OperationContract]
+        void AdresToevoegen(List<int> gelieerdePersonenIDs, Adres adres);
     }
 }

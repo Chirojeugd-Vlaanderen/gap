@@ -32,7 +32,8 @@ namespace Cg2.Data.Ef
         }
 
         /// <summary>
-        /// Bewaart adres en eventuele gekoppelde persoonsadressen.
+        /// Bewaart adres en eventuele gekoppelde persoonsadressen en 
+        /// gelieerde personen.
         /// </summary>
         /// <param name="nieuweEntiteit">Te bewaren adres</param>
         /// <returns>referentie naar het bewaarde adres</returns>
@@ -55,7 +56,10 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                bewaardAdres = db.AttachObjectGraph(adr, dink=>dink.Straat.WithoutUpdate(), dink=>dink.Subgemeente.WithoutUpdate(), dink => dink.PersoonsAdres.First());
+                bewaardAdres = db.AttachObjectGraph(adr
+                    , dink=>dink.Straat.WithoutUpdate()
+                    , dink=>dink.Subgemeente.WithoutUpdate()
+                    , dink=>dink.PersoonsAdres.First().GelieerdePersoon.WithoutUpdate());
 
                 // bewaardAdres is het geattachte adres.  Hiervan neem
                 // ik ID en versie over; de rest laat ik ongemoeid.
@@ -147,8 +151,7 @@ namespace Cg2.Data.Ef
         /// <param name="postCode"></param>
         /// <param name="gemeenteNaam"></param>
         /// <param name="metBewoners">indien true, worden ook de
-        /// persoonsadressen opgehaald (ALLEMAAL, dus niet zomaar
-        /// over de lijn sturen!)</param>
+        /// persoonsadressen en gelieerde personen opgehaald</param>
         /// <returns>Een adres als gevonden, anders null</returns>
         public Adres Ophalen(string straatNaam, int? huisNr, string bus, int postNr, string postCode, string gemeenteNaam, bool metBewoners)
         {

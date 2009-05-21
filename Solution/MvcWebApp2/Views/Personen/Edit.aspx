@@ -56,7 +56,7 @@
             <%=Html.ActionLink( "[verhuizen]", "Verhuizen", new {Controller="Personen", id = pa.Adres.ID} ) %>
         </li>
     <%} %>
-        <li><%=Html.ActionLink( "[nieuw adres]", "NieuwAdres", new {Controller="Personen", gelieerdePersoonID = ViewData.Model.ID} ) %></li>
+        <li><%=Html.ActionLink( "[nieuw adres]", "NieuwAdres", new {Controller="Personen", id = ViewData.Model.ID} ) %></li>
     </ul>   
     
 

@@ -82,6 +82,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="ModelStateWrapper.cs" />
+    <Compile Include="Models\NieuwAdresInfo.cs" />
     <Compile Include="Models\VerhuisInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -89,6 +90,7 @@
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Views\Leden\Index.aspx" />
+    <Content Include="Views\Personen\NieuwAdres.aspx" />
     <Content Include="Views\Personen\Details.aspx" />
     <Content Include="Views\Personen\Edit.aspx" />
     <Content Include="Views\Personen\Hallo.aspx" />

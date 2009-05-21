@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Cg2.Orm;
 using Capgemini.Adf.ServiceModel;
+
+using Cg2.Orm;
 using Cg2.ServiceContracts;
 
 namespace MvcWebApp2.Models
@@ -41,6 +42,10 @@ namespace MvcWebApp2.Models
             NaarAdres = new Adres();
             GelieerdePersoonIDs = new List<int>();
         }
+
+        // TODO: Ik ben er niet zeker van of het model de service
+        // rechtstreeks mag aanspreken, of of dat via de controller
+        // moet gebeuren...
 
         /// <summary>
         /// Creeert verhuisinfo voor alle (zichtbare) bewoners van het

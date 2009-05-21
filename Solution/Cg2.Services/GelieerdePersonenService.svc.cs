@@ -18,6 +18,8 @@ namespace Cg2.Services
     // NOTE: If you change the class name "GelieerdePersonenService" here, you must also update the reference to "GelieerdePersonenService" in Web.config.
     public class GelieerdePersonenService : IGelieerdePersonenService
     {
+        #region IGelieerdePersonenService Members
+
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<GelieerdePersoon> AllenOphalen(int groepID)
         {
@@ -80,7 +82,7 @@ namespace Cg2.Services
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public void Verhuizen(IList<int> gelieerdePersonen, Adres nieuwAdres, int oudAdresID)
+        public void Verhuizen(IList<int> gelieerdePersonenIDs, Adres nieuwAdres, int oudAdresID)
         {
             GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
             AuthorisatieManager aum = Factory.Maak<AuthorisatieManager>();
@@ -111,7 +113,7 @@ namespace Cg2.Services
             // Om foefelen te vermijden: we werken enkel op de gelieerde
             // personen waar de gebruiker GAV voor is.
 
-            IList<int> mijnGelieerdePersonen = aum.EnkelMijnGelieerdePersonen(gelieerdePersonen);
+            IList<int> mijnGelieerdePersonen = aum.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs);
 
             // Haal bronadres en alle bewoners op
 
@@ -145,5 +147,52 @@ namespace Cg2.Services
             // de persoonsobjecten los van het oude adres.
             // Bijgevolg moet het oudeAdres niet gepersisteerd worden.
         }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        public void AdresToevoegen(List<int> gelieerdePersonenIDs, Adres adres)
+        {
+            // Dit gaat sterk lijken op op verhuizen.
+
+            GelieerdePersonenManager persMgr = Factory.Maak<GelieerdePersonenManager>();
+            AdressenManager adrMgr = Factory.Maak<AdressenManager>();
+
+            // Adres opzoeken in database
+            try
+            {
+                adres = adrMgr.ZoekenOfMaken(adres);
+            }
+            catch (AdresException ex)
+            {
+                throw new FaultException<AdresFault>(ex.Fault);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            // Personen ophalen
+            IList<GelieerdePersoon> personenLijst = persMgr.LijstOphalen(gelieerdePersonenIDs);
+
+            // Adres koppelen
+            foreach (GelieerdePersoon p in personenLijst)
+            {
+                persMgr.AdresToevoegen(p, adres);
+            }
+
+            // persisteren
+            adrMgr.Bewaren(adres);
+        }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        public IList<GelieerdePersoon> HuisGenotenOphalen(int gelieerdePersoonID)
+        {
+            // FIXME: enkel huisgenoten ophalen die ook gelieerd zijn aan groepen
+            // van aanvrager!
+
+            GelieerdePersonenManager gm = Factory.Maak<GelieerdePersonenManager>();
+            return gm.HuisGenotenOphalen(gelieerdePersoonID);
+        }
+
+        #endregion
     }
 }

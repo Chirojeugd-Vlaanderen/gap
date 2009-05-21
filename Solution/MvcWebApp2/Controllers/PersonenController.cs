@@ -157,6 +157,38 @@ namespace MvcWebApp2.Controllers
             }
         }
 
+        // GET: /Personen/NieuwAdres/gelieerdePersoonID
+        public ActionResult NieuwAdres(int id)
+        {
+            NieuwAdresInfo model = new NieuwAdresInfo(id);
+            return View("NieuwAdres", model);
+        }
+
+        // post: /Personen/NieuwAdres
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult NieuwAdres(NieuwAdresInfo model)
+        {
+            try
+            {
+                // De service zal model.NieuwAdres.ID negeren; dit wordt
+                // steeds opnieuw opgezocht.  Adressen worden nooit
+                // gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
+
+                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegen(model.GelieerdePersoonIDs, model.NieuwAdres));
+
+                return RedirectToAction("Edit", new { id = model.AanvragerID });
+            }
+            catch (FaultException<AdresFault> ex)
+            {
+                new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "NieuwAdres");
+                return View("NieuwAdres", model);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public ActionResult Hallo()
         {
             return View("Hallo");

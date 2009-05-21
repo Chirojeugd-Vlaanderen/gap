@@ -85,7 +85,7 @@ namespace Cg2.Workers
 
             adr.ID = 0;
 
-            adresInDb = _dao.Ophalen(adr.Straat.Naam, adr.HuisNr, adr.Bus, adr.Straat.PostNr, adr.PostCode, adr.Subgemeente.Naam, true);
+            adresInDb = _dao.Ophalen(adr.Straat.Naam, adr.HuisNr, adr.Bus, adr.Straat.PostNr, adr.PostCode, adr.Subgemeente.Naam, false);
 
             if (adresInDb == null)
             {

@@ -12,6 +12,14 @@ namespace Cg2.Orm.DataInterfaces
     public interface IGelieerdePersonenDao: IDao<GelieerdePersoon>
     {
         /// <summary>
+        /// Haalt lijst op van GelieerdePersonen + persoonsinfo
+        /// </summary>
+        /// <param name="gelieerdePersonenIDs">ID's van op te halen
+        /// GelieerdePersonen</param>
+        /// <returns>lijst met GelieerdePersonen</returns>
+        IList<GelieerdePersoon> LijstOphalen(IList<int> gelieerdePersonenIDs);
+
+        /// <summary>
         /// Haalt de persoonsgegevens van alle gelieerde personen van een groep op.
         /// </summary>
         /// <param name="GroepID">ID van de groep</param>
@@ -65,5 +73,16 @@ namespace Cg2.Orm.DataInterfaces
         /// <returns>referentie naar p, nadat groepsgegevens
         /// geladen zijn</returns>
         GelieerdePersoon GroepLaden(GelieerdePersoon p);
+
+        /// <summary>
+        /// Haalt alle gelieerde personen op die op een zelfde
+        /// adres wonen als de gelieerde persoon met het gegeven ID.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van gegeven gelieerde
+        /// persoon.</param>
+        /// <returns>Lijst met GelieerdePersonen (inc. persoonsinfo)</returns>
+        /// <remarks>Als de persoon nergens woont, is hij toch zijn eigen
+        /// huisgenoot.</remarks>
+        IList<GelieerdePersoon> HuisGenotenOphalen(int gelieerdePersoonID);
     }
 }
