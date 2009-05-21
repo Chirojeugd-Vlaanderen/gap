@@ -118,29 +118,50 @@ die bij elkaar horen te groeperen.
 \end{enumerate}
 
 \begin{lstlisting}[float, caption=Opbouw, texcl=false, label=lblLstOpbouw]
-// Groep.cs - basisklasse voor ChiroGroep en Satelliet
-// Copyright (C) 2008, Chirojeugd Vlaanderen
-//
-// (licentievoorwaarden iemand?)
-//
-// Contact: Johan Vervloet <johan.vervloet@chiro.be>
-//
+/// (C) Chirojeugd-Vlaanderen vzw, 2009
+///
+/// (licentievoorwaarden?)
+///
+/// Contact: Johan Vervloet <johan.vervloet@chiro.be>
+///
 
-import System.Data;
-import System.Data.Linq;
-import System.Data.Linq.Mapping;
-import Kipadmin.StamNrTools; 
+using System;
+using System.Data;
+using System.Data.Linq.Mapping;
+using KipAdmin.StamNrTools;
 
 namespace ChiroData
 {
-	public class Groep
-	{
-#region Constructors
-		// definieer hier de constructors
-#endregion
+    /// <summary>
+    /// Basisklasse voor ChiroGroep en Satelliet
+    /// </summary>
+    public class Groep
+    {
+        #region Private members
+        // TODO: Private members declareren
+        #endregion
 
-		// nog meer definities...
-	}
+        #region Properties
+        // TODO: Properties uitwerken
+        #endregion
+
+        #region Constructor(s)
+
+        public Groep()
+        {
+            // TODO: Constructorlogica
+        }
+
+        #endregion
+
+        #region Publieke methods
+        // TODO: Publieke methods uitwerken
+        #endregion
+
+        #region Private methods
+        // TODO: Private methods uitwerken
+        #endregion
+    }
 }
 \end{lstlisting}
 
@@ -529,6 +550,52 @@ object dat je gebruikt.
 \item Roep de garbage collector zelf niet expliciet aan.
 \end{enumerate}
 
+\subsection{ADO.NET}\opmerking{Voor het Chirogroepprogramma gebruiken we Entity Framework voor data access; deze sectie staat er voor projecten die w\'el ADO.NET gebruiken.}
+
+\begin{enumerate}[resume]
+\item Connecties zo laat mogelijk openen en zo vroeg mogelijk opnieuw sluiten.\footnote{.NET is
+zelf verantwoordelijk voor connection pooling.}
+\item Zorg ervoor dat de connectie altijd gesloten wordt, ofwel in een \lstinline!finally!-blok, ofwel via een \lstinline !using!-constructie.
+\item Gebruik een `Data Provider Factory' om connecties, commando's, \ldots te
+genereren.
+\item Gebruik de klasse \lstinline !DbParameter! om query's te parameterizeren.
+\item Bewaar connection strings en data provider in het configuratiebestand.
+\item Bij excepties log je de volgende zaken:
+\begin{itemize}
+\item Naam van het commando
+\item Het commando zelf
+\item De parameters
+\item De connection string
+\end{itemize}
+\end{enumerate}
+
+\begin{lstlisting}[float, caption=ADO.NET]
+try
+{
+	// factory is de provider factory.
+
+	DbConnection connectie = factory.CreateConnection();
+	connectie.ConnectionString = connStr;
+
+	DbCommand commando = factory.CreateCommand();
+	commando.Connection = connectie;
+	commando.CommandText = InschrijvingsQuery;
+	
+	DbParameter parameter = factory.CreateParameter();
+	parameter.ParameterName = "@AdNr";
+	parameter.Value = adNr;
+
+	commando.Parameters.Add(parameter);
+	commando.ExecuteNonQuery();
+}
+// handel hier exceptions af
+finally
+{
+	commando.Dispose();
+	connectie.Dispose();
+}
+\end{lstlisting}
+
 \subsection{Overig}
 
 \begin{enumerate}[resume]
@@ -639,7 +706,7 @@ zelf verantwoordelijk voor connection pooling.}
 \item Entity's die buiten de context gebruikt moeten worden, moeten
 gedetached zijn.  Gebruik hiervoor \lstinline !MergeOption.NoTracking! of
 \lstinline !Detach!.
-\item Gebruik linq to entities voor databasemanipulaties.
+\item Gebruik linq to entities om te query'en.
 \item Bewaar connection strings in \lstinline !app.Config! of \lstinline
 !web.Config!.
 \end{enumerate}
