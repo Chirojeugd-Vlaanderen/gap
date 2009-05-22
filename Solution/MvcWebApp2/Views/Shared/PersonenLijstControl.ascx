@@ -10,7 +10,7 @@
 <tr>
     <td><%=p.Persoon.AdNummer %></td>
     <td><% Html.RenderPartial("PersoonsLinkControl", p); %></td>
-    <td><%=p.Persoon.GeboorteDatum == null ? "?" : ((DateTime)p.Persoon.GeboorteDatum).ToString("d") %></td>
+    <td><%=p.Persoon.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)p.Persoon.GeboorteDatum).ToString("dd/MM/yyyy") %></td>
     <td><%=p.Persoon.Geslacht.ToString() %></td>
     <td>
         <% if (p.Lid.Count == 0)
