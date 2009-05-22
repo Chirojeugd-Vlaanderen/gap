@@ -20,11 +20,10 @@ namespace MvcWebApp2.Controllers
         public ActionResult Index()
         {
             int aantal;
-            Models.LedenModel lidModel = new Models.LedenModel();
-            lidModel.Ledenlijst = ServiceHelper.CallService<ILedenService, IList<Lid>>(l => l.PaginaOphalen(int.Parse(ConfigurationSettings.AppSettings["TestGroepsWerkJaarID"]), 1, 12, out aantal));
-            //IList<Lid> leden = ServiceHelper.CallService<ILedenService, IList<Lid>>(l => l.PaginaOphalen(int.Parse(ConfigurationSettings.AppSettings["TestGroepsWerkJaarID"]), 1, 12, out aantal));
+            Models.LidInfoModel lidInfoModel = new Models.LidInfoModel();
+            lidInfoModel.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<LidInfo>>(lid => lid.PaginaOphalen(int.Parse(ConfigurationSettings.AppSettings["TestGroepsWerkJaarID"]), 1, 12, out aantal));
 
-            return View("Index", lidModel);
+            return View("Index", lidInfoModel);
         }
 
         //

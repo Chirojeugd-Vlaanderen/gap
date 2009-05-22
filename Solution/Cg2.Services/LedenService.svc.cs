@@ -20,35 +20,16 @@ namespace Cg2.Services
             LedenManager lm = Factory.Maak<LedenManager>();
 
             Lid l = lm.LidMaken(pm.Ophalen(gelieerdePersoonID));
-            
+
             return lm.Dao.Bewaren(l);
         }
 
-        public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalOpgehaald)
+        public IList<LidInfo> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalOpgehaald)
         {
             LedenManager lm = Factory.Maak<LedenManager>();
 
             IList<Lid> result = lm.Dao.PaginaOphalen(groepsWerkJaarID, pagina, paginaGrootte, out aantalOpgehaald);
-
-            return result;
-        }
-        
-        public IList<Lid> LedenOphalenMetInfo(string name, IList<LidInfo> gevraagd) //andere searcharg
-        {
-            LedenManager lm = Factory.Maak<LedenManager>();
-            return lm.LedenOphalenMetInfo(name, gevraagd);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="?"></param>
-        /// <returns></returns>
-        public IList<Lid> LidOphalenMetInfo(int lidID, string name, IList<LidInfo> gevraagd) //andere searcharg
-        {
-            LedenManager lm = Factory.Maak<LedenManager>();
-            return lm.LidOphalenMetInfo(lidID, name, gevraagd);
+            return mapLid(result);
         }
 
         /// <summary>
@@ -80,5 +61,34 @@ namespace Cg2.Services
             LedenManager lm = Factory.Maak<LedenManager>();
             lm.LidActiveren(lid);
         }
+
+        #region mappers
+
+        private LidInfo mapLid(Lid lid)
+        {
+            return new LidInfo() {
+                AdNummer = lid.GelieerdePersoon.Persoon.AdNummer,
+                GelieerdePersoonID = lid.GelieerdePersoon.ID,
+                GeboorteDatum = lid.GelieerdePersoon.Persoon.GeboorteDatum,
+                VolledigeNaam = lid.GelieerdePersoon.Persoon.VolledigeNaam,
+                Geslacht = lid.GelieerdePersoon.Persoon.Geslacht,
+                IsLid = (lid.GelieerdePersoon.Lid.Count > 0),
+                LidgeldBetaald = lid.LidgeldBetaald
+            };
+        }
+
+        private IList<LidInfo> mapLid(IList<Lid> leden)
+        {
+            IList<LidInfo> map = new List<LidInfo>();
+            foreach (var lid in leden)
+            {
+                map.Add(mapLid(lid));
+            }
+            return map;
+        }
+
+        #endregion
+
     }
+
 }

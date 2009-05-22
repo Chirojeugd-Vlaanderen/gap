@@ -9,10 +9,10 @@ using Cg2.ServiceContracts;
 
 namespace MvcWebApp2.Models
 {
-    public class PersoonInfoModel : MasterViewModel
+    public class LidInfoModel : MasterViewModel 
     {
-        public IList<PersoonInfo> PersoonInfoLijst { get; set; }
+        public IList<LidInfo> LidInfoLijst { get; set; }
 
-        public PersoonInfoModel() : base() { }
+        public LidInfoModel() : base() { }
     }
 }

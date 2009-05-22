@@ -83,6 +83,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="ModelStateWrapper.cs" />
+    <Compile Include="Models\LidInfoModel.cs" />
     <Compile Include="Models\GelieerdePersonenModel.cs" />
     <Compile Include="Models\LedenModel.cs" />
     <Compile Include="Models\MasterAttribute.cs" />

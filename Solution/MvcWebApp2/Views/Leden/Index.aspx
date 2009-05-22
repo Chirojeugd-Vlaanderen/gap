@@ -1,5 +1,6 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<LedenModel>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<LidInfoModel>" %>
 <%@ Import Namespace="Cg2.Orm" %>
+<%@ Import Namespace="Cg2.ServiceContracts" %>
 <%@ Import Namespace="MvcWebApp2.Models" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">

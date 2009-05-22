@@ -32,27 +32,7 @@ namespace Cg2.ServiceContracts
         /// <returns>lijst met leden, inclusief info gelieerde personen
         /// en personen</returns>
         [OperationContract]
-        IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalOpgehaald);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="?"></param>
-        /// <returns></returns>
-        [OperationContract]
-        IList<Lid> LedenOphalenMetInfo(string name, IList<LidInfo> gevraagd); //andere searcharg
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="?"></param>
-        /// <returns></returns>
-        [OperationContract]
-        IList<Lid> LidOphalenMetInfo(int lidID, string name, IList<LidInfo> gevraagd); //andere searcharg
-
+        IList<LidInfo> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalOpgehaald);
 
         /// <summary>
         /// ook om te maken en te deleten
