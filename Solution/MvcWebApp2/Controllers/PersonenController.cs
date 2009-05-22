@@ -84,7 +84,7 @@ namespace MvcWebApp2.Controllers
 
             var model = new Models.GelieerdePersonenModel();
             model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
-            model.Title = "Persoon Bewerken";
+            model.Title = "Persoon Bewerken " + model.HuidigePersoon.Persoon.VolledigeNaam;
             return View("Edit", model);
         }
 
