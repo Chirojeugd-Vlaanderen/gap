@@ -30,21 +30,21 @@ namespace Cg2.Services
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IList<GelieerdePersoon>  PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
+        public IList<GelieerdePersoon>  PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
             GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
 
-            var result = pm.PaginaOphalen(groepID, pagina, paginaGrootte, out aantalOpgehaald);
+            var result = pm.PaginaOphalen(groepID, pagina, paginaGrootte, out aantalTotaal);
 
             return result;
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IList<PersoonInfo> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
+        public IList<PersoonInfo> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
             GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
 
-            var gelieerdePersonen = pm.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalOpgehaald);
+            var gelieerdePersonen = pm.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
             return mapPersoon(gelieerdePersonen);
         }
 

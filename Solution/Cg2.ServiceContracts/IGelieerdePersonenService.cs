@@ -19,10 +19,10 @@ namespace Cg2.ServiceContracts
         /// <param name="groepID">ID van de betreffende groep</param>
         /// <param name="pagina">paginanummer (1 of hoger)</param>
         /// <param name="paginaGrootte">aantal records per pagina (1 of meer)</param>
-        /// <param name="aantalOpgehaald">outputparameter; geeft effectief aantal opgehaalde personen weer</param>
+        /// <param name="aantalTotaal">outputparameter; geeft het totaal aantal personen weer in de lijst</param>
         /// <returns>lijst van gelieerde personen met persoonsinfo</returns>
         [OperationContract]
-        IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald);
+        IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalTotaal);
 
         /// <summary>
         /// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep,
@@ -31,10 +31,10 @@ namespace Cg2.ServiceContracts
         /// <param name="groepID">ID van de betreffende groep</param>
         /// <param name="pagina">paginanummer (1 of hoger)</param>
         /// <param name="paginaGrootte">aantal records per pagina (1 of meer)</param>
-        /// <param name="aantalOpgehaald">outputparameter; geeft effectief aantal opgehaalde personen weer</param>
+        /// <param name="aantalTotaal">outputparameter; geeft het totaal aantal personen weer in de lijst</param>
         /// <returns>lijst van gelieerde personen met persoonsinfo</returns>
         [OperationContract]
-        IList<PersoonInfo> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald);
+        IList<PersoonInfo> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal);
 
         /// <summary>
         /// Zoekt alle personen die aan de criteria voldoen en geeft daarvan een bepaalde pagina weer

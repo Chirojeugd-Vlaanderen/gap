@@ -22,11 +22,21 @@ namespace MvcWebApp2.Controllers
         // GET: /Personen/
         public ActionResult Index()
         {
-            int aantal;
+            return List(1);
+        }
+
+        //
+        // GET: /Personen/List/4
+        public ActionResult List(int page)
+        {
+            int totaal = 0;
 
             var model = new Models.PersoonInfoModel();
-            model.PersoonInfoLijst = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>(g => g.PaginaOphalenMetLidInfo(int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12, out aantal));
-            model.Title = "Personen Overzicht";
+            model.PersoonInfoLijst = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>(g => g.PaginaOphalenMetLidInfo(int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), page, 20, out totaal));
+            model.PageVorige = page - 1 >= 1 ? page - 1 : -1;
+            model.PageHuidige = page;
+            model.PageVolgende = page + 1 <= totaal/20 ? page + 1 : -1;
+            model.Title = "Personen-overzicht";
 
             return View("Index", model);
         }
@@ -74,7 +84,7 @@ namespace MvcWebApp2.Controllers
 
             var model = new Models.GelieerdePersonenModel();
             model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
-            model.Title = "Personen Edit";
+            model.Title = "Persoon Bewerken";
             return View("Edit", model);
         }
 

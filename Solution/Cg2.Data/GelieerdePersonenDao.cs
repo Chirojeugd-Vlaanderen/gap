@@ -32,13 +32,18 @@ namespace Cg2.Data.Ef
             return result;
         }
 
-        public IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
+        public IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
             IList<GelieerdePersoon> lijst;
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
                 db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
+
+                aantalTotaal = (
+                    from gp in db.GelieerdePersoon
+                    where gp.Groep.ID == groepID
+                    select gp).Count();
 
                 var result = (
                     from gp in db.GelieerdePersoon.Include("Persoon")
@@ -47,7 +52,7 @@ namespace Cg2.Data.Ef
                     select gp).Skip((pagina-1)*paginaGrootte).Take(paginaGrootte);
 
                 lijst = result.ToList<GelieerdePersoon>();
-                aantalOpgehaald = lijst.Count;
+
             }
             
             return lijst;
@@ -89,7 +94,7 @@ namespace Cg2.Data.Ef
         // TODO: onderstaande misschien doen via GroepsWerkJaar ipv via
         // aparte persoon- en groepID?
         //
-        public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, int werkJaar, out int aantalOpgehaald)
+        public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, int werkJaar, out int aantalTotaal)
         {
             int wj;
             IList<GelieerdePersoon> lijst;
@@ -113,6 +118,11 @@ namespace Cg2.Data.Ef
                     wj = werkJaar;
                 }
 
+                aantalTotaal = (
+                    from gp in db.GelieerdePersoon
+                    where gp.Groep.ID == groepID
+                    select gp).Count();
+
                 lijst = (
                     from gp in db.GelieerdePersoon.Include("Persoon").Include("Lid.GroepsWerkJaar")
                     where gp.Groep.ID == groepID
@@ -123,8 +133,6 @@ namespace Cg2.Data.Ef
                 // persoon enkel lid kan zijn van zijn EIGEN groep, is er enkel mogelijk
                 // een probleem dat er lidinfo van ongevraagde werkjaren mee opgenomen is.
                 // Dat pakken we sebiet nog aan.
-
-                aantalOpgehaald = lijst.Count;
             }
 
             // Je zou toch denken dat onderstaande
@@ -147,9 +155,9 @@ namespace Cg2.Data.Ef
             return lijst;   // met wat change komt de relevante lidinfo mee.
         }
 
-        public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
+        public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
-            return PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, 0, out aantalOpgehaald);
+            return PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, 0, out aantalTotaal);
         }
 
         public IList<GelieerdePersoon> LijstOphalen(IList<int> gelieerdePersonenIDs)

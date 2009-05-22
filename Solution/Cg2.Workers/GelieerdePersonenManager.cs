@@ -61,18 +61,18 @@ namespace Cg2.Workers
             return _dao.AllenOphalen(groepID);
         }
 
-        public IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
+        public IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
-            return _dao.PaginaOphalen(groepID, pagina, paginaGrootte, out aantalOpgehaald);
+            return _dao.PaginaOphalen(groepID, pagina, paginaGrootte, out aantalTotaal);
         }
 
-        public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
+        public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
             AuthorisatieManager am = Factory.Maak<AuthorisatieManager>();
 
             if (am.IsGavGroep(groepID))
             {
-                return _dao.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalOpgehaald);
+                return _dao.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
             }
             else
             {

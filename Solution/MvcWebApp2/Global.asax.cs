@@ -17,6 +17,12 @@ namespace MvcWebApp2
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                "PaginatedList",                               // Route name
+                "Personen/List/{page}",                           // URL with params
+                new { controller = "Personen", action = "List" } // Param defaults
+            );
+
+            routes.MapRoute(
                 "Default",                                              // Route name
                 "{controller}/{action}/{id}",                           // URL with parameters
                 new { controller = "Personen", action = "Index", id = "" }  // Parameter defaults

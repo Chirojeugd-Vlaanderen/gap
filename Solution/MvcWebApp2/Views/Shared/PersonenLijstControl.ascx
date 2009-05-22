@@ -3,6 +3,10 @@
 <%@ Import Namespace="Cg2.Orm" %>
 <%@ Import Namespace="Cg2.ServiceContracts" %>
 
+<p><% if (ViewData.Model.PageVorige != -1) { %><%=Html.ActionLink("< " + ViewData.Model.PageVorige, "List", new { Controller = "Personen", page = ViewData.Model.PageVorige })%><% } %> 
+<%=ViewData.Model.PageHuidige %> 
+<% if (ViewData.Model.PageVolgende != -1) { %><%=Html.ActionLink(ViewData.Model.PageVolgende + " >", "List", new { Controller = "Personen", page = ViewData.Model.PageVolgende })%><% } %></p>
+
 <table>
 <tr>
 <th>Ad-nr.</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Acties</th>
