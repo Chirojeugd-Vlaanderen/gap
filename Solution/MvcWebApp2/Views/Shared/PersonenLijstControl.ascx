@@ -3,9 +3,18 @@
 <%@ Import Namespace="Cg2.Orm" %>
 <%@ Import Namespace="Cg2.ServiceContracts" %>
 
-<p><% if (ViewData.Model.PageVorige != -1) { %><%=Html.ActionLink("< " + ViewData.Model.PageVorige, "List", new { Controller = "Personen", page = ViewData.Model.PageVorige })%><% } %> 
-<%=ViewData.Model.PageHuidige %> 
-<% if (ViewData.Model.PageVolgende != -1) { %><%=Html.ActionLink(ViewData.Model.PageVolgende + " >", "List", new { Controller = "Personen", page = ViewData.Model.PageVolgende })%><% } %></p>
+<% if (ViewData.Model.PageTotaal > 1) { 
+    for (int i = 1; i <= ViewData.Model.PageTotaal; i++) {
+        if (ViewData.Model.PageHuidige != i)
+        { %>
+<%=Html.ActionLink("" + i, "List", new { Controller = "Personen", page = i })%>
+<%      }
+        else
+        { %>
+<strong><%=i%></strong>
+<%      } 
+    }
+  } %>
 
 <table>
 <tr>

@@ -26,16 +26,15 @@ namespace MvcWebApp2.Controllers
         }
 
         //
-        // GET: /Personen/List/4
+        // GET: /Personen/List/{paginanummer}
         public ActionResult List(int page)
         {
             int totaal = 0;
 
             var model = new Models.PersoonInfoModel();
             model.PersoonInfoLijst = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>(g => g.PaginaOphalenMetLidInfo(int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), page, 20, out totaal));
-            model.PageVorige = page - 1 >= 1 ? page - 1 : -1;
             model.PageHuidige = page;
-            model.PageVolgende = page + 1 <= totaal/20 ? page + 1 : -1;
+            model.PageTotaal = (int) Math.Ceiling(totaal / 20d);
             model.Title = "Personen-overzicht";
 
             return View("Index", model);
