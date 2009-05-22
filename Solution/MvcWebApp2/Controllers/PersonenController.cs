@@ -24,20 +24,23 @@ namespace MvcWebApp2.Controllers
         {
             int aantal;
 
-            Models.PersoonInfoModel personenModel = new Models.PersoonInfoModel();
-            personenModel.PersoonInfoLijst = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>(g => g.PaginaOphalenMetLidInfo(int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 20, out aantal));
+            var model = new Models.PersoonInfoModel();
+            model.PersoonInfoLijst = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>(g => g.PaginaOphalenMetLidInfo(int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12, out aantal));
+            model.Title = "Personen Overzicht";
 
-            return View("Index", personenModel);
+            return View("Index", model);
         }
 
         //
         // GET: /Personen/Details/5
         public ActionResult Details(int id)
         {
-            Models.GelieerdePersonenModel personenModel = new Models.GelieerdePersonenModel();
-            personenModel.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
+
+            var model = new Models.GelieerdePersonenModel();
+            model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
             //GelieerdePersoon p = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
-            return View("Details", personenModel);
+            model.Title = "Personen Detail";
+            return View("Details", model);
         }
 
         //
@@ -45,7 +48,7 @@ namespace MvcWebApp2.Controllers
         public ActionResult Create()
         {
             return View();
-        } 
+        }
 
         //
         // POST: /Personen/Create
@@ -68,10 +71,11 @@ namespace MvcWebApp2.Controllers
         // GET: /Personen/Edit/5
         public ActionResult Edit(int id)
         {
-            Models.GelieerdePersonenModel personenModel = new Models.GelieerdePersonenModel();
-            personenModel.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
-            // GelieerdePersoon p = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
-            return View("Edit", personenModel );
+
+            var model = new Models.GelieerdePersonenModel();
+            model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
+            model.Title = "Personen Edit";
+            return View("Edit", model);
         }
 
         //
@@ -81,8 +85,8 @@ namespace MvcWebApp2.Controllers
         {
             try
             {
-                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersoonBewaren(p.HuidigePersoon ));
- 
+                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersoonBewaren(p.HuidigePersoon));
+
                 // Voorlopig opnieuw redirecten naar Edit;
                 // er zou wel gemeld moeten worden dat het wijzigen
                 // gelukt is.
@@ -95,7 +99,7 @@ namespace MvcWebApp2.Controllers
             }
             catch
             {
-                return View("Edit" ,p);
+                return View("Edit", p);
             }
         }
 
@@ -110,8 +114,9 @@ namespace MvcWebApp2.Controllers
         // GET: /Personen/Verhuizen/adresID
         public ActionResult Verhuizen(int id)
         {
-            VerhuisInfo model = new VerhuisInfo(id);
-
+            
+            var model = new VerhuisInfo(id);
+            model.Title = "Personen Verhuis";
             return View("AdresBewerken", model);
         }
 
@@ -145,7 +150,7 @@ namespace MvcWebApp2.Controllers
             catch (FaultException<AdresFault> ex)
             {
                 new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "NaarAdres.");
-                
+
                 // Als ik de bewoners van het 'Van-adres' niet had getoond in
                 // de view, dan had ik de view meteen kunnen aanroepen met het
                 // model dat terug 'gebind' is.

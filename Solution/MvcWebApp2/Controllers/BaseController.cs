@@ -41,6 +41,7 @@ namespace MvcWebApp2.Controllers
             childViewModel.Groepsnaam = model.Groepsnaam;
             childViewModel.Gemeente = model.Gemeente;
             childViewModel.StamNummer = model.StamNummer;
+            childViewModel.Title += model.Title;
         }
 
         private void GegevensVanDeGroepInvullen()
@@ -49,6 +50,7 @@ namespace MvcWebApp2.Controllers
             model.Groepsnaam = "In BaseController gevulde groepsnaam";
             model.Gemeente = "Antwerpen";
             model.StamNummer = "XXX/0000";
+            model.Title = " - .: Kakajo :. ";
         }
     }
 }

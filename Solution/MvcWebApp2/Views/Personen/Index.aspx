@@ -4,7 +4,6 @@
 <%@ Import Namespace="Cg2.ServiceContracts" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-	<title>Personenoverzicht</title>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">

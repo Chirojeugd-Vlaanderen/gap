@@ -16,8 +16,24 @@ namespace MvcWebApp2.Models
     /// </summary>
     public class MasterViewModel
     {
+        /// <summary>
+        /// Chiro groepsnaam
+        /// </summary>
         public string Groepsnaam { get; set; }
+
+        /// <summary>
+        /// Plaats van de chirogroep
+        /// </summary>
         public string Gemeente { get; set; }
+
+        /// <summary>
+        /// Nationaal Stamnummer
+        /// </summary>
         public string StamNummer { get; set; }
+
+        /// <summary>
+        /// Titel van de pagina
+        /// </summary>
+        public string Title { get; set; }
     }
 }
