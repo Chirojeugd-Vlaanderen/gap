@@ -1,5 +1,6 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IList<GelieerdePersoon>>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<GelieerdePersonenModel>" %>
 <%@ Import Namespace="Cg2.Orm" %>
+<%@ Import Namespace="MvcWebApp2.Models" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 	<title>Personenoverzicht</title>

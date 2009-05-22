@@ -11,7 +11,8 @@ using Cg2.ServiceContracts;
 
 namespace MvcWebApp2.Controllers
 {
-    public class LedenController : Controller
+    public class LedenController : BaseController
+
     {
         //
         // GET: /Leden/
@@ -19,9 +20,11 @@ namespace MvcWebApp2.Controllers
         public ActionResult Index()
         {
             int aantal;
-            IList<Lid> leden = ServiceHelper.CallService<ILedenService, IList<Lid>>(l => l.PaginaOphalen(int.Parse(ConfigurationSettings.AppSettings["TestGroepsWerkJaarID"]), 1, 12, out aantal));
+            Models.LedenModel lidModel = new Models.LedenModel();
+            lidModel.Ledenlijst = ServiceHelper.CallService<ILedenService, IList<Lid>>(l => l.PaginaOphalen(int.Parse(ConfigurationSettings.AppSettings["TestGroepsWerkJaarID"]), 1, 12, out aantal));
+            //IList<Lid> leden = ServiceHelper.CallService<ILedenService, IList<Lid>>(l => l.PaginaOphalen(int.Parse(ConfigurationSettings.AppSettings["TestGroepsWerkJaarID"]), 1, 12, out aantal));
 
-            return View("Index", leden);
+            return View("Index", lidModel);
         }
 
         //

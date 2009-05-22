@@ -1,12 +1,13 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IList<GelieerdePersoon>>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<GelieerdePersonenModel>" %>
 <%@ Import Namespace="Cg2.Orm" %>
+<%@ Import Namespace="MvcWebApp2.Models" %>
 
 <table>
 <tr>
 <th>Ad-nr.</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Acties</th>
 </tr>
 
-<% foreach (GelieerdePersoon p in ViewData.Model) {  %>
+<% foreach (GelieerdePersoon p in ViewData.Model.GelieerdePersonenLijst) {  %>
 <tr>
     <td><%=p.Persoon.AdNummer %></td>
     <td><% Html.RenderPartial("PersoonsLinkControl", p); %></td>

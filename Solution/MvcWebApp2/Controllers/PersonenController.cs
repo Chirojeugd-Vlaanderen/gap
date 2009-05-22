@@ -16,24 +16,28 @@ using Cg2.Validatie;
 
 namespace MvcWebApp2.Controllers
 {
-    public class PersonenController : Controller
+    public class PersonenController : BaseController
     {
         //
         // GET: /Personen/
         public ActionResult Index()
         {
             int aantal;
-            IList<GelieerdePersoon> personen = ServiceHelper.CallService<IGelieerdePersonenService, IList<GelieerdePersoon> >(l => l.PaginaOphalenMetLidInfo(int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12, out aantal));
+            Models.GelieerdePersonenModel personenModel = new Models.GelieerdePersonenModel();
+            personenModel.GelieerdePersonenLijst = ServiceHelper.CallService<IGelieerdePersonenService, IList<GelieerdePersoon>>(l => l.PaginaOphalenMetLidInfo(int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12, out aantal));
+            //IList<GelieerdePersoon> personen = ServiceHelper.CallService<IGelieerdePersonenService, IList<GelieerdePersoon> >(l => l.PaginaOphalenMetLidInfo(int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12, out aantal));
 
-            return View("Index", personen);
+            return View("Index", personenModel);
         }
 
         //
         // GET: /Personen/Details/5
         public ActionResult Details(int id)
         {
-            GelieerdePersoon p = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
-            return View("Details", p);
+            Models.GelieerdePersonenModel personenModel = new Models.GelieerdePersonenModel();
+            personenModel.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
+            //GelieerdePersoon p = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
+            return View("Details", personenModel);
         }
 
         //
@@ -64,18 +68,20 @@ namespace MvcWebApp2.Controllers
         // GET: /Personen/Edit/5
         public ActionResult Edit(int id)
         {
-            GelieerdePersoon p = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
-            return View("Edit", p);
+            Models.GelieerdePersonenModel personenModel = new Models.GelieerdePersonenModel();
+            personenModel.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
+            // GelieerdePersoon p = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
+            return View("Edit", personenModel );
         }
 
         //
         // POST: /Personen/Edit/5
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Edit(GelieerdePersoon p)
+        public ActionResult Edit(GelieerdePersonenModel p)
         {
             try
             {
-                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersoonBewaren(p));
+                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersoonBewaren(p.HuidigePersoon ));
  
                 // Voorlopig opnieuw redirecten naar Edit;
                 // er zou wel gemeld moeten worden dat het wijzigen
@@ -85,7 +91,7 @@ namespace MvcWebApp2.Controllers
                 // zodat je bij een 'refresh' niet de vraag krijgt
                 // of je de gegevens opnieuw wil posten.)
 
-                return RedirectToAction("Edit", new { id = p.ID });
+                return RedirectToAction("Edit", new { id = p.HuidigePersoon.ID });
             }
             catch
             {

@@ -1,8 +1,9 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Cg2.Orm.GelieerdePersoon>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<GelieerdePersonenModel>" %>
 <%@ Import Namespace="Cg2.Orm" %>
+<%@ Import Namespace="MvcWebApp2.Models" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-	<title>Gegevens bewerken: <%=Model.Persoon.VolledigeNaam %></title>
+	<title>Gegevens bewerken: <%=Model.HuidigePersoon.Persoon.VolledigeNaam %></title>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -14,40 +15,40 @@
         <li><input type="submit" value="Bewaren" /></li>        
     </ul>
     
-    <h2><%=Model.Persoon.VolledigeNaam%></h2>
+    <h2><%=Model.HuidigePersoon.Persoon.VolledigeNaam%></h2>
 
     <fieldset>
     <legend>Persoonlijke gegevens</legend>
     
     <label for="Persoon_AdNummer">Ad-nummer</label> 
-    <%=Html.TextBox("Persoon.AdNummer", Model.Persoon.AdNummer, new {@readonly = "readonly"})%> <br />
+    <%=Html.TextBox("HuidigePersoon.Persoon.AdNummer", Model.HuidigePersoon.Persoon.AdNummer, new { @readonly = "readonly" })%> <br />
     
     <label for="Persoon_Naam">Familienaam</label> 
-    <%=Html.TextBox("Persoon.Naam")%> <br />
+    <%=Html.TextBox("HuidigePersoon.Persoon.Naam")%> <br />
     
     <label for="Persoon_VoorNaam">Voornaam</label> 
-    <%=Html.TextBox("Persoon.VoorNaam")%> <br />
+    <%=Html.TextBox("HuidigePersoon.Persoon.VoorNaam")%> <br />
     
     <label for="Persoon_GeboorteDatum">Geboortedatum</label> 
-    <%=Html.TextBox("Persoon.GeboorteDatum") %> <br />
+    <%=Html.TextBox("HuidigePersoon.Persoon.GeboorteDatum")%> <br />
     
     <label for="Persoon_Geslacht">Geslacht</label> 
-    <%=Html.TextBox("Persoon.Geslacht") %> <br />
+    <%=Html.TextBox("HuidigePersoon.Persoon.Geslacht")%> <br />
     
     <label for="ChiroLeefTijd">Chiroleeftijd</label> 
-    <%=Html.TextBox("ChiroLeefTijd") %>
+    <%=Html.TextBox("HuidigePersoon.ChiroLeefTijd")%>
 
-    <%=Html.Hidden("ID")%>
-    <%=Html.Hidden("VersieString")%>
-    <%=Html.Hidden("Persoon.ID")%>
-    <%=Html.Hidden("Persoon.VersieString")%>
+    <%=Html.Hidden("HuidigePersoon.ID")%>
+    <%=Html.Hidden("HuidigePersoon.VersieString")%>
+    <%=Html.Hidden("HuidigePersoon.Persoon.ID")%>
+    <%=Html.Hidden("HuidigePersoon.Persoon.VersieString")%>
 
     </fieldset>
         
     <h3>Adressen</h3>
 
     <ul>
-    <% foreach (PersoonsAdres pa in ViewData.Model.PersoonsAdres)
+    <% foreach (PersoonsAdres pa in ViewData.Model.HuidigePersoon.PersoonsAdres)
        { %>
        <li>
             <%=Html.Encode(String.Format("{0} {1}", pa.Adres.Straat.Naam, pa.Adres.HuisNr))%>,
@@ -56,14 +57,14 @@
             <%=Html.ActionLink( "[verhuizen]", "Verhuizen", new {Controller="Personen", id = pa.Adres.ID} ) %>
         </li>
     <%} %>
-        <li><%=Html.ActionLink( "[nieuw adres]", "NieuwAdres", new {Controller="Personen", id = ViewData.Model.ID} ) %></li>
+        <li><%=Html.ActionLink( "[nieuw adres]", "NieuwAdres", new {Controller="Personen", id = ViewData.Model.HuidigePersoon.ID} ) %></li>
     </ul>   
     
 
     <h3>Communicatie</h3>
 
     <ul>
-    <% foreach (CommunicatieVorm cv in Model.Communicatie)
+    <% foreach (CommunicatieVorm cv in Model.HuidigePersoon.Communicatie)
     { %>
     <li>
             <%=cv.Type.ToString() %>:
@@ -76,9 +77,6 @@
     <%} %>
     
     <div>
-        <%=Html.ActionLink("Back to List", "Index")%>
+        <%=Html.ActionLink("Terug naar de lijst", "Index")%>
     </div>
-
-
 </asp:Content>
-

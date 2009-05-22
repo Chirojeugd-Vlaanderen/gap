@@ -1,39 +1,37 @@
-<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage<MvcWebApp2.Models.MasterViewModel>" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <asp:ContentPlaceHolder ID="head" runat="server">
-        <title></title>
-    </asp:ContentPlaceHolder>
+    <title>.: Kakajo! :.</title>
+    <asp:ContentPlaceHolder ID="head" runat="server" />
     <link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
 </head>
-
 <body>
     <div class="page">
-
         <div id="header">
             <div id="title">
-                <h1>Kakajo!</h1>
+                <h1><%=Html.Encode(ViewData.Model.Groepsnaam) %>
+                    </h1>
+                <p>
+                    <%=Html.Encode(ViewData.Model.Gemeente)%> | Stamnr: <%=Html.Encode(ViewData.Model.StamNummer) %></p>
             </div>
-
             <div id="logindisplay">
-                Aangemeld als <% =System.Web.HttpContext.Current.User.Identity.Name %>
-            </div>            
-            
+                Aangemeld als
+                <% =System.Web.HttpContext.Current.User.Identity.Name %>
+            </div>
             <div id="menucontainer">
-            
-                <ul id="menu">              
-                    <li><%= Html.ActionLink("Personen", "Index", "Personen")%></li>
-                    <li><%= Html.ActionLink("Leden", "Index", "Leden")%></li>                  
-                </ul>                            
+                <ul id="menu">
+                    <li>
+                        <%= Html.ActionLink("Personen", "Index", "Personen")%></li>
+                    <li>
+                        <%= Html.ActionLink("Leden", "Index", "Leden")%></li>
+                </ul>
             </div>
         </div>
-
         <div id="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
-
             <div id="footer">
             </div>
         </div>

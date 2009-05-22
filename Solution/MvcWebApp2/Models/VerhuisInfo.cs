@@ -14,7 +14,7 @@ namespace MvcWebApp2.Models
     ///   . op een adres A wonen personen
     ///   . een aantal van die personen verhuizen naar een nieuw adres B
     /// </summary>
-    public class VerhuisInfo
+    public class VerhuisInfo : MasterViewModel 
     {
         /// <summary>
         /// VanAdresMetBewoners bevat het adres waarvan verhuisd wordt,

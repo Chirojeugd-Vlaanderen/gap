@@ -13,7 +13,7 @@ namespace MvcWebApp2.Models
     /// <summary>
     /// Model gebruikt om iemand een nieuw adres te geven.
     /// </summary>
-    public class NieuwAdresInfo
+    public class NieuwAdresInfo : MasterViewModel 
     {
         // ID van GelieerdePersoon waarvoor aangeklikt dat
         // hij/zij een extra adres nodig heeft

@@ -1,5 +1,6 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IList<Lid>>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<LedenModel>" %>
 <%@ Import Namespace="Cg2.Orm" %>
+<%@ Import Namespace="MvcWebApp2.Models" %>
 
 <table>
 <tr>
@@ -10,7 +11,7 @@
 Uiteraard willen we voor leden andere info zien als voor personen,
 maar dat is nu nog niet geimplementeerd :-) -->
 
-<% foreach (Lid l in ViewData.Model) {  %>
+<% foreach (Lid l in ViewData.Model.Ledenlijst) {  %>
 <tr>
     <td><%=l.GelieerdePersoon.Persoon.AdNummer %></td>
     <td><% Html.RenderPartial("PersoonsLinkControl", l.GelieerdePersoon); %></td>

@@ -275,6 +275,13 @@ div#title
     text-align:left;
 }
 
+#title p
+{
+    color:White;
+    margin: -10px 0 0 0;
+    font-weight : bold;
+}
+
 #logindisplay
 {
     font-size:1.1em;
