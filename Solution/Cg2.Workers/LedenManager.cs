@@ -55,8 +55,9 @@ namespace Cg2.Workers
             gwj.Lid.Add(l);
             gp.Lid.Add(l);
 
-            // Einde instapperiode moet ook nog berekend worden.
-            l.EindeInstapPeriode = DateTime.Now;
+            // TODO: Einde instapperiode moet ook nog berekend worden.
+            // 
+            //l.EindeInstapPeriode = DateTime.Now;
 
             // Ik denk dat in deze method geen databasecall mag gebeuren.
             // Dit moet via de Dao.

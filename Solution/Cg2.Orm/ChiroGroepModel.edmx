@@ -147,7 +147,6 @@
           <Key>
             <PropertyRef Name="LidID" />
           </Key>
-          <Property Name="EindeInstapPeriode" Type="datetime" />
           <Property Name="LidgeldBetaald" Type="bit" Nullable="false" />
           <Property Name="NonActief" Type="bit" Nullable="false" />
           <Property Name="Verwijderd" Type="bit" Nullable="false" />
@@ -533,7 +532,6 @@
         <EntityType Name="Lid">
           <Key>
             <PropertyRef Name="ID" /></Key>
-          <Property Name="EindeInstapPeriode" Type="DateTime" Nullable="true" />
           <Property Name="LidgeldBetaald" Type="Boolean" Nullable="false" />
           <Property Name="NonActief" Type="Boolean" Nullable="false" />
           <Property Name="Verwijderd" Type="Boolean" Nullable="false" />
@@ -701,7 +699,7 @@
                 <ScalarProperty Name="Verwijderd" ColumnName="Verwijderd" />
                 <ScalarProperty Name="NonActief" ColumnName="NonActief" />
                 <ScalarProperty Name="LidgeldBetaald" ColumnName="LidgeldBetaald" />
-                <ScalarProperty Name="EindeInstapPeriode" ColumnName="EindeInstapPeriode" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+             </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <AssociationSetMapping Name="FK_GroepsWerkjaar_Groep" TypeName="ChiroGroepModel.FK_GroepsWerkjaar_Groep" StoreEntitySet="GroepsWerkJaar">
             <EndProperty Name="GroepsWerkJaar">
               <ScalarProperty Name="ID" ColumnName="GroepsWerkjaarID" /></EndProperty>

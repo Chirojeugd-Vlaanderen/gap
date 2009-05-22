@@ -23,7 +23,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GebruikersRecht_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "GebruikersRecht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GebruikersRecht))]
 
 // Original file name:
-// Generation date: 15/04/2009 23:12:32
+// Generation date: 22/05/2009 22:01:19
 namespace Cg2.Orm
 {
     
@@ -2132,29 +2132,6 @@ namespace Cg2.Orm
             lid.Versie = versie;
             return lid;
         }
-        /// <summary>
-        /// There are no comments for Property EindeInstapPeriode in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Nullable<global::System.DateTime> EindeInstapPeriode
-        {
-            get
-            {
-                return this._EindeInstapPeriode;
-            }
-            set
-            {
-                this.OnEindeInstapPeriodeChanging(value);
-                this.ReportPropertyChanging("EindeInstapPeriode");
-                this._EindeInstapPeriode = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("EindeInstapPeriode");
-                this.OnEindeInstapPeriodeChanged();
-            }
-        }
-        private global::System.Nullable<global::System.DateTime> _EindeInstapPeriode;
-        partial void OnEindeInstapPeriodeChanging(global::System.Nullable<global::System.DateTime> value);
-        partial void OnEindeInstapPeriodeChanged();
         /// <summary>
         /// There are no comments for Property LidgeldBetaald in the schema.
         /// </summary>
