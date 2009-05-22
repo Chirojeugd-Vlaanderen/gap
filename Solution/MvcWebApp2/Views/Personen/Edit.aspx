@@ -21,13 +21,13 @@
     <legend>Persoonlijke gegevens</legend>
     
     <label for="Persoon_AdNummer">Ad-nummer</label> 
-    <%=Html.TextBox("HuidigePersoon.Persoon.AdNummer", Model.HuidigePersoon.Persoon.AdNummer, new { @readonly = "readonly" })%> <br />
+    <%=Model.HuidigePersoon.Persoon.AdNummer %><br />
     
     <label for="Persoon_VoorNaam">Voornaam</label> 
-    <%=Html.TextBox("HuidigePersoon.Persoon.VoorNaam")%> <br />
+    <%=Html.TextBox("HuidigePersoon.Persoon.VoorNaam")%><br />
     
     <label for="Persoon_Naam">Familienaam</label> 
-    <%=Html.TextBox("HuidigePersoon.Persoon.Naam")%> <br />
+    <%=Html.TextBox("HuidigePersoon.Persoon.Naam")%><br />
     
     <label for="Persoon_GeboorteDatum">Geboortedatum</label> 
     <%=Html.TextBox("HuidigePersoon.Persoon.GeboorteDatum", ((DateTime) Model.HuidigePersoon.Persoon.GeboorteDatum).ToString("d"))%> <br />
@@ -37,7 +37,7 @@
     <%= Html.RadioButton("HuidigePersoon.Persoon.Geslacht", GeslachtsType.Vrouw, Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Vrouw)%> Vrouw <br />
     
     <label for="ChiroLeefTijd">Chiroleeftijd</label> 
-    <%=Html.TextBox("HuidigePersoon.ChiroLeefTijd")%>
+    <%=Html.TextBox("HuidigePersoon.ChiroLeefTijd", (Model.HuidigePersoon.ChiroLeefTijd > 0 ? "+" : "") + Model.HuidigePersoon.ChiroLeefTijd.ToString())%>
 
     <%=Html.Hidden("HuidigePersoon.ID")%>
     <%=Html.Hidden("HuidigePersoon.VersieString")%>

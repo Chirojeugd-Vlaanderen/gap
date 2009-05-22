@@ -25,7 +25,7 @@ namespace MvcWebApp2.Controllers
             int aantal;
 
             Models.PersoonInfoModel personenModel = new Models.PersoonInfoModel();
-            personenModel.PersoonInfoLijst = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>(g => g.PaginaOphalenMetLidInfo(int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12, out aantal));
+            personenModel.PersoonInfoLijst = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>(g => g.PaginaOphalenMetLidInfo(int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 20, out aantal));
 
             return View("Index", personenModel);
         }
