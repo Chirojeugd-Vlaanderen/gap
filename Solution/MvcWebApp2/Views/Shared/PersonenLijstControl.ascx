@@ -1,22 +1,23 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<GelieerdePersonenModel>" %>
-<%@ Import Namespace="Cg2.Orm" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<PersoonInfoModel>" %>
 <%@ Import Namespace="MvcWebApp2.Models" %>
+<%@ Import Namespace="Cg2.Orm" %>
+<%@ Import Namespace="Cg2.ServiceContracts" %>
 
 <table>
 <tr>
 <th>Ad-nr.</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Acties</th>
 </tr>
 
-<% foreach (GelieerdePersoon p in ViewData.Model.GelieerdePersonenLijst) {  %>
+<% foreach (PersoonInfo p in ViewData.Model.PersoonInfoLijst) {  %>
 <tr>
-    <td><%=p.Persoon.AdNummer %></td>
+    <td><%=p.AdNummer %></td>
     <td><% Html.RenderPartial("PersoonsLinkControl", p); %></td>
-    <td class="right"><%=p.Persoon.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)p.Persoon.GeboorteDatum).ToString("d") %></td>
-    <td><%=p.Persoon.Geslacht.ToString() %></td>
+    <td class="right"><%=p.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)p.GeboorteDatum).ToString("d") %></td>
+    <td><%=p.Geslacht.ToString() %></td>
     <td>
-        <% if (p.Lid.Count == 0)
+        <% if (!p.IsLid)
            { %>
-        <%=Html.ActionLink("Lid maken", "LidMaken", new { Controller = "Personen", id = p.ID })%>
+        <%=Html.ActionLink("Lid maken", "LidMaken", new { Controller = "Personen", id = p.GelieerdePersoonID })%>
         <% } %>
     </td>
 </tr>
