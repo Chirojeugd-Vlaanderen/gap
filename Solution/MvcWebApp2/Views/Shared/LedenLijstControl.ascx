@@ -14,7 +14,7 @@ maar dat is nu nog niet geimplementeerd :-) -->
 <tr>
     <td><%=l.GelieerdePersoon.Persoon.AdNummer %></td>
     <td><% Html.RenderPartial("PersoonsLinkControl", l.GelieerdePersoon); %></td>
-    <td><%=l.GelieerdePersoon.Persoon.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)l.GelieerdePersoon.Persoon.GeboorteDatum).ToString("dd/MM/yyyy")%></td>
+    <td class="right"><%=l.GelieerdePersoon.Persoon.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)l.GelieerdePersoon.Persoon.GeboorteDatum).ToString("d")%></td>
     <td><%=l.GelieerdePersoon.Persoon.Geslacht.ToString()%></td>
     <td>
         <%=Html.ActionLink("Bewerken", "Edit", new { Controller = "Personen", id = l.GelieerdePersoon.ID })%>

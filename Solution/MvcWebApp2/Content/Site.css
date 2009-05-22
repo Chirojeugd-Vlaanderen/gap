@@ -339,3 +339,8 @@ fieldset label
     float: left;
     width: 120px;
 }
+
+td.right {
+    text-align: right;
+}
+
