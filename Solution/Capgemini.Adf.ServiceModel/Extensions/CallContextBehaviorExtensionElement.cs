@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.ServiceModel.Configuration;
 
-namespace Capgemini.Adf.ServiceModel.Extensions
+namespace Cg2.Adf.ServiceModel.Extensions
 {
 public class CallContextBehaviorExtensionElement : BehaviorExtensionElement
 {

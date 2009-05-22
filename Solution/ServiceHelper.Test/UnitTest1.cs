@@ -64,7 +64,7 @@ namespace ServiceHelper.Test
         public void ServiceHelperHalloTest()
         {
             string result =
-            Capgemini.Adf.ServiceModel.ServiceHelper.CallService<IGroepenService, string>(l => l.Hallo());
+            Cg2.Adf.ServiceModel.ServiceHelper.CallService<IGroepenService, string>(l => l.Hallo());
 
             Assert.IsTrue(result == "Hallo");
         }

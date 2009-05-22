@@ -5,7 +5,7 @@ using System.ServiceModel.Dispatcher;
 using System.Threading;
 using System.Globalization;
 
-namespace Capgemini.Adf.ServiceModel
+namespace Cg2.Adf.ServiceModel
 {
 	public class LocalizationBehavior : IClientMessageInspector, IDispatchMessageInspector, IEndpointBehavior
 	{

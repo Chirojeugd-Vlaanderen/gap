@@ -5,7 +5,7 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 
-namespace Capgemini.Adf.ServiceModel
+namespace Cg2.Adf.ServiceModel
 {
 	/// <summary>
 	/// Makes sure that expected or unexpected exceptions are properly shielded fro; the client and translated to SOAP faults.

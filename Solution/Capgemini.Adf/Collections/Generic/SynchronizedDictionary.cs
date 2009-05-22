@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Capgemini.Adf.Collections.Generic
+namespace Cg2.Adf.Collections.Generic
 {
 	/// <summary>
 	/// Represents a thread safe collection of keys and values.

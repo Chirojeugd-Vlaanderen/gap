@@ -3,7 +3,7 @@ using System.Configuration;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 
-namespace Capgemini.Adf.ServiceModel.Extensions
+namespace Cg2.Adf.ServiceModel.Extensions
 {
 public class CallContextInitializer : ICallContextInitializer
 {

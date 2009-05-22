@@ -8,7 +8,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using Cg2.Orm;
 using System.Configuration;
-using Capgemini.Adf.ServiceModel;
+using Cg2.Adf.ServiceModel;
 using Cg2.ServiceContracts;
 using MvcWebApp2.Models;
 

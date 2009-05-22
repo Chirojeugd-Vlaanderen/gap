@@ -15,6 +15,6 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle("Capgemini.Adf")]
+[assembly: AssemblyTitle("Cg2.Adf")]
 [assembly: AssemblyDescription("ADF Core classes")]
 [assembly: CLSCompliant(true)]

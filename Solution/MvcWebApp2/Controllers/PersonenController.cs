@@ -10,7 +10,7 @@ using MvcWebApp2.Models;
 using System.Diagnostics;
 using System.ServiceModel;
 using Cg2.Fouten.FaultContracts;
-using Capgemini.Adf.ServiceModel;
+using Cg2.Adf.ServiceModel;
 using Cg2.ServiceContracts;
 using Cg2.Validatie;
 

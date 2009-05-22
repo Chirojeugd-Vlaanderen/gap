@@ -5,7 +5,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 
-namespace Capgemini.Adf.ServiceModel
+namespace Cg2.Adf.ServiceModel
 {
 	public class ExceptionShieldingMessageInspector : IClientMessageInspector
 	{

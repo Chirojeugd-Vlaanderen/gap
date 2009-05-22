@@ -1,4 +1,4 @@
 ﻿using System.Reflection;
 
-[assembly: AssemblyTitle("Capgemini.Adf.ServiceModel")]
+[assembly: AssemblyTitle("Cg2.Adf.ServiceModel")]
 [assembly: AssemblyDescription("")]

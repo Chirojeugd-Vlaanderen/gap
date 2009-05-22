@@ -1,6 +1,6 @@
 using System;
 
-namespace Capgemini.Adf
+namespace Cg2.Adf
 {
 	/// <summary>
 	/// Represent the error that occurs when no registered ServiceProvider manages to resolve a service interface.

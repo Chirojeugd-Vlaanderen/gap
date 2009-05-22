@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Capgemini.Adf
+namespace Cg2.Adf
 {
 	/// <summary>
 	/// Defines methods to obtain configuration-based instances of interface implementations.

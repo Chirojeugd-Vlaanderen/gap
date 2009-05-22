@@ -1,9 +1,9 @@
 using System;
 using System.Configuration;
 using System.ServiceModel.Configuration;
-using Capgemini.Adf.ServiceModel.Extensions;
+using Cg2.Adf.ServiceModel.Extensions;
 
-namespace Capgemini.Adf.ServiceModel
+namespace Cg2.Adf.ServiceModel
 {
 	/// <summary>
 	/// Represents the configuration element that registers the LocalizationBehavior.

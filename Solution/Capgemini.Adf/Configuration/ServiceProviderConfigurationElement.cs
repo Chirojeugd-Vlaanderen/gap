@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using System.Collections.Generic;
 
-namespace Capgemini.Adf.Configuration
+namespace Cg2.Adf.Configuration
 {
 	/// <summary>
 	/// Represents a ServiceProvider configuration element.

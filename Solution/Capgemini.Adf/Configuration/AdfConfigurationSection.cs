@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace Capgemini.Adf.Configuration
+namespace Cg2.Adf.Configuration
 {
 	/// <summary>
 	/// Represents the confgiuration section named 'chiroGroep'.

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using Capgemini.Adf.Configuration;
+using Cg2.Adf.Configuration;
 using System.Globalization;
 using System.Collections;
 
-namespace Capgemini.Adf
+namespace Cg2.Adf
 {
 	/// <summary>
 	/// Resolves dependencies through configured or registered service providers.

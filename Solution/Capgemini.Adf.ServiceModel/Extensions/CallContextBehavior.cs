@@ -4,9 +4,9 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Description;
 using System.ServiceModel;
-using Capgemini.Adf.ServiceModel.Extensions;
+using Cg2.Adf.ServiceModel.Extensions;
 
-namespace Capgemini.Adf.ServiceModel.Extensions
+namespace Cg2.Adf.ServiceModel.Extensions
 {
 public class CallContextBehavior : Attribute, IServiceBehavior, IEndpointBehavior, IOperationBehavior
 {

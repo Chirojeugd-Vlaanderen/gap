@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ServiceModel;
 
-namespace Capgemini.Adf
+namespace Cg2.Adf
 {
 	/// <summary>
 	/// Resolves WCF service implementations.

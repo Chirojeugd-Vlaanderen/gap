@@ -7,7 +7,7 @@ using System.ServiceModel.Description;
 using System.Text;
 using System.Xml;
 
-namespace Capgemini.Adf.ServiceModel
+namespace Cg2.Adf.ServiceModel
 {
 	public class ReferencePreservingDataContractSerializerOperationBehavior : DataContractSerializerOperationBehavior
 	{

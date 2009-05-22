@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Capgemini.Adf.ServiceModel.Extensions
+namespace Cg2.Adf.ServiceModel.Extensions
 {
 	public abstract class CallContext
 	{
