@@ -125,9 +125,13 @@
     <None Include="Properties\DataSources\Cg2.Orm.Lid.datasource" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Capgemini.Adf.ServiceModel\Cg2.Adf.ServiceModel.csproj">
+    <ProjectReference Include="..\Cg2.Adf.ServiceModel\Cg2.Adf.ServiceModel.csproj">
       <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
       <Name>Cg2.Adf.ServiceModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cg2.Adf\Cg2.Adf.csproj">
+      <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
+      <Name>Cg2.Adf</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cg2.EfWrapper\Cg2.EfWrapper.csproj">
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>

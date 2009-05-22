@@ -70,7 +70,7 @@
     <Compile Include="ShieldExceptionsAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Capgemini.Adf\Cg2.Adf.csproj">
+    <ProjectReference Include="..\Cg2.Adf\Cg2.Adf.csproj">
       <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
       <Name>Cg2.Adf</Name>
     </ProjectReference>
