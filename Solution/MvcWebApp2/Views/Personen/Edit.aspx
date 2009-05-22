@@ -33,7 +33,8 @@
     <%=Html.TextBox("HuidigePersoon.Persoon.GeboorteDatum", ((DateTime) Model.HuidigePersoon.Persoon.GeboorteDatum).ToString("d"))%> <br />
     
     <label for="Persoon_Geslacht">Geslacht</label> 
-    <%=Html.TextBox("HuidigePersoon.Persoon.Geslacht")%> <br />
+    <%= Html.RadioButton("HuidigePersoon.Persoon.Geslacht", GeslachtsType.Man, Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Man)%> Man
+    <%= Html.RadioButton("HuidigePersoon.Persoon.Geslacht", GeslachtsType.Vrouw, Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Vrouw)%> Vrouw <br />
     
     <label for="ChiroLeefTijd">Chiroleeftijd</label> 
     <%=Html.TextBox("HuidigePersoon.ChiroLeefTijd")%>
