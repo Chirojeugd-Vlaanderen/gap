@@ -23,14 +23,14 @@
     <label for="Persoon_AdNummer">Ad-nummer</label> 
     <%=Html.TextBox("HuidigePersoon.Persoon.AdNummer", Model.HuidigePersoon.Persoon.AdNummer, new { @readonly = "readonly" })%> <br />
     
-    <label for="Persoon_Naam">Familienaam</label> 
-    <%=Html.TextBox("HuidigePersoon.Persoon.Naam")%> <br />
-    
     <label for="Persoon_VoorNaam">Voornaam</label> 
     <%=Html.TextBox("HuidigePersoon.Persoon.VoorNaam")%> <br />
     
+    <label for="Persoon_Naam">Familienaam</label> 
+    <%=Html.TextBox("HuidigePersoon.Persoon.Naam")%> <br />
+    
     <label for="Persoon_GeboorteDatum">Geboortedatum</label> 
-    <%=Html.TextBox("HuidigePersoon.Persoon.GeboorteDatum")%> <br />
+    <%=Html.TextBox("HuidigePersoon.Persoon.GeboorteDatum", ((DateTime) Model.HuidigePersoon.Persoon.GeboorteDatum).ToString("d"))%> <br />
     
     <label for="Persoon_Geslacht">Geslacht</label> 
     <%=Html.TextBox("HuidigePersoon.Persoon.Geslacht")%> <br />
