@@ -23,7 +23,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GebruikersRecht_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "GebruikersRecht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GebruikersRecht))]
 
 // Original file name:
-// Generation date: 22/05/2009 22:01:19
+// Generation date: 22/05/2009 22:27:33
 namespace Cg2.Orm
 {
     
@@ -2118,16 +2118,16 @@ namespace Cg2.Orm
         /// <param name="lidgeldBetaald">Initial value of LidgeldBetaald.</param>
         /// <param name="nonActief">Initial value of NonActief.</param>
         /// <param name="verwijderd">Initial value of Verwijderd.</param>
-        /// <param name="volgendWerkjaar">Initial value of VolgendWerkjaar.</param>
+        /// <param name="volgendWerkjaarInt">Initial value of VolgendWerkjaarInt.</param>
         /// <param name="id">Initial value of ID.</param>
         /// <param name="versie">Initial value of Versie.</param>
-        public static Lid CreateLid(bool lidgeldBetaald, bool nonActief, bool verwijderd, int volgendWerkjaar, int id, byte[] versie)
+        public static Lid CreateLid(bool lidgeldBetaald, bool nonActief, bool verwijderd, short volgendWerkjaarInt, int id, byte[] versie)
         {
             Lid lid = new Lid();
             lid.LidgeldBetaald = lidgeldBetaald;
             lid.NonActief = nonActief;
             lid.Verwijderd = verwijderd;
-            lid.VolgendWerkjaar = volgendWerkjaar;
+            lid.VolgendWerkjaarInt = volgendWerkjaarInt;
             lid.ID = id;
             lid.Versie = versie;
             return lid;
@@ -2202,28 +2202,28 @@ namespace Cg2.Orm
         partial void OnVerwijderdChanging(bool value);
         partial void OnVerwijderdChanged();
         /// <summary>
-        /// There are no comments for Property VolgendWerkjaar in the schema.
+        /// There are no comments for Property VolgendWerkjaarInt in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int VolgendWerkjaar
+        public short VolgendWerkjaarInt
         {
             get
             {
-                return this._VolgendWerkjaar;
+                return this._VolgendWerkjaarInt;
             }
             set
             {
-                this.OnVolgendWerkjaarChanging(value);
-                this.ReportPropertyChanging("VolgendWerkjaar");
-                this._VolgendWerkjaar = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("VolgendWerkjaar");
-                this.OnVolgendWerkjaarChanged();
+                this.OnVolgendWerkjaarIntChanging(value);
+                this.ReportPropertyChanging("VolgendWerkjaarInt");
+                this._VolgendWerkjaarInt = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("VolgendWerkjaarInt");
+                this.OnVolgendWerkjaarIntChanged();
             }
         }
-        private int _VolgendWerkjaar;
-        partial void OnVolgendWerkjaarChanging(int value);
-        partial void OnVolgendWerkjaarChanged();
+        private short _VolgendWerkjaarInt;
+        partial void OnVolgendWerkjaarIntChanging(short value);
+        partial void OnVolgendWerkjaarIntChanged();
         /// <summary>
         /// There are no comments for Property ID in the schema.
         /// </summary>

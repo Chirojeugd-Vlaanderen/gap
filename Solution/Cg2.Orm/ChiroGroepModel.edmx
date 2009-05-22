@@ -150,7 +150,7 @@
           <Property Name="LidgeldBetaald" Type="bit" Nullable="false" />
           <Property Name="NonActief" Type="bit" Nullable="false" />
           <Property Name="Verwijderd" Type="bit" Nullable="false" />
-          <Property Name="VolgendWerkjaar" Type="int" Nullable="false" />
+          <Property Name="VolgendWerkjaar" Type="smallint" Nullable="false" />
           <Property Name="LidID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="GroepsWerkjaarID" Type="int" Nullable="false" />
           <Property Name="GelieerdePersoonID" Type="int" Nullable="false" />
@@ -535,7 +535,7 @@
           <Property Name="LidgeldBetaald" Type="Boolean" Nullable="false" />
           <Property Name="NonActief" Type="Boolean" Nullable="false" />
           <Property Name="Verwijderd" Type="Boolean" Nullable="false" />
-          <Property Name="VolgendWerkjaar" Type="Int32" Nullable="false" />
+          <Property Name="VolgendWerkjaarInt" Type="Int16" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Versie" Type="Binary" Nullable="false" />
           <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_Lid_GroepsWerkjaar" FromRole="Lid" ToRole="GroepsWerkJaar" />
@@ -695,7 +695,7 @@
               <MappingFragment StoreEntitySet="Lid">
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="ID" ColumnName="LidID" />
-                <ScalarProperty Name="VolgendWerkjaar" ColumnName="VolgendWerkjaar" />
+                <ScalarProperty Name="VolgendWerkjaarInt" ColumnName="VolgendWerkjaar" />
                 <ScalarProperty Name="Verwijderd" ColumnName="Verwijderd" />
                 <ScalarProperty Name="NonActief" ColumnName="NonActief" />
                 <ScalarProperty Name="LidgeldBetaald" ColumnName="LidgeldBetaald" />
