@@ -70,9 +70,9 @@
     <Compile Include="ShieldExceptionsAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Capgemini.Adf\Capgemini.Adf.csproj">
+    <ProjectReference Include="..\Capgemini.Adf\Cg2.Adf.csproj">
       <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
-      <Name>Capgemini.Adf</Name>
+      <Name>Cg2.Adf</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

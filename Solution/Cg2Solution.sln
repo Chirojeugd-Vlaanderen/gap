@@ -24,9 +24,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcWebApp", "MvcWebApp2\Mvc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcWebApp.Tests", "MvcWebApp2.Tests\MvcWebApp.Tests.csproj", "{D9FF6AE7-5925-4A6D-9BD7-C4AC9D04C69F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Capgemini.Adf", "Capgemini.Adf\Capgemini.Adf.csproj", "{BAAC24EC-57C1-4108-94BA-40FC0977762A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Adf", "Capgemini.Adf\Cg2.Adf.csproj", "{BAAC24EC-57C1-4108-94BA-40FC0977762A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Capgemini.Adf.ServiceModel", "Capgemini.Adf.ServiceModel\Capgemini.Adf.ServiceModel.csproj", "{174890F3-1F4C-4CFC-83A1-AA88F5748A67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Adf.ServiceModel", "Capgemini.Adf.ServiceModel\Cg2.Adf.ServiceModel.csproj", "{174890F3-1F4C-4CFC-83A1-AA88F5748A67}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHelper.Test", "ServiceHelper.Test\ServiceHelper.Test.csproj", "{FF5B16C6-BC4B-4150-A266-7A6EE1BD914F}"
 EndProject

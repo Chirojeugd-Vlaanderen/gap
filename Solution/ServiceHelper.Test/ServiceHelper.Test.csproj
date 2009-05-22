@@ -45,13 +45,13 @@
     <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Capgemini.Adf.ServiceModel\Capgemini.Adf.ServiceModel.csproj">
+    <ProjectReference Include="..\Capgemini.Adf.ServiceModel\Cg2.Adf.ServiceModel.csproj">
       <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
-      <Name>Capgemini.Adf.ServiceModel</Name>
+      <Name>Cg2.Adf.ServiceModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Capgemini.Adf\Capgemini.Adf.csproj">
+    <ProjectReference Include="..\Capgemini.Adf\Cg2.Adf.csproj">
       <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
-      <Name>Capgemini.Adf</Name>
+      <Name>Cg2.Adf</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cg2.Orm\Cg2.Orm.csproj">
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
