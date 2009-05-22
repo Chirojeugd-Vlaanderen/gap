@@ -27,18 +27,8 @@ namespace Cg2.Orm
             set { _teVerwijderen = value; }
         }
 
-        public byte[] Versie
-        {
-            get
-            {
-                return null;
-            }
-            set
-            {
-                // Doe niets
-            }
-        }
-
+        // SubGemeente wordt nooit geupdatet, dus ook nooit
+        // concurrency.  VersieString is dus niet nodig.
         public string VersieString
         {
             get { return null; }

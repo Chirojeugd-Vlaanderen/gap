@@ -21,9 +21,13 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Lid_GelieerdePersoon", "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.GelieerdePersoon), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Lid))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GebruikersRecht_Gav", "Gav", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Gav), "GebruikersRecht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GebruikersRecht))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GebruikersRecht_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "GebruikersRecht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GebruikersRecht))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Afdeling_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.Groep), "Afdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Afdeling))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_AfdelingsJaar_GroepsWerkjaar", "GroepsWerkJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.GroepsWerkJaar), "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_AfdelingsJaar_Afdeling", "Afdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.Afdeling), "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_AfdelingsJaar_OfficieleAfdeling", "OfficieleAfdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.OfficieleAfdeling), "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar))]
 
 // Original file name:
-// Generation date: 22/05/2009 22:27:33
+// Generation date: 23/05/2009 0:07:14
 namespace Cg2.Orm
 {
     
@@ -238,6 +242,51 @@ namespace Cg2.Orm
         }
         private global::System.Data.Objects.ObjectQuery<GebruikersRecht> _GebruikersRecht;
         /// <summary>
+        /// There are no comments for Afdeling in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<Afdeling> Afdeling
+        {
+            get
+            {
+                if ((this._Afdeling == null))
+                {
+                    this._Afdeling = base.CreateQuery<Afdeling>("[Afdeling]");
+                }
+                return this._Afdeling;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<Afdeling> _Afdeling;
+        /// <summary>
+        /// There are no comments for AfdelingsJaar in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<AfdelingsJaar> AfdelingsJaar
+        {
+            get
+            {
+                if ((this._AfdelingsJaar == null))
+                {
+                    this._AfdelingsJaar = base.CreateQuery<AfdelingsJaar>("[AfdelingsJaar]");
+                }
+                return this._AfdelingsJaar;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<AfdelingsJaar> _AfdelingsJaar;
+        /// <summary>
+        /// There are no comments for OfficieleAfdeling in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<OfficieleAfdeling> OfficieleAfdeling
+        {
+            get
+            {
+                if ((this._OfficieleAfdeling == null))
+                {
+                    this._OfficieleAfdeling = base.CreateQuery<OfficieleAfdeling>("[OfficieleAfdeling]");
+                }
+                return this._OfficieleAfdeling;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<OfficieleAfdeling> _OfficieleAfdeling;
+        /// <summary>
         /// There are no comments for Groep in the schema.
         /// </summary>
         public void AddToGroep(Groep groep)
@@ -321,6 +370,27 @@ namespace Cg2.Orm
         {
             base.AddObject("GebruikersRecht", gebruikersRecht);
         }
+        /// <summary>
+        /// There are no comments for Afdeling in the schema.
+        /// </summary>
+        public void AddToAfdeling(Afdeling afdeling)
+        {
+            base.AddObject("Afdeling", afdeling);
+        }
+        /// <summary>
+        /// There are no comments for AfdelingsJaar in the schema.
+        /// </summary>
+        public void AddToAfdelingsJaar(AfdelingsJaar afdelingsJaar)
+        {
+            base.AddObject("AfdelingsJaar", afdelingsJaar);
+        }
+        /// <summary>
+        /// There are no comments for OfficieleAfdeling in the schema.
+        /// </summary>
+        public void AddToOfficieleAfdeling(OfficieleAfdeling officieleAfdeling)
+        {
+            base.AddObject("OfficieleAfdeling", officieleAfdeling);
+        }
     }
     /// <summary>
     /// There are no comments for ChiroGroepModel.ChiroGroep in the schema.
@@ -339,14 +409,39 @@ namespace Cg2.Orm
         /// <param name="naam">Initial value of Naam.</param>
         /// <param name="id">Initial value of ID.</param>
         /// <param name="versie">Initial value of Versie.</param>
-        public static ChiroGroep CreateChiroGroep(string naam, int id, byte[] versie)
+        /// <param name="versie_1">Initial value of Versie_1.</param>
+        public static ChiroGroep CreateChiroGroep(string naam, int id, byte[] versie, byte[] versie_1)
         {
             ChiroGroep chiroGroep = new ChiroGroep();
             chiroGroep.Naam = naam;
             chiroGroep.ID = id;
             chiroGroep.Versie = versie;
+            chiroGroep.Versie_1 = versie_1;
             return chiroGroep;
         }
+        /// <summary>
+        /// There are no comments for Property Versie_1 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie_1
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie_1);
+            }
+            set
+            {
+                this.OnVersie_1Changing(value);
+                this.ReportPropertyChanging("Versie_1");
+                this._Versie_1 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Versie_1");
+                this.OnVersie_1Changed();
+            }
+        }
+        private byte[] _Versie_1;
+        partial void OnVersie_1Changing(byte[] value);
+        partial void OnVersie_1Changed();
     }
     /// <summary>
     /// There are no comments for ChiroGroepModel.Groep in the schema.
@@ -598,6 +693,27 @@ namespace Cg2.Orm
                 }
             }
         }
+        /// <summary>
+        /// There are no comments for Afdeling in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Afdeling_Groep", "Afdeling")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Afdeling> Afdeling
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Afdeling>("ChiroGroepModel.FK_Afdeling_Groep", "Afdeling");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Afdeling>("ChiroGroepModel.FK_Afdeling_Groep", "Afdeling", value);
+                }
+            }
+        }
     }
     /// <summary>
     /// There are no comments for ChiroGroepModel.Persoon in the schema.
@@ -616,12 +732,14 @@ namespace Cg2.Orm
         /// <param name="naam">Initial value of Naam.</param>
         /// <param name="geslachtsInt">Initial value of GeslachtsInt.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static Persoon CreatePersoon(string naam, int geslachtsInt, int id)
+        /// <param name="versie">Initial value of Versie.</param>
+        public static Persoon CreatePersoon(string naam, int geslachtsInt, int id, byte[] versie)
         {
             Persoon persoon = new Persoon();
             persoon.Naam = naam;
             persoon.GeslachtsInt = geslachtsInt;
             persoon.ID = id;
+            persoon.Versie = versie;
             return persoon;
         }
         /// <summary>
@@ -788,7 +906,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -800,7 +918,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }
@@ -1305,12 +1423,14 @@ namespace Cg2.Orm
         /// <param name="bus">Initial value of Bus.</param>
         /// <param name="postCode">Initial value of PostCode.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static Adres CreateAdres(string bus, string postCode, int id)
+        /// <param name="versie">Initial value of Versie.</param>
+        public static Adres CreateAdres(string bus, string postCode, int id, byte[] versie)
         {
             Adres adres = new Adres();
             adres.Bus = bus;
             adres.PostCode = postCode;
             adres.ID = id;
+            adres.Versie = versie;
             return adres;
         }
         /// <summary>
@@ -1408,7 +1528,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -1420,7 +1540,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }
@@ -1541,12 +1661,14 @@ namespace Cg2.Orm
         /// <param name="id">Initial value of ID.</param>
         /// <param name="postNr">Initial value of PostNr.</param>
         /// <param name="naam">Initial value of Naam.</param>
-        public static Straat CreateStraat(int id, int postNr, string naam)
+        /// <param name="versie">Initial value of Versie.</param>
+        public static Straat CreateStraat(int id, int postNr, string naam, byte[] versie)
         {
             Straat straat = new Straat();
             straat.ID = id;
             straat.PostNr = postNr;
             straat.Naam = naam;
+            straat.Versie = versie;
             return straat;
         }
         /// <summary>
@@ -1619,6 +1741,29 @@ namespace Cg2.Orm
         partial void OnNaamChanging(string value);
         partial void OnNaamChanged();
         /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
+        /// <summary>
         /// There are no comments for Adres in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Adres_Straat", "Adres")]
@@ -1657,12 +1802,14 @@ namespace Cg2.Orm
         /// <param name="id">Initial value of ID.</param>
         /// <param name="postNr">Initial value of PostNr.</param>
         /// <param name="naam">Initial value of Naam.</param>
-        public static Subgemeente CreateSubgemeente(int id, int postNr, string naam)
+        /// <param name="versie">Initial value of Versie.</param>
+        public static Subgemeente CreateSubgemeente(int id, int postNr, string naam, byte[] versie)
         {
             Subgemeente subgemeente = new Subgemeente();
             subgemeente.ID = id;
             subgemeente.PostNr = postNr;
             subgemeente.Naam = naam;
+            subgemeente.Versie = versie;
             return subgemeente;
         }
         /// <summary>
@@ -1734,6 +1881,29 @@ namespace Cg2.Orm
         private string _Naam;
         partial void OnNaamChanging(string value);
         partial void OnNaamChanged();
+        /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
         /// <summary>
         /// There are no comments for Adres in the schema.
         /// </summary>
@@ -1989,11 +2159,13 @@ namespace Cg2.Orm
         /// </summary>
         /// <param name="werkJaar">Initial value of WerkJaar.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static GroepsWerkJaar CreateGroepsWerkJaar(int werkJaar, int id)
+        /// <param name="versie">Initial value of Versie.</param>
+        public static GroepsWerkJaar CreateGroepsWerkJaar(int werkJaar, int id, byte[] versie)
         {
             GroepsWerkJaar groepsWerkJaar = new GroepsWerkJaar();
             groepsWerkJaar.WerkJaar = werkJaar;
             groepsWerkJaar.ID = id;
+            groepsWerkJaar.Versie = versie;
             return groepsWerkJaar;
         }
         /// <summary>
@@ -2042,6 +2214,29 @@ namespace Cg2.Orm
         private int _ID;
         partial void OnIDChanging(int value);
         partial void OnIDChanged();
+        /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
         /// <summary>
         /// There are no comments for Groep in the schema.
         /// </summary>
@@ -2097,6 +2292,27 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Lid>("ChiroGroepModel.FK_Lid_GroepsWerkjaar", "Lid", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for AfdelingsJaar in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_AfdelingsJaar_GroepsWerkjaar", "AfdelingsJaar")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<AfdelingsJaar> AfdelingsJaar
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<AfdelingsJaar>("ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar", "AfdelingsJaar");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<AfdelingsJaar>("ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar", "AfdelingsJaar", value);
                 }
             }
         }
@@ -2361,11 +2577,13 @@ namespace Cg2.Orm
         /// </summary>
         /// <param name="id">Initial value of ID.</param>
         /// <param name="login">Initial value of Login.</param>
-        public static Gav CreateGav(int id, string login)
+        /// <param name="versie">Initial value of Versie.</param>
+        public static Gav CreateGav(int id, string login, byte[] versie)
         {
             Gav gav = new Gav();
             gav.ID = id;
             gav.Login = login;
+            gav.Versie = versie;
             return gav;
         }
         /// <summary>
@@ -2414,6 +2632,29 @@ namespace Cg2.Orm
         private string _Login;
         partial void OnLoginChanging(string value);
         partial void OnLoginChanged();
+        /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
         /// <summary>
         /// There are no comments for GebruikersRecht in the schema.
         /// </summary>
@@ -2599,6 +2840,525 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Groep>("ChiroGroepModel.FK_GebruikersRecht_Groep", "Groep", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.Afdeling in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// ID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Afdeling")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class Afdeling : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new Afdeling object.
+        /// </summary>
+        /// <param name="afdelingsNaam">Initial value of AfdelingsNaam.</param>
+        /// <param name="id">Initial value of ID.</param>
+        /// <param name="versie">Initial value of Versie.</param>
+        public static Afdeling CreateAfdeling(string afdelingsNaam, int id, byte[] versie)
+        {
+            Afdeling afdeling = new Afdeling();
+            afdeling.AfdelingsNaam = afdelingsNaam;
+            afdeling.ID = id;
+            afdeling.Versie = versie;
+            return afdeling;
+        }
+        /// <summary>
+        /// There are no comments for Property AfdelingsNaam in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string AfdelingsNaam
+        {
+            get
+            {
+                return this._AfdelingsNaam;
+            }
+            set
+            {
+                this.OnAfdelingsNaamChanging(value);
+                this.ReportPropertyChanging("AfdelingsNaam");
+                this._AfdelingsNaam = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("AfdelingsNaam");
+                this.OnAfdelingsNaamChanged();
+            }
+        }
+        private string _AfdelingsNaam;
+        partial void OnAfdelingsNaamChanging(string value);
+        partial void OnAfdelingsNaamChanged();
+        /// <summary>
+        /// There are no comments for Property Afkorting in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Afkorting
+        {
+            get
+            {
+                return this._Afkorting;
+            }
+            set
+            {
+                this.OnAfkortingChanging(value);
+                this.ReportPropertyChanging("Afkorting");
+                this._Afkorting = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Afkorting");
+                this.OnAfkortingChanged();
+            }
+        }
+        private string _Afkorting;
+        partial void OnAfkortingChanging(string value);
+        partial void OnAfkortingChanged();
+        /// <summary>
+        /// There are no comments for Property ID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int ID
+        {
+            get
+            {
+                return this._ID;
+            }
+            set
+            {
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
+            }
+        }
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Afdeling_Groep", "Groep")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Groep Groep
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_Afdeling_Groep", "Groep").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_Afdeling_Groep", "Groep").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Groep> GroepReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_Afdeling_Groep", "Groep");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Groep>("ChiroGroepModel.FK_Afdeling_Groep", "Groep", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for AfdelingsJaar in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_AfdelingsJaar_Afdeling", "AfdelingsJaar")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<AfdelingsJaar> AfdelingsJaar
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<AfdelingsJaar>("ChiroGroepModel.FK_AfdelingsJaar_Afdeling", "AfdelingsJaar");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<AfdelingsJaar>("ChiroGroepModel.FK_AfdelingsJaar_Afdeling", "AfdelingsJaar", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.AfdelingsJaar in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// ID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="AfdelingsJaar")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class AfdelingsJaar : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new AfdelingsJaar object.
+        /// </summary>
+        /// <param name="id">Initial value of ID.</param>
+        /// <param name="versie">Initial value of Versie.</param>
+        public static AfdelingsJaar CreateAfdelingsJaar(int id, byte[] versie)
+        {
+            AfdelingsJaar afdelingsJaar = new AfdelingsJaar();
+            afdelingsJaar.ID = id;
+            afdelingsJaar.Versie = versie;
+            return afdelingsJaar;
+        }
+        /// <summary>
+        /// There are no comments for Property GeboorteJaarTot in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> GeboorteJaarTot
+        {
+            get
+            {
+                return this._GeboorteJaarTot;
+            }
+            set
+            {
+                this.OnGeboorteJaarTotChanging(value);
+                this.ReportPropertyChanging("GeboorteJaarTot");
+                this._GeboorteJaarTot = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("GeboorteJaarTot");
+                this.OnGeboorteJaarTotChanged();
+            }
+        }
+        private global::System.Nullable<int> _GeboorteJaarTot;
+        partial void OnGeboorteJaarTotChanging(global::System.Nullable<int> value);
+        partial void OnGeboorteJaarTotChanged();
+        /// <summary>
+        /// There are no comments for Property GeboorteJaarVan in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> GeboorteJaarVan
+        {
+            get
+            {
+                return this._GeboorteJaarVan;
+            }
+            set
+            {
+                this.OnGeboorteJaarVanChanging(value);
+                this.ReportPropertyChanging("GeboorteJaarVan");
+                this._GeboorteJaarVan = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("GeboorteJaarVan");
+                this.OnGeboorteJaarVanChanged();
+            }
+        }
+        private global::System.Nullable<int> _GeboorteJaarVan;
+        partial void OnGeboorteJaarVanChanging(global::System.Nullable<int> value);
+        partial void OnGeboorteJaarVanChanged();
+        /// <summary>
+        /// There are no comments for Property ID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int ID
+        {
+            get
+            {
+                return this._ID;
+            }
+            set
+            {
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
+            }
+        }
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
+        /// <summary>
+        /// There are no comments for GroepsWerkJaar in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_AfdelingsJaar_GroepsWerkjaar", "GroepsWerkJaar")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public GroepsWerkJaar GroepsWerkJaar
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<GroepsWerkJaar>("ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar", "GroepsWerkJaar").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<GroepsWerkJaar>("ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar", "GroepsWerkJaar").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for GroepsWerkJaar in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<GroepsWerkJaar> GroepsWerkJaarReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<GroepsWerkJaar>("ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar", "GroepsWerkJaar");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<GroepsWerkJaar>("ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar", "GroepsWerkJaar", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Afdeling in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_AfdelingsJaar_Afdeling", "Afdeling")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Afdeling Afdeling
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Afdeling>("ChiroGroepModel.FK_AfdelingsJaar_Afdeling", "Afdeling").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Afdeling>("ChiroGroepModel.FK_AfdelingsJaar_Afdeling", "Afdeling").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Afdeling in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Afdeling> AfdelingReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Afdeling>("ChiroGroepModel.FK_AfdelingsJaar_Afdeling", "Afdeling");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Afdeling>("ChiroGroepModel.FK_AfdelingsJaar_Afdeling", "Afdeling", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for OfficieleAfdeling in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_AfdelingsJaar_OfficieleAfdeling", "OfficieleAfdeling")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public OfficieleAfdeling OfficieleAfdeling
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<OfficieleAfdeling>("ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling", "OfficieleAfdeling").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<OfficieleAfdeling>("ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling", "OfficieleAfdeling").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for OfficieleAfdeling in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<OfficieleAfdeling> OfficieleAfdelingReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<OfficieleAfdeling>("ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling", "OfficieleAfdeling");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<OfficieleAfdeling>("ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling", "OfficieleAfdeling", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.OfficieleAfdeling in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// ID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="OfficieleAfdeling")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class OfficieleAfdeling : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new OfficieleAfdeling object.
+        /// </summary>
+        /// <param name="naam">Initial value of Naam.</param>
+        /// <param name="id">Initial value of ID.</param>
+        /// <param name="versie">Initial value of Versie.</param>
+        public static OfficieleAfdeling CreateOfficieleAfdeling(string naam, int id, byte[] versie)
+        {
+            OfficieleAfdeling officieleAfdeling = new OfficieleAfdeling();
+            officieleAfdeling.Naam = naam;
+            officieleAfdeling.ID = id;
+            officieleAfdeling.Versie = versie;
+            return officieleAfdeling;
+        }
+        /// <summary>
+        /// There are no comments for Property Naam in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Naam
+        {
+            get
+            {
+                return this._Naam;
+            }
+            set
+            {
+                this.OnNaamChanging(value);
+                this.ReportPropertyChanging("Naam");
+                this._Naam = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Naam");
+                this.OnNaamChanged();
+            }
+        }
+        private string _Naam;
+        partial void OnNaamChanging(string value);
+        partial void OnNaamChanged();
+        /// <summary>
+        /// There are no comments for Property ID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int ID
+        {
+            get
+            {
+                return this._ID;
+            }
+            set
+            {
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
+            }
+        }
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
+        /// <summary>
+        /// There are no comments for AfdelingsJaar in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_AfdelingsJaar_OfficieleAfdeling", "AfdelingsJaar")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<AfdelingsJaar> AfdelingsJaar
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<AfdelingsJaar>("ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling", "AfdelingsJaar");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<AfdelingsJaar>("ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling", "AfdelingsJaar", value);
                 }
             }
         }
