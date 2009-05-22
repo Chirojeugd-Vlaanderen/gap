@@ -19,7 +19,7 @@ namespace Cg2.ServiceContracts
         /// <returns>De persoon met eventueel gewijzigde informatie</returns>
         /// <remarks>FIXME: gedetailleerde exception</remarks>
         [OperationContract]
-        Groep Updaten(Groep g);
+        Groep Bewaren(Groep g);
 
         /// <summary>
         /// Haalt groep op uit database
@@ -28,27 +28,52 @@ namespace Cg2.ServiceContracts
         /// <returns>het gevraagde groepsobject, of null indien niet gevonden.
         /// </returns>
         [OperationContract]
-        [ServiceKnownType(typeof(Groep))]
         Groep Ophalen(int groepID);
 
-        /// <summary>
-        /// Functie om de service te testen
-        /// </summary>
-        /// <returns>Een teststring</returns>
         [OperationContract]
-        string Hallo();
+        Groep OphalenMetAdressen(int groepID);
 
+        [OperationContract]
+        Groep OphalenMetCategorieen(int groepID);
+
+        [OperationContract]
+        Groep OphalenMetFuncties(int groepID);
+
+        [OperationContract]
+        Groep OphalenMetAfdelingen(int groepID);
+
+        [OperationContract]
+        Groep OphalenMetVrijeVelden(int groepID);
+
+        [OperationContract]
+        int OphalenGroepsWerkjaar(int groepID);
+
+        //alles om gelieerdepersonen op te halen zit in igelieerdepersonenservice
+
+        [OperationContract]
+        void AanmakenAfdeling(int groepID, string naam);
+
+        [OperationContract]
+        void AanmakenAfdeling(int groepID, string naam, string afkorting);
+
+        /// <summary>
+        /// Methode die aan de hand van een groep, een afdelingsjaar van de groep en een officiele afdeling een 
+        /// afdelingsjaar maakt voor de gegeven leeftijden. 
+        /// </summary>
+        /// <param name="g">Deze moet gelinkt zijn met afdelingsjaar, officieleafdeling en afdeling</param>
+        /// <param name="aj"></param>
+        /// <param name="oa"></param>
+        [OperationContract]
+        void AanmakenAfdelingsJaar(Groep g, Afdeling aj, OfficieleAfdeling oa, int geboortejaarbegin, int geboortejaareind);
+
+        [OperationContract]
+        IList<OfficieleAfdeling> OphalenOfficieleAfdelingen();
+        
+
+        //TODO geef lijst met alle mogelijke afdelingen,
+        //zorgen dat ge die lijst kunt aanpassen
 
         /*
-            acties op GROEP g
-            groepophalen(searcharg)
-            groepupdate(g)
-            =>nieuwe groep
-            groepverwijderen(g)? (JV: enkel nuttig voor eventueel admingedeelte)
-            groepophalenmetadressen(g)
-            groepophalenmetpersonen(g) => alle standaardpersonen dus (JV: wat zijn standaardpersonen? Alles lijkt me sowieso te veel)
-            groepophalenmetfuncties(g)
-            groepophalenmetvrijevelden(g)
             bivakorganiseren(g, b)
             stelGAVin
             verwijderGAV (JV: ik zou hier de 'VervalDatum' op nu instellen, zodat geregistreerd blijft dat iemand ooit gav was)
@@ -58,5 +83,13 @@ namespace Cg2.ServiceContracts
             afdelingsjaarverwijderen(g) (JV: kan enkel als er geen leden in dat afdelingsjaar zijn/waren)
             afdelingtoevoegen
          */
+
+
+        /// <summary>
+        /// Functie om de service te testen
+        /// </summary>
+        /// <returns>Een teststring</returns>
+        [OperationContract]
+        string Hallo();
     }
 }

@@ -41,7 +41,7 @@ namespace Cg2.Data.Ef
         /// gewijzigde velden in gerelateerde entity's niet!</opmerking>
         public override Adres Bewaren(Adres adr)
         {
-            Adres bewaardAdres;
+            Adres geattachtAdres;
 
             // Deze assertions moeten eigenlijk afgedwongen worden
             // door de businesslaag.  En eigenlijk moet deze method ook
@@ -56,7 +56,7 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                bewaardAdres = db.AttachObjectGraph(adr
+                geattachtAdres = db.AttachObjectGraph(adr
                     , dink=>dink.Straat.WithoutUpdate()
                     , dink=>dink.Subgemeente.WithoutUpdate()
                     , dink=>dink.PersoonsAdres.First().GelieerdePersoon.WithoutUpdate());
@@ -71,8 +71,8 @@ namespace Cg2.Data.Ef
 
                 db.SaveChanges();
 
-                adr.ID = bewaardAdres.ID;
-                adr.Versie = bewaardAdres.Versie;
+                adr.ID = geattachtAdres.ID;
+                adr.Versie = geattachtAdres.Versie;
             }
             return adr;
         }

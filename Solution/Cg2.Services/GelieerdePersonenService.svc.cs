@@ -70,12 +70,6 @@ namespace Cg2.Services
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID, PersoonsInfo gevraagd)
-        {
-            throw new NotImplementedException();
-        }
-
-        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public Adres AdresMetBewonersOphalen(int adresID)
         {
             AdressenManager adm = Factory.Maak<AdressenManager>();

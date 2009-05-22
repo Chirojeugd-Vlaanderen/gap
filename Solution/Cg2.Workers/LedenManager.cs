@@ -80,19 +80,13 @@ namespace Cg2.Workers
                 gpm.GroepLaden(gp);
             }
 
-            return LidMaken(gp, gm.Dao.HuidigWerkJaarGet(gp.Groep.ID));
+            return LidMaken(gp, gm.Dao.OphalenNieuwsteGroepsWerkjaar(gp.Groep.ID));
         }
 
-
-        /// <summary>
-        /// ook om te maken en te deleten
-        /// </summary>
-        /// <param name="persoon"></param>
-        public void LidBewaren(Lid lid)
+        /*public void LidMaken(int gelieerdePersoonID)
         {
-            //TODO
-            throw new NotImplementedException();
-        }
+            Dao.LidMaken(gelieerdePersoonID);
+        }*/
 
         /// <summary>
         /// 
@@ -114,6 +108,11 @@ namespace Cg2.Workers
             lid.NonActief = false;
             //TODO er moet betaald worden + save
             throw new NotImplementedException();
+        }
+
+        public void LidBewaren(Lid lid)
+        {
+            Dao.Bewaren(lid);
         }
     }
 }

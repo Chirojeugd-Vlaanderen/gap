@@ -9,17 +9,41 @@ using Cg2.Orm;
 namespace Cg2.ServiceContracts
 {
     // NOTE: If you change the interface name "ILedenService" here, you must also update the reference to "ILedenService" in Web.config.
+
     [ServiceContract]
     public interface ILedenService
     {
         /// <summary>
-        /// Een gelieerde persoon ophalen en die lid in het huidige werkjaar
-        /// en bewaren in database.
+        /// Gaat een gelieerde persoon ophalen en maakt die lid in het huidige werkjaar. Hiervoor krijgt het
+        /// de eigenschappen die overeenkomen met zijn leeftijd, maar er moet wel de juiste methode worden
+        /// aangeroepen om een kind of een leiding te maken
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van de gelieerde persoon</param>
         /// <returns>nieuw lidobject</returns>
         [OperationContract]
-        Lid LidMakenEnBewaren(int gelieerdePersoonID);
+        void LidMakenEnBewaren(int gelieerdePersoonID);
+        //Kind LidMaken(int gelieerdePersoonID);
+
+        //[OperationContract]
+        //Leiding LeidingMaken(int gelieerdePersoonID, IEnumerable<AfdelingsJaar> afdelingen);
+
+        /// <summary>
+        /// Om een lid aan te passen of te verwijderen uit het systeem. De gewone bewaar methode slaat altijd alleen
+        /// veranderingen op aan het lid object zelf
+        /// </summary>
+        /// <param name="persoon"></param>
+        [OperationContract]
+        void Bewaren(Lid lid);
+
+        [OperationContract]
+        void BewarenMetAfdelingen(Lid lid);
+
+        [OperationContract]
+        void BewarenMetFuncties(Lid lid);
+
+        [OperationContract]
+        void BewarenMetVrijeVelden(Lid lid);
+
 
         /// <summary>
         /// Haalt pagina met leden op uit bepaald groepswerkjaar
@@ -33,13 +57,6 @@ namespace Cg2.ServiceContracts
         /// en personen</returns>
         [OperationContract]
         IList<LidInfo> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalOpgehaald);
-
-        /// <summary>
-        /// ook om te maken en te deleten
-        /// </summary>
-        /// <param name="persoon"></param>
-        [OperationContract]
-        void LidBewaren(Lid lid);
 
         /// <summary>
         /// 

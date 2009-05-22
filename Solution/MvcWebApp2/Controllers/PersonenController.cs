@@ -68,6 +68,7 @@ namespace MvcWebApp2.Controllers
             {
                 // TODO: Add insert logic here
 
+
                 return RedirectToAction("Index");
             }
             catch

@@ -17,5 +17,7 @@ namespace Cg2.Orm.DataInterfaces
         /// bewaard</param>
         /// <returns>Een lijst van leden, inclusief info gelieerde personen en personen</returns>
         IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalOpgehaald);
+
+        //void LidMaken(int gelieerdeID);
     }
 }

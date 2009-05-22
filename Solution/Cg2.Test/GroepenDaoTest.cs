@@ -3,6 +3,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Orm.DataInterfaces;
 using Cg2.Orm;
 
+using System;
+using System.Linq;
+using System.Text;
+using System.Data.Objects;
+using Cg2.EfWrapper.Entity;
+
 namespace Cg2.Test
 {
     
@@ -75,6 +81,24 @@ namespace Cg2.Test
             Groep actual;
             actual = target.Ophalen(id);
             Assert.IsTrue(actual.ID == 310);
+        }
+
+        [TestMethod]
+        public void ToevoegenEnVerwijderenVanAfdelingen()
+        {
+            GroepenDao d = new GroepenDao();
+            d.ToevoegenAfdeling(310, "De Joskes", "DJ");
+
+            Groep g = d.Ophalen(310);
+
+            Assert.IsTrue(g.Afdeling.Count == 1);
+
+             
+            g.Afdeling.First().TeVerwijderen = true;
+
+            d.BewarenMetAfdelingen(g);
+
+            Assert.IsTrue(g.Afdeling.Count == 0);
         }
 
     }

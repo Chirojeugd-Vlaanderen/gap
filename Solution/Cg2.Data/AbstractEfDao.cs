@@ -9,6 +9,9 @@ using System.Data.Objects.DataClasses;
 using Cg2.Orm.DataInterfaces;
 using Cg2.Orm;
 using Cg2.EfWrapper;
+using Cg2.EfWrapper.Entity;
+
+using System.Linq.Expressions;
 
 namespace Cg2.Data.Ef
 {
@@ -139,6 +142,39 @@ namespace Cg2.Data.Ef
                     db.SaveChanges();
                 }
                 return entiteit;
+            }
+        }
+
+        /// <summary>
+        /// Bewaart/Updatet entiteit in database
+        /// </summary>
+        /// <param name="nieuweEntiteit">entiteit met nieuwe gegevens</param>
+        /// <returns>De geupdatete entiteit</returns>
+        /// <remarks>Nieuwe methode, die altijd attachobject graph gebruikt en dus als argument een array van lambda
+        /// expressions meekrijgt</remarks>
+        public virtual T Bewaren(T entiteit, params Expression<Func<T, object>>[] paths)
+        {
+
+            if (entiteit.ID == 0)
+            {
+                return Creeren(entiteit);
+            }
+            else if (entiteit.TeVerwijderen)
+            {
+                Verwijderen(entiteit);
+                return null;
+            }
+            else
+            {
+                T geattachteT;
+
+                using (ChiroGroepEntities db = new ChiroGroepEntities())
+                {
+                    geattachteT = db.AttachObjectGraph(entiteit, paths);
+
+                    db.SaveChanges();
+                }
+                return geattachteT;
             }
         }
 

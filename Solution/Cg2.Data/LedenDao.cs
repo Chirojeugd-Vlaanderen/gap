@@ -72,6 +72,36 @@ namespace Cg2.Data.Ef
             return l;
         }
 
+        /*public void LidMaken(int gelieerdeID)
+        {
+            int huidigchirojaar = 2008; //TODO NOT HARDCODED
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                var gp = (
+                    from g in db.GelieerdePersoon.Include("Groep.GroepsWerkJaar")
+                    where g.ID == gelieerdeID
+                    select g
+                    ).FirstOrDefault<GelieerdePersoon>();
+
+                var gwj = (
+                    from gj in gp.Groep.GroepsWerkJaar
+                    where gj.WerkJaar == huidigchirojaar
+                    select gj
+                    ).FirstOrDefault<GroepsWerkJaar>();
+
+                Lid l = new Lid();
+
+                l.GroepsWerkJaar = gwj;
+                l.GelieerdePersoon = gp;
+
+                gwj.Lid.Add(l);
+                gp.Lid.Add(l);
+
+                db.SaveChanges();
+            }
+        }*/
+
         public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalOpgehaald)
         {
             IList<Lid> lijst;
@@ -91,6 +121,16 @@ namespace Cg2.Data.Ef
             }
 
             return lijst;
+        }
+
+        /// <summary>
+        /// ook om te maken en te deleten
+        /// </summary>
+        /// <param name="persoon"></param>
+        public void LidBewaren(Lid lid)
+        {
+            //TODO
+            throw new NotImplementedException();
         }
     }
 }

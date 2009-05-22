@@ -9,24 +9,6 @@ using Cg2.EfWrapper.Entity;
 
 namespace Cg2.Orm
 {
-    /// <summary>
-    /// stelt voor welke extra info er in met een GelieerdePersoon opgevraagd kan worden
-    /// ADRESSEN: alle adressen van de persoon die zichtbaar zijn, zijn toegevoegd
-    /// COMMUNICATIEVORMEN: alle communicatievormen
-    /// LIDINFO: alle lidinfo van het huidige werkjaar en de huidige groep
-    /// ...
-    /// </summary>
-    [DataContract]
-    public enum PersoonsInfo {
-        [EnumMember] Adressen,
-        [EnumMember] CommunicatieVormen,
-        [EnumMember] VrijeVelden,
-        [EnumMember] LidInfo, //TODO maar lidmaken mag niet via persoon, moet via ledenservice
-        [EnumMember] Categorieen,
-        [EnumMember] CursusInfo,
-        [EnumMember] VerzekeringsInfo
-    }
-
     // Als er een persoon met adressen over de service gestuurd wordt,
     // en een PersoonsAdres is uit de lijst met PersoonsAdressen 
     // verdwenen, dan is het de bedoeling dat
