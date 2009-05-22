@@ -40,11 +40,12 @@ namespace Cg2.Services
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
+        public IList<PersoonInfo> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald)
         {
             GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
 
-            return pm.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalOpgehaald);
+            var gelieerdePersonen = pm.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalOpgehaald);
+            return mapPersoon(gelieerdePersonen);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
@@ -194,5 +195,30 @@ namespace Cg2.Services
         }
 
         #endregion
+
+        #region mappers
+
+        private PersoonInfo mapPersoon(GelieerdePersoon gp)
+        {
+            return new PersoonInfo() { 
+                AdNummer = gp.Persoon.AdNummer,
+                GelieerdePersoonID = gp.ID,
+                GeboorteDatum = gp.Persoon.GeboorteDatum,
+                VolledigeNaam = gp.Persoon.VolledigeNaam,
+                Geslacht = gp.Persoon.Geslacht,
+                IsLid = (gp.Lid.Count > 0) };
+        }
+
+        private IList<PersoonInfo> mapPersoon(IList<GelieerdePersoon> gps)
+        {
+            IList<PersoonInfo> map = new List<PersoonInfo>();
+            foreach (var gp in gps)
+            {
+                map.Add(mapPersoon(gp));
+            }
+            return map;
+        }
+
+        #endregion  
     }
 }

@@ -34,7 +34,7 @@ namespace Cg2.ServiceContracts
         /// <param name="aantalOpgehaald">outputparameter; geeft effectief aantal opgehaalde personen weer</param>
         /// <returns>lijst van gelieerde personen met persoonsinfo</returns>
         [OperationContract]
-        IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald);
+        IList<PersoonInfo> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald);
 
         /// <summary>
         /// Zoekt alle personen die aan de criteria voldoen en geeft daarvan een bepaalde pagina weer
