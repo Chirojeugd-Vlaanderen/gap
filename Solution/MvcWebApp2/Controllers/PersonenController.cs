@@ -23,9 +23,9 @@ namespace MvcWebApp2.Controllers
         public ActionResult Index()
         {
             int aantal;
-            Models.GelieerdePersonenModel personenModel = new Models.GelieerdePersonenModel();
-            personenModel.GelieerdePersonenLijst = ServiceHelper.CallService<IGelieerdePersonenService, IList<GelieerdePersoon>>(l => l.PaginaOphalenMetLidInfo(int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12, out aantal));
-            //IList<GelieerdePersoon> personen = ServiceHelper.CallService<IGelieerdePersonenService, IList<GelieerdePersoon> >(l => l.PaginaOphalenMetLidInfo(int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12, out aantal));
+
+            Models.PersoonInfoModel personenModel = new Models.PersoonInfoModel();
+            personenModel.PersoonInfoLijst = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>(g => g.PaginaOphalenMetLidInfo(int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), 1, 12, out aantal));
 
             return View("Index", personenModel);
         }
