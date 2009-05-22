@@ -8,6 +8,6 @@ namespace Cg2.Services
 {
     internal static class SecurityGroepen
     {
-        public const string Gebruikers = @"KIPDORP\g-developers-chirogroep";
+        public const string Gebruikers = @"CgUsers";
     }
 }
