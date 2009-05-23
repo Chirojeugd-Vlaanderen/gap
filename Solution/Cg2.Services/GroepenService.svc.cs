@@ -132,11 +132,36 @@ namespace Cg2.Services
         {
             return new GroepInfo()
             {
+                ID = g.ID,
                 Groepsnaam = g.Naam,
                 // TODO Add Adres / Plaats to Groep
                 Plaats = "Plaats nog toevoegen",
-                StamNummer = g.Code
+                StamNummer = g.Code == null ? String.Empty : g.Code.ToUpper()
             };
+        }
+
+        private IList<GroepInfo> mapGroepen(IEnumerable<Groep> groepen)
+        {
+            IList<GroepInfo> giList = new List<GroepInfo>();
+
+            foreach (var gr in groepen)
+            {
+                giList.Add(mapGroep(gr));
+            }
+            return giList;
+        }
+
+        #endregion
+
+        #region IGroepenService Members
+
+
+        public IEnumerable<GroepInfo> OphalenMijnGroepen()
+        {
+            AuthorisatieManager am = Factory.Maak<AuthorisatieManager>();
+
+            var result = am.GekoppeldeGroepenGet();
+            return mapGroepen(result);
         }
 
         #endregion

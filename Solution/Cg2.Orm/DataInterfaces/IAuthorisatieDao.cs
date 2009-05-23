@@ -63,12 +63,12 @@ namespace Cg2.Orm.DataInterfaces
 
 
         /// <summary>
-        /// Haalt lijst groepID's op waaraan de GAV met gegeven
+        /// Haalt lijst groepen op waaraan de GAV met gegeven
         /// login MOMENTEEL gekoppeld is
         /// </summary>
         /// <param name="login">Gebruikersnaam van de GAV</param>
-        /// <returns>lijst met groepID's</returns>
-        IList<int> GekoppeldeGroepenGet(string login);
+        /// <returns>lijst met groepen</returns>
+        IEnumerable<Groep> GekoppeldeGroepenGet(string login);
 
         /// <summary>
         /// Verwijdert uit een lijst met GelieerdePersonenID's de ID's

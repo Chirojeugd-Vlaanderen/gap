@@ -9,7 +9,7 @@ using Cg2.EfWrapper;
 
 namespace Cg2.Data.Ef
 {
-    public class AuthorisatieDao: Dao<GebruikersRecht>, IAuthorisatieDao
+    public class AuthorisatieDao : Dao<GebruikersRecht>, IAuthorisatieDao
     {
         #region IAuthorisatieDao Members
 
@@ -30,7 +30,7 @@ namespace Cg2.Data.Ef
 
                 var query
                     = from r in db.GebruikersRecht
-                      where r.Groep.ID == groepID && r.Gav.Login == login 
+                      where r.Groep.ID == groepID && r.Gav.Login == login
                       select r;
 
                 resultaat = query.FirstOrDefault();
@@ -100,24 +100,8 @@ namespace Cg2.Data.Ef
             return resultaat;
         }
 
-        public bool IsGavPersoon(string login, int persoonID)
-        {
-            bool resultaat;
 
-            using (ChiroGroepEntities db = new ChiroGroepEntities())
-            {
-                var query
-                    = from GebruikersRecht r in db.GebruikersRecht
-                      where r.Gav.Login == login && r.Groep.GelieerdePersoon.Any(gp => gp.Persoon.ID == persoonID)
-                      select r;
-
-                resultaat = query.Count() > 0;
-            }
-
-            return resultaat;
-        }
-
-        public IList<int> GekoppeldeGroepenGet(string login)
+        public IEnumerable<Groep> GekoppeldeGroepenGet(string login)
         {
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
@@ -131,7 +115,7 @@ namespace Cg2.Data.Ef
                 return
                     (from r in db.GebruikersRecht
                      where r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
-                     select r.Groep.ID).ToList<int>();
+                     select r.Groep).ToList();
             }
         }
 
@@ -153,7 +137,7 @@ namespace Cg2.Data.Ef
             }
 
             return resultaat;
-        }        
+        }
 
 
         public IList<int> EnkelMijnPersonen(IList<int> personenIDs, string login)
@@ -175,6 +159,29 @@ namespace Cg2.Data.Ef
 
             return resultaat;
         }
+
+        #endregion
+
+        #region IAuthorisatieDao Members
+
+
+        public bool IsGavPersoon(string login, int persoonID)
+        {
+            bool resultaat;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                var query
+                    = from GebruikersRecht r in db.GebruikersRecht
+                      where r.Gav.Login == login && r.Groep.GelieerdePersoon.Any(gp => gp.Persoon.ID == persoonID)
+                      select r;
+
+                resultaat = query.Count() > 0;
+            }
+
+            return resultaat;
+        }
+
 
         #endregion
     }

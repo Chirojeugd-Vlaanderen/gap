@@ -16,9 +16,9 @@ namespace Cg2.Data.Ef
     public class PersonenDao: Dao<GelieerdePersoon>, IPersonenDao
     {
         #region IPersonenDao Members
-        // TODO: onderstaande misschien doen via GroepsWerkJaar ipv via
-        // aparte persoon- en groepID?
-        //
+
+        // TODO: onderstaande misschien doen via GroepsWerkJaar ipv via aparte persoon- en groepID?
+
         public IList<Persoon> LijstOphalen(IList<int> personenIDs)
         {
             using (ChiroGroepEntities db = new ChiroGroepEntities())

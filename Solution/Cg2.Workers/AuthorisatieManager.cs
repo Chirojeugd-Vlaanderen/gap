@@ -61,7 +61,7 @@ namespace Cg2.Workers
         /// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV
         /// </summary>
         /// <returns>ID's van gekoppelde groepen</returns>
-        public IList<int> GekoppeldeGroepenGet()
+        public IEnumerable<Groep> GekoppeldeGroepenGet()
         {
             return _dao.GekoppeldeGroepenGet(ServiceSecurityContext.Current.WindowsIdentity.Name);
         }

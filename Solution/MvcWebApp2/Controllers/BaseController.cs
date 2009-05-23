@@ -24,12 +24,15 @@ namespace MvcWebApp2.Controllers
     {
         protected MasterViewModel model = new MasterViewModel();
 
+        protected const string GroepSessieKey = "MijnGroepId";
+
         /// <summary>
         /// Standaard constructor
         /// </summary>
         public BaseController() : base()
         {
-            GegevensVanDeGroepInvullen();
+            // Bart, deze werd dubbel uitgevoerd en te vroeg
+            // GegevensVanDeGroepInvullen();
         }
 
         /// <summary>
@@ -39,6 +42,8 @@ namespace MvcWebApp2.Controllers
         /// <remarks>Wordt aangeroepen door MasterAttribute na elke request</remarks>
         public void SetModel(MasterViewModel childViewModel)
         {
+            GegevensVanDeGroepInvullen();
+
             childViewModel.Groepsnaam = model.Groepsnaam;
             childViewModel.Plaats = model.Plaats;
             childViewModel.StamNummer = model.StamNummer;
@@ -47,24 +52,33 @@ namespace MvcWebApp2.Controllers
 
         private void GegevensVanDeGroepInvullen()
         { 
-            // TODO: groepID doorgeven
 
-            var groepId = Properties.Settings.Default.TestGroepId;
-            string cacheKey = "GI" + groepId.ToString();
+            object groepIdSessionItem = System.Web.HttpContext.Current.Session[GroepSessieKey];
 
-            System.Web.Caching.Cache c = System.Web.HttpContext.Current.Cache;
-            
-            GroepInfo gi = (GroepInfo)c.Get(cacheKey);
-            if (gi == null)
+            if (groepIdSessionItem == null)
             {
-                gi = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.OphalenInfo(Properties.Settings.Default.TestGroepId));
-                c.Add(cacheKey, gi, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
+                // De Gekozen groep is nog niet gekend, zet defaults
+                model.StamNummer = "Geen stamnummer gekozen";
             }
+            else
+            {
+                var groepId = (int)groepIdSessionItem;
+                string cacheKey = "GI" + groepId.ToString();
 
-            model.Groepsnaam = gi.Groepsnaam;
-            model.Plaats = gi.Plaats;
-            model.StamNummer = gi.StamNummer;
-            model.Title = " - .: Kakajo :. ";
+                System.Web.Caching.Cache c = System.Web.HttpContext.Current.Cache;
+
+                GroepInfo gi = (GroepInfo)c.Get(cacheKey);
+                if (gi == null)
+                {
+                    gi = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.OphalenInfo(Properties.Settings.Default.TestGroepId));
+                    c.Add(cacheKey, gi, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
+                }
+
+                model.Groepsnaam = gi.Groepsnaam;
+                model.Plaats = gi.Plaats;
+                model.StamNummer = gi.StamNummer;
+                model.Title = " - .: Kakajo :. ";
+            }
         }
     }
 }

@@ -10,6 +10,9 @@ namespace Cg2.ServiceContracts
     public class GroepInfo
     {
         [DataMember]
+        public int ID;
+
+        [DataMember]
         public string Groepsnaam;
 
         [DataMember]

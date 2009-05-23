@@ -50,9 +50,7 @@ namespace MvcWebApp2.Models
             PersoonIDs = new List<int>();
         }
 
-        // TODO: Ik ben er niet zeker van of het model de service
-        // rechtstreeks mag aanspreken, of of dat via de controller
-        // moet gebeuren...
+        // TODO: Ik ben er niet zeker van of het model de service rechtstreeks mag aanspreken, of of dat via de controller moet gebeuren...
 
         /// <summary>
         /// Creeert verhuisinfo voor gegeven gelieerde persoon en

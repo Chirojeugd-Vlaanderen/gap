@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Cg2.Orm.DataInterfaces
 {
+
+    // TODO: Straat en subgemeente zouden standaard mee opgehaald moeten worden.
+    
     /// <summary>
-    /// Data Access Object voor adressen.  
-    /// 
-    /// TODO: Straat en subgemeente zouden standaard
-    /// mee opgehaald moeten worden.
+    /// Data Access Object voor adressen.    
     /// </summary>
     public interface IAdressenDao: IDao<Adres>
     {

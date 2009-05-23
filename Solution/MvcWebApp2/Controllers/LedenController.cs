@@ -16,6 +16,7 @@ namespace MvcWebApp2.Controllers
     {
         //
         // GET: /Leden/
+        [GroepActionFilter(GroepSessieKey)]
         public ActionResult Index()
         {
             // TODO: List oproepen met recentste GroepsWerkJaar, niet met test ...

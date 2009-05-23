@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="CheckBoxListHelper.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\GavController.cs" />
     <Compile Include="Controllers\LedenController.cs" />
     <Compile Include="Controllers\PersonenController.cs" />
     <Compile Include="Default.aspx.cs">
@@ -82,7 +83,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="GroepActionFilter.cs" />
     <Compile Include="ModelStateWrapper.cs" />
+    <Compile Include="Models\GavModel.cs" />
     <Compile Include="Models\LidInfoModel.cs" />
     <Compile Include="Models\GelieerdePersonenModel.cs" />
     <Compile Include="Models\LedenModel.cs" />
@@ -102,6 +105,7 @@
   <ItemGroup>
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="Views\Gav\Index.aspx" />
     <Content Include="Views\Leden\Index.aspx" />
     <Content Include="Views\Personen\NieuwAdres.aspx" />
     <Content Include="Views\Personen\Edit.aspx" />

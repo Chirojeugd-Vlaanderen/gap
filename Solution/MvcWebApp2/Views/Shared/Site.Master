@@ -15,7 +15,7 @@
                 <h1><%=Html.Encode(ViewData.Model.Groepsnaam) %>
                     </h1>
                 <p>
-                    <%=Html.Encode(ViewData.Model.Plaats)%> | Stamnr: <%=Html.Encode(ViewData.Model.StamNummer.ToUpper()) %></p>
+                    <%=Html.Encode(ViewData.Model.Plaats)%> | Stamnr: <%=Html.Encode(ViewData.Model.StamNummer) %></p>
             </div>
             <div id="logindisplay">
                 Aangemeld als

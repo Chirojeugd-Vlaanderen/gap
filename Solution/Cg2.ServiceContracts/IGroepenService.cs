@@ -21,6 +21,14 @@ namespace Cg2.ServiceContracts
         GroepInfo OphalenInfo(int GroepId);
 
         /// <summary>
+        /// Ophalen van de Groeps info
+        /// </summary>
+        /// <param name="GroepId"></param>
+        /// <returns></returns>
+        [OperationContract]
+        IEnumerable<GroepInfo> OphalenMijnGroepen();
+
+        /// <summary>
         /// Persisteert een groep in de database
         /// </summary>
         /// <param name="g">Te persisteren groep</param>
