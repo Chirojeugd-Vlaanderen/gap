@@ -17,7 +17,7 @@
 						<UML:TaggedValue tag="modified" value="2008-05-05 00:00:00"/>
 						<UML:TaggedValue tag="iscontrolled" value="1"/>
 						<UML:TaggedValue tag="xmlpath" value="Design Model.xml"/>
-						<UML:TaggedValue tag="lastloaddate" value="2009-05-23 15:34:59"/>
+						<UML:TaggedValue tag="lastloaddate" value="2009-05-23 16:48:17"/>
 						<UML:TaggedValue tag="lastsavedate" value="2008-05-20 13:52:10"/>
 						<UML:TaggedValue tag="version" value="1.0"/>
 						<UML:TaggedValue tag="isprotected" value="0"/>
@@ -7524,7 +7524,7 @@
 										<UML:TaggedValue tag="lineStyle" value="0"/>
 										<UML:TaggedValue tag="conditional" value=" &#xA;«FK»"/>
 										<UML:TaggedValue tag="ea_localid" value="1224"/>
-										<UML:TaggedValue tag="ea_sourceName" value="AdresNaarGelieerdePersoon"/>
+										<UML:TaggedValue tag="ea_sourceName" value="PersoonsAdres"/>
 										<UML:TaggedValue tag="ea_targetName" value="Adres"/>
 										<UML:TaggedValue tag="ea_sourceType" value="Class"/>
 										<UML:TaggedValue tag="ea_targetType" value="Class"/>
@@ -16071,7 +16071,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Class name="AdresNaarGelieerdePersoon" xmi.id="EAID_D860EDB7_F16E_4b36_81AF_37F7E84E2D01" visibility="public" namespace="EAPK_C7237669_1EEC_4eb8_988B_AE96B912922A" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+								<UML:Class name="PersoonsAdres" xmi.id="EAID_D860EDB7_F16E_4b36_81AF_37F7E84E2D01" visibility="public" namespace="EAPK_C7237669_1EEC_4eb8_988B_AE96B912922A" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 									<UML:ModelElement.stereotype>
 										<UML:Stereotype name="table"/>
 									</UML:ModelElement.stereotype>
@@ -16082,7 +16082,7 @@
 										<UML:TaggedValue tag="version" value="1.0"/>
 										<UML:TaggedValue tag="package" value="EAPK_C7237669_1EEC_4eb8_988B_AE96B912922A"/>
 										<UML:TaggedValue tag="date_created" value="2008-06-16 10:21:52"/>
-										<UML:TaggedValue tag="date_modified" value="2009-05-22 15:41:38"/>
+										<UML:TaggedValue tag="date_modified" value="2009-05-23 16:52:32"/>
 										<UML:TaggedValue tag="gentype" value="SQL Server 2000"/>
 										<UML:TaggedValue tag="tagged" value="0"/>
 										<UML:TaggedValue tag="package_name" value="DDL-pers"/>
@@ -16187,34 +16187,6 @@
 												<UML:TaggedValue tag="ea_localid" value="2536"/>
 												<UML:TaggedValue tag="styleex" value="volatile=0;"/>
 												<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={C203FE8C-A7F0-434b-B254-BDEF5E70BF0D}$XID;$NAM=Stereotypes$NAM;$TYP=attribute property$TYP;$VIS=Public$VIS;$DES=@STEREO;Name=column;GUID={2831D2ED-6272-4bc4-AF29-27180C1F98D8};@ENDSTEREO;$DES;$CLT={1FF01422-9ACA-4753-80D9-421063D288FF}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
-											</UML:ModelElement.taggedValue>
-										</UML:Attribute>
-										<UML:Attribute name="gelieerdePersoonID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
-											<UML:Attribute.initialValue>
-												<UML:Expression/>
-											</UML:Attribute.initialValue>
-											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid3"/>
-											</UML:StructuralFeature.type>
-											<UML:ModelElement.stereotype>
-												<UML:Stereotype name="column"/>
-											</UML:ModelElement.stereotype>
-											<UML:ModelElement.taggedValue>
-												<UML:TaggedValue tag="type" value="Integer"/>
-												<UML:TaggedValue tag="derived" value="0"/>
-												<UML:TaggedValue tag="containment" value="Not Specified"/>
-												<UML:TaggedValue tag="length" value="0"/>
-												<UML:TaggedValue tag="ordered" value="0"/>
-												<UML:TaggedValue tag="stereotype" value="column"/>
-												<UML:TaggedValue tag="collection" value="false"/>
-												<UML:TaggedValue tag="position" value="4"/>
-												<UML:TaggedValue tag="lowerBound" value="1"/>
-												<UML:TaggedValue tag="upperBound" value="1"/>
-												<UML:TaggedValue tag="duplicates" value="0"/>
-												<UML:TaggedValue tag="ea_guid" value="{C84156E1-8C43-45da-BF2C-9D1346E9AB7A}"/>
-												<UML:TaggedValue tag="ea_localid" value="2895"/>
-												<UML:TaggedValue tag="styleex" value="volatile=0;"/>
-												<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={6D907801-FCCF-48e9-93D6-12EEF06EB90D}$XID;$NAM=Stereotypes$NAM;$TYP=attribute property$TYP;$VIS=Public$VIS;$DES=@STEREO;Name=column;GUID={2831D2ED-6272-4bc4-AF29-27180C1F98D8};@ENDSTEREO;$DES;$CLT={C84156E1-8C43-45da-BF2C-9D1346E9AB7A}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Operation name="Persoon" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -16876,7 +16848,7 @@
 		<UML:Diagram name="DDL-adr" xmi.id="EAID_55C29DC7_8105_429e_9382_51FB305B8AEF" diagramType="ClassDiagram" owner="EAPK_32EC13FE_3FD0_448a_AA8E_5623C23B7D2C" toolName="Enterprise Architect 2.5">
 			<UML:ModelElement.taggedValue>
 				<UML:TaggedValue tag="version" value="1.0"/>
-				<UML:TaggedValue tag="author" value="THaeper"/>
+				<UML:TaggedValue tag="author" value="vervljo"/>
 				<UML:TaggedValue tag="created_date" value="2009-05-22 18:21:39"/>
 				<UML:TaggedValue tag="modified_date" value="2009-05-22 18:21:39"/>
 				<UML:TaggedValue tag="package" value="EAPK_32EC13FE_3FD0_448a_AA8E_5623C23B7D2C"/>
@@ -16919,7 +16891,7 @@
 		<UML:Diagram name="DDL-core" xmi.id="EAID_5B78A123_7F38_4c88_B091_DF26AF2AD799" diagramType="ClassDiagram" owner="EAPK_E1CC90A0_97D7_4dd2_AA5A_F62D59B4C1DD" toolName="Enterprise Architect 2.5">
 			<UML:ModelElement.taggedValue>
 				<UML:TaggedValue tag="version" value="1.0"/>
-				<UML:TaggedValue tag="author" value="THaeper"/>
+				<UML:TaggedValue tag="author" value="vervljo"/>
 				<UML:TaggedValue tag="created_date" value="2009-05-22 19:52:05"/>
 				<UML:TaggedValue tag="modified_date" value="2009-05-22 19:52:05"/>
 				<UML:TaggedValue tag="package" value="EAPK_E1CC90A0_97D7_4dd2_AA5A_F62D59B4C1DD"/>
@@ -16942,7 +16914,7 @@
 		<UML:Diagram name="DDL-grp" xmi.id="EAID_C420AA0A_BC31_4964_9FAA_66FC75CAEBDA" diagramType="ClassDiagram" owner="EAPK_21ADAEE8_D306_41bd_A2FD_948B3781E72F" toolName="Enterprise Architect 2.5">
 			<UML:ModelElement.taggedValue>
 				<UML:TaggedValue tag="version" value="1.0"/>
-				<UML:TaggedValue tag="author" value="THaeper"/>
+				<UML:TaggedValue tag="author" value="vervljo"/>
 				<UML:TaggedValue tag="created_date" value="2009-05-22 19:56:13"/>
 				<UML:TaggedValue tag="modified_date" value="2009-05-22 19:56:13"/>
 				<UML:TaggedValue tag="package" value="EAPK_21ADAEE8_D306_41bd_A2FD_948B3781E72F"/>
@@ -17024,6 +16996,7 @@
 		<UML:TaggedValue tag="Owner" xmi.id="EAID_FCBFD6C3_81C5_4886_94D9_9653DE11561B" value="pers" modelElement="EAID_C9C6D881_5111_4b0f_936F_036E94E5264E"/>
 		<UML:TaggedValue tag="TABLESPACE" xmi.id="EAID_9BC615E9_0C3A_483b_A838_A8D2C0392E5C" modelElement="EAID_C9C6D881_5111_4b0f_936F_036E94E5264E"/>
 		<UML:TaggedValue tag="Owner" xmi.id="EAID_F3647AE5_E8F4_4dcd_BA39_451F470BC446" value="pers" modelElement="EAID_D860EDB7_F16E_4b36_81AF_37F7E84E2D01"/>
+		<UML:TaggedValue tag="TABLESPACE" xmi.id="EAID_8A26B87C_13D9_455b_BE1F_D4319CCF6EFE" modelElement="EAID_D860EDB7_F16E_4b36_81AF_37F7E84E2D01"/>
 		<UML:TaggedValue tag="Owner" xmi.id="EAID_5057C220_899F_4ff4_9106_C19D25266D3E" value="pers" modelElement="EAID_ED6208B5_D391_41c6_B7B3_C9879D6865DB"/>
 		<UML:TaggedValue tag="Owner" xmi.id="EAID_66207AA4_9F58_4fe4_A397_72FC0B1AC2B8" value="pers" modelElement="EAID_F21F0719_4264_4d1a_B121_7F0A8FE7958E"/>
 		<UML:Diagram name="DDL" xmi.id="EAID_87605ED3_5F49_4599_9D54_610B9FD17DB3" diagramType="ClassDiagram" owner="EAPK_C7237669_1EEC_4eb8_988B_AE96B912922A" toolName="Enterprise Architect 2.5">
