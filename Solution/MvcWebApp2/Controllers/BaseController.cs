@@ -11,6 +11,7 @@ using System.Configuration;
 using Cg2.Adf.ServiceModel;
 using Cg2.ServiceContracts;
 using MvcWebApp2.Models;
+using System.Web.Caching;
 
 namespace MvcWebApp2.Controllers
 {
@@ -46,13 +47,23 @@ namespace MvcWebApp2.Controllers
 
         private void GegevensVanDeGroepInvullen()
         { 
-            // TODO: groepID doorgeven en dan op een juiste manier de gegevens opvragen
+            // TODO: groepID doorgeven
 
-            var gr = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.OphalenInfo(Properties.Settings.Default.TestGroepId));
+            var groepId = Properties.Settings.Default.TestGroepId;
+            string cacheKey = "GI" + groepId.ToString();
 
-            model.Groepsnaam = gr.Groepsnaam;
-            model.Plaats = gr.Plaats;
-            model.StamNummer = gr.StamNummer;
+            System.Web.Caching.Cache c = System.Web.HttpContext.Current.Cache;
+            
+            GroepInfo gi = (GroepInfo)c.Get(cacheKey);
+            if (gi == null)
+            {
+                gi = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.OphalenInfo(Properties.Settings.Default.TestGroepId));
+                c.Add(cacheKey, gi, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
+            }
+
+            model.Groepsnaam = gi.Groepsnaam;
+            model.Plaats = gi.Plaats;
+            model.StamNummer = gi.StamNummer;
             model.Title = " - .: Kakajo :. ";
         }
     }

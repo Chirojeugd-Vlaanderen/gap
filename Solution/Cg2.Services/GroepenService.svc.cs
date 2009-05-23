@@ -17,6 +17,7 @@ namespace Cg2.Services
     {
         #region IGroepenService Members
 
+        
         public GroepInfo OphalenInfo(int GroepId)
         {
             var gr = Ophalen(GroepId);
