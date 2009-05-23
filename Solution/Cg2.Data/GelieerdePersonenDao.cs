@@ -123,33 +123,24 @@ namespace Cg2.Data.Ef
                     where gp.Groep.ID == groepID
                     select gp).Count();
 
-                lijst = (
+               lijst = (
                     from gp in db.GelieerdePersoon.Include("Persoon").Include("Lid.GroepsWerkJaar")
-                    where gp.Groep.ID == groepID
+                    where 
+                        gp.Groep.ID == groepID //TODO zoeken hoe je kan bepalen of hij alleen de leden includes als die aan 
+                        //bepaalde voorwaarden voldoen, maar wel alle gelieerdepersonen
                     orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
                     select gp).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte).ToList();
-
-                // Aangezien we vertrekken van een gelieerde persoon, en een gelieerde
-                // persoon enkel lid kan zijn van zijn EIGEN groep, is er enkel mogelijk
-                // een probleem dat er lidinfo van ongevraagde werkjaren mee opgenomen is.
-                // Dat pakken we sebiet nog aan.
             }
-
-            // Je zou toch denken dat onderstaande
-            // meteen in de query moet kunnen,
-            // maar ik heb niet gevonden hoe :(
 
             foreach (GelieerdePersoon gp in lijst)
             {
-                IList<Lid> verkeerdeLeden = (
+                Lid huidigLid = (
                     from Lid l in gp.Lid
-                    where l.GroepsWerkJaar.WerkJaar != wj
-                    select l).ToList();
+                    where l.GroepsWerkJaar.WerkJaar == wj
+                    select l).First();
 
-                foreach (Lid verkeerdLid in verkeerdeLeden)
-                {
-                    gp.Lid.Remove(verkeerdLid);
-                }
+                gp.Lid.Clear();
+                gp.Lid.Add(huidigLid);
             }
 
             return lijst;   // met wat change komt de relevante lidinfo mee.

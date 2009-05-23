@@ -192,6 +192,12 @@ namespace Cg2.Services
 
         #region mappers
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gp">DEZE GELIEERDE PERSOON MOET OPGEVRAAGD ZIJN MET GELIEERDEPERSONENDAO.PaginaOphalenMetLidInfo</param>
+        /// <returns></returns>
         private PersoonInfo mapPersoon(GelieerdePersoon gp)
         {
             return new PersoonInfo() { 

@@ -145,5 +145,11 @@ namespace Cg2.Workers
         {
             throw new NotImplementedException();
         }
+
+        
+        public bool IsLid(int gelieerdePersoonID)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
