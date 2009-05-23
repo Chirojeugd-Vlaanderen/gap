@@ -4,7 +4,6 @@
 <%@ Import Namespace="MvcWebApp2.Models" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-	<title>Ledenoverzicht</title>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">

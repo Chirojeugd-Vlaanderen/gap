@@ -21,7 +21,9 @@ namespace MvcWebApp2.Controllers
         {
             int aantal;
             var model = new Models.LidInfoModel();
-            model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<LidInfo>>(lid => lid.PaginaOphalen(int.Parse(ConfigurationSettings.AppSettings["TestGroepsWerkJaarID"]), 1, 12, out aantal));
+            model.LidInfoLijst = 
+                ServiceHelper.CallService<ILedenService, IList<LidInfo>>
+                (lid => lid.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarId, 1, 12, out aantal));
             model.Title = "Leden Overzicht";
             return View("Index", model);
         }

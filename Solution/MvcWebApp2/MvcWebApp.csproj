@@ -92,6 +92,12 @@
     <Compile Include="Models\PersoonInfoModel.cs" />
     <Compile Include="Models\VerhuisInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
@@ -125,6 +131,10 @@
     <None Include="Properties\DataSources\Cg2.Orm.Adres.datasource" />
     <None Include="Properties\DataSources\Cg2.Orm.GelieerdePersoon.datasource" />
     <None Include="Properties\DataSources\Cg2.Orm.Lid.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cg2.Adf.ServiceModel\Cg2.Adf.ServiceModel.csproj">

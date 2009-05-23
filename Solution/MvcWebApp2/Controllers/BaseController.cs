@@ -39,7 +39,7 @@ namespace MvcWebApp2.Controllers
         public void SetModel(MasterViewModel childViewModel)
         {
             childViewModel.Groepsnaam = model.Groepsnaam;
-            childViewModel.Gemeente = model.Gemeente;
+            childViewModel.Plaats = model.Plaats;
             childViewModel.StamNummer = model.StamNummer;
             childViewModel.Title += model.Title;
         }
@@ -47,9 +47,12 @@ namespace MvcWebApp2.Controllers
         private void GegevensVanDeGroepInvullen()
         { 
             // TODO: groepID doorgeven en dan op een juiste manier de gegevens opvragen
-            model.Groepsnaam = "In BaseController gevulde groepsnaam";
-            model.Gemeente = "Antwerpen";
-            model.StamNummer = "XXX/0000";
+
+            var gr = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.OphalenInfo(Properties.Settings.Default.TestGroepId));
+
+            model.Groepsnaam = gr.Groepsnaam;
+            model.Plaats = gr.Plaats;
+            model.StamNummer = gr.StamNummer;
             model.Title = " - .: Kakajo :. ";
         }
     }

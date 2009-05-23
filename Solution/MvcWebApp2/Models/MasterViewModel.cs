@@ -24,7 +24,7 @@ namespace MvcWebApp2.Models
         /// <summary>
         /// Plaats van de chirogroep
         /// </summary>
-        public string Gemeente { get; set; }
+        public string Plaats { get; set; }
 
         /// <summary>
         /// Nationaal Stamnummer
