@@ -32,7 +32,9 @@ namespace MvcWebApp2.Controllers
             int totaal = 0;
 
             var model = new Models.PersoonInfoModel();
-            model.PersoonInfoLijst = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>(g => g.PaginaOphalenMetLidInfo(int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), page, 20, out totaal));
+            model.PersoonInfoLijst = 
+                ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
+                (g => g.PaginaOphalenMetLidInfo(Properties.Settings.Default.TestGroepId, page, 20, out totaal));
             model.PageHuidig = page;
             model.PageTotaal = (int) Math.Ceiling(totaal / 20d);
             model.Title = "Personen-overzicht";
