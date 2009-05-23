@@ -45,7 +45,7 @@ namespace Cg2.Services
             GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
 
             var gelieerdePersonen = pm.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
-            return mapPersoon(gelieerdePersonen);
+            return PersoonInfoMapper.mapPersoon(gelieerdePersonen);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
@@ -189,36 +189,5 @@ namespace Cg2.Services
         }
 
         #endregion
-
-        #region mappers
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="gp">DEZE GELIEERDE PERSOON MOET OPGEVRAAGD ZIJN MET GELIEERDEPERSONENDAO.PaginaOphalenMetLidInfo</param>
-        /// <returns></returns>
-        private PersoonInfo mapPersoon(GelieerdePersoon gp)
-        {
-            return new PersoonInfo() { 
-                AdNummer = gp.Persoon.AdNummer,
-                GelieerdePersoonID = gp.ID,
-                GeboorteDatum = gp.Persoon.GeboorteDatum,
-                VolledigeNaam = gp.Persoon.VolledigeNaam,
-                Geslacht = gp.Persoon.Geslacht,
-                IsLid = (gp.Lid.Count > 0) };
-        }
-
-        private IList<PersoonInfo> mapPersoon(IList<GelieerdePersoon> gps)
-        {
-            IList<PersoonInfo> map = new List<PersoonInfo>();
-            foreach (var gp in gps)
-            {
-                map.Add(mapPersoon(gp));
-            }
-            return map;
-        }
-
-        #endregion  
     }
 }

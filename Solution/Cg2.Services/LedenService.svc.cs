@@ -31,7 +31,7 @@ namespace Cg2.Services
             LedenManager lm = Factory.Maak<LedenManager>();
 
             IList<Lid> result = lm.Dao.PaginaOphalen(groepsWerkJaarID, pagina, paginaGrootte, out aantalOpgehaald);
-            return mapLid(result);
+            return LidInfoMapper.mapLid(result);
         }
 
         /// <summary>
@@ -81,33 +81,6 @@ namespace Cg2.Services
             LedenManager lm = Factory.Maak<LedenManager>();
             lm.LidActiveren(lid);
         }
-
-        #region mappers
-
-        private LidInfo mapLid(Lid lid)
-        {
-            return new LidInfo() {
-                AdNummer = lid.GelieerdePersoon.Persoon.AdNummer,
-                GelieerdePersoonID = lid.GelieerdePersoon.ID,
-                GeboorteDatum = lid.GelieerdePersoon.Persoon.GeboorteDatum,
-                VolledigeNaam = lid.GelieerdePersoon.Persoon.VolledigeNaam,
-                Geslacht = lid.GelieerdePersoon.Persoon.Geslacht,
-                IsLid = (lid.GelieerdePersoon.Lid.Count > 0),
-                LidgeldBetaald = lid.LidgeldBetaald
-            };
-        }
-
-        private IList<LidInfo> mapLid(IList<Lid> leden)
-        {
-            IList<LidInfo> map = new List<LidInfo>();
-            foreach (var lid in leden)
-            {
-                map.Add(mapLid(lid));
-            }
-            return map;
-        }
-
-        #endregion
 
     }
 

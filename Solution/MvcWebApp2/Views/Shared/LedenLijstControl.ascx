@@ -14,12 +14,12 @@ maar dat is nu nog niet geimplementeerd :-) -->
 
 <% foreach (LidInfo l in ViewData.Model.LidInfoLijst) {  %>
 <tr>
-    <td><%=l.AdNummer %></td>
-    <td><% Html.RenderPartial("PersoonsLinkControl", l); %></td>
-    <td class="right"><%=l.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)l.GeboorteDatum).ToString("d")%></td>
-    <td><%=l.Geslacht.ToString()%></td>
+    <td><%=l.PersoonInfo.AdNummer %></td>
+    <td><% Html.RenderPartial("PersoonsLinkControl", l.PersoonInfo); %></td>
+    <td class="right"><%=l.PersoonInfo.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)l.PersoonInfo.GeboorteDatum).ToString("d")%></td>
+    <td><%=l.PersoonInfo.Geslacht.ToString()%></td>
     <td>
-        <%=Html.ActionLink("Bewerken", "Edit", new { Controller = "Personen", id = l.GelieerdePersoonID })%>
+        <%=Html.ActionLink("Bewerken", "Edit", new { Controller = "Personen", id = l.PersoonInfo.GelieerdePersoonID })%>
     </td>
 </tr>
 <% } %>

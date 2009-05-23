@@ -8,8 +8,11 @@ using Cg2.Orm;
 namespace Cg2.ServiceContracts
 {
     [DataContract]
-    public class LidInfo : PersoonInfo
+    public class LidInfo
     {
+        [DataMember]
+        public PersoonInfo PersoonInfo { get; set; }
+
         [DataMember]
         public bool LidgeldBetaald { get; set; }
     }
