@@ -38,18 +38,6 @@ namespace Cg2.Orm.DataInterfaces
 
         /// <summary>
         /// Haalt een 'pagina' persoonsgegevens van de gelieerde personen van een groep op, inclusief
-        /// eventueel lidobject in het gegeven werkjaar.
-        /// </summary>
-        /// <param name="groepID">ID van de groep</param>
-        /// <param name="pagina">paginanummer (1 of groter)</param>
-        /// <param name="paginaGrootte">aantal records op een pagina</param>
-        /// <param name="werkJaar">werkjaar waarvoor lidinfo op te halen</param>
-        /// <param name="aantalTotaal">outputparameter die aangeeft hoeveel personen er in de volledige lijst zitten</param>
-        /// <returns>Lijst met gelieerde personen</returns>
-        IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, int werkJaar, out int aantalTotaal);
-
-        /// <summary>
-        /// Haalt een 'pagina' persoonsgegevens van de gelieerde personen van een groep op, inclusief
         /// eventueel lidobject in het recentste werkjaar.
         /// </summary>
         /// <param name="groepID">ID van de groep</param>

@@ -13,7 +13,7 @@ using Cg2.EfWrapper;
 
 namespace Cg2.Data.Ef
 {
-    public class GelieerdePersonenDao: Dao<GelieerdePersoon>, IGelieerdePersonenDao
+    public class GelieerdePersonenDao : Dao<GelieerdePersoon>, IGelieerdePersonenDao
     {
         public IList<GelieerdePersoon> AllenOphalen(int groepID)
         {
@@ -49,12 +49,12 @@ namespace Cg2.Data.Ef
                     from gp in db.GelieerdePersoon.Include("Persoon")
                     where gp.Groep.ID == groepID
                     orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
-                    select gp).Skip((pagina-1)*paginaGrootte).Take(paginaGrootte);
+                    select gp).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte);
 
                 lijst = result.ToList<GelieerdePersoon>();
 
             }
-            
+
             return lijst;
         }
 
@@ -91,10 +91,8 @@ namespace Cg2.Data.Ef
         }
 
         #region IGelieerdePersonenDao Members
-        // TODO: onderstaande misschien doen via GroepsWerkJaar ipv via
-        // aparte persoon- en groepID?
-        //
-        public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, int werkJaar, out int aantalTotaal)
+
+        public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
             int wj;
             IList<GelieerdePersoon> lijst;
@@ -103,52 +101,69 @@ namespace Cg2.Data.Ef
             {
                 db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 
-                // Als werkjaar = 0: neem huidig werkjaar
-
-                if (werkJaar == 0)
-                {
-                    wj = (
+                wj = (
                     from w in db.GroepsWerkJaar
                     where w.Groep.ID == groepID
                     orderby w.WerkJaar descending
                     select w).FirstOrDefault<GroepsWerkJaar>().WerkJaar;
-                }
-                else
-                {
-                    wj = werkJaar;
-                }
 
                 aantalTotaal = (
                     from gp in db.GelieerdePersoon
                     where gp.Groep.ID == groepID
                     select gp).Count();
 
-               lijst = (
+                //TODO zoeken hoe je kan bepalen of hij alleen de leden includes als die aan 
+                //bepaalde voorwaarden voldoen, maar wel alle gelieerdepersonen
+                lijst = (
                     from gp in db.GelieerdePersoon.Include("Persoon").Include("Lid.GroepsWerkJaar")
-                    where 
-                        gp.Groep.ID == groepID //TODO zoeken hoe je kan bepalen of hij alleen de leden includes als die aan 
-                        //bepaalde voorwaarden voldoen, maar wel alle gelieerdepersonen
+                    where gp.Groep.ID == groepID
                     orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
                     select gp).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte).ToList();
-            }
 
-            foreach (GelieerdePersoon gp in lijst)
-            {
-                Lid huidigLid = (
-                    from Lid l in gp.Lid
-                    where l.GroepsWerkJaar.WerkJaar == wj
-                    select l).First();
+                // work around: alle leden verwijderen behalve het (eventuele) lid in het huidige werkjaar
+                foreach (GelieerdePersoon gp in lijst)
+                {
+                    IList<Lid> verkeerdeLeden = (
+                        from Lid l in gp.Lid
+                        where l.GroepsWerkJaar.WerkJaar != wj
+                        select l).ToList();
 
-                gp.Lid.Clear();
-                gp.Lid.Add(huidigLid);
+                    foreach (Lid verkeerdLid in verkeerdeLeden)
+                    {
+                        gp.Lid.Remove(verkeerdLid);
+                    }
+                }
+                /*                foreach (GelieerdePersoon gp in lijst) {
+                                    Lid huidigLid = gp.Lid.FirstOrDefault(lid => lid.GroepsWerkJaar.WerkJaar == wj);
+                                    gp.Lid.Clear();
+                                    if (huidigLid != null)
+                                    {
+                                        gp.Lid.Add(huidigLid);
+                                    }
+                                } */
+
+                /* Dit hieronder werkt ook nog niet ...
+                 * 
+                 * var tmpLijst = (
+                    from gp in db.GelieerdePersoon.Include("Persoon")
+                    where gp.Groep.ID == groepID
+                    orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
+                    select new { gp, gp.Persoon, huidigLid = gp.Lid.FirstOrDefault(lid => lid.GroepsWerkJaar.WerkJaar == wj) }
+                    ).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte).ToList();
+
+                lijst = new List<GelieerdePersoon>();
+                foreach (var tmp in tmpLijst)
+                {
+                    GelieerdePersoon gp = tmp.gp;
+                    if (tmp.huidigLid != null)
+                    {
+                        gp.Lid.Add(tmp.huidigLid);
+                    }
+                    lijst.Add(gp);
+                }*/
             }
 
             return lijst;   // met wat change komt de relevante lidinfo mee.
-        }
-
-        public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
-        {
-            return PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, 0, out aantalTotaal);
         }
 
         public IList<GelieerdePersoon> LijstOphalen(IList<int> gelieerdePersonenIDs)
