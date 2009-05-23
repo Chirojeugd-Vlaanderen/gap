@@ -60,13 +60,6 @@ namespace ServiceHelper.Test
         //
         #endregion
 
-        [TestMethod]
-        public void ServiceHelperHalloTest()
-        {
-            string result =
-            Cg2.Adf.ServiceModel.ServiceHelper.CallService<IGroepenService, string>(l => l.Hallo());
-
-            Assert.IsTrue(result == "Hallo");
-        }
+       
     }
 }

@@ -17,6 +17,12 @@ namespace Cg2.Services
     {
         #region IGroepenService Members
 
+        public GroepInfo OphalenInfo(int GroepId)
+        {
+            var gr = Ophalen(GroepId);
+            return mapGroep(gr);
+        }
+
         public Groep Bewaren(Groep g)
         {
             GroepenManager gm = Factory.Maak<GroepenManager>();
@@ -119,11 +125,19 @@ namespace Cg2.Services
             return gm.OphalenOfficieleAfdelingen();
         }
 
+        #endregion
 
+        #region mappers
 
-        public string Hallo()
+        private GroepInfo mapGroep(Groep g)
         {
-            return "Hallo";
+            return new GroepInfo()
+            {
+                Groepsnaam = g.Naam,
+                // TODO Add Adres / Plaats to Groep
+                Plaats = "Plaats nog toevoegen",
+                StamNummer = g.Code
+            };
         }
 
         #endregion

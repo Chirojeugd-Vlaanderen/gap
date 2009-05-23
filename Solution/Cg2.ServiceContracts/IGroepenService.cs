@@ -13,6 +13,14 @@ namespace Cg2.ServiceContracts
     public interface IGroepenService
     {
         /// <summary>
+        /// Ophalen van de Groeps info
+        /// </summary>
+        /// <param name="GroepId"></param>
+        /// <returns></returns>
+        [OperationContract]
+        GroepInfo OphalenInfo(int GroepId);
+
+        /// <summary>
         /// Persisteert een groep in de database
         /// </summary>
         /// <param name="g">Te persisteren groep</param>
@@ -81,12 +89,5 @@ namespace Cg2.ServiceContracts
             afdelingtoevoegen
          */
 
-
-        /// <summary>
-        /// Functie om de service te testen
-        /// </summary>
-        /// <returns>Een teststring</returns>
-        [OperationContract]
-        string Hallo();
     }
 }

@@ -59,6 +59,7 @@ namespace Cg2.Data.Ef
         //ophalen van groep, afdeling, afdelingsjaar en officiele afdelingen voor huidig werkjaar
         public Groep OphalenMetAfdelingen(int groepID)
         {
+            // TODO Fix this constante
             int huidigwerkjaar = 2008;
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
