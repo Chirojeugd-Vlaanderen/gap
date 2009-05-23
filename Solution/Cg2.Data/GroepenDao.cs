@@ -16,7 +16,7 @@ namespace Cg2.Data.Ef
         TODO creeren(groep) ?
         */
 
-        public GroepsWerkJaar OphalenNieuwsteGroepsWerkjaar(int groepID)
+        public GroepsWerkJaar OphalenHuidigeGroepsWerkjaar(int groepID)
         {
             GroepsWerkJaar result;
             using (ChiroGroepEntities db = new ChiroGroepEntities())
@@ -56,16 +56,40 @@ namespace Cg2.Data.Ef
             throw new NotImplementedException();
         }
 
-        // Ophalen van groep, afdeling, afdelingsjaar en officiele afdelingen voor huidig werkjaar
+        //ophalen van groep, afdeling, afdelingsjaar en officiele afdelingen voor huidig werkjaar
         public Groep OphalenMetAfdelingen(int groepID)
         {
+            int huidigwerkjaar = OphalenHuidigeGroepsWerkjaar(groepID).WerkJaar;
+
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
                 db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
-                return (
-                    from t in db.Groep.Include("Afdeling.AfdelingsJaar.OfficieleAfdeling")
-                    where t.ID == groepID // TODO && t.GroepsWerkJaar. == huidigwerkjaar
-                    select t).FirstOrDefault<Groep>();
+
+                var groep = (
+                    from t in db.Groep.Include("Afdeling")
+                    where t.ID == groepID
+                    select t);
+
+                var afdelingsjaren = (
+                    from x in db.AfdelingsJaar.Include("Afdeling").Include("GroepsWerkJaar").Include("OfficieleAfdeling")
+                    where x.GroepsWerkJaar.WerkJaar == huidigwerkjaar
+                    select x);
+
+                try
+                {
+                    return (
+                    from x in groep.First().Afdeling
+                    join y in afdelingsjaren
+                    on x equals y.Afdeling
+                    into volledige
+                    select groep
+                    ).First().First();
+                }
+                catch (System.InvalidOperationException e)
+                {
+                    return groep.First();
+                }
+                
             }
         }
 
@@ -148,13 +172,6 @@ namespace Cg2.Data.Ef
                     select t                    
                     ).ToList<OfficieleAfdeling>();
 
-                if (geboortejaarbegin < System.DateTime.Today.Year - 20
-                    || geboortejaarbegin > geboortejaareind
-                    || geboortejaareind > System.DateTime.Today.Year - 5)
-                {
-                    throw new InvalidOperationException("Ongeldige geboortejaren voor het afdelingsjaar");
-                }
-
                 if(!g.Afdeling.Contains(a) || !oas.Contains(oa))
                 {
                     throw new InvalidOperationException("Gebruik van ongeldige objecten");
@@ -176,9 +193,13 @@ namespace Cg2.Data.Ef
 
         public IList<OfficieleAfdeling> OphalenOfficieleAfdelingen()
         {
-            //TODO
-            throw new NotImplementedException();
-
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                return (
+                    from d in db.OfficieleAfdeling
+                    select d
+                ).ToList();
+            }
         }
         
     }

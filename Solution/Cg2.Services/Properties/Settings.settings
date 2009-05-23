@@ -1,12 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Cg2.Services.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
   <Profiles />
-  <Settings>
-    <Setting Name="WerkjaarStartNationaal" Type="System.DateTime" Scope="Application">
-      <Value Profile="(Default)">1990-09-01</Value>
-    </Setting>
-    <Setting Name="WerkjaarVerplichteOvergang" Type="System.DateTime" Scope="Application">
-      <Value Profile="(Default)">1990-10-15</Value>
-    </Setting>
-  </Settings>
+  <Settings />
 </SettingsFile>

@@ -19,7 +19,7 @@ namespace Cg2.Orm.DataInterfaces
         /// <param name="groepID">ID van Groep waarvoor werkjaar bepaald 
         /// moet worden</param>
         /// <returns>Het relevante GroepsWerkJaarobject</returns>
-        GroepsWerkJaar OphalenNieuwsteGroepsWerkjaar(int groepID);
+        GroepsWerkJaar OphalenHuidigeGroepsWerkjaar(int groepID);
 
         Groep OphalenMetAdressen(int groepID);
 

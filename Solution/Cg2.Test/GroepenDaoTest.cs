@@ -2,12 +2,15 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Orm.DataInterfaces;
 using Cg2.Orm;
+using Cg2.Workers;
 
 using System;
 using System.Linq;
 using System.Text;
 using System.Data.Objects;
 using Cg2.EfWrapper.Entity;
+using System.Collections.Generic;
+using Cg2.Ioc;
 
 namespace Cg2.Test
 {
@@ -92,7 +95,6 @@ namespace Cg2.Test
             Groep g = d.OphalenMetAfdelingen(310);
 
             Assert.IsTrue(g.Afdeling.Count == 1);
-
              
             g.Afdeling.First().TeVerwijderen = true;
 
@@ -101,6 +103,40 @@ namespace Cg2.Test
             g = d.OphalenMetAfdelingen(310);
 
             Assert.IsTrue(g.Afdeling.Count == 0);
+        }
+
+        public void OphalenVanGroepMetAfdelingen()
+        {
+            //TODO eerst nog alle nodige info toevoegen!!!
+            GroepenDao d = new GroepenDao();
+
+            Groep g = d.OphalenMetAfdelingen(310);
+            Assert.IsTrue(g.Afdeling.Count == 3);
+            int count = 0;
+            foreach (Afdeling a in g.Afdeling)
+            {
+                count += a.AfdelingsJaar.Count;
+            }
+            Assert.IsTrue(count == 2);
+        }
+
+        [TestMethod]
+        public void OphalenOfficieleAfdelingen()
+        {
+            GroepenDao d = new GroepenDao();
+            IList<OfficieleAfdeling> oas = d.OphalenOfficieleAfdelingen();
+
+            Assert.IsTrue(oas.Count == 6);
+            String[] namen = { "Ribbels", "Speelclub", "Rakwi's", "Tito's", "Keti's", "Aspiranten" };
+            foreach (String n in namen)
+            {
+                bool exists = false;
+                foreach (OfficieleAfdeling oa in oas)
+                {
+                    if (oa.Naam.Equals(n)) { exists = true; }
+                }
+                Assert.IsTrue(exists);
+            }
         }
 
     }

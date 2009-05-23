@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cg2.Services.Properties {
+namespace Cg2.Workers.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -20,6 +20,24 @@ namespace Cg2.Services.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1990-09-01")]
+        public global::System.DateTime WerkjaarStartNationaal {
+            get {
+                return ((global::System.DateTime)(this["WerkjaarStartNationaal"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1990-10-15")]
+        public global::System.DateTime WerkjaarVerplichteOvergang {
+            get {
+                return ((global::System.DateTime)(this["WerkjaarVerplichteOvergang"]));
             }
         }
     }

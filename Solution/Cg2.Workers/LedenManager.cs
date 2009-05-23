@@ -59,9 +59,6 @@ namespace Cg2.Workers
             // 
             //l.EindeInstapPeriode = DateTime.Now;
 
-            // Ik denk dat in deze method geen databasecall mag gebeuren.
-            // Dit moet via de Dao.
-
             return l;
         }
 
@@ -80,7 +77,7 @@ namespace Cg2.Workers
                 gpm.GroepLaden(gp);
             }
 
-            return LidMaken(gp, gm.Dao.OphalenNieuwsteGroepsWerkjaar(gp.Groep.ID));
+            return LidMaken(gp, gm.Dao.OphalenHuidigeGroepsWerkjaar(gp.Groep.ID));
         }
 
         /*public void LidMaken(int gelieerdePersoonID)

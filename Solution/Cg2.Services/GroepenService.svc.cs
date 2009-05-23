@@ -98,11 +98,9 @@ namespace Cg2.Services
         /// <returns></returns>
         public int OphalenGroepsWerkjaar(int groepID)
         {
-            var begindatumnieuwwerkjaar = Properties.Settings.Default.WerkjaarStartNationaal;
-            var deadlinenieuwwerkjaar = Properties.Settings.Default.WerkjaarVerplichteOvergang;
+            WerkjaarManager wm = Factory.Maak<WerkjaarManager>();
 
-            GroepenManager gm = Factory.Maak<GroepenManager>();
-            return gm.OphalenGroepsWerkjaar(groepID, begindatumnieuwwerkjaar, deadlinenieuwwerkjaar);
+            return wm.OphalenHuidigGroepsWerkjaar(groepID);
         }
 
         public void AanmakenAfdeling(int groepID, string naam, string afkorting)
