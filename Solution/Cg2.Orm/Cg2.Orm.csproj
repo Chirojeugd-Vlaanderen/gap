@@ -58,6 +58,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChiroGroepModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DataInterfaces\IPersonenDao.cs" />
     <Compile Include="AfdelingsJaar.cs" />
     <Compile Include="Afdeling.cs" />
     <Compile Include="OfficieleAfdeling.cs" />

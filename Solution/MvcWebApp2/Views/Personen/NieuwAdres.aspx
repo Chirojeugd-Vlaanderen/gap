@@ -26,17 +26,17 @@
                // CheckBoxListInfo kwakken
            
                List<CheckBoxListInfo> info
-                   = (from GelieerdePersoon gp in Model.MogelijkeBewoners
+                   = (from Persoon p in Model.MogelijkeBewoners
                       select new CheckBoxListInfo(
-                         gp.ID.ToString()
-                         , Html.ActionLink(Html.Encode(gp.Persoon.VolledigeNaam), "Edit", new { Controller = "Personen", id = gp.ID })
-                         , Model.GelieerdePersoonIDs.Contains(gp.ID) )).ToList<CheckBoxListInfo>();
+                         p.ID.ToString()
+                         , p.VolledigeNaam
+                         , Model.PersoonIDs.Contains(p.ID) )).ToList<CheckBoxListInfo>();
            
                // Zodat we ze kunnen gebruiken in onze custom
                // HtmlHelper 'CheckBoxList'
            %>
            
-           <%=Html.CheckBoxList("GelieerdePersoonIDs", info) %>
+           <%=Html.CheckBoxList("PersoonIDs", info) %>
                  
            </fieldset>
            

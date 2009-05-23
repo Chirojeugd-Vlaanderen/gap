@@ -22,7 +22,7 @@ namespace MvcWebApp2.Models
         /// <summary>
         /// Lijst met mogelijke bewoners voor het nieuwe adres
         /// </summary>
-        public IList<GelieerdePersoon> MogelijkeBewoners { get; set; }
+        public IList<Persoon> MogelijkeBewoners { get; set; }
 
         /// <summary>
         /// Nieuw adres voor de gegeven gelieerde personen
@@ -30,11 +30,11 @@ namespace MvcWebApp2.Models
         public Adres NieuwAdres { get; set; }
 
         /// <summary>
-        /// ID's van GelieerdePersonen aan wie het adres gekoppeld moet
+        /// ID's van Personen aan wie het adres gekoppeld moet
         /// worden.  (In de meeste gevallen zal AanvragerID daarbij
         /// inzitten.)
         /// </summary>
-        public List<int> GelieerdePersoonIDs { get; set; }
+        public List<int> PersoonIDs { get; set; }
 
         /// <summary>
         /// Standaardconstructor - creeert lege NieuwAdresInfo
@@ -42,18 +42,19 @@ namespace MvcWebApp2.Models
         public NieuwAdresInfo()
         {
             AanvragerID = 0;
-            MogelijkeBewoners = new List<GelieerdePersoon>();
+            MogelijkeBewoners = new List<Persoon>();
             NieuwAdres = new Adres();
-            GelieerdePersoonIDs = new List<int>();
+            PersoonIDs = new List<int>();
         }
 
         public NieuwAdresInfo(int aanvragerID): this()
         {
             AanvragerID = aanvragerID;
-            MogelijkeBewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<GelieerdePersoon>>(l => l.HuisGenotenOphalen(aanvragerID));
+            MogelijkeBewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<Persoon>>(l => l.HuisGenotenOphalen(aanvragerID));
 
-            // Standaard enkel een nieuw adres voor de aanvrager
-            GelieerdePersoonIDs.Add(AanvragerID);
+            // FIXME: overkill om aan het persoonID van de aanvragerID op te vragen
+            // (persoonID van de aanvrager al selecteren)
+            PersoonIDs.Add(ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(aanvragerID)).Persoon.ID);
         }
     }
 }

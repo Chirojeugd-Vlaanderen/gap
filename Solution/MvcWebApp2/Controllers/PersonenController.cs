@@ -110,14 +110,10 @@ namespace MvcWebApp2.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: /Personen/Verhuizen/adresID
-        public ActionResult Verhuizen(int id)
+        // GET: /Personen/Verhuizen/vanAdresID
+        public ActionResult Verhuizen(int id, int aanvragerID)
         {
-            
-            var model = new VerhuisInfo(id);
-            model.Title = "Personen Verhuis";
-            return View("AdresBewerken", model);
-        }
+			VerhuisInfo model = new VerhuisInfo(id, aanvragerID);			model.Title = "Personen Verhuis";            return View("AdresBewerken", model);        }
 
         // POST: /Personen/Verhuizen
         [AcceptVerbs(HttpVerbs.Post)]
@@ -131,7 +127,7 @@ namespace MvcWebApp2.Controllers
                 // Adressen worden nooit gewijzigd, enkel bijgemaakt.  (en eventueel
                 // verwijderd.)
 
-                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.Verhuizen(model.GelieerdePersoonIDs, model.NaarAdres, model.VanAdresMetBewoners.ID));
+                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersonenVerhuizen(model.PersoonIDs, model.NaarAdres, model.VanAdresMetBewoners.ID));
 
                 // FIXME: Dit (onderstaand) is uiteraard niet de goede manier om 
                 // de persoon te bepalen die getoond moet worden.  
@@ -139,12 +135,12 @@ namespace MvcWebApp2.Controllers
                 // wel een persoon heeft aangevinkt.  Maar voorlopig trek ik me
                 // er nog niks van aan
 
-                Debug.Assert(model.GelieerdePersoonIDs.Count > 0);
+                Debug.Assert(model.PersoonIDs.Count > 0);
 
                 // Toon een persoon die woont op het nieuwe adres.
                 // (wat hier moet gebeuren hangt voornamelijk af van de use case)
 
-                return RedirectToAction("Edit", new { id = model.GelieerdePersoonIDs[0] });
+                return RedirectToAction("Edit", new { id = model.AanvragerID });
             }
             catch (FaultException<AdresFault> ex)
             {
@@ -167,6 +163,8 @@ namespace MvcWebApp2.Controllers
             }
         }
 
+        // GET: /Personen/AdresVerwijderen/PersoonsAdresID
+
         // GET: /Personen/NieuwAdres/gelieerdePersoonID
         public ActionResult NieuwAdres(int id)
         {
@@ -184,7 +182,7 @@ namespace MvcWebApp2.Controllers
                 // steeds opnieuw opgezocht.  Adressen worden nooit
                 // gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
 
-                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegen(model.GelieerdePersoonIDs, model.NieuwAdres));
+                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenAanPersonen(model.PersoonIDs, model.NieuwAdres));
 
                 return RedirectToAction("Edit", new { id = model.AanvragerID });
             }

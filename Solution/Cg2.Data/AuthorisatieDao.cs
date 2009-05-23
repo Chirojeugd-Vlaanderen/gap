@@ -11,6 +11,8 @@ namespace Cg2.Data.Ef
 {
     public class AuthorisatieDao: Dao<GebruikersRecht>, IAuthorisatieDao
     {
+        #region IAuthorisatieDao Members
+
         public GebruikersRecht RechtenMbtGroepGet(string login, int groepID)
         {
             GebruikersRecht resultaat;
@@ -98,6 +100,22 @@ namespace Cg2.Data.Ef
             return resultaat;
         }
 
+        public bool IsGavPersoon(string login, int persoonID)
+        {
+            bool resultaat;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                var query
+                    = from GebruikersRecht r in db.GebruikersRecht
+                      where r.Gav.Login == login && r.Groep.GelieerdePersoon.Any(gp => gp.Persoon.ID == persoonID)
+                      select r;
+
+                resultaat = query.Count() > 0;
+            }
+
+            return resultaat;
+        }
 
         public IList<int> GekoppeldeGroepenGet(string login)
         {
@@ -135,6 +153,29 @@ namespace Cg2.Data.Ef
             }
 
             return resultaat;
+        }        
+
+
+        public IList<int> EnkelMijnPersonen(IList<int> personenIDs, string login)
+        {
+            List<int> resultaat;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                // Ook hier wordt rekening gehouden met de vervaldatum.
+
+                var query
+                    = db.GelieerdePersoon
+                    .Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.Persoon.ID, personenIDs))
+                    .Where(gp => gp.Groep.GebruikersRecht.Any(r => r.Gav.Login == login))
+                    .Select(gp => gp.Persoon.ID);
+
+                resultaat = query.ToList<int>();
+            }
+
+            return resultaat;
         }
+
+        #endregion
     }
 }

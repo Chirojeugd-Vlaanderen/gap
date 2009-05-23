@@ -184,7 +184,7 @@ namespace Cg2.Data.Ef
             {
                 db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
                 return (
-                    from gp in db.GelieerdePersoon.Include("Persoon").Include("Communicatie").Include("PersoonsAdres.Adres.Straat").Include("PersoonsAdres.Adres.Subgemeente")
+                    from gp in db.GelieerdePersoon.Include("Persoon").Include("Communicatie").Include("Persoon.PersoonsAdres.Adres.Straat").Include("Persoon.PersoonsAdres.Adres.Subgemeente")
                     where gp.ID == gelieerdePersoonID
                     select gp).FirstOrDefault();
             }
@@ -220,18 +220,36 @@ namespace Cg2.Data.Ef
             return p;
         }
 
-        public IList<GelieerdePersoon> HuisGenotenOphalen(int gelieerdePersoonID)
+        /// <summary>
+        /// Haalt alle Personen op die op een zelfde
+        /// adres wonen als de gelieerde persoon met het gegeven ID.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van gegeven gelieerde
+        /// persoon.</param>
+        /// <returns>Lijst met Personen (inc. persoonsinfo)</returns>
+        /// <remarks>Als de persoon nergens woont, is hij toch zijn eigen
+        /// huisgenoot.  Ik geef hier enkel Personen, geen GelieerdePersonen,
+        /// omdat ik niet geinteresseerd ben in eventuele dubbels als ik 
+        /// GAV ben van verschillende groepen.</remarks>
+        
+        public IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID)
         {
             List<PersoonsAdres> paLijst;
-            List<GelieerdePersoon> resultaat;
+            List<Persoon> resultaat;
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
                 db.PersoonsAdres.MergeOption = MergeOption.NoTracking;
 
+
+                // FIXME: enkel persoonsadressen van personen van groepen
+                // waarvan je GAV bent
+
                 var persoonsAdressen = (
-                    from pa in db.PersoonsAdres.Include("GelieerdePersoon.Persoon")
-                    where pa.Adres.PersoonsAdres.Any(l => l.GelieerdePersoon.ID == gelieerdePersoonID)
+                    from pa in db.PersoonsAdres.Include("Persoon")
+                    where pa.Adres.PersoonsAdres.Any(
+                    l => l.Persoon.GelieerdePersoon.Any(
+                        gp => gp.ID == gelieerdePersoonID))
                     select pa);
 
                 // Het zou interessant zijn als ik hierboven al 
@@ -251,7 +269,7 @@ namespace Cg2.Data.Ef
             // GelieerdePersoon voorzien van een custom Equals en
             // GetHashCode.
             resultaat = (from pa in paLijst
-                         select pa.GelieerdePersoon).Distinct().ToList();
+                         select pa.Persoon).Distinct().ToList();
 
 
             if (resultaat.Count == 0)
@@ -261,7 +279,7 @@ namespace Cg2.Data.Ef
                 // ook al woont hij/zij nergens.  Ipv een leeg resultaat,
                 // wordt dan gewoon de gevraagde persoon opgehaald.
 
-                resultaat.Add(DetailsOphalen(gelieerdePersoonID));
+                resultaat.Add(DetailsOphalen(gelieerdePersoonID).Persoon);
 
                 // FIXME: Er wordt veel te veel info opgehaald.
             }

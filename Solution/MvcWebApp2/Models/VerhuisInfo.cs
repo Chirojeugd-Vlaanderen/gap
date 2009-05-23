@@ -17,6 +17,13 @@ namespace MvcWebApp2.Models
     public class VerhuisInfo : MasterViewModel 
     {
         /// <summary>
+        /// ID van GelieerdePersoon die graag zou verhuizen.
+        /// Wordt bewaard om achteraf terug naar de details van de
+        /// aanvrager te kunnen redirecten.
+        /// </summary>
+        public int AanvragerID { get; set; }
+
+        /// <summary>
         /// VanAdresMetBewoners bevat het adres waarvan verhuisd wordt,
         /// met daaraan gekoppeld alle bewoners die de aangelogde gebruiker
         /// mag zien.
@@ -29,10 +36,10 @@ namespace MvcWebApp2.Models
         public Adres NaarAdres { get; set; }
 
         /// <summary>
-        /// Het lijstje GelieerdePersoonIDs bevat de GelieerdePersoonID's van
+        /// Het lijstje persoonIDs bevat de GelieerdePersoonID's van
         /// de personen die mee verhuizen.
         /// </summary>
-        public List<int> GelieerdePersoonIDs { get; set; }
+        public List<int> PersoonIDs { get; set; }
 
         /// <summary>
         /// Saaie standaardconstructor
@@ -40,7 +47,7 @@ namespace MvcWebApp2.Models
         public VerhuisInfo()
         {
             NaarAdres = new Adres();
-            GelieerdePersoonIDs = new List<int>();
+            PersoonIDs = new List<int>();
         }
 
         // TODO: Ik ben er niet zeker van of het model de service
@@ -48,12 +55,14 @@ namespace MvcWebApp2.Models
         // moet gebeuren...
 
         /// <summary>
-        /// Creeert verhuisinfo voor alle (zichtbare) bewoners van het
-        /// adres met gegeven ID
+        /// Creeert verhuisinfo voor gegeven gelieerde persoon en
+        /// gegeven adres.
         /// </summary>
+        /// <param name="gelieerdePersoonID">persoon waarvoor verhuis geinitieerd werd</param>
         /// <param name="vanAdresID">relevante vanAdresID</param>
-        public VerhuisInfo(int vanAdresID)
+        public VerhuisInfo(int vanAdresID, int gelieerdePersoonID)
         {
+            AanvragerID = gelieerdePersoonID;
             VanAdresMetBewoners = ServiceHelper.CallService<IGelieerdePersonenService, Adres>(l => l.AdresMetBewonersOphalen(vanAdresID));
 
             // Bij de constructie van verhuisinfo zijn vanadres naaradres
@@ -65,9 +74,9 @@ namespace MvcWebApp2.Models
             NaarAdres = VanAdresMetBewoners;
 
             // Standaard verhuist iedereen mee.
-            GelieerdePersoonIDs = (
+            PersoonIDs = (
                 from PersoonsAdres pa in VanAdresMetBewoners.PersoonsAdres
-                select pa.GelieerdePersoon.ID).ToList<int>();
+                select pa.Persoon.ID).ToList<int>();
         }
 
         /// <summary>

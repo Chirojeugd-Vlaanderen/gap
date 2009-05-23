@@ -16,6 +16,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_Subgemeente", "Subgemeente", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Subgemeente), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Adres))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsAdres_Adres", "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Adres), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.PersoonsAdres))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.GelieerdePersoon), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.PersoonsAdres))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsAdres_Persoon", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Persoon), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.PersoonsAdres))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GroepsWerkjaar_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "GroepsWerkJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GroepsWerkJaar))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Lid_GroepsWerkjaar", "GroepsWerkJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.GroepsWerkJaar), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Lid))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Lid_GelieerdePersoon", "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.GelieerdePersoon), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Lid))]
@@ -939,6 +940,27 @@ namespace Cg2.Orm
                 }
             }
         }
+        /// <summary>
+        /// There are no comments for PersoonsAdres in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_PersoonsAdres_Persoon", "PersoonsAdres")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<PersoonsAdres> PersoonsAdres
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<PersoonsAdres>("ChiroGroepModel.FK_PersoonsAdres_Persoon", "PersoonsAdres");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<PersoonsAdres>("ChiroGroepModel.FK_PersoonsAdres_Persoon", "PersoonsAdres", value);
+                }
+            }
+        }
     }
     /// <summary>
     /// There are no comments for ChiroGroepModel.CommunicatieVorm in the schema.
@@ -1348,27 +1370,6 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("ChiroGroepModel.FK_GelieerdePersoon_Persoon", "Persoon", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for PersoonsAdres in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_PersoonsAdres_GelieerdePersoon", "PersoonsAdres")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<PersoonsAdres> PersoonsAdres
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<PersoonsAdres>("ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon", "PersoonsAdres");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<PersoonsAdres>("ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon", "PersoonsAdres", value);
                 }
             }
         }
@@ -1925,37 +1926,13 @@ namespace Cg2.Orm
         /// <param name="isStandaard">Initial value of IsStandaard.</param>
         /// <param name="adresTypeID">Initial value of AdresTypeID.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static PersoonsAdres CreatePersoonsAdres(bool isStandaard, int adresTypeID, int id)
+        public static PersoonsAdres CreatePersoonsAdres(int adresTypeID, byte[] versie, int id)
         {
             PersoonsAdres persoonsAdres = new PersoonsAdres();
-            persoonsAdres.IsStandaard = isStandaard;
             persoonsAdres.AdresTypeID = adresTypeID;
             persoonsAdres.ID = id;
             return persoonsAdres;
         }
-        /// <summary>
-        /// There are no comments for Property IsStandaard in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public bool IsStandaard
-        {
-            get
-            {
-                return this._IsStandaard;
-            }
-            set
-            {
-                this.OnIsStandaardChanging(value);
-                this.ReportPropertyChanging("IsStandaard");
-                this._IsStandaard = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("IsStandaard");
-                this.OnIsStandaardChanged();
-            }
-        }
-        private bool _IsStandaard;
-        partial void OnIsStandaardChanging(bool value);
-        partial void OnIsStandaardChanged();
         /// <summary>
         /// There are no comments for Property Opmerking in the schema.
         /// </summary>
@@ -2086,39 +2063,39 @@ namespace Cg2.Orm
             }
         }
         /// <summary>
-        /// There are no comments for GelieerdePersoon in the schema.
+        /// There are no comments for Persoon in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_PersoonsAdres_Persoon", "Persoon")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public GelieerdePersoon GelieerdePersoon
+        public Persoon Persoon
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("ChiroGroepModel.FK_PersoonsAdres_Persoon", "Persoon").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("ChiroGroepModel.FK_PersoonsAdres_Persoon", "Persoon").Value = value;
             }
         }
         /// <summary>
-        /// There are no comments for GelieerdePersoon in the schema.
+        /// There are no comments for Persoon in the schema.
         /// </summary>
         [global::System.ComponentModel.BrowsableAttribute(false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<GelieerdePersoon> GelieerdePersoonReference
+        public global::System.Data.Objects.DataClasses.EntityReference<Persoon> PersoonReference
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("ChiroGroepModel.FK_PersoonsAdres_Persoon", "Persoon");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("ChiroGroepModel.FK_PersoonsAdres_Persoon", "Persoon", value);
                 }
             }
         }

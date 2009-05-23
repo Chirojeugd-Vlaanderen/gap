@@ -28,15 +28,15 @@
                List<CheckBoxListInfo> info
                    = (from PersoonsAdres pa in Model.VanAdresMetBewoners.PersoonsAdres
                       select new CheckBoxListInfo(
-                         pa.GelieerdePersoon.ID.ToString()
-                         , Html.ActionLink(Html.Encode(pa.GelieerdePersoon.Persoon.VolledigeNaam), "Edit", new { Controller = "Personen", id = pa.GelieerdePersoon.ID })
-                         , Model.GelieerdePersoonIDs.Contains(pa.GelieerdePersoon.ID) )).ToList<CheckBoxListInfo>();
+                         pa.Persoon.ID.ToString()
+                         , pa.Persoon.VolledigeNaam
+                         , Model.PersoonIDs.Contains(pa.Persoon.ID) )).ToList<CheckBoxListInfo>();
            
                // Zodat we ze kunnen gebruiken in onze custom
                // HtmlHelper 'CheckBoxList'
            %>
            
-           <%=Html.CheckBoxList("GelieerdePersoonIDs", info) %>
+           <%=Html.CheckBoxList("PersoonIDs", info) %>
                  
            </fieldset>
            
@@ -56,6 +56,7 @@
            <%=Html.TextBox("NaarAdres.Subgemeente.Naam") %> <%= Html.ValidationMessage("NaarAdres.Subgemeente.Naam") %> <br />
            
            <%=Html.Hidden("VanAdresMetBewoners.ID") %>
+           <%=Html.Hidden("AanvragerID") %>
            
            </fieldset>
            

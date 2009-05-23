@@ -85,7 +85,7 @@ namespace Cg2.Data.Ef
                     select groep
                     ).First().First();
                 }
-                catch (System.InvalidOperationException e)
+                catch (System.InvalidOperationException)
                 {
                     return groep.First();
                 }

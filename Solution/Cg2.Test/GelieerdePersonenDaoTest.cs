@@ -69,8 +69,6 @@ namespace Cg2.Test
             GelieerdePersoon p = dao.DetailsOphalen(373);
 
             Assert.IsTrue(p.Communicatie.Count > 0);
-            Assert.IsTrue(p.PersoonsAdres.Count > 0);
-            Assert.IsTrue(p.PersoonsAdres.First().Adres.Straat.Naam != "");
         }
     }
 }

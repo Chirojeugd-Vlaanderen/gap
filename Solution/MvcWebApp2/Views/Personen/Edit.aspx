@@ -48,13 +48,13 @@
     <h3>Adressen</h3>
 
     <ul>
-    <% foreach (PersoonsAdres pa in ViewData.Model.HuidigePersoon.PersoonsAdres)
+    <% foreach (PersoonsAdres pa in ViewData.Model.HuidigePersoon.Persoon.PersoonsAdres)
        { %>
        <li>
             <%=Html.Encode(String.Format("{0} {1}", pa.Adres.Straat.Naam, pa.Adres.HuisNr))%>,
             <%=Html.Encode(String.Format("{0} {1} {2}", pa.Adres.Straat.PostNr, pa.Adres.PostCode, pa.Adres.Subgemeente.Naam))%>
-            <%= pa.IsStandaard ? "(standaardadres)" : ""%>
-            <%=Html.ActionLink( "[verhuizen]", "Verhuizen", new {Controller="Personen", id = pa.Adres.ID} ) %>
+            <%=Html.ActionLink( "[verhuizen]", "Verhuizen", new {id = pa.Adres.ID, aanvragerID = ViewData.Model.HuidigePersoon.ID} ) %>
+            <%=Html.ActionLink( "[verwijderen]", "AdresVerwijderen", new {Controller="Personen", id = pa.ID} ) %>
         </li>
     <%} %>
         <li><%=Html.ActionLink( "[nieuw adres]", "NieuwAdres", new {Controller="Personen", id = ViewData.Model.HuidigePersoon.ID} ) %></li>

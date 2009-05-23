@@ -33,7 +33,7 @@ namespace Cg2.Data.Ef
 
         /// <summary>
         /// Bewaart adres en eventuele gekoppelde persoonsadressen en 
-        /// gelieerde personen.
+        /// Personen.
         /// </summary>
         /// <param name="nieuweEntiteit">Te bewaren adres</param>
         /// <returns>referentie naar het bewaarde adres</returns>
@@ -59,7 +59,7 @@ namespace Cg2.Data.Ef
                 geattachtAdres = db.AttachObjectGraph(adr
                     , dink=>dink.Straat.WithoutUpdate()
                     , dink=>dink.Subgemeente.WithoutUpdate()
-                    , dink=>dink.PersoonsAdres.First().GelieerdePersoon.WithoutUpdate());
+                    , dink=>dink.PersoonsAdres.First().Persoon.WithoutUpdate());
 
                 // bewaardAdres is het geattachte adres.  Hiervan neem
                 // ik ID en versie over; de rest laat ik ongemoeid.
@@ -77,9 +77,18 @@ namespace Cg2.Data.Ef
             return adr;
         }
 
+        /// <summary>
+        /// Haalt een adres op, samen met de gekoppelde personen
+        /// </summary>
+        /// <param name="adresID">ID op te halen adres</param>
+        /// <param name="user">Als user gegeven, worden enkel de
+        /// personen gekoppeld waar die user bekijkrechten op heeft.
+        /// Als user de lege string is, worden alle bewoners meegeleverd.
+        /// </param>
+        /// <returns>Adresobject met gekoppelde personen</returns>
         public Adres BewonersOphalen(int adresID, string user)
         {
-            // DAT IS HIER ZWAAR AAN TE PASSEN :-)
+            // TODO: Code na te kijken
 
             Adres resultaat = null;
             IList<PersoonsAdres> lijst = null;
@@ -99,7 +108,7 @@ namespace Cg2.Data.Ef
                 var query
                     = db.PersoonsAdres.Include("Adres.Straat")
                     .Include("Adres.Subgemeente")
-                    .Include("GelieerdePersoon.Persoon")
+                    .Include("Persoon")
                     .Where(pera => pera.Adres.ID == adresID);
                     
 
@@ -108,9 +117,10 @@ namespace Cg2.Data.Ef
                     // Controleer op niet-vervallen gebruikersrecht
 
                     query = query
-                        .Where(pera => pera.GelieerdePersoon.Groep.GebruikersRecht.Any(
-                            gr => gr.Gav.Login == user && (gr.VervalDatum == null 
-                                || gr.VervalDatum < DateTime.Now)));
+                        .Where(pera => pera.Persoon.GelieerdePersoon.Any(
+                            gp => gp.Groep.GebruikersRecht.Any(
+                                gr => gr.Gav.Login == user && (gr.VervalDatum == null
+                                    || gr.VervalDatum < DateTime.Now))));
                 }
                 query = query.Select(pera => pera);
 

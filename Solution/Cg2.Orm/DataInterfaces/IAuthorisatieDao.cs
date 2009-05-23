@@ -51,6 +51,15 @@ namespace Cg2.Orm.DataInterfaces
         /// <returns>true indien gebruiker nu gav is</returns>
         bool IsGavGelieerdePersoon(string login, int gelieerdePersoonID);
 
+        /// <summary>
+        /// Controleert of een gebruiker *nu* GAV is van een
+        /// groep waaraan de gegeven persoon gelieerd is.
+        /// </summary>
+        /// <param name="login">gebruikersnaam</param>
+        /// <param name="persoonID">ID van persoon</param>
+        /// <returns>true indien gebruiker geahtoriseerd is
+        /// (op dit moment) om persoonsgegevens te zien/wijzigen</returns>
+        bool IsGavPersoon(string login, int persoonID);
 
 
         /// <summary>
@@ -70,6 +79,18 @@ namespace Cg2.Orm.DataInterfaces
         /// <returns>Een lijst met de ID's van GelieerdePersonen waar de gebruiker
         /// GAV over is. (hoeveel indirectie kan er in 1 zin?)</returns>
         IList<int> EnkelMijnGelieerdePersonen(IList<int> gelieerdePersonenIDs, string login);
+
+        /// <summary>
+        /// Verwijdert uit een lijst met PersonenID's de ID's
+        /// waarvan een gegeven gebruiker geen GAV is
+        /// </summary>
+        /// <param name="personenIDs">lijst met PersonenID's</param>
+        /// <param name="login">gebruiker</param>
+        /// <returns>Een lijst met de ID's van Personen waar de gebruiker
+        /// GAV over is. (hoeveel indirectie kan er in 1 zin?)</returns>
+        IList<int> EnkelMijnPersonen(IList<int> personenIDs, string p);
+
         #endregion
+
     }
 }

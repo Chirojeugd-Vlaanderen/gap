@@ -81,10 +81,10 @@ namespace Cg2.ServiceContracts
         /// <summary>
         /// Verhuist gelieerde personen van een oud naar een nieuw
         /// adres.
-        /// (De koppelingen GelieerdePersoon-Oudadres worden aangepast 
-        /// naar GelieerdePersoon-NieuwAdres.)
+        /// (De koppelingen Persoon-Oudadres worden aangepast 
+        /// naar Persoon-NieuwAdres.)
         /// </summary>
-        /// <param name="verhuizers">ID's van te verhuizen gelieerde personen</param>
+        /// <param name="persoonIDs">ID's van te verhuizen Personen (niet gelieerd!)</param>
         /// <param name="nieuwAdres">Adresobject met nieuwe adresgegevens</param>
         /// <param name="oudAdresID">ID van het oude adres</param>
         /// <remarks>nieuwAdres.ID wordt genegeerd.  Het adresID wordt altijd
@@ -92,26 +92,27 @@ namespace Cg2.ServiceContracts
         /// dan krijgt het adres een nieuw ID.</remarks>
         [OperationContract]
         [FaultContract(typeof(AdresFault))]
-        void Verhuizen(IList<int> gelieerdePersonen, Adres nieuwAdres, int oudAdresID);
+        void PersonenVerhuizen(IList<int> persoonIDs, Adres nieuwAdres, int oudAdresID);
 
         /// <summary>
-        /// Haalt alle gelieerde personen op die een adres gemeen hebben met de
-        /// GelieerdePersoon bepaald door aanvragerID
+        /// Haalt alle personen op die een adres gemeen hebben met de
+        /// Persoon bepaald door gelieerdePersoonID
         /// </summary>
-        /// <param name="aanvragerID">ID van GelieerdePersoon</param>
-        /// <returns>lijst met GelieerdePersonen die huisgenoot zijn van gegeven gelieerde 
+        /// <param name="gelieerdePersoonID">ID van GelieerdePersoon</param>
+        /// <returns>lijst met Personen die huisgenoot zijn van gegeven
         /// persoon</returns>
+        /// <remarks>parameters: GELIEERDEpersoonID, returns PERSONEN</remarks>
         [OperationContract]
-        IList<GelieerdePersoon> HuisGenotenOphalen(int aanvragerID);
+        IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID);
 
         /// <summary>
-        /// Voegt een adres toe aan een verzameling gelieerde personen
+        /// Voegt een adres toe aan een verzameling personen
         /// </summary>
-        /// <param name="gelieerdePersonenIDs">ID's van gelieerde personen
+        /// <param name="personenIDs">ID's van Personen
         /// waaraan het nieuwe adres toegevoegd moet worden.</param>
         /// <param name="adres">Toe te voegen adres</param>
         /// <returns></returns>
         [OperationContract]
-        void AdresToevoegen(List<int> gelieerdePersonenIDs, Adres adres);
+        void AdresToevoegenAanPersonen(List<int> personenIDs, Adres adres);
     }
 }

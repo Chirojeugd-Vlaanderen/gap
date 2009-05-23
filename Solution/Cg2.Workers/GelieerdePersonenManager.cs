@@ -85,7 +85,17 @@ namespace Cg2.Workers
             return _dao.GroepLaden(gp);
         }
 
-        public IList<GelieerdePersoon> HuisGenotenOphalen(int gelieerdePersoonID)
+        /// <summary>
+        /// Haalt personen op die een adres gemeen hebben met de 
+        /// GelieerdePersoon
+        /// met gegeven ID
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van 
+        /// GelieerdePersoon waarvan huisgenoten
+        /// gevraagd zijn</param>
+        /// <returns>Lijstje met personen</returns>
+        /// <remarks>Parameter: GelieerdePersoonID, return value: Personen!</remarks>
+        public IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID)
         {
             AuthorisatieManager am = Factory.Maak<AuthorisatieManager>();
 
@@ -95,51 +105,11 @@ namespace Cg2.Workers
             }
             else
             {
-                throw new GeenGavException("Je kan geen adres toevoegen aan een persoon die niet gelieerd is aan je groep(en).");
+                throw new GeenGavException("Je bent geen GAV voor deze persoon.");
             }
         }
 
         #endregion
-
-        /// <summary>
-        /// Verhuist een persoon van oudAdres naar nieuwAdres
-        /// </summary>
-        /// <param name="verhuizer">te verhuizen GelieerdePersoon</param>
-        /// <param name="oudAdres">oud adres</param>
-        /// <param name="nieuwAdres">nieuw adres</param>
-        /// <remarks>Als de persoon niet gekoppeld is aan het oude adres,
-        /// zal hij ook niet verhiuzen</remarks>
-        public void Verhuizen(GelieerdePersoon verhuizer, Adres oudAdres, Adres nieuwAdres)
-        {
-            PersoonsAdres persoonsadres
-                = (from PersoonsAdres pa in verhuizer.PersoonsAdres
-                  where pa.Adres.ID == oudAdres.ID
-                  select pa).FirstOrDefault();
-
-            if (oudAdres.PersoonsAdres != null)
-            {
-                oudAdres.PersoonsAdres.Remove(persoonsadres);
-            }
-            persoonsadres.Adres = nieuwAdres;
-
-            if (nieuwAdres.PersoonsAdres != null)
-            {
-                nieuwAdres.PersoonsAdres.Add(persoonsadres);
-            }
-        }
-
-        /// <summary>
-        /// Koppelt het gegeven Adres via een nieuw PersoonsAdresObject
-        /// aan de gegeven GelieerdePersoon
-        /// </summary>
-        /// <param name="p">GelieerdePersoon die er een adres bij krijgt</param>
-        /// <param name="adres">Toe te voegen adres</param>
-        public void AdresToevoegen(GelieerdePersoon p, Adres adres)
-        {
-            PersoonsAdres pa = new PersoonsAdres { Adres = adres, GelieerdePersoon = p, AdresTypeID = 1 };
-            p.PersoonsAdres.Add(pa);
-            adres.PersoonsAdres.Add(pa);
-        }
 
         public void Bewaren(IList<GelieerdePersoon> personenLijst)
         {

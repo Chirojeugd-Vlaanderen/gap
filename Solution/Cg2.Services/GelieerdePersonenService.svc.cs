@@ -76,10 +76,14 @@ namespace Cg2.Services
             return adm.AdresMetBewonersOphalen(adresID);
         }
 
+        // Verhuizen van een lijst personen
+        // FIXME: Deze functie werkt op PersoonID's en niet op
+        // GelieerdePersoonID's, en bijgevolg hoort dit eerder thuis
+        // in een PersonenService ipv een GelieerdePersonenService.
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public void Verhuizen(IList<int> gelieerdePersonenIDs, Adres nieuwAdres, int oudAdresID)
+        public void PersonenVerhuizen(IList<int> personenIDs, Adres nieuwAdres, int oudAdresID)
         {
-            GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
+            PersonenManager pm = Factory.Maak<PersonenManager>();
             AuthorisatieManager aum = Factory.Maak<AuthorisatieManager>();
             AdressenManager adm = Factory.Maak<AdressenManager>();
 
@@ -108,7 +112,7 @@ namespace Cg2.Services
             // Om foefelen te vermijden: we werken enkel op de gelieerde
             // personen waar de gebruiker GAV voor is.
 
-            IList<int> mijnGelieerdePersonen = aum.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs);
+            IList<int> mijnPersonen = aum.EnkelMijnPersonen(personenIDs);
 
             // Haal bronadres en alle bewoners op
 
@@ -116,18 +120,18 @@ namespace Cg2.Services
 
             // Selecteer enkel bewoners uit mijnGelieerdePersonen
 
-            IList<GelieerdePersoon> teVerhuizen =
+            IList<Persoon> teVerhuizen =
                 (from PersoonsAdres pa
                 in oudAdres.PersoonsAdres
-                where mijnGelieerdePersonen.Contains(pa.GelieerdePersoon.ID)
-                select pa.GelieerdePersoon).ToList();
+                where mijnPersonen.Contains(pa.Persoon.ID)
+                select pa.Persoon).ToList();
 
             // Bovenstaande query meteen evalueren en resultaten in een lijst.
             // Als ik dat niet doe, dan verandert het 'in' gedeelte van
             // de foreach tijdens de loop, en daar kan .net niet mee
             // lachen.
 
-            foreach (GelieerdePersoon verhuizer in teVerhuizen)
+            foreach (Persoon verhuizer in teVerhuizen)
             {
                 pm.Verhuizen(verhuizer, oudAdres, nieuwAdres);
             }
@@ -144,11 +148,11 @@ namespace Cg2.Services
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public void AdresToevoegen(List<int> gelieerdePersonenIDs, Adres adres)
+        public void AdresToevoegenAanPersonen(List<int> personenIDs, Adres adres)
         {
             // Dit gaat sterk lijken op op verhuizen.
 
-            GelieerdePersonenManager persMgr = Factory.Maak<GelieerdePersonenManager>();
+            PersonenManager persMgr = Factory.Maak<PersonenManager>();
             AdressenManager adrMgr = Factory.Maak<AdressenManager>();
 
             // Adres opzoeken in database
@@ -166,10 +170,10 @@ namespace Cg2.Services
             }
 
             // Personen ophalen
-            IList<GelieerdePersoon> personenLijst = persMgr.LijstOphalen(gelieerdePersonenIDs);
+            IList<Persoon> personenLijst = persMgr.LijstOphalen(personenIDs);
 
             // Adres koppelen
-            foreach (GelieerdePersoon p in personenLijst)
+            foreach (Persoon p in personenLijst)
             {
                 persMgr.AdresToevoegen(p, adres);
             }
@@ -179,13 +183,11 @@ namespace Cg2.Services
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IList<GelieerdePersoon> HuisGenotenOphalen(int gelieerdePersoonID)
+        public IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID)
         {
-            // FIXME: enkel huisgenoten ophalen die ook gelieerd zijn aan groepen
-            // van aanvrager!
+            GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
 
-            GelieerdePersonenManager gm = Factory.Maak<GelieerdePersonenManager>();
-            return gm.HuisGenotenOphalen(gelieerdePersoonID);
+            return gpm.HuisGenotenOphalen(gelieerdePersoonID);
         }
 
         #endregion
