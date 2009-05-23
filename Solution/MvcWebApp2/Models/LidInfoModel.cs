@@ -11,6 +11,9 @@ namespace MvcWebApp2.Models
 {
     public class LidInfoModel : MasterViewModel 
     {
+        public int GroepsWerkJaarIdZichtbaar { get; set; }
+        public List<GroepsWerkJaar> GroepsWerkJaarLijst { get; set; }
+
         public IList<LidInfo> LidInfoLijst { get; set; }
 
         public LidInfoModel() : base() { }

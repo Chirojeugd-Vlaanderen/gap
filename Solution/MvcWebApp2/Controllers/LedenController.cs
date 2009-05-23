@@ -16,24 +16,27 @@ namespace MvcWebApp2.Controllers
     {
         //
         // GET: /Leden/
-
         public ActionResult Index()
         {
-            int aantal;
-            var model = new Models.LidInfoModel();
-            model.LidInfoLijst = 
-                ServiceHelper.CallService<ILedenService, IList<LidInfo>>
-                (lid => lid.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarId, 1, 12, out aantal));
-            model.Title = "Leden Overzicht";
-            return View("Index", model);
+            // TODO: List oproepen met recentste GroepsWerkJaar, niet met test ...
+            return List(Properties.Settings.Default.TestGroepsWerkJaarId);
         }
 
+        // TODO: verder uitwerken paginering
         //
-        // GET: /Leden/Details/5
-
-        public ActionResult Details(int id)
+        // GET: /Leden/List/{groepsWerkJaarId}
+        public ActionResult List(int groepsWerkJaarId)
         {
-            return View();
+            int totaal;
+            var model = new Models.LidInfoModel();
+            model.LidInfoLijst =
+                ServiceHelper.CallService<ILedenService, IList<LidInfo>>
+                (lid => lid.PaginaOphalen(groepsWerkJaarId, 1, 12, out totaal));
+            model.GroepsWerkJaarIdZichtbaar = groepsWerkJaarId;
+            // TODO: lijst opbouwen met alle GroepsWerkJaren van de huidige groep
+            // model.GroepsWerkJaarLijst = ...;
+            model.Title = "Leden Overzicht voor GroepsWerkJaarId " + groepsWerkJaarId.ToString();
+            return View("Index", model);
         }
 
         //
