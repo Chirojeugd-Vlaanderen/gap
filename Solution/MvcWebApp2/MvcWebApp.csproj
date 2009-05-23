@@ -104,7 +104,6 @@
     <Content Include="Global.asax" />
     <Content Include="Views\Leden\Index.aspx" />
     <Content Include="Views\Personen\NieuwAdres.aspx" />
-    <Content Include="Views\Personen\Details.aspx" />
     <Content Include="Views\Personen\Edit.aspx" />
     <Content Include="Views\Personen\Hallo.aspx" />
     <Content Include="Views\Personen\Index.aspx" />

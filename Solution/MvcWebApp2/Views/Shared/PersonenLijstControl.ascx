@@ -5,7 +5,7 @@
 
 <% if (ViewData.Model.PageTotaal > 1) { 
     for (int i = 1; i <= ViewData.Model.PageTotaal; i++) {
-        if (ViewData.Model.PageHuidige != i)
+        if (ViewData.Model.PageHuidig != i)
         { %>
 <%=Html.ActionLink("" + i, "List", new { Controller = "Personen", page = i })%>
 <%      }

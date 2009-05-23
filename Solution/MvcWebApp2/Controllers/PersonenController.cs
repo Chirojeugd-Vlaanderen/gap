@@ -33,23 +33,11 @@ namespace MvcWebApp2.Controllers
 
             var model = new Models.PersoonInfoModel();
             model.PersoonInfoLijst = ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>(g => g.PaginaOphalenMetLidInfo(int.Parse(ConfigurationSettings.AppSettings["TestGroepID"]), page, 20, out totaal));
-            model.PageHuidige = page;
+            model.PageHuidig = page;
             model.PageTotaal = (int) Math.Ceiling(totaal / 20d);
             model.Title = "Personen-overzicht";
 
             return View("Index", model);
-        }
-
-        //
-        // GET: /Personen/Details/5
-        public ActionResult Details(int id)
-        {
-
-            var model = new Models.GelieerdePersonenModel();
-            model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
-            //GelieerdePersoon p = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
-            model.Title = "Personen Detail";
-            return View("Details", model);
         }
 
         //
@@ -81,7 +69,6 @@ namespace MvcWebApp2.Controllers
         // GET: /Personen/Edit/5
         public ActionResult Edit(int id)
         {
-
             var model = new Models.GelieerdePersonenModel();
             model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
             model.Title = "Persoon Bewerken " + model.HuidigePersoon.Persoon.VolledigeNaam;
