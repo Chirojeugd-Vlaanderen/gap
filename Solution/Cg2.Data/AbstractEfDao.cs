@@ -154,28 +154,15 @@ namespace Cg2.Data.Ef
         /// expressions meekrijgt</remarks>
         public virtual T Bewaren(T entiteit, params Expression<Func<T, object>>[] paths)
         {
+            T geattachteT;
 
-            if (entiteit.ID == 0)
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                return Creeren(entiteit);
-            }
-            else if (entiteit.TeVerwijderen)
-            {
-                Verwijderen(entiteit);
-                return null;
-            }
-            else
-            {
-                T geattachteT;
+                geattachteT = db.AttachObjectGraph(entiteit, paths);
 
-                using (ChiroGroepEntities db = new ChiroGroepEntities())
-                {
-                    geattachteT = db.AttachObjectGraph(entiteit, paths);
-
-                    db.SaveChanges();
-                }
-                return geattachteT;
+                db.SaveChanges();
             }
+            return geattachteT;
         }
 
         /// <summary>

@@ -89,7 +89,7 @@ namespace Cg2.Test
             GroepenDao d = new GroepenDao();
             d.ToevoegenAfdeling(310, "De Joskes", "DJ");
 
-            Groep g = d.Ophalen(310);
+            Groep g = d.OphalenMetAfdelingen(310);
 
             Assert.IsTrue(g.Afdeling.Count == 1);
 
@@ -97,6 +97,8 @@ namespace Cg2.Test
             g.Afdeling.First().TeVerwijderen = true;
 
             d.BewarenMetAfdelingen(g);
+
+            g = d.OphalenMetAfdelingen(310);
 
             Assert.IsTrue(g.Afdeling.Count == 0);
         }
