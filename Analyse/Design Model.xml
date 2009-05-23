@@ -17,7 +17,7 @@
 						<UML:TaggedValue tag="modified" value="2008-05-05 00:00:00"/>
 						<UML:TaggedValue tag="iscontrolled" value="1"/>
 						<UML:TaggedValue tag="xmlpath" value="Design Model.xml"/>
-						<UML:TaggedValue tag="lastloaddate" value="2009-05-22 20:10:48"/>
+						<UML:TaggedValue tag="lastloaddate" value="2009-05-23 12:19:56"/>
 						<UML:TaggedValue tag="lastsavedate" value="2008-05-20 13:52:10"/>
 						<UML:TaggedValue tag="version" value="1.0"/>
 						<UML:TaggedValue tag="isprotected" value="0"/>
@@ -13035,6 +13035,7 @@
 												<UML:TaggedValue tag="derived" value="0"/>
 												<UML:TaggedValue tag="containment" value="Not Specified"/>
 												<UML:TaggedValue tag="ordered" value="0"/>
+												<UML:TaggedValue tag="static" value="1"/>
 												<UML:TaggedValue tag="stereotype" value="column"/>
 												<UML:TaggedValue tag="collection" value="true"/>
 												<UML:TaggedValue tag="position" value="5"/>
@@ -13062,6 +13063,7 @@
 												<UML:TaggedValue tag="derived" value="0"/>
 												<UML:TaggedValue tag="containment" value="Not Specified"/>
 												<UML:TaggedValue tag="ordered" value="0"/>
+												<UML:TaggedValue tag="static" value="1"/>
 												<UML:TaggedValue tag="stereotype" value="column"/>
 												<UML:TaggedValue tag="collection" value="true"/>
 												<UML:TaggedValue tag="position" value="6"/>
@@ -13127,13 +13129,14 @@
 												<UML:TaggedValue tag="stereotype" value="PK"/>
 												<UML:TaggedValue tag="synchronised" value="0"/>
 												<UML:TaggedValue tag="concurrency" value="Sequential"/>
-												<UML:TaggedValue tag="position" value="0"/>
+												<UML:TaggedValue tag="position" value="1"/>
 												<UML:TaggedValue tag="genoption" value="SourceClass=true;"/>
 												<UML:TaggedValue tag="returnarray" value="0"/>
 												<UML:TaggedValue tag="pure" value="0"/>
 												<UML:TaggedValue tag="ea_guid" value="{FD35887D-BB4E-41eb-BF16-7C8046F02A44}"/>
 												<UML:TaggedValue tag="ea_localid" value="1287"/>
 												<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={0ECB7240-D659-4221-9F49-F2C2E3FBEBEF}$XID;$NAM=Stereotypes$NAM;$TYP=operation property$TYP;$VIS=Public$VIS;$DES=@STEREO;Name=PK;GUID={C1E86625-79F6-4227-B5D7-937E6D801E32};@ENDSTEREO;$DES;$CLT={FD35887D-BB4E-41eb-BF16-7C8046F02A44}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
+												<UML:TaggedValue tag="property" value="PKNonClustered=1;" xmi.id="EAID_D14DEB7D_0999_4522_ABF1_BC72178A3575"/>
 											</UML:ModelElement.taggedValue>
 											<UML:BehavioralFeature.parameter>
 												<UML:Parameter kind="return" visibility="public">
@@ -13174,7 +13177,7 @@
 												<UML:TaggedValue tag="stereotype" value="FK"/>
 												<UML:TaggedValue tag="synchronised" value="0"/>
 												<UML:TaggedValue tag="concurrency" value="Sequential"/>
-												<UML:TaggedValue tag="position" value="1"/>
+												<UML:TaggedValue tag="position" value="2"/>
 												<UML:TaggedValue tag="returnarray" value="0"/>
 												<UML:TaggedValue tag="pure" value="0"/>
 												<UML:TaggedValue tag="ea_guid" value="{A6F52F00-A8CD-4413-88AA-2C15A40E47EA}"/>
@@ -13204,6 +13207,64 @@
 														<UML:TaggedValue tag="type" value="Integer"/>
 														<UML:TaggedValue tag="const" value="0"/>
 														<UML:TaggedValue tag="ea_guid" value="{225D6AB5-10CF-47c8-A2B6-0674030EC92C}"/>
+													</UML:ModelElement.taggedValue>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+										<UML:Operation name="UQ_Lid" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="index"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="const" value="false"/>
+												<UML:TaggedValue tag="stereotype" value="index"/>
+												<UML:TaggedValue tag="synchronised" value="0"/>
+												<UML:TaggedValue tag="position" value="3"/>
+												<UML:TaggedValue tag="pure" value="0"/>
+												<UML:TaggedValue tag="ea_guid" value="{356B44AC-43B5-4e10-8B79-45AA49713AA4}"/>
+												<UML:TaggedValue tag="ea_localid" value="1358"/>
+												<UML:TaggedValue tag="property" value="Unique=1;Clustered=1;Sort=Asc;" xmi.id="EAID_FA18048B_F523_4804_AA15_C50EB410E25C"/>
+											</UML:ModelElement.taggedValue>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<UML:Classifier xmi.idref="eaxmiid2"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue>
+														<UML:TaggedValue tag="pos" value="0"/>
+														<UML:TaggedValue tag="const" value="0"/>
+														<UML:TaggedValue tag="ea_guid" value="{RETURNID-43B5-4e10-8B79-45AA49713AA4}"/>
+													</UML:ModelElement.taggedValue>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="groepsWerkjaarID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<UML:Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue>
+														<UML:TaggedValue tag="pos" value="0"/>
+														<UML:TaggedValue tag="type" value="int"/>
+														<UML:TaggedValue tag="const" value="0"/>
+														<UML:TaggedValue tag="ea_guid" value="{83BDFA90-B537-42a4-8DF1-67EA3D1C6504}"/>
+													</UML:ModelElement.taggedValue>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="gelieerdePersoonID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<UML:Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue>
+														<UML:TaggedValue tag="pos" value="1"/>
+														<UML:TaggedValue tag="type" value="int"/>
+														<UML:TaggedValue tag="const" value="0"/>
+														<UML:TaggedValue tag="ea_guid" value="{7709F8ED-F0E2-4a02-982D-1DAEB398CDAE}"/>
 													</UML:ModelElement.taggedValue>
 													<UML:Parameter.defaultValue>
 														<UML:Expression/>
