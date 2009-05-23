@@ -27,7 +27,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_AfdelingsJaar_OfficieleAfdeling", "OfficieleAfdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.OfficieleAfdeling), "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar))]
 
 // Original file name:
-// Generation date: 23/05/2009 0:07:14
+// Generation date: 23/05/2009 11:24:29
 namespace Cg2.Orm
 {
     
@@ -408,21 +408,17 @@ namespace Cg2.Orm
         /// </summary>
         /// <param name="naam">Initial value of Naam.</param>
         /// <param name="id">Initial value of ID.</param>
-        /// <param name="versie">Initial value of Versie.</param>
-        /// <param name="versie_1">Initial value of Versie_1.</param>
-        public static ChiroGroep CreateChiroGroep(string naam, int id, byte[] versie, byte[] versie_1)
+        public static ChiroGroep CreateChiroGroep(string naam, int id)
         {
             ChiroGroep chiroGroep = new ChiroGroep();
             chiroGroep.Naam = naam;
             chiroGroep.ID = id;
-            chiroGroep.Versie = versie;
-            chiroGroep.Versie_1 = versie_1;
             return chiroGroep;
         }
         /// <summary>
         /// There are no comments for Property Versie_1 in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie_1
         {
@@ -434,7 +430,7 @@ namespace Cg2.Orm
             {
                 this.OnVersie_1Changing(value);
                 this.ReportPropertyChanging("Versie_1");
-                this._Versie_1 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Versie_1 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Versie_1");
                 this.OnVersie_1Changed();
             }
@@ -460,13 +456,11 @@ namespace Cg2.Orm
         /// </summary>
         /// <param name="naam">Initial value of Naam.</param>
         /// <param name="id">Initial value of ID.</param>
-        /// <param name="versie">Initial value of Versie.</param>
-        public static Groep CreateGroep(string naam, int id, byte[] versie)
+        public static Groep CreateGroep(string naam, int id)
         {
             Groep groep = new Groep();
             groep.Naam = naam;
             groep.ID = id;
-            groep.Versie = versie;
             return groep;
         }
         /// <summary>
@@ -610,7 +604,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -622,7 +616,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }
@@ -732,14 +726,12 @@ namespace Cg2.Orm
         /// <param name="naam">Initial value of Naam.</param>
         /// <param name="geslachtsInt">Initial value of GeslachtsInt.</param>
         /// <param name="id">Initial value of ID.</param>
-        /// <param name="versie">Initial value of Versie.</param>
-        public static Persoon CreatePersoon(string naam, int geslachtsInt, int id, byte[] versie)
+        public static Persoon CreatePersoon(string naam, int geslachtsInt, int id)
         {
             Persoon persoon = new Persoon();
             persoon.Naam = naam;
             persoon.GeslachtsInt = geslachtsInt;
             persoon.ID = id;
-            persoon.Versie = versie;
             return persoon;
         }
         /// <summary>
@@ -906,7 +898,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -918,7 +910,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }
@@ -965,14 +957,12 @@ namespace Cg2.Orm
         /// <param name="communicatieVormID">Initial value of CommunicatieVormID.</param>
         /// <param name="isGezinsgebonden">Initial value of IsGezinsgebonden.</param>
         /// <param name="voorkeur">Initial value of Voorkeur.</param>
-        /// <param name="versie">Initial value of Versie.</param>
-        public static CommunicatieVorm CreateCommunicatieVorm(int communicatieVormID, bool isGezinsgebonden, bool voorkeur, byte[] versie)
+        public static CommunicatieVorm CreateCommunicatieVorm(int communicatieVormID, bool isGezinsgebonden, bool voorkeur)
         {
             CommunicatieVorm communicatieVorm = new CommunicatieVorm();
             communicatieVorm.CommunicatieVormID = communicatieVormID;
             communicatieVorm.IsGezinsgebonden = isGezinsgebonden;
             communicatieVorm.Voorkeur = voorkeur;
-            communicatieVorm.Versie = versie;
             return communicatieVorm;
         }
         /// <summary>
@@ -1116,7 +1106,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -1128,7 +1118,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }
@@ -1190,13 +1180,11 @@ namespace Cg2.Orm
         /// </summary>
         /// <param name="chiroLeefTijd">Initial value of ChiroLeefTijd.</param>
         /// <param name="id">Initial value of ID.</param>
-        /// <param name="versie">Initial value of Versie.</param>
-        public static GelieerdePersoon CreateGelieerdePersoon(int chiroLeefTijd, int id, byte[] versie)
+        public static GelieerdePersoon CreateGelieerdePersoon(int chiroLeefTijd, int id)
         {
             GelieerdePersoon gelieerdePersoon = new GelieerdePersoon();
             gelieerdePersoon.ChiroLeefTijd = chiroLeefTijd;
             gelieerdePersoon.ID = id;
-            gelieerdePersoon.Versie = versie;
             return gelieerdePersoon;
         }
         /// <summary>
@@ -1248,7 +1236,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -1260,7 +1248,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }
@@ -1423,14 +1411,12 @@ namespace Cg2.Orm
         /// <param name="bus">Initial value of Bus.</param>
         /// <param name="postCode">Initial value of PostCode.</param>
         /// <param name="id">Initial value of ID.</param>
-        /// <param name="versie">Initial value of Versie.</param>
-        public static Adres CreateAdres(string bus, string postCode, int id, byte[] versie)
+        public static Adres CreateAdres(string bus, string postCode, int id)
         {
             Adres adres = new Adres();
             adres.Bus = bus;
             adres.PostCode = postCode;
             adres.ID = id;
-            adres.Versie = versie;
             return adres;
         }
         /// <summary>
@@ -1528,7 +1514,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -1540,7 +1526,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }
@@ -1661,14 +1647,12 @@ namespace Cg2.Orm
         /// <param name="id">Initial value of ID.</param>
         /// <param name="postNr">Initial value of PostNr.</param>
         /// <param name="naam">Initial value of Naam.</param>
-        /// <param name="versie">Initial value of Versie.</param>
-        public static Straat CreateStraat(int id, int postNr, string naam, byte[] versie)
+        public static Straat CreateStraat(int id, int postNr, string naam)
         {
             Straat straat = new Straat();
             straat.ID = id;
             straat.PostNr = postNr;
             straat.Naam = naam;
-            straat.Versie = versie;
             return straat;
         }
         /// <summary>
@@ -1743,7 +1727,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -1755,7 +1739,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }
@@ -1802,14 +1786,12 @@ namespace Cg2.Orm
         /// <param name="id">Initial value of ID.</param>
         /// <param name="postNr">Initial value of PostNr.</param>
         /// <param name="naam">Initial value of Naam.</param>
-        /// <param name="versie">Initial value of Versie.</param>
-        public static Subgemeente CreateSubgemeente(int id, int postNr, string naam, byte[] versie)
+        public static Subgemeente CreateSubgemeente(int id, int postNr, string naam)
         {
             Subgemeente subgemeente = new Subgemeente();
             subgemeente.ID = id;
             subgemeente.PostNr = postNr;
             subgemeente.Naam = naam;
-            subgemeente.Versie = versie;
             return subgemeente;
         }
         /// <summary>
@@ -1884,7 +1866,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -1896,7 +1878,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }
@@ -1942,14 +1924,12 @@ namespace Cg2.Orm
         /// </summary>
         /// <param name="isStandaard">Initial value of IsStandaard.</param>
         /// <param name="adresTypeID">Initial value of AdresTypeID.</param>
-        /// <param name="versie">Initial value of Versie.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static PersoonsAdres CreatePersoonsAdres(bool isStandaard, int adresTypeID, byte[] versie, int id)
+        public static PersoonsAdres CreatePersoonsAdres(bool isStandaard, int adresTypeID, int id)
         {
             PersoonsAdres persoonsAdres = new PersoonsAdres();
             persoonsAdres.IsStandaard = isStandaard;
             persoonsAdres.AdresTypeID = adresTypeID;
-            persoonsAdres.Versie = versie;
             persoonsAdres.ID = id;
             return persoonsAdres;
         }
@@ -2025,7 +2005,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -2037,7 +2017,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }
@@ -2159,13 +2139,11 @@ namespace Cg2.Orm
         /// </summary>
         /// <param name="werkJaar">Initial value of WerkJaar.</param>
         /// <param name="id">Initial value of ID.</param>
-        /// <param name="versie">Initial value of Versie.</param>
-        public static GroepsWerkJaar CreateGroepsWerkJaar(int werkJaar, int id, byte[] versie)
+        public static GroepsWerkJaar CreateGroepsWerkJaar(int werkJaar, int id)
         {
             GroepsWerkJaar groepsWerkJaar = new GroepsWerkJaar();
             groepsWerkJaar.WerkJaar = werkJaar;
             groepsWerkJaar.ID = id;
-            groepsWerkJaar.Versie = versie;
             return groepsWerkJaar;
         }
         /// <summary>
@@ -2217,7 +2195,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -2229,7 +2207,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }
@@ -2336,8 +2314,7 @@ namespace Cg2.Orm
         /// <param name="verwijderd">Initial value of Verwijderd.</param>
         /// <param name="volgendWerkjaarInt">Initial value of VolgendWerkjaarInt.</param>
         /// <param name="id">Initial value of ID.</param>
-        /// <param name="versie">Initial value of Versie.</param>
-        public static Lid CreateLid(bool lidgeldBetaald, bool nonActief, bool verwijderd, short volgendWerkjaarInt, int id, byte[] versie)
+        public static Lid CreateLid(bool lidgeldBetaald, bool nonActief, bool verwijderd, short volgendWerkjaarInt, int id)
         {
             Lid lid = new Lid();
             lid.LidgeldBetaald = lidgeldBetaald;
@@ -2345,7 +2322,6 @@ namespace Cg2.Orm
             lid.Verwijderd = verwijderd;
             lid.VolgendWerkjaarInt = volgendWerkjaarInt;
             lid.ID = id;
-            lid.Versie = versie;
             return lid;
         }
         /// <summary>
@@ -2466,7 +2442,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -2478,7 +2454,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }
@@ -2577,13 +2553,11 @@ namespace Cg2.Orm
         /// </summary>
         /// <param name="id">Initial value of ID.</param>
         /// <param name="login">Initial value of Login.</param>
-        /// <param name="versie">Initial value of Versie.</param>
-        public static Gav CreateGav(int id, string login, byte[] versie)
+        public static Gav CreateGav(int id, string login)
         {
             Gav gav = new Gav();
             gav.ID = id;
             gav.Login = login;
-            gav.Versie = versie;
             return gav;
         }
         /// <summary>
@@ -2635,7 +2609,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -2647,7 +2621,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }
@@ -2692,12 +2666,10 @@ namespace Cg2.Orm
         /// Create a new GebruikersRecht object.
         /// </summary>
         /// <param name="id">Initial value of ID.</param>
-        /// <param name="versie">Initial value of Versie.</param>
-        public static GebruikersRecht CreateGebruikersRecht(int id, byte[] versie)
+        public static GebruikersRecht CreateGebruikersRecht(int id)
         {
             GebruikersRecht gebruikersRecht = new GebruikersRecht();
             gebruikersRecht.ID = id;
-            gebruikersRecht.Versie = versie;
             return gebruikersRecht;
         }
         /// <summary>
@@ -2749,7 +2721,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -2761,7 +2733,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }
@@ -2860,13 +2832,11 @@ namespace Cg2.Orm
         /// </summary>
         /// <param name="afdelingsNaam">Initial value of AfdelingsNaam.</param>
         /// <param name="id">Initial value of ID.</param>
-        /// <param name="versie">Initial value of Versie.</param>
-        public static Afdeling CreateAfdeling(string afdelingsNaam, int id, byte[] versie)
+        public static Afdeling CreateAfdeling(string afdelingsNaam, int id)
         {
             Afdeling afdeling = new Afdeling();
             afdeling.AfdelingsNaam = afdelingsNaam;
             afdeling.ID = id;
-            afdeling.Versie = versie;
             return afdeling;
         }
         /// <summary>
@@ -2941,7 +2911,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -2953,7 +2923,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }
@@ -3035,12 +3005,10 @@ namespace Cg2.Orm
         /// Create a new AfdelingsJaar object.
         /// </summary>
         /// <param name="id">Initial value of ID.</param>
-        /// <param name="versie">Initial value of Versie.</param>
-        public static AfdelingsJaar CreateAfdelingsJaar(int id, byte[] versie)
+        public static AfdelingsJaar CreateAfdelingsJaar(int id)
         {
             AfdelingsJaar afdelingsJaar = new AfdelingsJaar();
             afdelingsJaar.ID = id;
-            afdelingsJaar.Versie = versie;
             return afdelingsJaar;
         }
         /// <summary>
@@ -3115,7 +3083,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -3127,7 +3095,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }
@@ -3263,13 +3231,11 @@ namespace Cg2.Orm
         /// </summary>
         /// <param name="naam">Initial value of Naam.</param>
         /// <param name="id">Initial value of ID.</param>
-        /// <param name="versie">Initial value of Versie.</param>
-        public static OfficieleAfdeling CreateOfficieleAfdeling(string naam, int id, byte[] versie)
+        public static OfficieleAfdeling CreateOfficieleAfdeling(string naam, int id)
         {
             OfficieleAfdeling officieleAfdeling = new OfficieleAfdeling();
             officieleAfdeling.Naam = naam;
             officieleAfdeling.ID = id;
-            officieleAfdeling.Versie = versie;
             return officieleAfdeling;
         }
         /// <summary>
@@ -3321,7 +3287,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Versie
         {
@@ -3333,7 +3299,7 @@ namespace Cg2.Orm
             {
                 this.OnVersieChanging(value);
                 this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Versie");
                 this.OnVersieChanged();
             }

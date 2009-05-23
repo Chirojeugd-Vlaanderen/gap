@@ -26,7 +26,7 @@
           <Property Name="HuisNr" Type="int" />
           <Property Name="PostCode" Type="varchar" Nullable="false" MaxLength="10" />
           <Property Name="AdresID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="true"/>
         </EntityType>
         <EntityType Name="GelieerdePersoon">
           <Key>
@@ -34,7 +34,7 @@
           </Key>
           <Property Name="ChiroLeefTijd" Type="int" Nullable="false" />
           <Property Name="GelieerdePersoonID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="PersoonsAdres">
           <Key>
@@ -43,7 +43,7 @@
           <Property Name="IsStandaard" Type="bit" Nullable="false" />
           <Property Name="Opmerking" Type="text" />
           <Property Name="AdresID" Type="int" Nullable="false" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
           <Property Name="GelieerdePersoonID" Type="int" Nullable="false" />
           <Property Name="PersoonsAdresID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
@@ -97,7 +97,7 @@
           <Property Name="HuisNr" Type="Int32" />
           <Property Name="PostCode" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" MaxLength="8" FixedLength="true" />
+          <Property Name="Versie" Type="Binary" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" Nullable="true" />
           <NavigationProperty Name="PersoonsAdres" Relationship="ChiroGroep.UnitTestModel.FK_PersoonsAdres_Adres" FromRole="Adres" ToRole="PersoonsAdres" />
         </EntityType>
         <EntityType Name="GelieerdePersoon">
@@ -106,7 +106,7 @@
           </Key>
           <Property Name="ChiroLeefTijd" Type="Int32" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" />
+          <Property Name="Versie" Type="Binary" Nullable="true" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="PersoonsAdres" Relationship="ChiroGroep.UnitTestModel.FK_PersoonsAdres_GelieerdePersoon" FromRole="GelieerdePersoon" ToRole="PersoonsAdres" />
         </EntityType>
         <EntityType Name="PersoonsAdres">
@@ -115,7 +115,7 @@
           </Key>
           <Property Name="IsStandaard" Type="Boolean" Nullable="false" />
           <Property Name="Opmerking" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
-          <Property Name="Versie" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" />
+          <Property Name="Versie" Type="Binary" Nullable="true" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" />
           <Property Name="ID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Adres" Relationship="ChiroGroep.UnitTestModel.FK_PersoonsAdres_Adres" FromRole="PersoonsAdres" ToRole="Adres" />
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroep.UnitTestModel.FK_PersoonsAdres_GelieerdePersoon" FromRole="PersoonsAdres" ToRole="GelieerdePersoon" />

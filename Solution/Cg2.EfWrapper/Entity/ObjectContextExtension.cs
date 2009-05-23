@@ -99,7 +99,10 @@ namespace Cg2.EfWrapper.Entity
                         // (Entity key verdwijnt typisch als webformgegevens
                         // aan een entity gebind worden.)
 
-                        entity.EntityKey = context.CreateEntityKey(typeof(T).Name, entity);
+                        if (entity.EntityKey == null || entity.EntityKey.EntityKeyValues == null)
+                        {
+                            entity.EntityKey = context.CreateEntityKey(typeof(T).Name, entity);
+                        }
 
                         //where.Append(" OR ((1=1)");
                         //foreach (EntityKeyMember keymember in entity.EntityKey.EntityKeyValues)
@@ -441,6 +444,13 @@ namespace Cg2.EfWrapper.Entity
 				try
 				{
 					prop.SetValue(clone, prop.GetValue(entity, null), null);
+                    // BELANGRIJK!!!
+                    //
+                    // Als uw toepassing hier hapert, is het waarschijnlijk omdat
+                    // je de debugger laat stoppen op alle geworpen exceptions.
+                    //
+                    // Als je enkel laat onderbreken op non-catched exceptions,
+                    // dan zal het wel gaan!
 				}
 				catch
 				{

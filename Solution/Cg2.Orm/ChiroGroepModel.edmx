@@ -101,7 +101,7 @@
           <Property Name="AdresID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="StraatID" Type="int" Nullable="false" />
           <Property Name="SubgemeenteID" Type="int" Nullable="false" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Straat">
           <Key>
@@ -110,7 +110,7 @@
           <Property Name="StraatID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="PostNr" Type="int" Nullable="false" />
           <Property Name="Naam" Type="varchar" Nullable="false" MaxLength="80" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Subgemeente">
           <Key>
@@ -119,7 +119,7 @@
           <Property Name="SubgemeenteID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="PostNr" Type="int" Nullable="false" />
           <Property Name="Naam" Type="varchar" Nullable="false" MaxLength="80" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Gav">
           <Key>
@@ -127,7 +127,7 @@
           </Key>
           <Property Name="GavID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Login" Type="varchar" Nullable="false" MaxLength="40" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="GebruikersRecht">
           <Key>
@@ -137,14 +137,14 @@
           <Property Name="GavID" Type="int" Nullable="false" />
           <Property Name="GroepID" Type="int" Nullable="false" />
           <Property Name="VervalDatum" Type="datetime" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="ChiroGroep">
           <Key>
             <PropertyRef Name="ChiroGroepID" />
           </Key>
           <Property Name="ChiroGroepID" Type="int" Nullable="false" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Groep">
           <Key>
@@ -156,7 +156,7 @@
           <Property Name="WebSite" Type="varchar" MaxLength="160" />
           <Property Name="Logo" Type="image" />
           <Property Name="GroepID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="GroepsWerkJaar">
           <Key>
@@ -165,7 +165,7 @@
           <Property Name="WerkJaar" Type="int" Nullable="false" />
           <Property Name="GroepsWerkJaarID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="GroepID" Type="int" Nullable="false" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Afdeling">
           <Key>
@@ -175,7 +175,7 @@
           <Property Name="Afkorting" Type="varchar" MaxLength="10" />
           <Property Name="afdelingID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="groepID" Type="int" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="AfdelingsJaar">
           <Key>
@@ -187,7 +187,7 @@
           <Property Name="afdelingID" Type="int" />
           <Property Name="GroepsWerkJaarID" Type="int" />
           <Property Name="officieleAfdelingID" Type="int" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Lid">
           <Key>
@@ -200,7 +200,7 @@
           <Property Name="lidID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="GroepsWerkJaarID" Type="int" Nullable="false" />
           <Property Name="gelieerdePersoonID" Type="int" Nullable="false" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="OfficieleAfdeling">
           <Key>
@@ -208,7 +208,7 @@
           </Key>
           <Property Name="Naam" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="officieleAfdelingID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="CommunicatieVorm">
           <Key>
@@ -220,7 +220,7 @@
           <Property Name="CommunicatieTypeID" Type="int" />
           <Property Name="IsGezinsgebonden" Type="bit" Nullable="false" />
           <Property Name="Voorkeur" Type="bit" Nullable="false" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
           <Property Name="GelieerdePersoonID" Type="int" />
         </EntityType>
         <EntityType Name="GelieerdePersoon">
@@ -231,7 +231,7 @@
           <Property Name="PersoonID" Type="int" Nullable="false" />
           <Property Name="ChiroLeefTijd" Type="int" Nullable="false" />
           <Property Name="GelieerdePersoonID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Persoon">
           <Key>
@@ -244,7 +244,7 @@
           <Property Name="Geslacht" Type="int" Nullable="false" />
           <Property Name="SterfDatum" Type="smalldatetime" />
           <Property Name="PersoonID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="PersoonsAdres">
           <Key>
@@ -254,7 +254,7 @@
           <Property Name="Opmerking" Type="text" />
           <Property Name="AdresID" Type="int" Nullable="false" />
           <Property Name="AdresTypeID" Type="int" Nullable="false" />
-          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
           <Property Name="GelieerdePersoonID" Type="int" Nullable="false" />
           <Property Name="PersoonsAdresID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
@@ -532,7 +532,7 @@
             <End Role="AfdelingsJaar" EntitySet="AfdelingsJaar" /></AssociationSet>
         </EntityContainer>
         <EntityType Name="ChiroGroep" BaseType="ChiroGroepModel.Groep">
-          <Property Name="Versie_1" Type="Binary" Nullable="false" /></EntityType>
+          <Property Name="Versie_1" Type="Binary" Nullable="true" /></EntityType>
         <EntityType Name="Groep">
           <Key>
             <PropertyRef Name="ID" />
@@ -543,7 +543,7 @@
           <Property Name="WebSite" Type="String" MaxLength="160" Unicode="false" FixedLength="false" />
           <Property Name="Logo" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" />
+          <Property Name="Versie" Type="Binary" Nullable="true" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_GelieerdePersoon_Groep" FromRole="Groep" ToRole="GelieerdePersoon" />
           <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_GroepsWerkjaar_Groep" FromRole="Groep" ToRole="GroepsWerkJaar" />
           <NavigationProperty Name="GebruikersRecht" Relationship="ChiroGroepModel.FK_GebruikersRecht_Groep" FromRole="Groep" ToRole="GebruikersRecht" />
@@ -559,7 +559,7 @@
           <Property Name="GeslachtsInt" Type="Int32" Nullable="false" />
           <Property Name="SterfDatum" Type="DateTime" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" Nullable="false" />
+          <Property Name="Versie" Type="Binary" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" Nullable="true" />
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_GelieerdePersoon_Persoon" FromRole="Persoon" ToRole="GelieerdePersoon" /></EntityType>
         <EntityType Name="CommunicatieVorm">
           <Key>
@@ -570,14 +570,14 @@
           <Property Name="CommunicatieTypeInt" Type="Int32" Nullable="true" />
           <Property Name="IsGezinsgebonden" Type="Boolean" Nullable="false" />
           <Property Name="Voorkeur" Type="Boolean" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="true" />
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" FromRole="CommunicatieVorm" ToRole="GelieerdePersoon" /></EntityType>
         <EntityType Name="GelieerdePersoon">
           <Key>
             <PropertyRef Name="ID" /></Key>
           <Property Name="ChiroLeefTijd" Type="Int32" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="false" ConcurrencyMode="Fixed" />
+          <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_GelieerdePersoon_Groep" FromRole="GelieerdePersoon" ToRole="Groep" />
           <NavigationProperty Name="Communicatie" Relationship="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" FromRole="GelieerdePersoon" ToRole="CommunicatieVorm" />
           <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_GelieerdePersoon_Persoon" FromRole="GelieerdePersoon" ToRole="Persoon" />
@@ -600,7 +600,7 @@
           <Property Name="HuisNr" Type="Int32" Nullable="true" />
           <Property Name="PostCode" Type="String" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" />
+          <Property Name="Versie" Type="Binary" Nullable="true" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="Straat" Relationship="ChiroGroepModel.FK_Adres_Straat" FromRole="Adres" ToRole="Straat" />
           <NavigationProperty Name="Subgemeente" Relationship="ChiroGroepModel.FK_Adres_Subgemeente" FromRole="Adres" ToRole="Subgemeente" />
           <NavigationProperty Name="PersoonsAdres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Adres" FromRole="Adres" ToRole="PersoonsAdres" /></EntityType>
@@ -611,7 +611,7 @@
           <Property Name="PostNr" Type="Int32" Nullable="false" />
           <Property Name="Naam" Type="String" Nullable="false" />
           <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_Adres_Straat" FromRole="Straat" ToRole="Adres" />
-          <Property Name="Versie" Type="Binary" Nullable="false" /></EntityType>
+          <Property Name="Versie" Type="Binary" Nullable="true" /></EntityType>
         <EntityType Name="Subgemeente">
           <Key>
             <PropertyRef Name="ID" /></Key>
@@ -619,14 +619,14 @@
           <Property Name="PostNr" Type="Int32" Nullable="false" />
           <Property Name="Naam" Type="String" Nullable="false" />
           <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_Adres_Subgemeente" FromRole="Subgemeente" ToRole="Adres" />
-          <Property Name="Versie" Type="Binary" Nullable="false" /></EntityType>
+          <Property Name="Versie" Type="Binary" Nullable="true" /></EntityType>
         <EntityType Name="PersoonsAdres">
           <Key>
             <PropertyRef Name="ID" /></Key>
           <Property Name="IsStandaard" Type="Boolean" Nullable="false" />
           <Property Name="Opmerking" Type="String" Nullable="true" />
           <Property Name="AdresTypeID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="true" />
           <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Adres" FromRole="PersoonsAdres" ToRole="Adres" />
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon" FromRole="PersoonsAdres" ToRole="GelieerdePersoon" />
           <Property Name="ID" Type="Int32" Nullable="false" /></EntityType>
@@ -651,7 +651,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_GroepsWerkjaar_Groep" FromRole="GroepsWerkJaar" ToRole="Groep" />
           <NavigationProperty Name="Lid" Relationship="ChiroGroepModel.FK_Lid_GroepsWerkjaar" FromRole="GroepsWerkJaar" ToRole="Lid" />
-          <Property Name="Versie" Type="Binary" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="true" />
           <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar" FromRole="GroepsWerkJaar" ToRole="AfdelingsJaar" />
           </EntityType>
         <EntityType Name="Lid">
@@ -663,7 +663,7 @@
           <Property Name="Verwijderd" Type="Boolean" Nullable="false" />
           <Property Name="VolgendWerkjaarInt" Type="Int16" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="true" />
           <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_Lid_GroepsWerkjaar" FromRole="Lid" ToRole="GroepsWerkJaar" />
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_Lid_GelieerdePersoon" FromRole="Lid" ToRole="GelieerdePersoon" />
         </EntityType>
@@ -682,13 +682,13 @@
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Login" Type="String" Nullable="false" />
           <NavigationProperty Name="GebruikersRecht" Relationship="ChiroGroepModel.FK_GebruikersRecht_Gav" FromRole="Gav" ToRole="GebruikersRecht" />
-          <Property Name="Versie" Type="Binary" Nullable="false" /></EntityType>
+          <Property Name="Versie" Type="Binary" Nullable="true" /></EntityType>
         <EntityType Name="GebruikersRecht">
           <Key>
             <PropertyRef Name="ID" /></Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="VervalDatum" Type="DateTime" Nullable="true" />
-          <Property Name="Versie" Type="Binary" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="true" />
           <NavigationProperty Name="Gav" Relationship="ChiroGroepModel.FK_GebruikersRecht_Gav" FromRole="GebruikersRecht" ToRole="Gav" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_GebruikersRecht_Groep" FromRole="GebruikersRecht" ToRole="Groep" /></EntityType>
         <Association Name="FK_GebruikersRecht_Gav">
@@ -703,7 +703,7 @@
           <Property Name="AfdelingsNaam" Type="String" Nullable="false" />
           <Property Name="Afkorting" Type="String" Nullable="true" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="true" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_Afdeling_Groep" FromRole="Afdeling" ToRole="Groep" />
           <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.FK_AfdelingsJaar_Afdeling" FromRole="Afdeling" ToRole="AfdelingsJaar" /></EntityType>
         <EntityType Name="AfdelingsJaar">
@@ -712,7 +712,7 @@
           <Property Name="GeboorteJaarTot" Type="Int32" Nullable="true" />
           <Property Name="GeboorteJaarVan" Type="Int32" Nullable="true" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="true" />
           <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar" FromRole="AfdelingsJaar" ToRole="GroepsWerkJaar" />
           <NavigationProperty Name="Afdeling" Relationship="ChiroGroepModel.FK_AfdelingsJaar_Afdeling" FromRole="AfdelingsJaar" ToRole="Afdeling" />
           <NavigationProperty Name="OfficieleAfdeling" Relationship="ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling" FromRole="AfdelingsJaar" ToRole="OfficieleAfdeling" /></EntityType>
@@ -721,7 +721,7 @@
             <PropertyRef Name="ID" /></Key>
           <Property Name="Naam" Type="String" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="true" />
           <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling" FromRole="OfficieleAfdeling" ToRole="AfdelingsJaar" /></EntityType>
         <Association Name="FK_Afdeling_Groep">
           <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="0..1" />
