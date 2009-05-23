@@ -56,18 +56,15 @@ namespace Cg2.Data.Ef
             throw new NotImplementedException();
         }
 
-        //ophalen van groep, afdeling, afdelingsjaar en officiele afdelingen voor huidig werkjaar
+        // Ophalen van groep, afdeling, afdelingsjaar en officiele afdelingen voor huidig werkjaar
         public Groep OphalenMetAfdelingen(int groepID)
         {
-            // TODO Fix this constante
-            int huidigwerkjaar = 2008;
-
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
                 db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
                 return (
                     from t in db.Groep.Include("Afdeling.AfdelingsJaar.OfficieleAfdeling")
-                    where t.ID == groepID //TODO&& t.GroepsWerkJaar. == huidigwerkjaar
+                    where t.ID == groepID // TODO && t.GroepsWerkJaar. == huidigwerkjaar
                     select t).FirstOrDefault<Groep>();
             }
         }
