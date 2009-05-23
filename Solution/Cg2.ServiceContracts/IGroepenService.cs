@@ -51,9 +51,6 @@ namespace Cg2.ServiceContracts
         //alles om gelieerdepersonen op te halen zit in igelieerdepersonenservice
 
         [OperationContract]
-        void AanmakenAfdeling(int groepID, string naam);
-
-        [OperationContract]
         void AanmakenAfdeling(int groepID, string naam, string afkorting);
 
         /// <summary>

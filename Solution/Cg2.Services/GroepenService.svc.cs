@@ -98,11 +98,6 @@ namespace Cg2.Services
             return gm.OphalenGroepsWerkjaar(groepID, begindatumnieuwwerkjaar, deadlinenieuwwerkjaar);
         }
 
-        public void AanmakenAfdeling(int groepID, string naam)
-        {
-            AanmakenAfdeling(groepID, naam, null);
-        }
-
         public void AanmakenAfdeling(int groepID, string naam, string afkorting)
         {
             GroepenManager gm = Factory.Maak<GroepenManager>();
