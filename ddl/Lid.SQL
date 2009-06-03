@@ -89,8 +89,8 @@ DROP TABLE lid.OfficieleAfdeling
 CREATE TABLE lid.Afdeling ( 
 	AfdelingsNaam varchar(50) NOT NULL,
 	Afkorting varchar(10) NULL,
-	afdelingID int identity(1,1)  NOT NULL,
-	groepID int NULL
+	AfdelingID int identity(1,1)  NOT NULL,
+	GroepID int NULL
 )
 ;
 
@@ -118,8 +118,8 @@ CREATE TABLE lid.Leiding (
 ;
 
 CREATE TABLE lid.LeidingInAfdelingsJaar ( 
-	afdelingsJaarID int NOT NULL,
-	leidingID int NOT NULL
+	AfdelingsJaarID int NOT NULL,
+	LeidingID int NOT NULL
 )
 ;
 
@@ -137,7 +137,7 @@ CREATE TABLE lid.Lid (
 
 CREATE TABLE lid.OfficieleAfdeling ( 
 	Naam varchar(50) NOT NULL,
-	officieleAfdelingID int identity(1,1)  NOT NULL
+	OfficieleAfdelingID int identity(1,1)  NOT NULL
 )
 ;
 
