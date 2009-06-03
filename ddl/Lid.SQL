@@ -97,10 +97,10 @@ CREATE TABLE lid.Afdeling (
 CREATE TABLE lid.AfdelingsJaar ( 
 	GeboorteJaarTot int NULL,    --  geboortejaar 'tot en met' 
 	GeboorteJaarVan int NULL,    --  geboortejaar 'vanaf' 
-	afdelingsJaarID int identity(1,1)  NOT NULL,
-	afdelingID int NULL,
-	groepsWerkjaarID int NULL,
-	officieleAfdelingID int NULL
+	AfdelingsJaarID int identity(1,1)  NOT NULL,
+	AfdelingID int NULL,
+	GroepsWerkJaarID int NULL,
+	OfficieleAfdelingID int NULL
 )
 ;
 
@@ -129,9 +129,9 @@ CREATE TABLE lid.Lid (
 	Verwijderd bit NULL,    --  Voor het einde van de instapperiode kunnen leden verwijderd worden.  Dat wordt hier aangevinkt.  Het record wordt niet verwijderd, om op die manier te kunnen onthouden dat de persoon al kandidaatlid is geweest. 
 	VolgendWerkjaar smallint NULL,    --  Bij een nieuw werkjaar zijn er geen leden meer.  Maar aan de hand van wat er in 'VolgendWerkjaar' staat, kan het programma aangeven of er nog leden zijn die waarschijnlijk nog ingeschreven moeten worden. 
 --  Als een lid van vorig werkjaar als toekomstperspectief 'KomtTerug' heeft, dan herinnert het programma er aan dat die persoon nog aangesloten moet worden.  Is het toekomstperspectief 'KomtNietTerug', dan zal het programma dat niet doen. 
-	lidID int identity(1,1)  NOT NULL,
-	groepsWerkjaarID int NOT NULL,
-	gelieerdePersoonID int NOT NULL
+	LidID int identity(1,1)  NOT NULL,
+	GroepsWerkjaarID int NOT NULL,
+	GelieerdePersoonID int NOT NULL
 )
 ;
 
