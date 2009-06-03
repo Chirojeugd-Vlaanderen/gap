@@ -17,7 +17,7 @@
 						<UML:TaggedValue tag="modified" value="2008-05-05 00:00:00"/>
 						<UML:TaggedValue tag="iscontrolled" value="1"/>
 						<UML:TaggedValue tag="xmlpath" value="Design Model.xml"/>
-						<UML:TaggedValue tag="lastloaddate" value="2009-06-03 11:11:32"/>
+						<UML:TaggedValue tag="lastloaddate" value="2009-06-03 11:24:45"/>
 						<UML:TaggedValue tag="lastsavedate" value="2008-05-20 13:52:10"/>
 						<UML:TaggedValue tag="version" value="1.0"/>
 						<UML:TaggedValue tag="isprotected" value="0"/>
@@ -10270,7 +10270,7 @@
 										</UML:AssociationEnd>
 									</UML:Association.connection>
 								</UML:Association>
-								<UML:Association name="(groepID = groepID)" xmi.id="EAID_E8633D48_CA54_4a41_AD41_FA87DCEC6295" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+								<UML:Association name="(GroepID = groepID)" xmi.id="EAID_E8633D48_CA54_4a41_AD41_FA87DCEC6295" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
 									<UML:ModelElement.stereotype>
 										<UML:Stereotype name="FK"/>
 									</UML:ModelElement.stereotype>
@@ -10301,7 +10301,7 @@
 										<UML:TaggedValue tag="lb" value="*"/>
 										<UML:TaggedValue tag="lt" value="+FK_Afdeling_Groep"/>
 										<UML:TaggedValue tag="mb" value=" &#xA;«FK»"/>
-										<UML:TaggedValue tag="mt" value="(groepID = groepID)"/>
+										<UML:TaggedValue tag="mt" value="(GroepID = groepID)"/>
 										<UML:TaggedValue tag="rb" value="1"/>
 										<UML:TaggedValue tag="rt" value="+PK_Groep"/>
 									</UML:ModelElement.taggedValue>
@@ -10923,7 +10923,7 @@
 												<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={0DCBFC0F-4E89-4a21-8ED7-A4218B960584}$XID;$NAM=Stereotypes$NAM;$TYP=attribute property$TYP;$VIS=Public$VIS;$DES=@STEREO;Name=column;GUID={2831D2ED-6272-4bc4-AF29-27180C1F98D8};@ENDSTEREO;$DES;$CLT={C1205609-F16D-4a4f-8322-611328D15E95}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
-										<UML:Attribute name="officieleAfdelingID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+										<UML:Attribute name="OfficieleAfdelingID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
 											<UML:Attribute.initialValue>
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
@@ -10937,10 +10937,7 @@
 												<UML:TaggedValue tag="type" value="int"/>
 												<UML:TaggedValue tag="derived" value="0"/>
 												<UML:TaggedValue tag="containment" value="Not Specified"/>
-												<UML:TaggedValue tag="length" value="0"/>
 												<UML:TaggedValue tag="ordered" value="1"/>
-												<UML:TaggedValue tag="precision" value="0"/>
-												<UML:TaggedValue tag="scale" value="0"/>
 												<UML:TaggedValue tag="stereotype" value="column"/>
 												<UML:TaggedValue tag="collection" value="false"/>
 												<UML:TaggedValue tag="position" value="1"/>
@@ -11030,7 +11027,7 @@
 														<UML:Expression/>
 													</UML:Parameter.defaultValue>
 												</UML:Parameter>
-												<UML:Parameter name="officieleAfdelingID" kind="in" visibility="public">
+												<UML:Parameter name="OfficieleAfdelingID" kind="in" visibility="public">
 													<UML:Parameter.type>
 														<UML:Classifier xmi.idref="eaxmiid1"/>
 													</UML:Parameter.type>
@@ -11038,7 +11035,7 @@
 														<UML:TaggedValue tag="pos" value="0"/>
 														<UML:TaggedValue tag="type" value="int"/>
 														<UML:TaggedValue tag="const" value="0"/>
-														<UML:TaggedValue tag="ea_guid" value="{D81AEC62-6384-4faf-A222-CD273F72F143}"/>
+														<UML:TaggedValue tag="ea_guid" value="{4A139EA9-1173-41ba-8607-B9C39C9BE8DB}"/>
 													</UML:ModelElement.taggedValue>
 													<UML:Parameter.defaultValue>
 														<UML:Expression/>
@@ -11048,7 +11045,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Association name="(OfficieleAfdelingID = officieleAfdelingID)" xmi.id="EAID_D69B1E81_00BE_4ee4_B014_925D6553F84E" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+								<UML:Association name="(OfficieleAfdelingID = OfficieleAfdelingID)" xmi.id="EAID_D69B1E81_00BE_4ee4_B014_925D6553F84E" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
 									<UML:ModelElement.stereotype>
 										<UML:Stereotype name="FK"/>
 									</UML:ModelElement.stereotype>
@@ -11079,7 +11076,7 @@
 										<UML:TaggedValue tag="lb" value="*"/>
 										<UML:TaggedValue tag="lt" value="+FK_AfdelingsJaar_OfficieleAfdeling"/>
 										<UML:TaggedValue tag="mb" value=" &#xA;«FK»"/>
-										<UML:TaggedValue tag="mt" value="(OfficieleAfdelingID = officieleAfdelingID)"/>
+										<UML:TaggedValue tag="mt" value="(OfficieleAfdelingID = OfficieleAfdelingID)"/>
 										<UML:TaggedValue tag="rb" value="1"/>
 										<UML:TaggedValue tag="rt" value="+PK_OfficieleAfdeling"/>
 									</UML:ModelElement.taggedValue>
@@ -11896,7 +11893,7 @@
 												<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={3D5F5CA1-75B9-4944-BC5C-AE79356D554B}$XID;$NAM=Stereotypes$NAM;$TYP=attribute property$TYP;$VIS=Public$VIS;$DES=@STEREO;Name=column;GUID={2831D2ED-6272-4bc4-AF29-27180C1F98D8};@ENDSTEREO;$DES;$CLT={05934939-C0FB-4e28-B302-85D1E06E089F}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
-										<UML:Attribute name="afdelingID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+										<UML:Attribute name="AfdelingID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
 											<UML:Attribute.initialValue>
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
@@ -11910,10 +11907,7 @@
 												<UML:TaggedValue tag="type" value="int"/>
 												<UML:TaggedValue tag="derived" value="0"/>
 												<UML:TaggedValue tag="containment" value="Not Specified"/>
-												<UML:TaggedValue tag="length" value="0"/>
 												<UML:TaggedValue tag="ordered" value="1"/>
-												<UML:TaggedValue tag="precision" value="0"/>
-												<UML:TaggedValue tag="scale" value="0"/>
 												<UML:TaggedValue tag="stereotype" value="column"/>
 												<UML:TaggedValue tag="collection" value="false"/>
 												<UML:TaggedValue tag="position" value="2"/>
@@ -11928,7 +11922,7 @@
 												<UML:TaggedValue tag="property" value="AutoNum=1;StartNum=1;Increment=1;NotForRep=0;" xmi.id="EAID_DFC663C9_CD2A_43c6_881F_588F98C69BE6"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
-										<UML:Attribute name="groepID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+										<UML:Attribute name="GroepID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
 											<UML:Attribute.initialValue>
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
@@ -11942,7 +11936,6 @@
 												<UML:TaggedValue tag="type" value="int"/>
 												<UML:TaggedValue tag="derived" value="0"/>
 												<UML:TaggedValue tag="containment" value="Not Specified"/>
-												<UML:TaggedValue tag="length" value="0"/>
 												<UML:TaggedValue tag="ordered" value="0"/>
 												<UML:TaggedValue tag="static" value="1"/>
 												<UML:TaggedValue tag="stereotype" value="column"/>
@@ -11957,6 +11950,50 @@
 												<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={B3E596A3-4708-4f99-B937-37B1E5F057B7}$XID;$NAM=Stereotypes$NAM;$TYP=attribute property$TYP;$VIS=Public$VIS;$DES=@STEREO;Name=column;GUID={2831D2ED-6272-4bc4-AF29-27180C1F98D8};@ENDSTEREO;$DES;$CLT={6085B7D2-78D0-41d2-ACEE-B5AC3AF32891}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
+										<UML:Operation name="UQ_Afdeling_GroepID" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="unique"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="const" value="false"/>
+												<UML:TaggedValue tag="stereotype" value="unique"/>
+												<UML:TaggedValue tag="synchronised" value="0"/>
+												<UML:TaggedValue tag="position" value="0"/>
+												<UML:TaggedValue tag="returnarray" value="0"/>
+												<UML:TaggedValue tag="pure" value="0"/>
+												<UML:TaggedValue tag="ea_guid" value="{18FB7EB7-FCA6-4cfe-A596-0606F68A8B4D}"/>
+												<UML:TaggedValue tag="ea_localid" value="1365"/>
+											</UML:ModelElement.taggedValue>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<UML:Classifier xmi.idref="eaxmiid2"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue>
+														<UML:TaggedValue tag="pos" value="0"/>
+														<UML:TaggedValue tag="const" value="0"/>
+														<UML:TaggedValue tag="ea_guid" value="{RETURNID-FCA6-4cfe-A596-0606F68A8B4D}"/>
+													</UML:ModelElement.taggedValue>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="GroepID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<UML:Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue>
+														<UML:TaggedValue tag="pos" value="0"/>
+														<UML:TaggedValue tag="type" value="int"/>
+														<UML:TaggedValue tag="const" value="0"/>
+														<UML:TaggedValue tag="ea_guid" value="{DCC0CA1A-6E2C-4da6-BED5-250E145A271D}"/>
+													</UML:ModelElement.taggedValue>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
 										<UML:Operation name="PK_Afdeling" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
 											<UML:ModelElement.stereotype>
 												<UML:Stereotype name="PK"/>
@@ -11988,7 +12025,7 @@
 														<UML:Expression/>
 													</UML:Parameter.defaultValue>
 												</UML:Parameter>
-												<UML:Parameter name="afdelingID" kind="in" visibility="public">
+												<UML:Parameter name="AfdelingID" kind="in" visibility="public">
 													<UML:Parameter.type>
 														<UML:Classifier xmi.idref="eaxmiid1"/>
 													</UML:Parameter.type>
@@ -11996,7 +12033,7 @@
 														<UML:TaggedValue tag="pos" value="0"/>
 														<UML:TaggedValue tag="type" value="int"/>
 														<UML:TaggedValue tag="const" value="0"/>
-														<UML:TaggedValue tag="ea_guid" value="{E169A131-26BC-46f4-8791-419E10D01C96}"/>
+														<UML:TaggedValue tag="ea_guid" value="{065AC0E1-BFA3-47c6-92D4-EDAEB335EB0D}"/>
 													</UML:ModelElement.taggedValue>
 													<UML:Parameter.defaultValue>
 														<UML:Expression/>
@@ -12034,7 +12071,7 @@
 														<UML:Expression/>
 													</UML:Parameter.defaultValue>
 												</UML:Parameter>
-												<UML:Parameter name="groepID" kind="in" visibility="public">
+												<UML:Parameter name="GroepID" kind="in" visibility="public">
 													<UML:Parameter.type>
 														<UML:Classifier xmi.idref="eaxmiid1"/>
 													</UML:Parameter.type>
@@ -12077,20 +12114,6 @@
 														<UML:Expression/>
 													</UML:Parameter.defaultValue>
 												</UML:Parameter>
-												<UML:Parameter name="groepID" kind="in" visibility="public">
-													<UML:Parameter.type>
-														<UML:Classifier xmi.idref="eaxmiid1"/>
-													</UML:Parameter.type>
-													<UML:ModelElement.taggedValue>
-														<UML:TaggedValue tag="pos" value="0"/>
-														<UML:TaggedValue tag="type" value="int"/>
-														<UML:TaggedValue tag="const" value="0"/>
-														<UML:TaggedValue tag="ea_guid" value="{682A13B1-823D-4254-B13D-2BBE511D7770}"/>
-													</UML:ModelElement.taggedValue>
-													<UML:Parameter.defaultValue>
-														<UML:Expression/>
-													</UML:Parameter.defaultValue>
-												</UML:Parameter>
 												<UML:Parameter name="AfdelingsNaam" kind="in" visibility="public">
 													<UML:Parameter.type>
 														<UML:Classifier xmi.idref="eaxmiid9"/>
@@ -12109,7 +12132,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Association name="(AfdelingID = afdelingID)" xmi.id="EAID_3DD712B8_F34C_493e_8F45_660DBE9E7572" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+								<UML:Association name="(AfdelingID = AfdelingID)" xmi.id="EAID_3DD712B8_F34C_493e_8F45_660DBE9E7572" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
 									<UML:ModelElement.stereotype>
 										<UML:Stereotype name="FK"/>
 									</UML:ModelElement.stereotype>
@@ -12140,7 +12163,7 @@
 										<UML:TaggedValue tag="lb" value="*"/>
 										<UML:TaggedValue tag="lt" value="+FK_AfdelingsJaar_Afdeling"/>
 										<UML:TaggedValue tag="mb" value=" &#xA;«FK»"/>
-										<UML:TaggedValue tag="mt" value="(AfdelingID = afdelingID)"/>
+										<UML:TaggedValue tag="mt" value="(AfdelingID = AfdelingID)"/>
 										<UML:TaggedValue tag="rb" value="1"/>
 										<UML:TaggedValue tag="rt" value="+PK_Afdeling"/>
 									</UML:ModelElement.taggedValue>
@@ -12291,7 +12314,10 @@
 												<UML:TaggedValue tag="type" value="int"/>
 												<UML:TaggedValue tag="derived" value="0"/>
 												<UML:TaggedValue tag="containment" value="Not Specified"/>
+												<UML:TaggedValue tag="length" value="0"/>
 												<UML:TaggedValue tag="ordered" value="0"/>
+												<UML:TaggedValue tag="precision" value="0"/>
+												<UML:TaggedValue tag="scale" value="0"/>
 												<UML:TaggedValue tag="static" value="1"/>
 												<UML:TaggedValue tag="stereotype" value="column"/>
 												<UML:TaggedValue tag="collection" value="true"/>
@@ -12347,7 +12373,10 @@
 												<UML:TaggedValue tag="type" value="int"/>
 												<UML:TaggedValue tag="derived" value="0"/>
 												<UML:TaggedValue tag="containment" value="Not Specified"/>
+												<UML:TaggedValue tag="length" value="0"/>
 												<UML:TaggedValue tag="ordered" value="0"/>
+												<UML:TaggedValue tag="precision" value="0"/>
+												<UML:TaggedValue tag="scale" value="0"/>
 												<UML:TaggedValue tag="stereotype" value="column"/>
 												<UML:TaggedValue tag="collection" value="true"/>
 												<UML:TaggedValue tag="position" value="5"/>
