@@ -27,10 +27,9 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_AfdelingsJaar_OfficieleAfdeling", "OfficieleAfdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.OfficieleAfdeling), "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "LeidingInAfdelingsJaar", "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar), "Leiding", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Leiding))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Kind_AfdelingsJaar", "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.AfdelingsJaar), "Kind", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Kind))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Kind_Lid", "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Lid), "Kind", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.Kind))]
 
 // Original file name:
-// Generation date: 3/06/2009 12:02:44
+// Generation date: 3/06/2009 12:19:03
 namespace Cg2.Orm
 {
     
@@ -290,21 +289,6 @@ namespace Cg2.Orm
         }
         private global::System.Data.Objects.ObjectQuery<OfficieleAfdeling> _OfficieleAfdeling;
         /// <summary>
-        /// There are no comments for Kind in the schema.
-        /// </summary>
-        public global::System.Data.Objects.ObjectQuery<Kind> Kind
-        {
-            get
-            {
-                if ((this._Kind == null))
-                {
-                    this._Kind = base.CreateQuery<Kind>("[Kind]");
-                }
-                return this._Kind;
-            }
-        }
-        private global::System.Data.Objects.ObjectQuery<Kind> _Kind;
-        /// <summary>
         /// There are no comments for Groep in the schema.
         /// </summary>
         public void AddToGroep(Groep groep)
@@ -408,13 +392,6 @@ namespace Cg2.Orm
         public void AddToOfficieleAfdeling(OfficieleAfdeling officieleAfdeling)
         {
             base.AddObject("OfficieleAfdeling", officieleAfdeling);
-        }
-        /// <summary>
-        /// There are no comments for Kind in the schema.
-        /// </summary>
-        public void AddToKind(Kind kind)
-        {
-            base.AddObject("Kind", kind);
         }
     }
     /// <summary>
@@ -2305,6 +2282,7 @@ namespace Cg2.Orm
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
     [global::System.Runtime.Serialization.KnownTypeAttribute(typeof(global::Cg2.Orm.Leiding))]
+    [global::System.Runtime.Serialization.KnownTypeAttribute(typeof(global::Cg2.Orm.Kind))]
     public partial class Lid : global::System.Data.Objects.DataClasses.EntityObject
     {
         /// <summary>
@@ -2534,43 +2512,6 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_Lid_GelieerdePersoon", "GelieerdePersoon", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for Kind in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Kind_Lid", "Kind")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Kind Kind
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Kind>("ChiroGroepModel.FK_Kind_Lid", "Kind").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Kind>("ChiroGroepModel.FK_Kind_Lid", "Kind").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for Kind in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Kind> KindReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Kind>("ChiroGroepModel.FK_Kind_Lid", "Kind");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Kind>("ChiroGroepModel.FK_Kind_Lid", "Kind", value);
                 }
             }
         }
@@ -3487,21 +3428,29 @@ namespace Cg2.Orm
     /// There are no comments for ChiroGroepModel.Kind in the schema.
     /// </summary>
     /// <KeyProperties>
-    /// kindID
+    /// ID
     /// </KeyProperties>
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Kind")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
-    public partial class Kind : global::System.Data.Objects.DataClasses.EntityObject
+    public partial class Kind : Lid
     {
         /// <summary>
         /// Create a new Kind object.
         /// </summary>
-        /// <param name="kindID">Initial value of kindID.</param>
-        public static Kind CreateKind(int kindID)
+        /// <param name="lidgeldBetaald">Initial value of LidgeldBetaald.</param>
+        /// <param name="nonActief">Initial value of NonActief.</param>
+        /// <param name="verwijderd">Initial value of Verwijderd.</param>
+        /// <param name="volgendWerkjaarInt">Initial value of VolgendWerkjaarInt.</param>
+        /// <param name="id">Initial value of ID.</param>
+        public static Kind CreateKind(bool lidgeldBetaald, bool nonActief, bool verwijderd, short volgendWerkjaarInt, int id)
         {
             Kind kind = new Kind();
-            kind.kindID = kindID;
+            kind.LidgeldBetaald = lidgeldBetaald;
+            kind.NonActief = nonActief;
+            kind.Verwijderd = verwijderd;
+            kind.VolgendWerkjaarInt = volgendWerkjaarInt;
+            kind.ID = id;
             return kind;
         }
         /// <summary>
@@ -3527,52 +3476,6 @@ namespace Cg2.Orm
         private global::System.Nullable<global::System.DateTime> _EindeInstapPeriode;
         partial void OnEindeInstapPeriodeChanging(global::System.Nullable<global::System.DateTime> value);
         partial void OnEindeInstapPeriodeChanged();
-        /// <summary>
-        /// There are no comments for Property kindID in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int kindID
-        {
-            get
-            {
-                return this._kindID;
-            }
-            set
-            {
-                this.OnkindIDChanging(value);
-                this.ReportPropertyChanging("kindID");
-                this._kindID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("kindID");
-                this.OnkindIDChanged();
-            }
-        }
-        private int _kindID;
-        partial void OnkindIDChanging(int value);
-        partial void OnkindIDChanged();
-        /// <summary>
-        /// There are no comments for Property Versie in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Versie
-        {
-            get
-            {
-                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
-            }
-            set
-            {
-                this.OnVersieChanging(value);
-                this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
-                this.ReportPropertyChanged("Versie");
-                this.OnVersieChanged();
-            }
-        }
-        private byte[] _Versie;
-        partial void OnVersieChanging(byte[] value);
-        partial void OnVersieChanged();
         /// <summary>
         /// There are no comments for AfdelingsJaar in the schema.
         /// </summary>
@@ -3607,43 +3510,6 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<AfdelingsJaar>("ChiroGroepModel.FK_Kind_AfdelingsJaar", "AfdelingsJaar", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for Lid in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Kind_Lid", "Lid")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Lid Lid
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Lid>("ChiroGroepModel.FK_Kind_Lid", "Lid").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Lid>("ChiroGroepModel.FK_Kind_Lid", "Lid").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for Lid in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Lid> LidReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Lid>("ChiroGroepModel.FK_Kind_Lid", "Lid");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Lid>("ChiroGroepModel.FK_Kind_Lid", "Lid", value);
                 }
             }
         }
