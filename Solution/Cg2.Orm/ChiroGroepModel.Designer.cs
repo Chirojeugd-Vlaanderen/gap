@@ -25,14 +25,12 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_AfdelingsJaar_GroepsWerkjaar", "GroepsWerkJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.GroepsWerkJaar), "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_AfdelingsJaar_Afdeling", "Afdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.Afdeling), "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_AfdelingsJaar_OfficieleAfdeling", "OfficieleAfdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.OfficieleAfdeling), "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "LeidingInAfdelingsJaar", "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar), "Leiding", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Leiding))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Kind_AfdelingsJaar", "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.AfdelingsJaar), "Kind", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Kind))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_LeidingInAfdelingsJaar_AfdelingsJaar", "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.AfdelingsJaar), "LeidingInAfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.LeidingInAfdelingsJaar))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Kind_Lid", "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Lid), "Kind", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.Kind))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Leiding_Lid", "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Lid), "Leiding", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.Leiding))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_LeidingInAfdelingsJaar_Leiding", "Leiding", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Leiding), "LeidingInAfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.LeidingInAfdelingsJaar))]
 
 // Original file name:
-// Generation date: 29/05/2009 11:37:59
+// Generation date: 3/06/2009 12:02:44
 namespace Cg2.Orm
 {
     
@@ -307,36 +305,6 @@ namespace Cg2.Orm
         }
         private global::System.Data.Objects.ObjectQuery<Kind> _Kind;
         /// <summary>
-        /// There are no comments for Leiding in the schema.
-        /// </summary>
-        public global::System.Data.Objects.ObjectQuery<Leiding> Leiding
-        {
-            get
-            {
-                if ((this._Leiding == null))
-                {
-                    this._Leiding = base.CreateQuery<Leiding>("[Leiding]");
-                }
-                return this._Leiding;
-            }
-        }
-        private global::System.Data.Objects.ObjectQuery<Leiding> _Leiding;
-        /// <summary>
-        /// There are no comments for LeidingInAfdelingsJaar in the schema.
-        /// </summary>
-        public global::System.Data.Objects.ObjectQuery<LeidingInAfdelingsJaar> LeidingInAfdelingsJaar
-        {
-            get
-            {
-                if ((this._LeidingInAfdelingsJaar == null))
-                {
-                    this._LeidingInAfdelingsJaar = base.CreateQuery<LeidingInAfdelingsJaar>("[LeidingInAfdelingsJaar]");
-                }
-                return this._LeidingInAfdelingsJaar;
-            }
-        }
-        private global::System.Data.Objects.ObjectQuery<LeidingInAfdelingsJaar> _LeidingInAfdelingsJaar;
-        /// <summary>
         /// There are no comments for Groep in the schema.
         /// </summary>
         public void AddToGroep(Groep groep)
@@ -447,20 +415,6 @@ namespace Cg2.Orm
         public void AddToKind(Kind kind)
         {
             base.AddObject("Kind", kind);
-        }
-        /// <summary>
-        /// There are no comments for Leiding in the schema.
-        /// </summary>
-        public void AddToLeiding(Leiding leiding)
-        {
-            base.AddObject("Leiding", leiding);
-        }
-        /// <summary>
-        /// There are no comments for LeidingInAfdelingsJaar in the schema.
-        /// </summary>
-        public void AddToLeidingInAfdelingsJaar(LeidingInAfdelingsJaar leidingInAfdelingsJaar)
-        {
-            base.AddObject("LeidingInAfdelingsJaar", leidingInAfdelingsJaar);
         }
     }
     /// <summary>
@@ -2350,6 +2304,7 @@ namespace Cg2.Orm
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Lid")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
+    [global::System.Runtime.Serialization.KnownTypeAttribute(typeof(global::Cg2.Orm.Leiding))]
     public partial class Lid : global::System.Data.Objects.DataClasses.EntityObject
     {
         /// <summary>
@@ -2616,43 +2571,6 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Kind>("ChiroGroepModel.FK_Kind_Lid", "Kind", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for Leiding in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Leiding_Lid", "Leiding")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Leiding Leiding
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Leiding>("ChiroGroepModel.FK_Leiding_Lid", "Leiding").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Leiding>("ChiroGroepModel.FK_Leiding_Lid", "Leiding").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for Leiding in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Leiding> LeidingReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Leiding>("ChiroGroepModel.FK_Leiding_Lid", "Leiding");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Leiding>("ChiroGroepModel.FK_Leiding_Lid", "Leiding", value);
                 }
             }
         }
@@ -3335,6 +3253,27 @@ namespace Cg2.Orm
             }
         }
         /// <summary>
+        /// There are no comments for Leiding in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "LeidingInAfdelingsJaar", "Leiding")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Leiding> Leiding
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Leiding>("ChiroGroepModel.LeidingInAfdelingsJaar", "Leiding");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Leiding>("ChiroGroepModel.LeidingInAfdelingsJaar", "Leiding", value);
+                }
+            }
+        }
+        /// <summary>
         /// There are no comments for Kind in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Kind_AfdelingsJaar", "Kind")]
@@ -3352,27 +3291,6 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Kind>("ChiroGroepModel.FK_Kind_AfdelingsJaar", "Kind", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for LeidingInAfdelingsJaar in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_LeidingInAfdelingsJaar_AfdelingsJaar", "LeidingInAfdelingsJaar")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<LeidingInAfdelingsJaar> LeidingInAfdelingsJaar
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<LeidingInAfdelingsJaar>("ChiroGroepModel.FK_LeidingInAfdelingsJaar_AfdelingsJaar", "LeidingInAfdelingsJaar");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<LeidingInAfdelingsJaar>("ChiroGroepModel.FK_LeidingInAfdelingsJaar_AfdelingsJaar", "LeidingInAfdelingsJaar", value);
                 }
             }
         }
@@ -3487,6 +3405,80 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<AfdelingsJaar>("ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling", "AfdelingsJaar", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.Leiding in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// ID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Leiding")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class Leiding : Lid
+    {
+        /// <summary>
+        /// Create a new Leiding object.
+        /// </summary>
+        /// <param name="lidgeldBetaald">Initial value of LidgeldBetaald.</param>
+        /// <param name="nonActief">Initial value of NonActief.</param>
+        /// <param name="verwijderd">Initial value of Verwijderd.</param>
+        /// <param name="volgendWerkjaarInt">Initial value of VolgendWerkjaarInt.</param>
+        /// <param name="id">Initial value of ID.</param>
+        public static Leiding CreateLeiding(bool lidgeldBetaald, bool nonActief, bool verwijderd, short volgendWerkjaarInt, int id)
+        {
+            Leiding leiding = new Leiding();
+            leiding.LidgeldBetaald = lidgeldBetaald;
+            leiding.NonActief = nonActief;
+            leiding.Verwijderd = verwijderd;
+            leiding.VolgendWerkjaarInt = volgendWerkjaarInt;
+            leiding.ID = id;
+            return leiding;
+        }
+        /// <summary>
+        /// There are no comments for Property DubbelPuntAbonnement in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<bool> DubbelPuntAbonnement
+        {
+            get
+            {
+                return this._DubbelPuntAbonnement;
+            }
+            set
+            {
+                this.OnDubbelPuntAbonnementChanging(value);
+                this.ReportPropertyChanging("DubbelPuntAbonnement");
+                this._DubbelPuntAbonnement = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("DubbelPuntAbonnement");
+                this.OnDubbelPuntAbonnementChanged();
+            }
+        }
+        private global::System.Nullable<bool> _DubbelPuntAbonnement;
+        partial void OnDubbelPuntAbonnementChanging(global::System.Nullable<bool> value);
+        partial void OnDubbelPuntAbonnementChanged();
+        /// <summary>
+        /// There are no comments for AfdelingsJaar in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "LeidingInAfdelingsJaar", "AfdelingsJaar")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<AfdelingsJaar> AfdelingsJaar
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<AfdelingsJaar>("ChiroGroepModel.LeidingInAfdelingsJaar", "AfdelingsJaar");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<AfdelingsJaar>("ChiroGroepModel.LeidingInAfdelingsJaar", "AfdelingsJaar", value);
                 }
             }
         }
@@ -3652,323 +3644,6 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Lid>("ChiroGroepModel.FK_Kind_Lid", "Lid", value);
-                }
-            }
-        }
-    }
-    /// <summary>
-    /// There are no comments for ChiroGroepModel.Leiding in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// leidingID
-    /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Leiding")]
-    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
-    [global::System.Serializable()]
-    public partial class Leiding : global::System.Data.Objects.DataClasses.EntityObject
-    {
-        /// <summary>
-        /// Create a new Leiding object.
-        /// </summary>
-        /// <param name="leidingID">Initial value of leidingID.</param>
-        public static Leiding CreateLeiding(int leidingID)
-        {
-            Leiding leiding = new Leiding();
-            leiding.leidingID = leidingID;
-            return leiding;
-        }
-        /// <summary>
-        /// There are no comments for Property DubbelPuntAbonnement in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Nullable<bool> DubbelPuntAbonnement
-        {
-            get
-            {
-                return this._DubbelPuntAbonnement;
-            }
-            set
-            {
-                this.OnDubbelPuntAbonnementChanging(value);
-                this.ReportPropertyChanging("DubbelPuntAbonnement");
-                this._DubbelPuntAbonnement = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("DubbelPuntAbonnement");
-                this.OnDubbelPuntAbonnementChanged();
-            }
-        }
-        private global::System.Nullable<bool> _DubbelPuntAbonnement;
-        partial void OnDubbelPuntAbonnementChanging(global::System.Nullable<bool> value);
-        partial void OnDubbelPuntAbonnementChanged();
-        /// <summary>
-        /// There are no comments for Property leidingID in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int leidingID
-        {
-            get
-            {
-                return this._leidingID;
-            }
-            set
-            {
-                this.OnleidingIDChanging(value);
-                this.ReportPropertyChanging("leidingID");
-                this._leidingID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("leidingID");
-                this.OnleidingIDChanged();
-            }
-        }
-        private int _leidingID;
-        partial void OnleidingIDChanging(int value);
-        partial void OnleidingIDChanged();
-        /// <summary>
-        /// There are no comments for Property Versie in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Versie
-        {
-            get
-            {
-                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
-            }
-            set
-            {
-                this.OnVersieChanging(value);
-                this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
-                this.ReportPropertyChanged("Versie");
-                this.OnVersieChanged();
-            }
-        }
-        private byte[] _Versie;
-        partial void OnVersieChanging(byte[] value);
-        partial void OnVersieChanged();
-        /// <summary>
-        /// There are no comments for Lid in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Leiding_Lid", "Lid")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Lid Lid
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Lid>("ChiroGroepModel.FK_Leiding_Lid", "Lid").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Lid>("ChiroGroepModel.FK_Leiding_Lid", "Lid").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for Lid in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Lid> LidReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Lid>("ChiroGroepModel.FK_Leiding_Lid", "Lid");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Lid>("ChiroGroepModel.FK_Leiding_Lid", "Lid", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for LeidingInAfdelingsJaar in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_LeidingInAfdelingsJaar_Leiding", "LeidingInAfdelingsJaar")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<LeidingInAfdelingsJaar> LeidingInAfdelingsJaar
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<LeidingInAfdelingsJaar>("ChiroGroepModel.FK_LeidingInAfdelingsJaar_Leiding", "LeidingInAfdelingsJaar");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<LeidingInAfdelingsJaar>("ChiroGroepModel.FK_LeidingInAfdelingsJaar_Leiding", "LeidingInAfdelingsJaar", value);
-                }
-            }
-        }
-    }
-    /// <summary>
-    /// There are no comments for ChiroGroepModel.LeidingInAfdelingsJaar in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// afdelingsJaarID
-    /// leidingID
-    /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="LeidingInAfdelingsJaar")]
-    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
-    [global::System.Serializable()]
-    public partial class LeidingInAfdelingsJaar : global::System.Data.Objects.DataClasses.EntityObject
-    {
-        /// <summary>
-        /// Create a new LeidingInAfdelingsJaar object.
-        /// </summary>
-        /// <param name="afdelingsJaarID">Initial value of afdelingsJaarID.</param>
-        /// <param name="leidingID">Initial value of leidingID.</param>
-        public static LeidingInAfdelingsJaar CreateLeidingInAfdelingsJaar(int afdelingsJaarID, int leidingID)
-        {
-            LeidingInAfdelingsJaar leidingInAfdelingsJaar = new LeidingInAfdelingsJaar();
-            leidingInAfdelingsJaar.afdelingsJaarID = afdelingsJaarID;
-            leidingInAfdelingsJaar.leidingID = leidingID;
-            return leidingInAfdelingsJaar;
-        }
-        /// <summary>
-        /// There are no comments for Property afdelingsJaarID in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int afdelingsJaarID
-        {
-            get
-            {
-                return this._afdelingsJaarID;
-            }
-            set
-            {
-                this.OnafdelingsJaarIDChanging(value);
-                this.ReportPropertyChanging("afdelingsJaarID");
-                this._afdelingsJaarID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("afdelingsJaarID");
-                this.OnafdelingsJaarIDChanged();
-            }
-        }
-        private int _afdelingsJaarID;
-        partial void OnafdelingsJaarIDChanging(int value);
-        partial void OnafdelingsJaarIDChanged();
-        /// <summary>
-        /// There are no comments for Property leidingID in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int leidingID
-        {
-            get
-            {
-                return this._leidingID;
-            }
-            set
-            {
-                this.OnleidingIDChanging(value);
-                this.ReportPropertyChanging("leidingID");
-                this._leidingID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("leidingID");
-                this.OnleidingIDChanged();
-            }
-        }
-        private int _leidingID;
-        partial void OnleidingIDChanging(int value);
-        partial void OnleidingIDChanged();
-        /// <summary>
-        /// There are no comments for Property Versie in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Versie
-        {
-            get
-            {
-                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
-            }
-            set
-            {
-                this.OnVersieChanging(value);
-                this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
-                this.ReportPropertyChanged("Versie");
-                this.OnVersieChanged();
-            }
-        }
-        private byte[] _Versie;
-        partial void OnVersieChanging(byte[] value);
-        partial void OnVersieChanged();
-        /// <summary>
-        /// There are no comments for AfdelingsJaar in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_LeidingInAfdelingsJaar_AfdelingsJaar", "AfdelingsJaar")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public AfdelingsJaar AfdelingsJaar
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<AfdelingsJaar>("ChiroGroepModel.FK_LeidingInAfdelingsJaar_AfdelingsJaar", "AfdelingsJaar").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<AfdelingsJaar>("ChiroGroepModel.FK_LeidingInAfdelingsJaar_AfdelingsJaar", "AfdelingsJaar").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for AfdelingsJaar in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<AfdelingsJaar> AfdelingsJaarReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<AfdelingsJaar>("ChiroGroepModel.FK_LeidingInAfdelingsJaar_AfdelingsJaar", "AfdelingsJaar");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<AfdelingsJaar>("ChiroGroepModel.FK_LeidingInAfdelingsJaar_AfdelingsJaar", "AfdelingsJaar", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for Leiding in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_LeidingInAfdelingsJaar_Leiding", "Leiding")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Leiding Leiding
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Leiding>("ChiroGroepModel.FK_LeidingInAfdelingsJaar_Leiding", "Leiding").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Leiding>("ChiroGroepModel.FK_LeidingInAfdelingsJaar_Leiding", "Leiding").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for Leiding in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Leiding> LeidingReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Leiding>("ChiroGroepModel.FK_LeidingInAfdelingsJaar_Leiding", "Leiding");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Leiding>("ChiroGroepModel.FK_LeidingInAfdelingsJaar_Leiding", "Leiding", value);
                 }
             }
         }
