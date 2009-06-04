@@ -23,5 +23,11 @@ namespace MvcWebApp2.Controllers
             return View("Index", model);
         }
 
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Index(Models.GavModel model)
+        {
+            Sessie.GroepID = model.GeselecteerdeGroepID;
+            return new RedirectResult("/Personen/Index");
+        }
     }
 }

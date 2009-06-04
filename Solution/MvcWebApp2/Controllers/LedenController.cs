@@ -16,11 +16,14 @@ namespace MvcWebApp2.Controllers
     {
         //
         // GET: /Leden/
-        [GroepActionFilter(GroepSessieKey)]
+        [GroepActionFilter]
         public ActionResult Index()
         {
             // TODO: List oproepen met recentste GroepsWerkJaar, niet met test ...
-            return List(Properties.Settings.Default.TestGroepsWerkJaarId);
+            // TODO: GroepsWerkJaar mag nu geen 'standaardsetting' meer zijn, aangezien de groep at runtime bepaald wordt.
+
+            //return List(Properties.Settings.Default.TestGroepsWerkJaarId);
+            throw new NotImplementedException();
         }
 
         // TODO: verder uitwerken paginering

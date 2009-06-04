@@ -8,16 +8,26 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2>GAV</h2>
-    <% foreach (var item in ViewData.Model.GroepenLijst)
+<% using (Html.BeginForm())
+   {        
+%>
+
+    <ul id="acties">
+        <li><input type="submit" value="OK" /></li>        
+    </ul>
+
+    <h2>Kies je Chirogroep:</h2>
+<%
+       foreach (var item in ViewData.Model.GroepenLijst)
        {
-           %>
-           
-           
-           <%=Html.TextBox(item.Groepsnaam) %>
+%>
+           <%=Html.RadioButton("GeselecteerdeGroepID", item.ID)%> 
+           <%=String.Format("{0} - {1} ({2})", item.StamNummer, item.Groepsnaam, item.Plaats)%>
            <br />
-           <%
+<%
            
-       } %>
+       }
+   }
+%>
 
 </asp:Content>

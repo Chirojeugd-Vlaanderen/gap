@@ -11,14 +11,20 @@ namespace MvcWebApp2
     public class GroepActionFilterAttribute : FilterAttribute, IAuthorizationFilter
     {
 
-        public GroepActionFilterAttribute(string sessionVariable)
+        public GroepActionFilterAttribute()
             : base()
         {
-            this.SessionVariable = sessionVariable;
         }
 
         #region IAuthorizationFilter Members
 
+        /// <summary>
+        /// Het authorisatiemechanisme voor de GroepActionFilter wordt
+        /// gebruikt om te bepalen welke groep een gebruiker wil beheren.
+        /// De gebruiker krijgt de keuze uit de groepen waarvoor hij
+        /// GAV is.
+        /// </summary>
+        /// <param name="filterContext"></param>
         public void OnAuthorization(AuthorizationContext filterContext)
         {
             if (filterContext == null)
@@ -26,9 +32,7 @@ namespace MvcWebApp2
                 throw new ArgumentNullException("filterContext");
             }
 
-            object groepIdSessionItem = filterContext.HttpContext.Session[SessionVariable];
-
-            if (groepIdSessionItem == null)
+            if (Sessie.GroepID == 0)
             {
                 // Er is nog geen groep gekozen. Kijk of er toevallig maar één groep is.
 
@@ -36,7 +40,7 @@ namespace MvcWebApp2
                     (g => g.OphalenMijnGroepen());
                 if (groepInfoLijst.Count() == 1)
                 {
-                    filterContext.HttpContext.Session[SessionVariable] = groepInfoLijst.First().ID;
+                    Sessie.GroepID = groepInfoLijst.First().ID;
                 }
                 else
                 {
@@ -48,12 +52,6 @@ namespace MvcWebApp2
             }
 
         }
-
-        #endregion
-
-        #region properties
-
-        public string SessionVariable { get; set; }
 
         #endregion
     }

@@ -20,6 +20,7 @@ namespace MvcWebApp2.Controllers
     {
         //
         // GET: /Personen/
+        [GroepActionFilter]
         public ActionResult Index()
         {
             return List(1);
@@ -27,6 +28,7 @@ namespace MvcWebApp2.Controllers
 
         //
         // GET: /Personen/List/{paginanummer}
+        [GroepActionFilter]
         public ActionResult List(int page)
         {
             int totaal = 0;
@@ -34,7 +36,7 @@ namespace MvcWebApp2.Controllers
             var model = new Models.PersoonInfoModel();
             model.PersoonInfoLijst = 
                 ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
-                (g => g.PaginaOphalenMetLidInfo(Properties.Settings.Default.TestGroepId, page, 20, out totaal));
+                (g => g.PaginaOphalenMetLidInfo(Sessie.GroepID, page, 20, out totaal));
             model.PageHuidig = page;
             model.PageTotaal = (int) Math.Ceiling(totaal / 20d);
             model.Title = "Personen-overzicht";
@@ -103,6 +105,7 @@ namespace MvcWebApp2.Controllers
         }
 
         // GET: /Personen/LidMaken/id
+        [GroepActionFilter]
         public ActionResult LidMaken(int id)
         {
             ServiceHelper.CallService<ILedenService>(l => l.LidMakenEnBewaren(id));

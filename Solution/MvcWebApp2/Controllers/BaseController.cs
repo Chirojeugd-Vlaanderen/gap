@@ -24,8 +24,6 @@ namespace MvcWebApp2.Controllers
     {
         protected MasterViewModel model = new MasterViewModel();
 
-        protected const string GroepSessieKey = "MijnGroepId";
-
         /// <summary>
         /// Standaard constructor
         /// </summary>
@@ -53,24 +51,25 @@ namespace MvcWebApp2.Controllers
         private void GegevensVanDeGroepInvullen()
         { 
 
-            object groepIdSessionItem = System.Web.HttpContext.Current.Session[GroepSessieKey];
-
-            if (groepIdSessionItem == null)
+            if (Sessie.GroepID == 0)
             {
                 // De Gekozen groep is nog niet gekend, zet defaults
-                model.StamNummer = "Geen stamnummer gekozen";
+                // TODO: De defaults op een zinvollere plaats definieren.
+
+                model.Groepsnaam = "Geen Chirogroep geselecteerd";
+                model.Plaats = "geen";
+                model.StamNummer = "--";
             }
             else
             {
-                var groepId = (int)groepIdSessionItem;
-                string cacheKey = "GI" + groepId.ToString();
+                string cacheKey = "GI" + Sessie.GroepID.ToString();
 
                 System.Web.Caching.Cache c = System.Web.HttpContext.Current.Cache;
 
                 GroepInfo gi = (GroepInfo)c.Get(cacheKey);
                 if (gi == null)
                 {
-                    gi = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.OphalenInfo(Properties.Settings.Default.TestGroepId));
+                    gi = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.OphalenInfo(Sessie.GroepID));
                     c.Add(cacheKey, gi, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
                 }
 

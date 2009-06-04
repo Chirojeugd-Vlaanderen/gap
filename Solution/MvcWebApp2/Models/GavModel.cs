@@ -14,7 +14,7 @@ namespace MvcWebApp2.Models
 
         public IEnumerable<GroepInfo> GroepenLijst { get; set; }
 
-        public GroepInfo GeselecteerdeGroep { get; set; }
+        public int GeselecteerdeGroepID { get; set; }
 
         
     }
