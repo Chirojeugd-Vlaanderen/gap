@@ -21,7 +21,7 @@
        foreach (var item in ViewData.Model.GroepenLijst)
        {
 %>
-           <%=Html.RadioButton("GeselecteerdeGroepID", item.ID)%> 
+           <%=Html.RadioButton("GeselecteerdeGroepID", item.ID, (item.ID == Sessie.GroepID))%> 
            <%=String.Format("{0} - {1} ({2})", item.StamNummer, item.Groepsnaam, item.Plaats)%>
            <br />
 <%
