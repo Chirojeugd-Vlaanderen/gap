@@ -77,7 +77,7 @@ namespace Cg2.Workers
                 gpm.GroepLaden(gp);
             }
 
-            return LidMaken(gp, gm.Dao.OphalenHuidigeGroepsWerkjaar(gp.Groep.ID));
+            return LidMaken(gp, gm.Dao.RecentsteGroepsWerkJaarGet(gp.Groep.ID));
         }
 
         /*public void LidMaken(int gelieerdePersoonID)

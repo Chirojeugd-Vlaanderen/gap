@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace Cg2.Workers
 {
-    public class WerkjaarManager
+    public class WerkJaarManager
     {
 
         private IGroepenDao _dao;
@@ -20,12 +20,23 @@ namespace Cg2.Workers
 
         #region Constructors
 
-        public WerkjaarManager(IGroepenDao groepenDao)
+        public WerkJaarManager(IGroepenDao groepenDao)
         {
             _dao = groepenDao;
         }
 
         #endregion
+
+        /// <summary>
+        /// Bepaalt ID van het recentste GroepsWerkJaar gemaakt voor een
+        /// gegeven groep.
+        /// </summary>
+        /// <param name="groepID">ID van Groep</param>
+        /// <returns>ID van het recentste GroepsWerkJaar</returns>
+        public int RecentsteGroepsWerkJaarIDGet(int groepID)
+        {
+            return _dao.RecentsteGroepsWerkJaarGet(groepID).ID;
+        }
 
         public int OphalenHuidigGroepsWerkjaar(int groepID)
         {
@@ -46,7 +57,7 @@ namespace Cg2.Workers
                 }
                 else
                 {
-                    int werkjaar = _dao.OphalenHuidigeGroepsWerkjaar(groepID).WerkJaar;
+                    int werkjaar = _dao.RecentsteGroepsWerkJaarGet(groepID).WerkJaar;
                     Debug.Assert(huidigedatum.Year == werkjaar || werkjaar + 1 == huidigedatum.Year);
                     return werkjaar;
                 }
@@ -71,5 +82,6 @@ namespace Cg2.Workers
                 }
             }
         }
+
     }
 }

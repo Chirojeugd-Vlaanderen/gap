@@ -88,7 +88,20 @@ namespace Cg2.Services
             return result;
         }
 
+        public int RecentsteGroepsWerkJaarIDGet(int groepID)
+        {
+            WerkJaarManager wm = Factory.Maak<WerkJaarManager>();
+
+            return wm.RecentsteGroepsWerkJaarIDGet(groepID);
+        }
+
         /// <summary>
+        /// TODO: Documentatie bijwerken, en naam veranderen in HuidgWerkJaarOphalen
+        /// (of iets gelijkaardig; zie coding standaard). 
+        /// Deze documentatie is alleszins onvolledig, want ze gaat ervan uit dat groepen
+        /// nooit ophouden te bestaan.  Wat moet deze functie teruggeven als de groep
+        /// geen werking meer heeft?
+        /// 
         /// Geeft het huidige werkjaar van de gegeven groep terug. Dit is gegarandeerd het huidige jaartal wanneer de
         /// huidige dag tussen de deadline voor het nieuwe werkjaar en de begindatum van het volgende werkjaar ligt.
         /// In de tussenperiode hangt het ervan af of de groep de overgang al heeft gemaakt, en dit is te zien aan 
@@ -98,7 +111,7 @@ namespace Cg2.Services
         /// <returns></returns>
         public int OphalenGroepsWerkjaar(int groepID)
         {
-            WerkjaarManager wm = Factory.Maak<WerkjaarManager>();
+            WerkJaarManager wm = Factory.Maak<WerkJaarManager>();
 
             return wm.OphalenHuidigGroepsWerkjaar(groepID);
         }

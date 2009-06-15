@@ -19,11 +19,9 @@ namespace MvcWebApp2.Controllers
         [GroepActionFilter]
         public ActionResult Index()
         {
-            // TODO: List oproepen met recentste GroepsWerkJaar, niet met test ...
-            // TODO: GroepsWerkJaar mag nu geen 'standaardsetting' meer zijn, aangezien de groep at runtime bepaald wordt.
+            // Recentste groepswerkjaar ophalen, en leden tonen.
 
-            //return List(Properties.Settings.Default.TestGroepsWerkJaarId);
-            throw new NotImplementedException();
+            return List(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(Sessie.GroepID)));
         }
 
         // TODO: verder uitwerken paginering

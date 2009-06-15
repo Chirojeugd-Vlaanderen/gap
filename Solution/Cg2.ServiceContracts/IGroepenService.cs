@@ -61,6 +61,19 @@ namespace Cg2.ServiceContracts
         [OperationContract]
         Groep OphalenMetVrijeVelden(int groepID);
 
+        /// <summary>
+        /// Haalt GroepsWerkJaarID van het recentst gemaakte groepswerkjaar
+        /// voor een gegeven groep op.
+        /// </summary>
+        /// <param name="groepID">GroepID van groep</param>
+        /// <returns>ID van het recentste GroepsWerkJaar</returns>
+        [OperationContract]
+        int RecentsteGroepsWerkJaarIDGet(int groepID);
+
+        // TODO: Hernoemen naar HuidigWerkJaarOphalen of iets
+        // gelijkaardig.  Een groepswerkjaar is een combinatie
+        // groep en werkjaar, en ik vermoed dat onderstaande functie
+        // bedoeld is om een jaartal te retourneren.
         [OperationContract]
         int OphalenGroepsWerkjaar(int groepID);
 

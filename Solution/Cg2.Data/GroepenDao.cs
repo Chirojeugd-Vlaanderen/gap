@@ -16,7 +16,7 @@ namespace Cg2.Data.Ef
         TODO creeren(groep) ?
         */
 
-        public GroepsWerkJaar OphalenHuidigeGroepsWerkjaar(int groepID)
+        public GroepsWerkJaar RecentsteGroepsWerkJaarGet(int groepID)
         {
             GroepsWerkJaar result;
             using (ChiroGroepEntities db = new ChiroGroepEntities())
@@ -59,7 +59,7 @@ namespace Cg2.Data.Ef
         //ophalen van groep, afdeling, afdelingsjaar en officiele afdelingen voor huidig werkjaar
         public Groep OphalenMetAfdelingen(int groepID)
         {
-            int huidigwerkjaar = OphalenHuidigeGroepsWerkjaar(groepID).WerkJaar;
+            int huidigwerkjaar = RecentsteGroepsWerkJaarGet(groepID).WerkJaar;
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {

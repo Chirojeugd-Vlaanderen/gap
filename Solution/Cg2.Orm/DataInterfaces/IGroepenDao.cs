@@ -11,15 +11,15 @@ namespace Cg2.Orm.DataInterfaces
     public interface IGroepenDao: IDao<Groep>
     {
         /// <summary>
-        /// Bepaalt het huidige GroepsWerkJaar van een gegeven Groep.
-        /// Dit moet steeds het 'laatst' toegevoegde zijn; er wordt pas
-        /// een nieuw GroepsWerkJaar gemaakt als het nieuw werkjaar
-        /// begint.
+        /// Bepaalt het recentste GroepsWerkJaar van een gegeven Groep.
+        /// Voor een actieve groep is dit steeds het huidige 
+        /// GroepsWerkJaar; er kan pas een GroepsWerkJaar gemaakt 
+        /// worden als het nieuw werkjaar begonnen is.
         /// </summary>
         /// <param name="groepID">ID van Groep waarvoor werkjaar bepaald 
         /// moet worden</param>
         /// <returns>Het relevante GroepsWerkJaarobject</returns>
-        GroepsWerkJaar OphalenHuidigeGroepsWerkjaar(int groepID);
+        GroepsWerkJaar RecentsteGroepsWerkJaarGet(int groepID);
 
         Groep OphalenMetAdressen(int groepID);
 
