@@ -89,6 +89,7 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
+                // TODO: Check vervaldatum GAV!
                 var query
                     = from GebruikersRecht r in db.GebruikersRecht
                       where r.Gav.Login == login && r.Groep.GelieerdePersoon.Any(gp => gp.ID == gelieerdePersoonID)
@@ -125,7 +126,7 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                // Ook hier wordt rekening gehouden met de vervaldatum.
+                // TODO: Check vervaldatum
 
                 var query
                     = db.GelieerdePersoon
@@ -146,7 +147,7 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                // Ook hier wordt rekening gehouden met de vervaldatum.
+                // TODO: Check vervaldatum!
 
                 var query
                     = db.GelieerdePersoon
@@ -160,17 +161,13 @@ namespace Cg2.Data.Ef
             return resultaat;
         }
 
-        #endregion
-
-        #region IAuthorisatieDao Members
-
-
         public bool IsGavPersoon(string login, int persoonID)
         {
             bool resultaat;
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
+                // TODO: Check vervaldatum GAV!
                 var query
                     = from GebruikersRecht r in db.GebruikersRecht
                       where r.Gav.Login == login && r.Groep.GelieerdePersoon.Any(gp => gp.Persoon.ID == persoonID)
@@ -182,6 +179,22 @@ namespace Cg2.Data.Ef
             return resultaat;
         }
 
+        public bool IsGavGroepsWerkJaar(string login, int groepsWerkJaarID)
+        {
+            bool resultaat;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                var query
+                    = from GebruikersRecht r in db.GebruikersRecht
+                      where r.Gav.Login == login && r.Groep.GroepsWerkJaar.Any(gwj => gwj.ID == groepsWerkJaarID)
+                      && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
+                      select r;
+
+                resultaat = query.Count() > 0;
+            }
+            return resultaat;
+        }
 
         #endregion
     }

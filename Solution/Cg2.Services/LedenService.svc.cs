@@ -30,7 +30,7 @@ namespace Cg2.Services
         {
             LedenManager lm = Factory.Maak<LedenManager>();
 
-            IList<Lid> result = lm.Dao.PaginaOphalen(groepsWerkJaarID, pagina, paginaGrootte, out aantalOpgehaald);
+            IList<Lid> result = lm.PaginaOphalen(groepsWerkJaarID, pagina, paginaGrootte, out aantalOpgehaald);
             return LidInfoMapper.mapLid(result);
         }
 

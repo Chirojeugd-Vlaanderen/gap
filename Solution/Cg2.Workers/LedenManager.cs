@@ -5,6 +5,8 @@ using System.Text;
 using Cg2.Orm;
 using Cg2.Data.Ef;
 using Cg2.Orm.DataInterfaces;
+using Cg2.Ioc;
+using Cg2.Fouten.Exceptions;
 
 namespace Cg2.Workers
 {
@@ -14,6 +16,7 @@ namespace Cg2.Workers
         private IGroepenDao _groepenDao;
         private IGelieerdePersonenDao _gelPersDao;
 
+        // TODO: Dao mag niet geexposed worden!
         public ILedenDao Dao
         {
             get { return _dao; }
@@ -63,7 +66,7 @@ namespace Cg2.Workers
         }
 
         /// <summary>
-        /// Maakt gelieerde persoon lid voor huidig werkjaar
+        /// Maakt gelieerde persoon lid voor recentste werkjaar
         /// </summary>
         /// <param name="gp">Gelieerde persoon</param>
         /// <returns>Nieuw lidobject</returns>
@@ -78,6 +81,28 @@ namespace Cg2.Workers
             }
 
             return LidMaken(gp, gm.Dao.RecentsteGroepsWerkJaarGet(gp.Groep.ID));
+        }
+
+        /// <summary>
+        /// Haalt een 'pagina' op met leden uit een bepaald GroepsWerkJaar
+        /// </summary>
+        /// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
+        /// <param name="pagina">Paginanummer (minstens 1)</param>
+        /// <param name="paginaGrootte">Aantal leden/pagina</param>
+        /// <param name="totaalAantalLeden">Bevat achteraf het totaal aantal leden</param>
+        /// <returns></returns>
+        public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int totaalAantalLeden)
+        {
+            AuthorisatieManager am = Factory.Maak<AuthorisatieManager>();
+
+            if (am.IsGavGroepsWerkJaar(groepsWerkJaarID))
+            {
+                return _dao.PaginaOphalen(groepsWerkJaarID, pagina, paginaGrootte, out totaalAantalLeden);
+            }
+            else
+            {
+                throw new GeenGavException("Dit GroepsWerkJaar hoort niet bij je groep(en).");
+            }
         }
 
         /*public void LidMaken(int gelieerdePersoonID)
@@ -109,7 +134,7 @@ namespace Cg2.Workers
 
         public void LidBewaren(Lid lid)
         {
-            Dao.Bewaren(lid);
+            _dao.Bewaren(lid);
         }
     }
 }

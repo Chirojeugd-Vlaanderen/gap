@@ -58,6 +58,17 @@ namespace Cg2.Workers
         }
 
         /// <summary>
+        /// Geeft true alss de aangemelde user correspondeert
+        /// met een GAV van de groep van een GroepsWerkJaar
+        /// </summary>
+        /// <param name="groepsWerkJaarID">ID gevraagde groepswerkjaar</param>
+        /// <returns>true indien aangemelde gebruiker GAV is</returns>
+        internal bool IsGavGroepsWerkJaar(int groepsWerkJaarID)
+        {
+            return _dao.IsGavGroepsWerkJaar(ServiceSecurityContext.Current.WindowsIdentity.Name, groepsWerkJaarID);
+        }
+
+        /// <summary>
         /// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV
         /// </summary>
         /// <returns>ID's van gekoppelde groepen</returns>
@@ -87,5 +98,6 @@ namespace Cg2.Workers
         {
             return _dao.EnkelMijnPersonen(personenIDs, ServiceSecurityContext.Current.WindowsIdentity.Name);
         }
+
     }
 }

@@ -61,6 +61,14 @@ namespace Cg2.Orm.DataInterfaces
         /// (op dit moment) om persoonsgegevens te zien/wijzigen</returns>
         bool IsGavPersoon(string login, int persoonID);
 
+        /// <summary>
+        /// Controleert of een gebruiker *nu* GAV is van de groep
+        /// horende bij gegeven GroepsWerkJaar
+        /// </summary>
+        /// <param name="login">gebruikersnaam</param>
+        /// <param name="groepsWerkJaarID">ID van gevraagde GroepsWerkJaar</param>
+        /// <returns>true indien de gebruiker GAV is</returns>
+        bool IsGavGroepsWerkJaar(string login, int groepsWerkJaarID);
 
         /// <summary>
         /// Haalt lijst groepen op waaraan de GAV met gegeven

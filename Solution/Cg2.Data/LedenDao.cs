@@ -102,7 +102,7 @@ namespace Cg2.Data.Ef
             }
         }*/
 
-        public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalOpgehaald)
+        public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
             IList<Lid> lijst;
 
@@ -117,7 +117,7 @@ namespace Cg2.Data.Ef
                     select l).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte);
 
                 lijst = result.ToList<Lid>();
-                aantalOpgehaald = lijst.Count;
+                aantalTotaal = lijst.Count;
             }
 
             return lijst;

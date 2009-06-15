@@ -13,10 +13,9 @@ namespace Cg2.Orm.DataInterfaces
         /// <param name="groepsWerkJaarID">ID van groepswerkjaar in kwestie</param>
         /// <param name="pagina">gevraagde pagina</param>
         /// <param name="paginaGrootte">leden per pagina</param>
-        /// <param name="aantalOpgehaald">hierin wordt het aantal opgehaalde records
-        /// bewaard</param>
+        /// <param name="aantalTotaal">geeft totaal aantal leden in groepswerkjaar terug</param>
         /// <returns>Een lijst van leden, inclusief info gelieerde personen en personen</returns>
-        IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalOpgehaald);
+        IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal);
 
         //void LidMaken(int gelieerdeID);
     }
