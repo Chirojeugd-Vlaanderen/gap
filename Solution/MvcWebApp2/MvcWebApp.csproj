@@ -35,6 +35,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -117,6 +118,7 @@
     <Content Include="Views\Shared\PersonenLijstControl.ascx" />
     <Content Include="Views\Shared\PersoonsDetailsControl.ascx" />
     <Content Include="Views\Shared\PersoonsLinkControl.ascx" />
+    <Content Include="Views\Shared\TerugNaarLijstLinkControl.ascx" />
     <Content Include="Web.config" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\jquery-1.2.6.js" />
