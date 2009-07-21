@@ -15,6 +15,28 @@ namespace Cg2.ServiceContracts
                 PersoonInfo = PersoonInfoMapper.mapPersoon(lid.GelieerdePersoon),
                 LidgeldBetaald = lid.LidgeldBetaald
             };
+            if (lid is Kind)
+            {
+                l.Type = LidType.Kind;
+                Kind k = (Kind) lid;
+                if (k.AfdelingsJaar == null)
+                {
+                    l.AfdelingString = "null";
+                }
+                else
+                {
+                    l.AfdelingString = k.AfdelingsJaar.Afdeling.AfdelingsNaam;
+                }
+            }
+            else if (lid is Leiding)
+            {
+                l.Type = LidType.Leiding;
+                l.AfdelingString = "not implemented";
+            }
+            else
+            {
+                l.Type = LidType.Onbekend;
+            }
             return l;
         }
 

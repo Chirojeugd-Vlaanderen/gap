@@ -57,40 +57,47 @@ namespace Cg2.Workers
             // * juiste afdeling (eventueel pagina tonen om te kiezen??)
             // * checken of het Lid nog niet bestaat (geen dubbels maken)
 
-            Kind k = new Kind();
-            
-            // GroepsWerkJaar en GelieerdePersoon invullen
-            k.GroepsWerkJaar = gwj;
-            k.GelieerdePersoon = gp;
+            Lid lid;
 
-            // Afdelingen opzoeken, eerste AfdelingsJaar toekennen
+            AfdelingsJaar aj = null;
+
+            // Afdelingen opzoeken
+            // TODO: effectief controleren
+            // Voorlopig altijd Kind
             GroepenManager gm = new GroepenManager(_groepenDao);
             IList<AfdelingsJaar> jaren = gm.OphalenAfdelingsJaren(gp.Groep, gwj);
             if (jaren.Count > 0)
             {
-                AfdelingsJaar aj = jaren.ElementAt(0);
-                k.AfdelingsJaar = jaren.ElementAt(0);
+                aj = jaren.ElementAt(0);
             }
 
-            // Kind toevoegen
-            gp.Lid.Add(k);
-            gwj.Lid.Add(k);
-            k.AfdelingsJaar.Kind.Add(k);
+            // specifieke dingen voor leiding of voor leden
+            // keuze voor leiding als geen geschikte afdeling gevonden kon worden
+            if (aj == null)
+            {
+                Leiding leiding = new Leiding();
+                lid = leiding;
+            }
+            else
+            {
+                Kind kind = new Kind();
+                kind.AfdelingsJaar.Kind.Add(kind);
+                lid = kind;
+            }
+            
+            // algemeen: GroepsWerkJaar en GelieerdePersoon invullen
+            lid.GroepsWerkJaar = gwj;
+            lid.GelieerdePersoon = gp;
+            gp.Lid.Add(lid);
+            gwj.Lid.Add(lid);
 
             // Kijken of er al een lid bestaat, moet nog gebeuren!
-
-            // het op deze manier doen, haalde ook niets uit:
-            // l.GroepsWerkJaarReference.EntityKey = gwj.EntityKey;
-            // l.GelieerdePersoonReference.EntityKey = gp.EntityKey;
-
-            //gwj.Lid.Add(l);
-            //gp.Lid.Add(l);
 
             // TODO: Einde instapperiode moet ook nog berekend worden.
             // 
             //l.EindeInstapPeriode = DateTime.Now;
 
-            return k;
+            return lid;
         }
 
         /// <summary>
@@ -116,17 +123,14 @@ namespace Cg2.Workers
         /// Haalt een 'pagina' op met leden uit een bepaald GroepsWerkJaar
         /// </summary>
         /// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
-        /// <param name="pagina">Paginanummer (minstens 1)</param>
-        /// <param name="paginaGrootte">Aantal leden/pagina</param>
-        /// <param name="totaalAantalLeden">Bevat achteraf het totaal aantal leden</param>
         /// <returns></returns>
-        public IList<Lid> PaginaOphalen(int groepsWerkJaarID/*, int pagina, int paginaGrootte, out int totaalAantalLeden*/)
+        public IList<Lid> PaginaOphalen(int groepsWerkJaarID)
         {
             AuthorisatieManager am = Factory.Maak<AuthorisatieManager>();
 
             if (am.IsGavGroepsWerkJaar(groepsWerkJaarID))
             {
-                return _dao.PaginaOphalen(groepsWerkJaarID/*, pagina, paginaGrootte, out totaalAantalLeden*/);
+                return _dao.PaginaOphalen(groepsWerkJaarID);
             }
             else
             {

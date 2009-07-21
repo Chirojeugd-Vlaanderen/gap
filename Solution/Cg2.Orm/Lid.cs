@@ -8,7 +8,14 @@ using Cg2.EfWrapper;
 
 namespace Cg2.Orm
 {
-    public partial class Lid: IBasisEntiteit
+    [DataContract]
+    public enum LidType {
+        [EnumMember] Kind = 1,
+        [EnumMember] Leiding = 2, 
+        [EnumMember] Onbekend = 0
+    }
+
+    public partial class Lid : IBasisEntiteit
     {
         private bool _teVerwijderen = false;
 

@@ -13,7 +13,7 @@ namespace Cg2.Orm.DataInterfaces
         /// </summary>
         /// <param name="groepsWerkJaarID">ID van groepswerkjaar in kwestie</param>
         /// <returns>Een lijst van leden, inclusief info gelieerde personen en personen</returns>
-        IList<Lid> PaginaOphalen(int groepsWerkJaarID/*, int pagina, int paginaGrootte, out int aantalTotaal*/);
+        IList<Lid> PaginaOphalen(int groepsWerkJaarID);
 
         //void LidMaken(int gelieerdeID);
     }

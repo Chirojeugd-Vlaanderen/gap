@@ -15,5 +15,12 @@ namespace Cg2.ServiceContracts
 
         [DataMember]
         public bool LidgeldBetaald { get; set; }
+
+        [DataMember]
+        public LidType Type { get; set; }
+
+        [DataMember]
+        public String AfdelingString { get; set; }
+
     }
 }
