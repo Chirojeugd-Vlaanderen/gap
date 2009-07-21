@@ -56,6 +56,8 @@
     <Compile Include="AdressenDao.cs" />
     <Compile Include="AuthorisatieDao.cs" />
     <Compile Include="ChiroGroepenDao.cs" />
+    <Compile Include="KindDao.cs" />
+    <Compile Include="LeidingDao.cs" />
     <Compile Include="PersonenDao.cs" />
     <Compile Include="GelieerdePersonenDao.cs" />
     <Compile Include="GroepenDao.cs" />

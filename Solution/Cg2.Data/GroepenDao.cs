@@ -77,13 +77,15 @@ namespace Cg2.Data.Ef
 
                 try
                 {
-                    return (
+                    var result = (
                     from x in groep.First().Afdeling
                     join y in afdelingsjaren
                     on x equals y.Afdeling
                     into volledige
                     select groep
                     ).First().First();
+                    return db.DetachObjectGraph(result);
+                    
                 }
                 catch (System.InvalidOperationException)
                 {
@@ -201,6 +203,6 @@ namespace Cg2.Data.Ef
                 ).ToList();
             }
         }
-        
+
     }
 }

@@ -21,7 +21,7 @@ namespace Cg2.Services
 
             Lid l = lm.LidMaken(pm.Ophalen(gelieerdePersoonID));
 
-            lm.Dao.Bewaren(l);
+            lm.LidBewaren(l);
 
             //lm.LidMaken(gelieerdePersoonID);
         }

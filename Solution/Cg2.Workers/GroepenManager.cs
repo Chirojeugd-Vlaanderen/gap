@@ -50,5 +50,29 @@ namespace Cg2.Workers
         {
             return Dao.OphalenOfficieleAfdelingen();
         }
+
+        // haalt alle AfdelingsJaren op bij een gegeven Groep en GroepsWerkJaar
+        // Groep en GroepsWerkJaar zijn allebei parameters omdat GroepsWerkJaar.Groep soms null is
+        // maakt gebruik van OphalenMetAfdelingen, filtert dan de afdelingsjaren
+        // die overeenkomen met het gegeven GroepsWerkJaar
+        public IList<AfdelingsJaar> OphalenAfdelingsJaren(Groep groep, GroepsWerkJaar gwj)
+        {
+            IList<AfdelingsJaar> result = new List<AfdelingsJaar>();
+            Groep g = Dao.OphalenMetAfdelingen(groep.ID);
+
+            int afdelingCnt = g.Afdeling.Count;
+
+            foreach (Afdeling a in g.Afdeling) {
+
+                int jaarCnt = a.AfdelingsJaar.Count;
+
+                foreach (AfdelingsJaar j in a.AfdelingsJaar) {
+                    if (j.GroepsWerkJaar.ID == gwj.ID) {
+                        result.Add(j);
+                    }
+                }
+            }
+            return result;
+        }
     }
 }

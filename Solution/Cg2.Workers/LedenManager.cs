@@ -8,11 +8,15 @@ using Cg2.Orm.DataInterfaces;
 using Cg2.Ioc;
 using Cg2.Fouten.Exceptions;
 
+using System.Diagnostics;
+
 namespace Cg2.Workers
 {
     public class LedenManager
     {
         private ILedenDao _dao;
+        private IKindDao _kindDao;
+        private ILeidingDao _leidingDao;
         private IGroepenDao _groepenDao;
         private IGelieerdePersonenDao _gelPersDao;
 
@@ -24,9 +28,11 @@ namespace Cg2.Workers
 
         #region Constructors
 
-        public LedenManager(ILedenDao dao, IGroepenDao groepenDao, IGelieerdePersonenDao gelPersDao)
+        public LedenManager(ILedenDao dao, IKindDao kindDao, ILeidingDao leidingDao, IGroepenDao groepenDao, IGelieerdePersonenDao gelPersDao)
         {
             _dao = dao;
+            _kindDao = kindDao;
+            _leidingDao = leidingDao;
             _groepenDao = groepenDao;
             _gelPersDao = gelPersDao;
         }
@@ -44,25 +50,47 @@ namespace Cg2.Workers
         /// </remarks>
         public Lid LidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
         {
+            // TODO: functie wordt aangepast om Kind aan te maken 
+            // bij de eerste afdeling van het GroepsWerkJaar
+            // later uitbreiden om:
+            // * te kiezen Kind/Leiding
+            // * juiste afdeling (eventueel pagina tonen om te kiezen??)
+            // * checken of het Lid nog niet bestaat (geen dubbels maken)
+
+            Kind k = new Kind();
+            
+            // GroepsWerkJaar en GelieerdePersoon invullen
+            k.GroepsWerkJaar = gwj;
+            k.GelieerdePersoon = gp;
+
+            // Afdelingen opzoeken, eerste AfdelingsJaar toekennen
+            GroepenManager gm = new GroepenManager(_groepenDao);
+            IList<AfdelingsJaar> jaren = gm.OphalenAfdelingsJaren(gp.Groep, gwj);
+            if (jaren.Count > 0)
+            {
+                AfdelingsJaar aj = jaren.ElementAt(0);
+                k.AfdelingsJaar = jaren.ElementAt(0);
+            }
+
+            // Kind toevoegen
+            gp.Lid.Add(k);
+            gwj.Lid.Add(k);
+            k.AfdelingsJaar.Kind.Add(k);
+
             // Kijken of er al een lid bestaat, moet nog gebeuren!
-
-            Lid l = new Lid();
-
-            l.GroepsWerkJaar = gwj;
-            l.GelieerdePersoon = gp;
 
             // het op deze manier doen, haalde ook niets uit:
             // l.GroepsWerkJaarReference.EntityKey = gwj.EntityKey;
             // l.GelieerdePersoonReference.EntityKey = gp.EntityKey;
 
-            gwj.Lid.Add(l);
-            gp.Lid.Add(l);
+            //gwj.Lid.Add(l);
+            //gp.Lid.Add(l);
 
             // TODO: Einde instapperiode moet ook nog berekend worden.
             // 
             //l.EindeInstapPeriode = DateTime.Now;
 
-            return l;
+            return k;
         }
 
         /// <summary>
@@ -80,6 +108,7 @@ namespace Cg2.Workers
                 gpm.GroepLaden(gp);
             }
 
+            GroepsWerkJaar gwj = gm.Dao.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
             return LidMaken(gp, gm.Dao.RecentsteGroepsWerkJaarGet(gp.Groep.ID));
         }
 
@@ -134,7 +163,20 @@ namespace Cg2.Workers
 
         public void LidBewaren(Lid lid)
         {
-            _dao.Bewaren(lid);
+            Debug.Assert(lid is Kind || lid is Leiding, "Lid moet ofwel Kind ofwel Leiding zijn!");
+            if (lid is Kind)
+            {
+                _kindDao.Bewaren((Kind) lid);
+            }
+            else if (lid is Leiding)
+            {
+                _leidingDao.Bewaren((Leiding)lid);
+            }
+            else
+            {
+                // hier komen we in principe nooit (zie Assert)
+                _dao.Bewaren(lid);
+            }
         }
     }
 }
