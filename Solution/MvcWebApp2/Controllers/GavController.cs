@@ -9,7 +9,7 @@ using Cg2.ServiceContracts;
 
 namespace MvcWebApp2.Controllers
 {
-    public class GavController : Controller
+    public class GavController : BaseController
     {
         //
         // GET: /Gav/

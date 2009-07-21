@@ -14,8 +14,11 @@
             <div id="title">
                 <h1><%=Html.Encode(ViewData.Model.Groepsnaam) %>
                     </h1>
-                <p>
-                    <%=Html.Encode(ViewData.Model.Plaats)%> | Stamnr: <%=Html.Encode(ViewData.Model.StamNummer) %></p>
+                <%  if (ViewData.Model.Plaats != "geen")
+                    { %>
+                        <p>
+                            <%=Html.Encode(ViewData.Model.Plaats)%> | Stamnr: <%=Html.Encode(ViewData.Model.StamNummer)%></p>
+                 <% } %>
             </div>
             <div id="logindisplay">
                 Aangemeld als
