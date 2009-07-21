@@ -14,7 +14,7 @@ namespace Cg2.Orm
         [EnumMember]
         Fax = 2,
         [EnumMember]
-        EMail = 3,
+        Mail = 3,
         [EnumMember]
         WebSite = 4,
         [EnumMember]

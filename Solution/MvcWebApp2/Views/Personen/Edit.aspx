@@ -29,7 +29,14 @@
     <%=Html.TextBox("HuidigePersoon.Persoon.Naam")%><br />
     
     <label for="Persoon_GeboorteDatum">Geboortedatum</label> 
-    <%=Html.TextBox("HuidigePersoon.Persoon.GeboorteDatum", ((DateTime) Model.HuidigePersoon.Persoon.GeboorteDatum).ToString("d"))%> <br />
+    <% if (Model.HuidigePersoon.Persoon.GeboorteDatum == null)
+       { %>
+            <%=Html.TextBox("HuidigePersoon.Persoon.GeboorteDatum", String.Empty)%>
+    <% }
+       else
+       { %>
+            <%=Html.TextBox("HuidigePersoon.Persoon.GeboorteDatum", ((DateTime)Model.HuidigePersoon.Persoon.GeboorteDatum).ToString("d"))%> 
+    <% } %><br />
     
     <label for="Persoon_Geslacht">Geslacht</label> 
     <%= Html.RadioButton("HuidigePersoon.Persoon.Geslacht", GeslachtsType.Man, Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Man)%> Man
@@ -77,6 +84,13 @@
     <%} %>
     
     <div>
-        <%=Html.ActionLink("Terug naar de lijst", "Index")%>
+        <% 
+            //  De link om terug te keren naar de laatste lijst moet alleen getoond worden als we effectief van een lijst komen. 
+            //  Welke lijst dat is, wordt door de controllers in de sessie opgeslagen.
+            if (MvcWebApp2.Sessie.LaatsteLijst != String.Empty)
+            {
+                %>
+                <%=Html.ActionLink("Terug naar de lijst", "List", new { Controller = MvcWebApp2.Sessie.LaatsteLijst, id = MvcWebApp2.Sessie.LaatstePagina })%>
+         <% } %>
     </div>
 </asp:Content>

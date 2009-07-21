@@ -31,6 +31,10 @@ namespace MvcWebApp2.Controllers
         [GroepActionFilter]
         public ActionResult List(int page)
         {
+            // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
+            Sessie.LaatsteLijst = "Personen";
+            Sessie.LaatstePagina = page;
+
             int totaal = 0;
 
             var model = new Models.PersoonInfoModel();
@@ -39,7 +43,7 @@ namespace MvcWebApp2.Controllers
                 (g => g.PaginaOphalenMetLidInfo(Sessie.GroepID, page, 20, out totaal));
             model.PageHuidig = page;
             model.PageTotaal = (int) Math.Ceiling(totaal / 20d);
-            model.Title = "Personen-overzicht";
+            model.Title = "Personenoverzicht";
 
             return View("Index", model);
         }

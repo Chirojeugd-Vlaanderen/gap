@@ -29,8 +29,6 @@ namespace MvcWebApp2.Controllers
         /// </summary>
         public BaseController() : base()
         {
-            // Bart, deze werd dubbel uitgevoerd en te vroeg
-            // GegevensVanDeGroepInvullen();
         }
 
         /// <summary>

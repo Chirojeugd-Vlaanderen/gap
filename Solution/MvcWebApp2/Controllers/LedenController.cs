@@ -20,7 +20,6 @@ namespace MvcWebApp2.Controllers
         public ActionResult Index()
         {
             // Recentste groepswerkjaar ophalen, en leden tonen.
-
             return List(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(Sessie.GroepID)));
         }
 
@@ -29,6 +28,10 @@ namespace MvcWebApp2.Controllers
         // GET: /Leden/List/{groepsWerkJaarId}
         public ActionResult List(int groepsWerkJaarId)
         {
+            // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten. Paginering gebeurt hier per werkjaar.
+            Sessie.LaatsteLijst = "Leden";
+            Sessie.LaatstePagina = groepsWerkJaarId;
+
             int totaal;
             var model = new Models.LidInfoModel();
             model.LidInfoLijst =
