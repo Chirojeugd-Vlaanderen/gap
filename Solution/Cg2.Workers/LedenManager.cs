@@ -120,13 +120,13 @@ namespace Cg2.Workers
         /// <param name="paginaGrootte">Aantal leden/pagina</param>
         /// <param name="totaalAantalLeden">Bevat achteraf het totaal aantal leden</param>
         /// <returns></returns>
-        public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int totaalAantalLeden)
+        public IList<Lid> PaginaOphalen(int groepsWerkJaarID/*, int pagina, int paginaGrootte, out int totaalAantalLeden*/)
         {
             AuthorisatieManager am = Factory.Maak<AuthorisatieManager>();
 
             if (am.IsGavGroepsWerkJaar(groepsWerkJaarID))
             {
-                return _dao.PaginaOphalen(groepsWerkJaarID, pagina, paginaGrootte, out totaalAantalLeden);
+                return _dao.PaginaOphalen(groepsWerkJaarID/*, pagina, paginaGrootte, out totaalAantalLeden*/);
             }
             else
             {

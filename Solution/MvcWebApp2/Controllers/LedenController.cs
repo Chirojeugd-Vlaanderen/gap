@@ -32,11 +32,10 @@ namespace MvcWebApp2.Controllers
             Sessie.LaatsteLijst = "Leden";
             Sessie.LaatstePagina = groepsWerkJaarId;
 
-            int totaal;
             var model = new Models.LidInfoModel();
             model.LidInfoLijst =
                 ServiceHelper.CallService<ILedenService, IList<LidInfo>>
-                (lid => lid.PaginaOphalen(groepsWerkJaarId, 1, 12, out totaal));
+                (lid => lid.PaginaOphalen(groepsWerkJaarId));
             model.GroepsWerkJaarIdZichtbaar = groepsWerkJaarId;
             // TODO: lijst opbouwen met alle GroepsWerkJaren van de huidige groep
             // model.GroepsWerkJaarLijst = ...;

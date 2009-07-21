@@ -32,7 +32,9 @@ namespace Cg2.Data.Ef
             return l;
         }
 
-        public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal)
+        // pagineren gebeurt nu per werkjaar
+        // pagina, paginaGrootte en aantalTotaal zijn niet meer nodig
+        public IList<Lid> PaginaOphalen(int groepsWerkJaarID/*, int pagina, int paginaGrootte, out int aantalTotaal*/)
         {
             IList<Lid> lijst;
 
@@ -44,10 +46,9 @@ namespace Cg2.Data.Ef
                     from l in db.Lid.Include("GelieerdePersoon.Persoon")
                     where l.GroepsWerkJaar.ID == groepsWerkJaarID
                     orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-                    select l).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte);
+                    select l);
 
                 lijst = result.ToList<Lid>();
-                aantalTotaal = lijst.Count;
             }
 
             return lijst;

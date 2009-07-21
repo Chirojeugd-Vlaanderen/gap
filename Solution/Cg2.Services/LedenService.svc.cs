@@ -26,11 +26,11 @@ namespace Cg2.Services
             //lm.LidMaken(gelieerdePersoonID);
         }
 
-        public IList<LidInfo> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalOpgehaald)
+        public IList<LidInfo> PaginaOphalen(int groepsWerkJaarID/*, int pagina, int paginaGrootte, out int aantalOpgehaald*/)
         {
             LedenManager lm = Factory.Maak<LedenManager>();
 
-            IList<Lid> result = lm.PaginaOphalen(groepsWerkJaarID, pagina, paginaGrootte, out aantalOpgehaald);
+            IList<Lid> result = lm.PaginaOphalen(groepsWerkJaarID/*, pagina paginaGrootte, out aantalOpgehaald*/);
             return LidInfoMapper.mapLid(result);
         }
 
