@@ -75,14 +75,13 @@ namespace Cg2.Data.Ef
 
                 using (ChiroGroepEntities db = new ChiroGroepEntities())
                 {
+                    // Bestaande objecten zijn hun entity key vaak kwijt (omdat die
+                    // verloren gaat in de MVC-cyclus.)  Opnieuw genereren dus.
+
                     p.EntityKey = db.CreateEntityKey("GelieerdePersoon", p);
                     p.Persoon.EntityKey = db.CreateEntityKey("Persoon", p.Persoon);
-
-                    db.Attach(p);
-                    db.Attach(p.Persoon);
-
-                    SetAllModified(p.EntityKey, db);
-                    SetAllModified(p.Persoon.EntityKey, db);
+                    
+                    GelieerdePersoon geattacht = db.AttachObjectGraph(p, gp => gp.Persoon);
 
                     db.SaveChanges();
                 }

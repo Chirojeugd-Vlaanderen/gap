@@ -29,7 +29,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Kind_AfdelingsJaar", "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.AfdelingsJaar), "Kind", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Kind))]
 
 // Original file name:
-// Generation date: 3/06/2009 12:19:03
+// Generation date: 21/07/2009 12:29:41
 namespace Cg2.Orm
 {
     
