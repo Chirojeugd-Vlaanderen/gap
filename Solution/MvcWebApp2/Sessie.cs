@@ -10,9 +10,10 @@ namespace MvcWebApp2
     public static class Sessie
     {
         private const string GroepSessieID = "MijnGroepID";
+        private const string MultiGav = "MultiGav";
         private const string LijstNaam = "LaatsteLijst";
         private const string LijstPagina = "LaatsteLijstPagina";
-        
+
         public static int GroepID
         {
             get
@@ -26,14 +27,27 @@ namespace MvcWebApp2
             }
         }
 
+        public static Boolean IsMultiGav
+        {
+            get
+            {
+                Boolean isMultiGav = Convert.ToBoolean(HttpContext.Current.Session[MultiGav].ToString());
+                return isMultiGav;
+            }
+            set
+            {
+                HttpContext.Current.Session[MultiGav] = value;
+            }
+        }
+
         public static String LaatsteLijst
         {
             get
-            { 
+            {
                 String lijstnaam = HttpContext.Current.Session[LijstNaam] as String;
                 return lijstnaam == null ? string.Empty : (String)lijstnaam;
             }
-            set 
+            set
             {
                 HttpContext.Current.Session[LijstNaam] = value;
             }

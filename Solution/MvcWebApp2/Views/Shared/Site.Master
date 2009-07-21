@@ -17,18 +17,22 @@
                 <%  if (ViewData.Model.Plaats != "geen")
                     { %>
                         <p>
-                            <%=Html.Encode(ViewData.Model.Plaats)%> | Stamnr: <%=Html.Encode(ViewData.Model.StamNummer)%></p>
-                 <% } %>
+                            <%=Html.Encode(ViewData.Model.Plaats)%> | Stamnr: <%=Html.Encode(ViewData.Model.StamNummer)%>
+                         </p>
+                  <%  } %>
             </div>
             <div id="logindisplay">
                 Aangemeld als
-                <% =System.Web.HttpContext.Current.User.Identity.Name %>
+                <% =System.Web.HttpContext.Current.User.Identity.Name %><br />
+                <% if (MvcWebApp2.Sessie.IsMultiGav == true)
+                   { %>
+                        [<%= Html.ActionLink("Wisselen van groep", "Index", "Gav")%>]
+                <% } %>
             </div>
             <div id="menucontainer">
                 <ul id="menu">
                     <li><%= Html.ActionLink("Personen", "Index", "Personen")%></li>
-                    <li><%= Html.ActionLink("Leden", "Index", "Leden")%></li>
-                    <li><%= Html.ActionLink("Andere Groep", "Index", "Gav")%></li>                    
+                    <li><%= Html.ActionLink("Leden", "Index", "Leden")%></li>                
                 </ul>
             </div>
         </div>

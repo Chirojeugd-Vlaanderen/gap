@@ -17,12 +17,12 @@ namespace MvcWebApp2.Models
     public class MasterViewModel
     {
         /// <summary>
-        /// Chiro groepsnaam
+        /// Naam van de Chirogroep
         /// </summary>
         public string Groepsnaam { get; set; }
 
         /// <summary>
-        /// Plaats van de chirogroep
+        /// Plaats van de Chirogroep
         /// </summary>
         public string Plaats { get; set; }
 

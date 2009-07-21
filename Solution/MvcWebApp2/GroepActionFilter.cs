@@ -40,10 +40,15 @@ namespace MvcWebApp2
                     (g => g.OphalenMijnGroepen());
                 if (groepInfoLijst.Count() == 1)
                 {
+                    // Sla in de sessie op dat de Gav niet moet kunnen wisselen van groep, en over welke groepID het gaat
+                    Sessie.IsMultiGav = false;
                     Sessie.GroepID = groepInfoLijst.First().ID;
                 }
                 else
                 {
+                    // Sla in de sessie op dat de Gav moet kunnen wisselen van groep
+                    MvcWebApp2.Sessie.IsMultiGav = true;
+
                     // Redirect naar de Kies Groep pagina
                     // TODO Hier proberen de return url in een parameter te duwen
                     filterContext.Result = new RedirectResult("/Gav/Index");
