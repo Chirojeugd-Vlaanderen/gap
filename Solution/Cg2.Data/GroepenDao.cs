@@ -159,25 +159,53 @@ namespace Cg2.Data.Ef
             }
         }
 
-        public void ToevoegenAfdelingsJaar(Groep g, Afdeling a, OfficieleAfdeling oa, int geboortejaarbegin, int geboortejaareind)
+        public void ToevoegenAfdelingsJaar(Groep g, Afdeling a, OfficieleAfdeling oa, int geboorteJaarVan, int geboorteJaarTot)
         {
-            GroepsWerkJaar huidigwerkjaar = null; //TODO
+            GroepsWerkJaar huidigwerkjaar = RecentsteGroepsWerkJaarGet(g.ID);
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                db.Attach(g);
-                db.Attach(a);
-                db.Attach(oa);
+                db.AttachObjectGraph(g);
+                db.AttachObjectGraph(a);
+                db.AttachObjectGraph(oa);
 
                 IList<OfficieleAfdeling> oas = (
                     from t in db.OfficieleAfdeling
                     select t                    
                     ).ToList<OfficieleAfdeling>();
 
-                if(!g.Afdeling.Contains(a) || !oas.Contains(oa))
+                // Groep g heeft niet altijd de afdelingen mee
+                Groep groepMetAfdelingen = OphalenMetAfdelingen(g.ID);
+
+                // groepMetAfdelingen.Afdeling.Contains(a) ... werkt niet
+                bool found = false;
+                foreach (Afdeling afdeling in groepMetAfdelingen.Afdeling)
                 {
-                    throw new InvalidOperationException("Gebruik van ongeldige objecten");
+                    if (afdeling.ID == a.ID)
+                    {
+                        found = true;   
+                    }
                 }
+                if (!found)
+                {
+                    throw new InvalidOperationException("Afdeling " + a.AfdelingsNaam + " is geen afdeling van Groep " + g.Naam);
+                }
+                found = groepMetAfdelingen.Afdeling.Contains(a);
+
+                // oas.Contains(oa) ... werkt niet
+                found = false;
+                foreach (OfficieleAfdeling afdeling in oas)
+                {
+                    if (afdeling.ID == oa.ID)
+                    {
+                        found = true;
+                    }
+                }
+                if (!found)
+                {
+                    throw new InvalidOperationException("OfficieleAfdeling " + oa.Naam + " bestaat niet");
+                }
+                found = oas.Contains(oa);
 
                 //TODO check if no conflicts with existing afdelingsjaar
 
@@ -186,9 +214,13 @@ namespace Cg2.Data.Ef
                 afdelingsjaar.OfficieleAfdeling = oa;
                 afdelingsjaar.Afdeling = a;
                 afdelingsjaar.GroepsWerkJaar = huidigwerkjaar;
+                afdelingsjaar.GeboorteJaarVan = geboorteJaarVan;
+                afdelingsjaar.GeboorteJaarTot = geboorteJaarTot;
 
                 a.AfdelingsJaar.Add(afdelingsjaar);
+                oa.AfdelingsJaar.Add(afdelingsjaar);
 
+                db.AttachObjectGraph(afdelingsjaar, aj=>aj.OfficieleAfdeling, aj=>aj.Afdeling, aj=>aj.GroepsWerkJaar);
                 db.SaveChanges();
             }
         }
@@ -197,10 +229,24 @@ namespace Cg2.Data.Ef
         {
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                return (
+                IList<OfficieleAfdeling> result = (
                     from d in db.OfficieleAfdeling
                     select d
                 ).ToList();
+                return db.DetachObjectGraph(result);
+            }
+        }
+
+        public IList<Afdeling> OphalenEigenAfdelingen(int groep)
+        {
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                IList<Afdeling> result = (
+                    from d in db.Afdeling
+                    where d.Groep.ID == groep
+                    select d
+                ).ToList();
+                return db.DetachObjectGraph(result);
             }
         }
 

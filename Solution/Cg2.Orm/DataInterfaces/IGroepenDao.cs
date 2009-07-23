@@ -46,5 +46,7 @@ namespace Cg2.Orm.DataInterfaces
         void ToevoegenAfdelingsJaar(Groep g, Afdeling aj, OfficieleAfdeling oa, int geboortejaarbegin, int geboortejaareind);
 
         IList<OfficieleAfdeling> OphalenOfficieleAfdelingen();
+
+        IList<Afdeling> OphalenEigenAfdelingen(int groep);
     }
 }

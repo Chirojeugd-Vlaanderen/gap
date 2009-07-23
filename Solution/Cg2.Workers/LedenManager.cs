@@ -65,7 +65,10 @@ namespace Cg2.Workers
             // TODO: effectief controleren
             // Voorlopig altijd Kind
             GroepenManager gm = new GroepenManager(_groepenDao);
+
             IList<AfdelingsJaar> jaren = gm.OphalenAfdelingsJaren(gp.Groep, gwj);
+            // voorlopig gewoon eerste afdeling uit de lijst nemen
+            // als er geen afdelingen zijn, dan null ===> leiding
             if (jaren.Count > 0)
             {
                 aj = jaren.ElementAt(0);
