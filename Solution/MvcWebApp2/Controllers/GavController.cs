@@ -27,6 +27,8 @@ namespace MvcWebApp2.Controllers
         public ActionResult Index(Models.GavModel model)
         {
             Sessie.GroepID = model.GeselecteerdeGroepID;
+            // TODO: verwijder tijdelijke feedbackregel hieronder
+            TempData["feedback"] = "Groep geselecteerd!";
             return new RedirectResult("/Personen/Index");
         }
     }

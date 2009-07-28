@@ -37,6 +37,10 @@
             </div>
         </div>
         <div id="main">
+        <% if (TempData["feedback"] != null)
+           { %>
+           <div class="Feedback"><%= Html.Encode(TempData["feedback"]) %></div>
+        <% } %>
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
             <div id="footer">
             </div>

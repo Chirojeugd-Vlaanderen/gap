@@ -351,3 +351,10 @@ td.right {
     text-align: right;
 }
 
+div.Feedback 
+{
+    border: Solid 1px Red;
+    background-color: Yellow;
+    padding: 1em 1em 1em 1em;
+    display: block;
+}
