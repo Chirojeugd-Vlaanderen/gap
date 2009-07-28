@@ -8,7 +8,7 @@ using System.Web.Routing;
 using System.Text;
 using System.Web.Mvc;
 
-namespace MvcWebApp2
+namespace MvcWebApp2.HtmlHelpers
 {
 
     /// <summary>

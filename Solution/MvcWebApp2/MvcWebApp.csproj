@@ -72,7 +72,7 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CheckBoxListHelper.cs" />
+    <Compile Include="HtmlHelpers\CheckBoxListHelper.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\GavController.cs" />
     <Compile Include="Controllers\LedenController.cs" />
@@ -85,6 +85,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="GroepActionFilter.cs" />
+    <Compile Include="HtmlHelpers\PagingHelper.cs" />
     <Compile Include="ModelStateWrapper.cs" />
     <Compile Include="Models\GavModel.cs" />
     <Compile Include="Models\LidInfoModel.cs" />

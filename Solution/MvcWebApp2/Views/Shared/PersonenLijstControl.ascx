@@ -3,18 +3,9 @@
 <%@ Import Namespace="Cg2.Orm" %>
 <%@ Import Namespace="Cg2.ServiceContracts" %>
 
-<% if (ViewData.Model.PageTotaal > 1) { 
-    for (int i = 1; i <= ViewData.Model.PageTotaal; i++) {
-        if (ViewData.Model.PageHuidig != i)
-        { %>
-<%=Html.ActionLink("" + i, "List", new { Controller = "Personen", page = i })%>
-<%      }
-        else
-        { %>
-<strong><%=i%></strong>
-<%      } 
-    }
-  } %>
+<div class="pager">
+Pagina: <%= Html.PagerLinks(ViewData.Model.PageHuidig, ViewData.Model.PageTotaal, i => Url.Action("List", new { page = i })) %>
+</div>
 
 <table>
 <tr>
