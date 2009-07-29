@@ -9,21 +9,21 @@ namespace MvcWebApp2
 {
     public static class Sessie
     {
-        private const string GroepSessieID = "MijnGroepID";
-        private const string MultiGav = "MultiGav";
-        private const string LijstNaam = "LaatsteLijst";
-        private const string LijstPagina = "LaatsteLijstPagina";
+        private const string GroepSessieIDString = "MijnGroepID";
+        private const string MultiGavString = "MultiGav";
+        private const string LijstNaamString = "LaatsteLijst";
+        private const string LijstPaginaString = "LaatsteLijstPagina";
 
         public static int GroepID
         {
             get
             {
-                int? groepID = HttpContext.Current.Session[GroepSessieID] as int?;
+                int? groepID = HttpContext.Current.Session[GroepSessieIDString] as int?;
                 return groepID == null ? 0 : (int)groepID;
             }
             set
             {
-                HttpContext.Current.Session[GroepSessieID] = value;
+                HttpContext.Current.Session[GroepSessieIDString] = value;
             }
         }
 
@@ -31,12 +31,12 @@ namespace MvcWebApp2
         {
             get
             {
-                Boolean isMultiGav = Convert.ToBoolean(HttpContext.Current.Session[MultiGav].ToString());
-                return isMultiGav;
+                bool? isMultiGav = HttpContext.Current.Session[MultiGavString] as bool?;
+                return isMultiGav == null ? false : (bool)isMultiGav;
             }
             set
             {
-                HttpContext.Current.Session[MultiGav] = value;
+                HttpContext.Current.Session[MultiGavString] = value;
             }
         }
 
@@ -44,12 +44,12 @@ namespace MvcWebApp2
         {
             get
             {
-                String lijstnaam = HttpContext.Current.Session[LijstNaam] as String;
+                String lijstnaam = HttpContext.Current.Session[LijstNaamString] as String;
                 return lijstnaam == null ? string.Empty : (String)lijstnaam;
             }
             set
             {
-                HttpContext.Current.Session[LijstNaam] = value;
+                HttpContext.Current.Session[LijstNaamString] = value;
             }
         }
 
@@ -57,12 +57,12 @@ namespace MvcWebApp2
         {
             get
             {
-                int? paginanummer = HttpContext.Current.Session[LijstPagina] as int?;
+                int? paginanummer = HttpContext.Current.Session[LijstPaginaString] as int?;
                 return paginanummer == null ? 1 : (int)paginanummer;
             }
             set
             {
-                HttpContext.Current.Session[LijstPagina] = value;
+                HttpContext.Current.Session[LijstPaginaString] = value;
             }
         }
     }
