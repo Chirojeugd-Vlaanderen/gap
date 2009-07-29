@@ -85,15 +85,16 @@ namespace Cg2.Data.Ef
         {
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                // ik gebruik BasisEntiteit.ID om entity's te identificeren.
-                // Omdat de echte entity key vaak verdwijnt, genereer ik
-                // hem hier opnieuw.
+                // Ik gebruik AttachObjectGraph, zodat er een nieuwe
+                // instantie gemaakt wordt van entiteit.  Op die manier
+                // vermijd ik dat eventuele gerelateerde objecten van
+                // entiteit mee geattacht worden.
 
-                entiteit.EntityKey = db.CreateEntityKey(typeof(T).Name, entiteit);
+                T geattacht = db.AttachObjectGraph(entiteit);
 
-                db.Attach(entiteit);
-                db.DeleteObject(entiteit as object);
+                db.DeleteObject(geattacht);
                 db.SaveChanges();
+
             }
         }
 

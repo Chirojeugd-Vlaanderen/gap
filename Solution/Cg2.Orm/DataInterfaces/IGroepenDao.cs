@@ -41,9 +41,9 @@ namespace Cg2.Orm.DataInterfaces
 
         void BewarenMetVrijeVelden(Groep g);
 
-        void ToevoegenAfdeling(int groepID, string naam, string afkorting);
+        Afdeling AfdelingCreeren(int groepID, string naam, string afkorting);
 
-        void ToevoegenAfdelingsJaar(Groep g, Afdeling aj, OfficieleAfdeling oa, int geboortejaarbegin, int geboortejaareind);
+        AfdelingsJaar AfdelingsJaarCreeren(Groep g, Afdeling aj, OfficieleAfdeling oa, int geboortejaarbegin, int geboortejaareind);
 
         IList<OfficieleAfdeling> OphalenOfficieleAfdelingen();
 

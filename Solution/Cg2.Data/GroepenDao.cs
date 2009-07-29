@@ -137,8 +137,17 @@ namespace Cg2.Data.Ef
         }
 
 
-        public void ToevoegenAfdeling(int groepID, string naam, string afkorting)
+        /// <summary>
+        /// Creeert een nieuwe afdeling.
+        /// </summary>
+        /// <param name="groepID">ID van de groep</param>
+        /// <param name="naam">naam van de afdeling</param>
+        /// <param name="afkorting">afkorting voor de afdeling</param>
+        /// <returns>Een relevant afdelingsobject</returns>
+        public Afdeling AfdelingCreeren(int groepID, string naam, string afkorting)
         {
+            Afdeling a = new Afdeling();
+
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
                 var gp = (
@@ -147,8 +156,6 @@ namespace Cg2.Data.Ef
                     select g
                     ).FirstOrDefault<Groep>();
 
-                Afdeling a = new Afdeling();
-
                 a.AfdelingsNaam = naam;
                 a.Afkorting = afkorting;
                 a.Groep = gp;
@@ -156,73 +163,86 @@ namespace Cg2.Data.Ef
                 gp.Afdeling.Add(a);
 
                 db.SaveChanges();
+
+                db.Detach(a);
             }
+
+            return a;
         }
 
-        public void ToevoegenAfdelingsJaar(Groep g, Afdeling a, OfficieleAfdeling oa, int geboorteJaarVan, int geboorteJaarTot)
+        /// <summary>
+        /// Creeert een nieuw afdelingsjaar.
+        /// </summary>
+        /// <param name="g">Groep voor afdelingsjaar</param>
+        /// <param name="a">Afdeling voor afdelingsjaar</param>
+        /// <param name="oa">Officiele afdeling voor afdelingsjaar</param>
+        /// <param name="geboorteJaarVan">begingeboortejaar voor afdeling</param>
+        /// <param name="geboorteJaarTot">eindgeboortejaar voor afdeling</param>
+        /// <returns>Het nieuwe afdelingsjaar</returns>
+        public AfdelingsJaar AfdelingsJaarCreeren(Groep g, Afdeling a, OfficieleAfdeling oa, int geboorteJaarVan, int geboorteJaarTot)
         {
-            GroepsWerkJaar huidigwerkjaar = RecentsteGroepsWerkJaarGet(g.ID);
+            AfdelingsJaar afdelingsJaar = new AfdelingsJaar();
+            GroepsWerkJaar huidigWerkJaar = RecentsteGroepsWerkJaarGet(g.ID);
+
+            // Omdat we met een combinatie van geattachte en nieuwe objecten
+            // zitten, geeft het het minste problemen als de we relaties tussen
+            // de objecten gedetachet leggen, en daarna AttachObjectGraph
+            // aanroepen.
+
+            // In theorie zouden de eerstvolgende zaken in Business kunnen gebeuren,
+            // en zou daarna het resulterende AfdelingsJaar
+            // doorgespeeld moeten worden aan deze functie, die het dan enkel
+            // nog moet persisteren.
+
+            // TODO: verifieren of de afdeling bij de groep hoort door
+            // de groep van de afdeling op te halen, ipv alle afdelingen
+            // van de groep.
+
+            // Groep g heeft niet altijd de afdelingen mee
+            Groep groepMetAfdelingen = OphalenMetAfdelingen(g.ID);
+
+            // TODO: deze test hoort thuis in business, niet in DAL:
+
+            if (!groepMetAfdelingen.Afdeling.Contains(a))
+            {
+                throw new InvalidOperationException("Afdeling " + a.AfdelingsNaam + " is geen afdeling van Groep " + g.Naam);
+            }
+
+            // TODO: test of de officiele afdeling bestaat, heb
+            // ik voorlopig even weggelaten.  Als de afdeling niet
+            // bestaat, zal er bij het bewaren toch een exception
+            // optreden, aangezien het niet de bedoeling is dat
+            // een officiele afdeling bijgemaakt wordt.
+
+            //TODO check if no conflicts with existing afdelingsjaar
+            //TODO: bovenstaande TODO moet ook in business layer gebeuren
+
+            afdelingsJaar.OfficieleAfdeling = oa;
+            afdelingsJaar.Afdeling = a;
+            afdelingsJaar.GroepsWerkJaar = huidigWerkJaar;
+            afdelingsJaar.GeboorteJaarVan = geboorteJaarVan;
+            afdelingsJaar.GeboorteJaarTot = geboorteJaarTot;
+
+            a.AfdelingsJaar.Add(afdelingsJaar);
+            oa.AfdelingsJaar.Add(afdelingsJaar);
+            huidigWerkJaar.AfdelingsJaar.Add(afdelingsJaar);
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                db.AttachObjectGraph(g);
-                db.AttachObjectGraph(a);
-                db.AttachObjectGraph(oa);
+                AfdelingsJaar geattachtAfdJr = db.AttachObjectGraph(afdelingsJaar
+                    , aj=>aj.OfficieleAfdeling.WithoutUpdate()
+                    , aj=>aj.Afdeling.WithoutUpdate()
+                    , aj=>aj.GroepsWerkJaar.WithoutUpdate());
 
-                IList<OfficieleAfdeling> oas = (
-                    from t in db.OfficieleAfdeling
-                    select t                    
-                    ).ToList<OfficieleAfdeling>();
-
-                // Groep g heeft niet altijd de afdelingen mee
-                Groep groepMetAfdelingen = OphalenMetAfdelingen(g.ID);
-
-                // groepMetAfdelingen.Afdeling.Contains(a) ... werkt niet
-                bool found = false;
-                foreach (Afdeling afdeling in groepMetAfdelingen.Afdeling)
-                {
-                    if (afdeling.ID == a.ID)
-                    {
-                        found = true;   
-                    }
-                }
-                if (!found)
-                {
-                    throw new InvalidOperationException("Afdeling " + a.AfdelingsNaam + " is geen afdeling van Groep " + g.Naam);
-                }
-                found = groepMetAfdelingen.Afdeling.Contains(a);
-
-                // oas.Contains(oa) ... werkt niet
-                found = false;
-                foreach (OfficieleAfdeling afdeling in oas)
-                {
-                    if (afdeling.ID == oa.ID)
-                    {
-                        found = true;
-                    }
-                }
-                if (!found)
-                {
-                    throw new InvalidOperationException("OfficieleAfdeling " + oa.Naam + " bestaat niet");
-                }
-                found = oas.Contains(oa);
-
-                //TODO check if no conflicts with existing afdelingsjaar
-
-                AfdelingsJaar afdelingsjaar = new AfdelingsJaar();
-
-                afdelingsjaar.OfficieleAfdeling = oa;
-                afdelingsjaar.Afdeling = a;
-                afdelingsjaar.GroepsWerkJaar = huidigwerkjaar;
-                afdelingsjaar.GeboorteJaarVan = geboorteJaarVan;
-                afdelingsjaar.GeboorteJaarTot = geboorteJaarTot;
-
-                a.AfdelingsJaar.Add(afdelingsjaar);
-                oa.AfdelingsJaar.Add(afdelingsjaar);
-
-                db.AttachObjectGraph(afdelingsjaar, aj=>aj.OfficieleAfdeling, aj=>aj.Afdeling, aj=>aj.GroepsWerkJaar);
                 db.SaveChanges();
+
+                // SaveChanges geeft geattachtAfdJr een ID.  Neem dit
+                // id over in het gedetachte afdelingsJaar.
+
+                afdelingsJaar.ID = geattachtAfdJr.ID;
             }
+
+            return afdelingsJaar;
         }
 
         public IList<OfficieleAfdeling> OphalenOfficieleAfdelingen()

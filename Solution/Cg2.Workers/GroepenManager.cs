@@ -29,10 +29,19 @@ namespace Cg2.Workers
             _dao = dao;
         }
 
-        
+        /// <summary>
+        /// Haalt groep op, op basis van GroepID
+        /// </summary>
+        /// <param name="groepID">ID op te halen groep</param>
+        /// <returns>gevraagde groep</returns>
+        public Groep Ophalen(int groepID)
+        {
+            return _dao.Ophalen(groepID);
+        }
+       
         public void ToevoegenAfdeling(int groepID, string naam, string afkorting)
         {            
-            Dao.ToevoegenAfdeling(groepID, naam, afkorting);
+            Dao.AfdelingCreeren(groepID, naam, afkorting);
         }
 
         public void ToevoegenAfdelingsJaar(Groep g, Afdeling a, OfficieleAfdeling oa, int geboortejaarbegin, int geboortejaareind)
@@ -43,7 +52,7 @@ namespace Cg2.Workers
             {
                 throw new InvalidOperationException("Ongeldige geboortejaren voor het afdelingsjaar");
             }
-            Dao.ToevoegenAfdelingsJaar(g, a, oa, geboortejaarbegin, geboortejaareind);
+            Dao.AfdelingsJaarCreeren(g, a, oa, geboortejaarbegin, geboortejaareind);
         }
 
         public IList<OfficieleAfdeling> OphalenOfficieleAfdelingen()
@@ -55,6 +64,11 @@ namespace Cg2.Workers
         // Groep en GroepsWerkJaar zijn allebei parameters omdat GroepsWerkJaar.Groep soms null is
         // maakt gebruik van OphalenMetAfdelingen, filtert dan de afdelingsjaren
         // die overeenkomen met het gegeven GroepsWerkJaar
+        //
+        // TODO: Als GroepsWerkJaar.Groep null is, dan moet deze functie maar zorgen dat
+        // GroepsWerkJaar.Groep opgevraagd wordt.  We moeten vermijden da een groep een afdeling
+        // toevoegt aan een groepswerkjaar van een andere groep!
+        // TODO: Authorisatie!
         public IList<AfdelingsJaar> OphalenAfdelingsJaren(Groep groep, GroepsWerkJaar gwj)
         {
             IList<AfdelingsJaar> result = new List<AfdelingsJaar>();
@@ -80,7 +94,13 @@ namespace Cg2.Workers
             return Dao.OphalenEigenAfdelingen(groep);
         }
 
-        
+
+        /// <summary>
+        /// Testfunctie die standaardafdelingen en afdelingsjaren
+        /// aanmaakt voor groep 310.
+        ///
+        /// TODO: generiek maken of verwijderen
+        /// </summary>
         public void ToevoegenAfdelingenEnAfdelingsJaren()
         {
             /*ToevoegenAfdeling(310, "Ribbels", "RI");
@@ -136,6 +156,15 @@ namespace Cg2.Workers
             }
         }
 
-    
+
+        /// <summary>
+        /// Haalt recentste groepswerkjaar op voor gegeven groep
+        /// </summary>
+        /// <param name="p">ID van gegeven groep</param>
+        /// <returns>Gevraagde groepswerkjaar</returns>
+        public GroepsWerkJaar RecentsteGroepsWerkJaarGet(Groep g)
+        {
+            return _dao.RecentsteGroepsWerkJaarGet(g.ID);
+        }
     }
 }

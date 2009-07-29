@@ -63,6 +63,7 @@
     <Compile Include="DataInterfaces\IPersonenDao.cs" />
     <Compile Include="AfdelingsJaar.cs" />
     <Compile Include="Afdeling.cs" />
+    <Compile Include="GroepsWerkJaar.cs" />
     <Compile Include="OfficieleAfdeling.cs" />
     <Compile Include="DataInterfaces\IAdressenDao.cs" />
     <Compile Include="DataInterfaces\IAuthorisatieDao.cs" />
