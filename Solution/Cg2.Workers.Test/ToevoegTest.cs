@@ -82,17 +82,28 @@ namespace Cg2.Workers.Test
             p.GelieerdePersoon.Add(gp);
             gp.Groep = g;
 
-            
-
             GelieerdePersonenDao gpdao = new GelieerdePersonenDao();
+            int number = gpdao.AllenOphalen(310).Count;
+            
             gpdao.Bewaren(gp);
 
+            int number2 = gpdao.AllenOphalen(310).Count;
+
+            Assert.AreEqual(number + 1, number2);
+
+            /*
+             * todo: 
+             * kan ik groep ophalen zonder al zijn gelieerde personen, maar toch aan de collectie toevoegen?
+             * verwijderen van persoon nog testen
+             * vastleggen welke velden van persoon not null zijn en welke uniek moeten zijn (alleen AD geloof ik)
+             * creeren als methode overal verwijderen?
+             * checken of overal in bewaren nieuwe objecten juist worden afgehandeld (nog niet zo voor gelieerdepersoon
+             *                   namelijk niet als de persoon als bestaat maar de gelieerdepersoon nieuw is)
+             */
 
 
-
-
-            gp.TeVerwijderen = true;
-            gpdao.Bewaren(gp);
+            //gp.TeVerwijderen = true;
+            //gpdao.Bewaren(gp);
         }
     }
 }
