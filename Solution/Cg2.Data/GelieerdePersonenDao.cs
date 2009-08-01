@@ -60,33 +60,36 @@ namespace Cg2.Data.Ef
 
         public override GelieerdePersoon Bewaren(GelieerdePersoon p)
         {
-            if (p.ID == 0)
+            /*if (p.ID == 0)
             {
                 // creeer nieuwe gelieerde persoon
 
                 return Creeren(p);
             }
             else
-            {
+            {*/
                 // update bestaande gelieerde persoon
 
                 Debug.Assert(p.Persoon != null);    // gelieerde persoon is niet nuttig zonder persoon
-                Debug.Assert(p.Persoon.ID != 0);    // een bestaande gelieerde persoon is nooit gekoppeld aan een nieuwe persoon
+                Debug.Assert(p.Persoon.ID != 0 || p.ID==0);    // een bestaande gelieerde persoon is nooit gekoppeld aan een nieuwe persoon
 
                 using (ChiroGroepEntities db = new ChiroGroepEntities())
                 {
                     // Bestaande objecten zijn hun entity key vaak kwijt (omdat die
                     // verloren gaat in de MVC-cyclus.)  Opnieuw genereren dus.
 
-                    p.EntityKey = db.CreateEntityKey("GelieerdePersoon", p);
-                    p.Persoon.EntityKey = db.CreateEntityKey("Persoon", p.Persoon);
+                    if (p.ID != 0 && p.Persoon.ID != 0)
+                    {
+                        p.EntityKey = db.CreateEntityKey("GelieerdePersoon", p);
+                        p.Persoon.EntityKey = db.CreateEntityKey("Persoon", p.Persoon);
+                    }
                     
-                    GelieerdePersoon geattacht = db.AttachObjectGraph(p, gp => gp.Persoon);
+                    GelieerdePersoon geattacht = db.AttachObjectGraph(p, gp => gp.Persoon, gp=>gp.Groep);
 
                     db.SaveChanges();
                 }
                 return p;
-            }
+            //}
         }
 
         #region IGelieerdePersonenDao Members

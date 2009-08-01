@@ -73,13 +73,16 @@ namespace Cg2.Workers.Test
             //p.VoorNaam = "Broes";
             //p.Naam = "De Cat";
 
+            /*PersonenDao pdao = new PersonenDao();
+            pdao.Bewaren(p);*/
+
             GelieerdePersoon gp = GelieerdePersoon.CreateGelieerdePersoon(10, 0);
+
             gp.Persoon = p;
             p.GelieerdePersoon.Add(gp);
             gp.Groep = g;
 
-            PersonenDao pdao = new PersonenDao();
-            pdao.Bewaren(p);
+            
 
             GelieerdePersonenDao gpdao = new GelieerdePersonenDao();
             gpdao.Bewaren(gp);
