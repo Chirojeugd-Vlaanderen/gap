@@ -50,32 +50,36 @@ namespace Cg2.Workers
         /// </remarks>
         public Lid LidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
         {
-            // TODO: functie wordt aangepast om Kind aan te maken 
-            // bij de eerste afdeling van het GroepsWerkJaar
-            // later uitbreiden om:
-            // * te kiezen Kind/Leiding
-            // * juiste afdeling (eventueel pagina tonen om te kiezen??)
-            // * checken of het Lid nog niet bestaat (geen dubbels maken)
-
+            // TODO: geslacht in rekening brengen bij automatisch keuze afdeling
+            // TODO: controle of lid nog niet bestaat
+            // TODO: berekening EindeInstapPeriode
+            
             Lid lid;
 
-            AfdelingsJaar aj = null;
+            // Details van GelieerdePersoon ophalen
+            GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
+            GelieerdePersoon gpMetDetails = gpm.DetailsOphalen(gp.ID);
 
-            // Afdelingen opzoeken
-            // TODO: effectief controleren
-            // Voorlopig altijd Kind
+            // Afdelingen ophalen
             GroepenManager gm = new GroepenManager(_groepenDao);
-
             IList<AfdelingsJaar> jaren = gm.OphalenAfdelingsJaren(gp.Groep, gwj);
-            // voorlopig gewoon eerste afdeling uit de lijst nemen
-            // als er geen afdelingen zijn, dan null ===> leiding
+
+            // Geschikte afdeling zoeken
+            // Als er geen geschikte afdeling is, dan null (wordt Leiding)
+            AfdelingsJaar aj = null;
             if (jaren.Count > 0)
             {
-                aj = jaren.ElementAt(0);
+                int geboorte = ((DateTime) gpMetDetails.Persoon.GeboorteDatum).Year - gp.ChiroLeefTijd;
+                foreach (AfdelingsJaar jaar in jaren)
+                {
+                    if (jaar.GeboorteJaarVan <= geboorte && geboorte <= jaar.GeboorteJaarTot)
+                    {
+                        aj = jaar;
+                    }
+                }
             }
 
-            // specifieke dingen voor leiding of voor leden
-            // keuze voor leiding als geen geschikte afdeling gevonden kon worden
+            // Specifieke dingen voor Leiding of Kind
             if (aj == null)
             {
                 Leiding leiding = new Leiding();
@@ -84,21 +88,16 @@ namespace Cg2.Workers
             else
             {
                 Kind kind = new Kind();
-                kind.AfdelingsJaar.Kind.Add(kind);
+                kind.AfdelingsJaar = aj;
+                aj.Kind.Add(kind);
                 lid = kind;
             }
             
-            // algemeen: GroepsWerkJaar en GelieerdePersoon invullen
+            // GroepsWerkJaar en GelieerdePersoon invullen
             lid.GroepsWerkJaar = gwj;
             lid.GelieerdePersoon = gp;
             gp.Lid.Add(lid);
             gwj.Lid.Add(lid);
-
-            // Kijken of er al een lid bestaat, moet nog gebeuren!
-
-            // TODO: Einde instapperiode moet ook nog berekend worden.
-            // 
-            //l.EindeInstapPeriode = DateTime.Now;
 
             return lid;
         }

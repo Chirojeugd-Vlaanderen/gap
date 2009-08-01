@@ -96,68 +96,6 @@ namespace Cg2.Workers
 
 
         /// <summary>
-        /// Testfunctie die standaardafdelingen en afdelingsjaren
-        /// aanmaakt voor groep 310.
-        ///
-        /// TODO: generiek maken of verwijderen
-        /// </summary>
-        public void ToevoegenAfdelingenEnAfdelingsJaren()
-        {
-            /*ToevoegenAfdeling(310, "Ribbels", "RI");
-            ToevoegenAfdeling(310, "Speelclub", "SP");
-            ToevoegenAfdeling(310, "Rakwi's", "RA");
-            ToevoegenAfdeling(310, "Tito's", "TI");
-            ToevoegenAfdeling(310, "Keti's", "KE");
-            ToevoegenAfdeling(310, "Aspi's", "AS");*/
-
-            Groep g = Dao.Ophalen(310);
-            IList<Afdeling> eigen = OphalenEigenAfdelingen(310);
-            IList<OfficieleAfdeling> off = OphalenOfficieleAfdelingen();
-            foreach (Afdeling a in eigen)
-            {
-                foreach (OfficieleAfdeling o in off)
-                {
-                    if (a.AfdelingsNaam.Length > 2 && o.Naam.StartsWith(a.AfdelingsNaam.Substring(0, 2)))
-                    {
-                        int start = System.DateTime.Today.Year, eind = System.DateTime.Today.Year;
-                        if (o.Naam.StartsWith("Ri"))
-                        {
-                            start -= 7;
-                            eind -= 6;
-                        }
-                        else if (o.Naam.StartsWith("Sp"))
-                        {
-                            start -= 9;
-                            eind -= 8;
-                        }
-                        else if (o.Naam.StartsWith("Ra"))
-                        {
-                            start -= 11;
-                            eind -= 10;
-                        }
-                        else if (o.Naam.StartsWith("Ti"))
-                        {
-                            start -= 13;
-                            eind -= 12;
-                        }
-                        else if (o.Naam.StartsWith("Ke"))
-                        {
-                            start -= 15;
-                            eind -= 14;
-                        }
-                        else if (o.Naam.StartsWith("As"))
-                        {
-                            start -= 17;
-                            eind -= 16;
-                        }
-                        ToevoegenAfdelingsJaar(g, a, o, start, eind);
-                    }
-                }
-            }
-        }
-
-
-        /// <summary>
         /// Haalt recentste groepswerkjaar op voor gegeven groep
         /// </summary>
         /// <param name="p">ID van gegeven groep</param>
