@@ -13,8 +13,6 @@
     <ul id="acties">
         <li><input type="submit" value="Bewaren" /></li>        
     </ul>
-    
-    <h2><%=Model.HuidigePersoon.Persoon.VolledigeNaam%></h2>
 
     <fieldset>
     <legend>Persoonlijke gegevens</legend>

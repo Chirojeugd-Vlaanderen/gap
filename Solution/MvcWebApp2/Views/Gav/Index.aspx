@@ -16,7 +16,6 @@
         <li><input type="submit" value="OK" /></li>        
     </ul>
 
-    <h2>Kies je Chirogroep:</h2>
 <%
        foreach (var item in ViewData.Model.GroepenLijst)
        {

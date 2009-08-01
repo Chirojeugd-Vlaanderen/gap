@@ -79,7 +79,7 @@ namespace MvcWebApp2.Controllers
         {
             var model = new Models.GelieerdePersonenModel();
             model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
-            model.Title = "Persoon Bewerken " + model.HuidigePersoon.Persoon.VolledigeNaam;
+            model.Title = model.HuidigePersoon.Persoon.VolledigeNaam;
             return View("Edit", model);
         }
 
@@ -95,11 +95,12 @@ namespace MvcWebApp2.Controllers
                 // Voorlopig opnieuw redirecten naar Edit;
                 // er zou wel gemeld moeten worden dat het wijzigen
                 // gelukt is.
+                // TODO: wat als er een fout optreedt bij PersoonBewaren?
+                TempData["feedback"] = "Wijzigingen zijn opgeslagen";
 
                 // (er wordt hier geredirect ipv de view te tonen,
                 // zodat je bij een 'refresh' niet de vraag krijgt
                 // of je de gegevens opnieuw wil posten.)
-
                 return RedirectToAction("Edit", new { id = p.HuidigePersoon.ID });
             }
             catch
@@ -113,14 +114,16 @@ namespace MvcWebApp2.Controllers
         public ActionResult LidMaken(int id)
         {
             ServiceHelper.CallService<ILedenService>(l => l.LidMakenEnBewaren(id));
-
             return RedirectToAction("Index");
         }
 
         // GET: /Personen/Verhuizen/vanAdresID
         public ActionResult Verhuizen(int id, int aanvragerID)
         {
-			VerhuisInfo model = new VerhuisInfo(id, aanvragerID);			model.Title = "Personen Verhuis";            return View("AdresBewerken", model);        }
+			VerhuisInfo model = new VerhuisInfo(id, aanvragerID);			
+            model.Title = "Personen Verhuizen";
+            return View("AdresBewerken", model);
+        }
 
         // POST: /Personen/Verhuizen
         [AcceptVerbs(HttpVerbs.Post)]
@@ -176,6 +179,7 @@ namespace MvcWebApp2.Controllers
         public ActionResult NieuwAdres(int id)
         {
             NieuwAdresInfo model = new NieuwAdresInfo(id);
+            model.Title = "Nieuw adres toevoegen";
             return View("NieuwAdres", model);
         }
 

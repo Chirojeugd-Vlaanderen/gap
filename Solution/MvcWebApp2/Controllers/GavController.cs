@@ -17,6 +17,7 @@ namespace MvcWebApp2.Controllers
         public ActionResult Index()
         {
             var model = new Models.GavModel();
+            model.Title = "Kies je Chirogroep";
             model.GroepenLijst = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
                     (g => g.OphalenMijnGroepen());
 

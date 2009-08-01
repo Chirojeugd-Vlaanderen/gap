@@ -74,7 +74,6 @@ namespace MvcWebApp2.Controllers
                 model.Groepsnaam = gi.Groepsnaam;
                 model.Plaats = gi.Plaats;
                 model.StamNummer = gi.StamNummer;
-                model.Title = " - .: Kakajo :. ";
             }
         }
     }

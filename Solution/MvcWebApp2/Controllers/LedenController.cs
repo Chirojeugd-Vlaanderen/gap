@@ -39,7 +39,7 @@ namespace MvcWebApp2.Controllers
             model.GroepsWerkJaarIdZichtbaar = groepsWerkJaarId;
             // TODO: lijst opbouwen met alle GroepsWerkJaren van de huidige groep
             // model.GroepsWerkJaarLijst = ...;
-            model.Title = "Leden Overzicht voor GroepsWerkJaarId " + groepsWerkJaarId.ToString();
+            model.Title = "Ledenoverzicht";
             return View("Index", model);
         }
 

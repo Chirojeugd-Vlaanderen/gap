@@ -16,8 +16,6 @@
            <li><input type="submit" value="Bewaren" /></li>
            </ul>
            
-           <h2>Adresgegevens</h2>
-           
            <fieldset>
            <legend>Adres toevoegen voor</legend>
            

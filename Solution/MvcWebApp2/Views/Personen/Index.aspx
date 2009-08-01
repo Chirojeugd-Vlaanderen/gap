@@ -8,8 +8,6 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-<h2>Personenoverzicht</h2>
-
 <% Html.RenderPartial("PersonenLijstControl"); %>
 
 </asp:Content>

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title><%=Html.Encode(ViewData.Model.Title) %></title>
+    <title><%=Html.Encode(ViewData.Model.Title) %> | <%=Html.Encode(ViewData.Model.Groepsnaam) %></title>
     <asp:ContentPlaceHolder ID="head" runat="server" />
     <link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
 </head>
@@ -17,7 +17,7 @@
                 <%  if (ViewData.Model.Plaats != "geen")
                     { %>
                         <p>
-                            <%=Html.Encode(ViewData.Model.Plaats)%> | Stamnr: <%=Html.Encode(ViewData.Model.StamNummer)%>
+                            <%=Html.Encode(ViewData.Model.Plaats)%> | Stamnummer: <%=Html.Encode(ViewData.Model.StamNummer)%>
                          </p>
                   <%  } %>
             </div>
@@ -37,6 +37,7 @@
             </div>
         </div>
         <div id="main">
+            <h2><%=Html.Encode(ViewData.Model.Title) %></h2>
         <% if (TempData["feedback"] != null)
            { %>
            <div class="Feedback"><%= Html.Encode(TempData["feedback"]) %></div>
