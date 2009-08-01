@@ -9,7 +9,7 @@ namespace Cg2.Orm.DataInterfaces
     /// Met een GelieerdePersoon moet altijd het geassocieerde
     /// persoonsobject meekomen, anders heeft het weinig zin.
     /// </summary>
-    public interface IPersonenDao: IDao<GelieerdePersoon>
+    public interface IPersonenDao: IDao<Persoon>
     {
         /// <summary>
         /// Haalt lijst op van Personen
@@ -18,5 +18,7 @@ namespace Cg2.Orm.DataInterfaces
         /// Personen</param>
         /// <returns>lijst met Personen</returns>
         IList<Persoon> LijstOphalen(IList<int> personenIDs);
+
+        Persoon Bewaren(Persoon p);
     }
 }

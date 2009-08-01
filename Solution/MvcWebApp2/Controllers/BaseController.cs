@@ -54,7 +54,7 @@ namespace MvcWebApp2.Controllers
                 // De Gekozen groep is nog niet gekend, zet defaults
                 // TODO: De defaults op een zinvollere plaats definieren.
 
-                model.Groepsnaam = "Geen Chirogroep geselecteerd";
+                model.Groepsnaam = "Nog geen Chirogroep geselecteerd";
                 model.Plaats = "geen";
                 model.StamNummer = "--";
             }

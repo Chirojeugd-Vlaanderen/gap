@@ -65,21 +65,31 @@ namespace Cg2.Workers.Test
         [TestMethod]
         public void TestMethod1()
         {
-            GroepenManager gm = Factory.Maak<GroepenManager>();
-            Groep g = gm.Ophalen(310);
+            GroepenDao gdao = new GroepenDao();
+            Groep g = gdao.Ophalen(310);
+            
+            Persoon p = Persoon.CreatePersoon("Broes", 0, 0);
+            //Persoon p = new Persoon();
+            //p.VoorNaam = "Broes";
+            //p.Naam = "De Cat";
 
-            Persoon p = Persoon.CreatePersoon("Broes", 0, 300);
-            GelieerdePersoon gp = GelieerdePersoon.CreateGelieerdePersoon(10, 300);
+            GelieerdePersoon gp = GelieerdePersoon.CreateGelieerdePersoon(10, 0);
             gp.Persoon = p;
             p.GelieerdePersoon.Add(gp);
             gp.Groep = g;
 
-            GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
-            gpm.Bewaren(gp);
+            PersonenDao pdao = new PersonenDao();
+            pdao.Bewaren(p);
+
+            GelieerdePersonenDao gpdao = new GelieerdePersonenDao();
+            gpdao.Bewaren(gp);
+
+
+
+
 
             gp.TeVerwijderen = true;
-
-            gpm.Bewaren(gp);
+            gpdao.Bewaren(gp);
         }
     }
 }
