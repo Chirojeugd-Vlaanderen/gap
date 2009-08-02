@@ -67,6 +67,8 @@ namespace Cg2.Workers.Test
         {
             GroepenDao gdao = new GroepenDao();
             Groep g = gdao.Ophalen(310);
+
+            Assert.AreEqual(0, g.GelieerdePersoon.Count);
             
             Persoon p = Persoon.CreatePersoon("Broes", 0, 0);
             //Persoon p = new Persoon();
@@ -82,14 +84,19 @@ namespace Cg2.Workers.Test
             p.GelieerdePersoon.Add(gp);
             gp.Groep = g;
 
+            Assert.AreEqual(1, g.GelieerdePersoon.Count);
+            //Er gebeurt dus GEEN loading van de andere gelieerde personen, maar blijkbaar kan het wel
+            //zonder probleem worden toegevoegd
+
             GelieerdePersonenDao gpdao = new GelieerdePersonenDao();
             int number = gpdao.AllenOphalen(310).Count;
             
-            gpdao.Bewaren(gp);
+            gp = gpdao.Bewaren(gp);
 
             int number2 = gpdao.AllenOphalen(310).Count;
 
             Assert.AreEqual(number + 1, number2);
+            Assert.AreNotEqual(number, 0);
 
             /*
              * todo: 
@@ -101,9 +108,16 @@ namespace Cg2.Workers.Test
              *                   namelijk niet als de persoon als bestaat maar de gelieerdepersoon nieuw is)
              */
 
+            //PROBLEEM: hij blijkt na bewaren nog altijd zijn oude ID te hebben, hoe dit te verhelpen?
+            //mss ophalen na bewaren (in de dao)
+            //gp = gpdao.Ophalen(gp.ID);
 
-            //gp.TeVerwijderen = true;
-            //gpdao.Bewaren(gp);
+            gp.TeVerwijderen = true;
+            p.TeVerwijderen = true;
+            gpdao.Bewaren(gp);
+
+            int number3 = gpdao.AllenOphalen(310).Count;
+            Assert.AreEqual(number, number3);
         }
     }
 }
