@@ -113,7 +113,7 @@ namespace MvcWebApp2.Controllers
         [GroepActionFilter]
         public ActionResult LidMaken(int id)
         {
-            ServiceHelper.CallService<ILedenService>(l => l.LidMakenEnBewaren(id));
+            TempData["feedback"] = ServiceHelper.CallService<ILedenService, String>(l => l.LidMakenEnBewaren(id));
             return RedirectToAction("Index");
         }
 

@@ -40,10 +40,13 @@ namespace MvcWebApp2.Controllers
         {
             GegevensVanDeGroepInvullen();
 
-            childViewModel.Groepsnaam = model.Groepsnaam;
-            childViewModel.Plaats = model.Plaats;
-            childViewModel.StamNummer = model.StamNummer;
-            childViewModel.Title += model.Title;
+            if (childViewModel != null)
+            {
+                childViewModel.Groepsnaam = model.Groepsnaam;
+                childViewModel.Plaats = model.Plaats;
+                childViewModel.StamNummer = model.StamNummer;
+                childViewModel.Title += model.Title;
+            }
         }
 
         private void GegevensVanDeGroepInvullen()

@@ -11,6 +11,9 @@ namespace Cg2.ServiceContracts
     public class LidInfo
     {
         [DataMember]
+        public int LidID { get; set; }
+
+        [DataMember]
         public PersoonInfo PersoonInfo { get; set; }
 
         [DataMember]

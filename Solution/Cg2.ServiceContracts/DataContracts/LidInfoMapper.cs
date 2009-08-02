@@ -13,7 +13,8 @@ namespace Cg2.ServiceContracts
             LidInfo l = new LidInfo()
             {
                 PersoonInfo = PersoonInfoMapper.mapPersoon(lid.GelieerdePersoon),
-                LidgeldBetaald = lid.LidgeldBetaald
+                LidgeldBetaald = lid.LidgeldBetaald,
+                LidID = lid.ID
             };
             if (lid is Kind)
             {
@@ -31,7 +32,12 @@ namespace Cg2.ServiceContracts
             else if (lid is Leiding)
             {
                 l.Type = LidType.Leiding;
-                l.AfdelingString = "not implemented";
+                l.AfdelingString = "";
+                Leiding leiding = (Leiding) lid;
+                foreach (AfdelingsJaar aj in leiding.AfdelingsJaar)
+                {
+                    l.AfdelingString = l.AfdelingString + (l.AfdelingString.Equals("") ? "" : ",") + " " + aj.Afdeling.AfdelingsNaam;
+                }
             }
             else
             {

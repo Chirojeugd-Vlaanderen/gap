@@ -21,7 +21,8 @@ maar dat is nu nog niet geimplementeerd :-) -->
     <td class="right"><%=l.PersoonInfo.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)l.PersoonInfo.GeboorteDatum).ToString("d")%></td>
     <td><%=l.PersoonInfo.Geslacht.ToString()%></td>
     <td>
-        <%=Html.ActionLink("Bewerken", "Edit", new { Controller = "Personen", id = l.PersoonInfo.GelieerdePersoonID })%>
+        <%=Html.ActionLink("Verwijderen", "Verwijderen", new { Controller = "Leden", id = l.LidID })%>
+        <%=Html.ActionLink("Afdelingen", "AfdelingenBewerken", new { Controller = "Leden", id = l.LidID })%>
     </td>
 </tr>
 <% } %>

@@ -70,6 +70,26 @@ namespace MvcWebApp2.Controllers
         }
 
         //
+        // GET: /Leden/Verwijderen/5
+        public ActionResult Verwijderen(int id)
+        {
+            Boolean success = ServiceHelper.CallService<ILedenService, Boolean>(l => l.Verwijderen(id));
+            if (success)
+            {
+                TempData["feedback"] = "Lid is verwijderd";
+            }
+            return RedirectToAction("Index");
+        }
+
+        //
+        // POST: /Leden/Verwijderen/5
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Verwijderen(int id, FormCollection collection)
+        {
+            return RedirectToAction("Index");
+        }
+
+        //
         // GET: /Leden/Edit/5
  
         public ActionResult Edit(int id)

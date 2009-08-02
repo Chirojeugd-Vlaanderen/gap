@@ -69,7 +69,11 @@ namespace Cg2.Workers
             AfdelingsJaar aj = null;
             if (jaren.Count > 0)
             {
-                int geboorte = ((DateTime) gpMetDetails.Persoon.GeboorteDatum).Year - gp.ChiroLeefTijd;
+                int geboorte = 0;
+                if (gpMetDetails.Persoon.GeboorteDatum != null)
+                {
+                    geboorte = ((DateTime) gpMetDetails.Persoon.GeboorteDatum).Year - gp.ChiroLeefTijd;
+                }
                 foreach (AfdelingsJaar jaar in jaren)
                 {
                     if (jaar.GeboorteJaarVan <= geboorte && geboorte <= jaar.GeboorteJaarTot)
@@ -83,6 +87,16 @@ namespace Cg2.Workers
             if (aj == null)
             {
                 Leiding leiding = new Leiding();
+                foreach (AfdelingsJaar ajw in jaren)
+                {
+                    Random seed = new Random();
+                    double r = seed.NextDouble();
+                    if (r < 0.2)
+                    {
+                        leiding.AfdelingsJaar.Add(ajw);
+                        ajw.Leiding.Add(leiding);
+                    }
+                }
                 lid = leiding;
             }
             else
@@ -122,6 +136,39 @@ namespace Cg2.Workers
         }
 
         /// <summary>
+        /// Verwijdert lid
+        /// </summary>
+        /// <param name="lid">Lid</param>
+        /// <returns>true on successful</returns>
+        public Boolean LidVerwijderen(int id)
+        {
+            // TODO: controleren huidige werkjaar
+            // TODO: controleren instapperiode
+            // TODO: fallback naar LidOpNonactiefZetten?
+            // TODO: controleren of verwijderen effectief gelukt is
+            // TODO: probleem oplossen met Leiding bewaren 
+
+            Lid lid = _dao.OphalenMetDetails(id);
+            lid.TeVerwijderen = true;
+
+            Debug.Assert(lid is Kind || lid is Leiding, "Lid moet ofwel Kind ofwel Leiding zijn!");
+
+            // voor een Kind is _dao.Bewaren(lid) voldoende
+            if (lid is Kind)
+            {
+                _dao.Bewaren(lid);
+            }
+            // voor Leiding moet er blijkbaar meer gebeuren
+            // onderstaande code werkt niet
+            else if (lid is Leiding)
+            {
+                _dao.Bewaren(lid);
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Haalt een 'pagina' op met leden uit een bepaald GroepsWerkJaar
         /// </summary>
         /// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
@@ -139,11 +186,6 @@ namespace Cg2.Workers
                 throw new GeenGavException("Dit GroepsWerkJaar hoort niet bij je groep(en).");
             }
         }
-
-        /*public void LidMaken(int gelieerdePersoonID)
-        {
-            Dao.LidMaken(gelieerdePersoonID);
-        }*/
 
         /// <summary>
         /// 

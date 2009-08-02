@@ -21,7 +21,7 @@ namespace Cg2.ServiceContracts
         /// <param name="gelieerdePersoonID">ID van de gelieerde persoon</param>
         /// <returns>nieuw lidobject</returns>
         [OperationContract]
-        void LidMakenEnBewaren(int gelieerdePersoonID);
+        String LidMakenEnBewaren(int gelieerdePersoonID);
         //Kind LidMaken(int gelieerdePersoonID);
 
         //[OperationContract]
@@ -43,6 +43,9 @@ namespace Cg2.ServiceContracts
 
         [OperationContract]
         void BewarenMetVrijeVelden(Lid lid);
+
+        [OperationContract]
+        Boolean Verwijderen(int id);
 
 
         /// <summary>

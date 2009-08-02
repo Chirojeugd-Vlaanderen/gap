@@ -92,5 +92,36 @@ namespace Cg2.Data.Ef
             //TODO
             throw new NotImplementedException();
         }
+
+        public Lid OphalenMetDetails(int lidID)
+        {
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                db.Lid.MergeOption = MergeOption.NoTracking;
+
+                Lid lid = (
+                    from t in db.Lid.Include("GelieerdePersoon").Include("GroepsWerkJaar")
+                    where t.ID == lidID
+                    select t).FirstOrDefault<Lid>();
+
+                if (lid is Kind)
+                {
+                    return (
+                        from t in db.Lid.OfType<Kind>().Include("GelieerdePersoon").Include("GroepsWerkJaar").Include("AfdelingsJaar")
+                        where t.ID == lidID
+                        select t).FirstOrDefault<Kind>();
+                }
+                else if (lid is Leiding)
+                {
+                    return (
+                        from t in db.Lid.OfType<Leiding>().Include("GelieerdePersoon").Include("GroepsWerkJaar").Include("AfdelingsJaar")
+                        where t.ID == lidID
+                        select t).FirstOrDefault<Leiding>();
+                }
+                return lid;
+            }
+        }
+
+
     }
 }

@@ -14,16 +14,16 @@ namespace Cg2.Services
     // NOTE: If you change the class name "LedenService" here, you must also update the reference to "LedenService" in Web.config.
     public class LedenService : ILedenService
     {
-        public void LidMakenEnBewaren(int gelieerdePersoonID)
+        public String LidMakenEnBewaren(int gelieerdePersoonID)
         {
             GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
             LedenManager lm = Factory.Maak<LedenManager>();
+            GelieerdePersoon gp = pm.DetailsOphalen(gelieerdePersoonID);
 
-            Lid l = lm.LidMaken(pm.Ophalen(gelieerdePersoonID));
-
+            Lid l = lm.LidMaken(gp);
             lm.LidBewaren(l);
-
-            //lm.LidMaken(gelieerdePersoonID);
+            // TODO: feedback aanpassen (controleren of lid effectief is toegevoegd)
+            return gp.Persoon.VolledigeNaam + " is toegevoegd als lid.";
         }
 
         public IList<LidInfo> PaginaOphalen(int groepsWerkJaarID)
@@ -42,6 +42,12 @@ namespace Cg2.Services
         {
             LedenManager lm = Factory.Maak<LedenManager>();
             lm.LidBewaren(lid);
+        }
+
+        public Boolean Verwijderen(int id)
+        {
+            LedenManager lm = Factory.Maak<LedenManager>();
+            return lm.LidVerwijderen(id);
         }
 
         public void BewarenMetAfdelingen(Lid lid)
