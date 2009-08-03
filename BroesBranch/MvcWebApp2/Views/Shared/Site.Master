@@ -1,0 +1,51 @@
+<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage<MvcWebApp2.Models.MasterViewModel>" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title><%=Html.Encode(ViewData.Model.Title) %> | <%=Html.Encode(ViewData.Model.Groepsnaam) %></title>
+    <asp:ContentPlaceHolder ID="head" runat="server" />
+    <link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="page">
+        <div id="header">
+            <div id="title">
+                <h1><%=Html.Encode(ViewData.Model.Groepsnaam) %>
+                    </h1>
+                <%  if (ViewData.Model.Plaats != "geen")
+                    { %>
+                        <p>
+                            <%=Html.Encode(ViewData.Model.Plaats)%> | Stamnummer: <%=Html.Encode(ViewData.Model.StamNummer)%>
+                         </p>
+                  <%  } %>
+            </div>
+            <div id="logindisplay">
+                Aangemeld als
+                <% =System.Web.HttpContext.Current.User.Identity.Name %><br />
+                <% if (MvcWebApp2.Sessie.IsMultiGav == true)
+                   { %>
+                        [<%= Html.ActionLink("Wisselen van groep", "Index", "Gav")%>]
+                <% } %>
+            </div>
+            <div id="menucontainer">
+                <ul id="menu">
+                    <li><%= Html.ActionLink("Personen", "Index", "Personen")%></li>
+                    <li><%= Html.ActionLink("Leden", "Index", "Leden")%></li>                
+                </ul>
+            </div>
+        </div>
+        <div id="main">
+            <h2><%=Html.Encode(ViewData.Model.Title) %></h2>
+        <% if (TempData["feedback"] != null)
+           { %>
+           <div class="Feedback"><%= Html.Encode(TempData["feedback"]) %></div>
+        <% } %>
+            <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+            <div id="footer">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

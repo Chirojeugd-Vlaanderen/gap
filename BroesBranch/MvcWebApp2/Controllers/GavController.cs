@@ -1,0 +1,36 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Mvc.Ajax;
+using Cg2.Adf.ServiceModel;
+using Cg2.ServiceContracts;
+
+namespace MvcWebApp2.Controllers
+{
+    public class GavController : BaseController
+    {
+        //
+        // GET: /Gav/
+
+        public ActionResult Index()
+        {
+            var model = new Models.GavModel();
+            model.Title = "Kies je Chirogroep";
+            model.GroepenLijst = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
+                    (g => g.OphalenMijnGroepen());
+
+            return View("Index", model);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Index(Models.GavModel model)
+        {
+            Sessie.GroepID = model.GeselecteerdeGroepID;
+            // TODO: verwijder tijdelijke feedbackregel hieronder
+            TempData["feedback"] = "Groep geselecteerd!";
+            return new RedirectResult("/Personen/Index");
+        }
+    }
+}
