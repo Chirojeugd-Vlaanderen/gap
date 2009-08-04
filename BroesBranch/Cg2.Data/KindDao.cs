@@ -15,11 +15,9 @@ namespace Cg2.Data.Ef
 {
     public class KindDao : Dao<Kind>, IKindDao
     {
-        private Expression<Func<Kind, object>>[] connectedEntities = { e => e.GroepsWerkJaar, e => e.GelieerdePersoon, e => e.AfdelingsJaar };
-
-        public override Expression<Func<Kind, object>>[] getConnectedEntities()
+        public KindDao()
         {
-            return connectedEntities;
+            connectedEntities = new Expression<Func<Kind, object>>[3] { e => e.GroepsWerkJaar, e => e.GelieerdePersoon, e => e.AfdelingsJaar };
         }
     }
 }

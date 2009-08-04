@@ -38,6 +38,8 @@ namespace Cg2.Workers
             {
                 oudAdres.PersoonsAdres.Remove(persoonsadres);
             }
+            //TODO probleem dat nieuwadres niet gedetached is en persoon wel, waardoor hij de twee
+            //contexten niet kan vergelijken.
             persoonsadres.Adres = nieuwAdres;
 
             if (nieuwAdres.PersoonsAdres != null)

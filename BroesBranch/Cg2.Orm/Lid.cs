@@ -11,8 +11,7 @@ namespace Cg2.Orm
     [DataContract]
     public enum LidType {
         [EnumMember] Kind = 1,
-        [EnumMember] Leiding = 2, 
-        [EnumMember] Onbekend = 0
+        [EnumMember] Leiding = 2
     }
 
     public partial class Lid : IBasisEntiteit

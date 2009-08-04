@@ -20,13 +20,11 @@ namespace Cg2.Data.Ef
     /// </summary>
     public class AdressenDao: Dao<Adres>, IAdressenDao
     {
-        private Expression<Func<Adres, object>>[] connectedEntities = { e=>e.Straat.WithoutUpdate()
+        public AdressenDao()
+        {
+            connectedEntities = new Expression<Func<Adres, object>>[3] { e=>e.Straat.WithoutUpdate()
                                                                     , e=>e.Subgemeente.WithoutUpdate()
                                                                     , e=>e.PersoonsAdres.First().Persoon.WithoutUpdate() };
-
-        public virtual Expression<Func<Adres, object>>[] getConnectedEntities()
-        {
-            return connectedEntities;
         }
 
         /// <summary>
@@ -39,8 +37,6 @@ namespace Cg2.Data.Ef
         /*/// gewijzigde velden in gerelateerde entity's niet!</opmerking>
         public override Adres Bewaren(Adres adr)
         {
-            Adres geattachtAdres;
-
             // Deze assertions moeten eigenlijk afgedwongen worden
             // door de businesslaag.  En eigenlijk moet deze method ook
             // werken zonder die asserties (en dan de juiste dingen
@@ -54,7 +50,9 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                geattachtAdres = db.AttachObjectGraph();
+                adr = db.AttachObjectGraph(adr, e=>e.Straat.WithoutUpdate()
+                                              , e=>e.Subgemeente.WithoutUpdate()
+                                              , e=>e.PersoonsAdres.First().Persoon.WithoutUpdate());
 
                 // bewaardAdres is het geattachte adres.  Hiervan neem
                 // ik ID en versie over; de rest laat ik ongemoeid.

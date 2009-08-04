@@ -15,6 +15,10 @@ namespace Cg2.Data.Ef
 {
     public class LedenDao: Dao<Lid>, ILedenDao
     {
+        public LedenDao()
+        {
+            connectedEntities = new Expression<Func<Lid, object>>[2] { e => e.GroepsWerkJaar, e => e.GelieerdePersoon };
+        }
 
         // pagineren gebeurt nu per werkjaar
         // pagina, paginaGrootte en aantalTotaal zijn niet meer nodig
@@ -65,13 +69,6 @@ namespace Cg2.Data.Ef
             }
 
             return lijst;
-        }
-
-        private Expression<Func<Lid, object>>[] connectedEntities = { e => e.GroepsWerkJaar, e => e.GelieerdePersoon };
-
-        public override Expression<Func<Lid, object>>[] getConnectedEntities()
-        {
-            return connectedEntities;
         }
 
         public Lid OphalenMetDetails(int lidID)

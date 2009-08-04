@@ -16,6 +16,25 @@ namespace Cg2.Data.Ef
 {
     public class GelieerdePersonenDao : Dao<GelieerdePersoon>, IGelieerdePersonenDao
     {
+        public GelieerdePersonenDao()
+        {
+            connectedEntities = new Expression<Func<GelieerdePersoon, object>>[2] { e => e.Persoon, e => e.Groep };
+        }
+
+        public override void getEntityKeys(GelieerdePersoon entiteit, ChiroGroepEntities db)
+        {
+            entiteit.EntityKey = db.CreateEntityKey(typeof(GelieerdePersoon).Name, entiteit);
+            entiteit.Persoon.EntityKey = db.CreateEntityKey(typeof(Persoon).Name, entiteit.Persoon);
+            if (entiteit.Groep == null)
+            {
+                entiteit = GroepLaden(entiteit);
+            }
+            else
+            {
+                entiteit.Groep.EntityKey = db.CreateEntityKey(typeof(Groep).Name, entiteit.Groep);
+            }
+        }
+
         public IList<GelieerdePersoon> AllenOphalen(int groepID)
         {
             List<GelieerdePersoon> result;
@@ -74,13 +93,6 @@ namespace Cg2.Data.Ef
             }
 
             return result;
-        }
-
-        private Expression<Func<GelieerdePersoon, object>>[] connectedEntities = { e => e.Persoon, e=>e.Groep };
-
-        public override Expression<Func<GelieerdePersoon, object>>[] getConnectedEntities()
-        {
-            return connectedEntities;
         }
 
         #region IGelieerdePersonenDao Members
@@ -166,7 +178,7 @@ namespace Cg2.Data.Ef
                 db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 
                 return (
-                    from gp in db.GelieerdePersoon.Include("Persoon").Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.ID, gelieerdePersonenIDs))
+                    from gp in db.GelieerdePersoon.Include("Groep").Include("Persoon").Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.ID, gelieerdePersonenIDs))
                     select gp).ToList();
             }
         }
@@ -239,7 +251,7 @@ namespace Cg2.Data.Ef
                 // waarvan je GAV bent
 
                 var persoonsAdressen = (
-                    from pa in db.PersoonsAdres.Include("Persoon").Include("Groep")
+                    from pa in db.PersoonsAdres.Include("Persoon")
                     where pa.Adres.PersoonsAdres.Any(
                     l => l.Persoon.GelieerdePersoon.Any(
                         gp => gp.ID == gelieerdePersoonID))

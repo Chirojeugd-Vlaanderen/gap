@@ -16,12 +16,9 @@ namespace Cg2.Data.Ef
 {
     public class LeidingDao : Dao<Leiding>, ILeidingDao
     {
-        private Expression<Func<Leiding, object>>[] connectedEntities = { e => e.GroepsWerkJaar, e => e.GelieerdePersoon, e => e.AfdelingsJaar };
-
-        public override Expression<Func<Leiding, object>>[] getConnectedEntities()
+        public LeidingDao()
         {
-            return connectedEntities;
+            connectedEntities = new Expression<Func<Leiding, object>>[3] { e => e.GroepsWerkJaar, e => e.GelieerdePersoon, e => e.AfdelingsJaar };
         }
-
     }
 }

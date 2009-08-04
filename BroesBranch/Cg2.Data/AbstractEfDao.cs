@@ -23,7 +23,12 @@ namespace Cg2.Data.Ef
     {
         #region IDao<T> Members
 
-        private Expression<Func<T, object>>[] connectedEntities = {};
+        protected Expression<Func<T, object>>[] connectedEntities;
+
+        public Dao()
+        {
+            connectedEntities = new Expression<Func<T, object>>[0];
+        }
 
         public virtual Expression<Func<T, object>>[] getConnectedEntities()
         {
@@ -136,7 +141,8 @@ namespace Cg2.Data.Ef
                 if (entiteit.ID != 0 && entiteit.EntityKey == null)
                 {
                     //FIXME: voor een object van Leiding crasht dit, want dat is geen entity in de database
-                    entiteit.EntityKey = db.CreateEntityKey(typeof(T).Name, entiteit);
+                    //tijdelijk
+                    getEntityKeys(entiteit, db);
 
                     //TODO als de lambda expressie gebruikt worden, moeten ook al hun entitykeys terug geladen worden!!!
                     //of toch eens kijken waarom die keys verloren gaan?
@@ -153,6 +159,11 @@ namespace Cg2.Data.Ef
             return entiteit;
         }
 
+        public virtual void getEntityKeys(T entiteit, ChiroGroepEntities db) 
+        {
+            entiteit.EntityKey = db.CreateEntityKey(typeof(T).Name, entiteit);
+        }
+
         /// <summary>
         /// Markeert entity als 'volledig gewijzigd'
         /// </summary>
@@ -165,7 +176,15 @@ namespace Cg2.Data.Ef
             var propertyNameList = stateEntry.CurrentValues.DataRecordInfo.FieldMetadata.Select
               (pn => pn.FieldType.Name);
             foreach (var propName in propertyNameList)
-                stateEntry.SetModifiedProperty(propName);
+            {
+                try
+                {
+                    stateEntry.SetModifiedProperty(propName);
+                }catch(InvalidOperationException e)
+                {
+                }
+                
+            }
         }
 
         #endregion
