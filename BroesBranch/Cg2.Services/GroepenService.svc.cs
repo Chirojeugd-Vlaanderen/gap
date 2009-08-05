@@ -30,7 +30,7 @@ namespace Cg2.Services
 
             try
             {
-                return gm.Dao.Bewaren(g);
+                return gm.Bewaren(g);
             }
             catch (Exception e)
             {
@@ -44,7 +44,7 @@ namespace Cg2.Services
         {
             GroepenManager gm = Factory.Maak<GroepenManager>();
 
-            var result = gm.Dao.Ophalen(groepID);
+            var result = gm.Ophalen(groepID);
             return result;
         }
 
@@ -52,7 +52,7 @@ namespace Cg2.Services
         {
             GroepenManager gm = Factory.Maak<GroepenManager>();
 
-            var result = gm.Dao.OphalenMetAdressen(groepID);
+            var result = gm.OphalenMetAdressen(groepID);
             return result;
         }
 
@@ -60,7 +60,7 @@ namespace Cg2.Services
         {
             GroepenManager gm = Factory.Maak<GroepenManager>();
 
-            var result = gm.Dao.OphalenMetCategorieen(groepID);
+            var result = gm.OphalenMetCategorieen(groepID);
             return result;
         }
 
@@ -68,7 +68,7 @@ namespace Cg2.Services
         {
             GroepenManager gm = Factory.Maak<GroepenManager>();
 
-            var result = gm.Dao.OphalenMetFuncties(groepID);
+            var result = gm.OphalenMetFuncties(groepID);
             return result;
         }
 
@@ -76,7 +76,7 @@ namespace Cg2.Services
         {
             GroepenManager gm = Factory.Maak<GroepenManager>();
 
-            var result = gm.Dao.OphalenMetAfdelingen(groepID);
+            var result = gm.OphalenMetAfdelingen(groepID);
             return result;
         }
 
@@ -84,7 +84,7 @@ namespace Cg2.Services
         {
             GroepenManager gm = Factory.Maak<GroepenManager>();
 
-            var result = gm.Dao.OphalenMetVrijeVelden(groepID);
+            var result = gm.OphalenMetVrijeVelden(groepID);
             return result;
         }
 

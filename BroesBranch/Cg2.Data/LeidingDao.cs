@@ -18,7 +18,28 @@ namespace Cg2.Data.Ef
     {
         public LeidingDao()
         {
-            connectedEntities = new Expression<Func<Leiding, object>>[3] { e => e.GroepsWerkJaar, e => e.GelieerdePersoon, e => e.AfdelingsJaar };
+            connectedEntities = new Expression<Func<Leiding, object>>[3] { 
+                                        e => e.GroepsWerkJaar, 
+                                        e => e.GelieerdePersoon, 
+                                        e => e.AfdelingsJaar };
+        }
+
+        public void getEntityKeys(Leiding entiteit, ChiroGroepEntities db)
+        {
+            if (entiteit.ID != 0 && entiteit.EntityKey == null)
+            {
+                entiteit.EntityKey = db.CreateEntityKey(typeof(Leiding).Name, entiteit);
+            }
+
+            foreach (AfdelingsJaar a in entiteit.AfdelingsJaar)
+            {
+                if (a.ID != 0 && a.EntityKey == null)
+                {
+                    a.EntityKey = db.CreateEntityKey(typeof(AfdelingsJaar).Name, entiteit.AfdelingsJaar);
+                }
+            }
+
+            base.getEntityKeys(entiteit, db);
         }
     }
 }

@@ -15,8 +15,10 @@ namespace Cg2.Orm.DataInterfaces
     public interface IDao<T>
     {
         T Ophalen(int id);
+        T Ophalen(int id, params Expression<Func<T, object>>[] paths);
         List<T> AllesOphalen();
         T Bewaren(T nieuweEntiteit);
+        T Bewaren(T entiteit, params Expression<Func<T, object>>[] paths);
         Expression<Func<T, object>>[] getConnectedEntities();
     }
 

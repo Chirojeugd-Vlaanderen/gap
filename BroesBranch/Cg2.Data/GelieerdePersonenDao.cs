@@ -18,13 +18,23 @@ namespace Cg2.Data.Ef
     {
         public GelieerdePersonenDao()
         {
-            connectedEntities = new Expression<Func<GelieerdePersoon, object>>[2] { e => e.Persoon, e => e.Groep };
+            connectedEntities = new Expression<Func<GelieerdePersoon, object>>[2] { 
+                                        e => e.Persoon, 
+                                        e => e.Groep };
         }
 
         public override void getEntityKeys(GelieerdePersoon entiteit, ChiroGroepEntities db)
         {
-            entiteit.EntityKey = db.CreateEntityKey(typeof(GelieerdePersoon).Name, entiteit);
-            entiteit.Persoon.EntityKey = db.CreateEntityKey(typeof(Persoon).Name, entiteit.Persoon);
+            if (entiteit.ID != 0 && entiteit.EntityKey == null)
+            {
+                entiteit.EntityKey = db.CreateEntityKey(typeof(GelieerdePersoon).Name, entiteit);
+            }
+
+            if (entiteit.Persoon.ID != 0 && entiteit.Persoon.EntityKey == null)
+            {
+                entiteit.Persoon.EntityKey = db.CreateEntityKey(typeof(Persoon).Name, entiteit.Persoon);
+            }
+            
             if (entiteit.Groep == null)
             {
                 entiteit = GroepLaden(entiteit);

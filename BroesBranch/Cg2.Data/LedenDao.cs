@@ -17,8 +17,30 @@ namespace Cg2.Data.Ef
     {
         public LedenDao()
         {
-            connectedEntities = new Expression<Func<Lid, object>>[2] { e => e.GroepsWerkJaar, e => e.GelieerdePersoon };
+            connectedEntities = new Expression<Func<Lid, object>>[2] { 
+                                        e => e.GroepsWerkJaar, 
+                                        e => e.GelieerdePersoon };
         }
+
+        
+        public void getEntityKeys(Lid entiteit, ChiroGroepEntities db)
+        {
+            if (entiteit.ID != 0 && entiteit.EntityKey == null)
+            {
+                entiteit.EntityKey = db.CreateEntityKey(typeof(Lid).Name, entiteit);
+            }
+
+            if (entiteit.GroepsWerkJaar.ID != 0 && entiteit.GroepsWerkJaar.EntityKey == null)
+            {
+                entiteit.GroepsWerkJaar.EntityKey = db.CreateEntityKey(typeof(GroepsWerkJaar).Name, entiteit.GroepsWerkJaar);
+            }
+
+            if (entiteit.GelieerdePersoon.ID != 0 && entiteit.GelieerdePersoon.EntityKey == null)
+            {
+                entiteit.GelieerdePersoon.EntityKey = db.CreateEntityKey(typeof(GelieerdePersoon).Name, entiteit.GelieerdePersoon);
+            }
+        }
+
 
         // pagineren gebeurt nu per werkjaar
         // pagina, paginaGrootte en aantalTotaal zijn niet meer nodig

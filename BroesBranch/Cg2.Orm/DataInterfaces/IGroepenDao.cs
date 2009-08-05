@@ -21,7 +21,9 @@ namespace Cg2.Orm.DataInterfaces
         /// <returns>Het relevante GroepsWerkJaarobject</returns>
         GroepsWerkJaar RecentsteGroepsWerkJaarGet(int groepID);
 
-        Groep OphalenMetAdressen(int groepID);
+        Groep OphalenMetAfdelingen(int groepID);
+
+        /*Groep OphalenMetAdressen(int groepID);
 
         Groep OphalenMetCategorieen(int groepID);
 
@@ -39,14 +41,10 @@ namespace Cg2.Orm.DataInterfaces
 
         void BewarenMetAfdelingen(Groep g);
 
-        void BewarenMetVrijeVelden(Groep g);
-
-        Afdeling AfdelingCreeren(int groepID, string naam, string afkorting);
-
-        AfdelingsJaar AfdelingsJaarCreeren(Groep g, Afdeling aj, OfficieleAfdeling oa, int geboortejaarbegin, int geboortejaareind);
+        void BewarenMetVrijeVelden(Groep g);*/
 
         IList<OfficieleAfdeling> OphalenOfficieleAfdelingen();
 
-        IList<Afdeling> OphalenEigenAfdelingen(int groep);
+        //IList<Afdeling> OphalenEigenAfdelingen(int groep);
     }
 }

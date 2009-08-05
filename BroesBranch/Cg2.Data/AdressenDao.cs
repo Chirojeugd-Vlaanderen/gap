@@ -22,9 +22,28 @@ namespace Cg2.Data.Ef
     {
         public AdressenDao()
         {
-            connectedEntities = new Expression<Func<Adres, object>>[3] { e=>e.Straat.WithoutUpdate()
-                                                                    , e=>e.Subgemeente.WithoutUpdate()
-                                                                    , e=>e.PersoonsAdres.First().Persoon.WithoutUpdate() };
+            connectedEntities = new Expression<Func<Adres, object>>[3] { 
+                                        e=>e.Straat.WithoutUpdate(),
+                                        e=>e.Subgemeente.WithoutUpdate(),
+                                        e=>e.PersoonsAdres.First().Persoon.WithoutUpdate() };
+        }
+
+        public override void getEntityKeys(Adres entiteit, ChiroGroepEntities db)
+        {
+            if (entiteit.ID != 0 && entiteit.EntityKey == null)
+            {
+                entiteit.EntityKey = db.CreateEntityKey(typeof(Adres).Name, entiteit);
+            }
+
+            if (entiteit.Straat.ID != 0 && entiteit.Straat.EntityKey == null)
+            {
+                entiteit.Straat.EntityKey = db.CreateEntityKey(typeof(Straat).Name, entiteit.Straat);
+            }
+
+            if (entiteit.Subgemeente.ID != 0 && entiteit.Subgemeente.EntityKey == null)
+            {
+                entiteit.Subgemeente.EntityKey = db.CreateEntityKey(typeof(Subgemeente).Name, entiteit.Subgemeente);
+            }
         }
 
         /// <summary>
