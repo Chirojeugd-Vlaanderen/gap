@@ -13,7 +13,7 @@ namespace Cg2.Workers
     public class GroepenManager
     {
         private IGroepenDao _dao;
-        private IAfdelingsJaarDao _afdao;
+        private IDao<AfdelingsJaar> _afdao;
 
         private IGroepenDao Dao
         {
@@ -25,7 +25,7 @@ namespace Cg2.Workers
         /// de groepen te gebruiken.  Nuttig voor mocking en testing.
         /// </summary>
         /// <param name="dao">Alternatieve dao</param>
-        public GroepenManager(IGroepenDao dao, IAfdelingsJaarDao afdao)
+        public GroepenManager(IGroepenDao dao, IDao<AfdelingsJaar> afdao)
         {
             _dao = dao;
             _afdao = afdao;

@@ -19,7 +19,7 @@ namespace Cg2.Workers
         private ILeidingDao _leidingDao;
         private IGroepenDao _groepenDao;
         private IGelieerdePersonenDao _gelPersDao;
-        private IAfdelingsJaarDao _afdao;
+        private IDao<AfdelingsJaar> _afdao;
 
         private ILedenDao Dao
         {
@@ -28,7 +28,7 @@ namespace Cg2.Workers
 
         #region Constructors
 
-        public LedenManager(ILedenDao dao, IKindDao kindDao, ILeidingDao leidingDao, IGroepenDao groepenDao, IGelieerdePersonenDao gelPersDao, IAfdelingsJaarDao afdao)
+        public LedenManager(ILedenDao dao, IKindDao kindDao, ILeidingDao leidingDao, IGroepenDao groepenDao, IGelieerdePersonenDao gelPersDao, IDao<AfdelingsJaar> afdao)
         {
             _dao = dao;
             _kindDao = kindDao;
