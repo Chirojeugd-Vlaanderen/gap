@@ -17,8 +17,11 @@
     <fieldset>
     <legend>Persoonlijke gegevens</legend>
     
-    <label for="Persoon_AdNummer">Ad-nummer</label> 
+    
+    
+    <label for="Persoon_AdNummer">Ad-nummer</label>
     <%=Model.HuidigePersoon.Persoon.AdNummer %><br />
+    <%=Html.Hidden("HuidigePersoon.Persoon.AdNummer")%>
     
     <label for="Persoon_VoorNaam">Voornaam</label> 
     <%=Html.TextBox("HuidigePersoon.Persoon.VoorNaam")%><br />

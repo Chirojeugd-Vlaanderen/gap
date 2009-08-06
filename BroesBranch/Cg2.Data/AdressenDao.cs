@@ -46,6 +46,8 @@ namespace Cg2.Data.Ef
             }
         }
 
+        //TODO kan deze methode ook vervangen worden door de generische bewaren met lambda expressies??
+
         /// <summary>
         /// Bewaart adres en eventuele gekoppelde persoonsadressen en 
         /// Personen.
@@ -53,7 +55,7 @@ namespace Cg2.Data.Ef
         /// <param name="nieuweEntiteit">Te bewaren adres</param>
         /// <returns>referentie naar het bewaarde adres</returns>
         /// <opmerking>ID en Versie worden aangepast in Adres, eventuele
-        /*/// gewijzigde velden in gerelateerde entity's niet!</opmerking>
+        /// gewijzigde velden in gerelateerde entity's niet!</opmerking>
         public override Adres Bewaren(Adres adr)
         {
             // Deze assertions moeten eigenlijk afgedwongen worden
@@ -69,7 +71,7 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                adr = db.AttachObjectGraph(adr, e=>e.Straat.WithoutUpdate()
+                Adres geattachtAdres = db.AttachObjectGraph(adr, e => e.Straat.WithoutUpdate()
                                               , e=>e.Subgemeente.WithoutUpdate()
                                               , e=>e.PersoonsAdres.First().Persoon.WithoutUpdate());
 
@@ -87,7 +89,7 @@ namespace Cg2.Data.Ef
                 adr.Versie = geattachtAdres.Versie;
             }
             return adr;
-        }*/
+        }
 
         /// <summary>
         /// Haalt een adres op, samen met de gekoppelde personen
