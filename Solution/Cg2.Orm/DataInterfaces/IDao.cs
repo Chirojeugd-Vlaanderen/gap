@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Linq.Expressions;
 
 namespace Cg2.Orm.DataInterfaces
 {
@@ -14,11 +15,11 @@ namespace Cg2.Orm.DataInterfaces
     public interface IDao<T>
     {
         T Ophalen(int id);
+        T Ophalen(int id, params Expression<Func<T, object>>[] paths);
         List<T> AllesOphalen();
-        T Creeren(T entiteit);
         T Bewaren(T nieuweEntiteit);
-        void Verwijderen(T entiteit);
-        void Commit();
+        T Bewaren(T entiteit, params Expression<Func<T, object>>[] paths);
+        Expression<Func<T, object>>[] getConnectedEntities();
     }
 
 }

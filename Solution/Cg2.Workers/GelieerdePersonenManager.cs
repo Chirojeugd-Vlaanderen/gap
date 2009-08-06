@@ -53,11 +53,6 @@ namespace Cg2.Workers
 
         public GelieerdePersoon Bewaren(GelieerdePersoon p)
         {
-            /*if (p.Persoon != null)
-            {
-                PersonenDao pd = new PersonenDao();
-                pd.Bewaren(p.Persoon);
-            }*/
             return _dao.Bewaren(p);
         }
 

@@ -32,7 +32,7 @@ namespace Cg2.Data.Ef
             return result;
         }
 
-        public Groep OphalenMetAdressen(int groepID)
+        /*public Groep OphalenMetAdressen(int groepID)
         {
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
@@ -54,7 +54,7 @@ namespace Cg2.Data.Ef
         {
             //TODO
             throw new NotImplementedException();
-        }
+        }*/
 
         //ophalen van groep, afdeling, afdelingsjaar en officiele afdelingen voor huidig werkjaar
         public Groep OphalenMetAfdelingen(int groepID)
@@ -95,7 +95,7 @@ namespace Cg2.Data.Ef
             }
         }
 
-        public Groep OphalenMetVrijeVelden(int groepID)
+        /*public Groep OphalenMetVrijeVelden(int groepID)
         {
             //TODO
             throw new NotImplementedException();
@@ -134,10 +134,10 @@ namespace Cg2.Data.Ef
         {
             //TODO
             throw new NotImplementedException();
-        }
+        }*/
 
 
-        /// <summary>
+        /*/// <summary>
         /// Creeert een nieuwe afdeling.
         /// </summary>
         /// <param name="groepID">ID van de groep</param>
@@ -147,6 +147,8 @@ namespace Cg2.Data.Ef
         public Afdeling AfdelingCreeren(int groepID, string naam, string afkorting)
         {
             Afdeling a = new Afdeling();
+
+
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
@@ -168,9 +170,9 @@ namespace Cg2.Data.Ef
             }
 
             return a;
-        }
+        }*/
 
-        /// <summary>
+        /*/// <summary>
         /// Creeert een nieuw afdelingsjaar.
         /// </summary>
         /// <param name="g">Groep voor afdelingsjaar</param>
@@ -243,7 +245,7 @@ namespace Cg2.Data.Ef
             }
 
             return afdelingsJaar;
-        }
+        }*/
 
         public IList<OfficieleAfdeling> OphalenOfficieleAfdelingen()
         {
@@ -257,7 +259,7 @@ namespace Cg2.Data.Ef
             }
         }
 
-        public IList<Afdeling> OphalenEigenAfdelingen(int groep)
+        /*public IList<Afdeling> OphalenEigenAfdelingen(int groep)
         {
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
@@ -268,7 +270,7 @@ namespace Cg2.Data.Ef
                 ).ToList();
                 return db.DetachObjectGraph(result);
             }
-        }
+        }*/
 
     }
 }

@@ -77,12 +77,13 @@ namespace Cg2.Dao.Test
             Dao<OfficieleAfdeling> oadao = new Dao<OfficieleAfdeling>();            
 
             Groep g = gdao.Ophalen(310);
-            Afdeling a = gdao.AfdelingCreeren(310, "Testers", "TE");
+            //TODO vervangen door worker
+            Afdeling a = null; //gdao.AfdelingCreeren(310, "Testers", "TE");
             OfficieleAfdeling oa = oadao.Ophalen(6);    // aspiranten
 
             // Act
-
-            AfdelingsJaar aj = gdao.AfdelingsJaarCreeren(g, a, oa, 1988, 1989);
+            //TODO vervangen door worker
+            AfdelingsJaar aj = null; // gdao.AfdelingsJaarCreeren(g, a, oa, 1988, 1989);
 
             // Assert
 
@@ -92,9 +93,13 @@ namespace Cg2.Dao.Test
 
             Dao<AfdelingsJaar> ajdao = new Dao<AfdelingsJaar>();
             Dao<Afdeling> adao = new Dao<Afdeling>();
-            ajdao.Verwijderen(aj);
-            adao.Verwijderen(a);
 
+            aj.TeVerwijderen = true;
+            a.TeVerwijderen = true;
+            ajdao.Bewaren(aj);
+            adao.Bewaren(a);
+            //oud ajdao.Verwijderen(aj);
+            //oud adao.Verwijderen(a);
         }
     }
 }

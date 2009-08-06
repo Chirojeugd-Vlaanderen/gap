@@ -41,7 +41,7 @@ namespace Cg2.ServiceContracts
             }
             else
             {
-                l.Type = LidType.Onbekend;
+                throw new InvalidProgramException("Een lid moet leiding of kind zijn.");
             }
             return l;
         }

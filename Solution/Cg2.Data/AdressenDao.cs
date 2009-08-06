@@ -10,7 +10,7 @@ using Cg2.EfWrapper;
 using Cg2.EfWrapper.Entity;
 using Cg2.Orm;
 using Cg2.Orm.DataInterfaces;
-
+using System.Linq.Expressions;
 
 
 namespace Cg2.Data.Ef
@@ -20,16 +20,33 @@ namespace Cg2.Data.Ef
     /// </summary>
     public class AdressenDao: Dao<Adres>, IAdressenDao
     {
-        /// <summary>
-        /// Creeert nieuw adres, en bewaart gekoppelde
-        /// persoonsadressen.
-        /// </summary>
-        /// <param name="adr">Te creeren adres</param>
-        /// <returns>referentie naar gecreerde adres</returns>
-        public override Adres Creeren(Adres adr)
+        public AdressenDao()
         {
-            return Bewaren(adr);
+            connectedEntities = new Expression<Func<Adres, object>>[3] { 
+                                        e=>e.Straat.WithoutUpdate(),
+                                        e=>e.Subgemeente.WithoutUpdate(),
+                                        e=>e.PersoonsAdres.First().Persoon.WithoutUpdate() };
         }
+
+        public override void getEntityKeys(Adres entiteit, ChiroGroepEntities db)
+        {
+            if (entiteit.ID != 0 && entiteit.EntityKey == null)
+            {
+                entiteit.EntityKey = db.CreateEntityKey(typeof(Adres).Name, entiteit);
+            }
+
+            if (entiteit.Straat.ID != 0 && entiteit.Straat.EntityKey == null)
+            {
+                entiteit.Straat.EntityKey = db.CreateEntityKey(typeof(Straat).Name, entiteit.Straat);
+            }
+
+            if (entiteit.Subgemeente.ID != 0 && entiteit.Subgemeente.EntityKey == null)
+            {
+                entiteit.Subgemeente.EntityKey = db.CreateEntityKey(typeof(Subgemeente).Name, entiteit.Subgemeente);
+            }
+        }
+
+        //TODO kan deze methode ook vervangen worden door de generische bewaren met lambda expressies??
 
         /// <summary>
         /// Bewaart adres en eventuele gekoppelde persoonsadressen en 
@@ -41,8 +58,6 @@ namespace Cg2.Data.Ef
         /// gewijzigde velden in gerelateerde entity's niet!</opmerking>
         public override Adres Bewaren(Adres adr)
         {
-            Adres geattachtAdres;
-
             // Deze assertions moeten eigenlijk afgedwongen worden
             // door de businesslaag.  En eigenlijk moet deze method ook
             // werken zonder die asserties (en dan de juiste dingen
@@ -56,10 +71,9 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                geattachtAdres = db.AttachObjectGraph(adr
-                    , dink=>dink.Straat.WithoutUpdate()
-                    , dink=>dink.Subgemeente.WithoutUpdate()
-                    , dink=>dink.PersoonsAdres.First().Persoon.WithoutUpdate());
+                Adres geattachtAdres = db.AttachObjectGraph(adr, e => e.Straat.WithoutUpdate()
+                                              , e=>e.Subgemeente.WithoutUpdate()
+                                              , e=>e.PersoonsAdres.First().Persoon.WithoutUpdate());
 
                 // bewaardAdres is het geattachte adres.  Hiervan neem
                 // ik ID en versie over; de rest laat ik ongemoeid.

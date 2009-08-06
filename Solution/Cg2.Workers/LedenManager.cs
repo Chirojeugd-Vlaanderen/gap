@@ -19,22 +19,23 @@ namespace Cg2.Workers
         private ILeidingDao _leidingDao;
         private IGroepenDao _groepenDao;
         private IGelieerdePersonenDao _gelPersDao;
+        private IDao<AfdelingsJaar> _afdao;
 
-        // TODO: Dao mag niet geexposed worden!
-        public ILedenDao Dao
+        private ILedenDao Dao
         {
             get { return _dao; }
         }
 
         #region Constructors
 
-        public LedenManager(ILedenDao dao, IKindDao kindDao, ILeidingDao leidingDao, IGroepenDao groepenDao, IGelieerdePersonenDao gelPersDao)
+        public LedenManager(ILedenDao dao, IKindDao kindDao, ILeidingDao leidingDao, IGroepenDao groepenDao, IGelieerdePersonenDao gelPersDao, IDao<AfdelingsJaar> afdao)
         {
             _dao = dao;
             _kindDao = kindDao;
             _leidingDao = leidingDao;
             _groepenDao = groepenDao;
             _gelPersDao = gelPersDao;
+            _afdao = afdao;
         }
 
         #endregion
@@ -61,7 +62,7 @@ namespace Cg2.Workers
             GelieerdePersoon gpMetDetails = gpm.DetailsOphalen(gp.ID);
 
             // Afdelingen ophalen
-            GroepenManager gm = new GroepenManager(_groepenDao);
+            GroepenManager gm = new GroepenManager(_groepenDao, _afdao);
             IList<AfdelingsJaar> jaren = gm.OphalenAfdelingsJaren(gp.Groep, gwj);
 
             // Geschikte afdeling zoeken
@@ -123,7 +124,7 @@ namespace Cg2.Workers
         /// <returns>Nieuw lidobject</returns>
         public Lid LidMaken(GelieerdePersoon gp)
         {
-            GroepenManager gm = new GroepenManager(_groepenDao);
+            GroepenManager gm = new GroepenManager(_groepenDao, _afdao);
 
             if (gp.Groep == null)
             {
@@ -131,8 +132,8 @@ namespace Cg2.Workers
                 gpm.GroepLaden(gp);
             }
 
-            GroepsWerkJaar gwj = gm.Dao.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
-            return LidMaken(gp, gm.Dao.RecentsteGroepsWerkJaarGet(gp.Groep.ID));
+            GroepsWerkJaar gwj = gm.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
+            return LidMaken(gp, gm.RecentsteGroepsWerkJaarGet(gp.Groep.ID));
         }
 
         /// <summary>

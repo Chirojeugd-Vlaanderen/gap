@@ -31,31 +31,6 @@ namespace Cg2.Data.Ef
             }
         }
 
-        public override Persoon Bewaren(Persoon p)
-        {
-            if (p.ID == 0)
-            {
-                // creeer nieuwe gelieerde persoon
-
-                return Creeren(p);
-            }
-            else
-            {
-                using (ChiroGroepEntities db = new ChiroGroepEntities())
-                {
-                    // Bestaande objecten zijn hun entity key vaak kwijt (omdat die
-                    // verloren gaat in de MVC-cyclus.)  Opnieuw genereren dus.
-
-                    p.EntityKey = db.CreateEntityKey("Persoon", p);
-
-                    Persoon geattacht = db.AttachObjectGraph(p);
-
-                    db.SaveChanges();
-                }
-                return p;
-            }
-        }
-
         #endregion
     }
 }

@@ -9,28 +9,33 @@ using System.Data;
 using Cg2.Orm.DataInterfaces;
 
 using Cg2.EfWrapper.Entity;
-
+using System.Linq.Expressions;
 
 namespace Cg2.Data.Ef
 {
     public class KindDao : Dao<Kind>, IKindDao
     {
-        /// <summary>
-        /// Creeert een nieuw kind
-        /// </summary>
-        /// <param name="l">kindobject</param>
-        /// <returns>bewaarde kindobject</returns>
-        /// <remarks>Wijzigingen in GroepsWerkJaar of
-        /// GelieerdePersoon worden niet meegenomen!</remarks>
-        public override Kind Creeren(Kind k)
+        public KindDao()
         {
-            using (ChiroGroepEntities db = new ChiroGroepEntities())
-            {
-                Kind kindMetContext = db.AttachObjectGraph(k, lid => lid.GroepsWerkJaar, lid => lid.GelieerdePersoon, kind => kind.AfdelingsJaar);
-                db.SaveChanges();
-            }
-            return k;
+            connectedEntities = new Expression<Func<Kind, object>>[3] { 
+                                        e => e.GroepsWerkJaar, 
+                                        e => e.GelieerdePersoon, 
+                                        e => e.AfdelingsJaar };
         }
 
+        public void getEntityKeys(Kind entiteit, ChiroGroepEntities db)
+        {
+            if (entiteit.ID != 0 && entiteit.EntityKey == null)
+            {
+                entiteit.EntityKey = db.CreateEntityKey(typeof(Kind).Name, entiteit);
+            }
+
+            if (entiteit.AfdelingsJaar.ID != 0 && entiteit.AfdelingsJaar.EntityKey == null)
+            {
+                entiteit.AfdelingsJaar.EntityKey = db.CreateEntityKey(typeof(AfdelingsJaar).Name, entiteit.AfdelingsJaar);
+            }
+
+            base.getEntityKeys(entiteit, db);
+        }
     }
 }

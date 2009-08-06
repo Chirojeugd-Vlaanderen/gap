@@ -70,15 +70,11 @@ namespace Cg2.Workers.Test
 
             Assert.AreEqual(0, g.GelieerdePersoon.Count);
             
-            Persoon p = Persoon.CreatePersoon("Broes", 0, 0);
-            //Persoon p = new Persoon();
-            //p.VoorNaam = "Broes";
-            //p.Naam = "De Cat";
+            Persoon p = new Persoon();
+            p.VoorNaam = "Broes";
+            p.Naam = "De Cat";
 
-            /*PersonenDao pdao = new PersonenDao();
-            pdao.Bewaren(p);*/
-
-            GelieerdePersoon gp = GelieerdePersoon.CreateGelieerdePersoon(10, 0);
+            GelieerdePersoon gp = GelieerdePersoon.CreateGelieerdePersoon(0, 0);
 
             gp.Persoon = p;
             p.GelieerdePersoon.Add(gp);
@@ -97,10 +93,10 @@ namespace Cg2.Workers.Test
 
             Assert.AreEqual(number + 1, number2);
             Assert.AreNotEqual(number, 0);
+            Assert.AreNotEqual(0, gp.ID);
 
             /*
              * todo: 
-             * kan ik groep ophalen zonder al zijn gelieerde personen, maar toch aan de collectie toevoegen?
              * verwijderen van persoon nog testen
              * vastleggen welke velden van persoon not null zijn en welke uniek moeten zijn (alleen AD geloof ik)
              * creeren als methode overal verwijderen?
@@ -108,12 +104,8 @@ namespace Cg2.Workers.Test
              *                   namelijk niet als de persoon als bestaat maar de gelieerdepersoon nieuw is)
              */
 
-            //PROBLEEM: hij blijkt na bewaren nog altijd zijn oude ID te hebben, hoe dit te verhelpen?
-            //mss ophalen na bewaren (in de dao)
-            //gp = gpdao.Ophalen(gp.ID);
-
             gp.TeVerwijderen = true;
-            p.TeVerwijderen = true;
+            gp.Persoon.TeVerwijderen = true;
             gpdao.Bewaren(gp);
 
             int number3 = gpdao.AllenOphalen(310).Count;

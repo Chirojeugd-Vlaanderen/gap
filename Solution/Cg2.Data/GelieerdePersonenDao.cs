@@ -10,11 +10,41 @@ using System.Data.Objects;
 
 using Cg2.EfWrapper.Entity;
 using Cg2.EfWrapper;
+using System.Linq.Expressions;
 
 namespace Cg2.Data.Ef
 {
     public class GelieerdePersonenDao : Dao<GelieerdePersoon>, IGelieerdePersonenDao
     {
+        public GelieerdePersonenDao()
+        {
+            connectedEntities = new Expression<Func<GelieerdePersoon, object>>[2] { 
+                                        e => e.Persoon, 
+                                        e => e.Groep };
+        }
+
+        public override void getEntityKeys(GelieerdePersoon entiteit, ChiroGroepEntities db)
+        {
+            if (entiteit.ID != 0 && entiteit.EntityKey == null)
+            {
+                entiteit.EntityKey = db.CreateEntityKey(typeof(GelieerdePersoon).Name, entiteit);
+            }
+
+            if (entiteit.Persoon.ID != 0 && entiteit.Persoon.EntityKey == null)
+            {
+                entiteit.Persoon.EntityKey = db.CreateEntityKey(typeof(Persoon).Name, entiteit.Persoon);
+            }
+            
+            if (entiteit.Groep == null)
+            {
+                entiteit = GroepLaden(entiteit);
+            }
+            else
+            {
+                entiteit.Groep.EntityKey = db.CreateEntityKey(typeof(Groep).Name, entiteit.Groep);
+            }
+        }
+
         public IList<GelieerdePersoon> AllenOphalen(int groepID)
         {
             List<GelieerdePersoon> result;
@@ -25,7 +55,7 @@ namespace Cg2.Data.Ef
                 // direct gedetachte gelieerde personen ophalen
 
                 result = (
-                    from gp in db.GelieerdePersoon.Include("Persoon")
+                    from gp in db.GelieerdePersoon.Include("Persoon").Include("Groep")
                     where gp.Groep.ID == groepID
                     select gp).ToList<GelieerdePersoon>();
             }
@@ -46,7 +76,7 @@ namespace Cg2.Data.Ef
                     select gp).Count();
 
                 var result = (
-                    from gp in db.GelieerdePersoon.Include("Persoon")
+                    from gp in db.GelieerdePersoon.Include("Persoon").Include("Groep")
                     where gp.Groep.ID == groepID
                     orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
                     select gp).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte);
@@ -58,38 +88,21 @@ namespace Cg2.Data.Ef
             return lijst;
         }
 
-        public override GelieerdePersoon Bewaren(GelieerdePersoon p)
+        //todo na deze aanroep is result.Persoon toch nog == null!!?
+        public override GelieerdePersoon Ophalen(int id)
         {
-            /*if (p.ID == 0)
+            GelieerdePersoon result;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                // creeer nieuwe gelieerde persoon
-
-                return Creeren(p);
+                result = (
+                    from t in db.GelieerdePersoon.Include("Persoon").Include("Groep")
+                    where t.ID == id
+                    select t).FirstOrDefault<GelieerdePersoon>();
+                db.Detach(result);
             }
-            else
-            {*/
-                // update bestaande gelieerde persoon
 
-                Debug.Assert(p.Persoon != null);    // gelieerde persoon is niet nuttig zonder persoon
-                Debug.Assert(p.Persoon.ID != 0 || p.ID==0);    // een bestaande gelieerde persoon is nooit gekoppeld aan een nieuwe persoon
-
-                using (ChiroGroepEntities db = new ChiroGroepEntities())
-                {
-                    // Bestaande objecten zijn hun entity key vaak kwijt (omdat die
-                    // verloren gaat in de MVC-cyclus.)  Opnieuw genereren dus.
-
-                    if (p.ID != 0 && p.Persoon.ID != 0)
-                    {
-                        p.EntityKey = db.CreateEntityKey("GelieerdePersoon", p);
-                        p.Persoon.EntityKey = db.CreateEntityKey("Persoon", p.Persoon);
-                    }
-                    
-                    GelieerdePersoon geattacht = db.AttachObjectGraph(p, gp => gp.Persoon, gp=>gp.Groep);
-
-                    db.SaveChanges();
-                }
-                return p;
-            //}
+            return result;
         }
 
         #region IGelieerdePersonenDao Members
@@ -117,7 +130,7 @@ namespace Cg2.Data.Ef
                 //TODO zoeken hoe je kan bepalen of hij alleen de leden includes als die aan 
                 //bepaalde voorwaarden voldoen, maar wel alle gelieerdepersonen
                 lijst = (
-                    from gp in db.GelieerdePersoon.Include("Persoon").Include("Lid.GroepsWerkJaar")
+                    from gp in db.GelieerdePersoon.Include("Persoon").Include("Lid.GroepsWerkJaar").Include("Groep")
                     where gp.Groep.ID == groepID
                     orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
                     select gp).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte).ToList();
@@ -175,7 +188,7 @@ namespace Cg2.Data.Ef
                 db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 
                 return (
-                    from gp in db.GelieerdePersoon.Include("Persoon").Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.ID, gelieerdePersonenIDs))
+                    from gp in db.GelieerdePersoon.Include("Groep").Include("Persoon").Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.ID, gelieerdePersonenIDs))
                     select gp).ToList();
             }
         }
@@ -186,7 +199,7 @@ namespace Cg2.Data.Ef
             {
                 db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
                 return (
-                    from gp in db.GelieerdePersoon.Include("Persoon").Include("Communicatie").Include("Persoon.PersoonsAdres.Adres.Straat").Include("Persoon.PersoonsAdres.Adres.Subgemeente")
+                    from gp in db.GelieerdePersoon.Include("Persoon").Include("Communicatie").Include("Persoon.PersoonsAdres.Adres.Straat").Include("Persoon.PersoonsAdres.Adres.Subgemeente").Include("Groep")
                     where gp.ID == gelieerdePersoonID
                     select gp).FirstOrDefault();
             }

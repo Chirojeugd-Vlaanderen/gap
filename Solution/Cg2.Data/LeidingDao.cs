@@ -8,6 +8,7 @@ using System.Data.Objects;
 using System.Data;
 using Cg2.Orm.DataInterfaces;
 
+using System.Linq.Expressions;
 using Cg2.EfWrapper.Entity;
 
 
@@ -15,21 +16,30 @@ namespace Cg2.Data.Ef
 {
     public class LeidingDao : Dao<Leiding>, ILeidingDao
     {
-        /// <summary>
-        /// Creeert een nieuwe leider/leidster
-        /// </summary>
-        /// <param name="l">Leiding-object</param>
-        /// <returns>bewaard Leiding-object</returns>
-        /// <remarks>Wijzigingen in GroepsWerkJaar of
-        /// GelieerdePersoon worden niet meegenomen!</remarks>
-        public override Leiding Creeren(Leiding l)
+        public LeidingDao()
         {
-            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            connectedEntities = new Expression<Func<Leiding, object>>[3] { 
+                                        e => e.GroepsWerkJaar, 
+                                        e => e.GelieerdePersoon, 
+                                        e => e.AfdelingsJaar };
+        }
+
+        public void getEntityKeys(Leiding entiteit, ChiroGroepEntities db)
+        {
+            if (entiteit.ID != 0 && entiteit.EntityKey == null)
             {
-                Leiding kindMetContext = db.AttachObjectGraph(l, lid => lid.GroepsWerkJaar, lid => lid.GelieerdePersoon, leiding => leiding.AfdelingsJaar);
-                db.SaveChanges();
+                entiteit.EntityKey = db.CreateEntityKey(typeof(Leiding).Name, entiteit);
             }
-            return l;
+
+            foreach (AfdelingsJaar a in entiteit.AfdelingsJaar)
+            {
+                if (a.ID != 0 && a.EntityKey == null)
+                {
+                    a.EntityKey = db.CreateEntityKey(typeof(AfdelingsJaar).Name, entiteit.AfdelingsJaar);
+                }
+            }
+
+            base.getEntityKeys(entiteit, db);
         }
     }
 }
