@@ -1,8 +1,0 @@
-﻿EfWrapper - IBasisEntiteit en helperklasses voor entity framework
-
-Dit project is een aanpassing van wat er op deze website staat:
-http://www.codeproject.com/KB/architecture/attachobjectgraph.aspx
-zodat het werkt op onze IBasisEntiteit.
-
-De bedoeling is om object graphs (bestaande uit een mix van nieuwe
-en gewijzigde entity's) aan een objectcontext te attachen
