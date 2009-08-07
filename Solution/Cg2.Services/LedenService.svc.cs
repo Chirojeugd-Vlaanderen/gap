@@ -26,14 +26,6 @@ namespace Cg2.Services
             return gp.Persoon.VolledigeNaam + " is toegevoegd als lid.";
         }
 
-        public IList<LidInfo> PaginaOphalen(int groepsWerkJaarID)
-        {
-            LedenManager lm = Factory.Maak<LedenManager>();
-
-            IList<Lid> result = lm.PaginaOphalen(groepsWerkJaarID);
-            return LidInfoMapper.mapLid(result);
-        }
-
         /// <summary>
         /// ook om te maken en te deleten
         /// </summary>
@@ -88,6 +80,22 @@ namespace Cg2.Services
             lm.LidActiveren(lid);
         }
 
-    }
 
+
+        public IList<LidInfo> PaginaOphalen(int groepsWerkJaarID)
+        {
+            LedenManager lm = Factory.Maak<LedenManager>();
+
+            IList<Lid> result = lm.PaginaOphalen(groepsWerkJaarID);
+            return LidInfoMapper.mapLid(result);
+        }
+
+        public IList<LidInfo> PaginaOphalenVoorAfdeling(int groepsWerkJaarID, int afdelingsID)
+        {
+            LedenManager lm = Factory.Maak<LedenManager>();
+
+            IList<Lid> result = lm.PaginaOphalen(groepsWerkJaarID, afdelingsID);
+            return LidInfoMapper.mapLid(result);
+        }
+    }
 }

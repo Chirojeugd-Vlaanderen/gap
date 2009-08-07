@@ -189,6 +189,26 @@ namespace Cg2.Workers
         }
 
         /// <summary>
+        /// Haalt een 'pagina' op met leden uit een bepaald GroepsWerkJaar
+        /// </summary>
+        /// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
+        /// <param name="afdelingsID">ID gevraagde afdeling</param>
+        /// <returns></returns>
+        public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int afdelingsID)
+        {
+            AuthorisatieManager am = Factory.Maak<AuthorisatieManager>();
+
+            if (am.IsGavGroepsWerkJaar(groepsWerkJaarID))
+            {
+                return _dao.PaginaOphalen(groepsWerkJaarID, afdelingsID);
+            }
+            else
+            {
+                throw new GeenGavException("Dit GroepsWerkJaar hoort niet bij je groep(en).");
+            }
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="lid"></param>

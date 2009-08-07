@@ -57,6 +57,9 @@ namespace Cg2.ServiceContracts
         [OperationContract]
         IList<LidInfo> PaginaOphalen(int groepsWerkJaarID);
 
+        [OperationContract]
+        IList<LidInfo> PaginaOphalenVoorAfdeling(int groepsWerkJaarID, int afdelingsID);
+
         /// <summary>
         /// 
         /// </summary>

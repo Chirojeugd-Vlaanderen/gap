@@ -52,12 +52,6 @@ namespace Cg2.Data.Ef
             {
                 db.Lid.MergeOption = MergeOption.NoTracking;
 
-                var leden = (
-                    from l in db.Lid.Include("GelieerdePersoon.Persoon")
-                    where l.GroepsWerkJaar.ID == groepsWerkJaarID
-                    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-                    select l).ToList<Lid>();
-
                 var kinderen = (
                     from l in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
                     where l.GroepsWerkJaar.ID == groepsWerkJaarID
@@ -79,14 +73,45 @@ namespace Cg2.Data.Ef
                 {
                     lijst.Add(lid);
                 }
-                // normaal gezien hebben we nu iedereen: kinderen + leiding
-                // toch nog even controleren of er geen leden zijn die noch kind noch leiding zijn
-                foreach (Lid lid in leden)
+            }
+
+            return lijst;
+        }
+
+        // pagineren gebeurt nu per werkjaar
+        // pagina, paginaGrootte en aantalTotaal zijn niet meer nodig
+        public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int afdelingsID)
+        {
+            IList<Lid> lijst;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                db.Lid.MergeOption = MergeOption.NoTracking;
+
+                var kinderen = (
+                    from l in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+                    where l.GroepsWerkJaar.ID == groepsWerkJaarID
+                                &&
+                          l.AfdelingsJaar.Afdeling.ID == afdelingsID
+                    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+                    select l).ToList<Kind>();
+
+                var leiding = (
+                    from l in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+                    where l.GroepsWerkJaar.ID == groepsWerkJaarID
+                                &&
+                          l.AfdelingsJaar.FirstOrDefault().Afdeling.ID == afdelingsID
+                    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+                    select l).ToList<Leiding>();
+
+                lijst = new List<Lid>();
+                foreach (Lid lid in kinderen)
                 {
-                    if (!(lid is Kind) && !(lid is Leiding))
-                    {
-                        lijst.Add(lid);
-                    }
+                    lijst.Add(lid);
+                }
+                foreach (Lid lid in leiding)
+                {
+                    lijst.Add(lid);
                 }
             }
 
