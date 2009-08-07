@@ -43,22 +43,8 @@ namespace Cg2.Data.Ef
         /// <returns></returns>
         public virtual T Ophalen(int id) 
         {
-            T result;
-
-            using (ChiroGroepEntities db = new ChiroGroepEntities())
-            {
-                db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
-
-                ObjectQuery<T> oq = db.CreateQuery<T>("[" + typeof(T).Name + "]");
-                result = (
-                    from t in oq
-                    where t.ID == id
-                    select t).FirstOrDefault<T>();
-
-                db.Detach(result);
-            }
-            
-            return result;
+            Expression<Func<T, object>>[] paths = {};
+            return Ophalen(id, paths);
         }
 
         public virtual T Ophalen(int id, params Expression<Func<T, object>>[] paths)
@@ -145,6 +131,31 @@ namespace Cg2.Data.Ef
             }
             return entiteit;
         }
+
+
+        //FIXME kan dit beter zonder foreach, maar het behandelen van de hele lijst?
+        public virtual IList<T> Bewaren(IList<T> es, params Expression<Func<T, object>>[] paths)
+        {
+            List<T> list = new List<T>() ;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                db.Lid.MergeOption = MergeOption.NoTracking;
+
+
+
+                foreach (T entiteit in es)
+                {
+                    getEntityKeys(entiteit, db);
+                    list.Add(db.AttachObjectGraph(entiteit, paths));
+                    SetAllModified(entiteit.EntityKey, db);
+                }
+
+                db.SaveChanges();
+            }
+            return list;
+        }
+
 
         public virtual void getEntityKeys(T entiteit, ChiroGroepEntities db) 
         {
