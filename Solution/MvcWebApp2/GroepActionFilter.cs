@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Cg2.Adf.ServiceModel;
 using Cg2.ServiceContracts;
+using MvcWebApp2.Properties;
 
 namespace MvcWebApp2
 {
@@ -50,8 +51,12 @@ namespace MvcWebApp2
                     MvcWebApp2.Sessie.IsMultiGav = true;
 
                     // Redirect naar de Kies Groep pagina
-                    // TODO Hier proberen de return url in een parameter te duwen
-                    filterContext.Result = new RedirectResult("/Gav/Index");
+
+                    // Normaalgezien gebeuren redirects via 'RedirectToAction', zodat
+                    // de paden meteen OK zijn.  Nu kan dat niet, omdat RedirectToAction
+                    // een method is van Controller.
+
+                    filterContext.Result = new RedirectResult(Settings.Default.GroepKiezenUrl);
                 }
 
             }
