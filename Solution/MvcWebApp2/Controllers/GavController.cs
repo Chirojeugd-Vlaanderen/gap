@@ -30,7 +30,7 @@ namespace MvcWebApp2.Controllers
             Sessie.GroepID = model.GeselecteerdeGroepID;
             // TODO: verwijder tijdelijke feedbackregel hieronder
             TempData["feedback"] = "Groep geselecteerd!";
-            return new RedirectResult("/Personen/Index");
+            return RedirectToAction("Index", "Personen");
         }
     }
 }
