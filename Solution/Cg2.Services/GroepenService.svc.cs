@@ -17,6 +17,10 @@ namespace Cg2.Services
     {
         #region IGroepenService Members
 
+        public string Hallo()
+        {
+            return "Hallo GroepenService!";
+        }
         
         public GroepInfo OphalenInfo(int GroepId)
         {

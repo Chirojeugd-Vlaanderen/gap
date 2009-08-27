@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Cg2.Adf.ServiceModel;
 using Cg2.ServiceContracts;
 
 namespace ServiceHelper.Test
@@ -11,9 +12,9 @@ namespace ServiceHelper.Test
     /// Summary description for UnitTest1
     /// </summary>
     [TestClass]
-    public class UnitTest1
+    public class ServiceAanroepen
     {
-        public UnitTest1()
+        public ServiceAanroepen()
         {
             //
             // TODO: Add constructor logic here
@@ -60,6 +61,17 @@ namespace ServiceHelper.Test
         //
         #endregion
 
-       
+        [TestMethod]
+        public void CallService()
+        {
+            // act
+            
+            string antwoord 
+                = Cg2.Adf.ServiceModel.ServiceHelper.CallService<IGroepenService, string>(s => s.Hallo());
+
+            // assert
+
+            Assert.IsTrue(antwoord.Length > 0);
+        }
     }
 }
