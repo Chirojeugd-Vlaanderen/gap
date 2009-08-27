@@ -10,7 +10,7 @@ using Cg2.Ioc;
 namespace Cg2.Workers.Test
 {
     /// <summary>
-    /// Summary description for UnitTest1
+    /// TODO: wat doet deze klasse?
     /// </summary>
     [TestClass]
     public class ToevoegTest

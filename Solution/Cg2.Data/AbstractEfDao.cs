@@ -67,7 +67,10 @@ namespace Cg2.Data.Ef
                     where t.ID == id
                     select t).FirstOrDefault<T>();
 
-                db.Detach(result);
+                if (result != null)
+                {
+                    db.Detach(result);
+                }
             }
 
             return result;
@@ -122,10 +125,9 @@ namespace Cg2.Data.Ef
                 //FIXME: voor een object van Leiding crasht dit, want dat is geen entity in de database
                 getEntityKeys(entiteit, db);
 
-                //FIXME entiteit verwijderen werkt nog niet
-
                 entiteit = db.AttachObjectGraph(entiteit, paths);
-                SetAllModified(entiteit.EntityKey, db);
+
+                // SetAllModified is niet meer nodig na AttachObjectGraph
 
                 db.SaveChanges();
             }

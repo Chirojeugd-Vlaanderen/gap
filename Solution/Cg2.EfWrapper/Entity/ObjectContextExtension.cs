@@ -54,8 +54,6 @@ namespace Cg2.EfWrapper.Entity
         /// moet hier niet geinterpreteerd worden als het eerste element.
         /// </param>
         /// <returns>Een array met geattachte objectgraphs</returns>
-        /// <remarks>FIXME: de 'TeVerwijderen'-vlag voor de rootentity's
-        /// wordt nog genegeerd.</remarks>
 		public static T[] AttachObjectGraphs<T>(this ObjectContext context, IEnumerable<T> entities, params Expression<Func<T, object>>[] paths) where T:IBasisEntiteit
 		{
 			T[] unattachedEntities = entities.ToArray();
@@ -189,7 +187,13 @@ namespace Cg2.EfWrapper.Entity
                     // attachedEntities.
 
                     for (int i = 0; i < unattachedEntities.Length; i++)
+                    {
                         NavigatePropertySet(context, root, unattachedEntities[i], attachedEntities[i]);
+                        if (unattachedEntities[i].TeVerwijderen)
+                        {
+                            context.DeleteObject(attachedEntities[i]);
+                        }
+                    }
                 }
 			}
 
