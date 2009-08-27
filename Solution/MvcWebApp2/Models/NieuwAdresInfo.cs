@@ -56,5 +56,15 @@ namespace MvcWebApp2.Models
             // (persoonID van de aanvrager al selecteren)
             PersoonIDs.Add(ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(aanvragerID)).Persoon.ID);
         }
+
+        /// <summary>
+        /// Haalt eventuele mogelijke bewoners van het nieuwe
+        /// adres opnieuw op uit de database, op basis van
+        /// AanvragerID
+        /// </summary>
+        public void HerstelMogelijkeBewoners()
+        {
+            MogelijkeBewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<Persoon>>(l => l.HuisGenotenOphalen(AanvragerID));
+        }
     }
 }

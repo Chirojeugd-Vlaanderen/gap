@@ -199,7 +199,13 @@ namespace MvcWebApp2.Controllers
             }
             catch (FaultException<AdresFault> ex)
             {
-                new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "NieuwAdres");
+                new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "NieuwAdres.");
+
+                // De mogelijke bewoners zijn op dit moment vergeten, en moeten dus
+                // terug opgevraagd worden.
+
+                model.HerstelMogelijkeBewoners();
+
                 return View("NieuwAdres", model);
             }
             catch

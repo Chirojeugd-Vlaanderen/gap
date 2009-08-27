@@ -166,6 +166,11 @@ namespace Cg2.Services
             }
             catch (Exception)
             {
+                // Als er een FaultException optreedt, is het normaal
+                // dat die hier opnieuw gethrowd wordt.  Bij het 
+                // debuggen zal de applicatie hier stilvallen.  Druk
+                // gewoon F5 om verder te gaan.
+
                 throw;
             }
 

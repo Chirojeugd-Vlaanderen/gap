@@ -113,6 +113,7 @@ namespace Cg2.ServiceContracts
         /// <param name="adres">Toe te voegen adres</param>
         /// <returns></returns>
         [OperationContract]
+        [FaultContract(typeof(AdresFault))]
         void AdresToevoegenAanPersonen(List<int> personenIDs, Adres adres);
     }
 }
