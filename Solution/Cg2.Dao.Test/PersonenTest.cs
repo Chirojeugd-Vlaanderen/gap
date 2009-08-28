@@ -5,17 +5,16 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Data.Ef;
 using Cg2.Orm;
-using Cg2.Ioc;
 
-namespace Cg2.Workers.Test
+namespace Cg2.Dao.Test
 {
     /// <summary>
-    /// TODO: wat doet deze klasse?
+    /// Summary description for PersonenTest
     /// </summary>
     [TestClass]
-    public class ToevoegTest
+    public class PersonenTest
     {
-        public ToevoegTest()
+        public PersonenTest()
         {
             //
             // TODO: Add constructor logic here
@@ -62,31 +61,53 @@ namespace Cg2.Workers.Test
         //
         #endregion
 
+        /// <summary>
+        /// Broes' test om te verifieren of de GelieerdePersonenDao 
+        /// een nieuwe persoon kan toevoegen.
+        /// </summary>
         [TestMethod]
-        public void TestMethod1()
+        public void NieuwePersoon()
         {
             GroepenDao gdao = new GroepenDao();
             Groep g = gdao.Ophalen(310);
 
-            Assert.AreEqual(0, g.GelieerdePersoon.Count);
-            
+            //// Onderstaande assert is niet relevant voor de test.
+            // Assert.AreEqual(0, g.GelieerdePersoon.Count);
+
             Persoon p = new Persoon();
             p.VoorNaam = "Broes";
             p.Naam = "De Cat";
 
-            GelieerdePersoon gp = GelieerdePersoon.CreateGelieerdePersoon(0, 0);
+            //// Ik weet niet precies waarom Broes de GP als volgt aanmaakte:
+            //
+            // GelieerdePersoon gp = GelieerdePersoon.CreateGelieerdePersoon(0, 0);
+            //
+            //// Dit is alleszins properder:
+
+            GelieerdePersoon gp = new GelieerdePersoon();
+
+            // Onderstaande operaties zouden beter gebeuren in de personenmanager.
 
             gp.Persoon = p;
             p.GelieerdePersoon.Add(gp);
             gp.Groep = g;
 
-            Assert.AreEqual(1, g.GelieerdePersoon.Count);
-            //Er gebeurt dus GEEN loading van de andere gelieerde personen, maar blijkbaar kan het wel
-            //zonder probleem worden toegevoegd
+            //// Deze assert is ook niet relevant
+            // Assert.AreEqual(1, g.GelieerdePersoon.Count);
+
+            // Er gebeurt dus GEEN loading van de andere gelieerde personen, maar blijkbaar kan het wel
+            // zonder probleem worden toegevoegd
+            // Johan: Zo is dat.  AttachObjectGraph kijkt alleen naar de beschikbare objecten.
+            // Vandaar dat de 'TeVerwijderen'-vlag nodig is.  Alles wat bij het opnieuw attachen niet
+            // beschikbaar is, wordt beschouwd als niet geladen.
 
             GelieerdePersonenDao gpdao = new GelieerdePersonenDao();
+
+            // TODO: Dao voorzien van functionaliteit om het aantal personen te tellen.
+            // Onderstaande is nogal 'duur':
+
             int number = gpdao.AllenOphalen(310).Count;
-            
+
             gp = gpdao.Bewaren(gp);
 
             int number2 = gpdao.AllenOphalen(310).Count;
@@ -95,21 +116,26 @@ namespace Cg2.Workers.Test
             Assert.AreNotEqual(number, 0);
             Assert.AreNotEqual(0, gp.ID);
 
+            // Bij wijze van cleanup gelieerde persoon opnieuw verwijderen.
+
             /*
              * todo: 
-             * verwijderen van persoon nog testen
              * vastleggen welke velden van persoon not null zijn en welke uniek moeten zijn (alleen AD geloof ik)
              * creeren als methode overal verwijderen?
              * checken of overal in bewaren nieuwe objecten juist worden afgehandeld (nog niet zo voor gelieerdepersoon
              *                   namelijk niet als de persoon als bestaat maar de gelieerdepersoon nieuw is)
              */
 
-            /*gp.TeVerwijderen = true;
+            gp.TeVerwijderen = true;
             gp.Persoon.TeVerwijderen = true;
             gpdao.Bewaren(gp);
 
             int number3 = gpdao.AllenOphalen(310).Count;
-            Assert.AreEqual(number, number3);*/
+
+            // Eigenlijk testen we het onderstaande niet, maar in dit geval
+            // komt het wel van pas.
+
+            Assert.AreEqual(number, number3);
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Cg2.Data.Ef
                 }
             }
 
-            base.getEntityKeys(entiteit, db);
+            base.EntityKeysHerstellen(entiteit, db);
         }
     }
 }

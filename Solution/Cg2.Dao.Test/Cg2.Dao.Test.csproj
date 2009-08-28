@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LedenTest.cs" />
+    <Compile Include="PersonenTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AfdelingsTest.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

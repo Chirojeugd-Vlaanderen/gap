@@ -28,7 +28,7 @@ namespace Cg2.Data.Ef
                                         e=>e.PersoonsAdres.First().Persoon.WithoutUpdate() };
         }
 
-        public override void getEntityKeys(Adres entiteit, ChiroGroepEntities db)
+        public override void EntityKeysHerstellen(Adres entiteit, ChiroGroepEntities db)
         {
             if (entiteit.ID != 0 && entiteit.EntityKey == null)
             {

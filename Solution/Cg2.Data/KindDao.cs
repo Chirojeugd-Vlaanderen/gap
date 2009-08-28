@@ -35,7 +35,7 @@ namespace Cg2.Data.Ef
                 entiteit.AfdelingsJaar.EntityKey = db.CreateEntityKey(typeof(AfdelingsJaar).Name, entiteit.AfdelingsJaar);
             }
 
-            base.getEntityKeys(entiteit, db);
+            base.EntityKeysHerstellen(entiteit, db);
         }
     }
 }

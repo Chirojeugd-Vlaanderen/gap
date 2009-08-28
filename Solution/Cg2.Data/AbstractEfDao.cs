@@ -123,7 +123,7 @@ namespace Cg2.Data.Ef
                 // de entity terug geattacht kan worden.
 
                 //FIXME: voor een object van Leiding crasht dit, want dat is geen entity in de database
-                getEntityKeys(entiteit, db);
+                EntityKeysHerstellen(entiteit, db);
 
                 entiteit = db.AttachObjectGraph(entiteit, paths);
 
@@ -148,7 +148,7 @@ namespace Cg2.Data.Ef
 
                 foreach (T entiteit in es)
                 {
-                    getEntityKeys(entiteit, db);
+                    EntityKeysHerstellen(entiteit, db);
                     list.Add(db.AttachObjectGraph(entiteit, paths));
                     SetAllModified(entiteit.EntityKey, db);
                 }
@@ -159,7 +159,12 @@ namespace Cg2.Data.Ef
         }
 
 
-        public virtual void getEntityKeys(T entiteit, ChiroGroepEntities db) 
+        /// <summary>
+        /// Herstelt zo nodig de entity key van een entiteit.
+        /// </summary>
+        /// <param name="entiteit">Entiteit waarvan key te herstellen is</param>
+        /// <param name="db">Object context</param>
+        public virtual void EntityKeysHerstellen(T entiteit, ChiroGroepEntities db) 
         {
             if (entiteit.ID != 0 && entiteit.EntityKey == null)
             {
