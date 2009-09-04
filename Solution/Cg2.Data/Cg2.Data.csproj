@@ -57,6 +57,7 @@
     <Compile Include="AfdelingsJaarDao.cs" />
     <Compile Include="AuthorisatieDao.cs" />
     <Compile Include="ChiroGroepenDao.cs" />
+    <Compile Include="GroepsWerkJaarDao.cs" />
     <Compile Include="KindDao.cs" />
     <Compile Include="LeidingDao.cs" />
     <Compile Include="PersonenDao.cs" />

@@ -58,5 +58,17 @@ namespace Cg2.Dao.Test.Properties {
                 this["TestGroepsWerkJaarID"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("40")]
+        public int TestAfdeling2ID {
+            get {
+                return ((int)(this["TestAfdeling2ID"]));
+            }
+            set {
+                this["TestAfdeling2ID"] = value;
+            }
+        }
     }
 }
