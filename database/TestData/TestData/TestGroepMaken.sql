@@ -5,18 +5,21 @@ USE ChiroGroep
 
 DECLARE @testGroepCode AS CHAR(10);
 DECLARE @testAfdelingsCode AS VARCHAR(10);
+DECLARE @testAfdelingsCode2 AS VARCHAR(10);
 DECLARE @testWerkJaar AS INT;
 DECLARE @testOfficieleAfdelingID AS INT;
 
 
 SET @testGroepCode='tst/0001';
 SET @testAfdelingsCode='UT';
+set @testAfdelingsCode2='SK';
 SET @testWerkJaar=2009;
 SET @testOfficieleAfdelingID=1;		-- officiele afdeling voor testafdeling in testwerkjaar
 
 
 DECLARE @testGroepID AS INT;
 DECLARE @testAfdelingID AS INT;
+DECLARE @testAfdeling2ID AS INT;
 DECLARE @testGroepsWerkJaarID AS INT;
 
 ---
@@ -57,7 +60,7 @@ BEGIN
 END
 
 ---
---- Afdeling maken 
+--- Afdelingen maken 
 ---
 
 IF NOT EXISTS (SELECT 1 FROM lid.Afdeling WHERE groepID = @testGroepID AND afkorting = @testAfdelingsCode)
@@ -71,8 +74,20 @@ BEGIN
 	SET @testAfdelingID = (SELECT AfdelingID FROM lid.Afdeling WHERE groepID = @testGroepID AND afkorting = @testAfdelingsCode)
 END
 
+IF NOT EXISTS (SELECT 1 FROM lid.Afdeling WHERE groepID = @testGroepID AND afkorting = @testAfdelingsCode2)
+BEGIN
+	INSERT INTO lid.Afdeling(GroepID, AfdelingsNaam, Afkorting)
+	VALUES(@testGroepID, 'Speelkwi''s', @testAfdelingsCode2);
+	SET @testAfdeling2ID = scope_identity();
+END
+ELSE
+BEGIN
+	SET @testAfdeling2ID = (SELECT AfdelingID FROM lid.Afdeling WHERE groepID = @testGroepID AND afkorting = @testAfdelingsCode2)
+END
+
+
 ---
---- AfdelingsJaar maken voor net gecreeerde officiele afdeling
+--- AfdelingsJaar maken voor testafdeling1
 ---
 
 IF NOT EXISTS (SELECT 1 FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID = @testGroepsWerkJaarID AND AfdelingID = @testAfdelingID)
@@ -83,7 +98,8 @@ END
 
 
 PRINT 'TestGroepID: ' + CAST(@testGroepID AS VARCHAR(10));
-PRINT 'TestAfdelingID: ' + CAST(@testAfdelingID AS VARCHAR(10));
+PRINT 'TestAfdeling1ID: ' + CAST(@testAfdelingID AS VARCHAR(10));
+PRINT 'TestAfdeling2ID: ' + CAST(@testAfdeling2ID AS VARCHAR(10));
 PRINT 'TestGroepsWerkJaarID: ' + CAST(@testGroepsWerkJaarID AS VARCHAR(10));
 
 
