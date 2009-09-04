@@ -5,12 +5,21 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Data.Ef;
 using Cg2.Orm;
+using Cg2.Data;
 
 namespace Cg2.Dao.Test
 {
     /// <summary>
-    /// Summary description for UnitTest1
+    /// Data-Access tests voor afdelingen en alles wat
+    /// daarrond hangt.
     /// </summary>
+    /// <remarks>Deze tests werken op een testgroep in
+    /// de database.  Het script om de testgroep te maken,
+    /// zit in SVN: 
+    /// https://develop.chiro.be/subversion/cg2/trunk/database/TestData/TestData/TestGroepMaken.sql
+    /// 
+    /// De IDs nodig voor de test zitten in de settings van dit project.
+    /// </remarks>
     [TestClass]
     public class AfdelingsTest
     {
@@ -60,6 +69,30 @@ namespace Cg2.Dao.Test
         // public void MyTestCleanup() { }
         //
         #endregion
+
+        /// <summary>
+        /// Opzoeken van een testafdelingsjaar
+        /// </summary>
+        [TestMethod]
+        public void AfdelingsJaarOpzoeken()
+        {
+            #region Arrange
+            int gwjID = Properties.Settings.Default.TestGroepsWerkJaarID;
+            int afdID = Properties.Settings.Default.TestAfdelingID;
+
+            AfdelingsJaarDao dao = new AfdelingsJaarDao();
+            #endregion
+
+            #region Act
+            AfdelingsJaar aj = dao.Ophalen(gwjID, afdID);
+            #endregion
+
+            #region Assert
+            Assert.IsTrue(aj != null);
+            Assert.IsTrue(aj.GroepsWerkJaar.ID == gwjID);
+            Assert.IsTrue(aj.Afdeling.ID == afdID);
+            #endregion
+        }
 
         [TestMethod]
         public void AfdelingsJaarCreeren()

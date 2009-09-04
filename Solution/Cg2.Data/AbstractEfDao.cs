@@ -188,8 +188,9 @@ namespace Cg2.Data.Ef
                 try
                 {
                     stateEntry.SetModifiedProperty(propName);
-                }catch(InvalidOperationException e)
+                }catch(InvalidOperationException)
                 {
+                    // WTF???
                 }
                 
             }

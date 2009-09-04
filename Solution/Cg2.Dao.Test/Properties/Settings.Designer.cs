@@ -22,5 +22,41 @@ namespace Cg2.Dao.Test.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("317")]
+        public int TestGroepID {
+            get {
+                return ((int)(this["TestGroepID"]));
+            }
+            set {
+                this["TestGroepID"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("37")]
+        public int TestAfdelingID {
+            get {
+                return ((int)(this["TestAfdelingID"]));
+            }
+            set {
+                this["TestAfdelingID"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("13")]
+        public int TestGroepsWerkJaarID {
+            get {
+                return ((int)(this["TestGroepsWerkJaarID"]));
+            }
+            set {
+                this["TestGroepsWerkJaarID"] = value;
+            }
+        }
     }
 }

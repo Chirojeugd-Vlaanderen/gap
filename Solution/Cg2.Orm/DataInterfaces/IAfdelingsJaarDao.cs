@@ -7,5 +7,6 @@ namespace Cg2.Orm.DataInterfaces
 {
     public interface IAfdelingsJaarDao : IDao<AfdelingsJaar>
     {
+        AfdelingsJaar Ophalen(int groepsWerkJaarID, int afdelingID);
     }
 }
