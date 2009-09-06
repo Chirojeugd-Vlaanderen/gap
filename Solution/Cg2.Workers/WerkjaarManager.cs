@@ -5,6 +5,7 @@ using System.Text;
 using Cg2.Orm.DataInterfaces;
 using Cg2.Orm;
 using System.Diagnostics;
+using Cg2.Fouten.Exceptions;
 
 namespace Cg2.Workers
 {
@@ -26,6 +27,48 @@ namespace Cg2.Workers
         }
 
         #endregion
+
+        /// <summary>
+        /// Maakt een nieuw afdelingsjaar op basis van groepswerkjaar,
+        /// afdeling en officiele afdeling.
+        /// </summary>
+        /// <param name="gwj">Groepswerkjaar voor afdelingsjaar</param>
+        /// <param name="afd">Afdeling voor afdelingswerkjaar</param>
+        /// <param name="oa">Corresponderende officiele afdeling voor afd</param>
+        /// <param name="jaarVan">startpunt interval geboortejaren</param>
+        /// <param name="jaarTot">eindpunt interval geboortejaren</param>
+        /// <returns>Afdelingsjaar met daaraan gekoppeld groepswerkjaar
+        /// , afdeling en officiele afdeling.</returns>
+        /// <remarks>gwj.Groep en afd.Groep mogen niet null zijn</remarks>
+        public AfdelingsJaar AfdelingsJaarMaken(GroepsWerkJaar gwj, Afdeling afd, OfficieleAfdeling oa, int jaarVan, int jaarTot)
+        {
+            Debug.Assert(gwj.Groep != null);
+            Debug.Assert(afd.Groep != null);
+
+            // FIXME: Eigenlijk zou onderstaande if ook moeten
+            // werken zonder de .ID's, want ik heb equals geoverload.
+            // Maar dat is blijkbaar niet zo evident.
+
+            if (gwj.Groep.ID != afd.Groep.ID)
+            {
+                throw new FoutieveGroepException("De afdeling is niet gekoppeld aan de groep van het groepswerkjaar.");
+            }
+
+            AfdelingsJaar resultaat = new AfdelingsJaar();
+
+            resultaat.GeboorteJaarVan = jaarVan;
+            resultaat.GeboorteJaarTot = jaarTot;
+
+            resultaat.GroepsWerkJaar = gwj;
+            resultaat.Afdeling = afd;
+            resultaat.OfficieleAfdeling = oa;
+
+            gwj.AfdelingsJaar.Add(resultaat);
+            afd.AfdelingsJaar.Add(resultaat);
+            oa.AfdelingsJaar.Add(resultaat);
+
+            return resultaat;
+        }
 
         /// <summary>
         /// Bepaalt ID van het recentste GroepsWerkJaar gemaakt voor een
@@ -64,6 +107,8 @@ namespace Cg2.Workers
             }
         }
 
+
+        // WTF???
         private int compare(int dag1, int maand1, int dag2, int maand2)
         {
             if (maand1 < maand2 || (maand1 == maand2 && dag1 < dag2))

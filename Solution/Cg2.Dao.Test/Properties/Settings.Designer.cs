@@ -70,5 +70,41 @@ namespace Cg2.Dao.Test.Properties {
                 this["TestAfdeling2ID"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int TestOfficieleAfdelingID {
+            get {
+                return ((int)(this["TestOfficieleAfdelingID"]));
+            }
+            set {
+                this["TestOfficieleAfdelingID"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2001")]
+        public int TestAfdeling2Van {
+            get {
+                return ((int)(this["TestAfdeling2Van"]));
+            }
+            set {
+                this["TestAfdeling2Van"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1998")]
+        public int TestAfdeling2Tot {
+            get {
+                return ((int)(this["TestAfdeling2Tot"]));
+            }
+            set {
+                this["TestAfdeling2Tot"] = value;
+            }
+        }
     }
 }

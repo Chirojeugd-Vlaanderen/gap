@@ -14,5 +14,14 @@
     <Setting Name="TestAfdeling2ID" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">40</Value>
     </Setting>
+    <Setting Name="TestOfficieleAfdelingID" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="TestAfdeling2Van" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2001</Value>
+    </Setting>
+    <Setting Name="TestAfdeling2Tot" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1998</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -6,6 +6,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Data.Ef;
 using Cg2.Orm;
 using Cg2.Data;
+using Cg2.Workers;
+using Cg2.Ioc;
 
 namespace Cg2.Dao.Test
 {
@@ -70,6 +72,31 @@ namespace Cg2.Dao.Test
         //
         #endregion
 
+
+        [ClassInitialize]
+        static public void TestsInitialiseren(TestContext context)
+        {
+
+            int gwjID = Properties.Settings.Default.TestGroepsWerkJaarID;
+            int afd2ID = Properties.Settings.Default.TestAfdeling2ID;
+
+            // Verwijder mogelijk afdelingsjaar voor afdeling2
+
+            AfdelingsJaarDao ajDao = new AfdelingsJaarDao();
+            AfdelingsJaar aj = ajDao.Ophalen(gwjID, afd2ID);
+
+            if (aj != null)
+            {
+                aj.TeVerwijderen = true;
+                ajDao.Bewaren(aj);
+            }
+
+            // Initialiseer IoC-container.  Niet zeker van of dit
+            // een goeie plaats is...
+            Factory.InitContainer();
+
+        }
+
         /// <summary>
         /// Opzoeken van een testafdelingsjaar
         /// </summary>
@@ -94,45 +121,89 @@ namespace Cg2.Dao.Test
             #endregion
         }
 
+        /// <summary>
+        /// Haalt de afdeling op bepaald door TestAfdelingID,
+        /// en controleert of die gekoppeld is aan groep
+        /// bepaald door TestGroepID
+        /// (zie property's)
+        /// </summary>
+        [TestMethod]
+        public void AfdelingOphalen()
+        {
+            #region Arrange
+            int afdID = Properties.Settings.Default.TestAfdelingID;
+            int groepID = Properties.Settings.Default.TestGroepID;
+
+            AfdelingenDao dao = new AfdelingenDao();
+            #endregion
+
+            #region Act
+            Afdeling afd = dao.Ophalen(afdID);
+            #endregion
+
+            #region Assert
+            Assert.IsTrue(afd != null);
+            Assert.IsTrue(afd.Groep.ID == groepID);
+            #endregion
+        }
+
+
+        /// <summary>
+        /// Creeert een AfdelingsWerkJaar voor de afdeling
+        /// bepaald door TestAfdeling2ID in het groepswerkjaar
+        /// bepaald door TestGroepsWerkJaarID (zie settings)
+        /// </summary>
         [TestMethod]
         public void AfdelingsJaarCreeren()
         {
-            // TODO: test fixen
-
-            // Als deze test failt, dan is een vorige cleanup 
-            // waarschijnlijk niet goed gelukt.  Verwijder dan
-            // manueel afdeling 'TE' voor groep 310 en eventueel
-            // gekoppeld afdelingsjaar.
-
             // Arrange
 
-            GroepenDao gdao = new GroepenDao();
-            Dao<OfficieleAfdeling> oadao = new Dao<OfficieleAfdeling>();            
+            GroepsWerkJaarDao gwDao = new GroepsWerkJaarDao();
+            AfdelingenDao aDao = new AfdelingenDao();
+            AfdelingsJaarDao ajDao = new AfdelingsJaarDao();
+            Dao<OfficieleAfdeling> oaDao = new Dao<OfficieleAfdeling>();
 
-            Groep g = gdao.Ophalen(310);
-            //TODO vervangen door worker
-            Afdeling a = null; //gdao.AfdelingCreeren(310, "Testers", "TE");
-            OfficieleAfdeling oa = oadao.Ophalen(6);    // aspiranten
+            WerkJaarManager wjm = Factory.Maak<WerkJaarManager>();
+
+            int gwjID = Properties.Settings.Default.TestGroepsWerkJaarID;
+            int afd2ID = Properties.Settings.Default.TestAfdeling2ID;
+            int oaID = Properties.Settings.Default.TestOfficieleAfdelingID;
+
+            int van = Properties.Settings.Default.TestAfdeling2Van;
+            int tot = Properties.Settings.Default.TestAfdeling2Tot;
+
+            // Voor het gemak haal ik groepswerkjaar en afdeling via
+            // de DAO's op ipv via de workers.
+
+            GroepsWerkJaar gw = gwDao.Ophalen(gwjID);
+            Afdeling afd = aDao.Ophalen(afd2ID);
+            OfficieleAfdeling oa = oaDao.Ophalen(oaID);
+
+            // Het afdelingsjaar wordt gemaakt door een worker.
+
+            AfdelingsJaar aj = wjm.AfdelingsJaarMaken(gw, afd, oa, van, tot);
 
             // Act
-            //TODO vervangen door worker
-            AfdelingsJaar aj = null; // gdao.AfdelingsJaarCreeren(g, a, oa, 1988, 1989);
+
+            // Bewaren *MOET* gebeuren via de DAO, want het is de
+            // dao die we testen; we willen niet dat een fout in de
+            // worker de test doet failen.
+
+            ajDao.Bewaren(aj);
+
+            // Nu opnieuw ophalen.
+
+            AfdelingsJaar aj2 = ajDao.Ophalen(gwjID, afd2ID);
 
             // Assert
 
-            Assert.IsTrue(aj.ID > 0);
+            Assert.IsTrue(aj2.ID > 0);
+            Assert.IsTrue(aj2.GroepsWerkJaar.ID == gwjID);
+            Assert.IsTrue(aj2.Afdeling.ID == afd2ID);
+            Assert.IsTrue(aj2.OfficieleAfdeling.ID == oaID);
 
-            // Cleanup
-
-            Dao<AfdelingsJaar> ajdao = new Dao<AfdelingsJaar>();
-            Dao<Afdeling> adao = new Dao<Afdeling>();
-
-            aj.TeVerwijderen = true;
-            a.TeVerwijderen = true;
-            ajdao.Bewaren(aj);
-            adao.Bewaren(a);
-            //oud ajdao.Verwijderen(aj);
-            //oud adao.Verwijderen(a);
+            // Cleanup is niet meer nodig, want het nieuw gemaakte
+            // afdelingsjaar wordt verwijderd in TestsInitialiseren
         }
     }
 }

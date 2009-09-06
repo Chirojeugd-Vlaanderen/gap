@@ -6,15 +6,26 @@ using Cg2.Orm.DataInterfaces;
 using Cg2.Orm;
 using System.Data.Objects;
 using Cg2.Data.Ef;
+using Cg2.EfWrapper.Entity;
 
 namespace Cg2.Data
 {
     public class AfdelingsJaarDao: Dao<AfdelingsJaar>, IAfdelingsJaarDao
     {
+        public AfdelingsJaarDao(): base()
+        {
+            connectedEntities = new System.Linq.Expressions.Expression<Func<AfdelingsJaar, object>>[3]
+            {
+                aj => aj.Afdeling.WithoutUpdate()
+                    , aj => aj.GroepsWerkJaar.WithoutUpdate()
+                        , aj => aj.OfficieleAfdeling.WithoutUpdate()
+            };
+        }
+
         /// <summary>
         /// Afdelingsjaar ophalen op basis van ID's van de
         /// afdeling en het groepswerkjaar.  Samen met afdelingsjaar
-        /// wordt GroepsWerkJaar en Afdeling teruggegeven.
+        /// wordt GroepsWerkJaar, OfficieleAfdeling en Afdeling teruggegeven.
         /// </summary>
         /// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
         /// <param name="afdelingID">ID van de afdeling</param>
@@ -33,7 +44,10 @@ namespace Cg2.Data
 
                 resultaat = (
                     from AfdelingsJaar aj 
-                        in db.AfdelingsJaar.Include("Afdeling").Include("GroepsWerkJaar")
+                        in db.AfdelingsJaar
+                        .Include("Afdeling")
+                        .Include("GroepsWerkJaar")
+                        .Include("OfficieleAfdeling")
                     where aj.GroepsWerkJaar.ID == groepsWerkJaarID
                     && aj.Afdeling.ID == afdelingID
                     select aj).FirstOrDefault();
@@ -44,6 +58,7 @@ namespace Cg2.Data
                 {
                     resultaat.GroepsWerkJaarReference.Load();
                     resultaat.AfdelingReference.Load();
+                    resultaat.OfficieleAfdelingReference.Load();
                 }
             }
 
