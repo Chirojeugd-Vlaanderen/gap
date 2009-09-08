@@ -8,19 +8,27 @@ DECLARE @testAfdelingsCode AS VARCHAR(10);
 DECLARE @testAfdelingsCode2 AS VARCHAR(10);
 DECLARE @testWerkJaar AS INT;
 DECLARE @testOfficieleAfdelingID AS INT;
+DECLARE @testPersoonNaam AS VARCHAR(160)
+DECLARE @testPersoonVoorNaam AS VARCHAR(60)
+DECLARE @testPersoon2VoorNaam AS VARCHAR(60)
 
 
 SET @testGroepCode='tst/0001';
 SET @testAfdelingsCode='UT';
-set @testAfdelingsCode2='SK';
+SET @testAfdelingsCode2='SK';
 SET @testWerkJaar=2009;
 SET @testOfficieleAfdelingID=1;		-- officiele afdeling voor testafdeling in testwerkjaar
+SET @testPersoonNaam = 'Bosmans';
+SET @testPersoonVoorNaam = 'Jos';
+SET @testPersoon2VoorNaam = 'Irène';
 
 
 DECLARE @testGroepID AS INT;
 DECLARE @testAfdelingID AS INT;
 DECLARE @testAfdeling2ID AS INT;
 DECLARE @testGroepsWerkJaarID AS INT;
+DECLARE @testPersoonID AS INT;
+DECLARE @testPersoon2ID AS INT;
 
 ---
 --- Groep en Chirogroep creeren
@@ -96,11 +104,54 @@ BEGIN
 	VALUES (2003, 2004, @testAfdelingID, @testGroepsWerkJaarID, @testOfficieleAfdelingID);
 END
 
+---
+--- Testpersonen maken 
+---
+
+IF NOT EXISTS (SELECT 1 FROM pers.Persoon WHERE Naam = @testPersoonNaam AND VoorNaam = @testPersoonVoorNaam)
+BEGIN
+	INSERT INTO pers.Persoon(Naam, VoorNaam, GeboorteDatum, Geslacht)
+	VALUES(@testPersoonNaam, @testPersoonVoorNaam, '1959-11-30', 1)
+	SET @testPersoonID = SCOPE_IDENTITY();
+END
+ELSE
+BEGIN
+	SET @testPersoonID = (SELECT PersoonID FROM pers.Persoon WHERE Naam = @testPersoonNaam AND VoorNaam = @testPersoonVoorNaam);
+END;
+
+IF NOT EXISTS (SELECT 1 FROM pers.Persoon WHERE Naam = @testPersoonNaam AND VoorNaam = @testPersoon2VoorNaam)
+BEGIN
+	INSERT INTO pers.Persoon(Naam, VoorNaam, GeboorteDatum, Geslacht)
+	VALUES(@testPersoonNaam, @testPersoon2VoorNaam, '1959-11-30', 1)
+	SET @testPersoon2ID = SCOPE_IDENTITY();
+END
+ELSE
+BEGIN
+	SET @testPersoon2ID = (SELECT PersoonID FROM pers.Persoon WHERE Naam = @testPersoonNaam AND VoorNaam = @testPersoon2VoorNaam);
+END;
+
+---
+--- Personen lieren aan testgroep 
+---
+
+IF NOT EXISTS (SELECT 1 FROM pers.GelieerdePersoon WHERE PersoonID = @testPersoonID AND GroepID = @testGroepID)
+BEGIN
+	INSERT INTO pers.GelieerdePersoon(PersoonID, GroepID, ChiroLeeftijd)
+	VALUES (@testPersoonID, @testGroepID, 0);
+END
+
+IF NOT EXISTS (SELECT 1 FROM pers.GelieerdePersoon WHERE PersoonID = @testPersoon2ID AND GroepID = @testGroepID)
+BEGIN
+	INSERT INTO pers.GelieerdePersoon(PersoonID, GroepID, ChiroLeeftijd)
+	VALUES (@testPersoon2ID, @testGroepID, 0);
+END
+
 
 PRINT 'TestGroepID: ' + CAST(@testGroepID AS VARCHAR(10));
 PRINT 'TestAfdeling1ID: ' + CAST(@testAfdelingID AS VARCHAR(10));
 PRINT 'TestAfdeling2ID: ' + CAST(@testAfdeling2ID AS VARCHAR(10));
 PRINT 'TestGroepsWerkJaarID: ' + CAST(@testGroepsWerkJaarID AS VARCHAR(10));
-
+PRINT 'TestPersoonID: ' + CAST(@testPersoonID AS VARCHAR(10))
+PRINT 'TestPersoon2ID: ' + CAST(@testPersoon2ID AS VARCHAR(10))
 
 GO
