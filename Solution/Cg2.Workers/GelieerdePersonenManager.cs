@@ -111,11 +111,74 @@ namespace Cg2.Workers
 
         #endregion
 
+
+        /// <summary>
+        /// Maak een GelieerdePersoon voor gegeven persoon en groep
+        /// </summary>
+        /// <param name="persoon">te lieren persoon</param>
+        /// <param name="groep">groep waaraan te lieren</param>
+        /// <param name="chiroLeeftijd">chiroleeftijd gelieerde persoon</param>
+        /// <returns>een nieuwe GelieerdePersoon</returns>
+        public GelieerdePersoon PersoonAanGroepKoppelen(Persoon persoon, Groep groep, int chiroLeeftijd)
+        {
+            AuthorisatieManager aum = Factory.Maak<AuthorisatieManager>();
+
+            if (aum.IsGavGroep(groep.ID))
+            {
+                GelieerdePersoon resultaat = new GelieerdePersoon();
+
+                resultaat.Persoon = persoon;
+                resultaat.Groep = groep;
+                resultaat.ChiroLeefTijd = chiroLeeftijd;
+
+                persoon.GelieerdePersoon.Add(resultaat);
+                groep.GelieerdePersoon.Add(resultaat);
+
+                return resultaat;
+            }
+            else
+            {
+                throw new GeenGavException("Je bent geen GAV van deze groep.");
+            }
+        }
+
+        /// <summary>
+        /// Maakt GelieerdePersoon, gekoppelde Persoon, Adressen en Communicatie allemaal
+        /// te verwijderen.
+        /// </summary>
+        /// <param name="gp">Te verwijderen gelieerde persoon</param>
+        /// <remarks>Deze wijziging wordt nog niet gepersisteerd in de database! Hiervoor
+        /// moet eerst 'Bewaren' aangeroepen worden!</remarks>
+        public void VolledigVerwijderen(GelieerdePersoon gp)
+        {
+            AuthorisatieManager aum = Factory.Maak<AuthorisatieManager>();
+
+            if (aum.IsGavGelieerdePersoon(gp.ID))
+            {
+                gp.TeVerwijderen = true;
+                gp.Persoon.TeVerwijderen = true;
+
+                foreach (PersoonsAdres pa in gp.Persoon.PersoonsAdres)
+                {
+                    pa.TeVerwijderen = true;
+                }
+
+                foreach (CommunicatieVorm cv in gp.Communicatie)
+                {
+                    cv.TeVerwijderen = true;
+                }
+            }
+            else
+            {
+                throw new GeenGavException("Je bent geen GAV van de gevraagde groep.");
+            }
+        }
+
+
         public void Bewaren(IList<GelieerdePersoon> personenLijst)
         {
             throw new NotImplementedException();
         }
-
         
         public bool IsLid(int gelieerdePersoonID)
         {

@@ -23,6 +23,17 @@ namespace Cg2.Workers
         #endregion
 
         /// <summary>
+        /// Bepaalt de gebruikersnaam van de huidig aangemelde gebruiker.
+        /// (lege string indien niet van toepassing)
+        /// </summary>
+        /// <returns>Username aangemelde gebruiker</returns>
+        private string GebruikersNaamGet()
+        {
+            return ServiceSecurityContext.Current == null ? ""
+                : ServiceSecurityContext.Current.WindowsIdentity.Name;
+        }
+
+        /// <summary>
         /// IsGav geeft true als de aangelogde user
         /// gav is voor de groep met gegeven ID
         /// </summary>
@@ -30,7 +41,7 @@ namespace Cg2.Workers
         /// <returns>true (enkel) als user gav is</returns>
         public bool IsGavGroep(int groepID)
         {
-            return _dao.IsGavGroep(ServiceSecurityContext.Current.WindowsIdentity.Name, groepID);
+            return _dao.IsGavGroep(GebruikersNaamGet(), groepID);
         }
 
         /// <summary>
@@ -42,7 +53,7 @@ namespace Cg2.Workers
         /// <returns>true indien de user de persoonsgegevens mag zien/bewerken</returns>
         public bool IsGavGelieerdePersoon(int gelieerdePersoonID)
         {
-            return _dao.IsGavGelieerdePersoon(ServiceSecurityContext.Current.WindowsIdentity.Name, gelieerdePersoonID);
+            return _dao.IsGavGelieerdePersoon(GebruikersNaamGet(), gelieerdePersoonID);
         }
 
         /// <summary>
@@ -54,7 +65,7 @@ namespace Cg2.Workers
         /// <returns>true indien de user de persoonsgegevens mag zien/bewerken</returns>
         public bool IsGavPersoon(int persoonID)
         {
-            return _dao.IsGavPersoon(ServiceSecurityContext.Current.WindowsIdentity.Name, persoonID);
+            return _dao.IsGavPersoon(GebruikersNaamGet(), persoonID);
         }
 
         /// <summary>
@@ -65,7 +76,7 @@ namespace Cg2.Workers
         /// <returns>true indien aangemelde gebruiker GAV is</returns>
         internal bool IsGavGroepsWerkJaar(int groepsWerkJaarID)
         {
-            return _dao.IsGavGroepsWerkJaar(ServiceSecurityContext.Current.WindowsIdentity.Name, groepsWerkJaarID);
+            return _dao.IsGavGroepsWerkJaar(GebruikersNaamGet(), groepsWerkJaarID);
         }
 
         /// <summary>
@@ -74,7 +85,7 @@ namespace Cg2.Workers
         /// <returns>ID's van gekoppelde groepen</returns>
         public IEnumerable<Groep> GekoppeldeGroepenGet()
         {
-            return _dao.GekoppeldeGroepenGet(ServiceSecurityContext.Current.WindowsIdentity.Name);
+            return _dao.GekoppeldeGroepenGet(GebruikersNaamGet());
         }
 
         /// <summary>
@@ -85,7 +96,7 @@ namespace Cg2.Workers
         /// <returns>enkel de ID's van die personen waarvoor de gebruiker GAV is</returns>
         public IList<int> EnkelMijnGelieerdePersonen(IList<int> gelieerdePersonenIDs)
         {
-            return _dao.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs, ServiceSecurityContext.Current.WindowsIdentity.Name);
+            return _dao.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs, GebruikersNaamGet());
         }
 
         /// <summary>
@@ -96,7 +107,7 @@ namespace Cg2.Workers
         /// <returns>enkel de ID's van die personen waarvoor de gebruiker GAV is</returns>
         public IList<int> EnkelMijnPersonen(IList<int> personenIDs)
         {
-            return _dao.EnkelMijnPersonen(personenIDs, ServiceSecurityContext.Current.WindowsIdentity.Name);
+            return _dao.EnkelMijnPersonen(personenIDs, GebruikersNaamGet());
         }
 
     }

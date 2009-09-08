@@ -42,6 +42,8 @@ namespace Cg2.Workers
         /// <remarks>gwj.Groep en afd.Groep mogen niet null zijn</remarks>
         public AfdelingsJaar AfdelingsJaarMaken(GroepsWerkJaar gwj, Afdeling afd, OfficieleAfdeling oa, int jaarVan, int jaarTot)
         {
+            // FIXME: Check of user wel gav is van gevraagde groep
+
             Debug.Assert(gwj.Groep != null);
             Debug.Assert(afd.Groep != null);
 
