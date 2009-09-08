@@ -415,20 +415,38 @@ namespace Cg2.EfWrapper.Entity
 
 					// Recursively navigate through new value (unless it's null):
 					IBasisEntiteit attachedinstance;
-					if (related == null)
-						attachedinstance = null;
-					else
-					{
+                    if (related == null)
+                    {
+                        attachedinstance = null;
+
+                        // Origineel werd hier ook 'property.PropertyInfo.SetValue' aangeroepen,
+                        // zodat het onbrekende 'related' verwijderd zou worden.  Zo doen wij
+                        // het niet; bij ons moet 'TeVerwijderen' gezet zijn.
+                    }
+                    else
+                    {
                         Debug.Assert(related is IBasisEntiteit);
 
-						attachedinstance = context.AddOrAttachInstance(related as IBasisEntiteit, !property.NoUpdate);
+                        attachedinstance = context.AddOrAttachInstance(related as IBasisEntiteit, !property.NoUpdate);
 
                         // recursieve aanroep voor eventuele children van property
-						NavigatePropertySet(context, childnode, related as IBasisEntiteit, attachedinstance);
-					}
+                        NavigatePropertySet(context, childnode, related as IBasisEntiteit, attachedinstance);
 
-					// Synchronise value:
-					property.PropertyInfo.SetValue(attachedowner, attachedinstance, null);
+                        // bookmark
+
+                        // dit stond daarnet een niveau lager.  AttachedOwner is nu 'related', maar
+                        // dan geattacht.  Koppel nu aan.
+
+                        property.PropertyInfo.SetValue(attachedowner, attachedinstance, null);
+
+                        // Als related te verwijderen was, doe dat dan ook.
+                        if ((related as IBasisEntiteit).TeVerwijderen)
+                        {
+                            context.DeleteObject(attachedinstance);
+                        }
+                    }
+
+                    // (hier stond het)
 				}
 			}
 		}
