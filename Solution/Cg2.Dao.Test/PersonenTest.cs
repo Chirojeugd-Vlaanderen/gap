@@ -61,6 +61,22 @@ namespace Cg2.Dao.Test
         //
         #endregion
 
+        [TestMethod]
+        public void ZoekenOpNaam()
+        {
+            // arrange
+            string zoekString = Properties.Settings.Default.TestZoekNaam;
+            int groepID = Properties.Settings.Default.TestGroepID;
+
+            GelieerdePersonenDao dao = new GelieerdePersonenDao();
+
+            // act
+            IList<GelieerdePersoon> lijst = dao.ZoekenOpNaam(groepID, zoekString);
+
+            // assert
+            Assert.IsTrue(lijst.Count >= 2);
+        }
+
         /// <summary>
         /// Broes' test om te verifieren of de GelieerdePersonenDao 
         /// een nieuwe persoon kan toevoegen.

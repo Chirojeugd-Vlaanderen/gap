@@ -20,6 +20,16 @@ namespace Cg2.Orm.DataInterfaces
         IList<GelieerdePersoon> LijstOphalen(IList<int> gelieerdePersonenIDs);
 
         /// <summary>
+        /// Gelieerde personen opzoeken op (fragment van) naam.
+        /// Gelieerde persoon, persoonsgegevens, adressen en communicatie
+        /// worden opgehaald.
+        /// </summary>
+        /// <param name="groepID">ID van groep</param>
+        /// <param name="zoekStringNaam">zoekstring voor naam</param>
+        /// <returns>Lijst met gevonden gelieerde personen</returns>
+        IList<GelieerdePersoon> ZoekenOpNaam(int groepID, string zoekStringNaam);
+
+        /// <summary>
         /// Haalt de persoonsgegevens van alle gelieerde personen van een groep op.
         /// </summary>
         /// <param name="GroepID">ID van de groep</param>

@@ -23,5 +23,8 @@
     <Setting Name="TestAfdeling2Tot" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1998</Value>
     </Setting>
+    <Setting Name="TestZoekNaam" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Bosmans</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

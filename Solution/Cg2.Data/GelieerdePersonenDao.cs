@@ -99,6 +99,7 @@ namespace Cg2.Data.Ef
         }
 
         //todo na deze aanroep is result.Persoon toch nog == null!!?
+        //Johan: probeer eens om MergeOption op MergeOption.NoTracking te zetten
         public override GelieerdePersoon Ophalen(int id)
         {
             GelieerdePersoon result;
@@ -114,8 +115,6 @@ namespace Cg2.Data.Ef
 
             return result;
         }
-
-        #region IGelieerdePersonenDao Members
 
         public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
@@ -256,7 +255,6 @@ namespace Cg2.Data.Ef
         /// huisgenoot.  Ik geef hier enkel Personen, geen GelieerdePersonen,
         /// omdat ik niet geinteresseerd ben in eventuele dubbels als ik 
         /// GAV ben van verschillende groepen.</remarks>
-        
         public IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID)
         {
             List<PersoonsAdres> paLijst;
@@ -312,6 +310,20 @@ namespace Cg2.Data.Ef
             return resultaat;
         }
 
-        #endregion
+        public IList<GelieerdePersoon> ZoekenOpNaam(int groepID, string zoekStringNaam)
+        {
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
+                return (
+                    from gp in db.GelieerdePersoon.Include("Persoon")
+                        .Include("Communicatie")
+                        .Include("Persoon.PersoonsAdres.Adres.Straat")
+                    where (gp.Persoon.VoorNaam + " " + gp.Persoon.Naam + " " + gp.Persoon.VoorNaam)
+                        .Contains(zoekStringNaam)
+                    select gp).ToList();
+            }
+        }
+
     }
 }

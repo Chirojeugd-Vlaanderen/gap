@@ -106,5 +106,17 @@ namespace Cg2.Dao.Test.Properties {
                 this["TestAfdeling2Tot"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Bosmans")]
+        public string TestZoekNaam {
+            get {
+                return ((string)(this["TestZoekNaam"]));
+            }
+            set {
+                this["TestZoekNaam"] = value;
+            }
+        }
     }
 }
