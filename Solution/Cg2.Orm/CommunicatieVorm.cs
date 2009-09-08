@@ -25,6 +25,14 @@ namespace Cg2.Orm
 
     public partial class CommunicatieVorm
     {
+        private bool _teVerwijderen = false;
+
+        public bool TeVerwijderen
+        {
+            get { return _teVerwijderen; }
+            set { _teVerwijderen = value; }
+        }
+
         public CommunicatieType Type
         {
             get { return (CommunicatieType)this.CommunicatieTypeInt; }
