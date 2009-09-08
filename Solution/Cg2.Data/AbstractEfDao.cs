@@ -115,8 +115,6 @@ namespace Cg2.Data.Ef
         {
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                db.Lid.MergeOption = MergeOption.NoTracking;
-
                 // Als de entity key verloren is gegaan
                 // (wat typisch gebeurt bij mvc)
                 // dan moeten we hem terug genereren alvorens
