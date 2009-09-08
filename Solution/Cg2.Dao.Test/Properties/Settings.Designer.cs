@@ -118,5 +118,41 @@ namespace Cg2.Dao.Test.Properties {
                 this["TestZoekNaam"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Perens")]
+        public string TestNieuwePersoonNaam {
+            get {
+                return ((string)(this["TestNieuwePersoonNaam"]));
+            }
+            set {
+                this["TestNieuwePersoonNaam"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Clement")]
+        public string TestNieuwePersoonVoornaam {
+            get {
+                return ((string)(this["TestNieuwePersoonVoornaam"]));
+            }
+            set {
+                this["TestNieuwePersoonVoornaam"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Silvain")]
+        public string TestTeVerwijderenVoornaam {
+            get {
+                return ((string)(this["TestTeVerwijderenVoornaam"]));
+            }
+            set {
+                this["TestTeVerwijderenVoornaam"] = value;
+            }
+        }
     }
 }

@@ -26,5 +26,14 @@
     <Setting Name="TestZoekNaam" Type="System.String" Scope="User">
       <Value Profile="(Default)">Bosmans</Value>
     </Setting>
+    <Setting Name="TestNieuwePersoonNaam" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Perens</Value>
+    </Setting>
+    <Setting Name="TestNieuwePersoonVoornaam" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Clement</Value>
+    </Setting>
+    <Setting Name="TestTeVerwijderenVoornaam" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Silvain</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

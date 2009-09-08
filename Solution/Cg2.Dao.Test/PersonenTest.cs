@@ -5,6 +5,8 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Data.Ef;
 using Cg2.Orm;
+using Cg2.Workers;
+using Cg2.Ioc;
 
 namespace Cg2.Dao.Test
 {
@@ -61,6 +63,72 @@ namespace Cg2.Dao.Test
         //
         #endregion
 
+        [ClassInitialize]
+        static public void TestInitialiseren(TestContext context)
+        {
+            Factory.InitContainer();
+
+            // Maak persoon aan, die bij het testen weer
+            // verwijderd kan worden.
+
+            int groepID = Properties.Settings.Default.TestGroepID;
+            string naam = Properties.Settings.Default.TestNieuwePersoonNaam;
+            string voornaam = Properties.Settings.Default.TestTeVerwijderenVoornaam;
+
+            GroepenDao gdao = new GroepenDao();
+            Groep g = gdao.Ophalen(groepID);
+
+            GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
+
+            // Creeer gloednieuwe persoon
+
+            Persoon p = new Persoon();
+            p.VoorNaam = voornaam;
+            p.Naam = naam;
+
+            // Koppel aan testgroep, Chiroleeftijd 0
+
+            GelieerdePersoon gp = gpm.PersoonAanGroepKoppelen(p, g, 0);
+
+            GelieerdePersonenDao gpdao = new GelieerdePersonenDao();
+            // Hier moeten we via de DAO gaan, en niet via de worker, omdat 
+            // we de DAO willen testen, en niet willen failen op fouten in
+            // de worker.
+
+            gp = gpdao.Bewaren(gp);
+        }
+
+        /// <summary>
+        /// Opkuis na de test; verwijdert bijgemaakte personen
+        /// </summary>
+        /// <param name="context"></param>
+        [ClassCleanup]
+        static public void Opkuis()
+        {
+            int groepID = Properties.Settings.Default.TestGroepID;
+            string naam = Properties.Settings.Default.TestNieuwePersoonNaam;
+            string voornaam = Properties.Settings.Default.TestNieuwePersoonVoornaam;
+
+            GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
+
+            // nog niet alle functionaliteit wordt aangeboden in de worker,
+            // dus ik werk hier en daar rechtstreeks op de dao.
+
+            GelieerdePersonenDao dao = new GelieerdePersonenDao();
+
+            IList<GelieerdePersoon> gevonden = dao.ZoekenOpNaam(groepID, naam + ' ' + voornaam);
+
+            foreach (GelieerdePersoon gp in gevonden)
+            {
+                // Markeer geliererde persoon en alle aanhangsels als
+                // 'te verwijderen' 
+                mgr.VolledigVerwijderen(gp);
+
+                // persisteer
+                dao.Bewaren(gp, l=>l.Persoon, l=>l.Persoon.PersoonsAdres, l=>l.Communicatie);
+            }
+        }
+
         [TestMethod]
         public void ZoekenOpNaam()
         {
@@ -78,80 +146,92 @@ namespace Cg2.Dao.Test
         }
 
         /// <summary>
-        /// Broes' test om te verifieren of de GelieerdePersonenDao 
-        /// een nieuwe persoon kan toevoegen.
+        /// Nieuwe (gelieerde) persoon bewaren via GelieerdePersonenDAO.
         /// </summary>
         [TestMethod]
         public void NieuwePersoon()
         {
-            GroepenDao gdao = new GroepenDao();
-            Groep g = gdao.Ophalen(310);
+            #region Arrange
 
-            //// Onderstaande assert is niet relevant voor de test.
-            // Assert.AreEqual(0, g.GelieerdePersoon.Count);
+            int groepID = Properties.Settings.Default.TestGroepID;
+            string naam = Properties.Settings.Default.TestNieuwePersoonNaam;
+            string voornaam = Properties.Settings.Default.TestNieuwePersoonVoornaam;
+
+            GroepenDao gdao = new GroepenDao();
+            Groep g = gdao.Ophalen(groepID);
+
+            GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
+            
+            // Creeer gloednieuwe persoon
 
             Persoon p = new Persoon();
-            p.VoorNaam = "Broes";
-            p.Naam = "De Cat";
+            p.VoorNaam = voornaam;
+            p.Naam = naam;
 
-            //// Ik weet niet precies waarom Broes de GP als volgt aanmaakte:
-            //
-            // GelieerdePersoon gp = GelieerdePersoon.CreateGelieerdePersoon(0, 0);
-            //
-            //// Dit is alleszins properder:
+            // Koppel aan testgroep, Chiroleeftijd 0
 
-            GelieerdePersoon gp = new GelieerdePersoon();
-
-            // Onderstaande operaties zouden beter gebeuren in de personenmanager.
-
-            gp.Persoon = p;
-            p.GelieerdePersoon.Add(gp);
-            gp.Groep = g;
-
-            //// Deze assert is ook niet relevant
-            // Assert.AreEqual(1, g.GelieerdePersoon.Count);
-
-            // Er gebeurt dus GEEN loading van de andere gelieerde personen, maar blijkbaar kan het wel
-            // zonder probleem worden toegevoegd
-            // Johan: Zo is dat.  AttachObjectGraph kijkt alleen naar de beschikbare objecten.
-            // Vandaar dat de 'TeVerwijderen'-vlag nodig is.  Alles wat bij het opnieuw attachen niet
-            // beschikbaar is, wordt beschouwd als niet geladen.
+            GelieerdePersoon gp = gpm.PersoonAanGroepKoppelen(p, g, 0);
 
             GelieerdePersonenDao gpdao = new GelieerdePersonenDao();
+            #endregion
 
-            // TODO: Dao voorzien van functionaliteit om het aantal personen te tellen.
-            // Onderstaande is nogal 'duur':
-
-            int number = gpdao.AllenOphalen(310).Count;
+            #region Act
+            // Hier moeten we via de DAO gaan, en niet via de worker, omdat 
+            // we de DAO willen testen, en niet willen failen op fouten in
+            // de worker.
 
             gp = gpdao.Bewaren(gp);
+            #endregion
 
-            int number2 = gpdao.AllenOphalen(310).Count;
+            #region Assert
+            IList<GelieerdePersoon> gevonden = gpdao.ZoekenOpNaam(groepID, naam + ' ' + voornaam);
+            Assert.IsTrue(gevonden.Count > 0);
+            #endregion
 
-            Assert.AreEqual(number + 1, number2);
-            Assert.AreNotEqual(number, 0);
-            Assert.AreNotEqual(0, gp.ID);
-
-            // Bij wijze van cleanup gelieerde persoon opnieuw verwijderen.
-
-            /*
-             * todo: 
-             * vastleggen welke velden van persoon not null zijn en welke uniek moeten zijn (alleen AD geloof ik)
-             * creeren als methode overal verwijderen?
-             * checken of overal in bewaren nieuwe objecten juist worden afgehandeld (nog niet zo voor gelieerdepersoon
-             *                   namelijk niet als de persoon als bestaat maar de gelieerdepersoon nieuw is)
-             */
-
-            gp.TeVerwijderen = true;
-            gp.Persoon.TeVerwijderen = true;
-            gpdao.Bewaren(gp);
-
-            int number3 = gpdao.AllenOphalen(310).Count;
-
-            // Eigenlijk testen we het onderstaande niet, maar in dit geval
-            // komt het wel van pas.
-
-            Assert.AreEqual(number, number3);
         }
+
+
+        /// <summary>
+        /// Test om persoon te verwijderen.
+        /// </summary>
+        [TestMethod]
+        public void VerwijderPersoon()
+        {
+            #region Arrange
+            // zoek te verwijderen personen op
+
+            int groepID = Properties.Settings.Default.TestGroepID;
+            string naam = Properties.Settings.Default.TestNieuwePersoonNaam;
+            string voornaam = Properties.Settings.Default.TestTeVerwijderenVoornaam;
+
+            GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
+
+            // nog niet alle functionaliteit wordt aangeboden in de worker,
+            // dus ik werk hier en daar rechtstreeks op de dao.
+
+            GelieerdePersonenDao dao = new GelieerdePersonenDao();
+
+            IList<GelieerdePersoon> gevonden = dao.ZoekenOpNaam(groepID, naam + ' ' + voornaam);
+            #endregion
+
+            #region Act
+            foreach (GelieerdePersoon gp in gevonden)
+            {
+                // Markeer geliererde persoon en alle aanhangsels als
+                // 'te verwijderen' 
+                mgr.VolledigVerwijderen(gp);
+
+                // persisteer
+                dao.Bewaren(gp, l => l.Persoon, l => l.Persoon.PersoonsAdres, l => l.Communicatie);
+            }
+            #endregion
+
+            #region Assert
+            IList<GelieerdePersoon> gevonden2 = dao.ZoekenOpNaam(groepID, naam + ' ' + voornaam);
+            Assert.IsTrue(gevonden2.Count == 0);
+            #endregion
+
+        }
+
     }
 }
