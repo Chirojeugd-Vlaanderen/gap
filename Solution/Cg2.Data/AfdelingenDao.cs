@@ -16,7 +16,7 @@ namespace Cg2.Data
         /// </summary>
         /// <param name="afdelingID">ID van gewenste afdeling</param>
         /// <returns>Afdeling en gekoppelde groep</returns>
-        public Afdeling Ophalen(int afdelingID)
+        public override Afdeling Ophalen(int afdelingID)
         {
             Afdeling resultaat;
 

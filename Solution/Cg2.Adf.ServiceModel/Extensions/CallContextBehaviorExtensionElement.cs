@@ -4,58 +4,67 @@ using System.ServiceModel.Configuration;
 
 namespace Cg2.Adf.ServiceModel.Extensions
 {
-public class CallContextBehaviorExtensionElement : BehaviorExtensionElement
-{
-	private ConfigurationPropertyCollection properties;
+    /// <summary>
+    /// TODO: Documenteren!
+    /// </summary>
+    public class CallContextBehaviorExtensionElement : BehaviorExtensionElement
+    {
+        private ConfigurationPropertyCollection properties;
 
-	///<summary>
-	///Gets the type of behavior.
-	///</summary>
-	///
-	///<returns>
-	///A <see cref="T:System.Type" />.
-	///</returns>
-	///
-	public override Type BehaviorType
-	{
-		get { return typeof(CallContextBehavior); }
-	}
+        ///<summary>
+        ///Gets the type of behavior.
+        ///</summary>
+        ///
+        ///<returns>
+        ///A <see cref="T:System.Type" />.
+        ///</returns>
+        ///
+        public override Type BehaviorType
+        {
+            get { return typeof(CallContextBehavior); }
+        }
 
-	///<summary>
-	///Creates a behavior extension based on the current configuration settings.
-	///</summary>
-	///
-	///<returns>
-	///The behavior extension.
-	///</returns>
-	protected override object CreateBehavior()
-	{
-		Type type = Type.GetType(ContextType);
-		
-		if (type == null)
-			throw new ConfigurationErrorsException(string.Format("The type '{0}' could not be initialized.", ContextType));
+        ///<summary>
+        ///Creates a behavior extension based on the current configuration settings.
+        ///</summary>
+        ///
+        ///<returns>
+        ///The behavior extension.
+        ///</returns>
+        protected override object CreateBehavior()
+        {
+            Type type = Type.GetType(ContextType);
 
-		return new CallContextBehavior(type);
-	}
+            if (type == null)
+                throw new ConfigurationErrorsException(string.Format("The type '{0}' could not be initialized.", ContextType));
 
-	protected override ConfigurationPropertyCollection Properties
-	{
-		get
-		{
-			if (properties == null)
-			{
-				properties = new ConfigurationPropertyCollection {new ConfigurationProperty("contextType", typeof (string))};
-			}
-			return properties;
-		}
-	}
+            return new CallContextBehavior(type);
+        }
 
-	[ConfigurationProperty("contextType", IsRequired = true)]
-	public string ContextType
-	{
-		get { return (string)base["contextType"]; }
-		set { base["contextType"] = value; }
-	}
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        protected override ConfigurationPropertyCollection Properties
+        {
+            get
+            {
+                if (properties == null)
+                {
+                    properties = new ConfigurationPropertyCollection { new ConfigurationProperty("contextType", typeof(string)) };
+                }
+                return properties;
+            }
+        }
 
-}
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        [ConfigurationProperty("contextType", IsRequired = true)]
+        public string ContextType
+        {
+            get { return (string)base["contextType"]; }
+            set { base["contextType"] = value; }
+        }
+
+    }
 }

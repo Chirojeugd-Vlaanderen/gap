@@ -7,20 +7,38 @@ using System.ServiceModel.Dispatcher;
 
 namespace Cg2.Adf.ServiceModel
 {
+    /// <summary>
+    /// TODO: Documenteren!
+    /// </summary>
 	public class ExceptionShieldingMessageInspector : IClientMessageInspector
 	{
 		private readonly Type[] knownFaultTypes;
 
+        /// <summary>
+        /// TODO: Documenteren
+        /// </summary>
+        /// <param name="knownFaultTypes"></param>
 		public ExceptionShieldingMessageInspector(Type[] knownFaultTypes)
 		{
 			this.knownFaultTypes = knownFaultTypes;
 		}
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="channel"></param>
+        /// <returns></returns>
 		public object BeforeSendRequest(ref Message request, IClientChannel channel)
 		{
 			return null; // no correlation required
 		}
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        /// <param name="reply"></param>
+        /// <param name="correlationState"></param>
 		public void AfterReceiveReply(ref Message reply, object correlationState)
 		{
 			if (!reply.IsFault) return;
@@ -38,6 +56,12 @@ namespace Cg2.Adf.ServiceModel
 			}
 		}
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        /// <param name="reply"></param>
+        /// <param name="faultType"></param>
+        /// <returns></returns>
 		private static object ReadFaultDetail(MessageFault reply, Type faultType)
 		{
 			using (var reader = reply.GetReaderAtDetailContents())

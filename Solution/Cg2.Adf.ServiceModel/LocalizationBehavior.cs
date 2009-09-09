@@ -7,16 +7,30 @@ using System.Globalization;
 
 namespace Cg2.Adf.ServiceModel
 {
+    /// <summary>
+    /// TODO: Documenteren!
+    /// </summary>
 	public class LocalizationBehavior : IClientMessageInspector, IDispatchMessageInspector, IEndpointBehavior
 	{
 		private const string headerName = "localizationHeader";
 		private const string @namespace = "urn:schemas-capgemini-be:localization";
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <param name="clientRuntime"></param>
 		public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
 		{
 			clientRuntime.MessageInspectors.Add(this);
 		}
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="channel"></param>
+        /// <returns></returns>
 		public object BeforeSendRequest(ref Message request, IClientChannel channel)
 		{
 			request.Headers.Add(MessageHeader.CreateHeader(headerName, @namespace, Thread.CurrentThread.CurrentUICulture.Name));
@@ -24,11 +38,23 @@ namespace Cg2.Adf.ServiceModel
 			return null; // no correlation required
 		}
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <param name="endpointDispatcher"></param>
 		public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
 		{
 			endpointDispatcher.DispatchRuntime.MessageInspectors.Add(this);
 		}
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="channel"></param>
+        /// <param name="instanceContext"></param>
+        /// <returns></returns>
 		public object AfterReceiveRequest(ref Message request, IClientChannel channel, InstanceContext instanceContext)
 		{
 			var cultureName = request.Headers.GetHeader<string>(headerName, @namespace);
@@ -39,9 +65,31 @@ namespace Cg2.Adf.ServiceModel
 			return null; // no correlation required
 		}
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        /// <param name="reply"></param>
+        /// <param name="correlationState"></param>
 		public void AfterReceiveReply(ref Message reply, object correlationState) { }
+
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        /// <param name="endpoint"></param>
 		public void Validate(ServiceEndpoint endpoint) { }
+
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <param name="bindingParameters"></param>
 		public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters) { }
+
+        /// <summary>
+        /// TODO: Documenteren1
+        /// </summary>
+        /// <param name="reply"></param>
+        /// <param name="correlationState"></param>
 		public void BeforeSendReply(ref Message reply, object correlationState) { }
 	}
 }

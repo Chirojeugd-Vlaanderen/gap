@@ -1,6 +1,9 @@
 ﻿using System;
 namespace Cg2.Adf.ServiceModel.Extensions
 {
+    /// <summary>
+    /// TODO: Documenteren!
+    /// </summary>
 	public abstract class CallContext
 	{
 		[ThreadStatic] // who needs OperationContext? ;-)
@@ -15,8 +18,14 @@ namespace Cg2.Adf.ServiceModel.Extensions
 			internal set { callContext = value;}
 		}
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
 		protected internal abstract void Initialize();
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
 		protected internal abstract void Dispose();
 	}
 }

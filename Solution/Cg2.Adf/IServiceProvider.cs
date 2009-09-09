@@ -32,6 +32,13 @@ namespace Cg2.Adf
 		/// <returns></returns>
 		I GetService<I>(string instanceName) where I : class;
 
+        /// <summary>
+        /// TODO: documenteren!
+        /// </summary>
+        /// <typeparam name="I"></typeparam>
+        /// <param name="instanceName"></param>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
 		I GetService<I>(string instanceName, object arguments) where I : class;
 
 		/// <summary>
@@ -63,8 +70,20 @@ namespace Cg2.Adf
 		/// <returns></returns>
 		IEnumerable GetServices(Type serviceType);
 
+        /// <summary>
+        /// TODO: documenteren
+        /// </summary>
+        /// <typeparam name="I"></typeparam>
+        /// <param name="service"></param>
+        /// <returns></returns>
 		bool TryGetService<I>(out I service) where I : class;
 
+        /// <summary>
+        /// TODO: documenteren
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="service"></param>
+        /// <returns></returns>
 		bool TryGetService(Type type, out object service);
 	}
 }

@@ -104,12 +104,24 @@ namespace Cg2.Adf
 			return null;
 		}
 
+        /// <summary>
+        /// TODO: Documenteren
+        /// </summary>
+        /// <typeparam name="I"></typeparam>
+        /// <param name="service"></param>
+        /// <returns></returns>
 		public bool TryGetService<I>(out I service) where I : class
 		{
 			service = GetService<I>();
 			return service != null;
 		}
 
+        /// <summary>
+        /// TODO: Documenteren
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="service"></param>
+        /// <returns></returns>
 		public bool TryGetService(Type type, out object service)
 		{
 			service = GetService(type);

@@ -18,7 +18,5 @@ namespace Cg2.Orm.DataInterfaces
         /// Personen</param>
         /// <returns>lijst met Personen</returns>
         IList<Persoon> LijstOphalen(IList<int> personenIDs);
-
-        Persoon Bewaren(Persoon p);
     }
 }

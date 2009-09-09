@@ -76,11 +76,23 @@ namespace Cg2.Adf.ServiceModel
 			}
 		}
 
+        /// <summary>
+        /// TODO: Documenteren
+        /// </summary>
+        /// <typeparam name="I"></typeparam>
+        /// <param name="operation"></param>
 		public static void CallService<I>(Action<I> operation) where I : class
 		{
 			Call(ServiceProvider.Default.GetService<I>(), operation);
 		}
 
+        /// <summary>
+        /// TODO: Documenteren
+        /// </summary>
+        /// <typeparam name="I"></typeparam>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="operation"></param>
+        /// <returns></returns>
 		public static T CallService<I, T>(Func<I, T> operation) where I : class
 		{
 			return Call(ServiceProvider.Default.GetService<I>(), operation);

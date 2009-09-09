@@ -17,7 +17,7 @@ namespace Cg2.Data
         /// <param name="groepsWerkJaarID">ID van gevraagd 
         /// groepswerkjaar</param>
         /// <returns>Groepswerkjaar en gekoppelde groep</returns>
-        public GroepsWerkJaar Ophalen(int groepsWerkJaarID)
+        public override GroepsWerkJaar Ophalen(int groepsWerkJaarID)
         {
             GroepsWerkJaar resultaat;
 

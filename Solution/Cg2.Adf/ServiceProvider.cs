@@ -73,6 +73,12 @@ namespace Cg2.Adf
 			return CallProviders(p => p.GetService<I>(instanceName), string.Format("Service type '{0}' could not be resolved.", typeof(I)));
 		}
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        /// <typeparam name="I"></typeparam>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
 		public I GetService<I>(object arguments) where I : class
 		{
 			return CallProviders(p => p.GetService<I>(arguments), string.Format("Service type '{0}' could not be resolved.", typeof(I)));
@@ -99,6 +105,12 @@ namespace Cg2.Adf
 			return CallProviders(p => p.GetService(type), string.Format("Service type '{0}' could not be resolved.", type));
 		}
 
+        /// <summary>
+        /// TODO: Documenteren
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="instanceName"></param>
+        /// <returns></returns>
 		public object GetService(Type type, string instanceName)
 		{
 			return CallProviders(p => p.GetService(type, instanceName), string.Format("Service type '{0}' with name '{1}' could not be resolved.", type, instanceName));

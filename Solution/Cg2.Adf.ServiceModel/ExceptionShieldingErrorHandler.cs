@@ -6,22 +6,41 @@ using System.ServiceModel.Dispatcher;
 
 namespace Cg2.Adf.ServiceModel
 {
+    /// <summary>
+    /// TODO: Documenteren!
+    /// </summary>
 	public class ExceptionShieldingErrorHandler : IErrorHandler
 	{
 		private readonly Type[] knownFaultTypes;
 		private readonly Type[] exceptionTypes;
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        /// <param name="knownFaultTypes"></param>
+        /// <param name="exceptionTypes"></param>
 		public ExceptionShieldingErrorHandler(Type[] knownFaultTypes, Type[] exceptionTypes)
 		{
 			this.knownFaultTypes = knownFaultTypes;
 			this.exceptionTypes = exceptionTypes;
 		}
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        /// <param name="error"></param>
+        /// <returns></returns>
 		public bool HandleError(Exception error)
 		{
 			return true; // session should not be killed, or should it?
 		}
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        /// <param name="error"></param>
+        /// <param name="version"></param>
+        /// <param name="fault"></param>
 		public void ProvideFault(Exception error, MessageVersion version, ref Message fault)
 		{
 			if (error is FaultException) return;
@@ -34,6 +53,12 @@ namespace Cg2.Adf.ServiceModel
 			}
 		}
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        /// <param name="faultType"></param>
+        /// <param name="exception"></param>
+        /// <returns></returns>
 		private static FaultException CreateFaultException(Type faultType, Exception exception)
 		{
 			var ctor = faultType.GetConstructor(new[] { exception.GetType() })   // .ctor with specific exception?

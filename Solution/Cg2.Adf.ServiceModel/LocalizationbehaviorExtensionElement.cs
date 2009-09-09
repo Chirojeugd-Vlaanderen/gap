@@ -12,16 +12,26 @@ namespace Cg2.Adf.ServiceModel
 	{
 		private ConfigurationPropertyCollection properties;
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
+        /// <returns></returns>
 		protected override object CreateBehavior()
 		{
 			return new LocalizationBehavior();
 		}
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
 		public override Type BehaviorType
 		{
 			get { return typeof (LocalizationBehavior); }
 		}
 
+        /// <summary>
+        /// TODO: Documenteren!
+        /// </summary>
 		protected override ConfigurationPropertyCollection Properties
 		{
 			get
