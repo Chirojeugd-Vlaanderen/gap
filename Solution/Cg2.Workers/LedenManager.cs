@@ -41,6 +41,36 @@ namespace Cg2.Workers
         #endregion
 
         /// <summary>
+        /// Deze functie met stichtende naam maakt een gelieerde persoon
+        /// lid in een gegeven afdelingsjaar
+        /// </summary>
+        /// <param name="gp">Lid te maken gelieerde persoon, met Groep
+        /// eraan gekoppeld</param>
+        /// <param name="aj">Gewenste afdelingsjaar, met daaraan gekoppeld 
+        /// GroepsWerkJaar, en daaraan dan weer Groep</param>
+        /// <returns></returns>
+        public Kind KindMaken(GelieerdePersoon gp, AfdelingsJaar aj)
+        {
+            if (aj.GroepsWerkJaar.Groep.ID != gp.Groep.ID)
+            {
+                throw new FoutieveGroepException("De gelieerde persoon is geen lid van de groep van het afdelingsjaar.");
+            }
+            else
+            {
+                Kind k = new Kind();
+                k.GelieerdePersoon = gp;
+                k.AfdelingsJaar = aj;
+                k.GroepsWerkJaar = aj.GroepsWerkJaar;
+
+                gp.Lid.Add(k);
+                aj.Kind.Add(k);
+                aj.GroepsWerkJaar.Lid.Add(k);
+
+                return k;
+            }
+        }
+
+        /// <summary>
         /// 'Opwaarderen' van een gelieerd persoon tot een lid.
         /// </summary>
         /// <param name="gp">Gelieerde persoon</param>
@@ -51,6 +81,10 @@ namespace Cg2.Workers
         /// </remarks>
         public Lid LidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
         {
+            // JOHAN: Ik zou precies de afdelingsjaren van de groep in het
+            // gegeven GroepsWerkJaar meegeven via de parameters.  Op die manier
+            // moet deze businessmethod geen Data Access gaan doen.
+
             // TODO: geslacht in rekening brengen bij automatisch keuze afdeling
             // TODO: controle of lid nog niet bestaat
             // TODO: berekening EindeInstapPeriode
