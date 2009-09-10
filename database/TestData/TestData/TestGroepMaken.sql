@@ -1,4 +1,13 @@
--- Creeer testgroep voor unittests, met testdata
+-- Creeer testgroep voor unittests, met deze testdata:
+--
+-- Een Groep (en ChiroGroep) met code @testGroepCode
+-- Een GroepsWerkJaar in @testWerkJaar
+-- Afdelingen met codes @testAfdelingsCode en @testAfdelingsCode2
+-- AfdelingsWerkJaar voor afdeling met code @testAfdelingsCode
+-- Gelieerde Testpersonen:
+--		 @testPersoonVoornaam @testPersoonNaam en @testPersoon2VoorNaam en @testPersoonNaam
+
+
 
 USE ChiroGroep
 
@@ -29,6 +38,8 @@ DECLARE @testAfdeling2ID AS INT;
 DECLARE @testGroepsWerkJaarID AS INT;
 DECLARE @testPersoonID AS INT;
 DECLARE @testPersoon2ID AS INT;
+DECLARE @testGelieerdePersoonID AS INT;
+DECLARE @testAfdelingsJaarID AS INT;
 
 ---
 --- Groep en Chirogroep creeren
@@ -102,6 +113,11 @@ IF NOT EXISTS (SELECT 1 FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID = @testGro
 BEGIN
 	INSERT INTO lid.AfdelingsJaar(GeboorteJaarVan, GeboorteJaarTot, AfdelingID, GroepsWerkJaarID, OfficieleAfdelingID)
 	VALUES (2003, 2004, @testAfdelingID, @testGroepsWerkJaarID, @testOfficieleAfdelingID);
+	SET @testAfdelingsJaarID = SCOPE_IDENTITY()
+END
+ELSE
+BEGIN
+	SET @testAfdelingsJaarID = (SELECT AfdelingsJaarID FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID = @testGroepsWerkJaarID AND AfdelingID = @testAfdelingID)
 END
 
 ---
@@ -138,6 +154,11 @@ IF NOT EXISTS (SELECT 1 FROM pers.GelieerdePersoon WHERE PersoonID = @testPersoo
 BEGIN
 	INSERT INTO pers.GelieerdePersoon(PersoonID, GroepID, ChiroLeeftijd)
 	VALUES (@testPersoonID, @testGroepID, 0);
+	SET @testGelieerdePersoonID = SCOPE_IDENTITY();
+END
+ELSE
+BEGIN
+	SET @testGelieerdePersoonID=(SELECT GelieerdePersoonID FROM pers.GelieerdePersoon WHERE PersoonID = @testPersoonID AND GroepID = @testGroepID)
 END
 
 IF NOT EXISTS (SELECT 1 FROM pers.GelieerdePersoon WHERE PersoonID = @testPersoon2ID AND GroepID = @testGroepID)
@@ -151,7 +172,9 @@ PRINT 'TestGroepID: ' + CAST(@testGroepID AS VARCHAR(10));
 PRINT 'TestAfdeling1ID: ' + CAST(@testAfdelingID AS VARCHAR(10));
 PRINT 'TestAfdeling2ID: ' + CAST(@testAfdeling2ID AS VARCHAR(10));
 PRINT 'TestGroepsWerkJaarID: ' + CAST(@testGroepsWerkJaarID AS VARCHAR(10));
+PRINT 'TestAdfelingsJaarID: ' + CAST(@testAfdelingsJaarID AS VARCHAR(10));
 PRINT 'TestPersoonID: ' + CAST(@testPersoonID AS VARCHAR(10))
+PRINT 'TestGelieerdePersoonID: ' + CAST(@testGelieerdePersoonID AS VARCHAR(10))
 PRINT 'TestPersoon2ID: ' + CAST(@testPersoon2ID AS VARCHAR(10))
 
 GO
