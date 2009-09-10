@@ -71,6 +71,8 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
+                db.PersoonsAdres.MergeOption = MergeOption.NoTracking;
+
                 Adres geattachtAdres = db.AttachObjectGraph(adr, e => e.Straat.WithoutUpdate()
                                               , e=>e.Subgemeente.WithoutUpdate()
                                               , e=>e.PersoonsAdres.First().Persoon.WithoutUpdate());
@@ -184,9 +186,6 @@ namespace Cg2.Data.Ef
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
                 db.Adres.MergeOption = MergeOption.NoTracking;
-                // NoTracking, zodat we straks niet moeten detachen
-                // (op die manier spelen we geen navigation properties
-                // kwijt)
 
                 var adressentabel = db.Adres.Include("Straat").Include("Subgemeente");
 

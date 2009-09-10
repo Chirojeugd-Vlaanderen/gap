@@ -18,6 +18,10 @@ namespace Cg2.Data.Ef
     /// <summary>
     /// Algemene implementatie van IDao; generieke CRUD-operaties voor
     /// een DAO-object.
+    /// 
+    /// SPECIAL: db.PersoonsAdres.MergeOption = MergeOption.NoTracking;
+    ///     dit moet altijd toegevoegd worden bij calls naar de database, zodat alles dat teruggegeven wordt van
+    ///     eender welke dao altijd GEDETACHED is, zonder dat informatie verloren is!
     /// </summary>
     public class Dao<T>: IDao<T> where T:EntityObject, IBasisEntiteit
     {
@@ -108,6 +112,8 @@ namespace Cg2.Data.Ef
             List<T> result;
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
+                db.PersoonsAdres.MergeOption = MergeOption.NoTracking;
+
                 ObjectQuery<T> oq = db.CreateQuery<T>("[" + typeof(T).Name + "]");
                 result = oq.ToList<T>();
             }
@@ -138,6 +144,8 @@ namespace Cg2.Data.Ef
         {
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
+                db.PersoonsAdres.MergeOption = MergeOption.NoTracking;
+
                 // Als de entity key verloren is gegaan
                 // (wat typisch gebeurt bij mvc)
                 // dan moeten we hem terug genereren alvorens
