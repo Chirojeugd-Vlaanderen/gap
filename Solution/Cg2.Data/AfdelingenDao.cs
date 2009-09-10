@@ -7,7 +7,7 @@ using Cg2.Orm;
 using Cg2.Orm.DataInterfaces;
 using System.Data.Objects;
 
-namespace Cg2.Data
+namespace Cg2.Data.Ef
 {
     public class AfdelingenDao: Dao<Afdeling>, IAfdelingenDao
     {

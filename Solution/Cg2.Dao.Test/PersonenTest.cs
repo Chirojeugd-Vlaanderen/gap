@@ -3,10 +3,10 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Cg2.Data.Ef;
 using Cg2.Orm;
 using Cg2.Workers;
 using Cg2.Ioc;
+using Cg2.Orm.DataInterfaces;
 
 namespace Cg2.Dao.Test
 {
@@ -75,7 +75,7 @@ namespace Cg2.Dao.Test
             string naam = Properties.Settings.Default.TestNieuwePersoonNaam;
             string voornaam = Properties.Settings.Default.TestTeVerwijderenVoornaam;
 
-            GroepenDao gdao = new GroepenDao();
+            IGroepenDao gdao = Factory.Maak<IGroepenDao>();
             Groep g = gdao.Ophalen(groepID);
 
             GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
@@ -90,7 +90,7 @@ namespace Cg2.Dao.Test
 
             GelieerdePersoon gp = gpm.PersoonAanGroepKoppelen(p, g, 0);
 
-            GelieerdePersonenDao gpdao = new GelieerdePersonenDao();
+            IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
             // Hier moeten we via de DAO gaan, en niet via de worker, omdat 
             // we de DAO willen testen, en niet willen failen op fouten in
             // de worker.
@@ -114,7 +114,7 @@ namespace Cg2.Dao.Test
             // nog niet alle functionaliteit wordt aangeboden in de worker,
             // dus ik werk hier en daar rechtstreeks op de dao.
 
-            GelieerdePersonenDao dao = new GelieerdePersonenDao();
+            IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
 
             IList<GelieerdePersoon> gevonden = dao.ZoekenOpNaam(groepID, naam + ' ' + voornaam);
 
@@ -136,7 +136,7 @@ namespace Cg2.Dao.Test
             string zoekString = Properties.Settings.Default.TestZoekNaam;
             int groepID = Properties.Settings.Default.TestGroepID;
 
-            GelieerdePersonenDao dao = new GelieerdePersonenDao();
+            IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
 
             // act
             IList<GelieerdePersoon> lijst = dao.ZoekenOpNaam(groepID, zoekString);
@@ -157,7 +157,7 @@ namespace Cg2.Dao.Test
             string naam = Properties.Settings.Default.TestNieuwePersoonNaam;
             string voornaam = Properties.Settings.Default.TestNieuwePersoonVoornaam;
 
-            GroepenDao gdao = new GroepenDao();
+            IGroepenDao gdao = Factory.Maak<IGroepenDao>();
             Groep g = gdao.Ophalen(groepID);
 
             GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
@@ -172,7 +172,7 @@ namespace Cg2.Dao.Test
 
             GelieerdePersoon gp = gpm.PersoonAanGroepKoppelen(p, g, 0);
 
-            GelieerdePersonenDao gpdao = new GelieerdePersonenDao();
+            IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
             #endregion
 
             #region Act
@@ -209,7 +209,7 @@ namespace Cg2.Dao.Test
             // nog niet alle functionaliteit wordt aangeboden in de worker,
             // dus ik werk hier en daar rechtstreeks op de dao.
 
-            GelieerdePersonenDao dao = new GelieerdePersonenDao();
+            IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
 
             IList<GelieerdePersoon> gevonden = dao.ZoekenOpNaam(groepID, naam + ' ' + voornaam);
             #endregion

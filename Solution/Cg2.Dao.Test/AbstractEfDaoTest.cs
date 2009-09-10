@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Orm;
-using Cg2.Data.Ef;
-using Cg2.Data;
+using Cg2.Ioc;
+using Cg2.Orm.DataInterfaces;
 
 namespace Cg2.Dao.Test
 {
@@ -65,7 +65,10 @@ namespace Cg2.Dao.Test
         [ClassInitialize]
         public static void TestInitialiseren(TestContext context)
         {
-            CommunicatieVormDao cvdao = new CommunicatieVormDao();
+            Factory.InitContainer();
+
+            ICommunicatieVormDao cvdao = Factory.Maak<ICommunicatieVormDao>();
+
             IList<CommunicatieVorm> lijst = cvdao.ZoekenOpNummer(Properties.Settings.Default.TestEMailAdres);
 
             foreach (CommunicatieVorm cv in lijst)
@@ -90,7 +93,7 @@ namespace Cg2.Dao.Test
             cv.Nummer = Properties.Settings.Default.TestEMailAdres;
             cv.Nota = "Toegevoegd door unit test.";
 
-            Dao<CommunicatieVorm> cvdao = new Dao<CommunicatieVorm>();
+            IDao<CommunicatieVorm> cvdao = Factory.Maak<IDao<CommunicatieVorm>>();
 
             // Act
 

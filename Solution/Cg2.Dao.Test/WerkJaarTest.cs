@@ -3,8 +3,9 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Cg2.Data;
 using Cg2.Orm;
+using Cg2.Orm.DataInterfaces;
+using Cg2.Ioc;
 
 namespace Cg2.Dao.Test
 {
@@ -61,11 +62,17 @@ namespace Cg2.Dao.Test
         //
         #endregion
 
+        [ClassInitialize]
+        public static void InitialiseerTests(TestContext ctx)
+        {
+            Factory.InitContainer();
+        }
+
         [TestMethod]
         public void GroepsWerkJaarZoeken()
         {
             #region Arrange
-            GroepsWerkJaarDao gwjDao = new GroepsWerkJaarDao();
+            IGroepsWerkJaarDao gwjDao = Factory.Maak<IGroepsWerkJaarDao>();
             int gwjID = Properties.Settings.Default.TestGroepsWerkJaarID;
             int testGroepID = Properties.Settings.Default.TestGroepID;
             #endregion

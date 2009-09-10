@@ -8,7 +8,7 @@ using System.Data.Objects;
 using Cg2.Data.Ef;
 using Cg2.EfWrapper.Entity;
 
-namespace Cg2.Data
+namespace Cg2.Data.Ef
 {
     public class AfdelingsJaarDao: Dao<AfdelingsJaar>, IAfdelingsJaarDao
     {

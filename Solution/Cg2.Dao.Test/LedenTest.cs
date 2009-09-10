@@ -3,11 +3,11 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Cg2.Data.Ef;
 using Cg2.Orm;
 using Cg2.Workers;
 using Cg2.Ioc;
 using Cg2.EfWrapper.Entity;
+using Cg2.Orm.DataInterfaces;
 
 namespace Cg2.Dao.Test
 {
@@ -78,10 +78,10 @@ namespace Cg2.Dao.Test
             int gelieerdePersoonID = Properties.Settings.Default.TestGelieerdePersoonID;
             int afdelingsJaarID = Properties.Settings.Default.TestAfdelingsJaarID;
 
-            Dao<AfdelingsJaar> ajdao = new Dao<AfdelingsJaar>();
+            IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
             AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
 
-            LedenDao ldao = new LedenDao();
+            ILedenDao ldao = Factory.Maak<ILedenDao>();
             Lid l = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.ID);
 
             if (l != null)
@@ -94,8 +94,8 @@ namespace Cg2.Dao.Test
 
             int gelieerdePersoon2ID = Properties.Settings.Default.TestGelieerdePersoon2ID;
 
-            GelieerdePersonenDao gpdao = new GelieerdePersonenDao();
-            Dao<Kind> kdao = new Dao<Kind>();
+            IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
+            IDao<Kind> kdao = Factory.Maak<IDao<Kind>>();
 
             Lid l2 = ldao.Ophalen(gelieerdePersoon2ID, aj.GroepsWerkJaar.ID);
 
@@ -124,9 +124,9 @@ namespace Cg2.Dao.Test
 
             LedenManager lm = Factory.Maak<LedenManager>();
 
-            GelieerdePersonenDao gpdao = new GelieerdePersonenDao();
-            Dao<AfdelingsJaar> ajdao = new Dao<AfdelingsJaar>();
-            Dao<Kind> kdao = new Dao<Kind>();
+            IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
+            IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
+            IDao<Kind> kdao = Factory.Maak<IDao<Kind>>();
 
             GelieerdePersoon gp = gpdao.Ophalen(gelieerdePersoonID, lmb => lmb.Groep);
             AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
@@ -143,7 +143,7 @@ namespace Cg2.Dao.Test
 
             #region Assert
 
-            LedenDao ldao = new LedenDao();
+            ILedenDao ldao = Factory.Maak<ILedenDao>();
             Lid l = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.ID);
 
             Assert.IsTrue(l != null && l is Kind);
@@ -162,10 +162,10 @@ namespace Cg2.Dao.Test
             int gelieerdePersoonID = Properties.Settings.Default.TestGelieerdePersoon2ID;
             int afdelingsJaarID = Properties.Settings.Default.TestAfdelingsJaarID;
 
-            Dao<AfdelingsJaar> ajdao = new Dao<AfdelingsJaar>();
+            IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
             AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
 
-            LedenDao ldao = new LedenDao();
+            ILedenDao ldao = Factory.Maak<ILedenDao>();
             Lid l = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.ID);
  
             // Act
@@ -177,7 +177,6 @@ namespace Cg2.Dao.Test
 
             Lid l2 = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.Groep.ID);
             Assert.IsNull(l2);
-
         }
     }
 }

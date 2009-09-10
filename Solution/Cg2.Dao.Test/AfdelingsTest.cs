@@ -3,11 +3,10 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Cg2.Data.Ef;
 using Cg2.Orm;
-using Cg2.Data;
 using Cg2.Workers;
 using Cg2.Ioc;
+using Cg2.Orm.DataInterfaces;
 
 namespace Cg2.Dao.Test
 {
@@ -76,13 +75,16 @@ namespace Cg2.Dao.Test
         [ClassInitialize]
         static public void TestsInitialiseren(TestContext context)
         {
+            // Initialiseer IoC-container.  Niet zeker van of dit
+            // een goeie plaats is...
+            Factory.InitContainer();
 
             int gwjID = Properties.Settings.Default.TestGroepsWerkJaarID;
             int afd2ID = Properties.Settings.Default.TestAfdeling2ID;
 
             // Verwijder mogelijk afdelingsjaar voor afdeling2
 
-            AfdelingsJaarDao ajDao = new AfdelingsJaarDao();
+            IAfdelingsJaarDao ajDao = Factory.Maak<IAfdelingsJaarDao>();
             AfdelingsJaar aj = ajDao.Ophalen(gwjID, afd2ID);
 
             if (aj != null)
@@ -91,9 +93,6 @@ namespace Cg2.Dao.Test
                 ajDao.Bewaren(aj);
             }
 
-            // Initialiseer IoC-container.  Niet zeker van of dit
-            // een goeie plaats is...
-            Factory.InitContainer();
 
         }
 
@@ -107,7 +106,7 @@ namespace Cg2.Dao.Test
             int gwjID = Properties.Settings.Default.TestGroepsWerkJaarID;
             int afdID = Properties.Settings.Default.TestAfdelingID;
 
-            AfdelingsJaarDao dao = new AfdelingsJaarDao();
+            IAfdelingsJaarDao dao = Factory.Maak<IAfdelingsJaarDao>();
             #endregion
 
             #region Act
@@ -134,7 +133,7 @@ namespace Cg2.Dao.Test
             int afdID = Properties.Settings.Default.TestAfdelingID;
             int groepID = Properties.Settings.Default.TestGroepID;
 
-            AfdelingenDao dao = new AfdelingenDao();
+            IAfdelingenDao dao = Factory.Maak<IAfdelingenDao>();
             #endregion
 
             #region Act
@@ -158,10 +157,10 @@ namespace Cg2.Dao.Test
         {
             // Arrange
 
-            GroepsWerkJaarDao gwDao = new GroepsWerkJaarDao();
-            AfdelingenDao aDao = new AfdelingenDao();
-            AfdelingsJaarDao ajDao = new AfdelingsJaarDao();
-            Dao<OfficieleAfdeling> oaDao = new Dao<OfficieleAfdeling>();
+            IGroepsWerkJaarDao gwDao = Factory.Maak<IGroepsWerkJaarDao>();
+            IAfdelingenDao aDao = Factory.Maak<IAfdelingenDao>();
+            IAfdelingsJaarDao ajDao = Factory.Maak<IAfdelingsJaarDao>();
+            IDao<OfficieleAfdeling> oaDao = Factory.Maak<IDao<OfficieleAfdeling>>();
 
             WerkJaarManager wjm = Factory.Maak<WerkJaarManager>();
 
