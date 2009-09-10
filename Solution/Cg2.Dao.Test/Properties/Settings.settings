@@ -41,5 +41,8 @@
     <Setting Name="TestAfdelingsJaarID" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">82</Value>
     </Setting>
+    <Setting Name="TestGelieerdePersoon2ID" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">918</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

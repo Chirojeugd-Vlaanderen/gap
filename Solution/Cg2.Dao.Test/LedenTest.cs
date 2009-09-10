@@ -73,7 +73,7 @@ namespace Cg2.Dao.Test
         {
             Factory.InitContainer();
 
-            // Verwijder lid om achteraf opnieuw toe te voegen
+            // Verwijder lid (GelieerdePersoonID in AfdelingsJaarID) om achteraf opnieuw toe te voegen
 
             int gelieerdePersoonID = Properties.Settings.Default.TestGelieerdePersoonID;
             int afdelingsJaarID = Properties.Settings.Default.TestAfdelingsJaarID;
@@ -90,8 +90,29 @@ namespace Cg2.Dao.Test
                 ldao.Bewaren(l);
             }
 
-            Assert.IsTrue(l != null && l is Kind);
+            // Voeg kind toe (GelieerdePersoonID2 in AfdelingsJaarID) om in test te kunnen verwijderen
 
+            int gelieerdePersoon2ID = Properties.Settings.Default.TestGelieerdePersoon2ID;
+
+            GelieerdePersonenDao gpdao = new GelieerdePersonenDao();
+            Dao<Kind> kdao = new Dao<Kind>();
+
+            Lid l2 = ldao.Ophalen(gelieerdePersoon2ID, aj.GroepsWerkJaar.ID);
+
+            if (l2 == null)
+            {
+                // enkel toevoegen als nog niet bestaat
+
+                LedenManager lm = Factory.Maak<LedenManager>();
+
+                GelieerdePersoon gp = gpdao.Ophalen(gelieerdePersoon2ID, lmb => lmb.Groep);
+
+                Kind k = lm.KindMaken(gp, aj);
+                kdao.Bewaren(k
+                    , lmb => lmb.GelieerdePersoon.WithoutUpdate()
+                    , lmb => lmb.AfdelingsJaar.GroepsWerkJaar.WithoutUpdate()
+                    , lmb => lmb.GroepsWerkJaar.WithoutUpdate());
+            }
         }
 
         [TestMethod]
@@ -130,28 +151,31 @@ namespace Cg2.Dao.Test
             #endregion
         }
 
+        /// <summary>
+        /// Verwijdert kind (GelieerdePersoon2ID, AfdelingsJaarID)
+        /// </summary>
         [TestMethod]
         public void KindVerwijderen()
         {
             // Arrange
 
-            // Haalt gewoon een willekeurig kind op.
-            // TODO: deze test zal sowieso failen als er
-            // geen leden zijn!
+            int gelieerdePersoonID = Properties.Settings.Default.TestGelieerdePersoon2ID;
+            int afdelingsJaarID = Properties.Settings.Default.TestAfdelingsJaarID;
+
+            Dao<AfdelingsJaar> ajdao = new Dao<AfdelingsJaar>();
+            AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
 
             LedenDao ldao = new LedenDao();
-            Lid l = ldao.TestKindGet();
-            int id = l.ID;
-
+            Lid l = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.ID);
+ 
             // Act
 
             l.TeVerwijderen = true;
             ldao.Bewaren(l);
 
-            Lid l2 = ldao.Ophalen(id);
-
             // Assert
 
+            Lid l2 = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.Groep.ID);
             Assert.IsNull(l2);
 
         }
