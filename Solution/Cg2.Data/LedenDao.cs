@@ -158,22 +158,5 @@ namespace Cg2.Data.Ef
                 return lid;
             }
         }
-
-        /// <summary>
-        /// Geeft een kind terug waarop getest kan worden.
-        /// </summary>
-        /// <returns>proefkonijn</returns>
-        public Kind TestKindGet()
-        {
-            using (ChiroGroepEntities db = new ChiroGroepEntities())
-            {
-                db.Lid.MergeOption = MergeOption.NoTracking;
-
-                return (
-                        from k in db.Lid.OfType<Kind>().Include("GelieerdePersoon").Include("GroepsWerkJaar").Include("AfdelingsJaar")
-                        select k).FirstOrDefault();
-            }
-        }
-
     }
 }
