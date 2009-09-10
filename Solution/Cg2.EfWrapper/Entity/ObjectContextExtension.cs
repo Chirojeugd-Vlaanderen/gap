@@ -99,7 +99,12 @@ namespace Cg2.EfWrapper.Entity
 
                         if (entity.EntityKey == null || entity.EntityKey.EntityKeyValues == null)
                         {
-                            entity.EntityKey = context.CreateEntityKey(typeof(T).Name, entity);
+                            // EntitySetName is niet noodzakelijk de naam van het Type,
+                            // bij overerving is dat ihb niet het geval.
+                            // Vandaar dat GetEntitySetName gebruikt wordt, ipv het
+                            // vroegere typeof(T).Name.
+
+                            entity.EntityKey = context.CreateEntityKey(GetEntitySetName(context, typeof(T)), entity);
                         }
 
                         //where.Append(" OR ((1=1)");

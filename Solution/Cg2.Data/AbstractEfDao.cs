@@ -55,25 +55,48 @@ namespace Cg2.Data.Ef
             {
                 db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 
-                ObjectQuery<T> oq = db.CreateQuery<T>("[" + typeof(T).Name + "]");
+                // Constructie db.CreateQuery<T>("[" + db.GetEntitySetName(typeof(T)) + "]").OfType<T>()
+                // zorgt ervoor dat dit ook werkt voor overervende types.  (In dat geval is
+                // de EntitySetName niet gelijk aan de naam van het type.)
 
-                foreach (var v in paths)
-                {
-                    oq.Include(v);
-                }
+                ObjectQuery<T> query = (from t in db.CreateQuery<T>("[" + db.GetEntitySetName(typeof(T)) + "]").OfType<T>()
+                             where t.ID == id
+                             select t) as ObjectQuery<T>;
 
-                result = (
-                    from t in oq
-                    where t.ID == id
-                    select t).FirstOrDefault<T>();
+                result = (IncludesToepassen(query,paths)).FirstOrDefault<T>(); 
 
                 if (result != null)
                 {
-                    db.Detach(result);
+                    result = db.DetachObjectGraph(result);
                 }
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// 'Includet' gerelateerde entiteiten aan een objectquery.
+        /// </summary>
+        /// <param name="query">Betreffende query</param>
+        /// <param name="paths">Paden naar mee op te halen gerelateerde entiteiten</param>
+        /// <returns>Nieuwe query die de gevraagde entiteiten Includet</returns>
+        protected ObjectQuery<T> IncludesToepassen(ObjectQuery<T> query, Expression<Func<T, object>>[] paths)
+        {
+            ObjectQuery<T> resultaat = query;
+
+            if (paths != null)
+            {
+                // Workaround om de Includes te laten werken
+                // overgenomen van 
+                // http://blogs.msdn.com/alexj/archive/2009/06/02/tip-22-how-to-make-include-really-include.aspx
+
+                foreach (var v in paths)
+                {
+                    resultaat = resultaat.Include(v);
+                }
+            }
+
+            return resultaat;
         }
 
         /// <summary>
@@ -120,8 +143,9 @@ namespace Cg2.Data.Ef
                 // dan moeten we hem terug genereren alvorens
                 // de entity terug geattacht kan worden.
 
-                //FIXME: voor een object van Leiding crasht dit, want dat is geen entity in de database
-                EntityKeysHerstellen(entiteit, db);
+
+                // Indien de entity key verdwenen moest zijn, dan zal
+                // AttachObjectGraph die wel herstellen
 
                 entiteit = db.AttachObjectGraph(entiteit, paths);
 
@@ -166,7 +190,11 @@ namespace Cg2.Data.Ef
         {
             if (entiteit.ID != 0 && entiteit.EntityKey == null)
             {
-                entiteit.EntityKey = db.CreateEntityKey(typeof(T).Name, entiteit);
+                // De handige Extension Method 'GetEntitySetName' geeft de naam
+                // van de entity set.  Dit is niet noodzakelijk de naam van het
+                // type.  Ihb als T erft van U, dan is EntitySetName U ipv T.
+
+                entiteit.EntityKey = db.CreateEntityKey(db.GetEntitySetName(typeof(T)), entiteit);
             }
         }
 

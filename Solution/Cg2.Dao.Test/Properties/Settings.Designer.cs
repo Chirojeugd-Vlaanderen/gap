@@ -154,5 +154,29 @@ namespace Cg2.Dao.Test.Properties {
                 this["TestTeVerwijderenVoornaam"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("917")]
+        public int TestGelieerdePersoonID {
+            get {
+                return ((int)(this["TestGelieerdePersoonID"]));
+            }
+            set {
+                this["TestGelieerdePersoonID"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("82")]
+        public int TestAfdelingsJaarID {
+            get {
+                return ((int)(this["TestAfdelingsJaarID"]));
+            }
+            set {
+                this["TestAfdelingsJaarID"] = value;
+            }
+        }
     }
 }

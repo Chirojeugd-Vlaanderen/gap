@@ -35,5 +35,11 @@
     <Setting Name="TestTeVerwijderenVoornaam" Type="System.String" Scope="User">
       <Value Profile="(Default)">Silvain</Value>
     </Setting>
+    <Setting Name="TestGelieerdePersoonID" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">917</Value>
+    </Setting>
+    <Setting Name="TestAfdelingsJaarID" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">82</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

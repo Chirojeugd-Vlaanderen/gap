@@ -22,7 +22,38 @@ namespace Cg2.Data.Ef
                                         e => e.GelieerdePersoon };
         }
 
-        
+        /// <summary>
+        /// Zoekt lid op op basis van GelieerdePersoonID en GroepsWerkJaarID
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van gelieerde persoon</param>
+        /// <param name="groepsWerkJaarID">ID van groepswerkjaar</param>
+        /// <returns>Lidobject indien gevonden, anders null</returns>
+        public Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID)
+        {
+            return Ophalen(gelieerdePersoonID, groepsWerkJaarID, null);
+        }
+
+        /// <summary>
+        /// Haalt lid met gerelateerde entity's op, op basis van 
+        /// GelieerdePersoonID en GroepsWerkJaarID
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van gelieerde persoon</param>
+        /// <param name="groepsWerkJaarID">ID van groepswerkjaar</param>
+        /// <param name="paths">lambda-expressies die de extra op te halen
+        /// informatie definieren</param>
+        /// <returns>Lidobject indien gevonden, anders null</returns>
+        public Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths)
+        {
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                var query = (from l in db.Lid
+                            where l.GelieerdePersoon.ID == gelieerdePersoonID
+                            && l.GroepsWerkJaar.ID == groepsWerkJaarID
+                            select l) as ObjectQuery<Lid>;
+                return (IncludesToepassen(query, paths).FirstOrDefault());
+            }
+        }
+ 
         public void getEntityKeys(Lid entiteit, ChiroGroepEntities db)
         {
             if (entiteit.ID != 0 && entiteit.EntityKey == null)
@@ -40,7 +71,6 @@ namespace Cg2.Data.Ef
                 entiteit.GelieerdePersoon.EntityKey = db.CreateEntityKey(typeof(GelieerdePersoon).Name, entiteit.GelieerdePersoon);
             }
         }
-
 
         // pagineren gebeurt nu per werkjaar
         // pagina, paginaGrootte en aantalTotaal zijn niet meer nodig

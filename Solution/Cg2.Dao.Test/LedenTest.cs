@@ -5,6 +5,9 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Data.Ef;
 using Cg2.Orm;
+using Cg2.Workers;
+using Cg2.Ioc;
+using Cg2.EfWrapper.Entity;
 
 namespace Cg2.Dao.Test
 {
@@ -60,6 +63,72 @@ namespace Cg2.Dao.Test
         // public void MyTestCleanup() { }
         //
         #endregion
+
+        /// <summary>
+        /// Voorbereidend werk voor deze tests
+        /// </summary>
+        /// <param name="context"></param>
+        [ClassInitialize]
+        static public void TestInitialiseren(TestContext context)
+        {
+            Factory.InitContainer();
+
+            // Verwijder lid om achteraf opnieuw toe te voegen
+
+            int gelieerdePersoonID = Properties.Settings.Default.TestGelieerdePersoonID;
+            int afdelingsJaarID = Properties.Settings.Default.TestAfdelingsJaarID;
+
+            Dao<AfdelingsJaar> ajdao = new Dao<AfdelingsJaar>();
+            AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
+
+            LedenDao ldao = new LedenDao();
+            Lid l = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.ID);
+
+            if (l != null)
+            {
+                l.TeVerwijderen = true;
+                ldao.Bewaren(l);
+            }
+
+            Assert.IsTrue(l != null && l is Kind);
+
+        }
+
+        [TestMethod]
+        public void NieuwKind()
+        {
+            #region Arrange
+            int gelieerdePersoonID = Properties.Settings.Default.TestGelieerdePersoonID;
+            int afdelingsJaarID = Properties.Settings.Default.TestAfdelingsJaarID;
+
+            LedenManager lm = Factory.Maak<LedenManager>();
+
+            GelieerdePersonenDao gpdao = new GelieerdePersonenDao();
+            Dao<AfdelingsJaar> ajdao = new Dao<AfdelingsJaar>();
+            Dao<Kind> kdao = new Dao<Kind>();
+
+            GelieerdePersoon gp = gpdao.Ophalen(gelieerdePersoonID, lmb => lmb.Groep);
+            AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
+
+            Kind k = lm.KindMaken(gp, aj);
+            #endregion
+
+            #region Act
+            kdao.Bewaren(k
+                , lmb => lmb.GelieerdePersoon.WithoutUpdate()
+                , lmb => lmb.AfdelingsJaar.GroepsWerkJaar.WithoutUpdate()
+                , lmb => lmb.GroepsWerkJaar.WithoutUpdate());
+            #endregion
+
+            #region Assert
+
+            LedenDao ldao = new LedenDao();
+            Lid l = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.ID);
+
+            Assert.IsTrue(l != null && l is Kind);
+
+            #endregion
+        }
 
         [TestMethod]
         public void KindVerwijderen()
