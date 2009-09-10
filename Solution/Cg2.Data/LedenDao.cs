@@ -54,24 +54,6 @@ namespace Cg2.Data.Ef
             }
         }
  
-        public void getEntityKeys(Lid entiteit, ChiroGroepEntities db)
-        {
-            if (entiteit.ID != 0 && entiteit.EntityKey == null)
-            {
-                entiteit.EntityKey = db.CreateEntityKey(typeof(Lid).Name, entiteit);
-            }
-
-            if (entiteit.GroepsWerkJaar.ID != 0 && entiteit.GroepsWerkJaar.EntityKey == null)
-            {
-                entiteit.GroepsWerkJaar.EntityKey = db.CreateEntityKey(typeof(GroepsWerkJaar).Name, entiteit.GroepsWerkJaar);
-            }
-
-            if (entiteit.GelieerdePersoon.ID != 0 && entiteit.GelieerdePersoon.EntityKey == null)
-            {
-                entiteit.GelieerdePersoon.EntityKey = db.CreateEntityKey(typeof(GelieerdePersoon).Name, entiteit.GelieerdePersoon);
-            }
-        }
-
         // pagineren gebeurt nu per werkjaar
         // pagina, paginaGrootte en aantalTotaal zijn niet meer nodig
         public IList<Lid> PaginaOphalen(int groepsWerkJaarID)
