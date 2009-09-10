@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="DataInterfaces\IAfdelingenDao.cs" />
     <Compile Include="DataInterfaces\IAfdelingsJaarDao.cs" />
+    <Compile Include="DataInterfaces\ICommunicatieVormDao.cs" />
     <Compile Include="DataInterfaces\IGroepsWerkJaarDao.cs" />
     <Compile Include="DataInterfaces\IKindDao.cs" />
     <Compile Include="DataInterfaces\ILeidingDao.cs" />

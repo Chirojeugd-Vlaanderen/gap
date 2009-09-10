@@ -190,5 +190,17 @@ namespace Cg2.Dao.Test.Properties {
                 this["TestGelieerdePersoon2ID"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("nietgebruiken@chiro.be")]
+        public string TestEMailAdres {
+            get {
+                return ((string)(this["TestEMailAdres"]));
+            }
+            set {
+                this["TestEMailAdres"] = value;
+            }
+        }
     }
 }

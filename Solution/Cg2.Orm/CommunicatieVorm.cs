@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
+using Cg2.EfWrapper;
 
 namespace Cg2.Orm
 {
@@ -23,7 +24,7 @@ namespace Cg2.Orm
         Jabber = 6
     }
 
-    public partial class CommunicatieVorm
+    public partial class CommunicatieVorm: IBasisEntiteit
     {
         private bool _teVerwijderen = false;
 
@@ -31,6 +32,12 @@ namespace Cg2.Orm
         {
             get { return _teVerwijderen; }
             set { _teVerwijderen = value; }
+        }
+
+        public string VersieString
+        {
+            get { return this.VersieStringGet(); }
+            set { this.VersieStringSet(value); }
         }
 
         public CommunicatieType Type

@@ -681,10 +681,10 @@
         </EntityType>
         <EntityType Name="CommunicatieVorm">
           <Key>
-            <PropertyRef Name="CommunicatieVormID" /></Key>
+            <PropertyRef Name="ID" /></Key>
           <Property Name="Nota" Type="String" Nullable="true" />
           <Property Name="Nummer" Type="String" Nullable="true" />
-          <Property Name="CommunicatieVormID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="CommunicatieTypeInt" Type="Int32" Nullable="true" />
           <Property Name="IsGezinsgebonden" Type="Boolean" Nullable="false" />
           <Property Name="Voorkeur" Type="Boolean" Nullable="false" />
@@ -915,7 +915,7 @@
                 <ScalarProperty Name="Voorkeur" ColumnName="Voorkeur" />
                 <ScalarProperty Name="IsGezinsgebonden" ColumnName="IsGezinsgebonden" />
                 <ScalarProperty Name="CommunicatieTypeInt" ColumnName="CommunicatieTypeID" />
-                <ScalarProperty Name="CommunicatieVormID" ColumnName="CommunicatieVormID" />
+                <ScalarProperty Name="ID" ColumnName="CommunicatieVormID" />
                 <ScalarProperty Name="Nummer" ColumnName="Nummer" />
                 <ScalarProperty Name="Nota" ColumnName="Nota" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="GelieerdePersoon">
@@ -931,7 +931,7 @@
               <ScalarProperty Name="ID" ColumnName="GroepID" /></EndProperty></AssociationSetMapping>
           <AssociationSetMapping Name="FK_CommunicatieVorm_GelieerdePersoon" TypeName="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" StoreEntitySet="CommunicatieVorm">
             <EndProperty Name="CommunicatieVorm">
-              <ScalarProperty Name="CommunicatieVormID" ColumnName="CommunicatieVormID" /></EndProperty>
+              <ScalarProperty Name="ID" ColumnName="CommunicatieVormID" /></EndProperty>
             <EndProperty Name="GelieerdePersoon">
               <ScalarProperty Name="ID" ColumnName="GelieerdePersoonID" /></EndProperty>
             <Condition ColumnName="GelieerdePersoonID" IsNull="false" /></AssociationSetMapping>

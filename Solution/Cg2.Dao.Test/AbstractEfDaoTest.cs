@@ -1,0 +1,104 @@
+﻿using System;
+using System.Text;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Cg2.Orm;
+using Cg2.Data.Ef;
+using Cg2.Data;
+
+namespace Cg2.Dao.Test
+{
+    /// <summary>
+    /// Summary description for DaoTest
+    /// </summary>
+    [TestClass]
+    public class AbstractEfDaoTest
+    {
+        public AbstractEfDaoTest()
+        {
+            //
+            // TODO: Add constructor logic here
+            //
+        }
+
+        private TestContext testContextInstance;
+
+        /// <summary>
+        ///Gets or sets the test context which provides
+        ///information about and functionality for the current test run.
+        ///</summary>
+        public TestContext TestContext
+        {
+            get
+            {
+                return testContextInstance;
+            }
+            set
+            {
+                testContextInstance = value;
+            }
+        }
+
+        #region Additional test attributes
+        //
+        // You can use the following additional attributes as you write your tests:
+        //
+        // Use ClassInitialize to run code before running the first test in the class
+        // [ClassInitialize()]
+        // public static void MyClassInitialize(TestContext testContext) { }
+        //
+        // Use ClassCleanup to run code after all tests in a class have run
+        // [ClassCleanup()]
+        // public static void MyClassCleanup() { }
+        //
+        // Use TestInitialize to run code before running each test 
+        // [TestInitialize()]
+        // public void MyTestInitialize() { }
+        //
+        // Use TestCleanup to run code after each test has run
+        // [TestCleanup()]
+        // public void MyTestCleanup() { }
+        //
+        #endregion
+
+        [ClassInitialize]
+        public static void TestInitialiseren(TestContext context)
+        {
+            CommunicatieVormDao cvdao = new CommunicatieVormDao();
+            IList<CommunicatieVorm> lijst = cvdao.ZoekenOpNummer(Properties.Settings.Default.TestEMailAdres);
+
+            foreach (CommunicatieVorm cv in lijst)
+            {
+                cv.TeVerwijderen = true;
+                cvdao.Bewaren(cv);
+            }
+        }
+
+        /// <summary>
+        /// Deze test kijkt na of een nieuwe entiteit
+        /// wel een ID krijgt.
+        /// </summary>
+        [TestMethod]
+        public void IDToekennen()
+        {
+            // Arrange
+
+            CommunicatieVorm cv = new CommunicatieVorm();
+
+            cv.Type = CommunicatieType.Mail;
+            cv.Nummer = Properties.Settings.Default.TestEMailAdres;
+            cv.Nota = "Toegevoegd door unit test.";
+
+            Dao<CommunicatieVorm> cvdao = new Dao<CommunicatieVorm>();
+
+            // Act
+
+            cv = cvdao.Bewaren(cv);
+
+            // Assert
+
+            Assert.IsTrue(cv.ID > 0);
+        }
+    }
+}

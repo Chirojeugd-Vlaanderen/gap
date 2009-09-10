@@ -29,7 +29,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Kind_AfdelingsJaar", "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.AfdelingsJaar), "Kind", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Kind))]
 
 // Original file name:
-// Generation date: 3/08/2009 22:26:20
+// Generation date: 10/09/2009 15:18:27
 namespace Cg2.Orm
 {
     
@@ -967,7 +967,7 @@ namespace Cg2.Orm
     /// There are no comments for ChiroGroepModel.CommunicatieVorm in the schema.
     /// </summary>
     /// <KeyProperties>
-    /// CommunicatieVormID
+    /// ID
     /// </KeyProperties>
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="CommunicatieVorm")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
@@ -977,13 +977,13 @@ namespace Cg2.Orm
         /// <summary>
         /// Create a new CommunicatieVorm object.
         /// </summary>
-        /// <param name="communicatieVormID">Initial value of CommunicatieVormID.</param>
+        /// <param name="id">Initial value of ID.</param>
         /// <param name="isGezinsgebonden">Initial value of IsGezinsgebonden.</param>
         /// <param name="voorkeur">Initial value of Voorkeur.</param>
-        public static CommunicatieVorm CreateCommunicatieVorm(int communicatieVormID, bool isGezinsgebonden, bool voorkeur)
+        public static CommunicatieVorm CreateCommunicatieVorm(int id, bool isGezinsgebonden, bool voorkeur)
         {
             CommunicatieVorm communicatieVorm = new CommunicatieVorm();
-            communicatieVorm.CommunicatieVormID = communicatieVormID;
+            communicatieVorm.ID = id;
             communicatieVorm.IsGezinsgebonden = isGezinsgebonden;
             communicatieVorm.Voorkeur = voorkeur;
             return communicatieVorm;
@@ -1035,28 +1035,28 @@ namespace Cg2.Orm
         partial void OnNummerChanging(string value);
         partial void OnNummerChanged();
         /// <summary>
-        /// There are no comments for Property CommunicatieVormID in the schema.
+        /// There are no comments for Property ID in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int CommunicatieVormID
+        public int ID
         {
             get
             {
-                return this._CommunicatieVormID;
+                return this._ID;
             }
             set
             {
-                this.OnCommunicatieVormIDChanging(value);
-                this.ReportPropertyChanging("CommunicatieVormID");
-                this._CommunicatieVormID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("CommunicatieVormID");
-                this.OnCommunicatieVormIDChanged();
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
             }
         }
-        private int _CommunicatieVormID;
-        partial void OnCommunicatieVormIDChanging(int value);
-        partial void OnCommunicatieVormIDChanged();
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
         /// <summary>
         /// There are no comments for Property CommunicatieTypeInt in the schema.
         /// </summary>
