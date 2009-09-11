@@ -115,6 +115,11 @@ namespace Cg2.Dao.Test
             }
         }
 
+        /// <summary>
+        /// Maakt kind aan door gelieerde persoon bepaald door TestGelieerdePersoonID 
+        /// (zie settings) te koppelen aan afdelingsjaar bepaald door
+        /// TestAfdelingsJaarID (zie ook settings)
+        /// </summary>
         [TestMethod]
         public void NieuwKind()
         {
