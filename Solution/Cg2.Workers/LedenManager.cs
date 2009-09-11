@@ -53,7 +53,7 @@ namespace Cg2.Workers
         {
             if (aj.GroepsWerkJaar.Groep.ID != gp.Groep.ID)
             {
-                throw new FoutieveGroepException("De gelieerde persoon is geen lid van de groep van het afdelingsjaar.");
+                throw new FoutieveGroepException("De persoon is niet gelieerd aan de groep van het afdelingsjaar.");
             }
             else
             {
