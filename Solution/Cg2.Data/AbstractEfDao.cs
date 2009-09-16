@@ -20,9 +20,8 @@ namespace Cg2.Data.Ef
     /// een DAO-object.
     /// </summary>
     /// <remarks>Alle entity's die de DAO oplevert, moeten gedetacht zijn.
-    /// Dit kan via MergeOption.NoTracking.  (Normaal had dat ook moeten
-    /// lukken met DetachObjectGraph, maar daar wordt blijkbaar de 
-    /// EntityState niet goed gezet :(.)</remarks>
+    /// Dit kan via MergeOption.NoTracking, of via Utility.DetachObjectGraph.
+    /// </remarks>
 
     public class Dao<T>: IDao<T> where T:EntityObject, IBasisEntiteit
     {
@@ -151,9 +150,12 @@ namespace Cg2.Data.Ef
 
                 db.SaveChanges();
 
-                db.DetachObjectGraph(entiteit);
             }
-            return entiteit;
+
+            // Door Utility.DetachObjectGraph te gebruiken wanneer de context
+            // niet meer bestaat, is het resultaat *echt* gedetacht.
+
+            return Utility.DetachObjectGraph(entiteit);
         }
 
 
