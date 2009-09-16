@@ -57,8 +57,6 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
-
                 // Constructie db.CreateQuery<T>("[" + db.GetEntitySetName(typeof(T)) + "]").OfType<T>()
                 // zorgt ervoor dat dit ook werkt voor overervende types.  (In dat geval is
                 // de EntitySetName niet gelijk aan de naam van het type.)
@@ -66,6 +64,8 @@ namespace Cg2.Data.Ef
                 ObjectQuery<T> query = (from t in db.CreateQuery<T>("[" + db.GetEntitySetName(typeof(T)) + "]").OfType<T>()
                              where t.ID == id
                              select t) as ObjectQuery<T>;
+
+                query.MergeOption = MergeOption.NoTracking;
 
                 result = (IncludesToepassen(query,paths)).FirstOrDefault<T>(); 
 
@@ -161,27 +161,22 @@ namespace Cg2.Data.Ef
         }
 
 
-        //FIXME kan dit beter zonder foreach, maar het behandelen van de hele lijst?
+        /// <summary>
+        /// Bewaren van een lijst entiteiten
+        /// </summary>
+        /// <param name="es">lijst entiteiten</param>
+        /// <param name="paths">paden met gerelateerde te bewaren
+        /// entiteiten</param>
+        /// <returns>De bewaarde entiteiten, maar gedetacht</returns>
         public virtual IList<T> Bewaren(IList<T> es, params Expression<Func<T, object>>[] paths)
         {
-            List<T> list = new List<T>() ;
-
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                db.Lid.MergeOption = MergeOption.NoTracking;
-
-
-
-                foreach (T entiteit in es)
-                {
-                    EntityKeysHerstellen(entiteit, db);
-                    list.Add(db.AttachObjectGraph(entiteit, paths));
-                    SetAllModified(entiteit.EntityKey, db);
-                }
-
+                db.AttachObjectGraphs(es);
                 db.SaveChanges();
             }
-            return list;
+
+            return Utility.DetachObjectGraph(es);
         }
 
 
