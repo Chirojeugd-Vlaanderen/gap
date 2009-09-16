@@ -253,14 +253,17 @@ namespace Cg2.EfWrapper.Entity
 		{
 			using (MemoryStream stream = new MemoryStream())
 			{
-				//NetDataContractSerializer serializer = new NetDataContractSerializer();
-				//serializer.Serialize(stream, entity);
-				//stream.Position = 0;
-				//return (T)serializer.Deserialize(stream);
-				BinaryFormatter formatter = new BinaryFormatter();
-				formatter.Serialize(stream, entity);
+
+				NetDataContractSerializer serializer = new NetDataContractSerializer();
+				serializer.Serialize(stream, entity);
 				stream.Position = 0;
-				return (T)formatter.Deserialize(stream);
+                string tmp = stream.GetBuffer().ToString();
+				return (T)serializer.Deserialize(stream);
+				
+                //BinaryFormatter formatter = new BinaryFormatter();
+				//formatter.Serialize(stream, entity);
+				//stream.Position = 0;
+				//return (T)formatter.Deserialize(stream);
 			}
 		}
 

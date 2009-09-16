@@ -18,11 +18,12 @@ namespace Cg2.Data.Ef
     /// <summary>
     /// Algemene implementatie van IDao; generieke CRUD-operaties voor
     /// een DAO-object.
-    /// 
-    /// SPECIAL: db.PersoonsAdres.MergeOption = MergeOption.NoTracking;
-    ///     dit moet altijd toegevoegd worden bij calls naar de database, zodat alles dat teruggegeven wordt van
-    ///     eender welke dao altijd GEDETACHED is, zonder dat informatie verloren is!
     /// </summary>
+    /// <remarks>Alle entity's die de DAO oplevert, moeten gedetacht zijn.
+    /// Dit kan via MergeOption.NoTracking.  (Normaal had dat ook moeten
+    /// lukken met DetachObjectGraph, maar daar wordt blijkbaar de 
+    /// EntityState niet goed gezet :(.)</remarks>
+
     public class Dao<T>: IDao<T> where T:EntityObject, IBasisEntiteit
     {
         #region IDao<T> Members
@@ -112,9 +113,9 @@ namespace Cg2.Data.Ef
             List<T> result;
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                db.PersoonsAdres.MergeOption = MergeOption.NoTracking;
-
-                ObjectQuery<T> oq = db.CreateQuery<T>("[" + typeof(T).Name + "]");
+                // Constructie met OfType zodat overerving ook werkt.
+                ObjectQuery<T> oq = db.CreateQuery<T>("[" + db.GetEntitySetName(typeof(T)) + "]").OfType<T>();
+                oq.MergeOption = MergeOption.NoTracking;
                 result = oq.ToList<T>();
             }
             return result;
@@ -144,22 +145,13 @@ namespace Cg2.Data.Ef
         {
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                db.PersoonsAdres.MergeOption = MergeOption.NoTracking;
-
-                // Als de entity key verloren is gegaan
-                // (wat typisch gebeurt bij mvc)
-                // dan moeten we hem terug genereren alvorens
-                // de entity terug geattacht kan worden.
-
-
-                // Indien de entity key verdwenen moest zijn, dan zal
-                // AttachObjectGraph die wel herstellen
-
                 entiteit = db.AttachObjectGraph(entiteit, paths);
 
                 // SetAllModified is niet meer nodig na AttachObjectGraph
 
                 db.SaveChanges();
+
+                db.DetachObjectGraph(entiteit);
             }
             return entiteit;
         }

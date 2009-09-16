@@ -111,7 +111,7 @@ namespace Cg2.Dao.Test
         /// oplevert.
         /// </summary>
         [TestMethod]
-        public void AllesOphalenIsDetached()
+        public void AllesOphalenIsDetacht()
         {
             // Arrange
             IDao<Groep> dao = Factory.Maak<IDao<Groep>>();
@@ -128,7 +128,7 @@ namespace Cg2.Dao.Test
         /// oplevert
         /// </summary>
         [TestMethod]
-        public void DetachedNaBewaren()
+        public void DetachtNaBewaren()
         {
             // Arrange
             IDao<Groep> dao = Factory.Maak<IDao<Groep>>();
