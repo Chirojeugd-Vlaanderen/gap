@@ -21,6 +21,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
+using System.IO;
+using System.Runtime.Serialization;
 
 namespace Cg2.EfWrapper
 {
@@ -53,6 +55,25 @@ namespace Cg2.EfWrapper
             var body = equals.Aggregate<Expression>((accumulate, equal) => Expression.Or(accumulate, equal));
 
             return Expression.Lambda<Func<TElement, bool>>(body, p);
+        }
+
+        /// <summary>
+        /// Detaches an objectgraph given it's root object.
+        /// </summary>
+        /// <returns>The detached root object.</returns>
+        /// <remarks>Dit werkt enkel behoorlijk als de
+        /// oorspronkelijke objectcontext niet meer bestaat!</remarks>
+        public static T DetachObjectGraph<T>(T entity)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+
+                NetDataContractSerializer serializer = new NetDataContractSerializer();
+                serializer.Serialize(stream, entity);
+                stream.Position = 0;
+                string tmp = stream.GetBuffer().ToString();
+                return (T)serializer.Deserialize(stream);
+            }
         }
     }
 }

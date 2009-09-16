@@ -69,11 +69,13 @@ namespace Cg2.Data.Ef
 
                 result = (IncludesToepassen(query,paths)).FirstOrDefault<T>(); 
 
-                if (result != null)
-                {
-                    result = db.DetachObjectGraph(result);
-                }
             }
+
+            if (result != null)
+            {
+                result = Utility.DetachObjectGraph(result);
+            }
+
 
             return result;
         }

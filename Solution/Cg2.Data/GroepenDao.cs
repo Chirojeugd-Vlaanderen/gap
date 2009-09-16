@@ -7,6 +7,7 @@ using Cg2.Orm.DataInterfaces;
 using System.Data.Objects;
 using Cg2.EfWrapper.Entity;
 using System.Linq.Expressions;
+using Cg2.EfWrapper;
 
 namespace Cg2.Data.Ef
 {
@@ -60,6 +61,7 @@ namespace Cg2.Data.Ef
         public Groep OphalenMetAfdelingen(int groepID)
         {
             int huidigwerkjaar = RecentsteGroepsWerkJaarGet(groepID).WerkJaar;
+            Groep result;
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
@@ -77,15 +79,13 @@ namespace Cg2.Data.Ef
 
                 try
                 {
-                    var result = (
+                    result = (
                     from x in groep.First().Afdeling
                     join y in afdelingsjaren
                     on x equals y.Afdeling
                     into volledige
                     select groep
-                    ).First().First();
-                    return db.DetachObjectGraph(result);
-                    
+                    ).First().First();                    
                 }
                 catch (System.InvalidOperationException)
                 {
@@ -93,6 +93,8 @@ namespace Cg2.Data.Ef
                 }
                 
             }
+            return Utility.DetachObjectGraph(result);
+
         }
 
         /*public Groep OphalenMetVrijeVelden(int groepID)
@@ -249,14 +251,15 @@ namespace Cg2.Data.Ef
 
         public IList<OfficieleAfdeling> OphalenOfficieleAfdelingen()
         {
+            IList<OfficieleAfdeling> result;
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                IList<OfficieleAfdeling> result = (
+                result = (
                     from d in db.OfficieleAfdeling
                     select d
                 ).ToList();
-                return db.DetachObjectGraph(result);
             }
+            return Utility.DetachObjectGraph(result);
         }
 
         /*public IList<Afdeling> OphalenEigenAfdelingen(int groep)
