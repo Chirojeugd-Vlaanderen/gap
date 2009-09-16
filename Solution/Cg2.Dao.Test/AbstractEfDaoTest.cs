@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Orm;
 using Cg2.Ioc;
 using Cg2.Orm.DataInterfaces;
+using System.Data;
 
 namespace Cg2.Dao.Test
 {
@@ -103,5 +104,42 @@ namespace Cg2.Dao.Test
 
             Assert.IsTrue(cv.ID > 0);
         }
+
+
+        /// <summary>
+        /// Controleert of de Dao.AllesOphalen wel gedetachte entity's
+        /// oplevert.
+        /// </summary>
+        [TestMethod]
+        public void AllesOphalenIsDetached()
+        {
+            // Arrange
+            IDao<Groep> dao = Factory.Maak<IDao<Groep>>();
+
+            // Act
+            IList<Groep> g = dao.AllesOphalen();
+
+            // Assert
+            Assert.IsTrue(g[0].EntityState == EntityState.Detached);
+        }
+
+        /// <summary>
+        /// Controleert of Dao.bewaren een gedetachte entity
+        /// oplevert
+        /// </summary>
+        [TestMethod]
+        public void DetachedNaBewaren()
+        {
+            // Arrange
+            IDao<Groep> dao = Factory.Maak<IDao<Groep>>();
+
+            // Act            
+            Groep g = dao.Ophalen(Properties.Settings.Default.TestGroepID);
+            g = dao.Bewaren(g);
+
+            // Assert
+            Assert.IsTrue(g.EntityState == EntityState.Detached);
+        }
+
     }
 }
