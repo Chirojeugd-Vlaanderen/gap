@@ -13,7 +13,7 @@ namespace MvcWebApp2.Models
     /// <summary>
     /// Model gebruikt om iemand een nieuw adres te geven.
     /// </summary>
-    public class NieuwAdresInfo : MasterViewModel 
+    public class NieuwAdresModel : MasterViewModel 
     {
         // ID van GelieerdePersoon waarvoor aangeklikt dat
         // hij/zij een extra adres nodig heeft
@@ -39,7 +39,7 @@ namespace MvcWebApp2.Models
         /// <summary>
         /// Standaardconstructor - creeert lege NieuwAdresInfo
         /// </summary>
-        public NieuwAdresInfo()
+        public NieuwAdresModel()
         {
             AanvragerID = 0;
             MogelijkeBewoners = new List<Persoon>();
@@ -47,7 +47,7 @@ namespace MvcWebApp2.Models
             PersoonIDs = new List<int>();
         }
 
-        public NieuwAdresInfo(int aanvragerID): this()
+        public NieuwAdresModel(int aanvragerID): this()
         {
             AanvragerID = aanvragerID;
             MogelijkeBewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<Persoon>>(l => l.HuisGenotenOphalen(aanvragerID));

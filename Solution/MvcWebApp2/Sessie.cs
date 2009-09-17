@@ -40,6 +40,9 @@ namespace MvcWebApp2
             }
         }
 
+        /// <summary>
+        /// Bevat de naam van de controller van de laatst opgevraagde lijst
+        /// </summary>
         public static String LaatsteLijst
         {
             get
@@ -53,6 +56,10 @@ namespace MvcWebApp2
             }
         }
 
+        /// <summary>
+        /// Bevat de waarde van het ID-gedeelte van de url van de laatste lijst
+        /// (indirectie alom ;))
+        /// </summary>
         public static int LaatstePagina
         {
             get

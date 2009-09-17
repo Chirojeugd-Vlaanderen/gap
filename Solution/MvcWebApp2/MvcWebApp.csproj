@@ -93,7 +93,7 @@
     <Compile Include="Models\LedenModel.cs" />
     <Compile Include="Models\MasterAttribute.cs" />
     <Compile Include="Models\MasterViewModel.cs" />
-    <Compile Include="Models\NieuwAdresInfo.cs" />
+    <Compile Include="Models\NieuwAdresModel.cs" />
     <Compile Include="Models\PersoonInfoModel.cs" />
     <Compile Include="Models\VerhuisInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

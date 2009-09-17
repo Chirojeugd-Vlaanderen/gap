@@ -81,7 +81,12 @@ namespace Cg2.Services
         }
 
 
-
+        /// <summary>
+        /// Haalt een pagina op met info over alle leden in een
+        /// gegeven groepswerkjaar.
+        /// </summary>
+        /// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+        /// <returns>Lijst met LidInfo</returns>
         public IList<LidInfo> PaginaOphalen(int groepsWerkJaarID)
         {
             LedenManager lm = Factory.Maak<LedenManager>();

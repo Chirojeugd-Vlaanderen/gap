@@ -178,14 +178,14 @@ namespace MvcWebApp2.Controllers
         // GET: /Personen/NieuwAdres/gelieerdePersoonID
         public ActionResult NieuwAdres(int id)
         {
-            NieuwAdresInfo model = new NieuwAdresInfo(id);
+            NieuwAdresModel model = new NieuwAdresModel(id);
             model.Title = "Nieuw adres toevoegen";
             return View("NieuwAdres", model);
         }
 
         // post: /Personen/NieuwAdres
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult NieuwAdres(NieuwAdresInfo model)
+        public ActionResult NieuwAdres(NieuwAdresModel model)
         {
             try
             {

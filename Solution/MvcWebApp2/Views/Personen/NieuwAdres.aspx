@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<NieuwAdresInfo>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<NieuwAdresModel>" %>
 <%@ Import Namespace="Cg2.Orm" %>
 <%@ Import Namespace="MvcWebApp2" %>
 <%@ Import Namespace="MvcWebApp2.Models" %>
