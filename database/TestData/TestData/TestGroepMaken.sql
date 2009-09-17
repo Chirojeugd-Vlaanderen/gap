@@ -1,9 +1,10 @@
 -- Creeer testgroep voor unittests, met deze testdata:
+-- @testWerkJaar en @testVorigWerkJaar
 --
 -- Een Groep (en ChiroGroep) met code @testGroepCode
 -- Een GroepsWerkJaar in @testWerkJaar
 -- Afdelingen met codes @testAfdelingsCode en @testAfdelingsCode2
--- AfdelingsWerkJaar voor afdeling met code @testAfdelingsCode
+-- AfdelingsWerkJaar en voor afdeling met code @testAfdelingsCode in @testWerkJaar en @testVorigWerkJaar
 -- Gelieerde Testpersonen:
 --		 @testPersoonVoornaam @testPersoonNaam en @testPersoon2VoorNaam en @testPersoonNaam
 
@@ -16,6 +17,7 @@ DECLARE @testGroepCode AS CHAR(10);
 DECLARE @testAfdelingsCode AS VARCHAR(10);
 DECLARE @testAfdelingsCode2 AS VARCHAR(10);
 DECLARE @testWerkJaar AS INT;
+DECLARE @testVorigWerkJaar AS INT;
 DECLARE @testOfficieleAfdelingID AS INT;
 DECLARE @testPersoonNaam AS VARCHAR(160)
 DECLARE @testPersoonVoorNaam AS VARCHAR(60)
@@ -26,6 +28,7 @@ SET @testGroepCode='tst/0001';
 SET @testAfdelingsCode='UT';
 SET @testAfdelingsCode2='SK';
 SET @testWerkJaar=2009;
+SET @testVorigWerkJaar=2008;
 SET @testOfficieleAfdelingID=1;		-- officiele afdeling voor testafdeling in testwerkjaar
 SET @testPersoonNaam = 'Bosmans';
 SET @testPersoonVoorNaam = 'Jos';
@@ -36,10 +39,12 @@ DECLARE @testGroepID AS INT;
 DECLARE @testAfdelingID AS INT;
 DECLARE @testAfdeling2ID AS INT;
 DECLARE @testGroepsWerkJaarID AS INT;
+DECLARE @testVorigGroepsWerkJaarID AS INT;
 DECLARE @testPersoonID AS INT;
 DECLARE @testPersoon2ID AS INT;
 DECLARE @testGelieerdePersoonID AS INT;
 DECLARE @testAfdelingsJaarID AS INT;
+DECLARE @testVorigAfdelingsJaarID AS INT;
 
 ---
 --- Groep en Chirogroep creeren
@@ -63,7 +68,7 @@ BEGIN
 END
 
 --- 
---- Groepswerkjaar creeren 
+--- Groepswerkjaren creeren 
 ---
 
 IF NOT EXISTS (SELECT 1 FROM grp.GroepsWerkJaar WHERE GroepID = @testGroepID AND WerkJaar = @testWerkJaar)
@@ -77,6 +82,19 @@ ELSE
 BEGIN
 	SET @testGroepsWerkJaarID = (SELECT GroepsWerkJaarID FROM grp.GroepsWerkJaar WHERE GroepID = @testGroepID AND WerkJaar = @testWerkJaar)
 END
+
+IF NOT EXISTS (SELECT 1 FROM grp.GroepsWerkJaar WHERE GroepID = @testGroepID AND WerkJaar = @testVorigWerkJaar)
+BEGIN
+	INSERT INTO grp.GroepsWerkJaar(WerkJaar, GroepID)
+	VALUES (@testVorigWerkJaar, @testGroepID);
+
+	SET @testVorigGroepsWerkJaarID = scope_identity();
+END
+ELSE
+BEGIN
+	SET @testVorigGroepsWerkJaarID = (SELECT GroepsWerkJaarID FROM grp.GroepsWerkJaar WHERE GroepID = @testGroepID AND WerkJaar = @testVorigWerkJaar)
+END
+
 
 ---
 --- Afdelingen maken 
@@ -118,6 +136,17 @@ END
 ELSE
 BEGIN
 	SET @testAfdelingsJaarID = (SELECT AfdelingsJaarID FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID = @testGroepsWerkJaarID AND AfdelingID = @testAfdelingID)
+END
+
+IF NOT EXISTS (SELECT 1 FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID = @testVorigGroepsWerkJaarID AND AfdelingID = @testAfdelingID)
+BEGIN
+	INSERT INTO lid.AfdelingsJaar(GeboorteJaarVan, GeboorteJaarTot, AfdelingID, GroepsWerkJaarID, OfficieleAfdelingID)
+	VALUES (2003, 2004, @testAfdelingID, @testVorigGroepsWerkJaarID, @testOfficieleAfdelingID);
+	SET @testVorigAfdelingsJaarID = SCOPE_IDENTITY()
+END
+ELSE
+BEGIN
+	SET @testVorigAfdelingsJaarID = (SELECT AfdelingsJaarID FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID = @testVorigGroepsWerkJaarID AND AfdelingID = @testAfdelingID)
 END
 
 ---
@@ -172,7 +201,9 @@ PRINT 'TestGroepID: ' + CAST(@testGroepID AS VARCHAR(10));
 PRINT 'TestAfdeling1ID: ' + CAST(@testAfdelingID AS VARCHAR(10));
 PRINT 'TestAfdeling2ID: ' + CAST(@testAfdeling2ID AS VARCHAR(10));
 PRINT 'TestGroepsWerkJaarID: ' + CAST(@testGroepsWerkJaarID AS VARCHAR(10));
+PRINT 'TestVorigGroepsWerkJaarID: ' + CAST(@testVorigGroepsWerkJaarID AS VARCHAR(10));
 PRINT 'TestAdfelingsJaarID: ' + CAST(@testAfdelingsJaarID AS VARCHAR(10));
+PRINT 'TestVorigAdfelingsJaarID: ' + CAST(@testVorigAfdelingsJaarID AS VARCHAR(10));
 PRINT 'TestPersoonID: ' + CAST(@testPersoonID AS VARCHAR(10))
 PRINT 'TestGelieerdePersoonID: ' + CAST(@testGelieerdePersoonID AS VARCHAR(10))
 PRINT 'TestPersoon2ID: ' + CAST(@testPersoon2ID AS VARCHAR(10))
