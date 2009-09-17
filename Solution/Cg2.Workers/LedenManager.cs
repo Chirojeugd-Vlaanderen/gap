@@ -97,7 +97,7 @@ namespace Cg2.Workers
 
             // Afdelingen ophalen
             GroepenManager gm = new GroepenManager(_groepenDao, _afdao);
-            IList<AfdelingsJaar> jaren = gm.OphalenAfdelingsJaren(gp.Groep, gwj);
+            IList<AfdelingsJaar> jaren = gm.AfdelingsJarenOphalen(gwj);
 
             // Geschikte afdeling zoeken
             // Als er geen geschikte afdeling is, dan null (wordt Leiding)

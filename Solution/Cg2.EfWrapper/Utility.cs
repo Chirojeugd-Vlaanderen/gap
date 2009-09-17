@@ -61,8 +61,13 @@ namespace Cg2.EfWrapper
         /// Detaches an objectgraph given it's root object.
         /// </summary>
         /// <returns>The detached root object.</returns>
-        /// <remarks>Dit werkt enkel behoorlijk als de
-        /// oorspronkelijke objectcontext niet meer bestaat!</remarks>
+        /// <remarks>
+        ///     1. Enkel als de oorspronkelijke context niet meer bestaat,
+        ///        zullen de entity's daadwerkelijk EntityState=Detached
+        ///        hebben.
+        ///     2. Als er circulaire relaties voorkomen, dan werkt het
+        ///        niet.
+        /// </remarks>
         public static T DetachObjectGraph<T>(T entity)
         {
             using (MemoryStream stream = new MemoryStream())

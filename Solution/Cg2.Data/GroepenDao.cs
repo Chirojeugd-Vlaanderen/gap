@@ -8,6 +8,7 @@ using System.Data.Objects;
 using Cg2.EfWrapper.Entity;
 using System.Linq.Expressions;
 using Cg2.EfWrapper;
+using System.Diagnostics;
 
 namespace Cg2.Data.Ef
 {
@@ -57,43 +58,74 @@ namespace Cg2.Data.Ef
             throw new NotImplementedException();
         }*/
 
-        //ophalen van groep, afdeling, afdelingsjaar en officiele afdelingen voor huidig werkjaar
-        public Groep OphalenMetAfdelingen(int groepID)
+        /// <summary>
+        /// ophalen van groep, groepswerkjaar, afdeling, afdelingsjaar en officiele afdelingen 
+        /// voor gegeven groepswerkjaar.
+        /// </summary>
+        /// <remarks>Deze functie haande origineel de afdelingen op voor een groep in het
+        /// huidige werkjaar, maar 'huidige werkjaar' vind ik precies wat veel business
+        /// voor in de DAL.</remarks>
+        /// <param name="groepsWerkJaarID">ID van gevraagde groepswerkjaar</param>
+        /// <returns>Groep, afdelingsjaar, afdelingen en officiele afdelingen</returns>
+        public Groep OphalenMetAfdelingen(int groepsWerkJaarID)
         {
-            int huidigwerkjaar = RecentsteGroepsWerkJaarGet(groepID).WerkJaar;
+            GroepsWerkJaar groepswj;
             Groep result;
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
+                // Deze functie geeft een circulaire graaf mee, dus gebruiken ik
+                // MergeOption.NoTracking ipv Utility.DetachObjectGraph.
 
-                var groep = (
-                    from t in db.Groep.Include("Afdeling")
-                    where t.ID == groepID
-                    select t);
+                db.AfdelingsJaar.MergeOption = MergeOption.NoTracking;
+                db.GroepsWerkJaar.MergeOption = MergeOption.NoTracking;
 
-                var afdelingsjaren = (
-                    from x in db.AfdelingsJaar.Include("Afdeling").Include("GroepsWerkJaar").Include("OfficieleAfdeling")
-                    where x.GroepsWerkJaar.WerkJaar == huidigwerkjaar
-                    select x);
+                var ajQuery = (
+                    from aj in db.AfdelingsJaar.Include("Afdeling").Include("OfficieleAfdeling")
+                    where aj.GroepsWerkJaar.ID == groepsWerkJaarID
+                    select aj);
 
-                try
+                // In principe zouden we Afdeling.Groep kunnen includen, 
+                // maar aangezien we met NoTracking werken, zou dat resulteren
+                // in een kopie van de groep voor elke afdeling, ipv 1
+                // GroepsObject met daaraan gekoppeld de gewenste afdelingen.
+
+                // Ik selecteer dus de groep apart, en koppel daarna alle gevonden
+                // afdelingen.
+
+
+                result = (
+                        from gwj in db.GroepsWerkJaar
+                        where gwj.ID == groepsWerkJaarID
+                        select gwj.Groep).FirstOrDefault();
+
+                // Een beetje prutsen om het originele groepswerkjaar
+                // aan de groep te koppelen.
+                // TODO: Kan dit niet in 1 keer?
+
+                groepswj = (
+                    from gwj in db.GroepsWerkJaar
+                    where gwj.ID == groepsWerkJaarID
+                    select gwj).FirstOrDefault();
+
+                groepswj.Groep = result;
+                result.GroepsWerkJaar.Add(groepswj);
+
+                if (result != null)
                 {
-                    result = (
-                    from x in groep.First().Afdeling
-                    join y in afdelingsjaren
-                    on x equals y.Afdeling
-                    into volledige
-                    select groep
-                    ).First().First();                    
+                    // Koppel gevonden afdelingsjaren aan groep en aan groepswerkjaar
+
+                    foreach (AfdelingsJaar aj in ajQuery)
+                    {
+                        aj.Afdeling.Groep = result;
+                        result.Afdeling.Add(aj.Afdeling);
+
+                        aj.GroepsWerkJaar = result.GroepsWerkJaar.First();
+                        result.GroepsWerkJaar.First().AfdelingsJaar.Add(aj);
+                    }
                 }
-                catch (System.InvalidOperationException)
-                {
-                    return groep.First();
-                }
-                
             }
-            return Utility.DetachObjectGraph(result);
+            return result;
 
         }
 

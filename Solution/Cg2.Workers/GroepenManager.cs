@@ -106,33 +106,20 @@ namespace Cg2.Workers
             return Dao.OphalenOfficieleAfdelingen();
         }
 
-        // haalt alle AfdelingsJaren op bij een gegeven Groep en GroepsWerkJaar
-        // Groep en GroepsWerkJaar zijn allebei parameters omdat GroepsWerkJaar.Groep soms null is
-        // maakt gebruik van OphalenMetAfdelingen, filtert dan de afdelingsjaren
-        // die overeenkomen met het gegeven GroepsWerkJaar
-        //
-        // TODO: Als GroepsWerkJaar.Groep null is, dan moet deze functie maar zorgen dat
-        // GroepsWerkJaar.Groep opgevraagd wordt.  We moeten vermijden da een groep een afdeling
-        // toevoegt aan een groepswerkjaar van een andere groep!
-        // TODO: Authorisatie!
-        public IList<AfdelingsJaar> OphalenAfdelingsJaren(Groep groep, GroepsWerkJaar gwj)
+        /// <summary>
+        /// haalt alle AfdelingsJaren op bij een gegeven GroepsWerkJaar
+        /// </summary>
+        /// <remarks>TODO: Authorisatie!</remarks>
+        /// <param name="gwj">Groepswerkjaar waarvoor afdelingsjaren op te halen</param>
+        /// <returns>Lijst van afdelingsjaren bij een groepswerkjaar</returns>
+        public IList<AfdelingsJaar> AfdelingsJarenOphalen(GroepsWerkJaar gwj)
         {
             IList<AfdelingsJaar> result = new List<AfdelingsJaar>();
-            Groep g = Dao.OphalenMetAfdelingen(groep.ID);
-
-            int afdelingCnt = g.Afdeling.Count;
-
-            foreach (Afdeling a in g.Afdeling) {
-
-                int jaarCnt = a.AfdelingsJaar.Count;
-
-                foreach (AfdelingsJaar j in a.AfdelingsJaar) {
-                    if (j.GroepsWerkJaar.ID == gwj.ID) {
-                        result.Add(j);
-                    }
-                }
-            }
-            return result;
+            Groep g = Dao.OphalenMetAfdelingen(gwj.ID);
+            // Aan g hangt nu slechts 1 groepswerkjaar, met name
+            // (een kopie van) gwj.
+            
+            return g.GroepsWerkJaar.First().AfdelingsJaar.ToList();
         }
 
 

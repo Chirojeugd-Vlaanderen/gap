@@ -146,7 +146,6 @@ namespace Cg2.Dao.Test
             #endregion
         }
 
-
         /// <summary>
         /// Creeert een AfdelingsWerkJaar voor de afdeling
         /// bepaald door TestAfdeling2ID in het groepswerkjaar
@@ -203,6 +202,58 @@ namespace Cg2.Dao.Test
 
             // Cleanup is niet meer nodig, want het nieuw gemaakte
             // afdelingsjaar wordt verwijderd in TestsInitialiseren
+        }
+
+        /// <summary>
+        /// Controleert of OphalenMetAfdelingen uit GroepenDao
+        /// slechts 1 afdelingsjaar oplevert voor de testafdeling.
+        /// </summary>
+        [TestMethod]
+        public void OphalenMetAfdelingenAfdelingsJaar()
+        {
+            // Arrange
+
+            IGroepenDao dao = Factory.Maak<IGroepenDao>();
+
+            // Act
+
+            Groep g = dao.OphalenMetAfdelingen(Properties.Settings.Default.TestGroepsWerkJaarID);
+
+            // Assert
+
+            var ajQuery = (
+                from afd in g.Afdeling
+                where afd.ID == Properties.Settings.Default.TestAfdelingID
+                select afd.AfdelingsJaar);
+
+            Assert.IsTrue(ajQuery.Count() == 1);
+        }
+
+        /// <summary>
+        /// Controleert de koppelingen Groep->Afdeling->AfdelingsJaar->GroepsWerkJaar->Groep
+        /// na GroepenDao.OphalenMetAfdelingen.
+        /// </summary>
+        [TestMethod]
+        public void OphalenMetAfdelingenGroepsWerkJaar()
+        {
+            // Arrange
+
+            IGroepenDao dao = Factory.Maak<IGroepenDao>();
+
+            // Act
+
+            Groep g = dao.OphalenMetAfdelingen(Properties.Settings.Default.TestGroepsWerkJaarID);
+
+            // Assert
+
+            foreach (Afdeling a in g.Afdeling)
+            {
+                foreach (AfdelingsJaar aj in a.AfdelingsJaar)
+                {
+                    Assert.IsTrue(aj.GroepsWerkJaar.Groep.ID == g.ID);
+                }
+            }
+
         }
     }
 }
