@@ -8,7 +8,7 @@
 -- Gelieerde Testpersonen:
 --		 @testPersoonVoornaam @testPersoonNaam en @testPersoon2VoorNaam en @testPersoonNaam
 
-
+-- Creeert ook 2 test-GAV's, en maakt de eerste GAV van testgroep1.
 
 USE ChiroGroep
 
@@ -22,6 +22,8 @@ DECLARE @testOfficieleAfdelingID AS INT;
 DECLARE @testPersoonNaam AS VARCHAR(160)
 DECLARE @testPersoonVoorNaam AS VARCHAR(60)
 DECLARE @testPersoon2VoorNaam AS VARCHAR(60)
+DECLARE @testGav1Login AS VARCHAR(40);
+DECLARE @testGav2Login AS VARCHAR(40);
 
 
 SET @testGroepCode='tst/0001';
@@ -33,7 +35,8 @@ SET @testOfficieleAfdelingID=1;		-- officiele afdeling voor testafdeling in test
 SET @testPersoonNaam = 'Bosmans';
 SET @testPersoonVoorNaam = 'Jos';
 SET @testPersoon2VoorNaam = 'Irène';
-
+SET @testGav1Login = 'Yvonne';
+SET @testGAV2Login='Yvette';
 
 DECLARE @testGroepID AS INT;
 DECLARE @testAfdelingID AS INT;
@@ -45,6 +48,7 @@ DECLARE @testPersoon2ID AS INT;
 DECLARE @testGelieerdePersoonID AS INT;
 DECLARE @testAfdelingsJaarID AS INT;
 DECLARE @testVorigAfdelingsJaarID AS INT;
+DECLARE @testGav1ID AS INT;
 
 ---
 --- Groep en Chirogroep creeren
@@ -196,6 +200,35 @@ BEGIN
 	VALUES (@testPersoon2ID, @testGroepID, 0);
 END
 
+-- 
+-- Users creeren 
+--
+
+IF NOT EXISTS (SELECT 1 FROM auth.GAV WHERE Login=@testGav1Login)
+BEGIN
+	INSERT INTO auth.GAV(Login) VALUES(@testGav1Login);
+	SET @testGav1ID = SCOPE_IDENTITY();
+END
+ELSE
+BEGIN
+	SET @testGAV1ID =  (SELECT GavID FROM auth.GAV WHERE Login=@testGav1Login)
+END
+
+IF NOT EXISTS (SELECT 1 FROM auth.GAV WHERE Login=@testGav2Login)
+BEGIN
+	INSERT INTO auth.GAV(Login) VALUES(@testGav2Login);
+END
+
+--
+-- Gebruikersrecht
+--
+
+IF NOT EXISTS (SELECT 1 FROM auth.GebruikersRecht WHERE GavID=@testGav1ID AND GroepID=@testGroepID)
+BEGIN
+	INSERT INTO auth.GebruikersRecht(GavID, GroepID) VALUES(@testGav1ID, @testGroepID)
+END
+
+
 
 PRINT 'TestGroepID: ' + CAST(@testGroepID AS VARCHAR(10));
 PRINT 'TestAfdeling1ID: ' + CAST(@testAfdelingID AS VARCHAR(10));
@@ -207,5 +240,5 @@ PRINT 'TestVorigAdfelingsJaarID: ' + CAST(@testVorigAfdelingsJaarID AS VARCHAR(1
 PRINT 'TestPersoonID: ' + CAST(@testPersoonID AS VARCHAR(10))
 PRINT 'TestGelieerdePersoonID: ' + CAST(@testGelieerdePersoonID AS VARCHAR(10))
 PRINT 'TestPersoon2ID: ' + CAST(@testPersoon2ID AS VARCHAR(10))
-
+PRINT 'TestGav1ID: ' + CAST(@testGav1ID AS VARCHAR(10))
 GO
