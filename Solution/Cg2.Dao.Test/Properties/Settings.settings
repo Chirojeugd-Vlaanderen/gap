@@ -47,5 +47,11 @@
     <Setting Name="TestEMailAdres" Type="System.String" Scope="User">
       <Value Profile="(Default)">nietgebruiken@chiro.be</Value>
     </Setting>
+    <Setting Name="TestGav1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">yvonne</Value>
+    </Setting>
+    <Setting Name="TestGav2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">yvette</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

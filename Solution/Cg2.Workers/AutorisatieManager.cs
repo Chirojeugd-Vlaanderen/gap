@@ -5,19 +5,20 @@ using System.Text;
 using Cg2.Orm;
 using Cg2.Orm.DataInterfaces;
 using Cg2.Data.Ef;
-using System.ServiceModel;
 
 namespace Cg2.Workers
 {
-    public class AuthorisatieManager
+    public class AutorisatieManager : IAutorisatieManager
     {
-        private IAuthorisatieDao _dao;
+        private IAutorisatieDao _dao;
+        private IAuthenticatieManager _am;
 
-        #region Constructors
+        #region Constructor
 
-        public AuthorisatieManager(IAuthorisatieDao dao)
+        public AutorisatieManager(IAutorisatieDao dao, IAuthenticatieManager am)
         {
             _dao = dao;
+            _am = am;
         }
 
         #endregion
@@ -29,8 +30,7 @@ namespace Cg2.Workers
         /// <returns>Username aangemelde gebruiker</returns>
         private string GebruikersNaamGet()
         {
-            return ServiceSecurityContext.Current == null ? ""
-                : ServiceSecurityContext.Current.WindowsIdentity.Name;
+            return _am.GebruikersNaamGet();
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Cg2.Workers
         /// </summary>
         /// <param name="groepsWerkJaarID">ID gevraagde groepswerkjaar</param>
         /// <returns>true indien aangemelde gebruiker GAV is</returns>
-        internal bool IsGavGroepsWerkJaar(int groepsWerkJaarID)
+        public bool IsGavGroepsWerkJaar(int groepsWerkJaarID)
         {
             return _dao.IsGavGroepsWerkJaar(GebruikersNaamGet(), groepsWerkJaarID);
         }

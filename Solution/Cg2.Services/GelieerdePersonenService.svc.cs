@@ -84,7 +84,7 @@ namespace Cg2.Services
         public void PersonenVerhuizen(IList<int> personenIDs, Adres nieuwAdres, int oudAdresID)
         {
             PersonenManager pm = Factory.Maak<PersonenManager>();
-            AuthorisatieManager aum = Factory.Maak<AuthorisatieManager>();
+            AutorisatieManager aum = Factory.Maak<AutorisatieManager>();
             AdressenManager adm = Factory.Maak<AdressenManager>();
 
             // Zoek adres op in database, of maak een nieuw.

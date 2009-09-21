@@ -67,10 +67,11 @@
     <Compile Include="DataInterfaces\IPersonenDao.cs" />
     <Compile Include="AfdelingsJaar.cs" />
     <Compile Include="Afdeling.cs" />
+    <Compile Include="DataInterfaces\LedenDaoCollectie.cs" />
     <Compile Include="GroepsWerkJaar.cs" />
     <Compile Include="OfficieleAfdeling.cs" />
     <Compile Include="DataInterfaces\IAdressenDao.cs" />
-    <Compile Include="DataInterfaces\IAuthorisatieDao.cs" />
+    <Compile Include="DataInterfaces\IAutorisatieDao.cs" />
     <Compile Include="DataInterfaces\IDao.cs" />
     <Compile Include="DataInterfaces\IGelieerdePersonenDao.cs" />
     <Compile Include="DataInterfaces\IGroepenDao.cs" />

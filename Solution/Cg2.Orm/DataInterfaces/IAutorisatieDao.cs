@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Cg2.Orm.DataInterfaces
 {
-    public interface IAuthorisatieDao: IDao<GebruikersRecht>
+    public interface IAutorisatieDao: IDao<GebruikersRecht>
     {
         #region Alle records in GebruikersRecht doorzoeken
         /// <summary>

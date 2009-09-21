@@ -9,7 +9,7 @@ using Cg2.EfWrapper;
 
 namespace Cg2.Data.Ef
 {
-    public class AuthorisatieDao : Dao<GebruikersRecht>, IAuthorisatieDao
+    public class AutorisatieDao : Dao<GebruikersRecht>, IAutorisatieDao
     {
         #region IAuthorisatieDao Members
 

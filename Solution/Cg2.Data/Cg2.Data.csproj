@@ -56,7 +56,7 @@
     <Compile Include="AdressenDao.cs" />
     <Compile Include="AfdelingenDao.cs" />
     <Compile Include="AfdelingsJaarDao.cs" />
-    <Compile Include="AuthorisatieDao.cs" />
+    <Compile Include="AutorisatieDao.cs" />
     <Compile Include="ChiroGroepenDao.cs" />
     <Compile Include="CommunicatieVormDao.cs" />
     <Compile Include="GroepsWerkJaarDao.cs" />

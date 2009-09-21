@@ -14,31 +14,21 @@ namespace Cg2.Workers
 {
     public class LedenManager
     {
-        private ILedenDao _dao;
-        private IKindDao _kindDao;
-        private ILeidingDao _leidingDao;
-        private IGroepenDao _groepenDao;
-        private IGelieerdePersonenDao _gelPersDao;
-        private IDao<AfdelingsJaar> _afdao;
+        private LedenDaoCollectie _daos;
+        private IAutorisatieManager _authorisatie;
 
-        private ILedenDao Dao
+        /// <summary>
+        /// Maakt een nieuwe ledenmanager aan
+        /// </summary>
+        /// <param name="daos">Een hele reeks van IDao-objecten, nodig
+        /// voor data access.</param>
+        /// <param name="authorisatie">een IAuthorisatieManager, die
+        /// de GAV-permissies van de huidige user controleert.</param>
+        public LedenManager(LedenDaoCollectie daos, IAutorisatieManager autorisatie)
         {
-            get { return _dao; }
+            _daos = daos;
+            _authorisatie = autorisatie;
         }
-
-        #region Constructors
-
-        public LedenManager(ILedenDao dao, IKindDao kindDao, ILeidingDao leidingDao, IGroepenDao groepenDao, IGelieerdePersonenDao gelPersDao, IDao<AfdelingsJaar> afdao)
-        {
-            _dao = dao;
-            _kindDao = kindDao;
-            _leidingDao = leidingDao;
-            _groepenDao = groepenDao;
-            _gelPersDao = gelPersDao;
-            _afdao = afdao;
-        }
-
-        #endregion
 
         /// <summary>
         /// Deze functie met stichtende naam maakt een gelieerde persoon
@@ -96,7 +86,7 @@ namespace Cg2.Workers
             GelieerdePersoon gpMetDetails = gpm.DetailsOphalen(gp.ID);
 
             // Afdelingen ophalen
-            GroepenManager gm = new GroepenManager(_groepenDao, _afdao);
+            GroepenManager gm = new GroepenManager(_daos.GroepenDao, _daos.AfdelingsJaarDao);
             IList<AfdelingsJaar> jaren = gm.AfdelingsJarenOphalen(gwj);
 
             // Geschikte afdeling zoeken
@@ -158,11 +148,11 @@ namespace Cg2.Workers
         /// <returns>Nieuw lidobject</returns>
         public Lid LidMaken(GelieerdePersoon gp)
         {
-            GroepenManager gm = new GroepenManager(_groepenDao, _afdao);
+            GroepenManager gm = new GroepenManager(_daos.GroepenDao, _daos.AfdelingsJaarDao);
 
             if (gp.Groep == null)
             {
-                GelieerdePersonenManager gpm = new GelieerdePersonenManager(_gelPersDao, _groepenDao);
+                GelieerdePersonenManager gpm = new GelieerdePersonenManager(_daos.GelieerdePersoonDao, _daos.GroepenDao);
                 gpm.GroepLaden(gp);
             }
 
@@ -183,7 +173,7 @@ namespace Cg2.Workers
             // TODO: controleren of verwijderen effectief gelukt is
             // TODO: probleem oplossen met Leiding bewaren 
 
-            Lid lid = _dao.OphalenMetDetails(id);
+            Lid lid = _daos.LedenDao.OphalenMetDetails(id);
             lid.TeVerwijderen = true;
 
             Debug.Assert(lid is Kind || lid is Leiding, "Lid moet ofwel Kind ofwel Leiding zijn!");
@@ -191,13 +181,13 @@ namespace Cg2.Workers
             // voor een Kind is _dao.Bewaren(lid) voldoende
             if (lid is Kind)
             {
-                _dao.Bewaren(lid);
+                _daos.LedenDao.Bewaren(lid);
             }
             // voor Leiding moet er blijkbaar meer gebeuren
             // onderstaande code werkt niet
             else if (lid is Leiding)
             {
-                _dao.Bewaren(lid);
+                _daos.LedenDao.Bewaren(lid);
             }
 
             return true;
@@ -210,11 +200,9 @@ namespace Cg2.Workers
         /// <returns></returns>
         public IList<Lid> PaginaOphalen(int groepsWerkJaarID)
         {
-            AuthorisatieManager am = Factory.Maak<AuthorisatieManager>();
-
-            if (am.IsGavGroepsWerkJaar(groepsWerkJaarID))
+            if (_authorisatie.IsGavGroepsWerkJaar(groepsWerkJaarID))
             {
-                return _dao.PaginaOphalen(groepsWerkJaarID);
+                return _daos.LedenDao.PaginaOphalen(groepsWerkJaarID);
             }
             else
             {
@@ -230,11 +218,9 @@ namespace Cg2.Workers
         /// <returns></returns>
         public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int afdelingsID)
         {
-            AuthorisatieManager am = Factory.Maak<AuthorisatieManager>();
-
-            if (am.IsGavGroepsWerkJaar(groepsWerkJaarID))
+            if (_authorisatie.IsGavGroepsWerkJaar(groepsWerkJaarID))
             {
-                return _dao.PaginaOphalen(groepsWerkJaarID, afdelingsID);
+                return _daos.LedenDao.PaginaOphalen(groepsWerkJaarID, afdelingsID);
             }
             else
             {
@@ -269,16 +255,16 @@ namespace Cg2.Workers
             Debug.Assert(lid is Kind || lid is Leiding, "Lid moet ofwel Kind ofwel Leiding zijn!");
             if (lid is Kind)
             {
-                _kindDao.Bewaren((Kind) lid);
+                _daos.KindDao.Bewaren((Kind) lid);
             }
             else if (lid is Leiding)
             {
-                _leidingDao.Bewaren((Leiding)lid);
+                _daos.LeidingDao.Bewaren((Leiding)lid);
             }
             else
             {
                 // hier komen we in principe nooit (zie Assert)
-                _dao.Bewaren(lid);
+                _daos.LedenDao.Bewaren(lid);
             }
         }
     }

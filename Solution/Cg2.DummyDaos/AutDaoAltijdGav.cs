@@ -10,7 +10,7 @@ namespace Cg2.DummyDaos
     /// Deze klasse kan gebruikt worden als IAuthorisatieDao om te testen.
     /// Ze geeft altijd true op IsGav-vragen.
     /// </summary>
-    public class AuthDaoAltijdGav: IAuthorisatieDao
+    public class AutDaoAltijdGav: IAutorisatieDao
     {
         #region IAuthorisatieDao Members
 

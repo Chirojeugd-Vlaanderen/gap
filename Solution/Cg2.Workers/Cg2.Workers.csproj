@@ -52,8 +52,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdressenManager.cs" />
-    <Compile Include="AuthorisatieManager.cs" />
+    <Compile Include="AuthenticatieManager.cs" />
+    <Compile Include="AutorisatieManager.cs" />
     <Compile Include="ChiroGroepenManager.cs" />
+    <Compile Include="IAuthenticatieManager.cs" />
+    <Compile Include="IAutorisatieManager.cs" />
     <Compile Include="PersonenManager.cs" />
     <Compile Include="GelieerdePersonenManager.cs" />
     <Compile Include="GroepenManager.cs" />

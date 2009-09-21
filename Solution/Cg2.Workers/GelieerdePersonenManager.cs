@@ -32,14 +32,14 @@ namespace Cg2.Workers
 
         public IList<GelieerdePersoon> LijstOphalen(List<int> gelieerdePersonenIDs)
         {
-            AuthorisatieManager authMgr = Factory.Maak<AuthorisatieManager>();
+            AutorisatieManager authMgr = Factory.Maak<AutorisatieManager>();
 
             return _dao.LijstOphalen(authMgr.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs));
         }
 
         public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
         {
-            AuthorisatieManager am = Factory.Maak<AuthorisatieManager>();
+            AutorisatieManager am = Factory.Maak<AutorisatieManager>();
 
             if (am.IsGavGelieerdePersoon(gelieerdePersoonID))
             {
@@ -68,7 +68,7 @@ namespace Cg2.Workers
 
         public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
-            AuthorisatieManager am = Factory.Maak<AuthorisatieManager>();
+            AutorisatieManager am = Factory.Maak<AutorisatieManager>();
 
             if (am.IsGavGroep(groepID))
             {
@@ -97,7 +97,7 @@ namespace Cg2.Workers
         /// <remarks>Parameter: GelieerdePersoonID, return value: Personen!</remarks>
         public IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID)
         {
-            AuthorisatieManager am = Factory.Maak<AuthorisatieManager>();
+            AutorisatieManager am = Factory.Maak<AutorisatieManager>();
 
             if (am.IsGavGelieerdePersoon(gelieerdePersoonID))
             {
@@ -121,7 +121,7 @@ namespace Cg2.Workers
         /// <returns>een nieuwe GelieerdePersoon</returns>
         public GelieerdePersoon PersoonAanGroepKoppelen(Persoon persoon, Groep groep, int chiroLeeftijd)
         {
-            AuthorisatieManager aum = Factory.Maak<AuthorisatieManager>();
+            AutorisatieManager aum = Factory.Maak<AutorisatieManager>();
 
             if (aum.IsGavGroep(groep.ID))
             {
@@ -151,7 +151,7 @@ namespace Cg2.Workers
         /// moet eerst 'Bewaren' aangeroepen worden!</remarks>
         public void VolledigVerwijderen(GelieerdePersoon gp)
         {
-            AuthorisatieManager aum = Factory.Maak<AuthorisatieManager>();
+            AutorisatieManager aum = Factory.Maak<AutorisatieManager>();
 
             if (aum.IsGavGelieerdePersoon(gp.ID))
             {

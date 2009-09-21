@@ -63,7 +63,7 @@ namespace Cg2.Workers
 
         public IList<Persoon> LijstOphalen(List<int> personenIDs)
         {
-            AuthorisatieManager authMgr = Factory.Maak<AuthorisatieManager>();
+            AutorisatieManager authMgr = Factory.Maak<AutorisatieManager>();
 
             return _dao.LijstOphalen(authMgr.EnkelMijnPersonen(personenIDs));
         }

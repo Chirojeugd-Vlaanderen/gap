@@ -175,7 +175,7 @@ namespace Cg2.Services
 
         public IEnumerable<GroepInfo> OphalenMijnGroepen()
         {
-            AuthorisatieManager am = Factory.Maak<AuthorisatieManager>();
+            AutorisatieManager am = Factory.Maak<AutorisatieManager>();
 
             var result = am.GekoppeldeGroepenGet();
             return mapGroepen(result);
