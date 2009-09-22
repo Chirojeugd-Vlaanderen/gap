@@ -46,7 +46,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Dao.Test", "Cg2.Dao.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Workers.Test", "Cg2.Workers.Test\Cg2.Workers.Test.csproj", "{AC33A7F9-7FFA-4AC2-9362-3409BE1C4BB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.DummyDaos", "Cg2.DummyDaos\Cg2.DummyDaos.csproj", "{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Dummies", "Cg2.DummyDaos\Cg2.Dummies.csproj", "{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Ioc.Test", "Cg2.Ioc.Test\Cg2.Ioc.Test.csproj", "{D77DFBE9-EDB7-4740-9450-3F3CEF14B4B9}"
 EndProject

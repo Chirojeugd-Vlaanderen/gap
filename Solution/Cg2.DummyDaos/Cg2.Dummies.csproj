@@ -8,8 +8,8 @@
     <ProjectGuid>{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cg2.DummyDaos</RootNamespace>
-    <AssemblyName>Cg2.DummyDaos</AssemblyName>
+    <RootNamespace>Cg2.Dummies</RootNamespace>
+    <AssemblyName>Cg2.Dummies</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutDaoAltijdGav.cs" />
+    <Compile Include="AutMgrAltijdGav.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +60,10 @@
     <ProjectReference Include="..\Cg2.Orm\Cg2.Orm.csproj">
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
       <Name>Cg2.Orm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cg2.Workers\Cg2.Workers.csproj">
+      <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
+      <Name>Cg2.Workers</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

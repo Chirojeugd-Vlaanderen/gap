@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Cg2.Orm.DataInterfaces;
 
-namespace Cg2.DummyDaos
+namespace Cg2.Dummies
 {
     /// <summary>
     /// Deze klasse kan gebruikt worden als IAuthorisatieDao om te testen.
