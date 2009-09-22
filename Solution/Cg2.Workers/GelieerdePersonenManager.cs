@@ -95,7 +95,22 @@ namespace Cg2.Workers
         {
             if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
             {
-                return _dao.HuisGenotenOphalen(gelieerdePersoonID);
+                // Haal alle huisgenoten op
+
+                IList<Persoon> allen = _dao.HuisGenotenOphalen(gelieerdePersoonID);
+
+                // Welke mag ik zien?
+
+                IList<int> selectie = _autorisatieMgr.EnkelMijnPersonen(
+                    (from p in allen select p.ID).ToList());
+
+                // Enkel de geselecteerde personen afleveren.
+
+                var resultaat = from p in allen
+                                where selectie.Contains(p.ID)
+                                select p;
+
+                return resultaat.ToList();
             }
             else
             {
