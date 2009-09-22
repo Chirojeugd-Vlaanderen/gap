@@ -15,7 +15,7 @@ namespace Cg2.Workers
     public class LedenManager
     {
         private LedenDaoCollectie _daos;
-        private IAutorisatieManager _authorisatie;
+        private IAutorisatieManager _authorisatieMgr;
 
         /// <summary>
         /// Maakt een nieuwe ledenmanager aan
@@ -27,7 +27,7 @@ namespace Cg2.Workers
         public LedenManager(LedenDaoCollectie daos, IAutorisatieManager autorisatie)
         {
             _daos = daos;
-            _authorisatie = autorisatie;
+            _authorisatieMgr = autorisatie;
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Cg2.Workers
 
             if (gp.Groep == null)
             {
-                GelieerdePersonenManager gpm = new GelieerdePersonenManager(_daos.GelieerdePersoonDao, _daos.GroepenDao);
+                GelieerdePersonenManager gpm = new GelieerdePersonenManager(_daos.GelieerdePersoonDao, _daos.GroepenDao, _authorisatieMgr);
                 gpm.GroepLaden(gp);
             }
 
@@ -200,7 +200,7 @@ namespace Cg2.Workers
         /// <returns></returns>
         public IList<Lid> PaginaOphalen(int groepsWerkJaarID)
         {
-            if (_authorisatie.IsGavGroepsWerkJaar(groepsWerkJaarID))
+            if (_authorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
             {
                 return _daos.LedenDao.PaginaOphalen(groepsWerkJaarID);
             }
@@ -218,7 +218,7 @@ namespace Cg2.Workers
         /// <returns></returns>
         public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int afdelingsID)
         {
-            if (_authorisatie.IsGavGroepsWerkJaar(groepsWerkJaarID))
+            if (_authorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
             {
                 return _daos.LedenDao.PaginaOphalen(groepsWerkJaarID, afdelingsID);
             }

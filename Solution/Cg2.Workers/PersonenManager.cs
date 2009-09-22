@@ -20,7 +20,7 @@ namespace Cg2.Workers
         }
 
         /// <summary>
-        /// Verhuist een persoon van oudAdres naar nieuwAdres
+        /// Verhuist een persoon van oudAdres naar nieuwAdres.  Persisteert niet.
         /// </summary>
         /// <param name="verhuizer">te verhuizen GelieerdePersoon</param>
         /// <param name="oudAdres">oud adres</param>
@@ -50,7 +50,7 @@ namespace Cg2.Workers
 
         /// <summary>
         /// Koppelt het gegeven Adres via een nieuw PersoonsAdresObject
-        /// aan de gegeven GelieerdePersoon
+        /// aan de gegeven GelieerdePersoon.  Persisteert niet.
         /// </summary>
         /// <param name="p">GelieerdePersoon die er een adres bij krijgt</param>
         /// <param name="adres">Toe te voegen adres</param>

@@ -14,11 +14,13 @@ namespace Cg2.Workers
     {
         private IGelieerdePersonenDao _dao;
         private IGroepenDao _groepenDao;
+        private IAutorisatieManager _autorisatieMgr;
 
-        public GelieerdePersonenManager(IGelieerdePersonenDao dao, IGroepenDao groepenDao)
+        public GelieerdePersonenManager(IGelieerdePersonenDao dao, IGroepenDao groepenDao, IAutorisatieManager autorisatieMgr)
         {
             _dao = dao;
             _groepenDao = groepenDao;
+            _autorisatieMgr = autorisatieMgr;
         }
 
         #region proxy naar data access
@@ -32,16 +34,12 @@ namespace Cg2.Workers
 
         public IList<GelieerdePersoon> LijstOphalen(List<int> gelieerdePersonenIDs)
         {
-            AutorisatieManager authMgr = Factory.Maak<AutorisatieManager>();
-
-            return _dao.LijstOphalen(authMgr.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs));
+            return _dao.LijstOphalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs));
         }
 
         public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
         {
-            AutorisatieManager am = Factory.Maak<AutorisatieManager>();
-
-            if (am.IsGavGelieerdePersoon(gelieerdePersoonID))
+            if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
             {
                 return _dao.DetailsOphalen(gelieerdePersoonID);
             }
@@ -68,9 +66,7 @@ namespace Cg2.Workers
 
         public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
-            AutorisatieManager am = Factory.Maak<AutorisatieManager>();
-
-            if (am.IsGavGroep(groepID))
+            if (_autorisatieMgr.IsGavGroep(groepID))
             {
                 return _dao.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
             }
@@ -97,9 +93,7 @@ namespace Cg2.Workers
         /// <remarks>Parameter: GelieerdePersoonID, return value: Personen!</remarks>
         public IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID)
         {
-            AutorisatieManager am = Factory.Maak<AutorisatieManager>();
-
-            if (am.IsGavGelieerdePersoon(gelieerdePersoonID))
+            if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
             {
                 return _dao.HuisGenotenOphalen(gelieerdePersoonID);
             }
@@ -121,9 +115,7 @@ namespace Cg2.Workers
         /// <returns>een nieuwe GelieerdePersoon</returns>
         public GelieerdePersoon PersoonAanGroepKoppelen(Persoon persoon, Groep groep, int chiroLeeftijd)
         {
-            AutorisatieManager aum = Factory.Maak<AutorisatieManager>();
-
-            if (aum.IsGavGroep(groep.ID))
+            if (_autorisatieMgr.IsGavGroep(groep.ID))
             {
                 GelieerdePersoon resultaat = new GelieerdePersoon();
 
@@ -151,9 +143,7 @@ namespace Cg2.Workers
         /// moet eerst 'Bewaren' aangeroepen worden!</remarks>
         public void VolledigVerwijderen(GelieerdePersoon gp)
         {
-            AutorisatieManager aum = Factory.Maak<AutorisatieManager>();
-
-            if (aum.IsGavGelieerdePersoon(gp.ID))
+            if (_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
             {
                 gp.TeVerwijderen = true;
                 gp.Persoon.TeVerwijderen = true;
