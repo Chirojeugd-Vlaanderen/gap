@@ -62,6 +62,10 @@
       <Project>{F9197C38-63BC-4D2F-9F0A-8326C698B536}</Project>
       <Name>Cg2.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Cg2.DummyDaos\Cg2.Dummies.csproj">
+      <Project>{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}</Project>
+      <Name>Cg2.Dummies</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cg2.EfWrapper\Cg2.EfWrapper.csproj">
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
       <Name>Cg2.EfWrapper</Name>
