@@ -61,6 +61,15 @@ namespace Cg2.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enkel het nationaal secretariaat mag AD-nummers wijzigen..
+        /// </summary>
+        internal static string AdNummerNietWijzigen {
+            get {
+                return ResourceManager.GetString("AdNummerNietWijzigen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deze afdeling is niet gekoppeld aan je groep(en)..
         /// </summary>
         internal static string GeenGavAfdeling {

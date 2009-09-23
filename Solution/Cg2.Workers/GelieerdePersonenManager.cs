@@ -83,7 +83,19 @@ namespace Cg2.Workers
         {
             if (_autorisatieMgr.IsGavGelieerdePersoon(p.ID))
             {
-                return _dao.Bewaren(p);
+                // Hier mapping gebruiken om te vermijden dat het AD-nummer
+                // overschreven wordt, lijkt me wat overkill.  Ik vergelijk
+                // hiet nieuwe AD-nummer gewoon met het bestaande.
+
+                GelieerdePersoon origineel = _dao.Ophalen(p.ID);
+                if (origineel.Persoon.AdNummer == p.Persoon.AdNummer)
+                {
+                    return _dao.Bewaren(p);
+                }
+                else
+                {
+                    throw new InvalidOperationException(Properties.Resources.AdNummerNietWijzigen);
+                }
             }
             else
             {
