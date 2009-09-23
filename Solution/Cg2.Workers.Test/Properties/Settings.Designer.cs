@@ -46,5 +46,17 @@ namespace Cg2.Workers.Test.Properties {
                 this["TestGav1"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int TestAdNummer {
+            get {
+                return ((int)(this["TestAdNummer"]));
+            }
+            set {
+                this["TestAdNummer"] = value;
+            }
+        }
     }
 }

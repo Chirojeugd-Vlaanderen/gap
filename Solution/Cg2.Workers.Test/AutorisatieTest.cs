@@ -184,5 +184,60 @@ namespace Cg2.Workers.Test
 
             #endregion
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void AdNummerWijzigen()
+        {
+            #region Arrange
+            
+            // GelieerdePersonenDao mocken.  Van een Dao verwachten
+            // we dat die gewoon doet wat we vragen; er is daar geen
+            // businesslogica geimplementeerd
+
+            var gpDaoMock = new Mock<IGelieerdePersonenDao>();
+
+            gpDaoMock.Setup(foo => foo.Ophalen(1)).Returns(MaakTestGelieerdePersoon());
+            gpDaoMock.Setup(foo => foo.Bewaren(It.IsAny<GelieerdePersoon>())).Returns(MaakTestGelieerdePersoon());
+
+            // Maak nu de GelieerdePersoonenManager aan die we willen testen.
+
+            GelieerdePersonenManager gpm = new GelieerdePersonenManager(gpDaoMock.Object, null, new AutMgrAltijdGav());
+
+            #endregion
+
+            #region Act
+            // Haal gelieerde persoon met GelieerdePersoonID 1 op
+            GelieerdePersoon gp = gpm.Ophalen(1); 
+
+            // Pruts met AD-nummer
+            ++gp.Persoon.AdNummer;
+  
+            // Probeer te bewaren
+            gpm.Bewaren(gp);
+            #endregion
+
+            #region Assert
+            // Als we hier geraken, is het zeker niet gelukt.
+            Assert.IsTrue(false);            
+            #endregion
+        }
+
+        /// <summary>
+        /// Maakt een (nep) gelieerde persoon om te testen
+        ///   Ad-nummer: TestAdNummer
+        /// </summary>
+        /// <returns>Een nieuw gelieerdepersoonsobject</returns>
+        private GelieerdePersoon MaakTestGelieerdePersoon()
+        {
+            // gewenste situatie opbouwen van een persoon die
+            // gekoppeld is aan een groep.
+
+            GelieerdePersonenManager gpm = new GelieerdePersonenManager(null, null, new AutMgrAltijdGav());
+
+            Groep g = new Groep();
+            Persoon p = new Persoon { AdNummer = 1 };
+            return gpm.PersoonAanGroepKoppelen(p, g, 0);
+        }
     }
 }

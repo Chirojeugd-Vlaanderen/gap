@@ -32,7 +32,7 @@ namespace Cg2.Dummies
 
         public bool IsGavGelieerdePersoon(int gelieerdePersoonID)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public bool IsGavGroep(int groepID)
