@@ -42,9 +42,10 @@ namespace Cg2.Orm.DataInterfaces
         /// <param name="groepID">ID van de groep</param>
         /// <param name="pagina">paginanummer (1 of groter)</param>
         /// <param name="paginaGrootte">aantal records op een pagina</param>
-        /// <param name="aantalOpgehaald">outputparameter die aangeeft hoeveel personen meegegeven zijn</param>
+        /// <param name="aantalTotaal">outputparameter voor totaal aantal 
+        /// personen gelieerd aan de groep.</param>
         /// <returns>Lijst met gelieerde personen</returns>
-        IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald);
+        IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalTotaal);
 
         /// <summary>
         /// Haalt een 'pagina' persoonsgegevens van de gelieerde personen van een groep op, inclusief
@@ -53,9 +54,10 @@ namespace Cg2.Orm.DataInterfaces
         /// <param name="groepID">ID van de groep</param>
         /// <param name="pagina">paginanummer (1 of groter)</param>
         /// <param name="paginaGrootte">aantal records op een pagina</param>
-        /// <param name="aantalOpgehaald">outputparameter die aangeeft hoeveel personen meegegeven zijn</param>
+        /// <param name="aantalTotaal">outputparameter voor totaal aantal
+        /// personen gelieerd aan de groep.</param>
         /// <returns>Lijst met gelieerde personen</returns>
-        IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalOpgehaald);
+        IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal);
 
         /// <summary>
         /// Haalt persoonsgegevens van een gelieerd persoon op, incl. adressen en communicatievormen

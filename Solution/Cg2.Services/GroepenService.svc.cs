@@ -113,32 +113,32 @@ namespace Cg2.Services
         /// </summary>
         /// <param name="groepID"></param>
         /// <returns></returns>
-        public int OphalenGroepsWerkjaar(int groepID)
+        public int HuidigWerkJaarGet(int groepID)
         {
             WerkJaarManager wm = Factory.Maak<WerkJaarManager>();
 
-            return wm.OphalenHuidigGroepsWerkjaar(groepID);
+            return wm.HuidigWerkJaarGet(groepID);
         }
 
         public void AanmakenAfdeling(int groepID, string naam, string afkorting)
         {
             GroepenManager gm = Factory.Maak<GroepenManager>();
 
-            gm.ToevoegenAfdeling(groepID, naam, afkorting);
+            gm.AfdelingToevoegen(groepID, naam, afkorting);
         }
 
         public void AanmakenAfdelingsJaar(Groep g, Afdeling aj, OfficieleAfdeling oa, int geboortejaarbegin, int geboortejaareind)
         {
             GroepenManager gm = Factory.Maak<GroepenManager>();
 
-            gm.ToevoegenAfdelingsJaar(g, aj, oa, geboortejaarbegin, geboortejaareind);
+            gm.AfdelingsJaarToevoegen(g, aj, oa, geboortejaarbegin, geboortejaareind);
         }
 
 
         public IList<OfficieleAfdeling> OphalenOfficieleAfdelingen()
         {
             GroepenManager gm = Factory.Maak<GroepenManager>();
-            return gm.OphalenOfficieleAfdelingen();
+            return gm.OfficieleAfdelingenOphalen();
         }
 
         #endregion

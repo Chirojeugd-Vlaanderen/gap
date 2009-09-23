@@ -71,6 +71,24 @@ namespace Cg2.Orm.DataInterfaces
         bool IsGavGroepsWerkJaar(string login, int groepsWerkJaarID);
 
         /// <summary>
+        /// Controleert of een gebruiker *nu* GAV is van de groep
+        /// horende bij de gegeven afdeling
+        /// </summary>
+        /// <param name="login">gebruikersnaam</param>
+        /// <param name="afdelingsID">AfdelingsID van de gegeven afdeling</param>
+        /// <returns></returns>
+        bool IsGavAfdeling(string login, int afdelingsID);
+
+        /// <summary>
+        /// Controleert of een gebruiker *nu* GAV is van de groep
+        /// horende bij het gegeven lid
+        /// </summary>
+        /// <param name="login">gebruikersnaam</param>
+        /// <param name="lidID">LidID van een zeker lid</param>
+        /// <returns></returns>
+        bool IsGavLid(string login, int lidID);
+
+        /// <summary>
         /// Haalt lijst groepen op waaraan de GAV met gegeven
         /// login MOMENTEEL gekoppeld is
         /// </summary>

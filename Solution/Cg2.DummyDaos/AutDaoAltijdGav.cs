@@ -41,7 +41,7 @@ namespace Cg2.Dummies
 
         public bool IsGavGroepsWerkJaar(string login, int groepsWerkJaarID)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public IEnumerable<Cg2.Orm.Groep> GekoppeldeGroepenGet(string login)
@@ -94,6 +94,16 @@ namespace Cg2.Dummies
         }
 
         public System.Linq.Expressions.Expression<Func<Cg2.Orm.GebruikersRecht, object>>[] getConnectedEntities()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsGavAfdeling(string login, int afdelingsID)
+        {
+            return true;
+        }
+
+        public bool IsGavLid(string login, int lidID)
         {
             throw new NotImplementedException();
         }

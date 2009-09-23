@@ -13,20 +13,18 @@ namespace Cg2.Workers
     {
 
         private IGroepenDao _dao;
+        private IAutorisatieManager _autorisatieMgr;
 
         public IGroepenDao Dao
         {
             get { return _dao; }
         }
 
-        #region Constructors
-
-        public WerkJaarManager(IGroepenDao groepenDao)
+        public WerkJaarManager(IGroepenDao groepenDao, IAutorisatieManager autorisatieMgr)
         {
             _dao = groepenDao;
+            _autorisatieMgr = autorisatieMgr;
         }
-
-        #endregion
 
         /// <summary>
         /// Maakt een nieuw afdelingsjaar op basis van groepswerkjaar,
@@ -42,7 +40,14 @@ namespace Cg2.Workers
         /// <remarks>gwj.Groep en afd.Groep mogen niet null zijn</remarks>
         public AfdelingsJaar AfdelingsJaarMaken(GroepsWerkJaar gwj, Afdeling afd, OfficieleAfdeling oa, int jaarVan, int jaarTot)
         {
-            // FIXME: Check of user wel gav is van gevraagde groep
+            if (!_autorisatieMgr.IsGavGroepsWerkJaar(gwj.ID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGroepsWerkJaar);
+            }
+            if (!_autorisatieMgr.IsGavAfdeling(afd.ID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavAfdeling);
+            }
 
             Debug.Assert(gwj.Groep != null);
             Debug.Assert(afd.Groep != null);
@@ -80,33 +85,54 @@ namespace Cg2.Workers
         /// <returns>ID van het recentste GroepsWerkJaar</returns>
         public int RecentsteGroepsWerkJaarIDGet(int groepID)
         {
-            return _dao.RecentsteGroepsWerkJaarGet(groepID).ID;
-        }
-
-        public int OphalenHuidigGroepsWerkjaar(int groepID)
-        {
-
-            var begindatumnieuwwerkjaar = Properties.Settings.Default.WerkjaarStartNationaal;
-            var deadlinenieuwwerkjaar = Properties.Settings.Default.WerkjaarVerplichteOvergang;
-            var huidigedatum = System.DateTime.Today;
-
-            if (compare(huidigedatum.Day, huidigedatum.Month, begindatumnieuwwerkjaar.Day, begindatumnieuwwerkjaar.Month) < 0)
+            if (_autorisatieMgr.IsGavGroep(groepID))
             {
-                return huidigedatum.Year;
+                return _dao.RecentsteGroepsWerkJaarGet(groepID).ID;
             }
             else
             {
-                if (compare(deadlinenieuwwerkjaar.Day, deadlinenieuwwerkjaar.Month, huidigedatum.Day, huidigedatum.Month) < 0)
+                throw new GeenGavException(Properties.Resources.GeenGavGroep);
+            }
+        }
+
+        /// <summary>
+        /// Haalt het huidige werkjaar op (beginjaar) voor een bepaalde groep
+        /// </summary>
+        /// <param name="groepID">ID van de groep</param>
+        /// <returns>beginjaar van het huidige werkjaar voor die bepaalde groep</returns>
+        public int HuidigWerkJaarGet(int groepID)
+        {
+            // TODO: Beter documenteren!
+
+            if (_autorisatieMgr.IsGavGroep(groepID))
+            {
+                var begindatumnieuwwerkjaar = Properties.Settings.Default.WerkjaarStartNationaal;
+                var deadlinenieuwwerkjaar = Properties.Settings.Default.WerkjaarVerplichteOvergang;
+                var huidigedatum = System.DateTime.Today;
+
+                if (compare(huidigedatum.Day, huidigedatum.Month, begindatumnieuwwerkjaar.Day, begindatumnieuwwerkjaar.Month) < 0)
                 {
                     return huidigedatum.Year;
                 }
                 else
                 {
-                    int werkjaar = _dao.RecentsteGroepsWerkJaarGet(groepID).WerkJaar;
-                    Debug.Assert(huidigedatum.Year == werkjaar || werkjaar + 1 == huidigedatum.Year);
-                    return werkjaar;
+                    if (compare(deadlinenieuwwerkjaar.Day, deadlinenieuwwerkjaar.Month, huidigedatum.Day, huidigedatum.Month) < 0)
+                    {
+                        return huidigedatum.Year;
+                    }
+                    else
+                    {
+                        int werkjaar = _dao.RecentsteGroepsWerkJaarGet(groepID).WerkJaar;
+                        Debug.Assert(huidigedatum.Year == werkjaar || werkjaar + 1 == huidigedatum.Year);
+                        return werkjaar;
+                    }
                 }
             }
+            else
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGroep);
+            }
+
         }
 
 

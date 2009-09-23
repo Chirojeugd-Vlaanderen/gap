@@ -13,22 +13,18 @@ namespace Cg2.Workers
         private IAutorisatieDao _dao;
         private IAuthenticatieManager _am;
 
-        #region Constructor
-
         public AutorisatieManager(IAutorisatieDao dao, IAuthenticatieManager am)
         {
             _dao = dao;
             _am = am;
         }
 
-        #endregion
-
         /// <summary>
         /// Bepaalt de gebruikersnaam van de huidig aangemelde gebruiker.
         /// (lege string indien niet van toepassing)
         /// </summary>
         /// <returns>Username aangemelde gebruiker</returns>
-        private string GebruikersNaamGet()
+        public string GebruikersNaamGet()
         {
             return _am.GebruikersNaamGet();
         }
@@ -80,6 +76,30 @@ namespace Cg2.Workers
         }
 
         /// <summary>
+        /// Controleert of een afdeling gekoppeld is aan een groep waarvan
+        /// de gebruiker GAV is.
+        /// </summary>
+        /// <param name="afdelingsID">ID gevraagde afdeling</param>
+        /// <returns>True indien de gebruiker GAV is van de groep van de
+        /// afdeling.</returns>
+        public bool IsGavAfdeling(int afdelingsID)
+        {
+            return _dao.IsGavAfdeling(GebruikersNaamGet(), afdelingsID);
+        }
+
+        /// <summary>
+        /// Controleert of een lid lid is van een groep waarvan de gebruiker
+        /// GAV is.
+        /// </summary>
+        /// <param name="lidID">ID van het betreffende lid</param>
+        /// <returns>True indien het een lid van een eigen groep is</returns>
+        public bool IsGavLid(int lidID)
+        {
+            return _dao.IsGavLid(GebruikersNaamGet(), lidID);
+        }
+
+
+        /// <summary>
         /// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV
         /// </summary>
         /// <returns>ID's van gekoppelde groepen</returns>
@@ -109,6 +129,5 @@ namespace Cg2.Workers
         {
             return _dao.EnkelMijnPersonen(personenIDs, GebruikersNaamGet());
         }
-
     }
 }

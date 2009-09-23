@@ -13,10 +13,12 @@ namespace Cg2.Workers
     public class PersonenManager
     {
         private IPersonenDao _dao;
+        private IAutorisatieManager _autorisatieMgr;
 
-        public PersonenManager(IPersonenDao dao)
+        public PersonenManager(IPersonenDao dao, IAutorisatieManager autorisatieMgr)
         {
             _dao = dao;
+            _autorisatieMgr = autorisatieMgr;
         }
 
         /// <summary>
@@ -29,22 +31,29 @@ namespace Cg2.Workers
         /// zal hij ook niet verhiuzen</remarks>
         public void Verhuizen(Persoon verhuizer, Adres oudAdres, Adres nieuwAdres)
         {
-            PersoonsAdres persoonsadres
-                = (from PersoonsAdres pa in verhuizer.PersoonsAdres
-                  where pa.Adres.ID == oudAdres.ID
-                  select pa).FirstOrDefault();
-
-            if (oudAdres.PersoonsAdres != null)
+            if (_autorisatieMgr.IsGavPersoon(verhuizer.ID))
             {
-                oudAdres.PersoonsAdres.Remove(persoonsadres);
+                PersoonsAdres persoonsadres
+                    = (from PersoonsAdres pa in verhuizer.PersoonsAdres
+                       where pa.Adres.ID == oudAdres.ID
+                       select pa).FirstOrDefault();
+
+                if (oudAdres.PersoonsAdres != null)
+                {
+                    oudAdres.PersoonsAdres.Remove(persoonsadres);
+                }
+                //TODO probleem dat nieuwadres attached is en persoon detached, waardoor hij de twee
+                //contexten niet kan vergelijken.
+                persoonsadres.Adres = nieuwAdres;
+
+                if (nieuwAdres.PersoonsAdres != null)
+                {
+                    nieuwAdres.PersoonsAdres.Add(persoonsadres);
+                }
             }
-            //TODO probleem dat nieuwadres attached is en persoon detached, waardoor hij de twee
-            //contexten niet kan vergelijken.
-            persoonsadres.Adres = nieuwAdres;
-
-            if (nieuwAdres.PersoonsAdres != null)
+            else
             {
-                nieuwAdres.PersoonsAdres.Add(persoonsadres);
+                throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
             }
         }
 
@@ -56,9 +65,16 @@ namespace Cg2.Workers
         /// <param name="adres">Toe te voegen adres</param>
         public void AdresToevoegen(Persoon p, Adres adres)
         {
-            PersoonsAdres pa = new PersoonsAdres { Adres = adres, Persoon = p, AdresTypeID = 1 };
-            p.PersoonsAdres.Add(pa);
-            adres.PersoonsAdres.Add(pa);
+            if (_autorisatieMgr.IsGavPersoon(p.ID))
+            {
+                PersoonsAdres pa = new PersoonsAdres { Adres = adres, Persoon = p, AdresTypeID = 1 };
+                p.PersoonsAdres.Add(pa);
+                adres.PersoonsAdres.Add(pa);
+            }
+            else
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+            }
         }
 
         public IList<Persoon> LijstOphalen(List<int> personenIDs)

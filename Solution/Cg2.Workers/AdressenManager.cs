@@ -17,17 +17,22 @@ namespace Cg2.Workers
         private IAdressenDao _dao;
         private IStratenDao _stratenDao;
         private ISubgemeenteDao _subgemeenteDao;
+        private IAutorisatieManager _autorisatieMgr;
 
-        #region constructors
-
-        public AdressenManager(IAdressenDao dao, IStratenDao stratenDao, ISubgemeenteDao subgemeenteDao)
+        /// <summary>
+        /// Creeert nieuwe adressenmanager
+        /// </summary>
+        /// <param name="dao">DAO voor adressen</param>
+        /// <param name="stratenDao">DAO voor straten</param>
+        /// <param name="subgemeenteDao">DAO voor 'subgemeentes'</param>
+        /// <param name="autorisatieMgr">Autorisatiemanager</param>
+        public AdressenManager(IAdressenDao dao, IStratenDao stratenDao, ISubgemeenteDao subgemeenteDao, IAutorisatieManager autorisatieMgr)
         {
             _dao = dao;
             _stratenDao = stratenDao;
             _subgemeenteDao = subgemeenteDao;
+            _autorisatieMgr = autorisatieMgr;
         }
-
-        #endregion
 
         #region proxy naar data acces
 
@@ -44,9 +49,14 @@ namespace Cg2.Workers
             // adres opzoeken.  Voor de bewonersgegevens worden de
             // rechten uiteraard wel gecontroleerd.
 
-            return _dao.BewonersOphalen(adresID, ServiceSecurityContext.Current.WindowsIdentity.Name);
+            return _dao.BewonersOphalen(adresID, _autorisatieMgr.GebruikersNaamGet());
         }
 
+        /// <summary>
+        /// Persisteert adres in de database
+        /// </summary>
+        /// <param name="adr">Te persisteren adres</param>
+        /// <returns>Het adres met eventueel nieuw ID</returns>
         public Adres Bewaren(Adres adr)
         {
             return _dao.Bewaren(adr);
@@ -69,6 +79,7 @@ namespace Cg2.Workers
         /// </summary>
         /// <param name="adr">Adresobject met zoekinfo</param>
         /// <returns>Gevonden adres</returns>
+        /// <remarks>Ieder heeft het recht adressen op te zoeken</remarks>
         public Adres ZoekenOfMaken(Adres adr)
         {
             AdresFault vf = new AdresFault();

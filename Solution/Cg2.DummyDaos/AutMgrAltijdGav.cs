@@ -50,6 +50,21 @@ namespace Cg2.Dummies
             throw new NotImplementedException();
         }
 
+        public string GebruikersNaamGet()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsGavAfdeling(int afdelingsID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsGavLid(int lidID)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

@@ -17,11 +17,6 @@ namespace Cg2.Workers
             _dao = dao;
         }
 
-        public IDao<ChiroGroep> Dao
-        {
-            get { return _dao; }
-        }
-
         // Nog geen interessante functionaliteit
     }
 }

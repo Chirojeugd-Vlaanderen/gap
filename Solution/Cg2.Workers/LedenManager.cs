@@ -32,7 +32,7 @@ namespace Cg2.Workers
 
         /// <summary>
         /// Deze functie met stichtende naam maakt een gelieerde persoon
-        /// lid in een gegeven afdelingsjaar
+        /// lid in een gegeven afdelingsjaar.  Er wordt niet gepersisteerd.
         /// </summary>
         /// <param name="gp">Lid te maken gelieerde persoon, met Groep
         /// eraan gekoppeld</param>
@@ -41,6 +41,16 @@ namespace Cg2.Workers
         /// <returns></returns>
         public Kind KindMaken(GelieerdePersoon gp, AfdelingsJaar aj)
         {
+            if (!_authorisatieMgr.IsGavGelieerdePersoon(gp.ID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+            }
+
+            if (!_authorisatieMgr.IsGavGroepsWerkJaar(aj.GroepsWerkJaar.ID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavAfdeling);
+            }
+
             if (aj.GroepsWerkJaar.Groep.ID != gp.Groep.ID)
             {
                 throw new FoutieveGroepException("De persoon is niet gelieerd aan de groep van het afdelingsjaar.");
@@ -65,12 +75,21 @@ namespace Cg2.Workers
         /// </summary>
         /// <param name="gp">Gelieerde persoon</param>
         /// <param name="gwj">Groepswerkjaar</param>
-        /// <returns>Lidobject</returns>
+        /// <returns>Lidobject, niet gepersisteerd</returns>
         /// <remarks>Normaalgezien worden er alleen leden bijgemaakt in het 
         /// huidige werkjaar.
         /// </remarks>
         public Lid LidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
         {
+            if (!_authorisatieMgr.IsGavGelieerdePersoon(gp.ID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+            }
+            if (!_authorisatieMgr.IsGavGroepsWerkJaar(gwj.ID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGroepsWerkJaar);
+            }
+
             // JOHAN: Ik zou precies de afdelingsjaren van de groep in het
             // gegeven GroepsWerkJaar meegeven via de parameters.  Op die manier
             // moet deze businessmethod geen Data Access gaan doen.
@@ -78,6 +97,7 @@ namespace Cg2.Workers
             // TODO: geslacht in rekening brengen bij automatisch keuze afdeling
             // TODO: controle of lid nog niet bestaat
             // TODO: berekening EindeInstapPeriode
+            // TODO: controle of groepswerkjaar van zelfde groep als gelieerde persoon.
             
             Lid lid;
 
@@ -86,7 +106,7 @@ namespace Cg2.Workers
             GelieerdePersoon gpMetDetails = gpm.DetailsOphalen(gp.ID);
 
             // Afdelingen ophalen
-            GroepenManager gm = new GroepenManager(_daos.GroepenDao, _daos.AfdelingsJaarDao);
+            GroepenManager gm = new GroepenManager(_daos.GroepenDao, _daos.AfdelingsJaarDao, _authorisatieMgr);
             IList<AfdelingsJaar> jaren = gm.AfdelingsJarenOphalen(gwj);
 
             // Geschikte afdeling zoeken
@@ -145,52 +165,66 @@ namespace Cg2.Workers
         /// Maakt gelieerde persoon lid voor recentste werkjaar
         /// </summary>
         /// <param name="gp">Gelieerde persoon</param>
-        /// <returns>Nieuw lidobject</returns>
+        /// <returns>Nieuw lidobject, niet gepersisteerd</returns>
         public Lid LidMaken(GelieerdePersoon gp)
         {
-            GroepenManager gm = new GroepenManager(_daos.GroepenDao, _daos.AfdelingsJaarDao);
-
-            if (gp.Groep == null)
+            if (_authorisatieMgr.IsGavGelieerdePersoon(gp.ID))
             {
-                GelieerdePersonenManager gpm = new GelieerdePersonenManager(_daos.GelieerdePersoonDao, _daos.GroepenDao, _authorisatieMgr);
-                gpm.GroepLaden(gp);
-            }
+                GroepenManager gm = new GroepenManager(_daos.GroepenDao, _daos.AfdelingsJaarDao, _authorisatieMgr);
 
-            GroepsWerkJaar gwj = gm.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
-            return LidMaken(gp, gm.RecentsteGroepsWerkJaarGet(gp.Groep.ID));
+                if (gp.Groep == null)
+                {
+                    GelieerdePersonenManager gpm = new GelieerdePersonenManager(_daos.GelieerdePersoonDao, _daos.GroepenDao, _authorisatieMgr);
+                    gpm.GroepLaden(gp);
+                }
+
+                GroepsWerkJaar gwj = gm.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
+                return LidMaken(gp, gm.RecentsteGroepsWerkJaarGet(gp.Groep.ID));
+            }
+            else
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+            }
         }
 
         /// <summary>
-        /// Verwijdert lid
+        /// Verwijdert lid uit database
         /// </summary>
-        /// <param name="lid">Lid</param>
+        /// <param name="id">LidID</param>
         /// <returns>true on successful</returns>
         public Boolean LidVerwijderen(int id)
         {
-            // TODO: controleren huidige werkjaar
-            // TODO: controleren instapperiode
-            // TODO: fallback naar LidOpNonactiefZetten?
-            // TODO: controleren of verwijderen effectief gelukt is
-            // TODO: probleem oplossen met Leiding bewaren 
-
-            Lid lid = _daos.LedenDao.OphalenMetDetails(id);
-            lid.TeVerwijderen = true;
-
-            Debug.Assert(lid is Kind || lid is Leiding, "Lid moet ofwel Kind ofwel Leiding zijn!");
-
-            // voor een Kind is _dao.Bewaren(lid) voldoende
-            if (lid is Kind)
+            if (_authorisatieMgr.IsGavLid(id))
             {
-                _daos.LedenDao.Bewaren(lid);
-            }
-            // voor Leiding moet er blijkbaar meer gebeuren
-            // onderstaande code werkt niet
-            else if (lid is Leiding)
-            {
-                _daos.LedenDao.Bewaren(lid);
-            }
+                // TODO: controleren huidige werkjaar
+                // TODO: controleren instapperiode
+                // TODO: fallback naar LidOpNonactiefZetten?
+                // TODO: controleren of verwijderen effectief gelukt is
+                // TODO: probleem oplossen met Leiding bewaren 
 
-            return true;
+                Lid lid = _daos.LedenDao.OphalenMetDetails(id);
+                lid.TeVerwijderen = true;
+
+                Debug.Assert(lid is Kind || lid is Leiding, "Lid moet ofwel Kind ofwel Leiding zijn!");
+
+                // voor een Kind is _dao.Bewaren(lid) voldoende
+                if (lid is Kind)
+                {
+                    _daos.LedenDao.Bewaren(lid);
+                }
+                // voor Leiding moet er blijkbaar meer gebeuren
+                // onderstaande code werkt niet
+                else if (lid is Leiding)
+                {
+                    _daos.LedenDao.Bewaren(lid);
+                }
+
+                return true;
+            }
+            else
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavLid);
+            }
         }
 
         /// <summary>
@@ -234,9 +268,19 @@ namespace Cg2.Workers
         /// <param name="lid"></param>
         public void LidOpNonactiefZetten(Lid lid)
         {
-            lid.NonActief = true;
-            //TODO save
-            throw new NotImplementedException();
+            if (_authorisatieMgr.IsGavLid(lid.ID))
+            {
+                lid.NonActief = true;
+                //TODO save
+                // JOHAN: Bewaren is niet per se nodig in deze method.  Wel
+                // goed documenteren of bewaard moet worden of niet.
+
+                throw new NotImplementedException();
+            }
+            else
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavLid);
+            }
         }
 
         /// <summary>
@@ -245,27 +289,44 @@ namespace Cg2.Workers
         /// <param name="lid"></param>
         public void LidActiveren(Lid lid)
         {
-            lid.NonActief = false;
-            //TODO er moet betaald worden + save
-            throw new NotImplementedException();
+            if (_authorisatieMgr.IsGavLid(lid.ID))
+            {
+                lid.NonActief = false;
+                //TODO er moet betaald worden + save
+                // JOHAN: Bewaren is niet per se nodig in deze method.  Wel
+                // goed documenteren of bewaard moet worden of niet.
+                throw new NotImplementedException();
+            }
+            else
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavLid);
+            }
         }
 
         public void LidBewaren(Lid lid)
         {
-            Debug.Assert(lid is Kind || lid is Leiding, "Lid moet ofwel Kind ofwel Leiding zijn!");
-            if (lid is Kind)
+            if (_authorisatieMgr.IsGavLid(lid.ID))
             {
-                _daos.KindDao.Bewaren((Kind) lid);
-            }
-            else if (lid is Leiding)
-            {
-                _daos.LeidingDao.Bewaren((Leiding)lid);
+                Debug.Assert(lid is Kind || lid is Leiding, "Lid moet ofwel Kind ofwel Leiding zijn!");
+                if (lid is Kind)
+                {
+                    _daos.KindDao.Bewaren((Kind)lid);
+                }
+                else if (lid is Leiding)
+                {
+                    _daos.LeidingDao.Bewaren((Leiding)lid);
+                }
+                else
+                {
+                    // hier komen we in principe nooit (zie Assert)
+                    _daos.LedenDao.Bewaren(lid);
+                }
             }
             else
             {
-                // hier komen we in principe nooit (zie Assert)
-                _daos.LedenDao.Bewaren(lid);
+                throw new GeenGavException(Properties.Resources.GeenGavLid);
             }
+
         }
     }
 }

@@ -27,16 +27,41 @@ namespace Cg2.Workers
 
         // Wel altijd rekening houden met authorisatie!
 
+        /// <summary>
+        /// Haalt enkel de gelieerde persoon op.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van de gelieerde persoon.</param>
+        /// <returns>Gelieerde persoon, zonder enige koppelingen.</returns>
         public GelieerdePersoon Ophalen(int gelieerdePersoonID)
         {
-            return _dao.Ophalen(gelieerdePersoonID);
+            if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
+            {
+                return _dao.Ophalen(gelieerdePersoonID);
+            }
+            else
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+            }
         }
 
+        /// <summary>
+        /// Haalt een lijst op van gelieerde personen.
+        /// </summary>
+        /// <param name="gelieerdePersonenIDs">ID's van de op te vragen
+        /// gelieerde personen.</param>
+        /// <returns>Lijst met gelieerde personen</returns>
         public IList<GelieerdePersoon> LijstOphalen(List<int> gelieerdePersonenIDs)
         {
             return _dao.LijstOphalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs));
         }
 
+        /// <summary>
+        /// Haalt gelieerde persoon op met persoonsgegevens, adressen en
+        /// communicatievormen.
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID gevraagde gelieerde persoon</param>
+        /// <returns>GelieerdePersoon met persoonsgegevens, adressen en 
+        /// communicatievormen.</returns>
         public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
         {
             if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
@@ -45,25 +70,74 @@ namespace Cg2.Workers
             }
             else
             {
-                throw new GeenGavException("Deze persoon is niet gelieerd aan je groep(en).");
+                throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
             }
         }
 
+        /// <summary>
+        /// Bewaart een gelieerde persoon, zonder koppelingen
+        /// </summary>
+        /// <param name="p">Te bewaren gelieerde persoon</param>
+        /// <returns>De bewaarde gelieerde persoon</returns>
         public GelieerdePersoon Bewaren(GelieerdePersoon p)
         {
-            return _dao.Bewaren(p);
+            if (_autorisatieMgr.IsGavGelieerdePersoon(p.ID))
+            {
+                return _dao.Bewaren(p);
+            }
+            else
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+            }
         }
 
+        /// <summary>
+        /// Haal een lijst op met alle gelieerde personen van een groep.
+        /// </summary>
+        /// <param name="groepID">GroepID van gevraagde groep</param>
+        /// <returns>Lijst met alle gelieerde personen</returns>
         public IList<GelieerdePersoon> AllenOphalen(int groepID)
         {
-            return _dao.AllenOphalen(groepID);
+            if (_autorisatieMgr.IsGavGroep(groepID))
+            {
+                return _dao.AllenOphalen(groepID);
+            }
+            else
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGroep);
+            }
         }
 
+        /// <summary>
+        /// Haal een pagina op met gelieerde personen van een groep.
+        /// </summary>
+        /// <param name="groepID">GroepID gevraagde groep</param>
+        /// <param name="pagina">paginanummer (>=1)</param>
+        /// <param name="paginaGrootte">grootte van de pagina's</param>
+        /// <param name="aantalTotaal">totaal aantal personen in de groep</param>
+        /// <returns>Lijst met een pagina aan gelieerde personen.</returns>
         public IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
-            return _dao.PaginaOphalen(groepID, pagina, paginaGrootte, out aantalTotaal);
+            if (_autorisatieMgr.IsGavGroep(groepID))
+            {
+                return _dao.PaginaOphalen(groepID, pagina, paginaGrootte, out aantalTotaal);
+            }
+            else
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGroep);
+            }
         }
 
+        /// <summary>
+        /// Haalt een pagina op met gelieerde personen van een groep,
+        /// inclusief eventuele lidobjecten voor deze groep
+        /// </summary>
+        /// <param name="groepID">GroepID gevraagde groep</param>
+        /// <param name="pagina">paginanummer (>=1)</param>
+        /// <param name="paginaGrootte">aantal personen per pagina</param>
+        /// <param name="aantalTotaal">output parameter voor totaal aantal
+        /// personen in de groep</param>
+        /// <returns>Lijst met GelieerdePersonen</returns>
         public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
             if (_autorisatieMgr.IsGavGroep(groepID))
@@ -72,13 +146,27 @@ namespace Cg2.Workers
             }
             else
             {
-                throw new GeenGavException("Je bent geen GAV van deze groep.");
+                throw new GeenGavException(Properties.Resources.GeenGavGroep);
             }
         }
 
+        /// <summary>
+        /// Koppelt het relevante groepsobject aan de gegeven
+        /// gelieerde persoon.
+        /// </summary>
+        /// <param name="gp">gelieerde persoon</param>
+        /// <returns>diezelfde gelieerde persoon, met zijn groep eraan
+        /// gekoppeld.</returns>
         public GelieerdePersoon GroepLaden(GelieerdePersoon gp)
         {
-            return _dao.GroepLaden(gp);
+            if (_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
+            {
+                return _dao.GroepLaden(gp);
+            }
+            else
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+            }
         }
 
         /// <summary>
@@ -114,7 +202,7 @@ namespace Cg2.Workers
             }
             else
             {
-                throw new GeenGavException("Je bent geen GAV voor deze persoon.");
+                throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
             }
         }
 
@@ -145,13 +233,13 @@ namespace Cg2.Workers
             }
             else
             {
-                throw new GeenGavException("Je bent geen GAV van deze groep.");
+                throw new GeenGavException(Properties.Resources.GeenGavGroep);
             }
         }
 
         /// <summary>
         /// Maakt GelieerdePersoon, gekoppelde Persoon, Adressen en Communicatie allemaal
-        /// te verwijderen.
+        /// te verwijderen.  Persisteert niet!
         /// </summary>
         /// <param name="gp">Te verwijderen gelieerde persoon</param>
         /// <remarks>Deze wijziging wordt nog niet gepersisteerd in de database! Hiervoor
@@ -175,7 +263,7 @@ namespace Cg2.Workers
             }
             else
             {
-                throw new GeenGavException("Je bent geen GAV van de gevraagde groep.");
+                throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
             }
         }
 

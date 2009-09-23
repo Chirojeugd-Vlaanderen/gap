@@ -83,7 +83,7 @@ namespace Cg2.ServiceContracts
         // groep en werkjaar, en ik vermoed dat onderstaande functie
         // bedoeld is om een jaartal te retourneren.
         [OperationContract]
-        int OphalenGroepsWerkjaar(int groepID);
+        int HuidigWerkJaarGet(int groepID);
 
         //alles om gelieerdepersonen op te halen zit in igelieerdepersonenservice
 

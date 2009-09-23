@@ -89,10 +89,10 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                // TODO: Check vervaldatum GAV!
                 var query
                     = from GebruikersRecht r in db.GebruikersRecht
                       where r.Gav.Login == login && r.Groep.GelieerdePersoon.Any(gp => gp.ID == gelieerdePersoonID)
+                      && (r.VervalDatum == null || r.VervalDatum >= DateTime.Now)
                       select r;
 
                 resultaat = query.Count() > 0;
@@ -126,12 +126,10 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                // TODO: Check vervaldatum
-
                 var query
                     = db.GelieerdePersoon
                     .Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.ID, gelieerdePersonenIDs))
-                    .Where(gp => gp.Groep.GebruikersRecht.Any(r => r.Gav.Login == login))
+                    .Where(gp => gp.Groep.GebruikersRecht.Any(r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)))
                     .Select(gp => gp.ID);
 
                 resultaat = query.ToList<int>();
@@ -147,12 +145,10 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                // TODO: Check vervaldatum!
-
                 var query
                     = db.GelieerdePersoon
                     .Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.Persoon.ID, personenIDs))
-                    .Where(gp => gp.Groep.GebruikersRecht.Any(r => r.Gav.Login == login))
+                    .Where(gp => gp.Groep.GebruikersRecht.Any(r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)))
                     .Select(gp => gp.Persoon.ID);
 
                 resultaat = query.ToList<int>();
@@ -167,10 +163,10 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                // TODO: Check vervaldatum GAV!
                 var query
                     = from GebruikersRecht r in db.GebruikersRecht
                       where r.Gav.Login == login && r.Groep.GelieerdePersoon.Any(gp => gp.Persoon.ID == persoonID)
+                      && (r.VervalDatum == null || r.VervalDatum >= DateTime.Now)
                       select r;
 
                 resultaat = query.Count() > 0;
@@ -190,6 +186,41 @@ namespace Cg2.Data.Ef
                       where r.Gav.Login == login && r.Groep.GroepsWerkJaar.Any(gwj => gwj.ID == groepsWerkJaarID)
                       && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
                       select r;
+
+                resultaat = query.Count() > 0;
+            }
+            return resultaat;
+        }
+
+        public bool IsGavAfdeling(string login, int afdelingsID)
+        {
+            bool resultaat;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                var query =
+                    from r in db.GebruikersRecht
+                    where r.Gav.Login == login
+                    && r.Groep.Afdeling.Any(afd => afd.ID == afdelingsID)
+                    && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
+                    select r;
+
+                resultaat = query.Count() > 0;
+            }
+            return resultaat;
+        }
+
+        public bool IsGavLid(string login, int lidID)
+        {
+            bool resultaat;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                var query =
+                    from l in db.Lid
+                    where l.ID == lidID
+                    && l.GroepsWerkJaar.Groep.GebruikersRecht.Any(r => r.Gav.Login == login)
+                    select l;
 
                 resultaat = query.Count() > 0;
             }
