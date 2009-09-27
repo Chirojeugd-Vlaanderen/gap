@@ -58,9 +58,6 @@ namespace Cg2.ServiceContracts
         Groep OphalenMetAdressen(int groepID);
 
         [OperationContract]
-        Groep OphalenMetCategorieen(int groepID);
-
-        [OperationContract]
         Groep OphalenMetFuncties(int groepID);
 
         [OperationContract]
@@ -117,6 +114,28 @@ namespace Cg2.ServiceContracts
             afdelingsjaarverwijderen(g) (JV: kan enkel als er geen leden in dat afdelingsjaar zijn/waren)
             afdelingtoevoegen
          */
+
+        #region categorieen
+        [OperationContract]
+        IList<GelieerdePersoon> PersonenOphalenUitCategorie(int groepID, int categorieID);
+
+        [OperationContract]
+        Groep OphalenMetCategorieen(int groepID);
+
+        //[OperationContract]
+        //void CategorieToevoegen(Categorie c, int groepID);
+        [OperationContract]
+        void CategorieVerwijderen(int groepID, int categorieID);
+        //[OperationContract]
+        //void CategorieAanpassen(Categorie c);
+
+        //TODO moet hier eigenlijk een groep worden meegegeven, of kan die worden afgeleid uit de aanroeper?
+        [OperationContract]
+        void PersonenToevoegenAanCategorie(IList<int> gelieerdePersonenIDs, int categorieID);
+        [OperationContract]
+        void PersonenVerwijderenUitCategorie(IList<int> gelieerdePersonenIDs, int categorieID);
+
+        #endregion categorieen
 
     }
 }

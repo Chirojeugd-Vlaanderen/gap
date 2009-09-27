@@ -60,14 +60,6 @@ namespace Cg2.Services
             return result;
         }
 
-        public Groep OphalenMetCategorieen(int groepID)
-        {
-            GroepenManager gm = Factory.Maak<GroepenManager>();
-
-            var result = gm.OphalenMetCategorieen(groepID);
-            return result;
-        }
-
         public Groep OphalenMetFuncties(int groepID)
         {
             GroepenManager gm = Factory.Maak<GroepenManager>();
@@ -182,5 +174,39 @@ namespace Cg2.Services
         }
 
         #endregion
+
+        #region categorieen
+        public IList<GelieerdePersoon> PersonenOphalenUitCategorie(int groepID, int categorieID)
+        {
+            return null;
+        }
+
+        public Groep OphalenMetCategorieen(int groepID)
+        {
+            GroepenManager gm = Factory.Maak<GroepenManager>();
+
+            var result = gm.OphalenMetCategorieen(groepID);
+            return result;
+        }
+
+        //void CategorieToevoegen(Categorie c, int groepID)
+        //{
+        //}
+        public void CategorieVerwijderen(int groepID, int categorieID)
+        {
+        }
+        //void CategorieAanpassen(Categorie c)
+        //{
+        //}
+
+        //TODO moet hier eigenlijk een groep worden meegegeven, of kan die worden afgeleid uit de aanroeper?
+        public void PersonenToevoegenAanCategorie(IList<int> gelieerdePersonenIDs, int categorieID)
+        {
+        }
+        public void PersonenVerwijderenUitCategorie(IList<int> gelieerdePersonenIDs, int categorieID)
+        {
+        }
+
+        #endregion categorieen
     }
 }

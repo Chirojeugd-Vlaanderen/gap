@@ -63,11 +63,13 @@ namespace Cg2.ServiceContracts
        // GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID, PersoonsInfo gevraagd);
 
         /// <summary>
-        /// Bewaart nieuwe/gewijzigde gelieerde persoon
+        /// Bewaart nieuwe/gewijzigde gelieerde persoon met zijn groep en zijn persoon
         /// </summary>
         /// <param name="persoon">Te bewaren persoon</param>
         [OperationContract]
         void PersoonBewaren(GelieerdePersoon persoon);
+
+        #region adressen
 
         /// <summary>
         /// Haalt adres op, met daaraan gekoppeld de bewoners waarop de
@@ -115,5 +117,34 @@ namespace Cg2.ServiceContracts
         [OperationContract]
         [FaultContract(typeof(AdresFault))]
         void AdresToevoegenAanPersonen(List<int> personenIDs, Adres adres);
+        [OperationContract]
+        [FaultContract(typeof(AdresFault))]
+        void AdresVerwijderenVanPersonen(List<int> personenIDs, int adresID);
+
+        #endregion adressen
+
+        #region commvormen
+        /// <summary>
+        /// Voegt een commvorm toe aan een verzameling personen
+        /// </summary>
+        /// <param name="personenIDs">ID's van Personen
+        /// waaraan het nieuwe commvorm toegevoegd moet worden.</param>
+        /// <param name="adres">Toe te voegen commvorm</param>
+        /// <returns></returns>
+        [OperationContract]
+        [FaultContract(typeof(BusinessFault<CommunicatieVorm>))]
+        void CommVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm);
+        [OperationContract]
+        [FaultContract(typeof(BusinessFault<CommunicatieVorm>))]
+        void CommVormVerwijderenVanPersoon(int gelieerdepersonenID, int commvormID);
+
+        /// <summary>
+        /// Gaat aanpassingen aan een bestaande commvorm persisteren, gelinkt met gelieerdepersoon
+        /// </summary>
+        /// <param name="v">De aangepaste commvorm met gelieerdepersoon</param>
+        [OperationContract]
+        [FaultContract(typeof(BusinessFault<CommunicatieVorm>))]
+        void AanpassenCommVorm(CommunicatieVorm v);
+        #endregion commvormen
     }
 }

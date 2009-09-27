@@ -188,11 +188,67 @@ namespace Cg2.Services
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        public void AdresVerwijderenVanPersonen(List<int> personenIDs, int adresID)
+        {
+            PersonenManager persMgr = Factory.Maak<PersonenManager>();
+            AdressenManager adrMgr = Factory.Maak<AdressenManager>();
+
+            // Personen ophalen
+            IList<Persoon> personenLijst = persMgr.LijstOphalen(personenIDs);
+
+            // Adres koppelen
+            foreach (Persoon p in personenLijst)
+            {
+                bool woonter = false;
+                foreach(PersoonsAdres a in p.PersoonsAdres){
+                    if (a.Adres.ID == adresID)
+                    {
+                        woonter = true;
+                        a.Adres.TeVerwijderen = true;
+                    }
+                }
+                if (!woonter)
+                {
+                    throw new AdresException("Niet iedereen woont op dat adres");
+                }
+            }
+
+            // persisteren
+            //TODO de personen bewaren met adressen!
+            throw new NotImplementedException();
+        }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID)
         {
             GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
 
             return gpm.HuisGenotenOphalen(gelieerdePersoonID);
+        }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        public void CommVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm)
+        {
+            GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
+
+            mgr.CommVormToevoegen(commvorm, gelieerdepersonenID);
+        }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        public void CommVormVerwijderenVanPersoon(int gelieerdepersonenID, int commvormID)
+        {
+            GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
+
+            mgr.CommVormVerwijderen(commvormID, gelieerdepersonenID);
+        }
+
+        ///TODO dit moet gecontroleerd worden!
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        public void AanpassenCommVorm(CommunicatieVorm v)
+        {
+            GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
+
+            mgr.BewarenMetCommVormen(v.GelieerdePersoon);
         }
 
         #endregion

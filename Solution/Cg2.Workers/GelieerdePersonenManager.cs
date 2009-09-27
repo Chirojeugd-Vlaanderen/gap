@@ -81,6 +81,26 @@ namespace Cg2.Workers
         /// <returns>De bewaarde gelieerde persoon</returns>
         public GelieerdePersoon Bewaren(GelieerdePersoon p)
         {
+            if (_autorisatieMgr.IsGavGelieerdePersoon(p.ID)){
+                // Hier mapping gebruiken om te vermijden dat het AD-nummer
+                // overschreven wordt, lijkt me wat overkill.  Ik vergelijk
+                // hiet nieuwe AD-nummer gewoon met het bestaande.
+
+                GelieerdePersoon origineel = _dao.Ophalen(p.ID);
+                if (origineel.Persoon.AdNummer == p.Persoon.AdNummer){
+                    return _dao.Bewaren(p);
+                }
+                else{
+                    throw new InvalidOperationException(Properties.Resources.AdNummerNietWijzigen);
+                }
+            }
+            else{
+                throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+            }
+        }
+
+        public GelieerdePersoon BewarenMetCommVormen(GelieerdePersoon p)
+        {
             if (_autorisatieMgr.IsGavGelieerdePersoon(p.ID))
             {
                 // Hier mapping gebruiken om te vermijden dat het AD-nummer
@@ -90,7 +110,7 @@ namespace Cg2.Workers
                 GelieerdePersoon origineel = _dao.Ophalen(p.ID);
                 if (origineel.Persoon.AdNummer == p.Persoon.AdNummer)
                 {
-                    return _dao.Bewaren(p);
+                    return _dao.Bewaren(p, l=>l.Communicatie);
                 }
                 else
                 {
@@ -100,6 +120,35 @@ namespace Cg2.Workers
             else
             {
                 throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+            }
+        }
+
+        public void CommVormToevoegen(CommunicatieVorm comm, int gelieerdePersoonID)
+        {
+            GelieerdePersoon origineel = _dao.Ophalen(gelieerdePersoonID, e => e.Communicatie);
+            origineel.Communicatie.Add(comm);
+            BewarenMetCommVormen(origineel);
+        }
+
+        public void CommVormVerwijderen(int commID, int gelieerdePersoonID)
+        {
+            GelieerdePersoon origineel = _dao.Ophalen(gelieerdePersoonID, e => e.Communicatie);
+            bool found = false;
+            foreach (CommunicatieVorm c in origineel.Communicatie)
+            {
+                if (c.ID == commID)
+                {
+                    found = true;
+                    c.TeVerwijderen = true;
+                }
+            }
+            if (found)
+            {
+                BewarenMetCommVormen(origineel);
+            }
+            else
+            {
+                throw new ArgumentException("De communicatievorm behoort niet toe aan de geselecteerde persoon.");
             }
         }
 

@@ -174,6 +174,11 @@ namespace MvcWebApp2.Controllers
         }
 
         // GET: /Personen/AdresVerwijderen/PersoonsAdresID
+        public ActionResult AdresVerwijderen(int id)
+        {
+            return null;
+            ///TODO zorgen dat de juiste methode gecalld wordt. Mss moet dit een post zijn?
+        }
 
         // GET: /Personen/NieuwAdres/gelieerdePersoonID
         public ActionResult NieuwAdres(int id)
