@@ -176,9 +176,9 @@ namespace Cg2.Services
         #endregion
 
         #region categorieen
-        public IList<GelieerdePersoon> PersonenOphalenUitCategorie(int groepID, int categorieID)
+        public IList<GelieerdePersoon> PersonenOphalenUitCategorie(int categorieID)
         {
-            return null;
+				throw new NotImplementedException();
         }
 
         public Groep OphalenMetCategorieen(int groepID)
@@ -192,8 +192,9 @@ namespace Cg2.Services
         //void CategorieToevoegen(Categorie c, int groepID)
         //{
         //}
-        public void CategorieVerwijderen(int groepID, int categorieID)
+        public void CategorieVerwijderen(int categorieID)
         {
+				throw new NotImplementedException();
         }
         //void CategorieAanpassen(Categorie c)
         //{
@@ -202,9 +203,11 @@ namespace Cg2.Services
         //TODO moet hier eigenlijk een groep worden meegegeven, of kan die worden afgeleid uit de aanroeper?
         public void PersonenToevoegenAanCategorie(IList<int> gelieerdePersonenIDs, int categorieID)
         {
+				throw new NotImplementedException();
         }
         public void PersonenVerwijderenUitCategorie(IList<int> gelieerdePersonenIDs, int categorieID)
         {
+				throw new NotImplementedException();
         }
 
         #endregion categorieen

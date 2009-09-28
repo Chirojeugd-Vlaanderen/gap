@@ -117,7 +117,7 @@ namespace Cg2.ServiceContracts
 
         #region categorieen
         [OperationContract]
-        IList<GelieerdePersoon> PersonenOphalenUitCategorie(int groepID, int categorieID);
+        IList<GelieerdePersoon> PersonenOphalenUitCategorie(int categorieID);
 
         [OperationContract]
         Groep OphalenMetCategorieen(int groepID);
@@ -125,7 +125,7 @@ namespace Cg2.ServiceContracts
         //[OperationContract]
         //void CategorieToevoegen(Categorie c, int groepID);
         [OperationContract]
-        void CategorieVerwijderen(int groepID, int categorieID);
+        void CategorieVerwijderen(int categorieID);
         //[OperationContract]
         //void CategorieAanpassen(Categorie c);
 
