@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="AutDaoAltijdGav.cs" />
     <Compile Include="AutMgrAltijdGav.cs" />
+    <Compile Include="AutMgrNooitGav.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

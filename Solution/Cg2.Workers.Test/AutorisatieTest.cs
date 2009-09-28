@@ -98,6 +98,53 @@ namespace Cg2.Workers.Test
         }
 
         /// <summary>
+        /// Als een niet-GAV probeert een communicatievorm te verwijderen
+        /// die niet aan een gelieerde persoon gekoppeld is, moet die een
+        /// GeenGavException krijgen, en niks anders :)
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(GeenGavException))]
+        public void FouteCommVormVerwijderenGeenGav()
+        {
+            #region arrange
+
+            // fake gelieerde persoon zonder communicatiemiddelen.
+
+            GelieerdePersoon communicatielozePersoon = new GelieerdePersoon();
+            communicatielozePersoon.Communicatie = new System.Data.Objects.DataClasses.EntityCollection<CommunicatieVorm>();
+
+            // GelieerdePersonenDao mocken, zodat die steeds de fake persoon oproept
+            
+            var gpDaoMock = new Mock<IGelieerdePersonenDao>();
+            gpDaoMock.Setup(foo => foo.Ophalen(It.IsAny<int>()
+                , It.IsAny<System.Linq.Expressions.Expression<Func<GelieerdePersoon,object>>[]>() )).Returns(communicatielozePersoon);
+
+            // GroepenDao mocken.
+
+            var groepenDaoMock = new Mock<IGroepenDao>();
+
+            // GelieerdePersonenManager mocken, waarbij autorisatieManager steeds 'false'
+            // antwoordt.
+
+            GelieerdePersonenManager gpMgr = new GelieerdePersonenManager(gpDaoMock.Object, groepenDaoMock.Object, new AutMgrNooitGav());
+
+            #endregion
+
+            #region act
+            // Probeer nu een fictieve communicatievorm te verwijderen.
+            // We verwachten 'GeenGavException'
+
+            gpMgr.CommVormVerwijderen(1, 1); 
+            // CommunicatieVormID en GelieerdePersoonID zijn irrelevant owv de mocking
+            #endregion
+
+            #region assert
+            // Als we dit tegenkomen, is het sowieso mislukt
+            Assert.IsTrue(false);
+            #endregion
+        }
+
+        /// <summary>
         /// Probeert ledenlijst op te halen als wel GAV
         /// Verwacht geen exception.
         /// </summary>
