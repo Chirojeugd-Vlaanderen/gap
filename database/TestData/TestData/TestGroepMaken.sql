@@ -7,8 +7,10 @@
 -- AfdelingsWerkJaar en voor afdeling met code @testAfdelingsCode in @testWerkJaar en @testVorigWerkJaar
 -- Gelieerde Testpersonen:
 --		 @testPersoonVoornaam @testPersoonNaam en @testPersoon2VoorNaam en @testPersoonNaam
-
--- Creeert ook 2 test-GAV's, en maakt de eerste GAV van testgroep1.
+--
+-- 2 test-GAV's, en maakt de eerste GAV van testgroep1.
+--
+-- 1 testcategorie voor testgroep1, waaraan de 1ste gelieerde persoon wordt toegevoegd
 
 USE ChiroGroep
 
@@ -24,6 +26,7 @@ DECLARE @testPersoonVoorNaam AS VARCHAR(60)
 DECLARE @testPersoon2VoorNaam AS VARCHAR(60)
 DECLARE @testGav1Login AS VARCHAR(40);
 DECLARE @testGav2Login AS VARCHAR(40);
+DECLARE @testCategorieCode AS VARCHAR(10);
 
 
 SET @testGroepCode='tst/0001';
@@ -37,6 +40,7 @@ SET @testPersoonVoorNaam = 'Jos';
 SET @testPersoon2VoorNaam = 'Irène';
 SET @testGav1Login = 'Yvonne';
 SET @testGAV2Login='Yvette';
+SET @testCategorieCode = 'last';
 
 DECLARE @testGroepID AS INT;
 DECLARE @testAfdelingID AS INT;
@@ -49,6 +53,7 @@ DECLARE @testGelieerdePersoonID AS INT;
 DECLARE @testAfdelingsJaarID AS INT;
 DECLARE @testVorigAfdelingsJaarID AS INT;
 DECLARE @testGav1ID AS INT;
+DECLARE @testCategorieID AS INT;
 
 ---
 --- Groep en Chirogroep creeren
@@ -228,6 +233,28 @@ BEGIN
 	INSERT INTO auth.GebruikersRecht(GavID, GroepID) VALUES(@testGav1ID, @testGroepID)
 END
 
+--
+-- TestCategorie maken voor testgroep 1
+--
+
+IF NOT EXISTS (SELECT 1 FROM core.Categorie WHERE Code=@testCategorieCode)
+BEGIN
+	INSERT INTO core.Categorie(Naam, Code, GroepID) VALUES('Vervelende mensen', @testCategorieCode, @testGroepID);
+	SET @testCategorieID = scope_identity();
+END
+ELSE
+BEGIN
+	SET @testCategorieID = (SELECT CategorieID FROM core.Categorie WHERE Code=@testCategorieCode)
+END
+
+--
+-- Testcategorie bevolken
+--
+
+IF NOT EXISTS (SELECT 1 FROM pers.PersoonsCategorie WHERE GelieerdePersoonID=@testGelieerdePersoonID AND CategorieID=@testCategorieID)
+BEGIN
+	INSERT INTO pers.PersoonsCategorie(GelieerdePersoonID, CategorieID) VALUES(@testGelieerdePersoonID, @testCategorieID);
+END;
 
 
 PRINT 'TestGroepID: ' + CAST(@testGroepID AS VARCHAR(10));
@@ -241,4 +268,5 @@ PRINT 'TestPersoonID: ' + CAST(@testPersoonID AS VARCHAR(10))
 PRINT 'TestGelieerdePersoonID: ' + CAST(@testGelieerdePersoonID AS VARCHAR(10))
 PRINT 'TestPersoon2ID: ' + CAST(@testPersoon2ID AS VARCHAR(10))
 PRINT 'TestGav1ID: ' + CAST(@testGav1ID AS VARCHAR(10))
+PRINT 'TestCategorieID: ' + CAST(@testCategorieID AS VARCHAR(10))
 GO
