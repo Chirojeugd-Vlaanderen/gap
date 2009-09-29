@@ -5,10 +5,10 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Orm.DataInterfaces;
 using Cg2.Orm;
-using Cg2.Data.Ef;
 using Cg2.Workers;
 using Cg2.Dummies;
 using Cg2.EfWrapper.Entity;
+using Cg2.Ioc;
 
 namespace Cg2.Dao.Test
 {
@@ -72,7 +72,7 @@ namespace Cg2.Dao.Test
 
             int gp2ID = Properties.Settings.Default.TestGelieerdePersoon2ID;
 
-            GelieerdePersonenDao dao = new GelieerdePersonenDao();
+            IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
             GelieerdePersoon gp = dao.Ophalen(gp2ID, foo => foo.Categorie);
 
             foreach (Categorie c in gp.Categorie)
@@ -102,7 +102,7 @@ namespace Cg2.Dao.Test
             int catID = Properties.Settings.Default.TestCategorieID;
             int gpID = Properties.Settings.Default.TestGelieerdePersoonID;
 
-            IGelieerdePersonenDao dao = new GelieerdePersonenDao();
+            IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
 
             // act
 
@@ -129,8 +129,8 @@ namespace Cg2.Dao.Test
             int catID = Properties.Settings.Default.TestCategorieID;
             int gpID = Properties.Settings.Default.TestGelieerdePersoon2ID;
 
-            IGelieerdePersonenDao gpDao = new GelieerdePersonenDao();
-            IDao<Categorie> catDao = new Dao<Categorie>();
+            IGelieerdePersonenDao gpDao = Factory.Maak<IGelieerdePersonenDao>();
+            IDao<Categorie> catDao = Factory.Maak<IDao<Categorie>>();
 
             GelieerdePersoon gp = gpDao.Ophalen(gpID, foo => foo.Categorie, foo => foo.Groep);
             Categorie cat = catDao.Ophalen(catID, foo => foo.Groep);
