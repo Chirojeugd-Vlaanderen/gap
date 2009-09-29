@@ -28,9 +28,10 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "LeidingInAfdelingsJaar", "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar), "Leiding", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Leiding))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Kind_AfdelingsJaar", "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.AfdelingsJaar), "Kind", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Kind))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Categorie_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "Categorie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Categorie))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "PersoonsCategorie", "Categorie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Categorie), "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GelieerdePersoon))]
 
 // Original file name:
-// Generation date: 29/09/2009 10:29:51
+// Generation date: 29/09/2009 11:09:36
 namespace Cg2.Orm
 {
     
@@ -1436,6 +1437,27 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Lid>("ChiroGroepModel.FK_Lid_GelieerdePersoon", "Lid", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Categorie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "PersoonsCategorie", "Categorie")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Categorie> Categorie
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Categorie>("ChiroGroepModel.PersoonsCategorie", "Categorie");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Categorie>("ChiroGroepModel.PersoonsCategorie", "Categorie", value);
                 }
             }
         }
@@ -3030,11 +3052,13 @@ namespace Cg2.Orm
         /// Create a new AfdelingsJaar object.
         /// </summary>
         /// <param name="geboorteJaarTot">Initial value of GeboorteJaarTot.</param>
+        /// <param name="geboorteJaarVan">Initial value of GeboorteJaarVan.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static AfdelingsJaar CreateAfdelingsJaar(int geboorteJaarTot, int id)
+        public static AfdelingsJaar CreateAfdelingsJaar(int geboorteJaarTot, int geboorteJaarVan, int id)
         {
             AfdelingsJaar afdelingsJaar = new AfdelingsJaar();
             afdelingsJaar.GeboorteJaarTot = geboorteJaarTot;
+            afdelingsJaar.GeboorteJaarVan = geboorteJaarVan;
             afdelingsJaar.ID = id;
             return afdelingsJaar;
         }
@@ -3064,9 +3088,9 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property GeboorteJaarVan in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Nullable<int> GeboorteJaarVan
+        public int GeboorteJaarVan
         {
             get
             {
@@ -3081,8 +3105,8 @@ namespace Cg2.Orm
                 this.OnGeboorteJaarVanChanged();
             }
         }
-        private global::System.Nullable<int> _GeboorteJaarVan;
-        partial void OnGeboorteJaarVanChanging(global::System.Nullable<int> value);
+        private int _GeboorteJaarVan;
+        partial void OnGeboorteJaarVanChanging(int value);
         partial void OnGeboorteJaarVanChanged();
         /// <summary>
         /// There are no comments for Property ID in the schema.
@@ -3566,7 +3590,7 @@ namespace Cg2.Orm
     /// There are no comments for ChiroGroepModel.Categorie in the schema.
     /// </summary>
     /// <KeyProperties>
-    /// CategorieID
+    /// ID
     /// </KeyProperties>
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Categorie")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
@@ -3576,11 +3600,11 @@ namespace Cg2.Orm
         /// <summary>
         /// Create a new Categorie object.
         /// </summary>
-        /// <param name="categorieID">Initial value of CategorieID.</param>
-        public static Categorie CreateCategorie(int categorieID)
+        /// <param name="id">Initial value of ID.</param>
+        public static Categorie CreateCategorie(int id)
         {
             Categorie categorie = new Categorie();
-            categorie.CategorieID = categorieID;
+            categorie.ID = id;
             return categorie;
         }
         /// <summary>
@@ -3630,28 +3654,28 @@ namespace Cg2.Orm
         partial void OnCodeChanging(string value);
         partial void OnCodeChanged();
         /// <summary>
-        /// There are no comments for Property CategorieID in the schema.
+        /// There are no comments for Property ID in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int CategorieID
+        public int ID
         {
             get
             {
-                return this._CategorieID;
+                return this._ID;
             }
             set
             {
-                this.OnCategorieIDChanging(value);
-                this.ReportPropertyChanging("CategorieID");
-                this._CategorieID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("CategorieID");
-                this.OnCategorieIDChanged();
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
             }
         }
-        private int _CategorieID;
-        partial void OnCategorieIDChanging(int value);
-        partial void OnCategorieIDChanged();
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>
@@ -3709,6 +3733,27 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Groep>("ChiroGroepModel.FK_Categorie_Groep", "Groep", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for GelieerdePersoon in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "PersoonsCategorie", "GelieerdePersoon")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<GelieerdePersoon> GelieerdePersoon
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<GelieerdePersoon>("ChiroGroepModel.PersoonsCategorie", "GelieerdePersoon");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<GelieerdePersoon>("ChiroGroepModel.PersoonsCategorie", "GelieerdePersoon", value);
                 }
             }
         }

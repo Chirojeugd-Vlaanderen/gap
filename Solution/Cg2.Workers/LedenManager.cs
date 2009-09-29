@@ -174,8 +174,7 @@ namespace Cg2.Workers
 
                 if (gp.Groep == null)
                 {
-                    GelieerdePersonenManager gpm = new GelieerdePersonenManager(_daos.GelieerdePersoonDao, _daos.GroepenDao, _authorisatieMgr);
-                    gpm.GroepLaden(gp);
+                    _daos.GelieerdePersoonDao.GroepLaden(gp);
                 }
 
                 GroepsWerkJaar gwj = gm.RecentsteGroepsWerkJaarGet(gp.Groep.ID);

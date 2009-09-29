@@ -6,9 +6,12 @@ using System.Text;
 namespace Cg2.Orm.DataInterfaces
 {
     /// <summary>
-    /// Met een GelieerdePersoon moet altijd het geassocieerde
-    /// persoonsobject meekomen, anders heeft het weinig zin.
+    /// CRUD-operaties op GelieerdePersoon
     /// </summary>
+    /// <remarks>
+    /// Met een GelieerdePersoon moet vrijwel altijd het geassocieerde
+    /// persoonsobject meekomen, anders heeft het weinig zin.
+    /// </remarks>
     public interface IGelieerdePersonenDao: IDao<GelieerdePersoon>
     {
         /// <summary>
@@ -75,7 +78,7 @@ namespace Cg2.Orm.DataInterfaces
         GelieerdePersoon GroepLaden(GelieerdePersoon p);
 
         /// <summary>
-        /// Haalt alle gelieerde personen op die op een zelfde
+        /// Haalt alle personen op die op een zelfde
         /// adres wonen als de gelieerde persoon met het gegeven ID.
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van gegeven gelieerde
@@ -84,5 +87,13 @@ namespace Cg2.Orm.DataInterfaces
         /// <remarks>Als de persoon nergens woont, is hij toch zijn eigen
         /// huisgenoot.</remarks>
         IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID);
+
+        /// <summary>
+        /// Geeft de gelieerde personen uit een categorie (inc. persoonsinfo)
+        /// TODO: Misschien moet deze functie een lijst van PersoonsInfo ophalen.
+        /// </summary>
+        /// <param name="categorieID">ID van een categorie</param>
+        /// <returns>lijst van gelieerde personen met persoonsinfo in de categorie</returns>
+        IList<GelieerdePersoon> OphalenUitCategorie(int categorieID);
     }
 }

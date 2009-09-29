@@ -108,6 +108,11 @@ namespace Cg2.Dummies
             throw new NotImplementedException();
         }
 
+        public bool IsGavCategorie(int categorieID, string login)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

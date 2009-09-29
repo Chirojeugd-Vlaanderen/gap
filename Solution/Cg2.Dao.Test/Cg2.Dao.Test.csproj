@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AbstractEfDaoTest.cs" />
     <Compile Include="AuthorisatieTest.cs" />
+    <Compile Include="CategorieenTest.cs" />
     <Compile Include="LedenTest.cs" />
     <Compile Include="PersonenTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

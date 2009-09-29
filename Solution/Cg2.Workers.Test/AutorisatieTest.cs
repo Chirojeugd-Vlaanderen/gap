@@ -123,10 +123,11 @@ namespace Cg2.Workers.Test
 
             var groepenDaoMock = new Mock<IGroepenDao>();
 
-            // GelieerdePersonenManager mocken, waarbij autorisatieManager steeds 'false'
+            // GelieerdePersonenManager aanmaken, waarbij autorisatieManager steeds 'false'
             // antwoordt.
 
-            GelieerdePersonenManager gpMgr = new GelieerdePersonenManager(gpDaoMock.Object, groepenDaoMock.Object, new AutMgrNooitGav());
+            GelieerdePersonenManager gpMgr = new GelieerdePersonenManager(gpDaoMock.Object, groepenDaoMock.Object, null, new AutMgrNooitGav());
+
 
             #endregion
 
@@ -208,7 +209,7 @@ namespace Cg2.Workers.Test
             // testen.
 
             GelieerdePersonenManager gpm2 = new GelieerdePersonenManager(
-                gpDaoMock.Object, null, auManMock.Object);
+                gpDaoMock.Object, null, null, auManMock.Object);
 
             #endregion
 
@@ -250,7 +251,7 @@ namespace Cg2.Workers.Test
 
             // Maak nu de GelieerdePersoonenManager aan die we willen testen.
 
-            GelieerdePersonenManager gpm = new GelieerdePersonenManager(gpDaoMock.Object, null, new AutMgrAltijdGav());
+            GelieerdePersonenManager gpm = new GelieerdePersonenManager(gpDaoMock.Object, null, null, new AutMgrAltijdGav());
 
             #endregion
 
@@ -292,7 +293,7 @@ namespace Cg2.Workers.Test
 
             // Maak nu de GelieerdePersoonenManager aan die we willen testen.
 
-            GelieerdePersonenManager gpm = new GelieerdePersonenManager(gpDaoMock.Object, null, new AutMgrAltijdGav());
+            GelieerdePersonenManager gpm = new GelieerdePersonenManager(gpDaoMock.Object, null, null, new AutMgrAltijdGav());
 
             #endregion
 
@@ -322,7 +323,7 @@ namespace Cg2.Workers.Test
             // gewenste situatie opbouwen van een persoon die
             // gekoppeld is aan een groep.
 
-            GelieerdePersonenManager gpm = new GelieerdePersonenManager(null, null, new AutMgrAltijdGav());
+            GelieerdePersonenManager gpm = new GelieerdePersonenManager(null, null, null, new AutMgrAltijdGav());
 
             Groep g = new Groep();
             Persoon p = new Persoon { AdNummer = 1 };

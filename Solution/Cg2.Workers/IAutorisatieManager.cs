@@ -12,6 +12,7 @@ namespace Cg2.Workers
         bool IsGavPersoon(int persoonID);
         bool IsGavAfdeling(int afdelingsID);
         bool IsGavLid(int lidID);
+        bool IsGavCategorie(int categorieID);
 
         string GebruikersNaamGet();
     }

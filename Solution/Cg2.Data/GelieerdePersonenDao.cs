@@ -325,5 +325,29 @@ namespace Cg2.Data.Ef
             }
         }
 
+        public IList<GelieerdePersoon> OphalenUitCategorie(int categorieID)
+        {
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                db.Categorie.MergeOption = MergeOption.NoTracking;
+
+                var query
+                    = from c in db.Categorie.Include("GelieerdePersoon.Persoon")
+                      where c.ID == categorieID
+                      select c;
+
+                Categorie cat = query.FirstOrDefault();
+
+                if (cat == null)
+                {
+                    // categorie niet gevonden
+                    return new List<GelieerdePersoon>();
+                }
+                else
+                {
+                    return cat.GelieerdePersoon.ToList();
+                }
+            }
+        }
     }
 }

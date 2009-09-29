@@ -219,8 +219,26 @@ namespace Cg2.Data.Ef
                 var query =
                     from l in db.Lid
                     where l.ID == lidID
-                    && l.GroepsWerkJaar.Groep.GebruikersRecht.Any(r => r.Gav.Login == login)
+                    && l.GroepsWerkJaar.Groep.GebruikersRecht.Any(r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
                     select l;
+
+                resultaat = query.Count() > 0;
+            }
+            return resultaat;
+        }
+
+        public bool IsGavCategorie(int categorieID, string login)
+        {
+            bool resultaat;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                var query =
+                    from r in db.GebruikersRecht
+                    where r.Gav.Login == login
+                    && r.Groep.Categorie.Any(foo => foo.ID == categorieID)
+                    && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
+                    select r;
 
                 resultaat = query.Count() > 0;
             }

@@ -120,8 +120,14 @@
   <data name="AdNummerNietWijzigen" xml:space="preserve">
     <value>Enkel het nationaal secretariaat mag AD-nummers wijzigen.</value>
   </data>
+  <data name="FoutieveGroepCategorie" xml:space="preserve">
+    <value>Je probeert een persoon te koppelen aan een categorie uit een andere groep.</value>
+  </data>
   <data name="GeenGavAfdeling" xml:space="preserve">
     <value>Deze afdeling is niet gekoppeld aan je groep(en).</value>
+  </data>
+  <data name="GeenGavCategoriePersoon" xml:space="preserve">
+    <value>De categorie en/of de persoon zijn niet gekoppeld aan je groep(en).</value>
   </data>
   <data name="GeenGavGelieerdePersoon" xml:space="preserve">
     <value>Deze persoon is niet gekoppeld aan je groep(en).</value>

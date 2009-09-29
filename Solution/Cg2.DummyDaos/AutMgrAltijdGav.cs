@@ -65,6 +65,11 @@ namespace Cg2.Dummies
             throw new NotImplementedException();
         }
 
+        public bool IsGavCategorie(int categorieID)
+        {
+            return true;
+        }
+
         #endregion
     }
 }

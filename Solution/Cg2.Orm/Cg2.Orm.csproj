@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adres.cs" />
+    <Compile Include="Categorie.cs" />
     <Compile Include="ChiroGroepModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -60,6 +61,7 @@
     </Compile>
     <Compile Include="DataInterfaces\IAfdelingenDao.cs" />
     <Compile Include="DataInterfaces\IAfdelingsJaarDao.cs" />
+    <Compile Include="DataInterfaces\ICategorieenDao.cs" />
     <Compile Include="DataInterfaces\ICommunicatieVormDao.cs" />
     <Compile Include="DataInterfaces\IGroepsWerkJaarDao.cs" />
     <Compile Include="DataInterfaces\IKindDao.cs" />

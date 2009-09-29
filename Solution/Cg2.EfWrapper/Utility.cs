@@ -67,6 +67,7 @@ namespace Cg2.EfWrapper
         ///        hebben.
         ///     2. Als er circulaire relaties voorkomen, dan werkt het
         ///        niet.
+        ///     3. Blijkbaar ook niet voor many-to-many?
         /// </remarks>
         public static T DetachObjectGraph<T>(T entity)
         {

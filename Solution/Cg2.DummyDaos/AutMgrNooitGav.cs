@@ -66,6 +66,11 @@ namespace Cg2.Dummies
             return false;
         }
 
+        public bool IsGavCategorie(int categorieID)
+        {
+            return false;
+        }
+
         #endregion
     }
 }

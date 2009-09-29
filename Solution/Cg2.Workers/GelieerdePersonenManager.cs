@@ -14,9 +14,11 @@ namespace Cg2.Workers
     {
         private IGelieerdePersonenDao _dao;
         private IGroepenDao _groepenDao;
+        private ICategorieenDao _categorieenDao;
         private IAutorisatieManager _autorisatieMgr;
 
-        public GelieerdePersonenManager(IGelieerdePersonenDao dao, IGroepenDao groepenDao, IAutorisatieManager autorisatieMgr)
+        public GelieerdePersonenManager(IGelieerdePersonenDao dao, IGroepenDao groepenDao
+            , ICategorieenDao categorieenDao, IAutorisatieManager autorisatieMgr)
         {
             _dao = dao;
             _groepenDao = groepenDao;
@@ -337,6 +339,46 @@ namespace Cg2.Workers
         public bool IsLid(int gelieerdePersoonID)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Koppelt een gelieerde persoon aan een categorie, zonder
+        /// te persisteren.
+        /// </summary>
+        /// <param name="gelieerdePersoon">te koppelen gelieerde persoon</param>
+        /// <param name="categorie">te koppelen categorie</param>
+        public void CategorieKoppelen(GelieerdePersoon gelieerdePersoon, Categorie categorie)
+        {
+            // Heeft de gebruiker rechten voor de groep en de categorie?
+
+            if (!_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoon.ID)
+                || !_autorisatieMgr.IsGavCategorie(categorie.ID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavCategoriePersoon);
+            };
+
+            // Is de persoon gelieerd aan de groep van de categorie?
+
+            if (gelieerdePersoon.Groep == null)
+            {
+                _dao.GroepLaden(gelieerdePersoon);
+            }
+
+            if (categorie.Groep == null)
+            {
+                _categorieenDao.GroepLaden(categorie);
+            }
+
+            if (!gelieerdePersoon.Groep.Equals(categorie.Groep))
+            {
+                throw new FoutieveGroepException(Properties.Resources.FoutieveGroepCategorie);
+            }
+
+            // Dan zullen we ons best eens doen...
+
+            gelieerdePersoon.Categorie.Add(categorie);
+            categorie.GelieerdePersoon.Add(gelieerdePersoon);
+
         }
     }
 }

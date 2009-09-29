@@ -70,11 +70,29 @@ namespace Cg2.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je probeert een persoon te koppelen aan een categorie uit een andere groep..
+        /// </summary>
+        internal static string FoutieveGroepCategorie {
+            get {
+                return ResourceManager.GetString("FoutieveGroepCategorie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deze afdeling is niet gekoppeld aan je groep(en)..
         /// </summary>
         internal static string GeenGavAfdeling {
             get {
                 return ResourceManager.GetString("GeenGavAfdeling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to De categorie en/of de persoon zijn niet gekoppeld aan je groep(en)..
+        /// </summary>
+        internal static string GeenGavCategoriePersoon {
+            get {
+                return ResourceManager.GetString("GeenGavCategoriePersoon", resourceCulture);
             }
         }
         

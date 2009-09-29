@@ -116,7 +116,17 @@ namespace Cg2.Orm.DataInterfaces
         /// GAV over is. (hoeveel indirectie kan er in 1 zin?)</returns>
         IList<int> EnkelMijnPersonen(IList<int> personenIDs, string p);
 
+        /// <summary>
+        /// Controleert of een gegeven gebruiker GAV is van de groep
+        /// horend bij een zekere categorie.
+        /// </summary>
+        /// <param name="categorieID">ID van de betreffende categorie</param>
+        /// <param name="login">login van de gebruiker</param>
+        /// <returns>true indien GAV</returns>
+        bool IsGavCategorie(int categorieID, string login);
+
         #endregion
+
 
     }
 }
