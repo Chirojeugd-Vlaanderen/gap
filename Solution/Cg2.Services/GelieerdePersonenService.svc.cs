@@ -221,9 +221,9 @@ namespace Cg2.Services
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID)
         {
-            GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
+            PersonenManager pm = Factory.Maak<PersonenManager>();
 
-            return gpm.HuisGenotenOphalen(gelieerdePersoonID);
+            return pm.HuisGenotenOphalen(gelieerdePersoonID);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]

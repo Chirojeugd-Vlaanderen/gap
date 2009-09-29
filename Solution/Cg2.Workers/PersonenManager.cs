@@ -22,6 +22,44 @@ namespace Cg2.Workers
         }
 
         /// <summary>
+        /// Haalt personen op die een adres gemeen hebben met de 
+        /// GelieerdePersoon
+        /// met gegeven ID
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van 
+        /// GelieerdePersoon waarvan huisgenoten
+        /// gevraagd zijn</param>
+        /// <returns>Lijstje met personen</returns>
+        /// <remarks>Parameter: GelieerdePersoonID, return value: Personen!</remarks>
+        public IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID)
+        {
+            if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
+            {
+                // Haal alle huisgenoten op
+
+                IList<Persoon> allen = _dao.HuisGenotenOphalen(gelieerdePersoonID);
+
+                // Welke mag ik zien?
+
+                IList<int> selectie = _autorisatieMgr.EnkelMijnPersonen(
+                    (from p in allen select p.ID).ToList());
+
+                // Enkel de geselecteerde personen afleveren.
+
+                var resultaat = from p in allen
+                                where selectie.Contains(p.ID)
+                                select p;
+
+                return resultaat.ToList();
+            }
+            else
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+            }
+        }
+
+
+        /// <summary>
         /// Verhuist een persoon van oudAdres naar nieuwAdres.  Persisteert niet.
         /// </summary>
         /// <param name="verhuizer">te verhuizen GelieerdePersoon</param>

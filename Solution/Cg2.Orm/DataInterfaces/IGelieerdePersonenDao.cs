@@ -78,17 +78,6 @@ namespace Cg2.Orm.DataInterfaces
         GelieerdePersoon GroepLaden(GelieerdePersoon p);
 
         /// <summary>
-        /// Haalt alle personen op die op een zelfde
-        /// adres wonen als de gelieerde persoon met het gegeven ID.
-        /// </summary>
-        /// <param name="gelieerdePersoonID">ID van gegeven gelieerde
-        /// persoon.</param>
-        /// <returns>Lijst met GelieerdePersonen (inc. persoonsinfo)</returns>
-        /// <remarks>Als de persoon nergens woont, is hij toch zijn eigen
-        /// huisgenoot.</remarks>
-        IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID);
-
-        /// <summary>
         /// Geeft de gelieerde personen uit een categorie (inc. persoonsinfo)
         /// TODO: Misschien moet deze functie een lijst van PersoonsInfo ophalen.
         /// </summary>
