@@ -29,7 +29,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Kind_AfdelingsJaar", "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.AfdelingsJaar), "Kind", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Kind))]
 
 // Original file name:
-// Generation date: 27/09/2009 18:58:37
+// Generation date: 29/09/2009 8:52:13
 namespace Cg2.Orm
 {
     
@@ -418,28 +418,28 @@ namespace Cg2.Orm
             return chiroGroep;
         }
         /// <summary>
-        /// There are no comments for Property Versie_1 in the schema.
+        /// There are no comments for Property Plaats in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Versie_1
+        public string Plaats
         {
             get
             {
-                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie_1);
+                return this._Plaats;
             }
             set
             {
-                this.OnVersie_1Changing(value);
-                this.ReportPropertyChanging("Versie_1");
-                this._Versie_1 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
-                this.ReportPropertyChanged("Versie_1");
-                this.OnVersie_1Changed();
+                this.OnPlaatsChanging(value);
+                this.ReportPropertyChanging("Plaats");
+                this._Plaats = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Plaats");
+                this.OnPlaatsChanged();
             }
         }
-        private byte[] _Versie_1;
-        partial void OnVersie_1Changing(byte[] value);
-        partial void OnVersie_1Changed();
+        private string _Plaats;
+        partial void OnPlaatsChanging(string value);
+        partial void OnPlaatsChanged();
     }
     /// <summary>
     /// There are no comments for ChiroGroepModel.Groep in the schema.

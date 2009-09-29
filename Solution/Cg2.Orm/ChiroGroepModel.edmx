@@ -168,6 +168,7 @@
           </Key>
           <Property Name="ChiroGroepID" Type="int" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="Plaats" Type="varchar" MaxLength="60" />
         </EntityType>
         <EntityType Name="Groep">
           <Key>
@@ -647,7 +648,7 @@
             <End Role="Kind" EntitySet="Lid" /></AssociationSet>
         </EntityContainer>
         <EntityType Name="ChiroGroep" BaseType="ChiroGroepModel.Groep">
-          <Property Name="Versie_1" Type="Binary" Nullable="true" /></EntityType>
+          <Property Name="Plaats" Type="String" MaxLength="60" FixedLength="false" Nullable="true" /></EntityType>
         <EntityType Name="Groep">
           <Key>
             <PropertyRef Name="ID" />
@@ -890,8 +891,8 @@
             </EntityTypeMapping>
           <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.ChiroGroep)">
               <MappingFragment StoreEntitySet="ChiroGroep">
-                <ScalarProperty Name="Versie_1" ColumnName="Versie" />
                 <ScalarProperty Name="ID" ColumnName="ChiroGroepID" />
+                <ScalarProperty Name="Plaats" ColumnName="Plaats"/>
               </MappingFragment>
             </EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Persoon">
@@ -1148,7 +1149,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram Name="ChiroGroepModel" ZoomLevel="88">
-        <EntityTypeShape EntityType="ChiroGroepModel.ChiroGroep" Width="1.5" PointX="0.5" PointY="5.875" Height="1.0103564453124996" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChiroGroepModel.ChiroGroep" Width="1.5" PointX="0.5" PointY="5.875" Height="1.0992643229166665" IsExpanded="true" />
         <EntityTypeShape EntityType="ChiroGroepModel.Groep" Width="1.5" PointX="2.25" PointY="5.125" Height="2.9052945963541674" IsExpanded="true" />
         <EntityTypeShape EntityType="ChiroGroepModel.Persoon" Width="1.5" PointX="2.25" PointY="2" Height="2.7158007812499996" IsExpanded="true" />
         <InheritanceConnector EntityType="ChiroGroepModel.ChiroGroep" ManuallyRouted="false">
