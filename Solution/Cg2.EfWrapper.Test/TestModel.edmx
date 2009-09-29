@@ -4,11 +4,13 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ChiroGroep.UnitTestModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+    <Schema Namespace="ChiroGroep.UnitTestModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
         <EntityContainer Name="ChiroGroepUnitTestModelStoreContainer">
           <EntitySet Name="Adres" EntityType="ChiroGroep.UnitTestModel.Store.Adres" store:Type="Tables" Schema="adr" />
+          <EntitySet Name="Categorie" EntityType="ChiroGroep.UnitTestModel.Store.Categorie" store:Type="Tables" Schema="core" />
           <EntitySet Name="GelieerdePersoon" EntityType="ChiroGroep.UnitTestModel.Store.GelieerdePersoon" store:Type="Tables" Schema="pers" />
           <EntitySet Name="PersoonsAdres" EntityType="ChiroGroep.UnitTestModel.Store.PersoonsAdres" store:Type="Tables" Schema="pers" />
+          <EntitySet Name="PersoonsCategorie" EntityType="ChiroGroep.UnitTestModel.Store.PersoonsCategorie" store:Type="Tables" Schema="pers" />
           <AssociationSet Name="FK_PersoonsAdres_Adres" Association="ChiroGroep.UnitTestModel.Store.FK_PersoonsAdres_Adres">
             <End Role="Adres" EntitySet="Adres" />
             <End Role="PersoonsAdres" EntitySet="PersoonsAdres" />
@@ -16,6 +18,14 @@
           <AssociationSet Name="FK_PersoonsAdres_GelieerdePersoon" Association="ChiroGroep.UnitTestModel.Store.FK_PersoonsAdres_GelieerdePersoon">
             <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
             <End Role="PersoonsAdres" EntitySet="PersoonsAdres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersoonsCategorie_Categorie" Association="ChiroGroep.UnitTestModel.Store.FK_PersoonsCategorie_Categorie">
+            <End Role="Categorie" EntitySet="Categorie" />
+            <End Role="PersoonsCategorie" EntitySet="PersoonsCategorie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersoonsCategorie_GelieerdePersoon" Association="ChiroGroep.UnitTestModel.Store.FK_PersoonsCategorie_GelieerdePersoon">
+            <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
+            <End Role="PersoonsCategorie" EntitySet="PersoonsCategorie" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Adres">
@@ -26,7 +36,17 @@
           <Property Name="HuisNr" Type="int" />
           <Property Name="PostCode" Type="varchar" Nullable="false" MaxLength="10" />
           <Property Name="AdresID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="true"/>
+          <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Categorie">
+          <Key>
+            <PropertyRef Name="CategorieID" />
+          </Key>
+          <Property Name="Naam" Type="varchar" MaxLength="80" />
+          <Property Name="Code" Type="varchar" MaxLength="10" />
+          <Property Name="CategorieID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="GroepID" Type="int" Nullable="false" />
+          <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="GelieerdePersoon">
           <Key>
@@ -34,7 +54,7 @@
           </Key>
           <Property Name="ChiroLeefTijd" Type="int" Nullable="false" />
           <Property Name="GelieerdePersoonID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
+          <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="PersoonsAdres">
           <Key>
@@ -43,9 +63,17 @@
           <Property Name="IsStandaard" Type="bit" Nullable="false" />
           <Property Name="Opmerking" Type="text" />
           <Property Name="AdresID" Type="int" Nullable="false" />
-          <Property Name="Versie" Type="timestamp" Nullable="true" StoreGeneratedPattern="Computed" />
           <Property Name="GelieerdePersoonID" Type="int" Nullable="false" />
           <Property Name="PersoonsAdresID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="PersoonsCategorie">
+          <Key>
+            <PropertyRef Name="GelieerdePersoonID" />
+            <PropertyRef Name="CategorieID" />
+          </Key>
+          <Property Name="GelieerdePersoonID" Type="int" Nullable="false" />
+          <Property Name="CategorieID" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_PersoonsAdres_Adres">
           <End Role="Adres" Type="ChiroGroep.UnitTestModel.Store.Adres" Multiplicity="1" />
@@ -71,8 +99,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
-    </edmx:StorageModels>
+        <Association Name="FK_PersoonsCategorie_Categorie">
+          <End Role="Categorie" Type="ChiroGroep.UnitTestModel.Store.Categorie" Multiplicity="1" />
+          <End Role="PersoonsCategorie" Type="ChiroGroep.UnitTestModel.Store.PersoonsCategorie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categorie">
+              <PropertyRef Name="CategorieID" />
+            </Principal>
+            <Dependent Role="PersoonsCategorie">
+              <PropertyRef Name="CategorieID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersoonsCategorie_GelieerdePersoon">
+          <End Role="GelieerdePersoon" Type="ChiroGroep.UnitTestModel.Store.GelieerdePersoon" Multiplicity="1" />
+          <End Role="PersoonsCategorie" Type="ChiroGroep.UnitTestModel.Store.PersoonsCategorie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GelieerdePersoon">
+              <PropertyRef Name="GelieerdePersoonID" />
+            </Principal>
+            <Dependent Role="PersoonsCategorie">
+              <PropertyRef Name="GelieerdePersoonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ChiroGroep.UnitTestModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
@@ -88,7 +139,10 @@
             <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
             <End Role="PersoonsAdres" EntitySet="PersoonsAdres" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="Categorie" EntityType="ChiroGroep.UnitTestModel.Categorie" />
+          <AssociationSet Name="PersoonsCategorie" Association="ChiroGroep.UnitTestModel.PersoonsCategorie">
+            <End Role="Categorie" EntitySet="Categorie" />
+            <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" /></AssociationSet></EntityContainer>
         <EntityType Name="Adres">
           <Key>
             <PropertyRef Name="ID" />
@@ -108,7 +162,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Versie" Type="Binary" Nullable="true" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="PersoonsAdres" Relationship="ChiroGroep.UnitTestModel.FK_PersoonsAdres_GelieerdePersoon" FromRole="GelieerdePersoon" ToRole="PersoonsAdres" />
-        </EntityType>
+          <NavigationProperty Name="Categorie" Relationship="ChiroGroep.UnitTestModel.PersoonsCategorie" FromRole="GelieerdePersoon" ToRole="Categorie" /></EntityType>
         <EntityType Name="PersoonsAdres">
           <Key>
             <PropertyRef Name="ID" />
@@ -128,7 +182,18 @@
           <End Role="GelieerdePersoon" Type="ChiroGroep.UnitTestModel.GelieerdePersoon" Multiplicity="1" />
           <End Role="PersoonsAdres" Type="ChiroGroep.UnitTestModel.PersoonsAdres" Multiplicity="*" />
         </Association>
-      </Schema>
+        <EntityType Name="Categorie">
+          <Key>
+            <PropertyRef Name="ID" /></Key>
+          <Property Name="Naam" Type="String" Nullable="true" />
+          <Property Name="Code" Type="String" Nullable="true" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="GroepID" Type="Int32" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="true" />
+          <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroep.UnitTestModel.PersoonsCategorie" FromRole="Categorie" ToRole="GelieerdePersoon" /></EntityType>
+        <Association Name="PersoonsCategorie">
+          <End Type="ChiroGroep.UnitTestModel.Categorie" Role="Categorie" Multiplicity="*" />
+          <End Type="ChiroGroep.UnitTestModel.GelieerdePersoon" Role="GelieerdePersoon" Multiplicity="*" /></Association></Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -180,7 +245,19 @@
               <ScalarProperty Name="ID" ColumnName="PersoonsAdresID" />
             </EndProperty>
           </AssociationSetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="Categorie">
+            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroep.UnitTestModel.Categorie)">
+              <MappingFragment StoreEntitySet="Categorie">
+                <ScalarProperty Name="Versie" ColumnName="Versie" />
+                <ScalarProperty Name="GroepID" ColumnName="GroepID" />
+                <ScalarProperty Name="ID" ColumnName="CategorieID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Naam" ColumnName="Naam" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <AssociationSetMapping Name="PersoonsCategorie" TypeName="ChiroGroep.UnitTestModel.PersoonsCategorie" StoreEntitySet="PersoonsCategorie">
+            <EndProperty Name="GelieerdePersoon">
+              <ScalarProperty Name="ID" ColumnName="GelieerdePersoonID" /></EndProperty>
+            <EndProperty Name="Categorie">
+              <ScalarProperty Name="ID" ColumnName="CategorieID" /></EndProperty></AssociationSetMapping></EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
@@ -200,14 +277,19 @@
     <edmx:Diagrams>
       <Diagram Name="TestModel">
         <EntityTypeShape EntityType="ChiroGroep.UnitTestModel.Adres" Width="1.5" PointX="0.75" PointY="3.875" Height="1.9210009765624996" IsExpanded="true" />
-        <EntityTypeShape EntityType="ChiroGroep.UnitTestModel.GelieerdePersoon" Width="1.5" PointX="0.75" PointY="1.125" Height="1.592306315104167" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChiroGroep.UnitTestModel.GelieerdePersoon" Width="1.5" PointX="6.5" PointY="1.125" Height="1.592306315104167" IsExpanded="true" />
         <EntityTypeShape EntityType="ChiroGroep.UnitTestModel.PersoonsAdres" Width="1.5" PointX="3" PointY="0.875" Height="1.9210009765625" IsExpanded="true" />
         <AssociationConnector Association="ChiroGroep.UnitTestModel.FK_PersoonsAdres_Adres" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="4.83550048828125" />
-          <ConnectorPoint PointX="3.75" PointY="4.83550048828125" />
-          <ConnectorPoint PointX="3.75" PointY="2.7960009765625" /></AssociationConnector>
+          <ConnectorPoint PointX="1.5" PointY="3.875" />
+          <ConnectorPoint PointX="1.5" PointY="1.83550048828125" />
+          <ConnectorPoint PointX="3" PointY="1.83550048828125" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroep.UnitTestModel.FK_PersoonsAdres_GelieerdePersoon" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="1.9211531575520835" />
-          <ConnectorPoint PointX="3" PointY="1.9211531575520835" /></AssociationConnector></Diagram></edmx:Diagrams>
+          <ConnectorPoint PointX="6.5" PointY="1.9605004882812502" />
+          <ConnectorPoint PointX="4.5" PointY="1.9605004882812502" /></AssociationConnector>
+        <EntityTypeShape EntityType="ChiroGroep.UnitTestModel.Categorie" Width="1.5" PointX="4.25" PointY="5" Height="1.9210009765624996" />
+        <AssociationConnector Association="ChiroGroep.UnitTestModel.PersoonsCategorie" >
+          <ConnectorPoint PointX="5.75" PointY="5.96050048828125" />
+          <ConnectorPoint PointX="7.25" PointY="5.96050048828125" />
+          <ConnectorPoint PointX="7.25" PointY="2.8816536458333331" /></AssociationConnector></Diagram></edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

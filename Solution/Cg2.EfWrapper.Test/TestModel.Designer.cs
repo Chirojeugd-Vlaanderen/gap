@@ -11,9 +11,10 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroep.UnitTestModel", "FK_PersoonsAdres_Adres", "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.EfWrapper.Test.Adres), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.EfWrapper.Test.PersoonsAdres))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroep.UnitTestModel", "FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.EfWrapper.Test.GelieerdePersoon), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.EfWrapper.Test.PersoonsAdres))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroep.UnitTestModel", "PersoonsCategorie", "Categorie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.EfWrapper.Test.Categorie), "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.EfWrapper.Test.GelieerdePersoon))]
 
 // Original file name:
-// Generation date: 23/05/2009 11:37:01
+// Generation date: 29/09/2009 15:22:52
 namespace Cg2.EfWrapper.Test
 {
     
@@ -93,6 +94,21 @@ namespace Cg2.EfWrapper.Test
         }
         private global::System.Data.Objects.ObjectQuery<PersoonsAdres> _PersoonsAdres;
         /// <summary>
+        /// There are no comments for Categorie in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<Categorie> Categorie
+        {
+            get
+            {
+                if ((this._Categorie == null))
+                {
+                    this._Categorie = base.CreateQuery<Categorie>("[Categorie]");
+                }
+                return this._Categorie;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<Categorie> _Categorie;
+        /// <summary>
         /// There are no comments for Adres in the schema.
         /// </summary>
         public void AddToAdres(Adres adres)
@@ -112,6 +128,13 @@ namespace Cg2.EfWrapper.Test
         public void AddToPersoonsAdres(PersoonsAdres persoonsAdres)
         {
             base.AddObject("PersoonsAdres", persoonsAdres);
+        }
+        /// <summary>
+        /// There are no comments for Categorie in the schema.
+        /// </summary>
+        public void AddToCategorie(Categorie categorie)
+        {
+            base.AddObject("Categorie", categorie);
         }
     }
     /// <summary>
@@ -389,6 +412,27 @@ namespace Cg2.EfWrapper.Test
                 }
             }
         }
+        /// <summary>
+        /// There are no comments for Categorie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroep.UnitTestModel", "PersoonsCategorie", "Categorie")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Categorie> Categorie
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Categorie>("ChiroGroep.UnitTestModel.PersoonsCategorie", "Categorie");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Categorie>("ChiroGroep.UnitTestModel.PersoonsCategorie", "Categorie", value);
+                }
+            }
+        }
     }
     /// <summary>
     /// There are no comments for ChiroGroep.UnitTestModel.PersoonsAdres in the schema.
@@ -576,6 +620,166 @@ namespace Cg2.EfWrapper.Test
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<GelieerdePersoon>("ChiroGroep.UnitTestModel.FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroep.UnitTestModel.Categorie in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// ID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroep.UnitTestModel", Name="Categorie")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class Categorie : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new Categorie object.
+        /// </summary>
+        /// <param name="id">Initial value of ID.</param>
+        /// <param name="groepID">Initial value of GroepID.</param>
+        public static Categorie CreateCategorie(int id, int groepID)
+        {
+            Categorie categorie = new Categorie();
+            categorie.ID = id;
+            categorie.GroepID = groepID;
+            return categorie;
+        }
+        /// <summary>
+        /// There are no comments for Property Naam in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Naam
+        {
+            get
+            {
+                return this._Naam;
+            }
+            set
+            {
+                this.OnNaamChanging(value);
+                this.ReportPropertyChanging("Naam");
+                this._Naam = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Naam");
+                this.OnNaamChanged();
+            }
+        }
+        private string _Naam;
+        partial void OnNaamChanging(string value);
+        partial void OnNaamChanged();
+        /// <summary>
+        /// There are no comments for Property Code in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Code
+        {
+            get
+            {
+                return this._Code;
+            }
+            set
+            {
+                this.OnCodeChanging(value);
+                this.ReportPropertyChanging("Code");
+                this._Code = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Code");
+                this.OnCodeChanged();
+            }
+        }
+        private string _Code;
+        partial void OnCodeChanging(string value);
+        partial void OnCodeChanged();
+        /// <summary>
+        /// There are no comments for Property ID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int ID
+        {
+            get
+            {
+                return this._ID;
+            }
+            set
+            {
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
+            }
+        }
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        /// <summary>
+        /// There are no comments for Property GroepID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int GroepID
+        {
+            get
+            {
+                return this._GroepID;
+            }
+            set
+            {
+                this.OnGroepIDChanging(value);
+                this.ReportPropertyChanging("GroepID");
+                this._GroepID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("GroepID");
+                this.OnGroepIDChanged();
+            }
+        }
+        private int _GroepID;
+        partial void OnGroepIDChanging(int value);
+        partial void OnGroepIDChanged();
+        /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
+        /// <summary>
+        /// There are no comments for GelieerdePersoon in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroep.UnitTestModel", "PersoonsCategorie", "GelieerdePersoon")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<GelieerdePersoon> GelieerdePersoon
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<GelieerdePersoon>("ChiroGroep.UnitTestModel.PersoonsCategorie", "GelieerdePersoon");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<GelieerdePersoon>("ChiroGroep.UnitTestModel.PersoonsCategorie", "GelieerdePersoon", value);
                 }
             }
         }

@@ -51,6 +51,35 @@ namespace Cg2.EfWrapper.Test
             return nieuwePersoonID;
         }
 
+        /// <summary>
+        /// Maakt gelieerde persoon met categorie, en returnt de 
+        /// GelieerdePersoonID;
+        /// </summary>
+        /// <returns>Gelieerde persoon met categorie</returns>
+        public static int PersoonMetCategorieMaken()
+        {
+            GelieerdePersoon p;
+            using (Entities db = new Entities())
+            {
+                Categorie c = new Categorie { Code = "TST", GroepID = 0 };
+                p = new GelieerdePersoon { ChiroLeefTijd = 0 };
+
+                db.AddToGelieerdePersoon(p);
+                db.AddToCategorie(c);
+
+                p.Categorie.Add(c);
+                c.GelieerdePersoon.Add(p);
+
+                db.SaveChanges();
+            }
+            return p.ID;
+        }
+
+        /// <summary>
+        /// Haalt gelieerde persoon met adres op
+        /// </summary>
+        /// <param name="persoonID">ID op te halen gelieerde persoon</param>
+        /// <returns>gelieerde persoon met adres</returns>
         internal static GelieerdePersoon PersoonOphalen(int persoonID)
         {
             GelieerdePersoon p;
@@ -59,6 +88,24 @@ namespace Cg2.EfWrapper.Test
                 db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 
                 p = (from gp in db.GelieerdePersoon.Include("PersoonsAdres.Adres")
+                     where gp.ID == persoonID
+                     select gp).FirstOrDefault();
+            }
+            return p;
+        }
+        /// <summary>
+        /// Haalt gelieerde persoon met categorieeen op
+        /// </summary>
+        /// <param name="persoonID">ID op te halen gelieerde persoon</param>
+        /// <returns>gelieerde persoon met categorieen</returns>
+        public static GelieerdePersoon PersoonOphalenMetCategorieen(int persoonID)
+        {
+            GelieerdePersoon p;
+            using (Entities db = new Entities())
+            {
+                db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
+
+                p = (from gp in db.GelieerdePersoon.Include("Categorie")
                      where gp.ID == persoonID
                      select gp).FirstOrDefault();
             }

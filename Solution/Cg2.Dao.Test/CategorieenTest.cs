@@ -80,11 +80,13 @@ namespace Cg2.Dao.Test
                 c.TeVerwijderen = true;
             }
 
-            dao.Bewaren(gp, foo => foo.Categorie.First().WithoutUpdate());
-            // De First() is nodig voor 1->veel of veel->veel.  Hopelijk zorgt
-            // WithoutUpdate() ervoor dat de categorie zelf niet weggegooid
-            // wordt.
-
+            dao.Bewaren(gp, foo => foo.Categorie);
+            // De 'TeVerwijderen' zorgt er bij 1->veel enkel voor
+            // dat de link tussen GelieerdePersoon en Categorie
+            // verwijderd wordt, en de Categorie zelf niet.
+            // Om dat laatste te bewerkstellingen, had 
+            // GelieerdePersoon gedecoreerd moeten zijn met
+            // [AssociationEndBehavior("PersoonsCategorie", Owned=true)]
         }
 
         /// <summary>

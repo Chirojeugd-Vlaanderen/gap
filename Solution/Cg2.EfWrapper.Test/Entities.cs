@@ -57,4 +57,22 @@ namespace Cg2.EfWrapper.Test
             set { this.VersieStringSet(value); }
         }
     }
+
+    public partial class Categorie : IBasisEntiteit
+    {
+        private bool _teVerwijderen = false;
+
+        public bool TeVerwijderen
+        {
+            get { return _teVerwijderen; }
+            set { _teVerwijderen = value; }
+        }
+
+        public string VersieString
+        {
+            get { return this.VersieStringGet(); }
+            set { this.VersieStringSet(value); }
+        }
+    }
+
 }

@@ -90,5 +90,32 @@ namespace Cg2.EfWrapper.Test
             Assert.AreEqual(q.PersoonsAdres.First().Adres.ID, adrid1);
             #endregion
         }
+
+        /// <summary>
+        /// De bedoeling is dat de persoon losgekoppeld wordt van de categorie.
+        /// </summary>
+        [TestMethod]
+        public void CategorieVerwijderen()
+        {
+            #region arrange
+            int gpid = TestHelpers.PersoonMetCategorieMaken();
+            GelieerdePersoon gp = TestHelpers.PersoonOphalenMetCategorieen(gpid);
+            #endregion
+
+            #region act
+            gp.Categorie.First().TeVerwijderen = true;
+
+            using (Entities db = new Entities())
+            {
+                db.AttachObjectGraph(gp, foo => foo.Categorie);
+                db.SaveChanges();
+            }
+            #endregion
+
+            #region assert
+            GelieerdePersoon gp2 = TestHelpers.PersoonOphalenMetCategorieen(gpid);
+            Assert.AreEqual(gp2.Categorie.Count(), 0);
+            #endregion
+        }
     }
 }
