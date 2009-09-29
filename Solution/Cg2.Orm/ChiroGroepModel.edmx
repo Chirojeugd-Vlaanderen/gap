@@ -208,24 +208,24 @@
         </EntityType>
         <EntityType Name="Afdeling">
           <Key>
-            <PropertyRef Name="afdelingID" />
+            <PropertyRef Name="AfdelingID" />
           </Key>
           <Property Name="AfdelingsNaam" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="Afkorting" Type="varchar" MaxLength="10" />
-          <Property Name="afdelingID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="groepID" Type="int" />
+          <Property Name="Afkorting" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="AfdelingID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="GroepID" Type="int" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="AfdelingsJaar">
           <Key>
             <PropertyRef Name="AfdelingsJaarID" />
           </Key>
-          <Property Name="GeboorteJaarTot" Type="int" />
-          <Property Name="GeboorteJaarVan" Type="int" />
+          <Property Name="GeboorteJaarTot" Type="int" Nullable="false" />
+          <Property Name="GeboorteJaarVan" Type="int" Nullable="false" />
           <Property Name="AfdelingsJaarID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="AfdelingID" Type="int" />
-          <Property Name="GroepsWerkJaarID" Type="int" />
-          <Property Name="OfficieleAfdelingID" Type="int" />
+          <Property Name="AfdelingID" Type="int" Nullable="false" />
+          <Property Name="GroepsWerkJaarID" Type="int" Nullable="false" />
+          <Property Name="OfficieleAfdelingID" Type="int" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Kind">
@@ -347,23 +347,23 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Afdeling_Groep">
-          <End Role="Groep" Type="ChiroGroepModel.Store.Groep" Multiplicity="0..1" />
+          <End Role="Groep" Type="ChiroGroepModel.Store.Groep" Multiplicity="1" />
           <End Role="Afdeling" Type="ChiroGroepModel.Store.Afdeling" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Groep">
               <PropertyRef Name="GroepID" />
             </Principal>
             <Dependent Role="Afdeling">
-              <PropertyRef Name="groepID" />
+              <PropertyRef Name="GroepID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_AfdelingsJaar_Afdeling">
-          <End Role="Afdeling" Type="ChiroGroepModel.Store.Afdeling" Multiplicity="0..1" />
+          <End Role="Afdeling" Type="ChiroGroepModel.Store.Afdeling" Multiplicity="1" />
           <End Role="AfdelingsJaar" Type="ChiroGroepModel.Store.AfdelingsJaar" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Afdeling">
-              <PropertyRef Name="afdelingID" />
+              <PropertyRef Name="AfdelingID" />
             </Principal>
             <Dependent Role="AfdelingsJaar">
               <PropertyRef Name="AfdelingID" />
@@ -371,7 +371,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_AfdelingsJaar_GroepsWerkjaar">
-          <End Role="GroepsWerkJaar" Type="ChiroGroepModel.Store.GroepsWerkJaar" Multiplicity="0..1" />
+          <End Role="GroepsWerkJaar" Type="ChiroGroepModel.Store.GroepsWerkJaar" Multiplicity="1" />
           <End Role="AfdelingsJaar" Type="ChiroGroepModel.Store.AfdelingsJaar" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="GroepsWerkJaar">
@@ -383,7 +383,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_AfdelingsJaar_OfficieleAfdeling">
-          <End Role="OfficieleAfdeling" Type="ChiroGroepModel.Store.OfficieleAfdeling" Multiplicity="0..1" />
+          <End Role="OfficieleAfdeling" Type="ChiroGroepModel.Store.OfficieleAfdeling" Multiplicity="1" />
           <End Role="AfdelingsJaar" Type="ChiroGroepModel.Store.AfdelingsJaar" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="OfficieleAfdeling">
@@ -852,7 +852,7 @@
           <Key>
             <PropertyRef Name="ID" /></Key>
           <Property Name="AfdelingsNaam" Type="String" Nullable="false" />
-          <Property Name="Afkorting" Type="String" Nullable="true" />
+          <Property Name="Afkorting" Type="String" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Versie" Type="Binary" Nullable="true" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_Afdeling_Groep" FromRole="Afdeling" ToRole="Groep" />
@@ -861,8 +861,8 @@
         <EntityType Name="AfdelingsJaar">
           <Key>
             <PropertyRef Name="ID" /></Key>
-          <Property Name="GeboorteJaarTot" Type="Int32" Nullable="true" />
-          <Property Name="GeboorteJaarVan" Type="Int32" Nullable="true" />
+          <Property Name="GeboorteJaarTot" Type="Int32" Nullable="false" />
+          <Property Name="GeboorteJaarVan" Type="Int32" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Versie" Type="Binary" Nullable="true" />
           <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar" FromRole="AfdelingsJaar" ToRole="GroepsWerkJaar" />
@@ -879,16 +879,16 @@
           <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling" FromRole="OfficieleAfdeling" ToRole="AfdelingsJaar" />
         </EntityType>
         <Association Name="FK_Afdeling_Groep">
-          <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="0..1" />
+          <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1" />
           <End Type="ChiroGroepModel.Afdeling" Role="Afdeling" Multiplicity="*" /></Association>
         <Association Name="FK_AfdelingsJaar_GroepsWerkjaar">
-          <End Type="ChiroGroepModel.GroepsWerkJaar" Role="GroepsWerkJaar" Multiplicity="0..1" />
+          <End Type="ChiroGroepModel.GroepsWerkJaar" Role="GroepsWerkJaar" Multiplicity="1" />
           <End Type="ChiroGroepModel.AfdelingsJaar" Role="AfdelingsJaar" Multiplicity="*" /></Association>
         <Association Name="FK_AfdelingsJaar_Afdeling">
-          <End Type="ChiroGroepModel.Afdeling" Role="Afdeling" Multiplicity="0..1" />
+          <End Type="ChiroGroepModel.Afdeling" Role="Afdeling" Multiplicity="1" />
           <End Type="ChiroGroepModel.AfdelingsJaar" Role="AfdelingsJaar" Multiplicity="*" /></Association>
         <Association Name="FK_AfdelingsJaar_OfficieleAfdeling">
-          <End Type="ChiroGroepModel.OfficieleAfdeling" Role="OfficieleAfdeling" Multiplicity="0..1" />
+          <End Type="ChiroGroepModel.OfficieleAfdeling" Role="OfficieleAfdeling" Multiplicity="1" />
           <End Type="ChiroGroepModel.AfdelingsJaar" Role="AfdelingsJaar" Multiplicity="*" /></Association>
         <EntityType Name="Leiding" BaseType="ChiroGroepModel.Lid">
           <Property Name="DubbelPuntAbonnement" Type="Boolean" Nullable="true" />
@@ -1114,7 +1114,7 @@
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Afdeling)">
               <MappingFragment StoreEntitySet="Afdeling">
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
-                <ScalarProperty Name="ID" ColumnName="afdelingID" />
+                <ScalarProperty Name="ID" ColumnName="AfdelingID" />
                 <ScalarProperty Name="Afkorting" ColumnName="Afkorting" />
                 <ScalarProperty Name="AfdelingsNaam" ColumnName="AfdelingsNaam" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="AfdelingsJaar">
@@ -1132,10 +1132,10 @@
                 <ScalarProperty Name="Naam" ColumnName="Naam" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
           <AssociationSetMapping Name="FK_Afdeling_Groep" TypeName="ChiroGroepModel.FK_Afdeling_Groep" StoreEntitySet="Afdeling">
             <EndProperty Name="Afdeling">
-              <ScalarProperty Name="ID" ColumnName="afdelingID" /></EndProperty>
+              <ScalarProperty Name="ID" ColumnName="AfdelingID" /></EndProperty>
             <EndProperty Name="Groep">
-              <ScalarProperty Name="ID" ColumnName="groepID" /></EndProperty>
-            <Condition ColumnName="groepID" IsNull="false" /></AssociationSetMapping>
+              <ScalarProperty Name="ID" ColumnName="GroepID" /></EndProperty>
+            <Condition ColumnName="GroepID" IsNull="false" /></AssociationSetMapping>
           <AssociationSetMapping Name="FK_AfdelingsJaar_GroepsWerkjaar" TypeName="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar" StoreEntitySet="AfdelingsJaar">
             <EndProperty Name="AfdelingsJaar">
               <ScalarProperty Name="ID" ColumnName="AfdelingsJaarID" /></EndProperty>

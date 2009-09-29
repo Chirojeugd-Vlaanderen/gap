@@ -21,16 +21,16 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Lid_GelieerdePersoon", "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.GelieerdePersoon), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Lid))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GebruikersRecht_Gav", "Gav", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Gav), "GebruikersRecht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GebruikersRecht))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GebruikersRecht_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "GebruikersRecht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GebruikersRecht))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Afdeling_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.Groep), "Afdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Afdeling))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_AfdelingsJaar_GroepsWerkjaar", "GroepsWerkJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.GroepsWerkJaar), "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_AfdelingsJaar_Afdeling", "Afdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.Afdeling), "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_AfdelingsJaar_OfficieleAfdeling", "OfficieleAfdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.OfficieleAfdeling), "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Afdeling_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "Afdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Afdeling))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_AfdelingsJaar_GroepsWerkjaar", "GroepsWerkJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.GroepsWerkJaar), "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_AfdelingsJaar_Afdeling", "Afdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Afdeling), "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_AfdelingsJaar_OfficieleAfdeling", "OfficieleAfdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.OfficieleAfdeling), "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "LeidingInAfdelingsJaar", "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.AfdelingsJaar), "Leiding", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Leiding))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Kind_AfdelingsJaar", "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.AfdelingsJaar), "Kind", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Kind))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Categorie_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "Categorie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Categorie))]
 
 // Original file name:
-// Generation date: 29/09/2009 9:59:53
+// Generation date: 29/09/2009 10:29:51
 namespace Cg2.Orm
 {
     
@@ -2854,11 +2854,13 @@ namespace Cg2.Orm
         /// Create a new Afdeling object.
         /// </summary>
         /// <param name="afdelingsNaam">Initial value of AfdelingsNaam.</param>
+        /// <param name="afkorting">Initial value of Afkorting.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static Afdeling CreateAfdeling(string afdelingsNaam, int id)
+        public static Afdeling CreateAfdeling(string afdelingsNaam, string afkorting, int id)
         {
             Afdeling afdeling = new Afdeling();
             afdeling.AfdelingsNaam = afdelingsNaam;
+            afdeling.Afkorting = afkorting;
             afdeling.ID = id;
             return afdeling;
         }
@@ -2888,7 +2890,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property Afkorting in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string Afkorting
         {
@@ -2900,7 +2902,7 @@ namespace Cg2.Orm
             {
                 this.OnAfkortingChanging(value);
                 this.ReportPropertyChanging("Afkorting");
-                this._Afkorting = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this._Afkorting = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
                 this.ReportPropertyChanged("Afkorting");
                 this.OnAfkortingChanged();
             }
@@ -3027,19 +3029,21 @@ namespace Cg2.Orm
         /// <summary>
         /// Create a new AfdelingsJaar object.
         /// </summary>
+        /// <param name="geboorteJaarTot">Initial value of GeboorteJaarTot.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static AfdelingsJaar CreateAfdelingsJaar(int id)
+        public static AfdelingsJaar CreateAfdelingsJaar(int geboorteJaarTot, int id)
         {
             AfdelingsJaar afdelingsJaar = new AfdelingsJaar();
+            afdelingsJaar.GeboorteJaarTot = geboorteJaarTot;
             afdelingsJaar.ID = id;
             return afdelingsJaar;
         }
         /// <summary>
         /// There are no comments for Property GeboorteJaarTot in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Nullable<int> GeboorteJaarTot
+        public int GeboorteJaarTot
         {
             get
             {
@@ -3054,8 +3058,8 @@ namespace Cg2.Orm
                 this.OnGeboorteJaarTotChanged();
             }
         }
-        private global::System.Nullable<int> _GeboorteJaarTot;
-        partial void OnGeboorteJaarTotChanging(global::System.Nullable<int> value);
+        private int _GeboorteJaarTot;
+        partial void OnGeboorteJaarTotChanging(int value);
         partial void OnGeboorteJaarTotChanged();
         /// <summary>
         /// There are no comments for Property GeboorteJaarVan in the schema.
