@@ -313,7 +313,7 @@
           </Key>
           <Property Name="AdNummer" Type="int" />
           <Property Name="Naam" Type="varchar" Nullable="false" MaxLength="160" />
-          <Property Name="VoorNaam" Type="varchar" MaxLength="60" />
+          <Property Name="VoorNaam" Type="varchar" Nullable="false" MaxLength="60" />
           <Property Name="GeboorteDatum" Type="smalldatetime" />
           <Property Name="Geslacht" Type="int" Nullable="false" />
           <Property Name="SterfDatum" Type="smalldatetime" />
@@ -747,7 +747,7 @@
           </Key>
           <Property Name="AdNummer" Type="Int32" ConcurrencyMode="Fixed" />
           <Property Name="Naam" Type="String" Nullable="false" MaxLength="160" Unicode="false" FixedLength="false" />
-          <Property Name="VoorNaam" Type="String" MaxLength="60" Unicode="false" FixedLength="false" />
+          <Property Name="VoorNaam" Type="String" MaxLength="60" Unicode="false" FixedLength="false" Nullable="false" />
           <Property Name="GeboorteDatum" Type="DateTime" />
           <Property Name="GeslachtsInt" Type="Int32" Nullable="false" />
           <Property Name="SterfDatum" Type="DateTime" />

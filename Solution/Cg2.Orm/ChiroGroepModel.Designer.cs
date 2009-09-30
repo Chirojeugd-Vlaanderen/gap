@@ -31,7 +31,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "PersoonsCategorie", "Categorie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Categorie), "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GelieerdePersoon))]
 
 // Original file name:
-// Generation date: 29/09/2009 11:09:36
+// Generation date: 30/09/2009 16:11:42
 namespace Cg2.Orm
 {
     
@@ -771,12 +771,14 @@ namespace Cg2.Orm
         /// Create a new Persoon object.
         /// </summary>
         /// <param name="naam">Initial value of Naam.</param>
+        /// <param name="voorNaam">Initial value of VoorNaam.</param>
         /// <param name="geslachtsInt">Initial value of GeslachtsInt.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static Persoon CreatePersoon(string naam, int geslachtsInt, int id)
+        public static Persoon CreatePersoon(string naam, string voorNaam, int geslachtsInt, int id)
         {
             Persoon persoon = new Persoon();
             persoon.Naam = naam;
+            persoon.VoorNaam = voorNaam;
             persoon.GeslachtsInt = geslachtsInt;
             persoon.ID = id;
             return persoon;
@@ -830,7 +832,7 @@ namespace Cg2.Orm
         /// <summary>
         /// There are no comments for Property VoorNaam in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string VoorNaam
         {
@@ -842,7 +844,7 @@ namespace Cg2.Orm
             {
                 this.OnVoorNaamChanging(value);
                 this.ReportPropertyChanging("VoorNaam");
-                this._VoorNaam = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this._VoorNaam = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
                 this.ReportPropertyChanged("VoorNaam");
                 this.OnVoorNaamChanged();
             }
