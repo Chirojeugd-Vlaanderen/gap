@@ -14,7 +14,7 @@ namespace MvcWebApp2.Models
     ///   . op een adres A wonen personen
     ///   . een aantal van die personen verhuizen naar een nieuw adres B
     /// </summary>
-    public class VerhuisInfo : MasterViewModel 
+    public class VerhuisModel : MasterViewModel 
     {
         /// <summary>
         /// ID van GelieerdePersoon die graag zou verhuizen.
@@ -44,7 +44,7 @@ namespace MvcWebApp2.Models
         /// <summary>
         /// Saaie standaardconstructor
         /// </summary>
-        public VerhuisInfo()
+        public VerhuisModel()
         {
             NaarAdres = new Adres();
             PersoonIDs = new List<int>();
@@ -58,7 +58,7 @@ namespace MvcWebApp2.Models
         /// </summary>
         /// <param name="gelieerdePersoonID">persoon waarvoor verhuis geinitieerd werd</param>
         /// <param name="vanAdresID">relevante vanAdresID</param>
-        public VerhuisInfo(int vanAdresID, int gelieerdePersoonID)
+        public VerhuisModel(int vanAdresID, int gelieerdePersoonID)
         {
             AanvragerID = gelieerdePersoonID;
             VanAdresMetBewoners = ServiceHelper.CallService<IGelieerdePersonenService, Adres>(l => l.AdresMetBewonersOphalen(vanAdresID));

@@ -95,7 +95,7 @@
     <Compile Include="Models\MasterViewModel.cs" />
     <Compile Include="Models\NieuwAdresModel.cs" />
     <Compile Include="Models\PersoonInfoModel.cs" />
-    <Compile Include="Models\VerhuisInfo.cs" />
+    <Compile Include="Models\VerhuisModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

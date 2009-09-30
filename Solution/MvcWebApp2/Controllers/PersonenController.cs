@@ -120,14 +120,14 @@ namespace MvcWebApp2.Controllers
         // GET: /Personen/Verhuizen/vanAdresID
         public ActionResult Verhuizen(int id, int aanvragerID)
         {
-			VerhuisInfo model = new VerhuisInfo(id, aanvragerID);			
+			VerhuisModel model = new VerhuisModel(id, aanvragerID);			
             model.Title = "Personen Verhuizen";
             return View("AdresBewerken", model);
         }
 
         // POST: /Personen/Verhuizen
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Verhuizen(VerhuisInfo model)
+        public ActionResult Verhuizen(VerhuisModel model)
         {
             try
             {
