@@ -190,32 +190,22 @@ namespace Cg2.Services
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void AdresVerwijderenVanPersonen(List<int> personenIDs, int adresID)
         {
-            PersonenManager persMgr = Factory.Maak<PersonenManager>();
             AdressenManager adrMgr = Factory.Maak<AdressenManager>();
 
-            // Personen ophalen
-            IList<Persoon> personenLijst = persMgr.LijstOphalen(personenIDs);
+            // Adres ophalen, met bewoners voor GAV
 
-            // Adres koppelen
-            foreach (Persoon p in personenLijst)
+            Adres adr = adrMgr.AdresMetBewonersOphalen(adresID);
+
+            IList<PersoonsAdres> teVerwijderen = (from pa in adr.PersoonsAdres
+                                                  where personenIDs.Contains(pa.Persoon.ID)
+                                                  select pa).ToList();
+
+            foreach (PersoonsAdres pa in teVerwijderen)
             {
-                bool woonter = false;
-                foreach(PersoonsAdres a in p.PersoonsAdres){
-                    if (a.Adres.ID == adresID)
-                    {
-                        woonter = true;
-                        a.Adres.TeVerwijderen = true;
-                    }
-                }
-                if (!woonter)
-                {
-                    throw new AdresException("Niet iedereen woont op dat adres");
-                }
+                pa.TeVerwijderen = true;
             }
 
-            // persisteren
-            //TODO de personen bewaren met adressen!
-            throw new NotImplementedException();
+            adrMgr.Bewaren(adr);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]

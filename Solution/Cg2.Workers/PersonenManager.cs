@@ -115,6 +115,7 @@ namespace Cg2.Workers
             }
         }
 
+
         public IList<Persoon> LijstOphalen(List<int> personenIDs)
         {
             AutorisatieManager authMgr = Factory.Maak<AutorisatieManager>();

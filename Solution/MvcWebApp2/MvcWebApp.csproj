@@ -87,6 +87,7 @@
     <Compile Include="GroepActionFilter.cs" />
     <Compile Include="HtmlHelpers\PagingHelper.cs" />
     <Compile Include="ModelStateWrapper.cs" />
+    <Compile Include="Models\AdresVerwijderenModel.cs" />
     <Compile Include="Models\GavModel.cs" />
     <Compile Include="Models\LidInfoModel.cs" />
     <Compile Include="Models\GelieerdePersonenModel.cs" />
@@ -110,6 +111,7 @@
     <Content Include="Global.asax" />
     <Content Include="Views\Gav\Index.aspx" />
     <Content Include="Views\Leden\Index.aspx" />
+    <Content Include="Views\Personen\AdresVerwijderen.aspx" />
     <Content Include="Views\Personen\NieuwAdres.aspx" />
     <Content Include="Views\Personen\Edit.aspx" />
     <Content Include="Views\Personen\Hallo.aspx" />

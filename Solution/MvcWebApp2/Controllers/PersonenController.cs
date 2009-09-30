@@ -117,7 +117,7 @@ namespace MvcWebApp2.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: /Personen/Verhuizen/vanAdresID
+        // GET: /Personen/Verhuizen/vanAdresID?AanvragerID=#
         public ActionResult Verhuizen(int id, int aanvragerID)
         {
 			VerhuisModel model = new VerhuisModel(id, aanvragerID);			
@@ -173,11 +173,20 @@ namespace MvcWebApp2.Controllers
             }
         }
 
-        // GET: /Personen/AdresVerwijderen/PersoonsAdresID
-        public ActionResult AdresVerwijderen(int id)
+        // GET: /Personen/AdresVerwijderen/AdresID
+        public ActionResult AdresVerwijderen(int id, int gelieerdePersoonID)
         {
-            return null;
-            ///TODO zorgen dat de juiste methode gecalld wordt. Mss moet dit een post zijn?
+            AdresVerwijderenModel model = new AdresVerwijderenModel(id, gelieerdePersoonID);
+            model.Title = "Adres verwijderen";
+            return View("AdresVerwijderen", model);
+        }
+
+        // POST: /Personen/AdresVerwijderen
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult AdresVerwijderen(AdresVerwijderenModel model)
+        {
+            ServiceHelper.CallService<IGelieerdePersonenService>(foo => foo.AdresVerwijderenVanPersonen(model.PersoonIDs, model.AdresMetBewoners.ID));
+            return RedirectToAction("Edit", new { id = model.AanvragerGelieerdePersoonID });
         }
 
         // GET: /Personen/NieuwAdres/gelieerdePersoonID

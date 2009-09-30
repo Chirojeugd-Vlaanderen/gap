@@ -4,9 +4,14 @@ using System.Linq;
 using System.Text;
 
 using Cg2.EfWrapper;
+using Cg2.EfWrapper.Entity;
 
 namespace Cg2.Orm
 {
+    // Als een link naar PersoonsAdres verwijdert wordt, dan
+    // moet het persoonsadres zelf ook verwijderd worden.
+    // Vandaar het attribuut AssociationEndBehavior
+    [AssociationEndBehavior("PersoonsAdres", Owned = true)]
     public partial class Adres: IBasisEntiteit
     {
         private bool _teVerwijderen = false;
