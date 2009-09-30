@@ -8,7 +8,7 @@ using Cg2.EfWrapper.Entity;
 
 namespace Cg2.Orm
 {
-    // Als een link naar PersoonsAdres verwijdert wordt, dan
+    // Als een link naar PersoonsAdres verwijderd wordt, dan
     // moet het persoonsadres zelf ook verwijderd worden.
     // Vandaar het attribuut AssociationEndBehavior
     [AssociationEndBehavior("PersoonsAdres", Owned = true)]
