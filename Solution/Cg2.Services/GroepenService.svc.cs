@@ -143,8 +143,7 @@ namespace Cg2.Services
             {
                 ID = g.ID,
                 Groepsnaam = g.Naam,
-                // TODO Add Adres / Plaats to Groep ('Mechelen' staat hier tijdelijk, door demodoeleinden)
-                Plaats = "Mechelen",
+                Plaats = (g is ChiroGroep ? (g as ChiroGroep).Plaats : Properties.Resources.NietVanToepassing),
                 StamNummer = g.Code == null ? String.Empty : g.Code.ToUpper()
             };
         }
