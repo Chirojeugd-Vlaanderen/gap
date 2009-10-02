@@ -22,6 +22,7 @@
           <EntitySet Name="LeidingInAfdelingsJaar" EntityType="ChiroGroepModel.Store.LeidingInAfdelingsJaar" store:Type="Tables" Schema="lid" />
           <EntitySet Name="Lid" EntityType="ChiroGroepModel.Store.Lid" store:Type="Tables" Schema="lid" />
           <EntitySet Name="OfficieleAfdeling" EntityType="ChiroGroepModel.Store.OfficieleAfdeling" store:Type="Tables" Schema="lid" />
+          <EntitySet Name="CommunicatieType" EntityType="ChiroGroepModel.Store.CommunicatieType" store:Type="Tables" Schema="pers" />
           <EntitySet Name="CommunicatieVorm" EntityType="ChiroGroepModel.Store.CommunicatieVorm" store:Type="Tables" Schema="pers" />
           <EntitySet Name="GelieerdePersoon" EntityType="ChiroGroepModel.Store.GelieerdePersoon" store:Type="Tables" Schema="pers" />
           <EntitySet Name="Persoon" EntityType="ChiroGroepModel.Store.Persoon" store:Type="Tables" Schema="pers" />
@@ -58,6 +59,10 @@
           <AssociationSet Name="FK_ChiroGroep_Groep" Association="ChiroGroepModel.Store.FK_ChiroGroep_Groep">
             <End Role="Groep" EntitySet="Groep" />
             <End Role="ChiroGroep" EntitySet="ChiroGroep" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommunicatieVorm_CommunicatieType" Association="ChiroGroepModel.Store.FK_CommunicatieVorm_CommunicatieType">
+            <End Role="CommunicatieType" EntitySet="CommunicatieType" />
+            <End Role="CommunicatieVorm" EntitySet="CommunicatieVorm" />
           </AssociationSet>
           <AssociationSet Name="FK_CommunicatieVorm_GelieerdePersoon" Association="ChiroGroepModel.Store.FK_CommunicatieVorm_GelieerdePersoon">
             <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
@@ -284,6 +289,15 @@
           <Property Name="officieleAfdelingID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="CommunicatieType">
+          <Key>
+            <PropertyRef Name="CommunicatieTypeID" />
+          </Key>
+          <Property Name="Omschrijving" Type="varchar" MaxLength="80" />
+          <Property Name="Validatie" Type="varchar" MaxLength="160" />
+          <Property Name="CommunicatieTypeID" Type="int" Nullable="false" />
+          <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
         <EntityType Name="CommunicatieVorm">
           <Key>
             <PropertyRef Name="CommunicatieVormID" />
@@ -291,7 +305,7 @@
           <Property Name="Nota" Type="varchar" MaxLength="320" />
           <Property Name="Nummer" Type="varchar" MaxLength="160" />
           <Property Name="CommunicatieVormID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="CommunicatieTypeID" Type="int" />
+          <Property Name="CommunicatieTypeID" Type="int" Nullable="false" />
           <Property Name="IsGezinsgebonden" Type="bit" Nullable="false" />
           <Property Name="Voorkeur" Type="bit" Nullable="false" />
           <Property Name="GelieerdePersoonID" Type="int" />
@@ -432,6 +446,18 @@
             </Principal>
             <Dependent Role="ChiroGroep">
               <PropertyRef Name="ChiroGroepID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CommunicatieVorm_CommunicatieType">
+          <End Role="CommunicatieType" Type="ChiroGroepModel.Store.CommunicatieType" Multiplicity="1" />
+          <End Role="CommunicatieVorm" Type="ChiroGroepModel.Store.CommunicatieVorm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CommunicatieType">
+              <PropertyRef Name="CommunicatieTypeID" />
+            </Principal>
+            <Dependent Role="CommunicatieVorm">
+              <PropertyRef Name="CommunicatieTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -721,7 +747,11 @@
           </AssociationSet>
           <AssociationSet Name="PersoonsCategorie" Association="ChiroGroepModel.PersoonsCategorie">
             <End Role="Categorie" EntitySet="Categorie" />
-            <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" /></AssociationSet></EntityContainer>
+            <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" /></AssociationSet>
+          <EntitySet Name="CommunicatieType" EntityType="ChiroGroepModel.CommunicatieType" />
+          <AssociationSet Name="FK_CommunicatieVorm_CommunicatieType" Association="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType">
+            <End Role="CommunicatieType" EntitySet="CommunicatieType" />
+            <End Role="CommunicatieVorm" EntitySet="CommunicatieVorm" /></AssociationSet></EntityContainer>
         <EntityType Name="ChiroGroep" BaseType="ChiroGroepModel.Groep">
           <Property Name="Plaats" Type="String" MaxLength="60" FixedLength="false" Nullable="true" /></EntityType>
         <EntityType Name="Groep">
@@ -762,11 +792,11 @@
           <Property Name="Nota" Type="String" Nullable="true" />
           <Property Name="Nummer" Type="String" Nullable="true" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="CommunicatieTypeInt" Type="Int32" Nullable="true" />
           <Property Name="IsGezinsgebonden" Type="Boolean" Nullable="false" />
           <Property Name="Voorkeur" Type="Boolean" Nullable="false" />
           <Property Name="Versie" Type="Binary" Nullable="true" />
-          <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" FromRole="CommunicatieVorm" ToRole="GelieerdePersoon" /></EntityType>
+          <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" FromRole="CommunicatieVorm" ToRole="GelieerdePersoon" />
+          <NavigationProperty Name="CommunicatieType" Relationship="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" FromRole="CommunicatieVorm" ToRole="CommunicatieType" /></EntityType>
         <EntityType Name="GelieerdePersoon">
           <Key>
             <PropertyRef Name="ID" /></Key>
@@ -963,7 +993,18 @@
         </Association>
         <Association Name="PersoonsCategorie">
           <End Type="ChiroGroepModel.Categorie" Role="Categorie" Multiplicity="*" />
-          <End Type="ChiroGroepModel.GelieerdePersoon" Role="GelieerdePersoon" Multiplicity="*" /></Association></Schema>
+          <End Type="ChiroGroepModel.GelieerdePersoon" Role="GelieerdePersoon" Multiplicity="*" /></Association>
+        <EntityType Name="CommunicatieType">
+          <Key>
+            <PropertyRef Name="ID" /></Key>
+          <Property Name="Omschrijving" Type="String" Nullable="true" />
+          <Property Name="Validatie" Type="String" Nullable="true" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="true" />
+          <NavigationProperty Name="CommunicatieVorm" Relationship="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" FromRole="CommunicatieType" ToRole="CommunicatieVorm" /></EntityType>
+        <Association Name="FK_CommunicatieVorm_CommunicatieType">
+          <End Type="ChiroGroepModel.CommunicatieType" Role="CommunicatieType" Multiplicity="1" />
+          <End Type="ChiroGroepModel.CommunicatieVorm" Role="CommunicatieVorm" Multiplicity="*" /></Association></Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1007,7 +1048,6 @@
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="Voorkeur" ColumnName="Voorkeur" />
                 <ScalarProperty Name="IsGezinsgebonden" ColumnName="IsGezinsgebonden" />
-                <ScalarProperty Name="CommunicatieTypeInt" ColumnName="CommunicatieTypeID" />
                 <ScalarProperty Name="ID" ColumnName="CommunicatieVormID" />
                 <ScalarProperty Name="Nummer" ColumnName="Nummer" />
                 <ScalarProperty Name="Nota" ColumnName="Nota" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
@@ -1244,7 +1284,19 @@
             <EndProperty Name="GelieerdePersoon">
               <ScalarProperty Name="ID" ColumnName="GelieerdePersoonID" /></EndProperty>
             <EndProperty Name="Categorie">
-              <ScalarProperty Name="ID" ColumnName="CategorieID" /></EndProperty></AssociationSetMapping></EntityContainerMapping>
+              <ScalarProperty Name="ID" ColumnName="CategorieID" /></EndProperty></AssociationSetMapping>
+          <EntitySetMapping Name="CommunicatieType">
+            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.CommunicatieType)">
+              <MappingFragment StoreEntitySet="CommunicatieType">
+                <ScalarProperty Name="Versie" ColumnName="Versie" />
+                <ScalarProperty Name="ID" ColumnName="CommunicatieTypeID" />
+                <ScalarProperty Name="Validatie" ColumnName="Validatie" />
+                <ScalarProperty Name="Omschrijving" ColumnName="Omschrijving" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <AssociationSetMapping Name="FK_CommunicatieVorm_CommunicatieType" TypeName="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" StoreEntitySet="CommunicatieVorm">
+            <EndProperty Name="CommunicatieVorm">
+              <ScalarProperty Name="ID" ColumnName="CommunicatieVormID" /></EndProperty>
+            <EndProperty Name="CommunicatieType">
+              <ScalarProperty Name="ID" ColumnName="CommunicatieTypeID" /></EndProperty></AssociationSetMapping></EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
@@ -1265,44 +1317,45 @@
       <Diagram Name="ChiroGroepModel" ZoomLevel="88">
         <EntityTypeShape EntityType="ChiroGroepModel.ChiroGroep" Width="1.5" PointX="0.5" PointY="5.875" Height="1.0992643229166665" IsExpanded="true" />
         <EntityTypeShape EntityType="ChiroGroepModel.Groep" Width="1.5" PointX="2.25" PointY="5.125" Height="2.9052945963541674" IsExpanded="true" />
-        <EntityTypeShape EntityType="ChiroGroepModel.Persoon" Width="1.5" PointX="7.5" PointY="0.625" Height="2.5783902994791656" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChiroGroepModel.Persoon" Width="1.5" PointX="12.625" PointY="0.75" Height="2.5783902994791656" IsExpanded="true" />
         <InheritanceConnector EntityType="ChiroGroepModel.ChiroGroep" ManuallyRouted="false">
           <ConnectorPoint PointX="2.25" PointY="6.4246321614583337" />
           <ConnectorPoint PointX="2" PointY="6.4246321614583337" />
           </InheritanceConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.CommunicatieVorm" Width="2.5" PointX="10.125" PointY="1.125" Height="2.2496956380208335" />
-        <EntityTypeShape EntityType="ChiroGroepModel.GelieerdePersoon" Width="1.5" PointX="4.75" PointY="2" Height="2.2496956380208326" />
+        <EntityTypeShape EntityType="ChiroGroepModel.CommunicatieVorm" Width="2.5" PointX="7.125" PointY="0.5" Height="2.41404296875" />
+        <EntityTypeShape EntityType="ChiroGroepModel.GelieerdePersoon" Width="1.5" PointX="4.75" PointY="2.625" Height="2.2496956380208326" />
         <AssociationConnector Association="ChiroGroepModel.FK_GelieerdePersoon_Groep" >
-          <ConnectorPoint PointX="3.4062525" PointY="5.125" />
-          <ConnectorPoint PointX="3.4062525" PointY="3.1248478190104163" />
-          <ConnectorPoint PointX="4.75" PointY="3.1248478190104163" />
+          <ConnectorPoint PointX="3.75" PointY="6.472643984375" />
+          <ConnectorPoint PointX="5.5" PointY="6.472643984375" />
+          <ConnectorPoint PointX="5.5" PointY="4.8746956380208326" />
           </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" >
-          <ConnectorPoint PointX="6.25" PointY="3.3202929687499996" />
-          <ConnectorPoint PointX="8.5729166666666661" PointY="3.3202929687499991" />
-          <ConnectorPoint PointX="8.7395833333333339" PointY="3.3202929687499996" />
-          <ConnectorPoint PointX="10.125" PointY="3.3202929687499996" /></AssociationConnector>
+          <ConnectorPoint PointX="6.25" PointY="3.8943698033854162" />
+          <ConnectorPoint PointX="8.375" PointY="3.8943698033854162" />
+          <ConnectorPoint PointX="8.375" PointY="2.91404296875" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_GelieerdePersoon_Persoon" >
-          <ConnectorPoint PointX="7.5" PointY="2.6016951497395828" />
-          <ConnectorPoint PointX="6.25" PointY="2.6016951497395828" />
-          </AssociationConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.Adres" Width="1.5" PointX="9.125" PointY="5" Height="2.3368131510416674" />
-        <EntityTypeShape EntityType="ChiroGroepModel.Straat" Width="1.5" PointX="11.375" PointY="4" Height="1.7683317057291674" />
-        <EntityTypeShape EntityType="ChiroGroepModel.Subgemeente" Width="1.5" PointX="11.375" PointY="6.5" Height="1.7683317057291674" />
-        <EntityTypeShape EntityType="ChiroGroepModel.PersoonsAdres" Width="1.5" PointX="6.625" PointY="5.75" Height="2.0853483072916656" />
+          <ConnectorPoint PointX="12.625" PointY="3.1524666341145826" />
+          <ConnectorPoint PointX="8.4583333333333339" PointY="3.1524666341145822" />
+          <ConnectorPoint PointX="8.2916666666666661" PointY="3.1524666341145826" />
+          <ConnectorPoint PointX="6.25" PointY="3.1524666341145826" /></AssociationConnector>
+        <EntityTypeShape EntityType="ChiroGroepModel.Adres" Width="1.5" PointX="11" PointY="7" Height="2.2496956380208326" />
+        <EntityTypeShape EntityType="ChiroGroepModel.Straat" Width="1.5" PointX="13.5" PointY="7.5" Height="1.7566536458333335" />
+        <EntityTypeShape EntityType="ChiroGroepModel.Subgemeente" Width="1.5" PointX="11" PointY="4.375" Height="1.7566536458333335" />
+        <EntityTypeShape EntityType="ChiroGroepModel.PersoonsAdres" Width="1.5" PointX="13.5" PointY="4.5" Height="1.9210009765624996" />
         <AssociationConnector Association="ChiroGroepModel.FK_Adres_Straat" >
-          <ConnectorPoint PointX="11.375" PointY="5.3783268229166667" />
-          <ConnectorPoint PointX="10.625" PointY="5.3783268229166667" />
+          <ConnectorPoint PointX="13.5" PointY="8.3748478190104159" />
+          <ConnectorPoint PointX="12.5" PointY="8.3748478190104159" />
           </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_Adres_Subgemeente" >
-          <ConnectorPoint PointX="11.375" PointY="6.8748478190104159" />
-          <ConnectorPoint PointX="10.625" PointY="6.8748478190104159" />
+          <ConnectorPoint PointX="11.75" PointY="6.1316536458333335" />
+          <ConnectorPoint PointX="11.75" PointY="7" />
           </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_Adres" >
-          <ConnectorPoint PointX="9.125" PointY="6.4998478190104159" />
-          <ConnectorPoint PointX="8.7395833333333339" PointY="6.499847819010415" />
-          <ConnectorPoint PointX="8.5729166666666661" PointY="6.4998478190104159" />
-          <ConnectorPoint PointX="8.125" PointY="6.4998478190104159" /></AssociationConnector>
+          <ConnectorPoint PointX="12.156252" PointY="7" />
+          <ConnectorPoint PointX="12.156252" PointY="6.3816536458333335" />
+          <ConnectorPoint PointX="12.75" PointY="6.3816536458333335" />
+          <ConnectorPoint PointX="12.75" PointY="5.46050048828125" />
+          <ConnectorPoint PointX="13.5" PointY="5.46050048828125" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon" >
           <ConnectorPoint PointX="5.875" PointY="6.582021484375" />
           <ConnectorPoint PointX="6.625" PointY="6.582021484375" />
@@ -1318,8 +1371,8 @@
           <ConnectorPoint PointX="5.5" PointY="10.21050048828125" />
           </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_Lid_GelieerdePersoon" >
-          <ConnectorPoint PointX="5.875" PointY="4.2496956380208326" />
-          <ConnectorPoint PointX="5.875" PointY="9.125" />
+          <ConnectorPoint PointX="5.9375" PointY="4.8746956380208326" />
+          <ConnectorPoint PointX="5.9375" PointY="9.125" />
           </AssociationConnector>
         <EntityTypeShape EntityType="ChiroGroepModel.Gav" Width="1.5" PointX="0.5" PointY="11.875" Height="1.5788378906249996" />
         <EntityTypeShape EntityType="ChiroGroepModel.GebruikersRecht" Width="1.5" PointX="0.5" PointY="8.75" Height="1.9578255208333335" />
@@ -1336,11 +1389,11 @@
         <EntityTypeShape EntityType="ChiroGroepModel.AfdelingsJaar" Width="1.5" PointX="13.375" PointY="10.25" Height="2.085348307291667" />
         <EntityTypeShape EntityType="ChiroGroepModel.OfficieleAfdeling" Width="1.5" PointX="11.125" PointY="9.625" Height="1.592306315104167" />
         <AssociationConnector Association="ChiroGroepModel.FK_Afdeling_Groep" >
-          <ConnectorPoint PointX="3.75" PointY="7.88279296875" />
-          <ConnectorPoint PointX="5.791666666666667" PointY="7.8827929687499987" />
-          <ConnectorPoint PointX="5.958333333333333" PointY="7.88279296875" />
-          <ConnectorPoint PointX="8.640625" PointY="7.88279296875" />
-          <ConnectorPoint PointX="8.640625" PointY="9.375" />
+          <ConnectorPoint PointX="3.75" PointY="7.6721402994791656" />
+          <ConnectorPoint PointX="5.854166666666667" PointY="7.6721402994791648" />
+          <ConnectorPoint PointX="6.020833333333333" PointY="7.6721402994791656" />
+          <ConnectorPoint PointX="8.59375" PointY="7.6721402994791656" />
+          <ConnectorPoint PointX="8.59375" PointY="9.375" />
           </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar" >
           <ConnectorPoint PointX="4" PointY="11.1710009765625" />
@@ -1430,9 +1483,8 @@
           <ConnectorPoint PointX="9.84375" PointY="12.063666046395792" />
           <ConnectorPoint PointX="9.84375" PointY="13.625" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_Persoon">
-          <ConnectorPoint PointX="8.65625" PointY="3.2033902994791656" />
-          <ConnectorPoint PointX="8.65625" PointY="7.1166768977864576" />
-          <ConnectorPoint PointX="8.125" PointY="7.1166768977864576" />
+          <ConnectorPoint PointX="13.8125" PointY="3.3283902994791656" />
+          <ConnectorPoint PointX="13.8125" PointY="4.5" />
           </AssociationConnector>
         <InheritanceConnector EntityType="ChiroGroepModel.Kind">
           <ConnectorPoint PointX="6.108397296875" PointY="11.374695638020834" />
@@ -1440,15 +1492,18 @@
           <ConnectorPoint PointX="5.75" PointY="13.87801690419515" /></InheritanceConnector>
         <EntityTypeShape EntityType="ChiroGroepModel.Categorie" Width="1.5" PointX="0.5" PointY="0.75" Height="1.7566536458333335" />
         <AssociationConnector Association="ChiroGroepModel.FK_Categorie_Groep">
-          <ConnectorPoint PointX="3" PointY="5.125" />
-          <ConnectorPoint PointX="3" PointY="1.7105004882812502" />
+          <ConnectorPoint PointX="2.79687375" PointY="5.125" />
+          <ConnectorPoint PointX="2.79687375" PointY="1.7105004882812502" />
           <ConnectorPoint PointX="2" PointY="1.7105004882812502" />
           </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.PersoonsCategorie" >
-          <ConnectorPoint PointX="2" PointY="2.33550048828125" />
-          <ConnectorPoint PointX="2.9166666666666665" PointY="2.3355004882812493" />
-          <ConnectorPoint PointX="3.0833333333333335" PointY="2.33550048828125" />
-          <ConnectorPoint PointX="4.75" PointY="2.33550048828125" />
-          </AssociationConnector></Diagram></edmx:Diagrams>
+          <ConnectorPoint PointX="2" PointY="1.1989977441406252" />
+          <ConnectorPoint PointX="5.5" PointY="1.1989977441406252" />
+          <ConnectorPoint PointX="5.5" PointY="2.625" />
+          </AssociationConnector>
+        <EntityTypeShape EntityType="ChiroGroepModel.CommunicatieType" Width="1.5" PointX="10.375" PointY="0.5" Height="1.7566536458333335" />
+        <AssociationConnector Association="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" >
+          <ConnectorPoint PointX="10.375" PointY="1.3783268229166668" />
+          <ConnectorPoint PointX="9.625" PointY="1.3783268229166668" /></AssociationConnector></Diagram></edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

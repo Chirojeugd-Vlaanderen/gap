@@ -59,10 +59,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChiroGroepModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="CommunicatieType.cs" />
     <Compile Include="DataInterfaces\IAfdelingenDao.cs" />
     <Compile Include="DataInterfaces\IAfdelingsJaarDao.cs" />
     <Compile Include="DataInterfaces\ICategorieenDao.cs" />
     <Compile Include="DataInterfaces\ICommunicatieVormDao.cs" />
+    <Compile Include="DataInterfaces\IGavDao.cs" />
     <Compile Include="DataInterfaces\IGroepsWerkJaarDao.cs" />
     <Compile Include="DataInterfaces\IKindDao.cs" />
     <Compile Include="DataInterfaces\ILeidingDao.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="AfdelingsJaar.cs" />
     <Compile Include="Afdeling.cs" />
     <Compile Include="DataInterfaces\LedenDaoCollectie.cs" />
+    <Compile Include="Gav.cs" />
     <Compile Include="GroepsWerkJaar.cs" />
     <Compile Include="OfficieleAfdeling.cs" />
     <Compile Include="DataInterfaces\IAdressenDao.cs" />

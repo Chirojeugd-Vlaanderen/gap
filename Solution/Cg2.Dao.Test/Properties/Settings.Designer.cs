@@ -193,13 +193,13 @@ namespace Cg2.Dao.Test.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("nietgebruiken@chiro.be")]
-        public string TestEMailAdres {
+        [global::System.Configuration.DefaultSettingValueAttribute("nietgebruiken")]
+        public string TestNieuweGav {
             get {
-                return ((string)(this["TestEMailAdres"]));
+                return ((string)(this["TestNieuweGav"]));
             }
             set {
-                this["TestEMailAdres"] = value;
+                this["TestNieuweGav"] = value;
             }
         }
         

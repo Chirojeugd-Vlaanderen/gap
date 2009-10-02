@@ -7,6 +7,7 @@ using Cg2.Orm;
 using Cg2.Ioc;
 using Cg2.Orm.DataInterfaces;
 using System.Data;
+using Cg2.EfWrapper.Entity;
 
 namespace Cg2.Dao.Test
 {
@@ -68,14 +69,15 @@ namespace Cg2.Dao.Test
         {
             Factory.InitContainer();
 
-            ICommunicatieVormDao cvdao = Factory.Maak<ICommunicatieVormDao>();
+            // Verwijder GAV die we straks zullen aanmaken.
+            IGavDao gavDao = Factory.Maak<IGavDao>();
 
-            IList<CommunicatieVorm> lijst = cvdao.ZoekenOpNummer(Properties.Settings.Default.TestEMailAdres);
+            Gav gav = gavDao.Ophalen(Properties.Settings.Default.TestNieuweGav);
 
-            foreach (CommunicatieVorm cv in lijst)
+            if (gav != null)
             {
-                cv.TeVerwijderen = true;
-                cvdao.Bewaren(cv);
+                gav.TeVerwijderen = true;
+                gavDao.Bewaren(gav);
             }
         }
 
@@ -88,21 +90,16 @@ namespace Cg2.Dao.Test
         {
             // Arrange
 
-            CommunicatieVorm cv = new CommunicatieVorm();
-
-            cv.Type = CommunicatieType.Mail;
-            cv.Nummer = Properties.Settings.Default.TestEMailAdres;
-            cv.Nota = "Toegevoegd door unit test.";
-
-            IDao<CommunicatieVorm> cvdao = Factory.Maak<IDao<CommunicatieVorm>>();
+            Gav gav = new Gav() { Login = Properties.Settings.Default.TestNieuweGav };
+            IDao<Gav> gavDao = Factory.Maak<IDao<Gav>>();
 
             // Act
 
-            cv = cvdao.Bewaren(cv);
+            gav = gavDao.Bewaren(gav);
 
             // Assert
 
-            Assert.IsTrue(cv.ID > 0);
+            Assert.IsTrue(gav.ID > 0);
         }
 
 

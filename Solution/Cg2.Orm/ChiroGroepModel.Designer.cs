@@ -29,9 +29,10 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Kind_AfdelingsJaar", "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Cg2.Orm.AfdelingsJaar), "Kind", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Kind))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Categorie_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.Groep), "Categorie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Categorie))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "PersoonsCategorie", "Categorie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.Categorie), "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.GelieerdePersoon))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_CommunicatieVorm_CommunicatieType", "CommunicatieType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.CommunicatieType), "CommunicatieVorm", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.CommunicatieVorm))]
 
 // Original file name:
-// Generation date: 30/09/2009 16:11:42
+// Generation date: 2/10/2009 9:20:07
 namespace Cg2.Orm
 {
     
@@ -306,6 +307,21 @@ namespace Cg2.Orm
         }
         private global::System.Data.Objects.ObjectQuery<Categorie> _Categorie;
         /// <summary>
+        /// There are no comments for CommunicatieType in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<CommunicatieType> CommunicatieType
+        {
+            get
+            {
+                if ((this._CommunicatieType == null))
+                {
+                    this._CommunicatieType = base.CreateQuery<CommunicatieType>("[CommunicatieType]");
+                }
+                return this._CommunicatieType;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<CommunicatieType> _CommunicatieType;
+        /// <summary>
         /// There are no comments for Groep in the schema.
         /// </summary>
         public void AddToGroep(Groep groep)
@@ -416,6 +432,13 @@ namespace Cg2.Orm
         public void AddToCategorie(Categorie categorie)
         {
             base.AddObject("Categorie", categorie);
+        }
+        /// <summary>
+        /// There are no comments for CommunicatieType in the schema.
+        /// </summary>
+        public void AddToCommunicatieType(CommunicatieType communicatieType)
+        {
+            base.AddObject("CommunicatieType", communicatieType);
         }
     }
     /// <summary>
@@ -1105,29 +1128,6 @@ namespace Cg2.Orm
         partial void OnIDChanging(int value);
         partial void OnIDChanged();
         /// <summary>
-        /// There are no comments for Property CommunicatieTypeInt in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Nullable<int> CommunicatieTypeInt
-        {
-            get
-            {
-                return this._CommunicatieTypeInt;
-            }
-            set
-            {
-                this.OnCommunicatieTypeIntChanging(value);
-                this.ReportPropertyChanging("CommunicatieTypeInt");
-                this._CommunicatieTypeInt = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("CommunicatieTypeInt");
-                this.OnCommunicatieTypeIntChanged();
-            }
-        }
-        private global::System.Nullable<int> _CommunicatieTypeInt;
-        partial void OnCommunicatieTypeIntChanging(global::System.Nullable<int> value);
-        partial void OnCommunicatieTypeIntChanged();
-        /// <summary>
         /// There are no comments for Property IsGezinsgebonden in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
@@ -1230,6 +1230,43 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon", "GelieerdePersoon", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for CommunicatieType in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_CommunicatieVorm_CommunicatieType", "CommunicatieType")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public CommunicatieType CommunicatieType
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CommunicatieType>("ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType", "CommunicatieType").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CommunicatieType>("ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType", "CommunicatieType").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for CommunicatieType in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<CommunicatieType> CommunicatieTypeReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CommunicatieType>("ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType", "CommunicatieType");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<CommunicatieType>("ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType", "CommunicatieType", value);
                 }
             }
         }
@@ -3756,6 +3793,141 @@ namespace Cg2.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<GelieerdePersoon>("ChiroGroepModel.PersoonsCategorie", "GelieerdePersoon", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.CommunicatieType in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// ID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="CommunicatieType")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class CommunicatieType : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new CommunicatieType object.
+        /// </summary>
+        /// <param name="id">Initial value of ID.</param>
+        public static CommunicatieType CreateCommunicatieType(int id)
+        {
+            CommunicatieType communicatieType = new CommunicatieType();
+            communicatieType.ID = id;
+            return communicatieType;
+        }
+        /// <summary>
+        /// There are no comments for Property Omschrijving in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Omschrijving
+        {
+            get
+            {
+                return this._Omschrijving;
+            }
+            set
+            {
+                this.OnOmschrijvingChanging(value);
+                this.ReportPropertyChanging("Omschrijving");
+                this._Omschrijving = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Omschrijving");
+                this.OnOmschrijvingChanged();
+            }
+        }
+        private string _Omschrijving;
+        partial void OnOmschrijvingChanging(string value);
+        partial void OnOmschrijvingChanged();
+        /// <summary>
+        /// There are no comments for Property Validatie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Validatie
+        {
+            get
+            {
+                return this._Validatie;
+            }
+            set
+            {
+                this.OnValidatieChanging(value);
+                this.ReportPropertyChanging("Validatie");
+                this._Validatie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Validatie");
+                this.OnValidatieChanged();
+            }
+        }
+        private string _Validatie;
+        partial void OnValidatieChanging(string value);
+        partial void OnValidatieChanged();
+        /// <summary>
+        /// There are no comments for Property ID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int ID
+        {
+            get
+            {
+                return this._ID;
+            }
+            set
+            {
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
+            }
+        }
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
+        /// <summary>
+        /// There are no comments for CommunicatieVorm in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_CommunicatieVorm_CommunicatieType", "CommunicatieVorm")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<CommunicatieVorm> CommunicatieVorm
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<CommunicatieVorm>("ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType", "CommunicatieVorm");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<CommunicatieVorm>("ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType", "CommunicatieVorm", value);
                 }
             }
         }

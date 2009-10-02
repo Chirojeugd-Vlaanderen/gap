@@ -44,8 +44,8 @@
     <Setting Name="TestGelieerdePersoon2ID" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">918</Value>
     </Setting>
-    <Setting Name="TestEMailAdres" Type="System.String" Scope="User">
-      <Value Profile="(Default)">nietgebruiken@chiro.be</Value>
+    <Setting Name="TestNieuweGav" Type="System.String" Scope="User">
+      <Value Profile="(Default)">nietgebruiken</Value>
     </Setting>
     <Setting Name="TestGav1" Type="System.String" Scope="User">
       <Value Profile="(Default)">yvonne</Value>
