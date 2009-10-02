@@ -75,9 +75,6 @@ namespace Cg2.Data.Ef
 
             }
 
-            // Om onderstaande Distinct te doen werken, moest ik
-            // GelieerdePersoon voorzien van een custom Equals en
-            // GetHashCode.
             resultaat = (from pa in paLijst
                          select pa.Persoon).Distinct().ToList();
 

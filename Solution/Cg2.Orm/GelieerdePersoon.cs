@@ -48,43 +48,9 @@ namespace Cg2.Orm
         }
         #endregion
 
-        #region Identity en equality
+        // Als ik identity en equality override, dan krijg ik problemen
+        // bij het deserializen in Cg2.Dao.Test.CategorieeenTest.
+        // Vandaar geen overload meer.
 
-        // Op een collectie van GelieerdePersonen zou ik een
-        // distinct willen kunnen uitvoeren.  Om dit correct te kunnen doen,
-        // moeten Equals en GetHashCode aangepast worden.
-
-        public override int GetHashCode()
-        {
-            if (ID != 0)
-            {
-                // de ID bepaalt op unieke manier de identiteit van de
-                // GelieerdePersoon
-                return ID.GetHashCode();
-            }
-            else
-            {
-                // Als er geen ID is, dan doen we een fallback naar de
-                // GetHashCode van de parent, wat eigenlijk niet helemaal
-                // correct is.
-                return base.GetHashCode();
-            }
-        }
-
-        public override bool Equals(object obj)
-        {
-            IBasisEntiteit andere = obj as GelieerdePersoon;
-            // Als obj geen GelieerdePersoon is, wordt andere null.
-
-            return andere != null && (ID != 0) && (ID == andere.ID)
-                || (ID == 0 || andere.ID == 0) && base.Equals(andere);
-
-            // Is obj geen GelieerdePersoon, dan is de vergelijking altijd vals.
-            // Hebben beide objecten een ID verschillend van 0, en zijn deze
-            // ID's gelijk, dan zijn de objecten ook gelijk.  Zo niet gebruiken we
-            // base.Equals, wat eigenlijk niet helemaal correct is.
-        }
-
-        #endregion
     }
 }

@@ -5,11 +5,21 @@ using System.Text;
 using Cg2.Orm;
 using Cg2.Orm.DataInterfaces;
 using System.Data.Objects;
+using System.Linq.Expressions;
 
 namespace Cg2.Data.Ef
 {
     public class CategorieenDao: Dao<Categorie>, ICategorieenDao
     {
+        public CategorieenDao(): base()
+        {
+            connectedEntities = new Expression<Func<Categorie, object>>[]
+            {
+                foo => foo.GelieerdePersoon
+                    , foo => foo.Groep
+            };
+        }
+
         public Categorie GroepLaden(Categorie categorie)
         {
             if (categorie.Groep == null)

@@ -157,7 +157,8 @@ namespace Cg2.Data.Ef
             // Door Utility.DetachObjectGraph te gebruiken wanneer de context
             // niet meer bestaat, is het resultaat *echt* gedetacht.
 
-            return Utility.DetachObjectGraph(entiteit);
+            entiteit = Utility.DetachObjectGraph(entiteit);
+            return entiteit;
         }
 
 
@@ -176,7 +177,8 @@ namespace Cg2.Data.Ef
                 db.SaveChanges();
             }
 
-            return Utility.DetachObjectGraph(es);
+            es = Utility.DetachObjectGraph(es);
+            return es;
         }
 
 

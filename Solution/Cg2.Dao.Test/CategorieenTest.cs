@@ -72,6 +72,8 @@ namespace Cg2.Dao.Test
 
             int gp2ID = Properties.Settings.Default.TestGelieerdePersoon2ID;
 
+            Cg2.Ioc.Factory.InitContainer();
+
             IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
             GelieerdePersoon gp = dao.Ophalen(gp2ID, foo => foo.Categorie);
 
@@ -130,26 +132,27 @@ namespace Cg2.Dao.Test
             int gpID = Properties.Settings.Default.TestGelieerdePersoon2ID;
 
             IGelieerdePersonenDao gpDao = Factory.Maak<IGelieerdePersonenDao>();
-            IDao<Categorie> catDao = Factory.Maak<IDao<Categorie>>();
+            ICategorieenDao catDao = Factory.Maak<ICategorieenDao>();
 
-            GelieerdePersoon gp = gpDao.Ophalen(gpID, foo => foo.Categorie, foo => foo.Groep);
-            Categorie cat = catDao.Ophalen(catID, foo => foo.Groep);
+            GelieerdePersoon gp = gpDao.Ophalen(gpID);
 
+            // Opgelet: onderstaande haalt standaard alle personen gekoppeld
+            // aan een categorie mee op.  Voor een test is dat niet erg, maar
+            // als je in business een persoon aan een categorie wil koppelen,
+            // is dat niet gewenst.
 
-            GelieerdePersonenManager gpm = new GelieerdePersonenManager(null, null, null, new AutMgrAltijdGav());
-            // Deze GelieerdePersonenManager zal enkel gebruikt worden om
-            // de gelieerde persoon aan een categorie te koppelen.  Hij mag
-            // geen data-access doen (vandaar de null-dao's), en niet moeilijk
-            // doen over GAV-rechten.
-
+            Categorie cat = catDao.Ophalen(catID);
             #endregion
 
             #region act
-            // koppel categorie aan groep
-            gpm.CategorieKoppelen(gp, cat);
+
+            // koppel categorie gauw handmatig aan groep
+            gp.Categorie.Add(cat);
+            cat.GelieerdePersoon.Add(gp);
 
             // bewaar via dao (we zijn de dao aan het testen)
-            gpDao.Bewaren(gp, foo => foo.Categorie);
+
+            catDao.Bewaren(cat);
             #endregion
 
             #region assert
