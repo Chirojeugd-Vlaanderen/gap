@@ -177,9 +177,13 @@ namespace Cg2.Services
         #region categorieen
         public IList<GelieerdePersoon> PersonenOphalenUitCategorie(int categorieID)
         {
-				throw new NotImplementedException();
+				GelieerdePersonenManager gm = Factory.Maak<GelieerdePersonenManager>();
+				return gm.OphalenCategorie(categorieID).GelieerdePersoon.ToList();
         }
 
+		  //TODO een efficiente manier vinden om een bepaalde eigenschap toe te voegen aan een al geladen element.
+		  //of anders in de workers methoden aanbieden om lambda expressies mee te geven: dan eerst bepalen wat allemaal nodig is, dan 1 keer laden
+		  //en dan zijn we terug bij het idee om in het object bij te houden wat hij allemaal heeft geladen
         public Groep OphalenMetCategorieen(int groepID)
         {
             GroepenManager gm = Factory.Maak<GroepenManager>();
@@ -188,25 +192,33 @@ namespace Cg2.Services
             return result;
         }
 
-        //void CategorieToevoegen(Categorie c, int groepID)
-        //{
-        //}
+        public void CategorieToevoegen(Categorie c, int groepID)
+        {
+				GroepenManager gm = Factory.Maak<GroepenManager>();
+
+				gm.CategorieToevoegen(c, groepID);
+        }
         public void CategorieVerwijderen(int categorieID)
+        {
+				GroepenManager gm = Factory.Maak<GroepenManager>();
+
+				gm.CategorieVerwijderen(categorieID);
+        }
+        public void CategorieAanpassen(Categorie c)
         {
 				throw new NotImplementedException();
         }
-        //void CategorieAanpassen(Categorie c)
-        //{
-        //}
 
         //TODO moet hier eigenlijk een groep worden meegegeven, of kan die worden afgeleid uit de aanroeper?
         public void PersonenToevoegenAanCategorie(IList<int> gelieerdePersonenIDs, int categorieID)
         {
-				throw new NotImplementedException();
+				GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
+				gpm.CategorieKoppelen(gelieerdePersonenIDs, categorieID, true);
         }
         public void PersonenVerwijderenUitCategorie(IList<int> gelieerdePersonenIDs, int categorieID)
         {
-				throw new NotImplementedException();
+				GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
+				gpm.CategorieKoppelen(gelieerdePersonenIDs, categorieID, false);
         }
 
         #endregion categorieen

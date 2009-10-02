@@ -14,7 +14,8 @@ namespace Cg2.Workers
     {
         private IGroepenDao _dao;
         private IDao<AfdelingsJaar> _afdao;
-        private IAutorisatieManager _autorisatieMgr;        
+        private IAutorisatieManager _autorisatieMgr;
+		  private ICategorieenDao _categorieenDao;
 
         /// <summary>
         /// Deze constructor laat toe om een alternatieve repository voor
@@ -219,8 +220,14 @@ namespace Cg2.Workers
 
         public Groep OphalenMetCategorieen(int groepID)
         {
-            //TODO
-            throw new NotImplementedException();
+				if (_autorisatieMgr.IsGavGroep(groepID))
+				{
+					 return _dao.Ophalen(groepID, e => e.Categorie);
+				}
+				else
+				{
+					 throw new GeenGavException(Properties.Resources.GeenGavGroep);
+				}
         }
 
         public Groep OphalenMetFuncties(int groepID)
@@ -257,5 +264,44 @@ namespace Cg2.Workers
                 throw new GeenGavException(Properties.Resources.GeenGavGroep);
             }
         }
+
+
+		  /// <summary>
+		  /// Persisteert wel
+		  /// </summary>
+		  /// <param name="c"></param>
+		  /// <param name="gID"></param>
+		  public void CategorieToevoegen(Categorie c, int gID)
+		  {
+				if (_autorisatieMgr.IsGavGroep(gID))
+				{
+					 Groep g = _dao.Ophalen(gID, l => l.Categorie);
+					 c.Groep = g;
+					 g.Categorie.Add(c);
+				}
+				else
+				{
+					 throw new GeenGavException(Properties.Resources.GeenGavGroep);
+				}
+				
+		  }
+
+		  /// <summary>
+		  /// Persisteert wel
+		  /// </summary>
+		  /// <param name="categorieID"></param>
+		  public void CategorieVerwijderen(int categorieID)
+		  {
+				Categorie c = _categorieenDao.Ophalen(categorieID);
+				if (_autorisatieMgr.IsGavGroep(c.Groep.ID))
+				{					 
+					 c.TeVerwijderen = true;
+					 _categorieenDao.Bewaren(c);
+				}
+				else
+				{
+					 throw new GeenGavException(Properties.Resources.GeenGavGroep);
+				}
+		  }
     }
 }

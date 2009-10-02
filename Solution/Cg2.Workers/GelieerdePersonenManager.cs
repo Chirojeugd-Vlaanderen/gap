@@ -306,43 +306,70 @@ namespace Cg2.Workers
         }
 
         /// <summary>
-        /// Koppelt een gelieerde persoon aan een categorie, zonder
-        /// te persisteren.
+        /// Koppelt een gelieerde persoon aan een categorie, en persisteert dan de aanpassingen
         /// </summary>
         /// <param name="gelieerdePersoon">te koppelen gelieerde persoon</param>
         /// <param name="categorie">te koppelen categorie</param>
-        public void CategorieKoppelen(GelieerdePersoon gelieerdePersoon, Categorie categorie)
+        public void CategorieKoppelen(IList<int> gelieerdePersoonIDs, int categorieID, bool koppelen)
         {
             // Heeft de gebruiker rechten voor de groep en de categorie?
 
-            if (!_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoon.ID)
-                || !_autorisatieMgr.IsGavCategorie(categorie.ID))
+				foreach (int x in gelieerdePersoonIDs)
+				{
+					 if (!_autorisatieMgr.IsGavGelieerdePersoon(x))
+					 {
+						  throw new GeenGavException(Properties.Resources.GeenGavCategoriePersoon);
+					 };
+				}
+
+            if (!!_autorisatieMgr.IsGavCategorie(categorieID))
             {
                 throw new GeenGavException(Properties.Resources.GeenGavCategoriePersoon);
             };
 
-            // Is de persoon gelieerd aan de groep van de categorie?
+				Categorie c = _categorieenDao.Ophalen(categorieID);
 
-            if (gelieerdePersoon.Groep == null)
-            {
-                _dao.GroepLaden(gelieerdePersoon);
-            }
+				foreach (int x in gelieerdePersoonIDs)
+				{
+					 if (koppelen)
+					 {
+						  GelieerdePersoon gp = _dao.Ophalen(x, l => l.Categorie, l => l.Groep);
 
-            if (categorie.Groep == null)
-            {
-                //TODO broes bezig _categorieenDao.GroepLaden(categorie);
-            }
+						  if (!gp.Groep.Equals(c.Groep))
+						  {
+								throw new FoutieveGroepException(Properties.Resources.FoutieveGroepCategorie);
+						  }
+						  gp.Categorie.Add(c);
+						  c.GelieerdePersoon.Add(gp);
+					 }
+					 else
+					 {
+						  foreach (GelieerdePersoon g in c.GelieerdePersoon)
+						  {
+								if (g.ID == x)
+								{
+									 g.TeVerwijderen = true;
+									 break;
+								}
+						  }						  
+					 }
+					 
+				}
 
-            if (!gelieerdePersoon.Groep.Equals(categorie.Groep))
-            {
-                throw new FoutieveGroepException(Properties.Resources.FoutieveGroepCategorie);
-            }
-
-            // Dan zullen we ons best eens doen...
-
-            gelieerdePersoon.Categorie.Add(categorie);
-            categorie.GelieerdePersoon.Add(gelieerdePersoon);
-
+				_categorieenDao.Bewaren(c);
+				
         }
+
+		  public Categorie OphalenCategorie(int catID)
+		  {
+				// Heeft de gebruiker rechten voor de groep en de categorie?
+
+				if (!_autorisatieMgr.IsGavCategorie(catID))
+				{
+					 throw new GeenGavException(Properties.Resources.GeenGavCategoriePersoon);
+				};
+
+				return _categorieenDao.Ophalen(catID);
+		  }
     }
 }
