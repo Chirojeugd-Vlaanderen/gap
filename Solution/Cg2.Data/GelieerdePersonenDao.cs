@@ -23,38 +23,6 @@ namespace Cg2.Data.Ef
                                         e => e.Groep };
         }
 
-        /// <summary>
-        /// Herstelt de relevante entity keys voor een GelieerdePersoon.
-        /// (Keys van GelieerdePersoon, Persoon en Groep worden zo nodig hersteld.)
-        /// </summary>
-        /// <param name="entiteit">Gelieerde Persoon met te herstellen entity keys</param>
-        /// <param name="db">Objectcontext</param>
-        public override void EntityKeysHerstellen(GelieerdePersoon entiteit, ChiroGroepEntities db)
-        {
-            // GelieerdePersoon zelf
-            if (entiteit.ID != 0 && entiteit.EntityKey == null)
-            {
-                entiteit.EntityKey = db.CreateEntityKey(typeof(GelieerdePersoon).Name, entiteit);
-            }
-
-            // Gekoppelde persoon
-            if (entiteit.Persoon.ID != 0 && entiteit.Persoon.EntityKey == null)
-            {
-                entiteit.Persoon.EntityKey = db.CreateEntityKey(typeof(Persoon).Name, entiteit.Persoon);
-            }
-            
-            // Groep.  Haal die eventueel op als dat nog niet gebeurd zou zijn.
-            if (entiteit.Groep == null)
-            {
-                entiteit = GroepLaden(entiteit);
-            }
-            else if (entiteit.Groep.ID != 0 && entiteit.EntityKey == null)
-            {
-                entiteit.Groep.EntityKey = db.CreateEntityKey(typeof(Groep).Name, entiteit.Groep);
-            }
-
-        }
-
         public IList<GelieerdePersoon> AllenOphalen(int groepID)
         {
             List<GelieerdePersoon> result;

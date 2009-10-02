@@ -31,15 +31,15 @@ namespace Cg2.Workers
         // Wel altijd rekening houden met authorisatie!
 
         /// <summary>
-        /// Haalt enkel de gelieerde persoon op.
+        /// Haalt gelieerde persoon met gekoppelde persoon op.
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van de gelieerde persoon.</param>
-        /// <returns>Gelieerde persoon, zonder enige koppelingen.</returns>
+        /// <returns>Gelieerde persoon, met gekoppeld persoonsobject.</returns>
         public GelieerdePersoon Ophalen(int gelieerdePersoonID)
         {
             if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
             {
-                return _dao.Ophalen(gelieerdePersoonID);
+                return _dao.Ophalen(gelieerdePersoonID, foo=>foo.Persoon);
             }
             else
             {
@@ -89,7 +89,7 @@ namespace Cg2.Workers
                 // overschreven wordt, lijkt me wat overkill.  Ik vergelijk
                 // hiet nieuwe AD-nummer gewoon met het bestaande.
 
-                GelieerdePersoon origineel = _dao.Ophalen(p.ID);
+                GelieerdePersoon origineel = _dao.Ophalen(p.ID, foo=>foo.Persoon);
                 if (origineel.Persoon.AdNummer == p.Persoon.AdNummer){
                     return _dao.Bewaren(p);
                 }

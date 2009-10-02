@@ -230,6 +230,14 @@ namespace Cg2.EfWrapper.Entity
 			}
 			else
 			{
+                // Als er wel een ID is, en geen entity key, dan is de entity
+                // key verdwenen.  In dat geval maken we hem terug aan.
+
+                if (entity.EntityKey == null)
+                {
+                    entity.EntityKey = context.CreateEntityKey(entity.GetType().Name, entity);
+                }
+
                 EntityKey entityKey = entity.EntityKey;
 
 				IBasisEntiteit attachedEntity = context.GetObjectByKey(entityKey) as IBasisEntiteit;

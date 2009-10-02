@@ -244,9 +244,15 @@ namespace Cg2.Workers.Test
 
             var gpDaoMock = new Mock<IGelieerdePersonenDao>();
 
-            gpDaoMock.Setup(foo => foo.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID)).Returns(() => MaakTestGelieerdePersoon());
-            // gekke syntax die ervoor zorgt dat MaakTestGelieerdePersoon iedere
-            // keer uitgevoerd wordt bij aanroep van 'Ophalen'.
+            gpDaoMock.Setup(foo => foo.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID
+                , It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>())).Returns(() => MaakTestGelieerdePersoon());
+
+            // Het stuk It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>()
+            // zorgt ervoor dat de Mock de linq-expressies in 'Ophalen' negeert.
+            //
+            // De constructie in 'Returns' zorgt ervoor dat MaakTestGelieerdePersoon iedere
+            // keer uitgevoerd wordt bij aanroep van 'Ophalen'.  (En niet eenmalig bij het
+            // opzetten van de mock.)
 
             // Maak nu de GelieerdePersoonenManager aan die we willen testen.
 
@@ -286,9 +292,15 @@ namespace Cg2.Workers.Test
 
             var gpDaoMock = new Mock<IGelieerdePersonenDao>();
 
-            gpDaoMock.Setup(foo => foo.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID)).Returns(() => MaakTestGelieerdePersoon());
-            // gekke syntax die ervoor zorgt dat MaakTestGelieerdePersoon iedere
-            // keer uitgevoerd wordt bij aanroep van 'Ophalen'.
+            gpDaoMock.Setup(foo => foo.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID
+                , It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>())).Returns(() => MaakTestGelieerdePersoon());
+
+            // Het stuk It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>()
+            // zorgt ervoor dat de Mock de linq-expressies in 'Ophalen' negeert.
+            //
+            // De constructie in 'Returns' zorgt ervoor dat MaakTestGelieerdePersoon iedere
+            // keer uitgevoerd wordt bij aanroep van 'Ophalen'.  (En niet eenmalig bij het
+            // opzetten van de mock.)
 
             // Maak nu de GelieerdePersoonenManager aan die we willen testen.
 
@@ -307,6 +319,7 @@ namespace Cg2.Workers.Test
             #region Assert
             // Als we hier geraken, is het ok.
             Assert.IsTrue(true);
+            gpDaoMock.VerifyAll();  // nakijken of de mock van GelieerdePersonenDao inderdaad aangeroepen werd.
             #endregion
         }
 

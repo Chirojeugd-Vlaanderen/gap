@@ -181,23 +181,6 @@ namespace Cg2.Data.Ef
 
 
         /// <summary>
-        /// Herstelt zo nodig de entity key van een entiteit.
-        /// </summary>
-        /// <param name="entiteit">Entiteit waarvan key te herstellen is</param>
-        /// <param name="db">Object context</param>
-        public virtual void EntityKeysHerstellen(T entiteit, ChiroGroepEntities db) 
-        {
-            if (entiteit.ID != 0 && entiteit.EntityKey == null)
-            {
-                // De handige Extension Method 'GetEntitySetName' geeft de naam
-                // van de entity set.  Dit is niet noodzakelijk de naam van het
-                // type.  Ihb als T erft van U, dan is EntitySetName U ipv T.
-
-                entiteit.EntityKey = db.CreateEntityKey(db.GetEntitySetName(typeof(T)), entiteit);
-            }
-        }
-
-        /// <summary>
         /// Markeert entity als 'volledig gewijzigd'
         /// </summary>
         /// <param name="key">Key van te markeren entity</param>

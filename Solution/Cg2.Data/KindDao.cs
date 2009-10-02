@@ -23,19 +23,5 @@ namespace Cg2.Data.Ef
                                         e => e.AfdelingsJaar };
         }
 
-        public void getEntityKeys(Kind entiteit, ChiroGroepEntities db)
-        {
-            if (entiteit.ID != 0 && entiteit.EntityKey == null)
-            {
-                entiteit.EntityKey = db.CreateEntityKey(typeof(Kind).Name, entiteit);
-            }
-
-            if (entiteit.AfdelingsJaar.ID != 0 && entiteit.AfdelingsJaar.EntityKey == null)
-            {
-                entiteit.AfdelingsJaar.EntityKey = db.CreateEntityKey(typeof(AfdelingsJaar).Name, entiteit.AfdelingsJaar);
-            }
-
-            base.EntityKeysHerstellen(entiteit, db);
-        }
     }
 }
