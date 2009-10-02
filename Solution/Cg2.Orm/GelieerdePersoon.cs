@@ -51,6 +51,5 @@ namespace Cg2.Orm
         // Als ik identity en equality override, dan krijg ik problemen
         // bij het deserializen in Cg2.Dao.Test.CategorieeenTest.
         // Vandaar geen overload meer.
-
     }
 }

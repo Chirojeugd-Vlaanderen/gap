@@ -47,7 +47,7 @@ namespace Cg2.Data.Ef
         /// <returns></returns>
         public virtual T Ophalen(int id) 
         {
-            Expression<Func<T, object>>[] paths = {};
+            Expression<Func<T, object>>[] paths = getConnectedEntities();
             return Ophalen(id, paths);
         }
 

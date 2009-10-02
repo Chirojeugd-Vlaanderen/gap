@@ -227,7 +227,7 @@ namespace Cg2.Data.Ef
             }
         }
 
-        public IList<GelieerdePersoon> OphalenUitCategorie(int categorieID)
+        /*public IList<GelieerdePersoon> OphalenUitCategorie(int categorieID)
         {
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
@@ -250,6 +250,6 @@ namespace Cg2.Data.Ef
                     return cat.GelieerdePersoon.ToList();
                 }
             }
-        }
+        }*/
     }
 }

@@ -330,7 +330,7 @@ namespace Cg2.Workers
 
             if (categorie.Groep == null)
             {
-                _categorieenDao.GroepLaden(categorie);
+                //TODO broes bezig _categorieenDao.GroepLaden(categorie);
             }
 
             if (!gelieerdePersoon.Groep.Equals(categorie.Groep))

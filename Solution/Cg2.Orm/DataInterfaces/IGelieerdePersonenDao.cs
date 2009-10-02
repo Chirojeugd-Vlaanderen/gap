@@ -77,12 +77,12 @@ namespace Cg2.Orm.DataInterfaces
         /// geladen zijn</returns>
         GelieerdePersoon GroepLaden(GelieerdePersoon p);
 
-        /// <summary>
+        /*/// <summary>
         /// Geeft de gelieerde personen uit een categorie (inc. persoonsinfo)
         /// TODO: Misschien moet deze functie een lijst van PersoonsInfo ophalen.
         /// </summary>
         /// <param name="categorieID">ID van een categorie</param>
         /// <returns>lijst van gelieerde personen met persoonsinfo in de categorie</returns>
-        IList<GelieerdePersoon> OphalenUitCategorie(int categorieID);
+        IList<GelieerdePersoon> OphalenUitCategorie(int categorieID);*/
     }
 }

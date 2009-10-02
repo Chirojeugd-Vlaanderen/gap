@@ -11,33 +11,11 @@ namespace Cg2.Data.Ef
 {
     public class CategorieenDao: Dao<Categorie>, ICategorieenDao
     {
-        public CategorieenDao(): base()
+		  public CategorieenDao()
         {
-            connectedEntities = new Expression<Func<Categorie, object>>[]
-            {
-                foo => foo.GelieerdePersoon
-                    , foo => foo.Groep
-            };
-        }
-
-        public Categorie GroepLaden(Categorie categorie)
-        {
-            if (categorie.Groep == null)
-            {
-                using (ChiroGroepEntities db = new ChiroGroepEntities())
-                {
-                    db.Categorie.MergeOption = MergeOption.NoTracking;
-
-                    Groep g
-                        = (from c in db.Categorie
-                           where c.ID == categorie.ID
-                           select c.Groep).FirstOrDefault();
-
-                    categorie.Groep = g;
-                    g.Categorie.Add(categorie);
-                }
-            }
-            return categorie;
+            connectedEntities = new Expression<Func<Categorie, object>>[2] { 
+                                        e => e.Groep, 
+                                        e => e.GelieerdePersoon };
         }
     }
 }
