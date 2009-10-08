@@ -53,7 +53,7 @@ namespace Cg2.Workers
         /// <param name="gelieerdePersonenIDs">ID's van de op te vragen
         /// gelieerde personen.</param>
         /// <returns>Lijst met gelieerde personen</returns>
-        public IList<GelieerdePersoon> LijstOphalen(List<int> gelieerdePersonenIDs)
+        public IList<GelieerdePersoon> LijstOphalen(IEnumerable<int> gelieerdePersonenIDs)
         {
             return _dao.LijstOphalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs));
         }

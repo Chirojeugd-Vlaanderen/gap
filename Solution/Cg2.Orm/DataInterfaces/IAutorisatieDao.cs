@@ -104,7 +104,7 @@ namespace Cg2.Orm.DataInterfaces
         /// <param name="login">gebruiker</param>
         /// <returns>Een lijst met de ID's van GelieerdePersonen waar de gebruiker
         /// GAV over is. (hoeveel indirectie kan er in 1 zin?)</returns>
-        IList<int> EnkelMijnGelieerdePersonen(IList<int> gelieerdePersonenIDs, string login);
+        IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs, string login);
 
         /// <summary>
         /// Verwijdert uit een lijst met PersonenID's de ID's
@@ -114,7 +114,7 @@ namespace Cg2.Orm.DataInterfaces
         /// <param name="login">gebruiker</param>
         /// <returns>Een lijst met de ID's van Personen waar de gebruiker
         /// GAV over is. (hoeveel indirectie kan er in 1 zin?)</returns>
-        IList<int> EnkelMijnPersonen(IList<int> personenIDs, string p);
+        IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs, string p);
 
         /// <summary>
         /// Controleert of een gegeven gebruiker GAV is van de groep

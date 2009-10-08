@@ -21,5 +21,43 @@ namespace Cg2.Orm
             get { return this.VersieStringGet(); }
             set { this.VersieStringSet(value); }
         }
+        #region Identity en equality
+
+        public override int GetHashCode()
+        {
+            if (ID != 0)
+            {
+                // de ID bepaalt op unieke manier de identiteit
+                return ID.GetHashCode();
+            }
+            else
+            {
+                // Als er geen ID is, dan doen we een fallback naar de
+                // GetHashCode van de parent, wat eigenlijk niet helemaal
+                // correct is.
+                return base.GetHashCode();
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            var andere = obj as Categorie;
+            // Als obj geen Groep is, wordt andere null.
+
+            if (andere == null)
+            {
+                return false;
+            }
+            else if (ID == 0 || andere.ID == 0)
+            {
+                return base.Equals(andere);
+            }
+            else
+            {
+                return ID.Equals(andere.ID);
+            }
+        }
+
+        #endregion
     }
 }

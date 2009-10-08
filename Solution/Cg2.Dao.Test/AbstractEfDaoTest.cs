@@ -125,7 +125,7 @@ namespace Cg2.Dao.Test
         /// oplevert
         /// </summary>
         [TestMethod]
-        public void DetachtNaBewaren()
+        public void GedetachtNaBewaren()
         {
             // Arrange
             IDao<Groep> dao = Factory.Maak<IDao<Groep>>();

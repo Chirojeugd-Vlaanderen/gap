@@ -15,18 +15,19 @@ namespace Cg2.Workers
         private IGroepenDao _dao;
         private IDao<AfdelingsJaar> _afdao;
         private IAutorisatieManager _autorisatieMgr;
-		  private ICategorieenDao _categorieenDao;
+		private ICategorieenDao _categorieenDao;
 
         /// <summary>
         /// Deze constructor laat toe om een alternatieve repository voor
         /// de groepen te gebruiken.  Nuttig voor mocking en testing.
         /// </summary>
         /// <param name="dao">Alternatieve dao</param>
-        public GroepenManager(IGroepenDao dao, IDao<AfdelingsJaar> afdao, IAutorisatieManager autorisatieMgr)
+        public GroepenManager(IGroepenDao dao, IDao<AfdelingsJaar> afdao, IAutorisatieManager autorisatieMgr, ICategorieenDao categorieenDao)
         {
             _dao = dao;
             _afdao = afdao;
             _autorisatieMgr = autorisatieMgr;
+            _categorieenDao = categorieenDao;
         }
 
         /// <summary>

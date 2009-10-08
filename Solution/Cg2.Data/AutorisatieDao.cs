@@ -120,7 +120,7 @@ namespace Cg2.Data.Ef
             }
         }
 
-        public IList<int> EnkelMijnGelieerdePersonen(IList<int> gelieerdePersonenIDs, string login)
+        public IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs, string login)
         {
             List<int> resultaat;
 
@@ -139,7 +139,7 @@ namespace Cg2.Data.Ef
         }
 
 
-        public IList<int> EnkelMijnPersonen(IList<int> personenIDs, string login)
+        public IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs, string login)
         {
             List<int> resultaat;
 

@@ -45,16 +45,21 @@ namespace Cg2.Orm
 
         public override bool Equals(object obj)
         {
-            IBasisEntiteit andere = obj as Groep;
+            var andere = obj as Groep;
             // Als obj geen Groep is, wordt andere null.
 
-            return andere != null && (ID != 0) && (ID == andere.ID)
-                || (ID == 0 || andere.ID == 0) && base.Equals(andere);
-
-            // Is obj geen Groep, dan is de vergelijking altijd vals.
-            // Hebben beide objecten een ID verschillend van 0, en zijn deze
-            // ID's gelijk, dan zijn de objecten ook gelijk.  Zo niet gebruiken we
-            // base.Equals, wat eigenlijk niet helemaal correct is.
+            if (andere == null)
+            {
+                return false;
+            }
+            else if (ID == 0 || andere.ID == 0)
+            {
+                return base.Equals(andere);
+            }
+            else
+            {
+                return ID.Equals(andere.ID);
+            }
         }
 
         #endregion

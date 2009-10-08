@@ -49,12 +49,12 @@ namespace Cg2.Dummies
             throw new NotImplementedException();
         }
 
-        public IList<int> EnkelMijnGelieerdePersonen(IList<int> gelieerdePersonenIDs, string login)
+        public IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs, string login)
         {
             throw new NotImplementedException();
         }
 
-        public IList<int> EnkelMijnPersonen(IList<int> personenIDs, string p)
+        public IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs, string p)
         {
             throw new NotImplementedException();
         }

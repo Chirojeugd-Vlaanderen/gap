@@ -106,7 +106,7 @@ namespace Cg2.Workers
             GelieerdePersoon gpMetDetails = gpm.DetailsOphalen(gp.ID);
 
             // Afdelingen ophalen
-            GroepenManager gm = new GroepenManager(_daos.GroepenDao, _daos.AfdelingsJaarDao, _authorisatieMgr);
+            GroepenManager gm = new GroepenManager(_daos.GroepenDao, _daos.AfdelingsJaarDao, _authorisatieMgr, Factory.Maak<ICategorieenDao>());
             IList<AfdelingsJaar> jaren = gm.AfdelingsJarenOphalen(gwj);
 
             // Geschikte afdeling zoeken
@@ -170,7 +170,7 @@ namespace Cg2.Workers
         {
             if (_authorisatieMgr.IsGavGelieerdePersoon(gp.ID))
             {
-                GroepenManager gm = new GroepenManager(_daos.GroepenDao, _daos.AfdelingsJaarDao, _authorisatieMgr);
+                GroepenManager gm = new GroepenManager(_daos.GroepenDao, _daos.AfdelingsJaarDao, _authorisatieMgr, Factory.Maak<ICategorieenDao>());
 
                 if (gp.Groep == null)
                 {
@@ -323,7 +323,8 @@ namespace Cg2.Workers
             }
             else
             {
-                throw new GeenGavException(Properties.Resources.GeenGavLid);
+                // hier komen we in principe nooit (zie Assert)
+                throw new InvalidOperationException("Lid is kind noch leiding");
             }
 
         }

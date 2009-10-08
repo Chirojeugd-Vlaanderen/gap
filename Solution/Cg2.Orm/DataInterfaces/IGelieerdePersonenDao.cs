@@ -20,7 +20,7 @@ namespace Cg2.Orm.DataInterfaces
         /// <param name="gelieerdePersonenIDs">ID's van op te halen
         /// GelieerdePersonen</param>
         /// <returns>lijst met GelieerdePersonen</returns>
-        IList<GelieerdePersoon> LijstOphalen(IList<int> gelieerdePersonenIDs);
+        IList<GelieerdePersoon> LijstOphalen(IEnumerable<int> gelieerdePersonenIDs);
 
         /// <summary>
         /// Gelieerde personen opzoeken op (fragment van) naam.

@@ -16,7 +16,7 @@ namespace Cg2.Dummies
     {
         #region IAutorisatieManager Members
 
-        public IList<int> EnkelMijnGelieerdePersonen(IList<int> gelieerdePersonenIDs)
+        public IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs)
         {
             return new List<int>();
         }

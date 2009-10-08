@@ -56,12 +56,13 @@ namespace Cg2.Workers
             // werken zonder de .ID's, want ik heb equals geoverload.
             // Maar dat is blijkbaar niet zo evident.
 
-            if (gwj.Groep.ID != afd.Groep.ID)
+            if (!gwj.Groep.Equals(afd.Groep))
             {
                 throw new FoutieveGroepException("De afdeling is niet gekoppeld aan de groep van het groepswerkjaar.");
             }
 
             AfdelingsJaar resultaat = new AfdelingsJaar();
+
 
             resultaat.GeboorteJaarVan = jaarVan;
             resultaat.GeboorteJaarTot = jaarTot;

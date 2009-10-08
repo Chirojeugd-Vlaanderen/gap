@@ -23,6 +23,7 @@ using System.Text;
 using System.Linq.Expressions;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Diagnostics;
 
 namespace Cg2.EfWrapper
 {
@@ -69,16 +70,40 @@ namespace Cg2.EfWrapper
         ///        niet.
         ///     3. Blijkbaar ook niet voor many-to-many?
         /// </remarks>
-        public static T DetachObjectGraph<T>(T entity)
+        public static T DetachObjectGraph<T>(T entity) where T:IBasisEntiteit
         {
             using (MemoryStream stream = new MemoryStream())
             {
 
                 NetDataContractSerializer serializer = new NetDataContractSerializer();
                 serializer.Serialize(stream, entity);
+
                 stream.Position = 0;
-                string tmp = stream.GetBuffer().ToString();
+
+                #region opkuisen
+                //// TODO: opkuis
+                //var tr = new StreamReader(stream);
+                //string xml = tr.ReadToEnd();
+
+                //Debug.WriteLine(xml);
+
+                
+                //stream.Position = 0;
+                #endregion
+
                 return (T)serializer.Deserialize(stream);
+            }
+        }
+        
+        public static IList<T> DetachObjectGraph<T>(IList<T> entities) where T : IBasisEntiteit
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+
+                NetDataContractSerializer serializer = new NetDataContractSerializer();
+                serializer.Serialize(stream, entities);
+                stream.Position = 0;
+                return (IList<T>)serializer.Deserialize(stream);
             }
         }
     }

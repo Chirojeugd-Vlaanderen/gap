@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 
 using Cg2.EfWrapper;
 using Cg2.EfWrapper.Entity;
+using System.Diagnostics;
 
 namespace Cg2.Orm
 {
@@ -48,8 +49,54 @@ namespace Cg2.Orm
         }
         #endregion
 
-        // Als ik identity en equality override, dan krijg ik problemen
-        // bij het deserializen in Cg2.Dao.Test.CategorieeenTest.
-        // Vandaar geen overload meer.
+
+        #region Identity en equality
+
+        // Op een collectie van GelieerdePersonen zou ik een
+        // distinct willen kunnen uitvoeren.  Om dit correct te kunnen doen,
+        // moeten Equals en GetHashCode aangepast worden.
+
+        public override int GetHashCode()
+        {
+            int hashcode;
+
+            if (ID != 0)
+            {
+                // de ID bepaalt op unieke manier de identiteit van de
+                // GelieerdePersoon
+                hashcode = ID.GetHashCode();
+            }
+            else
+            {
+                // Als er geen ID is, dan doen we een fallback naar de
+                // GetHashCode van de parent, wat eigenlijk niet helemaal
+                // correct is.
+                hashcode = base.GetHashCode();
+            }
+
+            Debug.WriteLine(string.Format("ID: {0}  Hashcode: {1}", ID, hashcode));
+
+            return hashcode;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var andere = obj as GelieerdePersoon;
+
+            if (andere == null)
+            {
+                return false;
+            }
+            else if (ID == 0 || andere.ID == 0)
+            {
+                return base.Equals(andere);
+            }
+            else
+            {
+                return ID == andere.ID;
+            }
+        }
+
+        #endregion
     }
 }

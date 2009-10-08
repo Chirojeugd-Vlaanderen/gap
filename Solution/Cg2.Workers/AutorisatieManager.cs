@@ -114,7 +114,7 @@ namespace Cg2.Workers
         /// </summary>
         /// <param name="gelieerdePersonenIDs">lijst met ID's van gelieerde personen</param>
         /// <returns>enkel de ID's van die personen waarvoor de gebruiker GAV is</returns>
-        public IList<int> EnkelMijnGelieerdePersonen(IList<int> gelieerdePersonenIDs)
+        public IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs)
         {
             return _dao.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs, GebruikersNaamGet());
         }

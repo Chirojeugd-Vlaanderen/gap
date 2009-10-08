@@ -163,7 +163,6 @@ namespace Cg2.Services
 
         #region IGroepenService Members
 
-
         public IEnumerable<GroepInfo> OphalenMijnGroepen()
         {
             AutorisatieManager am = Factory.Maak<AutorisatieManager>();

@@ -65,7 +65,10 @@ namespace Cg2.Data.Ef
                              where t.ID == id
                              select t) as ObjectQuery<T>;
 
-                query.MergeOption = MergeOption.NoTracking;
+                // query.MergeOption = MergeOption.NoTracking;
+                // Je zou denken dat bovenstaande lijn ervoor zorgt dat de opgehaalde
+                // objecten gedetacht zijn.  Maar dat is niet het geval.  (??) Vandaar
+                // dat ik verderop toch DetachObjectGraph gebruik.
 
                 result = (IncludesToepassen(query,paths)).FirstOrDefault<T>(); 
 
@@ -169,7 +172,7 @@ namespace Cg2.Data.Ef
         /// <param name="paths">paden met gerelateerde te bewaren
         /// entiteiten</param>
         /// <returns>De bewaarde entiteiten, maar gedetacht</returns>
-        public virtual IList<T> Bewaren(IList<T> es, params Expression<Func<T, object>>[] paths)
+        public virtual IList<T> Bewaren(IList<T> es, params Expression<Func<T, object>>[] paths) 
         {
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
