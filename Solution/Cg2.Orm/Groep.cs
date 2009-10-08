@@ -5,6 +5,7 @@ using System.Text;
 
 using Cg2.EfWrapper;
 using Cg2.EfWrapper.Entity;
+using System.Diagnostics;
 
 namespace Cg2.Orm
 {
@@ -29,18 +30,22 @@ namespace Cg2.Orm
 
         public override int GetHashCode()
         {
+            int result;
             if (ID != 0)
             {
                 // de ID bepaalt op unieke manier de identiteit
-                return ID.GetHashCode();
+                result = ID.GetHashCode();
             }
             else
             {
                 // Als er geen ID is, dan doen we een fallback naar de
                 // GetHashCode van de parent, wat eigenlijk niet helemaal
                 // correct is.
-                return base.GetHashCode();
+                result = base.GetHashCode();
             }
+            Debug.WriteLine(string.Format("Groep: ID: {0}  Hashcode: {1}  Base Hashcode: {2}", ID, result, base.GetHashCode()));
+
+            return result;
         }
 
         public override bool Equals(object obj)

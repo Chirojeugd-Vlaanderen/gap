@@ -72,27 +72,31 @@ namespace Cg2.EfWrapper
         /// </remarks>
         public static T DetachObjectGraph<T>(T entity) where T:IBasisEntiteit
         {
+            T gedetacht;
+
             using (MemoryStream stream = new MemoryStream())
             {
 
                 NetDataContractSerializer serializer = new NetDataContractSerializer();
                 serializer.Serialize(stream, entity);
-
                 stream.Position = 0;
 
                 #region opkuisen
-                //// TODO: opkuis
-                //var tr = new StreamReader(stream);
-                //string xml = tr.ReadToEnd();
+                // TODO: opkuis
+                var tr = new StreamReader(stream);
+                string xml = tr.ReadToEnd();
 
-                //Debug.WriteLine(xml);
+                Debug.WriteLine(xml);
 
-                
-                //stream.Position = 0;
+
+                stream.Position = 0;
                 #endregion
 
-                return (T)serializer.Deserialize(stream);
+
+                gedetacht = (T)serializer.Deserialize(stream);
             }
+
+            return gedetacht;
         }
         
         public static IList<T> DetachObjectGraph<T>(IList<T> entities) where T : IBasisEntiteit

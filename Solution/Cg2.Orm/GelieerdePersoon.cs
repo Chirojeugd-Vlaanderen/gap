@@ -74,27 +74,31 @@ namespace Cg2.Orm
                 hashcode = base.GetHashCode();
             }
 
-            Debug.WriteLine(string.Format("ID: {0}  Hashcode: {1}", ID, hashcode));
+            Debug.WriteLine(string.Format("Gelieerde Persoon: ID: {0}  Hashcode: {1}  Base Hashcode: {2}", ID, hashcode, base.GetHashCode()));
 
             return hashcode;
         }
 
         public override bool Equals(object obj)
         {
+            bool result;
+
             var andere = obj as GelieerdePersoon;
 
             if (andere == null)
             {
-                return false;
+                result = false;
             }
             else if (ID == 0 || andere.ID == 0)
             {
-                return base.Equals(andere);
+                result = base.Equals(andere);
             }
             else
             {
-                return ID == andere.ID;
+                result = (ID == andere.ID);
             }
+
+            return result;
         }
 
         #endregion

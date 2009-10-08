@@ -81,6 +81,18 @@ namespace Cg2.Dao.Test
 
 		  #endregion
 
+         /// <summary>
+         /// Test op het ophalen van een categorie
+         /// </summary>
+          [TestMethod]
+          public void CategorieOphalen()
+          {
+              // act
+              Categorie c = catdao.Ophalen(catID, foo=>foo.GelieerdePersoon);
+
+              // assert
+              Assert.IsTrue(c.ID == catID);
+          }
 		  
 
 		  /// <summary>

@@ -32,7 +32,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_CommunicatieVorm_CommunicatieType", "CommunicatieType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.CommunicatieType), "CommunicatieVorm", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.CommunicatieVorm))]
 
 // Original file name:
-// Generation date: 2/10/2009 9:20:07
+// Generation date: 8/10/2009 14:50:41
 namespace Cg2.Orm
 {
     
@@ -1285,38 +1285,15 @@ namespace Cg2.Orm
         /// <summary>
         /// Create a new GelieerdePersoon object.
         /// </summary>
-        /// <param name="chiroLeefTijd">Initial value of ChiroLeefTijd.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static GelieerdePersoon CreateGelieerdePersoon(int chiroLeefTijd, int id)
+        /// <param name="chiroLeefTijd">Initial value of ChiroLeefTijd.</param>
+        public static GelieerdePersoon CreateGelieerdePersoon(int id, int chiroLeefTijd)
         {
             GelieerdePersoon gelieerdePersoon = new GelieerdePersoon();
-            gelieerdePersoon.ChiroLeefTijd = chiroLeefTijd;
             gelieerdePersoon.ID = id;
+            gelieerdePersoon.ChiroLeefTijd = chiroLeefTijd;
             return gelieerdePersoon;
         }
-        /// <summary>
-        /// There are no comments for Property ChiroLeefTijd in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int ChiroLeefTijd
-        {
-            get
-            {
-                return this._ChiroLeefTijd;
-            }
-            set
-            {
-                this.OnChiroLeefTijdChanging(value);
-                this.ReportPropertyChanging("ChiroLeefTijd");
-                this._ChiroLeefTijd = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("ChiroLeefTijd");
-                this.OnChiroLeefTijdChanged();
-            }
-        }
-        private int _ChiroLeefTijd;
-        partial void OnChiroLeefTijdChanging(int value);
-        partial void OnChiroLeefTijdChanged();
         /// <summary>
         /// There are no comments for Property ID in the schema.
         /// </summary>
@@ -1340,6 +1317,29 @@ namespace Cg2.Orm
         private int _ID;
         partial void OnIDChanging(int value);
         partial void OnIDChanged();
+        /// <summary>
+        /// There are no comments for Property ChiroLeefTijd in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int ChiroLeefTijd
+        {
+            get
+            {
+                return this._ChiroLeefTijd;
+            }
+            set
+            {
+                this.OnChiroLeefTijdChanging(value);
+                this.ReportPropertyChanging("ChiroLeefTijd");
+                this._ChiroLeefTijd = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ChiroLeefTijd");
+                this.OnChiroLeefTijdChanged();
+            }
+        }
+        private int _ChiroLeefTijd;
+        partial void OnChiroLeefTijdChanging(int value);
+        partial void OnChiroLeefTijdChanged();
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>

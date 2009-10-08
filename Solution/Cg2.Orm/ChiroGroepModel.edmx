@@ -800,8 +800,8 @@
         <EntityType Name="GelieerdePersoon">
           <Key>
             <PropertyRef Name="ID" /></Key>
-          <Property Name="ChiroLeefTijd" Type="Int32" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ChiroLeefTijd" Type="Int32" Nullable="false" />
           <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_GelieerdePersoon_Groep" FromRole="GelieerdePersoon" ToRole="Groep" />
           <NavigationProperty Name="Communicatie" Relationship="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" FromRole="GelieerdePersoon" ToRole="CommunicatieVorm" />
