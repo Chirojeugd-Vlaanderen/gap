@@ -41,8 +41,6 @@ namespace Cg2.Orm
                 result = base.GetHashCode();
             }
 
-            Debug.WriteLine(string.Format("Categorie: ID: {0}  Hashcode: {1}  Base Hashcode: {2}", ID, result, base.GetHashCode()));
-
             return result;
         }
 

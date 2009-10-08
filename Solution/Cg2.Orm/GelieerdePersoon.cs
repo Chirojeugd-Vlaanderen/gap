@@ -74,8 +74,6 @@ namespace Cg2.Orm
                 hashcode = base.GetHashCode();
             }
 
-            Debug.WriteLine(string.Format("Gelieerde Persoon: ID: {0}  Hashcode: {1}  Base Hashcode: {2}", ID, hashcode, base.GetHashCode()));
-
             return hashcode;
         }
 

@@ -43,7 +43,6 @@ namespace Cg2.Orm
                 // correct is.
                 result = base.GetHashCode();
             }
-            Debug.WriteLine(string.Format("Groep: ID: {0}  Hashcode: {1}  Base Hashcode: {2}", ID, result, base.GetHashCode()));
 
             return result;
         }

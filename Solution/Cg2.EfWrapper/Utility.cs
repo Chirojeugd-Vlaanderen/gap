@@ -22,8 +22,8 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 using System.IO;
-using System.Runtime.Serialization;
 using System.Diagnostics;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Cg2.EfWrapper
 {
@@ -77,21 +77,15 @@ namespace Cg2.EfWrapper
             using (MemoryStream stream = new MemoryStream())
             {
 
-                NetDataContractSerializer serializer = new NetDataContractSerializer();
+                //NetDataContractSerializer serializer = new NetDataContractSerializer();
+
+                // Met een DataContractSerializer werkt het blijkbaar niet.
+                // Met een binaryFormatter wel.
+
+                BinaryFormatter serializer = new BinaryFormatter();
+
                 serializer.Serialize(stream, entity);
                 stream.Position = 0;
-
-                #region opkuisen
-                // TODO: opkuis
-                var tr = new StreamReader(stream);
-                string xml = tr.ReadToEnd();
-
-                Debug.WriteLine(xml);
-
-
-                stream.Position = 0;
-                #endregion
-
 
                 gedetacht = (T)serializer.Deserialize(stream);
             }
@@ -104,7 +98,7 @@ namespace Cg2.EfWrapper
             using (MemoryStream stream = new MemoryStream())
             {
 
-                NetDataContractSerializer serializer = new NetDataContractSerializer();
+                var serializer = new BinaryFormatter();
                 serializer.Serialize(stream, entities);
                 stream.Position = 0;
                 return (IList<T>)serializer.Deserialize(stream);
