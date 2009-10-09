@@ -67,7 +67,7 @@ namespace Cg2.Dao.Test
         [ClassInitialize]
         public static void TestInitialiseren(TestContext context)
         {
-            Factory.InitContainer();
+            Factory.ContainerInit();
 
             // Verwijder GAV die we straks zullen aanmaken.
             IGavDao gavDao = Factory.Maak<IGavDao>();

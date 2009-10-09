@@ -10,7 +10,7 @@ using Cg2.EfWrapper.Entity;
 
 namespace Cg2.Data.Ef
 {
-    public class AfdelingsJaarDao: Dao<AfdelingsJaar>, IAfdelingsJaarDao
+    public class AfdelingsJaarDao: Dao<AfdelingsJaar>, IAfdelingsJarenDao
     {
         public AfdelingsJaarDao(): base()
         {

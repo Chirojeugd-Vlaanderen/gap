@@ -8,6 +8,7 @@ using Cg2.Orm.DataInterfaces;
 using Cg2.Orm;
 using Cg2.Fouten.Exceptions;
 using Cg2.Dummies;
+using Cg2.Ioc;
 
 namespace Cg2.Workers.Test
 {
@@ -67,7 +68,7 @@ namespace Cg2.Workers.Test
         [ClassInitialize]
         static public void InitialiseerTests(TestContext context)
         {
-            // we doen even niets.
+            Factory.ContainerInit();
         }
 
         /// <summary>
@@ -86,9 +87,11 @@ namespace Cg2.Workers.Test
             ledenDaoMock.Setup(foo => foo.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(new List<Lid>());
             autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(false);
 
-            LedenDaoCollectie daos = new LedenDaoCollectie(ledenDaoMock.Object, null, null, null, null, null);
+            Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
+            Factory.InstantieRegistreren<IAutorisatieManager>(autorisatieMgrMock.Object);
 
-            LedenManager lm = new LedenManager(daos, autorisatieMgrMock.Object);
+            LedenDaoCollectie daos = Factory.Maak<LedenDaoCollectie>();
+            LedenManager lm = Factory.Maak<LedenManager>();
 
             // Act
 
@@ -126,9 +129,11 @@ namespace Cg2.Workers.Test
             // GelieerdePersonenManager aanmaken, waarbij autorisatieManager steeds 'false'
             // antwoordt.
 
-            GelieerdePersonenManager gpMgr = new GelieerdePersonenManager(gpDaoMock.Object, groepenDaoMock.Object, null, new AutMgrNooitGav());
+            Factory.InstantieRegistreren<IGelieerdePersonenDao>(gpDaoMock.Object);
+            Factory.InstantieRegistreren<IGroepenDao>(groepenDaoMock.Object);
+            Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrNooitGav());
 
-
+            GelieerdePersonenManager gpMgr = Factory.Maak<GelieerdePersonenManager>();
             #endregion
 
             #region act
@@ -160,9 +165,10 @@ namespace Cg2.Workers.Test
             ledenDaoMock.Setup(foo => foo.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(new List<Lid>());
             autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(true);
 
-            LedenDaoCollectie daos = new LedenDaoCollectie(ledenDaoMock.Object, null, null, null, null, null);
+            Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
+            Factory.InstantieRegistreren<IAutorisatieManager>(autorisatieMgrMock.Object);
 
-            LedenManager lm = new LedenManager(daos, autorisatieMgrMock.Object);
+            LedenManager lm = Factory.Maak<LedenManager>();
 
             // Act
 
@@ -208,7 +214,10 @@ namespace Cg2.Workers.Test
             // Tenslotte de personenManager die we willen
             // testen.
 
-            PersonenManager pm = new PersonenManager(pDaoMock.Object, auManMock.Object);
+            Factory.InstantieRegistreren<IPersonenDao>(pDaoMock.Object);
+            Factory.InstantieRegistreren<IAutorisatieManager>(auManMock.Object);
+
+            PersonenManager pm = Factory.Maak<PersonenManager>();
 
             #endregion
 
@@ -256,7 +265,10 @@ namespace Cg2.Workers.Test
 
             // Maak nu de GelieerdePersoonenManager aan die we willen testen.
 
-            GelieerdePersonenManager gpm = new GelieerdePersonenManager(gpDaoMock.Object, null, null, new AutMgrAltijdGav());
+            Factory.InstantieRegistreren<IGelieerdePersonenDao>(gpDaoMock.Object);
+            Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
+
+            GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
 
             #endregion
 
@@ -304,7 +316,10 @@ namespace Cg2.Workers.Test
 
             // Maak nu de GelieerdePersoonenManager aan die we willen testen.
 
-            GelieerdePersonenManager gpm = new GelieerdePersonenManager(gpDaoMock.Object, null, null, new AutMgrAltijdGav());
+            Factory.InstantieRegistreren<IGelieerdePersonenDao>(gpDaoMock.Object);
+            Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
+
+            GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
 
             #endregion
 
@@ -335,7 +350,9 @@ namespace Cg2.Workers.Test
             // gewenste situatie opbouwen van een persoon die
             // gekoppeld is aan een groep.
 
-            GelieerdePersonenManager gpm = new GelieerdePersonenManager(null, null, null, new AutMgrAltijdGav());
+            Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
+
+            GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
 
             Groep g = new Groep();
             Persoon p = new Persoon { AdNummer = 1 };

@@ -65,7 +65,7 @@ namespace Cg2.Dao.Test
         [ClassInitialize]
         public static void InitialiseerTests(TestContext ctx)
         {
-            Factory.InitContainer();
+            Factory.ContainerInit();
         }
 
         [TestMethod]

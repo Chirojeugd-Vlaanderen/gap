@@ -51,6 +51,13 @@
     <Compile Include="AutDaoAltijdGav.cs" />
     <Compile Include="AutMgrAltijdGav.cs" />
     <Compile Include="AutMgrNooitGav.cs" />
+    <Compile Include="DummyAfdelingsJarenDao.cs" />
+    <Compile Include="DummyCategorieenDao.cs" />
+    <Compile Include="DummyGelieerdePersonenDao.cs" />
+    <Compile Include="DummyGroepenDao.cs" />
+    <Compile Include="DummyKindDao.cs" />
+    <Compile Include="DummyLeidingDao.cs" />
+    <Compile Include="DummyPersonenDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

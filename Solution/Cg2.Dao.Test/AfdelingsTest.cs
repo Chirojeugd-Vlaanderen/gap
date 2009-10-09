@@ -77,14 +77,14 @@ namespace Cg2.Dao.Test
         {
             // Initialiseer IoC-container.  Niet zeker van of dit
             // een goeie plaats is...
-            Factory.InitContainer();
+            Factory.ContainerInit();
 
             int gwjID = Properties.Settings.Default.TestGroepsWerkJaarID;
             int afd2ID = Properties.Settings.Default.TestAfdeling2ID;
 
             // Verwijder mogelijk afdelingsjaar voor afdeling2
 
-            IAfdelingsJaarDao ajDao = Factory.Maak<IAfdelingsJaarDao>();
+            IAfdelingsJarenDao ajDao = Factory.Maak<IAfdelingsJarenDao>();
             AfdelingsJaar aj = ajDao.Ophalen(gwjID, afd2ID);
 
             if (aj != null)
@@ -106,7 +106,7 @@ namespace Cg2.Dao.Test
             int gwjID = Properties.Settings.Default.TestGroepsWerkJaarID;
             int afdID = Properties.Settings.Default.TestAfdelingID;
 
-            IAfdelingsJaarDao dao = Factory.Maak<IAfdelingsJaarDao>();
+            IAfdelingsJarenDao dao = Factory.Maak<IAfdelingsJarenDao>();
             #endregion
 
             #region Act
@@ -158,7 +158,7 @@ namespace Cg2.Dao.Test
 
             IGroepsWerkJaarDao gwDao = Factory.Maak<IGroepsWerkJaarDao>();
             IAfdelingenDao aDao = Factory.Maak<IAfdelingenDao>();
-            IAfdelingsJaarDao ajDao = Factory.Maak<IAfdelingsJaarDao>();
+            IAfdelingsJarenDao ajDao = Factory.Maak<IAfdelingsJarenDao>();
             IDao<OfficieleAfdeling> oaDao = Factory.Maak<IDao<OfficieleAfdeling>>();
 
             WerkJaarManager wjm = Factory.Maak<WerkJaarManager>();

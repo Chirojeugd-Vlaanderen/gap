@@ -71,7 +71,7 @@ namespace Cg2.Dao.Test
         [ClassInitialize]
         static public void TestInitialiseren(TestContext context)
         {
-            Factory.InitContainer();
+            Factory.ContainerInit();
 
             // Verwijder lid (GelieerdePersoonID in AfdelingsJaarID) om achteraf opnieuw toe te voegen
 

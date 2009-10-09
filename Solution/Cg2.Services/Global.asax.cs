@@ -13,7 +13,7 @@ namespace Cg2.Services
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            Factory.InitContainer();
+            Factory.ContainerInit();
         }
 
         protected void Session_Start(object sender, EventArgs e)
@@ -43,7 +43,7 @@ namespace Cg2.Services
 
         protected void Application_End(object sender, EventArgs e)
         {
-            Factory.DisposeContainer();
+            Factory.ContainerDispose();
         }
     }
 }

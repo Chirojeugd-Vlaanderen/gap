@@ -66,7 +66,7 @@ namespace Cg2.Dao.Test
         [ClassInitialize]
         static public void TestInitialiseren(TestContext context)
         {
-            Factory.InitContainer();
+            Factory.ContainerInit();
 
             // Maak persoon aan, die bij het testen weer
             // verwijderd kan worden.

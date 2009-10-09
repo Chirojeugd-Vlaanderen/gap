@@ -63,7 +63,7 @@ namespace Cg2.Ioc.Test
         [ClassInitialize]
         static public void InitTests(TestContext context)
         {
-            Factory.InitContainer();
+            Factory.ContainerInit();
         }
 
         /// <summary>

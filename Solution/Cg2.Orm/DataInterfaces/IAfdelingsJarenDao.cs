@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Cg2.Orm.DataInterfaces
 {
-    public interface IAfdelingsJaarDao : IDao<AfdelingsJaar>
+    public interface IAfdelingsJarenDao : IDao<AfdelingsJaar>
     {
         AfdelingsJaar Ophalen(int groepsWerkJaarID, int afdelingID);
     }

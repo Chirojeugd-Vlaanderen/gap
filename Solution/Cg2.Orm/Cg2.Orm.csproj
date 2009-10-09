@@ -61,7 +61,7 @@
     </Compile>
     <Compile Include="CommunicatieType.cs" />
     <Compile Include="DataInterfaces\IAfdelingenDao.cs" />
-    <Compile Include="DataInterfaces\IAfdelingsJaarDao.cs" />
+    <Compile Include="DataInterfaces\IAfdelingsJarenDao.cs" />
     <Compile Include="DataInterfaces\ICategorieenDao.cs" />
     <Compile Include="DataInterfaces\ICommunicatieVormDao.cs" />
     <Compile Include="DataInterfaces\IGavDao.cs" />

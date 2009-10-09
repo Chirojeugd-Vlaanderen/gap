@@ -14,6 +14,7 @@ namespace Cg2.Ioc
         private static object threadLock = new object();
 
         private static IUnityContainer _container = null;
+        private static string _containerNaam = "";
 
         private static IUnityContainer Container
         {
@@ -24,21 +25,52 @@ namespace Cg2.Ioc
             }
         }
 
-        public static void InitContainer()
+        public static string ContainerNaam
+        {
+            get
+            {
+                return _containerNaam;
+            }
+        }
+
+        /// <summary>
+        /// Initialiseert de unity container voor de factory.
+        /// Gebruikt de standaardcontainer.
+        /// </summary>
+        public static void ContainerInit()
+        {
+            ContainerInit(Properties.Settings.Default.StandaardContainer);
+        }
+
+        /// <summary>
+        /// Initialiseert de unity container voor de factory
+        /// </summary>
+        /// <param name="containerNaam">naam van de te gebruiken container</param>
+        public static void ContainerInit(string containerNaam)
         {
             lock (threadLock)
             {
+                if (_container != null && _containerNaam != containerNaam)
+                {
+                    // Andere container in gebruik: geef eerst vrij.
+
+                    _container.Dispose();
+                    _container = null;
+                    _containerNaam = "";
+                }
+
                 if (_container == null)
                 {
+                    var section = (UnityConfigurationSection)ConfigurationManager.GetSection("unity");
+
                     _container = new UnityContainer();
-                    UnityConfigurationSection section
-                        = (UnityConfigurationSection)ConfigurationManager.GetSection("unity");
-                    section.Containers.Default.Configure(_container);
+                    section.Containers[containerNaam].Configure(_container);
+                    _containerNaam = containerNaam;
                 }
             }
         }
 
-        public static void DisposeContainer()
+        public static void ContainerDispose()
         {
             lock (threadLock)
             {
@@ -47,6 +79,7 @@ namespace Cg2.Ioc
                     _container.Dispose();
                     _container = null;
                 }
+                _containerNaam = "";
             }
         }
         
@@ -58,6 +91,17 @@ namespace Cg2.Ioc
         public static T Maak<T>()
         {
             return Container.Resolve<T>(); 
+        }
+
+        /// <summary>
+        /// Zorg ervoor dat voor een (implementatie van) T steeds
+        /// hetzelfde bestaande object gebruikt wordt.
+        /// </summary>
+        /// <typeparam name="T">type of interface</typeparam>
+        /// <param name="instantie">te gebruiken object</param>
+        public static void InstantieRegistreren<T>(T instantie)
+        {
+            Container.RegisterInstance<T>(instantie);
         }
     }
 }

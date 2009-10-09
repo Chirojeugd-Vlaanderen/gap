@@ -61,7 +61,7 @@ namespace Cg2.Dao.Test
 		  [ClassInitialize]
 		  static public void TestInit(TestContext context)
 		  {
-				Cg2.Ioc.Factory.InitContainer();
+				Cg2.Ioc.Factory.ContainerInit();
 		  }
 
 		  [TestInitialize()]
