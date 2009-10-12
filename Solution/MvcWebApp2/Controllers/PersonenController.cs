@@ -74,6 +74,17 @@ namespace MvcWebApp2.Controllers
         }
 
         //
+        // GET: /Personen/Nieuw
+        public ActionResult Nieuw()
+        {
+            var model = new Models.GelieerdePersonenModel();
+            model.NieuweHuidigePersoon();
+            
+            model.Title = Properties.Resources.NieuwePersoonTitel;
+            return View("Edit", model);
+        }
+
+        //
         // GET: /Personen/Edit/5
         public ActionResult Edit(int id)
         {

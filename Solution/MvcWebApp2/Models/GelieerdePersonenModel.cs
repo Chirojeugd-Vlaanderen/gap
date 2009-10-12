@@ -16,5 +16,18 @@ namespace MvcWebApp2.Models
         public GelieerdePersoon HuidigePersoon { get; set; }
 
         public GelieerdePersonenModel() : base() { }
+
+        /// <summary>
+        /// Creeert een nieuwe gelieerde persoon, en stockeert in
+        /// HuidigePersoon.
+        /// </summary>
+        /// <returns>de nieuw gecreeerde gelieerde persoon</returns>
+        /// <remarks>Er is precies iets niet juist in deze code...</remarks>
+        public GelieerdePersoon NieuweHuidigePersoon()
+        {
+            HuidigePersoon = new GelieerdePersoon();
+            HuidigePersoon.Persoon = new Persoon();
+            return HuidigePersoon;
+        }
     }
 }

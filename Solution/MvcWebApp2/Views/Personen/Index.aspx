@@ -8,6 +8,9 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
+<ul id="acties">
+<li><%= Html.ActionLink("Nieuwe persoon", "Nieuw") %></li>
+</ul>
 <% Html.RenderPartial("PersonenLijstControl"); %>
 
 </asp:Content>

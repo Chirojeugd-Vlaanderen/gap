@@ -68,5 +68,14 @@ namespace MvcWebApp2.Properties {
                 return ResourceManager.GetString("DemoMessage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nieuwe persoon.
+        /// </summary>
+        internal static string NieuwePersoonTitel {
+            get {
+                return ResourceManager.GetString("NieuwePersoonTitel", resourceCulture);
+            }
+        }
     }
 }

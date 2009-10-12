@@ -120,4 +120,7 @@
   <data name="DemoMessage" xml:space="preserve">
     <value>Groep {0} geselecteerd.  Dat was {1}.</value>
   </data>
+  <data name="NieuwePersoonTitel" xml:space="preserve">
+    <value>Nieuwe persoon</value>
+  </data>
 </root>
