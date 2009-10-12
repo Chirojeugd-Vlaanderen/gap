@@ -90,6 +90,8 @@ namespace Cg2.Ioc
         /// <returns></returns>
         public static T Maak<T>()
         {
+            Debug.Assert(_container != null);
+            
             return Container.Resolve<T>(); 
         }
 

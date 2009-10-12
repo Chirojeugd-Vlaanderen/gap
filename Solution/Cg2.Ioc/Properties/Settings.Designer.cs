@@ -23,15 +23,12 @@ namespace Cg2.Ioc.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("container")]
         public string StandaardContainer {
             get {
                 return ((string)(this["StandaardContainer"]));
-            }
-            set {
-                this["StandaardContainer"] = value;
             }
         }
     }
