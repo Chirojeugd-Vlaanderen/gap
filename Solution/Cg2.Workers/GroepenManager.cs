@@ -22,7 +22,7 @@ namespace Cg2.Workers
         /// de groepen te gebruiken.  Nuttig voor mocking en testing.
         /// </summary>
         /// <param name="dao">Alternatieve dao</param>
-        public GroepenManager(IGroepenDao dao, IDao<AfdelingsJaar> afdao, IAutorisatieManager autorisatieMgr, ICategorieenDao categorieenDao)
+        public GroepenManager(IGroepenDao dao, IDao<AfdelingsJaar> afdao, ICategorieenDao categorieenDao, IAutorisatieManager autorisatieMgr)
         {
             _dao = dao;
             _afdao = afdao;

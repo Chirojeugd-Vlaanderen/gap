@@ -106,7 +106,7 @@ namespace Cg2.Workers
             GelieerdePersoon gpMetDetails = gpm.DetailsOphalen(gp.ID);
 
             // Afdelingen ophalen
-            GroepenManager gm = new GroepenManager(_daos.GroepenDao, _daos.AfdelingsJaarDao, _authorisatieMgr, Factory.Maak<ICategorieenDao>());
+            GroepenManager gm = Factory.Maak<GroepenManager>();
             IList<AfdelingsJaar> jaren = gm.AfdelingsJarenOphalen(gwj);
 
             // Geschikte afdeling zoeken
@@ -170,7 +170,7 @@ namespace Cg2.Workers
         {
             if (_authorisatieMgr.IsGavGelieerdePersoon(gp.ID))
             {
-                GroepenManager gm = new GroepenManager(_daos.GroepenDao, _daos.AfdelingsJaarDao, _authorisatieMgr, Factory.Maak<ICategorieenDao>());
+                GroepenManager gm = Factory.Maak<GroepenManager>();
 
                 if (gp.Groep == null)
                 {

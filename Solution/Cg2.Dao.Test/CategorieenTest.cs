@@ -26,9 +26,9 @@ namespace Cg2.Dao.Test
 		  // [AssociationEndBehavior("PersoonsCategorie", Owned=true)]
 		  // dus TODO apart verwijderen van categorie toelaten!
 
-		  ICategorieenDao catdao = null;
-		  IGelieerdePersonenDao gpdao = null;
-		  int catID, gpID, gp2ID;
+		  ICategorieenDao _catdao = null;
+		  IGelieerdePersonenDao _gpdao = null;
+		  int _catID, _gpID, _gp2ID;
 
 		  public CategorieenTest(){ }
 
@@ -67,11 +67,11 @@ namespace Cg2.Dao.Test
 		  [TestInitialize()]
 		  public void MyTestInitialize()
 		  {
-				catdao = Factory.Maak<ICategorieenDao>();
-				gpdao = Factory.Maak<IGelieerdePersonenDao>();
-				catID = Properties.Settings.Default.TestCategorieID;
-				gpID = Properties.Settings.Default.TestGelieerdePersoonID;
-				gp2ID = Properties.Settings.Default.TestGelieerdePersoon2ID;
+				_catdao = Factory.Maak<ICategorieenDao>();
+				_gpdao = Factory.Maak<IGelieerdePersonenDao>();
+				_catID = Properties.Settings.Default.TestCategorieID;
+				_gpID = Properties.Settings.Default.TestGelieerdePersoonID;
+				_gp2ID = Properties.Settings.Default.TestGelieerdePersoon2ID;
 		  }
 
 		  [TestCleanup()]
@@ -88,10 +88,10 @@ namespace Cg2.Dao.Test
           public void CategorieOphalen()
           {
               // act
-              Categorie c = catdao.Ophalen(catID, foo=>foo.GelieerdePersoon);
+              Categorie c = _catdao.Ophalen(_catID, foo=>foo.GelieerdePersoon);
 
               // assert
-              Assert.IsTrue(c.ID == catID);
+              Assert.IsTrue(c.ID == _catID);
           }
 		  
 
@@ -103,8 +103,8 @@ namespace Cg2.Dao.Test
 		  public void PersoonToevoegenAanCategorie()
 		  {
 				//arrange
-				GelieerdePersoon gp = gpdao.Ophalen(gpID);
-				Categorie cat = catdao.Ophalen(catID);
+				GelieerdePersoon gp = _gpdao.Ophalen(_gpID);
+				Categorie cat = _catdao.Ophalen(_catID);
 
 				//add
 				// koppel categorie aan groep
@@ -112,20 +112,20 @@ namespace Cg2.Dao.Test
 				gp.Categorie.Add(cat);
 
 				// bewaar via dao (we zijn de dao aan het testen)
-				catdao.Bewaren(cat);
+				_catdao.Bewaren(cat);
 
 				//assert
-				IList<GelieerdePersoon> lijst = catdao.Ophalen(catID).GelieerdePersoon.ToList();
+				IList<GelieerdePersoon> lijst = _catdao.Ophalen(_catID).GelieerdePersoon.ToList();
 
 				var query = (from item in lijst
-								 where item.ID == gpID
+								 where item.ID == _gpID
 								 select item);
 
 				Assert.IsTrue(query.Count() == 1);
 
 				//cleanup
 				cat.GelieerdePersoon.First().TeVerwijderen = true;
-				catdao.Bewaren(cat);
+				_catdao.Bewaren(cat);
 		  }
 	 }
 }
