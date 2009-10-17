@@ -84,5 +84,10 @@ namespace Cg2.Orm.DataInterfaces
         /// <param name="categorieID">ID van een categorie</param>
         /// <returns>lijst van gelieerde personen met persoonsinfo in de categorie</returns>
         IList<GelieerdePersoon> OphalenUitCategorie(int categorieID);*/
+
+        /// <summary>
+        /// Haalt een lijst op met alle communicatietypes
+        /// </summary>
+        IEnumerable<CommunicatieType> ophalenCommunicatieTypes();
     }
 }

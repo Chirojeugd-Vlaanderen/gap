@@ -230,11 +230,11 @@ namespace Cg2.Services
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public void CommVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm)
+        public void CommVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm, int typeID)
         {
             GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
 
-            mgr.CommVormToevoegen(commvorm, gelieerdepersonenID);
+            mgr.CommVormToevoegen(commvorm, gelieerdepersonenID, typeID);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
@@ -255,5 +255,26 @@ namespace Cg2.Services
         }
 
         #endregion
+
+        #region categorieen
+        public void CategorieToevoegenAanPersoon(IList<int> gelieerdepersonenIDs, int categorieID)
+        {
+            GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
+            mgr.CategorieKoppelen(gelieerdepersonenIDs, categorieID, true);
+        }
+        public void CategorieVerwijderenVanPersoon(IList<int> gelieerdepersonenIDs, int categorieID)
+        {
+            GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
+            mgr.CategorieKoppelen(gelieerdepersonenIDs, categorieID, true);
+        }
+
+        #endregion categorieen
+
+
+        public IEnumerable<CommunicatieType> ophalenCommunicatieTypes()
+        {
+            GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
+            return mgr.ophalenCommunicatieTypes();
+        }
     }
 }

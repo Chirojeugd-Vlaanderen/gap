@@ -142,7 +142,7 @@ namespace Cg2.ServiceContracts
         /// <returns></returns>
         [OperationContract]
         [FaultContract(typeof(BusinessFault<CommunicatieVorm>))]
-        void CommVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm);
+        void CommVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm, int typeID);
         [OperationContract]
         [FaultContract(typeof(BusinessFault<CommunicatieVorm>))]
         void CommVormVerwijderenVanPersoon(int gelieerdepersonenID, int commvormID);
@@ -155,5 +155,28 @@ namespace Cg2.ServiceContracts
         [FaultContract(typeof(BusinessFault<CommunicatieVorm>))]
         void AanpassenCommVorm(CommunicatieVorm v);
         #endregion commvormen
+
+        #region categorieen
+        /// <summary>
+        /// Voegt een categorieen toe aan een verzameling personen
+        /// </summary>
+        /// <param name="personenIDs">ID's van Personen
+        /// waaraan het nieuwe commvorm toegevoegd moet worden.</param>
+        /// <param name="adres">Toe te voegen commvorm</param>
+        /// <returns></returns>
+        [OperationContract]
+        [FaultContract(typeof(BusinessFault<Categorie>))]
+        void CategorieToevoegenAanPersoon(IList<int> gelieerdepersonenIDs, int categorieID);
+        [OperationContract]
+        [FaultContract(typeof(BusinessFault<Categorie>))]
+        void CategorieVerwijderenVanPersoon(IList<int> gelieerdepersonenIDs, int categorieID);
+
+        #endregion categorieen
+
+        /// <summary>
+        /// Haalt een lijst op met alle communicatietypes
+        /// </summary>
+        [OperationContract]
+        IEnumerable<CommunicatieType> ophalenCommunicatieTypes();
     }
 }

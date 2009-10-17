@@ -6,6 +6,7 @@ using System.Web;
 using Cg2.Adf.ServiceModel;
 using Cg2.Orm;
 using Cg2.ServiceContracts;
+using System.Web.Mvc;
 
 
 namespace MvcWebApp2.Models
@@ -13,7 +14,7 @@ namespace MvcWebApp2.Models
     /// <summary>
     /// Model gebruikt om iemand een nieuw adres te geven.
     /// </summary>
-    public class CommVormModel : MasterViewModel 
+    public class NieuweCommVormModel : MasterViewModel 
     {
         // ID van GelieerdePersoon waarvoor aangeklikt dat
         // hij/zij een extra adres nodig heeft
@@ -23,19 +24,23 @@ namespace MvcWebApp2.Models
         /// Nieuw adres voor de gegeven gelieerde personen
         /// </summary>
         public CommunicatieVorm NieuweCommVorm { get; set; }
+        public int geselecteerdeCommVorm { get; set; }
+
+        public IEnumerable<CommunicatieType> Types { get; set; }
 
         /// <summary>
         /// Standaardconstructor - creeert lege NieuwAdresInfo
         /// </summary>
-        public CommVormModel()
+        public NieuweCommVormModel()
         {
             Aanvrager = new GelieerdePersoon();
             NieuweCommVorm = new CommunicatieVorm();
         }
 
-        public CommVormModel(GelieerdePersoon aanvrager) : this()
+        public NieuweCommVormModel(GelieerdePersoon aanvrager, IEnumerable<CommunicatieType> types) : this()
         {
             Aanvrager = aanvrager;
+            Types = types;
             NieuweCommVorm = new CommunicatieVorm();
         }
     }

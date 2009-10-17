@@ -89,6 +89,7 @@
     <Compile Include="Models\AdresVerwijderenModel.cs" />
     <Compile Include="Models\CategorieModel.cs" />
     <Compile Include="Models\CommVormModel.cs" />
+    <Compile Include="Models\NieuweCommVormModel.cs" />
     <Compile Include="Models\GavModel.cs" />
     <Compile Include="Models\LidInfoModel.cs" />
     <Compile Include="Models\GelieerdePersonenModel.cs" />
@@ -118,6 +119,8 @@
     <Content Include="Views\Gav\Index.aspx" />
     <Content Include="Views\Leden\Index.aspx" />
     <Content Include="Views\Personen\AdresVerwijderen.aspx" />
+    <Content Include="Views\Personen\CommVormBewerken.aspx" />
+    <Content Include="Views\Personen\NieuweCommVorm.aspx" />
     <Content Include="Views\Personen\EditGegevens.aspx" />
     <Content Include="Views\Personen\NieuwAdres.aspx" />
     <Content Include="Views\Personen\EditRest.aspx" />

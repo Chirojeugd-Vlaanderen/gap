@@ -16,14 +16,16 @@ namespace Cg2.Workers
         private IGroepenDao _groepenDao;
         private ICategorieenDao _categorieenDao;
         private IAutorisatieManager _autorisatieMgr;
+        private IDao<CommunicatieType> _typedao;
 
         public GelieerdePersonenManager(IGelieerdePersonenDao dao, IGroepenDao groepenDao
-            , ICategorieenDao categorieenDao, IAutorisatieManager autorisatieMgr)
+            , ICategorieenDao categorieenDao, IAutorisatieManager autorisatieMgr, IDao<CommunicatieType> typedao)
         {
             _dao = dao;
             _groepenDao = groepenDao;
             _categorieenDao = categorieenDao;
             _autorisatieMgr = autorisatieMgr;
+            _typedao = typedao;
         }
 
         #region proxy naar data access
@@ -110,10 +112,10 @@ namespace Cg2.Workers
                 // overschreven wordt, lijkt me wat overkill.  Ik vergelijk
                 // hiet nieuwe AD-nummer gewoon met het bestaande.
 
-                GelieerdePersoon origineel = _dao.Ophalen(p.ID);
+                GelieerdePersoon origineel = _dao.Ophalen(p.ID, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
                 if (origineel.Persoon.AdNummer == p.Persoon.AdNummer)
                 {
-                    return _dao.Bewaren(p, l=>l.Communicatie);
+                    return _dao.Bewaren(p, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
                 }
                 else
                 {
@@ -126,10 +128,12 @@ namespace Cg2.Workers
             }
         }
 
-        public void CommVormToevoegen(CommunicatieVorm comm, int gelieerdePersoonID)
+        public void CommVormToevoegen(CommunicatieVorm comm, int gelieerdePersoonID, int typeID)
         {
-            GelieerdePersoon origineel = _dao.Ophalen(gelieerdePersoonID, e => e.Communicatie);
+            GelieerdePersoon origineel = _dao.Ophalen(gelieerdePersoonID, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
+            CommunicatieType type = _typedao.Ophalen(typeID);
             origineel.Communicatie.Add(comm);
+            comm.CommunicatieType = type;
             BewarenMetCommVormen(origineel);
         }
 
@@ -139,7 +143,7 @@ namespace Cg2.Workers
             {
                 throw new GeenGavException(Properties.Resources.GeenGavGroep);
             }
-            GelieerdePersoon origineel = _dao.Ophalen(gelieerdePersoonID, e => e.Communicatie);
+            GelieerdePersoon origineel = _dao.Ophalen(gelieerdePersoonID, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
             bool found = false;
             foreach (CommunicatieVorm c in origineel.Communicatie)
             {
@@ -314,6 +318,7 @@ namespace Cg2.Workers
         /// </summary>
         /// <param name="gelieerdePersoon">te koppelen gelieerde persoon</param>
         /// <param name="categorie">te koppelen categorie</param>
+        /// <param name="koppelen">geeft aan of ze gekoppeld (true) of ontkoppeld (false) moeten worden</param>
         public void CategorieKoppelen(IList<int> gelieerdePersoonIDs, int categorieID, bool koppelen)
         {
             // Heeft de gebruiker rechten voor de groep en de categorie?
@@ -375,5 +380,10 @@ namespace Cg2.Workers
 
 				return _categorieenDao.Ophalen(catID);
 		  }
+
+          public IEnumerable<CommunicatieType> ophalenCommunicatieTypes()
+          {
+              return _dao.ophalenCommunicatieTypes();
+          }
     }
 }

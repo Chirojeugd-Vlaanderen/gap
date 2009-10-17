@@ -251,5 +251,16 @@ namespace Cg2.Data.Ef
                 }
             }
         }*/
+
+        public IEnumerable<CommunicatieType> ophalenCommunicatieTypes()
+        {
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                db.CommunicatieType.MergeOption = MergeOption.NoTracking;
+                return (
+                    from gp in db.CommunicatieType
+                    select gp).ToList();
+            }
+        }
     }
 }
