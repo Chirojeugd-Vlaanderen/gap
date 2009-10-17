@@ -11,60 +11,69 @@ using Cg2.Workers;
 using Cg2.Orm;
 using Cg2.Fouten.Exceptions;
 using Cg2.Fouten.FaultContracts;
-using Cg2.Ioc;
 
 namespace Cg2.Services
 {
     // NOTE: If you change the class name "GelieerdePersonenService" here, you must also update the reference to "GelieerdePersonenService" in Web.config.
     public class GelieerdePersonenService : IGelieerdePersonenService
     {
+        #region Manager Injection
+
+        private readonly GelieerdePersonenManager gpm;
+        private readonly PersonenManager pm;
+        private readonly AutorisatieManager aum;
+        private readonly AdressenManager adm;
+        private readonly GroepenManager gm;
+
+        public GelieerdePersonenService(GelieerdePersonenManager gpm, PersonenManager pm, AutorisatieManager aum
+            , AdressenManager adm, GroepenManager gm)
+        {
+            this.gpm = gpm;
+            this.pm = pm;
+            this.aum = aum;
+            this.adm = adm;
+            this.gm = gm;
+        }
+
+        #endregion
+
         #region IGelieerdePersonenService Members
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<GelieerdePersoon> AllenOphalen(int groepID)
         {
-            GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
-
-            var result = pm.AllenOphalen(groepID);
+            var result = gpm.AllenOphalen(groepID);
             return result;
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<GelieerdePersoon>  PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
-            GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
-
-            var result = pm.PaginaOphalen(groepID, pagina, paginaGrootte, out aantalTotaal);
-
+            var result = gpm.PaginaOphalen(groepID, pagina, paginaGrootte, out aantalTotaal);
             return result;
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<PersoonInfo> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
-            GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
-
-            var gelieerdePersonen = pm.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
+            var gelieerdePersonen = gpm.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
             return PersoonInfoMapper.mapPersoon(gelieerdePersonen);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public int PersoonBewaren(GelieerdePersoon persoon)
         {
-            GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
-            GelieerdePersoon gp = pm.Bewaren(persoon);
-            return gp.ID;
+            gpm.Bewaren(persoon);
+            return persoon.ID;
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public int PersoonAanmaken(GelieerdePersoon persoon, int groepID)
         {
-            GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
-            GroepenManager gm = Factory.Maak<GroepenManager>();
             Groep g = gm.Ophalen(groepID);
             g.GelieerdePersoon.Add(persoon);
             persoon.Groep = g;
-            GelieerdePersoon gp = pm.Bewaren(persoon);
+            GelieerdePersoon gp = gpm.Bewaren(persoon);
             return gp.ID;
         }
 
@@ -73,19 +82,16 @@ namespace Cg2.Services
         {
             throw new NotImplementedException();
         }
-        //... andere zoekmogelijkheden
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID)
         {
-            GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
-            return pm.DetailsOphalen(gelieerdePersoonID);
+            return gpm.DetailsOphalen(gelieerdePersoonID);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public Adres AdresMetBewonersOphalen(int adresID)
         {
-            AdressenManager adm = Factory.Maak<AdressenManager>();
             return adm.AdresMetBewonersOphalen(adresID);
         }
 
@@ -96,13 +102,8 @@ namespace Cg2.Services
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void PersonenVerhuizen(IList<int> personenIDs, Adres nieuwAdres, int oudAdresID)
         {
-            PersonenManager pm = Factory.Maak<PersonenManager>();
-            AutorisatieManager aum = Factory.Maak<AutorisatieManager>();
-            AdressenManager adm = Factory.Maak<AdressenManager>();
-
             // Zoek adres op in database, of maak een nieuw.
             // (als straat en gemeente gekend)
-
             try
             {
                 nieuwAdres = adm.ZoekenOfMaken(nieuwAdres);
@@ -111,28 +112,15 @@ namespace Cg2.Services
             {
                 throw new FaultException<AdresFault>(ex.Fault);
             }
-            catch (Exception)
-            {
-                // OPMERKING: Deze exceptie is verwacht als je een foute
-                // straat of gemeente hebt ingetikt.  Ze wordt gecatcht
-                // aan de kant van de UI.  Je kan de applicatie dus gewoon
-                // verder laten runnen in Visual Studio; druk hiervoor
-                // op F5 :-)
-
-                throw;
-            }
 
             // Om foefelen te vermijden: we werken enkel op de gelieerde
             // personen waar de gebruiker GAV voor is.
-
             IList<int> mijnPersonen = aum.EnkelMijnPersonen(personenIDs);
 
             // Haal bronadres en alle bewoners op
-
             Adres oudAdres = adm.AdresMetBewonersOphalen(oudAdresID);
 
             // Selecteer enkel bewoners uit mijnGelieerdePersonen
-
             IList<Persoon> teVerhuizen =
                 (from PersoonsAdres pa
                 in oudAdres.PersoonsAdres
@@ -143,14 +131,12 @@ namespace Cg2.Services
             // Als ik dat niet doe, dan verandert het 'in' gedeelte van
             // de foreach tijdens de loop, en daar kan .net niet mee
             // lachen.
-
             foreach (Persoon verhuizer in teVerhuizen)
             {
                 pm.Verhuizen(verhuizer, oudAdres, nieuwAdres);
             }
 
             // Persisteren
-
             adm.Bewaren(nieuwAdres);
 
             // Bij een verhuis, blijven de PersoonsAdresobjecten dezelfde,
@@ -163,51 +149,37 @@ namespace Cg2.Services
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void AdresToevoegenAanPersonen(List<int> personenIDs, Adres adres)
         {
-            // Dit gaat sterk lijken op op verhuizen.
-
-            PersonenManager persMgr = Factory.Maak<PersonenManager>();
-            AdressenManager adrMgr = Factory.Maak<AdressenManager>();
+            // Dit gaat sterk lijken op verhuizen.
 
             // Adres opzoeken in database
             try
             {
-                adres = adrMgr.ZoekenOfMaken(adres);
+                adres = adm.ZoekenOfMaken(adres);
             }
             catch (AdresException ex)
             {
                 throw new FaultException<AdresFault>(ex.Fault);
             }
-            catch (Exception)
-            {
-                // Als er een FaultException optreedt, is het normaal
-                // dat die hier opnieuw gethrowd wordt.  Bij het 
-                // debuggen zal de applicatie hier stilvallen.  Druk
-                // gewoon F5 om verder te gaan.
-
-                throw;
-            }
 
             // Personen ophalen
-            IList<Persoon> personenLijst = persMgr.LijstOphalen(personenIDs);
+            IList<Persoon> personenLijst = pm.LijstOphalen(personenIDs);
 
             // Adres koppelen
             foreach (Persoon p in personenLijst)
             {
-                persMgr.AdresToevoegen(p, adres);
+                pm.AdresToevoegen(p, adres);
             }
 
             // persisteren
-            adrMgr.Bewaren(adres);
+            adm.Bewaren(adres);
+
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void AdresVerwijderenVanPersonen(List<int> personenIDs, int adresID)
         {
-            AdressenManager adrMgr = Factory.Maak<AdressenManager>();
-
             // Adres ophalen, met bewoners voor GAV
-
-            Adres adr = adrMgr.AdresMetBewonersOphalen(adresID);
+            Adres adr = adm.AdresMetBewonersOphalen(adresID);
 
             IList<PersoonsAdres> teVerwijderen = (from pa in adr.PersoonsAdres
                                                   where personenIDs.Contains(pa.Persoon.ID)
@@ -218,40 +190,32 @@ namespace Cg2.Services
                 pa.TeVerwijderen = true;
             }
 
-            adrMgr.Bewaren(adr);
+            adm.Bewaren(adr);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID)
         {
-            PersonenManager pm = Factory.Maak<PersonenManager>();
-
             return pm.HuisGenotenOphalen(gelieerdePersoonID);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void CommVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm, int typeID)
         {
-            GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
-
-            mgr.CommVormToevoegen(commvorm, gelieerdepersonenID, typeID);
+                       gpm.CommVormToevoegen(commvorm, gelieerdepersonenID, typeID);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void CommVormVerwijderenVanPersoon(int gelieerdepersonenID, int commvormID)
         {
-            GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
-
-            mgr.CommVormVerwijderen(commvormID, gelieerdepersonenID);
+            gpm.CommVormVerwijderen(commvormID, gelieerdepersonenID);
         }
 
         ///TODO dit moet gecontroleerd worden!
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void AanpassenCommVorm(CommunicatieVorm v)
         {
-            GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
-
-            mgr.BewarenMetCommVormen(v.GelieerdePersoon);
+            gpm.BewarenMetCommVormen(v.GelieerdePersoon);
         }
 
         #endregion
@@ -259,22 +223,20 @@ namespace Cg2.Services
         #region categorieen
         public void CategorieToevoegenAanPersoon(IList<int> gelieerdepersonenIDs, int categorieID)
         {
-            GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
-            mgr.CategorieKoppelen(gelieerdepersonenIDs, categorieID, true);
+            gpm.CategorieKoppelen(gelieerdepersonenIDs, categorieID, true);
         }
+
         public void CategorieVerwijderenVanPersoon(IList<int> gelieerdepersonenIDs, int categorieID)
         {
-            GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
-            mgr.CategorieKoppelen(gelieerdepersonenIDs, categorieID, true);
+            gpm.CategorieKoppelen(gelieerdepersonenIDs, categorieID, true);
         }
 
         #endregion categorieen
 
-
         public IEnumerable<CommunicatieType> ophalenCommunicatieTypes()
         {
-            GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
-            return mgr.ophalenCommunicatieTypes();
+            return gpm.ophalenCommunicatieTypes();
         }
+
     }
 }

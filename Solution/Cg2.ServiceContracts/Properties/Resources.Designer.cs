@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cg2.Services.Properties {
+namespace Cg2.ServiceContracts.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Cg2.Services.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Cg2.Services.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Cg2.ServiceContracts.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,15 @@ namespace Cg2.Services.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nvt.
+        /// </summary>
+        internal static string NietVanToepassing {
+            get {
+                return ResourceManager.GetString("NietVanToepassing", resourceCulture);
             }
         }
     }

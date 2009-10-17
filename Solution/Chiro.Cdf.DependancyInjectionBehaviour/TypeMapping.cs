@@ -1,0 +1,34 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Chiro.Cdf.DependencyInjection
+{
+	/// <summary>
+	/// Mapping between a requested type and the type to build by the object builder. 
+	/// Requested type is usually an interface whereas  typeToBuild is a concrete implementation of that interface.
+	/// If this type mapping is not specified and the requested type is an interface, 
+	/// object builder will not know how to create a new instance of that type.
+	/// </summary>
+	public class TypeMapping
+	{
+		private Type typeRequested;
+		private Type typeToBuild;
+
+		public TypeMapping(Type typeRequested, Type typeToBuild)
+		{
+			this.typeRequested = typeRequested;
+			this.typeToBuild = typeToBuild;
+		}
+
+		public Type TypeRequested
+		{
+			get { return typeRequested; }
+		}
+
+		public Type TypeToBuild
+		{
+			get { return typeToBuild; }
+		}
+	}
+}

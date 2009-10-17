@@ -13,14 +13,6 @@ namespace Cg2.ServiceContracts
     public interface IGroepenService
     {
         /// <summary>
-        /// Geeft gewoon een niet-lege string terug, met
-        /// als bedoeling na te kijken of de service beschikbaar is.
-        /// </summary>
-        /// <returns>niet-lege string</returns>
-        [OperationContract]
-        string Hallo();
-
-        /// <summary>
         /// Ophalen van de Groeps info
         /// </summary>
         /// <param name="GroepId"></param>

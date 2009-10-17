@@ -121,6 +121,10 @@
       <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
       <Name>Cg2.Workers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.DependancyInjectionBehaviour\Chiro.Cdf.DependencyInjectionBehavior.csproj">
+      <Project>{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}</Project>
+      <Name>Chiro.Cdf.DependencyInjectionBehavior</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Settings.settings">

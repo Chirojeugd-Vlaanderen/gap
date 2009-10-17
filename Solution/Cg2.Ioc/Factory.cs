@@ -96,6 +96,17 @@ namespace Cg2.Ioc
         }
 
         /// <summary>
+        /// Gebruik Unity om een instantie van het gevraagde type te creeren.
+        /// </summary>
+        /// <returns></returns>
+        public static object Maak(Type t)
+        {
+            Debug.Assert(_container != null);
+
+            return Container.Resolve(t);
+        }
+
+        /// <summary>
         /// Zorg ervoor dat voor een (implementatie van) T steeds
         /// hetzelfde bestaande object gebruikt wordt.
         /// </summary>

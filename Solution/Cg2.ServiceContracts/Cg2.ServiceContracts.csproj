@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataContracts\GroepInfo.cs" />
+    <Compile Include="DataContracts\GroepInfoMapper.cs" />
     <Compile Include="DataContracts\LidInfo.cs" />
     <Compile Include="DataContracts\LidInfoMapper.cs" />
     <Compile Include="DataContracts\PersoonInfo.cs" />
@@ -64,6 +65,11 @@
     <Compile Include="ILedenService.cs" />
     <Compile Include="IPersonenService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cg2.EfWrapper\Cg2.EfWrapper.csproj">
@@ -81,6 +87,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

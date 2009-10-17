@@ -14,16 +14,28 @@ namespace Cg2.Services
     // NOTE: If you change the class name "LedenService" here, you must also update the reference to "LedenService" in Web.config.
     public class LedenService : ILedenService
     {
-        public String LidMakenEnBewaren(int gelieerdePersoonID)
+
+        #region Manager Injection
+
+        private readonly GelieerdePersonenManager gpm;
+        private readonly LedenManager lm;
+
+        public LedenService(GelieerdePersonenManager gpm, LedenManager lm)
         {
-            GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
-            LedenManager lm = Factory.Maak<LedenManager>();
-            GelieerdePersoon gp = pm.DetailsOphalen(gelieerdePersoonID);
+            this.gpm = gpm;
+            this.lm = lm;
+        }
+
+        #endregion
+
+        public string LidMakenEnBewaren(int gelieerdePersoonID)
+        {
+            GelieerdePersoon gp = gpm.DetailsOphalen(gelieerdePersoonID);
 
             Lid l = lm.LidMaken(gp);
             lm.LidBewaren(l);
-            // TODO: feedback aanpassen (controleren of lid effectief is toegevoegd)
-            return gp.Persoon.VolledigeNaam + " is toegevoegd als lid.";
+            // TODO: feedback aanpassen
+            return string.Format("{0} is toegevoegd als lid.", gp.Persoon.VolledigeNaam);
         }
 
         /// <summary>
@@ -32,13 +44,11 @@ namespace Cg2.Services
         /// <param name="persoon"></param>
         public void Bewaren(Lid lid)
         {
-            LedenManager lm = Factory.Maak<LedenManager>();
             lm.LidBewaren(lid);
         }
 
         public Boolean Verwijderen(int id)
         {
-            LedenManager lm = Factory.Maak<LedenManager>();
             return lm.LidVerwijderen(id);
         }
 
@@ -66,7 +76,6 @@ namespace Cg2.Services
         /// <param name="lid"></param>
         public void LidOpNonactiefZetten(Lid lid)
         {
-            LedenManager lm = Factory.Maak<LedenManager>();
             lm.LidOpNonactiefZetten(lid);
         }
 
@@ -76,10 +85,8 @@ namespace Cg2.Services
         /// <param name="lid"></param>
         public void LidActiveren(Lid lid)
         {
-            LedenManager lm = Factory.Maak<LedenManager>();
             lm.LidActiveren(lid);
         }
-
 
         /// <summary>
         /// Haalt een pagina op met info over alle leden in een
@@ -89,16 +96,12 @@ namespace Cg2.Services
         /// <returns>Lijst met LidInfo</returns>
         public IList<LidInfo> PaginaOphalen(int groepsWerkJaarID)
         {
-            LedenManager lm = Factory.Maak<LedenManager>();
-
             IList<Lid> result = lm.PaginaOphalen(groepsWerkJaarID);
             return LidInfoMapper.mapLid(result);
         }
 
         public IList<LidInfo> PaginaOphalenVoorAfdeling(int groepsWerkJaarID, int afdelingsID)
         {
-            LedenManager lm = Factory.Maak<LedenManager>();
-
             IList<Lid> result = lm.PaginaOphalen(groepsWerkJaarID, afdelingsID);
             return LidInfoMapper.mapLid(result);
         }
