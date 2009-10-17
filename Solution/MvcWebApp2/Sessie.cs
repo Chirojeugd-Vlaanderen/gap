@@ -9,36 +9,9 @@ namespace MvcWebApp2
 {
     public static class Sessie
     {
-        private const string GroepSessieIDString = "MijnGroepID";
-        private const string MultiGavString = "MultiGav";
         private const string LijstNaamString = "LaatsteLijst";
         private const string LijstPaginaString = "LaatsteLijstPagina";
 
-        public static int GroepID
-        {
-            get
-            {
-                int? groepID = HttpContext.Current.Session[GroepSessieIDString] as int?;
-                return groepID == null ? 0 : (int)groepID;
-            }
-            set
-            {
-                HttpContext.Current.Session[GroepSessieIDString] = value;
-            }
-        }
-
-        public static Boolean IsMultiGav
-        {
-            get
-            {
-                bool? isMultiGav = HttpContext.Current.Session[MultiGavString] as bool?;
-                return isMultiGav == null ? false : (bool)isMultiGav;
-            }
-            set
-            {
-                HttpContext.Current.Session[MultiGavString] = value;
-            }
-        }
 
         /// <summary>
         /// Bevat de naam van de controller van de laatst opgevraagde lijst

@@ -27,7 +27,7 @@ namespace MvcWebApp2.Models
                 MasterViewModel viewModel = (MasterViewModel)((ViewResultBase)filterContext.Result).ViewData.Model;
 
                 BaseController controller = (BaseController)filterContext.Controller;
-                controller.SetModel(viewModel);
+                //controller.SetModel(viewModel);
             }
         }
     }

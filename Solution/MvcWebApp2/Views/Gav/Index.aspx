@@ -12,20 +12,23 @@
    {        
 %>
 
-    <ul id="acties">
-        <li><input type="submit" value="OK" /></li>        
-    </ul>
-
+    <ul>
 <%
        foreach (var item in ViewData.Model.GroepenLijst)
        {
+           
 %>
-           <%=Html.RadioButton("GeselecteerdeGroepID", item.ID, (item.ID == Sessie.GroepID))%> 
-           <%=String.Format("{0} - {1} ({2})", item.StamNummer, item.Groepsnaam, item.Plaats)%>
-           <br />
+           <li><%=Html.ActionLink(
+               // TODO: die string zou beter in het model zitten denk ik
+               String.Format("{0} - {1} ({2})", item.StamNummer, item.Groepsnaam, item.Plaats),
+                "List", 
+                new {Controller = "Personen", page = 1, groepID = item.ID})%></li>
 <%
            
        }
+%>
+    </ul>
+<%
    }
 %>
 

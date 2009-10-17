@@ -16,22 +16,31 @@ namespace MvcWebApp2
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // FIXME: startpagina moet uitmaken van hoeveel groepen
+            // de gebruiker GAV is, en eventueel een keuze laten maken.
+
+            routes.MapRoute(
+                "Route voor ~/: Kies GAV"
+                , ""
+                , new { controller = "Gav", action = "Index" });
+            
             routes.MapRoute(
                 "PaginatedPersonenList",
-                "Personen/List/{page}",
+                "{groepID}/Personen/List/{page}",
                 new { controller = "Personen", action = "List" }
             );
 
             routes.MapRoute(
                 "PaginatedLedenList",
-                "Leden/List/{groepsWerkJaarId}",
+                "{groepID}/Leden/List/{groepsWerkJaarId}",
                 new { controller = "Leden", action = "List" }
             );
 
             routes.MapRoute(
                 "Default",
-                "{controller}/{action}/{id}",
+                "{groepID}/{controller}/{action}/{id}",
                 new { controller = "Personen", action = "Index", id = "" }
+                // (personencontroller indien geen controller meegegeven)
             );
 
         }

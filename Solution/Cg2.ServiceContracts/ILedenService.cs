@@ -19,7 +19,7 @@ namespace Cg2.ServiceContracts
         /// aangeroepen om een kind of een leiding te maken
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van de gelieerde persoon</param>
-        /// <returns>nieuw lidobject</returns>
+        /// <returns>statusboodschap</returns>
         [OperationContract]
         String LidMakenEnBewaren(int gelieerdePersoonID);
         //Kind LidMaken(int gelieerdePersoonID);

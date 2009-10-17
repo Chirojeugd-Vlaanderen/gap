@@ -20,16 +20,14 @@ namespace MvcWebApp2.Controllers
     {
         //
         // GET: /Personen/
-        [GroepActionFilter]
-        public ActionResult Index()
+        public ActionResult Index(int groepID)
         {
-            return List(1);
+            return List(1, groepID);
         }
 
         //
         // GET: /Personen/List/{paginanummer}
-        [GroepActionFilter]
-        public ActionResult List(int page)
+        public ActionResult List(int page, int groepID)
         {
             // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
             Sessie.LaatsteLijst = "Personen";
@@ -38,9 +36,11 @@ namespace MvcWebApp2.Controllers
             int totaal = 0;
 
             var model = new Models.PersoonInfoModel();
+            BaseModelInit(model, groepID);
+
             model.PersoonInfoLijst = 
                 ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
-                (g => g.PaginaOphalenMetLidInfo(Sessie.GroepID, page, 20, out totaal));
+                (g => g.PaginaOphalenMetLidInfo(groepID, page, 20, out totaal));
             model.PageHuidig = page;
             model.PageTotaal = (int) Math.Ceiling(totaal / 20d);
             model.Title = "Personenoverzicht";
@@ -50,7 +50,7 @@ namespace MvcWebApp2.Controllers
 
         //
         // GET: /Personen/Create
-        public ActionResult Create()
+        public ActionResult Create(int groepID)
         {
             return View();
         }
@@ -58,7 +58,7 @@ namespace MvcWebApp2.Controllers
         //
         // POST: /Personen/Create
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(FormCollection collection, int groepID)
         {
             try
             {
@@ -69,15 +69,17 @@ namespace MvcWebApp2.Controllers
             }
             catch
             {
+                                
                 return View();
             }
         }
 
         //
         // GET: /Personen/Nieuw
-        public ActionResult Nieuw()
+        public ActionResult Nieuw(int groepID)
         {
             var model = new Models.GelieerdePersonenModel();
+            BaseModelInit(model, groepID);
             model.NieuweHuidigePersoon();
             
             model.Title = Properties.Resources.NieuwePersoonTitel;
@@ -86,9 +88,10 @@ namespace MvcWebApp2.Controllers
 
         //
         // GET: /Personen/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id, int groepID)
         {
             var model = new Models.GelieerdePersonenModel();
+            BaseModelInit(model, groepID);
             model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
             model.Title = model.HuidigePersoon.Persoon.VolledigeNaam;
             return View("Edit", model);
@@ -97,10 +100,11 @@ namespace MvcWebApp2.Controllers
         //
         // POST: /Personen/Edit/5
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Edit(GelieerdePersonenModel p)
+        public ActionResult Edit(GelieerdePersonenModel p, int groepID)
         {
             try
             {
+
                 ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersoonBewaren(p.HuidigePersoon));
 
                 // Voorlopig opnieuw redirecten naar Edit;
@@ -121,24 +125,25 @@ namespace MvcWebApp2.Controllers
         }
 
         // GET: /Personen/LidMaken/id
-        [GroepActionFilter]
-        public ActionResult LidMaken(int id)
+        public ActionResult LidMaken(int id, int groepID)
         {
             TempData["feedback"] = ServiceHelper.CallService<ILedenService, String>(l => l.LidMakenEnBewaren(id));
             return RedirectToAction("Index");
         }
 
         // GET: /Personen/Verhuizen/vanAdresID?AanvragerID=#
-        public ActionResult Verhuizen(int id, int aanvragerID)
+        public ActionResult Verhuizen(int id, int aanvragerID, int groepID)
         {
-			VerhuisModel model = new VerhuisModel(id, aanvragerID);			
+			VerhuisModel model = new VerhuisModel(id, aanvragerID);
+            BaseModelInit(model, groepID);
+
             model.Title = "Personen Verhuizen";
             return View("AdresBewerken", model);
         }
 
         // POST: /Personen/Verhuizen
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Verhuizen(VerhuisModel model)
+        public ActionResult Verhuizen(VerhuisModel model, int groepID)
         {
             try
             {
@@ -185,32 +190,36 @@ namespace MvcWebApp2.Controllers
         }
 
         // GET: /Personen/AdresVerwijderen/AdresID
-        public ActionResult AdresVerwijderen(int id, int gelieerdePersoonID)
+        public ActionResult AdresVerwijderen(int id, int gelieerdePersoonID, int groepID)
         {
             AdresVerwijderenModel model = new AdresVerwijderenModel(id, gelieerdePersoonID);
+            BaseModelInit(model, groepID);
+
             model.Title = "Adres verwijderen";
             return View("AdresVerwijderen", model);
         }
 
         // POST: /Personen/AdresVerwijderen
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult AdresVerwijderen(AdresVerwijderenModel model)
+        public ActionResult AdresVerwijderen(AdresVerwijderenModel model, int groepID)
         {
+            BaseModelInit(model, groepID);
             ServiceHelper.CallService<IGelieerdePersonenService>(foo => foo.AdresVerwijderenVanPersonen(model.PersoonIDs, model.AdresMetBewoners.ID));
             return RedirectToAction("Edit", new { id = model.AanvragerGelieerdePersoonID });
         }
 
         // GET: /Personen/NieuwAdres/gelieerdePersoonID
-        public ActionResult NieuwAdres(int id)
+        public ActionResult NieuwAdres(int id, int groepID)
         {
             NieuwAdresModel model = new NieuwAdresModel(id);
+            BaseModelInit(model, groepID);
             model.Title = "Nieuw adres toevoegen";
             return View("NieuwAdres", model);
         }
 
         // post: /Personen/NieuwAdres
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult NieuwAdres(NieuwAdresModel model)
+        public ActionResult NieuwAdres(NieuwAdresModel model, int groepID)
         {
             try
             {
@@ -224,6 +233,8 @@ namespace MvcWebApp2.Controllers
             }
             catch (FaultException<AdresFault> ex)
             {
+                BaseModelInit(model, groepID);
+
                 new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "NieuwAdres.");
 
                 // De mogelijke bewoners zijn op dit moment vergeten, en moeten dus

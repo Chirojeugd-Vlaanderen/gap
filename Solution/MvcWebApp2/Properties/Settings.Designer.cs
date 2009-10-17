@@ -31,5 +31,14 @@ namespace MvcWebApp2.Properties {
                 return ((string)(this["GroepKiezenUrl"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("310")]
+        public int TestGroepID {
+            get {
+                return ((int)(this["TestGroepID"]));
+            }
+        }
     }
 }

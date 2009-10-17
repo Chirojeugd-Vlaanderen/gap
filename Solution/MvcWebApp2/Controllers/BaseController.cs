@@ -22,8 +22,6 @@ namespace MvcWebApp2.Controllers
     [Master]
     public abstract class BaseController : Controller
     {
-        protected MasterViewModel model = new MasterViewModel();
-
         /// <summary>
         /// Standaard constructor
         /// </summary>
@@ -32,27 +30,13 @@ namespace MvcWebApp2.Controllers
         }
 
         /// <summary>
-        /// Geeft properties van het MasterViewModel door aan het overervend model
+        /// Vult de groepsgegevens in in de base view.
         /// </summary>
-        /// <param name="childViewModel">Model dat overerft, gecast als MasterViewModel</param>
-        /// <remarks>Wordt aangeroepen door MasterAttribute na elke request</remarks>
-        public void SetModel(MasterViewModel childViewModel)
-        {
-            GegevensVanDeGroepInvullen();
-
-            if (childViewModel != null)
-            {
-                childViewModel.Groepsnaam = model.Groepsnaam;
-                childViewModel.Plaats = model.Plaats;
-                childViewModel.StamNummer = model.StamNummer;
-                childViewModel.Title += model.Title;
-            }
-        }
-
-        private void GegevensVanDeGroepInvullen()
+        /// <param name="model">Te 'initen' model</param>
+        /// <param name="groepID">groepID van de gewenste groep</param>
+        protected static void BaseModelInit(MasterViewModel model, int groepID)
         { 
-
-            if (Sessie.GroepID == 0)
+            if (groepID == 0)
             {
                 // De Gekozen groep is nog niet gekend, zet defaults
                 // TODO: De defaults op een zinvollere plaats definieren.
@@ -63,14 +47,14 @@ namespace MvcWebApp2.Controllers
             }
             else
             {
-                string cacheKey = "GI" + Sessie.GroepID.ToString();
+                string cacheKey = "GI" + groepID.ToString();
 
                 System.Web.Caching.Cache c = System.Web.HttpContext.Current.Cache;
 
                 GroepInfo gi = (GroepInfo)c.Get(cacheKey);
                 if (gi == null)
                 {
-                    gi = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.OphalenInfo(Sessie.GroepID));
+                    gi = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.OphalenInfo(groepID));
                     c.Add(cacheKey, gi, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
                 }
 

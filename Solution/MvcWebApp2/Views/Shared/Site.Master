@@ -24,10 +24,7 @@
             <div id="logindisplay">
                 Aangemeld als
                 <% =System.Web.HttpContext.Current.User.Identity.Name %><br />
-                <% if (MvcWebApp2.Sessie.IsMultiGav == true)
-                   { %>
                         [<%= Html.ActionLink("Wisselen van groep", "Index", "Gav")%>]
-                <% } %>
             </div>
             <div id="menucontainer">
                 <ul id="menu">

@@ -17,6 +17,11 @@ namespace MvcWebApp2.Models
     public class MasterViewModel
     {
         /// <summary>
+        /// ID van de Chirogroep
+        /// </summary>
+        public int GroepID { get; set; }
+
+        /// <summary>
         /// Naam van de Chirogroep
         /// </summary>
         public string Groepsnaam { get; set; }
@@ -35,5 +40,6 @@ namespace MvcWebApp2.Models
         /// Titel van de pagina
         /// </summary>
         public string Title { get; set; }
+
     }
 }

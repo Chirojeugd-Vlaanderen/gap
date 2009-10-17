@@ -16,17 +16,16 @@ namespace MvcWebApp2.Controllers
     {
         //
         // GET: /Leden/
-        [GroepActionFilter]
-        public ActionResult Index()
+        public ActionResult Index(int groepID)
         {
             // Recentste groepswerkjaar ophalen, en leden tonen.
-            return List(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(Sessie.GroepID)));
+            return List(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), groepID);
         }
 
         // TODO: verder uitwerken paginering
         //
         // GET: /Leden/List/{groepsWerkJaarId}
-        public ActionResult List(int groepsWerkJaarId)
+        public ActionResult List(int groepsWerkJaarId, int groepID)
         {
             // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten. Paginering gebeurt hier per werkjaar.
             Sessie.LaatsteLijst = "Leden";
@@ -46,7 +45,7 @@ namespace MvcWebApp2.Controllers
         //
         // GET: /Leden/Create
 
-        public ActionResult Create()
+        public ActionResult Create(int groepID)
         {
             return View();
         } 
@@ -55,7 +54,7 @@ namespace MvcWebApp2.Controllers
         // POST: /Leden/Create
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(FormCollection collection, int groepID)
         {
             try
             {
@@ -71,7 +70,7 @@ namespace MvcWebApp2.Controllers
 
         //
         // GET: /Leden/Verwijderen/5
-        public ActionResult Verwijderen(int id)
+        public ActionResult Verwijderen(int id, int groepID)
         {
             Boolean success = ServiceHelper.CallService<ILedenService, Boolean>(l => l.Verwijderen(id));
             if (success)
@@ -84,7 +83,7 @@ namespace MvcWebApp2.Controllers
         //
         // POST: /Leden/Verwijderen/5
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Verwijderen(int id, FormCollection collection)
+        public ActionResult Verwijderen(int id, FormCollection collection, int groepID)
         {
             return RedirectToAction("Index");
         }
@@ -92,7 +91,7 @@ namespace MvcWebApp2.Controllers
         //
         // GET: /Leden/Edit/5
  
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id, int groepID)
         {
             return View();
         }
@@ -101,7 +100,7 @@ namespace MvcWebApp2.Controllers
         // POST: /Leden/Edit/5
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, FormCollection collection, int groepID)
         {
             try
             {
