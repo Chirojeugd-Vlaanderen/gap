@@ -11,40 +11,49 @@
        {%>
 
     <ul id="acties">
-        <li><input type="submit" value="Bewaren" /></li>        
+        <li><input type="submit" value="Gegevens wijzigen" /></li>        
     </ul>
 
     <fieldset>
-    <legend>Persoonlijke gegevens</legend>
-    
-    
+    <legend>Persoonlijke gegevens</legend>    
     
     <label for="Persoon_AdNummer">Ad-nummer</label>
-    <%=Model.HuidigePersoon.Persoon.AdNummer %><br />
+    <%=Model.HuidigePersoon.Persoon.AdNummer %>
     <%=Html.Hidden("HuidigePersoon.Persoon.AdNummer")%>
+    <br />
     
     <label for="Persoon_VoorNaam">Voornaam</label> 
-    <%=Html.TextBox("HuidigePersoon.Persoon.VoorNaam")%><br />
+    <%=Model.HuidigePersoon.Persoon.VoorNaam%>
+    <%=Html.Hidden("HuidigePersoon.Persoon.VoorNaam")%>
+    <br />
     
     <label for="Persoon_Naam">Familienaam</label> 
-    <%=Html.TextBox("HuidigePersoon.Persoon.Naam")%><br />
+    <%=Model.HuidigePersoon.Persoon.Naam%>
+    <%=Html.Hidden("HuidigePersoon.Persoon.Naam")%>
+    <br />
     
     <label for="Persoon_GeboorteDatum">Geboortedatum</label> 
-    <% if (Model.HuidigePersoon.Persoon.GeboorteDatum == null)
+    <%=Html.Hidden("HuidigePersoon.Persoon.GeboorteDatum")%>
+    <% if (Model.HuidigePersoon.Persoon.GeboorteDatum != null)
        { %>
-            <%=Html.TextBox("HuidigePersoon.Persoon.GeboorteDatum", String.Empty)%>
-    <% }
-       else
-       { %>
-            <%=Html.TextBox("HuidigePersoon.Persoon.GeboorteDatum", ((DateTime)Model.HuidigePersoon.Persoon.GeboorteDatum).ToString("d"))%> 
-    <% } %><br />
+           <%=((DateTime)Model.HuidigePersoon.Persoon.GeboorteDatum).ToString("d") %><br />
+    <% } %>
+    <br />
     
     <label for="Persoon_Geslacht">Geslacht</label> 
-    <%= Html.RadioButton("HuidigePersoon.Persoon.Geslacht", GeslachtsType.Man, Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Man)%> Man
-    <%= Html.RadioButton("HuidigePersoon.Persoon.Geslacht", GeslachtsType.Vrouw, Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Vrouw)%> Vrouw <br />
+    <%=Html.Hidden("HuidigePersoon.Persoon.Geslacht")%>
+    <%if (Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Man)
+      {%>
+        Man<br />
+    <% }
+      else
+      {%>
+      Vrouw<br />
+    <%} %>
     
     <label for="ChiroLeefTijd">Chiroleeftijd</label> 
-    <%=Html.TextBox("HuidigePersoon.ChiroLeefTijd", (Model.HuidigePersoon.ChiroLeefTijd > 0 ? "+" : "") + Model.HuidigePersoon.ChiroLeefTijd.ToString())%>
+    <%=Model.HuidigePersoon.ChiroLeefTijd%><br />
+    <%=Html.Hidden("HuidigePersoon.ChiroLeefTijd")%>
 
     <%=Html.Hidden("HuidigePersoon.ID")%>
     <%=Html.Hidden("HuidigePersoon.VersieString")%>
@@ -65,7 +74,7 @@
             <%=Html.ActionLink("[verwijderen]", "AdresVerwijderen", new { id = pa.Adres.ID, gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%>
         </li>
     <%} %>
-        <li><%=Html.ActionLink( "[nieuw adres]", "NieuwAdres", new {Controller="Personen", id = ViewData.Model.HuidigePersoon.ID} ) %></li>
+        <li><%=Html.ActionLink( "[nieuw adres]", "NieuwAdres", new {id = ViewData.Model.HuidigePersoon.ID} ) %></li>
     </ul>   
     
 
@@ -78,9 +87,24 @@
             <%=cv.CommunicatieType.Omschrijving %>:
             <%=Html.Encode(cv.Nummer) %>
             <%=cv.Voorkeur ? "(voorkeur)" : "" %>
+            <%=Html.ActionLink( "[verwijderen]", "VerwijderenCommVorm", new {id = cv.ID, aanvragerID = ViewData.Model.HuidigePersoon.ID} ) %>
         </li>
     <%} %>
+    <li><%=Html.ActionLink( "[nieuwe communicatievorm]", "NieuweCommVorm", new {id = ViewData.Model.HuidigePersoon.ID} ) %></li>
     </ul>     
+ 
+    <h3>Categorieen</h3>
+
+    <ul>
+    <% foreach (Categorie cv in Model.HuidigePersoon.Categorie)
+    { %>
+    <li>
+            <%=cv.Naam %>
+            <%=Html.ActionLink( "[verwijderen]", "VerwijderenCategorie", new {id = cv.ID, aanvragerID = ViewData.Model.HuidigePersoon.ID} ) %>
+        </li>
+    <%} %>
+    <li><%=Html.ActionLink( "[toevoegen aan categorie]", "ToevoegenAanCategorie", new {id = ViewData.Model.HuidigePersoon.ID} ) %></li>
+    </ul>  
  
     <%} %>
     

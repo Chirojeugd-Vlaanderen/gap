@@ -67,20 +67,26 @@ namespace Cg2.Data.Ef
 
         public bool IsGavGroep(string login, int groepID)
         {
-            bool resultaat;
-
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                var query
+                var query1
+                    = from r in db.Groep
+                      where r.ID == groepID
+                      select r;
+
+                if (query1.Count() == 0)
+                {
+                    return true;
+                }
+
+                var query2
                     = from r in db.GebruikersRecht
                       where r.Groep.ID == groepID && r.Gav.Login == login
                       && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
                       select r;
 
-                resultaat = query.Count() > 0;
+                return query2.Count() > 0;
             }
-
-            return resultaat;
         }
 
         public bool IsGavGelieerdePersoon(string login, int gelieerdePersoonID)
@@ -89,6 +95,17 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
+                //Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
+                var query1
+                    = from r in db.GelieerdePersoon
+                      where r.ID == gelieerdePersoonID
+                      select r;
+
+                if (query1.Count() == 0)
+                {
+                    return true;
+                }
+
                 var query
                     = from GebruikersRecht r in db.GebruikersRecht
                       where r.Gav.Login == login && r.Groep.GelieerdePersoon.Any(gp => gp.ID == gelieerdePersoonID)
@@ -163,13 +180,24 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                var query
+                //Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
+                var query1
+                    = from r in db.Persoon
+                      where r.ID == persoonID
+                      select r;
+
+                if (query1.Count() == 0)
+                {
+                    return true;
+                }
+
+                var query2
                     = from GebruikersRecht r in db.GebruikersRecht
                       where r.Gav.Login == login && r.Groep.GelieerdePersoon.Any(gp => gp.Persoon.ID == persoonID)
                       && (r.VervalDatum == null || r.VervalDatum >= DateTime.Now)
                       select r;
 
-                resultaat = query.Count() > 0;
+                resultaat = query2.Count() > 0;
             }
 
             return resultaat;
@@ -181,6 +209,17 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
+                //Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
+                var query1
+                    = from r in db.GroepsWerkJaar
+                      where r.ID == groepsWerkJaarID
+                      select r;
+
+                if (query1.Count() == 0)
+                {
+                    return true;
+                }
+
                 var query
                     = from GebruikersRecht r in db.GebruikersRecht
                       where r.Gav.Login == login && r.Groep.GroepsWerkJaar.Any(gwj => gwj.ID == groepsWerkJaarID)
@@ -198,6 +237,17 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
+                //Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
+                var query1
+                    = from r in db.Afdeling
+                      where r.ID == afdelingsID
+                      select r;
+
+                if (query1.Count() == 0)
+                {
+                    return true;
+                }
+
                 var query =
                     from r in db.GebruikersRecht
                     where r.Gav.Login == login
@@ -216,6 +266,17 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
+                //Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
+                var query1
+                    = from r in db.Lid
+                      where r.ID == lidID
+                      select r;
+
+                if (query1.Count() == 0)
+                {
+                    return true;
+                }
+
                 var query =
                     from l in db.Lid
                     where l.ID == lidID
@@ -233,6 +294,17 @@ namespace Cg2.Data.Ef
 
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
+                //Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
+                var query1
+                    = from r in db.Categorie
+                      where r.ID == categorieID
+                      select r;
+
+                if (query1.Count() == 0)
+                {
+                    return true;
+                }
+
                 var query =
                     from r in db.GebruikersRecht
                     where r.Gav.Login == login

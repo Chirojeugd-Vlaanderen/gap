@@ -44,6 +44,7 @@ namespace MvcWebApp2.Controllers
             model.PageHuidig = page;
             model.PageTotaal = (int) Math.Ceiling(totaal / 20d);
             model.Title = "Personenoverzicht";
+            model.Totaal = totaal;
 
             return View("Index", model);
         }
@@ -83,31 +84,74 @@ namespace MvcWebApp2.Controllers
             model.NieuweHuidigePersoon();
             
             model.Title = Properties.Resources.NieuwePersoonTitel;
-            return View("Edit", model);
+            return View("EditGegevens", model);
         }
 
         //
-        // GET: /Personen/Edit/5
-        public ActionResult Edit(int id, int groepID)
+        // POST: /Personen/Nieuw
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Nieuw(GelieerdePersonenModel p, int groepID)
+        {
+            BaseModelInit(p, groepID);
+            int i = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.PersoonAanmaken(p.HuidigePersoon, groepID));
+
+            // Voorlopig opnieuw redirecten naar EditRest;
+            // er zou wel gemeld moeten worden dat het wijzigen
+            // gelukt is.
+            // TODO: wat als er een fout optreedt bij PersoonBewaren?
+            TempData["feedback"] = "Wijzigingen zijn opgeslagen";
+
+            // (er wordt hier geredirect ipv de view te tonen,
+            // zodat je bij een 'refresh' niet de vraag krijgt
+            // of je de gegevens opnieuw wil posten.)
+            return RedirectToAction("EditRest", new { id = i });
+        }
+
+        //
+        // GET: /Personen/EditRest/5
+        public ActionResult EditRest(int id, int groepID)
         {
             var model = new Models.GelieerdePersonenModel();
             BaseModelInit(model, groepID);
             model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
             model.Title = model.HuidigePersoon.Persoon.VolledigeNaam;
-            return View("Edit", model);
+            return View("EditRest", model);
         }
 
         //
-        // POST: /Personen/Edit/5
+        // POST: /Personen/EditRest/5
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Edit(GelieerdePersonenModel p, int groepID)
+        public ActionResult EditRest(GelieerdePersonenModel p, int groepID)
         {
-            try
-            {
+            var model = new Models.GelieerdePersonenModel();
+            BaseModelInit(model, groepID);
+            model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(p.HuidigePersoon.ID));
+            model.Title = model.HuidigePersoon.Persoon.VolledigeNaam;
+            return RedirectToAction("EditGegevens", new { id = p.HuidigePersoon.ID });
+        }
+
+        //
+        // GET: /Personen/EditGegevens/5
+        public ActionResult EditGegevens(int id, int groepID)
+        {
+            var model = new Models.GelieerdePersonenModel();
+            BaseModelInit(model, groepID);
+            model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
+            model.Title = model.HuidigePersoon.Persoon.VolledigeNaam;
+            return View("EditGegevens", model);
+        }
+
+        //
+        // POST: /Personen/EditGegevens/5
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult EditGegevens(GelieerdePersonenModel p, int groepID)
+        {
+            //try
+            //{
 
                 ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersoonBewaren(p.HuidigePersoon));
 
-                // Voorlopig opnieuw redirecten naar Edit;
+                // Voorlopig opnieuw redirecten naar EditRest;
                 // er zou wel gemeld moeten worden dat het wijzigen
                 // gelukt is.
                 // TODO: wat als er een fout optreedt bij PersoonBewaren?
@@ -116,12 +160,12 @@ namespace MvcWebApp2.Controllers
                 // (er wordt hier geredirect ipv de view te tonen,
                 // zodat je bij een 'refresh' niet de vraag krijgt
                 // of je de gegevens opnieuw wil posten.)
-                return RedirectToAction("Edit", new { id = p.HuidigePersoon.ID });
-            }
+                return RedirectToAction("EditRest", new { id = p.HuidigePersoon.ID });
+            /*}
             catch
             {
-                return View("Edit", p);
-            }
+                return View("EditGegevens", p);
+            }*/
         }
 
         // GET: /Personen/LidMaken/id
@@ -166,7 +210,7 @@ namespace MvcWebApp2.Controllers
                 // Toon een persoon die woont op het nieuwe adres.
                 // (wat hier moet gebeuren hangt voornamelijk af van de use case)
 
-                return RedirectToAction("Edit", new { id = model.AanvragerID });
+                return RedirectToAction("EditRest", new { id = model.AanvragerID });
             }
             catch (FaultException<AdresFault> ex)
             {
@@ -205,7 +249,7 @@ namespace MvcWebApp2.Controllers
         {
             BaseModelInit(model, groepID);
             ServiceHelper.CallService<IGelieerdePersonenService>(foo => foo.AdresVerwijderenVanPersonen(model.PersoonIDs, model.AdresMetBewoners.ID));
-            return RedirectToAction("Edit", new { id = model.AanvragerGelieerdePersoonID });
+            return RedirectToAction("EditRest", new { id = model.AanvragerGelieerdePersoonID });
         }
 
         // GET: /Personen/NieuwAdres/gelieerdePersoonID
@@ -229,7 +273,7 @@ namespace MvcWebApp2.Controllers
 
                 ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenAanPersonen(model.PersoonIDs, model.NieuwAdres));
 
-                return RedirectToAction("Edit", new { id = model.AanvragerID });
+                return RedirectToAction("EditRest", new { id = model.AanvragerID });
             }
             catch (FaultException<AdresFault> ex)
             {
@@ -249,6 +293,48 @@ namespace MvcWebApp2.Controllers
                 throw;
             }
         }
+
+        // GET: /Personen/NieuwAdres/gelieerdePersoonID
+        public ActionResult NieuweCommVorm(int id, int groepID)
+        {
+            return null;
+        }
+
+        // post: /Personen/NieuwAdres
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult NieuweCommVorm(CommVormModel model, int groepID)
+        {
+            return null;
+        }
+
+        // GET: /Personen/AdresVerwijderen/AdresID
+        public ActionResult VerwijderenCommVorm(int commvormid, int gelieerdePersoonID, int groepID)
+        {
+            //ServiceHelper.CallService<IGelieerdePersonenService>(foo => foo.VerwijderenCommVorm(model.PersoonIDs, model.AdresMetBewoners.ID));
+            return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+        }
+
+        // GET: /Personen/AdresVerwijderen/AdresID
+        public ActionResult VerwijderenCategorie(int categorieID, int gelieerdePersoonID, int groepID)
+        {
+            //ServiceHelper.CallService<IGelieerdePersonenService>(foo => foo.VerwijderenCategorie(gelieerdePersoonID, categorieID));
+            return RedirectToAction("EditRest", new { id = categorieID });
+        }
+
+        // GET: /Personen/NieuwAdres/gelieerdePersoonID
+        public ActionResult ToevoegenAanCategorie(int categorieID, int gelieerdePersoonID, int groepID)
+        {
+            return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+        }
+
+        // post: /Personen/NieuwAdres
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult ToevoegenAanCategorie(CategorieModel model, int groepID)
+        {
+            BaseModelInit(model, groepID);
+            return RedirectToAction("EditRest", new { id = model.AanvragerID });
+        }
+        
 
         public ActionResult Hallo()
         {

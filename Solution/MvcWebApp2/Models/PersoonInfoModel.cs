@@ -13,6 +13,7 @@ namespace MvcWebApp2.Models
     {
         public int PageHuidig { get; set; }
         public int PageTotaal { get; set; }
+        public int Totaal { get; set; }
 
         public IList<PersoonInfo> PersoonInfoLijst { get; set; }
 

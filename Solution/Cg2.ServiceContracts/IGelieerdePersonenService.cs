@@ -63,11 +63,20 @@ namespace Cg2.ServiceContracts
        // GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID, PersoonsInfo gevraagd);
 
         /// <summary>
-        /// Bewaart nieuwe/gewijzigde gelieerde persoon met zijn groep en zijn persoon
+        /// Bewaart gewijzigde gelieerde persoon met zijn groep en zijn persoon
         /// </summary>
         /// <param name="persoon">Te bewaren persoon</param>
+        /// <returns>ID van de bewaarde persoon</returns>
         [OperationContract]
-        void PersoonBewaren(GelieerdePersoon persoon);
+        int PersoonBewaren(GelieerdePersoon persoon);
+
+        /// <summary>
+        /// Maakt een nieuwe gelieerdepersoon en persoon aan
+        /// </summary>
+        /// <param name="persoon">Te bewaren gelieerdepersoon, gelinkt met een nieuwe persoon persoon</param>
+        /// <returns>ID van de bewaarde persoon</returns>
+        [OperationContract]
+        int PersoonAanmaken(GelieerdePersoon persoon, int groepID);
 
         #region adressen
 

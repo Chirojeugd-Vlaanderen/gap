@@ -481,7 +481,12 @@ namespace Cg2.EfWrapper.Entity
 				if (typeof(IEntityWithKey).IsAssignableFrom(prop.PropertyType)) continue;
 				try
 				{
-					prop.SetValue(clone, prop.GetValue(entity, null), null);
+                    //TODO probeersel
+                    if (prop.CanWrite)
+                    {
+                        prop.SetValue(clone, prop.GetValue(entity, null), null);
+                    }
+				
                     // BELANGRIJK!!!
                     //
                     // Als uw toepassing hier hapert, is het waarschijnlijk omdat

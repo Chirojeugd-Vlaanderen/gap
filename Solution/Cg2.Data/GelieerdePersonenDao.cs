@@ -176,7 +176,7 @@ namespace Cg2.Data.Ef
             {
                 db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
                 return (
-                    from gp in db.GelieerdePersoon.Include("Persoon").Include("Communicatie.CommunicatieType").Include("Persoon.PersoonsAdres.Adres.Straat").Include("Persoon.PersoonsAdres.Adres.Subgemeente").Include("Groep")
+                    from gp in db.GelieerdePersoon.Include("Persoon").Include("Communicatie.CommunicatieType").Include("Persoon.PersoonsAdres.Adres.Straat").Include("Persoon.PersoonsAdres.Adres.Subgemeente").Include("Groep").Include("Categorie")
                     where gp.ID == gelieerdePersoonID
                     select gp).FirstOrDefault();
             }

@@ -87,6 +87,8 @@
     <Compile Include="HtmlHelpers\PagingHelper.cs" />
     <Compile Include="ModelStateWrapper.cs" />
     <Compile Include="Models\AdresVerwijderenModel.cs" />
+    <Compile Include="Models\CategorieModel.cs" />
+    <Compile Include="Models\CommVormModel.cs" />
     <Compile Include="Models\GavModel.cs" />
     <Compile Include="Models\LidInfoModel.cs" />
     <Compile Include="Models\GelieerdePersonenModel.cs" />
@@ -116,9 +118,9 @@
     <Content Include="Views\Gav\Index.aspx" />
     <Content Include="Views\Leden\Index.aspx" />
     <Content Include="Views\Personen\AdresVerwijderen.aspx" />
+    <Content Include="Views\Personen\EditGegevens.aspx" />
     <Content Include="Views\Personen\NieuwAdres.aspx" />
-    <Content Include="Views\Personen\Edit.aspx" />
-    <Content Include="Views\Personen\Hallo.aspx" />
+    <Content Include="Views\Personen\EditRest.aspx" />
     <Content Include="Views\Personen\Index.aspx" />
     <Content Include="Views\Personen\AdresBewerken.aspx" />
     <Content Include="Views\Shared\LedenLijstControl.ascx" />
@@ -206,7 +208,7 @@
           <DevelopmentServerPort>3494</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/cgtest</IISUrl>
-          <NTLMAuthentication>True</NTLMAuthentication>
+          <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
           </CustomServerUrl>

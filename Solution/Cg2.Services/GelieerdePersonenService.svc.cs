@@ -49,10 +49,23 @@ namespace Cg2.Services
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public void PersoonBewaren(GelieerdePersoon persoon)
+        public int PersoonBewaren(GelieerdePersoon persoon)
         {
             GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
-            pm.Bewaren(persoon);
+            GelieerdePersoon gp = pm.Bewaren(persoon);
+            return gp.ID;
+        }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        public int PersoonAanmaken(GelieerdePersoon persoon, int groepID)
+        {
+            GelieerdePersonenManager pm = Factory.Maak<GelieerdePersonenManager>();
+            GroepenManager gm = Factory.Maak<GroepenManager>();
+            Groep g = gm.Ophalen(groepID);
+            g.GelieerdePersoon.Add(persoon);
+            persoon.Groep = g;
+            GelieerdePersoon gp = pm.Bewaren(persoon);
+            return gp.ID;
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]

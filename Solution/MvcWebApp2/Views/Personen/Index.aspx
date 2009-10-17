@@ -11,6 +11,9 @@
 <ul id="acties">
 <li><%= Html.ActionLink("Nieuwe persoon", "Nieuw") %></li>
 </ul>
+<ul id="info">
+<li>Totaal aantal personen: <%= Model.Totaal %></li>
+</ul>
 <% Html.RenderPartial("PersonenLijstControl"); %>
 
 </asp:Content>

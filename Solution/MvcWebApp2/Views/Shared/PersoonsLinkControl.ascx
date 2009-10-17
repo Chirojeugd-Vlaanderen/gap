@@ -3,4 +3,4 @@
 <%@ Import Namespace="Cg2.Orm" %>
 <%@ Import Namespace="Cg2.ServiceContracts" %>
 
-<%=Html.ActionLink(Html.Encode(ViewData.Model.VolledigeNaam), "Edit", new { Controller = "Personen", id = ViewData.Model.GelieerdePersoonID })%>
+<%=Html.ActionLink(Html.Encode(ViewData.Model.VolledigeNaam), "EditRest", new { Controller = "Personen", id = ViewData.Model.GelieerdePersoonID })%>

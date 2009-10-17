@@ -63,7 +63,7 @@ namespace Cg2.Workers
         /// communicatievormen.
         /// </summary>
         /// <param name="gelieerdePersoonID">ID gevraagde gelieerde persoon</param>
-        /// <returns>GelieerdePersoon met persoonsgegevens, adressen en 
+        /// <returns>GelieerdePersoon met persoonsgegevens, adressen, categorieen en 
         /// communicatievormen.</returns>
         public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
         {
@@ -90,7 +90,7 @@ namespace Cg2.Workers
                 // hiet nieuwe AD-nummer gewoon met het bestaande.
 
                 GelieerdePersoon origineel = _dao.Ophalen(p.ID, foo=>foo.Persoon);
-                if (origineel.Persoon.AdNummer == p.Persoon.AdNummer){
+                if (origineel==null || origineel.Persoon.AdNummer == p.Persoon.AdNummer){
                     return _dao.Bewaren(p);
                 }
                 else{
@@ -135,6 +135,10 @@ namespace Cg2.Workers
 
         public void CommVormVerwijderen(int commID, int gelieerdePersoonID)
         {
+            if (!_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGroep);
+            }
             GelieerdePersoon origineel = _dao.Ophalen(gelieerdePersoonID, e => e.Communicatie);
             bool found = false;
             foreach (CommunicatieVorm c in origineel.Communicatie)
