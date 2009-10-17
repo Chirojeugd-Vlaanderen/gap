@@ -32,6 +32,7 @@ namespace MvcWebApp2.Controllers
             Sessie.LaatstePagina = groepsWerkJaarId;
 
             var model = new Models.LidInfoModel();
+            BaseModelInit(model, groepID);
             model.LidInfoLijst =
                 ServiceHelper.CallService<ILedenService, IList<LidInfo>>
                 (lid => lid.PaginaOphalen(groepsWerkJaarId));

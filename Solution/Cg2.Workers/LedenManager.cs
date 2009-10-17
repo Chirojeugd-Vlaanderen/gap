@@ -324,7 +324,7 @@ namespace Cg2.Workers
             else
             {
                 // hier komen we in principe nooit (zie Assert)
-                throw new GeenGavException("Lid is kind noch leiding");
+                throw new GeenGavException(Properties.Resources.GeenGavLid);
             }
 
         }
