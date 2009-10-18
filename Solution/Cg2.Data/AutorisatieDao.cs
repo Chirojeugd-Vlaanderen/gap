@@ -317,6 +317,35 @@ namespace Cg2.Data.Ef
             return resultaat;
         }
 
+        public bool IsGavCommVorm(int commvormID, string login)
+        {
+            bool resultaat;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                //Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
+                var query1
+                    = from r in db.CommunicatieVorm
+                      where r.ID == commvormID
+                      select r;
+
+                if (query1.Count() == 0)
+                {
+                    return true;
+                }
+
+                var query =
+                    from r in db.GebruikersRecht
+                    where r.Gav.Login == login
+                    && r.Groep.Categorie.Any(foo => foo.ID == commvormID)
+                    && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
+                    select r;
+
+                resultaat = query.Count() > 0;
+            }
+            return resultaat;
+        }
+
         #endregion
     }
 }

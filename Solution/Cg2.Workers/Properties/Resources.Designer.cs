@@ -113,6 +113,17 @@ namespace Cg2.Workers.Properties {
                 return ResourceManager.GetString("GeenGavGroep", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Je bent geen GAV van deze commvorm..
+        /// </summary>
+        internal static string GeenGavCommVorm
+        {
+            get
+            {
+                return ResourceManager.GetString("GeenGavCommVorm", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Dit werkjaar is niet gekoppeld aan je groep(en)..

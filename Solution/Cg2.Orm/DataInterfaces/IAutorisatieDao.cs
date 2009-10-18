@@ -125,8 +125,15 @@ namespace Cg2.Orm.DataInterfaces
         /// <returns>true indien GAV</returns>
         bool IsGavCategorie(int categorieID, string login);
 
+        /// <summary>
+        /// Controleert of een gegeven gebruiker GAV is van de groep
+        /// horend bij een zekere commvorm.
+        /// </summary>
+        /// <param name="commvormID">ID van de betreffende commvorm</param>
+        /// <param name="login">login van de gebruiker</param>
+        /// <returns>true indien GAV</returns>
+        bool IsGavCommVorm(int commvormID, string p);
+
         #endregion
-
-
     }
 }

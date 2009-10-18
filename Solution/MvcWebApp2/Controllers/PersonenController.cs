@@ -269,9 +269,9 @@ namespace MvcWebApp2.Controllers
         }
 
         // GET: /Personen/NieuweCommVorm/gelieerdePersoonID
-        public ActionResult NieuweCommVorm(int gelieerdepersoonID, int groepID)
+        public ActionResult NieuweCommVorm(int gelieerdePersoonID, int groepID)
         {
-            GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdepersoonID));
+            GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
             IEnumerable<CommunicatieType> types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.ophalenCommunicatieTypes());
             NieuweCommVormModel model = new NieuweCommVormModel(g, types);
             BaseModelInit(model, groepID);
@@ -288,32 +288,34 @@ namespace MvcWebApp2.Controllers
         }
 
         // GET: /Personen/VerwijderenCommVorm/commvormid
-        public ActionResult VerwijderenCommVorm(int commvormid, int gelieerdePersoonID, int groepID)
+        public ActionResult VerwijderenCommVorm(int commvormID, int gelieerdePersoonID, int groepID)
         {
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommVormVerwijderenVanPersoon(gelieerdePersoonID, commvormid));
+            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommVormVerwijderenVanPersoon(gelieerdePersoonID, commvormID));
             return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
         }
 
 
         // GET: /Personen/CommVormBewerken/gelieerdePersoonID
-        public ActionResult CommVormBewerken(int gelieerdePersoonID, int groepID)
+        public ActionResult BewerkenCommVorm(int commvormID, int gelieerdePersoonID, int groepID)
         {
-            /*CommVormModel model = new CommVormModel();
+            GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
+            CommunicatieVorm commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieVorm>(l => l.ophalenCommVorm(commvormID));
+            CommVormModel model = new CommVormModel(g, commv);
             BaseModelInit(model, groepID);
-            model.Title = "Communicatievorm aanpassen";*/
-            return View("CommVormBewerken", null);
+            model.Title = "Communicatievorm bewerken";
+            return View("CommVormBewerken", model);
         }
 
         //TODO meerdere commvormen tegelijk
 
         // POST: /Personen/CommVormBewerken/gelieerdePersoonID
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult CommVormBewerken(CommVormModel model, int groepID)
+        public ActionResult BewerkenCommVorm(CommVormModel model, int gelieerdePersoonID, int groepID)
         {
-            ///TODO catch exceptions overal
             BaseModelInit(model, groepID);
             ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AanpassenCommVorm(model.NieuweCommVorm));
-            return RedirectToAction("EditRest", new { id = model.Aanvrager.ID });
+            return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+            ///TODO catch exceptions overal
         }
 
 
@@ -327,21 +329,23 @@ namespace MvcWebApp2.Controllers
         }
 
         // GET: /Personen/ToevoegenAanCategorie/categorieID
-        public ActionResult ToevoegenAanCategorie(int aanvragerID, int groepID)
+        public ActionResult ToevoegenAanCategorie(int gelieerdePersoonID, int groepID)
         {
-            CategorieModel model = new CategorieModel();
+            GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
+            IEnumerable<Categorie> cats = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<Categorie>>(l => l.ophalenCategorieen(groepID));
+            CategorieModel model = new CategorieModel(cats, g);
             BaseModelInit(model, groepID);
             return View("CategorieToevoegen", model);
         }
 
         // POST: /Personen/ToevoegenAanCategorie/categorieID
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ToevoegenAanCategorie(CategorieModel model, int groepID)
-        {
+        public ActionResult ToevoegenAanCategorie(CategorieModel model, int gelieerdePersoonID, int groepID)
+        {   
             IList<int> list = new List<int>();
-            list.Add(model.AanvragerID);
-            //ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieToevoegenAanPersoon(list, model.categorieIDs));
-            return RedirectToAction("EditRest", new { id = model.AanvragerID });
+            list.Add(gelieerdePersoonID);
+            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieToevoegenAanPersoon(list, model.selectie));
+            return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
         }
         
 

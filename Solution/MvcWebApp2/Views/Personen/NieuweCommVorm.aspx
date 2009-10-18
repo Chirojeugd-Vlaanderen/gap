@@ -21,13 +21,10 @@
            
            <table>
            <tr>
-                <td>Type</td>
                 <td><%=Html.DropDownList("Model.geselecteerdeCommVorm", new SelectList(Model.Types.Select(x => new { value = x.ID, text = x.Omschrijving }), "value", "text"))%>
-                </td>
-           </tr>
-           <tr>
-                <td>Nummer/e-mail/adres/...</td>
-                <td><%=Html.TextBox("Model.NieuweCommVorm.Nummer")%>
+                :</td>
+                <td>
+                    <%=Html.TextBox("Model.NieuweCommVorm.Nummer")%>
                     <%= Html.ValidationMessage("Model.NieuweCommVorm.Nummer")%> 
                 </td>
            </tr>

@@ -24,15 +24,17 @@ namespace Cg2.Services
         private readonly AutorisatieManager aum;
         private readonly AdressenManager adm;
         private readonly GroepenManager gm;
+        private readonly CommVormManager cvm;
 
         public GelieerdePersonenService(GelieerdePersonenManager gpm, PersonenManager pm, AutorisatieManager aum
-            , AdressenManager adm, GroepenManager gm)
+            , AdressenManager adm, GroepenManager gm, CommVormManager cvm)
         {
             this.gpm = gpm;
             this.pm = pm;
             this.aum = aum;
             this.adm = adm;
             this.gm = gm;
+            this.cvm = cvm;
         }
 
         #endregion
@@ -202,20 +204,30 @@ namespace Cg2.Services
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void CommVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm, int typeID)
         {
-                       gpm.CommVormToevoegen(commvorm, gelieerdepersonenID, typeID);
+            cvm.CommVormToevoegen(commvorm, gelieerdepersonenID, typeID);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void CommVormVerwijderenVanPersoon(int gelieerdepersonenID, int commvormID)
         {
-            gpm.CommVormVerwijderen(commvormID, gelieerdepersonenID);
+            cvm.CommVormVerwijderen(commvormID, gelieerdepersonenID);
         }
 
         ///TODO dit moet gecontroleerd worden!
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void AanpassenCommVorm(CommunicatieVorm v)
         {
-            gpm.BewarenMetCommVormen(v.GelieerdePersoon);
+            cvm.Bewaren(v);
+        }
+
+        public CommunicatieVorm ophalenCommVorm(int commvormID)
+        {
+            return cvm.Ophalen(commvormID);
+        }
+
+        public IEnumerable<CommunicatieType> ophalenCommunicatieTypes()
+        {
+            return cvm.ophalenCommunicatieTypes();
         }
 
         #endregion
@@ -231,12 +243,11 @@ namespace Cg2.Services
             gpm.CategorieKoppelen(gelieerdepersonenIDs, categorieID, true);
         }
 
-        #endregion categorieen
-
-        public IEnumerable<CommunicatieType> ophalenCommunicatieTypes()
+        public IEnumerable<Categorie> ophalenCategorieen(int groepID)
         {
-            return gpm.ophalenCommunicatieTypes();
+            return gpm.ophalenCategorieen(groepID);
         }
 
+        #endregion categorieen
     }
 }

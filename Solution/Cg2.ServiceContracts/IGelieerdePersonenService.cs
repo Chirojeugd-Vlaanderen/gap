@@ -148,12 +148,26 @@ namespace Cg2.ServiceContracts
         void CommVormVerwijderenVanPersoon(int gelieerdepersonenID, int commvormID);
 
         /// <summary>
-        /// Gaat aanpassingen aan een bestaande commvorm persisteren, gelinkt met gelieerdepersoon
+        /// Gaat aanpassingen aan een bestaande commvorm persisteren zonder links naar andere objecten
         /// </summary>
-        /// <param name="v">De aangepaste commvorm met gelieerdepersoon</param>
+        /// <param name="v">De aangepaste commvorm</param>
         [OperationContract]
         [FaultContract(typeof(BusinessFault<CommunicatieVorm>))]
-        void AanpassenCommVorm(CommunicatieVorm v);
+        void AanpassenCommVorm(CommunicatieVorm c);
+
+
+        /// <summary>
+        /// Haalt een lijst op met alle communicatietypes
+        /// </summary>
+        [OperationContract]
+        IEnumerable<CommunicatieType> ophalenCommunicatieTypes();
+
+        /// <summary>
+        /// Haalt een communicatievorm op
+        /// </summary>
+        [OperationContract]
+        CommunicatieVorm ophalenCommVorm(int commvormID);
+
         #endregion commvormen
 
         #region categorieen
@@ -171,12 +185,12 @@ namespace Cg2.ServiceContracts
         [FaultContract(typeof(BusinessFault<Categorie>))]
         void CategorieVerwijderenVanPersoon(IList<int> gelieerdepersonenIDs, int categorieID);
 
-        #endregion categorieen
-
         /// <summary>
         /// Haalt een lijst op met alle communicatietypes
         /// </summary>
         [OperationContract]
-        IEnumerable<CommunicatieType> ophalenCommunicatieTypes();
+        IEnumerable<Categorie> ophalenCategorieen(int groepID);
+
+        #endregion categorieen
     }
 }

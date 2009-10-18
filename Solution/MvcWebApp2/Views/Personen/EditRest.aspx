@@ -87,10 +87,10 @@
             <%=cv.CommunicatieType.Omschrijving %>:
             <%=Html.Encode(cv.Nummer) %>
             <%=cv.Voorkeur ? "(voorkeur)" : "" %>
-            <%=Html.ActionLink("[verwijderen]", "VerwijderenCommVorm", new { commvormid = cv.ID, gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%>
+            <%=Html.ActionLink("[verwijderen]", "VerwijderenCommVorm", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%>
+            <%=Html.ActionLink("[bewerken]", "BewerkenCommVorm", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%></li>
         </li>
     <%} %>
-    <li><%=Html.ActionLink("[communicatievormen bewerken]", "BewerkenCommVorm", new { gelieerdePersoonID= ViewData.Model.HuidigePersoon.ID })%></li>
     <li><%=Html.ActionLink("[communicatievorm toevoegen]", "NieuweCommVorm", new { gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%></li>
     </ul>     
  
@@ -101,10 +101,11 @@
     { %>
     <li>
             <%=cv.Naam %>
-            <%=Html.ActionLink("[verwijderen]", "VerwijderenCategorie", new { categorieID = cv.ID, aanvragerID = ViewData.Model.HuidigePersoon.ID })%>
+            <%=Html.ActionLink("[verwijderen]", "VerwijderenCategorie", new { categorieID = cv.ID, gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%>
         </li>
     <%} %>
-    <li><%=Html.ActionLink("[toevoegen aan categorie]", "ToevoegenAanCategorie", new { aanvragerID = ViewData.Model.HuidigePersoon.ID })%></li>
+    
+    <li><%=Html.ActionLink("[toevoegen aan categorie]", "ToevoegenAanCategorie", new { gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%></li>
     </ul>  
  
     <%} %>

@@ -133,7 +133,7 @@ namespace Cg2.Workers.Test
             Factory.InstantieRegistreren<IGroepenDao>(groepenDaoMock.Object);
             Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrNooitGav());
 
-            GelieerdePersonenManager gpMgr = Factory.Maak<GelieerdePersonenManager>();
+            CommVormManager gpMgr = Factory.Maak<CommVormManager>();
             #endregion
 
             #region act

@@ -70,6 +70,11 @@ namespace Cg2.Dummies
             return true;
         }
 
+        public bool IsGavCommVorm(int commvormID)
+        {
+            return false;
+        }
+
         #endregion
     }
 }

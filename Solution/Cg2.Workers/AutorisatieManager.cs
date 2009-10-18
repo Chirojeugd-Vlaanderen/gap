@@ -140,5 +140,16 @@ namespace Cg2.Workers
         {
             return _dao.IsGavCategorie(categorieID, GebruikersNaamGet());
         }
+
+        /// <summary>
+        /// Controleert of de huidig aangelogde gebruiker momenteel
+        /// GAV is van de groep gekoppeld aan een zekere commvorm.
+        /// </summary>
+        /// <param name="commvormID">ID van de commvorm</param>
+        /// <returns>true indien GAV</returns>
+        public bool IsGavCommVorm(int commvormID)
+        {
+            return _dao.IsGavCommVorm(commvormID, GebruikersNaamGet());
+        }
     }
 }

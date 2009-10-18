@@ -16,16 +16,14 @@ namespace Cg2.Workers
         private IGroepenDao _groepenDao;
         private ICategorieenDao _categorieenDao;
         private IAutorisatieManager _autorisatieMgr;
-        private IDao<CommunicatieType> _typedao;
 
         public GelieerdePersonenManager(IGelieerdePersonenDao dao, IGroepenDao groepenDao
-            , ICategorieenDao categorieenDao, IAutorisatieManager autorisatieMgr, IDao<CommunicatieType> typedao)
+            , ICategorieenDao categorieenDao, IAutorisatieManager autorisatieMgr, IDao<CommunicatieType> typedao, IDao<CommunicatieVorm> commdao)
         {
             _dao = dao;
             _groepenDao = groepenDao;
             _categorieenDao = categorieenDao;
             _autorisatieMgr = autorisatieMgr;
-            _typedao = typedao;
         }
 
         #region proxy naar data access
@@ -41,7 +39,19 @@ namespace Cg2.Workers
         {
             if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
             {
-                return _dao.Ophalen(gelieerdePersoonID, foo=>foo.Persoon);
+                return _dao.Ophalen(gelieerdePersoonID, foo=>foo.Persoon, foo => foo.Groep);
+            }
+            else
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+            }
+        }
+
+        public GelieerdePersoon OphalenMetCommVormen(int gelieerdePersoonID)
+        {
+            if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
+            {
+                return _dao.Ophalen(gelieerdePersoonID, foo => foo.Persoon, foo => foo.Groep, foo => foo.Communicatie);
             }
             else
             {
@@ -125,41 +135,6 @@ namespace Cg2.Workers
             else
             {
                 throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
-            }
-        }
-
-        public void CommVormToevoegen(CommunicatieVorm comm, int gelieerdePersoonID, int typeID)
-        {
-            GelieerdePersoon origineel = _dao.Ophalen(gelieerdePersoonID, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
-            CommunicatieType type = _typedao.Ophalen(typeID);
-            origineel.Communicatie.Add(comm);
-            comm.CommunicatieType = type;
-            BewarenMetCommVormen(origineel);
-        }
-
-        public void CommVormVerwijderen(int commID, int gelieerdePersoonID)
-        {
-            if (!_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
-            {
-                throw new GeenGavException(Properties.Resources.GeenGavGroep);
-            }
-            GelieerdePersoon origineel = _dao.Ophalen(gelieerdePersoonID, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
-            bool found = false;
-            foreach (CommunicatieVorm c in origineel.Communicatie)
-            {
-                if (c.ID == commID)
-                {
-                    found = true;
-                    c.TeVerwijderen = true;
-                }
-            }
-            if (found)
-            {
-                BewarenMetCommVormen(origineel);
-            }
-            else
-            {
-                throw new ArgumentException("De communicatievorm behoort niet toe aan de geselecteerde persoon.");
             }
         }
 
@@ -381,9 +356,9 @@ namespace Cg2.Workers
 				return _categorieenDao.Ophalen(catID);
 		  }
 
-          public IEnumerable<CommunicatieType> ophalenCommunicatieTypes()
+          public IEnumerable<Categorie> ophalenCategorieen(int groepID)
           {
-              return _dao.ophalenCommunicatieTypes();
+              return _categorieenDao.OphalenVanGroep(groepID);
           }
     }
 }

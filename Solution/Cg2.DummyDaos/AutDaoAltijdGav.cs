@@ -113,6 +113,11 @@ namespace Cg2.Dummies
             throw new NotImplementedException();
         }
 
+        public bool IsGavCommVorm(int commvormID, string login)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

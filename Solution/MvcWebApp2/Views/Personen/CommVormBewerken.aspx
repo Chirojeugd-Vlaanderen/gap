@@ -17,31 +17,38 @@
            </ul>
            
            <fieldset>
-           <legend>Communicatievorm toevoegen voor <%=Model.Aanvrager.Persoon.VolledigeNaam %></legend>                 
-           </fieldset>
+           <legend>Communicatievorm bewerken voor <%=Model.Aanvrager.Persoon.VolledigeNaam %></legend>     
            
-           <fieldset>
-           <legend>Communicatiegegevens</legend>
-           
-           <% if(Model.NieuweCommVorm.CommunicatieType==1){ %>
-           
-           <%}else{%>
-           <%}%>
-           
-           <label for="NaarAdres_Straat_Naam">Straat</label>
-           <%=Html.TextBox("NaarAdres.Straat.Naam") %> <%= Html.ValidationMessage("NaarAdres.Straat.Naam") %> <br />
-           
-           <label for="NaarAdres_HuisNr">Nr.</label>
-           <%=Html.TextBox("NaarAdres.HuisNr") %> <br />
-           
-           <label for="NaarAdres_Straat_PostNr">Postnr.</label>
-           <%=Html.TextBox("NaarAdres.Straat.PostNr") %> <br />
-           
-           <label for="NaarAdres_Subgemeente_Naam">Gemeente</label>
-           <%=Html.TextBox("NaarAdres.Subgemeente.Naam") %> <%= Html.ValidationMessage("NaarAdres.Subgemeente.Naam") %> <br />
-           
-           <%=Html.Hidden("VanAdresMetBewoners.ID") %>
-           <%=Html.Hidden("AanvragerID") %>
+           <table>
+           <tr>
+                <td><%=Model.NieuweCommVorm.CommunicatieType.Omschrijving%>
+                :</td>
+                <td>
+                    <%=Html.TextBox("Model.NieuweCommVorm.Nummer")%>
+                    <%= Html.ValidationMessage("Model.NieuweCommVorm.Nummer")%> 
+                </td>
+           </tr>
+           <tr>
+                <td>Is dit de voorkeurscommunicatie voor dit communicatietype?</td>
+                <td><%=Html.CheckBox("Model.NieuweCommVorm.Voorkeur", false)%>
+                    <%= Html.ValidationMessage("Model.NieuweCommVorm.Voorkeur")%> 
+                </td>
+           </tr>
+           <tr>
+                <td>Is het gezinsgebonden?</td>
+                <td>
+                <%=Html.CheckBox("Model.NieuweCommVorm.IsGezinsgebonden", false)%>
+                <%= Html.ValidationMessage("Model.NieuweCommVorm.IsGezinsgebonden")%> 
+                </td>
+           </tr>
+           <tr>
+                <td>Extra informatie</td>
+                <td>
+                <%=Html.TextBox("Model.NieuweCommVorm.Nota")%> 
+                <%= Html.ValidationMessage("Model.NieuweCommVorm.Nota")%> 
+                </td>
+           </tr>
+           </table>
            
            </fieldset>
            

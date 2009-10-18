@@ -55,6 +55,7 @@
     <Compile Include="AuthenticatieManager.cs" />
     <Compile Include="AutorisatieManager.cs" />
     <Compile Include="ChiroGroepenManager.cs" />
+    <Compile Include="CommVormManager.cs" />
     <Compile Include="IAuthenticatieManager.cs" />
     <Compile Include="IAutorisatieManager.cs" />
     <Compile Include="PersonenManager.cs" />

@@ -14,5 +14,7 @@ namespace Cg2.Orm.DataInterfaces
         /// <param name="categorie">Categorie met op te halen groep</param>
         /// <returns>Dezelfde categorie</returns>
         Categorie GroepLaden(Categorie categorie);*/
+
+        IEnumerable<Categorie> OphalenVanGroep(int groepID);
     }
 }

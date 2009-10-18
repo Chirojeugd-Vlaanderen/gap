@@ -17,26 +17,28 @@ namespace MvcWebApp2.Models
     {
         // ID van GelieerdePersoon waarvoor aangeklikt dat
         // hij/zij een extra categorie nodig heeft
-        public int AanvragerID { get; set; }
+        public GelieerdePersoon Aanvrager { get; set; }
 
         /// <summary>
         /// Nieuwe categorie voor de gegeven gelieerde personen
         /// </summary>
-        public IList<Categorie> categorieIDs { get; set; }
+        public IEnumerable<Categorie> Categorieen { get; set; }
+
+        public int selectie { get; set; }
 
         /// <summary>
         /// Standaardconstructor - creeert lege
         /// </summary>
         public CategorieModel()
         {
-            AanvragerID = 0;
-            categorieIDs = new List<Categorie>();
+            Aanvrager = null;
+            Categorieen = new List<Categorie>();
         }
 
-        public CategorieModel(int aanvragerID, int groepID) : this()
+        public CategorieModel(IEnumerable<Categorie> c, GelieerdePersoon gp) : this()
         {
-            AanvragerID = aanvragerID;
-            categorieIDs = ServiceHelper.CallService<IGroepenService, IList<Categorie>>(l => l.OphalenMetCategorieen(groepID).Categorie.ToList<Categorie>());
+            Categorieen = c;
+            Aanvrager = gp;
         }
     }
 }

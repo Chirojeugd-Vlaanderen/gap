@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Cg2.Orm.DataInterfaces;
+using Cg2.Orm;
 
 namespace Cg2.Dummies
 {
@@ -44,6 +45,11 @@ namespace Cg2.Dummies
         }
 
         public System.Linq.Expressions.Expression<Func<Cg2.Orm.Categorie, object>>[] getConnectedEntities()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Categorie> OphalenVanGroep(int groepID)
         {
             throw new NotImplementedException();
         }

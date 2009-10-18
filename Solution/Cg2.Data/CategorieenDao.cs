@@ -17,5 +17,18 @@ namespace Cg2.Data.Ef
                                         e => e.Groep, 
                                         e => e.GelieerdePersoon };
         }
+
+          public IEnumerable<Categorie> OphalenVanGroep(int groepID)
+          {
+              using (ChiroGroepEntities db = new ChiroGroepEntities())
+              {
+                  db.Categorie.MergeOption = MergeOption.NoTracking;
+
+                  return (
+                      from cv in db.Categorie
+                      where cv.Groep.ID == groepID
+                      select cv).ToList();
+              }
+          }
     }
 }

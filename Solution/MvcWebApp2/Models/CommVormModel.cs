@@ -33,10 +33,10 @@ namespace MvcWebApp2.Models
             NieuweCommVorm = new CommunicatieVorm();
         }
 
-        public CommVormModel(GelieerdePersoon aanvrager) : this()
+        public CommVormModel(GelieerdePersoon aanvrager, CommunicatieVorm v) : this()
         {
             Aanvrager = aanvrager;
-            NieuweCommVorm = new CommunicatieVorm();
+            NieuweCommVorm = v;
         }
     }
 }
