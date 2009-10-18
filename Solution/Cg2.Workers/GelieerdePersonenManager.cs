@@ -306,7 +306,7 @@ namespace Cg2.Workers
 					 };
 				}
 
-            if (!!_autorisatieMgr.IsGavCategorie(categorieID))
+            if (!_autorisatieMgr.IsGavCategorie(categorieID))
             {
                 throw new GeenGavException(Properties.Resources.GeenGavCategoriePersoon);
             };

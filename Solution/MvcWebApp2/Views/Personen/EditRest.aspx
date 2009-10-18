@@ -83,7 +83,7 @@
     <ul>
     <% foreach (CommunicatieVorm cv in Model.HuidigePersoon.Communicatie)
     { %>
-    <li>
+        <li>
             <%=cv.CommunicatieType.Omschrijving %>:
             <%=Html.Encode(cv.Nummer) %>
             <%=cv.Voorkeur ? "(voorkeur)" : "" %>

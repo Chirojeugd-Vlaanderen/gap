@@ -20,7 +20,7 @@
            <legend>Categorie toevoegen</legend>     
            
            <%=Model.Aanvrager.Persoon.VolledigeNaam %> toevoegen aan de categorie 
-           <%=Html.DropDownList("Model.selectie", new SelectList(Model.Categorieen.Select(x => new { value = x.ID, text = x.Naam }), "value", "text"))%>:
+           <%=Html.DropDownList("Model.selectie", new SelectList(Model.Categorieen.Select(x => new { value = x.ID, text = x.Naam }), "value", "text"))%>
  
            
            </fieldset>

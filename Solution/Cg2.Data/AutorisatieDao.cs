@@ -306,11 +306,10 @@ namespace Cg2.Data.Ef
                 }
 
                 var query =
-                    from r in db.GebruikersRecht
-                    where r.Gav.Login == login
-                    && r.Groep.Categorie.Any(foo => foo.ID == categorieID)
-                    && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
-                    select r;
+                    from l in db.Categorie
+                    where l.ID==categorieID
+                    && l.Groep.GebruikersRecht.Any(r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
+                    select l;
 
                 resultaat = query.Count() > 0;
             }
@@ -335,11 +334,10 @@ namespace Cg2.Data.Ef
                 }
 
                 var query =
-                    from r in db.GebruikersRecht
-                    where r.Gav.Login == login
-                    && r.Groep.Categorie.Any(foo => foo.ID == commvormID)
-                    && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
-                    select r;
+                    from l in db.CommunicatieVorm
+                    where l.ID==commvormID
+                    && l.GelieerdePersoon.Groep.GebruikersRecht.Any(r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
+                    select l;
 
                 resultaat = query.Count() > 0;
             }
