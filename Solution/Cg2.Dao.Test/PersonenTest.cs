@@ -7,6 +7,8 @@ using Cg2.Orm;
 using Cg2.Workers;
 using Cg2.Ioc;
 using Cg2.Orm.DataInterfaces;
+using System.IO;
+using System.Runtime.Serialization;
 
 namespace Cg2.Dao.Test
 {
@@ -143,6 +145,53 @@ namespace Cg2.Dao.Test
 
             // assert
             Assert.IsTrue(lijst.Count >= 2);
+        }
+
+        /// <summary>
+        /// Test om te kijken of categorie"en meekomen met details.
+        /// </summary>
+        [TestMethod]
+        public void DetailsOphalenCategorie()
+        {
+            // arange
+            int gpID = Properties.Settings.Default.TestGelieerdePersoonID;
+            IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
+
+            // act
+            GelieerdePersoon gp = dao.DetailsOphalen(gpID);
+
+            // assert
+            Assert.IsTrue(gp.Categorie.Count > 0);
+        }
+
+        /// <summary>
+        /// Kijkt na of opgehaalde details wel geserializeerd 
+        /// kunnen worden door een DataContractSerializer.
+        /// </summary>
+        [TestMethod]
+        public void DetailsSerializable()
+        {
+            // arange
+            GelieerdePersoon gp, kloon;
+
+            int gpID = Properties.Settings.Default.TestGelieerdePersoonID;
+            IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
+
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                // act
+                gp = dao.DetailsOphalen(gpID);
+
+                var serializer = new NetDataContractSerializer();
+                serializer.Serialize(stream, gp);
+                stream.Position = 0;
+                kloon = (GelieerdePersoon)serializer.Deserialize(stream);
+            }
+
+            // assert
+
+            Assert.Equals(gp, kloon);
         }
 
         /// <summary>

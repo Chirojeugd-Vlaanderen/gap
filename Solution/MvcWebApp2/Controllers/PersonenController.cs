@@ -87,7 +87,8 @@ namespace MvcWebApp2.Controllers
         {
             var model = new Models.GelieerdePersonenModel();
             BaseModelInit(model, groepID);
-            model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
+            var serviceResultaat = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
+            model.HuidigePersoon = serviceResultaat;
             model.Title = model.HuidigePersoon.Persoon.VolledigeNaam;
             return View("EditRest", model);
         }
