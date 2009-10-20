@@ -169,7 +169,7 @@ namespace Cg2.Dao.Test
         /// kunnen worden door een DataContractSerializer.
         /// </summary>
         [TestMethod]
-        public void DetailsSerializable()
+        public void OphalenSerializable()
         {
             // arange
             GelieerdePersoon gp, kloon;
@@ -181,7 +181,8 @@ namespace Cg2.Dao.Test
             using (MemoryStream stream = new MemoryStream())
             {
                 // act
-                gp = dao.DetailsOphalen(gpID);
+                
+                gp = dao.Ophalen(gpID, pers => pers.Categorie);
 
                 var serializer = new NetDataContractSerializer();
                 serializer.Serialize(stream, gp);
@@ -191,7 +192,7 @@ namespace Cg2.Dao.Test
 
             // assert
 
-            Assert.Equals(gp, kloon);
+            Assert.AreEqual(gp, kloon);
         }
 
         /// <summary>
