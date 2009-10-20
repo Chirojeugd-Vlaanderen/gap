@@ -9,7 +9,7 @@ using Cg2.Orm;
 using Cg2.ServiceContracts;
 using Cg2.Ioc;
 using System.Diagnostics;
-using Cg2.ServiceContracts.DataContracts;
+using Chiro.CG2.ServiceContracts.Mappers;
 
 namespace Cg2.Services
 {

@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</ProjectGuid>
+    <ProjectGuid>{08F94344-8414-4136-8314-4B7380B10CD7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cg2.ServiceContracts</RootNamespace>
-    <AssemblyName>Cg2.ServiceContracts</AssemblyName>
+    <RootNamespace>Chiro.CG2.ServiceContracts.Mappers</RootNamespace>
+    <AssemblyName>Chiro.CG2.ServiceContracts.Mappers</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -38,12 +38,6 @@
     <Reference Include="System.Data.Entity">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Runtime.Serialization">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.ServiceModel">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -54,31 +48,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataContracts\GroepInfo.cs" />
-    <Compile Include="DataContracts\LidInfo.cs" />
-    <Compile Include="DataContracts\PersoonInfo.cs" />
-    <Compile Include="IGelieerdePersonenService.cs" />
-    <Compile Include="IGroepenService.cs" />
-    <Compile Include="ILedenService.cs" />
-    <Compile Include="IPersonenService.cs" />
+    <Compile Include="GroepInfoMapper.cs" />
+    <Compile Include="LidInfoMapper.cs" />
+    <Compile Include="PersoonInfoMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cg2.EfWrapper\Cg2.EfWrapper.csproj">
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
       <Name>Cg2.EfWrapper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Cg2.Fouten\Cg2.Fouten.csproj">
-      <Project>{D82C1286-8BC6-422C-8688-E178377D3EB6}</Project>
-      <Name>Cg2.Fouten</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Cg2.Orm\Cg2.Orm.csproj">
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
       <Name>Cg2.Orm</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Cg2.ServiceContracts\Cg2.ServiceContracts.csproj">
+      <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
+      <Name>Cg2.ServiceContracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

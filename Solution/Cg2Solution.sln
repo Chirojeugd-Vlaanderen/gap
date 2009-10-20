@@ -52,6 +52,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Ioc.Test", "Cg2.Ioc.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.DependencyInjectionBehavior", "Chiro.Cdf.DependancyInjectionBehaviour\Chiro.Cdf.DependencyInjectionBehavior.csproj", "{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.CG2.ServiceContracts.Mappers", "Chiro.CG2.ServiceContracts.Mappers\Chiro.CG2.ServiceContracts.Mappers.csproj", "{08F94344-8414-4136-8314-4B7380B10CD7}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution.vsmdi
@@ -141,6 +143,10 @@ Global
 		{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08F94344-8414-4136-8314-4B7380B10CD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08F94344-8414-4136-8314-4B7380B10CD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08F94344-8414-4136-8314-4B7380B10CD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08F94344-8414-4136-8314-4B7380B10CD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

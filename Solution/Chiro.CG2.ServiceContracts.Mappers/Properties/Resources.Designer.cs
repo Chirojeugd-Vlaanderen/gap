@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cg2.ServiceContracts.Properties {
+namespace Chiro.CG2.ServiceContracts.Mappers.Properties
+{
     using System;
     
     

@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Cg2.Orm;
+using Cg2.ServiceContracts;
 
-namespace Cg2.ServiceContracts.DataContracts
+namespace Chiro.CG2.ServiceContracts.Mappers
 {
     public class GroepInfoMapper
     {
-        #region mappers
-
         public static GroepInfo mapGroep(Groep g)
         {
             return new GroepInfo()
@@ -32,6 +31,5 @@ namespace Cg2.ServiceContracts.DataContracts
             return giList;
         }
 
-        #endregion
     }
 }
