@@ -35,11 +35,22 @@ namespace Cg2.Workers
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van de gelieerde persoon.</param>
         /// <returns>Gelieerde persoon, met gekoppeld persoonsobject.</returns>
+        /// <remarks>De groepsinfo wordt niet mee opgehaald, omdat we die in de
+        /// meeste gevallen niet nodig zullen hebben.</remarks>
         public GelieerdePersoon Ophalen(int gelieerdePersoonID)
         {
             if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
             {
-                return _dao.Ophalen(gelieerdePersoonID, foo=>foo.Persoon, foo => foo.Groep);
+                // ENKEL informatie gelieerde persoon en persoon ophalen.
+                // Als je ook informatie wil van de groep, maak dan een aparte
+                // method, of gebruik een lambda-expressie
+                //
+                // In de meeste gevallen zullen we bij het opvragen van een
+                // gelieerde persoon de groepsinfo niet nodig hebben, aangezien
+                // er aan die groepsinfo toch niets zal wijzigen.  Vandaar dat
+                // die groepsinfo hier niet mee komt.
+
+                return _dao.Ophalen(gelieerdePersoonID, foo=>foo.Persoon);
             }
             else
             {

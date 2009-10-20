@@ -253,8 +253,10 @@ namespace Cg2.Workers.Test
 
             var gpDaoMock = new Mock<IGelieerdePersonenDao>();
 
-            gpDaoMock.Setup(foo => foo.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID
-                , It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>())).Returns(() => MaakTestGelieerdePersoon());
+            gpDaoMock.Setup(
+                foo => foo.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID, 
+                It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>())).Returns(
+                    () => MaakTestGelieerdePersoon());
 
             // Het stuk It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>()
             // zorgt ervoor dat de Mock de linq-expressies in 'Ophalen' negeert.
