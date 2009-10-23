@@ -53,6 +53,10 @@
            <label for="NieuwAdres_Subgemeente_Naam">Gemeente</label>
            <%=Html.TextBox("NieuwAdres.Subgemeente.Naam") %> <%= Html.ValidationMessage("NieuwAdres.Subgemeente.Naam") %> <br />
            
+<%
+	// TODO: DropDownList toevoegen om adrestype te selecteren
+%>
+
            <%=Html.Hidden("AanvragerID") %>
            
            </fieldset>

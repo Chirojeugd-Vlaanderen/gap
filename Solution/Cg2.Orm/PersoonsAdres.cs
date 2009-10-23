@@ -2,11 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Runtime.Serialization;
 using Cg2.EfWrapper;
 
 namespace Cg2.Orm
 {
+    [DataContract]
+    public enum AdresTypeEnum
+    {
+        [EnumMember]
+        Onbekend = 0
+        ,
+        [EnumMember]
+        Thuis = 1
+        ,
+        [EnumMember]
+        Kot = 2
+            ,
+        [EnumMember]
+        Werk = 3
+        ,
+        [EnumMember]
+        Overig = 4
+    }
+
     public partial class PersoonsAdres: IBasisEntiteit
     {
         private bool _teVerwijderen = false;
@@ -21,6 +40,12 @@ namespace Cg2.Orm
         {
             get { return this.VersieStringGet(); }
             set { this.VersieStringSet(value); }
+        }
+
+        public AdresTypeEnum AdresType
+        {
+            get { return (AdresTypeEnum)this.AdresTypeInt; }
+            set { this.AdresTypeInt = (int)value; }
         }
     }
 }

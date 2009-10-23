@@ -97,15 +97,37 @@ namespace Cg2.Workers
 
         /// <summary>
         /// Koppelt het gegeven Adres via een nieuw PersoonsAdresObject
+        /// aan de gegeven GelieerdePersoon, als thuisadres.  Persisteert niet.
+        /// </summary>
+        /// <param name="p">GelieerdePersoon die er een adres bij krijgt</param>
+        /// <param name="adres">Toe te voegen adres</param>
+        /// <remarks>Overbodig geworden door overload waarbij adrestype ook meegegeven wordt</remarks>
+        //public void AdresToevoegen(Persoon p, Adres adres)
+        //{
+        //    if (_autorisatieMgr.IsGavPersoon(p.ID))
+        //    {
+        //        PersoonsAdres pa = new PersoonsAdres { Adres = adres, Persoon = p, AdresType =  AdresTypeEnum.Thuis  };
+        //        p.PersoonsAdres.Add(pa);
+        //        adres.PersoonsAdres.Add(pa);
+        //    }
+        //    else
+        //    {
+        //        throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+        //    }
+        //}
+
+
+        /// <summary>
+        /// Koppelt het gegeven Adres via een nieuw PersoonsAdresObject
         /// aan de gegeven GelieerdePersoon.  Persisteert niet.
         /// </summary>
         /// <param name="p">GelieerdePersoon die er een adres bij krijgt</param>
         /// <param name="adres">Toe te voegen adres</param>
-        public void AdresToevoegen(Persoon p, Adres adres)
+        public void AdresToevoegen(Persoon p, Adres adres, AdresTypeEnum adrestype)
         {
             if (_autorisatieMgr.IsGavPersoon(p.ID))
             {
-                PersoonsAdres pa = new PersoonsAdres { Adres = adres, Persoon = p, AdresTypeID = 1 };
+                PersoonsAdres pa = new PersoonsAdres { Adres = adres, Persoon = p, AdresType = adrestype };
                 p.PersoonsAdres.Add(pa);
                 adres.PersoonsAdres.Add(pa);
             }
@@ -114,7 +136,6 @@ namespace Cg2.Workers
                 throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
             }
         }
-
 
         public IList<Persoon> LijstOphalen(List<int> personenIDs)
         {

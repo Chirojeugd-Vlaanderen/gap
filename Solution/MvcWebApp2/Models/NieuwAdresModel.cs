@@ -30,6 +30,11 @@ namespace MvcWebApp2.Models
         public Adres NieuwAdres { get; set; }
 
         /// <summary>
+        /// Adrestype voor het nieuwe adres
+        /// </summary>
+        public AdresTypeEnum NieuwAdresType { get; set; }
+
+        /// <summary>
         /// ID's van Personen aan wie het adres gekoppeld moet
         /// worden.  (In de meeste gevallen zal AanvragerID daarbij
         /// inzitten.)

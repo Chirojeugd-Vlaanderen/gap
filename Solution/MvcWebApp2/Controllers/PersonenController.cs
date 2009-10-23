@@ -246,7 +246,7 @@ namespace MvcWebApp2.Controllers
                 // steeds opnieuw opgezocht.  Adressen worden nooit
                 // gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
 
-                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenAanPersonen(model.PersoonIDs, model.NieuwAdres));
+                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenAanPersonen(model.PersoonIDs, model.NieuwAdres, model.NieuwAdresType));
 
                 return RedirectToAction("EditRest", new { id = model.AanvragerID });
             }

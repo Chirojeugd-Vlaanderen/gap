@@ -52,7 +52,7 @@ namespace Cg2.ServiceContracts
         /// <returns>GelieerdePersoon met persoonsgegevens, communicatievorm en adressen</returns>
         [OperationContract]
         GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID);
-        
+
         /// <summary>
         /// Haalt gelieerd persoon op met extra gevraagde info.
         /// </summary>
@@ -60,7 +60,7 @@ namespace Cg2.ServiceContracts
         /// <param name="gevraagd">Stelt voor welke informatie opgehaald moet worden</param>
         /// <returns>GelieerdePersoon uitbreiden met meer info mbt het gevraagde onderwerp </returns>
         //[OperationContract(Name = "PersoonOphalenMetCustomDetails")]
-       // GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID, PersoonsInfo gevraagd);
+        // GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID, PersoonsInfo gevraagd);
 
         /// <summary>
         /// Bewaart gewijzigde gelieerde persoon met zijn groep en zijn persoon
@@ -122,10 +122,11 @@ namespace Cg2.ServiceContracts
         /// <param name="personenIDs">ID's van Personen
         /// waaraan het nieuwe adres toegevoegd moet worden.</param>
         /// <param name="adres">Toe te voegen adres</param>
+        /// <param name="adresType">Soort adres (thuis, kot, enz.)</param>
         /// <returns></returns>
         [OperationContract]
         [FaultContract(typeof(AdresFault))]
-        void AdresToevoegenAanPersonen(List<int> personenIDs, Adres adres);
+        void AdresToevoegenAanPersonen(List<int> personenIDs, Adres adres, AdresTypeEnum adresType);
         [OperationContract]
         [FaultContract(typeof(AdresFault))]
         void AdresVerwijderenVanPersonen(List<int> personenIDs, int adresID);

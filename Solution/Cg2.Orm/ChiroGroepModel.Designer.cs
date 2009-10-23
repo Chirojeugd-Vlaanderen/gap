@@ -32,7 +32,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_CommunicatieVorm_CommunicatieType", "CommunicatieType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Cg2.Orm.CommunicatieType), "CommunicatieVorm", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Cg2.Orm.CommunicatieVorm))]
 
 // Original file name:
-// Generation date: 20/10/2009 12:26:51
+// Generation date: 20/10/2009 20:41:00
 namespace Cg2.Orm
 {
     
@@ -2029,12 +2029,12 @@ namespace Cg2.Orm
         /// <summary>
         /// Create a new PersoonsAdres object.
         /// </summary>
-        /// <param name="adresTypeID">Initial value of AdresTypeID.</param>
+        /// <param name="adresTypeInt">Initial value of AdresTypeInt.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static PersoonsAdres CreatePersoonsAdres(int adresTypeID, int id)
+        public static PersoonsAdres CreatePersoonsAdres(int adresTypeInt, int id)
         {
             PersoonsAdres persoonsAdres = new PersoonsAdres();
-            persoonsAdres.AdresTypeID = adresTypeID;
+            persoonsAdres.AdresTypeInt = adresTypeInt;
             persoonsAdres.ID = id;
             return persoonsAdres;
         }
@@ -2062,28 +2062,28 @@ namespace Cg2.Orm
         partial void OnOpmerkingChanging(string value);
         partial void OnOpmerkingChanged();
         /// <summary>
-        /// There are no comments for Property AdresTypeID in the schema.
+        /// There are no comments for Property AdresTypeInt in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int AdresTypeID
+        public int AdresTypeInt
         {
             get
             {
-                return this._AdresTypeID;
+                return this._AdresTypeInt;
             }
             set
             {
-                this.OnAdresTypeIDChanging(value);
-                this.ReportPropertyChanging("AdresTypeID");
-                this._AdresTypeID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("AdresTypeID");
-                this.OnAdresTypeIDChanged();
+                this.OnAdresTypeIntChanging(value);
+                this.ReportPropertyChanging("AdresTypeInt");
+                this._AdresTypeInt = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("AdresTypeInt");
+                this.OnAdresTypeIntChanged();
             }
         }
-        private int _AdresTypeID;
-        partial void OnAdresTypeIDChanging(int value);
-        partial void OnAdresTypeIDChanged();
+        private int _AdresTypeInt;
+        partial void OnAdresTypeIntChanging(int value);
+        partial void OnAdresTypeIntChanged();
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>

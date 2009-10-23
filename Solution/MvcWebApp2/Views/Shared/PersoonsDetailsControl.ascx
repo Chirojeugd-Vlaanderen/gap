@@ -20,7 +20,7 @@
    { %>
    <li>
         <%=Html.Encode(String.Format("{0} {1}", pa.Adres.Straat.Naam, pa.Adres.HuisNr)) %>,
-        <%=Html.Encode(String.Format("{0} {1} {2}", pa.Adres.Straat.PostNr, pa.Adres.PostCode, pa.Adres.Subgemeente.Naam)) %>
+        <%=Html.Encode(String.Format("{0} {1} {2} ({3}) ", pa.Adres.Straat.PostNr, pa.Adres.PostCode, pa.Adres.Subgemeente.Naam, pa.Adres.AdresType))%>
         <%= pa.IsStandaard ? "(standaardadres)" : "" %>
     </li>
 <%} %>

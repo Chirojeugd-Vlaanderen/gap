@@ -149,8 +149,39 @@ namespace Cg2.Services
             // Bijgevolg moet het oudeAdres niet gepersisteerd worden.
         }
 
+        //[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        //public void AdresToevoegenAanPersonen(List<int> personenIDs, Adres adres)
+        //{
+        //    // OPM: kan deze weg, of kan in de overloaded void de parameter AdresTypeEnum optional worden?
+
+        //    // Dit gaat sterk lijken op verhuizen.
+
+        //    // Adres opzoeken in database
+        //    try
+        //    {
+        //        adres = adm.ZoekenOfMaken(adres);
+        //    }
+        //    catch (AdresException ex)
+        //    {
+        //        throw new FaultException<AdresFault>(ex.Fault);
+        //    }
+
+        //    // Personen ophalen
+        //    IList<Persoon> personenLijst = pm.LijstOphalen(personenIDs);
+
+        //    // Adres koppelen
+        //    foreach (Persoon p in personenLijst)
+        //    {
+        //        // By default een thuisadres, zou beter flexibel worden - vandaar de overloaded void
+        //        pm.AdresToevoegen(p, adres, AdresTypeEnum.Thuis);
+        //    }
+
+        //    // persisteren
+        //    adm.Bewaren(adres);
+        //}
+
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public void AdresToevoegenAanPersonen(List<int> personenIDs, Adres adres)
+        public void AdresToevoegenAanPersonen(List<int> personenIDs, Adres adres, AdresTypeEnum adresType)
         {
             // Dit gaat sterk lijken op verhuizen.
 
@@ -170,12 +201,11 @@ namespace Cg2.Services
             // Adres koppelen
             foreach (Persoon p in personenLijst)
             {
-                pm.AdresToevoegen(p, adres);
+                pm.AdresToevoegen(p, adres, adresType );
             }
 
             // persisteren
             adm.Bewaren(adres);
-
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]

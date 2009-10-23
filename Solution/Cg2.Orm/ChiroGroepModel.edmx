@@ -848,7 +848,7 @@
           <Key>
             <PropertyRef Name="ID" /></Key>
           <Property Name="Opmerking" Type="String" Nullable="true" />
-          <Property Name="AdresTypeID" Type="Int32" Nullable="false" />
+          <Property Name="AdresTypeInt" Type="Int32" Nullable="false" />
           <Property Name="Versie" Type="Binary" Nullable="true" />
           <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Adres" FromRole="PersoonsAdres" ToRole="Adres" />
           <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_PersoonsAdres_Persoon" FromRole="PersoonsAdres" ToRole="Persoon" />
@@ -1100,7 +1100,7 @@
               <MappingFragment StoreEntitySet="PersoonsAdres">
                 <ScalarProperty Name="ID" ColumnName="PersoonsAdresID" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
-                <ScalarProperty Name="AdresTypeID" ColumnName="AdresTypeID" />
+                <ScalarProperty Name="AdresTypeInt" ColumnName="AdresTypeID" />
                 <ScalarProperty Name="Opmerking" ColumnName="Opmerking" />
               </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <AssociationSetMapping Name="FK_Adres_Straat" TypeName="ChiroGroepModel.FK_Adres_Straat" StoreEntitySet="Adres">
@@ -1341,7 +1341,7 @@
         <EntityTypeShape EntityType="ChiroGroepModel.Adres" Width="1.5" PointX="11" PointY="7" Height="2.2496956380208326" />
         <EntityTypeShape EntityType="ChiroGroepModel.Straat" Width="1.5" PointX="13.5" PointY="7.5" Height="1.7566536458333335" />
         <EntityTypeShape EntityType="ChiroGroepModel.Subgemeente" Width="1.5" PointX="11" PointY="4.375" Height="1.7566536458333335" />
-        <EntityTypeShape EntityType="ChiroGroepModel.PersoonsAdres" Width="1.5" PointX="13.5" PointY="4.5" Height="1.9210009765624996" />
+        <EntityTypeShape EntityType="ChiroGroepModel.PersoonsAdres" Width="1.5" PointX="13.5" PointY="4.375" Height="1.9210009765624996" />
         <AssociationConnector Association="ChiroGroepModel.FK_Adres_Straat" >
           <ConnectorPoint PointX="13.5" PointY="8.3748478190104159" />
           <ConnectorPoint PointX="12.5" PointY="8.3748478190104159" />
@@ -1351,11 +1351,11 @@
           <ConnectorPoint PointX="11.75" PointY="7" />
           </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_Adres" >
-          <ConnectorPoint PointX="12.156252" PointY="7" />
-          <ConnectorPoint PointX="12.156252" PointY="6.3816536458333335" />
-          <ConnectorPoint PointX="12.75" PointY="6.3816536458333335" />
-          <ConnectorPoint PointX="12.75" PointY="5.46050048828125" />
-          <ConnectorPoint PointX="13.5" PointY="5.46050048828125" /></AssociationConnector>
+          <ConnectorPoint PointX="12.5" PointY="8.1248478190104159" />
+          <ConnectorPoint PointX="12.875" PointY="8.1248478190104159" />
+          <ConnectorPoint PointX="12.875" PointY="5.33550048828125" />
+          <ConnectorPoint PointX="13.5" PointY="5.33550048828125" />
+          </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon" >
           <ConnectorPoint PointX="5.875" PointY="6.582021484375" />
           <ConnectorPoint PointX="6.625" PointY="6.582021484375" />
@@ -1484,7 +1484,7 @@
           <ConnectorPoint PointX="9.84375" PointY="13.625" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_Persoon">
           <ConnectorPoint PointX="14.5" PointY="3.4533902994791656" />
-          <ConnectorPoint PointX="14.5" PointY="4.5" />
+          <ConnectorPoint PointX="14.5" PointY="4.375" />
           </AssociationConnector>
         <InheritanceConnector EntityType="ChiroGroepModel.Kind">
           <ConnectorPoint PointX="6.108397296875" PointY="11.374695638020834" />

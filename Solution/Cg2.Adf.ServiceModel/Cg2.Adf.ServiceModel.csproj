@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -84,6 +84,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>xcopy $(TargetDir)*.* $(SolutionDir)bin\$(ConfigurationName)\ /Y /R</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
