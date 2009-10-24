@@ -34,25 +34,9 @@ namespace Cg2.Orm
 
         #region Identity en equality
 
-        // Op een collectie van GelieerdePersonen zou ik een
-        // distinct willen kunnen uitvoeren.  Om dit correct te kunnen doen,
-        // moeten Equals en GetHashCode aangepast worden.
-
         public override int GetHashCode()
         {
-            if (ID != 0)
-            {
-                // de ID bepaalt op unieke manier de identiteit van de
-                // GelieerdePersoon
-                return ID.GetHashCode();
-            }
-            else
-            {
-                // Als er geen ID is, dan doen we een fallback naar de
-                // GetHashCode van de parent, wat eigenlijk niet helemaal
-                // correct is.
-                return base.GetHashCode();
-            }
+            return 3;
         }
 
         public override bool Equals(object obj)

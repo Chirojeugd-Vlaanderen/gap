@@ -47,5 +47,10 @@ namespace Cg2.Orm
             get { return (AdresTypeEnum)this.AdresTypeInt; }
             set { this.AdresTypeInt = (int)value; }
         }
+
+        public override int GetHashCode()
+        {
+            return 2;
+        }
     }
 }

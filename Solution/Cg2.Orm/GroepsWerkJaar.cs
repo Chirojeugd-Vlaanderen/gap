@@ -23,5 +23,10 @@ namespace Cg2.Orm
             get { return this.VersieStringGet(); }
             set { this.VersieStringSet(value); }
         }
+
+        public override int GetHashCode()
+        {
+            return 6;
+        }
     }
 }

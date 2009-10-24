@@ -52,29 +52,20 @@ namespace Cg2.Orm
 
         #region Identity en equality
 
-        // Op een collectie van GelieerdePersonen zou ik een
-        // distinct willen kunnen uitvoeren.  Om dit correct te kunnen doen,
-        // moeten Equals en GetHashCode aangepast worden.
-
+        /// <summary>
+        /// Wordt geoverride om in overeenstemming te zijn met de equals override:
+        /// 2 objecten die equal zijn moeten dezelfde hashcode hebben.
+        /// Omdat dit niet te garanderen was op basis van de entiteitseigenschappen tijdens deserializen (worden niet altijd gezet
+        /// voor het wordt opgeroepen), wordt er niet geimplementeerd dat objecten met hetzelfde ID dezelfde hashcode hebben, maar
+        /// dat objecten van dezelfde entiteitsklasse dezelfde ID hebben (een superset van objecten met dezelfde ID)
+        /// 
+        /// Het is mogelijk dat dit performantieproblemen geeft, maar vermoed wordt van niet, omdat uit ID weinig andere eigenschappen
+        /// worden afgeleid.
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode()
         {
-            int hashcode;
-
-            if (ID != 0)
-            {
-                // de ID bepaalt op unieke manier de identiteit van de
-                // GelieerdePersoon
-                hashcode = ID.GetHashCode();
-            }
-            else
-            {
-                // Als er geen ID is, dan doen we een fallback naar de
-                // GetHashCode van de parent, wat eigenlijk niet helemaal
-                // correct is.
-                hashcode = base.GetHashCode();
-            }
-
-            return hashcode;
+            return 9;
         }
 
         public override bool Equals(object obj)

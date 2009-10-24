@@ -30,21 +30,7 @@ namespace Cg2.Orm
 
         public override int GetHashCode()
         {
-            int result;
-            if (ID != 0)
-            {
-                // de ID bepaalt op unieke manier de identiteit
-                result = ID.GetHashCode();
-            }
-            else
-            {
-                // Als er geen ID is, dan doen we een fallback naar de
-                // GetHashCode van de parent, wat eigenlijk niet helemaal
-                // correct is.
-                result = base.GetHashCode();
-            }
-
-            return result;
+            return 7;
         }
 
         public override bool Equals(object obj)

@@ -127,5 +127,21 @@ namespace Cg2.Dao.Test
 				cat.GelieerdePersoon.First().TeVerwijderen = true;
 				_catdao.Bewaren(cat);
 		  }
+
+          [TestMethod]
+          public void TestHashCodes()
+          {
+              GelieerdePersoon p1 = new GelieerdePersoon();
+              p1.ID = 10;
+              GelieerdePersoon p2 = new GelieerdePersoon();
+              p2.ID = 10;
+              Categorie c1 = new Categorie();
+              c1.ID = 100;
+              Categorie c2 = new Categorie();
+              c2.ID = 10;
+              Assert.AreEqual(p1.GetHashCode(), p2.GetHashCode());
+              Assert.AreEqual(c1.GetHashCode(), c2.GetHashCode());
+              Assert.AreNotEqual(c1.GetHashCode(), p1.GetHashCode());
+          }
 	 }
 }

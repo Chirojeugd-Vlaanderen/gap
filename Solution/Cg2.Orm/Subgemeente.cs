@@ -36,5 +36,10 @@ namespace Cg2.Orm
         }
 
         #endregion
+
+        public override int GetHashCode()
+        {
+            return 18;
+        }
     }
 }
