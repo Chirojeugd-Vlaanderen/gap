@@ -5,9 +5,18 @@
 \usepackage[absolute]{textpos}
 \usepackage{enumitem}
 \usepackage{listings}
+\usepackage{makeidx}
 \lstloadlanguages{[Sharp]C}
 
+\hyphenation{wij-zi-ging}
+\hyphenation{be-kij-ken}
+\hyphenation{be-re-ke-ning}
+
+% dit document zou moeten compileren met texlive-latex-base
+% en texlive-latex-extra geïnstalleerd
+
 \newcommand{\opmerking}[1]{\marginpar{\scriptsize #1}}
+\newcommand{\oeps}{\textbf{OEPS! }}
 
 \setlength{\TPHorizModule}{25mm}
 \setlength{\TPVertModule}{\TPHorizModule}
@@ -16,6 +25,8 @@
 % Sans-serif font, volgens huisstijl
 %
 \renewcommand{\familydefault}{\sfdefault}
+
+\makeindex
 
 \begin{document}
 
@@ -52,7 +63,7 @@
 %%
 
 
-\noindent {\Large \bf CODING STANDARD C\#, doc. v. 0.3}
+\noindent {\Large \bf CODING STANDARD C\#, doc. v. 0.4}
 
 \tableofcontents
 
@@ -68,142 +79,598 @@ in alle C\#-projecten die nog voor de Chiro ontwikkeld zullen worden.
 \section{Architectuur}
 
 \begin{enumerate}
-\item We werken met een lagenmodel; iedere laag staat op zich, en communiceert slechts met de
-andere lagen via publieke klasses/interfaces.  Het lagenmodel voor
-het Chirogroepproject ziet er als volgt uit:
+\item We werken met een lagenmodel\index{lagenmodel}; iedere laag staat op zich, en communiceert slechts met de
+andere lagen via publieke klasses/interfaces.  We implementeren voor elk
+proejct deze lagen:
 \begin{itemize}
 \item Backend
 \begin{itemize}
-\item Cg2.Orm -- alles wat met de Object Relational Mapping (ORM) te maken heeft, en de interfaces van de Data Access Objects (DAO's)
-\item Cg2.Fouten -- custom exceptions en faultcontracts
-\item Cg2.Data -- De Data Access Objects
-\item Cg2.Workers -- De businesslogica
-\item Cg2.Services -- Implementatie van de WCF-services
-\item Cg2.ServiceContracts -- Interfaces voor de WCF-services
+\item Orm -- alles wat met de Object Relational Mapping (ORM) te
+maken heeft: de gegenereerde klasses, de uitbreidingen in partial classes,
+en de interfaces voor de Data Access Objects (DAO's)
+\item Data -- De Data Access Objects (repository's)
+\item Workers -- De businesslogica: Worker classes waarvan de methods zo
+veel mogelijk met objecten werken.
+\item ServiceContracts -- Interfaces voor WCF-services
+\item Services -- WCF-services.  De services doen niet veel meer dan
+objecten ophalen, en daar den de workers op loslaten.
 \end{itemize}
-\item User Interface: MvcWebApp
-\item Unit Tests (todo!)
+\item User Interface
 \end{itemize}
+\item Data Access Objects worden ge\"instantieerd via de Unity
+IoC-container.
+\item We gebruiken Entity Framework voor ORM
+\item We gebruiken subversion voor source control en trac voor issue
+tracking.
 \end{enumerate}
 
-\section{`Opmaak' van cs-bestanden}
+\section{Structuur}
 
-\subsection{Gegenereerde code}
+\subsection{Bronbestanden}
+\index{bronbestanden}
 
 \begin{enumerate}[resume]
-\item Wijzig geen automatisch gegenereerde code.  Gebruik partial classes als je automatisch
-gegenereerde code moet aanpassen.
+\item E\'en klasse, struct\index{struct} of interface per bestand, met inner classes als enige uitzondering.
+\item De bestandsnaam\index{bronbestanden!naam} moet overeen komen met de naam van de klasse, struct
+of interface.
+\item Generieke klasses \index{generics}\index{generics!klasses} komen in een bestand waarvan de naam het suffix
+\_{\em n}' krijgt, waarbij {\em n} het aantal generieke parameters
+is.  Bijv. `IDao\_1'.
+\item Ofwel worden alle \lstinline !enum!s \index{enum}\index{enum!declaratie} uit een assembly ondergebracht
+in 1 bestand Enums.cs, ofwel krijgt elke \lstinline !enum! zijn eigen
+bestand.
+
 \end{enumerate}
 
-\subsection{Opbouw}
+\subsection{Assembly's}
+\index{assembly's}
 
+\begin{enumerate}[resume]
+\item Assembly's hebben dezelfde naam als hun namespace.
+\item Specifieer bedrijf, copyright en versienummer in de AssemblyInfo.cs\index{AssemblyInfo.cs} van
+elke toepassing.
+\item Mix geen third-party code\index{third-party code} met eigen code in dezelfde assembly.
+\item Unit tests\index{unit tests} komen in \'e\'en of meerdere aparte
+assembly's.
+\end{enumerate}
+
+\subsection{Namespaces}
+\index{namespaces}
+
+\begin{enumerate}[resume]
+\item Gebruik nooit de globale namespace.
+\item Gebruik geen `gereserveerde' namespaces zoals \lstinline !System!.
+\item Gebruik geen fully-qualified type names, maar \lstinline !using!.
+\item Als er op die manier conflicten ontstaan, maak dan een alias d.m.v.
+\lstinline !using!.
+\end{enumerate}
+
+\subsection{Gegenereerde code}
+\index{gegenereerde code}
+
+\begin{enumerate}[resume]
+\item Wijzig geen third-party code\index{third-party code} of gegenereerde code;  Gebruik hiervoor
+partial classes\index{partial classes}.
+\item Geen applicatielogica in \lstinline !AssemblyInfo.cs!\index{AssemblyInfo.cs}.
+\end{enumerate}
+
+\subsection{Bestandsopbouw}
+\index{bronbestanden!opbouw}
 Zie listing \ref{lblLstOpbouw} voor voorbeelden.
 
 \begin{enumerate}[resume]
-\item Elke source file begint met een blokje commentaar met daarin\opmerking{Dit hebben we niet
+\item Elk bronbestand\index{bronbestanden} begint met een blokje commentaar met daarin\opmerking{Dit hebben we niet
 afgesproken, maar het lijkt me een zinvol idee.}
 \begin{itemize}
 \item een korte omschrijving van wat er in de code staat
-\item een `copyright notice'
-\item een verwijzing naar de licentievoorwaarden (?)
+\item een `copyright notice'\index{copyright}
+\item een verwijzing naar de licentievoorwaarden\index{licentievoorwaarden} (?)
 \item contactinfo van de verantwoordelijke voor het bestand
 \end{itemize}
-\item Groepeer de imports van namespaces bovenaan
-\item Hoogstens \'e\'en namespace in een source file.
-\item Vermijd om meer dan \'e\'en klasse in een source file te defini\"eren.
-\item Gebruik \lstinline !#region! \ldots \lstinline !#endregion!-constructies om stukken code
+\item Groepeer de imports van namespaces bovenaan\index{namespaces}
+\begin{itemize}
+\item Eerst de .Net namespaces
+\item Dan 3rd-party namespaces
+\item Tenslotte de eigen namespaces
+\end{itemize}
+\item Hoogstens \'e\'en namespace in \'e\'en bronbestand.
+\item Gebruik \lstinline !#region!\index{region@\#region} \ldots \lstinline !#endregion!-constructies om stukken code
 die bij elkaar horen te groeperen.
-\item Vermijd files van meer dan 500 lijnen code.
-\item Vermijd lijnen die langer zijn dan 120 karakters.
+\item Bronbestanden mogen niet groter worden\index{bronbestanden!grootte} dan 1000 lijnen code, omdat grote
+files de
+Visual Studio Debugger vertragen.  Splits de code van grotere klasses op in
+`logische' stukken, maak er partial classes\index{partial classes}\index{klasses!partial} van.  Geef ze namen zoals
+`KlasseNaam.OmschrijvingStukCode.cs'.
+\item Methods\index{methods!grootte} mogen niet langer worden dan 200 lijnen code.
 \end{enumerate}
 
-\begin{lstlisting}[float, caption=Opbouw, texcl=false, label=lblLstOpbouw]
-/// (C) Chirojeugd-Vlaanderen vzw, 2009
-///
-/// (licentievoorwaarden?)
-///
-/// Contact: Johan Vervloet <johan.vervloet@chiro.be>
-///
+\subsection{Line breaking}
+\begin{enumerate}[resume]
+\item Vermijd lijnen\index{lijnen!lengte} die langer zijn dan 120 karakters.
+\item Onderbreek lijnen\index{lijnen!line breaking} zo weinig mogelijk, en enkel indien nodig.
+\item Na een line break volgt een indentatie.\index{indentatie}
+\item De meest natuurlijke plaats voor een line break is na de
+assignatie-operator.
+\begin{lstlisting}
+GelieerdePersonenManager mgr =
+	Factory.Maak<GelieerdePersonenManager>();
+\end{lstlisting}
+\item Als dat niet volstaat, breek dan voor een lijst, na het haakje:
+\begin{lstlisting}
+public GroepenManager(
+	IGroepenDao grpDao, IDao<AfdelingsJaar> afdjDao)
+\end{lstlisting}
+\item Tussen parameters mogen line breaks komen, maar dan moet iedere
+parameter op een nieuwe lijn.  Breek na de komma, dan werkt Visual Studio
+beter mee.
+\begin{lstlisting}
+db.AttachObjectGraph(
+	afdelingsJaar,
+	aj => aj.OfficieleAfdeling.WithoutUpdate(),
+	aj => aj.Afdeling.WithoutUpdate(),
+	aj => aj.GroepsWerkJaar.WithoutUpdate());
+\end{lstlisting}
+\item Als er een logische connectie bestaat tussen opeenvolgende parameters,
+dan mag je ze bij line-breaking wel op dezelfde lijn laten staan.
+\begin{lstlisting}
+DoeIetsMetGegevens(
+	straat, nr, bus,
+	postnr, gemeente,
+	land);
+\end{lstlisting}
+\item Gebruik een dubbele indentatie als je bovenstaande line-breakings
+combineert.
+\begin{lstlisting}
+var gelieerdePersonen =
+	pm.PaginaOphalenMetLidInfo(
+		groepID,
+		pagina,
+		paginaGrootte,
+		out aantalTotaal);
+\end{lstlisting}
+\end{enumerate}
+
+\begin{lstlisting}[float, caption=Opbouw, label=lblLstOpbouw]
+// (C) Chirojeugd-Vlaanderen vzw, 2009
+//
+// (licentievoorwaarden?)
+//
+// Contact: Johan Vervloet \textless johan.vervloet@chiro.be \textgreater
+//
 
 using System;
 using System.Data;
 using System.Data.Linq.Mapping;
 using KipAdmin.StamNrTools;
 
-namespace ChiroData
+namespace Chiro.CG2
 {
-    /// <summary>
-    /// Basisklasse voor ChiroGroep en Satelliet
-    /// </summary>
-    public class Groep
-    {
-        #region Private members
-        // TODO: Private members declareren
-        #endregion
-
-        #region Properties
-        // TODO: Properties uitwerken
-        #endregion
-
-        #region Constructor(s)
-
-        public Groep()
-        {
-            // TODO: Constructorlogica
-        }
-
-        #endregion
-
-        #region Publieke methods
-        // TODO: Publieke methods uitwerken
-        #endregion
-
-        #region Private methods
-        // TODO: Private methods uitwerken
-        #endregion
-    }
+	/// \textless summary \textgreater
+	/// Basisklasse voor ChiroGroep en Satelliet
+	/// \textless /summary \textgreater
+	public class Groep
+	{
+		// ...
+	}
 }
 \end{lstlisting}
 
 \subsection{Whitespace en indentatie}
+\index{indentatie}
+\index{whitespace}
 
 Voorbeelden in listing \ref{lblLstWhitespace}.
 
 \begin{enumerate}[resume]
-\item Geen spaties na een (rond) haakje-open of voor een (rond) haakje-toe
-\item Scheid blokken gerelateerde code van elkaar door \'e\'en lege lijn.
-\item Gebruik tabs voor indentatie
-\item Indenteer ook commentaar
-\item Voor `blokken' code tussen accolades, zijn de accolades ge\"indenteerd op het niveau van
+\item Geen spaties na een (rond) haakje-open of voor een (rond) haakje-toe\index{haakjes}
+\item Uitzondering: \'e\'en spatie tussen \lstinline !if!\index{if}, \lstinline !for!\index{for},
+\lstinline !while!\index{while} en het haakje-open.  Bijv: \lstinline !if (voorwaarde)!
+\item Een spatie voor en na alle infix-operatoren\index{operatoren!infix}, inclusief de \lstinline
+!=>! van lambda-expressies\index{lambda-expressies}.
+\item Geen spatie tussen een prefixoperator\index{operatoren!prefix} (bijv. `\lstinline !-!' of
+`!') en zijn argument.
+\item Scheid blokken gerelateerde code van elkaar door \'e\'en lege lijn\index{lijnen!lege}.
+\item Gebruik tabs\index{tab} voor indentatie\index{indentatie}
+\item Indenteer ook commentaar\index{commentaar}
+\item Voor `blokken' code tussen accolades\index{accolades}, zijn de accolades ge\"indenteerd op het niveau van
 de bovenliggende structuur.  Op een regel met een accolade staat enkel die accolade.  Wat binnen de accolades staat, is ge\"indenteerd.
-\item Een spatie tussen \lstinline !if!, \lstinline !for!, \lstinline !while! en het haakje-open
-daarna.  Bijv: \lstinline !if (voorwaarde)!
-\item Geen spatie tussen de naam van een method en het haakje daarna.  Wel een spatie na de komma's tussen verschillende argumenten.  
+\item Uitzonderingen op bovenstaande regel:
+\begin{itemize}
+\item Eenvoudige getters en setters worden op \'e\'en lijn gedefinieerd, inclusief accolades.
+\item Abstracte\index{property's!abstracte} en automatische\index{property's!automatische} property's worden op \'e\'en lijn
+gedeclareerd, inclusief accolades.
+\item Lege functies (bijv. constructors\index{constructors}) worden op \'e\'en lijn
+gedefinieerd, inclusief accolades, bijv. 
+\lstinline !EenKlasse(string naam): base(naam) { }!.
+\end{itemize}
+\item Geen spatie tussen de naam van een method en het haakje daarna.  Wel een spatie na de komma's\index{komma's} tussen verschillende
+parameters\index{parameters!white space}\index{methods!parameters}.  
 
 Bijv.: \lstinline
 !DoeIets(argument, tweedeArgument)!.
 \end{enumerate}
 
 \begin{lstlisting}[float, caption=Indentatie, label=lblLstWhitespace]
-public static void Main(string[] argumenten)
+public class Wereld: Planeet
 {
-	Console.WriteLine("Hallo wereld!");
+	public Wereld(string naam, IZon zon): base(naam, zon) { }
 
-	if (argumenten.Count() == 0)
+	public void Hallo(string[] groeters)
 	{
-		// Commentaar is mee ge\"indenteerd.
-		// Let op de positie van de accolades!
+		foreach (g in groeters)
+		{
+			// Commentaar ge\"indenteerd
 
-		Console.WriteLine("Geen argumenten.");
-	}
-}	
+			Console.WriteLine(String.Format(
+				"{0}: Hallo {1}!", g, Naam));
+		}
+	}	
+}
 \end{lstlisting}
 
-\subsection{Controlestructuren en method calls}
+
+\subsection{Commentaar}
+\index{commentaar}
 
 \begin{enumerate}[resume]
-\item Gebruik steeds accolades bij een \lstinline !if!, \lstinline !while!, \lstinline
-!for!,\ldots, ook als er maar 1 (of geen) statement moet staan.  Zie listing
+\item Commentaar staat steeds v\'o\'or het stuk code waarop het betrekking
+heeft, met als mogelijke uitzondering commentaar van \'e\'en lijn betreffende \'e\'en
+lijn code: die mag op diezelfde lijn code.
+\item Zet in methods\index{methods!commentaar} enkel commentaar waar het nodig is, om de werking van je code te
+verduidelijken.  Als je leesbare code schrijft, kan je de hoeveelheid commentaar beperken.
+Complexe code moet goed gedocumenteerd zijn.
+\item Gebruik \lstinline !//! of \lstinline !///! (voor XML-documentatie, zie sectie
+\ref{sectDocumentatie}) voor `structureel'
+commentaar in je code.  \lstinline !/*! en \lstinline !*/! kan je dan nog gebruiken om tijdelijk
+een stuk code uit te commentari\"eren.
+\item Uitgecommentarieerde code mag niet gecommit worden in source control\index{source control}.
+\item Schrijf commentaar in kort, duidelijk en correct Nederlands :)
+\item Gebruik 'TODO:'\index{TODO} om aan te geven dat er nog iets moet gebeuren.  Als
+zo'n TODO gecommit wordt naar de source control, moet er een
+ticket\index{ticket}\index{trac} voor aangemaakt zijn in de track, en moet de TODO: naar het
+ticketnummer verwijzen.
+\item Als je een bugfix\index{bugfix} implementeerde, en het is niet duidelijk waarom je
+wijziging belangrijk is, commentarieer dat, en voorzie een link naar de
+trac.
+\item Commentarieer veronderstellingen die niet direct duidelijk zijn bij
+het bekijken van de code.
+\end{enumerate}
+
+\subsection{Documentatie}
+\label{sectDocumentatie}
+\index{documentatie}
+
+\begin{enumerate}[resume]
+\item Plaats een blok XML-documentatie voor
+\begin{itemize}
+\item alle methods\index{methods!documentatie}\footnote{voor code completion\index{code completion}}
+\item alwat \lstinline !public!\index{public!documentatie} of \lstinline !protected!\index{protected!documentatie} is.
+\end{itemize}
+\item Geen XML-documentatie voor vanzelfsprekende \lstinline !private!\index{private!documentatie} en
+\lstinline !internal!\index{internal!documentatie} code.
+\item Guidelines voor XML-documentatie:
+\begin{itemize}
+\item Wees consistent\index{consistentie} als je gelijkaardige members\index{class members} documenteert.
+\item Als je de implementatie van een interface\index{interfaces!documentatie} documenteert, kopieer dan
+de documentatie van de interface, en vul eventueel aan met
+implementatiespecifieke info.
+\item Gebruik \lstinline !<see>!\index{see@\textless see\textgreater}-tags om naar property's\index{property's!documentatie}, methods\index{methods!documentatie} en
+klasses\index{klasses!documentatie} te verwijzen.
+\item Gebruik \lstinline !<paramref />!\index{paramref@\textless paramref\textgreater} en
+\lstinline !<typeparamref />!\index{typeparamref@\textless
+typeparamref\textgreater} om
+naar parameters\index{parameters!documentatie} te verwijzen.
+\item Gebruik \lstinline !<c>!\index{c@\textless c\textgreater}-tags voor code-elementen.
+\item Gebruik steeds \lstinline !<c>!-tags voor `\lstinline !null!'\index{null!documenatie},
+`\lstinline !false!'\index{false!documentatie} en `\lstinline !true!''\index{true!documentatie}.
+\item Gebruik zowel de \lstinline !<summary>!\index{summary@\textless summary\textgreater}- als de \lstinline
+!<value>!\index{value@\textless value\textgreater}-tag.\footnote{Ja, dit wil zeggen dat je tekst moet herhalen.}
+\item Als een parameter niet \lstinline !null! mag zijn, moet dat zo
+gedocumenteerd zijn.
+\item Standaardvoorbeelden vind je in listing \ref{lstDocumentatie}
+\end{itemize}
+\item Indien mogelijk: voorzie tutorials\index{tutorials} en voorbeeldcode\index{voorbeelden} op de wiki.
+\item Documentatie voor frameworks\index{frameworks!documentatie} moet zeer uitgebreid zijn.
+\end{enumerate}
+
+\begin{lstlisting}[float,caption=XML-documentatie, label=lstDocumentatie]
+/// \textless summary\textgreater
+/// Ophalen van de unity container.
+/// \textless summary\textgreater
+/// \textless value\textgreater De unity container.\textless value\textgreater
+protected static IUnityContainer Container { get; }
+
+/// \textless summary\textgreater
+/// Ophalen of bewaren van het geslacht.
+/// \textless summary\textgreater
+/// \textless value\textgreater Het geslacht.\textless value\textgreater
+public GeslachtsType Geslacht { get; set; }
+
+/// \textless summary\textgreater
+/// Ophalen of bewaren van een waarde die bepaalt of 
+/// de entiteit verwijderd moet worden.
+/// \textless summary\textgreater
+/// \textless value\textgreater
+/// \textless c\textgreater true\textless c\textgreater als de entiteit verwijderd moet worden,
+/// anders \textless c\textgreater false\textless c\textgreater
+/// \textless value\textgreater
+bool TeVerwijderen { get; set; }
+
+/// \textless summary\textgreater
+/// Koppelt het adres \textless paramref name="adr"/\textgreater aan de 
+/// gelieerde persoon \textless paramref name="pers"/\textgreater
+/// \textless summary\textgreater
+/// \textless param name="pers"\textgreater
+/// Te koppelen gelieerde persoon; mag niet \textless c\textgreater null\textless c\textgreater zijn.
+/// \textless param\textgreater
+/// \textless param name="adr"\textgreater
+/// Te koppelen adres; mag niet \textless c\textgreater null\textless c\textgreater zijn.
+/// \textless param\textgreater
+void AdresKoppelen(GelieerdePersoon pers, Adres adr)
+\end{lstlisting}
+
+\section{Naamgeving}
+\index{namen}
+
+\subsection{Namen kiezen}
+
+\begin{enumerate}[resume]
+\item Alle eigen gekozen namen zijn in het Nederlands. 
+\item Namen zijn zo kort mogelijk, maar moeten wel een duidelijke
+betekenis hebben.
+\item Vermijd variabelenamen van 1 letter.
+\item Instanties van arrays\index{arrays!namen} en collecties\index{collecties!namen} hebben een naam in het meervoud.  Gebruik geen
+suffix \lstinline !Lijst! of dergelijk.
+\item Underscores\index{underscores} zijn enkel toegelaten als prefix van een member\index{membervariabelen!namen}
+variable.
+\item Gebruik geen prefixnotaties zoals Hongaarse notatie\index{Hongaarse notatie}.
+\item Vermijd het gebruik van cijfers\index{cijfers} in variabelenamen, tenzij
+\begin{itemize}
+\item als suffix voor namen van lokale variabelen\index{lokale variabelen!cijfers}
+en methodparameters
+\item als ze een betekenis hebben, zoals bijv. in `\lstinline !A4Formaat!'.
+\end{itemize}
+\item Indien een naam uit meerdere woorden bestaat, worden de woorden aan elkaar geschreven,
+waarbij elk nieuw woord met een hoofdletter begint.  Ook in samenstellingen\index{samenstellingen} start elk
+`deelwoord' met een hoofdletter.\footnote{Deze laatste regel is niet absoluut; zo kan bijv. in
+\lstinline !leeftijd! de `t' een kleine letter blijven, hoewel dit een samenstelling is.  Het is moeilijk om hier een regel op te
+plakken.}
+\begin{itemize}
+\item \lstinline !geboorteDatum!
+\item \lstinline !groepsLeiding!
+\end{itemize}
+\item Gebruik liever geen afkortingen\index{afkortingen}, tenzij ze door alle developers
+gekend zijn.
+\item Gebruik enkel letterwoorden\index{letterwoorden} die algemeen aanvaard zijn.
+\item Letterwoorden/afkortingen van 2 letters zijn volledig in hoofletters.\footnote{dit is een
+vergissing die men vroeger maakte, maar ze wordt algemeen aanvaard, en nu zitten we ermee.}
+\item Geen hoofdletters\index{hoofdletters} in het midden van letterwoorden of afkortingen
+\begin{itemize}
+\item \lstinline !isVzw!
+\item \lstinline !adNr!
+\end{itemize}
+\item Identifi\"ers die enkel qua `casing' verschillen zijn enkel
+toegelaten als ze naar verschillende language elements verwijzen (bijv.
+een property en een lokale variabele zoals in 
+\lstinline !Leeftijd = leeftijd!.)
+\end{enumerate}
+
+\subsection{Types}
+\index{types!namen}
+
+\begin{enumerate}[resume]
+\item Geen `libraryprefixes\index{libraryprefixes}'\footnote{Een `libraryprefix' is een prefix
+gebruikt voor alle types in een assembly/library.}
+\item Vermijd te vage typenames\index{types!namen} zoals \lstinline !Element!,
+\lstinline !Log!, \ldots om conflicten te vermijden.
+\item Verschillende implementaties van eenzelfde concept krijgen een
+gemeenschappelijk suffix\index{consistentie}, zoals \lstinline !PersonenDao!, \lstinline
+!GroepenDao!, \ldots
+\end{enumerate}
+
+\subsection{Klasses algemeen}
+\index{klasses!namen}
+
+\begin{enumerate}[resume]
+\item Namen van klasses zijn in het enkelvoud, en beginnen met een hoofdletter.
+\item Als een klasse slechts \'e\'en interface\index{interfaces!implementatie} implementeert, dan moet de
+klassenaam de naam van de interface bevatten.  Zie bijv. listing \ref{lstKlasseNaamgeving}.
+\item Statische klasses\index{klasses!statische}\index{statische klasses} die gebruikt worden als helper\index{helper}, krijgen het suffix
+`\lstinline !Helper!', bijv. \lstinline !EntityFrameworkHelper!.
+\end{enumerate}
+
+
+\begin{lstlisting}[float,caption=Naamgeving klasses,label=lstKlasseNaamgeving]
+public class AltijdGavAutorisatieDao: IAutorisatieDao
+{
+	private string _login;
+
+        public bool IsGavGelieerdePersoon(
+		int gelieerdePersoonID)
+        {
+            return true;
+        }
+
+	public string Login
+	{
+		get { return _login; }
+	}
+
+	// ...
+
+};
+\end{lstlisting}
+
+\subsection{Specifieke klasses}
+
+\begin{enumerate}[resume]
+\item Namen van exceptieklasses\index{excepties!namen} krijgen het suffix `\lstinline !Exception!'.
+\item Namen van interfaces\index{interfaces!namen} krijgen het prefix `\lstinline !I!'.
+\item Namen van attribuutklasses\index{attributen!namen} krijgen het suffix `\lstinline !Attribute!'.
+\end{enumerate}
+
+\subsection{Property's}
+\index{property's!namen}
+\begin{enumerate}[resume]
+\item Het achterliggend veld\index{property's!achterliggende velden}\index{membervariabelen!namen} (if any) van een property heeft dezelfde naam
+als de property, maar met een kleine letter en geprefixt met een underscore.
+\item Geen type-informatie\index{type-informatie} in propertynamen.
+\item Boolean\index{bool} property's krijgen het prefix \lstinline !Is! als dat de
+leesbaarheid bevordert.
+\item Maak de naam van een property zo kort mogelijk, zonder informatie te
+verliezen.  \item Als twee property's op dezelfde manier een kortere naam kunnen
+krijgen, gebruik dan voor geen van beide die kortere naam.
+\item Herhaal geen informatie uit een klassenaam in de naam van een
+property.  Als de klasse bijvoorbeeld `\lstinline !Categorie!' heet, kies
+dan eerder voor een property `\lstinline !Naam!' in plaats van `\lstinline
+!CategorieNaam!'.
+\item Als een klasse een identificatienummer\index{ID}\index{identificatienummer}\index{property's!ID} (ID) heeft, voorzie dan een
+property met de naam `\lstinline !ID!'.
+\end{enumerate}
+
+\subsection{Methods}
+\index{methods!namen}
+\begin{enumerate}[resume]
+\item Namen van methods beginnen met een hoofdletter, en zijn van de vorm `(lijdend voorwerp +)
+infitnitief'.\footnote{Op die manier worden methods die op hetzelfde betrekking hebben
+door `intellisense' gegroepeerd.}  `Get'\index{Get} en `Set'\index{Set} kunnen in het Engels blijven.
+\item Herhaal geen informatie uit een klassenaam in de naam van een
+method\index{redundantie!methodnamen}.  Als de interface bijvoorbeeld `\lstinline !IPersonenDao!' heet, kies
+dan eerder voor een method `\lstinline !Ophalen!' in de plaats van `\lstinline
+!PersoonOphalen!'.
+\end{enumerate}
+
+\subsection{Parameters}
+\index{parameters}
+\index{parameters!namen}
+\begin{enumerate}[resume]
+\item Method parameters krijgen namen met een kleine letter.
+\item Liever volledige woorden dan afkortingen\index{afkortingen}.
+\item Vermijd informatie uit het type te herhalen in de naam van de
+parameter\index{redundantie!typenamen}.  Als bijv. de parameter van het type \lstinline !IDataContext!
+is, dan kan de parameter eenvoudigweg \lstinline !context! heten.
+\item Methodparameters in interface-implementaties\index{methods!interface-implementatie} hebben dezelfde naam\index{consistentie} als de
+methodparameters in de interfaces.
+\item Als twee of meer overloads een gelijkaardige parameter hebben, geef
+die parameter\index{parameters!namen} dan dezelfde naam in iedere overload.
+\item Als twee parameters op dezelfde manier verkort\index{verkorting} kunnen worden,
+verkort dan geen van beide.
+\end{enumerate}
+
+\subsection{Lokale variabelen}
+\begin{enumerate}[resume]
+\item Namen van lokale variabelen\index{lokale variabelen!namen}\index{lokale variabelen} beginnen met een kleine letter.
+\item Hoe beperkter de scope, des te meer namen van variabelen afgekort
+mogen worden.
+\item Binnen eenzelfde method mogen geen twee lokale variabelen voorkomen
+met dezelfde naam (ook al zitten ze in een andere scope).\footnote{Op die
+manier wordt verwarring vermeden als een scope verdwijnt.}
+\end{enumerate}
+
+\subsection{Generieke parameters}
+\index{generics}\index{parameters!generiek}\index{generics!methods}
+\begin{enumerate}[resume]
+\item Als een method \'e\'en generieke parameter heeft, noem die parameter
+dan `\lstinline !T!'.
+\item Als een method twee generieke parameters heeft, en het gaat om keys
+en values, gebruik dan `\lstinline !TKey!' en `\lstinline !TValue!'.
+\item Indien van toepassing, mag de generieke parameter ook `\lstinline
+!TResult!' heten.
+\item Voor generieke conversies\index{conversies} kan je `\lstinline !TInput!' en `\lstinline
+!TOutput!' gebruiken.
+\item Als er meerdere generieke parameters zijn, en geen van bovenstaande
+regels is van toepassing, dan begint de naam van elke generieke
+parameter met de letter T.
+\end{enumerate}
+
+\subsection{Lambda-expressies}
+\index{lambda-expressies}
+\begin{enumerate}[resume]
+\item Gebruik niet de zeer nietszeggende naam `\lstinline !x!' voor
+parameters.
+\item Volg dezelfde regels voor naamgeving van parameters in
+lambda-expressies als voor parameters van standaardmethods.
+\end{enumerate}
+
+\subsection{Namespaces}
+\index{namespaces}
+\begin{enumerate}[resume]
+\item Namen van \lstinline !namespace!s beginnen met een hoofdletter.
+\item Geen namespace-hi\"erarchie\"en\index{namespaces!hi\"erarchie} van meer dan vier niveaus.
+\item Geen versienummers\index{versienummers} in namen van namespaces.
+\item Namespaces krijgen namen van concepten.
+\item Namespaces starten met de naam van het bedrijf, gevolgd door de
+naam van de applicatie, bijv. `\lstinline !Chiro.Gap.Xxx!'.
+\end{enumerate}
+
+\subsection{UI-elementen}
+\index{UI}\index{user interface}
+TODO.\footnote{Voor het Chirogroepprogramma is dit irrelevant, omdat we
+MVC gebruiken.  Er zijn dus geen objecten gekoppeld aan de UI-elementen}
+
+\subsection{Overig}
+
+\begin{enumerate}[resume]
+\item Zowel naam als waarden van een \lstinline
+!enum!\index{enum}\index{enum!namen}\index{enum!waarden} beginnen met een hoofdletter.
+\item Een \lstinline !enum!\index{enum!namen} krijgt een naam in het enkelvoud, tenzij de
+enum als bitset wordt gebruikt.
+\item Namen van \lstinline !struct!s\index{struct} beginnen met een hoofdletter.
+\item Namen van \lstinline !const!s\index{const} zijn volledig in hoofdletters.
+\item Namen van compiler variabelen\index{compiler!variabelen} zijn volledig in hoofdletters.
+\item Resources hebben alfanumerieke namen\index{resources!namen}, maar mogen een punt (.)
+bevatten om een soort van nesting\index{resources!nesting} te emuleren.
+\end{enumerate}
+
+\section{Implementatie}
+
+\subsection{Declaraties algemeen}
+
+\begin{enumerate}[resume]
+\item Gebruik in declaraties kleine letters voor de system data types\index{system types}
+\begin{itemize}
+\item \lstinline !int!\index{int}
+\item \lstinline !bool!\index{bool}
+\item \lstinline !string!\index{string}
+\item \ldots
+\end{itemize}
+\item Als je statische functies van system
+types\index{system types!statische functies}\footnote{\lstinline !string!, \lstinline !int!, \ldots} gebruikt,
+krijgen de types wel een hoofdletter.  Bijv. 
+\lstinline !String.IsNullOrEmpty!\index{String.IsNullOrEmpty}.
+\item E\'en variabeledeclaratie\index{variabelen!declaratie}\index{lokale variabelen!declaratie}\index{membervariabelen!declaratie} per lijn.
+\item Gebruik voor declaraties waar mogelijk interfaces\index{interfaces}, zelfs voor lokale variabelen\index{lokale variabelen!declaratie} of
+membervariabelen\index{membervariabelen!declaratie}. 
+\item Elk type\index{types!access modifier}, method\index{methods!access modifier} of field\index{fields} heeft een access modifier\index{access modifiers}.\footnote{\lstinline !public!, \lstinline
+!protected!, \lstinline !private!, \ldots}
+\end{enumerate}
+
+\begin{lstlisting}[float,caption=Declaraties algemeen]
+string Naam;
+string Voornaam;  // een nieuwe lijn voor een nieuwe declaratie
+
+public enum Kleur
+{
+  Rood, Groen, Blauw
+}
+\end{lstlisting}
+
+\subsection{Gebruik van `\lstinline !var!'}
+\index{var}
+\begin{enumerate}[resume]
+\item Gebruik `\lstinline !var!' voor een variabeledeclaratie als het de
+leesbaarheid van de code vergroot.
+\item Gebruik geen `\lstinline !var!' voor een basistype zoals
+\lstinline !int!\index{int} of \lstinline !string!\index{string}.
+\item Hoe beperkter de scope, hoe meer het gebruik van \lstinline !var!
+gerechtvaardigd is.
+\end{enumerate}
+
+\subsection{Controlestructuren}
+
+\begin{enumerate}[resume]
+\item Gebruik steeds accolades\index{accolades} bij een \lstinline !if!\index{if}, \lstinline !while!\index{while},
+ \lstinline !for!\index{for},\ldots, ook als er maar 1 (of geen) statement moet staan.  Zie listing
 \ref{lblLstControle}.
 \begin{lstlisting}[float, caption=Controlestructuren, label=lblLstControle]
 // FOUT want verwarrend:
@@ -220,346 +687,563 @@ while (eenOfAnder())
 	// doe niets
 }
 \end{lstlisting}
-\item Voorzie steeds een \lstinline !default! case bij een \lstinline !switch!-constructie.  Zie
+\item Gebruik geen \lstinline !goto!\index{goto}
+\item Pas de loopvariabele van een \lstinline !for!-loop\index{for} niet aan binnen
+de loop.
+\item Loopvariabelen voor \lstinline !while!\index{while} worden ofwel aangepast aan het
+begin van de loop, ofwel aan het einde.
+\item Houd de body van een loop kort, en vermijd te diepe nesting\index{nesting!loops}.  Als de
+body te complex wordt, gebruik dan liever een inner class\index{inner classes}\index{klasses!inner} of een private
+method.\index{methods!private}\index{private!methods}
+\item Roep dezelfde property niet herhaaldelijk aan.
+\item Vermijd `dure' operaties in loops.
+\item Vermijd recursieve\index{recursie} functie-aanroepen waar mogelijk.
+\item Voorzie steeds een \lstinline !default!\index{default} case\index{case} bij een \lstinline
+!switch!\index{switch}-constructie.  Als die situatie zich niet mag voordoen, zet daar
+dan een \lstinline !Assert!\index{Assert} of \lstinline !throw!\index{throw}.  Zie
 listing \ref{lblLstDefault}
-\begin{lstlisting}[float, caption=Steeds een `default', label=lblLstDefault]
+\item Als in meerdere gevallen hetzelfde codeblok uitgevoerd moet worden,
+groepeer dan deze \lstinline !case!s, zoals in listing \ref{lblLstDefault}.
+\begin{lstlisting}[float, caption=switch statements', label=lblLstDefault]
 switch (isnschrijver.Soort)
 {
-	InschrijvingsType.Deelnemer:
+	case InschrijvingsType.Deelnemer:
 	{
-		// doe het een
+		// code voor deelnemers
+		break;
 	}
-	InschrijvingsType.Begeleider:
+	case InschrijvingsType.Begeleider:
+	case InschrijvingsType.KookPloeg:
 	{
-		// doe het ander
+		// code voor begeleiding en kookploeg
+		break;
 	}
 	default:
 	{
-		// handel onverwachte situatie af
+		Debug.Assert(false, String.Format(
+			"Ongeldige soort inschrijver: {0}",
+			inschrijver.Soort));
 	}
 }
 \end{lstlisting}
-\item Voorzie steeds een \lstinline !else! zonder voorwaarde in een \lstinline !if! \ldots
+\item Voorzie steeds een \lstinline !else!\index{else} zonder voorwaarde in een \lstinline !if!\index{if} \ldots
 \lstinline !else if! \ldots constructie.
+\item Geen te moeilijke logica in een \lstinline !if!.  Als je \lstinline
+!if! te complex wordt, gebruik een lokale \lstinline !bool!\index{bool}.
+\item Een ternaire\index{operatoren!ternair}\index{?} (? :) of `coalescing\index{operatoren!coalescing}\index{??}' (??) operator mag enkel
+gebruikt worden in statements die op \'e\'en lijn passen.  Converteer ze
+naar een \lstinline !if!-structuur als dat niet lukt.
 \end{enumerate}
 
-\subsection{Commentaar}
+
+\subsection{Enums}
+\index{enum}\index{enum!declaratie}
 
 \begin{enumerate}[resume]
-\item Plaats vlak voor elke method en voor elke klasse een blok xml-commentaar die de werking van de method
-omschrijft.\footnote{Visual Studio maakt automatisch een template aan als je op de lijn voor de
-methoddeclaratie \lstinline !///! intikt.}
-\item Zet in methods enkel commentaar waar het nodig is, om de werking van je code te
-verduidelijken.  Als je leesbare code schrijft, kan je de hoeveelheid commentaar beperken.
-Complexe code moet goed gedocumenteerd zijn.
-\item Gebruik \lstinline !//! of \lstinline !///! (voor XML-commentaar) voor `structureel'
-commentaar in je code.  \lstinline !/*! en \lstinline !*/! kan je dan nog gebruiken om tijdelijk
-een stuk code uit te commentari\"eren.
-\item Schrijf commentaar in duidelijk en correct Nederlands :)
-\item Gebruik 'TODO:' om aan te geven dat er nog iets moet gebeuren.\footnote{De typische
-dingen die onafgewerkt blijven als de deadline eigenlijk voorbij is ;)}
+\item Gebruik liever geen expliciete waarden voor \lstinline !enum!s.
+\item Specifieer liever geen type\index{enum!type} voor een \lstinline !enum!, zodat het
+standaardtype \lstinline !Int32! gebruikt wordt.
+\item Gebruik \lstinline !enum!s in de plaats van een lijst statische constanten\index{constanten!static}, tenzij die lijst met constanten uitgebreid moet kunnen worden door ervende code.
+\item Vermijd \lstinline !enums! te wijzigen\index{enum!wijzigen} als ze ook gebruikt worden in code die je
+niet zelf beheert.  Gebruik het attribuut \lstinline ![Obsolete]!\index{obsolete@[Obsolete]} om
+members te markeren die niet meer gebruikt worden.
+\item Assigneer geen expliciete waarden\index{enum!expliciete waarden} in een \lstinline !enum!, tenzij ze nodig zijn voor
+persistentie in de database.
+\item De eerste waarde in een \lstinline !enum! is de standaardwaarde\index{enum!standaardwaarde}.
 \end{enumerate}
 
-\section{Naamgeving}
-
-\subsection{Namen kiezen}
-
+\subsection{Bitsets}
+\index{bitsets}
 \begin{enumerate}[resume]
-\item Alle eigen gekozen namen zijn in het Nederlands. 
-\item Indien een naam uit meerdere woorden bestaat, worden de woorden aan elkaar geschreven,
-waarbij elk nieuw woord met een hoofdletter begint.  Ook in samenstellingen start elk
-`deelwoord' met een hoofdletter.\footnote{Deze laatste regel is niet absoluut; zo kan bijv. in
-\lstinline !leeftijd! de `t' een kleine letter blijven, hoewel dit een samenstelling is.  Het is moeilijk om hier een regel op te
-plakken.}
-\begin{itemize}
-\item \lstinline !geboorteDatum!
-\item \lstinline !groepsLeiding!
-\end{itemize}
-\item Geen hoofdletters in het midden van letterwoorden of afkortingen
-\begin{itemize}
-\item \lstinline !isVzw!
-\item \lstinline !adNr!
-\end{itemize}
+\item Gebruik een \lstinline!enum! met het attribuut \lstinline ![Flags]!\index{flags@[Flags]} om een bitset
+te defini\"eren.
+\item Voor een bitset assigneer je de vlaggen\index{vlaggen} als machten van 2 in
+hexadecimale notatie.
+\item De eerste waarde van een bitset is altijd \lstinline !Geen!\index{Geen}, met als
+waarde \lstinline !0x00!.
+\item Je kan in een bitsets aliassen definieren voor combinaties van
+gezette vlaggen.
+\item Gebruik geen bitsets als er ongeldige combinaties van vlaggen
+bestaan.
 \end{enumerate}
 
-\subsection{Klasses algemeen}
-
-\begin{enumerate}[resume]
-\item Namen van klasses zijn in het enkelvoud, en beginnen met een hoofdletter.
-\item Namen van membervariabelen beginnen met een prefix '\_' en een kleine letter.
-\item Property's hebben dezelfde naam als de members (zonder prefix) die ze `accessen', maar dan met een
-hoofdletter.
-\item Als een klasse een identificatienummer heeft, dan krijgt die de naam van de klasse,
-gevolgd door het suffix \lstinline !ID!.
-\item Namen van methods beginnen met een hoofdletter, en zijn van de vorm `(lijdend voorwerp +)
-infitnitief'.\footnote{Op die manier worden methods die op hetzelfde betrekking hebben
-door `intellisense' gegroepeerd.}  `Get' en `Set' kunnen in het Engels blijven.
-\item Argumenten van een method krijgen namen met een kleine letter.
-\end{enumerate}
-
-\begin{lstlisting}[float,caption=Naamgeving klasses]
-public class Cursus
+\begin{lstlisting}[float,caption=Bitsets]
+[Flags]
+public enum Niveaus
 {
-	public void Annuleer()
-	{
-		// Doe vanalles...
-	}
-
-	public void DeelnemerInschrijven(Deelnemer inschrijver)
-	{
-		// Boeiende code weggelaten...
-	}
-
-	public decimal CursusID
-	{
-		get
-		{
-			return cursusID;
-		}
-	}
-
-	private int cursusID;
-};
-\end{lstlisting}
-
-\subsection{Speciale klasses}
-
-\begin{enumerate}[resume]
-\item Namen van exceptieklasses krijgen het suffix `\lstinline !Exception!'.
-\item Namen van interfaces krijgen het prefix `\lstinline !I!'.
-\item Namen van attribuutklasses krijgen het suffix `\lstinline !Attribute!'.
-\item Arrays en collecties hebben een naam in het meervoud.
-\end{enumerate}
-
-\subsection{Overig}
-
-\begin{enumerate}[resume]
-\item Namen van \lstinline !namespace!s beginnen met een hoofdletter.
-\item Zowel naam als waarden van een \lstinline !enum! krijgen een hoofdletter.
-\item Namen van \lstinline !struct!s beginnen met een hoofdletter.
-\item Lokale variabelen beginnen met een kleine letter.
-\item Vermijd variabelenamen van 1 letter.
-\end{enumerate}
-
-\section{Declaraties}
-
-\subsection{Algemeen}
-
-\begin{enumerate}[resume]
-\item Gebruik kleine letters voor de system data types
-\begin{itemize}
-\item \lstinline !int!
-\item \lstinline !bool!
-\item \lstinline !string!
-\item \ldots
-\end{itemize}
-\item E\'en variabeledeclaratie per lijn.
-\item Gebruik liever geen expliciete waarden voor enums
-\item Specifieer liever geen type voor een enum
-\end{enumerate}
-
-\begin{lstlisting}[float,caption=Declaraties algemeen]
-string Naam;
-string Voornaam;  // een nieuwe lijn voor een nieuwe declaratie
-
-public enum Kleur
-{
-  Rood, Groen, Blauw
+	Geen = 0x00,
+	Plaatselijk = 0x01,
+	Gewesteijk = 0x02,
+	Verbondelijk = 0x04,
+	Nationaal = 0x08,
+	Alles = Plaatselijk | Gewestelijk | Verbondelijk | 
+		Nationaal,
+	Kader = Alles & ~Plaatselijk
 }
 \end{lstlisting}
 
-\subsection{Klasses}
-
+\subsection{Membervariabelen}
+\index{membervariabelen!declaratie}
 \begin{enumerate}[resume]
-\item Klasses die niet zichtbaar mogen zijn buiten de assembly, krijgen de \lstinline !internal!
-access modifier.
-\item Gebruik de \lstinline !public! access modifier enkel als het strict noodzakelijk is.
-\item Klasses met statische members hebben een statische default constructor.
-\item Klasses met enkel statische members krijgen een \lstinline !private! constructor.
-\item Ieder class member heeft een access modifier.\footnote{\lstinline !public!, \lstinline
-!protected!, \lstinline !private!, \ldots}
+\item Membervariabelen zijn altijd \lstinline !private!\index{private!membervariabelen}.  Als ze van
+buitenaf lees- of schrijfbaar moeten zijn, dan moet dit via property's gebeuren.
+\item Gebruik geen membervariabelen voor iets dat je ook in een lokale variabele kwijt kunt.
+\item Slechts \'e\'en membervariabeledeclaratie per lijn
 \item In een klassedeclaratie zet je de membervariabelen vooraan.\footnote{Op die manier is het direct duidelijk of de klasse stateful of stateless
 is.}
-\item Membervariabelen zijn altijd \lstinline !private! of \lstinline !protected!.  Als ze van
-buitenaf lees- of schrijfbaar moeten zijn, dan moet dit via property's gebeuren.
-\item Gebruik geen membervariabelen voor iets dat je ook in een lokale variabele kwijt kan.
 \end{enumerate}
 
-\subsection{Methods}
-
+\subsection{Lokale variabelen}
+\index{lokale variabelen!declaratie}
 \begin{enumerate}[resume]
-\item Niet meer dan 5 argumenten voor een method.  Maak zo nodig een \lstinline !struct! als
-er meer informatie doorgespeeld moet worden.
-\item Niet meer dan 200 lijnen code in \'e\'en method.
+\item Declareer een lokale variabele in de juiste scope, zo dicht mogelijk
+bij zijn eerste gebruik.
+\item Meerdere lokale variabelen mogen op \'e\'en lijn gedeclareerd worden,
+op voorwaarde dat ze niet op die lijn ge"initialiseerd\index{lokale variabelen!initialisatie}
+worden.
 \end{enumerate}
 
-\section{Implementatie}
-
-
-\subsection{Assignaties}
-
+\subsection{Constanten}
+\index{constanten}
 \begin{enumerate}[resume]
-\item Gebruik geen `magic numbers', maar \lstinline !enum!s of \lstinline !const!s.  (Zie listing
-\ref{lstMagNum}.)
-\begin{lstlisting}[float,caption=Geen magic numbers,label=lstMagNum]
-// FOUT:
-if (lid.HeeftFunctie(170))
-{
-	// doe iets
-}
-
-// GOED:
-if (lid.HeeftFunctie(Functie.Vb))
-{
-	// doe iets
-}
-\end{lstlisting}
-\item Geen letterlijke strings in programmacode.  Declareer ze ergens apart als constante, of
-gebruik een resource file.  (Zie listing \ref{lstStrLit}.)
-\begin{lstlisting}[float,caption=Geen letterlijke strings,label=lstStrLit]
-// FOUT:
-Console.WriteLine("Bent u zeker dat u '{1}' wil "
-                  + "verwijderen?", Naam);
-
-// GOED:
-Console.WriteLine(Teksten.BevestigVerwijderenPersoon
-                  , Naam);
-\end{lstlisting}
-\item Gebruik de return value van een assignatie niet direct opnieuw.  (Zie listing
-\ref{lstAssRet}.)
-\begin{lstlisting}[float,caption=Geen hergebruik return value van assignatie,label=lstAssRet]
-// FOUT want zeer verwarrend:
-if (i = j)
-{
-	// Deze code wordt enkel uitgevoerd als 
-	// $j$ verschilt van 0.
-}
-
-// GOED:
-i = j;
-if (j != 0)
-{
-	// enz.
-}
-\end{lstlisting}
-\item Vermijd het gebruik van \lstinline !null!.  Gebruik \lstinline !String.Empty!, \lstinline
-!List<T>.Empty!, \ldots om een `leeg' resultaat voor te stellen.
-\item Gebruik generics in plaats van instanties van de klasse `\lstinline
-!Object!'.\footnote{Uitgezonderd bij het locken voor threading.}
+\item Declareer alle constanten behalve  \lstinline !0!, \lstinline !1!,
+\lstinline !true!\index{true!vergelijken met}, \lstinline !false!\index{false!vergelijken met} en \lstinline !null!\index{null}. 
+\item Gebruik `\lstinline !true!' en `\lstinline !false!' enkel om te
+assigneren\index{bool}; vergelijk niet met `\lstinline !true!' of `\lstinline !false!'.
+\item Als een constante een berekende waarde\index{berekende waarde} is, definieer ze dan als die
+berekening, en niet als die waarde.
+\item Als er een logische connectie\index{constanten!relaties tussen} bestaat tussen constanten, definieer
+dan de ene constante in functie van de andere.  Zie listing \ref{lblRelConst}.
+\item Gebruik `\lstinline !const!' enkel voor `echte' constanten, in de
+andere gevallen gebruik je 
+`\lstinline !readonly!'\index{constanten!vs readonly}\index{readonly}.\footnote{\lstinline !const!-expressies worden
+berekend bij het compileren, \lstinline !readonly!-expressies at runtime.} 
 \end{enumerate}
+\begin{lstlisting}[float, caption=Gerelateerde constanten, label=lblRelConst]
+public const int SECONDEN_IN_EEN_UUR = 60*60;
+public const int SECONDEN_IN_EEN_DAG =
+  SECONDEN_IN_EEN_UUR * 24;
+\end{lstlisting}
 
 \subsection{Strings}
-
+\index{strings}
 \begin{enumerate}[resume]
-\item Gebruik de klasse `\lstinline !StringBuilder!' als je een groot aantal stringmanipulaties
+\item Geen letterlijke strings in programmacode.  Declareer ze bij de
+resources.\footnote{In het begin van het ontwikkelen hoeft dat niet
+direct, maar zodra code wat vastere vorm krijgt wel.}  (Zie listing \ref{lstStrLit}.)
+\item Gebruik `\lstinline !String.Format!'\index{String.Format} bij het concateneren van strings
+als dit de leesbaarheid vergroot.
+\item Gebruik de klasse `\lstinline !StringBuilder!'\index{StringBuilder} als je een groot aantal stringmanipulaties
 moet uitvoeren op performantiekritsche plaatsen.
-\item Gebruik `\lstinline !String.Compare!' om strings te vergelijken.
-\item Stel de lege string voor door `\lstinline !String.Empty!' (en niet door \lstinline !null!).
+\item Gebruik `\lstinline !String.Compare!'\index{String.Compare} om strings te vergelijken.
+\item Gebruik `\lstinline !String.Empty!'\index{String.Empty} in plaats van \lstinline !""!
+\item Om te controleren op de lege string, gebruik je \lstinline
+!String.IsNullOrEmpty!\index{String.IsNullOrEmpty}.
+\item Gebruik `\lstinline !Equals()!' om strings te
+vergelijken.\footnote{\lstinline !Equals()! heeft overloads voor
+hoofdletterongevoelig vergelijken.}
 \item Gebruik het prefix `@' voor een letterlijke string, in plaats van te escapen.
 Bijvoorbeeld: \lstinline !@"Backslashes (\) zijn cool."!
 \end{enumerate}
 
-\subsection{Loops}
-
-\begin{enumerate}[resume]
-\item Roep dezelfde property niet herhaaldelijk aan.
-\item Vermijd `dure' operaties in loops.
-\item Vermijd recursieve functie-aanroepen waar mogelijk.
-\end{enumerate}
-
 \subsection{Arrays en collecties}
-
+\index{arrays}
+\index{collecties}
 \begin{enumerate}[resume]
-\item Gebruik waar mogelijk (begrensd aantal elementen met volgnummer) arrays.\footnote{Arrays zijn sneller dan collecties}
-\item Gebruik de generieke collecties uit \lstinline !System.Collections.Generic!.
-\item Gebruik de juiste collectie voor het juiste doel
+\item Indien mogelijk, gebruik de interfaces 
+\lstinline !IEnumerable<T>!\index{IEnumerable}
+(voor read-only access) en \lstinline !IList<T>!\index{IList}.
+\item Cre\"eer de juiste collectie voor het juiste doel
 
 \begin{tabular}{|c|l|}
 \hline
-elementen met index & \lstinline !List<T>! \\
-zoeken mogelijk & \lstinline !Dictionary<TKey, TValue>! \\
-gesorteerd & \lstinline !SortedDictionary<TKey, TValue>! \\
-FIFO & \lstinline !Queue<T>! \\
-LIFO & \lstinline !Stack<T>! \\
+vast aantal elementen met index & array \\
+elementen met index & \lstinline !List<T>!\index{List} \\
+zoeken mogelijk & \lstinline !Dictionary<TKey, TValue>!\index{Dictionary} \\
+gesorteerd & \lstinline !SortedDictionary<TKey, TValue>!\index{SortedDictionary} \\
+FIFO & \lstinline !Queue<T>!\index{Queue} \\
+LIFO & \lstinline !Stack<T>!\index{Stack} \\
 \hline
 \end{tabular}
 \end{enumerate}
 
-\subsection{ASP.NET}
+
+\subsection{Klasses}
+\index{klasses}
+\index{klasses!declaratie}
+
+\subsubsection{Access modifiers}
+\index{klasses!access modifiers}
 
 \begin{enumerate}[resume]
-\item Vermijd het gebruik van sessievariabelen.
-\item Als je sessievariabelen gebruikt, controleer dan steeds of ze
-niet \lstinline !null! zijn.
-\item Genereer correct XHTML 1.1 (strict).
-\item Gebruik style sheets (css) om de look en feel van een pagina te defini\"eren.
-\item Gebruik nooit user input in een client side javascript.\opmerking{en plaats ook nooit
-niet-gevalideerde userinput in een gegenereerde webpagina.}
+\item Klasses die niet zichtbaar mogen zijn buiten de assembly, krijgen de 
+access modifier `\lstinline !internal!'\index{internal}
+\item Gebruik de access modifier `\lstinline !public!'\index{public} enkel als het strict noodzakelijk is.
+\item Als een type enkel \lstinline !public! moet zijn opdat een bepaalde andere assembly
+het zou kunnen gebruiken, kan je `friend assembly's'\index{assembly's!friend}\index{friend assembly's} defini\"eren via het
+attribuut \lstinline ![InternalsVisibleTo]!\index{internalsvisibleto@[InternalsVisibleTo]}.
 \end{enumerate}
 
-\subsection{Exception handling}
+\subsubsection{Statische members}
 
 \begin{enumerate}[resume]
-\item Gebruik steeds een \lstinline !try! \ldots \lstinline !catch!-blok
+\item Klasses met statische members\index{class members!statische} hebben een statische default constructor.
+\item Klasses met enkel statische members krijgen een \lstinline !private!\index{private!constructor} constructor.
+\end{enumerate}
+
+\subsubsection{Abstracte klasses}
+\index{klasses!abstracte}\index{abstracte klasses}
+\begin{enumerate}[resume]
+\item Een abstracte klasse heeft enkel \lstinline !protected!\index{protected!constructor} of \lstinline
+!private! constructors\index{constructors!abstracte klasses}\index{private!constructor}.
+\item Indien mogelijk, voorzie dan een minimale implementatie van een
+abstracte klasse.  Deze klasse krijgt het suffix `\lstinline !Base!'.
+\end{enumerate}
+
+\subsubsection{Statische en verzegelde klasses}
+\index{klasses!statische}\index{klasses!verzegelde}
+\begin{enumerate}[resume]
+\item Cre\"eer niet te veel statische klasses.  Bekijk eerst of er nieuwe
+functionaliteit aan een statische klasse toegevoegd kan worden.
+\item Geen \lstinline !protected! members\index{protected!members} voor \lstinline !sealed! klasses.
+\item Vermijd \lstinline !sealed! klasses zo veel mogelijk; verzegel liever
+members.
+\end{enumerate}
+
+
+\subsubsection{Gebruik van \lstinline !this! en \lstinline !base!}
+\index{this}
+\index{base}
+\begin{enumerate}[resume]
+\item Gebruik \lstinline !this! enkel om andere constructors aan te roepen.
+\item Als je \lstinline !this! wil gebruiken om name clashes\index{namen!clash} op te lossen,
+verander dan \'e\'en van de conflicterende namen.
+\item Gebruik \lstinline !base! enkel om een andere constructor of een
+`predecessor method' aan te roepen.
+\item Je mag enkel een method van \lstinline !base! aanroepen vanuit
+dezelfde method in een ervende klasse.\index{methods!predecessor}
+\end{enumerate}
+
+
+\subsection{Methods en property's}
+\index{methods}
+\index{property's}
+
+\subsubsection{Methods of property's}
+\index{methods!vs property's}
+\index{property's!vs methods}
+\begin{enumerate}[resume]
+\item Het lezen van een property mag nooit resulteren in het wijzigen van
+een object.
+\item Gebruik methods \ldots
+\begin{itemize}
+\item voor transformaties\index{transformaties} en conviersies\index{conversies}, zoals bijv. `\lstinline !ToXml()!' en `\lstinline !ToSql()!'.
+\item als de gevraagde waarde niet gecachet wordt, maar duur is om te berekenen.
+\item als de terugkeerwaarde kan verschillen als ze meerdere malen na
+elkaar berekend wordt.
+\item als het resultaat een nieuwe kopie is van een bestaand object.
+\item als een getter overbodig is.  Gebruik geen write-only property's\index{property's!write-only}.
+\end{itemize}
+\item In alle andere gevallen waar je kan kiezen tussen property's en methods, kies je voor property's.
+\end{enumerate}
+
+\subsubsection{Resultaat}
+\begin{enumerate}[resume]
+\item Als een method een resultaat\index{resultaat}\index{methods!resultaat} teruggeeft, dan moet dit resultaat
+semantisch relevant zijn.  De terugkeerwaarde van een method mag nooit een
+foutcode\index{foutcodes} zijn;\footnote{Tenzij in een `Try*-pattern'} gebruik hiervoor een `\lstinline !out!'-parameter\index{out}, of een
+exception\index{excepties}.
+\item Als een method een collectie oplevert, geef dan nooit 
+\lstinline !null! als resultaat, maar wel een lege
+collectie\index{collecties!lege}.
+\end{enumerate}
+
+\subsubsection{Method parameters}
+\index{methods!parameters}
+\begin{enumerate}[resume]
+\item Niet meer dan 5 argumenten voor een method\index{methods!aantal parameters}.  Maak zo nodig een \lstinline !struct!\index{struct} als
+er meer informatie doorgegeven moet worden.
+\item Niet meer dan twee \lstinline !out!-\index{out} of 
+\lstinline !ref!-parameters\index{ref}.  Gebruik zo nodig een \lstinline !struct!.
+\item \lstinline !out!- en \lstinline !ref!-parameters komen als laatste
+in de parameterlijst
+\item Gebruik het minst afgeleide mogelijke type voor method arameters.
+\end{enumerate}
+
+\subsubsection{Method overloading}
+\index{methods!overloading}
+\index{overloading!methods}
+\begin{enumerate}[resume]
+\item Als methods een gelijkaardige functionaliteit hebben, gebruik dan
+overloads.
+\begin{lstlisting}
+// FOUT:
+void DoeHet();
+void DoeHetMetItem(Item item);
+void DoeHetMetLijst(IEnumerable<Item> items);
+
+// JUIST:
+void DoeHet();
+void DoeHet(Item item);
+void DoeHet(IEnumerable<Item> items);
+\end{lstlisting}
+\item Standaardiseer zo veel mogelijk de volgorde van de parameters in
+overloads en in gelijkaardige methods.\index{consistentie}
+\item Eenvoudige overloads roepen complexere overloads aan met
+standaardwaarden voor de ontbrekende parameters.
+
+\end{enumerate}
+
+
+\subsubsection{Extension methods}
+\index{extension methods}
+\begin{enumerate}[resume]
+\item Vermijd het gebruik van extension methods als je de methods even goed rechtstreeks aan de klasse kan toevoegen.
+\item Definieer geen extension methods op \lstinline !object!.
+\item Extension methods mogen enkel in dezelfde namespace\index{namespaces!extension methods} als het
+ge\"extende type gedefinieerd worden als je methods toevoegt aan een
+interface.  In andere gevallen definieer je ze in een andere namespace.
+\item Plaats extension methods in namespaces waarvan de naam aangeeft waar
+de extension method mee te maken heeft.
+\item Gebruik extension methods in deze gevallen
+\begin{itemize}
+\item Implementatie van methods die relevant zijn voor iedere
+implementatie van een bepaalde interface.\index{interfaces!extension methods}
+\item Als je voor de implementatie van een method een dependency moet
+leggen die niet overeenkomt met het lagenmodel, implementeer die method
+dan ergens anders als extension method.
+\end{itemize}
+\end{enumerate}
+
+
+\subsubsection{Virtuele methods}
+
+\begin{enumerate}[resume]
+\item Maak virtuele methods\index{virtuele methods}\index{methods!virtuele} \lstinline !protected!\index{protected!virtuele methods}.  Als een virtuele
+method publiek toegankelijk moet zijn, maak dan een publieke
+method die pre- en postcondities test, en de virtuele method aanroept.  (Zie
+listing \ref{virtueel}.)  De virtuele helperfunctie krijg het prefix \lstinline !Do!.
+\begin{lstlisting}[float,caption=Virtuele methods publiek
+toegankelijk maken,label=virtueel]
+public T Ophalen(int ID)
+{
+  Debug.Assert(ID > 0);
+  DoOphalen(ID);
+  Debug.Assert(T.ID == ID);
+}
+
+protected virtual T DoOphalen(int ID)
+{
+  // Hier gebeurt het echte werk.
+}
+
+\end{lstlisting}
+\end{enumerate}
+
+\subsubsection{Constructors}
+\index{constructors}
+\begin{enumerate}[resume]
+\item In een constructor mogen enkel property's gezet worden.
+\item Gebruik geen virtuele methods\index{constructors!virtuele methods} in een constructor.\footnote{Mogelijk
+gebruikt de implementatie van een ervende klasse dan items die nog niet
+ge\"initialiseerd zijn door die ervende klasse.}
+\end{enumerate}
+
+
+
+\subsection{Interfaces}
+\index{interfaces}
+\begin{enumerate}[resume]
+\item Definieer interfaces als je meer dan \'e\'en hi\"erarchie nodig hebt.
+\item Gebruik interfaces om een API te defini\"eren\index{API}.
+\item Gebruik geen `marker interfaces'\index{interfaces!marking} (interfaces zonder members), gebruik
+hiervoor attributen.\index{attributen}
+\item Interfaces bevatten hoogstens 10 members\index{aantal members!interfaces}.  Splits een interface
+zo nodig op.
+\item Implementeer een interface expliciet\index{interfaces!expliciete implementatie} als dat helpt om de API
+overzichtelijk te houden.
+\item Elke interface moet minstens \'e\'en keer gebruikt worden in
+`non-testing code'.  Zo niet mag de interface weg.
+\item Vermijd interfaces te wijzigen die gebruikt worden door projecten die je zelf niet onderhoudt.
+\end{enumerate}
+
+
+\begin{lstlisting}[float,caption=Geen letterlijke strings,label=lstStrLit]
+// FOUT:
+Console.WriteLine(String.Format(
+  "Bent u zeker dat u '{1}' wil verwijderen?", Naam));
+
+// GOED:
+Console.WriteLine(String.Format(
+	Properties.Resources.BevestigVerwijderenPersoon,
+	Naam));
+\end{lstlisting}
+
+
+\subsection{Exception handling}
+\index{excepties}
+\subsubsection{Excepties defini\"eren}
+\index{excepties!definitie}
+\begin{enumerate}[resume]
+\item Definieer geen nieuw exceptiontype\index{excepties!eigen excepties} voor elke mogelijke fout.
+\item Definieer een nieuw exceptiontype als je bijkomende property's wil
+bewaren.\index{excepties!property's}
+\item Eigen exceptions erven van \lstinline !Exception!, en zijn \lstinline ![Serializable]!.\index{serializable@[Serializable]}
+\item Eigen exceptions zijn \lstinline !public!\index{public!excepties}.
+\item Liever geen complexe exceptionhi\"erarchie\"en.\index{excepties!hi\"erarchie}  Inheritance van
+exceptions kan eventueel wel nuttig zijn als een groep van exceptions tegelijk gecatcht moet kunnen
+worden.
+\item Een exception voorziet vier standaardconstructors\index{excepties!constructors} zoals in listing
+\ref{lblExcepConstr}.
+\item Zorg ervoor dat er geen excepties kunnen optreden bij de constructie
+van een exceptie.
+\item Property's van excepties zijn \lstinline !readonly!.\index{excepties!property's}
+\end{enumerate}
+
+\begin{lstlisting}[float,caption=Exceptions defini\"eren,label=lblExcepConstr]
+public class GeenGavException: Exception, ISerializable
+{
+	public GeenGavException() : base() { }
+	public GeenGavException(string message): base(message){}
+	public GeenGavException(string message, 
+		Exception inner) : base(message, inner) { }
+	public GeenGavException(SerializationInfo info, 
+		StreamingContext context) : base(info, context) { }
+}
+\end{lstlisting}
+
+\subsubsection{Excepties opwerpen}
+\index{excepties!opwerpen}
+\begin{enumerate}[resume]
+\item Als een member zijn taak niet kan uitvoeren, moet een exceptie
+opgeworpen worden.
+\item Gebruik bij voorkeur standaardexcepties.\index{excepties!standaard-}
+\begin{itemize}
+\item \lstinline !InvalidOperationException!
+\item \lstinline !NotSupportedException!
+\item \lstinline !ArgumentNullException!
+\item \lstinline !ArgumentException!
+\item \lstinline !ArgumentOutOfRangeException!
+\item \ldots
+\end{itemize}
+\item Als je een \lstinline !ArgumentException!\index{ArgumentException} of een afgeleide daarvan
+opgooit, zorg er dan voor dat de property \lstinline !ParamName!\index{ParamName} niet
+\lstinline !null! is.
+\item Gooi nooit expliciet deze types excepties
+\begin{itemize}
+\item \lstinline !Exception! (gebruik een ervende exceptie)
+\item \lstinline !NullRerferenceException!
+\item \lstinline !AccessViolationException!
+\item \lstinline !InvalidCastException!
+\item \lstinline !IndexOutOfRangeException!
+\item \lstinline !StackOverflowException!
+\item \lstinline !OutOfMemoryException!
+\end{itemize}
+\end{enumerate}
+
+\subsubsection{Excepties catchen}
+\index{excepties!catchen}
+\begin{enumerate}[resume]
+\item Gebruik steeds een \lstinline !try!\index{try\ldots catch} \ldots \lstinline !catch!-blok
 als je het netwerk of externe hardware aanspreekt.
 \item Probeer \lstinline !try! \ldots \lstinline !catch! in andere
 gevallen zo veel mogelijk te vermijden.
-\item Maak zo weinig mogelijk gebruik van custom exceptions.  Als je er toch implementeert, erf
-dan van \lstinline !Exception!, en maak ze \lstinline ![Serializable]!.
-\item Als er zich een exceptie voordoet, geef je een verstaanbare boodschap voor de gebruiker,
-en log je de technische details.
-\item Catch enkel specifieke excepties.\footnote{Laat het programma gerust crashen op onverwachte
-excepties, zo zie je ze bij het debuggen zeker niet over het hoofd.  In gereleaste versies mag
-je generieke excepties opvangen op het hoogste niveau.}
+\item Als er zich een exceptie voordoet, geef je een verstaanbare boodschap voor de gebruiker\index{foutboodschappen}\index{excepties!foutboodschappen},
+en log je de technische details.\index{excepties!loggen}
+\item Catch enkel specifieke excepties; op die manier komen onverwachte
+excepties boven bij het testen.
+\item Een catch van de basisklasse \lstinline !Exception! kan w\'el bij het aanroepen van
+third-party code\index{excepties!third-party code}, om problemen in die third party code op te vangen.
 \item Om in een \lstinline !catch!-blok de `gecatchte' exceptie opnieuw te `throwen', gebruik je
-\lstinline !throw! zonder argumenten.\footnote{Op die manier wordt de volledige stack trace
+\lstinline !throw!\index{throw} zonder argumenten.\footnote{Op die manier wordt de volledige stack trace
 behouden.}
+\item Het \lstinline !catch!blok mag niet leeg zijn.
 \item Beperk de grootte van \lstinline !try! \ldots \lstinline !catch! structuren.  Liever
 meerdere blokken dan \'e\'en groot blok.\footnote{Op die manier is het duidelijker in welk deel
 van de code een exceptie optreedt.}
 \end{enumerate}
 
-\begin{lstlisting}[float,caption=Exception handling]
-try
-{
-	// lees uit bestand
-}
-catch (FileIOException ex)
-{
-	// catch enkel specifieke excepties
-	// log error
-	// geef duidelijke informatie aan gebruiker
-	// throw zo nodig exceptie opnieuw:
 
-	throw;
-}
-finally
+\subsection{Compileropties}
+\index{compiler!opties}
+\begin{enumerate}[resume]
+\item Gebruik geen \lstinline !#define!\index{define@\#define} in de code; zet compiler variabelen
+bij het compileren.
+\item Onderdruk geen waarschuwingen van de compiler.\index{compiler!waarschuwingen}
+\item Gebruik zo weinig mogelijk 
+\lstinline !#if!\index{if@\#if}-structuren in de code.  Groepeer deze structuren in een statische klasse\index{klasses!statische}
+\lstinline !CompilerOpties!.  (Zie listing \ref{lblCompilerOpties}.)
+\end{enumerate}
+
+\begin{lstlisting}[float,caption=Compiler options,label=lblCompilerOpties]
+public static class CompilerOptions
 {
-	// `dispose' bestand
+	public static bool Debug
+	{
+		get
+		{
+#ifdef DEBUG
+			return true;
+#else
+			return false;
+#endif
+		}
+	}
 }
 \end{lstlisting}
 
 \subsection{Garbage collection}
 
 \begin{enumerate}[resume]
-\item Implementeer de interface `\lstinline !IDisposable!' als je externe resources (connecties,
+\item Implementeer de interface `\lstinline
+!IDisposable!'\index{IDisposable}\index{disposable} als je klasse externe resources (connecties,
 files) gebruikt.
-\item Zorg ervoor dat de method `\lstinline !Dispose!' aangeroepen wordt van ieder disposable
-object dat je gebruikt.
-\item Gebruik geen unsafe code.
-\item Roep de garbage collector zelf niet expliciet aan.
+\item Gebruik \lstinline !using!\index{using} als je een disposable object
+aanmaakt.
+\item Als je zelf de method `\lstinline !Dispose!'\index{Dispose} implementeert, zorg er dan voor
+dat deze meerdere keren aangeroepen kan worden.
+\item Als er een betere naam\index{Dispose!andere naam} dan `\lstinline !Dispose!' is voor een
+\lstinline !Dispose!-functie, implementeer `\lstinline !Dispose!' dan
+impliciet, en voorzie een method met de betere naam die `\lstinline
+!Dispose!' aanroept.
+\item Gebruik geen unsafe code.\index{unsafe code}
+\item Roep de garbage collector\index{garbage collector} zelf niet expliciet aan.
+\item Vermijd zo veel mogelijk het gebruik van destructors\index{destructors}.\footnote{Destructors vertragen
+de garbage collector}
 \end{enumerate}
 
-\subsection{ADO.NET}\opmerking{Voor het Chirogroepprogramma gebruiken we Entity Framework voor data access; deze sectie staat er voor projecten die w\'el ADO.NET gebruiken.}
-
+\subsection{ASP.NET}
+\index{ASP.NET}
 \begin{enumerate}[resume]
-\item Connecties zo laat mogelijk openen en zo vroeg mogelijk opnieuw sluiten.\footnote{.NET is
-zelf verantwoordelijk voor connection pooling.}
-\item Zorg ervoor dat de connectie altijd gesloten wordt, ofwel in een \lstinline!finally!-blok, ofwel via een \lstinline !using!-constructie.
-\item Gebruik een `Data Provider Factory' om connecties, commando's, \ldots te
+\item Vermijd het gebruik van sessievariabelen.\index{sessievariabelen}
+\item Als je sessievariabelen gebruikt, controleer dan steeds of ze
+niet \lstinline !null!\index{null} zijn.
+\item Genereer correct XHTML 1.1\index{webstandaarden}\index{HTML}\index{XHTML} (strict).
+\item Gebruik style sheets (css) om de look en feel van een pagina te defini\"eren.\index{CSS}
+\item Gebruik nooit user input in een client side javascript.\index{Javascript}\opmerking{en plaats ook nooit
+niet-gevalideerde userinput in een gegenereerde webpagina.}
+\end{enumerate}
+
+
+
+\subsection{ADO.NET}\opmerking{Voor het Chirogroepprogramma gebruiken we Entity Framework voor data access}
+
+\subsubsection{Algemeen}
+
+\index{ADO.NET}
+\begin{enumerate}[resume]
+\item Connecties\index{connecties} zo laat mogelijk openen en zo vroeg mogelijk opnieuw sluiten.\footnote{.NET is
+zelf verantwoordelijk voor connection pooling\index{connecties!connection pooling}.}
+\item Zorg ervoor dat de connectie altijd gesloten wordt.
+\item Bewaar connection strings\index{connecties!connection string} in het configuratiebestand.
+\end{enumerate}
+
+\subsubsection{Voor projecten zonder Entity Framework:}\opmerking{Voor nieuwe projecten gebruiken we
+steeds entity framework.}
+\begin{enumerate}[resume]
+\item Gebruik een `Data Provider Factory'\index{data provider factory} om connecties, commando's, \ldots te
 genereren.
-\item Gebruik de klasse \lstinline !DbParameter! om query's te parameterizeren.
-\item Bewaar connection strings en data provider in het configuratiebestand.
+\item Gebruik de klasse \lstinline !DbParameter!\index{DbParameter} om query's te parameterizeren.\index{query parameters}
 \item Bij excepties log je de volgende zaken:
 \begin{itemize}
 \item Naam van het commando
@@ -569,7 +1253,7 @@ genereren.
 \end{itemize}
 \end{enumerate}
 
-\begin{lstlisting}[float, caption=ADO.NET]
+\begin{lstlisting}[float, caption=ADO.NET zonder Entity Framework]
 try
 {
 	// factory is de provider factory.
@@ -599,55 +1283,61 @@ finally
 \subsection{Overig}
 
 \begin{enumerate}[resume]
-\item Lock enkel objecten van het type `\lstinline !Object!'
-\item Event handlers zijn kort, en roepen andere methods op.
+\item Lock\index{locks} enkel objecten van het type `\lstinline !Object!'
+\item Event handlers\index{event handling} zijn kort, en roepen andere methods op.
 \item Event handlers worden enkel gebruikt om hun event(s) af te handelen, en worden voor de rest
-niet aangeroepen.
-\item Gebruik liever geen late binding.
+niet aangeroepen.\footnote{TODO: verder uitwerken event handling}
+\item Gebruik liever geen late binding\index{late binding}.
+\item In \'e\'en expressie mag de waarde van een variabele niet meerdere
+malen aangepast worden door een prefix- of suffixoperator.\index{++}\index{--}  (Bijv. 
+\lstinline !items[i++] = ++i! is fout.)
 \end{enumerate}
 
 \section{.NET 3}
-
-
-\subsection{Extension methods}
+\index{object initializers}
+\subsection{Object initializers}
 
 \begin{enumerate}[resume]
-\item Vermijd het gebruik van extension methods als je de methods even goed rechtstreeks aan de klasse kan toevoegen.
-\item Definieer geen extension methods op \lstinline !object!.
-\item Extension methods mogen enkel in dezelfde namespace als het
-ge\"extende type gedefinieerd worden als je methods toevoegt aan een
-interface.  In andere gevallen definieer je ze in een andere namespace.
-\item Plaats extension methods in namespaces waarvan de naam aangeeft waar
-de extension method mee te maken heeft.
-\item Gebruik extension methods in deze gevallen
-\begin{itemize}
-\item Implementatie van methods die relevant zijn voor iedere
-implementatie van een bepaalde interface.
-\item Als je voor de implementatie van een method een dependency moet
-leggen die niet overeenkomt met het lagenmodel, implementeer die method
-dan ergens anders als extension method.
-\end{itemize}
+\item Korte initialisatieblokken op \'e\'en lijn
+\item Bij object initialisatie in een declaratie, staat staat het
+\lstinline !new!-statement\index{new} bij voorkeur op dezelfde lijn als de
+declaratie.
+\item Als het \lstinline !new!-statement inline gebruikt wordt, en het
+niet op \'e\'en lijn kan, komt ook \lstinline !new! op een nieuwe lijn.
 \end{enumerate}
+\begin{lstlisting}[float,caption = Object initializers]
+// object-initialisatie op \'e\'en lijn
+DoeIets(new Categorie { Naam = "Kookploeg", Code = "kok" });
 
-\begin{lstlisting}[float,caption=Extension methods]
-namespace Cg2.MvcEntities
-{
-  // Deze extension method zal van toepassing zijn op alle 
-  // implementaties van IBasisEntiteit.
-  public static string VersieStringGet(this IBasisEntiteit be)
-    {
-      return be.Versie == null ? "" 
-        : Convert.ToBase64String(be.Versie);
-    }	
-}
+// new statement op dezelfde lijn als declaratie
+var commVorm = new CommunicatieVorm
+	{
+		Nummer = 'johan.vervloet@chiro.be',
+		Voorkeur = true,
+		IsGezinsGebonden = false
+	};
+
+// ook new statement op nieuwe lijn
+CommunicatieVorm communicatieVorm =
+	new CommunicatieVorm
+	{
+		Nummer = 'johan.vervloet@chiro.be',
+		Voorkeur = true,
+		IsGezinsGebonden = false
+	};
 \end{lstlisting}
 
-\subsection{Delegates en anonieme methods}
-
+\subsection{Delegates en lambda-expressies}
+\index{delegates}
+\index{anonieme methods}\index{methods!anonieme}\index{lambda-expressies}
 \begin{enumerate}[resume]
-\item Gebruik \lstinline !Func<>! en \lstinline !Expression<>! in plaats van eigen delegatetypes.
-\item Definieer anonieme methods als lambda-expressies.
-\item Gebruik enkel inline lambda-expressies als ze slechts 1 statement bevatten.
+\item Als een delegate maar \'e\'en- of tweemaal gebruikt wordt, en een
+vrij eenvoudige syntax heeft, gebruik dan \lstinline !Func<>!\index{Func} en \lstinline !Expression<>!\index{Expression} in plaats van eigen delegatetypes.
+\item Gebruik voor delegates dezelfde regels als voor methods.
+\item Definieer anonieme methods bij voorkeur als lambda-expressies.
+\item Als een lambda-expressie te complex\index{lambda-expressies!complexe} wordt, definieer dan een extra
+method, of gebruik delegates.
+\item Korte lambda-expressies kunnen inline.
 \item Complexere anonieme methods definieer je over meerdere lijnen.
 \end{enumerate}
 
@@ -659,56 +1349,39 @@ private static void DoeIets(Func<int, int> operatie)
 
 public static void Test()
 {
-  // inline lambda-expressie als ze maar 1 statement bevat
+  // korte lambda-expressies inline
 
   DoeIets(arg => arg * 2);
-
-  // Ingewikkelde delegates over meer lijnen declareren
-
-  Func<int, int> faculteit = arg =>
-    {
-      int res = 1;
-
-      for (int i = 2; i <= arg; ++i)
-      {
-        res *= i;
-      }
-      return res;
-    };
-
-  DoeIets(faculteit);
-}
+} 
 \end{lstlisting}
 
 \subsection{WCF}
-
+\index{WCF}\index{services}
 \begin{enumerate}[resume]
-\item Serivces zijn beveiligd.
+\item Serivces zijn beveiligd.\index{beveiliging}
 \item Na aanroep van een serviceoperatie is het systeem in een consistente toestand.
-\item Services zijn thread safe en kunnen gelijktijdig door verschillende
+\item Services zijn thread safe\index{thread safety} en kunnen gelijktijdig door verschillende
 clients aangeroepen worden.
-\item Gebruik \lstinline !ServiceHelper! om services aan te roepen.
+\item Gebruik \lstinline !ServiceHelper!\index{ServiceHelper}\footnote{Dit
+zit in ons eigen framework} om services aan te roepen.
 \item Gebruik steeds een interface als servicecontract.
-\item Een servicecontract biedt 3 tot 20 methods aan.
-\item Gebruik het \lstinline !DataContract! attribuut voor data
-contracts.\footnote{hoewel \lstinline !Serializable! ook zou werken.}
+\item Een servicecontract biedt 3 tot 20 methods\index{aantal methods!servicecontract} aan.
+\item Gebruik het \lstinline ![DataContract]!\index{datacontract@[DataContract]} attribuut voor data
+contracts.
 \item Gebruik enkel property's of read-only members als \lstinline
 !DataMember!.
-\item Verwacht excepties bij een service call.
+\item Verwacht en catch excepties\index{excepties!service call} bij een service call.
 \end{enumerate}
 
 \subsection{Entity Framework}
-
+\index{entity framework}
 \begin{enumerate}[resume]
-\item Een objectcontext zo laat mogelijk openen en zo vroeg mogelijk opnieuw sluiten.\footnote{.NET is
-zelf verantwoordelijk voor connection pooling.}
-\item Zorg ervoor dat de context altijd gesloten wordt, gebruik hiervoor een \lstinline !using!-constructie.
+\item Een objectcontext\index{objectcontext} zo laat mogelijk openen en zo vroeg mogelijk opnieuw sluiten.\footnote{.NET is
+zelf verantwoordelijk voor connection pooling\index{connecties!connection pooling}.}
 \item Entity's die buiten de context gebruikt moeten worden, moeten
-gedetached zijn.  Gebruik hiervoor \lstinline !MergeOption.NoTracking! of
-\lstinline !Detach!.
-\item Gebruik linq to entities om te query'en.
-\item Bewaar connection strings in \lstinline !app.Config! of \lstinline
-!web.Config!.
+gedetached zijn.  Gebruik hiervoor \lstinline !MergeOption.NoTracking!,
+\lstinline !Detach! of \lstinline !DetachObjectGraph!.\footnote{\lstinline !DetachObjectGraph! is code uit ons eigen framework.}
+\item Gebruik LINQ\index{LINQ} to entities om te query'en.
 \end{enumerate}
 
 \begin{lstlisting}[float, caption=Entity Framework]
@@ -717,27 +1390,37 @@ using (ChiroGroepEntities db = new ChiroGroepEntities())
   db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
   result = (
     from gp in db.GelieerdePersoon.Include("Persoon")
-      .Include("Communicatie")
-      .Include("PersoonsAdres.Adres.Straat")
-      .Include("PersoonsAdres.Adres.Subgemeente")
     where gp.ID == gelieerdePersoonID
     select gp).FirstOrDefault();
 }
 \end{lstlisting}
 
 \section{Gedrag van de software}
-
+\index{software!gedrag}
 \begin{enumerate}[resume]
-\item Geef steeds verstaanbare foutmeldingen voor de gebruiker.
+\item Geef steeds verstaanbare foutmeldingen\index{foutmeldingen} voor de gebruiker.
 \item Voer deze checks uit bij het starten van het programma:
 \begin{enumerate}
-\item Zijn alle files/resources/connecties beschikbaar?
-\item Bestaat het configuratiebestand? Zo nee: maak het aan met standaardwaarden.
+\item Zijn alle files/resources/connecties\index{bestanden!at runtime}\index{resources}\index{connecties} beschikbaar?
+\item Bestaat het configuratiebestand\index{configuratiebestand}? Zo nee: maak het aan met standaardwaarden.
 \item Is het configuratiebestand correct?
 \end{enumerate}
-\item Ga er niet vanuit dat het programma op een bepaalde schijf of in een bepaalde directory
+\item Ga er niet vanuit dat het programma op een bepaalde schijf of in een bepaalde directory\index{directory's}
 ge\"installeerd is.
-\item Gebruik `isolated storage' als je gebruikersspecifieke informatie moet bewaren.
+\item Gebruik `isolated storage'\index{isolated storage} als je gebruikersspecifieke informatie moet bewaren.
 \end{enumerate}
 
+\section{Niet/onvolledig opgenomen in dit document}
+
+\begin{itemize}
+\item GUI\index{GUI}'s
+\item Event handling\index{event handling}
+\item Nested types\index{types!nested}\index{nesting!types}
+\item Operator overloading\index{operatoren!overloading}\index{overloading!operators}
+\item Ons framework rond entity framework om multi-tier te kunnen werken.
+\end{itemize}
+
+\printindex
 \end{document}
+
+
