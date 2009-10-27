@@ -397,13 +397,13 @@ public GeslachtsType Geslacht { get; set; }
 bool TeVerwijderen { get; set; }
 
 /// \textless summary\textgreater
-/// Koppelt het adres \textless paramref name="adr"/\textgreater aan de 
-/// gelieerde persoon \textless paramref name="pers"/\textgreater
+/// Koppelt het adres \textless paramref name=``adr'' /\textgreater aan de 
+/// gelieerde persoon \textless paramref name=``pers'' /\textgreater
 /// \textless summary\textgreater
-/// \textless param name="pers"\textgreater
+/// \textless param name=``pers''\textgreater
 /// Te koppelen gelieerde persoon; mag niet \textless c\textgreater null\textless c\textgreater zijn.
 /// \textless param\textgreater
-/// \textless param name="adr"\textgreater
+/// \textless param name=``adr"\textgreater
 /// Te koppelen adres; mag niet \textless c\textgreater null\textless c\textgreater zijn.
 /// \textless param\textgreater
 void AdresKoppelen(GelieerdePersoon pers, Adres adr)
@@ -461,11 +461,10 @@ een property en een lokale variabele zoals in
 \begin{enumerate}[resume]
 \item Geen `libraryprefixes\index{libraryprefixes}'\footnote{Een `libraryprefix' is een prefix
 gebruikt voor alle types in een assembly/library.}
-\item Vermijd te vage typenames\index{types!namen} zoals \lstinline !Element!,
-\lstinline !Log!, \ldots om conflicten te vermijden.
+\item Vermijd te vage typenames\index{types!namen} zoals `\lstinline !Element!',
+`\lstinline !Log!', \ldots om conflicten te vermijden.
 \item Verschillende implementaties van eenzelfde concept krijgen een
-gemeenschappelijk suffix\index{consistentie}, zoals \lstinline !PersonenDao!, \lstinline
-!GroepenDao!, \ldots
+gemeenschappelijk suffix\index{consistentie}, zoals `\lstinline !PersonenDao!', `\lstinline !GroepenDao!', \ldots
 \end{enumerate}
 
 \subsection{Klasses algemeen}
