@@ -43,7 +43,7 @@ namespace Cg2.Services
 
         protected void Application_End(object sender, EventArgs e)
         {
-            Factory.ContainerDispose();
+            Factory.Dispose();
         }
     }
 }

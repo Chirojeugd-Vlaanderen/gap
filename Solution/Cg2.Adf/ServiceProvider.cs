@@ -100,9 +100,9 @@ namespace Chiro.Adf
 		/// Gets the implementation for the specified service interface type.
 		/// </summary>        
 		/// <returns>The configured implementation of interface I or null.</returns>
-		public object GetService(Type type)
+		public object GetService(Type serviceType)
 		{
-			return CallProviders(p => p.GetService(type), string.Format("Service type '{0}' could not be resolved.", type));
+            return CallProviders(p => p.GetService(serviceType), string.Format("Service type '{0}' could not be resolved.", serviceType));
 		}
 
         /// <summary>

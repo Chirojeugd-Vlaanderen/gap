@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Microsoft.Practices.Unity;
+using Cg2.Ioc;
 
 namespace Chiro.Gap.WebApp
 {
@@ -12,7 +14,16 @@ namespace Chiro.Gap.WebApp
 
     public class MvcApplication : System.Web.HttpApplication
     {
-        public static void RegisterRoutes(RouteCollection routes)
+        private static IUnityContainer _container;
+
+        protected void Application_Start()
+        {
+            RegisterRoutes(RouteTable.Routes);
+
+            InitializeContainer();
+        }
+
+        private static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
@@ -23,7 +34,7 @@ namespace Chiro.Gap.WebApp
                 "Route voor ~/: Kies GAV"
                 , ""
                 , new { controller = "Gav", action = "Index" });
-            
+
             routes.MapRoute(
                 "PaginatedPersonenList",
                 "{groepID}/Personen/List/{page}",
@@ -42,12 +53,23 @@ namespace Chiro.Gap.WebApp
                 new { controller = "Personen", action = "Index", id = "" }
                 // (personencontroller indien geen controller meegegeven)
             );
-
         }
 
-        protected void Application_Start()
+        private static void InitializeContainer()
         {
-            RegisterRoutes(RouteTable.Routes);
+
+            if (_container == null)
+            {
+                Factory.ContainerInit();
+                _container = Factory.Container;
+            }
+
+            IControllerFactory controllerFactory = 
+                new UnityControllerFactory(_container);
+
+            ControllerBuilder.Current.SetControllerFactory(controllerFactory);
+
         }
+
     }
 }

@@ -16,11 +16,10 @@ namespace Cg2.Ioc
         private static IUnityContainer _container = null;
         private static string _containerNaam = "";
 
-        private static IUnityContainer Container
+        public static IUnityContainer Container
         {
             get
             {
-                Debug.Assert(_container != null);
                 return _container;
             }
         }
@@ -64,13 +63,14 @@ namespace Cg2.Ioc
                     var section = (UnityConfigurationSection)ConfigurationManager.GetSection("unity");
 
                     _container = new UnityContainer();
-                    section.Containers[containerNaam].Configure(_container);
+                    if (section != null) 
+                        section.Containers[containerNaam].Configure(_container);
                     _containerNaam = containerNaam;
                 }
             }
         }
 
-        public static void ContainerDispose()
+        public static void Dispose()
         {
             lock (threadLock)
             {

@@ -65,6 +65,9 @@
     <None Include="Entity\OptimisticConcurrencyDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
+    <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
+      <Link>CustomDictionary.xml</Link>
+    </CodeAnalysisDictionary>
     <Content Include="LeesMe.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

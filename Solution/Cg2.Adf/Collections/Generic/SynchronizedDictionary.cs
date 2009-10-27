@@ -355,7 +355,7 @@ namespace Chiro.Adf.Collections.Generic
 		public ReadLock(ReaderWriterLockSlim locks)
 			: base(locks) { Locks.GetReadLock(ref _Locks); }
 
-		public override void Dispose() { Locks.ReleaseReadLock(ref _Locks); }
+        public override void Dispose() { Locks.ReleaseReadLock(ref _Locks); GC.SuppressFinalize(this); }
 	}
 
 	internal class WriteLock : ObjectLock
@@ -363,6 +363,6 @@ namespace Chiro.Adf.Collections.Generic
 		public WriteLock(ReaderWriterLockSlim locks)
 			: base(locks) { Locks.GetWriteLock(ref _Locks); }
 
-		public override void Dispose() { Locks.ReleaseWriteLock(ref _Locks); }
+        public override void Dispose() { Locks.ReleaseWriteLock(ref _Locks); GC.SuppressFinalize(this); }
 	}
 }
