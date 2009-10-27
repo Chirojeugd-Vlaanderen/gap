@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ServiceModel;
 
-namespace Cg2.Adf
+namespace Chiro.Adf
 {
 	/// <summary>
 	/// Resolves WCF service implementations.

@@ -3,7 +3,7 @@ using System.Configuration;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 
-namespace Cg2.Adf.ServiceModel.Extensions
+namespace Chiro.Adf.ServiceModel.Extensions
 {
     /// <summary>
     /// TODO: Documenteren!

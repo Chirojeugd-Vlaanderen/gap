@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<PersoonInfoModel>" %>
-<%@ Import Namespace="MvcWebApp2.Models" %>
+<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Cg2.Orm" %>
 <%@ Import Namespace="Cg2.ServiceContracts" %>
 

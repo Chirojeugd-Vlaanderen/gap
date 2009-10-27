@@ -1,7 +1,7 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<NieuweCommVormModel>" %>
 <%@ Import Namespace="Cg2.Orm" %>
-<%@ Import Namespace="MvcWebApp2" %>
-<%@ Import Namespace="MvcWebApp2.Models" %>
+<%@ Import Namespace="Chiro.Gap.WebApp" %>
+<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>

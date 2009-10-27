@@ -1,7 +1,7 @@
 using System;
 using System.ServiceModel;
 
-namespace Cg2.Adf.ServiceModel
+namespace Chiro.Adf.ServiceModel
 {
 	/// <summary>
 	/// Provides helper/extension methods to call operations on service proxies and making sure the proxy is 

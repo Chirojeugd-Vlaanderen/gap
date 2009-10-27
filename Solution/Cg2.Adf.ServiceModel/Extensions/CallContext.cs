@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Cg2.Adf.ServiceModel.Extensions
+namespace Chiro.Adf.ServiceModel.Extensions
 {
     /// <summary>
     /// TODO: Documenteren!

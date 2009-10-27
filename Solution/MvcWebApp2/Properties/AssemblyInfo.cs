@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MvcWebApp2")]
+[assembly: AssemblyTitle("Chiro.Gap.WebApp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MvcWebApp2")]
+[assembly: AssemblyProduct("Chiro.Gap.WebApp")]
 [assembly: AssemblyCopyright("Copyright ©  2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

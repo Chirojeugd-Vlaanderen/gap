@@ -1,5 +1,5 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<PersoonInfoModel>" %>
-<%@ Import Namespace="MvcWebApp2.Models" %>
+<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Cg2.Orm" %>
 <%@ Import Namespace="Cg2.ServiceContracts" %>
 

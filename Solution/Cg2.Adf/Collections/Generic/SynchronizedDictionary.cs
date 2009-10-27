@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Cg2.Adf.Collections.Generic
+namespace Chiro.Adf.Collections.Generic
 {
 	/// <summary>
 	/// Represents a thread safe collection of keys and values.

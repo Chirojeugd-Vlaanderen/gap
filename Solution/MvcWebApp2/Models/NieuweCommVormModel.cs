@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-using Cg2.Adf.ServiceModel;
+using Chiro.Adf.ServiceModel;
 using Cg2.Orm;
 using Cg2.ServiceContracts;
 using System.Web.Mvc;
 
 
-namespace MvcWebApp2.Models
+namespace Chiro.Gap.WebApp.Models
 {
     /// <summary>
     /// Model gebruikt om iemand een nieuw adres te geven.

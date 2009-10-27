@@ -1,9 +1,9 @@
 using System;
 using System.Configuration;
 using System.ServiceModel.Configuration;
-using Cg2.Adf.ServiceModel.Extensions;
+using Chiro.Adf.ServiceModel.Extensions;
 
-namespace Cg2.Adf.ServiceModel
+namespace Chiro.Adf.ServiceModel
 {
 	/// <summary>
 	/// Represents the configuration element that registers the LocalizationBehavior.

@@ -1,6 +1,6 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<MvcWebApp2.Models.AdresVerwijderenModel>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.AdresVerwijderenModel>" %>
 <%@ Import Namespace="Cg2.Orm" %>
-<%@ Import Namespace="MvcWebApp2" %>
+<%@ Import Namespace="Chiro.Gap.WebApp" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 	<title>Adres verwijderen</title>

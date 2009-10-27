@@ -2,14 +2,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}</ProjectGuid>
     <ProjectTypeGuids>{603c0e0b-db56-11dc-be95-000d561079b0};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MvcWebApp2</RootNamespace>
-    <AssemblyName>MvcWebApp2</AssemblyName>
+    <RootNamespace>Chiro.Gap.WebApp</RootNamespace>
+    <AssemblyName>Chiro.Gap.WebApp</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
   </PropertyGroup>
@@ -156,13 +156,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cg2.Adf.ServiceModel\Cg2.Adf.ServiceModel.csproj">
+    <ProjectReference Include="..\Cg2.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj">
       <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
-      <Name>Cg2.Adf.ServiceModel</Name>
+      <Name>Chiro.Adf.ServiceModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Cg2.Adf\Cg2.Adf.csproj">
+    <ProjectReference Include="..\Cg2.Adf\Chiro.Adf.csproj">
       <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
-      <Name>Cg2.Adf</Name>
+      <Name>Chiro.Adf</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cg2.EfWrapper\Cg2.EfWrapper.csproj">
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
@@ -214,6 +214,9 @@
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/cgtest</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

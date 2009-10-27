@@ -62,9 +62,9 @@
     <Content Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MvcWebApp2\MvcWebApp.csproj">
+    <ProjectReference Include="..\..\MvcWebApp2\Chiro.Gap.WebApp.csproj">
       <Project>{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}</Project>
-      <Name>MvcWebApp</Name>
+      <Name>Chiro.Gap.WebApp</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

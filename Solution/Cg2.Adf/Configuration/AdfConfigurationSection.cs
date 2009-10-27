@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace Cg2.Adf.Configuration
+namespace Chiro.Adf.Configuration
 {
 	/// <summary>
 	/// Represents the confgiuration section named 'chiroGroep'.

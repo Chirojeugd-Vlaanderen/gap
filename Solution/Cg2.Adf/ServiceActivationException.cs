@@ -1,6 +1,6 @@
 using System;
 
-namespace Cg2.Adf
+namespace Chiro.Adf
 {
 	/// <summary>
 	/// Represent the error that occurs when no registered ServiceProvider manages to resolve a service interface.

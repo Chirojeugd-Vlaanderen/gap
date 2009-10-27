@@ -4,7 +4,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 
-namespace Cg2.Adf.ServiceModel
+namespace Chiro.Adf.ServiceModel
 {
     /// <summary>
     /// TODO: Documenteren!

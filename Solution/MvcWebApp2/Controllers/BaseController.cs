@@ -8,12 +8,12 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using Cg2.Orm;
 using System.Configuration;
-using Cg2.Adf.ServiceModel;
+using Chiro.Adf.ServiceModel;
 using Cg2.ServiceContracts;
-using MvcWebApp2.Models;
+using Chiro.Gap.WebApp.Models;
 using System.Web.Caching;
 
-namespace MvcWebApp2.Controllers
+namespace Chiro.Gap.WebApp.Controllers
 {
     /// <summary>
     /// Houdt de info bij die in de MasterPage getoond moet worden

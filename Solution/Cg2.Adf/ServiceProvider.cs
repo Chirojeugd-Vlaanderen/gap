@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using Cg2.Adf.Configuration;
+using Chiro.Adf.Configuration;
 using System.Globalization;
 using System.Collections;
 
-namespace Cg2.Adf
+namespace Chiro.Adf
 {
 	/// <summary>
 	/// Resolves dependencies through configured or registered service providers.

@@ -8,13 +8,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{994E80C0-DD18-417A-A51C-F781D3B012AB}"
 	ProjectSection(SolutionItems) = preProject
 		Cg2Solution.vsmdi = Cg2Solution.vsmdi
-		Cg2Solution1.vsmdi = Cg2Solution1.vsmdi
+		Cg2Solution2.vsmdi = Cg2Solution2.vsmdi
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Validatie", "Cg2.Validatie\Cg2.Validatie.csproj", "{853B7FDF-27B6-48BC-A220-F68CCE610B6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcWebApp", "MvcWebApp2\MvcWebApp.csproj", "{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.WebApp", "MvcWebApp2\Chiro.Gap.WebApp.csproj", "{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}"
 	ProjectSection(ProjectDependencies) = postProject
 		{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975} = {96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}
 	EndProjectSection
@@ -31,9 +31,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.ServiceContracts", "Cg2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Ioc", "Cg2.Ioc\Cg2.Ioc.csproj", "{C100E957-CEE2-4707-BF13-C64553C28C7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Adf", "Cg2.Adf\Cg2.Adf.csproj", "{BAAC24EC-57C1-4108-94BA-40FC0977762A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Adf", "Cg2.Adf\Chiro.Adf.csproj", "{BAAC24EC-57C1-4108-94BA-40FC0977762A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Adf.ServiceModel", "Cg2.Adf.ServiceModel\Cg2.Adf.ServiceModel.csproj", "{174890F3-1F4C-4CFC-83A1-AA88F5748A67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Adf.ServiceModel", "Cg2.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj", "{174890F3-1F4C-4CFC-83A1-AA88F5748A67}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Orm", "Cg2.Orm\Cg2.Orm.csproj", "{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}"
 EndProject
@@ -63,7 +63,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHelper.Test", "TestP
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Cg2Solution1.vsmdi
+		CategoryFile = Cg2Solution2.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

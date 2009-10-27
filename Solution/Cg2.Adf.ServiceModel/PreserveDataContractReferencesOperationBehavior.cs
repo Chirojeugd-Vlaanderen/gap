@@ -7,7 +7,7 @@ using System.ServiceModel.Description;
 using System.Text;
 using System.Xml;
 
-namespace Cg2.Adf.ServiceModel
+namespace Chiro.Adf.ServiceModel
 {
     /// <summary>
     /// TODO: Documenteren!

@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.UI;
 
-namespace MvcWebApp2
+namespace Chiro.Gap.WebApp
 {
     public partial class _Default : Page
     {

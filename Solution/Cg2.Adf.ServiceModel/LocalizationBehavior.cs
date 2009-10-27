@@ -5,7 +5,7 @@ using System.ServiceModel.Dispatcher;
 using System.Threading;
 using System.Globalization;
 
-namespace Cg2.Adf.ServiceModel
+namespace Chiro.Adf.ServiceModel
 {
     /// <summary>
     /// TODO: Documenteren!

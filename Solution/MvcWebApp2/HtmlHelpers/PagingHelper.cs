@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Text;
 
-namespace MvcWebApp2.HtmlHelpers
+namespace Chiro.Gap.WebApp.HtmlHelpers
 {
     /// <summary>
     /// HtmlHelper die de links maakt om door een 'gepagineerde' lijst te navigeren.

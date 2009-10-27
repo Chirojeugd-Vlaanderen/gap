@@ -6,7 +6,7 @@ using Cg2.Validatie;
 using System.Web.Mvc;
 using Cg2.Fouten;
 
-namespace MvcWebApp2
+namespace Chiro.Gap.WebApp
 {
     /// <summary>
     /// Een ModelStateWrapper pakt een ModelStateDictionary in

@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<LidInfoModel>" %>
 <%@ Import Namespace="Cg2.Orm" %>
 <%@ Import Namespace="Cg2.ServiceContracts" %>
-<%@ Import Namespace="MvcWebApp2.Models" %>
+<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 
 <table>
 <tr>

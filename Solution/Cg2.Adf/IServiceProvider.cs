@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Cg2.Adf
+namespace Chiro.Adf
 {
 	/// <summary>
 	/// Defines methods to obtain configuration-based instances of interface implementations.

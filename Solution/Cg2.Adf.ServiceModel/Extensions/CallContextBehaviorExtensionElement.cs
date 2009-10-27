@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.ServiceModel.Configuration;
 
-namespace Cg2.Adf.ServiceModel.Extensions
+namespace Chiro.Adf.ServiceModel.Extensions
 {
     /// <summary>
     /// TODO: Documenteren!

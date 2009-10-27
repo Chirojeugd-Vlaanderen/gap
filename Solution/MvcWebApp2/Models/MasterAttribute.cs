@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using MvcWebApp2.Controllers;
+using Chiro.Gap.WebApp.Controllers;
 
-namespace MvcWebApp2.Models
+namespace Chiro.Gap.WebApp.Models
 {
     /// <summary>
     /// Zorgt ervoor dat controllers de gegevens van het MasterViewModel doorgeven aan

@@ -6,15 +6,15 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using System.Configuration;
 using Cg2.Orm;
-using MvcWebApp2.Models;
+using Chiro.Gap.WebApp.Models;
 using System.Diagnostics;
 using System.ServiceModel;
 using Cg2.Fouten.FaultContracts;
-using Cg2.Adf.ServiceModel;
+using Chiro.Adf.ServiceModel;
 using Cg2.ServiceContracts;
 using Cg2.Validatie;
 
-namespace MvcWebApp2.Controllers
+namespace Chiro.Gap.WebApp.Controllers
 {
     public class PersonenController : BaseController
     {

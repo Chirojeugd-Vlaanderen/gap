@@ -4,10 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
-using Cg2.Adf.ServiceModel;
+using Chiro.Adf.ServiceModel;
 using Cg2.ServiceContracts;
 
-namespace MvcWebApp2.Controllers
+namespace Chiro.Gap.WebApp.Controllers
 {
     public class GavController : BaseController
     {
