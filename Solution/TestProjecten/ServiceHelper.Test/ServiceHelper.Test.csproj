@@ -45,15 +45,15 @@
     <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cg2.Adf.ServiceModel\Cg2.Adf.ServiceModel.csproj">
+    <ProjectReference Include="..\..\Cg2.Adf.ServiceModel\Cg2.Adf.ServiceModel.csproj">
       <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
       <Name>Cg2.Adf.ServiceModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Cg2.Adf\Cg2.Adf.csproj">
+    <ProjectReference Include="..\..\Cg2.Adf\Cg2.Adf.csproj">
       <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
       <Name>Cg2.Adf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Cg2.ServiceContracts\Cg2.ServiceContracts.csproj">
+    <ProjectReference Include="..\..\Cg2.ServiceContracts\Cg2.ServiceContracts.csproj">
       <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
       <Name>Cg2.ServiceContracts</Name>
     </ProjectReference>
