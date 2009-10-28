@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-namespace Cg2.Fouten.FaultContracts
+namespace Chiro.Gap.Fouten.FaultContracts
 {
     /// <summary>
     /// Als er een fout optreedt aan de businesskant, zal de service

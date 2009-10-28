@@ -8,8 +8,8 @@
     <ProjectGuid>{D82C1286-8BC6-422C-8688-E178377D3EB6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cg2.Fouten</RootNamespace>
-    <AssemblyName>Cg2.Fouten</AssemblyName>
+    <RootNamespace>Chiro.Gap.Fouten</RootNamespace>
+    <AssemblyName>Chiro.Gap.Fouten</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

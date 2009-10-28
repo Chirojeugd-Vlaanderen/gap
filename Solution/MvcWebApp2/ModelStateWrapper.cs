@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using Cg2.Validatie;
 using System.Web.Mvc;
-using Cg2.Fouten;
+using Chiro.Gap.Fouten;
 
 namespace Chiro.Gap.WebApp
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-namespace Cg2.Fouten.Exceptions
+namespace Chiro.Gap.Fouten.Exceptions
 {
     /// <summary>
     /// Exception voor een 'Groep Mismatch', bijv. bij het koppelen

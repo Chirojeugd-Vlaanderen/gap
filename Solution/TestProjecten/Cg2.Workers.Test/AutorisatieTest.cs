@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Cg2.Orm.DataInterfaces;
 using Cg2.Orm;
-using Cg2.Fouten.Exceptions;
+using Chiro.Gap.Fouten.Exceptions;
 using Cg2.Dummies;
 using Cg2.Ioc;
 

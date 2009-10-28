@@ -6,8 +6,8 @@ using Cg2.Orm.DataInterfaces;
 using Chiro.Gap.Data.Ef;
 using Cg2.Orm;
 using System.Diagnostics;
-using Cg2.Fouten.Exceptions;
-using Cg2.Fouten.FaultContracts;
+using Chiro.Gap.Fouten.Exceptions;
+using Chiro.Gap.Fouten.FaultContracts;
 using System.ServiceModel;
 
 namespace Cg2.Workers

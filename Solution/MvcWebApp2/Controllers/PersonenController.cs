@@ -9,7 +9,7 @@ using Cg2.Orm;
 using Chiro.Gap.WebApp.Models;
 using System.Diagnostics;
 using System.ServiceModel;
-using Cg2.Fouten.FaultContracts;
+using Chiro.Gap.Fouten.FaultContracts;
 using Chiro.Adf.ServiceModel;
 using Cg2.ServiceContracts;
 using Cg2.Validatie;

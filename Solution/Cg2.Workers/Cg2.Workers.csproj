@@ -84,9 +84,9 @@
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
       <Name>Chiro.Cdf.EfWrapper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Cg2.Fouten\Cg2.Fouten.csproj">
+    <ProjectReference Include="..\Cg2.Fouten\Chiro.Gap.Fouten.csproj">
       <Project>{D82C1286-8BC6-422C-8688-E178377D3EB6}</Project>
-      <Name>Cg2.Fouten</Name>
+      <Name>Chiro.Gap.Fouten</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cg2.Ioc\Cg2.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>

@@ -5,7 +5,7 @@ using System.Text;
 using Cg2.Orm.DataInterfaces;
 using Chiro.Gap.Data.Ef;
 using Cg2.Orm;
-using Cg2.Fouten.Exceptions;
+using Chiro.Gap.Fouten.Exceptions;
 using Cg2.Ioc;
 
 namespace Cg2.Workers

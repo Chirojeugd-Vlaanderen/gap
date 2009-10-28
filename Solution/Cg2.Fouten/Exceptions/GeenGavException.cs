@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-namespace Cg2.Fouten.Exceptions
+namespace Chiro.Gap.Fouten.Exceptions
 {
     /// <summary>
     /// Exceptie voor operatie op objecten waarvoor de

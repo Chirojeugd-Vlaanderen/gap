@@ -9,8 +9,8 @@ using System.Security.Permissions;
 using Cg2.ServiceContracts;
 using Cg2.Workers;
 using Cg2.Orm;
-using Cg2.Fouten.Exceptions;
-using Cg2.Fouten.FaultContracts;
+using Chiro.Gap.Fouten.Exceptions;
+using Chiro.Gap.Fouten.FaultContracts;
 using Chiro.CG2.ServiceContracts.Mappers;
 
 namespace Cg2.Services
