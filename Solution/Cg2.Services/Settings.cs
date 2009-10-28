@@ -1,4 +1,4 @@
-﻿namespace Cg2.Services.Properties {
+﻿namespace Chiro.Gap.Services.Properties {
     
     
     // This class allows you to handle specific events on the settings class:

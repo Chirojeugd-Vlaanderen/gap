@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Configuration;
 
-namespace Cg2.Services
+namespace Chiro.Gap.Services
 {
     internal static class SecurityGroepen
     {

@@ -1,1 +1,1 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="Cg2.Services.LedenService" CodeBehind="LedenService.svc.cs" %>
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="Chiro.Gap.Services.LedenService" CodeBehind="LedenService.svc.cs" %>

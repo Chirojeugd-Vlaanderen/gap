@@ -6,7 +6,7 @@ using System.Web.Security;
 using System.Web.SessionState;
 using Chiro.Cdf.Ioc;
 
-namespace Cg2.Services
+namespace Chiro.Gap.Services
 {
     public class Global : System.Web.HttpApplication
     {

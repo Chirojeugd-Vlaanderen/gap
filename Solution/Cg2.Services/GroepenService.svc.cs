@@ -11,7 +11,7 @@ using Chiro.Cdf.Ioc;
 using System.Diagnostics;
 using Chiro.Chiro.Gap.ServiceContracts.Mappers;
 
-namespace Cg2.Services
+namespace Chiro.Gap.Services
 {
     // NOTE: If you change the class name "GroepenService" here, you must also update the reference to "GroepenService" in Web.config.
     public class GroepenService : IGroepenService

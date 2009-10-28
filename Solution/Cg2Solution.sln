@@ -24,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjecten", "TestProjec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Fouten", "Cg2.Fouten\Chiro.Gap.Fouten.csproj", "{D82C1286-8BC6-422C-8688-E178377D3EB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Services", "Cg2.Services\Cg2.Services.csproj", "{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Services", "Cg2.Services\Chiro.Gap.Services.csproj", "{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.EfWrapper", "Cg2.EfWrapper\Chiro.Cdf.EfWrapper.csproj", "{72F61656-2949-4763-9381-678B2D07AE0B}"
 EndProject

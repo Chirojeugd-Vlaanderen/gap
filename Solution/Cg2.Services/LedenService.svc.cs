@@ -10,7 +10,7 @@ using Chiro.Gap.Orm;
 using Chiro.Cdf.Ioc;
 using Chiro.Chiro.Gap.ServiceContracts.Mappers;
 
-namespace Cg2.Services
+namespace Chiro.Gap.Services
 {
     // NOTE: If you change the class name "LedenService" here, you must also update the reference to "LedenService" in Web.config.
     public class LedenService : ILedenService

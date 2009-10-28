@@ -13,7 +13,7 @@ using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Fouten.FaultContracts;
 using Chiro.Chiro.Gap.ServiceContracts.Mappers;
 
-namespace Cg2.Services
+namespace Chiro.Gap.Services
 {
     // NOTE: If you change the class name "GelieerdePersonenService" here, you must also update the reference to "GelieerdePersonenService" in Web.config.
     public class GelieerdePersonenService : IGelieerdePersonenService

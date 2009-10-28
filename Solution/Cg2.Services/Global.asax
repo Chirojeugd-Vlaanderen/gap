@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="Cg2.Services.Global" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="Chiro.Gap.Services.Global" Language="C#" %>
