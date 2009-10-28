@@ -13,7 +13,7 @@ using Cg2.Orm.DataInterfaces;
 using System.Linq.Expressions;
 
 
-namespace Cg2.Data.Ef
+namespace Chiro.Gap.Data.Ef
 {
     /// <summary>
     /// Data access voor adressen; zie IAdressenDao voor documentatie.

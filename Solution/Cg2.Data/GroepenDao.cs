@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 using Cg2.EfWrapper;
 using System.Diagnostics;
 
-namespace Cg2.Data.Ef
+namespace Chiro.Gap.Data.Ef
 {
     public class GroepenDao: Dao<Groep>, IGroepenDao
     {

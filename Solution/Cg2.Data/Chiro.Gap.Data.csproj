@@ -8,8 +8,8 @@
     <ProjectGuid>{F9197C38-63BC-4D2F-9F0A-8326C698B536}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cg2.Data</RootNamespace>
-    <AssemblyName>Cg2.Data</AssemblyName>
+    <RootNamespace>Chiro.Gap.Data</RootNamespace>
+    <AssemblyName>Chiro.Gap.Data</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

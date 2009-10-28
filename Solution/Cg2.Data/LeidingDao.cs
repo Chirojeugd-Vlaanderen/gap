@@ -12,7 +12,7 @@ using System.Linq.Expressions;
 using Cg2.EfWrapper.Entity;
 
 
-namespace Cg2.Data.Ef
+namespace Chiro.Gap.Data.Ef
 {
     public class LeidingDao : Dao<Leiding>, ILeidingDao
     {

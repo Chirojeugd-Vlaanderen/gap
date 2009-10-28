@@ -5,7 +5,7 @@ using System.Text;
 using Cg2.Orm;
 using Cg2.Orm.DataInterfaces;
 
-namespace Cg2.Data.Ef
+namespace Chiro.Gap.Data.Ef
 {
     public class SubgemeenteDao: Dao<Subgemeente>, ISubgemeenteDao
     {

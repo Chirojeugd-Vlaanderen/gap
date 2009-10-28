@@ -12,7 +12,7 @@ using Cg2.EfWrapper.Entity;
 using Cg2.EfWrapper;
 using System.Linq.Expressions;
 
-namespace Cg2.Data.Ef
+namespace Chiro.Gap.Data.Ef
 {
     public class GelieerdePersonenDao : Dao<GelieerdePersoon>, IGelieerdePersonenDao
     {

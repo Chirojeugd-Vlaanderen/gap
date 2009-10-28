@@ -7,7 +7,7 @@ using Cg2.Orm.DataInterfaces;
 using System.Data.Objects;
 using System.Linq.Expressions;
 
-namespace Cg2.Data.Ef
+namespace Chiro.Gap.Data.Ef
 {
     public class CategorieenDao: Dao<Categorie>, ICategorieenDao
     {

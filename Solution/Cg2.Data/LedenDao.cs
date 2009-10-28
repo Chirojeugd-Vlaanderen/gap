@@ -11,7 +11,7 @@ using Cg2.Orm.DataInterfaces;
 using Cg2.EfWrapper.Entity;
 using System.Linq.Expressions;
 
-namespace Cg2.Data.Ef
+namespace Chiro.Gap.Data.Ef
 {
     public class LedenDao: Dao<Lid>, ILedenDao
     {

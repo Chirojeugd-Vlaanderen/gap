@@ -13,7 +13,7 @@ using Cg2.EfWrapper.Entity;
 
 using System.Linq.Expressions;
 
-namespace Cg2.Data.Ef
+namespace Chiro.Gap.Data.Ef
 {
     /// <summary>
     /// Algemene implementatie van IDao; generieke CRUD-operaties voor

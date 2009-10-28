@@ -7,7 +7,7 @@ using Cg2.Orm.DataInterfaces;
 using System.Data.Objects;
 using Cg2.EfWrapper;
 
-namespace Cg2.Data.Ef
+namespace Chiro.Gap.Data.Ef
 {
     public class AutorisatieDao : Dao<GebruikersRecht>, IAutorisatieDao
     {

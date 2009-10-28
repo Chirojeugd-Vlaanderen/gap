@@ -11,7 +11,7 @@ using System.Data.Objects;
 using Cg2.EfWrapper.Entity;
 using Cg2.EfWrapper;
 
-namespace Cg2.Data.Ef
+namespace Chiro.Gap.Data.Ef
 {
     public class PersonenDao: Dao<Persoon>, IPersonenDao
     {

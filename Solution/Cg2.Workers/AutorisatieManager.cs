@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Cg2.Orm;
 using Cg2.Orm.DataInterfaces;
-using Cg2.Data.Ef;
+using Chiro.Gap.Data.Ef;
 
 namespace Cg2.Workers
 {
