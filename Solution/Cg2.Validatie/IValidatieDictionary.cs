@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Cg2.Validatie
+namespace Chiro.Gap.Validatie
 {
     /// <summary>
     /// Interface voor een dictionary die een foutbericht koppelt

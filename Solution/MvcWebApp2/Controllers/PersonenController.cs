@@ -12,7 +12,7 @@ using System.ServiceModel;
 using Chiro.Gap.Fouten.FaultContracts;
 using Chiro.Adf.ServiceModel;
 using Chiro.Gap.ServiceContracts;
-using Cg2.Validatie;
+using Chiro.Gap.Validatie;
 
 namespace Chiro.Gap.WebApp.Controllers
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Chiro.Gap.Orm;
 
-namespace Cg2.Validatie
+namespace Chiro.Gap.Validatie
 {
     public class PersonenValidator: Validator<Persoon>
     {

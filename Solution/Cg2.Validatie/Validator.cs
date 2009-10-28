@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Cg2.Validatie
+namespace Chiro.Gap.Validatie
 {
     public class Validator<T>: IValidator<T>
     {

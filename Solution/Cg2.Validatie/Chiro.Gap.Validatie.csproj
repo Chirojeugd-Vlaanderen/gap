@@ -8,8 +8,8 @@
     <ProjectGuid>{853B7FDF-27B6-48BC-A220-F68CCE610B6B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cg2.Validatie</RootNamespace>
-    <AssemblyName>Cg2.Validatie</AssemblyName>
+    <RootNamespace>Chiro.Gap.Validatie</RootNamespace>
+    <AssemblyName>Chiro.Gap.Validatie</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Cg2.Validatie;
+using Chiro.Gap.Validatie;
 using System.Web.Mvc;
 using Chiro.Gap.Fouten;
 
@@ -11,7 +11,7 @@ namespace Chiro.Gap.WebApp
     /// <summary>
     /// Een ModelStateWrapper pakt een ModelStateDictionary in
     /// in een IValidatieDictionary, zodat die door
-    /// Cg2.Validatie gebruikt kan worden.
+    /// Chiro.Gap.Validatie gebruikt kan worden.
     /// </summary>
     public class ModelStateWrapper: IValidatieDictionary
     {

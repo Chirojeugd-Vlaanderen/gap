@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Chiro.Gap.Fouten.FaultContracts;
 
-namespace Cg2.Validatie
+namespace Chiro.Gap.Validatie
 {
     /// <summary>
     /// Extension methods voor IValidatieDictionary
