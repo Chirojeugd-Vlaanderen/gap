@@ -1,9 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Data", "Cg2.Data\Chiro.Gap.Data.csproj", "{F9197C38-63BC-4D2F-9F0A-8326C698B536}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Workers", "Cg2.Workers\Chiro.Gap.Workers.csproj", "{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Workers", "Chiro.Gap.Workers\Chiro.Gap.Workers.csproj", "{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{994E80C0-DD18-417A-A51C-F781D3B012AB}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,34 +11,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Validatie", "Cg2.Validatie\Chiro.Gap.Validatie.csproj", "{853B7FDF-27B6-48BC-A220-F68CCE610B6B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.WebApp", "MvcWebApp2\Chiro.Gap.WebApp.csproj", "{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}"
-	ProjectSection(ProjectDependencies) = postProject
-		{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975} = {96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Validatie", "Chiro.Gap.Validatie\Chiro.Gap.Validatie.csproj", "{853B7FDF-27B6-48BC-A220-F68CCE610B6B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjecten", "TestProjecten", "{0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Fouten", "Cg2.Fouten\Chiro.Gap.Fouten.csproj", "{D82C1286-8BC6-422C-8688-E178377D3EB6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Fouten", "Chiro.Gap.Fouten\Chiro.Gap.Fouten.csproj", "{D82C1286-8BC6-422C-8688-E178377D3EB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Services", "Cg2.Services\Chiro.Gap.Services.csproj", "{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Services", "Chiro.Gap.Services\Chiro.Gap.Services.csproj", "{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.EfWrapper", "Cg2.EfWrapper\Chiro.Cdf.EfWrapper.csproj", "{72F61656-2949-4763-9381-678B2D07AE0B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.EfWrapper", "Chiro.Cdf.EfWrapper\Chiro.Cdf.EfWrapper.csproj", "{72F61656-2949-4763-9381-678B2D07AE0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.ServiceContracts", "Cg2.ServiceContracts\Chiro.Gap.ServiceContracts.csproj", "{8FAF739D-1058-4240-9466-BCA5DB8525D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.ServiceContracts", "Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj", "{8FAF739D-1058-4240-9466-BCA5DB8525D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Ioc", "Cg2.Ioc\Chiro.Cdf.Ioc.csproj", "{C100E957-CEE2-4707-BF13-C64553C28C7B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Ioc", "Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj", "{C100E957-CEE2-4707-BF13-C64553C28C7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Adf", "Cg2.Adf\Chiro.Adf.csproj", "{BAAC24EC-57C1-4108-94BA-40FC0977762A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Adf", "Chiro.Adf\Chiro.Adf.csproj", "{BAAC24EC-57C1-4108-94BA-40FC0977762A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Adf.ServiceModel", "Cg2.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj", "{174890F3-1F4C-4CFC-83A1-AA88F5748A67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Adf.ServiceModel", "Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj", "{174890F3-1F4C-4CFC-83A1-AA88F5748A67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Orm", "Cg2.Orm\Chiro.Gap.Orm.csproj", "{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Orm", "Chiro.Gap.Orm\Chiro.Gap.Orm.csproj", "{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.DependencyInjectionBehavior", "Chiro.Cdf.DependancyInjectionBehaviour\Chiro.Cdf.DependencyInjectionBehavior.csproj", "{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.DependencyInjectionBehavior", "Chiro.Cdf.DependencyInjectionBehavior\Chiro.Cdf.DependencyInjectionBehavior.csproj", "{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.ServiceContracts.Mappers", "Chiro.CG2.ServiceContracts.Mappers\Chiro.Gap.ServiceContracts.Mappers.csproj", "{08F94344-8414-4136-8314-4B7380B10CD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.ServiceContracts.Mappers", "Chiro.Gap.ServiceContracts.Mappers\Chiro.Gap.ServiceContracts.Mappers.csproj", "{08F94344-8414-4136-8314-4B7380B10CD7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{BBABD468-99FA-43E6-8E64-DAA6C3CFF2BE}"
 	ProjectSection(SolutionItems) = preProject
@@ -48,19 +41,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", 
 		References\Moq.dll = References\Moq.dll
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Data.Test", "TestProjecten\Cg2.Dao.Test\Chiro.Gap.Data.Test.csproj", "{CC7F4606-886C-459A-8D3F-4CF4F316DA35}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Data.Test", "TestProjecten\Chiro.Gap.Data.Test\Chiro.Gap.Data.Test.csproj", "{CC7F4606-886C-459A-8D3F-4CF4F316DA35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Dummies", "TestProjecten\Cg2.DummyDaos\Chiro.Gap.Dummies.csproj", "{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Dummies", "TestProjecten\Chiro.Gap.Dummies\Chiro.Gap.Dummies.csproj", "{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.EfWrapper.Test", "TestProjecten\Cg2.EfWrapper.Test\Chiro.Cdf.EfWrapper.Test.csproj", "{58B08F00-2098-4227-8359-39CF68A6371B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.EfWrapper.Test", "TestProjecten\Chiro.Cdf.EfWrapper.Test\Chiro.Cdf.EfWrapper.Test.csproj", "{58B08F00-2098-4227-8359-39CF68A6371B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Ioc.Test", "TestProjecten\Cg2.Ioc.Test\Chiro.Cdf.Ioc.Test.csproj", "{D77DFBE9-EDB7-4740-9450-3F3CEF14B4B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Workers.Test", "TestProjecten\Chiro.Gap.Workers.Test\Chiro.Gap.Workers.Test.csproj", "{AC33A7F9-7FFA-4AC2-9362-3409BE1C4BB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Workers.Test", "TestProjecten\Cg2.Workers.Test\Chiro.Gap.Workers.Test.csproj", "{AC33A7F9-7FFA-4AC2-9362-3409BE1C4BB3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.WebApp.Test", "TestProjecten\Chiro.Gap.WebApp.Test\Chiro.Gap.WebApp.Test.csproj", "{D9FF6AE7-5925-4A6D-9BD7-C4AC9D04C69F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.WebApp.Test", "TestProjecten\MvcWebApp2.Tests\Chiro.Gap.WebApp.Test.csproj", "{D9FF6AE7-5925-4A6D-9BD7-C4AC9D04C69F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Adf.ServiceModel.Test", "TestProjecten\Chiro.Adf.ServiceModel.Test\Chiro.Adf.ServiceModel.Test.csproj", "{FF5B16C6-BC4B-4150-A266-7A6EE1BD914F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Adf.ServiceModel.Test", "TestProjecten\ServiceHelper.Test\Chiro.Adf.ServiceModel.Test.csproj", "{FF5B16C6-BC4B-4150-A266-7A6EE1BD914F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Data", "Chiro.Gap.Data\Chiro.Gap.Data.csproj", "{F9197C38-63BC-4D2F-9F0A-8326C698B536}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.WebApp", "Chiro.Gap.WebApp\Chiro.Gap.WebApp.csproj", "{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Ioc.Test", "TestProjecten\Chiro.Cdf.Ioc.Test\Chiro.Cdf.Ioc.Test.csproj", "{D77DFBE9-EDB7-4740-9450-3F3CEF14B4B9}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -71,10 +68,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F9197C38-63BC-4D2F-9F0A-8326C698B536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9197C38-63BC-4D2F-9F0A-8326C698B536}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F9197C38-63BC-4D2F-9F0A-8326C698B536}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9197C38-63BC-4D2F-9F0A-8326C698B536}.Release|Any CPU.Build.0 = Release|Any CPU
 		{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -83,10 +76,6 @@ Global
 		{853B7FDF-27B6-48BC-A220-F68CCE610B6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{853B7FDF-27B6-48BC-A220-F68CCE610B6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{853B7FDF-27B6-48BC-A220-F68CCE610B6B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D82C1286-8BC6-422C-8688-E178377D3EB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D82C1286-8BC6-422C-8688-E178377D3EB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D82C1286-8BC6-422C-8688-E178377D3EB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -139,10 +128,6 @@ Global
 		{58B08F00-2098-4227-8359-39CF68A6371B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58B08F00-2098-4227-8359-39CF68A6371B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58B08F00-2098-4227-8359-39CF68A6371B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D77DFBE9-EDB7-4740-9450-3F3CEF14B4B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D77DFBE9-EDB7-4740-9450-3F3CEF14B4B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D77DFBE9-EDB7-4740-9450-3F3CEF14B4B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D77DFBE9-EDB7-4740-9450-3F3CEF14B4B9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AC33A7F9-7FFA-4AC2-9362-3409BE1C4BB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AC33A7F9-7FFA-4AC2-9362-3409BE1C4BB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC33A7F9-7FFA-4AC2-9362-3409BE1C4BB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -155,6 +140,18 @@ Global
 		{FF5B16C6-BC4B-4150-A266-7A6EE1BD914F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF5B16C6-BC4B-4150-A266-7A6EE1BD914F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF5B16C6-BC4B-4150-A266-7A6EE1BD914F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9197C38-63BC-4D2F-9F0A-8326C698B536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9197C38-63BC-4D2F-9F0A-8326C698B536}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9197C38-63BC-4D2F-9F0A-8326C698B536}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9197C38-63BC-4D2F-9F0A-8326C698B536}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D77DFBE9-EDB7-4740-9450-3F3CEF14B4B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D77DFBE9-EDB7-4740-9450-3F3CEF14B4B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D77DFBE9-EDB7-4740-9450-3F3CEF14B4B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D77DFBE9-EDB7-4740-9450-3F3CEF14B4B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -163,10 +160,10 @@ Global
 		{CC7F4606-886C-459A-8D3F-4CF4F316DA35} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 		{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 		{58B08F00-2098-4227-8359-39CF68A6371B} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
-		{D77DFBE9-EDB7-4740-9450-3F3CEF14B4B9} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 		{AC33A7F9-7FFA-4AC2-9362-3409BE1C4BB3} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 		{D9FF6AE7-5925-4A6D-9BD7-C4AC9D04C69F} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 		{FF5B16C6-BC4B-4150-A266-7A6EE1BD914F} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
+		{D77DFBE9-EDB7-4740-9450-3F3CEF14B4B9} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		VisualSVNWorkingCopyRoot = .
