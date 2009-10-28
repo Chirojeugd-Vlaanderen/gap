@@ -7,7 +7,7 @@ using Moq;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Fouten.Exceptions;
-using Cg2.Dummies;
+using Chiro.Gap.Dummies;
 using Chiro.Cdf.Ioc;
 
 namespace Chiro.Gap.Workers.Test

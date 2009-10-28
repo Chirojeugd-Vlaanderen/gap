@@ -48,9 +48,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", 
 		References\Moq.dll = References\Moq.dll
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Dao.Test", "TestProjecten\Cg2.Dao.Test\Cg2.Dao.Test.csproj", "{CC7F4606-886C-459A-8D3F-4CF4F316DA35}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Data.Test", "TestProjecten\Cg2.Dao.Test\Chiro.Gap.Data.Test.csproj", "{CC7F4606-886C-459A-8D3F-4CF4F316DA35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Dummies", "TestProjecten\Cg2.DummyDaos\Cg2.Dummies.csproj", "{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Dummies", "TestProjecten\Cg2.DummyDaos\Chiro.Gap.Dummies.csproj", "{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.EfWrapper.Test", "TestProjecten\Cg2.EfWrapper.Test\Chiro.Cdf.EfWrapper.Test.csproj", "{58B08F00-2098-4227-8359-39CF68A6371B}"
 EndProject
@@ -58,9 +58,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Ioc.Test", "TestP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Workers.Test", "TestProjecten\Cg2.Workers.Test\Chiro.Gap.Workers.Test.csproj", "{AC33A7F9-7FFA-4AC2-9362-3409BE1C4BB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcWebApp.Tests", "TestProjecten\MvcWebApp2.Tests\MvcWebApp.Tests.csproj", "{D9FF6AE7-5925-4A6D-9BD7-C4AC9D04C69F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.WebApp.Test", "TestProjecten\MvcWebApp2.Tests\Chiro.Gap.WebApp.Test.csproj", "{D9FF6AE7-5925-4A6D-9BD7-C4AC9D04C69F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHelper.Test", "TestProjecten\ServiceHelper.Test\ServiceHelper.Test.csproj", "{FF5B16C6-BC4B-4150-A266-7A6EE1BD914F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Adf.ServiceModel.Test", "TestProjecten\ServiceHelper.Test\Chiro.Adf.ServiceModel.Test.csproj", "{FF5B16C6-BC4B-4150-A266-7A6EE1BD914F}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution

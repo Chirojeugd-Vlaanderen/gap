@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Cg2.Dao.Test")]
+[assembly: AssemblyTitle("Chiro.Gap.Data.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Chirojeugd Vlaanderen VZW")]
-[assembly: AssemblyProduct("Cg2.Dao.Test")]
+[assembly: AssemblyProduct("Chiro.Gap.Data.Test")]
 [assembly: AssemblyCopyright("Copyright © Chirojeugd Vlaanderen VZW 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

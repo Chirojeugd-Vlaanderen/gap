@@ -7,7 +7,7 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Cdf.Ioc;
 
-namespace Cg2.Dao.Test
+namespace Chiro.Gap.Data.Test
 {
     /// <summary>
     /// Summary description for WerkJaarTest

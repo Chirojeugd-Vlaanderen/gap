@@ -9,7 +9,7 @@ using Chiro.Gap.Orm.DataInterfaces;
 using System.Data;
 using Chiro.Cdf.EfWrapper.Entity;
 
-namespace Cg2.Dao.Test
+namespace Chiro.Gap.Data.Test
 {
     /// <summary>
     /// Summary description for DaoTest

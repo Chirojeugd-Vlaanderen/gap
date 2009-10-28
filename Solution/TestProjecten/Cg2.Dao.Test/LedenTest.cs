@@ -9,7 +9,7 @@ using Chiro.Cdf.Ioc;
 using Chiro.Cdf.EfWrapper.Entity;
 using Chiro.Gap.Orm.DataInterfaces;
 
-namespace Cg2.Dao.Test
+namespace Chiro.Gap.Data.Test
 {
     /// <summary>
     /// Tests voor LedenDao

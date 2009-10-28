@@ -8,7 +8,7 @@ using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Data.Ef;
 
-namespace Cg2.Dao.Test
+namespace Chiro.Gap.Data.Test
 {
     /// <summary>
     /// Summary description for Authorisatietest

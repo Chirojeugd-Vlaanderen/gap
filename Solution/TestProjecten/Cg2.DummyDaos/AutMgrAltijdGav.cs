@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Chiro.Gap.Workers;
 
-namespace Cg2.Dummies
+namespace Chiro.Gap.Dummies
 {
     /// <summary>
     /// Autorisatiemanager die altijd alle rechten toekent

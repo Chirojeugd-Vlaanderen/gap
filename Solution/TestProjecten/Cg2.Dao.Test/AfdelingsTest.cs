@@ -8,7 +8,7 @@ using Chiro.Gap.Workers;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Orm.DataInterfaces;
 
-namespace Cg2.Dao.Test
+namespace Chiro.Gap.Data.Test
 {
     /// <summary>
     /// Data-Access tests voor afdelingen en alles wat

@@ -93,9 +93,9 @@
       <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
       <Name>Chiro.Gap.Workers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Cg2.DummyDaos\Cg2.Dummies.csproj">
+    <ProjectReference Include="..\Cg2.DummyDaos\Chiro.Gap.Dummies.csproj">
       <Project>{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}</Project>
-      <Name>Cg2.Dummies</Name>
+      <Name>Chiro.Gap.Dummies</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

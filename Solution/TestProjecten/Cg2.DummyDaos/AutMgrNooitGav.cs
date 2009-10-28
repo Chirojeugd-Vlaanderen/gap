@@ -5,7 +5,7 @@ using System.Text;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Orm;
 
-namespace Cg2.Dummies
+namespace Chiro.Gap.Dummies
 {
     /// <summary>
     /// Autorisatiemanager die er steeds van uitgaat dat

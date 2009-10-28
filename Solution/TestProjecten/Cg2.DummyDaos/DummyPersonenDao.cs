@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Chiro.Gap.Orm.DataInterfaces;
 
-namespace Cg2.Dummies
+namespace Chiro.Gap.Dummies
 {
     /// <summary>
     /// Dummy PersonenDao, die niets implementeert

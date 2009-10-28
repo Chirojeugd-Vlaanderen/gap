@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Adf.ServiceModel;
 using Chiro.Gap.ServiceContracts;
 
-namespace ServiceHelper.Test
+namespace Chiro.Adf.ServiceModel.Test
 {
     /// <summary>
     /// Summary description for UnitTest1

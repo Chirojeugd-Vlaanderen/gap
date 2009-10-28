@@ -5,7 +5,7 @@ using System.Text;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm;
 
-namespace Cg2.Dummies
+namespace Chiro.Gap.Dummies
 {
     /// <summary>
     /// Dummy CategorieenDao, die niets doet

@@ -6,11 +6,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Workers;
-using Cg2.Dummies;
+using Chiro.Gap.Dummies;
 using Chiro.Cdf.EfWrapper.Entity;
 using Chiro.Cdf.Ioc;
 
-namespace Cg2.Dao.Test
+namespace Chiro.Gap.Data.Test
 {
 	 /// <summary>
 	 /// Tests mbt de categorieen die een gelieerde persoon kan hebben.

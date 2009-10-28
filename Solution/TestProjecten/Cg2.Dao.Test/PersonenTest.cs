@@ -10,7 +10,7 @@ using Chiro.Gap.Orm.DataInterfaces;
 using System.IO;
 using System.Runtime.Serialization;
 
-namespace Cg2.Dao.Test
+namespace Chiro.Gap.Data.Test
 {
     /// <summary>
     /// Summary description for PersonenTest
