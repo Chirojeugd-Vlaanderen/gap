@@ -11,7 +11,7 @@ using Chiro.Gap.Workers;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Fouten.FaultContracts;
-using Chiro.Chiro.Gap.ServiceContracts.Mappers;
+using Chiro.Gap.ServiceContracts.Mappers;
 
 namespace Chiro.Gap.Services
 {

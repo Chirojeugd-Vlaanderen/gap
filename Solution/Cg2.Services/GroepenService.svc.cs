@@ -9,7 +9,7 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Cdf.Ioc;
 using System.Diagnostics;
-using Chiro.Chiro.Gap.ServiceContracts.Mappers;
+using Chiro.Gap.ServiceContracts.Mappers;
 
 namespace Chiro.Gap.Services
 {

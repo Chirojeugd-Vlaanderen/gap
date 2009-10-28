@@ -128,9 +128,9 @@
       <Project>{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}</Project>
       <Name>Chiro.Cdf.DependencyInjectionBehavior</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.CG2.ServiceContracts.Mappers\Chiro.CG2.ServiceContracts.Mappers.csproj">
+    <ProjectReference Include="..\Chiro.CG2.ServiceContracts.Mappers\Chiro.Gap.ServiceContracts.Mappers.csproj">
       <Project>{08F94344-8414-4136-8314-4B7380B10CD7}</Project>
-      <Name>Chiro.CG2.ServiceContracts.Mappers</Name>
+      <Name>Chiro.Gap.ServiceContracts.Mappers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

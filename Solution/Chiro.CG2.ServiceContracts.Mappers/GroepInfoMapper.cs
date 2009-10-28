@@ -5,7 +5,7 @@ using System.Text;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 
-namespace Chiro.Chiro.Gap.ServiceContracts.Mappers
+namespace Chiro.Gap.ServiceContracts.Mappers
 {
     public class GroepInfoMapper
     {
