@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-using Cg2.EfWrapper;
-using Cg2.EfWrapper.Entity;
+using Chiro.Cdf.EfWrapper;
+using Chiro.Cdf.EfWrapper.Entity;
 using System.Diagnostics;
 
 namespace Cg2.Orm

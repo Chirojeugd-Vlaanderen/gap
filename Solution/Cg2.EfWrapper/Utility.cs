@@ -25,7 +25,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Cg2.EfWrapper
+namespace Chiro.Cdf.EfWrapper
 {
     public static class Utility
     {

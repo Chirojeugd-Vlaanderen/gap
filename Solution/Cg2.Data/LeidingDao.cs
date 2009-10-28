@@ -9,7 +9,7 @@ using System.Data;
 using Cg2.Orm.DataInterfaces;
 
 using System.Linq.Expressions;
-using Cg2.EfWrapper.Entity;
+using Chiro.Cdf.EfWrapper.Entity;
 
 
 namespace Chiro.Gap.Data.Ef

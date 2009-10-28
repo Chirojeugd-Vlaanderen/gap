@@ -5,9 +5,9 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data.Objects;
 
-using Cg2.EfWrapper.Entity;
+using Chiro.Cdf.EfWrapper.Entity;
 
-namespace Cg2.EfWrapper.Test
+namespace Chiro.Cdf.EfWrapper.Test
 {
     /// <summary>
     /// Summary description for ToevoegTest

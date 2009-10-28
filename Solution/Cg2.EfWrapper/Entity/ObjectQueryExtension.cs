@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-namespace Cg2.EfWrapper.Entity
+namespace Chiro.Cdf.EfWrapper.Entity
 {
 	/// <summary>
 	/// Extension methods on ObjectQuery.

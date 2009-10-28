@@ -103,9 +103,9 @@
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cg2.EfWrapper\Cg2.EfWrapper.csproj">
+    <ProjectReference Include="..\Cg2.EfWrapper\Chiro.Cdf.EfWrapper.csproj">
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
-      <Name>Cg2.EfWrapper</Name>
+      <Name>Chiro.Cdf.EfWrapper</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

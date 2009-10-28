@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Cg2.EfWrapper;
-using Cg2.EfWrapper.Entity;
+using Chiro.Cdf.EfWrapper;
+using Chiro.Cdf.EfWrapper.Entity;
 
 namespace Cg2.Orm
 {

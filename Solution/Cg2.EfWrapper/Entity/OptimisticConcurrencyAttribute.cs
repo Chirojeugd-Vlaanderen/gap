@@ -3,7 +3,7 @@ using System.Data.Objects;
 using System.Linq;
 using System.Reflection;
 
-namespace Cg2.EfWrapper.Entity
+namespace Chiro.Cdf.EfWrapper.Entity
 {
 	/// <summary>
 	/// Declares a property for optimistic concurrency.

@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Orm;
 using Cg2.Workers;
 using Cg2.Ioc;
-using Cg2.EfWrapper.Entity;
+using Chiro.Cdf.EfWrapper.Entity;
 using Cg2.Orm.DataInterfaces;
 
 namespace Cg2.Dao.Test

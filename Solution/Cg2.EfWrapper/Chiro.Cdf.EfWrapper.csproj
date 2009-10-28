@@ -8,8 +8,8 @@
     <ProjectGuid>{72F61656-2949-4763-9381-678B2D07AE0B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cg2.EfWrapper</RootNamespace>
-    <AssemblyName>Cg2.EfWrapper</AssemblyName>
+    <RootNamespace>Chiro.Cdf.EfWrapper</RootNamespace>
+    <AssemblyName>Chiro.Cdf.EfWrapper</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>

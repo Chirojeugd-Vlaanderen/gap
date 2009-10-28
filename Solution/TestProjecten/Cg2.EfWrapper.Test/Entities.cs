@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cg2.EfWrapper.Entity;
+using Chiro.Cdf.EfWrapper.Entity;
 using System.Diagnostics;
 
-namespace Cg2.EfWrapper.Test
+namespace Chiro.Cdf.EfWrapper.Test
 {
     public partial class PersoonsAdres : IBasisEntiteit
     {

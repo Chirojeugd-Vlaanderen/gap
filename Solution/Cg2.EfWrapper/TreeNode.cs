@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Cg2.EfWrapper
+namespace Chiro.Cdf.EfWrapper
 {
 	/// <summary>
 	/// Represents a node in a tree structure and helps

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-using Cg2.EfWrapper;
+using Chiro.Cdf.EfWrapper;
 
 namespace Cg2.Orm
 {

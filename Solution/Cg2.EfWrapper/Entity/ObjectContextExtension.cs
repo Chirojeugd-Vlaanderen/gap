@@ -21,7 +21,7 @@ using System.Diagnostics;
 using Arebis.Reflection;
 
 
-namespace Cg2.EfWrapper.Entity
+namespace Chiro.Cdf.EfWrapper.Entity
 {
 	/// <summary>
 	/// Extension methods on ObjectContext.

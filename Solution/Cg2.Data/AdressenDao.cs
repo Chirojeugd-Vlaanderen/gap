@@ -6,8 +6,8 @@ using System.Diagnostics;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
 
-using Cg2.EfWrapper;
-using Cg2.EfWrapper.Entity;
+using Chiro.Cdf.EfWrapper;
+using Chiro.Cdf.EfWrapper.Entity;
 using Cg2.Orm;
 using Cg2.Orm.DataInterfaces;
 using System.Linq.Expressions;

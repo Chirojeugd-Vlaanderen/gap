@@ -70,9 +70,9 @@
       <Project>{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}</Project>
       <Name>Cg2.Dummies</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Cg2.EfWrapper\Cg2.EfWrapper.csproj">
+    <ProjectReference Include="..\..\Cg2.EfWrapper\Chiro.Cdf.EfWrapper.csproj">
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
-      <Name>Cg2.EfWrapper</Name>
+      <Name>Chiro.Cdf.EfWrapper</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Cg2.Ioc\Cg2.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>

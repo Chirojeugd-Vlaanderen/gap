@@ -5,9 +5,9 @@ using System.Text;
 using Cg2.Orm;
 using Cg2.Orm.DataInterfaces;
 using System.Data.Objects;
-using Cg2.EfWrapper.Entity;
+using Chiro.Cdf.EfWrapper.Entity;
 using System.Linq.Expressions;
-using Cg2.EfWrapper;
+using Chiro.Cdf.EfWrapper;
 using System.Diagnostics;
 
 namespace Chiro.Gap.Data.Ef

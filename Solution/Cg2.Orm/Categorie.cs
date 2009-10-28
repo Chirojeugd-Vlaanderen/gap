@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cg2.EfWrapper;
+using Chiro.Cdf.EfWrapper;
 using System.Diagnostics;
 
 namespace Cg2.Orm

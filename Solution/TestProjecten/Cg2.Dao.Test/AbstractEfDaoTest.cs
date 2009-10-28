@@ -7,7 +7,7 @@ using Cg2.Orm;
 using Cg2.Ioc;
 using Cg2.Orm.DataInterfaces;
 using System.Data;
-using Cg2.EfWrapper.Entity;
+using Chiro.Cdf.EfWrapper.Entity;
 
 namespace Cg2.Dao.Test
 {

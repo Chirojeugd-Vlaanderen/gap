@@ -8,7 +8,7 @@ using System.Data.Objects;
 using System.Data;
 using Cg2.Orm.DataInterfaces;
 
-using Cg2.EfWrapper.Entity;
+using Chiro.Cdf.EfWrapper.Entity;
 using System.Linq.Expressions;
 
 namespace Chiro.Gap.Data.Ef

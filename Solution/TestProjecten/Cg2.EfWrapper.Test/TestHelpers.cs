@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Data.Objects;
 
-using Cg2.EfWrapper.Entity;
+using Chiro.Cdf.EfWrapper.Entity;
 
-namespace Cg2.EfWrapper.Test
+namespace Chiro.Cdf.EfWrapper.Test
 {
     internal static class TestHelpers
     {

@@ -59,9 +59,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cg2.EfWrapper\Cg2.EfWrapper.csproj">
+    <ProjectReference Include="..\Cg2.EfWrapper\Chiro.Cdf.EfWrapper.csproj">
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
-      <Name>Cg2.EfWrapper</Name>
+      <Name>Chiro.Cdf.EfWrapper</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cg2.Orm\Cg2.Orm.csproj">
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>

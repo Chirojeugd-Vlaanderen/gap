@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Linq;
 
-namespace Cg2.EfWrapper.Entity
+namespace Chiro.Cdf.EfWrapper.Entity
 {
 	internal static class EntityFrameworkHelper
 	{

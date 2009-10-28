@@ -8,8 +8,8 @@ using System.Data;
 using System.Diagnostics;
 using System.Data.Objects;
 
-using Cg2.EfWrapper.Entity;
-using Cg2.EfWrapper;
+using Chiro.Cdf.EfWrapper.Entity;
+using Chiro.Cdf.EfWrapper;
 
 namespace Chiro.Gap.Data.Ef
 {

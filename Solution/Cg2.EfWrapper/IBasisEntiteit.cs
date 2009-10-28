@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data.Objects.DataClasses;
 
-namespace Cg2.EfWrapper
+namespace Chiro.Cdf.EfWrapper
 {
     /// <summary>
     /// Basisentiteit.  De bedoeling is dat al onze entity's
