@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 
-namespace Cg2.Orm.DataInterfaces
+namespace Chiro.Gap.Orm.DataInterfaces
 {
     public interface ILedenDao: IDao<Lid>
     {

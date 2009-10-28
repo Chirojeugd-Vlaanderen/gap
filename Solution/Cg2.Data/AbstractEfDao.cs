@@ -6,8 +6,8 @@ using System.Data.Objects;
 using System.Data;
 using System.Data.Objects.DataClasses;
 
-using Cg2.Orm.DataInterfaces;
-using Cg2.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Orm;
 using Chiro.Cdf.EfWrapper;
 using Chiro.Cdf.EfWrapper.Entity;
 

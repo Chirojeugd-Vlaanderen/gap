@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using System.Configuration;
-using Cg2.Orm;
+using Chiro.Gap.Orm;
 using Chiro.Gap.WebApp.Models;
 using System.Diagnostics;
 using System.ServiceModel;

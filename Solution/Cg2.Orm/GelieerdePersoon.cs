@@ -8,7 +8,7 @@ using Chiro.Cdf.EfWrapper;
 using Chiro.Cdf.EfWrapper.Entity;
 using System.Diagnostics;
 
-namespace Cg2.Orm
+namespace Chiro.Gap.Orm
 {
     // Als er een persoon met adressen over de service gestuurd wordt,
     // en een PersoonsAdres is uit de lijst met PersoonsAdressen 

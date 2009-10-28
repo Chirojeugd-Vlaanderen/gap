@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
-using Cg2.Orm;
+using Chiro.Gap.Orm;
 
 namespace Cg2.ServiceContracts
 {

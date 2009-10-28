@@ -8,7 +8,7 @@ using System.Security.Permissions;
 
 using Cg2.ServiceContracts;
 using Cg2.Workers;
-using Cg2.Orm;
+using Chiro.Gap.Orm;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Fouten.FaultContracts;
 using Chiro.CG2.ServiceContracts.Mappers;

@@ -6,7 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using Cg2.ServiceContracts;
 using Cg2.Workers;
-using Cg2.Orm;
+using Chiro.Gap.Orm;
 using Chiro.Cdf.Ioc;
 using Chiro.CG2.ServiceContracts.Mappers;
 

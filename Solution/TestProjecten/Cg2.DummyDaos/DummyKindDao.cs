@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cg2.Orm.DataInterfaces;
+using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Cg2.Dummies
 {
@@ -13,37 +13,37 @@ namespace Cg2.Dummies
     {
         #region IDao<Kind> Members
 
-        public Cg2.Orm.Kind Ophalen(int id)
+        public Chiro.Gap.Orm.Kind Ophalen(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Cg2.Orm.Kind Ophalen(int id, params System.Linq.Expressions.Expression<Func<Cg2.Orm.Kind, object>>[] paths)
+        public Chiro.Gap.Orm.Kind Ophalen(int id, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Kind, object>>[] paths)
         {
             throw new NotImplementedException();
         }
 
-        public List<Cg2.Orm.Kind> AllesOphalen()
+        public List<Chiro.Gap.Orm.Kind> AllesOphalen()
         {
             throw new NotImplementedException();
         }
 
-        public Cg2.Orm.Kind Bewaren(Cg2.Orm.Kind nieuweEntiteit)
+        public Chiro.Gap.Orm.Kind Bewaren(Chiro.Gap.Orm.Kind nieuweEntiteit)
         {
             throw new NotImplementedException();
         }
 
-        public Cg2.Orm.Kind Bewaren(Cg2.Orm.Kind entiteit, params System.Linq.Expressions.Expression<Func<Cg2.Orm.Kind, object>>[] paths)
+        public Chiro.Gap.Orm.Kind Bewaren(Chiro.Gap.Orm.Kind entiteit, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Kind, object>>[] paths)
         {
             throw new NotImplementedException();
         }
 
-        public IList<Cg2.Orm.Kind> Bewaren(IList<Cg2.Orm.Kind> es, params System.Linq.Expressions.Expression<Func<Cg2.Orm.Kind, object>>[] paths)
+        public IList<Chiro.Gap.Orm.Kind> Bewaren(IList<Chiro.Gap.Orm.Kind> es, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Kind, object>>[] paths)
         {
             throw new NotImplementedException();
         }
 
-        public System.Linq.Expressions.Expression<Func<Cg2.Orm.Kind, object>>[] getConnectedEntities()
+        public System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Kind, object>>[] getConnectedEntities()
         {
             throw new NotImplementedException();
         }

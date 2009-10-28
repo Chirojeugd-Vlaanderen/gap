@@ -7,7 +7,7 @@ using Chiro.Cdf.EfWrapper;
 using Chiro.Cdf.EfWrapper.Entity;
 using System.Diagnostics;
 
-namespace Cg2.Orm
+namespace Chiro.Gap.Orm
 {
     [AssociationEndBehavior("Afdeling", Owned = true)]
     public partial class Groep : IBasisEntiteit 

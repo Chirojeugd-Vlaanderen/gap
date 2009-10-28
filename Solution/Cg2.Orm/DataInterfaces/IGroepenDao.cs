@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Cg2.Orm.DataInterfaces
+namespace Chiro.Gap.Orm.DataInterfaces
 {
     /// <summary>
     /// Interface voor de 'Groepenrepository'

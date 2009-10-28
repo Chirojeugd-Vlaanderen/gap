@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cg2.Orm;
+using Chiro.Gap.Orm;
 using Cg2.ServiceContracts;
 
 namespace Chiro.CG2.ServiceContracts.Mappers

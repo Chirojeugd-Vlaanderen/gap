@@ -8,7 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{994E80C0-DD18-417A-A51C-F781D3B012AB}"
 	ProjectSection(SolutionItems) = preProject
 		Cg2Solution.vsmdi = Cg2Solution.vsmdi
-		Cg2Solution2.vsmdi = Cg2Solution2.vsmdi
+		Cg2Solution1.vsmdi = Cg2Solution1.vsmdi
 		CustomDictionary.xml = CustomDictionary.xml
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
@@ -36,7 +36,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Adf", "Cg2.Adf\Chiro.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Adf.ServiceModel", "Cg2.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj", "{174890F3-1F4C-4CFC-83A1-AA88F5748A67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cg2.Orm", "Cg2.Orm\Cg2.Orm.csproj", "{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Orm", "Cg2.Orm\Chiro.Gap.Orm.csproj", "{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.DependencyInjectionBehavior", "Chiro.Cdf.DependancyInjectionBehaviour\Chiro.Cdf.DependencyInjectionBehavior.csproj", "{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}"
 EndProject
@@ -64,7 +64,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHelper.Test", "TestP
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Cg2Solution2.vsmdi
+		CategoryFile = Cg2Solution1.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Chiro.Gap.Data.Ef;
-using Cg2.Orm.DataInterfaces;
-using Cg2.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Orm;
 using System.Data.Objects;
 
 namespace Chiro.Gap.Data.Ef

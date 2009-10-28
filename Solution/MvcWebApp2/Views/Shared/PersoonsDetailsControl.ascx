@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<GelieerdePersonenModel>" %>
-<%@ Import Namespace="Cg2.Orm" %>
+<%@ Import Namespace="Chiro.Gap.Orm" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 
 <h3>Algemeen</h3>

@@ -5,7 +5,7 @@ using System.Text;
 using Chiro.Cdf.EfWrapper;
 using System.Diagnostics;
 
-namespace Cg2.Orm
+namespace Chiro.Gap.Orm
 {
     public partial class Categorie: IBasisEntiteit
     {

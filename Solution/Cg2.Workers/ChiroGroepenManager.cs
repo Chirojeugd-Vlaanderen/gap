@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cg2.Orm.DataInterfaces;
+using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Data.Ef;
-using Cg2.Orm;
+using Chiro.Gap.Orm;
 
 namespace Cg2.Workers
 {

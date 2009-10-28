@@ -72,9 +72,9 @@
       <Project>{D82C1286-8BC6-422C-8688-E178377D3EB6}</Project>
       <Name>Chiro.Gap.Fouten</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Cg2.Orm\Cg2.Orm.csproj">
+    <ProjectReference Include="..\Cg2.Orm\Chiro.Gap.Orm.csproj">
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
-      <Name>Cg2.Orm</Name>
+      <Name>Chiro.Gap.Orm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

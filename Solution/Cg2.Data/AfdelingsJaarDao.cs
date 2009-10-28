@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cg2.Orm.DataInterfaces;
-using Cg2.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Orm;
 using System.Data.Objects;
 using Chiro.Gap.Data.Ef;
 using Chiro.Cdf.EfWrapper.Entity;

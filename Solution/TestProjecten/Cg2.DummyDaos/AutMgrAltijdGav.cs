@@ -25,7 +25,7 @@ namespace Cg2.Dummies
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Cg2.Orm.Groep> GekoppeldeGroepenGet()
+        public IEnumerable<Chiro.Gap.Orm.Groep> GekoppeldeGroepenGet()
         {
             throw new NotImplementedException();
         }

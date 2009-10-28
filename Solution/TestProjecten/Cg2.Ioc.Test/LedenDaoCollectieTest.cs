@@ -3,7 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Cg2.Orm.DataInterfaces;
+using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Cdf.Ioc.Test
 {

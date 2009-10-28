@@ -1,7 +1,7 @@
 ﻿using Cg2.Workers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Cg2.Orm.DataInterfaces;
-using Cg2.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Orm;
 using System.Collections.Generic;
 
 namespace Cg2.Workers.Test

@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<LidInfoModel>" %>
-<%@ Import Namespace="Cg2.Orm" %>
+<%@ Import Namespace="Chiro.Gap.Orm" %>
 <%@ Import Namespace="Cg2.ServiceContracts" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 

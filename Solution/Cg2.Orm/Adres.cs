@@ -6,7 +6,7 @@ using System.Text;
 using Chiro.Cdf.EfWrapper;
 using Chiro.Cdf.EfWrapper.Entity;
 
-namespace Cg2.Orm
+namespace Chiro.Gap.Orm
 {
     // Als een link naar PersoonsAdres verwijderd wordt, dan
     // moet het persoonsadres zelf ook verwijderd worden.

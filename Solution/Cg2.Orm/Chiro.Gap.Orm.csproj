@@ -8,8 +8,8 @@
     <ProjectGuid>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cg2.Orm</RootNamespace>
-    <AssemblyName>Cg2.Orm</AssemblyName>
+    <RootNamespace>Chiro.Gap.Orm</RootNamespace>
+    <AssemblyName>Chiro.Gap.Orm</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

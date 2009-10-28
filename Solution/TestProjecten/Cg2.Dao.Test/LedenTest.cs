@@ -3,11 +3,11 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Cg2.Orm;
+using Chiro.Gap.Orm;
 using Cg2.Workers;
 using Chiro.Cdf.Ioc;
 using Chiro.Cdf.EfWrapper.Entity;
-using Cg2.Orm.DataInterfaces;
+using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Cg2.Dao.Test
 {

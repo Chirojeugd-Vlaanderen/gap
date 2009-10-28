@@ -8,8 +8,8 @@ using System.Data.Objects.DataClasses;
 
 using Chiro.Cdf.EfWrapper;
 using Chiro.Cdf.EfWrapper.Entity;
-using Cg2.Orm;
-using Cg2.Orm.DataInterfaces;
+using Chiro.Gap.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
 using System.Linq.Expressions;
 
 

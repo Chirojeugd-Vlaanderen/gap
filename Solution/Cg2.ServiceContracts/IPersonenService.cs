@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cg2.Orm;
+using Chiro.Gap.Orm;
 using System.ServiceModel;
 
 namespace Cg2.ServiceContracts

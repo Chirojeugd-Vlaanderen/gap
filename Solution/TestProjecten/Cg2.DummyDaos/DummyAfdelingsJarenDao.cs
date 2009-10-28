@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cg2.Orm.DataInterfaces;
+using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Cg2.Dummies
 {
@@ -13,7 +13,7 @@ namespace Cg2.Dummies
     {
         #region IAfdelingsJaarDao Members
 
-        public Cg2.Orm.AfdelingsJaar Ophalen(int groepsWerkJaarID, int afdelingID)
+        public Chiro.Gap.Orm.AfdelingsJaar Ophalen(int groepsWerkJaarID, int afdelingID)
         {
             throw new NotImplementedException();
         }
@@ -22,37 +22,37 @@ namespace Cg2.Dummies
 
         #region IDao<AfdelingsJaar> Members
 
-        public Cg2.Orm.AfdelingsJaar Ophalen(int id)
+        public Chiro.Gap.Orm.AfdelingsJaar Ophalen(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Cg2.Orm.AfdelingsJaar Ophalen(int id, params System.Linq.Expressions.Expression<Func<Cg2.Orm.AfdelingsJaar, object>>[] paths)
+        public Chiro.Gap.Orm.AfdelingsJaar Ophalen(int id, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.AfdelingsJaar, object>>[] paths)
         {
             throw new NotImplementedException();
         }
 
-        public List<Cg2.Orm.AfdelingsJaar> AllesOphalen()
+        public List<Chiro.Gap.Orm.AfdelingsJaar> AllesOphalen()
         {
             throw new NotImplementedException();
         }
 
-        public Cg2.Orm.AfdelingsJaar Bewaren(Cg2.Orm.AfdelingsJaar nieuweEntiteit)
+        public Chiro.Gap.Orm.AfdelingsJaar Bewaren(Chiro.Gap.Orm.AfdelingsJaar nieuweEntiteit)
         {
             throw new NotImplementedException();
         }
 
-        public Cg2.Orm.AfdelingsJaar Bewaren(Cg2.Orm.AfdelingsJaar entiteit, params System.Linq.Expressions.Expression<Func<Cg2.Orm.AfdelingsJaar, object>>[] paths)
+        public Chiro.Gap.Orm.AfdelingsJaar Bewaren(Chiro.Gap.Orm.AfdelingsJaar entiteit, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.AfdelingsJaar, object>>[] paths)
         {
             throw new NotImplementedException();
         }
 
-        public IList<Cg2.Orm.AfdelingsJaar> Bewaren(IList<Cg2.Orm.AfdelingsJaar> es, params System.Linq.Expressions.Expression<Func<Cg2.Orm.AfdelingsJaar, object>>[] paths)
+        public IList<Chiro.Gap.Orm.AfdelingsJaar> Bewaren(IList<Chiro.Gap.Orm.AfdelingsJaar> es, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.AfdelingsJaar, object>>[] paths)
         {
             throw new NotImplementedException();
         }
 
-        public System.Linq.Expressions.Expression<Func<Cg2.Orm.AfdelingsJaar, object>>[] getConnectedEntities()
+        public System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.AfdelingsJaar, object>>[] getConnectedEntities()
         {
             throw new NotImplementedException();
         }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cg2.Orm.DataInterfaces;
+using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Cg2.Dummies
 {
@@ -14,12 +14,12 @@ namespace Cg2.Dummies
     {
         #region IAuthorisatieDao Members
 
-        public Cg2.Orm.GebruikersRecht RechtenMbtGroepGet(string login, int groepID)
+        public Chiro.Gap.Orm.GebruikersRecht RechtenMbtGroepGet(string login, int groepID)
         {
             throw new NotImplementedException();
         }
 
-        public Cg2.Orm.GebruikersRecht RechtenMbtGelieerdePersoonGet(string login, int GelieerdePersoonID)
+        public Chiro.Gap.Orm.GebruikersRecht RechtenMbtGelieerdePersoonGet(string login, int GelieerdePersoonID)
         {
             throw new NotImplementedException();
         }
@@ -44,7 +44,7 @@ namespace Cg2.Dummies
             return true;
         }
 
-        public IEnumerable<Cg2.Orm.Groep> GekoppeldeGroepenGet(string login)
+        public IEnumerable<Chiro.Gap.Orm.Groep> GekoppeldeGroepenGet(string login)
         {
             throw new NotImplementedException();
         }
@@ -63,37 +63,37 @@ namespace Cg2.Dummies
 
         #region IDao<GebruikersRecht> Members
 
-        public Cg2.Orm.GebruikersRecht Ophalen(int id)
+        public Chiro.Gap.Orm.GebruikersRecht Ophalen(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Cg2.Orm.GebruikersRecht Ophalen(int id, params System.Linq.Expressions.Expression<Func<Cg2.Orm.GebruikersRecht, object>>[] paths)
+        public Chiro.Gap.Orm.GebruikersRecht Ophalen(int id, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.GebruikersRecht, object>>[] paths)
         {
             throw new NotImplementedException();
         }
 
-        public List<Cg2.Orm.GebruikersRecht> AllesOphalen()
+        public List<Chiro.Gap.Orm.GebruikersRecht> AllesOphalen()
         {
             throw new NotImplementedException();
         }
 
-        public Cg2.Orm.GebruikersRecht Bewaren(Cg2.Orm.GebruikersRecht nieuweEntiteit)
+        public Chiro.Gap.Orm.GebruikersRecht Bewaren(Chiro.Gap.Orm.GebruikersRecht nieuweEntiteit)
         {
             throw new NotImplementedException();
         }
 
-        public Cg2.Orm.GebruikersRecht Bewaren(Cg2.Orm.GebruikersRecht entiteit, params System.Linq.Expressions.Expression<Func<Cg2.Orm.GebruikersRecht, object>>[] paths)
+        public Chiro.Gap.Orm.GebruikersRecht Bewaren(Chiro.Gap.Orm.GebruikersRecht entiteit, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.GebruikersRecht, object>>[] paths)
         {
             throw new NotImplementedException();
         }
 
-        public IList<Cg2.Orm.GebruikersRecht> Bewaren(IList<Cg2.Orm.GebruikersRecht> es, params System.Linq.Expressions.Expression<Func<Cg2.Orm.GebruikersRecht, object>>[] paths)
+        public IList<Chiro.Gap.Orm.GebruikersRecht> Bewaren(IList<Chiro.Gap.Orm.GebruikersRecht> es, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.GebruikersRecht, object>>[] paths)
         {
             throw new NotImplementedException();
         }
 
-        public System.Linq.Expressions.Expression<Func<Cg2.Orm.GebruikersRecht, object>>[] getConnectedEntities()
+        public System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.GebruikersRecht, object>>[] getConnectedEntities()
         {
             throw new NotImplementedException();
         }

@@ -3,9 +3,9 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Cg2.Orm;
+using Chiro.Gap.Orm;
 using Chiro.Cdf.Ioc;
-using Cg2.Orm.DataInterfaces;
+using Chiro.Gap.Orm.DataInterfaces;
 using System.Data;
 using Chiro.Cdf.EfWrapper.Entity;
 

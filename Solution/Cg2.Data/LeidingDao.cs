@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cg2.Orm;
+using Chiro.Gap.Orm;
 using System.Diagnostics;
 using System.Data.Objects;
 using System.Data;
-using Cg2.Orm.DataInterfaces;
+using Chiro.Gap.Orm.DataInterfaces;
 
 using System.Linq.Expressions;
 using Chiro.Cdf.EfWrapper.Entity;
