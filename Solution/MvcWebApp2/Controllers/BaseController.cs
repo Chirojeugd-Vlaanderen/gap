@@ -9,7 +9,7 @@ using System.Web.Mvc.Ajax;
 using Chiro.Gap.Orm;
 using System.Configuration;
 using Chiro.Adf.ServiceModel;
-using Cg2.ServiceContracts;
+using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.WebApp.Models;
 using System.Web.Caching;
 

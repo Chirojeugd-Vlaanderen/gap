@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Chiro.CG2.ServiceContracts.Mappers")]
+[assembly: AssemblyTitle("Chiro.Chiro.Gap.ServiceContracts.Mappers")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Capgemini")]
-[assembly: AssemblyProduct("Chiro.CG2.ServiceContracts.Mappers")]
+[assembly: AssemblyProduct("Chiro.Chiro.Gap.ServiceContracts.Mappers")]
 [assembly: AssemblyCopyright("Copyright © Capgemini 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

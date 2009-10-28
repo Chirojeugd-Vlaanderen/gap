@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Adf.ServiceModel;
-using Cg2.ServiceContracts;
+using Chiro.Gap.ServiceContracts;
 
 namespace ServiceHelper.Test
 {

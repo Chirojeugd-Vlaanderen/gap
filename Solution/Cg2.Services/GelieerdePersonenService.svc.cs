@@ -6,12 +6,12 @@ using System.ServiceModel;
 using System.Text;
 using System.Security.Permissions;
 
-using Cg2.ServiceContracts;
+using Chiro.Gap.ServiceContracts;
 using Cg2.Workers;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Fouten.FaultContracts;
-using Chiro.CG2.ServiceContracts.Mappers;
+using Chiro.Chiro.Gap.ServiceContracts.Mappers;
 
 namespace Cg2.Services
 {

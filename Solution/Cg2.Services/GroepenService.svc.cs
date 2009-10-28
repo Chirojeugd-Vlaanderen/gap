@@ -6,10 +6,10 @@ using System.ServiceModel;
 using System.Text;
 using Cg2.Workers;
 using Chiro.Gap.Orm;
-using Cg2.ServiceContracts;
+using Chiro.Gap.ServiceContracts;
 using Chiro.Cdf.Ioc;
 using System.Diagnostics;
-using Chiro.CG2.ServiceContracts.Mappers;
+using Chiro.Chiro.Gap.ServiceContracts.Mappers;
 
 namespace Cg2.Services
 {

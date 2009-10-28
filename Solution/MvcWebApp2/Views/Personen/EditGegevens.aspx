@@ -60,7 +60,7 @@
        { %>
        <li>
             <%=Html.Encode(String.Format("{0} {1}", pa.Adres.Straat.Naam, pa.Adres.HuisNr))%>,
-            <%=Html.Encode(String.Format("{0} {1} {2} ({3}) ", pa.Adres.Straat.PostNr, pa.Adres.PostCode, pa.Adres.Subgemeente.Naam, pa.Adres.AdresType))%>
+            <%=Html.Encode(String.Format("{0} {1} {2} ({3}) ", pa.Adres.Straat.PostNr, pa.Adres.PostCode, pa.Adres.Subgemeente.Naam, pa.AdresType))%>
             [verhuizen],[verwijderen]
         </li>
     <%} %>

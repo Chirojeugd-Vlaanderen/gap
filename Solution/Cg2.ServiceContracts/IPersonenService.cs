@@ -5,7 +5,7 @@ using System.Text;
 using Chiro.Gap.Orm;
 using System.ServiceModel;
 
-namespace Cg2.ServiceContracts
+namespace Chiro.Gap.ServiceContracts
 {
     [ServiceContract]
     interface IPersonenService

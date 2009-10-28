@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Chiro.Adf.ServiceModel;
-using Cg2.ServiceContracts;
+using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp
 {

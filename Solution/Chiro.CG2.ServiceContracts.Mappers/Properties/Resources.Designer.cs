@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Chiro.CG2.ServiceContracts.Mappers.Properties
+namespace Chiro.Chiro.Gap.ServiceContracts.Mappers.Properties
 {
     using System;
     
@@ -40,7 +40,7 @@ namespace Chiro.CG2.ServiceContracts.Mappers.Properties
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Cg2.ServiceContracts.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Chiro.Gap.ServiceContracts.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

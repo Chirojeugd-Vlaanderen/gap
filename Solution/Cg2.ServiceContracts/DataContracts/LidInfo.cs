@@ -5,7 +5,7 @@ using System.Text;
 using System.Runtime.Serialization;
 using Chiro.Gap.Orm;
 
-namespace Cg2.ServiceContracts
+namespace Chiro.Gap.ServiceContracts
 {
     [DataContract]
     public class LidInfo

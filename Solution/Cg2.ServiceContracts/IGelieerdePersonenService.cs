@@ -7,7 +7,7 @@ using System.Text;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Fouten.FaultContracts;
 
-namespace Cg2.ServiceContracts
+namespace Chiro.Gap.ServiceContracts
 {
     // NOTE: If you change the interface name "IGelieerdePersonenService" here, you must also update the reference to "IGelieerdePersonenService" in Web.config.
     [ServiceContract]

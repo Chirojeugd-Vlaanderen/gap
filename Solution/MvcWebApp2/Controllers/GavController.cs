@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using Chiro.Adf.ServiceModel;
-using Cg2.ServiceContracts;
+using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Controllers
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-namespace Cg2.ServiceContracts
+namespace Chiro.Gap.ServiceContracts
 {
     [DataContract]
     public class GroepInfo

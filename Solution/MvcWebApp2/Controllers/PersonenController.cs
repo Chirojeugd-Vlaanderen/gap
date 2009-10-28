@@ -11,7 +11,7 @@ using System.Diagnostics;
 using System.ServiceModel;
 using Chiro.Gap.Fouten.FaultContracts;
 using Chiro.Adf.ServiceModel;
-using Cg2.ServiceContracts;
+using Chiro.Gap.ServiceContracts;
 using Cg2.Validatie;
 
 namespace Chiro.Gap.WebApp.Controllers

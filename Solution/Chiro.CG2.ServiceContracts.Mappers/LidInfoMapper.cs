@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Chiro.Gap.Orm;
-using Cg2.ServiceContracts;
+using Chiro.Gap.ServiceContracts;
 
-namespace Chiro.CG2.ServiceContracts.Mappers
+namespace Chiro.Chiro.Gap.ServiceContracts.Mappers
 {
     public class LidInfoMapper
     {

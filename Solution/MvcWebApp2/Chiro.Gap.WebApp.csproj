@@ -185,9 +185,9 @@
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
       <Name>Chiro.Gap.Orm</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Cg2.ServiceContracts\Cg2.ServiceContracts.csproj">
+    <ProjectReference Include="..\Cg2.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
       <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
-      <Name>Cg2.ServiceContracts</Name>
+      <Name>Chiro.Gap.ServiceContracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cg2.Validatie\Cg2.Validatie.csproj">
       <Project>{853B7FDF-27B6-48BC-A220-F68CCE610B6B}</Project>

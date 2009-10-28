@@ -69,7 +69,7 @@
        { %>
        <li>
             <%=Html.Encode(String.Format("{0} {1}", pa.Adres.Straat.Naam, pa.Adres.HuisNr))%>,
-            <%=Html.Encode(String.Format("{0} {1} {2} ({3}) ", pa.Adres.Straat.PostNr, pa.Adres.PostCode, pa.Adres.Subgemeente.Naam, pa.Adres.AdresType))%>
+            <%=Html.Encode(String.Format("{0} {1} {2} ({3}) ", pa.Adres.Straat.PostNr, pa.Adres.PostCode, pa.Adres.Subgemeente.Naam, pa.AdresType))%>
             <%=Html.ActionLink( "[verhuizen]", "Verhuizen", new {id = pa.Adres.ID, aanvragerID = ViewData.Model.HuidigePersoon.ID} ) %>
             <%=Html.ActionLink("[verwijderen]", "AdresVerwijderen", new { id = pa.Adres.ID, gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%>
         </li>
@@ -88,7 +88,7 @@
             <%=Html.Encode(cv.Nummer) %>
             <%=cv.Voorkeur ? "(voorkeur)" : "" %>
             <%=Html.ActionLink("[verwijderen]", "VerwijderenCommVorm", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%>
-            <%=Html.ActionLink("[bewerken]", "BewerkenCommVorm", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%></li>
+            <%=Html.ActionLink("[bewerken]", "BewerkenCommVorm", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%>
         </li>
     <%} %>
     <li><%=Html.ActionLink("[communicatievorm toevoegen]", "NieuweCommVorm", new { gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%></li>

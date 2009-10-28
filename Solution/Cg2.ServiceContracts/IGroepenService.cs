@@ -6,7 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using Chiro.Gap.Orm;
 
-namespace Cg2.ServiceContracts
+namespace Chiro.Gap.ServiceContracts
 {
     // NOTE: If you change the interface name "IGroepenService" here, you must also update the reference to "IGroepenService" in Web.config.
     [ServiceContract]

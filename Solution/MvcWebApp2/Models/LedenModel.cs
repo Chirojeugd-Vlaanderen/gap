@@ -5,7 +5,7 @@ using System.Web;
 
 using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Orm;
-using Cg2.ServiceContracts;
+using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
