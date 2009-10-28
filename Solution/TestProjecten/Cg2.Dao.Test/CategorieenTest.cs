@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm;
-using Cg2.Workers;
+using Chiro.Gap.Workers;
 using Cg2.Dummies;
 using Chiro.Cdf.EfWrapper.Entity;
 using Chiro.Cdf.Ioc;

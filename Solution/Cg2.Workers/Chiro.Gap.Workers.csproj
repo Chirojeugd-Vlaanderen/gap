@@ -8,8 +8,8 @@
     <ProjectGuid>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cg2.Workers</RootNamespace>
-    <AssemblyName>Cg2.Workers</AssemblyName>
+    <RootNamespace>Chiro.Gap.Workers</RootNamespace>
+    <AssemblyName>Chiro.Gap.Workers</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

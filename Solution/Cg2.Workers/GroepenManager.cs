@@ -8,7 +8,7 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.Fouten.Exceptions;
 using System.Diagnostics;
 
-namespace Cg2.Workers
+namespace Chiro.Gap.Workers
 {
     public class GroepenManager
     {

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Cg2.Workers
+namespace Chiro.Gap.Workers
 {
     public interface IAutorisatieManager
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cg2.Workers;
+using Chiro.Gap.Workers;
 
 namespace Cg2.Dummies
 {

@@ -6,7 +6,7 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Data.Ef;
 
-namespace Cg2.Workers
+namespace Chiro.Gap.Workers
 {
     public class AutorisatieManager : IAutorisatieManager
     {

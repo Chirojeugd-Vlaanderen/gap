@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ServiceModel;
 
-namespace Cg2.Workers
+namespace Chiro.Gap.Workers
 {
     public class AuthenticatieManager: IAuthenticatieManager
     {

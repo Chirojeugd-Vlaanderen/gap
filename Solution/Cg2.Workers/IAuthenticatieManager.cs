@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Cg2.Workers
+namespace Chiro.Gap.Workers
 {
     /// <summary>
     /// Interface voor klasse die gebruiker moet authenticeren.

@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using Chiro.Gap.ServiceContracts;
-using Cg2.Workers;
+using Chiro.Gap.Workers;
 using Chiro.Gap.Orm;
 using Chiro.Cdf.Ioc;
 using Chiro.Chiro.Gap.ServiceContracts.Mappers;

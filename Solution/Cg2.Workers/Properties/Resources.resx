@@ -129,6 +129,9 @@
   <data name="GeenGavCategoriePersoon" xml:space="preserve">
     <value>De categorie en/of de persoon zijn niet gekoppeld aan je groep(en).</value>
   </data>
+  <data name="GeenGavCommVorm" xml:space="preserve">
+    <value>Dit is geen communicatievorm van een van jouw personen.</value>
+  </data>
   <data name="GeenGavGelieerdePersoon" xml:space="preserve">
     <value>Deze persoon is niet gekoppeld aan je groep(en).</value>
   </data>

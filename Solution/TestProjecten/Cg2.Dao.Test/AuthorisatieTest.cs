@@ -3,7 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Cg2.Workers;
+using Chiro.Gap.Workers;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Data.Ef;

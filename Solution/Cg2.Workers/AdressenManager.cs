@@ -10,7 +10,7 @@ using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Fouten.FaultContracts;
 using System.ServiceModel;
 
-namespace Cg2.Workers
+namespace Chiro.Gap.Workers
 {
     public class AdressenManager
     {

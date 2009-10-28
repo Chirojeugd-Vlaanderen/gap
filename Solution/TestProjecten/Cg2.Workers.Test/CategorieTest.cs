@@ -1,10 +1,10 @@
-﻿using Cg2.Workers;
+﻿using Chiro.Gap.Workers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm;
 using System.Collections.Generic;
 
-namespace Cg2.Workers.Test
+namespace Chiro.Gap.Workers.Test
 {
     
     

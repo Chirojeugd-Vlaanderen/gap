@@ -7,7 +7,7 @@ using Chiro.Gap.Orm;
 using System.Diagnostics;
 using Chiro.Gap.Fouten.Exceptions;
 
-namespace Cg2.Workers
+namespace Chiro.Gap.Workers
 {
     public class WerkJaarManager
     {

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cg2.Workers.Properties {
+namespace Chiro.Gap.Workers.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Cg2.Workers.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Cg2.Workers.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Chiro.Gap.Workers.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -97,6 +97,15 @@ namespace Cg2.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dit is geen communicatievorm van een van jouw personen..
+        /// </summary>
+        internal static string GeenGavCommVorm {
+            get {
+                return ResourceManager.GetString("GeenGavCommVorm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deze persoon is niet gekoppeld aan je groep(en)..
         /// </summary>
         internal static string GeenGavGelieerdePersoon {
@@ -111,17 +120,6 @@ namespace Cg2.Workers.Properties {
         internal static string GeenGavGroep {
             get {
                 return ResourceManager.GetString("GeenGavGroep", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Je bent geen GAV van deze commvorm..
-        /// </summary>
-        internal static string GeenGavCommVorm
-        {
-            get
-            {
-                return ResourceManager.GetString("GeenGavCommVorm", resourceCulture);
             }
         }
         

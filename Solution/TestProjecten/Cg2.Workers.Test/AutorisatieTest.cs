@@ -10,7 +10,7 @@ using Chiro.Gap.Fouten.Exceptions;
 using Cg2.Dummies;
 using Chiro.Cdf.Ioc;
 
-namespace Cg2.Workers.Test
+namespace Chiro.Gap.Workers.Test
 {
     /// <summary>
     /// Tests op de security van de workers.
