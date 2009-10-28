@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Workers;
 
-namespace Cg2.Ioc.Test
+namespace Chiro.Cdf.Ioc.Test
 {
     /// <summary>
     /// Test of een ledenmanager goed wordt aangemaakt

@@ -7,7 +7,7 @@ using System.Text;
 using Cg2.Workers;
 using Cg2.Orm;
 using Cg2.ServiceContracts;
-using Cg2.Ioc;
+using Chiro.Cdf.Ioc;
 using System.Diagnostics;
 using Chiro.CG2.ServiceContracts.Mappers;
 

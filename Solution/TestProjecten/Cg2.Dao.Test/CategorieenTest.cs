@@ -8,7 +8,7 @@ using Cg2.Orm;
 using Cg2.Workers;
 using Cg2.Dummies;
 using Chiro.Cdf.EfWrapper.Entity;
-using Cg2.Ioc;
+using Chiro.Cdf.Ioc;
 
 namespace Cg2.Dao.Test
 {
@@ -61,7 +61,7 @@ namespace Cg2.Dao.Test
 		  [ClassInitialize]
 		  static public void TestInit(TestContext context)
 		  {
-				Cg2.Ioc.Factory.ContainerInit();
+				Chiro.Cdf.Ioc.Factory.ContainerInit();
 		  }
 
 		  [TestInitialize()]

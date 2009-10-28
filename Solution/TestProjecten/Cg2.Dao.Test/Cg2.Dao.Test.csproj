@@ -74,9 +74,9 @@
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
       <Name>Chiro.Cdf.EfWrapper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Cg2.Ioc\Cg2.Ioc.csproj">
+    <ProjectReference Include="..\..\Cg2.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
-      <Name>Cg2.Ioc</Name>
+      <Name>Chiro.Cdf.Ioc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Cg2.Orm\Cg2.Orm.csproj">
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>

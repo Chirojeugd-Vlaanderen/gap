@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Orm;
 using Cg2.Workers;
-using Cg2.Ioc;
+using Chiro.Cdf.Ioc;
 using Cg2.Orm.DataInterfaces;
 using System.IO;
 using System.Runtime.Serialization;

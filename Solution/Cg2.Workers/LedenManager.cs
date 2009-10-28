@@ -5,7 +5,7 @@ using System.Text;
 using Cg2.Orm;
 using Chiro.Gap.Data.Ef;
 using Cg2.Orm.DataInterfaces;
-using Cg2.Ioc;
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Fouten.Exceptions;
 
 using System.Diagnostics;

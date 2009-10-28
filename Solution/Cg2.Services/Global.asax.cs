@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
-using Cg2.Ioc;
+using Chiro.Cdf.Ioc;
 
 namespace Cg2.Services
 {

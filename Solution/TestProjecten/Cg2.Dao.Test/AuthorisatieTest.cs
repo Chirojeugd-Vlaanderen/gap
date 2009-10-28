@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Workers;
 using Cg2.Orm.DataInterfaces;
-using Cg2.Ioc;
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Data.Ef;
 
 namespace Cg2.Dao.Test

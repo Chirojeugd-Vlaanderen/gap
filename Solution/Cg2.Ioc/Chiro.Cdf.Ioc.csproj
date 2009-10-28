@@ -8,8 +8,8 @@
     <ProjectGuid>{C100E957-CEE2-4707-BF13-C64553C28C7B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cg2.Ioc</RootNamespace>
-    <AssemblyName>Cg2.Ioc</AssemblyName>
+    <RootNamespace>Chiro.Cdf.Ioc</RootNamespace>
+    <AssemblyName>Chiro.Cdf.Ioc</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>

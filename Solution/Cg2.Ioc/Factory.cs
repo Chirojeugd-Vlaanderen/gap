@@ -7,7 +7,7 @@ using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using System.Diagnostics;
 
-namespace Cg2.Ioc
+namespace Chiro.Cdf.Ioc
 {
     public static class Factory
     {

@@ -4,7 +4,7 @@ using System.Text;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
-using Cg2.Ioc;
+using Chiro.Cdf.Ioc;
 
 
 namespace Chiro.Cdf.DependencyInjection

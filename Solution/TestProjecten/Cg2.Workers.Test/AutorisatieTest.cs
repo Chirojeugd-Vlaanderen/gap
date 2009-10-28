@@ -8,7 +8,7 @@ using Cg2.Orm.DataInterfaces;
 using Cg2.Orm;
 using Chiro.Gap.Fouten.Exceptions;
 using Cg2.Dummies;
-using Cg2.Ioc;
+using Chiro.Cdf.Ioc;
 
 namespace Cg2.Workers.Test
 {

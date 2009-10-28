@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Microsoft.Practices.Unity;
-using Cg2.Ioc;
+using Chiro.Cdf.Ioc;
 
 namespace Chiro.Gap.WebApp
 {

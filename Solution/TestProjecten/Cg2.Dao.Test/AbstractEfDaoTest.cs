@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Orm;
-using Cg2.Ioc;
+using Chiro.Cdf.Ioc;
 using Cg2.Orm.DataInterfaces;
 using System.Data;
 using Chiro.Cdf.EfWrapper.Entity;

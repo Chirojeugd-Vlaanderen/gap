@@ -7,8 +7,8 @@
     <ProjectGuid>{D77DFBE9-EDB7-4740-9450-3F3CEF14B4B9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cg2.Ioc.Test</RootNamespace>
-    <AssemblyName>Cg2.Ioc.Test</AssemblyName>
+    <RootNamespace>Chiro.Cdf.Ioc.Test</RootNamespace>
+    <AssemblyName>Chiro.Cdf.Ioc.Test</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -53,9 +53,9 @@
       <Project>{F9197C38-63BC-4D2F-9F0A-8326C698B536}</Project>
       <Name>Chiro.Gap.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Cg2.Ioc\Cg2.Ioc.csproj">
+    <ProjectReference Include="..\..\Cg2.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
-      <Name>Cg2.Ioc</Name>
+      <Name>Chiro.Cdf.Ioc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Cg2.Orm\Cg2.Orm.csproj">
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>

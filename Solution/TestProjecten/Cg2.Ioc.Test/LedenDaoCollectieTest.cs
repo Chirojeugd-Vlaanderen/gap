@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Cg2.Orm.DataInterfaces;
 
-namespace Cg2.Ioc.Test
+namespace Chiro.Cdf.Ioc.Test
 {
     /// <summary>
     /// Summary description for UnitTest1
