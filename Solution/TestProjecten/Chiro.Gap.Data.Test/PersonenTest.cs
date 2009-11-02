@@ -73,9 +73,9 @@ namespace Chiro.Gap.Data.Test
             // Maak persoon aan, die bij het testen weer
             // verwijderd kan worden.
 
-            int groepID = Properties.Settings.Default.TestGroepID;
-            string naam = Properties.Settings.Default.TestNieuwePersoonNaam;
-            string voornaam = Properties.Settings.Default.TestTeVerwijderenVoornaam;
+            int groepID = TestInfo.GROEPID;
+            string naam = TestInfo.NIEUWEPERSOONNAAM;
+            string voornaam = TestInfo.TEVERWIJDERENVOORNAAM;
 
             IGroepenDao gdao = Factory.Maak<IGroepenDao>();
             Groep g = gdao.Ophalen(groepID);
@@ -107,9 +107,9 @@ namespace Chiro.Gap.Data.Test
         [ClassCleanup]
         static public void Opkuis()
         {
-            int groepID = Properties.Settings.Default.TestGroepID;
-            string naam = Properties.Settings.Default.TestNieuwePersoonNaam;
-            string voornaam = Properties.Settings.Default.TestNieuwePersoonVoornaam;
+            int groepID = TestInfo.GROEPID;
+            string naam = TestInfo.NIEUWEPERSOONNAAM;
+            string voornaam = TestInfo.NIEUWEPERSOONVOORNAAM;
 
             GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
 
@@ -135,8 +135,8 @@ namespace Chiro.Gap.Data.Test
         public void ZoekenOpNaam()
         {
             // arrange
-            string zoekString = Properties.Settings.Default.TestZoekNaam;
-            int groepID = Properties.Settings.Default.TestGroepID;
+            string zoekString = TestInfo.ZOEKNAAM;
+            int groepID = TestInfo.GROEPID;
 
             IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
 
@@ -154,7 +154,7 @@ namespace Chiro.Gap.Data.Test
         public void DetailsOphalenCategorie()
         {
             // arange
-            int gpID = Properties.Settings.Default.TestGelieerdePersoonID;
+            int gpID = TestInfo.GELIEERDEPERSOONID;
             IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
 
             // act
@@ -174,7 +174,7 @@ namespace Chiro.Gap.Data.Test
             // arange
             GelieerdePersoon gp, kloon;
 
-            int gpID = Properties.Settings.Default.TestGelieerdePersoonID;
+            int gpID = TestInfo.GELIEERDEPERSOONID;
             IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
 
 
@@ -203,9 +203,9 @@ namespace Chiro.Gap.Data.Test
         {
             #region Arrange
 
-            int groepID = Properties.Settings.Default.TestGroepID;
-            string naam = Properties.Settings.Default.TestNieuwePersoonNaam;
-            string voornaam = Properties.Settings.Default.TestNieuwePersoonVoornaam;
+            int groepID = TestInfo.GROEPID;
+            string naam = TestInfo.NIEUWEPERSOONNAAM;
+            string voornaam = TestInfo.NIEUWEPERSOONVOORNAAM;
 
             IGroepenDao gdao = Factory.Maak<IGroepenDao>();
             Groep g = gdao.Ophalen(groepID);
@@ -250,9 +250,9 @@ namespace Chiro.Gap.Data.Test
             #region Arrange
             // zoek te verwijderen personen op
 
-            int groepID = Properties.Settings.Default.TestGroepID;
-            string naam = Properties.Settings.Default.TestNieuwePersoonNaam;
-            string voornaam = Properties.Settings.Default.TestTeVerwijderenVoornaam;
+            int groepID = TestInfo.GROEPID;
+            string naam = TestInfo.NIEUWEPERSOONNAAM;
+            string voornaam = TestInfo.TEVERWIJDERENVOORNAAM;
 
             GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
 

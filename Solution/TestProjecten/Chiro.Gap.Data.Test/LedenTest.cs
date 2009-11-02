@@ -75,8 +75,8 @@ namespace Chiro.Gap.Data.Test
 
             // Verwijder lid (GelieerdePersoonID in AfdelingsJaarID) om achteraf opnieuw toe te voegen
 
-            int gelieerdePersoonID = Properties.Settings.Default.TestGelieerdePersoonID;
-            int afdelingsJaarID = Properties.Settings.Default.TestAfdelingsJaarID;
+            int gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
+            int afdelingsJaarID = TestInfo.AFDELINGSJAARID;
 
             IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
             AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
@@ -92,7 +92,7 @@ namespace Chiro.Gap.Data.Test
 
             // Voeg kind toe (GelieerdePersoonID2 in AfdelingsJaarID) om in test te kunnen verwijderen
 
-            int gelieerdePersoon2ID = Properties.Settings.Default.TestGelieerdePersoon2ID;
+            int gelieerdePersoon2ID = TestInfo.GELIEERDEPERSOON2ID;
 
             IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
             IDao<Kind> kdao = Factory.Maak<IDao<Kind>>();
@@ -124,8 +124,8 @@ namespace Chiro.Gap.Data.Test
         public void NieuwKind()
         {
             #region Arrange
-            int gelieerdePersoonID = Properties.Settings.Default.TestGelieerdePersoonID;
-            int afdelingsJaarID = Properties.Settings.Default.TestAfdelingsJaarID;
+            int gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
+            int afdelingsJaarID = TestInfo.AFDELINGSJAARID;
 
             LedenManager lm = Factory.Maak<LedenManager>();
 
@@ -164,8 +164,8 @@ namespace Chiro.Gap.Data.Test
         {
             // Arrange
 
-            int gelieerdePersoonID = Properties.Settings.Default.TestGelieerdePersoon2ID;
-            int afdelingsJaarID = Properties.Settings.Default.TestAfdelingsJaarID;
+            int gelieerdePersoonID = TestInfo.GELIEERDEPERSOON2ID;
+            int afdelingsJaarID = TestInfo.AFDELINGSJAARID;
 
             IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
             AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);

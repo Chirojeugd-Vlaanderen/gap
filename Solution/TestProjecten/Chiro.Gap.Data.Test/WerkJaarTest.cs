@@ -73,8 +73,8 @@ namespace Chiro.Gap.Data.Test
         {
             #region Arrange
             IGroepsWerkJaarDao gwjDao = Factory.Maak<IGroepsWerkJaarDao>();
-            int gwjID = Properties.Settings.Default.TestGroepsWerkJaarID;
-            int testGroepID = Properties.Settings.Default.TestGroepID;
+            int gwjID = TestInfo.GROEPSWERKJAARID;
+            int testGroepID = TestInfo.GROEPID;
             #endregion
 
             #region Act

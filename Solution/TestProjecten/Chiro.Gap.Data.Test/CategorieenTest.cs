@@ -69,9 +69,9 @@ namespace Chiro.Gap.Data.Test
 		{
 			_catdao = Factory.Maak<ICategorieenDao>();
 			_gpdao = Factory.Maak<IGelieerdePersonenDao>();
-			_catID = Properties.Settings.Default.TestCategorieID;
-			_gpID = Properties.Settings.Default.TestGelieerdePersoonID;
-			_gp2ID = Properties.Settings.Default.TestGelieerdePersoon2ID;
+			_catID = TestInfo.CATEGORIEID;
+			_gpID = TestInfo.GELIEERDEPERSOONID;
+			_gp2ID = TestInfo.GELIEERDEPERSOON2ID;
 		}
 
 		[TestCleanup()]

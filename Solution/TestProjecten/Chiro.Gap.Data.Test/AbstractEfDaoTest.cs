@@ -72,7 +72,7 @@ namespace Chiro.Gap.Data.Test
             // Verwijder GAV die we straks zullen aanmaken.
             IGavDao gavDao = Factory.Maak<IGavDao>();
 
-            Gav gav = gavDao.Ophalen(Properties.Settings.Default.TestNieuweGav);
+            Gav gav = gavDao.Ophalen(TestInfo.NIEUWEGAV);
 
             if (gav != null)
             {
@@ -90,7 +90,7 @@ namespace Chiro.Gap.Data.Test
         {
             // Arrange
 
-            Gav gav = new Gav() { Login = Properties.Settings.Default.TestNieuweGav };
+            Gav gav = new Gav() { Login = TestInfo.NIEUWEGAV };
             IDao<Gav> gavDao = Factory.Maak<IDao<Gav>>();
 
             // Act
@@ -131,7 +131,7 @@ namespace Chiro.Gap.Data.Test
             IDao<Groep> dao = Factory.Maak<IDao<Groep>>();
 
             // Act            
-            Groep g = dao.Ophalen(Properties.Settings.Default.TestGroepID);
+            Groep g = dao.Ophalen(TestInfo.GROEPID);
             g = dao.Bewaren(g);
 
             // Assert
