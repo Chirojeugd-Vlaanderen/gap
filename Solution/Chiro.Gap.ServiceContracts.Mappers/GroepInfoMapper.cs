@@ -41,7 +41,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         /// </summary>
         /// <param name="g">te mappen Groep</param>
         /// <returns>gemapte GroepInfo</returns>
-        public static GroepInfo mapGroep(Groep g)
+        public static GroepInfo Map(Groep g)
         {
             GroepInfo result = new GroepInfo();
             Map(g, result);
@@ -53,13 +53,13 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         /// </summary>
         /// <param name="groepen">rij te mappen groepen</param>
         /// <returns>rij gemapte GroepInfo</returns>
-        public static IList<GroepInfo> mapGroepen(IEnumerable<Groep> groepen)
+        public static IList<GroepInfo> Map(IEnumerable<Groep> groepen)
         {
             IList<GroepInfo> giList = new List<GroepInfo>();
 
             foreach (var gr in groepen)
             {
-                giList.Add(mapGroep(gr));
+                giList.Add(Map(gr));
             }
             return giList;
         }

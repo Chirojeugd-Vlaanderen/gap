@@ -38,7 +38,7 @@ namespace Chiro.Gap.Services
         public GroepInfo OphalenInfo(int GroepId)
         {
             var gr = Ophalen(GroepId);
-            return GroepInfoMapper.mapGroep(gr);
+            return GroepInfoMapper.Map(gr);
         }
 
         public Groep Bewaren(Groep g)
@@ -127,7 +127,7 @@ namespace Chiro.Gap.Services
         public IEnumerable<GroepInfo> OphalenMijnGroepen()
         {
             var result = am.GekoppeldeGroepenGet();
-            return GroepInfoMapper.mapGroepen(result);
+            return GroepInfoMapper.Map(result);
         }
 
         #endregion
