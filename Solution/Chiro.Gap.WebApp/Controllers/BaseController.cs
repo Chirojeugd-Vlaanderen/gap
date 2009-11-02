@@ -58,7 +58,7 @@ namespace Chiro.Gap.WebApp.Controllers
                     c.Add(cacheKey, gi, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
                 }
 
-                model.Groepsnaam = gi.Groepsnaam;
+                model.Groepsnaam = gi.Naam;
                 model.Plaats = gi.Plaats;
                 model.StamNummer = gi.StamNummer;
             }

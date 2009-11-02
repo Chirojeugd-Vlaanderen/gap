@@ -13,7 +13,7 @@ namespace Chiro.Gap.ServiceContracts
         public int ID;
 
         [DataMember]
-        public string Groepsnaam;
+        public string Naam;
 
         [DataMember]
         public string Plaats;
