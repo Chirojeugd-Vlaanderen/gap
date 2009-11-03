@@ -60,7 +60,7 @@ namespace Chiro.Gap.Services
         public IList<PersoonInfo> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
             var gelieerdePersonen = gpm.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
-            return PersoonInfoMapper.mapPersoon(gelieerdePersonen);
+            return PersoonInfoMapper.Map(gelieerdePersonen);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]

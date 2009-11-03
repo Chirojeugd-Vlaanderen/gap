@@ -13,7 +13,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         {
             LidInfo l = new LidInfo()
             {
-                PersoonInfo = PersoonInfoMapper.mapPersoon(lid.GelieerdePersoon),
+                PersoonInfo = PersoonInfoMapper.Map(lid.GelieerdePersoon),
                 LidgeldBetaald = lid.LidgeldBetaald,
                 LidID = lid.ID
             };
