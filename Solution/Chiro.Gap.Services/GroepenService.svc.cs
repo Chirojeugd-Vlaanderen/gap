@@ -10,6 +10,7 @@ using Chiro.Gap.ServiceContracts;
 using Chiro.Cdf.Ioc;
 using System.Diagnostics;
 using Chiro.Gap.ServiceContracts.Mappers;
+using AutoMapper;
 
 namespace Chiro.Gap.Services
 {
@@ -38,7 +39,7 @@ namespace Chiro.Gap.Services
         public GroepInfo OphalenInfo(int GroepId)
         {
             var gr = Ophalen(GroepId);
-            return GroepInfoMapper.Map(gr);
+            return Mapper.Map<Groep, GroepInfo>(gr);
         }
 
         public Groep Bewaren(Groep g)
@@ -127,7 +128,7 @@ namespace Chiro.Gap.Services
         public IEnumerable<GroepInfo> OphalenMijnGroepen()
         {
             var result = am.GekoppeldeGroepenGet();
-            return GroepInfoMapper.Map(result);
+            return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(result);
         }
 
         #endregion

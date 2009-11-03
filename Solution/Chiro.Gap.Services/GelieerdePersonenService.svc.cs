@@ -12,6 +12,7 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Fouten.FaultContracts;
 using Chiro.Gap.ServiceContracts.Mappers;
+using AutoMapper;
 
 namespace Chiro.Gap.Services
 {
@@ -60,7 +61,7 @@ namespace Chiro.Gap.Services
         public IList<PersoonInfo> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
             var gelieerdePersonen = gpm.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
-            return PersoonInfoMapper.Map(gelieerdePersonen);
+            return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonInfo>>(gelieerdePersonen);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]

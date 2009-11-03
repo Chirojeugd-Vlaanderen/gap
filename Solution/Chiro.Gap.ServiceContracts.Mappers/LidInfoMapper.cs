@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
+using AutoMapper;
 
 namespace Chiro.Gap.ServiceContracts.Mappers
 {
@@ -13,7 +14,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
         {
             LidInfo l = new LidInfo()
             {
-                PersoonInfo = PersoonInfoMapper.Map(lid.GelieerdePersoon),
+                PersoonInfo = Mapper.Map<GelieerdePersoon, PersoonInfo>(lid.GelieerdePersoon),
                 LidgeldBetaald = lid.LidgeldBetaald,
                 LidID = lid.ID
             };
