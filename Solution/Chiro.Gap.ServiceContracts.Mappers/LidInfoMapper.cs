@@ -28,7 +28,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 }
                 else
                 {
-                    l.AfdelingString = k.AfdelingsJaar.Afdeling.AfdelingsNaam;
+                    l.AfdelingString = k.AfdelingsJaar.Afdeling.Naam;
                 }
             }
             else if (lid is Leiding)
@@ -38,7 +38,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 Leiding leiding = (Leiding) lid;
                 foreach (AfdelingsJaar aj in leiding.AfdelingsJaar)
                 {
-                    l.AfdelingString = l.AfdelingString + (l.AfdelingString.Equals("") ? "" : ",") + " " + aj.Afdeling.AfdelingsNaam;
+                    l.AfdelingString = l.AfdelingString + (l.AfdelingString.Equals("") ? "" : ",") + " " + aj.Afdeling.Naam;
                 }
             }
             else

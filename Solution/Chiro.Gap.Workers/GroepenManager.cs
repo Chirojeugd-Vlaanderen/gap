@@ -78,7 +78,7 @@ namespace Chiro.Gap.Workers
                 Afdeling a = new Afdeling();
                 Groep g = _dao.Ophalen(groepID);
 
-                a.AfdelingsNaam = naam;
+                a.Naam = naam;
                 a.Afkorting = afkorting;
                 a.Groep = g;
                 g.Afdeling.Add(a);
@@ -123,7 +123,7 @@ namespace Chiro.Gap.Workers
 
             if (!a.Groep.Equals(g))
             {
-                throw new FoutieveGroepException(String.Format("Afdeling {0} is geen afdeling van Groep {1}" , a.AfdelingsNaam, g.Naam));
+                throw new FoutieveGroepException(String.Format("Afdeling {0} is geen afdeling van Groep {1}" , a.Naam, g.Naam));
             }
 
             // TODO: test of de officiele afdeling bestaat, heb

@@ -924,7 +924,7 @@
         <EntityType Name="Afdeling">
           <Key>
             <PropertyRef Name="ID" /></Key>
-          <Property Name="AfdelingsNaam" Type="String" Nullable="false" />
+          <Property Name="Naam" Type="String" Nullable="false" />
           <Property Name="Afkorting" Type="String" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Versie" Type="Binary" Nullable="true" />
@@ -1201,7 +1201,7 @@
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="ID" ColumnName="AfdelingID" />
                 <ScalarProperty Name="Afkorting" ColumnName="Afkorting" />
-                <ScalarProperty Name="AfdelingsNaam" ColumnName="AfdelingsNaam" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+                <ScalarProperty Name="Naam" ColumnName="AfdelingsNaam" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="AfdelingsJaar">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.AfdelingsJaar)">
               <MappingFragment StoreEntitySet="AfdelingsJaar">
