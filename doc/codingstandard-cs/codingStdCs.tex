@@ -63,18 +63,40 @@
 %%
 
 
-\noindent {\Large \bf CODING STANDARD C\#, doc. v. 0.4}
+\noindent {\Large \bf CODING STANDARD C\#, doc. v. 0.5}
 
 \tableofcontents
 
 \section{Over dit document}
 
-Dit document geeft een aantal richtlijnen voor de ontwikkeling van C\#-applicaties, zowel over
-opmaak en naamgeving als over de manier van dingen implementeren.
+\subsection{Doel van het document}
 
-Het document is opgesteld naar aanleiding van de ontwikkeling van een nieuw Chirogroepprogramma.
+Dit document geeft een aantal richtlijnen voor de ontwikkeling van
+C\#.Net-applicaties, zowel over opmaak en naamgeving als over de manier van
+dingen implementeren.  Deze coding guidelines streven het volgende na:
+\begin{itemize}
+\item leesbaarheid en het onderhoudsgemak dankzij een uniforme stijl
+\item veilige code
+\item de tools in de IDE\footnote{code completion, automatisch
+gegenereerde code, \ldots} optimaal gebruiken
+\item bugs vermijden via duidelijk omschreven `patterns'
+\end{itemize}
+Het document is opgesteld naar aanleiding van de ontwikkeling van de
+opvolger van het Chirogroepprogramma.
 De bedoeling is dat de richtlijnen in dit document (en zijn opvolgers) toegepast zullen worden
 in alle C\#-projecten die nog voor de Chiro ontwikkeld zullen worden.
+
+\subsection{Aanpassingen aan dit document}
+
+Voorstellen voor wijzigingen en aanvullingen aan dit document worden via
+e-mail verstuurd naar de werkgroep Chirogroepprogramma.  In de
+`managementvergaderingen' voor Chirogroep van december, april en augustus
+wordt beslist of voorgestelde wijzigingen al dan niet doorgevoerd worden.
+
+Als er een richtlijn wegvalt, blijft het volgnummer van die richtlijn
+ongebruikt, zodat verwijzingen naar bestaande nummers correct blijven.
+Enkel bij een grote wijzigingen van de coding standard kan er
+hernummerd worden.
 
 \section{Architectuur}
 
@@ -116,9 +138,10 @@ of interface.
 \item Generieke klasses \index{generics}\index{generics!klasses} komen in een bestand waarvan de naam het suffix
 \_{\em n}' krijgt, waarbij {\em n} het aantal generieke parameters
 is.  Bijv. `IDao\_1'.
-\item Ofwel worden alle \lstinline !enum!s \index{enum}\index{enum!declaratie} uit een assembly ondergebracht
-in 1 bestand Enums.cs, ofwel krijgt elke \lstinline !enum! zijn eigen
-bestand.
+\item Als een \lstinline !enum! slechts voor \'e\'en klasse gebruikt
+wordt, kan die \lstinline !enum! in hetzelfde bronbestand als de klasse
+gedefinieerd worden.  Alle andere \lstinline !enum!s worden per
+assembly/namespace gegroepeerd in een bestand Enums.cs\index{Enums.cs}.
 
 \end{enumerate}
 
@@ -159,14 +182,10 @@ partial classes\index{partial classes}.
 Zie listing \ref{lblLstOpbouw} voor voorbeelden.
 
 \begin{enumerate}[resume]
-\item Elk bronbestand\index{bronbestanden} begint met een blokje commentaar met daarin\opmerking{Dit hebben we niet
-afgesproken, maar het lijkt me een zinvol idee.}
-\begin{itemize}
-\item een korte omschrijving van wat er in de code staat
-\item een `copyright notice'\index{copyright}
-\item een verwijzing naar de licentievoorwaarden\index{licentievoorwaarden} (?)
-\item contactinfo van de verantwoordelijke voor het bestand
-\end{itemize}
+\item Elk bronbestand\index{bronbestanden} begint met eenzelfde blokje
+commentaar, zie listing \ref{lblLstOpbouw}.\opmerking{De exacte tekst
+ligt nog niet vast.}\footnote{We zullen hiervoor een template voorzien
+voor Visual Studio.}
 \item Groepeer de imports van namespaces bovenaan\index{namespaces}
 \begin{itemize}
 \item Eerst de .Net namespaces
@@ -231,11 +250,7 @@ var gelieerdePersonen =
 \end{enumerate}
 
 \begin{lstlisting}[float, caption=Opbouw, label=lblLstOpbouw]
-// (C) Chirojeugd-Vlaanderen vzw, 2009
-//
-// (licentievoorwaarden?)
-//
-// Contact: Johan Vervloet \textless johan.vervloet@chiro.be \textgreater
+// Contacteer informatica@chiro.be voor alle info over deze broncode.
 //
 
 using System;
@@ -263,7 +278,7 @@ Voorbeelden in listing \ref{lblLstWhitespace}.
 
 \begin{enumerate}[resume]
 \item Geen spaties na een (rond) haakje-open of voor een (rond) haakje-toe\index{haakjes}
-\item Uitzondering: \'e\'en spatie tussen \lstinline !if!\index{if}, \lstinline !for!\index{for},
+\item E\'en spatie tussen \lstinline !if!\index{if}, \lstinline !for!\index{for},
 \lstinline !while!\index{while} en het haakje-open.  Bijv: \lstinline !if (voorwaarde)!
 \item Een spatie voor en na alle infix-operatoren\index{operatoren!infix}, inclusief de \lstinline
 !=>! van lambda-expressies\index{lambda-expressies}.
@@ -329,9 +344,9 @@ een stuk code uit te commentari\"eren.
 zo'n TODO gecommit wordt naar de source control, moet er een
 ticket\index{ticket}\index{trac} voor aangemaakt zijn in de track, en moet de TODO: naar het
 ticketnummer verwijzen.
-\item Als je een bugfix\index{bugfix} implementeerde, en het is niet duidelijk waarom je
-wijziging belangrijk is, commentarieer dat, en voorzie een link naar de
-trac.
+\item Code waarvan de bedoeling niet direct duidelijk is, maar die werd
+geschreven om een bug te fixen\index{bugfix}, krijgt in commentaar een link naar de
+bug in de Trac.
 \item Commentarieer veronderstellingen die niet direct duidelijk zijn bij
 het bekijken van de code.
 \end{enumerate}
@@ -369,8 +384,10 @@ naar parameters\index{parameters!documentatie} te verwijzen.
 gedocumenteerd zijn.
 \item Standaardvoorbeelden vind je in listing \ref{lstDocumentatie}
 \end{itemize}
-\item Indien mogelijk: voorzie tutorials\index{tutorials} en voorbeeldcode\index{voorbeelden} op de wiki.
 \item Documentatie voor frameworks\index{frameworks!documentatie} moet zeer uitgebreid zijn.
+\item Voorzie tutorials\index{tutorials} en
+voorbeeldcode\index{voorbeelden} op de wiki voor gebruikte frameworks en
+patterns\index{patterns}.
 \end{enumerate}
 
 \begin{lstlisting}[float,caption=XML-documentatie, label=lstDocumentatie]
@@ -442,13 +459,15 @@ plakken.}
 \item Gebruik liever geen afkortingen\index{afkortingen}, tenzij ze door alle developers
 gekend zijn.
 \item Gebruik enkel letterwoorden\index{letterwoorden} die algemeen aanvaard zijn.
-\item Letterwoorden/afkortingen van 2 letters zijn volledig in hoofletters.\footnote{dit is een
-vergissing die men vroeger maakte, maar ze wordt algemeen aanvaard, en nu zitten we ermee.}
-\item Geen hoofdletters\index{hoofdletters} in het midden van letterwoorden of afkortingen
+\item Voor letterwoorden en afkortingen gelden dezelfde regels als voor
+`gewone woorden'.  Dus geen `all caps'.
 \begin{itemize}
 \item \lstinline !isVzw!
-\item \lstinline !adNr!
+\item \lstinline !Gap.Ioc!
+\item \lstinline !AdNummer!
 \end{itemize}
+\item Uitzonderingen op vorige regel zijn \lstinline !ID! en 
+\lstinline !IO!.
 \item Identifi\"ers die enkel qua `casing' verschillen zijn enkel
 toegelaten als ze naar verschillende language elements verwijzen (bijv.
 een property en een lokale variabele zoals in 
@@ -513,7 +532,7 @@ public class AltijdGavAutorisatieDao: IAutorisatieDao
 \begin{enumerate}[resume]
 \item Het achterliggend veld\index{property's!achterliggende velden}\index{membervariabelen!namen} (if any) van een property heeft dezelfde naam
 als de property, maar met een kleine letter en geprefixt met een underscore.
-\item Geen type-informatie\index{type-informatie} in propertynamen.
+\item Geen type-informatie\index{type-informatie}\index{redundantie} in propertynamen.
 \item Boolean\index{bool} property's krijgen het prefix \lstinline !Is! als dat de
 leesbaarheid bevordert.
 \item Maak de naam van een property zo kort mogelijk, zonder informatie te
@@ -522,7 +541,7 @@ krijgen, gebruik dan voor geen van beide die kortere naam.
 \item Herhaal geen informatie uit een klassenaam in de naam van een
 property.  Als de klasse bijvoorbeeld `\lstinline !Categorie!' heet, kies
 dan eerder voor een property `\lstinline !Naam!' in plaats van `\lstinline
-!CategorieNaam!'.
+!CategorieNaam!'.\index{redundantie}
 \item Als een klasse een identificatienummer\index{ID}\index{identificatienummer}\index{property's!ID} (ID) heeft, voorzie dan een
 property met de naam `\lstinline !ID!'.
 \end{enumerate}
@@ -743,7 +762,8 @@ naar een \lstinline !if!-structuur als dat niet lukt.
 \item Specifieer liever geen type\index{enum!type} voor een \lstinline !enum!, zodat het
 standaardtype \lstinline !Int32! gebruikt wordt.
 \item Gebruik \lstinline !enum!s in de plaats van een lijst statische constanten\index{constanten!static}, tenzij die lijst met constanten uitgebreid moet kunnen worden door ervende code.
-\item Vermijd \lstinline !enums! te wijzigen\index{enum!wijzigen} als ze ook gebruikt worden in code die je
+\item Vermijd \lstinline !enums! te wijzigen\index{enum!wijzigen} als ze
+ook gebruikt worden als veldwaarde in de database, of in code die je
 niet zelf beheert.  Gebruik het attribuut \lstinline ![Obsolete]!\index{obsolete@[Obsolete]} om
 members te markeren die niet meer gebruikt worden.
 \item Assigneer geen expliciete waarden\index{enum!expliciete waarden} in een \lstinline !enum!, tenzij ze nodig zijn voor
@@ -804,24 +824,54 @@ worden.
 
 \subsection{Constanten}
 \index{constanten}
+Voorbeelden in listing \ref{lblLstConst}.
 \begin{enumerate}[resume]
 \item Declareer alle constanten behalve  \lstinline !0!, \lstinline !1!,
 \lstinline !true!\index{true!vergelijken met}, \lstinline !false!\index{false!vergelijken met} en \lstinline !null!\index{null}. 
 \item Gebruik `\lstinline !true!' en `\lstinline !false!' enkel om te
-assigneren\index{bool}; vergelijk niet met `\lstinline !true!' of `\lstinline !false!'.
+assigneren\index{bool}; vergelijk niet met `\lstinline !true!' of
+`\lstinline !false!'.
 \item Als een constante een berekende waarde\index{berekende waarde} is, definieer ze dan als die
 berekening, en niet als die waarde.
 \item Als er een logische connectie\index{constanten!relaties tussen} bestaat tussen constanten, definieer
-dan de ene constante in functie van de andere.  Zie listing \ref{lblRelConst}.
+dan de ene constante in functie van de andere.
 \item Gebruik `\lstinline !const!' enkel voor `echte' constanten, in de
 andere gevallen gebruik je 
 `\lstinline !readonly!'\index{constanten!vs readonly}\index{readonly}.\footnote{\lstinline !const!-expressies worden
 berekend bij het compileren, \lstinline !readonly!-expressies at runtime.} 
 \end{enumerate}
-\begin{lstlisting}[float, caption=Gerelateerde constanten, label=lblRelConst]
-public const int SECONDEN_IN_EEN_UUR = 60*60;
-public const int SECONDEN_IN_EEN_DAG =
+\begin{lstlisting}[float, caption=Constanten, label=lblLstConst]
+// Berekende en gerelateerde constanten
+
+// FOUT:
+
+return 86400;
+
+// GOED:
+
+const int SECONDEN_IN_EEN_UUR = 60*60;
+const int SECONDEN_IN_EEN_DAG =
   SECONDEN_IN_EEN_UUR * 24;
+
+/* ... */
+
+return SECONDEN_IN_EEN_DAG;
+
+
+// Niet vergelijken met true of false
+
+// FOUT:
+if (mgr.IsGavGroep(GroepID) == true)
+{
+	// ...
+}
+
+// GOED:
+if (mgr.IsGavGroep(GroepID))
+{
+	// ...
+}
+
 \end{lstlisting}
 
 \subsection{Strings}
@@ -834,13 +884,15 @@ direct, maar zodra code wat vastere vorm krijgt wel.}  (Zie listing \ref{lstStrL
 als dit de leesbaarheid vergroot.
 \item Gebruik de klasse `\lstinline !StringBuilder!'\index{StringBuilder} als je een groot aantal stringmanipulaties
 moet uitvoeren op performantiekritsche plaatsen.
-\item Gebruik `\lstinline !String.Compare!'\index{String.Compare} om strings te vergelijken.
+\item Gebruik `\lstinline !String.Compare!'\index{String.Compare} om
+strings te vergelijken.\footnote{\lstinline !String.Compare! is
+`cultuurgevoelig'.}
 \item Gebruik `\lstinline !String.Empty!'\index{String.Empty} in plaats van \lstinline !""!
 \item Om te controleren op de lege string, gebruik je \lstinline
 !String.IsNullOrEmpty!\index{String.IsNullOrEmpty}.
-\item Gebruik `\lstinline !Equals()!' om strings te
-vergelijken.\footnote{\lstinline !Equals()! heeft overloads voor
-hoofdletterongevoelig vergelijken.}
+\addtocounter{enumi}{1} 
+% De recommendeation ivm String.Equals valt weg, owv die ivm
+% String.Compare 
 \item Gebruik het prefix `@' voor een letterlijke string, in plaats van te escapen.
 Bijvoorbeeld: \lstinline !@"Backslashes (\) zijn cool."!
 \end{enumerate}
@@ -928,7 +980,7 @@ dezelfde method in een ervende klasse.\index{methods!predecessor}
 \index{methods}
 \index{property's}
 
-\subsubsection{Methods of property's}
+\subsubsection{Wanneer methods, wanneer property's?}
 \index{methods!vs property's}
 \index{property's!vs methods}
 \begin{enumerate}[resume]
@@ -988,8 +1040,8 @@ void DoeHet(IEnumerable<Item> items);
 \end{lstlisting}
 \item Standaardiseer zo veel mogelijk de volgorde van de parameters in
 overloads en in gelijkaardige methods.\index{consistentie}
-\item Eenvoudige overloads roepen complexere overloads aan met
-standaardwaarden voor de ontbrekende parameters.
+\item Overloads met minder parameters roepen overloads met meer
+parameters aan, met standaardwaarden voor de ontbrekende parameters.
 
 \end{enumerate}
 
@@ -1053,7 +1105,9 @@ ge\"initialiseerd zijn door die ervende klasse.}
 \subsection{Interfaces}
 \index{interfaces}
 \begin{enumerate}[resume]
-\item Definieer interfaces als je meer dan \'e\'en hi\"erarchie nodig hebt.
+%\item Definieer interfaces als je meer dan \'e\'en hi\"erarchie nodig hebt.
+% weggelaten, want niet duidelijk, en spreekt voor zich
+\addtocounter{enumi}{1}
 \item Gebruik interfaces om een API te defini\"eren\index{API}.
 \item Gebruik geen `marker interfaces'\index{interfaces!marking} (interfaces zonder members), gebruik
 hiervoor attributen.\index{attributen}
@@ -1114,7 +1168,7 @@ public class GeenGavException: Exception, ISerializable
 \subsubsection{Excepties opwerpen}
 \index{excepties!opwerpen}
 \begin{enumerate}[resume]
-\item Als een member zijn taak niet kan uitvoeren, moet een exceptie
+\item Als een method zijn taak niet kan uitvoeren, moet een exceptie
 opgeworpen worden.
 \item Gebruik bij voorkeur standaardexcepties.\index{excepties!standaard-}
 \begin{itemize}
@@ -1144,7 +1198,8 @@ opgooit, zorg er dan voor dat de property \lstinline !ParamName!\index{ParamName
 \index{excepties!catchen}
 \begin{enumerate}[resume]
 \item Gebruik steeds een \lstinline !try!\index{try\ldots catch} \ldots \lstinline !catch!-blok
-als je het netwerk of externe hardware aanspreekt.
+als je externe resources aanspreekt (netwerk, database, bestanden,
+\ldots)
 \item Probeer \lstinline !try! \ldots \lstinline !catch! in andere
 gevallen zo veel mogelijk te vermijden.
 \item Als er zich een exceptie voordoet, geef je een verstaanbare boodschap voor de gebruiker\index{foutboodschappen}\index{excepties!foutboodschappen},
@@ -1357,7 +1412,8 @@ public static void Test()
 \subsection{WCF}
 \index{WCF}\index{services}
 \begin{enumerate}[resume]
-\item Serivces zijn beveiligd.\index{beveiliging}
+\item Services mogen enkel aangesproken worden met correcte
+credentials.\index{beveiliging}\index{credentials}
 \item Na aanroep van een serviceoperatie is het systeem in een consistente toestand.
 \item Services zijn thread safe\index{thread safety} en kunnen gelijktijdig door verschillende
 clients aangeroepen worden.
