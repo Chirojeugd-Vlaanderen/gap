@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Chiro.Cdf.EfWrapper;
+using Chiro.Cdf.Data.Entity;
 using System.Diagnostics;
-
+using Chiro.Cdf.Data;
 namespace Chiro.Gap.Orm
 {
-    public partial class Categorie: IBasisEntiteit
+    public partial class Categorie: IEfBasisEntiteit
     {
         private bool _teVerwijderen = false;
 

@@ -8,8 +8,8 @@
     <ProjectGuid>{72F61656-2949-4763-9381-678B2D07AE0B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Chiro.Cdf.EfWrapper</RootNamespace>
-    <AssemblyName>Chiro.Cdf.EfWrapper</AssemblyName>
+    <RootNamespace>Chiro.Cdf.Data</RootNamespace>
+    <AssemblyName>Chiro.Cdf.Data</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
@@ -39,9 +39,6 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.Entity">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -49,20 +46,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasisEntiteitMethods.cs" />
-    <Compile Include="Entity\AssociationEndBehaviorAttribute.cs" />
-    <Compile Include="Entity\EntityFrameworkHelper.cs" />
-    <Compile Include="Entity\ObjectContextExtension.cs" />
-    <Compile Include="Entity\ObjectQueryExtension.cs" />
-    <Compile Include="Entity\OptimisticConcurrencyAttribute.cs" />
-    <Compile Include="Entity\OptimisticConcurrencyManager.cs" />
     <Compile Include="IBasisEntiteit.cs" />
+    <Compile Include="IDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReflectionExtensions.cs" />
-    <Compile Include="TreeNode.cs" />
-    <Compile Include="Utility.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Entity\OptimisticConcurrencyDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">

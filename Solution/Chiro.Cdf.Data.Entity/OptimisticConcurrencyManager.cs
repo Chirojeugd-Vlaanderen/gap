@@ -2,7 +2,7 @@ using System;
 using System.Data;
 using System.Data.Objects;
 
-namespace Chiro.Cdf.EfWrapper.Entity
+namespace Chiro.Cdf.Data.Entity
 {
 	/// <summary>
 	/// An Entity Framework addition to manage optimistic

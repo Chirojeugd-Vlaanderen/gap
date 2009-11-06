@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 
-namespace Chiro.Gap.Orm.DataInterfaces
+namespace Chiro.Cdf.Data
 {
     /// <summary>
-    /// Algemeen contract voor CRUD-operaties in de ORM-laag.
+    /// Algemeen contract voor CRUD-operaties in de ORM-laag.  Implementeert een 'Repository'.
     /// 
     /// Aangepast uit 'Pro LINQ Object Relational Mapping with C# 2008'.
     /// </summary>

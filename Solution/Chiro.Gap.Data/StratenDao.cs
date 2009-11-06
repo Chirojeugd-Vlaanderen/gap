@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Data.Ef
 {
-    public class StratenDao: Dao<Straat>, IStratenDao
+    public class StratenDao: Dao<Straat, ChiroGroepEntities>, IStratenDao
     {
         public Straat Ophalen(string naam, int postNr)
         {

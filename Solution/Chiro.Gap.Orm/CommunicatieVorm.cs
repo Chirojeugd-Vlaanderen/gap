@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
-using Chiro.Cdf.EfWrapper;
-
+using Chiro.Cdf.Data.Entity;
+using Chiro.Cdf.Data;
 namespace Chiro.Gap.Orm
 {
 
-    public partial class CommunicatieVorm: IBasisEntiteit
+    public partial class CommunicatieVorm: IEfBasisEntiteit
     {
         private bool _teVerwijderen = false;
 

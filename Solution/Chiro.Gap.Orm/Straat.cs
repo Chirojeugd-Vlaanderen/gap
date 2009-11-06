@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Chiro.Cdf.EfWrapper;
+using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Orm
 {
@@ -15,7 +15,7 @@ namespace Chiro.Gap.Orm
     /// Het feit dat er geen timestamp is, wil wel zeggen dat
     /// 'concurrencygewijze' de laatste altijd zal winnen.    
     /// </summary>
-    public partial class Straat: IBasisEntiteit
+    public partial class Straat: IEfBasisEntiteit
     {
         #region IBasisEntiteit Members
         private bool _teVerwijderen = false;

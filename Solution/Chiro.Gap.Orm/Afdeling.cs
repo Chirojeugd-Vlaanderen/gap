@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
-using Chiro.Cdf.EfWrapper;
+using Chiro.Cdf.Data;
+using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Orm
 {
-    public partial class Afdeling : IBasisEntiteit 
+    public partial class Afdeling : IEfBasisEntiteit 
     {
         private bool _teVerwijderen = false;
 
@@ -32,7 +32,7 @@ namespace Chiro.Gap.Orm
 
         public override bool Equals(object obj)
         {
-            IBasisEntiteit andere = obj as Afdeling;
+            IEfBasisEntiteit andere = obj as Afdeling;
             // Als obj geen Afdeling is, wordt andere null.
 
             return andere != null && (ID != 0) && (ID == andere.ID)

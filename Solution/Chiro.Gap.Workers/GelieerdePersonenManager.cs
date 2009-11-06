@@ -7,6 +7,7 @@ using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Cdf.Ioc;
+using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Workers
 {

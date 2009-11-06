@@ -25,7 +25,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Chiro.Cdf.EfWrapper
+namespace Chiro.Cdf.Data.Entity
 {
     public static class Utility
     {
@@ -70,7 +70,7 @@ namespace Chiro.Cdf.EfWrapper
         ///        niet.
         ///     3. Blijkbaar ook niet voor many-to-many?
         /// </remarks>
-        public static T DetachObjectGraph<T>(T entity) where T:IBasisEntiteit
+        public static T DetachObjectGraph<T>(T entity) where T:IEfBasisEntiteit
         {
             T gedetacht;
 
@@ -93,7 +93,7 @@ namespace Chiro.Cdf.EfWrapper
             return gedetacht;
         }
         
-        public static IList<T> DetachObjectGraph<T>(IList<T> entities) where T : IBasisEntiteit
+        public static IList<T> DetachObjectGraph<T>(IList<T> entities) where T : IEfBasisEntiteit
         {
             using (MemoryStream stream = new MemoryStream())
             {

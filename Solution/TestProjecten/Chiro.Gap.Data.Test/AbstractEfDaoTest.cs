@@ -7,7 +7,8 @@ using Chiro.Gap.Orm;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Orm.DataInterfaces;
 using System.Data;
-using Chiro.Cdf.EfWrapper.Entity;
+using Chiro.Cdf.Data.Entity;
+using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Data.Test
 {

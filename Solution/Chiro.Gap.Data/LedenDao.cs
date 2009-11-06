@@ -1,162 +1,163 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Chiro.Gap.Orm;
+using System.Data;
 using System.Diagnostics;
 using System.Data.Objects;
-using System.Data;
-using Chiro.Gap.Orm.DataInterfaces;
-
-using Chiro.Cdf.EfWrapper.Entity;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
+
+using Chiro.Cdf.Data.Entity;
+
+using Chiro.Gap.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
-    public class LedenDao: Dao<Lid>, ILedenDao
-    {
-        public LedenDao()
-        {
-            connectedEntities = new Expression<Func<Lid, object>>[2] { 
+	public class LedenDao : Dao<Lid, ChiroGroepEntities>, ILedenDao
+	{
+		public LedenDao()
+		{
+			connectedEntities = new Expression<Func<Lid, object>>[2] { 
                                         e => e.GroepsWerkJaar, 
                                         e => e.GelieerdePersoon };
-        }
+		}
 
-        /// <summary>
-        /// Zoekt lid op op basis van GelieerdePersoonID en GroepsWerkJaarID
-        /// </summary>
-        /// <param name="gelieerdePersoonID">ID van gelieerde persoon</param>
-        /// <param name="groepsWerkJaarID">ID van groepswerkjaar</param>
-        /// <returns>Lidobject indien gevonden, anders null</returns>
-        public Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID)
-        {
-            return Ophalen(gelieerdePersoonID, groepsWerkJaarID, null);
-        }
+		/// <summary>
+		/// Zoekt lid op op basis van GelieerdePersoonID en GroepsWerkJaarID
+		/// </summary>
+		/// <param name="gelieerdePersoonID">ID van gelieerde persoon</param>
+		/// <param name="groepsWerkJaarID">ID van groepswerkjaar</param>
+		/// <returns>Lidobject indien gevonden, anders null</returns>
+		public Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID)
+		{
+			return Ophalen(gelieerdePersoonID, groepsWerkJaarID, null);
+		}
 
-        /// <summary>
-        /// Haalt lid met gerelateerde entity's op, op basis van 
-        /// GelieerdePersoonID en GroepsWerkJaarID
-        /// </summary>
-        /// <param name="gelieerdePersoonID">ID van gelieerde persoon</param>
-        /// <param name="groepsWerkJaarID">ID van groepswerkjaar</param>
-        /// <param name="paths">lambda-expressies die de extra op te halen
-        /// informatie definieren</param>
-        /// <returns>Lidobject indien gevonden, anders null</returns>
-        public Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths)
-        {
-            using (ChiroGroepEntities db = new ChiroGroepEntities())
-            {
-                var query = (from l in db.Lid
-                            where l.GelieerdePersoon.ID == gelieerdePersoonID
-                            && l.GroepsWerkJaar.ID == groepsWerkJaarID
-                            select l) as ObjectQuery<Lid>;
-                return (IncludesToepassen(query, paths).FirstOrDefault());
-            }
-        }
- 
-        // pagineren gebeurt nu per werkjaar
-        // pagina, paginaGrootte en aantalTotaal zijn niet meer nodig
-        public IList<Lid> PaginaOphalen(int groepsWerkJaarID)
-        {
-            IList<Lid> lijst;
+		/// <summary>
+		/// Haalt lid met gerelateerde entity's op, op basis van 
+		/// GelieerdePersoonID en GroepsWerkJaarID
+		/// </summary>
+		/// <param name="gelieerdePersoonID">ID van gelieerde persoon</param>
+		/// <param name="groepsWerkJaarID">ID van groepswerkjaar</param>
+		/// <param name="paths">lambda-expressies die de extra op te halen
+		/// informatie definieren</param>
+		/// <returns>Lidobject indien gevonden, anders null</returns>
+		public Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths)
+		{
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{
+				var query = (from l in db.Lid
+					     where l.GelieerdePersoon.ID == gelieerdePersoonID
+					     && l.GroepsWerkJaar.ID == groepsWerkJaarID
+					     select l) as ObjectQuery<Lid>;
+				return (IncludesToepassen(query, paths).FirstOrDefault());
+			}
+		}
 
-            using (ChiroGroepEntities db = new ChiroGroepEntities())
-            {
-                db.Lid.MergeOption = MergeOption.NoTracking;
+		// pagineren gebeurt nu per werkjaar
+		// pagina, paginaGrootte en aantalTotaal zijn niet meer nodig
+		public IList<Lid> PaginaOphalen(int groepsWerkJaarID)
+		{
+			IList<Lid> lijst;
 
-                var kinderen = (
-                    from l in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
-                    where l.GroepsWerkJaar.ID == groepsWerkJaarID
-                    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-                    select l).ToList<Kind>();
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{
+				db.Lid.MergeOption = MergeOption.NoTracking;
 
-                var leiding = (
-                    from l in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
-                    where l.GroepsWerkJaar.ID == groepsWerkJaarID
-                    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-                    select l).ToList<Leiding>();
+				var kinderen = (
+				    from l in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+				    where l.GroepsWerkJaar.ID == groepsWerkJaarID
+				    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+				    select l).ToList<Kind>();
 
-                lijst = new List<Lid>();
-                foreach (Lid lid in kinderen)
-                {
-                    lijst.Add(lid);
-                }
-                foreach (Lid lid in leiding)
-                {
-                    lijst.Add(lid);
-                }
-            }
+				var leiding = (
+				    from l in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+				    where l.GroepsWerkJaar.ID == groepsWerkJaarID
+				    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+				    select l).ToList<Leiding>();
 
-            return lijst;
-        }
+				lijst = new List<Lid>();
+				foreach (Lid lid in kinderen)
+				{
+					lijst.Add(lid);
+				}
+				foreach (Lid lid in leiding)
+				{
+					lijst.Add(lid);
+				}
+			}
 
-        // pagineren gebeurt nu per werkjaar
-        // pagina, paginaGrootte en aantalTotaal zijn niet meer nodig
-        public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int afdelingsID)
-        {
-            IList<Lid> lijst;
+			return lijst;
+		}
 
-            using (ChiroGroepEntities db = new ChiroGroepEntities())
-            {
-                db.Lid.MergeOption = MergeOption.NoTracking;
+		// pagineren gebeurt nu per werkjaar
+		// pagina, paginaGrootte en aantalTotaal zijn niet meer nodig
+		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int afdelingsID)
+		{
+			IList<Lid> lijst;
 
-                var kinderen = (
-                    from l in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
-                    where l.GroepsWerkJaar.ID == groepsWerkJaarID
-                                &&
-                          l.AfdelingsJaar.Afdeling.ID == afdelingsID
-                    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-                    select l).ToList<Kind>();
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{
+				db.Lid.MergeOption = MergeOption.NoTracking;
 
-                var leiding = (
-                    from l in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
-                    where l.GroepsWerkJaar.ID == groepsWerkJaarID
-                                &&
-                          l.AfdelingsJaar.FirstOrDefault().Afdeling.ID == afdelingsID
-                    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-                    select l).ToList<Leiding>();
+				var kinderen = (
+				    from l in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+				    where l.GroepsWerkJaar.ID == groepsWerkJaarID
+						&&
+					  l.AfdelingsJaar.Afdeling.ID == afdelingsID
+				    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+				    select l).ToList<Kind>();
 
-                lijst = new List<Lid>();
-                foreach (Lid lid in kinderen)
-                {
-                    lijst.Add(lid);
-                }
-                foreach (Lid lid in leiding)
-                {
-                    lijst.Add(lid);
-                }
-            }
+				var leiding = (
+				    from l in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+				    where l.GroepsWerkJaar.ID == groepsWerkJaarID
+						&&
+					  l.AfdelingsJaar.FirstOrDefault().Afdeling.ID == afdelingsID
+				    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+				    select l).ToList<Leiding>();
 
-            return lijst;
-        }
+				lijst = new List<Lid>();
+				foreach (Lid lid in kinderen)
+				{
+					lijst.Add(lid);
+				}
+				foreach (Lid lid in leiding)
+				{
+					lijst.Add(lid);
+				}
+			}
 
-        public Lid OphalenMetDetails(int lidID)
-        {
-            using (ChiroGroepEntities db = new ChiroGroepEntities())
-            {
-                db.Lid.MergeOption = MergeOption.NoTracking;
+			return lijst;
+		}
 
-                Lid lid = (
-                    from t in db.Lid.Include("GelieerdePersoon").Include("GroepsWerkJaar")
-                    where t.ID == lidID
-                    select t).FirstOrDefault<Lid>();
+		public Lid OphalenMetDetails(int lidID)
+		{
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{
+				db.Lid.MergeOption = MergeOption.NoTracking;
 
-                if (lid is Kind)
-                {
-                    return (
-                        from t in db.Lid.OfType<Kind>().Include("GelieerdePersoon").Include("GroepsWerkJaar").Include("AfdelingsJaar")
-                        where t.ID == lidID
-                        select t).FirstOrDefault<Kind>();
-                }
-                else if (lid is Leiding)
-                {
-                    return (
-                        from t in db.Lid.OfType<Leiding>().Include("GelieerdePersoon").Include("GroepsWerkJaar").Include("AfdelingsJaar")
-                        where t.ID == lidID
-                        select t).FirstOrDefault<Leiding>();
-                }
-                return lid;
-            }
-        }
-    }
+				Lid lid = (
+				    from t in db.Lid.Include("GelieerdePersoon").Include("GroepsWerkJaar")
+				    where t.ID == lidID
+				    select t).FirstOrDefault<Lid>();
+
+				if (lid is Kind)
+				{
+					return (
+					    from t in db.Lid.OfType<Kind>().Include("GelieerdePersoon").Include("GroepsWerkJaar").Include("AfdelingsJaar")
+					    where t.ID == lidID
+					    select t).FirstOrDefault<Kind>();
+				}
+				else if (lid is Leiding)
+				{
+					return (
+					    from t in db.Lid.OfType<Leiding>().Include("GelieerdePersoon").Include("GroepsWerkJaar").Include("AfdelingsJaar")
+					    where t.ID == lidID
+					    select t).FirstOrDefault<Leiding>();
+				}
+				return lid;
+			}
+		}
+	}
 }

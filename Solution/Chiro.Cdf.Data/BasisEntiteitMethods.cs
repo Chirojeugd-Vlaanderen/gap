@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Chiro.Cdf.EfWrapper
+namespace Chiro.Cdf.Data
 {
     /// <summary>
     /// Klasse met extension methods voor basisentiteiten.

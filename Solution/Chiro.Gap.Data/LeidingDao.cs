@@ -9,19 +9,19 @@ using System.Data;
 using Chiro.Gap.Orm.DataInterfaces;
 
 using System.Linq.Expressions;
-using Chiro.Cdf.EfWrapper.Entity;
+using Chiro.Cdf.Data.Entity;
 
 
 namespace Chiro.Gap.Data.Ef
 {
-    public class LeidingDao : Dao<Leiding>, ILeidingDao
-    {
-        public LeidingDao()
-        {
-            connectedEntities = new Expression<Func<Leiding, object>>[3] { 
+	public class LeidingDao : Dao<Leiding, ChiroGroepEntities>, ILeidingDao
+	{
+		public LeidingDao()
+		{
+			connectedEntities = new Expression<Func<Leiding, object>>[3] { 
                                         e => e.GroepsWerkJaar, 
                                         e => e.GelieerdePersoon, 
                                         e => e.AfdelingsJaar };
-        }
-    }
+		}
+	}
 }

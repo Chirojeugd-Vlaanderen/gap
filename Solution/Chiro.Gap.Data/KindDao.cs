@@ -8,20 +8,20 @@ using System.Data.Objects;
 using System.Data;
 using Chiro.Gap.Orm.DataInterfaces;
 
-using Chiro.Cdf.EfWrapper.Entity;
+using Chiro.Cdf.Data.Entity;
 using System.Linq.Expressions;
 
 namespace Chiro.Gap.Data.Ef
 {
-    public class KindDao : Dao<Kind>, IKindDao
-    {
-        public KindDao()
-        {
-            connectedEntities = new Expression<Func<Kind, object>>[3] { 
+	public class KindDao : Dao<Kind, ChiroGroepEntities>, IKindDao
+	{
+		public KindDao()
+		{
+			connectedEntities = new Expression<Func<Kind, object>>[3] { 
                                         e => e.GroepsWerkJaar, 
                                         e => e.GelieerdePersoon, 
                                         e => e.AfdelingsJaar };
-        }
+		}
 
-    }
+	}
 }

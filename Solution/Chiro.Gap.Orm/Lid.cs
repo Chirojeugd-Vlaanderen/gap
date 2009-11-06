@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
-
-using Chiro.Cdf.EfWrapper;
+using Chiro.Cdf.Data;
+using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Orm
 {
@@ -14,7 +14,7 @@ namespace Chiro.Gap.Orm
         [EnumMember] Leiding = 2
     }
 
-    public partial class Lid : IBasisEntiteit
+    public partial class Lid : IEfBasisEntiteit
     {
         private bool _teVerwijderen = false;
 

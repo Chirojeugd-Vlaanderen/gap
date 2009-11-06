@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Chiro.Cdf.EfWrapper.Entity;
+using Chiro.Cdf.Data.Entity;
 
-namespace Chiro.Cdf.EfWrapper.Test
+namespace Chiro.Cdf.Data.Test
 {
     /// <summary>
     /// Summary description for VerwijderTest

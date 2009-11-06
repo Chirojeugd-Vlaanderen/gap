@@ -6,8 +6,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Workers;
 using Chiro.Cdf.Ioc;
-using Chiro.Cdf.EfWrapper.Entity;
+using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Data.Test
 {

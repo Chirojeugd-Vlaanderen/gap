@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Chiro.Cdf.EfWrapper;
-
+using Chiro.Cdf.Data.Entity;
+using Chiro.Cdf.Data;
 namespace Chiro.Gap.Orm
 {
-    public partial class CommunicatieType: IBasisEntiteit
+    public partial class CommunicatieType: IEfBasisEntiteit
     {
         private bool _teVerwijderen = false;
 

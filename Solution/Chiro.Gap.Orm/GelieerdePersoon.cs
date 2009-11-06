@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-using Chiro.Cdf.EfWrapper;
-using Chiro.Cdf.EfWrapper.Entity;
+using Chiro.Cdf.Data;
+using Chiro.Cdf.Data.Entity;
 using System.Diagnostics;
 
 namespace Chiro.Gap.Orm
@@ -20,7 +20,7 @@ namespace Chiro.Gap.Orm
     // dat heeft dan weer een key violation tot gevolg.)
 
     [AssociationEndBehavior("PersoonsAdres", Owned = true)]
-    public partial class GelieerdePersoon : IBasisEntiteit 
+    public partial class GelieerdePersoon : IEfBasisEntiteit 
     {
         // We gaan de lijst met PersoonsInfo niet opnemen in de
         // klasse.  De programmeur moet te allen tijde maar weten

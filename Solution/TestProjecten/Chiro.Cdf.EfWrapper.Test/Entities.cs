@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Chiro.Cdf.EfWrapper.Entity;
+using Chiro.Cdf.Data.Entity;
 using System.Diagnostics;
 
-namespace Chiro.Cdf.EfWrapper.Test
+namespace Chiro.Cdf.Data.Test
 {
-    public partial class PersoonsAdres : IBasisEntiteit
+    public partial class PersoonsAdres : IEfBasisEntiteit
     {
         private bool _teVerwijderen = false;
 
@@ -25,7 +25,7 @@ namespace Chiro.Cdf.EfWrapper.Test
     }
 
     [AssociationEndBehavior("PersoonsAdres", Owned=true)]
-    public partial class GelieerdePersoon : IBasisEntiteit
+    public partial class GelieerdePersoon : IEfBasisEntiteit
     {
         private bool _teVerwijderen = false;
 
@@ -95,7 +95,7 @@ namespace Chiro.Cdf.EfWrapper.Test
         #endregion
     }
 
-    public partial class Adres : IBasisEntiteit
+    public partial class Adres : IEfBasisEntiteit
     {
         private bool _teVerwijderen = false;
 
@@ -112,7 +112,7 @@ namespace Chiro.Cdf.EfWrapper.Test
         }
     }
 
-    public partial class Categorie : IBasisEntiteit
+    public partial class Categorie : IEfBasisEntiteit
     {
         private bool _teVerwijderen = false;
 

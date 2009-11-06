@@ -5,6 +5,7 @@ using System.Text;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Orm;
+using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Workers
 {

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Chiro.Cdf.EfWrapper;
-using Chiro.Cdf.EfWrapper.Entity;
+using Chiro.Cdf.Data;
+using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Orm
 {
@@ -12,7 +12,7 @@ namespace Chiro.Gap.Orm
     // moet het persoonsadres zelf ook verwijderd worden.
     // Vandaar het attribuut AssociationEndBehavior
     [AssociationEndBehavior("PersoonsAdres", Owned = true)]
-    public partial class Adres: IBasisEntiteit
+    public partial class Adres: IEfBasisEntiteit
     {
         private bool _teVerwijderen = false;
 

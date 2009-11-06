@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 
-namespace Chiro.Cdf.EfWrapper.Entity
+namespace Chiro.Cdf.Data.Entity
 {
 	[AttributeUsage(AttributeTargets.Class)]
 	public sealed class AssociationEndBehaviorAttribute : Attribute

@@ -5,21 +5,22 @@ using System.Text;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using System.Data.Objects;
+using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Data.Ef
 {
-    public class GavDao: Dao<Gav>, IGavDao
-    {
-        public Gav Ophalen(string login)
-        {
-            using (ChiroGroepEntities db = new ChiroGroepEntities())
-            {
-                db.Gav.MergeOption = MergeOption.NoTracking;
+	public class GavDao : Dao<Gav, ChiroGroepEntities>, IGavDao
+	{
+		public Gav Ophalen(string login)
+		{
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{
+				db.Gav.MergeOption = MergeOption.NoTracking;
 
-                return (from gav in db.Gav
-                        where gav.Login == login
-                        select gav).FirstOrDefault();
-            }
-        }
-    }
+				return (from gav in db.Gav
+					where gav.Login == login
+					select gav).FirstOrDefault();
+			}
+		}
+	}
 }

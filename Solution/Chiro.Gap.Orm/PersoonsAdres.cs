@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
-using Chiro.Cdf.EfWrapper;
-
+using Chiro.Cdf.Data.Entity;
+using Chiro.Cdf.Data;
 namespace Chiro.Gap.Orm
 {
     [DataContract]
@@ -26,7 +26,7 @@ namespace Chiro.Gap.Orm
         Overig = 4
     }
 
-    public partial class PersoonsAdres: IBasisEntiteit
+    public partial class PersoonsAdres: IEfBasisEntiteit
     {
         private bool _teVerwijderen = false;
 

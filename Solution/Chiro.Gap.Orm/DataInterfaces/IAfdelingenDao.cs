@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Orm.DataInterfaces
 {
-    public interface IAfdelingenDao: IDao<Afdeling>
-    {
-    }
+	public interface IAfdelingenDao : IDao<Afdeling>
+	{
+	}
 }

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
-
-using Chiro.Cdf.EfWrapper;
+using Chiro.Cdf.Data;
+using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Orm
 {
@@ -16,7 +16,7 @@ namespace Chiro.Gap.Orm
         , [EnumMember] Onbekend = 0
     }
 
-    public partial class Persoon : IBasisEntiteit
+    public partial class Persoon : IEfBasisEntiteit
     {
         private bool _teVerwijderen = false;
 
@@ -41,7 +41,7 @@ namespace Chiro.Gap.Orm
 
         public override bool Equals(object obj)
         {
-            IBasisEntiteit andere = obj as Persoon;
+            IEfBasisEntiteit andere = obj as Persoon;
             // Als obj geen GelieerdePersoon is, wordt andere null.
 
             if (andere == null)

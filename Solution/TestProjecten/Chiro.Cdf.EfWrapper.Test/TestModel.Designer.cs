@@ -9,13 +9,13 @@
 //------------------------------------------------------------------------------
 
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroep.UnitTestModel", "FK_PersoonsAdres_Adres", "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Cdf.EfWrapper.Test.Adres), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Cdf.EfWrapper.Test.PersoonsAdres))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroep.UnitTestModel", "FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Cdf.EfWrapper.Test.GelieerdePersoon), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Cdf.EfWrapper.Test.PersoonsAdres))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroep.UnitTestModel", "PersoonsCategorie", "Categorie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Cdf.EfWrapper.Test.Categorie), "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Cdf.EfWrapper.Test.GelieerdePersoon))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroep.UnitTestModel", "FK_PersoonsAdres_Adres", "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Cdf.Data.Test.Adres), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Cdf.Data.Test.PersoonsAdres))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroep.UnitTestModel", "FK_PersoonsAdres_GelieerdePersoon", "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Cdf.Data.Test.GelieerdePersoon), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Cdf.Data.Test.PersoonsAdres))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroep.UnitTestModel", "PersoonsCategorie", "Categorie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Cdf.Data.Test.Categorie), "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Cdf.Data.Test.GelieerdePersoon))]
 
 // Original file name:
 // Generation date: 28/10/2009 12:04:57
-namespace Chiro.Cdf.EfWrapper.Test
+namespace Chiro.Cdf.Data.Test
 {
     
     /// <summary>

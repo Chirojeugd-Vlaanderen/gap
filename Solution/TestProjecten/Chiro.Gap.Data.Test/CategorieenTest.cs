@@ -7,7 +7,7 @@ using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Dummies;
-using Chiro.Cdf.EfWrapper.Entity;
+using Chiro.Cdf.Data.Entity;
 using Chiro.Cdf.Ioc;
 
 namespace Chiro.Gap.Data.Test

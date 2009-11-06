@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Chiro.Cdf.EfWrapper;
-using Chiro.Cdf.EfWrapper.Entity;
+using Chiro.Cdf.Data;
+using Chiro.Cdf.Data.Entity;
 using System.Diagnostics;
 
 namespace Chiro.Gap.Orm
 {
     [AssociationEndBehavior("Afdeling", Owned = true)]
-    public partial class Groep : IBasisEntiteit 
+    public partial class Groep : IEfBasisEntiteit 
     {
         private bool _teVerwijderen = false;
 
