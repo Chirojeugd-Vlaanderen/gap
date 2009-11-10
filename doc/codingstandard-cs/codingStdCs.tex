@@ -103,7 +103,7 @@ hernummerd worden.
 \begin{enumerate}
 \item We werken met een lagenmodel\index{lagenmodel}; iedere laag staat op zich, en communiceert slechts met de
 andere lagen via publieke klasses/interfaces.  We implementeren voor elk
-proejct deze lagen:
+project deze lagen:
 \begin{itemize}
 \item Backend
 \begin{itemize}
@@ -138,7 +138,7 @@ of interface.
 \item Generieke klasses \index{generics}\index{generics!klasses} komen in een bestand waarvan de naam het suffix
 \_{\em n}' krijgt, waarbij {\em n} het aantal generieke parameters
 is.  Bijv. `IDao\_1'.
-\item Als een \lstinline !enum! slechts voor \'e\'en klasse gebruikt
+\item Als een \lstinline !enum!\index{enum} slechts voor \'e\'en klasse gebruikt
 wordt, kan die \lstinline !enum! in hetzelfde bronbestand als de klasse
 gedefinieerd worden.  Alle andere \lstinline !enum!s worden per
 assembly/namespace gegroepeerd in een bestand Enums.cs\index{Enums.cs}.
@@ -279,7 +279,7 @@ Voorbeelden in listing \ref{lblLstWhitespace}.
 \begin{enumerate}[resume]
 \item Geen spaties na een (rond) haakje-open of voor een (rond) haakje-toe\index{haakjes}
 \item E\'en spatie tussen \lstinline !if!\index{if}, \lstinline !for!\index{for},
-\lstinline !while!\index{while} en het haakje-open.  Bijv: \lstinline !if (voorwaarde)!
+\lstinline !while!\index{while} en het haakje-open.  Bijv.: \lstinline !if (voorwaarde)!
 \item Een spatie voor en na alle infix-operatoren\index{operatoren!infix}, inclusief de \lstinline
 !=>! van lambda-expressies\index{lambda-expressies}.
 \item Geen spatie tussen een prefixoperator\index{operatoren!prefix} (bijv. `\lstinline !-!' of
@@ -657,7 +657,7 @@ types\index{system types!statische functies}\footnote{\lstinline !string!, \lsti
 krijgen de types wel een hoofdletter.  Bijv. 
 \lstinline !String.IsNullOrEmpty!\index{String.IsNullOrEmpty}.
 \item E\'en variabeledeclaratie\index{variabelen!declaratie}\index{lokale variabelen!declaratie}\index{membervariabelen!declaratie} per lijn.
-\item Gebruik voor declaraties waar mogelijk interfaces\index{interfaces}, zelfs voor lokale variabelen\index{lokale variabelen!declaratie} of
+\item Gebruik voor declaraties waar mogelijk interfaces\index{interfaces}\index{interfaces!variabelendeclaraties}, zelfs voor lokale variabelen\index{lokale variabelen!declaratie} of
 membervariabelen\index{membervariabelen!declaratie}. 
 \item Elk type\index{types!access modifier}, method\index{methods!access modifier} of field\index{fields} heeft een access modifier\index{access modifiers}.\footnote{\lstinline !public!, \lstinline
 !protected!, \lstinline !private!, \ldots}
@@ -903,7 +903,7 @@ Bijvoorbeeld: \lstinline !@"Backslashes (\) zijn cool."!
 \begin{enumerate}[resume]
 \item Indien mogelijk, gebruik de interfaces 
 \lstinline !IEnumerable<T>!\index{IEnumerable}
-(voor read-only access) en \lstinline !IList<T>!\index{IList}.
+(voor rijen) en \lstinline !IList<T>!\index{IList} (voor lijsten).
 \item Cre\"eer de juiste collectie voor het juiste doel
 
 \begin{tabular}{|c|l|}
