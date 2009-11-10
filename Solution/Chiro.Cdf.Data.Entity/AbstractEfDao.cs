@@ -114,7 +114,7 @@ namespace Chiro.Cdf.Data.Entity
 		/// Alle entity's van het gegeven type ophalen
 		/// </summary>
 		/// <returns>Een lijst met objecten</returns>
-		public virtual List<TEntiteit> AllesOphalen()
+		public virtual IList<TEntiteit> AllesOphalen()
 		{
 			List<TEntiteit> result;
 			using (TContext db = new TContext())
@@ -174,7 +174,7 @@ namespace Chiro.Cdf.Data.Entity
 		/// <param name="paths">paden met gerelateerde te bewaren
 		/// entiteiten</param>
 		/// <returns>De bewaarde entiteiten, maar gedetacht</returns>
-		public virtual IList<TEntiteit> Bewaren(IList<TEntiteit> es, params Expression<Func<TEntiteit, object>>[] paths)
+		public virtual IEnumerable<TEntiteit> Bewaren(IEnumerable<TEntiteit> es, params Expression<Func<TEntiteit, object>>[] paths)
 		{
 			using (TContext db = new TContext())
 			{

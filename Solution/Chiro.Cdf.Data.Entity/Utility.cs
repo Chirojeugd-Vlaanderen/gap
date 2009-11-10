@@ -93,7 +93,7 @@ namespace Chiro.Cdf.Data.Entity
             return gedetacht;
         }
         
-        public static IList<T> DetachObjectGraph<T>(IList<T> entities) where T : IEfBasisEntiteit
+        public static IList<T> DetachObjectGraph<T>(IEnumerable<T> entities) where T : IEfBasisEntiteit
         {
             using (MemoryStream stream = new MemoryStream())
             {
