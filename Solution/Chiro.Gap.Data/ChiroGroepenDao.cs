@@ -28,7 +28,7 @@ namespace Chiro.Gap.Data.Ef
 			return result;
 		}
 
-		List<ChiroGroep> IDao<ChiroGroep>.AllesOphalen()
+		IList<ChiroGroep> IDao<ChiroGroep>.AllesOphalen()
 		{
 			List<ChiroGroep> result;
 

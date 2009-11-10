@@ -23,7 +23,7 @@ namespace Chiro.Gap.ServiceContracts
         public LidType Type { get; set; }
 
         [DataMember]
-        public String AfdelingString { get; set; }
+        public String AfdelingsNamen { get; set; }
 
     }
 }

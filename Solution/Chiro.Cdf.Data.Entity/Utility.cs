@@ -93,7 +93,7 @@ namespace Chiro.Cdf.Data.Entity
             return gedetacht;
         }
         
-        public static IList<T> DetachObjectGraph<T>(IEnumerable<T> entities) where T : IEfBasisEntiteit
+        public static IEnumerable<T> DetachObjectGraph<T>(IEnumerable<T> entities) where T : IEfBasisEntiteit
         {
             using (MemoryStream stream = new MemoryStream())
             {
@@ -101,8 +101,20 @@ namespace Chiro.Cdf.Data.Entity
                 var serializer = new BinaryFormatter();
                 serializer.Serialize(stream, entities);
                 stream.Position = 0;
-                return (IList<T>)serializer.Deserialize(stream);
+                return (IEnumerable<T>)serializer.Deserialize(stream);
             }
         }
+
+	public static IList<T> DetachObjectGraph<T>(IList<T> entities) where T : IEfBasisEntiteit
+	{
+		using (MemoryStream stream = new MemoryStream())
+		{
+
+			var serializer = new BinaryFormatter();
+			serializer.Serialize(stream, entities);
+			stream.Position = 0;
+			return (IList<T>)serializer.Deserialize(stream);
+		}
+	}
     }
 }

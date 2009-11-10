@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Dummies
@@ -13,37 +15,37 @@ namespace Chiro.Gap.Dummies
     {
         #region IDao<Kind> Members
 
-        public Chiro.Gap.Orm.Kind Ophalen(int id)
+        public Kind Ophalen(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Chiro.Gap.Orm.Kind Ophalen(int id, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Kind, object>>[] paths)
+        public Kind Ophalen(int id, params System.Linq.Expressions.Expression<Func<Kind, object>>[] paths)
         {
             throw new NotImplementedException();
         }
 
-        public List<Chiro.Gap.Orm.Kind> AllesOphalen()
+        public IList<Kind> AllesOphalen()
         {
             throw new NotImplementedException();
         }
 
-        public Chiro.Gap.Orm.Kind Bewaren(Chiro.Gap.Orm.Kind nieuweEntiteit)
+        public Kind Bewaren(Kind nieuweEntiteit)
         {
             throw new NotImplementedException();
         }
 
-        public Chiro.Gap.Orm.Kind Bewaren(Chiro.Gap.Orm.Kind entiteit, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Kind, object>>[] paths)
+        public Kind Bewaren(Kind entiteit, params System.Linq.Expressions.Expression<Func<Kind, object>>[] paths)
         {
             throw new NotImplementedException();
         }
 
-        public IList<Chiro.Gap.Orm.Kind> Bewaren(IList<Chiro.Gap.Orm.Kind> es, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Kind, object>>[] paths)
+        public IEnumerable<Kind> Bewaren(IEnumerable<Kind> es, params System.Linq.Expressions.Expression<Func<Kind, object>>[] paths)
         {
             throw new NotImplementedException();
         }
 
-        public System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Kind, object>>[] getConnectedEntities()
+        public System.Linq.Expressions.Expression<Func<Kind, object>>[] getConnectedEntities()
         {
             throw new NotImplementedException();
         }

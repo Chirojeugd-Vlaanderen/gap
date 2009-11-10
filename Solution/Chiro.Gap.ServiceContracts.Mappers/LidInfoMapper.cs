@@ -24,21 +24,21 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 Kind k = (Kind) lid;
                 if (k.AfdelingsJaar == null)
                 {
-                    l.AfdelingString = "null";
+                    l.AfdelingsNamen = "null";
                 }
                 else
                 {
-                    l.AfdelingString = k.AfdelingsJaar.Afdeling.Naam;
+                    l.AfdelingsNamen = k.AfdelingsJaar.Afdeling.Naam;
                 }
             }
             else if (lid is Leiding)
             {
                 l.Type = LidType.Leiding;
-                l.AfdelingString = "";
+                l.AfdelingsNamen = "";
                 Leiding leiding = (Leiding) lid;
                 foreach (AfdelingsJaar aj in leiding.AfdelingsJaar)
                 {
-                    l.AfdelingString = l.AfdelingString + (l.AfdelingString.Equals("") ? "" : ",") + " " + aj.Afdeling.Naam;
+                    l.AfdelingsNamen = l.AfdelingsNamen + (l.AfdelingsNamen.Equals("") ? "" : ",") + " " + aj.Afdeling.Naam;
                 }
             }
             else

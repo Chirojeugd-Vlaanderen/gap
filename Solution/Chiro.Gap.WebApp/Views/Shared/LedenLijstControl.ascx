@@ -16,7 +16,7 @@ maar dat is nu nog niet geimplementeerd :-) -->
 <tr>
     <td><%=l.PersoonInfo.AdNummer %></td>
     <td><%=l.Type.ToString() %></td>
-    <td><%=l.AfdelingString %></td>
+    <td><%=l.AfdelingsNamen %></td>
     <td><% Html.RenderPartial("PersoonsLinkControl", l.PersoonInfo); %></td>
     <td class="right"><%=l.PersoonInfo.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)l.PersoonInfo.GeboorteDatum).ToString("d")%></td>
     <td><%=l.PersoonInfo.Geslacht.ToString()%></td>

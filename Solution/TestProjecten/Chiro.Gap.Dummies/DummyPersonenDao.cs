@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+
 
 namespace Chiro.Gap.Dummies
 {
@@ -13,17 +15,17 @@ namespace Chiro.Gap.Dummies
     {
         #region IPersonenDao Members
 
-        public IList<Chiro.Gap.Orm.Persoon> LijstOphalen(IList<int> personenIDs)
+        public IList<Persoon> LijstOphalen(IList<int> personenIDs)
         {
             throw new NotImplementedException();
         }
 
-        public IList<Chiro.Gap.Orm.Persoon> HuisGenotenOphalen(int gelieerdePersoonID)
+        public IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID)
         {
             throw new NotImplementedException();
         }
 
-        public Chiro.Gap.Orm.Persoon CorresponderendePersoonOphalen(int gelieerdePersoonID)
+        public Persoon CorresponderendePersoonOphalen(int gelieerdePersoonID)
         {
             throw new NotImplementedException();
         }
@@ -32,37 +34,37 @@ namespace Chiro.Gap.Dummies
 
         #region IDao<Persoon> Members
 
-        public Chiro.Gap.Orm.Persoon Ophalen(int id)
+        public Persoon Ophalen(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Chiro.Gap.Orm.Persoon Ophalen(int id, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Persoon, object>>[] paths)
+        public Persoon Ophalen(int id, params System.Linq.Expressions.Expression<Func<Persoon, object>>[] paths)
         {
             throw new NotImplementedException();
         }
 
-        public List<Chiro.Gap.Orm.Persoon> AllesOphalen()
+        public IList<Persoon> AllesOphalen()
         {
             throw new NotImplementedException();
         }
 
-        public Chiro.Gap.Orm.Persoon Bewaren(Chiro.Gap.Orm.Persoon nieuweEntiteit)
+        public Persoon Bewaren(Persoon nieuweEntiteit)
         {
             throw new NotImplementedException();
         }
 
-        public Chiro.Gap.Orm.Persoon Bewaren(Chiro.Gap.Orm.Persoon entiteit, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Persoon, object>>[] paths)
+        public Persoon Bewaren(Persoon entiteit, params System.Linq.Expressions.Expression<Func<Persoon, object>>[] paths)
         {
             throw new NotImplementedException();
         }
 
-        public IList<Chiro.Gap.Orm.Persoon> Bewaren(IList<Chiro.Gap.Orm.Persoon> es, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Persoon, object>>[] paths)
+        public IEnumerable<Persoon> Bewaren(IEnumerable<Persoon> es, params System.Linq.Expressions.Expression<Func<Persoon, object>>[] paths)
         {
             throw new NotImplementedException();
         }
 
-        public System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Persoon, object>>[] getConnectedEntities()
+        public System.Linq.Expressions.Expression<Func<Persoon, object>>[] getConnectedEntities()
         {
             throw new NotImplementedException();
         }
