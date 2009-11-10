@@ -16,10 +16,10 @@ namespace Chiro.Cdf.Data
     {
         T Ophalen(int id);
         T Ophalen(int id, params Expression<Func<T, object>>[] paths);
-        List<T> AllesOphalen();
+        IList<T> AllesOphalen();
         T Bewaren(T nieuweEntiteit);
         T Bewaren(T entiteit, params Expression<Func<T, object>>[] paths);
-        IList<T> Bewaren(IList<T> es, params Expression<Func<T, object>>[] paths);
+        IEnumerable<T> Bewaren(IEnumerable<T> es, params Expression<Func<T, object>>[] paths);
         Expression<Func<T, object>>[] getConnectedEntities();
     }
 
