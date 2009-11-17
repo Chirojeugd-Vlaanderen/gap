@@ -64,8 +64,8 @@ namespace Chiro.Gap.Dummies
 				VoorNaam = "Irène",
 				GeboorteDatum = new DateTime(1990, 3, 8) };
 
-			_gelieerdeJos = gpMgr.PersoonAanGroepKoppelen(jos, _dummyGroep, 0);
-			gpMgr.PersoonAanGroepKoppelen(irene, _dummyGroep, 0);
+			_gelieerdeJos = gpMgr.Koppelen(jos, _dummyGroep, 0);
+			gpMgr.Koppelen(irene, _dummyGroep, 0);
 
 			lMgr.LidMaken(_gelieerdeJos, _huidigGwj);						
 		}

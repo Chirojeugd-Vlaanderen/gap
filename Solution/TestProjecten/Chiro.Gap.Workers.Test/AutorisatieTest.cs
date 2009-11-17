@@ -358,7 +358,7 @@ namespace Chiro.Gap.Workers.Test
 
             Groep g = new Groep();
             Persoon p = new Persoon { AdNummer = 1 };
-            GelieerdePersoon gp = gpm.PersoonAanGroepKoppelen(p, g, 0);
+            GelieerdePersoon gp = gpm.Koppelen(p, g, 0);
             gp.ID = Properties.Settings.Default.TestGelieerdePersoonID;
 
             return gp;

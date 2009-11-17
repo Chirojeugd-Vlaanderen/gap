@@ -11,8 +11,6 @@ using Chiro.Gap.ServiceContracts.Mappers;
 
 namespace Chiro.Gap.ServiceContracts.Test
 {
-	// 
-
 	/// <summary>
 	/// Summary description for UnitTest1
 	/// </summary>

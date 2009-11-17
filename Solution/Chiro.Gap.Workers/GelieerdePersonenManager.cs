@@ -238,7 +238,7 @@ namespace Chiro.Gap.Workers
         /// <param name="groep">groep waaraan te lieren</param>
         /// <param name="chiroLeeftijd">chiroleeftijd gelieerde persoon</param>
         /// <returns>een nieuwe GelieerdePersoon</returns>
-        public GelieerdePersoon PersoonAanGroepKoppelen(Persoon persoon, Groep groep, int chiroLeeftijd)
+        public GelieerdePersoon Koppelen(Persoon persoon, Groep groep, int chiroLeeftijd)
         {
             if (_autorisatieMgr.IsGavGroep(groep.ID))
             {

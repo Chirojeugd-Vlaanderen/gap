@@ -90,7 +90,7 @@ namespace Chiro.Gap.Data.Test
 
             // Koppel aan testgroep, Chiroleeftijd 0
 
-            GelieerdePersoon gp = gpm.PersoonAanGroepKoppelen(p, g, 0);
+            GelieerdePersoon gp = gpm.Koppelen(p, g, 0);
 
             IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
             // Hier moeten we via de DAO gaan, en niet via de worker, omdat 
@@ -220,7 +220,7 @@ namespace Chiro.Gap.Data.Test
 
             // Koppel aan testgroep, Chiroleeftijd 0
 
-            GelieerdePersoon gp = gpm.PersoonAanGroepKoppelen(p, g, 0);
+            GelieerdePersoon gp = gpm.Koppelen(p, g, 0);
 
             IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
             #endregion
