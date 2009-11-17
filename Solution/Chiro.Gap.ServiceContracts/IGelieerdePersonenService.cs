@@ -186,6 +186,9 @@ namespace Chiro.Gap.ServiceContracts
         [FaultContract(typeof(BusinessFault<Categorie>))]
         void CategorieVerwijderenVanPersoon(IList<int> gelieerdepersonenIDs, int categorieID);
 
+        [OperationContract]
+        IList<GelieerdePersoon> PersonenOphalenUitCategorie(int categorieID);
+
         /// <summary>
         /// Haalt een lijst op met alle communicatietypes
         /// </summary>

@@ -143,11 +143,6 @@ namespace Chiro.Gap.Services
 
 		#region Categorieen
 
-		public IList<GelieerdePersoon> PersonenOphalenUitCategorie(int categorieID)
-		{
-			return gpm.OphalenCategorie(categorieID).GelieerdePersoon.ToList();
-		}
-
 		//TODO een efficiente manier vinden om een bepaalde eigenschap toe te voegen aan een al geladen element.
 		//of anders in de workers methoden aanbieden om lambda expressies mee te geven: dan eerst bepalen wat allemaal nodig is, dan 1 keer laden
 		//en dan zijn we terug bij het idee om in het object bij te houden wat hij allemaal heeft geladen
@@ -171,17 +166,6 @@ namespace Chiro.Gap.Services
 		{
 			// Nog niet klaar
 			throw new NotImplementedException();
-		}
-
-		//TODO moet hier eigenlijk een groep worden meegegeven, of kan die worden afgeleid uit de aanroeper?
-		public void PersonenToevoegenAanCategorie(IList<int> gelieerdePersonenIDs, int categorieID)
-		{
-			gpm.CategorieKoppelen(gelieerdePersonenIDs, categorieID, true);
-		}
-
-		public void PersonenVerwijderenUitCategorie(IList<int> gelieerdePersonenIDs, int categorieID)
-		{
-			gpm.CategorieKoppelen(gelieerdePersonenIDs, categorieID, false);
 		}
 
 		#endregion categorieen

@@ -299,6 +299,7 @@ namespace Chiro.Gap.WebApp.Controllers
         // GET: /Personen/CommVormBewerken/gelieerdePersoonID
         public ActionResult BewerkenCommVorm(int commvormID, int gelieerdePersoonID, int groepID)
         {
+            //TODO dit is niet juist broes, want hij haalt 2 keer de persoon op?
             GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
             CommunicatieVorm commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieVorm>(l => l.ophalenCommVorm(commvormID));
             CommVormModel model = new CommVormModel(g, commv);

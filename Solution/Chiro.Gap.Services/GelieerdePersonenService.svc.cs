@@ -241,12 +241,17 @@ namespace Chiro.Gap.Services
 
         public void CategorieVerwijderenVanPersoon(IList<int> gelieerdepersonenIDs, int categorieID)
         {
-            gpm.CategorieKoppelen(gelieerdepersonenIDs, categorieID, true);
+            gpm.CategorieKoppelen(gelieerdepersonenIDs, categorieID, false);
         }
 
         public IEnumerable<Categorie> ophalenCategorieen(int groepID)
         {
             return gpm.ophalenCategorieen(groepID);
+        }
+
+        public IList<GelieerdePersoon> PersonenOphalenUitCategorie(int categorieID)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion categorieen

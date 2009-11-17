@@ -46,10 +46,10 @@
     <label for="ChiroLeefTijd">Chiroleeftijd</label> 
     <%=Html.TextBox("HuidigePersoon.ChiroLeefTijd", (Model.HuidigePersoon.ChiroLeefTijd > 0 ? "+" : "") + Model.HuidigePersoon.ChiroLeefTijd.ToString())%>
 
-    <%=Html.Hidden("HuidigePersoon.ID")%>
-    <%=Html.Hidden("HuidigePersoon.VersieString")%>
-    <%=Html.Hidden("HuidigePersoon.Persoon.ID")%>
-    <%=Html.Hidden("HuidigePersoon.Persoon.VersieString")%>
+    <%=Html.Hidden("HuidigePersoon.ID", Model.HuidigePersoon.ID)%>
+    <%=Html.Hidden("HuidigePersoon.VersieString", Model.HuidigePersoon.VersieString)%>
+    <%=Html.Hidden("HuidigePersoon.Persoon.ID", Model.HuidigePersoon.Persoon.ID)%>
+    <%=Html.Hidden("HuidigePersoon.Persoon.VersieString", Model.HuidigePersoon.Persoon.VersieString)%>
     
      </fieldset>
     

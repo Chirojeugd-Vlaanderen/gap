@@ -41,7 +41,7 @@ namespace Chiro.Gap.Workers
         {
             if (_autorisatieMgr.IsGavCommVorm(commvormID))
             {
-                return _dao.Ophalen(commvormID);
+                return _dao.Ophalen(commvormID, foo => foo.CommunicatieType);
             }
             else
             {
@@ -54,11 +54,11 @@ namespace Chiro.Gap.Workers
         /// </summary>
         /// <param name="g">Te persisteren groep</param>
         /// <returns>De bewaarde groep</returns>
-        public CommunicatieVorm Bewaren(CommunicatieVorm g)
+        public CommunicatieVorm Bewaren(CommunicatieVorm commvorm)
         {
-            if (_autorisatieMgr.IsGavCommVorm(g.ID))
+            if (_autorisatieMgr.IsGavCommVorm(commvorm.ID))
             {
-                return _dao.Bewaren(g);
+                return _dao.Bewaren(commvorm);
             }
             else
             {
