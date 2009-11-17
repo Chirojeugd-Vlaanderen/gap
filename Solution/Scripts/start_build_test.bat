@@ -1,12 +1,14 @@
 @echo off
 
-@if not "%CG2_PROJECT_DIR%" == "" (
+@if "%CG2_PROJECT_DIR%" == "" (
+  echo Standaard workdir.
   set CG2_PROJECT_DIR=E:\%USERNAME%\Builds
 )
 
-SET CG2_PROJECT_DIR=E:\%USERNAME%\Builds
 SET DAY_YYYYMMDD_HHMMSS=%DATE:~9,4%%DATE:~6,2%%DATE:~3,2%_%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
 SET MY_WORK_DIR=%CG2_PROJECT_DIR%\%DAY_YYYYMMDD_HHMMSS%
+
+echo Workdir: %MY_WORK_DIR%
 
 Rem Setup for M$-Visual Studio 9.0
 call "C:\Program Files\Microsoft Visual Studio 9.0\VC\bin\vcvars32.bat"
