@@ -72,7 +72,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="groep">Groep waarvoor afdeling moet worden gemaakt</param>
 		/// <param name="naam">naam van de afdeling</param>
 		/// <param name="afkorting">handige afkorting voor in schemaatjes</param>
-		public void AfdelingToevoegen(Groep groep, string naam, string afkorting)
+		public Afdeling AfdelingToevoegen(Groep groep, string naam, string afkorting)
 		{
 			if (_autorisatieMgr.IsGavGroep(groep.ID))
 			{
@@ -80,6 +80,8 @@ namespace Chiro.Gap.Workers
 
 				a.Groep = groep;
 				groep.Afdeling.Add(a);
+
+				return a;
 			}
 			else
 			{
