@@ -6,7 +6,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{994E80C0-DD18-417A-A51C-F781D3B012AB}"
 	ProjectSection(SolutionItems) = preProject
 		Cg2Solution.vsmdi = Cg2Solution.vsmdi
-		Cg2Solution1.vsmdi = Cg2Solution1.vsmdi
+		Cg2Solution4.vsmdi = Cg2Solution4.vsmdi
 		CustomDictionary.xml = CustomDictionary.xml
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
@@ -61,9 +61,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Ioc.Test", "TestP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Data.Entity", "Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj", "{F4145652-EF28-4F23-A11E-CD68D4AA2A05}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.ServiceContracts.Test", "TestProjecten\Chiro.Gap.ServiceContracts.Test\Chiro.Gap.ServiceContracts.Test.csproj", "{04FFC0EF-4B35-4673-9E82-D87562B1D288}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Cg2Solution1.vsmdi
+		CategoryFile = Cg2Solution4.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -158,6 +160,10 @@ Global
 		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04FFC0EF-4B35-4673-9E82-D87562B1D288}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04FFC0EF-4B35-4673-9E82-D87562B1D288}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04FFC0EF-4B35-4673-9E82-D87562B1D288}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04FFC0EF-4B35-4673-9E82-D87562B1D288}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -170,6 +176,7 @@ Global
 		{D9FF6AE7-5925-4A6D-9BD7-C4AC9D04C69F} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 		{FF5B16C6-BC4B-4150-A266-7A6EE1BD914F} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 		{D77DFBE9-EDB7-4740-9450-3F3CEF14B4B9} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
+		{04FFC0EF-4B35-4673-9E82-D87562B1D288} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		VisualSVNWorkingCopyRoot = .

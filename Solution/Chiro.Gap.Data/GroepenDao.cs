@@ -21,18 +21,27 @@ namespace Chiro.Gap.Data.Ef
 		TODO creeren(groep) ?
 		*/
 
+		/// <summary>
+		/// Haalt recentste groepswerkjaar op van groep met ID <paramref name="groepID"/>, inclusief 
+		/// afdelingsjaren.
+		/// </summary>
+		/// <param name="groepID">ID van groep waarvan het recentste groepswerkjaar gevraagd is.</param>
+		/// <returns>Groepswerkjaar van groep met ID <paramref name="groepID"/>, met daaraan gekoppeld de
+		/// afdelnigsjaren.</returns>
 		public GroepsWerkJaar RecentsteGroepsWerkJaarGet(int groepID)
 		{
 			GroepsWerkJaar result;
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
-				result = (
-				    from wj in db.GroepsWerkJaar
+				db.GroepsWerkJaar.MergeOption = MergeOption.NoTracking;
+
+				var query = (
+				    from wj in db.GroepsWerkJaar.Include("AfdelingsJaar")
 				    where wj.Groep.ID == groepID
 				    orderby wj.WerkJaar descending
-				    select wj).FirstOrDefault<GroepsWerkJaar>();
+				    select wj);
 
-				db.Detach(result);
+				result = query.FirstOrDefault<GroepsWerkJaar>();
 			}
 			return result;
 		}

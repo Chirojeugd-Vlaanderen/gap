@@ -57,7 +57,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src is Kind ? LidType.Kind : LidType.Leiding))
 				.ForMember(
 					dst => dst.AfdelingsNamen,
-					opt => opt.MapFrom(src => src.AfdelingsNamenGet()));
+					opt => opt.MapFrom(src => src.AfdelingsNamenGet()))
+				.ForMember(
+					dst => dst.PersoonInfo,
+					opt => opt.MapFrom(src => src.GelieerdePersoon));
 		}
 	}
 }

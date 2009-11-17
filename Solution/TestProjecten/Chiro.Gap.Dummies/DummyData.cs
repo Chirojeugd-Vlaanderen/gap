@@ -48,8 +48,8 @@ namespace Chiro.Gap.Dummies
 			OfficieleAfdeling ribbels = new OfficieleAfdeling { Naam = "Ribbels" };
 			OfficieleAfdeling rakwis = new OfficieleAfdeling { Naam = "Rakwi's" };
 
-			Afdeling unittestjes = new Afdeling { Afkorting = "UT", Naam = "unittestjes" };
-			Afdeling speelkwis = new Afdeling { Afkorting = "SK", Naam = "speelkwi's" };
+			Afdeling unittestjes = gMgr.AfdelingToevoegen(_dummyGroep, "unittestjes", "ut");
+			Afdeling speelkwis = gMgr.AfdelingToevoegen(_dummyGroep, "speelkwi's", "sk");
 
 			wjMgr.AfdelingsJaarMaken(_huidigGwj, unittestjes, ribbels, 2001, 2003);
 			wjMgr.AfdelingsJaarMaken(_huidigGwj, speelkwis, rakwis, 1998, 2000);
@@ -67,7 +67,7 @@ namespace Chiro.Gap.Dummies
 			_gelieerdeJos = gpMgr.PersoonAanGroepKoppelen(jos, _dummyGroep, 0);
 			gpMgr.PersoonAanGroepKoppelen(irene, _dummyGroep, 0);
 
-			lMgr.LidMaken(_gelieerdeJos);						
+			lMgr.LidMaken(_gelieerdeJos, _huidigGwj);						
 		}
 	}
 }

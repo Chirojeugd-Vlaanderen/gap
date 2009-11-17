@@ -49,7 +49,7 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Haalt recentste groepswerkjaar voor een groep op.
+		/// Haalt recentste groepswerkjaar voor een groep op, inclusief afdelingsjaren
 		/// </summary>
 		/// <param name="groepID">GroepID gevraagde groep</param>
 		/// <returns>Groepswerkjaar</returns>

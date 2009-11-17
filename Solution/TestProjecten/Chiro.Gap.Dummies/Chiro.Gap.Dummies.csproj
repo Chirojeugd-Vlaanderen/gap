@@ -53,10 +53,12 @@
     <Compile Include="AutMgrNooitGav.cs" />
     <Compile Include="DummyAfdelingsJarenDao.cs" />
     <Compile Include="DummyCategorieenDao.cs" />
+    <Compile Include="DummyDao.cs" />
     <Compile Include="DummyData.cs" />
     <Compile Include="DummyGelieerdePersonenDao.cs" />
     <Compile Include="DummyGroepenDao.cs" />
     <Compile Include="DummyKindDao.cs" />
+    <Compile Include="DummyLedenDao.cs" />
     <Compile Include="DummyLeidingDao.cs" />
     <Compile Include="DummyPersonenDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -82,9 +84,6 @@
       <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
       <Name>Chiro.Gap.Workers</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

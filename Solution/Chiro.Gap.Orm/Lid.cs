@@ -59,7 +59,7 @@ namespace Chiro.Gap.Orm
 					return (this as Kind).AfdelingsJaar.Afdeling.Naam;
 				}
 			}
-			else if (this is Kind)
+			else if (this is Leiding)
 			{
 				StringBuilder builder = new StringBuilder();
 

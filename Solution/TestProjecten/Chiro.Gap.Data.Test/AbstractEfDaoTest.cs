@@ -12,132 +12,131 @@ using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Data.Test
 {
-    /// <summary>
-    /// Summary description for DaoTest
-    /// </summary>
-    [TestClass]
-    public class AbstractEfDaoTest
-    {
-        public AbstractEfDaoTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
+	/// <summary>
+	/// Summary description for DaoTest
+	/// </summary>
+	[TestClass]
+	public class AbstractEfDaoTest
+	{
+		public AbstractEfDaoTest()
+		{
+			//
+			// TODO: Add constructor logic here
+			//
+		}
 
-        private TestContext testContextInstance;
+		private TestContext testContextInstance;
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+		/// <summary>
+		///Gets or sets the test context which provides
+		///information about and functionality for the current test run.
+		///</summary>
+		public TestContext TestContext
+		{
+			get
+			{
+				return testContextInstance;
+			}
+			set
+			{
+				testContextInstance = value;
+			}
+		}
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+		#region Additional test attributes
+		//
+		// You can use the following additional attributes as you write your tests:
+		//
+		// Use ClassInitialize to run code before running the first test in the class
+		// [ClassInitialize()]
+		// public static void MyClassInitialize(TestContext testContext) { }
+		//
+		// Use ClassCleanup to run code after all tests in a class have run
+		// [ClassCleanup()]
+		// public static void MyClassCleanup() { }
+		//
+		// Use TestInitialize to run code before running each test 
+		// [TestInitialize()]
+		// public void MyTestInitialize() { }
+		//
+		// Use TestCleanup to run code after each test has run
+		// [TestCleanup()]
+		// public void MyTestCleanup() { }
+		//
+		#endregion
 
-        [ClassInitialize]
-        public static void TestInitialiseren(TestContext context)
-        {
-            Factory.ContainerInit();
+		[ClassInitialize]
+		public static void TestInitialiseren(TestContext context)
+		{
+			Factory.ContainerInit();
 
-            // Verwijder GAV die we straks zullen aanmaken.
-            IGavDao gavDao = Factory.Maak<IGavDao>();
+			// Verwijder GAV die we straks zullen aanmaken.
+			IGavDao gavDao = Factory.Maak<IGavDao>();
 
-            Gav gav = gavDao.Ophalen(TestInfo.NIEUWEGAV);
+			Gav gav = gavDao.Ophalen(TestInfo.NIEUWEGAV);
 
-            if (gav != null)
-            {
-                gav.TeVerwijderen = true;
-                gavDao.Bewaren(gav);
-            }
-        }
+			if (gav != null)
+			{
+				gav.TeVerwijderen = true;
+				gavDao.Bewaren(gav);
+			}
+		}
 
-        /// <summary>
-        /// Deze test kijkt na of een nieuwe entiteit
-        /// wel een ID krijgt.
-        /// </summary>
-        [TestMethod]
-        public void IDToekennen()
-        {
-            // Arrange
+		/// <summary>
+		/// Deze test kijkt na of een nieuwe entiteit
+		/// wel een ID krijgt.
+		/// </summary>
+		[TestMethod]
+		public void IDToekennen()
+		{
+			// Arrange
 
-            Gav gav = new Gav() { Login = TestInfo.NIEUWEGAV };
-            IDao<Gav> gavDao = Factory.Maak<IDao<Gav>>();
+			Gav gav = new Gav() { Login = TestInfo.NIEUWEGAV };
+			IDao<Gav> gavDao = Factory.Maak<IDao<Gav>>();
 
-            // Act
+			// Act
 
-            gav = gavDao.Bewaren(gav);
+			gav = gavDao.Bewaren(gav);
 
-            // Assert
+			// Assert
 
-            Assert.IsTrue(gav.ID > 0);
-        }
+			Assert.IsTrue(gav.ID > 0);
+		}
 
 
-        /// <summary>
-        /// Controleert of de Dao.AllesOphalen wel gedetachte entity's
-        /// oplevert.
-        /// </summary>
-        [TestMethod]
-        public void AllesOphalenIsDetacht()
-        {
-            // Arrange
-            IDao<Groep> dao = Factory.Maak<IDao<Groep>>();
+		/// <summary>
+		/// Controleert of de Dao.AllesOphalen wel gedetachte entity's
+		/// oplevert.
+		/// </summary>
+		[TestMethod]
+		public void AllesOphalenIsDetacht()
+		{
+			// Arrange
+			IDao<Groep> dao = Factory.Maak<IDao<Groep>>();
 
-            // Act
-            IList<Groep> g = dao.AllesOphalen();
+			// Act
+			IList<Groep> g = dao.AllesOphalen();
 
-            // Assert
-            Assert.IsTrue(g[0].EntityState == EntityState.Detached);
-        }
+			// Assert
+			Assert.IsTrue(g[0].EntityState == EntityState.Detached);
+		}
 
-        /// <summary>
-        /// Controleert of Dao.bewaren een gedetachte entity
-        /// oplevert
-        /// </summary>
-        [TestMethod]
-        public void GedetachtNaBewaren()
-        {
-            // Arrange
-            IDao<Groep> dao = Factory.Maak<IDao<Groep>>();
+		/// <summary>
+		/// Controleert of Dao.bewaren een gedetachte entity
+		/// oplevert
+		/// </summary>
+		[TestMethod]
+		public void GedetachtNaBewaren()
+		{
+			// Arrange
+			IDao<Groep> dao = Factory.Maak<IDao<Groep>>();
 
-            // Act            
-            Groep g = dao.Ophalen(TestInfo.GROEPID);
-            g = dao.Bewaren(g);
+			// Act            
+			Groep g = dao.Ophalen(TestInfo.GROEPID);
+			g = dao.Bewaren(g);
 
-            // Assert
-            Assert.IsTrue(g.EntityState == EntityState.Detached);
-        }
-
-    }
+			// Assert
+			Assert.IsTrue(g.EntityState == EntityState.Detached);
+		}
+	}
 }

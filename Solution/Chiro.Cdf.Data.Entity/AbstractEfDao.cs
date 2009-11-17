@@ -214,7 +214,6 @@ namespace Chiro.Cdf.Data.Entity
 
 		#endregion
 
-
 	}
 
 

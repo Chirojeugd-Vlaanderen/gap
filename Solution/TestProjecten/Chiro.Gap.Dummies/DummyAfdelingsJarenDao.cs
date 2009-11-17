@@ -11,50 +11,11 @@ namespace Chiro.Gap.Dummies
     /// <summary>
     /// Dummy AfdelingsJarenDao, die niets implementeert
     /// </summary>
-    class DummyAfdelingsJarenDao: IAfdelingsJarenDao
+    class DummyAfdelingsJarenDao: DummyDao<AfdelingsJaar>, IAfdelingsJarenDao
     {
         #region IAfdelingsJaarDao Members
 
         public AfdelingsJaar Ophalen(int groepsWerkJaarID, int afdelingID)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IDao<AfdelingsJaar> Members
-
-        public AfdelingsJaar Ophalen(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AfdelingsJaar Ophalen(int id, params System.Linq.Expressions.Expression<Func<AfdelingsJaar, object>>[] paths)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IList<AfdelingsJaar> AllesOphalen()
-        {
-            throw new NotImplementedException();
-        }
-
-        public AfdelingsJaar Bewaren(AfdelingsJaar nieuweEntiteit)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AfdelingsJaar Bewaren(AfdelingsJaar entiteit, params System.Linq.Expressions.Expression<Func<AfdelingsJaar, object>>[] paths)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<AfdelingsJaar> Bewaren(IEnumerable<AfdelingsJaar> es, params System.Linq.Expressions.Expression<Func<AfdelingsJaar, object>>[] paths)
-        {
-            throw new NotImplementedException();
-        }
-
-        public System.Linq.Expressions.Expression<Func<AfdelingsJaar, object>>[] getConnectedEntities()
         {
             throw new NotImplementedException();
         }

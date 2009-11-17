@@ -11,50 +11,11 @@ namespace Chiro.Gap.Dummies
     /// <summary>
     /// Dummy CategorieenDao, die niets doet
     /// </summary>
-    class DummyCategorieenDao: ICategorieenDao
+    class DummyCategorieenDao: DummyDao<Categorie>, ICategorieenDao
     {
-        #region IDao<Categorie> Members
-
-        public Categorie Ophalen(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Categorie Ophalen(int id, params System.Linq.Expressions.Expression<Func<Categorie, object>>[] paths)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IList<Categorie> AllesOphalen()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Categorie Bewaren(Categorie nieuweEntiteit)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Categorie Bewaren(Categorie entiteit, params System.Linq.Expressions.Expression<Func<Categorie, object>>[] paths)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Categorie> Bewaren(IEnumerable<Categorie> es, params System.Linq.Expressions.Expression<Func<Categorie, object>>[] paths)
-        {
-            throw new NotImplementedException();
-        }
-
-        public System.Linq.Expressions.Expression<Func<Categorie, object>>[] getConnectedEntities()
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<Categorie> OphalenVanGroep(int groepID)
         {
             throw new NotImplementedException();
         }
-
-        #endregion
     }
 }

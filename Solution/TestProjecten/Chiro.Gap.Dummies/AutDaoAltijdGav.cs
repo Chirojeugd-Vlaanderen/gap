@@ -12,7 +12,7 @@ namespace Chiro.Gap.Dummies
     /// Deze klasse kan gebruikt worden als IAuthorisatieDao om te testen.
     /// Ze geeft altijd true op IsGav-vragen.
     /// </summary>
-    public class AutDaoAltijdGav: IAutorisatieDao
+    public class AutDaoAltijdGav: DummyDao<GebruikersRecht>, IAutorisatieDao
     {
         #region IAuthorisatieDao Members
 
@@ -63,43 +63,6 @@ namespace Chiro.Gap.Dummies
 
         #endregion
 
-        #region IDao<GebruikersRecht> Members
-
-        public GebruikersRecht Ophalen(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public GebruikersRecht Ophalen(int id, params System.Linq.Expressions.Expression<Func<GebruikersRecht, object>>[] paths)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IList<GebruikersRecht> AllesOphalen()
-        {
-            throw new NotImplementedException();
-        }
-
-        public GebruikersRecht Bewaren(GebruikersRecht nieuweEntiteit)
-        {
-            throw new NotImplementedException();
-        }
-
-        public GebruikersRecht Bewaren(GebruikersRecht entiteit, params System.Linq.Expressions.Expression<Func<GebruikersRecht, object>>[] paths)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<GebruikersRecht> Bewaren(IEnumerable<GebruikersRecht> es, params System.Linq.Expressions.Expression<Func<GebruikersRecht, object>>[] paths)
-        {
-            throw new NotImplementedException();
-        }
-
-        public System.Linq.Expressions.Expression<Func<GebruikersRecht, object>>[] getConnectedEntities()
-        {
-            throw new NotImplementedException();
-        }
-
         public bool IsGavAfdeling(string login, int afdelingsID)
         {
             return true;
@@ -119,7 +82,5 @@ namespace Chiro.Gap.Dummies
         {
             throw new NotImplementedException();
         }
-
-        #endregion
     }
 }

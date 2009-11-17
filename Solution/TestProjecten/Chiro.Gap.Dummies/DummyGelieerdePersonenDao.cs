@@ -11,7 +11,7 @@ namespace Chiro.Gap.Dummies
     /// <summary>
     /// Dummy GelieerdePersonenDao, die niets implementeert
     /// </summary>
-    class DummyGelieerdePersonenDao: IGelieerdePersonenDao
+    class DummyGelieerdePersonenDao: DummyDao<GelieerdePersoon>, IGelieerdePersonenDao
     {
         #region IGelieerdePersonenDao Members
 
@@ -51,45 +51,6 @@ namespace Chiro.Gap.Dummies
         }
 
         public IEnumerable<CommunicatieType> ophalenCommunicatieTypes()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IDao<GelieerdePersoon> Members
-
-        public GelieerdePersoon Ophalen(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public GelieerdePersoon Ophalen(int id, params System.Linq.Expressions.Expression<Func<GelieerdePersoon, object>>[] paths)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IList<GelieerdePersoon> AllesOphalen()
-        {
-            throw new NotImplementedException();
-        }
-
-        public GelieerdePersoon Bewaren(GelieerdePersoon nieuweEntiteit)
-        {
-            throw new NotImplementedException();
-        }
-
-        public GelieerdePersoon Bewaren(GelieerdePersoon entiteit, params System.Linq.Expressions.Expression<Func<GelieerdePersoon, object>>[] paths)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<GelieerdePersoon> Bewaren(IEnumerable<GelieerdePersoon> es, params System.Linq.Expressions.Expression<Func<GelieerdePersoon, object>>[] paths)
-        {
-            throw new NotImplementedException();
-        }
-
-        public System.Linq.Expressions.Expression<Func<GelieerdePersoon, object>>[] getConnectedEntities()
         {
             throw new NotImplementedException();
         }

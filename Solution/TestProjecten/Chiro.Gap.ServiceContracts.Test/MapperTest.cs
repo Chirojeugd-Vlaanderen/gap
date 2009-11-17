@@ -3,19 +3,21 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
+using AutoMapper;
 using Chiro.Cdf.Ioc;
+using Chiro.Gap.Dummies;
+using Chiro.Gap.Orm;
+using Chiro.Gap.ServiceContracts.Mappers;
 
-namespace Chiro.Gap.Data.Test
+namespace Chiro.Gap.ServiceContracts.Test
 {
 	/// <summary>
-	/// Summary description for WerkJaarTest
+	/// Summary description for UnitTest1
 	/// </summary>
 	[TestClass]
-	public class WerkJaarTest
+	public class MapperTest
 	{
-		public WerkJaarTest()
+		public MapperTest()
 		{
 			//
 			// TODO: Add constructor logic here
@@ -63,45 +65,22 @@ namespace Chiro.Gap.Data.Test
 		#endregion
 
 		[ClassInitialize]
-		public static void InitialiseerTests(TestContext ctx)
+		public static void Init(TestContext ctx)
 		{
 			Factory.ContainerInit();
-		}
 
-		[TestMethod]
-		public void GroepsWerkJaarZoeken()
-		{
-			#region Arrange
-			IGroepsWerkJaarDao gwjDao = Factory.Maak<IGroepsWerkJaarDao>();
-			int gwjID = TestInfo.GROEPSWERKJAARID;
-			int testGroepID = TestInfo.GROEPID;
-			#endregion
-
-			#region Act
-			GroepsWerkJaar gwj = gwjDao.Ophalen(gwjID);
-			#endregion
-
-			#region Assert
-			Assert.IsTrue(gwj.Groep != null);
-			Assert.IsTrue(gwj.Groep.ID == testGroepID);
-			#endregion
+			MappingHelper.MappingsDefinieren();
 		}
 
 		/// <summary>
-		/// Controleert of de afdelingsjaren meekomen met het recentste groepswerkjaar.
+		/// Test die probeert de leden uit huidig groepswerkjaar te mappen op een lijst van LidInfo.
 		/// </summary>
 		[TestMethod]
-		public void RecentsteGroepsWerkJaarMetAfdelingsJaren()
+		public void MapLijstLeden()
 		{
-			// arrange
-			IGroepenDao dao = Factory.Maak<IGroepenDao>();
+			var LidInfoLijst = Mapper.Map<IEnumerable<Lid>, IList<LidInfo>>(DummyData.HuidigGwj.Lid);
 
-			// act
-			GroepsWerkJaar gwj = dao.RecentsteGroepsWerkJaarGet(TestInfo.GROEPID);
-
-			//assert
-			Assert.IsTrue(gwj.AfdelingsJaar.Count >= 1);
-
+			Assert.IsTrue(LidInfoLijst.Count > 0);
 		}
 	}
 }
