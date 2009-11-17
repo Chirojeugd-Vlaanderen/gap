@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dictionary>
+  <Words>
+    <Unrecognized>
+      <Word>cb</Word>
+    </Unrecognized>
+    <Recognized>
+      <Word>Chiro</Word>
+      <Word>Adf</Word>
+      <Word>Cg2</Word>
+    </Recognized>
+    <Deprecated>
+      <Term PreferredAlternate="EnterpriseServices">ComPlus</Term>
+    </Deprecated>
+  </Words>
+  <Acronyms>
+    <CasingExceptions>
+      <Acronym>Cg2</Acronym>
+      <Acronym>Pi</Acronym>
+    </CasingExceptions>
+  </Acronyms>
+</Dictionary>
