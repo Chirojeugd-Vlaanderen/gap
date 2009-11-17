@@ -67,24 +67,19 @@ namespace Chiro.Gap.Workers
 
 
 		/// <summary>
-		/// Maakt een nieuwe afdeling voor een groep, en persisteert
+		/// Maakt een nieuwe afdeling voor een groep, zonder te persisteren
 		/// </summary>
-		/// <param name="groepID">GroepID van gevraagde groep</param>
+		/// <param name="groep">Groep waarvoor afdeling moet worden gemaakt</param>
 		/// <param name="naam">naam van de afdeling</param>
 		/// <param name="afkorting">handige afkorting voor in schemaatjes</param>
-		public void AfdelingToevoegen(int groepID, string naam, string afkorting)
+		public void AfdelingToevoegen(Groep groep, string naam, string afkorting)
 		{
-			if (_autorisatieMgr.IsGavGroep(groepID))
+			if (_autorisatieMgr.IsGavGroep(groep.ID))
 			{
-				Afdeling a = new Afdeling();
-				Groep g = _dao.Ophalen(groepID);
+				Afdeling a = new Afdeling { Afkorting = afkorting, Naam = naam };
 
-				a.Naam = naam;
-				a.Afkorting = afkorting;
-				a.Groep = g;
-				g.Afdeling.Add(a);
-
-				_dao.Bewaren(g);
+				a.Groep = groep;
+				groep.Afdeling.Add(a);
 			}
 			else
 			{
