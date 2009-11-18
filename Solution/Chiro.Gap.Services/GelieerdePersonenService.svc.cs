@@ -249,7 +249,7 @@ namespace Chiro.Gap.Services
             return gpm.ophalenCategorieen(groepID);
         }
 
-        public IList<GelieerdePersoon> PersonenOphalenUitCategorie(int categorieID)
+        public IList<GelieerdePersoon> OphalenUitCategorie(int categorieID)
         {
             throw new NotImplementedException();
         }
