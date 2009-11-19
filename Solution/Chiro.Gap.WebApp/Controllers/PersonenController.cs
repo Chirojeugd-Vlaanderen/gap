@@ -346,7 +346,7 @@ namespace Chiro.Gap.WebApp.Controllers
         {   
             IList<int> list = new List<int>();
             list.Add(gelieerdePersoonID);
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieToevoegenAanPersoon(list, model.selectie));
+            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieKoppelen(list, model.selectie));
             return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
         }
         

@@ -168,7 +168,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
-          <DevelopmentServerPort>2733</DevelopmentServerPort>
+          <DevelopmentServerPort>2734</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/Cg2.Services</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
