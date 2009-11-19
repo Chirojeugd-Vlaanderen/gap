@@ -142,11 +142,9 @@ namespace Chiro.Gap.Workers
 			oa.AfdelingsJaar.Add(afdelingsJaar);
 			huidigWerkJaar.AfdelingsJaar.Add(afdelingsJaar);
 
-			//TODO hier zou ook nog withoutupdate achter de lambdas moeten staan, maar dat is niet mogelijk
-			//buiten de chirogroepentities extension
-			_afdao.Bewaren(afdelingsJaar, aj => aj.OfficieleAfdeling,
-						 aj => aj.Afdeling,
-						 aj => aj.GroepsWerkJaar);
+			_afdao.Bewaren(afdelingsJaar, aj => aj.OfficieleAfdeling.WithoutUpdate(),
+						 aj => aj.Afdeling.WithoutUpdate(),
+						 aj => aj.GroepsWerkJaar.WithoutUpdate());
 		}
 
 		/// <summary>

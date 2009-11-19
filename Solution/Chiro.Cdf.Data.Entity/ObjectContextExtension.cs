@@ -285,28 +285,6 @@ namespace Chiro.Cdf.Data.Entity
 			throw new InvalidOperationException(String.Format("Unable to determine EntitySetName of type '{0}'.", entityType));
 		}
 
-		#region Entity path marker methods
-
-		/// <summary>
-		/// Marker method to indicate this section of the path expression
-		/// should not be loaded but only referenced.
-		/// </summary>
-		public static object ReferenceOnly(this IEntityWithKey entity)
-		{
-			throw new InvalidOperationException("The ReferenceOnly() method is a marker method in entity property paths and should not be effectively invoked.");
-		}
-
-		/// <summary>
-		/// Marker method to indicate the instances the method is called on
-		/// within path expressions should not be updated.
-		/// </summary>
-		public static object WithoutUpdate(this IEntityWithKey entity)
-		{
-			throw new InvalidOperationException("The WithoutUpdate() method is a marker method in entity property paths and should not be effectively invoked.");
-		}
-
-		#endregion
-
 		#region Private implementation
 
 		/// <summary>

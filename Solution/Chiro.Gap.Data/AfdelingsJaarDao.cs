@@ -1,26 +1,26 @@
 ﻿using System;
+using System.Data.Objects;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm;
-using System.Data.Objects;
-using Chiro.Gap.Data.Ef;
+using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
+using Chiro.Gap.Data.Ef;
+using Chiro.Gap.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
 	public class AfdelingsJaarDao : Dao<AfdelingsJaar, ChiroGroepEntities>, IAfdelingsJarenDao
 	{
-		public AfdelingsJaarDao()
-			: base()
+		public AfdelingsJaarDao(): base()
 		{
 			connectedEntities = new System.Linq.Expressions.Expression<Func<AfdelingsJaar, object>>[3]
-            {
-                aj => aj.Afdeling.WithoutUpdate()
-                    , aj => aj.GroepsWerkJaar.WithoutUpdate()
-                        , aj => aj.OfficieleAfdeling.WithoutUpdate()
-            };
+			{
+				aj => aj.Afdeling.WithoutUpdate(),
+				aj => aj.GroepsWerkJaar.WithoutUpdate(),
+				aj => aj.OfficieleAfdeling.WithoutUpdate()
+			};
 		}
 
 		/// <summary>
