@@ -21,22 +21,22 @@ namespace Chiro.Gap.Services
 	{
 		#region Manager Injection
 
-		private readonly GelieerdePersonenManager gpm;
-		private readonly PersonenManager pm;
-		private readonly AutorisatieManager aum;
-		private readonly AdressenManager adm;
-		private readonly GroepenManager gm;
-		private readonly CommVormManager cvm;
+		private readonly GelieerdePersonenManager _gpMgr;
+		private readonly PersonenManager _pMgr;
+		private readonly AutorisatieManager _auMgr;
+		private readonly AdressenManager _adrMgr;
+		private readonly GroepenManager _grMgr;
+		private readonly CommVormManager _cvMgr;
 
 		public GelieerdePersonenService(GelieerdePersonenManager gpm, PersonenManager pm, AutorisatieManager aum
 		    , AdressenManager adm, GroepenManager gm, CommVormManager cvm)
 		{
-			this.gpm = gpm;
-			this.pm = pm;
-			this.aum = aum;
-			this.adm = adm;
-			this.gm = gm;
-			this.cvm = cvm;
+			_gpMgr = gpm;
+			_pMgr = pm;
+			_auMgr = aum;
+			_adrMgr = adm;
+			_grMgr = gm;
+			_cvMgr = cvm;
 		}
 
 		#endregion
@@ -46,38 +46,38 @@ namespace Chiro.Gap.Services
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<GelieerdePersoon> AllenOphalen(int groepID)
 		{
-			var result = gpm.AllenOphalen(groepID);
+			var result = _gpMgr.AllenOphalen(groepID);
 			return result;
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
 		{
-			var result = gpm.PaginaOphalen(groepID, pagina, paginaGrootte, out aantalTotaal);
+			var result = _gpMgr.PaginaOphalen(groepID, pagina, paginaGrootte, out aantalTotaal);
 			return result;
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<PersoonInfo> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
 		{
-			var gelieerdePersonen = gpm.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
+			var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
 			return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonInfo>>(gelieerdePersonen);
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public int PersoonBewaren(GelieerdePersoon persoon)
 		{
-			gpm.Bewaren(persoon);
+			_gpMgr.Bewaren(persoon);
 			return persoon.ID;
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public int PersoonAanmaken(GelieerdePersoon persoon, int groepID)
 		{
-			Groep g = gm.Ophalen(groepID);
+			Groep g = _grMgr.Ophalen(groepID);
 			g.GelieerdePersoon.Add(persoon);
 			persoon.Groep = g;
-			GelieerdePersoon gp = gpm.Bewaren(persoon);
+			GelieerdePersoon gp = _gpMgr.Bewaren(persoon);
 			return gp.ID;
 		}
 
@@ -90,13 +90,13 @@ namespace Chiro.Gap.Services
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID)
 		{
-			return gpm.DetailsOphalen(gelieerdePersoonID);
+			return _gpMgr.DetailsOphalen(gelieerdePersoonID);
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public Adres AdresMetBewonersOphalen(int adresID)
 		{
-			return adm.AdresMetBewonersOphalen(adresID);
+			return _adrMgr.AdresMetBewonersOphalen(adresID);
 		}
 
 		// Verhuizen van een lijst personen
@@ -110,7 +110,7 @@ namespace Chiro.Gap.Services
 			// (als straat en gemeente gekend)
 			try
 			{
-				nieuwAdres = adm.ZoekenOfMaken(nieuwAdres);
+				nieuwAdres = _adrMgr.ZoekenOfMaken(nieuwAdres);
 			}
 			catch (AdresException ex)
 			{
@@ -119,10 +119,10 @@ namespace Chiro.Gap.Services
 
 			// Om foefelen te vermijden: we werken enkel op de gelieerde
 			// personen waar de gebruiker GAV voor is.
-			IList<int> mijnPersonen = aum.EnkelMijnPersonen(personenIDs);
+			IList<int> mijnPersonen = _auMgr.EnkelMijnPersonen(personenIDs);
 
 			// Haal bronadres en alle bewoners op
-			Adres oudAdres = adm.AdresMetBewonersOphalen(oudAdresID);
+			Adres oudAdres = _adrMgr.AdresMetBewonersOphalen(oudAdresID);
 
 			// Selecteer enkel bewoners uit mijnGelieerdePersonen
 			IList<Persoon> teVerhuizen =
@@ -137,11 +137,11 @@ namespace Chiro.Gap.Services
 			// lachen.
 			foreach (Persoon verhuizer in teVerhuizen)
 			{
-				pm.Verhuizen(verhuizer, oudAdres, nieuwAdres);
+				_pMgr.Verhuizen(verhuizer, oudAdres, nieuwAdres);
 			}
 
 			// Persisteren
-			adm.Bewaren(nieuwAdres);
+			_adrMgr.Bewaren(nieuwAdres);
 
 			// Bij een verhuis, blijven de PersoonsAdresobjecten dezelfde,
 			// maar worden ze aan een ander adres gekoppeld.  Een post
@@ -158,7 +158,7 @@ namespace Chiro.Gap.Services
 			// Adres opzoeken in database
 			try
 			{
-				adres = adm.ZoekenOfMaken(adres);
+				adres = _adrMgr.ZoekenOfMaken(adres);
 			}
 			catch (AdresException ex)
 			{
@@ -166,23 +166,23 @@ namespace Chiro.Gap.Services
 			}
 
 			// Personen ophalen
-			IList<Persoon> personenLijst = pm.LijstOphalen(personenIDs);
+			IList<Persoon> personenLijst = _pMgr.LijstOphalen(personenIDs);
 
 			// Adres koppelen
 			foreach (Persoon p in personenLijst)
 			{
-				pm.AdresToevoegen(p, adres, adresType);
+				_pMgr.AdresToevoegen(p, adres, adresType);
 			}
 
 			// persisteren
-			adm.Bewaren(adres);
+			_adrMgr.Bewaren(adres);
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AdresVerwijderenVanPersonen(List<int> personenIDs, int adresID)
 		{
 			// Adres ophalen, met bewoners voor GAV
-			Adres adr = adm.AdresMetBewonersOphalen(adresID);
+			Adres adr = _adrMgr.AdresMetBewonersOphalen(adresID);
 
 			IList<PersoonsAdres> teVerwijderen = (from pa in adr.PersoonsAdres
 							      where personenIDs.Contains(pa.Persoon.ID)
@@ -193,42 +193,42 @@ namespace Chiro.Gap.Services
 				pa.TeVerwijderen = true;
 			}
 
-			adm.Bewaren(adr);
+			_adrMgr.Bewaren(adr);
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID)
 		{
-			return pm.HuisGenotenOphalen(gelieerdePersoonID);
+			return _pMgr.HuisGenotenOphalen(gelieerdePersoonID);
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void CommVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm, int typeID)
 		{
-			cvm.CommVormToevoegen(commvorm, gelieerdepersonenID, typeID);
+			_cvMgr.CommVormToevoegen(commvorm, gelieerdepersonenID, typeID);
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void CommVormVerwijderenVanPersoon(int gelieerdepersonenID, int commvormID)
 		{
-			cvm.CommVormVerwijderen(commvormID, gelieerdepersonenID);
+			_cvMgr.CommVormVerwijderen(commvormID, gelieerdepersonenID);
 		}
 
 		///TODO dit moet gecontroleerd worden!
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AanpassenCommVorm(CommunicatieVorm v)
 		{
-			cvm.Bewaren(v);
+			_cvMgr.Bewaren(v);
 		}
 
 		public CommunicatieVorm ophalenCommVorm(int commvormID)
 		{
-			return cvm.Ophalen(commvormID);
+			return _cvMgr.Ophalen(commvormID);
 		}
 
 		public IEnumerable<CommunicatieType> ophalenCommunicatieTypes()
 		{
-			return cvm.ophalenCommunicatieTypes();
+			return _cvMgr.ophalenCommunicatieTypes();
 		}
 
 		#endregion
@@ -236,17 +236,17 @@ namespace Chiro.Gap.Services
 		#region categorieen
 		public void CategorieKoppelen(IList<int> gelieerdepersonenIDs, int categorieID)
 		{
-			gpm.CategorieKoppelen(gelieerdepersonenIDs, categorieID, true);
+			_gpMgr.CategorieKoppelen(gelieerdepersonenIDs, categorieID, true);
 		}
 
 		public void CategorieVerwijderenVanPersoon(IList<int> gelieerdepersonenIDs, int categorieID)
 		{
-			gpm.CategorieKoppelen(gelieerdepersonenIDs, categorieID, false);
+			_gpMgr.CategorieKoppelen(gelieerdepersonenIDs, categorieID, false);
 		}
 
 		public IEnumerable<Categorie> ophalenCategorieen(int groepID)
 		{
-			return gpm.ophalenCategorieen(groepID);
+			return _gpMgr.ophalenCategorieen(groepID);
 		}
 
 		public IList<GelieerdePersoon> OphalenUitCategorie(int categorieID)
