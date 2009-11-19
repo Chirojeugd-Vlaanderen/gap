@@ -77,9 +77,9 @@ namespace Chiro.Gap.Workers
         /// <param name="gelieerdePersonenIDs">ID's van de op te vragen
         /// gelieerde personen.</param>
         /// <returns>Lijst met gelieerde personen</returns>
-        public IList<GelieerdePersoon> LijstOphalen(IEnumerable<int> gelieerdePersonenIDs)
+        public IList<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersonenIDs)
         {
-            return _dao.LijstOphalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs));
+            return _dao.Ophalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs));
         }
 
         /// <summary>

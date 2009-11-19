@@ -223,7 +223,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2398</DevelopmentServerPort>
+          <DevelopmentServerPort>2780</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/cgtest</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

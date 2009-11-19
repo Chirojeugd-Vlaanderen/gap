@@ -21,7 +21,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// <param name="gelieerdePersonenIDs">ID's van op te halen
         /// GelieerdePersonen</param>
         /// <returns>lijst met GelieerdePersonen</returns>
-        IList<GelieerdePersoon> LijstOphalen(IEnumerable<int> gelieerdePersonenIDs);
+        IList<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersonenIDs);
 
         /// <summary>
         /// Gelieerde personen opzoeken op (fragment van) naam.
