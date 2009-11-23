@@ -77,7 +77,7 @@ namespace Chiro.Gap.ServiceContracts
         //alles om gelieerdepersonen op te halen zit in igelieerdepersonenservice
 
         [OperationContract]
-        void AanmakenAfdeling(int groepID, string naam, string afkorting);
+        void AfdelingToevoegen(int groepID, string naam, string afkorting);
 
         /// <summary>
         /// Methode die aan de hand van een groep, een afdelingsjaar van de groep en een officiele afdeling een 

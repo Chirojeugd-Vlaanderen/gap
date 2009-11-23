@@ -115,11 +115,11 @@ namespace Chiro.Gap.Services
 		/// <param name="groepID">ID van de groep</param>
 		/// <param name="naam">naam van de afdeling</param>
 		/// <param name="afkorting">afkorting van de afdeling (voor lijsten, overzichten,...)</param>
-		public void AanmakenAfdeling(int groepID, string naam, string afkorting)
+		public void AfdelingToevoegen(int groepID, string naam, string afkorting)
 		{
 			Groep g = gm.Ophalen(groepID);
 			gm.AfdelingToevoegen(g, naam, afkorting);
-			gm.Bewaren(g);
+			gm.BewarenMetAfdelingen(g);
 		}
 
 		public void AanmakenAfdelingsJaar(Groep g, Afdeling aj, OfficieleAfdeling oa, int geboortejaarbegin, int geboortejaareind)

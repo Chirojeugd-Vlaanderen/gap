@@ -262,6 +262,24 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
+		/// <summary>
+		/// Bewaart een groep, inclusief zijn gekoppelde afdelingen
+		/// </summary>
+		/// <param name="g">Te bewaren groep</param>
+		/// <returns>Een kloon van groep en afdelingen, met indien van toepassing nieuwe AfdelingID's</returns>
+		/// <remarks>Deze functie doet niets met afdelingsjaren!</remarks>
+		public Groep BewarenMetAfdelingen(Groep g)
+		{
+			if (_autorisatieMgr.IsGavGroep(g.ID))
+			{
+				return _dao.Bewaren(g, grp => grp.Afdeling);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavGroep);
+			}
+		}
+
 
 		/// <summary>
 		/// Persisteert wel
