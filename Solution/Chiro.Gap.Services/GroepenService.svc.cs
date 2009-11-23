@@ -146,15 +146,27 @@ namespace Chiro.Gap.Services
 		//TODO een efficiente manier vinden om een bepaalde eigenschap toe te voegen aan een al geladen element.
 		//of anders in de workers methoden aanbieden om lambda expressies mee te geven: dan eerst bepalen wat allemaal nodig is, dan 1 keer laden
 		//en dan zijn we terug bij het idee om in het object bij te houden wat hij allemaal heeft geladen
+		//
+		// Bedenking van Johan: Lambda-expressies lijken me niet wenselijk in de businesslaag, omdat je
+		// niet kan controleren of de gebruiker het recht wel heeft de zaken gespecifieerd in de expressie op
+		// te vragen.
 		public Groep OphalenMetCategorieen(int groepID)
 		{
 			var result = gm.OphalenMetCategorieen(groepID);
 			return result;
 		}
 
-		public void CategorieToevoegen(Categorie c, int groepID)
+		/// <summary>
+		/// Maakt een nieuwe categorie voor de groep met ID <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvoor nieuwe categorie wordt gemaakt</param>
+		/// <param name="naam">naam voor de nieuwe categorie</param>
+		/// <param name="code">code voor de nieuwe categorie</param>
+		public void CategorieToevoegen(int groepID, string naam, string code)
 		{
-			gm.CategorieToevoegen(c, groepID);
+			Groep g = gm.Ophalen(groepID);
+			gm.CategorieToevoegen(g, naam, code);
+			gm.BewarenMetCategorieen(g);
 		}
 
 		public void CategorieVerwijderen(int categorieID)

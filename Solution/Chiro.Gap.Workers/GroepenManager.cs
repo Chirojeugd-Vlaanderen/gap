@@ -280,25 +280,45 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
-
 		/// <summary>
-		/// Persisteert wel
+		/// Bewaart een groep, inclusief zijn gekoppelde categorieen
 		/// </summary>
-		/// <param name="c"></param>
-		/// <param name="gID"></param>
-		public void CategorieToevoegen(Categorie c, int gID)
+		/// <param name="g">Te bewaren groep</param>
+		/// <returns>Een kloon van groep en categorieen, met indien van toepassing nieuwe categorieID's</returns>
+		public Groep BewarenMetCategorieen(Groep g)
 		{
-			if (_autorisatieMgr.IsGavGroep(gID))
+			if (_autorisatieMgr.IsGavGroep(g.ID))
 			{
-				Groep g = _dao.Ophalen(gID, l => l.Categorie);
-				c.Groep = g;
-				g.Categorie.Add(c);
+				return _dao.Bewaren(g, grp => grp.Categorie);
 			}
 			else
 			{
 				throw new GeenGavException(Properties.Resources.GeenGavGroep);
 			}
+		}
 
+
+		/// <summary>
+		/// Maakt een nieuwe categorie voor een groep, zonder te persisteren.
+		/// </summary>
+		/// <param name="groep">Groep waarvoor de categorie moet worden gemaakt</param>
+		/// <param name="naam">naam van de categorie</param>
+		/// <param name="code">handige afkorting voor in overzichtjes</param>
+		public Categorie CategorieToevoegen(Groep groep, string naam, string code)
+		{
+			if (_autorisatieMgr.IsGavGroep(groep.ID))
+			{
+				Categorie c = new Categorie { Code = code, Naam = naam };
+
+				c.Groep = groep;
+				groep.Categorie.Add(c);
+
+				return c;
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavGroep);
+			}
 		}
 
 		/// <summary>
