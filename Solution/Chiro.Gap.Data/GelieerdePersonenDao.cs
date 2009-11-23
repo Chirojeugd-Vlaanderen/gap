@@ -160,18 +160,6 @@ namespace Chiro.Gap.Data.Ef
 			return lijst;   // met wat change komt de relevante lidinfo mee.
 		}
 
-		public IList<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersonenIDs)
-		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
-			{
-				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
-
-				return (
-				    from gp in db.GelieerdePersoon.Include("Groep").Include("Persoon").Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.ID, gelieerdePersonenIDs))
-				    select gp).ToList();
-			}
-		}
-
 		public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())

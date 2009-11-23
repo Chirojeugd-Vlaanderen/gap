@@ -31,6 +31,21 @@ namespace Chiro.Cdf.Data
 		/// <paramref name="paths"/></returns>
 		T Ophalen(int id, params Expression<Func<T, object>>[] paths);
 
+        /// <summary>
+        /// Haalt een lijst entiteiten op, met gegeven <paramref name="ids"/>
+        /// </summary>
+        /// <param name="ids">rij ID's op te halen entiteiten</param>
+        /// <returns>Lijst opgehaalde entiteiten</returns>
+        IList<T> Ophalen(IEnumerable<int> ids);
+
+        /// <summary>
+        /// Haalt een lijst entiteiten op, met gekoppelde entiteiten
+        /// </summary>
+        /// <param name="ids">ID's van op te halen entiteiten</param>
+        /// <param name="paths">geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+        /// <returns>Lijst met opgehaalde ID's</returns>
+        IList<T> Ophalen(IEnumerable<int> ids, params Expression<Func<T, object>>[] paths);
+
 		/// <summary>
 		/// Haalt alle entiteiten van het type <typeparamref name="T"/> op.
 		/// </summary>

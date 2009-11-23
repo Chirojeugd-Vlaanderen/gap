@@ -138,5 +138,28 @@ namespace Chiro.Gap.Data.Test
 			// Assert
 			Assert.IsTrue(g.EntityState == EntityState.Detached);
 		}
+
+		/// <summary>
+		/// Als een lijst opgehaald wordt met gekoppelde entiteiten, en een aantal van die gekoppelde entiteiten
+		/// zijn dezelfde, dan moet dat ook na het ophalen zo zijn.
+		/// In deze test worden 2 gelieerde personen van dezelfde groep opgehaald, inclusief de groep.  Dan moet
+		/// de groep van de eerste gelieerde persoon ook gelijk zijn aan de groep van de 2de gelieerde persoon.
+		/// </summary>
+		[TestMethod]
+		public void GeenDubbelsBijLijstOphalen()
+		{
+			// Arrange
+
+			IDao<GelieerdePersoon> dao = Factory.Maak<IDao<GelieerdePersoon>>();
+			int[] gpIDs = {TestInfo.GELIEERDEPERSOONID, TestInfo.GELIEERDEPERSOON2ID};
+
+			// Act
+
+			IEnumerable<GelieerdePersoon> opgehaaldePersonen = dao.Ophalen(gpIDs, gpers => gpers.Groep);
+
+			// Assert
+
+			Assert.IsTrue(opgehaaldePersonen.First().Groep == opgehaaldePersonen.Last().Groep);
+		}
 	}
 }

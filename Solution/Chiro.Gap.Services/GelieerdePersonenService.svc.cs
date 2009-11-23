@@ -57,6 +57,9 @@ namespace Chiro.Gap.Services
 			return result;
 		}
 
+		// *BELANGRIJK*: Als het debuggen hier stopt owv een autorisatiefout, kijk dan na of de gebruiker waarmee
+		// je aangemeld bent, op je lokale computer in de groep CgUsers zit.
+
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<PersoonInfo> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
 		{

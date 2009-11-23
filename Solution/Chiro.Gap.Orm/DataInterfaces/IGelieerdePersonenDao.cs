@@ -16,14 +16,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
     public interface IGelieerdePersonenDao: IDao<GelieerdePersoon>
     {
         /// <summary>
-        /// Haalt lijst op van GelieerdePersonen + persoonsinfo
-        /// </summary>
-        /// <param name="gelieerdePersonenIDs">ID's van op te halen
-        /// GelieerdePersonen</param>
-        /// <returns>lijst met GelieerdePersonen</returns>
-        IList<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersonenIDs);
-
-        /// <summary>
         /// Gelieerde personen opzoeken op (fragment van) naam.
         /// Gelieerde persoon, persoonsgegevens, adressen en communicatie
         /// worden opgehaald.

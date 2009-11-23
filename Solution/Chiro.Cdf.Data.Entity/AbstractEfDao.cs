@@ -53,6 +53,16 @@ namespace Chiro.Cdf.Data.Entity
 			return Ophalen(id, paths);
 		}
 
+		/// <summary>
+		/// Ophalen van een aantal entiteiten
+		/// </summary>
+		/// <param name="ids">ID's van op te halen entiteiten</param>
+		/// <returns>Lijst opgehaalde entiteiten</returns>
+		public IList<TEntiteit> Ophalen(IEnumerable<int> ids)
+		{
+			return Ophalen(ids, getConnectedEntities());
+		}
+
 		public virtual TEntiteit Ophalen(int id, params Expression<Func<TEntiteit, object>>[] paths)
 		{
 			TEntiteit result;
@@ -82,6 +92,41 @@ namespace Chiro.Cdf.Data.Entity
 			}
 
 
+			return result;
+		}
+
+		/// <summary>
+		/// Ophalen van een lijst entiteiten met gekoppelde entiteiten
+		/// </summary>
+		/// <param name="ids">ID's van op te halen entiteiten</param>
+		/// <param name="paths">omschrijft mee op te halen gekoppelde entiteiten</param>
+		/// <returns>een lijst opgehaalde entiteiten</returns>
+		public IList<TEntiteit> Ophalen(IEnumerable<int> ids, params Expression<Func<TEntiteit, object>>[] paths)
+		{
+			IList<TEntiteit> result;
+
+			using (TContext db = new TContext())
+			{
+				// onderstaande lukt niet, omdat Contains niet werkt voor LINQ to entities:
+				//ObjectQuery<TEntiteit> query = (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
+				//                                where ids.Contains(t.ID)
+				//                                select t) as ObjectQuery<TEntiteit>;
+
+				// Constructie db.CreateQuery<T>("[" + db.GetEntitySetName(typeof(T)) + "]").OfType<T>()
+				// zorgt ervoor dat dit ook werkt voor overervende types.  (In dat geval is
+				// de EntitySetName niet gelijk aan de naam van het type.)
+
+				ObjectQuery<TEntiteit> query = (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
+								.Where(Utility.BuildContainsExpression<TEntiteit, int>(ent => ent.ID, ids))
+								select t) as ObjectQuery<TEntiteit>;
+	
+				result = (IncludesToepassen(query, paths)).ToList<TEntiteit>();
+			}
+
+			if (result != null)
+			{
+				result = Utility.DetachObjectGraph(result);
+			}
 			return result;
 		}
 
@@ -213,7 +258,6 @@ namespace Chiro.Cdf.Data.Entity
 		}
 
 		#endregion
-
 	}
 
 

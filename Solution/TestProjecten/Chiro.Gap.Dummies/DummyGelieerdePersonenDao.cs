@@ -15,11 +15,6 @@ namespace Chiro.Gap.Dummies
     {
         #region IGelieerdePersonenDao Members
 
-        public IList<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersonenIDs)
-        {
-            throw new NotImplementedException();
-        }
-
         public IList<GelieerdePersoon> ZoekenOpNaam(int groepID, string zoekStringNaam)
         {
             throw new NotImplementedException();

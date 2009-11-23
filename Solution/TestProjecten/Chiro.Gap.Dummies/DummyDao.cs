@@ -45,6 +45,16 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		public IList<T> Ophalen(IEnumerable<int> ids)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IList<T> Ophalen(IEnumerable<int> ids, params System.Linq.Expressions.Expression<Func<T, object>>[] paths)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 	}
 }
