@@ -185,9 +185,9 @@
           <Key>
             <PropertyRef Name="CategorieID" />
           </Key>
+          <Property Name="Naam" Type="varchar" Nullable="false" MaxLength="80" />
+          <Property Name="Code" Type="varchar" Nullable="false" MaxLength="10" />
           <Property Name="CategorieID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Naam" Type="varchar" MaxLength="80" />
-          <Property Name="Code" Type="varchar" MaxLength="10" />
           <Property Name="GroepID" Type="int" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
@@ -982,8 +982,8 @@
             <PropertyRef Name="ID"/>
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Naam" Type="String" Nullable="true" />
-          <Property Name="Code" Type="String" Nullable="true" />
+          <Property Name="Naam" Type="String" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" />
           <Property Name="Versie" Type="Binary" Nullable="true" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_Categorie_Groep" FromRole="Categorie" ToRole="Groep"/>
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.PersoonsCategorie" FromRole="Categorie" ToRole="GelieerdePersoon" /></EntityType>
