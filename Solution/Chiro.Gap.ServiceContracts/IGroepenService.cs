@@ -8,117 +8,124 @@ using Chiro.Gap.Orm;
 
 namespace Chiro.Gap.ServiceContracts
 {
-    // NOTE: If you change the interface name "IGroepenService" here, you must also update the reference to "IGroepenService" in Web.config.
-    [ServiceContract]
-    public interface IGroepenService
-    {
-        /// <summary>
-        /// Ophalen van de Groeps info
-        /// </summary>
-        /// <param name="GroepId"></param>
-        /// <returns></returns>
-        [OperationContract]
-        GroepInfo OphalenInfo(int GroepId);
+	// NOTE: If you change the interface name "IGroepenService" here, you must also update the reference to "IGroepenService" in Web.config.
+	[ServiceContract]
+	public interface IGroepenService
+	{
+		/// <summary>
+		/// Ophalen van de Groeps info
+		/// </summary>
+		/// <param name="GroepId"></param>
+		/// <returns></returns>
+		[OperationContract]
+		GroepInfo OphalenInfo(int GroepId);
 
-        /// <summary>
-        /// Ophalen van de Groeps info
-        /// </summary>
-        /// <param name="GroepId"></param>
-        /// <returns></returns>
-        [OperationContract]
-        IEnumerable<GroepInfo> OphalenMijnGroepen();
+		/// <summary>
+		/// Ophalen van de Groeps info
+		/// </summary>
+		/// <param name="GroepId"></param>
+		/// <returns></returns>
+		[OperationContract]
+		IEnumerable<GroepInfo> OphalenMijnGroepen();
 
-        /// <summary>
-        /// Persisteert een groep in de database
-        /// </summary>
-        /// <param name="g">Te persisteren groep</param>
-        /// <returns>De persoon met eventueel gewijzigde informatie</returns>
-        /// <remarks>FIXME: gedetailleerde exception</remarks>
-        [OperationContract]
-        Groep Bewaren(Groep g);
+		/// <summary>
+		/// Persisteert een groep in de database
+		/// </summary>
+		/// <param name="g">Te persisteren groep</param>
+		/// <returns>De persoon met eventueel gewijzigde informatie</returns>
+		/// <remarks>FIXME: gedetailleerde exception</remarks>
+		[OperationContract]
+		Groep Bewaren(Groep g);
 
-        /// <summary>
-        /// Haalt groep op uit database
-        /// </summary>
-        /// <param name="groepID">ID van op te halen groep</param>
-        /// <returns>het gevraagde groepsobject, of null indien niet gevonden.
-        /// </returns>
-        [OperationContract]
-        Groep Ophalen(int groepID);
+		/// <summary>
+		/// Haalt groep op uit database
+		/// </summary>
+		/// <param name="groepID">ID van op te halen groep</param>
+		/// <returns>het gevraagde groepsobject, of null indien niet gevonden.
+		/// </returns>
+		[OperationContract]
+		Groep Ophalen(int groepID);
 
-        [OperationContract]
-        Groep OphalenMetAdressen(int groepID);
+		[OperationContract]
+		Groep OphalenMetAdressen(int groepID);
 
-        [OperationContract]
-        Groep OphalenMetFuncties(int groepID);
+		[OperationContract]
+		Groep OphalenMetFuncties(int groepID);
 
-        [OperationContract]
-        Groep OphalenMetAfdelingen(int groepID);
+		[OperationContract]
+		Groep OphalenMetAfdelingen(int groepID);
 
-        [OperationContract]
-        Groep OphalenMetVrijeVelden(int groepID);
+		[OperationContract]
+		Groep OphalenMetVrijeVelden(int groepID);
 
-        /// <summary>
-        /// Haalt GroepsWerkJaarID van het recentst gemaakte groepswerkjaar
-        /// voor een gegeven groep op.
-        /// </summary>
-        /// <param name="groepID">GroepID van groep</param>
-        /// <returns>ID van het recentste GroepsWerkJaar</returns>
-        [OperationContract]
-        int RecentsteGroepsWerkJaarIDGet(int groepID);
+		/// <summary>
+		/// Haalt GroepsWerkJaarID van het recentst gemaakte groepswerkjaar
+		/// voor een gegeven groep op.
+		/// </summary>
+		/// <param name="groepID">GroepID van groep</param>
+		/// <returns>ID van het recentste GroepsWerkJaar</returns>
+		[OperationContract]
+		int RecentsteGroepsWerkJaarIDGet(int groepID);
 
-        // TODO: Hernoemen naar HuidigWerkJaarOphalen of iets
-        // gelijkaardig.  Een groepswerkjaar is een combinatie
-        // groep en werkjaar, en ik vermoed dat onderstaande functie
-        // bedoeld is om een jaartal te retourneren.
-        [OperationContract]
-        int HuidigWerkJaarGet(int groepID);
+		// TODO: Hernoemen naar HuidigWerkJaarOphalen of iets
+		// gelijkaardig.  Een groepswerkjaar is een combinatie
+		// groep en werkjaar, en ik vermoed dat onderstaande functie
+		// bedoeld is om een jaartal te retourneren.
+		[OperationContract]
+		int HuidigWerkJaarGet(int groepID);
 
-        //alles om gelieerdepersonen op te halen zit in igelieerdepersonenservice
+		//alles om gelieerdepersonen op te halen zit in igelieerdepersonenservice
 
-        [OperationContract]
-        void AfdelingToevoegen(int groepID, string naam, string afkorting);
+		[OperationContract]
+		void AfdelingToevoegen(int groepID, string naam, string afkorting);
 
-        /// <summary>
-        /// Methode die aan de hand van een groep, een afdelingsjaar van de groep en een officiele afdeling een 
-        /// afdelingsjaar maakt voor de gegeven leeftijden. 
-        /// </summary>
-        /// <param name="g">Deze moet gelinkt zijn met afdelingsjaar, officieleafdeling en afdeling</param>
-        /// <param name="aj"></param>
-        /// <param name="oa"></param>
-        [OperationContract]
-        void AanmakenAfdelingsJaar(Groep g, Afdeling aj, OfficieleAfdeling oa, int geboortejaarbegin, int geboortejaareind);
+		/// <summary>
+		/// Methode die aan de hand van een groep, een afdelingsjaar van de groep en een officiele afdeling een 
+		/// afdelingsjaar maakt voor de gegeven leeftijden. 
+		/// </summary>
+		/// <param name="g">Deze moet gelinkt zijn met afdelingsjaar, officieleafdeling en afdeling</param>
+		/// <param name="aj"></param>
+		/// <param name="oa"></param>
+		[OperationContract]
+		void AanmakenAfdelingsJaar(Groep g, Afdeling aj, OfficieleAfdeling oa, int geboortejaarbegin, int geboortejaareind);
 
-        [OperationContract]
-        IList<OfficieleAfdeling> OphalenOfficieleAfdelingen();
-        
+		[OperationContract]
+		IList<OfficieleAfdeling> OphalenOfficieleAfdelingen();
 
-        //TODO geef lijst met alle mogelijke afdelingen,
-        //zorgen dat ge die lijst kunt aanpassen
 
-        /*
-            bivakorganiseren(g, b)
-            stelGAVin
-            verwijderGAV (JV: ik zou hier de 'VervalDatum' op nu instellen, zodat geregistreerd blijft dat iemand ooit gav was)
-            maaknieuwesatelliet(g, s)
-            afdelingsjaartoevoegen(g)
-            afdelingenreorganiseren(g) (JV: bedoel je het bewaren van de afdelingen gekoppeld aan de groep?)
-            afdelingsjaarverwijderen(g) (JV: kan enkel als er geen leden in dat afdelingsjaar zijn/waren)
-            afdelingtoevoegen
-         */
+		//TODO geef lijst met alle mogelijke afdelingen,
+		//zorgen dat ge die lijst kunt aanpassen
 
-        #region categorieen
-        [OperationContract]
-        Groep OphalenMetCategorieen(int groepID);
+		/*
+		    bivakorganiseren(g, b)
+		    stelGAVin
+		    verwijderGAV (JV: ik zou hier de 'VervalDatum' op nu instellen, zodat geregistreerd blijft dat iemand ooit gav was)
+		    maaknieuwesatelliet(g, s)
+		    afdelingsjaartoevoegen(g)
+		    afdelingenreorganiseren(g) (JV: bedoel je het bewaren van de afdelingen gekoppeld aan de groep?)
+		    afdelingsjaarverwijderen(g) (JV: kan enkel als er geen leden in dat afdelingsjaar zijn/waren)
+		    afdelingtoevoegen
+		 */
 
-        [OperationContract]
-        void CategorieToevoegen(Categorie c, int groepID);
-        [OperationContract]
-        void CategorieVerwijderen(int categorieID);
-        [OperationContract]
-        void CategorieAanpassen(Categorie c);
+		#region categorieen
+		[OperationContract]
+		Groep OphalenMetCategorieen(int groepID);
 
-        #endregion categorieen
+		/// <summary>
+		/// Maakt een nieuwe categorie voor de groep met ID <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvoor nieuwe categorie wordt gemaakt</param>
+		/// <param name="naam">naam voor de nieuwe categorie</param>
+		/// <param name="code">code voor de nieuwe categorie</param>
+		[OperationContract]
+		void CategorieToevoegen(int groepID, string naam, string code);
 
-    }
+		[OperationContract]
+		void CategorieVerwijderen(int categorieID);
+		[OperationContract]
+		void CategorieAanpassen(Categorie c);
+
+		#endregion categorieen
+
+	}
 }

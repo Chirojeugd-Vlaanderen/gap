@@ -17,6 +17,8 @@ namespace Chiro.Gap.Dummies
 		private static Groep _dummyGroep;		// testgroep
 		private static GroepsWerkJaar _huidigGwj;	// testgroepswerkjaar
 		private static GelieerdePersoon _gelieerdeJos;	// gelieerdePersoon genaamd 'Jos' 
+		private static GelieerdePersoon _gelieerdeIrene; // gelieerdePersoon genaamd 'Irene'
+		private static Categorie _vervelend;		// categorie voor vervelende mensen
 
 		/// <summary>
 		/// Een groep met daaraan gekoppeld een aantal leden
@@ -28,8 +30,20 @@ namespace Chiro.Gap.Dummies
 		/// </summary>
 		public static GroepsWerkJaar HuidigGwj { get { return _huidigGwj; } }
 
+		/// <summary>
+		/// De gelieerde testpersoon 'Jos'
+		/// </summary>
 		public static GelieerdePersoon GelieerdeJos { get { return _gelieerdeJos; } }
 
+		/// <summary>
+		/// De gelieerde testpersoon 'Irene'
+		/// </summary>
+		public static GelieerdePersoon GelieerdeIrene { get { return _gelieerdeIrene; } }
+
+		/// <summary>
+		/// De categorie voor vervelende mensen
+		/// </summary>
+		public static Categorie Vervelend { get { return _vervelend; } }
 
 		/// <summary>
 		/// Bouwt de dummy data op
@@ -40,10 +54,19 @@ namespace Chiro.Gap.Dummies
 			GelieerdePersonenManager gpMgr = Factory.Maak<GelieerdePersonenManager>();
 			GroepenManager gMgr = Factory.Maak<GroepenManager>();
 			LedenManager lMgr = Factory.Maak<LedenManager>();
+			CategorieenManager cMgr = Factory.Maak<CategorieenManager>();
+
+			// Groep en groepswerkjaar
 
 			_dummyGroep = new Groep { Naam = "St.-Unittestius", Code = "tst/0001" };
 
 			_huidigGwj = gMgr.GroepsWerkJaarMaken(_dummyGroep, 2009);
+
+			// Categorie
+
+			_vervelend = gMgr.CategorieToevoegen(_dummyGroep, "vervelende mensen", "last");
+
+			// Afdelingen gekoppeld aan officiele afdelingen in afdelingsjaren
 
 			OfficieleAfdeling ribbels = new OfficieleAfdeling { Naam = "Ribbels" };
 			OfficieleAfdeling rakwis = new OfficieleAfdeling { Naam = "Rakwi's" };
@@ -53,6 +76,8 @@ namespace Chiro.Gap.Dummies
 
 			wjMgr.AfdelingsJaarMaken(_huidigGwj, unittestjes, ribbels, 2001, 2003);
 			wjMgr.AfdelingsJaarMaken(_huidigGwj, speelkwis, rakwis, 1998, 2000);
+
+			// Gelieerde personen
 
 			Persoon jos = new Persoon { 
 				Naam = "Bosmans", 
@@ -65,7 +90,11 @@ namespace Chiro.Gap.Dummies
 				GeboorteDatum = new DateTime(1990, 3, 8) };
 
 			_gelieerdeJos = gpMgr.Koppelen(jos, _dummyGroep, 0);
-			gpMgr.Koppelen(irene, _dummyGroep, 0);
+			_gelieerdeIrene = gpMgr.Koppelen(irene, _dummyGroep, 0);
+
+			// Koppelingen allerhanden
+
+			gpMgr.CategorieKoppelen(new GelieerdePersoon[] { _gelieerdeJos }, _vervelend, true);
 
 			lMgr.LidMaken(_gelieerdeJos, _huidigGwj);						
 		}

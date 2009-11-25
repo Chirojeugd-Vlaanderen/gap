@@ -27,9 +27,10 @@ namespace Chiro.Gap.Services
 		private readonly AdressenManager _adrMgr;
 		private readonly GroepenManager _grMgr;
 		private readonly CommVormManager _cvMgr;
+		private readonly CategorieenManager _catMgr;
 
 		public GelieerdePersonenService(GelieerdePersonenManager gpm, PersonenManager pm, AutorisatieManager aum
-		    , AdressenManager adm, GroepenManager gm, CommVormManager cvm)
+		    , AdressenManager adm, GroepenManager gm, CommVormManager cvm, CategorieenManager cm)
 		{
 			_gpMgr = gpm;
 			_pMgr = pm;
@@ -37,6 +38,7 @@ namespace Chiro.Gap.Services
 			_adrMgr = adm;
 			_grMgr = gm;
 			_cvMgr = cvm;
+			_catMgr = cm;
 		}
 
 		#endregion
@@ -237,14 +239,45 @@ namespace Chiro.Gap.Services
 		#endregion
 
 		#region categorieen
+		/// <summary>
+		/// Koppelt een lijst gebruikers aan een categorie
+		/// </summary>
+		/// <param name="gelieerdepersonenIDs">ID's van de te koppelen gebruikers</param>
+		/// <param name="categorieID">ID van de te koppelen categorie</param>
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void CategorieKoppelen(IList<int> gelieerdepersonenIDs, int categorieID)
 		{
-			_gpMgr.CategorieKoppelen(gelieerdepersonenIDs, categorieID, true);
+			// Haal personen op met groep
+			IList<GelieerdePersoon> gelieerdePersonen = _gpMgr.Ophalen(gelieerdepersonenIDs);
+
+			// Haal categorie op met groep
+			Categorie categorie = _catMgr.Ophalen(categorieID);
+
+			// Koppelen
+			_gpMgr.CategorieKoppelen(gelieerdePersonen, categorie, true);
+
+			// Bewaren
+			_catMgr.BewarenMetPersonen(categorie);
 		}
 
-		public void CategorieVerwijderenVanPersoon(IList<int> gelieerdepersonenIDs, int categorieID)
+		/// <summary>
+		/// Koppelt een lijst gebruikers los van een categorie
+		/// </summary>
+		/// <param name="gelieerdepersonenIDs">ID's van los te koppelen gebruikers</param>
+		/// <param name="categorieID">ID van de categorie</param>
+		public void CategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID)
 		{
-			_gpMgr.CategorieKoppelen(gelieerdepersonenIDs, categorieID, false);
+			// Haal personen op met groep
+			IList<GelieerdePersoon> gelieerdePersonen = _gpMgr.Ophalen(gelieerdepersonenIDs);
+
+			// Haal categorie op met groep
+			Categorie categorie = _catMgr.Ophalen(categorieID);
+
+			// Ontkoppelen
+			_gpMgr.CategorieKoppelen(gelieerdePersonen, categorie, false);	
+		
+			// Bewaren
+			_catMgr.BewarenMetPersonen(categorie);
 		}
 
 		public IEnumerable<Categorie> ophalenCategorieen(int groepID)
