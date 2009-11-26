@@ -7,8 +7,8 @@
     <ProjectGuid>{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Chiro.Cdf.DependencyInjectionBehaviour</RootNamespace>
-    <AssemblyName>Chiro.Cdf.DependencyInjectionBehaviour</AssemblyName>
+    <RootNamespace>Chiro.Cdf.DependencyInjectionBehavior</RootNamespace>
+    <AssemblyName>Chiro.Cdf.DependencyInjectionBehavior</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

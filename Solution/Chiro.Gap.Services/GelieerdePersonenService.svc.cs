@@ -6,13 +6,14 @@ using System.ServiceModel;
 using System.Text;
 using System.Security.Permissions;
 
-using Chiro.Gap.ServiceContracts;
-using Chiro.Gap.Workers;
-using Chiro.Gap.Orm;
+using AutoMapper;
+
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Fouten.FaultContracts;
+using Chiro.Gap.Orm;
+using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.Mappers;
-using AutoMapper;
+using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Services
 {
@@ -23,14 +24,20 @@ namespace Chiro.Gap.Services
 
 		private readonly GelieerdePersonenManager _gpMgr;
 		private readonly PersonenManager _pMgr;
-		private readonly AutorisatieManager _auMgr;
 		private readonly AdressenManager _adrMgr;
 		private readonly GroepenManager _grMgr;
 		private readonly CommVormManager _cvMgr;
 		private readonly CategorieenManager _catMgr;
+		private readonly IAutorisatieManager _auMgr;
 
-		public GelieerdePersonenService(GelieerdePersonenManager gpm, PersonenManager pm, AutorisatieManager aum
-		    , AdressenManager adm, GroepenManager gm, CommVormManager cvm, CategorieenManager cm)
+		public GelieerdePersonenService(
+			GelieerdePersonenManager gpm, 
+			PersonenManager pm, 
+			AdressenManager adm, 
+			GroepenManager gm, 
+			CommVormManager cvm, 
+			CategorieenManager cm,
+			IAutorisatieManager aum)
 		{
 			_gpMgr = gpm;
 			_pMgr = pm;
