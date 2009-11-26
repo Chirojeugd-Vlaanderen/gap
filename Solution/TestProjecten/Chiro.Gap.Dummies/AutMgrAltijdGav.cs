@@ -17,12 +17,12 @@ namespace Chiro.Gap.Dummies
 
 		public IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs)
 		{
-			throw new NotImplementedException();
+			return gelieerdePersonenIDs.ToList();
 		}
 
 		public IList<int> EnkelMijnPersonen(IList<int> personenIDs)
 		{
-			throw new NotImplementedException();
+			return personenIDs.ToList();
 		}
 
 		public IEnumerable<Chiro.Gap.Orm.Groep> GekoppeldeGroepenGet()
@@ -47,7 +47,7 @@ namespace Chiro.Gap.Dummies
 
 		public bool IsGavPersoon(int persoonID)
 		{
-			throw new NotImplementedException();
+			return true;
 		}
 
 		public string GebruikersNaamGet()
@@ -62,7 +62,7 @@ namespace Chiro.Gap.Dummies
 
 		public bool IsGavLid(int lidID)
 		{
-			throw new NotImplementedException();
+			return true;
 		}
 
 		public bool IsGavCategorie(int categorieID)
@@ -72,7 +72,7 @@ namespace Chiro.Gap.Dummies
 
 		public bool IsGavCommVorm(int commvormID)
 		{
-			return false;
+			return true;
 		}
 
 		#endregion
