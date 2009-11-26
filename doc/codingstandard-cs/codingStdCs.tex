@@ -186,7 +186,7 @@ Zie listing \ref{lblLstOpbouw} voor voorbeelden.
 commentaar, zie listing \ref{lblLstOpbouw}.\opmerking{De exacte tekst
 ligt nog niet vast.}\footnote{We zullen hiervoor een template voorzien
 voor Visual Studio.}
-\item Groepeer de imports van namespaces bovenaan\index{namespaces}
+\item Groepeer de imports van namespaces bovenaan\index{namespaces}\index{using}
 \begin{itemize}
 \item Eerst de .Net namespaces
 \item Dan 3rd-party namespaces
@@ -549,7 +549,7 @@ property met de naam `\lstinline !ID!'.
 \subsection{Methods}
 \index{methods!namen}
 \begin{enumerate}[resume]
-\item Namen van methods beginnen met een hoofdletter, en zijn van de vorm `(lijdend voorwerp +)
+\item Namen van methods beginnen met een hoofdletter, en zijn van de vorm `(lijdend voorwerp\index{lijdend voorwerp} +)
 infitnitief'.\footnote{Op die manier worden methods die op hetzelfde betrekking hebben
 door `intellisense' gegroepeerd.}  `Get'\index{Get} en `Set'\index{Set} kunnen in het Engels blijven.
 \item Herhaal geen informatie uit een klassenaam in de naam van een
@@ -1039,7 +1039,7 @@ void DoeHet(Item item);
 void DoeHet(IEnumerable<Item> items);
 \end{lstlisting}
 \item Standaardiseer zo veel mogelijk de volgorde van de parameters in
-overloads en in gelijkaardige methods.\index{consistentie}
+overloads en in gelijkaardige methods.\index{consistentie}\index{methods!gelijkaardige}\index{gelijkaardige methods}\index{parameters!volgorde}
 \item Overloads met minder parameters roepen overloads met meer
 parameters aan, met standaardwaarden voor de ontbrekende parameters.
 
