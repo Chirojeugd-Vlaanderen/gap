@@ -19,17 +19,17 @@ namespace Chiro.Gap.Services
 	{
 		#region Manager Injection
 
-		private readonly GroepenManager gm;
-		private readonly WerkJaarManager wm;
-		private readonly AutorisatieManager am;
-		private readonly GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
+		private readonly GroepenManager _groepenMgr;
+		private readonly WerkJaarManager _werkjaarMgr;
+		private readonly AutorisatieManager _autorisatieMgr;
+		private readonly GelieerdePersonenManager _gelieerdePersonenMgr = Factory.Maak<GelieerdePersonenManager>();
 
 		public GroepenService(GroepenManager gm, WerkJaarManager wm, AutorisatieManager am, GelieerdePersonenManager gpm)
 		{
-			this.gm = gm;
-			this.wm = wm;
-			this.am = am;
-			this.gpm = gpm;
+			_groepenMgr = gm;
+			_werkjaarMgr = wm;
+			_autorisatieMgr = am;
+			_gelieerdePersonenMgr = gpm;
 		}
 
 		#endregion
@@ -46,7 +46,7 @@ namespace Chiro.Gap.Services
 		{
 			try
 			{
-				return gm.Bewaren(g);
+				return _groepenMgr.Bewaren(g);
 			}
 			catch (Exception e)
 			{
@@ -57,37 +57,37 @@ namespace Chiro.Gap.Services
 
 		public Groep Ophalen(int groepID)
 		{
-			var result = gm.Ophalen(groepID);
+			var result = _groepenMgr.Ophalen(groepID);
 			return result;
 		}
 
 		public Groep OphalenMetAdressen(int groepID)
 		{
-			var result = gm.OphalenMetAdressen(groepID);
+			var result = _groepenMgr.OphalenMetAdressen(groepID);
 			return result;
 		}
 
 		public Groep OphalenMetFuncties(int groepID)
 		{
-			var result = gm.OphalenMetFuncties(groepID);
+			var result = _groepenMgr.OphalenMetFuncties(groepID);
 			return result;
 		}
 
 		public Groep OphalenMetAfdelingen(int groepID)
 		{
-			var result = gm.OphalenMetAfdelingen(groepID);
+			var result = _groepenMgr.OphalenMetAfdelingen(groepID);
 			return result;
 		}
 
 		public Groep OphalenMetVrijeVelden(int groepID)
 		{
-			var result = gm.OphalenMetVrijeVelden(groepID);
+			var result = _groepenMgr.OphalenMetVrijeVelden(groepID);
 			return result;
 		}
 
 		public int RecentsteGroepsWerkJaarIDGet(int groepID)
 		{
-			return wm.RecentsteGroepsWerkJaarIDGet(groepID);
+			return _werkjaarMgr.RecentsteGroepsWerkJaarIDGet(groepID);
 		}
 
 		/// <summary>
@@ -106,7 +106,7 @@ namespace Chiro.Gap.Services
 		/// <returns></returns>
 		public int HuidigWerkJaarGet(int groepID)
 		{
-			return wm.HuidigWerkJaarGet(groepID);
+			return _werkjaarMgr.HuidigWerkJaarGet(groepID);
 		}
 
 		/// <summary>
@@ -117,25 +117,25 @@ namespace Chiro.Gap.Services
 		/// <param name="afkorting">afkorting van de afdeling (voor lijsten, overzichten,...)</param>
 		public void AfdelingToevoegen(int groepID, string naam, string afkorting)
 		{
-			Groep g = gm.Ophalen(groepID);
-			gm.AfdelingToevoegen(g, naam, afkorting);
-			gm.BewarenMetAfdelingen(g);
+			Groep g = _groepenMgr.Ophalen(groepID);
+			_groepenMgr.AfdelingToevoegen(g, naam, afkorting);
+			_groepenMgr.BewarenMetAfdelingen(g);
 		}
 
 		public void AanmakenAfdelingsJaar(Groep g, Afdeling aj, OfficieleAfdeling oa, int geboortejaarbegin, int geboortejaareind)
 		{
-			gm.AfdelingsJaarToevoegen(g, aj, oa, geboortejaarbegin, geboortejaareind);
+			_groepenMgr.AfdelingsJaarToevoegen(g, aj, oa, geboortejaarbegin, geboortejaareind);
 		}
 
 
 		public IList<OfficieleAfdeling> OphalenOfficieleAfdelingen()
 		{
-			return gm.OfficieleAfdelingenOphalen();
+			return _groepenMgr.OfficieleAfdelingenOphalen();
 		}
 
 		public IEnumerable<GroepInfo> OphalenMijnGroepen()
 		{
-			var result = am.GekoppeldeGroepenGet();
+			var result = _autorisatieMgr.GekoppeldeGroepenGet();
 			return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(result);
 		}
 
@@ -152,7 +152,7 @@ namespace Chiro.Gap.Services
 		// te vragen.
 		public Groep OphalenMetCategorieen(int groepID)
 		{
-			var result = gm.OphalenMetCategorieen(groepID);
+			var result = _groepenMgr.OphalenMetCategorieen(groepID);
 			return result;
 		}
 
@@ -164,14 +164,14 @@ namespace Chiro.Gap.Services
 		/// <param name="code">code voor de nieuwe categorie</param>
 		public void CategorieToevoegen(int groepID, string naam, string code)
 		{
-			Groep g = gm.Ophalen(groepID);
-			gm.CategorieToevoegen(g, naam, code);
-			gm.BewarenMetCategorieen(g);
+			Groep g = _groepenMgr.Ophalen(groepID);
+			_groepenMgr.CategorieToevoegen(g, naam, code);
+			_groepenMgr.BewarenMetCategorieen(g);
 		}
 
 		public void CategorieVerwijderen(int categorieID)
 		{
-			gm.CategorieVerwijderen(categorieID);
+			_groepenMgr.CategorieVerwijderen(categorieID);
 		}
 
 		public void CategorieAanpassen(Categorie c)
