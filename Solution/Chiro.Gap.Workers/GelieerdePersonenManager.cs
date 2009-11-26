@@ -19,8 +19,11 @@ namespace Chiro.Gap.Workers
 		private ICategorieenDao _categorieenDao;
 		private IAutorisatieManager _autorisatieMgr;
 
-		public GelieerdePersonenManager(IGelieerdePersonenDao dao, IGroepenDao groepenDao
-		    , ICategorieenDao categorieenDao, IAutorisatieManager autorisatieMgr, IDao<CommunicatieType> typedao, IDao<CommunicatieVorm> commdao)
+		public GelieerdePersonenManager(
+			IGelieerdePersonenDao dao, 
+			IGroepenDao groepenDao,
+			ICategorieenDao categorieenDao, 
+			IAutorisatieManager autorisatieMgr)
 		{
 			_dao = dao;
 			_groepenDao = groepenDao;
