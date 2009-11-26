@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.Diagnostics;
 using System.Text;
-using Chiro.Gap.Workers;
+
+using AutoMapper;
+
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
-using Chiro.Cdf.Ioc;
-using System.Diagnostics;
-using Chiro.Gap.ServiceContracts.Mappers;
-using AutoMapper;
+using Chiro.Gap.Workers;
+
 
 namespace Chiro.Gap.Services
 {
@@ -21,10 +23,10 @@ namespace Chiro.Gap.Services
 
 		private readonly GroepenManager _groepenMgr;
 		private readonly WerkJaarManager _werkjaarMgr;
-		private readonly AutorisatieManager _autorisatieMgr;
+		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly GelieerdePersonenManager _gelieerdePersonenMgr = Factory.Maak<GelieerdePersonenManager>();
 
-		public GroepenService(GroepenManager gm, WerkJaarManager wm, AutorisatieManager am, GelieerdePersonenManager gpm)
+		public GroepenService(GroepenManager gm, WerkJaarManager wm, GelieerdePersonenManager gpm, IAutorisatieManager am)
 		{
 			_groepenMgr = gm;
 			_werkjaarMgr = wm;
