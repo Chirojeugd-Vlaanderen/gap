@@ -18,7 +18,7 @@
 						<UML:TaggedValue tag="iscontrolled" value="1"/>
 						<UML:TaggedValue tag="isnamespace" value="1"/>
 						<UML:TaggedValue tag="xmlpath" value="Domain Model.xml"/>
-						<UML:TaggedValue tag="lastloaddate" value="2009-09-23 12:13:12"/>
+						<UML:TaggedValue tag="lastloaddate" value="2009-11-17 20:05:30"/>
 						<UML:TaggedValue tag="lastsavedate" value="2006-11-21 22:02:27"/>
 						<UML:TaggedValue tag="isprotected" value="0"/>
 						<UML:TaggedValue tag="usedtd" value="0"/>
@@ -1124,12 +1124,35 @@
 												<UML:TaggedValue tag="precision" value="0"/>
 												<UML:TaggedValue tag="scale" value="0"/>
 												<UML:TaggedValue tag="collection" value="false"/>
-												<UML:TaggedValue tag="position" value="5"/>
+												<UML:TaggedValue tag="position" value="0"/>
 												<UML:TaggedValue tag="lowerBound" value="1"/>
 												<UML:TaggedValue tag="upperBound" value="1"/>
 												<UML:TaggedValue tag="duplicates" value="0"/>
 												<UML:TaggedValue tag="ea_guid" value="{94426065-640E-4323-AFA6-1E41F6907207}"/>
 												<UML:TaggedValue tag="ea_localid" value="3063"/>
+												<UML:TaggedValue tag="styleex" value="volatile=0;"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Attribute name="IsActief" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<UML:Classifier xmi.idref="eaxmiid5"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="description" value="Als een gebruiker een gelieerde persoon wil verwijderen, dan mag natuurlijk de persoon zelf niet verwijderd worden. Maar ook de gelieerde persoon moet blijven bestaan, zodat het programma kan opmerken (evt ajaxgewijze) dat een nieuwe persoon eigenlijk een eerder gekende gelieerde persoon is.  Ook om 'geschiedenisredenen' mogen de gelieerde personen niet verdwijnen."/>
+												<UML:TaggedValue tag="type" value="bool"/>
+												<UML:TaggedValue tag="derived" value="0"/>
+												<UML:TaggedValue tag="containment" value="Not Specified"/>
+												<UML:TaggedValue tag="ordered" value="0"/>
+												<UML:TaggedValue tag="collection" value="false"/>
+												<UML:TaggedValue tag="position" value="1"/>
+												<UML:TaggedValue tag="lowerBound" value="1"/>
+												<UML:TaggedValue tag="upperBound" value="1"/>
+												<UML:TaggedValue tag="duplicates" value="0"/>
+												<UML:TaggedValue tag="ea_guid" value="{B34678EB-423F-49f5-B629-0CABA61CA80B}"/>
+												<UML:TaggedValue tag="ea_localid" value="3130"/>
 												<UML:TaggedValue tag="styleex" value="volatile=0;"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
@@ -1888,7 +1911,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid5"/>
+												<UML:Classifier xmi.idref="eaxmiid6"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="type" value="string"/>
@@ -2080,7 +2103,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid6"/>
+												<UML:Classifier xmi.idref="eaxmiid7"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="description" value="Als het aantal personen in een groep met deze functie een bovengrens heeft, dan is die bovengrens gegeven door 'maxAantal'.  Bijvoorbeeld: Hoogstens 1 contactpersoon per groep."/>
@@ -2106,7 +2129,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid6"/>
+												<UML:Classifier xmi.idref="eaxmiid7"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="description" value="Als het aantal personen in een groep met deze functie een ondergrens heeft, dan is die ondergrens gegeven door 'maxAantal'.  Bijvoorbeeld: Minstens 1 contactpersoon per groep."/>
@@ -2132,7 +2155,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid6"/>
+												<UML:Classifier xmi.idref="eaxmiid7"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="description" value="Mogelijk is er een minimumleeftijd voor een bepaalde functie."/>
@@ -2184,7 +2207,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid6"/>
+												<UML:Classifier xmi.idref="eaxmiid7"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="description" value="Tot wanneer deze functie beschikbaar blijft voor de groep. Niet opgegeven = voor altijd."/>
@@ -2218,7 +2241,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid6"/>
+												<UML:Classifier xmi.idref="eaxmiid7"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="description" value="Vanaf wanneer deze functie beschikbaar gemaakt is voor de groep"/>
@@ -2338,7 +2361,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid6"/>
+												<UML:Classifier xmi.idref="eaxmiid7"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="type" value="int"/>
@@ -2413,7 +2436,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid7"/>
+												<UML:Classifier xmi.idref="eaxmiid8"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="type" value="date"/>
@@ -2544,7 +2567,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid8"/>
+												<UML:Classifier xmi.idref="eaxmiid5"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="type" value="bool"/>
@@ -2701,7 +2724,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid6"/>
+												<UML:Classifier xmi.idref="eaxmiid7"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="type" value="int"/>
@@ -2999,7 +3022,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid6"/>
+												<UML:Classifier xmi.idref="eaxmiid7"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="type" value="int"/>
@@ -3226,7 +3249,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid6"/>
+												<UML:Classifier xmi.idref="eaxmiid7"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="type" value="int"/>
@@ -3684,7 +3707,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid6"/>
+												<UML:Classifier xmi.idref="eaxmiid7"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="type" value="int"/>
@@ -4139,7 +4162,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid6"/>
+												<UML:Classifier xmi.idref="eaxmiid7"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="type" value="int"/>
@@ -4164,7 +4187,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid6"/>
+												<UML:Classifier xmi.idref="eaxmiid7"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="type" value="int"/>
@@ -4259,7 +4282,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid6"/>
+												<UML:Classifier xmi.idref="eaxmiid7"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="description" value="Een werkjaar wordt geidentificeerd via het eerste van de twee kalender jaren.  Zo heeft bijv. voor 2007-2008 het veld 'Jaar' de waarde 2007, en voor 2008-2009 de waarde 2008."/>
@@ -4508,7 +4531,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid8"/>
+												<UML:Classifier xmi.idref="eaxmiid5"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="description" value="Als de groep ervan uitgaat dat het lid niet meer komt, kan het lid op non actief gezet worden."/>
@@ -4534,7 +4557,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid8"/>
+												<UML:Classifier xmi.idref="eaxmiid5"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="description" value="Voor het einde van de instapperiode kunnen leden verwijderd worden.  Dat wordt hier aangevinkt.  Het record wordt niet verwijderd, om op die manier te kunnen onthouden dat de persoon al kandidaatlid is geweest."/>
@@ -4718,7 +4741,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid8"/>
+												<UML:Classifier xmi.idref="eaxmiid5"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="description" value="Van elk commucatietype heeft 1 communicatievorm de voorkeur"/>
@@ -5436,7 +5459,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid6"/>
+												<UML:Classifier xmi.idref="eaxmiid7"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="description" value="geboortejaar 'tot en met'"/>
@@ -5462,7 +5485,7 @@
 												<UML:Expression/>
 											</UML:Attribute.initialValue>
 											<UML:StructuralFeature.type>
-												<UML:Classifier xmi.idref="eaxmiid6"/>
+												<UML:Classifier xmi.idref="eaxmiid7"/>
 											</UML:StructuralFeature.type>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="description" value="geboortejaar 'vanaf'"/>
@@ -5578,16 +5601,16 @@
 					</UML:Namespace.ownedElement>
 				</UML:Package>
 				<UML:DataType xmi.id="eaxmiid2" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
-				<UML:DataType xmi.id="eaxmiid5" name="string" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
+				<UML:DataType xmi.id="eaxmiid6" name="string" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
 				<UML:DataType xmi.id="eaxmiid4" name="short" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
 				<UML:DataType xmi.id="eaxmiid1" name="char" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
 				<UML:DataType xmi.id="eaxmiid3" name="boolean" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
-				<UML:DataType xmi.id="eaxmiid6" name="int" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
-				<UML:DataType xmi.id="eaxmiid8" name="bool" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
+				<UML:DataType xmi.id="eaxmiid7" name="int" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
+				<UML:DataType xmi.id="eaxmiid5" name="bool" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
 				<UML:DataType xmi.id="eaxmiid9" name="UniqueIdentifier" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
 				<UML:DataType xmi.id="eaxmiid0" name="datetime" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
 				<UML:DataType xmi.id="eaxmiid10" name="blob" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
-				<UML:DataType xmi.id="eaxmiid7" name="date" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
+				<UML:DataType xmi.id="eaxmiid8" name="date" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
 			</UML:Namespace.ownedElement>
 		</UML:Model>
 		<UML:Diagram name="Domain Model" xmi.id="EAID_0FF382BD_DFDA_4e0f_A015_4E61CB0A69BF" diagramType="ClassDiagram" owner="EAPK_B23AB2BC_74FF_4956_9C3E_BA397E7A7E1C" toolName="Enterprise Architect 2.5">
