@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Chiro.Cdf.Data;
+using System.Linq.Expressions;
 
 namespace Chiro.Gap.Dummies
 {
@@ -19,6 +20,11 @@ namespace Chiro.Gap.Dummies
 		{
 			throw new NotImplementedException();
 		}
+
+        public IList<T> PaginaOphalen(int id, int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<T, object>>[] paths)
+        {
+            throw new NotImplementedException();
+        }
 
 		public IList<T> AllesOphalen()
 		{

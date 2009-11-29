@@ -46,30 +46,6 @@ namespace Chiro.Gap.Data.Ef
 			return result;
 		}
 
-		/*public Groep OphalenMetAdressen(int groepID)
-		{
-		    using (ChiroGroepEntities db = new ChiroGroepEntities())
-		    {
-			db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
-			return (
-			    from t in db.Groep.Include("Adres")
-			    where t.ID == groepID
-			    select t).FirstOrDefault<Groep>();
-		    }
-		}
-
-		public Groep OphalenMetCategorieen(int groepID)
-		{
-		    //TODO
-		    throw new NotImplementedException();
-		}
-
-		public Groep OphalenMetFuncties(int groepID)
-		{
-		    //TODO
-		    throw new NotImplementedException();
-		}*/
-
 		/// <summary>
 		/// ophalen van groep, groepswerkjaar, afdeling, afdelingsjaar en officiele afdelingen 
 		/// voor gegeven groepswerkjaar.
@@ -140,48 +116,6 @@ namespace Chiro.Gap.Data.Ef
 			return result;
 
 		}
-
-		/*public Groep OphalenMetVrijeVelden(int groepID)
-		{
-		    //TODO
-		    throw new NotImplementedException();
-		}
-
-		public void BewarenMetAdressen(Groep g)
-		{
-		    //TODO
-		    throw new NotImplementedException();
-		}
-
-		public void BewarenMetCategorieen(Groep g)
-		{
-		    //TODO
-		    throw new NotImplementedException();
-		}
-
-		public void BewarenMetFuncties(Groep g)
-		{
-		    //TODO
-		    throw new NotImplementedException();
-		}
-
-		public void BewarenMetAfdelingen(Groep g)
-		{
-		    Expression<Func<Groep, object>>[] e = 
-		    {
-			d => d.Afdeling.First(),
-			d => d.Afdeling.First().AfdelingsJaar.First(),
-			d => d.Afdeling.First().AfdelingsJaar.First().OfficieleAfdeling.WithoutUpdate()
-		    };
-		    Bewaren(g, e);
-		}
-
-		public void BewarenMetVrijeVelden(Groep g)
-		{
-		    //TODO
-		    throw new NotImplementedException();
-		}*/
-
 
 		/*/// <summary>
 		/// Creeert een nieuwe afdeling.
@@ -305,19 +239,5 @@ namespace Chiro.Gap.Data.Ef
 			}
 			return Utility.DetachObjectGraph(result);
 		}
-
-		/*public IList<Afdeling> OphalenEigenAfdelingen(int groep)
-		{
-		    using (ChiroGroepEntities db = new ChiroGroepEntities())
-		    {
-			IList<Afdeling> result = (
-			    from d in db.Afdeling
-			    where d.Groep.ID == groep
-			    select d
-			).ToList();
-			return db.DetachObjectGraph(result);
-		    }
-		}*/
-
 	}
 }

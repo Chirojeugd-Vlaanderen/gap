@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using Chiro.Adf.ServiceModel;
 
 using Chiro.Gap.Orm;
@@ -25,6 +26,11 @@ namespace Chiro.Gap.WebApp.Models
         /// Naam van de Chirogroep
         /// </summary>
         public string Groepsnaam { get; set; }
+
+        /*/// <summary>
+        /// Categorieen van de groep
+        /// </summary>
+        public IEnumerable<SelectListItem> GroepsCategorieen { get; set; }*/
 
         /// <summary>
         /// Plaats van de Chirogroep

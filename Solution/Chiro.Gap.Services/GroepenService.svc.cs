@@ -12,6 +12,7 @@ using Chiro.Cdf.Ioc;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.Workers;
+using Chiro.Gap.Fouten.Exceptions;
 
 
 namespace Chiro.Gap.Services
@@ -36,7 +37,7 @@ namespace Chiro.Gap.Services
 
 		#endregion
 
-		#region IGroepenService Members
+		#region algemene members
 
 		public GroepInfo OphalenInfo(int GroepId)
 		{
@@ -57,37 +58,7 @@ namespace Chiro.Gap.Services
 			}
 		}
 
-		public Groep Ophalen(int groepID)
-		{
-			var result = _groepenMgr.Ophalen(groepID);
-			return result;
-		}
-
-		public Groep OphalenMetAdressen(int groepID)
-		{
-			var result = _groepenMgr.OphalenMetAdressen(groepID);
-			return result;
-		}
-
-		public Groep OphalenMetFuncties(int groepID)
-		{
-			var result = _groepenMgr.OphalenMetFuncties(groepID);
-			return result;
-		}
-
-		public Groep OphalenMetAfdelingen(int groepID)
-		{
-			var result = _groepenMgr.OphalenMetAfdelingen(groepID);
-			return result;
-		}
-
-		public Groep OphalenMetVrijeVelden(int groepID)
-		{
-			var result = _groepenMgr.OphalenMetVrijeVelden(groepID);
-			return result;
-		}
-
-		public int RecentsteGroepsWerkJaarIDGet(int groepID)
+        public int RecentsteGroepsWerkJaarIDGet(int groepID)
 		{
 			return _werkjaarMgr.RecentsteGroepsWerkJaarIDGet(groepID);
 		}
@@ -109,36 +80,132 @@ namespace Chiro.Gap.Services
 		public int HuidigWerkJaarGet(int groepID)
 		{
 			return _werkjaarMgr.HuidigWerkJaarGet(groepID);
-		}
+        }
 
-		/// <summary>
+        #endregion
+
+        #region ophalen
+        public Groep Ophalen(int groepID)
+        {
+            var result = _groepenMgr.Ophalen(groepID);
+            return result;
+        }
+
+        public Groep OphalenMetAdressen(int groepID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Groep OphalenMetFuncties(int groepID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Groep OphalenMetAfdelingen(int groepID)
+        {
+            var result = _groepenMgr.Ophalen(groepID, e => e.Afdeling);
+            return result;
+        }
+
+        public Groep OphalenMetVrijeVelden(int groepID)
+        {
+            throw new NotImplementedException();
+        }
+
+/*        public Groep OphalenMetCategorieen(int groepID)
+        {
+            var result = gm.Ophalen(groepID, e => e.Categorie);
+            return result;
+        }*/
+
+        public IList<OfficieleAfdeling> OphalenOfficieleAfdelingen()
+        {
+            return _groepenMgr.OfficieleAfdelingenOphalen();
+        }
+
+        public IEnumerable<GroepInfo> OphalenMijnGroepen()
+        {
+            var result = _autorisatieMgr.GekoppeldeGroepenGet();
+            return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(result);
+        }
+
+        #endregion
+
+        #region afdelingen
+
+        /*
+         * Bedoeling van het afdelingsgedeelte:
+         * er zijn een aantal officiele afdelingen, die een range van leeftijden hebben. Blijven deze altijd dezelfde??
+         * Elke chiro heeft elk werkjaar zijn eigen afdelingen, die ook een range van leeftijden hebben.
+         * 
+         * Elke afdeling moet overeenkomen met een officiele afdeling.
+         * Er is niet gespecifieerd of het mogelijke is om een eerste-jaar-rakkers en een tweede-jaar-rakkers te hebben
+         * 
+         * Omdat bovenstaande niet echt duidelijk is en misschien niet altijd voldoende:
+         * waarom moet er een mapping zijn met een officiele afdeling. Als dit echt moet, dan is het bovenstaande niet duidelijk,
+         * en stel ik het onderstaande voor
+         * 
+         * Elke chiroafdeling heeft een naam, een afkorting en een boolean NOGINGEBRUIK?
+         * Elke afdelingsjaar heeft een chiroafdeling en een interval van leeftijden.
+         * Voor elke leeftijd is er een mapping met een officiele afdeling
+         * elke leeftijd kan maar op 1 officiele afdeling gemapt worden
+         * 
+         * Voorbeelden:
+         * "de kleintjes" = {minis, speelclub}
+         * "de 5de jaar" = {eerste jaar rakkers}
+         * "rakwi's" = {tweede jaar speelclub, rakkers}
+         */
+
+        /// <summary>
 		/// Maakt een nieuwe afdeling voor een gegeven groep
 		/// </summary>
 		/// <param name="groepID">ID van de groep</param>
 		/// <param name="naam">naam van de afdeling</param>
 		/// <param name="afkorting">afkorting van de afdeling (voor lijsten, overzichten,...)</param>
-		public void AfdelingToevoegen(int groepID, string naam, string afkorting)
+		public void AanmakenAfdeling(int groepID, string naam, string afkorting)
 		{
 			Groep g = _groepenMgr.Ophalen(groepID);
 			_groepenMgr.AfdelingToevoegen(g, naam, afkorting);
-			_groepenMgr.BewarenMetAfdelingen(g);
+			_groepenMgr.Bewaren(g, e => e.Afdeling);
 		}
 
-		public void AanmakenAfdelingsJaar(Groep g, Afdeling aj, OfficieleAfdeling oa, int geboortejaarbegin, int geboortejaareind)
+		public void AanmakenAfdelingsJaar(int groepID, int afdelingsID, int offiafdelingsID, int geboortejaarbegin, int geboortejaareind)
 		{
-			_groepenMgr.AfdelingsJaarToevoegen(g, aj, oa, geboortejaarbegin, geboortejaareind);
-		}
+            Groep g = _groepenMgr.Ophalen(groepID, e => e.Afdeling);
+            Afdeling afd = null;
+            foreach (Afdeling a in g.Afdeling)
+            {
+                if (a.ID == afdelingsID)
+                {
+                    afd = a;
+                }
+            }
 
+            OfficieleAfdeling offafd = null;
+            foreach (OfficieleAfdeling a in _groepenMgr.OfficieleAfdelingenOphalen())
+            {
+                if (a.ID == offiafdelingsID)
+                {
+                    offafd = a;
+                }
+            }
 
-		public IList<OfficieleAfdeling> OphalenOfficieleAfdelingen()
-		{
-			return _groepenMgr.OfficieleAfdelingenOphalen();
-		}
+            if (afd == null || offafd == null)
+            {
+                throw new FoutieveGroepException(String.Format("De gegeven afdeling is geen afdeling van Groep {0}", g.Naam));
+            }
 
-		public IEnumerable<GroepInfo> OphalenMijnGroepen()
-		{
-			var result = _autorisatieMgr.GekoppeldeGroepenGet();
-			return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(result);
+            GroepsWerkJaar huidigWerkJaar = _groepenMgr.RecentsteGroepsWerkJaarGet(g.ID);
+
+			AfdelingsJaar afdjaar = _groepenMgr.AfdelingsJaarMaken(afd, offafd, huidigWerkJaar, geboortejaarbegin, geboortejaareind);
+
+            Factory.Maak<GroepenManager>();
+
+            throw new NotImplementedException();
+
+            /*_groepenMgr.Bewaren(afdjaar, aj => aj.OfficieleAfdeling.WithoutUpdate(),
+                                aj => aj.Afdeling.WithoutUpdate(),
+                                aj => aj.GroepsWerkJaar.WithoutUpdate());*/
 		}
 
 		#endregion
@@ -148,17 +215,17 @@ namespace Chiro.Gap.Services
 		//TODO een efficiente manier vinden om een bepaalde eigenschap toe te voegen aan een al geladen element.
 		//of anders in de workers methoden aanbieden om lambda expressies mee te geven: dan eerst bepalen wat allemaal nodig is, dan 1 keer laden
 		//en dan zijn we terug bij het idee om in het object bij te houden wat hij allemaal heeft geladen
-		//
-		// Bedenking van Johan: Lambda-expressies lijken me niet wenselijk in de businesslaag, omdat je
+
+        // Bedenking van Johan: Lambda-expressies lijken me niet wenselijk in de businesslaag, omdat je
 		// niet kan controleren of de gebruiker het recht wel heeft de zaken gespecifieerd in de expressie op
 		// te vragen.
 		public Groep OphalenMetCategorieen(int groepID)
 		{
-			var result = _groepenMgr.OphalenMetCategorieen(groepID);
+			var result = _groepenMgr.Ophalen(groepID, e => e.Categorie);
 			return result;
 		}
 
-		/// <summary>
+        /// <summary>
 		/// Maakt een nieuwe categorie voor de groep met ID <paramref name="groepID"/>
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvoor nieuwe categorie wordt gemaakt</param>
@@ -166,19 +233,34 @@ namespace Chiro.Gap.Services
 		/// <param name="code">code voor de nieuwe categorie</param>
 		public void CategorieToevoegen(int groepID, string naam, string code)
 		{
-			Groep g = _groepenMgr.Ophalen(groepID);
+            Groep g = OphalenMetCategorieen(groepID);
 			_groepenMgr.CategorieToevoegen(g, naam, code);
-			_groepenMgr.BewarenMetCategorieen(g);
+            _groepenMgr.Bewaren(g, e => e.Categorie);
 		}
 
-		public void CategorieVerwijderen(int categorieID)
+		public void CategorieVerwijderen(int categorieID, int groepID)
 		{
-			_groepenMgr.CategorieVerwijderen(categorieID);
+            Groep g = OphalenMetCategorieen(groepID);
+            Categorie c = null;
+            foreach(Categorie cc in g.Categorie)
+            {
+                if (cc.ID.Equals(categorieID))
+                {
+                    c = cc;
+                }
+            }
+            if (c == null)
+            {
+                throw new ArgumentException("Er is zo geen categorie in de gegeven groep");
+            }
+            _groepenMgr.CategorieVerwijderen(g, c);
+            _groepenMgr.Bewaren(g, e => e.Categorie);
 		}
 
-		public void CategorieAanpassen(Categorie c)
+		public void CategorieAanpassen(int categorieID, string nieuwenaam)
 		{
-			// Nog niet klaar
+            /*Groep g = OphalenMetCategorieen(groepID);
+            Categorie c = null;*/
 			throw new NotImplementedException();
 		}
 

@@ -44,6 +44,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.Groepsnaam = "Nog geen Chirogroep geselecteerd";
                 model.Plaats = "geen";
                 model.StamNummer = "--";
+                //model.GroepsCategorieen = new List<SelectListItem>();
             }
             else
             {
@@ -61,6 +62,19 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.Groepsnaam = gi.Naam;
                 model.Plaats = gi.Plaats;
                 model.StamNummer = gi.StamNummer;
+
+                /*List<SelectListItem> list = new List<SelectListItem>();
+                SelectListItem item = new SelectListItem();
+                item.Text = "Kookies";
+                item.Value = "10";
+                item.Selected = false;
+                list.Add(item);
+                item = new SelectListItem();
+                item.Text = "Alle";
+                item.Value = "Alle";
+                item.Selected = true;
+                list.Add(item);
+                model.GroepsCategorieen = list;*/
             }
         }
     }

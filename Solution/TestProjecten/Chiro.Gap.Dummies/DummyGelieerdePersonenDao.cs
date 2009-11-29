@@ -35,6 +35,11 @@ namespace Chiro.Gap.Dummies
             throw new NotImplementedException();
         }
 
+        public IList<GelieerdePersoon> PaginaOphalenMetLidInfoVolgensCategorie(int groepID, int pagina, int paginaGrootte, out int aantalTotaal, int categorieID)
+        {
+            throw new NotImplementedException();
+        }
+
         public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
         {
             throw new NotImplementedException();

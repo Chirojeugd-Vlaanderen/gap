@@ -42,32 +42,6 @@ namespace Chiro.Gap.Data.Ef
 			return result;
 		}
 
-		public IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
-		{
-			IList<GelieerdePersoon> lijst;
-
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
-			{
-				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
-
-				aantalTotaal = (
-				    from gp in db.GelieerdePersoon
-				    where gp.Groep.ID == groepID
-				    select gp).Count();
-
-				var result = (
-				    from gp in db.GelieerdePersoon.Include("Persoon").Include("Groep")
-				    where gp.Groep.ID == groepID
-				    orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
-				    select gp).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte);
-
-				lijst = result.ToList<GelieerdePersoon>();
-
-			}
-
-			return lijst;
-		}
-
 		//todo na deze aanroep is result.Persoon toch nog == null!!?
 		//Johan: probeer eens om MergeOption op MergeOption.NoTracking te zetten
 		public override GelieerdePersoon Ophalen(int id)
@@ -158,6 +132,81 @@ namespace Chiro.Gap.Data.Ef
 			}
 
 			return lijst;   // met wat change komt de relevante lidinfo mee.
+		}
+
+        public IList<GelieerdePersoon> PaginaOphalenMetLidInfoVolgensCategorie(int groepID, int pagina, int paginaGrootte, out int aantalTotaal, int categorieID)
+        {
+            int wj;
+            IList<GelieerdePersoon> lijst;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
+
+                wj = (
+                    from w in db.GroepsWerkJaar
+                    where w.Groep.ID == groepID
+                    orderby w.WerkJaar descending
+                    select w).FirstOrDefault<GroepsWerkJaar>().WerkJaar;
+
+                aantalTotaal = (
+                    from gp in db.GelieerdePersoon
+                    where gp.Groep.ID == groepID
+                    select gp).Count();
+
+                //TODO zoeken hoe je kan bepalen of hij alleen de leden includes als die aan 
+                //bepaalde voorwaarden voldoen, maar wel alle gelieerdepersonen
+                lijst = (
+                    from gp in db.GelieerdePersoon.Include("Persoon").Include("Lid.GroepsWerkJaar").Include("Groep")
+                    where gp.Groep.ID == groepID
+                    orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
+                    select gp).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte).ToList();
+
+                // work around: alle leden verwijderen behalve het (eventuele) lid in het huidige werkjaar
+                for (int i=0; i<lijst.Count; i++)
+                {
+                    GelieerdePersoon gp = lijst.ElementAt(i);
+                    bool found = false;
+                    foreach (Categorie c in gp.Categorie)
+                    {
+                        if (c.ID == categorieID)
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found)
+                    {
+                        lijst.RemoveAt(i);
+                        i--;
+                        continue;
+                    }
+
+                    IList<Lid> verkeerdeLeden = (
+                        from Lid l in gp.Lid
+                        where l.GroepsWerkJaar.WerkJaar != wj
+                        select l).ToList();
+
+                    foreach (Lid verkeerdLid in verkeerdeLeden)
+                    {
+                        gp.Lid.Remove(verkeerdLid);
+                    }
+                }
+            }
+
+            return lijst;   // met wat change komt de relevante lidinfo mee.
+        }
+
+		public IList<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersonenIDs)
+		{
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{
+				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
+
+				return (
+				    from gp in db.GelieerdePersoon.Include("Groep").Include("Persoon").Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.ID, gelieerdePersonenIDs))
+				    select gp).ToList();
+			}
 		}
 
 		public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)

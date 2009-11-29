@@ -33,17 +33,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
         IList<GelieerdePersoon> AllenOphalen(int GroepID);
 
         /// <summary>
-        /// Haalt een 'pagina' persoonsgegevens van de gelieerde personen van een groep op
-        /// </summary>
-        /// <param name="groepID">ID van de groep</param>
-        /// <param name="pagina">paginanummer (1 of groter)</param>
-        /// <param name="paginaGrootte">aantal records op een pagina</param>
-        /// <param name="aantalTotaal">outputparameter voor totaal aantal 
-        /// personen gelieerd aan de groep.</param>
-        /// <returns>Lijst met gelieerde personen</returns>
-        IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalTotaal);
-
-        /// <summary>
         /// Haalt een 'pagina' persoonsgegevens van de gelieerde personen van een groep op, inclusief
         /// eventueel lidobject in het recentste werkjaar.
         /// </summary>
@@ -54,6 +43,18 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// personen gelieerd aan de groep.</param>
         /// <returns>Lijst met gelieerde personen</returns>
         IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal);
+
+        /// <summary>
+        /// Haalt een 'pagina' persoonsgegevens van de gelieerde personen van een groep op behorende tot de gegeven categorie
+        /// inclusief eventueel lidobject in het recentste werkjaar.
+        /// </summary>
+        /// <param name="groepID">ID van de groep</param>
+        /// <param name="pagina">paginanummer (1 of groter)</param>
+        /// <param name="paginaGrootte">aantal records op een pagina</param>
+        /// <param name="aantalTotaal">outputparameter voor totaal aantal
+        /// personen gelieerd aan de groep.</param>
+        /// <returns>Lijst met gelieerde personen</returns>
+        IList<GelieerdePersoon> PaginaOphalenMetLidInfoVolgensCategorie(int groepID, int pagina, int paginaGrootte, out int aantalTotaal, int categorieID);
 
         /// <summary>
         /// Haalt persoonsgegevens van een gelieerd persoon op, incl. adressen en communicatievormen

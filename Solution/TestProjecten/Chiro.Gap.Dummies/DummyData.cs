@@ -93,7 +93,6 @@ namespace Chiro.Gap.Dummies
 			_gelieerdeIrene = gpMgr.Koppelen(irene, _dummyGroep, 0);
 
 			// Koppelingen allerhanden
-
 			gpMgr.CategorieKoppelen(new GelieerdePersoon[] { _gelieerdeJos }, _vervelend, true);
 
 			lMgr.LidMaken(_gelieerdeJos, _huidigGwj);						

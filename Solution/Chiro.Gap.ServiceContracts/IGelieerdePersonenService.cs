@@ -37,6 +37,19 @@ namespace Chiro.Gap.ServiceContracts
         IList<PersoonInfo> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal);
 
         /// <summary>
+        /// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep die tot de gegeven categorie behoren,
+        /// inclusief eventueel lidobject voor het recentste werkjaar.
+        /// </summary>
+        /// <param name="groepID">ID van de betreffende groep</param>
+        /// <param name="pagina">paginanummer (1 of hoger)</param>
+        /// <param name="paginaGrootte">aantal records per pagina (1 of meer)</param>
+        /// <param name="aantalTotaal">outputparameter; geeft het totaal aantal personen weer in de lijst</param>
+        /// <param name="categorieID">de gevraagde categorie</param>
+        /// <returns>lijst van gelieerde personen met persoonsinfo</returns>
+        [OperationContract]
+        IList<PersoonInfo> PaginaOphalenMetLidInfoVolgensCategorie(int groepID, int pagina, int paginaGrootte, out int aantalTotaal, int categorieID);
+
+        /// <summary>
         /// Zoekt alle personen die aan de criteria voldoen en geeft daarvan een bepaalde pagina weer
         /// </summary>
         /// <param name="?"></param>
@@ -190,7 +203,7 @@ namespace Chiro.Gap.ServiceContracts
         IList<GelieerdePersoon> OphalenUitCategorie(int categorieID);
 
         /// <summary>
-        /// Haalt een lijst op met alle communicatietypes
+        /// Haalt een lijst op met alle categorieen
         /// </summary>
         [OperationContract]
         IEnumerable<Categorie> ophalenCategorieen(int groepID);

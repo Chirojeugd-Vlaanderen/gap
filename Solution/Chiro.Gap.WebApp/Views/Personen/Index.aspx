@@ -10,6 +10,7 @@
 
 <ul id="acties">
 <li><%= Html.ActionLink("Nieuwe persoon", "Nieuw") %></li>
+<!--<li><%= Html.DropDownList("Categorie", Model.GroepsCategorieen, new {onChange="submit"})%></li>-->
 </ul>
 <ul id="info">
 <li>Totaal aantal personen: <%= Model.Totaal %></li>

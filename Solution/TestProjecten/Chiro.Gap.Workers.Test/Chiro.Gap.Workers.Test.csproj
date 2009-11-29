@@ -56,7 +56,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategorieKoppelen.cs" />
     <Compile Include="CategorieTest.cs" />
+    <Compile Include="CategorieToevoegen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AutorisatieTest.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -64,6 +66,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="CategorieVerwijderen.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />

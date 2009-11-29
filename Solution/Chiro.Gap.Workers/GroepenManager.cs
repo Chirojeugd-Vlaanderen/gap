@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
-
-using Chiro.Cdf.Data;
-using Chiro.Gap.Data.Ef;
-using Chiro.Gap.Fouten.Exceptions;
-using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-
+using Chiro.Gap.Data.Ef;
+using Chiro.Gap.Orm;
+using Chiro.Gap.Fouten.Exceptions;
+using System.Diagnostics;
+using Chiro.Cdf.Data;
+using System.Linq.Expressions;
 
 namespace Chiro.Gap.Workers
 {
@@ -31,23 +30,6 @@ namespace Chiro.Gap.Workers
 			_afdao = afdao;
 			_autorisatieMgr = autorisatieMgr;
 			_categorieenDao = categorieenDao;
-		}
-
-		/// <summary>
-		/// Haalt groep op, op basis van GroepID
-		/// </summary>
-		/// <param name="groepID">ID op te halen groep</param>
-		/// <returns>gevraagde groep</returns>
-		public Groep Ophalen(int groepID)
-		{
-			if (_autorisatieMgr.IsGavGroep(groepID))
-			{
-				return _dao.Ophalen(groepID);
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroep);
-			}
 		}
 
 		/// <summary>
@@ -99,13 +81,8 @@ namespace Chiro.Gap.Workers
 		/// <param name="oa">Te koppelen officiele afdeling</param>
 		/// <param name="geboorteJaarBegin">Geboortejaar van</param>
 		/// <param name="geboorteJaarEind">Geboortejaar tot</param>
-		public void AfdelingsJaarToevoegen(Groep g, Afdeling a, OfficieleAfdeling oa, int geboorteJaarBegin, int geboorteJaarEind)
+		public AfdelingsJaar AfdelingsJaarMaken(Afdeling a, OfficieleAfdeling oa, GroepsWerkJaar gwj, int geboorteJaarBegin, int geboorteJaarEind)
 		{
-			if (!_autorisatieMgr.IsGavGroep(g.ID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroep);
-			}
-
 			if (!_autorisatieMgr.IsGavAfdeling(a.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGavAfdeling);
@@ -119,34 +96,20 @@ namespace Chiro.Gap.Workers
 			}
 
 			AfdelingsJaar afdelingsJaar = new AfdelingsJaar();
-			GroepsWerkJaar huidigWerkJaar = _dao.RecentsteGroepsWerkJaarGet(g.ID);
-
-			if (!a.Groep.Equals(g))
-			{
-				throw new FoutieveGroepException(String.Format("Afdeling {0} is geen afdeling van Groep {1}", a.Naam, g.Naam));
-			}
-
-			// TODO: test of de officiele afdeling bestaat, heb
-			// ik voorlopig even weggelaten.  Als de afdeling niet
-			// bestaat, zal er bij het bewaren toch een exception
-			// optreden, aangezien het niet de bedoeling is dat
-			// een officiele afdeling bijgemaakt wordt.
 
 			//TODO check if no conflicts with existing afdelingsjaar
 
 			afdelingsJaar.OfficieleAfdeling = oa;
 			afdelingsJaar.Afdeling = a;
-			afdelingsJaar.GroepsWerkJaar = huidigWerkJaar;
+			afdelingsJaar.GroepsWerkJaar = gwj;
 			afdelingsJaar.GeboorteJaarVan = geboorteJaarBegin;
 			afdelingsJaar.GeboorteJaarTot = geboorteJaarEind;
 
 			a.AfdelingsJaar.Add(afdelingsJaar);
 			oa.AfdelingsJaar.Add(afdelingsJaar);
-			huidigWerkJaar.AfdelingsJaar.Add(afdelingsJaar);
+			gwj.AfdelingsJaar.Add(afdelingsJaar);
 
-			_afdao.Bewaren(afdelingsJaar, aj => aj.OfficieleAfdeling.WithoutUpdate(),
-						 aj => aj.Afdeling.WithoutUpdate(),
-						 aj => aj.GroepsWerkJaar.WithoutUpdate());
+            return afdelingsJaar;
 		}
 
 		/// <summary>
@@ -158,30 +121,6 @@ namespace Chiro.Gap.Workers
 			// Iedereen heeft het recht deze op te halen.
 			return _dao.OphalenOfficieleAfdelingen();
 		}
-
-		/// <summary>
-		/// haalt alle AfdelingsJaren op bij een gegeven GroepsWerkJaar
-		/// </summary>
-		/// <remarks>TODO: Authorisatie!</remarks>
-		/// <param name="gwj">Groepswerkjaar waarvoor afdelingsjaren op te halen</param>
-		/// <returns>Lijst van afdelingsjaren bij een groepswerkjaar</returns>
-		public IList<AfdelingsJaar> AfdelingsJarenOphalen(GroepsWerkJaar gwj)
-		{
-			if (_autorisatieMgr.IsGavGroepsWerkJaar(gwj.ID))
-			{
-				IList<AfdelingsJaar> result = new List<AfdelingsJaar>();
-				Groep g = _dao.OphalenMetAfdelingen(gwj.ID);
-				// Aan g hangt nu slechts 1 groepswerkjaar, met name
-				// (een kopie van) gwj.
-
-				return g.GroepsWerkJaar.First().AfdelingsJaar.ToList();
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroepsWerkJaar);
-			}
-		}
-
 
 		/// <summary>
 		/// Haalt recentste groepswerkjaar op voor gegeven groep
@@ -201,147 +140,96 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Ophalen van groep met zijn afdelingen
-		/// </summary>
-		/// <param name="groepid"></param>
-		/// <returns></returns>
-		public Groep OphalenMetAfdelingen(int groepID)
-		{
-			if (_autorisatieMgr.IsGavGroep(groepID))
-			{
-				return _dao.Ophalen(groepID, e => e.Afdeling);
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroep);
-			}
-		}
-
-		public Groep OphalenMetCategorieen(int groepID)
-		{
-			if (_autorisatieMgr.IsGavGroep(groepID))
-			{
-				return _dao.Ophalen(groepID, e => e.Categorie);
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroep);
-			}
-		}
-
-		public Groep OphalenMetFuncties(int groepID)
-		{
-			//TODO
-			throw new NotImplementedException();
-		}
-
-		public Groep OphalenMetVrijeVelden(int groepID)
-		{
-			//TODO
-			throw new NotImplementedException();
-		}
-
-		public Groep OphalenMetAdressen(int groepID)
-		{
-			//TODO
-			throw new NotImplementedException();
-		}
-
-		/// <summary>
 		/// Persisteert groep in de database
 		/// </summary>
 		/// <param name="g">Te persisteren groep</param>
 		/// <returns>De bewaarde groep</returns>
-		public Groep Bewaren(Groep g)
+        public Groep Bewaren(Groep g, params Expression<Func<Groep, object>>[] paths)
 		{
 			if (_autorisatieMgr.IsGavGroep(g.ID))
 			{
-				return _dao.Bewaren(g);
+				return _dao.Bewaren(g, paths);
 			}
 			else
 			{
 				throw new GeenGavException(Properties.Resources.GeenGavGroep);
 			}
-		}
+        }
+
+        ////TEST
+        public T Bewaren<T>(T g, params Expression<Func<T, object>>[] paths)
+        {
+            /*if (_autorisatieMgr.IsGavGroep(g.ID))
+            {
+                return _dao.Bewaren(g, paths);
+            }
+            else
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGroep);
+            }*/
+            throw new GeenGavException(Properties.Resources.GeenGavGroep);
+        }
+        ////END TEST
+
+
+
+
+
+        public Groep Ophalen(int groepID, params Expression<Func<Groep, object>>[] paths)
+        {
+            if (_autorisatieMgr.IsGavGroep(groepID))
+            {
+                return _dao.Ophalen(groepID, paths);
+            }
+            else
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGroep);
+            }
+        }
+
+        #region categorieen
 
 		/// <summary>
-		/// Bewaart een groep, inclusief zijn gekoppelde afdelingen
+		/// Persisteert wel
 		/// </summary>
-		/// <param name="g">Te bewaren groep</param>
-		/// <returns>Een kloon van groep en afdelingen, met indien van toepassing nieuwe AfdelingID's</returns>
-		/// <remarks>Deze functie doet niets met afdelingsjaren!</remarks>
-		public Groep BewarenMetAfdelingen(Groep g)
+		/// <param name="c"></param>
+		/// <param name="gID"></param>
+		public Categorie CategorieToevoegen(Groep g, String cnaam, String code)
 		{
-			if (_autorisatieMgr.IsGavGroep(g.ID))
-			{
-				return _dao.Bewaren(g, grp => grp.Afdeling);
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroep);
-			}
-		}
+            if(!_autorisatieMgr.IsGavGroep(g.ID))
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavGroep);
+            }
 
-		/// <summary>
-		/// Bewaart een groep, inclusief zijn gekoppelde categorieen
-		/// </summary>
-		/// <param name="g">Te bewaren groep</param>
-		/// <returns>Een kloon van groep en categorieen, met indien van toepassing nieuwe categorieID's</returns>
-		public Groep BewarenMetCategorieen(Groep g)
-		{
-			if (_autorisatieMgr.IsGavGroep(g.ID))
-			{
-				return _dao.Bewaren(g, grp => grp.Categorie);
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroep);
-			}
-		}
+            Categorie c = new Categorie();
+            c.Naam = cnaam;
+            c.Code = code;
+			c.Groep = g;
+			g.Categorie.Add(c);
+            return c;
 
-
-		/// <summary>
-		/// Maakt een nieuwe categorie voor een groep, zonder te persisteren.
-		/// </summary>
-		/// <param name="groep">Groep waarvoor de categorie moet worden gemaakt</param>
-		/// <param name="naam">naam van de categorie</param>
-		/// <param name="code">handige afkorting voor in overzichtjes</param>
-		public Categorie CategorieToevoegen(Groep groep, string naam, string code)
-		{
-			if (_autorisatieMgr.IsGavGroep(groep.ID))
-			{
-				Categorie c = new Categorie { Code = code, Naam = naam };
-
-				c.Groep = groep;
-				groep.Categorie.Add(c);
-
-				return c;
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroep);
-			}
 		}
 
 		/// <summary>
 		/// Persisteert wel
 		/// </summary>
 		/// <param name="categorieID"></param>
-		public void CategorieVerwijderen(int categorieID)
+		public void CategorieVerwijderen(Groep g, Categorie c)
 		{
-			Categorie c = _categorieenDao.Ophalen(categorieID);
-			if (_autorisatieMgr.IsGavGroep(c.Groep.ID))
+			if (_autorisatieMgr.IsGavGroep(g.ID))
 			{
 				c.TeVerwijderen = true;
-				_categorieenDao.Bewaren(c);
+                g.Categorie.Remove(c);
 			}
 			else
 			{
 				throw new GeenGavException(Properties.Resources.GeenGavGroep);
 			}
-		}
+        }
 
-		/// <summary>
+        #endregion categorieen
+
+        /// <summary>
 		/// Maakt een nieuw groepswerkjaar voor een gegeven <paramref name="groep" />
 		/// </summary>
 		/// <param name="groep">groep waarvoor een groepswerkjaar gemaakt moet worden</param>

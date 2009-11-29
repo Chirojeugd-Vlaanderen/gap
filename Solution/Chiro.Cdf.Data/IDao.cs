@@ -43,8 +43,19 @@ namespace Chiro.Cdf.Data
         /// </summary>
         /// <param name="ids">ID's van op te halen entiteiten</param>
         /// <param name="paths">geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
-        /// <returns>Lijst met opgehaalde ID's</returns>
+        /// <returns>Lijst met opgehaalde entiteiten</returns>
         IList<T> Ophalen(IEnumerable<int> ids, params Expression<Func<T, object>>[] paths);
+
+        /// <summary>
+        /// Haalt een gepagineerde lijst met entiteiten van type T op en de noodzakelijke koppelingen
+        /// </summary>
+        /// <param name="pagina">De hoeveelste pagina</param>
+        /// <param name="paginaGrootte">Het aantal elementen op een pagina</param>
+        /// <param name="aantalTotaal">Out parameter met het totaal aantal elementen</param>
+        /// <param name="paths">geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+        /// <returns>Lijst met opgehaalde entiteiten</returns>
+        IList<T> PaginaOphalen(int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<T, object>>[] paths);
+
 
 		/// <summary>
 		/// Haalt alle entiteiten van het type <typeparamref name="T"/> op.

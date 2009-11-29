@@ -95,6 +95,30 @@ namespace Chiro.Cdf.Data.Entity
 			return result;
 		}
 
+        public virtual IList<TEntiteit> PaginaOphalen(int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<TEntiteit, object>>[] paths)
+        {
+            IList<TEntiteit> result;
+
+            using (TContext db = new TContext())
+            {
+                aantalTotaal =  (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
+                                 select t).Count();
+
+                ObjectQuery<TEntiteit> query = 
+                    (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
+                     select t).Skip((pagina-1)*paginaGrootte).Take(paginaGrootte) as ObjectQuery<TEntiteit>;
+
+                result = (IncludesToepassen(query, paths)).ToList<TEntiteit>();
+            }
+
+            if (result != null)
+            {
+                result = Utility.DetachObjectGraph(result);
+            }
+
+            return result;
+        }
+
 		/// <summary>
 		/// Ophalen van een lijst entiteiten met gekoppelde entiteiten
 		/// </summary>
@@ -230,35 +254,6 @@ namespace Chiro.Cdf.Data.Entity
 			es = Utility.DetachObjectGraph(es);
 			return es;
 		}
-
-
-		/// <summary>
-		/// Markeert entity als 'volledig gewijzigd'
-		/// </summary>
-		/// <param name="key">Key van te markeren entity</param>
-		/// <param name="context">Context om wijzigingen in te markeren</param>
-		/// <remarks>Deze functie staat hier mogelijk niet op zijn plaats</remarks>
-		protected static void SetAllModified(EntityKey key, ObjectContext context)
-		{
-			var stateEntry = context.ObjectStateManager.GetObjectStateEntry(key);
-			var propertyNameList = stateEntry.CurrentValues.DataRecordInfo.FieldMetadata.Select
-			  (pn => pn.FieldType.Name);
-			foreach (var propName in propertyNameList)
-			{
-				try
-				{
-					stateEntry.SetModifiedProperty(propName);
-				}
-				catch (InvalidOperationException)
-				{
-					// WTF???
-				}
-
-			}
-		}
-
 		#endregion
 	}
-
-
 }

@@ -20,28 +20,8 @@ namespace Chiro.Gap.Services.Test
 	{
 		public GroepenServiceTest()
 		{
-			//
-			// TODO: Add constructor logic here
-			//
 		}
 
-		private TestContext testContextInstance;
-
-		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		///</summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
 
 		#region Additional test attributes
 		//
@@ -80,14 +60,14 @@ namespace Chiro.Gap.Services.Test
 		{
 			#region Arrange
 
-			// Mock creeren voor IGroepenDao.
+/*			// Mock creeren voor IGroepenDao.
 			var groepenDaoMock = new Mock<IGroepenDao>();
 
 			// Als Ophalen(testGroepID) opgeropen wordt, testgroep opleveren
 			groepenDaoMock.Setup(dao => dao.Ophalen(DummyData.DummyGroep.ID)).Returns(DummyData.DummyGroep);
 
 			// IOC container de mock laten gebruiken
-			Factory.InstantieRegistreren<IGroepenDao>(groepenDaoMock.Object);
+			Factory.InstantieRegistreren<IGroepenDao>(groepenDaoMock.Object);*/
 
 			// Service creeren
 			IGroepenService svc = Factory.Maak<GroepenService>();
@@ -96,14 +76,14 @@ namespace Chiro.Gap.Services.Test
 
 			#region Act
 
-			Groep g = svc.Ophalen(DummyData.DummyGroep.ID);
+			GroepInfo g = svc.OphalenInfo(317);
 
 			#endregion
 
 			#region Assert
 
-			Assert.IsTrue(g.ID == DummyData.DummyGroep.ID);
-			groepenDaoMock.Verify(dao => dao.Ophalen(DummyData.DummyGroep.ID)); // is Ophalen wel opgeroepen?
+			Assert.IsTrue(g.ID == 317);
+			//groepenDaoMock.Verify(dao => dao.Ophalen(DummyData.DummyGroep.ID)); // is Ophalen wel opgeroepen?
 
 			#endregion
 		}

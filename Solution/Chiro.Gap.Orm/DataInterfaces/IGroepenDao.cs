@@ -24,26 +24,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 
         Groep OphalenMetAfdelingen(int groepID);
 
-        /*Groep OphalenMetAdressen(int groepID);
-
-        Groep OphalenMetCategorieen(int groepID);
-
-        Groep OphalenMetFuncties(int groepID);
-
-        Groep OphalenMetAfdelingen(int groepID);
-
-        Groep OphalenMetVrijeVelden(int groepID);
-
-        void BewarenMetAdressen(Groep g);
-
-        void BewarenMetCategorieen(Groep g);
-
-        void BewarenMetFuncties(Groep g);
-
-        void BewarenMetAfdelingen(Groep g);
-
-        void BewarenMetVrijeVelden(Groep g);*/
-
         IList<OfficieleAfdeling> OphalenOfficieleAfdelingen();
 
         //IList<Afdeling> OphalenEigenAfdelingen(int groep);
