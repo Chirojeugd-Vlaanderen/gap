@@ -54,7 +54,7 @@ namespace Chiro.Cdf.Data
         /// <param name="aantalTotaal">Out parameter met het totaal aantal elementen</param>
         /// <param name="paths">geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
         /// <returns>Lijst met opgehaalde entiteiten</returns>
-        IList<T> PaginaOphalen(int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<T, object>>[] paths);
+        IList<T> PaginaOphalen(int id, Expression<Func<T, int>> f, int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<T, object>>[] paths);
 
 
 		/// <summary>

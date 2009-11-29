@@ -95,13 +95,17 @@ namespace Chiro.Cdf.Data.Entity
 			return result;
 		}
 
-        public virtual IList<TEntiteit> PaginaOphalen(int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<TEntiteit, object>>[] paths)
+        public virtual IList<TEntiteit> PaginaOphalen(int id, Expression<Func<TEntiteit, int>> f, int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<TEntiteit, object>>[] paths)
         {
             IList<TEntiteit> result;
+
+            List<int> list = new List<int>();
+            list.Add(id);
 
             using (TContext db = new TContext())
             {
                 aantalTotaal =  (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
+                                 .Where(Utility.BuildContainsExpression<TEntiteit, int>(f, list))
                                  select t).Count();
 
                 ObjectQuery<TEntiteit> query = 

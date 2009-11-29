@@ -21,7 +21,7 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-        public IList<T> PaginaOphalen(int id, int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<T, object>>[] paths)
+        public IList<T> PaginaOphalen(int id, Expression<Func<T, int>> f, int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<T, object>>[] paths)
         {
             throw new NotImplementedException();
         }

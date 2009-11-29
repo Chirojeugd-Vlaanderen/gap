@@ -179,7 +179,7 @@ namespace Chiro.Gap.Workers
         {
             if (_autorisatieMgr.IsGavGroep(groepID))
             {
-                IList<GelieerdePersoon> list = _dao.PaginaOphalen(groepID, pagina, paginaGrootte, out aantalTotaal);
+                IList<GelieerdePersoon> list = _dao.PaginaOphalen(groepID, e => e.Groep.ID, pagina, paginaGrootte, out aantalTotaal);
                 list.OrderBy(e => e.Persoon.Naam).ThenBy(e => e.Persoon.VoorNaam);
                 return list;
             }
