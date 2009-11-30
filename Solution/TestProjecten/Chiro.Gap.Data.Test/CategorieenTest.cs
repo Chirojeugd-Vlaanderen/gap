@@ -94,6 +94,27 @@ namespace Chiro.Gap.Data.Test
 			Assert.IsTrue(c.ID == _catID);
 		}
 
+		/// <summary>
+		/// Controleert of bij het ophalen van een pagina uit een categorie, de waarde van
+		/// de output parameter aantalTotaal klopt.
+		/// </summary>
+		[TestMethod]
+		public void PaginaOphalenUitCategorieAantal()
+		{
+			// arrange
+			int aantalTotaal;
+
+			// act
+			var pagina = _gpdao.PaginaOphalenMetLidInfoVolgensCategorie(
+				TestInfo.GROEPID, 
+				1, 10, 
+				out aantalTotaal, 
+				TestInfo.CATEGORIEID);
+
+			// assert
+			Assert.IsTrue(aantalTotaal == TestInfo.AANTALINCATEGORIE);
+		}
+
 
 		/// <summary>
 		/// Test op toevoegen van een gelieerde persoon aan een categorie

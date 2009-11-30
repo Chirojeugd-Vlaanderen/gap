@@ -25,8 +25,13 @@
 		/// <summary>
 		/// ID van categorie van testgroep1
 		/// </summary>
-		/// <remarks>Gelieerde Persoon 1 moet in deze categorie zitten</remarks>
+		/// <remarks>Enkel gelieerde Persoon 1 moet in deze categorie zitten</remarks>
 		public const int CATEGORIEID = 8;
+
+		/// <summary>
+		/// Totaal aantal personen in deze categorie
+		/// </summary>
+		public const int AANTALINCATEGORIE = 1;
 
 		/// <summary>
 		/// ID van een afdeling van de testgroep

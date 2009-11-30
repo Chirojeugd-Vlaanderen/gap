@@ -134,68 +134,97 @@ namespace Chiro.Gap.Data.Ef
 			return lijst;   // met wat change komt de relevante lidinfo mee.
 		}
 
-        public IList<GelieerdePersoon> PaginaOphalenMetLidInfoVolgensCategorie(int groepID, int pagina, int paginaGrootte, out int aantalTotaal, int categorieID)
-        {
-            int wj;
-            IList<GelieerdePersoon> lijst;
 
-            using (ChiroGroepEntities db = new ChiroGroepEntities())
-            {
-                db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
+		/// <summary>
+		/// Haal een pagina op met gelieerde personen uit een categorie, inclusief lidinfo voor het huidige
+		/// werkjaar.
+		/// </summary>
+		/// <param name="groepID">ID van de groep</param>
+		/// <param name="pagina">gevraagde pagina</param>
+		/// <param name="paginaGrootte">grootte van de pagina</param>
+		/// <param name="aantalTotaal">outputparameter die het totaal aantal personen in de categorie weergeeft</param>
+		/// <param name="categorieID">ID van de gevraagde categorie</param>
+		/// <returns>lijst gelieerde personen</returns>
+		public IList<GelieerdePersoon> PaginaOphalenMetLidInfoVolgensCategorie(int groepID, int pagina, int paginaGrootte, out int aantalTotaal, int categorieID)
+		{
+			// bedenkingen van Johan: 
+			//  . out-parameters moeten eigenlijk achteraan (guideline 188)
+			//  . de categorie bepaalt de groep, dus deze functie zou ook zonder groepID moeten kunnen werken
 
-                wj = (
-                    from w in db.GroepsWerkJaar
-                    where w.Groep.ID == groepID
-                    orderby w.WerkJaar descending
-                    select w).FirstOrDefault<GroepsWerkJaar>().WerkJaar;
+			int wj;
+			IList<GelieerdePersoon> lijst;
 
-                aantalTotaal = (
-                    from gp in db.GelieerdePersoon
-                    where gp.Groep.ID == groepID
-                    select gp).Count();
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{
+				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 
-                //TODO zoeken hoe je kan bepalen of hij alleen de leden includes als die aan 
-                //bepaalde voorwaarden voldoen, maar wel alle gelieerdepersonen
-                lijst = (
-                    from gp in db.GelieerdePersoon.Include("Persoon").Include("Lid.GroepsWerkJaar").Include("Groep")
-                    where gp.Groep.ID == groepID
-                    orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
-                    select gp).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte).ToList();
+				wj = (
+				    from w in db.GroepsWerkJaar
+				    where w.Groep.ID == groepID
+				    orderby w.WerkJaar descending
+				    select w).FirstOrDefault<GroepsWerkJaar>().WerkJaar;
 
-                // work around: alle leden verwijderen behalve het (eventuele) lid in het huidige werkjaar
-                for (int i=0; i<lijst.Count; i++)
-                {
-                    GelieerdePersoon gp = lijst.ElementAt(i);
-                    bool found = false;
-                    foreach (Categorie c in gp.Categorie)
-                    {
-                        if (c.ID == categorieID)
-                        {
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found)
-                    {
-                        lijst.RemoveAt(i);
-                        i--;
-                        continue;
-                    }
+				// JOHAN: ik denk niet dat je in aantalTotaal het totaal aantal personen van de groep
+				// wil stockeren
 
-                    IList<Lid> verkeerdeLeden = (
-                        from Lid l in gp.Lid
-                        where l.GroepsWerkJaar.WerkJaar != wj
-                        select l).ToList();
+				aantalTotaal = (
+				    from gp in db.GelieerdePersoon
+				    where gp.Groep.ID == groepID
+				    select gp).Count();
 
-                    foreach (Lid verkeerdLid in verkeerdeLeden)
-                    {
-                        gp.Lid.Remove(verkeerdLid);
-                    }
-                }
-            }
+				//TODO zoeken hoe je kan bepalen of hij alleen de leden includes als die aan 
+				//bepaalde voorwaarden voldoen, maar wel alle gelieerdepersonen
+				lijst = (
+				    from gp in db.GelieerdePersoon.Include("Persoon").Include("Lid.GroepsWerkJaar").Include("Groep")
+				    where gp.Groep.ID == groepID
+				    orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
+				    select gp).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte).ToList();
 
-            return lijst;   // met wat change komt de relevante lidinfo mee.
-        }
+				// JOHAN: Je selecteert alle leden ooit van een bepaalde groep, doet dan de paginering,
+				// en tenslotte probeer je er de irrelevante uit te gooien.  Op die manier werkt je 
+				// paginering niet as bijv. alle leden van de categorie in een laatste pagina zitten.
+
+				// work around: alle leden verwijderen behalve het (eventuele) lid in het huidige werkjaar
+				for (int i = 0; i < lijst.Count; i++)
+				{
+					// JOHAN: ElementAt is  niet performant voor een lijst.  Gebruik liever een
+					// iterator.
+					GelieerdePersoon gp = lijst.ElementAt(i);
+					bool found = false;
+					foreach (Categorie c in gp.Categorie)
+					{
+						if (c.ID == categorieID)
+						{
+							found = true;
+							break;
+						}
+					}
+					if (!found)
+					{
+						lijst.RemoveAt(i);
+
+						// JOHAN: violates guideline 124
+						// Je kan zoiets wel met een for doen, maar dan graag van achter
+						// naar voren.
+
+						i--;
+						continue;
+					}
+
+					IList<Lid> verkeerdeLeden = (
+					    from Lid l in gp.Lid
+					    where l.GroepsWerkJaar.WerkJaar != wj
+					    select l).ToList();
+
+					foreach (Lid verkeerdLid in verkeerdeLeden)
+					{
+						gp.Lid.Remove(verkeerdLid);
+					}
+				}
+			}
+
+			return lijst;   // met wat change komt de relevante lidinfo mee.
+		}
 
 		public IList<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersonenIDs)
 		{
