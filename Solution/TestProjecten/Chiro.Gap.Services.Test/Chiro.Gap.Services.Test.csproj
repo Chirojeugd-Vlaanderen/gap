@@ -65,6 +65,10 @@
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
       <Name>Chiro.Gap.Orm</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.ServiceContracts.Mappers\Chiro.Gap.ServiceContracts.Mappers.csproj">
+      <Project>{08F94344-8414-4136-8314-4B7380B10CD7}</Project>
+      <Name>Chiro.Gap.ServiceContracts.Mappers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
       <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
       <Name>Chiro.Gap.ServiceContracts</Name>

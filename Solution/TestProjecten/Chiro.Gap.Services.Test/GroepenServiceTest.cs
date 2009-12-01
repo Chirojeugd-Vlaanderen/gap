@@ -9,6 +9,7 @@ using Chiro.Gap.Orm.DataInterfaces;
 using Moq;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Orm;
+using Chiro.Gap.ServiceContracts.Mappers;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -49,6 +50,7 @@ namespace Chiro.Gap.Services.Test
 		public static void MyClassInitialize(TestContext testContext) 
 		{
 			Factory.ContainerInit();
+			MappingHelper.MappingsDefinieren();
 		}
 
 		/// <summary>
