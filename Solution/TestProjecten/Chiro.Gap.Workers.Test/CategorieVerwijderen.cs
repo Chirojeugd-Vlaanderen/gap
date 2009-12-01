@@ -9,70 +9,77 @@ using Chiro.Cdf.Ioc;
 using Chiro.Gap.Orm.DataInterfaces;
 using System.IO;
 using System.Runtime.Serialization;
+using Chiro.Gap.Dummies;
 
 namespace Chiro.Gap.Workers.Test
 {
-    /// <summary>
-    /// Summary description
-    /// </summary>
-    [TestClass]
-    public class CategorieVerwijderen
-    {
-        int groepID = 317;
-        String categorienaam = "TestKookies";
-        GroepenManager gm;
+	/// <summary>
+	/// Summary description
+	/// </summary>
+	[TestClass]
+	public class CategorieVerwijderen
+	{
+		int groepID = 317;
+		String categorienaam = "TestKookies";
+		GroepenManager gm;
 
-        public CategorieVerwijderen()
-        {
-        }
+		public CategorieVerwijderen()
+		{
+		}
 
-        [ClassInitialize]
-        static public void InitTests(TestContext context)
-        {
-            Factory.ContainerInit();
-        }
+		[ClassInitialize]
+		static public void InitTests(TestContext context)
+		{
+			Factory.ContainerInit();
+		}
 
-        [TestInitialize]
-        public void setUp(){
-            gm = Factory.Maak<GroepenManager>();
+		[TestInitialize]
+		public void setUp()
+		{
+			gm = Factory.Maak<GroepenManager>();
 
-            Groep g = gm.Ophalen(groepID, e => e.Categorie);
-            gm.CategorieToevoegen(g, categorienaam, "");
-        }
+			// Deze tests moeten de workers testen, en niet de DAO.
+			// Alles gebeurt dus in memory.  (refs #129)
 
-        [TestCleanup]
-        public void breakDown()
-        {
-        }
+			//Groep g = gm.Ophalen(groepID, e => e.Categorie);
+			Groep g = DummyData.DummyGroep;
 
-        [TestMethod]
-        public void TestCategorieVerwijderen()
-        {
-            /*Groep g = gm.Ophalen(groepID, e => e.Categorie);
+			gm.CategorieToevoegen(g, categorienaam, "");
+		}
 
-            bool found = false;
-            int cID = 0;
-            foreach(Categorie c in g.Categorie)
-            {
-                if (c.Naam.Equals(categorienaam))
-                {
-                    found = true;
-                    cID = c.ID;
-                }
-            }
-            Assert.IsTrue(found);
+		[TestCleanup]
+		public void breakDown()
+		{
+		}
 
-            gm.CategorieVerwijderen(g, c);
+		[TestMethod]
+		public void TestCategorieVerwijderen()
+		{
+			/*Groep g = gm.Ophalen(groepID, e => e.Categorie);
 
-            g = gm.Ophalen(groepID, e => e.Categorie);
-            found = false;
-            foreach (Categorie c in g.Categorie)
-            {
-                if(c.Naam.Equals(categorienaam)){
-                    found = true;
-                }
-            }
-            Assert.IsFalse(found);*/
-        }
-    }
+			bool found = false;
+			int cID = 0;
+			foreach(Categorie c in g.Categorie)
+			{
+			    if (c.Naam.Equals(categorienaam))
+			    {
+				found = true;
+				cID = c.ID;
+			    }
+			}
+			Assert.IsTrue(found);
+
+			gm.CategorieVerwijderen(g, c);
+
+			g = gm.Ophalen(groepID, e => e.Categorie);
+			found = false;
+			foreach (Categorie c in g.Categorie)
+			{
+			    if(c.Naam.Equals(categorienaam)){
+				found = true;
+			    }
+			}
+			Assert.IsFalse(found);*/
+		}
+	}
 }

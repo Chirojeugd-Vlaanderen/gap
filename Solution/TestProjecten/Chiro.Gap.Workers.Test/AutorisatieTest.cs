@@ -12,356 +12,361 @@ using Chiro.Cdf.Ioc;
 
 namespace Chiro.Gap.Workers.Test
 {
-    /// <summary>
-    /// Tests op de security van de workers.
-    /// </summary>
-    [TestClass]
-    public class AutorisatieTest
-    {
-        public AutorisatieTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
-
-        [ClassInitialize]
-        static public void InitialiseerTests(TestContext context)
-        {
-            Factory.ContainerInit();
-        }
-
-        /// <summary>
-        /// Probeert ledenlijst op te halen voor niet-GAV.
-        /// Verwacht een exception.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(GeenGavException))]
-        public void LijstLedenGeenGav()
-        {
-            // Arrange
-
-            var ledenDaoMock = new Mock<ILedenDao>();
-            var autorisatieMgrMock = new Mock<IAutorisatieManager>();
-
-            ledenDaoMock.Setup(foo => foo.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(new List<Lid>());
-            autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(false);
-
-            Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
-            Factory.InstantieRegistreren<IAutorisatieManager>(autorisatieMgrMock.Object);
-
-            LedenDaoCollectie daos = Factory.Maak<LedenDaoCollectie>();
-            LedenManager lm = Factory.Maak<LedenManager>();
-
-            // Act
-
-            lm.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID);
-
-            // Verwacht exception
-        }
-
-        /// <summary>
-        /// Als een niet-GAV probeert een communicatievorm te verwijderen
-        /// die niet aan een gelieerde persoon gekoppeld is, moet die een
-        /// GeenGavException krijgen, en niks anders :)
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(GeenGavException))]
-        public void FouteCommVormVerwijderenGeenGav()
-        {
-            #region arrange
-
-            // fake gelieerde persoon zonder communicatiemiddelen.
-
-            GelieerdePersoon communicatielozePersoon = new GelieerdePersoon();
-            communicatielozePersoon.Communicatie = new System.Data.Objects.DataClasses.EntityCollection<CommunicatieVorm>();
+	/// <summary>
+	/// Tests op de security van de workers.
+	/// </summary>
+	[TestClass]
+	public class AutorisatieTest
+	{
+		public AutorisatieTest()
+		{
+			//
+			// TODO: Add constructor logic here
+			//
+		}
+
+		private TestContext testContextInstance;
+
+		/// <summary>
+		///Gets or sets the test context which provides
+		///information about and functionality for the current test run.
+		///</summary>
+		public TestContext TestContext
+		{
+			get
+			{
+				return testContextInstance;
+			}
+			set
+			{
+				testContextInstance = value;
+			}
+		}
+
+		#region Additional test attributes
+		//
+		// You can use the following additional attributes as you write your tests:
+		//
+		// Use ClassInitialize to run code before running the first test in the class
+		// [ClassInitialize()]
+		// public static void MyClassInitialize(TestContext testContext) { }
+		//
+		// Use ClassCleanup to run code after all tests in a class have run
+		// [ClassCleanup()]
+		// public static void MyClassCleanup() { }
+		//
+		// Use TestInitialize to run code before running each test 
+		// [TestInitialize()]
+		// public void MyTestInitialize() { }
+		//
+		// Use TestCleanup to run code after each test has run
+		// [TestCleanup()]
+		// public void MyTestCleanup() { }
+		//
+		#endregion
+
+		[ClassInitialize]
+		static public void InitialiseerTests(TestContext context)
+		{
+			Factory.ContainerInit();
+		}
+
+		/// <summary>
+		/// Probeert ledenlijst op te halen voor niet-GAV.
+		/// Verwacht een exception.
+		/// </summary>
+		[TestMethod]
+		[ExpectedException(typeof(GeenGavException))]
+		public void LijstLedenGeenGav()
+		{
+			// Arrange
+
+			var ledenDaoMock = new Mock<ILedenDao>();
+			var autorisatieMgrMock = new Mock<IAutorisatieManager>();
+
+			ledenDaoMock.Setup(foo => foo.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(new List<Lid>());
+			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(false);
+
+			Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
+			Factory.InstantieRegistreren<IAutorisatieManager>(autorisatieMgrMock.Object);
+
+			LedenDaoCollectie daos = Factory.Maak<LedenDaoCollectie>();
+			LedenManager lm = Factory.Maak<LedenManager>();
+
+			// Act
+
+			lm.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID);
+
+			// Verwacht exception
+		}
+
+		/// <summary>
+		/// Als een niet-GAV probeert een communicatievorm te verwijderen
+		/// die niet aan een gelieerde persoon gekoppeld is, moet die een
+		/// GeenGavException krijgen, en niks anders :)
+		/// </summary>
+		[TestMethod]
+		[ExpectedException(typeof(GeenGavException))]
+		public void FouteCommVormVerwijderenGeenGav()
+		{
+			#region arrange
+
+			// fake gelieerde persoon zonder communicatiemiddelen.
+
+			GelieerdePersoon communicatielozePersoon = new GelieerdePersoon();
+			communicatielozePersoon.Communicatie = new System.Data.Objects.DataClasses.EntityCollection<CommunicatieVorm>();
 
-            // GelieerdePersonenDao mocken, zodat die steeds de fake persoon oproept
-            
-            var gpDaoMock = new Mock<IGelieerdePersonenDao>();
-            gpDaoMock.Setup(foo => foo.Ophalen(It.IsAny<int>()
-                , It.IsAny<System.Linq.Expressions.Expression<Func<GelieerdePersoon,object>>[]>() )).Returns(communicatielozePersoon);
+			// GelieerdePersonenDao mocken, zodat die steeds de fake persoon oproept
 
-            // GroepenDao mocken.
+			var gpDaoMock = new Mock<IGelieerdePersonenDao>();
+			gpDaoMock.Setup(foo => foo.Ophalen(It.IsAny<int>()
+			    , It.IsAny<System.Linq.Expressions.Expression<Func<GelieerdePersoon, object>>[]>())).Returns(communicatielozePersoon);
 
-            var groepenDaoMock = new Mock<IGroepenDao>();
+			// GroepenDao mocken.
 
-            // GelieerdePersonenManager aanmaken, waarbij autorisatieManager steeds 'false'
-            // antwoordt.
+			var groepenDaoMock = new Mock<IGroepenDao>();
 
-            Factory.InstantieRegistreren<IGelieerdePersonenDao>(gpDaoMock.Object);
-            Factory.InstantieRegistreren<IGroepenDao>(groepenDaoMock.Object);
-            Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrNooitGav());
+			// GelieerdePersonenManager aanmaken, waarbij autorisatieManager steeds 'false'
+			// antwoordt.
 
-            CommVormManager gpMgr = Factory.Maak<CommVormManager>();
-            #endregion
+			Factory.InstantieRegistreren<IGelieerdePersonenDao>(gpDaoMock.Object);
+			Factory.InstantieRegistreren<IGroepenDao>(groepenDaoMock.Object);
+			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrNooitGav());
 
-            #region act
-            // Probeer nu een fictieve communicatievorm te verwijderen.
-            // We verwachten 'GeenGavException'
+			CommVormManager gpMgr = Factory.Maak<CommVormManager>();
+			#endregion
 
-            gpMgr.CommVormVerwijderen(1, 1); 
-            // CommunicatieVormID en GelieerdePersoonID zijn irrelevant owv de mocking
-            #endregion
+			#region act
+			// Probeer nu een fictieve communicatievorm te verwijderen.
+			// We verwachten 'GeenGavException'
 
-            #region assert
-            // Als we dit tegenkomen, is het sowieso mislukt
-            Assert.IsTrue(false);
-            #endregion
-        }
+			gpMgr.CommVormVerwijderen(1, 1);
+			// CommunicatieVormID en GelieerdePersoonID zijn irrelevant owv de mocking
+			#endregion
 
-        /// <summary>
-        /// Probeert ledenlijst op te halen als wel GAV
-        /// Verwacht geen exception.
-        /// </summary>
-        [TestMethod]
-        public void LijstLedenGav()
-        {
-            // Arrange
+			#region assert
+			// Als we dit tegenkomen, is het sowieso mislukt
+			Assert.IsTrue(false);
+			#endregion
+		}
 
-            var ledenDaoMock = new Mock<ILedenDao>();
-            var autorisatieMgrMock = new Mock<IAutorisatieManager>();
+		/// <summary>
+		/// Probeert ledenlijst op te halen als wel GAV
+		/// Verwacht geen exception.
+		/// </summary>
+		[TestMethod]
+		public void LijstLedenGav()
+		{
+			// Arrange
 
-            ledenDaoMock.Setup(foo => foo.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(new List<Lid>());
-            autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(true);
+			var ledenDaoMock = new Mock<ILedenDao>();
+			var autorisatieMgrMock = new Mock<IAutorisatieManager>();
 
-            Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
-            Factory.InstantieRegistreren<IAutorisatieManager>(autorisatieMgrMock.Object);
+			ledenDaoMock.Setup(foo => foo.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(new List<Lid>());
+			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(true);
 
-            LedenManager lm = Factory.Maak<LedenManager>();
+			Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
+			Factory.InstantieRegistreren<IAutorisatieManager>(autorisatieMgrMock.Object);
 
-            // Act
+			LedenManager lm = Factory.Maak<LedenManager>();
 
-            IList<Lid> lijst = lm.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID);
+			// Act
 
-            // Assert
+			IList<Lid> lijst = lm.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID);
 
-            Assert.IsTrue(lijst != null);
-        }
+			// Assert
 
-        /// <summary>
-        /// Kijk na of adresgenoten van groepen waarvan je geen GAV
-        /// bent toch niet worden opgehaald.
-        /// </summary>
-        [TestMethod]
-        public void AdresGenotenEnkelEigenGroep()
-        {
-            #region Arrange
+			Assert.IsTrue(lijst != null);
+		}
 
-            // Test een beetje opgekuist.  Er wordt heel wat gemockt, dus is er
-            // minder voorbereiding nodig.
+		/// <summary>
+		/// Kijk na of adresgenoten van groepen waarvan je geen GAV
+		/// bent toch niet worden opgehaald.
+		/// </summary>
+		[TestMethod]
+		public void AdresGenotenEnkelEigenGroep()
+		{
+			#region Arrange
 
-            // Stel een situatie op waarbij er 3 personen op hetzelfde
-            // adres wonen, en waarbij 2 van die 3 personen gelieerd
-            // zijn aan jouw groep.
+			// Test een beetje opgekuist.  Er wordt heel wat gemockt, dus is er
+			// minder voorbereiding nodig.
 
-            Persoon p1 = new Persoon { ID = 1 };
-            Persoon p2 = new Persoon { ID = 2 };
-            Persoon p3 = new Persoon { ID = 3 };
+			// Stel een situatie op waarbij er 3 personen op hetzelfde
+			// adres wonen, en waarbij 2 van die 3 personen gelieerd
+			// zijn aan jouw groep.
 
-            // Creeer nu PersonenDaoMock, dia alle huisgenoten van p1 ophaalt.
+			Persoon p1 = new Persoon { ID = 1 };
+			Persoon p2 = new Persoon { ID = 2 };
+			Persoon p3 = new Persoon { ID = 3 };
 
-            var pDaoMock = new Mock<IPersonenDao>();
-            pDaoMock.Setup(foo => foo.HuisGenotenOphalen(1)).Returns(new List<Persoon> { p1, p2, p3 });
+			// Creeer nu PersonenDaoMock, dia alle huisgenoten van p1 ophaalt.
 
-            // en een AutorisatieManagerMock, die zorgt dat gebruiker alvast toegang heeft tot p1.
+			var pDaoMock = new Mock<IPersonenDao>();
+			pDaoMock.Setup(foo => foo.HuisGenotenOphalen(1)).Returns(new List<Persoon> { p1, p2, p3 });
 
-            var auManMock = new Mock<IAutorisatieManager>();
+			// en een AutorisatieManagerMock, die zorgt dat gebruiker alvast toegang heeft tot p1.
 
-            auManMock.Setup(foo => foo.IsGavGelieerdePersoon(1)).Returns(true);
-            auManMock.Setup(foo => foo.EnkelMijnPersonen(It.IsAny<IList<int>>())).Returns(new List<int>{1, 3});
+			var auManMock = new Mock<IAutorisatieManager>();
 
-            // Tenslotte de personenManager die we willen
-            // testen.
+			auManMock.Setup(foo => foo.IsGavGelieerdePersoon(1)).Returns(true);
+			auManMock.Setup(foo => foo.EnkelMijnPersonen(It.IsAny<IList<int>>())).Returns(new List<int> { 1, 3 });
 
-            Factory.InstantieRegistreren<IPersonenDao>(pDaoMock.Object);
-            Factory.InstantieRegistreren<IAutorisatieManager>(auManMock.Object);
+			// Tenslotte de personenManager die we willen
+			// testen.
 
-            PersonenManager pm = Factory.Maak<PersonenManager>();
+			Factory.InstantieRegistreren<IPersonenDao>(pDaoMock.Object);
+			Factory.InstantieRegistreren<IAutorisatieManager>(auManMock.Object);
 
-            #endregion
+			PersonenManager pm = Factory.Maak<PersonenManager>();
 
-            #region Act
-            IList<Persoon> huisgenoten = pm.HuisGenotenOphalen(p1.ID);
-            #endregion
+			#endregion
 
-            #region Assert
-            // We verwachten enkel p1 en p3.
+			#region Act
+			IList<Persoon> huisgenoten = pm.HuisGenotenOphalen(p1.ID);
+			#endregion
 
-            var idQuery = (from p in huisgenoten select p.ID);
+			#region Assert
+			// We verwachten enkel p1 en p3.
 
-            Assert.IsTrue(idQuery.Contains(1));
-            Assert.IsTrue(idQuery.Contains(3));
-            Assert.IsFalse(idQuery.Contains(2));
+			var idQuery = (from p in huisgenoten select p.ID);
 
-            // Ik vermoed dat onderstaande nakijkt of alle 'gesetupte' methods wel
-            // aangerpen werden.
-            auManMock.VerifyAll();
+			Assert.IsTrue(idQuery.Contains(1));
+			Assert.IsTrue(idQuery.Contains(3));
+			Assert.IsFalse(idQuery.Contains(2));
 
-            #endregion
-        }
+			// Ik vermoed dat onderstaande nakijkt of alle 'gesetupte' methods wel
+			// aangerpen werden.
+			auManMock.VerifyAll();
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void AdNummerWijzigen()
-        {
-            #region Arrange
-            
-            // GelieerdePersonenDao mocken.  Van een Dao verwachten
-            // we dat die gewoon doet wat we vragen; er is daar geen
-            // businesslogica geimplementeerd
+			#endregion
+		}
 
-            var gpDaoMock = new Mock<IGelieerdePersonenDao>();
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void AdNummerWijzigen()
+		{
+			#region Arrange
 
-            gpDaoMock.Setup(
-                foo => foo.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID, 
-                It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>())).Returns(
-                    () => MaakTestGelieerdePersoon());
+			// GelieerdePersonenDao mocken.  Van een Dao verwachten
+			// we dat die gewoon doet wat we vragen; er is daar geen
+			// businesslogica geimplementeerd
 
-            // Het stuk It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>()
-            // zorgt ervoor dat de Mock de linq-expressies in 'Ophalen' negeert.
-            //
-            // De constructie in 'Returns' zorgt ervoor dat MaakTestGelieerdePersoon iedere
-            // keer uitgevoerd wordt bij aanroep van 'Ophalen'.  (En niet eenmalig bij het
-            // opzetten van de mock.)
+			var gpDaoMock = new Mock<IGelieerdePersonenDao>();
 
-            // Maak nu de GelieerdePersoonenManager aan die we willen testen.
+			gpDaoMock.Setup(
+			    foo => foo.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID,
+			    It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>())).Returns(
+				() => MaakTestGelieerdePersoon());
 
-            Factory.InstantieRegistreren<IGelieerdePersonenDao>(gpDaoMock.Object);
-            Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
+			// Het stuk It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>()
+			// zorgt ervoor dat de Mock de linq-expressies in 'Ophalen' negeert.
+			//
+			// De constructie in 'Returns' zorgt ervoor dat MaakTestGelieerdePersoon iedere
+			// keer uitgevoerd wordt bij aanroep van 'Ophalen'.  (En niet eenmalig bij het
+			// opzetten van de mock.)
 
-            GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
+			// Maak nu de GelieerdePersoonenManager aan die we willen testen.
 
-            #endregion
+			Factory.InstantieRegistreren<IGelieerdePersonenDao>(gpDaoMock.Object);
+			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
 
-            #region Act
-            // Haal gelieerde persoon met TestGelieerdePersoonID op
-            GelieerdePersoon gp = gpm.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID); 
+			GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
 
-            // Pruts met AD-nummer
-            ++gp.Persoon.AdNummer;
-  
-            // Probeer te bewaren
-            gpm.Bewaren(gp);
-            #endregion
+			#endregion
 
-            #region Assert
-            // Als we hier geraken, is het zeker niet gelukt.
-            Assert.IsTrue(false);            
-            #endregion
-        }
+			#region Act
+			// Haal gelieerde persoon met TestGelieerdePersoonID op
+			GelieerdePersoon gp = gpm.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID);
 
-        /// <summary>
-        /// Test die nakijkt of ik een persoon wel kan bewaren
-        /// als ik het ad-nummer niet wijzig.
-        /// </summary>
-        [TestMethod]
-        public void AdNummerNietWijzigen()
-        {
-            #region Arrange
+			// Pruts met AD-nummer
+			++gp.Persoon.AdNummer;
 
-            // GelieerdePersonenDao mocken.  Van een Dao verwachten
-            // we dat die gewoon doet wat we vragen; er is daar geen
-            // businesslogica geimplementeerd
+			// Probeer te bewaren
+			gpm.Bewaren(gp);
+			#endregion
 
-            var gpDaoMock = new Mock<IGelieerdePersonenDao>();
+			#region Assert
+			// Als we hier geraken, is het zeker niet gelukt.
+			Assert.IsTrue(false);
+			#endregion
+		}
 
-            gpDaoMock.Setup(foo => foo.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID
-                , It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>())).Returns(() => MaakTestGelieerdePersoon());
+		/// <summary>
+		/// Test die nakijkt of ik een persoon wel kan bewaren
+		/// als ik het ad-nummer niet wijzig.
+		/// </summary>
+		[TestMethod]
+		public void AdNummerNietWijzigen()
+		{
+			#region Arrange
 
-            // Het stuk It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>()
-            // zorgt ervoor dat de Mock de linq-expressies in 'Ophalen' negeert.
-            //
-            // De constructie in 'Returns' zorgt ervoor dat MaakTestGelieerdePersoon iedere
-            // keer uitgevoerd wordt bij aanroep van 'Ophalen'.  (En niet eenmalig bij het
-            // opzetten van de mock.)
+			// GelieerdePersonenDao mocken.  Van een Dao verwachten
+			// we dat die gewoon doet wat we vragen; er is daar geen
+			// businesslogica geimplementeerd
 
-            // Maak nu de GelieerdePersoonenManager aan die we willen testen.
+			var gpDaoMock = new Mock<IGelieerdePersonenDao>();
 
-            Factory.InstantieRegistreren<IGelieerdePersonenDao>(gpDaoMock.Object);
-            Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
+			gpDaoMock.Setup(foo => foo.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID
+			    , It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>())).Returns(() => MaakTestGelieerdePersoon());
 
-            GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
+			// Het stuk It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>()
+			// zorgt ervoor dat de Mock de linq-expressies in 'Ophalen' negeert.
+			//
+			// De constructie in 'Returns' zorgt ervoor dat MaakTestGelieerdePersoon iedere
+			// keer uitgevoerd wordt bij aanroep van 'Ophalen'.  (En niet eenmalig bij het
+			// opzetten van de mock.)
 
-            #endregion
+			// Maak nu de GelieerdePersoonenManager aan die we willen testen.
 
-            #region Act
-            // Haal gelieerde persoon met TestGelieerdePersoonID op
-            GelieerdePersoon gp = gpm.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID);
+			Factory.InstantieRegistreren<IGelieerdePersonenDao>(gpDaoMock.Object);
+			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
 
-            // Probeer te bewaren
-            gpm.Bewaren(gp);
-            #endregion
+			GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
 
-            #region Assert
-            // Als we hier geraken, is het ok.
-            Assert.IsTrue(true);
-            gpDaoMock.VerifyAll();  // nakijken of de mock van GelieerdePersonenDao inderdaad aangeroepen werd.
-            #endregion
-        }
+			#endregion
 
+			#region Act
+			// Haal gelieerde persoon met TestGelieerdePersoonID op
+			GelieerdePersoon gp = gpm.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID);
 
-        /// <summary>
-        /// Maakt een (nep) gelieerde persoon om te testen:
-        ///   GelieerdePersoonID: TestGelieerdePersoonID
-        ///   Ad-nummer: TestAdNummer
-        /// </summary>
-        /// <returns>Een nieuw gelieerdepersoonsobject</returns>
-        private GelieerdePersoon MaakTestGelieerdePersoon()
-        {
-            // gewenste situatie opbouwen van een persoon die
-            // gekoppeld is aan een groep.
+			// Probeer te bewaren
+			gpm.Bewaren(gp);
+			#endregion
 
-            Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
+			#region Assert
+			// Als we hier geraken, is het ok.
+			Assert.IsTrue(true);
+			gpDaoMock.VerifyAll();  // nakijken of de mock van GelieerdePersonenDao inderdaad aangeroepen werd.
+			#endregion
+		}
 
-            GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
 
-            Groep g = new Groep();
-            Persoon p = new Persoon { AdNummer = 1 };
-            GelieerdePersoon gp = gpm.Koppelen(p, g, 0);
-            gp.ID = Properties.Settings.Default.TestGelieerdePersoonID;
 
-            return gp;
-        }
-    }
+		/// <summary>
+		/// Maakt een (nep) gelieerde persoon om te testen:
+		///   GelieerdePersoonID: TestGelieerdePersoonID
+		///   Ad-nummer: TestAdNummer
+		/// </summary>
+		/// <returns>Een nieuw gelieerdepersoonsobject</returns>
+		private GelieerdePersoon MaakTestGelieerdePersoon()
+		{
+			// gewenste situatie opbouwen van een persoon die
+			// gekoppeld is aan een groep.
+
+			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
+
+			GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
+
+			Groep g = new Groep();
+			Persoon p = new Persoon { AdNummer = 1 };
+			GelieerdePersoon gp = gpm.Koppelen(p, g, 0);
+			gp.ID = Properties.Settings.Default.TestGelieerdePersoonID;
+
+			return gp;
+		}
+
+
+	}
 }
