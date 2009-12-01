@@ -58,7 +58,8 @@ namespace Chiro.Cdf.Data.Entity
 		/// </summary>
 		/// <param name="ids">ID's van op te halen entiteiten</param>
 		/// <returns>Lijst opgehaalde entiteiten</returns>
-		public IList<TEntiteit> Ophalen(IEnumerable<int> ids)
+		/// <remarks>Virtueel gemaakt omdat PersonenDao overridet</remarks>
+		public virtual IList<TEntiteit> Ophalen(IEnumerable<int> ids)
 		{
 			return Ophalen(ids, getConnectedEntities());
 		}

@@ -40,14 +40,13 @@ namespace Chiro.Gap.ServiceContracts
         /// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep die tot de gegeven categorie behoren,
         /// inclusief eventueel lidobject voor het recentste werkjaar.
         /// </summary>
-        /// <param name="groepID">ID van de betreffende groep</param>
+	/// <param name="categorieID">ID van de gevraagde categorie</param>
         /// <param name="pagina">paginanummer (1 of hoger)</param>
         /// <param name="paginaGrootte">aantal records per pagina (1 of meer)</param>
         /// <param name="aantalTotaal">outputparameter; geeft het totaal aantal personen weer in de lijst</param>
-        /// <param name="categorieID">de gevraagde categorie</param>
         /// <returns>lijst van gelieerde personen met persoonsinfo</returns>
         [OperationContract]
-        IList<PersoonInfo> PaginaOphalenMetLidInfoVolgensCategorie(int groepID, int pagina, int paginaGrootte, out int aantalTotaal, int categorieID);
+        IList<PersoonInfo> PaginaOphalenMetLidInfoVolgensCategorie(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal);
 
         /// <summary>
         /// Zoekt alle personen die aan de criteria voldoen en geeft daarvan een bepaalde pagina weer

@@ -31,11 +31,11 @@ namespace Chiro.Gap.Services
 		private readonly IAutorisatieManager _auMgr;
 
 		public GelieerdePersonenService(
-			GelieerdePersonenManager gpm, 
-			PersonenManager pm, 
-			AdressenManager adm, 
-			GroepenManager gm, 
-			CommVormManager cvm, 
+			GelieerdePersonenManager gpm,
+			PersonenManager pm,
+			AdressenManager adm,
+			GroepenManager gm,
+			CommVormManager cvm,
 			CategorieenManager cm,
 			IAutorisatieManager aum)
 		{
@@ -66,12 +66,12 @@ namespace Chiro.Gap.Services
 			return result;
 		}
 
-        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IList<PersoonInfo> PaginaOphalenMetLidInfoVolgensCategorie(int groepID, int pagina, int paginaGrootte, out int aantalTotaal, int categorieID)
-        {
-            var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfoVolgensCategorie(groepID, pagina, paginaGrootte, out aantalTotaal, categorieID);
-            return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonInfo>>(gelieerdePersonen);
-        }
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public IList<PersoonInfo> PaginaOphalenMetLidInfoVolgensCategorie(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal)
+		{
+			var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfoVolgensCategorie(categorieID, pagina, paginaGrootte, out aantalTotaal);
+			return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonInfo>>(gelieerdePersonen);
+		}
 
 		// *BELANGRIJK*: Als het debuggen hier stopt owv een autorisatiefout, kijk dan na of de gebruiker waarmee
 		// je aangemeld bent, op je lokale computer in de groep CgUsers zit.
@@ -287,8 +287,8 @@ namespace Chiro.Gap.Services
 			Categorie categorie = _catMgr.Ophalen(categorieID);
 
 			// Ontkoppelen
-			_gpMgr.CategorieKoppelen(gelieerdePersonen, categorie, false);	
-		
+			_gpMgr.CategorieKoppelen(gelieerdePersonen, categorie, false);
+
 			// Bewaren
 			_catMgr.BewarenMetPersonen(categorie);
 		}

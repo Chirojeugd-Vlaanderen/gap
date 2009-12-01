@@ -23,10 +23,21 @@
 		public const int GELIEERDEPERSOON2ID = 918;
 
 		/// <summary>
+		/// LidID voor Gelieerde Persoon 1. (huidig werkjaar)
+		/// </summary>
+		public const int LIDID = 583;
+
+		/// <summary>
 		/// ID van categorie van testgroep1
 		/// </summary>
 		/// <remarks>Enkel gelieerde Persoon 1 moet in deze categorie zitten</remarks>
 		public const int CATEGORIEID = 8;
+
+		/// <summary>
+		/// ID van tweede testcategorie
+		/// </summary>
+		/// <remarks>Deze categorie bevat zowel gelieerde personen 1 en 2</remarks>
+		public const int CATEGORIE2ID = 9;
 
 		/// <summary>
 		/// Totaal aantal personen in deze categorie

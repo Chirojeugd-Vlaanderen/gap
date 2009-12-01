@@ -106,13 +106,39 @@ namespace Chiro.Gap.Data.Test
 
 			// act
 			var pagina = _gpdao.PaginaOphalenMetLidInfoVolgensCategorie(
-				TestInfo.GROEPID, 
+				TestInfo.CATEGORIEID, 
 				1, 10, 
-				out aantalTotaal, 
-				TestInfo.CATEGORIEID);
+				out aantalTotaal);
 
 			// assert
 			Assert.IsTrue(aantalTotaal == TestInfo.AANTALINCATEGORIE);
+		}
+
+		/// <summary>
+		/// Controleert of PaginaOphalenMetLidInfo de lidinfo wel juist ophaalt.
+		/// </summary>
+		[TestMethod]
+		public void PaginaOphalenMetLidInfo()
+		{
+			// arrange
+			int aantalTotaal;
+
+			// act
+			var pagina = _gpdao.PaginaOphalenMetLidInfoVolgensCategorie(
+				TestInfo.CATEGORIE2ID,
+				1, 10,
+				out aantalTotaal);
+
+			// assert
+			GelieerdePersoon lid = (from gp in pagina
+						where gp.ID == TestInfo.GELIEERDEPERSOONID
+						select gp).FirstOrDefault();
+			GelieerdePersoon geenLid = (from gp in pagina
+						    where gp.ID == TestInfo.GELIEERDEPERSOON2ID
+						    select gp).FirstOrDefault();
+
+			Assert.IsTrue(lid.Lid.First().ID == TestInfo.LIDID);
+			Assert.IsTrue(geenLid.Lid.Count() == 0);
 		}
 
 

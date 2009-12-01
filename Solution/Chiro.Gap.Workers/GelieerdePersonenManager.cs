@@ -215,21 +215,21 @@ namespace Chiro.Gap.Workers
         /// Haalt een pagina op met gelieerde personen van een groep die tot de categorie behoren,
         /// inclusief eventuele lidobjecten voor deze groep
         /// </summary>
-        /// <param name="groepID">GroepID gevraagde groep</param>
-        /// <param name="pagina">paginanummer (>=1)</param>
+        /// <param name="categorieID">ID gevraagde categorie</param>
+        /// <param name="pagina">paginanummer (minstens 1)</param>
         /// <param name="paginaGrootte">aantal personen per pagina</param>
         /// <param name="aantalTotaal">output parameter voor totaal aantal
         /// personen in de groep</param>
         /// <returns>Lijst met GelieerdePersonen</returns>
-        public IList<GelieerdePersoon> PaginaOphalenMetLidInfoVolgensCategorie(int groepID, int pagina, int paginaGrootte, out int aantalTotaal, int categorieID)
+        public IList<GelieerdePersoon> PaginaOphalenMetLidInfoVolgensCategorie(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
-            if (_autorisatieMgr.IsGavGroep(groepID))
+            if (_autorisatieMgr.IsGavCategorie(categorieID))
             {
-                return _dao.PaginaOphalenMetLidInfoVolgensCategorie(groepID, pagina, paginaGrootte, out aantalTotaal, categorieID);
+                return _dao.PaginaOphalenMetLidInfoVolgensCategorie(categorieID, pagina, paginaGrootte, out aantalTotaal);
             }
             else
             {
-                throw new GeenGavException(Properties.Resources.GeenGavGroep);
+                throw new GeenGavException(Properties.Resources.GeenGavCategorie);
             }
         }
 
