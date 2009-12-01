@@ -28,6 +28,12 @@
 		public const int GELIEERDEPERSOON3ID = 1580;
 
 		/// <summary>
+		/// Ondergrens voor het totaal aantal gelieerde personen in een groep.
+		/// </summary>
+		public const int MINAANTALGELPERS = 3;
+
+
+		/// <summary>
 		/// ID van categorie van testgroep1
 		/// </summary>
 		/// <remarks>Enkel gelieerde Persoon 1 moet in deze categorie zitten</remarks>

@@ -161,5 +161,25 @@ namespace Chiro.Gap.Data.Test
 
 			Assert.IsTrue(opgehaaldePersonen.First().Groep == opgehaaldePersonen.Last().Groep);
 		}
+
+		/// <summary>
+		/// Kijkt na of de eerste pagina voldoende entity's bevat.
+		/// </summary>
+		[TestMethod]
+		public void PaginaOphalen()
+		{
+			// Arrange
+
+			int totaal;
+			IDao<GelieerdePersoon> dao = Factory.Maak<IDao<GelieerdePersoon>>();
+
+			// Act
+
+			IEnumerable<GelieerdePersoon> opgehaaldePersonen = dao.PaginaOphalen(TestInfo.GROEPID, gprs=>gprs.Groep.ID , 1, 10, out totaal);
+
+			// Assert
+
+			Assert.IsTrue(opgehaaldePersonen.Count() >= TestInfo.MINAANTALGELPERS);
+		}
 	}
 }

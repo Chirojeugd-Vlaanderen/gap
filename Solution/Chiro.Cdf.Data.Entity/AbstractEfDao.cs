@@ -96,33 +96,44 @@ namespace Chiro.Cdf.Data.Entity
 			return result;
 		}
 
-        public virtual IList<TEntiteit> PaginaOphalen(int id, Expression<Func<TEntiteit, int>> f, int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<TEntiteit, object>>[] paths)
-        {
-            IList<TEntiteit> result;
+		/// <summary>
+		/// Haalt een pagina entiteiten op, op basis van een ID van een gerelateerde entiteit
+		/// </summary>
+		/// <param name="id">te vergelijken ID</param>
+		/// <param name="f">lambda-expressie die uitgaande van de op te zoeken entiteit de ID bepaalt 
+		/// waarmee <paramref name="ID"/> vergeleken moet worden.</param>
+		/// <param name="pagina">gevraagde pagina</param>
+		/// <param name="paginaGrootte">aantal entiteiten op de pagina</param>
+		/// <param name="aantalTotaal">out-parameter met totaal aantal entiteiten die voldoen</param>
+		/// <param name="paths">lambda-expressies voor gerelateerde entiteiten</param>
+		/// <returns></returns>
+		public virtual IList<TEntiteit> PaginaOphalen(int id, Expression<Func<TEntiteit, int>> f, int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<TEntiteit, object>>[] paths)
+		{
+			IList<TEntiteit> result;
 
-            List<int> list = new List<int>();
-            list.Add(id);
+			List<int> list = new List<int>();
+			list.Add(id);
 
-            using (TContext db = new TContext())
-            {
-                aantalTotaal =  (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
-                                 .Where(Utility.BuildContainsExpression<TEntiteit, int>(f, list))
-                                 select t).Count();
+			using (TContext db = new TContext())
+			{
+				aantalTotaal = (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
+						.Where(Utility.BuildContainsExpression<TEntiteit, int>(f, list))
+						select t).Count();
 
-                ObjectQuery<TEntiteit> query = 
-                    (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
-                     select t).Skip((pagina-1)*paginaGrootte).Take(paginaGrootte) as ObjectQuery<TEntiteit>;
+				ObjectQuery<TEntiteit> query =
+				    (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
+				     select t).OrderBy(basisent=>basisent.ID).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte) as ObjectQuery<TEntiteit>;
 
-                result = (IncludesToepassen(query, paths)).ToList<TEntiteit>();
-            }
+				result = (IncludesToepassen(query, paths)).ToList<TEntiteit>();
+			}
 
-            if (result != null)
-            {
-                result = Utility.DetachObjectGraph(result);
-            }
+			if (result != null)
+			{
+				result = Utility.DetachObjectGraph(result);
+			}
 
-            return result;
-        }
+			return result;
+		}
 
 		/// <summary>
 		/// Ophalen van een lijst entiteiten met gekoppelde entiteiten
@@ -148,7 +159,7 @@ namespace Chiro.Cdf.Data.Entity
 				ObjectQuery<TEntiteit> query = (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
 								.Where(Utility.BuildContainsExpression<TEntiteit, int>(ent => ent.ID, ids))
 								select t) as ObjectQuery<TEntiteit>;
-	
+
 				result = (IncludesToepassen(query, paths)).ToList<TEntiteit>();
 			}
 
