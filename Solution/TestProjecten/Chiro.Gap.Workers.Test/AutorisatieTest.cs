@@ -340,10 +340,6 @@ namespace Chiro.Gap.Workers.Test
 			#endregion
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(InvalidOperationException))]
-
-
 		/// <summary>
 		/// Maakt een (nep) gelieerde persoon om te testen:
 		///   GelieerdePersoonID: TestGelieerdePersoonID

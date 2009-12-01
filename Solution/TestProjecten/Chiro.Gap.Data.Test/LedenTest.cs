@@ -12,177 +12,193 @@ using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Data.Test
 {
-    /// <summary>
-    /// Tests voor LedenDao
-    /// </summary>
-    [TestClass]
-    public class LedenTest
-    {
-        public LedenTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
+	/// <summary>
+	/// Tests voor LedenDao
+	/// </summary>
+	[TestClass]
+	public class LedenTest
+	{
+		public LedenTest()
+		{
+			//
+			// TODO: Add constructor logic here
+			//
+		}
 
-        private TestContext testContextInstance;
+		private TestContext testContextInstance;
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+		/// <summary>
+		///Gets or sets the test context which provides
+		///information about and functionality for the current test run.
+		///</summary>
+		public TestContext TestContext
+		{
+			get
+			{
+				return testContextInstance;
+			}
+			set
+			{
+				testContextInstance = value;
+			}
+		}
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+		#region Additional test attributes
+		//
+		// You can use the following additional attributes as you write your tests:
+		//
+		// Use ClassInitialize to run code before running the first test in the class
+		// [ClassInitialize()]
+		// public static void MyClassInitialize(TestContext testContext) { }
+		//
+		// Use ClassCleanup to run code after all tests in a class have run
+		// [ClassCleanup()]
+		// public static void MyClassCleanup() { }
+		//
+		// Use TestInitialize to run code before running each test 
+		// [TestInitialize()]
+		// public void MyTestInitialize() { }
+		//
+		// Use TestCleanup to run code after each test has run
+		// [TestCleanup()]
+		// public void MyTestCleanup() { }
+		//
+		#endregion
 
-        /// <summary>
-        /// Voorbereidend werk voor deze tests
-        /// </summary>
-        /// <param name="context"></param>
-        [ClassInitialize]
-        static public void TestInitialiseren(TestContext context)
-        {
-            Factory.ContainerInit();
+		/// <summary>
+		/// Voorbereidend werk voor deze tests
+		/// </summary>
+		/// <param name="context"></param>
+		[ClassInitialize]
+		static public void TestInitialiseren(TestContext context)
+		{
+			Factory.ContainerInit();
 
-            // Verwijder lid (GelieerdePersoonID in AfdelingsJaarID) om achteraf opnieuw toe te voegen
+			int afdelingsJaarID = TestInfo.AFDELINGSJAARID;
 
-            int gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
-            int afdelingsJaarID = TestInfo.AFDELINGSJAARID;
+			IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
+			AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
 
-            IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
-            AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
+			// Voeg kind toe (GelieerdePersoonID2 in AfdelingsJaarID) om in test te kunnen verwijderen
 
-            ILedenDao ldao = Factory.Maak<ILedenDao>();
-            Lid l = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.ID);
+			int gelieerdePersoon2ID = TestInfo.GELIEERDEPERSOON2ID;
 
-            if (l != null)
-            {
-                l.TeVerwijderen = true;
-                ldao.Bewaren(l);
-            }
+			IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
+			IDao<Kind> kdao = Factory.Maak<IDao<Kind>>();
+			ILedenDao ldao = Factory.Maak<ILedenDao>();
 
-            // Voeg kind toe (GelieerdePersoonID2 in AfdelingsJaarID) om in test te kunnen verwijderen
+			Lid l2 = ldao.Ophalen(gelieerdePersoon2ID, aj.GroepsWerkJaar.ID);
 
-            int gelieerdePersoon2ID = TestInfo.GELIEERDEPERSOON2ID;
+			if (l2 == null)
+			{
+				// enkel toevoegen als nog niet bestaat
 
-            IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
-            IDao<Kind> kdao = Factory.Maak<IDao<Kind>>();
+				LedenManager lm = Factory.Maak<LedenManager>();
 
-            Lid l2 = ldao.Ophalen(gelieerdePersoon2ID, aj.GroepsWerkJaar.ID);
+				GelieerdePersoon gp = gpdao.Ophalen(gelieerdePersoon2ID, lmb => lmb.Groep);
 
-            if (l2 == null)
-            {
-                // enkel toevoegen als nog niet bestaat
+				Kind k = lm.KindMaken(gp, aj);
+				kdao.Bewaren(k
+				    , lmb => lmb.GelieerdePersoon.WithoutUpdate()
+				    , lmb => lmb.AfdelingsJaar.GroepsWerkJaar.WithoutUpdate()
+				    , lmb => lmb.GroepsWerkJaar.WithoutUpdate());
+			}
+		}
 
-                LedenManager lm = Factory.Maak<LedenManager>();
+		/// <summary>
+		/// Opkuis na de tests; verwijdert voornamelijk bijgemaakt lid.
+		/// </summary>
+		[ClassCleanup]
+		public static void TestOpkuisen()
+		{
+			// Verwijder lid (GelieerdePersoonID in AfdelingsJaarID) om achteraf opnieuw toe te voegen
 
-                GelieerdePersoon gp = gpdao.Ophalen(gelieerdePersoon2ID, lmb => lmb.Groep);
+			int gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
+			int afdelingsJaarID = TestInfo.AFDELINGSJAARID;
 
-                Kind k = lm.KindMaken(gp, aj);
-                kdao.Bewaren(k
-                    , lmb => lmb.GelieerdePersoon.WithoutUpdate()
-                    , lmb => lmb.AfdelingsJaar.GroepsWerkJaar.WithoutUpdate()
-                    , lmb => lmb.GroepsWerkJaar.WithoutUpdate());
-            }
-        }
+			IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
+			AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
 
-        /// <summary>
-        /// Maakt kind aan door gelieerde persoon bepaald door TestGelieerdePersoonID 
-        /// (zie settings) te koppelen aan afdelingsjaar bepaald door
-        /// TestAfdelingsJaarID (zie ook settings)
-        /// </summary>
-        [TestMethod]
-        public void NieuwKind()
-        {
-            #region Arrange
-            int gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
-            int afdelingsJaarID = TestInfo.AFDELINGSJAARID;
+			ILedenDao ldao = Factory.Maak<ILedenDao>();
+			Lid l = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.ID);
 
-            LedenManager lm = Factory.Maak<LedenManager>();
+			if (l != null)
+			{
+				l.TeVerwijderen = true;
+				ldao.Bewaren(l);
+			}
 
-            IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
-            IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
-            IDao<Kind> kdao = Factory.Maak<IDao<Kind>>();
+		}
 
-            GelieerdePersoon gp = gpdao.Ophalen(gelieerdePersoonID, lmb => lmb.Groep);
-            AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
 
-            Kind k = lm.KindMaken(gp, aj);
-            #endregion
 
-            #region Act
-            kdao.Bewaren(k
-                , lmb => lmb.GelieerdePersoon.WithoutUpdate()
-                , lmb => lmb.AfdelingsJaar.GroepsWerkJaar.WithoutUpdate()
-                , lmb => lmb.GroepsWerkJaar.WithoutUpdate());
-            #endregion
+		/// <summary>
+		/// Maakt kind aan door gelieerde persoon bepaald door TestGelieerdePersoonID 
+		/// (zie settings) te koppelen aan afdelingsjaar bepaald door
+		/// TestAfdelingsJaarID (zie ook settings)
+		/// </summary>
+		[TestMethod]
+		public void NieuwKind()
+		{
+			#region Arrange
+			int gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
+			int afdelingsJaarID = TestInfo.AFDELINGSJAARID;
 
-            #region Assert
+			LedenManager lm = Factory.Maak<LedenManager>();
 
-            ILedenDao ldao = Factory.Maak<ILedenDao>();
-            Lid l = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.ID);
+			IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
+			IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
+			IDao<Kind> kdao = Factory.Maak<IDao<Kind>>();
 
-            Assert.IsTrue(l != null && l is Kind);
+			GelieerdePersoon gp = gpdao.Ophalen(gelieerdePersoonID, lmb => lmb.Groep);
+			AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
 
-            #endregion
-        }
+			Kind k = lm.KindMaken(gp, aj);
+			#endregion
 
-        /// <summary>
-        /// Verwijdert kind (GelieerdePersoon2ID, AfdelingsJaarID)
-        /// </summary>
-        [TestMethod]
-        public void KindVerwijderen()
-        {
-            // Arrange
+			#region Act
+			kdao.Bewaren(k
+			    , lmb => lmb.GelieerdePersoon.WithoutUpdate()
+			    , lmb => lmb.AfdelingsJaar.GroepsWerkJaar.WithoutUpdate()
+			    , lmb => lmb.GroepsWerkJaar.WithoutUpdate());
+			#endregion
 
-            int gelieerdePersoonID = TestInfo.GELIEERDEPERSOON2ID;
-            int afdelingsJaarID = TestInfo.AFDELINGSJAARID;
+			#region Assert
 
-            IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
-            AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
+			ILedenDao ldao = Factory.Maak<ILedenDao>();
+			Lid l = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.ID);
 
-            ILedenDao ldao = Factory.Maak<ILedenDao>();
-            Lid l = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.ID);
- 
-            // Act
+			Assert.IsTrue(l != null && l is Kind);
 
-            l.TeVerwijderen = true;
-            ldao.Bewaren(l);
+			#endregion
+		}
 
-            // Assert
+		/// <summary>
+		/// Verwijdert kind (GelieerdePersoon2ID, AfdelingsJaarID)
+		/// </summary>
+		[TestMethod]
+		public void KindVerwijderen()
+		{
+			// Arrange
 
-            Lid l2 = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.Groep.ID);
-            Assert.IsNull(l2);
-        }
-    }
+			int gelieerdePersoonID = TestInfo.GELIEERDEPERSOON2ID;
+			int afdelingsJaarID = TestInfo.AFDELINGSJAARID;
+
+			IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
+			AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
+
+			ILedenDao ldao = Factory.Maak<ILedenDao>();
+			Lid l = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.ID);
+
+			// Act
+
+			l.TeVerwijderen = true;
+			ldao.Bewaren(l);
+
+			// Assert
+
+			Lid l2 = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.Groep.ID);
+			Assert.IsNull(l2);
+		}
+	}
 }

@@ -23,9 +23,9 @@
 		public const int GELIEERDEPERSOON2ID = 918;
 
 		/// <summary>
-		/// LidID voor Gelieerde Persoon 1. (huidig werkjaar)
+		/// ID van een derde gelieerde persoon van de testgroep; deze persoon is lid.
 		/// </summary>
-		public const int LIDID = 583;
+		public const int GELIEERDEPERSOON3ID = 1580;
 
 		/// <summary>
 		/// ID van categorie van testgroep1

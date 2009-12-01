@@ -131,13 +131,13 @@ namespace Chiro.Gap.Data.Test
 
 			// assert
 			GelieerdePersoon lid = (from gp in pagina
-						where gp.ID == TestInfo.GELIEERDEPERSOONID
+						where gp.ID == TestInfo.GELIEERDEPERSOON3ID
 						select gp).FirstOrDefault();
 			GelieerdePersoon geenLid = (from gp in pagina
 						    where gp.ID == TestInfo.GELIEERDEPERSOON2ID
 						    select gp).FirstOrDefault();
 
-			Assert.IsTrue(lid.Lid.First().ID == TestInfo.LIDID);
+			Assert.IsTrue(lid.Lid.First().ID > 0);
 			Assert.IsTrue(geenLid.Lid.Count() == 0);
 		}
 
