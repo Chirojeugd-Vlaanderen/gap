@@ -6,14 +6,15 @@
 -- Afdelingen met codes @testAfdelingsCode en @testAfdelingsCode2
 -- AfdelingsWerkJaar en voor afdeling met code @testAfdelingsCode in @testWerkJaar en @testVorigWerkJaar
 -- Gelieerde Testpersonen:
---		 @testPersoonVoornaam @testPersoonNaam en @testPersoon2VoorNaam en @testPersoonNaam
+--		 @testPersoonVoornaam @testPersoonNaam, @testPersoon2VoorNaam en @testPersoonNaam, @testPersoon3VoorNaam en @testPersoonNaam
 --
 -- 2 test-GAV's, en maakt de eerste GAV van testgroep1.
 --
--- 2de gelieerde persoon is leiding
+-- 1ste en 2de gelieerde persoon mogen geen lid zijn, want daarmee wordt geexperimenteerd in de ledentests
+-- 3de gelieerde persoon is leiding
 --
--- 1 testcategorie voor testgroep1, waaraan de 1 gelieerde personen worden toegevoegd
--- 2de testcategorie met beide gelieerde personen
+-- 1 testcategorie voor testgroep1, waaraan de 1ste gelieerde persoon worden toegevoegd
+-- 2de testcategorie met de drie gelieerde personen
 
 USE ChiroGroep
 
@@ -27,6 +28,7 @@ DECLARE @testOfficieleAfdelingID AS INT;
 DECLARE @testPersoonNaam AS VARCHAR(160)
 DECLARE @testPersoonVoorNaam AS VARCHAR(60)
 DECLARE @testPersoon2VoorNaam AS VARCHAR(60)
+DECLARE @testPersoon3VoorNaam AS VARCHAR(60)
 DECLARE @testGav1Login AS VARCHAR(40);
 DECLARE @testGav2Login AS VARCHAR(40);
 DECLARE @testCategorieCode AS VARCHAR(10);
@@ -42,6 +44,7 @@ SET @testOfficieleAfdelingID=1;		-- officiele afdeling voor testafdeling in test
 SET @testPersoonNaam = 'Bosmans';
 SET @testPersoonVoorNaam = 'Jos';
 SET @testPersoon2VoorNaam = 'Irène';
+SET @testPersoon3VoorNaam = 'Eugène';
 SET @testGav1Login = 'Yvonne';
 SET @testGAV2Login='Yvette';
 SET @testCategorieCode = 'last';
@@ -54,14 +57,16 @@ DECLARE @testGroepsWerkJaarID AS INT;
 DECLARE @testVorigGroepsWerkJaarID AS INT;
 DECLARE @testPersoonID AS INT;
 DECLARE @testPersoon2ID AS INT;
+DECLARE @testPersoon3ID AS INT;
 DECLARE @testGelieerdePersoonID AS INT;
 DECLARE @testGelieerdePersoon2ID AS INT;
+DECLARE @testGelieerdePersoon3ID AS INT;
 DECLARE @testAfdelingsJaarID AS INT;
 DECLARE @testVorigAfdelingsJaarID AS INT;
 DECLARE @testGav1ID AS INT;
 DECLARE @testCategorieID AS INT;
 DECLARE @testCategorie2ID AS INT;
-DECLARE @testLidID AS INT;
+DECLARE @testLid3ID AS INT;
 
 ---
 --- Groep en Chirogroep creeren
@@ -192,6 +197,17 @@ BEGIN
 	SET @testPersoon2ID = (SELECT PersoonID FROM pers.Persoon WHERE Naam = @testPersoonNaam AND VoorNaam = @testPersoon2VoorNaam);
 END;
 
+IF NOT EXISTS (SELECT 1 FROM pers.Persoon WHERE Naam = @testPersoonNaam AND VoorNaam = @testPersoon3VoorNaam)
+BEGIN
+	INSERT INTO pers.Persoon(Naam, VoorNaam, GeboorteDatum, Geslacht)
+	VALUES(@testPersoonNaam, @testPersoon3VoorNaam, '1959-11-30', 1)
+	SET @testPersoon3ID = SCOPE_IDENTITY();
+END
+ELSE
+BEGIN
+	SET @testPersoon3ID = (SELECT PersoonID FROM pers.Persoon WHERE Naam = @testPersoonNaam AND VoorNaam = @testPersoon3VoorNaam);
+END;
+
 ---
 --- Personen lieren aan testgroep 
 ---
@@ -217,6 +233,18 @@ ELSE
 BEGIN
 	SET @testGelieerdePersoon2ID=(SELECT GelieerdePersoonID FROM pers.GelieerdePersoon WHERE PersoonID = @testPersoon2ID AND GroepID = @testGroepID)
 END
+
+IF NOT EXISTS (SELECT 1 FROM pers.GelieerdePersoon WHERE PersoonID = @testPersoon3ID AND GroepID = @testGroepID)
+BEGIN
+	INSERT INTO pers.GelieerdePersoon(PersoonID, GroepID, ChiroLeeftijd)
+	VALUES (@testPersoon3ID, @testGroepID, 0);
+	SET @testGelieerdePersoon3ID = SCOPE_IDENTITY();
+END
+ELSE
+BEGIN
+	SET @testGelieerdePersoon3ID=(SELECT GelieerdePersoonID FROM pers.GelieerdePersoon WHERE PersoonID = @testPersoon3ID AND GroepID = @testGroepID)
+END
+
 
 -- 
 -- Users creeren 
@@ -290,23 +318,27 @@ BEGIN
 	INSERT INTO pers.PersoonsCategorie(GelieerdePersoonID, CategorieID) VALUES(@testGelieerdePersoon2ID, @testCategorie2ID);
 END;
 
+IF NOT EXISTS (SELECT 1 FROM pers.PersoonsCategorie WHERE GelieerdePersoonID=@testGelieerdePersoon3ID AND CategorieID=@testCategorie2ID)
+BEGIN
+	INSERT INTO pers.PersoonsCategorie(GelieerdePersoonID, CategorieID) VALUES(@testGelieerdePersoon3ID, @testCategorie2ID);
+END;
 
 -- leden maken
 --
 
-IF NOT EXISTS (SELECT 1 FROM lid.Lid WHERE GelieerdePersoonID = @testGelieerdePersoonID AND GroepsWerkJaarID = @testGroepsWerkJaarID)
+IF NOT EXISTS (SELECT 1 FROM lid.Lid WHERE GelieerdePersoonID = @testGelieerdePersoon3ID AND GroepsWerkJaarID = @testGroepsWerkJaarID)
 BEGIN
-	INSERT INTO lid.Lid(GelieerdePersoonID, GroepsWerkJaarID, NonActief, Verwijderd) VALUES (@testGelieerdePersoonID, @testGroepsWerkJaarID, 0, 0)
-	SET @testLidID = scope_identity();
+	INSERT INTO lid.Lid(GelieerdePersoonID, GroepsWerkJaarID, NonActief, Verwijderd, LidGeldBetaald, VolgendWerkJaar) VALUES (@testGelieerdePersoon3ID, @testGroepsWerkJaarID, 0, 0, 0, 0)
+	SET @testLid3ID = scope_identity();
 END
 ELSE
 BEGIN
-	SET @testLidID = (SELECT LidID FROM lid.Lid WHERE GelieerdePersoonID = @testGelieerdePersoonID AND GroepsWerkJaarID = @testGroepsWerkJaarID)
+	SET @testLid3ID = (SELECT LidID FROM lid.Lid WHERE GelieerdePersoonID = @testGelieerdePersoon3ID AND GroepsWerkJaarID = @testGroepsWerkJaarID)
 END
 
-IF NOT EXISTS (SELECT 1 FROM lid.Leiding WHERE LeidingID = @testLidID)
+IF NOT EXISTS (SELECT 1 FROM lid.Leiding WHERE LeidingID = @testLid3ID)
 BEGIN
-	INSERT INTO lid.Leiding(LeidingID) VALUES (@testLidID)
+	INSERT INTO lid.Leiding(LeidingID) VALUES (@testLid3ID)
 END
 
 PRINT 'TestGroepID: ' + CAST(@testGroepID AS VARCHAR(10));
@@ -320,9 +352,11 @@ PRINT 'TestPersoonID: ' + CAST(@testPersoonID AS VARCHAR(10))
 PRINT 'TestGelieerdePersoonID: ' + CAST(@testGelieerdePersoonID AS VARCHAR(10))
 PRINT 'TestPersoon2ID: ' + CAST(@testPersoon2ID AS VARCHAR(10))
 PRINT 'TestGelieerdePersoon2ID: ' + CAST(@testGelieerdePersoon2ID AS VARCHAR(10))
+PRINT 'TestPersoon3ID: ' + CAST(@testPersoon3ID AS VARCHAR(10))
+PRINT 'TestGelieerdePersoon3ID: ' + CAST(@testGelieerdePersoon3ID AS VARCHAR(10))
 PRINT 'TestGav1ID: ' + CAST(@testGav1ID AS VARCHAR(10))
 PRINT 'TestCategorieID: ' + CAST(@testCategorieID AS VARCHAR(10))
 PRINT 'TestCategorie2ID: ' + CAST(@testCategorie2ID AS VARCHAR(10))
-PRINT 'TestLidID: ' + CAST(@testLidID AS VARCHAR(10))
+PRINT 'TestLid3ID: ' + CAST(@testLid3ID AS VARCHAR(10))
 
 GO
