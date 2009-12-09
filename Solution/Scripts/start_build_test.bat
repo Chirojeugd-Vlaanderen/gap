@@ -26,6 +26,9 @@ Rem Clean and Build.
 DevEnv Cg2Solution.sln /Clean >%MY_WORK_DIR%/%DAY_YYYYMMDD_HHMMSS%_clean.log
 DevEnv Cg2Solution.sln /Build >>%MY_WORK_DIR%/%DAY_YYYYMMDD_HHMMSS%_build.log
 
+Rem Als GC2_GESTART_DOOR op MSTest is gezet, dan wordt er een DevServer opgestart, 
+Rem Zodat de regressie testen kunnen gebruik maken van de web services.
+SET CG2_GESTART_DOOR="MSTest"
 MSTest /testmetadata:Cg2Solution1.vsmdi >%MY_WORK_DIR%/%DAY_YYYYMMDD_HHMMSS%_test.log
 Rem Een deeltje van de testen doe als: 
 Rem MSTest /testmetadata:Cg2Solution1.vsmdi /testlist:Chiro.Gap.Data
