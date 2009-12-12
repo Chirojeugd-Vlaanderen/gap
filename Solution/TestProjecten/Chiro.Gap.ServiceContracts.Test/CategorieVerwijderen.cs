@@ -17,9 +17,9 @@ namespace Chiro.Gap.ServiceContracts.Test
     /// Summary description for CategorieToevoegen
     /// </summary>
     [TestClass]
-    public class CategorieToevoegen
+    public class CategorieVerwijderen
     {
-        public CategorieToevoegen()
+        public CategorieVerwijderen()
         {
             //
             // TODO: Add constructor logic here
@@ -32,14 +32,23 @@ namespace Chiro.Gap.ServiceContracts.Test
             Factory.ContainerInit();
         }
 
+        IGroepenService gpm;
         List<int> catlijst = new List<int>(); //lijst van nieuw aangemaakte categorieen, die nog verwijderd moeten worden
         int groepID = 317;
-        IGroepenService gpm;
+        String catnaam = "Kookies";
+
+        [TestInitialize]
+        public void setUp()
+        {
+            gpm = Factory.Maak<GroepenService>();
+            int catID = gpm.CategorieToevoegen(groepID, catnaam, "hallo");
+            catlijst.Add(catID);
+        }
 
         [TestCleanup]
         public void tearDown()
         {
-            gpm = Factory.Maak<GroepenService>();
+            IGroepenService gpm = Factory.Maak<GroepenService>();
             Groep g = gpm.OphalenMetCategorieen(groepID);
             foreach (Categorie c in g.Categorie)
             {
@@ -73,27 +82,36 @@ namespace Chiro.Gap.ServiceContracts.Test
         #endregion
 
         [TestMethod]
-        public void CategorieToevoegenNormaal()
+        public void CategorieVerwijderenNormaal()
         {
-            int catID = gpm.CategorieToevoegen(groepID, "TestKookies", "");
-            catlijst.Add(catID);
-
             Groep g = gpm.OphalenMetCategorieen(groepID);
+            foreach(Categorie c in g.Categorie)
+            {
+                if (c.Naam.Equals(catnaam))
+                {
+                    gpm.CategorieVerwijderen(c.ID, groepID);
+                }
+            }
+
+            g = gpm.OphalenMetCategorieen(groepID);
             bool found = false;
             foreach (Categorie c in g.Categorie)
             {
-                if (c.ID == catID)
+                if (c.Naam.Equals(catnaam))
                 {
                     found = true;
                 }
             }
-            Assert.IsTrue(found);
+            Assert.IsFalse(found);
         }
+
+        //TODO
 
         [TestMethod]
         [ExpectedExceptionAttribute(typeof(NotImplementedException))]
         public void CategorieAanmakenLegeNaam()
         {
+            
             catlijst.Add(gpm.CategorieToevoegen(groepID, "", ""));
         }
 
@@ -101,6 +119,7 @@ namespace Chiro.Gap.ServiceContracts.Test
         [ExpectedExceptionAttribute(typeof(NotImplementedException))]
         public void CategorieAanmakenGeenNaam()
         {
+            IGroepenService gpm = Factory.Maak<GroepenService>();
             catlijst.Add(gpm.CategorieToevoegen(groepID, null, ""));
         }
 
@@ -108,6 +127,7 @@ namespace Chiro.Gap.ServiceContracts.Test
         [ExpectedExceptionAttribute(typeof(NotImplementedException))]
         public void CategorieAanmakenGeenCode()
         {
+            IGroepenService gpm = Factory.Maak<GroepenService>();
             catlijst.Add(gpm.CategorieToevoegen(groepID, "kookies", null));
         }
 
@@ -115,6 +135,7 @@ namespace Chiro.Gap.ServiceContracts.Test
         [ExpectedExceptionAttribute(typeof(NotImplementedException))]
         public void CategorieAanmakenOnbestaandeGroep()
         {
+            IGroepenService gpm = Factory.Maak<GroepenService>();
             catlijst.Add(gpm.CategorieToevoegen(0, "kookies", ""));
         }
 
@@ -122,6 +143,7 @@ namespace Chiro.Gap.ServiceContracts.Test
         [ExpectedExceptionAttribute(typeof(NotImplementedException))]
         public void CategorieAanmakenBestaandeNaam()
         {
+            IGroepenService gpm = Factory.Maak<GroepenService>();
             catlijst.Add(gpm.CategorieToevoegen(groepID, "Kookies", ""));
             catlijst.Add(gpm.CategorieToevoegen(groepID, "Kookies", ""));
         }

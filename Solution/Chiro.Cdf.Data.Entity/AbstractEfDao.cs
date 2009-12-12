@@ -101,7 +101,7 @@ namespace Chiro.Cdf.Data.Entity
 		/// </summary>
 		/// <param name="id">te vergelijken ID</param>
 		/// <param name="f">lambda-expressie die uitgaande van de op te zoeken entiteit de ID bepaalt 
-		/// waarmee <paramref name="ID"/> vergeleken moet worden.</param>
+		/// waarmee <paramref name="id"/> vergeleken moet worden.</param>
 		/// <param name="pagina">gevraagde pagina</param>
 		/// <param name="paginaGrootte">aantal entiteiten op de pagina</param>
 		/// <param name="aantalTotaal">out-parameter met totaal aantal entiteiten die voldoen</param>

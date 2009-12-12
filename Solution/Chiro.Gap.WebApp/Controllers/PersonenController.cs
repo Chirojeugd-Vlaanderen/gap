@@ -50,6 +50,32 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         //
+        // GET: /Personen/Categorie/{catid}/{paginanummer}
+        public ActionResult CatList(int page, int groepID, int catID)
+        {
+            // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
+            //TODO wat willen we hier juist bijhouden
+            //Sessie.LaatsteLijst = "Personen";
+            //Sessie.LaatstePagina = page;
+
+            int totaal = 0;
+
+            var model = new Models.PersoonInfoModel();
+            BaseModelInit(model, groepID);
+
+            //TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
+            model.PersoonInfoLijst =
+                ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
+                (g => g.PaginaOphalenMetLidInfoVolgensCategorie(catID, page, 20, out totaal));
+            model.PageHuidig = page;
+            model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
+            model.Title = "Overzicht " + "Categorie X";
+            model.Totaal = totaal;
+
+            return View("Index", model);
+        }
+
+        //
         // GET: /Personen/Nieuw
         public ActionResult Nieuw(int groepID)
         {
@@ -245,6 +271,9 @@ namespace Chiro.Gap.WebApp.Controllers
                 // De service zal model.NieuwAdres.ID negeren; dit wordt
                 // steeds opnieuw opgezocht.  Adressen worden nooit
                 // gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
+
+                //TODO adrestype moet nog worden toegevoegd op de UI paginas ipv hier te setten
+                model.NieuwAdresType = AdresTypeEnum.Thuis;
 
                 ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenAanPersonen(model.PersoonIDs, model.NieuwAdres, model.NieuwAdresType));
 

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -48,14 +48,32 @@ namespace Chiro.Gap.ServiceContracts
         Boolean Verwijderen(int id);
 
 
+        //TODO: we vragen leden op per groepswerkjaar. Waarom dit verschil met personen? Personen zijn altijd geldig, 
+        //maar is dit wel de beste oplossing? Want alle leden zijn personen, maar wat dan als ze weggaan en dan terugkomen? 
+        //Moeten ze dan expliciet gedelete worden?...?
+
         /// <summary>
         /// Haalt pagina met leden op uit bepaald groepswerkjaar
         /// </summary>
         /// <param name="groepsWerkJaarID">gevraagde groepswerkjaar</param>
         /// <returns>lijst met leden, inclusief info gelieerde personen
         /// en personen</returns>
+        //[OperationContract]
+        //IList<LidInfo> PaginaOphalen(int groepsWerkJaarID);
+
+        /// <summary>
+        /// Haalt een pagina met ledengegevens in een bepaald groepswerkjaar
+        /// </summary>
+        /// <param name="groepID">ID van het betreffende groepwerkjaar</param>
+        /// <param name="pagina">paginanummer (1 of hoger)</param>
+        /// <param name="paginaGrootte">aantal records per pagina (1 of meer)</param>
+        /// <param name="aantalTotaal">outputparameter; geeft het totaal aantal personen weer in de lijst</param>
+        /// <returns>lijst van leen met hun relevante informatie</returns>
         [OperationContract]
-        IList<LidInfo> PaginaOphalen(int groepsWerkJaarID);
+        IList<LidInfo> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal);
+
+        [OperationContract]
+        IList<LidInfo> PaginaOphalenVolgensCategorie(int categorieID, int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal);
 
         [OperationContract]
         IList<LidInfo> PaginaOphalenVoorAfdeling(int groepsWerkJaarID, int afdelingsID);

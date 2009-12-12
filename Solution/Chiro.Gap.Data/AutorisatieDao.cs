@@ -10,6 +10,9 @@ using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 
+using System.Data.Objects.DataClasses;
+using System.Linq.Expressions;
+
 namespace Chiro.Gap.Data.Ef
 {
 	public class AutorisatieDao : Dao<GebruikersRecht, ChiroGroepEntities>, IAutorisatieDao

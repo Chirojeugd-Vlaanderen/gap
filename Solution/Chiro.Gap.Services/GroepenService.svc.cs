@@ -231,11 +231,14 @@ namespace Chiro.Gap.Services
 		/// <param name="groepID">ID van de groep waarvoor nieuwe categorie wordt gemaakt</param>
 		/// <param name="naam">naam voor de nieuwe categorie</param>
 		/// <param name="code">code voor de nieuwe categorie</param>
-		public void CategorieToevoegen(int groepID, string naam, string code)
+		public int CategorieToevoegen(int groepID, string naam, string code)
 		{
             Groep g = OphalenMetCategorieen(groepID);
-			_groepenMgr.CategorieToevoegen(g, naam, code);
+			Categorie c = _groepenMgr.CategorieToevoegen(g, naam, code);
             _groepenMgr.Bewaren(g, e => e.Categorie);
+            //TODO check if the ID is aangepast na het bewaren, of dat de groep van het bewaren 
+            //moet worden opgevraagd?
+            return c.ID;
 		}
 
 		public void CategorieVerwijderen(int categorieID, int groepID)

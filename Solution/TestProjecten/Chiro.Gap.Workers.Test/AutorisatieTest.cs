@@ -84,7 +84,7 @@ namespace Chiro.Gap.Workers.Test
 			var ledenDaoMock = new Mock<ILedenDao>();
 			var autorisatieMgrMock = new Mock<IAutorisatieManager>();
 
-			ledenDaoMock.Setup(foo => foo.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(new List<Lid>());
+			ledenDaoMock.Setup(foo => foo.AllesOphalen(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(new List<Lid>());
 			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(false);
 
 			Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
@@ -95,7 +95,8 @@ namespace Chiro.Gap.Workers.Test
 
 			// Act
 
-			lm.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID);
+            int totaal;
+			lm.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID, 0, 20, out totaal);
 
 			// Verwacht exception
 		}
@@ -162,7 +163,7 @@ namespace Chiro.Gap.Workers.Test
 			var ledenDaoMock = new Mock<ILedenDao>();
 			var autorisatieMgrMock = new Mock<IAutorisatieManager>();
 
-			ledenDaoMock.Setup(foo => foo.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(new List<Lid>());
+			ledenDaoMock.Setup(foo => foo.AllesOphalen(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(new List<Lid>());
 			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(true);
 
 			Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
@@ -172,7 +173,8 @@ namespace Chiro.Gap.Workers.Test
 
 			// Act
 
-			IList<Lid> lijst = lm.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID);
+            int totaal;
+			IList<Lid> lijst = lm.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID, 0, 20, out totaal);
 
 			// Assert
 

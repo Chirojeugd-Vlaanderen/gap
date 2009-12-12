@@ -15,6 +15,7 @@ namespace Chiro.Gap.WebApp.Models
         public List<GroepsWerkJaar> GroepsWerkJaarLijst { get; set; }
 
         public IList<LidInfo> LidInfoLijst { get; set; }
+        public int LedenTotaal { get; set; }
 
         public LidInfoModel() : base() { }
     }

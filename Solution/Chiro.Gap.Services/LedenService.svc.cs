@@ -19,23 +19,23 @@ namespace Chiro.Gap.Services
 
 		#region Manager Injection
 
-		private readonly GelieerdePersonenManager gpm;
-		private readonly LedenManager lm;
+		private readonly GelieerdePersonenManager _gpm;
+		private readonly LedenManager _lm;
 
 		public LedenService(GelieerdePersonenManager gpm, LedenManager lm)
 		{
-			this.gpm = gpm;
-			this.lm = lm;
+			this._gpm = gpm;
+			this._lm = lm;
 		}
 
 		#endregion
 
 		public string LidMakenEnBewaren(int gelieerdePersoonID)
 		{
-			GelieerdePersoon gp = gpm.DetailsOphalen(gelieerdePersoonID);
+			GelieerdePersoon gp = _gpm.DetailsOphalen(gelieerdePersoonID);
 
-			Lid l = lm.LidMaken(gp);
-			lm.LidBewaren(l);
+			Lid l = _lm.LidMaken(gp);
+			_lm.LidBewaren(l);
 			// TODO: feedback aanpassen
 			return string.Format("{0} is toegevoegd als lid.", gp.Persoon.VolledigeNaam);
 		}
@@ -46,12 +46,12 @@ namespace Chiro.Gap.Services
 		/// <param name="persoon"></param>
 		public void Bewaren(Lid lid)
 		{
-			lm.LidBewaren(lid);
+			_lm.LidBewaren(lid);
 		}
 
 		public Boolean Verwijderen(int id)
 		{
-			return lm.LidVerwijderen(id);
+			return _lm.LidVerwijderen(id);
 		}
 
 		public void BewarenMetAfdelingen(Lid lid)
@@ -72,13 +72,26 @@ namespace Chiro.Gap.Services
 			throw new NotImplementedException();
 		}
 
+        public IList<LidInfo> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal)
+        {
+            var result = _lm.PaginaOphalen(groepsWerkJaarID, pagina, paginaGrootte, out aantalTotaal);
+            return Mapper.Map<IList<Lid>, IList<LidInfo>>(result);
+        }
+
+
+        public IList<LidInfo> PaginaOphalenVolgensCategorie(int categorieID, int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal)
+        {
+            //TODO
+            throw new NotImplementedException();
+        }
+
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="lid"></param>
 		public void LidOpNonactiefZetten(Lid lid)
 		{
-			lm.LidOpNonactiefZetten(lid);
+			_lm.LidOpNonactiefZetten(lid);
 		}
 
 		/// <summary>
@@ -87,7 +100,7 @@ namespace Chiro.Gap.Services
 		/// <param name="lid"></param>
 		public void LidActiveren(Lid lid)
 		{
-			lm.LidActiveren(lid);
+			_lm.LidActiveren(lid);
 		}
 
 		/// <summary>
@@ -96,15 +109,15 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
 		/// <returns>Lijst met LidInfo</returns>
-		public IList<LidInfo> PaginaOphalen(int groepsWerkJaarID)
+		/*public IList<LidInfo> PaginaOphalen(int groepsWerkJaarID)
 		{
-			IList<Lid> result = lm.PaginaOphalen(groepsWerkJaarID);
+			IList<Lid> result = _lm.PaginaOphalen(groepsWerkJaarID);
 			return Mapper.Map<IList<Lid>, IList<LidInfo>>(result);
-		}
+		}*/
 
 		public IList<LidInfo> PaginaOphalenVoorAfdeling(int groepsWerkJaarID, int afdelingsID)
 		{
-			IList<Lid> result = lm.PaginaOphalen(groepsWerkJaarID, afdelingsID);
+			IList<Lid> result = _lm.PaginaOphalen(groepsWerkJaarID, afdelingsID);
 			return Mapper.Map<IList<Lid>, IList<LidInfo>>(result);
 		}
 	}

@@ -113,8 +113,9 @@ namespace Chiro.Gap.ServiceContracts
         /// </summary>
         /// <param name="cnaam">De naam van de nieuwe categorie</param>
         /// <param name="groepID">De groep waaraan het wordt toegevoegd</param>
+        /// <returns>De ID van de aangemaakte categorie</returns>
         [OperationContract]
-        void CategorieToevoegen(int groepID, String naam, String code);
+        int CategorieToevoegen(int groepID, String naam, String code);
 
         /// <summary>
         /// Voegt de gegeven categorie uit de gegeven groep

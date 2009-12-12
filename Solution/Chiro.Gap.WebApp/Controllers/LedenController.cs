@@ -19,27 +19,54 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult Index(int groepID)
         {
             // Recentste groepswerkjaar ophalen, en leden tonen.
-            return List(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), groepID);
+            return List(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), 1, groepID);
         }
 
         // TODO: verder uitwerken paginering
         //
-        // GET: /Leden/List/{groepsWerkJaarId}
-        public ActionResult List(int groepsWerkJaarId, int groepID)
+        // GET: /Leden/List/{groepsWerkJaarId}/{page}
+        public ActionResult List(int groepsWerkJaarId, int page, int groepID)
         {
             // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten. Paginering gebeurt hier per werkjaar.
             Sessie.LaatsteLijst = "Leden";
             Sessie.LaatstePagina = groepsWerkJaarId;
 
+            int totaal = 0;
+
             var model = new Models.LidInfoModel();
             BaseModelInit(model, groepID);
+
             model.LidInfoLijst =
                 ServiceHelper.CallService<ILedenService, IList<LidInfo>>
-                (lid => lid.PaginaOphalen(groepsWerkJaarId));
+                (lid => lid.PaginaOphalen(groepsWerkJaarId, page, 20, out totaal));
             model.GroepsWerkJaarIdZichtbaar = groepsWerkJaarId;
             // TODO: lijst opbouwen met alle GroepsWerkJaren van de huidige groep
             // model.GroepsWerkJaarLijst = ...;
             model.Title = "Ledenoverzicht";
+            return View("Index", model);
+        }
+
+        //TODO verder uitwerken paginering
+        // GET: /Leden/{catID}/{page}
+        public ActionResult CategorieList(int page, int catID, int groepID)
+        {
+            // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten. Paginering gebeurt hier per werkjaar.
+            //Sessie.LaatsteLijst = "Leden";
+            //Sessie.LaatstePagina = groepsWerkJaarId;
+
+            int groepsWerkJaarId = ServiceHelper.CallService<IGroepenService, int>(l => l.RecentsteGroepsWerkJaarIDGet(groepID));
+            int totaal = 0;
+
+            var model = new Models.LidInfoModel();
+            BaseModelInit(model, groepID);
+            model.LidInfoLijst =
+                ServiceHelper.CallService<ILedenService, IList<LidInfo>>
+                (lid => lid.PaginaOphalenVolgensCategorie(catID, groepsWerkJaarId, page, 20, out totaal));
+            //model.GroepsWerkJaarIdZichtbaar = groepsWerkJaarId;
+            // TODO: lijst opbouwen met alle GroepsWerkJaren van de huidige groep
+            // model.GroepsWerkJaarLijst = ...;
+            model.Title = "Overzicht leden " + "categorie";
+            model.LedenTotaal = totaal;
             return View("Index", model);
         }
 

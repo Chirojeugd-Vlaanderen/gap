@@ -55,9 +55,47 @@ namespace Chiro.Gap.Data.Ef
 			}
 		}
 
+        /// <summary>
+        /// Alle entity's van het gegeven type ophalen
+        /// </summary>
+        /// <returns>Een lijst met objecten</returns>
+        public IList<Lid> AllesOphalen(int groepsWerkJaarID)
+        {
+            IList<Lid> lijst;
+
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                db.Lid.MergeOption = MergeOption.NoTracking;
+
+                var kinderen = (
+                    from l in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+                    where l.GroepsWerkJaar.ID == groepsWerkJaarID
+                    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+                    select l).ToList<Kind>();
+
+                var leiding = (
+                    from l in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+                    where l.GroepsWerkJaar.ID == groepsWerkJaarID
+                    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+                    select l).ToList<Leiding>();
+
+                lijst = new List<Lid>();
+                foreach (Lid lid in kinderen)
+                {
+                    lijst.Add(lid);
+                }
+                foreach (Lid lid in leiding)
+                {
+                    lijst.Add(lid);
+                }
+            }
+
+            return lijst;
+        }
+
 		// pagineren gebeurt nu per werkjaar
 		// pagina, paginaGrootte en aantalTotaal zijn niet meer nodig
-		public IList<Lid> PaginaOphalen(int groepsWerkJaarID)
+        public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal)
 		{
 			IList<Lid> lijst;
 
@@ -86,6 +124,9 @@ namespace Chiro.Gap.Data.Ef
 				{
 					lijst.Add(lid);
 				}
+
+                aantalTotaal = lijst.Count;
+                lijst = lijst.Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte).ToList<Lid>();
 			}
 
 			return lijst;

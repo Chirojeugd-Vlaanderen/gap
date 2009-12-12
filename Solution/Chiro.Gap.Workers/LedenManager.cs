@@ -235,22 +235,27 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
-		/// <summary>
-		/// Haalt een 'pagina' op met leden uit een bepaald GroepsWerkJaar
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
-		/// <returns></returns>
-		public IList<Lid> PaginaOphalen(int groepsWerkJaarID)
-		{
-			if (_authorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
-			{
-				return _daos.LedenDao.PaginaOphalen(groepsWerkJaarID);
-			}
-			else
-			{
-				throw new GeenGavException("Dit GroepsWerkJaar hoort niet bij je groep(en).");
-			}
-		}
+        /// <summary>
+        /// Haal een pagina op met leden van een groepswerkjaar.
+        /// </summary>
+        /// <param name="groepswerkjaarID">groepswerkjaarID</param>
+        /// <param name="pagina">paginanummer (>=1)</param>
+        /// <param name="paginaGrootte">grootte van de pagina's</param>
+        /// <param name="aantalTotaal">totaal aantal personen in de groep</param>
+        /// <returns>Lijst met een pagina leden uit het gevraagde groepswerkjaar.</returns>
+        public IList<Lid> PaginaOphalen(int groepswerkjaarID, int pagina, int paginaGrootte, out int aantalTotaal)
+        {
+            if (_authorisatieMgr.IsGavGroepsWerkJaar(groepswerkjaarID))
+            {
+                IList<Lid> list = _daos.LedenDao.PaginaOphalen(groepswerkjaarID, pagina, paginaGrootte, out aantalTotaal);
+                list.OrderBy(e => e.GelieerdePersoon.Persoon.Naam).ThenBy(e => e.GelieerdePersoon.Persoon.VoorNaam);
+                return list;
+            }
+            else
+            {
+                throw new GeenGavException("Dit GroepsWerkJaar hoort niet bij je groep(en).");
+            }
+        }
 
 		/// <summary>
 		/// Haalt een 'pagina' op met leden uit een bepaald GroepsWerkJaar

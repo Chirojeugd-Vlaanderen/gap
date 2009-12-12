@@ -48,6 +48,18 @@ namespace Chiro.Gap.WebApp
             );
 
             routes.MapRoute(
+                "LedenCategorie",
+                "{groepID}/Leden/Categorie/{categorieId}/{page}",
+                new { controller = "Leden", action = "CatList" }
+            );
+
+            routes.MapRoute(
+                "PersonenCategorie",
+                "{groepID}/Personen/Categorie/{categorieId}/{page}",
+                new { controller = "Personen", action = "CatList" }
+            );
+
+            routes.MapRoute(
                 "Default",
                 "{groepID}/{controller}/{action}/{id}",
                 new { controller = "Personen", action = "Index", id = "" }
