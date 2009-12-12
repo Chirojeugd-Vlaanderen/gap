@@ -11,11 +11,14 @@ namespace Chiro.Gap.WebApp.Models
 {
     public class LidInfoModel : MasterViewModel 
     {
+        public int PageHuidig { get; set; }
+        public int PageTotaal { get; set; }
+        public int Totaal { get; set; }
+
         public int GroepsWerkJaarIdZichtbaar { get; set; }
         public List<GroepsWerkJaar> GroepsWerkJaarLijst { get; set; }
 
         public IList<LidInfo> LidInfoLijst { get; set; }
-        public int LedenTotaal { get; set; }
 
         public LidInfoModel() : base() { }
     }

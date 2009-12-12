@@ -29,7 +29,8 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten. Paginering gebeurt hier per werkjaar.
             Sessie.LaatsteLijst = "Leden";
-            Sessie.LaatstePagina = groepsWerkJaarId;
+            Sessie.LaatstePagina = page;
+            //TODO groepswerkjaarid moet hierbij
 
             int totaal = 0;
 
@@ -43,6 +44,9 @@ namespace Chiro.Gap.WebApp.Controllers
             // TODO: lijst opbouwen met alle GroepsWerkJaren van de huidige groep
             // model.GroepsWerkJaarLijst = ...;
             model.Title = "Ledenoverzicht";
+            model.PageHuidig = page;
+            model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
+            model.Totaal = totaal;
             return View("Index", model);
         }
 
@@ -66,7 +70,9 @@ namespace Chiro.Gap.WebApp.Controllers
             // TODO: lijst opbouwen met alle GroepsWerkJaren van de huidige groep
             // model.GroepsWerkJaarLijst = ...;
             model.Title = "Overzicht leden " + "categorie";
-            model.LedenTotaal = totaal;
+            model.PageHuidig = page;
+            model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
+            model.Totaal = totaal;
             return View("Index", model);
         }
 

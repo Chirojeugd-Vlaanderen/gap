@@ -43,7 +43,7 @@ namespace Chiro.Gap.WebApp
 
             routes.MapRoute(
                 "PaginatedLedenList",
-                "{groepID}/Leden/List/{groepsWerkJaarId}",
+                "{groepID}/Leden/List/{groepsWerkJaarId}/{page}",
                 new { controller = "Leden", action = "List" }
             );
 
