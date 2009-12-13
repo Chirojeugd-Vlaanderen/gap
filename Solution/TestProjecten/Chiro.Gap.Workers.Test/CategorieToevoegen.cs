@@ -30,11 +30,18 @@ namespace Chiro.Gap.Workers.Test
 			//
 		}
 
-		[ClassInitialize]
-		static public void InitTests(TestContext context)
-		{
-			Factory.ContainerInit();
-		}
+
+        [ClassInitialize]
+        static public void InitialiseerTests(TestContext tc)
+        {
+            Factory.ContainerInit();
+        }
+
+        [ClassCleanup]
+        static public void AfsluitenTests()
+        {
+            Factory.Dispose();
+        }
 
 		[TestInitialize]
 		public void setUp()

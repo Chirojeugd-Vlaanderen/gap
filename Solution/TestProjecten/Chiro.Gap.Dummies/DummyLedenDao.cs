@@ -15,39 +15,35 @@ namespace Chiro.Gap.Dummies
 	{
 		#region ILedenDao Members
 
-		public IList<Lid> PaginaOphalen(int groepsWerkJaarID)
-		{
-			throw new NotImplementedException();
-		}
-
 		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int afdelingsID)
 		{
-			throw new NotImplementedException();
+            return new List<Lid>();
 		}
 
         public IList<Lid> AllesOphalen(int groepsWerkJaarID)
         {
-            throw new NotImplementedException();
+            return new List<Lid>();
         }
 
         public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
-            throw new NotImplementedException();
+            aantalTotaal = 0;
+            return new List<Lid>();
         }
 
 		public Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID)
 		{
-			throw new NotImplementedException();
+            return null;
 		}
 
 		public Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID, params System.Linq.Expressions.Expression<Func<Lid, object>>[] paths)
 		{
-			throw new NotImplementedException();
+            return null;
 		}
 
 		public Lid OphalenMetDetails(int lidID)
 		{
-			throw new NotImplementedException();
+            return null;
 		}
 
 		#endregion

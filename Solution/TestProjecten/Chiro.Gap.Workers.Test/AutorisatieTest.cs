@@ -25,24 +25,6 @@ namespace Chiro.Gap.Workers.Test
 			//
 		}
 
-		private TestContext testContextInstance;
-
-		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		///</summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
-
 		#region Additional test attributes
 		//
 		// You can use the following additional attributes as you write your tests:
@@ -66,10 +48,16 @@ namespace Chiro.Gap.Workers.Test
 		#endregion
 
 		[ClassInitialize]
-		static public void InitialiseerTests(TestContext context)
+		static public void InitialiseerTests(TestContext tc)
 		{
 			Factory.ContainerInit();
 		}
+
+        [ClassCleanup]
+        static public void AfsluitenTests()
+        {
+            Factory.Dispose();
+        }
 
 		/// <summary>
 		/// Probeert ledenlijst op te halen voor niet-GAV.
@@ -141,7 +129,7 @@ namespace Chiro.Gap.Workers.Test
 			// Probeer nu een fictieve communicatievorm te verwijderen.
 			// We verwachten 'GeenGavException'
 
-			gpMgr.CommVormVerwijderen(1, 1);
+			gpMgr.CommVormVerwijderen(null, null);
 			// CommunicatieVormID en GelieerdePersoonID zijn irrelevant owv de mocking
 			#endregion
 
@@ -174,7 +162,7 @@ namespace Chiro.Gap.Workers.Test
 			// Act
 
             int totaal;
-			IList<Lid> lijst = lm.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID, 0, 20, out totaal);
+			IList<Lid> lijst = lm.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID, 1, 20, out totaal);
 
 			// Assert
 

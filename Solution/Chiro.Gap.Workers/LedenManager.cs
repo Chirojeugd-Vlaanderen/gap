@@ -248,7 +248,7 @@ namespace Chiro.Gap.Workers
             if (_authorisatieMgr.IsGavGroepsWerkJaar(groepswerkjaarID))
             {
                 IList<Lid> list = _daos.LedenDao.PaginaOphalen(groepswerkjaarID, pagina, paginaGrootte, out aantalTotaal);
-                list.OrderBy(e => e.GelieerdePersoon.Persoon.Naam).ThenBy(e => e.GelieerdePersoon.Persoon.VoorNaam);
+                list = list.OrderBy(e => e.GelieerdePersoon.Persoon.Naam).ThenBy(e => e.GelieerdePersoon.Persoon.VoorNaam).ToList();
                 return list;
             }
             else

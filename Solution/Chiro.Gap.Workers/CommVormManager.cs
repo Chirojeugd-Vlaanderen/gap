@@ -96,34 +96,17 @@ namespace Chiro.Gap.Workers
             _dao.Bewaren(comm, l => l.CommunicatieType, l => l.GelieerdePersoon.Persoon);
         }
 
-        public void CommVormVerwijderen(int commID, int gelieerdePersoonID)
+        public void CommVormVerwijderen(CommunicatieVorm comm, GelieerdePersoon origineel)
         {
-            if (!_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
+            if (!_autorisatieMgr.IsGavGelieerdePersoon(origineel.ID))
             {
                 throw new GeenGavException(Properties.Resources.GeenGavGroep);
             }
-            if (!_autorisatieMgr.IsGavCommVorm(commID))
+            if (!_autorisatieMgr.IsGavCommVorm(comm.ID))
             {
                 throw new GeenGavException(Properties.Resources.GeenGavCommVorm);
             }
-            GelieerdePersoon origineel = _geldao.Ophalen(gelieerdePersoonID, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
-            bool found = false;
-            foreach (CommunicatieVorm c in origineel.Communicatie)
-            {
-                if (c.ID == commID)
-                {
-                    found = true;
-                    c.TeVerwijderen = true;
-                }
-            }
-            if (found)
-            {
-                _geldao.Bewaren(origineel, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
-            }
-            else
-            {
-                throw new ArgumentException("De communicatievorm behoort niet toe aan de geselecteerde persoon.");
-            }
+            comm.TeVerwijderen = true;
         }
     }
 }

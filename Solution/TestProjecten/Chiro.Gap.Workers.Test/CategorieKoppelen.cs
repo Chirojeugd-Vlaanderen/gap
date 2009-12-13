@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Chiro.Cdf.Ioc;
 
 namespace Chiro.Gap.Workers.Test
 {
@@ -19,24 +20,19 @@ namespace Chiro.Gap.Workers.Test
             //
         }
 
-        private TestContext testContextInstance;
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
+        [ClassInitialize]
+        static public void InitialiseerTests(TestContext tc)
         {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
+            Factory.ContainerInit();
         }
 
+        [ClassCleanup]
+        static public void AfsluitenTests()
+        {
+            Factory.Dispose();
+        }
+        
         #region Additional test attributes
         //
         // You can use the following additional attributes as you write your tests:

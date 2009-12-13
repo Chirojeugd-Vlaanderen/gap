@@ -227,9 +227,26 @@ namespace Chiro.Gap.Services
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void CommVormVerwijderenVanPersoon(int gelieerdepersonenID, int commvormID)
+        public void CommVormVerwijderenVanPersoon(int gelieerdePersoonID, int commvormID)
 		{
-			_cvMgr.CommVormVerwijderen(commvormID, gelieerdepersonenID);
+            GelieerdePersoon gp = _gpMgr.OphalenMetCommVormen(gelieerdePersoonID);
+            CommunicatieVorm cv = null;
+            bool found = false;
+            foreach (CommunicatieVorm c in gp.Communicatie)
+            {
+                if (c.ID == commvormID)
+                {
+                    cv = c;
+                    found = true;
+                }
+            }
+            if(!found)
+            {
+                throw new ArgumentException("De communicatievorm behoort niet toe aan de geselecteerde persoon.");
+            }
+			_cvMgr.CommVormVerwijderen(cv, gp);
+            _gpMgr.BewarenMetCommVormen(gp);
+
 		}
 
 		///TODO dit moet gecontroleerd worden!

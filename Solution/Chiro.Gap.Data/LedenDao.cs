@@ -97,7 +97,7 @@ namespace Chiro.Gap.Data.Ef
 		// pagina, paginaGrootte en aantalTotaal zijn niet meer nodig
         public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal)
 		{
-			IList<Lid> lijst;
+            IList<Lid> lijst = new List<Lid>();
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
@@ -115,8 +115,7 @@ namespace Chiro.Gap.Data.Ef
 				    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 				    select l).ToList<Leiding>();
 
-				lijst = new List<Lid>();
-				foreach (Lid lid in kinderen)
+                foreach (Lid lid in kinderen)
 				{
 					lijst.Add(lid);
 				}

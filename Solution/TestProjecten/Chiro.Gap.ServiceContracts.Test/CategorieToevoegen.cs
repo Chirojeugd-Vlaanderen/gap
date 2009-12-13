@@ -27,19 +27,30 @@ namespace Chiro.Gap.ServiceContracts.Test
         }
 
         [ClassInitialize]
-        static public void InitTests(TestContext context)
+        static public void InitialiseerTests(TestContext tc)
         {
             Factory.ContainerInit();
+        }
+
+        [ClassCleanup]
+        static public void AfsluitenTests()
+        {
+            Factory.Dispose();
         }
 
         List<int> catlijst = new List<int>(); //lijst van nieuw aangemaakte categorieen, die nog verwijderd moeten worden
         int groepID = 317;
         IGroepenService gpm;
 
+        [TestInitialize]
+        public void initialiseerTest()
+        {
+            gpm = Factory.Maak<GroepenService>();
+        }
+
         [TestCleanup]
         public void tearDown()
         {
-            gpm = Factory.Maak<GroepenService>();
             Groep g = gpm.OphalenMetCategorieen(groepID);
             foreach (Categorie c in g.Categorie)
             {
@@ -50,32 +61,10 @@ namespace Chiro.Gap.ServiceContracts.Test
             }
         }
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
-
         [TestMethod]
         public void CategorieToevoegenNormaal()
         {
-            int catID = gpm.CategorieToevoegen(groepID, "TestKookies", "");
+            int catID = gpm.CategorieToevoegen(groepID, "TestKookies", "broes");
             catlijst.Add(catID);
 
             Groep g = gpm.OphalenMetCategorieen(groepID);
@@ -90,7 +79,7 @@ namespace Chiro.Gap.ServiceContracts.Test
             Assert.IsTrue(found);
         }
 
-        [TestMethod]
+/*        [TestMethod]
         [ExpectedExceptionAttribute(typeof(NotImplementedException))]
         public void CategorieAanmakenLegeNaam()
         {
@@ -124,6 +113,6 @@ namespace Chiro.Gap.ServiceContracts.Test
         {
             catlijst.Add(gpm.CategorieToevoegen(groepID, "Kookies", ""));
             catlijst.Add(gpm.CategorieToevoegen(groepID, "Kookies", ""));
-        }
+        }*/
     }
 }

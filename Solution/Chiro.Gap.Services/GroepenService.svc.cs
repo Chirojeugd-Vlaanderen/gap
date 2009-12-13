@@ -235,9 +235,16 @@ namespace Chiro.Gap.Services
 		{
             Groep g = OphalenMetCategorieen(groepID);
 			Categorie c = _groepenMgr.CategorieToevoegen(g, naam, code);
-            _groepenMgr.Bewaren(g, e => e.Categorie);
-            //TODO check if the ID is aangepast na het bewaren, of dat de groep van het bewaren 
-            //moet worden opgevraagd?
+            g = _groepenMgr.Bewaren(g, e => e.Categorie);
+            //TODO kan dit niet mooier om de ID op te vragen?
+            foreach(Categorie cc in g.Categorie)
+            {
+                if(cc.Naam.Equals(naam))
+                {
+                    c = cc;
+                }
+            }
+            //TODO de lambda expressies hieruit halen en er terug methoden van maken (die security kunnen checken)
             return c.ID;
 		}
 

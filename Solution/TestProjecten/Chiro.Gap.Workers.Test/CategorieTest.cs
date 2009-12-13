@@ -19,23 +19,18 @@ namespace Chiro.Gap.Workers.Test
 	{
 
 
-		private TestContext testContextInstance;
 
-		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		///</summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
+        [ClassInitialize]
+        static public void InitialiseerTests(TestContext tc)
+        {
+            Factory.ContainerInit();
+        }
+
+        [ClassCleanup]
+        static public void AfsluitenTests()
+        {
+            Factory.Dispose();
+        }
 
 		#region Additional test attributes
 		// 
@@ -65,16 +60,6 @@ namespace Chiro.Gap.Workers.Test
 		//{
 		//}
 		//
-
-		/// <summary>
-		/// Zeker zijn dat de IOC container geinitialiseerd is.
-		/// </summary>
-		/// <param name="testContext"></param>
-		[ClassInitialize()]
-		public static void MyClassInitialize(TestContext testContext)
-		{
-			Factory.ContainerInit();
-		}
 		#endregion
 
 		// Tests die niets deden meteen weggegooid.

@@ -46,12 +46,19 @@ namespace Chiro.Gap.Services.Test
 		//
 		#endregion
 
-		[ClassInitialize()]
-		public static void MyClassInitialize(TestContext testContext) 
-		{
-			Factory.ContainerInit();
-			MappingHelper.MappingsDefinieren();
-		}
+
+        [ClassInitialize]
+        static public void InitialiseerTests(TestContext tc)
+        {
+            Factory.ContainerInit();
+            MappingHelper.MappingsDefinieren();
+        }
+
+        [ClassCleanup]
+        static public void AfsluitenTests()
+        {
+            Factory.Dispose();
+        }
 
 		/// <summary>
 		/// Deze test kijkt enkel na of de method IGroepenservice.Ophalen(groepID) de groepenDAO
