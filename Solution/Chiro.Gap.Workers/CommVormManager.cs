@@ -96,6 +96,7 @@ namespace Chiro.Gap.Workers
             _dao.Bewaren(comm, l => l.CommunicatieType, l => l.GelieerdePersoon.Persoon);
         }
 
+	// FIXME: de parameter 'gelieerdePersoonID' is overbodig; zie ticket #145.
         public void CommVormVerwijderen(CommunicatieVorm comm, GelieerdePersoon origineel)
         {
             if (!_autorisatieMgr.IsGavGelieerdePersoon(origineel.ID))

@@ -226,6 +226,7 @@ namespace Chiro.Gap.Services
 			_cvMgr.CommVormToevoegen(commvorm, gelieerdepersonenID, typeID);
 		}
 
+		// FIXME: de parameter 'gelieerdePersoonID' is overbodig; zie ticket #145.
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void CommVormVerwijderenVanPersoon(int gelieerdePersoonID, int commvormID)
 		{
