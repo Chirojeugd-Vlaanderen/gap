@@ -6,6 +6,7 @@ using System.Web;
 using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
+using System.Web.Mvc;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -16,6 +17,8 @@ namespace Chiro.Gap.WebApp.Models
         public int Totaal { get; set; }
 
         public IList<PersoonInfo> PersoonInfoLijst { get; set; }
+
+		  public SelectList GroepsCategorieen { get; set; }
 
         public PersoonInfoModel() : base() { }
     }

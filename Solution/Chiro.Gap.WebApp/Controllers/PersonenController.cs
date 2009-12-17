@@ -46,6 +46,9 @@ namespace Chiro.Gap.WebApp.Controllers
             model.Title = "Personenoverzicht";
             model.Totaal = totaal;
 
+				var categories = ServiceHelper.CallService<IGroepenService, Groep>(g => g.OphalenMetCategorieen(groepID)).Categorie;
+				model.GroepsCategorieen = new SelectList(categories, "Naam", "Naam");
+
             return View("Index", model);
         }
 
