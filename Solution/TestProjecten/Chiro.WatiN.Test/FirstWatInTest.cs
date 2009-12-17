@@ -257,7 +257,7 @@ namespace Chiro.WatiN.Test
                     // Een volgende uitdaging is het vinden van een persoon in de lijst, deze kan namelijk op een andere pagina staan,
                     // de verschillende pagina nummers staat in een blok met naam: 'pager', van dit blok itereren we over alle links.
                     int link_nr = 0;
-                    while (link_nr++ < window.Div(Find.ByClass(new Regex("pager"))).Links.Count && !PersoonLidGemaakt)
+                    while (link_nr < window.Div(Find.ByClass(new Regex("pager"))).Links.Count && !PersoonLidGemaakt)
                     {
                         // Openen van de pagina. (het volgen van de link)
                         window.Div(Find.ByClass(new Regex("pager"))).Links[link_nr].Click();
@@ -297,6 +297,7 @@ namespace Chiro.WatiN.Test
                                 }
                             }
                         }
+                        link_nr = link_nr + 1;
                     }
                     // We hebben alle pagina's doorlopen en we hebben de persoon niet kunnen lid maken.
                     if (!PersoonLidGemaakt)
