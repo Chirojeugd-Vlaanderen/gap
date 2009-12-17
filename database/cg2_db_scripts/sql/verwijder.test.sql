@@ -24,7 +24,7 @@ DELETE FROM [grp].[GroepsWerkJaar]
 GO
 DELETE FROM [grp].[ChiroGroep]
 GO
-DELETE FROM [grp].[ChiroGroep]
+DELETE FROM [grp].[Groep]
 GO
 
 

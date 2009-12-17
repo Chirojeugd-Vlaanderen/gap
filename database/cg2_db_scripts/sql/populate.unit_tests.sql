@@ -16,6 +16,8 @@
 -- 1 testcategorie voor testgroep1, waaraan de 1ste gelieerde persoon worden toegevoegd
 -- 2de testcategorie met de drie gelieerde personen
 
+-- Datums worden in gegeven in het formaat DD/MM/YYYY
+SET DateFormat dmy;
 
 DECLARE @testGroepCode AS CHAR(10);
 DECLARE @testAfdelingsCode AS VARCHAR(10);
@@ -339,22 +341,40 @@ BEGIN
 	INSERT INTO lid.Leiding(LeidingID) VALUES (@testLid3ID)
 END
 
-PRINT 'TestGroepID: ' + CAST(@testGroepID AS VARCHAR(10));
-PRINT 'TestAfdeling1ID: ' + CAST(@testAfdelingID AS VARCHAR(10));
-PRINT 'TestAfdeling2ID: ' + CAST(@testAfdeling2ID AS VARCHAR(10));
-PRINT 'TestGroepsWerkJaarID: ' + CAST(@testGroepsWerkJaarID AS VARCHAR(10));
-PRINT 'TestVorigGroepsWerkJaarID: ' + CAST(@testVorigGroepsWerkJaarID AS VARCHAR(10));
-PRINT 'TestAdfelingsJaarID: ' + CAST(@testAfdelingsJaarID AS VARCHAR(10));
-PRINT 'TestVorigAdfelingsJaarID: ' + CAST(@testVorigAfdelingsJaarID AS VARCHAR(10));
-PRINT 'TestPersoonID: ' + CAST(@testPersoonID AS VARCHAR(10))
-PRINT 'TestGelieerdePersoonID: ' + CAST(@testGelieerdePersoonID AS VARCHAR(10))
-PRINT 'TestPersoon2ID: ' + CAST(@testPersoon2ID AS VARCHAR(10))
-PRINT 'TestGelieerdePersoon2ID: ' + CAST(@testGelieerdePersoon2ID AS VARCHAR(10))
-PRINT 'TestPersoon3ID: ' + CAST(@testPersoon3ID AS VARCHAR(10))
-PRINT 'TestGelieerdePersoon3ID: ' + CAST(@testGelieerdePersoon3ID AS VARCHAR(10))
-PRINT 'TestGav1ID: ' + CAST(@testGav1ID AS VARCHAR(10))
-PRINT 'TestCategorieID: ' + CAST(@testCategorieID AS VARCHAR(10))
-PRINT 'TestCategorie2ID: ' + CAST(@testCategorie2ID AS VARCHAR(10))
-PRINT 'TestLid3ID: ' + CAST(@testLid3ID AS VARCHAR(10))
+PRINT '.'
+PRINT 'Voor je deze database kan gebruiken moet je de volgende file update met de gegevens hier onder'
+PRINT 'FILE: source:trunk\Solution\TestProjecten\Chiro.Gap.Data.Test\TestInfo.cs'
+PRINT 'aan te passen constanten: '
+PRINT '.'
+PRINT 'public const int GROEPID = ' + CAST(@testGroepID AS VARCHAR(10)) + ';';
+PRINT 'public const int GELIEERDEPERSOONID = ' + CAST(@testGelieerdePersoonID AS VARCHAR(10)) + ';';
+PRINT 'public const int GELIEERDEPERSOON2ID = ' + CAST(@testGelieerdePersoon2ID  AS VARCHAR(10)) + ';';
+PRINT 'public const int GELIEERDEPERSOON3ID =' + CAST(@testGelieerdePersoon3ID  AS VARCHAR(10)) + ';';
+DECLARE @GELPERS AS INT;
+SET @GELPERS = (SELECT count(*) from pers.GelieerdePersoon where GroepID = @testGroepID);
+PRINT 'public const int MINAANTALGELPERS = '+ CAST(@GELPERS AS VARCHAR(10)) + ';';
+PRINT 'public const int CATEGORIEID = ' + CAST(@testCategorieID AS VARCHAR(10)) + ';';
+PRINT 'public const int CATEGORIE2ID = ' + CAST(@testCategorie2ID AS VARCHAR(10)) + ';';
+PRINT 'public const int AANTALINCATEGORIE = 1;'
+PRINT 'public const int AFDELINGID = ' + CAST(@testAfdelingID AS VARCHAR(10)) + ';';
+PRINT 'public const int OFFICIELEAFDELINGID = ' + CAST(@testOfficieleAfdelingID AS VARCHAR(10)) + ';';
+PRINT 'public const int AFDELINGSJAARID = ' + CAST(@testAfdelingsJaarID AS VARCHAR(10)) + ';';
+PRINT 'public const int AFDELING2ID = ' + CAST(@testAfdeling2ID AS VARCHAR(10)) + ';';
+PRINT 'public const int AFDELING2VAN = 2001;'
+PRINT 'public const int AFDELING2VAN = 1998;'
+PRINT 'public const int GROEPSWERKJAARID = ' + CAST(@testGroepsWerkJaarID AS VARCHAR(10)) + ';';
+PRINT 'public const string ZOEKNAAM = "' + CAST(@testPersoonNaam AS VARCHAR(10)) + '";'; 
+PRINT 'public const string GAV1 = "' + CAST(@testGav1Login AS VARCHAR(10)) + '";';
+PRINT 'public const string GAV2 = ' + CAST(@testGAV2Login AS VARCHAR(10)) + '";';
+PRINT '.'
+PRINT 'Blijkbaar wordt het onderstaande niet meer gebruikt: '
+PRINT '.'
+PRINT 'TestVorigGroepsWerkJaarID: ' + CAST(@testVorigGroepsWerkJaarID AS VARCHAR(10)) + ';';
+PRINT 'TestVorigAdfelingsJaarID: ' + CAST(@testVorigAfdelingsJaarID AS VARCHAR(10)) + ';';
+PRINT 'TestPersoonID: ' + CAST(@testPersoonID AS VARCHAR(10)) + ';';
+PRINT 'TestPersoon2ID: ' + CAST(@testPersoon3ID AS VARCHAR(10)) + ';';
+PRINT 'TestPersoon3ID: ' + CAST(@testPersoon3ID AS VARCHAR(10)) + ';';
+PRINT 'TestGav1ID: ' + CAST(@testGav1ID AS VARCHAR(10)) + ';';
+PRINT 'TestLid3ID: ' + CAST(@testLid3ID AS VARCHAR(10)) + ';';
 
 GO

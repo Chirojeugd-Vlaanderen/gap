@@ -329,7 +329,7 @@ GO
 
 BEGIN
 	CREATE TABLE [grp].[ChiroGroep](
-		[ChiroGroepID] [int] IDENTITY(1,1) NOT NULL,
+		[ChiroGroepID] [int] NOT NULL,
 		[Versie] [timestamp] NULL,
 		[Plaats] [varchar](60) NULL,
 		CONSTRAINT [PK_ChiroGroep] PRIMARY KEY CLUSTERED ([ChiroGroepID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
