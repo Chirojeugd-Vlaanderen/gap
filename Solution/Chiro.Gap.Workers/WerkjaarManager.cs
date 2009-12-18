@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm;
-using System.Diagnostics;
+
 using Chiro.Gap.Fouten.Exceptions;
+using Chiro.Gap.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Workers
 {
