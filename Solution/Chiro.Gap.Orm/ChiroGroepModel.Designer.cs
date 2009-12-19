@@ -32,7 +32,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_CommunicatieVorm_CommunicatieType", "CommunicatieType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.CommunicatieType), "CommunicatieVorm", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.CommunicatieVorm))]
 
 // Original file name:
-// Generation date: 23/11/2009 2:41:15
+// Generation date: 19/12/2009 12:05:32
 namespace Chiro.Gap.Orm
 {
     
@@ -3914,6 +3914,29 @@ namespace Chiro.Gap.Orm
         private byte[] _Versie;
         partial void OnVersieChanging(byte[] value);
         partial void OnVersieChanged();
+        /// <summary>
+        /// There are no comments for Property Voorbeeld in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Voorbeeld
+        {
+            get
+            {
+                return this._Voorbeeld;
+            }
+            set
+            {
+                this.OnVoorbeeldChanging(value);
+                this.ReportPropertyChanging("Voorbeeld");
+                this._Voorbeeld = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Voorbeeld");
+                this.OnVoorbeeldChanged();
+            }
+        }
+        private string _Voorbeeld;
+        partial void OnVoorbeeldChanging(string value);
+        partial void OnVoorbeeldChanged();
         /// <summary>
         /// There are no comments for CommunicatieVorm in the schema.
         /// </summary>

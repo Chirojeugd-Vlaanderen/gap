@@ -297,6 +297,7 @@
           <Property Name="Validatie" Type="varchar" MaxLength="160" />
           <Property Name="CommunicatieTypeID" Type="int" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="Voorbeeld" Type="varchar" MaxLength="160" />
         </EntityType>
         <EntityType Name="CommunicatieVorm">
           <Key>
@@ -1001,7 +1002,8 @@
           <Property Name="Validatie" Type="String" Nullable="true" />
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Versie" Type="Binary" Nullable="true" />
-          <NavigationProperty Name="CommunicatieVorm" Relationship="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" FromRole="CommunicatieType" ToRole="CommunicatieVorm" /></EntityType>
+          <NavigationProperty Name="CommunicatieVorm" Relationship="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" FromRole="CommunicatieType" ToRole="CommunicatieVorm" />
+          <Property Name="Voorbeeld" Type="String" Nullable="true" /></EntityType>
         <Association Name="FK_CommunicatieVorm_CommunicatieType">
           <End Type="ChiroGroepModel.CommunicatieType" Role="CommunicatieType" Multiplicity="1" />
           <End Type="ChiroGroepModel.CommunicatieVorm" Role="CommunicatieVorm" Multiplicity="*" /></Association></Schema>
@@ -1288,6 +1290,7 @@
           <EntitySetMapping Name="CommunicatieType">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.CommunicatieType)">
               <MappingFragment StoreEntitySet="CommunicatieType">
+                <ScalarProperty Name="Voorbeeld" ColumnName="Voorbeeld" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="ID" ColumnName="CommunicatieTypeID" />
                 <ScalarProperty Name="Validatie" ColumnName="Validatie" />
