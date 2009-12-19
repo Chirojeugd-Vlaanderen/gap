@@ -49,7 +49,7 @@ namespace Chiro.Cdf.Ioc
         {
             lock (threadLock)
             {
-                if (_container != null && _containerNaam != containerNaam)
+                if (_container != null /*&& _containerNaam != containerNaam*/)   // zie ticket #155
                 {
                     // Andere container in gebruik: geef eerst vrij.
 
