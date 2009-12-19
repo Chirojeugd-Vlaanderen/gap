@@ -34,7 +34,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="model">Te 'initen' model</param>
         /// <param name="groepID">groepID van de gewenste groep</param>
-        protected static void BaseModelInit(MasterViewModel model, int groepID)
+        protected void BaseModelInit(MasterViewModel model, int groepID)
         { 
             if (groepID == 0)
             {
@@ -62,19 +62,6 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.Groepsnaam = gi.Naam;
                 model.Plaats = gi.Plaats;
                 model.StamNummer = gi.StamNummer;
-
-                /*List<SelectListItem> list = new List<SelectListItem>();
-                SelectListItem item = new SelectListItem();
-                item.Text = "Kookies";
-                item.Value = "10";
-                item.Selected = false;
-                list.Add(item);
-                item = new SelectListItem();
-                item.Text = "Alle";
-                item.Value = "Alle";
-                item.Selected = true;
-                list.Add(item);
-                model.GroepsCategorieen = list;*/
             }
         }
     }
