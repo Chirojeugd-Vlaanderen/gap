@@ -35,8 +35,14 @@ namespace Chiro.Gap.ServiceContracts
         [OperationContract]
         void Bewaren(Lid lid);
 
+        /// <summary>
+        /// Krijgt een lijst met afdelingsIDs en het lid. De bedoeling is dat het lid een afdelingsjaar moet hebben voor die
+        /// afdelingsids en dat het voor andere afdelingsids verwijderd moet worden
+        /// </summary>
+        /// <param name="lidID"></param>
+        /// <param name="afdelingsJaarIDs"></param>
         [OperationContract]
-        void BewarenMetAfdelingen(Lid lid);
+        void BewarenMetAfdelingen(int lidID, IList<int> afdelingsIDs);
 
         [OperationContract]
         void BewarenMetFuncties(Lid lid);
@@ -91,5 +97,13 @@ namespace Chiro.Gap.ServiceContracts
         /// <param name="lid"></param>
         [OperationContract]
         void LidActiveren(Lid lid);
+
+        /// <summary>
+        /// Haalt lid inclusief afdelingsjaren, afdelingen en gelieerdepersoon
+        /// </summary>
+        /// <param name="lidID">ID op te halen lid</param>
+        /// <returns>Lidinfo met afdelingsjaren, afdelingen en gelieerdepersoon</returns>
+        [OperationContract]
+        LidInfo LidOphalenMetAfdelingen(int lidID);
     }
 }

@@ -11,9 +11,13 @@ namespace Chiro.Gap.WebApp.Models
 {
     public class LedenModel : MasterViewModel 
     {
-        public IList<Lid> Ledenlijst { get; set; }
+        public Dictionary<int, AfdelingInfo> AfdelingsInfoDictionary { get; set; }
+        //bevat de huidige afdelingen van een lid, of de geselecteerde na de ui, voor leiding
+        public List<int> AfdelingIDs { get; set; }
+        //bevat de huidige of de nieuwe gewenste afdeling voor een kind
+        public int AfdelingID { get; set; }
 
-        public Lid HuidigLid { get; set; }
+        public LidInfo HuidigLid { get; set; }
 
         public LedenModel() : base() { }
     }

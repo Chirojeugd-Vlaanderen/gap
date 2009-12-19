@@ -22,6 +22,5 @@ namespace Chiro.Gap.Data.Ef
                                         e => e.GelieerdePersoon, 
                                         e => e.AfdelingsJaar };
 		}
-
 	}
 }

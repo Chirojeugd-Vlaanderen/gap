@@ -34,31 +34,7 @@ namespace Chiro.Gap.WebApp
                 "Route voor ~/: Kies GAV"
                 , ""
                 , new { controller = "Gav", action = "Index" });
-            /*
-            routes.MapRoute(
-                "PaginatedPersonenList",
-                "{groepID}/Personen/List/{page}",
-                new { controller = "Personen", action = "List" }
-            );
 
-            routes.MapRoute(
-                "PaginatedLedenList",
-                "{groepID}/Leden/List/{groepsWerkJaarId}/{page}",
-                new { controller = "Leden", action = "List" }
-            );
-
-            routes.MapRoute(
-                "LedenCategorie",
-                "{groepID}/Leden/Categorie/{catID}/{page}",
-                new { controller = "Leden", action = "CatList" }
-            );
-
-            routes.MapRoute(
-                "PersonenCategorie",
-                "{groepID}/Personen/Categorie/{catID}/{page}",
-                new { controller = "Personen", action = "CatList" }
-            );
-            */
             routes.MapRoute(
                 "Default",
                 "{groepID}/{controller}/{action}/{id}/{page}",

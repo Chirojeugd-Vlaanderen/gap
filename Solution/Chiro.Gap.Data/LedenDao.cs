@@ -20,7 +20,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			connectedEntities = new Expression<Func<Lid, object>>[2] { 
                                         e => e.GroepsWerkJaar, 
-                                        e => e.GelieerdePersoon };
+                                        e => e.GelieerdePersoon.Persoon};
 		}
 
 		/// <summary>
@@ -171,6 +171,11 @@ namespace Chiro.Gap.Data.Ef
 			return lijst;
 		}
 
+        /// <summary>
+        /// lid met afdelingsjaren, afdelingen en gelieerdepersoon
+        /// </summary>
+        /// <param name="lidID"></param>
+        /// <returns></returns>
 		public Lid OphalenMetDetails(int lidID)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
@@ -178,21 +183,21 @@ namespace Chiro.Gap.Data.Ef
 				db.Lid.MergeOption = MergeOption.NoTracking;
 
 				Lid lid = (
-				    from t in db.Lid.Include("GelieerdePersoon").Include("GroepsWerkJaar")
+                    from t in db.Lid.Include("GelieerdePersoon.Persoon").Include("GroepsWerkJaar.AfdelingsJaar.Afdeling")
 				    where t.ID == lidID
 				    select t).FirstOrDefault<Lid>();
 
 				if (lid is Kind)
 				{
 					return (
-					    from t in db.Lid.OfType<Kind>().Include("GelieerdePersoon").Include("GroepsWerkJaar").Include("AfdelingsJaar")
+                        from t in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("GroepsWerkJaar.AfdelingsJaar.Afdeling").Include("AfdelingsJaar.Afdeling")
 					    where t.ID == lidID
 					    select t).FirstOrDefault<Kind>();
 				}
 				else if (lid is Leiding)
 				{
 					return (
-					    from t in db.Lid.OfType<Leiding>().Include("GelieerdePersoon").Include("GroepsWerkJaar").Include("AfdelingsJaar")
+                        from t in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("GroepsWerkJaar.AfdelingsJaar.Afdeling").Include("AfdelingsJaar.Afdeling")
 					    where t.ID == lidID
 					    select t).FirstOrDefault<Leiding>();
 				}

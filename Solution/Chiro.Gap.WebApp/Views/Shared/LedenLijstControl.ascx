@@ -27,7 +27,7 @@ maar dat is nu nog niet geimplementeerd :-) -->
     <td><%=l.PersoonInfo.Geslacht.ToString()%></td>
     <td>
         <%=Html.ActionLink("Verwijderen", "Verwijderen", new { Controller = "Leden", id = l.LidID })%>
-        <%=Html.ActionLink("Afdelingen", "AfdelingenBewerken", new { Controller = "Leden", id = l.LidID })%>
+        <%=Html.ActionLink("Afdelingen", "AfdelingBewerken", new { Controller = "Leden", lidID = l.LidID, groepsWerkJaarID = Model.GroepsWerkJaarIdZichtbaar })%>
     </td>
     <td><% foreach (int a in l.AfdelingIdLijst) 
            { %>

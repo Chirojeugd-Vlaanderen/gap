@@ -175,8 +175,8 @@ namespace Chiro.Gap.Data.Ef
 					     select c).FirstOrDefault().GelieerdePersoon;
 
                 //sorteer ze en bepaal totaal aantal personen
-                lijst = query.Skip((pagina - 1)*paginaGrootte).Take(paginaGrootte)
-                              .OrderBy(e => e.Persoon.Naam)
+                lijst = query.OrderBy(e => e.Persoon.Naam)
+                              .Skip((pagina - 1)*paginaGrootte).Take(paginaGrootte)
                               .ToList();
 				aantalTotaal = query.Count();
 

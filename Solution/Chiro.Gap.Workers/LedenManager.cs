@@ -24,51 +24,11 @@ namespace Chiro.Gap.Workers
 		/// voor data access.</param>
 		/// <param name="authorisatie">een IAuthorisatieManager, die
 		/// de GAV-permissies van de huidige user controleert.</param>
-		public LedenManager(LedenDaoCollectie daos, IAutorisatieManager autorisatie)
-		{
-			_daos = daos;
-			_authorisatieMgr = autorisatie;
-		}
-
-		/// <summary>
-		/// Deze functie met stichtende naam maakt een gelieerde persoon
-		/// lid in een gegeven afdelingsjaar.  Er wordt niet gepersisteerd.
-		/// </summary>
-		/// <param name="gp">Lid te maken gelieerde persoon, met Groep
-		/// eraan gekoppeld</param>
-		/// <param name="aj">Gewenste afdelingsjaar, met daaraan gekoppeld 
-		/// GroepsWerkJaar, en daaraan dan weer Groep</param>
-		/// <returns></returns>
-		public Kind KindMaken(GelieerdePersoon gp, AfdelingsJaar aj)
-		{
-			if (!_authorisatieMgr.IsGavGelieerdePersoon(gp.ID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
-			}
-
-			if (!_authorisatieMgr.IsGavGroepsWerkJaar(aj.GroepsWerkJaar.ID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGavAfdeling);
-			}
-
-			if (aj.GroepsWerkJaar.Groep.ID != gp.Groep.ID)
-			{
-				throw new FoutieveGroepException("De persoon is niet gelieerd aan de groep van het afdelingsjaar.");
-			}
-			else
-			{
-				Kind k = new Kind();
-				k.GelieerdePersoon = gp;
-				k.AfdelingsJaar = aj;
-				k.GroepsWerkJaar = aj.GroepsWerkJaar;
-
-				gp.Lid.Add(k);
-				aj.Kind.Add(k);
-				aj.GroepsWerkJaar.Lid.Add(k);
-
-				return k;
-			}
-		}
+        public LedenManager(LedenDaoCollectie daos, IAutorisatieManager autorisatie)
+        {
+            _daos = daos;
+            _authorisatieMgr = autorisatie;
+        }
 
 		/// <summary>
 		/// 'Opwaarderen' van een gelieerd persoon tot een lid.
@@ -337,10 +297,77 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				// hier komen we in principe nooit (zie Assert)
 				throw new GeenGavException(Properties.Resources.GeenGavLid);
 			}
 
 		}
+
+        /// <summary>
+        /// Haalt lid op met afdelingsjaren, afdelingen en gelieerdepersoon
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID gevraagde lid</param>
+        /// <returns>Lid met afdelingsjaren, afdelingen en gelieerdepersoon.</returns>
+        public Lid OphalenMetAfdelingen(int lidID)
+        {
+            if (_authorisatieMgr.IsGavLid(lidID))
+            {
+                return _daos.LedenDao.OphalenMetDetails(lidID);
+            }
+            else
+            {
+                throw new GeenGavException(Properties.Resources.GeenGavLid);
+            }
+        }
+
+        public void UpdatenAfdelingen(Lid l, IList<int> afdelingsIDs)
+        {
+            if(l is Kind)
+            {
+                Kind l2 = (Kind)l;
+                if(afdelingsIDs.Count>1)
+                {
+                    throw new ArgumentException("Een kind mag maar in 1 afdeling zitten tegelijk");
+                }
+                if (afdelingsIDs.Count == 1 && l2.AfdelingsJaar.Afdeling.ID != afdelingsIDs[0])
+                {
+                    //verwijder het kind uit zijn huidige afdelingsjaar
+                    AfdelingsJaar ajoud = l2.AfdelingsJaar;
+                    //ajoud.Kind.FirstOrDefault(e => e.ID == l2.ID).TeVerwijderen = true;
+                    l2.AfdelingsJaar.TeVerwijderen = true;
+
+                    AfdelingsJaar ajnieuw = l2.GroepsWerkJaar.AfdelingsJaar.FirstOrDefault(e => e.Afdeling.ID == afdelingsIDs[0]);
+                    if (ajnieuw == null)
+                    {
+                        //TODO mag niet voorkomen?
+                        throw new ArgumentException("Er is zo geen afdelingsjaar");
+                    }
+                    ajnieuw.Kind.Add(l2);
+                    l2.AfdelingsJaar = ajnieuw;
+                }
+            }else
+            {
+                Leiding l2 = (Leiding)l;
+                var afdelingsjaren = l2.GroepsWerkJaar.AfdelingsJaar.ToList();
+                foreach (AfdelingsJaar aj in afdelingsjaren)
+                {
+                    if (afdelingsIDs.Contains(aj.Afdeling.ID))
+                    {
+                        if (l2.AfdelingsJaar.FirstOrDefault(e => e.Afdeling.ID == aj.Afdeling.ID)==null)
+                        {
+                            l2.AfdelingsJaar.Add(aj);
+                            aj.Leiding.Add(l2);
+                        }
+                    }
+                    else
+                    {
+                        if (l2.AfdelingsJaar.FirstOrDefault(e => e.Afdeling.ID == aj.Afdeling.ID) != null)
+                        {
+                            l2.AfdelingsJaar.FirstOrDefault(e => e.ID == aj.ID).TeVerwijderen = true;
+                            //aj.Leiding.FirstOrDefault(e => e.ID == l2.ID).TeVerwijderen = true;
+                        }
+                    }
+                }
+            }
+        }
 	}
 }

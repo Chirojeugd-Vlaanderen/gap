@@ -10,6 +10,7 @@ using Chiro.Gap.Orm;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.ServiceContracts.Mappers;
 using AutoMapper;
+using System.Security.Permissions;
 
 namespace Chiro.Gap.Services
 {
@@ -30,6 +31,7 @@ namespace Chiro.Gap.Services
 
 		#endregion
 
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public string LidMakenEnBewaren(int gelieerdePersoonID)
 		{
 			GelieerdePersoon gp = _gpm.DetailsOphalen(gelieerdePersoonID);
@@ -44,41 +46,48 @@ namespace Chiro.Gap.Services
 		/// ook om te maken en te deleten
 		/// </summary>
 		/// <param name="persoon"></param>
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void Bewaren(Lid lid)
 		{
 			_lm.LidBewaren(lid);
 		}
 
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public Boolean Verwijderen(int id)
 		{
 			return _lm.LidVerwijderen(id);
 		}
 
-		public void BewarenMetAfdelingen(Lid lid)
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public void BewarenMetAfdelingen(int lidID, IList<int> afdelingsIDs)
 		{
-			//TODO
-			throw new NotImplementedException();
+            Lid l = _lm.OphalenMetAfdelingen(lidID);
+            _lm.UpdatenAfdelingen(l, afdelingsIDs);
+            _lm.LidBewaren(l);
 		}
 
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void BewarenMetFuncties(Lid lid)
 		{
 			//TODO
 			throw new NotImplementedException();
 		}
 
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void BewarenMetVrijeVelden(Lid lid)
 		{
 			//TODO
 			throw new NotImplementedException();
 		}
 
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<LidInfo> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
             var result = _lm.PaginaOphalen(groepsWerkJaarID, pagina, paginaGrootte, out aantalTotaal);
             return Mapper.Map<IList<Lid>, IList<LidInfo>>(result);
         }
 
-
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<LidInfo> PaginaOphalenVolgensCategorie(int categorieID, int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
             //TODO
@@ -89,6 +98,7 @@ namespace Chiro.Gap.Services
 		/// 
 		/// </summary>
 		/// <param name="lid"></param>
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void LidOpNonactiefZetten(Lid lid)
 		{
 			_lm.LidOpNonactiefZetten(lid);
@@ -98,6 +108,7 @@ namespace Chiro.Gap.Services
 		/// 
 		/// </summary>
 		/// <param name="lid"></param>
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void LidActiveren(Lid lid)
 		{
 			_lm.LidActiveren(lid);
@@ -115,10 +126,17 @@ namespace Chiro.Gap.Services
 			return Mapper.Map<IList<Lid>, IList<LidInfo>>(result);
 		}*/
 
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<LidInfo> PaginaOphalenVoorAfdeling(int groepsWerkJaarID, int afdelingsID)
 		{
 			IList<Lid> result = _lm.PaginaOphalen(groepsWerkJaarID, afdelingsID);
 			return Mapper.Map<IList<Lid>, IList<LidInfo>>(result);
 		}
+
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        public LidInfo LidOphalenMetAfdelingen(int lidID)
+        {
+            return Mapper.Map<Lid, LidInfo>(_lm.OphalenMetAfdelingen(lidID));
+        }
 	}
 }

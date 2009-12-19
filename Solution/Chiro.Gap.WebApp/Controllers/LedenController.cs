@@ -8,6 +8,7 @@ using Chiro.Gap.Orm;
 using System.Configuration;
 using Chiro.Adf.ServiceModel;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -132,23 +133,53 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         //
-        // GET: /Leden/Edit/5
- 
-        public ActionResult Edit(int id, int groepID)
+        // GET: /Leden/AfdelingBewerken/{groepsWerkJaarID}/{lidID}
+        public ActionResult AfdelingBewerken(int groepsWerkJaarID, int lidID, int groepID)
         {
-            return View();
+            var model = new LedenModel();
+            BaseModelInit(model, groepID);
+
+            var list =
+                ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
+                (groep => groep.AfdelingenOphalen(groepsWerkJaarID));
+            model.AfdelingsInfoDictionary = new Dictionary<int, AfdelingInfo>();
+            foreach (AfdelingInfo ai in list)
+            {
+                model.AfdelingsInfoDictionary.Add(ai.ID, ai);
+            }
+
+            model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>
+                (l => l.LidOphalenMetAfdelingen(lidID));
+
+            model.AfdelingIDs = model.HuidigLid.AfdelingIdLijst.ToList();
+
+            model.Title = "Ledenoverzicht";
+            
+            return View("AfdelingBewerken", model);
         }
 
         //
         // POST: /Leden/Edit/5
-
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Edit(int id, FormCollection collection, int groepID)
+        public ActionResult AfdelingBewerken(LedenModel model, int groepID)
         {
+            IList<int> selectie = new List<int>();
+            if (model.HuidigLid.Type == LidType.Kind)
+            {
+                selectie.Add(model.AfdelingID);
+            }
+            else
+            {
+                if (model.AfdelingIDs != null) // dit komt erop neer dat er iets geselecteerd
+                {
+                    selectie = model.AfdelingIDs;
+                }
+            }
+
             try
             {
-                // TODO: Add update logic here
- 
+                int x = selectie.Count;
+                ServiceHelper.CallService<ILedenService>(e => e.BewarenMetAfdelingen(model.HuidigLid.LidID, selectie));
                 return RedirectToAction("Index");
             }
             catch

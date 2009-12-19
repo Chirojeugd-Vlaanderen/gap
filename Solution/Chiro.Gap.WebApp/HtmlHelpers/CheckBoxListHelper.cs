@@ -30,6 +30,8 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 
     /// <summary>
     /// HTML-helper voor een (dynamische) lijst van checkboxes
+    /// 
+    /// belangrijk: als er niets wordt aangeklikt, wordt NULL teruggegeven ipv een lege lijst
     /// </summary>
     public static class CheckBoxListHelper
     {
