@@ -260,9 +260,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 // Maar ik toon de bewoners wel, dus moeten die hier opnieuw
                 // uit de database gehaald worden:
-
-                model.HerstelVanAdres();
-
+                model.VanAdresMetBewoners= ServiceHelper.CallService<IGelieerdePersonenService, Adres>(l => l.AdresMetBewonersOphalen(model.VanAdresMetBewoners.ID));
                 return View("AdresBewerken", model);
             }
             catch
@@ -347,9 +345,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 // De mogelijke bewoners zijn op dit moment vergeten, en moeten dus
                 // terug opgevraagd worden.
-
-                model.HerstelMogelijkeBewoners();
-
+                model.MogelijkeBewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<Persoon>>(l => l.HuisGenotenOphalen(model.AanvragerID));
                 return View("NieuwAdres", model);
             }
             catch

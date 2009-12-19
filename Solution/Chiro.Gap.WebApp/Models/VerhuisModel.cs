@@ -49,16 +49,5 @@ namespace Chiro.Gap.WebApp.Models
             NaarAdres = new Adres();
             PersoonIDs = new List<int>();
         }
-
-
-
-        /// <summary>
-        /// Haalt de gegevens van het vanadres opnieuw op, op basis van
-        /// VanAdresMetBewoners.ID.
-        /// </summary>
-        public void HerstelVanAdres()
-        {
-            VanAdresMetBewoners = ServiceHelper.CallService<IGelieerdePersonenService, Adres>(l => l.AdresMetBewonersOphalen(VanAdresMetBewoners.ID));
-        }
     }
 }

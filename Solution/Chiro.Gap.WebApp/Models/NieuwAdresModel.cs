@@ -36,13 +36,13 @@ namespace Chiro.Gap.WebApp.Models
 
         /// <summary>
         /// ID's van Personen aan wie het adres gekoppeld moet
-        /// worden.  (In de meeste gevallen zal AanvragerID daarbij
-        /// inzitten.)
+        /// worden.  (In de meeste gevallen zal AanvragerID daar bij
+        /// zitten.)
         /// </summary>
         public List<int> PersoonIDs { get; set; }
 
         /// <summary>
-        /// Standaardconstructor - creeert lege NieuwAdresInfo
+        /// Standaardconstructor - creëert lege NieuwAdresInfo
         /// </summary>
         public NieuwAdresModel()
         {
@@ -52,14 +52,5 @@ namespace Chiro.Gap.WebApp.Models
             PersoonIDs = new List<int>();
         }
 
-        /// <summary>
-        /// Haalt eventuele mogelijke bewoners van het nieuwe
-        /// adres opnieuw op uit de database, op basis van
-        /// AanvragerID
-        /// </summary>
-        public void HerstelMogelijkeBewoners()
-        {
-            MogelijkeBewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<Persoon>>(l => l.HuisGenotenOphalen(AanvragerID));
-        }
     }
 }
