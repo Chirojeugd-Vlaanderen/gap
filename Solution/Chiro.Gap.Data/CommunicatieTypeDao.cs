@@ -16,8 +16,6 @@ namespace Chiro.Gap.Data.Ef
         {
             using (ChiroGroepEntities db = new ChiroGroepEntities())
             {
-                //db.CommunicatieVorm.MergeOption = MergeOption.NoTracking;
-
                 return (
                     from ct in db.CommunicatieType
                     where ct.ID == communicatieTypeID

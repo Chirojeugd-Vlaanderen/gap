@@ -17,10 +17,10 @@ using Chiro.Gap.WebApp.Properties;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
-    /**
-     * Om te zorgen dat het terugkeren naar de vorige lijst en dergelijke werkt in samenwerking met het opvragen van subsets
-     * (categorieen ofzo), hebben we steeds een default (categorie, ...) die aangeeft dat alle personen moeten worden meegegeven
-     */
+
+    // Om te zorgen dat het terugkeren naar de vorige lijst en dergelijke werkt in samenwerking met het opvragen van subsets
+    // (categorieën of zo), hebben we steeds een default (categorie, ...) die aangeeft dat alle personen moeten worden meegegeven
+
     public class PersonenController : BaseController
     {
         //TODO er moeten ook nog een laatst gebruikte "actie" worden toegevoegd, niet alleen actie id
@@ -194,7 +194,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult LidMaken(int id, int groepID)
         {
             TempData["feedback"] = ServiceHelper.CallService<ILedenService, String>(l => l.LidMakenEnBewaren(id));
-            return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID});
+            return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
         }
 
         // GET: /Personen/Verhuizen/vanAdresID?AanvragerID=#
@@ -260,7 +260,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 // Maar ik toon de bewoners wel, dus moeten die hier opnieuw
                 // uit de database gehaald worden:
-                model.VanAdresMetBewoners= ServiceHelper.CallService<IGelieerdePersonenService, Adres>(l => l.AdresMetBewonersOphalen(model.VanAdresMetBewoners.ID));
+                model.VanAdresMetBewoners = ServiceHelper.CallService<IGelieerdePersonenService, Adres>(l => l.AdresMetBewonersOphalen(model.VanAdresMetBewoners.ID));
                 return View("AdresBewerken", model);
             }
             catch
@@ -326,9 +326,6 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             try
             {
-                // FIXME: AdresTypeEnum.Onbekend moet erin om een nulwaarde te hebben, maar de defaultwaarde moet 'thuis' zijn
-                // vervangen door id = 0 in databank (en dan update van bestaande gegevens)?
-                if (model.NieuwAdresType == AdresTypeEnum.Onbekend) { model.NieuwAdresType = AdresTypeEnum.Thuis; }
                 // De service zal model.NieuwAdres.ID negeren; dit wordt
                 // steeds opnieuw opgezocht.  Adressen worden nooit
                 // gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)

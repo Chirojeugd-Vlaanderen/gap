@@ -11,9 +11,6 @@ namespace Chiro.Gap.Orm
     public enum AdresTypeEnum
     {
         [EnumMember]
-        Onbekend = 0
-        ,
-        [EnumMember]
         Thuis = 1
         ,
         [EnumMember]
