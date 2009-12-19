@@ -273,7 +273,11 @@ namespace Chiro.Gap.Services
 			return _cvMgr.CommunicatieTypesOphalen();
 		}
 
-		#endregion
+        public int PersoonIDGet(int gelieerdePersoonID)
+        {
+            // TODO: Heel de gelieerde persoon + persoon ophalen voor enkel 1 ID is nog altijd overkill; zie issue #154
+            return _gpMgr.Ophalen(gelieerdePersoonID).Persoon.ID;
+        }
 
 		#region categorieen
 		/// <summary>
@@ -328,5 +332,10 @@ namespace Chiro.Gap.Services
 		}
 
 		#endregion categorieen
-	}
+
+
+
+
+        #endregion
+    }
 }

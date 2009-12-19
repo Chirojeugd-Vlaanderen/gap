@@ -90,6 +90,15 @@ namespace Chiro.Gap.ServiceContracts
         [OperationContract]
         int PersoonAanmaken(GelieerdePersoon persoon, int groepID);
 
+        /// <summary>
+        /// Haalt PersoonID op van een gelieerde persoon
+        /// </summary>
+        /// <param name="gelieerdePersoonID">ID van de gelieerde persoon</param>
+        /// <returns>PersoonID van de persoon gekoppeld aan de gelieerde persoon bepaald door <paramref name="gelieerdePersoonID"/></returns>
+        /// <remarks>Eigenlijk is dit een domme method, maar ze wordt gemakshalve nog gebruikt.</remarks>
+        [OperationContract]
+        int PersoonIDGet(int gelieerdePersoonID);
+
         #region adressen
 
         /// <summary>

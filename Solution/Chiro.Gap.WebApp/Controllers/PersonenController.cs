@@ -278,12 +278,12 @@ namespace Chiro.Gap.WebApp.Controllers
             model.AdresMetBewoners = ServiceHelper.CallService<IGelieerdePersonenService, Adres>(foo => foo.AdresMetBewonersOphalen(id));
 
             // Standaard vervalt enkel het adres van de aanvrager
-            // FIXME: Het is wat overkill om hiervoor PersoonOphalenMetDetails aan te roepen.
-            // Maar voorlopig is er geen alternatief.
+            // Van de aanvrager heb ik het PersoonID nodig, en we hebben nu enkel het
+            // ID van de GelieerdePersoon.  Het PersoonID
 
             model.PersoonIDs = new List<int> 
             { 
-                ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(foo => foo.PersoonOphalenMetDetails(gelieerdePersoonID)).Persoon.ID
+                ServiceHelper.CallService<IGelieerdePersonenService, int>(srvc => srvc.PersoonIDGet(gelieerdePersoonID))
             };
 
             BaseModelInit(model, groepID);
@@ -310,9 +310,11 @@ namespace Chiro.Gap.WebApp.Controllers
             model.AanvragerID = id;
             model.MogelijkeBewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<Persoon>>(l => l.HuisGenotenOphalen(id));
 
-            // FIXME: overkill om aan het persoonID van de aanvragerID op te vragen
-            // (persoonID van de aanvrager al selecteren)
-            model.PersoonIDs.Add(ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id)).Persoon.ID);
+            // Standaard krijgt alleen de aanvrager een nieuw adres.
+            // Van de aanvrager heb ik het PersoonID nodig, en we hebben nu enkel het
+            // ID van de GelieerdePersoon.  Het PersoonID
+
+            model.PersoonIDs.Add(ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.PersoonIDGet(id)));
 
             model.Title = "Nieuw adres toevoegen";
             return View("NieuwAdres", model);
