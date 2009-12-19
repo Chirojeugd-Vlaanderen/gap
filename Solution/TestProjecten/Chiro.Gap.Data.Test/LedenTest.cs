@@ -157,7 +157,7 @@ namespace Chiro.Gap.Data.Test
 			#endregion
 
 			#region Act
-			kdao.Bewaren(k
+			k = kdao.Bewaren(k
 			    , lmb => lmb.GelieerdePersoon.WithoutUpdate()
 			    , lmb => lmb.AfdelingsJaar.GroepsWerkJaar.WithoutUpdate()
 			    , lmb => lmb.GroepsWerkJaar.WithoutUpdate());
@@ -200,5 +200,27 @@ namespace Chiro.Gap.Data.Test
 			Lid l2 = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.Groep.ID);
 			Assert.IsNull(l2);
 		}
+
+        /// <summary>
+        /// Leidingwijzigen
+        /// </summary>
+        [TestMethod]
+        public void LeidingWijzigen()
+        {
+            // Arrange
+
+            int lid3ID = TestInfo.LID3ID;
+
+            ILeidingDao ldao = Factory.Maak<ILeidingDao>();
+            Leiding l = ldao.Ophalen(lid3ID);
+
+            // Act
+
+            ldao.Bewaren(l);
+
+            // Assert
+
+            Assert.IsTrue(true); // eerst al eens kijken of we er zonder crash komen.
+        }
 	}
 }

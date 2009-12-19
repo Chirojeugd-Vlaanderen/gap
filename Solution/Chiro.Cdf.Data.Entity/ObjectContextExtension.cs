@@ -147,7 +147,7 @@ namespace Chiro.Cdf.Data.Entity
 				if (pars.Count > 0)
 				{
 					// Construct query:
-					ObjectQuery<T> query = (ObjectQuery<T>)context.PublicGetProperty(GetEntitySetName(context, typeof(T)));
+                    ObjectQuery<T> query = new ObjectQuery<T>(GetEntitySetName(context, typeof(T)), context).OfType<T>();
 					foreach (var path in paths)
 						query = query.Include(path);
 					query = query.Where(where.ToString(), pars.ToArray());
