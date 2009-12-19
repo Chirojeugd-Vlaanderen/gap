@@ -32,6 +32,11 @@
 		/// </summary>
 		public const int MINAANTALGELPERS = 3;
 
+        /// <summary>
+        /// LidID van een leider;
+        /// </summary>
+        public const int LID3ID = 607;
+
 
 		/// <summary>
 		/// ID van categorie van testgroep1
