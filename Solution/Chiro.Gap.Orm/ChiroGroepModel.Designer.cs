@@ -32,7 +32,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_CommunicatieVorm_CommunicatieType", "CommunicatieType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.CommunicatieType), "CommunicatieVorm", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.CommunicatieVorm))]
 
 // Original file name:
-// Generation date: 19/12/2009 12:05:32
+// Generation date: 19/12/2009 14:58:35
 namespace Chiro.Gap.Orm
 {
     
@@ -795,14 +795,12 @@ namespace Chiro.Gap.Orm
         /// </summary>
         /// <param name="naam">Initial value of Naam.</param>
         /// <param name="voorNaam">Initial value of VoorNaam.</param>
-        /// <param name="geslachtsInt">Initial value of GeslachtsInt.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static Persoon CreatePersoon(string naam, string voorNaam, int geslachtsInt, int id)
+        public static Persoon CreatePersoon(string naam, string voorNaam, int id)
         {
             Persoon persoon = new Persoon();
             persoon.Naam = naam;
             persoon.VoorNaam = voorNaam;
-            persoon.GeslachtsInt = geslachtsInt;
             persoon.ID = id;
             return persoon;
         }
@@ -903,7 +901,7 @@ namespace Chiro.Gap.Orm
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int GeslachtsInt
+        internal int GeslachtsInt
         {
             get
             {

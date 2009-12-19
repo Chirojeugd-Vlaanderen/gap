@@ -780,7 +780,7 @@
           <Property Name="Naam" Type="String" Nullable="false" MaxLength="160" Unicode="false" FixedLength="false" />
           <Property Name="VoorNaam" Type="String" MaxLength="60" Unicode="false" FixedLength="false" Nullable="false" />
           <Property Name="GeboorteDatum" Type="DateTime" />
-          <Property Name="GeslachtsInt" Type="Int32" Nullable="false" />
+          <Property Name="GeslachtsInt" Type="Int32" Nullable="false" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Internal" />
           <Property Name="SterfDatum" Type="DateTime" />
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Versie" Type="Binary" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" Nullable="true" />
