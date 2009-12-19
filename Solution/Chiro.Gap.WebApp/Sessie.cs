@@ -10,6 +10,7 @@ namespace Chiro.Gap.WebApp
     public static class Sessie
     {
         private const string LijstNaamString = "LaatsteLijst";
+        private const string ActieIDString = "LaatsteActieID";
         private const string LijstPaginaString = "LaatsteLijstPagina";
 
 
@@ -43,6 +44,23 @@ namespace Chiro.Gap.WebApp
             set
             {
                 HttpContext.Current.Session[LijstPaginaString] = value;
+            }
+        }
+
+        /// <summary>
+        /// Bevat de waarde van het actie gedeelte van de url van de laatste lijst
+        /// (indirectie alom ;))
+        /// </summary>
+        public static int LaatsteActieID
+        {
+            get
+            {
+                int ? i = HttpContext.Current.Session[ActieIDString] as int?;
+                return i == null ? 0 : (int)i;
+            }
+            set
+            {
+                HttpContext.Current.Session[ActieIDString] = value;
             }
         }
     }

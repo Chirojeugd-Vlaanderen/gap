@@ -157,40 +157,42 @@ namespace Chiro.Gap.Data.Ef
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
+                //haal de groep van de gevraagde categorie op
 				g = (from c in db.Categorie
 				     where c.ID == categorieID
 				     select c.Groep).FirstOrDefault();
 
+                //haal het huidige groepswerkjaar van de groep op
 				huidigWj = (
 				    from w in db.GroepsWerkJaar
 				    where w.Groep.ID == g.ID
 				    orderby w.WerkJaar descending
 				    select w).FirstOrDefault<GroepsWerkJaar>().WerkJaar;
 
-				// selecteer de gevraagde personen
-
+				// haal alle personen in de gevraagde categorie op
 				var query = (from c in db.Categorie.Include("GelieerdePersoon.Persoon")
-					     from gp in c.GelieerdePersoon
 					     where c.ID == categorieID
-					     select gp);
+					     select c).FirstOrDefault().GelieerdePersoon;
 
-				lijst = query.OrderBy(gp=>gp.Persoon.Naam).Skip((pagina - 1)*paginaGrootte).Take(paginaGrootte).ToList();
+                //sorteer ze en bepaal totaal aantal personen
+                lijst = query.Skip((pagina - 1)*paginaGrootte).Take(paginaGrootte)
+                              .OrderBy(e => e.Persoon.Naam)
+                              .ToList();
 				aantalTotaal = query.Count();
 
 				// lijst is geattacht aan de objectcontext.  Als we nu ook de lidojecten van de 
 				// gelieerdepersonen in de lijst ophalen voor het gegeven werkjaar, dan worden
 				// die DDD-gewijze aan de gelieerde personen gekoppeld.
 
-				// ID's van de geselecteerde personen
-
-				IList<int> relevanteGpIDS = (from gp in lijst
-							     select gp.ID).ToList();
+				// haal de IDs van alle relevante personen op
+				IList<int> relevanteGpIDS = (from gp in lijst select gp.ID).ToList();
 
 				// Selecteer nu alle leden van huidig werkjaar met relevant gelieerdePersoonID
 
 				var huidigeLedenUitlijst = (from l in db.Lid.Include("GelieerdePersoon")
 								.Where(Utility.BuildContainsExpression<Lid, int>(ld=>ld.GelieerdePersoon.ID, relevanteGpIDS))
-								    select l).ToList();		
+                                where l.GroepsWerkJaar.WerkJaar == huidigWj
+							    select l).ToList();		
 			}
 			Utility.DetachObjectGraph(lijst);
 

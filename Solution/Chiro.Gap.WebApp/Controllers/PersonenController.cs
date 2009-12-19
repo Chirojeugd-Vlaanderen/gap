@@ -17,66 +17,77 @@ using Chiro.Gap.WebApp.Properties;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
+    /**
+     * Om te zorgen dat het terugkeren naar de vorige lijst en dergelijke werkt in samenwerking met het opvragen van subsets
+     * (categorieen ofzo), hebben we steeds een default (categorie, ...) die aangeeft dat alle personen moeten worden meegegeven
+     */
     public class PersonenController : BaseController
     {
+        //TODO er moeten ook nog een laatst gebruikte "actie" worden toegevoegd, niet alleen actie id
+
         //
         // GET: /Personen/
         public ActionResult Index(int groepID)
         {
-            return List(1, groepID);
+            return List(1, groepID, 0);
         }
 
         //
-        // GET: /Personen/List/{paginanummer}
-        public ActionResult List(int page, int groepID)
+        // GET: /Personen/List/{id}/{paginanummer}
+        public ActionResult List(int page, int groepID, int id)
         {
-            // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
+            Sessie.LaatsteActieID = id;
             Sessie.LaatsteLijst = "Personen";
             Sessie.LaatstePagina = page;
 
-            int totaal = 0;
+            //alle personen bekijken
+            if (id == 0)
+            {
+                // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
+                int totaal = 0;
 
-            var model = new Models.PersoonInfoModel();
-            BaseModelInit(model, groepID);
+                var model = new Models.PersoonInfoModel();
+                BaseModelInit(model, groepID);
 
-            model.PersoonInfoLijst =
-                ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
-                (g => g.PaginaOphalenMetLidInfo(groepID, page, 20, out totaal));
-            model.PageHuidig = page;
-            model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
-            model.Title = "Personenoverzicht";
-            model.Totaal = totaal;
+                model.PersoonInfoLijst =
+                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
+                    (g => g.PaginaOphalenMetLidInfo(groepID, page, 20, out totaal));
+                model.PageHuidig = page;
+                model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
+                model.Title = "Personenoverzicht";
+                model.Totaal = totaal;
 
-            var categories = ServiceHelper.CallService<IGroepenService, Groep>(g => g.OphalenMetCategorieen(groepID)).Categorie;
-            model.GroepsCategorieen = new SelectList(categories, "Naam", "Naam");
+                var categories = ServiceHelper.CallService<IGroepenService, Groep>(g => g.OphalenMetCategorieen(groepID)).Categorie;
+                model.GroepsCategorieen = new SelectList(categories, "ID", "Naam");
 
-            return View("Index", model);
-        }
+                return View("Index", model);
+            }
+            else
+            {
+                // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
+                //TODO wat willen we hier juist bijhouden
+                //Sessie.LaatsteLijst = "Personen";
+                //Sessie.LaatstePagina = page;
 
-        //
-        // GET: /Personen/Categorie/{catid}/{paginanummer}
-        public ActionResult Categorie(int page, int groepID, int id)
-        {
-            // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
-            //TODO wat willen we hier juist bijhouden
-            //Sessie.LaatsteLijst = "Personen";
-            //Sessie.LaatstePagina = page;
+                int totaal = 0;
 
-            int totaal = 0;
+                var model = new Models.PersoonInfoModel();
+                BaseModelInit(model, groepID);
 
-            var model = new Models.PersoonInfoModel();
-            BaseModelInit(model, groepID);
+                //TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
+                model.PersoonInfoLijst =
+                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
+                    (g => g.PaginaOphalenMetLidInfoVolgensCategorie(id, page, 20, out totaal));
+                model.PageHuidig = page;
+                model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
+                model.Title = "Overzicht " + "Categorie X";
+                model.Totaal = totaal;
 
-            //TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
-            model.PersoonInfoLijst =
-                ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
-                (g => g.PaginaOphalenMetLidInfoVolgensCategorie(id, page, 20, out totaal));
-            model.PageHuidig = page;
-            model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
-            model.Title = "Overzicht " + "Categorie X";
-            model.Totaal = totaal;
+                var categories = ServiceHelper.CallService<IGroepenService, Groep>(g => g.OphalenMetCategorieen(groepID)).Categorie;
+                model.GroepsCategorieen = new SelectList(categories, "ID", "Naam");
 
-            return View("Index", model);
+                return View("Index", model);
+            }
         }
 
         //
@@ -177,7 +188,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult LidMaken(int id, int groepID)
         {
             TempData["feedback"] = ServiceHelper.CallService<ILedenService, String>(l => l.LidMakenEnBewaren(id));
-            return RedirectToAction("Index");
+            return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID});
         }
 
         // GET: /Personen/Verhuizen/vanAdresID?AanvragerID=#

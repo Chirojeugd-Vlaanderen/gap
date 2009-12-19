@@ -49,20 +49,20 @@ namespace Chiro.Gap.WebApp
 
             routes.MapRoute(
                 "LedenCategorie",
-                "{groepID}/Leden/Categorie/{categorieId}/{page}",
+                "{groepID}/Leden/Categorie/{catID}/{page}",
                 new { controller = "Leden", action = "CatList" }
             );
 
             routes.MapRoute(
                 "PersonenCategorie",
-                "{groepID}/Personen/Categorie/{categorieId}/{page}",
+                "{groepID}/Personen/Categorie/{catID}/{page}",
                 new { controller = "Personen", action = "CatList" }
             );
             */
             routes.MapRoute(
                 "Default",
                 "{groepID}/{controller}/{action}/{id}/{page}",
-                new { controller = "Personen", action = "Index", id = "", page = 1 }
+                new { controller = "Personen", action = "Index", page = "1", id = "0"}
                 // (personencontroller indien geen controller meegegeven)
             );
         }

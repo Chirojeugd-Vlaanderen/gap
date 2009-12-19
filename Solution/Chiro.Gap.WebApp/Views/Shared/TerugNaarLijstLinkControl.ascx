@@ -8,6 +8,6 @@
         if (Chiro.Gap.WebApp.Sessie.LaatsteLijst != String.Empty)
         {
     %>
-    <%=Html.ActionLink("Terug naar de lijst", "List", new { Controller = Chiro.Gap.WebApp.Sessie.LaatsteLijst, id = Chiro.Gap.WebApp.Sessie.LaatstePagina })%>
+    <%=Html.ActionLink("Terug naar de lijst", "List", new { Controller = Chiro.Gap.WebApp.Sessie.LaatsteLijst, page = Chiro.Gap.WebApp.Sessie.LaatstePagina, id = Chiro.Gap.WebApp.Sessie.LaatsteActieID })%>
     <% } %>
 </div>
