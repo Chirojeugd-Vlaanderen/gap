@@ -31,7 +31,7 @@ maar dat is nu nog niet geimplementeerd :-) -->
     </td>
     <td><% foreach (int a in l.AfdelingIdLijst) 
            { %>
-               <%=Html.ActionLink(ViewData.Model.AfdelingsInfoDictionary[a].Afkorting, "Afdeling", new { Controller = "Leden", id = a }, new { title = ViewData.Model.AfdelingsInfoDictionary[a].Naam } )%>
+               <%=Html.ActionLink(Html.Encode(ViewData.Model.AfdelingsInfoDictionary[a].Afkorting), "Afdeling", new { Controller = "Leden", id = a }, new { title = Html.Encode(ViewData.Model.AfdelingsInfoDictionary[a].Naam) } )%>
         <% } %>
     </td>
 
