@@ -9,10 +9,6 @@
 
     $(function() {
         $("#Categorie").change(function() {
-            //var link = '<%= Html.ActionLink("CategorieBekijken", "Categorie") %>';
-            //var data = $("#Categorie").val();
-            //url = window.location.href.replace("List", "Categorie");
-            //window.location = url.substring(0, url.lastIndexOf("/")).concat("/" + data + "/" + 1);
         window.location = $("#Categorie select option:selected").val();
         });
 

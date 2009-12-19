@@ -189,7 +189,7 @@ namespace Chiro.Gap.Data.Ef
 
 				// Selecteer nu alle leden van huidig werkjaar met relevant gelieerdePersoonID
 
-				var huidigeLedenUitlijst = (from l in db.Lid.Include("GelieerdePersoon")
+				var huidigeLedenUitlijst = (from l in db.Lid.Include("GelieerdePersoon.Categorie")
 								.Where(Utility.BuildContainsExpression<Lid, int>(ld=>ld.GelieerdePersoon.ID, relevanteGpIDS))
                                 where l.GroepsWerkJaar.WerkJaar == huidigWj
 							    select l).ToList();		

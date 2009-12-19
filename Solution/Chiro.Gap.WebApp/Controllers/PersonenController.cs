@@ -80,7 +80,13 @@ namespace Chiro.Gap.WebApp.Controllers
                     (g => g.PaginaOphalenMetLidInfoVolgensCategorie(id, page, 20, out totaal));
                 model.PageHuidig = page;
                 model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
-                model.Title = "Overzicht " + "Categorie X";
+
+                String naam = (from c in model.PersoonInfoLijst.First().CategorieLijst
+                               where c.ID == id
+                               select c
+                                ).First().Naam;
+
+                model.Title = "Overzicht " + naam;
                 model.Totaal = totaal;
 
                 var categories = ServiceHelper.CallService<IGroepenService, Groep>(g => g.OphalenMetCategorieen(groepID)).Categorie;
