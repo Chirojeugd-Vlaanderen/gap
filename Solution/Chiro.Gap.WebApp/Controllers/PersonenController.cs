@@ -330,8 +330,6 @@ namespace Chiro.Gap.WebApp.Controllers
                 // De service zal model.NieuwAdres.ID negeren; dit wordt
                 // steeds opnieuw opgezocht.  Adressen worden nooit
                 // gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
-                //TODO adrestype moet nog worden toegevoegd op de UI paginas ipv hier te setten
-                model.NieuwAdresType = AdresTypeEnum.Thuis;
 
                 ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenAanPersonen(model.PersoonIDs, model.NieuwAdres, model.NieuwAdresType));
 

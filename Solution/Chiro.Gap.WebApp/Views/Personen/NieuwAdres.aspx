@@ -53,9 +53,11 @@
            <label for="NieuwAdres_Subgemeente_Naam">Gemeente</label>
            <%=Html.TextBox("NieuwAdres.Subgemeente.Naam") %> <%= Html.ValidationMessage("NieuwAdres.Subgemeente.Naam") %> <br />
            
-<%
-	// TODO: DropDownList toevoegen om adrestype te selecteren
-%>
+           <% var values = from AdresTypeEnum e in Enum.GetValues(typeof(AdresTypeEnum))
+                           select new { value = e, text = e.ToString() };
+             %>
+           <label for="NieuwAdresType">Type</label>
+           <%=Html.DropDownList("NieuwAdresType", new SelectList(values, "value", "text"))%>
 
            <%=Html.Hidden("AanvragerID") %>
            
