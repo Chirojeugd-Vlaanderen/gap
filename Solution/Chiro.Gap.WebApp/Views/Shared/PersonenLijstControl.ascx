@@ -9,7 +9,7 @@ Pagina: <%= Html.PagerLinks(ViewData.Model.PageHuidig, ViewData.Model.PageTotaal
 
 <table>
 <tr>
-<th>Ad-nr.</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Acties</th>
+<th>Ad-nr.</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Acties</th><th>Categorie&euml;n</th>
 </tr>
 
 <% foreach (PersoonInfo p in ViewData.Model.PersoonInfoLijst) {  %>
@@ -22,6 +22,11 @@ Pagina: <%= Html.PagerLinks(ViewData.Model.PageHuidig, ViewData.Model.PageTotaal
         <% if (!p.IsLid)
            { %>
         <%=Html.ActionLink("Lid maken", "LidMaken", new { Controller = "Personen", id = p.GelieerdePersoonID })%>
+        <% } %>
+    </td>
+    <td><% foreach (Categorie c in p.CategorieLijst) 
+           { %>
+               <%=Html.ActionLink(c.Code.ToString(), "Categorie", new { Controller = "Personen", id = c.ID })%>
         <% } %>
     </td>
 </tr>

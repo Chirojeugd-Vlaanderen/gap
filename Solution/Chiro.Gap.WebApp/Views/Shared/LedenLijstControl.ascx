@@ -9,7 +9,7 @@ Pagina: <%= Html.PagerLinks(ViewData.Model.PageHuidig, ViewData.Model.PageTotaal
 
 <table>
 <tr>
-<th>Ad-nr.</th><th>Type</th><th>Afdeling</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Acties</th>
+<th>Ad-nr.</th><th>Type</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Acties</th><th>Afdeling</th>
 </tr>
 
 <!-- TODO: Momenteel is dit slechts een kopie van de PersonenLijst.
@@ -22,7 +22,6 @@ maar dat is nu nog niet geimplementeerd :-) -->
 <tr>
     <td><%=l.PersoonInfo.AdNummer %></td>
     <td><%=l.Type.ToString() %></td>
-    <td><%=l.AfdelingsNamen %></td>
     <td><% Html.RenderPartial("PersoonsLinkControl", l.PersoonInfo); %></td>
     <td class="right"><%=l.PersoonInfo.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)l.PersoonInfo.GeboorteDatum).ToString("d")%></td>
     <td><%=l.PersoonInfo.Geslacht.ToString()%></td>
@@ -30,6 +29,7 @@ maar dat is nu nog niet geimplementeerd :-) -->
         <%=Html.ActionLink("Verwijderen", "Verwijderen", new { Controller = "Leden", id = l.LidID })%>
         <%=Html.ActionLink("Afdelingen", "AfdelingenBewerken", new { Controller = "Leden", id = l.LidID })%>
     </td>
+    <td><%=l.AfdelingsNamen %></td>
 </tr>
 <% } %>
 
