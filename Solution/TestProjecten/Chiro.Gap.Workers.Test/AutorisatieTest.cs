@@ -150,11 +150,14 @@ namespace Chiro.Gap.Workers.Test
 		public void LijstLedenGav()
 		{
 			// Arrange
+            
+            int totaal;
 
 			var ledenDaoMock = new Mock<ILedenDao>();
 			var autorisatieMgrMock = new Mock<IAutorisatieManager>();
 
 			ledenDaoMock.Setup(foo => foo.AllesOphalen(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(new List<Lid>());
+            ledenDaoMock.Setup(foo => foo.PaginaOphalen(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), out totaal)).Returns(new List<Lid>());
 			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(true);
 
 			Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
@@ -164,7 +167,6 @@ namespace Chiro.Gap.Workers.Test
 
 			// Act
 
-            int totaal;
 			IList<Lid> lijst = lm.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID, 1, 20, out totaal);
 
 			// Assert
