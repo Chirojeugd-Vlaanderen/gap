@@ -13,9 +13,9 @@ namespace Chiro.Gap.Validatie
         /// die gegeven zijn via attributen.)
         /// 
         /// Voorlopig zijn er zo nog geen attributen, dus retourneert
-        /// deze functie gewoonweg 'true'.
+        /// deze functie gewoonweg <c>true</c>.
         /// </summary>
-        /// <param name="teValideren">true indien validatie ok</param>
+        /// <param name="teValideren"><c>true</c> indien validatie ok</param>
         /// <returns></returns>
         public virtual bool Valideer(T teValideren)
         {

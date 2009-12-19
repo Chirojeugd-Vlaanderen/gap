@@ -10,6 +10,7 @@ using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {
@@ -46,7 +47,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(Resources.GeenGavGroep);
 			}
 		}
 
@@ -70,7 +71,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(Resources.GeenGavGroep);
 			}
 		}
 
@@ -86,7 +87,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavAfdeling(a.ID))
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavAfdeling);
+				throw new GeenGavException(Resources.GeenGavAfdeling);
 			}
 
 			if (geboorteJaarBegin < System.DateTime.Today.Year - 20
@@ -136,7 +137,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(Resources.GeenGavGroep);
 			}
 		}
 
@@ -153,7 +154,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(Resources.GeenGavGroep);
 			}
         }
 
@@ -168,7 +169,7 @@ namespace Chiro.Gap.Workers
             {
                 throw new GeenGavException(Properties.Resources.GeenGavGroep);
             }*/
-            throw new GeenGavException(Properties.Resources.GeenGavGroep);
+            throw new GeenGavException(Resources.GeenGavGroep);
         }
         ////END TEST
 
@@ -184,7 +185,7 @@ namespace Chiro.Gap.Workers
             }
             else
             {
-                throw new GeenGavException(Properties.Resources.GeenGavGroep);
+                throw new GeenGavException(Resources.GeenGavGroep);
             }
         }
 
@@ -199,7 +200,7 @@ namespace Chiro.Gap.Workers
 		{
             if(!_autorisatieMgr.IsGavGroep(g.ID))
             {
-                throw new GeenGavException(Properties.Resources.GeenGavGroep);
+                throw new GeenGavException(Resources.GeenGavGroep);
             }
 
             Categorie c = new Categorie();
@@ -224,7 +225,7 @@ namespace Chiro.Gap.Workers
 
 			if (!_autorisatieMgr.IsGavGroep(g.ID) || !_autorisatieMgr.IsGavCategorie(c.ID))
 			{
-                throw new GeenGavException(Properties.Resources.GeenGavGroep);
+                throw new GeenGavException(Resources.GeenGavGroep);
 			}
 
             c.TeVerwijderen = true;

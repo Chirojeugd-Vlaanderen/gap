@@ -117,4 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FouteAfdelingVoorGroepString" xml:space="preserve">
+    <value>De opgegeven afdeling is geen afdeling van groep {0}.</value>
+    <comment>Parameter 0: naam van de groep</comment>
+  </data>
+  <data name="FouteCategorieVoorGroepString" xml:space="preserve">
+    <value>Er is zo geen categorie in de gegeven groep.</value>
+  </data>
+  <data name="FouteCommunicatieVormVoorPersoonString" xml:space="preserve">
+    <value>De communicatievorm behoort niet toe aan de geselecteerde persoon.</value>
+  </data>
 </root>

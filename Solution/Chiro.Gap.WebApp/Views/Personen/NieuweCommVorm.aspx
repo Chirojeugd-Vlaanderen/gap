@@ -2,59 +2,56 @@
 <%@ Import Namespace="Chiro.Gap.Orm" %>
 <%@ Import Namespace="Chiro.Gap.WebApp" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
-
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
-
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-  
     <% using (Html.BeginForm())
        {
-           %>
-           
-           <ul id="acties">
-           <li><input type="submit" value="Bewaren" /></li>
-           </ul>
-           
-           <fieldset>
-           <legend>Communicatievorm toevoegen voor <%=Model.Aanvrager.Persoon.VolledigeNaam %></legend>     
-           
-           <table>
-           <tr>
-                <td><%=Html.DropDownList("Model.geselecteerdeCommVorm", new SelectList(Model.Types.Select(x => new { value = x.ID, text = x.Omschrijving }), "value", "text"))%>
-                :</td>
+    %>
+    <ul id="acties">
+        <li>
+            <input type="submit" value="Bewaren" /></li>
+    </ul>
+    <fieldset>
+        <legend>Communicatievorm toevoegen voor
+            <%=Model.Aanvrager.Persoon.VolledigeNaam %></legend>
+        <%=Html.ValidationSummary() %>
+        <table>
+            <tr>
+                <td>
+                    <%=Html.DropDownList("Model.geselecteerdeCommVorm", new SelectList(Model.Types.Select(x => new { value = x.ID, text = x.Omschrijving }), "value", "text"))%>
+                    :
+                </td>
                 <td>
                     <%=Html.TextBox("Model.NieuweCommVorm.Nummer")%>
-                    <%= Html.ValidationMessage("Model.NieuweCommVorm.Nummer")%> 
                 </td>
-           </tr>
-           <tr>
-                <td>Is dit de voorkeurscommunicatie voor dit communicatietype?</td>
-                <td><%=Html.CheckBox("Model.NieuweCommVorm.Voorkeur", false)%>
-                    <%= Html.ValidationMessage("Model.NieuweCommVorm.Voorkeur")%> 
-                </td>
-           </tr>
-           <tr>
-                <td>Is het gezinsgebonden?</td>
+            </tr>
+            <tr>
                 <td>
-                <%=Html.CheckBox("Model.NieuweCommVorm.IsGezinsgebonden", false)%>
-                <%= Html.ValidationMessage("Model.NieuweCommVorm.IsGezinsgebonden")%> 
+                    Is dit de voorkeurscommunicatie voor dit communicatietype?
                 </td>
-           </tr>
-           <tr>
-                <td>Extra informatie</td>
                 <td>
-                <%=Html.TextBox("Model.NieuweCommVorm.Nota")%> 
-                <%= Html.ValidationMessage("Model.NieuweCommVorm.Nota")%> 
+                    <%=Html.CheckBox("Model.NieuweCommVorm.Voorkeur", false)%>
                 </td>
-           </tr>
-           </table>
-           
-           </fieldset>
-           
-           <%
+            </tr>
+            <tr>
+                <td>
+                    Is het gezinsgebonden?
+                </td>
+                <td>
+                    <%=Html.CheckBox("Model.NieuweCommVorm.IsGezinsgebonden", false)%>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Extra informatie
+                </td>
+                <td>
+                    <%=Html.TextBox("Model.NieuweCommVorm.Nota")%>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <%
         } %>
-       
- 
-
 </asp:Content>

@@ -18,7 +18,7 @@ namespace Chiro.Gap.ServiceContracts
         /// <param name="GroepId"></param>
         /// <returns></returns>
         [OperationContract]
-        GroepInfo OphalenInfo(int GroepId);
+        GroepInfo InfoOphalen(int GroepId);
 
         /// <summary>
         /// Ophalen van de Groeps info
@@ -26,7 +26,7 @@ namespace Chiro.Gap.ServiceContracts
         /// <param name="GroepId"></param>
         /// <returns></returns>
         [OperationContract]
-        IEnumerable<GroepInfo> OphalenMijnGroepen();
+        IEnumerable<GroepInfo> MijnGroepenOphalen();
 
         /// <summary>
         /// Persisteert een groep in de database
@@ -90,7 +90,7 @@ namespace Chiro.Gap.ServiceContracts
         #region afdelingen
 
         [OperationContract]
-        void AanmakenAfdeling(int groepID, string naam, string afkorting);
+        void AfdelingAanmaken(int groepID, string naam, string afkorting);
 
         /// <summary>
         /// Methode die aan de hand van een groep, een afdelingsjaar van de groep en een officiele afdeling een 
@@ -100,10 +100,10 @@ namespace Chiro.Gap.ServiceContracts
         /// <param name="aj"></param>
         /// <param name="oa"></param>
         [OperationContract]
-        void AanmakenAfdelingsJaar(int groepID, int afdID, int offafdID, int geboortejaarbegin, int geboortejaareind);
+        void AfdelingsJaarAanmaken(int groepID, int afdID, int offafdID, int geboortejaarbegin, int geboortejaareind);
 
         [OperationContract]
-        IList<OfficieleAfdeling> OphalenOfficieleAfdelingen();
+        IList<OfficieleAfdeling> OfficieleAfdelingenOphalen();
         #endregion
 
         #region categorieen

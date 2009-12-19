@@ -30,7 +30,7 @@ namespace Chiro.Gap.ServiceContracts
         /// </summary>
         /// <param name="g"></param>
         [OperationContract]
-        void VoegGroepToeAanGav(Gav g);
+        void GroepAanGavToevoegen(Gav g);
 
         /// <summary>
         /// Zorgen dat een gav geen rechten meer heeft voor een gegeven gav
@@ -38,6 +38,6 @@ namespace Chiro.Gap.ServiceContracts
         /// <param name="g"></param>
         /// <param name="groepID"></param>
         [OperationContract]
-        void verwijderGroepVanGav(Gav g, int groepID);
+        void GroepVanGavVerwijderen(Gav g, int groepID);
     }
 }

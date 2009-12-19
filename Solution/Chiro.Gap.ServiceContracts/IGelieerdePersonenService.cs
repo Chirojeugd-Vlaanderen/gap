@@ -155,10 +155,10 @@ namespace Chiro.Gap.ServiceContracts
         /// <returns></returns>
         [OperationContract]
         [FaultContract(typeof(BusinessFault<CommunicatieVorm>))]
-        void CommVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm, int typeID);
+        void CommunicatieVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm, int typeID);
         [OperationContract]
         [FaultContract(typeof(BusinessFault<CommunicatieVorm>))]
-        void CommVormVerwijderenVanPersoon(int gelieerdepersonenID, int commvormID);
+        void CommunicatieVormVerwijderenVanPersoon(int gelieerdepersonenID, int commvormID);
 
         /// <summary>
         /// Gaat aanpassingen aan een bestaande commvorm persisteren zonder links naar andere objecten
@@ -166,20 +166,27 @@ namespace Chiro.Gap.ServiceContracts
         /// <param name="v">De aangepaste commvorm</param>
         [OperationContract]
         [FaultContract(typeof(BusinessFault<CommunicatieVorm>))]
-        void AanpassenCommVorm(CommunicatieVorm c);
+        void CommunicatieVormAanpassen(CommunicatieVorm c);
 
+        /// <summary>
+        /// Haalt een bepaald communicatietype op, op basis van ID
+        /// </summary>
+        /// <param name="commTypeID">De ID van het communicatietype</param>
+        /// <returns></returns>
+        [OperationContract]
+        CommunicatieType CommunicatieTypeOphalen(int commTypeID);
 
         /// <summary>
         /// Haalt een lijst op met alle communicatietypes
         /// </summary>
         [OperationContract]
-        IEnumerable<CommunicatieType> ophalenCommunicatieTypes();
+        IEnumerable<CommunicatieType> CommunicatieTypesOphalen();
 
         /// <summary>
         /// Haalt een communicatievorm op
         /// </summary>
         [OperationContract]
-        CommunicatieVorm ophalenCommVorm(int commvormID);
+        CommunicatieVorm CommunicatieVormOphalen(int commvormID);
 
         #endregion commvormen
 
@@ -205,7 +212,7 @@ namespace Chiro.Gap.ServiceContracts
         /// Haalt een lijst op met alle categorieen
         /// </summary>
         [OperationContract]
-        IEnumerable<Categorie> ophalenCategorieen(int groepID);
+        IEnumerable<Categorie> CategorieenOphalen(int groepID);
 
         #endregion categorieen
     }

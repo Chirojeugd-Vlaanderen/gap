@@ -129,8 +129,11 @@ namespace Chiro.Gap.Workers.Test
 			// Probeer nu een fictieve communicatievorm te verwijderen.
 			// We verwachten 'GeenGavException'
 
-			gpMgr.CommVormVerwijderen(null, null);
-			// CommunicatieVormID en GelieerdePersoonID zijn irrelevant owv de mocking
+            // CommunicatieVormID en GelieerdePersoonID zijn irrelevant owv de mocking,
+            // maar als je hier null meegeeft voor parameter 'origineel' 
+            // throwt gpMgr een NullRefereneException omdat hij origineel.ID opvraagt
+            gpMgr.CommunicatieVormVerwijderen(null, communicatielozePersoon);
+			
 			#endregion
 
 			#region assert

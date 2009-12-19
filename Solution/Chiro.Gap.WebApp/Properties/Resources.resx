@@ -117,8 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AlgemeneValidatieFout" xml:space="preserve">
+    <value>De opgegeven waarde voldoet niet aan de voorwaarden.</value>
+  </data>
   <data name="DemoMessage" xml:space="preserve">
     <value>Groep {0} geselecteerd.  Dat was {1}.</value>
+  </data>
+  <data name="FormatValidatieFout" xml:space="preserve">
+    <value>De waarde voor {0} voldoet niet aan de verplichte structuur: {1}</value>
+    <comment>Parameters: 0 = inputcontrol, 1 = formatvoorbeeld</comment>
   </data>
   <data name="NieuwePersoonTitel" xml:space="preserve">
     <value>Nieuwe persoon</value>

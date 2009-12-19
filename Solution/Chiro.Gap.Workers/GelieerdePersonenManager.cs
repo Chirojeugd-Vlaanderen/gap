@@ -377,7 +377,7 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
-		public Categorie OphalenCategorie(int catID)
+        public Categorie CategorieOphalen(int catID)
 		{
 			// Heeft de gebruiker rechten voor de groep en de categorie?
 
@@ -389,7 +389,7 @@ namespace Chiro.Gap.Workers
 			return _categorieenDao.Ophalen(catID);
 		}
 
-		public IEnumerable<Categorie> ophalenCategorieen(int groepID)
+        public IEnumerable<Categorie> CategorieenOphalen(int groepID)
 		{
 			return _categorieenDao.OphalenVanGroep(groepID);
 		}

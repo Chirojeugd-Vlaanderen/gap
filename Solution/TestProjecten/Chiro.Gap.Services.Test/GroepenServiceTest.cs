@@ -85,7 +85,7 @@ namespace Chiro.Gap.Services.Test
 
 			#region Act
 
-			GroepInfo g = svc.OphalenInfo(317);
+            GroepInfo g = svc.InfoOphalen(317);
 
 			#endregion
 

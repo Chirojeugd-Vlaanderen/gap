@@ -19,7 +19,7 @@ namespace Chiro.Gap.WebApp.Controllers
             // personenlijst van deze groep.  Zo niet krijgt de gebruiker de keuze
 
             var groepInfos = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
-                (g => g.OphalenMijnGroepen());
+                (g => g.MijnGroepenOphalen());
 
             if (groepInfos.Count() == 1)
             {
@@ -34,7 +34,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 model.Title = "Kies je Chirogroep";
                 model.GroepenLijst = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
-                        (g => g.OphalenMijnGroepen());
+                        (g => g.MijnGroepenOphalen());
 
                 return View("Index", model);
             }

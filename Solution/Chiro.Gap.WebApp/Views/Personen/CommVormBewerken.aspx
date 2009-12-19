@@ -18,34 +18,30 @@
            
            <fieldset>
            <legend>Communicatievorm bewerken voor <%=Model.Aanvrager.Persoon.VolledigeNaam %></legend>     
-           
+           <%=Html.ValidationSummary() %>
            <table>
            <tr>
                 <td><%=Model.NieuweCommVorm.CommunicatieType.Omschrijving%>
                 :</td>
                 <td>
                     <%=Html.TextBox("Model.NieuweCommVorm.Nummer", Model.NieuweCommVorm.Nummer)%>
-                    <%= Html.ValidationMessage("Model.NieuweCommVorm.Nummer")%> 
                 </td>
            </tr>
            <tr>
                 <td>Is dit de voorkeurscommunicatie voor dit communicatietype?</td>
                 <td><%=Html.CheckBox("Model.NieuweCommVorm.Voorkeur", Model.NieuweCommVorm.Voorkeur)%>
-                    <%= Html.ValidationMessage("Model.NieuweCommVorm.Voorkeur")%> 
                 </td>
            </tr>
            <tr>
                 <td>Is het gezinsgebonden?</td>
                 <td>
                 <%=Html.CheckBox("Model.NieuweCommVorm.IsGezinsgebonden", Model.NieuweCommVorm.IsGezinsgebonden)%>
-                <%= Html.ValidationMessage("Model.NieuweCommVorm.IsGezinsgebonden")%> 
                 </td>
            </tr>
            <tr>
                 <td>Extra informatie</td>
                 <td>
                 <%=Html.TextBox("Model.NieuweCommVorm.Nota", Model.NieuweCommVorm.Nota)%> 
-                <%= Html.ValidationMessage("Model.NieuweCommVorm.Nota")%> 
                 </td>
            </tr>
            </table>

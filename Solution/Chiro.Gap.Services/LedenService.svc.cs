@@ -13,7 +13,7 @@ using AutoMapper;
 
 namespace Chiro.Gap.Services
 {
-	// NOTE: If you change the class name "LedenService" here, you must also update the reference to "LedenService" in Web.config.
+	// OPM: als je de naam van de class "LedenService" hier verandert, moet je ook de sectie "Services" in web.config aanpassen.
 	public class LedenService : ILedenService
 	{
 

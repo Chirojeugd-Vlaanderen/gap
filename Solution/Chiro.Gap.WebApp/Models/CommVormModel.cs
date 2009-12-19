@@ -11,21 +11,23 @@ using Chiro.Gap.ServiceContracts;
 namespace Chiro.Gap.WebApp.Models
 {
     /// <summary>
-    /// Model gebruikt om iemand een nieuw adres te geven.
+    /// Model gebruikt om een communicatievorm weer te geven.
     /// </summary>
     public class CommVormModel : MasterViewModel 
     {
-        // ID van GelieerdePersoon waarvoor aangeklikt dat
-        // hij/zij een extra adres nodig heeft
+        /// <summary>
+        /// ID van GelieerdePersoon wiens/wier communicatievorm 
+        /// we bekijken 
+        /// </summary>
         public GelieerdePersoon Aanvrager { get; set; }
 
         /// <summary>
-        /// Nieuw adres voor de gegeven gelieerde personen
+        /// Nieuwe input voor de communicatievorm voor de gegeven gelieerde personen
         /// </summary>
         public CommunicatieVorm NieuweCommVorm { get; set; }
 
         /// <summary>
-        /// Standaardconstructor - creeert lege NieuwAdresInfo
+        /// Standaardconstructor - creëert leeg CommVormModel
         /// </summary>
         public CommVormModel()
         {

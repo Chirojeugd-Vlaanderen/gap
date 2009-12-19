@@ -12,24 +12,29 @@ using System.Web.Mvc;
 namespace Chiro.Gap.WebApp.Models
 {
     /// <summary>
-    /// Model gebruikt om iemand een nieuw adres te geven.
+    /// Model gebruikt om iemand een nieuwe communicatievorm te geven:
+    /// telefoonnummer, mailadres, enz.
     /// </summary>
     public class NieuweCommVormModel : MasterViewModel 
     {
-        // ID van GelieerdePersoon waarvoor aangeklikt dat
-        // hij/zij een extra adres nodig heeft
+        /// <summary>
+        /// ID van GelieerdePersoon waarvoor aangeklikt dat
+        /// hij/zij een extra adres nodig heeft
+        /// </summary>
         public GelieerdePersoon Aanvrager { get; set; }
 
         /// <summary>
-        /// Nieuw adres voor de gegeven gelieerde personen
+        /// Nieuwe communicatievorm (telefoonnummer, mailadres, ...)
+        /// voor de gegeven gelieerde personen
         /// </summary>
         public CommunicatieVorm NieuweCommVorm { get; set; }
+
         public int geselecteerdeCommVorm { get; set; }
 
         public IEnumerable<CommunicatieType> Types { get; set; }
 
         /// <summary>
-        /// Standaardconstructor - creeert lege NieuwAdresInfo
+        /// Standaardconstructor - creëert leeg NieuweCommVorm
         /// </summary>
         public NieuweCommVormModel()
         {

@@ -67,12 +67,17 @@ namespace Chiro.Gap.Workers
             }
         }
 
-        public IEnumerable<CommunicatieType> ophalenCommunicatieTypes()
+        public CommunicatieType CommunicatieTypeOphalen(int commTypeID)
+        {
+            return _typedao.Ophalen(commTypeID);
+        }
+
+        public IEnumerable<CommunicatieType> CommunicatieTypesOphalen()
         {
             return _typedao.AllesOphalen();
         }
 
-        public CommunicatieVorm CommVormOphalenCommVorm(int commvormID)
+        public CommunicatieVorm CommunicatieVormOphalen(int commvormID)
         {
             if (_autorisatieMgr.IsGavCommVorm(commvormID))
             {
@@ -84,7 +89,7 @@ namespace Chiro.Gap.Workers
             }
         }
 
-        public void CommVormToevoegen(CommunicatieVorm comm, int gelieerdePersoonID, int typeID)
+        public void CommunicatieVormToevoegen(CommunicatieVorm comm, int gelieerdePersoonID, int typeID)
         {
             if (!_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
             {
@@ -98,7 +103,7 @@ namespace Chiro.Gap.Workers
         }
 
 	// FIXME: de parameter 'gelieerdePersoonID' is overbodig; zie ticket #145.
-        public void CommVormVerwijderen(CommunicatieVorm comm, GelieerdePersoon origineel)
+        public void CommunicatieVormVerwijderen(CommunicatieVorm comm, GelieerdePersoon origineel)
         {
             if (!_autorisatieMgr.IsGavGelieerdePersoon(origineel.ID))
             {

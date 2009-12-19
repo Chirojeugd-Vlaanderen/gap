@@ -11,13 +11,14 @@ using AutoMapper;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Fouten.FaultContracts;
 using Chiro.Gap.Orm;
+using Chiro.Gap.Services.Properties;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Services
 {
-	// NOTE: If you change the class name "GelieerdePersonenService" here, you must also update the reference to "GelieerdePersonenService" in Web.config.
+    // OPM: als je de naam van de class "GelieerdePersonenService" hier verandert, moet je ook de sectie "Services" in web.config aanpassen.
 	public class GelieerdePersonenService : IGelieerdePersonenService
 	{
 		#region Manager Injection
@@ -221,14 +222,14 @@ namespace Chiro.Gap.Services
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void CommVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm, int typeID)
+		public void CommunicatieVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm, int typeID)
 		{
-			_cvMgr.CommVormToevoegen(commvorm, gelieerdepersonenID, typeID);
+			_cvMgr.CommunicatieVormToevoegen(commvorm, gelieerdepersonenID, typeID);
 		}
 
 		// FIXME: de parameter 'gelieerdePersoonID' is overbodig; zie ticket #145.
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public void CommVormVerwijderenVanPersoon(int gelieerdePersoonID, int commvormID)
+        public void CommunicatieVormVerwijderenVanPersoon(int gelieerdePersoonID, int commvormID)
 		{
             GelieerdePersoon gp = _gpMgr.OphalenMetCommVormen(gelieerdePersoonID);
             CommunicatieVorm cv = null;
@@ -243,28 +244,33 @@ namespace Chiro.Gap.Services
             }
             if(!found)
             {
-                throw new ArgumentException("De communicatievorm behoort niet toe aan de geselecteerde persoon.");
+                throw new ArgumentException(Resources.FouteCommunicatieVormVoorPersoonString);
             }
-			_cvMgr.CommVormVerwijderen(cv, gp);
+			_cvMgr.CommunicatieVormVerwijderen(cv, gp);
             _gpMgr.BewarenMetCommVormen(gp);
 
 		}
 
 		///TODO dit moet gecontroleerd worden!
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void AanpassenCommVorm(CommunicatieVorm v)
+		public void CommunicatieVormAanpassen(CommunicatieVorm v)
 		{
 			_cvMgr.Bewaren(v);
 		}
 
-		public CommunicatieVorm ophalenCommVorm(int commvormID)
+		public CommunicatieVorm CommunicatieVormOphalen(int commvormID)
 		{
 			return _cvMgr.Ophalen(commvormID);
 		}
 
-		public IEnumerable<CommunicatieType> ophalenCommunicatieTypes()
+        public CommunicatieType CommunicatieTypeOphalen(int commTypeID)
+        {
+            return _cvMgr.CommunicatieTypeOphalen(commTypeID);
+        }
+
+		public IEnumerable<CommunicatieType> CommunicatieTypesOphalen()
 		{
-			return _cvMgr.ophalenCommunicatieTypes();
+			return _cvMgr.CommunicatieTypesOphalen();
 		}
 
 		#endregion
@@ -311,9 +317,9 @@ namespace Chiro.Gap.Services
 			_catMgr.BewarenMetPersonen(categorie);
 		}
 
-		public IEnumerable<Categorie> ophalenCategorieen(int groepID)
+		public IEnumerable<Categorie> CategorieenOphalen(int groepID)
 		{
-			return _gpMgr.ophalenCategorieen(groepID);
+			return _gpMgr.CategorieenOphalen(groepID);
 		}
 
 		public IList<GelieerdePersoon> OphalenUitCategorie(int categorieID)

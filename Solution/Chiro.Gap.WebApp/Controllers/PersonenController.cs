@@ -13,6 +13,7 @@ using Chiro.Gap.Fouten.FaultContracts;
 using Chiro.Adf.ServiceModel;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.Validatie;
+using Chiro.Gap.WebApp.Properties;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -38,16 +39,16 @@ namespace Chiro.Gap.WebApp.Controllers
             var model = new Models.PersoonInfoModel();
             BaseModelInit(model, groepID);
 
-            model.PersoonInfoLijst = 
+            model.PersoonInfoLijst =
                 ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
                 (g => g.PaginaOphalenMetLidInfo(groepID, page, 20, out totaal));
             model.PageHuidig = page;
-            model.PageTotaal = (int) Math.Ceiling(totaal / 20d);
+            model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
             model.Title = "Personenoverzicht";
             model.Totaal = totaal;
 
-				var categories = ServiceHelper.CallService<IGroepenService, Groep>(g => g.OphalenMetCategorieen(groepID)).Categorie;
-				model.GroepsCategorieen = new SelectList(categories, "Naam", "Naam");
+            var categories = ServiceHelper.CallService<IGroepenService, Groep>(g => g.OphalenMetCategorieen(groepID)).Categorie;
+            model.GroepsCategorieen = new SelectList(categories, "Naam", "Naam");
 
             return View("Index", model);
         }
@@ -85,7 +86,7 @@ namespace Chiro.Gap.WebApp.Controllers
             var model = new Models.GelieerdePersonenModel();
             BaseModelInit(model, groepID);
             model.NieuweHuidigePersoon();
-            
+
             model.Title = Properties.Resources.NieuwePersoonTitel;
             return View("EditGegevens", model);
         }
@@ -153,18 +154,18 @@ namespace Chiro.Gap.WebApp.Controllers
             //try
             //{
 
-                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersoonBewaren(p.HuidigePersoon));
+            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersoonBewaren(p.HuidigePersoon));
 
-                // Voorlopig opnieuw redirecten naar EditRest;
-                // er zou wel gemeld moeten worden dat het wijzigen
-                // gelukt is.
-                // TODO: wat als er een fout optreedt bij PersoonBewaren?
-                TempData["feedback"] = "Wijzigingen zijn opgeslagen";
+            // Voorlopig opnieuw redirecten naar EditRest;
+            // er zou wel gemeld moeten worden dat het wijzigen
+            // gelukt is.
+            // TODO: wat als er een fout optreedt bij PersoonBewaren?
+            TempData["feedback"] = "Wijzigingen zijn opgeslagen";
 
-                // (er wordt hier geredirect ipv de view te tonen,
-                // zodat je bij een 'refresh' niet de vraag krijgt
-                // of je de gegevens opnieuw wil posten.)
-                return RedirectToAction("EditRest", new { id = p.HuidigePersoon.ID });
+            // (er wordt hier geredirect ipv de view te tonen,
+            // zodat je bij een 'refresh' niet de vraag krijgt
+            // of je de gegevens opnieuw wil posten.)
+            return RedirectToAction("EditRest", new { id = p.HuidigePersoon.ID });
             /*}
             catch
             {
@@ -182,7 +183,7 @@ namespace Chiro.Gap.WebApp.Controllers
         // GET: /Personen/Verhuizen/vanAdresID?AanvragerID=#
         public ActionResult Verhuizen(int id, int aanvragerID, int groepID)
         {
-			VerhuisModel model = new VerhuisModel(id, aanvragerID);
+            VerhuisModel model = new VerhuisModel(id, aanvragerID);
             BaseModelInit(model, groepID);
 
             model.Title = "Personen Verhuizen";
@@ -271,10 +272,12 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             try
             {
+                // FIXME: AdresTypeEnum.Onbekend moet erin om een nulwaarde te hebben, maar de defaultwaarde moet 'thuis' zijn
+                // vervangen door id = 0 in databank (en dan update van bestaande gegevens)?
+                if (model.NieuwAdresType == AdresTypeEnum.Onbekend) { model.NieuwAdresType = AdresTypeEnum.Thuis; }
                 // De service zal model.NieuwAdres.ID negeren; dit wordt
                 // steeds opnieuw opgezocht.  Adressen worden nooit
                 // gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
-
                 //TODO adrestype moet nog worden toegevoegd op de UI paginas ipv hier te setten
                 model.NieuwAdresType = AdresTypeEnum.Thuis;
 
@@ -305,7 +308,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult NieuweCommVorm(int gelieerdePersoonID, int groepID)
         {
             GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
-            IEnumerable<CommunicatieType> types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.ophalenCommunicatieTypes());
+            IEnumerable<CommunicatieType> types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.CommunicatieTypesOphalen());
             NieuweCommVormModel model = new NieuweCommVormModel(g, types);
             BaseModelInit(model, groepID);
             model.Title = "Nieuwe communicatievorm toevoegen";
@@ -316,14 +319,35 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult NieuweCommVorm(NieuweCommVormModel model, int groepID, int gelieerdePersoonID)
         {
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommVormToevoegenAanPersoon(gelieerdePersoonID, model.NieuweCommVorm, model.geselecteerdeCommVorm));
-            return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+            CommunicatieVormValidator cvValid = new CommunicatieVormValidator();
+            CommunicatieType type = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieType>(l => l.CommunicatieTypeOphalen(model.geselecteerdeCommVorm));
+            model.NieuweCommVorm.CommunicatieType = type;
+
+            if (cvValid.Valideer(model.NieuweCommVorm))
+            {
+                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegenAanPersoon(gelieerdePersoonID, model.NieuweCommVorm, model.geselecteerdeCommVorm));
+                return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+            }
+            else
+            {
+                BaseModelInit(model, groepID);
+
+                // info voor model herstellen
+                GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
+                IEnumerable<CommunicatieType> types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.CommunicatieTypesOphalen());
+                model.Aanvrager = g;
+                model.Types = types;
+                model.Title = "Nieuwe communicatievorm toevoegen";
+
+                ModelState.AddModelError("Model.NieuweCommVorm.Nummer", string.Format(Resources.FormatValidatieFout, type.Omschrijving, type.Voorbeeld));
+                return View("NieuweCommVorm", model);
+            }
         }
 
         // GET: /Personen/VerwijderenCommVorm/commvormid
         public ActionResult VerwijderenCommVorm(int commvormID, int gelieerdePersoonID, int groepID)
         {
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommVormVerwijderenVanPersoon(gelieerdePersoonID, commvormID));
+            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormVerwijderenVanPersoon(gelieerdePersoonID, commvormID));
             return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
         }
 
@@ -333,7 +357,7 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             //TODO dit is niet juist broes, want hij haalt 2 keer de persoon op?
             GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
-            CommunicatieVorm commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieVorm>(l => l.ophalenCommVorm(commvormID));
+            CommunicatieVorm commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieVorm>(l => l.CommunicatieVormOphalen(commvormID));
             CommVormModel model = new CommVormModel(g, commv);
             BaseModelInit(model, groepID);
             model.Title = "Communicatievorm bewerken";
@@ -346,9 +370,28 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult BewerkenCommVorm(CommVormModel model, int gelieerdePersoonID, int groepID)
         {
-            BaseModelInit(model, groepID);
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AanpassenCommVorm(model.NieuweCommVorm));
-            return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+            CommunicatieVormValidator cvValid = new CommunicatieVormValidator();
+            CommunicatieVorm commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieVorm>(l => l.CommunicatieVormOphalen(model.NieuweCommVorm.ID));
+            model.NieuweCommVorm.CommunicatieType = commv.CommunicatieType;
+
+            if (cvValid.Valideer(model.NieuweCommVorm))
+            {
+                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(model.NieuweCommVorm));
+                return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+            }
+            else
+            {
+                BaseModelInit(model, groepID);
+                // info herstellen
+                //TODO dit is niet juist broes, want hij haalt 2 keer de persoon op?
+                GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
+                model.Aanvrager = g;
+                model.NieuweCommVorm = commv;
+                model.Title = "Communicatievorm bewerken";
+
+                ModelState.AddModelError("Model.NieuweCommVorm.Nummer", string.Format(Resources.FormatValidatieFout, commv.CommunicatieType.Omschrijving, commv.CommunicatieType.Voorbeeld));
+                return View("CommVormBewerken", model);
+            }
             ///TODO catch exceptions overal
         }
 
@@ -366,7 +409,7 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult ToevoegenAanCategorie(int gelieerdePersoonID, int groepID)
         {
             GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
-            IEnumerable<Categorie> cats = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<Categorie>>(l => l.ophalenCategorieen(groepID));
+            IEnumerable<Categorie> cats = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<Categorie>>(l => l.CategorieenOphalen(groepID));
             CategorieModel model = new CategorieModel(cats, g);
             BaseModelInit(model, groepID);
             return View("CategorieToevoegen", model);
@@ -375,17 +418,11 @@ namespace Chiro.Gap.WebApp.Controllers
         // POST: /Personen/ToevoegenAanCategorie/categorieID
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ToevoegenAanCategorie(CategorieModel model, int gelieerdePersoonID, int groepID)
-        {   
+        {
             IList<int> list = new List<int>();
             list.Add(gelieerdePersoonID);
             ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieKoppelen(list, model.selectie));
             return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
-        }
-        
-
-        public ActionResult Hallo()
-        {
-            return View("Hallo");
         }
     }
 }

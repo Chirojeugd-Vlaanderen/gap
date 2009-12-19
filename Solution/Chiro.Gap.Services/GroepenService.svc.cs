@@ -10,6 +10,7 @@ using AutoMapper;
 
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Orm;
+using Chiro.Gap.Services.Properties;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Fouten.Exceptions;
@@ -17,7 +18,7 @@ using Chiro.Gap.Fouten.Exceptions;
 
 namespace Chiro.Gap.Services
 {
-	// NOTE: If you change the class name "GroepenService" here, you must also update the reference to "GroepenService" in Web.config.
+    // OPM: als je de naam van de class "GroepenService" hier verandert, moet je ook de sectie "Services" in web.config aanpassen.
 	public class GroepenService : IGroepenService
 	{
 		#region Manager Injection
@@ -39,7 +40,7 @@ namespace Chiro.Gap.Services
 
 		#region algemene members
 
-		public GroepInfo OphalenInfo(int GroepId)
+        public GroepInfo InfoOphalen(int GroepId)
 		{
 			var gr = Ophalen(GroepId);
 			return Mapper.Map<Groep, GroepInfo>(gr);
@@ -118,12 +119,12 @@ namespace Chiro.Gap.Services
             return result;
         }*/
 
-        public IList<OfficieleAfdeling> OphalenOfficieleAfdelingen()
+        public IList<OfficieleAfdeling> OfficieleAfdelingenOphalen()
         {
             return _groepenMgr.OfficieleAfdelingenOphalen();
         }
 
-        public IEnumerable<GroepInfo> OphalenMijnGroepen()
+        public IEnumerable<GroepInfo> MijnGroepenOphalen()
         {
             var result = _autorisatieMgr.GekoppeldeGroepenGet();
             return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(result);
@@ -133,28 +134,26 @@ namespace Chiro.Gap.Services
 
         #region afdelingen
 
-        /*
-         * Bedoeling van het afdelingsgedeelte:
-         * er zijn een aantal officiele afdelingen, die een range van leeftijden hebben. Blijven deze altijd dezelfde??
-         * Elke chiro heeft elk werkjaar zijn eigen afdelingen, die ook een range van leeftijden hebben.
-         * 
-         * Elke afdeling moet overeenkomen met een officiele afdeling.
-         * Er is niet gespecifieerd of het mogelijke is om een eerste-jaar-rakkers en een tweede-jaar-rakkers te hebben
-         * 
-         * Omdat bovenstaande niet echt duidelijk is en misschien niet altijd voldoende:
-         * waarom moet er een mapping zijn met een officiele afdeling. Als dit echt moet, dan is het bovenstaande niet duidelijk,
-         * en stel ik het onderstaande voor
-         * 
-         * Elke chiroafdeling heeft een naam, een afkorting en een boolean NOGINGEBRUIK?
-         * Elke afdelingsjaar heeft een chiroafdeling en een interval van leeftijden.
-         * Voor elke leeftijd is er een mapping met een officiele afdeling
-         * elke leeftijd kan maar op 1 officiele afdeling gemapt worden
-         * 
-         * Voorbeelden:
-         * "de kleintjes" = {minis, speelclub}
-         * "de 5de jaar" = {eerste jaar rakkers}
-         * "rakwi's" = {tweede jaar speelclub, rakkers}
-         */
+        // Bedoeling van het afdelingsgedeelte:
+        // er zijn een aantal officiële afdelingen, die een range van leeftijden hebben. Blijven dat altijd dezelfde?
+        // Elke Chirogroep heeft elk werkjaar haar eigen afdelingen, die ook een range van leeftijden hebben.
+        // 
+        // Elke afdeling moet overeenkomen met een officiële afdeling.
+        // Er is niet gespecifieerd of het mogelijk is om een eerste-jaar-rakkers en een tweede-jaar-rakkers te hebben
+        // 
+        // Omdat bovenstaande niet echt duidelijk is en misschien niet altijd voldoende:
+        // waarom moet er een mapping zijn met een officiële afdeling? Als dit echt moet, dan is het bovenstaande niet duidelijk,
+        // en stel ik het onderstaande voor
+        // 
+        // Elke afdeling heeft een naam, een afkorting en een boolean NOGINGEBRUIK?
+        // Elk afdelingsjaar heeft een afdeling en een interval van leeftijden.
+        // Voor elke leeftijd is er een mapping met een officiële afdeling
+        // elke leeftijd kan maar op 1 officiële afdeling gemapt worden
+        // 
+        // Voorbeelden:
+        // "de kleintjes" = {minis, speelclub}
+        // "de 5de jaars" = {eerste jaar rakkers}
+        // "rakwi's" = {tweede jaar speelclub, rakkers}
 
         /// <summary>
 		/// Maakt een nieuwe afdeling voor een gegeven groep
@@ -162,14 +161,14 @@ namespace Chiro.Gap.Services
 		/// <param name="groepID">ID van de groep</param>
 		/// <param name="naam">naam van de afdeling</param>
 		/// <param name="afkorting">afkorting van de afdeling (voor lijsten, overzichten,...)</param>
-		public void AanmakenAfdeling(int groepID, string naam, string afkorting)
+        public void AfdelingAanmaken(int groepID, string naam, string afkorting)
 		{
 			Groep g = _groepenMgr.Ophalen(groepID);
 			_groepenMgr.AfdelingToevoegen(g, naam, afkorting);
 			_groepenMgr.Bewaren(g, e => e.Afdeling);
 		}
 
-		public void AanmakenAfdelingsJaar(int groepID, int afdelingsID, int offiafdelingsID, int geboortejaarbegin, int geboortejaareind)
+        public void AfdelingsJaarAanmaken(int groepID, int afdelingsID, int offiafdelingsID, int geboortejaarbegin, int geboortejaareind)
 		{
             Groep g = _groepenMgr.Ophalen(groepID, e => e.Afdeling);
             Afdeling afd = null;
@@ -192,7 +191,7 @@ namespace Chiro.Gap.Services
 
             if (afd == null || offafd == null)
             {
-                throw new FoutieveGroepException(String.Format("De gegeven afdeling is geen afdeling van Groep {0}", g.Naam));
+                throw new FoutieveGroepException(String.Format(Resources.FouteAfdelingVoorGroepString, g.Naam));
             }
 
             GroepsWerkJaar huidigWerkJaar = _groepenMgr.RecentsteGroepsWerkJaarGet(g.ID);
@@ -261,7 +260,7 @@ namespace Chiro.Gap.Services
             }
             if (c == null)
             {
-                throw new ArgumentException("Er is zo geen categorie in de gegeven groep");
+                throw new ArgumentException(Resources.FouteCategorieVoorGroepString);
             }
             _groepenMgr.CategorieVerwijderen(g, c);
             _groepenMgr.Bewaren(g, e => e.Categorie);
