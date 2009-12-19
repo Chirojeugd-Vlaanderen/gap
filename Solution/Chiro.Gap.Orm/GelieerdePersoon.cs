@@ -91,5 +91,15 @@ namespace Chiro.Gap.Orm
         }
 
         #endregion
+
+        public IList<Categorie> CategorieLijstGet()
+        {
+            IList<Categorie> result = new List<Categorie>();
+            foreach (Categorie c in this.Categorie)
+            {
+                result.Add(c);
+            }
+            return result;
+        }
     }
 }

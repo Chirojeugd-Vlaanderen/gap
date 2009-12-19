@@ -54,7 +54,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
         //
         // GET: /Personen/Categorie/{catid}/{paginanummer}
-        public ActionResult CatList(int page, int groepID, int catID)
+        public ActionResult Categorie(int page, int groepID, int id)
         {
             // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
             //TODO wat willen we hier juist bijhouden
@@ -69,7 +69,7 @@ namespace Chiro.Gap.WebApp.Controllers
             //TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
             model.PersoonInfoLijst =
                 ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
-                (g => g.PaginaOphalenMetLidInfoVolgensCategorie(catID, page, 20, out totaal));
+                (g => g.PaginaOphalenMetLidInfoVolgensCategorie(id, page, 20, out totaal));
             model.PageHuidig = page;
             model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
             model.Title = "Overzicht " + "Categorie X";

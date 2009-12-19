@@ -28,5 +28,7 @@ namespace Chiro.Gap.ServiceContracts
         [DataMember]
         public Boolean IsLid { get; set; }
 
+        [DataMember]
+        public IList<Categorie> CategorieLijst { get; set; }
     }
 }

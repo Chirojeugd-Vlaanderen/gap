@@ -45,7 +45,7 @@ namespace Chiro.Gap.Orm
 		/// afdelingen waaraan het lid gekoppeld is.
 		/// </summary>
 		/// <returns>comma separated afdelingsnamen</returns>
-		/// <remarks>Een lid is hoogstens aan 1 afdeling gekoppeld</remarks>
+		/// <remarks>Een kind is hoogstens aan 1 afdeling gekoppeld</remarks>
 		public string AfdelingsNamenGet()
 		{
 			if (this is Kind)

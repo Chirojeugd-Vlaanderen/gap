@@ -83,7 +83,7 @@ namespace Chiro.Gap.Data.Ef
 				//TODO zoeken hoe je kan bepalen of hij alleen de leden includes als die aan 
 				//bepaalde voorwaarden voldoen, maar wel alle gelieerdepersonen
 				lijst = (
-				    from gp in db.GelieerdePersoon.Include("Persoon").Include("Lid.GroepsWerkJaar").Include("Groep")
+                    from gp in db.GelieerdePersoon.Include("Persoon").Include("Lid.GroepsWerkJaar").Include("Groep").Include("Categorie")
 				    where gp.Groep.ID == groepID
 				    orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
 				    select gp).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte).ToList();

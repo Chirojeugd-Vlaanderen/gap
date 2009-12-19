@@ -34,7 +34,7 @@ namespace Chiro.Gap.WebApp
                 "Route voor ~/: Kies GAV"
                 , ""
                 , new { controller = "Gav", action = "Index" });
-
+            /*
             routes.MapRoute(
                 "PaginatedPersonenList",
                 "{groepID}/Personen/List/{page}",
@@ -58,11 +58,11 @@ namespace Chiro.Gap.WebApp
                 "{groepID}/Personen/Categorie/{categorieId}/{page}",
                 new { controller = "Personen", action = "CatList" }
             );
-
+            */
             routes.MapRoute(
                 "Default",
-                "{groepID}/{controller}/{action}/{id}",
-                new { controller = "Personen", action = "Index", id = "" }
+                "{groepID}/{controller}/{action}/{id}/{page}",
+                new { controller = "Personen", action = "Index", id = "", page = 1 }
                 // (personencontroller indien geen controller meegegeven)
             );
         }
