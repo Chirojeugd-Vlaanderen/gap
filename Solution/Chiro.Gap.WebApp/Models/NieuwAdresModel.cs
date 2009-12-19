@@ -52,16 +52,6 @@ namespace Chiro.Gap.WebApp.Models
             PersoonIDs = new List<int>();
         }
 
-        public NieuwAdresModel(int aanvragerID): this()
-        {
-            AanvragerID = aanvragerID;
-            MogelijkeBewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<Persoon>>(l => l.HuisGenotenOphalen(aanvragerID));
-
-            // FIXME: overkill om aan het persoonID van de aanvragerID op te vragen
-            // (persoonID van de aanvrager al selecteren)
-            PersoonIDs.Add(ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(aanvragerID)).Persoon.ID);
-        }
-
         /// <summary>
         /// Haalt eventuele mogelijke bewoners van het nieuwe
         /// adres opnieuw op uit de database, op basis van

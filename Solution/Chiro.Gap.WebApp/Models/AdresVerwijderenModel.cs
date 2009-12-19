@@ -50,30 +50,6 @@ namespace Chiro.Gap.WebApp.Models
             PersoonIDs = new List<int>();
         }
 
-        // TODO: Ik ben er niet zeker van of het model de service rechtstreeks mag aanspreken, of of dat via de controller moet gebeuren...
-
-        /// <summary>
-        /// Creeert AdresVerwijderenModel voor een gegeven
-        /// persoonID en adresID.
-        /// </summary>
-        /// <param name="adresID">AdresID van te verwijderen adres</param>
-        /// <param name="gelieerdePersoonID">GelieerdePersoonID om achteraf terug
-        /// naar te redirecten</param>
-        public AdresVerwijderenModel(int adresID, int gelieerdePersoonID)
-        {
-            AanvragerGelieerdePersoonID = gelieerdePersoonID;
-            AdresMetBewoners = ServiceHelper.CallService<IGelieerdePersonenService, Adres>(foo => foo.AdresMetBewonersOphalen(adresID));
-
-            // Standaard vervalt enkel het adres van de aanvrager
-            // FIXME: Het is wat overkill om hiervoor PersoonOphalenMetDetails aan te roepen.
-            // Maar voorlopig is er geen alternatief.
-
-            PersoonIDs = new List<int> 
-            { 
-                ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(foo => foo.PersoonOphalenMetDetails(AanvragerGelieerdePersoonID)).Persoon.ID
-            };
-        }
-
         /// <summary>
         /// Haalt de gegevens van het adres opnieuw op, op basis van
         /// AdresMetBewoners.ID.

@@ -50,32 +50,7 @@ namespace Chiro.Gap.WebApp.Models
             PersoonIDs = new List<int>();
         }
 
-        // TODO: Ik ben er niet zeker van of het model de service rechtstreeks mag aanspreken, of of dat via de controller moet gebeuren...
 
-        /// <summary>
-        /// Creeert verhuisinfo voor gegeven gelieerde persoon en
-        /// gegeven adres.
-        /// </summary>
-        /// <param name="gelieerdePersoonID">persoon waarvoor verhuis geinitieerd werd</param>
-        /// <param name="vanAdresID">relevante vanAdresID</param>
-        public VerhuisModel(int vanAdresID, int gelieerdePersoonID)
-        {
-            AanvragerID = gelieerdePersoonID;
-            VanAdresMetBewoners = ServiceHelper.CallService<IGelieerdePersonenService, Adres>(l => l.AdresMetBewonersOphalen(vanAdresID));
-
-            // Bij de constructie van verhuisinfo zijn vanadres naaradres
-            // dezelfde.  Van zodra er een postback gebeurt van het form,
-            // wordt NaarAdres gebind met de gegevens uit het form; op dat
-            // moment wordt een nieuwe instantie van het naaradres
-            // gemaakt.
-
-            NaarAdres = VanAdresMetBewoners;
-
-            // Standaard verhuist iedereen mee.
-            PersoonIDs = (
-                from PersoonsAdres pa in VanAdresMetBewoners.PersoonsAdres
-                select pa.Persoon.ID).ToList<int>();
-        }
 
         /// <summary>
         /// Haalt de gegevens van het vanadres opnieuw op, op basis van

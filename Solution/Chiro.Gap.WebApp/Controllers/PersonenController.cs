@@ -194,8 +194,24 @@ namespace Chiro.Gap.WebApp.Controllers
         // GET: /Personen/Verhuizen/vanAdresID?AanvragerID=#
         public ActionResult Verhuizen(int id, int aanvragerID, int groepID)
         {
-            VerhuisModel model = new VerhuisModel(id, aanvragerID);
+            VerhuisModel model = new VerhuisModel();
             BaseModelInit(model, groepID);
+
+            model.AanvragerID = aanvragerID;
+            model.VanAdresMetBewoners = ServiceHelper.CallService<IGelieerdePersonenService, Adres>(l => l.AdresMetBewonersOphalen(id));
+
+            // Bij de constructie van verhuisinfo zijn vanadres naaradres
+            // dezelfde.  Van zodra er een postback gebeurt van het form,
+            // wordt NaarAdres gebind met de gegevens uit het form; op dat
+            // moment wordt een nieuwe instantie van het naaradres
+            // gemaakt.
+
+            model.NaarAdres = model.VanAdresMetBewoners;
+
+            // Standaard verhuist iedereen mee.
+            model.PersoonIDs = (
+                from PersoonsAdres pa in model.VanAdresMetBewoners.PersoonsAdres
+                select pa.Persoon.ID).ToList<int>();
 
             model.Title = "Personen Verhuizen";
             return View("AdresBewerken", model);
@@ -252,7 +268,20 @@ namespace Chiro.Gap.WebApp.Controllers
         // GET: /Personen/AdresVerwijderen/AdresID
         public ActionResult AdresVerwijderen(int id, int gelieerdePersoonID, int groepID)
         {
-            AdresVerwijderenModel model = new AdresVerwijderenModel(id, gelieerdePersoonID);
+            AdresVerwijderenModel model = new AdresVerwijderenModel();
+
+            model.AanvragerGelieerdePersoonID = gelieerdePersoonID;
+            model.AdresMetBewoners = ServiceHelper.CallService<IGelieerdePersonenService, Adres>(foo => foo.AdresMetBewonersOphalen(id));
+
+            // Standaard vervalt enkel het adres van de aanvrager
+            // FIXME: Het is wat overkill om hiervoor PersoonOphalenMetDetails aan te roepen.
+            // Maar voorlopig is er geen alternatief.
+
+            model.PersoonIDs = new List<int> 
+            { 
+                ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(foo => foo.PersoonOphalenMetDetails(gelieerdePersoonID)).Persoon.ID
+            };
+
             BaseModelInit(model, groepID);
 
             model.Title = "Adres verwijderen";
@@ -271,8 +300,16 @@ namespace Chiro.Gap.WebApp.Controllers
         // GET: /Personen/NieuwAdres/gelieerdePersoonID
         public ActionResult NieuwAdres(int id, int groepID)
         {
-            NieuwAdresModel model = new NieuwAdresModel(id);
+            NieuwAdresModel model = new NieuwAdresModel();
             BaseModelInit(model, groepID);
+
+            model.AanvragerID = id;
+            model.MogelijkeBewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<Persoon>>(l => l.HuisGenotenOphalen(id));
+
+            // FIXME: overkill om aan het persoonID van de aanvragerID op te vragen
+            // (persoonID van de aanvrager al selecteren)
+            model.PersoonIDs.Add(ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id)).Persoon.ID);
+
             model.Title = "Nieuw adres toevoegen";
             return View("NieuwAdres", model);
         }
