@@ -26,6 +26,11 @@ namespace Chiro.Gap.Orm.DataInterfaces
 
         IList<OfficieleAfdeling> OphalenOfficieleAfdelingen();
 
-        //IList<Afdeling> OphalenEigenAfdelingen(int groep);
+        /// <summary>
+        /// Haalt het groepswerkjaar op bij een gegeven GroepsWerkJaarID
+        /// </summary>
+        /// <param name="p">ID van het gevraagde GroepsWerkJaar</param>
+        /// <returns>Gevraagde groepswerkjaar</returns>
+        GroepsWerkJaar GroepsWerkJaarOphalen(int groepsWerkJaarID);
     }
 }

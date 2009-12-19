@@ -104,6 +104,10 @@ namespace Chiro.Gap.ServiceContracts
 
         [OperationContract]
         IList<OfficieleAfdeling> OfficieleAfdelingenOphalen();
+
+        [OperationContract]
+        IList<AfdelingInfo> AfdelingenOphalen(int groepswerkjaarID);
+
         #endregion
 
         #region categorieen

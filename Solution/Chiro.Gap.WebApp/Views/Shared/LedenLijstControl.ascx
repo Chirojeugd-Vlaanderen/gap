@@ -29,7 +29,12 @@ maar dat is nu nog niet geimplementeerd :-) -->
         <%=Html.ActionLink("Verwijderen", "Verwijderen", new { Controller = "Leden", id = l.LidID })%>
         <%=Html.ActionLink("Afdelingen", "AfdelingenBewerken", new { Controller = "Leden", id = l.LidID })%>
     </td>
-    <td><%=l.AfdelingsNamen %></td>
+    <td><% foreach (int a in l.AfdelingIdLijst) 
+           { %>
+               <%=Html.ActionLink(ViewData.Model.AfdelingsInfoDictionary[a].Afkorting, "Afdeling", new { Controller = "Leden", id = a }, new { title = ViewData.Model.AfdelingsInfoDictionary[a].Naam } )%>
+        <% } %>
+    </td>
+
 </tr>
 <% } %>
 

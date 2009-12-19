@@ -15,6 +15,8 @@ namespace Chiro.Gap.WebApp.Models
         public int PageTotaal { get; set; }
         public int Totaal { get; set; }
 
+        public Dictionary<int, AfdelingInfo> AfdelingsInfoDictionary { get; set; }
+
         public int GroepsWerkJaarIdZichtbaar { get; set; }
         public List<GroepsWerkJaar> GroepsWerkJaarLijst { get; set; }
 

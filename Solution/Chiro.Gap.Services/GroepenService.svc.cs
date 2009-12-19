@@ -207,6 +207,13 @@ namespace Chiro.Gap.Services
                                 aj => aj.GroepsWerkJaar.WithoutUpdate());*/
 		}
 
+
+        public IList<AfdelingInfo> AfdelingenOphalen(int groepswerkjaarID)
+        {
+            var groepswerkjaar = _groepenMgr.GroepsWerkJaarOphalen(groepswerkjaarID);
+            return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingInfo>>(groepswerkjaar.AfdelingsJaar.ToList<AfdelingsJaar>());
+        }
+
 		#endregion
 
 		#region Categorieen

@@ -37,6 +37,15 @@ namespace Chiro.Gap.WebApp.Controllers
             var model = new Models.LidInfoModel();
             BaseModelInit(model, groepID);
 
+            var list =
+                ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
+                (groep => groep.AfdelingenOphalen(groepsWerkJaarId));
+            model.AfdelingsInfoDictionary = new Dictionary<int, AfdelingInfo>();
+            foreach (AfdelingInfo ai in list)
+            {
+                model.AfdelingsInfoDictionary.Add(ai.ID, ai);
+            }
+
             model.LidInfoLijst =
                 ServiceHelper.CallService<ILedenService, IList<LidInfo>>
                 (lid => lid.PaginaOphalen(groepsWerkJaarId, page, 20, out totaal));
@@ -51,8 +60,8 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         //TODO verder uitwerken paginering
-        // GET: /Leden/{catID}/{page}
-        public ActionResult CategorieList(int page, int catID, int groepID)
+        // GET: /Leden/Afdeling/{afdelingsID}/{page}
+        public ActionResult Afdeling(int page, int id, int groepID)
         {
             // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten. Paginering gebeurt hier per werkjaar.
             //Sessie.LaatsteLijst = "Leden";
@@ -65,7 +74,7 @@ namespace Chiro.Gap.WebApp.Controllers
             BaseModelInit(model, groepID);
             model.LidInfoLijst =
                 ServiceHelper.CallService<ILedenService, IList<LidInfo>>
-                (lid => lid.PaginaOphalenVolgensCategorie(catID, groepsWerkJaarId, page, 20, out totaal));
+                (lid => lid.PaginaOphalenVolgensCategorie(id, groepsWerkJaarId, page, 20, out totaal));
             //model.GroepsWerkJaarIdZichtbaar = groepsWerkJaarId;
             // TODO: lijst opbouwen met alle GroepsWerkJaren van de huidige groep
             // model.GroepsWerkJaarLijst = ...;

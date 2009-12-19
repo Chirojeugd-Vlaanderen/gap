@@ -51,17 +51,28 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.Geslacht,
 					opt => opt.MapFrom(src => src.Persoon.Geslacht));
 
-			Mapper.CreateMap<Lid, LidInfo>()
+            Mapper.CreateMap<AfdelingsJaar, AfdelingInfo>()
+                .ForMember(
+                    dst => dst.ID,
+                    opt => opt.MapFrom(src => src.Afdeling.ID))
+                .ForMember(
+                    dst => dst.Naam,
+                    opt => opt.MapFrom(src => src.Afdeling.Naam))
+                .ForMember(
+                    dst => dst.Afkorting,
+                    opt => opt.MapFrom(src => src.Afdeling.Afkorting));
+
+            Mapper.CreateMap<Lid, LidInfo>()
 				.ForMember(
 					dst => dst.LidID,
 					opt => opt.MapFrom(src => src.ID))
 				.ForMember(
 					dst => dst.Type,
 					opt => opt.MapFrom(src => src is Kind ? LidType.Kind : LidType.Leiding))
-				.ForMember(
-					dst => dst.AfdelingsNamen,
-					opt => opt.MapFrom(src => src.AfdelingsNamenGet()))
-				.ForMember(
+                .ForMember(
+                    dst => dst.AfdelingIdLijst,
+                    opt => opt.MapFrom(src => src.AfdelingIdLijstGet()))
+                .ForMember(
 					dst => dst.PersoonInfo,
 					opt => opt.MapFrom(src => src.GelieerdePersoon));
 		}

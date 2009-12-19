@@ -40,44 +40,35 @@ namespace Chiro.Gap.Orm
 			return 5;
 		}
 
-		/// <summary>
-		/// Creeert een string met daarin een concatenatie van de namen van de
-		/// afdelingen waaraan het lid gekoppeld is.
-		/// </summary>
-		/// <returns>comma separated afdelingsnamen</returns>
-		/// <remarks>Een kind is hoogstens aan 1 afdeling gekoppeld</remarks>
-		public string AfdelingsNamenGet()
-		{
+        /// <summary>
+        /// Geeft een lijst terug van alle afdelingen waaraan het lid gekoppeld is.
+        /// </summary>
+        /// <returns>Lijst met afdelingen</returns>
+        /// <remarks>Een kind is hoogstens aan 1 afdeling gekoppeld</remarks>
+        public IList<int> AfdelingIdLijstGet()
+        {
+            IList<int> result = new List<int>();
 			if (this is Kind)
 			{
-				if ((this as Kind).AfdelingsJaar == null)
+				if ((this as Kind).AfdelingsJaar != null)
 				{
-					return Properties.Resources.Geen;
-				}
-				else
-				{
-					return (this as Kind).AfdelingsJaar.Afdeling.Naam;
+					result.Add((this as Kind).AfdelingsJaar.Afdeling.ID);
 				}
 			}
 			else if (this is Leiding)
 			{
-				StringBuilder builder = new StringBuilder();
-
 				foreach (AfdelingsJaar aj in (this as Leiding).AfdelingsJaar)
 				{
-					if (builder.Length > 0)
-					{
-						builder.Append(", ");
-					}
-					builder.Append(aj.Afdeling.Naam);
+                    result.Add(aj.Afdeling.ID);
 				}
-				return builder.ToString();
 			}
 			else
 			{
 				Debug.Assert(false, "Lid moet kind of leiding zijn.");
-				return String.Empty;	// Hier komen we toch niet.
 			}
-		}
+
+            return result;
+        }
+
 	}
 }

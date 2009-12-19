@@ -28,6 +28,11 @@ namespace Chiro.Gap.Dummies
             throw new NotImplementedException();
         }
 
+        public GroepsWerkJaar GroepsWerkJaarOphalen(int groepsWerkJaarID)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

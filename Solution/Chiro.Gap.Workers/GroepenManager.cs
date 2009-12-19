@@ -124,24 +124,44 @@ namespace Chiro.Gap.Workers
 			return _dao.OphalenOfficieleAfdelingen();
 		}
 
-		/// <summary>
-		/// Haalt recentste groepswerkjaar op voor gegeven groep
-		/// </summary>
-		/// <param name="p">ID van gegeven groep</param>
-		/// <returns>Gevraagde groepswerkjaar</returns>
-		public GroepsWerkJaar RecentsteGroepsWerkJaarGet(Groep g)
-		{
-			if (_autorisatieMgr.IsGavGroep(g.ID))
-			{
-				return _dao.RecentsteGroepsWerkJaarGet(g.ID);
-			}
-			else
-			{
-				throw new GeenGavException(Resources.GeenGavGroep);
-			}
-		}
+        /// <summary>
+        /// Haalt recentste groepswerkjaar op voor gegeven groep
+        /// </summary>
+        /// <param name="p">ID van gegeven groep</param>
+        /// <returns>Gevraagde groepswerkjaar</returns>
+        public GroepsWerkJaar RecentsteGroepsWerkJaarGet(Groep g)
+        {
+            if (_autorisatieMgr.IsGavGroep(g.ID))
+            {
+                return _dao.RecentsteGroepsWerkJaarGet(g.ID);
+            }
+            else
+            {
+                throw new GeenGavException(Resources.GeenGavGroep);
+            }
+        }
 
-		/// <summary>
+        /// <summary>
+        /// Haalt het groepswerkjaar op bij een gegeven GroepsWerkJaarID
+        /// </summary>
+        /// <param name="p">ID van het gevraagde GroepsWerkJaar</param>
+        /// <returns>Gevraagde groepswerkjaar</returns>
+        public GroepsWerkJaar GroepsWerkJaarOphalen(int groepsWerkJaarID)
+        {
+            GroepsWerkJaar gwj = _dao.GroepsWerkJaarOphalen(groepsWerkJaarID);
+            
+            if (_autorisatieMgr.IsGavGroep(gwj.Groep.ID))
+            {
+                return gwj;
+            }
+            else
+            {
+                throw new GeenGavException(Resources.GeenGavGroep);
+            }
+
+        }
+
+        /// <summary>
 		/// Persisteert groep in de database
 		/// </summary>
 		/// <param name="g">Te persisteren groep</param>
