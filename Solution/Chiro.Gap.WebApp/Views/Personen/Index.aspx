@@ -9,6 +9,7 @@
 
     $(function() {
         $("#Categorie").change(function() {
+        alert("Change");
         window.location = $("#Categorie select option:selected").val();
         });
 

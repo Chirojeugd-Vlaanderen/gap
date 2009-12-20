@@ -10,14 +10,7 @@
 
         $("#checkall").click(function() {
             $("input[@name=GekozenGelieerdePersoonIDs]").each(function() {
-                this.checked = true;
-            });
-        });
-
-        $("#uncheckall").click(function() {
-            var checked_status = this.checked;
-            $("input[@name=GekozenGelieerdePersoonIDs]").each(function() {
-                this.checked = false;
+                this.checked = !this.checked;
             });
         });
 
@@ -42,9 +35,6 @@ Pagina: <%= Html.PagerLinks(ViewData.Model.PageHuidig, ViewData.Model.PageTotaal
     int j = 0;
 %>
 
-<button id="checkall">Iedereen selecteren</button>
-<button id="uncheckall">Niemand selecteren</button>
-
 <form id="mactie" action="" method="post"> 
 <input type="submit" value="List" />
 <select id="GekozenActie" name="GekozenActie">
@@ -54,12 +44,13 @@ Pagina: <%= Html.PagerLinks(ViewData.Model.PageHuidig, ViewData.Model.PageTotaal
 
 <table>
 <tr>
-<th>Ad-nr.</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Acties</th><th>Categorie&euml;n</th>
+<th><%=Html.CheckBox("checkall") %></th><th>Ad-nr.</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Acties</th><th>Categorie&euml;n</th>
 </tr>
 <% foreach (PersoonInfo p in ViewData.Model.PersoonInfoLijst) {  %>
 <tr>
+    <td><%=Html.CheckBoxList("GekozenGelieerdePersoonIDs", info[j]) %><% j++; %></td>
     <td><%=p.AdNummer %></td>
-    <td><%=Html.CheckBoxList("GekozenGelieerdePersoonIDs", info[j]) %><% j++; %><% Html.RenderPartial("PersoonsLinkControl", p); %></td>
+    <td><% Html.RenderPartial("PersoonsLinkControl", p); %></td>
     <td class="right"><%=p.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)p.GeboorteDatum).ToString("d") %></td>
     <td><%=p.Geslacht.ToString() %></td>
     <td>
