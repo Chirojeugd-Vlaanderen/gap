@@ -21,7 +21,6 @@ namespace Chiro.Gap.Validatie
         /// </returns>
         public override bool Valideer(CommunicatieVorm cv)
         {
-            // FIXME: cv.CommunicatieType.Validatie moet geladen worden
             return Regex.IsMatch(cv.Nummer, cv.CommunicatieType.Validatie);
         }
     }

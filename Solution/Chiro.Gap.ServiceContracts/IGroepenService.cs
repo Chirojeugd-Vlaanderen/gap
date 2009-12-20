@@ -147,7 +147,7 @@ namespace Chiro.Gap.ServiceContracts
         int CategorieToevoegen(int groepID, String naam, String code);
 
         /// <summary>
-        /// Voegt de gegeven categorie uit de gegeven groep
+        /// Verwijdert de gegeven categorie uit de gegeven groep
         /// </summary>
         /// <param name="categorieID">De ID van de te verwijderen categorie</param>
         /// <param name="groepID">De groep van de categorie</param>
