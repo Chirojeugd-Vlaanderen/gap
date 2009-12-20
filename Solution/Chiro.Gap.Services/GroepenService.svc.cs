@@ -174,23 +174,7 @@ namespace Chiro.Gap.Services
 		{
             Groep g = _groepenMgr.Ophalen(groepID, e => e.Afdeling);
             Afdeling afd = g.Afdeling.Where(a => a.ID == afdelingsID).FirstOrDefault<Afdeling>();
-            /*Afdeling afd = null;
-            foreach (Afdeling a in g.Afdeling)
-            {
-                if (a.ID == afdelingsID)
-                {
-                    afd = a;
-                }
-            }*/
-
-            OfficieleAfdeling offafd = null;
-            foreach (OfficieleAfdeling a in _groepenMgr.OfficieleAfdelingenOphalen())
-            {
-                if (a.ID == offiafdelingsID)
-                {
-                    offafd = a;
-                }
-            }
+            OfficieleAfdeling offafd = _groepenMgr.OfficieleAfdelingenOphalen().Where(o => o.ID == offiafdelingsID).FirstOrDefault<OfficieleAfdeling>();
 
             if (afd == null || offafd == null)
             {
