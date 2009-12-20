@@ -95,7 +95,7 @@ namespace Chiro.Gap.Data.Ef
 
 		// pagineren gebeurt nu per werkjaar
 		// pagina, paginaGrootte en aantalTotaal zijn niet meer nodig
-        public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal)
+        public IList<Lid> PaginaOphalen(int groepsWerkJaarID)
 		{
             IList<Lid> lijst = new List<Lid>();
 
@@ -123,9 +123,6 @@ namespace Chiro.Gap.Data.Ef
 				{
 					lijst.Add(lid);
 				}
-
-                aantalTotaal = lijst.Count;
-                lijst = lijst.Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte).ToList<Lid>();
 			}
 
 			return lijst;
@@ -133,7 +130,7 @@ namespace Chiro.Gap.Data.Ef
 
 		// pagineren gebeurt nu per werkjaar
 		// pagina, paginaGrootte en aantalTotaal zijn niet meer nodig
-		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int afdelingsID)
+		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID)
 		{
 			IList<Lid> lijst;
 

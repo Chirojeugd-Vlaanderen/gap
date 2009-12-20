@@ -4,7 +4,7 @@
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 
 <div class="pager">
-Pagina: <%= Html.PagerLinks(ViewData.Model.PageHuidig, ViewData.Model.PageTotaal, i => Url.Action("List", new { page = i, groepsWerkJaarId = ViewData.Model.GroepsWerkJaarIdZichtbaar }))%>
+Pagina: <%= Html.WerkJaarLinks(ViewData.Model.GroepsWerkJaarIdZichtbaar, ViewData.Model.GroepsWerkJaarLijst, i => Url.Action("List", new { groepsWerkJaarId = Model.GroepsWerkJaarIdZichtbaar, afdID = Model.PageHuidig }))%>
 </div>
 
 <table>
@@ -31,7 +31,7 @@ maar dat is nu nog niet geimplementeerd :-) -->
     </td>
     <td><% foreach (int a in l.AfdelingIdLijst) 
            { %>
-               <%=Html.ActionLink(Html.Encode(ViewData.Model.AfdelingsInfoDictionary[a].Afkorting), "Afdeling", new { Controller = "Leden", id = a }, new { title = Html.Encode(ViewData.Model.AfdelingsInfoDictionary[a].Naam) } )%>
+               <%=Html.ActionLink(Html.Encode(ViewData.Model.AfdelingsInfoDictionary[a].Afkorting), "List", new { Controller = "Leden", id = a }, new { title = Html.Encode(ViewData.Model.AfdelingsInfoDictionary[a].Naam) } )%>
         <% } %>
     </td>
 

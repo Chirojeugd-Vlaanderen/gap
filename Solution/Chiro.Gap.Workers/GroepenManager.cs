@@ -52,6 +52,19 @@ namespace Chiro.Gap.Workers
 		}
 
 
+        public Groep OphalenMetGroepsWerkJaren(int groepID)
+        {
+            if (_autorisatieMgr.IsGavGroep(groepID))
+            {
+                return _dao.OphalenMetGroepsWerkJaren(groepID);
+            }
+            else
+            {
+                throw new GeenGavException(Resources.GeenGavGroep);
+            }
+        }
+
+
 		/// <summary>
 		/// Maakt een nieuwe afdeling voor een groep, zonder te persisteren
 		/// </summary>

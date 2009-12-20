@@ -15,11 +15,11 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// </summary>
         /// <param name="groepsWerkJaarID">ID van groepswerkjaar in kwestie</param>
         /// <returns>Een lijst van leden, inclusief info gelieerde personen en personen</returns>
-        IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal);
+        IList<Lid> PaginaOphalen(int groepsWerkJaarID);
 
         IList<Lid> AllesOphalen(int groepsWerkJaarID);
 
-        IList<Lid> PaginaOphalen(int groepsWerkJaarID, int afdelingsID);
+        IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID);
 
         /// <summary>
         /// Zoekt lid op op basis van GelieerdePersoonID en GroepsWerkJaarID

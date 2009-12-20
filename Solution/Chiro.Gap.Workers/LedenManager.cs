@@ -203,11 +203,13 @@ namespace Chiro.Gap.Workers
         /// <param name="paginaGrootte">grootte van de pagina's</param>
         /// <param name="aantalTotaal">totaal aantal personen in de groep</param>
         /// <returns>Lijst met een pagina leden uit het gevraagde groepswerkjaar.</returns>
-        public IList<Lid> PaginaOphalen(int groepswerkjaarID, int pagina, int paginaGrootte, out int aantalTotaal)
+        public IList<Lid> PaginaOphalen(int groepswerkjaarID, out int paginas)
         {
+            GroepsWerkJaar gwj = _daos.GroepenDao.GroepsWerkJaarOphalen(groepswerkjaarID);
+            paginas = _daos.GroepenDao.OphalenMetGroepsWerkJaren(gwj.Groep.ID).GroepsWerkJaar.Count;
             if (_authorisatieMgr.IsGavGroepsWerkJaar(groepswerkjaarID))
             {
-                IList<Lid> list = _daos.LedenDao.PaginaOphalen(groepswerkjaarID, pagina, paginaGrootte, out aantalTotaal);
+                IList<Lid> list = _daos.LedenDao.PaginaOphalen(groepswerkjaarID);
                 list = list.OrderBy(e => e.GelieerdePersoon.Persoon.Naam).ThenBy(e => e.GelieerdePersoon.Persoon.VoorNaam).ToList();
                 return list;
             }
@@ -223,11 +225,13 @@ namespace Chiro.Gap.Workers
 		/// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
 		/// <param name="afdelingsID">ID gevraagde afdeling</param>
 		/// <returns></returns>
-		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int afdelingsID)
+		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, out int paginas)
 		{
+            GroepsWerkJaar gwj = _daos.GroepenDao.GroepsWerkJaarOphalen(groepsWerkJaarID);
+            paginas = _daos.GroepenDao.OphalenMetGroepsWerkJaren(gwj.Groep.ID).GroepsWerkJaar.Count;
 			if (_authorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
-				return _daos.LedenDao.PaginaOphalen(groepsWerkJaarID, afdelingsID);
+				return _daos.LedenDao.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID);
 			}
 			else
 			{

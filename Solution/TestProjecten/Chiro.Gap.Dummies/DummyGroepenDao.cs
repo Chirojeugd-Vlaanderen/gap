@@ -18,6 +18,11 @@ namespace Chiro.Gap.Dummies
             throw new NotImplementedException();
         }
 
+        public Groep OphalenMetGroepsWerkJaren(int groepID)
+        {
+            throw new NotImplementedException();
+        }
+
         public Groep OphalenMetAfdelingen(int groepID)
         {
             throw new NotImplementedException();

@@ -81,18 +81,25 @@ namespace Chiro.Gap.Services
 		}
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IList<LidInfo> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal)
+        public IList<LidInfo> PaginaOphalen(int groepsWerkJaarID, out int paginas)
         {
-            var result = _lm.PaginaOphalen(groepsWerkJaarID, pagina, paginaGrootte, out aantalTotaal);
+            var result = _lm.PaginaOphalen(groepsWerkJaarID, out paginas);
             return Mapper.Map<IList<Lid>, IList<LidInfo>>(result);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        public IList<LidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, out int paginas)
+        {
+            IList<Lid> result = _lm.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID, out paginas);
+            return Mapper.Map<IList<Lid>, IList<LidInfo>>(result);
+        }
+
+        /*[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<LidInfo> PaginaOphalenVolgensCategorie(int categorieID, int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal)
         {
             //TODO
             throw new NotImplementedException();
-        }
+        }*/
 
 		/// <summary>
 		/// 
@@ -125,13 +132,6 @@ namespace Chiro.Gap.Services
 			IList<Lid> result = _lm.PaginaOphalen(groepsWerkJaarID);
 			return Mapper.Map<IList<Lid>, IList<LidInfo>>(result);
 		}*/
-
-        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<LidInfo> PaginaOphalenVoorAfdeling(int groepsWerkJaarID, int afdelingsID)
-		{
-			IList<Lid> result = _lm.PaginaOphalen(groepsWerkJaarID, afdelingsID);
-			return Mapper.Map<IList<Lid>, IList<LidInfo>>(result);
-		}
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public LidInfo LidOphalenMetAfdelingen(int lidID)

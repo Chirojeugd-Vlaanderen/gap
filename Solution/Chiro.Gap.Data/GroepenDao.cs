@@ -240,6 +240,22 @@ namespace Chiro.Gap.Data.Ef
 			return Utility.DetachObjectGraph(result);
 		}
 
+        public Groep OphalenMetGroepsWerkJaren(int groepID)
+        {
+            Groep result = null;
+            using (ChiroGroepEntities db = new ChiroGroepEntities())
+            {
+                db.GroepsWerkJaar.MergeOption = MergeOption.NoTracking;
+
+                result = (
+                    from g in db.Groep.Include("GroepsWerkJaar")
+                    where g.ID == groepID
+                    select g
+                ).FirstOrDefault();
+            }
+            return Utility.DetachObjectGraph(result);
+        }
+
         public GroepsWerkJaar GroepsWerkJaarOphalen(int groepsWerkJaarID) 
         {
             GroepsWerkJaar groepswj = null;

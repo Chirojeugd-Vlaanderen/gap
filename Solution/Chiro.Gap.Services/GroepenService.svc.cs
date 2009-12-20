@@ -14,6 +14,7 @@ using Chiro.Gap.Services.Properties;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Fouten.Exceptions;
+using System.Security.Permissions;
 
 
 namespace Chiro.Gap.Services
@@ -215,6 +216,12 @@ namespace Chiro.Gap.Services
         }
 
 		#endregion
+
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        public IList<GroepsWerkJaar> WerkJarenOphalen(int groepsID)
+        {
+            return _groepenMgr.OphalenMetGroepsWerkJaren(groepsID).GroepsWerkJaar.ToList();
+        }
 
 		#region Categorieen
 

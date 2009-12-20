@@ -15,10 +15,14 @@ namespace Chiro.Gap.Dummies
 	{
 		#region ILedenDao Members
 
-		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int afdelingsID)
-		{
+		public IList<Lid> PaginaOphalen(int groepsWerkJaarID)
+        {
             return new List<Lid>();
-		}
+        }
+		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID)
+        {
+            return new List<Lid>();
+        }
 
         public IList<Lid> AllesOphalen(int groepsWerkJaarID)
         {

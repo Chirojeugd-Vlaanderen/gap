@@ -28,6 +28,9 @@ namespace Chiro.Gap.ServiceContracts
         [OperationContract]
         IEnumerable<GroepInfo> MijnGroepenOphalen();
 
+        [OperationContract]
+        IList<GroepsWerkJaar> WerkJarenOphalen(int groepsID);
+
         /// <summary>
         /// Persisteert een groep in de database
         /// </summary>

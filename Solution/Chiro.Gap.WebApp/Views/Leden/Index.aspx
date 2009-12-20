@@ -4,9 +4,39 @@
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+<script type="text/javascript" src="/Scripts/jquery-1.2.6.min.js"></script>
+<script type="text/javascript">
+
+    $(function() {
+        $("#Categorie").change(function() {
+        window.location = $("#Afdeling select option:selected").val();
+        });
+
+    });
+ 
+</script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+
+<ul id="acties">
+<li>
+<form id="Afdeling" action="" method="post">
+    <select name="d">
+    <option value="">Kies een afdeling...</option>
+    <% 
+      foreach(var s in  Model.AfdelingsInfoDictionary) 
+      {
+          String s2 = Html.ActionLink("AfdelingBekijken", "List", new { groepsWerkJaarId = Model.GroepsWerkJaarIdZichtbaar, afdID = s.Value.ID});
+          int start = s2.IndexOf("href=\"")+6;
+          int end = s2.IndexOf("\"", start);
+          Response.Write("<option value=" + s2.Substring(start, end - start) + ">" + s.Value.Naam + "</option>\n");
+      }
+    %>
+    </select>
+</form>
+</li>
+</ul>
     
     <% Html.RenderPartial("LedenLijstControl"); %>
 
