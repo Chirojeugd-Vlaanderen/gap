@@ -39,5 +39,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// <param name="groepID"></param>
         /// <returns></returns>
         Groep OphalenMetGroepsWerkJaren(int groepID);
+
     }
 }

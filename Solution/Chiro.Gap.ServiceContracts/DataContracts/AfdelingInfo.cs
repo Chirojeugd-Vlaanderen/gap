@@ -13,10 +13,22 @@ namespace Chiro.Gap.ServiceContracts
         public int ID;
 
         [DataMember]
+        public int AfdelingsJaarID;
+
+        [DataMember]
         public string Naam;
 
         [DataMember]
         public string Afkorting;
+
+        [DataMember]
+        public string OfficieleAfdelingNaam;
+
+        [DataMember]
+        public int GeboorteJaarVan;
+
+        [DataMember]
+        public int GeboorteJaarTot;
 
     }
 }

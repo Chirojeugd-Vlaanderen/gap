@@ -169,17 +169,19 @@ namespace Chiro.Gap.Services
 			_groepenMgr.Bewaren(g, e => e.Afdeling);
 		}
 
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void AfdelingsJaarAanmaken(int groepID, int afdelingsID, int offiafdelingsID, int geboortejaarbegin, int geboortejaareind)
 		{
             Groep g = _groepenMgr.Ophalen(groepID, e => e.Afdeling);
-            Afdeling afd = null;
+            Afdeling afd = g.Afdeling.Where(a => a.ID == afdelingsID).FirstOrDefault<Afdeling>();
+            /*Afdeling afd = null;
             foreach (Afdeling a in g.Afdeling)
             {
                 if (a.ID == afdelingsID)
                 {
                     afd = a;
                 }
-            }
+            }*/
 
             OfficieleAfdeling offafd = null;
             foreach (OfficieleAfdeling a in _groepenMgr.OfficieleAfdelingenOphalen())
@@ -199,20 +201,15 @@ namespace Chiro.Gap.Services
 
 			AfdelingsJaar afdjaar = _groepenMgr.AfdelingsJaarMaken(afd, offafd, huidigWerkJaar, geboortejaarbegin, geboortejaareind);
 
-            Factory.Maak<GroepenManager>();
+            _groepenMgr.AfdelingsJaarBewaren(afdjaar);
 
-            throw new NotImplementedException();
-
-            /*_groepenMgr.Bewaren(afdjaar, aj => aj.OfficieleAfdeling.WithoutUpdate(),
-                                aj => aj.Afdeling.WithoutUpdate(),
-                                aj => aj.GroepsWerkJaar.WithoutUpdate());*/
-		}
+        }
 
 
         public IList<AfdelingInfo> AfdelingenOphalen(int groepswerkjaarID)
         {
             var groepswerkjaar = _groepenMgr.GroepsWerkJaarOphalen(groepswerkjaarID);
-            return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingInfo>>(groepswerkjaar.AfdelingsJaar.ToList<AfdelingsJaar>());
+            return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingInfo>>(groepswerkjaar.AfdelingsJaar.OrderBy(e => e.GeboorteJaarVan).ToList<AfdelingsJaar>());
         }
 
 		#endregion

@@ -265,7 +265,7 @@ namespace Chiro.Gap.Data.Ef
                 db.GroepsWerkJaar.MergeOption = MergeOption.NoTracking;
 
                 groepswj = (
-                    from gwj in db.GroepsWerkJaar.Include("Groep").Include("AfdelingsJaar").Include("AfdelingsJaar.Afdeling")
+                    from gwj in db.GroepsWerkJaar.Include("Groep").Include("AfdelingsJaar").Include("AfdelingsJaar.Afdeling").Include("AfdelingsJaar.OfficieleAfdeling")
                     where gwj.ID == groepsWerkJaarID
                     select gwj).FirstOrDefault();
             }

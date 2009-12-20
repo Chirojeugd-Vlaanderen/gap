@@ -17,7 +17,7 @@ namespace Chiro.Gap.Workers
 	public class GroepenManager
 	{
 		private IGroepenDao _dao;
-		private IDao<AfdelingsJaar> _afdao;
+		private IAfdelingsJarenDao _afdao;
 		private IAutorisatieManager _autorisatieMgr;
 		private ICategorieenDao _categorieenDao;
 
@@ -26,7 +26,7 @@ namespace Chiro.Gap.Workers
 		/// de groepen te gebruiken.  Nuttig voor mocking en testing.
 		/// </summary>
 		/// <param name="dao">Alternatieve dao</param>
-		public GroepenManager(IGroepenDao dao, IDao<AfdelingsJaar> afdao, ICategorieenDao categorieenDao, IAutorisatieManager autorisatieMgr)
+        public GroepenManager(IGroepenDao dao, IAfdelingsJarenDao afdao, ICategorieenDao categorieenDao, IAutorisatieManager autorisatieMgr)
 		{
 			_dao = dao;
 			_afdao = afdao;
@@ -96,7 +96,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="oa">Te koppelen officiele afdeling</param>
 		/// <param name="geboorteJaarBegin">Geboortejaar van</param>
 		/// <param name="geboorteJaarEind">Geboortejaar tot</param>
-		public AfdelingsJaar AfdelingsJaarMaken(Afdeling a, OfficieleAfdeling oa, GroepsWerkJaar gwj, int geboorteJaarBegin, int geboorteJaarEind)
+        public AfdelingsJaar AfdelingsJaarMaken(Afdeling a, OfficieleAfdeling oa, GroepsWerkJaar gwj, int geboorteJaarBegin, int geboorteJaarEind)
 		{
 			if (!_autorisatieMgr.IsGavAfdeling(a.ID))
 			{
@@ -174,6 +174,25 @@ namespace Chiro.Gap.Workers
 
         }
 
+        /// <summary>
+        /// Persisteert AfdelingsJaar in de database
+        /// </summary>
+        /// <param name="a">Te persisteren AfdelingsJaar</param>
+        /// <returns>De bewaarde groep</returns>
+        public AfdelingsJaar AfdelingsJaarBewaren(AfdelingsJaar a)
+        {
+            if (_autorisatieMgr.IsGavGroepsWerkJaar(a.GroepsWerkJaar.ID))
+            {
+                return _afdao.Bewaren(a);
+            }
+            else
+            {
+                throw new GeenGavException(Resources.GeenGavGroep);
+            }
+        }
+
+
+        
         /// <summary>
 		/// Persisteert groep in de database
 		/// </summary>

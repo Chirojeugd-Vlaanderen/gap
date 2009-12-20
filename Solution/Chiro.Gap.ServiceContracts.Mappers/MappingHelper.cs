@@ -56,6 +56,12 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.ID,
                     opt => opt.MapFrom(src => src.Afdeling.ID))
                 .ForMember(
+                    dst => dst.AfdelingsJaarID,
+                    opt => opt.MapFrom(src => src.ID))
+                .ForMember(
+                    dst => dst.OfficieleAfdelingNaam,
+                    opt => opt.MapFrom(src => src.OfficieleAfdeling.Naam + "|" + src.OfficieleAfdeling.ID))
+                .ForMember(
                     dst => dst.Naam,
                     opt => opt.MapFrom(src => src.Afdeling.Naam))
                 .ForMember(

@@ -22,9 +22,6 @@ namespace Chiro.Gap.ServiceContracts
         [DataMember]
         public LidType Type { get; set; }
 
-//        [DataMember]
-//        public String AfdelingsNamen { get; set; }
-
         [DataMember]
         public IList<int> AfdelingIdLijst { get; set; }
 
