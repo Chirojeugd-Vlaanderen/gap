@@ -17,10 +17,10 @@
     <fieldset>
     
     <label for="Afdeling_Naam">Naam</label> 
-    <%=Html.TextBox("HuidigeAfdeling.Naam")%><br />
+    <%=Html.TextBox("HuidigeAfdeling.Naam", Model.HuidigeAfdeling.Naam, new { @readonly = "readonly", title = "Nu niet wijzigbaar", disabled = "disabled" } )%><br />
     
     <label for="Afdeling_Afkorting">Afkorting</label> 
-    <%=Html.TextBox("HuidigeAfdeling.Afkorting")%><br />
+    <%=Html.TextBox("HuidigeAfdeling.Afkorting", Model.HuidigeAfdeling.Afkorting, new { @readonly = "readonly", title = "Nu niet wijzigbaar", disabled = "disabled" })%><br />
         
     <label for="AfdelingsJaar_GeboorteJaarVan">Van</label> 
     <%=Html.TextBox("HuidigAfdelingsJaar.GeboorteJaarVan")%><br />

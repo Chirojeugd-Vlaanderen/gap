@@ -162,7 +162,7 @@ namespace Chiro.Gap.Workers
         public GroepsWerkJaar GroepsWerkJaarOphalen(int groepsWerkJaarID)
         {
             GroepsWerkJaar gwj = _dao.GroepsWerkJaarOphalen(groepsWerkJaarID);
-            
+
             if (_autorisatieMgr.IsGavGroep(gwj.Groep.ID))
             {
                 return gwj;
@@ -175,21 +175,44 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Persisteert AfdelingsJaar in de database
+        /// Haalt het groepswerkjaar op bij een gegeven GroepsWerkJaarID
+        /// samen met alle info over het AfdelingsJaar, de Afdeling, de gelinkte
+        /// OfficieleAfdeling, de Kinderen en de Leiding, ...
         /// </summary>
-        /// <param name="a">Te persisteren AfdelingsJaar</param>
-        /// <returns>De bewaarde groep</returns>
-        public AfdelingsJaar AfdelingsJaarBewaren(AfdelingsJaar a)
+        /// <param name="p">ID van het gevraagde GroepsWerkJaar</param>
+        /// <returns>Gevraagde groepswerkjaar</returns>
+        public GroepsWerkJaar GroepsWerkJaarOphalenMetAfdelingInfo(int groepsWerkJaarID)
         {
-            if (_autorisatieMgr.IsGavGroepsWerkJaar(a.GroepsWerkJaar.ID))
+            GroepsWerkJaar gwj = _dao.GroepsWerkJaarOphalenMetAfdelingInfo(groepsWerkJaarID);
+
+            if (_autorisatieMgr.IsGavGroep(gwj.Groep.ID))
             {
-                return _afdao.Bewaren(a);
+                return gwj;
             }
             else
             {
                 throw new GeenGavException(Resources.GeenGavGroep);
             }
+
         }
+
+        // Zit nu in AfdelingsJaarManager.Bewaren
+        ///// <summary>
+        ///// Persisteert AfdelingsJaar in de database
+        ///// </summary>
+        ///// <param name="a">Te persisteren AfdelingsJaar</param>
+        ///// <returns>De bewaarde groep</returns>
+        //public AfdelingsJaar AfdelingsJaarBewaren(AfdelingsJaar a)
+        //{
+        //    if (_autorisatieMgr.IsGavGroepsWerkJaar(a.GroepsWerkJaar.ID))
+        //    {
+        //        return _afdao.Bewaren(a);
+        //    }
+        //    else
+        //    {
+        //        throw new GeenGavException(Resources.GeenGavGroep);
+        //    }
+        //}
 
 
         

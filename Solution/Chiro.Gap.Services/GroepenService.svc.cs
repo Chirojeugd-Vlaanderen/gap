@@ -24,14 +24,16 @@ namespace Chiro.Gap.Services
 	{
 		#region Manager Injection
 
-		private readonly GroepenManager _groepenMgr;
-		private readonly WerkJaarManager _werkjaarMgr;
+        private readonly GroepenManager _groepenMgr;
+        private readonly AfdelingsJaarManager _afdelingsJaarMgr;
+        private readonly WerkJaarManager _werkjaarMgr;
 		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly GelieerdePersonenManager _gelieerdePersonenMgr = Factory.Maak<GelieerdePersonenManager>();
 
-		public GroepenService(GroepenManager gm, WerkJaarManager wm, GelieerdePersonenManager gpm, IAutorisatieManager am)
+		public GroepenService(GroepenManager gm, AfdelingsJaarManager ajm, WerkJaarManager wm, GelieerdePersonenManager gpm, IAutorisatieManager am)
 		{
 			_groepenMgr = gm;
+            _afdelingsJaarMgr = ajm;
 			_werkjaarMgr = wm;
 			_autorisatieMgr = am;
 			_gelieerdePersonenMgr = gpm;
@@ -162,12 +164,52 @@ namespace Chiro.Gap.Services
 		/// <param name="groepID">ID van de groep</param>
 		/// <param name="naam">naam van de afdeling</param>
 		/// <param name="afkorting">afkorting van de afdeling (voor lijsten, overzichten,...)</param>
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void AfdelingAanmaken(int groepID, string naam, string afkorting)
 		{
 			Groep g = _groepenMgr.Ophalen(groepID);
 			_groepenMgr.AfdelingToevoegen(g, naam, afkorting);
 			_groepenMgr.Bewaren(g, e => e.Afdeling);
 		}
+
+
+        /// <summary>
+        /// Bewerkt een AfdelingsJaar: 
+        /// andere OfficieleAfdeling en/of andere leeftijden
+        /// </summary>
+        /// <param name="afdID">AfdelingsJaarID</param>
+        /// <param name="offafdID">OfficieleAfdelingsID</param>
+        /// <param name="geboortVan">GeboorteJaarVan</param>
+        /// <param name="geboortTot">GeboorteJaarTot</param>
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        public void AfdelingsJaarBewarenMetWijzigingen(int afdID, int offafdID, int geboorteVan, int geboorteTot)
+        {
+            AfdelingsJaar aj = _afdelingsJaarMgr.Ophalen(afdID);
+            OfficieleAfdeling oa = _groepenMgr.OfficieleAfdelingenOphalen().Where(a => a.ID == offafdID).FirstOrDefault<OfficieleAfdeling>();
+            aj.OfficieleAfdeling = oa;
+            aj.GeboorteJaarVan = geboorteVan;
+            aj.GeboorteJaarTot = geboorteTot;
+            _afdelingsJaarMgr.Bewaren(aj);
+        }
+
+
+        /// <summary>
+        /// Verwijdert een afdelingsjaar
+        /// en controleert of er geen leden in zitten.
+        /// </summary>
+        /// <param name="afdelingsJaarID"></param>
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        public void AfdelingsJaarVerwijderen(int afdelingsJaarID)
+        {
+            _afdelingsJaarMgr.Verwijderen(afdelingsJaarID);
+        }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        public AfdelingsJaar AfdelingsJaarOphalen(int afdelingsJaarID)
+        {
+            return _afdelingsJaarMgr.Ophalen(afdelingsJaarID);
+        }
+
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void AfdelingsJaarAanmaken(int groepID, int afdelingsID, int offiafdelingsID, int geboortejaarbegin, int geboortejaareind)
@@ -185,14 +227,14 @@ namespace Chiro.Gap.Services
 
 			AfdelingsJaar afdjaar = _groepenMgr.AfdelingsJaarMaken(afd, offafd, huidigWerkJaar, geboortejaarbegin, geboortejaareind);
 
-            _groepenMgr.AfdelingsJaarBewaren(afdjaar);
+            _afdelingsJaarMgr.Bewaren(afdjaar);
 
         }
 
 
         public IList<AfdelingInfo> AfdelingenOphalen(int groepswerkjaarID)
         {
-            var groepswerkjaar = _groepenMgr.GroepsWerkJaarOphalen(groepswerkjaarID);
+            var groepswerkjaar = _groepenMgr.GroepsWerkJaarOphalenMetAfdelingInfo(groepswerkjaarID);
             return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingInfo>>(groepswerkjaar.AfdelingsJaar.OrderBy(e => e.GeboorteJaarVan).ToList<AfdelingsJaar>());
         }
 

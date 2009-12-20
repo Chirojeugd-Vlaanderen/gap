@@ -30,5 +30,8 @@ namespace Chiro.Gap.ServiceContracts
         [DataMember]
         public int GeboorteJaarTot;
 
+        [DataMember]
+        public bool AfdelingsJaarMagVerwijderdWorden;
+
     }
 }

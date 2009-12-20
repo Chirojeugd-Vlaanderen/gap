@@ -27,7 +27,12 @@
         <td><%=ai.OfficieleAfdelingNaam %></td>
         <td><%=ai.GeboorteJaarVan %></td>
         <td><%=ai.GeboorteJaarTot %></td>
-        <td><%=Html.ActionLink("Bewerken", "Bewerken", new { Controller = "Afdeling", id = ai.AfdelingsJaarID } )%></td>
+        <td>
+            <%=Html.ActionLink("Bewerken", "Bewerken", new { Controller = "Afdeling", id = ai.AfdelingsJaarID } )%>
+            <% if (ai.AfdelingsJaarMagVerwijderdWorden) { %>
+            <%=Html.ActionLink("Verwijderen", "Verwijderen", new { Controller = "Afdeling", id = ai.AfdelingsJaarID } )%>
+            <% } %>
+        </td>
     </tr>
 <% } %>
 

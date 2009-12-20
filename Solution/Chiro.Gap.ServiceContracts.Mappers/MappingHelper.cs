@@ -65,6 +65,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                     dst => dst.Naam,
                     opt => opt.MapFrom(src => src.Afdeling.Naam))
                 .ForMember(
+                    dst => dst.AfdelingsJaarMagVerwijderdWorden,
+                    opt => opt.MapFrom(src => src.Leiding.Count + src.Kind.Count > 0 ? false : true))
+                .ForMember(
                     dst => dst.Afkorting,
                     opt => opt.MapFrom(src => src.Afdeling.Afkorting));
 

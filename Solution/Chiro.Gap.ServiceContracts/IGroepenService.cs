@@ -95,6 +95,9 @@ namespace Chiro.Gap.ServiceContracts
         [OperationContract]
         void AfdelingAanmaken(int groepID, string naam, string afkorting);
 
+        [OperationContract]
+        AfdelingsJaar AfdelingsJaarOphalen(int afdelingsJaarID);
+
         /// <summary>
         /// Methode die aan de hand van een groep, een afdelingsjaar van de groep en een officiele afdeling een 
         /// afdelingsjaar maakt voor de gegeven leeftijden. 
@@ -104,6 +107,25 @@ namespace Chiro.Gap.ServiceContracts
         /// <param name="oa"></param>
         [OperationContract]
         void AfdelingsJaarAanmaken(int groepID, int afdID, int offafdID, int geboortejaarbegin, int geboortejaareind);
+
+        /// <summary>
+        /// Bewerkt een AfdelingsJaar: 
+        /// andere OfficieleAfdeling en/of andere leeftijden
+        /// </summary>
+        /// <param name="afdID">AfdelingsJaarID</param>
+        /// <param name="offafdID">OfficieleAfdelingsID</param>
+        /// <param name="geboortVan">GeboorteJaarVan</param>
+        /// <param name="geboortTot">GeboorteJaarTot</param>
+        [OperationContract]
+        void AfdelingsJaarBewarenMetWijzigingen(int afdID, int offafdID, int geboorteVan, int geboorteTot);
+
+        /// <summary>
+        /// Verwijdert een afdelingsjaar 
+        /// en controleert of er geen leden in zitten.
+        /// </summary>
+        /// <param name="afdelingsJaarID"></param>
+        [OperationContract]
+        void AfdelingsJaarVerwijderen(int afdelingsJaarID);
 
         [OperationContract]
         IList<OfficieleAfdeling> OfficieleAfdelingenOphalen();

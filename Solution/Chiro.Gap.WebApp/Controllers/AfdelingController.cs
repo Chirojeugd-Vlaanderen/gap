@@ -115,7 +115,7 @@ namespace Chiro.Gap.WebApp.Controllers
         }
 
         //
-        // POST: /Afdeling/Nieuw
+        // POST: /Afdeling/Activeren/afdelingID
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Activeren(Models.AfdelingInfoModel model, int groepID, int id)
         {
@@ -131,6 +131,49 @@ namespace Chiro.Gap.WebApp.Controllers
             return RedirectToAction("Index");
         }
 
+        //
+        // GET: /Afdeling/Verwijderen/afdelingsJaarId
+        public ActionResult Verwijderen(int groepID, int id)
+        {
+            // Afdeling van afdelingsjaar invullen
+            ServiceHelper.CallService<IGroepenService>
+                (groep => groep.AfdelingsJaarVerwijderen(id));
+            return RedirectToAction("Index");
+        }
+
+        //
+        // GET: /Afdeling/Bewerken/afdelingsJaarId
+        public ActionResult Bewerken(int groepID, int id)
+        {
+            var model = new Models.AfdelingInfoModel();
+            BaseModelInit(model, groepID);
+
+            model.HuidigAfdelingsJaar =
+                ServiceHelper.CallService<IGroepenService, AfdelingsJaar>
+                (groep => groep.AfdelingsJaarOphalen(id));
+            model.OfficieleAfdelingenLijst =
+                ServiceHelper.CallService<IGroepenService, IList<OfficieleAfdeling>>
+                (groep => groep.OfficieleAfdelingenOphalen());
+            model.HuidigeAfdeling = model.HuidigAfdelingsJaar.Afdeling;
+            model.OfficieleAfdelingID = model.HuidigAfdelingsJaar.OfficieleAfdeling.ID;
+
+            model.Title = "Afdeling bewerken";
+            return View("AfdelingsJaar", model);
+        }
+
+        //
+        // POST: /Afdeling/Bewerken/afdelingsJaarId
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Bewerken(Models.AfdelingInfoModel model, int groepID, int id)
+        {
+            BaseModelInit(model, groepID);
+            ServiceHelper.CallService<IGroepenService>(e => e.AfdelingsJaarBewarenMetWijzigingen(id, model.OfficieleAfdelingID, model.HuidigAfdelingsJaar.GeboorteJaarVan, model.HuidigAfdelingsJaar.GeboorteJaarTot));
+
+            // TODO: wat als er een fout optreedt bij AfdelingAanmaken?
+            TempData["feedback"] = "Wijzigingen zijn opgeslagen";
+
+            return RedirectToAction("Index");
+        }
 
     }
 }
