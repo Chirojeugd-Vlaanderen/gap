@@ -40,6 +40,7 @@ Pagina: <%= Html.PagerLinks(ViewData.Model.PageHuidig, ViewData.Model.PageTotaal
 <select id="GekozenActie" name="GekozenActie">
 <option value=0>Kies een actie ...</option>
 <option value=1>Lid maken</option>
+<option value=2>In (dezelfde) categorie stoppen</option>
 </select>
 
 <table>

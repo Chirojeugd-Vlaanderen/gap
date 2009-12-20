@@ -11,6 +11,7 @@ using Chiro.Cdf.Ioc;
 using Chiro.Gap.ServiceContracts.Mappers;
 using AutoMapper;
 using System.Security.Permissions;
+using Chiro.Gap.Fouten.Exceptions;
 
 namespace Chiro.Gap.Services
 {
@@ -36,28 +37,41 @@ namespace Chiro.Gap.Services
 		{
 			GelieerdePersoon gp = _gpm.DetailsOphalen(gelieerdePersoonID);
 
-			Lid l = _lm.LidMaken(gp);
-			_lm.LidBewaren(l);
-			// TODO: feedback aanpassen
-			return string.Format("{0} is toegevoegd als lid.", gp.Persoon.VolledigeNaam);
+            try
+            {
+                Lid l = _lm.LidMaken(gp);
+                _lm.LidBewaren(l);
+                return string.Format("{0} is toegevoegd als lid.", gp.Persoon.VolledigeNaam);
+            }
+            catch (BestaatAlException e)
+            {
+                return "De persoon is al lid in dit werkjaar";
+            }
 		}
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public String LedenMakenEnBewaren(IEnumerable<int> gelieerdePersoonIDs)
         {
             String result = "";
+            bool bestonden = false;
             foreach (int gpID in gelieerdePersoonIDs)
             {
                 GelieerdePersoon gp = _gpm.DetailsOphalen(gpID);
 
-                Lid l = _lm.LidMaken(gp);
-                _lm.LidBewaren(l);
-
-                result = result + gp.Persoon.VolledigeNaam + ", ";
+                try
+                {
+                    Lid l = _lm.LidMaken(gp);
+                    _lm.LidBewaren(l);
+                    result = result + gp.Persoon.VolledigeNaam + ", ";
+                }
+                catch (BestaatAlException e)
+                {
+                    bestonden = true;
+                }
             }
             
             // TODO: feedback aanpassen
-            return result.Substring(0, result.Length-2) + " zijn toegevoegd als lid.";
+            return result.Substring(0, result.Length-2) + " zijn toegevoegd als lid." + (bestonden? " Sommige waren al lid.":"");
         }
 
 		/// <summary>

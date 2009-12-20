@@ -209,7 +209,7 @@ namespace Chiro.Gap.ServiceContracts
         /// <returns></returns>
         [OperationContract]
         [FaultContract(typeof(BusinessFault<Categorie>))]
-        void CategorieKoppelen(IList<int> gelieerdepersonenIDs, int categorieID);
+        void CategorieKoppelen(IList<int> gelieerdepersonenIDs, IList<int> categorieIDs);
         [OperationContract]
         [FaultContract(typeof(BusinessFault<Categorie>))]
         void CategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID);

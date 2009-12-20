@@ -217,7 +217,7 @@ namespace Chiro.Gap.Data.Ef
 			{
 				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 				return (
-				    from gp in db.GelieerdePersoon.Include("Persoon").Include("Communicatie.CommunicatieType").Include("Persoon.PersoonsAdres.Adres.Straat").Include("Persoon.PersoonsAdres.Adres.Subgemeente").Include("Groep").Include("Categorie")
+				    from gp in db.GelieerdePersoon.Include("Persoon").Include("Communicatie.CommunicatieType").Include("Persoon.PersoonsAdres.Adres.Straat").Include("Persoon.PersoonsAdres.Adres.Subgemeente").Include("Groep").Include("Categorie").Include("Lid.GroepsWerkJaar")
 				    where gp.ID == gelieerdePersoonID
 				    select gp).FirstOrDefault();
 			}

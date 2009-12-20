@@ -17,12 +17,26 @@
            </ul>
            
            <fieldset>
-           <legend>Categorie toevoegen</legend>     
+           <legend>Aan welke categorieen wil je <%= Model.GelieerdePersonenIDs.Count == 1 ? "hem/haar" : "hen" %> toevoegen?</legend>     
            
-           <%=Model.Aanvrager.Persoon.VolledigeNaam %> toevoegen aan de categorie 
-           <%=Html.DropDownList("Model.selectie", new SelectList(Model.Categorieen.Select(x => new { value = x.ID, text = x.Naam }), "value", "text"))%>
+           <!--<%=Html.DropDownList("Model.selectie", new SelectList(Model.Categorieen.Select(x => new { value = x.ID, text = x.Naam }), "value", "text"))%>-->
+           
+           <%
+                List<CheckBoxListInfo> info
+                   = (from pa in Model.Categorieen
+                      select new CheckBoxListInfo(
+                         pa.ID.ToString()
+                         , pa.Naam
+                         , false)).ToList<CheckBoxListInfo>();
+            %>
+           
+           <%= Html.CheckBoxList("GeselecteerdeCategorieen", info) %>
  
-           
+           <% //Html.Hidden("GelieerdePersonenIDs"); 
+           foreach(int i in Model.GelieerdePersonenIDs)
+           {
+               Response.Write("<input type=\"hidden\" name=\"GelieerdePersonenIDs\" value=\"" + i + "\"/>");
+           }%>
            </fieldset>
            
            <%

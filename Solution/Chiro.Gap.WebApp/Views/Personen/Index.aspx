@@ -7,10 +7,10 @@
 <script type="text/javascript" src="/Scripts/jquery-1.2.6.min.js"></script>
 <script type="text/javascript">
 
+//HEEL BELANGRIJK: voor een dropdownlist, moet het select statement zowel een id als een name hebben, die dezelfde zijn, en die moet ook in het event gebruikt worden
     $(function() {
-        $("#Categorie").change(function() {
-        alert("Change");
-        window.location = $("#Categorie select option:selected").val();
+    $("#cat").change(function() {
+    window.location = $("#cat option:selected").val();
         });
 
     });
@@ -24,16 +24,22 @@
 <li><%= Html.ActionLink("Nieuwe persoon", "Nieuw") %></li>
 <li>
 <form id="Categorie" action="" method="post">
-    <select name="d">
+    <select id="cat" name="cat">
     <option value="">Kies een categorie...</option>
     <% 
+        String s2;
+        int start, end;
       foreach(var s in  Model.GroepsCategorieen) 
       {
-          String s2 = Html.ActionLink("CategorieBekijken", "List", new { page = 1, id = s.Value});
-          int start = s2.IndexOf("href=\"")+6;
-          int end = s2.IndexOf("\"", start);
+          s2 = Html.ActionLink("CategorieBekijken", "List", new { page = 1, id = s.Value});
+          start = s2.IndexOf("href=\"")+6;
+          end = s2.IndexOf("\"", start);
           Response.Write("<option value=" + s2.Substring(start, end - start) + ">" + s.Text + "</option>\n");
       }
+      s2 = Html.ActionLink("CategorieBekijken", "List", new { page = 1, id = 0 });
+      start = s2.IndexOf("href=\"") + 6;
+      end = s2.IndexOf("\"", start);
+      Response.Write("<option value=" + s2.Substring(start, end - start) + ">Alle Personen</option>\n");
     %>
     </select>
 </form>

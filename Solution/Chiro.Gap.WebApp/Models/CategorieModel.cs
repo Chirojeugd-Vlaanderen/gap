@@ -15,30 +15,20 @@ namespace Chiro.Gap.WebApp.Models
     /// </summary>
     public class CategorieModel : MasterViewModel 
     {
-        // ID van GelieerdePersoon waarvoor aangeklikt dat
-        // hij/zij een extra categorie nodig heeft
-        public GelieerdePersoon Aanvrager { get; set; }
-
         /// <summary>
-        /// Nieuwe categorie voor de gegeven gelieerde personen
+        /// Nieuwe categorieen voor de gegeven gelieerde personen
         /// </summary>
         public IEnumerable<Categorie> Categorieen { get; set; }
+        public List<int> GeselecteerdeCategorieen { get; set; }
 
-        public int selectie { get; set; }
+        public List<int> GelieerdePersonenIDs { get; set; }
+        public List<string> GelieerdePersonenNaam { get; set; }
 
         /// <summary>
         /// Standaardconstructor - creeert lege
         /// </summary>
         public CategorieModel()
         {
-            Aanvrager = null;
-            Categorieen = new List<Categorie>();
-        }
-
-        public CategorieModel(IEnumerable<Categorie> c, GelieerdePersoon gp) : this()
-        {
-            Categorieen = c;
-            Aanvrager = gp;
         }
     }
 }

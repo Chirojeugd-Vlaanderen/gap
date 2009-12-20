@@ -286,19 +286,21 @@ namespace Chiro.Gap.Services
 		/// <param name="gelieerdepersonenIDs">ID's van de te koppelen gebruikers</param>
 		/// <param name="categorieID">ID van de te koppelen categorie</param>
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void CategorieKoppelen(IList<int> gelieerdepersonenIDs, int categorieID)
+		public void CategorieKoppelen(IList<int> gelieerdepersonenIDs, IList<int> categorieIDs)
 		{
 			// Haal personen op met groep
 			IList<GelieerdePersoon> gelieerdePersonen = _gpMgr.Ophalen(gelieerdepersonenIDs);
 
-			// Haal categorie op met groep
-			Categorie categorie = _catMgr.Ophalen(categorieID);
+            foreach (int catID in categorieIDs)
+            {
+                Categorie categorie = _catMgr.Ophalen(catID);
 
-			// Koppelen
-			_gpMgr.CategorieKoppelen(gelieerdePersonen, categorie, true);
+                // Koppelen
+                _gpMgr.CategorieKoppelen(gelieerdePersonen, categorie, true);
 
-			// Bewaren
-			_catMgr.BewarenMetPersonen(categorie);
+                // Bewaren
+                _catMgr.BewarenMetPersonen(categorie);
+            }
 		}
 
 		/// <summary>

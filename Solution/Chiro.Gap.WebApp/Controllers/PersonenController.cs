@@ -86,11 +86,22 @@ namespace Chiro.Gap.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult List(PersoonInfoModel model, int groepID)
         {
-            if (model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0 && model.GekozenActie == 1) 
+            if (model.GekozenActie == 1 && model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0) 
             {
-                TempData["feedback"] = ServiceHelper.CallService<ILedenService, String>(g => g.LedenMakenEnBewaren(model.GekozenGelieerdePersoonIDs)); 
+                TempData["feedback"] = ServiceHelper.CallService<ILedenService, String>(g => g.LedenMakenEnBewaren(model.GekozenGelieerdePersoonIDs));
+                return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
             }
-            return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
+            else if (model.GekozenActie == 2 && model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0)
+            {
+                TempData.Add("list", model.GekozenGelieerdePersoonIDs);
+                return RedirectToAction("ToevoegenAanCategorieLijst");
+            }
+            else
+            {
+                //TODO error handling
+
+                return RedirectToAction("Index");
+            }
         }
 
         //
@@ -452,21 +463,45 @@ namespace Chiro.Gap.WebApp.Controllers
         // GET: /Personen/ToevoegenAanCategorie/categorieID
         public ActionResult ToevoegenAanCategorie(int gelieerdePersoonID, int groepID)
         {
-            GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
-            IEnumerable<Categorie> cats = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<Categorie>>(l => l.CategorieenOphalen(groepID));
-            CategorieModel model = new CategorieModel(cats, g);
+            List<int> l = new List<int>();
+            l.Add(gelieerdePersoonID);
+            TempData.Add("list", l);
+            return RedirectToAction("ToevoegenAanCategorieLijst");
+        }
+
+        //mag niet van buiten de controller gecalld worden
+        public ActionResult ToevoegenAanCategorieLijst(int groepID)
+        {
+            List<int> gelieerdePersoonIDs = new List<int>();
+            object value;
+            TempData.TryGetValue("list", out value);
+            gelieerdePersoonIDs = (List<int>)value;
+            TempData.Remove("list");
+
+            //TODO na eten:
+            /*
+             * Uit categoriemodel de gelieerdepersoon halen (moet INFO ofzo worden)
+             * */
+            CategorieModel model = new CategorieModel();
+            model.Categorieen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<Categorie>>(l => l.CategorieenOphalen(groepID));
+            model.GelieerdePersonenIDs = gelieerdePersoonIDs;
             BaseModelInit(model, groepID);
             return View("CategorieToevoegen", model);
         }
 
         // POST: /Personen/ToevoegenAanCategorie/categorieID
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ToevoegenAanCategorie(CategorieModel model, int gelieerdePersoonID, int groepID)
+        public ActionResult ToevoegenAanCategorieLijst(CategorieModel model, int groepID)
         {
-            IList<int> list = new List<int>();
-            list.Add(gelieerdePersoonID);
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieKoppelen(list, model.selectie));
-            return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieKoppelen(model.GelieerdePersonenIDs, model.GeselecteerdeCategorieen));
+            if (model.GelieerdePersonenIDs.Count == 1)
+            {
+                return RedirectToAction("EditRest", new { id = model.GelieerdePersonenIDs[0] });
+            }
+            else
+            {
+                return RedirectToAction("List", new { id = Sessie.LaatsteActieID, page = Sessie.LaatstePagina });
+            }
         }
     }
 }

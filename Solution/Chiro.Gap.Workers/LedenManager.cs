@@ -9,6 +9,7 @@ using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using System.ServiceModel;
 
 namespace Chiro.Gap.Workers
 {
@@ -75,6 +76,15 @@ namespace Chiro.Gap.Workers
 				gpMetDetails = gp;
 			}
 
+            var x = (from l in gpMetDetails.Lid
+                    where l.GroepsWerkJaar.ID == gwj.ID
+                    select l
+                    ).FirstOrDefault();
+
+            if (x != null) //was dus al lid
+            {
+                throw new BestaatAlException();
+            }
 
 			// Geschikte afdeling zoeken
 			// Als er geen geschikte afdeling is, dan null (wordt Leiding)
