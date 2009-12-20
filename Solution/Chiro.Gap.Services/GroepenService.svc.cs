@@ -220,7 +220,10 @@ namespace Chiro.Gap.Services
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public IList<GroepsWerkJaar> WerkJarenOphalen(int groepsID)
         {
-            return _groepenMgr.OphalenMetGroepsWerkJaren(groepsID).GroepsWerkJaar.ToList();
+            return (from gwj in _groepenMgr.OphalenMetGroepsWerkJaren(groepsID).GroepsWerkJaar
+                    orderby gwj.WerkJaar descending
+                    select gwj
+                   ).ToList();
         }
 
 		#region Categorieen

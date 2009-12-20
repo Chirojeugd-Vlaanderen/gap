@@ -8,7 +8,7 @@
 <script type="text/javascript">
 
     $(function() {
-        $("#Categorie").change(function() {
+        $("#Afdeling").change(function() {
         window.location = $("#Afdeling select option:selected").val();
         });
 
@@ -32,6 +32,10 @@
           int end = s2.IndexOf("\"", start);
           Response.Write("<option value=" + s2.Substring(start, end - start) + ">" + s.Value.Naam + "</option>\n");
       }
+      String alles = Html.ActionLink("AfdelingBekijken", "List", new { groepsWerkJaarId = Model.GroepsWerkJaarIdZichtbaar, afdID = 0 });
+      int ss = alles.IndexOf("href=\"") + 6;
+      int e = alles.IndexOf("\"", ss);
+      Response.Write("<option value=" + alles.Substring(ss, e - ss) + ">" + "Alle leden" + "</option>\n");
     %>
     </select>
 </form>

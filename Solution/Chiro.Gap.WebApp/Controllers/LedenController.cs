@@ -41,6 +41,7 @@ namespace Chiro.Gap.WebApp.Controllers
             var list =
                     ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
                     (groep => groep.AfdelingenOphalen(groepsWerkJaarId));
+            
             model.AfdelingsInfoDictionary = new Dictionary<int, AfdelingInfo>();
             foreach (AfdelingInfo ai in list)
             {
@@ -51,11 +52,20 @@ namespace Chiro.Gap.WebApp.Controllers
                 ServiceHelper.CallService<IGroepenService, IList<GroepsWerkJaar>>
                         (e => e.WerkJarenOphalen(groepID));
 
+            GroepsWerkJaar huidig = (from g in model.GroepsWerkJaarLijst
+                                     where g.ID == groepsWerkJaarId
+                                     select g).FirstOrDefault();
+
+            model.GroepsWerkJaarIdZichtbaar = groepsWerkJaarId;
+            model.GroepsWerkJaartalZichtbaar = huidig.WerkJaar;
+
             if (afdID == 0)
             {
                 model.LidInfoLijst =
                     ServiceHelper.CallService<ILedenService, IList<LidInfo>>
                         (lid => lid.PaginaOphalen(groepsWerkJaarId, out paginas));
+
+                model.Title = "Ledenoverzicht van het jaar " + model.GroepsWerkJaartalZichtbaar;
 
             }
             else
@@ -63,15 +73,18 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.LidInfoLijst =
                     ServiceHelper.CallService<ILedenService, IList<LidInfo>>
                     (lid => lid.PaginaOphalenVolgensAfdeling(groepsWerkJaarId, afdID, out paginas));
+
+                AfdelingInfo af = (from a in model.AfdelingsInfoDictionary.AsQueryable()
+                                    where a.Value.ID == afdID
+                                    select a.Value).FirstOrDefault();
+
+                model.Title = "Ledenoverzicht van de " + af.Naam + " van het jaar " + model.GroepsWerkJaartalZichtbaar;
             }
             
-            model.GroepsWerkJaarIdZichtbaar = groepsWerkJaarId;
-            model.Title = "Ledenoverzicht van het jaar " + model.GroepsWerkJaarIdZichtbaar;
             model.PageHuidig = model.GroepsWerkJaarIdZichtbaar;
-            model.PageTotaal = paginas;
-            model.Totaal = model.LidInfoLijst.Count;
+            model.PageTotaal = model.LidInfoLijst.Count;
+            model.HuidigeAfdeling = afdID;
             return View("Index", model);
-            
         }
 
         //

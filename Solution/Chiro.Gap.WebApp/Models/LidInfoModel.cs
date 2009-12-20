@@ -13,11 +13,13 @@ namespace Chiro.Gap.WebApp.Models
     {
         public int PageHuidig { get; set; }
         public int PageTotaal { get; set; }
-        public int Totaal { get; set; }
+
+        public int HuidigeAfdeling { get; set; }
 
         public Dictionary<int, AfdelingInfo> AfdelingsInfoDictionary { get; set; }
 
         public int GroepsWerkJaarIdZichtbaar { get; set; }
+        public int GroepsWerkJaartalZichtbaar { get; set; }
         public IList<GroepsWerkJaar> GroepsWerkJaarLijst { get; set; }
 
         public IList<LidInfo> LidInfoLijst { get; set; }
