@@ -87,6 +87,7 @@ namespace Chiro.Gap.Services
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public Boolean Verwijderen(int id)
 		{
+            //wat moet het gedrag hiervan juist zijn (inactief of niet ...)
             throw new NotImplementedException();
 			//return _lm.LidVerwijderen(id);
 		}
