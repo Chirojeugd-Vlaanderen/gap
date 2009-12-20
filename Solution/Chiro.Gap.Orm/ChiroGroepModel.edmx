@@ -427,7 +427,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Categorie_Groep">
-          <End Role="Groep" Type="ChiroGroepModel.Store.Groep" Multiplicity="1" />
+          <End Role="Groep" Type="ChiroGroepModel.Store.Groep" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Categorie" Type="ChiroGroepModel.Store.Categorie" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Groep">
@@ -643,7 +645,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PersoonsCategorie_Categorie">
-          <End Role="Categorie" Type="ChiroGroepModel.Store.Categorie" Multiplicity="1" />
+          <End Role="Categorie" Type="ChiroGroepModel.Store.Categorie" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PersoonsCategorie" Type="ChiroGroepModel.Store.PersoonsCategorie" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Categorie">
@@ -655,7 +659,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PersoonsCategorie_GelieerdePersoon">
-          <End Role="GelieerdePersoon" Type="ChiroGroepModel.Store.GelieerdePersoon" Multiplicity="1" />
+          <End Role="GelieerdePersoon" Type="ChiroGroepModel.Store.GelieerdePersoon" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PersoonsCategorie" Type="ChiroGroepModel.Store.PersoonsCategorie" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="GelieerdePersoon">
@@ -989,7 +995,9 @@
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_Categorie_Groep" FromRole="Categorie" ToRole="Groep"/>
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.PersoonsCategorie" FromRole="Categorie" ToRole="GelieerdePersoon" /></EntityType>
         <Association Name="FK_Categorie_Groep">
-          <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1" />
+          <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1">
+            <OnDelete Action="Cascade"/>
+          </End>
           <End Type="ChiroGroepModel.Categorie" Role="Categorie" Multiplicity="*" />
         </Association>
         <Association Name="PersoonsCategorie">
