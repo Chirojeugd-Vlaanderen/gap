@@ -22,7 +22,8 @@ namespace Chiro.Gap.ServiceContracts
         /// <returns>statusboodschap</returns>
         [OperationContract]
         String LidMakenEnBewaren(int gelieerdePersoonID);
-        //Kind LidMaken(int gelieerdePersoonID);
+        [OperationContract]
+        String LedenMakenEnBewaren(IEnumerable<int> gelieerdePersoonIDs);
 
         //[OperationContract]
         //Leiding LeidingMaken(int gelieerdePersoonID, IEnumerable<AfdelingsJaar> afdelingen);
@@ -50,6 +51,11 @@ namespace Chiro.Gap.ServiceContracts
         [OperationContract]
         void BewarenMetVrijeVelden(Lid lid);
 
+        /// <summary>
+        /// TODO wat moet deze methode juist doen (nonactief maken of verwijderen als er nog niet lang in)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [OperationContract]
         Boolean Verwijderen(int id);
 

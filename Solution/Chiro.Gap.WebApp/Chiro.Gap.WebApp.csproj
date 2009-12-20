@@ -131,7 +131,6 @@
     <Content Include="DashBoard.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\dropdownlist.js" />
     <Content Include="Views\Afdeling\AfdelingsJaar.aspx" />
     <Content Include="Views\Afdeling\Index.aspx" />
     <Content Include="Views\Gav\Index.aspx" />

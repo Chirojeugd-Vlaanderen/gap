@@ -42,6 +42,24 @@ namespace Chiro.Gap.Services
 			return string.Format("{0} is toegevoegd als lid.", gp.Persoon.VolledigeNaam);
 		}
 
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+        public String LedenMakenEnBewaren(IEnumerable<int> gelieerdePersoonIDs)
+        {
+            String result = "";
+            foreach (int gpID in gelieerdePersoonIDs)
+            {
+                GelieerdePersoon gp = _gpm.DetailsOphalen(gpID);
+
+                Lid l = _lm.LidMaken(gp);
+                _lm.LidBewaren(l);
+
+                result = result + gp.Persoon.VolledigeNaam + ", ";
+            }
+            
+            // TODO: feedback aanpassen
+            return result.Substring(0, result.Length-2) + " zijn toegevoegd als lid.";
+        }
+
 		/// <summary>
 		/// ook om te maken en te deleten
 		/// </summary>
@@ -55,7 +73,8 @@ namespace Chiro.Gap.Services
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public Boolean Verwijderen(int id)
 		{
-			return _lm.LidVerwijderen(id);
+            throw new NotImplementedException();
+			//return _lm.LidVerwijderen(id);
 		}
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]

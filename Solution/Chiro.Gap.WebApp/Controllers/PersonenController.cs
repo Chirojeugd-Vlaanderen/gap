@@ -36,19 +36,19 @@ namespace Chiro.Gap.WebApp.Controllers
         // GET: /Personen/List/{id}/{paginanummer}
         public ActionResult List(int page, int groepID, int id)
         {
+            // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
             Sessie.LaatsteActieID = id;
             Sessie.LaatsteLijst = "Personen";
             Sessie.LaatstePagina = page;
 
+            int totaal = 0;
+
+            var model = new Models.PersoonInfoModel();
+            BaseModelInit(model, groepID);
+
             //alle personen bekijken
             if (id == 0)
             {
-                // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
-                int totaal = 0;
-
-                var model = new Models.PersoonInfoModel();
-                BaseModelInit(model, groepID);
-
                 model.PersoonInfoLijst =
                     ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
                     (g => g.PaginaOphalenMetLidInfo(groepID, page, 20, out totaal));
@@ -56,24 +56,9 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
                 model.Title = "Personenoverzicht";
                 model.Totaal = totaal;
-
-                var categories = ServiceHelper.CallService<IGroepenService, Groep>(g => g.OphalenMetCategorieen(groepID)).Categorie;
-                model.GroepsCategorieen = new SelectList(categories, "ID", "Naam");
-
-                return View("Index", model);
             }
             else
             {
-                // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
-                //TODO wat willen we hier juist bijhouden
-                //Sessie.LaatsteLijst = "Personen";
-                //Sessie.LaatstePagina = page;
-
-                int totaal = 0;
-
-                var model = new Models.PersoonInfoModel();
-                BaseModelInit(model, groepID);
-
                 //TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
                 model.PersoonInfoLijst =
                     ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
@@ -88,12 +73,24 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 model.Title = "Overzicht " + naam;
                 model.Totaal = totaal;
-
-                var categories = ServiceHelper.CallService<IGroepenService, Groep>(g => g.OphalenMetCategorieen(groepID)).Categorie;
-                model.GroepsCategorieen = new SelectList(categories, "ID", "Naam");
-
-                return View("Index", model);
             }
+
+            var categories = ServiceHelper.CallService<IGroepenService, Groep>(g => g.OphalenMetCategorieen(groepID)).Categorie;
+            model.GroepsCategorieen = new SelectList(categories, "ID", "Naam");
+
+            return View("Index", model);
+        }
+
+        //
+        // POST: /Personen/List/{id}/{paginanummer}
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult List(PersoonInfoModel model, int groepID)
+        {
+            if (model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0 && model.GekozenActie == 1) 
+            {
+                TempData["feedback"] = ServiceHelper.CallService<ILedenService, String>(g => g.LedenMakenEnBewaren(model.GekozenGelieerdePersoonIDs)); 
+            }
+            return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
         }
 
         //

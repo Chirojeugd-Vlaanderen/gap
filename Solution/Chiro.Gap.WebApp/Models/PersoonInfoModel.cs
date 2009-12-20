@@ -18,7 +18,10 @@ namespace Chiro.Gap.WebApp.Models
 
         public IList<PersoonInfo> PersoonInfoLijst { get; set; }
 
-		  public SelectList GroepsCategorieen { get; set; }
+        public List<int> GekozenGelieerdePersoonIDs { get; set; }
+        public int GekozenActie { get; set; }
+
+		public SelectList GroepsCategorieen { get; set; }
 
         public PersoonInfoModel() : base() { }
     }

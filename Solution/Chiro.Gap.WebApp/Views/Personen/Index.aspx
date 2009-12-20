@@ -41,6 +41,6 @@
 <ul id="info">
 <li>Totaal aantal personen: <%= Model.Totaal %></li>
 </ul>
-<% Html.RenderPartial("PersonenLijstControl"); %>
+<% Html.RenderPartial("PersonenLijstControl", Model); %>
 
 </asp:Content>
