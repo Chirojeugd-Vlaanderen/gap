@@ -14,5 +14,11 @@
     <Setting Name="TestGelieerdePersoonID" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2</Value>
     </Setting>
+    <Setting Name="GroepID" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">317</Value>
+    </Setting>
+    <Setting Name="CategorieNaam" Type="System.String" Scope="User">
+      <Value Profile="(Default)">TestKookies</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

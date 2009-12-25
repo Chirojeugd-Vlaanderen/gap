@@ -19,8 +19,8 @@ namespace Chiro.Gap.Workers.Test
 	[TestClass]
 	public class CategorieVerwijderen
 	{
-		int groepID = 317;
-		String categorienaam = "TestKookies";
+		// int groepID = Properties.Settings.Default.GroepID;
+		String categorienaam = Properties.Settings.Default.CategorieNaam;
 		GroepenManager gm;
 
 		public CategorieVerwijderen()
