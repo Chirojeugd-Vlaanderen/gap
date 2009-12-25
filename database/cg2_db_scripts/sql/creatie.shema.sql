@@ -96,6 +96,7 @@ BEGIN
 		[Omschrijving] [varchar](80) NULL,
 		[Validatie] [varchar](160) NULL,
 		[CommunicatieTypeID] [int] IDENTITY(1,1) NOT NULL,
+		[Voorbeeld] [varchar](160) NULL,
 		[Versie] [timestamp] NULL,
 		CONSTRAINT [PK_CommunicatieType] PRIMARY KEY CLUSTERED ([CommunicatieTypeID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
 	) ON [PRIMARY]
