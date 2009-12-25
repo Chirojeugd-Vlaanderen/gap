@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Chiro.Gap.ServiceContracts.Test.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="GroepID" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">317</Value>
+    </Setting>
+    <Setting Name="CategorieNaam" Type="System.String" Scope="User">
+      <Value Profile="(Default)">TestKookies</Value>
+    </Setting>
+    <Setting Name="CategorieCode_Toevoegen" Type="System.String" Scope="User">
+      <Value Profile="(Default)">broes</Value>
+    </Setting>
+    <Setting Name="CategorieCode_Verwijderen" Type="System.String" Scope="User">
+      <Value Profile="(Default)">hallo</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
