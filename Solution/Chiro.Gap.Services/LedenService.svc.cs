@@ -43,7 +43,7 @@ namespace Chiro.Gap.Services
                 _lm.LidBewaren(l);
                 return string.Format("{0} is toegevoegd als lid.", gp.Persoon.VolledigeNaam);
             }
-            catch (BestaatAlException e)
+            catch (BestaatAlException)
             {
                 return "De persoon is al lid in dit werkjaar";
             }
@@ -64,7 +64,7 @@ namespace Chiro.Gap.Services
                     _lm.LidBewaren(l);
                     result = result + gp.Persoon.VolledigeNaam + ", ";
                 }
-                catch (BestaatAlException e)
+                catch (BestaatAlException)
                 {
                     bestonden = true;
                 }
