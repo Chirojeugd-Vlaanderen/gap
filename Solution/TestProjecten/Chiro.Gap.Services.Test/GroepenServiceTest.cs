@@ -91,7 +91,7 @@ namespace Chiro.Gap.Services.Test
 
 			#region Assert
 
-			Assert.IsTrue(g.ID == 317);
+            Assert.IsTrue(g.ID == Properties.Settings.Default.GroepID);
 			//groepenDaoMock.Verify(dao => dao.Ophalen(DummyData.DummyGroep.ID)); // is Ophalen wel opgeroepen?
 
 			#endregion
