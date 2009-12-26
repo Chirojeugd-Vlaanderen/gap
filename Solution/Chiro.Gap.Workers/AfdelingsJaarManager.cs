@@ -70,7 +70,6 @@ namespace Chiro.Gap.Workers
             {
                 throw new GeenGavException(Resources.GeenGavGroep);
             }
-            return false;
         }
 
         public void Bewaren(AfdelingsJaar aj)
