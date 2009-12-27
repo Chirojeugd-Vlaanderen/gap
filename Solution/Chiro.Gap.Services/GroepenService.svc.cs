@@ -26,17 +26,19 @@ namespace Chiro.Gap.Services
 
         private readonly GroepenManager _groepenMgr;
         private readonly AfdelingsJaarManager _afdelingsJaarMgr;
+		private readonly AdressenManager _adresMgr;
         private readonly WerkJaarManager _werkjaarMgr;
 		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly GelieerdePersonenManager _gelieerdePersonenMgr = Factory.Maak<GelieerdePersonenManager>();
 
-		public GroepenService(GroepenManager gm, AfdelingsJaarManager ajm, WerkJaarManager wm, GelieerdePersonenManager gpm, IAutorisatieManager am)
+		public GroepenService(GroepenManager gm, AfdelingsJaarManager ajm, WerkJaarManager wm, GelieerdePersonenManager gpm, IAutorisatieManager am, AdressenManager adresMgr)
 		{
 			_groepenMgr = gm;
             _afdelingsJaarMgr = ajm;
 			_werkjaarMgr = wm;
 			_autorisatieMgr = am;
 			_gelieerdePersonenMgr = gpm;
+			_adresMgr = adresMgr;
 		}
 
 		#endregion
@@ -314,5 +316,19 @@ namespace Chiro.Gap.Services
 		}
 
 		#endregion categorieen
+
+		#region adressen
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public IEnumerable<GemeenteInfo> GemeentesOphalen()
+		{
+			return Mapper.Map<IList<Subgemeente>, IList<GemeenteInfo>>(_adresMgr.GemeentesOphalen());
+		}
+
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public IEnumerable<StraatInfo> StratenOphalen()
+		{
+			return Mapper.Map<IList<Straat>, IList<StraatInfo>>(_adresMgr.StratenOphalen());
+		}
+		#endregion
 	}
 }

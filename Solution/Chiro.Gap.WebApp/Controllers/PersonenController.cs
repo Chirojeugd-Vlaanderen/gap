@@ -102,9 +102,11 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 return RedirectToAction("Index");
             }
-        }
+		}
 
-        //
+		#region personen
+
+		//
         // GET: /Personen/Nieuw
         public ActionResult Nieuw(int groepID)
         {
@@ -196,23 +198,33 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 return View("EditGegevens", p);
             }*/
-        }
+		}
 
-        // GET: /Personen/LidMaken/id
+		#endregion personen
+
+		#region leden
+
+		// GET: /Personen/LidMaken/id
         public ActionResult LidMaken(int id, int groepID)
         {
             TempData["feedback"] = ServiceHelper.CallService<ILedenService, String>(l => l.LidMakenEnBewaren(id));
             return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
         }
 
+		#endregion leden
+
+		#region adressen
+
         // GET: /Personen/Verhuizen/vanAdresID?AanvragerID=#
         public ActionResult Verhuizen(int id, int aanvragerID, int groepID)
         {
-            VerhuisModel model = new VerhuisModel();
+            AdresModel model = new AdresModel();
             BaseModelInit(model, groepID);
 
             model.AanvragerID = aanvragerID;
-            model.VanAdresMetBewoners = ServiceHelper.CallService<IGelieerdePersonenService, Adres>(l => l.AdresMetBewonersOphalen(id));
+			AdresInfo a = ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(l => l.AdresMetBewonersOphalen(id));
+			model.Bewoners = a.Bewoners;
+			model.Adres = a;
 
             // Bij de constructie van verhuisinfo zijn vanadres naaradres
             // dezelfde.  Van zodra er een postback gebeurt van het form,
@@ -220,12 +232,11 @@ namespace Chiro.Gap.WebApp.Controllers
             // moment wordt een nieuwe instantie van het naaradres
             // gemaakt.
 
-            model.NaarAdres = model.VanAdresMetBewoners;
+            //TODO was dit nodig? model.Adres = a;
 
             // Standaard verhuist iedereen mee.
-            model.PersoonIDs = (
-                from PersoonsAdres pa in model.VanAdresMetBewoners.PersoonsAdres
-                select pa.Persoon.ID).ToList<int>();
+			model.PersoonIDs = (from b in a.Bewoners
+								select b.PersoonID).ToList();
 
             model.Title = "Personen Verhuizen";
             return View("AdresBewerken", model);
@@ -233,7 +244,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
         // POST: /Personen/Verhuizen
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Verhuizen(VerhuisModel model, int groepID)
+        public ActionResult Verhuizen(AdresModel model, int groepID)
         {
             try
             {
@@ -243,7 +254,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 // Adressen worden nooit gewijzigd, enkel bijgemaakt.  (en eventueel
                 // verwijderd.)
 
-                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersonenVerhuizen(model.PersoonIDs, model.NaarAdres, model.VanAdresMetBewoners.ID));
+				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersonenVerhuizen(model.PersoonIDs, model.Adres, model.OudAdresID));
 
                 // FIXME: Dit (onderstaand) is uiteraard niet de goede manier om 
                 // de persoon te bepalen die getoond moet worden.  
@@ -260,7 +271,7 @@ namespace Chiro.Gap.WebApp.Controllers
             }
             catch (FaultException<AdresFault> ex)
             {
-                new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "NaarAdres.");
+                new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "Adres.");
 
                 // Als ik de bewoners van het 'Van-adres' niet had getoond in
                 // de view, dan had ik de view meteen kunnen aanroepen met het
@@ -268,7 +279,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 // Maar ik toon de bewoners wel, dus moeten die hier opnieuw
                 // uit de database gehaald worden:
-                model.VanAdresMetBewoners = ServiceHelper.CallService<IGelieerdePersonenService, Adres>(l => l.AdresMetBewonersOphalen(model.VanAdresMetBewoners.ID));
+                model.Bewoners = (ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(l => l.AdresMetBewonersOphalen(model.AanvragerID))).Bewoners;
                 return View("AdresBewerken", model);
             }
             catch
@@ -282,8 +293,8 @@ namespace Chiro.Gap.WebApp.Controllers
         {
             AdresVerwijderenModel model = new AdresVerwijderenModel();
 
-            model.AanvragerGelieerdePersoonID = gelieerdePersoonID;
-            model.AdresMetBewoners = ServiceHelper.CallService<IGelieerdePersonenService, Adres>(foo => foo.AdresMetBewonersOphalen(id));
+            model.AanvragerID = gelieerdePersoonID;
+            model.Adres = ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(foo => foo.AdresMetBewonersOphalen(id));
 
             // Standaard vervalt enkel het adres van de aanvrager
             // Van de aanvrager heb ik het PersoonID nodig, en we hebben nu enkel het
@@ -305,18 +316,18 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult AdresVerwijderen(AdresVerwijderenModel model, int groepID)
         {
             BaseModelInit(model, groepID);
-            ServiceHelper.CallService<IGelieerdePersonenService>(foo => foo.AdresVerwijderenVanPersonen(model.PersoonIDs, model.AdresMetBewoners.ID));
-            return RedirectToAction("EditRest", new { id = model.AanvragerGelieerdePersoonID });
+			ServiceHelper.CallService<IGelieerdePersonenService>(foo => foo.AdresVerwijderenVanPersonen(model.PersoonIDs, model.Adres.ID));
+			return RedirectToAction("EditRest", new { id = model.AanvragerID });
         }
 
         // GET: /Personen/NieuwAdres/gelieerdePersoonID
         public ActionResult NieuwAdres(int id, int groepID)
         {
-            NieuwAdresModel model = new NieuwAdresModel();
+			AdresModel model = new AdresModel();
             BaseModelInit(model, groepID);
 
             model.AanvragerID = id;
-            model.MogelijkeBewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<Persoon>>(l => l.HuisGenotenOphalen(id));
+			model.Bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<GewonePersoonInfo>>(l => l.HuisGenotenOphalen(id));
 
             // Standaard krijgt alleen de aanvrager een nieuw adres.
             // Van de aanvrager heb ik het PersoonID nodig, en we hebben nu enkel het
@@ -325,12 +336,12 @@ namespace Chiro.Gap.WebApp.Controllers
             model.PersoonIDs.Add(ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.PersoonIDGet(id)));
 
             model.Title = "Nieuw adres toevoegen";
-            return View("NieuwAdres", model);
+			return View("AdresBewerken", model);
         }
 
         // post: /Personen/NieuwAdres
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult NieuwAdres(NieuwAdresModel model, int groepID)
+        public ActionResult NieuwAdres(AdresModel model, int groepID)
         {
             try
             {
@@ -338,7 +349,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 // steeds opnieuw opgezocht.  Adressen worden nooit
                 // gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
 
-                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenAanPersonen(model.PersoonIDs, model.NieuwAdres, model.NieuwAdresType));
+                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenAanPersonen(model.PersoonIDs, model.Adres, model.AdresType));
 
                 return RedirectToAction("EditRest", new { id = model.AanvragerID });
             }
@@ -350,8 +361,8 @@ namespace Chiro.Gap.WebApp.Controllers
 
                 // De mogelijke bewoners zijn op dit moment vergeten, en moeten dus
                 // terug opgevraagd worden.
-                model.MogelijkeBewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<Persoon>>(l => l.HuisGenotenOphalen(model.AanvragerID));
-                return View("NieuwAdres", model);
+				model.Bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<GewonePersoonInfo>>(l => l.HuisGenotenOphalen(model.AanvragerID));
+                return View("AdresBewerken", model);
             }
             catch
             {
@@ -359,7 +370,11 @@ namespace Chiro.Gap.WebApp.Controllers
             }
         }
 
-        // GET: /Personen/NieuweCommVorm/gelieerdePersoonID
+		#endregion adressen
+
+		#region commvormen
+
+		// GET: /Personen/NieuweCommVorm/gelieerdePersoonID
         public ActionResult NieuweCommVorm(int gelieerdePersoonID, int groepID)
         {
             GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
@@ -448,10 +463,13 @@ namespace Chiro.Gap.WebApp.Controllers
                 return View("CommVormBewerken", model);
             }
             ///TODO catch exceptions overal
-        }
+		}
 
+		#endregion commvormen
 
-        // GET: /Personen/VerwijderenCategorie/categorieID
+		#region categorieen
+
+		// GET: /Personen/VerwijderenCategorie/categorieID
         public ActionResult VerwijderenCategorie(int categorieID, int gelieerdePersoonID, int groepID)
         {
             IList<int> list = new List<int>();
@@ -502,6 +520,83 @@ namespace Chiro.Gap.WebApp.Controllers
             {
                 return RedirectToAction("List", new { id = Sessie.LaatsteActieID, page = Sessie.LaatstePagina });
             }
-        }
-    }
+		}
+
+		#endregion categorieen
+
+		#region adressencompletion
+
+		/// <summary>
+		/// This action method looks up the tags.
+		/// </summary>
+		/// <param name="q">The query that contains the user input.</param>
+		/// <param name="limit">The number of tags return.</param>
+		///TODO het lijkt niet mogelijk om rechtstreeks op GemeenteInfo een linq te maken die de juiste tags maakt, er gaat dan iets mis in de autocompletion
+		public ActionResult GetGemeentes(String q, int limit)
+		{
+			IEnumerable<GemeenteInfo> gs = MvcApplication.getGemeentes();
+
+			List<String> tags = (from g in gs
+								 select g.Naam).ToList();
+			
+			// Select the tags that match the query, and get the 
+			// number or tags specified by the limit.
+			var retValue = tags
+				.Where(x => x.StartsWith(q, StringComparison.OrdinalIgnoreCase))
+				.OrderBy(x => x)
+				.Take(limit)
+				.Select(r => new { Tag = r });
+
+			// Return the result set as JSON
+			return Json(retValue);
+		}
+
+		/// <summary>
+		/// This action method looks up the tags.
+		/// </summary>
+		/// <param name="q">The query that contains the user input.</param>
+		/// <param name="limit">The number of tags return.</param>
+		public ActionResult GetPostCode(String gemeente)
+		{
+			IEnumerable<GemeenteInfo> tags = MvcApplication.getGemeentes();
+
+			// Select the tags that match the query, and get the 
+			// number or tags specified by the limit.
+			var retValue = tags
+				.Where(x => x.Naam.Equals(gemeente, StringComparison.OrdinalIgnoreCase))
+				.OrderBy(x => x)
+				.Select(r => r.PostNr);
+
+			// Return the result set as JSON
+			return Json(retValue);
+		}
+
+		/// <summary>
+		/// This action method looks up the tags.
+		/// </summary>
+		/// <param name="q">The query that contains the user input.</param>
+		/// <param name="limit">The number of tags return.</param>
+		public ActionResult GetStraten(String straat, String gemeente)
+		{
+			IEnumerable<StraatInfo> ss = MvcApplication.getStraten();
+
+			var postcode = MvcApplication.getGemeentes().Where(x => x.Naam == gemeente).Select(x => x.PostNr).FirstOrDefault();
+
+			List<String> tags = (from g in ss
+								 where g.PostNr.Equals(postcode)
+								 select g.Naam).ToList();
+
+			// Select the tags that match the query, and get the 
+			// number or tags specified by the limit.
+			var retValue = tags
+				.Where(x => x.StartsWith(straat, StringComparison.OrdinalIgnoreCase))
+				.OrderBy(x => x)
+				.Select(r => new { Tag = r });
+
+			// Return the result set as JSON
+			return Json(retValue);
+		}
+
+		#endregion adressencompletion
+	}
 }

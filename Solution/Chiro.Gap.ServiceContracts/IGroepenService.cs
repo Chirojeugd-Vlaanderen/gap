@@ -166,7 +166,7 @@ namespace Chiro.Gap.ServiceContracts
 
         #endregion categorieen
 
-        /*TODO
+		/*TODO
             bivakorganiseren(g, b)
             stelGAVin
             verwijderGAV (JV: ik zou hier de 'VervalDatum' op nu instellen, zodat geregistreerd blijft dat iemand ooit gav was)
@@ -176,28 +176,13 @@ namespace Chiro.Gap.ServiceContracts
          */
 
 
+		#region adressen
+		[OperationContract]
+		IEnumerable<GemeenteInfo> GemeentesOphalen();
 
+		[OperationContract]
+		IEnumerable<StraatInfo> StratenOphalen();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
+		#endregion
+	}
 }

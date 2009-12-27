@@ -113,9 +113,9 @@ namespace Chiro.Gap.Services
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public Adres AdresMetBewonersOphalen(int adresID)
+		public AdresInfo AdresMetBewonersOphalen(int adresID)
 		{
-			return _adrMgr.AdresMetBewonersOphalen(adresID);
+			return Mapper.Map<Adres, AdresInfo>(_adrMgr.AdresMetBewonersOphalen(adresID));
 		}
 
 		// Verhuizen van een lijst personen
@@ -123,13 +123,15 @@ namespace Chiro.Gap.Services
 		// GelieerdePersoonID's, en bijgevolg hoort dit eerder thuis
 		// in een PersonenService ipv een GelieerdePersonenService.
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void PersonenVerhuizen(IList<int> personenIDs, Adres nieuwAdres, int oudAdresID)
+		public void PersonenVerhuizen(IList<int> personenIDs, AdresInfo nA, int oudAdresID)
 		{
 			// Zoek adres op in database, of maak een nieuw.
 			// (als straat en gemeente gekend)
+
+			Adres nieuwAdres = null;
 			try
 			{
-				nieuwAdres = _adrMgr.ZoekenOfMaken(nieuwAdres);
+				nieuwAdres = _adrMgr.ZoekenOfMaken(nA.Straat, nA.HuisNr, nA.Bus, nA.Gemeente, nA.PostNr, null);
 			}
 			catch (AdresException ex)
 			{
@@ -170,14 +172,15 @@ namespace Chiro.Gap.Services
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void AdresToevoegenAanPersonen(List<int> personenIDs, Adres adres, AdresTypeEnum adresType)
+		public void AdresToevoegenAanPersonen(List<int> personenIDs, AdresInfo adr, AdresTypeEnum adresType)
 		{
 			// Dit gaat sterk lijken op verhuizen.
 
 			// Adres opzoeken in database
+			Adres adres = null;
 			try
 			{
-				adres = _adrMgr.ZoekenOfMaken(adres);
+				adres = _adrMgr.ZoekenOfMaken(adr.Straat, adr.HuisNr, adr.Bus, adr.Gemeente, adr.PostNr, null);
 			}
 			catch (AdresException ex)
 			{
@@ -216,9 +219,10 @@ namespace Chiro.Gap.Services
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID)
+		public IList<GewonePersoonInfo> HuisGenotenOphalen(int gelieerdePersoonID)
 		{
-			return _pMgr.HuisGenotenOphalen(gelieerdePersoonID);
+			IList<Persoon> lijst = _pMgr.HuisGenotenOphalen(gelieerdePersoonID);
+			return Mapper.Map<IList<Persoon>, IList<GewonePersoonInfo>>(lijst);
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]

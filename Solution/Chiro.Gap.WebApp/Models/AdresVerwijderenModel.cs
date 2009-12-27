@@ -27,14 +27,14 @@ namespace Chiro.Gap.WebApp.Models
         /// Wordt bewaard om achteraf terug naar de details van de
         /// aanvrager te kunnen redirecten.
         /// </summary>
-        public int AanvragerGelieerdePersoonID { get; set; }
+        public int AanvragerID { get; set; }
 
         /// <summary>
         /// AdresMetBewoners bevat te verwijderen adres,
         /// met daaraan gekoppeld alle bewoners die de aangelogde gebruiker
         /// mag zien.
         /// </summary>
-        public Adres AdresMetBewoners { get; set; }
+        public AdresInfo Adres { get; set; }
 
         /// <summary>
         /// Het lijstje PersoonIDs bevat de ID's van de personen van wie
@@ -56,7 +56,7 @@ namespace Chiro.Gap.WebApp.Models
         /// </summary>
         public void HerstelAdres()
         {
-            AdresMetBewoners = ServiceHelper.CallService<IGelieerdePersonenService, Adres>(l => l.AdresMetBewonersOphalen(AdresMetBewoners.ID));
+            Adres = ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(l => l.AdresMetBewonersOphalen(AanvragerID));
         }
     }
 }

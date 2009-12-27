@@ -6,20 +6,16 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <script type="text/javascript" src="/Scripts/jquery-1.2.6.min.js"></script>
 <script type="text/javascript">
-
 //HEEL BELANGRIJK: voor een dropdownlist, moet het select statement zowel een id als een name hebben, die dezelfde zijn, en die moet ook in het event gebruikt worden
-    $(function() {
-    $("#cat").change(function() {
-    window.location = $("#cat option:selected").val();
-        });
-
-    });
- 
+$(function() {
+	$("#cat").change(function() {
+		window.location = $("#cat option:selected").val();
+	});
+});
 </script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
 <ul id="acties">
 <li><%= Html.ActionLink("Nieuwe persoon", "Nieuw") %></li>
 <li>
@@ -49,5 +45,4 @@
 <li>Totaal aantal personen: <%= Model.Totaal %></li>
 </ul>
 <% Html.RenderPartial("PersonenLijstControl", Model); %>
-
 </asp:Content>

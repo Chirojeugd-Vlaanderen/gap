@@ -18,11 +18,11 @@
            <fieldset>
            <legend>Adresgegevens</legend>
            
-           <%=Html.Encode(String.Format("{0} {1} {2}", Model.AdresMetBewoners.Straat.Naam, Model.AdresMetBewoners.HuisNr, Model.AdresMetBewoners.Bus)) %> <br />
-           <%=Html.Encode(String.Format("{0} {1}", Model.AdresMetBewoners.Subgemeente.PostNr, Model.AdresMetBewoners.Subgemeente.Naam)) %> <br />
+           <%=Html.Encode(String.Format("{0} {1} {2}", Model.Adres.Straat, Model.Adres.HuisNr, Model.Adres.Bus))%> <br />
+           <%=Html.Encode(String.Format("{0} {1}", Model.Adres.PostNr, Model.Adres.Gemeente))%> <br />
            
-           <%=Html.Hidden("AdresMetBewoners.ID") %>
-           <%=Html.Hidden("AanvragerGelieerdePersoonID") %>
+           <%=Html.Hidden("Adres.ID") %>
+           <%=Html.Hidden("AanvragerID") %>
            
            </fieldset>
 
@@ -31,18 +31,12 @@
            <legend>Wonen niet meer op bovenstaand adres:</legend>
            
            <%
-               // bestaande bewoners in een lijst van
-               // CheckBoxListInfo kwakken
-           
-               List<CheckBoxListInfo> info
-                   = (from PersoonsAdres pa in Model.AdresMetBewoners.PersoonsAdres
+				List<CheckBoxListInfo> info
+                   = (from pa in Model.Adres.Bewoners
                       select new CheckBoxListInfo(
-                         pa.Persoon.ID.ToString()
-                         , pa.Persoon.VolledigeNaam
-                         , Model.PersoonIDs.Contains(pa.Persoon.ID) )).ToList<CheckBoxListInfo>();
-           
-               // Zodat we ze kunnen gebruiken in onze custom
-               // HtmlHelper 'CheckBoxList'
+                         pa.PersoonID.ToString()
+                         , pa.VolledigeNaam
+                         , Model.PersoonIDs.Contains(pa.PersoonID) )).ToList<CheckBoxListInfo>();
            %>
            
            <%=Html.CheckBoxList("PersoonIDs", info) %>

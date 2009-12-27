@@ -13,8 +13,9 @@ namespace Chiro.Gap.WebApp.Models
     /// Model voor verhuis:
     ///   . op een adres A wonen personen
     ///   . een aantal van die personen verhuizen naar een nieuw adres B
+	/// Model voor een nieuw adres
     /// </summary>
-    public class VerhuisModel : MasterViewModel 
+    public class AdresModel : MasterViewModel 
     {
         /// <summary>
         /// ID van GelieerdePersoon die graag zou verhuizen.
@@ -23,31 +24,39 @@ namespace Chiro.Gap.WebApp.Models
         /// </summary>
         public int AanvragerID { get; set; }
 
-        /// <summary>
-        /// VanAdresMetBewoners bevat het adres waarvan verhuisd wordt,
-        /// met daaraan gekoppeld alle bewoners die de aangelogde gebruiker
-        /// mag zien.
-        /// </summary>
-        public Adres VanAdresMetBewoners { get; set; }
+		/// <summary>
+		/// Adrestype voor het nieuwe adres
+		/// </summary>
+		public AdresTypeEnum AdresType { get; set; }
+
+		/// <summary>
+		/// Lijst met bewoners van het huidige adres
+		/// </summary>
+		public IList<GewonePersoonInfo> Bewoners { get; set; }
 
         /// <summary>
-        /// NaarAdres bevat adresgegevens van het nieuwe adres.
+        /// Het adres (wordt geladen met het oude adres, komt terug met het nieuwe
         /// </summary>
-        public Adres NaarAdres { get; set; }
+        public AdresInfo Adres { get; set; }
+
+		/// <summary>
+		/// Het ID van het oude adres
+		/// </summary>
+		public int OudAdresID { get; set; }
 
         /// <summary>
-        /// Het lijstje persoonIDs bevat de GelieerdePersoonID's van
-        /// de personen die mee verhuizen.
+        /// De IDs van de gekozen gelieerdepersonen die mee verhuizen (subset van de bewoners).
         /// </summary>
         public List<int> PersoonIDs { get; set; }
 
         /// <summary>
-        /// Saaie standaardconstructor
+        /// Standaardconstructor
         /// </summary>
-        public VerhuisModel()
+        public AdresModel()
         {
-            NaarAdres = new Adres();
-            PersoonIDs = new List<int>();
+			Bewoners = new List<GewonePersoonInfo>();
+			PersoonIDs = new List<int>();
+			Adres = new AdresInfo();
         }
     }
 }

@@ -81,7 +81,7 @@ namespace Chiro.Gap.Workers
         /// <param name="adr">Adresobject met zoekinfo</param>
         /// <returns>Gevonden adres</returns>
         /// <remarks>Ieder heeft het recht adressen op te zoeken</remarks>
-        public Adres ZoekenOfMaken(Adres adr)
+        public Adres ZoekenOfMaken(String StraatNaam, int HuisNr, String Bus, String GemeenteNaam, int PostNr, String PostCode)
         {
             AdresFault vf = new AdresFault();
 
@@ -91,13 +91,13 @@ namespace Chiro.Gap.Workers
 
             Adres adresInDb;
 
-            Debug.Assert(adr.Straat.Naam != String.Empty);
-            Debug.Assert(adr.Straat.PostNr > 0);
-            Debug.Assert(adr.Subgemeente.Naam != String.Empty);
+			Debug.Assert(StraatNaam != String.Empty);
+			Debug.Assert(PostNr > 0);
+			Debug.Assert(GemeenteNaam != String.Empty);
 
-            adr.ID = 0;
+			adresInDb = _dao.Ophalen(StraatNaam, HuisNr, Bus, PostNr, PostCode, GemeenteNaam, false);
 
-            adresInDb = _dao.Ophalen(adr.Straat.Naam, adr.HuisNr, adr.Bus, adr.Straat.PostNr, adr.PostCode, adr.Subgemeente.Naam, false);
+			Adres adr = new Adres();
 
             if (adresInDb == null)
             {
@@ -106,7 +106,7 @@ namespace Chiro.Gap.Workers
                 Straat s;
                 Subgemeente sg;
 
-                s = _stratenDao.Ophalen(adr.Straat.Naam, adr.Straat.PostNr);
+				s = _stratenDao.Ophalen(StraatNaam, PostNr);
                 if (s != null)
                 {
                     // Straat gevonden: aan adres koppelen
@@ -120,10 +120,10 @@ namespace Chiro.Gap.Workers
 
                     vf.BerichtToevoegen(AdresFaultCode.OnbekendeStraat, "Straat.Naam"
                         , String.Format("Straat {0} met postnummer {1} niet gevonden."
-                        , adr.Straat.Naam, adr.Straat.PostNr));
+						, StraatNaam, PostNr));
                 }
 
-                sg = _subgemeenteDao.Ophalen(adr.Subgemeente.Naam, adr.Straat.PostNr);
+				sg = _subgemeenteDao.Ophalen(GemeenteNaam, PostNr);
                 if (sg != null)
                 {
                     // Gemeente gevonden: aan adres koppelen
@@ -137,7 +137,7 @@ namespace Chiro.Gap.Workers
 
                     vf.BerichtToevoegen(AdresFaultCode.OnbekendeGemeente, "SubGemeente.Naam"
                         , String.Format("Deelgemeente {0} met postnummer {1} niet gevonden."
-                        , adr.Subgemeente.Naam, adr.Straat.PostNr));
+						, GemeenteNaam, PostNr));
                 }
 
                 if (vf.Berichten.Count != 0)
@@ -157,6 +157,20 @@ namespace Chiro.Gap.Workers
 
                 return adresInDb;
             }
-        }
+		}
+
+		#region crab-ophalen
+
+		public IList<Subgemeente> GemeentesOphalen()
+		{
+			return _subgemeenteDao.AllesOphalen();
+		}
+
+		public IList<Straat> StratenOphalen()
+		{
+			return _stratenDao.AllesOphalen();
+		}
+
+		#endregion
     }
 }

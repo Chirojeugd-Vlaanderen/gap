@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Chiro.Adf.ServiceModel;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.Orm;
 
 namespace Chiro.Gap.WebApp
 {
@@ -12,7 +13,6 @@ namespace Chiro.Gap.WebApp
         private const string LijstNaamString = "LaatsteLijst";
         private const string ActieIDString = "LaatsteActieID";
         private const string LijstPaginaString = "LaatsteLijstPagina";
-
 
         /// <summary>
         /// Bevat de naam van de controller van de laatst opgevraagde lijst

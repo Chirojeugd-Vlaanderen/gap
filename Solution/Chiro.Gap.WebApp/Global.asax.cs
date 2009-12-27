@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Microsoft.Practices.Unity;
 using Chiro.Cdf.Ioc;
+using Chiro.Adf.ServiceModel;
+using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp
 {
@@ -14,13 +16,16 @@ namespace Chiro.Gap.WebApp
 
     public class MvcApplication : System.Web.HttpApplication
     {
-        private static IUnityContainer _container;
+		private static IUnityContainer _container;
+		private static IEnumerable<GemeenteInfo> GemeenteLijst;
+		private static IEnumerable<StraatInfo> StratenLijst;
 
         protected void Application_Start()
         {
             RegisterRoutes(RouteTable.Routes);
 
             InitializeContainer();
+			InitializeAdressDatabase();
         }
 
         private static void RegisterRoutes(RouteCollection routes)
@@ -58,6 +63,22 @@ namespace Chiro.Gap.WebApp
             ControllerBuilder.Current.SetControllerFactory(controllerFactory);
 
         }
+
+		private static void InitializeAdressDatabase()
+		{
+			GemeenteLijst = ServiceHelper.CallService<IGroepenService, IEnumerable<GemeenteInfo>>(g => g.GemeentesOphalen());
+			//StratenLijst = ServiceHelper.CallService<IGroepenService, IEnumerable<StraatInfo>>(g => g.StratenOphalen());
+		}
+
+		public static IEnumerable<GemeenteInfo> getGemeentes()
+		{
+			return GemeenteLijst;
+		}
+
+		public static IEnumerable<StraatInfo> getStraten()
+		{
+			return StratenLijst;
+		}
 
     }
 }

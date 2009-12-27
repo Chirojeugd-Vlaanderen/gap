@@ -44,12 +44,15 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(
 					dst => dst.VolledigeNaam,
 					opt => opt.MapFrom(src => src.Persoon.VolledigeNaam))
-                .ForMember(
-                    dst => dst.CategorieLijst,
-                    opt => opt.MapFrom(src => src.CategorieLijstGet()))
-                .ForMember(
+				.ForMember(
+					dst => dst.CategorieLijst,
+					opt => opt.MapFrom(src => src.CategorieLijstGet()))
+				.ForMember(
 					dst => dst.Geslacht,
-					opt => opt.MapFrom(src => src.Persoon.Geslacht));
+					opt => opt.MapFrom(src => src.Persoon.Geslacht))
+				.ForMember(
+					dst => dst.PersoonID,
+					opt => opt.MapFrom(src => src.Persoon.ID));
 
             Mapper.CreateMap<AfdelingsJaar, AfdelingInfo>()
                 .ForMember(
@@ -84,6 +87,62 @@ namespace Chiro.Gap.ServiceContracts.Mappers
                 .ForMember(
 					dst => dst.PersoonInfo,
 					opt => opt.MapFrom(src => src.GelieerdePersoon));
+
+			Mapper.CreateMap<Adres, AdresInfo>()
+				.ForMember(
+					dst => dst.Gemeente,
+					opt => opt.MapFrom(src => src.Subgemeente.Naam))
+				.ForMember(
+					dst => dst.Straat,
+					opt => opt.MapFrom(src => src.Straat.Naam))
+				.ForMember(
+					dst => dst.HuisNr,
+					opt => opt.MapFrom(src => src.HuisNr))
+				.ForMember(
+					dst => dst.PostNr,
+					opt => opt.MapFrom(src => src.Subgemeente.PostNr))
+				.ForMember(
+					dst => dst.Bewoners,
+					opt => opt.MapFrom(src => src.PersoonsAdres.Select(x => x.Persoon).ToList()))
+				.ForMember(
+					dst => dst.Bus,
+					opt => opt.MapFrom(src => src.Bus))
+				.ForMember(
+					dst => dst.ID,
+					opt => opt.MapFrom(src => src.ID));
+
+			Mapper.CreateMap<Persoon, GewonePersoonInfo>()
+				.ForMember(
+					dst => dst.AdNummer,
+					opt => opt.MapFrom(src => src.AdNummer))
+				.ForMember(
+					dst => dst.GeboorteDatum,
+					opt => opt.MapFrom(src => src.GeboorteDatum))
+				.ForMember(
+					dst => dst.VolledigeNaam,
+					opt => opt.MapFrom(src => src.VolledigeNaam))
+				.ForMember(
+					dst => dst.Geslacht,
+					opt => opt.MapFrom(src => src.Geslacht))
+				.ForMember(
+					dst => dst.PersoonID,
+					opt => opt.MapFrom(src => src.ID));
+
+			Mapper.CreateMap<Straat, StraatInfo>()
+				.ForMember(
+					dst => dst.PostNr,
+					opt => opt.MapFrom(src => src.PostNr))
+				.ForMember(
+					dst => dst.Naam,
+					opt => opt.MapFrom(src => src.Naam));
+
+			Mapper.CreateMap<Subgemeente, GemeenteInfo>()
+				.ForMember(
+					dst => dst.PostNr,
+					opt => opt.MapFrom(src => src.PostNr))
+				.ForMember(
+					dst => dst.Naam,
+					opt => opt.MapFrom(src => src.Naam));
 		}
 	}
 }

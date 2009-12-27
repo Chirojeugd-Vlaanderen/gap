@@ -108,7 +108,7 @@ namespace Chiro.Gap.ServiceContracts
         /// <param name="adresID">ID op te halen adres</param>
         /// <returns>Adresobject met gekoppelde personen</returns>
         [OperationContract]
-        Adres AdresMetBewonersOphalen(int adresID);
+        AdresInfo AdresMetBewonersOphalen(int adresID);
 
         /// <summary>
         /// Verhuist gelieerde personen van een oud naar een nieuw
@@ -117,14 +117,14 @@ namespace Chiro.Gap.ServiceContracts
         /// naar Persoon-NieuwAdres.)
         /// </summary>
         /// <param name="persoonIDs">ID's van te verhuizen Personen (niet gelieerd!)</param>
-        /// <param name="nieuwAdres">Adresobject met nieuwe adresgegevens</param>
+		/// <param name="nieuwAdres">AdresInfo-object met nieuwe adresgegevens</param>
         /// <param name="oudAdresID">ID van het oude adres</param>
         /// <remarks>nieuwAdres.ID wordt genegeerd.  Het adresID wordt altijd
         /// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
         /// dan krijgt het adres een nieuw ID.</remarks>
         [OperationContract]
         [FaultContract(typeof(AdresFault))]
-        void PersonenVerhuizen(IList<int> persoonIDs, Adres nieuwAdres, int oudAdresID);
+        void PersonenVerhuizen(IList<int> persoonIDs, AdresInfo nieuwAdres, int oudAdresID);
 
         /// <summary>
         /// Haalt alle personen op die een adres gemeen hebben met de
@@ -135,7 +135,7 @@ namespace Chiro.Gap.ServiceContracts
         /// persoon</returns>
         /// <remarks>parameters: GELIEERDEpersoonID, returns PERSONEN</remarks>
         [OperationContract]
-        IList<Persoon> HuisGenotenOphalen(int gelieerdePersoonID);
+		IList<GewonePersoonInfo> HuisGenotenOphalen(int gelieerdePersoonID);
 
         /// <summary>
         /// Voegt een adres toe aan een verzameling personen
@@ -147,7 +147,7 @@ namespace Chiro.Gap.ServiceContracts
         /// <returns></returns>
         [OperationContract]
         [FaultContract(typeof(AdresFault))]
-        void AdresToevoegenAanPersonen(List<int> personenIDs, Adres adres, AdresTypeEnum adresType);
+        void AdresToevoegenAanPersonen(List<int> personenIDs, AdresInfo adres, AdresTypeEnum adresType);
         [OperationContract]
         [FaultContract(typeof(AdresFault))]
         void AdresVerwijderenVanPersonen(List<int> personenIDs, int adresID);
