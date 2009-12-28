@@ -151,7 +151,7 @@ namespace Chiro.Gap.Data.Ef
 				    from l in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
 				    where l.GroepsWerkJaar.ID == groepsWerkJaarID
 						&&
-					  l.AfdelingsJaar.FirstOrDefault().Afdeling.ID == afdelingsID
+					  l.AfdelingsJaar.Any(x => x.Afdeling.ID == afdelingsID)
 				    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 				    select l).ToList<Leiding>();
 

@@ -8,8 +8,8 @@
 <script type="text/javascript">
 
     $(function() {
-        $("#Afdeling").change(function() {
-        window.location = $("#Afdeling select option:selected").val();
+        $("#afd").change(function() {
+        window.location = $("#afd option:selected").val();
         });
 
     });
@@ -22,7 +22,7 @@
 <ul id="acties">
 <li>
 <form id="Afdeling" action="" method="post">
-    <select name="d">
+    <select id="afd" name="afd">
     <option value="">Kies een afdeling...</option>
     <% 
       foreach(var s in  Model.AfdelingsInfoDictionary) 

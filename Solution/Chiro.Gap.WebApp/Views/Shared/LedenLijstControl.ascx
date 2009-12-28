@@ -12,10 +12,6 @@ Pagina: <%= Html.WerkJaarLinks(ViewData.Model.GroepsWerkJaarIdZichtbaar, ViewDat
 <th>Ad-nr.</th><th>Type</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Acties</th><th>Afdeling</th>
 </tr>
 
-<!-- TODO: Momenteel is dit slechts een kopie van de PersonenLijst.
-Uiteraard willen we voor leden andere info zien als voor personen,
-maar dat is nu nog niet geimplementeerd :-) -->
-
 <!-- TODO: terug naar vorige lijst heeft andere argumenten nodig, dus zou niet dezelfde standaard mogen zijn als bij personen -->
 
 <% foreach (LidInfo l in ViewData.Model.LidInfoLijst) {  %>
