@@ -2,56 +2,76 @@
 <%@ Import Namespace="Chiro.Gap.Orm" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>"></script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <% using (Html.BeginForm())
-       {%>
-       
+    
+    <%=Html.ValidationSummary("Er zijn enkele opmerkingen:") %>
+    
+    <% Html.EnableClientValidation(); %>
+
+    <% using (Html.BeginForm()) { %>
+    
     <ul id="acties">
         <li><input type="submit" value="Bewaren"/></li>
-        <li><input type="reset" value="  Reset  " /></li>
+        <li><input type="reset"  value=" Reset "/></li>
     </ul>
+    <br />
     
     <fieldset>
-    <legend>Persoonlijke gegevens</legend>
-    
-    <h3>Persoonsgegevens</h3>
-    
-    <label for="Persoon_AdNummer">Ad-nummer</label>
-    <%=Model.HuidigePersoon.Persoon.AdNummer %><br />
-    <%=Html.Hidden("HuidigePersoon.Persoon.AdNummer")%>
-    
-    <label for="Persoon_VoorNaam">Voornaam</label> 
-    <%=Html.TextBox("HuidigePersoon.Persoon.VoorNaam")%><br />
-    
-    <label for="Persoon_Naam">Familienaam</label> 
-    <%=Html.TextBox("HuidigePersoon.Persoon.Naam")%><br />
-    
-    <label for="Persoon_GeboorteDatum">Geboortedatum</label> 
-    <% if (Model.HuidigePersoon.Persoon.GeboorteDatum == null)
-       { %>
-            <%=Html.TextBox("HuidigePersoon.Persoon.GeboorteDatum", String.Empty)%>
-    <% }
-       else
-       { %>
-            <%=Html.TextBox("HuidigePersoon.Persoon.GeboorteDatum", ((DateTime)Model.HuidigePersoon.Persoon.GeboorteDatum).ToString("d"))%> 
-    <% } %><br />
-    
-    <label for="Persoon_Geslacht">Geslacht</label> 
-    <%= Html.RadioButton("HuidigePersoon.Persoon.Geslacht", GeslachtsType.Man, Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Man)%> Man
-    <%= Html.RadioButton("HuidigePersoon.Persoon.Geslacht", GeslachtsType.Vrouw, Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Vrouw)%> Vrouw <br />
-    
-    <label for="ChiroLeefTijd">Chiroleeftijd</label> 
-    <%=Html.TextBox("HuidigePersoon.ChiroLeefTijd", (Model.HuidigePersoon.ChiroLeefTijd > 0 ? "+" : "") + Model.HuidigePersoon.ChiroLeefTijd.ToString())%>
+        <legend>Persoonlijke gegevens</legend>          
+            
+            <p>
+            <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.AdNummer)%>
+            <%=Html.TextBox("AdNummer", Model.HuidigePersoon.Persoon.AdNummer, 
+                    new Dictionary<string, object> { 
+                        {"readonly", "readonly"}, 
+                        {"title", "Stamnummer kan niet ingegeven of gewijzigd worden." } })%>     
+            </p>
+            
+            <p>
+            <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.VoorNaam) %>
+            <%=Html.EditorFor(s=>s.HuidigePersoon.Persoon.VoorNaam) %>
+            <%=Html.ValidationMessageFor(s=>s.HuidigePersoon.Persoon.VoorNaam)%>
+            </p>
+            
+            <p>
+            <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.Naam) %>
+            <%=Html.EditorFor(s=>s.HuidigePersoon.Persoon.Naam) %>
+            <%=Html.ValidationMessageFor(s=>s.HuidigePersoon.Persoon.Naam)%>
+            </p>
+            
+            <p>
+            <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.GeboorteDatum) %>
+            <%=Html.EditorFor(s=>s.HuidigePersoon.Persoon.GeboorteDatum)%>
+            <%=Html.ValidationMessageFor(s=>s.HuidigePersoon.Persoon.GeboorteDatum)%>
+            </p>
+            
+            <p>
+            <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.Geslacht)%>
+            <%= Html.RadioButton("HuidigePersoon.Persoon.Geslacht", GeslachtsType.Man,   Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Man)%> Man
+            <%= Html.RadioButton("HuidigePersoon.Persoon.Geslacht", GeslachtsType.Vrouw, Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Vrouw)%> Vrouw
+            <%=Html.ValidationMessageFor(s=>s.HuidigePersoon.Persoon.Geslacht)%>
+            </p>
+            
+            <p>
+            <%=Html.LabelFor(s=>s.HuidigePersoon.ChiroLeefTijd)%>
+            <%=Html.EditorFor(s=>s.HuidigePersoon.ChiroLeefTijd)%>
+            <%=Html.ValidationMessageFor(s=>s.HuidigePersoon.ChiroLeefTijd)%>
+            </p>
 
-    <%=Html.Hidden("HuidigePersoon.ID", Model.HuidigePersoon.ID)%>
-    <%=Html.Hidden("HuidigePersoon.VersieString", Model.HuidigePersoon.VersieString)%>
-    <%=Html.Hidden("HuidigePersoon.Persoon.ID", Model.HuidigePersoon.Persoon.ID)%>
-    <%=Html.Hidden("HuidigePersoon.Persoon.VersieString", Model.HuidigePersoon.Persoon.VersieString)%>
-    
+            <%=Html.HiddenFor(s=>s.HuidigePersoon.ID)%>
+            <%=Html.HiddenFor(s=>s.HuidigePersoon.VersieString)%>
+            <%=Html.HiddenFor(s=>s.HuidigePersoon.Persoon.ID)%>
+            <%=Html.HiddenFor(s=>s.HuidigePersoon.Persoon.VersieString)%>
+            
      </fieldset>
+     
+     <%} %>
     
     <h3>Adressen</h3>
 
@@ -63,23 +83,22 @@
             <%=Html.Encode(String.Format("{0} {1} {2} ({3}) ", pa.Adres.Straat.PostNr, pa.Adres.PostCode, pa.Adres.Subgemeente.Naam, pa.AdresType))%>
             [verhuizen],[verwijderen]
         </li>
-    <%} %>
+    <% } %>
         <li>[nieuw adres]</li>
     </ul>   
     
-
     <h3>Communicatie</h3>
 
     <ul>
     <% foreach (CommunicatieVorm cv in Model.HuidigePersoon.Communicatie)
-    { %>
-    <li>
-            <%=cv.CommunicatieType.Omschrijving %>:
-            <%=Html.Encode(cv.Nummer) %>
-            <%=cv.Voorkeur ? "(voorkeur)" : "" %>
+       { %>
+        <li>
+            <%=cv.CommunicatieType.Omschrijving%>:
+            <%=Html.Encode(cv.Nummer)%>
+            <%=cv.Voorkeur ? "(voorkeur)" : ""%>
         </li>
-    <%} %>
-    </ul>     
+    <% } %>
+    </ul>
     
     <h3>Categorieen</h3>
 
@@ -90,10 +109,11 @@
             <%=cv.Naam %>
         </li>
     <%} %>
-    </ul>     
- 
-    <%} %>
+    </ul>
     
-    <%=Html.ActionLink("Stop met aanpassen zonder te bewaren", "EditRest", new { id = Model.HuidigePersoon.ID})%>
+    <% if (Model.HuidigePersoon.ID != 0) { %>
+        <%=Html.ActionLink("Stop met aanpassen zonder te bewaren", "EditRest", new { id = Model.HuidigePersoon.ID})%>
+    <% } %>
+    
     <% Html.RenderPartial("TerugNaarLijstLinkControl"); %>
 </asp:Content>

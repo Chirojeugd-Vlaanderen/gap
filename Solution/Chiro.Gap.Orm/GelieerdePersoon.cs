@@ -8,6 +8,10 @@ using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
 using System.Diagnostics;
 
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
+
+
 namespace Chiro.Gap.Orm
 {
     // Als er een persoon met adressen over de service gestuurd wordt,
@@ -20,8 +24,28 @@ namespace Chiro.Gap.Orm
     // dat heeft dan weer een key violation tot gevolg.)
 
     [AssociationEndBehavior("PersoonsAdres", Owned = true)]
+    [MetadataType(typeof(GelieerdePersoon_Validatie))]
     public partial class GelieerdePersoon : IEfBasisEntiteit 
     {
+        /// <summary>
+        /// Nested class die toelaat om validatie properties op te zetten, en die gereferenced wordt door het MetadataType attribute
+        /// Dit kan niet op de echte class, want die wordt gegenereerd door de EF Designer
+        /// </summary>
+        public class GelieerdePersoon_Validatie
+        {
+            public Groep Groep {get; set;}
+
+            [Verplicht]
+            [DisplayName("Chiroleeftijd")]
+            [Range(-8, +3, ErrorMessage="{0} is beperkt van {1} tot {2}.")]
+            [DisplayFormat(DataFormatString = "{0:+#0;-#0}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true)]
+            public int ChiroLeefTijd { get; set; }
+
+            public Persoon Persoon { get; set; }
+
+        }
+
+
         // We gaan de lijst met PersoonsInfo niet opnemen in de
         // klasse.  De programmeur moet te allen tijde maar weten
         // welke informatie hij wel/niet opgevraagd heeft.

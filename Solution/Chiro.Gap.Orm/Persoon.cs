@@ -5,6 +5,9 @@ using System.Text;
 using System.Runtime.Serialization;
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
+
 
 namespace Chiro.Gap.Orm
 {
@@ -16,10 +19,36 @@ namespace Chiro.Gap.Orm
         , [EnumMember] Onbekend = 0
     }
 
+    [MetadataType(typeof(Persoon_Validatie))]
     public partial class Persoon : IEfBasisEntiteit
     {
-        private bool _teVerwijderen = false;
+        /// <summary>
+        /// Nested class die toelaat om validatie properties op te zetten, en die gereferenced wordt door het MetadataType attribute
+        /// Dit kan niet op de echte class, want die wordt gegenereerd door de EF Designer
+        /// </summary>
+        public class Persoon_Validatie
+        {
+            [Verplicht(), StringLengte(160), StringMinimumLengte(2)]
+            [DisplayName("Familienaam")]
+            public string Naam { get; set; }
 
+            [Verplicht()]
+            [StringLengte(60), StringMinimumLengte(2)]
+            public string VoorNaam { get; set; }
+
+            [Verplicht()]
+            public Chiro.Gap.Orm.GeslachtsType Geslacht { set; get; }
+
+            [DisplayName("AD-Nummer")]
+            public Nullable<int> AdNummer { set; get; }
+
+            [DisplayFormat(DataFormatString="{0:d}", ApplyFormatInEditMode=true, ConvertEmptyStringToNull=true)]
+            public DateTime? GeboorteDatum { get; set; }
+
+        }
+
+        private bool _teVerwijderen = false;
+        
         public bool TeVerwijderen
         {
             get { return _teVerwijderen; }

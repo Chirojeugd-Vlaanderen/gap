@@ -44,7 +44,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(
 					dst => dst.VolledigeNaam,
 					opt => opt.MapFrom(src => src.Persoon.VolledigeNaam))
-				.ForMember(
+                .ForMember(
+                    dst => dst.CategorieLijst,
+                    opt => opt.MapFrom(src => src.CategorieLijstGet()))
+                .ForMember(
 					dst => dst.CategorieLijst,
 					opt => opt.MapFrom(src => src.CategorieLijstGet()))
 				.ForMember(

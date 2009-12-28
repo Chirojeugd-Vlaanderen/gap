@@ -7,6 +7,7 @@ using System.Web.Routing;
 using Microsoft.Practices.Unity;
 using Chiro.Cdf.Ioc;
 using Chiro.Adf.ServiceModel;
+using System.Web.Mvc.Html;
 using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp
@@ -26,6 +27,9 @@ namespace Chiro.Gap.WebApp
 
             InitializeContainer();
 			InitializeAdressDatabase();
+
+            DefaultModelBinder.ResourceClassKey = "MyResources";
+            ValidationExtensions.ResourceClassKey = "MyResources";
         }
 
         private static void RegisterRoutes(RouteCollection routes)
@@ -39,7 +43,19 @@ namespace Chiro.Gap.WebApp
                 "Route voor ~/: Kies GAV"
                 , ""
                 , new { controller = "Gav", action = "Index" });
+            /*
+            routes.MapRoute(
+                "LedenCategorie",
+                "{groepID}/Leden/Categorie/{categorieId}/{page}",
+                new { controller = "Leden", action = "CatList" }
+            );
 
+            routes.MapRoute(
+                "PersonenCategorie",
+                "{groepID}/Personen/Categorie/{categorieId}/{page}",
+                new { controller = "Personen", action = "CatList" }
+            );
+            */
             routes.MapRoute(
                 "Default",
                 "{groepID}/{controller}/{action}/{id}/{page}",

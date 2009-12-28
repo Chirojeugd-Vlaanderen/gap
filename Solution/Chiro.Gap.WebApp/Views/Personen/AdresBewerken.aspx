@@ -4,7 +4,7 @@
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-<script type="text/javascript" src="/Scripts/jquery-1.2.6.min.js"></script>
+<script type="text/javascript" src="/Scripts/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="/Scripts/jquery.autocomplete.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/Content/jquery.autocomplete.css" />
 <script type="text/javascript">

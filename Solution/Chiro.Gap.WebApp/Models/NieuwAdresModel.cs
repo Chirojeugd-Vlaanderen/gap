@@ -8,6 +8,8 @@ using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 
+using System.ComponentModel.DataAnnotations;
+
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -18,6 +20,7 @@ namespace Chiro.Gap.WebApp.Models
     {
         // ID van GelieerdePersoon waarvoor aangeklikt dat
         // hij/zij een extra adres nodig heeft
+        [Required()]
         public int AanvragerID { get; set; }
 
         /// <summary>
@@ -28,6 +31,7 @@ namespace Chiro.Gap.WebApp.Models
         /// <summary>
         /// Nieuw adres voor de gegeven gelieerde personen
         /// </summary>
+        [Required()]
         public Adres NieuwAdres { get; set; }
 
         /// <summary>

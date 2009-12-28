@@ -9,7 +9,6 @@ using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using System.ServiceModel;
 
 namespace Chiro.Gap.Workers
 {
@@ -219,7 +218,7 @@ namespace Chiro.Gap.Workers
             paginas = _daos.GroepenDao.OphalenMetGroepsWerkJaren(gwj.Groep.ID).GroepsWerkJaar.Count;
             if (_authorisatieMgr.IsGavGroepsWerkJaar(groepswerkjaarID))
             {
-                IList<Lid> list = _daos.LedenDao.PaginaOphalen(groepswerkjaarID);
+                IList<Lid> list = _daos.LedenDao.AllesOphalen(groepswerkjaarID);
                 list = list.OrderBy(e => e.GelieerdePersoon.Persoon.Naam).ThenBy(e => e.GelieerdePersoon.Persoon.VoorNaam).ToList();
                 return list;
             }

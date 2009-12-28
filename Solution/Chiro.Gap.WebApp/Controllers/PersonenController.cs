@@ -18,186 +18,195 @@ using Chiro.Gap.WebApp.Properties;
 namespace Chiro.Gap.WebApp.Controllers
 {
 
-    // Om te zorgen dat het terugkeren naar de vorige lijst en dergelijke werkt in samenwerking met het opvragen van subsets
-    // (categorieën of zo), hebben we steeds een default (categorie, ...) die aangeeft dat alle personen moeten worden meegegeven
+	// Om te zorgen dat het terugkeren naar de vorige lijst en dergelijke werkt in samenwerking met het opvragen van subsets
+	// (categorieën of zo), hebben we steeds een default (categorie, ...) die aangeeft dat alle personen moeten worden meegegeven
 
-    public class PersonenController : BaseController
-    {
-        //TODO er moeten ook nog een laatst gebruikte "actie" worden toegevoegd, niet alleen actie id
+	public class PersonenController : BaseController
+	{
+		//TODO er moeten ook nog een laatst gebruikte "actie" worden toegevoegd, niet alleen actie id
 
-        //
-        // GET: /Personen/
-        public ActionResult Index(int groepID)
-        {
-            return List(1, groepID, 0);
-        }
+		//
+		// GET: /Personen/
+		public ActionResult Index(int groepID)
+		{
+			return List(1, groepID, 0);
+		}
 
-        //
-        // GET: /Personen/List/{id}/{paginanummer}
-        public ActionResult List(int page, int groepID, int id)
-        {
-            // Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
-            Sessie.LaatsteActieID = id;
-            Sessie.LaatsteLijst = "Personen";
-            Sessie.LaatstePagina = page;
+		//
+		// GET: /Personen/List/{id}/{paginanummer}
+		public ActionResult List(int page, int groepID, int id)
+		{
+			// Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
+			Sessie.LaatsteActieID = id;
+			Sessie.LaatsteLijst = "Personen";
+			Sessie.LaatstePagina = page;
 
-            int totaal = 0;
+			int totaal = 0;
 
-            var model = new Models.PersoonInfoModel();
-            BaseModelInit(model, groepID);
+			var model = new Models.PersoonInfoModel();
+			BaseModelInit(model, groepID);
 
-            //alle personen bekijken
-            if (id == 0)
-            {
-                model.PersoonInfoLijst =
-                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
-                    (g => g.PaginaOphalenMetLidInfo(groepID, page, 20, out totaal));
-                model.PageHuidig = page;
-                model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
-                model.Title = "Personenoverzicht";
-                model.Totaal = totaal;
-            }
-            else
-            {
-                //TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
-                model.PersoonInfoLijst =
-                    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
-                    (g => g.PaginaOphalenMetLidInfoVolgensCategorie(id, page, 20, out totaal));
-                model.PageHuidig = page;
-                model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
+			//alle personen bekijken
+			if (id == 0)
+			{
+				model.PersoonInfoLijst =
+				    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
+				    (g => g.PaginaOphalenMetLidInfo(groepID, page, 20, out totaal));
+				model.PageHuidig = page;
+				model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
+				model.Title = "Personenoverzicht";
+				model.Totaal = totaal;
+			}
+			else
+			{
+				//TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
+				model.PersoonInfoLijst =
+				    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
+				    (g => g.PaginaOphalenMetLidInfoVolgensCategorie(id, page, 20, out totaal));
+				model.PageHuidig = page;
+				model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
 
-                String naam = (from c in model.PersoonInfoLijst.First().CategorieLijst
-                               where c.ID == id
-                               select c
-                                ).First().Naam;
+				String naam = (from c in model.PersoonInfoLijst.First().CategorieLijst
+					       where c.ID == id
+					       select c
+						).First().Naam;
 
-                model.Title = "Overzicht " + naam;
-                model.Totaal = totaal;
-            }
+				model.Title = "Overzicht " + naam;
+				model.Totaal = totaal;
+			}
 
-            var categories = ServiceHelper.CallService<IGroepenService, Groep>(g => g.OphalenMetCategorieen(groepID)).Categorie;
-            model.GroepsCategorieen = new SelectList(categories, "ID", "Naam");
+			var categories = ServiceHelper.CallService<IGroepenService, Groep>(g => g.OphalenMetCategorieen(groepID)).Categorie;
+			model.GroepsCategorieen = new SelectList(categories, "ID", "Naam");
 
-            return View("Index", model);
-        }
+			return View("Index", model);
+		}
 
-        //
-        // POST: /Personen/List/{id}/{paginanummer}
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult List(PersoonInfoModel model, int groepID)
-        {
-            if (model.GekozenActie == 1 && model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0) 
-            {
-                TempData["feedback"] = ServiceHelper.CallService<ILedenService, String>(g => g.LedenMakenEnBewaren(model.GekozenGelieerdePersoonIDs));
-                return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
-            }
-            else if (model.GekozenActie == 2 && model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0)
-            {
-                TempData.Add("list", model.GekozenGelieerdePersoonIDs);
-                return RedirectToAction("ToevoegenAanCategorieLijst");
-            }
-            else
-            {
-                //TODO error handling
+		//
+		// POST: /Personen/List/{id}/{paginanummer}
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult List(PersoonInfoModel model, int groepID)
+		{
+			if (model.GekozenActie == 1 && model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0)
+			{
+				TempData["feedback"] = ServiceHelper.CallService<ILedenService, String>(g => g.LedenMakenEnBewaren(model.GekozenGelieerdePersoonIDs));
+				return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
+			}
+			else if (model.GekozenActie == 2 && model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0)
+			{
+				TempData.Add("list", model.GekozenGelieerdePersoonIDs);
+				return RedirectToAction("ToevoegenAanCategorieLijst");
+			}
+			else
+			{
+				//TODO error handling
 
-                return RedirectToAction("Index");
-            }
+				return RedirectToAction("Index");
+			}
 		}
 
 		#region personen
 
 		//
-        // GET: /Personen/Nieuw
-        public ActionResult Nieuw(int groepID)
-        {
-            var model = new Models.GelieerdePersonenModel();
-            BaseModelInit(model, groepID);
-            model.NieuweHuidigePersoon();
+		// GET: /Personen/Nieuw
+		public ActionResult Nieuw(int groepID)
+		{
+			var model = new Models.GelieerdePersonenModel();
+			BaseModelInit(model, groepID);
+			model.NieuweHuidigePersoon();
 
-            model.Title = Properties.Resources.NieuwePersoonTitel;
-            return View("EditGegevens", model);
-        }
+			model.Title = Properties.Resources.NieuwePersoonTitel;
+			return View("EditGegevens", model);
+		}
 
-        //
-        // POST: /Personen/Nieuw
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Nieuw(GelieerdePersonenModel p, int groepID)
-        {
-            BaseModelInit(p, groepID);
-            int i = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.PersoonAanmaken(p.HuidigePersoon, groepID));
+		//
+		// POST: /Personen/Nieuw
+		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
+		public ActionResult Nieuw(GelieerdePersonenModel p, int groepID)
+		{
+			BaseModelInit(p, groepID);
+			p.Title = Properties.Resources.NieuwePersoonTitel;
 
-            // Voorlopig opnieuw redirecten naar EditRest;
-            // er zou wel gemeld moeten worden dat het wijzigen
-            // gelukt is.
-            // TODO: wat als er een fout optreedt bij PersoonBewaren?
-            TempData["feedback"] = "Wijzigingen zijn opgeslagen";
+			if (!ModelState.IsValid)
+			{
+				return View("EditGegevens", p);
+			}
 
-            // (er wordt hier geredirect ipv de view te tonen,
-            // zodat je bij een 'refresh' niet de vraag krijgt
-            // of je de gegevens opnieuw wil posten.)
-            return RedirectToAction("EditRest", new { id = i });
-        }
 
-        //
-        // GET: /Personen/EditRest/5
-        public ActionResult EditRest(int id, int groepID)
-        {
-            var model = new Models.GelieerdePersonenModel();
-            BaseModelInit(model, groepID);
-            var serviceResultaat = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
-            model.HuidigePersoon = serviceResultaat;
-            model.Title = model.HuidigePersoon.Persoon.VolledigeNaam;
-            return View("EditRest", model);
-        }
+			int i = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.PersoonAanmaken(p.HuidigePersoon, groepID));
 
-        //
-        // POST: /Personen/EditRest/5
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult EditRest(GelieerdePersonenModel p, int groepID)
-        {
-            var model = new Models.GelieerdePersonenModel();
-            BaseModelInit(model, groepID);
-            model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(p.HuidigePersoon.ID));
-            model.Title = model.HuidigePersoon.Persoon.VolledigeNaam;
-            return RedirectToAction("EditGegevens", new { id = p.HuidigePersoon.ID });
-        }
+			// Voorlopig opnieuw redirecten naar EditRest;
+			// er zou wel gemeld moeten worden dat het wijzigen
+			// gelukt is.
+			// TODO: wat als er een fout optreedt bij PersoonBewaren?
+			TempData["feedback"] = "Wijzigingen zijn opgeslagen";
 
-        //
-        // GET: /Personen/EditGegevens/5
-        public ActionResult EditGegevens(int id, int groepID)
-        {
-            var model = new Models.GelieerdePersonenModel();
-            BaseModelInit(model, groepID);
-            model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
-            model.Title = model.HuidigePersoon.Persoon.VolledigeNaam;
-            return View("EditGegevens", model);
-        }
+			// (er wordt hier geredirect ipv de view te tonen,
+			// zodat je bij een 'refresh' niet de vraag krijgt
+			// of je de gegevens opnieuw wil posten.)
+			return RedirectToAction("EditRest", new { id = i });
+		}
 
-        //
-        // POST: /Personen/EditGegevens/5
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult EditGegevens(GelieerdePersonenModel p, int groepID)
-        {
-            //try
-            //{
+		//
+		// GET: /Personen/EditRest/5
+		public ActionResult EditRest(int id, int groepID)
+		{
+			var model = new Models.GelieerdePersonenModel();
+			BaseModelInit(model, groepID);
+			var serviceResultaat = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
+			model.HuidigePersoon = serviceResultaat;
+			model.Title = model.HuidigePersoon.Persoon.VolledigeNaam;
+			return View("EditRest", model);
+		}
 
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersoonBewaren(p.HuidigePersoon));
+		//
+		// POST: /Personen/EditRest/5
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult EditRest(GelieerdePersonenModel p, int groepID)
+		{
+			var model = new Models.GelieerdePersonenModel();
+			BaseModelInit(model, groepID);
+			model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(p.HuidigePersoon.ID));
+			model.Title = model.HuidigePersoon.Persoon.VolledigeNaam;
+			return RedirectToAction("EditGegevens", new { id = p.HuidigePersoon.ID });
+		}
 
-            // Voorlopig opnieuw redirecten naar EditRest;
-            // er zou wel gemeld moeten worden dat het wijzigen
-            // gelukt is.
-            // TODO: wat als er een fout optreedt bij PersoonBewaren?
-            TempData["feedback"] = "Wijzigingen zijn opgeslagen";
+		//
+		// GET: /Personen/EditGegevens/5
+		public ActionResult EditGegevens(int id, int groepID)
+		{
+			var model = new Models.GelieerdePersonenModel();
+			BaseModelInit(model, groepID);
+			model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
+			model.Title = model.HuidigePersoon.Persoon.VolledigeNaam;
+			return View("EditGegevens", model);
+		}
 
-            // (er wordt hier geredirect ipv de view te tonen,
-            // zodat je bij een 'refresh' niet de vraag krijgt
-            // of je de gegevens opnieuw wil posten.)
-            return RedirectToAction("EditRest", new { id = p.HuidigePersoon.ID });
-            /*}
-            catch
-            {
-                return View("EditGegevens", p);
-            }*/
+		//
+		// POST: /Personen/EditGegevens/5
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult EditGegevens(GelieerdePersonenModel p, int groepID)
+		{
+			//try
+			//{
+
+			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersoonBewaren(p.HuidigePersoon));
+
+			// Voorlopig opnieuw redirecten naar EditRest;
+			// er zou wel gemeld moeten worden dat het wijzigen
+			// gelukt is.
+			// TODO: wat als er een fout optreedt bij PersoonBewaren?
+			TempData["feedback"] = "Wijzigingen zijn opgeslagen";
+
+			// (er wordt hier geredirect ipv de view te tonen,
+			// zodat je bij een 'refresh' niet de vraag krijgt
+			// of je de gegevens opnieuw wil posten.)
+			return RedirectToAction("EditRest", new { id = p.HuidigePersoon.ID });
+			/*}
+			catch
+			{
+			    return View("EditGegevens", p);
+			}*/
 		}
 
 		#endregion personen
@@ -205,264 +214,264 @@ namespace Chiro.Gap.WebApp.Controllers
 		#region leden
 
 		// GET: /Personen/LidMaken/id
-        public ActionResult LidMaken(int id, int groepID)
-        {
-            TempData["feedback"] = ServiceHelper.CallService<ILedenService, String>(l => l.LidMakenEnBewaren(id));
-            return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
-        }
+		public ActionResult LidMaken(int id, int groepID)
+		{
+			TempData["feedback"] = ServiceHelper.CallService<ILedenService, String>(l => l.LidMakenEnBewaren(id));
+			return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
+		}
 
 		#endregion leden
 
 		#region adressen
 
-        // GET: /Personen/Verhuizen/vanAdresID?AanvragerID=#
-        public ActionResult Verhuizen(int id, int aanvragerID, int groepID)
-        {
-            AdresModel model = new AdresModel();
-            BaseModelInit(model, groepID);
+		// GET: /Personen/Verhuizen/vanAdresID?AanvragerID=#
+		public ActionResult Verhuizen(int id, int aanvragerID, int groepID)
+		{
+			AdresModel model = new AdresModel();
+			BaseModelInit(model, groepID);
 
-            model.AanvragerID = aanvragerID;
+			model.AanvragerID = aanvragerID;
 			AdresInfo a = ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(l => l.AdresMetBewonersOphalen(id));
 			model.Bewoners = a.Bewoners;
 			model.Adres = a;
 
-            // Bij de constructie van verhuisinfo zijn vanadres naaradres
-            // dezelfde.  Van zodra er een postback gebeurt van het form,
-            // wordt NaarAdres gebind met de gegevens uit het form; op dat
-            // moment wordt een nieuwe instantie van het naaradres
-            // gemaakt.
+			// Bij de constructie van verhuisinfo zijn vanadres naaradres
+			// dezelfde.  Van zodra er een postback gebeurt van het form,
+			// wordt NaarAdres gebind met de gegevens uit het form; op dat
+			// moment wordt een nieuwe instantie van het naaradres
+			// gemaakt.
 
-            //TODO was dit nodig? model.Adres = a;
+			//TODO was dit nodig? model.Adres = a;
 
-            // Standaard verhuist iedereen mee.
+			// Standaard verhuist iedereen mee.
 			model.PersoonIDs = (from b in a.Bewoners
-								select b.PersoonID).ToList();
+					    select b.PersoonID).ToList();
 
-            model.Title = "Personen Verhuizen";
-            return View("AdresBewerken", model);
-        }
+			model.Title = "Personen Verhuizen";
+			return View("AdresBewerken", model);
+		}
 
-        // POST: /Personen/Verhuizen
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Verhuizen(AdresModel model, int groepID)
-        {
-            try
-            {
-                // De service zal het meegeleverder model.NaarAdres.ID negeren, en 
-                // opnieuw opzoeken.
-                //
-                // Adressen worden nooit gewijzigd, enkel bijgemaakt.  (en eventueel
-                // verwijderd.)
+		// POST: /Personen/Verhuizen
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult Verhuizen(AdresModel model, int groepID)
+		{
+			try
+			{
+				// De service zal het meegeleverder model.NaarAdres.ID negeren, en 
+				// opnieuw opzoeken.
+				//
+				// Adressen worden nooit gewijzigd, enkel bijgemaakt.  (en eventueel
+				// verwijderd.)
 
 				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersonenVerhuizen(model.PersoonIDs, model.Adres, model.OudAdresID));
 
-                // FIXME: Dit (onderstaand) is uiteraard niet de goede manier om 
-                // de persoon te bepalen die getoond moet worden.  
-                // Bovendien is het niet zeker of de gebruiker
-                // wel een persoon heeft aangevinkt.  Maar voorlopig trek ik me
-                // er nog niks van aan
+				// FIXME: Dit (onderstaand) is uiteraard niet de goede manier om 
+				// de persoon te bepalen die getoond moet worden.  
+				// Bovendien is het niet zeker of de gebruiker
+				// wel een persoon heeft aangevinkt.  Maar voorlopig trek ik me
+				// er nog niks van aan
 
-                Debug.Assert(model.PersoonIDs.Count > 0);
+				Debug.Assert(model.PersoonIDs.Count > 0);
 
-                // Toon een persoon die woont op het nieuwe adres.
-                // (wat hier moet gebeuren hangt voornamelijk af van de use case)
+				// Toon een persoon die woont op het nieuwe adres.
+				// (wat hier moet gebeuren hangt voornamelijk af van de use case)
 
-                return RedirectToAction("EditRest", new { id = model.AanvragerID });
-            }
-            catch (FaultException<AdresFault> ex)
-            {
-                new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "Adres.");
+				return RedirectToAction("EditRest", new { id = model.AanvragerID });
+			}
+			catch (FaultException<AdresFault> ex)
+			{
+				new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "Adres.");
 
-                // Als ik de bewoners van het 'Van-adres' niet had getoond in
-                // de view, dan had ik de view meteen kunnen aanroepen met het
-                // model dat terug 'gebind' is.
+				// Als ik de bewoners van het 'Van-adres' niet had getoond in
+				// de view, dan had ik de view meteen kunnen aanroepen met het
+				// model dat terug 'gebind' is.
 
-                // Maar ik toon de bewoners wel, dus moeten die hier opnieuw
-                // uit de database gehaald worden:
-                model.Bewoners = (ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(l => l.AdresMetBewonersOphalen(model.AanvragerID))).Bewoners;
-                return View("AdresBewerken", model);
-            }
-            catch
-            {
-                throw;  // onverwachte exceptie gewoon verder throwen
-            }
-        }
+				// Maar ik toon de bewoners wel, dus moeten die hier opnieuw
+				// uit de database gehaald worden:
+				model.Bewoners = (ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(l => l.AdresMetBewonersOphalen(model.AanvragerID))).Bewoners;
+				return View("AdresBewerken", model);
+			}
+			catch
+			{
+				throw;  // onverwachte exceptie gewoon verder throwen
+			}
+		}
 
-        // GET: /Personen/AdresVerwijderen/AdresID
-        public ActionResult AdresVerwijderen(int id, int gelieerdePersoonID, int groepID)
-        {
-            AdresVerwijderenModel model = new AdresVerwijderenModel();
+		// GET: /Personen/AdresVerwijderen/AdresID
+		public ActionResult AdresVerwijderen(int id, int gelieerdePersoonID, int groepID)
+		{
+			AdresVerwijderenModel model = new AdresVerwijderenModel();
 
-            model.AanvragerID = gelieerdePersoonID;
-            model.Adres = ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(foo => foo.AdresMetBewonersOphalen(id));
+			model.AanvragerID = gelieerdePersoonID;
+			model.Adres = ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(foo => foo.AdresMetBewonersOphalen(id));
 
-            // Standaard vervalt enkel het adres van de aanvrager
-            // Van de aanvrager heb ik het PersoonID nodig, en we hebben nu enkel het
-            // ID van de GelieerdePersoon.  Het PersoonID
+			// Standaard vervalt enkel het adres van de aanvrager
+			// Van de aanvrager heb ik het PersoonID nodig, en we hebben nu enkel het
+			// ID van de GelieerdePersoon.  Het PersoonID
 
-            model.PersoonIDs = new List<int> 
+			model.PersoonIDs = new List<int> 
             { 
                 ServiceHelper.CallService<IGelieerdePersonenService, int>(srvc => srvc.PersoonIDGet(gelieerdePersoonID))
             };
 
-            BaseModelInit(model, groepID);
+			BaseModelInit(model, groepID);
 
-            model.Title = "Adres verwijderen";
-            return View("AdresVerwijderen", model);
-        }
+			model.Title = "Adres verwijderen";
+			return View("AdresVerwijderen", model);
+		}
 
-        // POST: /Personen/AdresVerwijderen
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult AdresVerwijderen(AdresVerwijderenModel model, int groepID)
-        {
-            BaseModelInit(model, groepID);
+		// POST: /Personen/AdresVerwijderen
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult AdresVerwijderen(AdresVerwijderenModel model, int groepID)
+		{
+			BaseModelInit(model, groepID);
 			ServiceHelper.CallService<IGelieerdePersonenService>(foo => foo.AdresVerwijderenVanPersonen(model.PersoonIDs, model.Adres.ID));
 			return RedirectToAction("EditRest", new { id = model.AanvragerID });
-        }
+		}
 
-        // GET: /Personen/NieuwAdres/gelieerdePersoonID
-        public ActionResult NieuwAdres(int id, int groepID)
-        {
+		// GET: /Personen/NieuwAdres/gelieerdePersoonID
+		public ActionResult NieuwAdres(int id, int groepID)
+		{
 			AdresModel model = new AdresModel();
-            BaseModelInit(model, groepID);
+			BaseModelInit(model, groepID);
 
-            model.AanvragerID = id;
+			model.AanvragerID = id;
 			model.Bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<GewonePersoonInfo>>(l => l.HuisGenotenOphalen(id));
 
-            // Standaard krijgt alleen de aanvrager een nieuw adres.
-            // Van de aanvrager heb ik het PersoonID nodig, en we hebben nu enkel het
-            // ID van de GelieerdePersoon.  Het PersoonID
+			// Standaard krijgt alleen de aanvrager een nieuw adres.
+			// Van de aanvrager heb ik het PersoonID nodig, en we hebben nu enkel het
+			// ID van de GelieerdePersoon.  Het PersoonID
 
-            model.PersoonIDs.Add(ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.PersoonIDGet(id)));
+			model.PersoonIDs.Add(ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.PersoonIDGet(id)));
 
-            model.Title = "Nieuw adres toevoegen";
+			model.Title = "Nieuw adres toevoegen";
 			return View("AdresBewerken", model);
-        }
+		}
 
-        // post: /Personen/NieuwAdres
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult NieuwAdres(AdresModel model, int groepID)
-        {
-            try
-            {
-                // De service zal model.NieuwAdres.ID negeren; dit wordt
-                // steeds opnieuw opgezocht.  Adressen worden nooit
-                // gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
+		// post: /Personen/NieuwAdres
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult NieuwAdres(AdresModel model, int groepID)
+		{
+			try
+			{
+				// De service zal model.NieuwAdres.ID negeren; dit wordt
+				// steeds opnieuw opgezocht.  Adressen worden nooit
+				// gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
 
-                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenAanPersonen(model.PersoonIDs, model.Adres, model.AdresType));
+				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenAanPersonen(model.PersoonIDs, model.Adres, model.AdresType));
 
-                return RedirectToAction("EditRest", new { id = model.AanvragerID });
-            }
-            catch (FaultException<AdresFault> ex)
-            {
-                BaseModelInit(model, groepID);
+				return RedirectToAction("EditRest", new { id = model.AanvragerID });
+			}
+			catch (FaultException<AdresFault> ex)
+			{
+				BaseModelInit(model, groepID);
 
-                new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "NieuwAdres.");
+				new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "NieuwAdres.");
 
-                // De mogelijke bewoners zijn op dit moment vergeten, en moeten dus
-                // terug opgevraagd worden.
+				// De mogelijke bewoners zijn op dit moment vergeten, en moeten dus
+				// terug opgevraagd worden.
 				model.Bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<GewonePersoonInfo>>(l => l.HuisGenotenOphalen(model.AanvragerID));
-                return View("AdresBewerken", model);
-            }
-            catch
-            {
-                throw;
-            }
-        }
+				return View("AdresBewerken", model);
+			}
+			catch
+			{
+				throw;
+			}
+		}
 
 		#endregion adressen
 
 		#region commvormen
 
 		// GET: /Personen/NieuweCommVorm/gelieerdePersoonID
-        public ActionResult NieuweCommVorm(int gelieerdePersoonID, int groepID)
-        {
-            GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
-            IEnumerable<CommunicatieType> types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.CommunicatieTypesOphalen());
-            NieuweCommVormModel model = new NieuweCommVormModel(g, types);
-            BaseModelInit(model, groepID);
-            model.Title = "Nieuwe communicatievorm toevoegen";
-            return View("NieuweCommVorm", model);
-        }
+		public ActionResult NieuweCommVorm(int gelieerdePersoonID, int groepID)
+		{
+			GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
+			IEnumerable<CommunicatieType> types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.CommunicatieTypesOphalen());
+			NieuweCommVormModel model = new NieuweCommVormModel(g, types);
+			BaseModelInit(model, groepID);
+			model.Title = "Nieuwe communicatievorm toevoegen";
+			return View("NieuweCommVorm", model);
+		}
 
-        // post: /Personen/NieuweCommVorm
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult NieuweCommVorm(NieuweCommVormModel model, int groepID, int gelieerdePersoonID)
-        {
-            CommunicatieVormValidator cvValid = new CommunicatieVormValidator();
-            CommunicatieType type = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieType>(l => l.CommunicatieTypeOphalen(model.geselecteerdeCommVorm));
-            model.NieuweCommVorm.CommunicatieType = type;
+		// post: /Personen/NieuweCommVorm
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult NieuweCommVorm(NieuweCommVormModel model, int groepID, int gelieerdePersoonID)
+		{
+			CommunicatieVormValidator cvValid = new CommunicatieVormValidator();
+			CommunicatieType type = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieType>(l => l.CommunicatieTypeOphalen(model.geselecteerdeCommVorm));
+			model.NieuweCommVorm.CommunicatieType = type;
 
-            if (cvValid.Valideer(model.NieuweCommVorm))
-            {
-                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegenAanPersoon(gelieerdePersoonID, model.NieuweCommVorm, model.geselecteerdeCommVorm));
-                return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
-            }
-            else
-            {
-                BaseModelInit(model, groepID);
+			if (cvValid.Valideer(model.NieuweCommVorm))
+			{
+				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegenAanPersoon(gelieerdePersoonID, model.NieuweCommVorm, model.geselecteerdeCommVorm));
+				return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+			}
+			else
+			{
+				BaseModelInit(model, groepID);
 
-                // info voor model herstellen
-                GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
-                IEnumerable<CommunicatieType> types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.CommunicatieTypesOphalen());
-                model.Aanvrager = g;
-                model.Types = types;
-                model.Title = "Nieuwe communicatievorm toevoegen";
+				// info voor model herstellen
+				GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
+				IEnumerable<CommunicatieType> types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.CommunicatieTypesOphalen());
+				model.Aanvrager = g;
+				model.Types = types;
+				model.Title = "Nieuwe communicatievorm toevoegen";
 
-                ModelState.AddModelError("Model.NieuweCommVorm.Nummer", string.Format(Resources.FormatValidatieFout, type.Omschrijving, type.Voorbeeld));
-                return View("NieuweCommVorm", model);
-            }
-        }
+				ModelState.AddModelError("Model.NieuweCommVorm.Nummer", string.Format(Properties.Resources.FormatValidatieFout, type.Omschrijving, type.Voorbeeld));
+				return View("NieuweCommVorm", model);
+			}
+		}
 
-        // GET: /Personen/VerwijderenCommVorm/commvormid
-        public ActionResult VerwijderenCommVorm(int commvormID, int gelieerdePersoonID, int groepID)
-        {
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormVerwijderenVanPersoon(gelieerdePersoonID, commvormID));
-            return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
-        }
+		// GET: /Personen/VerwijderenCommVorm/commvormid
+		public ActionResult VerwijderenCommVorm(int commvormID, int gelieerdePersoonID, int groepID)
+		{
+			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormVerwijderenVanPersoon(gelieerdePersoonID, commvormID));
+			return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+		}
 
 
-        // GET: /Personen/CommVormBewerken/gelieerdePersoonID
-        public ActionResult BewerkenCommVorm(int commvormID, int gelieerdePersoonID, int groepID)
-        {
-            //TODO dit is niet juist broes, want hij haalt 2 keer de persoon op?
-            GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
-            CommunicatieVorm commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieVorm>(l => l.CommunicatieVormOphalen(commvormID));
-            CommVormModel model = new CommVormModel(g, commv);
-            BaseModelInit(model, groepID);
-            model.Title = "Communicatievorm bewerken";
-            return View("CommVormBewerken", model);
-        }
+		// GET: /Personen/CommVormBewerken/gelieerdePersoonID
+		public ActionResult BewerkenCommVorm(int commvormID, int gelieerdePersoonID, int groepID)
+		{
+			//TODO dit is niet juist broes, want hij haalt 2 keer de persoon op?
+			GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
+			CommunicatieVorm commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieVorm>(l => l.CommunicatieVormOphalen(commvormID));
+			CommVormModel model = new CommVormModel(g, commv);
+			BaseModelInit(model, groepID);
+			model.Title = "Communicatievorm bewerken";
+			return View("CommVormBewerken", model);
+		}
 
-        //TODO meerdere commvormen tegelijk
+		//TODO meerdere commvormen tegelijk
 
-        // POST: /Personen/CommVormBewerken/gelieerdePersoonID
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult BewerkenCommVorm(CommVormModel model, int gelieerdePersoonID, int groepID)
-        {
-            CommunicatieVormValidator cvValid = new CommunicatieVormValidator();
-            CommunicatieVorm commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieVorm>(l => l.CommunicatieVormOphalen(model.NieuweCommVorm.ID));
-            model.NieuweCommVorm.CommunicatieType = commv.CommunicatieType;
+		// POST: /Personen/CommVormBewerken/gelieerdePersoonID
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult BewerkenCommVorm(CommVormModel model, int gelieerdePersoonID, int groepID)
+		{
+			CommunicatieVormValidator cvValid = new CommunicatieVormValidator();
+			CommunicatieVorm commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieVorm>(l => l.CommunicatieVormOphalen(model.NieuweCommVorm.ID));
+			model.NieuweCommVorm.CommunicatieType = commv.CommunicatieType;
 
-            if (cvValid.Valideer(model.NieuweCommVorm))
-            {
-                ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(model.NieuweCommVorm));
-                return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
-            }
-            else
-            {
-                BaseModelInit(model, groepID);
-                // info herstellen
-                //TODO dit is niet juist broes, want hij haalt 2 keer de persoon op?
-                GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
-                model.Aanvrager = g;
-                model.NieuweCommVorm = commv;
-                model.Title = "Communicatievorm bewerken";
+			if (cvValid.Valideer(model.NieuweCommVorm))
+			{
+				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(model.NieuweCommVorm));
+				return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+			}
+			else
+			{
+				BaseModelInit(model, groepID);
+				// info herstellen
+				//TODO dit is niet juist broes, want hij haalt 2 keer de persoon op?
+				GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
+				model.Aanvrager = g;
+				model.NieuweCommVorm = commv;
+				model.Title = "Communicatievorm bewerken";
 
-                ModelState.AddModelError("Model.NieuweCommVorm.Nummer", string.Format(Resources.FormatValidatieFout, commv.CommunicatieType.Omschrijving, commv.CommunicatieType.Voorbeeld));
-                return View("CommVormBewerken", model);
-            }
-            ///TODO catch exceptions overal
+				ModelState.AddModelError("Model.NieuweCommVorm.Nummer", string.Format(Properties.Resources.FormatValidatieFout, commv.CommunicatieType.Omschrijving, commv.CommunicatieType.Voorbeeld));
+				return View("CommVormBewerken", model);
+			}
+			///TODO catch exceptions overal
 		}
 
 		#endregion commvormen
@@ -470,56 +479,56 @@ namespace Chiro.Gap.WebApp.Controllers
 		#region categorieen
 
 		// GET: /Personen/VerwijderenCategorie/categorieID
-        public ActionResult VerwijderenCategorie(int categorieID, int gelieerdePersoonID, int groepID)
-        {
-            IList<int> list = new List<int>();
-            list.Add(gelieerdePersoonID);
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieVerwijderen(list, categorieID));
-            return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
-        }
+		public ActionResult VerwijderenCategorie(int categorieID, int gelieerdePersoonID, int groepID)
+		{
+			IList<int> list = new List<int>();
+			list.Add(gelieerdePersoonID);
+			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieVerwijderen(list, categorieID));
+			return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+		}
 
-        // GET: /Personen/ToevoegenAanCategorie/categorieID
-        public ActionResult ToevoegenAanCategorie(int gelieerdePersoonID, int groepID)
-        {
-            List<int> l = new List<int>();
-            l.Add(gelieerdePersoonID);
-            TempData.Add("list", l);
-            return RedirectToAction("ToevoegenAanCategorieLijst");
-        }
+		// GET: /Personen/ToevoegenAanCategorie/categorieID
+		public ActionResult ToevoegenAanCategorie(int gelieerdePersoonID, int groepID)
+		{
+			List<int> l = new List<int>();
+			l.Add(gelieerdePersoonID);
+			TempData.Add("list", l);
+			return RedirectToAction("ToevoegenAanCategorieLijst");
+		}
 
-        //mag niet van buiten de controller gecalld worden
-        public ActionResult ToevoegenAanCategorieLijst(int groepID)
-        {
-            List<int> gelieerdePersoonIDs = new List<int>();
-            object value;
-            TempData.TryGetValue("list", out value);
-            gelieerdePersoonIDs = (List<int>)value;
-            TempData.Remove("list");
+		//mag niet van buiten de controller gecalld worden
+		public ActionResult ToevoegenAanCategorieLijst(int groepID)
+		{
+			List<int> gelieerdePersoonIDs = new List<int>();
+			object value;
+			TempData.TryGetValue("list", out value);
+			gelieerdePersoonIDs = (List<int>)value;
+			TempData.Remove("list");
 
-            //TODO na eten:
-            /*
-             * Uit categoriemodel de gelieerdepersoon halen (moet INFO ofzo worden)
-             * */
-            CategorieModel model = new CategorieModel();
-            model.Categorieen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<Categorie>>(l => l.CategorieenOphalen(groepID));
-            model.GelieerdePersonenIDs = gelieerdePersoonIDs;
-            BaseModelInit(model, groepID);
-            return View("CategorieToevoegen", model);
-        }
+			//TODO na eten:
+			/*
+			 * Uit categoriemodel de gelieerdepersoon halen (moet INFO ofzo worden)
+			 * */
+			CategorieModel model = new CategorieModel();
+			model.Categorieen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<Categorie>>(l => l.CategorieenOphalen(groepID));
+			model.GelieerdePersonenIDs = gelieerdePersoonIDs;
+			BaseModelInit(model, groepID);
+			return View("CategorieToevoegen", model);
+		}
 
-        // POST: /Personen/ToevoegenAanCategorie/categorieID
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ToevoegenAanCategorieLijst(CategorieModel model, int groepID)
-        {
-            ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieKoppelen(model.GelieerdePersonenIDs, model.GeselecteerdeCategorieen));
-            if (model.GelieerdePersonenIDs.Count == 1)
-            {
-                return RedirectToAction("EditRest", new { id = model.GelieerdePersonenIDs[0] });
-            }
-            else
-            {
-                return RedirectToAction("List", new { id = Sessie.LaatsteActieID, page = Sessie.LaatstePagina });
-            }
+		// POST: /Personen/ToevoegenAanCategorie/categorieID
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult ToevoegenAanCategorieLijst(CategorieModel model, int groepID)
+		{
+			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieKoppelen(model.GelieerdePersonenIDs, model.GeselecteerdeCategorieen));
+			if (model.GelieerdePersonenIDs.Count == 1)
+			{
+				return RedirectToAction("EditRest", new { id = model.GelieerdePersonenIDs[0] });
+			}
+			else
+			{
+				return RedirectToAction("List", new { id = Sessie.LaatsteActieID, page = Sessie.LaatstePagina });
+			}
 		}
 
 		#endregion categorieen
@@ -537,8 +546,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			IEnumerable<GemeenteInfo> gs = MvcApplication.getGemeentes();
 
 			List<String> tags = (from g in gs
-								 select g.Naam).ToList();
-			
+					     select g.Naam).ToList();
+
 			// Select the tags that match the query, and get the 
 			// number or tags specified by the limit.
 			var retValue = tags
@@ -583,8 +592,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			var postcode = MvcApplication.getGemeentes().Where(x => x.Naam == gemeente).Select(x => x.PostNr).FirstOrDefault();
 
 			List<String> tags = (from g in ss
-								 where g.PostNr.Equals(postcode)
-								 select g.Naam).ToList();
+					     where g.PostNr.Equals(postcode)
+					     select g.Naam).ToList();
 
 			// Select the tags that match the query, and get the 
 			// number or tags specified by the limit.

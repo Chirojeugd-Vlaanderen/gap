@@ -16,10 +16,15 @@ namespace Chiro.Gap.WebApp
             this.container = container;
         }
 
-        protected override IController GetControllerInstance(Type controllerType)
+        protected override IController GetControllerInstance(System.Web.Routing.RequestContext requestContext, Type controllerType)
         {
-            if (controllerType == null)
-                throw new ArgumentNullException("controllerType");
+		if (controllerType == null)
+		{
+			//throw new ArgumentNullException("controllerType");
+
+			// Misschien werkt het wel als ik dan null teruggeef.
+			return null;
+		}
 
             if (!typeof(IController).IsAssignableFrom(controllerType))
                 throw new ArgumentException(string.Format("Type requested {0} is not a controller", controllerType));

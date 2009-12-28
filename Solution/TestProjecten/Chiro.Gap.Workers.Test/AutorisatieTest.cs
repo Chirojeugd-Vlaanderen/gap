@@ -155,7 +155,7 @@ namespace Chiro.Gap.Workers.Test
 			var autorisatieMgrMock = new Mock<IAutorisatieManager>();
 
 			ledenDaoMock.Setup(foo => foo.AllesOphalen(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(new List<Lid>());
-            ledenDaoMock.Setup(foo => foo.PaginaOphalen(It.IsAny<int>())).Returns(new List<Lid>());
+            ledenDaoMock.Setup(foo => foo.AllesOphalen(It.IsAny<int>())).Returns(new List<Lid>());
 			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(true);
 
 			Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);

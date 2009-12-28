@@ -27,6 +27,7 @@ namespace Chiro.Gap.WebApp.Models
         {
             HuidigePersoon = new GelieerdePersoon();
             HuidigePersoon.Persoon = new Persoon();
+            HuidigePersoon.Persoon.Geslacht = GeslachtsType.Man;
             return HuidigePersoon;
         }
     }

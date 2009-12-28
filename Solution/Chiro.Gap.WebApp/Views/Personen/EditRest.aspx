@@ -6,59 +6,71 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
-    <% using (Html.BeginForm())
-       {%>
-
+    
+    <% using (Html.BeginForm()) {%>
+    
     <ul id="acties">
         <li><input type="submit" value="Gegevens wijzigen" /></li>        
     </ul>
+    <br />
 
     <fieldset>
-    <legend>Persoonlijke gegevens</legend>    
-    
-    <label for="Persoon_AdNummer">Ad-nummer</label>
-    <%=Model.HuidigePersoon.Persoon.AdNummer %>
-    <%=Html.Hidden("HuidigePersoon.Persoon.AdNummer")%>
-    <br />
-    
-    <label for="Persoon_VoorNaam">Voornaam</label> 
-    <%=Model.HuidigePersoon.Persoon.VoorNaam%>
-    <%=Html.Hidden("HuidigePersoon.Persoon.VoorNaam")%>
-    <br />
-    
-    <label for="Persoon_Naam">Familienaam</label> 
-    <%=Model.HuidigePersoon.Persoon.Naam%>
-    <%=Html.Hidden("HuidigePersoon.Persoon.Naam")%>
-    <br />
-    
-    <label for="Persoon_GeboorteDatum">Geboortedatum</label> 
-    <%=Html.Hidden("HuidigePersoon.Persoon.GeboorteDatum")%>
-    <% if (Model.HuidigePersoon.Persoon.GeboorteDatum != null)
-       { %>
-           <%=((DateTime)Model.HuidigePersoon.Persoon.GeboorteDatum).ToString("d") %><br />
-    <% } %>
-    <br />
-    
-    <label for="Persoon_Geslacht">Geslacht</label> 
-    <%=Html.Hidden("HuidigePersoon.Persoon.Geslacht")%>
-    <%if (Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Man)
-      {%>
-        Man<br />
-    <% }
-      else
-      {%>
-      Vrouw<br />
-    <%} %>
-    
-    <label for="ChiroLeefTijd">Chiroleeftijd</label> 
-    <%=Model.HuidigePersoon.ChiroLeefTijd%><br />
-    <%=Html.Hidden("HuidigePersoon.ChiroLeefTijd")%>
-
-    <%=Html.Hidden("HuidigePersoon.ID")%>
-    <%=Html.Hidden("HuidigePersoon.VersieString")%>
-    <%=Html.Hidden("HuidigePersoon.Persoon.ID")%>
-    <%=Html.Hidden("HuidigePersoon.Persoon.VersieString")%>
+        <legend>Persoonlijke gegevens</legend>    
+        
+            <p>
+            <%=Html.LabelFor(s => s.HuidigePersoon.Persoon.AdNummer)%>
+            <%=Html.TextBox("AdNummer", Model.HuidigePersoon.Persoon.AdNummer, 
+                    new Dictionary<string, object> { 
+                        {"readonly", "readonly"}, 
+                        {"title", "Stamnummer kan niet ingegeven of gewijzigd worden." } })%>
+            </p>
+            
+            <p>
+            <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.VoorNaam) %>
+            <%=Html.DisplayFor(s=>s.HuidigePersoon.Persoon.VoorNaam)%>
+            <%=Html.HiddenFor(s=>s.HuidigePersoon.Persoon.VoorNaam)%>
+            </p>
+            
+            <p>
+            <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.Naam) %>
+            <%=Html.DisplayFor(s=>s.HuidigePersoon.Persoon.Naam)%>
+            <%=Html.HiddenFor(s=>s.HuidigePersoon.Persoon.Naam)%>
+            </p>
+            
+            <p>
+            <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.GeboorteDatum) %>
+            <%=Html.DisplayFor(s=>s.HuidigePersoon.Persoon.GeboorteDatum)%>
+<%--            <% if (Model.HuidigePersoon.Persoon.GeboorteDatum.HasValue)
+               { %>
+                   <%=Model.HuidigePersoon.Persoon.GeboorteDatum.Value.ToString("d") %>
+            <% } %>--%>
+            <%=Html.HiddenFor(s=>s.HuidigePersoon.Persoon.GeboorteDatum)%>
+            </p>
+            
+            <p>
+            <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.Geslacht) %>
+            <%=Html.DisplayFor(s=>s.HuidigePersoon.Persoon.Geslacht)%>
+            <%--<%if (Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Man)
+              {%>
+                Man
+            <% }
+              else
+              {%>
+              Vrouw
+            <%} %>--%>
+            <%=Html.HiddenFor(s=>s.HuidigePersoon.Persoon.Geslacht)%>
+            </p>
+            
+            <p>
+            <%=Html.LabelFor(s=>s.HuidigePersoon.ChiroLeefTijd) %>
+            <%=Html.DisplayFor(s=>s.HuidigePersoon.ChiroLeefTijd)%>
+            <%=Html.HiddenFor(s=>s.HuidigePersoon.ChiroLeefTijd)%>
+            </p>
+            
+            <%=Html.HiddenFor(s=>s.HuidigePersoon.ID)%>
+            <%=Html.HiddenFor(s=>s.HuidigePersoon.VersieString)%>
+            <%=Html.HiddenFor(s=>s.HuidigePersoon.Persoon.ID)%>
+            <%=Html.HiddenFor(s=>s.HuidigePersoon.Persoon.VersieString)%>
 
     </fieldset>
         

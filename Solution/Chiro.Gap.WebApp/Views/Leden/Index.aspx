@@ -4,7 +4,7 @@
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-<script type="text/javascript" src="/Scripts/jquery-1.2.6.min.js"></script>
+<script type="text/javascript" src="/Scripts/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
 
     $(function() {

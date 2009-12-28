@@ -9,14 +9,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 {
     public interface ILedenDao: IDao<Lid>
     {
-        /// <summary>
-        /// Haalt een ledenlijst op van een bepaald groepswerkjaar
-        /// Hier wordt geen paginering gebruikt
-        /// </summary>
-        /// <param name="groepsWerkJaarID">ID van groepswerkjaar in kwestie</param>
-        /// <returns>Een lijst van leden, inclusief info gelieerde personen en personen</returns>
-        IList<Lid> PaginaOphalen(int groepsWerkJaarID);
-
         IList<Lid> AllesOphalen(int groepsWerkJaarID);
 
         IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID);

@@ -117,11 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Geen" xml:space="preserve">
-    <value>geen</value>
-    <comment>'none,' zoals ze zeggen.</comment>
+  <data name="FormatValidatieFout" xml:space="preserve">
+    <value>De waarde voor {0} voldoet niet aan de verplichte structuur: {1}</value>
+    <comment>Parameters: 0 = inputcontrol, 1 = formatvoorbeeld</comment>
   </data>
   <data name="RequiredAttribute_ValidationError" xml:space="preserve">
-    <value>{0} is een verplicht veld.</value>
+    <value>The {0} field is required.</value>
+  </data>
+  <data name="StringLengthAttribute_ValidationError" xml:space="preserve">
+    <value>The field {0} must be a string with a maximum length of {1}.</value>
+  </data>
+  <data name="StringMinimumLengthAttribute_ErrorMessage" xml:space="preserve">
+    <value>The field {0} must be a string with a minimum length of {1}.</value>
+  </data>
+  <data name="StringMinimumLengthAttribute_InvalidMinimumLenght" xml:space="preserve">
+    <value>The minimum lenght must be a nonnegative integer.</value>
   </data>
 </root>
