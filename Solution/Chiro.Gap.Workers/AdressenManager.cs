@@ -93,6 +93,7 @@ namespace Chiro.Gap.Workers
 
 			Debug.Assert(StraatNaam != String.Empty);
 			Debug.Assert(PostNr > 0);
+			//Debug.Assert(HuisNr > 0);
 			Debug.Assert(GemeenteNaam != String.Empty);
 
 			adresInDb = _dao.Ophalen(StraatNaam, HuisNr, Bus, PostNr, PostCode, GemeenteNaam, false);
@@ -145,6 +146,13 @@ namespace Chiro.Gap.Workers
                     throw new AdresException(vf);
                 }
 
+				if (PostCode != null && !PostCode.Equals(""))
+				{
+					adr.PostCode = PostCode;
+				}				
+				adr.HuisNr = HuisNr;
+				adr.Bus = Bus;
+
                 adr = _dao.Bewaren(adr);
                 // bewaren brengt Versie en ID automatisch in orde.
 
@@ -166,9 +174,9 @@ namespace Chiro.Gap.Workers
 			return _subgemeenteDao.AllesOphalen();
 		}
 
-		public IList<Straat> StratenOphalen()
+		public IList<Straat> StratenOphalen(String straatbegin, int postcode)
 		{
-			return _stratenDao.AllesOphalen();
+			return _stratenDao.MogelijkhedenOphalen(straatbegin, postcode);
 		}
 
 		#endregion

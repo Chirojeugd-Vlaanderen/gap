@@ -181,7 +181,7 @@ namespace Chiro.Gap.ServiceContracts
 		IEnumerable<GemeenteInfo> GemeentesOphalen();
 
 		[OperationContract]
-		IEnumerable<StraatInfo> StratenOphalen();
+		IEnumerable<StraatInfo> StratenOphalen(String straatbegin, int postcode);
 
 		#endregion
 	}

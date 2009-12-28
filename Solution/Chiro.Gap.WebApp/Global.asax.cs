@@ -19,7 +19,7 @@ namespace Chiro.Gap.WebApp
     {
 		private static IUnityContainer _container;
 		private static IEnumerable<GemeenteInfo> GemeenteLijst;
-		private static IEnumerable<StraatInfo> StratenLijst;
+		//private static IEnumerable<StraatInfo> StratenLijst;
 
         protected void Application_Start()
         {
@@ -91,10 +91,9 @@ namespace Chiro.Gap.WebApp
 			return GemeenteLijst;
 		}
 
-		public static IEnumerable<StraatInfo> getStraten()
+		/*public static IEnumerable<StraatInfo> getStraten()
 		{
 			return StratenLijst;
-		}
-
+		}*/
     }
 }

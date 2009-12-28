@@ -18,5 +18,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
         /// <param name="postNr">postnummer</param>
         /// <returns>relevante straat</returns>
         Straat Ophalen(string naam, int postNr);
+
+		IList<Straat> MogelijkhedenOphalen(string naambegin, int postNr);
     }
 }

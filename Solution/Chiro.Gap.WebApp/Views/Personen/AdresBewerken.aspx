@@ -10,23 +10,23 @@
 <script type="text/javascript">
 
 $(function(){
-	$("#Adres_Subgemeente_Naam").keyup(function(){
+	$("#Adres_Gemeente").keyup(function(){
 		$("#notfound").html("");
-		document.getElementById("Adres.Straat.Naam").disabled = true;
-		$("#Adres_Straat_Naam").val("");
-		$("#Adres_Straat_PostNr").val("");
+		document.getElementById("Adres.Straat").disabled = true;
+		$("#Adres_Straat").val("");
+		$("#Adres_PostNr").val("");
 	});
 });
 
 $(document).ready(function() {	
-	document.getElementById("Adres.Straat.PostNr").readOnly = true;
+	document.getElementById("Adres.PostNr").readOnly = true;
 	
-	if($("#Adres_Subgemeente_Naam").val().length==0)
+	if($("#Adres_Gemeente").val().length==0)
 	{
-		document.getElementById("Adres.Straat.Naam").disabled = true;		
+		document.getElementById("Adres.Straat").disabled = true;		
 	}
 
-	$("#Adres_Subgemeente_Naam").autocomplete('<%=Url.Action("GetGemeentes", "Personen") %>',
+	$("#Adres_Gemeente").autocomplete('<%=Url.Action("GetGemeentes", "Personen") %>',
 	{
 	dataType: 'json',
 	parse: function(data) {
@@ -52,13 +52,13 @@ $(document).ready(function() {
 		/*staat op verkeerde plaats if(data.length==0){
 			$("#notfound").html("Er bestaat geen gemeente met die naam.");
 		}*/
-		document.getElementById("Adres.Straat.Naam").disabled = false;
-		$.getJSON('<%=Url.Action("GetPostCode", "Personen") %>', { gemeente: $("#Adres_Subgemeente_Naam").val() }, function(data) {
-			$("#Adres_Straat_PostNr").val(data + "");
+		document.getElementById("Adres.Straat").disabled = false;
+		$.getJSON('<%=Url.Action("GetPostCode", "Personen") %>', { gemeente: $("#Adres_Gemeente").val() }, function(data) {
+			$("#Adres_PostNr").val(data + "");
 		});
 	});
 
-	/*$("#Adres_Straat_Naam").autocomplete('<%=Url.Action("GetStraten", "Personen") %>',
+	$("#Adres_Straat").autocomplete('<%=Url.Action("GetStraten", "Personen") %>',
 	{
 	dataType: 'json',
 	parse: function(data) {
@@ -75,10 +75,10 @@ $(document).ready(function() {
 	minChars: 2,
 	highlight: false,
 	multiple: false,
-	extraParams: { "gemeente": function() { return $("#Adres_Subgemeente_Naam").val(); },
-					"straat": function() { return $("#Adres_Straat_Naam").val(); }
+	extraParams: { "gemeente": function() { return $("#Adres_Gemeente").val(); },
+					"straat": function() { return $("#Adres_Straat").val(); }
 		}
-	});*/
+	});
 });
 </script>
 </asp:Content>
@@ -118,20 +118,25 @@ $(document).ready(function() {
 	<br />
    
 	<label>Gemeente</label>
-	<%= Html.TextBox("Adres.Subgemeente.Naam")%> <%= Html.ValidationMessage("Adres.Subgemeente.Naam")%>
+	<%= Html.TextBox("Adres.Gemeente")%> <%= Html.ValidationMessage("Adres.Gemeente")%>
 	<div id="notfound"></div>
 	<br />
 	
 	<label>PostCode</label>
-	<%=Html.TextBox("Adres.Straat.PostNr")%>
+	<%=Html.TextBox("Adres.PostNr")%>
 	<br />
 	
 	<label>Straat</label>
-	<%= Html.TextBox("Adres.Straat.Naam")%> <%= Html.ValidationMessage("Adres.Straat.Naam")%>
+	<%= Html.TextBox("Adres.Straat")%> <%= Html.ValidationMessage("Adres.Straat")%>
 	<br />
 	
 	<label>Nr.</label>
-    <%=Html.TextBox("Adres.HuisNr")%> <br />
+    <%=Html.TextBox("Adres.HuisNr")%> 
+    <br />
+    
+    <label>Bus</label>
+    <%=Html.TextBox("Adres.Bus")%> 
+    <br />
    
    <%=Html.Hidden("Bewoners.ID")%>
    <%=Html.Hidden("AanvragerID")%>

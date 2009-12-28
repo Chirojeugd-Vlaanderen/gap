@@ -234,6 +234,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			AdresInfo a = ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(l => l.AdresMetBewonersOphalen(id));
 			model.Bewoners = a.Bewoners;
 			model.Adres = a;
+			model.OudAdresID = id;
 
 			// Bij de constructie van verhuisinfo zijn vanadres naaradres
 			// dezelfde.  Van zodra er een postback gebeurt van het form,
@@ -546,14 +547,15 @@ namespace Chiro.Gap.WebApp.Controllers
 			IEnumerable<GemeenteInfo> gs = MvcApplication.getGemeentes();
 
 			List<String> tags = (from g in gs
-					     select g.Naam).ToList();
-
+								 select g.Naam)
+								 .Where(x => x.StartsWith(q, StringComparison.CurrentCultureIgnoreCase))
+								 .ToList();
+			
 			// Select the tags that match the query, and get the 
 			// number or tags specified by the limit.
 			var retValue = tags
-				.Where(x => x.StartsWith(q, StringComparison.OrdinalIgnoreCase))
 				.OrderBy(x => x)
-				.Take(limit)
+				//.Take(limit)
 				.Select(r => new { Tag = r });
 
 			// Return the result set as JSON
@@ -567,14 +569,12 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="limit">The number of tags return.</param>
 		public ActionResult GetPostCode(String gemeente)
 		{
-			IEnumerable<GemeenteInfo> tags = MvcApplication.getGemeentes();
+			IEnumerable<GemeenteInfo> tags = MvcApplication.getGemeentes().Where(x => x.Naam.Equals(gemeente, StringComparison.CurrentCultureIgnoreCase));
 
 			// Select the tags that match the query, and get the 
 			// number or tags specified by the limit.
 			var retValue = tags
-				.Where(x => x.Naam.Equals(gemeente, StringComparison.OrdinalIgnoreCase))
-				.OrderBy(x => x)
-				.Select(r => r.PostNr);
+				.Select(r => r.PostNr).FirstOrDefault();
 
 			// Return the result set as JSON
 			return Json(retValue);
@@ -587,13 +587,12 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="limit">The number of tags return.</param>
 		public ActionResult GetStraten(String straat, String gemeente)
 		{
-			IEnumerable<StraatInfo> ss = MvcApplication.getStraten();
+			var postcode = MvcApplication.getGemeentes().Where(x => x.Naam.Equals(gemeente)).Select(x => x.PostNr).FirstOrDefault();
 
-			var postcode = MvcApplication.getGemeentes().Where(x => x.Naam == gemeente).Select(x => x.PostNr).FirstOrDefault();
+			IEnumerable<StraatInfo> ss = ServiceHelper.CallService<IGroepenService, IEnumerable<StraatInfo>>(x => x.StratenOphalen(straat, postcode));			
 
 			List<String> tags = (from g in ss
-					     where g.PostNr.Equals(postcode)
-					     select g.Naam).ToList();
+								 select g.Naam).ToList();
 
 			// Select the tags that match the query, and get the 
 			// number or tags specified by the limit.

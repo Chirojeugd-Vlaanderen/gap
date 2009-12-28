@@ -56,8 +56,9 @@ namespace Chiro.Gap.Data.Ef
 				db.PersoonsAdres.MergeOption = MergeOption.NoTracking;
 
 				Adres geattachtAdres = db.AttachObjectGraph(adr, e => e.Straat.WithoutUpdate()
-							      , e => e.Subgemeente.WithoutUpdate()
-							      , e => e.PersoonsAdres.First().Persoon.WithoutUpdate());
+									, e => e.Subgemeente.WithoutUpdate()
+									, e => e.PersoonsAdres.First().Adres
+									, e => e.PersoonsAdres.First().Persoon.WithoutUpdate());
 
 				// bewaardAdres is het geattachte adres.  Hiervan neem
 				// ik ID en versie over; de rest laat ik ongemoeid.

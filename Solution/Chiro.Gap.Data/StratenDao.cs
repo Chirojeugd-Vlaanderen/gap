@@ -23,11 +23,32 @@ namespace Chiro.Gap.Data.Ef
 
                 if (resultaat != null)
                 {
-                    db.Detach(resultaat);
+					resultaat = Utility.DetachObjectGraph(resultaat);
                 }
             }
 
             return resultaat;
         }
+
+		public IList<Straat> MogelijkhedenOphalen(string naambegin, int postNr)
+		{
+			IList<Straat> resultaat = null;
+
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{
+				resultaat = (
+					from s in db.Straat
+					where s.Naam.StartsWith(naambegin) && s.PostNr == postNr
+					select s).ToList();
+
+				if (resultaat != null)
+				{
+					resultaat = Utility.DetachObjectGraph(resultaat);
+				}
+			}
+
+			return resultaat;
+		}
+
     }
 }

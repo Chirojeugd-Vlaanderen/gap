@@ -325,9 +325,9 @@ namespace Chiro.Gap.Services
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IEnumerable<StraatInfo> StratenOphalen()
+		public IEnumerable<StraatInfo> StratenOphalen(String straatbegin, int postcode)
 		{
-			return Mapper.Map<IList<Straat>, IList<StraatInfo>>(_adresMgr.StratenOphalen());
+			return Mapper.Map<IList<Straat>, IList<StraatInfo>>(_adresMgr.StratenOphalen(straatbegin, postcode));
 		}
 		#endregion
 	}
