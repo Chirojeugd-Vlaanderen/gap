@@ -11,96 +11,102 @@ using System.ComponentModel;
 
 namespace Chiro.Gap.Orm
 {
-    [DataContract]
-    public enum GeslachtsType
-    {
-        [EnumMember] Man = 1
-        , [EnumMember] Vrouw = 2
-        , [EnumMember] Onbekend = 0
-    }
+	[DataContract]
+	public enum GeslachtsType
+	{
+		[EnumMember]
+		Man = 1
+			,
+		[EnumMember]
+		Vrouw = 2
+			,
+		[EnumMember]
+		Onbekend = 0
+	}
 
-    [MetadataType(typeof(Persoon_Validatie))]
-    public partial class Persoon : IEfBasisEntiteit
-    {
-        /// <summary>
-        /// Nested class die toelaat om validatie properties op te zetten, en die gereferenced wordt door het MetadataType attribute
-        /// Dit kan niet op de echte class, want die wordt gegenereerd door de EF Designer
-        /// </summary>
-        public class Persoon_Validatie
-        {
-            [Verplicht(), StringLengte(160), StringMinimumLengte(2)]
-            [DisplayName("Familienaam")]
-            public string Naam { get; set; }
+	[MetadataType(typeof(Persoon_Validatie))]
+	public partial class Persoon : IEfBasisEntiteit
+	{
+		/// <summary>
+		/// Nested class die toelaat om validatie properties op te zetten, en die gereferenced wordt door het MetadataType attribute
+		/// Dit kan niet op de echte class, want die wordt gegenereerd door de EF Designer
+		/// </summary>
+		public class Persoon_Validatie
+		{
+			[Verplicht(), StringLengte(160), StringMinimumLengte(2)]
+			[DisplayName("Familienaam")]
+			public string Naam { get; set; }
 
-            [Verplicht()]
-            [StringLengte(60), StringMinimumLengte(2)]
-            public string VoorNaam { get; set; }
+			[Verplicht()]
+			[StringLengte(60), StringMinimumLengte(2)]
+			public string VoorNaam { get; set; }
 
-            [Verplicht()]
-            public Chiro.Gap.Orm.GeslachtsType Geslacht { set; get; }
+			[Verplicht()]
+			public Chiro.Gap.Orm.GeslachtsType Geslacht { set; get; }
 
-            [DisplayName("AD-Nummer")]
-            public Nullable<int> AdNummer { set; get; }
+			[DisplayName("AD-Nummer")]
+			public Nullable<int> AdNummer { set; get; }
 
-            [DisplayFormat(DataFormatString="{0:d}", ApplyFormatInEditMode=true, ConvertEmptyStringToNull=true)]
-            public DateTime? GeboorteDatum { get; set; }
+			//[DisplayFormat(DataFormatString="{0:d}", ApplyFormatInEditMode=true, ConvertEmptyStringToNull=true)]
+			[DataType(DataType.Date)]
+			public DateTime? GeboorteDatum { get; set; }
 
-        }
+		}
 
-        private bool _teVerwijderen = false;
-        
-        public bool TeVerwijderen
-        {
-            get { return _teVerwijderen; }
-            set { _teVerwijderen = value; }
-        }
+		private bool _teVerwijderen = false;
 
-        public string VersieString
-        {
-            get { return this.VersieStringGet(); }
-            set { this.VersieStringSet(value); }
-        }
+		public bool TeVerwijderen
+		{
+			get { return _teVerwijderen; }
+			set { _teVerwijderen = value; }
+		}
 
-        #region Identity en equality
+		public string VersieString
+		{
+			get { return this.VersieStringGet(); }
+			set { this.VersieStringSet(value); }
+		}
 
-        public override int GetHashCode()
-        {
-            return 3;
-        }
+		#region Identity en equality
 
-        public override bool Equals(object obj)
-        {
-            IEfBasisEntiteit andere = obj as Persoon;
-            // Als obj geen GelieerdePersoon is, wordt andere null.
+		public override int GetHashCode()
+		{
+			return 3;
+		}
 
-            if (andere == null)
-            {
-                return false;
-            }
-            else
-            {
-                return (ID != 0) && (ID == andere.ID)
-                    || (ID == 0 || andere.ID == 0) && base.Equals(andere);
-            }
+		public override bool Equals(object obj)
+		{
+			IEfBasisEntiteit andere = obj as Persoon;
+			// Als obj geen GelieerdePersoon is, wordt andere null.
 
-            // Is obj geen GelieerdePersoon, dan is de vergelijking altijd vals.
-            // Hebben beide objecten een ID verschillend van 0, en zijn deze
-            // ID's gelijk, dan zijn de objecten ook gelijk.  Zo niet gebruiken we
-            // base.Equals, wat eigenlijk niet helemaal correct is.
-        }
+			if (andere == null)
+			{
+				return false;
+			}
+			else
+			{
+				return (ID != 0) && (ID == andere.ID)
+				    || (ID == 0 || andere.ID == 0) && base.Equals(andere);
+			}
 
-        #endregion
+			// Is obj geen GelieerdePersoon, dan is de vergelijking altijd vals.
+			// Hebben beide objecten een ID verschillend van 0, en zijn deze
+			// ID's gelijk, dan zijn de objecten ook gelijk.  Zo niet gebruiken we
+			// base.Equals, wat eigenlijk niet helemaal correct is.
+		}
 
-        public GeslachtsType Geslacht
-        {
-            get { return (GeslachtsType)this.GeslachtsInt; }
-            set { this.GeslachtsInt = (int)value; }
-        }
+		#endregion
 
-        public string VolledigeNaam
-        {
-            get { return String.Format("{0} {1}", VoorNaam, Naam); }
-        }
+		public GeslachtsType Geslacht
+		{
+			get { return (GeslachtsType)this.GeslachtsInt; }
+			set { this.GeslachtsInt = (int)value; }
+		}
 
-    }
+		public string VolledigeNaam
+		{
+			get { return String.Format("{0} {1}", VoorNaam, Naam); }
+		}
+
+	}
 }

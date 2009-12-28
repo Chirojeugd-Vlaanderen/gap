@@ -27,12 +27,12 @@
     <% 
       foreach(var s in  Model.AfdelingsInfoDictionary) 
       {
-          String s2 = Html.ActionLink("AfdelingBekijken", "List", new { groepsWerkJaarId = Model.GroepsWerkJaarIdZichtbaar, afdID = s.Value.ID});
+          String s2 = Html.ActionLink("AfdelingBekijken", "List", new { groepsWerkJaarId = Model.GroepsWerkJaarIdZichtbaar, afdID = s.Value.ID}).ToHtmlString();
           int start = s2.IndexOf("href=\"")+6;
           int end = s2.IndexOf("\"", start);
           Response.Write("<option value=" + s2.Substring(start, end - start) + ">" + s.Value.Naam + "</option>\n");
       }
-      String alles = Html.ActionLink("AfdelingBekijken", "List", new { groepsWerkJaarId = Model.GroepsWerkJaarIdZichtbaar, afdID = 0 });
+      String alles = Html.ActionLink("AfdelingBekijken", "List", new { groepsWerkJaarId = Model.GroepsWerkJaarIdZichtbaar, afdID = 0 }).ToHtmlString();
       int ss = alles.IndexOf("href=\"") + 6;
       int e = alles.IndexOf("\"", ss);
       Response.Write("<option value=" + alles.Substring(ss, e - ss) + ">" + "Alle leden" + "</option>\n");

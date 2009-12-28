@@ -27,10 +27,10 @@
             
             <p>
             <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.AdNummer)%>
-            <%=Html.TextBox("AdNummer", Model.HuidigePersoon.Persoon.AdNummer, 
+            <%=Html.TextBoxFor(mdl=>mdl.HuidigePersoon.Persoon.AdNummer, 
                     new Dictionary<string, object> { 
                         {"readonly", "readonly"}, 
-                        {"title", "Stamnummer kan niet ingegeven of gewijzigd worden." } })%>     
+                        {"title", "AD-nummer kan niet ingegeven of gewijzigd worden." } })%>     
             </p>
             
             <p>

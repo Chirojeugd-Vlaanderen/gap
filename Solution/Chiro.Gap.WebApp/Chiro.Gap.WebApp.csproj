@@ -239,6 +239,7 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>MyResources.nl.designer.cs</LastGenOutput>
     </Content>
+    <Content Include="Views\Shared\DisplayTemplates\Date.ascx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
