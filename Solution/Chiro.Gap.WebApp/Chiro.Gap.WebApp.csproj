@@ -116,7 +116,6 @@
     <Compile Include="Models\LedenModel.cs" />
     <Compile Include="Models\MasterAttribute.cs" />
     <Compile Include="Models\MasterViewModel.cs" />
-    <Compile Include="Models\NieuwAdresModel.cs" />
     <Compile Include="Models\PersoonInfoModel.cs" />
     <Compile Include="Models\AdresModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -164,7 +163,6 @@
     <Content Include="Views\Afdeling\Nieuw.aspx" />
     <Content Include="Views\Personen\NieuweCommVorm.aspx" />
     <Content Include="Views\Personen\EditGegevens.aspx" />
-    <Content Include="Views\Personen\NieuwAdres.aspx" />
     <Content Include="Views\Personen\EditRest.aspx" />
     <Content Include="Views\Personen\Index.aspx" />
     <Content Include="Views\Personen\AdresBewerken.aspx" />
