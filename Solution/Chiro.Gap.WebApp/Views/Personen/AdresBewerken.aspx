@@ -15,6 +15,8 @@ $(function(){
 		document.getElementById("Adres.Straat").disabled = true;
 		$("#Adres_Straat").val("");
 		$("#Adres_PostNr").val("");
+		//Clear de straat cache als de gemeente verandert.
+		$("#Adres_Straat").flushCache();
 	});
 });
 
@@ -53,11 +55,11 @@ $(document).ready(function() {
 			$("#notfound").html("Er bestaat geen gemeente met die naam.");
 		}*/
 		document.getElementById("Adres.Straat").disabled = false;
-		$.getJSON('<%=Url.Action("GetPostCode", "Personen") %>', { gemeente: $("#Adres_Gemeente").val() }, function(data) {
+		$.post('<%=Url.Action("GetPostCode", "Personen") %>', { gemeente: $("#Adres_Gemeente").val() }, function(data) {
 			$("#Adres_PostNr").val(data + "");
-		});
+		}, "json");
 	});
-
+	
 	$("#Adres_Straat").autocomplete('<%=Url.Action("GetStraten", "Personen") %>',
 	{
 	dataType: 'json',

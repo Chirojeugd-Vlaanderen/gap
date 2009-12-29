@@ -359,6 +359,8 @@ $.Autocompleter = function(input, options) {
 			});
 			
 			$.ajax({
+				//this has to be added from MVC2 because GET with JSON is no longer allowed
+				type: "post",
 				// try to leverage ajaxQueue plugin to abort previous requests
 				mode: "abort",
 				// limit abortion to this input
