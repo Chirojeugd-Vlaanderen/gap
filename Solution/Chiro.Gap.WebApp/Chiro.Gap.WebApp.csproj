@@ -265,7 +265,7 @@
           <DevelopmentServerPort>2767</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/cgtest</IISUrl>
-          <NTLMAuthentication>True</NTLMAuthentication>
+          <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
           </CustomServerUrl>

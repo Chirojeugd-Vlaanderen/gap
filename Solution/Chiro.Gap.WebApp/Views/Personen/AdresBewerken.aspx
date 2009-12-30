@@ -12,7 +12,7 @@
 $(function(){
 	$("#Adres_Gemeente").keyup(function(){
 		$("#notfound").html("");
-		document.getElementById("Adres.Straat").disabled = true;
+		document.getElementById("Adres_Straat").disabled = true;
 		$("#Adres_Straat").val("");
 		$("#Adres_PostNr").val("");
 		//Clear de straat cache als de gemeente verandert.
@@ -21,11 +21,11 @@ $(function(){
 });
 
 $(document).ready(function() {	
-	document.getElementById("Adres.PostNr").readOnly = true;
+	document.getElementById("Adres_PostNr").readOnly = true;
 	
 	if($("#Adres_Gemeente").val().length==0)
 	{
-		document.getElementById("Adres.Straat").disabled = true;		
+		document.getElementById("Adres_Straat").disabled = true;		
 	}
 
 	$("#Adres_Gemeente").autocomplete('<%=Url.Action("GetGemeentes", "Personen") %>',
@@ -54,7 +54,7 @@ $(document).ready(function() {
 		/*staat op verkeerde plaats if(data.length==0){
 			$("#notfound").html("Er bestaat geen gemeente met die naam.");
 		}*/
-		document.getElementById("Adres.Straat").disabled = false;
+		document.getElementById("Adres_Straat").disabled = false;
 		$.post('<%=Url.Action("GetPostCode", "Personen") %>', { gemeente: $("#Adres_Gemeente").val() }, function(data) {
 			$("#Adres_PostNr").val(data + "");
 		}, "json");
