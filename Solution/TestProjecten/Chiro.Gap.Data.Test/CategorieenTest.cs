@@ -95,6 +95,19 @@ namespace Chiro.Gap.Data.Test
 		}
 
 		/// <summary>
+		/// Ophalen van een categorie op basis van groepid en code
+		/// </summary>
+		[TestMethod]
+		public void CategorieOphalenGroepCode()
+		{
+			// act
+			Categorie c = _catdao.Ophalen(TestInfo.GROEPID, TestInfo.CATEGORIECODE);
+
+			// assert
+			Assert.IsTrue(c != null);
+		}
+
+		/// <summary>
 		/// Controleert of bij het ophalen van een pagina uit een categorie, de waarde van
 		/// de output parameter aantalTotaal klopt.
 		/// </summary>

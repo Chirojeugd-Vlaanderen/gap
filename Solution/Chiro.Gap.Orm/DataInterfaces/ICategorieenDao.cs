@@ -17,5 +17,15 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		Categorie GroepLaden(Categorie categorie);*/
 
 		IEnumerable<Categorie> OphalenVanGroep(int groepID);
+
+
+		/// <summary>
+		/// Zoekt een categorie op op basis van <paramref name="groepID"/> en
+		/// <paramref name="code"/>.
+		/// </summary>
+		/// <param name="groepID">ID van groep waaraan de te zoeken categorie gekoppeld moet zijn</param>
+		/// <param name="code">code van de te zoeken categorie</param>
+		/// <returns>de gevonden categorie; <c>null</c> indien niet gevonden</returns>
+		Categorie Ophalen(int groepID, string code);
 	}
 }

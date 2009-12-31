@@ -8,14 +8,23 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Dummies
 {
-    /// <summary>
-    /// Dummy CategorieenDao, die niets doet
-    /// </summary>
-    class DummyCategorieenDao: DummyDao<Categorie>, ICategorieenDao
-    {
-        public IEnumerable<Categorie> OphalenVanGroep(int groepID)
-        {
-            throw new NotImplementedException();
-        }
-    }
+	/// <summary>
+	/// Dummy CategorieenDao, die niets doet
+	/// </summary>
+	class DummyCategorieenDao : DummyDao<Categorie>, ICategorieenDao
+	{
+		#region ICategorieenDao Members
+
+		public IEnumerable<Categorie> OphalenVanGroep(int groepID)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Categorie Ophalen(int groepID, string code)
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
+	}
 }

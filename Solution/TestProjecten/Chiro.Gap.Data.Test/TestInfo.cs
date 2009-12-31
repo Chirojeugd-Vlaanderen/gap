@@ -32,10 +32,10 @@
 		/// </summary>
 		public const int MINAANTALGELPERS = 3;
 
-        /// <summary>
-        /// LidID van een leider;
-        /// </summary>
-        public const int LID3ID = 607;
+		/// <summary>
+		/// LidID van een leider;
+		/// </summary>
+		public const int LID3ID = 607;
 
 
 		/// <summary>
@@ -43,6 +43,11 @@
 		/// </summary>
 		/// <remarks>Enkel gelieerde Persoon 1 moet in deze categorie zitten</remarks>
 		public const int CATEGORIEID = 8;
+
+		/// <summary>
+		/// code van bovenvermelde categorie
+		/// </summary>
+		public const string CATEGORIECODE = "last";
 
 		/// <summary>
 		/// ID van tweede testcategorie

@@ -31,5 +31,24 @@ namespace Chiro.Gap.Data.Ef
 				    select cv).ToList();
 			}
 		}
+
+		/// <summary>
+		/// Zoekt een categorie op op basis van <paramref name="groepID"/> en
+		/// <paramref name="code"/>.
+		/// </summary>
+		/// <param name="groepID">ID van groep waaraan de te zoeken categorie gekoppeld moet zijn</param>
+		/// <param name="code">code van de te zoeken categorie</param>
+		/// <returns>de gevonden categorie; <c>null</c> indien niet gevonden</returns>
+		public Categorie Ophalen(int groepID, string code)
+		{
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{
+				db.Categorie.MergeOption = MergeOption.NoTracking;
+
+				return (from cat in db.Categorie
+					where cat.Groep.ID == groepID && string.Compare(cat.Code, code) == 0
+					select cat).FirstOrDefault();
+			}
+		}
 	}
 }
