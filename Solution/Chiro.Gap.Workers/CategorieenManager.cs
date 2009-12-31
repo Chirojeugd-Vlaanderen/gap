@@ -50,6 +50,25 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
+		/// <summary>
+		/// Zoekt een categorie op op basis van <paramref name="groepID"/> en
+		/// <paramref name="code"/>.
+		/// </summary>
+		/// <param name="groepID">ID van groep waaraan de te zoeken categorie gekoppeld moet zijn</param>
+		/// <param name="code">code van de te zoeken categorie</param>
+		/// <returns>de gevonden categorie; <c>null</c> indien niet gevonden</returns>
+		public Categorie Ophalen(int groepID, string code)
+		{
+			if (_autorisatieMgr.IsGavGroep(groepID))
+			{
+				return _dao.Ophalen(groepID, code);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavGroep);
+			}
+		}
+
 		public Categorie BewarenMetPersonen(Categorie cat)
 		{
 			if (_autorisatieMgr.IsGavCategorie(cat.ID))
