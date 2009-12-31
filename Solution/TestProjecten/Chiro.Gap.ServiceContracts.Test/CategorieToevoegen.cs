@@ -14,129 +14,130 @@ using Chiro.Gap.Services;
 
 namespace Chiro.Gap.ServiceContracts.Test
 {
-    /// <summary>
-    /// Summary description for CategorieToevoegen
-    /// </summary>
-    [TestClass]
-    public class CategorieToevoegen
-    {
-        public CategorieToevoegen()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
+	/// <summary>
+	/// Summary description for CategorieToevoegen
+	/// </summary>
+	[TestClass]
+	public class CategorieToevoegen
+	{
+		public CategorieToevoegen()
+		{
+			//
+			// TODO: Add constructor logic here
+			//
+		}
 
-        [ClassInitialize]
-        static public void InitialiseerTests(TestContext tc)
-        {
-            Factory.ContainerInit();
-        }
+		[ClassInitialize]
+		static public void InitialiseerTests(TestContext tc)
+		{
+			Factory.ContainerInit();
+		}
 
-        [ClassCleanup]
-        static public void AfsluitenTests()
-        {
-            Factory.Dispose();
-        }
+		[ClassCleanup]
+		static public void AfsluitenTests()
+		{
+			Factory.Dispose();
+		}
 
-        List<int> catlijst = new List<int>(); //lijst van nieuw aangemaakte categorieen, die nog verwijderd moeten worden
-        IGroepenService gpm;
+		List<int> catlijst = new List<int>(); //lijst van nieuw aangemaakte categorieen, die nog verwijderd moeten worden
+		IGroepenService gpm;
 
-        [TestInitialize]
-        public void initialiseerTest()
-        {
-            Debug.WriteLine("Chiro.Gap.ServiceContracts.Test.CategorieToevoegen: InitialiseerTest - Start");
-            gpm = Factory.Maak<GroepenService>();
+		[TestInitialize]
+		public void initialiseerTest()
+		{
+			Debug.WriteLine("Chiro.Gap.ServiceContracts.Test.CategorieToevoegen: InitialiseerTest - Start");
+			gpm = Factory.Maak<GroepenService>();
 
-            // CategorieToevoegenNormaal voegt een categorie toe voor:
-            //    - Groep: Properties.Settings.Default.GroepID
-            //    - CategorieCode: Properties.Settings.Default.CategorieCode
-            // Deze moeten we verwijderen als die bestaat.
-            Groep g = gpm.OphalenMetCategorieen(Properties.Settings.Default.GroepID);
-            Debug.WriteLine ("Chiro.Gap.ServiceContracts.Test.CategorieToevoegen: InitialiseerTest: heb "
-                + g.Categorie.Count.ToString() + " Categorien gevonden voor "
-                + " GroepID: " + Properties.Settings.Default.GroepID.ToString());
+			// CategorieToevoegenNormaal voegt een categorie toe voor:
+			//    - Groep: Properties.Settings.Default.GroepID
+			//    - CategorieCode: Properties.Settings.Default.CategorieCode
+			// Deze moeten we verwijderen als die bestaat.
+			Groep g = gpm.OphalenMetCategorieen(Properties.Settings.Default.GroepID);
+			Debug.WriteLine("Chiro.Gap.ServiceContracts.Test.CategorieToevoegen: InitialiseerTest: heb "
+			    + g.Categorie.Count.ToString() + " Categorien gevonden voor "
+			    + " GroepID: " + Properties.Settings.Default.GroepID.ToString());
 
-            foreach (Categorie c in g.Categorie.ToList<Categorie>())
-            {  
-                if (c.Code.ToString().Equals(Properties.Settings.Default.CategorieCode_Toevoegen))
-                {
-                    Debug.WriteLine ("Chiro.Gap.ServiceContracts.Test.CategorieToevoegen: InitialiseerTest - Verwijder " 
-                        + "CategorieID: " + c.ID.ToString() 
-                        + " - GroepID: " + Properties.Settings.Default.GroepID.ToString());
-                    gpm.CategorieVerwijderen(c.ID, Properties.Settings.Default.GroepID);
-                }
-            }
-            Debug.WriteLine("Chiro.Gap.ServiceContracts.Test.CategorieToevoegen: InitialiseerTest - Einde");
-        }
+			foreach (Categorie c in g.Categorie.ToList<Categorie>())
+			{
+				if (c.Code.ToString().Equals(Properties.Settings.Default.CategorieCode_Toevoegen))
+				{
+					Debug.WriteLine("Chiro.Gap.ServiceContracts.Test.CategorieToevoegen: InitialiseerTest - Verwijder "
+					    + "CategorieID: " + c.ID.ToString()
+					    + " - GroepID: " + Properties.Settings.Default.GroepID.ToString());
 
-        [TestCleanup]
-        public void tearDown()
-        {
-            Groep g = gpm.OphalenMetCategorieen(Properties.Settings.Default.GroepID);
-            foreach (Categorie c in g.Categorie)
-            {
-                if(catlijst.Contains(c.ID))
-                {
-                    gpm.CategorieVerwijderen(c.ID, Properties.Settings.Default.GroepID);
-                }
-            }
-        }
+					gpm.CategorieVerwijderen(c.ID);
+				}
+			}
+			Debug.WriteLine("Chiro.Gap.ServiceContracts.Test.CategorieToevoegen: InitialiseerTest - Einde");
+		}
 
-        [TestMethod]
-        public void CategorieToevoegenNormaal()
-        {
-            int catID = gpm.CategorieToevoegen(Properties.Settings.Default.GroepID, 
-                    Properties.Settings.Default.CategorieNaam, 
-                    Properties.Settings.Default.CategorieCode_Toevoegen);
-            catlijst.Add(catID);
+		[TestCleanup]
+		public void tearDown()
+		{
+			Groep g = gpm.OphalenMetCategorieen(Properties.Settings.Default.GroepID);
+			foreach (Categorie c in g.Categorie)
+			{
+				if (catlijst.Contains(c.ID))
+				{
+					gpm.CategorieVerwijderen(c.ID);
+				}
+			}
+		}
 
-            Groep g = gpm.OphalenMetCategorieen(Properties.Settings.Default.GroepID);
-            bool found = false;
-            foreach (Categorie c in g.Categorie)
-            {
-                if (c.ID == catID)
-                {
-                    found = true;
-                }
-            }
-            Assert.IsTrue(found);
-        }
+		[TestMethod]
+		public void CategorieToevoegenNormaal()
+		{
+			int catID = gpm.CategorieToevoegen(Properties.Settings.Default.GroepID,
+				Properties.Settings.Default.CategorieNaam,
+				Properties.Settings.Default.CategorieCode_Toevoegen);
+			catlijst.Add(catID);
 
-/*        [TestMethod]
-        [ExpectedExceptionAttribute(typeof(NotImplementedException))]
-        public void CategorieAanmakenLegeNaam()
-        {
-            catlijst.Add(gpm.CategorieToevoegen(groepID, "", ""));
-        }
+			Groep g = gpm.OphalenMetCategorieen(Properties.Settings.Default.GroepID);
+			bool found = false;
+			foreach (Categorie c in g.Categorie)
+			{
+				if (c.ID == catID)
+				{
+					found = true;
+				}
+			}
+			Assert.IsTrue(found);
+		}
 
-        [TestMethod]
-        [ExpectedExceptionAttribute(typeof(NotImplementedException))]
-        public void CategorieAanmakenGeenNaam()
-        {
-            catlijst.Add(gpm.CategorieToevoegen(groepID, null, ""));
-        }
+		/*        [TestMethod]
+			[ExpectedExceptionAttribute(typeof(NotImplementedException))]
+			public void CategorieAanmakenLegeNaam()
+			{
+			    catlijst.Add(gpm.CategorieToevoegen(groepID, "", ""));
+			}
 
-        [TestMethod]
-        [ExpectedExceptionAttribute(typeof(NotImplementedException))]
-        public void CategorieAanmakenGeenCode()
-        {
-            catlijst.Add(gpm.CategorieToevoegen(groepID, "kookies", null));
-        }
+			[TestMethod]
+			[ExpectedExceptionAttribute(typeof(NotImplementedException))]
+			public void CategorieAanmakenGeenNaam()
+			{
+			    catlijst.Add(gpm.CategorieToevoegen(groepID, null, ""));
+			}
 
-        [TestMethod]
-        [ExpectedExceptionAttribute(typeof(NotImplementedException))]
-        public void CategorieAanmakenOnbestaandeGroep()
-        {
-            catlijst.Add(gpm.CategorieToevoegen(0, "kookies", ""));
-        }
+			[TestMethod]
+			[ExpectedExceptionAttribute(typeof(NotImplementedException))]
+			public void CategorieAanmakenGeenCode()
+			{
+			    catlijst.Add(gpm.CategorieToevoegen(groepID, "kookies", null));
+			}
 
-        [TestMethod]
-        [ExpectedExceptionAttribute(typeof(NotImplementedException))]
-        public void CategorieAanmakenBestaandeNaam()
-        {
-            catlijst.Add(gpm.CategorieToevoegen(groepID, "Kookies", ""));
-            catlijst.Add(gpm.CategorieToevoegen(groepID, "Kookies", ""));
-        }*/
-    }
+			[TestMethod]
+			[ExpectedExceptionAttribute(typeof(NotImplementedException))]
+			public void CategorieAanmakenOnbestaandeGroep()
+			{
+			    catlijst.Add(gpm.CategorieToevoegen(0, "kookies", ""));
+			}
+
+			[TestMethod]
+			[ExpectedExceptionAttribute(typeof(NotImplementedException))]
+			public void CategorieAanmakenBestaandeNaam()
+			{
+			    catlijst.Add(gpm.CategorieToevoegen(groepID, "Kookies", ""));
+			    catlijst.Add(gpm.CategorieToevoegen(groepID, "Kookies", ""));
+			}*/
+	}
 }

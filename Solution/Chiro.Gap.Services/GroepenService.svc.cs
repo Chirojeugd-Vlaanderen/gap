@@ -19,33 +19,42 @@ using System.Security.Permissions;
 
 namespace Chiro.Gap.Services
 {
-    // OPM: als je de naam van de class "GroepenService" hier verandert, moet je ook de sectie "Services" in web.config aanpassen.
+	// OPM: als je de naam van de class "GroepenService" hier verandert, moet je ook de sectie "Services" in web.config aanpassen.
 	public class GroepenService : IGroepenService
 	{
 		#region Manager Injection
 
-        private readonly GroepenManager _groepenMgr;
-        private readonly AfdelingsJaarManager _afdelingsJaarMgr;
+		private readonly GroepenManager _groepenMgr;
+		private readonly AfdelingsJaarManager _afdelingsJaarMgr;
 		private readonly AdressenManager _adresMgr;
-        private readonly WerkJaarManager _werkjaarMgr;
+		private readonly WerkJaarManager _werkjaarMgr;
 		private readonly IAutorisatieManager _autorisatieMgr;
-		private readonly GelieerdePersonenManager _gelieerdePersonenMgr = Factory.Maak<GelieerdePersonenManager>();
+		private readonly GelieerdePersonenManager _gelieerdePersonenMgr;
+		private readonly CategorieenManager _categorieenMgr;
 
-		public GroepenService(GroepenManager gm, AfdelingsJaarManager ajm, WerkJaarManager wm, GelieerdePersonenManager gpm, IAutorisatieManager am, AdressenManager adresMgr)
+		public GroepenService(
+			GroepenManager gm, 
+			AfdelingsJaarManager ajm, 
+			WerkJaarManager wm, 
+			GelieerdePersonenManager gpm, 
+			AdressenManager adresMgr,
+			CategorieenManager cm,
+			IAutorisatieManager am)
 		{
 			_groepenMgr = gm;
-            _afdelingsJaarMgr = ajm;
+			_afdelingsJaarMgr = ajm;
 			_werkjaarMgr = wm;
 			_autorisatieMgr = am;
 			_gelieerdePersonenMgr = gpm;
 			_adresMgr = adresMgr;
+			_categorieenMgr = cm;
 		}
 
 		#endregion
 
 		#region algemene members
 
-        public GroepInfo InfoOphalen(int GroepId)
+		public GroepInfo InfoOphalen(int GroepId)
 		{
 			var gr = Ophalen(GroepId);
 			return Mapper.Map<Groep, GroepInfo>(gr);
@@ -64,7 +73,7 @@ namespace Chiro.Gap.Services
 			}
 		}
 
-        public int RecentsteGroepsWerkJaarIDGet(int groepID)
+		public int RecentsteGroepsWerkJaarIDGet(int groepID)
 		{
 			return _werkjaarMgr.RecentsteGroepsWerkJaarIDGet(groepID);
 		}
@@ -86,88 +95,88 @@ namespace Chiro.Gap.Services
 		public int HuidigWerkJaarGet(int groepID)
 		{
 			return _werkjaarMgr.HuidigWerkJaarGet(groepID);
-        }
+		}
 
-        #endregion
+		#endregion
 
-        #region ophalen
-        public Groep Ophalen(int groepID)
-        {
-            var result = _groepenMgr.Ophalen(groepID);
-            return result;
-        }
+		#region ophalen
+		public Groep Ophalen(int groepID)
+		{
+			var result = _groepenMgr.Ophalen(groepID);
+			return result;
+		}
 
-        public Groep OphalenMetAdressen(int groepID)
-        {
-            throw new NotImplementedException();
-        }
+		public Groep OphalenMetAdressen(int groepID)
+		{
+			throw new NotImplementedException();
+		}
 
-        public Groep OphalenMetFuncties(int groepID)
-        {
-            throw new NotImplementedException();
-        }
+		public Groep OphalenMetFuncties(int groepID)
+		{
+			throw new NotImplementedException();
+		}
 
-        public Groep OphalenMetAfdelingen(int groepID)
-        {
-            var result = _groepenMgr.Ophalen(groepID, e => e.Afdeling);
-            return result;
-        }
+		public Groep OphalenMetAfdelingen(int groepID)
+		{
+			var result = _groepenMgr.Ophalen(groepID, e => e.Afdeling);
+			return result;
+		}
 
-        public Groep OphalenMetVrijeVelden(int groepID)
-        {
-            throw new NotImplementedException();
-        }
+		public Groep OphalenMetVrijeVelden(int groepID)
+		{
+			throw new NotImplementedException();
+		}
 
-/*        public Groep OphalenMetCategorieen(int groepID)
-        {
-            var result = gm.Ophalen(groepID, e => e.Categorie);
-            return result;
-        }*/
+		/*        public Groep OphalenMetCategorieen(int groepID)
+			{
+			    var result = gm.Ophalen(groepID, e => e.Categorie);
+			    return result;
+			}*/
 
-        public IList<OfficieleAfdeling> OfficieleAfdelingenOphalen()
-        {
-            return _groepenMgr.OfficieleAfdelingenOphalen();
-        }
+		public IList<OfficieleAfdeling> OfficieleAfdelingenOphalen()
+		{
+			return _groepenMgr.OfficieleAfdelingenOphalen();
+		}
 
-        public IEnumerable<GroepInfo> MijnGroepenOphalen()
-        {
-            var result = _autorisatieMgr.GekoppeldeGroepenGet();
-            return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(result);
-        }
+		public IEnumerable<GroepInfo> MijnGroepenOphalen()
+		{
+			var result = _autorisatieMgr.GekoppeldeGroepenGet();
+			return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(result);
+		}
 
-        #endregion
+		#endregion
 
-        #region afdelingen
+		#region afdelingen
 
-        // Bedoeling van het afdelingsgedeelte:
-        // er zijn een aantal officiële afdelingen, die een range van leeftijden hebben. Blijven dat altijd dezelfde?
-        // Elke Chirogroep heeft elk werkjaar haar eigen afdelingen, die ook een range van leeftijden hebben.
-        // 
-        // Elke afdeling moet overeenkomen met een officiële afdeling.
-        // Er is niet gespecifieerd of het mogelijk is om een eerste-jaar-rakkers en een tweede-jaar-rakkers te hebben
-        // 
-        // Omdat bovenstaande niet echt duidelijk is en misschien niet altijd voldoende:
-        // waarom moet er een mapping zijn met een officiële afdeling? Als dit echt moet, dan is het bovenstaande niet duidelijk,
-        // en stel ik het onderstaande voor
-        // 
-        // Elke afdeling heeft een naam, een afkorting en een boolean NOGINGEBRUIK?
-        // Elk afdelingsjaar heeft een afdeling en een interval van leeftijden.
-        // Voor elke leeftijd is er een mapping met een officiële afdeling
-        // elke leeftijd kan maar op 1 officiële afdeling gemapt worden
-        // 
-        // Voorbeelden:
-        // "de kleintjes" = {minis, speelclub}
-        // "de 5de jaars" = {eerste jaar rakkers}
-        // "rakwi's" = {tweede jaar speelclub, rakkers}
+		// Bedoeling van het afdelingsgedeelte:
+		// er zijn een aantal officiële afdelingen, die een range van leeftijden hebben. Blijven dat altijd dezelfde?
+		// Elke Chirogroep heeft elk werkjaar haar eigen afdelingen, die ook een range van leeftijden hebben.
+		// 
+		// Elke afdeling moet overeenkomen met een officiële afdeling.
+		// Er is niet gespecifieerd of het mogelijk is om een eerste-jaar-rakkers en een tweede-jaar-rakkers te hebben
+		// 
+		// Omdat bovenstaande niet echt duidelijk is en misschien niet altijd voldoende:
+		// waarom moet er een mapping zijn met een officiële afdeling? Als dit echt moet, dan is het bovenstaande niet duidelijk,
+		// en stel ik het onderstaande voor
+		// 
+		// Elke afdeling heeft een naam, een afkorting en een boolean NOGINGEBRUIK?
+		// Elk afdelingsjaar heeft een afdeling en een interval van leeftijden.
+		// Voor elke leeftijd is er een mapping met een officiële afdeling
+		// elke leeftijd kan maar op 1 officiële afdeling gemapt worden
+		// 
+		// Voorbeelden:
+		// "de kleintjes" = {minis, speelclub}
+		// "de 5de jaars" = {eerste jaar rakkers}
+		// "rakwi's" = {tweede jaar speelclub, rakkers}
 
-        /// <summary>
+		/// <summary>
 		/// Maakt een nieuwe afdeling voor een gegeven groep
 		/// </summary>
 		/// <param name="groepID">ID van de groep</param>
 		/// <param name="naam">naam van de afdeling</param>
 		/// <param name="afkorting">afkorting van de afdeling (voor lijsten, overzichten,...)</param>
-        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public void AfdelingAanmaken(int groepID, string naam, string afkorting)
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public void AfdelingAanmaken(int groepID, string naam, string afkorting)
 		{
 			Groep g = _groepenMgr.Ophalen(groepID);
 			_groepenMgr.AfdelingToevoegen(g, naam, afkorting);
@@ -175,81 +184,81 @@ namespace Chiro.Gap.Services
 		}
 
 
-        /// <summary>
-        /// Bewerkt een AfdelingsJaar: 
-        /// andere OfficieleAfdeling en/of andere leeftijden
-        /// </summary>
-        /// <param name="afdID">AfdelingsJaarID</param>
-        /// <param name="offafdID">OfficieleAfdelingsID</param>
-        /// <param name="geboortVan">GeboorteJaarVan</param>
-        /// <param name="geboortTot">GeboorteJaarTot</param>
-        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public void AfdelingsJaarBewarenMetWijzigingen(int afdID, int offafdID, int geboorteVan, int geboorteTot)
-        {
-            AfdelingsJaar aj = _afdelingsJaarMgr.Ophalen(afdID);
-            OfficieleAfdeling oa = _groepenMgr.OfficieleAfdelingenOphalen().Where(a => a.ID == offafdID).FirstOrDefault<OfficieleAfdeling>();
-            aj.OfficieleAfdeling = oa;
-            aj.GeboorteJaarVan = geboorteVan;
-            aj.GeboorteJaarTot = geboorteTot;
-            _afdelingsJaarMgr.Bewaren(aj);
-        }
-
-
-        /// <summary>
-        /// Verwijdert een afdelingsjaar
-        /// en controleert of er geen leden in zitten.
-        /// </summary>
-        /// <param name="afdelingsJaarID"></param>
-        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public void AfdelingsJaarVerwijderen(int afdelingsJaarID)
-        {
-            _afdelingsJaarMgr.Verwijderen(afdelingsJaarID);
-        }
-
-        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public AfdelingsJaar AfdelingsJaarOphalen(int afdelingsJaarID)
-        {
-            return _afdelingsJaarMgr.Ophalen(afdelingsJaarID);
-        }
-
-
-        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public void AfdelingsJaarAanmaken(int groepID, int afdelingsID, int offiafdelingsID, int geboortejaarbegin, int geboortejaareind)
+		/// <summary>
+		/// Bewerkt een AfdelingsJaar: 
+		/// andere OfficieleAfdeling en/of andere leeftijden
+		/// </summary>
+		/// <param name="afdID">AfdelingsJaarID</param>
+		/// <param name="offafdID">OfficieleAfdelingsID</param>
+		/// <param name="geboortVan">GeboorteJaarVan</param>
+		/// <param name="geboortTot">GeboorteJaarTot</param>
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public void AfdelingsJaarBewarenMetWijzigingen(int afdID, int offafdID, int geboorteVan, int geboorteTot)
 		{
-            Groep g = _groepenMgr.Ophalen(groepID, e => e.Afdeling);
-            Afdeling afd = g.Afdeling.Where(a => a.ID == afdelingsID).FirstOrDefault<Afdeling>();
-            OfficieleAfdeling offafd = _groepenMgr.OfficieleAfdelingenOphalen().Where(o => o.ID == offiafdelingsID).FirstOrDefault<OfficieleAfdeling>();
+			AfdelingsJaar aj = _afdelingsJaarMgr.Ophalen(afdID);
+			OfficieleAfdeling oa = _groepenMgr.OfficieleAfdelingenOphalen().Where(a => a.ID == offafdID).FirstOrDefault<OfficieleAfdeling>();
+			aj.OfficieleAfdeling = oa;
+			aj.GeboorteJaarVan = geboorteVan;
+			aj.GeboorteJaarTot = geboorteTot;
+			_afdelingsJaarMgr.Bewaren(aj);
+		}
 
-            if (afd == null || offafd == null)
-            {
-                throw new FoutieveGroepException(String.Format(Resources.FouteAfdelingVoorGroepString, g.Naam));
-            }
 
-            GroepsWerkJaar huidigWerkJaar = _groepenMgr.RecentsteGroepsWerkJaarGet(g.ID);
+		/// <summary>
+		/// Verwijdert een afdelingsjaar
+		/// en controleert of er geen leden in zitten.
+		/// </summary>
+		/// <param name="afdelingsJaarID"></param>
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public void AfdelingsJaarVerwijderen(int afdelingsJaarID)
+		{
+			_afdelingsJaarMgr.Verwijderen(afdelingsJaarID);
+		}
+
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public AfdelingsJaar AfdelingsJaarOphalen(int afdelingsJaarID)
+		{
+			return _afdelingsJaarMgr.Ophalen(afdelingsJaarID);
+		}
+
+
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public void AfdelingsJaarAanmaken(int groepID, int afdelingsID, int offiafdelingsID, int geboortejaarbegin, int geboortejaareind)
+		{
+			Groep g = _groepenMgr.Ophalen(groepID, e => e.Afdeling);
+			Afdeling afd = g.Afdeling.Where(a => a.ID == afdelingsID).FirstOrDefault<Afdeling>();
+			OfficieleAfdeling offafd = _groepenMgr.OfficieleAfdelingenOphalen().Where(o => o.ID == offiafdelingsID).FirstOrDefault<OfficieleAfdeling>();
+
+			if (afd == null || offafd == null)
+			{
+				throw new FoutieveGroepException(String.Format(Resources.FouteAfdelingVoorGroepString, g.Naam));
+			}
+
+			GroepsWerkJaar huidigWerkJaar = _groepenMgr.RecentsteGroepsWerkJaarGet(g.ID);
 
 			AfdelingsJaar afdjaar = _groepenMgr.AfdelingsJaarMaken(afd, offafd, huidigWerkJaar, geboortejaarbegin, geboortejaareind);
 
-            _afdelingsJaarMgr.Bewaren(afdjaar);
+			_afdelingsJaarMgr.Bewaren(afdjaar);
 
-        }
+		}
 
 
-        public IList<AfdelingInfo> AfdelingenOphalen(int groepswerkjaarID)
-        {
-            var groepswerkjaar = _groepenMgr.GroepsWerkJaarOphalenMetAfdelingInfo(groepswerkjaarID);
-            return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingInfo>>(groepswerkjaar.AfdelingsJaar.OrderBy(e => e.GeboorteJaarVan).ToList<AfdelingsJaar>());
-        }
+		public IList<AfdelingInfo> AfdelingenOphalen(int groepswerkjaarID)
+		{
+			var groepswerkjaar = _groepenMgr.GroepsWerkJaarOphalenMetAfdelingInfo(groepswerkjaarID);
+			return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingInfo>>(groepswerkjaar.AfdelingsJaar.OrderBy(e => e.GeboorteJaarVan).ToList<AfdelingsJaar>());
+		}
 
 		#endregion
 
-        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IList<GroepsWerkJaar> WerkJarenOphalen(int groepsID)
-        {
-            return (from gwj in _groepenMgr.OphalenMetGroepsWerkJaren(groepsID).GroepsWerkJaar
-                    orderby gwj.WerkJaar descending
-                    select gwj
-                   ).ToList();
-        }
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public IList<GroepsWerkJaar> WerkJarenOphalen(int groepsID)
+		{
+			return (from gwj in _groepenMgr.OphalenMetGroepsWerkJaren(groepsID).GroepsWerkJaar
+				orderby gwj.WerkJaar descending
+				select gwj
+			       ).ToList();
+		}
 
 		#region Categorieen
 
@@ -257,7 +266,7 @@ namespace Chiro.Gap.Services
 		//of anders in de workers methoden aanbieden om lambda expressies mee te geven: dan eerst bepalen wat allemaal nodig is, dan 1 keer laden
 		//en dan zijn we terug bij het idee om in het object bij te houden wat hij allemaal heeft geladen
 
-        // Bedenking van Johan: Lambda-expressies lijken me niet wenselijk in de businesslaag, omdat je
+		// Bedenking van Johan: Lambda-expressies lijken me niet wenselijk in de businesslaag, omdat je
 		// niet kan controleren of de gebruiker het recht wel heeft de zaken gespecifieerd in de expressie op
 		// te vragen.
 		public Groep OphalenMetCategorieen(int groepID)
@@ -266,7 +275,7 @@ namespace Chiro.Gap.Services
 			return result;
 		}
 
-        /// <summary>
+		/// <summary>
 		/// Maakt een nieuwe categorie voor de groep met ID <paramref name="groepID"/>
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvoor nieuwe categorie wordt gemaakt</param>
@@ -274,45 +283,51 @@ namespace Chiro.Gap.Services
 		/// <param name="code">code voor de nieuwe categorie</param>
 		public int CategorieToevoegen(int groepID, string naam, string code)
 		{
-            Groep g = OphalenMetCategorieen(groepID);
+			Groep g = OphalenMetCategorieen(groepID);
 			Categorie c = _groepenMgr.CategorieToevoegen(g, naam, code);
-            g = _groepenMgr.Bewaren(g, e => e.Categorie);
-            //TODO kan dit niet mooier om de ID op te vragen?
-            foreach(Categorie cc in g.Categorie)
-            {
-                if(cc.Naam.Equals(naam))
-                {
-                    c = cc;
-                }
-            }
-            //TODO de lambda expressies hieruit halen en er terug methoden van maken (die security kunnen checken)
-            return c.ID;
+			g = _groepenMgr.Bewaren(g, e => e.Categorie);
+			//TODO kan dit niet mooier om de ID op te vragen?
+			foreach (Categorie cc in g.Categorie)
+			{
+				if (cc.Naam.Equals(naam))
+				{
+					c = cc;
+				}
+			}
+			//TODO de lambda expressies hieruit halen en er terug methoden van maken (die security kunnen checken)
+			return c.ID;
 		}
 
-		public void CategorieVerwijderen(int categorieID, int groepID)
+		/// <summary>
+		/// Verwijdert de categorie met gegeven <paramref name="categorieID"/>
+		/// </summary>
+		/// <param name="categorieID">ID van de te verwijderen categorie</param>
+		public void CategorieVerwijderen(int categorieID)
 		{
-            Groep g = OphalenMetCategorieen(groepID);
-            Categorie c = null;
-            foreach(Categorie cc in g.Categorie)
-            {
-                if (cc.ID.Equals(categorieID))
-                {
-                    c = cc;
-                }
-            }
-            if (c == null)
-            {
-                throw new ArgumentException(Resources.FouteCategorieVoorGroepString);
-            }
-            _groepenMgr.CategorieVerwijderen(g, c);
-            _groepenMgr.Bewaren(g, e => e.Categorie);
+			Categorie c = _categorieenMgr.Ophalen(categorieID);
+			c.TeVerwijderen = true;
+			_categorieenMgr.Bewaren(c);
 		}
 
 		public void CategorieAanpassen(int categorieID, string nieuwenaam)
 		{
-            /*Groep g = OphalenMetCategorieen(groepID);
-            Categorie c = null;*/
+			/*Groep g = OphalenMetCategorieen(groepID);
+			Categorie c = null;*/
 			throw new NotImplementedException();
+		}
+
+
+		/// <summary>
+		/// Zoekt de categorieID op van de categorie bepaald door de gegeven 
+		/// <paramref name="groepID"/> en <paramref name="code"/>.
+		/// </summary>
+		/// <param name="groepID">ID van groep waaraan de gezochte categorie gekoppeld is</param>
+		/// <param name="code">code van de te zoeken categorie</param>
+		/// <returns>Het categorieID als de categorie gevonden is, anders 0.</returns>
+		public int CategorieIDOphalen(int groepID, string code)
+		{
+			Categorie cat = _categorieenMgr.Ophalen(groepID, code);
+			return (cat == null) ? 0 : cat.ID;
 		}
 
 		#endregion categorieen

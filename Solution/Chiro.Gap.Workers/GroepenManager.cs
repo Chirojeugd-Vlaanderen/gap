@@ -287,25 +287,6 @@ namespace Chiro.Gap.Workers
 
 		}
 
-		/// <summary>
-		/// Persisteert wel
-		/// </summary>
-		/// <param name="categorieID"></param>
-		public void CategorieVerwijderen(Groep g, Categorie c)
-		{
-            if (c.GelieerdePersoon.Count != 0)
-            {
-                throw new InvalidOperationException("Er zitten nog personen in de categorie (maakt eigenlijk niet uit?)");
-            }
-
-			if (!_autorisatieMgr.IsGavGroep(g.ID) || !_autorisatieMgr.IsGavCategorie(c.ID))
-			{
-                throw new GeenGavException(Resources.GeenGavGroep);
-			}
-
-            c.TeVerwijderen = true;
-        }
-
         #endregion categorieen
 
         /// <summary>

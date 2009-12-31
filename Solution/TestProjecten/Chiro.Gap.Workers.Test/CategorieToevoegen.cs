@@ -49,33 +49,6 @@ namespace Chiro.Gap.Workers.Test
 			gm = Factory.Maak<GroepenManager>();
 		}
 
-		[TestCleanup]
-		public void breakDown()
-		{
-			// De bedoeling is dat de businesslaag getest wordt, en niet de data access.
-			// De toegevoegde categorie moet dus enkel uit het geheugen opnieuw
-			// verwijderd worden.
-
-			//Groep g = gm.Ophalen(groepID, e => e.Categorie);
-			Groep g = DummyData.DummyGroep;
-
-			//foreach (Categorie c in g.Categorie)
-			//{
-			//        if (c.Naam.Equals(categorienaam))
-			//        {
-			//                gm.CategorieVerwijderen(g, c);
-			//        }
-			//}
-			foreach (Categorie c in (from ctg in g.Categorie where ctg.Naam.Equals(categorienaam) select ctg).ToList())
-			{
-				// Eigenlijk is de parameter 'g' overbodig, aangezien een categorie
-				// telkens aan slechts 1 groep gebonden is.
-
-				gm.CategorieVerwijderen(g, c);
-			}
-		}
-
-
 		#region Additional test attributes
 		//
 		// You can use the following additional attributes as you write your tests:

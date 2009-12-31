@@ -51,6 +51,23 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
+		/// Persisteert de <paramref name="categorie"/> in de database.
+		/// </summary>
+		/// <param name="categorie">Te persisteren categorie</param>
+		/// <returns>Gepersisteerde categorie (met correct ID)</returns>
+		public Categorie Bewaren(Categorie categorie)
+		{
+			if (_autorisatieMgr.IsGavCategorie(categorie.ID))
+			{
+				return _dao.Bewaren(categorie);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavCategorie);
+			}
+		}
+
+		/// <summary>
 		/// Zoekt een categorie op op basis van <paramref name="groepID"/> en
 		/// <paramref name="code"/>.
 		/// </summary>
