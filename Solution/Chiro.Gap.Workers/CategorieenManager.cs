@@ -42,7 +42,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavCategorie(categorieID))
 			{
-				return _dao.Ophalen(categorieID, ctg=>ctg.Groep);
+				return _dao.Ophalen(categorieID);
 			}
 			else
 			{

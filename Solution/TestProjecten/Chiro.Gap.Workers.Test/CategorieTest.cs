@@ -82,10 +82,7 @@ namespace Chiro.Gap.Workers.Test
 		
 			// Act
 
-			gpMgr.CategorieKoppelen(
-				new GelieerdePersoon[] { DummyData.GelieerdeJos }, 
-				DummyData.Vervelend, 
-				true);
+			gpMgr.CategorieKoppelen(new GelieerdePersoon[] { DummyData.GelieerdeJos }, DummyData.Vervelend);
 			
 			// Assert		
 
@@ -99,18 +96,12 @@ namespace Chiro.Gap.Workers.Test
 
 			var gpMgr = Factory.Maak<GelieerdePersonenManager>();
 			// Voeg Irene voor het gemak toe aan de vervelende personen, zodat ze verwijderd kan worden.
-			gpMgr.CategorieKoppelen(
-				new GelieerdePersoon[] { DummyData.GelieerdeIrene },
-				DummyData.Vervelend,
-				true);
+			gpMgr.CategorieKoppelen(new GelieerdePersoon[] { DummyData.GelieerdeIrene },DummyData.Vervelend);
 
 			// Act
 
 			// opnieuw loskoppelen
-			gpMgr.CategorieKoppelen(
-				new GelieerdePersoon[] { DummyData.GelieerdeIrene },
-				DummyData.Vervelend,
-				false);
+			gpMgr.CategorieLoskoppelen(new int[] { DummyData.GelieerdeIrene.ID },DummyData.Vervelend);
 
 			// Assert
 

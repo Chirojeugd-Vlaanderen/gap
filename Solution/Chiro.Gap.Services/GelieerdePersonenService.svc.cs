@@ -292,15 +292,14 @@ namespace Chiro.Gap.Services
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void CategorieKoppelen(IList<int> gelieerdepersonenIDs, IList<int> categorieIDs)
 		{
-			// Haal personen op met groep
-			IList<GelieerdePersoon> gelieerdePersonen = _gpMgr.Ophalen(gelieerdepersonenIDs);
+			IList<GelieerdePersoon> gelpersonen = _gpMgr.Ophalen(gelieerdepersonenIDs);
 
             foreach (int catID in categorieIDs)
             {
                 Categorie categorie = _catMgr.Ophalen(catID);
 
                 // Koppelen
-                _gpMgr.CategorieKoppelen(gelieerdePersonen, categorie, true);
+				_gpMgr.CategorieKoppelen(gelpersonen, categorie);
 
                 // Bewaren
                 _catMgr.BewarenMetPersonen(categorie);
@@ -321,7 +320,7 @@ namespace Chiro.Gap.Services
 			Categorie categorie = _catMgr.Ophalen(categorieID);
 
 			// Ontkoppelen
-			_gpMgr.CategorieKoppelen(gelieerdePersonen, categorie, false);
+			_gpMgr.CategorieLoskoppelen(gelieerdepersonenIDs, categorie);
 
 			// Bewaren
 			_catMgr.BewarenMetPersonen(categorie);
@@ -338,9 +337,6 @@ namespace Chiro.Gap.Services
 		}
 
 		#endregion categorieen
-
-
-
 
         #endregion
     }

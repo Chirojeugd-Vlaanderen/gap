@@ -334,16 +334,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="gelieerdePersonen">te koppelen gelieerde persoon</param>
 		/// <param name="categorie">te koppelen categorie</param>
-		/// <param name="koppelen">geeft aan of ze gekoppeld (true) of ontkoppeld (false) moeten worden</param>
-		/// <remarks>Verwijderen werkt enkel als de te verwijderen personen aan de categorie gekoppeld zijn,
-		/// en als de gelieerde personen in <paramref name="gelieerdePersonen"/> dezelfde zijn als de aan
-		/// de categorie gekopppede personen.
-		/// 
-		/// Ik ben mij ervan bewust dat dit geen mooie manier van werken is.  Bovendien is dit verwarrend,
-		/// omdat persisteren via de categorie moet gebeuren.  (Anders verdwijnen de gelieerde personen,
-		/// wat uiteraard niet de bedoeling is.)  Vandaar dat een functie CategorieLoskoppelenEnPersisteren
-		/// hier zeer nuttig is, om verwarring te vermijden.</remarks>
-		public void CategorieKoppelen(IList<GelieerdePersoon> gelieerdePersonen, Categorie c, bool koppelen)
+		public void CategorieKoppelen(IList<GelieerdePersoon> gelieerdePersonen, Categorie c)
 		{
 			// Heeft de gebruiker rechten voor de groep en de categorie?
 			foreach (GelieerdePersoon x in gelieerdePersonen)
@@ -361,19 +352,47 @@ namespace Chiro.Gap.Workers
 
 			foreach (GelieerdePersoon x in gelieerdePersonen)
 			{
-				if (koppelen)
+				if (!x.Groep.Equals(c.Groep))
 				{
-					if (!x.Groep.Equals(c.Groep))
-					{
-						throw new FoutieveGroepException(Properties.Resources.FoutieveGroepCategorie);
-					}
-					x.Categorie.Add(c);
-					c.GelieerdePersoon.Add(x);
+					throw new FoutieveGroepException(Properties.Resources.FoutieveGroepCategorie);
 				}
-				else
+				x.Categorie.Add(c);
+				c.GelieerdePersoon.Add(x);
+			}
+		}
+
+		/// <summary>
+		/// Verwijdert de gelieerde personen uit de categorie
+		/// </summary>
+		/// <remarks>De methode is reentrant, als er bepaalde personen niet gelinkt zijn aan de categorie, 
+		/// gebeurd er niets met die personen, ook geen error.
+		/// </remarks>
+		/// <param name="gelieerdePersonenIDs">gelieerde persoon IDs</param>
+		/// <param name="categorie">te verwijderen categorie MET gelinkte gelieerdepersonen </param>
+		public void CategorieLoskoppelen(IList<int> gelieerdePersonenIDs, Categorie categorie)
+		{
+			// Heeft de gebruiker rechten voor de groep en de categorie?
+			foreach (int x in gelieerdePersonenIDs)
+			{
+				if (!_autorisatieMgr.IsGavGelieerdePersoon(x))
 				{
-					x.TeVerwijderen = true;
-				}
+					throw new GeenGavException(Properties.Resources.GeenGavCategoriePersoon);
+				};
+			}
+
+			if (!_autorisatieMgr.IsGavCategorie(categorie.ID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavCategoriePersoon);
+			}
+
+			IList<GelieerdePersoon> gel = 
+					(from gp in categorie.GelieerdePersoon
+					 where gelieerdePersonenIDs.Contains(gp.ID)
+					 select gp).ToList();
+
+			foreach(GelieerdePersoon gp in gel)
+			{
+				gp.TeVerwijderen = true;
 			}
 		}
 
