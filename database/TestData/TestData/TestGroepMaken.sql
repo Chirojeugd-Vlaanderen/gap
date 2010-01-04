@@ -11,6 +11,7 @@
 -- 2 test-GAV's, en maakt de eerste GAV van testgroep1.
 --
 -- 1ste en 2de gelieerde persoon mogen geen lid zijn, want daarmee wordt geexperimenteerd in de ledentests
+-- 2de gelieerde persoon moet wel een geboortedatum hebben die in een afdeling van testgroep 1 valt
 -- 3de gelieerde persoon is leiding
 --
 -- 1 testcategorie voor testgroep1, waaraan de 1ste gelieerde persoon worden toegevoegd
@@ -198,7 +199,7 @@ END;
 IF NOT EXISTS (SELECT 1 FROM pers.Persoon WHERE Naam = @testPersoonNaam AND VoorNaam = @testPersoon2VoorNaam)
 BEGIN
 	INSERT INTO pers.Persoon(Naam, VoorNaam, GeboorteDatum, Geslacht)
-	VALUES(@testPersoonNaam, @testPersoon2VoorNaam, '1959-11-30', 1)
+	VALUES(@testPersoonNaam, @testPersoon2VoorNaam, '2003-11-30', 1)
 	SET @testPersoon2ID = SCOPE_IDENTITY();
 	PRINT 'Persoon2 gecreerd';
 END
