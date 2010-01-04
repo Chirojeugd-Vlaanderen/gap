@@ -212,10 +212,9 @@ namespace Chiro.Gap.Workers
 		/// <returns>Lijst met alle leden uit het gevraagde groepswerkjaar.</returns>
 		public IList<Lid> PaginaOphalen(int groepswerkjaarID, out int paginas)
 		{
-			GroepsWerkJaar gwj = _daos.GroepenDao.GroepsWerkJaarOphalen(groepswerkjaarID);
-
 			if (_authorisatieMgr.IsGavGroepsWerkJaar(groepswerkjaarID))
 			{
+				GroepsWerkJaar gwj = _daos.GroepenDao.GroepsWerkJaarOphalen(groepswerkjaarID);
 				paginas = _daos.GroepenDao.OphalenMetGroepsWerkJaren(gwj.Groep.ID).GroepsWerkJaar.Count;
 				IList<Lid> list = _daos.LedenDao.AllesOphalen(groepswerkjaarID);
 				list = list.OrderBy(e => e.GelieerdePersoon.Persoon.Naam).ThenBy(e => e.GelieerdePersoon.Persoon.VoorNaam).ToList();
