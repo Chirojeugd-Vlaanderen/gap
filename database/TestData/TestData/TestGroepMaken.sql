@@ -77,6 +77,7 @@ BEGIN
 	INSERT INTO grp.Groep(Naam, Code)
 	VALUES('St.-Unittestius', @testGroepCode);
 
+	PRINT 'Groep gecreerd';
 	SET @testGroepID = scope_identity();
 END
 ELSE
@@ -87,6 +88,7 @@ END
 IF NOT EXISTS (SELECT 1 FROM grp.ChiroGroep WHERE ChiroGroepID = @testGroepID)
 BEGIN
 	INSERT INTO grp.ChiroGroep(ChiroGroepID) VALUES(@testGroepID);
+	PRINT 'ChiroGroep gecreerd';
 END
 
 --- 
@@ -99,6 +101,7 @@ BEGIN
 	VALUES (@testWerkJaar, @testGroepID);
 
 	SET @testGroepsWerkJaarID = scope_identity();
+	PRINT 'GroepsWerkJaar gecreerd';
 END
 ELSE
 BEGIN
@@ -111,6 +114,7 @@ BEGIN
 	VALUES (@testVorigWerkJaar, @testGroepID);
 
 	SET @testVorigGroepsWerkJaarID = scope_identity();
+	PRINT 'Vorig GroepsWerkJaar gecreerd';
 END
 ELSE
 BEGIN
@@ -127,6 +131,7 @@ BEGIN
 	INSERT INTO lid.Afdeling(GroepID, AfdelingsNaam, Afkorting)
 	VALUES(@testGroepID, 'Unittestjes', @testAfdelingsCode);
 	SET @testAfdelingID = scope_identity();
+  	PRINT 'Afdeling gecreerd';
 END
 ELSE
 BEGIN
@@ -138,6 +143,7 @@ BEGIN
 	INSERT INTO lid.Afdeling(GroepID, AfdelingsNaam, Afkorting)
 	VALUES(@testGroepID, 'Speelkwi''s', @testAfdelingsCode2);
 	SET @testAfdeling2ID = scope_identity();
+	PRINT 'Afdeling2 gecreerd';
 END
 ELSE
 BEGIN
@@ -154,6 +160,7 @@ BEGIN
 	INSERT INTO lid.AfdelingsJaar(GeboorteJaarVan, GeboorteJaarTot, AfdelingID, GroepsWerkJaarID, OfficieleAfdelingID)
 	VALUES (2003, 2004, @testAfdelingID, @testGroepsWerkJaarID, @testOfficieleAfdelingID);
 	SET @testAfdelingsJaarID = SCOPE_IDENTITY()
+	PRINT 'AfdelingsJaar gecreerd';
 END
 ELSE
 BEGIN
@@ -165,6 +172,7 @@ BEGIN
 	INSERT INTO lid.AfdelingsJaar(GeboorteJaarVan, GeboorteJaarTot, AfdelingID, GroepsWerkJaarID, OfficieleAfdelingID)
 	VALUES (2003, 2004, @testAfdelingID, @testVorigGroepsWerkJaarID, @testOfficieleAfdelingID);
 	SET @testVorigAfdelingsJaarID = SCOPE_IDENTITY()
+	PRINT 'Vorig AfdelingsJaar gecreerd';
 END
 ELSE
 BEGIN
@@ -180,6 +188,7 @@ BEGIN
 	INSERT INTO pers.Persoon(Naam, VoorNaam, GeboorteDatum, Geslacht)
 	VALUES(@testPersoonNaam, @testPersoonVoorNaam, '1959-11-30', 1)
 	SET @testPersoonID = SCOPE_IDENTITY();
+	PRINT 'Persoon gecreerd';
 END
 ELSE
 BEGIN
@@ -191,6 +200,7 @@ BEGIN
 	INSERT INTO pers.Persoon(Naam, VoorNaam, GeboorteDatum, Geslacht)
 	VALUES(@testPersoonNaam, @testPersoon2VoorNaam, '1959-11-30', 1)
 	SET @testPersoon2ID = SCOPE_IDENTITY();
+	PRINT 'Persoon2 gecreerd';
 END
 ELSE
 BEGIN
@@ -202,6 +212,7 @@ BEGIN
 	INSERT INTO pers.Persoon(Naam, VoorNaam, GeboorteDatum, Geslacht)
 	VALUES(@testPersoonNaam, @testPersoon3VoorNaam, '1959-11-30', 1)
 	SET @testPersoon3ID = SCOPE_IDENTITY();
+	PRINT 'Persoon3 gecreerd';
 END
 ELSE
 BEGIN
@@ -217,6 +228,7 @@ BEGIN
 	INSERT INTO pers.GelieerdePersoon(PersoonID, GroepID, ChiroLeeftijd)
 	VALUES (@testPersoonID, @testGroepID, 0);
 	SET @testGelieerdePersoonID = SCOPE_IDENTITY();
+	PRINT 'GelieerdePersoon gecreerd';
 END
 ELSE
 BEGIN
@@ -228,6 +240,7 @@ BEGIN
 	INSERT INTO pers.GelieerdePersoon(PersoonID, GroepID, ChiroLeeftijd)
 	VALUES (@testPersoon2ID, @testGroepID, 0);
 	SET @testGelieerdePersoon2ID = SCOPE_IDENTITY();
+	PRINT 'GelieerdePersoon2 gecreerd';
 END
 ELSE
 BEGIN
@@ -239,6 +252,7 @@ BEGIN
 	INSERT INTO pers.GelieerdePersoon(PersoonID, GroepID, ChiroLeeftijd)
 	VALUES (@testPersoon3ID, @testGroepID, 0);
 	SET @testGelieerdePersoon3ID = SCOPE_IDENTITY();
+	PRINT 'GelieerdePersoon3 gecreerd';
 END
 ELSE
 BEGIN
@@ -254,6 +268,7 @@ IF NOT EXISTS (SELECT 1 FROM auth.GAV WHERE Login=@testGav1Login)
 BEGIN
 	INSERT INTO auth.GAV(Login) VALUES(@testGav1Login);
 	SET @testGav1ID = SCOPE_IDENTITY();
+	PRINT 'Gav gecreerd';
 END
 ELSE
 BEGIN
@@ -263,6 +278,7 @@ END
 IF NOT EXISTS (SELECT 1 FROM auth.GAV WHERE Login=@testGav2Login)
 BEGIN
 	INSERT INTO auth.GAV(Login) VALUES(@testGav2Login);
+	PRINT 'Gav2 gecreerd';
 END
 
 --
@@ -272,6 +288,7 @@ END
 IF NOT EXISTS (SELECT 1 FROM auth.GebruikersRecht WHERE GavID=@testGav1ID AND GroepID=@testGroepID)
 BEGIN
 	INSERT INTO auth.GebruikersRecht(GavID, GroepID) VALUES(@testGav1ID, @testGroepID)
+	PRINT 'GebruikersRecht gecreerd';
 END
 
 --
@@ -282,6 +299,7 @@ IF NOT EXISTS (SELECT 1 FROM core.Categorie WHERE Code=@testCategorieCode)
 BEGIN
 	INSERT INTO core.Categorie(Naam, Code, GroepID) VALUES('Vervelende mensen', @testCategorieCode, @testGroepID);
 	SET @testCategorieID = scope_identity();
+	PRINT 'Categorie gecreerd';
 END
 ELSE
 BEGIN
@@ -292,6 +310,7 @@ IF NOT EXISTS (SELECT 1 FROM core.Categorie WHERE Code=@testCategorie2Code)
 BEGIN
 	INSERT INTO core.Categorie(Naam, Code, GroepID) VALUES('Peulengaleis', @testCategorie2Code, @testGroepID);
 	SET @testCategorie2ID = scope_identity();
+	PRINT 'Categorie2 gecreerd';
 END
 ELSE
 BEGIN
@@ -306,21 +325,25 @@ END
 IF NOT EXISTS (SELECT 1 FROM pers.PersoonsCategorie WHERE GelieerdePersoonID=@testGelieerdePersoonID AND CategorieID=@testCategorieID)
 BEGIN
 	INSERT INTO pers.PersoonsCategorie(GelieerdePersoonID, CategorieID) VALUES(@testGelieerdePersoonID, @testCategorieID);
+	PRINT 'Persoon aan Categorie gekoppeld';
 END;
 
 IF NOT EXISTS (SELECT 1 FROM pers.PersoonsCategorie WHERE GelieerdePersoonID=@testGelieerdePersoonID AND CategorieID=@testCategorie2ID)
 BEGIN
 	INSERT INTO pers.PersoonsCategorie(GelieerdePersoonID, CategorieID) VALUES(@testGelieerdePersoonID, @testCategorie2ID);
+	PRINT 'Persoon2 aan Categorie gekoppeld';
 END;
 
 IF NOT EXISTS (SELECT 1 FROM pers.PersoonsCategorie WHERE GelieerdePersoonID=@testGelieerdePersoon2ID AND CategorieID=@testCategorie2ID)
 BEGIN
 	INSERT INTO pers.PersoonsCategorie(GelieerdePersoonID, CategorieID) VALUES(@testGelieerdePersoon2ID, @testCategorie2ID);
+	PRINT 'Persoon2 aan Categorie2 gekoppeld';
 END;
 
 IF NOT EXISTS (SELECT 1 FROM pers.PersoonsCategorie WHERE GelieerdePersoonID=@testGelieerdePersoon3ID AND CategorieID=@testCategorie2ID)
 BEGIN
 	INSERT INTO pers.PersoonsCategorie(GelieerdePersoonID, CategorieID) VALUES(@testGelieerdePersoon3ID, @testCategorie2ID);
+	PRINT 'Persoon3 aan Categorie2 gekoppeld';
 END;
 
 -- leden maken
@@ -330,6 +353,7 @@ IF NOT EXISTS (SELECT 1 FROM lid.Lid WHERE GelieerdePersoonID = @testGelieerdePe
 BEGIN
 	INSERT INTO lid.Lid(GelieerdePersoonID, GroepsWerkJaarID, NonActief, Verwijderd, LidGeldBetaald, VolgendWerkJaar) VALUES (@testGelieerdePersoon3ID, @testGroepsWerkJaarID, 0, 0, 0, 0)
 	SET @testLid3ID = scope_identity();
+	PRINT 'Lid3 gecreerd (persoon3)';
 END
 ELSE
 BEGIN
@@ -339,6 +363,7 @@ END
 IF NOT EXISTS (SELECT 1 FROM lid.Leiding WHERE LeidingID = @testLid3ID)
 BEGIN
 	INSERT INTO lid.Leiding(LeidingID) VALUES (@testLid3ID)
+	PRINT 'Leiding3 gecreerd';
 END
 
 PRINT 'TestGroepID: ' + CAST(@testGroepID AS VARCHAR(10));
