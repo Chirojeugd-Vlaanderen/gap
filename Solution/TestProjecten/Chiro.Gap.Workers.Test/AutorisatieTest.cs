@@ -90,6 +90,54 @@ namespace Chiro.Gap.Workers.Test
 		}
 
 		/// <summary>
+		/// Probeert aantal groepswerkjaren van een groep op te halen waarvoor
+		/// men geen GAV is, via LedenManager.PaginaOphalen.
+		/// Verwacht een exception.
+		/// </summary>
+		[TestMethod]
+		[ExpectedException(typeof(GeenGavException))]
+		public void LijstLedenGeenGavAantalGwj()
+		{
+			// Arrange
+
+			bool gecatcht = false;
+
+			var ledenDaoMock = new Mock<ILedenDao>();
+			var autorisatieMgrMock = new Mock<IAutorisatieManager>();
+			var groepenDaoMock = new Mock<IGroepenDao>();
+
+			ledenDaoMock.Setup(foo => foo.AllesOphalen(DummyData.HuidigGwj.ID)).Returns(new List<Lid>());
+			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(DummyData.HuidigGwj.ID)).Returns(false);
+			groepenDaoMock.Setup(foo => foo.GroepsWerkJaarOphalen(DummyData.HuidigGwj.ID)).Returns(DummyData.HuidigGwj);
+			groepenDaoMock.Setup(foo => foo.OphalenMetGroepsWerkJaren(DummyData.DummyGroep.ID)).Returns(DummyData.DummyGroep);
+
+			Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
+			Factory.InstantieRegistreren<IGroepenDao>(groepenDaoMock.Object);
+			Factory.InstantieRegistreren<IAutorisatieManager>(autorisatieMgrMock.Object);
+
+			LedenDaoCollectie daos = Factory.Maak<LedenDaoCollectie>();
+			LedenManager lm = Factory.Maak<LedenManager>();
+
+			// Act
+
+			int paginas = 0;
+
+			try
+			{
+				lm.PaginaOphalen(DummyData.HuidigGwj.ID, out paginas);
+			}
+			catch (GeenGavException)
+			{
+				// Catch de verwachte GeenGavException
+				gecatcht = true;
+			}
+
+			Assert.IsTrue(gecatcht && paginas == 0);
+			// verwacht dat de exception gecatcht is, en dat het aantal groepswerkjaren
+			// niet meegegeven werd.
+		}
+
+		/// <summary>
 		/// Als een niet-GAV probeert een communicatievorm te verwijderen
 		/// die niet aan een gelieerde persoon gekoppeld is, moet die een
 		/// GeenGavException krijgen, en niks anders :)
