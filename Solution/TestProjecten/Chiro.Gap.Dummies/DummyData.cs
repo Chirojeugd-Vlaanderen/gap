@@ -82,7 +82,8 @@ namespace Chiro.Gap.Dummies
 			Persoon jos = new Persoon { 
 				Naam = "Bosmans", 
 				VoorNaam = "Jos", 
-				GeboorteDatum = new DateTime(2000, 6, 28) };
+				GeboorteDatum = new DateTime(2000, 6, 28),
+				AdNummer = 1};
 
 			Persoon irene = new Persoon {
 				Naam = "Bosmans",
@@ -96,6 +97,26 @@ namespace Chiro.Gap.Dummies
 			gpMgr.CategorieKoppelen(new GelieerdePersoon[] { _gelieerdeJos }, _vervelend);
 
 			lMgr.LidMaken(_gelieerdeJos, _huidigGwj);						
+		}
+
+		/// <summary>
+		/// Genereert een kloon van de gelieerde persoon Jos, zoals die bijv. door
+		/// een service opgeleverd zou kunnen worden.
+		/// </summary>
+		/// <returns></returns>
+		public static GelieerdePersoon KloonJos()
+		{
+			GelieerdePersoon gp = new GelieerdePersoon();
+			gp.Persoon = new Persoon();
+
+			gp.ID = DummyData.GelieerdeJos.ID;
+			gp.Persoon.AdNummer = DummyData.GelieerdeJos.Persoon.AdNummer;
+			gp.Persoon.GeboorteDatum = DummyData.GelieerdeJos.Persoon.GeboorteDatum;
+			gp.Persoon.Geslacht = DummyData.GelieerdeJos.Persoon.Geslacht;
+			gp.Persoon.ID = DummyData.GelieerdeJos.Persoon.ID;
+			gp.Persoon.Naam = DummyData.GelieerdeJos.Persoon.Naam;
+
+			return gp;
 		}
 	}
 }

@@ -4,6 +4,9 @@
 	/// Gegevens voor unit testing, zodat de automatische tests de
 	/// `manuele' tests niet in de weg lopen.
 	/// </summary>
+	/// <remarks>Deze ID's moeten overeenkomen met de DB.  Het zou niet slecht zijn moest het
+	/// script om de database te genereren telkens dezelfde testdata aanmaken, waaraan dan deze
+	/// ID's aangepast kunnen worden.</remarks>
 	public static class TestInfo
 	{
 		/// <summary>
@@ -53,7 +56,7 @@
 		/// ID van tweede testcategorie
 		/// </summary>
 		/// <remarks>Deze categorie bevat zowel gelieerde personen 1 en 2</remarks>
-		public const int CATEGORIE2ID = 9;
+		public const int CATEGORIE2ID = 289;
 
 		/// <summary>
 		/// Totaal aantal personen in deze categorie

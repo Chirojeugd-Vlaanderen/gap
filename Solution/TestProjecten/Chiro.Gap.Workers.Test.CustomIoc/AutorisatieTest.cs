@@ -299,9 +299,9 @@ namespace Chiro.Gap.Workers.Test
 			var gpDaoMock = new Mock<IGelieerdePersonenDao>();
 
 			gpDaoMock.Setup(
-			    foo => foo.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID,
+			    foo => foo.Ophalen(DummyData.GelieerdeJos.ID,
 			    It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>())).Returns(
-				() => MaakTestGelieerdePersoon());
+				() => DummyData.KloonJos());
 
 			// Het stuk It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>()
 			// zorgt ervoor dat de Mock de linq-expressies in 'Ophalen' negeert.
@@ -321,7 +321,7 @@ namespace Chiro.Gap.Workers.Test
 
 			#region Act
 			// Haal gelieerde persoon met TestGelieerdePersoonID op
-			GelieerdePersoon gp = gpm.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID);
+			GelieerdePersoon gp = gpm.Ophalen(DummyData.GelieerdeJos.ID);
 
 			// Pruts met AD-nummer
 			++gp.Persoon.AdNummer;
@@ -351,8 +351,8 @@ namespace Chiro.Gap.Workers.Test
 
 			var gpDaoMock = new Mock<IGelieerdePersonenDao>();
 
-			gpDaoMock.Setup(foo => foo.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID
-			    , It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>())).Returns(() => MaakTestGelieerdePersoon());
+			gpDaoMock.Setup(foo => foo.Ophalen(DummyData.GelieerdeJos.ID
+			    , It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>())).Returns(() => DummyData.GelieerdeJos);
 
 			// Het stuk It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>()
 			// zorgt ervoor dat de Mock de linq-expressies in 'Ophalen' negeert.
@@ -372,7 +372,7 @@ namespace Chiro.Gap.Workers.Test
 
 			#region Act
 			// Haal gelieerde persoon met TestGelieerdePersoonID op
-			GelieerdePersoon gp = gpm.Ophalen(Properties.Settings.Default.TestGelieerdePersoonID);
+			GelieerdePersoon gp = gpm.Ophalen(DummyData.GelieerdeJos.ID);
 
 			// Probeer te bewaren
 			gpm.Bewaren(gp);
@@ -384,30 +384,5 @@ namespace Chiro.Gap.Workers.Test
 			gpDaoMock.VerifyAll();  // nakijken of de mock van GelieerdePersonenDao inderdaad aangeroepen werd.
 			#endregion
 		}
-
-		/// <summary>
-		/// Maakt een (nep) gelieerde persoon om te testen:
-		///   GelieerdePersoonID: TestGelieerdePersoonID
-		///   Ad-nummer: TestAdNummer
-		/// </summary>
-		/// <returns>Een nieuw gelieerdepersoonsobject</returns>
-		private GelieerdePersoon MaakTestGelieerdePersoon()
-		{
-			// gewenste situatie opbouwen van een persoon die
-			// gekoppeld is aan een groep.
-
-			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
-
-			GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
-
-			Groep g = new Groep();
-			Persoon p = new Persoon { AdNummer = 1 };
-			GelieerdePersoon gp = gpm.Koppelen(p, g, 0);
-			gp.ID = Properties.Settings.Default.TestGelieerdePersoonID;
-
-			return gp;
-		}
-
-
 	}
 }
