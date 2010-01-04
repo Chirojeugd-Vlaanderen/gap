@@ -208,10 +208,8 @@ namespace Chiro.Gap.Workers
         /// Haal een pagina op met leden van een groepswerkjaar.
         /// </summary>
         /// <param name="groepswerkjaarID">groepswerkjaarID</param>
-        /// <param name="pagina">paginanummer (>=1)</param>
-        /// <param name="paginaGrootte">grootte van de pagina's</param>
-        /// <param name="aantalTotaal">totaal aantal personen in de groep</param>
-        /// <returns>Lijst met een pagina leden uit het gevraagde groepswerkjaar.</returns>
+        /// <param name="pagina's">totaal aantal groepswerkjaren van de groep</param>
+        /// <returns>Lijst met alle leden uit het gevraagde groepswerkjaar.</returns>
         public IList<Lid> PaginaOphalen(int groepswerkjaarID, out int paginas)
         {
             GroepsWerkJaar gwj = _daos.GroepenDao.GroepsWerkJaarOphalen(groepswerkjaarID);
