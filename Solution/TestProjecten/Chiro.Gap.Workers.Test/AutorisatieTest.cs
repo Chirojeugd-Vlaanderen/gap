@@ -95,7 +95,6 @@ namespace Chiro.Gap.Workers.Test
 		/// Verwacht een exception.
 		/// </summary>
 		[TestMethod]
-		[ExpectedException(typeof(GeenGavException))]
 		public void LijstLedenGeenGavAantalGwj()
 		{
 			// Arrange
