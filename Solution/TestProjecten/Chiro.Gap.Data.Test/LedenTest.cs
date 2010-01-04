@@ -97,12 +97,14 @@ namespace Chiro.Gap.Data.Test
 
 				GelieerdePersoon gp = gpdao.Ophalen(gelieerdePersoon2ID, lmb => lmb.Groep);
 
-				/* TODO deze methode zou niet met afdelingsjaar moeten werken
-                Kind k = lm.LidMaken(gp, aj);
+				// GelieerdePersoon2 moet Kind gemaakt worden, want in de test KindVerwijderen
+				// zal geprobeerd worden op GelieerdePersoon2 te 'ontkinden'.  Zie #184.
+
+				Kind k = lm.LidMaken(gp) as Kind;
 				kdao.Bewaren(k
 				    , lmb => lmb.GelieerdePersoon.WithoutUpdate()
 				    , lmb => lmb.AfdelingsJaar.GroepsWerkJaar.WithoutUpdate()
-				    , lmb => lmb.GroepsWerkJaar.WithoutUpdate());*/
+				    , lmb => lmb.GroepsWerkJaar.WithoutUpdate());
 			}
 		}
 
