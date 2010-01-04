@@ -25,18 +25,6 @@ namespace Chiro.Gap.Workers.Test.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("13")]
-        public int TestGroepsWerkJaarID {
-            get {
-                return ((int)(this["TestGroepsWerkJaarID"]));
-            }
-            set {
-                this["TestGroepsWerkJaarID"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("yvonne")]
         public string TestGav1 {
             get {

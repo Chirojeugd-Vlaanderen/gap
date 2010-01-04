@@ -53,11 +53,11 @@ namespace Chiro.Gap.Workers.Test
 			Factory.ContainerInit();
 		}
 
-        [ClassCleanup]
-        static public void AfsluitenTests()
-        {
-            Factory.Dispose();
-        }
+		[ClassCleanup]
+		static public void AfsluitenTests()
+		{
+			Factory.Dispose();
+		}
 
 		/// <summary>
 		/// Probeert ledenlijst op te halen voor niet-GAV.
@@ -72,8 +72,8 @@ namespace Chiro.Gap.Workers.Test
 			var ledenDaoMock = new Mock<ILedenDao>();
 			var autorisatieMgrMock = new Mock<IAutorisatieManager>();
 
-			ledenDaoMock.Setup(foo => foo.AllesOphalen(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(new List<Lid>());
-			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(false);
+			ledenDaoMock.Setup(foo => foo.AllesOphalen(DummyData.HuidigGwj.ID)).Returns(new List<Lid>());
+			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(DummyData.HuidigGwj.ID)).Returns(false);
 
 			Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
 			Factory.InstantieRegistreren<IAutorisatieManager>(autorisatieMgrMock.Object);
@@ -83,8 +83,8 @@ namespace Chiro.Gap.Workers.Test
 
 			// Act
 
-            int paginas;
-			lm.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID, out paginas);
+			int paginas;
+			lm.PaginaOphalen(DummyData.HuidigGwj.ID, out paginas);
 
 			// Verwacht exception
 		}
@@ -129,11 +129,11 @@ namespace Chiro.Gap.Workers.Test
 			// Probeer nu een fictieve communicatievorm te verwijderen.
 			// We verwachten 'GeenGavException'
 
-            // CommunicatieVormID en GelieerdePersoonID zijn irrelevant owv de mocking,
-            // maar als je hier null meegeeft voor parameter 'origineel' 
-            // throwt gpMgr een NullRefereneException omdat hij origineel.ID opvraagt
-            gpMgr.CommunicatieVormVerwijderen(null, communicatielozePersoon);
-			
+			// CommunicatieVormID en GelieerdePersoonID zijn irrelevant owv de mocking,
+			// maar als je hier null meegeeft voor parameter 'origineel' 
+			// throwt gpMgr een NullRefereneException omdat hij origineel.ID opvraagt
+			gpMgr.CommunicatieVormVerwijderen(null, communicatielozePersoon);
+
 			#endregion
 
 			#region assert
@@ -152,20 +152,25 @@ namespace Chiro.Gap.Workers.Test
 			// Arrange
 
 			var ledenDaoMock = new Mock<ILedenDao>();
+			var groepenDaoMock = new Mock<IGroepenDao>();
 			var autorisatieMgrMock = new Mock<IAutorisatieManager>();
 
-			ledenDaoMock.Setup(foo => foo.AllesOphalen(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(new List<Lid>());
-            ledenDaoMock.Setup(foo => foo.AllesOphalen(It.IsAny<int>())).Returns(new List<Lid>());
-			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(Properties.Settings.Default.TestGroepsWerkJaarID)).Returns(true);
+			ledenDaoMock.Setup(foo => foo.AllesOphalen(DummyData.HuidigGwj.ID)).Returns(new List<Lid>());
+			ledenDaoMock.Setup(foo => foo.AllesOphalen(It.IsAny<int>())).Returns(new List<Lid>());
+			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(DummyData.HuidigGwj.ID)).Returns(true);
 
+			groepenDaoMock.Setup(foo => foo.GroepsWerkJaarOphalen(DummyData.HuidigGwj.ID)).Returns(DummyData.HuidigGwj);
+			groepenDaoMock.Setup(foo => foo.OphalenMetGroepsWerkJaren(DummyData.DummyGroep.ID)).Returns(DummyData.DummyGroep);
+			
 			Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
 			Factory.InstantieRegistreren<IAutorisatieManager>(autorisatieMgrMock.Object);
+			Factory.InstantieRegistreren<IGroepenDao>(groepenDaoMock.Object);
 
 			LedenManager lm = Factory.Maak<LedenManager>();
 
 			// Act
-            int paginas;
-            IList<Lid> lijst = lm.PaginaOphalen(Properties.Settings.Default.TestGroepsWerkJaarID, out paginas);
+			int paginas;
+			IList<Lid> lijst = lm.PaginaOphalen(DummyData.HuidigGwj.ID, out paginas);
 
 			// Assert
 
