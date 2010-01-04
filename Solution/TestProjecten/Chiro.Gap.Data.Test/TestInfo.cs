@@ -42,7 +42,7 @@
 		/// ID van categorie van testgroep1
 		/// </summary>
 		/// <remarks>Enkel gelieerde Persoon 1 moet in deze categorie zitten</remarks>
-		public const int CATEGORIEID = 8;
+		public const int CATEGORIEID = 288;
 
 		/// <summary>
 		/// code van bovenvermelde categorie

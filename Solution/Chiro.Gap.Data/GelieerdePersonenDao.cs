@@ -146,10 +146,6 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>lijst gelieerde personen</returns>
 		public IList<GelieerdePersoon> PaginaOphalenMetLidInfoVolgensCategorie(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal)
 		{
-			// bedenkingen van Johan: 
-			//  . out-parameters moeten eigenlijk achteraan (guideline 188)
-			//  . de categorie bepaalt de groep, dus deze functie zou ook zonder groepID moeten kunnen werken
-
 			Groep g;
 			int huidigWj;
 
