@@ -83,10 +83,10 @@ namespace Chiro.Gap.Data.Ef
 				//TODO zoeken hoe je kan bepalen of hij alleen de leden includes als die aan 
 				//bepaalde voorwaarden voldoen, maar wel alle gelieerdepersonen
 				lijst = (
-                    from gp in db.GelieerdePersoon.Include("Persoon").Include("Lid.GroepsWerkJaar").Include("Groep").Include("Categorie")
-				    where gp.Groep.ID == groepID
-				    orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
-				    select gp).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte).ToList();
+		    from gp in db.GelieerdePersoon.Include("Persoon").Include("Lid.GroepsWerkJaar").Include("Groep").Include("Categorie")
+		    where gp.Groep.ID == groepID
+		    orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
+		    select gp).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte).ToList();
 
 				// work around: alle leden verwijderen behalve het (eventuele) lid in het huidige werkjaar
 				foreach (GelieerdePersoon gp in lijst)
@@ -153,12 +153,12 @@ namespace Chiro.Gap.Data.Ef
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
-                //haal de groep van de gevraagde categorie op
+				//haal de groep van de gevraagde categorie op
 				g = (from c in db.Categorie
 				     where c.ID == categorieID
 				     select c.Groep).FirstOrDefault();
 
-                //haal het huidige groepswerkjaar van de groep op
+				//haal het huidige groepswerkjaar van de groep op
 				huidigWj = (
 				    from w in db.GroepsWerkJaar
 				    where w.Groep.ID == g.ID
@@ -170,10 +170,10 @@ namespace Chiro.Gap.Data.Ef
 					     where c.ID == categorieID
 					     select c).FirstOrDefault().GelieerdePersoon;
 
-                //sorteer ze en bepaal totaal aantal personen
-                lijst = query.OrderBy(e => e.Persoon.Naam)
-                              .Skip((pagina - 1)*paginaGrootte).Take(paginaGrootte)
-                              .ToList();
+				//sorteer ze en bepaal totaal aantal personen
+				lijst = query.OrderBy(e => e.Persoon.Naam)
+					      .Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte)
+					      .ToList();
 				aantalTotaal = query.Count();
 
 				// lijst is geattacht aan de objectcontext.  Als we nu ook de lidojecten van de 
@@ -186,9 +186,9 @@ namespace Chiro.Gap.Data.Ef
 				// Selecteer nu alle leden van huidig werkjaar met relevant gelieerdePersoonID
 
 				var huidigeLedenUitlijst = (from l in db.Lid.Include("GelieerdePersoon.Categorie")
-								.Where(Utility.BuildContainsExpression<Lid, int>(ld=>ld.GelieerdePersoon.ID, relevanteGpIDS))
-                                where l.GroepsWerkJaar.WerkJaar == huidigWj
-							    select l).ToList();		
+								.Where(Utility.BuildContainsExpression<Lid, int>(ld => ld.GelieerdePersoon.ID, relevanteGpIDS))
+							    where l.GroepsWerkJaar.WerkJaar == huidigWj
+							    select l).ToList();
 			}
 			Utility.DetachObjectGraph(lijst);
 
@@ -263,6 +263,43 @@ namespace Chiro.Gap.Data.Ef
 				    select gp).ToList();
 			}
 		}
+
+		/// <summary>
+		/// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> met naam 
+		/// en voornaam gelijkaardig aan <paramref name="naam"/> en <paramref name="voornaam"/>.
+		/// (inclusief communicatie en adressen)
+		/// </summary>
+		/// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
+		/// <param name="naam">te zoeken naam (ongeveer)</param>
+		/// <param name="voornaam">te zoeken voornaam (ongeveer)</param>
+		/// <returns>lijst met gevonden matches</returns>
+		public IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam)
+		{
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{
+				// Ik denk dat sql server user defined functions niet aangeroepen kunnen worden via LINQ to entities,
+				// vandaar dat de query in Entity SQL opgesteld wordt.
+
+				// !Herinner van bij de scouts dat die soundex best bij in de tabel terecht komt,
+				// en dat daarop een index moet komen te liggen!
+
+
+				string esqlQuery = "SELECT VALUE gp FROM ChiroGroepEntities.GelieerdePersoon AS gp " +
+					"WHERE gp.Groep.ID = @groepid " +
+					"AND ChiroGroepModel.Store.ufnSoundEx(gp.Persoon.Naam)=ChiroGroepModel.Store.ufnSoundEx(@naam) " +
+					"AND ChiroGroepModel.Store.ufnSoundEx(gp.Persoon.Voornaam)=ChiroGroepModel.Store.ufnSoundEx(@voornaam)";
+
+				var query = db.CreateQuery<GelieerdePersoon>(esqlQuery);
+
+				query.Parameters.Add(new ObjectParameter("groepid", groepID));
+				query.Parameters.Add(new ObjectParameter("voornaam", voornaam));
+				query.Parameters.Add(new ObjectParameter("naam", naam));
+
+				return query.ToList();
+			}
+		}
+
+
 
 		/*public IList<GelieerdePersoon> OphalenUitCategorie(int categorieID)
 		{

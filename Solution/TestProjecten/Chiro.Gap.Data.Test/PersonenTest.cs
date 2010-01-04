@@ -12,276 +12,295 @@ using System.Runtime.Serialization;
 
 namespace Chiro.Gap.Data.Test
 {
-    /// <summary>
-    /// Summary description for PersonenTest
-    /// </summary>
-    [TestClass]
-    public class PersonenTest
-    {
-        public PersonenTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
+	/// <summary>
+	/// Summary description for PersonenTest
+	/// </summary>
+	[TestClass]
+	public class PersonenTest
+	{
+		public PersonenTest()
+		{
+			//
+			// TODO: Add constructor logic here
+			//
+		}
 
-        private TestContext testContextInstance;
+		private TestContext testContextInstance;
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+		/// <summary>
+		///Gets or sets the test context which provides
+		///information about and functionality for the current test run.
+		///</summary>
+		public TestContext TestContext
+		{
+			get
+			{
+				return testContextInstance;
+			}
+			set
+			{
+				testContextInstance = value;
+			}
+		}
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+		#region Additional test attributes
+		//
+		// You can use the following additional attributes as you write your tests:
+		//
+		// Use ClassInitialize to run code before running the first test in the class
+		// [ClassInitialize()]
+		// public static void MyClassInitialize(TestContext testContext) { }
+		//
+		// Use ClassCleanup to run code after all tests in a class have run
+		// [ClassCleanup()]
+		// public static void MyClassCleanup() { }
+		//
+		// Use TestInitialize to run code before running each test 
+		// [TestInitialize()]
+		// public void MyTestInitialize() { }
+		//
+		// Use TestCleanup to run code after each test has run
+		// [TestCleanup()]
+		// public void MyTestCleanup() { }
+		//
+		#endregion
 
-        [ClassInitialize]
-        static public void TestInitialiseren(TestContext context)
-        {
-            Factory.ContainerInit();
+		[ClassInitialize]
+		static public void TestInitialiseren(TestContext context)
+		{
+			Factory.ContainerInit();
 
-            // Maak persoon aan, die bij het testen weer
-            // verwijderd kan worden.
+			// Maak persoon aan, die bij het testen weer
+			// verwijderd kan worden.
 
-            int groepID = TestInfo.GROEPID;
-            string naam = TestInfo.NIEUWEPERSOONNAAM;
-            string voornaam = TestInfo.TEVERWIJDERENVOORNAAM;
+			int groepID = TestInfo.GROEPID;
+			string naam = TestInfo.NIEUWEPERSOONNAAM;
+			string voornaam = TestInfo.TEVERWIJDERENVOORNAAM;
 
-            IGroepenDao gdao = Factory.Maak<IGroepenDao>();
-            Groep g = gdao.Ophalen(groepID);
+			IGroepenDao gdao = Factory.Maak<IGroepenDao>();
+			Groep g = gdao.Ophalen(groepID);
 
-            GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
+			GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
 
-            // Creeer gloednieuwe persoon
+			// Creeer gloednieuwe persoon
 
-            Persoon p = new Persoon();
-            p.VoorNaam = voornaam;
-            p.Naam = naam;
+			Persoon p = new Persoon();
+			p.VoorNaam = voornaam;
+			p.Naam = naam;
 
-            // Koppel aan testgroep, Chiroleeftijd 0
+			// Koppel aan testgroep, Chiroleeftijd 0
 
-            GelieerdePersoon gp = gpm.Koppelen(p, g, 0);
+			GelieerdePersoon gp = gpm.Koppelen(p, g, 0);
 
-            IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
-            // Hier moeten we via de DAO gaan, en niet via de worker, omdat 
-            // we de DAO willen testen, en niet willen failen op fouten in
-            // de worker.
+			IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
+			// Hier moeten we via de DAO gaan, en niet via de worker, omdat 
+			// we de DAO willen testen, en niet willen failen op fouten in
+			// de worker.
 
-            gp = gpdao.Bewaren(gp);
-        }
+			gp = gpdao.Bewaren(gp);
+		}
 
-        /// <summary>
-        /// Opkuis na de test; verwijdert bijgemaakte personen
-        /// </summary>
-        /// <param name="context"></param>
-        [ClassCleanup]
-        static public void Opkuis()
-        {
-            int groepID = TestInfo.GROEPID;
-            string naam = TestInfo.NIEUWEPERSOONNAAM;
-            string voornaam = TestInfo.NIEUWEPERSOONVOORNAAM;
+		/// <summary>
+		/// Opkuis na de test; verwijdert bijgemaakte personen
+		/// </summary>
+		/// <param name="context"></param>
+		[ClassCleanup]
+		static public void Opkuis()
+		{
+			int groepID = TestInfo.GROEPID;
+			string naam = TestInfo.NIEUWEPERSOONNAAM;
+			string voornaam = TestInfo.NIEUWEPERSOONVOORNAAM;
 
-            GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
+			GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
 
-            // nog niet alle functionaliteit wordt aangeboden in de worker,
-            // dus ik werk hier en daar rechtstreeks op de dao.
+			// nog niet alle functionaliteit wordt aangeboden in de worker,
+			// dus ik werk hier en daar rechtstreeks op de dao.
 
-            IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
+			IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
 
-            IList<GelieerdePersoon> gevonden = dao.ZoekenOpNaam(groepID, naam + ' ' + voornaam);
+			IList<GelieerdePersoon> gevonden = dao.ZoekenOpNaam(groepID, naam + ' ' + voornaam);
 
-            foreach (GelieerdePersoon gp in gevonden)
-            {
-                // Markeer geliererde persoon en alle aanhangsels als
-                // 'te verwijderen' 
-                mgr.VolledigVerwijderen(gp);
+			foreach (GelieerdePersoon gp in gevonden)
+			{
+				// Markeer geliererde persoon en alle aanhangsels als
+				// 'te verwijderen' 
+				mgr.VolledigVerwijderen(gp);
 
-                // persisteer
-                dao.Bewaren(gp, l=>l.Persoon, l=>l.Persoon.PersoonsAdres, l=>l.Communicatie);
-            }
-        }
+				// persisteer
+				dao.Bewaren(gp, l => l.Persoon, l => l.Persoon.PersoonsAdres, l => l.Communicatie);
+			}
+		}
 
-        [TestMethod]
-        public void ZoekenOpNaam()
-        {
-            // arrange
-            string zoekString = TestInfo.ZOEKNAAM;
-            int groepID = TestInfo.GROEPID;
+		[TestMethod]
+		public void ZoekenOpNaam()
+		{
+			// arrange
+			string zoekString = TestInfo.ZOEKNAAM;
+			int groepID = TestInfo.GROEPID;
 
-            IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
+			IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
 
-            // act
-            IList<GelieerdePersoon> lijst = dao.ZoekenOpNaam(groepID, zoekString);
+			// act
+			IList<GelieerdePersoon> lijst = dao.ZoekenOpNaam(groepID, zoekString);
 
-            // assert
-            Assert.IsTrue(lijst.Count >= 2);
-        }
+			// assert
+			Assert.IsTrue(lijst.Count >= 2);
+		}
 
-        /// <summary>
-        /// Test om te kijken of categorie"en meekomen met details.
-        /// </summary>
-        [TestMethod]
-        public void DetailsOphalenCategorie()
-        {
-            // arange
-            int gpID = TestInfo.GELIEERDEPERSOONID;
-            IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
+		/// <summary>
+		/// Test zoeken op basis van SoundEx
+		/// </summary>
+		[TestMethod]
+		public void ZoekenOpNaamOngeveer()
+		{
+			// arrange
+			IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
 
-            // act
-            GelieerdePersoon gp = dao.DetailsOphalen(gpID);
+			// act
+			IList<GelieerdePersoon> lijst = dao.ZoekenOpNaamOngeveer(
+				TestInfo.GROEPID, 
+				TestInfo.ZOEKNAAM, 
+				TestInfo.ZOEKVOORNAAMONGEVEER);
 
-            // assert
-            Assert.IsTrue(gp.Categorie.Count > 0);
-        }
+			// assert
+			Assert.IsTrue(lijst.Count >= 1);
+		}
 
-        /// <summary>
-        /// Kijkt na of opgehaalde details wel geserializeerd 
-        /// kunnen worden door een DataContractSerializer.
-        /// </summary>
-        [TestMethod]
-        public void OphalenSerializable()
-        {
-            // arange
-            GelieerdePersoon gp, kloon;
+		/// <summary>
+		/// Test om te kijken of categorie"en meekomen met details.
+		/// </summary>
+		[TestMethod]
+		public void DetailsOphalenCategorie()
+		{
+			// arange
+			int gpID = TestInfo.GELIEERDEPERSOONID;
+			IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
 
-            int gpID = TestInfo.GELIEERDEPERSOONID;
-            IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
+			// act
+			GelieerdePersoon gp = dao.DetailsOphalen(gpID);
 
+			// assert
+			Assert.IsTrue(gp.Categorie.Count > 0);
+		}
 
-            using (MemoryStream stream = new MemoryStream())
-            {
-                // act
-                
-                gp = dao.Ophalen(gpID, pers => pers.Categorie);
+		/// <summary>
+		/// Kijkt na of opgehaalde details wel geserializeerd 
+		/// kunnen worden door een DataContractSerializer.
+		/// </summary>
+		[TestMethod]
+		public void OphalenSerializable()
+		{
+			// arange
+			GelieerdePersoon gp, kloon;
 
-                var serializer = new NetDataContractSerializer();
-                serializer.Serialize(stream, gp);
-                stream.Position = 0;
-                kloon = (GelieerdePersoon)serializer.Deserialize(stream);
-            }
-
-            // assert
-
-            Assert.AreEqual(gp, kloon);
-        }
-
-        /// <summary>
-        /// Nieuwe (gelieerde) persoon bewaren via GelieerdePersonenDAO.
-        /// </summary>
-        [TestMethod]
-        public void NieuwePersoon()
-        {
-            #region Arrange
-
-            int groepID = TestInfo.GROEPID;
-            string naam = TestInfo.NIEUWEPERSOONNAAM;
-            string voornaam = TestInfo.NIEUWEPERSOONVOORNAAM;
-
-            IGroepenDao gdao = Factory.Maak<IGroepenDao>();
-            Groep g = gdao.Ophalen(groepID);
-
-            GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
-            
-            // Creeer gloednieuwe persoon
-
-            Persoon p = new Persoon();
-            p.VoorNaam = voornaam;
-            p.Naam = naam;
-
-            // Koppel aan testgroep, Chiroleeftijd 0
-
-            GelieerdePersoon gp = gpm.Koppelen(p, g, 0);
-
-            IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
-            #endregion
-
-            #region Act
-            // Hier moeten we via de DAO gaan, en niet via de worker, omdat 
-            // we de DAO willen testen, en niet willen failen op fouten in
-            // de worker.
-
-            gp = gpdao.Bewaren(gp);
-            #endregion
-
-            #region Assert
-            IList<GelieerdePersoon> gevonden = gpdao.ZoekenOpNaam(groepID, naam + ' ' + voornaam);
-            Assert.IsTrue(gevonden.Count > 0);
-            #endregion
-
-        }
+			int gpID = TestInfo.GELIEERDEPERSOONID;
+			IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
 
 
-        /// <summary>
-        /// Test om persoon te verwijderen.
-        /// </summary>
-        [TestMethod]
-        public void VerwijderPersoon()
-        {
-            #region Arrange
-            // zoek te verwijderen personen op
+			using (MemoryStream stream = new MemoryStream())
+			{
+				// act
 
-            int groepID = TestInfo.GROEPID;
-            string naam = TestInfo.NIEUWEPERSOONNAAM;
-            string voornaam = TestInfo.TEVERWIJDERENVOORNAAM;
+				gp = dao.Ophalen(gpID, pers => pers.Categorie);
 
-            GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
+				var serializer = new NetDataContractSerializer();
+				serializer.Serialize(stream, gp);
+				stream.Position = 0;
+				kloon = (GelieerdePersoon)serializer.Deserialize(stream);
+			}
 
-            // nog niet alle functionaliteit wordt aangeboden in de worker,
-            // dus ik werk hier en daar rechtstreeks op de dao.
+			// assert
 
-            IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
+			Assert.AreEqual(gp, kloon);
+		}
 
-            IList<GelieerdePersoon> gevonden = dao.ZoekenOpNaam(groepID, naam + ' ' + voornaam);
-            #endregion
+		/// <summary>
+		/// Nieuwe (gelieerde) persoon bewaren via GelieerdePersonenDAO.
+		/// </summary>
+		[TestMethod]
+		public void NieuwePersoon()
+		{
+			#region Arrange
 
-            #region Act
-            foreach (GelieerdePersoon gp in gevonden)
-            {
-                // Markeer geliererde persoon en alle aanhangsels als
-                // 'te verwijderen' 
-                mgr.VolledigVerwijderen(gp);
+			int groepID = TestInfo.GROEPID;
+			string naam = TestInfo.NIEUWEPERSOONNAAM;
+			string voornaam = TestInfo.NIEUWEPERSOONVOORNAAM;
 
-                // persisteer
-                dao.Bewaren(gp, l => l.Persoon, l => l.Persoon.PersoonsAdres, l => l.Communicatie);
-            }
-            #endregion
+			IGroepenDao gdao = Factory.Maak<IGroepenDao>();
+			Groep g = gdao.Ophalen(groepID);
 
-            #region Assert
-            IList<GelieerdePersoon> gevonden2 = dao.ZoekenOpNaam(groepID, naam + ' ' + voornaam);
-            Assert.IsTrue(gevonden2.Count == 0);
-            #endregion
+			GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
 
-        }
+			// Creeer gloednieuwe persoon
 
-    }
+			Persoon p = new Persoon();
+			p.VoorNaam = voornaam;
+			p.Naam = naam;
+
+			// Koppel aan testgroep, Chiroleeftijd 0
+
+			GelieerdePersoon gp = gpm.Koppelen(p, g, 0);
+
+			IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
+			#endregion
+
+			#region Act
+			// Hier moeten we via de DAO gaan, en niet via de worker, omdat 
+			// we de DAO willen testen, en niet willen failen op fouten in
+			// de worker.
+
+			gp = gpdao.Bewaren(gp);
+			#endregion
+
+			#region Assert
+			IList<GelieerdePersoon> gevonden = gpdao.ZoekenOpNaam(groepID, naam + ' ' + voornaam);
+			Assert.IsTrue(gevonden.Count > 0);
+			#endregion
+
+		}
+
+
+		/// <summary>
+		/// Test om persoon te verwijderen.
+		/// </summary>
+		[TestMethod]
+		public void VerwijderPersoon()
+		{
+			#region Arrange
+			// zoek te verwijderen personen op
+
+			int groepID = TestInfo.GROEPID;
+			string naam = TestInfo.NIEUWEPERSOONNAAM;
+			string voornaam = TestInfo.TEVERWIJDERENVOORNAAM;
+
+			GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
+
+			// nog niet alle functionaliteit wordt aangeboden in de worker,
+			// dus ik werk hier en daar rechtstreeks op de dao.
+
+			IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
+
+			IList<GelieerdePersoon> gevonden = dao.ZoekenOpNaam(groepID, naam + ' ' + voornaam);
+			#endregion
+
+			#region Act
+			foreach (GelieerdePersoon gp in gevonden)
+			{
+				// Markeer geliererde persoon en alle aanhangsels als
+				// 'te verwijderen' 
+				mgr.VolledigVerwijderen(gp);
+
+				// persisteer
+				dao.Bewaren(gp, l => l.Persoon, l => l.Persoon.PersoonsAdres, l => l.Communicatie);
+			}
+			#endregion
+
+			#region Assert
+			IList<GelieerdePersoon> gevonden2 = dao.ZoekenOpNaam(groepID, naam + ' ' + voornaam);
+			Assert.IsTrue(gevonden2.Count == 0);
+			#endregion
+
+		}
+
+	}
 }

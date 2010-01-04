@@ -104,6 +104,11 @@
 		public const string ZOEKNAAM = "Bosmans";
 
 		/// <summary>
+		/// Ongeveer de voornaam van diezelfde bestaande persoon in de testgroep
+		/// </summary>
+		public const string ZOEKVOORNAAMONGEVEER = "Joss";
+
+		/// <summary>
 		/// Naam voor nieuwe persoon
 		/// </summary>
 		public const string NIEUWEPERSOONNAAM = "Perens";
