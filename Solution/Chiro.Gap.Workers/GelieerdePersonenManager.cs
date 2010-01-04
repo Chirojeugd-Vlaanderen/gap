@@ -257,6 +257,27 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
+		/// <summary>
+		/// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> met naam 
+		/// en voornaam gelijkaardig aan <paramref name="naam"/> en <paramref name="voornaam"/>.
+		/// (inclusief communicatie en adressen)
+		/// </summary>
+		/// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
+		/// <param name="naam">te zoeken naam (ongeveer)</param>
+		/// <param name="voornaam">te zoeken voornaam (ongeveer)</param>
+		/// <returns>lijst met gevonden matches</returns>
+		public IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam)
+		{
+			if (_autorisatieMgr.IsGavGroep(groepID))
+			{
+				return _dao.ZoekenOpNaamOngeveer(groepID, naam, voornaam);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavGroep);
+			}
+		}
+
 		#endregion
 
 
