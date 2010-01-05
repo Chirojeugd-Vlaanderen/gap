@@ -133,7 +133,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 
 
-			int i = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.PersoonAanmaken(p.HuidigePersoon, groepID));
+			int i = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.Aanmaken(p.HuidigePersoon, groepID));
 
 			// Voorlopig opnieuw redirecten naar EditRest;
 			// er zou wel gemeld moeten worden dat het wijzigen

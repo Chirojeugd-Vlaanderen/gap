@@ -90,14 +90,29 @@ namespace Chiro.Gap.Services
 			return persoon.ID;
 		}
 
+		/// <summary>
+		/// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven
+		/// <paramref>groepID</paramref>
+		/// </summary>
+		/// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren: Chiroleeftijd, en
+		/// de velden van <c>info.Persoon</c></param>
+		/// <param name="groepID">ID van de groep waaraan de nieuwe persoon gekoppeld moet worden</param>
+		/// <returns>ID van de bewaarde persoon</returns>
+		/// <remarks>Adressen, Communicatievormen,... worden niet mee gepersisteerd; enkel de persoonsinfo
+		/// en de Chiroleeftijd.</remarks>
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public int PersoonAanmaken(GelieerdePersoon persoon, int groepID)
+		public int Aanmaken(GelieerdePersoon info, int groepID)
 		{
+			// De parameter 'info' wordt hier eigenlijk niet gebruikt als GelieerdePersoon,
+			// maar als datacontract dat de persoonsinfo en de Chiroleeftijd bevat.
+
 			Groep g = _grMgr.Ophalen(groepID);
-			g.GelieerdePersoon.Add(persoon);
-			persoon.Groep = g;
-			GelieerdePersoon gp = _gpMgr.Bewaren(persoon);
-			return gp.ID;
+
+			// Gebruik de businesslaag om info.Persoon te koppelen aan de opgehaalde groep.
+
+			GelieerdePersoon gelieerd = _gpMgr.Koppelen(info.Persoon, g, info.ChiroLeefTijd);
+			gelieerd = _gpMgr.Bewaren(gelieerd);
+			return gelieerd.ID;
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]

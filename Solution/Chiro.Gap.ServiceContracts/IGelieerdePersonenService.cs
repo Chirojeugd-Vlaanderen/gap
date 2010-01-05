@@ -83,12 +83,17 @@ namespace Chiro.Gap.ServiceContracts
         int PersoonBewaren(GelieerdePersoon persoon);
 
         /// <summary>
-        /// Maakt een nieuwe gelieerdepersoon en persoon aan
+        /// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven
+	/// <paramref>groepID</paramref>
         /// </summary>
-        /// <param name="persoon">Te bewaren gelieerdepersoon, gelinkt met een nieuwe persoon persoon</param>
+        /// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren: Chiroleeftijd, en
+	/// de velden van <c>info.Persoon</c></param>
+	/// <param name="groepID">ID van de groep waaraan de nieuwe persoon gekoppeld moet worden</param>
         /// <returns>ID van de bewaarde persoon</returns>
+	/// <remarks>Adressen, Communicatievormen,... worden niet mee gepersisteerd; enkel de persoonsinfo
+	/// en de Chiroleeftijd.</remarks>
         [OperationContract]
-        int PersoonAanmaken(GelieerdePersoon persoon, int groepID);
+        int Aanmaken(GelieerdePersoon info, int groepID);
 
         /// <summary>
         /// Haalt PersoonID op van een gelieerde persoon
