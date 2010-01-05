@@ -12,12 +12,12 @@ namespace Chiro.Gap.Fouten.FaultContracts
     /// </summary>
     /// <typeparam name="T">Type van de foutcode (meestal een enum)</typeparam>
     [DataContract]
-    public class BusinessFault<T>
+    public class DataContractFault<T>
     {
         [DataMember]
         public Dictionary<string, FoutBericht<T>> Berichten { get; set; }
 
-        public BusinessFault()
+        public DataContractFault()
         {
             Berichten = new Dictionary<string, FoutBericht<T>>();
         }

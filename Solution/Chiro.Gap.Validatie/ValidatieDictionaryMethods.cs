@@ -21,7 +21,7 @@ namespace Chiro.Gap.Validatie
         /// <param name="src">BusinessFault met toe te voegen berichten</param>
         /// <param name="keyPrefix">prefix toe te voegen aan de keys van src,
         /// alvorens ze toe te voegen aan dst</param>
-        public static void BerichtenToevoegen<T>(this IValidatieDictionary dst, BusinessFault<T> src
+        public static void BerichtenToevoegen<T>(this IValidatieDictionary dst, DataContractFault<T> src
             , string keyPrefix)
         {
             foreach (KeyValuePair<string, FoutBericht<T> > paar in src.Berichten)

@@ -18,5 +18,5 @@ namespace Chiro.Gap.Fouten.FaultContracts
     }
 
     [DataContract]
-    public class AdresFault : BusinessFault<AdresFaultCode> { }
+    public class AdresFault : DataContractFault<AdresFaultCode> { }
 }

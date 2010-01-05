@@ -168,10 +168,10 @@ namespace Chiro.Gap.ServiceContracts
         /// <param name="adres">Toe te voegen commvorm</param>
         /// <returns></returns>
         [OperationContract]
-        [FaultContract(typeof(BusinessFault<CommunicatieVorm>))]
+        [FaultContract(typeof(DataContractFault<CommunicatieVorm>))]
         void CommunicatieVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm, int typeID);
         [OperationContract]
-        [FaultContract(typeof(BusinessFault<CommunicatieVorm>))]
+        [FaultContract(typeof(DataContractFault<CommunicatieVorm>))]
         void CommunicatieVormVerwijderenVanPersoon(int gelieerdepersonenID, int commvormID);
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace Chiro.Gap.ServiceContracts
         /// </summary>
         /// <param name="v">De aangepaste commvorm</param>
         [OperationContract]
-        [FaultContract(typeof(BusinessFault<CommunicatieVorm>))]
+        [FaultContract(typeof(DataContractFault<CommunicatieVorm>))]
         void CommunicatieVormAanpassen(CommunicatieVorm c);
 
         /// <summary>
@@ -213,10 +213,10 @@ namespace Chiro.Gap.ServiceContracts
         /// <param name="adres">Toe te voegen commvorm</param>
         /// <returns></returns>
         [OperationContract]
-        [FaultContract(typeof(BusinessFault<Categorie>))]
+        [FaultContract(typeof(DataContractFault<Categorie>))]
         void CategorieKoppelen(IList<int> gelieerdepersonenIDs, IList<int> categorieIDs);
         [OperationContract]
-        [FaultContract(typeof(BusinessFault<Categorie>))]
+        [FaultContract(typeof(DataContractFault<Categorie>))]
         void CategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID);
 
         [OperationContract]
