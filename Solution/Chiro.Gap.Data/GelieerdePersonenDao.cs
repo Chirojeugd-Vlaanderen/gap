@@ -273,6 +273,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="naam">te zoeken naam (ongeveer)</param>
 		/// <param name="voornaam">te zoeken voornaam (ongeveer)</param>
 		/// <returns>lijst met gevonden matches</returns>
+		/// <remarks>includeert ook de persoonsinfo</remarks>
 		public IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
@@ -295,7 +296,7 @@ namespace Chiro.Gap.Data.Ef
 				query.Parameters.Add(new ObjectParameter("voornaam", voornaam));
 				query.Parameters.Add(new ObjectParameter("naam", naam));
 
-				return query.ToList();
+				return query.Include(gp=>gp.Persoon).ToList();
 			}
 		}
 

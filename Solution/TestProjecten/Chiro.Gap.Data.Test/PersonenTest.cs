@@ -148,7 +148,7 @@ namespace Chiro.Gap.Data.Test
 		}
 
 		/// <summary>
-		/// Test zoeken op basis van SoundEx
+		/// Test zoeken op basis van SoundEx; wordt er een GelieerdePersoon gevonden, en komt de persoonsinfo mee?
 		/// </summary>
 		[TestMethod]
 		public void ZoekenOpNaamOngeveer()
@@ -164,6 +164,7 @@ namespace Chiro.Gap.Data.Test
 
 			// assert
 			Assert.IsTrue(lijst.Count >= 1);
+			Assert.IsTrue(lijst.First().Persoon != null);
 		}
 
 		/// <summary>
