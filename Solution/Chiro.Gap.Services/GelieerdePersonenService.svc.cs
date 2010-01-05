@@ -103,6 +103,49 @@ namespace Chiro.Gap.Services
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public int Aanmaken(GelieerdePersoon info, int groepID)
 		{
+			return GeforceerdAanmaken(info, groepID, false);
+		}
+
+		/// <summary>
+		/// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven
+		/// <paramref>groepID</paramref>
+		/// </summary>
+		/// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren: Chiroleeftijd, en
+		/// de velden van <c>info.Persoon</c></param>
+		/// <param name="groepID">ID van de groep waaraan de nieuwe persoon gekoppeld moet worden</param>
+		/// <returns>ID van de bewaarde persoon</returns>
+		/// <param name="forceer">Als deze <c>true</c> is, wordt de nieuwe persoon sowieso gemaakt, ook
+		/// al lijkt hij op een bestaande gelieerde persoon.  Is <paramref>force</paramref>
+		/// <c>false</c>, dan wordt er een exceptie opgegooid als de persoon te hard lijkt op een
+		/// bestaande.</param>
+		/// <remarks>Adressen, Communicatievormen,... worden niet mee gepersisteerd; enkel de persoonsinfo
+		/// en de Chiroleeftijd.</remarks>
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public int GeforceerdAanmaken(GelieerdePersoon info, int groepID, bool forceer)
+		{
+			// Indien 'forceer' niet gezet is, moet een FaultException opgeworpen worden
+			// als de  nieuwe persoon te hard lijkt op een bestaande Gelieerde Persoon.
+
+			if (!forceer)
+			{
+				IList<GelieerdePersoon> bestaandePersonen =
+					_gpMgr.ZoekGelijkaardig(info.Persoon, groepID);
+
+
+				if (bestaandePersonen.Count > 0)
+				{
+					throw new FaultException<GelijkaardigePersoonFault>(new GelijkaardigePersoonFault {
+						GelijkaardigePersonen = Mapper.Map<IList<GelieerdePersoon>, IList<PersoonInfo>>(bestaandePersonen)});
+
+					// ********************************************************************************
+					// * BELANGRIJK: Als je debugger breakt op deze throw, dan is dat geen probleem.  *
+					// * Dat wil gewoon zeggen dat er een gelieerde persoon gevonden is die lijkt op  *
+					// * de nieuw toe te voegen persoon.  Er gaat een faultexception over de lijn,    *
+					// * die door de UI gecatcht moet worden.                                         *
+					// ********************************************************************************
+				}
+			}
+			
 			// De parameter 'info' wordt hier eigenlijk niet gebruikt als GelieerdePersoon,
 			// maar als datacontract dat de persoonsinfo en de Chiroleeftijd bevat.
 

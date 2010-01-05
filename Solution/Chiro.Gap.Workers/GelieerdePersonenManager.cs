@@ -433,5 +433,28 @@ namespace Chiro.Gap.Workers
 		{
 			return _categorieenDao.OphalenVanGroep(groepID);
 		}
+
+		/// <summary>
+		/// Zoekt naar gelieerde personen die gelijkaardig zijn aan een gegeven
+		/// <paramref name="persoon"/>.
+		/// </summary>
+		/// <param name="persoon">Persoon waarmee vergeleken moet worden</param>
+		/// <param name="groepID">ID van groep waarin te zoeken</param>
+		/// <returns>Lijstje met gelijkaardige personen</returns>
+		public IList<GelieerdePersoon> ZoekGelijkaardig(Persoon persoon, int groepID)
+		{
+			if (_autorisatieMgr.IsGavGroep(groepID))
+			{
+				// Momenteel wordt er enkel op 'naam ongeveer' gezocht, maar
+				// ik kan me voorstellen dat deze functie in de toekomst wat
+				// gesofisticeerder wordt.
+
+				return _dao.ZoekenOpNaamOngeveer(groepID, persoon.Naam, persoon.VoorNaam);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavGroep);
+			}
+		}
 	}
 }

@@ -124,6 +124,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HttpPost]
 		public ActionResult Nieuw(GelieerdePersonenModel p, int groepID)
 		{
+			int persoonID;
+
 			BaseModelInit(p, groepID);
 			p.Title = Properties.Resources.NieuwePersoonTitel;
 
@@ -133,7 +135,15 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 
 
-			int i = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.Aanmaken(p.HuidigePersoon, groepID));
+			try
+			{
+				persoonID = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.Aanmaken(p.HuidigePersoon, groepID));
+			}
+			catch (FaultException<GelijkaardigePersoonFault>)
+			{
+				// TODO: juiste actie ondernemen als een gelijkaardige persoon gevonden is
+				throw new NotImplementedException("Nog niets geimplementeerd voor het toevoegen van een mogelijk dubbele persoon.");
+			}
 
 			// Voorlopig opnieuw redirecten naar EditRest;
 			// er zou wel gemeld moeten worden dat het wijzigen
@@ -144,7 +154,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// (er wordt hier geredirect ipv de view te tonen,
 			// zodat je bij een 'refresh' niet de vraag krijgt
 			// of je de gegevens opnieuw wil posten.)
-			return RedirectToAction("EditRest", new { id = i });
+			return RedirectToAction("EditRest", new { id = persoonID });
 		}
 
 		//

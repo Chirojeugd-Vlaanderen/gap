@@ -65,6 +65,7 @@
     <Compile Include="FaultContracts\AdresFault.cs" />
     <Compile Include="FaultContracts\DataContractFault.cs" />
     <Compile Include="FaultContracts\FoutBericht.cs" />
+    <Compile Include="FaultContracts\GelijkaardigePersoonFault.cs" />
     <Compile Include="IGelieerdePersonenService.cs" />
     <Compile Include="IGroepenService.cs" />
     <Compile Include="ILedenService.cs" />
