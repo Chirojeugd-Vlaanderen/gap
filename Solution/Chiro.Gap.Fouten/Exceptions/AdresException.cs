@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
-using Chiro.Gap.Fouten.FaultContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.Fouten.Exceptions
 {

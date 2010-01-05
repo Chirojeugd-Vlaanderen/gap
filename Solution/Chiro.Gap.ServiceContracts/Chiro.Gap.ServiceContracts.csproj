@@ -62,6 +62,9 @@
     <Compile Include="DataContracts\GroepInfo.cs" />
     <Compile Include="DataContracts\LidInfo.cs" />
     <Compile Include="DataContracts\PersoonInfo.cs" />
+    <Compile Include="FaultContracts\AdresFault.cs" />
+    <Compile Include="FaultContracts\DataContractFault.cs" />
+    <Compile Include="FaultContracts\FoutBericht.cs" />
     <Compile Include="IGelieerdePersonenService.cs" />
     <Compile Include="IGroepenService.cs" />
     <Compile Include="ILedenService.cs" />
@@ -76,10 +79,6 @@
     <ProjectReference Include="..\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
       <Name>Chiro.Cdf.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.Fouten\Chiro.Gap.Fouten.csproj">
-      <Project>{D82C1286-8BC6-422C-8688-E178377D3EB6}</Project>
-      <Name>Chiro.Gap.Fouten</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Orm\Chiro.Gap.Orm.csproj">
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>

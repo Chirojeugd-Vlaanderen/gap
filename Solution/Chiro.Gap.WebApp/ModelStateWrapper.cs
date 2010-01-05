@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using Chiro.Gap.Validatie;
 using System.Web.Mvc;
-using Chiro.Gap.Fouten;
 
 namespace Chiro.Gap.WebApp
 {

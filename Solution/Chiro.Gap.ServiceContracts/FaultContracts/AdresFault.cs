@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Runtime.Serialization;
 
-namespace Chiro.Gap.Fouten.FaultContracts
+namespace Chiro.Gap.ServiceContracts.FaultContracts
 {
     [DataContract]
     public enum AdresFaultCode

@@ -9,7 +9,7 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.WebApp.Models;
 using System.Diagnostics;
 using System.ServiceModel;
-using Chiro.Gap.Fouten.FaultContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Adf.ServiceModel;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.Validatie;

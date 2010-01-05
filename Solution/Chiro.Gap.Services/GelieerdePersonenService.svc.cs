@@ -9,7 +9,7 @@ using System.Security.Permissions;
 using AutoMapper;
 
 using Chiro.Gap.Fouten.Exceptions;
-using Chiro.Gap.Fouten.FaultContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Services.Properties;
 using Chiro.Gap.ServiceContracts;

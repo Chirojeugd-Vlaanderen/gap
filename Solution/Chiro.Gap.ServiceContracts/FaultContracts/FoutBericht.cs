@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-namespace Chiro.Gap.Fouten.FaultContracts
+namespace Chiro.Gap.ServiceContracts.FaultContracts
 {
     /// <summary>
     /// Klasse voor een foutboodschap.
