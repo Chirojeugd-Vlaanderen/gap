@@ -20,7 +20,7 @@ LOG_FILE=$(mktemp /tmp/$(basename $0)_XXXX)
   {
      cat <<EOF
 	 
-	 Gebruik: $(basename $0) -h -a [creatie | verwijder | beide ]  -t [ shema | constraints | gegevens | test ] -n <db_name> -f
+	 Gebruik: $(basename $0) -h -a [creatie | verwijder | beide ]  -t [ shema | constraints | stored_procedures | gegevens | test ] -n <db_name> -f
 	 
 	   -h: Toon deze help pagina
 	   -a: De actie die je wil doen.
@@ -40,6 +40,7 @@ LOG_FILE=$(mktemp /tmp/$(basename $0)_XXXX)
             We kennen de volgende types:
                 - shema: We gaan het shema creeren of verwijderen (afh van optie -a)
                 - constraints: We gaan de constraints creeren of verwijderen (afh van optie -a)
+				- stored_procedure: We gaan de stored procedures creeren of verwijderen (afh van optie -a)
                 - gegevens: We gaan de standaard gegevens creeren of verwijderen (afh van optie -a)
 				            standaard gegevens: GIS data, officiele afdelingen, Communictie types, .... 
                 - test: We gaan de geevens nodig voor de test omgeving creeren of verwijderen (afh van optie -a)
@@ -67,7 +68,7 @@ EOF
 			;;
 		t) 	# Optie type van de actie door te geven.
 		    case ${OPTARG} in
-				shema | constraints | gegevens | test) 	TYPE=${OPTARG}
+				shema | constraints | stored_procedures | gegevens | test) 	TYPE=${OPTARG}
 													;;
 				*)	echo "Fout: optie '${OPTARG}' kent de waarde '${OPTARG}' niet" >&2
 				    toon_help
@@ -141,17 +142,21 @@ EOF
 	
     cat ${SQL_SCRIPT}       >>${TMP_SQL_FILE}
   else
-    cat ${PWD}/sql/verwijder.constraints.sql       >>${TMP_SQL_FILE}
-    cat ${PWD}/sql/verwijder.shema.sql             >>${TMP_SQL_FILE}
+    cat ${PWD}/sql/verwijder.stored_procedures.sql            >>${TMP_SQL_FILE}
+    cat ${PWD}/sql/verwijder.constraints.sql                  >>${TMP_SQL_FILE}
+    cat ${PWD}/sql/verwijder.shema.sql                        >>${TMP_SQL_FILE}
 
 	# shema is het laagste dat we kunnen maken, dus dit doen we altijd.
-    cat ${PWD}/sql/creatie.shema.sql               >>${TMP_SQL_FILE}
+    cat ${PWD}/sql/creatie.shema.sql                          >>${TMP_SQL_FILE}
     if [[ "${TYPE}" != "shema" ]]; then
-      cat ${PWD}/sql/creatie.constraints.sql       >>${TMP_SQL_FILE}
-	  if [[ "${TYPE}" != "constraints" ]]; then
-	    cat ${PWD}/sql/creatie.gegevens.sql        >>${TMP_SQL_FILE}
-		if [[ "${TYPE}" != "gegevens" ]]; then
-		  cat ${PWD}/sql/creatie.test.sql          >>${TMP_SQL_FILE}
+      cat ${PWD}/sql/creatie.constraints.sql                  >>${TMP_SQL_FILE}
+	  if [[ "${TYPE}" != "constraints" ]]; then 
+	    cat ${PWD}/sql/creatie.gegevens.sql                   >>${TMP_SQL_FILE}
+		if [[ "${TYPE}" != "stored_procedures" ]]; then
+		  cat ${PWD}/sql/creatie.stored_procedures.sql        >>${TMP_SQL_FILE}		
+		  if [[ "${TYPE}" != "gegevens" ]]; then
+		  cat ${PWD}/sql/creatie.test.sql                     >>${TMP_SQL_FILE}
+		  fi
 		fi
 	  fi
 	fi

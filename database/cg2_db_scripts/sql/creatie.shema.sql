@@ -8,6 +8,9 @@ EXEC sys.sp_executesql N'CREATE SCHEMA [adr] AUTHORIZATION [dbo]'
 GO
 EXEC sys.sp_executesql N'CREATE SCHEMA [auth] AUTHORIZATION [dbo]'
 GO
+EXEC sys.sp_executesql N'CREATE SCHEMA [data] AUTHORIZATION [dbo]'
+-- Hier in worden stored procedures bewaard.
+GO
 EXEC sys.sp_executesql N'CREATE SCHEMA [core] AUTHORIZATION [dbo]'
 GO
 EXEC sys.sp_executesql N'CREATE SCHEMA [grp] AUTHORIZATION [dbo]'
@@ -532,3 +535,6 @@ BEGIN
 	) ON [PRIMARY]
 END
 GO
+
+
+
