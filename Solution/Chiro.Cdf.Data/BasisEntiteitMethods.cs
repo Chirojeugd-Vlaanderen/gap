@@ -30,6 +30,16 @@ namespace Chiro.Cdf.Data
 		/// <param name="ver">stringrepresentatie van rowversion</param>
 		public static void VersieStringSet(this IBasisEntiteit be, String ver)
 		{
+			if (ver == null)
+			{
+				// strings die null zijn in webforms, dat komt nooit goed.
+				// (dan krijg je problemen zoals ticket #198)
+				// Vandaar dat een nulle version string wordt behandeld
+				// als de lege string.
+				
+				ver = String.Empty;
+			}
+
 			be.Versie = Convert.FromBase64String(ver);
 		}
 
