@@ -273,8 +273,24 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="naam">te zoeken naam (ongeveer)</param>
 		/// <param name="voornaam">te zoeken voornaam (ongeveer)</param>
 		/// <returns>lijst met gevonden matches</returns>
-		/// <remarks>includeert ook de persoonsinfo</remarks>
+		/// <remarks>includeert bij wijze van standaard de persoonsinfo</remarks>
 		public IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam)
+		{
+			return ZoekenOpNaamOngeveer(groepID, naam, voornaam, gp => gp.Persoon);
+		}
+
+
+		/// <summary>
+		/// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> met naam 
+		/// en voornaam gelijkaardig aan <paramref name="naam"/> en <paramref name="voornaam"/>.
+		/// (inclusief communicatie en adressen)
+		/// </summary>
+		/// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
+		/// <param name="naam">te zoeken naam (ongeveer)</param>
+		/// <param name="voornaam">te zoeken voornaam (ongeveer)</param>
+		/// <param name="paths">expressies die aangeven welke dependencies mee opgehaald moeten worden</param>
+		/// <returns>lijst met gevonden matches</returns>
+		public IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam, params Expression<Func<GelieerdePersoon, object>>[] paths)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
@@ -290,13 +306,15 @@ namespace Chiro.Gap.Data.Ef
 					"AND ChiroGroepModel.Store.ufnSoundEx(gp.Persoon.Naam)=ChiroGroepModel.Store.ufnSoundEx(@naam) " +
 					"AND ChiroGroepModel.Store.ufnSoundEx(gp.Persoon.Voornaam)=ChiroGroepModel.Store.ufnSoundEx(@voornaam)";
 
-				var query = db.CreateQuery<GelieerdePersoon>(esqlQuery);
+				// Query casten naar ObjectQuery, om zodadelijk de includes te kunnen toepassen.
+
+				var query = db.CreateQuery<GelieerdePersoon>(esqlQuery) as ObjectQuery<GelieerdePersoon>;
 
 				query.Parameters.Add(new ObjectParameter("groepid", groepID));
 				query.Parameters.Add(new ObjectParameter("voornaam", voornaam));
 				query.Parameters.Add(new ObjectParameter("naam", naam));
 
-				return query.Include(gp=>gp.Persoon).ToList();
+				return IncludesToepassen(query, paths).ToList();
 			}
 		}
 

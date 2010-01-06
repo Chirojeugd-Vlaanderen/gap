@@ -60,6 +60,11 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		public IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam, params System.Linq.Expressions.Expression<Func<GelieerdePersoon, object>>[] paths)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 	}
 }
