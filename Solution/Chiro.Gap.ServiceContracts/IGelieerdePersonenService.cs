@@ -113,6 +113,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// en de Chiroleeftijd.  Ik had deze functie ook graag 'aanmaken' genoemd (zie coding guideline
 		/// 190), maar dat mag blijkbaar niet bij services.</remarks>
 		[OperationContract]
+		[FaultContract(typeof(GelijkaardigePersoonFault))]
 		int GeforceerdAanmaken(GelieerdePersoon info, int groepID, bool forceer);
 
 		/// <summary>

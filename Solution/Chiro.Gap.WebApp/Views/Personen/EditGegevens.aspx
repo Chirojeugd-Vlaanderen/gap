@@ -1,7 +1,7 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<GelieerdePersonenModel>" %>
 <%@ Import Namespace="Chiro.Gap.Orm" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
-
+<%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>"></script>
@@ -21,6 +21,31 @@
         <li><input type="reset"  value=" Reset "/></li>
     </ul>
     <br />
+    <%
+        if (Model.GelijkaardigePersonen != null && Model.GelijkaardigePersonen.Count() > 0)
+        {
+            // Toon gelijkaardige personen
+    %>
+    
+    <p class="validation-summary-errors">
+    Let op! Uw nieuwe persoon lijkt verdacht veel op (een) reeds bestaande perso(o)n(en).
+    Als u zeker bent dat u niemand dubbel toevoegt, klik dan opnieuw op 
+    &lsquo;Bewaren&rsquo;.
+    </p>
+    
+    <ul>
+    <% 
+        foreach (PersoonInfo pi in Model.GelijkaardigePersonen)
+        {
+            %>
+            <li><%Html.RenderPartial("PersoonsLinkControl", pi);%> - <%=String.Format("{0:d}", pi.GeboorteDatum) %></li>
+            <%
+        }
+    %>
+    </ul>    
+    <%      
+        }
+    %>
     
     <fieldset>
         <legend>Persoonlijke gegevens</legend>          
@@ -68,6 +93,15 @@
             <%=Html.HiddenFor(s=>s.HuidigePersoon.VersieString)%>
             <%=Html.HiddenFor(s=>s.HuidigePersoon.Persoon.ID)%>
             <%=Html.HiddenFor(s=>s.HuidigePersoon.Persoon.VersieString)%>
+            <%
+                if (Model.Forceer)
+                {
+                    // Ik krijg onderstaande niet geregeld met een html helper... :(
+                    %>
+                    <input type="hidden" name="Forceer" id="Forceer" value="True" />
+                    <%
+                }
+            %>
             
      </fieldset>
      

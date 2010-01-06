@@ -112,7 +112,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			var model = new Models.GelieerdePersonenModel();
 			BaseModelInit(model, groepID);
-			model.NieuweHuidigePersoon();
+			model.HuidigePersoon = new GelieerdePersoon { Persoon = new Persoon() };
 
 			model.Title = Properties.Resources.NieuwePersoonTitel;
 			return View("EditGegevens", model);
@@ -122,27 +122,27 @@ namespace Chiro.Gap.WebApp.Controllers
 		// POST: /Personen/Nieuw
 		[AcceptVerbs(HttpVerbs.Post)]
 		[HttpPost]
-		public ActionResult Nieuw(GelieerdePersonenModel p, int groepID)
+		public ActionResult Nieuw(GelieerdePersonenModel model, int groepID)
 		{
 			int persoonID;
 
-			BaseModelInit(p, groepID);
-			p.Title = Properties.Resources.NieuwePersoonTitel;
+			BaseModelInit(model, groepID);
+			model.Title = Properties.Resources.NieuwePersoonTitel;
 
 			if (!ModelState.IsValid)
 			{
-				return View("EditGegevens", p);
+				return View("EditGegevens", model);
 			}
-
 
 			try
 			{
-				persoonID = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.Aanmaken(p.HuidigePersoon, groepID));
+				persoonID = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.GeforceerdAanmaken(model.HuidigePersoon, groepID, model.Forceer));
 			}
-			catch (FaultException<GelijkaardigePersoonFault>)
+			catch (FaultException<GelijkaardigePersoonFault> fault)
 			{
-				// TODO: juiste actie ondernemen als een gelijkaardige persoon gevonden is
-				throw new NotImplementedException("Nog niets geimplementeerd voor het toevoegen van een mogelijk dubbele persoon.");
+				model.GelijkaardigePersonen = fault.Detail.GelijkaardigePersonen;
+				model.Forceer = true;
+				return View("EditGegevens", model);
 			}
 
 			// Voorlopig opnieuw redirecten naar EditRest;

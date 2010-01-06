@@ -14,6 +14,7 @@ namespace Chiro.Gap.ServiceContracts.FaultContracts
 	[DataContract]
 	public class GelijkaardigePersoonFault
 	{
+		[DataMember]
 		public IList<PersoonInfo> GelijkaardigePersonen { get; set; }
 	}
 }

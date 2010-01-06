@@ -9,26 +9,39 @@ using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
-    public class GelieerdePersonenModel : MasterViewModel
-    {
-        public IList<GelieerdePersoon> GelieerdePersonenLijst { get; set; }
+	/// <summary>
+	/// In het algemeen bevat het GelieerdePersonenModel informatie over slechts 1 persoon.
+	/// Deze informatie zit dan in <c>HuidigePersoon</c>.
+	/// 
+	/// Wanneer dit model gebruikt wordt voor het toevoegen van een nieuwe persoon, dan
+	/// bevat het ook mogelijke gelijkaardige personen (<c>GelijkaardigePersonen</c>) en
+	/// een boolean <c>Forceer</c> die aangeeft of een nieuwe persoon geforceerd moet worden
+	/// ondanks gevonden gelijkaardige personen.
+	/// </summary>
+	public class GelieerdePersonenModel : MasterViewModel
+	{
+		/// <summary>
+		/// Informatie over een te tonen of te wijzigen persoon
+		/// </summary>
+		public GelieerdePersoon HuidigePersoon { get; set; }
 
-        public GelieerdePersoon HuidigePersoon { get; set; }
+		/// <summary>
+		/// Lijst met info over eventueel gelijkaardige personen
+		/// </summary>
+		public IEnumerable<PersoonInfo> GelijkaardigePersonen { get; set; }
 
-        public GelieerdePersonenModel() : base() { }
+		/// <summary>
+		/// Geeft aan of een persoon ook toegevoegd moet worden als er al gelijkaardige
+		/// personen bestaan.
+		/// </summary>
+		public bool Forceer { get; set; }
 
-        /// <summary>
-        /// Creeert een nieuwe gelieerde persoon, en stockeert in
-        /// HuidigePersoon.
-        /// </summary>
-        /// <returns>de nieuw gecreeerde gelieerde persoon</returns>
-        /// <remarks>Er is precies iets niet juist in deze code...</remarks>
-        public GelieerdePersoon NieuweHuidigePersoon()
-        {
-            HuidigePersoon = new GelieerdePersoon();
-            HuidigePersoon.Persoon = new Persoon();
-            HuidigePersoon.Persoon.Geslacht = GeslachtsType.Man;
-            return HuidigePersoon;
-        }
-    }
+		/// <summary>
+		/// Standaardconstructor.
+		/// </summary>
+		public GelieerdePersonenModel() : base() 
+		{
+			Forceer = false;
+		}
+	}
 }

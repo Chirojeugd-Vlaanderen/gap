@@ -23,6 +23,8 @@ $(function() {
     <select id="cat" name="cat">
     <option value="">Kies een categorie...</option>
     <% 
+        // TODO: Hier kunnen we beter een helper van maken.
+        
         String s2;
         int start, end;
       foreach(var s in  Model.GroepsCategorieen) 
