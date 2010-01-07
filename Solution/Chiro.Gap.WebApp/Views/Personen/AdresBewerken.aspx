@@ -11,8 +11,10 @@
 
 $(function(){
 	$("#Adres_Gemeente").keyup(function(){
-		$("#notfound").html("");
-		document.getElementById("Adres_Straat").disabled = true;
+	$("#notfound").html("");
+	// Straat nergens disabelen, als workaround voor probleem #201
+	// https://develop.chiro.be/trac/cg2/ticket/201
+		//document.getElementById("Adres_Straat").disabled = true;
 		$("#Adres_Straat").val("");
 		$("#Adres_PostNr").val("");
 		//Clear de straat cache als de gemeente verandert.
@@ -20,13 +22,16 @@ $(function(){
 	});
 });
 
-$(document).ready(function() {	
-	document.getElementById("Adres_PostNr").readOnly = true;
+$(document).ready(function() {
+// Onderstaande lijnen wegcommentarieren werkt rond probleem #201.
+// https://develop.chiro.be/trac/cg2/ticket/201
+
+	// document.getElementById("Adres_PostNr").readOnly = true;
 	
-	if($("#Adres_Gemeente").val().length==0)
-	{
-		document.getElementById("Adres_Straat").disabled = true;		
-	}
+	// if($("#Adres_Gemeente").val().length==0)
+	// {
+	//  	document.getElementById("Adres_Straat").disabled = true;		
+	// }
 
 	$("#Adres_Gemeente").autocomplete('<%=Url.Action("GetGemeentes", "Personen") %>',
 	{
@@ -60,7 +65,7 @@ $(document).ready(function() {
 		}, "json");
 	});
 	
-	$("#Adres_Straat").autocomplete('<%=Url.Action("GetStraten", "Personen") %>',
+	$("#Adres_Straat").autocomplete('<%=Url.Action("StratenVoorstellen", "Personen") %>',
 	{
 	dataType: 'json',
 	parse: function(data) {
@@ -77,8 +82,8 @@ $(document).ready(function() {
 	minChars: 2,
 	highlight: false,
 	multiple: false,
-	extraParams: { "gemeente": function() { return $("#Adres_Gemeente").val(); },
-					"straat": function() { return $("#Adres_Straat").val(); }
+	extraParams: { "gemeenteNaam": function() { return $("#Adres_Gemeente").val(); },
+					"gedeeltelijkeStraatNaam": function() { return $("#Adres_Straat").val(); }
 		}
 	});
 });

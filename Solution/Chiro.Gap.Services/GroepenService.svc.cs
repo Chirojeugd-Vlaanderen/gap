@@ -333,16 +333,43 @@ namespace Chiro.Gap.Services
 		#endregion categorieen
 
 		#region adressen
+		/// <summary>
+		/// Maakt een lijst met alle deelgemeentes uit de database; nuttig voor autocompletion
+		/// in de ui.
+		/// </summary>
+		/// <returns>Lijst met alle beschikbare deelgemeentes</returns>
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IEnumerable<GemeenteInfo> GemeentesOphalen()
 		{
 			return Mapper.Map<IList<Subgemeente>, IList<GemeenteInfo>>(_adresMgr.GemeentesOphalen());
 		}
 
+		/// <summary>
+		/// Haalt alle straten op uit een gegeven <paramref name="postNr"/>, waarvan de naam begint
+		/// met het gegeven <paramref name="straatBegin"/>.
+		/// </summary>
+		/// <param name="straatBegin">Eerste letters van de te zoeken straatnamen</param>
+		/// <param name="postNr">Postnummer waarin te zoeken</param>
+		/// <returns>Gegevens van de gevonden straten</returns>
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IEnumerable<StraatInfo> StratenOphalen(String straatbegin, int postcode)
+		public IEnumerable<StraatInfo> StratenOphalen(String straatBegin, int postNr)
 		{
-			return Mapper.Map<IList<Straat>, IList<StraatInfo>>(_adresMgr.StratenOphalen(straatbegin, postcode));
+			return Mapper.Map<IList<Straat>, IList<StraatInfo>>(_adresMgr.StratenOphalen(straatBegin, postNr));
+		}
+
+		/// <summary>
+		/// Haalt alle straten op uit een gegeven rij <paramref name="postNrs"/>, waarvan de naam begint
+		/// met het gegeven <paramref name="straatBegin"/>.
+		/// </summary>
+		/// <param name="straatBegin">Eerste letters van de te zoeken straatnamen</param>
+		/// <param name="postNrs">Postnummers waarin te zoeken</param>
+		/// <returns>Gegevens van de gevonden straten</returns>
+		/// <remarks>Ik had deze functie ook graag StratenOphalen genoemd, maar je mag geen 2 
+		/// WCF-functies met dezelfde naam in 1 service hebben.  Spijtig.</remarks>
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public IEnumerable<StraatInfo> StratenOphalenMeerderePostNrs(String straatBegin, IEnumerable<int> postNrs)
+		{
+			return Mapper.Map<IList<Straat>, IList<StraatInfo>>(_adresMgr.StratenOphalen(straatBegin, postNrs));
 		}
 		#endregion
 	}

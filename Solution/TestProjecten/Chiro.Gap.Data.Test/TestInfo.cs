@@ -137,6 +137,17 @@
 		/// login van GAV die geen GAV van testgroep 1 is.
 		/// </summary>
 		public const string GAV2 = "yvette";
+
+		/// <summary>
+		/// String voor autosuggestie straat mee te testen
+		/// (onregelmatigheid in casing is bewust)
+		/// </summary>
+		public const string TEZOEKENSTRAAT = "GRote ste";
+
+		/// <summary>
+		/// postnummer om bovenstaande straat in te zoeken
+		/// </summary>
+		public const int POSTNR = 2560;
 	}
 
 }

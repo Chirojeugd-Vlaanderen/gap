@@ -347,7 +347,12 @@ namespace Chiro.Gap.WebApp.Controllers
 			return RedirectToAction("EditRest", new { id = model.AanvragerID });
 		}
 
-		// GET: /Personen/NieuwAdres/gelieerdePersoonID
+		/// <summary>
+		/// Laat toe een nieuw adres te koppelen aan een gelieerde persoon.
+		/// </summary>
+		/// <param name="id">GelieerdePersoonID van de persoon die een nieuw adres moet krijgen</param>
+		/// <param name="groepID">ID van de huidige geselecteerde groep</param>
+		/// <returns>De view 'AdresBewerken'</returns>
 		public ActionResult NieuwAdres(int id, int groepID)
 		{
 			AdresModel model = new AdresModel();
@@ -573,7 +578,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			var retValue = tags
 				.OrderBy(x => x)
 				//.Take(limit)
-				.Select(r => new { Tag = r });
+				.Select(r => new { Tag = r }).ToList();
 
 			// Return the result set as JSON
 			return Json(retValue);
@@ -598,28 +603,35 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// This action method looks up the tags.
+		/// Stelt op basis van een <paramref name="gedeeltelijkeStraatNaam"/> en een 
+		/// <paramref name="gemeenteNaam"/> een lijst suggesties samen met straatnamen die de
+		/// gebruiker mogelijk zinnes is in te vullen.
 		/// </summary>
-		/// <param name="q">The query that contains the user input.</param>
-		/// <param name="limit">The number of tags return.</param>
-		public ActionResult GetStraten(String straat, String gemeente)
+		/// <param name="gedeeltelijkeStraatNaam">wat de gebruiker reeds intikte</param>
+		/// <param name="gemeenteNaam">naam van gemeente waarin de straat moet liggen</param>
+		/// <returns>Json-lijst met voorgestelde straatnamen</returns>
+		public ActionResult StratenVoorstellen(String gedeeltelijkeStraatNaam, String gemeenteNaam)
 		{
-			var postcode = MvcApplication.getGemeentes().Where(x => x.Naam.Equals(gemeente)).Select(x => x.PostNr).FirstOrDefault();
+			// Opm. van Johan:
+			// TODO: Moet die gemeentelijst niet in cache zitten, ipv op het niveau van de app?
+			// Na te kijken in het verslag over state
+			var postNrs = (from gemeente in MvcApplication.getGemeentes()
+				       where String.Compare(gemeente.Naam, gemeenteNaam) == 0
+				       select gemeente.PostNr).Distinct().ToList();
+				      
+			IEnumerable<StraatInfo> mogelijkeStraten = 
+				ServiceHelper.CallService<IGroepenService, IEnumerable<StraatInfo>>(
+					x => x.StratenOphalenMeerderePostNrs(gedeeltelijkeStraatNaam, postNrs));
 
-			IEnumerable<StraatInfo> ss = ServiceHelper.CallService<IGroepenService, IEnumerable<StraatInfo>>(x => x.StratenOphalen(straat, postcode));			
+			var namen = (from straat in mogelijkeStraten
+				     orderby straat.Naam
+				     select straat.Naam).Distinct();
 
-			List<String> tags = (from g in ss
-								 select g.Naam).ToList();
-
-			// Select the tags that match the query, and get the 
-			// number or tags specified by the limit.
-			var retValue = tags
-				.Where(x => x.StartsWith(straat, StringComparison.OrdinalIgnoreCase))
-				.OrderBy(x => x)
-				.Select(r => new { Tag = r });
+			var resultaat = from tag in namen
+					select new {Tag = tag};
 
 			// Return the result set as JSON
-			return Json(retValue);
+			return Json(resultaat);
 		}
 
 		#endregion adressencompletion

@@ -188,8 +188,27 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		IEnumerable<GemeenteInfo> GemeentesOphalen();
 
+		/// <summary>
+		/// Haalt alle straten op uit een gegeven <paramref name="postNr"/>, waarvan de naam begint
+		/// met het gegeven <paramref name="straatBegin"/>.
+		/// </summary>
+		/// <param name="straatBegin">Eerste letters van de te zoeken straatnamen</param>
+		/// <param name="postNr">Postnummer waarin te zoeken</param>
+		/// <returns>Gegevens van de gevonden straten</returns>
 		[OperationContract]
-		IEnumerable<StraatInfo> StratenOphalen(String straatbegin, int postcode);
+		IEnumerable<StraatInfo> StratenOphalen(String straatBegin, int postNr);
+
+		/// <summary>
+		/// Haalt alle straten op uit een gegeven rij <paramref name="postNrs"/>, waarvan de naam begint
+		/// met het gegeven <paramref name="straatBegin"/>.
+		/// </summary>
+		/// <param name="straatBegin">Eerste letters van de te zoeken straatnamen</param>
+		/// <param name="postNrs">Postnummers waarin te zoeken</param>
+		/// <returns>Gegevens van de gevonden straten</returns>
+		/// <remarks>Ik had deze functie ook graag StratenOphalen genoemd, maar je mag geen 2 
+		/// WCF-functies met dezelfde naam in 1 service hebben.  Spijtig.</remarks>
+		[OperationContract]
+		IEnumerable<StraatInfo> StratenOphalenMeerderePostNrs(String straatBegin, IEnumerable<int> postNrs);
 
 		#endregion
 	}
