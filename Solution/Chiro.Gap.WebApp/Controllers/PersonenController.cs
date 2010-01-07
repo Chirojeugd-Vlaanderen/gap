@@ -181,8 +181,12 @@ namespace Chiro.Gap.WebApp.Controllers
 			return RedirectToAction("EditGegevens", new { id = p.HuidigePersoon.ID });
 		}
 
-		//
-		// GET: /Personen/EditGegevens/5
+		/// <summary>
+		/// Laat toe persoonsgegevens te wijzigen
+		/// </summary>
+		/// <param name="id">GelieerdePersoonID van te wijzigen persoon</param>
+		/// <param name="groepID">GroepID van de huidig geselecteerde groep</param>
+		/// <returns>De view 'EditGegevens'</returns>
 		public ActionResult EditGegevens(int id, int groepID)
 		{
 			var model = new Models.GelieerdePersonenModel();
@@ -192,15 +196,23 @@ namespace Chiro.Gap.WebApp.Controllers
 			return View("EditGegevens", model);
 		}
 
-		//
-		// POST: /Personen/EditGegevens/5
+		
+		/// <summary>
+		/// Probeert de gewijzigde persoonsgegevens te persisteren via de webservice
+		/// </summary>
+		/// <param name="model"><c>GelieerdePersonenModel</c> met gegevens gewijzigd door de gebruiker</param>
+		/// <param name="groepID">GroepID van huidig geseecteerde groep</param>
+		/// <returns>Redirect naar overzicht persoonsinfo indien alles ok, anders opnieuw de view
+		/// 'EditGegevens'.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult EditGegevens(GelieerdePersonenModel p, int groepID)
+		public ActionResult EditGegevens(GelieerdePersonenModel model, int groepID)
 		{
-			//try
-			//{
+			if (!ModelState.IsValid)
+			{
+				return View("EditGegevens", model);
+			}
 
-			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersoonBewaren(p.HuidigePersoon));
+			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersoonBewaren(model.HuidigePersoon));
 
 			// Voorlopig opnieuw redirecten naar EditRest;
 			// er zou wel gemeld moeten worden dat het wijzigen
@@ -211,12 +223,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// (er wordt hier geredirect ipv de view te tonen,
 			// zodat je bij een 'refresh' niet de vraag krijgt
 			// of je de gegevens opnieuw wil posten.)
-			return RedirectToAction("EditRest", new { id = p.HuidigePersoon.ID });
-			/*}
-			catch
-			{
-			    return View("EditGegevens", p);
-			}*/
+			return RedirectToAction("EditRest", new { id = model.HuidigePersoon.ID });
 		}
 
 		#endregion personen
