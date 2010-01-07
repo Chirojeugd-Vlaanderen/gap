@@ -7,17 +7,25 @@ using Chiro.Gap.Orm;
 
 namespace Chiro.Gap.ServiceContracts
 {
-    [DataContract]
-    public class AdresInfo
-    {
+	[DataContract]
+	public class AdresInfo
+	{
+		private string _bus;
+
 		[DataMember]
 		public int ID { get; set; }
 
 		[DataMember]
-		public String Bus { get; set; }
+		public string Bus
+		{
+			// Vervangt eventuele null door String.Empty
+			// Zie ticket #202: https://develop.chiro.be/trac/cg2/ticket/202
+			get { return _bus; }
+			set { _bus = value ?? String.Empty; }
+		}
 
-        [DataMember]
-        public int PostNr { get; set; }
+		[DataMember]
+		public int PostNr { get; set; }
 
 		[DataMember]
 		public int HuisNr { get; set; }
@@ -30,5 +38,5 @@ namespace Chiro.Gap.ServiceContracts
 
 		[DataMember]
 		public List<GewonePersoonInfo> Bewoners { get; set; }
-    }
+	}
 }
