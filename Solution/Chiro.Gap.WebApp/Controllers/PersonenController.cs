@@ -269,7 +269,13 @@ namespace Chiro.Gap.WebApp.Controllers
 			return View("AdresBewerken", model);
 		}
 
-		// POST: /Personen/Verhuizen
+		/// <summary>
+		/// Verhuist de personen bepaald door <paramref name="model"/>.PersoonIDs van het adres
+		/// bpaald door <paramref name="model"/>.OudAdresID naar <paramref name="model"/>.Adres.
+		/// </summary>
+		/// <param name="model">bevat de nodige info voor de verhuis</param>
+		/// <param name="groepID">huidig geslecteerde groep van de gebruiker</param>
+		/// <returns>de view 'EditRest' indien OK, anders opnieuw de view 'AdresBewerken'.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Verhuizen(AdresModel model, int groepID)
 		{
@@ -306,7 +312,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				// Maar ik toon de bewoners wel, dus moeten die hier opnieuw
 				// uit de database gehaald worden:
-				model.Bewoners = (ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(l => l.AdresMetBewonersOphalen(model.AanvragerID))).Bewoners;
+				model.Bewoners = (ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(l => l.AdresMetBewonersOphalen(model.OudAdresID))).Bewoners;
 				return View("AdresBewerken", model);
 			}
 			catch

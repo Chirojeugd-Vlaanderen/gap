@@ -134,6 +134,7 @@ namespace Chiro.Gap.Data.Ef
 			// iemand op het gezochte adres woont.  Dat is uiteraard niet 
 			// noodzakelijk het geval.
 
+			// Als deze assert failt, dan zou het ook kunnen dat het adres niet bestaat!
 			Debug.Assert(lijst.Count > 0);
 
 			// Koppel nu alle PersoonsAdressen aan dezelfde instantie van Adres.
