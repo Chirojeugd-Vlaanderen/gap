@@ -38,17 +38,19 @@ namespace Chiro.Gap.Orm
 			public string Naam { get; set; }
 
 			[Verplicht()]
+			[DisplayName("Voornaam")]
 			[StringLengte(60), StringMinimumLengte(2)]
 			public string VoorNaam { get; set; }
 
 			[Verplicht()]
 			public Chiro.Gap.Orm.GeslachtsType Geslacht { set; get; }
 
-			[DisplayName("AD-Nummer")]
+			[DisplayName("AD-nummer")]
 			public Nullable<int> AdNummer { set; get; }
 
 			//[DisplayFormat(DataFormatString="{0:d}", ApplyFormatInEditMode=true, ConvertEmptyStringToNull=true)]
 			[DataType(DataType.Date)]
+			[DisplayName("Geboortedatum")]
 			public DateTime? GeboorteDatum { get; set; }
 
 		}
