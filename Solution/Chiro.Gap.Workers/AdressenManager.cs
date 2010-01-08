@@ -83,7 +83,7 @@ namespace Chiro.Gap.Workers
 		/// <remarks>Ieder heeft het recht adressen op te zoeken</remarks>
 		public Adres ZoekenOfMaken(String StraatNaam, int HuisNr, String Bus, String GemeenteNaam, int PostNr, String PostCode)
 		{
-			AdresFault vf = new AdresFault();
+			AdresFault fault = new AdresFault();
 
 			// Al maar preventief een VerhuisFault aanmaken.  Als daar uiteindelijk
 			// geen foutberichten inzitten, dan is er geen probleem.  Anders
@@ -119,7 +119,10 @@ namespace Chiro.Gap.Workers
 				{
 					// Straat niet gevonden: foutbericht toevoegen
 
-					vf.BerichtToevoegen(AdresFaultCode.OnbekendeStraat, "Straat.Naam"
+					// FIXME: Dit is geen propere manier van werken.  Die component 'Straat'
+					// heeft betrekking op het datacontract 'AdresInfo', wat helemaal niet
+					// van belang is in deze layer
+					fault.BerichtToevoegen(AdresFaultCode.OnbekendeStraat, "Straat"
 					    , String.Format("Straat {0} met postnummer {1} niet gevonden."
 								    , StraatNaam, PostNr));
 				}
@@ -136,14 +139,15 @@ namespace Chiro.Gap.Workers
 				{
 					// Gemeente niet gevonden: foutbericht toevoegen
 
-					vf.BerichtToevoegen(AdresFaultCode.OnbekendeGemeente, "SubGemeente.Naam"
+					// FIXME: hier idem.
+					fault.BerichtToevoegen(AdresFaultCode.OnbekendeGemeente, "Gemeente"
 					    , String.Format("Deelgemeente {0} met postnummer {1} niet gevonden."
 								    , GemeenteNaam, PostNr));
 				}
 
-				if (vf.Berichten.Count != 0)
+				if (fault.Berichten.Count != 0)
 				{
-					throw new AdresException(vf);
+					throw new AdresException(fault);
 				}
 
 				if (PostCode != null && !PostCode.Equals(""))

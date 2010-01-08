@@ -304,6 +304,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			catch (FaultException<AdresFault> ex)
 			{
+				BaseModelInit(model, groepID);
+
 				new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "Adres.");
 
 				// Als ik de bewoners van het 'Van-adres' niet had getoond in
@@ -395,7 +397,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				BaseModelInit(model, groepID);
 
-				new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "NieuwAdres.");
+				new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "Adres.");
 
 				// De mogelijke bewoners zijn op dit moment vergeten, en moeten dus
 				// terug opgevraagd worden.
