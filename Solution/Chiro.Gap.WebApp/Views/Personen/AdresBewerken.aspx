@@ -120,34 +120,38 @@ $(document).ready(function() {
 				 select new { value = e, text = e.ToString() }; 
 	%>
 
-	<label>Type</label>
-	<%=Html.DropDownList("AdresType", new SelectList(values, "value", "text"))%>
+	<%=Html.LabelFor(mdl => mdl.AdresType) %>
+	<%=Html.DropDownListFor(mdl => mdl.AdresType, new SelectList(values, "value", "text"))%>
 	<br />
    
-	<label>Gemeente</label>
-	<%= Html.TextBox("Adres.Gemeente")%> <%= Html.ValidationMessage("Adres.Gemeente")%>
+	<%=Html.LabelFor(mdl => mdl.Adres.Gemeente) %>
+	<%=Html.EditorFor(mdl => mdl.Adres.Gemeente) %>
+    <%=Html.ValidationMessageFor(mdl => mdl.Adres.Gemeente)%>
 	<div id="notfound"></div>
 	<br />
-	
-	<label>PostCode</label>
-	<%=Html.TextBox("Adres.PostNr")%>
+
+	<%=Html.LabelFor(mdl => mdl.Adres.PostNr) %>
+	<%=Html.EditorFor(mdl => mdl.Adres.PostNr) %>
+    <%=Html.ValidationMessageFor(mdl => mdl.Adres.PostNr) %>	
 	<br />
 	
-	<label>Straat</label>
-	<%= Html.TextBox("Adres.Straat")%> <%= Html.ValidationMessage("Adres.Straat")%>
+	<%=Html.LabelFor(mdl => mdl.Adres.Straat) %>
+	<%=Html.EditorFor(mdl => mdl.Adres.Straat) %>
+    <%=Html.ValidationMessageFor(mdl => mdl.Adres.Straat) %>	
 	<br />
 	
-	<label>Nr.</label>
-    <%=Html.TextBox("Adres.HuisNr")%> 
+	<%=Html.LabelFor(mdl => mdl.Adres.HuisNr) %>
+	<%=Html.EditorFor(mdl => mdl.Adres.HuisNr) %>
+    <%=Html.ValidationMessageFor(mdl => mdl.Adres.HuisNr) %>	
     <br />
     
-    <label>Bus</label>
-    <%=Html.TextBox("Adres.Bus")%> 
+	<%=Html.LabelFor(mdl => mdl.Adres.Bus) %>
+	<%=Html.EditorFor(mdl => mdl.Adres.Bus)%>
+    <%=Html.ValidationMessageFor(mdl => mdl.Adres.Bus)%>	
     <br />
    
-   <%=Html.Hidden("Bewoners.ID")%>
-   <%=Html.Hidden("AanvragerID")%>
-   <%=Html.Hidden("OudAdresID")%>
+   <%=Html.HiddenFor(mdl=>mdl.AanvragerID) %>
+   <%=Html.HiddenFor(mdl=>mdl.OudAdresID) %>
    
    </fieldset>
    
