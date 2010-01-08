@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
 using System.Data.Objects;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
+using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
 
 using Chiro.Gap.Orm;
@@ -18,9 +17,9 @@ namespace Chiro.Gap.Data.Ef
 	{
 		public LedenDao()
 		{
-			connectedEntities = new Expression<Func<Lid, object>>[2] { 
-                                        e => e.GroepsWerkJaar, 
-                                        e => e.GelieerdePersoon.Persoon};
+			connectedEntities = new Expression<Func<Lid, object>>[] { 
+                                        e => e.GroepsWerkJaar.WithoutUpdate(), 
+                                        e => e.GelieerdePersoon.Persoon.WithoutUpdate()};
 		}
 
 		/// <summary>
