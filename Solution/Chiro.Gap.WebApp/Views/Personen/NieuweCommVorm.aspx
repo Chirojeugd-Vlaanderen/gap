@@ -19,11 +19,12 @@
         <table>
             <tr>
                 <td>
-                    <%=Html.DropDownList("Model.geselecteerdeCommVorm", new SelectList(Model.Types.Select(x => new { value = x.ID, text = x.Omschrijving }), "value", "text"))%>
+                    <%=Html.DropDownListFor(mdl=>mdl.geselecteerdeCommVorm, new SelectList(Model.Types.Select(x => new { value = x.ID, text = x.Omschrijving }), "value", "text"))%>
                     :
                 </td>
                 <td>
-                    <%=Html.TextBox("Model.NieuweCommVorm.Nummer")%>
+                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nummer) %>
+                    <%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.Nummer) %>
                 </td>
             </tr>
             <tr>
@@ -31,7 +32,8 @@
                     Is dit de voorkeurscommunicatie voor dit communicatietype?
                 </td>
                 <td>
-                    <%=Html.CheckBox("Model.NieuweCommVorm.Voorkeur", false)%>
+                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Voorkeur) %>
+                    <%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.Voorkeur) %>
                 </td>
             </tr>
             <tr>
@@ -39,7 +41,8 @@
                     Is het gezinsgebonden?
                 </td>
                 <td>
-                    <%=Html.CheckBox("Model.NieuweCommVorm.IsGezinsgebonden", false)%>
+                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.IsGezinsgebonden) %>
+                    <%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.IsGezinsgebonden) %>
                 </td>
             </tr>
             <tr>
@@ -47,7 +50,8 @@
                     Extra informatie
                 </td>
                 <td>
-                    <%=Html.TextBox("Model.NieuweCommVorm.Nota")%>
+                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nota) %>
+                    <%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.Nota) %>
                 </td>
             </tr>
         </table>

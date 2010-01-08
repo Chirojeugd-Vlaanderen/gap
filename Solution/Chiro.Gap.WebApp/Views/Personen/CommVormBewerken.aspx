@@ -24,35 +24,35 @@
                 <td><%=Model.NieuweCommVorm.CommunicatieType.Omschrijving%>
                 :</td>
                 <td>
-                    <%=Html.TextBox("Model.NieuweCommVorm.Nummer", Model.NieuweCommVorm.Nummer)%>
-                    <%= Html.ValidationMessage("Model.NieuweCommVorm.Nummer")%> 
+                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nummer) %>
+                    <%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.Nummer) %>
                 </td>
            </tr>
            <tr>
                 <td>Is dit de voorkeurscommunicatie voor dit communicatietype?</td>
-                <td><%=Html.CheckBox("Model.NieuweCommVorm.Voorkeur", Model.NieuweCommVorm.Voorkeur)%>
-                    <%= Html.ValidationMessage("Model.NieuweCommVorm.Voorkeur")%> 
+                <td>
+                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Voorkeur) %>
+                    <%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.Voorkeur) %>
                 </td>
            </tr>
            <tr>
                 <td>Is het gezinsgebonden?</td>
                 <td>
-                <%=Html.CheckBox("Model.NieuweCommVorm.IsGezinsgebonden", Model.NieuweCommVorm.IsGezinsgebonden)%>
-                <%= Html.ValidationMessage("Model.NieuweCommVorm.IsGezinsgebonden")%> 
+                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.IsGezinsgebonden) %>
+                    <%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.IsGezinsgebonden) %>
                 </td>
            </tr>
            <tr>
                 <td>Extra informatie</td>
                 <td>
-                <%=Html.TextBox("Model.NieuweCommVorm.Nota", Model.NieuweCommVorm.Nota)%> 
-                <%= Html.ValidationMessage("Model.NieuweCommVorm.Nota")%> 
+                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nota) %>
+                    <%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.Nota) %>
                 </td>
            </tr>
            </table>
            
-            <%=Html.Hidden("Model.NieuweCommVorm.ID", Model.NieuweCommVorm.ID)%>
-            <%=Html.Hidden("Model.NieuweCommVorm.VersieString", Model.NieuweCommVorm.VersieString)%>
-
+            <%=Html.HiddenFor(mdl=>mdl.NieuweCommVorm.ID) %>
+            <%=Html.HiddenFor(mdl=>mdl.NieuweCommVorm.VersieString) %>
            
            </fieldset>
            
