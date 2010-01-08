@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Objects;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
+
+using Chiro.Cdf.Data;
+using Chiro.Cdf.Data.Entity;
+
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using System.Data.Objects;
-using System.Linq.Expressions;
-using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Data.Ef
 {
@@ -14,9 +17,9 @@ namespace Chiro.Gap.Data.Ef
 	{
 		public CategorieenDao()
 		{
-			connectedEntities = new Expression<Func<Categorie, object>>[2] { 
-                                        e => e.Groep, 
-                                        e => e.GelieerdePersoon };
+			connectedEntities = new Expression<Func<Categorie, object>>[] { 
+                                        e => e.Groep.WithoutUpdate(), 
+                                        e => e.GelieerdePersoon.First().WithoutUpdate() };
 		}
 
 		public IEnumerable<Categorie> OphalenVanGroep(int groepID)
