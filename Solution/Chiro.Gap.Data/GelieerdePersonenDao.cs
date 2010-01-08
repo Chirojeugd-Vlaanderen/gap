@@ -22,7 +22,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			connectedEntities = new Expression<Func<GelieerdePersoon, object>>[2] { 
                                         e => e.Persoon, 
-                                        e => e.Groep };
+                                        e => e.Groep.WithoutUpdate() };
 		}
 
 		public IList<GelieerdePersoon> AllenOphalen(int groepID)
