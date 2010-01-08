@@ -537,4 +537,28 @@ END
 GO
 
 
+-- Rol voor applicatiegebruiker
+
+CREATE ROLE GapRole
+GO
+EXEC sp_addrolemember N'db_datareader', N'GapRole'
+GRANT EXECUTE ON core.ufnSoundEx TO GapRole
+GRANT DELETE,INSERT,UPDATE ON auth.Gav TO GapRole
+GRANT DELETE,INSERT,UPDATE ON auth.GebruikersRecht TO GapRole
+GRANT DELETE,INSERT,UPDATE ON core.Categorie TO GapRole
+GRANT DELETE,INSERT,UPDATE ON grp.Groep TO GapRole
+GRANT DELETE,INSERT,UPDATE ON lid.AfdelingsJaar TO GapRole
+GRANT DELETE,INSERT,UPDATE ON lid.Afdeling TO GapRole
+GRANT DELETE,INSERT,UPDATE ON lid.AfdelingsJaar TO GapRole
+GRANT DELETE,INSERT,UPDATE ON lid.Kind TO GapRole
+GRANT DELETE,INSERT,UPDATE ON lid.Leiding TO GapRole
+GRANT DELETE,INSERT,UPDATE ON lid.LeidingInAfdelingsJaar TO GapRole
+GRANT DELETE,INSERT,UPDATE ON lid.Lid TO GapRole
+GRANT DELETE,INSERT,UPDATE ON pers.CommunicatieVorm TO GapRole
+GRANT DELETE,INSERT,UPDATE ON pers.GelieerdePersoon TO GapRole
+GRANT DELETE,INSERT,UPDATE ON pers.Persoon TO GapRole
+GRANT DELETE,INSERT,UPDATE ON pers.PersoonsAdres TO GapRole
+GRANT DELETE,INSERT,UPDATE ON pers.PersoonsCategorie TO GapRole
+GRANT DELETE,INSERT,UPDATE ON pers.PersoonVrijVeld TO GapRole
+GRANT DELETE,INSERT,UPDATE ON pers.PersoonVrijVeldType TO GapRole
 
