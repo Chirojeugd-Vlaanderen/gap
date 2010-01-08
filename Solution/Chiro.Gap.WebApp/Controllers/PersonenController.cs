@@ -421,28 +421,36 @@ namespace Chiro.Gap.WebApp.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult NieuweCommVorm(NieuweCommVormModel model, int groepID, int gelieerdePersoonID)
 		{
-			CommunicatieVormValidator cvValid = new CommunicatieVormValidator();
-			CommunicatieType type = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieType>(l => l.CommunicatieTypeOphalen(model.geselecteerdeCommVorm));
-			model.NieuweCommVorm.CommunicatieType = type;
+			CommunicatieVormValidator validator = new CommunicatieVormValidator();
+			CommunicatieType commType = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieType>(l => l.CommunicatieTypeOphalen(model.geselecteerdeCommVorm));
+			model.NieuweCommVorm.CommunicatieType = commType;
 
-			if (cvValid.Valideer(model.NieuweCommVorm))
+			// De validatie van de vorm van telefoonnrs, e-mailadressen,... kan niet automatisch;
+			// dat doen we eerst.
+			if (!validator.Valideer(model.NieuweCommVorm))
 			{
-				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegenAanPersoon(gelieerdePersoonID, model.NieuweCommVorm, model.geselecteerdeCommVorm));
-				return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+				// voeg gevonden fout toe aan modelstate.
+				ModelState.AddModelError("Model.NieuweCommVorm.Nummer", string.Format(Properties.Resources.FormatValidatieFout, commType.Omschrijving, commType.Voorbeeld));
 			}
-			else
+
+			if (!ModelState.IsValid)
 			{
+				// Zowel bij automatisch gedetecteerde fout, als bij fout in vorm van
+				// communicatievorm: model herstellen, en gebruiker opnieuw laten proberen.
+
 				BaseModelInit(model, groepID);
 
 				// info voor model herstellen
-				GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
-				IEnumerable<CommunicatieType> types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.CommunicatieTypesOphalen());
-				model.Aanvrager = g;
-				model.Types = types;
+				model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
+				model.Types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.CommunicatieTypesOphalen());
 				model.Title = "Nieuwe communicatievorm toevoegen";
 
-				ModelState.AddModelError("Model.NieuweCommVorm.Nummer", string.Format(Properties.Resources.FormatValidatieFout, type.Omschrijving, type.Voorbeeld));
 				return View("NieuweCommVorm", model);
+			}
+			else
+			{
+				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegenAanPersoon(gelieerdePersoonID, model.NieuweCommVorm, model.geselecteerdeCommVorm));
+				return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
 			}
 		}
 
@@ -472,27 +480,41 @@ namespace Chiro.Gap.WebApp.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult BewerkenCommVorm(CommVormModel model, int gelieerdePersoonID, int groepID)
 		{
-			CommunicatieVormValidator cvValid = new CommunicatieVormValidator();
-			CommunicatieVorm commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieVorm>(l => l.CommunicatieVormOphalen(model.NieuweCommVorm.ID));
-			model.NieuweCommVorm.CommunicatieType = commv.CommunicatieType;
+			var validator = new CommunicatieVormValidator();
+			CommunicatieVorm commVorm = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieVorm>(l => l.CommunicatieVormOphalen(model.NieuweCommVorm.ID));
+			CommunicatieType commType = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieType>(l => l.CommunicatieTypeOphalen(commVorm.CommunicatieType.ID));
 
-			if (cvValid.Valideer(model.NieuweCommVorm))
+			model.NieuweCommVorm.CommunicatieType = commVorm.CommunicatieType;
+			
+			// De validatie van de vorm van telefoonnrs, e-mailadressen,... kan niet automatisch;
+			// dat doen we eerst.
+			if (!validator.Valideer(model.NieuweCommVorm))
 			{
-				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(model.NieuweCommVorm));
-				return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+				// voeg gevonden fout toe aan modelstate.
+				ModelState.AddModelError("Model.NieuweCommVorm.Nummer", string.Format(
+					Properties.Resources.FormatValidatieFout, 
+					commType.Omschrijving, 
+					commType.Voorbeeld));
+			}
+
+			if (!ModelState.IsValid)
+			{
+				// Zowel bij automatisch gedetecteerde fout (op basis van attributen) als bij
+				// fout in vorm communicatievorm: model herstellen en gebruiker opnieuw laten
+				// proberen.
+
+				BaseModelInit(model, groepID);
+
+				model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
+				model.NieuweCommVorm = commVorm;
+				model.Title = "Communicatievorm bewerken";
+
+				return View("CommVormBewerken", model);
 			}
 			else
 			{
-				BaseModelInit(model, groepID);
-				// info herstellen
-				//TODO dit is niet juist broes, want hij haalt 2 keer de persoon op?
-				GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
-				model.Aanvrager = g;
-				model.NieuweCommVorm = commv;
-				model.Title = "Communicatievorm bewerken";
-
-				ModelState.AddModelError("Model.NieuweCommVorm.Nummer", string.Format(Properties.Resources.FormatValidatieFout, commv.CommunicatieType.Omschrijving, commv.CommunicatieType.Voorbeeld));
-				return View("CommVormBewerken", model);
+				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(model.NieuweCommVorm));
+				return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
 			}
 			///TODO catch exceptions overal
 		}
