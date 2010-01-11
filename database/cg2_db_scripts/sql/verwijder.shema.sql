@@ -3,6 +3,10 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[core].[ufnSoundEx]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [core].[ufnSoundEx]
+GO
+
 DROP TABLE [adr].[Adres]
 GO
 DROP TABLE [adr].[Gemeente]
