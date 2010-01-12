@@ -1,0 +1,5 @@
+Hier vind je exports van het analysebestand, dat we maakten met Enterprise
+Architect.  Het is mogelijk dat deze exports verouderd zijn.
+
+Hoe je het originele document bekijkt, vind je in [wiki:UmlSpecs]:
+https://develop.chiro.be/trac/cg2/wiki/UmlSpecs
