@@ -99,6 +99,10 @@
       <Project>{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}</Project>
       <Name>Chiro.Gap.Dummies</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.TestDbInfo\Chiro.Gap.TestDbInfo.csproj">
+      <Project>{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724}</Project>
+      <Name>Chiro.Gap.TestDbInfo</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

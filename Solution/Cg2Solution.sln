@@ -8,7 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Cg2Solution1.vsmdi = Cg2Solution1.vsmdi
 		Cg2Solution2.vsmdi = Cg2Solution2.vsmdi
 		Cg2Solution3.vsmdi = Cg2Solution3.vsmdi
-		Cg2Solution4.vsmdi = Cg2Solution4.vsmdi
+		Cg2Solution6.vsmdi = Cg2Solution6.vsmdi
 		CustomDictionary.xml = CustomDictionary.xml
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
@@ -78,9 +78,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Validation", "Chi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Workers.Test.CustomIoc", "TestProjecten\Chiro.Gap.Workers.Test.CustomIoc\Chiro.Gap.Workers.Test.CustomIoc.csproj", "{64C70DFC-E7B9-4293-B626-2C99C62208C8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.TestDbInfo", "TestProjecten\Chiro.Gap.TestDbInfo\Chiro.Gap.TestDbInfo.csproj", "{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Cg2Solution4.vsmdi
+		CategoryFile = Cg2Solution6.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -361,6 +363,16 @@ Global
 		{64C70DFC-E7B9-4293-B626-2C99C62208C8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{64C70DFC-E7B9-4293-B626-2C99C62208C8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{64C70DFC-E7B9-4293-B626-2C99C62208C8}.Release|Win32.ActiveCfg = Release|Any CPU
+		{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -377,6 +389,7 @@ Global
 		{61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 		{9BFC33C8-238D-421C-B19B-D5FAC50CB15C} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 		{64C70DFC-E7B9-4293-B626-2C99C62208C8} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
+		{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 		{E883CD16-1749-43FA-B344-AD2928A8B00E} = {BBABD468-99FA-43E6-8E64-DAA6C3CFF2BE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

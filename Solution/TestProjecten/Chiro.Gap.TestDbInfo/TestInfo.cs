@@ -1,12 +1,8 @@
-﻿namespace Chiro.Gap.Data.Test
+﻿namespace Chiro.Gap.TestDbInfo
 {
 	/// <summary>
-	/// Gegevens voor unit testing, zodat de automatische tests de
-	/// `manuele' tests niet in de weg lopen.
+	/// Info over testgegevens in de database voor unit testing.
 	/// </summary>
-	/// <remarks>Deze ID's moeten overeenkomen met de DB.  Het zou niet slecht zijn moest het
-	/// script om de database te genereren telkens dezelfde testdata aanmaken, waaraan dan deze
-	/// ID's aangepast kunnen worden.</remarks>
 	public static class TestInfo
 	{
 		/// <summary>

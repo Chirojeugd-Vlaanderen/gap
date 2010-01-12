@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.TestDbInfo;
 
 namespace Chiro.Gap.Data.Test
 {

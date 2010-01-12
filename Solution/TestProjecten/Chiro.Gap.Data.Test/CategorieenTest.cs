@@ -9,6 +9,7 @@ using Chiro.Gap.Workers;
 using Chiro.Gap.Dummies;
 using Chiro.Cdf.Data.Entity;
 using Chiro.Cdf.Ioc;
+using Chiro.Gap.TestDbInfo;
 
 namespace Chiro.Gap.Data.Test
 {

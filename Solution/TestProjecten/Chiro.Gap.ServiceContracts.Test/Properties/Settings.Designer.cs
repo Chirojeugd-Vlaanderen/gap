@@ -25,18 +25,6 @@ namespace Chiro.Gap.ServiceContracts.Test.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("317")]
-        public int GroepID {
-            get {
-                return ((int)(this["GroepID"]));
-            }
-            set {
-                this["GroepID"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("TestKookies")]
         public string CategorieNaam {
             get {

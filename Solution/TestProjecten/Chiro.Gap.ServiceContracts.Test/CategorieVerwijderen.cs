@@ -10,6 +10,7 @@ using Chiro.Gap.Orm.DataInterfaces;
 using System.IO;
 using System.Runtime.Serialization;
 using Chiro.Gap.Services;
+using Chiro.Gap.TestDbInfo;
 
 namespace Chiro.Gap.ServiceContracts.Test
 {
@@ -50,13 +51,13 @@ namespace Chiro.Gap.ServiceContracts.Test
 			// Kijken of Broes' testcategorie al bestaat.  Zo niet: creeren.
 
 			int catID = groepenSvc.CategorieIDOphalen(
-				Properties.Settings.Default.GroepID,
+				TestInfo.GROEPID,
 				Properties.Settings.Default.CategorieCode_Verwijderen);
 
 			if (catID == 0)
 			{
 				catID = groepenSvc.CategorieToevoegen(
-					Properties.Settings.Default.GroepID,
+					TestInfo.GROEPID,
 					Properties.Settings.Default.CategorieNaam,
 					Properties.Settings.Default.CategorieCode_Verwijderen);
 			}
@@ -68,7 +69,7 @@ namespace Chiro.Gap.ServiceContracts.Test
 		public void tearDown()
 		{
 			IGroepenService gpm = Factory.Maak<GroepenService>();
-			Groep g = gpm.OphalenMetCategorieen(Properties.Settings.Default.GroepID);
+			Groep g = gpm.OphalenMetCategorieen(TestInfo.GROEPID);
 			foreach (Categorie c in g.Categorie)
 			{
 				if (catlijst.Contains(c.ID))
@@ -88,7 +89,7 @@ namespace Chiro.Gap.ServiceContracts.Test
 			// Arrange: Categorie-ID bepalen van te verwijderen categorie.
 
 			int catID = groepenSvc.CategorieIDOphalen(
-				Properties.Settings.Default.GroepID,
+				TestInfo.GROEPID,
 				Properties.Settings.Default.CategorieCode_Verwijderen);
 
 			// Act: verwijder de categorie met gegeven ID, en probeer categorie
@@ -96,7 +97,7 @@ namespace Chiro.Gap.ServiceContracts.Test
 
 			groepenSvc.CategorieVerwijderen(catID);
 			catID = groepenSvc.CategorieIDOphalen(
-				Properties.Settings.Default.GroepID,
+				TestInfo.GROEPID,
 				Properties.Settings.Default.CategorieCode_Verwijderen);
 
 			// Assert: categorie niet meer gevonden.

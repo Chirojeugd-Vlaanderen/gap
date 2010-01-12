@@ -9,6 +9,7 @@ using Chiro.Cdf.Ioc;
 using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Cdf.Data;
+using Chiro.Gap.TestDbInfo;
 
 namespace Chiro.Gap.Data.Test
 {
