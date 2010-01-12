@@ -6,6 +6,7 @@ using Chiro.Adf.ServiceModel;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
+using System.ComponentModel;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -27,6 +28,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Adrestype voor het nieuwe adres
 		/// </summary>
+		[DisplayName("Adrestype")]
 		public AdresTypeEnum AdresType { get; set; }
 
 		/// <summary>

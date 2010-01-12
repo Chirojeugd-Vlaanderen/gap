@@ -61,7 +61,7 @@
 		/// <summary>
 		/// Totaal aantal personen in deze categorie
 		/// </summary>
-		public const int AANTALINCATEGORIE = 1;
+		public const int AANTALINCATEGORIE = 2;
 
 		/// <summary>
 		/// ID van een afdeling van de testgroep
