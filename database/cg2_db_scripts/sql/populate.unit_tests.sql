@@ -425,13 +425,18 @@ PRINT 'public const int GROEPID = ' + CAST(@testGroepID AS VARCHAR(10)) + ';';
 PRINT 'public const int GELIEERDEPERSOONID = ' + CAST(@testGelieerdePersoon1ID AS VARCHAR(10)) + ';';
 PRINT 'public const int GELIEERDEPERSOON2ID = ' + CAST(@testGelieerdePersoon2ID  AS VARCHAR(10)) + ';';
 PRINT 'public const int GELIEERDEPERSOON3ID = ' + CAST(@testGelieerdePersoon3ID  AS VARCHAR(10)) + ';';
+
 DECLARE @GELPERS AS INT;
+DECLARE @AantalInCategorie AS INT;
+
 SET @GELPERS = (SELECT count(*) from pers.GelieerdePersoon where GroepID = @testGroepID);
+SET @AantalInCategorie = (SELECT COUNT(*) FROM pers.PersoonsCategorie WHERE CategorieID=@testCategorie1ID);
+
 PRINT 'public const int MINAANTALGELPERS = '+ CAST(@GELPERS AS VARCHAR(10)) + ';';
 PRINT 'public const int LID3ID = ' + CAST(@testLid3ID AS VARCHAR(10)) + ';';
 PRINT 'public const int CATEGORIEID = ' + CAST(@testCategorie1ID AS VARCHAR(10)) + ';';
 PRINT 'public const int CATEGORIE2ID = ' + CAST(@testCategorie2ID AS VARCHAR(10)) + ';';
-PRINT 'public const int AANTALINCATEGORIE = 1;'
+PRINT 'public const int AANTALINCATEGORIE = ' + CAST(@aantalInCategorie AS VARCHAR(10)) + ';'
 PRINT 'public const int AFDELINGID = ' + CAST(@testAfdeling1ID AS VARCHAR(10)) + ';';
 PRINT 'public const int OFFICIELEAFDELINGID = ' + CAST(@testOfficieleAfdelingID1 AS VARCHAR(10)) + ';';
 PRINT 'public const int AFDELINGSJAARID = ' + CAST(@testAfdelingsJaarID AS VARCHAR(10)) + ';';
