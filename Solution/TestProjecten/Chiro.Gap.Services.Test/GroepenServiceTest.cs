@@ -10,6 +10,7 @@ using Moq;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts.Mappers;
+using Chiro.Gap.TestDbInfo;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -85,13 +86,13 @@ namespace Chiro.Gap.Services.Test
 
 			#region Act
 
-            GroepInfo g = svc.InfoOphalen(Properties.Settings.Default.GroepID);
+            GroepInfo g = svc.InfoOphalen(TestInfo.GROEPID);
 
 			#endregion
 
 			#region Assert
 
-            Assert.IsTrue(g.ID == Properties.Settings.Default.GroepID);
+	    Assert.IsTrue(g.ID == TestInfo.GROEPID);
 			//groepenDaoMock.Verify(dao => dao.Ophalen(DummyData.DummyGroep.ID)); // is Ophalen wel opgeroepen?
 
 			#endregion

@@ -22,17 +22,5 @@ namespace Chiro.Gap.Services.Test.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("317")]
-        public int GroepID {
-            get {
-                return ((int)(this["GroepID"]));
-            }
-            set {
-                this["GroepID"] = value;
-            }
-        }
     }
 }
