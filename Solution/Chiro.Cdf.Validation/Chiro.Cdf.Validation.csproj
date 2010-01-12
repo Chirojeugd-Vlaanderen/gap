@@ -49,7 +49,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="StringLengteAttribute.cs" />
-    <Compile Include="StringMinimumLengthAttribute.cs" />
+    <Compile Include="StringMinimumLengteAttribute.cs" />
     <Compile Include="VerplichtAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
