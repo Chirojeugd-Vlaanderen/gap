@@ -71,7 +71,7 @@ SET DateFormat dmy;
 		DECLARE @testPersoon2ID AS INT;
 		DECLARE @testPersoon2Naam AS VARCHAR(160);				SET @testPersoon2Naam = @testPersoon1Naam
 		DECLARE @testPersoon2VoorNaam AS VARCHAR(60);			SET @testPersoon2VoorNaam = 'Irène';
-		DECLARE @testPersoon2GeboorteDatum AS SMALLDATETIME; 	SET @testPersoon2GeboorteDatum = '30/11/1959';
+		DECLARE @testPersoon2GeboorteDatum AS SMALLDATETIME; 	SET @testPersoon2GeboorteDatum = '30/11/2003';
 		DECLARE @testPersoon2IsMan AS BIT;						SET @testPersoon2IsMan=1;
 		
 		DECLARE @testPersoon3ID AS INT;
