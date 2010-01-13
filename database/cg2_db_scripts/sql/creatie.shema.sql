@@ -561,6 +561,7 @@ EXEC sp_addrolemember N'db_datareader', N'GapRole'
 GRANT EXECUTE ON core.ufnSoundEx TO GapRole
 GRANT DELETE,INSERT,UPDATE ON auth.Gav TO GapRole
 GRANT DELETE,INSERT,UPDATE ON auth.GebruikersRecht TO GapRole
+GRANT DELETE,INSERT,UPDATE ON adr.Adres TO GapRole
 GRANT DELETE,INSERT,UPDATE ON core.Categorie TO GapRole
 GRANT DELETE,INSERT,UPDATE ON grp.Groep TO GapRole
 GRANT DELETE,INSERT,UPDATE ON lid.AfdelingsJaar TO GapRole

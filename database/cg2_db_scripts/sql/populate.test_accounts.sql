@@ -28,5 +28,9 @@ INSERT INTO [auth].[Gav] ([Login]) VALUES ('CORP\THaeper');
 INSERT INTO [auth].[Gav] ([Login]) VALUES ('broes-laptop\broes de cat');
 INSERT INTO [auth].[Gav] ([Login]) VALUES ('SCOOTER\Steven');
 INSERT INTO [auth].[Gav] ([Login]) VALUES ('HILBERT\peter');
+INSERT INTO [auth].[Gav] ([Login]) VALUES ('BROES-DESKTOP\Administrator');
+INSERT INTO [auth].[Gav] ([Login]) VALUES ('BROES-DESKTOP\Broes');
+INSERT INTO [auth].[Gav] ([Login]) VALUES ('LAP-JVE\Johan');
+INSERT INTO [auth].[Gav] ([Login]) VALUES ('TST-JVE\Johan');
 
 
