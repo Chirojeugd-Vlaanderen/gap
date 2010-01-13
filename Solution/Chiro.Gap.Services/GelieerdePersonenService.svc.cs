@@ -189,7 +189,7 @@ namespace Chiro.Gap.Services
 			Adres nieuwAdres = null;
 			try
 			{
-				nieuwAdres = _adrMgr.ZoekenOfMaken(nA.Straat, nA.HuisNr, nA.Bus, nA.Gemeente, nA.PostNr, null);
+				nieuwAdres = _adrMgr.ZoekenOfMaken(nA.Straat, nA.HuisNr, nA.Bus, nA.Gemeente, nA.PostNr, String.Empty);
 			}
 			catch (AdresException ex)
 			{
@@ -238,7 +238,7 @@ namespace Chiro.Gap.Services
 			Adres adres = null;
 			try
 			{
-				adres = _adrMgr.ZoekenOfMaken(adr.Straat, adr.HuisNr, adr.Bus, adr.Gemeente, adr.PostNr, null);
+				adres = _adrMgr.ZoekenOfMaken(adr.Straat, adr.HuisNr, adr.Bus, adr.Gemeente, adr.PostNr, String.Empty);
 			}
 			catch (AdresException ex)
 			{

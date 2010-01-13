@@ -69,7 +69,7 @@ namespace Chiro.Gap.Data.Test
 		}
 
 		/// <summary>
-		/// Probeert een straat op te zoeken op basis van de postcode
+		/// Probeert een straat op te zoeken op basis van een postnummer
 		/// </summary>
 		[TestMethod]
 		public void StraatOpzoeken()

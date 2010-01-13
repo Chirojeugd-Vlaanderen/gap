@@ -60,7 +60,7 @@ $(document).ready(function() {
 			$("#notfound").html("Er bestaat geen gemeente met die naam.");
 		}*/
 		document.getElementById("Adres_Straat").disabled = false;
-		$.post('<%=Url.Action("GetPostCode", "Personen") %>', { gemeente: $("#Adres_Gemeente").val() }, function(data) {
+		$.post('<%=Url.Action("PostNrVoorstellen", "Personen") %>', { gemeente: $("#Adres_Gemeente").val() }, function(data) {
 			$("#Adres_PostNr").val(data + "");
 		}, "json");
 	});

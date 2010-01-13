@@ -621,7 +621,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="q">The query that contains the user input.</param>
 		/// <param name="limit">The number of tags return.</param>
-		public ActionResult GetPostCode(String gemeente)
+		public ActionResult PostNrVoorstellen(String gemeente)
 		{
 			IEnumerable<GemeenteInfo> tags = MvcApplication.getGemeentes().Where(x => x.Naam.Equals(gemeente, StringComparison.CurrentCultureIgnoreCase));
 

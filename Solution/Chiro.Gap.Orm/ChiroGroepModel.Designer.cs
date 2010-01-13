@@ -32,7 +32,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_CommunicatieVorm_CommunicatieType", "CommunicatieType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.CommunicatieType), "CommunicatieVorm", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.CommunicatieVorm))]
 
 // Original file name:
-// Generation date: 31/12/2009 2:27:52
+// Generation date: 13/01/2010 2:58:47
 namespace Chiro.Gap.Orm
 {
     
