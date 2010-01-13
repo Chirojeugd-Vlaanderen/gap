@@ -399,7 +399,7 @@ GO
 BEGIN
 	CREATE TABLE [pers].[CommunicatieVorm](
 		[Nota] [varchar](320) NULL,
-		[Nummer] [varchar](160) NULL,
+		[Nummer] [varchar](160) NOT NULL,
 		[CommunicatieVormID] [int] IDENTITY(1,1) NOT NULL,
 		[CommunicatieTypeID] [int] NOT NULL,
 		[IsGezinsgebonden] [bit] NOT NULL CONSTRAINT [DF_CommunicatieVorm_IsGezinsgebonden]  DEFAULT ((0)),
