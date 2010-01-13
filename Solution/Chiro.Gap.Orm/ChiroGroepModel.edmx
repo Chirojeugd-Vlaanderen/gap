@@ -304,7 +304,7 @@
             <PropertyRef Name="CommunicatieVormID" />
           </Key>
           <Property Name="Nota" Type="varchar" MaxLength="320" />
-          <Property Name="Nummer" Type="varchar" MaxLength="160" />
+          <Property Name="Nummer" Type="varchar" Nullable="false" MaxLength="160" />
           <Property Name="CommunicatieVormID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CommunicatieTypeID" Type="int" Nullable="false" />
           <Property Name="IsGezinsgebonden" Type="bit" Nullable="false" />
@@ -794,7 +794,7 @@
           <Key>
             <PropertyRef Name="ID" /></Key>
           <Property Name="Nota" Type="String" Nullable="true" />
-          <Property Name="Nummer" Type="String" Nullable="true" />
+          <Property Name="Nummer" Type="String" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="IsGezinsgebonden" Type="Boolean" Nullable="false" />
           <Property Name="Voorkeur" Type="Boolean" Nullable="false" />

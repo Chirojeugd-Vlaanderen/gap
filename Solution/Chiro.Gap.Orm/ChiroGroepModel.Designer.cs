@@ -32,7 +32,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_CommunicatieVorm_CommunicatieType", "CommunicatieType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.CommunicatieType), "CommunicatieVorm", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.CommunicatieVorm))]
 
 // Original file name:
-// Generation date: 13/01/2010 2:58:47
+// Generation date: 13/01/2010 5:04:07
 namespace Chiro.Gap.Orm
 {
     
@@ -1045,12 +1045,14 @@ namespace Chiro.Gap.Orm
         /// <summary>
         /// Create a new CommunicatieVorm object.
         /// </summary>
+        /// <param name="nummer">Initial value of Nummer.</param>
         /// <param name="id">Initial value of ID.</param>
         /// <param name="isGezinsgebonden">Initial value of IsGezinsgebonden.</param>
         /// <param name="voorkeur">Initial value of Voorkeur.</param>
-        public static CommunicatieVorm CreateCommunicatieVorm(int id, bool isGezinsgebonden, bool voorkeur)
+        public static CommunicatieVorm CreateCommunicatieVorm(string nummer, int id, bool isGezinsgebonden, bool voorkeur)
         {
             CommunicatieVorm communicatieVorm = new CommunicatieVorm();
+            communicatieVorm.Nummer = nummer;
             communicatieVorm.ID = id;
             communicatieVorm.IsGezinsgebonden = isGezinsgebonden;
             communicatieVorm.Voorkeur = voorkeur;
@@ -1082,7 +1084,7 @@ namespace Chiro.Gap.Orm
         /// <summary>
         /// There are no comments for Property Nummer in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string Nummer
         {
@@ -1094,7 +1096,7 @@ namespace Chiro.Gap.Orm
             {
                 this.OnNummerChanging(value);
                 this.ReportPropertyChanging("Nummer");
-                this._Nummer = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this._Nummer = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
                 this.ReportPropertyChanged("Nummer");
                 this.OnNummerChanged();
             }

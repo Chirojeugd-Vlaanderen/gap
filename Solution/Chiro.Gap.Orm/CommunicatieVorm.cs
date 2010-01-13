@@ -20,6 +20,7 @@ namespace Chiro.Gap.Orm
 		public class CommuncatieVormValidatie
 		{
 			[Verplicht()]
+			public string Nummer { get; set; }
 			[StringLengte(320)]
 			public string Nota { get; set; }
 		}

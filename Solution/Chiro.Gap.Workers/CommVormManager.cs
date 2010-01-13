@@ -99,7 +99,7 @@ namespace Chiro.Gap.Workers
             CommunicatieType type = _typedao.Ophalen(typeID);
             origineel.Communicatie.Add(comm);
             comm.CommunicatieType = type;
-            _dao.Bewaren(comm, l => l.CommunicatieType, l => l.GelieerdePersoon.Persoon);
+            _dao.Bewaren(comm, l => l.CommunicatieType.WithoutUpdate(), l => l.GelieerdePersoon.WithoutUpdate());
         }
 
 	// FIXME: de parameter 'gelieerdePersoonID' is overbodig; zie ticket #145.
