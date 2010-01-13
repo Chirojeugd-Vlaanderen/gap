@@ -8,23 +8,23 @@
 		/// <summary>
 		/// ID van groep waarop automatisch getest mag worden
 		/// </summary>
-		public const int GROEPID = 317;
+		public const int GROEPID = 1;
 
 		/// <summary>
 		/// ID van een gelieerde persoon van de testgroep
 		/// </summary>
 		/// <remarks>Deze persoon moet minstens 1 categorie hebben</remarks>
-		public const int GELIEERDEPERSOONID = 917;
+		public const int GELIEERDEPERSOONID = 1;
 
 		/// <summary>
 		/// ID van een andere gelieerde persoon van de testgroep
 		/// </summary>
-		public const int GELIEERDEPERSOON2ID = 918;
+		public const int GELIEERDEPERSOON2ID = 2;
 
 		/// <summary>
 		/// ID van een derde gelieerde persoon van de testgroep; deze persoon is lid.
 		/// </summary>
-		public const int GELIEERDEPERSOON3ID = 1580;
+		public const int GELIEERDEPERSOON3ID = 3;
 
 		/// <summary>
 		/// Ondergrens voor het totaal aantal gelieerde personen in een groep.
@@ -34,14 +34,14 @@
 		/// <summary>
 		/// LidID van een leider;
 		/// </summary>
-		public const int LID3ID = 607;
+		public const int LID3ID = 1;
 
 
 		/// <summary>
 		/// ID van categorie van testgroep1
 		/// </summary>
 		/// <remarks>Enkel gelieerde Persoon 1 moet in deze categorie zitten</remarks>
-		public const int CATEGORIEID = 288;
+		public const int CATEGORIEID = 1;
 
 		/// <summary>
 		/// code van bovenvermelde categorie
@@ -52,7 +52,7 @@
 		/// ID van tweede testcategorie
 		/// </summary>
 		/// <remarks>Deze categorie bevat zowel gelieerde personen 1 en 2</remarks>
-		public const int CATEGORIE2ID = 289;
+		public const int CATEGORIE2ID = 2;
 
 		/// <summary>
 		/// Totaal aantal personen in deze categorie
@@ -62,22 +62,22 @@
 		/// <summary>
 		/// ID van een afdeling van de testgroep
 		/// </summary>
-		public const int AFDELINGID = 37;
+		public const int AFDELINGID = 1;
 
 		/// <summary>
 		/// Officiele afdeling horende bij afdeling bepaald door AFDELINGID
 		/// </summary>
-		public const int OFFICIELEAFDELINGID = 3;
+		public const int OFFICIELEAFDELINGID = 1;
 
 		/// <summary>
 		/// Afdelingsjaar voor de testafdeling
 		/// </summary>
-		public const int AFDELINGSJAARID = 82;
+		public const int AFDELINGSJAARID = 1;
 
 		/// <summary>
 		/// ID van een andere afdeling van de testgroep
 		/// </summary>
-		public const int AFDELING2ID = 40;
+		public const int AFDELING2ID = 2;
 
 		/// <summary>
 		/// `startgeboortejaar' voor afdeling 2
@@ -92,7 +92,7 @@
 		/// <summary>
 		/// ID van een groepswerkjaar van de testgroep
 		/// </summary>
-		public const int GROEPSWERKJAARID = 13;
+		public const int GROEPSWERKJAARID = 1;
 
 		/// <summary>
 		/// Naam van een bestaande persoon in de testgroep
