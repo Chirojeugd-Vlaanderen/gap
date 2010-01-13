@@ -594,24 +594,26 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="q">The query that contains the user input.</param>
 		/// <param name="limit">The number of tags return.</param>
 		///TODO het lijkt niet mogelijk om rechtstreeks op GemeenteInfo een linq te maken die de juiste tags maakt, er gaat dan iets mis in de autocompletion
-		public ActionResult GetGemeentes(String q, int limit)
+		public ActionResult GemeentesVoorstellen(String q, int limit)
 		{
-			IEnumerable<GemeenteInfo> gs = MvcApplication.getGemeentes();
+			// Als geen limiet meegegeven, nemen we er (arbitrair) 10
+			if (limit == 0)
+			{
+				limit = 10;
+			}
 
-			List<String> tags = (from g in gs
-								 select g.Naam)
-								 .Where(x => x.StartsWith(q, StringComparison.CurrentCultureIgnoreCase))
-								 .ToList();
+			IEnumerable<GemeenteInfo> gemeentelijst = MvcApplication.getGemeentes();
+
+			var tags = (from g in gemeentelijst
+				    orderby g.Naam
+				    select new { Tag = g.Naam })
+				   .Where(x => x.Tag.StartsWith(q, StringComparison.CurrentCultureIgnoreCase))
+				   .Distinct()
+				   .Take(limit)
+				   .ToList();
 			
-			// Select the tags that match the query, and get the 
-			// number or tags specified by the limit.
-			var retValue = tags
-				.OrderBy(x => x)
-				//.Take(limit)
-				.Select(r => new { Tag = r }).ToList();
-
 			// Return the result set as JSON
-			return Json(retValue);
+			return Json(tags);
 		}
 
 		/// <summary>

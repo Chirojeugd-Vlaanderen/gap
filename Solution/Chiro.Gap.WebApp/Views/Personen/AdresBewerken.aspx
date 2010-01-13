@@ -33,7 +33,7 @@ $(document).ready(function() {
 	//  	document.getElementById("Adres_Straat").disabled = true;		
 	// }
 
-	$("#Adres_Gemeente").autocomplete('<%=Url.Action("GetGemeentes", "Personen") %>',
+	$("#Adres_Gemeente").autocomplete('<%=Url.Action("GemeentesVoorstellen", "Personen") %>',
 	{
 	dataType: 'json',
 	parse: function(data) {
