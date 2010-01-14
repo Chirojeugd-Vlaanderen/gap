@@ -34,7 +34,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Lijst met bewoners van het huidige adres
 		/// </summary>
-		public IList<GewonePersoonInfo> Bewoners { get; set; }
+		public IList<BewonersInfo> Bewoners { get; set; }
 
         /// <summary>
         /// Het adres (wordt geladen met het oude adres, komt terug met het nieuwe
@@ -56,7 +56,7 @@ namespace Chiro.Gap.WebApp.Models
         /// </summary>
         public AdresModel()
         {
-			Bewoners = new List<GewonePersoonInfo>();
+			Bewoners = new List<BewonersInfo>();
 			PersoonIDs = new List<int>();
 			Adres = new AdresInfo();
         }

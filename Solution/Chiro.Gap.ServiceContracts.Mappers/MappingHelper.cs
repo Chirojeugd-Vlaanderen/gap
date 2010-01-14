@@ -44,10 +44,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(
 					dst => dst.VolledigeNaam,
 					opt => opt.MapFrom(src => src.Persoon.VolledigeNaam))
-                .ForMember(
-                    dst => dst.CategorieLijst,
-                    opt => opt.MapFrom(src => src.CategorieLijstGet()))
-                .ForMember(
+		.ForMember(
+		    dst => dst.CategorieLijst,
+		    opt => opt.MapFrom(src => src.CategorieLijstGet()))
+		.ForMember(
 					dst => dst.CategorieLijst,
 					opt => opt.MapFrom(src => src.CategorieLijstGet()))
 				.ForMember(
@@ -57,39 +57,39 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.PersoonID,
 					opt => opt.MapFrom(src => src.Persoon.ID));
 
-            Mapper.CreateMap<AfdelingsJaar, AfdelingInfo>()
-                .ForMember(
-                    dst => dst.ID,
-                    opt => opt.MapFrom(src => src.Afdeling.ID))
-                .ForMember(
-                    dst => dst.AfdelingsJaarID,
-                    opt => opt.MapFrom(src => src.ID))
-                .ForMember(
-                    dst => dst.OfficieleAfdelingNaam,
-                    opt => opt.MapFrom(src => src.OfficieleAfdeling.Naam))
-                .ForMember(
-                    dst => dst.Naam,
-                    opt => opt.MapFrom(src => src.Afdeling.Naam))
-                .ForMember(
-                    dst => dst.AfdelingsJaarMagVerwijderdWorden,
-                    opt => opt.MapFrom(src => src.Leiding.Count + src.Kind.Count > 0 ? false : true))
-                .ForMember(
-                    dst => dst.Afkorting,
-                    opt => opt.MapFrom(src => src.Afdeling.Afkorting));
+			Mapper.CreateMap<AfdelingsJaar, AfdelingInfo>()
+			    .ForMember(
+				dst => dst.ID,
+				opt => opt.MapFrom(src => src.Afdeling.ID))
+			    .ForMember(
+				dst => dst.AfdelingsJaarID,
+				opt => opt.MapFrom(src => src.ID))
+			    .ForMember(
+				dst => dst.OfficieleAfdelingNaam,
+				opt => opt.MapFrom(src => src.OfficieleAfdeling.Naam))
+			    .ForMember(
+				dst => dst.Naam,
+				opt => opt.MapFrom(src => src.Afdeling.Naam))
+			    .ForMember(
+				dst => dst.AfdelingsJaarMagVerwijderdWorden,
+				opt => opt.MapFrom(src => src.Leiding.Count + src.Kind.Count > 0 ? false : true))
+			    .ForMember(
+				dst => dst.Afkorting,
+				opt => opt.MapFrom(src => src.Afdeling.Afkorting));
 
-            Mapper.CreateMap<Lid, LidInfo>()
-				.ForMember(
-					dst => dst.LidID,
-					opt => opt.MapFrom(src => src.ID))
-				.ForMember(
-					dst => dst.Type,
-					opt => opt.MapFrom(src => src is Kind ? LidType.Kind : LidType.Leiding))
-                .ForMember(
-                    dst => dst.AfdelingIdLijst,
-                    opt => opt.MapFrom(src => src.AfdelingIdLijstGet()))
-                .ForMember(
-					dst => dst.PersoonInfo,
-					opt => opt.MapFrom(src => src.GelieerdePersoon));
+			Mapper.CreateMap<Lid, LidInfo>()
+					    .ForMember(
+						    dst => dst.LidID,
+						    opt => opt.MapFrom(src => src.ID))
+					    .ForMember(
+						    dst => dst.Type,
+						    opt => opt.MapFrom(src => src is Kind ? LidType.Kind : LidType.Leiding))
+			    .ForMember(
+				dst => dst.AfdelingIdLijst,
+				opt => opt.MapFrom(src => src.AfdelingIdLijstGet()))
+			    .ForMember(
+						    dst => dst.PersoonInfo,
+						    opt => opt.MapFrom(src => src.GelieerdePersoon));
 
 			Mapper.CreateMap<Adres, AdresInfo>()
 				.ForMember(
@@ -106,7 +106,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.Subgemeente.PostNr))
 				.ForMember(
 					dst => dst.Bewoners,
-					opt => opt.MapFrom(src => src.PersoonsAdres.Select(x => x.Persoon).ToList()))
+					opt => opt.MapFrom(src => src.PersoonsAdres.ToList()))
 				.ForMember(
 					dst => dst.Bus,
 					opt => opt.MapFrom(src => src.Bus))
@@ -114,22 +114,28 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.ID,
 					opt => opt.MapFrom(src => src.ID));
 
-			Mapper.CreateMap<Persoon, GewonePersoonInfo>()
+			Mapper.CreateMap<Persoon, BewonersInfo>()
 				.ForMember(
-					dst => dst.AdNummer,
+					dst => dst.PersoonAdNummer,
 					opt => opt.MapFrom(src => src.AdNummer))
 				.ForMember(
-					dst => dst.GeboorteDatum,
+					dst => dst.PersoonGeboorteDatum,
 					opt => opt.MapFrom(src => src.GeboorteDatum))
 				.ForMember(
-					dst => dst.VolledigeNaam,
+					dst => dst.PersoonVolledigeNaam,
 					opt => opt.MapFrom(src => src.VolledigeNaam))
 				.ForMember(
-					dst => dst.Geslacht,
+					dst => dst.PersoonGeslacht,
 					opt => opt.MapFrom(src => src.Geslacht))
 				.ForMember(
 					dst => dst.PersoonID,
-					opt => opt.MapFrom(src => src.ID));
+					opt => opt.MapFrom(src => src.ID))
+				.ForMember(dst => dst.AdresType, opt => opt.MapFrom(src => AdresTypeEnum.Overig));
+
+			// De namen van de property's van BewonersInfo zijn zodanig geconfigureerd
+			// dat automapper automagisch goed geconfigureerd wordt.
+
+			Mapper.CreateMap<PersoonsAdres, BewonersInfo>();
 
 			Mapper.CreateMap<Straat, StraatInfo>()
 				.ForMember(
@@ -146,6 +152,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(
 					dst => dst.Naam,
 					opt => opt.MapFrom(src => src.Naam));
+
+			Mapper.AssertConfigurationIsValid();
 		}
 	}
 }

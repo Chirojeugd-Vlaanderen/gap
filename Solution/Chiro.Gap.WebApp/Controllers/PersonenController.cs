@@ -196,7 +196,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			return View("EditGegevens", model);
 		}
 
-		
+
 		/// <summary>
 		/// Probeert de gewijzigde persoonsgegevens te persisteren via de webservice
 		/// </summary>
@@ -241,25 +241,32 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		#region adressen
 
-		// GET: /Personen/Verhuizen/vanAdresID?AanvragerID=#
+		/// <summary>
+		/// Laat de gebruiker een persoon en eventueel diens huisgenoten verhuizen
+		/// </summary>
+		/// <param name="id">AdresID van het 'van-adres'</param>
+		/// <param name="aanvragerID">GelieerdePersoonID van de verhuizer</param>
+		/// <param name="groepID">Momenteel geselecteerde groep</param>
+		/// <returns>De view 'AdresBewerken'</returns>
 		public ActionResult Verhuizen(int id, int aanvragerID, int groepID)
 		{
+			// Haal PersoonID op, om te weten van wie we het adrestype gaan overnemen.
+			int persoonID = 
+				ServiceHelper.CallService<IGelieerdePersonenService, int>(
+					srvc => srvc.PersoonIDGet(aanvragerID));
+
 			AdresModel model = new AdresModel();
 			BaseModelInit(model, groepID);
 
 			model.AanvragerID = aanvragerID;
 			AdresInfo a = ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(l => l.AdresMetBewonersOphalen(id));
+
 			model.Bewoners = a.Bewoners;
 			model.Adres = a;
 			model.OudAdresID = id;
-
-			// Bij de constructie van verhuisinfo zijn vanadres naaradres
-			// dezelfde.  Van zodra er een postback gebeurt van het form,
-			// wordt NaarAdres gebind met de gegevens uit het form; op dat
-			// moment wordt een nieuwe instantie van het naaradres
-			// gemaakt.
-
-			//TODO was dit nodig? model.Adres = a;
+			model.AdresType = (from bewoner in model.Bewoners
+					   where bewoner.PersoonID == persoonID
+					   select bewoner.AdresType).FirstOrDefault();
 
 			// Standaard verhuist iedereen mee.
 			model.PersoonIDs = (from b in a.Bewoners
@@ -287,15 +294,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				// Adressen worden nooit gewijzigd, enkel bijgemaakt.  (en eventueel
 				// verwijderd.)
 
-				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersonenVerhuizen(model.PersoonIDs, model.Adres, model.OudAdresID));
-
-				// FIXME: Dit (onderstaand) is uiteraard niet de goede manier om 
-				// de persoon te bepalen die getoond moet worden.  
-				// Bovendien is het niet zeker of de gebruiker
-				// wel een persoon heeft aangevinkt.  Maar voorlopig trek ik me
-				// er nog niks van aan
-
-				Debug.Assert(model.PersoonIDs.Count > 0);
+				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersonenVerhuizen(model.PersoonIDs, model.Adres, model.OudAdresID, model.AdresType));
 
 				// Toon een persoon die woont op het nieuwe adres.
 				// (wat hier moet gebeuren hangt voornamelijk af van de use case)
@@ -335,10 +334,9 @@ namespace Chiro.Gap.WebApp.Controllers
 			// Van de aanvrager heb ik het PersoonID nodig, en we hebben nu enkel het
 			// ID van de GelieerdePersoon.  Het PersoonID
 
-			model.PersoonIDs = new List<int> 
-            { 
-                ServiceHelper.CallService<IGelieerdePersonenService, int>(srvc => srvc.PersoonIDGet(gelieerdePersoonID))
-            };
+			model.PersoonIDs = new List<int> { 
+				ServiceHelper.CallService<IGelieerdePersonenService, int>(srvc => srvc.PersoonIDGet(gelieerdePersoonID))
+			};
 
 			BaseModelInit(model, groepID);
 
@@ -367,7 +365,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			BaseModelInit(model, groepID);
 
 			model.AanvragerID = id;
-			model.Bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<GewonePersoonInfo>>(l => l.HuisGenotenOphalen(id));
+			model.Bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(l => l.HuisGenotenOphalen(id));
 
 			// Standaard krijgt alleen de aanvrager een nieuw adres.
 			// Van de aanvrager heb ik het PersoonID nodig, en we hebben nu enkel het
@@ -401,7 +399,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				// De mogelijke bewoners zijn op dit moment vergeten, en moeten dus
 				// terug opgevraagd worden.
-				model.Bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<GewonePersoonInfo>>(l => l.HuisGenotenOphalen(model.AanvragerID));
+				model.Bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(l => l.HuisGenotenOphalen(model.AanvragerID));
 				return View("AdresBewerken", model);
 			}
 			catch
@@ -493,15 +491,15 @@ namespace Chiro.Gap.WebApp.Controllers
 			CommunicatieType commType = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieType>(l => l.CommunicatieTypeOphalen(commVorm.CommunicatieType.ID));
 
 			model.NieuweCommVorm.CommunicatieType = commVorm.CommunicatieType;
-			
+
 			// De validatie van de vorm van telefoonnrs, e-mailadressen,... kan niet automatisch;
 			// dat doen we eerst.
 			if (!validator.Valideer(model.NieuweCommVorm))
 			{
 				// voeg gevonden fout toe aan modelstate.
 				ModelState.AddModelError("Model.NieuweCommVorm.Nummer", string.Format(
-					Properties.Resources.FormatValidatieFout, 
-					commType.Omschrijving, 
+					Properties.Resources.FormatValidatieFout,
+					commType.Omschrijving,
 					commType.Voorbeeld));
 			}
 
@@ -611,7 +609,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				   .Distinct()
 				   .Take(limit)
 				   .ToList();
-			
+
 			// Return the result set as JSON
 			return Json(tags);
 		}
@@ -650,8 +648,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			var postNrs = (from gemeente in MvcApplication.getGemeentes()
 				       where String.Compare(gemeente.Naam, gemeenteNaam) == 0
 				       select gemeente.PostNr).Distinct().ToList();
-				      
-			IEnumerable<StraatInfo> mogelijkeStraten = 
+
+			IEnumerable<StraatInfo> mogelijkeStraten =
 				ServiceHelper.CallService<IGroepenService, IEnumerable<StraatInfo>>(
 					x => x.StratenOphalenMeerderePostNrs(gedeeltelijkeStraatNaam, postNrs));
 
@@ -660,7 +658,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				     select straat.Naam).Distinct();
 
 			var resultaat = from tag in namen
-					select new {Tag = tag};
+					select new { Tag = tag };
 
 			// Return the result set as JSON
 			return Json(resultaat);

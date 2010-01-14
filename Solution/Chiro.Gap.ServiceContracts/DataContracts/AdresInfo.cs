@@ -37,6 +37,6 @@ namespace Chiro.Gap.ServiceContracts
 		public String Gemeente { get; set; }
 
 		[DataMember]
-		public List<GewonePersoonInfo> Bewoners { get; set; }
+		public List<BewonersInfo> Bewoners { get; set; }
 	}
 }

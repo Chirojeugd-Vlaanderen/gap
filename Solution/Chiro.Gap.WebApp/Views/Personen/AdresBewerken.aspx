@@ -105,7 +105,10 @@ $(document).ready(function() {
    <%
 	List<CheckBoxListInfo> info
 		= (from p in Model.Bewoners
-		   select new CheckBoxListInfo(p.PersoonID.ToString(), p.VolledigeNaam, Model.PersoonIDs.Contains(p.PersoonID)))
+		   select new CheckBoxListInfo(
+                       p.PersoonID.ToString(), 
+                       p.PersoonVolledigeNaam, 
+                       Model.PersoonIDs.Contains(p.PersoonID)))
 			.ToList<CheckBoxListInfo>();
    %>
    

@@ -176,12 +176,32 @@ namespace Chiro.Gap.Services
 			return Mapper.Map<Adres, AdresInfo>(_adrMgr.AdresMetBewonersOphalen(adresID));
 		}
 
-		// Verhuizen van een lijst personen
-		// FIXME: Deze functie werkt op PersoonID's en niet op
-		// GelieerdePersoonID's, en bijgevolg hoort dit eerder thuis
-		// in een PersonenService ipv een GelieerdePersonenService.
+
+		/// <summary>
+		/// Verhuist gelieerde personen van een oud naar een nieuw
+		/// adres.
+		/// (De koppelingen Persoon-Oudadres worden aangepast 
+		/// naar Persoon-NieuwAdres.)
+		/// </summary>
+		/// <param name="persoonIDs">ID's van te verhuizen Personen (niet gelieerd!)</param>
+		/// <param name="naarAdres">AdresInfo-object met nieuwe adresgegevens</param>
+		/// <param name="oudAdresID">ID van het oude adres</param>
+		/// <param name="adresType">Adrestype dat alle aangepaste PersoonsAdressen zullen krijgen</param>
+		/// <remarks>
+		/// (1) nieuwAdres.ID wordt genegeerd.  Het adresID wordt altijd
+		/// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
+		/// dan krijgt het adres een nieuw ID. 
+		/// 
+		/// (2) Deze functie werkt op PersoonID's en niet op
+		/// GelieerdePersoonID's, en bijgevolg hoort dit eerder thuis
+		/// in een PersonenService dan in een GelieerdePersonenService.
+		/// </remarks>
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void PersonenVerhuizen(IList<int> personenIDs, AdresInfo nA, int oudAdresID)
+		public void PersonenVerhuizen(
+			IList<int> persoonIDs, 
+			AdresInfo naarAdres, 
+			int oudAdresID,
+			AdresTypeEnum adresType)
 		{
 			// Zoek adres op in database, of maak een nieuw.
 			// (als straat en gemeente gekend)
@@ -189,7 +209,13 @@ namespace Chiro.Gap.Services
 			Adres nieuwAdres = null;
 			try
 			{
-				nieuwAdres = _adrMgr.ZoekenOfMaken(nA.Straat, nA.HuisNr, nA.Bus, nA.Gemeente, nA.PostNr, String.Empty);
+				nieuwAdres = _adrMgr.ZoekenOfMaken(
+					naarAdres.Straat, 
+					naarAdres.HuisNr, 
+					naarAdres.Bus, 
+					naarAdres.Gemeente, 
+					naarAdres.PostNr, 
+					String.Empty);	// TODO: buitenlandse adressen (#238)
 			}
 			catch (AdresException ex)
 			{
@@ -198,7 +224,7 @@ namespace Chiro.Gap.Services
 
 			// Om foefelen te vermijden: we werken enkel op de gelieerde
 			// personen waar de gebruiker GAV voor is.
-			IList<int> mijnPersonen = _auMgr.EnkelMijnPersonen(personenIDs);
+			IList<int> mijnPersonen = _auMgr.EnkelMijnPersonen(persoonIDs);
 
 			// Haal bronadres en alle bewoners op
 			Adres oudAdres = _adrMgr.AdresMetBewonersOphalen(oudAdresID);
@@ -216,7 +242,7 @@ namespace Chiro.Gap.Services
 			// lachen.
 			foreach (Persoon verhuizer in teVerhuizen)
 			{
-				_pMgr.Verhuizen(verhuizer, oudAdres, nieuwAdres);
+				_pMgr.Verhuizen(verhuizer, oudAdres, nieuwAdres, adresType);
 			}
 
 			// Persisteren
@@ -277,10 +303,10 @@ namespace Chiro.Gap.Services
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<GewonePersoonInfo> HuisGenotenOphalen(int gelieerdePersoonID)
+		public IList<BewonersInfo> HuisGenotenOphalen(int gelieerdePersoonID)
 		{
 			IList<Persoon> lijst = _pMgr.HuisGenotenOphalen(gelieerdePersoonID);
-			return Mapper.Map<IList<Persoon>, IList<GewonePersoonInfo>>(lijst);
+			return Mapper.Map<IList<Persoon>, IList<BewonersInfo>>(lijst);
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]

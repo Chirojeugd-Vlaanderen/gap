@@ -145,12 +145,17 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="persoonIDs">ID's van te verhuizen Personen (niet gelieerd!)</param>
 		/// <param name="nieuwAdres">AdresInfo-object met nieuwe adresgegevens</param>
 		/// <param name="oudAdresID">ID van het oude adres</param>
+		/// <param name="adresType">Adrestype dat alle aangepaste PersoonsAdressen zullen krijgen</param>
 		/// <remarks>nieuwAdres.ID wordt genegeerd.  Het adresID wordt altijd
 		/// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
 		/// dan krijgt het adres een nieuw ID.</remarks>
 		[OperationContract]
 		[FaultContract(typeof(AdresFault))]
-		void PersonenVerhuizen(IList<int> persoonIDs, AdresInfo nieuwAdres, int oudAdresID);
+		void PersonenVerhuizen(
+			IList<int> persoonIDs, 
+			AdresInfo nieuwAdres, 
+			int oudAdresID, 
+			AdresTypeEnum adresType);
 
 		/// <summary>
 		/// Haalt alle personen op die een adres gemeen hebben met de
@@ -161,7 +166,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// persoon</returns>
 		/// <remarks>parameters: GELIEERDEpersoonID, returns PERSONEN</remarks>
 		[OperationContract]
-		IList<GewonePersoonInfo> HuisGenotenOphalen(int gelieerdePersoonID);
+		IList<BewonersInfo> HuisGenotenOphalen(int gelieerdePersoonID);
 
 		/// <summary>
 		/// Voegt een adres toe aan een verzameling personen

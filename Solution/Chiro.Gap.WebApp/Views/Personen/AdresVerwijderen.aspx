@@ -35,7 +35,7 @@
                    = (from pa in Model.Adres.Bewoners
                       select new CheckBoxListInfo(
                          pa.PersoonID.ToString()
-                         , pa.VolledigeNaam
+                         , pa.PersoonVolledigeNaam
                          , Model.PersoonIDs.Contains(pa.PersoonID) )).ToList<CheckBoxListInfo>();
            %>
            
