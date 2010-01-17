@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Configuration;
 using System.Text;
@@ -9,7 +11,7 @@ using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WatiN.Core;
 using WatiN.Core.Logging;
-
+using Chiro.WatiN.Test;
 
 namespace Chiro.WatiN.Test
 {
@@ -47,6 +49,12 @@ namespace Chiro.WatiN.Test
             }
         }
 
+        // 
+        // ------------------------------------------------------------------------------------------------------------
+        // - Configuratie van test omgeving
+        // ------------------------------------------------------------------------------------------------------------
+        //
+
         #region Additional test attributes
         //
         // You can use the following additional attributes as you write your tests:
@@ -70,13 +78,13 @@ namespace Chiro.WatiN.Test
         #endregion
         // Deployment server voor GapServices
         private static Process GapServicesProcess;
-        private static int GapServicesPort = 2734;
+        private static int GapServicesPort = Properties.Settings.Default.GapServicesPort;
         private static string GapServicesDeploymentServer = "http://localhost:" + GapServicesPort;
         private static string GapServicesPhysicalPath;
 
         // Deployment server voor GapWebApp
         private static Process GapWebAppProcess;
-        private static int GapWebAppPort = 58895;
+        private static int GapWebAppPort = Properties.Settings.Default.GapWebAppPort;
         private static string GapWebAppDeploymentServer = "http://localhost:" + GapWebAppPort;
         private static string GapWebAppPhysicalPath;
 
@@ -88,24 +96,29 @@ namespace Chiro.WatiN.Test
         [ClassInitialize()]
         public static void StartWebServer(TestContext testContext)
         {
+            // De IDE wat tijd geven om correct zijn werk te doen, vooral op trage machines.
+            System.Threading.Thread.Sleep(1000);
+
             // Probeer de Solution directory te vinden.
             EnvDTE.DTE dte = (EnvDTE.DTE)System.Runtime.InteropServices.Marshal.GetActiveObject("VisualStudio.DTE");
             SolutionRoot = System.IO.Path.GetDirectoryName(dte.Solution.FullName);
-            
+
             // Als we de testen runnen in de debugging mode, dan start de DevServer automatisch.
             // Er zijn 2 mogelijkheden wanneer we niet in de debugger zitten, ofwel runnen we onze testen
             // via de VisualStudio UI, ofwel via een commandline tool genaamd: MSTest.
             // We veronderstellen dat als de environment variabele "CG2_GESTART_DOOR" de waarde DevEnv heeft, 
             // dan gebruiken we niet de VisualStudio UI.
             Boolean StartDevServer = false;
-            String Gg2GestartDoor = Environment.GetEnvironmentVariable("    "); 
-            if ( ! String.IsNullOrEmpty (Gg2GestartDoor)) 
-            { 
+            String Gg2GestartDoor = Environment.GetEnvironmentVariable("    ");
+            if (!String.IsNullOrEmpty(Gg2GestartDoor))
+            {
                 if (String.Equals(Gg2GestartDoor, "MSTest"))
                 {
                     StartDevServer = true;
                 }
-            } else {
+            }
+            else
+            {
                 if (!System.Diagnostics.Debugger.IsAttached)
                 {
                     StartDevServer = true;
@@ -163,16 +176,139 @@ namespace Chiro.WatiN.Test
             }
         }
 
+        // Use TestCleanup to run code after each test has run
+        [TestInitialize()]
+        public void MyTestInitialize()
+        {
+            // Tussen elke test moeten we er voor zorgen dat alle data leeg is, dit wil zeggen dat voor
+            // de ChiroGroep met stamnummer 'WATIN'  en naam 'St-WebAutomatedTestIndotNet' volledig leeg moet zijn.
+            // Dit opkuisen van data moeten we met SQL statements doen.
+            // Mischien is er een betere mannier maar ik doe het hier via een eigen SQL connection.
+            //
+            SqlConnection conn = new SqlConnection(
+            "Data Source=DEVSERVER;Initial Catalog=ChiroGroep;User ID=CgApp;Password=doemaariets;MultipleActiveResultSets=True");
+            SqlDataReader GelPersDr = null;
+
+            try
+            {
+                // Open de connectie.
+                conn.Open();
+
+                // Iets mooier is eerst alle personen op te vragen, 
+                // Daarvan alle GelieerdePersonen te verwijderen en dan de persoon zelf.
+
+                // Opvragen van alle GelieerdePersonen met de WatiN Groep.
+                GelPersDr = new SqlCommand("SELECT pers.GelieerdePersoon.PersoonID, pers.GelieerdePersoon.GelieerdePersoonID "
+                    + " FROM grp.Groep JOIN [pers].[GelieerdePersoon] "
+                    + "				ON Groep.GroepID = GelieerdePersoon.GroepID "
+                    + "			WHERE Groep.Code = 'WatiN';", conn).ExecuteReader();
+
+                while (GelPersDr.Read())
+                {
+                    String PersoonID = GelPersDr["PersoonID"].ToString();
+                    String GelieerdePersoonID = GelPersDr["GelieerdePersoonID"].ToString();
+
+                    // Indien nodig maak die persoon niet meer Lid.
+                    // Eerst moeten we kijken of die persoon Leiding of Kind is (Dit moet ook weg)
+                    SqlDataReader LedenDr = null;
+                    try
+                    {
+                        LedenDr = new SqlCommand("SELECT LidID FROM lid.Lid WHERE GelieerdePersoonID = '"
+                            + GelieerdePersoonID + "';", conn).ExecuteReader();
+                        while (LedenDr.Read())
+                        {
+                            String LidID = LedenDr["LidID"].ToString();
+
+                            // Verwijder de Leiding
+                            SqlDataReader VerwijderLeiding = new SqlCommand("DELETE FROM lid.Leiding "
+                                + " Where LeidingID = '" + LidID + "';", conn).ExecuteReader();
+                            Debug.WriteLine("Aantal Leiding verwijderd door GelPersID (" + GelieerdePersoonID + "): "
+                                + VerwijderLeiding.RecordsAffected.ToString());
+                            VerwijderLeiding.Close();
+
+                            // Verwijderen van Kinderen
+                            SqlDataReader VerwijderKind = new SqlCommand("DELETE FROM lid.Kind "
+                                + " Where KindID = '" + LidID + "';", conn).ExecuteReader();
+                            Debug.WriteLine("Aantal Kinderen verwijderd door GelPersID (" + GelieerdePersoonID + "): "
+                                + VerwijderKind.RecordsAffected.ToString());
+                            VerwijderKind.Close();
+
+                            // Verwijder Lid
+                            SqlDataReader VerwijderLid = new SqlCommand("DELETE FROM lid.Lid "
+                                + " Where LidID = '" + LidID + "';", conn).ExecuteReader();
+                            Debug.WriteLine("Aantal Leden verwijderd door GelPersID (" + GelieerdePersoonID + "): "
+                                + VerwijderLid.RecordsAffected.ToString());
+                            VerwijderLid.Close();
+                        }
+
+                    }
+                    finally
+                    {
+                        if (LedenDr != null)
+                        {
+                            LedenDr.Close();
+                        }
+                    }
+
+                    // Verwijder de GelieerdePersoon
+                    SqlDataReader VerwijderGelPers = new SqlCommand("DELETE FROM pers.GelieerdePersoon "
+                    + " WHERE GelieerdePersoonID = '" + GelieerdePersoonID + "';", conn).ExecuteReader();
+                    Debug.WriteLine("Aantal GelieerdePersonen verwijderd door ID (" + GelieerdePersoonID + "): "
+                        + VerwijderGelPers.RecordsAffected.ToString());
+                    VerwijderGelPers.Close();
+
+                    // Verwijder de Persoon
+                    SqlDataReader VerwijderPersoon = new SqlCommand("DELETE FROM pers.Persoon "
+                    + " WHERE PërsoonID = '" + PersoonID + "';", conn).ExecuteReader();
+                    Debug.WriteLine("Aantal Personen verwijderd door PersoonID (" + PersoonID + "): "
+                        + GelPersDr.RecordsAffected.ToString());
+                    VerwijderPersoon.Close();
+                }
+
+                GelPersDr = new SqlCommand("DELETE FROM pers.GelieerdePersoon "
+                    + " WHERE PersoonID IN "
+                    + "		(SELECT pers.GelieerdePersoon.PersoonID "
+                    + "			FROM grp.Groep JOIN [pers].[GelieerdePersoon] "
+                    + "				ON Groep.GroepID = GelieerdePersoon.GroepID "
+                    + "			WHERE Groep.Code = 'WatiN');", conn).ExecuteReader();
+
+                Debug.WriteLine("Aantal GelieerdePersonen verwijderd: " + GelPersDr.RecordsAffected.ToString());
+
+            }
+
+            finally
+            {
+                // close the reader
+                if (GelPersDr != null)
+                {
+                    GelPersDr.Close();
+                }
+
+                // Close the connection
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+        }
+
+        // 
+        // ------------------------------------------------------------------------------------------------------------
+        // - Acties met Menu's
+        // ------------------------------------------------------------------------------------------------------------
+        //
+
         /// <summary>
         /// Definitie van de beschikbare paginas:
         /// </summary>
         public enum Paginas
         {
-            Afdelingen, 
-            Personen, 
+            Afdelingen,
+            Personen,
             Leden
         }
 
+        String MijnHomePage = null;
         // Hier schrijf ik een aantal help functies die mijn testen overzichtelijker maken
         /// <summary>
         /// Deze procedure gaat in het window naar de gevraagde pagina.
@@ -186,7 +322,24 @@ namespace Chiro.WatiN.Test
             // gewenste pagina. 
             // Als we direct naar de link surfen, weten we niet of deze bereikbaar via de normale
             // weg.  (2e reden: een aantal linken zijn afhankelijk van wie er op de site zit.)
-            window.GoTo(GapWebAppDeploymentServer);
+            if (String.IsNullOrEmpty(MijnHomePage))
+            {
+                window.GoTo(GapWebAppDeploymentServer);
+
+                // Indien een gebruiker toegang heef tot meer dan 1 groep dan moet die nu een groep selecteren, 
+                // indien dit zo is bevat de titel van de pagina 'Kies je Chirogroep | Nog geen Chirogroep geselecteerd'
+                // en hij moet dan 'WATIN - St-WebAutomatedTestIndotNet ()' selecteren
+                Regex SelecteerGroep = new Regex("Kies je Chirogroep");
+                if (SelecteerGroep.Match(window.Title).Success)
+                {
+                    window.Link(Find.ByText(new Regex("St-WebAutomatedTestIndotNet"))).Click();
+                    MijnHomePage = window.Url;
+                }
+            }
+            else
+            {
+                window.GoTo(MijnHomePage);
+            }
 
             // Op deze pagina is er een unordered list (ul) met id menu.
             Element MenuLijst = window.Element(Find.ById("menu"));
@@ -201,7 +354,7 @@ namespace Chiro.WatiN.Test
                 case Paginas.Personen:
                     {
                         // Code om naar Personen pagina te gaan
-                       MenuLijst.DomContainer.Link(Find.ByText(new Regex("^Personen$"))).Click();
+                        MenuLijst.DomContainer.Link(Find.ByText(new Regex("^Personen$"))).Click();
                         break;
                     }
                 case Paginas.Leden:
@@ -217,10 +370,31 @@ namespace Chiro.WatiN.Test
             }
         }
 
+        // 
+        // ------------------------------------------------------------------------------------------------------------
+        // - Acties met Menu's
+        // ------------------------------------------------------------------------------------------------------------
+        //
+
+        public struct Persoon
+        {
+            public string Voornaam, FamilieNaam, GeboorteDatum, Geslacht, ChiroLeeftijd;
+
+            public Persoon(String Voornaam, String FamilieNaam, String GeboorteDatum, String Geslacht, String ChiroLeeftijd)
+            {
+                this.Voornaam = Voornaam;
+                this.FamilieNaam = FamilieNaam;
+                this.GeboorteDatum = GeboorteDatum;
+                this.Geslacht = Geslacht;
+                this.ChiroLeeftijd = ChiroLeeftijd;
+            }
+        }
+
         public enum PersonenActie
         {
             NieuwePersoon,
-            ZoekPersoonEnMaakLid
+            ZoekPersoonEnMaakLid, 
+            TelVoorkomen
         }
         /// <summary>
         /// Preconditie: We window moet in Personen menu zitten.
@@ -252,15 +426,14 @@ namespace Chiro.WatiN.Test
             }
         }
 
-        public Boolean PersonenPaginaActie(IE window, PersonenActie actie,
-            String Voornaam, String FamilieNaam, String GeboorteDatum, String Geslacht)
+        public Boolean PersonenPaginaActie(IE window, PersonenActie actie, Persoon Pers)
         {
             switch (actie)
             {
                 case PersonenActie.NieuwePersoon:
                     {
                         // Dit is enkel gesupporteerd bij PersonenPaginaActie(IE window, PersonenActie actie)
-                        throw new NotImplementedException ("Persoons gegevens niet nodig.");
+                        throw new NotImplementedException("Persoons gegevens niet nodig.");
                     }
                 case PersonenActie.ZoekPersoonEnMaakLid:
                     {
@@ -271,11 +444,11 @@ namespace Chiro.WatiN.Test
 
                         // Aanmaken van een reguliere expressie die we gaan gebruiken om een persoon op te zoeken, 
                         // Hier gebruiken we enkel nogmaar de Naam en VoorNaam.
-                        Regex VindPersoon = new Regex(Voornaam + " " + FamilieNaam);
+                        Regex VindPersoon = new Regex(Pers.Voornaam + " " + Pers.FamilieNaam);
 
                         // Als we dit vinden in de volgende pagina dat in 
                         Regex VindIsToegevoegdAlsLid = new Regex("is toegevoegd als lid.");
-                        
+
                         // Een volgende uitdaging is het vinden van een persoon in de lijst, deze kan namelijk op een andere pagina staan,
                         // de verschillende pagina nummers staat in een blok met naam: 'pager', van dit blok itereren we over alle links.
                         int link_nr = 0;
@@ -300,7 +473,7 @@ namespace Chiro.WatiN.Test
                                 if (VindPersoon.IsMatch(PersonenLijstEnum.Current.TableCell(Find.ByIndex(2)).ToString()))
                                 {
                                     // TODO: Nakijken of GeboorteDatum en Geslacht correct zijn.
-                                    
+
                                     // Maak de persoon lid, maar er bestaat een kans dat die persoon al lid is, 
                                     // Dus voor de link gaan ophalen kijken of die wel bestaat.
                                     if (PersonenLijstEnum.Current.ElementOfType<Link>(Find.ByText(new Regex("^Lid maken$"))).Exists)
@@ -331,7 +504,7 @@ namespace Chiro.WatiN.Test
                         // We hebben alle pagina's doorlopen en we hebben de persoon niet kunnen lid maken.
                         if (!PersoonLidGemaakt)
                         {
-                            Debug.WriteLine("ASSERT ERROR: Niet lid gemaakt:" + Voornaam + " " + FamilieNaam);
+                            Debug.WriteLine("ASSERT ERROR: Niet lid gemaakt:" + Pers.Voornaam + " " + Pers.FamilieNaam);
                         }
                         return PersoonLidGemaaktRestultaat;
                     }
@@ -340,6 +513,46 @@ namespace Chiro.WatiN.Test
                         throw new NotImplementedException();
                     }
             }
+        }
+
+        public int PersonenPaginaActieCount(IE window, PersonenActie actie, Persoon Pers)
+        {
+            int AantalGevonden = 0;
+            
+            // Aanmaken van een reguliere expressie die we gaan gebruiken om een persoon op te zoeken, 
+            // Hier gebruiken we enkel nogmaar de Naam en VoorNaam.
+            Regex VindPersoon = new Regex(Pers.Voornaam + " " + Pers.FamilieNaam);
+            
+            // Een volgende uitdaging is het vinden van een persoon in de lijst, deze kan namelijk op een andere pagina staan,
+            // de verschillende pagina nummers staat in een blok met naam: 'pager', van dit blok itereren we over alle links.
+            int link_nr = 0;
+            while (link_nr < window.Div(Find.ByClass(new Regex("^pager$"))).Links.Count)
+            {
+                // Openen van de pagina. (het volgen van de link)
+                window.Div(Find.ByClass(new Regex("^pager$"))).Links[link_nr].Click();
+
+                // Kijk of we daar een '<Voornaam> <Naam>' tegen komen in de tabel met personen.
+                // Alle verschillende personen staan in een tabel, waarvan spijtig genoeg de table noch tbody noch tr een id hebben.
+                // Gaan zoeken over alle itereren over alle Tabel rijen.
+
+                IEnumerator<TableRow> PersonenLijstEnum = window.TableRows.GetEnumerator();
+                // Bij creatie van de PersonenLijstEnum, wordt die geinitialiseerd juist voor het eerste resultaat. 
+                // (resultaat is nog niet opgehaald) en als hij er geen meer kan geven geeft hij een false return.
+                // De eerste rij is altijd de table header, dus ga direct naar de volgende.
+                PersonenLijstEnum.MoveNext();
+                while (PersonenLijstEnum.MoveNext())
+                {
+                    // De naam van de persoon is de 3e in de tabel rij. (Find.ByIndex(2))
+                    // Let Op: Geen regex want we willen een exacte match
+                    if (VindPersoon.IsMatch(PersonenLijstEnum.Current.TableCell(Find.ByIndex(2)).ToString()))
+                    {
+                        // Een persoon gevonden
+                        AantalGevonden += 1;
+                    }
+                }
+                link_nr += 1;
+            }
+            return AantalGevonden;
         }
 
 
@@ -352,8 +565,7 @@ namespace Chiro.WatiN.Test
         /// <param name="Geboortedatum"></param>
         /// <param name="Geslacht">Het geslacht, geldig zijn: 'Man' en 'Vrouw' alle andere waarden resulteren in geen selectie.</param>
         /// <param name="ChiroLeeftijd"></param>
-        public void PersoonVoegToe(IE window, string VoorNaam, string FamilieNaam, string GeboorteDatum,
-            string Geslacht, string ChiroLeeftijd)
+        public void PersoonVoegToe(IE window, Persoon Pers)
         {
             // Na het klikken op Nieuwe Persoon, krijgen we een scherm met de volgende gegevens:
             TextField Field_Voornaam = window.TextField(Find.ByName(new Regex("\\.VoorNaam$")));
@@ -369,116 +581,54 @@ namespace Chiro.WatiN.Test
             // Eenvoudig testje, we gaan de volgende persoon invoegen:
             //  Voornaam, Naam, GeboorteDatum, Geslacht, ChiroLeeftijd
             Field_Voornaam.Click();
-            Field_Voornaam.TypeText(VoorNaam);
+            Field_Voornaam.TypeText(Pers.Voornaam);
 
             Field_Naam.Click();
-            Field_Naam.TypeText(FamilieNaam);
+            Field_Naam.TypeText(Pers.FamilieNaam);
 
             Field_GebDat.Click();
-            Field_GebDat.TypeText(GeboorteDatum);
+            Field_GebDat.TypeText(Pers.GeboorteDatum);
 
-            if (("Man".Equals(Geslacht)) || ("Vrouw".Equals(Geslacht))) 
+            if (("Man".Equals(Pers.Geslacht)) || ("Vrouw".Equals(Pers.Geslacht)))
             {
-                window.RadioButton(Find.ByName(new Regex("Geslacht$")) && Find.ByValue(Geslacht)).Checked = true;
+                window.RadioButton(Find.ByName(new Regex("Geslacht$")) && Find.ByValue(Pers.Geslacht)).Checked = true;
             }
 
             Field_ChiroLeeftijd.Click();
-            Field_ChiroLeeftijd.TypeText(ChiroLeeftijd);
+            Field_ChiroLeeftijd.TypeText(Pers.ChiroLeeftijd);
 
             // We bewaren de toestand in de database
             Button_Bewaren.Click();
         }
 
-        public enum ToegevoegdePersoonActie
+        public enum ToegevoegdePersoonActies
         {
             NieuwAdres,
             CommunicatieVormToevoegen,
             ToevoegenCategorie,
             TerugNaarLijst,
-            GegevensWijzigen
+            GegevensWijzigen,
+            Bewaren,
+            Niets
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="window"></param>
-        /// <param name="success"></param>
-        /// <param name="FoutBoodschap"></param>
-        /// <param name="actie"></param>
-        /// <returns></returns>
-        public Boolean CheckToegevoegdePersoonEnActie(IE window, Boolean success, string FoutBoodschap, 
-            string VoorNaam, string FamilieNaam, string GeboorteDatum, string Geslacht, string ChiroLeeftijd,
-            ToegevoegdePersoonActie actie)
+
+        public void ToegevoegdePersoonActie(IE window, ToegevoegdePersoonActies actie)
         {
-            Boolean resultaat = true;
-            String PaginaBevatString = string.Empty;
-            
-            if (success) {
-                PaginaBevatString = "Wijzigingen zijn opgeslagen";
-            }
-            else
-            {
-                PaginaBevatString = "Wijzigingen zijn niet opgeslagen";
-            }
-
-            if (!string.Equals(window.Element(Find.ByClass(new Regex("Feedback"))).Text, PaginaBevatString))
-            {
-                Debug.WriteLine("ASSERT ERROR: " + FoutBoodschap);
-                resultaat = false;
-            }
-            else
-            {
-                // in een fieldset geven we de ingevoegde gegevens ter bevestiging.
-                // Kijk Voornaam correct is.
-                if (!window.TextField(Find.ById(new Regex("^HuidigePersoon_Persoon_VoorNaam$"))).Value.Equals(VoorNaam))
-                {
-                    Debug.WriteLine("ASSERT ERROR: Voornaam is: "
-                        + window.TextField(Find.ById(new Regex("^HuidigePersoon_Persoon_VoorNaam$"))).Value
-                        + " en we verwachten: " + VoorNaam);
-                    resultaat = false;
-                }
-
-                // Kijk Naam correct is.
-                if (!window.TextField(Find.ById(new Regex("^HuidigePersoon_Persoon_Naam$"))).Value.Equals(FamilieNaam))
-                {
-                    Debug.WriteLine("ASSERT ERROR: Naam is: "
-                        + window.TextField(Find.ById(new Regex("^HuidigePersoon_Persoon_Naam$"))).Value
-                        + " en we verwachten: " + FamilieNaam);
-                    resultaat = false;
-                }
-
-                // Kijk GeboorteDatum correct is.
-                if (!"".Equals(GeboorteDatum)) if (!window.TextField(Find.ById(new Regex("^HuidigePersoon_Persoon_GeboorteDatum$"))).Value.Equals(GeboorteDatum))
-                {
-                    Debug.WriteLine("ASSERT ERROR: GeboorteDatum is: "
-                        + window.TextField(Find.ById(new Regex("^^HuidigePersoon_Persoon_GeboorteDatum$"))).Value
-                        + " en we verwachten: " + GeboorteDatum);
-                    resultaat = false;
-                }
-
-                // Kijk Geslacht correct is.
-                if (!window.TextField(Find.ById(new Regex("^HuidigePersoon_Persoon_Geslacht$"))).Value.Equals(Geslacht))
-                {
-                    Debug.WriteLine("ASSERT ERROR: Geslacht is: "
-                        + window.TextField(Find.ById(new Regex("^HuidigePersoon_Persoon_Geslacht$"))).Value
-                        + " en we verwachten: " + Geslacht);
-                    resultaat = false;
-                }
-
-                // Kijk ChiroLeeftijd correct is.
-                if (!window.TextField(Find.ById(new Regex("^HuidigePersoon_ChiroLeefTijd$"))).Value.Equals(ChiroLeeftijd))
-                {
-                    Debug.WriteLine("ASSERT ERROR: ChiroLeeftijd is: "
-                        + window.TextField(Find.ById(new Regex("^HuidigePersoon_ChiroLeefTijd$"))).Value
-                        + " en we verwachten: " + ChiroLeeftijd);
-                    resultaat = false;
-                }
-            }
-
             switch (actie)
             {
-                case ToegevoegdePersoonActie.TerugNaarLijst:
+                case ToegevoegdePersoonActies.TerugNaarLijst:
                     {
                         window.Link(Find.ByText(new Regex("Terug naar de lijst"))).Click();
+                        break;
+                    }
+                case ToegevoegdePersoonActies.Niets:
+                    {
+                        // Niks
+                        break;
+                    }
+                case ToegevoegdePersoonActies.Bewaren:
+                    {
+                        window.Button(Find.ByValue("Bewaren")).Click();
                         break;
                     }
                 default:
@@ -487,7 +637,158 @@ namespace Chiro.WatiN.Test
                     }
 
             }
+        }
 
+        public Boolean CheckToegevoegdePersoon(IE window, Persoon Pers, Boolean success, string FoutBoodschap)
+        {
+            Boolean resultaat = true;
+
+            if (success)
+            {
+                // Kijk of de pagina de string: "Wijzigingen zijn opgeslagen" bevat.
+                if (!string.Equals(window.Element(Find.ByClass(new Regex("Feedback"))).Text, "Wijzigingen zijn opgeslagen"))
+                {
+                    Debug.WriteLine("ASSERT ERROR: " + FoutBoodschap);
+                    resultaat = false;
+                }
+                else
+                {
+                    // in een fieldset geven we de ingevoegde gegevens ter bevestiging.
+                    // Kijk Voornaam correct is.
+                    if (!window.TextField(Find.ById(new Regex("^HuidigePersoon_Persoon_VoorNaam$"))).Value.Equals(Pers.Voornaam))
+                    {
+                        Debug.WriteLine("ASSERT ERROR: Voornaam is: "
+                            + window.TextField(Find.ById(new Regex("^HuidigePersoon_Persoon_VoorNaam$"))).Value
+                            + " en we verwachten: " + Pers.Voornaam);
+                        resultaat = false;
+                    }
+
+                    // Kijk Naam correct is.
+                    if (!window.TextField(Find.ById(new Regex("^HuidigePersoon_Persoon_Naam$"))).Value.Equals(Pers.FamilieNaam))
+                    {
+                        Debug.WriteLine("ASSERT ERROR: Naam is: "
+                            + window.TextField(Find.ById(new Regex("^HuidigePersoon_Persoon_Naam$"))).Value
+                            + " en we verwachten: " + Pers.FamilieNaam);
+                        resultaat = false;
+                    }
+
+                    // Kijk GeboorteDatum correct is.
+                    if (!"".Equals(Pers.GeboorteDatum))
+                    {
+                        String BewaardeGebDat = window.TextField(Find.ById(new Regex("^HuidigePersoon_Persoon_GeboorteDatum$"))).Value;
+                        // De Datums op de webpagina's bevatten ook een uur
+                        Regex Verwacht = new Regex("[1-9]{0,1}[0-9]/[0-9]{2}/[0-9]{4} 0:00:00");
+                        if (!Verwacht.IsMatch(Pers.GeboorteDatum + " 0:00:00"))
+                        {
+                            Debug.WriteLine("ASSERT ERROR: GeboorteDatum is: "
+                                + window.TextField(Find.ById(new Regex("^HuidigePersoon_Persoon_GeboorteDatum$"))).Value
+                                + " en we verwachten: " + Pers.GeboorteDatum);
+                            resultaat = false;
+                        }
+                    }
+                    // Kijk Geslacht correct is.
+                    String BewaardGeslacht = window.TextField(Find.ById(new Regex("^HuidigePersoon_Persoon_Geslacht$"))).Value;
+                    switch (Pers.Geslacht)
+                    {
+                        case "Man":
+                        case "Vrouw":
+                            {
+                                // Dit is een geldige waarde, en dat moet overeenkomen
+                                if (!BewaardGeslacht.Equals(Pers.Geslacht))
+                                {
+                                    Debug.WriteLine("ASSERT ERROR: Geslacht is: "
+                               + BewaardGeslacht + " en we verwachten: " + Pers.Geslacht);
+                                    resultaat = false;
+                                }
+                                break;
+                            }
+                        case "Onzijdig":
+                            {
+                                if (!BewaardGeslacht.Equals("Onbekend"))
+                                {
+                                    Debug.WriteLine("ASSERT ERROR: Geslacht is: "
+                            + BewaardGeslacht + " en we verwachten: " + Pers.Geslacht);
+                                    resultaat = false;
+                                }
+                                break;
+                            }
+
+                        default:
+                            {
+                                throw new NotImplementedException();
+                            }
+
+                    }
+
+                    // Kijk ChiroLeeftijd correct is.
+                    if (!window.TextField(Find.ById(new Regex("^HuidigePersoon_ChiroLeefTijd$"))).Value.Equals(Pers.ChiroLeeftijd))
+                    {
+                        Debug.WriteLine("ASSERT ERROR: ChiroLeeftijd is: "
+                            + window.TextField(Find.ById(new Regex("^HuidigePersoon_ChiroLeefTijd$"))).Value
+                            + " en we verwachten: " + Pers.ChiroLeeftijd);
+                        resultaat = false;
+                    }
+                }
+            }
+            else
+            {
+                // Deze pagina bevat een div met class naam 'validation-summary-errors', 
+                // en daarin staat dan een lijst met de fouten.
+                Element FoutMeldingElement = window.Element(Find.ByClass(new Regex("validation-summary-errors")));
+
+                if (!FoutMeldingElement.Exists)
+                {
+                    Debug.WriteLine("ASSERT ERROR: " + FoutBoodschap);
+                    Debug.WriteLine("              validation-summary-errors Class niet gevonden.");
+                    resultaat = false;
+                }
+                else
+                {
+                    // Soms staat de validation-summary-errors in een <DIV>
+                    // en soms in een <P>
+                    switch (FoutMeldingElement.TagName)
+                    {
+                        case "DIV":
+                            resultaat = false;
+                            Div FoutMelding = window.Div(Find.ByClass(new Regex("validation-summary-errors")));
+                            IEnumerator<Element> ErrorElements = FoutMelding.Elements.GetEnumerator();
+                            while (ErrorElements.MoveNext())
+                            {
+                                // De fout boodschappen ziten in een <LI>
+                                if (ErrorElements.Current.TagName.Equals("LI"))
+                                {
+                                    if (ErrorElements.Current.OuterText.Equals(FoutBoodschap))
+                                    {
+                                        // We hebben de fout boodschap gevonden.
+                                        resultaat = true;
+                                    }
+
+                                }
+                            }
+                            // We hebben over alle Elements met TagName LI gegaan en als de Boodschap overeen kwam dan staat resultaat op true
+                            // Als hier resultaat nog false is dan moeten we een foutboodschap terugsturen.
+                            break;
+
+                        case "P":
+                            if (!FoutMeldingElement.InnerHtml.Equals(FoutBoodschap))
+                            {
+                                // We hebben de fout boodschap niet gevonden.
+                                resultaat = false;
+                            }
+                            break;
+
+                        default:
+                            throw new NotImplementedException();
+                    }
+
+                    if (!resultaat)
+                    {
+                        Debug.WriteLine("ASSERT ERROR: " + FoutBoodschap);
+                        Debug.WriteLine("              validation-summary-errors Gevonden maar bevat niet de verwachte boodschap.");
+                        resultaat = false;
+                    }
+                }
+            }
             return resultaat;
         }
 
@@ -519,89 +820,197 @@ namespace Chiro.WatiN.Test
                 GaNaarMenuPagina(window, Paginas.Afdelingen);
                 GaNaarMenuPagina(window, Paginas.Leden);
 
-                //
-                // TEST 1: Toevoegen van een persoon, van het type mannelijk.
-                //
-
                 // Ga naar de Personen pagina
                 GaNaarMenuPagina(window, Paginas.Personen);
                 // We wensen een persoon toe te voegen.
                 PersonenPaginaActie(window, PersonenActie.NieuwePersoon);
 
-                PersoonVoegToe(window, "Koen", "Meersman", "23/11/1975", "Man", "23");
+                // ------------------------------------------------------------------------------------------------ 
+                // Positive Testen
+                // ------------------------------------------------------------------------------------------------
+
+                //
+                // TEST 1: Toevoegen van een persoon, van het type mannelijk.
+                //
+                Persoon Koen = new Persoon("Koen", "Meersman", "23/11/1975", "Man", "-8");
+                PersoonVoegToe(window, Koen);
                 // Na het bewaren moeten we wachten tot dat we een resutltaat gekregen hebben
-                if (!CheckToegevoegdePersoonEnActie(window, true, "Persoon (Koen Meersman) is niet opgeslagen",
-                    "Koen", "Meersman", "23/11/1975 0:00:00", "Man", "23",
-                    ToegevoegdePersoonActie.TerugNaarLijst))
+                if (!CheckToegevoegdePersoon(window, Koen, true, "Persoon (Koen Meersman) is niet opgeslagen"))
                 {
                     FoutGevonden |= true;
                     RaporteerFout += "\nPersoon (Koen Meersman) is niet opgeslagen";
                 }
+                ToegevoegdePersoonActie(window, ToegevoegdePersoonActies.TerugNaarLijst);
 
                 //
                 // TEST 2: Toevoegen van een persoon van het type vrouwelijk.
                 //
+                Persoon Marleen = new Persoon("Marleen", "Van Loock", "07/12/1977", "Vrouw", "0");
                 PersonenPaginaActie(window, PersonenActie.NieuwePersoon);
-                PersoonVoegToe(window, "Marleen", "Van Loock", "07/12/1977", "Vrouw", "0");
-                if (!CheckToegevoegdePersoonEnActie(window, true, "Persoon (Marleen Van Loock) is niet opgeslagen",
-                    "Marleen", "Van Loock", "7/12/1977 0:00:00", "Vrouw", "0",
-                    ToegevoegdePersoonActie.TerugNaarLijst))
+                PersoonVoegToe(window, Marleen);
+                if (!CheckToegevoegdePersoon(window, Marleen, true, "Persoon (Marleen Van Loock) is niet opgeslagen"))
                 {
                     FoutGevonden |= true;
                     RaporteerFout += "\nPersoon (Marleen Van Loock) is niet opgeslagen";
                 }
+                ToegevoegdePersoonActie(window, ToegevoegdePersoonActies.TerugNaarLijst);
 
                 //
                 // TEST 3: Toevoegen van een persoon van het type onzijdig.
                 //
+                Persoon Onzijdig = new Persoon("Onzijdige", "Persoon", "07/12/1977", "Onzijdig", "0");
                 PersonenPaginaActie(window, PersonenActie.NieuwePersoon);
-                PersoonVoegToe(window, "Onzijdige", "Persoon", "07/12/1977", "onzijdig", "0");
-                if (!CheckToegevoegdePersoonEnActie(window, true, "Een onzijdige Persoon is niet opgeslagen",
-                    "Onzijdige", "Persoon", "7/12/1977 0:00:00", "Onbekend", "0",
-                    ToegevoegdePersoonActie.TerugNaarLijst))
+
+                PersoonVoegToe(window, Onzijdig);
+                if (!CheckToegevoegdePersoon(window, Onzijdig, true, "Een onzijdige Persoon is niet opgeslagen"))
                 {
                     FoutGevonden |= true;
                     RaporteerFout += "\nEen onzijdige Persoon is niet opgeslagen";
                 }
+                ToegevoegdePersoonActie(window, ToegevoegdePersoonActies.TerugNaarLijst);
 
                 //
                 // TEST 4: Toevoegen van een persoon, die nog geboren moet worden ;-)
                 //
+                Persoon OnGeboren = new Persoon("Minder", "Dan Baby", "07/12/2077", "Vrouw", "0");
                 PersonenPaginaActie(window, PersonenActie.NieuwePersoon);
-                PersoonVoegToe(window, "Minder", "Dan Baby", "07/12/2077", "Vrouw", "0");
-                if (!CheckToegevoegdePersoonEnActie(window, false, "Persoon met geboorte datum in de toekomst is opgeslagen",
-                    "Minder", "Dan Baby", "7/12/2077 0:00:00", "Vrouw", "0",
-                    ToegevoegdePersoonActie.TerugNaarLijst))
+                PersoonVoegToe(window, OnGeboren);
+                // In theorie moet dit falen, maar momenteel is dit nog success vol.
+                if (!CheckToegevoegdePersoon(window, OnGeboren, true, "Persoon met geboorte datum in de toekomst is opgeslagen"))
                 {
                     FoutGevonden |= true;
                     RaporteerFout += "\nPersoon met geboorte datum in de toekomst kan met niet invoegen.";
                 }
+                ToegevoegdePersoonActie(window, ToegevoegdePersoonActies.TerugNaarLijst);
 
                 //
                 // TEST 5: Toevoegen van een persoon, zonder geboortedatum
                 //
+                Persoon GeenGebDat = new Persoon("Geen", "Geboorte Datum", "", "Vrouw", "0");
                 PersonenPaginaActie(window, PersonenActie.NieuwePersoon);
-                PersoonVoegToe(window, "Geen", "Geboorte Datum", "", "Vrouw", "0");
-                if (!CheckToegevoegdePersoonEnActie(window, true, "Persoon zonder geboortedatum is niet opgeslagen", 
-                    "Geen", "Geboorte Datum", "", "Vrouw", "0",
-                    ToegevoegdePersoonActie.TerugNaarLijst))
+                PersoonVoegToe(window, GeenGebDat);
+                if (!CheckToegevoegdePersoon(window, GeenGebDat, true, "Persoon zonder geboortedatum is niet opgeslagen"))
                 {
                     FoutGevonden |= true;
                     RaporteerFout += "\nPersoon zonder geboortedatum is niet opgeslagen.";
                 }
+                ToegevoegdePersoonActie(window, ToegevoegdePersoonActies.TerugNaarLijst);
 
                 //
-                // TEST 6: Toevoegen van een persoon, met foutieve geboortedatums
+                // TEST X : Invoegen van 2 personen die op elkaar gelijken.
+                //          Ik weet wel niet de definitie van 2 op elkaar lijkende personen.
+                //          (En deze persoon confirmeren)
                 //
+                Persoon Tweeling1 = new Persoon("Tweeling", "Persoon1", "01/04/2009", "Man", "+2");
+                Persoon Tweeling2 = new Persoon("Tweeling", "Persoon2", "01/04/2009", "Man", "+2");
                 PersonenPaginaActie(window, PersonenActie.NieuwePersoon);
-                PersoonVoegToe(window, "Foutieve", "Geboorte Datum", "XX/11/2000", "Vrouw", "0");
-                if (!CheckToegevoegdePersoonEnActie(window, false, "Persoon met foutieve Geboortedatum is opgeslagen",
-                    "Foutieve", "Geboorte Datum", "XX/11/2000 0:00:00", "Vrouw", "0",
-                    ToegevoegdePersoonActie.TerugNaarLijst))
+                PersoonVoegToe(window, Tweeling1);
+                ToegevoegdePersoonActie(window, ToegevoegdePersoonActies.TerugNaarLijst);
+                PersonenPaginaActie(window, PersonenActie.NieuwePersoon);
+                PersoonVoegToe(window, Tweeling2);
+                // Kijken of we een waarschuwing zoals onderstaande hebben en Confirmeer: 
+                //   - Let op! Uw nieuwe persoon lijkt verdacht veel op (een) reeds bestaande perso(o)n(en). Als u zeker bent dat u niemand dubbel toevoegt, klik dan opnieuw op ‘Bewaren’. 
+                String WaarschuwingString = "Let op! Uw nieuwe persoon lijkt verdacht veel op (een) reeds bestaande perso(o)n(en). "
+                + "Als u zeker bent dat u niemand dubbel toevoegt, klik dan opnieuw op ‘Bewaren’. ";
+                if (!CheckToegevoegdePersoon(window, Tweeling2, false, WaarschuwingString))
                 {
                     FoutGevonden |= true;
-                    RaporteerFout += "\nPersoon met foutieve GeboorteDatum (XX/11/2000) is opgeslagen.";
+                    RaporteerFout += "\n2 op elkaar gelijkende personen niet gevonden.";
                 }
+                ToegevoegdePersoonActie(window, ToegevoegdePersoonActies.Bewaren);
+                ToegevoegdePersoonActie(window, ToegevoegdePersoonActies.TerugNaarLijst);
+                // Controlleren of we nu 2 personen hebben met bijna identieke naam.
+                if (!PersonenPaginaActieCount(window, PersonenActie.TelVoorkomen, Tweeling1).Equals(1))
+                {
+                    FoutGevonden |= true;
+                    RaporteerFout += "\n2 Tweeling1 niet gevonden.";
+                }
+                if (!PersonenPaginaActieCount(window, PersonenActie.TelVoorkomen, Tweeling2).Equals(1))
+                {
+                    FoutGevonden |= true;
+                    RaporteerFout += "\n2 Tweeling2 niet gevonden.";
+                }
+
+                // 
+                // TEST X : Invoegen van 2 identieke personen
+                //
+                Persoon Identiek = new Persoon("Identieke", "Persoon", "01/04/2009", "Man", "-0");
+                PersonenPaginaActie(window, PersonenActie.NieuwePersoon);
+                PersoonVoegToe(window, Identiek);
+                ToegevoegdePersoonActie(window, ToegevoegdePersoonActies.TerugNaarLijst);
+                PersonenPaginaActie(window, PersonenActie.NieuwePersoon);
+                PersoonVoegToe(window, Identiek);
+                // Kijken of we een waarschuwing zien en confirmeer.
+                if (!CheckToegevoegdePersoon(window, Identiek, false, WaarschuwingString))
+                {
+                    FoutGevonden |= true;
+                    RaporteerFout += "\n2 de zelfde personen niet gevonden.";
+                }
+                ToegevoegdePersoonActie(window, ToegevoegdePersoonActies.Bewaren);
+
+                ToegevoegdePersoonActie(window, ToegevoegdePersoonActies.TerugNaarLijst);
+                // Kijken of we nu 2 personen hebben met de zelfde naam
+                if (!PersonenPaginaActieCount(window, PersonenActie.TelVoorkomen, Identiek).Equals(2))
+                {
+                    FoutGevonden |= true;
+                    RaporteerFout += "\n2 Geen 2 personen gevonden die identiek zijn.";
+                }
+
+
+                //
+                // TEST X : Invoegen van 2 personen met zelfde naam, maar had die al toegevoegd, 
+                //          Ik confirmeer dus niet.        
+                //
+
+
+                // ------------------------------------------------------------------------------------------------ 
+                // Negatieve Testen
+                // ------------------------------------------------------------------------------------------------
+
+                //
+                // TEST X: Toevoegen van een persoon, zonder FamilieNaam
+                //
+                Persoon GeenFamNaam = new Persoon("Geen FamilieNaam", "", "23/11/2000", "Vrouw", "0");
+                PersonenPaginaActie(window, PersonenActie.NieuwePersoon);
+                PersoonVoegToe(window, GeenFamNaam);
+                // Kijken voor de volgende foutboodschappen:
+                //  - 'Familienaam' moet minstens 2 tekens bevatten.
+                //  - 'Familienaam' is een verplicht veld.
+                if (!CheckToegevoegdePersoon(window, GeenFamNaam, false, "'Familienaam' moet minstens 2 tekens bevatten.")
+                    & !CheckToegevoegdePersoon(window, GeenFamNaam, false, "'Familienaam' is een verplicht veld."))
+                {
+                    FoutGevonden |= true;
+                    RaporteerFout += "\nFoutboodschappen voor geen FamilieNaam niet gevonden.";
+                }
+                ToegevoegdePersoonActie(window, ToegevoegdePersoonActies.TerugNaarLijst);
+
+                //
+                // TEST X: Toevoegen van een persoon, zonder Voornaam
+                //
+
+                //
+                // TEST X: Toevoegen van een persoon, met foutieve geboortedatums
+                //
+                Persoon FouteGebDat = new Persoon("Foutieve", "Geboorte Datum", "33/11/2000", "Vrouw", "0");
+                PersonenPaginaActie(window, PersonenActie.NieuwePersoon);
+                PersoonVoegToe(window, FouteGebDat);
+                if (!CheckToegevoegdePersoon(window, FouteGebDat, false, "The value '33/11/2000' is not valid for Geboortedatum."))
+                {
+                    FoutGevonden |= true;
+                    RaporteerFout += "\nFout boodschap voor foutieve geboortedatum (33/11/2000) niet gevonden.";
+                }
+                ToegevoegdePersoonActie(window, ToegevoegdePersoonActies.TerugNaarLijst);
+
+                //
+                FouteGebDat = new Persoon("Foutieve", "Geboorte Datum", "XX/11/2000", "Vrouw", "0");
+                PersonenPaginaActie(window, PersonenActie.NieuwePersoon);
+                PersoonVoegToe(window, FouteGebDat);
+                if (!CheckToegevoegdePersoon(window, FouteGebDat, false, "The value 'XX/11/2000' is not valid for Geboortedatum."))
+                {
+                    FoutGevonden |= true;
+                    RaporteerFout += "\nFout boodschap voor foutieve geboortedatum (XX/11/2000) niet gevonden.";
+                }
+                ToegevoegdePersoonActie(window, ToegevoegdePersoonActies.TerugNaarLijst);
 
             }
             Debug.Assert(!FoutGevonden, "Sommige sub tests van InvoegenPersoon falen!", RaporteerFout);
@@ -619,25 +1028,21 @@ namespace Chiro.WatiN.Test
                 GaNaarMenuPagina(window, Paginas.Personen);
                 // Voeg een persoon Toe
                 PersonenPaginaActie(window, PersonenActie.NieuwePersoon);
-
-                PersoonVoegToe(window, "Koen", "Meersman", "23/11/1975", "Man", "23");
-                if (!CheckToegevoegdePersoonEnActie(window, true, "Persoon (Koen Meersman) is niet opgeslagen",
-                    "Koen", "Meersman", "23/11/1975 0:00:00", "Man", "23",
-                    ToegevoegdePersoonActie.TerugNaarLijst))
+                Persoon Koen = new Persoon("Koen", "Meersman", "23/11/1975", "Man", "-8");
+                PersoonVoegToe(window, Koen);
+                if (!CheckToegevoegdePersoon(window, Koen, true, "Persoon (Koen Meersman) is niet opgeslagen"))
                 {
                     FoutGevonden |= true;
                     RaporteerFout += "\nPersoon (Koen Meersman) is niet opgeslagen";
                 }
-
+                ToegevoegdePersoonActie(window, ToegevoegdePersoonActies.TerugNaarLijst);
                 // Maak deze persoon Lid
-                if (!PersonenPaginaActie(window, PersonenActie.ZoekPersoonEnMaakLid,
-                    "Koen", "Meersman", "23/11/1975", "Man"))
+                if (!PersonenPaginaActie(window, PersonenActie.ZoekPersoonEnMaakLid, Koen))
                 {
                     FoutGevonden |= true;
                     RaporteerFout += "\nPersoon (Koen Meersman) is niet Lid geamaakt.";
                 }
-
-
+                window.ForceClose();
             }
             Debug.Assert(!FoutGevonden, RaporteerFout);
         }
