@@ -57,12 +57,23 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		Groep OphalenMetFuncties(int groepID);
 
+		/// <summary>
+		/// Haalt een groep op, met daaraan gekoppeld al zijn afdelingen
+		/// </summary>
+		/// <param name="groepID">ID van de gevraagde groep</param>
+		/// <returns>De gevraagde groep, met daaraan gekoppeld al zijn afdelingen</returns>
 		[OperationContract]
 		Groep OphalenMetAfdelingen(int groepID);
 
 		[OperationContract]
 		Groep OphalenMetVrijeVelden(int groepID);
 
+		/// <summary>
+		/// Haalt een groep op, met daaraan gekoppeld al zijn categorieen
+		/// </summary>
+		/// <param name="groepID">ID van op te halen groep</param>
+		/// <returns>Groep met ID <paramref name="groepID"/>, met daaraan gekoppeld al zijn 
+		/// categorieen.</returns>
 		[OperationContract]
 		Groep OphalenMetCategorieen(int groepID);
 

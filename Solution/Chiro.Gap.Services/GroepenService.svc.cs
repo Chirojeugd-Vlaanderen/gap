@@ -116,9 +116,14 @@ namespace Chiro.Gap.Services
 			throw new NotImplementedException();
 		}
 
+		/// <summary>
+		/// Haalt een groep op, met daaraan gekoppeld al zijn afdelingen
+		/// </summary>
+		/// <param name="groepID">ID van de gevraagde groep</param>
+		/// <returns>De gevraagde groep, met daaraan gekoppeld al zijn afdelingen</returns>
 		public Groep OphalenMetAfdelingen(int groepID)
 		{
-			var result = _groepenMgr.Ophalen(groepID, e => e.Afdeling);
+			var result = _groepenMgr.OphalenMetAfdelingen(groepID);
 			return result;
 		}
 
@@ -225,7 +230,7 @@ namespace Chiro.Gap.Services
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AfdelingsJaarAanmaken(int groepID, int afdelingsID, int offiafdelingsID, int geboortejaarbegin, int geboortejaareind)
 		{
-			Groep g = _groepenMgr.Ophalen(groepID, e => e.Afdeling);
+			Groep g = _groepenMgr.OphalenMetAfdelingen(groepID);
 			Afdeling afd = g.Afdeling.Where(a => a.ID == afdelingsID).FirstOrDefault<Afdeling>();
 			OfficieleAfdeling offafd = _groepenMgr.OfficieleAfdelingenOphalen().Where(o => o.ID == offiafdelingsID).FirstOrDefault<OfficieleAfdeling>();
 
@@ -262,16 +267,15 @@ namespace Chiro.Gap.Services
 
 		#region Categorieen
 
-		//TODO een efficiente manier vinden om een bepaalde eigenschap toe te voegen aan een al geladen element.
-		//of anders in de workers methoden aanbieden om lambda expressies mee te geven: dan eerst bepalen wat allemaal nodig is, dan 1 keer laden
-		//en dan zijn we terug bij het idee om in het object bij te houden wat hij allemaal heeft geladen
-
-		// Bedenking van Johan: Lambda-expressies lijken me niet wenselijk in de businesslaag, omdat je
-		// niet kan controleren of de gebruiker het recht wel heeft de zaken gespecifieerd in de expressie op
-		// te vragen.
+		/// <summary>
+		/// Haalt een groep op, met daaraan gekoppeld al zijn categorieen
+		/// </summary>
+		/// <param name="groepID">ID van op te halen groep</param>
+		/// <returns>Groep met ID <paramref name="groepID"/>, met daaraan gekoppeld al zijn 
+		/// categorieen.</returns>
 		public Groep OphalenMetCategorieen(int groepID)
 		{
-			var result = _groepenMgr.Ophalen(groepID, e => e.Categorie);
+			var result = _groepenMgr.OphalenMetCategorieen(groepID);
 			return result;
 		}
 
