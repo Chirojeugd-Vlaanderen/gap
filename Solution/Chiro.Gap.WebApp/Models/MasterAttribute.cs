@@ -24,7 +24,7 @@ namespace Chiro.Gap.WebApp.Models
             // als we iets moeten tonen, moeten we nog iets doorgeven van de MasterViewModel.
             if (filterContext.Result as ViewResultBase != null)
             {
-                MasterViewModel viewModel = (MasterViewModel)((ViewResultBase)filterContext.Result).ViewData.Model;
+                IMasterViewModel viewModel = (IMasterViewModel)((ViewResultBase)filterContext.Result).ViewData.Model;
 
                 BaseController controller = (BaseController)filterContext.Controller;
                 //controller.SetModel(viewModel);

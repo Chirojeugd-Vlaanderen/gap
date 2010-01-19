@@ -15,22 +15,17 @@ namespace Chiro.Gap.WebApp.Models
     /// <summary>
     /// Model voor zaken die op de masterpage getoond moeten worden,
     /// </summary>
-    public class MasterViewModel
+    public class MasterViewModel : IMasterViewModel
     {
         /// <summary>
         /// ID van de Chirogroep
         /// </summary>
         public int GroepID { get; set; }
 
-        /// <summary>
-        /// Naam van de Chirogroep
-        /// </summary>
+	/// <summary>
+	/// ID van de Chirogroep
+	/// </summary>
         public string GroepsNaam { get; set; }
-
-        /*/// <summary>
-        /// Categorieen van de groep
-        /// </summary>
-        public IEnumerable<SelectListItem> GroepsCategorieen { get; set; }*/
 
         /// <summary>
         /// Plaats van de Chirogroep
@@ -38,7 +33,8 @@ namespace Chiro.Gap.WebApp.Models
         public string Plaats { get; set; }
 
         /// <summary>
-        /// Nationaal Stamnummer
+        /// Het stamnummer wordt niet meer gebruikt als primary key, maar zal nog wel
+	/// lang gebruikt worden als handige manier om een groep op te zoeken.
         /// </summary>
         public string StamNummer { get; set; }
 

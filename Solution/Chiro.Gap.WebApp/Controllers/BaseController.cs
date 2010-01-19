@@ -34,7 +34,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// </summary>
         /// <param name="model">Te 'initen' model</param>
         /// <param name="groepID">groepID van de gewenste groep</param>
-        protected void BaseModelInit(MasterViewModel model, int groepID)
+        protected void BaseModelInit(IMasterViewModel model, int groepID)
         { 
             if (groepID == 0)
             {

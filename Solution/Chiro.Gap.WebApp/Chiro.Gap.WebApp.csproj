@@ -109,6 +109,7 @@
     <Compile Include="Models\CategorieModel.cs" />
     <Compile Include="Models\CommVormModel.cs" />
     <Compile Include="Models\AfdelingInfoModel.cs" />
+    <Compile Include="Models\IMasterViewModel.cs" />
     <Compile Include="Models\NieuweCommVormModel.cs" />
     <Compile Include="Models\GavModel.cs" />
     <Compile Include="Models\LidInfoModel.cs" />
