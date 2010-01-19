@@ -27,7 +27,7 @@ namespace Chiro.Gap.Services
 		private readonly GroepenManager _groepenMgr;
 		private readonly AfdelingsJaarManager _afdelingsJaarMgr;
 		private readonly AdressenManager _adresMgr;
-		private readonly WerkJaarManager _werkjaarMgr;
+		private readonly WerkJaarManager _werkJaarMgr;
 		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly GelieerdePersonenManager _gelieerdePersonenMgr;
 		private readonly CategorieenManager _categorieenMgr;
@@ -43,7 +43,7 @@ namespace Chiro.Gap.Services
 		{
 			_groepenMgr = gm;
 			_afdelingsJaarMgr = ajm;
-			_werkjaarMgr = wm;
+			_werkJaarMgr = wm;
 			_autorisatieMgr = am;
 			_gelieerdePersonenMgr = gpm;
 			_adresMgr = adresMgr;
@@ -75,7 +75,7 @@ namespace Chiro.Gap.Services
 
 		public int RecentsteGroepsWerkJaarIDGet(int groepID)
 		{
-			return _werkjaarMgr.RecentsteGroepsWerkJaarIDGet(groepID);
+			return _werkJaarMgr.RecentsteGroepsWerkJaarIDGet(groepID);
 		}
 
 		/// <summary>
@@ -94,7 +94,7 @@ namespace Chiro.Gap.Services
 		/// <returns></returns>
 		public int HuidigWerkJaarGet(int groepID)
 		{
-			return _werkjaarMgr.HuidigWerkJaarGet(groepID);
+			return _werkJaarMgr.HuidigWerkJaarGet(groepID);
 		}
 
 		#endregion
@@ -239,7 +239,7 @@ namespace Chiro.Gap.Services
 				throw new FoutieveGroepException(String.Format(Resources.FouteAfdelingVoorGroepString, g.Naam));
 			}
 
-			GroepsWerkJaar huidigWerkJaar = _groepenMgr.RecentsteGroepsWerkJaarGet(g.ID);
+			GroepsWerkJaar huidigWerkJaar = _werkJaarMgr.RecentsteGroepsWerkJaarGet(g.ID);
 
 			AfdelingsJaar afdjaar = _groepenMgr.AfdelingsJaarMaken(afd, offafd, huidigWerkJaar, geboortejaarbegin, geboortejaareind);
 

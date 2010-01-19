@@ -7,6 +7,7 @@ using System.Text;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {
@@ -79,6 +80,24 @@ namespace Chiro.Gap.Workers
             return resultaat;
         }
 
+	/// <summary>
+	/// Haalt recentste groepswerkjaar voor een groep op, inclusief afdelingsjaren
+	/// </summary>
+	/// <param name="groepID">GroepID gevraagde groep</param>
+	/// <returns>Groepswerkjaar</returns>
+	public GroepsWerkJaar RecentsteGroepsWerkJaarGet(int groepID)
+	{
+		if (_autorisatieMgr.IsGavGroep(groepID))
+		{
+			// TODO: cachen, want dit gaan we veel nodig hebben (Zie #251)
+			return _dao.RecentsteGroepsWerkJaarGet(groepID);
+		}
+		else
+		{
+			throw new GeenGavException(Resources.GeenGavGroep);
+		}
+	}
+
         /// <summary>
         /// Bepaalt ID van het recentste GroepsWerkJaar gemaakt voor een
         /// gegeven groep.
@@ -89,7 +108,8 @@ namespace Chiro.Gap.Workers
         {
             if (_autorisatieMgr.IsGavGroep(groepID))
             {
-                return _dao.RecentsteGroepsWerkJaarGet(groepID).ID;
+		    // TODO: cachen, want dit gaan we veel nodig hebben (Zie #251)
+		    return _dao.RecentsteGroepsWerkJaarGet(groepID).ID;
             }
             else
             {

@@ -148,15 +148,15 @@ namespace Chiro.Gap.Workers
 		{
 			if (_authorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
-				GroepenManager gm = Factory.Maak<GroepenManager>();
+				WerkJaarManager mgr = Factory.Maak<WerkJaarManager>();
 
 				if (gp.Groep == null)
 				{
 					_daos.GelieerdePersoonDao.GroepLaden(gp);
 				}
 
-				GroepsWerkJaar gwj = gm.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
-				return LidMaken(gp, gm.RecentsteGroepsWerkJaarGet(gp.Groep.ID));
+				GroepsWerkJaar gwj = mgr.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
+				return LidMaken(gp, mgr.RecentsteGroepsWerkJaarGet(gp.Groep.ID));
 			}
 			else
 			{

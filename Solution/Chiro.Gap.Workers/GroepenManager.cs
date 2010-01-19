@@ -34,23 +34,6 @@ namespace Chiro.Gap.Workers
 			_categorieenDao = categorieenDao;
 		}
 
-		/// <summary>
-		/// Haalt recentste groepswerkjaar voor een groep op, inclusief afdelingsjaren
-		/// </summary>
-		/// <param name="groepID">GroepID gevraagde groep</param>
-		/// <returns>Groepswerkjaar</returns>
-		public GroepsWerkJaar RecentsteGroepsWerkJaarGet(int groepID)
-		{
-			if (_autorisatieMgr.IsGavGroep(groepID))
-			{
-				return _dao.RecentsteGroepsWerkJaarGet(groepID);
-			}
-			else
-			{
-				throw new GeenGavException(Resources.GeenGavGroep);
-			}
-		}
-
 
 		public Groep OphalenMetGroepsWerkJaren(int groepID)
 		{
