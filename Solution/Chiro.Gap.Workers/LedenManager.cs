@@ -214,7 +214,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_authorisatieMgr.IsGavGroepsWerkJaar(groepswerkjaarID))
 			{
-				GroepsWerkJaar gwj = _daos.GroepenDao.GroepsWerkJaarOphalen(groepswerkjaarID);
+				GroepsWerkJaar gwj = _daos.GroepsWerkJaarDao.Ophalen(groepswerkjaarID, grwj=>grwj.Groep);
 				paginas = _daos.GroepenDao.OphalenMetGroepsWerkJaren(gwj.Groep.ID).GroepsWerkJaar.Count;
 				IList<Lid> list = _daos.LedenDao.AllesOphalen(groepswerkjaarID);
 				list = list.OrderBy(e => e.GelieerdePersoon.Persoon.Naam).ThenBy(e => e.GelieerdePersoon.Persoon.VoorNaam).ToList();
@@ -234,7 +234,7 @@ namespace Chiro.Gap.Workers
 		/// <returns></returns>
 		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, out int paginas)
 		{
-			GroepsWerkJaar gwj = _daos.GroepenDao.GroepsWerkJaarOphalen(groepsWerkJaarID);
+			GroepsWerkJaar gwj = _daos.GroepsWerkJaarDao.Ophalen(groepsWerkJaarID, grwj=>grwj.Groep);
 			paginas = _daos.GroepenDao.OphalenMetGroepsWerkJaren(gwj.Groep.ID).GroepsWerkJaar.Count;
 			if (_authorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{

@@ -79,7 +79,7 @@ namespace Chiro.Gap.Data.Test
 			#endregion
 
 			#region Act
-			GroepsWerkJaar gwj = gwjDao.Ophalen(gwjID);
+			GroepsWerkJaar gwj = gwjDao.Ophalen(gwjID, grwj=>grwj.Groep);
 			#endregion
 
 			#region Assert

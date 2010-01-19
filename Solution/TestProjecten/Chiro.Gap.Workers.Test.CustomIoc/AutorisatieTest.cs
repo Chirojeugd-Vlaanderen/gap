@@ -9,6 +9,7 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Dummies;
 using Chiro.Cdf.Ioc;
+using System.Linq.Expressions;
 
 namespace Chiro.Gap.Workers.Test
 {
@@ -104,15 +105,17 @@ namespace Chiro.Gap.Workers.Test
 			var ledenDaoMock = new Mock<ILedenDao>();
 			var autorisatieMgrMock = new Mock<IAutorisatieManager>();
 			var groepenDaoMock = new Mock<IGroepenDao>();
+			var groepsWerkJaarDaoMock = new Mock<IGroepsWerkJaarDao>();
 
 			ledenDaoMock.Setup(foo => foo.AllesOphalen(DummyData.HuidigGwj.ID)).Returns(new List<Lid>());
 			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(DummyData.HuidigGwj.ID)).Returns(false);
-			groepenDaoMock.Setup(foo => foo.GroepsWerkJaarOphalen(DummyData.HuidigGwj.ID)).Returns(DummyData.HuidigGwj);
+			groepsWerkJaarDaoMock.Setup(foo => foo.Ophalen(DummyData.HuidigGwj.ID)).Returns(DummyData.HuidigGwj);
 			groepenDaoMock.Setup(foo => foo.OphalenMetGroepsWerkJaren(DummyData.DummyGroep.ID)).Returns(DummyData.DummyGroep);
 
 			Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
 			Factory.InstantieRegistreren<IGroepenDao>(groepenDaoMock.Object);
 			Factory.InstantieRegistreren<IAutorisatieManager>(autorisatieMgrMock.Object);
+			Factory.InstantieRegistreren<IGroepsWerkJaarDao>(groepsWerkJaarDaoMock.Object);
 
 			LedenDaoCollectie daos = Factory.Maak<LedenDaoCollectie>();
 			LedenManager lm = Factory.Maak<LedenManager>();
@@ -201,17 +204,19 @@ namespace Chiro.Gap.Workers.Test
 			var ledenDaoMock = new Mock<ILedenDao>();
 			var groepenDaoMock = new Mock<IGroepenDao>();
 			var autorisatieMgrMock = new Mock<IAutorisatieManager>();
+			var groepsWerkJaarDaoMock = new Mock<IGroepsWerkJaarDao>();
 
 			ledenDaoMock.Setup(foo => foo.AllesOphalen(DummyData.HuidigGwj.ID)).Returns(new List<Lid>());
 			ledenDaoMock.Setup(foo => foo.AllesOphalen(It.IsAny<int>())).Returns(new List<Lid>());
 			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(DummyData.HuidigGwj.ID)).Returns(true);
 
-			groepenDaoMock.Setup(foo => foo.GroepsWerkJaarOphalen(DummyData.HuidigGwj.ID)).Returns(DummyData.HuidigGwj);
+			groepsWerkJaarDaoMock.Setup(foo => foo.Ophalen(DummyData.HuidigGwj.ID, It.IsAny<Expression<Func<GroepsWerkJaar, object>>>())).Returns(DummyData.HuidigGwj);
 			groepenDaoMock.Setup(foo => foo.OphalenMetGroepsWerkJaren(DummyData.DummyGroep.ID)).Returns(DummyData.DummyGroep);
 			
 			Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
 			Factory.InstantieRegistreren<IAutorisatieManager>(autorisatieMgrMock.Object);
 			Factory.InstantieRegistreren<IGroepenDao>(groepenDaoMock.Object);
+			Factory.InstantieRegistreren<IGroepsWerkJaarDao>(groepsWerkJaarDaoMock.Object);
 
 			LedenManager lm = Factory.Maak<LedenManager>();
 

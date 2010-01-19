@@ -11,172 +11,196 @@ using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {
-    public class GroepsWerkJaarManager
-    {
-
-        private IGroepenDao _dao;
-        private IAutorisatieManager _autorisatieMgr;
-
-        public IGroepenDao Dao
-        {
-            get { return _dao; }
-        }
-
-        public GroepsWerkJaarManager(IGroepenDao groepenDao, IAutorisatieManager autorisatieMgr)
-        {
-            _dao = groepenDao;
-            _autorisatieMgr = autorisatieMgr;
-        }
-
-        /// <summary>
-        /// Maakt een nieuw afdelingsjaar op basis van groepswerkjaar,
-        /// afdeling en officiele afdeling.
-        /// </summary>
-        /// <param name="gwj">Groepswerkjaar voor afdelingsjaar</param>
-        /// <param name="afd">Afdeling voor afdelingswerkjaar</param>
-        /// <param name="oa">Corresponderende officiele afdeling voor afd</param>
-        /// <param name="jaarVan">startpunt interval geboortejaren</param>
-        /// <param name="jaarTot">eindpunt interval geboortejaren</param>
-        /// <returns>Afdelingsjaar met daaraan gekoppeld groepswerkjaar
-        /// , afdeling en officiele afdeling.</returns>
-        /// <remarks>gwj.Groep en afd.Groep mogen niet null zijn</remarks>
-        public AfdelingsJaar AfdelingsJaarMaken(GroepsWerkJaar gwj, Afdeling afd, OfficieleAfdeling oa, int jaarVan, int jaarTot)
-        {
-            if (!_autorisatieMgr.IsGavGroepsWerkJaar(gwj.ID))
-            {
-                throw new GeenGavException(Properties.Resources.GeenGavGroepsWerkJaar);
-            }
-            if (!_autorisatieMgr.IsGavAfdeling(afd.ID))
-            {
-                throw new GeenGavException(Properties.Resources.GeenGavAfdeling);
-            }
-
-            Debug.Assert(gwj.Groep != null);
-            Debug.Assert(afd.Groep != null);
-
-            // FIXME: Eigenlijk zou onderstaande if ook moeten
-            // werken zonder de .ID's, want ik heb equals geoverload.
-            // Maar dat is blijkbaar niet zo evident.
-
-            if (!gwj.Groep.Equals(afd.Groep))
-            {
-                throw new FoutieveGroepException("De afdeling is niet gekoppeld aan de groep van het groepswerkjaar.");
-            }
-
-            AfdelingsJaar resultaat = new AfdelingsJaar();
-
-
-            resultaat.GeboorteJaarVan = jaarVan;
-            resultaat.GeboorteJaarTot = jaarTot;
-
-            resultaat.GroepsWerkJaar = gwj;
-            resultaat.Afdeling = afd;
-            resultaat.OfficieleAfdeling = oa;
-
-            gwj.AfdelingsJaar.Add(resultaat);
-            afd.AfdelingsJaar.Add(resultaat);
-            oa.AfdelingsJaar.Add(resultaat);
-
-            return resultaat;
-        }
-
-	/// <summary>
-	/// Haalt recentste groepswerkjaar voor een groep op, inclusief afdelingsjaren
-	/// </summary>
-	/// <param name="groepID">GroepID gevraagde groep</param>
-	/// <returns>Groepswerkjaar</returns>
-	public GroepsWerkJaar RecentsteGroepsWerkJaarGet(int groepID)
+	public class GroepsWerkJaarManager
 	{
-		if (_autorisatieMgr.IsGavGroep(groepID))
+
+		private IGroepsWerkJaarDao _groepsWjDao;
+		private IGroepenDao _groepenDao;
+		private IAutorisatieManager _autorisatieMgr;
+
+		public GroepsWerkJaarManager(IGroepsWerkJaarDao groepsWjDao, IGroepenDao groepenDao, IAutorisatieManager autorisatieMgr)
 		{
-			// TODO: cachen, want dit gaan we veel nodig hebben (Zie #251)
-			return _dao.RecentsteGroepsWerkJaarGet(groepID);
+			_groepsWjDao = groepsWjDao;
+			_groepenDao = groepenDao;
+			_autorisatieMgr = autorisatieMgr;
 		}
-		else
+
+		/// <summary>
+		/// Haalt het groepswerkjaar op bij een gegeven <paramref name="groepsWerkJaarID"/>
+		/// samen met alle info over het AfdelingsJaar, de Afdeling, de gelinkte
+		/// OfficieleAfdeling, de Kinderen en de Leiding, ...
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het gevraagde GroepsWerkJaar</param>
+		/// <returns>Gevraagde groepswerkjaar</returns>
+		public GroepsWerkJaar OphalenMetLeden(int groepsWerkJaarID)
 		{
-			throw new GeenGavException(Resources.GeenGavGroep);
+			GroepsWerkJaar resultaat = _groepsWjDao.Ophalen(
+				groepsWerkJaarID, 
+				gwj=>gwj.Groep,
+				gwj=>gwj.AfdelingsJaar.First().Afdeling,
+				gwj=>gwj.AfdelingsJaar.First().OfficieleAfdeling,
+				gwj=>gwj.AfdelingsJaar.First().Kind,
+				gwj=>gwj.AfdelingsJaar.First().Leiding);
+
+			if (_autorisatieMgr.IsGavGroep(resultaat.Groep.ID))
+			{
+				return resultaat;
+			}
+			else
+			{
+				throw new GeenGavException(Resources.GeenGavGroep);
+			}
 		}
+
+		/// <summary>
+		/// Maakt een nieuw afdelingsjaar op basis van groepswerkjaar,
+		/// afdeling en officiele afdeling.
+		/// </summary>
+		/// <param name="gwj">Groepswerkjaar voor afdelingsjaar</param>
+		/// <param name="afd">Afdeling voor afdelingswerkjaar</param>
+		/// <param name="oa">Corresponderende officiele afdeling voor afd</param>
+		/// <param name="jaarVan">startpunt interval geboortejaren</param>
+		/// <param name="jaarTot">eindpunt interval geboortejaren</param>
+		/// <returns>Afdelingsjaar met daaraan gekoppeld groepswerkjaar
+		/// , afdeling en officiele afdeling.</returns>
+		/// <remarks>gwj.Groep en afd.Groep mogen niet null zijn</remarks>
+		public AfdelingsJaar AfdelingsJaarMaken(GroepsWerkJaar gwj, Afdeling afd, OfficieleAfdeling oa, int jaarVan, int jaarTot)
+		{
+			if (!_autorisatieMgr.IsGavGroepsWerkJaar(gwj.ID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavGroepsWerkJaar);
+			}
+			if (!_autorisatieMgr.IsGavAfdeling(afd.ID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavAfdeling);
+			}
+
+			Debug.Assert(gwj.Groep != null);
+			Debug.Assert(afd.Groep != null);
+
+			// FIXME: Eigenlijk zou onderstaande if ook moeten
+			// werken zonder de .ID's, want ik heb equals geoverload.
+			// Maar dat is blijkbaar niet zo evident.
+
+			if (!gwj.Groep.Equals(afd.Groep))
+			{
+				throw new FoutieveGroepException("De afdeling is niet gekoppeld aan de groep van het groepswerkjaar.");
+			}
+
+			AfdelingsJaar resultaat = new AfdelingsJaar();
+
+
+			resultaat.GeboorteJaarVan = jaarVan;
+			resultaat.GeboorteJaarTot = jaarTot;
+
+			resultaat.GroepsWerkJaar = gwj;
+			resultaat.Afdeling = afd;
+			resultaat.OfficieleAfdeling = oa;
+
+			gwj.AfdelingsJaar.Add(resultaat);
+			afd.AfdelingsJaar.Add(resultaat);
+			oa.AfdelingsJaar.Add(resultaat);
+
+			return resultaat;
+		}
+
+		/// <summary>
+		/// Haalt recentste groepswerkjaar voor een groep op, inclusief afdelingsjaren
+		/// </summary>
+		/// <param name="groepID">GroepID gevraagde groep</param>
+		/// <returns>Groepswerkjaar</returns>
+		public GroepsWerkJaar RecentsteGroepsWerkJaarGet(int groepID)
+		{
+			if (_autorisatieMgr.IsGavGroep(groepID))
+			{
+				// TODO: cachen, want dit gaan we veel nodig hebben (Zie #251)
+				return _groepenDao.RecentsteGroepsWerkJaarGet(groepID);
+			}
+			else
+			{
+				throw new GeenGavException(Resources.GeenGavGroep);
+			}
+		}
+
+		/// <summary>
+		/// Bepaalt ID van het recentste GroepsWerkJaar gemaakt voor een
+		/// gegeven groep.
+		/// </summary>
+		/// <param name="groepID">ID van Groep</param>
+		/// <returns>ID van het recentste GroepsWerkJaar</returns>
+		public int RecentsteGroepsWerkJaarIDGet(int groepID)
+		{
+			if (_autorisatieMgr.IsGavGroep(groepID))
+			{
+				// TODO: cachen, want dit gaan we veel nodig hebben (Zie #251)
+				return _groepenDao.RecentsteGroepsWerkJaarGet(groepID).ID;
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavGroep);
+			}
+		}
+
+		/// <summary>
+		/// Haalt het huidige werkjaar op (beginjaar) voor een bepaalde groep
+		/// </summary>
+		/// <param name="groepID">ID van de groep</param>
+		/// <returns>beginjaar van het huidige werkjaar voor die bepaalde groep</returns>
+		public int HuidigWerkJaarGet(int groepID)
+		{
+			// TODO: Beter documenteren!
+
+			if (_autorisatieMgr.IsGavGroep(groepID))
+			{
+				var begindatumnieuwwerkjaar = Properties.Settings.Default.WerkjaarStartNationaal;
+				var deadlinenieuwwerkjaar = Properties.Settings.Default.WerkjaarVerplichteOvergang;
+				var huidigedatum = System.DateTime.Today;
+
+				if (compare(huidigedatum.Day, huidigedatum.Month, begindatumnieuwwerkjaar.Day, begindatumnieuwwerkjaar.Month) < 0)
+				{
+					return huidigedatum.Year;
+				}
+				else
+				{
+					if (compare(deadlinenieuwwerkjaar.Day, deadlinenieuwwerkjaar.Month, huidigedatum.Day, huidigedatum.Month) < 0)
+					{
+						return huidigedatum.Year;
+					}
+					else
+					{
+						int werkjaar = _groepenDao.RecentsteGroepsWerkJaarGet(groepID).WerkJaar;
+						Debug.Assert(huidigedatum.Year == werkjaar || werkjaar + 1 == huidigedatum.Year);
+						return werkjaar;
+					}
+				}
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavGroep);
+			}
+
+		}
+
+
+		// WTF???
+		private int compare(int dag1, int maand1, int dag2, int maand2)
+		{
+			if (maand1 < maand2 || (maand1 == maand2 && dag1 < dag2))
+			{
+				return -1;
+			}
+			else
+			{
+				if (maand1 > maand2 || (maand1 == maand2 && dag1 > dag2))
+				{
+					return 1;
+				}
+				else
+				{
+					return 0;
+				}
+			}
+		}
+
 	}
-
-        /// <summary>
-        /// Bepaalt ID van het recentste GroepsWerkJaar gemaakt voor een
-        /// gegeven groep.
-        /// </summary>
-        /// <param name="groepID">ID van Groep</param>
-        /// <returns>ID van het recentste GroepsWerkJaar</returns>
-        public int RecentsteGroepsWerkJaarIDGet(int groepID)
-        {
-            if (_autorisatieMgr.IsGavGroep(groepID))
-            {
-		    // TODO: cachen, want dit gaan we veel nodig hebben (Zie #251)
-		    return _dao.RecentsteGroepsWerkJaarGet(groepID).ID;
-            }
-            else
-            {
-                throw new GeenGavException(Properties.Resources.GeenGavGroep);
-            }
-        }
-
-        /// <summary>
-        /// Haalt het huidige werkjaar op (beginjaar) voor een bepaalde groep
-        /// </summary>
-        /// <param name="groepID">ID van de groep</param>
-        /// <returns>beginjaar van het huidige werkjaar voor die bepaalde groep</returns>
-        public int HuidigWerkJaarGet(int groepID)
-        {
-            // TODO: Beter documenteren!
-
-            if (_autorisatieMgr.IsGavGroep(groepID))
-            {
-                var begindatumnieuwwerkjaar = Properties.Settings.Default.WerkjaarStartNationaal;
-                var deadlinenieuwwerkjaar = Properties.Settings.Default.WerkjaarVerplichteOvergang;
-                var huidigedatum = System.DateTime.Today;
-
-                if (compare(huidigedatum.Day, huidigedatum.Month, begindatumnieuwwerkjaar.Day, begindatumnieuwwerkjaar.Month) < 0)
-                {
-                    return huidigedatum.Year;
-                }
-                else
-                {
-                    if (compare(deadlinenieuwwerkjaar.Day, deadlinenieuwwerkjaar.Month, huidigedatum.Day, huidigedatum.Month) < 0)
-                    {
-                        return huidigedatum.Year;
-                    }
-                    else
-                    {
-                        int werkjaar = _dao.RecentsteGroepsWerkJaarGet(groepID).WerkJaar;
-                        Debug.Assert(huidigedatum.Year == werkjaar || werkjaar + 1 == huidigedatum.Year);
-                        return werkjaar;
-                    }
-                }
-            }
-            else
-            {
-                throw new GeenGavException(Properties.Resources.GeenGavGroep);
-            }
-
-        }
-
-
-        // WTF???
-        private int compare(int dag1, int maand1, int dag2, int maand2)
-        {
-            if (maand1 < maand2 || (maand1 == maand2 && dag1 < dag2))
-            {
-                return -1;
-            }
-            else
-            {
-                if (maand1 > maand2 || (maand1 == maand2 && dag1 > dag2))
-                {
-                    return 1;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-        }
-
-    }
 }

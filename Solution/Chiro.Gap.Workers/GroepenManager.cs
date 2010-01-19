@@ -137,47 +137,8 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
-		/// <summary>
-		/// Haalt het groepswerkjaar op bij een gegeven GroepsWerkJaarID
-		/// </summary>
-		/// <param name="p">ID van het gevraagde GroepsWerkJaar</param>
-		/// <returns>Gevraagde groepswerkjaar</returns>
-		public GroepsWerkJaar GroepsWerkJaarOphalen(int groepsWerkJaarID)
-		{
-			GroepsWerkJaar gwj = _dao.GroepsWerkJaarOphalen(groepsWerkJaarID);
 
-			if (_autorisatieMgr.IsGavGroep(gwj.Groep.ID))
-			{
-				return gwj;
-			}
-			else
-			{
-				throw new GeenGavException(Resources.GeenGavGroep);
-			}
 
-		}
-
-		/// <summary>
-		/// Haalt het groepswerkjaar op bij een gegeven GroepsWerkJaarID
-		/// samen met alle info over het AfdelingsJaar, de Afdeling, de gelinkte
-		/// OfficieleAfdeling, de Kinderen en de Leiding, ...
-		/// </summary>
-		/// <param name="p">ID van het gevraagde GroepsWerkJaar</param>
-		/// <returns>Gevraagde groepswerkjaar</returns>
-		public GroepsWerkJaar GroepsWerkJaarOphalenMetAfdelingInfo(int groepsWerkJaarID)
-		{
-			GroepsWerkJaar gwj = _dao.GroepsWerkJaarOphalenMetAfdelingInfo(groepsWerkJaarID);
-
-			if (_autorisatieMgr.IsGavGroep(gwj.Groep.ID))
-			{
-				return gwj;
-			}
-			else
-			{
-				throw new GeenGavException(Resources.GeenGavGroep);
-			}
-
-		}
 
 		// Zit nu in AfdelingsJaarManager.Bewaren
 		///// <summary>

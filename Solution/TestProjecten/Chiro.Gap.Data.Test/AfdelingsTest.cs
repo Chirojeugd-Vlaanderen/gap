@@ -175,7 +175,7 @@ namespace Chiro.Gap.Data.Test
             // Voor het gemak haal ik groepswerkjaar en afdeling via
             // de DAO's op ipv via de workers.
 
-            GroepsWerkJaar gw = gwDao.Ophalen(gwjID);
+            GroepsWerkJaar gw = gwDao.Ophalen(gwjID, gwj=>gwj.Groep);
             Afdeling afd = aDao.Ophalen(afd2ID);
             OfficieleAfdeling oa = oaDao.Ophalen(oaID);
 

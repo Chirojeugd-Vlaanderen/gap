@@ -255,40 +255,5 @@ namespace Chiro.Gap.Data.Ef
             }
             return Utility.DetachObjectGraph(result);
         }
-
-        public GroepsWerkJaar GroepsWerkJaarOphalen(int groepsWerkJaarID)
-        {
-            GroepsWerkJaar groepswj = null;
-
-            using (ChiroGroepEntities db = new ChiroGroepEntities())
-            {
-                db.GroepsWerkJaar.MergeOption = MergeOption.NoTracking;
-
-                groepswj = (
-                    from gwj in db.GroepsWerkJaar.Include("Groep")
-                    where gwj.ID == groepsWerkJaarID
-                    select gwj).FirstOrDefault();
-            }
-
-            return groepswj;
-        }
-
-        public GroepsWerkJaar GroepsWerkJaarOphalenMetAfdelingInfo(int groepsWerkJaarID)
-        {
-            GroepsWerkJaar groepswj = null;
-
-            using (ChiroGroepEntities db = new ChiroGroepEntities())
-            {
-                db.GroepsWerkJaar.MergeOption = MergeOption.NoTracking;
-
-                groepswj = (
-                    from gwj in db.GroepsWerkJaar.Include("Groep").Include("AfdelingsJaar").Include("AfdelingsJaar.Afdeling").Include("AfdelingsJaar.OfficieleAfdeling").Include("AfdelingsJaar.Kind").Include("AfdelingsJaar.Leiding")
-                    where gwj.ID == groepsWerkJaarID
-                    select gwj).FirstOrDefault();
-            }
-
-            return groepswj;
-        }
-
     }
 }

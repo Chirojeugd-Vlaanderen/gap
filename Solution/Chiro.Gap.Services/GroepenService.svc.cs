@@ -27,7 +27,7 @@ namespace Chiro.Gap.Services
 		private readonly GroepenManager _groepenMgr;
 		private readonly AfdelingsJaarManager _afdelingsJaarMgr;
 		private readonly AdressenManager _adresMgr;
-		private readonly GroepsWerkJaarManager _werkJaarMgr;
+		private readonly GroepsWerkJaarManager _groepsWerkJaarManager;
 		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly GelieerdePersonenManager _gelieerdePersonenMgr;
 		private readonly CategorieenManager _categorieenMgr;
@@ -43,7 +43,7 @@ namespace Chiro.Gap.Services
 		{
 			_groepenMgr = gm;
 			_afdelingsJaarMgr = ajm;
-			_werkJaarMgr = wm;
+			_groepsWerkJaarManager = wm;
 			_autorisatieMgr = am;
 			_gelieerdePersonenMgr = gpm;
 			_adresMgr = adresMgr;
@@ -75,7 +75,7 @@ namespace Chiro.Gap.Services
 
 		public int RecentsteGroepsWerkJaarIDGet(int groepID)
 		{
-			return _werkJaarMgr.RecentsteGroepsWerkJaarIDGet(groepID);
+			return _groepsWerkJaarManager.RecentsteGroepsWerkJaarIDGet(groepID);
 		}
 
 		/// <summary>
@@ -94,7 +94,7 @@ namespace Chiro.Gap.Services
 		/// <returns></returns>
 		public int HuidigWerkJaarGet(int groepID)
 		{
-			return _werkJaarMgr.HuidigWerkJaarGet(groepID);
+			return _groepsWerkJaarManager.HuidigWerkJaarGet(groepID);
 		}
 
 		#endregion
@@ -239,7 +239,7 @@ namespace Chiro.Gap.Services
 				throw new FoutieveGroepException(String.Format(Resources.FouteAfdelingVoorGroepString, g.Naam));
 			}
 
-			GroepsWerkJaar huidigWerkJaar = _werkJaarMgr.RecentsteGroepsWerkJaarGet(g.ID);
+			GroepsWerkJaar huidigWerkJaar = _groepsWerkJaarManager.RecentsteGroepsWerkJaarGet(g.ID);
 
 			AfdelingsJaar afdjaar = _groepenMgr.AfdelingsJaarMaken(afd, offafd, huidigWerkJaar, geboortejaarbegin, geboortejaareind);
 
@@ -250,7 +250,7 @@ namespace Chiro.Gap.Services
 
 		public IList<AfdelingInfo> AfdelingenOphalen(int groepswerkjaarID)
 		{
-			var groepswerkjaar = _groepenMgr.GroepsWerkJaarOphalenMetAfdelingInfo(groepswerkjaarID);
+			var groepswerkjaar = _groepsWerkJaarManager.OphalenMetLeden(groepswerkjaarID);
 			return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingInfo>>(groepswerkjaar.AfdelingsJaar.OrderBy(e => e.GeboorteJaarVan).ToList<AfdelingsJaar>());
 		}
 
