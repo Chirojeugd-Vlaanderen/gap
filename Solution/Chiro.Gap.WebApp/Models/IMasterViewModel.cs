@@ -9,23 +9,23 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// ID van de Chirogroep
 		/// </summary>
-		int GroepID { get; set; }
+		int GroepID { get; }
 		/// <summary>
 		/// ID van de Chirogroep
 		/// </summary>
-		string GroepsNaam { get; set; }
+		string GroepsNaam { get; }
 		/// <summary>
 		/// Plaats van de Chirogroep
 		/// </summary>
-		string Plaats { get; set; }
+		string Plaats { get; }
 		/// <summary>
 		/// Het stamnummer wordt niet meer gebruikt als primary key, maar zal nog wel
 		/// lang gebruikt worden als handige manier om een groep op te zoeken.
 		/// </summary>
-		string StamNummer { get; set; }
+		string StamNummer { get; }
 		/// <summary>
 		/// Titel van de webpagina
 		/// </summary>
-		string Titel { get; set; }
+		string Titel { get; }
 	}
 }
