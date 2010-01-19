@@ -11,7 +11,7 @@ using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {
-    public class WerkJaarManager
+    public class GroepsWerkJaarManager
     {
 
         private IGroepenDao _dao;
@@ -22,7 +22,7 @@ namespace Chiro.Gap.Workers
             get { return _dao; }
         }
 
-        public WerkJaarManager(IGroepenDao groepenDao, IAutorisatieManager autorisatieMgr)
+        public GroepsWerkJaarManager(IGroepenDao groepenDao, IAutorisatieManager autorisatieMgr)
         {
             _dao = groepenDao;
             _autorisatieMgr = autorisatieMgr;

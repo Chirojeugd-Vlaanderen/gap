@@ -27,7 +27,7 @@ namespace Chiro.Gap.Services
 		private readonly GroepenManager _groepenMgr;
 		private readonly AfdelingsJaarManager _afdelingsJaarMgr;
 		private readonly AdressenManager _adresMgr;
-		private readonly WerkJaarManager _werkJaarMgr;
+		private readonly GroepsWerkJaarManager _werkJaarMgr;
 		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly GelieerdePersonenManager _gelieerdePersonenMgr;
 		private readonly CategorieenManager _categorieenMgr;
@@ -35,7 +35,7 @@ namespace Chiro.Gap.Services
 		public GroepenService(
 			GroepenManager gm, 
 			AfdelingsJaarManager ajm, 
-			WerkJaarManager wm, 
+			GroepsWerkJaarManager wm, 
 			GelieerdePersonenManager gpm, 
 			AdressenManager adresMgr,
 			CategorieenManager cm,

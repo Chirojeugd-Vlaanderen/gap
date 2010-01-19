@@ -50,7 +50,7 @@ namespace Chiro.Gap.Dummies
 		/// </summary>
 		static DummyData()
 		{
-			WerkJaarManager wjMgr = Factory.Maak<WerkJaarManager>();
+			GroepsWerkJaarManager wjMgr = Factory.Maak<GroepsWerkJaarManager>();
 			GelieerdePersonenManager gpMgr = Factory.Maak<GelieerdePersonenManager>();
 			GroepenManager gMgr = Factory.Maak<GroepenManager>();
 			LedenManager lMgr = Factory.Maak<LedenManager>();

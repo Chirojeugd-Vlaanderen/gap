@@ -163,7 +163,7 @@ namespace Chiro.Gap.Data.Test
             IAfdelingsJarenDao ajDao = Factory.Maak<IAfdelingsJarenDao>();
             IDao<OfficieleAfdeling> oaDao = Factory.Maak<IDao<OfficieleAfdeling>>();
 
-            WerkJaarManager wjm = Factory.Maak<WerkJaarManager>();
+            GroepsWerkJaarManager wjm = Factory.Maak<GroepsWerkJaarManager>();
 
             int gwjID = TestInfo.GROEPSWERKJAARID;
             int afd2ID = TestInfo.AFDELING2ID;

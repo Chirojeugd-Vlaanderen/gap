@@ -148,7 +148,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_authorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
-				WerkJaarManager mgr = Factory.Maak<WerkJaarManager>();
+				GroepsWerkJaarManager mgr = Factory.Maak<GroepsWerkJaarManager>();
 
 				if (gp.Groep == null)
 				{
