@@ -25,7 +25,7 @@ namespace Chiro.Gap.WebApp.Models
         /// <summary>
         /// Naam van de Chirogroep
         /// </summary>
-        public string Groepsnaam { get; set; }
+        public string GroepsNaam { get; set; }
 
         /*/// <summary>
         /// Categorieen van de groep
@@ -45,7 +45,7 @@ namespace Chiro.Gap.WebApp.Models
         /// <summary>
         /// Titel van de pagina
         /// </summary>
-        public string Title { get; set; }
+        public string Titel { get; set; }
 
     }
 }

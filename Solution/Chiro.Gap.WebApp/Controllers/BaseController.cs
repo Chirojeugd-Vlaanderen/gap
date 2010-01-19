@@ -41,7 +41,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 // De Gekozen groep is nog niet gekend, zet defaults
                 // TODO: De defaults op een zinvollere plaats definieren.
 
-                model.Groepsnaam = "Nog geen Chirogroep geselecteerd";
+                model.GroepsNaam = "Nog geen Chirogroep geselecteerd";
                 model.Plaats = "geen";
                 model.StamNummer = "--";
                 //model.GroepsCategorieen = new List<SelectListItem>();
@@ -59,7 +59,7 @@ namespace Chiro.Gap.WebApp.Controllers
                     c.Add(cacheKey, gi, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
                 }
 
-                model.Groepsnaam = gi.Naam;
+                model.GroepsNaam = gi.Naam;
                 model.Plaats = gi.Plaats;
                 model.StamNummer = gi.StamNummer;
 

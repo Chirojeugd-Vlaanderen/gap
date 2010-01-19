@@ -53,7 +53,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 }
             }
 
-            model.Title = "Afdelingen";
+            model.Titel = "Afdelingen";
             return View("Index", model);
         }
 
@@ -66,7 +66,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             model.HuidigeAfdeling = new Afdeling();
 
-            model.Title = "Nieuwe afdeling";
+            model.Titel = "Nieuwe afdeling";
             return View("Nieuw", model);
         }
 
@@ -110,7 +110,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 }
             }
 
-            model.Title = "Afdeling activeren";
+            model.Titel = "Afdeling activeren";
             return View("AfdelingsJaar", model);
         }
 
@@ -157,7 +157,7 @@ namespace Chiro.Gap.WebApp.Controllers
             model.HuidigeAfdeling = model.HuidigAfdelingsJaar.Afdeling;
             model.OfficieleAfdelingID = model.HuidigAfdelingsJaar.OfficieleAfdeling.ID;
 
-            model.Title = "Afdeling bewerken";
+            model.Titel = "Afdeling bewerken";
             return View("AfdelingsJaar", model);
         }
 

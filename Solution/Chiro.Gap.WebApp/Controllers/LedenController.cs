@@ -65,7 +65,7 @@ namespace Chiro.Gap.WebApp.Controllers
                     ServiceHelper.CallService<ILedenService, IList<LidInfo>>
                         (lid => lid.PaginaOphalen(groepsWerkJaarId, out paginas));
 
-                model.Title = "Ledenoverzicht van het jaar " + model.GroepsWerkJaartalZichtbaar;
+                model.Titel = "Ledenoverzicht van het jaar " + model.GroepsWerkJaartalZichtbaar;
 
             }
             else
@@ -78,7 +78,7 @@ namespace Chiro.Gap.WebApp.Controllers
                                     where a.Value.ID == afdID
                                     select a.Value).FirstOrDefault();
 
-                model.Title = "Ledenoverzicht van de " + af.Naam + " van het jaar " + model.GroepsWerkJaartalZichtbaar;
+                model.Titel = "Ledenoverzicht van de " + af.Naam + " van het jaar " + model.GroepsWerkJaartalZichtbaar;
             }
             
             model.PageHuidig = model.GroepsWerkJaarIdZichtbaar;
@@ -145,7 +145,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
             model.AfdelingIDs = model.HuidigLid.AfdelingIdLijst.ToList();
 
-            model.Title = "Ledenoverzicht";
+            model.Titel = "Ledenoverzicht";
             
             return View("AfdelingBewerken", model);
         }

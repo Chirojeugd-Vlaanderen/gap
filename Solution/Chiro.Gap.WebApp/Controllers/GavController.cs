@@ -32,7 +32,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 var model = new Models.GavModel();
                 BaseModelInit(model, 0);    // 0:nog geen groep gekozen
 
-                model.Title = "Kies je Chirogroep";
+                model.Titel = "Kies je Chirogroep";
                 model.GroepenLijst = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
                         (g => g.MijnGroepenOphalen());
 

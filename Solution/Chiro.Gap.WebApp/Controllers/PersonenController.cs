@@ -54,7 +54,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				    (g => g.PaginaOphalenMetLidInfo(groepID, page, 20, out totaal));
 				model.PageHuidig = page;
 				model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
-				model.Title = "Personenoverzicht";
+				model.Titel = "Personenoverzicht";
 				model.Totaal = totaal;
 			}
 			else
@@ -71,7 +71,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					       select c
 						).First().Naam;
 
-				model.Title = "Overzicht " + naam;
+				model.Titel = "Overzicht " + naam;
 				model.Totaal = totaal;
 			}
 
@@ -114,7 +114,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			BaseModelInit(model, groepID);
 			model.HuidigePersoon = new GelieerdePersoon { Persoon = new Persoon() };
 
-			model.Title = Properties.Resources.NieuwePersoonTitel;
+			model.Titel = Properties.Resources.NieuwePersoonTitel;
 			return View("EditGegevens", model);
 		}
 
@@ -127,7 +127,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			int persoonID;
 
 			BaseModelInit(model, groepID);
-			model.Title = Properties.Resources.NieuwePersoonTitel;
+			model.Titel = Properties.Resources.NieuwePersoonTitel;
 
 			if (!ModelState.IsValid)
 			{
@@ -165,7 +165,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			BaseModelInit(model, groepID);
 			var serviceResultaat = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
 			model.HuidigePersoon = serviceResultaat;
-			model.Title = model.HuidigePersoon.Persoon.VolledigeNaam;
+			model.Titel = model.HuidigePersoon.Persoon.VolledigeNaam;
 			return View("EditRest", model);
 		}
 
@@ -177,7 +177,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new Models.GelieerdePersonenModel();
 			BaseModelInit(model, groepID);
 			model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(p.HuidigePersoon.ID));
-			model.Title = model.HuidigePersoon.Persoon.VolledigeNaam;
+			model.Titel = model.HuidigePersoon.Persoon.VolledigeNaam;
 			return RedirectToAction("EditGegevens", new { id = p.HuidigePersoon.ID });
 		}
 
@@ -192,7 +192,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new Models.GelieerdePersonenModel();
 			BaseModelInit(model, groepID);
 			model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
-			model.Title = model.HuidigePersoon.Persoon.VolledigeNaam;
+			model.Titel = model.HuidigePersoon.Persoon.VolledigeNaam;
 			return View("EditGegevens", model);
 		}
 
@@ -272,7 +272,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.PersoonIDs = (from b in a.Bewoners
 					    select b.PersoonID).ToList();
 
-			model.Title = "Personen Verhuizen";
+			model.Titel = "Personen Verhuizen";
 			return View("AdresBewerken", model);
 		}
 
@@ -340,7 +340,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			BaseModelInit(model, groepID);
 
-			model.Title = "Adres verwijderen";
+			model.Titel = "Adres verwijderen";
 			return View("AdresVerwijderen", model);
 		}
 
@@ -373,7 +373,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			model.PersoonIDs.Add(ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.PersoonIDGet(id)));
 
-			model.Title = "Nieuw adres toevoegen";
+			model.Titel = "Nieuw adres toevoegen";
 			return View("AdresBewerken", model);
 		}
 
@@ -419,7 +419,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			IEnumerable<CommunicatieType> types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.CommunicatieTypesOphalen());
 			NieuweCommVormModel model = new NieuweCommVormModel(g, types);
 			BaseModelInit(model, groepID);
-			model.Title = "Nieuwe communicatievorm toevoegen";
+			model.Titel = "Nieuwe communicatievorm toevoegen";
 			return View("NieuweCommVorm", model);
 		}
 
@@ -449,7 +449,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				// info voor model herstellen
 				model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
 				model.Types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.CommunicatieTypesOphalen());
-				model.Title = "Nieuwe communicatievorm toevoegen";
+				model.Titel = "Nieuwe communicatievorm toevoegen";
 
 				return View("NieuweCommVorm", model);
 			}
@@ -476,7 +476,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			CommunicatieVorm commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieVorm>(l => l.CommunicatieVormOphalen(commvormID));
 			CommVormModel model = new CommVormModel(g, commv);
 			BaseModelInit(model, groepID);
-			model.Title = "Communicatievorm bewerken";
+			model.Titel = "Communicatievorm bewerken";
 			return View("CommVormBewerken", model);
 		}
 
@@ -513,7 +513,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
 				model.NieuweCommVorm = commVorm;
-				model.Title = "Communicatievorm bewerken";
+				model.Titel = "Communicatievorm bewerken";
 
 				return View("CommVormBewerken", model);
 			}
