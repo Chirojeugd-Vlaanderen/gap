@@ -45,7 +45,7 @@ namespace Chiro.Gap.WebApp.Controllers
             model.AfdelingsInfoDictionary = new Dictionary<int, AfdelingInfo>();
             foreach (AfdelingInfo ai in list)
             {
-                model.AfdelingsInfoDictionary.Add(ai.ID, ai);
+                model.AfdelingsInfoDictionary.Add(ai.AfdelingID, ai);
             }
 
             model.GroepsWerkJaarLijst =
@@ -75,7 +75,7 @@ namespace Chiro.Gap.WebApp.Controllers
                     (lid => lid.PaginaOphalenVolgensAfdeling(groepsWerkJaarId, afdID, out paginas));
 
                 AfdelingInfo af = (from a in model.AfdelingsInfoDictionary.AsQueryable()
-                                    where a.Value.ID == afdID
+                                    where a.Value.AfdelingID == afdID
                                     select a.Value).FirstOrDefault();
 
                 model.Titel = "Ledenoverzicht van de " + af.Naam + " van het jaar " + model.GroepsWerkJaartalZichtbaar;
@@ -137,7 +137,7 @@ namespace Chiro.Gap.WebApp.Controllers
             model.AfdelingsInfoDictionary = new Dictionary<int, AfdelingInfo>();
             foreach (AfdelingInfo ai in list)
             {
-                model.AfdelingsInfoDictionary.Add(ai.ID, ai);
+                model.AfdelingsInfoDictionary.Add(ai.AfdelingID, ai);
             }
 
             model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>

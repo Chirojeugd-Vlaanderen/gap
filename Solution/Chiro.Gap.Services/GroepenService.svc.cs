@@ -53,11 +53,40 @@ namespace Chiro.Gap.Services
 		#endregion
 
 		#region algemene members
-
-		public GroepInfo InfoOphalen(int GroepId)
+		/// <summary>
+		/// Ophalen van Groepsinformatie
+		/// </summary>
+		/// <param name="groepID">GroepID van groep waarvan we de informatie willen opvragen</param>
+		/// <param name="extras">Bitset, die aangeeft welke extra informatie er opgehaald moet worden</param>
+		/// <returns>
+		/// GroepInfo-structuur met de gevraagde informatie over de groep met id <paramref name="groepID"/>
+		/// </returns>
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public GroepInfo Ophalen(int groepID, GroepsExtras extras)
 		{
-			var gr = Ophalen(GroepId);
-			return Mapper.Map<Groep, GroepInfo>(gr);
+			Groep g;
+			GroepInfo resultaat;
+
+			if ((extras & GroepsExtras.Categorieen) == GroepsExtras.Categorieen)
+			{
+				g = _groepenMgr.OphalenMetCategorieen(groepID);
+			}
+			else
+			{
+				g = _groepenMgr.Ophalen(groepID);
+			}
+
+			resultaat = Mapper.Map<Groep, GroepInfo>(g);
+
+			if ((extras & GroepsExtras.AfdelingenHuidigWerkJaar) == GroepsExtras.AfdelingenHuidigWerkJaar)
+			{
+				int gwjID = _groepsWerkJaarManager.RecentsteGroepsWerkJaarIDGet(groepID);
+				GroepsWerkJaar gwj = _groepsWerkJaarManager.OphalenMetAfdelingen(gwjID);
+
+				resultaat.AfdelingenDitWerkJaar = Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingInfo>>(gwj.AfdelingsJaar.ToList());
+			}
+
+			return resultaat;
 		}
 
 		public Groep Bewaren(Groep g)
@@ -100,11 +129,6 @@ namespace Chiro.Gap.Services
 		#endregion
 
 		#region ophalen
-		public Groep Ophalen(int groepID)
-		{
-			var result = _groepenMgr.Ophalen(groepID);
-			return result;
-		}
 
 		public Groep OphalenMetAdressen(int groepID)
 		{
@@ -114,17 +138,6 @@ namespace Chiro.Gap.Services
 		public Groep OphalenMetFuncties(int groepID)
 		{
 			throw new NotImplementedException();
-		}
-
-		/// <summary>
-		/// Haalt een groep op, met daaraan gekoppeld al zijn afdelingen
-		/// </summary>
-		/// <param name="groepID">ID van de gevraagde groep</param>
-		/// <returns>De gevraagde groep, met daaraan gekoppeld al zijn afdelingen</returns>
-		public Groep OphalenMetAfdelingen(int groepID)
-		{
-			var result = _groepenMgr.OphalenMetAfdelingen(groepID);
-			return result;
 		}
 
 		public Groep OphalenMetVrijeVelden(int groepID)
@@ -247,11 +260,45 @@ namespace Chiro.Gap.Services
 
 		}
 
-
-		public IList<AfdelingInfo> AfdelingenOphalen(int groepswerkjaarID)
+		/// <summary>
+		/// Haat een afdeling op, op basis van <paramref name="afdelingID"/>
+		/// </summary>
+		/// <param name="afdelingID">ID van op te halen afdeling</param>
+		/// <returns>de gevraagde afdeling</returns>
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public Afdeling AfdelingOphalen(int afdelingID)
 		{
-			var groepswerkjaar = _groepsWerkJaarManager.OphalenMetLeden(groepswerkjaarID);
+			return _groepenMgr.AfdelingOphalen(afdelingID);
+		}
+
+		/// <summary>
+		/// Haalt informatie op over alle actieve afdelingen in het groepswerkjaar met 
+		/// ID <paramref name="groepsWerkJaarID"/>
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+		/// <returns>
+		/// Informatie over alle actieve afdelingen in het groepswerkjaar met 
+		/// ID <paramref name="groepsWerkJaarID"/>
+		/// </returns>
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public IList<AfdelingInfo> AfdelingenOphalen(int groepsWerkJaarID)
+		{
+			var groepswerkjaar = _groepsWerkJaarManager.OphalenMetLeden(groepsWerkJaarID);
 			return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingInfo>>(groepswerkjaar.AfdelingsJaar.OrderBy(e => e.GeboorteJaarVan).ToList<AfdelingsJaar>());
+		}
+
+		/// <summary>
+		/// Haalt informatie op over de afdelingen van een groep die niet gebruikt zijn in een gegeven 
+		/// groepswerkjaar, op basis van een <paramref name="groepsWerkJaarID"/>
+		/// </summary>
+		/// <param name="groepswerkjaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
+		/// opgezocht moeten worden.</param>
+		/// <returns>info over de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarID)
+		{
+			IList<Afdeling> ongebruikteAfdelingen = _groepsWerkJaarManager.OngebruikteAfdelingenOphalen(groepswerkjaarID);
+			return Mapper.Map<IList<Afdeling>, IList<AfdelingInfo>>(ongebruikteAfdelingen);
 		}
 
 		#endregion
@@ -268,18 +315,6 @@ namespace Chiro.Gap.Services
 		#region Categorieen
 
 		/// <summary>
-		/// Haalt een groep op, met daaraan gekoppeld al zijn categorieen
-		/// </summary>
-		/// <param name="groepID">ID van op te halen groep</param>
-		/// <returns>Groep met ID <paramref name="groepID"/>, met daaraan gekoppeld al zijn 
-		/// categorieen.</returns>
-		public Groep OphalenMetCategorieen(int groepID)
-		{
-			var result = _groepenMgr.OphalenMetCategorieen(groepID);
-			return result;
-		}
-
-		/// <summary>
 		/// Maakt een nieuwe categorie voor de groep met ID <paramref name="groepID"/>
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvoor nieuwe categorie wordt gemaakt</param>
@@ -287,7 +322,7 @@ namespace Chiro.Gap.Services
 		/// <param name="code">code voor de nieuwe categorie</param>
 		public int CategorieToevoegen(int groepID, string naam, string code)
 		{
-			Groep g = OphalenMetCategorieen(groepID);
+			Groep g = _groepenMgr.OphalenMetCategorieen(groepID);
 			Categorie c = _groepenMgr.CategorieToevoegen(g, naam, code);
 			g = _groepenMgr.Bewaren(g, e => e.Categorie);
 			//TODO kan dit niet mooier om de ID op te vragen?

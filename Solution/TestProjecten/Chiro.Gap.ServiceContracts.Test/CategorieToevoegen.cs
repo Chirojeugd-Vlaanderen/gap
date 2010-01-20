@@ -41,68 +41,63 @@ namespace Chiro.Gap.ServiceContracts.Test
 		}
 
 		List<int> catlijst = new List<int>(); //lijst van nieuw aangemaakte categorieen, die nog verwijderd moeten worden
-		IGroepenService gpm;
+		IGroepenService groepenSvc;
+
+		/// <summary>
+		/// Zoekt de categorie voor de test 'categorie toevoegen', en verwijdert ze uit de database
+		/// als ze bestaat.
+		/// </summary>
+		private void VerwijderCategorieToevoegTest()
+		{
+			GroepInfo g = groepenSvc.Ophalen(TestInfo.GROEPID, GroepsExtras.Categorieen);
+
+			int catID = (from cInfo in g.Categorie
+				     where String.Compare(cInfo.Code, Properties.Settings.Default.CategorieCode_Toevoegen, true) == 0
+				     select cInfo.ID).FirstOrDefault();
+
+			// De 'FirstOrDefault' kiest 0 als er geen gevonden is.
+
+			if (catID != 0)
+			{
+				groepenSvc.CategorieVerwijderen(catID);
+			}
+		}
 
 		[TestInitialize]
 		public void initialiseerTest()
 		{
-			Debug.WriteLine("Chiro.Gap.ServiceContracts.Test.CategorieToevoegen: InitialiseerTest - Start");
-			gpm = Factory.Maak<GroepenService>();
+			groepenSvc = Factory.Maak<GroepenService>();
 
 			// CategorieToevoegenNormaal voegt een categorie toe voor:
 			//    - Groep: Properties.Settings.Default.GroepID
 			//    - CategorieCode: Properties.Settings.Default.CategorieCode
-			// Deze moeten we verwijderen als die bestaat.
-			Groep g = gpm.OphalenMetCategorieen(TestInfo.GROEPID);
-			Debug.WriteLine("Chiro.Gap.ServiceContracts.Test.CategorieToevoegen: InitialiseerTest: heb "
-			    + g.Categorie.Count.ToString() + " Categorien gevonden voor "
-			    + " GroepID: " + TestInfo.GROEPID.ToString());
+			//
+			// Deze moeten we op voorhand verwijderen als die bestaat.
 
-			foreach (Categorie c in g.Categorie.ToList<Categorie>())
-			{
-				if (c.Code.ToString().Equals(Properties.Settings.Default.CategorieCode_Toevoegen))
-				{
-					Debug.WriteLine("Chiro.Gap.ServiceContracts.Test.CategorieToevoegen: InitialiseerTest - Verwijder "
-					    + "CategorieID: " + c.ID.ToString()
-					    + " - GroepID: " + TestInfo.GROEPID.ToString());
-
-					gpm.CategorieVerwijderen(c.ID);
-				}
-			}
-			Debug.WriteLine("Chiro.Gap.ServiceContracts.Test.CategorieToevoegen: InitialiseerTest - Einde");
+			VerwijderCategorieToevoegTest();
 		}
 
 		[TestCleanup]
 		public void tearDown()
 		{
-			Groep g = gpm.OphalenMetCategorieen(TestInfo.GROEPID);
-			foreach (Categorie c in g.Categorie)
-			{
-				if (catlijst.Contains(c.ID))
-				{
-					gpm.CategorieVerwijderen(c.ID);
-				}
-			}
+			VerwijderCategorieToevoegTest();
 		}
 
 		[TestMethod]
 		public void CategorieToevoegenNormaal()
 		{
-			int catID = gpm.CategorieToevoegen(TestInfo.GROEPID,
+			int catID = groepenSvc.CategorieToevoegen(TestInfo.GROEPID,
 				Properties.Settings.Default.CategorieNaam,
 				Properties.Settings.Default.CategorieCode_Toevoegen);
 			catlijst.Add(catID);
 
-			Groep g = gpm.OphalenMetCategorieen(TestInfo.GROEPID);
-			bool found = false;
-			foreach (Categorie c in g.Categorie)
-			{
-				if (c.ID == catID)
-				{
-					found = true;
-				}
-			}
-			Assert.IsTrue(found);
+			GroepInfo g = groepenSvc.Ophalen(TestInfo.GROEPID, GroepsExtras.Categorieen);
+
+			var query = (from cInfo in g.Categorie
+				     where cInfo.ID == catID
+				     select cInfo);
+
+			Assert.IsTrue(query.Count() > 0);
 		}
 
 		/*        [TestMethod]

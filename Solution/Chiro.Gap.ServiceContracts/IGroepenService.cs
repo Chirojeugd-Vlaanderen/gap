@@ -13,12 +13,15 @@ namespace Chiro.Gap.ServiceContracts
 	public interface IGroepenService
 	{
 		/// <summary>
-		/// Ophalen van de Groeps info
+		/// Ophalen van Groepsinformatie
 		/// </summary>
-		/// <param name="GroepId"></param>
-		/// <returns></returns>
+		/// <param name="groepID">GroepID van groep waarvan we de informatie willen opvragen</param>
+		/// <param name="extras">Bitset, die aangeeft welke extra informatie er opgehaald moet worden</param>
+		/// <returns>
+		/// GroepInfo-structuur met de gevraagde informatie over de groep met id <paramref name="groepID"/>
+		/// </returns>
 		[OperationContract]
-		GroepInfo InfoOphalen(int GroepId);
+		GroepInfo Ophalen(int groepID, GroepsExtras extras);
 
 		/// <summary>
 		/// Ophalen van de Groeps info
@@ -42,40 +45,15 @@ namespace Chiro.Gap.ServiceContracts
 
 		#region ophalen
 
-		/// <summary>
-		/// Haalt de groep met gegeven ID op uit database, eventueel met zijn links naar de entities in de methodenaam
-		/// </summary>
-		/// <param name="groepID">ID van op te halen groep</param>
-		/// <returns>het gevraagde groepsobject, of null indien niet gevonden.
-		/// </returns>
-		[OperationContract]
-		Groep Ophalen(int groepID);
-
 		[OperationContract]
 		Groep OphalenMetAdressen(int groepID);
 
 		[OperationContract]
 		Groep OphalenMetFuncties(int groepID);
 
-		/// <summary>
-		/// Haalt een groep op, met daaraan gekoppeld al zijn afdelingen
-		/// </summary>
-		/// <param name="groepID">ID van de gevraagde groep</param>
-		/// <returns>De gevraagde groep, met daaraan gekoppeld al zijn afdelingen</returns>
-		[OperationContract]
-		Groep OphalenMetAfdelingen(int groepID);
-
 		[OperationContract]
 		Groep OphalenMetVrijeVelden(int groepID);
 
-		/// <summary>
-		/// Haalt een groep op, met daaraan gekoppeld al zijn categorieen
-		/// </summary>
-		/// <param name="groepID">ID van op te halen groep</param>
-		/// <returns>Groep met ID <paramref name="groepID"/>, met daaraan gekoppeld al zijn 
-		/// categorieen.</returns>
-		[OperationContract]
-		Groep OphalenMetCategorieen(int groepID);
 
 		#endregion
 
@@ -141,8 +119,35 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		IList<OfficieleAfdeling> OfficieleAfdelingenOphalen();
 
+		/// <summary>
+		/// Haat een afdeling op, op basis van <paramref name="afdelingID"/>
+		/// </summary>
+		/// <param name="afdelingID">ID van op te halen afdeling</param>
+		/// <returns>de gevraagde afdeling</returns>
 		[OperationContract]
-		IList<AfdelingInfo> AfdelingenOphalen(int groepswerkjaarID);
+		Afdeling AfdelingOphalen(int afdelingID);
+
+		/// <summary>
+		/// Haalt informatie op over alle actieve afdelingen in het groepswerkjaar met 
+		/// ID <paramref name="groepsWerkJaarID"/>
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+		/// <returns>
+		/// Informatie over alle actieve afdelingen in het groepswerkjaar met 
+		/// ID <paramref name="groepsWerkJaarID"/>
+		/// </returns>
+		[OperationContract]
+		IList<AfdelingInfo> AfdelingenOphalen(int groepsWerkJaarID);
+
+		/// <summary>
+		/// Haalt informatie op over de afdelingen van een groep die niet gebruikt zijn in een gegeven 
+		/// groepswerkjaar, op basis van een <paramref name="groepsWerkJaarID"/>
+		/// </summary>
+		/// <param name="groepswerkjaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
+		/// opgezocht moeten worden.</param>
+		/// <returns>info de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
+		[OperationContract]
+		IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarID);
 
 		#endregion
 

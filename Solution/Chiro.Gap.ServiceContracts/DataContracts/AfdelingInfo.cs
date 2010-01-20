@@ -6,32 +6,59 @@ using System.Runtime.Serialization;
 
 namespace Chiro.Gap.ServiceContracts
 {
-    [DataContract]
-    public class AfdelingInfo
-    {
-        [DataMember]
-        public int ID;
+	/// <summary>
+	/// Informatie over een afdeling waarvoor er in het huidige werkjaar een groepswerkjaar bestaat.
+	/// </summary>
+	[DataContract]
+	public class AfdelingInfo
+	{
+		/// <summary>
+		/// ID van de afdeling
+		/// </summary>
+		[DataMember]
+		public int AfdelingID;
 
-        [DataMember]
-        public int AfdelingsJaarID;
+		/// <summary>
+		/// ID van het afdelingsjaar
+		/// </summary>
+		[DataMember]
+		public int AfdelingsJaarID;
 
-        [DataMember]
-        public string Naam;
+		/// <summary>
+		/// Naam van de afdeling
+		/// </summary>
+		[DataMember]
+		public string Naam;
 
-        [DataMember]
-        public string Afkorting;
+		/// <summary>
+		/// Afkorting van de afdeling
+		/// </summary>
+		[DataMember]
+		public string Afkorting;
 
-        [DataMember]
-        public string OfficieleAfdelingNaam;
+		/// <summary>
+		/// Naam van de corresponderende officiele afdeling
+		/// </summary>
+		[DataMember]
+		public string OfficieleAfdelingNaam;
 
-        [DataMember]
-        public int GeboorteJaarVan;
+		/// <summary>
+		/// Geboortejaar oudste leden van de afdeling 
+		/// </summary>
+		[DataMember]
+		public int GeboorteJaarVan;
 
-        [DataMember]
-        public int GeboorteJaarTot;
+		/// <summary>
+		/// Geboortejaar jongste leden van de afdeling
+		/// </summary>
+		[DataMember]
+		public int GeboorteJaarTot;
 
-        [DataMember]
-        public bool AfdelingsJaarMagVerwijderdWorden;
+		/// <summary>
+		/// <c>true</c> indien geverifieerd werd dat er geen leden zijn in het afdelingsjaar, anders <c>false</c>
+		/// </summary>
+		[DataMember]
+		public bool AfdelingsJaarMagVerwijderdWorden;
 
-    }
+	}
 }

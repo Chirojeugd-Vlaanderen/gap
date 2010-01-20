@@ -20,10 +20,13 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 		public static void MappingsDefinieren()
 		{
 			Mapper.CreateMap<Groep, GroepInfo>()
-			    .ForMember(dst => dst.Plaats, opt => opt.MapFrom(
-				src => src is ChiroGroep ? (src as ChiroGroep).Plaats : Properties.Resources.NietVanToepassing))
-			    .ForMember(dst => dst.StamNummer, opt => opt.MapFrom(
-				src => src.Code == null ? String.Empty : src.Code.ToUpper()));
+				.ForMember(dst => dst.Plaats, opt => opt.MapFrom(
+					src => src is ChiroGroep ? (src as ChiroGroep).Plaats : Properties.Resources.NietVanToepassing))
+				.ForMember(dst => dst.StamNummer, opt => opt.MapFrom(
+					src => src.Code == null ? String.Empty : src.Code.ToUpper()))
+				.ForMember(
+					dst => dst.AfdelingenDitWerkJaar,
+					opt => opt.MapFrom(src => new List<AfdelingInfo>()));
 
 			// Als de namen van PersoonInfo wat anders gekozen zouden zijn, dan zou dat wel wat
 			// `ForMember'-regels uitsparen.
@@ -44,10 +47,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(
 					dst => dst.VolledigeNaam,
 					opt => opt.MapFrom(src => src.Persoon.VolledigeNaam))
-		.ForMember(
-		    dst => dst.CategorieLijst,
-		    opt => opt.MapFrom(src => src.CategorieLijstGet()))
-		.ForMember(
+				.ForMember(
+					dst => dst.CategorieLijst,
+					opt => opt.MapFrom(src => src.CategorieLijstGet()))
+				.ForMember(
 					dst => dst.CategorieLijst,
 					opt => opt.MapFrom(src => src.CategorieLijstGet()))
 				.ForMember(
@@ -59,9 +62,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
 			Mapper.CreateMap<AfdelingsJaar, AfdelingInfo>()
 			    .ForMember(
-				dst => dst.ID,
-				opt => opt.MapFrom(src => src.Afdeling.ID))
-			    .ForMember(
 				dst => dst.AfdelingsJaarID,
 				opt => opt.MapFrom(src => src.ID))
 			    .ForMember(
@@ -72,10 +72,21 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				opt => opt.MapFrom(src => src.Afdeling.Naam))
 			    .ForMember(
 				dst => dst.AfdelingsJaarMagVerwijderdWorden,
-				opt => opt.MapFrom(src => src.Leiding.Count + src.Kind.Count > 0 ? false : true))
+				opt => opt.MapFrom(src => (src.Kind != null && src.Leiding != null && (src.Leiding.Count + src.Kind.Count == 0))))
 			    .ForMember(
 				dst => dst.Afkorting,
 				opt => opt.MapFrom(src => src.Afdeling.Afkorting));
+
+			// AfdelingInfo is eigenlijk bedoeld voor AfdelingsJaar, en niet voor Afdeling.
+			// De niet-gebruikte velden zet ik gewoon op 0.
+			Mapper.CreateMap<Afdeling, AfdelingInfo>()
+				.ForMember(dst => dst.AfdelingID, opt => opt.MapFrom(src => src.ID))
+				.ForMember(dst => dst.AfdelingsJaarID, opt => opt.MapFrom(src => 0))
+				.ForMember(dst => dst.OfficieleAfdelingNaam, opt => opt.MapFrom(src => String.Empty))
+				.ForMember(dst => dst.GeboorteJaarVan, opt => opt.MapFrom(src => 0))
+				.ForMember(dst => dst.GeboorteJaarTot, opt => opt.MapFrom(src => 0))
+				.ForMember(dst => dst.AfdelingsJaarMagVerwijderdWorden, opt => opt.MapFrom(src => false));
+
 
 			Mapper.CreateMap<Lid, LidInfo>()
 					    .ForMember(
@@ -132,26 +143,15 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.ID))
 				.ForMember(dst => dst.AdresType, opt => opt.MapFrom(src => AdresTypeEnum.Overig));
 
-			// De namen van de property's van BewonersInfo zijn zodanig geconfigureerd
-			// dat automapper automagisch goed geconfigureerd wordt.
+			// Als de property's van de doelobjecten strategisch gekozen namen hebben, configureert
+			// Automapper alles automatisch, zoals hieronder:
 
 			Mapper.CreateMap<PersoonsAdres, BewonersInfo>();
+			Mapper.CreateMap<Straat, StraatInfo>();
+			Mapper.CreateMap<Subgemeente, GemeenteInfo>();
+			Mapper.CreateMap<Categorie, CategorieInfo>();
 
-			Mapper.CreateMap<Straat, StraatInfo>()
-				.ForMember(
-					dst => dst.PostNr,
-					opt => opt.MapFrom(src => src.PostNr))
-				.ForMember(
-					dst => dst.Naam,
-					opt => opt.MapFrom(src => src.Naam));
-
-			Mapper.CreateMap<Subgemeente, GemeenteInfo>()
-				.ForMember(
-					dst => dst.PostNr,
-					opt => opt.MapFrom(src => src.PostNr))
-				.ForMember(
-					dst => dst.Naam,
-					opt => opt.MapFrom(src => src.Naam));
+			// Wel even nakijken of die automagie overal gewerkt heeft:
 
 			Mapper.AssertConfigurationIsValid();
 		}

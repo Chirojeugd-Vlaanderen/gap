@@ -51,6 +51,7 @@
     <Compile Include="AutDaoAltijdGav.cs" />
     <Compile Include="AutMgrAltijdGav.cs" />
     <Compile Include="AutMgrNooitGav.cs" />
+    <Compile Include="DummyAfdelingenDao.cs" />
     <Compile Include="DummyAfdelingsJarenDao.cs" />
     <Compile Include="DummyCategorieenDao.cs" />
     <Compile Include="DummyDao.cs" />

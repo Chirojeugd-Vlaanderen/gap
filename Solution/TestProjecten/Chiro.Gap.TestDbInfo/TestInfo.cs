@@ -60,7 +60,7 @@
 		public const int AANTALINCATEGORIE = 2;
 
 		/// <summary>
-		/// ID van een afdeling van de testgroep
+		/// ID van een afdeling van de testgroep.  Van deze afdeling bestaat een afdelingsjaar.
 		/// </summary>
 		public const int AFDELINGID = 1;
 
@@ -75,7 +75,8 @@
 		public const int AFDELINGSJAARID = 1;
 
 		/// <summary>
-		/// ID van een andere afdeling van de testgroep
+		/// ID van een andere afdeling van de testgroep.  Van deze afdeling bestaat
+		/// geen afdelingsjaar.
 		/// </summary>
 		public const int AFDELING2ID = 2;
 

@@ -17,12 +17,19 @@ namespace Chiro.Gap.Workers
 		private IGroepsWerkJaarDao _groepsWjDao;
 		private IGroepenDao _groepenDao;
 		private IAutorisatieManager _autorisatieMgr;
+		private IAfdelingenDao _afdelingenDao;
 
-		public GroepsWerkJaarManager(IGroepsWerkJaarDao groepsWjDao, IGroepenDao groepenDao, IAutorisatieManager autorisatieMgr)
+		public GroepsWerkJaarManager(
+			IGroepsWerkJaarDao groepsWjDao, 
+			IGroepenDao groepenDao, 
+			IAfdelingenDao afdelingenDao,
+			IAutorisatieManager autorisatieMgr)
 		{
 			_groepsWjDao = groepsWjDao;
 			_groepenDao = groepenDao;
 			_autorisatieMgr = autorisatieMgr;
+			_afdelingenDao = afdelingenDao;
+
 		}
 
 		/// <summary>
@@ -34,22 +41,57 @@ namespace Chiro.Gap.Workers
 		/// <returns>Gevraagde groepswerkjaar</returns>
 		public GroepsWerkJaar OphalenMetLeden(int groepsWerkJaarID)
 		{
-			GroepsWerkJaar resultaat = _groepsWjDao.Ophalen(
-				groepsWerkJaarID, 
-				gwj=>gwj.Groep,
-				gwj=>gwj.AfdelingsJaar.First().Afdeling,
-				gwj=>gwj.AfdelingsJaar.First().OfficieleAfdeling,
-				gwj=>gwj.AfdelingsJaar.First().Kind,
-				gwj=>gwj.AfdelingsJaar.First().Leiding);
-
-			if (_autorisatieMgr.IsGavGroep(resultaat.Groep.ID))
+			if (_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
+				GroepsWerkJaar resultaat = _groepsWjDao.Ophalen(
+					groepsWerkJaarID,
+					gwj => gwj.Groep,
+					gwj => gwj.AfdelingsJaar.First().Afdeling,
+					gwj => gwj.AfdelingsJaar.First().OfficieleAfdeling,
+					gwj => gwj.AfdelingsJaar.First().Kind,
+					gwj => gwj.AfdelingsJaar.First().Leiding);
+
 				return resultaat;
 			}
 			else
 			{
 				throw new GeenGavException(Resources.GeenGavGroep);
 			}
+		}
+
+		/// <summary>
+		/// Haalt een groepswerkjaar op, samen met gekoppelde afdelingsjaren, afdelingen en officiele afdelingen.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID op te vragen groepswerkjaar</param>
+		/// <returns>
+		/// groepswerkjaar, samen met gekoppelde afdelingsjaren, afdelingen en officiele afdelingen
+		/// </returns>
+		public GroepsWerkJaar OphalenMetAfdelingen(int groepsWerkJaarID)
+		{
+			if (_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
+			{
+				GroepsWerkJaar resultaat = _groepsWjDao.Ophalen(
+					groepsWerkJaarID,
+					gwj => gwj.AfdelingsJaar.First().Afdeling,
+					gwj => gwj.AfdelingsJaar.First().OfficieleAfdeling);
+				return resultaat;
+			}
+			else
+			{
+				throw new GeenGavException(Resources.GeenGavGroepsWerkJaar);
+			}
+		}
+
+		/// <summary>
+		/// Haalt de afdelingen van een groep op die niet gebruikt zijn in een gegeven 
+		/// groepswerkjaar, op basis van een <paramref name="groepsWerkJaarID"/>
+		/// </summary>
+		/// <param name="groepswerkjaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
+		/// opgezocht moeten worden.</param>
+		/// <returns>de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
+		public IList<Afdeling> OngebruikteAfdelingenOphalen(int groepsWerkJaarID)
+		{
+			return _afdelingenDao.OngebruikteOphalen(groepsWerkJaarID);
 		}
 
 		/// <summary>

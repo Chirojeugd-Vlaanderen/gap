@@ -29,9 +29,9 @@
                   List<CheckBoxListInfo> info =
                       (from pa in Model.AfdelingsInfoDictionary
                        select new CheckBoxListInfo(
-                                       pa.Value.ID.ToString()
+                                       pa.Value.AfdelingID.ToString()
                                        , pa.Value.Naam
-                                       , Model.AfdelingIDs.Contains(pa.Value.ID))).ToList<CheckBoxListInfo>();
+                                       , Model.AfdelingIDs.Contains(pa.Value.AfdelingID))).ToList<CheckBoxListInfo>();
 
                   Response.Write(Html.CheckBoxList("AfdelingIDs", info));
               }
@@ -42,7 +42,7 @@
                   <%
                   foreach(var ai in Model.AfdelingsInfoDictionary)
                   {
-                      Response.Write("<p>" + Html.RadioButton("AfdelingID", ai.Value.ID, Model.HuidigLid.AfdelingIdLijst.ElementAt(0) == ai.Value.ID)+ ai.Value.Naam + "</p>");   
+                      Response.Write("<p>" + Html.RadioButton("AfdelingID", ai.Value.AfdelingID, Model.HuidigLid.AfdelingIdLijst.ElementAt(0) == ai.Value.AfdelingID)+ ai.Value.Naam + "</p>");   
                   }
               }
            %>

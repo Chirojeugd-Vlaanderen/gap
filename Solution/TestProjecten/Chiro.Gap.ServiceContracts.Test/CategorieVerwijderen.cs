@@ -11,6 +11,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using Chiro.Gap.Services;
 using Chiro.Gap.TestDbInfo;
+using Chiro.Gap.ServiceContracts.Mappers;
 
 namespace Chiro.Gap.ServiceContracts.Test
 {
@@ -30,6 +31,11 @@ namespace Chiro.Gap.ServiceContracts.Test
 		[ClassInitialize]
 		static public void InitialiseerTests(TestContext tc)
 		{
+			// Dit gebeurt normaalgesproken bij het starten van de service,
+			// maar blijkbaar is het moeilijk de service te herstarten bij het testen.
+			// Vandaar op deze manier:
+
+			MappingHelper.MappingsDefinieren();
 			Factory.ContainerInit();
 		}
 
@@ -68,16 +74,21 @@ namespace Chiro.Gap.ServiceContracts.Test
 		[TestCleanup]
 		public void tearDown()
 		{
-			IGroepenService gpm = Factory.Maak<GroepenService>();
-			Groep g = gpm.OphalenMetCategorieen(TestInfo.GROEPID);
-			foreach (Categorie c in g.Categorie)
+			/// Controleert of de toegevoegde categorie nog bestaat, en verwijdert ze
+			/// als dat het geval is.
+			/// 
+			IGroepenService groepenSvc = Factory.Maak<GroepenService>();
+			GroepInfo g = groepenSvc.Ophalen(TestInfo.GROEPID, GroepsExtras.Categorieen);
+
+			int catID = (from catInfo in g.Categorie
+				     where String.Compare(catInfo.Code, Properties.Settings.Default.CategorieCode_Verwijderen, true) == 0
+				     select catInfo.ID).FirstOrDefault();
+
+			if (catID != 0)
 			{
-				if (catlijst.Contains(c.ID))
-				{
-					
-					gpm.CategorieVerwijderen(c.ID);
-				}
+				groepenSvc.CategorieVerwijderen(catID);
 			}
+
 		}
 
 		/// <summary>

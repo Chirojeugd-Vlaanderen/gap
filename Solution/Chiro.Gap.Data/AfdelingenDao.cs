@@ -42,5 +42,26 @@ namespace Chiro.Gap.Data.Ef
 				return resultaat;
 			}
 		}
+
+		/// <summary>
+		/// Haalt de afdelingen van een groep op die niet gebruikt zijn in een gegeven 
+		/// groepswerkjaar, op basis van een <paramref name="groepsWerkJaarID"/>
+		/// </summary>
+		/// <param name="groepswerkjaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
+		/// opgezocht moeten worden.</param>
+		/// <returns>de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
+		public IList<Afdeling> OngebruikteOphalen(int groepsWerkJaarID)
+		{
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{
+				db.Afdeling.MergeOption = MergeOption.NoTracking;
+
+				return (from afdeling in db.Afdeling
+					     where afdeling.Groep.GroepsWerkJaar.Any(gwj => gwj.ID == groepsWerkJaarID)
+					     && !afdeling.AfdelingsJaar.Any(afdj => afdj.GroepsWerkJaar.ID == groepsWerkJaarID)
+					     select afdeling).ToList();
+			}
+
+		}
 	}
 }

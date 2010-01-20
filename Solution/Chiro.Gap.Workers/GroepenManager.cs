@@ -16,20 +16,30 @@ namespace Chiro.Gap.Workers
 {
 	public class GroepenManager
 	{
-		private IGroepenDao _dao;
-		private IAfdelingsJarenDao _afdao;
+		private IGroepenDao _groepenDao;
+		private IAfdelingsJarenDao _afdJrDao;
+		private IAfdelingenDao _afdelingenDao;
 		private IAutorisatieManager _autorisatieMgr;
 		private ICategorieenDao _categorieenDao;
 
 		/// <summary>
-		/// Deze constructor laat toe om een alternatieve repository voor
-		/// de groepen te gebruiken.  Nuttig voor mocking en testing.
+		/// Standaardconstructor
 		/// </summary>
-		/// <param name="dao">Alternatieve dao</param>
-		public GroepenManager(IGroepenDao dao, IAfdelingsJarenDao afdao, ICategorieenDao categorieenDao, IAutorisatieManager autorisatieMgr)
+		/// <param name="grpDao">DAO voor groepen</param>
+		/// <param name="afjDao">DAO voor afdelingsjaren</param>
+		/// <param name="afdDao">DAO voor afdelingen</param>
+		/// <param name="categorieenDao">DAO voor categorieen</param>
+		/// <param name="autorisatieMgr">Autorisatiemanager</param>
+		public GroepenManager(
+			IGroepenDao grpDao, 
+			IAfdelingsJarenDao afjDao, 
+			IAfdelingenDao afdDao,
+			ICategorieenDao categorieenDao, 
+			IAutorisatieManager autorisatieMgr)
 		{
-			_dao = dao;
-			_afdao = afdao;
+			_groepenDao = grpDao;
+			_afdJrDao = afjDao;
+			_afdelingenDao = afdDao;
 			_autorisatieMgr = autorisatieMgr;
 			_categorieenDao = categorieenDao;
 		}
@@ -39,7 +49,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				return _dao.OphalenMetGroepsWerkJaren(groepID);
+				return _groepenDao.OphalenMetGroepsWerkJaren(groepID);
 			}
 			else
 			{
@@ -68,6 +78,23 @@ namespace Chiro.Gap.Workers
 			else
 			{
 				throw new GeenGavException(Resources.GeenGavGroep);
+			}
+		}
+
+		/// <summary>
+		/// Haat een afdeling op, op basis van <paramref name="afdelingID"/>
+		/// </summary>
+		/// <param name="afdelingID">ID van op te halen afdeling</param>
+		/// <returns>de gevraagde afdeling</returns>
+		public Afdeling AfdelingOphalen(int afdelingID)
+		{
+			if (_autorisatieMgr.IsGavAfdeling(afdelingID))
+			{
+				return _afdelingenDao.Ophalen(afdelingID);
+			}
+			else
+			{
+				throw new GeenGavException(Resources.GeenGavAfdeling);
 			}
 		}
 
@@ -117,7 +144,7 @@ namespace Chiro.Gap.Workers
 		public IList<OfficieleAfdeling> OfficieleAfdelingenOphalen()
 		{
 			// Iedereen heeft het recht deze op te halen.
-			return _dao.OphalenOfficieleAfdelingen();
+			return _groepenDao.OphalenOfficieleAfdelingen();
 		}
 
 		/// <summary>
@@ -129,7 +156,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(g.ID))
 			{
-				return _dao.RecentsteGroepsWerkJaarGet(g.ID);
+				return _groepenDao.RecentsteGroepsWerkJaarGet(g.ID);
 			}
 			else
 			{
@@ -169,7 +196,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(g.ID))
 			{
-				return _dao.Bewaren(g, paths);
+				return _groepenDao.Bewaren(g, paths);
 			}
 			else
 			{
@@ -187,7 +214,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				return _dao.Ophalen(groepID);
+				return _groepenDao.Ophalen(groepID);
 			}
 			else
 			{
@@ -204,7 +231,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				return _dao.Ophalen(groepID, grp=>grp.Afdeling);
+				return _groepenDao.Ophalen(groepID, grp=>grp.Afdeling);
 			}
 			else
 			{
@@ -221,7 +248,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				return _dao.Ophalen(groepID, grp => grp.Categorie);
+				return _groepenDao.Ophalen(groepID, grp => grp.Categorie);
 			}
 			else
 			{

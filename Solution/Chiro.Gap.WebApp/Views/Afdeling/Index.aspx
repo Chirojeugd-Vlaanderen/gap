@@ -50,7 +50,7 @@
     <tr>
         <td><%=ai.Naam %></td>
         <td><%=ai.Afkorting %></td>
-        <td><%=Html.ActionLink("Activeren in huidig werkjaar", "Activeren", new { Controller = "Afdeling", id = ai.ID } )%></td>
+        <td><%=Html.ActionLink("Activeren in huidig werkjaar", "Activeren", new { Controller = "Afdeling", id = ai.AfdelingID } )%></td>
     </tr>
 <% } %>
 

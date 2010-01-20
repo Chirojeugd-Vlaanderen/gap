@@ -15,8 +15,10 @@ using Chiro.Gap.TestDbInfo;
 namespace Chiro.Gap.Services.Test
 {
 	/// <summary>
-	/// Summary description for UnitTest1
+	/// Test op groepenservice
 	/// </summary>
+	/// <remarks>Blijkbaar heeft iemand mijn mocks voor de DAO weggehaald.  Dan testen we maar
+	/// heel de flow.</remarks>
 	[TestClass]
 	public class GroepenServiceTest
 	{
@@ -48,54 +50,90 @@ namespace Chiro.Gap.Services.Test
 		#endregion
 
 
-        [ClassInitialize]
-        static public void InitialiseerTests(TestContext tc)
-        {
-            Factory.ContainerInit();
-            MappingHelper.MappingsDefinieren();
-        }
+		[ClassInitialize]
+		static public void InitialiseerTests(TestContext tc)
+		{
+			Factory.ContainerInit();
+			MappingHelper.MappingsDefinieren();
+		}
 
-        [ClassCleanup]
-        static public void AfsluitenTests()
-        {
-            Factory.Dispose();
-        }
+		[ClassCleanup]
+		static public void AfsluitenTests()
+		{
+			Factory.Dispose();
+		}
+
 
 		/// <summary>
-		/// Deze test kijkt enkel na of de method IGroepenservice.Ophalen(groepID) de groepenDAO
-		/// aanspreekt.
+		/// Ophalen groepsinfo (zonder categorieen of afdelingen)
 		/// </summary>
 		[TestMethod]
 		public void GroepOphalen()
 		{
 			#region Arrange
-
-/*			// Mock creeren voor IGroepenDao.
-			var groepenDaoMock = new Mock<IGroepenDao>();
-
-			// Als Ophalen(testGroepID) opgeropen wordt, testgroep opleveren
-			groepenDaoMock.Setup(dao => dao.Ophalen(DummyData.DummyGroep.ID)).Returns(DummyData.DummyGroep);
-
-			// IOC container de mock laten gebruiken
-			Factory.InstantieRegistreren<IGroepenDao>(groepenDaoMock.Object);*/
-
-			// Service creeren
 			IGroepenService svc = Factory.Maak<GroepenService>();
-
 			#endregion
 
 			#region Act
-
-            GroepInfo g = svc.InfoOphalen(TestInfo.GROEPID);
-
+			GroepInfo g = svc.Ophalen(TestInfo.GROEPID, GroepsExtras.Geen);
 			#endregion
 
 			#region Assert
-
-	    Assert.IsTrue(g.ID == TestInfo.GROEPID);
-			//groepenDaoMock.Verify(dao => dao.Ophalen(DummyData.DummyGroep.ID)); // is Ophalen wel opgeroepen?
-
+			Assert.IsTrue(g.ID == TestInfo.GROEPID);
+			Assert.IsTrue(g.Categorie.Count() == 0);
+			Assert.IsTrue(g.AfdelingenDitWerkJaar.Count() == 0);
 			#endregion
 		}
+
+		/// <summary>
+		/// Ophalen groepsinfo met categorieen
+		/// </summary>
+		[TestMethod]
+		public void GroepOphalenMetCategorieen()
+		{
+			#region Arrange
+			IGroepenService svc = Factory.Maak<GroepenService>();
+			#endregion
+
+			#region Act
+			GroepInfo g = svc.Ophalen(TestInfo.GROEPID, GroepsExtras.Categorieen);
+
+			CategorieInfo categorie = (from cat in g.Categorie
+					           where cat.ID == TestInfo.CATEGORIEID
+					           select cat).FirstOrDefault();
+			#endregion
+
+			#region Assert
+			Assert.IsTrue(g.ID == TestInfo.GROEPID);
+			Assert.IsTrue(categorie != null);
+			Assert.IsTrue(g.AfdelingenDitWerkJaar.Count() == 0);
+			#endregion
+		}
+
+		/// <summary>
+		/// Ophalen groepsinfo met afdelingen
+		/// </summary>
+		[TestMethod]
+		public void GroepOphalenMetAfdelingen()
+		{
+			#region Arrange
+			IGroepenService svc = Factory.Maak<GroepenService>();
+			#endregion
+
+			#region Act
+			GroepInfo g = svc.Ophalen(TestInfo.GROEPID, GroepsExtras.AfdelingenHuidigWerkJaar);
+
+			AfdelingInfo afdeling = (from afd in g.AfdelingenDitWerkJaar
+						 where afd.AfdelingID == TestInfo.AFDELINGID
+						 select afd).FirstOrDefault();
+			#endregion
+
+			#region Assert
+			Assert.IsTrue(g.ID == TestInfo.GROEPID);
+			Assert.IsTrue(afdeling != null);
+			Assert.IsTrue(g.Categorie.Count() == 0);
+			#endregion
+		}
+
 	}
 }
