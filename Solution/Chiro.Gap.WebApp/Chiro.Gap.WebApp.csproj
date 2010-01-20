@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AfdelingController.cs" />
+    <Compile Include="Controllers\GroepController.cs" />
     <Compile Include="DashBoard.aspx.cs">
       <DependentUpon>DashBoard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -109,6 +110,7 @@
     <Compile Include="Models\CategorieModel.cs" />
     <Compile Include="Models\CommVormModel.cs" />
     <Compile Include="Models\AfdelingInfoModel.cs" />
+    <Compile Include="Models\GroepsInfoModel.cs" />
     <Compile Include="Models\IMasterViewModel.cs" />
     <Compile Include="Models\NieuweCommVormModel.cs" />
     <Compile Include="Models\GavModel.cs" />
@@ -234,6 +236,7 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>MyResources.nl.designer.cs</LastGenOutput>
     </Content>
+    <Content Include="Views\Groep\Index.aspx" />
     <Content Include="Views\Shared\DisplayTemplates\Date.ascx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

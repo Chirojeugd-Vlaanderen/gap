@@ -62,6 +62,7 @@ namespace Chiro.Gap.WebApp.Controllers
                 model.GroepsNaam = gi.Naam;
                 model.Plaats = gi.Plaats;
                 model.StamNummer = gi.StamNummer;
+		model.GroepID = gi.ID;
             }
         }
     }

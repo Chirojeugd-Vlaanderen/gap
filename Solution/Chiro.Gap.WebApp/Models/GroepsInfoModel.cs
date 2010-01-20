@@ -1,0 +1,46 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using Chiro.Gap.ServiceContracts;
+
+namespace Chiro.Gap.WebApp.Models
+{
+	/// <summary>
+	/// Model voor overzicht van algemene groepsinfo
+	/// </summary>
+	/// <remarks>
+	/// Aangezien ik de info van een ChiroGroep nodig heb, en de members van IMasterViewModel
+	/// hiervan een subset zijn, map ik deze via een impliciete implementatie van IMasterViewModel.
+	/// </remarks>
+	public class GroepsInfoModel: IMasterViewModel
+	{
+		public GroepInfo Info { get; set; }
+
+		#region IMasterViewModel Members
+
+		int IMasterViewModel.GroepID
+		{
+			get { return Info.ID; }
+		}
+
+		string IMasterViewModel.GroepsNaam
+		{
+			get { return Info.Naam; }
+		}
+
+		string IMasterViewModel.Plaats
+		{
+			get { return Info.Plaats; }
+		}
+
+		string IMasterViewModel.StamNummer
+		{
+			get { return Info.StamNummer; }
+		}
+
+		public string Titel { get; set; }
+
+		#endregion
+	}
+}

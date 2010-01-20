@@ -24,11 +24,12 @@
             <div id="logindisplay">
                 Aangemeld als
                 <% =System.Web.HttpContext.Current.User.Identity.Name %><br />
-                        [<%= Html.ActionLink("Wisselen van groep", "Index", "Gav")%>]
+                <!-- TODO: aparte div-id maken voor actionlinks -->
+                [<%= Html.ActionLink("Andere groep", "Index", "Gav")%>]<br />
+                [<%= Html.ActionLink("Groepsinstellingen", "Index", "Groep")%>]
             </div>
             <div id="menucontainer">
                 <ul id="menu">
-                    <li><%= Html.ActionLink("Afdelingen", "Index", "Afdeling")%></li>
                     <li><%= Html.ActionLink("Personen", "Index", "Personen")%></li>
                     <li><%= Html.ActionLink("Leden", "Index", "Leden")%></li>                
                 </ul>
