@@ -1,10 +1,11 @@
-﻿using System;
-using System.Text;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using AutoMapper;
-using Chiro.Cdf.Ioc;
+
+using Chiro.Cdf.Ioc;		// is nodig voor dummydata in gap.dummies.  dummydata zou beter ergens anders zitten.
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts.Mappers;
@@ -28,7 +29,6 @@ namespace Chiro.Gap.ServiceContracts.Test
 		public static void Init(TestContext ctx)
 		{
 			Factory.ContainerInit();
-
 			MappingHelper.MappingsDefinieren();
 		}
 

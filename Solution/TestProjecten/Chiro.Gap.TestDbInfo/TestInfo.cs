@@ -55,6 +55,22 @@
 		public const int CATEGORIE2ID = 2;
 
 		/// <summary>
+		/// Code van een onbestaande categorie in de testgroep, om te testen
+		/// </summary>
+		public const string ONBESTAANDECATEGORIECODE1 = "BROES";
+
+		/// <summary>
+		/// Code van een onbestaande categorie in de testgroep, om te testen
+		/// </summary>
+		public const string ONBESTAANDECATEGORIECODE2 = "HALLO";
+
+		/// <summary>
+		/// Willekeurige onbestaande categorienaam, om te testen
+		/// </summary>
+		public const string CATEGORIENAAM = "Testkookies";
+
+
+		/// <summary>
 		/// Totaal aantal personen in deze categorie
 		/// </summary>
 		public const int AANTALINCATEGORIE = 2;

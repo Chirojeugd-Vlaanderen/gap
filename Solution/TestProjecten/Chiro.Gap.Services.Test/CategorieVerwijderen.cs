@@ -1,17 +1,17 @@
-﻿using System;
-using System.Text;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Workers;
-using Chiro.Cdf.Ioc;
-using Chiro.Gap.Orm.DataInterfaces;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Text;
+
+using Chiro.Cdf.Ioc;
+using Chiro.Gap.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Gap.Services;
 using Chiro.Gap.TestDbInfo;
-using Chiro.Gap.ServiceContracts.Mappers;
 
 namespace Chiro.Gap.ServiceContracts.Test
 {
@@ -58,14 +58,14 @@ namespace Chiro.Gap.ServiceContracts.Test
 
 			int catID = groepenSvc.CategorieIDOphalen(
 				TestInfo.GROEPID,
-				Properties.Settings.Default.CategorieCode_Verwijderen);
+				TestInfo.ONBESTAANDECATEGORIECODE2);
 
 			if (catID == 0)
 			{
 				catID = groepenSvc.CategorieToevoegen(
 					TestInfo.GROEPID,
-					Properties.Settings.Default.CategorieNaam,
-					Properties.Settings.Default.CategorieCode_Verwijderen);
+					TestInfo.CATEGORIENAAM,
+					TestInfo.ONBESTAANDECATEGORIECODE2);
 			}
 
 			catlijst.Add(catID);
@@ -77,11 +77,10 @@ namespace Chiro.Gap.ServiceContracts.Test
 			/// Controleert of de toegevoegde categorie nog bestaat, en verwijdert ze
 			/// als dat het geval is.
 			/// 
-			IGroepenService groepenSvc = Factory.Maak<GroepenService>();
 			GroepInfo g = groepenSvc.Ophalen(TestInfo.GROEPID, GroepsExtras.Categorieen);
 
 			int catID = (from catInfo in g.Categorie
-				     where String.Compare(catInfo.Code, Properties.Settings.Default.CategorieCode_Verwijderen, true) == 0
+				     where String.Compare(catInfo.Code, TestInfo.ONBESTAANDECATEGORIECODE2, true) == 0
 				     select catInfo.ID).FirstOrDefault();
 
 			if (catID != 0)
@@ -101,7 +100,7 @@ namespace Chiro.Gap.ServiceContracts.Test
 
 			int catID = groepenSvc.CategorieIDOphalen(
 				TestInfo.GROEPID,
-				Properties.Settings.Default.CategorieCode_Verwijderen);
+				TestInfo.ONBESTAANDECATEGORIECODE2);
 
 			// Act: verwijder de categorie met gegeven ID, en probeer categorie
 			// opnieuw op te halen
@@ -109,7 +108,7 @@ namespace Chiro.Gap.ServiceContracts.Test
 			groepenSvc.CategorieVerwijderen(catID);
 			catID = groepenSvc.CategorieIDOphalen(
 				TestInfo.GROEPID,
-				Properties.Settings.Default.CategorieCode_Verwijderen);
+				TestInfo.ONBESTAANDECATEGORIECODE2);
 
 			// Assert: categorie niet meer gevonden.
 
