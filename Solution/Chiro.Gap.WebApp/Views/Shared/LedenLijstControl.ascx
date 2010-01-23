@@ -9,7 +9,7 @@ Pagina: <%= Html.WerkJaarLinks(ViewData.Model.GroepsWerkJaarIdZichtbaar, ViewDat
 
 <table>
 <tr>
-<th>Ad-nr.</th><th>Type</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Acties</th><th>Afdeling</th>
+<th>Ad-nr.</th><th>Type</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Betaald</th><th>Acties</th><th>Afdeling</th>
 </tr>
 
 <!-- TODO: terug naar vorige lijst heeft andere argumenten nodig, dus zou niet dezelfde standaard mogen zijn als bij personen -->
@@ -21,6 +21,7 @@ Pagina: <%= Html.WerkJaarLinks(ViewData.Model.GroepsWerkJaarIdZichtbaar, ViewDat
     <td><% Html.RenderPartial("PersoonsLinkControl", l.PersoonInfo); %></td>
     <td class="right"><%=l.PersoonInfo.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)l.PersoonInfo.GeboorteDatum).ToString("d")%></td>
     <td><%=l.PersoonInfo.Geslacht.ToString()%></td>
+    <td><%= l.LidgeldBetaald?"Ja":"Nee"%></td>
     <td>
         <%=Html.ActionLink("Verwijderen", "Verwijderen", new { Controller = "Leden", id = l.LidID })%>
         <%=Html.ActionLink("Afdelingen", "AfdelingBewerken", new { Controller = "Leden", lidID = l.LidID, groepsWerkJaarID = Model.GroepsWerkJaarIdZichtbaar })%>

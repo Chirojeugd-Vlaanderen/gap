@@ -9,6 +9,13 @@
 <link rel="stylesheet" type="text/css" href="/Content/jquery.autocomplete.css" />
 <script type="text/javascript">
 
+//TODO bij de autocompletion van gemeentes MOET bij elke record de postcode van de gemeente in die record gegeven worden
+//zodat men weet welke postcode men selecteert
+//de vraag blijft dan of men zowel de deelgemeente als de hoofdgemeente kan selecteren voor dezelfde postcode
+//bvb Antwerpen		NUMMER
+//	  Antwerpen(X) ZELFDENUMMER
+//wat laten we dan toe?
+
 $(function(){
 	$("#Adres_Gemeente").keyup(function(){
 	$("#notfound").html("");

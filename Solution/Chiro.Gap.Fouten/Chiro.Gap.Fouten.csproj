@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\BestaatAlException.cs" />
+    <Compile Include="Exceptions\OngeldigeActieException.cs" />
     <Compile Include="Exceptions\FoutieveGroepException.cs" />
     <Compile Include="Exceptions\GeenGavException.cs" />
     <Compile Include="Exceptions\AdresException.cs" />

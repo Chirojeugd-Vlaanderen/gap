@@ -149,5 +149,14 @@ namespace Chiro.Gap.Workers.Properties {
                 return ResourceManager.GetString("GeenGavLid", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 21.
+        /// </summary>
+        internal static string InstapPeriode {
+            get {
+                return ResourceManager.GetString("InstapPeriode", resourceCulture);
+            }
+        }
     }
 }

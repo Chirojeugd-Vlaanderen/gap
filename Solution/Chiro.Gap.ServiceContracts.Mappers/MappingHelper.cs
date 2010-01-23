@@ -51,9 +51,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.CategorieLijst,
 					opt => opt.MapFrom(src => src.CategorieLijstGet()))
 				.ForMember(
-					dst => dst.CategorieLijst,
-					opt => opt.MapFrom(src => src.CategorieLijstGet()))
-				.ForMember(
 					dst => dst.Geslacht,
 					opt => opt.MapFrom(src => src.Persoon.Geslacht))
 				.ForMember(
@@ -72,7 +69,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				opt => opt.MapFrom(src => src.Afdeling.Naam))
 			    .ForMember(
 				dst => dst.AfdelingsJaarMagVerwijderdWorden,
-				opt => opt.MapFrom(src => (src.Kind != null && src.Leiding != null && (src.Leiding.Count + src.Kind.Count == 0))))
+				opt => opt.MapFrom(src => (src.Kind==null && src.Leiding==null) || (src.Kind!=null && src.Leiding!=null && src.Kind.Count+src.Leiding.Count==0)))
 			    .ForMember(
 				dst => dst.Afkorting,
 				opt => opt.MapFrom(src => src.Afdeling.Afkorting));
@@ -87,20 +84,31 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst => dst.GeboorteJaarTot, opt => opt.MapFrom(src => 0))
 				.ForMember(dst => dst.AfdelingsJaarMagVerwijderdWorden, opt => opt.MapFrom(src => false));
 
-
-			Mapper.CreateMap<Lid, LidInfo>()
-					    .ForMember(
-						    dst => dst.LidID,
-						    opt => opt.MapFrom(src => src.ID))
-					    .ForMember(
-						    dst => dst.Type,
-						    opt => opt.MapFrom(src => src is Kind ? LidType.Kind : LidType.Leiding))
-			    .ForMember(
-				dst => dst.AfdelingIdLijst,
-				opt => opt.MapFrom(src => src.AfdelingIdLijstGet()))
-			    .ForMember(
-						    dst => dst.PersoonInfo,
-						    opt => opt.MapFrom(src => src.GelieerdePersoon));
+            Mapper.CreateMap<Lid, LidInfo>()
+				.ForMember(
+					dst => dst.LidID,
+					opt => opt.MapFrom(src => src.ID))
+				.ForMember(
+					dst => dst.Type,
+					opt => opt.MapFrom(src => src is Kind ? LidType.Kind : LidType.Leiding))
+				.ForMember(
+					dst => dst.NonActief,
+					opt => opt.MapFrom(src => src.NonActief))
+				.ForMember(
+					dst => dst.LidgeldBetaald,
+					opt => opt.MapFrom(src => src.LidgeldBetaald))
+				.ForMember(
+					dst => dst.DubbelPunt,
+					opt => opt.MapFrom(src => src is Leiding ? ((Leiding)src).DubbelPuntAbonnement: null))
+				.ForMember(
+					dst => dst.EindeInstapperiode,
+					opt => opt.MapFrom(src => src is Kind? ((Kind)src).EindeInstapPeriode : null))
+                .ForMember(
+                    dst => dst.AfdelingIdLijst,
+                    opt => opt.MapFrom(src => src.AfdelingIdLijstGet()))
+                .ForMember(
+					dst => dst.PersoonInfo,
+					opt => opt.MapFrom(src => src.GelieerdePersoon));
 
 			Mapper.CreateMap<Adres, AdresInfo>()
 				.ForMember(

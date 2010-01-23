@@ -22,66 +22,118 @@ namespace Chiro.Gap.Services
 		#region Manager Injection
 
 		private readonly GelieerdePersonenManager _gpm;
+		private readonly GroepenManager _grm;
 		private readonly LedenManager _lm;
 
-		public LedenService(GelieerdePersonenManager gpm, LedenManager lm)
+		public LedenService(GelieerdePersonenManager gpm, LedenManager lm, GroepenManager grm)
 		{
 			this._gpm = gpm;
 			this._lm = lm;
+			this._grm = grm;
 		}
 
 		#endregion
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public string LidMakenEnBewaren(int gelieerdePersoonID)
-		{
-			GelieerdePersoon gp = _gpm.DetailsOphalen(gelieerdePersoonID);
+		public IEnumerable<int> LedenMakenEnBewaren(IEnumerable<int> gelieerdePersoonIDs)
+        {
+            String result = String.Empty;
+			IList<Lid> leden = new List<Lid>();
+            foreach (int gpID in gelieerdePersoonIDs)
+            {
+				GelieerdePersoon gp = _gpm.DetailsOphalen(gpID);
 
-            try
-            {
-                Lid l = _lm.LidMaken(gp);
-                _lm.LidBewaren(l);
-                return string.Format("{0} is toegevoegd als lid.", gp.Persoon.VolledigeNaam);
-            }
-            catch (BestaatAlException)
-            {
-                return "De persoon is al lid in dit werkjaar";
-            }
+				try
+				{
+					Lid l = _lm.KindMaken(gp);
+					leden.Add(l);
+				}
+				catch (BestaatAlException){ /*code is reentrant*/ }
+				catch (OngeldigeActieException ex)
+				{
+					result += ex.Message + "\n";
+				}
+			}
+			if (!result.Equals(String.Empty))
+			{
+				throw new OngeldigeActieException(result);
+			}
+
+			foreach(Lid l in leden)
+			{
+				_lm.LidBewaren(l);
+			}
+			return (from l in leden
+					select l.ID).ToList<int>();
+        }
+
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public IEnumerable<int> LeidingMakenEnBewaren(IEnumerable<int> gelieerdePersoonIDs)
+		{
+			String result = String.Empty;
+			IList<Lid> leden = new List<Lid>();
+			foreach (int gpID in gelieerdePersoonIDs)
+			{
+				GelieerdePersoon gp = _gpm.DetailsOphalen(gpID);
+
+				try
+				{
+					Lid l = _lm.LeidingMaken(gp);
+					leden.Add(l);
+				}
+				catch (BestaatAlException) { /*code is reentrant*/ }
+				catch (OngeldigeActieException ex)
+				{
+					result += ex.Message + "\n";
+				}
+			}
+			if (!result.Equals(String.Empty))
+			{
+				throw new OngeldigeActieException(result);
+			}
+
+			foreach(Lid l in leden)
+			{
+				_lm.LidBewaren(l);
+			}
+			return (from l in leden
+					select l.ID).ToList<int>();
 		}
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public String LedenMakenEnBewaren(IEnumerable<int> gelieerdePersoonIDs)
-        {
-            String result = "";
-            bool bestonden = false;
-            foreach (int gpID in gelieerdePersoonIDs)
-            {
-                GelieerdePersoon gp = _gpm.DetailsOphalen(gpID);
-
-                try
-                {
-                    Lid l = _lm.LidMaken(gp);
-                    _lm.LidBewaren(l);
-                    result = result + gp.Persoon.VolledigeNaam + ", ";
-                }
-                catch (BestaatAlException)
-                {
-                    bestonden = true;
-                }
-            }
-            
-            // TODO: feedback aanpassen
-            return result.Substring(0, result.Length-2) + " zijn toegevoegd als lid." + (bestonden? " Sommige waren al lid.":"");
-        }
-
-		/// <summary>
-		/// ook om te maken en te deleten
-		/// </summary>
-		/// <param name="persoon"></param>
-        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void Bewaren(Lid lid)
+		public void Bewaren(LidInfo lid)
 		{
-			_lm.LidBewaren(lid);
+			throw new NotImplementedException();
+
+			/*Lid l = _lm.Ophalen(lid.LidID);
+			if (lid.Type == LidType.Kind)
+			{
+				Kind kind = new Kind();
+
+				//3 weken bedenktijd
+				kind.EindeInstapPeriode = DateTime.Now.AddDays(21); //TODO IN MOOIE CONFIGFILE STEKEN OFZO
+
+				l = (Lid)kind;
+			}
+			else
+			{
+				Leiding leiding = new Leiding();
+
+				leiding.
+
+				//TODO afdelingjaren en dubbelpunt
+
+				l = (Lid)leiding;
+			}
+
+			GelieerdePersoon gp = _gpm.Ophalen(lid.PersoonInfo.GelieerdePersoonID);
+			l.GelieerdePersoon = gp;
+			l.LidgeldBetaald = false;
+			l.NonActief = false;
+
+			l.GroepsWerkJaar = _grm.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
+			gp.Lid.Add(l);
+			_lm.LidBewaren(l);*/
 		}
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
@@ -96,22 +148,8 @@ namespace Chiro.Gap.Services
 		public void BewarenMetAfdelingen(int lidID, IList<int> afdelingsIDs)
 		{
             Lid l = _lm.OphalenMetAfdelingen(lidID);
-            _lm.UpdatenAfdelingen(l, afdelingsIDs);
+            _lm.AanpassenAfdelingenVanLid(l, afdelingsIDs);
             _lm.LidBewaren(l);
-		}
-
-        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void BewarenMetFuncties(Lid lid)
-		{
-			//TODO
-			throw new NotImplementedException();
-		}
-
-        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void BewarenMetVrijeVelden(Lid lid)
-		{
-			//TODO
-			throw new NotImplementedException();
 		}
 
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
@@ -128,49 +166,24 @@ namespace Chiro.Gap.Services
             return Mapper.Map<IList<Lid>, IList<LidInfo>>(result);
         }
 
-        /*[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-        public IList<LidInfo> PaginaOphalenVolgensCategorie(int categorieID, int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal)
-        {
-            //TODO
-            throw new NotImplementedException();
-        }*/
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="lid"></param>
-        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void LidOpNonactiefZetten(Lid lid)
-		{
-			_lm.LidOpNonactiefZetten(lid);
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="lid"></param>
-        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void LidActiveren(Lid lid)
-		{
-			_lm.LidActiveren(lid);
-		}
-
-		/// <summary>
-		/// Haalt een pagina op met info over alle leden in een
-		/// gegeven groepswerkjaar.
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
-		/// <returns>Lijst met LidInfo</returns>
-		/*public IList<LidInfo> PaginaOphalen(int groepsWerkJaarID)
-		{
-			IList<Lid> result = _lm.PaginaOphalen(groepsWerkJaarID);
-			return Mapper.Map<IList<Lid>, IList<LidInfo>>(result);
-		}*/
-
         [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public LidInfo LidOphalenMetAfdelingen(int lidID)
         {
             return Mapper.Map<Lid, LidInfo>(_lm.OphalenMetAfdelingen(lidID));
         }
+
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public void BewarenMetFuncties(LidInfo lid)
+		{
+			//TODO
+			throw new NotImplementedException();
+		}
+
+		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public void BewarenMetVrijeVelden(LidInfo lid)
+		{
+			//TODO
+			throw new NotImplementedException();
+		}
 	}
 }

@@ -31,15 +31,29 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// 'Opwaarderen' van een gelieerd persoon tot een lid.
+		/// Doet de basic aanpassingen aan het lid object (alle andere zijn specifiek voor kind of leiding).
 		/// </summary>
-		/// <param name="gp">Gelieerde persoon</param>
-		/// <param name="gwj">Groepswerkjaar, met gekoppelde afdelingsjaren</param>
-		/// <returns>Lidobject, niet gepersisteerd</returns>
-		/// <remarks>Normaalgezien worden er alleen leden bijgemaakt in het 
-		/// huidige werkjaar.
-		/// </remarks>
-		public Lid LidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
+		/// <param name="lid"></param>
+		/// <param name="gp"></param>
+		/// <param name="gwj"></param>
+		private void LidMaken(Lid lid, GelieerdePersoon gp, GroepsWerkJaar gwj)
+		{	
+			// GroepsWerkJaar en GelieerdePersoon invullen
+			lid.GroepsWerkJaar = gwj;
+			lid.GelieerdePersoon = gp;
+			gp.Lid.Add(lid);
+			gwj.Lid.Add(lid);
+		}
+
+		/// <summary>
+		/// Doet alle nodige checks om na te kijken dat de gegeven gelieerde persoon lid gemaakt kan worden in het
+		/// gegeven groepswerkjaar. In dat geval wordt er true teruggeven
+		/// </summary>
+		/// <param name="gp"></param>
+		/// <param name="gwj"></param>
+		/// <param name="gpMetDetails">De gelieerde persoon aangevuld met details</param>
+		/// <returns>True als de persoon lid kan worden</returns>
+		private bool kanLidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, out GelieerdePersoon gpMetDetails)
 		{
 			if (!_authorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
@@ -50,101 +64,119 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGavGroepsWerkJaar);
 			}
 
-			// JOHAN: Ik zou precies de afdelingsjaren van de groep in het
-			// gegeven GroepsWerkJaar meegeven via de parameters.  Op die manier
-			// moet deze businessmethod geen Data Access gaan doen.
-
-			// TODO: geslacht in rekening brengen bij automatisch keuze afdeling
-			// TODO: controle of lid nog niet bestaat
-			// TODO: berekening EindeInstapPeriode
-			// TODO: controle of groepswerkjaar van zelfde groep als gelieerde persoon.
-
-			Lid lid;
-
 			// De persoonsgegevens zijn nodig om de afdeling te bepalen.  Haal ze op als ze ontbreken.
-
-			GelieerdePersoon gpMetDetails;
-
+			gpMetDetails = gp;
 			if (gp.Persoon == null)
 			{
 				GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
 				gpMetDetails = gpm.DetailsOphalen(gp.ID);
 			}
-			else
-			{
-				gpMetDetails = gp;
-			}
 
+			//CONTROLES
+			//Lid bestaat al
 			var x = (from l in gpMetDetails.Lid
-				 where l.GroepsWerkJaar.ID == gwj.ID
-				 select l
-				).FirstOrDefault();
+					 where l.GroepsWerkJaar.ID == gwj.ID
+					 select l).FirstOrDefault();
 
 			if (x != null) //was dus al lid
 			{
 				throw new BestaatAlException();
 			}
 
-			// Geschikte afdeling zoeken
-			// Als er geen geschikte afdeling is, dan null (wordt Leiding)
-			AfdelingsJaar aj = null;
-			if (gwj.AfdelingsJaar.Count > 0)
+			//Er zijn afdelingen
+			if (gwj.AfdelingsJaar.Count == 0)
 			{
-				int geboorte = 0;
-				if (gpMetDetails.Persoon.GeboorteDatum != null)
-				{
-					geboorte = ((DateTime)gpMetDetails.Persoon.GeboorteDatum).Year - gp.ChiroLeefTijd;
-				}
-				foreach (AfdelingsJaar jaar in gwj.AfdelingsJaar)
-				{
-					if (jaar.GeboorteJaarVan <= geboorte && geboorte <= jaar.GeboorteJaarTot)
-					{
-						aj = jaar;
-					}
-				}
+				throw new OngeldigeActieException("Je kan geen lid maken als de groep geen afdelingen heeft!");
 			}
 
-			// Specifieke dingen voor Leiding of Kind
-			if (aj == null)
+			//Zelfde groep (persoon en werkjaar)
+			if (gpMetDetails.Groep.ID != gwj.Groep.ID)
 			{
-				Leiding leiding = new Leiding();
-				foreach (AfdelingsJaar ajw in gwj.AfdelingsJaar)
-				{
-					Random seed = new Random();
-					double r = seed.NextDouble();
-					if (r < 0.2)
-					{
-						leiding.AfdelingsJaar.Add(ajw);
-						ajw.Leiding.Add(leiding);
-					}
-				}
-				lid = leiding;
+				throw new OngeldigeActieException("Je kan geen persoon lid maken in een andere chiro!");
 			}
-			else
+
+			return true;
+		}
+
+		/// <summary>
+		/// Maakt gelieerde persoon een kind (lid) voor het recentste werkjaar
+		/// </summary>
+		/// <param name="gp">Gelieerde persoon</param>
+		/// <returns>Nieuw kindobject, niet gepersisteerd</returns>
+		public Kind KindMaken(GelieerdePersoon gp)
+		{
+			if (_authorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
+				GroepenManager gm = Factory.Maak<GroepenManager>();
+
+				if (gp.Groep == null)
+				{
+					_daos.GelieerdePersoonDao.GroepLaden(gp);
+				}
+
+				GroepsWerkJaar gwj = _daos.GroepenDao.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
+
+				GelieerdePersoon gpMetDetails;
+				if (!kanLidMaken(gp, gwj, out gpMetDetails))
+				{
+					throw new OngeldigeActieException("De gegeven persoon kan geen lid worden in het huidige werkjaar.");
+				}
+
+				//Geboortedatum is verplicht als je lid wilt worden
+				if (gpMetDetails.Persoon.GeboorteDatum == null)
+				{
+					throw new OngeldigeActieException("Je kan geen lid maken als je de geboortedatum van de persoon niet hebt ingegeven");
+				}
+
+				//Afdeling automatisch bepalen
+				int geboortejaar = gpMetDetails.Persoon.GeboorteDatum.Value.Year;
+				geboortejaar += gpMetDetails.ChiroLeefTijd;	 //aanpassen aan chiroleeftijd
+
+				//relevante afdelingsjaren opzoeken
+				List<AfdelingsJaar> afdelingen =
+						(from a in gwj.AfdelingsJaar
+						 where a.GeboorteJaarVan <= geboortejaar && geboortejaar <= a.GeboorteJaarTot
+						 select a).ToList();
+
+				if (afdelingen.Count == 0)
+				{
+					throw new OngeldigeActieException("Er is geen afdeling in jullie groep voor die leeftijd. Je maakt er best eerst een aan (of controleert de leeftijd van het kind).");
+				}
+
+				AfdelingsJaar aj = null;
+				if (afdelingen.Count > 1)
+				{
+					//TODO implement this wanneer een afdelingsjaar een geslacht heeft
+					/*aj = (from a in afdelingen
+						  where a.Geslacht == gpMetDetails.Persoon.Geslacht
+						  select a).FirstOrDefault();*/
+				}
+				if (aj == null)
+				{
+					aj = afdelingen.First();
+				}
+
 				Kind kind = new Kind();
 				kind.AfdelingsJaar = aj;
 				aj.Kind.Add(kind);
-				lid = kind;
+				kind.EindeInstapPeriode = DateTime.Today.AddDays(int.Parse(Properties.Resources.InstapPeriode));
+				
+				LidMaken(kind, gpMetDetails, gwj);
+
+				return kind;
 			}
-
-			// GroepsWerkJaar en GelieerdePersoon invullen
-			lid.GroepsWerkJaar = gwj;
-			lid.GelieerdePersoon = gp;
-			gp.Lid.Add(lid);
-			gwj.Lid.Add(lid);
-
-			return lid;
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+			}
 		}
 
-
-
 		/// <summary>
-		/// Maakt gelieerde persoon lid voor recentste werkjaar
+		/// Maakt de gelieerdepersoon leiding in het huidige werkjaar.
 		/// </summary>
-		/// <param name="gp">Gelieerde persoon</param>
-		/// <returns>Nieuw lidobject, niet gepersisteerd</returns>
-		public Lid LidMaken(GelieerdePersoon gp)
+		/// <param name="gp"></param>
+		/// <returns></returns>
+		public Leiding LeidingMaken(GelieerdePersoon gp)
 		{
 			if (_authorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
@@ -155,8 +187,18 @@ namespace Chiro.Gap.Workers
 					_daos.GelieerdePersoonDao.GroepLaden(gp);
 				}
 
-				GroepsWerkJaar gwj = mgr.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
-				return LidMaken(gp, mgr.RecentsteGroepsWerkJaarGet(gp.Groep.ID));
+				GroepsWerkJaar gwj = _daos.GroepenDao.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
+
+				GelieerdePersoon gpMetDetails;
+				if (!kanLidMaken(gp, gwj, out gpMetDetails))
+				{
+					throw new OngeldigeActieException("De gegeven persoon kan geen lid worden in het huidige werkjaar.");
+				}
+
+				Leiding leiding = new Leiding();
+
+				LidMaken(leiding, gpMetDetails, gwj);
+				return leiding;
 			}
 			else
 			{
@@ -166,6 +208,7 @@ namespace Chiro.Gap.Workers
 
 		/// <summary>
 		/// Verwijdert lid uit database
+		/// Dit kan enkel als het een lid uit het huidige werkjaar is en als de instapperiode niet verstreken is voor een kind
 		/// </summary>
 		/// <param name="id">LidID</param>
 		/// <returns>true on successful</returns>
@@ -173,13 +216,18 @@ namespace Chiro.Gap.Workers
 		{
 			if (_authorisatieMgr.IsGavLid(id))
 			{
-				// TODO: controleren huidige werkjaar
-				// TODO: controleren instapperiode
-				// TODO: fallback naar LidOpNonactiefZetten?
-				// TODO: controleren of verwijderen effectief gelukt is
-				// TODO: probleem oplossen met Leiding bewaren 
-
 				Lid lid = _daos.LedenDao.OphalenMetDetails(id);
+
+				//checks:
+				if (lid.GroepsWerkJaar != _daos.GroepenDao.RecentsteGroepsWerkJaarGet(lid.GroepsWerkJaar.Groep.ID))
+				{
+					throw new OngeldigeActieException("Een lid verwijderen mag enkel als het een lid uit het huidige werkjaar is.");
+				}
+				if(lid is Kind && DateTime.Compare(((Kind)lid).EindeInstapPeriode.Value, DateTime.Today)<0)
+				{
+					throw new OngeldigeActieException("Een kind verwijderen kan niet meer nadat de instapperiode verstreken is.");
+				}
+
 				lid.TeVerwijderen = true;
 
 				Debug.Assert(lid is Kind || lid is Leiding, "Lid moet ofwel Kind ofwel Leiding zijn!");
@@ -189,7 +237,7 @@ namespace Chiro.Gap.Workers
 				{
 					_daos.LedenDao.Bewaren(lid);
 				}
-				// voor Leiding moet er blijkbaar meer gebeuren
+				// TODO voor Leiding moet er blijkbaar meer gebeuren
 				// onderstaande code werkt niet
 				else if (lid is Leiding)
 				{
@@ -210,13 +258,13 @@ namespace Chiro.Gap.Workers
 		/// <param name="groepswerkjaarID">groepswerkjaarID</param>
 		/// <param name="pagina's">totaal aantal groepswerkjaren van de groep</param>
 		/// <returns>Lijst met alle leden uit het gevraagde groepswerkjaar.</returns>
-		public IList<Lid> PaginaOphalen(int groepswerkjaarID, out int paginas)
+		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, out int paginas)
 		{
-			if (_authorisatieMgr.IsGavGroepsWerkJaar(groepswerkjaarID))
+			if (_authorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
-				GroepsWerkJaar gwj = _daos.GroepsWerkJaarDao.Ophalen(groepswerkjaarID, grwj=>grwj.Groep);
+				GroepsWerkJaar gwj = _daos.GroepsWerkJaarDao.Ophalen(groepsWerkJaarID, grwj => grwj.Groep);
 				paginas = _daos.GroepenDao.OphalenMetGroepsWerkJaren(gwj.Groep.ID).GroepsWerkJaar.Count;
-				IList<Lid> list = _daos.LedenDao.AllesOphalen(groepswerkjaarID);
+				IList<Lid> list = _daos.LedenDao.AllesOphalen(groepsWerkJaarID);
 				list = list.OrderBy(e => e.GelieerdePersoon.Persoon.Naam).ThenBy(e => e.GelieerdePersoon.Persoon.VoorNaam).ToList();
 				return list;
 			}
@@ -246,71 +294,26 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="lid"></param>
-		public void LidOpNonactiefZetten(Lid lid)
-		{
-			if (_authorisatieMgr.IsGavLid(lid.ID))
-			{
-				lid.NonActief = true;
-				//TODO save
-				// JOHAN: Bewaren is niet per se nodig in deze method.  Wel
-				// goed documenteren of bewaard moet worden of niet.
-
-				throw new NotImplementedException();
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGavLid);
-			}
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="lid"></param>
-		public void LidActiveren(Lid lid)
-		{
-			if (_authorisatieMgr.IsGavLid(lid.ID))
-			{
-				lid.NonActief = false;
-				//TODO er moet betaald worden + save
-				// JOHAN: Bewaren is niet per se nodig in deze method.  Wel
-				// goed documenteren of bewaard moet worden of niet.
-				throw new NotImplementedException();
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGavLid);
-			}
-		}
-
-		public void LidBewaren(Lid lid)
+		public Lid LidBewaren(Lid lid)
 		{
 			if (_authorisatieMgr.IsGavLid(lid.ID))
 			{
 				Debug.Assert(lid is Kind || lid is Leiding, "Lid moet ofwel Kind ofwel Leiding zijn!");
 				if (lid is Kind)
 				{
-					_daos.KindDao.Bewaren((Kind)lid);
+					return _daos.KindDao.Bewaren((Kind)lid);
 				}
 				else if (lid is Leiding)
 				{
-					_daos.LeidingDao.Bewaren((Leiding)lid);
+					return _daos.LeidingDao.Bewaren((Leiding)lid);
 				}
-				else
-				{
-					// hier komen we in principe nooit (zie Assert)
-					_daos.LedenDao.Bewaren(lid);
-				}
+				//hier mag de code nooit komen (zie assert)
+				return null;
 			}
 			else
 			{
 				throw new GeenGavException(Properties.Resources.GeenGavLid);
 			}
-
 		}
 
 		/// <summary>
@@ -330,54 +333,68 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
-		public void UpdatenAfdelingen(Lid l, IList<int> afdelingsIDs)
-		{
-			if (l is Kind)
-			{
-				Kind l2 = (Kind)l;
-				if (afdelingsIDs.Count > 1)
-				{
-					throw new ArgumentException("Een kind mag maar in 1 afdeling zitten tegelijk");
-				}
-				if (afdelingsIDs.Count == 1 && l2.AfdelingsJaar.Afdeling.ID != afdelingsIDs[0])
-				{
-					//verwijder het kind uit zijn huidige afdelingsjaar
-					AfdelingsJaar ajoud = l2.AfdelingsJaar;
-					//ajoud.Kind.FirstOrDefault(e => e.ID == l2.ID).TeVerwijderen = true;
-					l2.AfdelingsJaar.TeVerwijderen = true;
+		/// <summary>
+		/// De afdelingen van het gegeven lid worden aangepast van whatever momenteel zijn afdelingen zijn naar
+		/// de gegeven lijst nieuwe afdelingen.
+		/// Een kind mag maar 1 afdeling hebben, voor een leider staan daar geen constraints op.
+		/// </summary>
+		/// <param name="l">Lid, geladen met groepswerkjaar met afdelingsjaren</param>
+		/// <param name="afdelingsIDs">De ids van de AFDELING waarvan het kind lid is</param>
+        public void AanpassenAfdelingenVanLid(Lid l, IList<int> afdelingsIDs)
+        {
+            if(l is Kind)
+            {
+                Kind kind = (Kind)l;
+                if(afdelingsIDs.Count!=1)
+                {
+                    throw new OngeldigeActieException("Een kind moet in exact 1 afdeling zitten.");
+                }
+				
+                if (kind.AfdelingsJaar.Afdeling.ID != afdelingsIDs[0]) //anders verandert er niets
+                {
+                    //verwijder het kind uit zijn huidige afdelingsjaar
+                    kind.AfdelingsJaar.TeVerwijderen = true;
 
-					AfdelingsJaar ajnieuw = l2.GroepsWerkJaar.AfdelingsJaar.FirstOrDefault(e => e.Afdeling.ID == afdelingsIDs[0]);
+					AfdelingsJaar ajnieuw = kind.GroepsWerkJaar.AfdelingsJaar.FirstOrDefault(e => e.Afdeling.ID == afdelingsIDs[0]);
 					if (ajnieuw == null)
 					{
-						//TODO mag niet voorkomen?
-						throw new ArgumentException("Er is zo geen afdelingsjaar");
+						throw new OngeldigeActieException("De gekozen afdeling is geen afdeling van de groep in het gekozen werkjaar.");
 					}
-					ajnieuw.Kind.Add(l2);
-					l2.AfdelingsJaar = ajnieuw;
+					ajnieuw.Kind.Add(kind);
+					kind.AfdelingsJaar = ajnieuw;
 				}
 			}
 			else
 			{
-				Leiding l2 = (Leiding)l;
-				var afdelingsjaren = l2.GroepsWerkJaar.AfdelingsJaar.ToList();
+				Leiding leiding = (Leiding)l;
+				var afdelingsjaren = leiding.GroepsWerkJaar.AfdelingsJaar.ToList();
 				foreach (AfdelingsJaar aj in afdelingsjaren)
 				{
+					//als het een afdelingsjaar waar de leider in moet komen
 					if (afdelingsIDs.Contains(aj.Afdeling.ID))
 					{
-						if (l2.AfdelingsJaar.FirstOrDefault(e => e.Afdeling.ID == aj.Afdeling.ID) == null)
+						//en hij zit er nog niet in
+						if (leiding.AfdelingsJaar.FirstOrDefault(e => e.Afdeling.ID == aj.Afdeling.ID) == null)
 						{
-							l2.AfdelingsJaar.Add(aj);
-							aj.Leiding.Add(l2);
+							//voeg het dan toe
+							leiding.AfdelingsJaar.Add(aj);
+							aj.Leiding.Add(leiding);
 						}
+						afdelingsIDs.Remove(aj.Afdeling.ID);
 					}
-					else
+					else //de leider mag niet meer in de afdeling zitten
 					{
-						if (l2.AfdelingsJaar.FirstOrDefault(e => e.Afdeling.ID == aj.Afdeling.ID) != null)
+						//en hij zit er wel in
+						if (leiding.AfdelingsJaar.FirstOrDefault(e => e.Afdeling.ID == aj.Afdeling.ID) != null)
 						{
-							l2.AfdelingsJaar.FirstOrDefault(e => e.ID == aj.ID).TeVerwijderen = true;
-							//aj.Leiding.FirstOrDefault(e => e.ID == l2.ID).TeVerwijderen = true;
+							//verwijder hem eruit
+							leiding.AfdelingsJaar.FirstOrDefault(e => e.ID == aj.ID).TeVerwijderen = true;
 						}
 					}
+				}
+				if (afdelingsIDs.Count != 0)
+				{
+					throw new OngeldigeActieException("Niet alle gekozen afdelingen zijn afdelingen van de groep in het gekozen werkjaar.");
 				}
 			}
 		}

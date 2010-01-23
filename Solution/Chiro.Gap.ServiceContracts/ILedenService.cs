@@ -19,14 +19,14 @@ namespace Chiro.Gap.ServiceContracts
         /// aangeroepen om een kind of een leiding te maken
         /// </summary>
         /// <param name="gelieerdePersoonID">ID van de gelieerde persoon</param>
-        /// <returns>statusboodschap</returns>
+        /// <returns>De ids van de personen die lid zijn gemaakt</returns>
+		/// <throws>OngeldigeActieException als om een of andere reden, minstens 1 van de personen geen lid gemaakt 
+		/// kan worden. In dat geval wordt geen enkele persoon lid. </throws>
+		/// <remarks>De methode is reentrant, dus zal niet klagen als er personen al lid zijn.</remarks>
         [OperationContract]
-        String LidMakenEnBewaren(int gelieerdePersoonID);
-        [OperationContract]
-        String LedenMakenEnBewaren(IEnumerable<int> gelieerdePersoonIDs);
-
-        //[OperationContract]
-        //Leiding LeidingMaken(int gelieerdePersoonID, IEnumerable<AfdelingsJaar> afdelingen);
+		IEnumerable<int> LedenMakenEnBewaren(IEnumerable<int> gelieerdePersoonIDs);
+		[OperationContract]
+		IEnumerable<int> LeidingMakenEnBewaren(IEnumerable<int> gelieerdePersoonIDs);
 
         /// <summary>
         /// Om een lid aan te passen of te verwijderen uit het systeem. De gewone bewaar methode slaat altijd alleen
@@ -34,7 +34,7 @@ namespace Chiro.Gap.ServiceContracts
         /// </summary>
         /// <param name="persoon"></param>
         [OperationContract]
-        void Bewaren(Lid lid);
+        void Bewaren(LidInfo lid);
 
         /// <summary>
         /// Krijgt een lijst met afdelingsIDs en het lid. De bedoeling is dat het lid een afdelingsjaar moet hebben voor die
@@ -46,10 +46,10 @@ namespace Chiro.Gap.ServiceContracts
         void BewarenMetAfdelingen(int lidID, IList<int> afdelingsIDs);
 
         [OperationContract]
-        void BewarenMetFuncties(Lid lid);
+		void BewarenMetFuncties(LidInfo lid);
 
         [OperationContract]
-        void BewarenMetVrijeVelden(Lid lid);
+		void BewarenMetVrijeVelden(LidInfo lid);
 
         /// <summary>
         /// TODO wat moet deze methode juist doen (nonactief maken of verwijderen als er nog niet lang in)
@@ -65,15 +65,6 @@ namespace Chiro.Gap.ServiceContracts
         //Moeten ze dan expliciet gedelete worden?...?
 
         /// <summary>
-        /// Haalt pagina met leden op uit bepaald groepswerkjaar
-        /// </summary>
-        /// <param name="groepsWerkJaarID">gevraagde groepswerkjaar</param>
-        /// <returns>lijst met leden, inclusief info gelieerde personen
-        /// en personen</returns>
-        //[OperationContract]
-        //IList<LidInfo> PaginaOphalen(int groepsWerkJaarID);
-
-        /// <summary>
         /// Haalt een pagina met ledengegevens in een bepaald groepswerkjaar
         /// </summary>
         /// <param name="groepID">ID van het betreffende groepwerkjaar</param>
@@ -82,25 +73,15 @@ namespace Chiro.Gap.ServiceContracts
         [OperationContract]
         IList<LidInfo> PaginaOphalen(int groepsWerkJaarID, out int paginas);
 
-        //[OperationContract]
-        //IList<LidInfo> PaginaOphalenVolgensCategorie(int categorieID, int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal);
-
+		/// <summary>
+		/// Haalt een pagina met ledengegevens in een bepaald groepswerkjaar, maar alleen leden uit de gegeven afdeling
+		/// </summary>
+		/// <param name="groepID">ID van het betreffende groepwerkjaar</param>
+		/// <param name="afdelingID">ID van de betreffende afdeling</param>
+		/// <param name="paginas">Het totaal aantal pagians</param>
+		/// <returns>lijst van leen met hun relevante informatie</returns>
         [OperationContract]
         IList<LidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, out int paginas);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="lid"></param>
-        [OperationContract]
-        void LidOpNonactiefZetten(Lid lid);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="lid"></param>
-        [OperationContract]
-        void LidActiveren(Lid lid);
 
         /// <summary>
         /// Haalt lid inclusief afdelingsjaren, afdelingen en gelieerdepersoon

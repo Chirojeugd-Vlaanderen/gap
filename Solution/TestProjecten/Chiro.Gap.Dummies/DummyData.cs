@@ -96,7 +96,7 @@ namespace Chiro.Gap.Dummies
 			// Koppelingen allerhanden
 			gpMgr.CategorieKoppelen(new GelieerdePersoon[] { _gelieerdeJos }, _vervelend);
 
-			lMgr.LidMaken(_gelieerdeJos, _huidigGwj);						
+			lMgr.KindMaken(_gelieerdeJos);
 		}
 
 		/// <summary>

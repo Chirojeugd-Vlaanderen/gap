@@ -88,7 +88,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			if (model.GekozenActie == 1 && model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0)
 			{
-				TempData["feedback"] = ServiceHelper.CallService<ILedenService, String>(g => g.LedenMakenEnBewaren(model.GekozenGelieerdePersoonIDs));
+				IEnumerable<int> gemaakteleden = ServiceHelper.CallService<ILedenService, IEnumerable<int>>(g => g.LedenMakenEnBewaren(model.GekozenGelieerdePersoonIDs));
+				//TODO TempData["feedback"] =  aanpassen
 				return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
 			}
 			else if (model.GekozenActie == 2 && model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0)
@@ -233,7 +234,10 @@ namespace Chiro.Gap.WebApp.Controllers
 		// GET: /Personen/LidMaken/id
 		public ActionResult LidMaken(int id, int groepID)
 		{
-			TempData["feedback"] = ServiceHelper.CallService<ILedenService, String>(l => l.LidMakenEnBewaren(id));
+			List<int> ids = new List<int>();
+			ids.Add(id);
+			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LedenMakenEnBewaren(ids));
+			//TODO feedback
 			return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
 		}
 

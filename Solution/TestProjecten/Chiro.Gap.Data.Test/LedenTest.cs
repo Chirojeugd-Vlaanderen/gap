@@ -101,7 +101,7 @@ namespace Chiro.Gap.Data.Test
 				// GelieerdePersoon2 moet Kind gemaakt worden, want in de test KindVerwijderen
 				// zal geprobeerd worden op GelieerdePersoon2 te 'ontkinden'.  Zie #184.
 
-				Kind k = lm.LidMaken(gp) as Kind;
+				Kind k = lm.KindMaken(gp);
 				kdao.Bewaren(k
 				    , lmb => lmb.GelieerdePersoon.WithoutUpdate()
 				    , lmb => lmb.AfdelingsJaar.GroepsWerkJaar.WithoutUpdate()
