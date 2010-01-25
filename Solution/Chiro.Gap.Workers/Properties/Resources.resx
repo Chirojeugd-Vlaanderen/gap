@@ -120,6 +120,9 @@
   <data name="AdNummerNietWijzigen" xml:space="preserve">
     <value>Enkel het nationaal secretariaat mag AD-nummers wijzigen.</value>
   </data>
+  <data name="FoutiefGroepsWerkJaar" xml:space="preserve">
+    <value>Deze persoon is niet gekoppeld aan de groep waarvan je hem/haar lid wil maken.</value>
+  </data>
   <data name="FoutieveGroepCategorie" xml:space="preserve">
     <value>Je probeert een persoon te koppelen aan een categorie uit een andere groep.</value>
   </data>

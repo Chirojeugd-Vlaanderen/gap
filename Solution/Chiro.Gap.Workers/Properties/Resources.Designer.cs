@@ -70,6 +70,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deze persoon is niet gekoppeld aan de groep waarvan je hem/haar lid wil maken..
+        /// </summary>
+        internal static string FoutiefGroepsWerkJaar {
+            get {
+                return ResourceManager.GetString("FoutiefGroepsWerkJaar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Je probeert een persoon te koppelen aan een categorie uit een andere groep..
         /// </summary>
         internal static string FoutieveGroepCategorie {

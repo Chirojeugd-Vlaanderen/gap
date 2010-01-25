@@ -15,7 +15,7 @@ namespace Chiro.Gap.Workers
 	public class LedenManager
 	{
 		private LedenDaoCollectie _daos;
-		private IAutorisatieManager _authorisatieMgr;
+		private IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
 		/// Maakt een nieuwe ledenmanager aan
@@ -27,7 +27,7 @@ namespace Chiro.Gap.Workers
 		public LedenManager(LedenDaoCollectie daos, IAutorisatieManager autorisatie)
 		{
 			_daos = daos;
-			_authorisatieMgr = autorisatie;
+			_autorisatieMgr = autorisatie;
 		}
 
 		/// <summary>
@@ -55,11 +55,11 @@ namespace Chiro.Gap.Workers
 		/// <returns>True als de persoon lid kan worden</returns>
 		private bool kanLidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, out GelieerdePersoon gpMetDetails)
 		{
-			if (!_authorisatieMgr.IsGavGelieerdePersoon(gp.ID))
+			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
 			}
-			if (!_authorisatieMgr.IsGavGroepsWerkJaar(gwj.ID))
+			if (!_autorisatieMgr.IsGavGroepsWerkJaar(gwj.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGavGroepsWerkJaar);
 			}
@@ -92,7 +92,7 @@ namespace Chiro.Gap.Workers
 			//Zelfde groep (persoon en werkjaar)
 			if (gpMetDetails.Groep.ID != gwj.Groep.ID)
 			{
-				throw new OngeldigeActieException("Je kan geen persoon lid maken in een andere chiro!");
+				throw new FoutieveGroepException(Properties.Resources.FoutiefGroepsWerkJaar);
 			}
 
 			return true;
@@ -105,7 +105,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>Nieuw kindobject, niet gepersisteerd</returns>
 		public Kind KindMaken(GelieerdePersoon gp)
 		{
-			if (_authorisatieMgr.IsGavGelieerdePersoon(gp.ID))
+			if (_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
 				if (gp.Groep == null)
 				{
@@ -133,7 +133,7 @@ namespace Chiro.Gap.Workers
 		/// </remarks>
 		public Kind KindMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
 		{
-			if (_authorisatieMgr.IsGavGelieerdePersoon(gp.ID))
+			if (_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
 				GelieerdePersoon gpMetDetails;
 				if (!kanLidMaken(gp, gwj, out gpMetDetails))
@@ -197,7 +197,7 @@ namespace Chiro.Gap.Workers
 		/// <returns></returns>
 		public Leiding LeidingMaken(GelieerdePersoon gp)
 		{
-			if (_authorisatieMgr.IsGavGelieerdePersoon(gp.ID))
+			if (_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
 				GroepsWerkJaarManager mgr = Factory.Maak<GroepsWerkJaarManager>();
 
@@ -233,7 +233,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>true on successful</returns>
 		public Boolean LidVerwijderen(int id)
 		{
-			if (_authorisatieMgr.IsGavLid(id))
+			if (_autorisatieMgr.IsGavLid(id))
 			{
 				Lid lid = _daos.LedenDao.OphalenMetDetails(id);
 
@@ -279,7 +279,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>Lijst met alle leden uit het gevraagde groepswerkjaar.</returns>
 		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, out int paginas)
 		{
-			if (_authorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
+			if (_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
 				GroepsWerkJaar gwj = _daos.GroepsWerkJaarDao.Ophalen(groepsWerkJaarID, grwj => grwj.Groep);
 				paginas = _daos.GroepenDao.OphalenMetGroepsWerkJaren(gwj.Groep.ID).GroepsWerkJaar.Count;
@@ -303,7 +303,7 @@ namespace Chiro.Gap.Workers
 		{
 			GroepsWerkJaar gwj = _daos.GroepsWerkJaarDao.Ophalen(groepsWerkJaarID, grwj=>grwj.Groep);
 			paginas = _daos.GroepenDao.OphalenMetGroepsWerkJaren(gwj.Groep.ID).GroepsWerkJaar.Count;
-			if (_authorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
+			if (_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
 				return _daos.LedenDao.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID);
 			}
@@ -315,7 +315,7 @@ namespace Chiro.Gap.Workers
 
 		public Lid LidBewaren(Lid lid)
 		{
-			if (_authorisatieMgr.IsGavLid(lid.ID))
+			if (_autorisatieMgr.IsGavLid(lid.ID))
 			{
 				Debug.Assert(lid is Kind || lid is Leiding, "Lid moet ofwel Kind ofwel Leiding zijn!");
 				if (lid is Kind)
@@ -342,7 +342,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>Lid met afdelingsjaren, afdelingen en gelieerdepersoon.</returns>
 		public Lid OphalenMetAfdelingen(int lidID)
 		{
-			if (_authorisatieMgr.IsGavLid(lidID))
+			if (_autorisatieMgr.IsGavLid(lidID))
 			{
 				return _daos.LedenDao.OphalenMetDetails(lidID);
 			}
