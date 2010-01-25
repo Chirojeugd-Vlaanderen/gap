@@ -11,6 +11,8 @@ using Chiro.Gap.Dummies;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Gap.TestDbInfo;
+using System.Security.Principal;
+using System.Threading;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -50,6 +52,7 @@ namespace Chiro.Gap.Services.Test
 		#endregion
 
 
+
 		[ClassInitialize]
 		static public void InitialiseerTests(TestContext tc)
 		{
@@ -61,6 +64,21 @@ namespace Chiro.Gap.Services.Test
 		static public void AfsluitenTests()
 		{
 			Factory.Dispose();
+		}
+
+
+		/// <summary>
+		/// Deze functie zorgt ervoor dat de PrincipalPermissionAttributes op de service methods
+		/// geen excepties genereren, door te doen alsof de service aangeroepen is met de goede
+		/// security
+		/// </summary>
+		[TestInitialize]
+		public void VoorElkeTest()
+		{
+			var identity = new GenericIdentity(Properties.Settings.Default.TestUser);
+			var roles = new[] { Properties.Settings.Default.TestSecurityGroep };
+			var principal = new GenericPrincipal(identity, roles);
+			Thread.CurrentPrincipal = principal;
 		}
 
 

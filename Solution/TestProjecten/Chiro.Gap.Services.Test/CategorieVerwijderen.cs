@@ -12,8 +12,11 @@ using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Gap.Services;
 using Chiro.Gap.TestDbInfo;
+using System.Security.Principal;
+using System.Threading;
+using Chiro.Gap.ServiceContracts;
 
-namespace Chiro.Gap.ServiceContracts.Test
+namespace Chiro.Gap.Services.Test
 {
 	/// <summary>
 	/// Summary description for CategorieToevoegen
@@ -31,6 +34,7 @@ namespace Chiro.Gap.ServiceContracts.Test
 		[ClassInitialize]
 		static public void InitialiseerTests(TestContext tc)
 		{
+
 			// Dit gebeurt normaalgesproken bij het starten van de service,
 			// maar blijkbaar is het moeilijk de service te herstarten bij het testen.
 			// Vandaar op deze manier:
@@ -52,6 +56,14 @@ namespace Chiro.Gap.ServiceContracts.Test
 		[TestInitialize]
 		public void setUp()
 		{
+			/// Zorg ervoor dat de PrincipalPermissionAttributes op de service methods
+			/// geen excepties genereren, door te doen alsof de service aangeroepen is met de goede
+			/// 
+			var identity = new GenericIdentity(Properties.Settings.Default.TestUser);
+			var roles = new[] { Properties.Settings.Default.TestSecurityGroep };
+			var principal = new GenericPrincipal(identity, roles);
+			Thread.CurrentPrincipal = principal;
+
 			groepenSvc = Factory.Maak<GroepenService>();
 
 			// Kijken of Broes' testcategorie al bestaat.  Zo niet: creeren.
@@ -89,6 +101,8 @@ namespace Chiro.Gap.ServiceContracts.Test
 			}
 
 		}
+
+
 
 		/// <summary>
 		/// Verwijderen van een categorie

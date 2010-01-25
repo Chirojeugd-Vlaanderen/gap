@@ -22,5 +22,29 @@ namespace Chiro.Gap.Services.Test.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("CgUsers")]
+        public string TestSecurityGroep {
+            get {
+                return ((string)(this["TestSecurityGroep"]));
+            }
+            set {
+                this["TestSecurityGroep"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("tester")]
+        public string TestUser {
+            get {
+                return ((string)(this["TestUser"]));
+            }
+            set {
+                this["TestUser"] = value;
+            }
+        }
     }
 }

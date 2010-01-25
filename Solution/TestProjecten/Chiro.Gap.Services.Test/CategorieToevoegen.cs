@@ -13,6 +13,8 @@ using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.Services;
 using Chiro.Gap.TestDbInfo;
+using System.Security.Principal;
+using System.Threading;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -67,6 +69,14 @@ namespace Chiro.Gap.Services.Test
 		[TestInitialize]
 		public void initialiseerTest()
 		{
+			/// Zorg ervoor dat de PrincipalPermissionAttributes op de service methods
+			/// geen excepties genereren, door te doen alsof de service aangeroepen is met de goede
+			/// 
+			var identity = new GenericIdentity(Properties.Settings.Default.TestUser);
+			var roles = new[] { Properties.Settings.Default.TestSecurityGroep };
+			var principal = new GenericPrincipal(identity, roles);
+			Thread.CurrentPrincipal = principal;
+
 			groepenSvc = Factory.Maak<GroepenService>();
 
 			// CategorieToevoegenNormaal voegt een categorie toe voor:
