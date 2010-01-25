@@ -75,6 +75,11 @@ namespace Chiro.Gap.Dummies
 			return true;
 		}
 
+		public bool IsSuperGavGroep(int groepID)
+		{
+			return true;
+		}
+
 		#endregion
 	}
 }

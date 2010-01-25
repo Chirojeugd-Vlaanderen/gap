@@ -60,80 +60,66 @@ namespace Chiro.Gap.Data.Ef
 			return result;
 		}
 
-		public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
+		/// <summary>
+		/// Haal een pagina op met gelieerde personen van een groep, inclusief hun categorieen en relevante 
+		/// lidinfo voor het recentste werkjaar.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>
+		/// <param name="pagina">gevraagde pagina</param>
+		/// <param name="paginaGrootte">aantal personen per pagina</param>
+		/// <param name="aantalTotaal">out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
+		/// zijn. </param>
+		/// <returns>de gevraagde lijst gelieerde personen</returns>
+		public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(
+			int groepID, 
+			int pagina, 
+			int paginaGrootte, 
+			out int aantalTotaal)
 		{
-			int wj;
+			int groepsWerkJaarID;
 			IList<GelieerdePersoon> lijst;
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
-				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
+				// vind het huidig groepsWerkJaarID
+				groepsWerkJaarID = (from w in db.GroepsWerkJaar
+						    where w.Groep.ID == groepID
+						    orderby w.WerkJaar descending
+						    select w.ID).FirstOrDefault();
+				
+				// haal de gelieerde personen op van de gevraagde groep
+				var gpQuery = (from grp in db.Groep
+						       .Include("GelieerdePersoon.Persoon")
+						       .Include("GelieerdePersoon.Categorie")
+					       where grp.ID == groepID
+					       select grp).FirstOrDefault().GelieerdePersoon;
+				
+				// selecteer gewenste pagina, en bepaal totaal aantal personen
+				lijst = gpQuery
+						.OrderBy(gp => String.Format(
+							"{0} {1}",
+							gp.Persoon.Naam,
+							gp.Persoon.VoorNaam))
+						.Skip((pagina - 1) * paginaGrootte)
+						.Take(paginaGrootte).ToList();
+				aantalTotaal = gpQuery.Count();
 
-				wj = (
-				    from w in db.GroepsWerkJaar
-				    where w.Groep.ID == groepID
-				    orderby w.WerkJaar descending
-				    select w).FirstOrDefault<GroepsWerkJaar>().WerkJaar;
+				// De gelieerde personen in 'lijst' zijn geattacht aan de objectcontext.  Als nu
+				// ook de gewenste lidobjecten van het huidige werkjaar opgevraagd worden, dan zal
+				// entity framework die automagisch koppelen aan de gelieerde personen in 'lijst'.
 
-				aantalTotaal = (
-				    from gp in db.GelieerdePersoon
-				    where gp.Groep.ID == groepID
-				    select gp).Count();
+				IList<int> relevanteGpIDs = (from gp in lijst select gp.ID).ToList();
+				var huidigeLedenUItLijst = (from ld in db.Lid.Include("GelieerdePersoon")
+								.Where(Utility.BuildContainsExpression<Lid, int>(
+									l => l.GelieerdePersoon.ID,
+									relevanteGpIDs))
+							    where ld.GroepsWerkJaar.ID == groepsWerkJaarID
+							    select ld).ToList();
 
-				//TODO zoeken hoe je kan bepalen of hij alleen de leden includes als die aan 
-				//bepaalde voorwaarden voldoen, maar wel alle gelieerdepersonen
-				lijst = (
-		    from gp in db.GelieerdePersoon.Include("Persoon").Include("Lid.GroepsWerkJaar").Include("Groep").Include("Categorie")
-		    where gp.Groep.ID == groepID
-		    orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
-		    select gp).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte).ToList();
-
-				// work around: alle leden verwijderen behalve het (eventuele) lid in het huidige werkjaar
-				foreach (GelieerdePersoon gp in lijst)
-				{
-					IList<Lid> verkeerdeLeden = (
-					    from Lid l in gp.Lid
-					    where l.GroepsWerkJaar.WerkJaar != wj
-					    select l).ToList();
-
-					foreach (Lid verkeerdLid in verkeerdeLeden)
-					{
-						gp.Lid.Remove(verkeerdLid);
-					}
-				}
-				/*                foreach (GelieerdePersoon gp in lijst) {
-						    Lid huidigLid = gp.Lid.FirstOrDefault(lid => lid.GroepsWerkJaar.WerkJaar == wj);
-						    gp.Lid.Clear();
-						    if (huidigLid != null)
-						    {
-							gp.Lid.Add(huidigLid);
-						    }
-						} */
-
-				/* Dit hieronder werkt ook nog niet ...
-				 * 
-				 * var tmpLijst = (
-				    from gp in db.GelieerdePersoon.Include("Persoon")
-				    where gp.Groep.ID == groepID
-				    orderby gp.Persoon.Naam, gp.Persoon.VoorNaam
-				    select new { gp, gp.Persoon, huidigLid = gp.Lid.FirstOrDefault(lid => lid.GroepsWerkJaar.WerkJaar == wj) }
-				    ).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte).ToList();
-
-				lijst = new List<GelieerdePersoon>();
-				foreach (var tmp in tmpLijst)
-				{
-				    GelieerdePersoon gp = tmp.gp;
-				    if (tmp.huidigLid != null)
-				    {
-					gp.Lid.Add(tmp.huidigLid);
-				    }
-				    lijst.Add(gp);
-				}*/
 			}
-
-			return lijst;   // met wat change komt de relevante lidinfo mee.
+			Utility.DetachObjectGraph(lijst);
+			return lijst;   
 		}
-
 
 		/// <summary>
 		/// Haal een pagina op met gelieerde personen uit een categorie, inclusief lidinfo voor het huidige

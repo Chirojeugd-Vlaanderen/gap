@@ -152,5 +152,18 @@ namespace Chiro.Gap.Workers
         {
             return _dao.IsGavCommVorm(commvormID, GebruikersNaamGet());
         }
+
+	/// <summary>
+	/// Geeft true als de aangelogde user
+	/// gav is voor de groep met gegeven ID, en 'superrechten' heeft
+	/// (zoals het verwijderen van leden uit vorig werkjaar, het 
+	/// verwijderen van leden waarvan de probeerperiode voorbij is,...)
+	/// </summary>
+	/// <param name="groepID">id van de groep</param>
+	/// <returns>true (enkel) als user supergav is</returns>
+	public bool IsSuperGavGroep(int groepID)
+	{
+		return false;  // voorlopig zijn er geen supergebruikers
+	}
     }
 }
