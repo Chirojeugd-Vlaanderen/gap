@@ -15,6 +15,7 @@ using Chiro.Gap.Services;
 using Chiro.Gap.TestDbInfo;
 using System.Security.Principal;
 using System.Threading;
+using Chiro.Gap.ServiceContracts.Mappers;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -35,6 +36,7 @@ namespace Chiro.Gap.Services.Test
 		static public void InitialiseerTests(TestContext tc)
 		{
 			Factory.ContainerInit();
+			MappingHelper.MappingsDefinieren();
 		}
 
 		[ClassCleanup]

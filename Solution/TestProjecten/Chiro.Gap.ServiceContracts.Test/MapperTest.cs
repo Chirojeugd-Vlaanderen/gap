@@ -42,5 +42,16 @@ namespace Chiro.Gap.ServiceContracts.Test
 
 			Assert.IsTrue(LidInfoLijst.Count > 0);
 		}
+
+		/// <summary>
+		/// Test voor de mapping van een groep naar GroepInfo
+		/// </summary>
+		[TestMethod]
+		public void MapGroepGroepInfo()
+		{
+			GroepInfo gi = Mapper.Map<Groep, GroepInfo>(DummyData.DummyGroep);
+
+			Assert.IsTrue(gi.Categorie.Count > 0);
+		}
 	}
 }
