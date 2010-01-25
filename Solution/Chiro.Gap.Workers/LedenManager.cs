@@ -107,8 +107,6 @@ namespace Chiro.Gap.Workers
 		{
 			if (_authorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
-				GroepenManager gm = Factory.Maak<GroepenManager>();
-
 				if (gp.Groep == null)
 				{
 					_daos.GelieerdePersoonDao.GroepLaden(gp);
@@ -116,6 +114,27 @@ namespace Chiro.Gap.Workers
 
 				GroepsWerkJaar gwj = _daos.GroepenDao.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
 
+				return KindMaken(gp, gwj);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+			}
+		}
+
+		/// <summary>
+		/// Maakt gelieerde persoon een kind (lid) voor het gegeven werkjaar
+		/// </summary>
+		/// <param name="gp">Gelieerde persoon, gekoppeld aan groep</param>
+		/// <param name="gwj">Groepswerkjaar waarin lid te maken</param>
+		/// <returns>Nieuw kindobject, niet gepersisteerd</returns>
+		/// <remarks>De user zal nooit zelf mogen kiezen in welk groepswerkjaar een kind lid wordt.  Maar 
+		/// om testdata voor unit tests op te bouwen, hebben we deze functionaliteit wel nodig.
+		/// </remarks>
+		public Kind KindMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
+		{
+			if (_authorisatieMgr.IsGavGelieerdePersoon(gp.ID))
+			{
 				GelieerdePersoon gpMetDetails;
 				if (!kanLidMaken(gp, gwj, out gpMetDetails))
 				{

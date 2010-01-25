@@ -96,7 +96,10 @@ namespace Chiro.Gap.Dummies
 			// Koppelingen allerhanden
 			gpMgr.CategorieKoppelen(new GelieerdePersoon[] { _gelieerdeJos }, _vervelend);
 
-			lMgr.KindMaken(_gelieerdeJos);
+			// We moeten hier expliciet lid maken in _huidigGwj, anders werken een aantal
+			// unit tests niet meer.  (Zie #259)
+
+			lMgr.KindMaken(_gelieerdeJos, _huidigGwj);
 		}
 
 		/// <summary>
