@@ -310,7 +310,7 @@ div#title
     font-weight: bold;
 }
 
-#logindisplay
+#settingsmenu
 {
     font-size: 1.1em;
     display: block;
@@ -319,19 +319,19 @@ div#title
     color: White;
 }
 
-#logindisplay a:link
+#settingsmenu a:link
 {
     color: white;
     text-decoration: underline;
 }
 
-#logindisplay a:visited
+#settingsmenu a:visited
 {
     color: white;
     text-decoration: underline;
 }
 
-#logindisplay a:hover
+#settingsmenu a:hover
 {
     color: white;
     text-decoration: none;

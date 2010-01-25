@@ -6,6 +6,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>"></script>
     <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>"></script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -15,6 +16,8 @@
     <% Html.EnableClientValidation(); %>
 
     <% using (Html.BeginForm()) { %>
+    <% this.ViewContext.FormContext.ClientValidationFunction = "__MVC_EnableClientValidation"; %>
+    
     
     <ul id="acties">
         <li><input type="submit" value="Bewaren"/></li>
