@@ -156,10 +156,11 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Haal een lijst op met alle gelieerde personen van een groep.
+		/// Haal een lijst op met alle gelieerde personen van een groep, inclusief persoons- en lidinfo.
 		/// </summary>
 		/// <param name="groepID">GroepID van gevraagde groep</param>
-		/// <returns>Lijst met alle gelieerde personen</returns>
+		/// <returns>Lijst met alle gelieerde personen, inclusief persoons- en lidinfo</returns>
+		/// <remarks>Opgelet! Dit kan een zware query zijn!</remarks>
 		public IList<GelieerdePersoon> AllenOphalen(int groepID)
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))

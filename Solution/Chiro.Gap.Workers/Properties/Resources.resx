@@ -150,6 +150,9 @@
   <data name="GeenGavLid" xml:space="preserve">
     <value>Dit lid is niet gekoppeld aan je groep(en).</value>
   </data>
+  <data name="GeenSuperGav" xml:space="preserve">
+    <value>Deze operatie is enkel beschikbaar voor super-GAV-goden.</value>
+  </data>
   <data name="InstapPeriode" xml:space="preserve">
     <value>21</value>
   </data>

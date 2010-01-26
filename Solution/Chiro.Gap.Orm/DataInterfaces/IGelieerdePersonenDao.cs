@@ -56,7 +56,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// </summary>
 		/// <param name="GroepID">ID van de groep</param>
 		/// <returns>Lijst van gelieerde personen</returns>
-		IList<GelieerdePersoon> AllenOphalen(int GroepID);
+		IList<GelieerdePersoon> AllenOphalen(int GroepID, params Expression<Func<GelieerdePersoon, object>>[] paths);
 
 		/// <summary>
 		/// Haalt een 'pagina' persoonsgegevens van de gelieerde personen van een groep op, inclusief

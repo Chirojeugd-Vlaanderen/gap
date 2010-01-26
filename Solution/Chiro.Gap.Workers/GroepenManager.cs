@@ -11,6 +11,7 @@ using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers.Properties;
+using Chiro.Cdf.Ioc;
 
 namespace Chiro.Gap.Workers
 {
@@ -21,6 +22,7 @@ namespace Chiro.Gap.Workers
 		private IAfdelingenDao _afdelingenDao;
 		private IAutorisatieManager _autorisatieMgr;
 		private ICategorieenDao _categorieenDao;
+		private IGelieerdePersonenDao _gelPersDao;
 
 		/// <summary>
 		/// Standaardconstructor
@@ -29,12 +31,14 @@ namespace Chiro.Gap.Workers
 		/// <param name="afjDao">DAO voor afdelingsjaren</param>
 		/// <param name="afdDao">DAO voor afdelingen</param>
 		/// <param name="categorieenDao">DAO voor categorieen</param>
+		/// <param name="gelPersDao">DAO voor gelieerde personen</param>
 		/// <param name="autorisatieMgr">Autorisatiemanager</param>
 		public GroepenManager(
 			IGroepenDao grpDao, 
 			IAfdelingsJarenDao afjDao, 
 			IAfdelingenDao afdDao,
 			ICategorieenDao categorieenDao, 
+			IGelieerdePersonenDao gelPersDao,
 			IAutorisatieManager autorisatieMgr)
 		{
 			_groepenDao = grpDao;
@@ -42,9 +46,14 @@ namespace Chiro.Gap.Workers
 			_afdelingenDao = afdDao;
 			_autorisatieMgr = autorisatieMgr;
 			_categorieenDao = categorieenDao;
+			_gelPersDao = gelPersDao;
 		}
 
-
+		/// <summary>
+		/// Haalt een groep op, met daaraan gekoppeld alle groepswerkjaren
+		/// </summary>
+		/// <param name="groepID">ID van de op te halen groep</param>
+		/// <returns>De gevraagde groep, met daaraan gekoppeld al zijn groepswerkjaren</returns>
 		public Groep OphalenMetGroepsWerkJaren(int groepID)
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
@@ -55,6 +64,51 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(Resources.GeenGavGroep);
 			}
+		}
+
+		/// <summary>
+		/// Verwijdert alle gelieerde personen van de groep met ID <paramref name="groepID"/>.  Probeert ook
+		/// de gekoppelde personen te verwijderen, indien <paramref name="verwijderPersonen"/> <c>true</c> is.
+		/// PERSISTEERT!
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvan je de gelieerde personen wilt verwijderen</param>
+		/// <param name="verwijderPersonen">Indien <c>true</c>, worden ook de personen vewijderd waarvoor
+		/// een GelieerdePersoon met de groep bestond.</param>
+		/// <remarks>Deze functie vereist super-GAV-rechten</remarks>
+		public void VerwijderGelieerdePersonen(int groepID, bool verwijderPersonen)
+		{
+			if (_autorisatieMgr.IsSuperGavGroep(groepID))
+			{
+				// Alle gelieerde personen van de groep ophalen
+				IList<GelieerdePersoon> allePersonen = _gelPersDao.AllenOphalen(
+					groepID,
+					gp => gp.Lid, gp => gp.Persoon);
+
+				// Alle gelieerde personen als 'te verwijderen' markeren
+				foreach (GelieerdePersoon gp in allePersonen)
+				{
+					gp.TeVerwijderen = true;
+
+					// Alle leden als 'te verwijderen' markeren
+					foreach (Lid ld in gp.Lid)
+					{
+						ld.TeVerwijderen = true;
+					}
+
+					// Markeer zo nodig ook de persoon
+					if (verwijderPersonen)
+					{
+						gp.Persoon.TeVerwijderen = true;
+					}
+				}
+
+				// Persisteer
+				_gelPersDao.Bewaren(allePersonen, gp => gp.Lid, gp => gp.Persoon);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenSuperGav);
+			};
 		}
 
 

@@ -160,6 +160,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deze operatie is enkel beschikbaar voor super-GAV-goden..
+        /// </summary>
+        internal static string GeenSuperGav {
+            get {
+                return ResourceManager.GetString("GeenSuperGav", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 21.
         /// </summary>
         internal static string InstapPeriode {

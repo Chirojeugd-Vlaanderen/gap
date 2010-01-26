@@ -20,45 +20,41 @@ namespace Chiro.Gap.Data.Ef
 	{
 		public GelieerdePersonenDao()
 		{
-			connectedEntities = new Expression<Func<GelieerdePersoon, object>>[2] { 
+			connectedEntities = new Expression<Func<GelieerdePersoon, object>>[] { 
                                         e => e.Persoon, 
                                         e => e.Groep.WithoutUpdate() };
 		}
 
-		public IList<GelieerdePersoon> AllenOphalen(int groepID)
+		/// <summary>
+		/// Haalt alle gelieerde personen van een groep op, inclusief de gerelateerde entity's gegeven
+		/// in <paramref name="paths"/>
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvan we de gelieerde personen willen opvragen</param>
+		/// <param name="paths">een array van lambda-expressions die de mee op te halen gerelateerde entity's
+		/// bepaalt</param>
+		/// <returns>De gevraagde lijst gelieerde personen</returns>
+		public IList<GelieerdePersoon> AllenOphalen(
+			int groepID, 
+			params Expression<Func<GelieerdePersoon, object>>[] paths)
 		{
-			List<GelieerdePersoon> result;
+			IList<GelieerdePersoon> result;
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
 				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 				// direct gedetachte gelieerde personen ophalen
 
-				result = (
-				    from gp in db.GelieerdePersoon.Include("Persoon").Include("Groep")
-				    where gp.Groep.ID == groepID
-				    select gp).ToList<GelieerdePersoon>();
+				var query = (from gp in db.GelieerdePersoon
+					     where gp.Groep.ID == groepID
+					     select gp) as ObjectQuery<GelieerdePersoon>;
+
+				result = (IncludesToepassen(query, paths)).ToList();
 			}
+			Utility.DetachObjectGraph(result);
+
 			return result;
 		}
 
-		//todo na deze aanroep is result.Persoon toch nog == null!!?
-		//Johan: probeer eens om MergeOption op MergeOption.NoTracking te zetten
-		public override GelieerdePersoon Ophalen(int id)
-		{
-			GelieerdePersoon result;
-
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
-			{
-				result = (
-				    from t in db.GelieerdePersoon.Include("Persoon").Include("Groep")
-				    where t.ID == id
-				    select t).FirstOrDefault<GelieerdePersoon>();
-				db.Detach(result);
-			}
-
-			return result;
-		}
 
 		/// <summary>
 		/// Haal een pagina op met gelieerde personen van een groep, inclusief hun categorieen en relevante 
@@ -71,13 +67,12 @@ namespace Chiro.Gap.Data.Ef
 		/// zijn. </param>
 		/// <returns>de gevraagde lijst gelieerde personen</returns>
 		public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(
-			int groepID, 
-			int pagina, 
-			int paginaGrootte, 
+			int groepID,
+			int pagina,
+			int paginaGrootte,
 			out int aantalTotaal)
 		{
 			int groepsWerkJaarID;
-			IList<GelieerdePersoon> lijst;
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
@@ -86,7 +81,39 @@ namespace Chiro.Gap.Data.Ef
 						    where w.Groep.ID == groepID
 						    orderby w.WerkJaar descending
 						    select w.ID).FirstOrDefault();
-				
+
+			}
+			return PaginaOphalenMetLidInfo(
+				groepID,
+				groepsWerkJaarID,
+				pagina,
+				paginaGrootte,
+				out aantalTotaal);
+		}
+
+		/// <summary>
+		/// Haal een pagina op met gelieerde personen van een groep, inclusief hun categorieen en relevante 
+		/// lidinfo voor het gegeven werkjaar.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor we geinteresseerd zijn in de
+		/// lidinfo.</param>
+		/// <param name="pagina">gevraagde pagina</param>
+		/// <param name="paginaGrootte">aantal personen per pagina</param>
+		/// <param name="aantalTotaal">out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
+		/// zijn. </param>
+		/// <returns>de gevraagde lijst gelieerde personen</returns>
+		public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(
+			int groepID, 
+			int groepsWerkJaarID,
+			int pagina, 
+			int paginaGrootte, 
+			out int aantalTotaal)
+		{
+			IList<GelieerdePersoon> lijst;
+
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{		
 				// haal de gelieerde personen op van de gevraagde groep
 				var gpQuery = (from grp in db.Groep
 						       .Include("GelieerdePersoon.Persoon")

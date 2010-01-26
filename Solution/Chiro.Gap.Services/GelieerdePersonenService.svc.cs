@@ -54,13 +54,6 @@ namespace Chiro.Gap.Services
 		#region IGelieerdePersonenService Members
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<GelieerdePersoon> AllenOphalen(int groepID)
-		{
-			var result = _gpMgr.AllenOphalen(groepID);
-			return result;
-		}
-
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
 		{
 			var result = _gpMgr.PaginaOphalen(groepID, pagina, paginaGrootte, out aantalTotaal);
