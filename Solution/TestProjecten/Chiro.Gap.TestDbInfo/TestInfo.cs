@@ -11,6 +11,11 @@
 		public const int GROEPID = 1;
 
 		/// <summary>
+		/// ID van groep voor WatiN-test.
+		/// </summary>
+		public const int WATINGROEPID = 2;
+
+		/// <summary>
 		/// ID van een gelieerde persoon van de testgroep
 		/// </summary>
 		/// <remarks>Deze persoon moet minstens 1 categorie hebben</remarks>

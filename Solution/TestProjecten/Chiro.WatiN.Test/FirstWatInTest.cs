@@ -1,16 +1,16 @@
-﻿using System;
-using System.Data;
-using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Configuration;
-using System.Text;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
-using System.Web;
+using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Web;
 using WatiN.Core;
 using WatiN.Core.Logging;
+
+using Chiro.Gap.TestDbInfo;
 using Chiro.WatiN.Test;
 
 namespace Chiro.WatiN.Test
@@ -182,114 +182,8 @@ namespace Chiro.WatiN.Test
 		{
 			// Tussen elke test moeten we er voor zorgen dat alle data leeg is, dit wil zeggen dat voor
 			// de ChiroGroep met stamnummer 'WATIN'  en naam 'St-WebAutomatedTestIndotNet' volledig leeg moet zijn.
-			// Dit opkuisen van data moeten we met SQL statements doen.
-			// Mischien is er een betere mannier maar ik doe het hier via een eigen SQL connection.
-			//
-			SqlConnection conn = new SqlConnection(
-			"Data Source=DEVSERVER;Initial Catalog=ChiroGroep;User ID=CgApp;Password=doemaariets;MultipleActiveResultSets=True");
-			SqlDataReader GelPersDr = null;
 
-			try
-			{
-				// Open de connectie.
-				conn.Open();
-
-				// Iets mooier is eerst alle personen op te vragen, 
-				// Daarvan alle GelieerdePersonen te verwijderen en dan de persoon zelf.
-
-				// Opvragen van alle GelieerdePersonen met de WatiN Groep.
-				GelPersDr = new SqlCommand("SELECT pers.GelieerdePersoon.PersoonID, pers.GelieerdePersoon.GelieerdePersoonID "
-				    + " FROM grp.Groep JOIN [pers].[GelieerdePersoon] "
-				    + "				ON Groep.GroepID = GelieerdePersoon.GroepID "
-				    + "			WHERE Groep.Code = 'WatiN';", conn).ExecuteReader();
-
-				while (GelPersDr.Read())
-				{
-					String PersoonID = GelPersDr["PersoonID"].ToString();
-					String GelieerdePersoonID = GelPersDr["GelieerdePersoonID"].ToString();
-
-					// Indien nodig maak die persoon niet meer Lid.
-					// Eerst moeten we kijken of die persoon Leiding of Kind is (Dit moet ook weg)
-					SqlDataReader LedenDr = null;
-					try
-					{
-						LedenDr = new SqlCommand("SELECT LidID FROM lid.Lid WHERE GelieerdePersoonID = '"
-						    + GelieerdePersoonID + "';", conn).ExecuteReader();
-						while (LedenDr.Read())
-						{
-							String LidID = LedenDr["LidID"].ToString();
-
-							// Verwijder de Leiding
-							SqlDataReader VerwijderLeiding = new SqlCommand("DELETE FROM lid.Leiding "
-							    + " Where LeidingID = '" + LidID + "';", conn).ExecuteReader();
-							Debug.WriteLine("Aantal Leiding verwijderd door GelPersID (" + GelieerdePersoonID + "): "
-							    + VerwijderLeiding.RecordsAffected.ToString());
-							VerwijderLeiding.Close();
-
-							// Verwijderen van Kinderen
-							SqlDataReader VerwijderKind = new SqlCommand("DELETE FROM lid.Kind "
-							    + " Where KindID = '" + LidID + "';", conn).ExecuteReader();
-							Debug.WriteLine("Aantal Kinderen verwijderd door GelPersID (" + GelieerdePersoonID + "): "
-							    + VerwijderKind.RecordsAffected.ToString());
-							VerwijderKind.Close();
-
-							// Verwijder Lid
-							SqlDataReader VerwijderLid = new SqlCommand("DELETE FROM lid.Lid "
-							    + " Where LidID = '" + LidID + "';", conn).ExecuteReader();
-							Debug.WriteLine("Aantal Leden verwijderd door GelPersID (" + GelieerdePersoonID + "): "
-							    + VerwijderLid.RecordsAffected.ToString());
-							VerwijderLid.Close();
-						}
-
-					}
-					finally
-					{
-						if (LedenDr != null)
-						{
-							LedenDr.Close();
-						}
-					}
-
-					// Verwijder de GelieerdePersoon
-					SqlDataReader VerwijderGelPers = new SqlCommand("DELETE FROM pers.GelieerdePersoon "
-					+ " WHERE GelieerdePersoonID = '" + GelieerdePersoonID + "';", conn).ExecuteReader();
-					Debug.WriteLine("Aantal GelieerdePersonen verwijderd door ID (" + GelieerdePersoonID + "): "
-					    + VerwijderGelPers.RecordsAffected.ToString());
-					VerwijderGelPers.Close();
-
-					// Verwijder de Persoon
-					SqlDataReader VerwijderPersoon = new SqlCommand("DELETE FROM pers.Persoon "
-					+ " WHERE PërsoonID = '" + PersoonID + "';", conn).ExecuteReader();
-					Debug.WriteLine("Aantal Personen verwijderd door PersoonID (" + PersoonID + "): "
-					    + GelPersDr.RecordsAffected.ToString());
-					VerwijderPersoon.Close();
-				}
-
-				GelPersDr = new SqlCommand("DELETE FROM pers.GelieerdePersoon "
-				    + " WHERE PersoonID IN "
-				    + "		(SELECT pers.GelieerdePersoon.PersoonID "
-				    + "			FROM grp.Groep JOIN [pers].[GelieerdePersoon] "
-				    + "				ON Groep.GroepID = GelieerdePersoon.GroepID "
-				    + "			WHERE Groep.Code = 'WatiN');", conn).ExecuteReader();
-
-				Debug.WriteLine("Aantal GelieerdePersonen verwijderd: " + GelPersDr.RecordsAffected.ToString());
-
-			}
-
-			finally
-			{
-				// close the reader
-				if (GelPersDr != null)
-				{
-					GelPersDr.Close();
-				}
-
-				// Close the connection
-				if (conn != null)
-				{
-					conn.Close();
-				}
-			}
+			TestHelper.KuisOp(TestInfo.WATINGROEPID);
 		}
 
 		// 
