@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Chiro.Cdf.Data.Entity
 {
-	[AttributeUsage(AttributeTargets.Class)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple=true)]
 	public sealed class AssociationEndBehaviorAttribute : Attribute
 	{
 		private static AssociationEndBehaviorAttribute defaultInstance = new AssociationEndBehaviorAttribute(String.Empty);

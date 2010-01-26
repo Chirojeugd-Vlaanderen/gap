@@ -263,7 +263,7 @@ namespace Chiro.Cdf.Data.Entity
 		{
 			using (TContext db = new TContext())
 			{
-				db.AttachObjectGraphs(es);
+				db.AttachObjectGraphs(es, paths);
 				db.SaveChanges();
 			}
 
