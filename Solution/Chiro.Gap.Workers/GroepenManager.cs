@@ -75,7 +75,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="verwijderPersonen">Indien <c>true</c>, worden ook de personen vewijderd waarvoor
 		/// een GelieerdePersoon met de groep bestond.</param>
 		/// <remarks>Deze functie vereist super-GAV-rechten</remarks>
-		public void VerwijderGelieerdePersonen(int groepID, bool verwijderPersonen)
+		public void GelieerdePersonenVerwijderen(int groepID, bool verwijderPersonen)
 		{
 			if (_autorisatieMgr.IsSuperGavGroep(groepID))
 			{

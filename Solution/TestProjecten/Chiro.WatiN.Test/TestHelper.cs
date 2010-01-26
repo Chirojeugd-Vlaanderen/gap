@@ -31,7 +31,7 @@ namespace Chiro.WatiN.Test
 		{
 			GroepenManager gMgr = Factory.Maak<GroepenManager>();
 
-			gMgr.VerwijderGelieerdePersonen(groepID, true);
+			gMgr.GelieerdePersonenVerwijderen(groepID, true);
 		}
 	}
 }
