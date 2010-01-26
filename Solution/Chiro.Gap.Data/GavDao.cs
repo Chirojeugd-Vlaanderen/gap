@@ -11,13 +11,19 @@ namespace Chiro.Gap.Data.Ef
 {
 	public class GavDao : Dao<Gav, ChiroGroepEntities>, IGavDao
 	{
+		/// <summary>
+		/// Haalt GAV-object op voor een gegeven <paramref name="login"/>, inclusief via gebruikersrecht
+		/// gekoppelde groepen
+		/// </summary>
+		/// <param name="login">gebruikersnaam op te halen gav</param>
+		/// <returns>GAV-object met gekoppelde gebruikersrechten en groepen</returns>
 		public Gav Ophalen(string login)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
 				db.Gav.MergeOption = MergeOption.NoTracking;
 
-				return (from gav in db.Gav
+				return (from gav in db.Gav.Include("GebruikersRecht.Groep")
 					where gav.Login == login
 					select gav).FirstOrDefault();
 			}

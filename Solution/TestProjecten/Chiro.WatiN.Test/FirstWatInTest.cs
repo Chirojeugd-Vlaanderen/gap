@@ -155,11 +155,17 @@ namespace Chiro.WatiN.Test
 				System.Threading.Thread.Sleep(120);
 			}
 
+			// Geef gebruiker GAV-rechten op groep voor watin-test
+			TestHelper.GeefGavRecht(TestInfo.WATINGROEPID);
+
 		}
 
 		[ClassCleanup()]
 		public static void StopWebServer()
 		{
+			// Ontneem gebruiker GAV-rechten op groep voor watin-test
+			TestHelper.OntneemGavRecht(TestInfo.WATINGROEPID);
+
 			if (!System.Diagnostics.Debugger.IsAttached)
 			{
 				if (GapServicesProcess == null)
