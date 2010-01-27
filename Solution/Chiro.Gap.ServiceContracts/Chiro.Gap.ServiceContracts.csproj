@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -65,6 +66,7 @@
     <Compile Include="DataContracts\LidInfo.cs" />
     <Compile Include="DataContracts\PersoonInfo.cs" />
     <Compile Include="FaultContracts\AdresFault.cs" />
+    <Compile Include="FaultContracts\BestaatAlFault.cs" />
     <Compile Include="FaultContracts\DataContractFault.cs" />
     <Compile Include="FaultContracts\FoutBericht.cs" />
     <Compile Include="FaultContracts\GelijkaardigePersoonFault.cs" />
@@ -82,6 +84,10 @@
     <ProjectReference Include="..\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
       <Name>Chiro.Cdf.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Validation\Chiro.Cdf.Validation.csproj">
+      <Project>{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}</Project>
+      <Name>Chiro.Cdf.Validation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Orm\Chiro.Gap.Orm.csproj">
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>

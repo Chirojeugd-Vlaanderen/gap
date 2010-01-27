@@ -15,6 +15,7 @@ using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Fouten.Exceptions;
 using System.Security.Permissions;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 
 
 namespace Chiro.Gap.Services
@@ -323,18 +324,31 @@ namespace Chiro.Gap.Services
 		public int CategorieToevoegen(int groepID, string naam, string code)
 		{
 			Groep g = _groepenMgr.OphalenMetCategorieen(groepID);
-			Categorie c = _groepenMgr.CategorieToevoegen(g, naam, code);
-			g = _groepenMgr.Bewaren(g, e => e.Categorie);
-			//TODO kan dit niet mooier om de ID op te vragen?
-			foreach (Categorie cc in g.Categorie)
+			try
 			{
-				if (cc.Naam.Equals(naam))
-				{
-					c = cc;
-				}
+				Categorie c = _groepenMgr.CategorieToevoegen(g, naam, code);
 			}
-			//TODO de lambda expressies hieruit halen en er terug methoden van maken (die security kunnen checken)
-			return c.ID;
+			catch (BestaatAlException ex)
+			{
+				throw new FaultException<BestaatAlFault>(ex.Fault);
+			}
+			catch (Exception)
+			{
+				// ********************************************************************************
+				// * BELANGRIJK: Als je debugger breakt op deze throw, dan is dat geen probleem.  *
+				// * Dat wil gewoon zeggen dat er een bestaande categorie gevonden is, met        *
+				// * dezelfde code als de nieuwe.  Er gaat een faultexception over de lijn,       *
+				// * die door de UI gecatcht moet worden.  Druk gewoon F5 om verder te gaan.      *
+				// ********************************************************************************
+
+				throw;
+			}
+
+			g = _groepenMgr.Bewaren(g, e => e.Categorie);
+
+			return (from ctg in g.Categorie
+				where ctg.Code == code
+				select ctg.ID).FirstOrDefault();
 		}
 
 		/// <summary>

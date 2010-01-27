@@ -12,6 +12,7 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers.Properties;
 using Chiro.Cdf.Ioc;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.Workers
 {
@@ -313,23 +314,42 @@ namespace Chiro.Gap.Workers
 		#region categorieen
 
 		/// <summary>
-		/// Persisteert wel
+		/// Maakt een nieuwe categorie, en koppelt die aan een bestaande groep (met daaraan
+		/// gekoppeld zijn categorieen)
 		/// </summary>
-		/// <param name="c"></param>
-		/// <param name="gID"></param>
-		public Categorie CategorieToevoegen(Groep g, String cnaam, String code)
+		/// <param name="categorieCode">Code voor de nieuwe categorie</param>
+		/// <param name="categorieNaam">Naam voor de nieuwe categorie</param>
+		/// <param name="g">Groep waarvoor de categorie gemaakt wordt.  Als bestaande categorieen
+		/// gekoppeld zijn, wordt op dubbels gecontroleerd</param>
+		public Categorie CategorieToevoegen(Groep g, String categorieNaam, String categorieCode)
 		{
 			if (!_autorisatieMgr.IsGavGroep(g.ID))
 			{
 				throw new GeenGavException(Resources.GeenGavGroep);
 			}
+			else
+			{
+				Categorie bestaande = (from ctg in g.Categorie
+						       where String.Compare(
+								ctg.Code
+								, categorieCode) == 0
+						       select ctg).FirstOrDefault();
 
-			Categorie c = new Categorie();
-			c.Naam = cnaam;
-			c.Code = code;
-			c.Groep = g;
-			g.Categorie.Add(c);
-			return c;
+				if (bestaande != null)
+				{
+					throw new BestaatAlException(new BestaatAlFault { 
+						FoutCode = BestaatAlFaultCode.CategorieBestaatAl });
+				}
+				else
+				{
+					Categorie c = new Categorie();
+					c.Naam = categorieNaam;
+					c.Code = categorieCode;
+					c.Groep = g;
+					g.Categorie.Add(c);
+					return c;
+				}
+			}
 
 		}
 

@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using Chiro.Gap.Orm;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -161,6 +162,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="code">code voor de nieuwe categorie</param>
 		/// <returns>De ID van de aangemaakte categorie</returns>
 		[OperationContract]
+		[FaultContract(typeof(BestaatAlFault))]
 		int CategorieToevoegen(int groepID, String naam, String code);
 
 		/// <summary>

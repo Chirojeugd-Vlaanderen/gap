@@ -8,6 +8,8 @@ using Chiro.Gap.WebApp.Models;
 using Chiro.Gap.Orm;
 using Chiro.Adf.ServiceModel;
 using Chiro.Gap.ServiceContracts;
+using System.ServiceModel;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -20,10 +22,63 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>view met algemene gegevens over de groep</returns>
 		public ActionResult Index(int groepID)
 		{
-			GroepsInfoModel model = new GroepsInfoModel();
-
+			GroepsInstellingenModel model = new GroepsInstellingenModel();
+			
+			model.Titel = Properties.Resources.GroepsInstellingenTitel;
 			model.Info = ServiceHelper.CallService<IGroepenService, GroepInfo>(svc => svc.Ophalen(
 				groepID, 
+				GroepsExtras.AfdelingenHuidigWerkJaar | GroepsExtras.Categorieen));
+
+			return View(model);
+		}
+
+		/// <summary>
+		/// Actie voor als de gebruiker gegevens heeft ingevuld voor een nieuwe categorie
+		/// </summary>
+		/// <param name="model">Groepsinstellingenmodel</param>
+		/// <param name="groepID">ID van de gewenste groep</param>
+		/// <returns>Opnieuw de view Groep/Index</returns>
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult Index(GroepsInstellingenModel model, int groepID)
+		{
+			// Ik heb chance, want momenteel staan er enkel constraints op de velden die de
+			// gebruiker invulde, en die meegeleverd worden via model binding.
+			// Dus het is nog niet nodig om hier het model aan te vullen...
+
+			if (ModelState.IsValid)
+			{
+				// Als de ModelState geldig is: categorie toevoegen
+
+				try
+				{
+					ServiceHelper.CallService<IGroepenService>(svc => svc.CategorieToevoegen(
+						groepID,
+						model.NieuweCategorie.Naam,
+						model.NieuweCategorie.Code));
+				}
+				catch (FaultException<BestaatAlFault>)
+				{
+					ModelState.AddModelError(
+						"NieuweCategorie.Code", 
+						String.Format(
+							Properties.Resources.CategorieBestaatAl, 
+							model.NieuweCategorie.Code));
+				}
+				catch (Exception)
+				{
+					throw;
+				}
+			}
+
+			// Als ik op deze plaats het model aanvul, dan staat de eventuele nieuwe categorie
+			// er al in.
+
+			// Van zodra er wel constraints zullen staan op de groepsinfo/afdelingsinfo/..., moet
+			// het model toch op voorhand aangevuld zijn.
+
+			model.Titel = Properties.Resources.GroepsInstellingenTitel;
+			model.Info = ServiceHelper.CallService<IGroepenService, GroepInfo>(svc => svc.Ophalen(
+				groepID,
 				GroepsExtras.AfdelingenHuidigWerkJaar | GroepsExtras.Categorieen));
 
 			return View(model);

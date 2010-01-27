@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.GroepsInfoModel>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.GroepsInstellingenModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
  
@@ -52,8 +52,27 @@
             <%
         }
     %>
-            <li>[<%=Html.ActionLink("categorieen bijmaken/verwijderen", "Index", "Categorieen") %>]</li>    
-    </ul>      
+    </ul>  
+
+<% using (Html.BeginForm())
+   { %>
+    <fieldset>
+    <legend>Categorie toevoegen</legend>
+    <p>
+    <%=Html.LabelFor(mdl=>mdl.NieuweCategorie.Naam) %>
+    <%=Html.EditorFor(mdl=>mdl.NieuweCategorie.Naam) %>
+    <%=Html.ValidationMessageFor(mdl=>mdl.NieuweCategorie.Naam) %>
+    </p>
+    <p>
+    <%=Html.LabelFor(mdl=>mdl.NieuweCategorie.Code) %>
+    <%=Html.EditorFor(mdl=>mdl.NieuweCategorie.Code) %>
+    <%=Html.ValidationMessageFor(mdl=>mdl.NieuweCategorie.Code) %>
+    </p>
+    <p>
+    <input type="submit" value="Bewaren"/>
+    </p>
+    </fieldset>        
+<%} %>
 
 
 
