@@ -62,7 +62,7 @@ namespace Chiro.Gap.Services
 		/// <returns>
 		/// GroepInfo-structuur met de gevraagde informatie over de groep met id <paramref name="groepID"/>
 		/// </returns>
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public GroepInfo Ophalen(int groepID, GroepsExtras extras)
 		{
 			Groep g;
@@ -194,7 +194,7 @@ namespace Chiro.Gap.Services
 		/// <param name="groepID">ID van de groep</param>
 		/// <param name="naam">naam van de afdeling</param>
 		/// <param name="afkorting">afkorting van de afdeling (voor lijsten, overzichten,...)</param>
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AfdelingAanmaken(int groepID, string naam, string afkorting)
 		{
 			Groep g = _groepenMgr.Ophalen(groepID);
@@ -211,7 +211,7 @@ namespace Chiro.Gap.Services
 		/// <param name="offafdID">OfficieleAfdelingsID</param>
 		/// <param name="geboortVan">GeboorteJaarVan</param>
 		/// <param name="geboortTot">GeboorteJaarTot</param>
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AfdelingsJaarBewarenMetWijzigingen(int afdID, int offafdID, int geboorteVan, int geboorteTot)
 		{
 			AfdelingsJaar aj = _afdelingsJaarMgr.Ophalen(afdID);
@@ -228,20 +228,20 @@ namespace Chiro.Gap.Services
 		/// en controleert of er geen leden in zitten.
 		/// </summary>
 		/// <param name="afdelingsJaarID"></param>
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AfdelingsJaarVerwijderen(int afdelingsJaarID)
 		{
 			_afdelingsJaarMgr.Verwijderen(afdelingsJaarID);
 		}
 
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public AfdelingsJaar AfdelingsJaarOphalen(int afdelingsJaarID)
 		{
 			return _afdelingsJaarMgr.Ophalen(afdelingsJaarID);
 		}
 
 
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AfdelingsJaarAanmaken(int groepID, int afdelingsID, int offiafdelingsID, int geboortejaarbegin, int geboortejaareind)
 		{
 			Groep g = _groepenMgr.OphalenMetAfdelingen(groepID);
@@ -266,7 +266,7 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		/// <param name="afdelingID">ID van op te halen afdeling</param>
 		/// <returns>de gevraagde afdeling</returns>
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public Afdeling AfdelingOphalen(int afdelingID)
 		{
 			return _groepenMgr.AfdelingOphalen(afdelingID);
@@ -281,7 +281,7 @@ namespace Chiro.Gap.Services
 		/// Informatie over alle actieve afdelingen in het groepswerkjaar met 
 		/// ID <paramref name="groepsWerkJaarID"/>
 		/// </returns>
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<AfdelingInfo> AfdelingenOphalen(int groepsWerkJaarID)
 		{
 			var groepswerkjaar = _groepsWerkJaarManager.OphalenMetLeden(groepsWerkJaarID);
@@ -295,7 +295,7 @@ namespace Chiro.Gap.Services
 		/// <param name="groepswerkjaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
 		/// opgezocht moeten worden.</param>
 		/// <returns>info over de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarID)
 		{
 			IList<Afdeling> ongebruikteAfdelingen = _groepsWerkJaarManager.OngebruikteAfdelingenOphalen(groepswerkjaarID);
@@ -304,7 +304,7 @@ namespace Chiro.Gap.Services
 
 		#endregion
 
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<GroepsWerkJaar> WerkJarenOphalen(int groepsID)
 		{
 			return (from gwj in _groepenMgr.OphalenMetGroepsWerkJaren(groepsID).GroepsWerkJaar
@@ -391,7 +391,7 @@ namespace Chiro.Gap.Services
 		/// in de ui.
 		/// </summary>
 		/// <returns>Lijst met alle beschikbare deelgemeentes</returns>
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IEnumerable<GemeenteInfo> GemeentesOphalen()
 		{
 			return Mapper.Map<IList<Subgemeente>, IList<GemeenteInfo>>(_adresMgr.GemeentesOphalen());
@@ -404,7 +404,7 @@ namespace Chiro.Gap.Services
 		/// <param name="straatBegin">Eerste letters van de te zoeken straatnamen</param>
 		/// <param name="postNr">Postnummer waarin te zoeken</param>
 		/// <returns>Gegevens van de gevonden straten</returns>
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IEnumerable<StraatInfo> StratenOphalen(String straatBegin, int postNr)
 		{
 			return Mapper.Map<IList<Straat>, IList<StraatInfo>>(_adresMgr.StratenOphalen(straatBegin, postNr));
@@ -419,7 +419,7 @@ namespace Chiro.Gap.Services
 		/// <returns>Gegevens van de gevonden straten</returns>
 		/// <remarks>Ik had deze functie ook graag StratenOphalen genoemd, maar je mag geen 2 
 		/// WCF-functies met dezelfde naam in 1 service hebben.  Spijtig.</remarks>
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IEnumerable<StraatInfo> StratenOphalenMeerderePostNrs(String straatBegin, IEnumerable<int> postNrs)
 		{
 			return Mapper.Map<IList<Straat>, IList<StraatInfo>>(_adresMgr.StratenOphalen(straatBegin, postNrs));

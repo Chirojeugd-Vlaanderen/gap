@@ -53,14 +53,14 @@ namespace Chiro.Gap.Services
 
 		#region IGelieerdePersonenService Members
 
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
 		{
 			var result = _gpMgr.PaginaOphalen(groepID, pagina, paginaGrootte, out aantalTotaal);
 			return result;
 		}
 
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<PersoonInfo> PaginaOphalenMetLidInfoVolgensCategorie(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal)
 		{
 			var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfoVolgensCategorie(categorieID, pagina, paginaGrootte, out aantalTotaal);
@@ -69,14 +69,14 @@ namespace Chiro.Gap.Services
 
 		// *BELANGRIJK*: Als het debuggen hier stopt owv een autorisatiefout, kijk dan na of de gebruiker waarmee
 		// je aangemeld bent, op je lokale computer in de groep CgUsers zit.
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<PersoonInfo> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
 		{
 			var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
 			return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonInfo>>(gelieerdePersonen);
 		}
 
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public int PersoonBewaren(GelieerdePersoon persoon)
 		{
 			_gpMgr.Bewaren(persoon);
@@ -93,7 +93,7 @@ namespace Chiro.Gap.Services
 		/// <returns>ID van de bewaarde persoon</returns>
 		/// <remarks>Adressen, Communicatievormen,... worden niet mee gepersisteerd; enkel de persoonsinfo
 		/// en de Chiroleeftijd.</remarks>
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public int Aanmaken(GelieerdePersoon info, int groepID)
 		{
 			return GeforceerdAanmaken(info, groepID, false);
@@ -113,7 +113,7 @@ namespace Chiro.Gap.Services
 		/// bestaande.</param>
 		/// <remarks>Adressen, Communicatievormen,... worden niet mee gepersisteerd; enkel de persoonsinfo
 		/// en de Chiroleeftijd.</remarks>
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public int GeforceerdAanmaken(GelieerdePersoon info, int groepID, bool forceer)
 		{
 			// Indien 'forceer' niet gezet is, moet een FaultException opgeworpen worden
@@ -151,19 +151,19 @@ namespace Chiro.Gap.Services
 			return gelieerd.ID;
 		}
 
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<GelieerdePersoon> zoekPersonen(string naamgedeelte, int pagina, int paginagrootte)
 		{
 			throw new NotImplementedException();
 		}
 
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID)
 		{
 			return _gpMgr.DetailsOphalen(gelieerdePersoonID);
 		}
 
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public AdresInfo AdresMetBewonersOphalen(int adresID)
 		{
 			return Mapper.Map<Adres, AdresInfo>(_adrMgr.AdresMetBewonersOphalen(adresID));
@@ -189,7 +189,7 @@ namespace Chiro.Gap.Services
 		/// GelieerdePersoonID's, en bijgevolg hoort dit eerder thuis
 		/// in een PersonenService dan in een GelieerdePersonenService.
 		/// </remarks>
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void PersonenVerhuizen(
 			IList<int> persoonIDs, 
 			AdresInfo naarAdres, 
@@ -248,7 +248,7 @@ namespace Chiro.Gap.Services
 			// Bijgevolg moet het oudeAdres niet gepersisteerd worden.
 		}
 
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AdresToevoegenAanPersonen(List<int> personenIDs, AdresInfo adr, AdresTypeEnum adresType)
 		{
 			// Dit gaat sterk lijken op verhuizen.
@@ -277,7 +277,7 @@ namespace Chiro.Gap.Services
 			_adrMgr.Bewaren(adres);
 		}
 
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AdresVerwijderenVanPersonen(List<int> personenIDs, int adresID)
 		{
 			// Adres ophalen, met bewoners voor GAV
@@ -295,21 +295,21 @@ namespace Chiro.Gap.Services
 			_adrMgr.Bewaren(adr);
 		}
 
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<BewonersInfo> HuisGenotenOphalen(int gelieerdePersoonID)
 		{
 			IList<Persoon> lijst = _pMgr.HuisGenotenOphalen(gelieerdePersoonID);
 			return Mapper.Map<IList<Persoon>, IList<BewonersInfo>>(lijst);
 		}
 
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void CommunicatieVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm, int typeID)
 		{
 			_cvMgr.CommunicatieVormToevoegen(commvorm, gelieerdepersonenID, typeID);
 		}
 
 		// FIXME: de parameter 'gelieerdePersoonID' is overbodig; zie ticket #145.
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
         public void CommunicatieVormVerwijderenVanPersoon(int gelieerdePersoonID, int commvormID)
 		{
             GelieerdePersoon gp = _gpMgr.OphalenMetCommVormen(gelieerdePersoonID);
@@ -333,7 +333,7 @@ namespace Chiro.Gap.Services
 		}
 
 		///TODO dit moet gecontroleerd worden!
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void CommunicatieVormAanpassen(CommunicatieVorm v)
 		{
 			_cvMgr.Bewaren(v);
@@ -366,7 +366,7 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		/// <param name="gelieerdepersonenIDs">ID's van de te koppelen gebruikers</param>
 		/// <param name="categorieID">ID van de te koppelen categorie</param>
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void CategorieKoppelen(IList<int> gelieerdepersonenIDs, IList<int> categorieIDs)
 		{
 			IList<GelieerdePersoon> gelpersonen = _gpMgr.Ophalen(gelieerdepersonenIDs);
