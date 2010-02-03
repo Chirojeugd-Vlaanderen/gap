@@ -4,7 +4,7 @@
 <%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.min.js")%>"></script>
     <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>"></script>
     <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>"></script>
 </asp:Content>

@@ -4,7 +4,7 @@
 <%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-<script type="text/javascript" src="/Scripts/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.min.js")%>"></script>
 <script type="text/javascript">
 //HEEL BELANGRIJK: voor een dropdownlist, moet het select statement zowel een id als een name hebben, die dezelfde zijn, en die moet ook in het event gebruikt worden
 $(function() {

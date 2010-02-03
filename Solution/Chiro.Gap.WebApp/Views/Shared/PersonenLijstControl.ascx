@@ -3,7 +3,7 @@
 <%@ Import Namespace="Chiro.Gap.Orm" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
 
-<script type="text/javascript" src="/Scripts/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.min.js")%>"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('input:submit').hide();
