@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 
@@ -9,20 +10,24 @@ using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
-    public class AfdelingInfoModel : MasterViewModel 
-    {
-        public Afdeling HuidigeAfdeling { get; set; }
+	/// <summary>
+	/// Dit model wordt her en der gebruikt voor afdelingsgerelateerde dingen.
+	/// </summary>
+	public class AfdelingInfoModel : MasterViewModel
+	{
+		public Afdeling HuidigeAfdeling { get; set; }
 
-        public AfdelingsJaar HuidigAfdelingsJaar { get; set; }
+		public AfdelingsJaar HuidigAfdelingsJaar { get; set; }
 
-        public IList<AfdelingInfo> GebruikteAfdelingLijst { get; set; }
+		public IList<AfdelingInfo> GebruikteAfdelingLijst { get; set; }
 
-        public IList<AfdelingInfo> OngebruikteAfdelingLijst { get; set; }
+		public IList<AfdelingInfo> OngebruikteAfdelingLijst { get; set; }
 
-        public IList<OfficieleAfdeling> OfficieleAfdelingenLijst { get; set; }
+		public IList<OfficieleAfdeling> OfficieleAfdelingenLijst { get; set; }
 
-        public int OfficieleAfdelingID { get; set; }
+		[DisplayName("Officiële afdeling")]
+		public int OfficieleAfdelingID { get; set; }
 
-        public AfdelingInfoModel() : base() { }
-    }
+		public AfdelingInfoModel() : base() { }
+	}
 }

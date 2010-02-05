@@ -16,23 +16,26 @@
     
     <fieldset>
     
-    <label for="Afdeling_Naam">Naam</label> 
-    <%=Html.TextBox("HuidigeAfdeling.Naam", Model.HuidigeAfdeling.Naam, new { @readonly = "readonly", title = "Nu niet wijzigbaar", disabled = "disabled" } )%><br />
-    
-    <label for="Afdeling_Afkorting">Afkorting</label> 
-    <%=Html.TextBox("HuidigeAfdeling.Afkorting", Model.HuidigeAfdeling.Afkorting, new { @readonly = "readonly", title = "Nu niet wijzigbaar", disabled = "disabled" })%><br />
-        
-    <label for="AfdelingsJaar_GeboorteJaarVan">Van</label> 
-    <%=Html.TextBox("HuidigAfdelingsJaar.GeboorteJaarVan")%><br />
-    
-    <label for="AfdelingsJaar_GeboorteJaarTot">Tot</label> 
-    <%=Html.TextBox("HuidigAfdelingsJaar.GeboorteJaarTot")%><br />
+    <%=Html.LabelFor(mdl=> mdl.HuidigeAfdeling.Naam)%>
+    <%=Html.TextBoxFor(mdl => mdl.HuidigeAfdeling.Naam, new { @readonly = "readonly", title = "Nu niet wijzigbaar", disabled = "disabled" } )%><br />
+
+    <%=Html.LabelFor(mdl=> mdl.HuidigeAfdeling.Afkorting)%>
+    <%=Html.TextBoxFor(mdl => mdl.HuidigeAfdeling.Afkorting, new { @readonly = "readonly", title = "Nu niet wijzigbaar", disabled = "disabled" } )%><br />
+   
+    <%=Html.LabelFor(mdl => mdl.HuidigAfdelingsJaar.GeboorteJaarVan) %>
+    <%=Html.EditorFor(mdl => mdl.HuidigAfdelingsJaar.GeboorteJaarVan) %>
+    <%=Html.ValidationMessageFor(mdl => mdl.HuidigAfdelingsJaar.GeboorteJaarVan) %><br />
+
+    <%=Html.LabelFor(mdl => mdl.HuidigAfdelingsJaar.GeboorteJaarTot) %>
+    <%=Html.EditorFor(mdl => mdl.HuidigAfdelingsJaar.GeboorteJaarTot) %>
+    <%=Html.ValidationMessageFor(mdl => mdl.HuidigAfdelingsJaar.GeboorteJaarTot) %><br />
     
     <% var values = from OfficieleAfdeling oa in Model.OfficieleAfdelingenLijst
                     select new { value = oa.ID, text = oa.Naam.ToString() }; 
     %>
-    <label for="AfdelingsJaar_OfficieleAfdeling">Offici&euml;le afdeling</label>
-    <%=Html.DropDownList("OfficieleAfdelingID", new SelectList(values, "value", "text"))%>
+    
+    <%=Html.LabelFor(mdl=>mdl.OfficieleAfdelingID) %>
+    <%=Html.DropDownListFor(mdl => mdl.OfficieleAfdelingID, new SelectList(values, "value", "text"))%><br />
 
     </fieldset>
     
