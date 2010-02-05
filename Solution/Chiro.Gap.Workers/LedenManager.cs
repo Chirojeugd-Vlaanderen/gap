@@ -151,33 +151,25 @@ namespace Chiro.Gap.Workers
 				int geboortejaar = gpMetDetails.Persoon.GeboorteDatum.Value.Year;
 				geboortejaar += gpMetDetails.ChiroLeefTijd;	 //aanpassen aan chiroleeftijd
 
-				//relevante afdelingsjaren opzoeken
-				List<AfdelingsJaar> afdelingen =
+				//relevante afdelingsjaar opzoeken
+				AfdelingsJaar afdelingsjaar =
 						(from a in gwj.AfdelingsJaar
-						 where a.GeboorteJaarVan <= geboortejaar && geboortejaar <= a.GeboorteJaarTot
-						 select a).ToList();
+						 where a.GeboorteJaarVan <= geboortejaar
+							&& geboortejaar <= a.GeboorteJaarTot
+							&& (a.Geslacht == GeslachtsType.Gemengd
+								|| a.Geslacht == gpMetDetails.Persoon.Geslacht)
+						 select a).FirstOrDefault();
+				// (eerste is goed)
 
-				if (afdelingen.Count == 0)
+				if (afdelingsjaar == null)
 				{
-					throw new OngeldigeActieException("Er is geen afdeling in jullie groep voor die leeftijd. Je maakt er best eerst een aan (of controleert de leeftijd van het kind).");
+					throw new OngeldigeActieException(Properties.Resources.GeenGeschikteAfdeling);
 				}
 
-				AfdelingsJaar aj = null;
-				if (afdelingen.Count > 1)
-				{
-					//TODO implement this wanneer een afdelingsjaar een geslacht heeft
-					/*aj = (from a in afdelingen
-						  where a.Geslacht == gpMetDetails.Persoon.Geslacht
-						  select a).FirstOrDefault();*/
-				}
-				if (aj == null)
-				{
-					aj = afdelingen.First();
-				}
 
 				Kind kind = new Kind();
-				kind.AfdelingsJaar = aj;
-				aj.Kind.Add(kind);
+				kind.AfdelingsJaar = afdelingsjaar;
+				afdelingsjaar.Kind.Add(kind);
 				kind.EindeInstapPeriode = DateTime.Today.AddDays(int.Parse(Properties.Resources.InstapPeriode));
 				
 				LidMaken(kind, gpMetDetails, gwj);

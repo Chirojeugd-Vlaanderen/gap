@@ -169,6 +169,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Er werd geen geschikte afdeling gevonden voor deze persoon..
+        /// </summary>
+        internal static string GeenGeschikteAfdeling {
+            get {
+                return ResourceManager.GetString("GeenGeschikteAfdeling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deze operatie is enkel beschikbaar voor super-GAV-goden..
         /// </summary>
         internal static string GeenSuperGav {

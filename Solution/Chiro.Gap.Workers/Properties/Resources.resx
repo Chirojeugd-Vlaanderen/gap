@@ -153,6 +153,9 @@
   <data name="GeenGavLid" xml:space="preserve">
     <value>Dit lid is niet gekoppeld aan je groep(en).</value>
   </data>
+  <data name="GeenGeschikteAfdeling" xml:space="preserve">
+    <value>Er werd geen geschikte afdeling gevonden voor deze persoon.</value>
+  </data>
   <data name="GeenSuperGav" xml:space="preserve">
     <value>Deze operatie is enkel beschikbaar voor super-GAV-goden.</value>
   </data>
