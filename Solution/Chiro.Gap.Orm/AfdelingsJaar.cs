@@ -33,6 +33,14 @@ namespace Chiro.Gap.Orm
 			public int GeboorteJaarTot { get; set; }
 		}
 
+		/// <summary>
+		/// De constructor maakt een lege gemengde afdeling
+		/// </summary>
+		public AfdelingsJaar()
+		{
+			Geslacht = GeslachtsType.Gemengd;
+		}
+
 		public GeslachtsType Geslacht
 		{
 			get { return (GeslachtsType)this.GeslachtsInt; }
