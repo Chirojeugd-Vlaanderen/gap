@@ -240,6 +240,7 @@ BEGIN
 		[GeboorteJaarVan] [int] NOT NULL,
 		[AfdelingsJaarID] [int] IDENTITY(1,1) NOT NULL,
 		[AfdelingID] [int] NOT NULL,
+    [Geslacht] [int] NOT NULL,
 		[GroepsWerkJaarID] [int] NOT NULL,
 		[OfficieleAfdelingID] [int] NOT NULL,
 		[Versie] [timestamp] NULL,
