@@ -21,6 +21,12 @@
 
     <%=Html.LabelFor(mdl=> mdl.HuidigeAfdeling.Afkorting)%>
     <%=Html.TextBoxFor(mdl => mdl.HuidigeAfdeling.Afkorting, new { @readonly = "readonly", title = "Nu niet wijzigbaar", disabled = "disabled" } )%><br />
+
+    <%=Html.LabelFor(s => s.HuidigAfdelingsJaar.Geslacht)%>
+    <%= Html.RadioButton("HuidigAfdelingsJaar.Geslacht", GeslachtsType.Man, Model.HuidigAfdelingsJaar.Geslacht == GeslachtsType.Gemengd)%> Gemengd
+    <%= Html.RadioButton("HuidigAfdelingsJaar.Geslacht", GeslachtsType.Man, Model.HuidigAfdelingsJaar.Geslacht == GeslachtsType.Man)%> Jongens
+    <%= Html.RadioButton("HuidigAfdelingsJaar.Geslacht", GeslachtsType.Vrouw, Model.HuidigAfdelingsJaar.Geslacht == GeslachtsType.Vrouw)%> Meisjes
+    <%=Html.ValidationMessageFor(s => s.HuidigAfdelingsJaar.Geslacht)%><br />
    
     <%=Html.LabelFor(mdl => mdl.HuidigAfdelingsJaar.GeboorteJaarVan) %>
     <%=Html.EditorFor(mdl => mdl.HuidigAfdelingsJaar.GeboorteJaarVan) %>

@@ -12,16 +12,17 @@ using System.ComponentModel;
 namespace Chiro.Gap.Orm
 {
 	[DataContract]
+	[Flags]
 	public enum GeslachtsType
 	{
 		[EnumMember]
-		Man = 1
-			,
+		Onbekend = 0x00,
 		[EnumMember]
-		Vrouw = 2
-			,
+		Man = 0x01,
 		[EnumMember]
-		Onbekend = 0
+		Vrouw = 0x02,
+		[EnumMember]
+		Gemengd = Man | Vrouw	// interessant voor gemengde groepen/afdelingen
 	}
 
 	[MetadataType(typeof(Persoon_Validatie))]

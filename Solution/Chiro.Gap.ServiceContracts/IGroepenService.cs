@@ -106,8 +106,10 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="offafdID">OfficieleAfdelingsID</param>
 		/// <param name="geboortVan">GeboorteJaarVan</param>
 		/// <param name="geboortTot">GeboorteJaarTot</param>
+		/// <param name="geslacht">geeft aan of het een jongensafdeling, een meisjesafdeling
+		/// of een gemengde afdeling is.</param>
 		[OperationContract]
-		void AfdelingsJaarBewarenMetWijzigingen(int afdID, int offafdID, int geboorteVan, int geboorteTot);
+		void AfdelingsJaarBewarenMetWijzigingen(int afdID, int offafdID, int geboorteVan, int geboorteTot, GeslachtsType geslacht);
 
 		/// <summary>
 		/// Verwijdert een afdelingsjaar 

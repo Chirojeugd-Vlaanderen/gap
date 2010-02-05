@@ -211,14 +211,26 @@ namespace Chiro.Gap.Services
 		/// <param name="offafdID">OfficieleAfdelingsID</param>
 		/// <param name="geboortVan">GeboorteJaarVan</param>
 		/// <param name="geboortTot">GeboorteJaarTot</param>
+		/// <param name="geslacht">geeft aan of het een jongensafdeling, een meisjesafdeling
+		/// of een gemengde afdeling is.</param>
 		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void AfdelingsJaarBewarenMetWijzigingen(int afdID, int offafdID, int geboorteVan, int geboorteTot)
+		// TODO: datacontract maken, waar ook de versiestring in zit. (Zie #297)
+		public void AfdelingsJaarBewarenMetWijzigingen(
+			int afdID, 
+			int offafdID, 
+			int geboorteVan, 
+			int geboorteTot, 
+			GeslachtsType geslacht)
 		{
 			AfdelingsJaar aj = _afdelingsJaarMgr.Ophalen(afdID);
 			OfficieleAfdeling oa = _groepenMgr.OfficieleAfdelingenOphalen().Where(a => a.ID == offafdID).FirstOrDefault<OfficieleAfdeling>();
+
+			// TODO: als er een datacontract is, kan een mapper gebruikt worden (#297)
+
 			aj.OfficieleAfdeling = oa;
 			aj.GeboorteJaarVan = geboorteVan;
 			aj.GeboorteJaarTot = geboorteTot;
+			aj.Geslacht = geslacht;
 			_afdelingsJaarMgr.Bewaren(aj);
 		}
 

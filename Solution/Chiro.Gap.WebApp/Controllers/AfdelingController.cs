@@ -149,7 +149,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult Bewerken(Models.AfdelingInfoModel model, int groepID, int id)
 		{
 			BaseModelInit(model, groepID);
-			ServiceHelper.CallService<IGroepenService>(e => e.AfdelingsJaarBewarenMetWijzigingen(id, model.OfficieleAfdelingID, model.HuidigAfdelingsJaar.GeboorteJaarVan, model.HuidigAfdelingsJaar.GeboorteJaarTot));
+			ServiceHelper.CallService<IGroepenService>(e => e.AfdelingsJaarBewarenMetWijzigingen(id, model.OfficieleAfdelingID, model.HuidigAfdelingsJaar.GeboorteJaarVan, model.HuidigAfdelingsJaar.GeboorteJaarTot, model.HuidigAfdelingsJaar.Geslacht));
 
 			// TODO: wat als er een fout optreedt bij AfdelingAanmaken?
 			TempData["feedback"] = "Wijzigingen zijn opgeslagen";

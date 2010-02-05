@@ -33,6 +33,12 @@ namespace Chiro.Gap.Orm
 			public int GeboorteJaarTot { get; set; }
 		}
 
+		public GeslachtsType Geslacht
+		{
+			get { return (GeslachtsType)this.GeslachtsInt; }
+			set { this.GeslachtsInt = (int)value; }
+		}
+
 		private bool _teVerwijderen = false;
 
 		public bool TeVerwijderen

@@ -32,7 +32,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_CommunicatieVorm_CommunicatieType", "CommunicatieType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.CommunicatieType), "CommunicatieVorm", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.CommunicatieVorm))]
 
 // Original file name:
-// Generation date: 13/01/2010 5:04:07
+// Generation date: 5/02/2010 12:13:36
 namespace Chiro.Gap.Orm
 {
     
@@ -3191,6 +3191,29 @@ namespace Chiro.Gap.Orm
         private byte[] _Versie;
         partial void OnVersieChanging(byte[] value);
         partial void OnVersieChanged();
+        /// <summary>
+        /// There are no comments for Property GeslachtsInt in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        private int GeslachtsInt
+        {
+            get
+            {
+                return this._GeslachtsInt;
+            }
+            set
+            {
+                this.OnGeslachtsIntChanging(value);
+                this.ReportPropertyChanging("GeslachtsInt");
+                this._GeslachtsInt = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("GeslachtsInt");
+                this.OnGeslachtsIntChanged();
+            }
+        }
+        private int _GeslachtsInt;
+        partial void OnGeslachtsIntChanging(int value);
+        partial void OnGeslachtsIntChanged();
         /// <summary>
         /// There are no comments for GroepsWerkJaar in the schema.
         /// </summary>
