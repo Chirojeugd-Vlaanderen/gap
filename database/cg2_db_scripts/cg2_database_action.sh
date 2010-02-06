@@ -20,40 +20,60 @@ LOG_FILE=$(mktemp /tmp/$(basename $0)_XXXX)
   {
      cat <<EOF
 	 
-	 Gebruik: $(basename $0) -h -a [creatie | verwijder | beide ]  -t [ shema | constraints | stored_procedures | gegevens | test ] -n <db_name> -f
+Gebruik: $(basename $0) -h -a [creatie | verwijder | beide ]  \\
+	   -t [ shema | constraints | stored_procedures | gegevens | test ] \\
+	   -n <db_name> -f -s <servernaam>
 	 
-	   -h: Toon deze help pagina
+	   -h: Toon deze helppagina
 	   -a: De actie die je wil doen.
 	       We kennen de volgende acties:
 				- creatie : We gaan enkel creaties doen.
-				            (We houden geen rekening met de relaties tussen verschillende scripts)
-				- verwijder: We gaan enkel verwijderen van gegevens / structuur
-						    (We houden geen rekening met de relaties tussen verschillende scripts)
-                - beide: We gaan eerst verwijderen en dan her creeren.
-				         Bij het verwijderen houden we rekening houden met relaties tussen de scripts, 
-						 eerst verwijderen we alle mogelijkde data, dit is in volgorde: constraints, shema.
-						 De gegevens en test gegevens gaan samen weg met het verwijderen van de de tabellen (shema)
-						 Het creeren moet in de volgorde: shema, constraints, gegevens, test.
-						 Waar we stoppen is afhankelijk van de '-t' optie. 
-				
+				            (We houden geen rekening met 
+					     de relaties tussen verschillende 
+					     scripts)
+				- verwijder: We gaan enkel verwijderen van 
+				             gegevens / structuur
+					     (We houden geen rekening met de 
+					      relaties tussen verschillende 
+					      scripts)
+                - beide: We gaan eerst verwijderen en dan opnieuw creeren.
+		         Bij het verwijderen houden we rekening met relaties 
+			 tussen de scripts: 
+				eerst verwijderen we alle mogelijkde data, 
+				dit is in volgorde: constraints, shema.
+				De gegevens en test gegevens gaan samen weg 
+				met het verwijderen van de de tabellen (shema)
+				Het creeren moet in de volgorde: shema, 
+				constraints, gegevens, test.
+				Waar we stoppen is afhankelijk van de '-t' optie. 
+
         -t: Welk type actie wil je doen
             We kennen de volgende types:
-                - shema: We gaan het shema creeren of verwijderen (afh van optie -a)
-                - constraints: We gaan de constraints creeren of verwijderen (afh van optie -a)
-				- stored_procedure: We gaan de stored procedures creeren of verwijderen (afh van optie -a)
-                - gegevens: We gaan de standaard gegevens creeren of verwijderen (afh van optie -a)
-				            standaard gegevens: GIS data, officiele afdelingen, Communictie types, .... 
-                - test: We gaan de geevens nodig voor de test omgeving creeren of verwijderen (afh van optie -a)
+                - shema: We gaan het shema creeren of verwijderen 
+			(afh van optie -a)
+                - constraints: We gaan de constraints creeren of verwijderen 
+			(afh van optie -a)
+		- stored_procedures: We gaan de stored procedures creeren 
+			of verwijderen (afh van optie -a)
+                - gegevens: We gaan de standaard gegevens creeren of 
+			verwijderen (afh van optie -a)
+			standaard gegevens: GIS data, officiele afdelingen, 
+			Communictie types, .... 
+                - test: We gaan de geevens nodig voor de test omgeving 
+			creeren of verwijderen (afh van optie -a)
 				
-		-n name: We willen de database met naam verwijderen/creeren.
+	-n name: We willen de database met naam verwijderen/creeren.
 		
-		-f: Het script vraagt nooit voor confirmatie.				
+	-f: Het script vraagt nooit voor confirmatie.
+	-s <servernaam>: naam van de server, standaard DEVSERVER
 				
 EOF
   }
 
+  DBSERVER="DEVSERVER";
+
   # Ophalen en controleren van de gegeven opies.
-  while getopts  "a:t:n:fh" flag
+  while getopts  "a:t:n:s:fh" flag
   do 
 	case ${flag} in 
 		a) 	# Optie om actie door te geven
@@ -78,6 +98,9 @@ EOF
 			;;
 		n) 	# Naam van de database die we bewerken. 
 			DB_NAME=${OPTARG}
+			;;
+		s)	# Naam van de server
+			DBSERVER=${OPTARG}
 			;;
 	    f) 	# Optie om aan te geven dat ik weet wat ik doe, 
 			# en nooit een confirmatie scherm wens te krijgen.
@@ -118,6 +141,7 @@ EOF
     echo "   Gebruiker       : ${DB_NAME}"
     echo "   Met passwoord   : ${DB_NAME}"
     echo "   Database naam   : ${DB_NAME}"
+    echo "   Databaseserver  : ${DBSERVER}"
     echo "Is dit correct? (J/N)"
     read CONFIRM
 	
@@ -168,7 +192,7 @@ EOF
   # -U loginid 
   # -P password
  
-  sqlcmd -S DEVSERVER -H DEVSERVER -U ${DB_NAME} -P ${DB_NAME} -i "$(cygpath.exe -w ${TMP_SQL_FILE})" -o "$(cygpath.exe -w ${TMP_SQL_FILE}.out)"
+  sqlcmd -S ${DBSERVER} -H ${DBSERVER} -U ${DB_NAME} -P ${DB_NAME} -i "$(cygpath.exe -w ${TMP_SQL_FILE})" -o "$(cygpath.exe -w ${TMP_SQL_FILE}.out)"
   
   # Toon de output file maar laat een aanal niet intressante dingen weg:
   cat ${TMP_SQL_FILE}.out | grep -v 'rows affected' | grep -e '[:alpha:]'

@@ -25,13 +25,15 @@ LOG_FILE=$(mktemp /tmp/$(basename $0)_XXXX)
   {
     cat <<EOF
 	
-	Gebruik: $(basename $0) -h -a [ migratie | verwijder ] -g [ stamnr | alle_groepen] -n <db_name> -f
+	Gebruik: $(basename $0) -h -a [ migratie | verwijder ] -g [ stamnr | alle_groepen] -n <db_name> -f -s <servernaam>
 	 
 EOF
   }
 
+  DBSERVER="DEVSERVER";
+
   # Ophalen en controleren van de gegeven opies.
-  while getopts  "a:g:n:fh" flag
+  while getopts  "a:g:n:s:fh" flag
   do 
 	case ${flag} in 
 		a) 	# Optie om actie door te geven
@@ -49,6 +51,10 @@ EOF
             ;;			
 		n) 	# Naam van de database die we bewerken. 
 			DB_NAME=${OPTARG}
+			;;
+
+		s) 	# Naam van de database die we bewerken. 
+			DBSERVER=${OPTARG}
 			;;
 		h)  # in alle andere gevallen hebben we een niet verwachte 
 		    # optie gevonden of '-h'
@@ -182,7 +188,7 @@ EOF
   # -U loginid 
   # -P password
  
-  sqlcmd -S DEVSERVER -H DEVSERVER -U ${DB_NAME} -P ${DB_NAME} -i "$(cygpath.exe -w ${TMP_SQL_FILE})" -o "$(cygpath.exe -w ${TMP_SQL_FILE}.out)"
+  sqlcmd -S ${DBSERVER} -H ${DBSERVER} -U ${DB_NAME} -P ${DB_NAME} -i "$(cygpath.exe -w ${TMP_SQL_FILE})" -o "$(cygpath.exe -w ${TMP_SQL_FILE}.out)"
   
   # Toon de output file maar laat een aanal niet intressante dingen weg:
   cat ${TMP_SQL_FILE}.out | grep -v 'rows affected' | grep -e '[:alpha:]'
