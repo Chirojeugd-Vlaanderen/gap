@@ -12,22 +12,26 @@
  
 TMP_SQL_FILE=$(mktemp /tmp/cg2_database_create_sql_XXXX)
 LOG_FILE=$(mktemp /tmp/$(basename $0)_XXXX)
- 
+
+
 (
   # Creatie van funties
   toon_help () 
   {
      cat <<EOF
 
-	 Gebruik: $(basename $0) -h [-c | -d ] -n db_name -f
+	 Gebruik: $(basename $0) -h [-c | -d ] -n db_name -f -s SERVER
 	 
-		-h: Toon deze help pagina
+		-h: Toon deze helppagina
 		-c: We willen een database creeren
 		-d: We willen een database verwijderen
 		-n name: We willen de database met naam verwijderen/creeren.
 		-f: Het script vraagt nooit voor confirmatie.
+		-s: servernaam.  default: devserver
+		-p: pad op de server (windowsnotatie) voor databasefiles
+		    (standaard in C:\Program files\blablabla)
 		
-	 Dit script maakt een lege database aan in DEVSERVER.
+	 Dit script maakt een lege database.
 	 Dit script verwacht dat de aanroeper de correcte permissies 
 	 heeft op de database server.
 	 
@@ -35,7 +39,7 @@ LOG_FILE=$(mktemp /tmp/$(basename $0)_XXXX)
 		- Toevoegen van -U/-P opties, om db_usernaam en db_paswoord 
 		  van de database server te geven.
 		- Toevoegen van -D/-H opties, om naar een andere DB server 
-		  te gaan. (nu is DEVSERVER hard-gecodeerd)
+		  te gaan. 
 EOF
   }  
 
@@ -53,9 +57,9 @@ GO
 -- en gedeeltelijk aan elkaar geschreven.
 
 CREATE DATABASE [${DB_NAME}] ON  PRIMARY 
-( NAME = N'${DB_NAME}', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL.1\MSSQL\DATA\\${DB_NAME}.mdf' , SIZE = 5120KB , FILEGROWTH = 10%)
+( NAME = N'${DB_NAME}', FILENAME = N'${FILEPATH}\\${DB_NAME}.mdf' , SIZE = 5120KB , FILEGROWTH = 10%)
  LOG ON 
-( NAME = N'${DB_NAME}_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL.1\MSSQL\DATA\\${DB_NAME}_log.ldf' , SIZE = 1024KB , FILEGROWTH = 10%)
+( NAME = N'${DB_NAME}_log', FILENAME = N'${FILEPATH}\\${DB_NAME}_log.ldf' , SIZE = 1024KB , FILEGROWTH = 10%)
 COLLATE Latin1_General_CI_AI
 GO
 -- Sets certain database behaviors to be compatible with the specified earlier version of SQL Server. 
@@ -179,9 +183,11 @@ EOF
   ACTIE="";
   FORCE=""; 
   DB_NAME=""  
+  DBSERVER="DEVSERVER";   # default; straks misschien overschrijven
+  FILEPATH='C:\Program Files\Microsoft SQL Server\MSSQL.1\MSSQL\Data';
   
   # Ophalen en controleren van de gegeven opies.
-  while getopts  "cdn:fh" flag
+  while getopts  "cdn:s:p:fh" flag
   do 
 	case ${flag} in 
 		c) 	# Optie om database te creeren.
@@ -202,6 +208,12 @@ EOF
 			;;
 		n) 	# Naam van de database te creeren. 
 			DB_NAME=${OPTARG}
+			;;
+		s)	# Naam van de server
+			DBSERVER=${OPTARG}
+			;;
+		p)	# Naam van de server
+			FILEPATH=${OPTARG}
 			;;
 	    f) 	# Optie om aan te geven dat ik weet wat ik doe, 
 			# en nooit een confirmatie scherm wens te krijgen.
@@ -241,6 +253,8 @@ EOF
     echo "   Gebruiker       : ${DB_NAME}"
     echo "   Met passwoord   : ${DB_NAME}"
     echo "   Database naam   : ${DB_NAME}"
+    echo "   Databaseserver  : ${DBSERVER}"
+    echo "   Bestandslocatie : ${FILEPATH}"
     echo "Is dit correct? (J/N)"
     read CONFIRM
 	
@@ -272,7 +286,9 @@ EOF
   # -P password
  
   cd /tmp  # M$ is niet instaat om met /tmp te werken, enkel gekend bij Cygwin.
-  sqlcmd -S DEVSERVER -H DEVSERVER -i $(basename ${TMP_SQL_FILE})
+  # TODO: Je kan dit properder via 'cygpath'
+
+  sqlcmd -S ${DBSERVER} -H ${DBSERVER} -i $(basename ${TMP_SQL_FILE})
   cd -  
   
   echo "DEBUG: Uitgevoerd SQL script: ${TMP_SQL_FILE}" 
