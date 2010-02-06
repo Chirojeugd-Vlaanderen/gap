@@ -122,7 +122,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.HuisNr))
 				.ForMember(
 					dst => dst.PostNr,
-					opt => opt.MapFrom(src => src.Subgemeente.PostNr))
+					opt => opt.MapFrom(src => src.Straat.PostNr))
 				.ForMember(
 					dst => dst.Bewoners,
 					opt => opt.MapFrom(src => src.PersoonsAdres.ToList()))
