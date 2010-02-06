@@ -1,9 +1,5 @@
 
-:r ./sql/populate.adr.Gemeente.sql
-GO 
 :r ./sql/populate.adr.PostNr.sql
-GO
-:r ./sql/populate.adr.PostNrNaarGemeente.sql
 GO
 :r ./sql/populate.adr.Subgemeente.sql
 GO

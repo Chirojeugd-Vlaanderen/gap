@@ -12,9 +12,5 @@ DELETE FROM adr.Straat
 GO
 DELETE FROM adr.Subgemeente
 GO
-DELETE FROM adr.PostNrNaarGemeente
-GO
 DELETE FROM adr.PostNr
 GO
-DELETE FROM adr.Gemeente
-GO 

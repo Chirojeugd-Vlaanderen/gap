@@ -77,12 +77,6 @@ GO
 ALTER TABLE [pers].[PersoonVrijVeld]  WITH CHECK ADD  CONSTRAINT [FK_PersoonVrijVeld_GelieerdePersoon] FOREIGN KEY([GelieerdePersoonID]) REFERENCES [pers].[GelieerdePersoon] ([GelieerdePersoonID])
 GO
 
-ALTER TABLE [adr].[PostNrNaarGemeente]  WITH CHECK ADD  CONSTRAINT [FK_PostCodeNaarGemeente_Gemeente] FOREIGN KEY([GemeenteID]) REFERENCES [adr].[Gemeente] ([GemeenteID])
-GO
-
-ALTER TABLE [adr].[PostNrNaarGemeente]  WITH CHECK ADD  CONSTRAINT [FK_PostCodeNaarGemeentes_PostCode] FOREIGN KEY([PostNr]) REFERENCES [adr].[PostNr] ([PostNr])
-GO
-
 ALTER TABLE [adr].[Straat]  WITH CHECK ADD  CONSTRAINT [FK_Straat_PostCode] FOREIGN KEY([PostNr]) REFERENCES [adr].[PostNr] ([PostNr])
 GO
 

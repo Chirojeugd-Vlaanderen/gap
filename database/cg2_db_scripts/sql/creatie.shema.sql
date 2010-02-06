@@ -44,20 +44,6 @@ GO
 -- ----------
 -- --  adr --
 -- ----------
-BEGIN
-	CREATE TABLE [adr].[Gemeente](
-		[GemeenteID] [int] IDENTITY(1,1) NOT NULL,
-		[NisGemeenteCode] [decimal](5, 0) NOT NULL,
-		[Taal] [char](2) NOT NULL,
-		[Naam] [varchar](40) NOT NULL,
-		[Versie] [timestamp] NULL, 
-		CONSTRAINT [PK_Gemeente] PRIMARY KEY CLUSTERED ([GemeenteID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
-	) ON [PRIMARY]
-END
-GO
-CREATE UNIQUE NONCLUSTERED INDEX [Gemeente_NisGemeenteCode] ON [adr].[Gemeente] ([NisGemeenteCode] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
-GO
-
 --
 
 BEGIN
@@ -422,16 +408,6 @@ BEGIN
 		[PersoonVrijVeldTypeID] [int] NOT NULL,
 		[Versie] [timestamp] NULL,
 		CONSTRAINT [PK_PersoonVrijVeld] PRIMARY KEY CLUSTERED ([GelieerdePersoonID] ASC,[PersoonVrijVeldTypeID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
-	) ON [PRIMARY]
-END
-GO
-
-BEGIN
-	CREATE TABLE [adr].[PostNrNaarGemeente](
-		[GemeenteID] [int] NOT NULL,
-		[PostNr] [int] NOT NULL,
-		[Versie] [timestamp] NULL,
-		CONSTRAINT [PK_PostcodeNaarGemeente] PRIMARY KEY CLUSTERED ([GemeenteID] ASC,[PostNr] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
 	) ON [PRIMARY]
 END
 GO
