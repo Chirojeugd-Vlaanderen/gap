@@ -221,8 +221,8 @@ END
 
 IF NOT EXISTS (SELECT 1 FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID = @testGroepsHuidigWerkJaarID AND AfdelingID = @testAfdeling1ID)
 BEGIN
-	INSERT INTO lid.AfdelingsJaar(GeboorteJaarVan, GeboorteJaarTot, AfdelingID, GroepsWerkJaarID, OfficieleAfdelingID)
-	VALUES (@testHuidigGeboorteJaarVanAfdelingID1, @testHuidigGeboorteJaarTotAfdelingID1, @testAfdeling1ID, @testGroepsHuidigWerkJaarID, @testOfficieleAfdelingID1);
+	INSERT INTO lid.AfdelingsJaar(GeboorteJaarVan, GeboorteJaarTot, AfdelingID, GroepsWerkJaarID, OfficieleAfdelingID, Geslacht)
+	VALUES (@testHuidigGeboorteJaarVanAfdelingID1, @testHuidigGeboorteJaarTotAfdelingID1, @testAfdeling1ID, @testGroepsHuidigWerkJaarID, @testOfficieleAfdelingID1, 3);
 	SET @testAfdelingsJaarID = SCOPE_IDENTITY()
 END
 ELSE
@@ -232,8 +232,8 @@ END
 
 IF NOT EXISTS (SELECT 1 FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID = @testVorigGroepsWerkJaarID AND AfdelingID = @testAfdeling1ID)
 BEGIN
-	INSERT INTO lid.AfdelingsJaar(GeboorteJaarVan, GeboorteJaarTot, AfdelingID, GroepsWerkJaarID, OfficieleAfdelingID)
-	VALUES (@testVorigGeboorteJaarVanAfdelingID1, @testVorigGeboorteJaarTotAfdelingID1, @testAfdeling1ID, @testVorigGroepsWerkJaarID, @testOfficieleAfdelingID1);
+	INSERT INTO lid.AfdelingsJaar(GeboorteJaarVan, GeboorteJaarTot, AfdelingID, GroepsWerkJaarID, OfficieleAfdelingID, Geslacht)
+	VALUES (@testVorigGeboorteJaarVanAfdelingID1, @testVorigGeboorteJaarTotAfdelingID1, @testAfdeling1ID, @testVorigGroepsWerkJaarID, @testOfficieleAfdelingID1, 3);
 	SET @testVorigAfdelingsJaarID = SCOPE_IDENTITY()
 END
 ELSE
