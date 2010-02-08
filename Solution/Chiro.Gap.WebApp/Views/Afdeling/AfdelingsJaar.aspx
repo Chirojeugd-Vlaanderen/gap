@@ -23,7 +23,7 @@
     <%=Html.TextBoxFor(mdl => mdl.HuidigeAfdeling.Afkorting, new { @readonly = "readonly", title = "Nu niet wijzigbaar", disabled = "disabled" } )%><br />
 
     <%=Html.LabelFor(s => s.HuidigAfdelingsJaar.Geslacht)%>
-    <%= Html.RadioButton("HuidigAfdelingsJaar.Geslacht", GeslachtsType.Man, Model.HuidigAfdelingsJaar.Geslacht == GeslachtsType.Gemengd)%> Gemengd
+    <%= Html.RadioButton("HuidigAfdelingsJaar.Geslacht", GeslachtsType.Gemengd, Model.HuidigAfdelingsJaar.Geslacht == GeslachtsType.Gemengd)%> Gemengd
     <%= Html.RadioButton("HuidigAfdelingsJaar.Geslacht", GeslachtsType.Man, Model.HuidigAfdelingsJaar.Geslacht == GeslachtsType.Man)%> Jongens
     <%= Html.RadioButton("HuidigAfdelingsJaar.Geslacht", GeslachtsType.Vrouw, Model.HuidigAfdelingsJaar.Geslacht == GeslachtsType.Vrouw)%> Meisjes
     <%=Html.ValidationMessageFor(s => s.HuidigAfdelingsJaar.Geslacht)%><br />
