@@ -22,6 +22,10 @@ BEGIN
 		FROM KipAdmin.dbo.Groep
 			WHERE StamNr = @stamNr
 	SET @groepID = scope_identity();
+    INSERT INTO grp.ChiroGroep(ChiroGroepID, Plaats)
+		SELECT @groepID, Gemeente
+		FROM KipAdmin.grp.ChiroGroep
+			WHERE StamNr = @stamNr
 END
 ELSE
 BEGIN
@@ -30,16 +34,18 @@ BEGIN
 
 	-- Opvragen van Naam, Oprichtingsjaar en Website.
 	-- Hier veronderstellen we dat de Naam, Oprichtingsjaar en Website in KipAdmin 
-	-- steeds van betere qualiteit zijn dan de al geimporteerde.
+	-- steeds van betere kwaliteit zijn dan de al geimporteerde.
 	
+    -- LET OP! De groepid's in kipadmin verschillen van de groepid's in GAP!
+
 	UPDATE dst
 		SET dst.Naam = g.Naam, 
 			dst.OprichtingsJaar = YEAR(g.StartDatum), 
 			dst.WebSite = lower(g.WebSite)
 	FROM grp.Groep dst 
-	JOIN Kipadmin.grp.Groep g on dst.GroepID = g.GroepID
-	JOIN Kipadmin.grp.ChiroGroep cg on dst.GroepID = cg.GroepID
-	WHERE g.GroepID = @groepID
+	JOIN Kipadmin.grp.ChiroGroep cg on dst.Code = cg.StamNr COLLATE SQL_Latin1_General_CP1_CI_AS
+	JOIN Kipadmin.grp.Groep g on cg.GroepID = g.GroepID
+	WHERE dst.GroepID = @groepID
 END
 PRINT 'Chiro groep ingevoegd/aangepast.'
 PRINT ''
@@ -63,7 +69,7 @@ PRINT '-> Reeds bestaande personen aanpassen.'
 UPDATE pGap
 	SET pGap.Naam = p.Naam, 
 		pGap.VoorNaam = p.VoorNaam, 
-		pGap.GeboorteDatum = p.GeboorteDatum, 
+		pGap.GeboorteDatum = p.GeboorteDatum,  -- als dat hier crasht, is dat waarschijnlijk owv slechte groepsgegevens 
 		pGap.Geslacht = p.Geslacht
 	FROM KipAdmin.dbo.kipPersoon p JOIN KipadMin.dbo.kipLidLeidKad lk 
 			ON p.AdNr = lk.AdNr
@@ -181,7 +187,7 @@ INSERT INTO adr.Adres (Bus,HuisNr,PostCode,StraatID,SubgemeenteID)
 	SELECT Bus,HuisNr,max(PostCode),StraatID,max(SubgemeenteID) 
 		FROM #Adres a
 		WHERE NOT EXISTS (SELECT 1 FROM adr.Adres 
-									WHERE Bus=a.Bus 
+									WHERE Bus COLLATE SQL_Latin1_General_CP1_CI_AI =a.Bus 
 										AND HuisNr = a.HuisNr 
 										AND StraatID = a.StraatID)
 GROUP BY StraatID, HuisNr, Bus
@@ -218,7 +224,7 @@ CREATE TABLE #PersoonsAdres(
 
 PRINT 'Insert in tijdelijke tabel'
 INSERT INTO #PersoonsAdres(Opmerking, PersoonId, AdresId, AdresTypeId)
-	SELECT distinct '',  p.PersoonID, a.AdresID, pat.AdresTypeID
+	SELECT distinct '',  p.PersoonID, a.AdresID, max(pat.AdresTypeID)
 		FROM kipAdmin.dbo.kipAdres ka JOIN adr.Straat s 
 				ON ka.Straat COLLATE SQL_Latin1_General_CP1_CI_AI = s.Naam 
 					AND ka.PostNr COLLATE SQL_Latin1_General_CP1_CI_AI = cast(s.PostNr as varchar(5))
@@ -240,6 +246,7 @@ INSERT INTO #PersoonsAdres(Opmerking, PersoonId, AdresId, AdresTypeId)
 			JOIN pers.AdresType pat
 				ON pat.Omschrijving = kat.Omschrijving COLLATE SQL_Latin1_General_CP1_CI_AI
 		WHERE gp.GroepID=@groepID
+		GROUP BY p.PersoonId, a.AdresId -- blijkbaar heeft kipadmin personen met meermaals hetzelfde adres, maar dan met een ander type
 
 PRINT 'Update AdresTypeID van gekende personen.'
 UPDATE pa 

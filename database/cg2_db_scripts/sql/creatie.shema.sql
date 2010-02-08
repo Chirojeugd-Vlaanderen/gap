@@ -123,7 +123,7 @@ BEGIN
 		[AdNummer] [int] NULL,
 		[Naam] [varchar](160) NOT NULL,
 		[VoorNaam] [varchar](60) NOT NULL,
-		[GeboorteDatum] [smalldatetime] NULL,
+		[GeboorteDatum] [datetime] NULL,
 		[Geslacht] [int] NOT NULL,
 		[SterfDatum] [smalldatetime] NULL,
 		[PersoonID] [int] IDENTITY(1,1) NOT NULL,
