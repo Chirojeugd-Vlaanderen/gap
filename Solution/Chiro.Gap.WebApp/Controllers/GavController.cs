@@ -9,36 +9,36 @@ using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
-    public class GavController : BaseController
-    {
-        //
-        // GET: /Gav/
-        public ActionResult Index()
-        {
-            // Als de gebruiker GAV is van 1 groep, dan wordt er doorgeschakeld naar de
-            // personenlijst van deze groep.  Zo niet krijgt de gebruiker de keuze
+	public class GavController : BaseController
+	{
+		//
+		// GET: /Gav/
+		public ActionResult Index()
+		{
+			// Als de gebruiker GAV is van 1 groep, dan wordt er doorgeschakeld naar de
+			// personenlijst van deze groep.  Zo niet krijgt de gebruiker de keuze
 
-            var groepInfos = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
-                (g => g.MijnGroepenOphalen());
+			var groepInfos = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
+			    (g => g.MijnGroepenOphalen());
 
-            if (groepInfos.Count() == 1)
-            {
-                // Redirect naar personenlijst van gevraagde groep;
+			if (groepInfos.Count() == 1)
+			{
+				// Redirect naar personenlijst van gevraagde groep;
 
-                return RedirectToAction("List", new { Controller = "Personen", groepID = groepInfos.First().ID, page = 1 });
-            }
-            else
-            {
-                var model = new Models.GavModel();
-                BaseModelInit(model, 0);    // 0:nog geen groep gekozen
+				return RedirectToAction("List", new { Controller = "Personen", groepID = groepInfos.First().ID, page = 1 });
+			}
+			else
+			{
+				var model = new Models.GavModel();
+				BaseModelInit(model, 0);    // 0:nog geen groep gekozen
 
-                model.Titel = "Kies je Chirogroep";
-                model.GroepenLijst = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
-                        (g => g.MijnGroepenOphalen());
+				model.Titel = "Kies je Chirogroep";
+				model.GroepenLijst = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
+					(g => g.MijnGroepenOphalen());
 
-                return View("Index", model);
-            }
-        }
+				return View("Index", model);
+			}
+		}
 
-    }
+	}
 }
