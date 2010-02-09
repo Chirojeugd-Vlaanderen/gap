@@ -146,6 +146,16 @@ BEGIN
 END
 GO
 
+
+CREATE INDEX IDX_PersoonsAdres_PersoonID_AdresID ON [pers].[PersoonsAdres] 
+(
+	PersoonID ASC,
+	AdresID ASC
+)
+INCLUDE (AdresTypeID, Versie, PersoonsAdresID)
+go
+
+
 BEGIN
 	CREATE TABLE [grp].[GroepsAdres](
 		[AdresID] [int] NOT NULL,
@@ -398,8 +408,15 @@ BEGIN
 END
 GO
 
-CREATE NONCLUSTERED INDEX [IDX_CommunicatieVorm_GelieerdePersoonID_CommunicatieVormID] ON [pers].[CommunicatieVorm] ([GelieerdePersoonID] ASC,[CommunicatieVormID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
-GO
+CREATE INDEX IDX_CommunicatieVorm_GelieerdePersoonID_CommunicatieTypeID_CommunicatieVormID 
+ON pers.CommunicatieVorm
+(
+	GelieerdePersoonID ASC,
+	CommunicatieTypeID ASC,
+	CommunicatieVormID ASC
+)
+INCLUDE (Nota, Nummer, IsGezinsgebonden, Voorkeur, Versie) 
+go
 
 BEGIN
 	CREATE TABLE [pers].[PersoonVrijVeld](
