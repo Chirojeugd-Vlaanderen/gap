@@ -5,60 +5,34 @@
 	/// </summary>
 	public static class TestInfo
 	{
-		/// <summary>
-		/// ID van groep waarop automatisch getest mag worden
-		/// </summary>
-		public const int GROEPID = 1;
+		#region ID's gegenereerd door script
+		// te plakken uit output van 
+		// cg2_database_action.sh -a creatie -t test
 
-		/// <summary>
-		/// ID van groep voor WatiN-test.
-		/// </summary>
-		public const int WATINGROEPID = 2;
-
-		/// <summary>
-		/// ID van een gelieerde persoon van de testgroep
-		/// </summary>
-		/// <remarks>Deze persoon moet minstens 1 categorie hebben</remarks>
-		public const int GELIEERDEPERSOONID = 1;
-
-		/// <summary>
-		/// ID van een andere gelieerde persoon van de testgroep
-		/// </summary>
-		public const int GELIEERDEPERSOON2ID = 2;
-
-		/// <summary>
-		/// ID van een derde gelieerde persoon van de testgroep; deze persoon is lid.
-		/// </summary>
-		public const int GELIEERDEPERSOON3ID = 3;
-
-		/// <summary>
-		/// Ondergrens voor het totaal aantal gelieerde personen in een groep.
-		/// </summary>
+		public const int GROEPID = 37;
+		public const int GELIEERDEPERSOONID = 4002;
+		public const int GELIEERDEPERSOON2ID = 4003;
+		public const int GELIEERDEPERSOON3ID = 4004;
 		public const int MINAANTALGELPERS = 3;
-
-		/// <summary>
-		/// LidID van een leider;
-		/// </summary>
-		public const int LID3ID = 1;
-
-
-		/// <summary>
-		/// ID van categorie van testgroep1
-		/// </summary>
-		/// <remarks>Enkel gelieerde Persoon 1 moet in deze categorie zitten</remarks>
-		public const int CATEGORIEID = 1;
-
-		/// <summary>
-		/// code van bovenvermelde categorie
-		/// </summary>
+		public const int LID3ID = 9;
+		public const int CATEGORIEID = 9;
 		public const string CATEGORIECODE = "last";
+		public const int CATEGORIE2ID = 10;
+		public const int AANTALINCATEGORIE = 1;
+		public const int AFDELINGID = 13;
+		public const int OFFICIELEAFDELINGID = 1;
+		public const int AFDELINGSJAARID = 13;
+		public const int AFDELING2ID = 14;
+		public const int AFDELING2VAN = 2001;
+		public const int AFDELING2TOT = 1998;
+		public const int GROEPSWERKJAARID = 40;
+		public const string ZOEKNAAM = "Bosmans";
+		public const string GAV1 = "Yvonne";
+		public const string GAV2 = "Yvette";
+		public const int WATINGROEPID = 38;
+		#endregion
 
-		/// <summary>
-		/// ID van tweede testcategorie
-		/// </summary>
-		/// <remarks>Deze categorie bevat zowel gelieerde personen 1 en 2</remarks>
-		public const int CATEGORIE2ID = 2;
-
+		#region Zelf in te stellen:
 		/// <summary>
 		/// Code van een onbestaande categorie in de testgroep, om te testen
 		/// </summary>
@@ -74,57 +48,10 @@
 		/// </summary>
 		public const string CATEGORIENAAM = "Testkookies";
 
-
 		/// <summary>
-		/// Totaal aantal personen in deze categorie
+		/// Gebruikersnaam voor een nieuwe GAV
 		/// </summary>
-		public const int AANTALINCATEGORIE = 2;
-
-		/// <summary>
-		/// ID van een afdeling van de testgroep.  Van deze afdeling bestaat een afdelingsjaar.
-		/// </summary>
-		public const int AFDELINGID = 1;
-
-		/// <summary>
-		/// Officiele afdeling horende bij afdeling bepaald door AFDELINGID
-		/// </summary>
-		public const int OFFICIELEAFDELINGID = 1;
-
-		/// <summary>
-		/// Afdelingsjaar voor de testafdeling
-		/// </summary>
-		public const int AFDELINGSJAARID = 1;
-
-		/// <summary>
-		/// ID van een andere afdeling van de testgroep.  Van deze afdeling bestaat
-		/// geen afdelingsjaar.
-		/// </summary>
-		public const int AFDELING2ID = 2;
-
-		/// <summary>
-		/// `startgeboortejaar' voor afdeling 2
-		/// </summary>
-		public const int AFDELING2VAN = 2001;
-
-		/// <summary>
-		/// `stopgeboortejaar' voor afdeling 2.
-		/// </summary>
-		public const int AFDELING2TOT = 1998;
-
-		/// <summary>
-		/// ID van een groepswerkjaar van de testgroep
-		/// </summary>
-		public const int GROEPSWERKJAARID = 1;
-
-		/// <summary>
-		/// Naam van een bestaande persoon in de testgroep
-		/// </summary>
-		public const string ZOEKNAAM = "Bosmans";
-
-		/// <summary>
-		/// Ongeveer de voornaam van diezelfde bestaande persoon in de testgroep
-		/// </summary>
-		public const string ZOEKVOORNAAMONGEVEER = "Joss";
+		public const string NIEUWEGAV = "nietgebruiken";
 
 		/// <summary>
 		/// Naam voor nieuwe persoon
@@ -142,21 +69,6 @@
 		public const string TEVERWIJDERENVOORNAAM = "Sylvain";
 
 		/// <summary>
-		/// Gebruikersnaam voor een nieuwe GAV
-		/// </summary>
-		public const string NIEUWEGAV = "nietgebruiken";
-
-		/// <summary>
-		/// login van GAV van testgroep 1
-		/// </summary>
-		public const string GAV1 = "yvonne";
-
-		/// <summary>
-		/// login van GAV die geen GAV van testgroep 1 is.
-		/// </summary>
-		public const string GAV2 = "yvette";
-
-		/// <summary>
 		/// String voor autosuggestie straat mee te testen
 		/// (onregelmatigheid in casing is bewust)
 		/// </summary>
@@ -166,6 +78,13 @@
 		/// postnummer om bovenstaande straat in te zoeken
 		/// </summary>
 		public const int POSTNR = 2560;
+
+		/// <summary>
+		/// Ongeveer de voornaam van diezelfde bestaande persoon in de testgroep
+		/// </summary>
+		public const string ZOEKVOORNAAMONGEVEER = "Joss";
+
+		#endregion;
 	}
 
 }
