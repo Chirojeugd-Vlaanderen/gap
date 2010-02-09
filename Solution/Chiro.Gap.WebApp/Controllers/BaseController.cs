@@ -15,55 +15,56 @@ using System.Web.Caching;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
-    /// <summary>
-    /// Houdt de info bij die in de MasterPage getoond moet worden
-    /// </summary>
-    /// <remarks>MasterAttribute helpt de overerving regelen</remarks>
-    [Master]
-    public abstract class BaseController : Controller
-    {
-        /// <summary>
-        /// Standaard constructor
-        /// </summary>
-        public BaseController() : base()
-        {
-        }
+	/// <summary>
+	/// Houdt de info bij die in de MasterPage getoond moet worden
+	/// </summary>
+	/// <remarks>MasterAttribute helpt de overerving regelen</remarks>
+	[Master]
+	public abstract class BaseController : Controller
+	{
+		/// <summary>
+		/// Standaard constructor
+		/// </summary>
+		public BaseController()
+			: base()
+		{
+		}
 
-        /// <summary>
-        /// Vult de groepsgegevens in in de base view.
-        /// </summary>
-        /// <param name="model">Te 'initen' model</param>
-        /// <param name="groepID">groepID van de gewenste groep</param>
-        protected void BaseModelInit(MasterViewModel model, int groepID)
-        { 
-            if (groepID == 0)
-            {
-                // De Gekozen groep is nog niet gekend, zet defaults
-                // TODO: De defaults op een zinvollere plaats definieren.
+		/// <summary>
+		/// Vult de groepsgegevens in in de base view.
+		/// </summary>
+		/// <param name="model">Te 'initen' model</param>
+		/// <param name="groepID">groepID van de gewenste groep</param>
+		protected void BaseModelInit(MasterViewModel model, int groepID)
+		{
+			if (groepID == 0)
+			{
+				// De Gekozen groep is nog niet gekend, zet defaults
+				// TODO: De defaults op een zinvollere plaats definieren.
 
-                model.GroepsNaam = "Nog geen Chirogroep geselecteerd";
-                model.Plaats = "geen";
-                model.StamNummer = "--";
-                //model.GroepsCategorieen = new List<SelectListItem>();
-            }
-            else
-            {
-                string cacheKey = "GI" + groepID.ToString();
+				model.GroepsNaam = "Nog geen Chirogroep geselecteerd";
+				model.Plaats = "geen";
+				model.StamNummer = "--";
+				//model.GroepsCategorieen = new List<SelectListItem>();
+			}
+			else
+			{
+				string cacheKey = "GI" + groepID.ToString();
 
-                System.Web.Caching.Cache c = System.Web.HttpContext.Current.Cache;
+				System.Web.Caching.Cache c = System.Web.HttpContext.Current.Cache;
 
-                GroepInfo gi = (GroepInfo)c.Get(cacheKey);
-                if (gi == null)
-                {
-                    gi = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.Ophalen(groepID, GroepsExtras.Geen));
-                    c.Add(cacheKey, gi, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
-                }
+				GroepInfo gi = (GroepInfo)c.Get(cacheKey);
+				if (gi == null)
+				{
+					gi = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.Ophalen(groepID, GroepsExtras.Geen));
+					c.Add(cacheKey, gi, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
+				}
 
-                model.GroepsNaam = gi.Naam;
-                model.Plaats = gi.Plaats;
-                model.StamNummer = gi.StamNummer;
-		model.GroepID = gi.ID;
-            }
-        }
-    }
+				model.GroepsNaam = gi.Naam;
+				model.Plaats = gi.Plaats;
+				model.StamNummer = gi.StamNummer;
+				model.GroepID = gi.ID;
+			}
+		}
+	}
 }
