@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 
-using Chiro.Adf.ServiceModel;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Controllers
@@ -15,6 +15,8 @@ namespace Chiro.Gap.WebApp.Controllers
 	/// </summary>
 	public class AdressenController : BaseController
 	{
+		public AdressenController(IServiceHelper serviceHelper) : base(serviceHelper) { }
+
 		/// <summary>
 		/// Levert een lijst op van alle deelgemeentes
 		/// </summary>

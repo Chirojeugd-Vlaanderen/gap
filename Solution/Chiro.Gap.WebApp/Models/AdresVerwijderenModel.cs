@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Chiro.Adf.ServiceModel;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.Orm;
 
@@ -48,15 +47,6 @@ namespace Chiro.Gap.WebApp.Models
         public AdresVerwijderenModel()
         {
             PersoonIDs = new List<int>();
-        }
-
-        /// <summary>
-        /// Haalt de gegevens van het adres opnieuw op, op basis van
-        /// AdresMetBewoners.ID.
-        /// </summary>
-        public void HerstelAdres()
-        {
-            Adres = ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(l => l.AdresMetBewonersOphalen(AanvragerID));
         }
     }
 }

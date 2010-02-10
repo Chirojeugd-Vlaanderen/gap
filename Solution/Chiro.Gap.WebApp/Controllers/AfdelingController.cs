@@ -1,18 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
+
 using Chiro.Gap.Orm;
-using System.Configuration;
-using Chiro.Adf.ServiceModel;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
 	public class AfdelingController : BaseController
 	{
+		public AfdelingController(IServiceHelper serviceHelper): base(serviceHelper){}
+
+
 		//
 		// GET: /Afdeling/
 		public ActionResult Index(int groepID)

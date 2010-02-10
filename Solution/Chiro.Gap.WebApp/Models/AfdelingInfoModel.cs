@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web;
 
-using Chiro.Adf.ServiceModel;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 

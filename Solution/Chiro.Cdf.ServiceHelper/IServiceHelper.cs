@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Chiro.Cdf.ServiceHelper;
-
-namespace Chiro.Adf.ServiceModel
+namespace Chiro.Cdf.ServiceHelper
 {
 	/// <summary>
-	/// ServiceHelper is nu een niet-statische wrapper naar de oorspronkelijke ServiceHelper, die nu
-	/// StaticServiceHelper heet.
+	/// Een IServiceHelper is een constructie om webservices op te roepen.  De bedoeling van deze
+	/// interface is om de ServiceHelper gemakkelijk te kunnen mocken.
 	/// </summary>
-	public class ServiceHelper: IServiceHelper
+	public interface IServiceHelper
 	{
-		#region IServiceHelper Members
-
 		/// <summary>
 		/// Gebruik deze method om een functie aan te roepen van een service.
 		/// </summary>
@@ -26,10 +22,7 @@ namespace Chiro.Adf.ServiceModel
 		/// <example>
 		/// <c>string = CallService &lt;IMijnService, string&gt; (svc =&gt; svc.IetsDoen(id))</c>
 		/// </example>
-		public T CallService<I, T>(Func<I, T> operation) where I : class
-		{
-			return StaticServiceHelper.CallService<I, T>(operation);
-		}
+		T CallService<I, T>(Func<I, T> operation) where I : class;
 
 		/// <summary>
 		/// Gebruik deze method om een method van een service aan te roepen.
@@ -40,11 +33,6 @@ namespace Chiro.Adf.ServiceModel
 		/// <example>
 		/// <c>CallService &lt;IMijnService, string&gt; (svc =&gt; svc.IetsDoen(id))</c>
 		/// </example>
-		public void CallService<I>(Action<I> operation) where I : class
-		{
-			StaticServiceHelper.CallService<I>(operation);
-		}
-
-		#endregion
+		void CallService<I>(Action<I> operation) where I : class;
 	}
 }

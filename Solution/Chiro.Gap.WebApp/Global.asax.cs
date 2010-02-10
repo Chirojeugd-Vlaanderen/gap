@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Microsoft.Practices.Unity;
 using Chiro.Cdf.Ioc;
-using Chiro.Adf.ServiceModel;
 using System.Web.Mvc.Html;
 using Chiro.Gap.ServiceContracts;
 
@@ -33,26 +32,11 @@ namespace Chiro.Gap.WebApp
 		{
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-			// FIXME: startpagina moet uitmaken van hoeveel groepen
-			// de gebruiker GAV is, en eventueel een keuze laten maken.
-
 			routes.MapRoute(
 			    "Route voor ~/: Kies GAV"
 			    , ""
 			    , new { controller = "Gav", action = "Index" });
-			/*
-			routes.MapRoute(
-			    "LedenCategorie",
-			    "{groepID}/Leden/Categorie/{categorieId}/{page}",
-			    new { controller = "Leden", action = "CatList" }
-			);
 
-			routes.MapRoute(
-			    "PersonenCategorie",
-			    "{groepID}/Personen/Categorie/{categorieId}/{page}",
-			    new { controller = "Personen", action = "CatList" }
-			);
-			*/
 			routes.MapRoute(
 			    "Default",
 			    "{groepID}/{controller}/{action}/{id}/{page}",

@@ -4,13 +4,16 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
-using Chiro.Adf.ServiceModel;
+
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
 	public class GavController : BaseController
 	{
+		public GavController(IServiceHelper serviceHelper): base(serviceHelper){}
+
 		//
 		// GET: /Gav/
 		public ActionResult Index()

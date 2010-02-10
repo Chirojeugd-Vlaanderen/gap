@@ -1,20 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
-using Chiro.Gap.WebApp.Models;
+
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Orm;
-using Chiro.Adf.ServiceModel;
 using Chiro.Gap.ServiceContracts;
-using System.ServiceModel;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
 	public class GroepController : BaseController
 	{
+		public GroepController(IServiceHelper serviceHelper) : base(serviceHelper) { }
+
 		/// <summary>
 		/// Genereert een view met algemene gegevens over de groep
 		/// </summary>

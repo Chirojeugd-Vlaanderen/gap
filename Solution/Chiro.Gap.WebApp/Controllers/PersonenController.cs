@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
+using System.ServiceModel;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
-using System.Configuration;
+
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Orm;
-using Chiro.Gap.WebApp.Models;
-using System.Diagnostics;
-using System.ServiceModel;
 using Chiro.Gap.ServiceContracts.FaultContracts;
-using Chiro.Adf.ServiceModel;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.Validatie;
-using Chiro.Gap.WebApp.Properties;
+using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -23,6 +23,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 	public class PersonenController : BaseController
 	{
+		public PersonenController(IServiceHelper serviceHelper) : base(serviceHelper) { }
 		//TODO er moeten ook nog een laatst gebruikte "actie" worden toegevoegd, niet alleen actie id
 
 		//

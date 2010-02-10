@@ -2,32 +2,40 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
+using System.Web.Caching;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
+
 using Chiro.Gap.Orm;
-using System.Configuration;
-using Chiro.Adf.ServiceModel;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.WebApp.Models;
-using System.Web.Caching;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
 	/// <summary>
-	/// Houdt de info bij die in de MasterPage getoond moet worden
+	/// Deze controller bevat de method 'BaseModelInit', het BaseModel initialiseert.
+	/// Verder ga ik hier proberen de IoC te arrangere voor de ServiceHelper
 	/// </summary>
 	/// <remarks>MasterAttribute helpt de overerving regelen</remarks>
 	[Master]
 	public abstract class BaseController : Controller
 	{
+		private IServiceHelper _serviceHelper;
+
+		protected IServiceHelper ServiceHelper { get { return _serviceHelper; } }
+
 		/// <summary>
-		/// Standaard constructor
+		/// Constructor voor de BaseController
 		/// </summary>
-		public BaseController()
-			: base()
+		/// <param name="serviceHelper">de IServiceHelper die de service calls zal uitvoeren
+		/// (dependency injection)</param>
+		public BaseController(IServiceHelper serviceHelper): base()
 		{
+			_serviceHelper = serviceHelper;
 		}
 
 		/// <summary>
