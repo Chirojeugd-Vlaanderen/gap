@@ -40,5 +40,23 @@ namespace Chiro.Gap.WebApp.Properties {
                 return ((int)(this["TestGroepID"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("InfoAlleDeelGemeentes")]
+        public string DeelGemeentesCacheKey {
+            get {
+                return ((string)(this["DeelGemeentesCacheKey"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int AutoSuggestieStandaardLimiet {
+            get {
+                return ((int)(this["AutoSuggestieStandaardLimiet"]));
+            }
+        }
     }
 }

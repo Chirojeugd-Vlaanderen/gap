@@ -18,15 +18,12 @@ namespace Chiro.Gap.WebApp
 	public class MvcApplication : System.Web.HttpApplication
 	{
 		private static IUnityContainer _container;
-		private static IEnumerable<GemeenteInfo> GemeenteLijst;
-		//private static IEnumerable<StraatInfo> StratenLijst;
 
 		protected void Application_Start()
 		{
 			RegisterRoutes(RouteTable.Routes);
 
 			InitializeContainer();
-			InitializeAdressDatabase();
 
 			DefaultModelBinder.ResourceClassKey = "MyResources";
 			ValidationExtensions.ResourceClassKey = "MyResources";
@@ -78,17 +75,6 @@ namespace Chiro.Gap.WebApp
 
 			ControllerBuilder.Current.SetControllerFactory(controllerFactory);
 
-		}
-
-		private static void InitializeAdressDatabase()
-		{
-			GemeenteLijst = ServiceHelper.CallService<IGroepenService, IEnumerable<GemeenteInfo>>(g => g.GemeentesOphalen());
-			//StratenLijst = ServiceHelper.CallService<IGroepenService, IEnumerable<StraatInfo>>(g => g.StratenOphalen());
-		}
-
-		public static IEnumerable<GemeenteInfo> getGemeentes()
-		{
-			return GemeenteLijst;
 		}
 
 		/*public static IEnumerable<StraatInfo> getStraten()

@@ -73,6 +73,7 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AdressenController.cs" />
     <Compile Include="Controllers\AfdelingController.cs" />
     <Compile Include="Controllers\GroepController.cs" />
     <Compile Include="DashBoard.aspx.cs">

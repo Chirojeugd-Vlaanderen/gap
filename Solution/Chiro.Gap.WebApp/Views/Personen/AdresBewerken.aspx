@@ -40,7 +40,7 @@ $(document).ready(function() {
 	//  	document.getElementById("Adres_Straat").disabled = true;		
 	// }
 
-	$("#Adres_Gemeente").autocomplete('<%=Url.Action("GemeentesVoorstellen", "Personen") %>',
+	$("#Adres_Gemeente").autocomplete('<%=Url.Action("GemeentesVoorstellen", "Adressen") %>',
 	{
 	dataType: 'json',
 	parse: function(data) {
@@ -63,16 +63,13 @@ $(document).ready(function() {
 	max: 10,
 	highlight: false
 	}).result(function(event, data, formatted) {
-		/*staat op verkeerde plaats if(data.length==0){
-			$("#notfound").html("Er bestaat geen gemeente met die naam.");
-		}*/
 		document.getElementById("Adres_Straat").disabled = false;
-		$.post('<%=Url.Action("PostNrVoorstellen", "Personen") %>', { gemeente: $("#Adres_Gemeente").val() }, function(data) {
+		$.post('<%=Url.Action("PostNrVoorstellen", "Adressen") %>', { gemeente: $("#Adres_Gemeente").val() }, function(data) {
 			$("#Adres_PostNr").val(data + "");
 		}, "json");
 	});
 	
-	$("#Adres_Straat").autocomplete('<%=Url.Action("StratenVoorstellen", "Personen") %>',
+	$("#Adres_Straat").autocomplete('<%=Url.Action("StratenVoorstellen", "Adressen") %>',
 	{
 	dataType: 'json',
 	parse: function(data) {
