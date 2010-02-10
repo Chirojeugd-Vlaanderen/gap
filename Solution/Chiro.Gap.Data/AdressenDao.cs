@@ -119,7 +119,7 @@ namespace Chiro.Gap.Data.Ef
 					    .Where(pera => pera.Persoon.GelieerdePersoon.Any(
 						gp => gp.Groep.GebruikersRecht.Any(
 						    gr => gr.Gav.Login == user && (gr.VervalDatum == null
-							|| gr.VervalDatum < DateTime.Now))));
+							|| gr.VervalDatum > DateTime.Now))));
 				}
 				query = query.Select(pera => pera);
 
