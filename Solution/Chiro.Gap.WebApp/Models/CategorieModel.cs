@@ -10,7 +10,8 @@ using Chiro.Gap.ServiceContracts;
 namespace Chiro.Gap.WebApp.Models
 {
 	/// <summary>
-	/// Model gebruikt om iemand een nieuw adres te geven.
+	/// Dit model bevat een lijstje categorieen, een lijstje GelieerdePersoonIDs, en een lijstje
+	/// ID's van geselecteerde categorieen
 	/// </summary>
 	public class CategorieModel : MasterViewModel
 	{
@@ -18,10 +19,9 @@ namespace Chiro.Gap.WebApp.Models
 		/// Nieuwe categorieen voor de gegeven gelieerde personen
 		/// </summary>
 		public IEnumerable<Categorie> Categorieen { get; set; }
-		public List<int> GeselecteerdeCategorieen { get; set; }
+		public List<int> GeselecteerdeCategorieIDs { get; set; }
 
-		public List<int> GelieerdePersonenIDs { get; set; }
-		public List<string> GelieerdePersonenNaam { get; set; }
+		public IList<int> GelieerdePersoonIDs { get; set; }
 
 		/// <summary>
 		/// Standaardconstructor - creeert lege

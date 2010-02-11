@@ -552,34 +552,47 @@ namespace Chiro.Gap.WebApp.Controllers
 			return RedirectToAction("ToevoegenAanCategorieLijst");
 		}
 
-		//mag niet van buiten de controller gecalld worden
+		/// <summary>
+		/// Toont de view 'CategorieToevoegen', die toelaat om personen in een categorie onder te
+		/// brengen.  
+		/// De ID's van onder te brengen personen worden opgevist uit TempData["list"].
+		/// TODO: Kan dat niet properder?
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarin de gebruiker momenteel aan het werken is</param>
+		/// <returns>De view 'CategorieToevoegen'</returns>
 		public ActionResult ToevoegenAanCategorieLijst(int groepID)
 		{
-			List<int> gelieerdePersoonIDs = new List<int>();
+			CategorieModel model = new CategorieModel();
+			BaseModelInit(model, groepID);
+			model.Categorieen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<Categorie>>(l => l.CategorieenOphalen(groepID));
+
 			object value;
 			TempData.TryGetValue("list", out value);
-			gelieerdePersoonIDs = (List<int>)value;
-			TempData.Remove("list");
+			model.GelieerdePersoonIDs = (List<int>)value;
+			TempData.Remove("list"); // Ik denk dat dit voor MVC2 automatisch gebeurt; na te kijken.
 
-			//TODO na eten:
-			/*
-			 * Uit categoriemodel de gelieerdepersoon halen (moet INFO ofzo worden)
-			 * */
-			CategorieModel model = new CategorieModel();
-			model.Categorieen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<Categorie>>(l => l.CategorieenOphalen(groepID));
-			model.GelieerdePersonenIDs = gelieerdePersoonIDs;
-			BaseModelInit(model, groepID);
 			return View("CategorieToevoegen", model);
 		}
 
-		// POST: /Personen/ToevoegenAanCategorie/categorieID
+		/// <summary>
+		/// Koppelt de gelieerde personen bepaald door <paramref name="model"/>.GelieerdePersonenIDs aan de 
+		/// categorieen
+		/// met ID's <paramref name="model"/>.GeselecteerdeCategorieIDs
+		/// </summary>
+		/// <param name="model"><c>CategorieModel</c> met ID's van gelieerde personen en Categorieen</param>
+		/// <param name="groepID">Bepaalt de groep waarin de gebruiker nu werkt</param>
+		/// <returns>Als 1 persoon aan een categorie toegekend moet worden, wordt geredirect naar de
+		/// details van die persoon.  Anders krijg je de laatst opgroepen lijst.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult ToevoegenAanCategorieLijst(CategorieModel model, int groepID)
 		{
-			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieKoppelen(model.GelieerdePersonenIDs, model.GeselecteerdeCategorieen));
-			if (model.GelieerdePersonenIDs.Count == 1)
+			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieKoppelen(
+				model.GelieerdePersoonIDs, 
+				model.GeselecteerdeCategorieIDs));
+
+			if (model.GelieerdePersoonIDs.Count == 1)
 			{
-				return RedirectToAction("EditRest", new { id = model.GelieerdePersonenIDs[0] });
+				return RedirectToAction("EditRest", new { id = model.GelieerdePersoonIDs[0] });
 			}
 			else
 			{

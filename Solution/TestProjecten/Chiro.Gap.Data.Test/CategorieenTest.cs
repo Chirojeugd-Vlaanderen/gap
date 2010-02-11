@@ -29,7 +29,7 @@ namespace Chiro.Gap.Data.Test
 
 		ICategorieenDao _catdao = null;
 		IGelieerdePersonenDao _gpdao = null;
-		int _gpID, _gp2ID;
+		int _gp2ID;
 
 		public CategorieenTest() { }
 
@@ -70,7 +70,6 @@ namespace Chiro.Gap.Data.Test
 		{
 			_catdao = Factory.Maak<ICategorieenDao>();
 			_gpdao = Factory.Maak<IGelieerdePersonenDao>();
-			_gpID = TestInfo.GELIEERDEPERSOONID;
 			_gp2ID = TestInfo.GELIEERDEPERSOON2ID;
 
 			// Als de persoon die we in ToevoegenAanCategorie aan de categorie willen toevoegen
