@@ -29,7 +29,7 @@ namespace Chiro.Gap.Data.Test
 
 		ICategorieenDao _catdao = null;
 		IGelieerdePersonenDao _gpdao = null;
-		int _catID, _gpID, _gp2ID;
+		int _gpID, _gp2ID;
 
 		public CategorieenTest() { }
 
@@ -70,15 +70,16 @@ namespace Chiro.Gap.Data.Test
 		{
 			_catdao = Factory.Maak<ICategorieenDao>();
 			_gpdao = Factory.Maak<IGelieerdePersonenDao>();
-			_catID = TestInfo.CATEGORIEID;
 			_gpID = TestInfo.GELIEERDEPERSOONID;
 			_gp2ID = TestInfo.GELIEERDEPERSOON2ID;
 
 			// Als de persoon die we in ToevoegenAanCategorie aan de categorie willen toevoegen
 			// er al in zit, dan moet die eerst verwijderd worden.
 
-			var cat = _catdao.Ophalen(_catID, ct => ct.GelieerdePersoon);
-			var gevondenPersoon = cat.GelieerdePersoon.Where(koppeling => koppeling.ID == _gp2ID).FirstOrDefault();
+			var cat = _catdao.Ophalen(TestInfo.CATEGORIE3ID, ct => ct.GelieerdePersoon);
+			var gevondenPersoon = (from gpers in cat.GelieerdePersoon
+					       where gpers.ID == _gp2ID
+					       select gpers).FirstOrDefault();
 
 			if (gevondenPersoon != null)
 			{
@@ -105,10 +106,10 @@ namespace Chiro.Gap.Data.Test
 		public void CategorieOphalen()
 		{
 			// act
-			Categorie c = _catdao.Ophalen(_catID, foo => foo.GelieerdePersoon);
+			Categorie c = _catdao.Ophalen(TestInfo.CATEGORIEID, foo => foo.GelieerdePersoon);
 
 			// assert
-			Assert.IsTrue(c.ID == _catID);
+			Assert.IsTrue(c.ID == TestInfo.CATEGORIEID);
 		}
 
 		/// <summary>
@@ -188,7 +189,7 @@ namespace Chiro.Gap.Data.Test
 			// categorie te hebben.
 
 			GelieerdePersoon gp = _gpdao.Ophalen(_gp2ID);
-			Categorie cat = _catdao.Ophalen(_catID);
+			Categorie cat = _catdao.Ophalen(TestInfo.CATEGORIE3ID);
 
 			//add
 			// koppel categorie aan groep
@@ -199,17 +200,15 @@ namespace Chiro.Gap.Data.Test
 			_catdao.Bewaren(cat);
 
 			//assert
-			IList<GelieerdePersoon> lijst = _catdao.Ophalen(_catID).GelieerdePersoon.ToList();
-
-			var query = (from item in lijst
-				     where item.ID == _gpID
-				     select item);
-
-			Assert.IsTrue(query.Count() == 1);
+			var opgehaald = _catdao.Ophalen(TestInfo.CATEGORIE3ID, ctg=>ctg.GelieerdePersoon);
+			var toegevoegd = (from gpers in opgehaald.GelieerdePersoon
+					  where gpers.ID == _gp2ID
+					  select gpers).FirstOrDefault();
+			Assert.IsTrue(toegevoegd != null);
 
 			//cleanup
 
-			cat.GelieerdePersoon.Where(koppeling => koppeling.ID == _gp2ID).First().TeVerwijderen = true;
+			toegevoegd.TeVerwijderen = true;
 			_catdao.Bewaren(cat);
 		}
 

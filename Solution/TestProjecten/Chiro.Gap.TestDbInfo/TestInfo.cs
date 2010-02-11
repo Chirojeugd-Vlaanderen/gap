@@ -18,6 +18,7 @@
 		public const int CATEGORIEID = 9;
 		public const string CATEGORIECODE = "last";
 		public const int CATEGORIE2ID = 10;
+		public const int CATEGORIE3ID = 114;
 		public const int AANTALINCATEGORIE = 1;
 		public const int AFDELINGID = 13;
 		public const int OFFICIELEAFDELINGID = 1;
