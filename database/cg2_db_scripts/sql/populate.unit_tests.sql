@@ -100,8 +100,12 @@ SET DateFormat dmy;
 		DECLARE @testCategorie2Naam AS VARCHAR(80);				SET @testCategorie2Naam= 'Peulengaleis';		
 		DECLARE @testCategorie2Code AS VARCHAR(10); 			SET @testCategorie2Code = 'peulen';
 
+		DECLARE @testCategorie3ID AS INT;
+		DECLARE @testCategorie3Naam AS VARCHAR(80);				SET @testCategorie3Naam = 'Roddeltantes';
+		DECLARE @testCategorie3Code AS VARCHAR(10);				SET @testCategorie3Code = 'bla';
+
 -- 8° We gaan de persoons categorien bevolken:
---       					testCategorie1ID  	testCategorie2ID
+--       					testCategorie1ID  	testCategorie2ID	testCategorie3
 --       testPersoon1ID 			JA					JA
 --       testPersoon2ID									JA
 --       testPersoon3ID									JA
@@ -339,6 +343,16 @@ BEGIN
 	SET @testCategorie2ID = (SELECT CategorieID FROM core.Categorie WHERE Code=@testCategorie2Code)
 END
 
+IF NOT EXISTS (SELECT 1 FROM core.Categorie WHERE Code=@testCategorie3Code)
+BEGIN
+	INSERT INTO core.Categorie(Naam, Code, GroepID) VALUES(@testCategorie3Naam , @testCategorie3Code, @testGroepID);
+	SET @testCategorie3ID = scope_identity();
+END
+ELSE
+BEGIN
+	SET @testCategorie3ID = (SELECT CategorieID FROM core.Categorie WHERE Code=@testCategorie3Code)
+END
+
 --
 -- 8° Testcategorieen bevolken
 --
@@ -437,6 +451,7 @@ PRINT 'public const int LID3ID = ' + CAST(@testLid3ID AS VARCHAR(10)) + ';';
 PRINT 'public const int CATEGORIEID = ' + CAST(@testCategorie1ID AS VARCHAR(10)) + ';';
 PRINT 'public const string CATEGORIECODE = "' + CAST(@testCategorie1Code AS VARCHAR(10)) + '";';
 PRINT 'public const int CATEGORIE2ID = ' + CAST(@testCategorie2ID AS VARCHAR(10)) + ';';
+PRINT 'public const int CATEGORIE3ID = ' + CAST(@testCategorie3ID AS VARCHAR(10)) + ';';
 PRINT 'public const int AANTALINCATEGORIE = ' + CAST(@aantalInCategorie AS VARCHAR(10)) + ';'
 PRINT 'public const int AFDELINGID = ' + CAST(@testAfdeling1ID AS VARCHAR(10)) + ';';
 PRINT 'public const int OFFICIELEAFDELINGID = ' + CAST(@testOfficieleAfdelingID1 AS VARCHAR(10)) + ';';
