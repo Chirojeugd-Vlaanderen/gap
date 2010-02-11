@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -32,6 +33,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// Stamnummer, heeft enkel nog nut als zoeksleutel.
 		/// </summary>
 		[DataMember]
+		[DisplayName("Stamnummer")]
 		public string StamNummer { get; set; }
 
 		/// <summary>

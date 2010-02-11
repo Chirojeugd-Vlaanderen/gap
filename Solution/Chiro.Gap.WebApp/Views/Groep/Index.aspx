@@ -48,7 +48,10 @@
         foreach (var cat in Model.Info.Categorie.OrderBy(cat=>cat.Code))
         {
             %>
-            <li><%=Html.Encode(String.Format("{0} - {1}", cat.Code, cat.Naam)) %></li>
+            <li>
+                <%=Html.Encode(String.Format("{0} - {1}", cat.Code, cat.Naam)) %>
+                [<%=Html.ActionLink("verwijderen", "CategorieVerwijderen", new {id = cat.ID }) %>]
+            </li>
             <%
         }
     %>

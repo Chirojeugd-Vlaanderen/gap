@@ -87,5 +87,18 @@ namespace Chiro.Gap.WebApp.Controllers
 			return View(model);
 		}
 
+		/// <summary>
+		/// Verwijdert een categorie.  Indien de categorie niet leeg was, lukt dat direct, en krijg
+		/// je opnieuw de view 'Index'.  In het andere geval krijg je de view 'CategorieVerwijderen'.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarin de gebruiker momenteel aan het werken is</param>
+		/// <param name="id">CategorieID van te verwijderen categorie</param>
+		/// <returns>Opnieuw de Index als de categorie leeg was, en anders de view CategorieVerwijderen.
+		/// </returns>
+		public ActionResult CategorieVerwijderen(int groepID, int id)
+		{
+			throw new NotImplementedException();
+		}
+
 	}
 }
