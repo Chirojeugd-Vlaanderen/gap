@@ -158,7 +158,7 @@ namespace Chiro.Gap.Services
 		}
 
 		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID)
+		public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
 		{
 			return _gpMgr.DetailsOphalen(gelieerdePersoonID);
 		}

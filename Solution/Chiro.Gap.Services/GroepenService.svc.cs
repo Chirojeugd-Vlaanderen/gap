@@ -367,11 +367,31 @@ namespace Chiro.Gap.Services
 		/// Verwijdert de categorie met gegeven <paramref name="categorieID"/>
 		/// </summary>
 		/// <param name="categorieID">ID van de te verwijderen categorie</param>
-		public void CategorieVerwijderen(int categorieID)
+		/// <param name="forceren">Indien <c>true</c>, worden eventuele personen uit de
+		/// te verwijderen categorie eerst uit de categorie weggehaald.  Indien
+		/// <c>false</c> krijg je een exception als de categorie niet leeg is.</param>
+		public void CategorieVerwijderen(int categorieID, bool forceren)
 		{
-			Categorie c = _categorieenMgr.Ophalen(categorieID);
-			c.TeVerwijderen = true;
-			_categorieenMgr.Bewaren(c);
+			// Personen moeten mee opgehaald worden; anders werkt 
+			// CategorieenManager.Verwijderen niet.
+
+			Categorie c = _categorieenMgr.Ophalen(categorieID, true);
+
+			try
+			{
+				_categorieenMgr.Verwijderen(c, forceren);
+			}
+			catch (GekoppeldeObjectenException<GelieerdePersoon> ex)
+			{
+				IEnumerable<PersoonInfo> gekoppeldePersonen 
+					= Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonInfo>>(ex.Objecten);
+				var fault = new GekoppeldeObjectenFault<PersoonInfo> { Objecten = gekoppeldePersonen };
+				throw new FaultException<GekoppeldeObjectenFault<PersoonInfo>>(fault);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
 		}
 
 		public void CategorieAanpassen(int categorieID, string nieuwenaam)

@@ -165,7 +165,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			var model = new Models.GelieerdePersonenModel();
 			BaseModelInit(model, groepID);
-			var serviceResultaat = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
+			var serviceResultaat = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(id));
 			model.HuidigePersoon = serviceResultaat;
 			model.Titel = model.HuidigePersoon.Persoon.VolledigeNaam;
 			return View("EditRest", model);
@@ -178,7 +178,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			var model = new Models.GelieerdePersonenModel();
 			BaseModelInit(model, groepID);
-			model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(p.HuidigePersoon.ID));
+			model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(p.HuidigePersoon.ID));
 			model.Titel = model.HuidigePersoon.Persoon.VolledigeNaam;
 			return RedirectToAction("EditGegevens", new { id = p.HuidigePersoon.ID });
 		}
@@ -193,7 +193,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			var model = new Models.GelieerdePersonenModel();
 			BaseModelInit(model, groepID);
-			model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(id));
+			model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(id));
 			model.Titel = model.HuidigePersoon.Persoon.VolledigeNaam;
 			return View("EditGegevens", model);
 		}
@@ -420,7 +420,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		// GET: /Personen/NieuweCommVorm/gelieerdePersoonID
 		public ActionResult NieuweCommVorm(int gelieerdePersoonID, int groepID)
 		{
-			GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
+			GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(gelieerdePersoonID));
 			IEnumerable<CommunicatieType> types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.CommunicatieTypesOphalen());
 			NieuweCommVormModel model = new NieuweCommVormModel(g, types);
 			BaseModelInit(model, groepID);
@@ -452,7 +452,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				BaseModelInit(model, groepID);
 
 				// info voor model herstellen
-				model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
+				model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(gelieerdePersoonID));
 				model.Types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.CommunicatieTypesOphalen());
 				model.Titel = "Nieuwe communicatievorm toevoegen";
 
@@ -477,7 +477,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult BewerkenCommVorm(int commvormID, int gelieerdePersoonID, int groepID)
 		{
 			//TODO dit is niet juist broes, want hij haalt 2 keer de persoon op?
-			GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
+			GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(gelieerdePersoonID));
 			CommunicatieVorm commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieVorm>(l => l.CommunicatieVormOphalen(commvormID));
 			CommVormModel model = new CommVormModel(g, commv);
 			BaseModelInit(model, groepID);
@@ -516,7 +516,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				BaseModelInit(model, groepID);
 
-				model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.PersoonOphalenMetDetails(gelieerdePersoonID));
+				model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(gelieerdePersoonID));
 				model.NieuweCommVorm = commVorm;
 				model.Titel = "Communicatievorm bewerken";
 

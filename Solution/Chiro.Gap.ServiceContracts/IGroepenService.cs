@@ -171,8 +171,12 @@ namespace Chiro.Gap.ServiceContracts
 		/// Verwijdert de gegeven categorie
 		/// </summary>
 		/// <param name="categorieID">De ID van de te verwijderen categorie</param>
+		/// <param name="forceren">Indien <c>true</c>, worden eventuele personen uit de
+		/// te verwijderen categorie eerst uit de categorie weggehaald.  Indien
+		/// <c>false</c> krijg je een exception als de categorie niet leeg is.</param>
 		[OperationContract]
-		void CategorieVerwijderen(int categorieID);
+		[FaultContract(typeof(GekoppeldeObjectenFault<PersoonInfo>))]
+		void CategorieVerwijderen(int categorieID, bool forceren);
 
 		/// <summary>
 		/// Het veranderen van de naam van een categorie

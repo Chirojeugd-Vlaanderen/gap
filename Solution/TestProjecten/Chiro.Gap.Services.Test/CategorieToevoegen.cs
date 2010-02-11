@@ -57,14 +57,14 @@ namespace Chiro.Gap.Services.Test
 			GroepInfo g = groepenSvc.Ophalen(TestInfo.GROEPID, GroepsExtras.Categorieen);
 
 			int catID = (from cInfo in g.Categorie
-				     where String.Compare(cInfo.Code, TestInfo.ONBESTAANDECATEGORIECODE1, true) == 0
+				     where String.Compare(cInfo.Code, TestInfo.ONBESTAANDENIEUWECATCODE, true) == 0
 				     select cInfo.ID).FirstOrDefault();
 
 			// De 'FirstOrDefault' kiest 0 als er geen gevonden is.
 
 			if (catID != 0)
 			{
-				groepenSvc.CategorieVerwijderen(catID);
+				groepenSvc.CategorieVerwijderen(catID, true);
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace Chiro.Gap.Services.Test
 		{
 			int catID = groepenSvc.CategorieToevoegen(TestInfo.GROEPID,
 				TestInfo.CATEGORIENAAM,
-				TestInfo.ONBESTAANDECATEGORIECODE1);
+				TestInfo.ONBESTAANDENIEUWECATCODE);
 			catlijst.Add(catID);
 
 			GroepInfo g = groepenSvc.Ophalen(TestInfo.GROEPID, GroepsExtras.Categorieen);

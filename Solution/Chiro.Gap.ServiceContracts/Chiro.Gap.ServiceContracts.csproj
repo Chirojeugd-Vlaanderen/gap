@@ -69,6 +69,7 @@
     <Compile Include="FaultContracts\BestaatAlFault.cs" />
     <Compile Include="FaultContracts\DataContractFault.cs" />
     <Compile Include="FaultContracts\FoutBericht.cs" />
+    <Compile Include="FaultContracts\GekoppeldeObjectenFault.cs" />
     <Compile Include="FaultContracts\GelijkaardigePersoonFault.cs" />
     <Compile Include="IGelieerdePersonenService.cs" />
     <Compile Include="IGroepenService.cs" />

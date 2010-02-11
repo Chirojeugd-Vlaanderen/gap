@@ -73,6 +73,22 @@ namespace Chiro.Gap.Data.Test
 			_catID = TestInfo.CATEGORIEID;
 			_gpID = TestInfo.GELIEERDEPERSOONID;
 			_gp2ID = TestInfo.GELIEERDEPERSOON2ID;
+
+			// Als de persoon die we in ToevoegenAanCategorie aan de categorie willen toevoegen
+			// er al in zit, dan moet die eerst verwijderd worden.
+
+			var cat = _catdao.Ophalen(_catID, ct => ct.GelieerdePersoon);
+			var gevondenPersoon = cat.GelieerdePersoon.Where(koppeling => koppeling.ID == _gp2ID).FirstOrDefault();
+
+			if (gevondenPersoon != null)
+			{
+				gevondenPersoon.TeVerwijderen = true;
+
+				// Als we nu via de categorie bewaren, wordt enkel de koppeling met
+				// gevondenPersoon verbroken.
+
+				_catdao.Bewaren(cat);
+			}
 		}
 
 		[TestCleanup()]
@@ -208,8 +224,14 @@ namespace Chiro.Gap.Data.Test
 			c1.ID = 100;
 			Categorie c2 = new Categorie();
 			c2.ID = 10;
+
 			Assert.AreEqual(p1.GetHashCode(), p2.GetHashCode());
+
+			// JOHAN: WTF?? Onderstaande conditie is geen requirement.  De hashcodes van
+			// c1 en c2 mogen gerust verschillen.  Het is niet omdat deze assert failt,
+			// dat er een fout in de code zit.
 			Assert.AreEqual(c1.GetHashCode(), c2.GetHashCode());
+
 			Assert.AreNotEqual(c1.GetHashCode(), p1.GetHashCode());
 		}
 	}

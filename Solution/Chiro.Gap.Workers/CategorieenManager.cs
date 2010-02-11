@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -37,12 +38,33 @@ namespace Chiro.Gap.Workers
 		/// Een categorie ophalen op basis van zijn <paramref name="categorieID"/>, inclusief groep.
 		/// </summary>
 		/// <param name="categorieID">ID van op te halen categorie</param>
+		/// <param name="metGelieerdePersonen">Indien <c>true</c>, worden ook de gekoppelde gelieerde 
+		/// personen mee opgehaald</param>
 		/// <returns>opgehaalde categorie, met gekoppelde groep</returns>
 		public Categorie Ophalen(int categorieID)
 		{
+			return Ophalen(categorieID, false);  // personen interesseren ons niet
+		}
+
+		/// <summary>
+		/// Een categorie ophalen op basis van zijn <paramref name="categorieID"/>, inclusief groep.
+		/// </summary>
+		/// <param name="categorieID">ID van op te halen categorie</param>
+		/// <param name="metPersonen">Indien <c>true</c>, worden ook de gekoppelde gelieerde 
+		/// personen en persoonsinfo mee opgehaald</param>
+		/// <returns>opgehaalde categorie, met gekoppelde groep</returns>
+		public Categorie Ophalen(int categorieID, bool metPersonen)
+		{
 			if (_autorisatieMgr.IsGavCategorie(categorieID))
 			{
-				return _dao.Ophalen(categorieID);
+				if (metPersonen)
+				{
+					return _dao.Ophalen(categorieID, cat => cat.GelieerdePersoon.First().Persoon);
+				}
+				else
+				{
+					return _dao.Ophalen(categorieID);
+				}
 			}
 			else
 			{
@@ -104,6 +126,49 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
+		/// <summary>
+		/// Verwijdert een categorie (PERSISTEERT!)
+		/// </summary>
+		/// <param name="categorie">Te verwijderen categorie, inclusief gelieerde personen</param>
+		/// <param name="forceren">Indien <c>true</c> wordt de categorie ook verwijderd als er
+		/// personen in de categorie zitten.  Anders krijg je een exception.</param>
+		/// <remarks>Deze method gaat ervan uit dat de categorie zijn leden bevat.</remarks>
+		public void Verwijderen(Categorie categorie, bool forceren)
+		{
+			// Gelieerde personen moeten gekoppeld zijn
+			// (null verschilt hier expliciet van een lege lijst)
+			Debug.Assert(categorie.GelieerdePersoon != null);
+
+			if (!forceren && categorie.GelieerdePersoon.Count > 0)
+			{
+				throw new GekoppeldeObjectenException<GelieerdePersoon>(
+					Properties.Resources.CategorieNietLeeg,
+					categorie.GelieerdePersoon);
+			}
+
+			LeegMaken(categorie);
+
+			categorie.TeVerwijderen = true;
+
+			Bewaren(categorie);
+		}
+
 		#endregion
+
+		/// <summary>
+		/// Verwijdert alle gelieerde personen uit de categorie <paramref name="c"/>
+		/// </summary>
+		/// <param name="c">Leeg te maken categorie</param>
+		public void LeegMaken(Categorie c)
+		{
+			if (_autorisatieMgr.IsGavCategorie(c.ID))
+			{
+				foreach (GelieerdePersoon gp in c.GelieerdePersoon)
+				{
+					gp.TeVerwijderen = true;
+					// dit verwijdert enkel de link naar de gelieerde persoon
+				}
+			}
+		}
 	}
 }

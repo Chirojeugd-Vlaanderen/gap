@@ -32,17 +32,22 @@
 		public const int WATINGROEPID = 38;
 		#endregion
 
+		
 		#region Zelf in te stellen:
-		/// <summary>
-		/// Code van een onbestaande categorie in de testgroep, om te testen
-		/// </summary>
-		public const string ONBESTAANDECATEGORIECODE1 = "BROES";
 
 		/// <summary>
-		/// Code van een onbestaande categorie in de testgroep, om te testen
+		/// Onbestaande categoriecode te gebruiken voor toevoegtest
 		/// </summary>
-		public const string ONBESTAANDECATEGORIECODE2 = "HALLO";
+		public const string ONBESTAANDENIEUWECATCODE = "BROES";
 
+		/// <summary>
+		/// Codes van onbestaande categorieen, te gebruiken voor unit tests.
+		/// </summary>
+		public static readonly string[] ONBESTAANDECATEGORIECODES = {
+									"HALLO",
+									"BLA2",
+									"BLA3"};
+									
 		/// <summary>
 		/// Willekeurige onbestaande categorienaam, om te testen
 		/// </summary>

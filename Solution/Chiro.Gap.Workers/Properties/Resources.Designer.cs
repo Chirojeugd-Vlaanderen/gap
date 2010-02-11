@@ -79,6 +79,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Er zijn nog personen gekoppeld aan deze categorie..
+        /// </summary>
+        internal static string CategorieNietLeeg {
+            get {
+                return ResourceManager.GetString("CategorieNietLeeg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deze persoon is niet gekoppeld aan de groep waarvan je hem/haar lid wil maken..
         /// </summary>
         internal static string FoutiefGroepsWerkJaar {

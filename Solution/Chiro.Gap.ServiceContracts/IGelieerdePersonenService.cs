@@ -63,7 +63,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>
 		/// <returns>GelieerdePersoon met persoonsgegevens, communicatievorm en adressen</returns>
 		[OperationContract]
-		GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID);
+		GelieerdePersoon DetailsOphalen(int gelieerdePersoonID);
 
 		/// <summary>
 		/// Haalt gelieerd persoon op met extra gevraagde info.

@@ -53,7 +53,7 @@ namespace Chiro.Gap.Dummies
 
 		public IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs, string login)
 		{
-			throw new NotImplementedException();
+			return gelieerdePersonenIDs.ToList();
 		}
 
 		public IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs, string p)
