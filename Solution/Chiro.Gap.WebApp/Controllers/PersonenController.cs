@@ -57,7 +57,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			//alle personen bekijken
 			if (id == 0)
 			{
-				model.PersoonInfoLijst =
+				model.PersoonInfos =
 				    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
 				    (g => g.PaginaOphalenMetLidInfo(groepID, page, 20, out totaal));
 				model.PageHuidig = page;
@@ -68,13 +68,13 @@ namespace Chiro.Gap.WebApp.Controllers
 			else
 			{
 				//TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
-				model.PersoonInfoLijst =
+				model.PersoonInfos =
 				    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
 				    (g => g.PaginaOphalenUitCategorieMetLidInfo(id, page, 20, out totaal));
 				model.PageHuidig = page;
 				model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
 
-				String naam = (from c in model.PersoonInfoLijst.First().CategorieLijst
+				String naam = (from c in model.PersoonInfos.First().CategorieLijst
 					       where c.ID == id
 					       select c
 						).First().Naam;
