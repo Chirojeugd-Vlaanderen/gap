@@ -60,8 +60,8 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.PersoonInfos =
 				    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
 				    (g => g.PaginaOphalenMetLidInfo(groepID, page, 20, out totaal));
-				model.PageHuidig = page;
-				model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
+				model.HuidigePagina = page;
+				model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
 				model.Titel = "Personenoverzicht";
 				model.Totaal = totaal;
 			}
@@ -71,8 +71,8 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.PersoonInfos =
 				    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
 				    (g => g.PaginaOphalenUitCategorieMetLidInfo(id, page, 20, out totaal));
-				model.PageHuidig = page;
-				model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
+				model.HuidigePagina = page;
+				model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
 
 				String naam = (from c in model.PersoonInfos.First().CategorieLijst
 					       where c.ID == id
