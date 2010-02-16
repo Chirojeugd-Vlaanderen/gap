@@ -31,16 +31,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.Unity, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Moq, Version=3.1.416.3, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\References\Moq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
+    <Reference Include="System.ServiceModel, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -48,23 +56,63 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Microsoft ASP.NET\ASP.NET MVC RC\Assemblies\System.Web.Mvc.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Microsoft ASP.NET\ASP.NET MVC RC\Assemblies\System.Web.Routing.dll</HintPath>
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GroepControllerTest.cs" />
     <Compile Include="MockContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
     <Content Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj">
+      <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
+      <Name>Chiro.Adf.ServiceModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">
+      <Project>{F4145652-EF28-4F23-A11E-CD68D4AA2A05}</Project>
+      <Name>Chiro.Cdf.Data.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
+      <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
+      <Name>Chiro.Cdf.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
+      <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
+      <Name>Chiro.Cdf.Ioc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj">
+      <Project>{11A23709-8EA9-43B1-9982-B1DC08A50FD8}</Project>
+      <Name>Chiro.Cdf.ServiceHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.Orm\Chiro.Gap.Orm.csproj">
+      <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
+      <Name>Chiro.Gap.Orm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
+      <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
+      <Name>Chiro.Gap.ServiceContracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.Validatie\Chiro.Gap.Validatie.csproj">
+      <Project>{853B7FDF-27B6-48BC-A220-F68CCE610B6B}</Project>
+      <Name>Chiro.Gap.Validatie</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.WebApp\Chiro.Gap.WebApp.csproj">
+      <Project>{F9C3C5C0-D1B6-4AED-90B7-D327FC25EBDD}</Project>
+      <Name>Chiro.Gap.WebApp</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
