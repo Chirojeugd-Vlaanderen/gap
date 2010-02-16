@@ -5,8 +5,10 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.min.js")%>"></script>
+<%
+    //HEEL BELANGRIJK: voor een dropdownlist moet het select statement zowel een id als een name hebben, die dezelfde zijn, en die moet ook in het event gebruikt worden
+%>
 <script type="text/javascript">
-//HEEL BELANGRIJK: voor een dropdownlist, moet het select statement zowel een id als een name hebben, die dezelfde zijn, en die moet ook in het event gebruikt worden
 $(function() {
 	$("#cat").change(function() {
 		window.location = $("#cat option:selected").val();
@@ -21,7 +23,7 @@ $(function() {
 <li>
 <form id="Categorie" action="" method="post">
     <select id="cat" name="cat">
-    <option value="">Kies een categorie...</option>
+    <option value="">Filter op categorie...</option>
     <% 
         // TODO: Hier kunnen we beter een helper van maken.
         

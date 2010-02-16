@@ -23,7 +23,7 @@
 <li>
 <form id="Afdeling" action="" method="post">
     <select id="afd" name="afd">
-    <option value="">Kies een afdeling...</option>
+    <option value="">Filter op afdeling...</option>
     <% 
       foreach(var s in  Model.AfdelingsInfoDictionary) 
       {

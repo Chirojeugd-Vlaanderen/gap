@@ -14,7 +14,7 @@ using Chiro.Gap.Dummies;
 namespace Chiro.Gap.Workers.Test
 {
 	/// <summary>
-	/// Summary description for CategorieToevoegen
+	/// Testclass voor CategorieToevoegen
 	/// </summary>
 	[TestClass]
 	public class CategorieToevoegen

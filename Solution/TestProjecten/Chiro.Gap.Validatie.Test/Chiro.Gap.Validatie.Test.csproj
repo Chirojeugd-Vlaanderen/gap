@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D82C1286-8BC6-422C-8688-E178377D3EB6}</ProjectGuid>
+    <ProjectGuid>{D1C65B7E-8F0E-497A-A6A2-4CD36175219C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Chiro.Gap.Fouten</RootNamespace>
-    <AssemblyName>Chiro.Gap.Fouten</AssemblyName>
+    <RootNamespace>Chiro.Gap.Validatie.Test</RootNamespace>
+    <AssemblyName>Chiro.Gap.Validatie.Test</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,8 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Entity">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml.Linq">
@@ -45,28 +49,49 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\BestaatAlException.cs" />
-    <Compile Include="Exceptions\GekoppeldeObjectenException.cs" />
-    <Compile Include="Exceptions\OngeldigeActieException.cs" />
-    <Compile Include="Exceptions\FoutieveGroepException.cs" />
-    <Compile Include="Exceptions\GeenGavException.cs" />
-    <Compile Include="Exceptions\AdresException.cs" />
-    <Compile Include="Exceptions\ValidatieException.cs" />
+    <Compile Include="CommunicatieVormValideren.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
-      <Link>CustomDictionary.xml</Link>
-    </CodeAnalysisDictionary>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
+    <ProjectReference Include="..\..\Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj">
+      <Project>{174890F3-1F4C-4CFC-83A1-AA88F5748A67}</Project>
+      <Name>Chiro.Adf.ServiceModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">
+      <Project>{F4145652-EF28-4F23-A11E-CD68D4AA2A05}</Project>
+      <Name>Chiro.Cdf.Data.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
       <Name>Chiro.Cdf.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
+    <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
+      <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
+      <Name>Chiro.Cdf.Ioc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.Orm\Chiro.Gap.Orm.csproj">
+      <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
+      <Name>Chiro.Gap.Orm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
       <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
       <Name>Chiro.Gap.ServiceContracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.Services\Chiro.Gap.Services.csproj">
+      <Project>{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}</Project>
+      <Name>Chiro.Gap.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.Validatie\Chiro.Gap.Validatie.csproj">
+      <Project>{853B7FDF-27B6-48BC-A220-F68CCE610B6B}</Project>
+      <Name>Chiro.Gap.Validatie</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
+      <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
+      <Name>Chiro.Gap.Workers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Dummies\Chiro.Gap.Dummies.csproj">
+      <Project>{2D7B3C9F-1F19-41EA-9538-AE5D4B11388A}</Project>
+      <Name>Chiro.Gap.Dummies</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

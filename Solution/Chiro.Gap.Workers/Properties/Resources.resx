@@ -120,6 +120,11 @@
   <data name="AdNummerNietWijzigen" xml:space="preserve">
     <value>Enkel het nationaal secretariaat mag AD-nummers wijzigen.</value>
   </data>
+  <data name="CommunicatieVormValidatieFeedback" xml:space="preserve">
+    <value>'{0}' is geen geldige waarde voor {1}</value>
+    <comment>Parameter 0 = input, 1 = property</comment>
+  </data>
+
   <data name="CategorieBestaatAl" xml:space="preserve">
     <value>Er bestaat al een categorie met code '{0}'.</value>
   </data>

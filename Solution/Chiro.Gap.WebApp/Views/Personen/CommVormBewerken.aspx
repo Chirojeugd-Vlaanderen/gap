@@ -25,28 +25,24 @@
                 :</td>
                 <td>
                     <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nummer) %>
-                    <%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.Nummer) %>
                 </td>
            </tr>
            <tr>
                 <td>Is dit de voorkeurscommunicatie voor dit communicatietype?</td>
                 <td>
                     <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Voorkeur) %>
-                    <%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.Voorkeur) %>
                 </td>
            </tr>
            <tr>
                 <td>Is het gezinsgebonden?</td>
                 <td>
                     <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.IsGezinsgebonden) %>
-                    <%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.IsGezinsgebonden) %>
                 </td>
            </tr>
            <tr>
                 <td>Extra informatie</td>
                 <td>
                     <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nota) %>
-                    <%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.Nota) %>
                 </td>
            </tr>
            </table>

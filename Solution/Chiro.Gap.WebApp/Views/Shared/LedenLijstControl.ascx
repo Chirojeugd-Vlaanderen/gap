@@ -7,7 +7,7 @@
 Pagina: <%= Html.WerkJaarLinks(ViewData.Model.GroepsWerkJaarIdZichtbaar, ViewData.Model.GroepsWerkJaarLijst, i => Url.Action("List", new { groepsWerkJaarId = Model.GroepsWerkJaarLijst[i].ID, afdID = Model.HuidigeAfdeling }))%>
 </div>
 
-<table>
+<table class="overzicht">
 <tr>
 <th>Ad-nr.</th><th>Type</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Betaald</th><th>Acties</th><th>Afdeling</th>
 </tr>
