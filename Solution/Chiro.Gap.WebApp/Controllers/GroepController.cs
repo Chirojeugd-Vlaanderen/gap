@@ -97,7 +97,16 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </returns>
 		public ActionResult CategorieVerwijderen(int groepID, int id)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				ServiceHelper.CallService<IGroepenService>(svc => svc.CategorieVerwijderen(id, false));
+			}
+			catch (Exception)
+			{
+				// Voorlopig doen we niks.
+				throw;
+			}
+			return RedirectToAction("Index", new { groepID = groepID });
 		}
 
 	}
