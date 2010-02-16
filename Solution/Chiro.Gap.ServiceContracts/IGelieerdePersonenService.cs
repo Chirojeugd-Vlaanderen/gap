@@ -46,7 +46,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="aantalTotaal">outputparameter; geeft het totaal aantal personen weer in de lijst</param>
 		/// <returns>lijst van gelieerde personen met persoonsinfo</returns>
 		[OperationContract]
-		IList<PersoonInfo> PaginaOphalenMetLidInfoVolgensCategorie(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal);
+		IList<PersoonInfo> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal);
 
 		/// <summary>
 		/// Zoekt alle personen die aan de criteria voldoen en geeft daarvan een bepaalde pagina weer

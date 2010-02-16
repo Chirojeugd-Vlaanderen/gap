@@ -33,8 +33,15 @@ namespace Chiro.Gap.WebApp.Controllers
 			return List(1, groepID, 0);
 		}
 
-		//
-		// GET: /Personen/List/{id}/{paginanummer}
+		/// <summary>
+		/// Haal een pagina met persoonsinformatie op (inclusief lidinfo) voor personen uit een
+		/// bepaalde categorie, en toont deze pagina via de view 'Index'.
+		/// </summary>
+		/// <param name="page">Paginanummer</param>
+		/// <param name="groepID">Huidige groep waarin de gebruiker aan het werken is</param>
+		/// <param name="id">ID van de gevraagde categorie.  Kan ook 0 zijn; dan worden alle personen
+		/// geselecteerd.</param>
+		/// <returns>De personenlijst in de view 'Index'</returns>
 		public ActionResult List(int page, int groepID, int id)
 		{
 			// Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
@@ -63,7 +70,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				//TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
 				model.PersoonInfoLijst =
 				    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
-				    (g => g.PaginaOphalenMetLidInfoVolgensCategorie(id, page, 20, out totaal));
+				    (g => g.PaginaOphalenUitCategorieMetLidInfo(id, page, 20, out totaal));
 				model.PageHuidig = page;
 				model.PageTotaal = (int)Math.Ceiling(totaal / 20d);
 
