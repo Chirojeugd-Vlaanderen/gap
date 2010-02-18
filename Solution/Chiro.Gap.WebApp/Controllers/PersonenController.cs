@@ -107,10 +107,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
-				//TODO error handling
                 TempData["feedback"] =  Properties.Resources.NiemandGeselecteerdFout;
                 return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
-				//return RedirectToAction("Index");
 			}
 		}
 
@@ -245,9 +243,16 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			List<int> ids = new List<int>();
 			ids.Add(id);
-			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LedenMakenEnBewaren(ids));
-			//TODO feedback
-			return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
+            try
+            {
+                ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LedenMakenEnBewaren(ids));
+                TempData["feedback"] = Properties.Resources.LidGemaaktFeedback;
+            }
+            catch (Exception ex)
+            {
+                TempData["feedback"] = string.Concat(Properties.Resources.LidMakenMisluktFout, Environment.NewLine, ex.Message.ToString());
+            }
+            return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
 		}
 
 		#endregion leden

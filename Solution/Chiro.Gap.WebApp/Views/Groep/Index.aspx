@@ -63,12 +63,12 @@
     <legend>Categorie toevoegen</legend>
     <p>
     <%=Html.LabelFor(mdl=>mdl.NieuweCategorie.Naam) %>
-    <%=Html.EditorFor(mdl=>mdl.NieuweCategorie.Naam) %>
+    <%=Html.EditorFor(mdl=>mdl.NieuweCategorie.Naam) %><br />
     <%=Html.ValidationMessageFor(mdl=>mdl.NieuweCategorie.Naam) %>
     </p>
     <p>
     <%=Html.LabelFor(mdl=>mdl.NieuweCategorie.Code) %>
-    <%=Html.EditorFor(mdl=>mdl.NieuweCategorie.Code) %>
+    <%=Html.EditorFor(mdl=>mdl.NieuweCategorie.Code) %><br />
     <%=Html.ValidationMessageFor(mdl=>mdl.NieuweCategorie.Code) %>
     </p>
     <p>

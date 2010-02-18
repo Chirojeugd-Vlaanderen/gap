@@ -13,15 +13,18 @@ namespace Chiro.Gap.ServiceContracts.FaultContracts
 	public enum BestaatAlFaultCode
 	{
 		[EnumMember]
-		AlgemeneFout = 0,	// standaardwaarde
+		AlgemeneFout = 0,	            // standaardwaarde
 		[EnumMember]
-		CategorieBestaatAl	// poging tot aanmaken dubbele categorie
+		CategorieCodeBestaatAl,	        // er is al een categorie met die code
+        [EnumMember]
+        CategorieNaamBestaatAl          // er is al een categorie met die naam
 		// TODO: foutcodes voor andere dingen die al kunnen bestaan.
 	}
 
 	/// <summary>
 	/// Deze fault zal over de service gestuurd worden als de gebruiker probeert een dubbele entiteit te
 	/// maken, terwijl dat niet mag.
+    /// </summary>
 	[DataContract]
 	public class BestaatAlFault
 	{

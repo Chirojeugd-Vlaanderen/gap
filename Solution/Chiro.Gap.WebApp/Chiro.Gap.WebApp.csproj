@@ -238,6 +238,7 @@
       <LastGenOutput>MyResources.nl.designer.cs</LastGenOutput>
     </Content>
     <Content Include="Content\Chirologo.png" />
+    <Content Include="Content\GeenGroepGekozen.css" />
     <Content Include="Scripts\MicrosoftMvcJQueryValidation.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Views\Groep\Index.aspx" />

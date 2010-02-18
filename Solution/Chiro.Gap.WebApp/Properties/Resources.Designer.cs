@@ -72,9 +72,18 @@ namespace Chiro.Gap.WebApp.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Er bestaat al een categorie met code &apos;{0}&apos;..
         /// </summary>
-        internal static string CategorieBestaatAl {
+        internal static string CategorieCodeBestaatAl {
             get {
-                return ResourceManager.GetString("CategorieBestaatAl", resourceCulture);
+                return ResourceManager.GetString("CategorieCodeBestaatAl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Er bestaat al een categorie met &apos;{0}&apos; als beschrijving..
+        /// </summary>
+        internal static string CategorieNaamBestaatAl {
+            get {
+                return ResourceManager.GetString("CategorieNaamBestaatAl", resourceCulture);
             }
         }
         
@@ -84,15 +93,6 @@ namespace Chiro.Gap.WebApp.Properties {
         internal static string CategoriserenZonderCategorieënFout {
             get {
                 return ResourceManager.GetString("CategoriserenZonderCategorieënFout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Groep {0} geselecteerd.  Dat was {1}..
-        /// </summary>
-        internal static string DemoMessage {
-            get {
-                return ResourceManager.GetString("DemoMessage", resourceCulture);
             }
         }
         
@@ -111,6 +111,24 @@ namespace Chiro.Gap.WebApp.Properties {
         internal static string GroepsInstellingenTitel {
             get {
                 return ResourceManager.GetString("GroepsInstellingenTitel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die persoon is nu ingeschreven als lid van je groep..
+        /// </summary>
+        internal static string LidGemaaktFeedback {
+            get {
+                return ResourceManager.GetString("LidGemaaktFeedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Er is iets foutgelopen, die persoon is nog niet ingeschreven als lid van je groep..
+        /// </summary>
+        internal static string LidMakenMisluktFout {
+            get {
+                return ResourceManager.GetString("LidMakenMisluktFout", resourceCulture);
             }
         }
         

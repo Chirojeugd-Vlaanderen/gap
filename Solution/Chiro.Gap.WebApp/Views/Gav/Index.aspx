@@ -4,6 +4,7 @@
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
+<link href="/Content/GeenGroepGekozen.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">

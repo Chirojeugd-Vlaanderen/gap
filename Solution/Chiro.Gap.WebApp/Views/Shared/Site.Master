@@ -52,7 +52,9 @@
                 <% =System.Web.HttpContext.Current.User.Identity.Name %><br />
                 [<a href="https://extranet.chiro.be/Gebruiker" title="Je wachtwoord veranderen">Wachtwoord
                     wijzigen</a>]<br />
+                    <div id="AndereGroepLink">
                 [<%= Html.ActionLink("Andere groep", "Index", "Gav")%>]
+                </div>
             </div>
             <div id="topNavigatie">
                 <ul>
