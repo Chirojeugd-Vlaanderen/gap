@@ -301,7 +301,8 @@ div#title
 
 #settingsmenu
 {
-	font-size: 0.8em;
+	font-size: 0.9em;
+	line-height: 1.5em;
 	font-style: italic;
 	display: block;
 	text-align: right;
@@ -382,12 +383,14 @@ div.Feedback
 	padding: 1em 1em 1em 1em;
 	display: block;
 	color: #FF0000;
+	margin-bottom: 2em;
 }
 
 table.overzicht 
 {
 	background-color: #E0E0E0;
 }
+
 table.overzicht th 
 {
 	background-color: #A0A0A0;
@@ -400,7 +403,6 @@ ul#info
 }
 
 ul#info li
-{
-	
+{	
 	list-style: none;
 }

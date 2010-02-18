@@ -108,8 +108,9 @@ namespace Chiro.Gap.WebApp.Controllers
 			else
 			{
 				//TODO error handling
-
-				return RedirectToAction("Index");
+                TempData["feedback"] =  Properties.Resources.NiemandGeselecteerdFout;
+                return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
+				//return RedirectToAction("Index");
 			}
 		}
 
@@ -573,12 +574,20 @@ namespace Chiro.Gap.WebApp.Controllers
 			BaseModelInit(model, groepID);
 			model.Categorieen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<Categorie>>(l => l.CategorieenOphalen(groepID));
 
-			object value;
-			TempData.TryGetValue("list", out value);
-			model.GelieerdePersoonIDs = (List<int>)value;
-			TempData.Remove("list"); // Ik denk dat dit voor MVC2 automatisch gebeurt; na te kijken.
+            if (model.Categorieen.Count() > 0)
+            {
+                object value;
+                TempData.TryGetValue("list", out value);
+                model.GelieerdePersoonIDs = (List<int>)value;
+                TempData.Remove("list"); // Ik denk dat dit voor MVC2 automatisch gebeurt; na te kijken.
 
-			return View("CategorieToevoegen", model);
+                return View("CategorieToevoegen", model);
+            }
+            else
+            {
+                TempData["feedback"] = Properties.Resources.CategoriserenZonderCategorieënFout;
+                return RedirectToAction("List", new { id = Sessie.LaatsteActieID, page = Sessie.LaatstePagina });
+            }
 		}
 
 		/// <summary>

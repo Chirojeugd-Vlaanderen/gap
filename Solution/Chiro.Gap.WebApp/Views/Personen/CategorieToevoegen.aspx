@@ -17,7 +17,7 @@
            </ul>
            
            <fieldset>
-           <legend>Aan welke categorieen wil je <%= Model.GelieerdePersoonIDs.Count == 1 ? "hem/haar" : "hen" %> toevoegen?</legend>     
+           <legend>Aan welke categorieën wil je <%= Model.GelieerdePersoonIDs.Count == 1 ? "hem/haar" : "hen" %> toevoegen?</legend>     
                  
            <%
                 List<CheckBoxListInfo> info

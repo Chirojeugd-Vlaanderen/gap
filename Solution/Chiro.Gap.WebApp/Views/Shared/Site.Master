@@ -34,7 +34,8 @@
                     { %>
                 <p>
                     <%=Html.Encode(ViewData.Model.Plaats)%>
-                    <br /> Stamnummer:
+                    <br />
+                    Stamnummer:
                     <%=Html.Encode(ViewData.Model.StamNummer)%>
                 </p>
                 <%  }
@@ -49,11 +50,14 @@
             <div id="settingsmenu">
                 Aangemeld als
                 <% =System.Web.HttpContext.Current.User.Identity.Name %><br />
-                [<%= Html.ActionLink("Andere groep", "Index", "Gav")%>]<br />
-                [<%= Html.ActionLink("Groepsinstellingen", "Index", "Groep")%>]
+                [<a href="https://extranet.chiro.be/Gebruiker" title="Je wachtwoord veranderen">Wachtwoord
+                    wijzigen</a>]<br />
+                [<%= Html.ActionLink("Andere groep", "Index", "Gav")%>]
             </div>
             <div id="topNavigatie">
                 <ul>
+                    <li>
+                        <%= Html.ActionLink("Groep", "Index", "Groep")%></li>
                     <li>
                         <%= Html.ActionLink("Personen", "Index", "Personen")%></li>
                     <li>
