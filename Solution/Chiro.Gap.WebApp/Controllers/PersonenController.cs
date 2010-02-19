@@ -545,7 +545,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		#endregion commvormen
 
-		#region categorieen
+		#region categorieën
 
 		// GET: /Personen/VerwijderenCategorie/categorieID
 		public ActionResult VerwijderenCategorie(int categorieID, int gelieerdePersoonID, int groepID)
@@ -597,10 +597,10 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		/// <summary>
 		/// Koppelt de gelieerde personen bepaald door <paramref name="model"/>.GelieerdePersonenIDs aan de 
-		/// categorieen
+		/// categorieën
 		/// met ID's <paramref name="model"/>.GeselecteerdeCategorieIDs
 		/// </summary>
-		/// <param name="model"><c>CategorieModel</c> met ID's van gelieerde personen en Categorieen</param>
+		/// <param name="model"><c>CategorieModel</c> met ID's van gelieerde personen en categorieën</param>
 		/// <param name="groepID">Bepaalt de groep waarin de gebruiker nu werkt</param>
 		/// <returns>Als 1 persoon aan een categorie toegekend moet worden, wordt geredirect naar de
 		/// details van die persoon.  Anders krijg je de laatst opgroepen lijst.</returns>
@@ -621,7 +621,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 		}
 
-		#endregion categorieen
+		#endregion categorieën
 
 	}
 }

@@ -66,7 +66,7 @@ namespace Chiro.Gap.Dummies
 
 			_vervelend = gMgr.CategorieToevoegen(_dummyGroep, "vervelende mensen", "last");
 
-			// Afdelingen gekoppeld aan officiele afdelingen in afdelingsjaren
+			// Afdelingen gekoppeld aan officiële afdelingen in afdelingsjaren
 
 			OfficieleAfdeling ribbels = new OfficieleAfdeling { Naam = "Ribbels" };
 			OfficieleAfdeling rakwis = new OfficieleAfdeling { Naam = "Rakwi's" };

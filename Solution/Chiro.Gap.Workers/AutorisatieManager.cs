@@ -218,7 +218,7 @@ namespace Chiro.Gap.Workers
 
 				if (resultaat == null)
 				{
-					// nee: creeren
+					// nee: creëren
 					resultaat = new GebruikersRecht { Groep = groep, Gav = gav };
 					groep.GebruikersRecht.Add(resultaat);
 					gav.GebruikersRecht.Add(resultaat);

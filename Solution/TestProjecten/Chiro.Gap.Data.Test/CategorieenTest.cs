@@ -14,7 +14,7 @@ using Chiro.Gap.TestDbInfo;
 namespace Chiro.Gap.Data.Test
 {
 	/// <summary>
-	/// Tests mbt de categorieen die een gelieerde persoon kan hebben.
+	/// Tests mbt de categorieën die een gelieerde persoon kan hebben.
 	/// </summary>
 	[TestClass]
 	public class CategorieenTest

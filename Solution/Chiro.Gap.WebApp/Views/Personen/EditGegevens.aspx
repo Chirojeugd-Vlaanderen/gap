@@ -137,7 +137,7 @@
     <% } %>
     </ul>
     
-    <h3>Categorieen</h3>
+    <h3>categorieën</h3>
 
     <ul>
     <% foreach (Categorie cv in Model.HuidigePersoon.Categorie)

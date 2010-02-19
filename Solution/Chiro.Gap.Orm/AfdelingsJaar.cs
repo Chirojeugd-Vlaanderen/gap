@@ -11,7 +11,7 @@ using Chiro.Cdf.Data.Entity;
 namespace Chiro.Gap.Orm
 {
 	/// <summary>
-	/// Een afdelingsjaar bepaalt welke geboortejaren, geslacht en officiele afdelingen
+	/// Een afdelingsjaar bepaalt welke geboortejaren, geslacht en officiële afdelingen
 	/// in een bepaald werkjaar overeenkomen met een gegeven afdeling.
 	/// </summary>
 	[MetadataType(typeof(AfdelingsJaarAttributen))]

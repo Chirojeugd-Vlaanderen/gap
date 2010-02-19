@@ -150,4 +150,7 @@
   <data name="NieuwePersoonTitel" xml:space="preserve">
     <value>Nieuwe persoon</value>
   </data>
+  <data name="WijzigingenOpgeslagenFeedback" xml:space="preserve">
+    <value>De wijzigingen zijn opgeslagen</value>
+  </data>
 </root>

@@ -31,7 +31,7 @@ namespace Chiro.Gap.Workers
         /// <param name="grpDao">DAO voor groepen</param>
         /// <param name="afjDao">DAO voor afdelingsjaren</param>
         /// <param name="afdDao">DAO voor afdelingen</param>
-        /// <param name="categorieenDao">DAO voor categorieen</param>
+        /// <param name="categorieenDao">DAO voor categorieën</param>
         /// <param name="gelPersDao">DAO voor gelieerde personen</param>
         /// <param name="autorisatieMgr">Autorisatiemanager</param>
         public GroepenManager(
@@ -158,7 +158,7 @@ namespace Chiro.Gap.Workers
         /// </summary>
         /// <param name="g">Groep voor nieuw afdelingsjaar</param>
         /// <param name="a">Afdeling voor nieuw afdelingsjaar</param>
-        /// <param name="oa">Te koppelen officiele afdeling</param>
+        /// <param name="oa">Te koppelen officiële afdeling</param>
         /// <param name="geboorteJaarBegin">Geboortejaar van</param>
         /// <param name="geboorteJaarEind">Geboortejaar tot</param>
         public AfdelingsJaar AfdelingsJaarMaken(Afdeling a, OfficieleAfdeling oa, GroepsWerkJaar gwj, int geboorteJaarBegin, int geboorteJaarEind)
@@ -193,9 +193,9 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Haalt lijst officiele afdelingen op.
+        /// Haalt lijst officiële afdelingen op.
         /// </summary>
-        /// <returns>Lijst officiele afdelingen</returns>
+        /// <returns>Lijst officiële afdelingen</returns>
         public IList<OfficieleAfdeling> OfficieleAfdelingenOphalen()
         {
             // Iedereen heeft het recht deze op te halen.
@@ -295,10 +295,10 @@ namespace Chiro.Gap.Workers
         }
 
         /// <summary>
-        /// Haalt een groep op, met daaraan gekoppeld al zijn categorieen
+        /// Haalt een groep op, met daaraan gekoppeld al zijn categorieën
         /// </summary>
         /// <param name="groepID">ID van de gevraagde groep</param>
-        /// <returns>De gevraagde groep, met daaraan gekoppeld al zijn categorieen</returns>
+        /// <returns>De gevraagde groep, met daaraan gekoppeld al zijn categorieën</returns>
         public Groep OphalenMetCategorieen(int groepID)
         {
             if (_autorisatieMgr.IsGavGroep(groepID))
@@ -311,15 +311,15 @@ namespace Chiro.Gap.Workers
             }
         }
 
-        #region categorieen
+        #region categorieën
 
         /// <summary>
         /// Maakt een nieuwe categorie, en koppelt die aan een bestaande groep (met daaraan
-        /// gekoppeld zijn categorieen)
+        /// gekoppeld zijn categorieën)
         /// </summary>
         /// <param name="categorieCode">Code voor de nieuwe categorie</param>
         /// <param name="categorieNaam">Naam voor de nieuwe categorie</param>
-        /// <param name="g">Groep waarvoor de categorie gemaakt wordt.  Als bestaande categorieen
+        /// <param name="g">Groep waarvoor de categorie gemaakt wordt.  Als bestaande categorieën
         /// gekoppeld zijn, wordt op dubbels gecontroleerd</param>
         public Categorie CategorieToevoegen(Groep g, String categorieNaam, String categorieCode)
         {
@@ -375,7 +375,7 @@ namespace Chiro.Gap.Workers
 
         }
 
-        #endregion categorieen
+        #endregion categorieën
 
         /// <summary>
         /// Maakt een nieuw groepswerkjaar voor een gegeven <paramref name="groep" />

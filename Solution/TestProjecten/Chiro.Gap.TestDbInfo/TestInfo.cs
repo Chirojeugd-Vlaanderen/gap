@@ -42,7 +42,7 @@
 		public const string ONBESTAANDENIEUWECATCODE = "BROES";
 
 		/// <summary>
-		/// Codes van onbestaande categorieen, te gebruiken voor unit tests.
+		/// Codes van onbestaande categorieën, te gebruiken voor unit tests.
 		/// </summary>
 		public static readonly string[] ONBESTAANDECATEGORIECODES = {
 									"HALLO",

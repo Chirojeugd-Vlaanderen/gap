@@ -83,7 +83,7 @@ namespace Chiro.Gap.Services.Test
 
 
 		/// <summary>
-		/// Ophalen groepsinfo (zonder categorieen of afdelingen)
+		/// Ophalen groepsinfo (zonder categorieën of afdelingen)
 		/// </summary>
 		[TestMethod]
 		public void GroepOphalen()
@@ -104,7 +104,7 @@ namespace Chiro.Gap.Services.Test
 		}
 
 		/// <summary>
-		/// Ophalen groepsinfo met categorieen
+		/// Ophalen groepsinfo met categorieën
 		/// </summary>
 		[TestMethod]
 		public void GroepOphalenMetCategorieen()

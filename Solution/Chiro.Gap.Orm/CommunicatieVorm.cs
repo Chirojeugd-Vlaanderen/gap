@@ -22,6 +22,7 @@ namespace Chiro.Gap.Orm
 			[Verplicht()]
 			public string Nummer { get; set; }
 			[StringLengte(320)]
+            [DataType(DataType.MultilineText)]
 			public string Nota { get; set; }
 		}
 

@@ -14,7 +14,7 @@ using Chiro.Gap.Orm.DataInterfaces;
 namespace Chiro.Gap.Workers
 {
 	/// <summary>
-	/// Klasse die methods bevat voor de businesslogica m.b.t. categorieen.
+	/// Klasse die methods bevat voor de businesslogica m.b.t. categorieën.
 	/// </summary>
 	public class CategorieenManager
 	{
@@ -24,8 +24,8 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Creeert een CategorieenManager
 		/// </summary>
-		/// <param name="dao">Repository voor Categorieen</param>
-		/// <param name="auMgr">Autorisatiemanager voor Categorieen</param>
+		/// <param name="dao">Repository voor categorieën</param>
+		/// <param name="auMgr">Autorisatiemanager voor categorieën</param>
 		public CategorieenManager(ICategorieenDao dao, IAutorisatieManager auMgr)
 		{
 			_dao = dao;
@@ -115,7 +115,7 @@ namespace Chiro.Gap.Workers
 				// TODO: (bug ) Eigenlijk zou de lambda-expressie hieronder
 				// cgrie => cgrie.GelieerdePersoon.First().WithoutUpdate()
 				// moeten zijn.  Maar met WithoutUpdate worden blijkbaar de
-				// TeVerwijderen categorieen genegeerd.
+				// TeVerwijderen categorieën genegeerd.
 				// Zie ticket #116.
 
 				return _dao.Bewaren(cat, cgrie => cgrie.GelieerdePersoon.First());

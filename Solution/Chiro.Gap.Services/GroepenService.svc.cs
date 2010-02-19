@@ -325,7 +325,7 @@ namespace Chiro.Gap.Services
 			       ).ToList();
 		}
 
-		#region Categorieen
+		#region categorieën
 
 		/// <summary>
 		/// Maakt een nieuwe categorie voor de groep met ID <paramref name="groepID"/>
@@ -415,7 +415,7 @@ namespace Chiro.Gap.Services
 			return (cat == null) ? 0 : cat.ID;
 		}
 
-		#endregion categorieen
+		#endregion categorieën
 
 		#region adressen
 		/// <summary>

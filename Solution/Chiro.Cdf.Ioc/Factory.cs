@@ -85,7 +85,7 @@ namespace Chiro.Cdf.Ioc
         
         /// <summary>
         /// Gebruik Unity om een instantie van type/interface T
-        /// te creeren.
+        /// te creëren.
         /// </summary>
         /// <returns></returns>
         public static T Maak<T>()
@@ -96,7 +96,7 @@ namespace Chiro.Cdf.Ioc
         }
 
         /// <summary>
-        /// Gebruik Unity om een instantie van het gevraagde type te creeren.
+        /// Gebruik Unity om een instantie van het gevraagde type te creëren.
         /// </summary>
         /// <returns></returns>
         public static object Maak(Type t)

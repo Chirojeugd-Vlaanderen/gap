@@ -97,7 +97,7 @@ namespace Chiro.Cdf.Data.Test
         /// Haalt gelieerde persoon met categorieeen op
         /// </summary>
         /// <param name="persoonID">ID op te halen gelieerde persoon</param>
-        /// <returns>gelieerde persoon met categorieen</returns>
+        /// <returns>gelieerde persoon met categorieën</returns>
         public static GelieerdePersoon PersoonOphalenMetCategorieen(int persoonID)
         {
             GelieerdePersoon p;

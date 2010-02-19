@@ -360,7 +360,7 @@ namespace Chiro.Gap.Services
             return _gpMgr.Ophalen(gelieerdePersoonID).Persoon.ID;
         }
 
-		#region categorieen
+		#region categorieën
 		/// <summary>
 		/// Koppelt een lijst gebruikers aan een categorie
 		/// </summary>
@@ -413,7 +413,7 @@ namespace Chiro.Gap.Services
 			throw new NotImplementedException();
 		}
 
-		#endregion categorieen
+		#endregion categorieën
 
         #endregion
     }

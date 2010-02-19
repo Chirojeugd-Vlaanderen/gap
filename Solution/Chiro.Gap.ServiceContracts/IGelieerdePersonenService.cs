@@ -230,9 +230,9 @@ namespace Chiro.Gap.ServiceContracts
 
 		#endregion commvormen
 
-        #region categorieen
+        #region categorieën
         /// <summary>
-        /// Voegt een categorieen toe aan een verzameling personen
+        /// Voegt een categorieën toe aan een verzameling personen
         /// </summary>
         /// <param name="personenIDs">ID's van Personen
         /// waaraan het nieuwe commvorm toegevoegd moet worden.</param>
@@ -249,11 +249,11 @@ namespace Chiro.Gap.ServiceContracts
 		IList<GelieerdePersoon> OphalenUitCategorie(int categorieID);
 
 		/// <summary>
-		/// Haalt een lijst op met alle categorieen
+		/// Haalt een lijst op met alle categorieën
 		/// </summary>
 		[OperationContract]
 		IEnumerable<Categorie> CategorieenOphalen(int groepID);
 
-		#endregion categorieen
+		#endregion categorieën
 	}
 }

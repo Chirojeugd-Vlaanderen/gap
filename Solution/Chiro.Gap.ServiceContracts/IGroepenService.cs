@@ -89,7 +89,7 @@ namespace Chiro.Gap.ServiceContracts
 		AfdelingsJaar AfdelingsJaarOphalen(int afdelingsJaarID);
 
 		/// <summary>
-		/// Methode die aan de hand van een groep, een afdelingsjaar van de groep en een officiele afdeling een 
+		/// Methode die aan de hand van een groep, een afdelingsjaar van de groep en een officiële afdeling een 
 		/// afdelingsjaar maakt voor de gegeven leeftijden. 
 		/// </summary>
 		/// <param name="g">Deze moet gelinkt zijn met afdelingsjaar, officieleafdeling en afdeling</param>
@@ -154,7 +154,7 @@ namespace Chiro.Gap.ServiceContracts
 
 		#endregion
 
-		#region categorieen
+		#region categorieën
 
 		/// <summary>
 		/// Voegt een categorie toe aan de groep
@@ -196,7 +196,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <returns>Het categorieID als de categorie gevonden is, anders 0.</returns>
 		int CategorieIDOphalen(int groepID, string code);
 
-		#endregion categorieen
+		#endregion categorieën
 
 		/*TODO
             bivakorganiseren(g, b)

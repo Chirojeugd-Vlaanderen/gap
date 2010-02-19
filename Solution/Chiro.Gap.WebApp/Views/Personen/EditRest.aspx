@@ -106,7 +106,7 @@
     <li><%=Html.ActionLink("[communicatievorm toevoegen]", "NieuweCommVorm", new { gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%></li>
     </ul>     
  
-    <h3>Categorieen</h3>
+    <h3>categorieën</h3>
 
     <ul>
     <% foreach (Categorie cv in Model.HuidigePersoon.Categorie)

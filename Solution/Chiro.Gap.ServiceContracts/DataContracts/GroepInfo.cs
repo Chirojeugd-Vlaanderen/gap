@@ -46,7 +46,7 @@ namespace Chiro.Gap.ServiceContracts
 		public IList<AfdelingInfo> AfdelingenDitWerkJaar { get; set; }
 
 		/// <summary>
-		/// Lijst met info over afdelingen van categorieen.
+		/// Lijst met info over afdelingen van categorieën.
 		/// </summary>
 		/// <remarks>
 		/// Kan <c>null</c> blijven indien niet relevant.

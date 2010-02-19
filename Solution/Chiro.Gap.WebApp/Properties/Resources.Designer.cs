@@ -149,5 +149,14 @@ namespace Chiro.Gap.WebApp.Properties {
                 return ResourceManager.GetString("NieuwePersoonTitel", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to De wijzigingen zijn opgeslagen.
+        /// </summary>
+        internal static string WijzigingenOpgeslagenFeedback {
+            get {
+                return ResourceManager.GetString("WijzigingenOpgeslagenFeedback", resourceCulture);
+            }
+        }
     }
 }

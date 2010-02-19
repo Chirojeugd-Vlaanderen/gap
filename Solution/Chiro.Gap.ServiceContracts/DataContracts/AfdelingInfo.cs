@@ -37,7 +37,7 @@ namespace Chiro.Gap.ServiceContracts
 		public string Afkorting;
 
 		/// <summary>
-		/// Naam van de corresponderende officiele afdeling
+		/// Naam van de corresponderende officiële afdeling
 		/// </summary>
 		[DataMember]
 		public string OfficieleAfdelingNaam;

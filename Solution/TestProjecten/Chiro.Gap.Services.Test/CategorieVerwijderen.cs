@@ -68,7 +68,7 @@ namespace Chiro.Gap.Services.Test
 			_groepenSvc = Factory.Maak<GroepenService>();
 			_personenSvc = Factory.Maak<GelieerdePersonenService>();
 
-			// Maak de categorieen voor de tests aan, als ze niet bestaan
+			// Maak de categorieën voor de tests aan, als ze niet bestaan
 
 			foreach (string code in TestInfo.ONBESTAANDECATEGORIECODES)
 			{
@@ -85,7 +85,7 @@ namespace Chiro.Gap.Services.Test
 		}
 
 		/// <summary>
-		/// Verwijder eventuele overblijvende categorieen
+		/// Verwijder eventuele overblijvende categorieën
 		/// </summary>
 		[TestCleanup]
 		public void tearDown()

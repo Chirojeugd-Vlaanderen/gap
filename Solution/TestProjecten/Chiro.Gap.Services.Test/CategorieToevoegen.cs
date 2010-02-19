@@ -45,7 +45,7 @@ namespace Chiro.Gap.Services.Test
 			Factory.Dispose();
 		}
 
-		List<int> catlijst = new List<int>(); //lijst van nieuw aangemaakte categorieen, die nog verwijderd moeten worden
+		List<int> catlijst = new List<int>(); //lijst van nieuw aangemaakte categorieën, die nog verwijderd moeten worden
 		IGroepenService groepenSvc;
 
 		/// <summary>

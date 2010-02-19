@@ -47,14 +47,14 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// ophalen van groep, groepswerkjaar, afdeling, afdelingsjaar en officiele afdelingen 
+		/// ophalen van groep, groepswerkjaar, afdeling, afdelingsjaar en officiële afdelingen 
 		/// voor gegeven groepswerkjaar.
 		/// </summary>
 		/// <remarks>Deze functie haande origineel de afdelingen op voor een groep in het
 		/// huidige werkjaar, maar 'huidige werkjaar' vind ik precies wat veel business
 		/// voor in de DAL.</remarks>
 		/// <param name="groepsWerkJaarID">ID van gevraagde groepswerkjaar</param>
-		/// <returns>Groep, afdelingsjaar, afdelingen en officiele afdelingen</returns>
+		/// <returns>Groep, afdelingsjaar, afdelingen en officiële afdelingen</returns>
 		public Groep OphalenMetAfdelingen(int groepsWerkJaarID)
 		{
 			GroepsWerkJaar groepswj;
@@ -157,7 +157,7 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		/// <param name="g">Groep voor afdelingsjaar</param>
 		/// <param name="a">Afdeling voor afdelingsjaar</param>
-		/// <param name="oa">Officiele afdeling voor afdelingsjaar</param>
+		/// <param name="oa">officiële afdeling voor afdelingsjaar</param>
 		/// <param name="geboorteJaarVan">begingeboortejaar voor afdeling</param>
 		/// <param name="geboorteJaarTot">eindgeboortejaar voor afdeling</param>
 		/// <returns>Het nieuwe afdelingsjaar</returns>
@@ -190,11 +190,11 @@ namespace Chiro.Gap.Data.Ef
 			throw new InvalidOperationException("Afdeling " + a.AfdelingsNaam + " is geen afdeling van Groep " + g.Naam);
 		    }
 
-		    // TODO: test of de officiele afdeling bestaat, heb
+		    // TODO: test of de officiële afdeling bestaat, heb
 		    // ik voorlopig even weggelaten.  Als de afdeling niet
 		    // bestaat, zal er bij het bewaren toch een exception
 		    // optreden, aangezien het niet de bedoeling is dat
-		    // een officiele afdeling bijgemaakt wordt.
+		    // een officiële afdeling bijgemaakt wordt.
 
 		    //TODO check if no conflicts with existing afdelingsjaar
 		    //TODO: bovenstaande TODO moet ook in business layer gebeuren

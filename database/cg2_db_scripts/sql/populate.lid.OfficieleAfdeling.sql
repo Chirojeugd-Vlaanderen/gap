@@ -8,5 +8,5 @@ INSERT INTO [lid].[OfficieleAfdeling] ([Naam]) VALUES ('Tito''s');
 GO
 INSERT INTO [lid].[OfficieleAfdeling] ([Naam]) VALUES ('Keti''s');
 GO
-INSERT INTO [lid].[OfficieleAfdeling] ([Naam]) VALUES ('Aspiranten');
+INSERT INTO [lid].[OfficieleAfdeling] ([Naam]) VALUES ('Aspi''s');
 GO

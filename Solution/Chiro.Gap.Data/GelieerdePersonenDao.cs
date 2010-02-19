@@ -57,7 +57,7 @@ namespace Chiro.Gap.Data.Ef
 
 
 		/// <summary>
-		/// Haal een pagina op met gelieerde personen van een groep, inclusief hun categorieen en relevante 
+		/// Haal een pagina op met gelieerde personen van een groep, inclusief hun categorieën en relevante 
 		/// lidinfo voor het recentste werkjaar.
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>
@@ -92,7 +92,7 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// Haal een pagina op met gelieerde personen van een groep, inclusief hun categorieen en relevante 
+		/// Haal een pagina op met gelieerde personen van een groep, inclusief hun categorieën en relevante 
 		/// lidinfo voor het gegeven werkjaar.
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>

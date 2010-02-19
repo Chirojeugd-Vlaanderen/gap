@@ -60,11 +60,11 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Haalt een groepswerkjaar op, samen met gekoppelde afdelingsjaren, afdelingen en officiele afdelingen.
+		/// Haalt een groepswerkjaar op, samen met gekoppelde afdelingsjaren, afdelingen en officiële afdelingen.
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID op te vragen groepswerkjaar</param>
 		/// <returns>
-		/// groepswerkjaar, samen met gekoppelde afdelingsjaren, afdelingen en officiele afdelingen
+		/// groepswerkjaar, samen met gekoppelde afdelingsjaren, afdelingen en officiële afdelingen
 		/// </returns>
 		public GroepsWerkJaar OphalenMetAfdelingen(int groepsWerkJaarID)
 		{
@@ -96,15 +96,15 @@ namespace Chiro.Gap.Workers
 
 		/// <summary>
 		/// Maakt een nieuw afdelingsjaar op basis van groepswerkjaar,
-		/// afdeling en officiele afdeling.
+		/// afdeling en officiële afdeling.
 		/// </summary>
 		/// <param name="gwj">Groepswerkjaar voor afdelingsjaar</param>
 		/// <param name="afd">Afdeling voor afdelingswerkjaar</param>
-		/// <param name="oa">Corresponderende officiele afdeling voor afd</param>
+		/// <param name="oa">Corresponderende officiële afdeling voor afd</param>
 		/// <param name="jaarVan">startpunt interval geboortejaren</param>
 		/// <param name="jaarTot">eindpunt interval geboortejaren</param>
 		/// <returns>Afdelingsjaar met daaraan gekoppeld groepswerkjaar
-		/// , afdeling en officiele afdeling.</returns>
+		/// , afdeling en officiële afdeling.</returns>
 		/// <remarks>gwj.Groep en afd.Groep mogen niet null zijn</remarks>
 		public AfdelingsJaar AfdelingsJaarMaken(GroepsWerkJaar gwj, Afdeling afd, OfficieleAfdeling oa, int jaarVan, int jaarTot)
 		{

@@ -10,13 +10,13 @@ using Chiro.Gap.ServiceContracts;
 namespace Chiro.Gap.WebApp.Models
 {
 	/// <summary>
-	/// Dit model bevat een lijstje categorieen, een lijstje GelieerdePersoonIDs, en een lijstje
-	/// ID's van geselecteerde categorieen
+	/// Dit model bevat een lijstje categorieën, een lijstje GelieerdePersoonIDs, en een lijstje
+	/// ID's van geselecteerde categorieën
 	/// </summary>
 	public class CategorieModel : MasterViewModel
 	{
 		/// <summary>
-		/// Nieuwe categorieen voor de gegeven gelieerde personen
+		/// Nieuwe categorieën voor de gegeven gelieerde personen
 		/// </summary>
 		public IEnumerable<Categorie> Categorieen { get; set; }
 		public List<int> GeselecteerdeCategorieIDs { get; set; }
