@@ -18,7 +18,8 @@
         |
         <%=Html.Encode(ViewData.Model.GroepsNaam) %></title>
     <asp:ContentPlaceHolder ID="head" runat="server" />
-    <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="<%=ResolveUrl("~/Content/Site.css")%>" rel="stylesheet" type="text/css" />
+
 </head>
 <body>
     <div class="page">
