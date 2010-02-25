@@ -56,6 +56,15 @@ GO
 ALTER TABLE [core].[Categorie]  WITH CHECK ADD  CONSTRAINT [FK_Categorie_Groep] FOREIGN KEY([GroepID]) REFERENCES [grp].[Groep] ([GroepID])
 GO
 
+ALTER TABLE lid.Functie  ADD  CONSTRAINT FK_Functie_Groep FOREIGN KEY(GroepID) REFERENCES grp.Groep (GroepID)
+GO
+
+ALTER TABLE lid.LidFunctie  ADD  CONSTRAINT FK_LidFunctie_Lid FOREIGN KEY(LidID) REFERENCES lid.Lid (LidID)
+GO
+
+ALTER TABLE lid.LidFunctie  ADD  CONSTRAINT FK_LidFunctie_Functie FOREIGN KEY(FunctieID) REFERENCES lid.Functie (FunctieID)
+GO
+
 ALTER TABLE [grp].[GroepsWerkJaar]  WITH CHECK ADD  CONSTRAINT [FK_GroepsWerkjaar_Groep] FOREIGN KEY([GroepID]) REFERENCES [grp].[Groep] ([GroepID])
 GO
 

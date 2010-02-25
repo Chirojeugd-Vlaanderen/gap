@@ -530,6 +530,37 @@ BEGIN
 END
 GO
 
+-- functie
+
+BEGIN
+	CREATE TABLE lid.Functie(
+		Naam varchar(80) NOT NULL,
+		Code varchar(10) NOT NULL,
+		FunctieID int IDENTITY(1,1) NOT NULL,
+		GroepID int NULL,
+		Versie timestamp NULL,
+    MaxAantal int NOT NULL,  -- indien 0: onbeperkt
+    MinAantal int NOT NULL,
+    MinLeefTijd int NOT NULL,
+    WerkJaarVan int NOT NULL,
+    WerkJaarTot int NOT NULL,  -- indien 0: functie nog actief
+		CONSTRAINT PK_Functie PRIMARY KEY (FunctieID ASC)
+	)
+END
+GO
+
+CREATE UNIQUE INDEX IX_Functie_Naam_GroepID ON lid.Functie(Naam, GroepID)
+GO
+
+-- lidfunctie
+
+CREATE TABLE lid.LidFunctie(
+  LidID INT NOT NULL,
+  FunctieID INT NOT NULL,
+  CONSTRAINT PK_LidFunctie PRIMARY KEY (LidID, FunctieID)
+)
+GO
+
 -- User defined function
 
 CREATE FUNCTION core.ufnSoundEx
