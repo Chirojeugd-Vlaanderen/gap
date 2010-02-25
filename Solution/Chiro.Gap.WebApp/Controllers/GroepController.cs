@@ -11,6 +11,7 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WebApp.Models;
+using System.Web.Routing;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -110,27 +111,63 @@ namespace Chiro.Gap.WebApp.Controllers
             }
         }
 
-        /// <summary>
-        /// Verwijdert een categorie.  Indien de categorie niet leeg was, lukt dat direct, en krijg
-        /// je opnieuw de view 'Index'.  In het andere geval krijg je de view 'CategorieVerwijderen'.
-        /// </summary>
-        /// <param name="groepID">ID van de groep waarin de gebruiker momenteel aan het werken is</param>
-        /// <param name="id">CategorieID van te verwijderen categorie</param>
-        /// <returns>Opnieuw de Index als de categorie leeg was, en anders de view CategorieVerwijderen.
-        /// </returns>
-        public ActionResult CategorieVerwijderen(int groepID, int id)
-        {
-            try
-            {
-                ServiceHelper.CallService<IGroepenService>(svc => svc.CategorieVerwijderen(id, false));
-            }
-            catch (Exception)
-            {
-                // Voorlopig doen we niks.
-                throw;
-            }
-            return RedirectToAction("Index", new { groepID = groepID });
-        }
+		/// <summary>
+		/// Verwijdert een categorie.  Indien de categorie niet leeg was, lukt dat direct, en krijg
+		/// je opnieuw de view 'Index'.  In het andere geval krijg je de view 'CategorieVerwijderen'.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarin de gebruiker momenteel aan het werken is</param>
+		/// <param name="id">CategorieID van te verwijderen categorie</param>
+		/// <returns>Opnieuw de Index als de categorie leeg was, en anders de view CategorieVerwijderen.
+		/// </returns>
+		public ActionResult CategorieVerwijderen(int groepID, int id)
+		{
+			try
+			{
+				ServiceHelper.CallService<IGroepenService>(svc => svc.CategorieVerwijderen(id, false));
+			}
+			catch (FaultException<GekoppeldeObjectenFault<PersoonInfo>> ex)
+			{
+				// Categorie was niet leeg
 
+				var model = new Models.PersonenLinksModel();
+				BaseModelInit(model, groepID);
+
+				model.Personen = ex.Detail.Objecten;
+				model.CategorieID = id;
+				model.VolledigeLijstUrl = Url.Action("List", "Personen", new RouteValueDictionary(new { id = id, groepID = groepID }));
+				
+				// Vis categorienaam op uit de gekoppelde categorieen van de personen
+				// niet elegant, maar werkt wel.
+
+				string categorieNaam = (from cat in model.Personen.First().CategorieLijst
+							where cat.ID == id
+							select cat).First().Naam;
+
+				model.Titel = String.Format("Categorie '{0}' verwijderen", categorieNaam);
+
+				return View("CategorieVerwijderen", model);
+			}
+			catch (Exception)
+			{
+				// Onverwachte exception gewoon verder throwen
+				throw;
+			}
+			return RedirectToAction("Index", new { groepID = groepID });
+		}
+
+	    /// <summary>
+	    /// Forceert het verwijderen van een categorie
+	    /// </summary>
+	    /// <param name="model">PersonenLinkModel, waarvan enkel GroepID en CategorieID van belang zijn</param>
+	    /// <returns>Een redirect naar de actie 'Index'</returns>
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult CategorieVerwijderen(PersonenLinksModel model)
+		{
+			ServiceHelper.CallService<IGroepenService>(svc => svc.CategorieVerwijderen(
+				model.CategorieID, 
+				true));	// forceer; ook als categorie niet leeg.
+
+			return RedirectToAction("Index", new { groepID = model.GroepID });
+		}		
     }
 }

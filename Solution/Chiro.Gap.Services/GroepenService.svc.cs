@@ -385,7 +385,7 @@ namespace Chiro.Gap.Services
 			{
 				IEnumerable<PersoonInfo> gekoppeldePersonen 
 					= Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonInfo>>(ex.Objecten);
-				var fault = new GekoppeldeObjectenFault<PersoonInfo> { Objecten = gekoppeldePersonen };
+				var fault = new GekoppeldeObjectenFault<PersoonInfo> { Objecten = gekoppeldePersonen.Take(Properties.Settings.Default.KleinAantal).ToList() };
 				throw new FaultException<GekoppeldeObjectenFault<PersoonInfo>>(fault);
 			}
 			catch (Exception)

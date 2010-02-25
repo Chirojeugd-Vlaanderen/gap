@@ -58,5 +58,14 @@ namespace Chiro.Gap.WebApp.Properties {
                 return ((int)(this["AutoSuggestieStandaardLimiet"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int KleinAantalPersonen {
+            get {
+                return ((int)(this["KleinAantalPersonen"]));
+            }
+        }
     }
 }

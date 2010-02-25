@@ -1,11 +1,15 @@
-﻿using Chiro.Gap.WebApp.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
-using Chiro.Cdf.ServiceHelper;
-using System.Web.Mvc;
-using Moq;
-using Chiro.Gap.ServiceContracts;
 using System;
+using System.ServiceModel;
+using System.Web.Mvc;
+
+using Moq;
+
+using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.WebApp.Controllers;
 
 namespace Chiro.Gap.WebApp.Test
 {
@@ -98,5 +102,6 @@ namespace Chiro.Gap.WebApp.Test
 			// Verwacht de view met de groepsinstellingen.
 			Assert.AreEqual("Index", actual.RouteValues["action"]);
 		}
+
 	}
 }

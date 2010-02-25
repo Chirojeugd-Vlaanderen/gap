@@ -120,6 +120,7 @@
     <Compile Include="Models\LedenModel.cs" />
     <Compile Include="Models\MasterAttribute.cs" />
     <Compile Include="Models\MasterViewModel.cs" />
+    <Compile Include="Models\PersonenLinksModel.cs" />
     <Compile Include="Models\PersoonInfoModel.cs" />
     <Compile Include="Models\AdresModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -241,8 +242,10 @@
     <Content Include="Content\GeenGroepGekozen.css" />
     <Content Include="Scripts\MicrosoftMvcJQueryValidation.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
+    <Content Include="Views\Groep\CategorieVerwijderen.aspx" />
     <Content Include="Views\Groep\Index.aspx" />
     <Content Include="Views\Shared\DisplayTemplates\Date.ascx" />
+    <Content Include="Views\Shared\PersonenLinksControl.ascx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

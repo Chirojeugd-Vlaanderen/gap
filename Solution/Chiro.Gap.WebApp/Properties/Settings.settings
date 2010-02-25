@@ -14,5 +14,8 @@
     <Setting Name="AutoSuggestieStandaardLimiet" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">10</Value>
     </Setting>
+    <Setting Name="KleinAantalPersonen" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
