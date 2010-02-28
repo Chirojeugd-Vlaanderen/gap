@@ -173,7 +173,6 @@
     <Content Include="Views\Personen\AdresBewerken.aspx" />
     <Content Include="Views\Shared\LedenLijstControl.ascx" />
     <Content Include="Views\Shared\PersonenLijstControl.ascx" />
-    <Content Include="Views\Shared\PersoonsDetailsControl.ascx" />
     <Content Include="Views\Shared\PersoonsLinkControl.ascx" />
     <Content Include="Views\Shared\TerugNaarLijstLinkControl.ascx" />
     <Content Include="Web.config" />
@@ -244,6 +243,8 @@
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Views\Groep\CategorieVerwijderen.aspx" />
     <Content Include="Views\Groep\Index.aspx" />
+    <Content Include="Views\Leden\EditRest.aspx" />
+    <Content Include="Views\Shared\LedenLinkControl.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\Date.ascx" />
     <Content Include="Views\Shared\PersonenLinksControl.ascx" />
     <EmbeddedResource Include="Properties\Resources.resx">

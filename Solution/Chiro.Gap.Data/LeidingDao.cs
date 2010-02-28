@@ -18,10 +18,12 @@ namespace Chiro.Gap.Data.Ef
 	{
 		public LeidingDao()
 		{
-			connectedEntities = new Expression<Func<Leiding, object>>[3] { 
-                                        e => e.GroepsWerkJaar.WithoutUpdate(), 
+			connectedEntities = new Expression<Func<Leiding, object>>[] { 
+                                        e => e.GroepsWerkJaar.WithoutUpdate(),
                                         e => e.GelieerdePersoon.WithoutUpdate(), 
-                                        e => e.AfdelingsJaar.First().WithoutUpdate() };
+										e => e.GelieerdePersoon.Persoon.WithoutUpdate(), 
+                                        e => e.AfdelingsJaar.First().WithoutUpdate(),
+										e => e.AfdelingsJaar.First().Afdeling.WithoutUpdate()};
 		}
 	}
 }

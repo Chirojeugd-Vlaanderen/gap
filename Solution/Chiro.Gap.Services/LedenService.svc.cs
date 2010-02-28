@@ -8,10 +8,12 @@ using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Orm;
 using Chiro.Cdf.Ioc;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.ServiceContracts.Mappers;
 using AutoMapper;
 using System.Security.Permissions;
 using Chiro.Gap.Fouten.Exceptions;
+using System.Diagnostics;
 
 namespace Chiro.Gap.Services
 {
@@ -56,7 +58,7 @@ namespace Chiro.Gap.Services
 			}
 			if (!result.Equals(String.Empty))
 			{
-				throw new OngeldigeActieException(result);
+				throw new FaultException<OngeldigeActieException>(new OngeldigeActieException(result));
 			}
 
 			foreach(Lid l in leden)
@@ -101,47 +103,61 @@ namespace Chiro.Gap.Services
 		}
 
         /* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void Bewaren(LidInfo lid)
+		public LidInfo Bewaren(LidInfo lidinfo)
 		{
-			throw new NotImplementedException();
+			Lid lid = _lm.OphalenMetAfdelingen(lidinfo.LidID);
 
-			/*Lid l = _lm.Ophalen(lid.LidID);
-			if (lid.Type == LidType.Kind)
+			Debug.Assert(lid is Leiding || lid is Kind);
+
+			if (lid is Kind && lidinfo.Type == LidType.Leiding)
 			{
-				Kind kind = new Kind();
+				throw new NotImplementedException();
+			}
+			else if (lid is Leiding && lidinfo.Type == LidType.Kind)
+			{
+				throw new NotImplementedException();
+			}
 
-				//3 weken bedenktijd
-				kind.EindeInstapPeriode = DateTime.Now.AddDays(21); //TODO IN MOOIE CONFIGFILE STEKEN OFZO
-
-				l = (Lid)kind;
+			if (lid is Kind)
+			{
+				Kind kind = (Kind)lid;
+				kind.LidgeldBetaald = lidinfo.LidgeldBetaald;
+				kind.NonActief = lidinfo.NonActief;
 			}
 			else
 			{
-				Leiding leiding = new Leiding();
-
-				leiding.
-
-				//TODO afdelingjaren en dubbelpunt
-
-				l = (Lid)leiding;
+				Leiding leiding = (Leiding)lid;
+				leiding.DubbelPuntAbonnement = lidinfo.DubbelPunt;
+				leiding.NonActief = lidinfo.NonActief;
 			}
 
-			GelieerdePersoon gp = _gpm.Ophalen(lid.PersoonInfo.GelieerdePersoonID);
-			l.GelieerdePersoon = gp;
-			l.LidgeldBetaald = false;
-			l.NonActief = false;
+			return Mapper.Map<Lid, LidInfo>(_lm.LidBewaren(lid));
+		}
 
-			l.GroepsWerkJaar = _grm.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
-			gp.Lid.Add(l);
-			_lm.LidBewaren(l);*/
+        [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public LidInfo BewarenMetAfdelingen(LidInfo lidinfo)
+		{
+			Bewaren(lidinfo);
+
+			Lid lid = _lm.OphalenMetAfdelingen(lidinfo.LidID);
+
+			try
+			{
+				_lm.AanpassenAfdelingenVanLid(lid, lidinfo.AfdelingIdLijst);
+			}
+			catch (OngeldigeActieException ex)
+			{
+				//TODO
+				throw ex;
+			}
+			
+			return Mapper.Map<Lid, LidInfo>(_lm.LidBewaren(lid));
 		}
 
         /* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public Boolean Verwijderen(int id)
 		{
-            //wat moet het gedrag hiervan juist zijn (inactief of niet ...)
-            throw new NotImplementedException();
-			//return _lm.LidVerwijderen(id);
+            return _lm.LidVerwijderen(id);
 		}
 
         /* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
@@ -173,14 +189,14 @@ namespace Chiro.Gap.Services
         }
 
 		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void BewarenMetFuncties(LidInfo lid)
+		public LidInfo BewarenMetFuncties(LidInfo lid)
 		{
 			//TODO
 			throw new NotImplementedException();
 		}
 
 		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void BewarenMetVrijeVelden(LidInfo lid)
+		public LidInfo BewarenMetVrijeVelden(LidInfo lid)
 		{
 			//TODO
 			throw new NotImplementedException();

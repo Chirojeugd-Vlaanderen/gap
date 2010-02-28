@@ -16,7 +16,7 @@
     <% Html.EnableClientValidation(); %>
 
     <% using (Html.BeginForm()) { %>
-    <% this.ViewContext.FormContext.ClientValidationFunction = "__MVC_EnableClientValidation"; %>
+    <% Html.EnableClientValidation(); %>
     
     
     <ul id="acties">

@@ -173,13 +173,41 @@ namespace Chiro.Gap.WebApp.Controllers
 			try
 			{
 				int x = selectie.Count;
-				ServiceHelper.CallService<ILedenService>(e => e.BewarenMetAfdelingen(model.HuidigLid.LidID, selectie));
+				LidInfo tebewarenlid = model.HuidigLid;
+				tebewarenlid.AfdelingIdLijst = selectie;
+				ServiceHelper.CallService<ILedenService>(e => e.BewarenMetAfdelingen(tebewarenlid));
 				return RedirectToAction("List", new { groepsWerkJaarId = Sessie.LaatstePagina, afdID = Sessie.LaatsteActieID });
 			}
 			catch
 			{
 				return View();
 			}
+		}
+
+		//
+		// GET: /Leden/EditRest/{lidID}
+		public ActionResult EditRest(int lidID, int groepID)
+		{
+			var model = new LedenModel();
+			BaseModelInit(model, groepID);
+
+			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>
+				(l => l.LidOphalenMetAfdelingen(lidID));
+
+			/*var list =
+				ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
+				(groep => groep.AfdelingenOphalen());
+			model.AfdelingsInfoDictionary = new Dictionary<int, AfdelingInfo>();
+			foreach (AfdelingInfo ai in list)
+			{
+				model.AfdelingsInfoDictionary.Add(ai.AfdelingID, ai);
+			}
+			model.AfdelingIDs = model.HuidigLid.AfdelingIdLijst.ToList();
+			*/
+
+			model.Titel = "Ledenoverzicht";
+
+			return View("EditRest", model);
 		}
 	}
 }

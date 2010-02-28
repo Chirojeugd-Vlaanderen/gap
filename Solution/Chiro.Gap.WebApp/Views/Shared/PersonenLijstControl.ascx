@@ -55,9 +55,13 @@ Pagina: <%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.AantalP
     <td align="right"><%=p.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)p.GeboorteDatum).ToString("d") %></td>
     <td><%=p.Geslacht.ToString() %></td>
     <td>
-        <% if (!p.IsLid)
-           { %>
-        <%=Html.ActionLink("Lid maken", "LidMaken", new { Controller = "Personen", id = p.GelieerdePersoonID })%>
+        <% if (!p.IsLid){ %>
+			<% if(p.GeboorteDatum.HasValue && p.GeboorteDatum.Value.Year > DateTime.Today.Year-21){ %>
+				<%=Html.ActionLink("Lid maken", "LidMaken", new { Controller = "Personen", id = p.GelieerdePersoonID })%>
+			<% } %>
+			<% if(p.GeboorteDatum.HasValue && p.GeboorteDatum.Value.Year < DateTime.Today.Year-14){ %>
+				<%=Html.ActionLink("Leiding maken", "LeidingMaken", new { Controller = "Personen", id = p.GelieerdePersoonID })%>
+			<% } %>
         <% } %>
     </td>
     <td><% foreach (Categorie c in p.CategorieLijst) 

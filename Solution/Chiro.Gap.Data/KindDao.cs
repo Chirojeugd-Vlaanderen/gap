@@ -20,7 +20,9 @@ namespace Chiro.Gap.Data.Ef
 			connectedEntities = new Expression<Func<Kind, object>>[] { 
                                         e => e.GroepsWerkJaar.WithoutUpdate(), 
                                         e => e.GelieerdePersoon.WithoutUpdate(), 
-                                        e => e.AfdelingsJaar.WithoutUpdate() };
+										e => e.GelieerdePersoon.Persoon.WithoutUpdate(), 
+										e => e.AfdelingsJaar.WithoutUpdate(),
+                                        e => e.AfdelingsJaar.Afdeling.WithoutUpdate() };
 		}
 	}
 }

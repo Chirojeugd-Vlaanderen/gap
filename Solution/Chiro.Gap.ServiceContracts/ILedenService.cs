@@ -29,27 +29,27 @@ namespace Chiro.Gap.ServiceContracts
 		IEnumerable<int> LeidingMakenEnBewaren(IEnumerable<int> gelieerdePersoonIDs);
 
         /// <summary>
-        /// Om een lid aan te passen of te verwijderen uit het systeem. De gewone bewaar methode slaat altijd alleen
-        /// veranderingen op aan het lid object zelf
+		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. Creert of verwijdert geen leden, en leden
+		/// kunnen ook niet van werkjaar of van gelieerdepersoon veranderen.
         /// </summary>
         /// <param name="persoon"></param>
         [OperationContract]
-        void Bewaren(LidInfo lid);
+        LidInfo Bewaren(LidInfo lid);
 
         /// <summary>
-        /// Krijgt een lijst met afdelingsIDs en het lid. De bedoeling is dat het lid een afdelingsjaar moet hebben voor die
-        /// afdelingsids en dat het voor andere afdelingsids verwijderd moet worden
+		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. Creert of verwijdert geen leden, en leden
+		/// kunnen ook niet van werkjaar of van gelieerdepersoon veranderen. Ook de afdelingen worden aangepast.
         /// </summary>
         /// <param name="lidID"></param>
         /// <param name="afdelingsJaarIDs"></param>
         [OperationContract]
-        void BewarenMetAfdelingen(int lidID, IList<int> afdelingsIDs);
+        LidInfo BewarenMetAfdelingen(LidInfo lid);
 
         [OperationContract]
-		void BewarenMetFuncties(LidInfo lid);
+		LidInfo BewarenMetFuncties(LidInfo lid);
 
         [OperationContract]
-		void BewarenMetVrijeVelden(LidInfo lid);
+		LidInfo BewarenMetVrijeVelden(LidInfo lid);
 
         /// <summary>
         /// TODO wat moet deze methode juist doen (nonactief maken of verwijderen als er nog niet lang in)

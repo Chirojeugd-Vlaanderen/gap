@@ -255,6 +255,16 @@ namespace Chiro.Gap.WebApp.Controllers
             return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
 		}
 
+		// GET: /Personen/LidMaken/id
+		public ActionResult LeidingMaken(int id, int groepID)
+		{
+			List<int> ids = new List<int>();
+			ids.Add(id);
+			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LeidingMakenEnBewaren(ids));
+			//TODO feedback
+			return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
+		}
+
 		#endregion leden
 
 		#region adressen
@@ -309,8 +319,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				// De service zal het meegeleverder model.NaarAdres.ID negeren, en 
 				// opnieuw opzoeken.
 				//
-				// Adressen worden nooit gewijzigd, enkel bijgemaakt.  (en eventueel
-				// verwijderd.)
+				// Adressen worden nooit gewijzigd, enkel bijgemaakt.  (en eventueel verwijderd.)
 
 				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersonenVerhuizen(model.PersoonIDs, model.Adres, model.OudAdresID, model.AdresType));
 

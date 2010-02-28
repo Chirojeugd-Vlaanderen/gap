@@ -86,13 +86,7 @@ namespace Chiro.Gap.Workers
 			//Er zijn afdelingen
 			if (gwj.AfdelingsJaar.Count == 0)
 			{
-				throw new OngeldigeActieException("Je kan geen lid maken als de groep geen afdelingen heeft!");
-			}
-
-			//Zelfde groep (persoon en werkjaar)
-			if (gpMetDetails.Groep.ID != gwj.Groep.ID)
-			{
-				throw new FoutieveGroepException(Properties.Resources.FoutiefGroepsWerkJaar);
+				throw new OngeldigeActieException("Je kan geen lid maken als de groep geen afdelingen heeft in het huidige werkjaar!");
 			}
 
 			return true;
@@ -105,21 +99,20 @@ namespace Chiro.Gap.Workers
 		/// <returns>Nieuw kindobject, niet gepersisteerd</returns>
 		public Kind KindMaken(GelieerdePersoon gp)
 		{
-			if (_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
-			{
-				if (gp.Groep == null)
-				{
-					_daos.GelieerdePersoonDao.GroepLaden(gp);
-				}
-
-				GroepsWerkJaar gwj = _daos.GroepenDao.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
-
-				return KindMaken(gp, gwj);
-			}
-			else
+			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
 			}
+
+			if (gp.Groep == null)
+			{
+				_daos.GelieerdePersoonDao.GroepLaden(gp);
+			}
+
+			//Door het groepswerkjaar van de persoon op te halen is de link tussen groepswerkjaar en persoon zeker in orde
+			GroepsWerkJaar gwj = _daos.GroepenDao.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
+
+			return KindMaken(gp, gwj);
 		}
 
 		/// <summary>
@@ -133,53 +126,75 @@ namespace Chiro.Gap.Workers
 		/// </remarks>
 		public Kind KindMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
 		{
-			if (_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
-			{
-				GelieerdePersoon gpMetDetails;
-				if (!kanLidMaken(gp, gwj, out gpMetDetails))
-				{
-					throw new OngeldigeActieException("De gegeven persoon kan geen lid worden in het huidige werkjaar.");
-				}
-
-				//Geboortedatum is verplicht als je lid wilt worden
-				if (gpMetDetails.Persoon.GeboorteDatum == null)
-				{
-					throw new OngeldigeActieException("Je kan geen lid maken als je de geboortedatum van de persoon niet hebt ingegeven");
-				}
-
-				//Afdeling automatisch bepalen
-				int geboortejaar = gpMetDetails.Persoon.GeboorteDatum.Value.Year;
-				geboortejaar += gpMetDetails.ChiroLeefTijd;	 //aanpassen aan chiroleeftijd
-
-				//relevante afdelingsjaar opzoeken
-				AfdelingsJaar afdelingsjaar =
-						(from a in gwj.AfdelingsJaar
-						 where a.GeboorteJaarVan <= geboortejaar
-							&& geboortejaar <= a.GeboorteJaarTot
-							&& (a.Geslacht == GeslachtsType.Gemengd
-								|| a.Geslacht == gpMetDetails.Persoon.Geslacht)
-						 select a).FirstOrDefault();
-				// (eerste is goed)
-
-				if (afdelingsjaar == null)
-				{
-					throw new OngeldigeActieException(Properties.Resources.GeenGeschikteAfdeling);
-				}
-
-
-				Kind kind = new Kind();
-				kind.AfdelingsJaar = afdelingsjaar;
-				afdelingsjaar.Kind.Add(kind);
-				kind.EindeInstapPeriode = DateTime.Today.AddDays(int.Parse(Properties.Resources.InstapPeriode));
-				
-				LidMaken(kind, gpMetDetails, gwj);
-
-				return kind;
-			}
-			else
+			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
 			}
+
+			GroepenManager gm = Factory.Maak<GroepenManager>();
+
+			GelieerdePersoon gpMetDetails;
+			if (!kanLidMaken(gp, gwj, out gpMetDetails))
+			{
+				throw new OngeldigeActieException("De gegeven persoon kan geen lid worden in het huidige werkjaar.");
+			}
+
+			//Geboortedatum is verplicht als je lid wilt worden
+			if (gpMetDetails.Persoon.GeboorteDatum == null)
+			{
+				throw new OngeldigeActieException("Je kan geen lid maken als je de geboortedatum van de persoon niet hebt ingegeven");
+			}
+
+			//Afdeling automatisch bepalen
+			int geboortejaar = gpMetDetails.Persoon.GeboorteDatum.Value.Year;
+			geboortejaar += gpMetDetails.ChiroLeefTijd;	 //aanpassen aan chiroleeftijd
+
+			int leeftijd = DateTime.Today.Year - gpMetDetails.Persoon.GeboorteDatum.Value.Year;
+			if (leeftijd < 6)
+			{
+				throw new OngeldigeActieException("Deze persoon is te jong om lid te zijn in de chiro.");
+			}
+			if (leeftijd > 20)
+			{
+				throw new OngeldigeActieException("Is deze persoon niet te oud om in de chiro te komen?");
+			}
+			int aangepasteleeftijd = DateTime.Today.Year - geboortejaar;
+			if (aangepasteleeftijd < 6 || aangepasteleeftijd > 18)
+			{
+				throw new OngeldigeActieException("De afdelingen lopen maar van 6 tot 18 jaar.");
+			}
+
+			//relevante afdelingsjaren opzoeken
+			List<AfdelingsJaar> afdelingsjaren =
+					(from a in gwj.AfdelingsJaar
+					 where a.GeboorteJaarVan <= geboortejaar && geboortejaar <= a.GeboorteJaarTot
+					 select a).ToList();
+
+			if (afdelingsjaren.Count == 0)
+			{
+				throw new OngeldigeActieException("Er is geen afdeling in jullie groep voor die leeftijd. Je maakt er best eerst een aan (of controleert de leeftijd van het kind).");
+			}
+
+			AfdelingsJaar aj = null;
+			if (afdelingsjaren.Count > 1)
+			{
+				aj = (from a in afdelingsjaren
+					  where a.Geslacht == gpMetDetails.Persoon.Geslacht || a.Geslacht == GeslachtsType.Gemengd
+					  select a).FirstOrDefault();
+			}
+			if (aj == null)
+			{
+				aj = afdelingsjaren.First();
+			}
+
+			Kind kind = new Kind();
+			kind.AfdelingsJaar = aj;
+			aj.Kind.Add(kind);
+			kind.EindeInstapPeriode = DateTime.Today.AddDays(int.Parse(Properties.Resources.InstapPeriode));
+
+			LidMaken(kind, gpMetDetails, gwj);
+
+			return kind;
 		}
 
 		/// <summary>
@@ -189,78 +204,72 @@ namespace Chiro.Gap.Workers
 		/// <returns></returns>
 		public Leiding LeidingMaken(GelieerdePersoon gp)
 		{
-			if (_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
-			{
-				GroepsWerkJaarManager mgr = Factory.Maak<GroepsWerkJaarManager>();
-
-				if (gp.Groep == null)
-				{
-					_daos.GelieerdePersoonDao.GroepLaden(gp);
-				}
-
-				GroepsWerkJaar gwj = _daos.GroepenDao.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
-
-				GelieerdePersoon gpMetDetails;
-				if (!kanLidMaken(gp, gwj, out gpMetDetails))
-				{
-					throw new OngeldigeActieException("De gegeven persoon kan geen lid worden in het huidige werkjaar.");
-				}
-
-				Leiding leiding = new Leiding();
-
-				LidMaken(leiding, gpMetDetails, gwj);
-				return leiding;
-			}
-			else
+			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
 			}
+
+			GroepsWerkJaarManager mgr = Factory.Maak<GroepsWerkJaarManager>();
+
+			if (gp.Groep == null)
+			{
+				_daos.GelieerdePersoonDao.GroepLaden(gp);
+			}
+
+			GroepsWerkJaar gwj = _daos.GroepenDao.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
+
+			GelieerdePersoon gpMetDetails;
+			if (!kanLidMaken(gp, gwj, out gpMetDetails))
+			{
+				throw new OngeldigeActieException("De gegeven persoon kan geen lid worden in het huidige werkjaar.");
+			}
+
+			Leiding leiding = new Leiding();
+
+			LidMaken(leiding, gpMetDetails, gwj);
+			return leiding;
 		}
 
 		/// <summary>
 		/// Verwijdert lid uit database
 		/// Dit kan enkel als het een lid uit het huidige werkjaar is en als de instapperiode niet verstreken is voor een kind
+		/// Leiding kan niet verwijderd worden.
 		/// </summary>
 		/// <param name="id">LidID</param>
 		/// <returns>true on successful</returns>
 		public Boolean LidVerwijderen(int id)
 		{
-			if (_autorisatieMgr.IsGavLid(id))
-			{
-				Lid lid = _daos.LedenDao.OphalenMetDetails(id);
-
-				//checks:
-				if (lid.GroepsWerkJaar != _daos.GroepenDao.RecentsteGroepsWerkJaarGet(lid.GroepsWerkJaar.Groep.ID))
-				{
-					throw new OngeldigeActieException("Een lid verwijderen mag enkel als het een lid uit het huidige werkjaar is.");
-				}
-				if(lid is Kind && DateTime.Compare(((Kind)lid).EindeInstapPeriode.Value, DateTime.Today)<0)
-				{
-					throw new OngeldigeActieException("Een kind verwijderen kan niet meer nadat de instapperiode verstreken is.");
-				}
-
-				lid.TeVerwijderen = true;
-
-				Debug.Assert(lid is Kind || lid is Leiding, "Lid moet ofwel Kind ofwel Leiding zijn!");
-
-				// voor een Kind is _dao.Bewaren(lid) voldoende
-				if (lid is Kind)
-				{
-					_daos.LedenDao.Bewaren(lid);
-				}
-				// TODO voor Leiding moet er blijkbaar meer gebeuren
-				// onderstaande code werkt niet
-				else if (lid is Leiding)
-				{
-					_daos.LedenDao.Bewaren(lid);
-				}
-
-				return true;
-			}
-			else
+			if (!_autorisatieMgr.IsGavLid(id))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGavLid);
 			}
+
+			Lid lid = _daos.LedenDao.OphalenMetDetails(id);
+
+			//checks:
+			if (lid is Leiding)
+			{
+				throw new OngeldigeActieException("Leiding kan niet meer verwijderd worden.");
+			}
+			if (lid.GroepsWerkJaar != _daos.GroepenDao.RecentsteGroepsWerkJaarGet(lid.GroepsWerkJaar.Groep.ID))
+			{
+				throw new OngeldigeActieException("Een lid verwijderen mag enkel als het een lid uit het huidige werkjaar is.");
+			}
+			if(lid is Kind && DateTime.Compare(((Kind)lid).EindeInstapPeriode.Value, DateTime.Today)<0)
+			{
+				throw new OngeldigeActieException("Een kind verwijderen kan niet meer nadat de instapperiode verstreken is.");
+			}
+
+			lid.TeVerwijderen = true;
+
+			Debug.Assert(lid is Kind || lid is Leiding, "Lid moet ofwel Kind ofwel Leiding zijn!");
+
+			// voor een Kind is _dao.Bewaren(lid) voldoende
+			if (lid is Kind)
+			{
+				_daos.LedenDao.Bewaren(lid);
+			}
+			return true;
 		}
 
 		/// <summary>
@@ -372,6 +381,17 @@ namespace Chiro.Gap.Workers
 						throw new OngeldigeActieException("De gekozen afdeling is geen afdeling van de groep in het gekozen werkjaar.");
 					}
 					ajnieuw.Kind.Add(kind);
+
+					//Pas chiroleeftijd aan als hij buiten het veld van de nieuwe afdeling valt
+					if (kind.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year + kind.GelieerdePersoon.ChiroLeefTijd < ajnieuw.GeboorteJaarVan)
+					{
+						kind.GelieerdePersoon.ChiroLeefTijd = ajnieuw.GeboorteJaarVan - kind.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year;
+					}
+					else if (kind.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year + kind.GelieerdePersoon.ChiroLeefTijd > ajnieuw.GeboorteJaarTot)
+					{
+						kind.GelieerdePersoon.ChiroLeefTijd = ajnieuw.GeboorteJaarTot - kind.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year;
+					}
+
 					kind.AfdelingsJaar = ajnieuw;
 				}
 			}
@@ -379,11 +399,14 @@ namespace Chiro.Gap.Workers
 			{
 				Leiding leiding = (Leiding)l;
 				var afdelingsjaren = leiding.GroepsWerkJaar.AfdelingsJaar.ToList();
-				foreach (AfdelingsJaar aj in afdelingsjaren)
+				int checks = 0;
+				foreach (AfdelingsJaar aj in afdelingsjaren) //alle afdelingsjaren van de GROEP
 				{
-					//als het een afdelingsjaar waar de leider in moet komen
+					//de leider moet in dat afdelingsjaar zitten
 					if (afdelingsIDs.Contains(aj.Afdeling.ID))
 					{
+						checks++;
+
 						//en hij zit er nog niet in
 						if (leiding.AfdelingsJaar.FirstOrDefault(e => e.Afdeling.ID == aj.Afdeling.ID) == null)
 						{
@@ -391,9 +414,8 @@ namespace Chiro.Gap.Workers
 							leiding.AfdelingsJaar.Add(aj);
 							aj.Leiding.Add(leiding);
 						}
-						afdelingsIDs.Remove(aj.Afdeling.ID);
 					}
-					else //de leider mag niet meer in de afdeling zitten
+					else //de leider mag niet in dat afdelingsjaar zitten
 					{
 						//en hij zit er wel in
 						if (leiding.AfdelingsJaar.FirstOrDefault(e => e.Afdeling.ID == aj.Afdeling.ID) != null)
@@ -403,7 +425,7 @@ namespace Chiro.Gap.Workers
 						}
 					}
 				}
-				if (afdelingsIDs.Count != 0)
+				if (checks!=afdelingsIDs.Count || afdelingsIDs.Count != leiding.AfdelingsJaar.Count)
 				{
 					throw new OngeldigeActieException("Niet alle gekozen afdelingen zijn afdelingen van de groep in het gekozen werkjaar.");
 				}

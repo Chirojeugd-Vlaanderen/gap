@@ -18,7 +18,7 @@ Pagina: <%= Html.WerkJaarLinks(ViewData.Model.GroepsWerkJaarIdZichtbaar, ViewDat
 <tr>
     <td><%=l.PersoonInfo.AdNummer %></td>
     <td><%=l.Type.ToString() %></td>
-    <td><% Html.RenderPartial("PersoonsLinkControl", l.PersoonInfo); %></td>
+    <td><% Html.RenderPartial("LedenLinkControl", l); %></td>
     <td class="right"><%=l.PersoonInfo.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)l.PersoonInfo.GeboorteDatum).ToString("d")%></td>
     <td><%=l.PersoonInfo.Geslacht.ToString()%></td>
     <td><%= l.LidgeldBetaald?"Ja":"Nee"%></td>
