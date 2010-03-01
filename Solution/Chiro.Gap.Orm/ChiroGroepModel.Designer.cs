@@ -30,9 +30,11 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Categorie_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Groep), "Categorie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Categorie))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "PersoonsCategorie", "Categorie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Categorie), "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.GelieerdePersoon))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_CommunicatieVorm_CommunicatieType", "CommunicatieType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.CommunicatieType), "CommunicatieVorm", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.CommunicatieVorm))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Functie_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.Groep), "Functie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Functie))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "LidFunctie", "Functie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Functie), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Lid))]
 
 // Original file name:
-// Generation date: 5/02/2010 12:13:36
+// Generation date: 1/03/2010 9:40:08
 namespace Chiro.Gap.Orm
 {
     
@@ -322,6 +324,21 @@ namespace Chiro.Gap.Orm
         }
         private global::System.Data.Objects.ObjectQuery<CommunicatieType> _CommunicatieType;
         /// <summary>
+        /// There are no comments for Functie in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<Functie> Functie
+        {
+            get
+            {
+                if ((this._Functie == null))
+                {
+                    this._Functie = base.CreateQuery<Functie>("[Functie]");
+                }
+                return this._Functie;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<Functie> _Functie;
+        /// <summary>
         /// There are no comments for Groep in the schema.
         /// </summary>
         public void AddToGroep(Groep groep)
@@ -439,6 +456,13 @@ namespace Chiro.Gap.Orm
         public void AddToCommunicatieType(CommunicatieType communicatieType)
         {
             base.AddObject("CommunicatieType", communicatieType);
+        }
+        /// <summary>
+        /// There are no comments for Functie in the schema.
+        /// </summary>
+        public void AddToFunctie(Functie functie)
+        {
+            base.AddObject("Functie", functie);
         }
     }
     /// <summary>
@@ -775,6 +799,27 @@ namespace Chiro.Gap.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Categorie>("ChiroGroepModel.FK_Categorie_Groep", "Categorie", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Functie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Functie_Groep", "Functie")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Functie> Functie
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Functie>("ChiroGroepModel.FK_Functie_Groep", "Functie");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Functie>("ChiroGroepModel.FK_Functie_Groep", "Functie", value);
                 }
             }
         }
@@ -2618,6 +2663,27 @@ namespace Chiro.Gap.Orm
                 }
             }
         }
+        /// <summary>
+        /// There are no comments for Functie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "LidFunctie", "Functie")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Functie> Functie
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Functie>("ChiroGroepModel.LidFunctie", "Functie");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Functie>("ChiroGroepModel.LidFunctie", "Functie", value);
+                }
+            }
+        }
     }
     /// <summary>
     /// There are no comments for ChiroGroepModel.Gav in the schema.
@@ -3972,6 +4038,307 @@ namespace Chiro.Gap.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<CommunicatieVorm>("ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType", "CommunicatieVorm", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.Functie in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// FunctieID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Functie")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class Functie : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new Functie object.
+        /// </summary>
+        /// <param name="naam">Initial value of Naam.</param>
+        /// <param name="code">Initial value of Code.</param>
+        /// <param name="functieID">Initial value of FunctieID.</param>
+        /// <param name="maxAantal">Initial value of MaxAantal.</param>
+        /// <param name="minAantal">Initial value of MinAantal.</param>
+        /// <param name="minLeefTijd">Initial value of MinLeefTijd.</param>
+        /// <param name="werkJaarVan">Initial value of WerkJaarVan.</param>
+        /// <param name="werkJaarTot">Initial value of WerkJaarTot.</param>
+        public static Functie CreateFunctie(string naam, string code, int functieID, int maxAantal, int minAantal, int minLeefTijd, int werkJaarVan, int werkJaarTot)
+        {
+            Functie functie = new Functie();
+            functie.Naam = naam;
+            functie.Code = code;
+            functie.FunctieID = functieID;
+            functie.MaxAantal = maxAantal;
+            functie.MinAantal = minAantal;
+            functie.MinLeefTijd = minLeefTijd;
+            functie.WerkJaarVan = werkJaarVan;
+            functie.WerkJaarTot = werkJaarTot;
+            return functie;
+        }
+        /// <summary>
+        /// There are no comments for Property Naam in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Naam
+        {
+            get
+            {
+                return this._Naam;
+            }
+            set
+            {
+                this.OnNaamChanging(value);
+                this.ReportPropertyChanging("Naam");
+                this._Naam = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Naam");
+                this.OnNaamChanged();
+            }
+        }
+        private string _Naam;
+        partial void OnNaamChanging(string value);
+        partial void OnNaamChanged();
+        /// <summary>
+        /// There are no comments for Property Code in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Code
+        {
+            get
+            {
+                return this._Code;
+            }
+            set
+            {
+                this.OnCodeChanging(value);
+                this.ReportPropertyChanging("Code");
+                this._Code = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Code");
+                this.OnCodeChanged();
+            }
+        }
+        private string _Code;
+        partial void OnCodeChanging(string value);
+        partial void OnCodeChanged();
+        /// <summary>
+        /// There are no comments for Property FunctieID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int FunctieID
+        {
+            get
+            {
+                return this._FunctieID;
+            }
+            set
+            {
+                this.OnFunctieIDChanging(value);
+                this.ReportPropertyChanging("FunctieID");
+                this._FunctieID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("FunctieID");
+                this.OnFunctieIDChanged();
+            }
+        }
+        private int _FunctieID;
+        partial void OnFunctieIDChanging(int value);
+        partial void OnFunctieIDChanged();
+        /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
+        /// <summary>
+        /// There are no comments for Property MaxAantal in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int MaxAantal
+        {
+            get
+            {
+                return this._MaxAantal;
+            }
+            set
+            {
+                this.OnMaxAantalChanging(value);
+                this.ReportPropertyChanging("MaxAantal");
+                this._MaxAantal = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("MaxAantal");
+                this.OnMaxAantalChanged();
+            }
+        }
+        private int _MaxAantal;
+        partial void OnMaxAantalChanging(int value);
+        partial void OnMaxAantalChanged();
+        /// <summary>
+        /// There are no comments for Property MinAantal in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int MinAantal
+        {
+            get
+            {
+                return this._MinAantal;
+            }
+            set
+            {
+                this.OnMinAantalChanging(value);
+                this.ReportPropertyChanging("MinAantal");
+                this._MinAantal = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("MinAantal");
+                this.OnMinAantalChanged();
+            }
+        }
+        private int _MinAantal;
+        partial void OnMinAantalChanging(int value);
+        partial void OnMinAantalChanged();
+        /// <summary>
+        /// There are no comments for Property MinLeefTijd in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int MinLeefTijd
+        {
+            get
+            {
+                return this._MinLeefTijd;
+            }
+            set
+            {
+                this.OnMinLeefTijdChanging(value);
+                this.ReportPropertyChanging("MinLeefTijd");
+                this._MinLeefTijd = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("MinLeefTijd");
+                this.OnMinLeefTijdChanged();
+            }
+        }
+        private int _MinLeefTijd;
+        partial void OnMinLeefTijdChanging(int value);
+        partial void OnMinLeefTijdChanged();
+        /// <summary>
+        /// There are no comments for Property WerkJaarVan in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int WerkJaarVan
+        {
+            get
+            {
+                return this._WerkJaarVan;
+            }
+            set
+            {
+                this.OnWerkJaarVanChanging(value);
+                this.ReportPropertyChanging("WerkJaarVan");
+                this._WerkJaarVan = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("WerkJaarVan");
+                this.OnWerkJaarVanChanged();
+            }
+        }
+        private int _WerkJaarVan;
+        partial void OnWerkJaarVanChanging(int value);
+        partial void OnWerkJaarVanChanged();
+        /// <summary>
+        /// There are no comments for Property WerkJaarTot in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int WerkJaarTot
+        {
+            get
+            {
+                return this._WerkJaarTot;
+            }
+            set
+            {
+                this.OnWerkJaarTotChanging(value);
+                this.ReportPropertyChanging("WerkJaarTot");
+                this._WerkJaarTot = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("WerkJaarTot");
+                this.OnWerkJaarTotChanged();
+            }
+        }
+        private int _WerkJaarTot;
+        partial void OnWerkJaarTotChanging(int value);
+        partial void OnWerkJaarTotChanged();
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Functie_Groep", "Groep")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Groep Groep
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_Functie_Groep", "Groep").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_Functie_Groep", "Groep").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Groep> GroepReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_Functie_Groep", "Groep");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Groep>("ChiroGroepModel.FK_Functie_Groep", "Groep", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Lid in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "LidFunctie", "Lid")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Lid> Lid
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Lid>("ChiroGroepModel.LidFunctie", "Lid");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Lid>("ChiroGroepModel.LidFunctie", "Lid", value);
                 }
             }
         }
