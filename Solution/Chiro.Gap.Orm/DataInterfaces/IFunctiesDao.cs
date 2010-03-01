@@ -14,5 +14,11 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	/// is een nationaal gedefinieerde functie.</remarks>
 	public interface IFunctiesDao: IDao<Functie>
 	{
+		/// <summary>
+		/// Haalt een gepredefinieerde functie op
+		/// </summary>
+		/// <param name="f">GepredefinieerdeFunctieType dat de op te halen functie bepaalt</param>
+		/// <returns>De gevraagde gepredefinieerde functie</returns>
+		Functie Ophalen(GepredefinieerdeFunctieType f);
 	}
 }

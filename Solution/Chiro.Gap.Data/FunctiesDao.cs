@@ -16,6 +16,8 @@ namespace Chiro.Gap.Data.Ef
 	/// is een nationaal gedefinieerde functie.</remarks>
 	public class FunctiesDao: Dao<Functie, ChiroGroepEntities>, IFunctiesDao
 	{
+		#region IFunctiesDao Members
+
 		/// <summary>
 		/// Standaard wordt de link met de Groep vastgelegd in ConnectedEntities
 		/// </summary>
@@ -24,5 +26,18 @@ namespace Chiro.Gap.Data.Ef
 			connectedEntities = new System.Linq.Expressions.Expression<Func<Functie, object>>[]{
 				fnc => fnc.Groep};
 		}
+
+
+		/// <summary>
+		/// Haalt een gepredefinieerde functie op
+		/// </summary>
+		/// <param name="f">GepredefinieerdeFunctieType dat de op te halen functie bepaalt</param>
+		/// <returns>De gevraagde gepredefinieerde functie</returns>
+		public Functie Ophalen(GepredefinieerdeFunctieType f)
+		{
+			return Ophalen((int)f);
+		}
+
+		#endregion
 	}
 }
