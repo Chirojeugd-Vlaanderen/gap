@@ -48,6 +48,7 @@
     <Compile Include="AdressenTest.cs" />
     <Compile Include="AuthorisatieTest.cs" />
     <Compile Include="CategorieenTest.cs" />
+    <Compile Include="FunctiesTest.cs" />
     <Compile Include="LedenTest.cs" />
     <Compile Include="PersonenTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

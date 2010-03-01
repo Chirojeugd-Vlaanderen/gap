@@ -80,6 +80,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.TestDbInfo", "Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.ServiceHelper", "Chiro.Cdf.ServiceHelper\Chiro.Cdf.ServiceHelper.csproj", "{11A23709-8EA9-43B1-9982-B1DC08A50FD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Orm.Test", "Chiro.Gap.Orm.Test\Chiro.Gap.Orm.Test.csproj", "{95AAE40F-B33D-4266-B134-F98FF7E115A7}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Cg2Solution2.vsmdi
@@ -381,6 +383,16 @@ Global
 		{11A23709-8EA9-43B1-9982-B1DC08A50FD8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{11A23709-8EA9-43B1-9982-B1DC08A50FD8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{11A23709-8EA9-43B1-9982-B1DC08A50FD8}.Release|Win32.ActiveCfg = Release|Any CPU
+		{95AAE40F-B33D-4266-B134-F98FF7E115A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95AAE40F-B33D-4266-B134-F98FF7E115A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95AAE40F-B33D-4266-B134-F98FF7E115A7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{95AAE40F-B33D-4266-B134-F98FF7E115A7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{95AAE40F-B33D-4266-B134-F98FF7E115A7}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{95AAE40F-B33D-4266-B134-F98FF7E115A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95AAE40F-B33D-4266-B134-F98FF7E115A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95AAE40F-B33D-4266-B134-F98FF7E115A7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{95AAE40F-B33D-4266-B134-F98FF7E115A7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{95AAE40F-B33D-4266-B134-F98FF7E115A7}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -398,6 +410,7 @@ Global
 		{9BFC33C8-238D-421C-B19B-D5FAC50CB15C} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 		{64C70DFC-E7B9-4293-B626-2C99C62208C8} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 		{1696D4A9-E2DA-41B1-8A5A-CAE3E0F0F724} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
+		{95AAE40F-B33D-4266-B134-F98FF7E115A7} = {0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}
 		{E883CD16-1749-43FA-B344-AD2928A8B00E} = {BBABD468-99FA-43E6-8E64-DAA6C3CFF2BE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

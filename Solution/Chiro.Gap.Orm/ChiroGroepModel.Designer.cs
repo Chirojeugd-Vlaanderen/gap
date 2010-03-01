@@ -34,7 +34,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "LidFunctie", "Functie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Functie), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Lid))]
 
 // Original file name:
-// Generation date: 1/03/2010 9:40:08
+// Generation date: 1/03/2010 12:04:10
 namespace Chiro.Gap.Orm
 {
     
@@ -4046,7 +4046,7 @@ namespace Chiro.Gap.Orm
     /// There are no comments for ChiroGroepModel.Functie in the schema.
     /// </summary>
     /// <KeyProperties>
-    /// FunctieID
+    /// ID
     /// </KeyProperties>
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Functie")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
@@ -4058,18 +4058,18 @@ namespace Chiro.Gap.Orm
         /// </summary>
         /// <param name="naam">Initial value of Naam.</param>
         /// <param name="code">Initial value of Code.</param>
-        /// <param name="functieID">Initial value of FunctieID.</param>
+        /// <param name="id">Initial value of ID.</param>
         /// <param name="maxAantal">Initial value of MaxAantal.</param>
         /// <param name="minAantal">Initial value of MinAantal.</param>
         /// <param name="minLeefTijd">Initial value of MinLeefTijd.</param>
         /// <param name="werkJaarVan">Initial value of WerkJaarVan.</param>
         /// <param name="werkJaarTot">Initial value of WerkJaarTot.</param>
-        public static Functie CreateFunctie(string naam, string code, int functieID, int maxAantal, int minAantal, int minLeefTijd, int werkJaarVan, int werkJaarTot)
+        public static Functie CreateFunctie(string naam, string code, int id, int maxAantal, int minAantal, int minLeefTijd, int werkJaarVan, int werkJaarTot)
         {
             Functie functie = new Functie();
             functie.Naam = naam;
             functie.Code = code;
-            functie.FunctieID = functieID;
+            functie.ID = id;
             functie.MaxAantal = maxAantal;
             functie.MinAantal = minAantal;
             functie.MinLeefTijd = minLeefTijd;
@@ -4124,28 +4124,28 @@ namespace Chiro.Gap.Orm
         partial void OnCodeChanging(string value);
         partial void OnCodeChanged();
         /// <summary>
-        /// There are no comments for Property FunctieID in the schema.
+        /// There are no comments for Property ID in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int FunctieID
+        public int ID
         {
             get
             {
-                return this._FunctieID;
+                return this._ID;
             }
             set
             {
-                this.OnFunctieIDChanging(value);
-                this.ReportPropertyChanging("FunctieID");
-                this._FunctieID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("FunctieID");
-                this.OnFunctieIDChanged();
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
             }
         }
-        private int _FunctieID;
-        partial void OnFunctieIDChanging(int value);
-        partial void OnFunctieIDChanged();
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
         /// <summary>
         /// There are no comments for Property Versie in the schema.
         /// </summary>

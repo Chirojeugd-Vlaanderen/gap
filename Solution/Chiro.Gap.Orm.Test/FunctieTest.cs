@@ -1,0 +1,93 @@
+﻿using Chiro.Gap.Orm;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+namespace Chiro.Gap.Orm.Test
+{
+    
+    
+    /// <summary>
+    ///This is a test class for FunctieTest and is intended
+    ///to contain all FunctieTest Unit Tests
+    ///</summary>
+	[TestClass()]
+	public class FunctieTest
+	{
+
+
+		private TestContext testContextInstance;
+
+		/// <summary>
+		///Gets or sets the test context which provides
+		///information about and functionality for the current test run.
+		///</summary>
+		public TestContext TestContext
+		{
+			get
+			{
+				return testContextInstance;
+			}
+			set
+			{
+				testContextInstance = value;
+			}
+		}
+
+		#region Additional test attributes
+		// 
+		//You can use the following additional attributes as you write your tests:
+		//
+		//Use ClassInitialize to run code before running the first test in the class
+		//[ClassInitialize()]
+		//public static void MyClassInitialize(TestContext testContext)
+		//{
+		//}
+		//
+		//Use ClassCleanup to run code after all tests in a class have run
+		//[ClassCleanup()]
+		//public static void MyClassCleanup()
+		//{
+		//}
+		//
+		//Use TestInitialize to run code before running each test
+		//[TestInitialize()]
+		//public void MyTestInitialize()
+		//{
+		//}
+		//
+		//Use TestCleanup to run code after each test has run
+		//[TestCleanup()]
+		//public void MyTestCleanup()
+		//{
+		//}
+		//
+		#endregion
+
+
+		/// <summary>
+		///Controleert of de gepredefinieerde functie 'Groepsleiding' wordt herekend.
+		///</summary>
+		[TestMethod()]
+		public void GepredefinieerdeFunctieTest()
+		{
+			Functie f = new Functie(); // TODO: Initialize to an appropriate value
+
+			f.ID = (int)GepredefinieerdeFunctieType.GroepsLeiding;
+
+			Assert.AreEqual(f.GepredefinieerdeFunctie, GepredefinieerdeFunctieType.GroepsLeiding);
+		}
+
+		/// <summary>
+		///Controleert of een niet-gepredefinieerde functie wordt herkend.
+		///</summary>
+		[TestMethod()]
+		public void NietGepredefinieerdeFunctieTest()
+		{
+			Functie f = new Functie(); // TODO: Initialize to an appropriate value
+
+			f.ID = 2312;	// en nu maar hopen dat dit niet gepredefinieerd is.
+
+			Assert.AreEqual(f.GepredefinieerdeFunctie, GepredefinieerdeFunctieType.Geen);
+		}
+
+
+	}
+}

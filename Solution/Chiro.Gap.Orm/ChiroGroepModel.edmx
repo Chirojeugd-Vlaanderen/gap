@@ -1096,10 +1096,10 @@
           <End Type="ChiroGroepModel.CommunicatieVorm" Role="CommunicatieVorm" Multiplicity="*" /></Association>
         <EntityType Name="Functie">
           <Key>
-            <PropertyRef Name="FunctieID" /></Key>
+            <PropertyRef Name="ID" /></Key>
           <Property Name="Naam" Type="String" Nullable="false" />
           <Property Name="Code" Type="String" Nullable="false" />
-          <Property Name="FunctieID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Versie" Type="Binary" Nullable="true" />
           <Property Name="MaxAantal" Type="Int32" Nullable="false" />
           <Property Name="MinAantal" Type="Int32" Nullable="false" />
@@ -1417,12 +1417,12 @@
                 <ScalarProperty Name="MinAantal" ColumnName="MinAantal" />
                 <ScalarProperty Name="MaxAantal" ColumnName="MaxAantal" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
-                <ScalarProperty Name="FunctieID" ColumnName="FunctieID" />
+                <ScalarProperty Name="ID" ColumnName="FunctieID" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="Naam" ColumnName="Naam" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
           <AssociationSetMapping Name="FK_Functie_Groep" TypeName="ChiroGroepModel.FK_Functie_Groep" StoreEntitySet="Functie">
             <EndProperty Name="Functie">
-              <ScalarProperty Name="FunctieID" ColumnName="FunctieID" /></EndProperty>
+              <ScalarProperty Name="ID" ColumnName="FunctieID" /></EndProperty>
             <EndProperty Name="Groep">
               <ScalarProperty Name="ID" ColumnName="GroepID" /></EndProperty>
             <Condition ColumnName="GroepID" IsNull="false" /></AssociationSetMapping>
@@ -1430,7 +1430,7 @@
             <EndProperty Name="Lid">
               <ScalarProperty Name="ID" ColumnName="LidID" /></EndProperty>
             <EndProperty Name="Functie">
-              <ScalarProperty Name="FunctieID" ColumnName="FunctieID" /></EndProperty></AssociationSetMapping></EntityContainerMapping>
+              <ScalarProperty Name="ID" ColumnName="FunctieID" /></EndProperty></AssociationSetMapping></EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
