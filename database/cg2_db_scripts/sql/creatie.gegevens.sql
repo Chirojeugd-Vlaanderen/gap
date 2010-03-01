@@ -11,3 +11,5 @@ GO
 GO
 :r ./sql/populate.pers.CommunicatieType.sql
 GO
+:r ./sql/populate.lid.Functie.sql
+GO
