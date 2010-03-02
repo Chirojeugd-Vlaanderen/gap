@@ -99,6 +99,17 @@ namespace Chiro.Gap.Workers
 		bool IsGavCommVorm(int commvormID);
 
 		/// <summary>
+		/// Geeft <c>true</c> als de functie met ID <paramref name="functieID"/> nationaal gedefinieerd is
+		/// of gekoppeld is aan een groep waar de aangelogde gebruiker momenteel GAV van is.  Anders
+		/// <c>false</c>.
+		/// </summary>
+		/// <param name="functieID">ID van de functie</param>
+		/// <returns><c>true</c> als de functie met ID <paramref name="functieID"/> nationaal gedefinieerd is
+		/// of gekoppeld is aan een groep waar de aangelogde gebruiker momenteel GAV van is.  Anders
+		/// <c>false</c>.</returns>
+		bool IsGavFunctie(int functieID);
+
+		/// <summary>
 		/// Geeft true als de aangelogde user
 		/// gav is voor de groep met gegeven ID, en 'superrechten' heeft
 		/// (zoals het verwijderen van leden uit vorig werkjaar, het 
@@ -114,5 +125,6 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <returns>Username aangemelde gebruiker</returns>
 		string GebruikersNaamGet();
+
 	}
 }

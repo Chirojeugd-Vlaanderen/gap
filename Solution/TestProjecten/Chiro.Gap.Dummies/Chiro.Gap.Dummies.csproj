@@ -56,6 +56,7 @@
     <Compile Include="DummyCategorieenDao.cs" />
     <Compile Include="DummyDao.cs" />
     <Compile Include="DummyData.cs" />
+    <Compile Include="DummyFunctiesDao.cs" />
     <Compile Include="DummyGelieerdePersonenDao.cs" />
     <Compile Include="DummyGroepenDao.cs" />
     <Compile Include="DummyGroepsWerkJaarDao.cs" />

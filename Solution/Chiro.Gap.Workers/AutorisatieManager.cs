@@ -13,9 +13,12 @@ namespace Chiro.Gap.Workers
 {
 	public class AutorisatieManager : IAutorisatieManager
 	{
+		#region Private members
 		private IAutorisatieDao _autorisatieDao;
 		private IGavDao _gavDao;
 		private IGroepenDao _groepenDao;
+		private IFunctiesDao _functiesDao;
+
 		private IAuthenticatieManager _am;
 
 		// Eigenlijk IAutorisatieDao ook een IDao<GebruikersRecht>.  Maar voor IAutorisatieDao
@@ -23,7 +26,9 @@ namespace Chiro.Gap.Workers
 		// De _gebruikersRechtDao moet gebruikt worden om nieuwe gebruikersrechten te persisteren.
 
 		private IDao<GebruikersRecht> _gebruikersrechtDao;
+		#endregion
 
+		#region Constructor
 		/// <summary>
 		/// Maakt een nieuwe AutorisatieManager
 		/// </summary>
@@ -37,25 +42,22 @@ namespace Chiro.Gap.Workers
 			IAutorisatieDao autorisatieDao, 
 			IGavDao gavDao, 
 			IGroepenDao groepenDao,
+			IFunctiesDao functiesDao,
 			IDao<GebruikersRecht> gebruikersrechtDao,
 			IAuthenticatieManager am)
 		{
 			_autorisatieDao = autorisatieDao;
 			_gavDao = gavDao;
 			_groepenDao = groepenDao;
-			_am = am;
+			_functiesDao = functiesDao;
 			_gebruikersrechtDao = gebruikersrechtDao;
-		}
 
-		/// <summary>
-		/// Bepaalt de gebruikersnaam van de huidig aangemelde gebruiker.
-		/// (lege string indien niet van toepassing)
-		/// </summary>
-		/// <returns>Username aangemelde gebruiker</returns>
-		public string GebruikersNaamGet()
-		{
-			return _am.GebruikersNaamGet();
+			_am = am;
+
 		}
+		#endregion
+
+		#region IsGav...
 
 		/// <summary>
 		/// IsGav geeft true als de aangelogde user
@@ -126,7 +128,47 @@ namespace Chiro.Gap.Workers
 			return _autorisatieDao.IsGavLid(GebruikersNaamGet(), lidID);
 		}
 
+		/// <summary>
+		/// Geeft <c>true</c> als de functie met ID <paramref name="functieID"/> nationaal gedefinieerd is
+		/// of gekoppeld is aan een groep waar de aangelogde gebruiker momenteel GAV van is.  Anders
+		/// <c>false</c>.
+		/// </summary>
+		/// <param name="functieID">ID van de functie</param>
+		/// <returns><c>true</c> als de functie met ID <paramref name="functieID"/> nationaal gedefinieerd is
+		/// of gekoppeld is aan een groep waar de aangelogde gebruiker momenteel GAV van is.  Anders
+		/// <c>false</c>.</returns>
+		public bool IsGavFunctie(int functieID)
+		{
+			Functie f = _functiesDao.Ophalen(functieID, fnc=>fnc.Groep);
 
+			return (f.Groep == null || IsGavGroep(f.Groep.ID));
+		}
+		#endregion
+
+		/// <summary>
+		/// Controleert of de huidig aangelogde gebruiker momenteel
+		/// GAV is van de groep gekoppeld aan een zekere categorie.
+		/// </summary>
+		/// <param name="categorieID">ID van de categorie</param>
+		/// <returns>true indien GAV</returns>
+		public bool IsGavCategorie(int categorieID)
+		{
+			return _autorisatieDao.IsGavCategorie(categorieID, GebruikersNaamGet());
+		}
+
+		/// <summary>
+		/// Controleert of de huidig aangelogde gebruiker momenteel
+		/// GAV is van de groep gekoppeld aan een zekere commvorm.
+		/// </summary>
+		/// <param name="commvormID">ID van de commvorm</param>
+		/// <returns>true indien GAV</returns>
+		public bool IsGavCommVorm(int commvormID)
+		{
+			return _autorisatieDao.IsGavCommVorm(commvormID, GebruikersNaamGet());
+		}
+
+
+		#region Ophalen/uitfilteren 
 		/// <summary>
 		/// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV
 		/// </summary>
@@ -157,29 +199,10 @@ namespace Chiro.Gap.Workers
 		{
 			return _autorisatieDao.EnkelMijnPersonen(personenIDs, GebruikersNaamGet());
 		}
+		#endregion
 
-		/// <summary>
-		/// Controleert of de huidig aangelogde gebruiker momenteel
-		/// GAV is van de groep gekoppeld aan een zekere categorie.
-		/// </summary>
-		/// <param name="categorieID">ID van de categorie</param>
-		/// <returns>true indien GAV</returns>
-		public bool IsGavCategorie(int categorieID)
-		{
-			return _autorisatieDao.IsGavCategorie(categorieID, GebruikersNaamGet());
-		}
 
-		/// <summary>
-		/// Controleert of de huidig aangelogde gebruiker momenteel
-		/// GAV is van de groep gekoppeld aan een zekere commvorm.
-		/// </summary>
-		/// <param name="commvormID">ID van de commvorm</param>
-		/// <returns>true indien GAV</returns>
-		public bool IsGavCommVorm(int commvormID)
-		{
-			return _autorisatieDao.IsGavCommVorm(commvormID, GebruikersNaamGet());
-		}
-
+		#region Misc
 		/// <summary>
 		/// Geeft true als de aangelogde user
 		/// gav is voor de groep met gegeven ID, en 'superrechten' heeft
@@ -278,6 +301,18 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGavGroep);
 			}
 		}
+
+		/// <summary>
+		/// Bepaalt de gebruikersnaam van de huidig aangemelde gebruiker.
+		/// (lege string indien niet van toepassing)
+		/// </summary>
+		/// <returns>Username aangemelde gebruiker</returns>
+		public string GebruikersNaamGet()
+		{
+			return _am.GebruikersNaamGet();
+		}
+		#endregion
+
 
 	}
 }

@@ -81,6 +81,11 @@ namespace Chiro.Gap.Dummies
 		return false;
 	}
 
+	public bool IsGavFunctie(int functieID)
+	{
+		return false;
+	}
+
 	#endregion
     }
 }

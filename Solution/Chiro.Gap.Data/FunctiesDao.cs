@@ -38,6 +38,26 @@ namespace Chiro.Gap.Data.Ef
 			return Ophalen((int)f);
 		}
 
+		/// <summary>
+		/// Bepaalt het aantal leden uit de groep bepaald door <paramref name="groepID"/> de functie
+		/// hebben bepaad door <paramref name="functieID"/>
+		/// </summary>
+		/// <param name="groepID">ID van een groep</param>
+		/// <param name="functieID">ID van een functie</param>
+		/// <returns>antal leden uit de groep bepaald door <paramref name="groepID"/> de functie
+		/// hebben bepaad door <paramref name="functieID"/></returns>
+		public int AantalLeden(int groepID, int functieID)
+		{
+			using (var db = new ChiroGroepEntities())
+			{
+				return (from ld in db.Lid
+					where ld.GelieerdePersoon.Groep.ID == groepID 
+						&& ld.Functie.Any(fnc => fnc.ID == functieID)
+					select ld).Count();
+
+			}
+		}
+
 		#endregion
 	}
 }

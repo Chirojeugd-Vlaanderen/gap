@@ -124,7 +124,6 @@
     <value>'{0}' is geen geldige waarde voor {1}</value>
     <comment>Parameter 0 = input, 1 = property</comment>
   </data>
-
   <data name="CategorieBestaatAl" xml:space="preserve">
     <value>Er bestaat al een categorie met code '{0}'.</value>
   </data>
@@ -169,5 +168,20 @@
   </data>
   <data name="InstapPeriode" xml:space="preserve">
     <value>21</value>
+  </data>
+  <data name="FoutieveGroepFunctie" xml:space="preserve">
+    <value>Je probeert een lid te koppelen aan een categorie uit een andere groep.</value>
+  </data>
+  <data name="GeenGavFunctie" xml:space="preserve">
+    <value>Deze functie is niet gekoppeld aan je groep(en).</value>
+  </data>
+  <data name="GeboorteDatumOntbreekt" xml:space="preserve">
+    <value>De geboortedatum moet gekend zijn.</value>
+  </data>
+  <data name="TeJong" xml:space="preserve">
+    <value>De persoon is te jong.</value>
+  </data>
+  <data name="FunctieVol" xml:space="preserve">
+    <value>Slechts {0} leden mogen de functie '{1}' hebben.</value>
   </data>
 </root>

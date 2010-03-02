@@ -58,6 +58,7 @@
     <Compile Include="ChiroGroepenManager.cs" />
     <Compile Include="CommVormManager.cs" />
     <Compile Include="AfdelingsJaarManager.cs" />
+    <Compile Include="FunctiesManager.cs" />
     <Compile Include="IAuthenticatieManager.cs" />
     <Compile Include="IAutorisatieManager.cs" />
     <Compile Include="PersonenManager.cs" />
@@ -85,6 +86,10 @@
     <ProjectReference Include="..\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
       <Name>Chiro.Cdf.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Cdf.Validation\Chiro.Cdf.Validation.csproj">
+      <Project>{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}</Project>
+      <Name>Chiro.Cdf.Validation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Data\Chiro.Gap.Data.csproj">
       <Project>{F9197C38-63BC-4D2F-9F0A-8326C698B536}</Project>

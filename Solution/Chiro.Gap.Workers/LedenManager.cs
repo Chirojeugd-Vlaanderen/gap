@@ -360,6 +360,8 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="l">Lid, geladen met groepswerkjaar met afdelingsjaren</param>
 		/// <param name="afdelingsIDs">De ids van de AFDELING waarvan het kind lid is</param>
+		/// <remarks>Deze functie is niet 'compliant' aan de coding standard, zie 
+		/// richtlijnen 85, 83 en 1)</remarks>
 		public void AanpassenAfdelingenVanLid(Lid l, IList<int> afdelingsIDs)
 		{
 			if (l is Kind)

@@ -20,5 +20,15 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="f">GepredefinieerdeFunctieType dat de op te halen functie bepaalt</param>
 		/// <returns>De gevraagde gepredefinieerde functie</returns>
 		Functie Ophalen(GepredefinieerdeFunctieType f);
+
+		/// <summary>
+		/// Bepaalt het aantal leden uit de groep bepaald door <paramref name="groepID"/> de functie
+		/// hebben bepaad door <paramref name="functieID"/>
+		/// </summary>
+		/// <param name="groepID">ID van een groep</param>
+		/// <param name="functieID">ID van een functie</param>
+		/// <returns>antal leden uit de groep bepaald door <paramref name="groepID"/> de functie
+		/// hebben bepaad door <paramref name="functieID"/></returns>
+		int AantalLeden(int groepID, int functieID);
 	}
 }
