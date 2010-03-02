@@ -37,7 +37,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="gp"></param>
 		/// <param name="gwj"></param>
 		private void LidMaken(Lid lid, GelieerdePersoon gp, GroepsWerkJaar gwj)
-		{	
+		{
 			// GroepsWerkJaar en GelieerdePersoon invullen
 			lid.GroepsWerkJaar = gwj;
 			lid.GelieerdePersoon = gp;
@@ -75,8 +75,8 @@ namespace Chiro.Gap.Workers
 			//CONTROLES
 			//Lid bestaat al
 			var x = (from l in gpMetDetails.Lid
-					 where l.GroepsWerkJaar.ID == gwj.ID
-					 select l).FirstOrDefault();
+				 where l.GroepsWerkJaar.ID == gwj.ID
+				 select l).FirstOrDefault();
 
 			if (x != null) //was dus al lid
 			{
@@ -179,8 +179,8 @@ namespace Chiro.Gap.Workers
 			if (afdelingsjaren.Count > 1)
 			{
 				aj = (from a in afdelingsjaren
-					  where a.Geslacht == gpMetDetails.Persoon.Geslacht || a.Geslacht == GeslachtsType.Gemengd
-					  select a).FirstOrDefault();
+				      where a.Geslacht == gpMetDetails.Persoon.Geslacht || a.Geslacht == GeslachtsType.Gemengd
+				      select a).FirstOrDefault();
 			}
 			if (aj == null)
 			{
@@ -255,7 +255,7 @@ namespace Chiro.Gap.Workers
 			{
 				throw new OngeldigeActieException("Een lid verwijderen mag enkel als het een lid uit het huidige werkjaar is.");
 			}
-			if(lid is Kind && DateTime.Compare(((Kind)lid).EindeInstapPeriode.Value, DateTime.Today)<0)
+			if (lid is Kind && DateTime.Compare(((Kind)lid).EindeInstapPeriode.Value, DateTime.Today) < 0)
 			{
 				throw new OngeldigeActieException("Een kind verwijderen kan niet meer nadat de instapperiode verstreken is.");
 			}
@@ -302,7 +302,7 @@ namespace Chiro.Gap.Workers
 		/// <returns></returns>
 		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, out int paginas)
 		{
-			GroepsWerkJaar gwj = _daos.GroepsWerkJaarDao.Ophalen(groepsWerkJaarID, grwj=>grwj.Groep);
+			GroepsWerkJaar gwj = _daos.GroepsWerkJaarDao.Ophalen(groepsWerkJaarID, grwj => grwj.Groep);
 			paginas = _daos.GroepenDao.OphalenMetGroepsWerkJaren(gwj.Groep.ID).GroepsWerkJaar.Count;
 			if (_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
@@ -360,20 +360,20 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="l">Lid, geladen met groepswerkjaar met afdelingsjaren</param>
 		/// <param name="afdelingsIDs">De ids van de AFDELING waarvan het kind lid is</param>
-        public void AanpassenAfdelingenVanLid(Lid l, IList<int> afdelingsIDs)
-        {
-            if(l is Kind)
-            {
-                Kind kind = (Kind)l;
-                if(afdelingsIDs.Count!=1)
-                {
-                    throw new OngeldigeActieException("Een kind moet in exact 1 afdeling zitten.");
-                }
-				
-                if (kind.AfdelingsJaar.Afdeling.ID != afdelingsIDs[0]) //anders verandert er niets
-                {
-                    //verwijder het kind uit zijn huidige afdelingsjaar
-                    kind.AfdelingsJaar.TeVerwijderen = true;
+		public void AanpassenAfdelingenVanLid(Lid l, IList<int> afdelingsIDs)
+		{
+			if (l is Kind)
+			{
+				Kind kind = (Kind)l;
+				if (afdelingsIDs.Count != 1)
+				{
+					throw new OngeldigeActieException("Een kind moet in exact 1 afdeling zitten.");
+				}
+
+				if (kind.AfdelingsJaar.Afdeling.ID != afdelingsIDs[0]) //anders verandert er niets
+				{
+					//verwijder het kind uit zijn huidige afdelingsjaar
+					kind.AfdelingsJaar.TeVerwijderen = true;
 
 					AfdelingsJaar ajnieuw = kind.GroepsWerkJaar.AfdelingsJaar.FirstOrDefault(e => e.Afdeling.ID == afdelingsIDs[0]);
 					if (ajnieuw == null)
@@ -425,7 +425,7 @@ namespace Chiro.Gap.Workers
 						}
 					}
 				}
-				if (checks!=afdelingsIDs.Count || afdelingsIDs.Count != leiding.AfdelingsJaar.Count)
+				if (checks != afdelingsIDs.Count || afdelingsIDs.Count != leiding.AfdelingsJaar.Count)
 				{
 					throw new OngeldigeActieException("Niet alle gekozen afdelingen zijn afdelingen van de groep in het gekozen werkjaar.");
 				}
