@@ -1,8 +1,14 @@
-﻿using System;
-using System.Data.Objects;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
+using System.Data.Objects;
 using System.Linq;
 using System.Text;
+
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Data.Ef;
@@ -30,7 +36,7 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
 		/// <param name="afdelingID">ID van de afdeling</param>
-		/// <returns>het gevraagde afdelingsjaar, of null indien niet
+		/// <returns>Het gevraagde afdelingsjaar, of null indien niet
 		/// gevonden.</returns>
 		/// <remarks>Dit heeft enkel zin als de afdeling bepaald door
 		/// AfdelingID een afdeling is van de groep bepaald door het

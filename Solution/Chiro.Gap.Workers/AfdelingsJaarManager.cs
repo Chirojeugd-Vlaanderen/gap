@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -14,6 +19,9 @@ using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {
+    /// <summary>
+    /// Worker die alle businesslogica i.v.m. afdelingsjaren bevat
+    /// </summary>
     public class AfdelingsJaarManager
     {
         private IAfdelingsJarenDao _dao;
@@ -24,12 +32,18 @@ namespace Chiro.Gap.Workers
         /// de groepen te gebruiken.  Nuttig voor mocking en testing.
         /// </summary>
         /// <param name="dao">Alternatieve dao</param>
+        /// <param name="autorisatieMgr">Alternatieve autorisatiemanager</param>
         public AfdelingsJaarManager(IAfdelingsJarenDao dao, IAutorisatieManager autorisatieMgr)
         {
             _dao = dao;
             _autorisatieMgr = autorisatieMgr;
         }
 
+        /// <summary>
+        /// Op basis van een ID een afdelingsjaar ophalen
+        /// </summary>
+        /// <param name="afdelingsJaarID">De ID van het afdelingsjaar</param>
+        /// <returns>Het afdelingsjaar met de opgegeven ID</returns>
         public AfdelingsJaar Ophalen(int afdelingsJaarID)
         {
             AfdelingsJaar aj = _dao.Ophalen(afdelingsJaarID, a => a.Afdeling, a => a.Leiding, a => a.Kind, a => a.OfficieleAfdeling);
@@ -47,8 +61,8 @@ namespace Chiro.Gap.Workers
         /// <summary>
         /// Verwijdert AfdelingsJaar uit database
         /// </summary>
-        /// <param name="id">afdelingsJaarID</param>
-        /// <returns>true on successful</returns>
+        /// <param name="afdelingsJaarID">ID van het AfdelingsJaar</param>
+        /// <returns><c>True</c> on successful</returns>
         public bool Verwijderen(int afdelingsJaarID)
         {
             AfdelingsJaar aj = _dao.Ophalen(afdelingsJaarID, a => a.Afdeling, a => a.Leiding, a => a.Kind);
@@ -72,6 +86,10 @@ namespace Chiro.Gap.Workers
             }
         }
 
+        /// <summary>
+        /// Het opgegeven afdelingsjaar opslaan
+        /// </summary>
+        /// <param name="aj">Het afdelingsjaar dat opgeslagen moet worden</param>
         public void Bewaren(AfdelingsJaar aj)
         {
             if (_autorisatieMgr.IsGavAfdeling(aj.Afdeling.ID))
@@ -83,6 +101,5 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Properties.Resources.GeenGavLid);
             }
         }
-
     }
 }

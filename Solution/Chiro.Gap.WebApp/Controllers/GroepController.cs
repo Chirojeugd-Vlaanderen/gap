@@ -1,3 +1,8 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,13 +10,13 @@ using System.ServiceModel;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
+using System.Web.Routing;
 
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WebApp.Models;
-using System.Web.Routing;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -23,7 +28,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// Genereert een view met algemene gegevens over de groep
         /// </summary>
         /// <param name="groepID">ID van de gewenste groep</param>
-        /// <returns>view met algemene gegevens over de groep</returns>
+        /// <returns>View met algemene gegevens over de groep</returns>
         public ActionResult Index(int groepID)
         {
             GroepsInstellingenModel model = new GroepsInstellingenModel();
@@ -39,7 +44,7 @@ namespace Chiro.Gap.WebApp.Controllers
         /// <summary>
         /// Actie voor als de gebruiker gegevens heeft ingevuld voor een nieuwe categorie
         /// </summary>
-        /// <param name="model">Groepsinstellingenmodel</param>
+		/// <param name="model">Model voor Groepsinstellingen</param>
         /// <param name="groepID">ID van de gewenste groep</param>
         /// <returns>Opnieuw de view Groep/Index</returns>
         [AcceptVerbs(HttpVerbs.Post)]

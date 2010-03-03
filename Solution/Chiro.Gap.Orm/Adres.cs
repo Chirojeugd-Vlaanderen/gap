@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,8 +33,8 @@ namespace Chiro.Gap.Orm
             // Als er geen bus/postcode is, dan moet er
             // gewoon een lege string staan.
 
-            Bus = "";
-            PostCode = "";
+            Bus = String.Empty;
+            PostCode = String.Empty;
         }
 
         public string VersieString

@@ -1,11 +1,16 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Configuration;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
-using System.Diagnostics;
 
 namespace Chiro.Cdf.Ioc
 {
@@ -14,7 +19,7 @@ namespace Chiro.Cdf.Ioc
         private static object threadLock = new object();
 
         private static IUnityContainer _container = null;
-        private static string _containerNaam = "";
+        private static string _containerNaam = String.Empty;
 
         public static IUnityContainer Container
         {
@@ -44,7 +49,7 @@ namespace Chiro.Cdf.Ioc
         /// <summary>
         /// Initialiseert de unity container voor de factory
         /// </summary>
-        /// <param name="containerNaam">naam van de te gebruiken container</param>
+        /// <param name="containerNaam">Naam van de te gebruiken container</param>
         public static void ContainerInit(string containerNaam)
         {
             lock (threadLock)
@@ -55,7 +60,7 @@ namespace Chiro.Cdf.Ioc
 
                     _container.Dispose();
                     _container = null;
-                    _containerNaam = "";
+                    _containerNaam = String.Empty;
                 }
 
                 if (_container == null)
@@ -63,8 +68,10 @@ namespace Chiro.Cdf.Ioc
                     var section = (UnityConfigurationSection)ConfigurationManager.GetSection("unity");
 
                     _container = new UnityContainer();
-                    if (section != null) 
-                        section.Containers[containerNaam].Configure(_container);
+					if (section != null)
+					{
+						section.Containers[containerNaam].Configure(_container);
+					}
                     _containerNaam = containerNaam;
                 }
             }
@@ -79,7 +86,7 @@ namespace Chiro.Cdf.Ioc
                     _container.Dispose();
                     _container = null;
                 }
-                _containerNaam = "";
+                _containerNaam = String.Empty;
             }
         }
         
@@ -87,6 +94,7 @@ namespace Chiro.Cdf.Ioc
         /// Gebruik Unity om een instantie van type/interface T
         /// te creëren.
         /// </summary>
+		/// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public static T Maak<T>()
         {
@@ -98,6 +106,7 @@ namespace Chiro.Cdf.Ioc
         /// <summary>
         /// Gebruik Unity om een instantie van het gevraagde type te creëren.
         /// </summary>
+		/// <param name="t"></param>
         /// <returns></returns>
         public static object Maak(Type t)
         {
@@ -110,8 +119,8 @@ namespace Chiro.Cdf.Ioc
         /// Zorg ervoor dat voor een (implementatie van) T steeds
         /// hetzelfde bestaande object gebruikt wordt.
         /// </summary>
-        /// <typeparam name="T">type of interface</typeparam>
-        /// <param name="instantie">te gebruiken object</param>
+        /// <typeparam name="T">Type van de interface</typeparam>
+        /// <param name="instantie">Te gebruiken object</param>
         public static void InstantieRegistreren<T>(T instantie)
         {
             Container.RegisterInstance<T>(instantie);

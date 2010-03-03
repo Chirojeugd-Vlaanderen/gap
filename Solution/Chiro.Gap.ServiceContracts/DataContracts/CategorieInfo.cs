@@ -1,8 +1,13 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
-using System.ComponentModel.DataAnnotations;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -22,10 +27,10 @@ namespace Chiro.Gap.ServiceContracts
 		[Verplicht(), StringLengte(80), StringMinimumLengte(2)]
 		public string Naam { get; set; }
 
-		[Verplicht(), StringLengte(10), StringMinimumLengte(2)]
 		/// <summary>
 		/// Code voor de categorie
 		/// </summary>
+		[Verplicht(), StringLengte(10), StringMinimumLengte(2)]
 		public string Code { get; set; }
 	}
 }

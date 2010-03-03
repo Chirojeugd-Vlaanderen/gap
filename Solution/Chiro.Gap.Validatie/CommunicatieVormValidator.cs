@@ -1,14 +1,23 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Chiro.Gap.Orm;
+
 using Chiro.Gap.Data.Ef;
-using System.Diagnostics;
+using Chiro.Gap.Orm;
 
 namespace Chiro.Gap.Validatie
 {
+    /// <summary>
+    /// Klasse die validatieregels controleert voor Communicatievormen
+    /// </summary>
 	public class CommunicatieVormValidator : Validator<CommunicatieVorm>
 	{
 		/// <summary>
@@ -17,7 +26,7 @@ namespace Chiro.Gap.Validatie
 		/// </summary>
 		/// <param name="cv">De communicatievorm (bv. telefoonnummer, mailadres, ...</param>
 		/// <returns>
-		/// <c>true</c> als de waarde ('Nummer') voldoet aan de opgegeven Regex voor dat communicatietype,
+		/// <c>True</c> als de waarde ('Nummer') voldoet aan de opgegeven Regex voor dat communicatietype,
 		/// en anders <c>false</c>
 		/// </returns>
 		public override bool Valideer(CommunicatieVorm cv)

@@ -1,3 +1,8 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Data.Objects;
@@ -16,6 +21,9 @@ namespace Chiro.Cdf.Data.Entity
 		/// Specifies the related objects to include in the query results using
 		/// a lambda expression listing the path members.
 		/// </summary>
+		/// <param name="query"></param>
+		/// <param name="path"></param>
+		/// <typeparam name="T"></typeparam>
 		/// <returns>A new System.Data.Objects.ObjectQuery&lt;T&gt; with the defined query path.</returns>
 		public static ObjectQuery<T> Include<T>(this ObjectQuery<T> query, Expression<Func<T, object>> path)
 		{
@@ -25,7 +33,7 @@ namespace Chiro.Cdf.Data.Entity
 
 			// Build string path:
 			StringBuilder sb = new StringBuilder();
-			string separator = "";
+			string separator = String.Empty;
 			foreach (ExtendedPropertyInfo member in members)
 			{
 				sb.Append(separator);

@@ -1,15 +1,20 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Objects;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+
+using Chiro.Cdf.Data;
+using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using System.Data;
-using System.Diagnostics;
-using System.Data.Objects;
-
-using Chiro.Cdf.Data.Entity;
-using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Data.Ef
 {
@@ -51,7 +56,6 @@ namespace Chiro.Gap.Data.Ef
 			{
 				db.PersoonsAdres.MergeOption = MergeOption.NoTracking;
 
-
 				// FIXME: enkel persoonsadressen van personen van groepen
 				// waarvan je GAV bent
 
@@ -72,12 +76,10 @@ namespace Chiro.Gap.Data.Ef
 
 				// Als de persoon nergens woont, dan is deze lijst leeg.  In dat geval
 				// halen we gewoon de gelieerde persoon zelf op.
-
 			}
 
 			resultaat = (from pa in paLijst
 				     select pa.Persoon).Distinct().ToList();
-
 
 			if (resultaat.Count == 0)
 			{

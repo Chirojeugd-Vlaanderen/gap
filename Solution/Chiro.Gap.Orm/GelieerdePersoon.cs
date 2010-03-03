@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +15,6 @@ using System.Diagnostics;
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-
 
 namespace Chiro.Gap.Orm
 {
@@ -43,9 +47,7 @@ namespace Chiro.Gap.Orm
 			public int ChiroLeefTijd { get; set; }
 
 			public Persoon Persoon { get; set; }
-
 		}
-
 
 		// We gaan de lijst met PersoonsInfo niet opnemen in de
 		// klasse.  De programmeur moet te allen tijde maar weten
@@ -75,7 +77,6 @@ namespace Chiro.Gap.Orm
 		}
 		#endregion
 
-
 		#region Identity en equality
 
 		/// <summary>
@@ -84,11 +85,11 @@ namespace Chiro.Gap.Orm
 		/// Omdat dit niet te garanderen was op basis van de entiteitseigenschappen tijdens deserializen (worden niet altijd gezet
 		/// voor het wordt opgeroepen), wordt er niet geimplementeerd dat objecten met hetzelfde ID dezelfde hashcode hebben, maar
 		/// dat objecten van dezelfde entiteitsklasse dezelfde ID hebben (een superset van objecten met dezelfde ID)
-		/// 
+		/// <para />
 		/// Het is mogelijk dat dit performantieproblemen geeft, maar vermoed wordt van niet, omdat uit ID weinig andere eigenschappen
 		/// worden afgeleid.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>De HashCode van de GelieerdePersoon</returns>
 		public override int GetHashCode()
 		{
 			return 9;

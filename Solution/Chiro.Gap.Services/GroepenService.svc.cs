@@ -1,22 +1,26 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Security.Permissions;
 using System.ServiceModel;
-using System.Diagnostics;
 using System.Text;
 
 using AutoMapper;
 
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Services.Properties;
-using Chiro.Gap.ServiceContracts;
-using Chiro.Gap.Workers;
 using Chiro.Gap.Fouten.Exceptions;
-using System.Security.Permissions;
+using Chiro.Gap.Orm;
+using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
-
+using Chiro.Gap.Services.Properties;
+using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Services
 {
@@ -114,14 +118,14 @@ namespace Chiro.Gap.Services
 		/// Deze documentatie is alleszins onvolledig, want ze gaat ervan uit dat groepen
 		/// nooit ophouden te bestaan.  Wat moet deze functie teruggeven als de groep
 		/// geen werking meer heeft?
-		/// 
+		/// <para/>
 		/// Geeft het huidige werkjaar van de gegeven groep terug. Dit is gegarandeerd het huidige jaartal wanneer de
 		/// huidige dag tussen de deadline voor het nieuwe werkjaar en de begindatum van het volgende werkjaar ligt.
 		/// In de tussenperiode hangt het ervan af of de groep de overgang al heeft gemaakt, en dit is te zien aan 
 		/// het laatst gemaakte groepswerkjaar
 		/// </summary>
-		/// <param name="groepID"></param>
-		/// <returns></returns>
+		/// <param name="groepID">ID voor de groep waarvan het huidige werkjaar opgehaald wordt</param>
+		/// <returns>Een int die het werkjaar voorstelt (bv. 2009 voor werkjaar 2009-2010)</returns>
 		public int HuidigWerkJaarGet(int groepID)
 		{
 			return _groepsWerkJaarManager.HuidigWerkJaarGet(groepID);
@@ -192,8 +196,8 @@ namespace Chiro.Gap.Services
 		/// Maakt een nieuwe afdeling voor een gegeven groep
 		/// </summary>
 		/// <param name="groepID">ID van de groep</param>
-		/// <param name="naam">naam van de afdeling</param>
-		/// <param name="afkorting">afkorting van de afdeling (voor lijsten, overzichten,...)</param>
+		/// <param name="naam">Naam van de afdeling</param>
+		/// <param name="afkorting">Afkorting van de afdeling (voor lijsten, overzichten,...)</param>
 		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AfdelingAanmaken(int groepID, string naam, string afkorting)
 		{
@@ -202,16 +206,15 @@ namespace Chiro.Gap.Services
 			_groepenMgr.Bewaren(g, e => e.Afdeling);
 		}
 
-
 		/// <summary>
 		/// Bewerkt een AfdelingsJaar: 
 		/// andere OfficieleAfdeling en/of andere leeftijden
 		/// </summary>
-		/// <param name="afdID">AfdelingsJaarID</param>
-		/// <param name="offafdID">OfficieleAfdelingsID</param>
-		/// <param name="geboortVan">GeboorteJaarVan</param>
-		/// <param name="geboortTot">GeboorteJaarTot</param>
-		/// <param name="geslacht">geeft aan of het een jongensafdeling, een meisjesafdeling
+		/// <param name="afdID">ID van het AfdelingsJaar waar het over gaat</param>
+		/// <param name="offafdID">ID van de officiële afdeling waar de afdeling op gemapt wordt</param>
+		/// <param name="geboorteVan">GeboorteJaar van de oudste leden in die afdeling</param>
+		/// <param name="geboorteTot">GeboorteJaar van de jongste leden in die afdeling</param>
+		/// <param name="geslacht">Geeft aan of het een jongensafdeling, een meisjesafdeling
 		/// of een gemengde afdeling is.</param>
 		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		// TODO: datacontract maken, waar ook de versiestring in zit. (Zie #297)
@@ -234,12 +237,11 @@ namespace Chiro.Gap.Services
 			_afdelingsJaarMgr.Bewaren(aj);
 		}
 
-
 		/// <summary>
 		/// Verwijdert een afdelingsjaar
 		/// en controleert of er geen leden in zitten.
 		/// </summary>
-		/// <param name="afdelingsJaarID"></param>
+		/// <param name="afdelingsJaarID">ID van het afdelingsjaar dat verwijderd moet worden</param>
 		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AfdelingsJaarVerwijderen(int afdelingsJaarID)
 		{
@@ -251,7 +253,6 @@ namespace Chiro.Gap.Services
 		{
 			return _afdelingsJaarMgr.Ophalen(afdelingsJaarID);
 		}
-
 
 		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AfdelingsJaarAanmaken(int groepID, int afdelingsID, int offiafdelingsID, int geboortejaarbegin, int geboortejaareind)
@@ -270,14 +271,13 @@ namespace Chiro.Gap.Services
 			AfdelingsJaar afdjaar = _groepenMgr.AfdelingsJaarMaken(afd, offafd, huidigWerkJaar, geboortejaarbegin, geboortejaareind);
 
 			_afdelingsJaarMgr.Bewaren(afdjaar);
-
 		}
 
 		/// <summary>
 		/// Haat een afdeling op, op basis van <paramref name="afdelingID"/>
 		/// </summary>
 		/// <param name="afdelingID">ID van op te halen afdeling</param>
-		/// <returns>de gevraagde afdeling</returns>
+		/// <returns>De gevraagde afdeling</returns>
 		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public Afdeling AfdelingOphalen(int afdelingID)
 		{
@@ -306,7 +306,7 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		/// <param name="groepswerkjaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
 		/// opgezocht moeten worden.</param>
-		/// <returns>info over de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
+		/// <returns>Info over de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
 		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarID)
 		{
@@ -331,8 +331,9 @@ namespace Chiro.Gap.Services
 		/// Maakt een nieuwe categorie voor de groep met ID <paramref name="groepID"/>
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvoor nieuwe categorie wordt gemaakt</param>
-		/// <param name="naam">naam voor de nieuwe categorie</param>
-		/// <param name="code">code voor de nieuwe categorie</param>
+		/// <param name="naam">Naam voor de nieuwe categorie</param>
+		/// <param name="code">Code voor de nieuwe categorie</param>
+		/// <returns></returns>
 		public int CategorieToevoegen(int groepID, string naam, string code)
 		{
 			Groep g = _groepenMgr.OphalenMetCategorieen(groepID);
@@ -401,13 +402,12 @@ namespace Chiro.Gap.Services
 			throw new NotImplementedException();
 		}
 
-
 		/// <summary>
 		/// Zoekt de categorieID op van de categorie bepaald door de gegeven 
 		/// <paramref name="groepID"/> en <paramref name="code"/>.
 		/// </summary>
 		/// <param name="groepID">ID van groep waaraan de gezochte categorie gekoppeld is</param>
-		/// <param name="code">code van de te zoeken categorie</param>
+		/// <param name="code">Code van de te zoeken categorie</param>
 		/// <returns>Het categorieID als de categorie gevonden is, anders 0.</returns>
 		public int CategorieIDOphalen(int groepID, string code)
 		{

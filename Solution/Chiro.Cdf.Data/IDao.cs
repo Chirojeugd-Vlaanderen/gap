@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +13,7 @@ namespace Chiro.Cdf.Data
 {
 	/// <summary>
 	/// Algemeen contract voor CRUD-operaties in de ORM-laag.  Implementeert een 'Repository'.
-	/// 
+	/// <para/>
 	/// Aangepast uit 'Pro LINQ Object Relational Mapping with C# 2008'.
 	/// </summary>
 	/// <typeparam name="T">Entiteit die 'geDaot' moet worden</typeparam>
@@ -25,7 +30,7 @@ namespace Chiro.Cdf.Data
 		/// Haalt entiteit op met gekoppelde entiteiten
 		/// </summary>
 		/// <param name="id">ID op te halen entiteit</param>
-		/// <param name="paths">lambda-expressies die aangeven welke gekoppelde entiteiten mee opgehaald 
+		/// <param name="paths">Lambda-expressies die aangeven welke gekoppelde entiteiten mee opgehaald 
 		/// moeten worden</param>
 		/// <returns>De gevraagde entiteit, met de gekoppelde entiteiten gespecifieerd in
 		/// <paramref name="paths"/></returns>
@@ -34,7 +39,7 @@ namespace Chiro.Cdf.Data
         /// <summary>
         /// Haalt een lijst entiteiten op, met gegeven <paramref name="ids"/>
         /// </summary>
-        /// <param name="ids">rij ID's op te halen entiteiten</param>
+        /// <param name="ids">Rij ID's op te halen entiteiten</param>
         /// <returns>Lijst opgehaalde entiteiten</returns>
         IList<T> Ophalen(IEnumerable<int> ids);
 
@@ -42,20 +47,21 @@ namespace Chiro.Cdf.Data
         /// Haalt een lijst entiteiten op, met gekoppelde entiteiten
         /// </summary>
         /// <param name="ids">ID's van op te halen entiteiten</param>
-        /// <param name="paths">geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+        /// <param name="paths">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
         /// <returns>Lijst met opgehaalde entiteiten</returns>
         IList<T> Ophalen(IEnumerable<int> ids, params Expression<Func<T, object>>[] paths);
 
         /// <summary>
         /// Haalt een gepagineerde lijst met entiteiten van type T op en de noodzakelijke koppelingen
         /// </summary>
+		/// <param name="id"></param>
+		/// <param name="f"></param>
         /// <param name="pagina">De hoeveelste pagina</param>
         /// <param name="paginaGrootte">Het aantal elementen op een pagina</param>
         /// <param name="aantalTotaal">Out parameter met het totaal aantal elementen</param>
-        /// <param name="paths">geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+        /// <param name="paths">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
         /// <returns>Lijst met opgehaalde entiteiten</returns>
         IList<T> PaginaOphalen(int id, Expression<Func<T, int>> f, int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<T, object>>[] paths);
-
 
 		/// <summary>
 		/// Haalt alle entiteiten van het type <typeparamref name="T"/> op.
@@ -66,7 +72,7 @@ namespace Chiro.Cdf.Data
 		/// <summary>
 		/// Bewaart of updatet de gegeven <paramref name="entiteit"/>
 		/// </summary>
-		/// <param name="entiteit">te bewaren entiteit</param>
+		/// <param name="entiteit">Te bewaren entiteit</param>
 		/// <returns>Een kloon van de bewaarde entiteit, met juiste ID's</returns>
 		T Bewaren(T entiteit);
 
@@ -74,7 +80,7 @@ namespace Chiro.Cdf.Data
 		/// Bewaart of updatet de <paramref name="entiteit"/> en gekoppelde andere entiteiten
 		/// </summary>
 		/// <param name="entiteit">Te bewaren entiteit</param>
-		/// <param name="paths">lambda-expressie die bepaalt welke andere entiteiten mee bewaard moeten worden.</param>
+		/// <param name="paths">Lambda-expressie die bepaalt welke andere entiteiten mee bewaard moeten worden.</param>
 		/// <returns>Een kloon van de bewaarde entiteit, met de juiste ID's</returns>
 		T Bewaren(T entiteit, params Expression<Func<T, object>>[] paths);
 
@@ -82,7 +88,7 @@ namespace Chiro.Cdf.Data
 		/// Bewaart of updatet de entiteiten <paramref name="es"/>, inclusief gekoppelde andere entiteiten
 		/// </summary>
 		/// <param name="es">Te bewaren entiteiten</param>
-		/// <param name="paths">lambda-expressie de mee te bewaren gekoppelde entiteiten bepaalt</param>
+		/// <param name="paths">Lambda-expressie de mee te bewaren gekoppelde entiteiten bepaalt</param>
 		/// <returns>Een kloon van <paramref name="es"/> met de juiste ID's</returns>
 		IEnumerable<T> Bewaren(IEnumerable<T> es, params Expression<Func<T, object>>[] paths);
 
@@ -93,5 +99,4 @@ namespace Chiro.Cdf.Data
 		/// of opgevraagd worden.</returns>
 		Expression<Func<T, object>>[] getConnectedEntities();
 	}
-
 }

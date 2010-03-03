@@ -1,3 +1,8 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -5,7 +10,6 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using Chiro.Cdf.Ioc;
-
 
 namespace Chiro.Cdf.DependencyInjection
 {
@@ -20,7 +24,7 @@ namespace Chiro.Cdf.DependencyInjection
 		List<TypeMapping> typeMappings;
 
 		/// <summary>
-		/// Constructor
+		/// Instantieert een DIInstanceProvider
 		/// </summary>
 		/// <param name="serviceType">Service implementation type</param>
 		/// <param name="typeMappings">Type mappings</param>
@@ -48,11 +52,11 @@ namespace Chiro.Cdf.DependencyInjection
 		/// <returns></returns>
 		public object GetInstance(InstanceContext instanceContext, Message message) 
 		{
-            //DependencyContainer container = new DependencyContainer();
-            //foreach (TypeMapping typeMapping in this.typeMappings)
-            //{
+            // DependencyContainer container = new DependencyContainer();
+            // foreach (TypeMapping typeMapping in this.typeMappings)
+            // {
             //    container.RegisterTypeMapping(typeMapping.TypeRequested, typeMapping.TypeToBuild);
-            //}
+            // }
 
             return Factory.Maak(this.serviceType);
 		} 
@@ -64,7 +68,6 @@ namespace Chiro.Cdf.DependencyInjection
 		/// <param name="instance"></param>
 		public void ReleaseInstance(InstanceContext instanceContext, object instance) 
 		{ 
-
 		} 
 	}
 }

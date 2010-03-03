@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Data.Objects;
 using System.Linq;
@@ -11,19 +16,20 @@ using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 
-
 namespace Chiro.Gap.Data.Ef
 {
 	public class LeidingDao : Dao<Leiding, ChiroGroepEntities>, ILeidingDao
 	{
 		public LeidingDao()
 		{
-			connectedEntities = new Expression<Func<Leiding, object>>[] { 
-                                        e => e.GroepsWerkJaar.WithoutUpdate(),
-                                        e => e.GelieerdePersoon.WithoutUpdate(), 
-										e => e.GelieerdePersoon.Persoon.WithoutUpdate(), 
-                                        e => e.AfdelingsJaar.First().WithoutUpdate(),
-										e => e.AfdelingsJaar.First().Afdeling.WithoutUpdate()};
+			connectedEntities = new Expression<Func<Leiding, object>>[] 
+			{
+				e => e.GroepsWerkJaar.WithoutUpdate(),
+				e => e.GelieerdePersoon.WithoutUpdate(), 
+				e => e.GelieerdePersoon.Persoon.WithoutUpdate(), 
+				e => e.AfdelingsJaar.First().WithoutUpdate(),
+				e => e.AfdelingsJaar.First().Afdeling.WithoutUpdate()
+			};
 		}
 	}
 }

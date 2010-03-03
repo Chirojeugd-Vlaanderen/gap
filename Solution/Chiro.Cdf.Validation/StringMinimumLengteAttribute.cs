@@ -39,7 +39,5 @@ namespace System.ComponentModel.DataAnnotations
             }
             return false;
         }
-
     }
-
 }

@@ -27,7 +27,7 @@ namespace Chiro.Gap.Orm
         }
 
 
-        // Straat wordt nooit geupdatet, dus ook nooit
+        // Straat wordt nooit geüpdatet, dus ook nooit
         // concurrency.  VersieString is dus niet nodig.
 
         public string VersieString

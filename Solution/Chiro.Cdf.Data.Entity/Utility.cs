@@ -1,5 +1,8 @@
-﻿// BuildContainsExpression.cs - workaround voor 'where in' in linq to EF
-//
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 // Met dank aan http://www.velocityreviews.com/forums/showpost.php?p=3683755&postcount=6
 //
 // Linq to entities biedt geen ondersteuning voor bijv.
@@ -27,23 +30,32 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Chiro.Cdf.Data.Entity
 {
+	/// <summary>
+	/// Workaround voor 'where in' in linq to EF
+	/// </summary>
     public static class Utility
     {
         /// <summary>
-        /// Deze nifty functie creert een expressie die in het
-        /// 'where' gedeelte van een linqexpressie gebruikt kan
-        /// worden.  De bedoeling is om een 'where-in' constructie
+        /// Deze nifty functie creëert een expressie die in het
+        /// 'where'-gedeelte van een linq-expressie gebruikt kan
+        /// worden.  De bedoeling is om een 'where-in'-constructie
         /// te simuleren.
         /// </summary>
-        /// <typeparam name="TElement">klasse van het object dat 'gewhereind' moet worden</typeparam>
-        /// <typeparam name="TValue">type van het veld waarop 'gewhereind' moet worden</typeparam>
-        /// <param name="valueSelector">lambda-expressie die het bovenvermelde veld selecteert uit een TElement</param>
-        /// <param name="values">collectie waarin het vermelde veld gezocht moet worden</param>
-        /// <returns>experssie die in de 'where' van een linkexpressie gebruikt kan worden</returns>
+        /// <typeparam name="TElement">Klasse van het object dat 'gewhereind' moet worden</typeparam>
+        /// <typeparam name="TValue">Type van het veld waarop 'gewhereind' moet worden</typeparam>
+        /// <param name="valueSelector">Lambda-expressie die het bovenvermelde veld selecteert uit een TElement</param>
+        /// <param name="values">Collectie waarin het vermelde veld gezocht moet worden</param>
+        /// <returns>Expressie die in de 'where' van een linq-expressie gebruikt kan worden</returns>
         public static Expression<Func<TElement, bool>> BuildContainsExpression<TElement, TValue>(Expression<Func<TElement, TValue>> valueSelector, IEnumerable<TValue> values)
         {
-            if (valueSelector == null) throw new ArgumentNullException("valueSelector");
-            if (values == null) throw new ArgumentNullException("values");
+			if (valueSelector == null)
+			{
+				throw new ArgumentNullException("valueSelector");
+			}
+			if (values == null)
+			{
+				throw new ArgumentNullException("values");
+			}
 
             ParameterExpression p = valueSelector.Parameters.Single();
 
@@ -61,6 +73,8 @@ namespace Chiro.Cdf.Data.Entity
         /// <summary>
         /// Detaches an objectgraph given it's root object.
         /// </summary>
+		/// <param name="entity"></param>
+		/// <typeparam name="T"></typeparam>
         /// <returns>The detached root object.</returns>
         /// <remarks>
         ///     1. Enkel als de oorspronkelijke context niet meer bestaat,
@@ -76,8 +90,7 @@ namespace Chiro.Cdf.Data.Entity
 
             using (MemoryStream stream = new MemoryStream())
             {
-
-                //NetDataContractSerializer serializer = new NetDataContractSerializer();
+                // NetDataContractSerializer serializer = new NetDataContractSerializer();
 
                 // Met een DataContractSerializer werkt het blijkbaar niet.
                 // Met een binaryFormatter wel.
@@ -97,7 +110,6 @@ namespace Chiro.Cdf.Data.Entity
         {
             using (MemoryStream stream = new MemoryStream())
             {
-
                 var serializer = new BinaryFormatter();
                 serializer.Serialize(stream, entities);
                 stream.Position = 0;
@@ -109,7 +121,6 @@ namespace Chiro.Cdf.Data.Entity
 	{
 		using (MemoryStream stream = new MemoryStream())
 		{
-
 			var serializer = new BinaryFormatter();
 			serializer.Serialize(stream, entities);
 			stream.Position = 0;

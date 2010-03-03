@@ -1,3 +1,8 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System;
 using System.Data.Objects;
 using System.Linq;
@@ -18,6 +23,8 @@ namespace Chiro.Cdf.Data.Entity
 		/// <summary>
 		/// Declares the optimistic concurrency attribute and its resolvertype.
 		/// </summary>
+		/// <param name="propertyName"></param>
+		/// <param name="concurrencyResolverType"></param>
 		public OptimisticConcurrencyAttribute(string propertyName, Type concurrencyResolverType)
 		{
 			this.propertyName = propertyName;
@@ -46,6 +53,9 @@ namespace Chiro.Cdf.Data.Entity
 		/// <summary>
 		/// Whether the optimistic concurrency property has changed on the given instance.
 		/// </summary>
+		/// <param name="context"></param>
+		/// <param name="instance"></param>
+		/// <returns></returns>
 		public bool HasPropertyChanged(ObjectContext context, object instance)
 		{
 			return context.ObjectStateManager.GetObjectStateEntry(instance).GetModifiedProperties().Contains(this.propertyName);
@@ -54,11 +64,15 @@ namespace Chiro.Cdf.Data.Entity
 		/// <summary>
 		/// Updates the concurrency property on the given instance.
 		/// </summary>
+		/// <param name="instance"></param>
 		public void UpdateInstance(object instance)
 		{
 			// Retrieve the property instance:
 			PropertyInfo property = instance.GetType().GetProperty(this.propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-			if (property == null) throw new ArgumentException(String.Format("ConcurrencyAttribute's PropertyName \"{0}\" not found.", this.propertyName));
+			if (property == null)
+			{
+				throw new ArgumentException(String.Format("ConcurrencyAttribute's PropertyName \"{0}\" not found.", this.propertyName));
+			}
 
 			// Invoke the NextValue method on the concurrency resolver, given the actual property value:
 			object actualValue = property.GetValue(instance, null);
@@ -72,6 +86,8 @@ namespace Chiro.Cdf.Data.Entity
 		/// <summary>
 		/// Retrieves the OptimisticConcurrencyAttributes decorating the given entity type.
 		/// </summary>
+		/// <param name="entityType"></param>
+		/// <returns></returns>
 		public static OptimisticConcurrencyAttribute[] GetConcurrencyAttributes(Type entityType)
 		{
 			return (OptimisticConcurrencyAttribute[])entityType.GetCustomAttributes(typeof(OptimisticConcurrencyAttribute), true);
@@ -88,6 +104,8 @@ namespace Chiro.Cdf.Data.Entity
 		/// Provide the next value of the optimistic locking field, given
 		/// it's actual value.
 		/// </summary>
+		/// <param name="actualValue"></param>
+		/// <returns></returns>
 		T NextValue(T actualValue);
 	}
 

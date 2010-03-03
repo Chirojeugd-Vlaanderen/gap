@@ -1,6 +1,12 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Data.Objects;
 using System.Data;
@@ -8,8 +14,6 @@ using System.Data.Objects.DataClasses;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
-
-using System.Linq.Expressions;
 
 namespace Chiro.Cdf.Data.Entity
 {
@@ -22,7 +26,6 @@ namespace Chiro.Cdf.Data.Entity
 	/// <remarks>Alle entity's die de DAO oplevert, moeten gedetacht zijn.
 	/// Dit kan via MergeOption.NoTracking, of via Utility.DetachObjectGraph.
 	/// </remarks>
-
 	public class Dao<TEntiteit, TContext> : IDao<TEntiteit>
 		where TEntiteit : EntityObject, IEfBasisEntiteit
 		where TContext : ObjectContext, new()
@@ -40,7 +43,6 @@ namespace Chiro.Cdf.Data.Entity
 		{
 			return connectedEntities;
 		}
-
 
 		/// <summary>
 		/// Ophalen van een entity op basis van ID
@@ -84,7 +86,6 @@ namespace Chiro.Cdf.Data.Entity
 				// dat ik verderop toch DetachObjectGraph gebruik.
 
 				result = (IncludesToepassen(query, paths)).FirstOrDefault<TEntiteit>();
-
 			}
 
 			if (result != null)
@@ -92,20 +93,19 @@ namespace Chiro.Cdf.Data.Entity
 				result = Utility.DetachObjectGraph(result);
 			}
 
-
 			return result;
 		}
 
 		/// <summary>
 		/// Haalt een pagina entiteiten op, op basis van een ID van een gerelateerde entiteit
 		/// </summary>
-		/// <param name="id">te vergelijken ID</param>
-		/// <param name="f">lambda-expressie die uitgaande van de op te zoeken entiteit de ID bepaalt 
+		/// <param name="id">Te vergelijken ID</param>
+		/// <param name="f">Lambda-expressie die uitgaande van de op te zoeken entiteit de ID bepaalt 
 		/// waarmee <paramref name="id"/> vergeleken moet worden.</param>
-		/// <param name="pagina">gevraagde pagina</param>
-		/// <param name="paginaGrootte">aantal entiteiten op de pagina</param>
-		/// <param name="aantalTotaal">out-parameter met totaal aantal entiteiten die voldoen</param>
-		/// <param name="paths">lambda-expressies voor gerelateerde entiteiten</param>
+		/// <param name="pagina">Gevraagde pagina</param>
+		/// <param name="paginaGrootte">Aantal entiteiten op de pagina</param>
+		/// <param name="aantalTotaal">Out-parameter met totaal aantal entiteiten die voldoen</param>
+		/// <param name="paths">Lambda-expressies voor gerelateerde entiteiten</param>
 		/// <returns></returns>
 		public virtual IList<TEntiteit> PaginaOphalen(int id, Expression<Func<TEntiteit, int>> f, int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<TEntiteit, object>>[] paths)
 		{
@@ -139,8 +139,8 @@ namespace Chiro.Cdf.Data.Entity
 		/// Ophalen van een lijst entiteiten met gekoppelde entiteiten
 		/// </summary>
 		/// <param name="ids">ID's van op te halen entiteiten</param>
-		/// <param name="paths">omschrijft mee op te halen gekoppelde entiteiten</param>
-		/// <returns>een lijst opgehaalde entiteiten</returns>
+		/// <param name="paths">Omschrijft mee op te halen gekoppelde entiteiten</param>
+		/// <returns>Een lijst opgehaalde entiteiten</returns>
 		public IList<TEntiteit> Ophalen(IEnumerable<int> ids, params Expression<Func<TEntiteit, object>>[] paths)
 		{
 			IList<TEntiteit> result;
@@ -148,7 +148,7 @@ namespace Chiro.Cdf.Data.Entity
 			using (TContext db = new TContext())
 			{
 				// onderstaande lukt niet, omdat Contains niet werkt voor LINQ to entities:
-				//ObjectQuery<TEntiteit> query = (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
+				// ObjectQuery<TEntiteit> query = (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
 				//                                where ids.Contains(t.ID)
 				//                                select t) as ObjectQuery<TEntiteit>;
 
@@ -171,7 +171,7 @@ namespace Chiro.Cdf.Data.Entity
 		}
 
 		/// <summary>
-		/// 'Includet' gerelateerde entiteiten aan een objectquery.
+		/// Includet gerelateerde entiteiten in een objectquery
 		/// </summary>
 		/// <param name="query">Betreffende query</param>
 		/// <param name="paths">Paden naar mee op te halen gerelateerde entiteiten</param>
@@ -215,8 +215,8 @@ namespace Chiro.Cdf.Data.Entity
 		/// <summary>
 		/// Bewaart/Updatet entiteit in database
 		/// </summary>
-		/// <param name="nieuweEntiteit">entiteit met nieuwe gegevens</param>
-		/// <returns>De geupdatete entiteit</returns>
+		/// <param name="entiteit">Entiteit met nieuwe gegevens</param>
+		/// <returns>De geüpdatete entiteit</returns>
 		/// <remarks>Deze functie mag ook gebruikt worden voor het toevoegen
 		/// van een nieuwe entiteit, of het verwijderen van een bestaande.
 		/// In dat laatste geval is de terugkeerwaarde null.</remarks>
@@ -228,8 +228,9 @@ namespace Chiro.Cdf.Data.Entity
 		/// <summary>
 		/// Bewaart/Updatet entiteit in database
 		/// </summary>
-		/// <param name="nieuweEntiteit">entiteit met nieuwe gegevens</param>
-		/// <returns>De geupdatete entiteit</returns>
+		/// <param name="entiteit">Entiteit met nieuwe gegevens</param>
+		/// <param name="paths"></param>
+		/// <returns>De geüpdatete entiteit</returns>
 		/// <remarks>Nieuwe methode, die altijd attachobject graph gebruikt en dus als argument een array van lambda
 		/// expressions meekrijgt</remarks>
 		public virtual TEntiteit Bewaren(TEntiteit entiteit, params Expression<Func<TEntiteit, object>>[] paths)
@@ -241,7 +242,6 @@ namespace Chiro.Cdf.Data.Entity
 				// SetAllModified is niet meer nodig na AttachObjectGraph
 
 				db.SaveChanges();
-
 			}
 
 			// Door Utility.DetachObjectGraph te gebruiken wanneer de context
@@ -251,12 +251,11 @@ namespace Chiro.Cdf.Data.Entity
 			return entiteit;
 		}
 
-
 		/// <summary>
 		/// Bewaren van een lijst entiteiten
 		/// </summary>
-		/// <param name="es">lijst entiteiten</param>
-		/// <param name="paths">paden met gerelateerde te bewaren
+		/// <param name="es">Lijst entiteiten</param>
+		/// <param name="paths">Paden met gerelateerde te bewaren
 		/// entiteiten</param>
 		/// <returns>De bewaarde entiteiten, maar gedetacht</returns>
 		public virtual IEnumerable<TEntiteit> Bewaren(IEnumerable<TEntiteit> es, params Expression<Func<TEntiteit, object>>[] paths)

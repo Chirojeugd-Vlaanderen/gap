@@ -1,3 +1,8 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -10,23 +15,21 @@ using System.Web.Mvc.Ajax;
 
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Orm;
-using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
-
 	// Om te zorgen dat het terugkeren naar de vorige lijst en dergelijke werkt in samenwerking met het opvragen van subsets
 	// (categorieën of zo), hebben we steeds een default (categorie, ...) die aangeeft dat alle personen moeten worden meegegeven
 
 	public class PersonenController : BaseController
 	{
 		public PersonenController(IServiceHelper serviceHelper) : base(serviceHelper) { }
-		//TODO er moeten ook nog een laatst gebruikte "actie" worden toegevoegd, niet alleen actie id
+		// TODO er moeten ook nog een laatst gebruikte "actie" worden toegevoegd, niet alleen actie id
 
-		//
 		// GET: /Personen/
 		public ActionResult Index(int groepID)
 		{
@@ -34,10 +37,10 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// Haal een pagina met persoonsinformatie op (inclusief lidinfo) voor personen uit een
+		/// Haal een 'pagina' met persoonsinformatie op (inclusief lidinfo) voor personen uit een
 		/// bepaalde categorie, en toont deze pagina via de view 'Index'.
 		/// </summary>
-		/// <param name="page">Paginanummer</param>
+		/// <param name="page">Nummer van de 'pagina'</param>
 		/// <param name="groepID">Huidige groep waarin de gebruiker aan het werken is</param>
 		/// <param name="id">ID van de gevraagde categorie.  Kan ook 0 zijn; dan worden alle personen
 		/// geselecteerd.</param>
@@ -54,7 +57,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new Models.PersoonInfoModel();
 			BaseModelInit(model, groepID);
 
-			//alle personen bekijken
+			// Alle personen bekijken
 			if (id == 0)
 			{
 				model.PersoonInfos =
@@ -67,7 +70,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
-				//TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
+				// TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
 				model.PersoonInfos =
 				    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
 				    (g => g.PaginaOphalenUitCategorieMetLidInfo(id, page, 20, out totaal));
@@ -97,7 +100,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (model.GekozenActie == 1 && model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0)
 			{
 				IEnumerable<int> gemaakteleden = ServiceHelper.CallService<ILedenService, IEnumerable<int>>(g => g.LedenMakenEnBewaren(model.GekozenGelieerdePersoonIDs));
-				//TODO TempData["feedback"] =  aanpassen
+				// TODO TempData["feedback"] =  aanpassen
 				return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
 			}
 			else if (model.GekozenActie == 2 && model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0)
@@ -107,7 +110,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
-                TempData["feedback"] =  Properties.Resources.NiemandGeselecteerdFout;
+                TempData["feedback"] = Properties.Resources.NiemandGeselecteerdFout;
                 return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
 			}
 		}
@@ -204,7 +207,6 @@ namespace Chiro.Gap.WebApp.Controllers
 			return View("EditGegevens", model);
 		}
 
-
 		/// <summary>
 		/// Probeert de gewijzigde persoonsgegevens te persisteren via de webservice
 		/// </summary>
@@ -261,7 +263,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			List<int> ids = new List<int>();
 			ids.Add(id);
 			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LeidingMakenEnBewaren(ids));
-			//TODO feedback
+			// TODO feedback
 			return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
 		}
 
@@ -308,9 +310,9 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// Verhuist de personen bepaald door <paramref name="model"/>.PersoonIDs van het adres
 		/// bpaald door <paramref name="model"/>.OudAdresID naar <paramref name="model"/>.Adres.
 		/// </summary>
-		/// <param name="model">bevat de nodige info voor de verhuis</param>
-		/// <param name="groepID">huidig geslecteerde groep van de gebruiker</param>
-		/// <returns>de view 'EditRest' indien OK, anders opnieuw de view 'AdresBewerken'.</returns>
+		/// <param name="model">Bevat de nodige info voor de verhuis</param>
+		/// <param name="groepID">Huidig geslecteerde groep van de gebruiker</param>
+		/// <returns>De view 'EditRest' indien OK, anders opnieuw de view 'AdresBewerken'.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Verhuizen(AdresModel model, int groepID)
 		{
@@ -361,7 +363,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			// Van de aanvrager heb ik het PersoonID nodig, en we hebben nu enkel het
 			// ID van de GelieerdePersoon.  Het PersoonID
 
-			model.PersoonIDs = new List<int> { 
+			model.PersoonIDs = new List<int> 
+			{ 
 				ServiceHelper.CallService<IGelieerdePersonenService, int>(srvc => srvc.PersoonIDGet(gelieerdePersoonID))
 			};
 
@@ -494,11 +497,10 @@ namespace Chiro.Gap.WebApp.Controllers
 			return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
 		}
 
-
 		// GET: /Personen/CommVormBewerken/gelieerdePersoonID
 		public ActionResult BewerkenCommVorm(int commvormID, int gelieerdePersoonID, int groepID)
 		{
-			//TODO dit is niet juist broes, want hij haalt 2 keer de persoon op?
+			// TODO dit is niet juist broes, want hij haalt 2 keer de persoon op?
 			GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(gelieerdePersoonID));
 			CommunicatieVorm commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieVorm>(l => l.CommunicatieVormOphalen(commvormID));
 			CommVormModel model = new CommVormModel(g, commv);
@@ -507,7 +509,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			return View("CommVormBewerken", model);
 		}
 
-		//TODO meerdere commvormen tegelijk
+		// TODO meerdere commvormen tegelijk
 
 		// POST: /Personen/CommVormBewerken/gelieerdePersoonID
 		[AcceptVerbs(HttpVerbs.Post)]
@@ -549,7 +551,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(model.NieuweCommVorm));
 				return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
 			}
-			///TODO catch exceptions overal
+			// TODO catch exceptions overal
 		}
 
 		#endregion commvormen
@@ -631,6 +633,5 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		#endregion categorieën
-
 	}
 }

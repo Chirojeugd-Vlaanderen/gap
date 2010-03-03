@@ -1,16 +1,24 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Data.Ef;
+using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Fouten.Exceptions;
 
 namespace Chiro.Gap.Workers
 {
+    /// <summary>
+    /// Worker die alle businesslogica i.v.m. autorisatie bevat
+    /// </summary>
 	public class AutorisatieManager : IAutorisatieManager
 	{
 		#region Private members
@@ -32,11 +40,12 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Maakt een nieuwe AutorisatieManager
 		/// </summary>
-		/// <param name="autorisatieDao">DAO om te kijken of de gebruiker wel recht heeft om de methods
+		/// <param name="autorisatieDao">Repository om te kijken of de gebruiker wel recht heeft om de methods
 		/// van deze worker te gebruiken</param>
-		/// <param name="gavDao">DAO voor GAV's</param>
-		/// <param name="groepenDao">DAO voor groepen</param>
-		/// <param name="gebruikersrechtDao">DAO om gebruikersrechten te persisteren</param>
+		/// <param name="gavDao">Repository voor GAV's</param>
+		/// <param name="groepenDao">Repository voor groepen</param>
+		/// <param name="functiesDao">Repository voor functies</param>
+		/// <param name="gebruikersrechtDao">Repository om gebruikersrechten te persisteren</param>
 		/// <param name="am">AuthenticatieManager (bepaalt gebruikersnaam)</param>
 		public AutorisatieManager(
 			IAutorisatieDao autorisatieDao, 
@@ -53,7 +62,6 @@ namespace Chiro.Gap.Workers
 			_gebruikersrechtDao = gebruikersrechtDao;
 
 			_am = am;
-
 		}
 		#endregion
 
@@ -63,43 +71,40 @@ namespace Chiro.Gap.Workers
 		/// IsGav geeft true als de aangelogde user
 		/// gav is voor de groep met gegeven ID
 		/// </summary>
-		/// <param name="groepID">id van de groep</param>
-		/// <returns>true (enkel) als user gav is</returns>
+		/// <param name="groepID">ID van de groep</param>
+        /// <returns><c>True</c> (enkel) als user gav is</returns>
 		public bool IsGavGroep(int groepID)
 		{
 			return _autorisatieDao.IsGavGroep(GebruikersNaamGet(), groepID);
 		}
 
 		/// <summary>
-		/// Geeft true als (en slechts als) de ingelogde user correspondeert
-		/// met een GAV van een groep gelieerd aan de gelieerde
-		/// persoon met gegeven ID
+        /// Nagaan of de ingelogde user overeenkomt met een GAV van een groep 
+        /// gelieerd aan de gelieerde persoon met gegeven ID
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID van te checken gelieerde persoon</param>
-		/// <returns>true indien de user de persoonsgegevens mag zien/bewerken</returns>
+        /// <returns><c>True</c> als de user de persoonsgegevens mag zien/bewerken</returns>
 		public bool IsGavGelieerdePersoon(int gelieerdePersoonID)
 		{
 			return _autorisatieDao.IsGavGelieerdePersoon(GebruikersNaamGet(), gelieerdePersoonID);
 		}
 
 		/// <summary>
-		/// Geeft true als (en slechts als) de ingelogde user correspondeert
-		/// met een GAV van een groep gelieerd aan de
+        /// Nagaan of de ingelogde user overeenkomt met een GAV van een groep gelieerd aan de
 		/// persoon met gegeven ID
 		/// </summary>
 		/// <param name="persoonID">ID van te checken Persoon</param>
-		/// <returns>true indien de user de persoonsgegevens mag zien/bewerken</returns>
+        /// <returns><c>True</c> Als de user de persoonsgegevens mag zien/bewerken</returns>
 		public bool IsGavPersoon(int persoonID)
 		{
 			return _autorisatieDao.IsGavPersoon(GebruikersNaamGet(), persoonID);
 		}
 
 		/// <summary>
-		/// Geeft true alss de aangemelde user correspondeert
-		/// met een GAV van de groep van een GroepsWerkJaar
+		/// Nagaan of de ingelogde user overeenkomt met een GAV van de groep van een GroepsWerkJaar
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID gevraagde groepswerkjaar</param>
-		/// <returns>true indien aangemelde gebruiker GAV is</returns>
+		/// <returns><c>True</c> als aangemelde gebruiker GAV is</returns>
 		public bool IsGavGroepsWerkJaar(int groepsWerkJaarID)
 		{
 			return _autorisatieDao.IsGavGroepsWerkJaar(GebruikersNaamGet(), groepsWerkJaarID);
@@ -110,8 +115,8 @@ namespace Chiro.Gap.Workers
 		/// de gebruiker GAV is.
 		/// </summary>
 		/// <param name="afdelingsID">ID gevraagde afdeling</param>
-		/// <returns>True indien de gebruiker GAV is van de groep van de
-		/// afdeling.</returns>
+		/// <returns><c>True</c> als de gebruiker GAV is van de groep van de
+		/// afdeling</returns>
 		public bool IsGavAfdeling(int afdelingsID)
 		{
 			return _autorisatieDao.IsGavAfdeling(GebruikersNaamGet(), afdelingsID);
@@ -122,7 +127,7 @@ namespace Chiro.Gap.Workers
 		/// GAV is.
 		/// </summary>
 		/// <param name="lidID">ID van het betreffende lid</param>
-		/// <returns>True indien het een lid van een eigen groep is</returns>
+        /// <returns><c>True</c> als het een lid van een eigen groep is</returns>
 		public bool IsGavLid(int lidID)
 		{
 			return _autorisatieDao.IsGavLid(GebruikersNaamGet(), lidID);
@@ -167,7 +172,6 @@ namespace Chiro.Gap.Workers
 			return _autorisatieDao.IsGavCommVorm(commvormID, GebruikersNaamGet());
 		}
 
-
 		#region Ophalen/uitfilteren 
 		/// <summary>
 		/// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV
@@ -180,10 +184,10 @@ namespace Chiro.Gap.Workers
 
 		/// <summary>
 		/// Verwijdert uit een lijst van GelieerdePersoonID's de ID's
-		/// van GelieerdePersonen waarvoor de aangemelde gebruiker geen GAV is.
+		/// van GelieerdePersonen voor wie de aangemelde gebruiker geen GAV is
 		/// </summary>
-		/// <param name="gelieerdePersonenIDs">lijst met ID's van gelieerde personen</param>
-		/// <returns>enkel de ID's van die personen waarvoor de gebruiker GAV is</returns>
+		/// <param name="gelieerdePersonenIDs">Lijst met ID's van gelieerde personen</param>
+		/// <returns>Enkel de ID's van die personen voor wie de gebruiker GAV is</returns>
 		public IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs)
 		{
 			return _autorisatieDao.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs, GebruikersNaamGet());
@@ -191,26 +195,25 @@ namespace Chiro.Gap.Workers
 
 		/// <summary>
 		/// Verwijdert uit een lijst van PersoonID's de ID's
-		/// van Personen waarvoor de aangemelde gebruiker geen GAV is.
+		/// van Personen voor wie de aangemelde gebruiker geen GAV is
 		/// </summary>
-		/// <param name="personenIDs">lijst met ID's van personen</param>
-		/// <returns>enkel de ID's van die personen waarvoor de gebruiker GAV is</returns>
+		/// <param name="personenIDs">Lijst met ID's van personen</param>
+		/// <returns>Enkel de ID's van die personen voor wie de gebruiker GAV is</returns>
 		public IList<int> EnkelMijnPersonen(IList<int> personenIDs)
 		{
 			return _autorisatieDao.EnkelMijnPersonen(personenIDs, GebruikersNaamGet());
 		}
 		#endregion
 
-
 		#region Misc
 		/// <summary>
-		/// Geeft true als de aangelogde user
+		/// Controleert of de aangelogde user
 		/// gav is voor de groep met gegeven ID, en 'superrechten' heeft
-		/// (zoals het verwijderen van leden uit vorig werkjaar, het 
-		/// verwijderen van leden waarvan de probeerperiode voorbij is,...)
+		/// (zoals leden verwijderen uit vorig werkjaar, 
+		/// leden verwijderen voor wie de probeerperiode voorbij is, enz.)
 		/// </summary>
-		/// <param name="groepID">id van de groep</param>
-		/// <returns>true (enkel) als user supergav is</returns>
+		/// <param name="groepID">ID van de groep</param>
+        /// <returns><c>True</c> (enkel) als user supergav is</returns>
 		public bool IsSuperGavGroep(int groepID)
 		{
 			return false;  // voorlopig zijn er geen supergebruikers
@@ -221,9 +224,9 @@ namespace Chiro.Gap.Workers
 		/// met een zekere <paramref name="vervalDatum"/>.  Persisteert niet.
 		/// </summary>
 		/// <param name="gav">GAV die gebruikersrecht moet krijgen</param>
-		/// <param name="groep">groep waarvoor gebruikersrecht verleend moet worden</param>
-		/// <param name="vervalDatum">vervaldatum van het gebruikersrecht</param>
-		/// <returns>het gegeven GebruikersRecht</returns>
+		/// <param name="groep">Groep waarvoor gebruikersrecht verleend moet worden</param>
+		/// <param name="vervalDatum">Vervaldatum van het gebruikersrecht</param>
+		/// <returns>Het gegeven GebruikersRecht</returns>
 		/// <remarks>Aan de GAV moeten al zijn gebruikersrechten op voorhand gekoppeld zijn.
 		/// Als er al een gebruikersrecht bestaat, wordt gewoon de vervaldatum aangepast.</remarks>
 		public GebruikersRecht GebruikersRechtToekennen(Gav gav, Groep groep, DateTime vervalDatum)
@@ -264,8 +267,8 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="login">ID van GAV die gebruikersrecht moet krijgen</param>
 		/// <param name="groepID">ID van groep waarvoor gebruikersrecht verleend moet worden</param>
-		/// <param name="vervalDatum">vervaldatum van het gebruikersrecht</param>
-		/// <returns>het gegeven GebruikersRecht</returns>
+		/// <param name="vervalDatum">Vervaldatum van het gebruikersrecht</param>
+		/// <returns>Het gegeven GebruikersRecht</returns>
 		/// <remarks>Als er al een gebruikersrecht bestaat, wordt gewoon de vervaldatum aangepast.</remarks>
 		public GebruikersRecht GebruikersRechtToekennen(string login, int groepID, DateTime vervalDatum)
 		{
@@ -279,7 +282,6 @@ namespace Chiro.Gap.Workers
 				Groep groep = (from recht in gav.GebruikersRecht
 						       where recht.Groep.ID == groepID
 						       select recht.Groep).FirstOrDefault();
-
 
 				if (groep == null)
 				{
@@ -312,7 +314,5 @@ namespace Chiro.Gap.Workers
 			return _am.GebruikersNaamGet();
 		}
 		#endregion
-
-
 	}
 }

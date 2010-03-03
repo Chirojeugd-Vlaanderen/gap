@@ -1,3 +1,8 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,7 +34,6 @@ namespace Chiro.Cdf.DependencyInjection
 			this.typeMappings.AddRange(typeMappings);
 		}
 
-
 		public void ApplyDispatchBehavior(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase) 
 		{ 
 			foreach (ChannelDispatcherBase cdb in serviceHostBase.ChannelDispatchers) 
@@ -49,7 +53,6 @@ namespace Chiro.Cdf.DependencyInjection
 		
 		public void AddBindingParameters(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase, Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters) 
 		{ 
-		
 		} 
 		
 		public void Validate(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase) 

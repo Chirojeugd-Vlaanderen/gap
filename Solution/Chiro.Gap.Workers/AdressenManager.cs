@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,12 +12,15 @@ using System.Text;
 
 using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Fouten.Exceptions;
-using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.Workers
 {
+    /// <summary>
+    /// Worker die alle businesslogica i.v.m. adressen bevat
+    /// </summary>
 	public class AdressenManager
 	{
 		private IAdressenDao _dao;
@@ -21,12 +29,12 @@ namespace Chiro.Gap.Workers
 		private IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
-		/// Creeert nieuwe adressenmanager
+		/// Creëert nieuwe adressenmanager
 		/// </summary>
-		/// <param name="dao">DAO voor adressen</param>
-		/// <param name="stratenDao">DAO voor straten</param>
-		/// <param name="subgemeenteDao">DAO voor 'subgemeentes'</param>
-		/// <param name="autorisatieMgr">Autorisatiemanager</param>
+        /// <param name="dao">Repository voor adressen</param>
+        /// <param name="stratenDao">Repository voor straten</param>
+		/// <param name="subgemeenteDao">Repository voor 'subgemeentes'</param>
+        /// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 		public AdressenManager(IAdressenDao dao, IStratenDao stratenDao, ISubgemeenteDao subgemeenteDao, IAutorisatieManager autorisatieMgr)
 		{
 			_dao = dao;
@@ -42,7 +50,7 @@ namespace Chiro.Gap.Workers
 		/// user gebruikersrechten op heeft.
 		/// </summary>
 		/// <param name="adresID">ID van het gevraagde adres</param>
-		/// <returns>adres met daaraan gekoppeld de bewoners</returns>
+		/// <returns>Adres met daaraan gekoppeld de bewoners</returns>
 		public Adres AdresMetBewonersOphalen(int adresID)
 		{
 			// Adressen zitten vast in de database, en daar is niets
@@ -72,13 +80,18 @@ namespace Chiro.Gap.Workers
 		///  - huisnummer
 		///  - straat.postnr
 		///  - subgemeente.naam
-		/// 
+		/// <para />
 		/// Als er zo geen adres bestaat, wordt het aangemaakt, op
 		/// voorwaarde dat de straat en subgemeente geidentificeerd
 		/// kunnen worden.  Als ook dat laatste niet het geval is,
 		/// wordt een exception gethrowd.
 		/// </summary>
-		/// <param name="adr">Adresobject met zoekinfo</param>
+		/// <param name="StraatNaam">De naam van de straat</param>
+        /// <param name="HuisNr">Het huisnummer</param>
+        /// <param name="Bus">Het eventuele busnummer</param>
+        /// <param name="GemeenteNaam">De naam van de gemeente</param>
+        /// <param name="PostNr">Het postnummer van de gemeente</param>
+        /// <param name="PostCode">Tekst die in het buitenland volgt op postnummers</param>
 		/// <returns>Gevonden adres</returns>
 		/// <remarks>Ieder heeft het recht adressen op te zoeken</remarks>
 		public Adres ZoekenOfMaken(String StraatNaam, int HuisNr, String Bus, String GemeenteNaam, int PostNr, String PostCode)
@@ -87,13 +100,13 @@ namespace Chiro.Gap.Workers
 
 			// Al maar preventief een VerhuisFault aanmaken.  Als daar uiteindelijk
 			// geen foutberichten inzitten, dan is er geen probleem.  Anders
-			// creer ik een exception met de verhuisfault daarin.
+			// creëer ik een exception met de verhuisfault daarin.
 
 			Adres adresInDb;
 
 			Debug.Assert(StraatNaam != String.Empty);
 			Debug.Assert(PostNr > 0);
-			//Debug.Assert(HuisNr > 0);
+			// Debug.Assert(HuisNr > 0);
 			Debug.Assert(GemeenteNaam != String.Empty);
 
 			adresInDb = _dao.Ophalen(StraatNaam, HuisNr, Bus, PostNr, PostCode, GemeenteNaam, false);
@@ -150,7 +163,7 @@ namespace Chiro.Gap.Workers
 					throw new AdresException(fault);
 				}
 
-				if (PostCode != null && !PostCode.Equals(""))
+				if (PostCode != null && !PostCode.Equals(String.Empty))
 				{
 					adr.PostCode = PostCode;
 				}
@@ -173,6 +186,10 @@ namespace Chiro.Gap.Workers
 
 		#region crab-ophalen
 
+        /// <summary>
+        /// Een lijst van subgemeenten ophalen
+        /// </summary>
+        /// <returns>Een lijst van subgemeenten</returns>
 		public IList<Subgemeente> GemeentesOphalen()
 		{
 			return _subgemeenteDao.AllesOphalen();

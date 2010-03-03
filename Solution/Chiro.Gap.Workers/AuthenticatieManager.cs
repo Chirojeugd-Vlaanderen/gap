@@ -1,11 +1,19 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.ServiceModel;
+using System.Text;
 
 namespace Chiro.Gap.Workers
 {
+    /// <summary>
+    /// Worker die alle businesslogica i.v.m. authenticatie bevat
+    /// </summary>
     public class AuthenticatieManager: IAuthenticatieManager
     {
         #region IAuthenticatieManager Members
@@ -17,7 +25,7 @@ namespace Chiro.Gap.Workers
         /// <returns>Username aangemelde gebruiker</returns>
         public string GebruikersNaamGet()
         {
-            return ServiceSecurityContext.Current == null ? ""
+            return ServiceSecurityContext.Current == null ? String.Empty 
                 : ServiceSecurityContext.Current.WindowsIdentity.Name;
         }
 

@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Data.Objects;
 using System.Diagnostics;
@@ -11,7 +16,6 @@ using Chiro.Cdf.Data.Entity;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-
 
 namespace Chiro.Gap.Data.Ef
 {
@@ -47,7 +51,7 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// ophalen van groep, groepswerkjaar, afdeling, afdelingsjaar en officiële afdelingen 
+		/// Ophalen van groep, groepswerkjaar, afdeling, afdelingsjaar en officiële afdelingen 
 		/// voor gegeven groepswerkjaar.
 		/// </summary>
 		/// <remarks>Deze functie haande origineel de afdelingen op voor een groep in het
@@ -81,7 +85,6 @@ namespace Chiro.Gap.Data.Ef
 				// Ik selecteer dus de groep apart, en koppel daarna alle gevonden
 				// afdelingen.
 
-
 				result = (
 					from gwj in db.GroepsWerkJaar
 					where gwj.ID == groepsWerkJaarID
@@ -114,10 +117,10 @@ namespace Chiro.Gap.Data.Ef
 				}
 			}
 			return result;
-
 		}
 
-		/*/// <summary>
+		/*
+        /// <summary>
 		/// Creeert een nieuwe afdeling.
 		/// </summary>
 		/// <param name="groepID">ID van de groep</param>
@@ -150,7 +153,8 @@ namespace Chiro.Gap.Data.Ef
 		    }
 
 		    return a;
-		}*/
+		}
+         */
 
 		/*/// <summary>
 		/// Creeert een nieuw afdelingsjaar.

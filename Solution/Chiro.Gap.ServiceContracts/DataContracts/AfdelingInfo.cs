@@ -1,8 +1,13 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -55,10 +60,9 @@ namespace Chiro.Gap.ServiceContracts
 		public int GeboorteJaarTot;
 
 		/// <summary>
-		/// <c>true</c> indien geverifieerd werd dat er geen leden zijn in het afdelingsjaar, anders <c>false</c>
+		/// <c>True</c> indien geverifieerd werd dat er geen leden zijn in het afdelingsjaar, anders <c>false</c>
 		/// </summary>
 		[DataMember]
 		public bool AfdelingsJaarMagVerwijderdWorden;
-
 	}
 }

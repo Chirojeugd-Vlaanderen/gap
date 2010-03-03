@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -17,7 +22,7 @@ namespace Chiro.Gap.ServiceContracts
 		public int ID { get; set; }
 
 		/// <summary>
-		/// Groepsnaam
+		/// Naam van de groep
 		/// </summary>
 		[DataMember]
 		public string Naam { get; set; }

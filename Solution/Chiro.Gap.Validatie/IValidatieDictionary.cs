@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,9 +19,10 @@ namespace Chiro.Gap.Validatie
         /// <summary>
         /// Voegt een bericht toe
         /// </summary>
-        /// <param name="key">component waarop fout van toepassing</param>
-        /// <param name="bericht">foutbericht</param>
+        /// <param name="key">Component waarop fout van toepassing</param>
+        /// <param name="bericht">Foutbericht dat toegevoegd moet worden</param>
         void BerichtToevoegen(string key, string bericht);
+
         /// <summary>
         /// Geeft enkel true als er geen fouten in de dictionary
         /// zitten.

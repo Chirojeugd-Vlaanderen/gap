@@ -1,3 +1,8 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -36,16 +41,21 @@ namespace Chiro.Cdf.Data.Entity
 
 				// Only static (extension) methods with 1 argument are supported:
 				if (cexp.Method.IsStatic == false || cexp.Arguments.Count != 1)
+				{
 					throw new InvalidOperationException("Invalid type of expression.");
+				}
 
 				// Recursively handle arguments:
 				foreach (var arg in cexp.Arguments)
+				{
 					CollectRelationalMembers(arg, members);
+				}
 
 				// Handle special marker method 'WithoutUpdate':
 				if (cexp.Method.Name == "WithoutUpdate")
+				{
 					members.Last().NoUpdate = true;
-
+				}
 			}
 			else if (exp.NodeType == ExpressionType.Parameter)
 			{
@@ -78,9 +88,13 @@ namespace Chiro.Cdf.Data.Entity
 		public bool Equals(ExtendedPropertyInfo other)
 		{
 			if (Object.ReferenceEquals(other, null))
+			{
 				return false;
+			}
 			else
+			{
 				return (Object.Equals(this.PropertyInfo, other.PropertyInfo));
+			}
 		}
 
 		public override int GetHashCode()

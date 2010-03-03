@@ -1,3 +1,8 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 // Met dank aan http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
 
 using System;
@@ -9,8 +14,8 @@ using System.Web.Caching;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 
-using Chiro.Gap.Orm;
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.WebApp.Models;
 
@@ -31,7 +36,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <summary>
 		/// Constructor voor de BaseController
 		/// </summary>
-		/// <param name="serviceHelper">de IServiceHelper die de service calls zal uitvoeren
+		/// <param name="serviceHelper">De IServiceHelper die de service calls zal uitvoeren
 		/// (dependency injection)</param>
 		public BaseController(IServiceHelper serviceHelper): base()
 		{
@@ -42,7 +47,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// Vult de groepsgegevens in in de base view.
 		/// </summary>
 		/// <param name="model">Te 'initen' model</param>
-		/// <param name="groepID">groepID van de gewenste groep</param>
+		/// <param name="groepID">ID van de gewenste groep</param>
 		protected void BaseModelInit(MasterViewModel model, int groepID)
 		{
 			if (groepID == 0)
@@ -53,7 +58,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.GroepsNaam = "Nog geen Chirogroep geselecteerd";
 				model.Plaats = "geen";
 				model.StamNummer = "--";
-				//model.GroepsCategorieen = new List<SelectListItem>();
+				// model.GroepsCategorieen = new List<SelectListItem>();
 			}
 			else
 			{

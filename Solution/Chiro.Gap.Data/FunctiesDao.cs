@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,10 +28,11 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		public FunctiesDao()
 		{
-			connectedEntities = new System.Linq.Expressions.Expression<Func<Functie, object>>[]{
-				fnc => fnc.Groep};
+			connectedEntities = new System.Linq.Expressions.Expression<Func<Functie, object>>[]
+            {
+				fnc => fnc.Groep
+            };
 		}
-
 
 		/// <summary>
 		/// Haalt een gepredefinieerde functie op

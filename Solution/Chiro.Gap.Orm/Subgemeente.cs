@@ -27,7 +27,7 @@ namespace Chiro.Gap.Orm
             set { _teVerwijderen = value; }
         }
 
-        // SubGemeente wordt nooit geupdatet, dus ook nooit
+        // SubGemeente wordt nooit geüpdatet, dus ook nooit
         // concurrency.  VersieString is dus niet nodig.
         public string VersieString
         {

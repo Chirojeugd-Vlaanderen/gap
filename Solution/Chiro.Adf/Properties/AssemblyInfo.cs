@@ -16,7 +16,7 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Cg2.Adf")]
+[assembly: AssemblyTitle("Chiro.Adf")]
 [assembly: AssemblyDescription("ADF Core classes")]
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]

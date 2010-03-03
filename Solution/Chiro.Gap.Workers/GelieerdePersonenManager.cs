@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +17,9 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Workers
 {
+    /// <summary>
+    /// Worker die alle businesslogica i.v.m. gelieerde personen bevat
+    /// </summary>
 	public class GelieerdePersonenManager
 	{
 		private IGelieerdePersonenDao _dao;
@@ -19,6 +27,15 @@ namespace Chiro.Gap.Workers
 		private ICategorieenDao _categorieenDao;
 		private IAutorisatieManager _autorisatieMgr;
 
+        /// <summary>
+        /// Creëert een GelieerdePersonenManager
+        /// </summary>
+        /// <param name="dao">Repository voor gelieerde personen</param>
+        /// <param name="groepenDao">Repository voor groepen</param>
+        /// <param name="categorieenDao">Repository voor categorieën</param>
+        /// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
+        /// <param name="typedao">Repository voor communicatietypes</param>
+        /// <param name="commdao">Repository voor communicatievormen</param>
 		public GelieerdePersonenManager(IGelieerdePersonenDao dao, IGroepenDao groepenDao
 		    , ICategorieenDao categorieenDao, IAutorisatieManager autorisatieMgr, IDao<CommunicatieType> typedao, IDao<CommunicatieVorm> commdao)
 		{
@@ -60,6 +77,11 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
+        /// <summary>
+        /// Een gelieerde persoon ophalen met al zijn/haar communicatievormen
+        /// </summary>
+        /// <param name="gelieerdePersoonID">De ID van de gelieerde persoon</param>
+        /// <returns>Een gelieerde persoon met al zijn/haar communicatievormen</returns>
 		public GelieerdePersoon OphalenMetCommVormen(int gelieerdePersoonID)
 		{
 			if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
@@ -177,9 +199,9 @@ namespace Chiro.Gap.Workers
 		/// Haal een pagina op met gelieerde personen van een groep.
 		/// </summary>
 		/// <param name="groepID">GroepID gevraagde groep</param>
-		/// <param name="pagina">paginanummer (>=1)</param>
-		/// <param name="paginaGrootte">grootte van de pagina's</param>
-		/// <param name="aantalTotaal">totaal aantal personen in de groep</param>
+		/// <param name="pagina">Paginanummer (>=1)</param>
+		/// <param name="paginaGrootte">Grootte van de pagina's</param>
+		/// <param name="aantalTotaal">Totaal aantal personen in de groep</param>
 		/// <returns>Lijst met een pagina aan gelieerde personen.</returns>
 		public IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
 		{
@@ -200,9 +222,9 @@ namespace Chiro.Gap.Workers
 		/// inclusief eventuele lidobjecten voor deze groep
 		/// </summary>
 		/// <param name="groepID">GroepID gevraagde groep</param>
-		/// <param name="pagina">paginanummer (>=1)</param>
-		/// <param name="paginaGrootte">aantal personen per pagina</param>
-		/// <param name="aantalTotaal">output parameter voor totaal aantal
+		/// <param name="pagina">Paginanummer (>=1)</param>
+		/// <param name="paginaGrootte">Aantal personen per pagina</param>
+		/// <param name="aantalTotaal">Outputparameter voor totaal aantal
 		/// personen in de groep</param>
 		/// <returns>Lijst met GelieerdePersonen</returns>
 		public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
@@ -222,9 +244,9 @@ namespace Chiro.Gap.Workers
 		/// inclusief eventuele lidobjecten voor deze groep
 		/// </summary>
 		/// <param name="categorieID">ID gevraagde categorie</param>
-		/// <param name="pagina">paginanummer (minstens 1)</param>
-		/// <param name="paginaGrootte">aantal personen per pagina</param>
-		/// <param name="aantalTotaal">output parameter voor totaal aantal
+		/// <param name="pagina">Paginanummer (minstens 1)</param>
+		/// <param name="paginaGrootte">Aantal personen per pagina</param>
+		/// <param name="aantalTotaal">Outputparameter voor totaal aantal
 		/// personen in de groep</param>
 		/// <returns>Lijst met GelieerdePersonen</returns>
 		public IList<GelieerdePersoon> PaginaOphalenMetLidInfoVolgensCategorie(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal)
@@ -243,9 +265,9 @@ namespace Chiro.Gap.Workers
 		/// Koppelt het relevante groepsobject aan de gegeven
 		/// gelieerde persoon.
 		/// </summary>
-		/// <param name="gp">gelieerde persoon</param>
-		/// <returns>diezelfde gelieerde persoon, met zijn groep eraan
-		/// gekoppeld.</returns>
+		/// <param name="gp">Gelieerde persoon</param>
+		/// <returns>Diezelfde gelieerde persoon, met zijn of haar groep 
+        /// eraan gekoppeld.</returns>
 		public GelieerdePersoon GroepLaden(GelieerdePersoon gp)
 		{
 			if (_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
@@ -264,9 +286,9 @@ namespace Chiro.Gap.Workers
 		/// (inclusief communicatie en adressen)
 		/// </summary>
 		/// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
-		/// <param name="naam">te zoeken naam (ongeveer)</param>
-		/// <param name="voornaam">te zoeken voornaam (ongeveer)</param>
-		/// <returns>lijst met gevonden matches</returns>
+		/// <param name="naam">Te zoeken naam (ongeveer)</param>
+		/// <param name="voornaam">Te zoeken voornaam (ongeveer)</param>
+		/// <returns>Lijst met gevonden matches</returns>
 		public IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam)
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
@@ -281,14 +303,13 @@ namespace Chiro.Gap.Workers
 
 		#endregion
 
-
 		/// <summary>
 		/// Maak een GelieerdePersoon voor gegeven persoon en groep
 		/// </summary>
-		/// <param name="persoon">te lieren persoon</param>
-		/// <param name="groep">groep waaraan te lieren</param>
-		/// <param name="chiroLeeftijd">chiroleeftijd gelieerde persoon</param>
-		/// <returns>een nieuwe GelieerdePersoon</returns>
+		/// <param name="persoon">Te liëren persoon</param>
+		/// <param name="groep">Groep waaraan te liëren</param>
+		/// <param name="chiroLeeftijd">Chiroleeftijd gelieerde persoon</param>
+		/// <returns>Een nieuwe GelieerdePersoon</returns>
 		public GelieerdePersoon Koppelen(Persoon persoon, Groep groep, int chiroLeeftijd)
 		{
 			if (_autorisatieMgr.IsGavGroep(groep.ID))
@@ -340,7 +361,6 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
-
 		public void Bewaren(IList<GelieerdePersoon> personenLijst)
 		{
 			throw new NotImplementedException();
@@ -354,8 +374,8 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Koppelt een gelieerde persoon aan een categorie, en persisteert dan de aanpassingen
 		/// </summary>
-		/// <param name="gelieerdePersonen">te koppelen gelieerde persoon</param>
-		/// <param name="categorie">te koppelen categorie</param>
+		/// <param name="gelieerdePersonen">Te koppelen gelieerde persoon</param>
+		/// <param name="c">Te koppelen categorie</param>
 		public void CategorieKoppelen(IList<GelieerdePersoon> gelieerdePersonen, Categorie c)
 		{
 			// Heeft de gebruiker rechten voor de groep en de categorie?
@@ -387,10 +407,10 @@ namespace Chiro.Gap.Workers
 		/// Verwijdert de gelieerde personen uit de categorie
 		/// </summary>
 		/// <remarks>De methode is reentrant, als er bepaalde personen niet gelinkt zijn aan de categorie, 
-		/// gebeurd er niets met die personen, ook geen error.
+		/// gebeurt er niets met die personen, ook geen error.
 		/// </remarks>
-		/// <param name="gelieerdePersonenIDs">gelieerde persoon IDs</param>
-		/// <param name="categorie">te verwijderen categorie MET gelinkte gelieerdepersonen </param>
+		/// <param name="gelieerdePersonenIDs">Gelieerde persoon IDs</param>
+		/// <param name="categorie">Te verwijderen categorie MET gelinkte gelieerdepersonen </param>
 		public void CategorieLoskoppelen(IList<int> gelieerdePersonenIDs, Categorie categorie)
 		{
 			// Heeft de gebruiker rechten voor de groep en de categorie?
@@ -418,6 +438,11 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
+        /// <summary>
+        /// Een categorie ophalen op basis van de opgegeven ID
+        /// </summary>
+        /// <param name="catID">De ID van de categorie die je nodig hebt</param>
+        /// <returns>De categorie met de opgegeven ID</returns>
 		public Categorie OphalenCategorie(int catID)
 		{
 			// Heeft de gebruiker rechten voor de groep en de categorie?
@@ -430,6 +455,11 @@ namespace Chiro.Gap.Workers
 			return _categorieenDao.Ophalen(catID);
 		}
 
+        /// <summary>
+        /// De collectie categorieën ophalen die gebruikt worden door de groep met de opgegeven ID
+        /// </summary>
+        /// <param name="groepID">De ID van de groep waar het over gaat</param>
+        /// <returns>De collectie categorieën van de groep waar het over gaat</returns>
 		public IEnumerable<Categorie> CategorieenOphalen(int groepID)
 		{
 			return _categorieenDao.OphalenVanGroep(groepID);

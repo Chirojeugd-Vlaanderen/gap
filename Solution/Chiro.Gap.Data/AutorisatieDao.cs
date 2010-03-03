@@ -1,17 +1,20 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Data.Objects;
+using System.Data.Objects.DataClasses;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
-
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-
-using System.Data.Objects.DataClasses;
-using System.Linq.Expressions;
 
 namespace Chiro.Gap.Data.Ef
 {
@@ -101,7 +104,7 @@ namespace Chiro.Gap.Data.Ef
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
-				//Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
+				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
 				var query1
 				    = from r in db.GelieerdePersoon
 				      where r.ID == gelieerdePersoonID
@@ -123,7 +126,6 @@ namespace Chiro.Gap.Data.Ef
 
 			return resultaat;
 		}
-
 
 		public IEnumerable<Groep> GekoppeldeGroepenGet(string login)
 		{
@@ -161,7 +163,6 @@ namespace Chiro.Gap.Data.Ef
 			return resultaat;
 		}
 
-
 		public IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs, string login)
 		{
 			List<int> resultaat;
@@ -186,7 +187,7 @@ namespace Chiro.Gap.Data.Ef
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
-				//Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
+				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
 				var query1
 				    = from r in db.Persoon
 				      where r.ID == persoonID
@@ -215,7 +216,7 @@ namespace Chiro.Gap.Data.Ef
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
-				//Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
+				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
 				var query1
 				    = from r in db.GroepsWerkJaar
 				      where r.ID == groepsWerkJaarID
@@ -243,7 +244,7 @@ namespace Chiro.Gap.Data.Ef
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
-				//Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
+				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
 				var query1
 				    = from r in db.Afdeling
 				      where r.ID == afdelingsID
@@ -272,7 +273,7 @@ namespace Chiro.Gap.Data.Ef
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
-				//Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
+				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
 				var query1
 				    = from r in db.Lid
 				      where r.ID == lidID
@@ -300,7 +301,7 @@ namespace Chiro.Gap.Data.Ef
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
-				//Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
+				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
 				var query1
 				    = from r in db.Categorie
 				      where r.ID == categorieID
@@ -328,7 +329,7 @@ namespace Chiro.Gap.Data.Ef
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
-				//Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
+				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
 				var query1
 				    = from r in db.CommunicatieVorm
 				      where r.ID == commvormID

@@ -1,4 +1,9 @@
-﻿// met dank aan http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+// met dank aan http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
 // meer info: http://www.davidhayden.com/blog/dave/archive/2008/03/21/ActionFilterAttributeExamplesASPNETMVCFrameworkPreview2.aspx
 
 using System;
@@ -27,7 +32,7 @@ namespace Chiro.Gap.WebApp.Models
                 IMasterViewModel viewModel = (IMasterViewModel)((ViewResultBase)filterContext.Result).ViewData.Model;
 
                 BaseController controller = (BaseController)filterContext.Controller;
-                //controller.SetModel(viewModel);
+                // Controller.SetModel(viewModel);
             }
         }
     }

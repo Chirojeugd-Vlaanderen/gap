@@ -1,10 +1,17 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using Chiro.Cdf.Data.Entity;
-using System.Diagnostics;
+
 using Chiro.Cdf.Data;
+using Chiro.Cdf.Data.Entity;
+
 namespace Chiro.Gap.Orm
 {
     public partial class Categorie: IEfBasisEntiteit

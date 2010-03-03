@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,11 +14,13 @@ namespace Chiro.Cdf.Data
 	/// Represents a node in a tree structure and helps
 	/// constructing and navigating trees based on paths.
 	/// </summary>
+	/// <typeparam name="T"></typeparam>
 	public class TreeNode<T>
 	{
 		/// <summary>
 		/// Constructs the root node of a tree.
 		/// </summary>
+		/// <param name="item"></param>
 		public TreeNode(T item)
 			: this(null, item)
 		{ }
@@ -21,6 +28,8 @@ namespace Chiro.Cdf.Data
 		/// <summary>
 		/// Constructs a node in a tree.
 		/// </summary>
+		/// <param name="parent"></param>
+		/// <param name="item"></param>
 		public TreeNode(TreeNode<T> parent, T item)
 		{
 			this.Parent = parent;
@@ -47,6 +56,7 @@ namespace Chiro.Cdf.Data
 		/// Adds a path of items to the current node, extending
 		/// the tree if needed.
 		/// </summary>
+		/// <param name="path"></param>
 		public void AddPath(IEnumerable<T> path)
 		{
 			// Start at the current node:
@@ -60,7 +70,9 @@ namespace Chiro.Cdf.Data
 
 				// Look for a matching node in the children of the parent node:
 				if (!extendingTree)
+				{
 					itemNode = node.Children.Where(p => p.Item.Equals(item)).FirstOrDefault();
+				}
 
 				// Extend the tree with a new node if none found:
 				if (itemNode == null)

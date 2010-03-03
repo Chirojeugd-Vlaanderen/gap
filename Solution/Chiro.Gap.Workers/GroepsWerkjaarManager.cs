@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -11,14 +16,23 @@ using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {
+    /// <summary>
+    /// Worker die alle businesslogica i.v.m. groepswerkjaren bevat
+    /// </summary>
 	public class GroepsWerkJaarManager
 	{
-
 		private IGroepsWerkJaarDao _groepsWjDao;
 		private IGroepenDao _groepenDao;
 		private IAutorisatieManager _autorisatieMgr;
 		private IAfdelingenDao _afdelingenDao;
 
+        /// <summary>
+        /// Creëert een GroepsWerkJaarManager
+        /// </summary>
+        /// <param name="groepsWjDao">Repository voor groepswerkjaren</param>
+        /// <param name="groepenDao">Repository voor groepen</param>
+        /// <param name="afdelingenDao">Repository voor afdelingen</param>
+        /// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 		public GroepsWerkJaarManager(
 			IGroepsWerkJaarDao groepsWjDao, 
 			IGroepenDao groepenDao, 
@@ -29,7 +43,6 @@ namespace Chiro.Gap.Workers
 			_groepenDao = groepenDao;
 			_autorisatieMgr = autorisatieMgr;
 			_afdelingenDao = afdelingenDao;
-
 		}
 
 		/// <summary>
@@ -64,7 +77,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID op te vragen groepswerkjaar</param>
 		/// <returns>
-		/// groepswerkjaar, samen met gekoppelde afdelingsjaren, afdelingen en officiële afdelingen
+		/// Groepswerkjaar, samen met gekoppelde afdelingsjaren, afdelingen en officiële afdelingen
 		/// </returns>
 		public GroepsWerkJaar OphalenMetAfdelingen(int groepsWerkJaarID)
 		{
@@ -86,9 +99,9 @@ namespace Chiro.Gap.Workers
 		/// Haalt de afdelingen van een groep op die niet gebruikt zijn in een gegeven 
 		/// groepswerkjaar, op basis van een <paramref name="groepsWerkJaarID"/>
 		/// </summary>
-		/// <param name="groepswerkjaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
+        /// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
 		/// opgezocht moeten worden.</param>
-		/// <returns>de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
+		/// <returns>De ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
 		public IList<Afdeling> OngebruikteAfdelingenOphalen(int groepsWerkJaarID)
 		{
 			return _afdelingenDao.OngebruikteOphalen(groepsWerkJaarID);
@@ -101,8 +114,8 @@ namespace Chiro.Gap.Workers
 		/// <param name="gwj">Groepswerkjaar voor afdelingsjaar</param>
 		/// <param name="afd">Afdeling voor afdelingswerkjaar</param>
 		/// <param name="oa">Corresponderende officiële afdeling voor afd</param>
-		/// <param name="jaarVan">startpunt interval geboortejaren</param>
-		/// <param name="jaarTot">eindpunt interval geboortejaren</param>
+		/// <param name="jaarVan">Startpunt interval geboortejaren</param>
+		/// <param name="jaarTot">Eindpunt interval geboortejaren</param>
 		/// <returns>Afdelingsjaar met daaraan gekoppeld groepswerkjaar
 		/// , afdeling en officiële afdeling.</returns>
 		/// <remarks>gwj.Groep en afd.Groep mogen niet null zijn</remarks>
@@ -131,8 +144,7 @@ namespace Chiro.Gap.Workers
 
 			AfdelingsJaar resultaat = new AfdelingsJaar();
 
-
-			resultaat.GeboorteJaarVan = jaarVan;
+            resultaat.GeboorteJaarVan = jaarVan;
 			resultaat.GeboorteJaarTot = jaarTot;
 
 			resultaat.GroepsWerkJaar = gwj;
@@ -149,8 +161,8 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Haalt recentste groepswerkjaar voor een groep op, inclusief afdelingsjaren
 		/// </summary>
-		/// <param name="groepID">GroepID gevraagde groep</param>
-		/// <returns>Groepswerkjaar</returns>
+		/// <param name="groepID">ID gevraagde groep</param>
+		/// <returns>Het recentste Groepswerkjaar voor de opgegeven groep</returns>
 		public GroepsWerkJaar RecentsteGroepsWerkJaarGet(int groepID)
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
@@ -187,7 +199,7 @@ namespace Chiro.Gap.Workers
 		/// Haalt het huidige werkjaar op (beginjaar) voor een bepaalde groep
 		/// </summary>
 		/// <param name="groepID">ID van de groep</param>
-		/// <returns>beginjaar van het huidige werkjaar voor die bepaalde groep</returns>
+		/// <returns>Beginjaar van het huidige werkjaar voor die bepaalde groep</returns>
 		public int HuidigWerkJaarGet(int groepID)
 		{
 			// TODO: Beter documenteren!
@@ -220,9 +232,7 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(Properties.Resources.GeenGavGroep);
 			}
-
 		}
-
 
 		// WTF???
 		private int compare(int dag1, int maand1, int dag2, int maand2)
@@ -243,6 +253,5 @@ namespace Chiro.Gap.Workers
 				}
 			}
 		}
-
 	}
 }

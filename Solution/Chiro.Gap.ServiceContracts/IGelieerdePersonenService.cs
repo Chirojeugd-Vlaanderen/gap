@@ -1,9 +1,15 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
@@ -17,10 +23,10 @@ namespace Chiro.Gap.ServiceContracts
 		/// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep
 		/// </summary>
 		/// <param name="groepID">ID van de betreffende groep</param>
-		/// <param name="pagina">paginanummer (1 of hoger)</param>
-		/// <param name="paginaGrootte">aantal records per pagina (1 of meer)</param>
-		/// <param name="aantalTotaal">outputparameter; geeft het totaal aantal personen weer in de lijst</param>
-		/// <returns>lijst van gelieerde personen met persoonsinfo</returns>
+		/// <param name="pagina">Paginanummer (1 of hoger)</param>
+		/// <param name="paginaGrootte">Aantal records per pagina (1 of meer)</param>
+		/// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
+		/// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
 		[OperationContract]
 		IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalTotaal);
 
@@ -29,10 +35,10 @@ namespace Chiro.Gap.ServiceContracts
 		/// inclusief eventueel lidobject voor het recentste werkjaar.
 		/// </summary>
 		/// <param name="groepID">ID van de betreffende groep</param>
-		/// <param name="pagina">paginanummer (1 of hoger)</param>
-		/// <param name="paginaGrootte">aantal records per pagina (1 of meer)</param>
-		/// <param name="aantalTotaal">outputparameter; geeft het totaal aantal personen weer in de lijst</param>
-		/// <returns>lijst van gelieerde personen met persoonsinfo</returns>
+		/// <param name="pagina">Paginanummer (1 of hoger)</param>
+		/// <param name="paginaGrootte">Aantal records per pagina (1 of meer)</param>
+		/// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
+		/// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
 		[OperationContract]
 		IList<PersoonInfo> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal);
 
@@ -41,21 +47,23 @@ namespace Chiro.Gap.ServiceContracts
 		/// inclusief eventueel lidobject voor het recentste werkjaar.
 		/// </summary>
 		/// <param name="categorieID">ID van de gevraagde categorie</param>
-		/// <param name="pagina">paginanummer (1 of hoger)</param>
-		/// <param name="paginaGrootte">aantal records per pagina (1 of meer)</param>
-		/// <param name="aantalTotaal">outputparameter; geeft het totaal aantal personen weer in de lijst</param>
-		/// <returns>lijst van gelieerde personen met persoonsinfo</returns>
+		/// <param name="pagina">Paginanummer (1 of hoger)</param>
+		/// <param name="paginaGrootte">Aantal records per pagina (1 of meer)</param>
+		/// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
+		/// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
 		[OperationContract]
 		IList<PersoonInfo> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal);
 
 		/// <summary>
 		/// Zoekt alle personen die aan de criteria voldoen en geeft daarvan een bepaalde pagina weer
 		/// </summary>
-		/// <param name="?"></param>
-		/// <param name="?"></param>
-		/// <returns></returns>
+		/// <param name="naamgedeelte">Een deel van de naam, dat als zoekterm opgegeven wordt</param>
+		/// <param name="pagina">De hoeveelste pagina je wilt zien</param>
+		/// <param name="paginagrootte">Het aantal personen dat je per pagina wilt zien</param>
+		/// <returns>Een lijst van gelieerde personen bij wie het <paramref name="naamgedeelte" />
+		/// in de naam voorkomt</returns>
 		IList<GelieerdePersoon> zoekPersonen(string naamgedeelte, int pagina, int paginagrootte);
-		//... andere zoekmogelijkheden
+		// ... andere zoekmogelijkheden
 
 		/// <summary>
 		/// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen
@@ -71,7 +79,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>
 		/// <param name="gevraagd">Stelt voor welke informatie opgehaald moet worden</param>
 		/// <returns>GelieerdePersoon uitbreiden met meer info mbt het gevraagde onderwerp </returns>
-		//[OperationContract(Name = "PersoonOphalenMetCustomDetails")]
+		// [OperationContract(Name = "PersoonOphalenMetCustomDetails")]
 		// GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID, PersoonsInfo gevraagd);
 
 		/// <summary>
@@ -152,9 +160,9 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(AdresFault))]
 		void PersonenVerhuizen(
-			IList<int> persoonIDs, 
-			AdresInfo nieuwAdres, 
-			int oudAdresID, 
+			IList<int> persoonIDs,
+			AdresInfo nieuwAdres,
+			int oudAdresID,
 			AdresTypeEnum adresType);
 
 		/// <summary>
@@ -162,9 +170,9 @@ namespace Chiro.Gap.ServiceContracts
 		/// Persoon bepaald door gelieerdePersoonID
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID van GelieerdePersoon</param>
-		/// <returns>lijst met Personen die huisgenoot zijn van gegeven
+		/// <returns>Lijst met Personen die huisgenoot zijn van gegeven
 		/// persoon</returns>
-		/// <remarks>parameters: GELIEERDEpersoonID, returns PERSONEN</remarks>
+		/// <remarks>Parameters: GELIEERDEpersoonID, returns PERSONEN</remarks>
 		[OperationContract]
 		IList<BewonersInfo> HuisGenotenOphalen(int gelieerdePersoonID);
 
@@ -175,38 +183,48 @@ namespace Chiro.Gap.ServiceContracts
 		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
 		/// <param name="adres">Toe te voegen adres</param>
 		/// <param name="adresType">Soort adres (thuis, kot, enz.)</param>
-		/// <returns></returns>
 		[OperationContract]
 		[FaultContract(typeof(AdresFault))]
 		void AdresToevoegenAanPersonen(List<int> personenIDs, AdresInfo adres, AdresTypeEnum adresType);
+
+		/// <summary>
+		/// Verwijdert een adres van een verzameling personen
+		/// </summary>
+		/// <param name="personenIDs">ID's van de personen over wie het gaat</param>
+		/// <param name="adresID">ID van het adres dat losgekoppeld moet worden</param>
 		[OperationContract]
 		[FaultContract(typeof(AdresFault))]
 		void AdresVerwijderenVanPersonen(List<int> personenIDs, int adresID);
 
 		#endregion adressen
 
-        #region commvormen
-        /// <summary>
-        /// Voegt een commvorm toe aan een verzameling personen
-        /// </summary>
-        /// <param name="personenIDs">ID's van Personen
-        /// waaraan het nieuwe commvorm toegevoegd moet worden.</param>
-        /// <param name="adres">Toe te voegen commvorm</param>
-        /// <returns></returns>
-        [OperationContract]
-        [FaultContract(typeof(DataContractFault<CommunicatieVorm>))]
-        void CommunicatieVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm, int typeID);
-        [OperationContract]
-        [FaultContract(typeof(DataContractFault<CommunicatieVorm>))]
-        void CommunicatieVormVerwijderenVanPersoon(int gelieerdepersonenID, int commvormID);
+		#region commvormen
+		/// <summary>
+		/// Voegt een commvorm toe aan een gelieerde persoon
+		/// </summary>
+		/// <param name="gelieerdepersonenID">ID van de gelieerde persoon</param>
+		/// <param name="commvorm">De communicatievorm die aan die persoon gekoppeld moet worden</param>
+		/// <param name="typeID">De ID van het communicatietype waartoe <paramref name="commvorm"/> behoort</param>
+		[OperationContract]
+		[FaultContract(typeof(DataContractFault<CommunicatieVorm>))]
+		void CommunicatieVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm, int typeID);
+		
+		/// <summary>
+		/// Verwijdert een communicatievorm van een gelieerde persoon
+		/// </summary>
+		/// <param name="gelieerdepersonenID">ID van de gelieerde persoon</param>
+		/// <param name="commvormID">ID van de communicatievorm</param>
+		[OperationContract]
+		[FaultContract(typeof(DataContractFault<CommunicatieVorm>))]
+		void CommunicatieVormVerwijderenVanPersoon(int gelieerdepersonenID, int commvormID);
 
-        /// <summary>
-        /// Gaat aanpassingen aan een bestaande commvorm persisteren zonder links naar andere objecten
-        /// </summary>
-        /// <param name="v">De aangepaste commvorm</param>
-        [OperationContract]
-        [FaultContract(typeof(DataContractFault<CommunicatieVorm>))]
-        void CommunicatieVormAanpassen(CommunicatieVorm c);
+		/// <summary>
+		/// Gaat aanpassingen aan een bestaande communicatievorm persisteren zonder links naar andere objecten
+		/// </summary>
+		/// <param name="c">De aangepaste communicatievorm</param>
+		[OperationContract]
+		[FaultContract(typeof(DataContractFault<CommunicatieVorm>))]
+		void CommunicatieVormAanpassen(CommunicatieVorm c);
 
 		/// <summary>
 		/// Haalt een bepaald communicatietype op, op basis van ID
@@ -219,38 +237,53 @@ namespace Chiro.Gap.ServiceContracts
 		/// <summary>
 		/// Haalt een lijst op met alle communicatietypes
 		/// </summary>
+		/// <returns>Een lijst op met alle communicatietypes</returns>
 		[OperationContract]
 		IEnumerable<CommunicatieType> CommunicatieTypesOphalen();
 
 		/// <summary>
 		/// Haalt een communicatievorm op
 		/// </summary>
+		/// <param name="commvormID">ID van de communicatievorm waarover het gaat</param>
+		/// <returns>De communicatievorm met de opgegeven ID</returns>
 		[OperationContract]
 		CommunicatieVorm CommunicatieVormOphalen(int commvormID);
 
 		#endregion commvormen
 
-        #region categorieën
-        /// <summary>
-        /// Voegt een categorieën toe aan een verzameling personen
-        /// </summary>
-        /// <param name="personenIDs">ID's van Personen
-        /// waaraan het nieuwe commvorm toegevoegd moet worden.</param>
-        /// <param name="adres">Toe te voegen commvorm</param>
-        /// <returns></returns>
-        [OperationContract]
-        [FaultContract(typeof(DataContractFault<Categorie>))]
-        void CategorieKoppelen(IList<int> gelieerdepersonenIDs, IList<int> categorieIDs);
-        [OperationContract]
-        [FaultContract(typeof(DataContractFault<Categorie>))]
-        void CategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID);
+		#region categorieën
+		
+		/// <summary>
+		/// Voegt een collectie gelieerde personen op basis van hun ID toe aan een collectie categorieën
+		/// </summary>
+		/// <param name="gelieerdepersonenIDs">ID's van de gelieerde personen</param>
+		/// <param name="categorieIDs">ID's van de categorieën waaraan ze toegevoegd moeten worden</param>
+		[OperationContract]
+		[FaultContract(typeof(DataContractFault<Categorie>))]
+		void CategorieKoppelen(IList<int> gelieerdepersonenIDs, IList<int> categorieIDs);
 
+		/// <summary>
+		/// Haalt een collectie gelieerde personen uit de opgegeven categorie
+		/// </summary>
+		/// <param name="gelieerdepersonenIDs">ID's van de gelieerde personen over wie het gaat</param>
+		/// <param name="categorieID">ID van de categorie waaruit ze verwijderd moeten worden</param>
+		[OperationContract]
+		[FaultContract(typeof(DataContractFault<Categorie>))]
+		void CategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID);
+
+		/// <summary>
+		/// Haalt een lijst op van personen die tot de opgegeven categorie behoren
+		/// </summary>
+		/// <param name="categorieID">ID van de categorie</param>
+		/// <returns>Een lijst van personen die tot de opgegeven categorie behoren</returns>
 		[OperationContract]
 		IList<GelieerdePersoon> OphalenUitCategorie(int categorieID);
 
 		/// <summary>
-		/// Haalt een lijst op met alle categorieën
+		/// Haalt een lijst op met alle categorieën voor de opgegeven groep
 		/// </summary>
+		/// <param name="groepID">ID van de groep waarover het gaat</param>
+		/// <returns></returns>
 		[OperationContract]
 		IEnumerable<Categorie> CategorieenOphalen(int groepID);
 

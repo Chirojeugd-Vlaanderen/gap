@@ -1,3 +1,8 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,9 +33,12 @@ namespace Chiro.Cdf.Data.Entity
 		{
 			// Loop over attributes and return matching one:
 			foreach (AssociationEndBehaviorAttribute item in type.GetCustomAttributes(typeof(AssociationEndBehaviorAttribute), true))
+			{
 				if (item.EndName == endName)
+				{
 					return item;
-
+				}
+			}
 			// If none found, return default one:
 			return defaultInstance;
 		}

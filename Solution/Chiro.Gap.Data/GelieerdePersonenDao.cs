@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Objects;
@@ -9,10 +14,8 @@ using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
-
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-
 
 namespace Chiro.Gap.Data.Ef
 {
@@ -20,9 +23,11 @@ namespace Chiro.Gap.Data.Ef
 	{
 		public GelieerdePersonenDao()
 		{
-			connectedEntities = new Expression<Func<GelieerdePersoon, object>>[] { 
-                                        e => e.Persoon, 
-                                        e => e.Groep.WithoutUpdate() };
+			connectedEntities = new Expression<Func<GelieerdePersoon, object>>[] 
+			{ 
+				e => e.Persoon, 
+				e => e.Groep.WithoutUpdate() 
+			};
 		}
 
 		/// <summary>
@@ -30,11 +35,11 @@ namespace Chiro.Gap.Data.Ef
 		/// in <paramref name="paths"/>
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvan we de gelieerde personen willen opvragen</param>
-		/// <param name="paths">een array van lambda-expressions die de mee op te halen gerelateerde entity's
+		/// <param name="paths">Een array van lambda-expressions die de mee op te halen gerelateerde entity's
 		/// bepaalt</param>
 		/// <returns>De gevraagde lijst gelieerde personen</returns>
 		public IList<GelieerdePersoon> AllenOphalen(
-			int groepID, 
+			int groepID,
 			params Expression<Func<GelieerdePersoon, object>>[] paths)
 		{
 			IList<GelieerdePersoon> result;
@@ -45,8 +50,8 @@ namespace Chiro.Gap.Data.Ef
 				// direct gedetachte gelieerde personen ophalen
 
 				var query = (from gp in db.GelieerdePersoon
-					     where gp.Groep.ID == groepID
-					     select gp) as ObjectQuery<GelieerdePersoon>;
+							 where gp.Groep.ID == groepID
+							 select gp) as ObjectQuery<GelieerdePersoon>;
 
 				result = (IncludesToepassen(query, paths)).ToList();
 			}
@@ -55,17 +60,16 @@ namespace Chiro.Gap.Data.Ef
 			return result;
 		}
 
-
 		/// <summary>
 		/// Haal een pagina op met gelieerde personen van een groep, inclusief hun categorieën en relevante 
 		/// lidinfo voor het recentste werkjaar.
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>
-		/// <param name="pagina">gevraagde pagina</param>
-		/// <param name="paginaGrootte">aantal personen per pagina</param>
-		/// <param name="aantalTotaal">out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
+		/// <param name="pagina">Gevraagde pagina</param>
+		/// <param name="paginaGrootte">Aantal personen per pagina</param>
+		/// <param name="aantalTotaal">Out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
 		/// zijn. </param>
-		/// <returns>de gevraagde lijst gelieerde personen</returns>
+		/// <returns>De gevraagde lijst gelieerde personen</returns>
 		public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(
 			int groepID,
 			int pagina,
@@ -76,13 +80,13 @@ namespace Chiro.Gap.Data.Ef
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
-				// vind het huidig groepsWerkJaarID
+				// Vind het huidig groepsWerkJaarID
 				groepsWerkJaarID = (from w in db.GroepsWerkJaar
-						    where w.Groep.ID == groepID
-						    orderby w.WerkJaar descending
-						    select w.ID).FirstOrDefault();
-
+									where w.Groep.ID == groepID
+									orderby w.WerkJaar descending
+									select w.ID).FirstOrDefault();
 			}
+
 			return PaginaOphalenMetLidInfo(
 				groepID,
 				groepsWerkJaarID,
@@ -98,30 +102,30 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor we geinteresseerd zijn in de
 		/// lidinfo.</param>
-		/// <param name="pagina">gevraagde pagina</param>
-		/// <param name="paginaGrootte">aantal personen per pagina</param>
-		/// <param name="aantalTotaal">out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
+		/// <param name="pagina">Gevraagde pagina</param>
+		/// <param name="paginaGrootte">Aantal personen per pagina</param>
+		/// <param name="aantalTotaal">Out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
 		/// zijn. </param>
-		/// <returns>de gevraagde lijst gelieerde personen</returns>
+		/// <returns>De gevraagde lijst gelieerde personen</returns>
 		public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(
-			int groepID, 
+			int groepID,
 			int groepsWerkJaarID,
-			int pagina, 
-			int paginaGrootte, 
+			int pagina,
+			int paginaGrootte,
 			out int aantalTotaal)
 		{
 			IList<GelieerdePersoon> lijst;
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
-			{		
-				// haal de gelieerde personen op van de gevraagde groep
+			{
+				// Haal de gelieerde personen op van de gevraagde groep
 				var gpQuery = (from grp in db.Groep
-						       .Include("GelieerdePersoon.Persoon")
-						       .Include("GelieerdePersoon.Categorie")
-					       where grp.ID == groepID
-					       select grp).FirstOrDefault().GelieerdePersoon;
-				
-				// selecteer gewenste pagina, en bepaal totaal aantal personen
+							   .Include("GelieerdePersoon.Persoon")
+							   .Include("GelieerdePersoon.Categorie")
+							   where grp.ID == groepID
+							   select grp).FirstOrDefault().GelieerdePersoon;
+
+				// Selecteer gewenste pagina, en bepaal totaal aantal personen
 				lijst = gpQuery
 						.OrderBy(gp => String.Format(
 							"{0} {1}",
@@ -140,23 +144,23 @@ namespace Chiro.Gap.Data.Ef
 								.Where(Utility.BuildContainsExpression<Lid, int>(
 									l => l.GelieerdePersoon.ID,
 									relevanteGpIDs))
-							    where ld.GroepsWerkJaar.ID == groepsWerkJaarID
-							    select ld).ToList();
-
+											where ld.GroepsWerkJaar.ID == groepsWerkJaarID
+											select ld).ToList();
 			}
+
 			Utility.DetachObjectGraph(lijst);
-			return lijst;   
+			return lijst;
 		}
 
 		/// <summary>
 		/// Haal een pagina op met gelieerde personen uit een categorie, inclusief lidinfo voor het huidige
 		/// werkjaar.
 		/// </summary>
-		/// <param name="pagina">gevraagde pagina</param>
-		/// <param name="paginaGrootte">grootte van de pagina</param>
-		/// <param name="aantalTotaal">outputparameter die het totaal aantal personen in de categorie weergeeft</param>
 		/// <param name="categorieID">ID van de gevraagde categorie</param>
-		/// <returns>lijst gelieerde personen</returns>
+		/// <param name="pagina">Gevraagde pagina</param>
+		/// <param name="paginaGrootte">Grootte van de pagina</param>
+		/// <param name="aantalTotaal">Outputparameter die het totaal aantal personen in de categorie weergeeft</param>
+		/// <returns>Lijst gelieerde personen</returns>
 		public IList<GelieerdePersoon> PaginaOphalenMetLidInfoVolgensCategorie(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal)
 		{
 			Groep g;
@@ -166,42 +170,42 @@ namespace Chiro.Gap.Data.Ef
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
-				//haal de groep van de gevraagde categorie op
+				// Haal de groep van de gevraagde categorie op
 				g = (from c in db.Categorie
-				     where c.ID == categorieID
-				     select c.Groep).FirstOrDefault();
+					 where c.ID == categorieID
+					 select c.Groep).FirstOrDefault();
 
-				//haal het huidige groepswerkjaar van de groep op
+				// Haal het huidige groepswerkjaar van de groep op
 				huidigWj = (
-				    from w in db.GroepsWerkJaar
-				    where w.Groep.ID == g.ID
-				    orderby w.WerkJaar descending
-				    select w).FirstOrDefault<GroepsWerkJaar>().WerkJaar;
+					from w in db.GroepsWerkJaar
+					where w.Groep.ID == g.ID
+					orderby w.WerkJaar descending
+					select w).FirstOrDefault<GroepsWerkJaar>().WerkJaar;
 
-				// haal alle personen in de gevraagde categorie op
+				// Haal alle personen in de gevraagde categorie op
 				var query = (from c in db.Categorie.Include("GelieerdePersoon.Persoon")
-					     where c.ID == categorieID
-					     select c).FirstOrDefault().GelieerdePersoon;
+							 where c.ID == categorieID
+							 select c).FirstOrDefault().GelieerdePersoon;
 
-				//sorteer ze en bepaal totaal aantal personen
+				// Sorteer ze en bepaal totaal aantal personen
 				lijst = query.OrderBy(e => e.Persoon.Naam)
-					      .Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte)
-					      .ToList();
+						  .Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte)
+						  .ToList();
 				aantalTotaal = query.Count();
 
-				// lijst is geattacht aan de objectcontext.  Als we nu ook de lidojecten van de 
+				// Lijst is geattacht aan de objectcontext.  Als we nu ook de lidojecten van de 
 				// gelieerdepersonen in de lijst ophalen voor het gegeven werkjaar, dan worden
 				// die DDD-gewijze aan de gelieerde personen gekoppeld.
 
-				// haal de IDs van alle relevante personen op
+				// Haal de IDs van alle relevante personen op
 				IList<int> relevanteGpIDS = (from gp in lijst select gp.ID).ToList();
 
 				// Selecteer nu alle leden van huidig werkjaar met relevant gelieerdePersoonID
 
 				var huidigeLedenUitlijst = (from l in db.Lid.Include("GelieerdePersoon.Categorie")
 								.Where(Utility.BuildContainsExpression<Lid, int>(ld => ld.GelieerdePersoon.ID, relevanteGpIDS))
-							    where l.GroepsWerkJaar.WerkJaar == huidigWj
-							    select l).ToList();
+											where l.GroepsWerkJaar.WerkJaar == huidigWj
+											select l).ToList();
 			}
 			Utility.DetachObjectGraph(lijst);
 
@@ -215,8 +219,8 @@ namespace Chiro.Gap.Data.Ef
 				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 
 				return (
-				    from gp in db.GelieerdePersoon.Include("Groep").Include("Persoon").Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.ID, gelieerdePersonenIDs))
-				    select gp).ToList();
+					from gp in db.GelieerdePersoon.Include("Groep").Include("Persoon").Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.ID, gelieerdePersonenIDs))
+					select gp).ToList();
 			}
 		}
 
@@ -226,11 +230,10 @@ namespace Chiro.Gap.Data.Ef
 			{
 				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 				return (
-				    from gp in db.GelieerdePersoon.Include("Persoon").Include("Communicatie.CommunicatieType").Include("Persoon.PersoonsAdres.Adres.Straat").Include("Persoon.PersoonsAdres.Adres.Subgemeente").Include("Groep").Include("Categorie").Include("Lid.GroepsWerkJaar")
-				    where gp.ID == gelieerdePersoonID
-				    select gp).FirstOrDefault();
+					from gp in db.GelieerdePersoon.Include("Persoon").Include("Communicatie.CommunicatieType").Include("Persoon.PersoonsAdres.Adres.Straat").Include("Persoon.PersoonsAdres.Adres.Subgemeente").Include("Groep").Include("Categorie").Include("Lid.GroepsWerkJaar")
+					where gp.ID == gelieerdePersoonID
+					select gp).FirstOrDefault();
 			}
-
 		}
 
 		public GelieerdePersoon GroepLaden(GelieerdePersoon p)
@@ -252,8 +255,8 @@ namespace Chiro.Gap.Data.Ef
 					db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 
 					g = (from gp in db.GelieerdePersoon
-					     where gp.ID == p.ID
-					     select gp.Groep).FirstOrDefault();
+						 where gp.ID == p.ID
+						 select gp.Groep).FirstOrDefault();
 				}
 				p.Groep = g;
 				g.GelieerdePersoon.Add(p);  // nog niet zeker of dit gaat werken...
@@ -268,12 +271,12 @@ namespace Chiro.Gap.Data.Ef
 			{
 				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 				return (
-				    from gp in db.GelieerdePersoon.Include("Persoon")
+					from gp in db.GelieerdePersoon.Include("Persoon")
 					.Include("Communicatie")
 					.Include("Persoon.PersoonsAdres.Adres.Straat")
-				    where (gp.Persoon.VoorNaam + " " + gp.Persoon.Naam + " " + gp.Persoon.VoorNaam)
+					where (gp.Persoon.VoorNaam + " " + gp.Persoon.Naam + " " + gp.Persoon.VoorNaam)
 					.Contains(zoekStringNaam)
-				    select gp).ToList();
+					select gp).ToList();
 			}
 		}
 
@@ -283,15 +286,14 @@ namespace Chiro.Gap.Data.Ef
 		/// (inclusief communicatie en adressen)
 		/// </summary>
 		/// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
-		/// <param name="naam">te zoeken naam (ongeveer)</param>
-		/// <param name="voornaam">te zoeken voornaam (ongeveer)</param>
-		/// <returns>lijst met gevonden matches</returns>
-		/// <remarks>includeert bij wijze van standaard de persoonsinfo</remarks>
+		/// <param name="naam">Te zoeken naam (ongeveer)</param>
+		/// <param name="voornaam">Te zoeken voornaam (ongeveer)</param>
+		/// <returns>Lijst met gevonden matches</returns>
+		/// <remarks>Includeert bij wijze van standaard de persoonsinfo</remarks>
 		public IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam)
 		{
 			return ZoekenOpNaamOngeveer(groepID, naam, voornaam, gp => gp.Persoon);
 		}
-
 
 		/// <summary>
 		/// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> met naam 
@@ -299,10 +301,10 @@ namespace Chiro.Gap.Data.Ef
 		/// (inclusief communicatie en adressen)
 		/// </summary>
 		/// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
-		/// <param name="naam">te zoeken naam (ongeveer)</param>
-		/// <param name="voornaam">te zoeken voornaam (ongeveer)</param>
-		/// <param name="paths">expressies die aangeven welke dependencies mee opgehaald moeten worden</param>
-		/// <returns>lijst met gevonden matches</returns>
+		/// <param name="naam">Te zoeken naam (ongeveer)</param>
+		/// <param name="voornaam">Te zoeken voornaam (ongeveer)</param>
+		/// <param name="paths">Expressies die aangeven welke dependencies mee opgehaald moeten worden</param>
+		/// <returns>Lijst met gevonden matches</returns>
 		public IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam, params Expression<Func<GelieerdePersoon, object>>[] paths)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
@@ -312,7 +314,6 @@ namespace Chiro.Gap.Data.Ef
 
 				// !Herinner van bij de scouts dat die soundex best bij in de tabel terecht komt,
 				// en dat daarop een index moet komen te liggen!
-
 
 				string esqlQuery = "SELECT VALUE gp FROM ChiroGroepEntities.GelieerdePersoon AS gp " +
 					"WHERE gp.Groep.ID = @groepid " +
@@ -330,8 +331,6 @@ namespace Chiro.Gap.Data.Ef
 				return IncludesToepassen(query, paths).ToList();
 			}
 		}
-
-
 
 		/*public IList<GelieerdePersoon> OphalenUitCategorie(int categorieID)
 		{
@@ -364,8 +363,8 @@ namespace Chiro.Gap.Data.Ef
 			{
 				db.CommunicatieType.MergeOption = MergeOption.NoTracking;
 				return (
-				    from gp in db.CommunicatieType
-				    select gp).ToList();
+					from gp in db.CommunicatieType
+					select gp).ToList();
 			}
 		}
 	}

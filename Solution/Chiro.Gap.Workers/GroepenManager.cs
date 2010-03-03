@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,16 +11,19 @@ using System.Linq.Expressions;
 using System.Text;
 
 using Chiro.Cdf.Data;
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Workers.Properties;
-using Chiro.Cdf.Ioc;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {
+    /// <summary>
+    /// Worker die alle businesslogica i.v.m. groepen bevat (dat is breder dan 'Chirogroepen', bv. satellieten)
+    /// </summary>
     public class GroepenManager
     {
         private IGroepenDao _groepenDao;
@@ -26,14 +34,14 @@ namespace Chiro.Gap.Workers
         private IGelieerdePersonenDao _gelPersDao;
 
         /// <summary>
-        /// Standaardconstructor
+        /// Standaardconstructor voor GroepenManagers
         /// </summary>
-        /// <param name="grpDao">DAO voor groepen</param>
-        /// <param name="afjDao">DAO voor afdelingsjaren</param>
-        /// <param name="afdDao">DAO voor afdelingen</param>
-        /// <param name="categorieenDao">DAO voor categorieën</param>
-        /// <param name="gelPersDao">DAO voor gelieerde personen</param>
-        /// <param name="autorisatieMgr">Autorisatiemanager</param>
+        /// <param name="grpDao">Repository voor groepen</param>
+        /// <param name="afjDao">Repository voor afdelingsjaren</param>
+        /// <param name="afdDao">Repository voor afdelingen</param>
+        /// <param name="categorieenDao">Repository voor categorieën</param>
+        /// <param name="gelPersDao">Repository voor gelieerde personen</param>
+        /// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
         public GroepenManager(
             IGroepenDao grpDao,
             IAfdelingsJarenDao afjDao,
@@ -112,13 +120,13 @@ namespace Chiro.Gap.Workers
             };
         }
 
-
         /// <summary>
         /// Maakt een nieuwe afdeling voor een groep, zonder te persisteren
         /// </summary>
         /// <param name="groep">Groep waarvoor afdeling moet worden gemaakt</param>
-        /// <param name="naam">naam van de afdeling</param>
-        /// <param name="afkorting">handige afkorting voor in schemaatjes</param>
+        /// <param name="naam">Naam van de afdeling</param>
+        /// <param name="afkorting">Handige afkorting voor in schemaatjes</param>
+        /// <returns>De toegevoegde (maar nog niet gepersisteerde) afdeling</returns>
         public Afdeling AfdelingToevoegen(Groep groep, string naam, string afkorting)
         {
             if (_autorisatieMgr.IsGavGroep(groep.ID))
@@ -140,7 +148,7 @@ namespace Chiro.Gap.Workers
         /// Haat een afdeling op, op basis van <paramref name="afdelingID"/>
         /// </summary>
         /// <param name="afdelingID">ID van op te halen afdeling</param>
-        /// <returns>de gevraagde afdeling</returns>
+        /// <returns>De gevraagde afdeling</returns>
         public Afdeling AfdelingOphalen(int afdelingID)
         {
             if (_autorisatieMgr.IsGavAfdeling(afdelingID))
@@ -156,11 +164,12 @@ namespace Chiro.Gap.Workers
         /// <summary>
         /// Maakt een afdelingsjaar voor een groep en een afdeling
         /// </summary>
-        /// <param name="g">Groep voor nieuw afdelingsjaar</param>
         /// <param name="a">Afdeling voor nieuw afdelingsjaar</param>
         /// <param name="oa">Te koppelen officiële afdeling</param>
+        /// /// <param name="gwj">Groepswerkjaar (koppelt de afdeling aan een groep en een werkjaar)</param>
         /// <param name="geboorteJaarBegin">Geboortejaar van</param>
         /// <param name="geboorteJaarEind">Geboortejaar tot</param>
+        /// <returns>Het aangemaakte afdelingsjaar</returns>
         public AfdelingsJaar AfdelingsJaarMaken(Afdeling a, OfficieleAfdeling oa, GroepsWerkJaar gwj, int geboorteJaarBegin, int geboorteJaarEind)
         {
             if (!_autorisatieMgr.IsGavAfdeling(a.ID))
@@ -177,7 +186,7 @@ namespace Chiro.Gap.Workers
 
             AfdelingsJaar afdelingsJaar = new AfdelingsJaar();
 
-            //TODO check if no conflicts with existing afdelingsjaar
+            // TODO check if no conflicts with existing afdelingsjaar
 
             afdelingsJaar.OfficieleAfdeling = oa;
             afdelingsJaar.Afdeling = a;
@@ -205,7 +214,7 @@ namespace Chiro.Gap.Workers
         /// <summary>
         /// Haalt recentste groepswerkjaar op voor gegeven groep
         /// </summary>
-        /// <param name="p">ID van gegeven groep</param>
+        /// <param name="g">De gegeven groep</param>
         /// <returns>Gevraagde groepswerkjaar</returns>
         public GroepsWerkJaar RecentsteGroepsWerkJaarGet(Groep g)
         {
@@ -219,17 +228,14 @@ namespace Chiro.Gap.Workers
             }
         }
 
-
-
-
         // Zit nu in AfdelingsJaarManager.Bewaren
         ///// <summary>
         ///// Persisteert AfdelingsJaar in de database
         ///// </summary>
         ///// <param name="a">Te persisteren AfdelingsJaar</param>
         ///// <returns>De bewaarde groep</returns>
-        //public AfdelingsJaar AfdelingsJaarBewaren(AfdelingsJaar a)
-        //{
+        // public AfdelingsJaar AfdelingsJaarBewaren(AfdelingsJaar a)
+        // {
         //    if (_autorisatieMgr.IsGavGroepsWerkJaar(a.GroepsWerkJaar.ID))
         //    {
         //        return _afdao.Bewaren(a);
@@ -238,14 +244,13 @@ namespace Chiro.Gap.Workers
         //    {
         //        throw new GeenGavException(Resources.GeenGavGroep);
         //    }
-        //}
-
-
+        // }
 
         /// <summary>
         /// Persisteert groep in de database
         /// </summary>
         /// <param name="g">Te persisteren groep</param>
+        /// <param name="paths">Expressies die aangeven welke dependencies mee opgehaald moeten worden</param>
         /// <returns>De bewaarde groep</returns>
         public Groep Bewaren(Groep g, params Expression<Func<Groep, object>>[] paths)
         {
@@ -258,13 +263,12 @@ namespace Chiro.Gap.Workers
                 throw new GeenGavException(Resources.GeenGavGroep);
             }
         }
-
-
+        
         /// <summary>
         /// Haalt een groepsobject op zonder gerelateerde entiteiten
         /// </summary>
         /// <param name="groepID">ID van de op te halen groep</param>
-        /// <returns>groep met ID <paramref name="groepID"/></returns>
+        /// <returns>De groep met de opgegeven ID <paramref name="groepID"/></returns>
         public Groep Ophalen(int groepID)
         {
             if (_autorisatieMgr.IsGavGroep(groepID))
@@ -317,10 +321,11 @@ namespace Chiro.Gap.Workers
         /// Maakt een nieuwe categorie, en koppelt die aan een bestaande groep (met daaraan
         /// gekoppeld zijn categorieën)
         /// </summary>
-        /// <param name="categorieCode">Code voor de nieuwe categorie</param>
-        /// <param name="categorieNaam">Naam voor de nieuwe categorie</param>
         /// <param name="g">Groep waarvoor de categorie gemaakt wordt.  Als bestaande categorieën
         /// gekoppeld zijn, wordt op dubbels gecontroleerd</param>
+        /// <param name="categorieNaam">Naam voor de nieuwe categorie</param>
+        /// <param name="categorieCode">Code voor de nieuwe categorie</param>
+        /// <returns>De toegevoegde categorie</returns>
         public Categorie CategorieToevoegen(Groep g, String categorieNaam, String categorieCode)
         {
             if (!_autorisatieMgr.IsGavGroep(g.ID))
@@ -372,7 +377,6 @@ namespace Chiro.Gap.Workers
                     }
                 }
             }
-
         }
 
         #endregion categorieën
@@ -380,8 +384,8 @@ namespace Chiro.Gap.Workers
         /// <summary>
         /// Maakt een nieuw groepswerkjaar voor een gegeven <paramref name="groep" />
         /// </summary>
-        /// <param name="groep">groep waarvoor een groepswerkjaar gemaakt moet worden</param>
-        /// <param name="werkJaar">int die het werkjaar identificeert (bijv 2009 voor 2009-2010)</param>
+        /// <param name="groep">Groep waarvoor een groepswerkjaar gemaakt moet worden</param>
+        /// <param name="werkJaar">Int die het werkjaar identificeert (bv. 2009 voor 2009-2010)</param>
         /// <returns>Het gemaakte groepswerkjaar.</returns>
         /// <remarks>Persisteert niet.</remarks>
         public GroepsWerkJaar GroepsWerkJaarMaken(Groep groep, int werkJaar)

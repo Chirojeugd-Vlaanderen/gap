@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,7 +13,6 @@ using Chiro.Cdf.Validation;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-
 
 namespace Chiro.Gap.Workers
 {
@@ -21,9 +25,9 @@ namespace Chiro.Gap.Workers
 		private IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
-		/// Constructor voor FunctiesManager
+		/// Instantieert een FunctiesManager
 		/// </summary>
-		/// <param name="funDao">een IFunctiesDao voor data access mbt functies</param>
+		/// <param name="funDao">Een IFunctiesDao voor data access mbt functies</param>
 		/// <param name="auMgr">Een IAutorisatieManager voor de autorisatie</param>
 		public FunctiesManager(IFunctiesDao funDao, IAutorisatieManager auMgr)
 		{
@@ -80,8 +84,7 @@ namespace Chiro.Gap.Workers
 						// is persoon oud genoeg?
 
 						// TODO: Custom exception?
-						throw new InvalidOperationException(Properties.Resources.TeJong);
-								
+						throw new InvalidOperationException(Properties.Resources.TeJong);			
 					}
 				}
 				if (f.MaxAantal > 0)

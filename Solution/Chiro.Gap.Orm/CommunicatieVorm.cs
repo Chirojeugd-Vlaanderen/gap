@@ -1,11 +1,18 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization;
-using Chiro.Cdf.Data.Entity;
-using Chiro.Cdf.Data;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+
+using Chiro.Cdf.Data;
+using Chiro.Cdf.Data.Entity;
+
 namespace Chiro.Gap.Orm
 {
 	[MetadataType(typeof(CommuncatieVormValidatie))]
@@ -44,6 +51,5 @@ namespace Chiro.Gap.Orm
 		{
 			return 12;
 		}
-
 	}
 }

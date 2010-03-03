@@ -1,13 +1,18 @@
-﻿using System.Reflection;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("CodeProject - EF Library")]
+[assembly: AssemblyTitle("Chiro.Cdf.Data")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("AREBIS")]
-[assembly: AssemblyProduct("CodeProject - EF")]
-[assembly: AssemblyCopyright("Copyright © Rudi Breedenraedt 2009")]
+[assembly: AssemblyCompany("Chirojeugd-Vlaanderen vzw")]
+[assembly: AssemblyProduct("Chiro.Cdf.Data")]
+[assembly: AssemblyCopyright("Copyright © Chirojeugd-Vlaanderen vzw 2007-2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]

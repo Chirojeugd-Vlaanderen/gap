@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -10,11 +15,10 @@ using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 
-
 namespace Chiro.Gap.Workers
 {
 	/// <summary>
-	/// Klasse die methods bevat voor de businesslogica m.b.t. categorieën.
+    /// Worker die alle businesslogica i.v.m. categorieën bevat
 	/// </summary>
 	public class CategorieenManager
 	{
@@ -22,10 +26,10 @@ namespace Chiro.Gap.Workers
 		private IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
-		/// Creeert een CategorieenManager
+		/// Creëert een CategorieenManager
 		/// </summary>
 		/// <param name="dao">Repository voor categorieën</param>
-		/// <param name="auMgr">Autorisatiemanager voor categorieën</param>
+		/// <param name="auMgr">Worker die autorisatie regelt</param>
 		public CategorieenManager(ICategorieenDao dao, IAutorisatieManager auMgr)
 		{
 			_dao = dao;
@@ -38,9 +42,7 @@ namespace Chiro.Gap.Workers
 		/// Een categorie ophalen op basis van zijn <paramref name="categorieID"/>, inclusief groep.
 		/// </summary>
 		/// <param name="categorieID">ID van op te halen categorie</param>
-		/// <param name="metGelieerdePersonen">Indien <c>true</c>, worden ook de gekoppelde gelieerde 
-		/// personen mee opgehaald</param>
-		/// <returns>opgehaalde categorie, met gekoppelde groep</returns>
+		/// <returns>Opgehaalde categorie, met gekoppelde groep</returns>
 		public Categorie Ophalen(int categorieID)
 		{
 			return Ophalen(categorieID, false);  // personen interesseren ons niet
@@ -52,7 +54,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="categorieID">ID van op te halen categorie</param>
 		/// <param name="metPersonen">Indien <c>true</c>, worden ook de gekoppelde gelieerde 
 		/// personen en persoonsinfo mee opgehaald</param>
-		/// <returns>opgehaalde categorie, met gekoppelde groep</returns>
+		/// <returns>Opgehaalde categorie, met gekoppelde groep</returns>
 		public Categorie Ophalen(int categorieID, bool metPersonen)
 		{
 			if (_autorisatieMgr.IsGavCategorie(categorieID))
@@ -94,8 +96,8 @@ namespace Chiro.Gap.Workers
 		/// <paramref name="code"/>.
 		/// </summary>
 		/// <param name="groepID">ID van groep waaraan de te zoeken categorie gekoppeld moet zijn</param>
-		/// <param name="code">code van de te zoeken categorie</param>
-		/// <returns>de gevonden categorie; <c>null</c> indien niet gevonden</returns>
+		/// <param name="code">Code van de te zoeken categorie</param>
+		/// <returns>De gevonden categorie; <c>null</c> indien niet gevonden</returns>
 		public Categorie Ophalen(int groepID, string code)
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))

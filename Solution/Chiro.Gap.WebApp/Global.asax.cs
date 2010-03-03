@@ -1,13 +1,20 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
-using Microsoft.Practices.Unity;
-using Chiro.Cdf.Ioc;
 using System.Web.Mvc.Html;
+using System.Web.Routing;
+
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.ServiceContracts;
+
+using Microsoft.Practices.Unity;
 
 namespace Chiro.Gap.WebApp
 {
@@ -34,7 +41,7 @@ namespace Chiro.Gap.WebApp
 
 			routes.MapRoute(
 			    "Route voor ~/: Kies GAV"
-			    , ""
+			    , string.Empty 
 			    , new { controller = "Gav", action = "Index" });
 
 			routes.MapRoute(
@@ -47,7 +54,6 @@ namespace Chiro.Gap.WebApp
 
 		private static void InitializeContainer()
 		{
-
 			if (_container == null)
 			{
 				Factory.ContainerInit();
@@ -58,7 +64,6 @@ namespace Chiro.Gap.WebApp
 			    new UnityControllerFactory(_container);
 
 			ControllerBuilder.Current.SetControllerFactory(controllerFactory);
-
 		}
 
 		/*public static IEnumerable<StraatInfo> getStraten()

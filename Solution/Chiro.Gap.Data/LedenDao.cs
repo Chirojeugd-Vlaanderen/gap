@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Data.Objects;
 using System.Linq;
@@ -17,9 +22,11 @@ namespace Chiro.Gap.Data.Ef
 	{
 		public LedenDao()
 		{
-			connectedEntities = new Expression<Func<Lid, object>>[] { 
+			connectedEntities = new Expression<Func<Lid, object>>[] 
+            { 
                                         e => e.GroepsWerkJaar.WithoutUpdate(), 
-                                        e => e.GelieerdePersoon.Persoon.WithoutUpdate()};
+                                        e => e.GelieerdePersoon.Persoon.WithoutUpdate()
+            };
 		}
 
 		/// <summary>
@@ -39,7 +46,7 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID van gelieerde persoon</param>
 		/// <param name="groepsWerkJaarID">ID van groepswerkjaar</param>
-		/// <param name="paths">lambda-expressies die de extra op te halen
+		/// <param name="paths">Lambda-expressies die de extra op te halen
 		/// informatie definieren</param>
 		/// <returns>Lidobject indien gevonden, anders null</returns>
 		public Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths)
@@ -47,17 +54,18 @@ namespace Chiro.Gap.Data.Ef
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
 				var query = (from l in db.Lid
-					     where l.GelieerdePersoon.ID == gelieerdePersoonID
-					     && l.GroepsWerkJaar.ID == groepsWerkJaarID
-					     select l) as ObjectQuery<Lid>;
+							 where l.GelieerdePersoon.ID == gelieerdePersoonID
+							 && l.GroepsWerkJaar.ID == groepsWerkJaarID
+							 select l) as ObjectQuery<Lid>;
 				return (IncludesToepassen(query, paths).FirstOrDefault());
 			}
 		}
 
 		/// <summary>
-		/// Alle entity's van het gegeven type ophalen
+		/// Een lijst ophalen van alle leden voor het opgegeven groepswerkjaar
 		/// </summary>
-		/// <returns>Een lijst met objecten</returns>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+		/// <returns>Een lijst alle leden voor het opgegeven groepswerkjaar</returns>
 		public IList<Lid> AllesOphalen(int groepsWerkJaarID)
 		{
 			IList<Lid> lijst;
@@ -67,16 +75,16 @@ namespace Chiro.Gap.Data.Ef
 				db.Lid.MergeOption = MergeOption.NoTracking;
 
 				var kinderen = (
-				    from l in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
-				    where l.GroepsWerkJaar.ID == groepsWerkJaarID
-				    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-				    select l).ToList<Kind>();
+					from l in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+					where l.GroepsWerkJaar.ID == groepsWerkJaarID
+					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+					select l).ToList<Kind>();
 
 				var leiding = (
-				    from l in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
-				    where l.GroepsWerkJaar.ID == groepsWerkJaarID
-				    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-				    select l).ToList<Leiding>();
+					from l in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+					where l.GroepsWerkJaar.ID == groepsWerkJaarID
+					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+					select l).ToList<Leiding>();
 
 				lijst = new List<Lid>();
 				foreach (Lid lid in kinderen)
@@ -103,16 +111,16 @@ namespace Chiro.Gap.Data.Ef
 				db.Lid.MergeOption = MergeOption.NoTracking;
 
 				var kinderen = (
-				    from l in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
-				    where l.GroepsWerkJaar.ID == groepsWerkJaarID
-				    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-				    select l).ToList<Kind>();
+					from l in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+					where l.GroepsWerkJaar.ID == groepsWerkJaarID
+					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+					select l).ToList<Kind>();
 
 				var leiding = (
-				    from l in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
-				    where l.GroepsWerkJaar.ID == groepsWerkJaarID
-				    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-				    select l).ToList<Leiding>();
+					from l in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+					where l.GroepsWerkJaar.ID == groepsWerkJaarID
+					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+					select l).ToList<Leiding>();
 
 				// TODO: onderstaande moet eleganter kunnen.
 				foreach (Lid lid in kinderen)
@@ -139,20 +147,20 @@ namespace Chiro.Gap.Data.Ef
 				db.Lid.MergeOption = MergeOption.NoTracking;
 
 				var kinderen = (
-				    from l in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
-				    where l.GroepsWerkJaar.ID == groepsWerkJaarID
+					from l in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+					where l.GroepsWerkJaar.ID == groepsWerkJaarID
 						&&
 					  l.AfdelingsJaar.Afdeling.ID == afdelingsID
-				    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-				    select l).ToList<Kind>();
+					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+					select l).ToList<Kind>();
 
 				var leiding = (
-				    from l in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
-				    where l.GroepsWerkJaar.ID == groepsWerkJaarID
+					from l in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+					where l.GroepsWerkJaar.ID == groepsWerkJaarID
 						&&
 					  l.AfdelingsJaar.Any(x => x.Afdeling.ID == afdelingsID)
-				    orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-				    select l).ToList<Leiding>();
+					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+					select l).ToList<Leiding>();
 
 				lijst = new List<Lid>();
 				foreach (Lid lid in kinderen)
@@ -169,10 +177,10 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// lid met afdelingsjaren, afdelingen en gelieerdepersoon
+		/// Lid met afdelingsjaren, afdelingen en gelieerdepersoon
 		/// </summary>
-		/// <param name="lidID"></param>
-		/// <returns></returns>
+		/// <param name="lidID">ID van het lid waarvan we gegevens willen opvragen</param>
+		/// <returns>Een lid met afdelingsjaren, afdelingen en gelieerdepersoon</returns>
 		public Lid OphalenMetDetails(int lidID)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
@@ -180,9 +188,9 @@ namespace Chiro.Gap.Data.Ef
 				db.Lid.MergeOption = MergeOption.NoTracking;
 
 				Lid lid = (
-		    from t in db.Lid.Include("GelieerdePersoon.Persoon").Include("GroepsWerkJaar.AfdelingsJaar.Afdeling")
-		    where t.ID == lidID
-		    select t).FirstOrDefault<Lid>();
+			from t in db.Lid.Include("GelieerdePersoon.Persoon").Include("GroepsWerkJaar.AfdelingsJaar.Afdeling")
+			where t.ID == lidID
+			select t).FirstOrDefault<Lid>();
 
 				if (lid is Kind)
 				{

@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +16,19 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Workers
 {
+    /// <summary>
+    /// Worker die alle businesslogica i.v.m. personen bevat
+    /// </summary>
 	public class PersonenManager
 	{
 		private IPersonenDao _dao;
 		private IAutorisatieManager _autorisatieMgr;
 
+        /// <summary>
+        /// Creëert een PersonenManager
+        /// </summary>
+        /// <param name="dao">Repository voor personen</param>
+        /// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 		public PersonenManager(IPersonenDao dao, IAutorisatieManager autorisatieMgr)
 		{
 			_dao = dao;
@@ -59,16 +72,15 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
-
 		/// <summary>
 		/// Verhuist een persoon van oudAdres naar nieuwAdres.  Persisteert niet.
 		/// </summary>
-		/// <param name="verhuizer">te verhuizen GelieerdePersoon</param>
-		/// <param name="oudAdres">oud adres</param>
-		/// <param name="nieuwAdres">nieuw adres</param>
-		/// <param name="adresType">adrestype voor de nieuwe koppeling persoon-adres</param>
+		/// <param name="verhuizer">Te verhuizen GelieerdePersoon</param>
+		/// <param name="oudAdres">Oud adres</param>
+		/// <param name="nieuwAdres">Nieuw adres</param>
+		/// <param name="adresType">Adrestype voor de nieuwe koppeling persoon-adres</param>
 		/// <remarks>Als de persoon niet gekoppeld is aan het oude adres,
-		/// zal hij ook niet verhiuzen</remarks>
+		/// zal hij of zij ook niet verhuizen</remarks>
 		public void Verhuizen(Persoon verhuizer, Adres oudAdres, Adres nieuwAdres, AdresTypeEnum adresType)
 		{
 			if (_autorisatieMgr.IsGavPersoon(verhuizer.ID))
@@ -103,6 +115,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="p">GelieerdePersoon die er een adres bij krijgt</param>
 		/// <param name="adres">Toe te voegen adres</param>
+        /// <param name="adrestype">Het adrestype (thuis, kot, enz.)</param>
 		public void AdresToevoegen(Persoon p, Adres adres, AdresTypeEnum adrestype)
 		{
 			if (_autorisatieMgr.IsGavPersoon(p.ID))
@@ -117,13 +130,16 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
+        /// <summary>
+        /// Een collectie personen ophalen van wie de ID's opgegeven zijn
+        /// </summary>
+        /// <param name="personenIDs">De ID's van de personen die in de collectie moeten zitten</param>
+        /// <returns>Een collectie met de gevraagde personen</returns>
 		public IList<Persoon> LijstOphalen(List<int> personenIDs)
 		{
 			AutorisatieManager authMgr = Factory.Maak<AutorisatieManager>();
 
 			return _dao.LijstOphalen(authMgr.EnkelMijnPersonen(personenIDs));
 		}
-
-
 	}
 }

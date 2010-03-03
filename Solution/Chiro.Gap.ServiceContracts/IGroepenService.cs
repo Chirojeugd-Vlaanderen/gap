@@ -1,9 +1,15 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
@@ -25,9 +31,7 @@ namespace Chiro.Gap.ServiceContracts
 		GroepInfo Ophalen(int groepID, GroepsExtras extras);
 
 		/// <summary>
-		/// Ophalen van de Groeps info
 		/// </summary>
-		/// <param name="GroepId"></param>
 		/// <returns></returns>
 		[OperationContract]
 		IEnumerable<GroepInfo> MijnGroepenOphalen();
@@ -55,7 +59,6 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		Groep OphalenMetVrijeVelden(int groepID);
 
-
 		#endregion
 
 		#region werkjaren
@@ -76,7 +79,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		int HuidigWerkJaarGet(int groepID);
 
-		//alles om gelieerdepersonen op te halen zit in igelieerdepersonenservice
+		// Alles om gelieerdepersonen op te halen zit in igelieerdepersonenservice
 
 		#endregion
 
@@ -89,12 +92,13 @@ namespace Chiro.Gap.ServiceContracts
 		AfdelingsJaar AfdelingsJaarOphalen(int afdelingsJaarID);
 
 		/// <summary>
-		/// Methode die aan de hand van een groep, een afdelingsjaar van de groep en een officiële afdeling een 
-		/// afdelingsjaar maakt voor de gegeven leeftijden. 
+		/// Methode die een afdelingsjaar maakt voor de gegeven leeftijden. 
 		/// </summary>
-		/// <param name="g">Deze moet gelinkt zijn met afdelingsjaar, officieleafdeling en afdeling</param>
-		/// <param name="aj"></param>
-		/// <param name="oa"></param>
+		/// <param name="groepID">ID van de groep waarover het gaat</param>
+		/// <param name="afdID">ID van de afdeling</param>
+		/// <param name="offafdID">ID van de officiële afdeling waarop de afdeling gemapt wordt</param>
+		/// <param name="geboortejaarbegin">Geboortejaar van de oudste leden in die afdeling</param>
+		/// <param name="geboortejaareind">Geboortejaar van de jongste leden in die afdeling</param>
 		[OperationContract]
 		void AfdelingsJaarAanmaken(int groepID, int afdID, int offafdID, int geboortejaarbegin, int geboortejaareind);
 
@@ -102,12 +106,12 @@ namespace Chiro.Gap.ServiceContracts
 		/// Bewerkt een AfdelingsJaar: 
 		/// andere OfficieleAfdeling en/of andere leeftijden
 		/// </summary>
-		/// <param name="afdID">AfdelingsJaarID</param>
-		/// <param name="offafdID">OfficieleAfdelingsID</param>
-		/// <param name="geboortVan">GeboorteJaarVan</param>
-		/// <param name="geboortTot">GeboorteJaarTot</param>
-		/// <param name="geslacht">geeft aan of het een jongensafdeling, een meisjesafdeling
-		/// of een gemengde afdeling is.</param>
+		/// <param name="afdID">ID van het Afdelingsjaar</param>
+		/// <param name="offafdID">ID van de officiële afdeling waarop de afdeling gemapt wordt</param>
+		/// <param name="geboorteVan">Geboortejaar van de oudste leden in die afdeling</param>
+		/// <param name="geboorteTot">Geboortejaar van de jongste leden in die afdeling</param>
+		/// <param name="geslacht">Geeft aan of het een jongensafdeling, een meisjesafdeling
+		/// of een gemengde afdeling is</param>
 		[OperationContract]
 		void AfdelingsJaarBewarenMetWijzigingen(int afdID, int offafdID, int geboorteVan, int geboorteTot, GeslachtsType geslacht);
 
@@ -115,7 +119,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// Verwijdert een afdelingsjaar 
 		/// en controleert of er geen leden in zitten.
 		/// </summary>
-		/// <param name="afdelingsJaarID"></param>
+		/// <param name="afdelingsJaarID">ID van het afdelingsjaar waarover het gaat</param>
 		[OperationContract]
 		void AfdelingsJaarVerwijderen(int afdelingsJaarID);
 
@@ -126,7 +130,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// Haat een afdeling op, op basis van <paramref name="afdelingID"/>
 		/// </summary>
 		/// <param name="afdelingID">ID van op te halen afdeling</param>
-		/// <returns>de gevraagde afdeling</returns>
+		/// <returns>De gevraagde afdeling</returns>
 		[OperationContract]
 		Afdeling AfdelingOphalen(int afdelingID);
 
@@ -148,7 +152,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="groepswerkjaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
 		/// opgezocht moeten worden.</param>
-		/// <returns>info de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
+		/// <returns>Info de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
 		[OperationContract]
 		IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarID);
 
@@ -161,7 +165,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="groepID">De groep waaraan het wordt toegevoegd</param>
 		/// <param name="naam">De naam van de nieuwe categorie</param>
-		/// <param name="code">code voor de nieuwe categorie</param>
+		/// <param name="code">Code voor de nieuwe categorie</param>
 		/// <returns>De ID van de aangemaakte categorie</returns>
 		[OperationContract]
 		[FaultContract(typeof(BestaatAlFault))]
@@ -192,7 +196,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <paramref name="groepID"/> en <paramref name="code"/>.
 		/// </summary>
 		/// <param name="groepID">ID van groep waaraan de gezochte categorie gekoppeld is</param>
-		/// <param name="code">code van de te zoeken categorie</param>
+		/// <param name="code">Code van de te zoeken categorie</param>
 		/// <returns>Het categorieID als de categorie gevonden is, anders 0.</returns>
 		int CategorieIDOphalen(int groepID, string code);
 
@@ -206,7 +210,6 @@ namespace Chiro.Gap.ServiceContracts
             afdelingenreorganiseren(g) (JV: bedoel je het bewaren van de afdelingen gekoppeld aan de groep?)
             afdelingsjaarverwijderen(g) (JV: kan enkel als er geen leden in dat afdelingsjaar zijn/waren)
          */
-
 
 		#region adressen
 		[OperationContract]

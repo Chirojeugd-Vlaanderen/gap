@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +20,7 @@ namespace Chiro.Cdf.Data
 		/// integer.
 		/// </summary>
 		int ID { get; set; }
+	
 		/// <summary>
 		/// Timestamp die het object in de database heeft.
 		/// De bedoeling is niet dat de gebruiker hier iets
@@ -22,11 +28,13 @@ namespace Chiro.Cdf.Data
 		/// aan concurrency control te doen.
 		/// </summary>
 		byte[] Versie { get; set; }
+
 		/// <summary>
 		/// Geeft stringrepresentatie van Versie weer (hex).
 		/// Nodig om versie te bewaren in MVC view.
 		/// </summary>
 		string VersieString { get; set; }
+
 		/// <summary>
 		/// Deze property geeft aan of de entity verwijderd
 		/// moet worden bij terugsturen naar de service.

@@ -1,3 +1,8 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -6,9 +11,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
-using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
@@ -68,7 +73,6 @@ namespace Chiro.Gap.WebApp.Controllers
 					(lid => lid.PaginaOphalen(groepsWerkJaarId, out paginas));
 
 				model.Titel = "Ledenoverzicht van het jaar " + model.GroepsWerkJaartalZichtbaar;
-
 			}
 			else
 			{

@@ -1,12 +1,18 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
+using System.Data.Objects;
 using System.Linq;
 using System.Text;
+
+using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using System.Data.Objects;
-using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Data.Ef
 {
@@ -47,9 +53,9 @@ namespace Chiro.Gap.Data.Ef
 		/// Haalt de afdelingen van een groep op die niet gebruikt zijn in een gegeven 
 		/// groepswerkjaar, op basis van een <paramref name="groepsWerkJaarID"/>
 		/// </summary>
-		/// <param name="groepswerkjaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
+        /// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
 		/// opgezocht moeten worden.</param>
-		/// <returns>de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
+		/// <returns>De ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
 		public IList<Afdeling> OngebruikteOphalen(int groepsWerkJaarID)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
@@ -61,7 +67,6 @@ namespace Chiro.Gap.Data.Ef
 					     && !afdeling.AfdelingsJaar.Any(afdj => afdj.GroepsWerkJaar.ID == groepsWerkJaarID)
 					     select afdeling).ToList();
 			}
-
 		}
 	}
 }

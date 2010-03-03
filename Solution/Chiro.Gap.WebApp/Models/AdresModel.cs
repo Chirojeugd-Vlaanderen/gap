@@ -1,11 +1,16 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
-using System.ComponentModel;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -51,7 +56,7 @@ namespace Chiro.Gap.WebApp.Models
         public List<int> PersoonIDs { get; set; }
 
         /// <summary>
-        /// Standaardconstructor
+        /// Standaardconstructor voor AdresModel
         /// </summary>
         public AdresModel()
         {

@@ -1,3 +1,8 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -6,9 +11,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
-using Chiro.Cdf.ServiceHelper;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -16,8 +21,6 @@ namespace Chiro.Gap.WebApp.Controllers
     {
         public AfdelingController(IServiceHelper serviceHelper) : base(serviceHelper) { }
 
-
-        //
         // GET: /Afdeling/
         public ActionResult Index(int groepID)
         {
@@ -186,8 +189,6 @@ namespace Chiro.Gap.WebApp.Controllers
                 TempData["feedback"] = ex.Message.ToString();
                 return RedirectToAction("Bewerken");
             }
-            
         }
-
     }
 }

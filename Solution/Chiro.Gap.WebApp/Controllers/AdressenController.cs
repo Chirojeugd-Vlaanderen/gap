@@ -1,3 +1,8 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +57,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="q">Eerste letters van de te zoeken deelgemeente</param>
 		/// <param name="limit">Maximale lengte van de lijst.  Indien 0, wordt de standaardlengte gekozen.</param>
+		/// <returns></returns>
 		public ActionResult GemeentesVoorstellen(String q, int limit)
 		{
 			if (limit == 0)
@@ -78,8 +84,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <paramref name="gemeenteNaam"/> een lijst suggesties samen met straatnamen die de
 		/// gebruiker mogelijk zinnes is in te vullen.
 		/// </summary>
-		/// <param name="gedeeltelijkeStraatNaam">wat de gebruiker reeds intikte</param>
-		/// <param name="gemeenteNaam">naam van gemeente waarin de straat moet liggen</param>
+		/// <param name="gedeeltelijkeStraatNaam">Wat de gebruiker al intikte</param>
+		/// <param name="gemeenteNaam">Naam van gemeente waarin de straat moet liggen</param>
 		/// <returns>Json-lijst voor autosuggestie met voorgestelde straatnamen</returns>
 		public ActionResult StratenVoorstellen(String gedeeltelijkeStraatNaam, String gemeenteNaam)
 		{
@@ -108,7 +114,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <summary>
 		/// Zoekt een postnummer dat correspondeert met de gegeven deelgemeentenaam.
 		/// </summary>
-		/// <param name="gemeente">deelgemeentenaam</param>
+		/// <param name="gemeente">Naam van de deelgemeente</param>
 		/// <returns>Een willekeurig postnummer dat hoort bij de deelgemeentenaam</returns>
 		/// <remarks>Dit is nogal een omslachtige search voor iets dat eigenlijk weinig zinvol is.</remarks>
 		public ActionResult PostNrVoorstellen(String gemeente)
@@ -123,6 +129,5 @@ namespace Chiro.Gap.WebApp.Controllers
 			// Return the result set as JSON
 			return Json(retValue);
 		}
-
 	}
 }

@@ -1,4 +1,9 @@
-﻿// Met dank aan http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+// Met dank aan http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
 
 using System;
 using System.Collections.Generic;
@@ -40,6 +45,5 @@ namespace Chiro.Gap.WebApp.Models
         /// Titel van de pagina
         /// </summary>
         public string Titel { get; set; }
-
     }
 }

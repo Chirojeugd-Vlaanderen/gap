@@ -1,7 +1,11 @@
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 // Code gevonden op http://www.codeproject.com/KB/architecture/attachobjectgraph.aspx
 // en aangepast voor gebruik met IBasisEntiteit
 // (waar ID == 0 <=> nieuwe entiteit)
-
 
 using System;
 using System.Collections;
@@ -18,7 +22,8 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Diagnostics;
-using Arebis.Reflection;
+
+using Chiro.Cdf.Data;
 
 namespace Chiro.Cdf.Data.Entity
 {
@@ -30,6 +35,11 @@ namespace Chiro.Cdf.Data.Entity
 		/// <summary>
 		/// Attaches an entire objectgraph to the context.
 		/// </summary>
+		/// <param name="context"></param>
+		/// <param name="entity"></param>
+		/// <param name="paths"></param>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
 		/// <remarks>Als je achteraf context.SaveChanges aanroept,
 		/// en je wil op zoek naar nieuwe ID's, kijk dan niet in
 		/// je originele graaf, maar in de graaf van de return
@@ -66,8 +76,14 @@ namespace Chiro.Cdf.Data.Entity
 			{
 				// Workaround to ensure the assembly containing the entity type is loaded:
 				// (see: https://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=3405138&SiteID=1)
-				try { context.MetadataWorkspace.LoadFromAssembly(entityType.Assembly); }
-				catch { }
+				try 
+				{ 
+					context.MetadataWorkspace.LoadFromAssembly(entityType.Assembly); 
+				}
+				catch 
+				{
+					// TODO logica voorzien - zie ticket #334
+				}
 
 				// In onderstaande region worden de al bestaande root
 				// entity's gequery'd, om op die manier al in de
@@ -106,9 +122,9 @@ namespace Chiro.Cdf.Data.Entity
 							entity.EntityKey = context.CreateEntityKey(GetEntitySetName(context, typeof(T)), entity);
 						}
 
-						//where.Append(" OR ((1=1)");
-						//foreach (EntityKeyMember keymember in entity.EntityKey.EntityKeyValues)
-						//{
+						// where.Append(" OR ((1=1)");
+						// foreach (EntityKeyMember keymember in entity.EntityKey.EntityKeyValues)
+						// {
 						//    string pname = String.Format("p{0}", pid++);
 						//    where.Append(" AND (it.[");
 						//    where.Append(keymember.Key);
@@ -116,8 +132,8 @@ namespace Chiro.Cdf.Data.Entity
 						//    where.Append(pname);
 						//    where.Append(")");
 						//    pars.Add(new ObjectParameter(pname, keymember.Value));
-						//}
-						//where.Append(")");
+						// }
+						// where.Append(")");
 
 						// Vervangen door:
 
@@ -126,7 +142,6 @@ namespace Chiro.Cdf.Data.Entity
 						pars.Add(new ObjectParameter(pname, entity.ID));
 
 						// en nu maar hopen dat het werkt :)
-
 					}
 					else
 					{
@@ -149,11 +164,13 @@ namespace Chiro.Cdf.Data.Entity
 					// Construct query:
                     ObjectQuery<T> query = new ObjectQuery<T>(GetEntitySetName(context, typeof(T)), context).OfType<T>();
 					foreach (var path in paths)
+					{
 						query = query.Include(path);
+					}
 					query = query.Where(where.ToString(), pars.ToArray());
 
 					// Execute query and load entities:
-					//Console.WriteLine(query.ToTraceString());
+					// Console.WriteLine(query.ToTraceString());
 					query.Execute(MergeOption.AppendOnly).ToArray();
 				}
 
@@ -165,7 +182,9 @@ namespace Chiro.Cdf.Data.Entity
 				// of geadd.  De geattachte exemplaren komen in 
 				// attachedEntities terecht.
 				for (int i = 0; i < unattachedEntities.Length; i++)
+				{
 					attachedEntities[i] = (T)context.AddOrAttachInstance(unattachedEntities[i], true);
+				}
 
 				if (paths != null)
 				{
@@ -209,9 +228,9 @@ namespace Chiro.Cdf.Data.Entity
 		/// Adds or attaches the entity to the context. If the entity has an EntityKey,
 		/// the entity is attached, otherwise a clone of it is added.
 		/// </summary>
-		/// <param name="context">context waaraan te attachen</param>
-		/// <param name="entity">te attachen entiteit</param>
-		/// <param name="applyPropertyChanges">geeft aan of property changes in de
+		/// <param name="context">Context waaraan te attachen</param>
+		/// <param name="entity">Te attachen entiteit</param>
+		/// <param name="applyPropertyChanges">Geeft aan of property changes in de
 		/// context gemarkeerd moeten worden</param>
 		/// <returns>De geattachte entiteit</returns>
 		public static IEfBasisEntiteit AddOrAttachInstance(this ObjectContext context, IEfBasisEntiteit entity, bool applyPropertyChanges)
@@ -255,6 +274,9 @@ namespace Chiro.Cdf.Data.Entity
 		/// <summary>
 		/// Returns the EntitySetName for the given entity type.
 		/// </summary>
+		/// <param name="context"></param>
+		/// <param name="entityType"></param>
+		/// <returns></returns>
 		public static string GetEntitySetName(this ObjectContext context, Type entityType)
 		{
 			Type type = entityType;
@@ -274,7 +296,10 @@ namespace Chiro.Cdf.Data.Entity
 								.FirstOrDefault();
 
 					// If match, return the entitySetName:
-					if (entitySetName != null) return entitySetName;
+					if (entitySetName != null)
+					{
+						return entitySetName;
+					}
 				}
 
 				// If no matching attribute or entitySetName found, try basetype:
@@ -290,10 +315,10 @@ namespace Chiro.Cdf.Data.Entity
 		/// <summary>
 		/// Navigates a property path on detached instance to translate into attached instance.
 		/// </summary>
-		/// <param name="context">Objectcontext</param>
-		/// <param name="propertynode">tree met daarin de property's die de graaf bepalen</param>
-		/// <param name="owner">entiteit voor niet-geattachte graaf</param>
-		/// <param name="attachedowner">entiteit voor geattachte graaf;
+		/// <param name="context">De objectcontext</param>
+		/// <param name="propertynode">Tree met daarin de property's die de graaf bepalen</param>
+		/// <param name="owner">Entiteit voor niet-geattachte graaf</param>
+		/// <param name="attachedowner">Entiteit voor geattachte graaf;
 		/// bevat initieel enkel de parent.</param>
 		private static void NavigatePropertySet(ObjectContext context, TreeNode<ExtendedPropertyInfo> propertynode, IEfBasisEntiteit owner, IEfBasisEntiteit attachedowner)
 		{
@@ -323,7 +348,9 @@ namespace Chiro.Cdf.Data.Entity
 					object attachedlist = property.PropertyInfo.GetValue(attachedowner, null);
 					RelatedEnd relatedEnd = (RelatedEnd)attachedlist;
 					if (((EntityObject)attachedowner).EntityState != EntityState.Added && !relatedEnd.IsLoaded)
+					{
 						relatedEnd.Load();
+					}
 
 					// attachedlist bevat de gerelateerde entity's van 
 					// het geattachte object
@@ -368,9 +395,10 @@ namespace Chiro.Cdf.Data.Entity
 					if (AssociationEndBehaviorAttribute.GetAttribute(property.PropertyInfo).Owned)
 					{
 						foreach (var removedItem in removedItems)
+						{
 							context.DeleteObject(removedItem);
+						}
 					}
-
 				}
 				else if (!typeof(IEnumerable).IsAssignableFrom(property.PropertyInfo.PropertyType))
 				{
@@ -382,7 +410,9 @@ namespace Chiro.Cdf.Data.Entity
 					// Load reference of currently attached in context:
 					RelatedEnd relatedEnd = (RelatedEnd)attachedowner.PublicGetProperty(property.PropertyInfo.Name + "Reference");
 					if (((EntityObject)attachedowner).EntityState != EntityState.Added && !relatedEnd.IsLoaded)
+					{
 						relatedEnd.Load();
+					}
 
 					// Recursively navigate through new value (unless it's null):
 					IEfBasisEntiteit attachedinstance;
@@ -425,18 +455,29 @@ namespace Chiro.Cdf.Data.Entity
 		/// <summary>
 		/// Returns a shallow clone of only the scalar properties.
 		/// </summary>
+		/// <param name="entity"></param>
+		/// <returns></returns>
 		private static object GetShallowEntityClone(object entity)
 		{
 			object clone = Activator.CreateInstance(entity.GetType());
 			foreach (PropertyInfo prop in entity.GetType().GetProperties())
 			{
-				if (typeof(RelatedEnd).IsAssignableFrom(prop.PropertyType)) continue;
-				//if (typeof(EntityReference).IsAssignableFrom(prop.PropertyType)) continue;
-				//if (typeof(IEnumerable).IsAssignableFrom(prop.PropertyType) && (!typeof(String).IsAssignableFrom(prop.PropertyType))) continue;
-				if (typeof(IEntityWithKey).IsAssignableFrom(prop.PropertyType)) continue;
+				if (typeof(RelatedEnd).IsAssignableFrom(prop.PropertyType))
+				{
+					continue;
+				}
+
+				// if (typeof(EntityReference).IsAssignableFrom(prop.PropertyType)) continue;
+				// if (typeof(IEnumerable).IsAssignableFrom(prop.PropertyType) && (!typeof(String).IsAssignableFrom(prop.PropertyType))) continue;
+
+				if (typeof(IEntityWithKey).IsAssignableFrom(prop.PropertyType))
+				{
+					continue;
+				}
+
 				try
 				{
-					//TODO probeersel
+					// TODO probeersel
 					if (prop.CanWrite)
 					{
 						prop.SetValue(clone, prop.GetValue(entity, null), null);
@@ -460,17 +501,17 @@ namespace Chiro.Cdf.Data.Entity
 		/// <summary>
 		/// Synchronises a targetlist with a sourcelist by adding or removing items from the targetlist.
 		/// The targetlist is untyped and controlled through reflection.
-		/// 
+		/// <para/>
 		/// Oorspronkelijk werd er uit target verwijderd wat er niet
 		/// in source zit.  Maar nu kijk ik naar de TeVerwijderen property
 		/// van target zelf.
 		/// </summary>
-		/// <param name="targetlist">een-op-veel property van een bestaande 
+		/// <param name="targetlist">Een-op-veel property van een bestaande 
 		/// geattachte entiteit, zoals die uit de database gehaald is</param>
-		/// <param name="sourcelist">diezelfde een-op-veel property, maar
+		/// <param name="sourcelist">Diezelfde een-op-veel property, maar
 		/// zoals het zou moeten zijn.  Ook hier zijn alle gerelateerde
 		/// entity' s geattacht</param>
-		/// <param name="removedItems">hierin zullen de te verwijderen objecten
+		/// <param name="removedItems">Hierin zullen de te verwijderen objecten
 		/// bewaard worden</param>
 		private static void SyncList(IEnumerable targetlist, IList<IBasisEntiteit> sourcelist, out IList<IBasisEntiteit> removedItems)
 		{
@@ -490,8 +531,8 @@ namespace Chiro.Cdf.Data.Entity
 			// List<IBasisEntiteit> localsourcelist = new List<IBasisEntiteit>(sourcelist);
 			//
 			//// Compare both lists:
-			//foreach (object item in targetlist)
-			//{
+			// foreach (object item in targetlist)
+			// {
 			//    bool found = false;
 			//    for (int i = 0; i < localsourcelist.Count; i++)
 			//    {
@@ -503,17 +544,17 @@ namespace Chiro.Cdf.Data.Entity
 			//    }
 			//    if (!found)
 			//        toremove.Add(item);
-			//}
+			// }
 			//
 			//// Add members not in targetlist:
-			//foreach (object item in localsourcelist)
-			//{
+			// foreach (object item in localsourcelist)
+			// {
 			//    if (Object.ReferenceEquals(item, null) == false)
 			//        targetlist.PublicInvokeMethod("Add", item);
-			//}
+			// }
 
 			//// Remove members not in sourcelist:
-			//foreach (object item in toremove)
+			// foreach (object item in toremove)
 			//    targetlist.PublicInvokeMethod("Remove", item);
 
 			for (int i = 0; i < sourcelist.Count; ++i)

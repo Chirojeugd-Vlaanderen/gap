@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,30 +12,31 @@ using Microsoft.Practices.Unity;
 
 namespace Chiro.Gap.WebApp
 {
-    public class UnityControllerFactory : DefaultControllerFactory
-    {
-        IUnityContainer container;
+	public class UnityControllerFactory : DefaultControllerFactory
+	{
+		IUnityContainer container;
 
-        public UnityControllerFactory(IUnityContainer container)
-        {
-            this.container = container;
-        }
-
-        protected override IController GetControllerInstance(System.Web.Routing.RequestContext requestContext, Type controllerType)
-        {
-		if (controllerType == null)
+		public UnityControllerFactory(IUnityContainer container)
 		{
-			//throw new ArgumentNullException("controllerType");
-
-			// Misschien werkt het wel als ik dan null teruggeef.
-			return null;
+			this.container = container;
 		}
 
-            if (!typeof(IController).IsAssignableFrom(controllerType))
-                throw new ArgumentException(string.Format("Type requested {0} is not a controller", controllerType));
+		protected override IController GetControllerInstance(System.Web.Routing.RequestContext requestContext, Type controllerType)
+		{
+			if (controllerType == null)
+			{
+				// throw new ArgumentNullException("controllerType");
 
-            return container.Resolve(controllerType) as IController;
-        }
+				// Misschien werkt het wel als ik dan null teruggeef.
+				return null;
+			}
 
-    }
+			if (!typeof(IController).IsAssignableFrom(controllerType))
+			{
+				throw new ArgumentException(string.Format("Type requested {0} is not a controller", controllerType));
+			}
+
+			return container.Resolve(controllerType) as IController;
+		}
+	}
 }

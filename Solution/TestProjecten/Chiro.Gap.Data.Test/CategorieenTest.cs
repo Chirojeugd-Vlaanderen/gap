@@ -34,9 +34,9 @@ namespace Chiro.Gap.Data.Test
 		public CategorieenTest() { }
 
 		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		///</summary>
+		/// Gets or sets the test context which provides
+		/// information about and functionality for the current test run.
+		/// </summary>
 		public TestContext TestContext { get; set; }
 
 		#region Additional test attributes
@@ -179,7 +179,7 @@ namespace Chiro.Gap.Data.Test
 		[TestMethod]
 		public void PersoonToevoegenAanCategorie()
 		{
-			//arrange
+			// Arrange
 
 			// Onderstaande test uitvoeren met GelieerdePersoon2, want
 			// achteraf wordt de categorie opnieuw verwijderd.
@@ -190,22 +190,23 @@ namespace Chiro.Gap.Data.Test
 			GelieerdePersoon gp = _gpdao.Ophalen(_gp2ID);
 			Categorie cat = _catdao.Ophalen(TestInfo.CATEGORIE3ID);
 
-			//add
+			// Act
+
 			// koppel categorie aan groep
 			cat.GelieerdePersoon.Add(gp);
 			gp.Categorie.Add(cat);
 
-			// bewaar via dao (we zijn de dao aan het testen)
+			// Bewaar via dao (we zijn de dao aan het testen)
 			_catdao.Bewaren(cat);
 
-			//assert
+			// Assert
 			var opgehaald = _catdao.Ophalen(TestInfo.CATEGORIE3ID, ctg=>ctg.GelieerdePersoon);
 			var toegevoegd = (from gpers in opgehaald.GelieerdePersoon
 					  where gpers.ID == _gp2ID
 					  select gpers).FirstOrDefault();
 			Assert.IsTrue(toegevoegd != null);
 
-			//cleanup
+			// Cleanup
 
 			toegevoegd.TeVerwijderen = true;
 			_catdao.Bewaren(cat);
