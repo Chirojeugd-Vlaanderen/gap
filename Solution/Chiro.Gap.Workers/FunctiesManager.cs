@@ -96,7 +96,13 @@ namespace Chiro.Gap.Workers
 						// TODO: Een exception is hier eigenlijk niet op zijn plaats;
 						// de bedoeling is dat je ergens een warning krijgt, die je
 						// aanzet om de situatie recht te zetten.
-						// Zie verslag februari 2010.
+						// Zie verslag maart 2010.
+
+						// Andere optie:
+						//  Toch een exception
+						//  UI toont lijst van huidige personen met deze functie,
+						//  en laat gebruiker kiezen wiens functie moet afgenomen worden.
+						//  dan functionaliteit 'FunctieOverNemen' of zoiets implementeren.
 
 						throw new InvalidOperationException(
 							String.Format(
@@ -106,9 +112,18 @@ namespace Chiro.Gap.Workers
 					}
 				}
 
-				// Alle checks goed overleefd; functie koppelen
+				// Alle checks goed overleefd; functie koppelen als dat nog niet
+				// gebeurd moest zijn.
 
-				throw new NotImplementedException(); // dat heb ik nog niet geimpl.
+				if ((from fnc in lid.Functie where fnc.ID == f.ID select fnc).FirstOrDefault() == null)
+				{
+					lid.Functie.Add(f);
+				}
+
+				if ((from ld in f.Lid where ld.ID == lid.ID select ld).FirstOrDefault() == null)
+				{
+					f.Lid.Add(lid);
+				}
 			}
 		}
 
