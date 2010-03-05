@@ -157,24 +157,24 @@ namespace Chiro.Gap.Data.Test
 			GelieerdePersoon gp = gpdao.Ophalen(gelieerdePersoonID, lmb => lmb.Groep);
 			AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
 
-            /* TODO deze methode zou niet met afdelingsjaar moeten werken
-			Kind k = lm.KindMaken(gp, aj);
-			#endregion
+			/* TODO deze methode zou niet met afdelingsjaar moeten werken
+				    Kind k = lm.KindMaken(gp, aj);
+				    #endregion
 
-			#region Act
-			k = kdao.Bewaren(k
-			    , lmb => lmb.GelieerdePersoon.WithoutUpdate()
-			    , lmb => lmb.AfdelingsJaar.GroepsWerkJaar.WithoutUpdate()
-			    , lmb => lmb.GroepsWerkJaar.WithoutUpdate());
-			#endregion
+				    #region Act
+				    k = kdao.Bewaren(k
+					, lmb => lmb.GelieerdePersoon.WithoutUpdate()
+					, lmb => lmb.AfdelingsJaar.GroepsWerkJaar.WithoutUpdate()
+					, lmb => lmb.GroepsWerkJaar.WithoutUpdate());
+				    #endregion
 
-			#region Assert
+				    #region Assert
 
-			ILedenDao ldao = Factory.Maak<ILedenDao>();
-			Lid l = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.ID);
+				    ILedenDao ldao = Factory.Maak<ILedenDao>();
+				    Lid l = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.ID);
 
-			Assert.IsTrue(l != null && l is Kind);
-            */
+				    Assert.IsTrue(l != null && l is Kind);
+			*/
 			#endregion
 		}
 
@@ -206,26 +206,27 @@ namespace Chiro.Gap.Data.Test
 			Assert.IsNull(l2);
 		}
 
-        /// <summary>
-        /// Leidingwijzigen
-        /// </summary>
-        [TestMethod]
-        public void LeidingWijzigen()
-        {
-            // Arrange
+		/// <summary>
+		/// Leidingwijzigen
+		/// </summary>
+		[TestMethod]
+		public void LeidingWijzigen()
+		{
+			// Arrange
 
-            int lid3ID = TestInfo.LID3ID;
+			int lid3ID = TestInfo.LID3ID;
 
-            ILeidingDao ldao = Factory.Maak<ILeidingDao>();
-            Leiding l = ldao.Ophalen(lid3ID);
+			ILeidingDao ldao = Factory.Maak<ILeidingDao>();
+			Leiding l = ldao.Ophalen(lid3ID);
 
-            // Act
+			// Act
 
-            ldao.Bewaren(l);
+			ldao.Bewaren(l);
 
-            // Assert
+			// Assert
 
-            Assert.IsTrue(true); // eerst al eens kijken of we er zonder crash komen.
-        }
+			Assert.IsTrue(true); // eerst al eens kijken of we er zonder crash komen.
+		}
 	}
+
 }
