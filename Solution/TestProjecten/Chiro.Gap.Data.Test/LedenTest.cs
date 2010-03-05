@@ -228,6 +228,9 @@ namespace Chiro.Gap.Data.Test
 			Assert.IsTrue(true); // eerst al eens kijken of we er zonder crash komen.
 		}
 
+		/// <summary>
+		/// Test ophalen leden op basis van functie en groepswerkjaar
+		/// </summary>
 		[TestMethod]
 		public void OphalenUitFunctie()
 		{
@@ -251,6 +254,39 @@ namespace Chiro.Gap.Data.Test
 			Assert.AreEqual(result.First().GroepsWerkJaar.Groep.ID, TestInfo.GROEPID);
 			Assert.AreEqual(result.First().Functie.First().ID, (int)GepredefinieerdeFunctieType.ContactPersoon);
 		}
+
+		/// <summary>
+		/// Test ophalen leden op basis van functie en groepswerkjaar, waarbij nagekeken wordt of
+		/// de koppeling naar functie bij elk opgehaald lid naar dezelfde functie wijst.
+		/// </summary>
+		[TestMethod]
+		public void OphalenUitFunctieDdd()
+		{
+			// Arrange
+
+			ILedenDao dao = Factory.Maak<ILedenDao>();
+
+			// Act
+
+			var result = dao.OphalenUitFunctie(
+				TestInfo.FUNCTIEID,
+				TestInfo.GROEPSWERKJAARID,
+				ld => ld.GroepsWerkJaar.Groep,
+				ld => ld.Functie,
+				ld => ld.GelieerdePersoon.Persoon);
+
+			var opgehaaldeFunctie = (from fun in result.First().Functie
+						 where fun.ID == TestInfo.FUNCTIEID
+						 select fun).First();
+			// query nodig om - in geval van meerdere gekoppelde functies -
+			// zeker de juiste te heben
+
+			// Assert
+
+			Assert.IsTrue(result.Count() > 1);	// check of db ok
+			Assert.IsTrue(opgehaaldeFunctie.Lid.Count() > 1);	// eigenlijke check
+		}
+
 	}
 
 }
