@@ -20,6 +20,8 @@
 -- We definiteren dit hier (in de documentatie) omdat hier beneden we het gebruiken.
 SET DateFormat dmy;
 
+		DECLARE @contactPersoonCode AS VARCHAR(5);				SET @contactPersoonCode='GG1';
+
 -- Dit script doet het volgende: 
 --
 -- 1°  Creatie van een ChiroGroep, 'St.-Unittestius' met als stamnummer 'tst/0001'
@@ -111,7 +113,7 @@ SET DateFormat dmy;
 --       testPersoon3ID									JA
 
 -- 9° Leden / Leiding aanmaken: 
---    We gaan Persoon3 (Gelieerde) lid maken en is tevens leiding.		
+--    We gaan Persoon3 (Gelieerde) lid maken en is tevens leiding, en zelfs contactpersoon.		
 		DECLARE @testLid3ID AS INT;
 		DECLARE @testLid3NonActief AS BIT;						SET @testLid3NonActief = 0;
 		DECLARE	@testLid3Verwijderd	AS BIT;						SET @testLid3Verwijderd	= 0;
@@ -395,6 +397,12 @@ END
 IF NOT EXISTS (SELECT 1 FROM lid.Leiding WHERE LeidingID = @testLid3ID)
 BEGIN
 	INSERT INTO lid.Leiding(LeidingID) VALUES (@testLid3ID)
+END
+
+IF NOT EXISTS (SELECT 1 FROM lid.LidFunctie lf JOIN lid.Functie f on lf.FunctieID = f.FunctieID WHERE lf.LidID=@testLid3ID AND f.Code=@contactPersoonCode)
+BEGIN
+	INSERT INTO lid.LidFunctie(LidID, FunctieID)
+	SELECT @testLid3ID, FunctieID FROM lid.Functie WHERE Code=@contactPersoonCode
 END
 
 
