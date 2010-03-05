@@ -75,6 +75,11 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		public int AantalLeden(int groepID, Chiro.Gap.Orm.GepredefinieerdeFunctieType f)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 	}
 }

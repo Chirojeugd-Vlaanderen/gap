@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm;
+using Chiro.Gap.TestDbInfo;
 
 namespace Chiro.Gap.Data.Test
 {
@@ -73,8 +74,10 @@ namespace Chiro.Gap.Data.Test
 		[TestMethod]
 		public void GepredefinieerdeFuncties()
 		{
+			// Arrange
 			IFunctiesDao dao = Factory.Maak<IFunctiesDao>();
 
+			// Act
 			Functie gg1 = dao.Ophalen(GepredefinieerdeFunctieType.ContactPersoon);
 			Functie gg2 = dao.Ophalen(GepredefinieerdeFunctieType.GroepsLeiding);
 			Functie gv1 = dao.Ophalen(GepredefinieerdeFunctieType.Vb);
@@ -83,6 +86,7 @@ namespace Chiro.Gap.Data.Test
 			Functie kk = dao.Ophalen(GepredefinieerdeFunctieType.KookPloeg);
 			Functie gp = dao.Ophalen(GepredefinieerdeFunctieType.Proost);
 
+			// Assert
 			Assert.AreEqual(gg1.Code, "GG1", true);
 			Assert.AreEqual(gg2.Code, "GG2", true);
 			Assert.AreEqual(gv1.Code, "GV1", true);
@@ -91,5 +95,24 @@ namespace Chiro.Gap.Data.Test
 			Assert.AreEqual(kk.Code, "KK", true);
 			Assert.AreEqual(gp.Code, "GP", true);
 		}
+
+
+		/// <summary>
+		/// Tel het aantal contactpersonen van de testgroep; we verwachten 1.
+		/// </summary>
+		[TestMethod]
+		public void EenContactpersoon()
+		{
+			// Arrange
+			IFunctiesDao dao = Factory.Maak<IFunctiesDao>();
+
+			// Act
+			int aantal = dao.AantalLeden(TestInfo.GROEPID, GepredefinieerdeFunctieType.ContactPersoon);
+
+			// Assert
+			Assert.AreEqual(aantal, 1);
+
+		}
+
 	}
 }

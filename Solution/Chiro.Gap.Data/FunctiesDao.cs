@@ -64,6 +64,19 @@ namespace Chiro.Gap.Data.Ef
 			}
 		}
 
+		/// <summary>
+		/// Bepaalt het aantal leden uit de groep met ID <paramref name="groepID"/> met 
+		/// gepredefinieerde functie <paramref name="f"/>.
+		/// </summary>
+		/// <param name="groepID">ID van een groep</param>
+		/// <param name="f">Gepredefinieerde functie</param>
+		/// <returns>Aantal leden uit de groep met ID <paramref name="groepID"/> met 
+		/// gepredefinieerde functie <paramref name="f"/></returns>
+		public int AantalLeden(int groepID, GepredefinieerdeFunctieType f)
+		{
+			return AantalLeden(groepID, (int)f);
+		}
+
 		#endregion
 	}
 }

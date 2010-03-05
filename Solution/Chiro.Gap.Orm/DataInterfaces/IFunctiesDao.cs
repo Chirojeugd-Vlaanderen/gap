@@ -30,5 +30,15 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <returns>antal leden uit de groep bepaald door <paramref name="groepID"/> de functie
 		/// hebben bepaad door <paramref name="functieID"/></returns>
 		int AantalLeden(int groepID, int functieID);
+
+		/// <summary>
+		/// Bepaalt het aantal leden uit de groep met ID <paramref name="groepID"/> met 
+		/// gepredefinieerde functie <paramref name="f"/>.
+		/// </summary>
+		/// <param name="groepID">ID van een groep</param>
+		/// <param name="f">Gepredefinieerde functie</param>
+		/// <returns>Aantal leden uit de groep met ID <paramref name="groepID"/> met 
+		/// gepredefinieerde functie <paramref name="f"/></returns>
+		int AantalLeden(int groepID, GepredefinieerdeFunctieType f);
 	}
 }

@@ -93,7 +93,11 @@ namespace Chiro.Gap.Workers
 
 					if (_funDao.AantalLeden(lid.GelieerdePersoon.Groep.ID, f.ID) >= f.MaxAantal)
 					{
-						// TODO: Custom exception?
+						// TODO: Een exception is hier eigenlijk niet op zijn plaats;
+						// de bedoeling is dat je ergens een warning krijgt, die je
+						// aanzet om de situatie recht te zetten.
+						// Zie verslag februari 2010.
+
 						throw new InvalidOperationException(
 							String.Format(
 								Properties.Resources.FunctieVol,
