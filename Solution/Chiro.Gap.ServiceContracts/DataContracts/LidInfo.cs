@@ -13,14 +13,14 @@ using Chiro.Gap.Orm;
 
 namespace Chiro.Gap.ServiceContracts
 {
-    [DataContract]
-    public class LidInfo
-    {
-        [DataMember]
-        public int LidID { get; set; }
+	[DataContract]
+	public class LidInfo
+	{
+		[DataMember]
+		public int LidID { get; set; }
 
-        [DataMember]
-        public PersoonInfo PersoonInfo { get; set; }
+		[DataMember]
+		public PersoonInfo PersoonInfo { get; set; }
 
 		/// <summary>
 		/// Kind of leiding
@@ -28,8 +28,8 @@ namespace Chiro.Gap.ServiceContracts
 		[DataMember]
 		public LidType Type { get; set; }
 
-        [DataMember]
-        public bool LidgeldBetaald { get; set; }
+		[DataMember]
+		public bool LidgeldBetaald { get; set; }
 
 		/// <summary>
 		/// De datum van het einde van de instapperiode
@@ -53,7 +53,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <summary>
 		/// De lijst van afdelingIDs waarin het lid zit (1 voor een kind)
 		/// </summary>
-        [DataMember]
-        public IList<int> AfdelingIdLijst { get; set; }
-    }
+		[DataMember]
+		public IList<int> AfdelingIdLijst { get; set; }
+	}
 }
