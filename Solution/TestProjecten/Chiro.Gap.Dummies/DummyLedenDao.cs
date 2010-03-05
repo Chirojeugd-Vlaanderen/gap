@@ -50,6 +50,16 @@ namespace Chiro.Gap.Dummies
 			return null;
 		}
 
+		public IList<Lid> OphalenUitFunctie(int functieID, int groepsWerkJaarID, params System.Linq.Expressions.Expression<Func<Lid, object>>[] paths)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IList<Lid> OphalenUitFunctie(GepredefinieerdeFunctieType f, int groepsWerkJaarID, params System.Linq.Expressions.Expression<Func<Lid, object>>[] paths)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 	}
 }

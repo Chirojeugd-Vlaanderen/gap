@@ -21,6 +21,33 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <returns>Lidobject indien gevonden, anders null</returns>
 		Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID);
 
+		/// <summary>
+		/// Haalt de leden op die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
+		/// de functie bepaald door <paramref name="functieID"/> hebben
+		/// </summary>
+		/// <param name="functieID">ID van een functie</param>
+		/// <param name="groepsWerkJaarID">ID van een groepswerkjaar</param>
+		/// <param name="paths">bepaalt de mee op te halen gekoppelde entiteiten</param>
+		/// <returns>Lijst leden die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
+		/// de functie bepaald door <paramref name="functieID"/> hebben.</returns>
+		IList<Lid> OphalenUitFunctie(
+			int functieID, 
+			int groepsWerkJaarID, 
+			params Expression<Func<Lid, object>>[] paths);
+
+		/// <summary>
+		/// Haalt de leden op die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
+		/// de gepredefinieerde functie met type <paramref name="f"/> hebben.
+		/// </summary>
+		/// <param name="f">type gepredefinieerde functie</param>
+		/// <param name="groepsWerkJaarID">ID van een groepswerkjaar</param>
+		/// <param name="paths">bepaalt de mee op te halen gekoppelde entiteiten</param>
+		/// <returns>Lijst leden die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
+		/// de gepredefinieerde functie met type <paramref name="f"/> hebben.</returns>
+		IList<Lid> OphalenUitFunctie(
+			GepredefinieerdeFunctieType f,
+			int groepsWerkJaarID,
+			params Expression<Func<Lid, object>>[] paths);
 
 
 		/// <summary>

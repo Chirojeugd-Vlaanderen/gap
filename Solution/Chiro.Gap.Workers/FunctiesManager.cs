@@ -22,16 +22,19 @@ namespace Chiro.Gap.Workers
 	public class FunctiesManager
 	{
 		private IFunctiesDao _funDao;
+		private ILedenDao _ledenDao;
 		private IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
 		/// Instantieert een FunctiesManager
 		/// </summary>
-		/// <param name="funDao">Een IFunctiesDao voor data access mbt functies</param>
+		/// <param name="funDao">Een dao voor data access mbt functies</param>
+		/// <param name="ledenDao">Een dao voor data access mbt leden</param>
 		/// <param name="auMgr">Een IAutorisatieManager voor de autorisatie</param>
-		public FunctiesManager(IFunctiesDao funDao, IAutorisatieManager auMgr)
+		public FunctiesManager(IFunctiesDao funDao, ILedenDao ledenDao, IAutorisatieManager auMgr)
 		{
 			_funDao = funDao;
+			_ledenDao = ledenDao;
 			_autorisatieMgr = auMgr;
 		}
 
@@ -137,6 +140,35 @@ namespace Chiro.Gap.Workers
 			// FIXME: Dit is nogal gevaarlijk, want wie weet is de groep gewoon niet gefetcht.
 
 			return f.Groep == null;
+		}
+
+
+		/// <summary>
+		/// Haalt leden op uit een bepaald groepswerkjaar met een gegeven functie
+		/// </summary>
+		/// <param name="functieID">ID van de functie</param>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+		/// <returns>Lijst leden uit het groepswerkjaar met de gegeven functie</returns>
+		public IList<Lid> LedenOphalen(int functieID, int groepsWerkJaarID)
+		{
+
+			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavGroepsWerkJaar);
+			}
+			else if (!_autorisatieMgr.IsGavFunctie(functieID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavFunctie);
+			}
+			else
+			{
+				return _ledenDao.OphalenUitFunctie(
+					functieID,
+					groepsWerkJaarID,
+					ld => ld.GroepsWerkJaar.Groep,
+					ld => ld.Functie,
+					ld => ld.GelieerdePersoon.Persoon);
+			}
 		}
 	}
 }

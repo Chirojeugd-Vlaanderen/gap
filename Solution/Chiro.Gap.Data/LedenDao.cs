@@ -209,5 +209,47 @@ namespace Chiro.Gap.Data.Ef
 				return lid;
 			}
 		}
+
+		/// <summary>
+		/// Haalt de leden op die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
+		/// de functie bepaald door <paramref name="functieID"/> hebben
+		/// </summary>
+		/// <param name="functieID">ID van een functie</param>
+		/// <param name="groepsWerkJaarID">ID van een groepswerkjaar</param>
+		/// <param name="paths">bepaalt de mee op te halen gekoppelde entiteiten</param>
+		/// <returns>Lijst leden die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
+		/// de functie bepaald door <paramref name="functieID"/> hebben.</returns>
+		public IList<Lid> OphalenUitFunctie(int functieID, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths)
+		{
+			IList<Lid> result;
+			using (var db = new ChiroGroepEntities())
+			{
+				var query = (from lid in db.Lid
+					     where lid.Functie.Any(fnc => fnc.ID == functieID) &&
+						lid.GroepsWerkJaar.ID == groepsWerkJaarID
+					     select lid) as ObjectQuery<Lid>;
+				result = (IncludesToepassen(query, paths)).ToList();
+			}
+
+			return Utility.DetachObjectGraph(result);
+		}
+
+		/// <summary>
+		/// Haalt de leden op die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
+		/// de gepredefinieerde functie met type <paramref name="f"/> hebben.
+		/// </summary>
+		/// <param name="f">type gepredefinieerde functie</param>
+		/// <param name="groepsWerkJaarID">ID van een groepswerkjaar</param>
+		/// <param name="paths">bepaalt de mee op te halen gekoppelde entiteiten</param>
+		/// <returns>Lijst leden die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
+		/// de gepredefinieerde functie met type <paramref name="f"/> hebben.</returns>
+		public IList<Lid> OphalenUitFunctie(
+			GepredefinieerdeFunctieType f,
+			int groepsWerkJaarID,
+			params Expression<Func<Lid, object>>[] paths)
+		{
+			return OphalenUitFunctie((int)f, groepsWerkJaarID, paths);
+		}
+
 	}
 }

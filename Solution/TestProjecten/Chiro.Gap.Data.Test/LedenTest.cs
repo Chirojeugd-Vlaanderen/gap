@@ -227,6 +227,30 @@ namespace Chiro.Gap.Data.Test
 
 			Assert.IsTrue(true); // eerst al eens kijken of we er zonder crash komen.
 		}
+
+		[TestMethod]
+		public void OphalenUitFunctie()
+		{
+			// Arrange
+
+			ILedenDao dao = Factory.Maak<ILedenDao>();
+
+			// Act
+
+			var result = dao.OphalenUitFunctie(
+				GepredefinieerdeFunctieType.ContactPersoon,
+				TestInfo.GROEPSWERKJAARID,
+				ld => ld.GroepsWerkJaar.Groep,
+				ld => ld.Functie,
+				ld => ld.GelieerdePersoon.Persoon);
+
+			// Assert
+
+			Assert.AreEqual(result.Count(), 1);
+			Assert.AreEqual(result.First().GelieerdePersoon.ID, TestInfo.GELIEERDEPERSOON3ID);
+			Assert.AreEqual(result.First().GroepsWerkJaar.Groep.ID, TestInfo.GROEPID);
+			Assert.AreEqual(result.First().Functie.First().ID, (int)GepredefinieerdeFunctieType.ContactPersoon);
+		}
 	}
 
 }
