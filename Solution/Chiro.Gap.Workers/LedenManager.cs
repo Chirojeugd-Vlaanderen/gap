@@ -363,6 +363,34 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
+		/// Haalt leden op uit een bepaald groepswerkjaar met een gegeven functie
+		/// </summary>
+		/// <param name="functieID">ID van de functie</param>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+		/// <returns>Lijst leden uit het groepswerkjaar met de gegeven functie</returns>
+		public IList<Lid> Ophalen(int functieID, int groepsWerkJaarID)
+		{
+
+			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavGroepsWerkJaar);
+			}
+			else if (!_autorisatieMgr.IsGavFunctie(functieID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavFunctie);
+			}
+			else
+			{
+				return _daos.LedenDao.OphalenUitFunctie(
+					functieID,
+					groepsWerkJaarID,
+					ld => ld.GroepsWerkJaar.Groep,
+					ld => ld.Functie,
+					ld => ld.GelieerdePersoon.Persoon);
+			}
+		}
+
+		/// <summary>
 		/// De afdelingen van het gegeven lid worden aangepast van whatever momenteel zijn afdelingen zijn naar
 		/// de gegeven lijst nieuwe afdelingen.
 		/// Een kind mag maar 1 afdeling hebben, voor een leider staan daar geen constraints op.

@@ -157,32 +157,6 @@ namespace Chiro.Gap.Workers
 		}
 
 
-		/// <summary>
-		/// Haalt leden op uit een bepaald groepswerkjaar met een gegeven functie
-		/// </summary>
-		/// <param name="functieID">ID van de functie</param>
-		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
-		/// <returns>Lijst leden uit het groepswerkjaar met de gegeven functie</returns>
-		public IList<Lid> LedenOphalen(int functieID, int groepsWerkJaarID)
-		{
 
-			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroepsWerkJaar);
-			}
-			else if (!_autorisatieMgr.IsGavFunctie(functieID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGavFunctie);
-			}
-			else
-			{
-				return _ledenDao.OphalenUitFunctie(
-					functieID,
-					groepsWerkJaarID,
-					ld => ld.GroepsWerkJaar.Groep,
-					ld => ld.Functie,
-					ld => ld.GelieerdePersoon.Persoon);
-			}
-		}
 	}
 }
