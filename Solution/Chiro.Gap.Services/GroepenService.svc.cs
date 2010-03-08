@@ -331,8 +331,7 @@ namespace Chiro.Gap.Services
 		{
 			return (from gwj in _groepenMgr.OphalenMetGroepsWerkJaren(groepsID).GroepsWerkJaar
 					orderby gwj.WerkJaar descending
-					select gwj
-				   ).ToList();
+					select gwj).ToList();
 		}
 
 		#region categorieën

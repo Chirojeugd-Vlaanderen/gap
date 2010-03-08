@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -46,15 +51,15 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
 		/// <param name="naam">te zoeken naam (ongeveer)</param>
 		/// <param name="voornaam">te zoeken voornaam (ongeveer)</param>
-		/// <param name="paths">expressies die aangeven welke dependencies mee opgehaald moeten worden</param>
+		/// <param name="paths">Expressies die aangeven welke dependencies mee opgehaald moeten worden</param>
 		/// <returns>lijst met gevonden matches</returns>
 		IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam, params Expression<Func<GelieerdePersoon, object>>[] paths);
-
 
 		/// <summary>
 		/// Haalt de persoonsgegevens van alle gelieerde personen van een groep op.
 		/// </summary>
 		/// <param name="GroepID">ID van de groep</param>
+		/// <param name="paths">Expressies die aangeven welke dependencies mee opgehaald moeten worden</param>
 		/// <returns>Lijst van gelieerde personen</returns>
 		IList<GelieerdePersoon> AllenOphalen(int GroepID, params Expression<Func<GelieerdePersoon, object>>[] paths);
 
@@ -74,6 +79,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// Haalt een 'pagina' persoonsgegevens van de gelieerde personen van een groep op behorende tot de gegeven categorie
 		/// inclusief eventueel lidobject in het recentste werkjaar.
 		/// </summary>
+		/// <param name="categorieID">ID van de categorie die we nodig hebben</param>
 		/// <param name="pagina">paginanummer (1 of groter)</param>
 		/// <param name="paginaGrootte">aantal records op een pagina</param>
 		/// <param name="aantalTotaal">outputparameter voor totaal aantal

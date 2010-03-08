@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +16,7 @@ namespace Chiro.Gap.Orm
 	/// Een straat heeft geen versie (timestamp) in de database.
 	/// Dat lijkt me ook niet direct nodig voor een klasse die
 	/// bijna nooit wijzigt.
-	/// 
+	/// <para/>
 	/// Het feit dat er geen timestamp is, wil wel zeggen dat
 	/// 'concurrencygewijze' de laatste altijd zal winnen.    
 	/// </summary>

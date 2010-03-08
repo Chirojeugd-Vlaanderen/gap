@@ -86,7 +86,7 @@ namespace Chiro.Gap.Workers.Test
 			//}
 			Assert.IsTrue((from c in g.Categorie where c.Naam.Equals(categorienaam) select c).FirstOrDefault() == null);
 
-			gm.CategorieToevoegen(g, categorienaam, "");
+			gm.CategorieToevoegen(g, categorienaam, String.Empty);
 
 			//g = gm.Ophalen(groepID, e => e.Categorie);
 			//bool found = false;

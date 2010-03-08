@@ -155,7 +155,7 @@ namespace Chiro.Gap.Workers
 		/// GAV is van de groep gekoppeld aan een zekere categorie.
 		/// </summary>
 		/// <param name="categorieID">ID van de categorie</param>
-		/// <returns>true indien GAV</returns>
+		/// <returns><c>True</c> als GAV</returns>
 		public bool IsGavCategorie(int categorieID)
 		{
 			return _autorisatieDao.IsGavCategorie(categorieID, GebruikersNaamGet());
@@ -166,7 +166,7 @@ namespace Chiro.Gap.Workers
 		/// GAV is van de groep gekoppeld aan een zekere commvorm.
 		/// </summary>
 		/// <param name="commvormID">ID van de commvorm</param>
-		/// <returns>true indien GAV</returns>
+		/// <returns><c>True</c> als GAV</returns>
 		public bool IsGavCommVorm(int commvormID)
 		{
 			return _autorisatieDao.IsGavCommVorm(commvormID, GebruikersNaamGet());
@@ -245,7 +245,11 @@ namespace Chiro.Gap.Workers
 				if (resultaat == null)
 				{
 					// nee: creëren
-					resultaat = new GebruikersRecht { Groep = groep, Gav = gav };
+					resultaat = new GebruikersRecht
+					{
+						Groep = groep,
+						Gav = gav
+					};
 					groep.GebruikersRecht.Add(resultaat);
 					gav.GebruikersRecht.Add(resultaat);
 				}

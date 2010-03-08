@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +32,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// </summary>
 		/// <param name="functieID">ID van een functie</param>
 		/// <param name="groepsWerkJaarID">ID van een groepswerkjaar</param>
-		/// <param name="paths">bepaalt de mee op te halen gekoppelde entiteiten</param>
+		/// <param name="paths">Bepaalt de mee op te halen gekoppelde entiteiten</param>
 		/// <returns>Lijst leden die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
 		/// de functie bepaald door <paramref name="functieID"/> hebben.</returns>
 		IList<Lid> OphalenUitFunctie(
@@ -39,9 +44,9 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// Haalt de leden op die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
 		/// de gepredefinieerde functie met type <paramref name="f"/> hebben.
 		/// </summary>
-		/// <param name="f">type gepredefinieerde functie</param>
+		/// <param name="f">Type gepredefinieerde functie</param>
 		/// <param name="groepsWerkJaarID">ID van een groepswerkjaar</param>
-		/// <param name="paths">bepaalt de mee op te halen gekoppelde entiteiten</param>
+		/// <param name="paths">Bepaalt de mee op te halen gekoppelde entiteiten</param>
 		/// <returns>Lijst leden die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
 		/// de gepredefinieerde functie met type <paramref name="f"/> hebben.</returns>
 		IList<Lid> OphalenUitFunctie(
@@ -49,20 +54,19 @@ namespace Chiro.Gap.Orm.DataInterfaces
 			int groepsWerkJaarID,
 			params Expression<Func<Lid, object>>[] paths);
 
-
 		/// <summary>
 		/// Haalt lid met gerelateerde entity's op, op basis van 
 		/// GelieerdePersoonID en GroepsWerkJaarID
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID van gelieerde persoon</param>
 		/// <param name="groepsWerkJaarID">ID van groepswerkjaar</param>
-		/// <param name="paths">lambda-expressies die de extra op te halen
-		/// informatie definieren</param>
-		/// <returns>Lidobject indien gevonden, anders null</returns>
+		/// <param name="paths">Lambda-expressies die de extra op te halen
+		/// informatie definiëren</param>
+		/// <returns>Lidobject indien gevonden, anders <c>null</c></returns>
 		Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths);
 
 		Lid OphalenMetDetails(int lidID);
 
-		//void LidMaken(int gelieerdeID);
+		// void LidMaken(int gelieerdeID);
 	}
 }

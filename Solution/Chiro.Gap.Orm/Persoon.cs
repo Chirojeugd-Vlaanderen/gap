@@ -1,13 +1,18 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 using System.Runtime.Serialization;
+using System.Text;
+
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
-
 
 namespace Chiro.Gap.Orm
 {
@@ -73,7 +78,6 @@ namespace Chiro.Gap.Orm
 				get;
 				set;
 			}
-
 		}
 
 		private bool _teVerwijderen = false;
@@ -151,6 +155,5 @@ namespace Chiro.Gap.Orm
 				return String.Format("{0} {1}", VoorNaam, Naam);
 			}
 		}
-
 	}
 }

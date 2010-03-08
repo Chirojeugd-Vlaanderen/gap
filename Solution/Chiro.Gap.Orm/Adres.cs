@@ -23,8 +23,14 @@ namespace Chiro.Gap.Orm
 
 		public bool TeVerwijderen
 		{
-			get { return _teVerwijderen; }
-			set { _teVerwijderen = value; }
+			get
+			{
+				return _teVerwijderen;
+			}
+			set
+			{
+				_teVerwijderen = value;
+			}
 		}
 
 		public Adres()
@@ -40,8 +46,14 @@ namespace Chiro.Gap.Orm
 
 		public string VersieString
 		{
-			get { return this.VersieStringGet(); }
-			set { this.VersieStringSet(value); }
+			get
+			{
+				return this.VersieStringGet();
+			}
+			set
+			{
+				this.VersieStringSet(value);
+			}
 		}
 
 		public override int GetHashCode()

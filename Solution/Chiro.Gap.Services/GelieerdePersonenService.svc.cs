@@ -331,17 +331,11 @@ namespace Chiro.Gap.Services
 		public void CommunicatieVormVerwijderenVanPersoon(int gelieerdePersoonID, int commvormID)
 		{
 			GelieerdePersoon gp = _gpMgr.OphalenMetCommVormen(gelieerdePersoonID);
-			CommunicatieVorm cv = null;
-			bool found = false;
-			foreach (CommunicatieVorm c in gp.Communicatie)
-			{
-				if (c.ID == commvormID)
-				{
-					cv = c;
-					found = true;
-				}
-			}
-			if (!found)
+			CommunicatieVorm cv = (from commVorm in gp.Communicatie
+									where commVorm.ID == commvormID
+									select commVorm).FirstOrDefault();
+			
+			if (cv == null)
 			{
 				throw new ArgumentException(Resources.FouteCommunicatieVormVoorPersoonString);
 			}

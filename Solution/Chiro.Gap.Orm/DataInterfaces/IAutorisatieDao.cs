@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +17,9 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <summary>
 		/// Haalt rechten op die een gebruiker heeft op een groep.
 		/// </summary>
-		/// <param name="login">gebruikersnaam</param>
-		/// <param name="groepID">groepid</param>
-		/// <returns>null indien geen gebruikersrechten gevonden,
+		/// <param name="login">De gebruikersnaam</param>
+		/// <param name="groepID">ID van de groep</param>
+		/// <returns><c>Null</c> als geen gebruikersrechten gevonden,
 		/// anders een GebruikersRecht-object</returns>
 		/// <remarks>Let op: de gebruikersrechten kunnen vervallen zijn!</remarks>
 		GebruikersRecht RechtenMbtGroepGet(string login, int groepID);
@@ -24,9 +29,9 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// (Dit komt erop neer dat de gelieerde persoon gelieerd is aan een
 		/// groep waar de gebruiker GAV van is.)
 		/// </summary>
-		/// <param name="login">gebruikersnaam</param>
-		/// <param name="groepID">ID val gelieerde persoon</param>
-		/// <returns>null indien geen gebruikersrechten gevonden,
+		/// <param name="login">De gebruikersnaam</param>
+		/// <param name="GelieerdePersoonID">ID van gelieerde persoon</param>
+		/// <returns><c>Null</c> indien geen gebruikersrechten gevonden,
 		/// anders een GebruikersRecht-object</returns>
 		/// <remarks>Let op: de gebruikersrechten kunnen vervallen zijn!</remarks>
 		GebruikersRecht RechtenMbtGelieerdePersoonGet(string login, int GelieerdePersoonID);
@@ -38,45 +43,45 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// Controleert of een gebruiker *nu* GAV is van een
 		/// gegeven groep
 		/// </summary>
-		/// <param name="login">gebruikersnaam gebruiker</param>
-		/// <param name="groepID">id groep</param>
-		/// <returns>true indien de gebruiker nu GAV is</returns>
+		/// <param name="login">De gebruikersnaam </param>
+		/// <param name="groepID">ID van de groep</param>
+		/// <returns><c>True</c> als de gebruiker nu GAV is</returns>
 		bool IsGavGroep(string login, int groepID);
 
 		/// <summary>
-		/// Controleert of een gebruiker *nu* GAV is van een
+		/// Controleert of een gebruiker *nu* GAV is van 
 		/// de groep van een gelieerde persoon
 		/// </summary>
-		/// <param name="login">gebruikersnaam gebruiker</param>
-		/// <param name="groepID">id gelieerde persoon</param>
-		/// <returns>true indien gebruiker nu gav is</returns>
+		/// <param name="login">De gebruikersnaam</param>
+		/// <param name="gelieerdePersoonID">ID van de gelieerde persoon</param>
+		/// <returns><c>True</c> als gebruiker nu GAV is</returns>
 		bool IsGavGelieerdePersoon(string login, int gelieerdePersoonID);
 
 		/// <summary>
 		/// Controleert of een gebruiker *nu* GAV is van een
 		/// groep waaraan de gegeven persoon gelieerd is.
 		/// </summary>
-		/// <param name="login">gebruikersnaam</param>
+		/// <param name="login">De gebruikersnaam</param>
 		/// <param name="persoonID">ID van persoon</param>
-		/// <returns>true indien gebruiker geahtoriseerd is
-		/// (op dit moment) om persoonsgegevens te zien/wijzigen</returns>
+		/// <returns><c>True</c> als de gebruiker (op dit moment) geautoriseerd is
+		/// om persoonsgegevens te zien/wijzigen</returns>
 		bool IsGavPersoon(string login, int persoonID);
 
 		/// <summary>
 		/// Controleert of een gebruiker *nu* GAV is van de groep
 		/// horende bij gegeven GroepsWerkJaar
 		/// </summary>
-		/// <param name="login">gebruikersnaam</param>
+		/// <param name="login">De gebruikersnaam</param>
 		/// <param name="groepsWerkJaarID">ID van gevraagde GroepsWerkJaar</param>
-		/// <returns>true indien de gebruiker GAV is</returns>
+		/// <returns><c>True</c> als de gebruiker GAV is</returns>
 		bool IsGavGroepsWerkJaar(string login, int groepsWerkJaarID);
 
 		/// <summary>
 		/// Controleert of een gebruiker *nu* GAV is van de groep
 		/// horende bij de gegeven afdeling
 		/// </summary>
-		/// <param name="login">gebruikersnaam</param>
-		/// <param name="afdelingsID">AfdelingsID van de gegeven afdeling</param>
+		/// <param name="login">De gebruikersnaam</param>
+		/// <param name="afdelingsID">ID van de gegeven afdeling</param>
 		/// <returns></returns>
 		bool IsGavAfdeling(string login, int afdelingsID);
 
@@ -84,8 +89,8 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// Controleert of een gebruiker *nu* GAV is van de groep
 		/// horende bij het gegeven lid
 		/// </summary>
-		/// <param name="login">gebruikersnaam</param>
-		/// <param name="lidID">LidID van een zeker lid</param>
+		/// <param name="login">De gebruikersnaam</param>
+		/// <param name="lidID">ID van een zeker lid</param>
 		/// <returns></returns>
 		bool IsGavLid(string login, int lidID);
 
@@ -101,8 +106,8 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// Verwijdert uit een lijst met GelieerdePersonenID's de ID's
 		/// waarvan een gegeven gebruiker geen GAV is
 		/// </summary>
-		/// <param name="gelieerdePersonenIDs">lijst met GelieerdePersonenID's</param>
-		/// <param name="login">gebruiker</param>
+		/// <param name="gelieerdePersonenIDs">Lijst met GelieerdePersonenID's</param>
+		/// <param name="login">De gebruikersnaam</param>
 		/// <returns>Een lijst met de ID's van GelieerdePersonen waar de gebruiker
 		/// GAV over is. (hoeveel indirectie kan er in 1 zin?)</returns>
 		IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs, string login);
@@ -111,19 +116,19 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// Verwijdert uit een lijst met PersonenID's de ID's
 		/// waarvan een gegeven gebruiker geen GAV is
 		/// </summary>
-		/// <param name="personenIDs">lijst met PersonenID's</param>
-		/// <param name="login">gebruiker</param>
+		/// <param name="personenIDs">Lijst met PersonenID's</param>
+		/// <param name="p"></param>
 		/// <returns>Een lijst met de ID's van Personen waar de gebruiker
 		/// GAV over is. (hoeveel indirectie kan er in 1 zin?)</returns>
-		IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs, string p);
+		IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs, string p); // TODO: parameter p documenteren (#340)
 
 		/// <summary>
 		/// Controleert of een gegeven gebruiker GAV is van de groep
 		/// horend bij een zekere categorie.
 		/// </summary>
 		/// <param name="categorieID">ID van de betreffende categorie</param>
-		/// <param name="login">login van de gebruiker</param>
-		/// <returns>true indien GAV</returns>
+		/// <param name="login">De gebruikersnaam</param>
+		/// <returns><c>True</c> als GAV</returns>
 		bool IsGavCategorie(int categorieID, string login);
 
 		/// <summary>
@@ -131,8 +136,8 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// horend bij een zekere commvorm.
 		/// </summary>
 		/// <param name="commvormID">ID van de betreffende commvorm</param>
-		/// <param name="login">login van de gebruiker</param>
-		/// <returns>true indien GAV</returns>
+		/// <param name="login">De gebruikersnaam</param>
+		/// <returns><c>True</c> als GAV</returns>
 		bool IsGavCommVorm(int commvormID, string p);
 
 		#endregion

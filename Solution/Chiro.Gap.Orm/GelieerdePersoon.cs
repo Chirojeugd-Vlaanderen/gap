@@ -5,16 +5,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Runtime.Serialization;
+using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
-using System.Diagnostics;
-
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
 
 namespace Chiro.Gap.Orm
 {
@@ -38,15 +37,27 @@ namespace Chiro.Gap.Orm
 		/// </summary>
 		public class GelieerdePersoon_Validatie
 		{
-			public Groep Groep { get; set; }
+			public Groep Groep
+			{
+				get;
+				set;
+			}
 
 			[Verplicht]
 			[DisplayName("Chiroleeftijd")]
 			[Range(-8, +3, ErrorMessage = "{0} is beperkt van {1} tot {2}.")]
 			[DisplayFormat(DataFormatString = "{0:+#0;-#0}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true)]
-			public int ChiroLeefTijd { get; set; }
+			public int ChiroLeefTijd
+			{
+				get;
+				set;
+			}
 
-			public Persoon Persoon { get; set; }
+			public Persoon Persoon
+			{
+				get;
+				set;
+			}
 		}
 
 		// We gaan de lijst met PersoonsInfo niet opnemen in de
@@ -60,8 +71,14 @@ namespace Chiro.Gap.Orm
 
 		public bool TeVerwijderen
 		{
-			get { return _teVerwijderen; }
-			set { _teVerwijderen = value; }
+			get
+			{
+				return _teVerwijderen;
+			}
+			set
+			{
+				_teVerwijderen = value;
+			}
 		}
 
 		public GelieerdePersoon()
@@ -72,8 +89,14 @@ namespace Chiro.Gap.Orm
 
 		public string VersieString
 		{
-			get { return this.VersieStringGet(); }
-			set { this.VersieStringSet(value); }
+			get
+			{
+				return this.VersieStringGet();
+			}
+			set
+			{
+				this.VersieStringSet(value);
+			}
 		}
 		#endregion
 

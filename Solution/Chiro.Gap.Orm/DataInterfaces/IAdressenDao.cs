@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +11,6 @@ using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Orm.DataInterfaces
 {
-
 	// TODO: Straat en subgemeente zouden standaard mee opgehaald moeten worden.
 
 	/// <summary>
@@ -28,16 +32,16 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <summary>
 		/// Haalt adres op, op basis van de adresgegevens
 		/// </summary>
-		/// <param name="straatNaam">naam van de straat</param>
-		/// <param name="huisNr">huisnummer</param>
-		/// <param name="bus">bus</param>
-		/// <param name="postNr">postnummer</param>
-		/// <param name="postCode">postcode (nt relevant in Belgie)</param>
-		/// <param name="gemeenteNaam">naam (sub)gemeente</param>
-		/// <param name="metBewoners">indien true, worden ook de PersoonsAdressen
+		/// <param name="straatNaam">Naam van de straat</param>
+		/// <param name="huisNr">Het huisnummer</param>
+		/// <param name="bus">Het eventuele busnummer</param>
+		/// <param name="postNr">Het postnummer</param>
+		/// <param name="postCode">De postcode (niet relevant in België)</param>
+		/// <param name="gemeenteNaam">Naam (sub)gemeente</param>
+		/// <param name="metBewoners">Indien <c>true</c>, worden ook de PersoonsAdressen
 		/// opgehaald.  (ALLE persoonsadressen gekoppeld aan het adres; niet
 		/// zomaar over de lijn sturen dus)</param>
-		/// <returns>gevraagd adresobject</returns>
+		/// <returns>Gevraagd adresobject</returns>
 		Adres Ophalen(string straatNaam, int? huisNr, string bus, int postNr, string postCode, string gemeenteNaam, bool metBewoners);
 	}
 }

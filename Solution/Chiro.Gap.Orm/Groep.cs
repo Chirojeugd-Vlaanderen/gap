@@ -1,11 +1,16 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
-using System.Diagnostics;
 
 namespace Chiro.Gap.Orm
 {
@@ -16,14 +21,26 @@ namespace Chiro.Gap.Orm
 
 		public bool TeVerwijderen
 		{
-			get { return _teVerwijderen; }
-			set { _teVerwijderen = value; }
+			get
+			{
+				return _teVerwijderen;
+			}
+			set
+			{
+				_teVerwijderen = value;
+			}
 		}
 
 		public string VersieString
 		{
-			get { return this.VersieStringGet(); }
-			set { this.VersieStringSet(value); }
+			get
+			{
+				return this.VersieStringGet();
+			}
+			set
+			{
+				this.VersieStringSet(value);
+			}
 		}
 
 		#region Identity en equality
