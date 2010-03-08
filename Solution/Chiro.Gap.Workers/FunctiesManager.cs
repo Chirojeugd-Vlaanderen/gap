@@ -44,13 +44,21 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="lid">Lid dat de functies moet krijgen</param>
 		/// <param name="functies">Rij toe te kennen functies</param>
-		/// <remarks>De functie moet gekoppeld zijn aan zijn groep (als die bestaat).  Het lid moet
-		/// gekoppeld zijn aan zijn GelieerdePersoon, die op zijn beurt gekoppeld moet zijn aan
-		/// Groep en Persoon.</remarks>
+		/// <remarks>
+		/// Er wordt verondersteld dat er heel wat geladen is!
+		/// - lid.groepswerkjaar.groep
+		/// - lid.functie
+		/// - lid.gelieerdePersoon.Persoon (voor leeftijd)
+		/// - voor elke functie:
+		///   - functie.lid (voor leden van dezelfde groep)
+		///   - functie.groep
+		/// </remarks>
 		public void Toekennen(Lid lid, IEnumerable<Functie> functies)
 		{
 			Debug.Assert(lid.GelieerdePersoon != null);
-			Debug.Assert(lid.GelieerdePersoon.Groep != null);
+			Debug.Assert(lid.GelieerdePersoon.Persoon != null);
+			Debug.Assert(lid.GroepsWerkJaar != null);
+			Debug.Assert(lid.GroepsWerkJaar.Groep != null);
 
 			if (!_autorisatieMgr.IsGavLid(lid.ID))
 			{
@@ -63,7 +71,7 @@ namespace Chiro.Gap.Workers
 				{
 					throw new GeenGavException(Properties.Resources.GeenGavFunctie);
 				}
-				if (!IsNationaalBepaald(f) && f.Groep.ID != lid.GelieerdePersoon.Groep.ID)
+				if (!IsNationaalBepaald(f) && f.Groep.ID != lid.GroepsWerkJaar.Groep.ID)
 				{
 					throw new FoutieveGroepException(Properties.Resources.FoutieveGroepFunctie);
 				}
@@ -92,9 +100,14 @@ namespace Chiro.Gap.Workers
 				}
 				if (f.MaxAantal > 0)
 				{
-					// Aantalconstraints op functie.  Tel huidig aantal
+					// We verwachten dat f.Lid enkel leden uit het groepswerkjaar
+					// van lid bevat, maar voor de zekerheid filteren we ze eruit.
 
-					if (_funDao.AantalLeden(lid.GelieerdePersoon.Groep.ID, f.ID) >= f.MaxAantal)
+					var query = (from ld in f.Lid
+						     where ld.GroepsWerkJaar.ID == lid.GroepsWerkJaar.ID
+							&& ld.ID != lid.ID
+						     select ld);
+					if (query.Count() >= f.MaxAantal)
 					{
 						// TODO: Een exception is hier eigenlijk niet op zijn plaats;
 						// de bedoeling is dat je ergens een warning krijgt, die je
@@ -106,6 +119,7 @@ namespace Chiro.Gap.Workers
 						//  UI toont lijst van huidige personen met deze functie,
 						//  en laat gebruiker kiezen wiens functie moet afgenomen worden.
 						//  dan functionaliteit 'FunctieOverNemen' of zoiets implementeren.
+						// (maar dat werkt alleen als functies 1 voor 1 toegekend worden)
 
 						throw new InvalidOperationException(
 							String.Format(

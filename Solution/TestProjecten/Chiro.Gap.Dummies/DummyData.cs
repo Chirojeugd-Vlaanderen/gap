@@ -18,7 +18,11 @@ namespace Chiro.Gap.Dummies
 		private static GroepsWerkJaar _huidigGwj;	// testgroepswerkjaar
 		private static GelieerdePersoon _gelieerdeJos;	// gelieerdePersoon genaamd 'Jos' 
 		private static GelieerdePersoon _gelieerdeIrene; // gelieerdePersoon genaamd 'Irene'
+		private static GelieerdePersoon _gelieerdeYvonne; // gelieerdePersoon genaamd 'Yvonne'
 		private static Categorie _vervelend;		// categorie voor vervelende mensen
+		private static Functie _redactie;		// functie voor 1 persoon
+		private static Lid _lidJos;			// lidobject Jos
+		private static Lid _lidYvonne;			// lidobject Yvonne
 
 		/// <summary>
 		/// Een groep met daaraan gekoppeld een aantal leden
@@ -41,9 +45,29 @@ namespace Chiro.Gap.Dummies
 		public static GelieerdePersoon GelieerdeIrene { get { return _gelieerdeIrene; } }
 
 		/// <summary>
+		/// De gelieerde testpersoon 'Yvonne'
+		/// </summary>
+		public static GelieerdePersoon GelieerdeYvonne { get { return _gelieerdeYvonne; } }
+
+		/// <summary>
+		/// Jos' lidobject
+		/// </summary>
+		public static Lid LidJos { get { return _lidJos; } }
+
+		/// <summary>
+		/// Yvonnes lidobject
+		/// </summary>
+		public static Lid LidYvonne { get { return _lidYvonne; } }
+
+		/// <summary>
 		/// De categorie voor vervelende mensen
 		/// </summary>
 		public static Categorie Vervelend { get { return _vervelend; } }
+
+		/// <summary>
+		/// Functie voor 1 persoon
+		/// </summary>
+		public static Functie UniekeFunctie { get { return _redactie; } }
 
 		/// <summary>
 		/// Bouwt de dummy data op
@@ -55,6 +79,7 @@ namespace Chiro.Gap.Dummies
 			GroepenManager gMgr = Factory.Maak<GroepenManager>();
 			LedenManager lMgr = Factory.Maak<LedenManager>();
 			CategorieenManager cMgr = Factory.Maak<CategorieenManager>();
+			FunctiesManager fMgr = Factory.Maak<FunctiesManager>();
 
 			// Groep en groepswerkjaar
 
@@ -65,6 +90,10 @@ namespace Chiro.Gap.Dummies
 			// Categorie
 
 			_vervelend = gMgr.CategorieToevoegen(_dummyGroep, "vervelende mensen", "last");
+
+			// Functie
+
+			_redactie = new Functie { Code = "HRE", Naam = "Hoofdredacteur", MaxAantal = 1 };
 
 			// Afdelingen gekoppeld aan officiële afdelingen in afdelingsjaren
 
@@ -89,9 +118,20 @@ namespace Chiro.Gap.Dummies
 				Naam = "Bosmans",
 				VoorNaam = "Irène",
 				GeboorteDatum = new DateTime(1990, 3, 8) };
+			
+			Persoon yvonne = new Persoon
+			{
+				Naam = "Bosmans",
+				VoorNaam = "Yvonne",
+				GeboorteDatum = new DateTime(1999, 3, 8)
+
+			};
+
 
 			_gelieerdeJos = gpMgr.Koppelen(jos, _dummyGroep, 0);
 			_gelieerdeIrene = gpMgr.Koppelen(irene, _dummyGroep, 0);
+			_gelieerdeYvonne = gpMgr.Koppelen(yvonne, _dummyGroep, 0);
+
 
 			// Koppelingen allerhanden
 			gpMgr.CategorieKoppelen(new GelieerdePersoon[] { _gelieerdeJos }, _vervelend);
@@ -99,7 +139,18 @@ namespace Chiro.Gap.Dummies
 			// We moeten hier expliciet lid maken in _huidigGwj, anders werken een aantal
 			// unit tests niet meer.  (Zie #259)
 
-			lMgr.KindMaken(_gelieerdeJos, _huidigGwj);
+			_lidJos = lMgr.KindMaken(_gelieerdeJos, _huidigGwj);
+			_lidYvonne = lMgr.KindMaken(_gelieerdeYvonne, _huidigGwj);
+
+			// ID's worden niet toegekend als de DAO's gemockt zijn, dus delen we die manueel
+			// uit.
+
+			_lidJos.ID = 1;
+			_lidYvonne.ID = 2;
+
+			fMgr.Toekennen(_lidJos, new Functie[] { _redactie });
+			
+
 		}
 
 		/// <summary>
