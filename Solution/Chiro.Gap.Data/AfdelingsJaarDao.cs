@@ -19,7 +19,8 @@ namespace Chiro.Gap.Data.Ef
 {
 	public class AfdelingsJaarDao : Dao<AfdelingsJaar, ChiroGroepEntities>, IAfdelingsJarenDao
 	{
-		public AfdelingsJaarDao(): base()
+		public AfdelingsJaarDao()
+			: base()
 		{
 			connectedEntities = new System.Linq.Expressions.Expression<Func<AfdelingsJaar, object>>[3]
 			{
@@ -50,14 +51,14 @@ namespace Chiro.Gap.Data.Ef
 				db.AfdelingsJaar.MergeOption = MergeOption.NoTracking;
 
 				resultaat = (
-				    from AfdelingsJaar aj
+					from AfdelingsJaar aj
 					in db.AfdelingsJaar
 					.Include("Afdeling")
 					.Include("GroepsWerkJaar")
 					.Include("OfficieleAfdeling")
-				    where aj.GroepsWerkJaar.ID == groepsWerkJaarID
-				    && aj.Afdeling.ID == afdelingID
-				    select aj).FirstOrDefault();
+					where aj.GroepsWerkJaar.ID == groepsWerkJaarID
+					&& aj.Afdeling.ID == afdelingID
+					select aj).FirstOrDefault();
 
 				// Aangezien Eager Loading niet werkt, doen we het manueel :(
 

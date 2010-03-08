@@ -43,7 +43,7 @@ namespace Chiro.Cdf.DependencyInjection
 				TypeMapping typeMapping = new TypeMapping(typeMappingElement.TypeRequested, typeMappingElement.TypeToBuild);
 				typeMappings.Add(typeMapping);
 			}
-			
+
 			return new DIServiceBehavior(typeMappings);
 		}
 	}

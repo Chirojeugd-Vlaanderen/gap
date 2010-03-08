@@ -12,12 +12,12 @@ using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
-    public class GavModel : MasterViewModel
-    {   
-        public GavModel() : base() { }
+	public class GavModel : MasterViewModel
+	{
+		public GavModel() : base() { }
 
-        public IEnumerable<GroepInfo> GroepenLijst { get; set; }
+		public IEnumerable<GroepInfo> GroepenLijst { get; set; }
 
-        public int GeselecteerdeGroepID { get; set; }
-    }
+		public int GeselecteerdeGroepID { get; set; }
+	}
 }

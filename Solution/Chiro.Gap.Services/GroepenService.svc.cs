@@ -38,10 +38,10 @@ namespace Chiro.Gap.Services
 		private readonly CategorieenManager _categorieenMgr;
 
 		public GroepenService(
-			GroepenManager gm, 
-			AfdelingsJaarManager ajm, 
-			GroepsWerkJaarManager wm, 
-			GelieerdePersonenManager gpm, 
+			GroepenManager gm,
+			AfdelingsJaarManager ajm,
+			GroepsWerkJaarManager wm,
+			GelieerdePersonenManager gpm,
 			AdressenManager adresMgr,
 			CategorieenManager cm,
 			IAutorisatieManager am)
@@ -66,7 +66,8 @@ namespace Chiro.Gap.Services
 		/// <returns>
 		/// GroepInfo-structuur met de gevraagde informatie over de groep met id <paramref name="groepID"/>
 		/// </returns>
-		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public GroepInfo Ophalen(int groepID, GroepsExtras extras)
 		{
 			Groep g;
@@ -198,7 +199,8 @@ namespace Chiro.Gap.Services
 		/// <param name="groepID">ID van de groep</param>
 		/// <param name="naam">Naam van de afdeling</param>
 		/// <param name="afkorting">Afkorting van de afdeling (voor lijsten, overzichten,...)</param>
-		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AfdelingAanmaken(int groepID, string naam, string afkorting)
 		{
 			Groep g = _groepenMgr.Ophalen(groepID);
@@ -216,13 +218,14 @@ namespace Chiro.Gap.Services
 		/// <param name="geboorteTot">GeboorteJaar van de jongste leden in die afdeling</param>
 		/// <param name="geslacht">Geeft aan of het een jongensafdeling, een meisjesafdeling
 		/// of een gemengde afdeling is.</param>
-		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		// TODO: datacontract maken, waar ook de versiestring in zit. (Zie #297)
 		public void AfdelingsJaarBewarenMetWijzigingen(
-			int afdID, 
-			int offafdID, 
-			int geboorteVan, 
-			int geboorteTot, 
+			int afdID,
+			int offafdID,
+			int geboorteVan,
+			int geboorteTot,
 			GeslachtsType geslacht)
 		{
 			AfdelingsJaar aj = _afdelingsJaarMgr.Ophalen(afdID);
@@ -242,19 +245,22 @@ namespace Chiro.Gap.Services
 		/// en controleert of er geen leden in zitten.
 		/// </summary>
 		/// <param name="afdelingsJaarID">ID van het afdelingsjaar dat verwijderd moet worden</param>
-		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AfdelingsJaarVerwijderen(int afdelingsJaarID)
 		{
 			_afdelingsJaarMgr.Verwijderen(afdelingsJaarID);
 		}
 
-		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public AfdelingsJaar AfdelingsJaarOphalen(int afdelingsJaarID)
 		{
 			return _afdelingsJaarMgr.Ophalen(afdelingsJaarID);
 		}
 
-		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AfdelingsJaarAanmaken(int groepID, int afdelingsID, int offiafdelingsID, int geboortejaarbegin, int geboortejaareind)
 		{
 			Groep g = _groepenMgr.OphalenMetAfdelingen(groepID);
@@ -278,7 +284,8 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		/// <param name="afdelingID">ID van op te halen afdeling</param>
 		/// <returns>De gevraagde afdeling</returns>
-		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public Afdeling AfdelingOphalen(int afdelingID)
 		{
 			return _groepenMgr.AfdelingOphalen(afdelingID);
@@ -293,7 +300,8 @@ namespace Chiro.Gap.Services
 		/// Informatie over alle actieve afdelingen in het groepswerkjaar met 
 		/// ID <paramref name="groepsWerkJaarID"/>
 		/// </returns>
-		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<AfdelingInfo> AfdelingenOphalen(int groepsWerkJaarID)
 		{
 			var groepswerkjaar = _groepsWerkJaarManager.OphalenMetLeden(groepsWerkJaarID);
@@ -307,7 +315,8 @@ namespace Chiro.Gap.Services
 		/// <param name="groepswerkjaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
 		/// opgezocht moeten worden.</param>
 		/// <returns>Info over de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
-		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarID)
 		{
 			IList<Afdeling> ongebruikteAfdelingen = _groepsWerkJaarManager.OngebruikteAfdelingenOphalen(groepswerkjaarID);
@@ -316,13 +325,14 @@ namespace Chiro.Gap.Services
 
 		#endregion
 
-		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<GroepsWerkJaar> WerkJarenOphalen(int groepsID)
 		{
 			return (from gwj in _groepenMgr.OphalenMetGroepsWerkJaren(groepsID).GroepsWerkJaar
-				orderby gwj.WerkJaar descending
-				select gwj
-			       ).ToList();
+					orderby gwj.WerkJaar descending
+					select gwj
+				   ).ToList();
 		}
 
 		#region categorieën
@@ -360,8 +370,8 @@ namespace Chiro.Gap.Services
 			g = _groepenMgr.Bewaren(g, e => e.Categorie);
 
 			return (from ctg in g.Categorie
-				where ctg.Code == code
-				select ctg.ID).FirstOrDefault();
+					where ctg.Code == code
+					select ctg.ID).FirstOrDefault();
 		}
 
 		/// <summary>
@@ -384,9 +394,12 @@ namespace Chiro.Gap.Services
 			}
 			catch (GekoppeldeObjectenException<GelieerdePersoon> ex)
 			{
-				IEnumerable<PersoonInfo> gekoppeldePersonen 
+				IEnumerable<PersoonInfo> gekoppeldePersonen
 					= Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonInfo>>(ex.Objecten);
-				var fault = new GekoppeldeObjectenFault<PersoonInfo> { Objecten = gekoppeldePersonen.Take(Properties.Settings.Default.KleinAantal).ToList() };
+				var fault = new GekoppeldeObjectenFault<PersoonInfo>
+				{
+					Objecten = gekoppeldePersonen.Take(Properties.Settings.Default.KleinAantal).ToList()
+				};
 				throw new FaultException<GekoppeldeObjectenFault<PersoonInfo>>(fault);
 			}
 			catch (Exception)
@@ -423,7 +436,8 @@ namespace Chiro.Gap.Services
 		/// in de ui.
 		/// </summary>
 		/// <returns>Lijst met alle beschikbare deelgemeentes</returns>
-		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IEnumerable<GemeenteInfo> GemeentesOphalen()
 		{
 			return Mapper.Map<IList<Subgemeente>, IList<GemeenteInfo>>(_adresMgr.GemeentesOphalen());
@@ -436,7 +450,8 @@ namespace Chiro.Gap.Services
 		/// <param name="straatBegin">Eerste letters van de te zoeken straatnamen</param>
 		/// <param name="postNr">Postnummer waarin te zoeken</param>
 		/// <returns>Gegevens van de gevonden straten</returns>
-		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IEnumerable<StraatInfo> StratenOphalen(String straatBegin, int postNr)
 		{
 			return Mapper.Map<IList<Straat>, IList<StraatInfo>>(_adresMgr.StratenOphalen(straatBegin, postNr));
@@ -451,7 +466,8 @@ namespace Chiro.Gap.Services
 		/// <returns>Gegevens van de gevonden straten</returns>
 		/// <remarks>Ik had deze functie ook graag StratenOphalen genoemd, maar je mag geen 2 
 		/// WCF-functies met dezelfde naam in 1 service hebben.  Spijtig.</remarks>
-		/* zie #273 */ // [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IEnumerable<StraatInfo> StratenOphalenMeerderePostNrs(String straatBegin, IEnumerable<int> postNrs)
 		{
 			return Mapper.Map<IList<Straat>, IList<StraatInfo>>(_adresMgr.StratenOphalen(straatBegin, postNrs));

@@ -11,10 +11,10 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 
+using Microsoft.Practices.Unity;
+
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.ServiceContracts;
-
-using Microsoft.Practices.Unity;
 
 namespace Chiro.Gap.WebApp
 {
@@ -40,16 +40,25 @@ namespace Chiro.Gap.WebApp
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
 			routes.MapRoute(
-			    "Route voor ~/: Kies GAV"
-			    , string.Empty 
-			    , new { controller = "Gav", action = "Index" });
+				"Route voor ~/: Kies GAV",
+				string.Empty,
+				new
+				{
+					controller = "Gav",
+					action = "Index"
+				});
 
+			// (personencontroller indien geen controller meegegeven)
 			routes.MapRoute(
-			    "Default",
-			    "{groepID}/{controller}/{action}/{id}/{page}",
-			    new { controller = "Personen", action = "Index", page = "1", id = "0" }
-				// (personencontroller indien geen controller meegegeven)
-			);
+				"Default",
+				"{groepID}/{controller}/{action}/{id}/{page}",
+				new
+				{
+					controller = "Personen",
+					action = "Index",
+					page = "1",
+					id = "0"
+				});
 		}
 
 		private static void InitializeContainer()
@@ -61,7 +70,7 @@ namespace Chiro.Gap.WebApp
 			}
 
 			IControllerFactory controllerFactory =
-			    new UnityControllerFactory(_container);
+				new UnityControllerFactory(_container);
 
 			ControllerBuilder.Current.SetControllerFactory(controllerFactory);
 		}

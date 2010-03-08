@@ -17,7 +17,7 @@ namespace Chiro.Gap.WebApp.Controllers
 {
 	public class GavController : BaseController
 	{
-		public GavController(IServiceHelper serviceHelper): base(serviceHelper){}
+		public GavController(IServiceHelper serviceHelper) : base(serviceHelper) { }
 
 		//
 		// GET: /Gav/
@@ -27,7 +27,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// personenlijst van deze groep.  Zo niet krijgt de gebruiker de keuze
 
 			var groepInfos = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
-			    (g => g.MijnGroepenOphalen());
+				(g => g.MijnGroepenOphalen());
 
 			if (groepInfos.Count() == 1)
 			{

@@ -30,8 +30,8 @@ namespace Chiro.Gap.Data.Ef
 				db.Gav.MergeOption = MergeOption.NoTracking;
 
 				return (from gav in db.Gav.Include("GebruikersRecht.Groep")
-					where gav.Login == login
-					select gav).FirstOrDefault();
+						where gav.Login == login
+						select gav).FirstOrDefault();
 			}
 		}
 	}

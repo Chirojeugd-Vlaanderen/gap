@@ -31,8 +31,8 @@ namespace Chiro.Gap.Data.Ef
 				db.Persoon.MergeOption = MergeOption.NoTracking;
 
 				return (
-				    from p in db.Persoon.Where(Utility.BuildContainsExpression<Persoon, int>(p => p.ID, personenIDs))
-				    select p).ToList();
+					from p in db.Persoon.Where(Utility.BuildContainsExpression<Persoon, int>(p => p.ID, personenIDs))
+					select p).ToList();
 			}
 		}
 
@@ -60,11 +60,11 @@ namespace Chiro.Gap.Data.Ef
 				// waarvan je GAV bent
 
 				var persoonsAdressen = (
-				    from pa in db.PersoonsAdres.Include("Persoon")
-				    where pa.Adres.PersoonsAdres.Any(
-				    l => l.Persoon.GelieerdePersoon.Any(
+					from pa in db.PersoonsAdres.Include("Persoon")
+					where pa.Adres.PersoonsAdres.Any(
+					l => l.Persoon.GelieerdePersoon.Any(
 					gp => gp.ID == gelieerdePersoonID))
-				    select pa);
+					select pa);
 
 				// Het zou interessant zijn als ik hierboven al 
 				// pa.GelieerdePersoon zou 'selecten'.  Maar gek genoeg wordt
@@ -79,7 +79,7 @@ namespace Chiro.Gap.Data.Ef
 			}
 
 			resultaat = (from pa in paLijst
-				     select pa.Persoon).Distinct().ToList();
+						 select pa.Persoon).Distinct().ToList();
 
 			if (resultaat.Count == 0)
 			{
@@ -109,8 +109,8 @@ namespace Chiro.Gap.Data.Ef
 				db.Persoon.MergeOption = MergeOption.NoTracking;
 
 				return (from foo in db.Persoon.Include("PersoonsAdres.Adres.Straat").Include("PersoonsAdres.Adres.Subgemeente")
-					where foo.GelieerdePersoon.Any(bar => bar.ID == gelieerdePersoonID)
-					select foo).FirstOrDefault();
+						where foo.GelieerdePersoon.Any(bar => bar.ID == gelieerdePersoonID)
+						select foo).FirstOrDefault();
 			}
 		}
 

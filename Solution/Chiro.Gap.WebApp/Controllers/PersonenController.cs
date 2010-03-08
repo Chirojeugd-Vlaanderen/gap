@@ -61,8 +61,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (id == 0)
 			{
 				model.PersoonInfos =
-				    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
-				    (g => g.PaginaOphalenMetLidInfo(groepID, page, 20, out totaal));
+					ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
+					(g => g.PaginaOphalenMetLidInfo(groepID, page, 20, out totaal));
 				model.HuidigePagina = page;
 				model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
 				model.Titel = "Personenoverzicht";
@@ -72,15 +72,14 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				// TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
 				model.PersoonInfos =
-				    ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
-				    (g => g.PaginaOphalenUitCategorieMetLidInfo(id, page, 20, out totaal));
+					ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
+					(g => g.PaginaOphalenUitCategorieMetLidInfo(id, page, 20, out totaal));
 				model.HuidigePagina = page;
 				model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
 
 				String naam = (from c in model.PersoonInfos.First().CategorieLijst
-					       where c.ID == id
-					       select c
-						).First().Naam;
+							   where c.ID == id
+							   select c).First().Naam;
 
 				model.Titel = "Overzicht " + naam;
 				model.Totaal = totaal;
@@ -110,8 +109,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
-                TempData["feedback"] = Properties.Resources.NiemandGeselecteerdFout;
-                return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
+				TempData["feedback"] = Properties.Resources.NiemandGeselecteerdFout;
+				return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
 			}
 		}
 
@@ -245,16 +244,16 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			List<int> ids = new List<int>();
 			ids.Add(id);
-            try
-            {
-                ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LedenMakenEnBewaren(ids));
-                TempData["feedback"] = Properties.Resources.LidGemaaktFeedback;
-            }
-            catch (Exception ex)
-            {
-                TempData["feedback"] = string.Concat(Properties.Resources.LidMakenMisluktFout, Environment.NewLine, ex.Message.ToString());
-            }
-            return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
+			try
+			{
+				ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LedenMakenEnBewaren(ids));
+				TempData["feedback"] = Properties.Resources.LidGemaaktFeedback;
+			}
+			catch (Exception ex)
+			{
+				TempData["feedback"] = string.Concat(Properties.Resources.LidMakenMisluktFout, Environment.NewLine, ex.Message.ToString());
+			}
+			return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
 		}
 
 		// GET: /Personen/LidMaken/id
@@ -281,7 +280,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult Verhuizen(int id, int aanvragerID, int groepID)
 		{
 			// Haal PersoonID op, om te weten van wie we het adrestype gaan overnemen.
-			int persoonID = 
+			int persoonID =
 				ServiceHelper.CallService<IGelieerdePersonenService, int>(
 					srvc => srvc.PersoonIDGet(aanvragerID));
 
@@ -295,12 +294,12 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.Adres = a;
 			model.OudAdresID = id;
 			model.AdresType = (from bewoner in model.Bewoners
-					   where bewoner.PersoonID == persoonID
-					   select bewoner.AdresType).FirstOrDefault();
+							   where bewoner.PersoonID == persoonID
+							   select bewoner.AdresType).FirstOrDefault();
 
 			// Standaard verhuist iedereen mee.
 			model.PersoonIDs = (from b in a.Bewoners
-					    select b.PersoonID).ToList();
+								select b.PersoonID).ToList();
 
 			model.Titel = "Personen Verhuizen";
 			return View("AdresBewerken", model);
@@ -590,20 +589,20 @@ namespace Chiro.Gap.WebApp.Controllers
 			BaseModelInit(model, groepID);
 			model.Categorieen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<Categorie>>(l => l.CategorieenOphalen(groepID));
 
-            if (model.Categorieen.Count() > 0)
-            {
-                object value;
-                TempData.TryGetValue("list", out value);
-                model.GelieerdePersoonIDs = (List<int>)value;
-                TempData.Remove("list"); // Ik denk dat dit voor MVC2 automatisch gebeurt; na te kijken.
+			if (model.Categorieen.Count() > 0)
+			{
+				object value;
+				TempData.TryGetValue("list", out value);
+				model.GelieerdePersoonIDs = (List<int>)value;
+				TempData.Remove("list"); // Ik denk dat dit voor MVC2 automatisch gebeurt; na te kijken.
 
-                return View("CategorieToevoegen", model);
-            }
-            else
-            {
-                TempData["feedback"] = Properties.Resources.CategoriserenZonderCategorieënFout;
-                return RedirectToAction("List", new { id = Sessie.LaatsteActieID, page = Sessie.LaatstePagina });
-            }
+				return View("CategorieToevoegen", model);
+			}
+			else
+			{
+				TempData["feedback"] = Properties.Resources.CategoriserenZonderCategorieënFout;
+				return RedirectToAction("List", new { id = Sessie.LaatsteActieID, page = Sessie.LaatstePagina });
+			}
 		}
 
 		/// <summary>
@@ -619,7 +618,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult ToevoegenAanCategorieLijst(CategorieModel model, int groepID)
 		{
 			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieKoppelen(
-				model.GelieerdePersoonIDs, 
+				model.GelieerdePersoonIDs,
 				model.GeselecteerdeCategorieIDs));
 
 			if (model.GelieerdePersoonIDs.Count == 1)

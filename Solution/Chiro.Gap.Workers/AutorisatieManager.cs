@@ -16,9 +16,9 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Workers
 {
-    /// <summary>
-    /// Worker die alle businesslogica i.v.m. autorisatie bevat
-    /// </summary>
+	/// <summary>
+	/// Worker die alle businesslogica i.v.m. autorisatie bevat
+	/// </summary>
 	public class AutorisatieManager : IAutorisatieManager
 	{
 		#region Private members
@@ -48,8 +48,8 @@ namespace Chiro.Gap.Workers
 		/// <param name="gebruikersrechtDao">Repository om gebruikersrechten te persisteren</param>
 		/// <param name="am">AuthenticatieManager (bepaalt gebruikersnaam)</param>
 		public AutorisatieManager(
-			IAutorisatieDao autorisatieDao, 
-			IGavDao gavDao, 
+			IAutorisatieDao autorisatieDao,
+			IGavDao gavDao,
 			IGroepenDao groepenDao,
 			IFunctiesDao functiesDao,
 			IDao<GebruikersRecht> gebruikersrechtDao,
@@ -72,29 +72,29 @@ namespace Chiro.Gap.Workers
 		/// gav is voor de groep met gegeven ID
 		/// </summary>
 		/// <param name="groepID">ID van de groep</param>
-        /// <returns><c>True</c> (enkel) als user gav is</returns>
+		/// <returns><c>True</c> (enkel) als user gav is</returns>
 		public bool IsGavGroep(int groepID)
 		{
 			return _autorisatieDao.IsGavGroep(GebruikersNaamGet(), groepID);
 		}
 
 		/// <summary>
-        /// Nagaan of de ingelogde user overeenkomt met een GAV van een groep 
-        /// gelieerd aan de gelieerde persoon met gegeven ID
+		/// Nagaan of de ingelogde user overeenkomt met een GAV van een groep 
+		/// gelieerd aan de gelieerde persoon met gegeven ID
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID van te checken gelieerde persoon</param>
-        /// <returns><c>True</c> als de user de persoonsgegevens mag zien/bewerken</returns>
+		/// <returns><c>True</c> als de user de persoonsgegevens mag zien/bewerken</returns>
 		public bool IsGavGelieerdePersoon(int gelieerdePersoonID)
 		{
 			return _autorisatieDao.IsGavGelieerdePersoon(GebruikersNaamGet(), gelieerdePersoonID);
 		}
 
 		/// <summary>
-        /// Nagaan of de ingelogde user overeenkomt met een GAV van een groep gelieerd aan de
+		/// Nagaan of de ingelogde user overeenkomt met een GAV van een groep gelieerd aan de
 		/// persoon met gegeven ID
 		/// </summary>
 		/// <param name="persoonID">ID van te checken Persoon</param>
-        /// <returns><c>True</c> Als de user de persoonsgegevens mag zien/bewerken</returns>
+		/// <returns><c>True</c> Als de user de persoonsgegevens mag zien/bewerken</returns>
 		public bool IsGavPersoon(int persoonID)
 		{
 			return _autorisatieDao.IsGavPersoon(GebruikersNaamGet(), persoonID);
@@ -127,7 +127,7 @@ namespace Chiro.Gap.Workers
 		/// GAV is.
 		/// </summary>
 		/// <param name="lidID">ID van het betreffende lid</param>
-        /// <returns><c>True</c> als het een lid van een eigen groep is</returns>
+		/// <returns><c>True</c> als het een lid van een eigen groep is</returns>
 		public bool IsGavLid(int lidID)
 		{
 			return _autorisatieDao.IsGavLid(GebruikersNaamGet(), lidID);
@@ -144,7 +144,7 @@ namespace Chiro.Gap.Workers
 		/// <c>false</c>.</returns>
 		public bool IsGavFunctie(int functieID)
 		{
-			Functie f = _functiesDao.Ophalen(functieID, fnc=>fnc.Groep);
+			Functie f = _functiesDao.Ophalen(functieID, fnc => fnc.Groep);
 
 			return (f.Groep == null || IsGavGroep(f.Groep.ID));
 		}
@@ -172,7 +172,7 @@ namespace Chiro.Gap.Workers
 			return _autorisatieDao.IsGavCommVorm(commvormID, GebruikersNaamGet());
 		}
 
-		#region Ophalen/uitfilteren 
+		#region Ophalen/uitfilteren
 		/// <summary>
 		/// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV
 		/// </summary>
@@ -213,7 +213,7 @@ namespace Chiro.Gap.Workers
 		/// leden verwijderen voor wie de probeerperiode voorbij is, enz.)
 		/// </summary>
 		/// <param name="groepID">ID van de groep</param>
-        /// <returns><c>True</c> (enkel) als user supergav is</returns>
+		/// <returns><c>True</c> (enkel) als user supergav is</returns>
 		public bool IsSuperGavGroep(int groepID)
 		{
 			return false;  // voorlopig zijn er geen supergebruikers
@@ -239,8 +239,8 @@ namespace Chiro.Gap.Workers
 				// Bestaat er al een gebruikersrecht?
 
 				resultaat = (from gr in gav.GebruikersRecht
-					     where gr.Groep.ID == groep.ID
-					     select gr).FirstOrDefault();
+							 where gr.Groep.ID == groep.ID
+							 select gr).FirstOrDefault();
 
 				if (resultaat == null)
 				{
@@ -276,12 +276,12 @@ namespace Chiro.Gap.Workers
 			if (IsGavGroep(groepID))
 			{
 				Gav gav = _gavDao.Ophalen(login);
-				
+
 				// probeer groep al te vinden via huidige gebruikersrechten
 
 				Groep groep = (from recht in gav.GebruikersRecht
-						       where recht.Groep.ID == groepID
-						       select recht.Groep).FirstOrDefault();
+							   where recht.Groep.ID == groepID
+							   select recht.Groep).FirstOrDefault();
 
 				if (groep == null)
 				{

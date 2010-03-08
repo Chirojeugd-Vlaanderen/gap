@@ -19,7 +19,7 @@ namespace Chiro.Gap.Data.Ef
 	/// </summary>
 	/// <remarks>Probeer met een functie ALTIJD ZIJN GROEP mee op te halen.  Want een functie met groep null,
 	/// is een nationaal gedefinieerde functie.</remarks>
-	public class FunctiesDao: Dao<Functie, ChiroGroepEntities>, IFunctiesDao
+	public class FunctiesDao : Dao<Functie, ChiroGroepEntities>, IFunctiesDao
 	{
 		#region IFunctiesDao Members
 
@@ -57,9 +57,9 @@ namespace Chiro.Gap.Data.Ef
 			using (var db = new ChiroGroepEntities())
 			{
 				return (from ld in db.Lid
-					where ld.GelieerdePersoon.Groep.ID == groepID 
-						&& ld.Functie.Any(fnc => fnc.ID == functieID)
-					select ld).Count();
+						where ld.GelieerdePersoon.Groep.ID == groepID
+							&& ld.Functie.Any(fnc => fnc.ID == functieID)
+						select ld).Count();
 
 			}
 		}

@@ -95,7 +95,7 @@ namespace Chiro.Gap.Workers
 						// is persoon oud genoeg?
 
 						// TODO: Custom exception?
-						throw new InvalidOperationException(Properties.Resources.TeJong);			
+						throw new InvalidOperationException(Properties.Resources.TeJong);
 					}
 				}
 				if (f.MaxAantal > 0)
@@ -104,9 +104,9 @@ namespace Chiro.Gap.Workers
 					// van lid bevat, maar voor de zekerheid filteren we ze eruit.
 
 					var query = (from ld in f.Lid
-						     where ld.GroepsWerkJaar.ID == lid.GroepsWerkJaar.ID
-							&& ld.ID != lid.ID
-						     select ld);
+								 where ld.GroepsWerkJaar.ID == lid.GroepsWerkJaar.ID
+								&& ld.ID != lid.ID
+								 select ld);
 					if (query.Count() >= f.MaxAantal)
 					{
 						// TODO: Een exception is hier eigenlijk niet op zijn plaats;
@@ -155,8 +155,5 @@ namespace Chiro.Gap.Workers
 
 			return f.Groep == null;
 		}
-
-
-
 	}
 }

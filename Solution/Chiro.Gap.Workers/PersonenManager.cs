@@ -16,19 +16,19 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Workers
 {
-    /// <summary>
-    /// Worker die alle businesslogica i.v.m. personen bevat
-    /// </summary>
+	/// <summary>
+	/// Worker die alle businesslogica i.v.m. personen bevat
+	/// </summary>
 	public class PersonenManager
 	{
 		private IPersonenDao _dao;
 		private IAutorisatieManager _autorisatieMgr;
 
-        /// <summary>
-        /// Creëert een PersonenManager
-        /// </summary>
-        /// <param name="dao">Repository voor personen</param>
-        /// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
+		/// <summary>
+		/// Creëert een PersonenManager
+		/// </summary>
+		/// <param name="dao">Repository voor personen</param>
+		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 		public PersonenManager(IPersonenDao dao, IAutorisatieManager autorisatieMgr)
 		{
 			_dao = dao;
@@ -56,13 +56,13 @@ namespace Chiro.Gap.Workers
 				// Welke mag ik zien?
 
 				IList<int> selectie = _autorisatieMgr.EnkelMijnPersonen(
-				    (from p in allen select p.ID).ToList());
+					(from p in allen select p.ID).ToList());
 
 				// Enkel de geselecteerde personen afleveren.
 
 				var resultaat = from p in allen
-						where selectie.Contains(p.ID)
-						select p;
+								where selectie.Contains(p.ID)
+								select p;
 
 				return resultaat.ToList();
 			}
@@ -86,9 +86,9 @@ namespace Chiro.Gap.Workers
 			if (_autorisatieMgr.IsGavPersoon(verhuizer.ID))
 			{
 				PersoonsAdres persoonsadres
-				    = (from PersoonsAdres pa in verhuizer.PersoonsAdres
-				       where pa.Adres.ID == oudAdres.ID
-				       select pa).FirstOrDefault();
+					= (from PersoonsAdres pa in verhuizer.PersoonsAdres
+					   where pa.Adres.ID == oudAdres.ID
+					   select pa).FirstOrDefault();
 
 				if (oudAdres.PersoonsAdres != null)
 				{
@@ -115,7 +115,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="p">GelieerdePersoon die er een adres bij krijgt</param>
 		/// <param name="adres">Toe te voegen adres</param>
-        /// <param name="adrestype">Het adrestype (thuis, kot, enz.)</param>
+		/// <param name="adrestype">Het adrestype (thuis, kot, enz.)</param>
 		public void AdresToevoegen(Persoon p, Adres adres, AdresTypeEnum adrestype)
 		{
 			if (_autorisatieMgr.IsGavPersoon(p.ID))
@@ -130,11 +130,11 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
-        /// <summary>
-        /// Een collectie personen ophalen van wie de ID's opgegeven zijn
-        /// </summary>
-        /// <param name="personenIDs">De ID's van de personen die in de collectie moeten zitten</param>
-        /// <returns>Een collectie met de gevraagde personen</returns>
+		/// <summary>
+		/// Een collectie personen ophalen van wie de ID's opgegeven zijn
+		/// </summary>
+		/// <param name="personenIDs">De ID's van de personen die in de collectie moeten zitten</param>
+		/// <returns>Een collectie met de gevraagde personen</returns>
 		public IList<Persoon> LijstOphalen(List<int> personenIDs)
 		{
 			AutorisatieManager authMgr = Factory.Maak<AutorisatieManager>();

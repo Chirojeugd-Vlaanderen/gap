@@ -56,12 +56,12 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 
 			model.GroepsWerkJaarLijst =
-			    ServiceHelper.CallService<IGroepenService, IList<GroepsWerkJaar>>
-				    (e => e.WerkJarenOphalen(groepID));
+				ServiceHelper.CallService<IGroepenService, IList<GroepsWerkJaar>>
+					(e => e.WerkJarenOphalen(groepID));
 
 			GroepsWerkJaar huidig = (from g in model.GroepsWerkJaarLijst
-						 where g.ID == groepsWerkJaarId
-						 select g).FirstOrDefault();
+									 where g.ID == groepsWerkJaarId
+									 select g).FirstOrDefault();
 
 			model.GroepsWerkJaarIdZichtbaar = groepsWerkJaarId;
 			model.GroepsWerkJaartalZichtbaar = huidig.WerkJaar;
@@ -69,7 +69,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (afdID == 0)
 			{
 				model.LidInfoLijst =
-				    ServiceHelper.CallService<ILedenService, IList<LidInfo>>
+					ServiceHelper.CallService<ILedenService, IList<LidInfo>>
 					(lid => lid.PaginaOphalen(groepsWerkJaarId, out paginas));
 
 				model.Titel = "Ledenoverzicht van het jaar " + model.GroepsWerkJaartalZichtbaar;
@@ -77,12 +77,12 @@ namespace Chiro.Gap.WebApp.Controllers
 			else
 			{
 				model.LidInfoLijst =
-				    ServiceHelper.CallService<ILedenService, IList<LidInfo>>
-				    (lid => lid.PaginaOphalenVolgensAfdeling(groepsWerkJaarId, afdID, out paginas));
+					ServiceHelper.CallService<ILedenService, IList<LidInfo>>
+					(lid => lid.PaginaOphalenVolgensAfdeling(groepsWerkJaarId, afdID, out paginas));
 
 				AfdelingInfo af = (from a in model.AfdelingsInfoDictionary.AsQueryable()
-						   where a.Value.AfdelingID == afdID
-						   select a.Value).FirstOrDefault();
+								   where a.Value.AfdelingID == afdID
+								   select a.Value).FirstOrDefault();
 
 				model.Titel = "Ledenoverzicht van de " + af.Naam + " van het jaar " + model.GroepsWerkJaartalZichtbaar;
 			}
@@ -138,8 +138,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			BaseModelInit(model, groepID);
 
 			var list =
-			    ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
-			    (groep => groep.AfdelingenOphalen(groepsWerkJaarID));
+				ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
+				(groep => groep.AfdelingenOphalen(groepsWerkJaarID));
 			model.AfdelingsInfoDictionary = new Dictionary<int, AfdelingInfo>();
 			foreach (AfdelingInfo ai in list)
 			{
@@ -147,7 +147,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 
 			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>
-			    (l => l.LidOphalenMetAfdelingen(lidID));
+				(l => l.LidOphalenMetAfdelingen(lidID));
 
 			model.AfdelingIDs = model.HuidigLid.AfdelingIdLijst.ToList();
 

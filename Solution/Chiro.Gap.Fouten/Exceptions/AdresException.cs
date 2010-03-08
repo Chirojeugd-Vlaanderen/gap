@@ -12,27 +12,27 @@ using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.Fouten.Exceptions
 {
-    /// <summary>
-    /// Exceptie voor onbekende subgemeente
-    /// </summary>
-    public class AdresException : System.Exception, ISerializable
-    {
-        private AdresFault _fault = null;
+	/// <summary>
+	/// Exceptie voor onbekende subgemeente
+	/// </summary>
+	public class AdresException : System.Exception, ISerializable
+	{
+		private AdresFault _fault = null;
 
-        public AdresException() : base() { }
-        public AdresException(string message) : base(message) { }
-        public AdresException(string message, Exception inner) : base(message, inner) { }
-        public AdresException(SerializationInfo info, StreamingContext context) : base(info, context) { }
-        public AdresException(AdresFault vf)
-            : base()
-        {
-            _fault = vf;
-        }
+		public AdresException() : base() { }
+		public AdresException(string message) : base(message) { }
+		public AdresException(string message, Exception inner) : base(message, inner) { }
+		public AdresException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+		public AdresException(AdresFault vf)
+			: base()
+		{
+			_fault = vf;
+		}
 
-        public AdresFault Fault
-        {
-            get { return _fault; }
-            set { _fault = value; }
-        }
-    }
+		public AdresFault Fault
+		{
+			get { return _fault; }
+			set { _fault = value; }
+		}
+	}
 }

@@ -11,17 +11,17 @@ using System.Web;
 
 namespace Chiro.Gap.ServiceContracts.FaultContracts
 {
-    [DataContract]
-    public enum AdresFaultCode
-    {
-        [EnumMember]
-        AlgemeneFout = 0,   // standaardwaarde
-        [EnumMember]
-        OnbekendeStraat,
-        [EnumMember]
-        OnbekendeGemeente
-    }
+	[DataContract]
+	public enum AdresFaultCode
+	{
+		[EnumMember]
+		AlgemeneFout = 0,   // standaardwaarde
+		[EnumMember]
+		OnbekendeStraat,
+		[EnumMember]
+		OnbekendeGemeente
+	}
 
-    [DataContract]
-    public class AdresFault : DataContractFault<AdresFaultCode> { }
+	[DataContract]
+	public class AdresFault : DataContractFault<AdresFaultCode> { }
 }

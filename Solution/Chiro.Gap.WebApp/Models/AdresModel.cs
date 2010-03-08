@@ -14,20 +14,20 @@ using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
-    /// <summary>
-    /// Model voor verhuis:
-    ///   . op een adres A wonen personen
-    ///   . een aantal van die personen verhuizen naar een nieuw adres B
+	/// <summary>
+	/// Model voor verhuis:
+	///   . op een adres A wonen personen
+	///   . een aantal van die personen verhuizen naar een nieuw adres B
 	/// Model voor een nieuw adres
-    /// </summary>
-    public class AdresModel : MasterViewModel 
-    {
-        /// <summary>
-        /// ID van GelieerdePersoon die graag zou verhuizen.
-        /// Wordt bewaard om achteraf terug naar de details van de
-        /// aanvrager te kunnen redirecten.
-        /// </summary>
-        public int AanvragerID { get; set; }
+	/// </summary>
+	public class AdresModel : MasterViewModel
+	{
+		/// <summary>
+		/// ID van GelieerdePersoon die graag zou verhuizen.
+		/// Wordt bewaard om achteraf terug naar de details van de
+		/// aanvrager te kunnen redirecten.
+		/// </summary>
+		public int AanvragerID { get; set; }
 
 		/// <summary>
 		/// Adrestype voor het nieuwe adres
@@ -40,29 +40,29 @@ namespace Chiro.Gap.WebApp.Models
 		/// </summary>
 		public IList<BewonersInfo> Bewoners { get; set; }
 
-        /// <summary>
-        /// Het adres (wordt geladen met het oude adres, komt terug met het nieuwe
-        /// </summary>
-        public AdresInfo Adres { get; set; }
+		/// <summary>
+		/// Het adres (wordt geladen met het oude adres, komt terug met het nieuwe
+		/// </summary>
+		public AdresInfo Adres { get; set; }
 
 		/// <summary>
 		/// Het ID van het oude adres
 		/// </summary>
 		public int OudAdresID { get; set; }
 
-        /// <summary>
-        /// De IDs van de gekozen gelieerdepersonen die mee verhuizen (subset van de bewoners).
-        /// </summary>
-        public List<int> PersoonIDs { get; set; }
+		/// <summary>
+		/// De IDs van de gekozen gelieerdepersonen die mee verhuizen (subset van de bewoners).
+		/// </summary>
+		public List<int> PersoonIDs { get; set; }
 
-        /// <summary>
-        /// Standaardconstructor voor AdresModel
-        /// </summary>
-        public AdresModel()
-        {
+		/// <summary>
+		/// Standaardconstructor voor AdresModel
+		/// </summary>
+		public AdresModel()
+		{
 			Bewoners = new List<BewonersInfo>();
 			PersoonIDs = new List<int>();
 			Adres = new AdresInfo();
-        }
-    }
+		}
+	}
 }

@@ -21,7 +21,7 @@ namespace Chiro.Gap.Data.Ef
 	/// met 1 type `injecteert' naar een generic met 2 types.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class AbstractChiroGroepDao<T>: Dao<T, ChiroGroepEntities>, IDao<T> where T:EntityObject, IEfBasisEntiteit
+	public class AbstractChiroGroepDao<T> : Dao<T, ChiroGroepEntities>, IDao<T> where T : EntityObject, IEfBasisEntiteit
 	{
 	}
 }

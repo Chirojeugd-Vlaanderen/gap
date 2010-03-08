@@ -17,9 +17,9 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Workers
 {
-    /// <summary>
-    /// Worker die alle businesslogica i.v.m. gelieerde personen bevat
-    /// </summary>
+	/// <summary>
+	/// Worker die alle businesslogica i.v.m. gelieerde personen bevat
+	/// </summary>
 	public class GelieerdePersonenManager
 	{
 		private IGelieerdePersonenDao _dao;
@@ -27,17 +27,22 @@ namespace Chiro.Gap.Workers
 		private ICategorieenDao _categorieenDao;
 		private IAutorisatieManager _autorisatieMgr;
 
-        /// <summary>
-        /// Creëert een GelieerdePersonenManager
-        /// </summary>
-        /// <param name="dao">Repository voor gelieerde personen</param>
-        /// <param name="groepenDao">Repository voor groepen</param>
-        /// <param name="categorieenDao">Repository voor categorieën</param>
-        /// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
-        /// <param name="typedao">Repository voor communicatietypes</param>
-        /// <param name="commdao">Repository voor communicatievormen</param>
-		public GelieerdePersonenManager(IGelieerdePersonenDao dao, IGroepenDao groepenDao
-		    , ICategorieenDao categorieenDao, IAutorisatieManager autorisatieMgr, IDao<CommunicatieType> typedao, IDao<CommunicatieVorm> commdao)
+		/// <summary>
+		/// Creëert een GelieerdePersonenManager
+		/// </summary>
+		/// <param name="dao">Repository voor gelieerde personen</param>
+		/// <param name="groepenDao">Repository voor groepen</param>
+		/// <param name="categorieenDao">Repository voor categorieën</param>
+		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
+		/// <param name="typedao">Repository voor communicatietypes</param>
+		/// <param name="commdao">Repository voor communicatievormen</param>
+		public GelieerdePersonenManager(
+			IGelieerdePersonenDao dao,
+			IGroepenDao groepenDao,
+			ICategorieenDao categorieenDao,
+			IAutorisatieManager autorisatieMgr,
+			IDao<CommunicatieType> typedao,
+			IDao<CommunicatieVorm> commdao)
 		{
 			_dao = dao;
 			_groepenDao = groepenDao;
@@ -77,11 +82,11 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
-        /// <summary>
-        /// Een gelieerde persoon ophalen met al zijn/haar communicatievormen
-        /// </summary>
-        /// <param name="gelieerdePersoonID">De ID van de gelieerde persoon</param>
-        /// <returns>Een gelieerde persoon met al zijn/haar communicatievormen</returns>
+		/// <summary>
+		/// Een gelieerde persoon ophalen met al zijn/haar communicatievormen
+		/// </summary>
+		/// <param name="gelieerdePersoonID">De ID van de gelieerde persoon</param>
+		/// <returns>Een gelieerde persoon met al zijn/haar communicatievormen</returns>
 		public GelieerdePersoon OphalenMetCommVormen(int gelieerdePersoonID)
 		{
 			if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
@@ -267,7 +272,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="gp">Gelieerde persoon</param>
 		/// <returns>Diezelfde gelieerde persoon, met zijn of haar groep 
-        /// eraan gekoppeld.</returns>
+		/// eraan gekoppeld.</returns>
 		public GelieerdePersoon GroepLaden(GelieerdePersoon gp)
 		{
 			if (_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
@@ -427,22 +432,22 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGavCategoriePersoon);
 			}
 
-			IList<GelieerdePersoon> gel = 
+			IList<GelieerdePersoon> gel =
 					(from gp in categorie.GelieerdePersoon
 					 where gelieerdePersonenIDs.Contains(gp.ID)
 					 select gp).ToList();
 
-			foreach(GelieerdePersoon gp in gel)
+			foreach (GelieerdePersoon gp in gel)
 			{
 				gp.TeVerwijderen = true;
 			}
 		}
 
-        /// <summary>
-        /// Een categorie ophalen op basis van de opgegeven ID
-        /// </summary>
-        /// <param name="catID">De ID van de categorie die je nodig hebt</param>
-        /// <returns>De categorie met de opgegeven ID</returns>
+		/// <summary>
+		/// Een categorie ophalen op basis van de opgegeven ID
+		/// </summary>
+		/// <param name="catID">De ID van de categorie die je nodig hebt</param>
+		/// <returns>De categorie met de opgegeven ID</returns>
 		public Categorie OphalenCategorie(int catID)
 		{
 			// Heeft de gebruiker rechten voor de groep en de categorie?
@@ -455,11 +460,11 @@ namespace Chiro.Gap.Workers
 			return _categorieenDao.Ophalen(catID);
 		}
 
-        /// <summary>
-        /// De collectie categorieën ophalen die gebruikt worden door de groep met de opgegeven ID
-        /// </summary>
-        /// <param name="groepID">De ID van de groep waar het over gaat</param>
-        /// <returns>De collectie categorieën van de groep waar het over gaat</returns>
+		/// <summary>
+		/// De collectie categorieën ophalen die gebruikt worden door de groep met de opgegeven ID
+		/// </summary>
+		/// <param name="groepID">De ID van de groep waar het over gaat</param>
+		/// <returns>De collectie categorieën van de groep waar het over gaat</returns>
 		public IEnumerable<Categorie> CategorieenOphalen(int groepID)
 		{
 			return _categorieenDao.OphalenVanGroep(groepID);

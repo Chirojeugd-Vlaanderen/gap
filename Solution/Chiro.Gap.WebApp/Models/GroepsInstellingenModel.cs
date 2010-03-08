@@ -18,7 +18,7 @@ namespace Chiro.Gap.WebApp.Models
 	/// Aangezien ik de info van een ChiroGroep nodig heb, en de members van IMasterViewModel
 	/// hiervan een subset zijn, map ik deze via een impliciete implementatie van IMasterViewModel.
 	/// </remarks>
-	public class GroepsInstellingenModel: IMasterViewModel
+	public class GroepsInstellingenModel : IMasterViewModel
 	{
 		public GroepInfo Info { get; set; }
 		public CategorieInfo NieuweCategorie { get; set; }

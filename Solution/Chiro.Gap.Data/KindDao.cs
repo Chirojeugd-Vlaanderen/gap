@@ -18,11 +18,11 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
-    public class KindDao : Dao<Kind, ChiroGroepEntities>, IKindDao
-    {
-        public KindDao()
-        {
-            connectedEntities = new Expression<Func<Kind, object>>[] 
+	public class KindDao : Dao<Kind, ChiroGroepEntities>, IKindDao
+	{
+		public KindDao()
+		{
+			connectedEntities = new Expression<Func<Kind, object>>[] 
             { 
                                         e => e.GroepsWerkJaar.WithoutUpdate(), 
                                         e => e.GelieerdePersoon.WithoutUpdate(), 
@@ -30,6 +30,6 @@ namespace Chiro.Gap.Data.Ef
 										e => e.AfdelingsJaar.WithoutUpdate(),
                                         e => e.AfdelingsJaar.Afdeling.WithoutUpdate() 
             };
-        }
-    }
+		}
+	}
 }

@@ -32,7 +32,7 @@ namespace Chiro.Gap.Orm
 	/// <summary>
 	/// Functie op lidniveau
 	/// </summary>
-	public partial class Functie: IEfBasisEntiteit
+	public partial class Functie : IEfBasisEntiteit
 	{
 		private bool _teVerwijderen = false;
 
@@ -46,7 +46,7 @@ namespace Chiro.Gap.Orm
 		{
 			// Al stiekem hopend op een bugfix ivm het desynchronisatieprobleem met entity's,
 			// gebruik ik toch al ID.GetHashCode() als hash code.
-			
+
 			return ID.GetHashCode();
 		}
 
@@ -68,8 +68,8 @@ namespace Chiro.Gap.Orm
 				// als de functiecode niet overeenkomt met een gepredefinieerde functie.
 				//
 				return (from GepredefinieerdeFunctieType f in Enum.GetValues(typeof(GepredefinieerdeFunctieType))
-					where (int)f == ID
-					select f).FirstOrDefault();
+						where (int)f == ID
+						select f).FirstOrDefault();
 			}
 		}
 	}

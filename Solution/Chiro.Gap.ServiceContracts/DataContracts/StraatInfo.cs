@@ -13,13 +13,13 @@ using Chiro.Gap.Orm;
 
 namespace Chiro.Gap.ServiceContracts
 {
-    [DataContract]
-    public class StraatInfo
-    {
-        [DataMember]
-        public int PostNr { get; set; }
+	[DataContract]
+	public class StraatInfo
+	{
+		[DataMember]
+		public int PostNr { get; set; }
 
 		[DataMember]
 		public String Naam { get; set; }
-    }
+	}
 }

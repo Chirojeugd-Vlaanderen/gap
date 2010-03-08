@@ -12,7 +12,8 @@ namespace Chiro.Cdf.DependencyInjection
 {
 	public class TypeMappingElementCollection : ConfigurationElementCollection
 	{
-		public TypeMappingElementCollection() : base()
+		public TypeMappingElementCollection()
+			: base()
 		{
 		}
 

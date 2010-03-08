@@ -25,9 +25,9 @@ namespace Chiro.Gap.Data.Ef
 				db.CommunicatieVorm.MergeOption = MergeOption.NoTracking;
 
 				return (
-				    from cv in db.CommunicatieVorm
-				    where cv.Nummer == zoekString
-				    select cv).ToList();
+					from cv in db.CommunicatieVorm
+					where cv.Nummer == zoekString
+					select cv).ToList();
 			}
 		}
 	}

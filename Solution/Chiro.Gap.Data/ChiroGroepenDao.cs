@@ -25,9 +25,9 @@ namespace Chiro.Gap.Data.Ef
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
 				result = (
-				    from g in db.Groep.OfType<ChiroGroep>()
-				    where g.ID == id
-				    select g).FirstOrDefault<ChiroGroep>();
+					from g in db.Groep.OfType<ChiroGroep>()
+					where g.ID == id
+					select g).FirstOrDefault<ChiroGroep>();
 
 				db.Detach(result);
 			}
@@ -43,8 +43,8 @@ namespace Chiro.Gap.Data.Ef
 				db.Groep.MergeOption = MergeOption.NoTracking;
 
 				result = (
-				    from g in db.Groep.OfType<ChiroGroep>()
-				    select g).ToList<ChiroGroep>();
+					from g in db.Groep.OfType<ChiroGroep>()
+					select g).ToList<ChiroGroep>();
 			}
 			return result;
 		}

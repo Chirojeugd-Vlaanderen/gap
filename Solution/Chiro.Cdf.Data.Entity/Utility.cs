@@ -33,21 +33,21 @@ namespace Chiro.Cdf.Data.Entity
 	/// <summary>
 	/// Workaround voor 'where in' in linq to EF
 	/// </summary>
-    public static class Utility
-    {
-        /// <summary>
-        /// Deze nifty functie creëert een expressie die in het
-        /// 'where'-gedeelte van een linq-expressie gebruikt kan
-        /// worden.  De bedoeling is om een 'where-in'-constructie
-        /// te simuleren.
-        /// </summary>
-        /// <typeparam name="TElement">Klasse van het object dat 'gewhereind' moet worden</typeparam>
-        /// <typeparam name="TValue">Type van het veld waarop 'gewhereind' moet worden</typeparam>
-        /// <param name="valueSelector">Lambda-expressie die het bovenvermelde veld selecteert uit een TElement</param>
-        /// <param name="values">Collectie waarin het vermelde veld gezocht moet worden</param>
-        /// <returns>Expressie die in de 'where' van een linq-expressie gebruikt kan worden</returns>
-        public static Expression<Func<TElement, bool>> BuildContainsExpression<TElement, TValue>(Expression<Func<TElement, TValue>> valueSelector, IEnumerable<TValue> values)
-        {
+	public static class Utility
+	{
+		/// <summary>
+		/// Deze nifty functie creëert een expressie die in het
+		/// 'where'-gedeelte van een linq-expressie gebruikt kan
+		/// worden.  De bedoeling is om een 'where-in'-constructie
+		/// te simuleren.
+		/// </summary>
+		/// <typeparam name="TElement">Klasse van het object dat 'gewhereind' moet worden</typeparam>
+		/// <typeparam name="TValue">Type van het veld waarop 'gewhereind' moet worden</typeparam>
+		/// <param name="valueSelector">Lambda-expressie die het bovenvermelde veld selecteert uit een TElement</param>
+		/// <param name="values">Collectie waarin het vermelde veld gezocht moet worden</param>
+		/// <returns>Expressie die in de 'where' van een linq-expressie gebruikt kan worden</returns>
+		public static Expression<Func<TElement, bool>> BuildContainsExpression<TElement, TValue>(Expression<Func<TElement, TValue>> valueSelector, IEnumerable<TValue> values)
+		{
 			if (valueSelector == null)
 			{
 				throw new ArgumentNullException("valueSelector");
@@ -57,75 +57,75 @@ namespace Chiro.Cdf.Data.Entity
 				throw new ArgumentNullException("values");
 			}
 
-            ParameterExpression p = valueSelector.Parameters.Single();
+			ParameterExpression p = valueSelector.Parameters.Single();
 
-            if (!values.Any())
-            {
-                return e => false;
-            }
+			if (!values.Any())
+			{
+				return e => false;
+			}
 
-            var equals = values.Select(value => (Expression)Expression.Equal(valueSelector.Body, Expression.Constant(value, typeof(TValue))));
-            var body = equals.Aggregate<Expression>((accumulate, equal) => Expression.Or(accumulate, equal));
+			var equals = values.Select(value => (Expression)Expression.Equal(valueSelector.Body, Expression.Constant(value, typeof(TValue))));
+			var body = equals.Aggregate<Expression>((accumulate, equal) => Expression.Or(accumulate, equal));
 
-            return Expression.Lambda<Func<TElement, bool>>(body, p);
-        }
+			return Expression.Lambda<Func<TElement, bool>>(body, p);
+		}
 
-        /// <summary>
-        /// Detaches an objectgraph given it's root object.
-        /// </summary>
+		/// <summary>
+		/// Detaches an objectgraph given it's root object.
+		/// </summary>
 		/// <param name="entity"></param>
 		/// <typeparam name="T"></typeparam>
-        /// <returns>The detached root object.</returns>
-        /// <remarks>
-        ///     1. Enkel als de oorspronkelijke context niet meer bestaat,
-        ///        zullen de entity's daadwerkelijk EntityState=Detached
-        ///        hebben.
-        ///     2. Als er circulaire relaties voorkomen, dan werkt het
-        ///        niet.
-        ///     3. Blijkbaar ook niet voor many-to-many?
-        /// </remarks>
-        public static T DetachObjectGraph<T>(T entity) where T:IEfBasisEntiteit
-        {
-            T gedetacht;
-
-            using (MemoryStream stream = new MemoryStream())
-            {
-                // NetDataContractSerializer serializer = new NetDataContractSerializer();
-
-                // Met een DataContractSerializer werkt het blijkbaar niet.
-                // Met een binaryFormatter wel.
-
-                BinaryFormatter serializer = new BinaryFormatter();
-
-                serializer.Serialize(stream, entity);
-                stream.Position = 0;
-
-                gedetacht = (T)serializer.Deserialize(stream);
-            }
-
-            return gedetacht;
-        }
-        
-        public static IEnumerable<T> DetachObjectGraph<T>(IEnumerable<T> entities) where T : IEfBasisEntiteit
-        {
-            using (MemoryStream stream = new MemoryStream())
-            {
-                var serializer = new BinaryFormatter();
-                serializer.Serialize(stream, entities);
-                stream.Position = 0;
-                return (IEnumerable<T>)serializer.Deserialize(stream);
-            }
-        }
-
-	public static IList<T> DetachObjectGraph<T>(IList<T> entities) where T : IEfBasisEntiteit
-	{
-		using (MemoryStream stream = new MemoryStream())
+		/// <returns>The detached root object.</returns>
+		/// <remarks>
+		///     1. Enkel als de oorspronkelijke context niet meer bestaat,
+		///        zullen de entity's daadwerkelijk EntityState=Detached
+		///        hebben.
+		///     2. Als er circulaire relaties voorkomen, dan werkt het
+		///        niet.
+		///     3. Blijkbaar ook niet voor many-to-many?
+		/// </remarks>
+		public static T DetachObjectGraph<T>(T entity) where T : IEfBasisEntiteit
 		{
-			var serializer = new BinaryFormatter();
-			serializer.Serialize(stream, entities);
-			stream.Position = 0;
-			return (IList<T>)serializer.Deserialize(stream);
+			T gedetacht;
+
+			using (MemoryStream stream = new MemoryStream())
+			{
+				// NetDataContractSerializer serializer = new NetDataContractSerializer();
+
+				// Met een DataContractSerializer werkt het blijkbaar niet.
+				// Met een binaryFormatter wel.
+
+				BinaryFormatter serializer = new BinaryFormatter();
+
+				serializer.Serialize(stream, entity);
+				stream.Position = 0;
+
+				gedetacht = (T)serializer.Deserialize(stream);
+			}
+
+			return gedetacht;
+		}
+
+		public static IEnumerable<T> DetachObjectGraph<T>(IEnumerable<T> entities) where T : IEfBasisEntiteit
+		{
+			using (MemoryStream stream = new MemoryStream())
+			{
+				var serializer = new BinaryFormatter();
+				serializer.Serialize(stream, entities);
+				stream.Position = 0;
+				return (IEnumerable<T>)serializer.Deserialize(stream);
+			}
+		}
+
+		public static IList<T> DetachObjectGraph<T>(IList<T> entities) where T : IEfBasisEntiteit
+		{
+			using (MemoryStream stream = new MemoryStream())
+			{
+				var serializer = new BinaryFormatter();
+				serializer.Serialize(stream, entities);
+				stream.Position = 0;
+				return (IList<T>)serializer.Deserialize(stream);
+			}
 		}
 	}
-    }
 }

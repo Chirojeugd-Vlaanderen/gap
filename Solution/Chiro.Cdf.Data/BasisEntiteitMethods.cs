@@ -41,7 +41,7 @@ namespace Chiro.Cdf.Data
 				// (dan krijg je problemen zoals ticket #198)
 				// Vandaar dat een nulle version string wordt behandeld
 				// als de lege string.
-				
+
 				ver = String.Empty;
 			}
 

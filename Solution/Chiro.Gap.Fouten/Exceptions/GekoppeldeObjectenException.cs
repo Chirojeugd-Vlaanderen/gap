@@ -19,7 +19,7 @@ namespace Chiro.Gap.Fouten.Exceptions
 	/// (Bijv. het verwijderen van een niet-lege categorie.)
 	/// </summary>
 	/// <typeparam name="T">Klasse van de gekoppelde objecten</typeparam>
-	public class GekoppeldeObjectenException<T>: System.Exception, ISerializable where T:IBasisEntiteit
+	public class GekoppeldeObjectenException<T> : System.Exception, ISerializable where T : IBasisEntiteit
 	{
 		/// <summary>
 		/// Lijst met gekoppelde objecten die de problemen veroorzaken
@@ -30,10 +30,12 @@ namespace Chiro.Gap.Fouten.Exceptions
 		public GekoppeldeObjectenException(string message) : base(message) { }
 		public GekoppeldeObjectenException(string message, Exception inner) : base(message, inner) { }
 		public GekoppeldeObjectenException(
-			SerializationInfo info, 
-			StreamingContext context) : base(info, context) { }
+			SerializationInfo info,
+			StreamingContext context)
+			: base(info, context) { }
 
-		public GekoppeldeObjectenException(string message, IEnumerable<T> objecten): base(message)
+		public GekoppeldeObjectenException(string message, IEnumerable<T> objecten)
+			: base(message)
 		{
 			_gekoppeldeObjecten = objecten;
 		}

@@ -6,8 +6,8 @@ using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Orm.DataInterfaces
 {
-    public interface IAfdelingsJarenDao : IDao<AfdelingsJaar>
-    {
-        AfdelingsJaar Ophalen(int groepsWerkJaarID, int afdelingID);
-    }
+	public interface IAfdelingsJarenDao : IDao<AfdelingsJaar>
+	{
+		AfdelingsJaar Ophalen(int groepsWerkJaarID, int afdelingID);
+	}
 }

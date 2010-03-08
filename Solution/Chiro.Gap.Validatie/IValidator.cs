@@ -10,22 +10,22 @@ using System.Text;
 
 namespace Chiro.Gap.Validatie
 {
-    /// <summary>
-    /// Interface voor een Validator
-    /// </summary>
-    /// <typeparam name="T">Object waarop de validator van toepassing is</typeparam>
-    public interface IValidator<T>
-    {
-        /// <summary>
-        /// Valideert een object.  De bedoeling is dat er hier een aantal
-        /// generieke zaken getest kunnen worden.  (Bijv. 'maxlengths'
-        /// die gegeven zijn via attributen.)
-        /// <para />
-        /// Voorlopig zijn er zo nog geen attributen, dus retourneert
-        /// deze functie gewoonweg <c>true</c>.
-        /// </summary>
-        /// <param name="teValideren">Object dat gevalideerd moet worden</param>
-        /// <returns><c>True</c> indien validatie oké</returns>
-        bool Valideer(T teValideren);
-    }
+	/// <summary>
+	/// Interface voor een Validator
+	/// </summary>
+	/// <typeparam name="T">Object waarop de validator van toepassing is</typeparam>
+	public interface IValidator<T>
+	{
+		/// <summary>
+		/// Valideert een object.  De bedoeling is dat er hier een aantal
+		/// generieke zaken getest kunnen worden.  (Bijv. 'maxlengths'
+		/// die gegeven zijn via attributen.)
+		/// <para />
+		/// Voorlopig zijn er zo nog geen attributen, dus retourneert
+		/// deze functie gewoonweg <c>true</c>.
+		/// </summary>
+		/// <param name="teValideren">Object dat gevalideerd moet worden</param>
+		/// <returns><c>True</c> indien validatie oké</returns>
+		bool Valideer(T teValideren);
+	}
 }

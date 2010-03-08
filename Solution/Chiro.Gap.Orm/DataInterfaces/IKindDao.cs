@@ -6,7 +6,7 @@ using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Orm.DataInterfaces
 {
-    public interface IKindDao : IDao<Kind>
-    {
-    }
+	public interface IKindDao : IDao<Kind>
+	{
+	}
 }

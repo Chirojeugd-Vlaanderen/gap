@@ -12,7 +12,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	/// </summary>
 	/// <remarks>Probeer met een functie ALTIJD ZIJN GROEP mee op te halen.  Want een functie met groep null,
 	/// is een nationaal gedefinieerde functie.</remarks>
-	public interface IFunctiesDao: IDao<Functie>
+	public interface IFunctiesDao : IDao<Functie>
 	{
 		/// <summary>
 		/// Haalt een gepredefinieerde functie op

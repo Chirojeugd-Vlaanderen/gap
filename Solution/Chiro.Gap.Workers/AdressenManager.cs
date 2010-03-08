@@ -18,9 +18,9 @@ using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.Workers
 {
-    /// <summary>
-    /// Worker die alle businesslogica i.v.m. adressen bevat
-    /// </summary>
+	/// <summary>
+	/// Worker die alle businesslogica i.v.m. adressen bevat
+	/// </summary>
 	public class AdressenManager
 	{
 		private IAdressenDao _dao;
@@ -31,10 +31,10 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Creëert nieuwe adressenmanager
 		/// </summary>
-        /// <param name="dao">Repository voor adressen</param>
-        /// <param name="stratenDao">Repository voor straten</param>
+		/// <param name="dao">Repository voor adressen</param>
+		/// <param name="stratenDao">Repository voor straten</param>
 		/// <param name="subgemeenteDao">Repository voor 'subgemeentes'</param>
-        /// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
+		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 		public AdressenManager(IAdressenDao dao, IStratenDao stratenDao, ISubgemeenteDao subgemeenteDao, IAutorisatieManager autorisatieMgr)
 		{
 			_dao = dao;
@@ -87,11 +87,11 @@ namespace Chiro.Gap.Workers
 		/// wordt een exception gethrowd.
 		/// </summary>
 		/// <param name="StraatNaam">De naam van de straat</param>
-        /// <param name="HuisNr">Het huisnummer</param>
-        /// <param name="Bus">Het eventuele busnummer</param>
-        /// <param name="GemeenteNaam">De naam van de gemeente</param>
-        /// <param name="PostNr">Het postnummer van de gemeente</param>
-        /// <param name="PostCode">Tekst die in het buitenland volgt op postnummers</param>
+		/// <param name="HuisNr">Het huisnummer</param>
+		/// <param name="Bus">Het eventuele busnummer</param>
+		/// <param name="GemeenteNaam">De naam van de gemeente</param>
+		/// <param name="PostNr">Het postnummer van de gemeente</param>
+		/// <param name="PostCode">Tekst die in het buitenland volgt op postnummers</param>
 		/// <returns>Gevonden adres</returns>
 		/// <remarks>Ieder heeft het recht adressen op te zoeken</remarks>
 		public Adres ZoekenOfMaken(String StraatNaam, int HuisNr, String Bus, String GemeenteNaam, int PostNr, String PostCode)
@@ -135,9 +135,8 @@ namespace Chiro.Gap.Workers
 					// FIXME: Dit is geen propere manier van werken.  Die component 'Straat'
 					// heeft betrekking op het datacontract 'AdresInfo', wat helemaal niet
 					// van belang is in deze layer
-					fault.BerichtToevoegen(AdresFaultCode.OnbekendeStraat, "Straat"
-					    , String.Format("Straat {0} met postnummer {1} niet gevonden."
-								    , StraatNaam, PostNr));
+					fault.BerichtToevoegen(AdresFaultCode.OnbekendeStraat, "Straat",
+						String.Format("Straat {0} met postnummer {1} niet gevonden.", StraatNaam, PostNr));
 				}
 
 				sg = _subgemeenteDao.Ophalen(GemeenteNaam, PostNr);
@@ -153,9 +152,8 @@ namespace Chiro.Gap.Workers
 					// Gemeente niet gevonden: foutbericht toevoegen
 
 					// FIXME: hier idem.
-					fault.BerichtToevoegen(AdresFaultCode.OnbekendeGemeente, "Gemeente"
-					    , String.Format("Deelgemeente {0} met postnummer {1} niet gevonden."
-								    , GemeenteNaam, PostNr));
+					fault.BerichtToevoegen(AdresFaultCode.OnbekendeGemeente, "Gemeente",
+						String.Format("Deelgemeente {0} met postnummer {1} niet gevonden.", GemeenteNaam, PostNr));
 				}
 
 				if (fault.Berichten.Count != 0)
@@ -186,10 +184,10 @@ namespace Chiro.Gap.Workers
 
 		#region crab-ophalen
 
-        /// <summary>
-        /// Een lijst van subgemeenten ophalen
-        /// </summary>
-        /// <returns>Een lijst van subgemeenten</returns>
+		/// <summary>
+		/// Een lijst van subgemeenten ophalen
+		/// </summary>
+		/// <returns>Een lijst van subgemeenten</returns>
 		public IList<Subgemeente> GemeentesOphalen()
 		{
 			return _subgemeenteDao.AllesOphalen();
@@ -217,7 +215,7 @@ namespace Chiro.Gap.Workers
 		public IList<Straat> StratenOphalen(String straatBegin, IEnumerable<int> postNrs)
 		{
 			return _stratenDao.MogelijkhedenOphalen(straatBegin, postNrs);
-		}		
+		}
 
 		#endregion
 	}

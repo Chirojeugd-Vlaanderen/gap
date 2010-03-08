@@ -15,22 +15,22 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Workers
 {
-    /// <summary>
-    /// Worker die alle businesslogica i.v.m. Chirogroepen bevat
-    /// </summary>
-    public class ChiroGroepenManager
-    {
-        private IDao<ChiroGroep> _dao = null;
+	/// <summary>
+	/// Worker die alle businesslogica i.v.m. Chirogroepen bevat
+	/// </summary>
+	public class ChiroGroepenManager
+	{
+		private IDao<ChiroGroep> _dao = null;
 
-        /// <summary>
-        /// Creëert een ChiroGroepenManager
-        /// </summary>
-        /// <param name="dao">Repository voor Chirogroepen</param>
-        public ChiroGroepenManager(IDao<ChiroGroep> dao)
-        {
-            _dao = dao;
-        }
+		/// <summary>
+		/// Creëert een ChiroGroepenManager
+		/// </summary>
+		/// <param name="dao">Repository voor Chirogroepen</param>
+		public ChiroGroepenManager(IDao<ChiroGroep> dao)
+		{
+			_dao = dao;
+		}
 
-        // Nog geen interessante functionaliteit
-    }
+		// Nog geen interessante functionaliteit
+	}
 }

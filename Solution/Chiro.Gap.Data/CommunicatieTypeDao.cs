@@ -15,17 +15,17 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
-    public class CommunicatieTypeDao : Dao<CommunicatieType, ChiroGroepEntities>, ICommunicatieTypeDao 
-    {
-        public override CommunicatieType Ophalen(int communicatieTypeID)
-        {
-            using (ChiroGroepEntities db = new ChiroGroepEntities())
-            {
-                return (
-                    from ct in db.CommunicatieType
-                    where ct.ID == communicatieTypeID
-                    select ct).FirstOrDefault();
-            }
-        }
-    }
+	public class CommunicatieTypeDao : Dao<CommunicatieType, ChiroGroepEntities>, ICommunicatieTypeDao
+	{
+		public override CommunicatieType Ophalen(int communicatieTypeID)
+		{
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{
+				return (
+					from ct in db.CommunicatieType
+					where ct.ID == communicatieTypeID
+					select ct).FirstOrDefault();
+			}
+		}
+	}
 }

@@ -76,11 +76,11 @@ namespace Chiro.Cdf.Data.Entity
 			{
 				// Workaround to ensure the assembly containing the entity type is loaded:
 				// (see: https://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=3405138&SiteID=1)
-				try 
-				{ 
-					context.MetadataWorkspace.LoadFromAssembly(entityType.Assembly); 
+				try
+				{
+					context.MetadataWorkspace.LoadFromAssembly(entityType.Assembly);
 				}
-				catch 
+				catch
 				{
 					// TODO logica voorzien - zie ticket #334
 				}
@@ -162,7 +162,7 @@ namespace Chiro.Cdf.Data.Entity
 				if (pars.Count > 0)
 				{
 					// Construct query:
-                    ObjectQuery<T> query = new ObjectQuery<T>(GetEntitySetName(context, typeof(T)), context).OfType<T>();
+					ObjectQuery<T> query = new ObjectQuery<T>(GetEntitySetName(context, typeof(T)), context).OfType<T>();
 					foreach (var path in paths)
 					{
 						query = query.Include(path);
@@ -291,8 +291,8 @@ namespace Chiro.Cdf.Data.Entity
 
 					// Retrieve the name of the entityset matching the given types EdmEntityTypeAttribute:
 					string entitySetName = (from meta in container.BaseEntitySets
-								where meta.ElementType.FullName == typeattr.NamespaceName + "." + typeattr.Name
-								select meta.Name)
+											where meta.ElementType.FullName == typeattr.NamespaceName + "." + typeattr.Name
+											select meta.Name)
 								.FirstOrDefault();
 
 					// If match, return the entitySetName:

@@ -31,8 +31,8 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <returns>Lijst leden die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
 		/// de functie bepaald door <paramref name="functieID"/> hebben.</returns>
 		IList<Lid> OphalenUitFunctie(
-			int functieID, 
-			int groepsWerkJaarID, 
+			int functieID,
+			int groepsWerkJaarID,
 			params Expression<Func<Lid, object>>[] paths);
 
 		/// <summary>

@@ -36,23 +36,43 @@ namespace Chiro.Gap.Orm
 		{
 			[Verplicht(), StringLengte(160), StringMinimumLengte(2)]
 			[DisplayName("Familienaam")]
-			public string Naam { get; set; }
+			public string Naam
+			{
+				get;
+				set;
+			}
 
 			[Verplicht()]
 			[DisplayName("Voornaam")]
 			[StringLengte(60), StringMinimumLengte(2)]
-			public string VoorNaam { get; set; }
+			public string VoorNaam
+			{
+				get;
+				set;
+			}
 
 			[Verplicht()]
-			public Chiro.Gap.Orm.GeslachtsType Geslacht { set; get; }
+			public Chiro.Gap.Orm.GeslachtsType Geslacht
+			{
+				set;
+				get;
+			}
 
 			[DisplayName("AD-nummer")]
-			public Nullable<int> AdNummer { set; get; }
+			public Nullable<int> AdNummer
+			{
+				set;
+				get;
+			}
 
-			//[DisplayFormat(DataFormatString="{0:d}", ApplyFormatInEditMode=true, ConvertEmptyStringToNull=true)]
+			// [DisplayFormat(DataFormatString="{0:d}", ApplyFormatInEditMode=true, ConvertEmptyStringToNull=true)]
 			[DataType(DataType.Date)]
 			[DisplayName("Geboortedatum")]
-			public DateTime? GeboorteDatum { get; set; }
+			public DateTime? GeboorteDatum
+			{
+				get;
+				set;
+			}
 
 		}
 
@@ -60,14 +80,26 @@ namespace Chiro.Gap.Orm
 
 		public bool TeVerwijderen
 		{
-			get { return _teVerwijderen; }
-			set { _teVerwijderen = value; }
+			get
+			{
+				return _teVerwijderen;
+			}
+			set
+			{
+				_teVerwijderen = value;
+			}
 		}
 
 		public string VersieString
 		{
-			get { return this.VersieStringGet(); }
-			set { this.VersieStringSet(value); }
+			get
+			{
+				return this.VersieStringGet();
+			}
+			set
+			{
+				this.VersieStringSet(value);
+			}
 		}
 
 		#region Identity en equality
@@ -89,7 +121,7 @@ namespace Chiro.Gap.Orm
 			else
 			{
 				return (ID != 0) && (ID == andere.ID)
-				    || (ID == 0 || andere.ID == 0) && base.Equals(andere);
+					|| (ID == 0 || andere.ID == 0) && base.Equals(andere);
 			}
 
 			// Is obj geen GelieerdePersoon, dan is de vergelijking altijd vals.
@@ -102,13 +134,22 @@ namespace Chiro.Gap.Orm
 
 		public GeslachtsType Geslacht
 		{
-			get { return (GeslachtsType)this.GeslachtsInt; }
-			set { this.GeslachtsInt = (int)value; }
+			get
+			{
+				return (GeslachtsType)this.GeslachtsInt;
+			}
+			set
+			{
+				this.GeslachtsInt = (int)value;
+			}
 		}
 
 		public string VolledigeNaam
 		{
-			get { return String.Format("{0} {1}", VoorNaam, Naam); }
+			get
+			{
+				return String.Format("{0} {1}", VoorNaam, Naam);
+			}
 		}
 
 	}

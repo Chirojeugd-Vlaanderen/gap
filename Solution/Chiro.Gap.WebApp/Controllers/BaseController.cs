@@ -38,7 +38,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="serviceHelper">De IServiceHelper die de service calls zal uitvoeren
 		/// (dependency injection)</param>
-		public BaseController(IServiceHelper serviceHelper): base()
+		public BaseController(IServiceHelper serviceHelper)
+			: base()
 		{
 			_serviceHelper = serviceHelper;
 		}

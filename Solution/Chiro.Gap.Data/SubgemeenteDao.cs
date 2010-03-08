@@ -23,9 +23,9 @@ namespace Chiro.Gap.Data.Ef
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
 				resultaat = (
-				    from Subgemeente s in db.Subgemeente
-				    where s.Naam == naam && s.PostNr == postNr
-				    select s).FirstOrDefault<Subgemeente>();
+					from Subgemeente s in db.Subgemeente
+					where s.Naam == naam && s.PostNr == postNr
+					select s).FirstOrDefault<Subgemeente>();
 
 				if (resultaat != null)
 				{

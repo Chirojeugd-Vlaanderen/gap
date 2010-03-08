@@ -26,13 +26,13 @@ namespace Chiro.Gap.WebApp.Models
 		/// Plaats van de Chirogroep
 		/// </summary>
 		string Plaats { get; }
-		
+
 		/// <summary>
 		/// Het stamnummer wordt niet meer gebruikt als primary key, maar zal nog wel
 		/// lang gebruikt worden als handige manier om een groep op te zoeken.
 		/// </summary>
 		string StamNummer { get; }
-		
+
 		/// <summary>
 		/// Titel van de webpagina
 		/// </summary>

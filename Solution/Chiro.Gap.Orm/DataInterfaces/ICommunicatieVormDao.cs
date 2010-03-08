@@ -6,8 +6,8 @@ using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Orm.DataInterfaces
 {
-    public interface ICommunicatieVormDao: IDao<CommunicatieVorm>
-    {
-        IList<CommunicatieVorm> ZoekenOpNummer(string zoekString);
-    }
+	public interface ICommunicatieVormDao : IDao<CommunicatieVorm>
+	{
+		IList<CommunicatieVorm> ZoekenOpNummer(string zoekString);
+	}
 }

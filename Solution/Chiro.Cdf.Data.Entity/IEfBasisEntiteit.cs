@@ -15,7 +15,7 @@ namespace Chiro.Cdf.Data.Entity
 	/// IEfBasisEntiteit: Basisentiteit voor gebruik met Chiro.Cdf.Data.Entity
 	/// (entity framework).
 	/// </summary>
-	public interface IEfBasisEntiteit: IBasisEntiteit, IEntityWithKey
+	public interface IEfBasisEntiteit : IBasisEntiteit, IEntityWithKey
 	{
 	}
 }

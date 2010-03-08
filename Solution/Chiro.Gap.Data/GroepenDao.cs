@@ -40,10 +40,10 @@ namespace Chiro.Gap.Data.Ef
 				db.GroepsWerkJaar.MergeOption = MergeOption.NoTracking;
 
 				var query = (
-				    from wj in db.GroepsWerkJaar.Include("AfdelingsJaar").Include("Groep")
-				    where wj.Groep.ID == groepID
-				    orderby wj.WerkJaar descending
-				    select wj);
+					from wj in db.GroepsWerkJaar.Include("AfdelingsJaar").Include("Groep")
+					where wj.Groep.ID == groepID
+					orderby wj.WerkJaar descending
+					select wj);
 
 				result = query.FirstOrDefault<GroepsWerkJaar>();
 			}
@@ -73,9 +73,9 @@ namespace Chiro.Gap.Data.Ef
 				db.GroepsWerkJaar.MergeOption = MergeOption.NoTracking;
 
 				var ajQuery = (
-				    from aj in db.AfdelingsJaar.Include("Afdeling").Include("OfficieleAfdeling")
-				    where aj.GroepsWerkJaar.ID == groepsWerkJaarID
-				    select aj);
+					from aj in db.AfdelingsJaar.Include("Afdeling").Include("OfficieleAfdeling")
+					where aj.GroepsWerkJaar.ID == groepsWerkJaarID
+					select aj);
 
 				// In principe zouden we Afdeling.Groep kunnen includen, 
 				// maar aangezien we met NoTracking werken, zou dat resulteren
@@ -95,9 +95,9 @@ namespace Chiro.Gap.Data.Ef
 				// TODO: Kan dit niet in 1 keer?
 
 				groepswj = (
-				    from gwj in db.GroepsWerkJaar
-				    where gwj.ID == groepsWerkJaarID
-				    select gwj).FirstOrDefault();
+					from gwj in db.GroepsWerkJaar
+					where gwj.ID == groepsWerkJaarID
+					select gwj).FirstOrDefault();
 
 				groepswj.Groep = result;
 				result.GroepsWerkJaar.Add(groepswj);
@@ -237,27 +237,27 @@ namespace Chiro.Gap.Data.Ef
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
 				result = (
-				    from d in db.OfficieleAfdeling
-				    select d
+					from d in db.OfficieleAfdeling
+					select d
 				).ToList();
 			}
 			return Utility.DetachObjectGraph(result);
 		}
 
-        public Groep OphalenMetGroepsWerkJaren(int groepID)
-        {
-            Groep result = null;
-            using (ChiroGroepEntities db = new ChiroGroepEntities())
-            {
-                db.GroepsWerkJaar.MergeOption = MergeOption.NoTracking;
+		public Groep OphalenMetGroepsWerkJaren(int groepID)
+		{
+			Groep result = null;
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{
+				db.GroepsWerkJaar.MergeOption = MergeOption.NoTracking;
 
-                result = (
-                    from g in db.Groep.Include("GroepsWerkJaar")
-                    where g.ID == groepID
-                    select g
-                ).FirstOrDefault();
-            }
-            return Utility.DetachObjectGraph(result);
-        }
-    }
+				result = (
+					from g in db.Groep.Include("GroepsWerkJaar")
+					where g.ID == groepID
+					select g
+				).FirstOrDefault();
+			}
+			return Utility.DetachObjectGraph(result);
+		}
+	}
 }

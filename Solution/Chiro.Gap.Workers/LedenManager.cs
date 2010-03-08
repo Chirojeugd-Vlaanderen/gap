@@ -83,8 +83,8 @@ namespace Chiro.Gap.Workers
 			// CONTROLES
 			// Lid bestaat al
 			var x = (from l in gpMetDetails.Lid
-				 where l.GroepsWerkJaar.ID == gwj.ID
-				 select l).FirstOrDefault();
+					 where l.GroepsWerkJaar.ID == gwj.ID
+					 select l).FirstOrDefault();
 
 			if (x != null) // was dus al lid
 			{
@@ -187,8 +187,8 @@ namespace Chiro.Gap.Workers
 			if (afdelingsjaren.Count > 1)
 			{
 				aj = (from a in afdelingsjaren
-				      where a.Geslacht == gpMetDetails.Persoon.Geslacht || a.Geslacht == GeslachtsType.Gemengd
-				      select a).FirstOrDefault();
+					  where a.Geslacht == gpMetDetails.Persoon.Geslacht || a.Geslacht == GeslachtsType.Gemengd
+					  select a).FirstOrDefault();
 			}
 			if (aj == null)
 			{
@@ -370,7 +370,6 @@ namespace Chiro.Gap.Workers
 		/// <returns>Lijst leden uit het groepswerkjaar met de gegeven functie</returns>
 		public IList<Lid> Ophalen(int functieID, int groepsWerkJaarID)
 		{
-
 			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGavGroepsWerkJaar);

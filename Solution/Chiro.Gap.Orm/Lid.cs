@@ -40,14 +40,14 @@ namespace Chiro.Gap.Orm
 			return 5;
 		}
 
-        /// <summary>
-        /// Geeft een lijst terug van alle afdelingen waaraan het lid gekoppeld is.
-        /// </summary>
-        /// <returns>Lijst met afdelingen</returns>
-        /// <remarks>Een kind is hoogstens aan 1 afdeling gekoppeld</remarks>
-        public IList<int> AfdelingIdLijstGet()
-        {
-            IList<int> result = new List<int>();
+		/// <summary>
+		/// Geeft een lijst terug van alle afdelingen waaraan het lid gekoppeld is.
+		/// </summary>
+		/// <returns>Lijst met afdelingen</returns>
+		/// <remarks>Een kind is hoogstens aan 1 afdeling gekoppeld</remarks>
+		public IList<int> AfdelingIdLijstGet()
+		{
+			IList<int> result = new List<int>();
 			if (this is Kind)
 			{
 				if ((this as Kind).AfdelingsJaar != null)
@@ -59,7 +59,7 @@ namespace Chiro.Gap.Orm
 			{
 				foreach (AfdelingsJaar aj in (this as Leiding).AfdelingsJaar)
 				{
-                    result.Add(aj.Afdeling.ID);
+					result.Add(aj.Afdeling.ID);
 				}
 			}
 			else
@@ -67,8 +67,8 @@ namespace Chiro.Gap.Orm
 				Debug.Assert(false, "Lid moet kind of leiding zijn.");
 			}
 
-            return result;
-        }
+			return result;
+		}
 
 	}
 }

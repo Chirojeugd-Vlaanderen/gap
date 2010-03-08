@@ -208,7 +208,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(DataContractFault<CommunicatieVorm>))]
 		void CommunicatieVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm, int typeID);
-		
+
 		/// <summary>
 		/// Verwijdert een communicatievorm van een gelieerde persoon
 		/// </summary>
@@ -252,7 +252,7 @@ namespace Chiro.Gap.ServiceContracts
 		#endregion commvormen
 
 		#region categorieën
-		
+
 		/// <summary>
 		/// Voegt een collectie gelieerde personen op basis van hun ID toe aan een collectie categorieën
 		/// </summary>

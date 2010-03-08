@@ -36,6 +36,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="postNrs">Postnummers waarin te zoeken</param>
 		/// <returns>Gegevens van de gevonden straten</returns>
 		IList<Straat> MogelijkhedenOphalen(string naamBegin, IEnumerable<int> postNrs);
-		
+
 	}
 }

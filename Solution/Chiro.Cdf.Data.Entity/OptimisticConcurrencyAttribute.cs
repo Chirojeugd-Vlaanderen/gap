@@ -78,7 +78,7 @@ namespace Chiro.Cdf.Data.Entity
 			object actualValue = property.GetValue(instance, null);
 			Type iftype = typeof(IConcurrencyResolver<>).MakeGenericType(property.PropertyType);
 			object nextValue = this.concurrencyResolverType.GetInterfaceMap(iftype).TargetMethods[0].Invoke(this.concurrencyResolver, new object[1] { actualValue });
-			
+
 			// Assign NextValue:
 			property.SetValue(instance, nextValue, null);
 		}

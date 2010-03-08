@@ -43,7 +43,8 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Standaardconstructor voor GelieerdePersonenModel
 		/// </summary>
-		public GelieerdePersonenModel() : base() 
+		public GelieerdePersonenModel()
+			: base()
 		{
 			Forceer = false;
 		}

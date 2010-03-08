@@ -15,25 +15,25 @@ using Chiro.Gap.WebApp.Controllers;
 
 namespace Chiro.Gap.WebApp.Models
 {
-    /// <summary>
-    /// Zorgt ervoor dat controllers de gegevens van het MasterViewModel doorgeven aan
-    /// het overervend model
-    /// </summary>
-    public class MasterAttribute : ActionFilterAttribute
-    {
-        public override void OnActionExecuted(ActionExecutedContext filterContext)
-        {
-            base.OnActionExecuted(filterContext);
-            
-            // Controleer of we iets moeten tonen of dat we geredirect worden. Bij Redirect mogen we verder doen,
-            // als we iets moeten tonen, moeten we nog iets doorgeven van de MasterViewModel.
-            if (filterContext.Result as ViewResultBase != null)
-            {
-                IMasterViewModel viewModel = (IMasterViewModel)((ViewResultBase)filterContext.Result).ViewData.Model;
+	/// <summary>
+	/// Zorgt ervoor dat controllers de gegevens van het MasterViewModel doorgeven aan
+	/// het overervend model
+	/// </summary>
+	public class MasterAttribute : ActionFilterAttribute
+	{
+		public override void OnActionExecuted(ActionExecutedContext filterContext)
+		{
+			base.OnActionExecuted(filterContext);
 
-                BaseController controller = (BaseController)filterContext.Controller;
-                // Controller.SetModel(viewModel);
-            }
-        }
-    }
+			// Controleer of we iets moeten tonen of dat we geredirect worden. Bij Redirect mogen we verder doen,
+			// als we iets moeten tonen, moeten we nog iets doorgeven van de MasterViewModel.
+			if (filterContext.Result as ViewResultBase != null)
+			{
+				IMasterViewModel viewModel = (IMasterViewModel)((ViewResultBase)filterContext.Result).ViewData.Model;
+
+				BaseController controller = (BaseController)filterContext.Controller;
+				// Controller.SetModel(viewModel);
+			}
+		}
+	}
 }

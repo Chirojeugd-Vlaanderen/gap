@@ -13,22 +13,22 @@ using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
-    public class LedenModel : MasterViewModel 
-    {
-        public Dictionary<int, AfdelingInfo> AfdelingsInfoDictionary { get; set; }
-        
-        /// <summary>
+	public class LedenModel : MasterViewModel
+	{
+		public Dictionary<int, AfdelingInfo> AfdelingsInfoDictionary { get; set; }
+
+		/// <summary>
 		/// Bevat de huidige afdelingen van een lid, of de geselecteerde na de ui, voor leiding
-        /// </summary>
+		/// </summary>
 		public List<int> AfdelingIDs { get; set; }
-        
-        /// <summary>
+
+		/// <summary>
 		/// Bevat de huidige of de nieuwe gewenste afdeling voor een kind
-        /// </summary>
+		/// </summary>
 		public int AfdelingID { get; set; }
 
-        public LidInfo HuidigLid { get; set; }
+		public LidInfo HuidigLid { get; set; }
 
-        public LedenModel() : base() { }
-    }
+		public LedenModel() : base() { }
+	}
 }

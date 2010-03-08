@@ -11,8 +11,8 @@ using System.Web;
 
 namespace Chiro.Gap.Services
 {
-    internal static class SecurityGroepen
-    {
-        public const string Gebruikers = @"CgUsers";
-    }
+	internal static class SecurityGroepen
+	{
+		public const string Gebruikers = @"CgUsers";
+	}
 }

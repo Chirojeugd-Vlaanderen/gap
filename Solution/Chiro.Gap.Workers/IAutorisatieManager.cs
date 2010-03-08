@@ -50,7 +50,7 @@ namespace Chiro.Gap.Workers
 		/// gav is voor de groep met gegeven ID
 		/// </summary>
 		/// <param name="groepID">ID van de groep</param>
-        /// <returns><c>True</c> (enkel) als user GAV is</returns>
+		/// <returns><c>True</c> (enkel) als user GAV is</returns>
 		bool IsGavGroep(int groepID);
 
 		/// <summary>
@@ -58,7 +58,7 @@ namespace Chiro.Gap.Workers
 		/// met een GAV van de groep van een GroepsWerkJaar
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID gevraagde groepswerkjaar</param>
-        /// <returns><c>True</c> als aangemelde gebruiker GAV is</returns>
+		/// <returns><c>True</c> als aangemelde gebruiker GAV is</returns>
 		bool IsGavGroepsWerkJaar(int groepsWerkJaarID);
 
 		/// <summary>
@@ -67,7 +67,7 @@ namespace Chiro.Gap.Workers
 		/// persoon met gegeven ID
 		/// </summary>
 		/// <param name="persoonID">ID van te checken Persoon</param>
-        /// <returns><c>True</c> als de user de persoonsgegevens mag zien/bewerken</returns>
+		/// <returns><c>True</c> als de user de persoonsgegevens mag zien/bewerken</returns>
 		bool IsGavPersoon(int persoonID);
 
 		/// <summary>
@@ -75,7 +75,7 @@ namespace Chiro.Gap.Workers
 		/// de gebruiker GAV is.
 		/// </summary>
 		/// <param name="afdelingsID">ID gevraagde afdeling</param>
-        /// <returns><c>True</c> als de gebruiker GAV is van de groep van de
+		/// <returns><c>True</c> als de gebruiker GAV is van de groep van de
 		/// afdeling</returns>
 		bool IsGavAfdeling(int afdelingsID);
 
@@ -84,7 +84,7 @@ namespace Chiro.Gap.Workers
 		/// GAV is.
 		/// </summary>
 		/// <param name="lidID">ID van het betreffende lid</param>
-        /// <returns><c>True</c> als het een lid van een eigen groep is</returns>
+		/// <returns><c>True</c> als het een lid van een eigen groep is</returns>
 		bool IsGavLid(int lidID);
 
 		/// <summary>
@@ -92,7 +92,7 @@ namespace Chiro.Gap.Workers
 		/// GAV is van de groep gekoppeld aan een zekere categorie.
 		/// </summary>
 		/// <param name="categorieID">ID van de categorie</param>
-        /// <returns><c>True</c> indien GAV</returns>
+		/// <returns><c>True</c> indien GAV</returns>
 		bool IsGavCategorie(int categorieID);
 
 		/// <summary>
@@ -100,7 +100,7 @@ namespace Chiro.Gap.Workers
 		/// GAV is van de groep gekoppeld aan een zekere communicatievorm.
 		/// </summary>
 		/// <param name="commvormID">ID van de communicatievorm</param>
-        /// <returns><c>True</c> indien GAV</returns>
+		/// <returns><c>True</c> indien GAV</returns>
 		bool IsGavCommVorm(int commvormID);
 
 		/// <summary>
@@ -121,7 +121,7 @@ namespace Chiro.Gap.Workers
 		/// verwijderen van leden waarvan de probeerperiode voorbij is,...)
 		/// </summary>
 		/// <param name="groepID">ID van de groep</param>
-        /// <returns><c>True</c> (enkel) als user supergav is</returns>
+		/// <returns><c>True</c> (enkel) als user supergav is</returns>
 		bool IsSuperGavGroep(int groepID);
 
 		/// <summary>

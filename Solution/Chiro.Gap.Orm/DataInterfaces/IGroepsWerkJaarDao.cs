@@ -6,7 +6,7 @@ using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Orm.DataInterfaces
 {
-    public interface IGroepsWerkJaarDao: IDao<GroepsWerkJaar>
-    {
-    }
+	public interface IGroepsWerkJaarDao : IDao<GroepsWerkJaar>
+	{
+	}
 }

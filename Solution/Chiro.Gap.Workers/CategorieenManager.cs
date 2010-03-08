@@ -18,7 +18,7 @@ using Chiro.Gap.Orm.DataInterfaces;
 namespace Chiro.Gap.Workers
 {
 	/// <summary>
-    /// Worker die alle businesslogica i.v.m. categorieën bevat
+	/// Worker die alle businesslogica i.v.m. categorieën bevat
 	/// </summary>
 	public class CategorieenManager
 	{

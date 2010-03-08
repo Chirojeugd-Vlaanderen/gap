@@ -13,31 +13,31 @@ using Chiro.Gap.Orm;
 
 namespace Chiro.Gap.ServiceContracts
 {
-    [DataContract]
-    public class PersoonInfo
-    {
-        [DataMember]
-        public int? AdNummer { get; set; }
+	[DataContract]
+	public class PersoonInfo
+	{
+		[DataMember]
+		public int? AdNummer { get; set; }
 
-        [DataMember]
-        public int GelieerdePersoonID { get; set; }
+		[DataMember]
+		public int GelieerdePersoonID { get; set; }
 
 		[DataMember]
 		public int PersoonID { get; set; }
 
-        [DataMember]
-        public string VolledigeNaam { get; set; }
+		[DataMember]
+		public string VolledigeNaam { get; set; }
 
-        [DataMember]
-        public DateTime? GeboorteDatum { get; set; }
+		[DataMember]
+		public DateTime? GeboorteDatum { get; set; }
 
-        [DataMember]
-        public GeslachtsType Geslacht { get; set; }
+		[DataMember]
+		public GeslachtsType Geslacht { get; set; }
 
-        [DataMember]
-        public Boolean IsLid { get; set; }
+		[DataMember]
+		public Boolean IsLid { get; set; }
 
-        [DataMember]
-        public IList<Categorie> CategorieLijst { get; set; }
-    }
+		[DataMember]
+		public IList<Categorie> CategorieLijst { get; set; }
+	}
 }

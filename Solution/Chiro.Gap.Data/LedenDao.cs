@@ -225,9 +225,9 @@ namespace Chiro.Gap.Data.Ef
 			using (var db = new ChiroGroepEntities())
 			{
 				var query = (from lid in db.Lid
-					     where lid.Functie.Any(fnc => fnc.ID == functieID) &&
-						lid.GroepsWerkJaar.ID == groepsWerkJaarID
-					     select lid) as ObjectQuery<Lid>;
+							 where lid.Functie.Any(fnc => fnc.ID == functieID) &&
+							lid.GroepsWerkJaar.ID == groepsWerkJaarID
+							 select lid) as ObjectQuery<Lid>;
 				result = (IncludesToepassen(query, paths)).ToList();
 			}
 

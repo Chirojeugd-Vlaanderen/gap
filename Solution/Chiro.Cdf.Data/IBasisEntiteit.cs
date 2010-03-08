@@ -20,7 +20,7 @@ namespace Chiro.Cdf.Data
 		/// integer.
 		/// </summary>
 		int ID { get; set; }
-	
+
 		/// <summary>
 		/// Timestamp die het object in de database heeft.
 		/// De bedoeling is niet dat de gebruiker hier iets

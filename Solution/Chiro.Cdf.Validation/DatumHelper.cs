@@ -31,7 +31,7 @@ namespace Chiro.Cdf.Validation
 		public static int LeefTijd(DateTime geboorteDatum, DateTime referentie)
 		{
 			int jaren = referentie.Year - geboorteDatum.Year;
-			
+
 			return (referentie.Month < geboorteDatum.Month ||
 					(referentie.Month == geboorteDatum.Month &&
 						referentie.Day < geboorteDatum.Day)) ? --jaren : jaren;

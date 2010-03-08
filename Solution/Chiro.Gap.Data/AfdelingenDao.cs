@@ -32,10 +32,10 @@ namespace Chiro.Gap.Data.Ef
 				db.Afdeling.MergeOption = MergeOption.NoTracking;
 
 				resultaat = (
-				    from Afdeling afd
-				    in db.Afdeling.Include("Groep")
-				    where afd.ID == afdelingID
-				    select afd).FirstOrDefault();
+					from Afdeling afd
+					in db.Afdeling.Include("Groep")
+					where afd.ID == afdelingID
+					select afd).FirstOrDefault();
 
 				if (resultaat != null)
 				{
@@ -53,7 +53,7 @@ namespace Chiro.Gap.Data.Ef
 		/// Haalt de afdelingen van een groep op die niet gebruikt zijn in een gegeven 
 		/// groepswerkjaar, op basis van een <paramref name="groepsWerkJaarID"/>
 		/// </summary>
-        /// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
 		/// opgezocht moeten worden.</param>
 		/// <returns>De ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
 		public IList<Afdeling> OngebruikteOphalen(int groepsWerkJaarID)
@@ -63,9 +63,9 @@ namespace Chiro.Gap.Data.Ef
 				db.Afdeling.MergeOption = MergeOption.NoTracking;
 
 				return (from afdeling in db.Afdeling
-					     where afdeling.Groep.GroepsWerkJaar.Any(gwj => gwj.ID == groepsWerkJaarID)
-					     && !afdeling.AfdelingsJaar.Any(afdj => afdj.GroepsWerkJaar.ID == groepsWerkJaarID)
-					     select afdeling).ToList();
+						where afdeling.Groep.GroepsWerkJaar.Any(gwj => gwj.ID == groepsWerkJaarID)
+						&& !afdeling.AfdelingsJaar.Any(afdj => afdj.GroepsWerkJaar.ID == groepsWerkJaarID)
+						select afdeling).ToList();
 			}
 		}
 	}

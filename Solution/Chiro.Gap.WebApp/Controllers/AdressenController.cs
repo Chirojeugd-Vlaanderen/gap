@@ -37,7 +37,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				// Cache geexpired, opnieuw opzoeken en cachen.
 
-				result = ServiceHelper.CallService<IGroepenService, 
+				result = ServiceHelper.CallService<IGroepenService,
 					IEnumerable<GemeenteInfo>>(g => g.GemeentesOphalen());
 
 				cache.Add(
@@ -68,8 +68,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			var gemeenteLijst = DeelGemeentesOphalen();
 
 			var tags = (from g in gemeenteLijst
-				    orderby g.Naam
-				    select new { Tag = g.Naam })
+						orderby g.Naam
+						select new { Tag = g.Naam })
 				   .Where(x => x.Tag.StartsWith(q, StringComparison.CurrentCultureIgnoreCase))
 				   .Distinct()
 				   .Take(limit)
@@ -93,19 +93,19 @@ namespace Chiro.Gap.WebApp.Controllers
 			// TODO: Moet die gemeentelijst niet in cache zitten, ipv op het niveau van de app?
 			// Na te kijken in het verslag over state
 			var postNrs = (from gemeente in DeelGemeentesOphalen()
-				       where String.Compare(gemeente.Naam, gemeenteNaam) == 0
-				       select gemeente.PostNr).Distinct().ToList();
+						   where String.Compare(gemeente.Naam, gemeenteNaam) == 0
+						   select gemeente.PostNr).Distinct().ToList();
 
 			IEnumerable<StraatInfo> mogelijkeStraten =
 				ServiceHelper.CallService<IGroepenService, IEnumerable<StraatInfo>>(
 					x => x.StratenOphalenMeerderePostNrs(gedeeltelijkeStraatNaam, postNrs));
 
 			var namen = (from straat in mogelijkeStraten
-				     orderby straat.Naam
-				     select straat.Naam).Distinct();
+						 orderby straat.Naam
+						 select straat.Naam).Distinct();
 
 			var resultaat = from tag in namen
-					select new { Tag = tag };
+							select new { Tag = tag };
 
 			// Return the result set as JSON
 			return Json(resultaat);

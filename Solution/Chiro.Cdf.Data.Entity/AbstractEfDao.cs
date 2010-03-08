@@ -77,8 +77,8 @@ namespace Chiro.Cdf.Data.Entity
 				// de EntitySetName niet gelijk aan de naam van het type.)
 
 				ObjectQuery<TEntiteit> query = (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
-								where t.ID == id
-								select t) as ObjectQuery<TEntiteit>;
+												where t.ID == id
+												select t) as ObjectQuery<TEntiteit>;
 
 				// query.MergeOption = MergeOption.NoTracking;
 				// Je zou denken dat bovenstaande lijn ervoor zorgt dat de opgehaalde
@@ -118,11 +118,11 @@ namespace Chiro.Cdf.Data.Entity
 			{
 				aantalTotaal = (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
 						.Where(Utility.BuildContainsExpression<TEntiteit, int>(f, list))
-						select t).Count();
+								select t).Count();
 
 				ObjectQuery<TEntiteit> query =
-				    (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
-				     select t).OrderBy(basisent=>basisent.ID).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte) as ObjectQuery<TEntiteit>;
+					(from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
+					 select t).OrderBy(basisent => basisent.ID).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte) as ObjectQuery<TEntiteit>;
 
 				result = (IncludesToepassen(query, paths)).ToList<TEntiteit>();
 			}
@@ -158,7 +158,7 @@ namespace Chiro.Cdf.Data.Entity
 
 				ObjectQuery<TEntiteit> query = (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
 								.Where(Utility.BuildContainsExpression<TEntiteit, int>(ent => ent.ID, ids))
-								select t) as ObjectQuery<TEntiteit>;
+												select t) as ObjectQuery<TEntiteit>;
 
 				result = (IncludesToepassen(query, paths)).ToList<TEntiteit>();
 			}

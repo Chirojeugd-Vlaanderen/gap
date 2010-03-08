@@ -36,32 +36,32 @@ namespace Chiro.Cdf.Data
 		/// <paramref name="paths"/></returns>
 		T Ophalen(int id, params Expression<Func<T, object>>[] paths);
 
-        /// <summary>
-        /// Haalt een lijst entiteiten op, met gegeven <paramref name="ids"/>
-        /// </summary>
-        /// <param name="ids">Rij ID's op te halen entiteiten</param>
-        /// <returns>Lijst opgehaalde entiteiten</returns>
-        IList<T> Ophalen(IEnumerable<int> ids);
+		/// <summary>
+		/// Haalt een lijst entiteiten op, met gegeven <paramref name="ids"/>
+		/// </summary>
+		/// <param name="ids">Rij ID's op te halen entiteiten</param>
+		/// <returns>Lijst opgehaalde entiteiten</returns>
+		IList<T> Ophalen(IEnumerable<int> ids);
 
-        /// <summary>
-        /// Haalt een lijst entiteiten op, met gekoppelde entiteiten
-        /// </summary>
-        /// <param name="ids">ID's van op te halen entiteiten</param>
-        /// <param name="paths">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
-        /// <returns>Lijst met opgehaalde entiteiten</returns>
-        IList<T> Ophalen(IEnumerable<int> ids, params Expression<Func<T, object>>[] paths);
+		/// <summary>
+		/// Haalt een lijst entiteiten op, met gekoppelde entiteiten
+		/// </summary>
+		/// <param name="ids">ID's van op te halen entiteiten</param>
+		/// <param name="paths">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+		/// <returns>Lijst met opgehaalde entiteiten</returns>
+		IList<T> Ophalen(IEnumerable<int> ids, params Expression<Func<T, object>>[] paths);
 
-        /// <summary>
-        /// Haalt een gepagineerde lijst met entiteiten van type T op en de noodzakelijke koppelingen
-        /// </summary>
+		/// <summary>
+		/// Haalt een gepagineerde lijst met entiteiten van type T op en de noodzakelijke koppelingen
+		/// </summary>
 		/// <param name="id"></param>
 		/// <param name="f"></param>
-        /// <param name="pagina">De hoeveelste pagina</param>
-        /// <param name="paginaGrootte">Het aantal elementen op een pagina</param>
-        /// <param name="aantalTotaal">Out parameter met het totaal aantal elementen</param>
-        /// <param name="paths">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
-        /// <returns>Lijst met opgehaalde entiteiten</returns>
-        IList<T> PaginaOphalen(int id, Expression<Func<T, int>> f, int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<T, object>>[] paths);
+		/// <param name="pagina">De hoeveelste pagina</param>
+		/// <param name="paginaGrootte">Het aantal elementen op een pagina</param>
+		/// <param name="aantalTotaal">Out parameter met het totaal aantal elementen</param>
+		/// <param name="paths">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+		/// <returns>Lijst met opgehaalde entiteiten</returns>
+		IList<T> PaginaOphalen(int id, Expression<Func<T, int>> f, int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<T, object>>[] paths);
 
 		/// <summary>
 		/// Haalt alle entiteiten van het type <typeparamref name="T"/> op.

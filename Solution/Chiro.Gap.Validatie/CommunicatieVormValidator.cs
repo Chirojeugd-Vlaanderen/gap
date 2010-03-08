@@ -15,9 +15,9 @@ using Chiro.Gap.Orm;
 
 namespace Chiro.Gap.Validatie
 {
-    /// <summary>
-    /// Klasse die validatieregels controleert voor Communicatievormen
-    /// </summary>
+	/// <summary>
+	/// Klasse die validatieregels controleert voor Communicatievormen
+	/// </summary>
 	public class CommunicatieVormValidator : Validator<CommunicatieVorm>
 	{
 		/// <summary>

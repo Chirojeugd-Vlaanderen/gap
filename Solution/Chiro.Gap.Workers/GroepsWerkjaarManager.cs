@@ -16,9 +16,9 @@ using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {
-    /// <summary>
-    /// Worker die alle businesslogica i.v.m. groepswerkjaren bevat
-    /// </summary>
+	/// <summary>
+	/// Worker die alle businesslogica i.v.m. groepswerkjaren bevat
+	/// </summary>
 	public class GroepsWerkJaarManager
 	{
 		private IGroepsWerkJaarDao _groepsWjDao;
@@ -26,16 +26,16 @@ namespace Chiro.Gap.Workers
 		private IAutorisatieManager _autorisatieMgr;
 		private IAfdelingenDao _afdelingenDao;
 
-        /// <summary>
-        /// Creëert een GroepsWerkJaarManager
-        /// </summary>
-        /// <param name="groepsWjDao">Repository voor groepswerkjaren</param>
-        /// <param name="groepenDao">Repository voor groepen</param>
-        /// <param name="afdelingenDao">Repository voor afdelingen</param>
-        /// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
+		/// <summary>
+		/// Creëert een GroepsWerkJaarManager
+		/// </summary>
+		/// <param name="groepsWjDao">Repository voor groepswerkjaren</param>
+		/// <param name="groepenDao">Repository voor groepen</param>
+		/// <param name="afdelingenDao">Repository voor afdelingen</param>
+		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 		public GroepsWerkJaarManager(
-			IGroepsWerkJaarDao groepsWjDao, 
-			IGroepenDao groepenDao, 
+			IGroepsWerkJaarDao groepsWjDao,
+			IGroepenDao groepenDao,
 			IAfdelingenDao afdelingenDao,
 			IAutorisatieManager autorisatieMgr)
 		{
@@ -99,7 +99,7 @@ namespace Chiro.Gap.Workers
 		/// Haalt de afdelingen van een groep op die niet gebruikt zijn in een gegeven 
 		/// groepswerkjaar, op basis van een <paramref name="groepsWerkJaarID"/>
 		/// </summary>
-        /// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
 		/// opgezocht moeten worden.</param>
 		/// <returns>De ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
 		public IList<Afdeling> OngebruikteAfdelingenOphalen(int groepsWerkJaarID)
@@ -144,7 +144,7 @@ namespace Chiro.Gap.Workers
 
 			AfdelingsJaar resultaat = new AfdelingsJaar();
 
-            resultaat.GeboorteJaarVan = jaarVan;
+			resultaat.GeboorteJaarVan = jaarVan;
 			resultaat.GeboorteJaarTot = jaarTot;
 
 			resultaat.GroepsWerkJaar = gwj;
