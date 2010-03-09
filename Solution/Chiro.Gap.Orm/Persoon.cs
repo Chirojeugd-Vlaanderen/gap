@@ -80,6 +80,7 @@ namespace Chiro.Gap.Orm
 			// [DisplayFormat(DataFormatString="{0:d}", ApplyFormatInEditMode=true, ConvertEmptyStringToNull=true)]
 			[DataType(DataType.Date)]
 			[DisplayName("Geboortedatum")]
+			[GeboorteDatumInVerleden()]
 			public DateTime? GeboorteDatum
 			{
 				get;

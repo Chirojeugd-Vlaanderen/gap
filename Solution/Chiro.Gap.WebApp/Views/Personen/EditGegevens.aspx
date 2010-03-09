@@ -64,32 +64,27 @@
             <p>
             <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.VoorNaam) %>
             <%=Html.EditorFor(s=>s.HuidigePersoon.Persoon.VoorNaam) %>
-            <%=Html.ValidationMessageFor(s=>s.HuidigePersoon.Persoon.VoorNaam)%>
             </p>
             
             <p>
             <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.Naam) %>
             <%=Html.EditorFor(s=>s.HuidigePersoon.Persoon.Naam) %>
-            <%=Html.ValidationMessageFor(s=>s.HuidigePersoon.Persoon.Naam)%>
             </p>
             
             <p>
             <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.GeboorteDatum) %>
             <%=Html.EditorFor(s=>s.HuidigePersoon.Persoon.GeboorteDatum)%>
-            <%=Html.ValidationMessageFor(s=>s.HuidigePersoon.Persoon.GeboorteDatum)%>
             </p>
             
             <p>
             <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.Geslacht)%>
             <%= Html.RadioButton("HuidigePersoon.Persoon.Geslacht", GeslachtsType.Man,   Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Man)%> Man
             <%= Html.RadioButton("HuidigePersoon.Persoon.Geslacht", GeslachtsType.Vrouw, Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Vrouw)%> Vrouw
-            <%=Html.ValidationMessageFor(s=>s.HuidigePersoon.Persoon.Geslacht)%>
             </p>
             
             <p>
             <%=Html.LabelFor(s=>s.HuidigePersoon.ChiroLeefTijd)%>
             <%=Html.EditorFor(s=>s.HuidigePersoon.ChiroLeefTijd)%>
-            <%=Html.ValidationMessageFor(s=>s.HuidigePersoon.ChiroLeefTijd)%>
             </p>
 
             <%=Html.HiddenFor(s=>s.HuidigePersoon.ID)%>

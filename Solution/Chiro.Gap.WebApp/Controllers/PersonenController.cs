@@ -27,7 +27,10 @@ namespace Chiro.Gap.WebApp.Controllers
 
 	public class PersonenController : BaseController
 	{
-		public PersonenController(IServiceHelper serviceHelper) : base(serviceHelper) { }
+		public PersonenController(IServiceHelper serviceHelper)
+			: base(serviceHelper)
+		{
+		}
 		// TODO er moeten ook nog een laatst gebruikte "actie" worden toegevoegd, niet alleen actie id
 
 		// GET: /Personen/
@@ -100,7 +103,11 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				IEnumerable<int> gemaakteleden = ServiceHelper.CallService<ILedenService, IEnumerable<int>>(g => g.LedenMakenEnBewaren(model.GekozenGelieerdePersoonIDs));
 				// TODO TempData["feedback"] =  aanpassen
-				return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
+				return RedirectToAction("List", new
+				{
+					page = Sessie.LaatstePagina,
+					id = Sessie.LaatsteActieID
+				});
 			}
 			else if (model.GekozenActie == 2 && model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0)
 			{
@@ -110,7 +117,11 @@ namespace Chiro.Gap.WebApp.Controllers
 			else
 			{
 				TempData["feedback"] = Properties.Resources.NiemandGeselecteerdFout;
-				return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
+				return RedirectToAction("List", new
+				{
+					page = Sessie.LaatstePagina,
+					id = Sessie.LaatsteActieID
+				});
 			}
 		}
 
@@ -122,7 +133,10 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			var model = new Models.GelieerdePersonenModel();
 			BaseModelInit(model, groepID);
-			model.HuidigePersoon = new GelieerdePersoon { Persoon = new Persoon() };
+			model.HuidigePersoon = new GelieerdePersoon
+			{
+				Persoon = new Persoon()
+			};
 
 			model.Titel = Properties.Resources.NieuwePersoonTitel;
 			return View("EditGegevens", model);
@@ -164,7 +178,10 @@ namespace Chiro.Gap.WebApp.Controllers
 			// (er wordt hier geredirect ipv de view te tonen,
 			// zodat je bij een 'refresh' niet de vraag krijgt
 			// of je de gegevens opnieuw wil posten.)
-			return RedirectToAction("EditRest", new { id = persoonID });
+			return RedirectToAction("EditRest", new
+			{
+				id = persoonID
+			});
 		}
 
 		//
@@ -188,7 +205,10 @@ namespace Chiro.Gap.WebApp.Controllers
 			BaseModelInit(model, groepID);
 			model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(p.HuidigePersoon.ID));
 			model.Titel = model.HuidigePersoon.Persoon.VolledigeNaam;
-			return RedirectToAction("EditGegevens", new { id = p.HuidigePersoon.ID });
+			return RedirectToAction("EditGegevens", new
+			{
+				id = p.HuidigePersoon.ID
+			});
 		}
 
 		/// <summary>
@@ -232,7 +252,10 @@ namespace Chiro.Gap.WebApp.Controllers
 			// (er wordt hier geredirect ipv de view te tonen,
 			// zodat je bij een 'refresh' niet de vraag krijgt
 			// of je de gegevens opnieuw wil posten.)
-			return RedirectToAction("EditRest", new { id = model.HuidigePersoon.ID });
+			return RedirectToAction("EditRest", new
+			{
+				id = model.HuidigePersoon.ID
+			});
 		}
 
 		#endregion personen
@@ -253,7 +276,11 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				TempData["feedback"] = string.Concat(Properties.Resources.LidMakenMisluktFout, Environment.NewLine, ex.Message.ToString());
 			}
-			return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
+			return RedirectToAction("List", new
+			{
+				page = Sessie.LaatstePagina,
+				id = Sessie.LaatsteActieID
+			});
 		}
 
 		// GET: /Personen/LidMaken/id
@@ -263,7 +290,11 @@ namespace Chiro.Gap.WebApp.Controllers
 			ids.Add(id);
 			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LeidingMakenEnBewaren(ids));
 			// TODO feedback
-			return RedirectToAction("List", new { page = Sessie.LaatstePagina, id = Sessie.LaatsteActieID });
+			return RedirectToAction("List", new
+			{
+				page = Sessie.LaatstePagina,
+				id = Sessie.LaatsteActieID
+			});
 		}
 
 		#endregion leden
@@ -327,7 +358,10 @@ namespace Chiro.Gap.WebApp.Controllers
 				// Toon een persoon die woont op het nieuwe adres.
 				// (wat hier moet gebeuren hangt voornamelijk af van de use case)
 
-				return RedirectToAction("EditRest", new { id = model.AanvragerID });
+				return RedirectToAction("EditRest", new
+				{
+					id = model.AanvragerID
+				});
 			}
 			catch (FaultException<AdresFault> ex)
 			{
@@ -379,7 +413,10 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			BaseModelInit(model, groepID);
 			ServiceHelper.CallService<IGelieerdePersonenService>(foo => foo.AdresVerwijderenVanPersonen(model.PersoonIDs, model.Adres.ID));
-			return RedirectToAction("EditRest", new { id = model.AanvragerID });
+			return RedirectToAction("EditRest", new
+			{
+				id = model.AanvragerID
+			});
 		}
 
 		/// <summary>
@@ -418,7 +455,10 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenAanPersonen(model.PersoonIDs, model.Adres, model.AdresType));
 
-				return RedirectToAction("EditRest", new { id = model.AanvragerID });
+				return RedirectToAction("EditRest", new
+				{
+					id = model.AanvragerID
+				});
 			}
 			catch (FaultException<AdresFault> ex)
 			{
@@ -485,7 +525,10 @@ namespace Chiro.Gap.WebApp.Controllers
 			else
 			{
 				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegenAanPersoon(gelieerdePersoonID, model.NieuweCommVorm, model.geselecteerdeCommVorm));
-				return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+				return RedirectToAction("EditRest", new
+				{
+					id = gelieerdePersoonID
+				});
 			}
 		}
 
@@ -493,7 +536,10 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult VerwijderenCommVorm(int commvormID, int gelieerdePersoonID, int groepID)
 		{
 			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormVerwijderenVanPersoon(gelieerdePersoonID, commvormID));
-			return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+			return RedirectToAction("EditRest", new
+			{
+				id = gelieerdePersoonID
+			});
 		}
 
 		// GET: /Personen/CommVormBewerken/gelieerdePersoonID
@@ -548,7 +594,10 @@ namespace Chiro.Gap.WebApp.Controllers
 			else
 			{
 				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(model.NieuweCommVorm));
-				return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+				return RedirectToAction("EditRest", new
+				{
+					id = gelieerdePersoonID
+				});
 			}
 			// TODO catch exceptions overal
 		}
@@ -563,7 +612,10 @@ namespace Chiro.Gap.WebApp.Controllers
 			IList<int> list = new List<int>();
 			list.Add(gelieerdePersoonID);
 			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieVerwijderen(list, categorieID));
-			return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
+			return RedirectToAction("EditRest", new
+			{
+				id = gelieerdePersoonID
+			});
 		}
 
 		// GET: /Personen/ToevoegenAanCategorie/categorieID
@@ -601,7 +653,11 @@ namespace Chiro.Gap.WebApp.Controllers
 			else
 			{
 				TempData["feedback"] = Properties.Resources.CategoriserenZonderCategorieënFout;
-				return RedirectToAction("List", new { id = Sessie.LaatsteActieID, page = Sessie.LaatstePagina });
+				return RedirectToAction("List", new
+				{
+					id = Sessie.LaatsteActieID,
+					page = Sessie.LaatstePagina
+				});
 			}
 		}
 
@@ -623,11 +679,18 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			if (model.GelieerdePersoonIDs.Count == 1)
 			{
-				return RedirectToAction("EditRest", new { id = model.GelieerdePersoonIDs[0] });
+				return RedirectToAction("EditRest", new
+				{
+					id = model.GelieerdePersoonIDs[0]
+				});
 			}
 			else
 			{
-				return RedirectToAction("List", new { id = Sessie.LaatsteActieID, page = Sessie.LaatstePagina });
+				return RedirectToAction("List", new
+				{
+					id = Sessie.LaatsteActieID,
+					page = Sessie.LaatstePagina
+				});
 			}
 		}
 
