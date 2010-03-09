@@ -18,8 +18,14 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+	/// <summary>
+	/// Gegevenstoegangsobject voor kinderen
+	/// </summary>
 	public class KindDao : Dao<Kind, ChiroGroepEntities>, IKindDao
 	{
+		/// <summary>
+		/// Instantieert een gegevenstoegangsobject voor kinderen
+		/// </summary>
 		public KindDao()
 		{
 			connectedEntities = new Expression<Func<Kind, object>>[] 

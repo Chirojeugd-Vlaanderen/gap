@@ -16,6 +16,10 @@ using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Orm
 {
+	/// <summary>
+	/// Enum om informatie over het geslacht over te brengen
+	/// </summary>
+	/// <remarks>Kan zowel over personen als over groepen/afdelingen gaan</remarks>
 	[DataContract]
 	[Flags]
 	public enum GeslachtsType
@@ -30,11 +34,14 @@ namespace Chiro.Gap.Orm
 		Gemengd = Man | Vrouw	// interessant voor gemengde groepen/afdelingen
 	}
 
+	/// <summary>
+	/// Instantieert een Persoon-object dat zorgt voor samenwerking met Entity Framework
+	/// </summary>
 	[MetadataType(typeof(Persoon_Validatie))]
 	public partial class Persoon : IEfBasisEntiteit
 	{
 		/// <summary>
-		/// Nested class die toelaat om validatie properties op te zetten, en die gereferenced wordt door het MetadataType attribute
+		/// Nested class die toelaat om validatie properties op te zetten, en die gereferencet wordt door het MetadataType attribute
 		/// Dit kan niet op de echte class, want die wordt gegenereerd door de EF Designer
 		/// </summary>
 		public class Persoon_Validatie

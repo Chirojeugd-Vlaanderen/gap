@@ -12,6 +12,9 @@ using Chiro.Cdf.Data.Entity;
 using Chiro.Cdf.Data;
 namespace Chiro.Gap.Orm
 {
+	/// <summary>
+	/// Bepaalt de 'status' van het adres
+	/// </summary>
 	[DataContract]
 	public enum AdresTypeEnum
 	{
@@ -25,6 +28,9 @@ namespace Chiro.Gap.Orm
 		Overig = 4
 	}
 
+	/// <summary>
+	/// Instantieert een PersoonsAdres-object dat zorgt voor samenwerking met Entity Framework
+	/// </summary>
 	public partial class PersoonsAdres : IEfBasisEntiteit
 	{
 		private bool _teVerwijderen = false;

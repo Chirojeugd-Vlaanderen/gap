@@ -15,8 +15,16 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+	/// <summary>
+	/// Gegevenstoegangsobject voor communicatietypes
+	/// </summary>
 	public class CommunicatieTypeDao : Dao<CommunicatieType, ChiroGroepEntities>, ICommunicatieTypeDao
 	{
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="communicatieTypeID"></param>
+		/// <returns></returns>
 		public override CommunicatieType Ophalen(int communicatieTypeID)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())

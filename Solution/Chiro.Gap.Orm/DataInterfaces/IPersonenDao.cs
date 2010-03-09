@@ -12,9 +12,12 @@ using Chiro.Cdf.Data;
 namespace Chiro.Gap.Orm.DataInterfaces
 {
 	/// <summary>
+	/// Interface voor een gegevenstoegangsobject voor Personen
+	/// </summary>
+	/// <remarks>
 	/// Met een GelieerdePersoon moet altijd het geassocieerde
 	/// persoonsobject meekomen, anders heeft het weinig zin.
-	/// </summary>
+	/// </remarks>
 	public interface IPersonenDao : IDao<Persoon>
 	{
 		/// <summary>
@@ -22,7 +25,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// </summary>
 		/// <param name="personenIDs">ID's van op te halen
 		/// Personen</param>
-		/// <returns>lijst met Personen</returns>
+		/// <returns>Lijst met Personen</returns>
 		IList<Persoon> LijstOphalen(IList<int> personenIDs);
 
 		/// <summary>

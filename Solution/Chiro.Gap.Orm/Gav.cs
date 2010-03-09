@@ -12,6 +12,9 @@ using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Orm
 {
+	/// <summary>
+	/// Instantieert een Gav-object dat zorgt voor samenwerking met Entity Framework
+	/// </summary>
 	public partial class Gav : IEfBasisEntiteit
 	{
 		private bool _teVerwijderen = false;

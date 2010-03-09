@@ -11,6 +11,9 @@ using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Orm.DataInterfaces
 {
+	/// <summary>
+	/// Interface voor een data access object voor afdelingen
+	/// </summary>
 	public interface IAfdelingenDao : IDao<Afdeling>
 	{
 		/// <summary>
@@ -19,7 +22,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
 		/// opgezocht moeten worden.</param>
-		/// <returns>de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
+		/// <returns>De ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
 		IList<Afdeling> OngebruikteOphalen(int groepsWerkJaarID);
 	}
 }

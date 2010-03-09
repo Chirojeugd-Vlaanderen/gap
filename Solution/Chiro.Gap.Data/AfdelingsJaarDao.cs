@@ -17,8 +17,14 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+	/// <summary>
+	/// Gegevenstoegangsobject voor AfdelingsJaren
+	/// </summary>
 	public class AfdelingsJaarDao : Dao<AfdelingsJaar, ChiroGroepEntities>, IAfdelingsJarenDao
 	{
+		/// <summary>
+		/// Instantieert een gegevenstoegangsobject voor AfdelingsJaren
+		/// </summary>
 		public AfdelingsJaarDao()
 			: base()
 		{

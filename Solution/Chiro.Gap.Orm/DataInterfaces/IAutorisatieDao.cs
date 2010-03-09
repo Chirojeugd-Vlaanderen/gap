@@ -11,13 +11,16 @@ using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Orm.DataInterfaces
 {
+	/// <summary>
+	/// Interface voor een gegevenstoegangsobject voor GebruikersRechten
+	/// </summary>
 	public interface IAutorisatieDao : IDao<GebruikersRecht>
 	{
 		#region Alle records in GebruikersRecht doorzoeken
 		/// <summary>
 		/// Haalt rechten op die een gebruiker heeft op een groep.
 		/// </summary>
-		/// <param name="login">De gebruikersnaam</param>
+		/// <param name="login">De gebruikersnaam van de bezoeker</param>
 		/// <param name="groepID">ID van de groep</param>
 		/// <returns><c>Null</c> als geen gebruikersrechten gevonden,
 		/// anders een GebruikersRecht-object</returns>
@@ -29,7 +32,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// (Dit komt erop neer dat de gelieerde persoon gelieerd is aan een
 		/// groep waar de gebruiker GAV van is.)
 		/// </summary>
-		/// <param name="login">De gebruikersnaam</param>
+		/// <param name="login">De gebruikersnaam van de bezoeker</param>
 		/// <param name="GelieerdePersoonID">ID van gelieerde persoon</param>
 		/// <returns><c>Null</c> indien geen gebruikersrechten gevonden,
 		/// anders een GebruikersRecht-object</returns>
@@ -52,7 +55,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// Controleert of een gebruiker *nu* GAV is van 
 		/// de groep van een gelieerde persoon
 		/// </summary>
-		/// <param name="login">De gebruikersnaam</param>
+		/// <param name="login">De gebruikersnaam van de bezoeker</param>
 		/// <param name="gelieerdePersoonID">ID van de gelieerde persoon</param>
 		/// <returns><c>True</c> als gebruiker nu GAV is</returns>
 		bool IsGavGelieerdePersoon(string login, int gelieerdePersoonID);
@@ -61,7 +64,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// Controleert of een gebruiker *nu* GAV is van een
 		/// groep waaraan de gegeven persoon gelieerd is.
 		/// </summary>
-		/// <param name="login">De gebruikersnaam</param>
+		/// <param name="login">De gebruikersnaam van de bezoeker</param>
 		/// <param name="persoonID">ID van persoon</param>
 		/// <returns><c>True</c> als de gebruiker (op dit moment) geautoriseerd is
 		/// om persoonsgegevens te zien/wijzigen</returns>
@@ -71,7 +74,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// Controleert of een gebruiker *nu* GAV is van de groep
 		/// horende bij gegeven GroepsWerkJaar
 		/// </summary>
-		/// <param name="login">De gebruikersnaam</param>
+		/// <param name="login">De gebruikersnaam van de bezoeker</param>
 		/// <param name="groepsWerkJaarID">ID van gevraagde GroepsWerkJaar</param>
 		/// <returns><c>True</c> als de gebruiker GAV is</returns>
 		bool IsGavGroepsWerkJaar(string login, int groepsWerkJaarID);
@@ -80,18 +83,20 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// Controleert of een gebruiker *nu* GAV is van de groep
 		/// horende bij de gegeven afdeling
 		/// </summary>
-		/// <param name="login">De gebruikersnaam</param>
+		/// <param name="login">De gebruikersnaam van de bezoeker</param>
 		/// <param name="afdelingsID">ID van de gegeven afdeling</param>
-		/// <returns></returns>
+		/// <returns><c>True</c> als de bezoeker Gav is voor de bedoelde afdeling,
+		/// <c>false</c> als dat niet het geval is</returns>
 		bool IsGavAfdeling(string login, int afdelingsID);
 
 		/// <summary>
 		/// Controleert of een gebruiker *nu* GAV is van de groep
 		/// horende bij het gegeven lid
 		/// </summary>
-		/// <param name="login">De gebruikersnaam</param>
+		/// <param name="login">De gebruikersnaam van de bezoeker</param>
 		/// <param name="lidID">ID van een zeker lid</param>
-		/// <returns></returns>
+		/// <returns><c>True</c> als de bezoeker Gav is voor het bedoelde Lid,
+		/// <c>false</c> als dat niet het geval is</returns>
 		bool IsGavLid(string login, int lidID);
 
 		/// <summary>
@@ -99,7 +104,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// login MOMENTEEL gekoppeld is
 		/// </summary>
 		/// <param name="login">Gebruikersnaam van de GAV</param>
-		/// <returns>lijst met groepen</returns>
+		/// <returns>Lijst met groepen</returns>
 		IEnumerable<Groep> GekoppeldeGroepenGet(string login);
 
 		/// <summary>
@@ -107,7 +112,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// waarvan een gegeven gebruiker geen GAV is
 		/// </summary>
 		/// <param name="gelieerdePersonenIDs">Lijst met GelieerdePersonenID's</param>
-		/// <param name="login">De gebruikersnaam</param>
+		/// <param name="login">De gebruikersnaam van de bezoeker</param>
 		/// <returns>Een lijst met de ID's van GelieerdePersonen waar de gebruiker
 		/// GAV over is. (hoeveel indirectie kan er in 1 zin?)</returns>
 		IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs, string login);
@@ -127,8 +132,9 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// horend bij een zekere categorie.
 		/// </summary>
 		/// <param name="categorieID">ID van de betreffende categorie</param>
-		/// <param name="login">De gebruikersnaam</param>
-		/// <returns><c>True</c> als GAV</returns>
+		/// <param name="login">De gebruikersnaam van de bezoeker</param>
+		/// <returns><c>True</c> als de bezoeker Gav is voor de bedoelde categorie,
+		/// <c>false</c> als dat niet het geval is</returns>
 		bool IsGavCategorie(int categorieID, string login);
 
 		/// <summary>
@@ -136,9 +142,10 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// horend bij een zekere commvorm.
 		/// </summary>
 		/// <param name="commvormID">ID van de betreffende commvorm</param>
-		/// <param name="login">De gebruikersnaam</param>
-		/// <returns><c>True</c> als GAV</returns>
-		bool IsGavCommVorm(int commvormID, string p);
+		/// <param name="login">De gebruikersnaam van de bezoeker</param>
+		/// <returns><c>True</c> als de bezoeker Gav is voor de bedoelde communicatievorm,
+		/// <c>false</c> als dat niet het geval is</returns>
+		bool IsGavCommVorm(int commvormID, string login);
 
 		#endregion
 	}

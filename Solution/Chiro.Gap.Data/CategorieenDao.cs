@@ -18,8 +18,14 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+	/// <summary>
+	/// Gegevenstoegangsobject voor categorieën
+	/// </summary>
 	public class CategorieenDao : Dao<Categorie, ChiroGroepEntities>, ICategorieenDao
 	{
+		/// <summary>
+		/// Instantieert een gegevenstoegangsobject voor categorieën
+		/// </summary>
 		public CategorieenDao()
 		{
 			connectedEntities = new Expression<Func<Categorie, object>>[] 
@@ -29,6 +35,11 @@ namespace Chiro.Gap.Data.Ef
             };
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="groepID"></param>
+		/// <returns></returns>
 		public IEnumerable<Categorie> OphalenVanGroep(int groepID)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())

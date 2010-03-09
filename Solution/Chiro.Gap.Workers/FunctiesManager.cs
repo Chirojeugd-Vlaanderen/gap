@@ -26,7 +26,7 @@ namespace Chiro.Gap.Workers
 		private IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
-		/// Instantieert een FunctiesManager
+		/// Instantieert een FunctiesManager-object
 		/// </summary>
 		/// <param name="funDao">Een dao voor data access mbt functies</param>
 		/// <param name="ledenDao">Een dao voor data access mbt leden</param>

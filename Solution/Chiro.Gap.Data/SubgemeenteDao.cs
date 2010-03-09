@@ -14,8 +14,17 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+	/// <summary>
+	/// Gegevenstoegangsobject voor subgemeenten
+	/// </summary>
 	public class SubgemeenteDao : Dao<Subgemeente, ChiroGroepEntities>, ISubgemeenteDao
 	{
+		/// <summary>
+		/// Haalt de subgemeente op op basis van een postnummer en een naam
+		/// </summary>
+		/// <param name="naam">De naam van de (sub)gemeente</param>
+		/// <param name="postNr">Het postnummer van de (sub)gemeente</param>
+		/// <returns>De subgemeente die aan de criteria voldoet</returns>
 		public Subgemeente Ophalen(string naam, int postNr)
 		{
 			Subgemeente resultaat = null;

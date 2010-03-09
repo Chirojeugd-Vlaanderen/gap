@@ -14,8 +14,17 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+	/// <summary>
+	/// Gegevenstoegangsobject voor straten
+	/// </summary>
 	public class StratenDao : Dao<Straat, ChiroGroepEntities>, IStratenDao
 	{
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="naam"></param>
+		/// <param name="postNr"></param>
+		/// <returns></returns>
 		public Straat Ophalen(string naam, int postNr)
 		{
 			Straat resultaat = null;

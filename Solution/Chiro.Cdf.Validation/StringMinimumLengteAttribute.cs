@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,16 +13,22 @@ using System.Globalization;
 
 namespace System.ComponentModel.DataAnnotations
 {
-
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
 	public class StringMinimumLengteAttribute : ValidationAttribute
 	{
 		// Fields
-		public int MinimumLenght { get; set; }
+		public int MinimumLenght
+		{
+			get;
+			set;
+		}
 
 		// Methods
 		public StringMinimumLengteAttribute(int minimumLength)
-			: base(delegate { return Properties.Resources.StringMinimumLengthAttribute_ErrorMessage; })
+			: base(delegate
+			{
+				return Properties.Resources.StringMinimumLengthAttribute_ErrorMessage;
+			})
 		{
 			if (minimumLength < 0)
 			{

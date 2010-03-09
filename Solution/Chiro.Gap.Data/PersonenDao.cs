@@ -18,12 +18,20 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+	/// <summary>
+	/// Gegevenstoegangsobject voor personen
+	/// </summary>
 	public class PersonenDao : Dao<Persoon, ChiroGroepEntities>, IPersonenDao
 	{
 		#region IPersonenDao Members
 
 		// TODO: onderstaande misschien doen via GroepsWerkJaar ipv via aparte persoon- en groepID?
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="personenIDs"></param>
+		/// <returns></returns>
 		public IList<Persoon> LijstOphalen(IList<int> personenIDs)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())

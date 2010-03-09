@@ -15,6 +15,9 @@ using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Orm
 {
+	/// <summary>
+	/// Instantieert een CommunicatieVorm-object dat zorgt voor samenwerking met Entity Framework
+	/// </summary>
 	[MetadataType(typeof(CommuncatieVormValidatie))]
 	public partial class CommunicatieVorm : IEfBasisEntiteit
 	{

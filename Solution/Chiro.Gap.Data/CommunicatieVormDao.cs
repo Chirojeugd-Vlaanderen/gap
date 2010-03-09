@@ -16,8 +16,16 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+	/// <summary>
+	/// Gegevenstoegangsobject voor communicatievormen
+	/// </summary>
 	public class CommunicatieVormDao : Dao<CommunicatieVorm, ChiroGroepEntities>, ICommunicatieVormDao
 	{
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="zoekString"></param>
+		/// <returns></returns>
 		public IList<CommunicatieVorm> ZoekenOpNummer(string zoekString)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())

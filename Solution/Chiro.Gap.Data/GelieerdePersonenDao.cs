@@ -19,8 +19,14 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+	/// <summary>
+	/// Gegevenstoegangsobject voor gelieerde personen
+	/// </summary>
 	public class GelieerdePersonenDao : Dao<GelieerdePersoon, ChiroGroepEntities>, IGelieerdePersonenDao
 	{
+		/// <summary>
+		/// Instantieert een gegevenstoegangsobject voor gelieerde personen
+		/// </summary>
 		public GelieerdePersonenDao()
 		{
 			connectedEntities = new Expression<Func<GelieerdePersoon, object>>[] 
@@ -212,6 +218,11 @@ namespace Chiro.Gap.Data.Ef
 			return lijst;   // lijst met personen + lidinfo
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="gelieerdePersonenIDs"></param>
+		/// <returns></returns>
 		public override IList<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersonenIDs)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
@@ -224,6 +235,11 @@ namespace Chiro.Gap.Data.Ef
 			}
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="gelieerdePersoonID"></param>
+		/// <returns></returns>
 		public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
@@ -236,6 +252,11 @@ namespace Chiro.Gap.Data.Ef
 			}
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="p"></param>
+		/// <returns></returns>
 		public GelieerdePersoon GroepLaden(GelieerdePersoon p)
 		{
 			Debug.Assert(p != null);
@@ -265,6 +286,12 @@ namespace Chiro.Gap.Data.Ef
 			return p;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="groepID"></param>
+		/// <param name="zoekStringNaam"></param>
+		/// <returns></returns>
 		public IList<GelieerdePersoon> ZoekenOpNaam(int groepID, string zoekStringNaam)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
@@ -357,6 +384,10 @@ namespace Chiro.Gap.Data.Ef
 		    }
 		}*/
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
 		public IEnumerable<CommunicatieType> ophalenCommunicatieTypes()
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())

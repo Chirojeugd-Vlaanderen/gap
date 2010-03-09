@@ -24,7 +24,7 @@ namespace Chiro.Cdf.DependencyInjection
 		List<TypeMapping> typeMappings;
 
 		/// <summary>
-		/// Instantieert een DIInstanceProvider
+		/// Instantieert een DIInstanceProvider-object
 		/// </summary>
 		/// <param name="serviceType">Service implementation type</param>
 		/// <param name="typeMappings">Type mappings</param>

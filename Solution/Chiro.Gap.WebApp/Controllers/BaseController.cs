@@ -31,7 +31,13 @@ namespace Chiro.Gap.WebApp.Controllers
 	{
 		private IServiceHelper _serviceHelper;
 
-		protected IServiceHelper ServiceHelper { get { return _serviceHelper; } }
+		protected IServiceHelper ServiceHelper
+		{
+			get
+			{
+				return _serviceHelper;
+			}
+		}
 
 		/// <summary>
 		/// Constructor voor de BaseController
@@ -47,7 +53,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <summary>
 		/// Vult de groepsgegevens in in de base view.
 		/// </summary>
-		/// <param name="model">Te 'initen' model</param>
+		/// <param name="model">Te initialiseren model</param>
 		/// <param name="groepID">ID van de gewenste groep</param>
 		protected void BaseModelInit(MasterViewModel model, int groepID)
 		{

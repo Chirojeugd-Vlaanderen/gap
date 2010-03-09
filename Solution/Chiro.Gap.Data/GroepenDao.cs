@@ -19,6 +19,9 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+	/// <summary>
+	/// Gegevenstoegangsobject voor groepen
+	/// </summary>
 	public class GroepenDao : Dao<Groep, ChiroGroepEntities>, IGroepenDao
 	{
 		/*
@@ -231,19 +234,26 @@ namespace Chiro.Gap.Data.Ef
 		    return afdelingsJaar;
 		}*/
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
 		public IList<OfficieleAfdeling> OphalenOfficieleAfdelingen()
 		{
 			IList<OfficieleAfdeling> result;
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
-				result = (
-					from d in db.OfficieleAfdeling
-					select d
-				).ToList();
+				result = (from d in db.OfficieleAfdeling
+						  select d).ToList();
 			}
 			return Utility.DetachObjectGraph(result);
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="groepID"></param>
+		/// <returns></returns>
 		public Groep OphalenMetGroepsWerkJaren(int groepID)
 		{
 			Groep result = null;
@@ -251,11 +261,9 @@ namespace Chiro.Gap.Data.Ef
 			{
 				db.GroepsWerkJaar.MergeOption = MergeOption.NoTracking;
 
-				result = (
-					from g in db.Groep.Include("GroepsWerkJaar")
-					where g.ID == groepID
-					select g
-				).FirstOrDefault();
+				result = (from g in db.Groep.Include("GroepsWerkJaar")
+						  where g.ID == groepID
+						  select g).FirstOrDefault();
 			}
 			return Utility.DetachObjectGraph(result);
 		}

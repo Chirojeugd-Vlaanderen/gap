@@ -17,9 +17,41 @@ namespace Chiro.Gap.Fouten.Exceptions
 	/// </summary>
 	public class GeenGavException : System.Exception, ISerializable
 	{
-		public GeenGavException() : base() { }
-		public GeenGavException(string message) : base(message) { }
-		public GeenGavException(string message, Exception inner) : base(message, inner) { }
-		public GeenGavException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+		/// <summary>
+		/// 
+		/// </summary>
+		public GeenGavException()
+			: base()
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="message"></param>
+		public GeenGavException(string message)
+			: base(message)
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="message"></param>
+		/// <param name="inner"></param>
+		public GeenGavException(string message, Exception inner)
+			: base(message, inner)
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="info"></param>
+		/// <param name="context"></param>
+		public GeenGavException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+		}
 	}
 }

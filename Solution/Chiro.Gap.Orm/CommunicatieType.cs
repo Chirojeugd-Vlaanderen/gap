@@ -13,6 +13,9 @@ using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Orm
 {
+	/// <summary>
+	/// Instantieert een CommunicatieType-object dat zorgt voor samenwerking met Entity Framework
+	/// </summary>
 	public partial class CommunicatieType : IEfBasisEntiteit
 	{
 		private bool _teVerwijderen = false;

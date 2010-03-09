@@ -15,6 +15,9 @@ using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Orm
 {
+	/// <summary>
+	/// Maakt een onderscheid tussen kinderen en leiding
+	/// </summary>
 	[DataContract]
 	public enum LidType
 	{
@@ -24,6 +27,9 @@ namespace Chiro.Gap.Orm
 		Leiding = 2
 	}
 
+	/// <summary>
+	/// Instantieert een Lid-object dat zorgt voor samenwerking met Entity Framework
+	/// </summary>
 	public partial class Lid : IEfBasisEntiteit
 	{
 		private bool _teVerwijderen = false;

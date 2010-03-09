@@ -12,7 +12,7 @@ using Chiro.Cdf.Data;
 namespace Chiro.Gap.Orm.DataInterfaces
 {
 	/// <summary>
-	/// Interface voor de 'Groepenrepository'
+	/// Interface voor een gegevenstoegangsobject voor Groepen
 	/// </summary>
 	public interface IGroepenDao : IDao<Groep>
 	{
@@ -34,7 +34,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="groepID"></param>
+		/// <param name="groepID">ID van de groep waar het over gaat</param>
 		/// <returns></returns>
 		Groep OphalenMetGroepsWerkJaren(int groepID);
 	}

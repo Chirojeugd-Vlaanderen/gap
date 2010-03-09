@@ -16,8 +16,16 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+	/// <summary>
+	/// Gegevenstoegangsobject voor Chirogroepen
+	/// </summary>
 	public class ChiroGroepenDao : Dao<ChiroGroep, ChiroGroepEntities>, IDao<ChiroGroep>
 	{
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		ChiroGroep IDao<ChiroGroep>.Ophalen(int id)
 		{
 			ChiroGroep result;
@@ -34,6 +42,10 @@ namespace Chiro.Gap.Data.Ef
 			return result;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
 		IList<ChiroGroep> IDao<ChiroGroep>.AllesOphalen()
 		{
 			List<ChiroGroep> result;

@@ -15,7 +15,7 @@ using Chiro.Gap.Orm.DataInterfaces;
 namespace Chiro.Gap.Data.Ef
 {
 	/// <summary>
-	/// Data access object voor functies
+	/// Gegevenstoegangsobject voor functies
 	/// </summary>
 	/// <remarks>Probeer met een functie ALTIJD ZIJN GROEP mee op te halen.  Want een functie met groep null,
 	/// is een nationaal gedefinieerde functie.</remarks>
@@ -24,8 +24,11 @@ namespace Chiro.Gap.Data.Ef
 		#region IFunctiesDao Members
 
 		/// <summary>
-		/// Standaard wordt de link met de Groep vastgelegd in ConnectedEntities
+		/// Instantieert een gegevenstoegangsobject voor functies
 		/// </summary>
+		/// <remarks>
+		/// Standaard wordt de link met de Groep vastgelegd in ConnectedEntities
+		/// </remarks>
 		public FunctiesDao()
 		{
 			connectedEntities = new System.Linq.Expressions.Expression<Func<Functie, object>>[]
@@ -50,8 +53,8 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		/// <param name="groepID">ID van een groep</param>
 		/// <param name="functieID">ID van een functie</param>
-		/// <returns>antal leden uit de groep bepaald door <paramref name="groepID"/> de functie
-		/// hebben bepaad door <paramref name="functieID"/></returns>
+		/// <returns>Aantal leden uit de groep bepaald door <paramref name="groepID"/> de functie
+		/// hebben bepaald door <paramref name="functieID"/></returns>
 		public int AantalLeden(int groepID, int functieID)
 		{
 			using (var db = new ChiroGroepEntities())
@@ -60,7 +63,6 @@ namespace Chiro.Gap.Data.Ef
 						where ld.GelieerdePersoon.Groep.ID == groepID
 							&& ld.Functie.Any(fnc => fnc.ID == functieID)
 						select ld).Count();
-
 			}
 		}
 

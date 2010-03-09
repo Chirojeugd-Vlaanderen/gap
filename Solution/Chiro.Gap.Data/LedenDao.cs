@@ -18,14 +18,20 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+	/// <summary>
+	/// Gegevenstoegangsobject voor leden
+	/// </summary>
 	public class LedenDao : Dao<Lid, ChiroGroepEntities>, ILedenDao
 	{
+		/// <summary>
+		/// Instantieert een gegevenstoegangsobject voor leden
+		/// </summary>
 		public LedenDao()
 		{
 			connectedEntities = new Expression<Func<Lid, object>>[] 
             { 
-                                        e => e.GroepsWerkJaar.WithoutUpdate(), 
-                                        e => e.GelieerdePersoon.Persoon.WithoutUpdate()
+				e => e.GroepsWerkJaar.WithoutUpdate(), 
+				e => e.GelieerdePersoon.Persoon.WithoutUpdate()
             };
 		}
 
@@ -100,8 +106,15 @@ namespace Chiro.Gap.Data.Ef
 			return lijst;
 		}
 
-		// pagineren gebeurt nu per werkjaar
-		// pagina, paginaGrootte en aantalTotaal zijn niet meer nodig
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="groepsWerkJaarID"></param>
+		/// <returns></returns>
+		/// <remarks>
+		/// Pagineren gebeurt per werkjaar.
+		/// De parameters pagina, paginaGrootte en aantalTotaal zijn niet meer nodig.
+		/// </remarks>
 		public IList<Lid> PaginaOphalen(int groepsWerkJaarID)
 		{
 			IList<Lid> lijst = new List<Lid>();
@@ -136,8 +149,15 @@ namespace Chiro.Gap.Data.Ef
 			return lijst;
 		}
 
-		// pagineren gebeurt nu per werkjaar
-		// pagina, paginaGrootte en aantalTotaal zijn niet meer nodig
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="groepsWerkJaarID"></param>
+		/// <param name="afdelingsID"></param>
+		/// <remarks>
+		/// Pagineren gebeurt per werkjaar.
+		/// De parameters pagina, paginaGrootte en aantalTotaal zijn niet meer nodig.
+		/// </remarks>
 		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID)
 		{
 			IList<Lid> lijst;
@@ -216,7 +236,7 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		/// <param name="functieID">ID van een functie</param>
 		/// <param name="groepsWerkJaarID">ID van een groepswerkjaar</param>
-		/// <param name="paths">bepaalt de mee op te halen gekoppelde entiteiten</param>
+		/// <param name="paths">Bepaalt de mee op te halen gekoppelde entiteiten</param>
 		/// <returns>Lijst leden die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
 		/// de functie bepaald door <paramref name="functieID"/> hebben.</returns>
 		public IList<Lid> OphalenUitFunctie(int functieID, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths)
@@ -238,9 +258,9 @@ namespace Chiro.Gap.Data.Ef
 		/// Haalt de leden op die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
 		/// de gepredefinieerde functie met type <paramref name="f"/> hebben.
 		/// </summary>
-		/// <param name="f">type gepredefinieerde functie</param>
+		/// <param name="f">Type gepredefinieerde functie</param>
 		/// <param name="groepsWerkJaarID">ID van een groepswerkjaar</param>
-		/// <param name="paths">bepaalt de mee op te halen gekoppelde entiteiten</param>
+		/// <param name="paths">Bepaalt de mee op te halen gekoppelde entiteiten</param>
 		/// <returns>Lijst leden die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
 		/// de gepredefinieerde functie met type <paramref name="f"/> hebben.</returns>
 		public IList<Lid> OphalenUitFunctie(
@@ -250,6 +270,5 @@ namespace Chiro.Gap.Data.Ef
 		{
 			return OphalenUitFunctie((int)f, groepsWerkJaarID, paths);
 		}
-
 	}
 }

@@ -23,9 +23,9 @@ namespace Chiro.Gap.Orm
 	public partial class AfdelingsJaar : IEfBasisEntiteit
 	{
 		/// <summary>
-		/// Geneste klasse om attributen te definieren.
+		/// Geneste klasse om attributen te definiëren.
 		/// (Op de echte property's kan dat niet, want die zijn 
-		/// automatisch gegenereerd)
+		/// automatisch gegenereerd.)
 		/// </summary>
 		public class AfdelingsJaarAttributen
 		{
@@ -39,7 +39,7 @@ namespace Chiro.Gap.Orm
 		}
 
 		/// <summary>
-		/// De constructor maakt een lege gemengde afdeling
+		/// Instantieert een lege gemengde afdeling
 		/// </summary>
 		public AfdelingsJaar()
 		{

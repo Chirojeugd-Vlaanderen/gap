@@ -13,9 +13,14 @@ using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Orm
 {
-	// Als een link naar PersoonsAdres verwijderd wordt, dan
-	// moet het persoonsadres zelf ook verwijderd worden.
-	// Vandaar het attribuut AssociationEndBehavior
+	/// <summary>
+	/// Instantieert een Adres-object dat zorgt voor samenwerking met Entity Framework
+	/// </summary>
+	/// <remarks>
+	/// Als een link naar PersoonsAdres verwijderd wordt, dan
+	/// moet het persoonsadres zelf ook verwijderd worden.
+	/// Vandaar het attribuut AssociationEndBehavior
+	/// </remarks>
 	[AssociationEndBehavior("PersoonsAdres", Owned = true)]
 	public partial class Adres : IEfBasisEntiteit
 	{
@@ -33,6 +38,9 @@ namespace Chiro.Gap.Orm
 			}
 		}
 
+		/// <summary>
+		/// Instantieert een Adres-object
+		/// </summary>
 		public Adres()
 			: base()
 		{

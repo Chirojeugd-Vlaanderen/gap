@@ -18,10 +18,23 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+	/// <summary>
+	/// Gegevenstoegangsobject voor autorisatie-info
+	/// </summary>
 	public class AutorisatieDao : Dao<GebruikersRecht, ChiroGroepEntities>, IAutorisatieDao
 	{
 		#region IAuthorisatieDao Members
 
+		/// <summary>
+		/// Haalt de rechten op die de gebruiker met de opgegeven <paramref name="login"/> heeft of had
+		/// voor de groep met de opgegeven <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="login">De gebruikersnaam van de bezoeker</param>
+		/// <param name="groepID">ID van de groep die de bezoeker wil bekijken/bewerken</param>
+		/// <returns>
+		/// Een GebruikersRecht-object waarmee we kunnen nagaan welke rechten de gebruiker heeft of had
+		/// m.b.t. de groep waar het over gaat
+		/// </returns>
 		public GebruikersRecht RechtenMbtGroepGet(string login, int groepID)
 		{
 			GebruikersRecht resultaat;
@@ -48,6 +61,16 @@ namespace Chiro.Gap.Data.Ef
 			return resultaat;
 		}
 
+		/// <summary>
+		/// Haalt de rechten op die de gebruiker met de opgegeven <paramref name="login"/> heeft of had
+		/// voor de gelieerde persoon met de opgegeven <paramref name="gelieerdePersoonID"/>
+		/// </summary>
+		/// <param name="login"></param>
+		/// <param name="gelieerdePersoonID"></param>
+		/// <returns>
+		/// Een GebruikersRecht-object waarmee we kunnen nagaan welke rechten de gebruiker heeft of had
+		/// m.b.t. de gelieerde persoon waar het over gaat
+		/// </returns>
 		public GebruikersRecht RechtenMbtGelieerdePersoonGet(string login, int gelieerdePersoonID)
 		{
 			GebruikersRecht resultaat;
@@ -74,6 +97,12 @@ namespace Chiro.Gap.Data.Ef
 			return resultaat;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="login"></param>
+		/// <param name="groepID"></param>
+		/// <returns></returns>
 		public bool IsGavGroep(string login, int groepID)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
@@ -98,6 +127,12 @@ namespace Chiro.Gap.Data.Ef
 			}
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="login"></param>
+		/// <param name="gelieerdePersoonID"></param>
+		/// <returns></returns>
 		public bool IsGavGelieerdePersoon(string login, int gelieerdePersoonID)
 		{
 			bool resultaat;
@@ -127,6 +162,11 @@ namespace Chiro.Gap.Data.Ef
 			return resultaat;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="login"></param>
+		/// <returns></returns>
 		public IEnumerable<Groep> GekoppeldeGroepenGet(string login)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
@@ -145,6 +185,12 @@ namespace Chiro.Gap.Data.Ef
 			}
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="gelieerdePersonenIDs"></param>
+		/// <param name="login"></param>
+		/// <returns></returns>
 		public IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs, string login)
 		{
 			List<int> resultaat;
@@ -163,6 +209,12 @@ namespace Chiro.Gap.Data.Ef
 			return resultaat;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="personenIDs"></param>
+		/// <param name="login"></param>
+		/// <returns></returns>
 		public IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs, string login)
 		{
 			List<int> resultaat;
@@ -181,6 +233,12 @@ namespace Chiro.Gap.Data.Ef
 			return resultaat;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="login"></param>
+		/// <param name="persoonID"></param>
+		/// <returns></returns>
 		public bool IsGavPersoon(string login, int persoonID)
 		{
 			bool resultaat;
@@ -210,6 +268,12 @@ namespace Chiro.Gap.Data.Ef
 			return resultaat;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="login"></param>
+		/// <param name="groepsWerkJaarID"></param>
+		/// <returns></returns>
 		public bool IsGavGroepsWerkJaar(string login, int groepsWerkJaarID)
 		{
 			bool resultaat;
@@ -238,6 +302,12 @@ namespace Chiro.Gap.Data.Ef
 			return resultaat;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="login"></param>
+		/// <param name="afdelingsID"></param>
+		/// <returns></returns>
 		public bool IsGavAfdeling(string login, int afdelingsID)
 		{
 			bool resultaat;
@@ -267,6 +337,12 @@ namespace Chiro.Gap.Data.Ef
 			return resultaat;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="login"></param>
+		/// <param name="lidID"></param>
+		/// <returns></returns>
 		public bool IsGavLid(string login, int lidID)
 		{
 			bool resultaat;
@@ -295,6 +371,12 @@ namespace Chiro.Gap.Data.Ef
 			return resultaat;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="categorieID"></param>
+		/// <param name="login"></param>
+		/// <returns></returns>
 		public bool IsGavCategorie(int categorieID, string login)
 		{
 			bool resultaat;
@@ -323,6 +405,12 @@ namespace Chiro.Gap.Data.Ef
 			return resultaat;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="commvormID"></param>
+		/// <param name="login"></param>
+		/// <returns></returns>
 		public bool IsGavCommVorm(int commvormID, string login)
 		{
 			bool resultaat;

@@ -18,6 +18,13 @@ namespace Chiro.Gap.Fouten.Exceptions
 	/// </summary>
 	public class FoutieveGroepException : System.Exception, ISerializable
 	{
-		public FoutieveGroepException(string message) : base(message) { }
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="message"></param>
+		public FoutieveGroepException(string message)
+			: base(message)
+		{
+		}
 	}
 }

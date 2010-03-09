@@ -11,6 +11,9 @@ using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Orm.DataInterfaces
 {
+	/// <summary>
+	/// Interface voor een gegevenstoegangsobject voor Categorieën
+	/// </summary>
 	public interface ICategorieenDao : IDao<Categorie>
 	{
 		/*/// <summary>

@@ -18,8 +18,14 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+	/// <summary>
+	/// Gegevenstoegangsobject voor leiding
+	/// </summary>
 	public class LeidingDao : Dao<Leiding, ChiroGroepEntities>, ILeidingDao
 	{
+		/// <summary>
+		/// Instantieert een gegevenstoegangsobject voor leiding
+		/// </summary>
 		public LeidingDao()
 		{
 			connectedEntities = new Expression<Func<Leiding, object>>[] 

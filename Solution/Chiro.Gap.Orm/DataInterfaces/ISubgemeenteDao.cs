@@ -12,16 +12,16 @@ using Chiro.Cdf.Data;
 namespace Chiro.Gap.Orm.DataInterfaces
 {
 	/// <summary>
-	/// Data Access Object voor subgemeente
+	/// Interface voor een gegevenstoegangsobject voor Subgemeenten
 	/// </summary>
 	public interface ISubgemeenteDao : IDao<Subgemeente>
 	{
 		/// <summary>
 		/// Haalt subgemeente op op basis van naam en postnummer
 		/// </summary>
-		/// <param name="naam">naam van de subgemeente</param>
-		/// <param name="postNr">postnummer van de subgemeente</param>
-		/// <returns>relevante subgemeene</returns>
+		/// <param name="naam">Naam van de subgemeente</param>
+		/// <param name="postNr">Postnummer van de subgemeente</param>
+		/// <returns>Relevante subgemeente</returns>
 		Subgemeente Ophalen(string naam, int postNr);
 	}
 }

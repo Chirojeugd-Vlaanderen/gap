@@ -26,14 +26,50 @@ namespace Chiro.Gap.Fouten.Exceptions
 		/// </summary>
 		private IEnumerable<T> _gekoppeldeObjecten;
 
-		public GekoppeldeObjectenException() : base() { }
-		public GekoppeldeObjectenException(string message) : base(message) { }
-		public GekoppeldeObjectenException(string message, Exception inner) : base(message, inner) { }
+		/// <summary>
+		/// Instantieert een lege GekoppeldeObjectenException
+		/// </summary>
+		public GekoppeldeObjectenException()
+			: base()
+		{
+		}
+
+		/// <summary>
+		/// Instantieert een GekoppeldeObjectenException met een opgegeven foutboodschap
+		/// </summary>
+		/// <param name="message">De foutboodschap die doorgegeven moet worden</param>
+		public GekoppeldeObjectenException(string message)
+			: base(message)
+		{
+		}
+
+		/// <summary>
+		/// Instantieert een GekoppeldeObjectenException met een opgegeven foutboodschap en 'inner exception'
+		/// </summary>
+		/// <param name="message">De foutboodschap die doorgegeven moet worden</param>
+		/// <param name="inner"></param>
+		public GekoppeldeObjectenException(string message, Exception inner)
+			: base(message, inner)
+		{
+		}
+
+		/// <summary>
+		/// Instantieert een GekoppeldeObjectenException met een opgegeven SerializationInfo en StreamingContext
+		/// </summary>
+		/// <param name="info"></param>
+		/// <param name="context"></param>
 		public GekoppeldeObjectenException(
 			SerializationInfo info,
 			StreamingContext context)
-			: base(info, context) { }
+			: base(info, context)
+		{
+		}
 
+		/// <summary>
+		/// Instantieert een GekoppeldeObjectenException met een opgegeven foutboodschap en gekoppelde objecten
+		/// </summary>
+		/// <param name="message">De foutboodschap die doorgegeven moet worden</param>
+		/// <param name="objecten">De gekoppelde objecten die de problemen veroorzaken</param>
 		public GekoppeldeObjectenException(string message, IEnumerable<T> objecten)
 			: base(message)
 		{
@@ -43,6 +79,12 @@ namespace Chiro.Gap.Fouten.Exceptions
 		/// <summary>
 		/// Lijst met gekoppelde objecten die de problemen veroorzaken
 		/// </summary>
-		public IEnumerable<T> Objecten { get { return _gekoppeldeObjecten; } }
+		public IEnumerable<T> Objecten
+		{
+			get
+			{
+				return _gekoppeldeObjecten;
+			}
+		}
 	}
 }

@@ -11,7 +11,7 @@ using System.Text;
 namespace Chiro.Gap.Orm.DataInterfaces
 {
 	/// <summary>
-	/// Collectie van DAO-objecten die vaak nodig zijn voor ledenbeheer
+	/// Collectie van data access objecten die vaak nodig zijn voor ledenbeheer
 	/// </summary>
 	public class LedenDaoCollectie
 	{
@@ -51,6 +51,16 @@ namespace Chiro.Gap.Orm.DataInterfaces
 			set;
 		}
 
+		/// <summary>
+		/// Instantieert een LedenDaoCollectie-object
+		/// </summary>
+		/// <param name="ledenDao">Een gegevenstoegangsobject voor leden</param>
+		/// <param name="kindDao">Een gegevenstoegangsobject voor kinderen</param>
+		/// <param name="leidingDao">Een gegevenstoegangsobject voor leiding</param>
+		/// <param name="groepenDao">Een gegevenstoegangsobject voor groepen</param>
+		/// <param name="gpDao">Een gegevenstoegangsobject voor gelieerde personen</param>
+		/// <param name="ajDao">Een gegevenstoegangsobject voor afdelingsjaren</param>
+		/// <param name="groepsWjDao">Een gegevenstoegangsobject voor groepswerkjaren</param>
 		public LedenDaoCollectie(
 			ILedenDao ledenDao,
 			IKindDao kindDao,

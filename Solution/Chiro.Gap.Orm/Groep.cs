@@ -14,6 +14,9 @@ using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Orm
 {
+	/// <summary>
+	/// Instantieert een Groep-object dat zorgt voor samenwerking met Entity Framework
+	/// </summary>
 	[AssociationEndBehavior("Afdeling", Owned = true)]
 	[AssociationEndBehavior("Categorie", Owned = true)]
 	public partial class Groep : IEfBasisEntiteit

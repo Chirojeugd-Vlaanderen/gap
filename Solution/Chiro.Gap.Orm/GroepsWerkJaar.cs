@@ -13,6 +13,9 @@ using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Orm
 {
+	/// <summary>
+	/// Instantieert een GroepsWerkJaar-object dat zorgt voor samenwerking met Entity Framework
+	/// </summary>
 	public partial class GroepsWerkJaar : IEfBasisEntiteit
 	{
 		private bool _teVerwijderen = false;

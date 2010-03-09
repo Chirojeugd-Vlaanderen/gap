@@ -13,7 +13,7 @@ using Chiro.Cdf.Data;
 namespace Chiro.Gap.Orm.DataInterfaces
 {
 	/// <summary>
-	/// CRUD-operaties op GelieerdePersoon
+	/// Interface voor een gegevenstoegangsobject voor GelieerdePersonen
 	/// </summary>
 	/// <remarks>
 	/// Met een GelieerdePersoon moet vrijwel altijd het geassocieerde
@@ -27,7 +27,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// worden opgehaald.
 		/// </summary>
 		/// <param name="groepID">ID van groep</param>
-		/// <param name="zoekStringNaam">zoekstring voor naam</param>
+		/// <param name="zoekStringNaam">Zoekstring voor naam</param>
 		/// <returns>Lijst met gevonden gelieerde personen</returns>
 		IList<GelieerdePersoon> ZoekenOpNaam(int groepID, string zoekStringNaam);
 
@@ -37,10 +37,10 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// (inclusief communicatie en adressen)
 		/// </summary>
 		/// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
-		/// <param name="naam">te zoeken naam (ongeveer)</param>
-		/// <param name="voornaam">te zoeken voornaam (ongeveer)</param>
-		/// <returns>lijst met gevonden matches</returns>
-		/// <remarks>standaard wordt de persoonsinfo 'geincludet'</remarks>
+		/// <param name="naam">Te zoeken naam (ongeveer)</param>
+		/// <param name="voornaam">Te zoeken voornaam (ongeveer)</param>
+		/// <returns>Lijst met gevonden matches</returns>
+		/// <remarks>Standaard wordt de persoonsinfo 'geïncludet'</remarks>
 		IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam);
 
 		/// <summary>
@@ -49,10 +49,10 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// (inclusief communicatie en adressen)
 		/// </summary>
 		/// <param name="groepID">GroepID dat bepaalt in welke gelieerde personen gezocht mag worden</param>
-		/// <param name="naam">te zoeken naam (ongeveer)</param>
-		/// <param name="voornaam">te zoeken voornaam (ongeveer)</param>
+		/// <param name="naam">Te zoeken naam (ongeveer)</param>
+		/// <param name="voornaam">Te zoeken voornaam (ongeveer)</param>
 		/// <param name="paths">Expressies die aangeven welke dependencies mee opgehaald moeten worden</param>
-		/// <returns>lijst met gevonden matches</returns>
+		/// <returns>Lijst met gevonden matches</returns>
 		IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam, params Expression<Func<GelieerdePersoon, object>>[] paths);
 
 		/// <summary>
@@ -68,9 +68,9 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// eventueel lidobject in het recentste werkjaar.
 		/// </summary>
 		/// <param name="groepID">ID van de groep</param>
-		/// <param name="pagina">paginanummer (1 of groter)</param>
-		/// <param name="paginaGrootte">aantal records op een pagina</param>
-		/// <param name="aantalTotaal">outputparameter voor totaal aantal
+		/// <param name="pagina">Paginanummer (1 of groter)</param>
+		/// <param name="paginaGrootte">Aantal records op een pagina</param>
+		/// <param name="aantalTotaal">Outputparameter voor totaal aantal
 		/// personen gelieerd aan de groep.</param>
 		/// <returns>Lijst met gelieerde personen</returns>
 		IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal);
@@ -80,9 +80,9 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// inclusief eventueel lidobject in het recentste werkjaar.
 		/// </summary>
 		/// <param name="categorieID">ID van de categorie die we nodig hebben</param>
-		/// <param name="pagina">paginanummer (1 of groter)</param>
-		/// <param name="paginaGrootte">aantal records op een pagina</param>
-		/// <param name="aantalTotaal">outputparameter voor totaal aantal
+		/// <param name="pagina">Paginanummer (1 of groter)</param>
+		/// <param name="paginaGrootte">Aantal records op een pagina</param>
+		/// <param name="aantalTotaal">Outputparameter voor totaal aantal
 		/// personen gelieerd aan de groep.</param>
 		/// <returns>Lijst met gelieerde personen</returns>
 		IList<GelieerdePersoon> PaginaOphalenMetLidInfoVolgensCategorie(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal);
@@ -97,8 +97,8 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <summary>
 		/// Laadt groepsgegevens in GelieerdePersoonsobject
 		/// </summary>
-		/// <param name="p">gelieerde persoon</param>
-		/// <returns>referentie naar p, nadat groepsgegevens
+		/// <param name="p">Gelieerde persoon</param>
+		/// <returns>Referentie naar p, nadat groepsgegevens
 		/// geladen zijn</returns>
 		GelieerdePersoon GroepLaden(GelieerdePersoon p);
 
@@ -107,12 +107,13 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// TODO: Misschien moet deze functie een lijst van PersoonsInfo ophalen.
 		/// </summary>
 		/// <param name="categorieID">ID van een categorie</param>
-		/// <returns>lijst van gelieerde personen met persoonsinfo in de categorie</returns>
+		/// <returns>Lijst van gelieerde personen met persoonsinfo in de categorie</returns>
 		IList<GelieerdePersoon> OphalenUitCategorie(int categorieID);*/
 
 		/// <summary>
 		/// Haalt een lijst op met alle communicatietypes
 		/// </summary>
+		/// <returns>Een lijst met alle communicatietypes</returns>
 		IEnumerable<CommunicatieType> ophalenCommunicatieTypes();
 	}
 }

@@ -16,6 +16,9 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+	/// <summary>
+	/// Gegevenstoegangsobject voor GroepsWerkJaren
+	/// </summary>
 	public class GroepsWerkJaarDao : Dao<GroepsWerkJaar, ChiroGroepEntities>, IGroepsWerkJaarDao
 	{
 		// TODO: deze klasse en bijhorende interface mag eigenlijk weg.

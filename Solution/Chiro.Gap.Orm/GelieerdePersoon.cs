@@ -17,22 +17,26 @@ using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Orm
 {
-	// Als er een persoon met adressen over de service gestuurd wordt,
-	// en een PersoonsAdres is uit de lijst met PersoonsAdressen 
-	// verdwenen, dan is het de bedoeling dat
-	// het PersoonsAdresobject mee verdwijnt uit de database.  Om daarvoor
-	// te zorgen, is onderstaand attribuut AssociationEndBehavior
-	// nodig.  (Als dat attribuut er niet zou staan, dan zou enkel
-	// de koppeling tussen Persoon en Persoonsadres verdwijnen, en
-	// dat heeft dan weer een key violation tot gevolg.)
-
+	/// <summary>
+	/// Instantieert een GelieerdePersoon-object dat zorgt voor samenwerking met Entity Framework
+	/// </summary>
+	/// <remarks>
+	/// Als er een persoon met adressen over de service gestuurd wordt,
+	/// en een PersoonsAdres is uit de lijst met PersoonsAdressen 
+	/// verdwenen, dan is het de bedoeling dat
+	/// het PersoonsAdresobject mee verdwijnt uit de database.  Om daarvoor
+	/// te zorgen, is attribuut AssociationEndBehavior
+	/// nodig.  (Als dat attribuut er niet stond, zou enkel
+	/// de koppeling tussen Persoon en Persoonsadres verdwijnen, en
+	/// dat heeft dan weer een key violation tot gevolg.)
+	/// </remarks>
 	[AssociationEndBehavior("PersoonsAdres", Owned = true)]
 	[AssociationEndBehavior("Persoon", Owned = true)]
 	[MetadataType(typeof(GelieerdePersoon_Validatie))]
 	public partial class GelieerdePersoon : IEfBasisEntiteit
 	{
 		/// <summary>
-		/// Nested class die toelaat om validatie properties op te zetten, en die gereferenced wordt door het MetadataType attribute
+		/// Nested class die toelaat om validatie properties op te zetten, en die gereferencet wordt door het MetadataType attribute
 		/// Dit kan niet op de echte class, want die wordt gegenereerd door de EF Designer
 		/// </summary>
 		public class GelieerdePersoon_Validatie
@@ -81,6 +85,9 @@ namespace Chiro.Gap.Orm
 			}
 		}
 
+		/// <summary>
+		/// Instantieert een GelieerdePersoon-object
+		/// </summary>
 		public GelieerdePersoon()
 			: base()
 		{

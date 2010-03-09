@@ -13,13 +13,16 @@ using Chiro.Cdf.Data.Entity;
 namespace Chiro.Gap.Orm
 {
 	/// <summary>
+	/// Instantieert een Straat-object dat zorgt voor samenwerking met Entity Framework
+	/// </summary>
+	/// <remarks>
 	/// Een straat heeft geen versie (timestamp) in de database.
 	/// Dat lijkt me ook niet direct nodig voor een klasse die
 	/// bijna nooit wijzigt.
 	/// <para/>
 	/// Het feit dat er geen timestamp is, wil wel zeggen dat
 	/// 'concurrencygewijze' de laatste altijd zal winnen.    
-	/// </summary>
+	/// </remarks>
 	public partial class Straat : IEfBasisEntiteit
 	{
 		#region IBasisEntiteit Members

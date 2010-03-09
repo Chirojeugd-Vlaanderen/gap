@@ -14,7 +14,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	// TODO: Straat en subgemeente zouden standaard mee opgehaald moeten worden.
 
 	/// <summary>
-	/// Data Access Object voor adressen.    
+	/// Interface voor een data access object voor adressen
 	/// </summary>
 	public interface IAdressenDao : IDao<Adres>
 	{

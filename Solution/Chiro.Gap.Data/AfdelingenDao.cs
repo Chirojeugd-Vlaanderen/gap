@@ -16,6 +16,9 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+	/// <summary>
+	/// Gegevenstoegangsobject voor afdelingen
+	/// </summary>
 	public class AfdelingenDao : Dao<Afdeling, ChiroGroepEntities>, IAfdelingenDao
 	{
 		/// <summary>

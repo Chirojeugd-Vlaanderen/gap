@@ -22,21 +22,66 @@ namespace Chiro.Gap.Fouten.Exceptions
 		/// </summary>
 		private BestaatAlFault _fault = null;
 
-		public BestaatAlException() : base() { }
-		public BestaatAlException(string message) : base(message) { }
-		public BestaatAlException(string message, Exception inner) : base(message, inner) { }
-		public BestaatAlException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+		/// <summary>
+		/// 
+		/// </summary>
+		public BestaatAlException()
+			: base()
+		{
+		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="message"></param>
+		public BestaatAlException(string message)
+			: base(message)
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="message"></param>
+		/// <param name="inner"></param>
+		public BestaatAlException(string message, Exception inner)
+			: base(message, inner)
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="info"></param>
+		/// <param name="context"></param>
+		public BestaatAlException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="fault"></param>
 		public BestaatAlException(BestaatAlFault fault)
 			: base()
 		{
 			_fault = fault;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public BestaatAlFault Fault
 		{
-			get { return _fault; }
-			set { _fault = value; }
+			get
+			{
+				return _fault;
+			}
+			set
+			{
+				_fault = value;
+			}
 		}
 	}
 }

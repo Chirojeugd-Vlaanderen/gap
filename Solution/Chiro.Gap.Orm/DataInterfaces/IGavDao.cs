@@ -12,14 +12,14 @@ using Chiro.Cdf.Data;
 namespace Chiro.Gap.Orm.DataInterfaces
 {
 	/// <summary>
-	/// Data access voor GAV's
+	/// Interface voor een gegevenstoegangsobject voor GAV's
 	/// </summary>
 	public interface IGavDao : IDao<Gav>
 	{
 		/// <summary>
 		/// Haalt GAV-object op op basis van login
 		/// </summary>
-		/// <param name="login">De gebruikersnaam</param>
+		/// <param name="login">De gebruikersnaam van de bezoeker</param>
 		/// <returns>GAV horende bij gegeven login</returns>
 		Gav Ophalen(string login);
 	}

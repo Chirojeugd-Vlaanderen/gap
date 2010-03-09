@@ -16,10 +16,41 @@ namespace Chiro.Gap.Fouten.Exceptions
 	/// </summary>
 	public class OngeldigeActieException : System.Exception, ISerializable
 	{
+		/// <summary>
+		/// 
+		/// </summary>
+		public OngeldigeActieException()
+			: base()
+		{
+		}
 
-		public OngeldigeActieException() : base() { }
-		public OngeldigeActieException(string message) : base(message) { }
-		public OngeldigeActieException(string message, Exception inner) : base(message, inner) { }
-		public OngeldigeActieException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="message"></param>
+		public OngeldigeActieException(string message)
+			: base(message)
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="message"></param>
+		/// <param name="inner"></param>
+		public OngeldigeActieException(string message, Exception inner)
+			: base(message, inner)
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="info"></param>
+		/// <param name="context"></param>
+		public OngeldigeActieException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+		}
 	}
 }

@@ -19,20 +19,65 @@ namespace Chiro.Gap.Fouten.Exceptions
 	{
 		private AdresFault _fault = null;
 
-		public AdresException() : base() { }
-		public AdresException(string message) : base(message) { }
-		public AdresException(string message, Exception inner) : base(message, inner) { }
-		public AdresException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+		/// <summary>
+		/// 
+		/// </summary>
+		public AdresException()
+			: base()
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="message"></param>
+		public AdresException(string message)
+			: base(message)
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="message"></param>
+		/// <param name="inner"></param>
+		public AdresException(string message, Exception inner)
+			: base(message, inner)
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="vf"></param>
+		public AdresException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="vf"></param>
 		public AdresException(AdresFault vf)
 			: base()
 		{
 			_fault = vf;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public AdresFault Fault
 		{
-			get { return _fault; }
-			set { _fault = value; }
+			get
+			{
+				return _fault;
+			}
+			set
+			{
+				_fault = value;
+			}
 		}
 	}
 }

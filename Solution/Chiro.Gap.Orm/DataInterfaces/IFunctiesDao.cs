@@ -32,7 +32,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// </summary>
 		/// <param name="groepID">ID van een groep</param>
 		/// <param name="functieID">ID van een functie</param>
-		/// <returns>antal leden uit de groep bepaald door <paramref name="groepID"/> de functie
+		/// <returns>Aantal leden uit de groep bepaald door <paramref name="groepID"/> de functie
 		/// hebben bepaad door <paramref name="functieID"/></returns>
 		int AantalLeden(int groepID, int functieID);
 

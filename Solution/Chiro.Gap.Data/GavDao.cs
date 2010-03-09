@@ -15,6 +15,9 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
+	/// <summary>
+	/// Gegevenstoegangsobject voor GAV-info
+	/// </summary>
 	public class GavDao : Dao<Gav, ChiroGroepEntities>, IGavDao
 	{
 		/// <summary>

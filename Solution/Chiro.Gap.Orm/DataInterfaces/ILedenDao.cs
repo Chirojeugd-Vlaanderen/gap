@@ -12,6 +12,9 @@ using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Orm.DataInterfaces
 {
+	/// <summary>
+	/// Interface voor een gegevenstoegangsobject voor Leden
+	/// </summary>
 	public interface ILedenDao : IDao<Lid>
 	{
 		IList<Lid> AllesOphalen(int groepsWerkJaarID);

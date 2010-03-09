@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +30,7 @@ namespace Chiro.Cdf.Validation
 		/// Bepaalt de leeftijd in jaren van iemand die geboren is in <paramref name="geboorteDatum"/>
 		/// op het moment bepaald door <paramref name="referentie"/>
 		/// </summary>
-		/// <param name="geboorteDatum">Geboortedatum</param>
+		/// <param name="geboorteDatum">De geboortedatum</param>
 		/// <param name="referentie">Datum waarop de leeftijd bepaald moet worden</param>
 		/// <returns>De leeftijd in jaren</returns>
 		public static int LeefTijd(DateTime geboorteDatum, DateTime referentie)

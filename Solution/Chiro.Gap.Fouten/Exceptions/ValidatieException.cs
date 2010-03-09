@@ -16,9 +16,41 @@ namespace Chiro.Gap.Fouten.Exceptions
 	/// </summary>
 	public class ValidatieException : System.Exception, ISerializable
 	{
-		public ValidatieException() : base() { }
-		public ValidatieException(string message) : base(message) { }
-		public ValidatieException(string message, Exception inner) : base(message, inner) { }
-		public ValidatieException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+		/// <summary>
+		/// Instantieert een lege ValidatieException
+		/// </summary>
+		public ValidatieException()
+			: base()
+		{
+		}
+
+		/// <summary>
+		/// Instantieert een ValidatieException met een opgegeven foutboodschap
+		/// </summary>
+		/// <param name="message">De foutboodschap die doorgegeven moet worden</param>
+		public ValidatieException(string message)
+			: base(message)
+		{
+		}
+
+		/// <summary>
+		/// Instantieert een ValidatieException met een opgegeven foutboodschap en 'inner exception'
+		/// </summary>
+		/// <param name="message"></param>
+		/// <param name="inner"></param>
+		public ValidatieException(string message, Exception inner)
+			: base(message, inner)
+		{
+		}
+
+		/// <summary>
+		/// Instantieert een ValidatieException met een opgegeven SerializationInfo en StreamingContext
+		/// </summary>
+		/// <param name="info"></param>
+		/// <param name="context"></param>
+		public ValidatieException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+		}
 	}
 }
