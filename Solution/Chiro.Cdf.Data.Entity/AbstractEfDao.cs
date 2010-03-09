@@ -235,20 +235,8 @@ namespace Chiro.Cdf.Data.Entity
 		/// expressions meekrijgt</remarks>
 		public virtual TEntiteit Bewaren(TEntiteit entiteit, params Expression<Func<TEntiteit, object>>[] paths)
 		{
-			using (TContext db = new TContext())
-			{
-				entiteit = db.AttachObjectGraph(entiteit, paths);
-
-				// SetAllModified is niet meer nodig na AttachObjectGraph
-
-				db.SaveChanges();
-			}
-
-			// Door Utility.DetachObjectGraph te gebruiken wanneer de context
-			// niet meer bestaat, is het resultaat *echt* gedetacht.
-
-			entiteit = Utility.DetachObjectGraph(entiteit);
-			return entiteit;
+			var resultaat = Bewaren(new TEntiteit[] { entiteit }, paths);
+			return (resultaat.Count() == 1) ? resultaat.First() : null;
 		}
 
 		/// <summary>
@@ -262,12 +250,19 @@ namespace Chiro.Cdf.Data.Entity
 		{
 			using (TContext db = new TContext())
 			{
-				db.AttachObjectGraphs(es, paths);
+				es = db.AttachObjectGraphs(es, paths);
+				// Geattachte graph toekennen aan es, zodat we achteraf de goeie detachen.
+
 				db.SaveChanges();
 			}
 
 			es = Utility.DetachObjectGraph(es);
-			return es;
+
+			// Als er 'root'-entiteiten te verwijderen waren, dan halen we die ook uit de lijst
+
+			return (from entiteit in es
+				where entiteit.TeVerwijderen == false
+				select entiteit).ToArray();
 		}
 		#endregion
 	}

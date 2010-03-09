@@ -43,6 +43,11 @@
 		public const string ONBESTAANDENIEUWECATCODE = "BROES";
 
 		/// <summary>
+		/// Naam voor de nieuwe categorie
+		/// </summary>
+		public const string ONBESTAANDENIEUWECATNAAM = "Broezers";
+
+		/// <summary>
 		/// Codes van onbestaande categorieën, te gebruiken voor unit tests.
 		/// </summary>
 		public static readonly string[] ONBESTAANDECATEGORIECODES = {

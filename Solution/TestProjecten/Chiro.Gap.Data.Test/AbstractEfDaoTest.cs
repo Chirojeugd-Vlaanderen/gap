@@ -1,15 +1,19 @@
-﻿using System;
-using System.Text;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Chiro.Gap.Orm;
-using Chiro.Cdf.Ioc;
-using Chiro.Gap.Orm.DataInterfaces;
 using System.Data;
-using Chiro.Cdf.Data.Entity;
+using System.Linq;
+using System.Text;
+
 using Chiro.Cdf.Data;
+using Chiro.Cdf.Data.Entity;
+using Chiro.Cdf.Ioc;
+
+using Chiro.Gap.Data.Ef;
+using Chiro.Gap.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.TestDbInfo;
+using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Data.Test
 {
@@ -75,12 +79,23 @@ namespace Chiro.Gap.Data.Test
 			IGavDao gavDao = Factory.Maak<IGavDao>();
 
 			Gav gav = gavDao.Ophalen(TestInfo.NIEUWEGAV);
-
 			if (gav != null)
 			{
 				gav.TeVerwijderen = true;
 				gavDao.Bewaren(gav);
 			}
+
+			// Verwijder onbestaande categorie, zodat ze zeker onbestaand is :-)
+			var catDao = Factory.Maak<ICategorieenDao>();
+
+			Categorie cat = catDao.Ophalen(TestInfo.GROEPID, TestInfo.ONBESTAANDENIEUWECATCODE);
+			if (cat != null)
+			{
+				cat.TeVerwijderen = true;
+				catDao.Bewaren(cat);
+			}
+
+
 		}
 
 		/// <summary>
@@ -102,6 +117,52 @@ namespace Chiro.Gap.Data.Test
 			// Assert
 
 			Assert.IsTrue(gav.ID > 0);
+		}
+
+		/// <summary>
+		/// Kijkt na of nieuwe entiteiten ergens in de expression tree van de lambda-expressies
+		/// een ID krijgen.
+		/// </summary>
+		[TestMethod]
+		public void IDToekennenIndirect()
+		{
+			#region Arrange
+
+			var gDao = Factory.Maak<IGroepenDao>();
+			var cDao = Factory.Maak<ICategorieenDao>();
+			var mgr = Factory.Maak<GroepenManager>();
+
+			Groep g = gDao.Ophalen(TestInfo.GROEPID, grp => grp.Categorie);
+
+			#endregion
+
+			#region Act
+
+			Categorie c = mgr.CategorieToevoegen(
+				g,
+				TestInfo.ONBESTAANDENIEUWECATNAAM,
+				TestInfo.ONBESTAANDENIEUWECATCODE);
+
+			g = gDao.Bewaren(g, grp => grp.Categorie);
+
+			#endregion
+
+			#region Assert
+
+			c = (from cat in g.Categorie
+			     where String.Compare(cat.Code, TestInfo.ONBESTAANDENIEUWECATCODE) == 0
+			     select cat).First();
+
+			Assert.IsTrue(c.ID > 0);
+
+			#endregion
+
+			#region Cleanup
+
+			c.TeVerwijderen = true;
+			g = gDao.Bewaren(g, grp => grp.Categorie);
+
+			#endregion
 		}
 
 
@@ -138,6 +199,95 @@ namespace Chiro.Gap.Data.Test
 
 			// Assert
 			Assert.IsTrue(g.EntityState == EntityState.Detached);
+		}
+
+		/// <summary>
+		/// Als een entiteit wordt verwijderd uit de database via 'te verwijderen', willen we dat 
+		/// de terugkeerwaarde null is
+		/// </summary>
+		[TestMethod]
+		public void NullNaVerwijderen()
+		{
+			#region Arrange
+
+			var gDao = Factory.Maak<IGroepenDao>();
+			var cDao = Factory.Maak<ICategorieenDao>();
+			var mgr = Factory.Maak<GroepenManager>();
+
+			Groep g = gDao.Ophalen(TestInfo.GROEPID, grp=>grp.Categorie);
+
+			// categorie maken en toevoegen, zodat we kunnen zien of we ze goed kunnen verwijderen
+
+			Categorie c = mgr.CategorieToevoegen(
+				g,
+				TestInfo.ONBESTAANDENIEUWECATNAAM,
+				TestInfo.ONBESTAANDENIEUWECATCODE);
+
+			c = cDao.Bewaren(c);
+
+			#endregion
+
+			#region Act
+
+			c.TeVerwijderen = true;
+			c = cDao.Bewaren(c);
+
+			#endregion
+
+			#region Assert
+
+			Assert.IsNull(c);
+
+			#endregion
+
+		}
+
+		/// <summary>
+		/// Als een entiteit wordt verwijderd uit de database via 'te verwijderen', en die entiteit is 
+		/// niet de root, dan mag die entiteit ook niet meer gekoppeld zijn aan het teruggegeven object.
+		/// </summary>
+		[TestMethod]
+		public void TeVerwijderenObjectDaadwerkelijkVerdwenen()
+		{
+			#region Arrange
+
+			var gDao = Factory.Maak<IGroepenDao>();
+			var mgr = Factory.Maak<GroepenManager>();
+
+			Groep g = gDao.Ophalen(TestInfo.GROEPID, grp => grp.Categorie);
+
+			// categorie maken en toevoegen, zodat we kunnen zien of we ze goed kunnen verwijderen
+
+			Categorie c = mgr.CategorieToevoegen(
+				g,
+				TestInfo.ONBESTAANDENIEUWECATNAAM,
+				TestInfo.ONBESTAANDENIEUWECATCODE);
+
+			g = gDao.Bewaren(g, grp=>grp.Categorie);
+
+			#endregion
+
+			#region Act
+
+			c = (from cat in g.Categorie
+			     where String.Compare(cat.Code, TestInfo.ONBESTAANDENIEUWECATCODE) == 0
+			     select cat).First();
+
+			c.TeVerwijderen = true;
+			g = gDao.Bewaren(g, grp=>grp.Categorie);
+
+			#endregion
+
+			#region Assert
+
+			var gevonden = (from cat in g.Categorie
+					where String.Compare(cat.Code, TestInfo.ONBESTAANDENIEUWECATCODE) == 0
+					select cat).FirstOrDefault();
+
+			Assert.IsNull(gevonden);	// verwacht dat categorie niet meer aan groep hangt
+
+			#endregion
+
 		}
 
 		/// <summary>

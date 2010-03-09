@@ -15,6 +15,7 @@ using Chiro.Cdf.Data.Entity;
 namespace Chiro.Gap.Orm
 {
 	[AssociationEndBehavior("Afdeling", Owned = true)]
+	[AssociationEndBehavior("Categorie", Owned = true)]
 	public partial class Groep : IEfBasisEntiteit
 	{
 		private bool _teVerwijderen = false;
