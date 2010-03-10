@@ -241,7 +241,7 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Verwijdert lid uit database
 		/// Dit kan enkel als het een lid uit het huidige werkjaar is en als de instapperiode niet verstreken is voor een kind
-		/// Leiding kan niet verwijderd worden.
+		/// Leiding kan niet verwijderd worden.  Persisteert.
 		/// </summary>
 		/// <param name="id">ID van het lid dat verwijderd moet worden</param>
 		/// <returns><c>True</c> on successful</returns>
@@ -393,12 +393,14 @@ namespace Chiro.Gap.Workers
 		/// De afdelingen van het gegeven lid worden aangepast van whatever momenteel zijn afdelingen zijn naar
 		/// de gegeven lijst nieuwe afdelingen.
 		/// Een kind mag maar 1 afdeling hebben, voor een leider staan daar geen constraints op.
+		/// Persisteert.
 		/// </summary>
 		/// <param name="l">Lid, geladen met groepswerkjaar met afdelingsjaren</param>
 		/// <param name="afdelingsIDs">De ids van de AFDELING waarvan het kind lid is</param>
 		/// <remarks>Deze functie is niet 'compliant' aan de coding standard, zie 
 		/// richtlijnen 85, 83 en 1)</remarks>
-		public void AanpassenAfdelingenVanLid(Lid l, IList<int> afdelingsIDs)
+		/// <returns>Lidobject met gekoppeld(e) afdelingsja(a)r(en)</returns>
+		public Lid AanpassenAfdelingenVanLid(Lid l, IList<int> afdelingsIDs)
 		{
 			if (l is Kind)
 			{
@@ -431,6 +433,11 @@ namespace Chiro.Gap.Workers
 					}
 
 					kind.AfdelingsJaar = ajnieuw;
+					return _daos.KindDao.Bewaren(kind, knd => knd.AfdelingsJaar);
+				}
+				else
+				{
+					return kind;
 				}
 			}
 			else
@@ -467,6 +474,7 @@ namespace Chiro.Gap.Workers
 				{
 					throw new OngeldigeActieException("Niet alle gekozen afdelingen zijn afdelingen van de groep in het gekozen werkjaar.");
 				}
+				return _daos.LeidingDao.Bewaren(leiding, ldng => ldng.AfdelingsJaar);
 			}
 		}
 	}

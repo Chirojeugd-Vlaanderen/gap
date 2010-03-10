@@ -338,11 +338,9 @@ namespace Chiro.Gap.Workers
 
 		/// <summary>
 		/// Maakt GelieerdePersoon, gekoppelde Persoon, Adressen en Communicatie allemaal
-		/// te verwijderen.  Persisteert niet!
+		/// te verwijderen.  Persisteert!
 		/// </summary>
 		/// <param name="gp">Te verwijderen gelieerde persoon</param>
-		/// <remarks>Deze wijziging wordt nog niet gepersisteerd in de database! Hiervoor
-		/// moet eerst 'Bewaren' aangeroepen worden!</remarks>
 		public void VolledigVerwijderen(GelieerdePersoon gp)
 		{
 			if (_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
@@ -359,6 +357,8 @@ namespace Chiro.Gap.Workers
 				{
 					cv.TeVerwijderen = true;
 				}
+
+				_dao.Bewaren(gp, gpers => gpers.Persoon.PersoonsAdres, gpers => gpers.Communicatie);
 			}
 			else
 			{
@@ -409,14 +409,15 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Verwijdert de gelieerde personen uit de categorie
+		/// Verwijdert de gelieerde personen uit de categorie, en persisteert
 		/// </summary>
 		/// <remarks>De methode is reentrant, als er bepaalde personen niet gelinkt zijn aan de categorie, 
 		/// gebeurt er niets met die personen, ook geen error.
 		/// </remarks>
 		/// <param name="gelieerdePersonenIDs">Gelieerde persoon IDs</param>
 		/// <param name="categorie">Te verwijderen categorie MET gelinkte gelieerdepersonen </param>
-		public void CategorieLoskoppelen(IList<int> gelieerdePersonenIDs, Categorie categorie)
+		/// <returns>Een kloon van de categorie, waaruit de gevraagde personen verwijderd zijn</returns>
+		public Categorie CategorieLoskoppelen(IList<int> gelieerdePersonenIDs, Categorie categorie)
 		{
 			// Heeft de gebruiker rechten voor de groep en de categorie?
 			foreach (int x in gelieerdePersonenIDs)
@@ -441,6 +442,8 @@ namespace Chiro.Gap.Workers
 			{
 				gp.TeVerwijderen = true;
 			}
+
+			return _categorieenDao.Bewaren(categorie, cat => cat.GelieerdePersoon);
 		}
 
 		/// <summary>

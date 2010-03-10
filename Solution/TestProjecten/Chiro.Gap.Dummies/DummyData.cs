@@ -74,6 +74,11 @@ namespace Chiro.Gap.Dummies
 		/// </summary>
 		static DummyData()
 		{
+			// TODO: Door de objecten te bewaren krijgen ze ID's, waardoor de tests betrouwbaarder
+			// worden.  Op het einden zou er dus ergens 
+			// GroepenDao.Bewaren(_dummyGroep, lambda-expressie-die-alles-meeneemt)
+			// aangeroepen moeten worden.
+
 			GroepsWerkJaarManager wjMgr = Factory.Maak<GroepsWerkJaarManager>();
 			GelieerdePersonenManager gpMgr = Factory.Maak<GelieerdePersonenManager>();
 			GroepenManager gMgr = Factory.Maak<GroepenManager>();

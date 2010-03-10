@@ -110,6 +110,12 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
+		/// <summary>
+		/// Bewaart de categorie, met daaraan gekopped de personen
+		/// </summary>
+		/// <param name="cat">Te bewaren categorie</param>
+		/// <returns>Een kloon van de categorie, met eventueel geupdatete ID's of verwijderde
+		/// personen.</returns>
 		public Categorie BewarenMetPersonen(Categorie cat)
 		{
 			if (_autorisatieMgr.IsGavCategorie(cat.ID))
@@ -148,20 +154,20 @@ namespace Chiro.Gap.Workers
 					categorie.GelieerdePersoon);
 			}
 
-			LeegMaken(categorie);
+			LeegMaken(categorie);  // verwijdert alle gel. personen, en persisteert
 
-			categorie.TeVerwijderen = true;
-
+			categorie.TeVerwijderen = true;	// nu de categorie zelf nog
 			Bewaren(categorie);
 		}
 
 		#endregion
 
 		/// <summary>
-		/// Verwijdert alle gelieerde personen uit de categorie <paramref name="c"/>
+		/// Verwijdert alle gelieerde personen uit de categorie <paramref name="c"/>, en persisteert
 		/// </summary>
 		/// <param name="c">Leeg te maken categorie</param>
-		public void LeegMaken(Categorie c)
+		/// <returns>De categorie zonder personen</returns>
+		public Categorie LeegMaken(Categorie c)
 		{
 			if (_autorisatieMgr.IsGavCategorie(c.ID))
 			{
@@ -170,6 +176,11 @@ namespace Chiro.Gap.Workers
 					gp.TeVerwijderen = true;
 					// dit verwijdert enkel de link naar de gelieerde persoon
 				}
+				return _dao.Bewaren(c, cat => cat.GelieerdePersoon);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavCategorie);
 			}
 		}
 	}

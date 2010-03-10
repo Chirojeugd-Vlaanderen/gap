@@ -76,8 +76,13 @@ namespace Chiro.Gap.Workers.Test
 			// Arrange
 
 			var gpMgr = Factory.Maak<GelieerdePersonenManager>();
-			// (kijk even na of Jos wel in de categorie zit)
-			Assert.IsTrue(DummyData.GelieerdeJos.Categorie.Contains(DummyData.Vervelend));
+
+			if (!DummyData.GelieerdeJos.Categorie.Contains(DummyData.Vervelend))
+			{
+				// Zeker zijn dat Jos al een keer in de categorie zit.
+				gpMgr.CategorieKoppelen(new GelieerdePersoon[] { DummyData.GelieerdeJos }, DummyData.Vervelend);
+			}
+
 			int aantalCategorieen = DummyData.GelieerdeJos.Categorie.Count;
 		
 			// Act
@@ -105,18 +110,9 @@ namespace Chiro.Gap.Workers.Test
 
 			// Assert
 
-			// De koppeling categorie - gelieerde persoon moet nu gemarkeerd zijn als 'te verwijderen', ze
-			// blijft dus wel bestaan.
+			// LosKoppelen is een 'delete', dus moet er direct bewaard worden.
 
-			Assert.IsTrue(DummyData.Vervelend.GelieerdePersoon.Contains(DummyData.GelieerdeIrene));
-
-			// In praktijk wil dat zeggen dat Irene als te verwijderen gemarkeerd is.
-			// Eigenlijk is dat gevaarlijk, want als nu de persoon gepersisteerd wordt ipv de categorie,
-			// dan valt de persoon weg.  Wat niet de bedoeling is uiteraard.  Maar ik vrees dat
-			// het moeilijk anders kan zolang er geen beter multi-tier support is voor EF.
-
-			Assert.IsTrue(DummyData.GelieerdeIrene.TeVerwijderen);
-
+			Assert.IsFalse(DummyData.Vervelend.GelieerdePersoon.Contains(DummyData.GelieerdeIrene));
 		}
 
 	}

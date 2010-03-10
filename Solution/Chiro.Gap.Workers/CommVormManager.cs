@@ -144,18 +144,28 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
-		// FIXME: de parameter 'gelieerdePersoonID' is overbodig; zie ticket #145.
+		// FIXME: de parameter 'gelieerdePersoon' is overbodig; zie ticket #145.
+		/// <summary>
+		/// Verwijdert een communicatievorm, en persisteert.
+		/// </summary>
+		/// <param name="comm">Te verwijderen communicatievorm</param>
+		/// <param name="origineel">Gekoppelde persoon.  Deze parameter moet verdwijnen; die informatie
+		/// moet komen uit comm.GelieerdePersoon.</param>
 		public void CommunicatieVormVerwijderen(CommunicatieVorm comm, GelieerdePersoon origineel)
 		{
 			if (!_autorisatieMgr.IsGavGelieerdePersoon(origineel.ID))
 			{
-				throw new GeenGavException(Resources.GeenGavGroep);
+				// Aangezien er niet getest wordt of de communicatievorm wel hoort bij de 
+				// gegeven persoon, is deze test belachelijk.
+
+				throw new GeenGavException(Resources.GeenGavGelieerdePersoon);
 			}
 			if (!_autorisatieMgr.IsGavCommVorm(comm.ID))
 			{
 				throw new GeenGavException(Resources.GeenGavCommVorm);
 			}
 			comm.TeVerwijderen = true;
+			_dao.Bewaren(comm);
 		}
 	}
 }

@@ -7,20 +7,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Linq;
+
+[assembly: InternalsVisibleTo("Chiro.Gap.Dummies")]
 
 namespace Chiro.Cdf.Data.Entity
 {
 	internal static class EntityFrameworkHelper
 	{
 		/// <summary>
-		/// Ik vermoed dat deze method een soort van tree genereert
-		/// met daarin de namen van de properties die de object
-		/// graph bepalen
+		/// Deze method bepaalt alle (sub)property's waar de lambda-expressie <paramref name="exp"/>
+		/// betrekking op heeft, en voegt die toe aan de lijst <paramref name="members"/>.
 		/// </summary>
-		/// <param name="exp">1 path van de paths meegegeven aan 
-		/// AttachObjectGraphs</param>
-		/// <param name="members">Een lijst met ExtendedPropertyInfo</param>
+		/// <param name="exp">1 'path' bepaald door een lambda-expressie</param>
+		/// <param name="members">Lijst waar de gevonden properties aan toegevoegd moeten worden</param>
 		internal static void CollectRelationalMembers(Expression exp, IList<ExtendedPropertyInfo> members)
 		{
 			if (exp.NodeType == ExpressionType.Lambda)
@@ -69,6 +70,9 @@ namespace Chiro.Cdf.Data.Entity
 		}
 	}
 
+	/// <summary>
+	/// Deze klasse wordt gebruikt om 'propertybomen' op te stellen op basis van lambda-expressies 
+	/// </summary>
 	internal class ExtendedPropertyInfo : IEquatable<ExtendedPropertyInfo>
 	{
 		public ExtendedPropertyInfo(PropertyInfo propertyInfo)

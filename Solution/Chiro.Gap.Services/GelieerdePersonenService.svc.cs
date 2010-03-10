@@ -302,6 +302,8 @@ namespace Chiro.Gap.Services
 												  where personenIDs.Contains(pa.Persoon.ID)
 												  select pa).ToList();
 
+			// TODO: worker method gebruiken 
+
 			foreach (PersoonsAdres pa in teVerwijderen)
 			{
 				pa.TeVerwijderen = true;
@@ -339,8 +341,7 @@ namespace Chiro.Gap.Services
 			{
 				throw new ArgumentException(Resources.FouteCommunicatieVormVoorPersoonString);
 			}
-			_cvMgr.CommunicatieVormVerwijderen(cv, gp);
-			_gpMgr.BewarenMetCommVormen(gp);
+			_cvMgr.CommunicatieVormVerwijderen(cv, gp);	// persisteert
 		}
 
 		// TODO dit moet gecontroleerd worden!
@@ -409,11 +410,8 @@ namespace Chiro.Gap.Services
 			// Haal categorie op met groep
 			Categorie categorie = _catMgr.Ophalen(categorieID);
 
-			// Ontkoppelen
+			// Ontkoppelen en persisteren (verwijderen persisteert altijd meteen)
 			_gpMgr.CategorieLoskoppelen(gelieerdepersonenIDs, categorie);
-
-			// Bewaren
-			_catMgr.BewarenMetPersonen(categorie);
 		}
 
 		public IEnumerable<Categorie> CategorieenOphalen(int groepID)

@@ -123,12 +123,7 @@ namespace Chiro.Gap.Data.Test
 
 			foreach (GelieerdePersoon gp in gevonden)
 			{
-				// Markeer geliererde persoon en alle aanhangsels als
-				// 'te verwijderen' 
-				mgr.VolledigVerwijderen(gp);
-
-				// persisteer
-				dao.Bewaren(gp, l => l.Persoon, l => l.Persoon.PersoonsAdres, l => l.Communicatie);
+				mgr.VolledigVerwijderen(gp);	// verwijderen persisteert direct
 			}
 		}
 
@@ -288,12 +283,7 @@ namespace Chiro.Gap.Data.Test
 			#region Act
 			foreach (GelieerdePersoon gp in gevonden)
 			{
-				// Markeer geliererde persoon en alle aanhangsels als
-				// 'te verwijderen' 
-				mgr.VolledigVerwijderen(gp);
-
-				// persisteer
-				dao.Bewaren(gp, l => l.Persoon, l => l.Persoon.PersoonsAdres, l => l.Communicatie);
+				mgr.VolledigVerwijderen(gp);	// verwijderen persisteert direct
 			}
 			#endregion
 
