@@ -12,67 +12,67 @@ namespace Chiro.Gap.Dummies
 	/// <summary>
 	/// Dummy data om mee te spelen in tests
 	/// </summary>
-	public static class DummyData
+	public class DummyData
 	{
-		private static Groep _dummyGroep;		// testgroep
-		private static GroepsWerkJaar _huidigGwj;	// testgroepswerkjaar
-		private static GelieerdePersoon _gelieerdeJos;	// gelieerdePersoon genaamd 'Jos' 
-		private static GelieerdePersoon _gelieerdeIrene; // gelieerdePersoon genaamd 'Irene'
-		private static GelieerdePersoon _gelieerdeYvonne; // gelieerdePersoon genaamd 'Yvonne'
-		private static Categorie _vervelend;		// categorie voor vervelende mensen
-		private static Functie _redactie;		// functie voor 1 persoon
-		private static Lid _lidJos;			// lidobject Jos
-		private static Lid _lidYvonne;			// lidobject Yvonne
+		private Groep _dummyGroep;		// testgroep
+		private GroepsWerkJaar _huidigGwj;	// testgroepswerkjaar
+		private GelieerdePersoon _gelieerdeJos;	// gelieerdePersoon genaamd 'Jos' 
+		private GelieerdePersoon _gelieerdeIrene; // gelieerdePersoon genaamd 'Irene'
+		private GelieerdePersoon _gelieerdeYvonne; // gelieerdePersoon genaamd 'Yvonne'
+		private Categorie _vervelend;		// categorie voor vervelende mensen
+		private Functie _redactie;		// functie voor 1 persoon
+		private Lid _lidJos;			// lidobject Jos
+		private Lid _lidYvonne;			// lidobject Yvonne
 
 		/// <summary>
 		/// Een groep met daaraan gekoppeld een aantal leden
 		/// </summary>
-		public static Groep DummyGroep { get { return _dummyGroep; } }
+		public Groep DummyGroep { get { return _dummyGroep; } }
 
 		/// <summary>
 		/// Huidig groepswerkjaar voor de testgroep
 		/// </summary>
-		public static GroepsWerkJaar HuidigGwj { get { return _huidigGwj; } }
+		public GroepsWerkJaar HuidigGwj { get { return _huidigGwj; } }
 
 		/// <summary>
 		/// De gelieerde testpersoon 'Jos'
 		/// </summary>
-		public static GelieerdePersoon GelieerdeJos { get { return _gelieerdeJos; } }
+		public GelieerdePersoon GelieerdeJos { get { return _gelieerdeJos; } }
 
 		/// <summary>
 		/// De gelieerde testpersoon 'Irene'
 		/// </summary>
-		public static GelieerdePersoon GelieerdeIrene { get { return _gelieerdeIrene; } }
+		public GelieerdePersoon GelieerdeIrene { get { return _gelieerdeIrene; } }
 
 		/// <summary>
 		/// De gelieerde testpersoon 'Yvonne'
 		/// </summary>
-		public static GelieerdePersoon GelieerdeYvonne { get { return _gelieerdeYvonne; } }
+		public GelieerdePersoon GelieerdeYvonne { get { return _gelieerdeYvonne; } }
 
 		/// <summary>
 		/// Jos' lidobject
 		/// </summary>
-		public static Lid LidJos { get { return _lidJos; } }
+		public Lid LidJos { get { return _lidJos; } }
 
 		/// <summary>
 		/// Yvonnes lidobject
 		/// </summary>
-		public static Lid LidYvonne { get { return _lidYvonne; } }
+		public Lid LidYvonne { get { return _lidYvonne; } }
 
 		/// <summary>
 		/// De categorie voor vervelende mensen
 		/// </summary>
-		public static Categorie Vervelend { get { return _vervelend; } }
+		public Categorie Vervelend { get { return _vervelend; } }
 
 		/// <summary>
 		/// Functie voor 1 persoon
 		/// </summary>
-		public static Functie UniekeFunctie { get { return _redactie; } }
+		public Functie UniekeFunctie { get { return _redactie; } }
 
 		/// <summary>
 		/// Bouwt de dummy data op
 		/// </summary>
-		static DummyData()
+		public DummyData()
 		{
 			// TODO: Door de objecten te bewaren krijgen ze ID's, waardoor de tests betrouwbaarder
 			// worden.  Op het einden zou er dus ergens 
@@ -163,17 +163,19 @@ namespace Chiro.Gap.Dummies
 		/// een service opgeleverd zou kunnen worden.
 		/// </summary>
 		/// <returns></returns>
-		public static GelieerdePersoon KloonJos()
+		public GelieerdePersoon KloonJos()
 		{
+			var testData = new DummyData();
+
 			GelieerdePersoon gp = new GelieerdePersoon();
 			gp.Persoon = new Persoon();
 
-			gp.ID = DummyData.GelieerdeJos.ID;
-			gp.Persoon.AdNummer = DummyData.GelieerdeJos.Persoon.AdNummer;
-			gp.Persoon.GeboorteDatum = DummyData.GelieerdeJos.Persoon.GeboorteDatum;
-			gp.Persoon.Geslacht = DummyData.GelieerdeJos.Persoon.Geslacht;
-			gp.Persoon.ID = DummyData.GelieerdeJos.Persoon.ID;
-			gp.Persoon.Naam = DummyData.GelieerdeJos.Persoon.Naam;
+			gp.ID = testData.GelieerdeJos.ID;
+			gp.Persoon.AdNummer = testData.GelieerdeJos.Persoon.AdNummer;
+			gp.Persoon.GeboorteDatum = testData.GelieerdeJos.Persoon.GeboorteDatum;
+			gp.Persoon.Geslacht = testData.GelieerdeJos.Persoon.Geslacht;
+			gp.Persoon.ID = testData.GelieerdeJos.Persoon.ID;
+			gp.Persoon.Naam = testData.GelieerdeJos.Persoon.Naam;
 
 			return gp;
 		}

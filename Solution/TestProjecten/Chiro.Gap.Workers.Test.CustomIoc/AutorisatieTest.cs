@@ -70,11 +70,12 @@ namespace Chiro.Gap.Workers.Test
 		{
 			// Arrange
 
+			var testData = new DummyData();
 			var ledenDaoMock = new Mock<ILedenDao>();
 			var autorisatieMgrMock = new Mock<IAutorisatieManager>();
 
-			ledenDaoMock.Setup(foo => foo.AllesOphalen(DummyData.HuidigGwj.ID)).Returns(new List<Lid>());
-			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(DummyData.HuidigGwj.ID)).Returns(false);
+			ledenDaoMock.Setup(foo => foo.AllesOphalen(testData.HuidigGwj.ID)).Returns(new List<Lid>());
+			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(testData.HuidigGwj.ID)).Returns(false);
 
 			Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
 			Factory.InstantieRegistreren<IAutorisatieManager>(autorisatieMgrMock.Object);
@@ -85,7 +86,7 @@ namespace Chiro.Gap.Workers.Test
 			// Act
 
 			int paginas;
-			lm.PaginaOphalen(DummyData.HuidigGwj.ID, out paginas);
+			lm.PaginaOphalen(testData.HuidigGwj.ID, out paginas);
 
 			// Verwacht exception
 		}
@@ -100,6 +101,7 @@ namespace Chiro.Gap.Workers.Test
 		{
 			// Arrange
 
+			var testData = new DummyData();
 			bool gecatcht = false;
 
 			var ledenDaoMock = new Mock<ILedenDao>();
@@ -107,10 +109,10 @@ namespace Chiro.Gap.Workers.Test
 			var groepenDaoMock = new Mock<IGroepenDao>();
 			var groepsWerkJaarDaoMock = new Mock<IGroepsWerkJaarDao>();
 
-			ledenDaoMock.Setup(foo => foo.AllesOphalen(DummyData.HuidigGwj.ID)).Returns(new List<Lid>());
-			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(DummyData.HuidigGwj.ID)).Returns(false);
-			groepsWerkJaarDaoMock.Setup(foo => foo.Ophalen(DummyData.HuidigGwj.ID)).Returns(DummyData.HuidigGwj);
-			groepenDaoMock.Setup(foo => foo.OphalenMetGroepsWerkJaren(DummyData.DummyGroep.ID)).Returns(DummyData.DummyGroep);
+			ledenDaoMock.Setup(foo => foo.AllesOphalen(testData.HuidigGwj.ID)).Returns(new List<Lid>());
+			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(testData.HuidigGwj.ID)).Returns(false);
+			groepsWerkJaarDaoMock.Setup(foo => foo.Ophalen(testData.HuidigGwj.ID)).Returns(testData.HuidigGwj);
+			groepenDaoMock.Setup(foo => foo.OphalenMetGroepsWerkJaren(testData.DummyGroep.ID)).Returns(testData.DummyGroep);
 
 			Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
 			Factory.InstantieRegistreren<IGroepenDao>(groepenDaoMock.Object);
@@ -126,7 +128,7 @@ namespace Chiro.Gap.Workers.Test
 
 			try
 			{
-				lm.PaginaOphalen(DummyData.HuidigGwj.ID, out paginas);
+				lm.PaginaOphalen(testData.HuidigGwj.ID, out paginas);
 			}
 			catch (GeenGavException)
 			{
@@ -137,6 +139,7 @@ namespace Chiro.Gap.Workers.Test
 			Assert.IsTrue(gecatcht && paginas == 0);
 			// verwacht dat de exception gecatcht is, en dat het aantal groepswerkjaren
 			// niet meegegeven werd.
+			// TODO: geen catch-structuur, maar wel [ExpectedException]-Attribuut op test
 		}
 
 		/// <summary>
@@ -201,17 +204,18 @@ namespace Chiro.Gap.Workers.Test
 		{
 			// Arrange
 
+			var testData = new DummyData();
 			var ledenDaoMock = new Mock<ILedenDao>();
 			var groepenDaoMock = new Mock<IGroepenDao>();
 			var autorisatieMgrMock = new Mock<IAutorisatieManager>();
 			var groepsWerkJaarDaoMock = new Mock<IGroepsWerkJaarDao>();
 
-			ledenDaoMock.Setup(foo => foo.AllesOphalen(DummyData.HuidigGwj.ID)).Returns(new List<Lid>());
+			ledenDaoMock.Setup(foo => foo.AllesOphalen(testData.HuidigGwj.ID)).Returns(new List<Lid>());
 			ledenDaoMock.Setup(foo => foo.AllesOphalen(It.IsAny<int>())).Returns(new List<Lid>());
-			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(DummyData.HuidigGwj.ID)).Returns(true);
+			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(testData.HuidigGwj.ID)).Returns(true);
 
-			groepsWerkJaarDaoMock.Setup(foo => foo.Ophalen(DummyData.HuidigGwj.ID, It.IsAny<Expression<Func<GroepsWerkJaar, object>>>())).Returns(DummyData.HuidigGwj);
-			groepenDaoMock.Setup(foo => foo.OphalenMetGroepsWerkJaren(DummyData.DummyGroep.ID)).Returns(DummyData.DummyGroep);
+			groepsWerkJaarDaoMock.Setup(foo => foo.Ophalen(testData.HuidigGwj.ID, It.IsAny<Expression<Func<GroepsWerkJaar, object>>>())).Returns(testData.HuidigGwj);
+			groepenDaoMock.Setup(foo => foo.OphalenMetGroepsWerkJaren(testData.DummyGroep.ID)).Returns(testData.DummyGroep);
 			
 			Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
 			Factory.InstantieRegistreren<IAutorisatieManager>(autorisatieMgrMock.Object);
@@ -222,7 +226,7 @@ namespace Chiro.Gap.Workers.Test
 
 			// Act
 			int paginas;
-			IList<Lid> lijst = lm.PaginaOphalen(DummyData.HuidigGwj.ID, out paginas);
+			IList<Lid> lijst = lm.PaginaOphalen(testData.HuidigGwj.ID, out paginas);
 
 			// Assert
 
@@ -291,11 +295,20 @@ namespace Chiro.Gap.Workers.Test
 			#endregion
 		}
 
+		/// <summary>
+		/// Verwacht een exception wanneer geprobeerd wordt het AD-nummer aan te passen.
+		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void AdNummerWijzigen()
 		{
 			#region Arrange
+
+			// testData aanmaken.  Voor de zekerheid eerst de AutMgrAltijdGav registreren als
+			// IAutorisatieManager, want het kan goed zijn dat een vorige test dat wijzigde.
+
+			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
+			var testData = new DummyData();
 
 			// GelieerdePersonenDao mocken.  Van een Dao verwachten
 			// we dat die gewoon doet wat we vragen; er is daar geen
@@ -304,9 +317,9 @@ namespace Chiro.Gap.Workers.Test
 			var gpDaoMock = new Mock<IGelieerdePersonenDao>();
 
 			gpDaoMock.Setup(
-			    foo => foo.Ophalen(DummyData.GelieerdeJos.ID,
+			    foo => foo.Ophalen(testData.GelieerdeJos.ID,
 			    It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>())).Returns(
-				() => DummyData.KloonJos());
+				() => testData.KloonJos());
 
 			// Het stuk It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>()
 			// zorgt ervoor dat de Mock de linq-expressies in 'Ophalen' negeert.
@@ -326,7 +339,7 @@ namespace Chiro.Gap.Workers.Test
 
 			#region Act
 			// Haal gelieerde persoon met TestGelieerdePersoonID op
-			GelieerdePersoon gp = gpm.Ophalen(DummyData.GelieerdeJos.ID);
+			GelieerdePersoon gp = gpm.Ophalen(testData.GelieerdeJos.ID);
 
 			// Pruts met AD-nummer
 			++gp.Persoon.AdNummer;
@@ -342,13 +355,19 @@ namespace Chiro.Gap.Workers.Test
 		}
 
 		/// <summary>
-		/// Test die nakijkt of ik een persoon wel kan bewaren
-		/// als ik het ad-nummer niet wijzig.
+		/// Test die nakijkt of ik een persoon kan bewaren
+		/// als ik het ad-nummer niet wijzig.  (Verwacht = ja)
 		/// </summary>
 		[TestMethod]
 		public void AdNummerNietWijzigen()
 		{
 			#region Arrange
+
+			// testData aanmaken.  Voor de zekerheid eerst de AutMgrAltijdGav registreren als
+			// IAutorisatieManager, want het kan goed zijn dat een vorige test dat wijzigde.
+
+			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
+			var testData = new DummyData();
 
 			// GelieerdePersonenDao mocken.  Van een Dao verwachten
 			// we dat die gewoon doet wat we vragen; er is daar geen
@@ -356,8 +375,8 @@ namespace Chiro.Gap.Workers.Test
 
 			var gpDaoMock = new Mock<IGelieerdePersonenDao>();
 
-			gpDaoMock.Setup(foo => foo.Ophalen(DummyData.GelieerdeJos.ID
-			    , It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>())).Returns(() => DummyData.GelieerdeJos);
+			gpDaoMock.Setup(foo => foo.Ophalen(testData.GelieerdeJos.ID
+			    , It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>())).Returns(() => testData.GelieerdeJos);
 
 			// Het stuk It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>()
 			// zorgt ervoor dat de Mock de linq-expressies in 'Ophalen' negeert.
@@ -369,7 +388,6 @@ namespace Chiro.Gap.Workers.Test
 			// Maak nu de GelieerdePersoonenManager aan die we willen testen.
 
 			Factory.InstantieRegistreren<IGelieerdePersonenDao>(gpDaoMock.Object);
-			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
 
 			GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
 
@@ -377,7 +395,7 @@ namespace Chiro.Gap.Workers.Test
 
 			#region Act
 			// Haal gelieerde persoon met TestGelieerdePersoonID op
-			GelieerdePersoon gp = gpm.Ophalen(DummyData.GelieerdeJos.ID);
+			GelieerdePersoon gp = gpm.Ophalen(testData.GelieerdeJos.ID);
 
 			// Probeer te bewaren
 			gpm.Bewaren(gp);

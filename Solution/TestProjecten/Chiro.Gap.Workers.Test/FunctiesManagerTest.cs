@@ -82,9 +82,11 @@ namespace Chiro.Gap.Workers.Test
 		{
 			// Arrange
 
+			var testData = new DummyData();
+
 			FunctiesManager fm = Factory.Maak<FunctiesManager>();
-			Lid lid = DummyData.LidYvonne;
-			IEnumerable<Functie> functies = new Functie[] { DummyData.UniekeFunctie };
+			Lid lid = testData.LidYvonne;
+			IEnumerable<Functie> functies = new Functie[] { testData.UniekeFunctie };
 
 			// Act
 
@@ -107,9 +109,10 @@ namespace Chiro.Gap.Workers.Test
 		{
 			// Arrange
 
+			var testData = new DummyData();
 			FunctiesManager fm = Factory.Maak<FunctiesManager>();
-			Lid lid = DummyData.LidJos;
-			IEnumerable<Functie> functies = new Functie[] { DummyData.UniekeFunctie };
+			Lid lid = testData.LidJos;
+			IEnumerable<Functie> functies = new Functie[] { testData.UniekeFunctie };
 
 			// Act
 
@@ -119,8 +122,8 @@ namespace Chiro.Gap.Workers.Test
 
 			// Kijk even na of jos nog steeds 1 keer de functie UniekeFunctie heeft.
 
-			int aantal = (from fun in lid.Functie 
-				     where fun.ID == DummyData.UniekeFunctie.ID 
+			int aantal = (from fun in lid.Functie
+				      where fun.ID == testData.UniekeFunctie.ID 
 				     select fun).Count();
 
 			Assert.AreEqual(aantal, 1);

@@ -38,7 +38,8 @@ namespace Chiro.Gap.ServiceContracts.Test
 		[TestMethod]
 		public void MapLijstLeden()
 		{
-			var LidInfoLijst = Mapper.Map<IEnumerable<Lid>, IList<LidInfo>>(DummyData.HuidigGwj.Lid);
+			var testData = new DummyData();
+			var LidInfoLijst = Mapper.Map<IEnumerable<Lid>, IList<LidInfo>>(testData.HuidigGwj.Lid);
 
 			Assert.IsTrue(LidInfoLijst.Count > 0);
 		}
@@ -49,7 +50,8 @@ namespace Chiro.Gap.ServiceContracts.Test
 		[TestMethod]
 		public void MapGroepGroepInfo()
 		{
-			GroepInfo gi = Mapper.Map<Groep, GroepInfo>(DummyData.DummyGroep);
+			var testData = new DummyData();
+			GroepInfo gi = Mapper.Map<Groep, GroepInfo>(testData.DummyGroep);
 
 			Assert.IsTrue(gi.Categorie.Count > 0);
 		}

@@ -74,11 +74,13 @@ namespace Chiro.Gap.Workers.Test
 		[TestMethod]
 		public void TestCategorieToevoegen()
 		{
+			var testData = new DummyData();
+
 			// Het is niet de bedoeling dat deze test de database 
 			// raadpleegt.  Refs #129.
 
 			// Groep g = gm.Ophalen(groepID, e => e.Categorie);
-			Groep g = DummyData.DummyGroep;
+			Groep g = testData.DummyGroep;
 
 			//foreach (Categorie c in g.Categorie)
 			//{

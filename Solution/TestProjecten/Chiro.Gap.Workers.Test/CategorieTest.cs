@@ -75,23 +75,27 @@ namespace Chiro.Gap.Workers.Test
 		{
 			// Arrange
 
+			var testData = new DummyData();
+
 			var gpMgr = Factory.Maak<GelieerdePersonenManager>();
 
-			if (!DummyData.GelieerdeJos.Categorie.Contains(DummyData.Vervelend))
+			if (!testData.GelieerdeJos.Categorie.Contains(testData.Vervelend))
 			{
 				// Zeker zijn dat Jos al een keer in de categorie zit.
-				gpMgr.CategorieKoppelen(new GelieerdePersoon[] { DummyData.GelieerdeJos }, DummyData.Vervelend);
+				gpMgr.CategorieKoppelen(
+					new GelieerdePersoon[] { testData.GelieerdeJos }, 
+					testData.Vervelend);
 			}
 
-			int aantalCategorieen = DummyData.GelieerdeJos.Categorie.Count;
+			int aantalCategorieen = testData.GelieerdeJos.Categorie.Count;
 		
 			// Act
 
-			gpMgr.CategorieKoppelen(new GelieerdePersoon[] { DummyData.GelieerdeJos }, DummyData.Vervelend);
+			gpMgr.CategorieKoppelen(new GelieerdePersoon[] { testData.GelieerdeJos }, testData.Vervelend);
 			
 			// Assert		
 
-			Assert.IsTrue(DummyData.GelieerdeJos.Categorie.Count == aantalCategorieen);
+			Assert.IsTrue(testData.GelieerdeJos.Categorie.Count == aantalCategorieen);
 		}
 
 		[TestMethod]
@@ -99,20 +103,23 @@ namespace Chiro.Gap.Workers.Test
 		{
 			// Arrange
 
+			var testData = new DummyData();
 			var gpMgr = Factory.Maak<GelieerdePersonenManager>();
 			// Voeg Irene voor het gemak toe aan de vervelende personen, zodat ze verwijderd kan worden.
-			gpMgr.CategorieKoppelen(new GelieerdePersoon[] { DummyData.GelieerdeIrene },DummyData.Vervelend);
+			gpMgr.CategorieKoppelen(
+				new GelieerdePersoon[] { testData.GelieerdeIrene }, 
+				testData.Vervelend);
 
 			// Act
 
 			// opnieuw loskoppelen
-			gpMgr.CategorieLoskoppelen(new int[] { DummyData.GelieerdeIrene.ID },DummyData.Vervelend);
+			gpMgr.CategorieLoskoppelen(new int[] { testData.GelieerdeIrene.ID }, testData.Vervelend);
 
 			// Assert
 
 			// LosKoppelen is een 'delete', dus moet er direct bewaard worden.
 
-			Assert.IsFalse(DummyData.Vervelend.GelieerdePersoon.Contains(DummyData.GelieerdeIrene));
+			Assert.IsFalse(testData.Vervelend.GelieerdePersoon.Contains(testData.GelieerdeIrene));
 		}
 
 	}
