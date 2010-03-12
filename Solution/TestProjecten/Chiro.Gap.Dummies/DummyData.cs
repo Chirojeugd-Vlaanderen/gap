@@ -14,6 +14,9 @@ namespace Chiro.Gap.Dummies
 	/// </summary>
 	public class DummyData
 	{
+		private const string _NIEUWEFUNCODE = "DOM";
+		private const string _NIEUWEFUNNAAM = "Domme functie";
+
 		private Groep _dummyGroep;		// testgroep
 		private GroepsWerkJaar _huidigGwj;	// testgroepswerkjaar
 		private GelieerdePersoon _gelieerdeJos;	// gelieerdePersoon genaamd 'Jos' 
@@ -69,8 +72,9 @@ namespace Chiro.Gap.Dummies
 		/// </summary>
 		public Functie UniekeFunctie { get { return _redactie; } }
 
+
 		/// <summary>
-		/// Bouwt de dummy data op
+		/// Herstelt de dummydata naar de oorspronkelijke toestand
 		/// </summary>
 		public DummyData()
 		{
@@ -96,7 +100,7 @@ namespace Chiro.Gap.Dummies
 
 			_vervelend = gMgr.CategorieToevoegen(_dummyGroep, "vervelende mensen", "last");
 
-			// Functie
+			// Functie (nationaal bepaald, maar dit ter zijde)
 
 			_redactie = new Functie { Code = "HRE", Naam = "Hoofdredacteur", MaxAantal = 1 };
 
@@ -179,5 +183,15 @@ namespace Chiro.Gap.Dummies
 
 			return gp;
 		}
+
+		/// <summary>
+		/// Property voor een code van een niet-bestaande functie
+		/// </summary>
+		public string NieuweFunctieCode { get { return _NIEUWEFUNCODE; } }
+
+		/// <summary>
+		/// Property voor een naam van een niet-bestaande functie
+		/// </summary>
+		public string NieuweFunctieNaam { get { return _NIEUWEFUNNAAM; } }
 	}
 }

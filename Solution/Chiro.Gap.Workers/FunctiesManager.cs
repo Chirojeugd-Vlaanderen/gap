@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
+using Chiro.Cdf.Data.Entity;
 using Chiro.Cdf.Validation;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
@@ -16,6 +17,18 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Workers
 {
+	/// <summary>
+	/// Struct die gebruikt wordt om van een functie max aantal leden, min aantal leden en totaal aantal
+	/// leden te stockeren.
+	/// </summary>
+	public struct Telling
+	{
+		public int ID;
+		public int Aantal;
+		public int Max;
+		public int Min;
+	}
+		
 	/// <summary>
 	/// Businesslogica ivm functies
 	/// </summary>
@@ -40,7 +53,7 @@ namespace Chiro.Gap.Workers
 
 		/// <summary>
 		/// Kent de meegegeven <paramref name="functies"/> toe aan het gegeven <paramref name="lid"/>.
-		/// Als het lid al andere functies had, blijven die behouden.
+		/// Als het lid al andere functies had, blijven die behouden.  Persisteert niet.
 		/// </summary>
 		/// <param name="lid">Lid dat de functies moet krijgen</param>
 		/// <param name="functies">Rij toe te kennen functies</param>
@@ -98,36 +111,11 @@ namespace Chiro.Gap.Workers
 						throw new InvalidOperationException(Properties.Resources.TeJong);
 					}
 				}
-				if (f.MaxAantal > 0)
-				{
-					// We verwachten dat f.Lid enkel leden uit het groepswerkjaar
-					// van lid bevat, maar voor de zekerheid filteren we ze eruit.
 
-					var query = (from ld in f.Lid
-								 where ld.GroepsWerkJaar.ID == lid.GroepsWerkJaar.ID
-								&& ld.ID != lid.ID
-								 select ld);
-					if (query.Count() >= f.MaxAantal)
-					{
-						// TODO: Een exception is hier eigenlijk niet op zijn plaats;
-						// de bedoeling is dat je ergens een warning krijgt, die je
-						// aanzet om de situatie recht te zetten.
-						// Zie verslag maart 2010.
-
-						// Andere optie:
-						//  Toch een exception
-						//  UI toont lijst van huidige personen met deze functie,
-						//  en laat gebruiker kiezen wiens functie moet afgenomen worden.
-						//  dan functionaliteit 'FunctieOverNemen' of zoiets implementeren.
-						// (maar dat werkt alleen als functies 1 voor 1 toegekend worden)
-
-						throw new InvalidOperationException(
-							String.Format(
-								Properties.Resources.FunctieVol,
-								f.MaxAantal,
-								f.Naam));
-					}
-				}
+				// Ik test hier bewust niet of er niet te veel leden zijn met de functie;
+				// op die manier worden inconsistenties bij het veranderen van functies toegelaten,
+				// wat me voor de UI makkelijker lijkt.  De method 'AantallenControleren' kan
+				// te allen tijde gebruikt worden om problemen met functieaantallen op te sporen.
 
 				// Alle checks goed overleefd; functie koppelen als dat nog niet
 				// gebeurd moest zijn.
@@ -145,6 +133,47 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
+		/// Koppelt de functies met ID's <paramref name="functieIDs"/> los van het lid
+		/// <paramref name="lid"/>.  PERSISTEERT.
+		/// </summary>
+		/// <param name="lid">Lid waarvan functies losgekoppeld moeten worden</param>
+		/// <param name="functieIDs">ID's van de los te koppelen functies</param>
+		/// <returns>Het lidobject met daaraan gekoppeld de overblijvende functies</returns>
+		/// <remarks>
+		/// * functie-ID's van functies die niet aan het lid gekoppeld zijn, worden genegeerd.
+		/// * er wordt verwacht dat voor elke te verwijderen functie alle leden met groepswerkjaar geladen zijn
+		/// * er wordt niet echt losgekoppeld; de koppeling lid-functie wordt op 'te verwijderen'
+		///   gezet.  (Wat wil zeggen dat verwijderen via het lid moet gebeuren, en niet via de functie)
+		/// (Dat systeem met 'teVerwijderen' is eigenlijk toch verre van ideaal.)
+		/// </remarks>
+		public Lid LosKoppelen(Lid lid, IEnumerable<int> functieIDs)
+		{
+			if (!_autorisatieMgr.IsGavLid(lid.ID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavLid);
+			}
+
+			var losTeKoppelen = (from fun in lid.Functie
+					     where functieIDs.Contains(fun.ID)
+					     select fun);
+			
+			foreach (Functie f in losTeKoppelen)
+			{
+				// Ik test hier bewust niet of er niet te weinig leden zijn met de functie;
+				// op die manier worden inconsistenties bij het veranderen van functies toegelaten,
+				// wat me voor de UI makkelijker lijkt.  De method 'AantallenControleren' kan
+				// te allen tijde gebruikt worden om problemen met functieaantallen op te sporen.
+
+				// De essentie van deze prachtige method:
+
+				f.TeVerwijderen = true;
+			}
+			return _ledenDao.Bewaren(lid, ld => ld.Functie);
+		}
+
+
+
+		/// <summary>
 		/// Controleert of de functie <paramref name="f"/> nationaal bepaald is.
 		/// </summary>
 		/// <param name="f">Te controleren functie</param>
@@ -154,6 +183,37 @@ namespace Chiro.Gap.Workers
 			// FIXME: Dit is nogal gevaarlijk, want wie weet is de groep gewoon niet gefetcht.
 
 			return f.Groep == null;
+		}
+
+		/// <summary>
+		/// Kijkt na voor een gegeven <paramref name="groepsWerkJaar"/> of er geen functies zijn met
+		/// te veel of te weinig leden.
+		/// </summary>
+		/// <param name="groepsWerkJaar">te controleren werkjaar</param>
+		/// <returns>Een lijst met tellingsgegevens voor de functies waar de aantallen niet kloppen.</returns>
+		/// <remarks>Deze functie is zich niet bewust van de aanwezigheid van een database, en kijkt
+		/// enkel naar de objecten gekoppeld aan <paramref name="groepsWerkJaar"/></remarks>
+		public IEnumerable<Telling> AantallenControleren(GroepsWerkJaar groepsWerkJaar)
+		{
+			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaar.ID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavGroepsWerkJaar);
+			}
+			else
+			{
+				var query = groepsWerkJaar.Lid.SelectMany(ld => ld.Functie)
+					.Distinct()
+					.Where(fn => fn.MaxAantal > 0 && fn.Lid.Count() > fn.MaxAantal
+							|| fn.MinAantal > 0 && fn.Lid.Count() < fn.MinAantal)
+					.Select(fn => new Telling
+					{
+						ID = fn.ID,
+						Aantal = fn.Lid.Count(),
+						Max = fn.MaxAantal,
+						Min = fn.MinAantal
+					});
+				return query.ToList();
+			}
 		}
 	}
 }

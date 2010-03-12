@@ -124,6 +124,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minstens {0} leden moeten de functie &apos;{1}&apos; hebben..
+        /// </summary>
+        internal static string FunctieLeeg {
+            get {
+                return ResourceManager.GetString("FunctieLeeg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Slechts {0} leden mogen de functie &apos;{1}&apos; hebben..
         /// </summary>
         internal static string FunctieVol {

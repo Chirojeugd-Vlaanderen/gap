@@ -372,6 +372,88 @@ namespace Chiro.Gap.Workers
 		#endregion categorieën
 
 		/// <summary>
+		/// Maakt een nieuwe (groepseigen) functie voor groep <paramref name="g"/>.  Persisteert niet.
+		/// </summary>
+		/// <param name="g">Groep waarvoor de functie gemaakt wordt</param>
+		/// <param name="naam">Naam van de functie</param>
+		/// <param name="code">Code van de functie</param>
+		/// <param name="maxAantal">Maximum aantal leden in de categorie.  Onbeperkt indien 0.</param>
+		/// <param name="minAantal">Minimum aantal leden in de categorie.</param>
+		/// <param name="minLeeftijd">Minimumleeftijd voor categorieleden.</param>
+		/// <param name="werkJaarVan">Werkjaar vanaf wanneer de categorie gebruikt mag worden.</param>
+		/// <returns>De nieuwe (gekoppelde) functie</returns>
+		public Functie FunctieToevoegen(
+			Groep g,
+			string naam,
+			string code,
+			int maxAantal,
+			int minAantal,
+			int minLeeftijd,
+			int werkJaarVan)
+		{
+			if (!_autorisatieMgr.IsGavGroep(g.ID))
+			{
+				throw new GeenGavException(Resources.GeenGavGroep);
+			}
+			else
+			{
+				// Controleer op dubbele code
+
+				var bestaande = (from fun in g.Functie
+						 where String.Compare(g.Code, code) == 0
+						 select fun).FirstOrDefault();
+
+				if (bestaande != null && bestaande.TeVerwijderen)
+				{
+					throw new InvalidOperationException(
+						"Er bestaat al een functie met die code, gemarkeerd als TeVerwijderen");
+				}
+				else if (bestaande != null)
+				{
+					throw new BestaatAlException(new BestaatAlFault { 
+						FoutCode = BestaatAlFaultCode.FunctieCodeBestaatAl });
+				}
+
+				// Hetzelfde voor dubbele naam
+
+				bestaande = (from fun in g.Functie
+						where String.Compare(g.Naam, naam) == 0
+						select fun).FirstOrDefault();
+
+				if (bestaande != null && bestaande.TeVerwijderen)
+				{
+					throw new InvalidOperationException(
+						"Er bestaat al een functie met die naam, gemarkeerd als TeVerwijderen");
+				}
+				else if (bestaande != null)
+				{
+					throw new BestaatAlException(new BestaatAlFault
+					{
+						FoutCode = BestaatAlFaultCode.FunctieNaamBestaatAl
+					});
+				}
+
+				// Zonder problemen hier geraakt.  Dan kunnen we verder.
+
+				Functie f = new Functie
+				{
+					Code = code,
+					Groep = g,
+					MaxAantal = maxAantal,
+					MinAantal = minAantal,
+					MinLeefTijd = minLeeftijd,
+					Naam = naam,
+					WerkJaarTot = 0,
+					WerkJaarVan = werkJaarVan
+				};
+
+				g.Functie.Add(f);
+
+				return f;
+			}
+		}
+
+		/// <summary>
 		/// Maakt een nieuw groepswerkjaar voor een gegeven <paramref name="groep" />
 		/// </summary>
 		/// <param name="groep">Groep waarvoor een groepswerkjaar gemaakt moet worden</param>

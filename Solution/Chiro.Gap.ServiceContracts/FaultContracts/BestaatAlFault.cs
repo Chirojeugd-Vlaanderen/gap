@@ -22,7 +22,11 @@ namespace Chiro.Gap.ServiceContracts.FaultContracts
 		[EnumMember]
 		CategorieCodeBestaatAl,	        // er is al een categorie met die code
 		[EnumMember]
-		CategorieNaamBestaatAl          // er is al een categorie met die naam
+		CategorieNaamBestaatAl,         // er is al een categorie met die naam
+		[EnumMember]
+		FunctieCodeBestaatAl,		// er is al een functie met die code
+		[EnumMember]
+		FunctieNaamBestaatAl		// er is al een functie met die naam
 		// TODO: foutcodes voor andere dingen die al kunnen bestaan.
 	}
 

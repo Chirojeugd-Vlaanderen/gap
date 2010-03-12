@@ -73,11 +73,9 @@ namespace Chiro.Gap.Workers.Test
 		#endregion
 
 		/// <summary>
-		/// Als een functie maar 1 keer mag voorkomen, maar ze wordt aan 2 personen toegekend, 
-		/// verwachten we een exception.  
+		/// Opsporen functie met te veel aantal members
 		/// </summary>
 		[TestMethod()]
-		[ExpectedException(typeof(InvalidOperationException))]
 		public void TweeKeerUniekeFunctieToekennenTestVerschillendLid()
 		{
 			// Arrange
@@ -85,24 +83,32 @@ namespace Chiro.Gap.Workers.Test
 			var testData = new DummyData();
 
 			FunctiesManager fm = Factory.Maak<FunctiesManager>();
-			Lid lid = testData.LidYvonne;
-			IEnumerable<Functie> functies = new Functie[] { testData.UniekeFunctie };
+			GroepenManager gm = Factory.Maak<GroepenManager>();
+
+			Functie f = gm.FunctieToevoegen(
+				testData.DummyGroep,
+				testData.NieuweFunctieNaam,
+				testData.NieuweFunctieCode,
+				1, 0,
+				0,
+				0);
+
+			IEnumerable<Functie> functies = new Functie[] { f };
 
 			// Act
 
-			fm.Toekennen(lid, functies);
+			fm.Toekennen(testData.LidJos, functies);
+			fm.Toekennen(testData.LidYvonne, functies);
 
 			// Assert
 
-			// Normaal komen we hier niet meer.
-
-			Assert.IsTrue(false);
+			var problemen = fm.AantallenControleren(testData.HuidigGwj);
+			Assert.AreNotEqual(problemen.Count(), 0);
 		}
 
 		/// <summary>
 		/// Als een functie maar 1 keer mag voorkomen, maar ze wordt 2 keer toegekend aan dezelfde
-		/// persoon, dan moet dat zonder problemen kunnen.  (Uiteraard blijft de functie 1 keer toegekend,
-		/// maar we zijn er vooral in geinteresseerd dat er geen exception opgeworpen wordt.)
+		/// persoon, dan moet dat zonder problemen kunnen.  
 		/// </summary>
 		[TestMethod()]
 		public void TweeKeerUniekeFunctieToekennenTestZelfdeLid()
@@ -110,23 +116,29 @@ namespace Chiro.Gap.Workers.Test
 			// Arrange
 
 			var testData = new DummyData();
+
 			FunctiesManager fm = Factory.Maak<FunctiesManager>();
-			Lid lid = testData.LidJos;
-			IEnumerable<Functie> functies = new Functie[] { testData.UniekeFunctie };
+			GroepenManager gm = Factory.Maak<GroepenManager>();
+
+			Functie f = gm.FunctieToevoegen(
+				testData.DummyGroep,
+				testData.NieuweFunctieNaam,
+				testData.NieuweFunctieCode,
+				1, 0,
+				0,
+				0);
+
+			IEnumerable<Functie> functies = new Functie[] { f };
 
 			// Act
 
-			fm.Toekennen(lid, functies);
+			fm.Toekennen(testData.LidJos, functies);
+			fm.Toekennen(testData.LidJos, functies);
 
 			// Assert
 
-			// Kijk even na of jos nog steeds 1 keer de functie UniekeFunctie heeft.
-
-			int aantal = (from fun in lid.Functie
-				      where fun.ID == testData.UniekeFunctie.ID 
-				     select fun).Count();
-
-			Assert.AreEqual(aantal, 1);
+			var problemen = fm.AantallenControleren(testData.HuidigGwj);
+			Assert.AreEqual(problemen.Count(), 0);
 		}
 	}
 }
