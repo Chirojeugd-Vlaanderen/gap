@@ -79,6 +79,23 @@ namespace Chiro.Gap.Data.Ef
 			return AantalLeden(groepID, (int)f);
 		}
 
+		/// <summary>
+		/// Haalt de nationaal bepaalde functies op
+		/// </summary>
+		/// <returns>de rij met nationaal bepaalde functies</returns>
+		public IEnumerable<Functie> NationaalBepaaldeFunctiesOphalen()
+		{
+			IEnumerable<Functie> resultaat;
+
+			using (var db = new ChiroGroepEntities())
+			{
+				resultaat = (from f in db.Functie
+					     where f.Groep == null
+					     select f).ToList();
+			}
+			return Utility.DetachObjectGraph(resultaat);
+		}
+
 		#endregion
 	}
 }

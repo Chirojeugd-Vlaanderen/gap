@@ -14,6 +14,7 @@ using Chiro.Cdf.Validation;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using System.Web;
 
 namespace Chiro.Gap.Workers
 {
@@ -214,6 +215,24 @@ namespace Chiro.Gap.Workers
 					});
 				return query.ToList();
 			}
+		}
+
+		/// <summary>
+		/// Geeft de nationaal bepaalde functies terug
+		/// </summary>
+		/// <returns>De rij nationaal bepaalde functies</returns>
+		public IEnumerable<Functie> NationaalBepaaldeFunctiesOphalen()
+		{
+			var cache = HttpRuntime.Cache;
+
+			if (cache[Properties.Settings.Default.NatFunctiesCacheKey] == null)
+			{
+				cache.Insert(
+					Properties.Settings.Default.NatFunctiesCacheKey,
+					_funDao.NationaalBepaaldeFunctiesOphalen());
+			}
+
+			return cache[Properties.Settings.Default.NatFunctiesCacheKey] as IEnumerable<Functie>;
 		}
 	}
 }

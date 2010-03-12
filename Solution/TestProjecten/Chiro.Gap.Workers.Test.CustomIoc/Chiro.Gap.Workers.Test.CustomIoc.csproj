@@ -40,10 +40,17 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.ServiceModel, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutorisatieTest.cs" />
+    <Compile Include="FunctiesManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -66,6 +73,14 @@
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Cdf.Validation\Chiro.Cdf.Validation.csproj">
+      <Project>{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}</Project>
+      <Name>Chiro.Cdf.Validation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.Data\Chiro.Gap.Data.csproj">
+      <Project>{F9197C38-63BC-4D2F-9F0A-8326C698B536}</Project>
+      <Name>Chiro.Gap.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.Fouten\Chiro.Gap.Fouten.csproj">
       <Project>{D82C1286-8BC6-422C-8688-E178377D3EB6}</Project>
       <Name>Chiro.Gap.Fouten</Name>
@@ -73,6 +88,14 @@
     <ProjectReference Include="..\..\Chiro.Gap.Orm\Chiro.Gap.Orm.csproj">
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
       <Name>Chiro.Gap.Orm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.ServiceContracts\Chiro.Gap.ServiceContracts.csproj">
+      <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
+      <Name>Chiro.Gap.ServiceContracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Gap.Validatie\Chiro.Gap.Validatie.csproj">
+      <Project>{853B7FDF-27B6-48BC-A220-F68CCE610B6B}</Project>
+      <Name>Chiro.Gap.Validatie</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
       <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>

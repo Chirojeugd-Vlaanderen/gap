@@ -40,5 +40,14 @@ namespace Chiro.Gap.Workers.Properties {
                 return ((global::System.DateTime)(this["WerkjaarVerplichteOvergang"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NatFuncties")]
+        public string NatFunctiesCacheKey {
+            get {
+                return ((string)(this["NatFunctiesCacheKey"]));
+            }
+        }
     }
 }

@@ -9,20 +9,6 @@ namespace Chiro.Gap.Dummies
 {
 	public class DummyFunctiesDao: IFunctiesDao
 	{
-		#region IFunctiesDao Members
-
-		public Chiro.Gap.Orm.Functie Ophalen(Chiro.Gap.Orm.GepredefinieerdeFunctieType f)
-		{
-			throw new NotImplementedException();
-		}
-
-		public int AantalLeden(int groepID, int functieID)
-		{
-			throw new NotImplementedException();
-		}
-
-		#endregion
-
 		#region IDao<Functie> Members
 
 		public Chiro.Gap.Orm.Functie Ophalen(int id)
@@ -75,7 +61,27 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		#endregion
+
+
+		#region IFunctiesDao Members
+
+		public Chiro.Gap.Orm.Functie Ophalen(Chiro.Gap.Orm.GepredefinieerdeFunctieType f)
+		{
+			throw new NotImplementedException();
+		}
+
+		public int AantalLeden(int groepID, int functieID)
+		{
+			throw new NotImplementedException();
+		}
+
 		public int AantalLeden(int groepID, Chiro.Gap.Orm.GepredefinieerdeFunctieType f)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IEnumerable<Chiro.Gap.Orm.Functie> NationaalBepaaldeFunctiesOphalen()
 		{
 			throw new NotImplementedException();
 		}

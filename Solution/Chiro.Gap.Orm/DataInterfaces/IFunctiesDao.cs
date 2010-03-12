@@ -45,5 +45,11 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <returns>Aantal leden uit de groep met ID <paramref name="groepID"/> met 
 		/// gepredefinieerde functie <paramref name="f"/></returns>
 		int AantalLeden(int groepID, GepredefinieerdeFunctieType f);
+
+		/// <summary>
+		/// Haalt de nationaal bepaalde functies op
+		/// </summary>
+		/// <returns>de rij met nationaal bepaalde functies</returns>
+		IEnumerable<Functie> NationaalBepaaldeFunctiesOphalen();
 	}
 }
