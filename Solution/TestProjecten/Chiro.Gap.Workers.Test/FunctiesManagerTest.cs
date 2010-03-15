@@ -4,10 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Chiro.Gap.Dummies;
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.Orm.DataInterfaces;
+
+using Chiro.Gap.Dummies;
+using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Workers.Test
@@ -140,5 +142,61 @@ namespace Chiro.Gap.Workers.Test
 			var problemen = fm.AantallenControleren(testData.HuidigGwj);
 			Assert.AreEqual(problemen.Count(), 0);
 		}
+
+		/// <summary>
+		/// Test of regelementaire 'FunctieBewaren' geen exception oplevert.
+		/// </summary>
+		[TestMethod()]
+		public void FunctieBewarenTest()
+		{
+			// Arrange
+
+			var testData = new DummyData();
+
+			FunctiesManager fm = Factory.Maak<FunctiesManager>();
+			GroepenManager gm = Factory.Maak<GroepenManager>();
+
+			Functie f = gm.FunctieToevoegen(
+				testData.DummyGroep,
+				testData.NieuweFunctieNaam,
+				testData.NieuweFunctieCode,
+				1, 0,
+				0,
+				0);
+
+			// Act
+
+			f = fm.Bewaren(f);
+
+			// Assert
+
+			Assert.AreNotEqual(f.ID, 0);
+		}
+
+		/// <summary>
+		/// Test op exception bij poging tot bewaren van nationaal bepaalde functie.
+		/// </summary>
+		[TestMethod()]
+		[ExpectedException(typeof(GeenGavException))]
+		public void NationaalBepaaldeFunctieBewarenTest()
+		{
+			// Arrange
+
+			var testData = new DummyData();
+
+			FunctiesManager fm = Factory.Maak<FunctiesManager>();
+
+			Functie f = fm.NationaalBepaaldeFunctiesOphalen().First();
+
+			// Act
+
+			f = fm.Bewaren(f);
+
+			// Assert
+
+			// Dit mogen we niet halen.
+			Assert.IsTrue(false);
+		}
+
 	}
 }

@@ -53,6 +53,26 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
+		/// Persisteert de gegeven <paramref name="functie"/> in de database, samen met zijn koppeling
+		/// naar groep.
+		/// </summary>
+		/// <param name="functie">Te persisteren functie</param>
+		/// <returns>De bewaarde functie</returns>
+		public Functie Bewaren(Functie functie)
+		{
+			if (NationaalBepaaldeFunctiesOphalen().Contains(functie)
+				|| functie.Groep == null
+				|| !_autorisatieMgr.IsGavGroep(functie.Groep.ID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGavFunctie);
+			}
+			else
+			{
+				return _funDao.Bewaren(functie, fn => fn.Groep);
+			}
+		}
+
+		/// <summary>
 		/// Kent de meegegeven <paramref name="functies"/> toe aan het gegeven <paramref name="lid"/>.
 		/// Als het lid al andere functies had, blijven die behouden.  Persisteert niet.
 		/// </summary>
