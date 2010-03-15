@@ -187,4 +187,7 @@
   <data name="FunctieLeeg" xml:space="preserve">
     <value>Minstens {0} leden moeten de functie '{1}' hebben.</value>
   </data>
+  <data name="FoutiefGroepsWerkJaarFunctie" xml:space="preserve">
+    <value>Je probeert een lid te koppelen aan een functie die niet geldig is voor het gegeven werkjaar.</value>
+  </data>
 </root>

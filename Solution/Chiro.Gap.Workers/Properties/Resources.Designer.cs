@@ -106,6 +106,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je probeert een lid te koppelen aan een functie die niet geldig is voor het gegeven werkjaar..
+        /// </summary>
+        internal static string FoutiefGroepsWerkJaarFunctie {
+            get {
+                return ResourceManager.GetString("FoutiefGroepsWerkJaarFunctie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Je probeert een persoon te koppelen aan een categorie uit een andere groep..
         /// </summary>
         internal static string FoutieveGroepCategorie {

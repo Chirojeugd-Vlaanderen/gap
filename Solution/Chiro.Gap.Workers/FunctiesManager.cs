@@ -99,6 +99,9 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGavLid);
 			}
 
+			// Eerst alle checks, zodat als er ergens een exceptie optreedt, er geen enkele
+			// functie wordt toegekend.
+
 			foreach (Functie f in functies)
 			{
 				if (!_autorisatieMgr.IsGavFunctie(f.ID))
@@ -108,6 +111,11 @@ namespace Chiro.Gap.Workers
 				if (!IsNationaalBepaald(f) && f.Groep.ID != lid.GroepsWerkJaar.Groep.ID)
 				{
 					throw new FoutieveGroepException(Properties.Resources.FoutieveGroepFunctie);
+				}
+				if (f.WerkJaarTot != 0 && f.WerkJaarTot < lid.GroepsWerkJaar.WerkJaar
+					|| f.WerkJaarVan != 0 && f.WerkJaarVan > lid.GroepsWerkJaar.WerkJaar)
+				{
+					throw new GroepsWerkJaarException(Properties.Resources.FoutiefGroepsWerkJaarFunctie);
 				}
 				if (f.MinLeefTijd != 0)
 				{
@@ -138,9 +146,13 @@ namespace Chiro.Gap.Workers
 				// wat me voor de UI makkelijker lijkt.  De method 'AantallenControleren' kan
 				// te allen tijde gebruikt worden om problemen met functieaantallen op te sporen.
 
-				// Alle checks goed overleefd; functie koppelen als dat nog niet
-				// gebeurd moest zijn.
+			}
 
+			// Alle checks goed overleefd; als we nog niet uit de method 'gethrowd' zijn, kunnen we
+			// nu de functies toekennen.
+
+			foreach (var f in functies)
+			{
 				if ((from fnc in lid.Functie where fnc.ID == f.ID select fnc).FirstOrDefault() == null)
 				{
 					lid.Functie.Add(f);
@@ -243,6 +255,9 @@ namespace Chiro.Gap.Workers
 		/// Functies in <paramref name="functies"/> waar geen groep aan gekoppeld is, worden als
 		/// nationaal bepaalde functies beschouwd.
 		/// </para>
+		/// <para>
+		/// Functies die niet geldig zijn in het gevraagde groepswerkjaar, worden genegeerd
+		/// </para>
 		/// </remarks>
 		public IEnumerable<Telling> AantallenControleren(
 			GroepsWerkJaar groepsWerkJaar,
@@ -269,8 +284,10 @@ namespace Chiro.Gap.Workers
 
 				var problemenToegekendeFuncties =
 					from fn in toegekendeFuncties
-					where fn.MaxAantal > 0 && fn.Lid.Count() > fn.MaxAantal
-						|| fn.MinAantal > 0 && fn.Lid.Count() < fn.MinAantal
+					where (fn.WerkJaarVan == 0 || fn.WerkJaarVan <= groepsWerkJaar.WerkJaar)
+						&& (fn.WerkJaarTot == 0 || fn.WerkJaarTot >= groepsWerkJaar.WerkJaar)
+						&& (fn.MaxAantal > 0 && fn.Lid.Count() > fn.MaxAantal
+							|| fn.MinAantal > 0 && fn.Lid.Count() < fn.MinAantal)
 					select new Telling
 					{
 						ID = fn.ID,
@@ -283,7 +300,9 @@ namespace Chiro.Gap.Workers
 
 				var problemenOntbrekendeFuncties =
 					from fn in nietToegekendeFuncties
-					where fn.MinAantal > 0
+					where (fn.WerkJaarVan == 0 || fn.WerkJaarVan <= groepsWerkJaar.WerkJaar)
+						&& (fn.WerkJaarTot == 0 || fn.WerkJaarTot >= groepsWerkJaar.WerkJaar)
+						&& fn.MinAantal > 0
 					select new Telling
 					{
 						ID = fn.ID,

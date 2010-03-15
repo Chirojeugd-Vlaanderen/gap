@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Exceptions\BestaatAlException.cs" />
     <Compile Include="Exceptions\GekoppeldeObjectenException.cs" />
+    <Compile Include="Exceptions\GroepsWerkJaarException.cs" />
     <Compile Include="Exceptions\OngeldigeActieException.cs" />
     <Compile Include="Exceptions\FoutieveGroepException.cs" />
     <Compile Include="Exceptions\GeenGavException.cs" />

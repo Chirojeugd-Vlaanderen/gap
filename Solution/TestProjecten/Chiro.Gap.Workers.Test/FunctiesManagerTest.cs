@@ -142,7 +142,40 @@ namespace Chiro.Gap.Workers.Test
 			var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
 			Assert.AreEqual(problemen.Count(), 0);
 		}
-		
+
+		/// <summary>
+		/// Het toekennen van een functie die niet geldig is in het huidige werkjaar, moet
+		/// een exception opleveren
+		/// </summary>
+		[ExpectedException(typeof(GroepsWerkJaarException))]
+		[TestMethod()]
+		public void ToekennenFunctieOngeldigWerkJaar()
+		{
+			// Arrange
+
+			var testData = new DummyData();
+
+			FunctiesManager fm = Factory.Maak<FunctiesManager>();
+			GroepenManager gm = Factory.Maak<GroepenManager>();
+
+			Functie f = gm.FunctieToevoegen(
+				testData.DummyGroep,
+				testData.NieuweFunctieNaam,
+				testData.NieuweFunctieCode,
+				1, 0,
+				0,
+				testData.HuidigGwj.WerkJaar+1);	// pas geldig volgend groepswerkjaar
+
+			IEnumerable<Functie> functies = new Functie[] { f };
+
+			// Act
+
+			fm.Toekennen(testData.LidJos, functies);
+
+			// Assert
+			Assert.IsTrue(false);
+		}
+
 		/// <summary>
 		/// Verplichte functie die niet toegekend wordt
 		/// </summary>
@@ -179,6 +212,41 @@ namespace Chiro.Gap.Workers.Test
 
 			var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
 			Assert.AreNotEqual(problemen.Count(), 0);
+		}
+
+		/// <summary>
+		/// Kijkt na of de verplichte aantallen genegeerd worden voor functies die niet geldig zijn
+		/// in het gegeven groepswerkjaar.
+		/// </summary>
+		[TestMethod()]
+		public void IrrelevanteVerplichteFunctie()
+		{
+			// Arrange
+
+			var testData = new DummyData();
+
+			FunctiesManager fm = Factory.Maak<FunctiesManager>();
+			GroepenManager gm = Factory.Maak<GroepenManager>();
+
+			Functie f = gm.FunctieToevoegen(
+				testData.DummyGroep,
+				testData.NieuweFunctieNaam,
+				testData.NieuweFunctieCode,
+				1, 1,
+				0,
+				testData.HuidigGwj.WerkJaar + 1);	// pas volgend jaar geldig
+
+			// Jos krijgt alle nationaal bepaalde functies, zodat eventuele verplichte
+			// nationaal bepaalde functies OK zijn.
+			fm.Toekennen(testData.LidJos, fm.NationaalBepaaldeFunctiesOphalen());
+
+			// Act
+
+			var problemen = fm.AantallenControleren(testData.HuidigGwj);
+
+			// Assert
+
+			Assert.AreEqual(problemen.Count(), 0);
 		}
 
 		/// <summary>
