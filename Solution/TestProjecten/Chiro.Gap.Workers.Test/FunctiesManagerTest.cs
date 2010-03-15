@@ -328,5 +328,48 @@ namespace Chiro.Gap.Workers.Test
 			// Dit mogen we niet halen.
 			Assert.IsTrue(false);
 		}
+
+		/// <summary>
+		/// Test functies vervangen
+		/// </summary>
+		[TestMethod()]
+		public void FunctiesVervangen()
+		{
+			// Arrange
+
+			var testData = new DummyData();
+
+			FunctiesManager fm = Factory.Maak<FunctiesManager>();
+			GroepenManager gm = Factory.Maak<GroepenManager>();
+
+			Functie f = gm.FunctieToevoegen(
+				testData.DummyGroep,
+				testData.NieuweFunctieNaam,
+				testData.NieuweFunctieCode,
+				1, 0,
+				0,
+				0);
+
+			// Het DummyDao kent een ID toe aan f.  (Voor DummyDao is dat OK, maar in echte situaties
+			// niet, omdat de nieuwe f niet gekoppeld zou zijn aan de groep.  Eigenlijk moeten we
+			// de groep bewaren, samen met zijn functies.)
+
+			f = fm.Bewaren(f);
+
+			var natBepFuncties = fm.NationaalBepaaldeFunctiesOphalen();
+			// we weten dat er minstens 2 nat. bepaalde functies zijn.
+			IEnumerable<Functie> functies = new Functie[] { f, natBepFuncties.First() };
+			fm.Toekennen(testData.LidJos, functies);
+
+			// Act
+
+			fm.Vervangen(testData.LidJos, natBepFuncties);
+
+			// Assert
+
+			Assert.IsTrue(testData.LidJos.Functie.Contains(natBepFuncties.First()));
+			Assert.IsTrue(testData.LidJos.Functie.Contains(natBepFuncties.Last()));
+			Assert.IsFalse(testData.LidJos.Functie.Contains(f));
+		}
 	}
 }

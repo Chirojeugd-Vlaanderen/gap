@@ -204,6 +204,28 @@ namespace Chiro.Gap.Workers
 			return _ledenDao.Bewaren(lid, ld => ld.Functie);
 		}
 
+		/// <summary>
+		/// Vervangt de functies van het lid <paramref name="lid"/> door de functies in 
+		/// <paramref name="functies"/>.  Persisteert.
+		/// </summary>
+		/// <param name="lid">Lid waarvan de functies vervangen moeten worden</param>
+		/// <param name="functies">nieuwe lijst functies</param>
+		/// <returns><paramref name="lid"/> met daaraan gekoppeld de nieuwe functies</returns>
+		/// <remarks>Aan <paramref name="lid"/>moeten de huidige functies gekoppeld zijn</remarks>
+		public Lid Vervangen(Lid lid, IEnumerable<Functie> functies)
+		{
+			IList<Functie> toeTeVoegen = (from fn in functies
+						      where !lid.Functie.Contains(fn)
+						      select fn).ToList();
+			IList<int> teVerwijderen = (from fn in lid.Functie
+						    where !functies.Contains(fn)
+						    select fn.ID).ToList();
+
+			// Exception handling laten we over aan Toekennen en LosKoppelen
+			Toekennen(lid, toeTeVoegen);
+			return LosKoppelen(lid, teVerwijderen);	// LosKoppelen persisteert
+		}
+
 
 
 		/// <summary>
