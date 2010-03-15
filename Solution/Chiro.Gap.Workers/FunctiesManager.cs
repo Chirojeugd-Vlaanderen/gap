@@ -207,14 +207,25 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Kijkt na voor een gegeven <paramref name="groepsWerkJaar"/> of er geen functies zijn met
-		/// te veel of te weinig leden.
+		/// Kijkt na voor een gegeven <paramref name="groepsWerkJaar"/> of de maximum- en
+		/// minimumaantallen van de functies <paramref name="functies"/> niet overschreden zijn.
 		/// </summary>
 		/// <param name="groepsWerkJaar">te controleren werkjaar</param>
+		/// <param name="functies">functies waarop te controleren</param>
 		/// <returns>Een lijst met tellingsgegevens voor de functies waar de aantallen niet kloppen.</returns>
-		/// <remarks>Deze functie is zich niet bewust van de aanwezigheid van een database, en kijkt
-		/// enkel naar de objecten gekoppeld aan <paramref name="groepsWerkJaar"/></remarks>
-		public IEnumerable<Telling> AantallenControleren(GroepsWerkJaar groepsWerkJaar)
+		/// <remarks>
+		/// <para>
+		/// Deze functie is zich niet bewust van de aanwezigheid van een database, en verwacht
+		/// dat groepsWerkJaar.Lid[i].Functie geladen is.
+		/// </para>
+		/// Functies in <paramref name="functies"/> waar geen groep aan gekoppeld is, worden als
+		/// nationaal bepaalde functies beschouwd.
+		/// <para>
+		/// </para>
+		/// </remarks>
+		public IEnumerable<Telling> AantallenControleren(
+			GroepsWerkJaar groepsWerkJaar,
+			IEnumerable<Functie> functies)
 		{
 			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaar.ID))
 			{
@@ -222,18 +233,45 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				var query = groepsWerkJaar.Lid.SelectMany(ld => ld.Functie)
-					.Distinct()
-					.Where(fn => fn.MaxAantal > 0 && fn.Lid.Count() > fn.MaxAantal
-							|| fn.MinAantal > 0 && fn.Lid.Count() < fn.MinAantal)
-					.Select(fn => new Telling
+				var toegekendeFuncties =
+					groepsWerkJaar.Lid.SelectMany(ld => ld.Functie)
+						.Distinct()
+						.Where(fn => functies.Contains(fn));
+
+				var nietToegekendeFuncties = from fn in functies
+							     where !toegekendeFuncties.Contains(fn)
+								&& (fn.Groep == null || fn.Groep == groepsWerkJaar.Groep)
+								// bovenstaande vermijdt groepsvreemde functies
+							     select fn;
+
+				// toegekende functies waarvan er te veel of te weinig zijn
+
+				var problemenToegekendeFuncties =
+					from fn in toegekendeFuncties
+					where fn.MaxAantal > 0 && fn.Lid.Count() > fn.MaxAantal
+						|| fn.MinAantal > 0 && fn.Lid.Count() < fn.MinAantal
+					select new Telling
 					{
 						ID = fn.ID,
 						Aantal = fn.Lid.Count(),
 						Max = fn.MaxAantal,
 						Min = fn.MinAantal
-					});
-				return query.ToList();
+					};
+
+				// niet-toegekende functies waarvan er te weinig zijn
+
+				var problemenOntbrekendeFuncties =
+					from fn in nietToegekendeFuncties
+					where fn.MinAantal > 0
+					select new Telling
+					{
+						ID = fn.ID,
+						Aantal = 0,
+						Max = fn.MaxAantal,
+						Min = fn.MinAantal
+					};
+
+				return (problemenToegekendeFuncties.Union(problemenOntbrekendeFuncties)).ToArray();
 			}
 		}
 

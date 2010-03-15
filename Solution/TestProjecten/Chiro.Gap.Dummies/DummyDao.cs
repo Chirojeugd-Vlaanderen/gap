@@ -13,7 +13,8 @@ namespace Chiro.Gap.Dummies
 {
 	public class DummyDao<T>: IDao<T> where T:IEfBasisEntiteit
 	{
-		private static int _newID = 0;
+		private static int _newID = 10000;	// hoog genoeg, om dubbelzinnigheid met gepdredefinieerde
+							// ID's te vermijden
 
 		#region IDao<T> Members
 

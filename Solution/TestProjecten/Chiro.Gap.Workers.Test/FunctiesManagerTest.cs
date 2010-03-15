@@ -104,7 +104,7 @@ namespace Chiro.Gap.Workers.Test
 
 			// Assert
 
-			var problemen = fm.AantallenControleren(testData.HuidigGwj);
+			var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
 			Assert.AreNotEqual(problemen.Count(), 0);
 		}
 
@@ -139,8 +139,46 @@ namespace Chiro.Gap.Workers.Test
 
 			// Assert
 
-			var problemen = fm.AantallenControleren(testData.HuidigGwj);
+			var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
 			Assert.AreEqual(problemen.Count(), 0);
+		}
+		
+		/// <summary>
+		/// Verplichte functie die niet toegekend wordt
+		/// </summary>
+		[TestMethod()]
+		public void NietToegekendeVerplichteFunctie()
+		{
+			// Arrange
+
+			var testData = new DummyData();
+
+			FunctiesManager fm = Factory.Maak<FunctiesManager>();
+			GroepenManager gm = Factory.Maak<GroepenManager>();
+
+			Functie f = gm.FunctieToevoegen(
+				testData.DummyGroep,
+				testData.NieuweFunctieNaam,
+				testData.NieuweFunctieCode,
+				1, 1,
+				0,
+				0);
+
+			// Functie bewaren, zodat dummydao een ID toekent.
+
+			f = fm.Bewaren(f);
+
+			IEnumerable<Functie> functies = new Functie[] { f };
+
+			// Act
+
+			fm.Toekennen(testData.LidJos, functies);
+			fm.Toekennen(testData.LidYvonne, functies);
+
+			// Assert
+
+			var problemen = fm.AantallenControleren(testData.HuidigGwj, functies);
+			Assert.AreNotEqual(problemen.Count(), 0);
 		}
 
 		/// <summary>
