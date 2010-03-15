@@ -182,6 +182,31 @@ namespace Chiro.Gap.Workers.Test
 		}
 
 		/// <summary>
+		/// Standaard 'AantallenControleren'.  Nakijken of rekening wordt gehouden
+		/// met nationaal bepaalde functies.
+		/// </summary>
+		[TestMethod()]
+		public void OntbrekendeNationaalBepaaldeFuncties()
+		{
+			// Arrange
+
+			var testData = new DummyData();
+
+			FunctiesManager fm = Factory.Maak<FunctiesManager>();
+
+			// Act
+
+			var problemen = fm.AantallenControleren(testData.HuidigGwj);
+			// Het DummyFunctieDao voorziet nationaal bepaalde verplichte functies.
+
+			// Assert
+
+			Assert.AreNotEqual(problemen.Count(), 0);
+		}
+
+
+
+		/// <summary>
 		/// Test of regelementaire 'FunctieBewaren' geen exception oplevert.
 		/// </summary>
 		[TestMethod()]
@@ -235,6 +260,5 @@ namespace Chiro.Gap.Workers.Test
 			// Dit mogen we niet halen.
 			Assert.IsTrue(false);
 		}
-
 	}
 }

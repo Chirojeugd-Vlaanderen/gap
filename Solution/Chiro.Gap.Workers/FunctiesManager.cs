@@ -208,6 +208,27 @@ namespace Chiro.Gap.Workers
 
 		/// <summary>
 		/// Kijkt na voor een gegeven <paramref name="groepsWerkJaar"/> of de maximum- en
+		/// minimumaantallen van de functies (eigen en nationaal bepaald) niet overschreden zijn.
+		/// </summary>
+		/// <param name="groepsWerkJaar">te controleren werkjaar</param>
+		/// <returns>Een lijst met tellingsgegevens voor de functies waar de aantallen niet kloppen.</returns>
+		/// <remarks>
+		/// <para>
+		/// Deze functie is zich niet bewust van de aanwezigheid van een database, en verwacht
+		/// dat groepsWerkJaar.Groep.Functie en groepsWerkJaar.Lid[i].Functie geladen zijn.
+		/// </para>
+		/// </remarks>
+		public IEnumerable<Telling> AantallenControleren(GroepsWerkJaar groepsWerkJaar)
+		{
+			var eigenFuncties = from fn in groepsWerkJaar.Groep.Functie select fn;
+
+			return AantallenControleren(
+				groepsWerkJaar, 
+				eigenFuncties.Union(NationaalBepaaldeFunctiesOphalen()));
+		}
+
+		/// <summary>
+		/// Kijkt na voor een gegeven <paramref name="groepsWerkJaar"/> of de maximum- en
 		/// minimumaantallen van de functies <paramref name="functies"/> niet overschreden zijn.
 		/// </summary>
 		/// <param name="groepsWerkJaar">te controleren werkjaar</param>
@@ -218,9 +239,9 @@ namespace Chiro.Gap.Workers
 		/// Deze functie is zich niet bewust van de aanwezigheid van een database, en verwacht
 		/// dat groepsWerkJaar.Lid[i].Functie geladen is.
 		/// </para>
+		/// <para>
 		/// Functies in <paramref name="functies"/> waar geen groep aan gekoppeld is, worden als
 		/// nationaal bepaalde functies beschouwd.
-		/// <para>
 		/// </para>
 		/// </remarks>
 		public IEnumerable<Telling> AantallenControleren(
