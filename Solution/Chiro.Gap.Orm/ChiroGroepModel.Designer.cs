@@ -34,7 +34,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "LidFunctie", "Functie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Functie), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Lid))]
 
 // Original file name:
-// Generation date: 16/03/2010 14:55:13
+// Generation date: 16/03/2010 16:04:03
 namespace Chiro.Gap.Orm
 {
     
@@ -2438,15 +2438,13 @@ namespace Chiro.Gap.Orm
         /// <summary>
         /// Create a new Lid object.
         /// </summary>
-        /// <param name="lidgeldBetaald">Initial value of LidgeldBetaald.</param>
         /// <param name="nonActief">Initial value of NonActief.</param>
         /// <param name="verwijderd">Initial value of Verwijderd.</param>
         /// <param name="volgendWerkjaarInt">Initial value of VolgendWerkjaarInt.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static Lid CreateLid(bool lidgeldBetaald, bool nonActief, bool verwijderd, short volgendWerkjaarInt, int id)
+        public static Lid CreateLid(bool nonActief, bool verwijderd, short volgendWerkjaarInt, int id)
         {
             Lid lid = new Lid();
-            lid.LidgeldBetaald = lidgeldBetaald;
             lid.NonActief = nonActief;
             lid.Verwijderd = verwijderd;
             lid.VolgendWerkjaarInt = volgendWerkjaarInt;
@@ -2456,9 +2454,9 @@ namespace Chiro.Gap.Orm
         /// <summary>
         /// There are no comments for Property LidgeldBetaald in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public bool LidgeldBetaald
+        public global::System.Nullable<bool> LidgeldBetaald
         {
             get
             {
@@ -2473,8 +2471,8 @@ namespace Chiro.Gap.Orm
                 this.OnLidgeldBetaaldChanged();
             }
         }
-        private bool _LidgeldBetaald;
-        partial void OnLidgeldBetaaldChanging(bool value);
+        private global::System.Nullable<bool> _LidgeldBetaald;
+        partial void OnLidgeldBetaaldChanging(global::System.Nullable<bool> value);
         partial void OnLidgeldBetaaldChanged();
         /// <summary>
         /// There are no comments for Property NonActief in the schema.
@@ -3564,15 +3562,13 @@ namespace Chiro.Gap.Orm
         /// <summary>
         /// Create a new Leiding object.
         /// </summary>
-        /// <param name="lidgeldBetaald">Initial value of LidgeldBetaald.</param>
         /// <param name="nonActief">Initial value of NonActief.</param>
         /// <param name="verwijderd">Initial value of Verwijderd.</param>
         /// <param name="volgendWerkjaarInt">Initial value of VolgendWerkjaarInt.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static Leiding CreateLeiding(bool lidgeldBetaald, bool nonActief, bool verwijderd, short volgendWerkjaarInt, int id)
+        public static Leiding CreateLeiding(bool nonActief, bool verwijderd, short volgendWerkjaarInt, int id)
         {
             Leiding leiding = new Leiding();
-            leiding.LidgeldBetaald = lidgeldBetaald;
             leiding.NonActief = nonActief;
             leiding.Verwijderd = verwijderd;
             leiding.VolgendWerkjaarInt = volgendWerkjaarInt;
@@ -3638,15 +3634,13 @@ namespace Chiro.Gap.Orm
         /// <summary>
         /// Create a new Kind object.
         /// </summary>
-        /// <param name="lidgeldBetaald">Initial value of LidgeldBetaald.</param>
         /// <param name="nonActief">Initial value of NonActief.</param>
         /// <param name="verwijderd">Initial value of Verwijderd.</param>
         /// <param name="volgendWerkjaarInt">Initial value of VolgendWerkjaarInt.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static Kind CreateKind(bool lidgeldBetaald, bool nonActief, bool verwijderd, short volgendWerkjaarInt, int id)
+        public static Kind CreateKind(bool nonActief, bool verwijderd, short volgendWerkjaarInt, int id)
         {
             Kind kind = new Kind();
-            kind.LidgeldBetaald = lidgeldBetaald;
             kind.NonActief = nonActief;
             kind.Verwijderd = verwijderd;
             kind.VolgendWerkjaarInt = volgendWerkjaarInt;

@@ -58,11 +58,13 @@ namespace Chiro.Gap.ServiceContracts
 		LidInfo BewarenMetAfdelingen(LidInfo lid);
 
 		/// <summary>
+		/// Vervangt de functies van het lid bepaald door <paramref name="lidID"/> door de functies
+		/// met ID's <paramref name="functieIDs"/>
 		/// </summary>
-		/// <param name="lid"></param>
-		/// <returns></returns>
+		/// <param name="lidID">ID van lid met te vervangen functies</param>
+		/// <param name="functieIDs">IDs van nieuwe functies voor het lid</param>
 		[OperationContract]
-		LidInfo BewarenMetFuncties(LidInfo lid);
+		void FunctiesVervangen(int lidID, IEnumerable<int> functieIDs);
 
 		/// <summary>
 		/// </summary>

@@ -29,15 +29,21 @@ namespace Chiro.Gap.Services
 	{
 		#region Manager Injection
 
-		private readonly GelieerdePersonenManager _gpm;
-		private readonly GroepenManager _grm;
-		private readonly LedenManager _lm;
+		private readonly GelieerdePersonenManager _gelieerdePersonenMgr;
+		private readonly GroepenManager _groepenMgr;
+		private readonly LedenManager _ledenMgr;
+		private readonly FunctiesManager _functiesMgr;
 
-		public LedenService(GelieerdePersonenManager gpm, LedenManager lm, GroepenManager grm)
+		public LedenService(
+			GelieerdePersonenManager gpm, 
+			LedenManager lm, 
+			GroepenManager grm,
+			FunctiesManager fm)
 		{
-			this._gpm = gpm;
-			this._lm = lm;
-			this._grm = grm;
+			this._gelieerdePersonenMgr = gpm;
+			this._ledenMgr = lm;
+			this._groepenMgr = grm;
+			this._functiesMgr = fm;
 		}
 
 		#endregion
@@ -50,11 +56,11 @@ namespace Chiro.Gap.Services
 			IList<Lid> leden = new List<Lid>();
 			foreach (int gpID in gelieerdePersoonIDs)
 			{
-				GelieerdePersoon gp = _gpm.DetailsOphalen(gpID);
+				GelieerdePersoon gp = _gelieerdePersonenMgr.DetailsOphalen(gpID);
 
 				try
 				{
-					Lid l = _lm.KindMaken(gp);
+					Lid l = _ledenMgr.KindMaken(gp);
 					leden.Add(l);
 				}
 				catch (BestaatAlException)
@@ -73,7 +79,7 @@ namespace Chiro.Gap.Services
 
 			foreach (Lid l in leden)
 			{
-				_lm.LidBewaren(l);
+				_ledenMgr.LidBewaren(l);
 			}
 			return (from l in leden
 					select l.ID).ToList<int>();
@@ -87,11 +93,11 @@ namespace Chiro.Gap.Services
 			IList<Lid> leden = new List<Lid>();
 			foreach (int gpID in gelieerdePersoonIDs)
 			{
-				GelieerdePersoon gp = _gpm.DetailsOphalen(gpID);
+				GelieerdePersoon gp = _gelieerdePersonenMgr.DetailsOphalen(gpID);
 
 				try
 				{
-					Lid l = _lm.LeidingMaken(gp);
+					Lid l = _ledenMgr.LeidingMaken(gp);
 					leden.Add(l);
 				}
 				catch (BestaatAlException)
@@ -110,7 +116,7 @@ namespace Chiro.Gap.Services
 
 			foreach (Lid l in leden)
 			{
-				_lm.LidBewaren(l);
+				_ledenMgr.LidBewaren(l);
 			}
 			return (from l in leden
 					select l.ID).ToList<int>();
@@ -120,7 +126,7 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public LidInfo Bewaren(LidInfo lidinfo)
 		{
-			Lid lid = _lm.Ophalen(lidinfo.LidID, LidExtras.Geen);
+			Lid lid = _ledenMgr.Ophalen(lidinfo.LidID, LidExtras.Geen);
 
 			Debug.Assert(lid is Leiding || lid is Kind);
 
@@ -146,7 +152,7 @@ namespace Chiro.Gap.Services
 				leiding.NonActief = lidinfo.NonActief;
 			}
 
-			return Mapper.Map<Lid, LidInfo>(_lm.LidBewaren(lid));
+			return Mapper.Map<Lid, LidInfo>(_ledenMgr.LidBewaren(lid));
 		}
 
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
@@ -154,11 +160,11 @@ namespace Chiro.Gap.Services
 		{
 			Bewaren(lidinfo);
 
-			Lid lid = _lm.Ophalen(lidinfo.LidID, LidExtras.Groep | LidExtras.Afdelingen);
+			Lid lid = _ledenMgr.Ophalen(lidinfo.LidID, LidExtras.Groep | LidExtras.Afdelingen);
 
 			try
 			{
-				_lm.AanpassenAfdelingenVanLid(lid, lidinfo.AfdelingIdLijst);
+				_ledenMgr.AanpassenAfdelingenVanLid(lid, lidinfo.AfdelingIdLijst);
 			}
 			catch (OngeldigeActieException ex)
 			{
@@ -166,30 +172,30 @@ namespace Chiro.Gap.Services
 				throw ex;
 			}
 
-			return Mapper.Map<Lid, LidInfo>(_lm.LidBewaren(lid));
+			return Mapper.Map<Lid, LidInfo>(_ledenMgr.LidBewaren(lid));
 		}
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public Boolean Verwijderen(int id)
 		{
-			return _lm.LidVerwijderen(id);
+			return _ledenMgr.LidVerwijderen(id);
 		}
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void BewarenMetAfdelingen(int lidID, IList<int> afdelingsIDs)
 		{
-			Lid l = _lm.Ophalen(lidID, LidExtras.Groep | LidExtras.Afdelingen);
-			_lm.AanpassenAfdelingenVanLid(l, afdelingsIDs);
-			_lm.LidBewaren(l);
+			Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Groep | LidExtras.Afdelingen);
+			_ledenMgr.AanpassenAfdelingenVanLid(l, afdelingsIDs);
+			_ledenMgr.LidBewaren(l);
 		}
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<LidInfo> PaginaOphalen(int groepsWerkJaarID, out int paginas)
 		{
-			var result = _lm.PaginaOphalen(groepsWerkJaarID, out paginas);
+			var result = _ledenMgr.PaginaOphalen(groepsWerkJaarID, out paginas);
 			return Mapper.Map<IList<Lid>, IList<LidInfo>>(result);
 		}
 
@@ -197,7 +203,7 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<LidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, out int paginas)
 		{
-			IList<Lid> result = _lm.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID, out paginas);
+			IList<Lid> result = _ledenMgr.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID, out paginas);
 			return Mapper.Map<IList<Lid>, IList<LidInfo>>(result);
 		}
 
@@ -209,16 +215,27 @@ namespace Chiro.Gap.Services
 		/// <returns>Lidinfo met gelieerdepersoon en persoon</returns>
 		public LidInfo Ophalen(int lidID, LidExtras extras)
 		{
-			var lid = _lm.Ophalen(lidID, extras);
-			return Mapper.Map<Lid, LidInfo>(lid);
+			return Mapper.Map<Lid, LidInfo>(_ledenMgr.Ophalen(lidID, extras));
 		}
 
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public LidInfo BewarenMetFuncties(LidInfo lid)
+		/// <summary>
+		/// Vervangt de functies van het lid bepaald door <paramref name="lidID"/> door de functies
+		/// met ID's <paramref name="functieIDs"/>
+		/// </summary>
+		/// <param name="lidID">ID van lid met te vervangen functies</param>
+		/// <param name="functieIDs">IDs van nieuwe functies voor het lid</param>
+		public void FunctiesVervangen(int lidID, IEnumerable<int> functieIDs)
 		{
-			// TODO
-			throw new NotImplementedException();
+			Lid lid = _ledenMgr.Ophalen(lidID, LidExtras.Groep | LidExtras.Functies);
+			var functies = _functiesMgr.Ophalen(functieIDs);
+
+			// Probleem is hier dat de functies en de groepen daaraan gekoppeld uit 'functies'
+			// mogelijk dezelfde zijn als de functies en de groep van 'lid', hoewel het verschillende
+			// objecten zijn.
+			//
+			// Laat ons dus hopen dat volgende call hierop geen problemen geeft:
+
+			_functiesMgr.Vervangen(lid, functies);
 		}
 
 		/* zie #273 */

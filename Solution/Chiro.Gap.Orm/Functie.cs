@@ -50,6 +50,31 @@ namespace Chiro.Gap.Orm
 			return ID.GetHashCode();
 		}
 
+		public override bool Equals(object obj)
+		{
+			if (obj is Functie)
+			{
+				Functie f = obj as Functie;
+
+				if (f.ID != 0 && f.ID == this.ID)
+				{
+					return true;
+				}
+				else if (f.ID == 0 && this.ID == 0)
+				{
+					return base.Equals(f);
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+		}
+
 		public string VersieString
 		{
 			get { return this.VersieStringGet(); }

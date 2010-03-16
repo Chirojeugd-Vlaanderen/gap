@@ -95,6 +95,7 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
+
 		/// <summary>
 		/// Haalt de afdelingen van een groep op die niet gebruikt zijn in een gegeven 
 		/// groepswerkjaar, op basis van een <paramref name="groepsWerkJaarID"/>

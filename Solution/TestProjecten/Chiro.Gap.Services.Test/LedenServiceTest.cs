@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 
+using System.Collections.Generic;
 using System.Linq;
 
 using Chiro.Cdf.Ioc;
@@ -93,6 +94,45 @@ namespace Chiro.Gap.Services.Test
 			var ids = (from f in actual.Functies select f.ID);
 			Assert.IsTrue(ids.Contains((int)GepredefinieerdeFunctieType.ContactPersoon));
 			Assert.IsTrue(ids.Contains(TestInfo.FUNCTIEID));
+		}
+
+		///<summary>
+		///A test for FunctiesVervangen
+		///</summary>
+		[TestMethod()]
+		public void FunctiesVervangenTest()
+		{
+			#region arrange
+			LedenService target = Factory.Maak<LedenService>();
+			#endregion
+
+			#region act
+			// Lid3 heeft functies contactpersoon en redactie (eigen functie)
+			// Vervang door financieel verantwoordelijke, vb en redactie
+
+			int lidID = TestInfo.LID3ID;
+			IEnumerable<int> functieIDs = new int[] {
+				(int)GepredefinieerdeFunctieType.FinancieelVerantwoordelijke,
+				(int)GepredefinieerdeFunctieType.Vb,
+				TestInfo.FUNCTIEID};
+			target.FunctiesVervangen(lidID, functieIDs);
+			#endregion
+
+			#region Assert
+			var l = target.Ophalen(lidID, LidExtras.Functies);
+			var funIDs = (from f in l.Functies select f.ID);
+
+			Assert.AreEqual(funIDs.Count(), 3);
+			Assert.IsTrue(funIDs.Contains((int)GepredefinieerdeFunctieType.FinancieelVerantwoordelijke));
+			Assert.IsTrue(funIDs.Contains((int)GepredefinieerdeFunctieType.Vb));
+			Assert.IsTrue(funIDs.Contains(TestInfo.FUNCTIEID));
+			#endregion
+
+			#region Cleanup
+			target.FunctiesVervangen(lidID, new int[]{
+				(int)GepredefinieerdeFunctieType.ContactPersoon,
+				TestInfo.FUNCTIEID});
+			#endregion
 		}
 	}
 }

@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
+using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
 using Chiro.Cdf.Validation;
 using Chiro.Gap.Fouten.Exceptions;
@@ -68,8 +69,31 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				return _funDao.Bewaren(functie, fn => fn.Groep);
+				return _funDao.Bewaren(functie, fn => fn.Groep.WithoutUpdate());
 			}
+		}
+
+		/// <summary>
+		/// Haalt een lijstje functies op, uiteraard met gekoppelde groepen (indien van toepassing)
+		/// </summary>
+		/// <param name="functieIDs">ID's op te halen functies</param>
+		/// <returns>lijst opgehaalde functies, met gekoppelde groepen (indien van toepassing)</returns>
+		public IList<Functie> Ophalen(IEnumerable<int> functieIDs)
+		{
+			var resultaat = _funDao.Ophalen(functieIDs, fn => fn.Groep);
+			var groepIDs = (from fn in resultaat 
+					where fn.Groep != null
+					select fn.Groep.ID).Distinct();
+
+			foreach (int id in groepIDs)
+			{
+				if (!_autorisatieMgr.IsGavGroep(id))
+				{
+					throw new GeenGavException(Properties.Resources.GeenGavFunctie);
+				}
+			}
+
+			return resultaat.ToList();
 		}
 
 		/// <summary>
