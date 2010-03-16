@@ -147,7 +147,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 
 			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>
-				(l => l.LidOphalenMetAfdelingen(lidID));
+				(l => l.Ophalen(lidID, LidExtras.Groep|LidExtras.Afdelingen));
 
 			model.AfdelingIDs = model.HuidigLid.AfdelingIdLijst.ToList();
 
@@ -196,7 +196,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			BaseModelInit(model, groepID);
 
 			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>
-				(l => l.LidOphalenMetAfdelingen(lidID));
+				(l => l.Ophalen(lidID, LidExtras.Groep|LidExtras.Afdelingen));
 
 			/*var list =
 				ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>

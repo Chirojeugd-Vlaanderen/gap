@@ -201,11 +201,15 @@ namespace Chiro.Gap.Services
 			return Mapper.Map<IList<Lid>, IList<LidInfo>>(result);
 		}
 
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public LidInfo LidOphalenMetAfdelingen(int lidID)
+		/// <summary>
+		/// Haalt lid op, inclusief gelieerde persoon en persoon
+		/// </summary>
+		/// <param name="lidID">ID op te halen lid</param>
+		/// <param name="extras">geeft aan welke extra entiteiten mee opgehaald moeten worden</param>
+		/// <returns>Lidinfo met gelieerdepersoon en persoon</returns>
+		public LidInfo Ophalen(int lidID, LidExtras extras)
 		{
-			return Mapper.Map<Lid, LidInfo>(_lm.Ophalen(lidID, LidExtras.Groep|LidExtras.Afdelingen));
+			return Mapper.Map<Lid, LidInfo>(_lm.Ophalen(lidID, extras));
 		}
 
 		/* zie #273 */
