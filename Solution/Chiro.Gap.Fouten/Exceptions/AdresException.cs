@@ -49,7 +49,8 @@ namespace Chiro.Gap.Fouten.Exceptions
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="vf"></param>
+		/// <param name="info"></param>
+		/// <param name="context"></param>
 		public AdresException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{

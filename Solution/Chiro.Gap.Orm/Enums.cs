@@ -53,6 +53,4 @@ namespace Chiro.Gap.Orm
 		[EnumMember]
 		Alles = Groep | Afdelingen | Functies
 	}
-
-
 }

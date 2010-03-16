@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Web;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
@@ -15,7 +16,6 @@ using Chiro.Cdf.Validation;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using System.Web;
 
 namespace Chiro.Gap.Workers
 {
@@ -77,7 +77,7 @@ namespace Chiro.Gap.Workers
 		/// Haalt een lijstje functies op, uiteraard met gekoppelde groepen (indien van toepassing)
 		/// </summary>
 		/// <param name="functieIDs">ID's op te halen functies</param>
-		/// <returns>lijst opgehaalde functies, met gekoppelde groepen (indien van toepassing)</returns>
+		/// <returns>Lijst opgehaalde functies, met gekoppelde groepen (indien van toepassing)</returns>
 		public IList<Functie> Ophalen(IEnumerable<int> functieIDs)
 		{
 			var resultaat = _funDao.Ophalen(functieIDs, fn => fn.Groep);
@@ -169,7 +169,6 @@ namespace Chiro.Gap.Workers
 				// op die manier worden inconsistenties bij het veranderen van functies toegelaten,
 				// wat me voor de UI makkelijker lijkt.  De method 'AantallenControleren' kan
 				// te allen tijde gebruikt worden om problemen met functieaantallen op te sporen.
-
 			}
 
 			// Alle checks goed overleefd; als we nog niet uit de method 'gethrowd' zijn, kunnen we
@@ -233,8 +232,8 @@ namespace Chiro.Gap.Workers
 		/// <paramref name="functies"/>.  Persisteert.
 		/// </summary>
 		/// <param name="lid">Lid waarvan de functies vervangen moeten worden</param>
-		/// <param name="functies">nieuwe lijst functies</param>
-		/// <returns><paramref name="lid"/> met daaraan gekoppeld de nieuwe functies</returns>
+		/// <param name="functies">Nieuwe lijst functies</param>
+		/// <returns>Het <paramref name="lid"/> met daaraan gekoppeld de nieuwe functies</returns>
 		/// <remarks>Aan <paramref name="lid"/>moeten de huidige functies gekoppeld zijn</remarks>
 		public Lid Vervangen(Lid lid, IEnumerable<Functie> functies)
 		{
@@ -249,8 +248,6 @@ namespace Chiro.Gap.Workers
 			Toekennen(lid, toeTeVoegen);
 			return LosKoppelen(lid, teVerwijderen);	// LosKoppelen persisteert
 		}
-
-
 
 		/// <summary>
 		/// Controleert of de functie <paramref name="f"/> nationaal bepaald is.
@@ -268,7 +265,7 @@ namespace Chiro.Gap.Workers
 		/// Kijkt na voor een gegeven <paramref name="groepsWerkJaar"/> of de maximum- en
 		/// minimumaantallen van de functies (eigen en nationaal bepaald) niet overschreden zijn.
 		/// </summary>
-		/// <param name="groepsWerkJaar">te controleren werkjaar</param>
+		/// <param name="groepsWerkJaar">Te controleren werkjaar</param>
 		/// <returns>Een lijst met tellingsgegevens voor de functies waar de aantallen niet kloppen.</returns>
 		/// <remarks>
 		/// <para>
@@ -289,8 +286,8 @@ namespace Chiro.Gap.Workers
 		/// Kijkt na voor een gegeven <paramref name="groepsWerkJaar"/> of de maximum- en
 		/// minimumaantallen van de functies <paramref name="functies"/> niet overschreden zijn.
 		/// </summary>
-		/// <param name="groepsWerkJaar">te controleren werkjaar</param>
-		/// <param name="functies">functies waarop te controleren</param>
+		/// <param name="groepsWerkJaar">Te controleren werkjaar</param>
+		/// <param name="functies">Functies waarop te controleren</param>
 		/// <returns>Een lijst met tellingsgegevens voor de functies waar de aantallen niet kloppen.</returns>
 		/// <remarks>
 		/// <para>

@@ -3,4 +3,4 @@
 <%@ Import Namespace="Chiro.Gap.Orm" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
 
-<%=Html.ActionLink(Html.Encode(ViewData.Model.PersoonInfo.VolledigeNaam), "EditRest", new { Controller = "Leden", lidID = ViewData.Model.LidID })%>
+<%=Html.ActionLink(ViewData.Model.PersoonInfo.VolledigeNaam, "EditRest", new { Controller = "Leden", lidID = ViewData.Model.LidID })%>

@@ -82,7 +82,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <summary>
 		/// Haalt de nationaal bepaalde functies op
 		/// </summary>
-		/// <returns>de rij met nationaal bepaalde functies</returns>
+		/// <returns>De rij met nationaal bepaalde functies</returns>
 		public IEnumerable<Functie> NationaalBepaaldeFunctiesOphalen()
 		{
 			IEnumerable<Functie> resultaat;

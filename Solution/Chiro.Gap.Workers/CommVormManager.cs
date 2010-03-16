@@ -144,7 +144,6 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
-		// FIXME: de parameter 'gelieerdePersoon' is overbodig; zie ticket #145.
 		/// <summary>
 		/// Verwijdert een communicatievorm, en persisteert.
 		/// </summary>
@@ -153,6 +152,8 @@ namespace Chiro.Gap.Workers
 		/// moet komen uit comm.GelieerdePersoon.</param>
 		public void CommunicatieVormVerwijderen(CommunicatieVorm comm, GelieerdePersoon origineel)
 		{
+			// FIXME: de parameter 'gelieerdePersoon' is overbodig; zie ticket #145.
+
 			if (!_autorisatieMgr.IsGavGelieerdePersoon(origineel.ID))
 			{
 				// Aangezien er niet getest wordt of de communicatievorm wel hoort bij de 

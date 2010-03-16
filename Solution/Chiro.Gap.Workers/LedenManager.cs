@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 using Chiro.Cdf.Ioc;
@@ -14,7 +15,6 @@ using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using System.Linq.Expressions;
 
 namespace Chiro.Gap.Workers
 {
@@ -350,7 +350,7 @@ namespace Chiro.Gap.Workers
 		/// Haalt lid op, op basis van zijn <paramref name="lidID"/>
 		/// </summary>
 		/// <param name="lidID">ID gevraagde lid</param>
-		/// <param name="extras">geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+		/// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
 		/// <returns>Kind of Leiding met persoonsgegevens en <paramref name="extras"/>.</returns>
 		public Lid Ophalen(int lidID, LidExtras extras)
 		{
@@ -422,7 +422,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="functieID">ID van de functie</param>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
-		/// <param name="extras">geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden
+		/// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden
 		/// met de leden</param>
 		/// <returns>Lijst leden uit het groepswerkjaar met de gegeven functie</returns>
 		/// <remarks>Persoonsgegevens worden standaard mee opgehaald met lid.</remarks>

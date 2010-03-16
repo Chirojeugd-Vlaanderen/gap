@@ -131,7 +131,11 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(groep.ID))
 			{
-				Afdeling a = new Afdeling { Afkorting = afkorting, Naam = naam };
+				Afdeling a = new Afdeling
+				{
+					Afkorting = afkorting,
+					Naam = naam
+				};
 
 				a.Groep = groep;
 				groep.Afdeling.Add(a);
@@ -342,7 +346,10 @@ namespace Chiro.Gap.Workers
 				if (bestaande != null)
 				{
 					throw new BestaatAlException(
-						new BestaatAlFault { FoutCode = BestaatAlFaultCode.CategorieCodeBestaatAl });
+						new BestaatAlFault
+						{
+							FoutCode = BestaatAlFaultCode.CategorieCodeBestaatAl
+						});
 				}
 				else
 				{
@@ -354,7 +361,10 @@ namespace Chiro.Gap.Workers
 					if (bestaande != null)
 					{
 						throw new BestaatAlException(
-							new BestaatAlFault { FoutCode = BestaatAlFaultCode.CategorieNaamBestaatAl });
+							new BestaatAlFault
+							{
+								FoutCode = BestaatAlFaultCode.CategorieNaamBestaatAl
+							});
 					}
 					else
 					{
@@ -400,8 +410,8 @@ namespace Chiro.Gap.Workers
 				// Controleer op dubbele code
 
 				var bestaande = (from fun in g.Functie
-						 where String.Compare(g.Code, code) == 0
-						 select fun).FirstOrDefault();
+								 where String.Compare(g.Code, code) == 0
+								 select fun).FirstOrDefault();
 
 				if (bestaande != null && bestaande.TeVerwijderen)
 				{
@@ -410,15 +420,17 @@ namespace Chiro.Gap.Workers
 				}
 				else if (bestaande != null)
 				{
-					throw new BestaatAlException(new BestaatAlFault { 
-						FoutCode = BestaatAlFaultCode.FunctieCodeBestaatAl });
+					throw new BestaatAlException(new BestaatAlFault
+					{
+						FoutCode = BestaatAlFaultCode.FunctieCodeBestaatAl
+					});
 				}
 
 				// Hetzelfde voor dubbele naam
 
 				bestaande = (from fun in g.Functie
-						where String.Compare(g.Naam, naam) == 0
-						select fun).FirstOrDefault();
+							 where String.Compare(g.Naam, naam) == 0
+							 select fun).FirstOrDefault();
 
 				if (bestaande != null && bestaande.TeVerwijderen)
 				{
@@ -462,7 +474,11 @@ namespace Chiro.Gap.Workers
 		/// <remarks>Persisteert niet.</remarks>
 		public GroepsWerkJaar GroepsWerkJaarMaken(Groep groep, int werkJaar)
 		{
-			GroepsWerkJaar resultaat = new GroepsWerkJaar { Groep = groep, WerkJaar = werkJaar };
+			GroepsWerkJaar resultaat = new GroepsWerkJaar
+			{
+				Groep = groep,
+				WerkJaar = werkJaar
+			};
 			groep.GroepsWerkJaar.Add(resultaat);
 			return resultaat;
 		}

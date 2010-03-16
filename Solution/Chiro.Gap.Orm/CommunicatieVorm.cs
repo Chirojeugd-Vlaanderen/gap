@@ -25,12 +25,13 @@ namespace Chiro.Gap.Orm
 		/// De attributen op de properties van deze geneste class zorgen voor de validatie.
 		/// Je kan de attributen niet rechtstreeks op de properties van CommunicatieVorm zetten,
 		/// omdat Entity Framework de definitie van deze attributen telkens opnieuw genereert.
-		/// (Let op het MetaData-attributt op CommunicatieVorm)
+		/// (Let op het MetaData-attribute op CommunicatieVorm)
 		/// </summary>
 		public class CommuncatieVormValidatie
 		{
 			[Verplicht()]
 			public string Nummer { get; set; }
+
 			[StringLengte(320)]
 			[DataType(DataType.MultilineText)]
 			public string Nota { get; set; }
