@@ -14,6 +14,7 @@ using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using System.Linq.Expressions;
 
 namespace Chiro.Gap.Workers
 {
@@ -346,15 +347,59 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Haalt lid op met afdelingsjaren, afdelingen en gelieerdepersoon
+		/// Haalt lid op, op basis van zijn <paramref name="lidID"/>
 		/// </summary>
 		/// <param name="lidID">ID gevraagde lid</param>
-		/// <returns>Lid met afdelingsjaren, afdelingen en gelieerdepersoon.</returns>
-		public Lid OphalenMetAfdelingen(int lidID)
+		/// <param name="extras">geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+		/// <returns>Kind of Leiding met persoonsgegevens en <paramref name="extras"/>.</returns>
+		public Lid Ophalen(int lidID, LidExtras extras)
 		{
 			if (_autorisatieMgr.IsGavLid(lidID))
 			{
-				return _daos.LedenDao.OphalenMetDetails(lidID);
+				if (_daos.LedenDao.IsLeiding(lidID))
+				{
+					// Leiding: ga via LeidingDAO.
+
+					var paths = new List<Expression<Func<Leiding, object>>>();
+					paths.Add(ld => ld.GelieerdePersoon.Persoon);
+
+					if ((extras & LidExtras.Groep) != 0)
+					{
+						paths.Add(ld => ld.GroepsWerkJaar.Groep);
+					}
+					if ((extras & LidExtras.Afdelingen) != 0)
+					{
+						paths.Add(ld => ld.AfdelingsJaar.First().Afdeling);
+					}
+					if ((extras & LidExtras.Functies) != 0)
+					{
+						paths.Add(ld => ld.Functie);
+					}
+
+					return _daos.LeidingDao.Ophalen(lidID, paths.ToArray());
+				}
+				else
+				{
+					// Nog eens ongeveer hetzelfde voor kinderen.  Waarschijnlijk kan dit
+					// properder.
+					var paths = new List<Expression<Func<Kind, object>>>();
+					paths.Add(ld => ld.GelieerdePersoon.Persoon);
+
+					if ((extras & LidExtras.Groep) != 0)
+					{
+						paths.Add(ld => ld.GroepsWerkJaar.Groep);
+					}
+					if ((extras & LidExtras.Afdelingen) != 0)
+					{
+						paths.Add(ld => ld.AfdelingsJaar.Afdeling);
+					}
+					if ((extras & LidExtras.Functies) != 0)
+					{
+						paths.Add(ld => ld.Functie);
+					}
+
+					return _daos.KindDao.Ophalen(lidID, paths.ToArray());
+				}
 			}
 			else
 			{
@@ -363,12 +408,25 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
+		/// Haalt lid en gekoppelde persoon op, op basis van <paramref name="lidID"/>
+		/// </summary>
+		/// <param name="lidID">ID op te halen lid</param>
+		/// <returns>Lid, met daaraan gekoppeld gelieerde persoon en persoon.</returns>
+		public Lid Ophalen(int lidID)
+		{
+			return Ophalen(lidID, LidExtras.Geen);
+		}
+
+		/// <summary>
 		/// Haalt leden op uit een bepaald groepswerkjaar met een gegeven functie
 		/// </summary>
 		/// <param name="functieID">ID van de functie</param>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+		/// <param name="extras">geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden
+		/// met de leden</param>
 		/// <returns>Lijst leden uit het groepswerkjaar met de gegeven functie</returns>
-		public IList<Lid> Ophalen(int functieID, int groepsWerkJaarID)
+		/// <remarks>Persoonsgegevens worden standaard mee opgehaald met lid.</remarks>
+		public IList<Lid> Ophalen(int functieID, int groepsWerkJaarID, LidExtras extras)
 		{
 			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
@@ -380,12 +438,28 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
+				var paths = new List<Expression<Func<Lid, object>>>();
+
+				paths.Add(ld => ld.GelieerdePersoon.Persoon);
+				if ((extras & LidExtras.Groep) != 0)
+				{
+					paths.Add(ld => ld.GroepsWerkJaar.Groep);
+				}
+				if ((extras & LidExtras.Afdelingen) != 0)
+				{
+					// Afdelingen: altijd tricky, want verschillend voor leden
+					// en leiding.
+					throw new NotImplementedException();
+				}
+				if ((extras & LidExtras.Functies) != 0)
+				{
+					paths.Add(ld => ld.Functie);
+				}
+
 				return _daos.LedenDao.OphalenUitFunctie(
 					functieID,
 					groepsWerkJaarID,
-					ld => ld.GroepsWerkJaar.Groep,
-					ld => ld.Functie,
-					ld => ld.GelieerdePersoon.Persoon);
+					paths.ToArray());
 			}
 		}
 

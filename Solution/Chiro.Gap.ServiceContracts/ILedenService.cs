@@ -103,7 +103,7 @@ namespace Chiro.Gap.ServiceContracts
 		IList<LidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, out int paginas);
 
 		/// <summary>
-		/// Haalt lid inclusief afdelingsjaren, afdelingen en gelieerdepersoon
+		/// Haalt lid op, inclusief groepswerkjaar, groep, afdelingsjaren, afdelingen en gelieerdepersoon
 		/// </summary>
 		/// <param name="lidID">ID op te halen lid</param>
 		/// <returns>Lidinfo met afdelingsjaren, afdelingen en gelieerdepersoon</returns>

@@ -270,5 +270,19 @@ namespace Chiro.Gap.Data.Ef
 		{
 			return OphalenUitFunctie((int)f, groepsWerkJaarID, paths);
 		}
+
+		/// <summary>
+		/// Geeft <c>true</c> indien het lid met <paramref name="lidID"/> leiding is, anders <c>false</c>
+		/// </summary>
+		/// <param name="lidID">ID van lid waarvoor na te gaan of het al dan niet leiding is</param>
+		/// <returns><c>true</c> indien het lid met <paramref name="lidID"/> leiding is, anders <c>false</c></returns>
+		public bool IsLeiding(int lidID)
+		{
+			using (var db = new ChiroGroepEntities())
+			{
+				Lid l = (from ld in db.Lid where ld.ID == lidID select ld).FirstOrDefault();
+				return (l is Leiding);
+			}
+		}
 	}
 }

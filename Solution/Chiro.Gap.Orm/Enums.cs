@@ -9,15 +9,14 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
-using Chiro.Gap.Orm;
-
-namespace Chiro.Gap.ServiceContracts
+namespace Chiro.Gap.Orm
 {
 	/// <summary>
-	/// Enum die aangeeft welke extra's er meegeleverd kunnen worden met de gewone GroepInfo.
+	/// Enum die aangeeft welke extra's er meegeleverd kunnen worden met een groep.
 	/// </summary>
 	/// <remarks>Er zullen nog extra members aan deze enum toegevoegd moeten worden</remarks>
 	[DataContract]
+	[Flags]
 	public enum GroepsExtras
 	{
 		[EnumMember]
@@ -29,4 +28,31 @@ namespace Chiro.Gap.ServiceContracts
 		[EnumMember]
 		Alles = AfdelingenHuidigWerkJaar | Categorieen
 	}
+
+	/// <summary>
+	/// Enum om aan te geven welke extra informatie er met een lid mee opgehaald moet worden.
+	/// </summary>
+	[DataContract]
+	[Flags]
+	public enum LidExtras
+	{
+		[EnumMember]
+		Geen = 0x00,
+		/// <summary>
+		/// Haalt groepswerkjaar en groep mee op
+		/// </summary>
+		[EnumMember]
+		Groep = 0x01,
+		/// <summary>
+		/// Haalt afdelingsjaren en afdelingen mee op
+		/// </summary>
+		[EnumMember]
+		Afdelingen = 0x02,
+		[EnumMember]
+		Functies = 0x04,
+		[EnumMember]
+		Alles = Groep | Afdelingen | Functies
+	}
+
+
 }

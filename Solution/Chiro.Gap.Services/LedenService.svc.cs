@@ -120,7 +120,7 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public LidInfo Bewaren(LidInfo lidinfo)
 		{
-			Lid lid = _lm.OphalenMetAfdelingen(lidinfo.LidID);
+			Lid lid = _lm.Ophalen(lidinfo.LidID, LidExtras.Geen);
 
 			Debug.Assert(lid is Leiding || lid is Kind);
 
@@ -154,7 +154,7 @@ namespace Chiro.Gap.Services
 		{
 			Bewaren(lidinfo);
 
-			Lid lid = _lm.OphalenMetAfdelingen(lidinfo.LidID);
+			Lid lid = _lm.Ophalen(lidinfo.LidID, LidExtras.Groep | LidExtras.Afdelingen);
 
 			try
 			{
@@ -180,7 +180,7 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void BewarenMetAfdelingen(int lidID, IList<int> afdelingsIDs)
 		{
-			Lid l = _lm.OphalenMetAfdelingen(lidID);
+			Lid l = _lm.Ophalen(lidID, LidExtras.Groep | LidExtras.Afdelingen);
 			_lm.AanpassenAfdelingenVanLid(l, afdelingsIDs);
 			_lm.LidBewaren(l);
 		}
@@ -205,7 +205,7 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public LidInfo LidOphalenMetAfdelingen(int lidID)
 		{
-			return Mapper.Map<Lid, LidInfo>(_lm.OphalenMetAfdelingen(lidID));
+			return Mapper.Map<Lid, LidInfo>(_lm.Ophalen(lidID, LidExtras.Groep|LidExtras.Afdelingen));
 		}
 
 		/* zie #273 */

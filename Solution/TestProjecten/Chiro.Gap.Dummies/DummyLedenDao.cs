@@ -60,6 +60,11 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		public bool IsLeiding(int lidID)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 	}
 }

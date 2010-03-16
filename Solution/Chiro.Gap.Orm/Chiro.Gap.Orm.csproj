@@ -77,6 +77,7 @@
     <Compile Include="AfdelingsJaar.cs" />
     <Compile Include="Afdeling.cs" />
     <Compile Include="DataInterfaces\LedenDaoCollectie.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Functie.cs" />
     <Compile Include="Gav.cs" />
     <Compile Include="GroepsWerkJaar.cs" />

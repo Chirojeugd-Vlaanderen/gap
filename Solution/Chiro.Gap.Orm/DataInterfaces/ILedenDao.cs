@@ -70,6 +70,13 @@ namespace Chiro.Gap.Orm.DataInterfaces
 
 		Lid OphalenMetDetails(int lidID);
 
+		/// <summary>
+		/// Geeft <c>true</c> indien het lid met <paramref name="lidID"/> leiding is, anders <c>false</c>
+		/// </summary>
+		/// <param name="lidID">ID van lid waarvoor na te gaan of het al dan niet leiding is</param>
+		/// <returns><c>true</c> indien het lid met <paramref name="lidID"/> leiding is, anders <c>false</c></returns>
+		bool IsLeiding(int lidID);
+
 		// void LidMaken(int gelieerdeID);
 	}
 }
