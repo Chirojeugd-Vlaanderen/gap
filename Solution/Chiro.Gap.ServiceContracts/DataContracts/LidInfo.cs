@@ -55,5 +55,12 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		[DataMember]
 		public IList<int> AfdelingIdLijst { get; set; }
+
+		/// <summary>
+		/// Functies van het lid
+		/// </summary>
+		[DataMember]
+		public IList<FunctieInfo> Functies { get; set; }
+
 	}
 }

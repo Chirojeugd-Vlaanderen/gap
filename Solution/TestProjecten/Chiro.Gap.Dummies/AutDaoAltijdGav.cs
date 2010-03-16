@@ -70,7 +70,7 @@ namespace Chiro.Gap.Dummies
 
 		public bool IsGavLid(string login, int lidID)
 		{
-			throw new NotImplementedException();
+			return true;
 		}
 
 		public bool IsGavCategorie(int categorieID, string login)

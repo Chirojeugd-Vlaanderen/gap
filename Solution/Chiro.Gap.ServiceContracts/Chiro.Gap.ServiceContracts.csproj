@@ -58,6 +58,7 @@
     <Compile Include="DataContracts\AfdelingInfo.cs" />
     <Compile Include="DataContracts\AdresInfo.cs" />
     <Compile Include="DataContracts\CategorieInfo.cs" />
+    <Compile Include="DataContracts\FunctieInfo.cs" />
     <Compile Include="DataContracts\StraatInfo.cs" />
     <Compile Include="DataContracts\GemeenteInfo.cs" />
     <Compile Include="DataContracts\BewonersInfo.cs" />

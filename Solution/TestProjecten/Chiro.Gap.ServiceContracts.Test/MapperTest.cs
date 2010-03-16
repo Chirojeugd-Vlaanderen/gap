@@ -55,5 +55,27 @@ namespace Chiro.Gap.ServiceContracts.Test
 
 			Assert.IsTrue(gi.Categorie.Count > 0);
 		}
+
+		/// <summary>
+		/// Controleert mapping Functie -> FunctieInfo
+		/// </summary>
+		[TestMethod]
+		public void MapFunctieInfo()
+		{
+			var testData = new DummyData();
+			FunctieInfo fi = Mapper.Map<Functie, FunctieInfo>(testData.UniekeFunctie);
+			Assert.AreEqual(fi.Code, testData.UniekeFunctie.Code);
+		}
+
+		/// <summary>
+		/// Controleert of functies goed mee gemapt worden met lidinfo.
+		/// </summary>
+		[TestMethod]
+		public void MapLidInfoFuncties()
+		{
+			var testData = new DummyData();
+			LidInfo li = Mapper.Map<Lid, LidInfo>(testData.LidJos);
+			Assert.IsTrue(li.Functies.Count() > 0);
+		}
 	}
 }

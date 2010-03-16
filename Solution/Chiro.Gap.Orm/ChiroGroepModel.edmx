@@ -967,7 +967,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="LidgeldBetaald" Type="Boolean" Nullable="true" />
+          <Property Name="LidgeldBetaald" Type="Boolean" Nullable="false" />
           <Property Name="NonActief" Type="Boolean" Nullable="false" />
           <Property Name="Verwijderd" Type="Boolean" Nullable="false" />
           <Property Name="VolgendWerkjaarInt" Type="Int16" Nullable="false" />

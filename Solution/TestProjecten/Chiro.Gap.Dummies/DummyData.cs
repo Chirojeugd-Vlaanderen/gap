@@ -157,6 +157,8 @@ namespace Chiro.Gap.Dummies
 			_lidJos.ID = 1;
 			_lidYvonne.ID = 2;
 
+			// Jos krijgt een functie
+
 			fMgr.Toekennen(_lidJos, new Functie[] { _redactie });
 			
 

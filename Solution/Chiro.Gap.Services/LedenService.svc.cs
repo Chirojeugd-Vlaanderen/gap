@@ -209,7 +209,8 @@ namespace Chiro.Gap.Services
 		/// <returns>Lidinfo met gelieerdepersoon en persoon</returns>
 		public LidInfo Ophalen(int lidID, LidExtras extras)
 		{
-			return Mapper.Map<Lid, LidInfo>(_lm.Ophalen(lidID, extras));
+			var lid = _lm.Ophalen(lidID, extras);
+			return Mapper.Map<Lid, LidInfo>(lid);
 		}
 
 		/* zie #273 */

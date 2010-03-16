@@ -42,7 +42,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.ID))
 				.ForMember(
 					dst => dst.IsLid,
-					opt => opt.MapFrom(src => src.Lid.Count > 0))
+					opt => opt.MapFrom(src => (src.Lid.Count > 0)))
 				.ForMember(
 					dst => dst.AdNummer,
 					opt => opt.MapFrom(src => src.Persoon.AdNummer))
@@ -89,6 +89,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst => dst.GeboorteJaarTot, opt => opt.MapFrom(src => 0))
 				.ForMember(dst => dst.AfdelingsJaarMagVerwijderdWorden, opt => opt.MapFrom(src => false));
 
+			Mapper.CreateMap<Functie, FunctieInfo>()
+				.ForMember(dst => dst.IsNationaalBepaald, opt => opt.MapFrom(src => src.Groep == null));
+
 			Mapper.CreateMap<Lid, LidInfo>()
 				.ForMember(
 					dst => dst.LidID,
@@ -113,7 +116,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.AfdelingIdLijstGet()))
 				.ForMember(
 					dst => dst.PersoonInfo,
-					opt => opt.MapFrom(src => src.GelieerdePersoon));
+					opt => opt.MapFrom(src => src.GelieerdePersoon))
+				.ForMember(
+					dst => dst.Functies,
+					opt => opt.MapFrom(src => src.Functie));
 
 			Mapper.CreateMap<Adres, AdresInfo>()
 				.ForMember(
