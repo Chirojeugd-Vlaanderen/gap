@@ -141,6 +141,11 @@ namespace Chiro.Gap.WebApp.Controllers
 				ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
 				(groep => groep.AfdelingenOphalen(groepsWerkJaarID));
 			model.AfdelingsInfoDictionary = new Dictionary<int, AfdelingInfo>();
+
+			if(list.Count==0){
+				return View();
+			}
+
 			foreach (AfdelingInfo ai in list)
 			{
 				model.AfdelingsInfoDictionary.Add(ai.AfdelingID, ai);

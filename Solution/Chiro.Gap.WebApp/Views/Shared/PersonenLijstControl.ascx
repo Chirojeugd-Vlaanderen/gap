@@ -9,9 +9,7 @@
         $('input:submit').hide();
 
         $("#checkall").click(function() {
-            $("input[@name=GekozenGelieerdePersoonIDs]").each(function() {
-                this.checked = !this.checked;
-            });
+	        $("INPUT[@name=GekozenGelieerdePersoonIDs][type='checkbox']").attr('checked', $("#checkall").is(':checked'));
         });
 
         $("#GekozenActie").change(function() {
@@ -31,8 +29,8 @@
     int j = 0;
 %>
 
-<form id="mactie" action="" method="post"> 
-<input type="submit" value="List" />
+<form id="mactie" action="" method="post">
+<input type="submit" value="List"/>
 <select id="GekozenActie" name="GekozenActie">
 <option value="0">Kies een actie ...</option>
 <option value="1">Lid maken</option>
