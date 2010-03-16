@@ -49,5 +49,14 @@ namespace Chiro.Gap.Workers.Properties {
                 return ((string)(this["NatFunctiesCacheKey"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("21")]
+        public int DagenInstapPeriode {
+            get {
+                return ((int)(this["DagenInstapPeriode"]));
+            }
+        }
     }
 }

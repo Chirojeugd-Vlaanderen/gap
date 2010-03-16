@@ -11,5 +11,8 @@
     <Setting Name="NatFunctiesCacheKey" Type="System.String" Scope="Application">
       <Value Profile="(Default)">NatFuncties</Value>
     </Setting>
+    <Setting Name="DagenInstapPeriode" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">21</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

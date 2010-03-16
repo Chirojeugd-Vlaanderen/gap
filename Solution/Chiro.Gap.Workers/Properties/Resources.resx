@@ -166,9 +166,6 @@
   <data name="GeenSuperGav" xml:space="preserve">
     <value>Deze operatie is enkel beschikbaar voor super-GAV-goden.</value>
   </data>
-  <data name="InstapPeriode" xml:space="preserve">
-    <value>21</value>
-  </data>
   <data name="FoutieveGroepFunctie" xml:space="preserve">
     <value>Je probeert een lid te koppelen aan een categorie uit een andere groep.</value>
   </data>

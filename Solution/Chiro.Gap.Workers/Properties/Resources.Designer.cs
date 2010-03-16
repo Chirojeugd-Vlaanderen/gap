@@ -259,15 +259,6 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 21.
-        /// </summary>
-        internal static string InstapPeriode {
-            get {
-                return ResourceManager.GetString("InstapPeriode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to De persoon is te jong..
         /// </summary>
         internal static string TeJong {

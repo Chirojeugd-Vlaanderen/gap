@@ -15,6 +15,7 @@ using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {
@@ -199,7 +200,7 @@ namespace Chiro.Gap.Workers
 			Kind kind = new Kind();
 			kind.AfdelingsJaar = aj;
 			aj.Kind.Add(kind);
-			kind.EindeInstapPeriode = DateTime.Today.AddDays(int.Parse(Properties.Resources.InstapPeriode));
+			kind.EindeInstapPeriode = DateTime.Today.AddDays(Settings.Default.DagenInstapPeriode);
 
 			LidMaken(kind, gpMetDetails, gwj);
 
