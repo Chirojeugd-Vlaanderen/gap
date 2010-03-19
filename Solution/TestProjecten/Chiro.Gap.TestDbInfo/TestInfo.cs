@@ -9,29 +9,31 @@
 		// te plakken uit output van 
 		// cg2_database_action.sh -a creatie -t test
 
-		public const int GROEPID = 37;
-		public const int GELIEERDEPERSOONID = 4002;
-		public const int GELIEERDEPERSOON2ID = 4003;
-		public const int GELIEERDEPERSOON3ID = 4004;
-		public const int MINAANTALGELPERS = 3;
-		public const int LID3ID = 9;
-		public const int CATEGORIEID = 9;
+		public const int GROEPID = 1;
+		public const int GELIEERDEPERSOONID = 1;
+		public const int GELIEERDEPERSOON2ID = 2;
+		public const int GELIEERDEPERSOON3ID = 3;
+		public const int GELIEERDEPERSOON4ID = 4;
+		public const int MINAANTALGELPERS = 4;
+		public const int LID3ID = 1;
+		public const int LID4ID = 2;
+		public const int CATEGORIEID = 1;
 		public const string CATEGORIECODE = "last";
-		public const int CATEGORIE2ID = 10;
-		public const int CATEGORIE3ID = 114;
+		public const int CATEGORIE2ID = 2;
+		public const int CATEGORIE3ID = 3;
 		public const int FUNCTIEID = 8;
 		public const int AANTALINCATEGORIE = 1;
-		public const int AFDELINGID = 13;
+		public const int AFDELINGID = 1;
 		public const int OFFICIELEAFDELINGID = 1;
-		public const int AFDELINGSJAARID = 13;
-		public const int AFDELING2ID = 14;
+		public const int AFDELINGSJAARID = 1;
+		public const int AFDELING2ID = 2;
 		public const int AFDELING2VAN = 2001;
 		public const int AFDELING2TOT = 1998;
-		public const int GROEPSWERKJAARID = 40;
+		public const int GROEPSWERKJAARID = 1;
 		public const string ZOEKNAAM = "Bosmans";
 		public const string GAV1 = "Yvonne";
 		public const string GAV2 = "Yvette";
-		public const int WATINGROEPID = 38;
+		public const int WATINGROEPID = 2;
 		#endregion
 
 		

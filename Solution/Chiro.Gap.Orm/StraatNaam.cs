@@ -23,7 +23,7 @@ namespace Chiro.Gap.Orm
 	/// Het feit dat er geen timestamp is, wil wel zeggen dat
 	/// 'concurrencygewijze' de laatste altijd zal winnen.    
 	/// </remarks>
-	public partial class Straat : IEfBasisEntiteit
+	public partial class StraatNaam : IEfBasisEntiteit
 	{
 		#region IBasisEntiteit Members
 		private bool _teVerwijderen = false;

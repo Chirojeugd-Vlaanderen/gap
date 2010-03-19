@@ -14,7 +14,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	/// <summary>
 	/// Interface voor een gegevenstoegangsobject voor Straten
 	/// </summary>
-	public interface IStratenDao : IDao<Straat>
+	public interface IStratenDao : IDao<StraatNaam>
 	{
 		/// <summary>
 		/// Haalt straat op op basis van naam en postnummer
@@ -22,7 +22,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="naam">Een straatnaam</param>
 		/// <param name="postNr">Een postnummer</param>
 		/// <returns>Relevante straat</returns>
-		Straat Ophalen(string naam, int postNr);
+		StraatNaam Ophalen(string naam, int postNr);
 
 		/// <summary>
 		/// Haalt alle straten op uit een gegeven <paramref name="postNr"/>, waarvan de naam begint
@@ -31,7 +31,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="naamBegin">Eerste letters van de te zoeken straatnamen</param>
 		/// <param name="postNr">Postnummer waarin te zoeken</param>
 		/// <returns>Gegevens van de gevonden straten</returns>
-		IList<Straat> MogelijkhedenOphalen(string naamBegin, int postNr);
+		IList<StraatNaam> MogelijkhedenOphalen(string naamBegin, int postNr);
 
 		/// <summary>
 		/// Haalt alle straten op uit een gegeven rij <paramref name="postNrs"/>, waarvan de naam begint
@@ -40,6 +40,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="naamBegin">Eerste letters van de te zoeken straatnamen</param>
 		/// <param name="postNrs">Postnummers waarin te zoeken</param>
 		/// <returns>Gegevens van de gevonden straten</returns>
-		IList<Straat> MogelijkhedenOphalen(string naamBegin, IEnumerable<int> postNrs);
+		IList<StraatNaam> MogelijkhedenOphalen(string naamBegin, IEnumerable<int> postNrs);
 	}
 }

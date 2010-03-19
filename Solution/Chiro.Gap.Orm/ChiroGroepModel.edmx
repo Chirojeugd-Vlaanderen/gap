@@ -7,8 +7,8 @@
     <Schema Namespace="ChiroGroepModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
         <EntityContainer Name="ChiroGroepModelStoreContainer">
           <EntitySet Name="Adres" EntityType="ChiroGroepModel.Store.Adres" store:Type="Tables" Schema="adr" />
-          <EntitySet Name="Straat" EntityType="ChiroGroepModel.Store.Straat" store:Type="Tables" Schema="adr" />
-          <EntitySet Name="Subgemeente" EntityType="ChiroGroepModel.Store.Subgemeente" store:Type="Tables" Schema="adr" />
+          <EntitySet Name="StraatNaam" EntityType="ChiroGroepModel.Store.StraatNaam" store:Type="Tables" Schema="adr" />
+          <EntitySet Name="WoonPlaats" EntityType="ChiroGroepModel.Store.WoonPlaats" store:Type="Tables" Schema="adr" />
           <EntitySet Name="Gav" EntityType="ChiroGroepModel.Store.Gav" store:Type="Tables" Schema="auth" />
           <EntitySet Name="GebruikersRecht" EntityType="ChiroGroepModel.Store.GebruikersRecht" store:Type="Tables" Schema="auth" />
           <EntitySet Name="Categorie" EntityType="ChiroGroepModel.Store.Categorie" store:Type="Tables" Schema="core" />
@@ -30,12 +30,12 @@
           <EntitySet Name="Persoon" EntityType="ChiroGroepModel.Store.Persoon" store:Type="Tables" Schema="pers" />
           <EntitySet Name="PersoonsAdres" EntityType="ChiroGroepModel.Store.PersoonsAdres" store:Type="Tables" Schema="pers" />
           <EntitySet Name="PersoonsCategorie" EntityType="ChiroGroepModel.Store.PersoonsCategorie" store:Type="Tables" Schema="pers" />
-          <AssociationSet Name="FK_Adres_Straat" Association="ChiroGroepModel.Store.FK_Adres_Straat">
-            <End Role="Straat" EntitySet="Straat" />
+          <AssociationSet Name="FK_Adres_StraatNaam" Association="ChiroGroepModel.Store.FK_Adres_StraatNaam">
+            <End Role="StraatNaam" EntitySet="StraatNaam" />
             <End Role="Adres" EntitySet="Adres" />
           </AssociationSet>
-          <AssociationSet Name="FK_Adres_Subgemeente" Association="ChiroGroepModel.Store.FK_Adres_Subgemeente">
-            <End Role="Subgemeente" EntitySet="Subgemeente" />
+          <AssociationSet Name="FK_Adres_WoonPlaats" Association="ChiroGroepModel.Store.FK_Adres_WoonPlaats">
+            <End Role="WoonPlaats" EntitySet="WoonPlaats" />
             <End Role="Adres" EntitySet="Adres" />
           </AssociationSet>
           <AssociationSet Name="FK_Afdeling_Groep" Association="ChiroGroepModel.Store.FK_Afdeling_Groep">
@@ -155,27 +155,31 @@
           <Property Name="HuisNr" Type="int" />
           <Property Name="PostCode" Type="varchar" Nullable="false" MaxLength="10" />
           <Property Name="AdresID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="StraatID" Type="int" Nullable="false" />
-          <Property Name="SubgemeenteID" Type="int" Nullable="false" />
+          <Property Name="StraatNaamID" Type="int" Nullable="false" />
+          <Property Name="WoonPlaatsID" Type="int" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
-        <EntityType Name="Straat">
+        <EntityType Name="StraatNaam">
           <Key>
-            <PropertyRef Name="StraatID" />
+            <PropertyRef Name="StraatNaamID" />
           </Key>
-          <Property Name="StraatID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="PostNr" Type="int" Nullable="false" />
+          <Property Name="StraatNaamID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PostNummer" Type="int" Nullable="false" />
           <Property Name="Naam" Type="varchar" Nullable="false" MaxLength="80" />
-          <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="TaalID" Type="int" Nullable="false" />
+          <Property Name="CrabSubstraatID" Type="int" />
+          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
-        <EntityType Name="Subgemeente">
+        <EntityType Name="WoonPlaats">
           <Key>
-            <PropertyRef Name="SubgemeenteID" />
+            <PropertyRef Name="WoonPlaatsID" />
           </Key>
-          <Property Name="SubgemeenteID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="PostNr" Type="int" Nullable="false" />
+          <Property Name="WoonPlaatsID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PostNummer" Type="int" Nullable="false" />
           <Property Name="Naam" Type="varchar" Nullable="false" MaxLength="80" />
-          <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="TaalID" Type="int" Nullable="false" />
+          <Property Name="CrabPostKantonID" Type="int" />
+          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Gav">
           <Key>
@@ -392,27 +396,27 @@
           <Property Name="GelieerdePersoonID" Type="int" Nullable="false" />
           <Property Name="CategorieID" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Adres_Straat">
-          <End Role="Straat" Type="ChiroGroepModel.Store.Straat" Multiplicity="1" />
+        <Association Name="FK_Adres_StraatNaam">
+          <End Role="StraatNaam" Type="ChiroGroepModel.Store.StraatNaam" Multiplicity="1" />
           <End Role="Adres" Type="ChiroGroepModel.Store.Adres" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Straat">
-              <PropertyRef Name="StraatID" />
+            <Principal Role="StraatNaam">
+              <PropertyRef Name="StraatNaamID" />
             </Principal>
             <Dependent Role="Adres">
-              <PropertyRef Name="StraatID" />
+              <PropertyRef Name="StraatNaamID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Adres_Subgemeente">
-          <End Role="Subgemeente" Type="ChiroGroepModel.Store.Subgemeente" Multiplicity="1" />
+        <Association Name="FK_Adres_WoonPlaats">
+          <End Role="WoonPlaats" Type="ChiroGroepModel.Store.WoonPlaats" Multiplicity="1" />
           <End Role="Adres" Type="ChiroGroepModel.Store.Adres" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Subgemeente">
-              <PropertyRef Name="SubgemeenteID" />
+            <Principal Role="WoonPlaats">
+              <PropertyRef Name="WoonPlaatsID" />
             </Principal>
             <Dependent Role="Adres">
-              <PropertyRef Name="SubgemeenteID" />
+              <PropertyRef Name="WoonPlaatsID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -762,15 +766,7 @@
             <End Role="Persoon" EntitySet="Persoon" />
             <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" /></AssociationSet>
           <EntitySet Name="Adres" EntityType="ChiroGroepModel.Adres" />
-          <EntitySet Name="Straat" EntityType="ChiroGroepModel.Straat" />
-          <EntitySet Name="Subgemeente" EntityType="ChiroGroepModel.Subgemeente" />
           <EntitySet Name="PersoonsAdres" EntityType="ChiroGroepModel.PersoonsAdres" />
-          <AssociationSet Name="FK_Adres_Straat" Association="ChiroGroepModel.FK_Adres_Straat">
-            <End Role="Straat" EntitySet="Straat" />
-            <End Role="Adres" EntitySet="Adres" /></AssociationSet>
-          <AssociationSet Name="FK_Adres_Subgemeente" Association="ChiroGroepModel.FK_Adres_Subgemeente">
-            <End Role="Subgemeente" EntitySet="Subgemeente" />
-            <End Role="Adres" EntitySet="Adres" /></AssociationSet>
           <AssociationSet Name="FK_PersoonsAdres_Adres" Association="ChiroGroepModel.FK_PersoonsAdres_Adres">
             <End Role="Adres" EntitySet="Adres" />
             <End Role="PersoonsAdres" EntitySet="PersoonsAdres" /></AssociationSet>
@@ -836,7 +832,15 @@
             <End Role="Functie" EntitySet="Functie" /></AssociationSet>
           <AssociationSet Name="LidFunctie" Association="ChiroGroepModel.LidFunctie">
             <End Role="Functie" EntitySet="Functie" />
-            <End Role="Lid" EntitySet="Lid" /></AssociationSet></EntityContainer>
+            <End Role="Lid" EntitySet="Lid" /></AssociationSet>
+          <EntitySet Name="StraatNaam" EntityType="ChiroGroepModel.StraatNaam" />
+          <EntitySet Name="WoonPlaats" EntityType="ChiroGroepModel.WoonPlaats" />
+          <AssociationSet Name="FK_Adres_StraatNaam" Association="ChiroGroepModel.FK_Adres_StraatNaam">
+            <End Role="StraatNaam" EntitySet="StraatNaam" />
+            <End Role="Adres" EntitySet="Adres" /></AssociationSet>
+          <AssociationSet Name="FK_Adres_WoonPlaats" Association="ChiroGroepModel.FK_Adres_WoonPlaats">
+            <End Role="WoonPlaats" EntitySet="WoonPlaats" />
+            <End Role="Adres" EntitySet="Adres" /></AssociationSet></EntityContainer>
         <EntityType Name="ChiroGroep" BaseType="ChiroGroepModel.Groep">
           <Property Name="Plaats" Type="String" MaxLength="60" FixedLength="false" Nullable="true" /></EntityType>
         <EntityType Name="Groep">
@@ -910,25 +914,9 @@
           <Property Name="PostCode" Type="String" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Versie" Type="Binary" Nullable="true" MaxLength="8" FixedLength="true" ConcurrencyMode="Fixed" />
-          <NavigationProperty Name="Straat" Relationship="ChiroGroepModel.FK_Adres_Straat" FromRole="Adres" ToRole="Straat" />
-          <NavigationProperty Name="Subgemeente" Relationship="ChiroGroepModel.FK_Adres_Subgemeente" FromRole="Adres" ToRole="Subgemeente" />
-          <NavigationProperty Name="PersoonsAdres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Adres" FromRole="Adres" ToRole="PersoonsAdres" /></EntityType>
-        <EntityType Name="Straat">
-          <Key>
-            <PropertyRef Name="ID" /></Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="PostNr" Type="Int32" Nullable="false" />
-          <Property Name="Naam" Type="String" Nullable="false" />
-          <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_Adres_Straat" FromRole="Straat" ToRole="Adres" />
-          <Property Name="Versie" Type="Binary" Nullable="true" /></EntityType>
-        <EntityType Name="Subgemeente">
-          <Key>
-            <PropertyRef Name="ID" /></Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="PostNr" Type="Int32" Nullable="false" />
-          <Property Name="Naam" Type="String" Nullable="false" />
-          <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_Adres_Subgemeente" FromRole="Subgemeente" ToRole="Adres" />
-          <Property Name="Versie" Type="Binary" Nullable="true" /></EntityType>
+          <NavigationProperty Name="PersoonsAdres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Adres" FromRole="Adres" ToRole="PersoonsAdres" />
+          <NavigationProperty Name="StraatNaam" Relationship="ChiroGroepModel.FK_Adres_StraatNaam" FromRole="Adres" ToRole="StraatNaam" />
+          <NavigationProperty Name="WoonPlaats" Relationship="ChiroGroepModel.FK_Adres_WoonPlaats" FromRole="Adres" ToRole="WoonPlaats" /></EntityType>
         <EntityType Name="PersoonsAdres">
           <Key>
             <PropertyRef Name="ID" /></Key>
@@ -938,12 +926,6 @@
           <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Adres" FromRole="PersoonsAdres" ToRole="Adres" />
           <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_PersoonsAdres_Persoon" FromRole="PersoonsAdres" ToRole="Persoon" />
           <Property Name="ID" Type="Int32" Nullable="false" /></EntityType>
-        <Association Name="FK_Adres_Straat">
-          <End Type="ChiroGroepModel.Straat" Role="Straat" Multiplicity="1" />
-          <End Type="ChiroGroepModel.Adres" Role="Adres" Multiplicity="*" /></Association>
-        <Association Name="FK_Adres_Subgemeente">
-          <End Type="ChiroGroepModel.Subgemeente" Role="Subgemeente" Multiplicity="1" />
-          <End Type="ChiroGroepModel.Adres" Role="Adres" Multiplicity="*" /></Association>
         <Association Name="FK_PersoonsAdres_Adres">
           <End Type="ChiroGroepModel.Adres" Role="Adres" Multiplicity="1" />
           <End Type="ChiroGroepModel.PersoonsAdres" Role="PersoonsAdres" Multiplicity="*" />
@@ -1113,7 +1095,33 @@
           <End Type="ChiroGroepModel.Functie" Role="Functie" Multiplicity="*" /></Association>
         <Association Name="LidFunctie">
           <End Type="ChiroGroepModel.Functie" Role="Functie" Multiplicity="*" />
-          <End Type="ChiroGroepModel.Lid" Role="Lid" Multiplicity="*" /></Association></Schema>
+          <End Type="ChiroGroepModel.Lid" Role="Lid" Multiplicity="*" /></Association>
+        <EntityType Name="StraatNaam">
+          <Key>
+            <PropertyRef Name="ID" /></Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="PostNummer" Type="Int32" Nullable="false" />
+          <Property Name="Naam" Type="String" Nullable="false" />
+          <Property Name="TaalID" Type="Int32" Nullable="false" />
+          <Property Name="CrabSubstraatID" Type="Int32" Nullable="true" />
+          <Property Name="Versie" Type="Binary" Nullable="false" />
+          <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_Adres_StraatNaam" FromRole="StraatNaam" ToRole="Adres" /></EntityType>
+        <EntityType Name="WoonPlaats">
+          <Key>
+            <PropertyRef Name="ID" /></Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="PostNummer" Type="Int32" Nullable="false" />
+          <Property Name="Naam" Type="String" Nullable="false" />
+          <Property Name="TaalID" Type="Int32" Nullable="false" />
+          <Property Name="CrabPostKantonID" Type="Int32" Nullable="true" />
+          <Property Name="Versie" Type="Binary" Nullable="false" />
+          <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_Adres_WoonPlaats" FromRole="WoonPlaats" ToRole="Adres" /></EntityType>
+        <Association Name="FK_Adres_StraatNaam">
+          <End Type="ChiroGroepModel.StraatNaam" Role="StraatNaam" Multiplicity="1" />
+          <End Type="ChiroGroepModel.Adres" Role="Adres" Multiplicity="*" /></Association>
+        <Association Name="FK_Adres_WoonPlaats">
+          <End Type="ChiroGroepModel.WoonPlaats" Role="WoonPlaats" Multiplicity="1" />
+          <End Type="ChiroGroepModel.Adres" Role="Adres" Multiplicity="*" /></Association></Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1190,20 +1198,6 @@
                 <ScalarProperty Name="HuisNr" ColumnName="HuisNr" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="Bus" ColumnName="Bus" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <EntitySetMapping Name="Straat">
-            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Straat)">
-              <MappingFragment StoreEntitySet="Straat">
-                <ScalarProperty Name="Versie" ColumnName="Versie" />
-                <ScalarProperty Name="Naam" ColumnName="Naam" />
-                <ScalarProperty Name="PostNr" ColumnName="PostNr" />
-                <ScalarProperty Name="ID" ColumnName="StraatID" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <EntitySetMapping Name="Subgemeente">
-            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Subgemeente)">
-              <MappingFragment StoreEntitySet="Subgemeente">
-                <ScalarProperty Name="Versie" ColumnName="Versie" />
-                <ScalarProperty Name="Naam" ColumnName="Naam" />
-                <ScalarProperty Name="PostNr" ColumnName="PostNr" />
-                <ScalarProperty Name="ID" ColumnName="SubgemeenteID" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="PersoonsAdres">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.PersoonsAdres)">
               <MappingFragment StoreEntitySet="PersoonsAdres">
@@ -1212,16 +1206,6 @@
                 <ScalarProperty Name="AdresTypeInt" ColumnName="AdresTypeID" />
                 <ScalarProperty Name="Opmerking" ColumnName="Opmerking" />
               </MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <AssociationSetMapping Name="FK_Adres_Straat" TypeName="ChiroGroepModel.FK_Adres_Straat" StoreEntitySet="Adres">
-            <EndProperty Name="Adres">
-              <ScalarProperty Name="ID" ColumnName="AdresID" /></EndProperty>
-            <EndProperty Name="Straat">
-              <ScalarProperty Name="ID" ColumnName="StraatID" /></EndProperty></AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Adres_Subgemeente" TypeName="ChiroGroepModel.FK_Adres_Subgemeente" StoreEntitySet="Adres">
-            <EndProperty Name="Adres">
-              <ScalarProperty Name="ID" ColumnName="AdresID" /></EndProperty>
-            <EndProperty Name="Subgemeente">
-              <ScalarProperty Name="ID" ColumnName="SubgemeenteID" /></EndProperty></AssociationSetMapping>
           <AssociationSetMapping Name="FK_PersoonsAdres_Adres" TypeName="ChiroGroepModel.FK_PersoonsAdres_Adres" StoreEntitySet="PersoonsAdres">
             <EndProperty Name="PersoonsAdres">
               <ScalarProperty Name="ID" ColumnName="PersoonsAdresID" /></EndProperty>
@@ -1430,7 +1414,35 @@
             <EndProperty Name="Lid">
               <ScalarProperty Name="ID" ColumnName="LidID" /></EndProperty>
             <EndProperty Name="Functie">
-              <ScalarProperty Name="ID" ColumnName="FunctieID" /></EndProperty></AssociationSetMapping></EntityContainerMapping>
+              <ScalarProperty Name="ID" ColumnName="FunctieID" /></EndProperty></AssociationSetMapping>
+          <EntitySetMapping Name="StraatNaam">
+            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.StraatNaam)">
+              <MappingFragment StoreEntitySet="StraatNaam">
+                <ScalarProperty Name="Versie" ColumnName="Versie" />
+                <ScalarProperty Name="CrabSubstraatID" ColumnName="CrabSubstraatID" />
+                <ScalarProperty Name="TaalID" ColumnName="TaalID" />
+                <ScalarProperty Name="Naam" ColumnName="Naam" />
+                <ScalarProperty Name="PostNummer" ColumnName="PostNummer" />
+                <ScalarProperty Name="ID" ColumnName="StraatNaamID" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="WoonPlaats">
+            <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.WoonPlaats)">
+              <MappingFragment StoreEntitySet="WoonPlaats">
+                <ScalarProperty Name="Versie" ColumnName="Versie" />
+                <ScalarProperty Name="CrabPostKantonID" ColumnName="CrabPostKantonID" />
+                <ScalarProperty Name="TaalID" ColumnName="TaalID" />
+                <ScalarProperty Name="Naam" ColumnName="Naam" />
+                <ScalarProperty Name="PostNummer" ColumnName="PostNummer" />
+                <ScalarProperty Name="ID" ColumnName="WoonPlaatsID" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <AssociationSetMapping Name="FK_Adres_StraatNaam" TypeName="ChiroGroepModel.FK_Adres_StraatNaam" StoreEntitySet="Adres">
+            <EndProperty Name="Adres">
+              <ScalarProperty Name="ID" ColumnName="AdresID" /></EndProperty>
+            <EndProperty Name="StraatNaam">
+              <ScalarProperty Name="ID" ColumnName="StraatNaamID" /></EndProperty></AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Adres_WoonPlaats" TypeName="ChiroGroepModel.FK_Adres_WoonPlaats" StoreEntitySet="Adres">
+            <EndProperty Name="Adres">
+              <ScalarProperty Name="ID" ColumnName="AdresID" /></EndProperty>
+            <EndProperty Name="WoonPlaats">
+              <ScalarProperty Name="ID" ColumnName="WoonPlaatsID" /></EndProperty></AssociationSetMapping></EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
@@ -1459,8 +1471,8 @@
         <EntityTypeShape EntityType="ChiroGroepModel.CommunicatieVorm" Width="2.5" PointX="7.125" PointY="0.5" Height="2.41404296875" />
         <EntityTypeShape EntityType="ChiroGroepModel.GelieerdePersoon" Width="1.5" PointX="4.75" PointY="2.625" Height="2.2496956380208326" />
         <AssociationConnector Association="ChiroGroepModel.FK_GelieerdePersoon_Groep" >
-          <ConnectorPoint PointX="3.75" PointY="6.18579002766927" />
-          <ConnectorPoint PointX="5.2812475" PointY="6.18579002766927" />
+          <ConnectorPoint PointX="3.75" PointY="6.1736818298339848" />
+          <ConnectorPoint PointX="5.2812475" PointY="6.1736818298339848" />
           <ConnectorPoint PointX="5.2812475" PointY="4.8746956380208326" />
           </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" >
@@ -1473,22 +1485,11 @@
           <ConnectorPoint PointX="8.2916666666666661" PointY="3.1327929687499996" />
           <ConnectorPoint PointX="6.25" PointY="3.1327929687499996" /></AssociationConnector>
         <EntityTypeShape EntityType="ChiroGroepModel.Adres" Width="1.5" PointX="11" PointY="7" Height="2.2496956380208326" />
-        <EntityTypeShape EntityType="ChiroGroepModel.Straat" Width="1.5" PointX="13.5" PointY="7.5" Height="1.7566536458333335" />
-        <EntityTypeShape EntityType="ChiroGroepModel.Subgemeente" Width="1.5" PointX="11" PointY="4.375" Height="1.7566536458333335" />
         <EntityTypeShape EntityType="ChiroGroepModel.PersoonsAdres" Width="1.5" PointX="13.5" PointY="4.375" Height="1.9210009765624996" />
-        <AssociationConnector Association="ChiroGroepModel.FK_Adres_Straat" >
-          <ConnectorPoint PointX="13.5" PointY="8.3748478190104159" />
-          <ConnectorPoint PointX="12.5" PointY="8.3748478190104159" />
-          </AssociationConnector>
-        <AssociationConnector Association="ChiroGroepModel.FK_Adres_Subgemeente" >
-          <ConnectorPoint PointX="11.75" PointY="6.1316536458333335" />
-          <ConnectorPoint PointX="11.75" PointY="7" />
-          </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_Adres" >
-          <ConnectorPoint PointX="12.5" PointY="8.1248478190104159" />
-          <ConnectorPoint PointX="12.875" PointY="8.1248478190104159" />
-          <ConnectorPoint PointX="12.875" PointY="5.33550048828125" />
-          <ConnectorPoint PointX="13.5" PointY="5.33550048828125" />
+          <ConnectorPoint PointX="12.5" PointY="7.5312499999999991" />
+          <ConnectorPoint PointX="13.53125" PointY="7.5312499999999991" />
+          <ConnectorPoint PointX="13.53125" PointY="6.2960009765625" />
           </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_GelieerdePersoon" >
           <ConnectorPoint PointX="5.875" PointY="6.582021484375" />
@@ -1521,34 +1522,43 @@
           </AssociationConnector>
         <EntityTypeShape EntityType="ChiroGroepModel.Afdeling" Width="1.5" PointX="8.125" PointY="9.375" Height="1.9210009765625" />
         <EntityTypeShape EntityType="ChiroGroepModel.AfdelingsJaar" Width="1.5" PointX="13.375" PointY="10.25" Height="2.085348307291667" />
-        <EntityTypeShape EntityType="ChiroGroepModel.OfficieleAfdeling" Width="1.5" PointX="11.125" PointY="9.625" Height="1.592306315104167" />
+        <EntityTypeShape EntityType="ChiroGroepModel.OfficieleAfdeling" Width="1.5" PointX="13.625" PointY="8.125" Height="1.592306315104167" />
         <AssociationConnector Association="ChiroGroepModel.FK_Afdeling_Groep" >
-          <ConnectorPoint PointX="3.75" PointY="7.2223636596679688" />
-          <ConnectorPoint PointX="5.791666666666667" PointY="7.2223636596679679" />
-          <ConnectorPoint PointX="5.958333333333333" PointY="7.2223636596679688" />
-          <ConnectorPoint PointX="8.875" PointY="7.2223636596679688" />
-          <ConnectorPoint PointX="8.875" PointY="9.375" />
-          </AssociationConnector>
+          <ConnectorPoint PointX="3.75" PointY="5.46875" />
+          <ConnectorPoint PointX="5.1979141666666671" PointY="5.4687499999999991" />
+          <ConnectorPoint PointX="5.3645808333333331" PointY="5.46875" />
+          <ConnectorPoint PointX="5.791666666666667" PointY="5.4687499999999991" />
+          <ConnectorPoint PointX="5.958333333333333" PointY="5.46875" />
+          <ConnectorPoint PointX="8.40625" PointY="5.46875" />
+          <ConnectorPoint PointX="8.40625" PointY="9.375" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar" >
           <ConnectorPoint PointX="4" PointY="11.1710009765625" />
-          <ConnectorPoint PointX="4" PointY="11.750430842208312" />
-          <ConnectorPoint PointX="4.822916666666667" PointY="11.750430842208312" />
-          <ConnectorPoint PointX="4.989583333333333" PointY="11.750430842208312" />
-          <ConnectorPoint PointX="6.010416666666667" PointY="11.750430842208312" />
-          <ConnectorPoint PointX="6.177083333333333" PointY="11.750430842208312" />
-          <ConnectorPoint PointX="6.3697936666666672" PointY="11.750430842208312" />
-          <ConnectorPoint PointX="6.5364603333333333" PointY="11.750430842208312" />
-          <ConnectorPoint PointX="13.375" PointY="11.750430842208312" /></AssociationConnector>
+          <ConnectorPoint PointX="4" PointY="12.103661076955726" />
+          <ConnectorPoint PointX="4.822916666666667" PointY="12.103661076955726" />
+          <ConnectorPoint PointX="4.989583333333333" PointY="12.103661076955726" />
+          <ConnectorPoint PointX="6.010416666666667" PointY="12.103661076955726" />
+          <ConnectorPoint PointX="6.177083333333333" PointY="12.103661076955726" />
+          <ConnectorPoint PointX="6.3697936666666672" PointY="12.103661076955726" />
+          <ConnectorPoint PointX="6.5364603333333333" PointY="12.103661076955726" />
+          <ConnectorPoint PointX="8.7916666666666661" PointY="12.103661076955726" />
+          <ConnectorPoint PointX="8.9583333333333339" PointY="12.103661076955726" />
+          <ConnectorPoint PointX="10.291666666666666" PointY="12.103661076955726" />
+          <ConnectorPoint PointX="10.458333333333334" PointY="12.103661076955726" />
+          <ConnectorPoint PointX="13.375" PointY="12.103661076955726" />
+          </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_Lid_GroepsWerkjaar1" >
           <ConnectorPoint PointX="4.75" PointY="10.876511230468751" />
           <ConnectorPoint PointX="5.5" PointY="10.876511230468751" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_Afdeling" >
-          <ConnectorPoint PointX="9.625" PointY="9.46875" />
-          <ConnectorPoint PointX="14.125" PointY="9.46875" />
-          <ConnectorPoint PointX="14.125" PointY="10.25" /></AssociationConnector>
+          <ConnectorPoint PointX="8.875" PointY="11.2960009765625" />
+          <ConnectorPoint PointX="8.875" PointY="12.497278188217447" />
+          <ConnectorPoint PointX="10.291666666666666" PointY="12.497278188217447" />
+          <ConnectorPoint PointX="10.458333333333334" PointY="12.497278188217447" />
+          <ConnectorPoint PointX="13.375" PointY="12.497278188217447" />
+          </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling" >
-          <ConnectorPoint PointX="12.625" PointY="10.815826822916666" />
-          <ConnectorPoint PointX="13.375" PointY="10.815826822916666" /></AssociationConnector>
+          <ConnectorPoint PointX="14.25" PointY="9.7173063151041674" />
+          <ConnectorPoint PointX="14.25" PointY="10.25" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_Lid_GelieerdePersoon1" >
           <ConnectorPoint PointX="5.84375" PointY="7.41404296875" />
           <ConnectorPoint PointX="5.84375" PointY="9.125" /></AssociationConnector>
@@ -1614,9 +1624,10 @@
           <ConnectorPoint PointX="5.84375" PointY="7.2496956380208326" />
           <ConnectorPoint PointX="5.84375" PointY="9.125" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.LeidingInAfdelingsJaar">
-          <ConnectorPoint PointX="13.375" PointY="12.605779185161453" />
-          <ConnectorPoint PointX="10.375" PointY="12.605779185161453" />
-          <ConnectorPoint PointX="10.375" PointY="13.125" /></AssociationConnector>
+          <ConnectorPoint PointX="13.375" PointY="11.660481196029947" />
+          <ConnectorPoint PointX="10.375" PointY="11.660481196029947" />
+          <ConnectorPoint PointX="10.375" PointY="13.125" />
+          </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_Persoon">
           <ConnectorPoint PointX="14.5" PointY="3.4533902994791656" />
           <ConnectorPoint PointX="14.5" PointY="4.375" />
@@ -1649,6 +1660,15 @@
         <AssociationConnector Association="ChiroGroepModel.LidFunctie" >
           <ConnectorPoint PointX="4.90625" PointY="13.25" />
           <ConnectorPoint PointX="4.90625" PointY="11.38627197265625" />
-          <ConnectorPoint PointX="5.5" PointY="11.38627197265625" /></AssociationConnector></Diagram></edmx:Diagrams>
+          <ConnectorPoint PointX="5.5" PointY="11.38627197265625" /></AssociationConnector>
+        <EntityTypeShape EntityType="ChiroGroepModel.StraatNaam" Width="1.5" PointX="8.75" PointY="5.875" Height="2.0853483072916674" />
+        <EntityTypeShape EntityType="ChiroGroepModel.WoonPlaats" Width="1.5" PointX="11" PointY="3.625" Height="2.0853483072916674" />
+        <AssociationConnector Association="ChiroGroepModel.FK_Adres_StraatNaam" >
+          <ConnectorPoint PointX="10.25" PointY="7.4801741536458337" />
+          <ConnectorPoint PointX="11" PointY="7.4801741536458337" /></AssociationConnector>
+        <AssociationConnector Association="ChiroGroepModel.FK_Adres_WoonPlaats" >
+          <ConnectorPoint PointX="11.75" PointY="5.7103483072916674" />
+          <ConnectorPoint PointX="11.75" PointY="7" />
+          </AssociationConnector></Diagram></edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

@@ -116,7 +116,7 @@ namespace Chiro.Gap.Data.Ef
 			{
 				db.Persoon.MergeOption = MergeOption.NoTracking;
 
-				return (from foo in db.Persoon.Include("PersoonsAdres.Adres.Straat").Include("PersoonsAdres.Adres.Subgemeente")
+				return (from foo in db.Persoon.Include(p => p.PersoonsAdres.First().Adres.StraatNaam).Include(p => p.PersoonsAdres.First().Adres.WoonPlaats)
 						where foo.GelieerdePersoon.Any(bar => bar.ID == gelieerdePersoonID)
 						select foo).FirstOrDefault();
 			}

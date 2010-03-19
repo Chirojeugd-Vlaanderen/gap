@@ -439,7 +439,7 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IEnumerable<GemeenteInfo> GemeentesOphalen()
 		{
-			return Mapper.Map<IList<Subgemeente>, IList<GemeenteInfo>>(_adresMgr.GemeentesOphalen());
+			return Mapper.Map<IEnumerable<WoonPlaats>, IList<GemeenteInfo>>(_adresMgr.GemeentesOphalen());
 		}
 
 		/// <summary>
@@ -453,7 +453,7 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IEnumerable<StraatInfo> StratenOphalen(String straatBegin, int postNr)
 		{
-			return Mapper.Map<IList<Straat>, IList<StraatInfo>>(_adresMgr.StratenOphalen(straatBegin, postNr));
+			return Mapper.Map<IList<StraatNaam>, IList<StraatInfo>>(_adresMgr.StratenOphalen(straatBegin, postNr));
 		}
 
 		/// <summary>
@@ -469,7 +469,7 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IEnumerable<StraatInfo> StratenOphalenMeerderePostNrs(String straatBegin, IEnumerable<int> postNrs)
 		{
-			return Mapper.Map<IList<Straat>, IList<StraatInfo>>(_adresMgr.StratenOphalen(straatBegin, postNrs));
+			return Mapper.Map<IList<StraatNaam>, IList<StraatInfo>>(_adresMgr.StratenOphalen(straatBegin, postNrs));
 		}
 		#endregion
 	}

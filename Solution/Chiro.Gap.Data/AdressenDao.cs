@@ -31,8 +31,8 @@ namespace Chiro.Gap.Data.Ef
 		{
 			connectedEntities = new Expression<Func<Adres, object>>[3] 
             { 
-				e => e.Straat.WithoutUpdate(),
-				e => e.Subgemeente.WithoutUpdate(),
+				e => e.StraatNaam.WithoutUpdate(),
+				e => e.WoonPlaats.WithoutUpdate(),
 				e => e.PersoonsAdres.First().Persoon.WithoutUpdate() 
             };
 		}
@@ -55,10 +55,10 @@ namespace Chiro.Gap.Data.Ef
 			// bijcreeren).
 			// Voorlopig niet dus.
 
-			Debug.Assert(adr.Straat != null);
-			Debug.Assert(adr.Subgemeente != null);
-			Debug.Assert(adr.Straat.ID != 0);
-			Debug.Assert(adr.Subgemeente.ID != 0);
+			Debug.Assert(adr.StraatNaam != null);
+			Debug.Assert(adr.WoonPlaats != null);
+			Debug.Assert(adr.StraatNaam.ID != 0);
+			Debug.Assert(adr.WoonPlaats.ID != 0);
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
@@ -66,8 +66,8 @@ namespace Chiro.Gap.Data.Ef
 
 				Adres geattachtAdres = db.AttachObjectGraph(
 									adr,
-									e => e.Straat.WithoutUpdate(),
-									e => e.Subgemeente.WithoutUpdate(),
+									e => e.StraatNaam.WithoutUpdate(),
+									e => e.WoonPlaats.WithoutUpdate(),
 									e => e.PersoonsAdres.First().Adres,
 									e => e.PersoonsAdres.First().Persoon.WithoutUpdate());
 
@@ -116,8 +116,8 @@ namespace Chiro.Gap.Data.Ef
 				// los van al de rest.)
 
 				var query
-					= db.PersoonsAdres.Include("Adres.Straat")
-					.Include("Adres.Subgemeente")
+					= db.PersoonsAdres.Include(pa=>pa.Adres.StraatNaam)
+					.Include(pa=>pa.Adres.WoonPlaats)
 					.Include("Persoon")
 					.Where(pera => pera.Adres.ID == adresID);
 
@@ -190,8 +190,8 @@ namespace Chiro.Gap.Data.Ef
 
 				resultaat = (
 					from Adres a in adressentabel
-					where (a.Straat.Naam == straatNaam && a.Subgemeente.Naam == gemeenteNaam
-					&& a.Straat.PostNr == postNr
+					where (a.StraatNaam.Naam == straatNaam && a.WoonPlaats.Naam == gemeenteNaam
+					&& a.StraatNaam.PostNummer == postNr
 					&& a.HuisNr == huisNr && a.Bus == bus && a.PostCode == postCode)
 					select a).FirstOrDefault();
 
@@ -204,8 +204,8 @@ namespace Chiro.Gap.Data.Ef
 				{
 					// Dit is uiteraard enkel zinvol als er iets gevonden is.
 
-					resultaat.StraatReference.Load();
-					resultaat.SubgemeenteReference.Load();
+					resultaat.StraatNaamReference.Load();
+					resultaat.WoonPlaatsReference.Load();
 
 					if (metBewoners)
 					{

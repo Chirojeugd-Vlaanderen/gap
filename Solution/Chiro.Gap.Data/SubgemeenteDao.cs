@@ -17,7 +17,7 @@ namespace Chiro.Gap.Data.Ef
 	/// <summary>
 	/// Gegevenstoegangsobject voor subgemeenten
 	/// </summary>
-	public class SubgemeenteDao : Dao<Subgemeente, ChiroGroepEntities>, ISubgemeenteDao
+	public class SubgemeenteDao : Dao<WoonPlaats, ChiroGroepEntities>, ISubgemeenteDao
 	{
 		/// <summary>
 		/// Haalt de subgemeente op op basis van een postnummer en een naam
@@ -25,16 +25,16 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="naam">De naam van de (sub)gemeente</param>
 		/// <param name="postNr">Het postnummer van de (sub)gemeente</param>
 		/// <returns>De subgemeente die aan de criteria voldoet</returns>
-		public Subgemeente Ophalen(string naam, int postNr)
+		public WoonPlaats Ophalen(string naam, int postNr)
 		{
-			Subgemeente resultaat = null;
+			WoonPlaats resultaat = null;
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
 				resultaat = (
-					from Subgemeente s in db.Subgemeente
-					where s.Naam == naam && s.PostNr == postNr
-					select s).FirstOrDefault<Subgemeente>();
+					from WoonPlaats s in db.WoonPlaats
+					where s.Naam == naam && s.PostNummer == postNr
+					select s).FirstOrDefault<WoonPlaats>();
 
 				if (resultaat != null)
 				{

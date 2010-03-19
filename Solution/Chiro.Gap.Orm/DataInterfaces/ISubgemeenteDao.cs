@@ -14,7 +14,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	/// <summary>
 	/// Interface voor een gegevenstoegangsobject voor Subgemeenten
 	/// </summary>
-	public interface ISubgemeenteDao : IDao<Subgemeente>
+	public interface ISubgemeenteDao : IDao<WoonPlaats>
 	{
 		/// <summary>
 		/// Haalt subgemeente op op basis van naam en postnummer
@@ -22,6 +22,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="naam">Naam van de subgemeente</param>
 		/// <param name="postNr">Postnummer van de subgemeente</param>
 		/// <returns>Relevante subgemeente</returns>
-		Subgemeente Ophalen(string naam, int postNr);
+		WoonPlaats Ophalen(string naam, int postNr);
 	}
 }

@@ -17,7 +17,7 @@ namespace Chiro.Gap.ServiceContracts
 	public class StraatInfo
 	{
 		[DataMember]
-		public int PostNr { get; set; }
+		public int PostNummer { get; set; }
 
 		[DataMember]
 		public String Naam { get; set; }

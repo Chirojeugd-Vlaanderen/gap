@@ -246,7 +246,7 @@ namespace Chiro.Gap.Data.Ef
 			{
 				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 				return (
-					from gp in db.GelieerdePersoon.Include("Persoon").Include("Communicatie.CommunicatieType").Include("Persoon.PersoonsAdres.Adres.Straat").Include("Persoon.PersoonsAdres.Adres.Subgemeente").Include("Groep").Include("Categorie").Include("Lid.GroepsWerkJaar")
+					from gp in db.GelieerdePersoon.Include("Persoon").Include("Communicatie.CommunicatieType").Include(gp => gp.Persoon.PersoonsAdres.First().Adres.StraatNaam).Include(gp => gp.Persoon.PersoonsAdres.First().Adres.WoonPlaats).Include("Groep").Include("Categorie").Include("Lid.GroepsWerkJaar")
 					where gp.ID == gelieerdePersoonID
 					select gp).FirstOrDefault();
 			}
@@ -300,7 +300,7 @@ namespace Chiro.Gap.Data.Ef
 				return (
 					from gp in db.GelieerdePersoon.Include("Persoon")
 					.Include("Communicatie")
-					.Include("Persoon.PersoonsAdres.Adres.Straat")
+					.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.StraatNaam)
 					where (gp.Persoon.VoorNaam + " " + gp.Persoon.Naam + " " + gp.Persoon.VoorNaam)
 					.Contains(zoekStringNaam)
 					select gp).ToList();

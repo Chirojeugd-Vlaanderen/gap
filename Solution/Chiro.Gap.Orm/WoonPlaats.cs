@@ -23,7 +23,7 @@ namespace Chiro.Gap.Orm
 	/// Het feit dat er geen timestamp is, wil wel zeggen dat
 	/// 'concurrencygewijze' de laatste altijd zal winnen.    
 	/// </remarks>
-	public partial class Subgemeente : IEfBasisEntiteit
+	public partial class WoonPlaats : IEfBasisEntiteit
 	{
 		#region IBasisEntiteit Members
 

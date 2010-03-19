@@ -80,8 +80,8 @@
     <% foreach (PersoonsAdres pa in ViewData.Model.HuidigePersoon.Persoon.PersoonsAdres)
        { %>
        <li>
-            <%=Html.Encode(String.Format("{0} {1}", pa.Adres.Straat.Naam, pa.Adres.HuisNr))%>,
-            <%=Html.Encode(String.Format("{0}-{1}-{2} {3} ({4}) ", pa.Adres.Straat.PostNr, pa.Adres.PostCode, pa.Adres.Subgemeente.PostNr, pa.Adres.Subgemeente.Naam, pa.AdresType))%>
+            <%=Html.Encode(String.Format("{0} {1}", pa.Adres.StraatNaam.Naam, pa.Adres.HuisNr))%>,
+            <%=Html.Encode(String.Format("{0}-{1}-{2} {3} ({4}) ", pa.Adres.StraatNaam.PostNummer, pa.Adres.PostCode, pa.Adres.WoonPlaats.PostNummer, pa.Adres.WoonPlaats.Naam, pa.AdresType))%>
             <%=Html.ActionLink( "[verhuizen]", "Verhuizen", new {id = pa.Adres.ID, aanvragerID = ViewData.Model.HuidigePersoon.ID} ) %>
             <%=Html.ActionLink("[verwijderen]", "AdresVerwijderen", new { id = pa.Adres.ID, gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%>
         </li>

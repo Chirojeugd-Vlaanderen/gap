@@ -12,8 +12,6 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GelieerdePersoon_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Groep), "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.GelieerdePersoon))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_CommunicatieVorm_GelieerdePersoon", "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.GelieerdePersoon), "CommunicatieVorm", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.CommunicatieVorm))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GelieerdePersoon_Persoon", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Persoon), "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.GelieerdePersoon))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_Straat", "Straat", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Straat), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Adres))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_Subgemeente", "Subgemeente", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Subgemeente), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Adres))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsAdres_Adres", "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Adres), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.PersoonsAdres))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsAdres_Persoon", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Persoon), "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.PersoonsAdres))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GroepsWerkjaar_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Groep), "GroepsWerkJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.GroepsWerkJaar))]
@@ -32,9 +30,11 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_CommunicatieVorm_CommunicatieType", "CommunicatieType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.CommunicatieType), "CommunicatieVorm", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.CommunicatieVorm))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Functie_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.Groep), "Functie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Functie))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "LidFunctie", "Functie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Functie), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Lid))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_StraatNaam", "StraatNaam", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.StraatNaam), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Adres))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_WoonPlaats", "WoonPlaats", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.WoonPlaats), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Adres))]
 
 // Original file name:
-// Generation date: 16/03/2010 16:04:03
+// Generation date: 18/03/2010 15:34:29
 namespace Chiro.Gap.Orm
 {
     
@@ -143,36 +143,6 @@ namespace Chiro.Gap.Orm
             }
         }
         private global::System.Data.Objects.ObjectQuery<Adres> _Adres;
-        /// <summary>
-        /// There are no comments for Straat in the schema.
-        /// </summary>
-        public global::System.Data.Objects.ObjectQuery<Straat> Straat
-        {
-            get
-            {
-                if ((this._Straat == null))
-                {
-                    this._Straat = base.CreateQuery<Straat>("[Straat]");
-                }
-                return this._Straat;
-            }
-        }
-        private global::System.Data.Objects.ObjectQuery<Straat> _Straat;
-        /// <summary>
-        /// There are no comments for Subgemeente in the schema.
-        /// </summary>
-        public global::System.Data.Objects.ObjectQuery<Subgemeente> Subgemeente
-        {
-            get
-            {
-                if ((this._Subgemeente == null))
-                {
-                    this._Subgemeente = base.CreateQuery<Subgemeente>("[Subgemeente]");
-                }
-                return this._Subgemeente;
-            }
-        }
-        private global::System.Data.Objects.ObjectQuery<Subgemeente> _Subgemeente;
         /// <summary>
         /// There are no comments for PersoonsAdres in the schema.
         /// </summary>
@@ -339,6 +309,36 @@ namespace Chiro.Gap.Orm
         }
         private global::System.Data.Objects.ObjectQuery<Functie> _Functie;
         /// <summary>
+        /// There are no comments for StraatNaam in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<StraatNaam> StraatNaam
+        {
+            get
+            {
+                if ((this._StraatNaam == null))
+                {
+                    this._StraatNaam = base.CreateQuery<StraatNaam>("[StraatNaam]");
+                }
+                return this._StraatNaam;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<StraatNaam> _StraatNaam;
+        /// <summary>
+        /// There are no comments for WoonPlaats in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<WoonPlaats> WoonPlaats
+        {
+            get
+            {
+                if ((this._WoonPlaats == null))
+                {
+                    this._WoonPlaats = base.CreateQuery<WoonPlaats>("[WoonPlaats]");
+                }
+                return this._WoonPlaats;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<WoonPlaats> _WoonPlaats;
+        /// <summary>
         /// There are no comments for Groep in the schema.
         /// </summary>
         public void AddToGroep(Groep groep)
@@ -372,20 +372,6 @@ namespace Chiro.Gap.Orm
         public void AddToAdres(Adres adres)
         {
             base.AddObject("Adres", adres);
-        }
-        /// <summary>
-        /// There are no comments for Straat in the schema.
-        /// </summary>
-        public void AddToStraat(Straat straat)
-        {
-            base.AddObject("Straat", straat);
-        }
-        /// <summary>
-        /// There are no comments for Subgemeente in the schema.
-        /// </summary>
-        public void AddToSubgemeente(Subgemeente subgemeente)
-        {
-            base.AddObject("Subgemeente", subgemeente);
         }
         /// <summary>
         /// There are no comments for PersoonsAdres in the schema.
@@ -463,6 +449,20 @@ namespace Chiro.Gap.Orm
         public void AddToFunctie(Functie functie)
         {
             base.AddObject("Functie", functie);
+        }
+        /// <summary>
+        /// There are no comments for StraatNaam in the schema.
+        /// </summary>
+        public void AddToStraatNaam(StraatNaam straatNaam)
+        {
+            base.AddObject("StraatNaam", straatNaam);
+        }
+        /// <summary>
+        /// There are no comments for WoonPlaats in the schema.
+        /// </summary>
+        public void AddToWoonPlaats(WoonPlaats woonPlaats)
+        {
+            base.AddObject("WoonPlaats", woonPlaats);
         }
     }
     /// <summary>
@@ -1687,80 +1687,6 @@ namespace Chiro.Gap.Orm
         partial void OnVersieChanging(byte[] value);
         partial void OnVersieChanged();
         /// <summary>
-        /// There are no comments for Straat in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Adres_Straat", "Straat")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Straat Straat
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Straat>("ChiroGroepModel.FK_Adres_Straat", "Straat").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Straat>("ChiroGroepModel.FK_Adres_Straat", "Straat").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for Straat in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Straat> StraatReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Straat>("ChiroGroepModel.FK_Adres_Straat", "Straat");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Straat>("ChiroGroepModel.FK_Adres_Straat", "Straat", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for Subgemeente in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Adres_Subgemeente", "Subgemeente")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Subgemeente Subgemeente
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Subgemeente>("ChiroGroepModel.FK_Adres_Subgemeente", "Subgemeente").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Subgemeente>("ChiroGroepModel.FK_Adres_Subgemeente", "Subgemeente").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for Subgemeente in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Subgemeente> SubgemeenteReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Subgemeente>("ChiroGroepModel.FK_Adres_Subgemeente", "Subgemeente");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Subgemeente>("ChiroGroepModel.FK_Adres_Subgemeente", "Subgemeente", value);
-                }
-            }
-        }
-        /// <summary>
         /// There are no comments for PersoonsAdres in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_PersoonsAdres_Adres", "PersoonsAdres")]
@@ -1781,281 +1707,77 @@ namespace Chiro.Gap.Orm
                 }
             }
         }
-    }
-    /// <summary>
-    /// There are no comments for ChiroGroepModel.Straat in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// ID
-    /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Straat")]
-    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
-    [global::System.Serializable()]
-    public partial class Straat : global::System.Data.Objects.DataClasses.EntityObject
-    {
         /// <summary>
-        /// Create a new Straat object.
+        /// There are no comments for StraatNaam in the schema.
         /// </summary>
-        /// <param name="id">Initial value of ID.</param>
-        /// <param name="postNr">Initial value of PostNr.</param>
-        /// <param name="naam">Initial value of Naam.</param>
-        public static Straat CreateStraat(int id, int postNr, string naam)
-        {
-            Straat straat = new Straat();
-            straat.ID = id;
-            straat.PostNr = postNr;
-            straat.Naam = naam;
-            return straat;
-        }
-        /// <summary>
-        /// There are no comments for Property ID in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int ID
-        {
-            get
-            {
-                return this._ID;
-            }
-            set
-            {
-                this.OnIDChanging(value);
-                this.ReportPropertyChanging("ID");
-                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("ID");
-                this.OnIDChanged();
-            }
-        }
-        private int _ID;
-        partial void OnIDChanging(int value);
-        partial void OnIDChanged();
-        /// <summary>
-        /// There are no comments for Property PostNr in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int PostNr
-        {
-            get
-            {
-                return this._PostNr;
-            }
-            set
-            {
-                this.OnPostNrChanging(value);
-                this.ReportPropertyChanging("PostNr");
-                this._PostNr = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("PostNr");
-                this.OnPostNrChanged();
-            }
-        }
-        private int _PostNr;
-        partial void OnPostNrChanging(int value);
-        partial void OnPostNrChanged();
-        /// <summary>
-        /// There are no comments for Property Naam in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Naam
-        {
-            get
-            {
-                return this._Naam;
-            }
-            set
-            {
-                this.OnNaamChanging(value);
-                this.ReportPropertyChanging("Naam");
-                this._Naam = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
-                this.ReportPropertyChanged("Naam");
-                this.OnNaamChanged();
-            }
-        }
-        private string _Naam;
-        partial void OnNaamChanging(string value);
-        partial void OnNaamChanged();
-        /// <summary>
-        /// There are no comments for Property Versie in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Versie
-        {
-            get
-            {
-                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
-            }
-            set
-            {
-                this.OnVersieChanging(value);
-                this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
-                this.ReportPropertyChanged("Versie");
-                this.OnVersieChanged();
-            }
-        }
-        private byte[] _Versie;
-        partial void OnVersieChanging(byte[] value);
-        partial void OnVersieChanged();
-        /// <summary>
-        /// There are no comments for Adres in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Adres_Straat", "Adres")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Adres_StraatNaam", "StraatNaam")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<Adres> Adres
+        public StraatNaam StraatNaam
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Adres>("ChiroGroepModel.FK_Adres_Straat", "Adres");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<StraatNaam>("ChiroGroepModel.FK_Adres_StraatNaam", "StraatNaam").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<StraatNaam>("ChiroGroepModel.FK_Adres_StraatNaam", "StraatNaam").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for StraatNaam in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<StraatNaam> StraatNaamReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<StraatNaam>("ChiroGroepModel.FK_Adres_StraatNaam", "StraatNaam");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Adres>("ChiroGroepModel.FK_Adres_Straat", "Adres", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<StraatNaam>("ChiroGroepModel.FK_Adres_StraatNaam", "StraatNaam", value);
                 }
             }
         }
-    }
-    /// <summary>
-    /// There are no comments for ChiroGroepModel.Subgemeente in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// ID
-    /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Subgemeente")]
-    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
-    [global::System.Serializable()]
-    public partial class Subgemeente : global::System.Data.Objects.DataClasses.EntityObject
-    {
         /// <summary>
-        /// Create a new Subgemeente object.
+        /// There are no comments for WoonPlaats in the schema.
         /// </summary>
-        /// <param name="id">Initial value of ID.</param>
-        /// <param name="postNr">Initial value of PostNr.</param>
-        /// <param name="naam">Initial value of Naam.</param>
-        public static Subgemeente CreateSubgemeente(int id, int postNr, string naam)
-        {
-            Subgemeente subgemeente = new Subgemeente();
-            subgemeente.ID = id;
-            subgemeente.PostNr = postNr;
-            subgemeente.Naam = naam;
-            return subgemeente;
-        }
-        /// <summary>
-        /// There are no comments for Property ID in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int ID
-        {
-            get
-            {
-                return this._ID;
-            }
-            set
-            {
-                this.OnIDChanging(value);
-                this.ReportPropertyChanging("ID");
-                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("ID");
-                this.OnIDChanged();
-            }
-        }
-        private int _ID;
-        partial void OnIDChanging(int value);
-        partial void OnIDChanged();
-        /// <summary>
-        /// There are no comments for Property PostNr in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int PostNr
-        {
-            get
-            {
-                return this._PostNr;
-            }
-            set
-            {
-                this.OnPostNrChanging(value);
-                this.ReportPropertyChanging("PostNr");
-                this._PostNr = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("PostNr");
-                this.OnPostNrChanged();
-            }
-        }
-        private int _PostNr;
-        partial void OnPostNrChanging(int value);
-        partial void OnPostNrChanged();
-        /// <summary>
-        /// There are no comments for Property Naam in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public string Naam
-        {
-            get
-            {
-                return this._Naam;
-            }
-            set
-            {
-                this.OnNaamChanging(value);
-                this.ReportPropertyChanging("Naam");
-                this._Naam = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
-                this.ReportPropertyChanged("Naam");
-                this.OnNaamChanged();
-            }
-        }
-        private string _Naam;
-        partial void OnNaamChanging(string value);
-        partial void OnNaamChanged();
-        /// <summary>
-        /// There are no comments for Property Versie in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Versie
-        {
-            get
-            {
-                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
-            }
-            set
-            {
-                this.OnVersieChanging(value);
-                this.ReportPropertyChanging("Versie");
-                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
-                this.ReportPropertyChanged("Versie");
-                this.OnVersieChanged();
-            }
-        }
-        private byte[] _Versie;
-        partial void OnVersieChanging(byte[] value);
-        partial void OnVersieChanged();
-        /// <summary>
-        /// There are no comments for Adres in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Adres_Subgemeente", "Adres")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Adres_WoonPlaats", "WoonPlaats")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<Adres> Adres
+        public WoonPlaats WoonPlaats
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Adres>("ChiroGroepModel.FK_Adres_Subgemeente", "Adres");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<WoonPlaats>("ChiroGroepModel.FK_Adres_WoonPlaats", "WoonPlaats").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<WoonPlaats>("ChiroGroepModel.FK_Adres_WoonPlaats", "WoonPlaats").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for WoonPlaats in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<WoonPlaats> WoonPlaatsReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<WoonPlaats>("ChiroGroepModel.FK_Adres_WoonPlaats", "WoonPlaats");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Adres>("ChiroGroepModel.FK_Adres_Subgemeente", "Adres", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<WoonPlaats>("ChiroGroepModel.FK_Adres_WoonPlaats", "WoonPlaats", value);
                 }
             }
         }
@@ -4339,6 +4061,384 @@ namespace Chiro.Gap.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Lid>("ChiroGroepModel.LidFunctie", "Lid", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.StraatNaam in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// ID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="StraatNaam")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class StraatNaam : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new StraatNaam object.
+        /// </summary>
+        /// <param name="id">Initial value of ID.</param>
+        /// <param name="postNummer">Initial value of PostNummer.</param>
+        /// <param name="naam">Initial value of Naam.</param>
+        /// <param name="taalID">Initial value of TaalID.</param>
+        /// <param name="versie">Initial value of Versie.</param>
+        public static StraatNaam CreateStraatNaam(int id, int postNummer, string naam, int taalID, byte[] versie)
+        {
+            StraatNaam straatNaam = new StraatNaam();
+            straatNaam.ID = id;
+            straatNaam.PostNummer = postNummer;
+            straatNaam.Naam = naam;
+            straatNaam.TaalID = taalID;
+            straatNaam.Versie = versie;
+            return straatNaam;
+        }
+        /// <summary>
+        /// There are no comments for Property ID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int ID
+        {
+            get
+            {
+                return this._ID;
+            }
+            set
+            {
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
+            }
+        }
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        /// <summary>
+        /// There are no comments for Property PostNummer in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int PostNummer
+        {
+            get
+            {
+                return this._PostNummer;
+            }
+            set
+            {
+                this.OnPostNummerChanging(value);
+                this.ReportPropertyChanging("PostNummer");
+                this._PostNummer = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("PostNummer");
+                this.OnPostNummerChanged();
+            }
+        }
+        private int _PostNummer;
+        partial void OnPostNummerChanging(int value);
+        partial void OnPostNummerChanged();
+        /// <summary>
+        /// There are no comments for Property Naam in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Naam
+        {
+            get
+            {
+                return this._Naam;
+            }
+            set
+            {
+                this.OnNaamChanging(value);
+                this.ReportPropertyChanging("Naam");
+                this._Naam = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Naam");
+                this.OnNaamChanged();
+            }
+        }
+        private string _Naam;
+        partial void OnNaamChanging(string value);
+        partial void OnNaamChanged();
+        /// <summary>
+        /// There are no comments for Property TaalID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int TaalID
+        {
+            get
+            {
+                return this._TaalID;
+            }
+            set
+            {
+                this.OnTaalIDChanging(value);
+                this.ReportPropertyChanging("TaalID");
+                this._TaalID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("TaalID");
+                this.OnTaalIDChanged();
+            }
+        }
+        private int _TaalID;
+        partial void OnTaalIDChanging(int value);
+        partial void OnTaalIDChanged();
+        /// <summary>
+        /// There are no comments for Property CrabSubstraatID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> CrabSubstraatID
+        {
+            get
+            {
+                return this._CrabSubstraatID;
+            }
+            set
+            {
+                this.OnCrabSubstraatIDChanging(value);
+                this.ReportPropertyChanging("CrabSubstraatID");
+                this._CrabSubstraatID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("CrabSubstraatID");
+                this.OnCrabSubstraatIDChanged();
+            }
+        }
+        private global::System.Nullable<int> _CrabSubstraatID;
+        partial void OnCrabSubstraatIDChanging(global::System.Nullable<int> value);
+        partial void OnCrabSubstraatIDChanged();
+        /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
+        /// <summary>
+        /// There are no comments for Adres in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Adres_StraatNaam", "Adres")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Adres> Adres
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Adres>("ChiroGroepModel.FK_Adres_StraatNaam", "Adres");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Adres>("ChiroGroepModel.FK_Adres_StraatNaam", "Adres", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.WoonPlaats in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// ID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="WoonPlaats")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class WoonPlaats : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new WoonPlaats object.
+        /// </summary>
+        /// <param name="id">Initial value of ID.</param>
+        /// <param name="postNummer">Initial value of PostNummer.</param>
+        /// <param name="naam">Initial value of Naam.</param>
+        /// <param name="taalID">Initial value of TaalID.</param>
+        /// <param name="versie">Initial value of Versie.</param>
+        public static WoonPlaats CreateWoonPlaats(int id, int postNummer, string naam, int taalID, byte[] versie)
+        {
+            WoonPlaats woonPlaats = new WoonPlaats();
+            woonPlaats.ID = id;
+            woonPlaats.PostNummer = postNummer;
+            woonPlaats.Naam = naam;
+            woonPlaats.TaalID = taalID;
+            woonPlaats.Versie = versie;
+            return woonPlaats;
+        }
+        /// <summary>
+        /// There are no comments for Property ID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int ID
+        {
+            get
+            {
+                return this._ID;
+            }
+            set
+            {
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
+            }
+        }
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        /// <summary>
+        /// There are no comments for Property PostNummer in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int PostNummer
+        {
+            get
+            {
+                return this._PostNummer;
+            }
+            set
+            {
+                this.OnPostNummerChanging(value);
+                this.ReportPropertyChanging("PostNummer");
+                this._PostNummer = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("PostNummer");
+                this.OnPostNummerChanged();
+            }
+        }
+        private int _PostNummer;
+        partial void OnPostNummerChanging(int value);
+        partial void OnPostNummerChanged();
+        /// <summary>
+        /// There are no comments for Property Naam in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Naam
+        {
+            get
+            {
+                return this._Naam;
+            }
+            set
+            {
+                this.OnNaamChanging(value);
+                this.ReportPropertyChanging("Naam");
+                this._Naam = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Naam");
+                this.OnNaamChanged();
+            }
+        }
+        private string _Naam;
+        partial void OnNaamChanging(string value);
+        partial void OnNaamChanged();
+        /// <summary>
+        /// There are no comments for Property TaalID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int TaalID
+        {
+            get
+            {
+                return this._TaalID;
+            }
+            set
+            {
+                this.OnTaalIDChanging(value);
+                this.ReportPropertyChanging("TaalID");
+                this._TaalID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("TaalID");
+                this.OnTaalIDChanged();
+            }
+        }
+        private int _TaalID;
+        partial void OnTaalIDChanging(int value);
+        partial void OnTaalIDChanged();
+        /// <summary>
+        /// There are no comments for Property CrabPostKantonID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> CrabPostKantonID
+        {
+            get
+            {
+                return this._CrabPostKantonID;
+            }
+            set
+            {
+                this.OnCrabPostKantonIDChanging(value);
+                this.ReportPropertyChanging("CrabPostKantonID");
+                this._CrabPostKantonID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("CrabPostKantonID");
+                this.OnCrabPostKantonIDChanged();
+            }
+        }
+        private global::System.Nullable<int> _CrabPostKantonID;
+        partial void OnCrabPostKantonIDChanging(global::System.Nullable<int> value);
+        partial void OnCrabPostKantonIDChanged();
+        /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
+        /// <summary>
+        /// There are no comments for Adres in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Adres_WoonPlaats", "Adres")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Adres> Adres
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Adres>("ChiroGroepModel.FK_Adres_WoonPlaats", "Adres");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Adres>("ChiroGroepModel.FK_Adres_WoonPlaats", "Adres", value);
                 }
             }
         }

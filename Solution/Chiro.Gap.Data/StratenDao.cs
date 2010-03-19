@@ -17,7 +17,7 @@ namespace Chiro.Gap.Data.Ef
 	/// <summary>
 	/// Gegevenstoegangsobject voor straten
 	/// </summary>
-	public class StratenDao : Dao<Straat, ChiroGroepEntities>, IStratenDao
+	public class StratenDao : Dao<StraatNaam, ChiroGroepEntities>, IStratenDao
 	{
 		/// <summary>
 		/// 
@@ -25,16 +25,16 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="naam"></param>
 		/// <param name="postNr"></param>
 		/// <returns></returns>
-		public Straat Ophalen(string naam, int postNr)
+		public StraatNaam Ophalen(string naam, int postNr)
 		{
-			Straat resultaat = null;
+			StraatNaam resultaat = null;
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
 				resultaat = (
-					from Straat s in db.Straat
-					where s.Naam == naam && s.PostNr == postNr
-					select s).FirstOrDefault<Straat>();
+					from StraatNaam s in db.StraatNaam
+					where s.Naam == naam && s.PostNummer == postNr
+					select s).FirstOrDefault<StraatNaam>();
 
 				if (resultaat != null)
 				{
@@ -52,7 +52,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="naamBegin">Eerste letters van de te zoeken straatnamen</param>
 		/// <param name="postNr">Postnummer waarin te zoeken</param>
 		/// <returns>Gegevens van de gevonden straten</returns>
-		public IList<Straat> MogelijkhedenOphalen(string naamBegin, int postNr)
+		public IList<StraatNaam> MogelijkhedenOphalen(string naamBegin, int postNr)
 		{
 			return MogelijkhedenOphalen(naamBegin, new int[] { postNr });
 		}
@@ -64,14 +64,14 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="naamBegin">Eerste letters van de te zoeken straatnamen</param>
 		/// <param name="postNrs">Postnummers waarin te zoeken</param>
 		/// <returns>Gegevens van de gevonden straten</returns>
-		public IList<Straat> MogelijkhedenOphalen(string naamBegin, IEnumerable<int> postNrs)
+		public IList<StraatNaam> MogelijkhedenOphalen(string naamBegin, IEnumerable<int> postNrs)
 		{
-			IList<Straat> resultaat = null;
+			IList<StraatNaam> resultaat = null;
 
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{
-				resultaat = db.Straat
-					.Where(Utility.BuildContainsExpression<Straat, int>(str => str.PostNr, postNrs))
+				resultaat = db.StraatNaam
+					.Where(Utility.BuildContainsExpression<StraatNaam, int>(str => str.PostNummer, postNrs))
 					.Where(str => str.Naam.StartsWith(naamBegin))
 					.Select(str => str)
 					.ToList();

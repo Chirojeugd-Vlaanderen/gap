@@ -94,7 +94,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// Na te kijken in het verslag over state
 			var postNrs = (from gemeente in DeelGemeentesOphalen()
 						   where String.Compare(gemeente.Naam, gemeenteNaam) == 0
-						   select gemeente.PostNr).Distinct().ToList();
+						   select gemeente.PostNummer).Distinct().ToList();
 
 			IEnumerable<StraatInfo> mogelijkeStraten =
 				ServiceHelper.CallService<IGroepenService, IEnumerable<StraatInfo>>(
@@ -124,7 +124,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// Select the tags that match the query, and get the 
 			// number or tags specified by the limit.
 			var retValue = tags
-				.Select(r => r.PostNr).FirstOrDefault();
+				.Select(r => r.PostNummer).FirstOrDefault();
 
 			// Return the result set as JSON
 			return Json(retValue);

@@ -117,15 +117,15 @@ namespace Chiro.Gap.Workers
 			{
 				// Adres niet gevonden.  Probeer straat en gemeente te vinden
 
-				Straat s;
-				Subgemeente sg;
+				StraatNaam s;
+				WoonPlaats sg;
 
 				s = _stratenDao.Ophalen(StraatNaam, PostNr);
 				if (s != null)
 				{
 					// Straat gevonden: aan adres koppelen
 
-					adr.Straat = s;
+					adr.StraatNaam = s;
 					s.Adres.Add(adr);
 				}
 				else
@@ -144,7 +144,7 @@ namespace Chiro.Gap.Workers
 				{
 					// Gemeente gevonden: aan adres koppelen
 
-					adr.Subgemeente = sg;
+					adr.WoonPlaats = sg;
 					sg.Adres.Add(adr);
 				}
 				else
@@ -175,8 +175,8 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				Debug.Assert(adresInDb.Straat != null);
-				Debug.Assert(adresInDb.Subgemeente != null);
+				Debug.Assert(adresInDb.StraatNaam != null);
+				Debug.Assert(adresInDb.WoonPlaats != null);
 
 				return adresInDb;
 			}
@@ -188,7 +188,7 @@ namespace Chiro.Gap.Workers
 		/// Een lijst van subgemeenten ophalen
 		/// </summary>
 		/// <returns>Een lijst van subgemeenten</returns>
-		public IList<Subgemeente> GemeentesOphalen()
+		public IList<WoonPlaats> GemeentesOphalen()
 		{
 			return _subgemeenteDao.AllesOphalen();
 		}
@@ -200,7 +200,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="straatBegin">Eerste letters van de te zoeken straatnamen</param>
 		/// <param name="postNr">Postnummer waarin te zoeken</param>
 		/// <returns>Gegevens van de gevonden straten</returns>
-		public IList<Straat> StratenOphalen(String straatBegin, int postNr)
+		public IList<StraatNaam> StratenOphalen(String straatBegin, int postNr)
 		{
 			return StratenOphalen(straatBegin, new int[] { postNr });
 		}
@@ -212,7 +212,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="straatBegin">Eerste letters van de te zoeken straatnamen</param>
 		/// <param name="postNrs">Postnummers waarin te zoeken</param>
 		/// <returns>Gegevens van de gevonden straten</returns>
-		public IList<Straat> StratenOphalen(String straatBegin, IEnumerable<int> postNrs)
+		public IList<StraatNaam> StratenOphalen(String straatBegin, IEnumerable<int> postNrs)
 		{
 			return _stratenDao.MogelijkhedenOphalen(straatBegin, postNrs);
 		}

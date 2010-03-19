@@ -102,8 +102,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Straat.cs" />
-    <Compile Include="Subgemeente.cs" />
+    <Compile Include="StraatNaam.cs" />
+    <Compile Include="WoonPlaats.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />

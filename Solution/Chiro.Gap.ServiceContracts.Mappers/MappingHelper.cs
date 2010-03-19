@@ -124,16 +124,16 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.CreateMap<Adres, AdresInfo>()
 				.ForMember(
 					dst => dst.Gemeente,
-					opt => opt.MapFrom(src => src.Subgemeente.Naam))
+					opt => opt.MapFrom(src => src.WoonPlaats.Naam))
 				.ForMember(
 					dst => dst.Straat,
-					opt => opt.MapFrom(src => src.Straat.Naam))
+					opt => opt.MapFrom(src => src.StraatNaam.Naam))
 				.ForMember(
 					dst => dst.HuisNr,
 					opt => opt.MapFrom(src => src.HuisNr))
 				.ForMember(
 					dst => dst.PostNr,
-					opt => opt.MapFrom(src => src.Straat.PostNr))
+					opt => opt.MapFrom(src => src.StraatNaam.PostNummer))
 				.ForMember(
 					dst => dst.Bewoners,
 					opt => opt.MapFrom(src => src.PersoonsAdres.ToList()))
@@ -166,8 +166,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			// Automapper alles automatisch, zoals hieronder:
 
 			Mapper.CreateMap<PersoonsAdres, BewonersInfo>();
-			Mapper.CreateMap<Straat, StraatInfo>();
-			Mapper.CreateMap<Subgemeente, GemeenteInfo>();
+			Mapper.CreateMap<StraatNaam, StraatInfo>();
+			Mapper.CreateMap<WoonPlaats, GemeenteInfo>();
 			Mapper.CreateMap<Categorie, CategorieInfo>();
 
 			// Wel even nakijken of die automagie overal gewerkt heeft:
