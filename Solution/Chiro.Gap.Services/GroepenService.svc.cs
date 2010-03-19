@@ -437,9 +437,9 @@ namespace Chiro.Gap.Services
 		/// <returns>Lijst met alle beschikbare deelgemeentes</returns>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IEnumerable<GemeenteInfo> GemeentesOphalen()
+		public IEnumerable<WoonPlaatsInfo> GemeentesOphalen()
 		{
-			return Mapper.Map<IEnumerable<WoonPlaats>, IList<GemeenteInfo>>(_adresMgr.GemeentesOphalen());
+			return Mapper.Map<IEnumerable<WoonPlaats>, IList<WoonPlaatsInfo>>(_adresMgr.GemeentesOphalen());
 		}
 
 		/// <summary>

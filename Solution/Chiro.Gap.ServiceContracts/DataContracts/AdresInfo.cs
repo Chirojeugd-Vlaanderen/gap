@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -37,10 +38,15 @@ namespace Chiro.Gap.ServiceContracts
 		public int HuisNr { get; set; }
 
 		[DataMember]
-		public String Straat { get; set; }
+		[DisplayName("Straat")]
+		public String StraatNaamNaam { get; set; }
 
 		[DataMember]
-		public String Gemeente { get; set; }
+		[DisplayName("Woonplaats")]
+		public String WoonPlaatsNaam { get; set; }
+
+		[DataMember]
+		public int WoonPlaatsID { get; set; }
 
 		[DataMember]
 		public List<BewonersInfo> Bewoners { get; set; }

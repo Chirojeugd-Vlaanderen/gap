@@ -14,8 +14,11 @@ using Chiro.Gap.Orm;
 namespace Chiro.Gap.ServiceContracts
 {
 	[DataContract]
-	public class GemeenteInfo
+	public class WoonPlaatsInfo
 	{
+		[DataMember]
+		public int ID { get; set; }
+
 		[DataMember]
 		public int PostNummer { get; set; }
 

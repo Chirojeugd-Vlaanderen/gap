@@ -56,6 +56,11 @@ namespace Chiro.Gap.WebApp.Models
 		public List<int> PersoonIDs { get; set; }
 
 		/// <summary>
+		/// Lijstje woonplaatsen dat overeenkomt met Adres.PostNr
+		/// </summary>
+		public IEnumerable<WoonPlaatsInfo> WoonPlaatsen { get; set; }
+
+		/// <summary>
 		/// Standaardconstructor voor AdresModel
 		/// </summary>
 		public AdresModel()
@@ -63,6 +68,7 @@ namespace Chiro.Gap.WebApp.Models
 			Bewoners = new List<BewonersInfo>();
 			PersoonIDs = new List<int>();
 			Adres = new AdresInfo();
+			WoonPlaatsen = new List<WoonPlaatsInfo>();
 		}
 	}
 }

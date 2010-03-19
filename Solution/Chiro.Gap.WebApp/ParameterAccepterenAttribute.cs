@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace Chiro.Gap.WebApp
+{
+	/// <summary>
+	/// Eigen attribuut dat gebruikt kan worden in forms met meer dan 1 knop, om te detecteren op 
+	/// welke knop geklikt is
+	/// </summary>
+	public class ParameterAccepterenAttribute: ActionMethodSelectorAttribute
+	{
+		/// <summary>
+		/// Naam van de knop
+		/// </summary>
+		public string Naam { get; set; }
+		/// <summary>
+		/// 'Waarde' van de knop (gegeven in value-attribuut van knop input)
+		/// </summary>
+		public string Waarde { get; set; }
+
+		/// <summary>
+		/// Decoreer een controlleractie met dit attribuut als ze enkel uitgevoerd mag worden indien
+		/// het form-element met id <c>Naam</c> de waarde <c>Waarde</c> heeft.
+		/// </summary>
+		/// <param name="controllerContext"></param>
+		/// <param name="methodInfo"></param>
+		/// <returns><c>true</c> indien deze controlleractie uitgevoerd mag worden, anders <c>false</c>.</returns>
+		public override bool IsValidForRequest(ControllerContext controllerContext, System.Reflection.MethodInfo methodInfo)
+		{
+			var req = controllerContext.RequestContext.HttpContext.Request;
+			return req.Form[this.Naam] == this.Waarde;
+		}
+	}
+}

@@ -43,19 +43,19 @@ namespace Chiro.Gap.Workers.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("NatFuncties")]
-        public string NatFunctiesCacheKey {
+        [global::System.Configuration.DefaultSettingValueAttribute("21")]
+        public int DagenInstapPeriode {
             get {
-                return ((string)(this["NatFunctiesCacheKey"]));
+                return ((int)(this["DagenInstapPeriode"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("21")]
-        public int DagenInstapPeriode {
+        [global::System.Configuration.DefaultSettingValueAttribute("Het ID van de woonplaats is ongeldig.")]
+        public string FoutiefWoonPlaatsID {
             get {
-                return ((int)(this["DagenInstapPeriode"]));
+                return ((string)(this["FoutiefWoonPlaatsID"]));
             }
         }
     }

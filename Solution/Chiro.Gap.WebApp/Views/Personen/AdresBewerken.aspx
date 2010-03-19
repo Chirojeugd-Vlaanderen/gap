@@ -7,100 +7,36 @@
 <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.min.js")%>"></script>
 <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery.autocomplete.min.js")%>"></script>
 <link rel="stylesheet" type="text/css" href="<%= ResolveUrl("~/Content/jquery.autocomplete.css")%>" />
+
 <script type="text/javascript">
+    // Automatisch invullen gemeentes na keuze postnummer
+    $(function() {
+        $("input#Adres_PostNr").change(function() {
+            $.getJSON('<%=Url.Action("WoonPlaatsenOphalen", "Adressen")%>', { postNummer: $(this).val() }, function(j) {
+                var options = '';
+                for (var i = 0; i < j.length; i++) {
+                    options += '<option value="' + j[i].ID + '">' + j[i].Naam + '</option>';
+                }
+                $("select#Adres_WoonPlaatsID").html(options);
+            })
+        })
+    });
 
-//TODO bij de autocompletion van gemeentes MOET bij elke record de postcode van de gemeente in die record gegeven worden
-//zodat men weet welke postcode men selecteert
-//de vraag blijft dan of men zowel de deelgemeente als de hoofdgemeente kan selecteren voor dezelfde postcode
-//bvb Antwerpen		NUMMER
-//	  Antwerpen(X) ZELFDENUMMER
-//wat laten we dan toe?
+    // Autocomplete straten
+    $(document).ready(function() {
+    $("input#Adres_StraatNaamNaam").autocomplete(
+        '<%= Url.Action("StratenVoorstellen", "Adressen") %>', 
+        { extraParams: { "postNummer": function() { return $("input#Adres_PostNr").val(); } } });
+    }); 
 
-$(function(){
-	$("#Adres_Gemeente").keyup(function(){
-	$("#notfound").html("");
-	// Straat nergens disabelen, als workaround voor probleem #201
-	// https://develop.chiro.be/trac/cg2/ticket/201
-		//document.getElementById("Adres_Straat").disabled = true;
-		$("#Adres_Straat").val("");
-		$("#Adres_PostNr").val("");
-		//Clear de straat cache als de gemeente verandert.
-		$("#Adres_Straat").flushCache();
-	});
-});
-
-$(document).ready(function() {
-// Onderstaande lijnen wegcommentarieren werkt rond probleem #201.
-// https://develop.chiro.be/trac/cg2/ticket/201
-
-	// document.getElementById("Adres_PostNr").readOnly = true;
-	
-	// if($("#Adres_Gemeente").val().length==0)
-	// {
-	//  	document.getElementById("Adres_Straat").disabled = true;		
-	// }
-
-	$("#Adres_Gemeente").autocomplete('<%=Url.Action("GemeentesVoorstellen", "Adressen") %>',
-	{
-	dataType: 'json',
-	parse: function(data) {
-		if(data.length==0){
-			$("#notfound").html("Er bestaat geen gemeente met die naam.");
-			return new Array();
-		}else{
-			var rows = new Array();
-			for (var i = 0; i < data.length; i++) {
-				rows[i] = { data: data[i], value: data[i].Tag, result: data[i].Tag };
-			}
-			return rows;
-		}
-	},
-	formatItem: function(row, i, max) {
-		return row.Tag;
-	},
-	width: 300,
-	minChars: 2,
-	max: 10,
-	highlight: false
-	}).result(function(event, data, formatted) {
-		document.getElementById("Adres_Straat").disabled = false;
-		$.post('<%=Url.Action("PostNrVoorstellen", "Adressen") %>', { gemeente: $("#Adres_Gemeente").val() }, function(data) {
-			$("#Adres_PostNr").val(data + "");
-		}, "json");
-	});
-	
-	$("#Adres_Straat").autocomplete('<%=Url.Action("StratenVoorstellen", "Adressen") %>',
-	{
-	dataType: 'json',
-	parse: function(data) {
-		var rows = new Array();
-		for (var i = 0; i < data.length; i++) {
-			rows[i] = { data: data[i], value: data[i].Tag, result: data[i].Tag };
-		}
-		return rows;
-	},
-	formatItem: function(row, i, max) {
-		return row.Tag;
-	},
-	width: 300,
-	minChars: 2,
-	highlight: false,
-	multiple: false,
-	extraParams: { "gemeenteNaam": function() { return $("#Adres_Gemeente").val(); },
-					"gedeeltelijkeStraatNaam": function() { return $("#Adres_Straat").val(); }
-		}
-	});
-});
 </script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 <% using (Html.BeginForm()){%>
-
-	<!--werkt niet (om _ te vervangen door . in de namen, want de . wordt sowieso verkeerd geinterpreteerd) HtmlHelper.IdAttributeDotReplacement = ".";-->
-   
+ 
    <ul id="acties">
-   <li><input type="submit" value="Bewaren" /></li>
+   <li><input type="submit" name="action" value="Bewaren" /></li>
    </ul>
    
    <fieldset>
@@ -123,28 +59,25 @@ $(document).ready(function() {
    <fieldset>
    <legend>Adresgegevens</legend>
    
-   	<% var values = from AdresTypeEnum e in Enum.GetValues(typeof(AdresTypeEnum))
+  	<% var values = from AdresTypeEnum e in Enum.GetValues(typeof(AdresTypeEnum))
 				 select new { value = e, text = e.ToString() }; 
 	%>
 
 	<%=Html.LabelFor(mdl => mdl.AdresType) %>
 	<%=Html.DropDownListFor(mdl => mdl.AdresType, new SelectList(values, "value", "text"))%>
 	<br />
-   
-	<%=Html.LabelFor(mdl => mdl.Adres.Gemeente) %>
-	<%=Html.EditorFor(mdl => mdl.Adres.Gemeente) %>
-    <%=Html.ValidationMessageFor(mdl => mdl.Adres.Gemeente)%>
-	<div id="notfound"></div>
-	<br />
 
 	<%=Html.LabelFor(mdl => mdl.Adres.PostNr) %>
 	<%=Html.EditorFor(mdl => mdl.Adres.PostNr) %>
     <%=Html.ValidationMessageFor(mdl => mdl.Adres.PostNr) %>	
+    <noscript>
+        <input type="submit" name="action" value="Woonplaatsen ophalen" />
+    </noscript>
 	<br />
-	
-	<%=Html.LabelFor(mdl => mdl.Adres.Straat) %>
-	<%=Html.EditorFor(mdl => mdl.Adres.Straat) %>
-    <%=Html.ValidationMessageFor(mdl => mdl.Adres.Straat) %>	
+
+	<%=Html.LabelFor(mdl => mdl.Adres.StraatNaamNaam) %>
+	<%=Html.EditorFor(mdl => mdl.Adres.StraatNaamNaam)%>
+    <%=Html.ValidationMessageFor(mdl => mdl.Adres.StraatNaamNaam)%>	
 	<br />
 	
 	<%=Html.LabelFor(mdl => mdl.Adres.HuisNr) %>
@@ -156,7 +89,12 @@ $(document).ready(function() {
 	<%=Html.EditorFor(mdl => mdl.Adres.Bus)%>
     <%=Html.ValidationMessageFor(mdl => mdl.Adres.Bus)%>	
     <br />
-   
+
+	<%=Html.LabelFor(mdl => mdl.Adres.WoonPlaatsNaam) %> 
+    <%=Html.DropDownListFor(mdl => mdl.Adres.WoonPlaatsID, new SelectList(Model.WoonPlaatsen, "ID", "Naam")) %>
+    <%=Html.ValidationMessageFor(mdl => mdl.Adres.WoonPlaatsNaam)%>
+	<br />
+	
    <%=Html.HiddenFor(mdl=>mdl.AanvragerID) %>
    <%=Html.HiddenFor(mdl=>mdl.OudAdresID) %>
    

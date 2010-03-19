@@ -79,7 +79,7 @@ namespace Chiro.Gap.Workers
 		///  - straat.naam
 		///  - huisnummer
 		///  - straat.postnr
-		///  - subgemeente.naam
+		///  - woonplaats.id
 		/// <para />
 		/// Als er zo geen adres bestaat, wordt het aangemaakt, op
 		/// voorwaarde dat de straat en subgemeente geidentificeerd
@@ -89,12 +89,12 @@ namespace Chiro.Gap.Workers
 		/// <param name="StraatNaam">De naam van de straat</param>
 		/// <param name="HuisNr">Het huisnummer</param>
 		/// <param name="Bus">Het eventuele busnummer</param>
-		/// <param name="GemeenteNaam">De naam van de gemeente</param>
+		/// <param name="WoonPlaatsID">De naam van de gemeente</param>
 		/// <param name="PostNr">Het postnummer van de gemeente</param>
 		/// <param name="PostCode">Tekst die in het buitenland volgt op postnummers</param>
 		/// <returns>Gevonden adres</returns>
 		/// <remarks>Ieder heeft het recht adressen op te zoeken</remarks>
-		public Adres ZoekenOfMaken(String StraatNaam, int HuisNr, String Bus, String GemeenteNaam, int PostNr, String PostCode)
+		public Adres ZoekenOfMaken(String StraatNaam, int HuisNr, String Bus, int WoonPlaatsID, int PostNr, String PostCode)
 		{
 			AdresFault fault = new AdresFault();
 
@@ -107,9 +107,9 @@ namespace Chiro.Gap.Workers
 			Debug.Assert(StraatNaam != String.Empty);
 			Debug.Assert(PostNr > 0);
 			// Debug.Assert(HuisNr > 0);
-			Debug.Assert(GemeenteNaam != String.Empty);
+			Debug.Assert(WoonPlaatsID > 0);
 
-			adresInDb = _dao.Ophalen(StraatNaam, HuisNr, Bus, PostNr, PostCode, GemeenteNaam, false);
+			adresInDb = _dao.Ophalen(StraatNaam, HuisNr, Bus, PostNr, PostCode, WoonPlaatsID, false);
 
 			Adres adr = new Adres();
 
@@ -139,7 +139,7 @@ namespace Chiro.Gap.Workers
 						String.Format("Straat {0} met postnummer {1} niet gevonden.", StraatNaam, PostNr));
 				}
 
-				sg = _subgemeenteDao.Ophalen(GemeenteNaam, PostNr);
+				sg = _subgemeenteDao.Ophalen(WoonPlaatsID);
 				if (sg != null)
 				{
 					// Gemeente gevonden: aan adres koppelen
@@ -152,8 +152,10 @@ namespace Chiro.Gap.Workers
 					// Gemeente niet gevonden: foutbericht toevoegen
 
 					// FIXME: hier idem.
-					fault.BerichtToevoegen(AdresFaultCode.OnbekendeGemeente, "Gemeente",
-						String.Format("Deelgemeente {0} met postnummer {1} niet gevonden.", GemeenteNaam, PostNr));
+					fault.BerichtToevoegen(
+						AdresFaultCode.OnbekendeGemeente, 
+						"Gemeente", 
+						Properties.Settings.Default.FoutiefWoonPlaatsID);
 				}
 
 				if (fault.Berichten.Count != 0)

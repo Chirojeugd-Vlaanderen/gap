@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 
+using Chiro.Cdf.Ioc;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
 
@@ -20,36 +21,11 @@ namespace Chiro.Gap.WebApp.Controllers
 	/// </summary>
 	public class AdressenController : BaseController
 	{
-		public AdressenController(IServiceHelper serviceHelper) : base(serviceHelper) { }
+		private AdressenHelper _adressenHelper;
 
-		/// <summary>
-		/// Levert een lijst op van alle deelgemeentes
-		/// </summary>
-		/// <returns>Een lijst met alle beschikbare deelgemeentes</returns>
-		public IEnumerable<GemeenteInfo> DeelGemeentesOphalen()
+		public AdressenController(IServiceHelper serviceHelper) : base(serviceHelper) 
 		{
-			string cacheKey = Properties.Settings.Default.DeelGemeentesCacheKey;
-
-			var cache = System.Web.HttpContext.Current.Cache;
-			var result = (IEnumerable<GemeenteInfo>)cache.Get(cacheKey);
-
-			if (result == null)
-			{
-				// Cache geexpired, opnieuw opzoeken en cachen.
-
-				result = ServiceHelper.CallService<IGroepenService,
-					IEnumerable<GemeenteInfo>>(g => g.GemeentesOphalen());
-
-				cache.Add(
-					cacheKey,
-					result,
-					null,
-					System.Web.Caching.Cache.NoAbsoluteExpiration,
-					new TimeSpan(1, 0, 0, 0) /* bewaar 1 dag */,
-					System.Web.Caching.CacheItemPriority.High /* niet te gauw wissen; grote kost */,
-					null);
-			}
-			return result;
+			_adressenHelper = new AdressenHelper(serviceHelper);
 		}
 
 		/// <summary>
@@ -65,7 +41,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				limit = Properties.Settings.Default.AutoSuggestieStandaardLimiet;
 			}
 
-			var gemeenteLijst = DeelGemeentesOphalen();
+			var gemeenteLijst = _adressenHelper.WoonPlaatsenOphalen();
 
 			var tags = (from g in gemeenteLijst
 						orderby g.Naam
@@ -80,35 +56,43 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
+		/// Genereert een JSON-lijst met WoonPlaatsInfo corresponderend met het gegeven
+		/// <paramref name="postNummer"/>.
+		/// </summary>
+		/// <param name="postNummer">Postnummer waarvan woonplaatsen gevraagd</param>
+		/// <returns>
+		/// JSON-lijst met WoonPlaatsInfo corresponderend met het gegeven
+		/// <paramref name="postNummer"/>.
+		/// </returns>
+		public ActionResult WoonPlaatsenOphalen(int postNummer)
+		{
+			var resultaat = (from g in _adressenHelper.WoonPlaatsenOphalen()
+					 where g.PostNummer == postNummer
+					 orderby g.Naam
+					 select g);
+
+			return Json(resultaat, JsonRequestBehavior.AllowGet);
+		}
+
+		/// <summary>
 		/// Stelt op basis van een <paramref name="gedeeltelijkeStraatNaam"/> en een 
 		/// <paramref name="gemeenteNaam"/> een lijst suggesties samen met straatnamen die de
 		/// gebruiker mogelijk zinnes is in te vullen.
 		/// </summary>
-		/// <param name="gedeeltelijkeStraatNaam">Wat de gebruiker al intikte</param>
-		/// <param name="gemeenteNaam">Naam van gemeente waarin de straat moet liggen</param>
-		/// <returns>Json-lijst voor autosuggestie met voorgestelde straatnamen</returns>
-		public ActionResult StratenVoorstellen(String gedeeltelijkeStraatNaam, String gemeenteNaam)
+		/// <param name="q">Wat de gebruiker al intikte</param>
+		/// <param name="postNummer">Postnummer waarin gezocht moet worden</param>
+		/// <returns>Voorgestelde straatnamen in plain text, nieuwe regel na elke straat</returns>
+		public ActionResult StratenVoorstellen(String q, int postNummer)
 		{
-			// Opm. van Johan:
-			// TODO: Moet die gemeentelijst niet in cache zitten, ipv op het niveau van de app?
-			// Na te kijken in het verslag over state
-			var postNrs = (from gemeente in DeelGemeentesOphalen()
-						   where String.Compare(gemeente.Naam, gemeenteNaam) == 0
-						   select gemeente.PostNummer).Distinct().ToList();
-
 			IEnumerable<StraatInfo> mogelijkeStraten =
 				ServiceHelper.CallService<IGroepenService, IEnumerable<StraatInfo>>(
-					x => x.StratenOphalenMeerderePostNrs(gedeeltelijkeStraatNaam, postNrs));
+					x => x.StratenOphalen(q, postNummer));
 
 			var namen = (from straat in mogelijkeStraten
 						 orderby straat.Naam
 						 select straat.Naam).Distinct();
 
-			var resultaat = from tag in namen
-							select new { Tag = tag };
-
-			// Return the result set as JSON
-			return Json(resultaat);
+			return Content(String.Join("\n", namen.ToArray<string>()));
 		}
 
 		/// <summary>
@@ -119,7 +103,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <remarks>Dit is nogal een omslachtige search voor iets dat eigenlijk weinig zinvol is.</remarks>
 		public ActionResult PostNrVoorstellen(String gemeente)
 		{
-			IEnumerable<GemeenteInfo> tags = DeelGemeentesOphalen().Where(x => x.Naam.Equals(gemeente, StringComparison.CurrentCultureIgnoreCase));
+			IEnumerable<WoonPlaatsInfo> tags = _adressenHelper.WoonPlaatsenOphalen().Where(x => x.Naam.Equals(gemeente, StringComparison.CurrentCultureIgnoreCase));
 
 			// Select the tags that match the query, and get the 
 			// number or tags specified by the limit.

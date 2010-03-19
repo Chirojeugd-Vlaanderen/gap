@@ -121,28 +121,14 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.Functies,
 					opt => opt.MapFrom(src => src.Functie));
 
+			// Zo veel mogelijk automatisch mappen
 			Mapper.CreateMap<Adres, AdresInfo>()
-				.ForMember(
-					dst => dst.Gemeente,
-					opt => opt.MapFrom(src => src.WoonPlaats.Naam))
-				.ForMember(
-					dst => dst.Straat,
-					opt => opt.MapFrom(src => src.StraatNaam.Naam))
-				.ForMember(
-					dst => dst.HuisNr,
-					opt => opt.MapFrom(src => src.HuisNr))
 				.ForMember(
 					dst => dst.PostNr,
 					opt => opt.MapFrom(src => src.StraatNaam.PostNummer))
 				.ForMember(
 					dst => dst.Bewoners,
-					opt => opt.MapFrom(src => src.PersoonsAdres.ToList()))
-				.ForMember(
-					dst => dst.Bus,
-					opt => opt.MapFrom(src => src.Bus))
-				.ForMember(
-					dst => dst.ID,
-					opt => opt.MapFrom(src => src.ID));
+					opt => opt.MapFrom(src => src.PersoonsAdres.ToList()));
 
 			Mapper.CreateMap<Persoon, BewonersInfo>()
 				.ForMember(
@@ -167,7 +153,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
 			Mapper.CreateMap<PersoonsAdres, BewonersInfo>();
 			Mapper.CreateMap<StraatNaam, StraatInfo>();
-			Mapper.CreateMap<WoonPlaats, GemeenteInfo>();
+			Mapper.CreateMap<WoonPlaats, WoonPlaatsInfo>();
 			Mapper.CreateMap<Categorie, CategorieInfo>();
 
 			// Wel even nakijken of die automagie overal gewerkt heeft:

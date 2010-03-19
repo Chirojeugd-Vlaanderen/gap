@@ -36,6 +36,8 @@ namespace Chiro.Gap.Workers
 	/// </summary>
 	public class FunctiesManager
 	{
+		private const string NATFUNCTIESCACHEKEY = "NatFunctiesCacheKey";
+
 		private IFunctiesDao _funDao;
 		private ILedenDao _ledenDao;
 		private IAutorisatieManager _autorisatieMgr;
@@ -366,14 +368,19 @@ namespace Chiro.Gap.Workers
 		{
 			var cache = HttpRuntime.Cache;
 
-			if (cache[Properties.Settings.Default.NatFunctiesCacheKey] == null)
+			if (cache[NATFUNCTIESCACHEKEY] == null)
 			{
-				cache.Insert(
-					Properties.Settings.Default.NatFunctiesCacheKey,
-					_funDao.NationaalBepaaldeFunctiesOphalen());
+				cache.Add(
+					NATFUNCTIESCACHEKEY,
+					_funDao.NationaalBepaaldeFunctiesOphalen(),
+					null,
+					System.Web.Caching.Cache.NoAbsoluteExpiration,
+					new TimeSpan(1, 0, 0, 0) /* bewaar 1 dag */,
+					System.Web.Caching.CacheItemPriority.Low,
+					null);
 			}
 
-			return cache[Properties.Settings.Default.NatFunctiesCacheKey] as IEnumerable<Functie>;
+			return cache[NATFUNCTIESCACHEKEY] as IEnumerable<Functie>;
 		}
 	}
 }

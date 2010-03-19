@@ -213,7 +213,7 @@ namespace Chiro.Gap.ServiceContracts
 
 		#region adressen
 		[OperationContract]
-		IEnumerable<GemeenteInfo> GemeentesOphalen();
+		IEnumerable<WoonPlaatsInfo> GemeentesOphalen();
 
 		/// <summary>
 		/// Haalt alle straten op uit een gegeven <paramref name="postNr"/>, waarvan de naam begint

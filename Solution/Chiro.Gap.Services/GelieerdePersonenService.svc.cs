@@ -216,10 +216,10 @@ namespace Chiro.Gap.Services
 			try
 			{
 				nieuwAdres = _adrMgr.ZoekenOfMaken(
-					naarAdres.Straat,
+					naarAdres.StraatNaamNaam,
 					naarAdres.HuisNr,
 					naarAdres.Bus,
-					naarAdres.Gemeente,
+					naarAdres.WoonPlaatsID,
 					naarAdres.PostNr,
 					String.Empty);	// TODO: buitenlandse adressen (#238)
 			}
@@ -271,7 +271,7 @@ namespace Chiro.Gap.Services
 			Adres adres = null;
 			try
 			{
-				adres = _adrMgr.ZoekenOfMaken(adr.Straat, adr.HuisNr, adr.Bus, adr.Gemeente, adr.PostNr, String.Empty);
+				adres = _adrMgr.ZoekenOfMaken(adr.StraatNaamNaam, adr.HuisNr, adr.Bus, adr.WoonPlaatsID, adr.PostNr, String.Empty);
 			}
 			catch (AdresException ex)
 			{

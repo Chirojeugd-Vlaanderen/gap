@@ -19,6 +19,7 @@ using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WebApp.Models;
+using Chiro.Cdf.Ioc;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -27,9 +28,12 @@ namespace Chiro.Gap.WebApp.Controllers
 
 	public class PersonenController : BaseController
 	{
+		private AdressenHelper _adressenHelper;
+
 		public PersonenController(IServiceHelper serviceHelper)
 			: base(serviceHelper)
 		{
+			_adressenHelper = new AdressenHelper(serviceHelper);
 		}
 		// TODO er moeten ook nog een laatst gebruikte "actie" worden toegevoegd, niet alleen actie id
 
@@ -327,12 +331,35 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.AdresType = (from bewoner in model.Bewoners
 							   where bewoner.PersoonID == persoonID
 							   select bewoner.AdresType).FirstOrDefault();
+			model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(a.PostNr);
 
 			// Standaard verhuist iedereen mee.
 			model.PersoonIDs = (from b in a.Bewoners
 								select b.PersoonID).ToList();
 
 			model.Titel = "Personen Verhuizen";
+			return View("AdresBewerken", model);
+		}
+
+		/// <summary>
+		/// Ook in de view Verhuizen krijg je - indien javascript niet werkt - een knop
+		/// 'Woonplaatsen ophalen', waarmee het lijstje met woonplaatsen moet worden gevuld.
+		/// </summary>
+		/// <param name="model">informatie over het nieuw adres</param>
+		/// <param name="groepID">ID van de geselecteerde groep</param>
+		/// <returns>Opnieuw de view AdresBewerken, maar met het lijstje woonplaatsen ingevuld</returns>
+		[ActionName("Verhuizen")]
+		[AcceptVerbs(HttpVerbs.Post)]
+		[ParameterAccepteren(Naam = "action", Waarde = "Woonplaatsen ophalen")]
+		public ActionResult Verhuizen_WoonplaatsenOphalen(AdresModel model, int groepID)
+		{
+			// TODO: Deze method is identiek aan NieuwAdres_WoonPlaatsenOphalen.
+			// Dat moet dus niet dubbel geschreven zijn
+
+			BaseModelInit(model, groepID);
+			model.Bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(svc => svc.HuisGenotenOphalen(model.AanvragerID));
+			model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
+
 			return View("AdresBewerken", model);
 		}
 
@@ -344,6 +371,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepID">Huidig geslecteerde groep van de gebruiker</param>
 		/// <returns>De view 'EditRest' indien OK, anders opnieuw de view 'AdresBewerken'.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
+		[ParameterAccepteren(Naam = "action", Waarde = "Bewaren")]
 		public ActionResult Verhuizen(AdresModel model, int groepID)
 		{
 			try
@@ -376,6 +404,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				// Maar ik toon de bewoners wel, dus moeten die hier opnieuw
 				// uit de database gehaald worden:
 				model.Bewoners = (ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(l => l.AdresMetBewonersOphalen(model.OudAdresID))).Bewoners;
+				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
 				return View("AdresBewerken", model);
 			}
 			catch
@@ -443,8 +472,35 @@ namespace Chiro.Gap.WebApp.Controllers
 			return View("AdresBewerken", model);
 		}
 
-		// post: /Personen/NieuwAdres
+		/// <summary>
+		/// Bij het posten van een nieuw adres krijg je - indien javascript niet werkt - een knop
+		/// 'Woonplaatsen ophalen', waarmee het lijstje met woonplaatsen wordt gevuld.
+		/// </summary>
+		/// <param name="model">informatie over het nieuw adres</param>
+		/// <param name="groepID">ID van de geselecteerde groep</param>
+		/// <returns>Opnieuw de view AdresBewerken, maar met het lijstje woonplaatsen ingevuld</returns>
+		[ActionName("NieuwAdres")]
 		[AcceptVerbs(HttpVerbs.Post)]
+		[ParameterAccepteren(Naam="action", Waarde="Woonplaatsen ophalen")]
+		public ActionResult NieuwAdres_WoonplaatsenOphalen(AdresModel model, int groepID)
+		{
+			BaseModelInit(model, groepID);
+			model.Bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(svc => svc.HuisGenotenOphalen(model.AanvragerID));
+			model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
+
+			return View("AdresBewerken", model);
+		}
+
+
+		/// <summary>
+		/// Actie voor post van nieuw adres
+		/// </summary>
+		/// <param name="model">bevat de geposte informatie</param>
+		/// <param name="groepID">ID van huidig geselecteerde groep</param>
+		/// <returns>Zonder problemen wordt geredirect naar de actie 'persoon bewerken'.  Maar
+		/// bij een ongeldig adres krijg je opnieuw de view 'AdresBewerken'.</returns>
+		[AcceptVerbs(HttpVerbs.Post)]
+		[ParameterAccepteren(Naam = "action", Waarde = "Bewaren")]
 		public ActionResult NieuwAdres(AdresModel model, int groepID)
 		{
 			try
@@ -469,6 +525,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				// De mogelijke bewoners zijn op dit moment vergeten, en moeten dus
 				// terug opgevraagd worden.
 				model.Bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(l => l.HuisGenotenOphalen(model.AanvragerID));
+				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
 				return View("AdresBewerken", model);
 			}
 			catch
