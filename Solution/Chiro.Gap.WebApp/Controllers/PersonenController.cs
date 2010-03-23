@@ -40,7 +40,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		// GET: /Personen/
 		public ActionResult Index(int groepID)
 		{
-			return List(1, groepID, 0);
+			// redirect naar alle personen van de groep, pagina 1.
+			return RedirectToAction("List", new { groepID = groepID, page = 1, id = 0 });
 		}
 
 		/// <summary>
