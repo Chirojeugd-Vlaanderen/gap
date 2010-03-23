@@ -64,6 +64,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			var model = new Models.PersoonInfoModel();
 			BaseModelInit(model, groepID);
+			model.GekozenCategorieID = id;
 
 			// Alle personen bekijken
 			if (id == 0)
@@ -93,16 +94,38 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.Totaal = totaal;
 			}
 
-			var categories = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.Ophalen(groepID, GroepsExtras.Categorieen)).Categorie;
-			model.GroepsCategorieen = new SelectList(categories, "ID", "Naam");
+			model.GroepsCategorieen = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.Ophalen(groepID, GroepsExtras.Categorieen)).Categorie.ToList();
+			model.GroepsCategorieen.Add(new CategorieInfo { ID = 0, Naam = "Alle personen" });
 
 			return View("Index", model);
 		}
 
-		//
-		// POST: /Personen/List/{id}/{paginanummer}
+		/// <summary>
+		/// Bij postback naar List, wordt er gekeken wat er in model.GekozenCategorieID zit, en
+		/// wordt de lijst getoond van personen in die categorie
+		/// </summary>
+		/// <param name="model">model.GekozenCategorieID bevat de ID van de categorie waarvan de
+		/// personen getoond moeten worden.  Is deze 0, dan worden alle personen getoond</param>
+		/// <param name="groepID">ID van de groep waarin de gebruiker momenteel werkt</param>
+		/// <returns>Een redirect naar de juiste lijst</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult List(PersoonInfoModel model, int groepID)
+		{
+			return RedirectToAction(
+				"List", 
+				new { page = 1, id = model.GekozenCategorieID, groepID = groepID });
+		}
+
+		/// <summary>
+		/// Voert de gekozen actie in de dropdownlist van de personenlijstcontrol uit op de geselecteerde
+		/// personen.
+		/// </summary>
+		/// <param name="model">De property GekozenActie bepaalt wat er zal gebeuren met de gelieerde personen
+		/// met ID's in de property GeselecteerdePersonen.</param>
+		/// <param name="groepID">ID van de groep waarin de gebruiker op dit moment aan het werken is.</param>
+		/// <returns>Een redirect naar de juiste controller action</returns>
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult ToepassenOpSelectie(PersoonInfoModel model, int groepID)
 		{
 			if (model.GekozenActie == 1 && model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0)
 			{

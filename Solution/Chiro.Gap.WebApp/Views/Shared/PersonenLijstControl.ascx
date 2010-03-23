@@ -6,14 +6,14 @@
 <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.min.js")%>"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        $('input:submit').hide();
-
         $("#checkall").click(function() {
-	        $("INPUT[@name=GekozenGelieerdePersoonIDs][type='checkbox']").attr('checked', $("#checkall").is(':checked'));
+            $("INPUT[@name=GekozenGelieerdePersoonIDs][type='checkbox']").attr('checked', $("#checkall").is(':checked'));
         });
 
+        $('#kiesActie').hide();
+        
         $("#GekozenActie").change(function() {
-            $('input:submit').click();
+            $('#kiesActie').click();
         });
     });
 </script>
@@ -29,13 +29,13 @@
     int j = 0;
 %>
 
-<form id="mactie" action="" method="post">
-<input type="submit" value="List"/>
+<%using (Html.BeginForm("ToepassenOpSelectie", "Personen")){ %>
 <select id="GekozenActie" name="GekozenActie">
 <option value="0">Kies een actie ...</option>
 <option value="1">Lid maken</option>
 <option value="2">In (dezelfde) categorie stoppen</option>
 </select>
+<input id="kiesActie" type="submit" value="Uitvoeren"/>
 
 <div class="pager">
 Pagina: <%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.AantalPaginas, i => Url.Action("List", new { page = i })) %>
@@ -71,4 +71,6 @@ Pagina: <%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.AantalP
 <% } %>
 
 </table>
-</form>
+<%
+  }
+%>

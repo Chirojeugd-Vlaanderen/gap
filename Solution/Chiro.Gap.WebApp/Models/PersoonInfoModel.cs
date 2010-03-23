@@ -24,8 +24,9 @@ namespace Chiro.Gap.WebApp.Models
 
 		public List<int> GekozenGelieerdePersoonIDs { get; set; }
 		public int GekozenActie { get; set; }
+		public int GekozenCategorieID { get; set; }
 
-		public SelectList GroepsCategorieen { get; set; }
+		public IList<CategorieInfo> GroepsCategorieen { get; set; }
 
 		public PersoonInfoModel() : base() { }
 	}
