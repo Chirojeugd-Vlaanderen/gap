@@ -86,16 +86,31 @@ GO
 ALTER TABLE [pers].[PersoonVrijVeld]  WITH CHECK ADD  CONSTRAINT [FK_PersoonVrijVeld_GelieerdePersoon] FOREIGN KEY([GelieerdePersoonID]) REFERENCES [pers].[GelieerdePersoon] ([GelieerdePersoonID])
 GO
 
-ALTER TABLE [adr].[Straat]  WITH CHECK ADD  CONSTRAINT [FK_Straat_PostCode] FOREIGN KEY([PostNr]) REFERENCES [adr].[PostNr] ([PostNr])
+ALTER TABLE adr.WoonPlaats
+ADD CONSTRAINT FK_WoonPlaats_PostNummer
+FOREIGN KEY(PostNummer) REFERENCES adr.PostNr(PostNr);
 GO
 
-ALTER TABLE [adr].[Subgemeente]  WITH CHECK ADD  CONSTRAINT [FK_SubGemeente_PostCode] FOREIGN KEY([PostNr]) REFERENCES [adr].[PostNr] ([PostNr])
+ALTER TABLE adr.WoonPlaats
+ADD CONSTRAINT FK_WoonPlaats_Taal
+FOREIGN KEY(TaalID) REFERENCES Core.Taal(TaalID);
 GO
 
-ALTER TABLE [adr].[Adres]  WITH CHECK ADD  CONSTRAINT [FK_Adres_Straat] FOREIGN KEY([StraatID]) REFERENCES [adr].[Straat] ([StraatID])
+ALTER TABLE adr.StraatNaam
+ADD CONSTRAINT FK_StraatNaam_PostNummer
+FOREIGN KEY(PostNummer) REFERENCES adr.PostNr(PostNr);
 GO
 
-ALTER TABLE [adr].[Adres]  WITH CHECK ADD  CONSTRAINT [FK_Adres_Subgemeente] FOREIGN KEY([SubgemeenteID]) REFERENCES [adr].[Subgemeente] ([SubgemeenteID])
+ALTER TABLE adr.StraatNaam
+ADD CONSTRAINT FK_StraatNaam_Taal
+FOREIGN KEY(TaalID) REFERENCES Core.Taal(TaalID);
+GO
+
+
+ALTER TABLE [adr].[Adres]  WITH CHECK ADD  CONSTRAINT [FK_Adres_StraatNaam] FOREIGN KEY([StraatNaamID]) REFERENCES [adr].[StraatNaam] ([StraatNaamID])
+GO
+
+ALTER TABLE [adr].[Adres]  WITH CHECK ADD  CONSTRAINT [FK_Adres_WoonPlaats] FOREIGN KEY([WoonPlaatsID]) REFERENCES [adr].[WoonPlaats] ([WoonPlaatsID])
 GO
 
 ALTER TABLE [lid].[LeidingInAfdelingsJaar]  WITH CHECK ADD  CONSTRAINT [FK_LeidingInAfdelingsJaar_AfdelingsJaar] FOREIGN KEY([AfdelingsJaarID]) REFERENCES [lid].[AfdelingsJaar] ([AfdelingsJaarID])

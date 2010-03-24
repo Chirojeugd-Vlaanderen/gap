@@ -473,6 +473,7 @@ IF NOT EXISTS (SELECT 1 FROM lid.Functie WHERE Code=@testFunctieCode AND GroepID
 BEGIN
 	INSERT INTO lid.Functie(Naam, Code, GroepID, MaxAantal, MinAantal, MinLeefTijd, WerkJaarVan, WerkJaarTot)
 	VALUES(@testFunctieNaam, @testFunctieCode, @testGroepID, @testFunctieMaxAantal, 0, 0, 0, 0)
+	SET @testFunctieID = scope_identity();
 END
 ELSE
 BEGIN
@@ -532,7 +533,7 @@ END
 
 PRINT '-'
 PRINT 'Voor je deze database kan gebruiken moet je de volgende file update met de gegevens hier onder'
-PRINT 'FILE: source:trunk\Solution\TestProjecten\Chiro.Gap.Data.Test\TestInfo.cs'
+PRINT 'FILE: source:trunk\Solution\TestProjecten\Chiro.Gap.TestDbInfo\TestInfo.cs'
 PRINT 'aan te passen constanten: '
 PRINT '-'
 PRINT 'public const int GROEPID = ' + CAST(@testGroepID AS VARCHAR(10)) + ';';

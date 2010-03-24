@@ -140,9 +140,9 @@ CREATE TABLE #Adres(
 	Bus VARCHAR(10) NOT NULL,
 	HuisNr INT NOT NULL,
 	PostCode VARCHAR(10) NOT NULL,
-	StraatID INT NOT NULL,
-	SubgemeenteID INT NOT NULL,
-    PRIMARY KEY(StraatID, SubgemeenteID, HuisNr, Bus, PostCode));
+	StraatNaamID INT NOT NULL,
+	WoonPlaatsID INT NOT NULL,
+    PRIMARY KEY(StraatNaamID, WoonPlaatsID, HuisNr, Bus, PostCode));
 
 -- We kennen in Kipadmin geen Bus noch PostCode.
 -- De matching tussen een CRAB AdresID (Adressen bewaard in nieuwe CG2 database, gebaseerd op CRAB)
@@ -152,14 +152,14 @@ INSERT INTO #Adres
 	SELECT distinct '' AS Bus, 
 					CAST(kipadmin.dbo.EnkelCijfers(ka.Nr) AS INT) as HuisNr,
 					'' AS PostCode, 
-					s.StraatID, 
-					sg.SubgemeenteID 
-		FROM kipAdmin.dbo.kipAdres ka JOIN adr.Straat s 
+					s.StraatNaamID, 
+					sg.WoonPlaatsID 
+		FROM kipAdmin.dbo.kipAdres ka JOIN adr.StraatNaam s 
 				ON ka.Straat COLLATE SQL_Latin1_General_CP1_CI_AI = s.Naam 
-					AND ka.PostNr COLLATE SQL_Latin1_General_CP1_CI_AI = cast(s.PostNr as varchar(5))
-			JOIN adr.Subgemeente sg 
+					AND ka.PostNr COLLATE SQL_Latin1_General_CP1_CI_AI = cast(s.PostNummer as varchar(5))
+			JOIN adr.WoonPlaats sg 
 				ON Gemeente COLLATE SQL_Latin1_General_CP1_CI_AI = sg.Naam 
-					AND ka.PostNr COLLATE SQL_Latin1_General_CP1_CI_AI = cast(s.PostNr as varchar(5))
+					AND ka.PostNr COLLATE SQL_Latin1_General_CP1_CI_AI = cast(s.PostNummer as varchar(5))
 			JOIN kipAdmin.dbo.kipWoont kw 
 				ON kw.AdresId = ka.AdresId
 			JOIN pers.Persoon p 
@@ -168,29 +168,24 @@ INSERT INTO #Adres
 				ON p.PersoonID = gp.PersoonID
 WHERE gp.GroepID = @groepID
 
--- Het zou moeten zijn zoals hieronder uitgecommentarieerd: de adressen 
--- Venstraat 48, 2240 Viersel als
+-- de adressen 
+-- Venstraat 48, 2240 Viersel en
 -- Venstraat 48, 2240 Zandhoven
 -- mogen verschillend in de database zitten, hoewel het eigenlijk hetzelfde
 -- adres is (Viersel is deelgemeente van Zandhoven).  De gebruiker mag kiezen
 -- of hij fusiegemeente of deelgemeente gebruikt, en het is niet omdat groep A
 -- met deelgemeenten werkt, groep B dat ook moet doen.
 
---INSERT INTO adr.Adres (Bus,HuisNr,PostCode,StraatID,SubgemeenteID)
---SELECT * FROM #Adres a
---WHERE NOT EXISTS (SELECT 1 FROM adr.Adres WHERE Bus=a.Bus AND HuisNr = a.HuisNr AND PostCode = a.PostCode AND StraatID = a.StraatID AND SubgemeenteID = a.SubgemeenteID)
-
--- De constraint AK_Adres moet dus nog aangepast worden; voorlopig is het zo:
 
 -- Die adressen invoeren die nog niet bestaan in de database.
-INSERT INTO adr.Adres (Bus,HuisNr,PostCode,StraatID,SubgemeenteID)
-	SELECT Bus,HuisNr,max(PostCode),StraatID,max(SubgemeenteID) 
+INSERT INTO adr.Adres (Bus,HuisNr,PostCode,StraatNaamID,WoonPlaatsID)
+	SELECT Bus,HuisNr,PostCode,StraatNaamID,WoonPlaatsID
 		FROM #Adres a
 		WHERE NOT EXISTS (SELECT 1 FROM adr.Adres 
 									WHERE Bus COLLATE SQL_Latin1_General_CP1_CI_AI =a.Bus 
 										AND HuisNr = a.HuisNr 
-										AND StraatID = a.StraatID)
-GROUP BY StraatID, HuisNr, Bus
+										AND StraatNaamID = a.StraatNaamID
+										AND WoonPlaatsID = a.WoonPlaatsID)
 
 DROP TABLE #Adres
 
@@ -225,19 +220,19 @@ CREATE TABLE #PersoonsAdres(
 PRINT 'Insert in tijdelijke tabel'
 INSERT INTO #PersoonsAdres(Opmerking, PersoonId, AdresId, AdresTypeId)
 	SELECT distinct '',  p.PersoonID, a.AdresID, max(pat.AdresTypeID)
-		FROM kipAdmin.dbo.kipAdres ka JOIN adr.Straat s 
+		FROM kipAdmin.dbo.kipAdres ka JOIN adr.StraatNaam s 
 				ON ka.Straat COLLATE SQL_Latin1_General_CP1_CI_AI = s.Naam 
-					AND ka.PostNr COLLATE SQL_Latin1_General_CP1_CI_AI = cast(s.PostNr as varchar(5))
-			JOIN adr.Subgemeente sg 
+					AND ka.PostNr COLLATE SQL_Latin1_General_CP1_CI_AI = cast(s.PostNummer as varchar(5))
+			JOIN adr.WoonPlaats sg 
 				ON Gemeente COLLATE SQL_Latin1_General_CP1_CI_AI = sg.Naam 
-					AND ka.PostNr COLLATE SQL_Latin1_General_CP1_CI_AI = cast(s.PostNr as varchar(5))
+					AND ka.PostNr COLLATE SQL_Latin1_General_CP1_CI_AI = cast(sg.PostNummer as varchar(5))
 			JOIN kipAdmin.dbo.kipWoont kw 
 				ON kw.AdresId = ka.AdresId
 			JOIN pers.Persoon p 
 				ON kw.AdNr = p.AdNummer
 			JOIN adr.Adres a 
-				ON a.StraatID = s.StraatID 
-					AND a.SubgemeenteID = sg.SubgemeenteID 
+				ON a.StraatNaamID = s.StraatNaamID 
+					AND a.WoonPlaatsID = sg.WoonPlaatsID 
 					AND CAST(kipadmin.dbo.EnkelCijfers(ka.Nr) AS INT) = a.HuisNr
 			JOIN pers.GelieerdePersoon gp 
 				ON p.PersoonID = gp.PersoonID
@@ -336,3 +331,5 @@ INSERT INTO grp.GroepsWerkJaar(GroepID, WerkJaar)
 
 
 PRINT 'GroepID: ' + CAST(@GroepID AS VARCHAR(10))
+
+

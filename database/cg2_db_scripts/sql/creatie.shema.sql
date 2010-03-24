@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
--- Createie van de Schema's
+-- Creatie van de schema's
 EXEC sys.sp_executesql N'CREATE SCHEMA [adr] AUTHORIZATION [dbo]'
 GO
 EXEC sys.sp_executesql N'CREATE SCHEMA [auth] AUTHORIZATION [dbo]'
@@ -18,10 +18,21 @@ GO
 EXEC sys.sp_executesql N'CREATE SCHEMA [lid] AUTHORIZATION [dbo]'
 GO
 EXEC sys.sp_executesql N'CREATE SCHEMA [pers] AUTHORIZATION [dbo]'
-GO
-EXEC sys.sp_executesql N'CREATE SCHEMA [znd] AUTHORIZATION [dbo]'
+
 
 -- Creatie van de tabellen:
+
+-- ----------
+-- -- core --
+-- ----------
+
+CREATE TABLE core.Taal(
+	TaalID INT IDENTITY(1,1) NOT NULL,
+	Code VARCHAR(5) NOT NULL,
+	Naam VARCHAR(30) NOT NULL
+	PRIMARY KEY(TaalID));
+GO
+
 -- ----------
 -- --  grp --
 -- ----------
@@ -36,22 +47,6 @@ BEGIN
 		[Versie] [timestamp] NULL,
 		CONSTRAINT [PK_Groep] PRIMARY KEY CLUSTERED ([GroepID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
 	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-END
-GO
-CREATE UNIQUE NONCLUSTERED INDEX [AK_Groep_Code] ON [grp].[Groep] ([Code] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
-GO
-
--- ----------
--- --  adr --
--- ----------
---
-
-BEGIN
-	CREATE TABLE [adr].[PostNr](
-		[PostNr] [int] NOT NULL,
-		[Versie] [timestamp] NULL,
-		CONSTRAINT [PK_PostCode] PRIMARY KEY CLUSTERED ([PostNr] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
-	) ON [PRIMARY]
 END
 GO
 
@@ -113,8 +108,6 @@ BEGIN
 	) ON [PRIMARY]
 END
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [AK_Gav_Login] ON [auth].[Gav] ([Login] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
-GO
 
 --
 
@@ -147,13 +140,6 @@ END
 GO
 
 
-CREATE INDEX IDX_PersoonsAdres_PersoonID_AdresID ON [pers].[PersoonsAdres] 
-(
-	PersoonID ASC,
-	AdresID ASC
-)
-INCLUDE (AdresTypeID, Versie, PersoonsAdresID)
-go
 
 
 BEGIN
@@ -181,8 +167,6 @@ BEGIN
 END
 GO
 
-CREATE UNIQUE CLUSTERED INDEX [UQ_Lid] ON [lid].[Lid] ([GroepsWerkjaarID] ASC, 	[GelieerdePersoonID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
-GO
 
 EXEC sys.sp_addextendedproperty 
 	@name=N'MS_Description', 
@@ -325,8 +309,6 @@ BEGIN
 	) ON [PRIMARY]
 END
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [AK_GebruikersRecht_GroepID_GavID] ON [auth].[GebruikersRecht] ([GroepID] ASC,[GavID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
-GO
 
 BEGIN
 	CREATE TABLE [grp].[ChiroGroep](
@@ -350,11 +332,6 @@ BEGIN
 END
 GO
 
-CREATE NONCLUSTERED INDEX [IDX_GelieerdePersoon_GroepID] ON [pers].[GelieerdePersoon] ([GroepID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
-GO
-
-CREATE NONCLUSTERED INDEX [IDX_GelieerdePersoon_PersoonID] ON [pers].[GelieerdePersoon] ([PersoonID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
-GO
 
 BEGIN
 	CREATE TABLE [core].[Categorie](
@@ -381,8 +358,6 @@ BEGIN
 END
 GO
 
-CREATE UNIQUE NONCLUSTERED INDEX [IDX_GroepsWerkJaar_GroepID_WerkJaar] ON [grp].[GroepsWerkJaar] ([GroepID] ASC,[WerkJaar] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
-GO
 
 BEGIN
 	CREATE TABLE [pers].[PersoonsCategorie](
@@ -408,16 +383,6 @@ BEGIN
 END
 GO
 
-CREATE INDEX IDX_CommunicatieVorm_GelieerdePersoonID_CommunicatieTypeID_CommunicatieVormID 
-ON pers.CommunicatieVorm
-(
-	GelieerdePersoonID ASC,
-	CommunicatieTypeID ASC,
-	CommunicatieVormID ASC
-)
-INCLUDE (Nota, Nummer, IsGezinsgebonden, Voorkeur, Versie) 
-go
-
 BEGIN
 	CREATE TABLE [pers].[PersoonVrijVeld](
 		[Waarde] [varchar](320) NOT NULL,
@@ -429,25 +394,42 @@ BEGIN
 END
 GO
 
-BEGIN
-	CREATE TABLE [adr].[Straat](
-		[StraatID] [int] IDENTITY(1,1) NOT NULL,
-		[PostNr] [int] NOT NULL,
-		[Naam] [varchar](80) NOT NULL,
-		[Versie] [timestamp] NULL,
-		CONSTRAINT [PK_Straat] PRIMARY KEY CLUSTERED ([StraatID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
-	) ON [PRIMARY]
-END
+
+-- ----------
+-- --  adr --
+-- ----------
+--
 
 BEGIN
-	CREATE TABLE [adr].[Subgemeente](
-		[SubgemeenteID] [int] IDENTITY(1,1) NOT NULL,
+	CREATE TABLE [adr].[PostNr](
 		[PostNr] [int] NOT NULL,
-		[Naam] [varchar](80) NOT NULL,
 		[Versie] [timestamp] NULL,
-		CONSTRAINT [PK_Subgemeente] PRIMARY KEY CLUSTERED ([SubgemeenteID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+		CONSTRAINT [PK_PostCode] PRIMARY KEY CLUSTERED ([PostNr] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
 	) ON [PRIMARY]
 END
+GO
+
+
+CREATE TABLE adr.StraatNaam(
+	StraatNaamID INT IDENTITY(1,1) NOT NULL,
+	PostNummer INT NOT NULL,
+	Naam VARCHAR(80) NOT NULL,
+	TaalID INT NOT NULL,
+	CrabSubstraatID INT,
+	Versie TIMESTAMP,
+	PRIMARY KEY(StraatNaamID));
+GO
+
+CREATE TABLE adr.WoonPlaats(
+	WoonPlaatsID INT IDENTITY(1,1) NOT NULL,
+	PostNummer INT NOT NULL,
+	Naam VARCHAR(80) NOT NULL,
+	TaalID INT NOT NULL,
+	CrabPostKantonID INT,
+	Versie TIMESTAMP,
+	PRIMARY KEY(WoonPlaatsID));
+GO
+
 
 BEGIN
 	CREATE TABLE [adr].[Adres](
@@ -455,11 +437,11 @@ BEGIN
 		[HuisNr] [int] NULL,
 		[PostCode] [varchar](10) NOT NULL,
 		[AdresID] [int] IDENTITY(1,1) NOT NULL,
-		[StraatID] [int] NOT NULL,
-		[SubgemeenteID] [int] NOT NULL,
+		[StraatNaamID] [int] NOT NULL,
+		[WoonPlaatsID] [int] NOT NULL,
 		[Versie] [timestamp] NULL,
 		CONSTRAINT [PK_Adres] PRIMARY KEY CLUSTERED ([AdresID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY],
-		CONSTRAINT [AK_Adres] UNIQUE NONCLUSTERED ([StraatID] ASC,[HuisNr] ASC,[Bus] ASC, [SubgemeenteID] ASC, [PostCode] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+		CONSTRAINT [AK_Adres] UNIQUE NONCLUSTERED ([StraatNaamID] ASC,[HuisNr] ASC,[Bus] ASC, [WoonPlaatsID] ASC, [PostCode] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
 	) ON [PRIMARY]
 END
 
@@ -547,9 +529,6 @@ BEGIN
 		CONSTRAINT PK_Functie PRIMARY KEY (FunctieID ASC)
 	)
 END
-GO
-
-CREATE UNIQUE INDEX IX_Functie_Naam_GroepID ON lid.Functie(Naam, GroepID)
 GO
 
 -- lidfunctie

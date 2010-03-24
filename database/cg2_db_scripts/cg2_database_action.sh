@@ -36,15 +36,16 @@ Gebruik: $(basename $0) -h -a [creatie | verwijder | beide ]  \\
 					     (We houden geen rekening met de 
 					      relaties tussen verschillende 
 					      scripts)
-                - beide: We gaan eerst verwijderen en dan opnieuw creeren.
+		                - beide: We gaan eerst verwijderen en dan 
+					opnieuw creeren.
 		         Bij het verwijderen houden we rekening met relaties 
 			 tussen de scripts: 
-				eerst verwijderen we alle mogelijkde data, 
+				eerst verwijderen we alle mogelijke data, 
 				dit is in volgorde: constraints, shema.
 				De gegevens en test gegevens gaan samen weg 
 				met het verwijderen van de de tabellen (shema)
 				Het creeren moet in de volgorde: shema, 
-				constraints, gegevens, test.
+				constraints, gegevens, test, indexes.
 				Waar we stoppen is afhankelijk van de '-t' optie. 
 
         -t: Welk type actie wil je doen
@@ -61,6 +62,9 @@ Gebruik: $(basename $0) -h -a [creatie | verwijder | beide ]  \\
 			Communictie types, .... 
                 - test: We gaan de geevens nodig voor de test omgeving 
 			creeren of verwijderen (afh van optie -a)
+		- indexes: Belangrijk voor performant opzoeken, maar best
+			pas creeren als alle initiele data geimporteerd is
+			(anders kan je lang wachten op 160000 straten)
 				
 	-n name: We willen de database met naam verwijderen/creeren.
 		
@@ -88,7 +92,7 @@ EOF
 			;;
 		t) 	# Optie type van de actie door te geven.
 		    case ${OPTARG} in
-				shema | constraints | stored_procedures | gegevens | test) 	TYPE=${OPTARG}
+				shema | constraints | stored_procedures | gegevens | test | indexes) 	TYPE=${OPTARG}
 													;;
 				*)	echo "Fout: optie '${OPTARG}' kent de waarde '${OPTARG}' niet" >&2
 				    toon_help

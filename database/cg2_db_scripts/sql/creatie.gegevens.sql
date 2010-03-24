@@ -1,9 +1,10 @@
-
+:r ./sql/populate.core.Taal.sql
+GO
 :r ./sql/populate.adr.PostNr.sql
 GO
-:r ./sql/populate.adr.Subgemeente.sql
+:r ./sql/populate.adr.WoonPlaats.sql
 GO
-:r ./sql/populate.adr.Straat.sql
+:r ./sql/populate.adr.StraatNaam.sql
 GO
 :r ./sql/populate.lid.OfficieleAfdeling.sql
 GO
