@@ -70,7 +70,7 @@ namespace Chiro.Cdf.Data
 				}
 				else if (f.ID == 0 && be.ID == 0)
 				{
-					return ((object)be).Equals(obj);
+					return Object.ReferenceEquals(be, obj);
 				}
 				else
 				{

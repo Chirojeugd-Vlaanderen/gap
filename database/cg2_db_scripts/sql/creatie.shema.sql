@@ -526,6 +526,7 @@ BEGIN
     MinLeefTijd int NOT NULL,
     WerkJaarVan int NOT NULL,
     WerkJaarTot int NOT NULL,  -- indien 0: functie nog actief
+    IsNationaal  AS (CASE WHEN GroepID IS NULL then CONVERT(BIT,'true') ELSE CONVERT(BIT,'false') END),
 		CONSTRAINT PK_Functie PRIMARY KEY (FunctieID ASC)
 	)
 END

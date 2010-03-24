@@ -34,7 +34,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_WoonPlaats", "WoonPlaats", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.WoonPlaats), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Adres))]
 
 // Original file name:
-// Generation date: 24/03/2010 8:55:00
+// Generation date: 24/03/2010 11:16:11
 namespace Chiro.Gap.Orm
 {
     
@@ -3786,7 +3786,8 @@ namespace Chiro.Gap.Orm
         /// <param name="minLeefTijd">Initial value of MinLeefTijd.</param>
         /// <param name="werkJaarVan">Initial value of WerkJaarVan.</param>
         /// <param name="werkJaarTot">Initial value of WerkJaarTot.</param>
-        public static Functie CreateFunctie(string naam, string code, int id, int maxAantal, int minAantal, int minLeefTijd, int werkJaarVan, int werkJaarTot)
+        /// <param name="isNationaal">Initial value of IsNationaal.</param>
+        public static Functie CreateFunctie(string naam, string code, int id, int maxAantal, int minAantal, int minLeefTijd, int werkJaarVan, int werkJaarTot, bool isNationaal)
         {
             Functie functie = new Functie();
             functie.Naam = naam;
@@ -3797,6 +3798,7 @@ namespace Chiro.Gap.Orm
             functie.MinLeefTijd = minLeefTijd;
             functie.WerkJaarVan = werkJaarVan;
             functie.WerkJaarTot = werkJaarTot;
+            functie.IsNationaal = isNationaal;
             return functie;
         }
         /// <summary>
@@ -4006,6 +4008,29 @@ namespace Chiro.Gap.Orm
         private int _WerkJaarTot;
         partial void OnWerkJaarTotChanging(int value);
         partial void OnWerkJaarTotChanged();
+        /// <summary>
+        /// There are no comments for Property IsNationaal in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsNationaal
+        {
+            get
+            {
+                return this._IsNationaal;
+            }
+            set
+            {
+                this.OnIsNationaalChanging(value);
+                this.ReportPropertyChanging("IsNationaal");
+                this._IsNationaal = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("IsNationaal");
+                this.OnIsNationaalChanged();
+            }
+        }
+        private bool _IsNationaal;
+        partial void OnIsNationaalChanging(bool value);
+        partial void OnIsNationaalChanged();
         /// <summary>
         /// There are no comments for Groep in the schema.
         /// </summary>

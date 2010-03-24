@@ -456,7 +456,7 @@ namespace Chiro.Gap.Workers
 					MinLeefTijd = minLeeftijd,
 					Naam = naam,
 					WerkJaarTot = 0,
-					WerkJaarVan = werkJaarVan
+					WerkJaarVan = werkJaarVan, IsNationaal = false
 				};
 
 				g.Functie.Add(f);

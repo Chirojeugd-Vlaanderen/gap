@@ -64,7 +64,7 @@ namespace Chiro.Gap.Workers
 		public Functie Bewaren(Functie functie)
 		{
 			if (NationaalBepaaldeFunctiesOphalen().Contains(functie)
-				|| functie.Groep == null
+				|| functie.IsNationaal
 				|| !_autorisatieMgr.IsGavGroep(functie.Groep.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGavFunctie);
@@ -134,7 +134,7 @@ namespace Chiro.Gap.Workers
 				{
 					throw new GeenGavException(Properties.Resources.GeenGavFunctie);
 				}
-				if (!IsNationaalBepaald(f) && f.Groep.ID != lid.GroepsWerkJaar.Groep.ID)
+				if (!f.IsNationaal && f.Groep.ID != lid.GroepsWerkJaar.Groep.ID)
 				{
 					throw new FoutieveGroepException(Properties.Resources.FoutieveGroepFunctie);
 				}
@@ -252,18 +252,6 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Controleert of de functie <paramref name="f"/> nationaal bepaald is.
-		/// </summary>
-		/// <param name="f">Te controleren functie</param>
-		/// <returns><c>true</c> enkel als de functie nationaal bepaald is</returns>
-		private bool IsNationaalBepaald(Functie f)
-		{
-			// FIXME: Dit is nogal gevaarlijk, want wie weet is de groep gewoon niet gefetcht.
-
-			return f.Groep == null;
-		}
-
-		/// <summary>
 		/// Kijkt na voor een gegeven <paramref name="groepsWerkJaar"/> of de maximum- en
 		/// minimumaantallen van de functies (eigen en nationaal bepaald) niet overschreden zijn.
 		/// </summary>
@@ -321,7 +309,7 @@ namespace Chiro.Gap.Workers
 
 				var nietToegekendeFuncties = from fn in functies
 							     where !toegekendeFuncties.Contains(fn)
-								&& (fn.Groep == null || fn.Groep == groepsWerkJaar.Groep)
+								&& (fn.IsNationaal || fn.Groep == groepsWerkJaar.Groep)
 								// bovenstaande vermijdt groepsvreemde functies
 							     select fn;
 

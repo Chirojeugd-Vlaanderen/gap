@@ -275,6 +275,7 @@
           <Property Name="MinLeefTijd" Type="int" Nullable="false" />
           <Property Name="WerkJaarVan" Type="int" Nullable="false" />
           <Property Name="WerkJaarTot" Type="int" Nullable="false" />
+          <Property Name="IsNationaal" Type="bit" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Kind">
           <Key>
@@ -1089,7 +1090,8 @@
           <Property Name="WerkJaarVan" Type="Int32" Nullable="false" />
           <Property Name="WerkJaarTot" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_Functie_Groep" FromRole="Functie" ToRole="Groep" />
-          <NavigationProperty Name="Lid" Relationship="ChiroGroepModel.LidFunctie" FromRole="Functie" ToRole="Lid" /></EntityType>
+          <NavigationProperty Name="Lid" Relationship="ChiroGroepModel.LidFunctie" FromRole="Functie" ToRole="Lid" />
+          <Property Name="IsNationaal" Type="Boolean" Nullable="false" /></EntityType>
         <Association Name="FK_Functie_Groep">
           <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="0..1" />
           <End Type="ChiroGroepModel.Functie" Role="Functie" Multiplicity="*" /></Association>
@@ -1395,6 +1397,7 @@
           <EntitySetMapping Name="Functie">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Functie)">
               <MappingFragment StoreEntitySet="Functie">
+                <ScalarProperty Name="IsNationaal" ColumnName="IsNationaal" />
                 <ScalarProperty Name="WerkJaarTot" ColumnName="WerkJaarTot" />
                 <ScalarProperty Name="WerkJaarVan" ColumnName="WerkJaarVan" />
                 <ScalarProperty Name="MinLeefTijd" ColumnName="MinLeefTijd" />

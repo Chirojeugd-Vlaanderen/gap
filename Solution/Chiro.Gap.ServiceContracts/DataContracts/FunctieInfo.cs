@@ -27,6 +27,6 @@ namespace Chiro.Gap.ServiceContracts
 		[DataMember]
 		public int WerkJaarTot { get; set; }
 		[DataMember]
-		public bool IsNationaalBepaald { get; set; }
+		public bool IsNationaal { get; set; }
 	}
 }

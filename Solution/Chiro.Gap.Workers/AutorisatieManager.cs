@@ -146,7 +146,7 @@ namespace Chiro.Gap.Workers
 		{
 			Functie f = _functiesDao.Ophalen(functieID, fnc => fnc.Groep);
 
-			return (f.Groep == null || IsGavGroep(f.Groep.ID));
+			return (f.IsNationaal || IsGavGroep(f.Groep.ID));
 		}
 		#endregion
 

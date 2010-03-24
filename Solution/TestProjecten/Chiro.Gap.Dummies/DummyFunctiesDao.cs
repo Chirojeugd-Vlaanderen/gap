@@ -40,12 +40,14 @@ namespace Chiro.Gap.Dummies
 					ID = (int)GepredefinieerdeFunctieType.ContactPersoon,
 					Code = "GG1",
 					MaxAantal = 1,
-					MinAantal = 1},
+					MinAantal = 1,
+					IsNationaal = true},
 				new Functie {
 					ID = (int)GepredefinieerdeFunctieType.FinancieelVerantwoordelijke,
 					Code = "FI",
 					MaxAantal = 1,
-					MinAantal = 1}
+					MinAantal = 1,
+					IsNationaal = true}
 			};
 		}
 

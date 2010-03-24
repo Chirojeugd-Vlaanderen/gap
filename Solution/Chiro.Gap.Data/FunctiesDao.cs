@@ -90,7 +90,7 @@ namespace Chiro.Gap.Data.Ef
 			using (var db = new ChiroGroepEntities())
 			{
 				resultaat = (from f in db.Functie
-					     where f.Groep == null
+					     where f.IsNationaal
 					     select f).ToList();
 			}
 			return Utility.DetachObjectGraph(resultaat);

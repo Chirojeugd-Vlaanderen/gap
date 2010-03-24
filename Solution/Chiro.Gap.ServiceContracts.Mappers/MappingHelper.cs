@@ -89,8 +89,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst => dst.GeboorteJaarTot, opt => opt.MapFrom(src => 0))
 				.ForMember(dst => dst.AfdelingsJaarMagVerwijderdWorden, opt => opt.MapFrom(src => false));
 
-			Mapper.CreateMap<Functie, FunctieInfo>()
-				.ForMember(dst => dst.IsNationaalBepaald, opt => opt.MapFrom(src => src.Groep == null));
+			Mapper.CreateMap<Functie, FunctieInfo>();
 
 			Mapper.CreateMap<Lid, LidInfo>()
 				.ForMember(
