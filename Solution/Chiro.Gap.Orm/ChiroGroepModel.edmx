@@ -883,7 +883,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="IsGezinsgebonden" Type="Boolean" Nullable="false" />
           <Property Name="Voorkeur" Type="Boolean" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="true" />
+          <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_CommunicatieVorm_GelieerdePersoon" FromRole="CommunicatieVorm" ToRole="GelieerdePersoon" />
           <NavigationProperty Name="CommunicatieType" Relationship="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" FromRole="CommunicatieVorm" ToRole="CommunicatieType" /></EntityType>
         <EntityType Name="GelieerdePersoon">

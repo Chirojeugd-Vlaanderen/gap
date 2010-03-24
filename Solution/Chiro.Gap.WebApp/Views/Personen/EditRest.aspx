@@ -40,24 +40,12 @@
             <p>
             <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.GeboorteDatum) %>
             <%=Html.DisplayFor(s=>s.HuidigePersoon.Persoon.GeboorteDatum)%>
-<%--            <% if (Model.HuidigePersoon.Persoon.GeboorteDatum.HasValue)
-               { %>
-                   <%=Model.HuidigePersoon.Persoon.GeboorteDatum.Value.ToString("d") %>
-            <% } %>--%>
             <%=Html.HiddenFor(s=>s.HuidigePersoon.Persoon.GeboorteDatum)%>
             </p>
             
             <p>
             <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.Geslacht) %>
             <%=Html.DisplayFor(s=>s.HuidigePersoon.Persoon.Geslacht)%>
-            <%--<%if (Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Man)
-              {%>
-                Man
-            <% }
-              else
-              {%>
-              Vrouw
-            <%} %>--%>
             <%=Html.HiddenFor(s=>s.HuidigePersoon.Persoon.Geslacht)%>
             </p>
             
@@ -93,16 +81,39 @@
     <h3>Communicatie</h3>
 
     <ul>
-    <% foreach (CommunicatieVorm cv in Model.HuidigePersoon.Communicatie)
-    { %>
-        <li>
-            <%=cv.CommunicatieType.Omschrijving %>:
-            <%=Html.Encode(cv.Nummer) %>
-            <%=cv.Voorkeur ? "(voorkeur)" : "" %>
-            <%=Html.ActionLink("[verwijderen]", "VerwijderenCommVorm", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%>
-            <%=Html.ActionLink("[bewerken]", "BewerkenCommVorm", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%>
-        </li>
-    <%} %>
+    <% 
+           var gegroepeerdeComm = Model.HuidigePersoon.Communicatie.GroupBy(cv => cv.CommunicatieType);
+           
+           foreach (var commType in gegroepeerdeComm)
+           {
+               %>
+               <li>
+                    <%=commType.Key.Omschrijving %>
+                    <ul>
+                    <%
+                        foreach (var cv in commType)
+                        {
+                            %>
+                            <li>
+                                <%=cv.Voorkeur ? "<strong>" + Html.Encode(cv.Nummer) + "</strong>" : Html.Encode(cv.Nummer)%>.
+                                <em><%=Html.Encode(cv.Nota) %></em>
+                                <%=Html.ActionLink(
+                                    "[verwijderen]", 
+                                    "VerwijderenCommVorm", 
+                                    new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%>
+                                <%=Html.ActionLink(
+                                    "[bewerken]", 
+                                    "BewerkenCommVorm", 
+                                    new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%>
+                            </li>                            
+                            <%
+                        }
+                    %>
+                    </ul>
+               </li>
+               <%
+           }
+           %>
     <li><%=Html.ActionLink("[communicatievorm toevoegen]", "NieuweCommVorm", new { gelieerdePersoonID = ViewData.Model.HuidigePersoon.ID })%></li>
     </ul>     
  

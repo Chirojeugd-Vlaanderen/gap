@@ -26,15 +26,22 @@ namespace Chiro.Gap.Orm
 			set { _teVerwijderen = value; }
 		}
 
+		// Custom Equals en GetHashCode; geeft mogelijk problemen bij deserializatie
+
+		public override int GetHashCode()
+		{
+			return ID.GetHashCode();
+		}
+
+		public override bool Equals(object obj)
+		{
+			return this.ChiroEquals(obj);
+		}
+
 		public string VersieString
 		{
 			get { return this.VersieStringGet(); }
 			set { this.VersieStringSet(value); }
-		}
-
-		public override int GetHashCode()
-		{
-			return 14;
 		}
 	}
 }

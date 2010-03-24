@@ -212,14 +212,18 @@ namespace Chiro.Gap.WebApp.Controllers
 			});
 		}
 
-		//
-		// GET: /Personen/EditRest/5
+		/// <summary>
+		/// Deze actie (TODO:) met onduidelijke naam toont gewoon de personenfiche van de gelieerde
+		/// persoon met id <paramref name="id"/>.
+		/// </summary>
+		/// <param name="id">ID van de te tonen gelieerde persoon</param>
+		/// <param name="groepID">GroepID van de groep waarin de gebruiker aan het werken is</param>
+		/// <returns>De view van de personenfiche</returns>
 		public ActionResult EditRest(int id, int groepID)
 		{
 			var model = new Models.GelieerdePersonenModel();
 			BaseModelInit(model, groepID);
-			var serviceResultaat = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(id));
-			model.HuidigePersoon = serviceResultaat;
+			model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(id));
 			model.Titel = model.HuidigePersoon.Persoon.VolledigeNaam;
 			return View("EditRest", model);
 		}

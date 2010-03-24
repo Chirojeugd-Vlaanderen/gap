@@ -42,37 +42,16 @@ namespace Chiro.Gap.Orm
 			set { _teVerwijderen = value; }
 		}
 
+		// Custom Equals en GetHashCode; geeft mogelijk problemen bij deserializatie
+
 		public override int GetHashCode()
 		{
-			// Al stiekem hopend op een bugfix ivm het desynchronisatieprobleem met entity's,
-			// gebruik ik toch al ID.GetHashCode() als hash code.
-
 			return ID.GetHashCode();
 		}
 
 		public override bool Equals(object obj)
 		{
-			if (obj is Functie)
-			{
-				Functie f = obj as Functie;
-
-				if (f.ID != 0 && f.ID == this.ID)
-				{
-					return true;
-				}
-				else if (f.ID == 0 && this.ID == 0)
-				{
-					return base.Equals(f);
-				}
-				else
-				{
-					return false;
-				}
-			}
-			else
-			{
-				return false;
-			}
+			return this.ChiroEquals(obj);
 		}
 
 		public string VersieString

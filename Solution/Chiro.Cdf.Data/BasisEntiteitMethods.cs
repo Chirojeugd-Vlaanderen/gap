@@ -48,6 +48,41 @@ namespace Chiro.Cdf.Data
 			be.Versie = Convert.FromBase64String(ver);
 		}
 
+		/// <summary>
+		/// Experimentele equals die objecten als gelijk beschouwt als hun ID's niet nul en gelijk zijn.
+		/// </summary>
+		/// <typeparam name="T">Type van <paramref name="be"/>, moet IBasisentiteit implementeren</typeparam>
+		/// <param name="be">te vergelijken entiteit</param>
+		/// <param name="obj">te vergelijken entiteit</param>
+		/// <returns>true indien <paramref name="be"/> en <paramref name="obj"/> hetzelfde niet-nulle ID 
+		/// hebben</returns>
+		/// <remarks>als zowel <paramref name="be"/> als <paramref name="obj"/> ID 0 hebben, wordt
+		/// Object.Equas aangeroepen</remarks>
+		public static bool ChiroEquals<T>(this T be, object obj) where T:class,IBasisEntiteit
+		{
+			if (obj is T)
+			{
+				T f = obj as T;
+
+				if (f.ID != 0 && f.ID == be.ID)
+				{
+					return true;
+				}
+				else if (f.ID == 0 && be.ID == 0)
+				{
+					return ((object)be).Equals(obj);
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+		}
+
 		#region Entity path marker methods
 
 		/// <summary>
