@@ -521,11 +521,11 @@ BEGIN
 		FunctieID int IDENTITY(1,1) NOT NULL,
 		GroepID int NULL,
 		Versie timestamp NULL,
-    MaxAantal int NOT NULL,  -- indien 0: onbeperkt
+    MaxAantal int NULL,  
     MinAantal int NOT NULL,
     MinLeefTijd int NOT NULL,
-    WerkJaarVan int NOT NULL,
-    WerkJaarTot int NOT NULL,  -- indien 0: functie nog actief
+    WerkJaarVan int NOT,
+    WerkJaarTot int NOT,  -- indien 0: functie nog actief
     IsNationaal  AS (CASE WHEN GroepID IS NULL then CONVERT(BIT,'true') ELSE CONVERT(BIT,'false') END),
 		CONSTRAINT PK_Functie PRIMARY KEY (FunctieID ASC)
 	)

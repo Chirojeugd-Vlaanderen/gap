@@ -27,7 +27,7 @@ namespace Chiro.Gap.Workers
 	{
 		public int ID;
 		public int Aantal;
-		public int Max;
+		public int? Max;
 		public int Min;
 	}
 		
@@ -138,8 +138,8 @@ namespace Chiro.Gap.Workers
 				{
 					throw new FoutieveGroepException(Properties.Resources.FoutieveGroepFunctie);
 				}
-				if (f.WerkJaarTot != 0 && f.WerkJaarTot < lid.GroepsWerkJaar.WerkJaar
-					|| f.WerkJaarVan != 0 && f.WerkJaarVan > lid.GroepsWerkJaar.WerkJaar)
+				if (f.WerkJaarTot < lid.GroepsWerkJaar.WerkJaar  // false als wjtot null
+					|| f.WerkJaarVan > lid.GroepsWerkJaar.WerkJaar)	// false als wjvan null
 				{
 					throw new GroepsWerkJaarException(Properties.Resources.FoutiefGroepsWerkJaarFunctie);
 				}
@@ -317,10 +317,10 @@ namespace Chiro.Gap.Workers
 
 				var problemenToegekendeFuncties =
 					from fn in toegekendeFuncties
-					where (fn.WerkJaarVan == 0 || fn.WerkJaarVan <= groepsWerkJaar.WerkJaar)
-						&& (fn.WerkJaarTot == 0 || fn.WerkJaarTot >= groepsWerkJaar.WerkJaar)
-						&& (fn.MaxAantal > 0 && fn.Lid.Count() > fn.MaxAantal
-							|| fn.MinAantal > 0 && fn.Lid.Count() < fn.MinAantal)
+					where (fn.WerkJaarVan == null || fn.WerkJaarVan <= groepsWerkJaar.WerkJaar)
+						&& (fn.WerkJaarTot == null || fn.WerkJaarTot >= groepsWerkJaar.WerkJaar)
+						&& (fn.Lid.Count() > fn.MaxAantal  // geeft false als maxaant == null
+							|| fn.Lid.Count() < fn.MinAantal) // geeft false als minaant null
 					select new Telling
 					{
 						ID = fn.ID,
@@ -333,8 +333,8 @@ namespace Chiro.Gap.Workers
 
 				var problemenOntbrekendeFuncties =
 					from fn in nietToegekendeFuncties
-					where (fn.WerkJaarVan == 0 || fn.WerkJaarVan <= groepsWerkJaar.WerkJaar)
-						&& (fn.WerkJaarTot == 0 || fn.WerkJaarTot >= groepsWerkJaar.WerkJaar)
+					where (fn.WerkJaarVan == null || fn.WerkJaarVan <= groepsWerkJaar.WerkJaar)
+						&& (fn.WerkJaarTot == null || fn.WerkJaarTot >= groepsWerkJaar.WerkJaar)
 						&& fn.MinAantal > 0
 					select new Telling
 					{

@@ -270,11 +270,11 @@
           <Property Name="FunctieID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="GroepID" Type="int" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
-          <Property Name="MaxAantal" Type="int" Nullable="false" />
+          <Property Name="MaxAantal" Type="int" />
           <Property Name="MinAantal" Type="int" Nullable="false" />
           <Property Name="MinLeefTijd" Type="int" Nullable="false" />
-          <Property Name="WerkJaarVan" Type="int" Nullable="false" />
-          <Property Name="WerkJaarTot" Type="int" Nullable="false" />
+          <Property Name="WerkJaarVan" Type="int" />
+          <Property Name="WerkJaarTot" Type="int" />
           <Property Name="IsNationaal" Type="bit" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Kind">
@@ -1084,11 +1084,11 @@
           <Property Name="Code" Type="String" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Versie" Type="Binary" Nullable="true" />
-          <Property Name="MaxAantal" Type="Int32" Nullable="false" />
+          <Property Name="MaxAantal" Type="Int32" Nullable="true" />
           <Property Name="MinAantal" Type="Int32" Nullable="false" />
           <Property Name="MinLeefTijd" Type="Int32" Nullable="false" />
-          <Property Name="WerkJaarVan" Type="Int32" Nullable="false" />
-          <Property Name="WerkJaarTot" Type="Int32" Nullable="false" />
+          <Property Name="WerkJaarVan" Type="Int32" Nullable="true" />
+          <Property Name="WerkJaarTot" Type="Int32" Nullable="true" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_Functie_Groep" FromRole="Functie" ToRole="Groep" />
           <NavigationProperty Name="Lid" Relationship="ChiroGroepModel.LidFunctie" FromRole="Functie" ToRole="Lid" />
           <Property Name="IsNationaal" Type="Boolean" Nullable="false" /></EntityType>

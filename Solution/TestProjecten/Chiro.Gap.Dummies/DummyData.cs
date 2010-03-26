@@ -102,7 +102,7 @@ namespace Chiro.Gap.Dummies
 
 			// Functie (nationaal bepaald, maar dit ter zijde)
 
-			_redactie = gMgr.FunctieToevoegen(_dummyGroep, "Hoofdredacteur boekje", "HRE", 1, 0, 0, 0);
+			_redactie = gMgr.FunctieToevoegen(_dummyGroep, "Hoofdredacteur boekje", "HRE", 1, 0, 0, null);
 
 			// Afdelingen gekoppeld aan officiële afdelingen in afdelingsjaren
 

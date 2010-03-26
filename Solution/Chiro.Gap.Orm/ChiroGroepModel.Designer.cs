@@ -34,7 +34,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_WoonPlaats", "WoonPlaats", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.WoonPlaats), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Adres))]
 
 // Original file name:
-// Generation date: 24/03/2010 11:16:11
+// Generation date: 26/03/2010 9:15:30
 namespace Chiro.Gap.Orm
 {
     
@@ -3781,23 +3781,17 @@ namespace Chiro.Gap.Orm
         /// <param name="naam">Initial value of Naam.</param>
         /// <param name="code">Initial value of Code.</param>
         /// <param name="id">Initial value of ID.</param>
-        /// <param name="maxAantal">Initial value of MaxAantal.</param>
         /// <param name="minAantal">Initial value of MinAantal.</param>
         /// <param name="minLeefTijd">Initial value of MinLeefTijd.</param>
-        /// <param name="werkJaarVan">Initial value of WerkJaarVan.</param>
-        /// <param name="werkJaarTot">Initial value of WerkJaarTot.</param>
         /// <param name="isNationaal">Initial value of IsNationaal.</param>
-        public static Functie CreateFunctie(string naam, string code, int id, int maxAantal, int minAantal, int minLeefTijd, int werkJaarVan, int werkJaarTot, bool isNationaal)
+        public static Functie CreateFunctie(string naam, string code, int id, int minAantal, int minLeefTijd, bool isNationaal)
         {
             Functie functie = new Functie();
             functie.Naam = naam;
             functie.Code = code;
             functie.ID = id;
-            functie.MaxAantal = maxAantal;
             functie.MinAantal = minAantal;
             functie.MinLeefTijd = minLeefTijd;
-            functie.WerkJaarVan = werkJaarVan;
-            functie.WerkJaarTot = werkJaarTot;
             functie.IsNationaal = isNationaal;
             return functie;
         }
@@ -3896,9 +3890,9 @@ namespace Chiro.Gap.Orm
         /// <summary>
         /// There are no comments for Property MaxAantal in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int MaxAantal
+        public global::System.Nullable<int> MaxAantal
         {
             get
             {
@@ -3913,8 +3907,8 @@ namespace Chiro.Gap.Orm
                 this.OnMaxAantalChanged();
             }
         }
-        private int _MaxAantal;
-        partial void OnMaxAantalChanging(int value);
+        private global::System.Nullable<int> _MaxAantal;
+        partial void OnMaxAantalChanging(global::System.Nullable<int> value);
         partial void OnMaxAantalChanged();
         /// <summary>
         /// There are no comments for Property MinAantal in the schema.
@@ -3965,9 +3959,9 @@ namespace Chiro.Gap.Orm
         /// <summary>
         /// There are no comments for Property WerkJaarVan in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int WerkJaarVan
+        public global::System.Nullable<int> WerkJaarVan
         {
             get
             {
@@ -3982,15 +3976,15 @@ namespace Chiro.Gap.Orm
                 this.OnWerkJaarVanChanged();
             }
         }
-        private int _WerkJaarVan;
-        partial void OnWerkJaarVanChanging(int value);
+        private global::System.Nullable<int> _WerkJaarVan;
+        partial void OnWerkJaarVanChanging(global::System.Nullable<int> value);
         partial void OnWerkJaarVanChanged();
         /// <summary>
         /// There are no comments for Property WerkJaarTot in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int WerkJaarTot
+        public global::System.Nullable<int> WerkJaarTot
         {
             get
             {
@@ -4005,8 +3999,8 @@ namespace Chiro.Gap.Orm
                 this.OnWerkJaarTotChanged();
             }
         }
-        private int _WerkJaarTot;
-        partial void OnWerkJaarTotChanging(int value);
+        private global::System.Nullable<int> _WerkJaarTot;
+        partial void OnWerkJaarTotChanging(global::System.Nullable<int> value);
         partial void OnWerkJaarTotChanged();
         /// <summary>
         /// There are no comments for Property IsNationaal in the schema.

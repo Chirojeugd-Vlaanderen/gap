@@ -387,7 +387,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="g">Groep waarvoor de functie gemaakt wordt</param>
 		/// <param name="naam">Naam van de functie</param>
 		/// <param name="code">Code van de functie</param>
-		/// <param name="maxAantal">Maximum aantal leden in de categorie.  Onbeperkt indien 0.</param>
+		/// <param name="maxAantal">Maximum aantal leden in de categorie.  Onbeperkt indien null.</param>
 		/// <param name="minAantal">Minimum aantal leden in de categorie.</param>
 		/// <param name="minLeeftijd">Minimumleeftijd voor categorieleden.</param>
 		/// <param name="werkJaarVan">Werkjaar vanaf wanneer de categorie gebruikt mag worden.</param>
@@ -396,10 +396,10 @@ namespace Chiro.Gap.Workers
 			Groep g,
 			string naam,
 			string code,
-			int maxAantal,
+			int? maxAantal,
 			int minAantal,
 			int minLeeftijd,
-			int werkJaarVan)
+			int? werkJaarVan)
 		{
 			if (!_autorisatieMgr.IsGavGroep(g.ID))
 			{
@@ -455,8 +455,9 @@ namespace Chiro.Gap.Workers
 					MinAantal = minAantal,
 					MinLeefTijd = minLeeftijd,
 					Naam = naam,
-					WerkJaarTot = 0,
-					WerkJaarVan = werkJaarVan, IsNationaal = false
+					WerkJaarTot = null,
+					WerkJaarVan = werkJaarVan, 
+					IsNationaal = false
 				};
 
 				g.Functie.Add(f);

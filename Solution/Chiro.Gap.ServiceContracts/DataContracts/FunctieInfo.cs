@@ -19,13 +19,13 @@ namespace Chiro.Gap.ServiceContracts
 		[DataMember]
 		public string Naam { get; set; }
 		[DataMember]
-		public int MaxAantal { get; set; }
+		public int? MaxAantal { get; set; }
 		[DataMember]
 		public int MinAantal { get; set; }
 		[DataMember]
-		public int WerkJaarVan { get; set; }
+		public int? WerkJaarVan { get; set; }
 		[DataMember]
-		public int WerkJaarTot { get; set; }
+		public int? WerkJaarTot { get; set; }
 		[DataMember]
 		public bool IsNationaal { get; set; }
 	}
