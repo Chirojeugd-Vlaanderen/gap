@@ -115,6 +115,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deze functie is niet toegelaten voor dit type lid (kind/leiding)..
+        /// </summary>
+        internal static string FoutiefLidType {
+            get {
+                return ResourceManager.GetString("FoutiefLidType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Je probeert een persoon te koppelen aan een categorie uit een andere groep..
         /// </summary>
         internal static string FoutieveGroepCategorie {
@@ -255,15 +264,6 @@ namespace Chiro.Gap.Workers.Properties {
         internal static string GeenSuperGav {
             get {
                 return ResourceManager.GetString("GeenSuperGav", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to De persoon is te jong..
-        /// </summary>
-        internal static string TeJong {
-            get {
-                return ResourceManager.GetString("TeJong", resourceCulture);
             }
         }
     }

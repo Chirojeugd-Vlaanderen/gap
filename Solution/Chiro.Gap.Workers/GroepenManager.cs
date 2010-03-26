@@ -389,7 +389,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="code">Code van de functie</param>
 		/// <param name="maxAantal">Maximum aantal leden in de categorie.  Onbeperkt indien null.</param>
 		/// <param name="minAantal">Minimum aantal leden in de categorie.</param>
-		/// <param name="minLeeftijd">Minimumleeftijd voor categorieleden.</param>
+		/// <param name="lidType">LidType waarvoor de functie van toepassing is</param>
 		/// <param name="werkJaarVan">Werkjaar vanaf wanneer de categorie gebruikt mag worden.</param>
 		/// <returns>De nieuwe (gekoppelde) functie</returns>
 		public Functie FunctieToevoegen(
@@ -398,7 +398,7 @@ namespace Chiro.Gap.Workers
 			string code,
 			int? maxAantal,
 			int minAantal,
-			int minLeeftijd,
+			LidType lidType,
 			int? werkJaarVan)
 		{
 			if (!_autorisatieMgr.IsGavGroep(g.ID))
@@ -453,7 +453,7 @@ namespace Chiro.Gap.Workers
 					Groep = g,
 					MaxAantal = maxAantal,
 					MinAantal = minAantal,
-					MinLeefTijd = minLeeftijd,
+					Type = lidType,
 					Naam = naam,
 					WerkJaarTot = null,
 					WerkJaarVan = werkJaarVan, 

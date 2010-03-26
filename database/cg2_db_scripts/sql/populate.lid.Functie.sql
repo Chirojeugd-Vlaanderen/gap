@@ -21,7 +21,7 @@ declare @gpID as int;
 
 if not exists (select 1 from lid.Functie where code=@gg1Code)
 begin
-	insert into lid.Functie(Naam, Code, MinAantal, MaxAantal, MinLeefTijd, WerkJaarVan, WerkJaarTot) values('Contactpersoon', @gg1Code, 1, 1, 16, null, null);
+	insert into lid.Functie(Naam, Code, MinAantal, MaxAantal, LidType, WerkJaarVan, WerkJaarTot) values('Contactpersoon', @gg1Code, 1, 1, 2, null, null);
 	set @gg1ID = scope_identity();
 end
 else
@@ -31,7 +31,7 @@ end
 
 if not exists (select 1 from lid.Functie where code=@gg2Code)
 begin
-	insert into lid.Functie(Naam, Code, MinAantal, MaxAantal, MinLeefTijd, WerkJaarVan, WerkJaarTot) values('Groepsleiding', @gg2Code, 0, null, 16, null, null);
+	insert into lid.Functie(Naam, Code, MinAantal, MaxAantal, LidType, WerkJaarVan, WerkJaarTot) values('Groepsleiding', @gg2Code, 0, null, 2, null, null);
 	set @gg2ID = scope_identity();
 end
 else
@@ -41,7 +41,7 @@ end
 
 if not exists (select 1 from lid.Functie where code=@gv1Code)
 begin
-	insert into lid.Functie(Naam, Code, MinAantal, MaxAantal, MinLeefTijd, WerkJaarVan, WerkJaarTot) values('VB', @gv1Code, 0, 0, 18, null, null);
+	insert into lid.Functie(Naam, Code, MinAantal, MaxAantal, LidType, WerkJaarVan, WerkJaarTot) values('VB', @gv1Code, 0, 0, 18, null, null);
 	set @gv1ID = scope_identity();
 end
 else
@@ -51,7 +51,7 @@ end
 
 if not exists (select 1 from lid.Functie where code=@fiCode)
 begin
-	insert into lid.Functie(Naam, Code, MinAantal, MaxAantal, MinLeefTijd, WerkJaarVan, WerkJaarTot) values('Financieel verantwoordelijke', @fiCode, 1, 1, 16, null, null);
+	insert into lid.Functie(Naam, Code, MinAantal, MaxAantal, LidType, WerkJaarVan, WerkJaarTot) values('Financieel verantwoordelijke', @fiCode, 1, 1, 2, null, null);
 	set @fiID = scope_identity();
 end
 else
@@ -61,7 +61,7 @@ end
 
 if not exists (select 1 from lid.Functie where code=@jrCode)
 begin
-	insert into lid.Functie(Naam, Code, MinAantal, MaxAantal, MinLeefTijd, WerkJaarVan, WerkJaarTot) values('Vertegenwoordiger in jeugdraad', @jrCode, 0, null, 16, null, null);
+	insert into lid.Functie(Naam, Code, MinAantal, MaxAantal, LidType, WerkJaarVan, WerkJaarTot) values('Vertegenwoordiger in jeugdraad', @jrCode, 0, null, 3, null, null);
 	set @jrID = scope_identity();
 end
 else
@@ -71,7 +71,7 @@ end
 
 if not exists (select 1 from lid.Functie where code=@kkCode)
 begin
-	insert into lid.Functie(Naam, Code, MinAantal, MaxAantal, MinLeefTijd, WerkJaarVan, WerkJaarTot) values('Contactpersoon kookploeg', @kkCode, 0, null, 16, null, null);
+	insert into lid.Functie(Naam, Code, MinAantal, MaxAantal, LidType, WerkJaarVan, WerkJaarTot) values('Contactpersoon kookploeg', @kkCode, 0, null, 3, null, null);
 	set @kkID = scope_identity();
 end
 else
@@ -81,7 +81,7 @@ end
 
 if not exists (select 1 from lid.Functie where code=@gpCode)
 begin
-	insert into lid.Functie(Naam, Code, MinAantal, MaxAantal, MinLeefTijd, WerkJaarVan, WerkJaarTot) values('Proost', @gpCode, 0, null, 16, null, null);
+	insert into lid.Functie(Naam, Code, MinAantal, MaxAantal, LidType, WerkJaarVan, WerkJaarTot) values('Proost', @gpCode, 0, null, 2, null, null);
 	set @gpID = scope_identity();
 end
 else

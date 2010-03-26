@@ -272,7 +272,7 @@
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
           <Property Name="MaxAantal" Type="int" />
           <Property Name="MinAantal" Type="int" Nullable="false" />
-          <Property Name="MinLeefTijd" Type="int" Nullable="false" />
+          <Property Name="LidType" Type="int" Nullable="false" />
           <Property Name="WerkJaarVan" Type="int" />
           <Property Name="WerkJaarTot" Type="int" />
           <Property Name="IsNationaal" Type="bit" StoreGeneratedPattern="Computed" />
@@ -1086,12 +1086,12 @@
           <Property Name="Versie" Type="Binary" Nullable="true" />
           <Property Name="MaxAantal" Type="Int32" Nullable="true" />
           <Property Name="MinAantal" Type="Int32" Nullable="false" />
-          <Property Name="MinLeefTijd" Type="Int32" Nullable="false" />
           <Property Name="WerkJaarVan" Type="Int32" Nullable="true" />
           <Property Name="WerkJaarTot" Type="Int32" Nullable="true" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_Functie_Groep" FromRole="Functie" ToRole="Groep" />
           <NavigationProperty Name="Lid" Relationship="ChiroGroepModel.LidFunctie" FromRole="Functie" ToRole="Lid" />
-          <Property Name="IsNationaal" Type="Boolean" Nullable="false" /></EntityType>
+          <Property Name="IsNationaal" Type="Boolean" Nullable="false" />
+          <Property Name="LidTypeInt" Type="Int32" Nullable="false" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" /></EntityType>
         <Association Name="FK_Functie_Groep">
           <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="0..1" />
           <End Type="ChiroGroepModel.Functie" Role="Functie" Multiplicity="*" /></Association>
@@ -1397,10 +1397,10 @@
           <EntitySetMapping Name="Functie">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Functie)">
               <MappingFragment StoreEntitySet="Functie">
+                <ScalarProperty Name="LidTypeInt" ColumnName="LidType" />
                 <ScalarProperty Name="IsNationaal" ColumnName="IsNationaal" />
                 <ScalarProperty Name="WerkJaarTot" ColumnName="WerkJaarTot" />
                 <ScalarProperty Name="WerkJaarVan" ColumnName="WerkJaarVan" />
-                <ScalarProperty Name="MinLeefTijd" ColumnName="MinLeefTijd" />
                 <ScalarProperty Name="MinAantal" ColumnName="MinAantal" />
                 <ScalarProperty Name="MaxAantal" ColumnName="MaxAantal" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
@@ -1536,18 +1536,16 @@
           <ConnectorPoint PointX="8.40625" PointY="9.375" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar" >
           <ConnectorPoint PointX="4" PointY="11.1710009765625" />
-          <ConnectorPoint PointX="4" PointY="12.103661076955726" />
-          <ConnectorPoint PointX="4.822916666666667" PointY="12.103661076955726" />
-          <ConnectorPoint PointX="4.989583333333333" PointY="12.103661076955726" />
-          <ConnectorPoint PointX="6.010416666666667" PointY="12.103661076955726" />
-          <ConnectorPoint PointX="6.177083333333333" PointY="12.103661076955726" />
-          <ConnectorPoint PointX="6.3697936666666672" PointY="12.103661076955726" />
-          <ConnectorPoint PointX="6.5364603333333333" PointY="12.103661076955726" />
-          <ConnectorPoint PointX="8.7916666666666661" PointY="12.103661076955726" />
-          <ConnectorPoint PointX="8.9583333333333339" PointY="12.103661076955726" />
-          <ConnectorPoint PointX="10.291666666666666" PointY="12.103661076955726" />
-          <ConnectorPoint PointX="10.458333333333334" PointY="12.103661076955726" />
-          <ConnectorPoint PointX="13.375" PointY="12.103661076955726" />
+          <ConnectorPoint PointX="4" PointY="12.153612774308353" />
+          <ConnectorPoint PointX="4.822916666666667" PointY="12.153612774308353" />
+          <ConnectorPoint PointX="4.989583333333333" PointY="12.153612774308353" />
+          <ConnectorPoint PointX="6.010416666666667" PointY="12.153612774308353" />
+          <ConnectorPoint PointX="6.177083333333333" PointY="12.153612774308353" />
+          <ConnectorPoint PointX="6.3697936666666672" PointY="12.153612774308353" />
+          <ConnectorPoint PointX="6.5364603333333333" PointY="12.153612774308353" />
+          <ConnectorPoint PointX="10.322916666666666" PointY="12.153612774308353" />
+          <ConnectorPoint PointX="10.489583333333334" PointY="12.153612774308353" />
+          <ConnectorPoint PointX="13.375" PointY="12.153612774308353" />
           </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_Lid_GroepsWerkjaar1" >
           <ConnectorPoint PointX="4.75" PointY="10.876511230468751" />
@@ -1655,10 +1653,10 @@
         <AssociationConnector Association="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" >
           <ConnectorPoint PointX="10.125" PointY="1.3783268229166668" />
           <ConnectorPoint PointX="9.625" PointY="1.3783268229166668" /></AssociationConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.Functie" Width="1.5" PointX="3.5" PointY="13.25" Height="2.7427376302083317" />
+        <EntityTypeShape EntityType="ChiroGroepModel.Functie" Width="1.5" PointX="3.5" PointY="13.25" Height="2.7427376302083335" />
         <AssociationConnector Association="ChiroGroepModel.FK_Functie_Groep" >
-          <ConnectorPoint PointX="2.9843775" PointY="8.1964322916666674" />
-          <ConnectorPoint PointX="2.9843775" PointY="14.621368815104166" />
+          <ConnectorPoint PointX="2.9179706249999997" PointY="8.1964322916666674" />
+          <ConnectorPoint PointX="2.9179706249999997" PointY="14.621368815104166" />
           <ConnectorPoint PointX="3.5" PointY="14.621368815104166" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.LidFunctie" >
           <ConnectorPoint PointX="4.90625" PointY="13.25" />

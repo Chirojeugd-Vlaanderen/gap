@@ -34,6 +34,14 @@ namespace Chiro.Gap.Orm
 	/// </summary>
 	public partial class Functie : IEfBasisEntiteit
 	{
+		/// <summary>
+		/// Standaardconstructor; maakt een functie die geschikt is voor alle types leden.
+		/// </summary>
+		public Functie()
+		{
+			Type = LidType.Alles;
+		}
+
 		private bool _teVerwijderen = false;
 
 		public bool TeVerwijderen
@@ -76,5 +84,15 @@ namespace Chiro.Gap.Orm
 						select f).FirstOrDefault();
 			}
 		}
+
+		/// <summary>
+		/// Koppeling tussen enum LidType en databaseveld LidTypeInt
+		/// </summary>
+		public LidType Type
+		{
+			get { return (LidType)LidTypeInt; }
+			set { LidTypeInt = (int)value; }
+		}
+
 	}
 }

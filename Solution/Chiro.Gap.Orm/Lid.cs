@@ -19,12 +19,15 @@ namespace Chiro.Gap.Orm
 	/// Maakt een onderscheid tussen kinderen en leiding
 	/// </summary>
 	[DataContract]
+	[Flags]
 	public enum LidType
 	{
 		[EnumMember]
-		Kind = 1,
+		Kind = 0x01,
 		[EnumMember]
-		Leiding = 2
+		Leiding = 0x02,
+		[EnumMember]
+		Alles = Kind|Leiding
 	}
 
 	/// <summary>
@@ -46,9 +49,12 @@ namespace Chiro.Gap.Orm
 			set { this.VersieStringSet(value); }
 		}
 
-		public override int GetHashCode()
+		/// <summary>
+		/// Geeft een LidType weer, wat Kind of Leiding kan zijn.
+		/// </summary>
+		public LidType Type
 		{
-			return 5;
+			get { return (this is Kind ? LidType.Kind : LidType.Leiding); }
 		}
 
 		/// <summary>
@@ -80,5 +86,17 @@ namespace Chiro.Gap.Orm
 
 			return result;
 		}
+
+
+		public override int GetHashCode()
+		{
+			return ID.GetHashCode();
+		}
+
+		public override bool Equals(object obj)
+		{
+			return this.ChiroEquals(obj);
+		}
+
 	}
 }

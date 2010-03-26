@@ -34,7 +34,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_WoonPlaats", "WoonPlaats", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.WoonPlaats), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Adres))]
 
 // Original file name:
-// Generation date: 26/03/2010 9:15:30
+// Generation date: 26/03/2010 9:38:13
 namespace Chiro.Gap.Orm
 {
     
@@ -3782,17 +3782,17 @@ namespace Chiro.Gap.Orm
         /// <param name="code">Initial value of Code.</param>
         /// <param name="id">Initial value of ID.</param>
         /// <param name="minAantal">Initial value of MinAantal.</param>
-        /// <param name="minLeefTijd">Initial value of MinLeefTijd.</param>
         /// <param name="isNationaal">Initial value of IsNationaal.</param>
-        public static Functie CreateFunctie(string naam, string code, int id, int minAantal, int minLeefTijd, bool isNationaal)
+        /// <param name="lidTypeInt">Initial value of LidTypeInt.</param>
+        public static Functie CreateFunctie(string naam, string code, int id, int minAantal, bool isNationaal, int lidTypeInt)
         {
             Functie functie = new Functie();
             functie.Naam = naam;
             functie.Code = code;
             functie.ID = id;
             functie.MinAantal = minAantal;
-            functie.MinLeefTijd = minLeefTijd;
             functie.IsNationaal = isNationaal;
+            functie.LidTypeInt = lidTypeInt;
             return functie;
         }
         /// <summary>
@@ -3934,29 +3934,6 @@ namespace Chiro.Gap.Orm
         partial void OnMinAantalChanging(int value);
         partial void OnMinAantalChanged();
         /// <summary>
-        /// There are no comments for Property MinLeefTijd in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int MinLeefTijd
-        {
-            get
-            {
-                return this._MinLeefTijd;
-            }
-            set
-            {
-                this.OnMinLeefTijdChanging(value);
-                this.ReportPropertyChanging("MinLeefTijd");
-                this._MinLeefTijd = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("MinLeefTijd");
-                this.OnMinLeefTijdChanged();
-            }
-        }
-        private int _MinLeefTijd;
-        partial void OnMinLeefTijdChanging(int value);
-        partial void OnMinLeefTijdChanged();
-        /// <summary>
         /// There are no comments for Property WerkJaarVan in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
@@ -4025,6 +4002,29 @@ namespace Chiro.Gap.Orm
         private bool _IsNationaal;
         partial void OnIsNationaalChanging(bool value);
         partial void OnIsNationaalChanged();
+        /// <summary>
+        /// There are no comments for Property LidTypeInt in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int LidTypeInt
+        {
+            internal get
+            {
+                return this._LidTypeInt;
+            }
+            set
+            {
+                this.OnLidTypeIntChanging(value);
+                this.ReportPropertyChanging("LidTypeInt");
+                this._LidTypeInt = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("LidTypeInt");
+                this.OnLidTypeIntChanged();
+            }
+        }
+        private int _LidTypeInt;
+        partial void OnLidTypeIntChanging(int value);
+        partial void OnLidTypeIntChanged();
         /// <summary>
         /// There are no comments for Groep in the schema.
         /// </summary>

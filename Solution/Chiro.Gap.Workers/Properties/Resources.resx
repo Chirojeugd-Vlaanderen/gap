@@ -175,9 +175,6 @@
   <data name="GeboorteDatumOntbreekt" xml:space="preserve">
     <value>De geboortedatum moet gekend zijn.</value>
   </data>
-  <data name="TeJong" xml:space="preserve">
-    <value>De persoon is te jong.</value>
-  </data>
   <data name="FunctieVol" xml:space="preserve">
     <value>Slechts {0} leden mogen de functie '{1}' hebben.</value>
   </data>
@@ -186,5 +183,8 @@
   </data>
   <data name="FoutiefGroepsWerkJaarFunctie" xml:space="preserve">
     <value>Je probeert een lid te koppelen aan een functie die niet geldig is voor het gegeven werkjaar.</value>
+  </data>
+  <data name="FoutiefLidType" xml:space="preserve">
+    <value>Deze functie is niet toegelaten voor dit type lid (kind/leiding).</value>
   </data>
 </root>

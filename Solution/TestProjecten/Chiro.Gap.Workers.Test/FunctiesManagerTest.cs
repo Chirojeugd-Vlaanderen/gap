@@ -92,7 +92,7 @@ namespace Chiro.Gap.Workers.Test
 				testData.NieuweFunctieNaam,
 				testData.NieuweFunctieCode,
 				1, 0,
-				0,
+				LidType.Alles,
 				0);
 
 			IEnumerable<Functie> functies = new Functie[] { f };
@@ -127,7 +127,7 @@ namespace Chiro.Gap.Workers.Test
 				testData.NieuweFunctieNaam,
 				testData.NieuweFunctieCode,
 				1, 0,
-				0,
+				LidType.Alles,
 				0);
 
 			IEnumerable<Functie> functies = new Functie[] { f };
@@ -163,13 +163,44 @@ namespace Chiro.Gap.Workers.Test
 				testData.NieuweFunctieNaam,
 				testData.NieuweFunctieCode,
 				1, 0,
-				0,
+				LidType.Alles,
 				testData.HuidigGwj.WerkJaar+1);	// pas geldig volgend groepswerkjaar
 
 			IEnumerable<Functie> functies = new Functie[] { f };
 
 			// Act
 
+			fm.Toekennen(testData.LidJos, functies);
+
+			// Assert
+			Assert.IsTrue(false);
+		}
+
+		/// <summary>
+		/// Functies voor leiding mogen niet aan een kind toegewezen worden.
+		/// </summary>
+		[ExpectedException(typeof(InvalidOperationException))]
+		[TestMethod()]
+		public void ToekennenLeidingsFunctieAanLid()
+		{
+			// Arrange
+
+			var testData = new DummyData();
+
+			FunctiesManager fm = Factory.Maak<FunctiesManager>();
+			GroepenManager gm = Factory.Maak<GroepenManager>();
+
+			Functie f = gm.FunctieToevoegen(
+				testData.DummyGroep,
+				testData.NieuweFunctieNaam,
+				testData.NieuweFunctieCode,
+				1, 0,
+				LidType.Leiding,
+				testData.HuidigGwj.WerkJaar);
+
+			IEnumerable<Functie> functies = new Functie[] { f };
+
+			// Act
 			fm.Toekennen(testData.LidJos, functies);
 
 			// Assert
@@ -194,7 +225,7 @@ namespace Chiro.Gap.Workers.Test
 				testData.NieuweFunctieNaam,
 				testData.NieuweFunctieCode,
 				1, 1,
-				0,
+				LidType.Alles,
 				0);
 
 			// Functie bewaren, zodat dummydao een ID toekent.
@@ -233,7 +264,7 @@ namespace Chiro.Gap.Workers.Test
 				testData.NieuweFunctieNaam,
 				testData.NieuweFunctieCode,
 				1, 1,
-				0,
+				LidType.Alles,
 				testData.HuidigGwj.WerkJaar + 1);	// pas volgend jaar geldig
 
 			// Jos krijgt alle nationaal bepaalde functies, zodat eventuele verplichte
@@ -347,7 +378,7 @@ namespace Chiro.Gap.Workers.Test
 				testData.NieuweFunctieNaam,
 				testData.NieuweFunctieCode,
 				1, 0,
-				0,
+				LidType.Alles,
 				0);
 
 			// Het DummyDao kent een ID toe aan f.  (Voor DummyDao is dat OK, maar in echte situaties

@@ -108,7 +108,6 @@ namespace Chiro.Gap.Workers
 		/// Er wordt verondersteld dat er heel wat geladen is!
 		/// - lid.groepswerkjaar.groep
 		/// - lid.functie
-		/// - lid.gelieerdePersoon.Persoon (voor leeftijd)
 		/// - voor elke functie:
 		///   - functie.lid (voor leden van dezelfde groep)
 		///   - functie.groep
@@ -143,28 +142,10 @@ namespace Chiro.Gap.Workers
 				{
 					throw new GroepsWerkJaarException(Properties.Resources.FoutiefGroepsWerkJaarFunctie);
 				}
-				if (f.MinLeefTijd != 0)
+
+				if ((f.Type & lid.Type) == 0)
 				{
-					// leeftijdsconstraints op functie.  Check geboortedatum
-
-					Debug.Assert(lid.GelieerdePersoon.Persoon != null);
-
-					if (lid.GelieerdePersoon.Persoon.GeboorteDatum == null)
-					{
-						// geboortedatum ontbreekt
-
-						// TODO: custom exception?
-						throw new InvalidOperationException(
-							Properties.Resources.GeboorteDatumOntbreekt);
-					}
-					else if (DatumHelper.LeefTijd(
-						(DateTime)lid.GelieerdePersoon.Persoon.GeboorteDatum) < f.MinLeefTijd)
-					{
-						// is persoon oud genoeg?
-
-						// TODO: Custom exception?
-						throw new InvalidOperationException(Properties.Resources.TeJong);
-					}
+					throw new InvalidOperationException(Properties.Resources.FoutiefLidType);
 				}
 
 				// Ik test hier bewust niet of er niet te veel leden zijn met de functie;
