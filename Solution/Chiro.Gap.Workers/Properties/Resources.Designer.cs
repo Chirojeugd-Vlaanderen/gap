@@ -70,6 +70,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minstens 1 gevraagde afdeling is niet beschikbaar in dit werkjaar..
+        /// </summary>
+        internal static string AfdelingNietBeschikbaar {
+            get {
+                return ResourceManager.GetString("AfdelingNietBeschikbaar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Er bestaat al een categorie met code &apos;{0}&apos;..
         /// </summary>
         internal static string CategorieBestaatAl {

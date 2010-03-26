@@ -43,19 +43,17 @@ namespace Chiro.Gap.ServiceContracts
 		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. Creëert of verwijdert geen leden, en leden
 		/// kunnen ook niet van werkjaar of van gelieerdepersoon veranderen.
 		/// </summary>
-		/// <param name="lid"></param>
-		/// <returns></returns>
+		/// <param name="lid">te bewaren lid</param>
 		[OperationContract]
-		LidInfo Bewaren(LidInfo lid);
+		void Bewaren(LidInfo lid);
 
 		/// <summary>
 		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. Creëert of verwijdert geen leden, en leden
 		/// kunnen ook niet van werkjaar of van gelieerdepersoon veranderen. Ook de afdelingen worden aangepast.
 		/// </summary>
-		/// <param name="lid"></param>
-		/// <returns></returns>
+		/// <param name="lid">te bewaren lid</param>
 		[OperationContract]
-		LidInfo BewarenMetAfdelingen(LidInfo lid);
+		void BewarenMetAfdelingen(LidInfo lid);
 
 		/// <summary>
 		/// Vervangt de functies van het lid bepaald door <paramref name="lidID"/> door de functies

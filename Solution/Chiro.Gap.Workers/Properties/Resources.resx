@@ -187,4 +187,7 @@
   <data name="FoutiefLidType" xml:space="preserve">
     <value>Deze functie is niet toegelaten voor dit type lid (kind/leiding).</value>
   </data>
+  <data name="AfdelingNietBeschikbaar" xml:space="preserve">
+    <value>Minstens 1 gevraagde afdeling is niet beschikbaar in dit werkjaar.</value>
+  </data>
 </root>

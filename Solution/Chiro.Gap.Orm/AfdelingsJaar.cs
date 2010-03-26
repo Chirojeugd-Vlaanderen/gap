@@ -66,9 +66,17 @@ namespace Chiro.Gap.Orm
 			set { this.VersieStringSet(value); }
 		}
 
+		// Custom Equals en GetHashCode; geeft mogelijk problemen bij deserializatie
+
 		public override int GetHashCode()
 		{
-			return 16;
+			return ID.GetHashCode();
 		}
+
+		public override bool Equals(object obj)
+		{
+			return this.ChiroEquals(obj);
+		}
+
 	}
 }

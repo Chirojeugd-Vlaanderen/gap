@@ -122,59 +122,47 @@ namespace Chiro.Gap.Services
 					select l.ID).ToList<int>();
 		}
 
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public LidInfo Bewaren(LidInfo lidinfo)
+		/// <summary>
+		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. Creëert of verwijdert geen leden, en leden
+		/// kunnen ook niet van werkjaar of van gelieerdepersoon veranderen.
+		/// </summary>
+		/// <param name="lid">te bewaren lid</param>
+		public void Bewaren(LidInfo lidinfo)
 		{
 			Lid lid = _ledenMgr.Ophalen(lidinfo.LidID, LidExtras.Geen);
 
-			Debug.Assert(lid is Leiding || lid is Kind);
-
-			if (lid is Kind && lidinfo.Type == LidType.Leiding)
-			{
-				throw new NotImplementedException();
-			}
-			else if (lid is Leiding && lidinfo.Type == LidType.Kind)
-			{
-				throw new NotImplementedException();
-			}
-
-			if (lid is Kind)
-			{
-				Kind kind = (Kind)lid;
-				kind.LidgeldBetaald = lidinfo.LidgeldBetaald;
-				kind.NonActief = lidinfo.NonActief;
-			}
-			else
-			{
-				Leiding leiding = (Leiding)lid;
-				leiding.DubbelPuntAbonnement = lidinfo.DubbelPunt;
-				leiding.NonActief = lidinfo.NonActief;
-			}
-
-			return Mapper.Map<Lid, LidInfo>(_ledenMgr.LidBewaren(lid));
+			_ledenMgr.InfoOvernemen(lidinfo, lid);
+			_ledenMgr.LidBewaren(lid);
 		}
 
+		/// <summary>
+		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. Creëert of verwijdert geen leden, en leden
+		/// kunnen ook niet van werkjaar of van gelieerdepersoon veranderen. Ook de afdelingen worden aangepast.
+		/// </summary>
+		/// <param name="lid">te bewaren lid</param>
 		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public LidInfo BewarenMetAfdelingen(LidInfo lidinfo)
+		public void BewarenMetAfdelingen(LidInfo lidinfo)
 		{
-			Bewaren(lidinfo);
-
+			// Haal oorspronkelijk lid op.
 			Lid lid = _ledenMgr.Ophalen(
 				lidinfo.LidID, 
 				LidExtras.Groep | LidExtras.Afdelingen | LidExtras.AlleAfdelingen);
 
+			// Neem gegevens uit lidinfo over.  
+
+			_ledenMgr.InfoOvernemen(lidinfo, lid);
+		
 			try
 			{
+				// persisteert meteen
+
 				_ledenMgr.AanpassenAfdelingenVanLid(lid, lidinfo.AfdelingIdLijst);
 			}
-			catch (OngeldigeActieException ex)
+			catch (OngeldigeActieException)
 			{
 				// TODO
-				throw ex;
+				throw;
 			}
-
-			return Mapper.Map<Lid, LidInfo>(_ledenMgr.LidBewaren(lid));
 		}
 
 		/* zie #273 */

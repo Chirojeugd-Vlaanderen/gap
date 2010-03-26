@@ -15,6 +15,7 @@ using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
@@ -481,6 +482,9 @@ namespace Chiro.Gap.Workers
 		/// <returns>Lidobject met gekoppeld(e) afdelingsja(a)r(en)</returns>
 		public Lid AanpassenAfdelingenVanLid(Lid l, IList<int> afdelingsIDs)
 		{
+			Debug.Assert(l.GroepsWerkJaar != null);
+			Debug.Assert(l.GroepsWerkJaar.AfdelingsJaar != null);
+
 			if (l is Kind)
 			{
 				Kind kind = (Kind)l;
@@ -522,38 +526,81 @@ namespace Chiro.Gap.Workers
 			else
 			{
 				Leiding leiding = (Leiding)l;
-				var afdelingsjaren = leiding.GroepsWerkJaar.AfdelingsJaar.ToList();
-				int checks = 0;
-				foreach (AfdelingsJaar aj in afdelingsjaren) // alle afdelingsjaren van de GROEP
-				{
-					// De leid(st)er moet in dat afdelingsjaar zitten
-					if (afdelingsIDs.Contains(aj.Afdeling.ID))
-					{
-						checks++;
 
-						// En hij/zij zit er nog niet in
-						if (leiding.AfdelingsJaar.FirstOrDefault(e => e.Afdeling.ID == aj.Afdeling.ID) == null)
-						{
-							// Voeg het dan toe
-							leiding.AfdelingsJaar.Add(aj);
-							aj.Leiding.Add(leiding);
-						}
-					}
-					else // De leid(st)er mag niet in dat afdelingsjaar zitten
-					{
-						// En hij/zij zit er wel in
-						if (leiding.AfdelingsJaar.FirstOrDefault(e => e.Afdeling.ID == aj.Afdeling.ID) != null)
-						{
-							// Verwijder hem/haar eruit
-							leiding.AfdelingsJaar.FirstOrDefault(e => e.ID == aj.ID).TeVerwijderen = true;
-						}
-					}
-				}
-				if (checks != afdelingsIDs.Count || afdelingsIDs.Count != leiding.AfdelingsJaar.Count)
+				// Controleer op voorhand of de gevraagde afdelingen wel geactiveerd zijn in het 
+				// groepswerkjaar van het lid.
+
+				var geldigeAfdelingIDs = from aj in leiding.GroepsWerkJaar.AfdelingsJaar
+							 select aj.Afdeling.ID;
+
+
+				var nietGevonden = from aid in afdelingsIDs
+						   where !(geldigeAfdelingIDs.Contains(aid))
+						   select aid;
+
+				if (nietGevonden.Count() > 0)
 				{
-					throw new OngeldigeActieException("Niet alle gekozen afdelingen zijn afdelingen van de groep in het gekozen werkjaar.");
+					throw new GroepsWerkJaarException(Properties.Resources.AfdelingNietBeschikbaar);
 				}
+
+				// Verwijder ontbrekende afdelingen;
+
+				var teVerwijderenAfdelingen = from aj in leiding.AfdelingsJaar
+							      where !afdelingsIDs.Contains(aj.Afdeling.ID)
+							      select aj;
+
+				foreach (var aj in teVerwijderenAfdelingen)
+				{
+					aj.TeVerwijderen = true;
+				}
+
+
+				// Ken nieuwe afdelingen toe
+
+				var nieuweAfdelingen = from aj in leiding.GroepsWerkJaar.AfdelingsJaar
+						       where afdelingsIDs.Contains(aj.Afdeling.ID)
+							       && !(leiding.AfdelingsJaar.Contains(aj))
+						       select aj;
+
+				foreach (var aj in nieuweAfdelingen)
+				{
+					leiding.AfdelingsJaar.Add(aj);
+					aj.Leiding.Add(leiding);
+				}
+
 				return _daos.LeidingDao.Bewaren(leiding, ldng => ldng.AfdelingsJaar);
+			}
+		}
+
+		/// <summary>
+		/// Neemt de info uit <paramref name="lidInfo"/> over in <paramref name="lid"/>
+		/// </summary>
+		/// <param name="lidinfo">LidInfo om over te nemen in <paramref name="lid"/></param>
+		/// <param name="lid">Lid dat <paramref name="lidInfo"/> moet krijgen</param>
+		public void InfoOvernemen(LidInfo lidInfo, Lid lid)
+		{
+			Debug.Assert(lid is Leiding || lid is Kind);
+
+			if (lid is Kind && lidInfo.Type == LidType.Leiding)
+			{
+				throw new NotImplementedException();
+			}
+			else if (lid is Leiding && lidInfo.Type == LidType.Kind)
+			{
+				throw new NotImplementedException();
+			}
+
+			if (lid is Kind)
+			{
+				Kind kind = (Kind)lid;
+				kind.LidgeldBetaald = lidInfo.LidgeldBetaald;
+				kind.NonActief = lidInfo.NonActief;
+			}
+			else
+			{
+				Leiding leiding = (Leiding)lid;
+				leiding.DubbelPuntAbonnement = lidInfo.DubbelPunt;
+				leiding.NonActief = lidInfo.NonActief;
 			}
 		}
 	}
