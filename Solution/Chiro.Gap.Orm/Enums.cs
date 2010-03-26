@@ -48,8 +48,16 @@ namespace Chiro.Gap.Orm
 		/// </summary>
 		[EnumMember]
 		Afdelingen = 0x02,
+		/// <summary>
+		/// Haalt alle afdelingen van het groepswerkjaar van het lid mee op
+		/// </summary>
 		[EnumMember]
-		Functies = 0x04,
+		AlleAfdelingen = 0x04,
+		/// <summary>
+		/// Haalt functies mee op
+		/// </summary>
+		[EnumMember]
+		Functies = 0x08,
 		[EnumMember]
 		Alles = Groep | Afdelingen | Functies
 	}

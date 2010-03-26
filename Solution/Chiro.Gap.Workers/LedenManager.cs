@@ -372,6 +372,10 @@ namespace Chiro.Gap.Workers
 					{
 						paths.Add(ld => ld.AfdelingsJaar.First().Afdeling);
 					}
+					if ((extras & LidExtras.AlleAfdelingen) != 0)
+					{
+						paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().Afdeling);
+					}
 					if ((extras & LidExtras.Functies) != 0)
 					{
 						paths.Add(ld => ld.Functie);

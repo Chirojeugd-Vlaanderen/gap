@@ -160,7 +160,9 @@ namespace Chiro.Gap.Services
 		{
 			Bewaren(lidinfo);
 
-			Lid lid = _ledenMgr.Ophalen(lidinfo.LidID, LidExtras.Groep | LidExtras.Afdelingen);
+			Lid lid = _ledenMgr.Ophalen(
+				lidinfo.LidID, 
+				LidExtras.Groep | LidExtras.Afdelingen | LidExtras.AlleAfdelingen);
 
 			try
 			{
