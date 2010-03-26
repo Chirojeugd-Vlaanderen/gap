@@ -53,7 +53,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <returns>Lijst leden die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
 		/// de gepredefinieerde functie met type <paramref name="f"/> hebben.</returns>
 		IList<Lid> OphalenUitFunctie(
-			GepredefinieerdeFunctieType f,
+			NationaleFunctie f,
 			int groepsWerkJaarID,
 			params Expression<Func<Lid, object>>[] paths);
 

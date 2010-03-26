@@ -42,7 +42,7 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		/// <param name="f">GepredefinieerdeFunctieType dat de op te halen functie bepaalt</param>
 		/// <returns>De gevraagde gepredefinieerde functie</returns>
-		public Functie Ophalen(GepredefinieerdeFunctieType f)
+		public Functie Ophalen(NationaleFunctie f)
 		{
 			return Ophalen((int)f);
 		}
@@ -74,7 +74,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="f">Gepredefinieerde functie</param>
 		/// <returns>Aantal leden uit de groep met ID <paramref name="groepID"/> met 
 		/// gepredefinieerde functie <paramref name="f"/></returns>
-		public int AantalLeden(int groepID, GepredefinieerdeFunctieType f)
+		public int AantalLeden(int groepID, NationaleFunctie f)
 		{
 			return AantalLeden(groepID, (int)f);
 		}

@@ -92,7 +92,7 @@ namespace Chiro.Gap.Services.Test
 
 			// Assert
 			var ids = (from f in actual.Functies select f.ID);
-			Assert.IsTrue(ids.Contains((int)GepredefinieerdeFunctieType.ContactPersoon));
+			Assert.IsTrue(ids.Contains((int)NationaleFunctie.ContactPersoon));
 			Assert.IsTrue(ids.Contains(TestInfo.FUNCTIEID));
 		}
 
@@ -112,8 +112,8 @@ namespace Chiro.Gap.Services.Test
 
 			int lidID = TestInfo.LID3ID;
 			IEnumerable<int> functieIDs = new int[] {
-				(int)GepredefinieerdeFunctieType.FinancieelVerantwoordelijke,
-				(int)GepredefinieerdeFunctieType.Vb,
+				(int)NationaleFunctie.FinancieelVerantwoordelijke,
+				(int)NationaleFunctie.Vb,
 				TestInfo.FUNCTIEID};
 			target.FunctiesVervangen(lidID, functieIDs);
 			#endregion
@@ -123,14 +123,14 @@ namespace Chiro.Gap.Services.Test
 			var funIDs = (from f in l.Functies select f.ID);
 
 			Assert.AreEqual(funIDs.Count(), 3);
-			Assert.IsTrue(funIDs.Contains((int)GepredefinieerdeFunctieType.FinancieelVerantwoordelijke));
-			Assert.IsTrue(funIDs.Contains((int)GepredefinieerdeFunctieType.Vb));
+			Assert.IsTrue(funIDs.Contains((int)NationaleFunctie.FinancieelVerantwoordelijke));
+			Assert.IsTrue(funIDs.Contains((int)NationaleFunctie.Vb));
 			Assert.IsTrue(funIDs.Contains(TestInfo.FUNCTIEID));
 			#endregion
 
 			#region Cleanup
 			target.FunctiesVervangen(lidID, new int[]{
-				(int)GepredefinieerdeFunctieType.ContactPersoon,
+				(int)NationaleFunctie.ContactPersoon,
 				TestInfo.FUNCTIEID});
 			#endregion
 		}

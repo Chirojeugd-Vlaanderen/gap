@@ -70,24 +70,9 @@ namespace Chiro.Gap.Orm.Test
 		{
 			Functie f = new Functie(); // TODO: Initialize to an appropriate value
 
-			f.ID = (int)GepredefinieerdeFunctieType.GroepsLeiding;
+			f.ID = (int)NationaleFunctie.GroepsLeiding;
 
-			Assert.AreEqual(f.GepredefinieerdeFunctie, GepredefinieerdeFunctieType.GroepsLeiding);
+			Assert.IsTrue(f.Is(NationaleFunctie.GroepsLeiding));
 		}
-
-		/// <summary>
-		///Controleert of een niet-gepredefinieerde functie wordt herkend.
-		///</summary>
-		[TestMethod()]
-		public void NietGepredefinieerdeFunctieTest()
-		{
-			Functie f = new Functie(); // TODO: Initialize to an appropriate value
-
-			f.ID = 2312;	// en nu maar hopen dat dit niet gepredefinieerd is.
-
-			Assert.AreEqual(f.GepredefinieerdeFunctie, GepredefinieerdeFunctieType.Geen);
-		}
-
-
 	}
 }

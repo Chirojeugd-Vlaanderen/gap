@@ -12,7 +12,7 @@ namespace Chiro.Gap.Dummies
 	{
 		#region IFunctiesDao Members
 
-		public Functie Ophalen(GepredefinieerdeFunctieType f)
+		public Functie Ophalen(NationaleFunctie f)
 		{
 			throw new NotImplementedException();
 		}
@@ -22,7 +22,7 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public int AantalLeden(int groepID, GepredefinieerdeFunctieType f)
+		public int AantalLeden(int groepID, NationaleFunctie f)
 		{
 			throw new NotImplementedException();
 		}
@@ -37,13 +37,13 @@ namespace Chiro.Gap.Dummies
 			return new Functie[]
 			{
 				new Functie { 
-					ID = (int)GepredefinieerdeFunctieType.ContactPersoon,
+					ID = (int)NationaleFunctie.ContactPersoon,
 					Code = "GG1",
 					MaxAantal = 1,
 					MinAantal = 1,
 					IsNationaal = true},
 				new Functie {
-					ID = (int)GepredefinieerdeFunctieType.FinancieelVerantwoordelijke,
+					ID = (int)NationaleFunctie.FinancieelVerantwoordelijke,
 					Code = "FI",
 					MaxAantal = 1,
 					MinAantal = 1,

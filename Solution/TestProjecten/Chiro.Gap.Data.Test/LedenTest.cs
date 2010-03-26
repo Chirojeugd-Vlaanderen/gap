@@ -241,7 +241,7 @@ namespace Chiro.Gap.Data.Test
 			// Act
 
 			var result = dao.OphalenUitFunctie(
-				GepredefinieerdeFunctieType.ContactPersoon,
+				NationaleFunctie.ContactPersoon,
 				TestInfo.GROEPSWERKJAARID,
 				ld => ld.GroepsWerkJaar.Groep,
 				ld => ld.Functie,
@@ -252,7 +252,7 @@ namespace Chiro.Gap.Data.Test
 			Assert.AreEqual(result.Count(), 1);
 			Assert.AreEqual(result.First().GelieerdePersoon.ID, TestInfo.GELIEERDEPERSOON3ID);
 			Assert.AreEqual(result.First().GroepsWerkJaar.Groep.ID, TestInfo.GROEPID);
-			Assert.AreEqual(result.First().Functie.First().ID, (int)GepredefinieerdeFunctieType.ContactPersoon);
+			Assert.AreEqual(result.First().Functie.First().ID, (int)NationaleFunctie.ContactPersoon);
 		}
 
 		/// <summary>

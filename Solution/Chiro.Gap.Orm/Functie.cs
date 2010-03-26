@@ -17,9 +17,8 @@ namespace Chiro.Gap.Orm
 	/// Sommige functies zijn gepredefinieerd, en hun codes moeten constant zijn.
 	/// (Dit is enkel van toepassing op nationaal gedefinieerde functies)
 	/// </summary>
-	public enum GepredefinieerdeFunctieType
+	public enum NationaleFunctie
 	{
-		Geen = 0,
 		ContactPersoon = 1,
 		GroepsLeiding = 2,
 		Vb = 3,
@@ -69,20 +68,13 @@ namespace Chiro.Gap.Orm
 		}
 
 		/// <summary>
-		/// Als de functie gepredefinieerd is, kom je via deze property te weten over welke
-		/// gepredefinieerde functie het gaat.
+		/// Controleert of de functie de nationale functie de nationale functie <paramref name="natFun"/> is.
 		/// </summary>
-		public GepredefinieerdeFunctieType GepredefinieerdeFunctie
+		/// <param name="natFun">Een nationale functie</param>
+		/// <returns><c>true</c> als de functie de nationale functie is, anders <c>false</c></returns>
+		public bool Is(NationaleFunctie natFun)
 		{
-			get
-			{
-				// Constructie met linq, en niet gewoon conversie, om default (0, 'Geen') te krijgen
-				// als de functiecode niet overeenkomt met een gepredefinieerde functie.
-				//
-				return (from GepredefinieerdeFunctieType f in Enum.GetValues(typeof(GepredefinieerdeFunctieType))
-						where (int)f == ID
-						select f).FirstOrDefault();
-			}
+			return ID == ((int)natFun);
 		}
 
 		/// <summary>

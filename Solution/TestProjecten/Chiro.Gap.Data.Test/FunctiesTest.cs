@@ -78,13 +78,13 @@ namespace Chiro.Gap.Data.Test
 			IFunctiesDao dao = Factory.Maak<IFunctiesDao>();
 
 			// Act
-			Functie gg1 = dao.Ophalen(GepredefinieerdeFunctieType.ContactPersoon);
-			Functie gg2 = dao.Ophalen(GepredefinieerdeFunctieType.GroepsLeiding);
-			Functie gv1 = dao.Ophalen(GepredefinieerdeFunctieType.Vb);
-			Functie fi = dao.Ophalen(GepredefinieerdeFunctieType.FinancieelVerantwoordelijke);
-			Functie jr = dao.Ophalen(GepredefinieerdeFunctieType.JeugdRaad);
-			Functie kk = dao.Ophalen(GepredefinieerdeFunctieType.KookPloeg);
-			Functie gp = dao.Ophalen(GepredefinieerdeFunctieType.Proost);
+			Functie gg1 = dao.Ophalen(NationaleFunctie.ContactPersoon);
+			Functie gg2 = dao.Ophalen(NationaleFunctie.GroepsLeiding);
+			Functie gv1 = dao.Ophalen(NationaleFunctie.Vb);
+			Functie fi = dao.Ophalen(NationaleFunctie.FinancieelVerantwoordelijke);
+			Functie jr = dao.Ophalen(NationaleFunctie.JeugdRaad);
+			Functie kk = dao.Ophalen(NationaleFunctie.KookPloeg);
+			Functie gp = dao.Ophalen(NationaleFunctie.Proost);
 
 			// Assert
 			Assert.AreEqual(gg1.Code, "CP", true);
@@ -107,7 +107,7 @@ namespace Chiro.Gap.Data.Test
 			IFunctiesDao dao = Factory.Maak<IFunctiesDao>();
 
 			// Act
-			int aantal = dao.AantalLeden(TestInfo.GROEPID, GepredefinieerdeFunctieType.ContactPersoon);
+			int aantal = dao.AantalLeden(TestInfo.GROEPID, NationaleFunctie.ContactPersoon);
 
 			// Assert
 			Assert.AreEqual(aantal, 1);
