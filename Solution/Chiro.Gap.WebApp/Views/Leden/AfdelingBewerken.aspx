@@ -27,11 +27,11 @@
                   <%
                   
                   List<CheckBoxListInfo> info =
-                      (from pa in Model.AfdelingsInfoDictionary
+                      (from pa in Model.AlleAfdelingen
                        select new CheckBoxListInfo(
-                                       pa.Value.AfdelingID.ToString()
-                                       , pa.Value.Naam
-                                       , Model.AfdelingIDs.Contains(pa.Value.AfdelingID))).ToList<CheckBoxListInfo>();
+                                       pa.AfdelingID.ToString()
+                                       , pa.Naam
+                                       , Model.AfdelingIDs.Contains(pa.AfdelingID))).ToList<CheckBoxListInfo>();
 
                   Response.Write(Html.CheckBoxList("AfdelingIDs", info));
               }
@@ -40,9 +40,9 @@
                   %>
                   <p>Selecteer de afdeling van <%= Model.HuidigLid.PersoonInfo.VolledigeNaam %></p>
                   <%
-                  foreach(var ai in Model.AfdelingsInfoDictionary)
+                  foreach(var ai in Model.AlleAfdelingen)
                   {
-                      Response.Write("<p>" + Html.RadioButton("AfdelingID", ai.Value.AfdelingID, Model.HuidigLid.AfdelingIdLijst.ElementAt(0) == ai.Value.AfdelingID)+ ai.Value.Naam + "</p>");   
+                      Response.Write("<p>" + Html.RadioButton("AfdelingID", ai.AfdelingID, Model.HuidigLid.AfdelingIdLijst.ElementAt(0) == ai.AfdelingID)+ ai.Naam + "</p>");   
                   }
               }
            %>

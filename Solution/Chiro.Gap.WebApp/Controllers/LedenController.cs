@@ -137,18 +137,12 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new LedenModel();
 			BaseModelInit(model, groepID);
 
-			var list =
+			model.AlleAfdelingen =
 				ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
 				(groep => groep.AfdelingenOphalen(groepsWerkJaarID));
-			model.AfdelingsInfoDictionary = new Dictionary<int, AfdelingInfo>();
 
-			if(list.Count==0){
+			if(model.AlleAfdelingen.Count()==0){
 				return View();
-			}
-
-			foreach (AfdelingInfo ai in list)
-			{
-				model.AfdelingsInfoDictionary.Add(ai.AfdelingID, ai);
 			}
 
 			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>
