@@ -87,13 +87,13 @@ namespace Chiro.Gap.Data.Test
 			Functie gp = dao.Ophalen(GepredefinieerdeFunctieType.Proost);
 
 			// Assert
-			Assert.AreEqual(gg1.Code, "GG1", true);
-			Assert.AreEqual(gg2.Code, "GG2", true);
-			Assert.AreEqual(gv1.Code, "GV1", true);
-			Assert.AreEqual(fi.Code, "FI", true);
+			Assert.AreEqual(gg1.Code, "CP", true);
+			Assert.AreEqual(gg2.Code, "GL", true);
+			Assert.AreEqual(gv1.Code, "VB", true);
+			Assert.AreEqual(fi.Code, "FV", true);
 			Assert.AreEqual(jr.Code, "JR", true);
-			Assert.AreEqual(kk.Code, "KK", true);
-			Assert.AreEqual(gp.Code, "GP", true);
+			Assert.AreEqual(kk.Code, "CK", true);
+			Assert.AreEqual(gp.Code, "PR", true);
 		}
 
 
