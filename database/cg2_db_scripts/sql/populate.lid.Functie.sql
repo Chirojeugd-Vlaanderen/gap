@@ -1,12 +1,12 @@
 
 
-declare @gg1Code as varchar(5); set @gg1Code='GG1';
-declare @gg2Code as varchar(5); set @gg2Code='GG2';
-declare @gv1Code as varchar(5); set @gv1Code='GV1';
-declare @fiCode as varchar(5); set @fiCode='FI';
+declare @gg1Code as varchar(5); set @gg1Code='CP';
+declare @gg2Code as varchar(5); set @gg2Code='GL';
+declare @gv1Code as varchar(5); set @gv1Code='VB';
+declare @fiCode as varchar(5); set @fiCode='FV';
 declare @jrCode as varchar(5); set @jrCode='JR';
-declare @kkCode as varchar(5); set @kkCode='KK';
-declare @gpCode as varchar(5); set @gpCode='GP';
+declare @kkCode as varchar(5); set @kkCode='CK';
+declare @gpCode as varchar(5); set @gpCode='PR';
 
 
 
