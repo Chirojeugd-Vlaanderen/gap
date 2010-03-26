@@ -62,5 +62,7 @@ namespace Chiro.Gap.ServiceContracts
 		[DataMember]
 		public IList<FunctieInfo> Functies { get; set; }
 
+		[DataMember]
+		public int GroepsWerkJaarID { get; set; }
 	}
 }

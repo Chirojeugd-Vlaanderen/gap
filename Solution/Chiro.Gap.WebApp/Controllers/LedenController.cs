@@ -130,23 +130,29 @@ namespace Chiro.Gap.WebApp.Controllers
 			return RedirectToAction("List", new { groepsWerkJaarId = Sessie.LaatstePagina, afdID = Sessie.LaatsteActieID });
 		}
 
-		//
-		// GET: /Leden/AfdelingBewerken/{groepsWerkJaarID}/{lidID}
-		public ActionResult AfdelingBewerken(int groepsWerkJaarID, int lidID, int groepID)
+		/// <summary>
+		/// Toont de view die toelaat om de afdeling(en) van een lid te wijzigen
+		/// </summary>
+		/// <param name="id">LidID van het lid met de te wijzigen afdeling</param>
+		/// <param name="groepID"></param>
+		/// <returns></returns>
+		public ActionResult AfdelingBewerken(int id, int groepID)
 		{
 			var model = new LedenModel();
 			BaseModelInit(model, groepID);
 
+			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>
+				(l => l.Ophalen(id, LidExtras.Groep|LidExtras.Afdelingen));
+
 			model.AlleAfdelingen =
 				ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
-				(groep => groep.AfdelingenOphalen(groepsWerkJaarID));
+				(groep => groep.AfdelingenOphalen(model.HuidigLid.GroepsWerkJaarID));
 
-			if(model.AlleAfdelingen.Count()==0){
-				return View();
+			if(model.AlleAfdelingen.Count()==0)
+			{
+				throw new NotImplementedException("Foutmelding als er geen afdelingen geactiveerd zijn voor dit werkjaar.");
 			}
 
-			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>
-				(l => l.Ophalen(lidID, LidExtras.Groep|LidExtras.Afdelingen));
 
 			model.AfdelingIDs = model.HuidigLid.AfdelingIdLijst.ToList();
 

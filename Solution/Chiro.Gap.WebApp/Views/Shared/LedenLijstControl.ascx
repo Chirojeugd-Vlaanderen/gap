@@ -24,7 +24,7 @@ Pagina: <%= Html.WerkJaarLinks(ViewData.Model.GroepsWerkJaarIdZichtbaar, ViewDat
     <td><%= l.LidgeldBetaald?"Ja":"Nee"%></td>
     <td>
         <%=Html.ActionLink("Verwijderen", "Verwijderen", new { Controller = "Leden", id = l.LidID })%>
-        <%=Html.ActionLink("Afdelingen", "AfdelingBewerken", new { Controller = "Leden", lidID = l.LidID, groepsWerkJaarID = Model.GroepsWerkJaarIdZichtbaar })%>
+        <%=Html.ActionLink("Afdelingen", "AfdelingBewerken", new { Controller = "Leden", id = l.LidID })%>
     </td>
     <td><% foreach (int a in l.AfdelingIdLijst) 
            { %>
