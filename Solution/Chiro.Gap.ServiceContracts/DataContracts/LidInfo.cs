@@ -10,6 +10,7 @@ using System.Runtime.Serialization;
 using System.Text;
 
 using Chiro.Gap.Orm;
+using System.ComponentModel;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -36,6 +37,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// enkel voor kinderen en niet aanpasbaar
 		/// </summary>
 		[DataMember]
+		[DisplayName("Testperiode")]
 		public DateTime? EindeInstapperiode { get; set; }
 
 		/// <summary>
@@ -48,7 +50,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// Geeft aan of de leid(st)er een abonnement heeft op dubbelpunt
 		/// </summary>
 		[DataMember]
-		public bool? DubbelPunt { get; set; }
+		public bool DubbelPunt { get; set; }
 
 		/// <summary>
 		/// De lijst van afdelingIDs waarin het lid zit (1 voor een kind)

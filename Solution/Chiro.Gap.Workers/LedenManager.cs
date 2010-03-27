@@ -15,7 +15,6 @@ using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
@@ -94,12 +93,6 @@ namespace Chiro.Gap.Workers
 				throw new BestaatAlException();
 			}
 
-			// Er zijn afdelingen
-			if (gwj.AfdelingsJaar.Count == 0)
-			{
-				throw new OngeldigeActieException("Je kan geen lid maken als de groep geen afdelingen heeft in het huidige werkjaar!");
-			}
-
 			return true;
 		}
 
@@ -148,6 +141,12 @@ namespace Chiro.Gap.Workers
 			if (!kanLidMaken(gp, gwj, out gpMetDetails))
 			{
 				throw new OngeldigeActieException("De gegeven persoon kan geen lid worden in het huidige werkjaar.");
+			}
+
+			// Er zijn afdelingen
+			if (gwj.AfdelingsJaar.Count == 0)
+			{
+				throw new OngeldigeActieException("Je kan geen lid maken als de groep geen afdelingen heeft in het huidige werkjaar!");
 			}
 
 			// Geboortedatum is verplicht als je lid wilt worden
@@ -356,60 +355,59 @@ namespace Chiro.Gap.Workers
 		/// <returns>Kind of Leiding met persoonsgegevens en <paramref name="extras"/>.</returns>
 		public Lid Ophalen(int lidID, LidExtras extras)
 		{
-			if (_autorisatieMgr.IsGavLid(lidID))
+			if (!_autorisatieMgr.IsGavLid(lidID))
 			{
-				if (_daos.LedenDao.IsLeiding(lidID))
+				throw new GeenGavException(Properties.Resources.GeenGavLid);
+			}
+			if (_daos.LedenDao.IsLeiding(lidID))
+			{
+				// Leiding: ga via LeidingDAO.
+
+				var paths = new List<Expression<Func<Leiding, object>>>();
+				paths.Add(ld => ld.GelieerdePersoon.Persoon);
+				paths.Add(ld => ld.GroepsWerkJaar);
+
+				if ((extras & LidExtras.Groep) != 0)
 				{
-					// Leiding: ga via LeidingDAO.
-
-					var paths = new List<Expression<Func<Leiding, object>>>();
-					paths.Add(ld => ld.GelieerdePersoon.Persoon);
-
-					if ((extras & LidExtras.Groep) != 0)
-					{
-						paths.Add(ld => ld.GroepsWerkJaar.Groep);
-					}
-					if ((extras & LidExtras.Afdelingen) != 0)
-					{
-						paths.Add(ld => ld.AfdelingsJaar.First().Afdeling);
-					}
-					if ((extras & LidExtras.AlleAfdelingen) != 0)
-					{
-						paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().Afdeling);
-					}
-					if ((extras & LidExtras.Functies) != 0)
-					{
-						paths.Add(ld => ld.Functie);
-					}
-
-					return _daos.LeidingDao.Ophalen(lidID, paths.ToArray());
+					paths.Add(ld => ld.GroepsWerkJaar.Groep);
 				}
-				else
+				if ((extras & LidExtras.Afdelingen) != 0)
 				{
-					// Nog eens ongeveer hetzelfde voor kinderen.  Waarschijnlijk kan dit
-					// properder.
-					var paths = new List<Expression<Func<Kind, object>>>();
-					paths.Add(ld => ld.GelieerdePersoon.Persoon);
-
-					if ((extras & LidExtras.Groep) != 0)
-					{
-						paths.Add(ld => ld.GroepsWerkJaar.Groep);
-					}
-					if ((extras & LidExtras.Afdelingen) != 0)
-					{
-						paths.Add(ld => ld.AfdelingsJaar.Afdeling);
-					}
-					if ((extras & LidExtras.Functies) != 0)
-					{
-						paths.Add(ld => ld.Functie);
-					}
-
-					return _daos.KindDao.Ophalen(lidID, paths.ToArray());
+					paths.Add(ld => ld.AfdelingsJaar.First().Afdeling);
 				}
+				if ((extras & LidExtras.Functies) != 0)
+				{
+					paths.Add(ld => ld.Functie);
+				}
+				if ((extras & LidExtras.AlleAfdelingen) != 0)
+				{
+					paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().Afdeling);
+				}
+
+				return _daos.LeidingDao.Ophalen(lidID, paths.ToArray());
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavLid);
+				// Nog eens ongeveer hetzelfde voor kinderen.  Waarschijnlijk kan dit
+				// properder.
+				var paths = new List<Expression<Func<Kind, object>>>();
+				paths.Add(ld => ld.GelieerdePersoon.Persoon);
+				paths.Add(ld => ld.GroepsWerkJaar);
+
+				if ((extras & LidExtras.Groep) != 0)
+				{
+					paths.Add(ld => ld.GroepsWerkJaar.Groep);
+				}
+				if ((extras & LidExtras.Afdelingen) != 0)
+				{
+					paths.Add(ld => ld.AfdelingsJaar.Afdeling);
+				}
+				if ((extras & LidExtras.Functies) != 0)
+				{
+					paths.Add(ld => ld.Functie);
+				}
+
+				return _daos.KindDao.Ophalen(lidID, paths.ToArray());
 			}
 		}
 
@@ -529,14 +527,12 @@ namespace Chiro.Gap.Workers
 
 				// Controleer op voorhand of de gevraagde afdelingen wel geactiveerd zijn in het 
 				// groepswerkjaar van het lid.
-
 				var geldigeAfdelingIDs = from aj in leiding.GroepsWerkJaar.AfdelingsJaar
-							 select aj.Afdeling.ID;
-
+										 select aj.Afdeling.ID;
 
 				var nietGevonden = from aid in afdelingsIDs
-						   where !(geldigeAfdelingIDs.Contains(aid))
-						   select aid;
+								   where !(geldigeAfdelingIDs.Contains(aid))
+								   select aid;
 
 				if (nietGevonden.Count() > 0)
 				{
@@ -544,23 +540,19 @@ namespace Chiro.Gap.Workers
 				}
 
 				// Verwijder ontbrekende afdelingen;
-
 				var teVerwijderenAfdelingen = from aj in leiding.AfdelingsJaar
-							      where !afdelingsIDs.Contains(aj.Afdeling.ID)
-							      select aj;
+											  where !afdelingsIDs.Contains(aj.Afdeling.ID)
+											  select aj;
 
 				foreach (var aj in teVerwijderenAfdelingen)
 				{
 					aj.TeVerwijderen = true;
 				}
 
-
 				// Ken nieuwe afdelingen toe
-
 				var nieuweAfdelingen = from aj in leiding.GroepsWerkJaar.AfdelingsJaar
-						       where afdelingsIDs.Contains(aj.Afdeling.ID)
-							       && !(leiding.AfdelingsJaar.Contains(aj))
-						       select aj;
+									   where afdelingsIDs.Contains(aj.Afdeling.ID) && !(leiding.AfdelingsJaar.Contains(aj))
+									   select aj;
 
 				foreach (var aj in nieuweAfdelingen)
 				{
@@ -577,7 +569,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="lidinfo">LidInfo om over te nemen in <paramref name="lid"/></param>
 		/// <param name="lid">Lid dat <paramref name="lidInfo"/> moet krijgen</param>
-		public void InfoOvernemen(LidInfo lidInfo, Lid lid)
+		public void InfoOvernemen(Chiro.Gap.ServiceContracts.LidInfo lidInfo, Lid lid)
 		{
 			Debug.Assert(lid is Leiding || lid is Kind);
 

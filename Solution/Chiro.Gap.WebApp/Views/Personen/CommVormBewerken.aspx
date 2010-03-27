@@ -28,13 +28,13 @@
                 </td>
            </tr>
            <tr>
-                <td>Is dit de voorkeurscommunicatie voor dit communicatietype?</td>
+                <td>Alle informatie naar dit adres sturen?</td>
                 <td>
                     <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Voorkeur) %>
                 </td>
            </tr>
            <tr>
-                <td>Is het gezinsgebonden?</td>
+                <td>Bereiken we hiermee het hele gezin?</td>
                 <td>
                     <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.IsGezinsgebonden) %>
                 </td>

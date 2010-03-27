@@ -7,63 +7,77 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     
-    <% using (Html.BeginForm()) {%>
+    <% using (Html.BeginForm()){%>
+    
+    <fieldset>
     
     <h3>Lid-info</h3>
 
-	<%if(Model.HuidigLid.Type == LidType.Kind){ %>
+	<%if (Model.HuidigLid.Type == LidType.Kind){ %>
 	<p>
-    <%=Html.LabelFor(s=>s.HuidigLid.LidgeldBetaald) %>
-    <%=Html.DisplayFor(s => s.HuidigLid.LidgeldBetaald)%>
-    <%=Html.HiddenFor(s=>s.HuidigLid.LidgeldBetaald)%>
-    </p>
-    <p>
-    <%=Html.LabelFor(s => s.HuidigLid.NonActief)%>
-    <%=Html.DisplayFor(s => s.HuidigLid.NonActief)%>
-    <%=Html.HiddenFor(s => s.HuidigLid.NonActief)%>
+    <%=Html.LabelFor(s => s.HuidigLid.LidgeldBetaald)%>
+    <%=Html.EditorFor(s => s.HuidigLid.LidgeldBetaald)%>
     </p>
     <p>
     <%=Html.LabelFor(s => s.HuidigLid.EindeInstapperiode)%>
-    <%=Html.DisplayFor(s => s.HuidigLid.EindeInstapperiode)%>
-    <%=Html.HiddenFor(s => s.HuidigLid.EindeInstapperiode)%>
+    <%if (Model.HuidigLid.EindeInstapperiode.Value.CompareTo(DateTime.Today) <= 0)
+	  {
+		  Response.Write(" is verlopen");
+	  }else{
+		  %>
+		 <%Response.Write(" tot" + Html.DisplayFor(s => s.HuidigLid.EindeInstapperiode));%>
+    <%} %>
     </p>
 	<%}else{ %>
     <p>
     <%=Html.LabelFor(s => s.HuidigLid.DubbelPunt)%>
-    <%=Html.DisplayFor(s => s.HuidigLid.DubbelPunt)%>
-    <%=Html.HiddenFor(s => s.HuidigLid.DubbelPunt)%>
+    <%=Html.EditorFor(s => s.HuidigLid.DubbelPunt)%>
     </p>
-    <p>
+	<%} %>
+	
+	<p>
     <%=Html.LabelFor(s => s.HuidigLid.NonActief)%>
-    <%=Html.DisplayFor(s => s.HuidigLid.NonActief)%>
-    <%=Html.HiddenFor(s => s.HuidigLid.NonActief)%>
+    <%=Html.EditorFor(s => s.HuidigLid.NonActief)%>
     </p>
-	<%} %>
 
-	<h3>Afdelingen</h3>
+	<h3>Afdelingen</h3>  
+           
+	<%if (Model.HuidigLid.Type == LidType.Leiding)
+   {
+	   if (Model.HuidigLid.AfdelingIdLijst.Count == 0)
+	   {
+		   Response.Write(Model.HuidigLid.PersoonInfo.VolledigeNaam + " heeft geen afdelingen.");
+	   }
+	   else
+	   {
+		   Response.Write(Model.HuidigLid.PersoonInfo.VolledigeNaam + " is leiding van:<table>");
+		   foreach (var ai in Model.AlleAfdelingen)
+		   {
+			   if (Model.HuidigLid.AfdelingIdLijst.ElementAt(0) == ai.AfdelingID)
+			   {
+				   Response.Write("<tr><td>" + ai.Naam + "</td></tr>");
+			   }
+		   }
+		   Response.Write("</table>");
+	   }
+   }else{
+	   Response.Write(Model.HuidigLid.PersoonInfo.VolledigeNaam + " zit in de " +
+		   Model.AlleAfdelingen.FirstOrDefault(s => s.AfdelingID == Model.HuidigLid.AfdelingIdLijst.ElementAt(0)).Naam + ".");
+   }%>
+   </br></br>
+   <%= Html.ActionLink("Afdelingen aanpassen", "AfdelingBewerken", new { groepsWerkJaarID = Model.HuidigLid.GroepsWerkJaarID, id = Model.HuidigLid.LidID })%>
+       
+	<%= Html.Hidden("HuidigLid.LidID")%>
+	<%= Html.Hidden("HuidigLid.Type")%>
+	<%= Html.Hidden("AfdelingsInfoDictionary")%>
+       
+	</fieldset>
 
-<%--	<ul>
-	<% foreach (int afd in Model.HuidigLid.AfdelingIdLijst)
-	   { %>
-	   <li>
-			<%	Chiro.Gap.ServiceContracts.AfdelingInfo value;
-				Model.AfdelingsInfoDictionary.TryGetValue(afd, out value); %>
-			<%= value %>
-		</li>
-	<%} %>
-	</ul>--%>
-    
     <ul id="acties">
         <li><input type="submit" value="Gegevens wijzigen" /></li>        
     </ul>
     <br />
-
-    <fieldset>
-        <legend>Persoonlijke gegevens</legend> 
-        
-        extra gegevens...         
-    </fieldset>
- 
+    
     <%} %>
     
     <% Html.RenderPartial("TerugNaarLijstLinkControl"); %>

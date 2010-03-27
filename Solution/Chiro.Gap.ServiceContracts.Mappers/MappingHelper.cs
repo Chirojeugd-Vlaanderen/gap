@@ -106,7 +106,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.LidgeldBetaald))
 				.ForMember(
 					dst => dst.DubbelPunt,
-					opt => opt.MapFrom(src => src is Leiding ? ((Leiding)src).DubbelPuntAbonnement : null))
+					//FIXME: geef hier false terug, zodat het in de lidinfo een bool is ipv bool? en het printen
+					//in de ui makkelijker is
+					opt => opt.MapFrom(src => src is Leiding ? ((Leiding)src).DubbelPuntAbonnement : false))
 				.ForMember(
 					dst => dst.EindeInstapperiode,
 					opt => opt.MapFrom(src => src is Kind ? ((Kind)src).EindeInstapPeriode : null))
@@ -118,7 +120,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.GelieerdePersoon))
 				.ForMember(
 					dst => dst.Functies,
-					opt => opt.MapFrom(src => src.Functie));
+					opt => opt.MapFrom(src => src.Functie))
+				.ForMember(
+					dst => dst.GroepsWerkJaarID,
+					opt => opt.MapFrom(src => src.GroepsWerkJaar.ID));
 
 			// Zo veel mogelijk automatisch mappen
 			Mapper.CreateMap<Adres, AdresInfo>()

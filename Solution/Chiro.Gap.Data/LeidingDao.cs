@@ -31,9 +31,9 @@ namespace Chiro.Gap.Data.Ef
 			connectedEntities = new Expression<Func<Leiding, object>>[] 
 			{
 				e => e.GroepsWerkJaar.WithoutUpdate(),
-				e => e.GelieerdePersoon.WithoutUpdate(), 
-				e => e.GelieerdePersoon.Persoon.WithoutUpdate(), 
-				e => e.AfdelingsJaar.First().WithoutUpdate(),
+				e => e.GelieerdePersoon, 
+				e => e.GelieerdePersoon.Persoon, 
+				e => e.AfdelingsJaar.First(),
 				e => e.AfdelingsJaar.First().Afdeling.WithoutUpdate()
 			};
 		}

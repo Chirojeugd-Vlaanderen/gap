@@ -43,7 +43,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>Lidobject indien gevonden, anders null</returns>
 		public Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID)
 		{
-			return Ophalen(gelieerdePersoonID, groepsWerkJaarID, null);
+			return Ophalen(gelieerdePersoonID, groepsWerkJaarID, getConnectedEntities());
 		}
 
 		/// <summary>
@@ -81,13 +81,13 @@ namespace Chiro.Gap.Data.Ef
 				db.Lid.MergeOption = MergeOption.NoTracking;
 
 				var kinderen = (
-					from l in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+					from l in db.Lid.OfType<Kind>().Include("GroepsWerkJaar").Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
 					where l.GroepsWerkJaar.ID == groepsWerkJaarID
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 					select l).ToList<Kind>();
 
 				var leiding = (
-					from l in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+					from l in db.Lid.OfType<Leiding>().Include("GroepsWerkJaar").Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
 					where l.GroepsWerkJaar.ID == groepsWerkJaarID
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 					select l).ToList<Leiding>();
@@ -124,13 +124,13 @@ namespace Chiro.Gap.Data.Ef
 				db.Lid.MergeOption = MergeOption.NoTracking;
 
 				var kinderen = (
-					from l in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+					from l in db.Lid.OfType<Kind>().Include("GroepsWerkJaar").Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
 					where l.GroepsWerkJaar.ID == groepsWerkJaarID
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 					select l).ToList<Kind>();
 
 				var leiding = (
-					from l in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+					from l in db.Lid.OfType<Leiding>().Include("GroepsWerkJaar").Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
 					where l.GroepsWerkJaar.ID == groepsWerkJaarID
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 					select l).ToList<Leiding>();
@@ -167,7 +167,7 @@ namespace Chiro.Gap.Data.Ef
 				db.Lid.MergeOption = MergeOption.NoTracking;
 
 				var kinderen = (
-					from l in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+					from l in db.Lid.OfType<Kind>().Include("GroepsWerkJaar").Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
 					where l.GroepsWerkJaar.ID == groepsWerkJaarID
 						&&
 					  l.AfdelingsJaar.Afdeling.ID == afdelingsID
@@ -175,7 +175,7 @@ namespace Chiro.Gap.Data.Ef
 					select l).ToList<Kind>();
 
 				var leiding = (
-					from l in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
+					from l in db.Lid.OfType<Leiding>().Include("GroepsWerkJaar").Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling")
 					where l.GroepsWerkJaar.ID == groepsWerkJaarID
 						&&
 					  l.AfdelingsJaar.Any(x => x.Afdeling.ID == afdelingsID)
@@ -263,10 +263,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="paths">Bepaalt de mee op te halen gekoppelde entiteiten</param>
 		/// <returns>Lijst leden die in het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
 		/// de gepredefinieerde functie met type <paramref name="f"/> hebben.</returns>
-		public IList<Lid> OphalenUitFunctie(
-			NationaleFunctie f,
-			int groepsWerkJaarID,
-			params Expression<Func<Lid, object>>[] paths)
+		public IList<Lid> OphalenUitFunctie(NationaleFunctie f, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths)
 		{
 			return OphalenUitFunctie((int)f, groepsWerkJaarID, paths);
 		}

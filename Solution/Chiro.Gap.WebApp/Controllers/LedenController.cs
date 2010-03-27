@@ -144,17 +144,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>
 				(l => l.Ophalen(id, LidExtras.Groep|LidExtras.Afdelingen));
 
-			model.AlleAfdelingen =
-				ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
-				(groep => groep.AfdelingenOphalen(model.HuidigLid.GroepsWerkJaarID));
-
-			if(model.AlleAfdelingen.Count()==0)
-			{
-				throw new NotImplementedException("Foutmelding als er geen afdelingen geactiveerd zijn voor dit werkjaar.");
-			}
-
-
-			model.AfdelingIDs = model.HuidigLid.AfdelingIdLijst.ToList();
+			InladenAfdelingsNamen(model);
 
 			model.Titel = "Ledenoverzicht";
 
@@ -200,23 +190,40 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new LedenModel();
 			BaseModelInit(model, groepID);
 
-			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>
-				(l => l.Ophalen(lidID, LidExtras.Groep|LidExtras.Afdelingen));
+			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>(l => l.Ophalen(lidID, LidExtras.Groep|LidExtras.Afdelingen));
+			InladenAfdelingsNamen(model);
 
-			/*var list =
-				ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
-				(groep => groep.AfdelingenOphalen());
-			model.AfdelingsInfoDictionary = new Dictionary<int, AfdelingInfo>();
-			foreach (AfdelingInfo ai in list)
-			{
-				model.AfdelingsInfoDictionary.Add(ai.AfdelingID, ai);
-			}
-			model.AfdelingIDs = model.HuidigLid.AfdelingIdLijst.ToList();
-			*/
-
-			model.Titel = "Ledenoverzicht";
+			model.Titel = "Overzicht van " + model.HuidigLid.PersoonInfo.VolledigeNaam;
 
 			return View("EditRest", model);
+		}
+
+		//
+		// POST: /Leden/EditRest/{lidID}
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult EditRest(LedenModel model, int groepID)
+		{
+			//FIXME: bewaren gaat geen groep en afdelingen inladen, wat dus fout is (want de GET methode doet dit wel)
+			ServiceHelper.CallService<ILedenService>(l => l.Bewaren(model.HuidigLid));
+			//InladenAfdelingsNamen(model);
+			//return View("EditRest", model);
+			return RedirectToAction("EditRest", new { lidID=model.HuidigLid.LidID, groepID=groepID});
+		}
+
+		/// <summary>
+		/// Als het lid ingeladen is, laadt deze methode de dictionary van afdelingsids naar namen in
+		/// </summary>
+		/// <param name="model"></param>
+		public void InladenAfdelingsNamen(LedenModel model){
+			model.AlleAfdelingen = ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
+				(groep => groep.AfdelingenOphalen(model.HuidigLid.GroepsWerkJaarID));
+
+			if (model.AlleAfdelingen.Count() == 0)
+			{
+				throw new NotImplementedException("Foutmelding als er geen afdelingen geactiveerd zijn voor dit werkjaar.");
+			}
+
+			model.AfdelingIDs = model.HuidigLid.AfdelingIdLijst.ToList();
 		}
 	}
 }
