@@ -107,7 +107,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// daaraan gekoppeld eventuele afdelingsjaren met afdelingen.</returns>
 		/// <remarks>Het gegeven 'enkel lidinfo in een bepaald groepswerkjaar ophalen' kan niet opgegeven worden
 		/// via een lambda-expressie, omdat gp=>gp.lid de lidobjecten uit alle werkjaren zou ophalen.</remarks>
-		GelieerdePersoon OphalenMetHuidigeAfdelingen(
+		GelieerdePersoon OphalenMetAfdelingen(
 			int gelieerdePersoonID,
 			int groepsWerkJaarID,
 			params Expression<Func<GelieerdePersoon, object>>[] paths);

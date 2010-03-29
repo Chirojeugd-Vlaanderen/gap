@@ -279,7 +279,7 @@ namespace Chiro.Gap.Data.Ef
 		/// daaraan gekoppeld eventuele afdelingsjaren met afdelingen.</returns>
 		/// <remarks>Het gegeven 'enkel lidinfo in een bepaald groepswerkjaar ophalen' kan niet opgegeven worden
 		/// via een lambda-expressie, omdat gp=>gp.lid de lidobjecten uit alle werkjaren zou ophalen.</remarks>
-		public GelieerdePersoon OphalenMetHuidigeAfdelingen(
+		public GelieerdePersoon OphalenMetAfdelingen(
 			int gelieerdePersoonID,
 			int groepsWerkJaarID,
 			params Expression<Func<GelieerdePersoon, object>>[] paths)
@@ -315,15 +315,14 @@ namespace Chiro.Gap.Data.Ef
 				// dat, indien een kind gevonden wordt, het kind gekoppeld wordt aan de gelieerde
 				// persoon.  Indien een leid(st)er gevonden is, wordt de leid(st)er aan de gelieerde
 				// persoon gekoppeld.
-				// Het is normaalgezien onmogelijk dat er zowel een kind als een leid(st)er gevonden
-				// is, aangezien een persoon in een groepswerkjaar niet tegelijk kind en leiding kan
-				// zijn.
 
 				resultaat = gpQuery.FirstOrDefault();
 				Kind kind = kindQuery.FirstOrDefault();
 				Leiding leiding = leidingQuery.FirstOrDefault();
 
-				Debug.Assert(kind == null && leiding != null || kind != null && leiding == null);
+				// Iemand kan nooit kind en leiding tegelijk zijn.  Het kan natuurlijk wel dat
+				// je noch kind noch leiding bent, namelijk wanneer je geen lid bent.
+				Debug.Assert(kind == null || leiding == null);
 			}
 
 			return Utility.DetachObjectGraph(resultaat);

@@ -14,6 +14,7 @@
 		public const int GELIEERDEPERSOON2ID = 2;
 		public const int GELIEERDEPERSOON3ID = 3;
 		public const int GELIEERDEPERSOON4ID = 4;
+		public const int GELIEERDEPERSOON5ID = 184;
 		public const int MINAANTALGELPERS = 5;
 		public const int LID3ID = 1;
 		public const int LID4ID = 2;

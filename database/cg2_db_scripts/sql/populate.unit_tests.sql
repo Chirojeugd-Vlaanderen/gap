@@ -647,6 +647,7 @@ PRINT 'public const int GELIEERDEPERSOONID = ' + CAST(@testGelieerdePersoon1ID A
 PRINT 'public const int GELIEERDEPERSOON2ID = ' + CAST(@testGelieerdePersoon2ID  AS VARCHAR(10)) + ';';
 PRINT 'public const int GELIEERDEPERSOON3ID = ' + CAST(@testGelieerdePersoon3ID  AS VARCHAR(10)) + ';';
 PRINT 'public const int GELIEERDEPERSOON4ID = ' + CAST(@testGelieerdePersoon4ID  AS VARCHAR(10)) + ';';
+PRINT 'public const int GELIEERDEPERSOON5ID = ' + CAST(@testGelieerdePersoon5ID  AS VARCHAR(10)) + ';';
 
 DECLARE @GELPERS AS INT;
 DECLARE @AantalInCategorie AS INT;

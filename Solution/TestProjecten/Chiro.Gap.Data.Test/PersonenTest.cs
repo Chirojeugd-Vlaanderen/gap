@@ -212,6 +212,58 @@ namespace Chiro.Gap.Data.Test
 		}
 
 		/// <summary>
+		/// Test voor het ophalen van een persoon, inclusief lidinfo en afdelingen.  De persoon in kwestie
+		/// is een kind.
+		/// </summary>
+		[TestMethod]
+		public void OphalenPersoonMetAfdelingenKind()
+		{
+			// Arrange
+			var dao = Factory.Maak<IGelieerdePersonenDao>();
+
+			// Act
+			GelieerdePersoon resultaat = dao.OphalenMetAfdelingen(
+				TestInfo.GELIEERDEPERSOON5ID, 
+				TestInfo.GROEPSWERKJAARID, 
+				gp => gp.Persoon);
+
+			
+			// Assert
+
+			Assert.IsTrue(resultaat.Lid.Count() == 1);	// 1 lidobject opgehaald
+			Assert.IsTrue(resultaat.Lid.First() is Kind);	// het is een kind
+			Assert.IsTrue((resultaat.Lid.First() as Kind).AfdelingsJaar.Afdeling != null);	
+		}
+
+		/// <summary>
+		/// Test voor het ophalen van een persoon, inclusief lidinfo en afdelingen.  De persoon in kwestie
+		/// is leiding.
+		/// </summary>
+		[TestMethod]
+		public void OphalenPersoonMetAfdelingenLeiding()
+		{
+			// Arrange
+			var dao = Factory.Maak<IGelieerdePersonenDao>();
+
+			// Act
+			GelieerdePersoon resultaat = dao.OphalenMetAfdelingen(
+				TestInfo.GELIEERDEPERSOON3ID,
+				TestInfo.GROEPSWERKJAARID,
+				gp => gp.Persoon);
+
+
+			// Assert
+
+			// slechts 1 lidobject opgehaald
+			Assert.IsTrue(resultaat.Lid.Count() == 1);
+			// het is leiding
+			Assert.IsTrue(resultaat.Lid.First() is Leiding);
+			// van 2 afdelingen
+			Assert.IsTrue((resultaat.Lid.First() as Leiding).AfdelingsJaar.Count() == 2);
+		}
+
+
+		/// <summary>
 		/// Nieuwe (gelieerde) persoon bewaren via GelieerdePersonenDAO.
 		/// </summary>
 		[TestMethod]
