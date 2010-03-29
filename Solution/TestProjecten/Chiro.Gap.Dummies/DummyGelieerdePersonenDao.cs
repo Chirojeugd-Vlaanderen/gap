@@ -65,6 +65,11 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		public GelieerdePersoon OphalenMetHuidigeAfdelingen(int gelieerdePersoonID, int groepsWerkJaarID, params System.Linq.Expressions.Expression<Func<GelieerdePersoon, object>>[] paths)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 	}
 }

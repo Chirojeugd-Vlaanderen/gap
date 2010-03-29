@@ -142,7 +142,7 @@ namespace Chiro.Gap.Services.Test
 			GroepInfo g = svc.Ophalen(TestInfo.GROEPID, GroepsExtras.AfdelingenHuidigWerkJaar);
 
 			AfdelingInfo afdeling = (from afd in g.AfdelingenDitWerkJaar
-						 where afd.AfdelingID == TestInfo.AFDELINGID
+						 where afd.AfdelingID == TestInfo.AFDELING1ID
 						 select afd).FirstOrDefault();
 			#endregion
 

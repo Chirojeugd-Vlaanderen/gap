@@ -75,7 +75,7 @@ namespace Chiro.Gap.Data.Test
 		{
 			Factory.ContainerInit();
 
-			int afdelingsJaarID = TestInfo.AFDELINGSJAARID;
+			int afdelingsJaarID = TestInfo.AFDELINGSJAAR1ID;
 
 			IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
 			AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
@@ -118,7 +118,7 @@ namespace Chiro.Gap.Data.Test
 			// Verwijder lid (GelieerdePersoonID in AfdelingsJaarID) om achteraf opnieuw toe te voegen
 
 			int gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
-			int afdelingsJaarID = TestInfo.AFDELINGSJAARID;
+			int afdelingsJaarID = TestInfo.AFDELINGSJAAR1ID;
 
 			IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
 			AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
@@ -146,7 +146,7 @@ namespace Chiro.Gap.Data.Test
 		{
 			#region Arrange
 			int gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
-			int afdelingsJaarID = TestInfo.AFDELINGSJAARID;
+			int afdelingsJaarID = TestInfo.AFDELINGSJAAR1ID;
 
 			LedenManager lm = Factory.Maak<LedenManager>();
 
@@ -187,7 +187,7 @@ namespace Chiro.Gap.Data.Test
 			// Arrange
 
 			int gelieerdePersoonID = TestInfo.GELIEERDEPERSOON2ID;
-			int afdelingsJaarID = TestInfo.AFDELINGSJAARID;
+			int afdelingsJaarID = TestInfo.AFDELINGSJAAR1ID;
 
 			IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
 			AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);

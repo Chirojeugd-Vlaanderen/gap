@@ -3,24 +3,29 @@
 --
 -- Een Groep (en ChiroGroep) met code @testGroepCode
 -- Een GroepsWerkJaar in @testHuidigWerkJaar
--- Afdelingen met codes @testAfdelingsAfkorting1 en @testAfdelingsAfkorting12
+-- Afdelingen met codes 
+--		@testAfdelingsAfkorting1
+--		@testAfdelingsAfkorting2
+--		@testAfdelingsAfkorting3 - deze mag niet actief zijn in het huidig werkjaar
 -- AfdelingsWerkJaar en voor afdeling met code @testAfdelingsAfkorting1 in @testHuidigWerkJaar en @testVorigWerkJaar
--- Gelieerde Testpersonen:
---		 @testPersoonVoorNaam1 @testPersoonNaam1, @testPersoon2VoorNaam en @testPersoonNaam1, @testPersoon3VoorNaam en @testPersoonNaam1
+--
+-- 5 test GelieerdePersonen
+--     Gegevens in @testPersoonVoorNaami @testPersoonNaami @testPersoonGeboorteDatum, @testPersoonGeslacht
+--
+--   GelieerdePersoon1 is geen lid, en zit in Categorie1, en Categorie 2
+--   GelieerdePersoon2 is ook geen lid, zit in Categorie2.
+--   GelieerdePersoon3 is leiding van Afdeling1 en Afdeling2, 
+--     zit in Categorie2 en heeft functies contactpersoon en eindredactie boekje
+--   GelieerdePersoon4 is ook leiding, met functie 'eindredactie boekje'
+--   GelieerdePersoon5 is lid bij de 'unittestjes'.
 --
 -- 2 test-GAV's, en maakt de eerste GAV van testgroep1.
 --
--- 1ste en 2de gelieerde persoon mogen geen lid zijn, want daarmee wordt geexperimenteerd in de ledentests
--- 3de en 4de gelieerde persoon zijn leiding; 3de is contactpersoon, 3de en 4de zijn 'eindredacteurs boekje' (eigen functie)
---
--- 1 testcategorie voor testgroep1, waaraan de 1ste gelieerde persoon worden toegevoegd
--- 2de testcategorie met de drie gelieerde personen
-
 -- Datums worden in gegeven in het formaat DD/MM/YYYY
 -- We definiteren dit hier (in de documentatie) omdat hier beneden we het gebruiken.
 SET DateFormat dmy;
 
-		DECLARE @contactPersoonCode AS VARCHAR(5);				SET @contactPersoonCode='GG1';
+		DECLARE @contactPersoonCode AS VARCHAR(5);				SET @contactPersoonCode='CP';
 
 -- Dit script doet het volgende: 
 --
@@ -41,15 +46,21 @@ SET DateFormat dmy;
 		DECLARE @testAfdeling1ID AS INT;
 		DECLARE @testAfdelingsNaam1 AS VARCHAR(50);				SET @testAfdelingsNaam1 ='Unittestjes';
 		DECLARE @testAfdelingsAfkorting1 AS VARCHAR(10);		SET @testAfdelingsAfkorting1='UT';
+		DECLARE @testAfdelingsJaar1ID AS INT;
 		
 --    En heeft een afdeling Speelkwi's met afkoring 'SK'
 		DECLARE @testAfdeling2ID AS INT;
 		DECLARE @testAfdelingsNaam2 AS VARCHAR(50);				SET @testAfdelingsNaam2 ='Speelkwi''s';
 		DECLARE @testAfdelingsAfkorting2 AS VARCHAR(10);		SET @testAfdelingsAfkorting2='SK';
+		DECLARE @testAfdelingsJaar2ID AS INT;
 
--- 4° De eerste afdeling, Unittestjes, mappen we met een officiele Chiro afdeling
---    namelijk met de Ribbels.
---    Dit doen we voor Huidig Werkjaar en Vorig Werkjaar, en geven telkens de start en eind van de geboorte jaren.
+--     De afdeling 'onbestaandjes'
+
+		DECLARE @testAfdeling3ID AS INT;
+		DECLARE @testAfdelingsNaam3 AS VARCHAR(50);				SET @testAfdelingsNaam3 ='Onbestaandjes';
+		DECLARE @testAfdelingsAfkorting3 AS VARCHAR(10);		SET @testAfdelingsAfkorting3='OB';
+
+-- 4° afdelingen activeren
 
         DECLARE @testOfficieleAfdelingID1 AS INT; 
 		DECLARE @testOfficieleAfdelingNaam1 AS VARCHAR(50);		SET @testOfficieleAfdelingNaam1 = 'Ribbels';
@@ -60,6 +71,16 @@ SET DateFormat dmy;
 		DECLARE @testVorigGeboorteJaarVanAfdelingID1 AS INT;	SET @testVorigGeboorteJaarVanAfdelingID1=2003;
 		DECLARE @testVorigGeboorteJaarTotAfdelingID1 AS INT;	SET @testVorigGeboorteJaarTotAfdelingID1=2004;
 
+        DECLARE @testOfficieleAfdelingID2 AS INT; 
+		DECLARE @testOfficieleAfdelingNaam2 AS VARCHAR(50);		SET @testOfficieleAfdelingNaam2 = 'Speelclub';
+
+		DECLARE @testHuidigGeboorteJaarVanAfdelingID2 AS INT;	SET @testHuidigGeboorteJaarVanAfdelingID2=2003;
+		DECLARE @testHuidigGeboorteJaarTotAfdelingID2 AS INT;	SET @testHuidigGeboorteJaarTotAfdelingID2=2004;
+		
+		DECLARE @testVorigGeboorteJaarVanAfdelingID2 AS INT;	SET @testVorigGeboorteJaarVanAfdelingID2=2003;
+		DECLARE @testVorigGeboorteJaarTotAfdelingID2 AS INT;	SET @testVorigGeboorteJaarTotAfdelingID2=2004;
+
+
 -- 5° We maken nu een aantal testpersonen aan, ze zijn allen famillie van elkaar (eg: zelfde Naam):
 --    (Noot: Ook zelfde geboortedatum en geslacht) 
 
@@ -67,27 +88,32 @@ SET DateFormat dmy;
 		DECLARE @testPersoon1Naam AS VARCHAR(160);				SET @testPersoon1Naam = 'Bosmans';
 		DECLARE @testPersoon1VoorNaam AS VARCHAR(60);			SET @testPersoon1VoorNaam = 'Jos';
 		DECLARE @testPersoon1GeboorteDatum AS SMALLDATETIME; 	SET @testPersoon1GeboorteDatum = '30/11/1959';
-		DECLARE @testPersoon1IsMan AS INT;						SET @testPersoon1IsMan=1;
+		DECLARE @testPersoon1Geslacht AS INT;						SET @testPersoon1Geslacht=1;
 		
 
 		DECLARE @testPersoon2ID AS INT;
 		DECLARE @testPersoon2Naam AS VARCHAR(160);				SET @testPersoon2Naam = @testPersoon1Naam
 		DECLARE @testPersoon2VoorNaam AS VARCHAR(60);			SET @testPersoon2VoorNaam = 'Irène';
 		DECLARE @testPersoon2GeboorteDatum AS SMALLDATETIME; 	SET @testPersoon2GeboorteDatum = '30/11/2003';
-		DECLARE @testPersoon2IsMan AS BIT;						SET @testPersoon2IsMan=1;
+		DECLARE @testPersoon2Geslacht AS BIT;						SET @testPersoon2Geslacht=1;
 		
 		DECLARE @testPersoon3ID AS INT;
 		DECLARE @testPersoon3Naam AS VARCHAR(160);				SET @testPersoon3Naam = @testPersoon1Naam
 		DECLARE @testPersoon3VoorNaam AS VARCHAR(60);			SET @testPersoon3VoorNaam = 'Eugène';
 		DECLARE @testPersoon3GeboorteDatum AS SMALLDATETIME; 	SET @testPersoon3GeboorteDatum = '30/11/1959';
-		DECLARE @testPersoon3IsMan AS BIT;						SET @testPersoon3IsMan=1;
+		DECLARE @testPersoon3Geslacht AS BIT;						SET @testPersoon3Geslacht=1;
 
 		DECLARE @testPersoon4ID AS INT;
 		DECLARE @testPersoon4Naam AS VARCHAR(160);				SET @testPersoon4Naam = @testPersoon1Naam
 		DECLARE @testPersoon4VoorNaam AS VARCHAR(60);			SET @testPersoon4VoorNaam = 'Yvonne';
 		DECLARE @testPersoon4GeboorteDatum AS SMALLDATETIME; 	SET @testPersoon4GeboorteDatum = '20/06/1959';
-		DECLARE @testPersoon4IsMan AS BIT;						SET @testPersoon4IsMan=2;
+		DECLARE @testPersoon4Geslacht AS BIT;						SET @testPersoon4Geslacht=2;
 
+		DECLARE @testPersoon5ID AS INT;
+		DECLARE @testPersoon5Naam AS VARCHAR(160);				SET @testPersoon5Naam = 'De Kleine';
+		DECLARE @testPersoon5VoorNaam AS VARCHAR(60);			SET @testPersoon5VoorNaam = 'Benjamin';
+		DECLARE @testPersoon5GeboorteDatum AS SMALLDATETIME; 	SET @testPersoon5GeboorteDatum = '20/06/2004';
+		DECLARE @testPersoon5Geslacht AS BIT;						SET @testPersoon5Geslacht=2;
 
 -- 6° We maken de aangemaakte testpersonen lid van de zelfde Groep, (Unittestjes), 
 --    Alle test personen zitten in de juiste leeftijdsgroep.
@@ -100,7 +126,8 @@ SET DateFormat dmy;
 		DECLARE @testPersoon3ChiroLeeftijd AS INT;				SET @testPersoon3ChiroLeeftijd=0;
 		DECLARE @testGelieerdePersoon4ID AS INT;
 		DECLARE @testPersoon4ChiroLeeftijd AS INT;				SET @testPersoon4ChiroLeeftijd=0;
-
+		DECLARE @testGelieerdePersoon5ID AS INT;
+		DECLARE @testPersoon5ChiroLeeftijd AS INT;				SET @testPersoon5ChiroLeeftijd=0;
 
 -- 7° De ChiroGroep (Unittestjes) definieerd ook een aantal categorieen (persoons)
 
@@ -123,7 +150,7 @@ SET DateFormat dmy;
 --       testPersoon3ID									JA
 
 -- 9° Leden / Leiding aanmaken: 
---    We gaan Persoon3 en 4 leiding maken.  3 is contactpersoon.		
+--    GelieerdePersoon 3, 4 en 5 worden leiding
 		DECLARE @testLid3ID AS INT;
 		DECLARE @testLid3NonActief AS BIT;						SET @testLid3NonActief = 0;
 		DECLARE	@testLid3Verwijderd	AS BIT;						SET @testLid3Verwijderd	= 0;
@@ -135,6 +162,13 @@ SET DateFormat dmy;
 		DECLARE	@testLid4Verwijderd	AS BIT;						SET @testLid4Verwijderd	= 0;
 		DECLARE @testLid4LidGeldBetaald AS BIT;					SET @testLid4LidGeldBetaald = 0;
 		DECLARE @testLid4VolgendWerkjaar AS SMALLINT;			SET @testLid4VolgendWerkjaar = 0;
+
+		DECLARE @testLid5ID AS INT;
+		DECLARE @testLid5NonActief AS BIT;						SET @testLid5NonActief = 0;
+		DECLARE	@testLid5Verwijderd	AS BIT;						SET @testLid5Verwijderd	= 0;
+		DECLARE @testLid5LidGeldBetaald AS BIT;					SET @testLid5LidGeldBetaald = 0;
+		DECLARE @testLid5VolgendWerkjaar AS SMALLINT;			SET @testLid5VolgendWerkjaar = 0;
+
 
 -- 9.1 functies
 --   We maken een eigen functie: 'redactie boekje'
@@ -156,7 +190,6 @@ SET DateFormat dmy;
 
 
 
-DECLARE @testAfdelingsJaarID AS INT;
 DECLARE @testVorigAfdelingsJaarID AS INT;
 
 
@@ -169,6 +202,7 @@ DECLARE @testVorigAfdelingsJaarID AS INT;
 
 -- Officiele afdeling horende bij afdeling bepaald door AFDELINGID
 SET @testOfficieleAfdelingID1 = (SELECT officieleAfdelingID FROM lid.OfficieleAfdeling WHERE Naam=@testOfficieleAfdelingNaam1)
+SET @testOfficieleAfdelingID2 = (SELECT officieleAfdelingID FROM lid.OfficieleAfdeling WHERE Naam=@testOfficieleAfdelingNaam2)
 
 
 ---
@@ -244,21 +278,45 @@ BEGIN
 	SET @testAfdeling2ID = (SELECT AfdelingID FROM lid.Afdeling WHERE groepID = @testGroepID AND afkorting = @testAfdelingsAfkorting2)
 END
 
+IF NOT EXISTS (SELECT 1 FROM lid.Afdeling WHERE groepID = @testGroepID AND afkorting = @testAfdelingsAfkorting3)
+BEGIN
+	INSERT INTO lid.Afdeling(GroepID, AfdelingsNaam, Afkorting)
+	VALUES(@testGroepID, @testAfdelingsNaam3, @testAfdelingsAfkorting3);
+	SET @testAfdeling2ID = scope_identity();
+END
+ELSE
+BEGIN
+	SET @testAfdeling3ID = (SELECT AfdelingID FROM lid.Afdeling WHERE groepID = @testGroepID AND afkorting = @testAfdelingsAfkorting3)
+END
+
 
 ---
---- 4° AfdelingsJaar maken voor testafdeling1
+--- 4° AfdelingsJaren
 ---
 
 IF NOT EXISTS (SELECT 1 FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID = @testGroepsHuidigWerkJaarID AND AfdelingID = @testAfdeling1ID)
 BEGIN
 	INSERT INTO lid.AfdelingsJaar(GeboorteJaarVan, GeboorteJaarTot, AfdelingID, GroepsWerkJaarID, OfficieleAfdelingID, Geslacht)
 	VALUES (@testHuidigGeboorteJaarVanAfdelingID1, @testHuidigGeboorteJaarTotAfdelingID1, @testAfdeling1ID, @testGroepsHuidigWerkJaarID, @testOfficieleAfdelingID1, 3);
-	SET @testAfdelingsJaarID = SCOPE_IDENTITY()
+	SET @testAfdelingsJaar1ID = SCOPE_IDENTITY()
 END
 ELSE
 BEGIN
-	SET @testAfdelingsJaarID = (SELECT AfdelingsJaarID FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID = @testGroepsHuidigWerkJaarID AND AfdelingID = @testAfdeling1ID)
+	SET @testAfdelingsJaar1ID = (SELECT AfdelingsJaarID FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID = @testGroepsHuidigWerkJaarID AND AfdelingID = @testAfdeling1ID)
 END
+
+IF NOT EXISTS (SELECT 1 FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID = @testGroepsHuidigWerkJaarID AND AfdelingID = @testAfdeling2ID)
+BEGIN
+	INSERT INTO lid.AfdelingsJaar(GeboorteJaarVan, GeboorteJaarTot, AfdelingID, GroepsWerkJaarID, OfficieleAfdelingID, Geslacht)
+	VALUES (@testHuidigGeboorteJaarVanAfdelingID2, @testHuidigGeboorteJaarTotAfdelingID2, @testAfdeling2ID, @testGroepsHuidigWerkJaarID, @testOfficieleAfdelingID2, 3);
+	SET @testAfdelingsJaar2ID = SCOPE_IDENTITY()
+END
+ELSE
+BEGIN
+	SET @testAfdelingsJaar2ID = (SELECT AfdelingsJaarID FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID = @testGroepsHuidigWerkJaarID AND AfdelingID = @testAfdeling2ID)
+END
+
+-- ook een van vorig werkjaar
 
 IF NOT EXISTS (SELECT 1 FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID = @testVorigGroepsWerkJaarID AND AfdelingID = @testAfdeling1ID)
 BEGIN
@@ -278,7 +336,7 @@ END
 IF NOT EXISTS (SELECT 1 FROM pers.Persoon WHERE Naam = @testPersoon1Naam AND VoorNaam = @testPersoon1VoorNaam)
 BEGIN
 	INSERT INTO pers.Persoon(Naam, VoorNaam, GeboorteDatum, Geslacht)
-	VALUES(@testPersoon1Naam, @testPersoon1VoorNaam, @testPersoon1GeboorteDatum, @testPersoon1IsMan)
+	VALUES(@testPersoon1Naam, @testPersoon1VoorNaam, @testPersoon1GeboorteDatum, @testPersoon1Geslacht)
 	SET @testPersoon1ID = SCOPE_IDENTITY();
 END
 ELSE
@@ -289,7 +347,7 @@ END;
 IF NOT EXISTS (SELECT 1 FROM pers.Persoon WHERE Naam = @testPersoon2Naam AND VoorNaam = @testPersoon2VoorNaam)
 BEGIN
 	INSERT INTO pers.Persoon(Naam, VoorNaam, GeboorteDatum, Geslacht)
-	VALUES(@testPersoon2Naam, @testPersoon2VoorNaam, @testPersoon2GeboorteDatum, @testPersoon2IsMan)
+	VALUES(@testPersoon2Naam, @testPersoon2VoorNaam, @testPersoon2GeboorteDatum, @testPersoon2Geslacht)
 	SET @testPersoon2ID = SCOPE_IDENTITY();
 END
 ELSE
@@ -300,7 +358,7 @@ END;
 IF NOT EXISTS (SELECT 1 FROM pers.Persoon WHERE Naam = @testPersoon3Naam AND VoorNaam = @testPersoon3VoorNaam)
 BEGIN
 	INSERT INTO pers.Persoon(Naam, VoorNaam, GeboorteDatum, Geslacht)
-	VALUES(@testPersoon3Naam, @testPersoon3VoorNaam, @testPersoon3GeboorteDatum, @testPersoon3IsMan)
+	VALUES(@testPersoon3Naam, @testPersoon3VoorNaam, @testPersoon3GeboorteDatum, @testPersoon3Geslacht)
 	SET @testPersoon3ID = SCOPE_IDENTITY();
 END
 ELSE
@@ -311,12 +369,23 @@ END;
 IF NOT EXISTS (SELECT 1 FROM pers.Persoon WHERE Naam = @testPersoon4Naam AND VoorNaam = @testPersoon4VoorNaam)
 BEGIN
 	INSERT INTO pers.Persoon(Naam, VoorNaam, GeboorteDatum, Geslacht)
-	VALUES(@testPersoon4Naam, @testPersoon4VoorNaam, @testPersoon4GeboorteDatum, @testPersoon4IsMan)
+	VALUES(@testPersoon4Naam, @testPersoon4VoorNaam, @testPersoon4GeboorteDatum, @testPersoon4Geslacht)
 	SET @testPersoon4ID = SCOPE_IDENTITY();
 END
 ELSE
 BEGIN
 	SET @testPersoon4ID = (SELECT PersoonID FROM pers.Persoon WHERE Naam = @testPersoon4Naam AND VoorNaam = @testPersoon4VoorNaam);
+END;
+
+IF NOT EXISTS (SELECT 1 FROM pers.Persoon WHERE Naam = @testPersoon5Naam AND VoorNaam = @testPersoon5VoorNaam)
+BEGIN
+	INSERT INTO pers.Persoon(Naam, VoorNaam, GeboorteDatum, Geslacht)
+	VALUES(@testPersoon5Naam, @testPersoon5VoorNaam, @testPersoon5GeboorteDatum, @testPersoon5Geslacht)
+	SET @testPersoon5ID = SCOPE_IDENTITY();
+END
+ELSE
+BEGIN
+	SET @testPersoon5ID = (SELECT PersoonID FROM pers.Persoon WHERE Naam = @testPersoon5Naam AND VoorNaam = @testPersoon5VoorNaam);
 END;
 
 ---
@@ -365,6 +434,17 @@ END
 ELSE
 BEGIN
 	SET @testGelieerdePersoon4ID=(SELECT GelieerdePersoonID FROM pers.GelieerdePersoon WHERE PersoonID = @testPersoon4ID AND GroepID = @testGroepID)
+END
+
+IF NOT EXISTS (SELECT 1 FROM pers.GelieerdePersoon WHERE PersoonID = @testPersoon5ID AND GroepID = @testGroepID)
+BEGIN
+	INSERT INTO pers.GelieerdePersoon(PersoonID, GroepID, ChiroLeeftijd)
+	VALUES (@testPersoon5ID, @testGroepID, @testPersoon5ChiroLeeftijd);
+	SET @testGelieerdePersoon5ID = SCOPE_IDENTITY();
+END
+ELSE
+BEGIN
+	SET @testGelieerdePersoon5ID=(SELECT GelieerdePersoonID FROM pers.GelieerdePersoon WHERE PersoonID = @testPersoon5ID AND GroepID = @testGroepID)
 END
 
 --
@@ -445,6 +525,15 @@ BEGIN
 	INSERT INTO lid.Leiding(LeidingID) VALUES (@testLid3ID)
 END
 
+IF NOT EXISTS (SELECT 1 FROM lid.LeidingInAfdelingsJaar WHERE LeidingID=@testLid3ID AND AfdelingsJaarID=@testAfdelingsJaar1ID)
+BEGIN
+  INSERT INTO lid.LeidingInAfdelingsJaar(LeidingID, AfdelingsJaarID) VALUES(@testLid3ID, @testAfdelingsJaar1ID)
+END
+
+IF NOT EXISTS (SELECT 1 FROM lid.LeidingInAfdelingsJaar WHERE LeidingID=@testLid3ID AND AfdelingsJaarID=@testAfdelingsJaar2ID)
+BEGIN
+  INSERT INTO lid.LeidingInAfdelingsJaar(LeidingID, AfdelingsJaarID) VALUES(@testLid3ID, @testAfdelingsJaar2ID)
+END
 
 
 IF NOT EXISTS (SELECT 1 FROM lid.Lid WHERE GelieerdePersoonID = @testGelieerdePersoon4ID AND GroepsWerkJaarID = @testGroepsHuidigWerkJaarID)
@@ -463,6 +552,23 @@ BEGIN
 	INSERT INTO lid.Leiding(LeidingID) VALUES (@testLid4ID)
 END
 
+
+IF NOT EXISTS (SELECT 1 FROM lid.Lid WHERE GelieerdePersoonID = @testGelieerdePersoon5ID AND GroepsWerkJaarID = @testGroepsHuidigWerkJaarID)
+BEGIN
+	INSERT INTO lid.Lid(GelieerdePersoonID, GroepsWerkJaarID, NonActief, Verwijderd, LidGeldBetaald, VolgendWerkJaar) 
+		VALUES (@testGelieerdePersoon5ID, @testGroepsHuidigWerkJaarID, @testLid5NonActief, @testLid5Verwijderd, @testLid5LidGeldBetaald, @testLid5VolgendWerkjaar)
+	SET @testLid5ID = scope_identity();
+END
+ELSE
+BEGIN
+	SET @testLid5ID = (SELECT LidID FROM lid.Lid WHERE GelieerdePersoonID = @testGelieerdePersoon5ID AND GroepsWerkJaarID = @testGroepsHuidigWerkJaarID)
+END
+
+IF NOT EXISTS (SELECT 1 FROM lid.Kind WHERE KindID = @testLid5ID)
+BEGIN
+  INSERT INTO lid.Kind(KindID, AfdelingsJaarID) VALUES(@testLid5ID, @testAfdeling1ID);
+END
+
 -- 
 -- 9.1 functies
 -- 
@@ -471,8 +577,8 @@ END
 
 IF NOT EXISTS (SELECT 1 FROM lid.Functie WHERE Code=@testFunctieCode AND GroepID=@testGroepID)
 BEGIN
-	INSERT INTO lid.Functie(Naam, Code, GroepID, MaxAantal, MinAantal, MinLeefTijd, WerkJaarVan, WerkJaarTot)
-	VALUES(@testFunctieNaam, @testFunctieCode, @testGroepID, @testFunctieMaxAantal, 0, 0, 0, 0)
+	INSERT INTO lid.Functie(Naam, Code, GroepID, MaxAantal, MinAantal, LidType, WerkJaarVan, WerkJaarTot)
+	VALUES(@testFunctieNaam, @testFunctieCode, @testGroepID, @testFunctieMaxAantal, 0, 3, 0, 0)
 	SET @testFunctieID = scope_identity();
 END
 ELSE
@@ -557,12 +663,16 @@ PRINT 'public const int CATEGORIE2ID = ' + CAST(@testCategorie2ID AS VARCHAR(10)
 PRINT 'public const int CATEGORIE3ID = ' + CAST(@testCategorie3ID AS VARCHAR(10)) + ';';
 PRINT 'public const int FUNCTIEID = ' + CAST(@testFunctieID AS VARCHAR(10)) + ';';
 PRINT 'public const int AANTALINCATEGORIE = ' + CAST(@aantalInCategorie AS VARCHAR(10)) + ';'
-PRINT 'public const int AFDELINGID = ' + CAST(@testAfdeling1ID AS VARCHAR(10)) + ';';
+PRINT 'public const int AFDELING1ID = ' + CAST(@testAfdeling1ID AS VARCHAR(10)) + ';';
 PRINT 'public const int OFFICIELEAFDELINGID = ' + CAST(@testOfficieleAfdelingID1 AS VARCHAR(10)) + ';';
-PRINT 'public const int AFDELINGSJAARID = ' + CAST(@testAfdelingsJaarID AS VARCHAR(10)) + ';';
+PRINT 'public const int AFDELINGSJAAR1ID = ' + CAST(@testAfdelingsJaar1ID AS VARCHAR(10)) + ';';
+PRINT 'public const int AFDELING1VAN = ' + CAST(@testHuidigGeboorteJaarVanAfdelingID1 AS VARCHAR(10)) + ' ;'
+PRINT 'public const int AFDELING1TOT = ' + CAST(@testHuidigGeboorteJaarTotAfdelingID1 AS VARCHAR(10)) + ' ;'
 PRINT 'public const int AFDELING2ID = ' + CAST(@testAfdeling2ID AS VARCHAR(10)) + ';';
-PRINT 'public const int AFDELING2VAN = 2001;'
-PRINT 'public const int AFDELING2TOT = 1998;'
+PRINT 'public const int AFDELINGSJAAR2ID = ' + CAST(@testAfdelingsJaar2ID AS VARCHAR(10)) + ';';
+PRINT 'public const int AFDELING2VAN = ' + CAST(@testHuidigGeboorteJaarVanAfdelingID2 AS VARCHAR(10)) + ' ;'
+PRINT 'public const int AFDELING2TOT = ' + CAST(@testHuidigGeboorteJaarTotAfdelingID2 AS VARCHAR(10)) + ' ;'
+PRINT 'public const int AFDELING3ID = ' + CAST(@testAfdeling3ID AS VARCHAR(10)) + ';';
 PRINT 'public const int GROEPSWERKJAARID = ' + CAST(@testGroepsHuidigWerkJaarID AS VARCHAR(10)) + ';';
 PRINT 'public const string ZOEKNAAM = "' + CAST(@testPersoon1Naam AS VARCHAR(10)) + '";'; 
 PRINT 'public const string GAV1 = "' + CAST(@testGav1Login AS VARCHAR(10)) + '";';

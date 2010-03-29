@@ -82,12 +82,12 @@ namespace Chiro.Gap.Data.Test
             Factory.ContainerInit();
 
             int gwjID = TestInfo.GROEPSWERKJAARID;
-            int afd2ID = TestInfo.AFDELING2ID;
+            int afd3ID = TestInfo.AFDELING3ID;
 
-            // Verwijder mogelijk afdelingsjaar voor afdeling2
+            // Verwijder mogelijk afdelingsjaar voor afdeling3
 
             IAfdelingsJarenDao ajDao = Factory.Maak<IAfdelingsJarenDao>();
-            AfdelingsJaar aj = ajDao.Ophalen(gwjID, afd2ID);
+            AfdelingsJaar aj = ajDao.Ophalen(gwjID, afd3ID);
 
             if (aj != null)
             {
@@ -106,7 +106,7 @@ namespace Chiro.Gap.Data.Test
         {
             #region Arrange
             int gwjID = TestInfo.GROEPSWERKJAARID;
-            int afdID = TestInfo.AFDELINGID;
+            int afdID = TestInfo.AFDELING1ID;
 
             IAfdelingsJarenDao dao = Factory.Maak<IAfdelingsJarenDao>();
             #endregion
@@ -132,7 +132,7 @@ namespace Chiro.Gap.Data.Test
         public void AfdelingOphalen()
         {
             #region Arrange
-            int afdID = TestInfo.AFDELINGID;
+            int afdID = TestInfo.AFDELING1ID;
             int groepID = TestInfo.GROEPID;
 
             IAfdelingenDao dao = Factory.Maak<IAfdelingenDao>();
@@ -150,7 +150,7 @@ namespace Chiro.Gap.Data.Test
 
         /// <summary>
         /// Creeert een AfdelingsWerkJaar voor de afdeling
-        /// bepaald door TestAfdeling2ID in het groepswerkjaar
+        /// bepaald door TestAfdeling3ID in het groepswerkjaar
         /// bepaald door TestGroepsWerkJaarID (zie settings)
         /// </summary>
         [TestMethod]
@@ -166,17 +166,17 @@ namespace Chiro.Gap.Data.Test
             GroepsWerkJaarManager wjm = Factory.Maak<GroepsWerkJaarManager>();
 
             int gwjID = TestInfo.GROEPSWERKJAARID;
-            int afd2ID = TestInfo.AFDELING2ID;
+            int afd3ID = TestInfo.AFDELING3ID;
             int oaID = TestInfo.OFFICIELEAFDELINGID;
 
-            int van = TestInfo.AFDELING2VAN;
-            int tot = TestInfo.AFDELING2TOT;
+            int van = TestInfo.AFDELING3VAN;
+            int tot = TestInfo.AFDELING3TOT;
 
             // Voor het gemak haal ik groepswerkjaar en afdeling via
             // de DAO's op ipv via de workers.
 
             GroepsWerkJaar gw = gwDao.Ophalen(gwjID, gwj=>gwj.Groep);
-            Afdeling afd = aDao.Ophalen(afd2ID);
+            Afdeling afd = aDao.Ophalen(afd3ID);
             OfficieleAfdeling oa = oaDao.Ophalen(oaID);
 
             // Het afdelingsjaar wordt gemaakt door een worker.
@@ -193,13 +193,13 @@ namespace Chiro.Gap.Data.Test
 
             // Nu opnieuw ophalen.
 
-            AfdelingsJaar aj2 = ajDao.Ophalen(gwjID, afd2ID);
+            AfdelingsJaar aj2 = ajDao.Ophalen(gwjID, afd3ID);
 
             // Assert
 
             Assert.IsTrue(aj2.ID > 0);
             Assert.IsTrue(aj2.GroepsWerkJaar.ID == gwjID);
-            Assert.IsTrue(aj2.Afdeling.ID == afd2ID);
+            Assert.IsTrue(aj2.Afdeling.ID == afd3ID);
             Assert.IsTrue(aj2.OfficieleAfdeling.ID == oaID);
 
             // Cleanup is niet meer nodig, want het nieuw gemaakte
@@ -225,7 +225,7 @@ namespace Chiro.Gap.Data.Test
 
             var ajQuery = (
                 from afd in g.Afdeling
-                where afd.ID == TestInfo.AFDELINGID
+                where afd.ID == TestInfo.AFDELING1ID
                 select afd.AfdelingsJaar);
 
             Assert.IsTrue(ajQuery.Count() == 1);

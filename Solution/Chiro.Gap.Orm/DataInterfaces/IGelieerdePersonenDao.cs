@@ -95,6 +95,24 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		GelieerdePersoon DetailsOphalen(int gelieerdePersoonID);
 
 		/// <summary>
+		/// Haalt een gelieerde persoon op, inclusief Lid/Leidingsobject in het groepswerkjaar bepaald
+		/// door <paramref name="groepsWerkJaarID"/>, met
+		/// daaraan gekoppeld eventuele afdelingsjaren met afdelingen.
+		/// </summary>
+		/// <param name="gelieerdePersoonID">ID van op te halen gelieerde persoon</param>
+		/// <param name="groepsWerkJaarID">ID van het gevraagde groepswerkjaar</param>
+		/// <param name="paths">lambda-expressies die aangeven welke extra info er mee opgehaald moet worden.</param>
+		/// <returns>De gelieerde persoon, inclusief Lid/Leidingsobject in het groepswerkjaar bepaald
+		/// door <paramref name="groepsWerkJaarID"/>, met
+		/// daaraan gekoppeld eventuele afdelingsjaren met afdelingen.</returns>
+		/// <remarks>Het gegeven 'enkel lidinfo in een bepaald groepswerkjaar ophalen' kan niet opgegeven worden
+		/// via een lambda-expressie, omdat gp=>gp.lid de lidobjecten uit alle werkjaren zou ophalen.</remarks>
+		GelieerdePersoon OphalenMetHuidigeAfdelingen(
+			int gelieerdePersoonID,
+			int groepsWerkJaarID,
+			params Expression<Func<GelieerdePersoon, object>>[] paths);
+
+		/// <summary>
 		/// Laadt groepsgegevens in GelieerdePersoonsobject
 		/// </summary>
 		/// <param name="p">Gelieerde persoon</param>
