@@ -172,7 +172,7 @@ namespace Chiro.Gap.Services
 		/// <param name="lidID">ID van het te verwijderen lid</param>
 		public void Verwijderen(int lidID)
 		{
-			Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Groep);
+			Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Groep | LidExtras.Afdelingen);
 			_ledenMgr.Verwijderen(l);	// verwijderen persisteert meteen
 		}
 

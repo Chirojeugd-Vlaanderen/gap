@@ -246,7 +246,8 @@ namespace Chiro.Gap.Workers
 		/// Leiding kan niet verwijderd worden.  Persisteert.
 		/// </summary>
 		/// <param name="lid">te verwijderen lid</param>
-		/// <remarks>Aan <paramref name="lid"/> moet via het groepswerkjaar de groep gekoppeld zijn</remarks>
+		/// <remarks><paramref name="lid"/> moet via het groepswerkjaar gekoppeld
+		/// aan zijn groep.  Als het om leiding gaat, moeten ook de afdelingen gekoppeld zijn.</remarks>
 		public void Verwijderen(Lid lid)
 		{
 			Debug.Assert(lid.GroepsWerkJaar != null);
@@ -256,7 +257,6 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(Properties.Resources.GeenGavLid);
 			}
-
 
 			// checks:
 			if (!lid.GroepsWerkJaar.Equals(_daos.GroepenDao.RecentsteGroepsWerkJaarGet(lid.GroepsWerkJaar.Groep.ID)))
@@ -269,8 +269,21 @@ namespace Chiro.Gap.Workers
 			}
 
 			lid.TeVerwijderen = true;
+			if (lid is Leiding)
+			{
+				var leiding = lid as Leiding;
 
-			_daos.LedenDao.Bewaren(lid);
+				foreach (AfdelingsJaar aj in leiding.AfdelingsJaar)
+				{
+					aj.TeVerwijderen = true;
+				}
+				_daos.LeidingDao.Bewaren(leiding, ld => ld.AfdelingsJaar);
+			}
+			else
+			{
+				_daos.LedenDao.Bewaren(lid);
+			}
+
 		}
 
 		/// <summary>
