@@ -18,22 +18,18 @@
     <%=Html.LabelFor(s => s.HuidigLid.LidgeldBetaald)%>
     <%=Html.EditorFor(s => s.HuidigLid.LidgeldBetaald)%>
     </p>
-    <p>
-    <%=Html.LabelFor(s => s.HuidigLid.EindeInstapperiode)%>
-    <%if (Model.HuidigLid.EindeInstapperiode.Value.CompareTo(DateTime.Today) <= 0)
-	  {
-		  Response.Write(" is verlopen");
-	  }else{
-		  %>
-		 <%Response.Write(" tot" + Html.DisplayFor(s => s.HuidigLid.EindeInstapperiode));%>
-    <%} %>
-    </p>
 	<%}else{ %>
     <p>
     <%=Html.LabelFor(s => s.HuidigLid.DubbelPunt)%>
     <%=Html.EditorFor(s => s.HuidigLid.DubbelPunt)%>
     </p>
+    
 	<%} %>
+
+	<p>
+    <%=Html.LabelFor(s => s.HuidigLid.EindeInstapperiode) %>
+    <%=(Model.HuidigLid.EindeInstapperiode < DateTime.Today) ? "verlopen" : "tot " + Html.DisplayFor(s => s.HuidigLid.EindeInstapperiode)%>
+    </p>
 	
 	<p>
     <%=Html.LabelFor(s => s.HuidigLid.NonActief)%>
@@ -61,7 +57,7 @@
 		   Response.Write("</table>");
 	   }
    }else{
-	   Response.Write(Model.HuidigLid.PersoonInfo.VolledigeNaam + " zit in de " +
+	   Response.Write(Model.HuidigLid.PersoonInfo.VolledigeNaam + " is bij de " +
 		   Model.AlleAfdelingen.FirstOrDefault(s => s.AfdelingID == Model.HuidigLid.AfdelingIdLijst.ElementAt(0)).Naam + ".");
    }%>
    </br></br>

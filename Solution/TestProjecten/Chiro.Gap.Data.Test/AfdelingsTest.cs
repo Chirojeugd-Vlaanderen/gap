@@ -84,15 +84,28 @@ namespace Chiro.Gap.Data.Test
 			int gwjID = TestInfo.GROEPSWERKJAARID;
 			int afd3ID = TestInfo.AFDELING3ID;
 
-			// Verwijder mogelijk afdelingsjaar voor afdeling3
+			// Verwijder mogelijk afdelingsjaren/leden voor afdeling3
 
 			IAfdelingsJarenDao ajDao = Factory.Maak<IAfdelingsJarenDao>();
-			AfdelingsJaar aj = ajDao.Ophalen(gwjID, afd3ID);
+			AfdelingsJaar aj = ajDao.Ophalen(gwjID, afd3ID, afdj => afdj.Leiding, afdj => afdj.Kind);
+
+			// TODO: Deze 2 foreachen zouden toch in een keer moeten kunnen met een union of zo, maar
+			// ik krijg het niet zo direct voor elkaar.
+
+			foreach (Lid ld in aj.Kind)
+			{
+				ld.TeVerwijderen = true;
+			}
+
+			foreach (Lid ld in aj.Leiding)
+			{
+				ld.TeVerwijderen = true;
+			}
 
 			if (aj != null)
 			{
 				aj.TeVerwijderen = true;
-				ajDao.Bewaren(aj);
+				ajDao.Bewaren(aj, afdj => afdj.Kind, afdj => afdj.Leiding);
 			}
 
 

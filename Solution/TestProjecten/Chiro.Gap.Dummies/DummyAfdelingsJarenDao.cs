@@ -20,6 +20,11 @@ namespace Chiro.Gap.Dummies
             throw new NotImplementedException();
         }
 
-        #endregion
+	public AfdelingsJaar Ophalen(int groepsWerkJaarID, int afdelingID, params System.Linq.Expressions.Expression<Func<AfdelingsJaar, object>>[] paths)
+	{
+		throw new NotImplementedException();
+	}
+
+	#endregion
     }
 }

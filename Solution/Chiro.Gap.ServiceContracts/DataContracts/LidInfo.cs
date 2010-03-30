@@ -5,12 +5,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
 using Chiro.Gap.Orm;
-using System.ComponentModel;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -37,7 +38,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// enkel voor kinderen en niet aanpasbaar
 		/// </summary>
 		[DataMember]
-		[DisplayName("Testperiode")]
+		[DisplayName("Probeerperiode")]
+		[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ConvertEmptyStringToNull = true)]
 		public DateTime? EindeInstapperiode { get; set; }
 
 		/// <summary>

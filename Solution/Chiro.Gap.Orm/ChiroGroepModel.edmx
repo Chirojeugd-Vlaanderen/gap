@@ -281,7 +281,6 @@
           <Key>
             <PropertyRef Name="kindID" />
           </Key>
-          <Property Name="EindeInstapPeriode" Type="smalldatetime" />
           <Property Name="kindID" Type="int" Nullable="false" />
           <Property Name="afdelingsJaarID" Type="int" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
@@ -315,6 +314,7 @@
           <Property Name="GroepsWerkjaarID" Type="int" Nullable="false" />
           <Property Name="GelieerdePersoonID" Type="int" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="EindeInstapPeriode" Type="smalldatetime" />
         </EntityType>
         <EntityType Name="LidFunctie">
           <Key>
@@ -958,7 +958,8 @@
           <Property Name="Versie" Type="Binary" Nullable="true" />
           <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_Lid_GroepsWerkjaar" FromRole="Lid" ToRole="GroepsWerkJaar" />
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_Lid_GelieerdePersoon" FromRole="Lid" ToRole="GelieerdePersoon" />
-          <NavigationProperty Name="Functie" Relationship="ChiroGroepModel.LidFunctie" FromRole="Lid" ToRole="Functie" /></EntityType>
+          <NavigationProperty Name="Functie" Relationship="ChiroGroepModel.LidFunctie" FromRole="Lid" ToRole="Functie" />
+          <Property Name="EindeInstapPeriode" Type="DateTime" Nullable="true" /></EntityType>
         <Association Name="FK_GroepsWerkjaar_Groep">
           <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1" />
           <End Type="ChiroGroepModel.GroepsWerkJaar" Role="GroepsWerkJaar" Multiplicity="*" /></Association>
@@ -1040,7 +1041,6 @@
           <End Role ="Leiding" Type="ChiroGroepModel.Leiding" Multiplicity="*" />
         </Association>
         <EntityType Name="Kind" BaseType="ChiroGroepModel.Lid">
-          <Property Name="EindeInstapPeriode" Type="DateTime" Nullable="true" />
           <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.FK_Kind_AfdelingsJaar" FromRole="Kind" ToRole="AfdelingsJaar" />
           </EntityType>
         <Association Name="FK_Kind_AfdelingsJaar">
@@ -1227,6 +1227,7 @@
           <EntitySetMapping Name="Lid">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Lid)">
               <MappingFragment StoreEntitySet="Lid">
+                <ScalarProperty Name="EindeInstapPeriode" ColumnName="EindeInstapPeriode" />
                 <ScalarProperty Name="ID" ColumnName="LidID" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="VolgendWerkjaarInt" ColumnName="VolgendWerkjaar" />
@@ -1244,7 +1245,7 @@
           <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Kind)">
               <MappingFragment StoreEntitySet="Kind">
                 <ScalarProperty Name="ID" ColumnName="kindID" />
-                <ScalarProperty Name="EindeInstapPeriode" ColumnName="EindeInstapPeriode" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+                </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <AssociationSetMapping Name="FK_GroepsWerkjaar_Groep" TypeName="ChiroGroepModel.FK_GroepsWerkjaar_Groep" StoreEntitySet="GroepsWerkJaar">
             <EndProperty Name="Groep">
               <ScalarProperty Name="ID" ColumnName="GroepID" /></EndProperty>
@@ -1590,12 +1591,12 @@
           <ConnectorPoint PointX="11" PointY="14.256805826822916" />
           </AssociationConnector>
         <InheritanceConnector EntityType="ChiroGroepModel.Leiding" ManuallyRouted="false">
-          <ConnectorPoint PointX="6.09375" PointY="11.53904296875" />
+          <ConnectorPoint PointX="6.09375" PointY="11.703390299479166" />
           <ConnectorPoint PointX="6.09375" PointY="13.40625" />
           <ConnectorPoint PointX="6.3697936666666672" PointY="13.40625" />
           <ConnectorPoint PointX="6.5364603333333333" PointY="13.40625" />
           <ConnectorPoint PointX="9.625" PointY="13.40625" /></InheritanceConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.Kind" Width="1.5" PointX="6.75" PointY="13.75" Height="1.2636116536458317" />
+        <EntityTypeShape EntityType="ChiroGroepModel.Kind" Width="1.5" PointX="6.75" PointY="13.75" Height="1.0992643229166657" />
         <AssociationConnector Association="ChiroGroepModel.FK_GroepsWerkjaar_Groep1" >
           <ConnectorPoint PointX="3.6875" PointY="8.0320849609375" />
           <ConnectorPoint PointX="3.6875" PointY="9.25" /></AssociationConnector>
@@ -1618,8 +1619,8 @@
           <ConnectorPoint PointX="13.375" PointY="10.470413411458333" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_Kind_AfdelingsJaar" >
           <ConnectorPoint PointX="14.125" PointY="12.828390299479167" />
-          <ConnectorPoint PointX="14.125" PointY="14.732361653645832" />
-          <ConnectorPoint PointX="8.25" PointY="14.732361653645832" />
+          <ConnectorPoint PointX="14.125" PointY="14.65018798828125" />
+          <ConnectorPoint PointX="8.25" PointY="14.65018798828125" />
           </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_Lid_GelieerdePersoon1" >
           <ConnectorPoint PointX="5.84375" PointY="7.2496956380208326" />
@@ -1634,9 +1635,9 @@
           <ConnectorPoint PointX="14.5" PointY="4.375" />
           </AssociationConnector>
         <InheritanceConnector EntityType="ChiroGroepModel.Kind" ManuallyRouted="false">
-          <ConnectorPoint PointX="6.453127" PointY="11.53904296875" />
-          <ConnectorPoint PointX="6.453127" PointY="14.381805826822916" />
-          <ConnectorPoint PointX="6.75" PointY="14.381805826822916" />
+          <ConnectorPoint PointX="6.453127" PointY="11.703390299479166" />
+          <ConnectorPoint PointX="6.453127" PointY="14.299632161458334" />
+          <ConnectorPoint PointX="6.75" PointY="14.299632161458334" />
           </InheritanceConnector>
         <EntityTypeShape EntityType="ChiroGroepModel.Categorie" Width="1.5" PointX="0.5" PointY="0.75" Height="1.7566536458333335" />
         <AssociationConnector Association="ChiroGroepModel.FK_Categorie_Groep">

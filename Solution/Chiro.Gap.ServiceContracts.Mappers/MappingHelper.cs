@@ -110,9 +110,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					//in de ui makkelijker is
 					opt => opt.MapFrom(src => src is Leiding ? ((Leiding)src).DubbelPuntAbonnement : false))
 				.ForMember(
-					dst => dst.EindeInstapperiode,
-					opt => opt.MapFrom(src => src is Kind ? ((Kind)src).EindeInstapPeriode : null))
-				.ForMember(
 					dst => dst.AfdelingIdLijst,
 					opt => opt.MapFrom(src => src.AfdelingIdLijstGet()))
 				.ForMember(

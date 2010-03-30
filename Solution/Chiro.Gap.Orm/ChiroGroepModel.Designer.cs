@@ -34,7 +34,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_WoonPlaats", "WoonPlaats", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.WoonPlaats), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Adres))]
 
 // Original file name:
-// Generation date: 26/03/2010 9:38:13
+// Generation date: 30/03/2010 11:48:06
 namespace Chiro.Gap.Orm
 {
     
@@ -2312,6 +2312,29 @@ namespace Chiro.Gap.Orm
         partial void OnVersieChanging(byte[] value);
         partial void OnVersieChanged();
         /// <summary>
+        /// There are no comments for Property EindeInstapPeriode in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<global::System.DateTime> EindeInstapPeriode
+        {
+            get
+            {
+                return this._EindeInstapPeriode;
+            }
+            set
+            {
+                this.OnEindeInstapPeriodeChanging(value);
+                this.ReportPropertyChanging("EindeInstapPeriode");
+                this._EindeInstapPeriode = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("EindeInstapPeriode");
+                this.OnEindeInstapPeriodeChanged();
+            }
+        }
+        private global::System.Nullable<global::System.DateTime> _EindeInstapPeriode;
+        partial void OnEindeInstapPeriodeChanging(global::System.Nullable<global::System.DateTime> value);
+        partial void OnEindeInstapPeriodeChanged();
+        /// <summary>
         /// There are no comments for GroepsWerkJaar in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Lid_GroepsWerkjaar", "GroepsWerkJaar")]
@@ -3369,29 +3392,6 @@ namespace Chiro.Gap.Orm
             kind.ID = id;
             return kind;
         }
-        /// <summary>
-        /// There are no comments for Property EindeInstapPeriode in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Nullable<global::System.DateTime> EindeInstapPeriode
-        {
-            get
-            {
-                return this._EindeInstapPeriode;
-            }
-            set
-            {
-                this.OnEindeInstapPeriodeChanging(value);
-                this.ReportPropertyChanging("EindeInstapPeriode");
-                this._EindeInstapPeriode = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("EindeInstapPeriode");
-                this.OnEindeInstapPeriodeChanged();
-            }
-        }
-        private global::System.Nullable<global::System.DateTime> _EindeInstapPeriode;
-        partial void OnEindeInstapPeriodeChanging(global::System.Nullable<global::System.DateTime> value);
-        partial void OnEindeInstapPeriodeChanged();
         /// <summary>
         /// There are no comments for AfdelingsJaar in the schema.
         /// </summary>

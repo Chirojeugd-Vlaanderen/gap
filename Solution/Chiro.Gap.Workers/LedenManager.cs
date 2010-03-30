@@ -53,6 +53,7 @@ namespace Chiro.Gap.Workers
 			lid.GelieerdePersoon = gp;
 			gp.Lid.Add(lid);
 			gwj.Lid.Add(lid);
+			lid.EindeInstapPeriode = DateTime.Today.AddDays(Settings.Default.DagenInstapPeriode);
 		}
 
 		/// <summary>
@@ -200,7 +201,6 @@ namespace Chiro.Gap.Workers
 			Kind kind = new Kind();
 			kind.AfdelingsJaar = aj;
 			aj.Kind.Add(kind);
-			kind.EindeInstapPeriode = DateTime.Today.AddDays(Settings.Default.DagenInstapPeriode);
 
 			LidMaken(kind, gpMetDetails, gwj);
 
@@ -257,15 +257,11 @@ namespace Chiro.Gap.Workers
 			Lid lid = _daos.LedenDao.OphalenMetDetails(id);
 
 			// checks:
-			if (lid is Leiding)
-			{
-				throw new OngeldigeActieException("Leiding kan niet meer verwijderd worden.");
-			}
 			if (lid.GroepsWerkJaar != _daos.GroepenDao.RecentsteGroepsWerkJaarGet(lid.GroepsWerkJaar.Groep.ID))
 			{
 				throw new OngeldigeActieException("Een lid verwijderen mag enkel als het een lid uit het huidige werkjaar is.");
 			}
-			if (lid is Kind && DateTime.Compare(((Kind)lid).EindeInstapPeriode.Value, DateTime.Today) < 0)
+			if (lid is Kind && DateTime.Compare(lid.EindeInstapPeriode.Value, DateTime.Today) < 0)
 			{
 				throw new OngeldigeActieException("Een kind verwijderen kan niet meer nadat de instapperiode verstreken is.");
 			}
