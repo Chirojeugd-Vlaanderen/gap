@@ -74,16 +74,21 @@ namespace Chiro.Cdf.Data.Entity
 
 			if (unattachedEntities.Length > 0)
 			{
-				// Workaround to ensure the assembly containing the entity type is loaded:
-				// (see: https://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=3405138&SiteID=1)
-				try
-				{
-					context.MetadataWorkspace.LoadFromAssembly(entityType.Assembly);
-				}
-				catch
-				{
-					// TODO logica voorzien - zie ticket #334
-				}
+				// Onderstaande workaround uitgecommentarieerd, want de LoadFromAssembly
+				// gaf problemen bij de unit test OphalenMetLidInfoSerializable
+				// (zie ook ticket #404).  Ik hoop nu wel dat ik nergens anders probemen
+				// introduceer...
+
+				//// Workaround to ensure the assembly containing the entity type is loaded:
+				//// (see: https://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=3405138&SiteID=1)
+				//try
+				//{
+				//        context.MetadataWorkspace.LoadFromAssembly(entityType.Assembly);
+				//}
+				//catch
+				//{
+				//        // TODO logica voorzien - zie ticket #334
+				//}
 
 				// In onderstaande region worden de al bestaande root
 				// entity's gequery'd, om op die manier al in de
