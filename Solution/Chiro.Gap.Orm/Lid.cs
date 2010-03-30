@@ -88,15 +88,15 @@ namespace Chiro.Gap.Orm
 		}
 
 
-		public override int GetHashCode()
-		{
-			return ID.GetHashCode();
-		}
+		//public override int GetHashCode()
+		//{
+		//        return ID.GetHashCode();
+		//}
 
-		public override bool Equals(object obj)
-		{
-			return this.ChiroEquals(obj);
-		}
+		//public override bool Equals(object obj)
+		//{
+		//        return this.ChiroEquals(obj);
+		//}
 
 	}
 }

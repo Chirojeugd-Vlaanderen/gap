@@ -212,6 +212,40 @@ namespace Chiro.Gap.Data.Test
 		}
 
 		/// <summary>
+		/// Ook als een pagina met lidinfo opgehaald wordt, moet het resultaat serializable
+		/// zijn.
+		/// </summary>
+		[TestMethod]
+		public void OphalenMetLidInfoSerializable()
+		{
+			// arange
+			int totaal;
+
+			IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
+
+			// act
+
+			// Haal 30 personen op, daar zitten allicht leden bij
+			var lijst = dao.PaginaOphalenMetLidInfo(
+				TestInfo.GROEPID, 1, 30, out totaal);
+
+			using (MemoryStream stream = new MemoryStream())
+			{
+				// act
+
+				var serializer = new NetDataContractSerializer();
+				serializer.Serialize(stream, lijst);
+				stream.Position = 0;
+				IEnumerable<GelieerdePersoon> kloon = (IEnumerable<GelieerdePersoon>)serializer.Deserialize(stream);
+			}
+
+			// assert
+
+			// Als we hier geraken zonder problemen, is het OK
+			Assert.IsTrue(true);
+		}
+
+		/// <summary>
 		/// Test voor het ophalen van een persoon, inclusief lidinfo en afdelingen.  De persoon in kwestie
 		/// is een kind.
 		/// </summary>
