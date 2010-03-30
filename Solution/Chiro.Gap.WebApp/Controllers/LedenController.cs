@@ -122,11 +122,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		// GET: /Leden/Verwijderen/5
 		public ActionResult Verwijderen(int id, int groepID)
 		{
-			Boolean success = ServiceHelper.CallService<ILedenService, Boolean>(l => l.Verwijderen(id));
-			if (success)
-			{
-				TempData["feedback"] = "Lid is verwijderd";
-			}
+			ServiceHelper.CallService<ILedenService>(l => l.Verwijderen(id));
+			TempData["feedback"] = "Lid is verwijderd";
 			return RedirectToAction("List", new { groepsWerkJaarId = Sessie.LaatstePagina, afdID = Sessie.LaatsteActieID });
 		}
 

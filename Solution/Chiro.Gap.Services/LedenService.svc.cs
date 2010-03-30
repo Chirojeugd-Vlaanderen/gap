@@ -165,11 +165,15 @@ namespace Chiro.Gap.Services
 			}
 		}
 
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public Boolean Verwijderen(int id)
+
+		/// <summary>
+		/// Verwijdert het lid met ID <paramref name="lidID"/>
+		/// </summary>
+		/// <param name="lidID">ID van het te verwijderen lid</param>
+		public void Verwijderen(int lidID)
 		{
-			return _ledenMgr.LidVerwijderen(id);
+			Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Groep);
+			_ledenMgr.Verwijderen(l);	// verwijderen persisteert meteen
 		}
 
 		/* zie #273 */

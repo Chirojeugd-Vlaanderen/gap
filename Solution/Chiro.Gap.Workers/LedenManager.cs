@@ -245,19 +245,21 @@ namespace Chiro.Gap.Workers
 		/// Dit kan enkel als het een lid uit het huidige werkjaar is en als de instapperiode niet verstreken is voor een kind
 		/// Leiding kan niet verwijderd worden.  Persisteert.
 		/// </summary>
-		/// <param name="id">ID van het lid dat verwijderd moet worden</param>
-		/// <returns><c>True</c> on successful</returns>
-		public Boolean LidVerwijderen(int id)
+		/// <param name="lid">te verwijderen lid</param>
+		/// <remarks>Aan <paramref name="lid"/> moet via het groepswerkjaar de groep gekoppeld zijn</remarks>
+		public void Verwijderen(Lid lid)
 		{
-			if (!_autorisatieMgr.IsGavLid(id))
+			Debug.Assert(lid.GroepsWerkJaar != null);
+			Debug.Assert(lid.GroepsWerkJaar.Groep != null);
+
+			if (!_autorisatieMgr.IsGavLid(lid.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGavLid);
 			}
 
-			Lid lid = _daos.LedenDao.OphalenMetDetails(id);
 
 			// checks:
-			if (lid.GroepsWerkJaar != _daos.GroepenDao.RecentsteGroepsWerkJaarGet(lid.GroepsWerkJaar.Groep.ID))
+			if (!lid.GroepsWerkJaar.Equals(_daos.GroepenDao.RecentsteGroepsWerkJaarGet(lid.GroepsWerkJaar.Groep.ID)))
 			{
 				throw new OngeldigeActieException("Een lid verwijderen mag enkel als het een lid uit het huidige werkjaar is.");
 			}
@@ -268,14 +270,7 @@ namespace Chiro.Gap.Workers
 
 			lid.TeVerwijderen = true;
 
-			Debug.Assert(lid is Kind || lid is Leiding, "Lid moet ofwel Kind ofwel Leiding zijn!");
-
-			// voor een Kind is _dao.Bewaren(lid) voldoende
-			if (lid is Kind)
-			{
-				_daos.LedenDao.Bewaren(lid);
-			}
-			return true;
+			_daos.LedenDao.Bewaren(lid);
 		}
 
 		/// <summary>

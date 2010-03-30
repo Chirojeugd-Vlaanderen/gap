@@ -72,12 +72,11 @@ namespace Chiro.Gap.ServiceContracts
 		LidInfo BewarenMetVrijeVelden(LidInfo lid);
 
 		/// <summary>
-		/// TODO wat moet deze methode juist doen (nonactief maken of verwijderen als er nog niet lang in)
+		/// Verwijdert het lid met ID <paramref name="lidID"/>
 		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
+		/// <param name="lidID">ID van het te verwijderen lid</param>
 		[OperationContract]
-		Boolean Verwijderen(int id);
+		void Verwijderen(int lidID);
 
 		// TODO: we vragen leden op per groepswerkjaar. Waarom dit verschil met personen? Personen zijn altijd geldig, 
 		// maar is dit wel de beste oplossing? Want alle leden zijn personen, maar wat dan als ze weggaan en dan terugkomen? 
