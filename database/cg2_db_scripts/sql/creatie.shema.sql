@@ -524,8 +524,8 @@ BEGIN
     MaxAantal int NULL,  
     MinAantal int NOT NULL,
     LidType int NOT NULL,
-    WerkJaarVan int NOT,
-    WerkJaarTot int NOT,  -- indien 0: functie nog actief
+    WerkJaarVan int NULL,
+    WerkJaarTot int NULL,  -- indien null: functie nog actief
     IsNationaal  AS (CASE WHEN GroepID IS NULL then CONVERT(BIT,'true') ELSE CONVERT(BIT,'false') END),
 		CONSTRAINT PK_Functie PRIMARY KEY (FunctieID ASC)
 	)
