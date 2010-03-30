@@ -1,9 +1,0 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-Project("{4F2E2C19-372F-40D8-9FA7-9D2138C6997A}") = "TestData", "TestData\TestData.ssmssqlproj", "{8CA7178E-C8EA-4A54-8ED0-C378EF7703C4}"
-EndProject
-Global
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-EndGlobal
