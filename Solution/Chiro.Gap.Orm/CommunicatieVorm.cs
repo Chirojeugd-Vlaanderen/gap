@@ -12,6 +12,7 @@ using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
+using System.ComponentModel;
 
 namespace Chiro.Gap.Orm
 {
@@ -35,6 +36,12 @@ namespace Chiro.Gap.Orm
 			[StringLengte(320)]
 			[DataType(DataType.MultilineText)]
 			public string Nota { get; set; }
+
+			[DisplayName("Voor heel het gezin?")]
+			public bool IsGezinsgebonden { get; set; }
+
+			[DisplayName("Gebruiken om persoon te contacteren?")]
+			public bool Voorkeur { get; set; }
 		}
 
 		private bool _teVerwijderen = false;

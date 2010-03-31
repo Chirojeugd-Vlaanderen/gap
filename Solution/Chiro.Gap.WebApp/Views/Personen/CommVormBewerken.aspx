@@ -21,20 +21,19 @@
            <%=Html.ValidationSummary() %>
            <table>
            <tr>
-                <td><%=Model.NieuweCommVorm.CommunicatieType.Omschrijving%>
-                :</td>
+                <td><%=Model.NieuweCommVorm.CommunicatieType.Omschrijving%>:</td>
                 <td>
                     <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nummer) %>
                 </td>
            </tr>
            <tr>
-                <td>Alle informatie naar dit adres sturen?</td>
+                <td><%=Html.LabelFor(mdl => mdl.NieuweCommVorm.Voorkeur)%></td>
                 <td>
                     <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Voorkeur) %>
                 </td>
            </tr>
            <tr>
-                <td>Bereiken we hiermee het hele gezin?</td>
+                <td><%=Html.LabelFor(mdl => mdl.NieuweCommVorm.IsGezinsgebonden) %></td>
                 <td>
                     <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.IsGezinsgebonden) %>
                 </td>

@@ -19,27 +19,26 @@
         <table>
             <tr>
                 <td>
-                    <%=Html.DropDownListFor(mdl=>mdl.geselecteerdeCommVorm, new SelectList(Model.Types.Select(x => new { value = x.ID, text = x.Omschrijving }), "value", "text"))%>
-                    :
+                    <%=Html.DropDownListFor(mdl=>mdl.geselecteerdeCommVorm, new SelectList(Model.Types.Select(x => new { value = x.ID, text = x.Omschrijving }), "value", "text"))%>:
                 </td>
                 <td>
-                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nummer) %><br />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Is dit de voorkeurscommunicatie voor dit communicatietype?
-                </td>
-                <td>
-                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Voorkeur) %><br />
+                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nummer) %>
                 </td>
             </tr>
             <tr>
                 <td>
-                    Is het gezinsgebonden?
+                    <%=Html.LabelFor(mdl => mdl.NieuweCommVorm.Voorkeur) %>
                 </td>
                 <td>
-                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.IsGezinsgebonden) %><br />
+                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Voorkeur) %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <%=Html.LabelFor(mdl => mdl.NieuweCommVorm.IsGezinsgebonden) %>
+                </td>
+                <td>
+                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.IsGezinsgebonden) %>
                 </td>
             </tr>
             <tr>
