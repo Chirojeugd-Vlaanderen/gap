@@ -296,6 +296,27 @@ namespace Chiro.Gap.Data.Test
 			Assert.IsTrue((resultaat.Lid.First() as Leiding).AfdelingsJaar.Count() == 2);
 		}
 
+		/// <summary>
+		/// Test voor het ophalen van een persoon, inclusief lidinfo en afdelingen.  Hier wordt
+		/// expliciet getest op gerelateerde op te halen entiteiten
+		/// </summary>
+		[TestMethod]
+		public void OphalenPersoonMetAfdelingenGerelateerdeEntiteiten()
+		{
+			// Arrange
+			var dao = Factory.Maak<IGelieerdePersonenDao>();
+
+			// Act
+			GelieerdePersoon resultaat = dao.OphalenMetAfdelingen(
+				TestInfo.GELIEERDEPERSOON5ID,
+				TestInfo.GROEPSWERKJAARID,
+				gp => gp.Persoon);
+
+
+			// Assert
+
+			Assert.IsTrue(resultaat.Persoon != null);
+		}
 
 		/// <summary>
 		/// Nieuwe (gelieerde) persoon bewaren via GelieerdePersonenDAO.

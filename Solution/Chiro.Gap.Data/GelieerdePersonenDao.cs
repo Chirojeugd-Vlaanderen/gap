@@ -294,7 +294,7 @@ namespace Chiro.Gap.Data.Ef
 					       where gp.ID == gelieerdePersoonID
 					       select gp) as ObjectQuery<GelieerdePersoon>;
 
-				IncludesToepassen(gpQuery, paths);
+				gpQuery = IncludesToepassen(gpQuery, paths);
 
 				// Query's voor relevante lidobjecten.  Zoek zowel een kindobject als een 
 				// leidingsobject die de gevraagde gelieerde persoon koppelt aan het gevraagde
