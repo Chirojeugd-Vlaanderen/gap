@@ -406,3 +406,9 @@ ul#info li
 {	
 	list-style: none;
 }
+
+textarea
+{
+    width: 60ex;
+    height: 10ex;
+}
