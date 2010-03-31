@@ -49,5 +49,23 @@ namespace Chiro.Gap.Workers.Properties {
                 return ((int)(this["DagenInstapPeriode"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        public int MinLidLeefTijd {
+            get {
+                return ((int)(this["MinLidLeefTijd"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int MaxLidLeefTijd {
+            get {
+                return ((int)(this["MaxLidLeefTijd"]));
+            }
+        }
     }
 }

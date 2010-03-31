@@ -182,9 +182,11 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(GeenGavFoutCode.Afdeling, Resources.GeenGavAfdeling);
 			}
 
-			if (geboorteJaarBegin < System.DateTime.Today.Year - 20
-				|| geboorteJaarBegin > geboorteJaarEind
-				|| geboorteJaarEind > System.DateTime.Today.Year - 5)
+			// Leden moeten minstens in het 1ste leerjaar zitten, alvorens we inschrijven.
+			// De maximumleeftijd is arbitrair nattevingerwerk. :-)
+			if  (!(gwj.WerkJaar - geboorteJaarEind >= Properties.Settings.Default.MinLidLeefTijd) 
+				|| !(gwj.WerkJaar - geboorteJaarBegin <= Properties.Settings.Default.MaxLidLeefTijd)
+				|| !(geboorteJaarBegin <= geboorteJaarEind))
 			{
 				throw new InvalidOperationException("Ongeldige geboortejaren voor het afdelingsjaar");
 			}
