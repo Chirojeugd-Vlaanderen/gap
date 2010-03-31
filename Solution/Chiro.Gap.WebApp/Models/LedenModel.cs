@@ -23,7 +23,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Bevat de huidige afdelingen van een lid, of de geselecteerde na de ui, voor leiding
 		/// </summary>
-		public List<int> AfdelingIDs { get; set; }
+		public IList<int> AfdelingIDs { get; set; }
 
 		/// <summary>
 		/// Bevat de huidige of de nieuwe gewenste afdeling voor een kind
@@ -32,6 +32,12 @@ namespace Chiro.Gap.WebApp.Models
 
 		public LidInfo HuidigLid { get; set; }
 
-		public LedenModel() : base() { }
+		/// <summary>
+		/// Standaardconstructor; er zijn geen afdelingen geselecteerd.
+		/// </summary>
+		public LedenModel() : base() 
+		{
+			AfdelingIDs = new List<int>();
+		}
 	}
 }

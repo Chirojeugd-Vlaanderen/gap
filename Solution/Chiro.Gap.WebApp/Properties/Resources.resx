@@ -135,6 +135,9 @@
     <value>De waarde voor {0} voldoet niet aan de verplichte structuur: {1}</value>
     <comment>Parameters: 0 = inputcontrol, 1 = formatvoorbeeld</comment>
   </data>
+  <data name="GeenActieveAfdelingen" xml:space="preserve">
+    <value>Er zijn geen afdelingen geactiveerd voor dit werkjaar.  Pas eerst je &lt;a href='{0}'&gt;afdelingsverdeling&lt;/a&gt; aan.</value>
+  </data>
   <data name="GroepsInstellingenTitel" xml:space="preserve">
     <value>Groepsinstellingen</value>
   </data>

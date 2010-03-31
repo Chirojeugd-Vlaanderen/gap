@@ -141,11 +141,27 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>
 				(l => l.Ophalen(id, LidExtras.Groep|LidExtras.Afdelingen));
 
-			InladenAfdelingsNamen(model);
+			AfdelingenOphalen(model);
 
-			model.Titel = "Ledenoverzicht";
+			if (model.AlleAfdelingen.FirstOrDefault() == null)
+			{
+				// Geen afdelingen.
 
-			return View("AfdelingBewerken", model);
+				// Workaround via TempData["feedback"].  Niet zeker of dat een geweldig goed
+				// idee is.
+
+				TempData["feedback"] = String.Format(
+					Properties.Resources.GeenActieveAfdelingen,
+					Url.Action("Index", "Afdeling", new { groepID = groepID }));
+					
+
+				return RedirectToAction("List", new { groepsWerkJaarId = Sessie.LaatstePagina, afdID = Sessie.LaatsteActieID });
+			}
+			else
+			{
+				model.Titel = "Ledenoverzicht";
+				return View("AfdelingBewerken", model);
+			}
 		}
 
 		//
@@ -188,7 +204,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			BaseModelInit(model, groepID);
 
 			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>(l => l.Ophalen(lidID, LidExtras.Groep|LidExtras.Afdelingen));
-			InladenAfdelingsNamen(model);
+			AfdelingenOphalen(model);
 
 			model.Titel = "Overzicht van " + model.HuidigLid.PersoonInfo.VolledigeNaam;
 
@@ -208,17 +224,15 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// Als het lid ingeladen is, laadt deze methode de dictionary van afdelingsids naar namen in
+		/// Bekijkt model.HuidigLid.  Haalt alle afdelingen van het groepswerkjaar van het lid op, en
+		/// bewaart ze in model.AlleAfdelingen.  In model.AfdelingIDs komen de ID's van de toegekende
+		/// afdelingen voor het lid.
 		/// </summary>
 		/// <param name="model"></param>
-		public void InladenAfdelingsNamen(LedenModel model){
+		public void AfdelingenOphalen(LedenModel model)
+		{
 			model.AlleAfdelingen = ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
 				(groep => groep.AfdelingenOphalen(model.HuidigLid.GroepsWerkJaarID));
-
-			if (model.AlleAfdelingen.Count() == 0)
-			{
-				throw new NotImplementedException("Foutmelding als er geen afdelingen geactiveerd zijn voor dit werkjaar.");
-			}
 
 			model.AfdelingIDs = model.HuidigLid.AfdelingIdLijst.ToList();
 		}
