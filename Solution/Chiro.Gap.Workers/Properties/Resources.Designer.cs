@@ -275,5 +275,23 @@ namespace Chiro.Gap.Workers.Properties {
                 return ResourceManager.GetString("GeenSuperGav", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ongeldige WoonPlaatsID..
+        /// </summary>
+        internal static string GemeenteNietGevonden {
+            get {
+                return ResourceManager.GetString("GemeenteNietGevonden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Straat {0} met postnummer {1} niet gevonden..
+        /// </summary>
+        internal static string StraatNietGevonden {
+            get {
+                return ResourceManager.GetString("StraatNietGevonden", resourceCulture);
+            }
+        }
     }
 }

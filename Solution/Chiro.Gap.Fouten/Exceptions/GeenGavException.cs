@@ -15,43 +15,15 @@ namespace Chiro.Gap.Fouten.Exceptions
 	/// Exceptie voor operatie op objecten waarvoor de
 	/// gebruiker geen GAV-rechten heeft.
 	/// </summary>
-	public class GeenGavException : System.Exception, ISerializable
-	{
+	/// <remarks>Deze klasse doet eigenlijk niets speciaals.</remarks>
+	[Serializable]
+	public class GeenGavException : FoutCodeException<GeenGavFoutCode> 
+	{ 
 		/// <summary>
-		/// 
+		/// Creeert een exception met gegeven foutcode
 		/// </summary>
-		public GeenGavException()
-			: base()
-		{
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="message"></param>
-		public GeenGavException(string message)
-			: base(message)
-		{
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="message"></param>
-		/// <param name="inner"></param>
-		public GeenGavException(string message, Exception inner)
-			: base(message, inner)
-		{
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="info"></param>
-		/// <param name="context"></param>
-		public GeenGavException(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-		}
+		/// <param name="foutCode">Foutcode voor de exception</param>
+		/// <param name="message">String die meer informatie over de exception geeft</param>
+		public GeenGavException(GeenGavFoutCode foutCode, string message) : base(foutCode, message) { }
 	}
 }

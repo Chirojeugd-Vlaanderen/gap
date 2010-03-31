@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 
 using Chiro.Cdf.Ioc;
+using Chiro.Gap.Fouten;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.ServiceContracts.Mappers;
@@ -133,7 +134,7 @@ namespace Chiro.Gap.Services.Test
 		/// exception verwacht.
 		/// </summary>
 		[TestMethod]
-		[ExpectedException(typeof(FaultException<GekoppeldeObjectenFault<PersoonInfo>>))]
+		[ExpectedException(typeof(FaultException<BlokkerendeObjectenFault<GekoppeldeObjectenFoutCode, PersoonInfo>>))]
 		public void CategorieVerwijderenMetPersoon()
 		{
 			// Arrange: categorie opzoeken, en persoon toevoegen.

@@ -13,6 +13,7 @@ using System.Web;
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
 using Chiro.Cdf.Validation;
+using Chiro.Gap.Fouten;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -67,7 +68,7 @@ namespace Chiro.Gap.Workers
 				|| functie.IsNationaal
 				|| !_autorisatieMgr.IsGavGroep(functie.Groep.ID))
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavFunctie);
+				throw new GeenGavException(GeenGavFoutCode.Functie, Properties.Resources.GeenGavFunctie);
 			}
 			else
 			{
@@ -91,7 +92,7 @@ namespace Chiro.Gap.Workers
 			{
 				if (!_autorisatieMgr.IsGavGroep(id))
 				{
-					throw new GeenGavException(Properties.Resources.GeenGavFunctie);
+					throw new GeenGavException(GeenGavFoutCode.Functie, Properties.Resources.GeenGavFunctie);
 				}
 			}
 
@@ -121,7 +122,7 @@ namespace Chiro.Gap.Workers
 
 			if (!_autorisatieMgr.IsGavLid(lid.ID))
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavLid);
+				throw new GeenGavException(GeenGavFoutCode.Lid, Properties.Resources.GeenGavLid);
 			}
 
 			// Eerst alle checks, zodat als er ergens een exceptie optreedt, er geen enkele
@@ -131,16 +132,20 @@ namespace Chiro.Gap.Workers
 			{
 				if (!_autorisatieMgr.IsGavFunctie(f.ID))
 				{
-					throw new GeenGavException(Properties.Resources.GeenGavFunctie);
+					throw new GeenGavException(GeenGavFoutCode.Functie, Properties.Resources.GeenGavFunctie);
 				}
 				if (!f.IsNationaal && f.Groep.ID != lid.GroepsWerkJaar.Groep.ID)
 				{
-					throw new FoutieveGroepException(Properties.Resources.FoutieveGroepFunctie);
+					throw new FoutCodeException<VerkeerdeGroepFoutCode>(
+						VerkeerdeGroepFoutCode.Functie,
+						Properties.Resources.FoutieveGroepFunctie);
 				}
 				if (f.WerkJaarTot < lid.GroepsWerkJaar.WerkJaar  // false als wjtot null
 					|| f.WerkJaarVan > lid.GroepsWerkJaar.WerkJaar)	// false als wjvan null
 				{
-					throw new GroepsWerkJaarException(Properties.Resources.FoutiefGroepsWerkJaarFunctie);
+					throw new FoutCodeException<NietBeschikbaarFoutCode>(
+						NietBeschikbaarFoutCode.Functie, 
+						Properties.Resources.FoutiefGroepsWerkJaarFunctie);
 				}
 
 				if ((f.Type & lid.Type) == 0)
@@ -189,7 +194,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavLid(lid.ID))
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavLid);
+				throw new GeenGavException(GeenGavFoutCode.Lid, Properties.Resources.GeenGavLid);
 			}
 
 			var losTeKoppelen = (from fun in lid.Functie
@@ -279,7 +284,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaar.ID))
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroepsWerkJaar);
+				throw new GeenGavException(GeenGavFoutCode.GroepsWerkJaar, Properties.Resources.GeenGavGroepsWerkJaar);
 			}
 			else
 			{

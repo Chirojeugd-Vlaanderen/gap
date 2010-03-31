@@ -9,7 +9,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
 
-namespace Chiro.Gap.ServiceContracts.FaultContracts
+namespace Chiro.Gap.Fouten
 {
 	/// <summary>
 	/// Klasse voor een foutboodschap.

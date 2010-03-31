@@ -10,6 +10,7 @@ using System.Text;
 
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Data.Ef;
+using Chiro.Gap.Fouten;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -68,7 +69,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
 			}
 		}
 
@@ -105,7 +106,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
 			}
 		}
 
@@ -126,7 +127,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
 			}
 		}
 

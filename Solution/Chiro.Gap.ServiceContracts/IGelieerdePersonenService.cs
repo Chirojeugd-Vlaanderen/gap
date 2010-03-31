@@ -10,6 +10,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 
+using Chiro.Gap.Fouten;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
@@ -102,7 +103,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// en de Chiroleeftijd.  Als de info lijkt op die van een bestaande gelieerde persoon, dan
 		/// wordt een exceptie opgegooid.</remarks>
 		[OperationContract]
-		[FaultContract(typeof(GelijkaardigePersoonFault))]
+		[FaultContract(typeof(BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonInfo>))]
 		int Aanmaken(GelieerdePersoon info, int groepID);
 
 		/// <summary>
@@ -121,7 +122,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// en de Chiroleeftijd.  Ik had deze functie ook graag 'aanmaken' genoemd (zie coding guideline
 		/// 190), maar dat mag blijkbaar niet bij services.</remarks>
 		[OperationContract]
-		[FaultContract(typeof(GelijkaardigePersoonFault))]
+		[FaultContract(typeof(BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonInfo>))]
 		int GeforceerdAanmaken(GelieerdePersoon info, int groepID, bool forceer);
 
 		/// <summary>
@@ -158,7 +159,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
 		/// dan krijgt het adres een nieuw ID.</remarks>
 		[OperationContract]
-		[FaultContract(typeof(AdresFault))]
+		[FaultContract(typeof(OngeldigObjectFault<AdresFoutCode>))]
 		void PersonenVerhuizen(
 			IList<int> persoonIDs,
 			AdresInfo nieuwAdres,
@@ -184,7 +185,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="adres">Toe te voegen adres</param>
 		/// <param name="adresType">Soort adres (thuis, kot, enz.)</param>
 		[OperationContract]
-		[FaultContract(typeof(AdresFault))]
+		[FaultContract(typeof(OngeldigObjectFault<AdresFoutCode>))]
 		void AdresToevoegenAanPersonen(List<int> personenIDs, AdresInfo adres, AdresTypeEnum adresType);
 
 		/// <summary>
@@ -193,7 +194,6 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="personenIDs">ID's van de personen over wie het gaat</param>
 		/// <param name="adresID">ID van het adres dat losgekoppeld moet worden</param>
 		[OperationContract]
-		[FaultContract(typeof(AdresFault))]
 		void AdresVerwijderenVanPersonen(List<int> personenIDs, int adresID);
 
 		#endregion adressen
@@ -206,7 +206,6 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="commvorm">De communicatievorm die aan die persoon gekoppeld moet worden</param>
 		/// <param name="typeID">De ID van het communicatietype waartoe <paramref name="commvorm"/> behoort</param>
 		[OperationContract]
-		[FaultContract(typeof(DataContractFault<CommunicatieVorm>))]
 		void CommunicatieVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm, int typeID);
 
 		/// <summary>
@@ -215,7 +214,6 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="gelieerdepersonenID">ID van de gelieerde persoon</param>
 		/// <param name="commvormID">ID van de communicatievorm</param>
 		[OperationContract]
-		[FaultContract(typeof(DataContractFault<CommunicatieVorm>))]
 		void CommunicatieVormVerwijderenVanPersoon(int gelieerdepersonenID, int commvormID);
 
 		/// <summary>
@@ -223,7 +221,6 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="c">De aangepaste communicatievorm</param>
 		[OperationContract]
-		[FaultContract(typeof(DataContractFault<CommunicatieVorm>))]
 		void CommunicatieVormAanpassen(CommunicatieVorm c);
 
 		/// <summary>
@@ -259,7 +256,6 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="gelieerdepersonenIDs">ID's van de gelieerde personen</param>
 		/// <param name="categorieIDs">ID's van de categorieën waaraan ze toegevoegd moeten worden</param>
 		[OperationContract]
-		[FaultContract(typeof(DataContractFault<Categorie>))]
 		void CategorieKoppelen(IList<int> gelieerdepersonenIDs, IList<int> categorieIDs);
 
 		/// <summary>
@@ -268,7 +264,6 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="gelieerdepersonenIDs">ID's van de gelieerde personen over wie het gaat</param>
 		/// <param name="categorieID">ID van de categorie waaruit ze verwijderd moeten worden</param>
 		[OperationContract]
-		[FaultContract(typeof(DataContractFault<Categorie>))]
 		void CategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID);
 
 		/// <summary>

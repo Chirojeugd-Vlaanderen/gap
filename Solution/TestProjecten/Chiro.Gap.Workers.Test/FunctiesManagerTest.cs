@@ -7,6 +7,7 @@ using System.Linq;
 using Chiro.Cdf.Ioc;
 
 using Chiro.Gap.Dummies;
+using Chiro.Gap.Fouten;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -147,7 +148,7 @@ namespace Chiro.Gap.Workers.Test
 		/// Het toekennen van een functie die niet geldig is in het huidige werkjaar, moet
 		/// een exception opleveren
 		/// </summary>
-		[ExpectedException(typeof(GroepsWerkJaarException))]
+		[ExpectedException(typeof(FoutCodeException<NietBeschikbaarFoutCode>))]
 		[TestMethod()]
 		public void ToekennenFunctieOngeldigWerkJaar()
 		{

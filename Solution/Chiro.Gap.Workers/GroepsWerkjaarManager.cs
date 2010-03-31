@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
+using Chiro.Gap.Fouten;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -68,7 +69,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Resources.GeenGavGroep);
+				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
 			}
 		}
 
@@ -91,7 +92,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Resources.GeenGavGroepsWerkJaar);
+				throw new GeenGavException(GeenGavFoutCode.GroepsWerkJaar, Resources.GeenGavGroepsWerkJaar);
 			}
 		}
 
@@ -123,11 +124,11 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavGroepsWerkJaar(gwj.ID))
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroepsWerkJaar);
+				throw new GeenGavException(GeenGavFoutCode.GroepsWerkJaar, Properties.Resources.GeenGavGroepsWerkJaar);
 			}
 			if (!_autorisatieMgr.IsGavAfdeling(afd.ID))
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavAfdeling);
+				throw new GeenGavException(GeenGavFoutCode.Afdeling, Properties.Resources.GeenGavAfdeling);
 			}
 
 			Debug.Assert(gwj.Groep != null);
@@ -139,7 +140,9 @@ namespace Chiro.Gap.Workers
 
 			if (!gwj.Groep.Equals(afd.Groep))
 			{
-				throw new FoutieveGroepException("De afdeling is niet gekoppeld aan de groep van het groepswerkjaar.");
+				throw new FoutCodeException<VerkeerdeGroepFoutCode>(
+						VerkeerdeGroepFoutCode.Afdeling,
+						"De afdeling is niet gekoppeld aan de groep van het groepswerkjaar.");
 			}
 
 			AfdelingsJaar resultaat = new AfdelingsJaar();
@@ -172,7 +175,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Resources.GeenGavGroep);
+				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
 			}
 		}
 
@@ -191,7 +194,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(GeenGavFoutCode.Groep, Properties.Resources.GeenGavGroep);
 			}
 		}
 
@@ -230,7 +233,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(GeenGavFoutCode.Groep, Properties.Resources.GeenGavGroep);
 			}
 		}
 

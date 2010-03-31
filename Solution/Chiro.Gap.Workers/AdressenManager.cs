@@ -11,6 +11,7 @@ using System.ServiceModel;
 using System.Text;
 
 using Chiro.Gap.Data.Ef;
+using Chiro.Gap.Fouten;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -96,7 +97,7 @@ namespace Chiro.Gap.Workers
 		/// <remarks>Ieder heeft het recht adressen op te zoeken</remarks>
 		public Adres ZoekenOfMaken(String StraatNaam, int HuisNr, String Bus, int WoonPlaatsID, int PostNr, String PostCode)
 		{
-			AdresFault fault = new AdresFault();
+			var problemen = new Dictionary<string, FoutBericht<AdresFoutCode>>();
 
 			// Al maar preventief een VerhuisFault aanmaken.  Als daar uiteindelijk
 			// geen foutberichten inzitten, dan is er geen probleem.  Anders
@@ -135,8 +136,15 @@ namespace Chiro.Gap.Workers
 					// FIXME: Dit is geen propere manier van werken.  Die component 'Straat'
 					// heeft betrekking op het datacontract 'AdresInfo', wat helemaal niet
 					// van belang is in deze layer
-					fault.BerichtToevoegen(AdresFaultCode.OnbekendeStraat, "Straat",
-						String.Format("Straat {0} met postnummer {1} niet gevonden.", StraatNaam, PostNr));
+
+					problemen.Add("StraatNaamNaam", new FoutBericht<AdresFoutCode>
+					{
+						FoutCode = AdresFoutCode.OnbekendeStraat,
+						Bericht = String.Format(
+							Properties.Resources.StraatNietGevonden,
+							StraatNaam,
+							PostNr)
+					});
 				}
 
 				sg = _subgemeenteDao.Ophalen(WoonPlaatsID);
@@ -152,15 +160,17 @@ namespace Chiro.Gap.Workers
 					// Gemeente niet gevonden: foutbericht toevoegen
 
 					// FIXME: hier idem.
-					fault.BerichtToevoegen(
-						AdresFaultCode.OnbekendeGemeente, 
-						"Gemeente", 
-						Properties.Settings.Default.FoutiefWoonPlaatsID);
+
+					problemen.Add("WoonPlaatsNaam", new FoutBericht<AdresFoutCode>
+					{
+						FoutCode = AdresFoutCode.OnbekendeGemeente,
+						Bericht = Properties.Resources.GemeenteNietGevonden
+					});
 				}
 
-				if (fault.Berichten.Count != 0)
+				if (problemen.Count != 0)
 				{
-					throw new AdresException(fault);
+					throw new OngeldigObjectException<AdresFoutCode>(problemen);
 				}
 
 				if (PostCode != null && !PostCode.Equals(String.Empty))

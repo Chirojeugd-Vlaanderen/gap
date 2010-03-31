@@ -13,6 +13,7 @@ using System.Text;
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Data.Ef;
+using Chiro.Gap.Fouten;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -71,7 +72,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Resources.GeenGavGroep);
+				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
 			}
 		}
 
@@ -116,7 +117,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenSuperGav);
+				throw new GeenGavException(GeenGavFoutCode.GeenSuperGav, Properties.Resources.GeenSuperGav);
 			};
 		}
 
@@ -144,7 +145,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Resources.GeenGavGroep);
+				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
 			}
 		}
 
@@ -161,7 +162,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Resources.GeenGavAfdeling);
+				throw new GeenGavException(GeenGavFoutCode.Afdeling, Resources.GeenGavAfdeling);
 			}
 		}
 
@@ -178,7 +179,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavAfdeling(a.ID))
 			{
-				throw new GeenGavException(Resources.GeenGavAfdeling);
+				throw new GeenGavException(GeenGavFoutCode.Afdeling, Resources.GeenGavAfdeling);
 			}
 
 			if (geboorteJaarBegin < System.DateTime.Today.Year - 20
@@ -228,7 +229,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Resources.GeenGavGroep);
+				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
 			}
 		}
 
@@ -264,7 +265,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Resources.GeenGavGroep);
+				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
 			}
 		}
 
@@ -281,7 +282,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Resources.GeenGavGroep);
+				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
 			}
 		}
 
@@ -298,7 +299,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Resources.GeenGavGroep);
+				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
 			}
 		}
 
@@ -315,7 +316,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Resources.GeenGavGroep);
+				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
 			}
 		}
 
@@ -334,7 +335,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavGroep(g.ID))
 			{
-				throw new GeenGavException(Resources.GeenGavGroep);
+				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
 			}
 			else
 			{
@@ -345,11 +346,10 @@ namespace Chiro.Gap.Workers
 
 				if (bestaande != null)
 				{
-					throw new BestaatAlException(
-						new BestaatAlFault
-						{
-							FoutCode = BestaatAlFaultCode.CategorieCodeBestaatAl
-						});
+					throw new BlokkerendeObjectenException<BestaatAlFoutCode, Categorie>(
+						BestaatAlFoutCode.CategorieCodeBestaatAl,
+						new Categorie[] {bestaande}
+						);
 				}
 				else
 				{
@@ -360,11 +360,10 @@ namespace Chiro.Gap.Workers
 
 					if (bestaande != null)
 					{
-						throw new BestaatAlException(
-							new BestaatAlFault
-							{
-								FoutCode = BestaatAlFaultCode.CategorieNaamBestaatAl
-							});
+						throw new BlokkerendeObjectenException<BestaatAlFoutCode, Categorie>(
+							BestaatAlFoutCode.CategorieNaamBestaatAl,
+							new Categorie[] { bestaande }
+							);
 					}
 					else
 					{
@@ -403,7 +402,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavGroep(g.ID))
 			{
-				throw new GeenGavException(Resources.GeenGavGroep);
+				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
 			}
 			else
 			{
@@ -420,10 +419,8 @@ namespace Chiro.Gap.Workers
 				}
 				else if (bestaande != null)
 				{
-					throw new BestaatAlException(new BestaatAlFault
-					{
-						FoutCode = BestaatAlFaultCode.FunctieCodeBestaatAl
-					});
+					throw new BlokkerendeObjectenException<BestaatAlFoutCode, Functie>(
+						BestaatAlFoutCode.FunctieCodeBestaatAl, new Functie[] { bestaande });
 				}
 
 				// Hetzelfde voor dubbele naam
@@ -439,10 +436,8 @@ namespace Chiro.Gap.Workers
 				}
 				else if (bestaande != null)
 				{
-					throw new BestaatAlException(new BestaatAlFault
-					{
-						FoutCode = BestaatAlFaultCode.FunctieNaamBestaatAl
-					});
+					throw new BlokkerendeObjectenException<BestaatAlFoutCode, Functie>(
+						BestaatAlFoutCode.FunctieNaamBestaatAl, new Functie[] { bestaande });
 				}
 
 				// Zonder problemen hier geraakt.  Dan kunnen we verder.

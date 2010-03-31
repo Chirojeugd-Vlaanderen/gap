@@ -11,6 +11,7 @@ using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Data.Ef;
+using Chiro.Gap.Fouten;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -59,7 +60,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Resources.GeenGavCommVorm);
+				throw new GeenGavException(GeenGavFoutCode.CommunicatieVorm, Resources.GeenGavCommVorm);
 			}
 		}
 
@@ -76,7 +77,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Resources.GeenGavCommVorm);
+				throw new GeenGavException(GeenGavFoutCode.CommunicatieVorm, Resources.GeenGavCommVorm);
 			}
 		}
 
@@ -112,7 +113,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Resources.GeenGavCommVorm);
+				throw new GeenGavException(GeenGavFoutCode.CommunicatieVorm, Resources.GeenGavCommVorm);
 			}
 		}
 
@@ -126,7 +127,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
 			{
-				throw new GeenGavException(Resources.GeenGavGroep);
+				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
 			}
 			GelieerdePersoon origineel = _geldao.Ophalen(gelieerdePersoonID, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
 			CommunicatieType type = _typedao.Ophalen(typeID);
@@ -159,11 +160,11 @@ namespace Chiro.Gap.Workers
 				// Aangezien er niet getest wordt of de communicatievorm wel hoort bij de 
 				// gegeven persoon, is deze test belachelijk.
 
-				throw new GeenGavException(Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(GeenGavFoutCode.Persoon, Resources.GeenGavGelieerdePersoon);
 			}
 			if (!_autorisatieMgr.IsGavCommVorm(comm.ID))
 			{
-				throw new GeenGavException(Resources.GeenGavCommVorm);
+				throw new GeenGavException(GeenGavFoutCode.CommunicatieVorm, Resources.GeenGavCommVorm);
 			}
 			comm.TeVerwijderen = true;
 			_dao.Bewaren(comm);

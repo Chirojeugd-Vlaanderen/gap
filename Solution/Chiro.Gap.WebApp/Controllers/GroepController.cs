@@ -13,6 +13,7 @@ using System.Web.Mvc.Ajax;
 using System.Web.Routing;
 
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.Fouten;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
@@ -68,10 +69,10 @@ namespace Chiro.Gap.WebApp.Controllers
 
 					return RedirectToAction("Index", new { groepID = groepID });
 				}
-				catch (FaultException<BestaatAlFault> ex)
+				catch (FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, CategorieInfo>> ex)
 				{
 					// Geef feedback aan de gebruiker: de naam of de code worden al gebruikt
-					if (ex.Detail.FoutCode == BestaatAlFaultCode.CategorieCodeBestaatAl)
+					if (ex.Detail.FoutCode == BestaatAlFoutCode.CategorieCodeBestaatAl)
 					{
 						ModelState.AddModelError(
 							"NieuweCategorie.Code",
@@ -79,7 +80,7 @@ namespace Chiro.Gap.WebApp.Controllers
 								Properties.Resources.CategorieCodeBestaatAl,
 								model.NieuweCategorie.Code));
 					}
-					else if (ex.Detail.FoutCode == BestaatAlFaultCode.CategorieNaamBestaatAl)
+					else if (ex.Detail.FoutCode == BestaatAlFoutCode.CategorieNaamBestaatAl)
 					{
 						ModelState.AddModelError(
 							"NieuweCategorie.Naam",
@@ -130,7 +131,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				ServiceHelper.CallService<IGroepenService>(svc => svc.CategorieVerwijderen(id, false));
 			}
-			catch (FaultException<GekoppeldeObjectenFault<PersoonInfo>> ex)
+			catch (FaultException<BlokkerendeObjectenFault<GekoppeldeObjectenFoutCode, PersoonInfo>> ex)
 			{
 				// Categorie was niet leeg
 

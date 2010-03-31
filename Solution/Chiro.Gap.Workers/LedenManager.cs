@@ -12,6 +12,7 @@ using System.Text;
 
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Data.Ef;
+using Chiro.Gap.Fouten;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -68,11 +69,11 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
 			}
 			if (!_autorisatieMgr.IsGavGroepsWerkJaar(gwj.ID))
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroepsWerkJaar);
+				throw new GeenGavException(GeenGavFoutCode.GroepsWerkJaar, Properties.Resources.GeenGavGroepsWerkJaar);
 			}
 
 			// De persoonsgegevens zijn nodig om de afdeling te bepalen.  Haal ze op als ze ontbreken.
@@ -91,7 +92,8 @@ namespace Chiro.Gap.Workers
 
 			if (x != null) // was dus al lid
 			{
-				throw new BestaatAlException();
+				throw new BlokkerendeObjectenException<BestaatAlFoutCode, Lid>(
+					BestaatAlFoutCode.LidBestaatAl, new Lid[] {x});
 			}
 
 			return true;
@@ -106,7 +108,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
 			}
 
 			if (gp.Groep == null)
@@ -133,7 +135,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
 			}
 
 			GroepenManager gm = Factory.Maak<GroepenManager>();
@@ -216,7 +218,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
 			}
 
 			GroepsWerkJaarManager mgr = Factory.Maak<GroepsWerkJaarManager>();
@@ -255,7 +257,7 @@ namespace Chiro.Gap.Workers
 
 			if (!_autorisatieMgr.IsGavLid(lid.ID))
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavLid);
+				throw new GeenGavException(GeenGavFoutCode.Lid, Properties.Resources.GeenGavLid);
 			}
 
 			// checks:
@@ -304,7 +306,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroepsWerkJaar);
+				throw new GeenGavException(GeenGavFoutCode.GroepsWerkJaar, Properties.Resources.GeenGavGroepsWerkJaar);
 			}
 		}
 
@@ -325,7 +327,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException("Dit GroepsWerkJaar hoort niet bij je groep(en).");
+				throw new GeenGavException(GeenGavFoutCode.GroepsWerkJaar, "Dit GroepsWerkJaar hoort niet bij je groep(en).");
 			}
 		}
 
@@ -347,7 +349,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavLid);
+				throw new GeenGavException(GeenGavFoutCode.Lid, Properties.Resources.GeenGavLid);
 			}
 		}
 
@@ -361,7 +363,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavLid(lidID))
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavLid);
+				throw new GeenGavException(GeenGavFoutCode.Lid, Properties.Resources.GeenGavLid);
 			}
 			if (_daos.LedenDao.IsLeiding(lidID))
 			{
@@ -438,11 +440,11 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroepsWerkJaar);
+				throw new GeenGavException(GeenGavFoutCode.GroepsWerkJaar, Properties.Resources.GeenGavGroepsWerkJaar);
 			}
 			else if (!_autorisatieMgr.IsGavFunctie(functieID))
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavFunctie);
+				throw new GeenGavException(GeenGavFoutCode.Functie, Properties.Resources.GeenGavFunctie);
 			}
 			else
 			{
@@ -540,7 +542,9 @@ namespace Chiro.Gap.Workers
 
 				if (nietGevonden.Count() > 0)
 				{
-					throw new GroepsWerkJaarException(Properties.Resources.AfdelingNietBeschikbaar);
+					throw new FoutCodeException<NietBeschikbaarFoutCode>(
+						NietBeschikbaarFoutCode.Afdeling,
+						Properties.Resources.AfdelingNietBeschikbaar);
 				}
 
 				// Verwijder ontbrekende afdelingen;

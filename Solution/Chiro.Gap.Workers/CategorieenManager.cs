@@ -14,6 +14,7 @@ using Chiro.Cdf.Data;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Fouten;
 
 namespace Chiro.Gap.Workers
 {
@@ -70,7 +71,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(GeenGavFoutCode.Groep, Properties.Resources.GeenGavGroep);
 			}
 		}
 
@@ -87,7 +88,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavCategorie);
+				throw new GeenGavException(GeenGavFoutCode.Categorie, Properties.Resources.GeenGavCategorie);
 			}
 		}
 
@@ -106,7 +107,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(GeenGavFoutCode.Groep, Properties.Resources.GeenGavGroep);
 			}
 		}
 
@@ -130,7 +131,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(GeenGavFoutCode.Groep, Properties.Resources.GeenGavGroep);
 			}
 		}
 
@@ -149,9 +150,10 @@ namespace Chiro.Gap.Workers
 
 			if (!forceren && categorie.GelieerdePersoon.Count > 0)
 			{
-				throw new GekoppeldeObjectenException<GelieerdePersoon>(
-					Properties.Resources.CategorieNietLeeg,
-					categorie.GelieerdePersoon);
+				throw new BlokkerendeObjectenException<GekoppeldeObjectenFoutCode, GelieerdePersoon>(
+					GekoppeldeObjectenFoutCode.CategorieNietLeeg,
+					categorie.GelieerdePersoon,
+					Properties.Resources.CategorieNietLeeg);
 			}
 
 			LeegMaken(categorie);  // verwijdert alle gel. personen, en persisteert
@@ -180,7 +182,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGavCategorie);
+				throw new GeenGavException(GeenGavFoutCode.Categorie, Properties.Resources.GeenGavCategorie);
 			}
 		}
 	}

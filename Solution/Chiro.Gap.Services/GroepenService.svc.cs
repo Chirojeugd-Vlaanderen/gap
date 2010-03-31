@@ -14,8 +14,9 @@ using System.Text;
 
 using AutoMapper;
 
-using Chiro.Cdf.Ioc;
+using Chiro.Gap.Fouten;
 using Chiro.Gap.Fouten.Exceptions;
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
@@ -269,7 +270,9 @@ namespace Chiro.Gap.Services
 
 			if (afd == null || offafd == null)
 			{
-				throw new FoutieveGroepException(String.Format(Resources.FouteAfdelingVoorGroepString, g.Naam));
+				// TODO: Check of afdeling wel hoort bij de gevraagde groep, is taak voor business
+				// TODO2: FaultException throwen
+				throw new NotImplementedException(String.Format(Resources.FouteAfdelingVoorGroepString, g.Naam));
 			}
 
 			GroepsWerkJaar huidigWerkJaar = _groepsWerkJaarManager.RecentsteGroepsWerkJaarGet(g.ID);
@@ -350,9 +353,13 @@ namespace Chiro.Gap.Services
 			{
 				Categorie c = _groepenMgr.CategorieToevoegen(g, naam, code);
 			}
-			catch (BestaatAlException ex)
+			catch (BlokkerendeObjectenException<BestaatAlFoutCode,Categorie> ex)
 			{
-				throw new FaultException<BestaatAlFault>(ex.Fault);
+				var fault = Mapper.Map<BlokkerendeObjectenException<BestaatAlFoutCode, Categorie>,
+						BlokkerendeObjectenFault<BestaatAlFoutCode, CategorieInfo>>(ex);
+
+				throw new FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, CategorieInfo>>(
+					fault);
 			}
 			catch (Exception)
 			{
@@ -391,15 +398,12 @@ namespace Chiro.Gap.Services
 			{
 				_categorieenMgr.Verwijderen(c, forceren);
 			}
-			catch (GekoppeldeObjectenException<GelieerdePersoon> ex)
+			catch (BlokkerendeObjectenException<GekoppeldeObjectenFoutCode, GelieerdePersoon> ex)
 			{
-				IEnumerable<PersoonInfo> gekoppeldePersonen
-					= Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonInfo>>(ex.Objecten);
-				var fault = new GekoppeldeObjectenFault<PersoonInfo>
-				{
-					Objecten = gekoppeldePersonen.Take(Properties.Settings.Default.KleinAantal).ToList()
-				};
-				throw new FaultException<GekoppeldeObjectenFault<PersoonInfo>>(fault);
+				var fault = Mapper.Map<BlokkerendeObjectenException<GekoppeldeObjectenFoutCode, GelieerdePersoon>,
+					BlokkerendeObjectenFault<GekoppeldeObjectenFoutCode, PersoonInfo>>(ex);
+
+				throw new FaultException<BlokkerendeObjectenFault<GekoppeldeObjectenFoutCode, PersoonInfo>>(fault);
 			}
 			catch (Exception)
 			{

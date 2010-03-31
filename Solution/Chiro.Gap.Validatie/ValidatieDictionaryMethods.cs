@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+using Chiro.Gap.Fouten;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.Validatie
@@ -26,7 +28,7 @@ namespace Chiro.Gap.Validatie
 		/// <param name="src">BusinessFault met toe te voegen berichten</param>
 		/// <param name="keyPrefix">Prefix toe te voegen aan de keys van src,
 		/// alvorens ze toe te voegen aan dst</param>
-		public static void BerichtenToevoegen<T>(this IValidatieDictionary dst, DataContractFault<T> src, string keyPrefix)
+		public static void BerichtenToevoegen<T>(this IValidatieDictionary dst, OngeldigObjectFault<T> src, string keyPrefix)
 		{
 			foreach (KeyValuePair<string, FoutBericht<T>> paar in src.Berichten)
 			{

@@ -190,4 +190,10 @@
   <data name="AfdelingNietBeschikbaar" xml:space="preserve">
     <value>Minstens 1 gevraagde afdeling is niet beschikbaar in dit werkjaar.</value>
   </data>
+  <data name="GemeenteNietGevonden" xml:space="preserve">
+    <value>Ongeldige WoonPlaatsID.</value>
+  </data>
+  <data name="StraatNietGevonden" xml:space="preserve">
+    <value>Straat {0} met postnummer {1} niet gevonden.</value>
+  </data>
 </root>

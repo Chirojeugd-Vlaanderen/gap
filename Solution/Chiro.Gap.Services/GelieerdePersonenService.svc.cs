@@ -13,6 +13,7 @@ using System.Security.Permissions;
 
 using AutoMapper;
 
+using Chiro.Gap.Fouten;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Orm;
@@ -130,6 +131,9 @@ namespace Chiro.Gap.Services
 		{
 			// Indien 'forceer' niet gezet is, moet een FaultException opgeworpen worden
 			// als de  nieuwe persoon te hard lijkt op een bestaande Gelieerde Persoon.
+			
+			// FIXME: Deze businesslogica moet in de workers gebeuren, waar dan een exception opgeworpen
+			// kan worden, die we hier mappen op een faultcontract.
 
 			if (!forceer)
 			{
@@ -138,8 +142,11 @@ namespace Chiro.Gap.Services
 
 				if (bestaandePersonen.Count > 0)
 				{
-					throw new FaultException<GelijkaardigePersoonFault>(
-						new GelijkaardigePersoonFault { GelijkaardigePersonen = Mapper.Map<IList<GelieerdePersoon>, IList<PersoonInfo>>(bestaandePersonen) });
+					var fault = new BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonInfo>{
+						FoutCode = BestaatAlFoutCode.PersoonBestaatAl,
+						Objecten = Mapper.Map<IList<GelieerdePersoon>, IList<PersoonInfo>>(bestaandePersonen) };
+
+					throw new FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonInfo>>(fault);
 
 					// ********************************************************************************
 					// * BELANGRIJK: Als je debugger breakt op deze throw, dan is dat geen probleem.  *
@@ -224,9 +231,12 @@ namespace Chiro.Gap.Services
 					naarAdres.PostNr,
 					String.Empty);	// TODO: buitenlandse adressen (#238)
 			}
-			catch (AdresException ex)
+			catch (OngeldigObjectException<AdresFoutCode> ex)
 			{
-				throw new FaultException<AdresFault>(ex.Fault);
+				var fault = Mapper.Map<OngeldigObjectException<AdresFoutCode>,
+					OngeldigObjectFault<AdresFoutCode>>(ex);
+
+				throw new FaultException<OngeldigObjectFault<AdresFoutCode>>(fault);
 			}
 
 			// Om foefelen te vermijden: we werken enkel op de gelieerde
@@ -274,9 +284,12 @@ namespace Chiro.Gap.Services
 			{
 				adres = _adrMgr.ZoekenOfMaken(adr.StraatNaamNaam, adr.HuisNr, adr.Bus, adr.WoonPlaatsID, adr.PostNr, String.Empty);
 			}
-			catch (AdresException ex)
+			catch (OngeldigObjectException<AdresFoutCode> ex)
 			{
-				throw new FaultException<AdresFault>(ex.Fault);
+				var fault = Mapper.Map<OngeldigObjectException<AdresFoutCode>,
+					OngeldigObjectFault<AdresFoutCode>>(ex);
+
+				throw new FaultException<OngeldigObjectFault<AdresFoutCode>>(fault);
 			}
 
 			// Personen ophalen

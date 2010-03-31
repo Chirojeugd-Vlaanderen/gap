@@ -11,6 +11,9 @@ using System.Text;
 using AutoMapper;
 
 using Chiro.Gap.Orm;
+using Chiro.Gap.Fouten;
+using Chiro.Gap.Fouten.Exceptions;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.ServiceContracts.Mappers
 {
@@ -156,6 +159,20 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.CreateMap<StraatNaam, StraatInfo>();
 			Mapper.CreateMap<WoonPlaats, WoonPlaatsInfo>();
 			Mapper.CreateMap<Categorie, CategorieInfo>();
+
+			#region Mapping van Exceptions naar Faults
+			// TODO: Kan het mappen van die generics niet efficienter?
+
+			Mapper.CreateMap<BlokkerendeObjectenException<BestaatAlFoutCode, Categorie>,
+						BlokkerendeObjectenFault<BestaatAlFoutCode, CategorieInfo>>();
+			Mapper.CreateMap<OngeldigObjectException<AdresFoutCode>,
+					OngeldigObjectFault<AdresFoutCode>>();
+			Mapper.CreateMap<BlokkerendeObjectenException<GekoppeldeObjectenFoutCode, GelieerdePersoon>,
+					BlokkerendeObjectenFault<GekoppeldeObjectenFoutCode, PersoonInfo>>()
+				.ForMember(
+					dst => dst.Objecten, 
+					opt => opt.MapFrom(src => src.Objecten.Take(Properties.Settings.Default.KleinAantal)));
+			#endregion
 
 			// Wel even nakijken of die automagie overal gewerkt heeft:
 

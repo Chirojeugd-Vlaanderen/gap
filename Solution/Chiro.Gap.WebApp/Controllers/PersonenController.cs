@@ -13,13 +13,14 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 
+using Chiro.Cdf.Ioc;
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.Fouten;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WebApp.Models;
-using Chiro.Cdf.Ioc;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -190,9 +191,9 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				persoonID = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.GeforceerdAanmaken(model.HuidigePersoon, groepID, model.Forceer));
 			}
-			catch (FaultException<GelijkaardigePersoonFault> fault)
+			catch (FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonInfo>> fault)
 			{
-				model.GelijkaardigePersonen = fault.Detail.GelijkaardigePersonen;
+				model.GelijkaardigePersonen = fault.Detail.Objecten;
 				model.Forceer = true;
 				return View("EditGegevens", model);
 			}
@@ -419,7 +420,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					id = model.AanvragerID
 				});
 			}
-			catch (FaultException<AdresFault> ex)
+			catch (FaultException<OngeldigObjectFault<AdresFoutCode>> ex)
 			{
 				BaseModelInit(model, groepID);
 
@@ -544,7 +545,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					id = model.AanvragerID
 				});
 			}
-			catch (FaultException<AdresFault> ex)
+			catch (FaultException<OngeldigObjectFault<AdresFoutCode>> ex)
 			{
 				BaseModelInit(model, groepID);
 

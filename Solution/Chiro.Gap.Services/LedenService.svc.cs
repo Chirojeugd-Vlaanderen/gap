@@ -15,6 +15,7 @@ using System.Text;
 using AutoMapper;
 
 using Chiro.Cdf.Ioc;
+using Chiro.Gap.Fouten;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
@@ -63,7 +64,7 @@ namespace Chiro.Gap.Services
 					Lid l = _ledenMgr.KindMaken(gp);
 					leden.Add(l);
 				}
-				catch (BestaatAlException)
+				catch (BlokkerendeObjectenException<BestaatAlFoutCode, Lid>)
 				{
 					/*code is reentrant*/
 				}
@@ -100,7 +101,7 @@ namespace Chiro.Gap.Services
 					Lid l = _ledenMgr.LeidingMaken(gp);
 					leden.Add(l);
 				}
-				catch (BestaatAlException)
+				catch (BlokkerendeObjectenException<BestaatAlFoutCode, Lid>)
 				{
 					/*code is reentrant*/
 				}

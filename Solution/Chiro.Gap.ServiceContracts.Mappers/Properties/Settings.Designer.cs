@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Chiro.Gap.Workers.Properties {
+namespace Chiro.Gap.ServiceContracts.Mappers.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -25,28 +25,10 @@ namespace Chiro.Gap.Workers.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1990-09-01")]
-        public global::System.DateTime WerkjaarStartNationaal {
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int KleinAantal {
             get {
-                return ((global::System.DateTime)(this["WerkjaarStartNationaal"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1990-10-15")]
-        public global::System.DateTime WerkjaarVerplichteOvergang {
-            get {
-                return ((global::System.DateTime)(this["WerkjaarVerplichteOvergang"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("21")]
-        public int DagenInstapPeriode {
-            get {
-                return ((int)(this["DagenInstapPeriode"]));
+                return ((int)(this["KleinAantal"]));
             }
         }
     }
