@@ -79,6 +79,7 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Verwijdert alle gelieerde personen van de groep met ID <paramref name="groepID"/>.  Probeert ook
 		/// de gekoppelde personen te verwijderen, indien <paramref name="verwijderPersonen"/> <c>true</c> is.
+		/// Verwijdert ook mogelijke lidobjecten.
 		/// PERSISTEERT!
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvan je de gelieerde personen wilt verwijderen</param>

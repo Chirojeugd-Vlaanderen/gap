@@ -321,8 +321,16 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			List<int> ids = new List<int>();
 			ids.Add(id);
-			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LeidingMakenEnBewaren(ids));
-			// TODO feedback
+			try
+			{
+				ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LeidingMakenEnBewaren(ids));
+				TempData["feedback"] = Properties.Resources.LidGemaaktFeedback;
+			}
+			catch (Exception ex)
+			{
+				TempData["feedback"] = string.Concat(Properties.Resources.LidMakenMisluktFout, Environment.NewLine, ex.Message.ToString());
+			}
+
 			return RedirectToAction("List", new
 			{
 				page = Sessie.LaatstePagina,

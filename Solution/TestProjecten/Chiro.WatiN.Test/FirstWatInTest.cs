@@ -342,7 +342,7 @@ namespace Chiro.WatiN.Test
 						Regex VindPersoon = new Regex(Pers.Voornaam + " " + Pers.FamilieNaam);
 
 						// Als we dit vinden in de volgende pagina dat in 
-						Regex VindIsToegevoegdAlsLid = new Regex("is toegevoegd als lid.");
+						Regex VindIsToegevoegdAlsLid = new Regex(@"is nu ingeschreven als (lid|leiding|kind)");
 
 						// Een volgende uitdaging is het vinden van een persoon in de lijst, deze kan namelijk op een andere pagina staan,
 						// de verschillende pagina nummers staat in een blok met naam: 'pager', van dit blok itereren we over alle links.
@@ -371,17 +371,19 @@ namespace Chiro.WatiN.Test
 
 									// Maak de persoon lid, maar er bestaat een kans dat die persoon al lid is, 
 									// Dus voor de link gaan ophalen kijken of die wel bestaat.
-									if (PersonenLijstEnum.Current.ElementOfType<Link>(Find.ByText(new Regex("^Lid maken$"))).Exists)
+									if (PersonenLijstEnum.Current.ElementOfType<Link>(Find.ByText(new Regex("^Leiding maken$"))).Exists)
 									{
-										PersonenLijstEnum.Current.ElementOfType<Link>(Find.ByText(new Regex("^Lid maken$"))).Click();
+										PersonenLijstEnum.Current.ElementOfType<Link>(Find.ByText(new Regex("^Leiding maken$"))).Click();
 
 										// Als een persoon is toegevoed gaan we terug naar het begin scherm, en hebben we een veld waar:
 										// '<Voornaam> <Naam> is toegevoegd als lid.' in staat.
 										// We controlleren hier voor 2 dingen:
 										//   - of de juiste naam van de persoon in de feedback staat
 										//   - of de string: 'is toegevoegd als lid.' in de feedback staat.
-										PersoonLidGemaaktRestultaat = (VindIsToegevoegdAlsLid.IsMatch(window.Element(Find.ByClass(new Regex("^Feedback$"))).Text) &&
-										VindPersoon.IsMatch(window.Element(Find.ByClass(new Regex("^Feedback$"))).Text));
+
+										string feedBackText = window.Element(Find.ByClass(new Regex("^Feedback$"))).Text;
+
+										PersoonLidGemaaktRestultaat = VindIsToegevoegdAlsLid.IsMatch(window.Element(Find.ByClass(new Regex("^Feedback$"))).Text);
 
 										// We hebben een poging gedaan om de persoon lid te maken.
 										PersoonLidGemaakt = true;

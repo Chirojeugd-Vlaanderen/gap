@@ -32,6 +32,7 @@ namespace Chiro.Gap.Orm
 	/// </remarks>
 	[AssociationEndBehavior("PersoonsAdres", Owned = true)]
 	[AssociationEndBehavior("Persoon", Owned = true)]
+	[AssociationEndBehavior("Lid", Owned = true)]
 	[MetadataType(typeof(GelieerdePersoon_Validatie))]
 	public partial class GelieerdePersoon : IEfBasisEntiteit
 	{
