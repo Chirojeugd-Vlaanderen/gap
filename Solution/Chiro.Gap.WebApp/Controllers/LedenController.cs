@@ -33,12 +33,21 @@ namespace Chiro.Gap.WebApp.Controllers
 		// De paginering zal gebeuren per groepswerkjaar, niet per grootte van de pagina
 		// Er wordt ook meegegeven welke afdeling er gevraagd is (0 is alles)
 		// GET: /Leden/List/{afdID}/{groepsWerkJaarId}
-		public ActionResult List(int groepsWerkJaarId, int afdID, int groepID)
+
+		/// <summary>
+		/// Toont de lijst van leden uit groepswerkjaar met GroepsWerkJaarID <paramref name="id"/>.
+		/// </summary>
+		/// <param name="id">ID van het gevraagde groepswerkjaar</param>
+		/// <param name="afdID">Indien 0, worden alle leden getoond, anders enkel de leden uit de afdeling
+		/// met het gegeven AfdelingsID</param>
+		/// <param name="groepID">ID van de groep</param>
+		/// <returns></returns>
+		public ActionResult List(int id, int afdID, int groepID)
 		{
 			// Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten. Paginering gebeurt hier per werkjaar.
 			Sessie.LaatsteLijst = "Leden";
 			Sessie.LaatsteActieID = afdID;
-			Sessie.LaatstePagina = groepsWerkJaarId;
+			Sessie.LaatstePagina = id;
 
 			int paginas = 0;
 
@@ -47,7 +56,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			var list =
 				ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
-				(groep => groep.AfdelingenOphalen(groepsWerkJaarId));
+				(groep => groep.AfdelingenOphalen(id));
 
 			model.AfdelingsInfoDictionary = new Dictionary<int, AfdelingInfo>();
 			foreach (AfdelingInfo ai in list)
@@ -60,17 +69,17 @@ namespace Chiro.Gap.WebApp.Controllers
 					(e => e.WerkJarenOphalen(groepID));
 
 			GroepsWerkJaar huidig = (from g in model.GroepsWerkJaarLijst
-									 where g.ID == groepsWerkJaarId
+									 where g.ID == id
 									 select g).FirstOrDefault();
 
-			model.GroepsWerkJaarIdZichtbaar = groepsWerkJaarId;
+			model.GroepsWerkJaarIdZichtbaar = id;
 			model.GroepsWerkJaartalZichtbaar = huidig.WerkJaar;
 
 			if (afdID == 0)
 			{
 				model.LidInfoLijst =
 					ServiceHelper.CallService<ILedenService, IList<LidInfo>>
-					(lid => lid.PaginaOphalen(groepsWerkJaarId, out paginas));
+					(lid => lid.PaginaOphalen(id, out paginas));
 
 				model.Titel = "Ledenoverzicht van het jaar " + model.GroepsWerkJaartalZichtbaar;
 			}
@@ -78,7 +87,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				model.LidInfoLijst =
 					ServiceHelper.CallService<ILedenService, IList<LidInfo>>
-					(lid => lid.PaginaOphalenVolgensAfdeling(groepsWerkJaarId, afdID, out paginas));
+					(lid => lid.PaginaOphalenVolgensAfdeling(id, afdID, out paginas));
 
 				AfdelingInfo af = (from a in model.AfdelingsInfoDictionary.AsQueryable()
 								   where a.Value.AfdelingID == afdID

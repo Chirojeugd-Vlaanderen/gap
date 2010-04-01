@@ -160,22 +160,7 @@ namespace Chiro.Gap.Workers
 
 			// Afdeling automatisch bepalen
 			int geboortejaar = gpMetDetails.Persoon.GeboorteDatum.Value.Year;
-			geboortejaar += gpMetDetails.ChiroLeefTijd;	 // aanpassen aan Chiroleeftijd
-
-			int leeftijd = DateTime.Today.Year - gpMetDetails.Persoon.GeboorteDatum.Value.Year;
-			if (leeftijd < 6)
-			{
-				throw new OngeldigeActieException("Deze persoon is te jong om lid te zijn in de chiro.");
-			}
-			if (leeftijd > 20)
-			{
-				throw new OngeldigeActieException("Is deze persoon niet te oud om in de chiro te komen?");
-			}
-			int aangepasteleeftijd = DateTime.Today.Year - geboortejaar;
-			if (aangepasteleeftijd < 6 || aangepasteleeftijd > 18)
-			{
-				throw new OngeldigeActieException("De afdelingen lopen maar van 6 tot 18 jaar.");
-			}
+			geboortejaar -= gpMetDetails.ChiroLeefTijd;	 // aanpassen aan Chiroleeftijd
 
 			// Relevante afdelingsjaren opzoeken
 			List<AfdelingsJaar> afdelingsjaren =
