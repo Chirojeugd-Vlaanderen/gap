@@ -226,11 +226,6 @@ namespace Chiro.Gap.Data.Test
 
 			Assert.AreEqual(p1.GetHashCode(), p2.GetHashCode());
 
-			// JOHAN: WTF?? Onderstaande conditie is geen requirement.  De hashcodes van
-			// c1 en c2 mogen gerust verschillen.  Het is niet omdat deze assert failt,
-			// dat er een fout in de code zit.
-			Assert.AreEqual(c1.GetHashCode(), c2.GetHashCode());
-
 			Assert.AreNotEqual(c1.GetHashCode(), p1.GetHashCode());
 		}
 	}

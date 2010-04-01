@@ -94,6 +94,8 @@
     <Compile Include="DashBoard.aspx.designer.cs">
       <DependentUpon>DashBoard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ExcelControllerExtensions.cs" />
+    <Compile Include="ExcelResult.cs" />
     <Compile Include="HtmlHelpers\CheckBoxListHelper.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\GavController.cs" />

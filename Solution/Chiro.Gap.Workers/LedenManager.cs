@@ -261,7 +261,7 @@ namespace Chiro.Gap.Workers
 			}
 
 			// checks:
-			if (!lid.GroepsWerkJaar.Equals(_daos.GroepenDao.RecentsteGroepsWerkJaarGet(lid.GroepsWerkJaar.Groep.ID)))
+			if (lid.GroepsWerkJaar.ID != _daos.GroepenDao.RecentsteGroepsWerkJaarGet(lid.GroepsWerkJaar.Groep.ID).ID)
 			{
 				throw new OngeldigeActieException("Een lid verwijderen mag enkel als het een lid uit het huidige werkjaar is.");
 			}

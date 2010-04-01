@@ -31,19 +31,5 @@ namespace Chiro.Gap.Orm
 			get { return this.VersieStringGet(); }
 			set { this.VersieStringSet(value); }
 		}
-
-		// Ge kunt er over zeggen wat ge wilt, maar het gebeurt al heel gauw dat groepswerkjaren
-		// met elkaar vergeleken worden ipv de groepswerkjaarID's.  Dus als het geen problemen geeft
-		// om Equals/GetHashCode te overloaden, wil ik het toch graag doen.
-
-		public override int GetHashCode()
-		{
-			return ID.GetHashCode();
-		}
-
-		public override bool Equals(object obj)
-		{
-			return this.ChiroEquals(obj);
-		}
 	}
 }
