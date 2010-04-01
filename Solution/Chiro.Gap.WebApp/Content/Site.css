@@ -399,7 +399,7 @@ table.overzicht th
 ul#info 
 {
 	float: right;
-	display: inline;
+	display: block;
 }
 
 ul#info li

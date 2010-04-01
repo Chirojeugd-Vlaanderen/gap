@@ -102,6 +102,49 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
+		/// Haalt een Excellijst op van alle personen in een groep, of als <paramref name="id"/> verschilt van 0, 
+		/// de personen uit de categorie met ID <paramref name="id"/>.
+		/// </summary>
+		/// <param name="groepID">Huidige groep waarin de gebruiker aan het werken is</param>
+		/// <param name="id">ID van de gevraagde categorie.  Kan ook 0 zijn; dan worden alle personen
+		/// geselecteerd.</param>
+		/// <returns>Een 'ExcelResult' met de gevraagde lijst</returns>
+		public ActionResult Download(int groepID, int id)
+		{
+			int totaal = 0;
+			IEnumerable<PersoonInfo> data;
+
+			// Alle personen bekijken
+			if (id == 0)
+			{
+				data =
+					ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
+					(g => g.PaginaOphalenMetLidInfo(groepID, 1, Int16.MaxValue, out totaal));
+			}
+			else
+			{
+				data =
+					ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
+					(g => g.PaginaOphalenUitCategorieMetLidInfo(id, 1, Int16.MaxValue, out totaal));
+			}
+
+			var selectie = from d in data
+				       select new
+				       {
+					       AdNummer = d.AdNummer,
+					       VolledigeNaam = d.VolledigeNaam,
+					       GeboorteDatum = String.Format("{0:dd/MM/yyyy}", d.GeboorteDatum),
+					       Geslacht = d.Geslacht == GeslachtsType.Man ? "jongen" : "meisje",
+					       IsLid = d.IsLid ? "(lid)" : ""
+				       };
+
+			return new ExcelResult(
+				"Personen.xls", 
+				selectie.AsQueryable(), 
+				new string[] { "AdNummer", "VolledigeNaam", "GeboorteDatum", "Geslacht", "IsLid" });
+		}
+
+		/// <summary>
 		/// Bij postback naar List, wordt er gekeken wat er in model.GekozenCategorieID zit, en
 		/// wordt de lijst getoond van personen in die categorie
 		/// </summary>
