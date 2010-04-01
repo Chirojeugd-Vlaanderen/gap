@@ -41,7 +41,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="afdID">Indien 0, worden alle leden getoond, anders enkel de leden uit de afdeling
 		/// met het gegeven AfdelingsID</param>
 		/// <param name="groepID">ID van de groep</param>
-		/// <returns></returns>
+		/// <returns>De view 'Index' met de ledenlijst</returns>
 		public ActionResult List(int id, int afdID, int groepID)
 		{
 			// Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten. Paginering gebeurt hier per werkjaar.
@@ -100,6 +100,48 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.PageTotaal = model.LidInfoLijst.Count;
 			model.HuidigeAfdeling = afdID;
 			return View("Index", model);
+		}
+
+		/// <summary>
+		/// Downloadt de lijst van leden uit groepswerkjaar met GroepsWerkJaarID <paramref name="id"/> als
+		/// Exceldocument.
+		/// </summary>
+		/// <param name="id">ID van het gevraagde groepswerkjaar</param>
+		/// <param name="afdID">Indien 0, worden alle leden getoond, anders enkel de leden uit de afdeling
+		/// met het gegeven AfdelingsID</param>
+		/// <param name="groepID">ID van de groep</param>
+		/// <returns>Exceldocument met gevraagde ledenlijst</returns>
+		public ActionResult Download(int id, int afdID, int groepID)
+		{
+			IEnumerable<LidInfo> lijst;
+			int paginas;
+
+			if (afdID == 0)
+			{
+				lijst =
+					ServiceHelper.CallService<ILedenService, IList<LidInfo>>
+					(lid => lid.PaginaOphalen(id, out paginas));			}
+			else
+			{
+				lijst =
+					ServiceHelper.CallService<ILedenService, IList<LidInfo>>
+					(lid => lid.PaginaOphalenVolgensAfdeling(id, afdID, out paginas));
+			}
+
+			var selectie = from l in lijst
+				       select new
+				       {
+					       AdNummer = l.PersoonInfo.AdNummer,
+					       VolledigeNaam = l.PersoonInfo.VolledigeNaam,
+					       GeboorteDatum = String.Format("{0:dd/MM/yyyy}", l.PersoonInfo.GeboorteDatum),
+					       Geslacht = l.PersoonInfo.Geslacht == GeslachtsType.Man ? "jongen" : "meisje"
+				       };
+
+			return new ExcelResult(
+				"Leden.xls",
+				selectie.AsQueryable(),
+				new string[] { "AdNummer", "VolledigeNaam", "GeboorteDatum", "Geslacht"});
+
 		}
 
 		//

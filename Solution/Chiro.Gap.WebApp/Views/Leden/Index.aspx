@@ -19,9 +19,10 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-<ul id="acties">
-<li>
 <form id="Afdeling" action="" method="post">
+<ul id="acties">
+<li><%= Html.ActionLink("Lijst downloaden", "Download", new { id = Model.GroepsWerkJaarIdZichtbaar, afdID = Model.HuidigeAfdeling })%></li>
+<li>
     <select id="afd" name="afd">
     <option value="">Filter op afdeling...</option>
     <% 
@@ -40,9 +41,10 @@
       Response.Write("<option value=" + alles.Substring(ss, e - ss) + ">" + "Alle leden" + "</option>\n");
     %>
     </select>
-</form>
+
 </li>
 </ul>
+</form>
     
     <% Html.RenderPartial("LedenLijstControl"); %>
 
