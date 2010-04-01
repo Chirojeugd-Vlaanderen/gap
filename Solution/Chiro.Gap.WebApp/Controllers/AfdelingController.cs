@@ -119,6 +119,15 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			BaseModelInit(model, groepID);
 
+			// Als de gebruiker een kleiner geboortejaar 'tot' als 'van' ingeeft, wisselen we die stiekem om.  (Ticket #289)
+
+			if (model.HuidigAfdelingsJaar.GeboorteJaarTot < model.HuidigAfdelingsJaar.GeboorteJaarVan)
+			{
+				int tmp = model.HuidigAfdelingsJaar.GeboorteJaarVan;
+				model.HuidigAfdelingsJaar.GeboorteJaarVan = model.HuidigAfdelingsJaar.GeboorteJaarTot;
+				model.HuidigAfdelingsJaar.GeboorteJaarTot = tmp;
+			}
+
 			try
 			{
 				ServiceHelper.CallService<IGroepenService>(e => e.AfdelingsJaarAanmaken(groepID, id, model.OfficieleAfdelingID, model.HuidigAfdelingsJaar.GeboorteJaarVan, model.HuidigAfdelingsJaar.GeboorteJaarTot));
@@ -174,6 +183,16 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult Bewerken(Models.AfdelingInfoModel model, int groepID, int id)
 		{
 			BaseModelInit(model, groepID);
+
+			// Als de gebruiker een kleiner geboortejaar 'tot' als 'van' ingeeft, wisselen we die stiekem om.  (Ticket #289)
+
+			if (model.HuidigAfdelingsJaar.GeboorteJaarTot < model.HuidigAfdelingsJaar.GeboorteJaarVan)
+			{
+				int tmp = model.HuidigAfdelingsJaar.GeboorteJaarVan;
+				model.HuidigAfdelingsJaar.GeboorteJaarVan = model.HuidigAfdelingsJaar.GeboorteJaarTot;
+				model.HuidigAfdelingsJaar.GeboorteJaarTot = tmp;
+			}
+
 			try
 			{
 				// TODO: hier (of beter: in de service) moeten dezelfde controles gebeuren als bij AfdelingActiveren - zie ticket #326
