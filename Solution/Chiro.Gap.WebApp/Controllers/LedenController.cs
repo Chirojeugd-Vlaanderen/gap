@@ -81,7 +81,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					ServiceHelper.CallService<ILedenService, IList<LidInfo>>
 					(lid => lid.PaginaOphalen(id, out paginas));
 
-				model.Titel = "Ledenoverzicht van het werkjaar " + model.GroepsWerkJaartalZichtbaar + "-" + model.GroepsWerkJaartalZichtbaar+1;
+				model.Titel = "Ledenoverzicht van het werkjaar " + model.GroepsWerkJaartalZichtbaar + "-" + (int)(model.GroepsWerkJaartalZichtbaar+1);
 			}
 			else
 			{
@@ -93,7 +93,7 @@ namespace Chiro.Gap.WebApp.Controllers
 								   where a.Value.AfdelingID == afdID
 								   select a.Value).FirstOrDefault();
 
-				model.Titel = "Ledenoverzicht van de " + af.Naam + " van het werkjaar " + model.GroepsWerkJaartalZichtbaar + "-" + model.GroepsWerkJaartalZichtbaar + 1;
+				model.Titel = "Ledenoverzicht van de " + af.Naam + " van het werkjaar " + model.GroepsWerkJaartalZichtbaar + "-" + (int)(model.GroepsWerkJaartalZichtbaar + 1);
 			}
 
 			model.PageHuidig = model.GroepsWerkJaarIdZichtbaar;
@@ -132,7 +132,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				       select new
 				       {
 					       AdNummer = l.PersoonInfo.AdNummer,
-					       VolledigeNaam = l.PersoonInfo.VolledigeNaam(),
+					       VolledigeNaam = l.PersoonInfo.VolledigeNaam,
 					       GeboorteDatum = String.Format("{0:dd/MM/yyyy}", l.PersoonInfo.GeboorteDatum),
 					       Geslacht = l.PersoonInfo.Geslacht == GeslachtsType.Man ? "jongen" : "meisje"
 				       };
@@ -239,11 +239,12 @@ namespace Chiro.Gap.WebApp.Controllers
 				LidInfo tebewarenlid = model.HuidigLid;
 				tebewarenlid.AfdelingIdLijst = selectie;
 				ServiceHelper.CallService<ILedenService>(e => e.BewarenMetAfdelingen(tebewarenlid));
-				return RedirectToAction("List", new { groepsWerkJaarId = Sessie.LaatstePagina, afdID = Sessie.LaatsteActieID });
+				//TODO handle exception
+				return RedirectToAction("EditRest", new { Controller = "Personen", id = model.HuidigLid.PersoonInfo.GelieerdePersoonID});
 			}
 			catch
 			{
-				return View();
+				return RedirectToAction("List", new { groepsWerkJaarId = Sessie.LaatstePagina, afdID = Sessie.LaatsteActieID });
 			}
 		}
 
@@ -257,7 +258,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>(l => l.Ophalen(lidID, LidExtras.Groep|LidExtras.Afdelingen));
 			AfdelingenOphalen(model);
 
-			model.Titel = "Overzicht van " + model.HuidigLid.PersoonInfo.VolledigeNaam();
+			model.Titel = "Overzicht van " + model.HuidigLid.PersoonInfo.VolledigeNaam;
 
 			return View("EditLidGegevens", model);
 		}

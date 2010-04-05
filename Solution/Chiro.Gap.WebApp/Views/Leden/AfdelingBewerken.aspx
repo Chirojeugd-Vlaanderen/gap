@@ -49,6 +49,7 @@
            
            
            <%= Html.Hidden("HuidigLid.LidID")%>
+           <%= Html.Hidden("HuidigLid.PersoonInfo.GelieerdePersoonID") %>
            <%= Html.Hidden("HuidigLid.Type")%>
            </fieldset>
            

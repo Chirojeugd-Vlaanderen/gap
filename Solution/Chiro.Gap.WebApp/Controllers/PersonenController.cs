@@ -132,7 +132,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				       select new
 				       {
 					       AdNummer = d.AdNummer,
-					       VolledigeNaam = d.VolledigeNaam(),
+					       VolledigeNaam = d.VolledigeNaam,
 					       GeboorteDatum = String.Format("{0:dd/MM/yyyy}", d.GeboorteDatum),
 					       Geslacht = d.Geslacht == GeslachtsType.Man ? "jongen" : "meisje",
 					       IsLid = d.IsLid ? "(lid)" : ""
@@ -328,7 +328,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.PersoonLidInfo.LidInfo.PersoonInfo = model.PersoonLidInfo.PersoonInfo;
 			}
 			
-			model.Titel = model.PersoonLidInfo.PersoonInfo.VolledigeNaam();
+			model.Titel = model.PersoonLidInfo.PersoonInfo.VolledigeNaam;
 			return View("EditRest", model);
 		}
 

@@ -46,9 +46,10 @@ namespace Chiro.Gap.ServiceContracts
 		[DataMember]
 		public IList<Categorie> CategorieLijst { get; set; }
 
-		public string VolledigeNaam()
-		{
-			return VoorNaam + " " + Naam;
+		public string VolledigeNaam {
+			get {
+				return VoorNaam + " " + Naam;
+			}
 		}
 	}
 }
