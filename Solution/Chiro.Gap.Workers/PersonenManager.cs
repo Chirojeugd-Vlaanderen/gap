@@ -6,6 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Text;
 
 using Chiro.Cdf.Ioc;
@@ -14,6 +16,7 @@ using Chiro.Gap.Fouten;
 using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+
 
 namespace Chiro.Gap.Workers
 {
@@ -112,21 +115,61 @@ namespace Chiro.Gap.Workers
 
 		/// <summary>
 		/// Koppelt het gegeven Adres via een nieuw PersoonsAdresObject
-		/// aan de gegeven GelieerdePersoon.  Persisteert niet.
+		/// aan de gegeven Persoon.  Persisteert niet.
 		/// </summary>
-		/// <param name="p">GelieerdePersoon die er een adres bij krijgt</param>
+		/// <param name="p">Persoon die er een adres bij krijgt, met daaraan gekoppeld zijn huidige
+		/// adressen.</param>
 		/// <param name="adres">Toe te voegen adres</param>
 		/// <param name="adrestype">Het adrestype (thuis, kot, enz.)</param>
-		public void AdresToevoegen(Persoon p, Adres adres, AdresTypeEnum adrestype)
+		public void AdresToevoegen(Persoon p, Adres adres, AdresTypeEnum adresType)
 		{
-			if (_autorisatieMgr.IsGavPersoon(p.ID))
+			AdresToevoegen(new List<Persoon> { p }, adres, adresType);
+		}
+
+		/// <summary>
+		/// Koppelt het gegeven Adres via nieuwe PersoonsAdresObjecten
+		/// aan de gegeven Personen.  Persisteert niet.
+		/// </summary>
+		/// <param name="personen">Personen die er een adres bij krijgen, met daaraan gekoppeld hun huidige
+		/// adressen.</param>
+		/// <param name="adres">Toe te voegen adres</param>
+		/// <param name="adrestype">Het adrestype (thuis, kot, enz.)</param>
+		public void AdresToevoegen(IEnumerable<Persoon> personen, Adres adres, AdresTypeEnum adrestype)
+		{
+			var persIDs = (from p in personen
+				       select p.ID).ToList();
+			var mijnPersIDs = _autorisatieMgr.EnkelMijnPersonen(persIDs);
+
+			if (persIDs.Count() == mijnPersIDs.Count())
 			{
-				PersoonsAdres pa = new PersoonsAdres { Adres = adres, Persoon = p, AdresType = adrestype };
-				p.PersoonsAdres.Add(pa);
-				adres.PersoonsAdres.Add(pa);
+				// Vind personen waaraan het adres al gekoppeld is.
+
+				var bestaand = personen.SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == adres.ID));
+
+				if (bestaand.FirstOrDefault() != null)
+				{
+					// Sommige personen hebben het adres al.  Geef een exception met daarin de
+					// betreffende persoonsadres-objecten.
+
+					var bestaandePersoonsAdressen = bestaand.ToList();
+
+					throw new BlokkerendeObjectenException<BestaatAlFoutCode, PersoonsAdres>(
+						BestaatAlFoutCode.PersoonsAdresBestaatAl, 
+						bestaandePersoonsAdressen);
+				}
+
+				foreach (Persoon p in personen)
+				{
+					PersoonsAdres pa = new PersoonsAdres { Adres = adres, Persoon = p, AdresType = adrestype };
+					p.PersoonsAdres.Add(pa);
+					adres.PersoonsAdres.Add(pa);
+				}
 			}
 			else
 			{
+				// stiekem personen niet gelieerd aan eigen groep bij in lijst opgenomen.  Geen
+				// tijd aan verspillen; gewoon een GeenGavException.
+
 				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
 			}
 		}
@@ -135,12 +178,20 @@ namespace Chiro.Gap.Workers
 		/// Een collectie personen ophalen van wie de ID's opgegeven zijn
 		/// </summary>
 		/// <param name="personenIDs">De ID's van de personen die in de collectie moeten zitten</param>
+		/// <param name="extras">Geeft aan welke gerelateerde entiteiten mee opgehaald moeten worden</param>
 		/// <returns>Een collectie met de gevraagde personen</returns>
-		public IList<Persoon> LijstOphalen(List<int> personenIDs)
+		public IList<Persoon> LijstOphalen(List<int> personenIDs, PersoonsExtras extras)
 		{
 			AutorisatieManager authMgr = Factory.Maak<AutorisatieManager>();
 
-			return _dao.LijstOphalen(authMgr.EnkelMijnPersonen(personenIDs));
+			var paths = new List<Expression<Func<Persoon, object>>>();
+
+			if ((extras & PersoonsExtras.Adressen) != 0)
+			{
+				paths.Add(p => p.PersoonsAdres.First().Adres);
+			}
+
+			return _dao.Ophalen(authMgr.EnkelMijnPersonen(personenIDs), paths.ToArray());
 		}
 	}
 }

@@ -42,17 +42,7 @@
    <fieldset>
    <legend>Adres </legend>
    
-   <%
-	List<CheckBoxListInfo> info
-		= (from p in Model.Bewoners
-		   select new CheckBoxListInfo(
-                       p.PersoonID.ToString(), 
-                       p.PersoonVolledigeNaam, 
-                       Model.PersoonIDs.Contains(p.PersoonID)))
-			.ToList<CheckBoxListInfo>();
-   %>
-   
-   <%=Html.CheckBoxList("PersoonIDs", info)%>
+   <%=Html.CheckBoxList("PersoonIDs", Model.Bewoners)%>
    
    </fieldset>
 

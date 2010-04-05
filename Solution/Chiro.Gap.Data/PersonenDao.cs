@@ -25,25 +25,6 @@ namespace Chiro.Gap.Data.Ef
 	{
 		#region IPersonenDao Members
 
-		// TODO: onderstaande misschien doen via GroepsWerkJaar ipv via aparte persoon- en groepID?
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="personenIDs"></param>
-		/// <returns></returns>
-		public IList<Persoon> LijstOphalen(IList<int> personenIDs)
-		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
-			{
-				db.Persoon.MergeOption = MergeOption.NoTracking;
-
-				return (
-					from p in db.Persoon.Where(Utility.BuildContainsExpression<Persoon, int>(p => p.ID, personenIDs))
-					select p).ToList();
-			}
-		}
-
 		/// <summary>
 		/// Haalt alle Personen op die op een zelfde
 		/// adres wonen als de gelieerde persoon met het gegeven ID.

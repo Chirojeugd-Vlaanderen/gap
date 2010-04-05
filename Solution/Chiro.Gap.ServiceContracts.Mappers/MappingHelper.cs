@@ -69,7 +69,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.ChiroLeefTijd))
 				.ForMember(
 					dst => dst.PersoonID,
-					opt => opt.MapFrom(src => src.Persoon.ID));
+					opt => opt.MapFrom(src => src.Persoon.ID))
+				.ForMember(
+					dst => dst.VolledigeNaam,
+					opt => opt.Ignore());	// @Broes: anders werkt het bij mij niet meer
 
 			Mapper.CreateMap<AfdelingsJaar, AfdelingInfo>()
 				.ForMember(
@@ -165,6 +168,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.CreateMap<StraatNaam, StraatInfo>();
 			Mapper.CreateMap<WoonPlaats, WoonPlaatsInfo>();
 			Mapper.CreateMap<Categorie, CategorieInfo>();
+			Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo2>();
 			Mapper.CreateMap<CommunicatieVorm, CommunicatieInfo>();
 			Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo>()
 				.ForMember(
@@ -203,6 +207,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(
 					dst => dst.Objecten, 
 					opt => opt.MapFrom(src => src.Objecten.Take(Properties.Settings.Default.KleinAantal)));
+			Mapper.CreateMap<BlokkerendeObjectenException<BestaatAlFoutCode, PersoonsAdres>,
+					BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>>();
 			#endregion
 
 			// Wel even nakijken of die automagie overal gewerkt heeft:

@@ -18,8 +18,8 @@
            <fieldset>
            <legend>Adresgegevens</legend>
            
-           <%=Html.Encode(String.Format("{0} {1} {2}", Model.Adres.Straat, Model.Adres.HuisNr, Model.Adres.Bus))%> <br />
-           <%=Html.Encode(String.Format("{0} {1}", Model.Adres.PostNr, Model.Adres.Gemeente))%> <br />
+           <%=Html.Encode(String.Format("{0} {1} {2}", Model.Adres.StraatNaamNaam, Model.Adres.HuisNr, Model.Adres.Bus))%> <br />
+           <%=Html.Encode(String.Format("{0} {1}", Model.Adres.PostNr, Model.Adres.WoonPlaatsNaam))%> <br />
            
            <%=Html.Hidden("Adres.ID") %>
            <%=Html.Hidden("AanvragerID") %>

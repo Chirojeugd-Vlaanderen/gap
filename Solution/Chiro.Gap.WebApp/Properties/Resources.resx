@@ -156,4 +156,7 @@
   <data name="WijzigingenOpgeslagenFeedback" xml:space="preserve">
     <value>De wijzigingen zijn opgeslagen</value>
   </data>
+  <data name="WoontDaarAl" xml:space="preserve">
+    <value>Deze persoon woont al op het gevraagde adres.</value>
+  </data>
 </root>

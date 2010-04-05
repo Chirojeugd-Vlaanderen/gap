@@ -11,6 +11,7 @@ using System.Web;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.WebApp.HtmlHelpers;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -38,7 +39,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Lijst met bewoners van het huidige adres
 		/// </summary>
-		public IList<BewonersInfo> Bewoners { get; set; }
+		public IEnumerable<CheckBoxListInfo> Bewoners { get; set; }
 
 		/// <summary>
 		/// Het adres (wordt geladen met het oude adres, komt terug met het nieuwe
@@ -65,7 +66,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// </summary>
 		public AdresModel()
 		{
-			Bewoners = new List<BewonersInfo>();
+			Bewoners = new List<CheckBoxListInfo>();
 			PersoonIDs = new List<int>();
 			Adres = new AdresInfo();
 			WoonPlaatsen = new List<WoonPlaatsInfo>();

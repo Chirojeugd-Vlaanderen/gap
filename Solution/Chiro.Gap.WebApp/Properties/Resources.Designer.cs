@@ -167,5 +167,14 @@ namespace Chiro.Gap.WebApp.Properties {
                 return ResourceManager.GetString("WijzigingenOpgeslagenFeedback", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deze persoon woont al op het gevraagde adres..
+        /// </summary>
+        public static string WoontDaarAl {
+            get {
+                return ResourceManager.GetString("WoontDaarAl", resourceCulture);
+            }
+        }
     }
 }

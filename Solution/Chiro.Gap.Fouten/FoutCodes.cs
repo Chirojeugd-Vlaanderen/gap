@@ -25,7 +25,9 @@ namespace Chiro.Gap.Fouten
 		[EnumMember]
 		LidBestaatAl,			// de persoon is al lid in het gegeven groepswerkjaar
 		[EnumMember]
-		PersoonBestaatAl		// er is een gelijkaardige persoon gevonden
+		PersoonBestaatAl,		// er is een gelijkaardige persoon gevonden
+		[EnumMember]
+		PersoonsAdresBestaatAl		// de persoon woont al op het aangegeven adres
 		// TODO: foutcodes voor andere dingen die al kunnen bestaan.
 	}
 

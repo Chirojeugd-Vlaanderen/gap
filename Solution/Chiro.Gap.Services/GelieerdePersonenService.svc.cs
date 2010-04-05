@@ -292,7 +292,7 @@ namespace Chiro.Gap.Services
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void AdresToevoegenAanPersonen(List<int> personenIDs, AdresInfo adr, AdresTypeEnum adresType)
+		public void AdresToevoegen(List<int> personenIDs, AdresInfo adr, AdresTypeEnum adresType)
 		{
 			// Dit gaat sterk lijken op verhuizen.
 
@@ -311,12 +311,20 @@ namespace Chiro.Gap.Services
 			}
 
 			// Personen ophalen
-			IList<Persoon> personenLijst = _pMgr.LijstOphalen(personenIDs);
+			IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalen(personenIDs, PersoonsExtras.Adressen);
 
-			// Adres koppelen
-			foreach (Persoon p in personenLijst)
+			// Adres koppelen aan personen
+
+			try
 			{
-				_pMgr.AdresToevoegen(p, adres, adresType);
+				_pMgr.AdresToevoegen(personenLijst, adres, adresType);
+			}
+			catch (BlokkerendeObjectenException<BestaatAlFoutCode, PersoonsAdres> ex)
+			{
+				var fault = Mapper.Map<BlokkerendeObjectenException<BestaatAlFoutCode, PersoonsAdres>,
+					BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>>(ex);
+
+				throw new FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>>(fault);
 			}
 
 			// persisteren

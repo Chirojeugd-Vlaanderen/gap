@@ -21,14 +21,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	public interface IPersonenDao : IDao<Persoon>
 	{
 		/// <summary>
-		/// Haalt lijst op van Personen
-		/// </summary>
-		/// <param name="personenIDs">ID's van op te halen
-		/// Personen</param>
-		/// <returns>Lijst met Personen</returns>
-		IList<Persoon> LijstOphalen(IList<int> personenIDs);
-
-		/// <summary>
 		/// Haalt alle personen op die op een zelfde
 		/// adres wonen als de gelieerde persoon met het gegeven ID.
 		/// </summary>

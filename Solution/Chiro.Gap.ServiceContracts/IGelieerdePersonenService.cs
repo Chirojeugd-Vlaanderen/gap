@@ -196,7 +196,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="adresType">Soort adres (thuis, kot, enz.)</param>
 		[OperationContract]
 		[FaultContract(typeof(OngeldigObjectFault<AdresFoutCode>))]
-		void AdresToevoegenAanPersonen(List<int> personenIDs, AdresInfo adres, AdresTypeEnum adresType);
+		[FaultContract(typeof(BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>))]
+		void AdresToevoegen(List<int> personenIDs, AdresInfo adres, AdresTypeEnum adresType);
 
 		/// <summary>
 		/// Verwijdert een adres van een verzameling personen

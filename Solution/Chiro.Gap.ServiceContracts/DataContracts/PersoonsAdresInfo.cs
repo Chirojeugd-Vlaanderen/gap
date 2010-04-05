@@ -1,4 +1,4 @@
-﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// <copyright company="Chirojeugd-Vlaanderen vzw">
 // Copyright (c) 2007-2010
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
@@ -22,5 +22,19 @@ namespace Chiro.Gap.ServiceContracts
 
 		[DataMember]
 		public AdresTypeEnum AdresType { get; set; }
+	}
+
+	/// <summary>
+	/// Flauw datacontractje dat enkel een PersoonID en een AdresID bevat.  Wordt gebruikt om informatie
+	/// mee te geven over al bestaande adressen
+	/// (Helaas had ik een datacontract geschreven met dezelfde naam als een ander datacontract van Broes.)
+	/// </summary>
+	[DataContract]
+	public class PersoonsAdresInfo2
+	{
+		[DataMember]
+		public int PersoonID { get; set; }
+		[DataMember]
+		public int AdresID { get; set; }
 	}
 }

@@ -20,16 +20,37 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 	/// </summary>
 	public class CheckBoxListInfo
 	{
+		/// <summary>
+		/// Constructor voor CheckBoxListInfo
+		/// </summary>
+		/// <param name="displayText">Tekst die de gebruiker te zien krijgt na de checkbox</param>
+		/// <param name="value">Waarde die doorgegeven moet worden als het item aangekruist is</param>
+		/// <param name="isChecked">Bepaalt de huidige status van de checkbox</param>
+		/// getoond.</param>
 		public CheckBoxListInfo(string value, string displayText, bool isChecked)
+			: this(value, displayText, isChecked, String.Empty) { }
+
+
+		/// <summary>
+		/// Constructor voor CheckBoxListInfo
+		/// </summary>
+		/// <param name="displayText">Tekst die de gebruiker te zien krijgt na de checkbox</param>
+		/// <param name="value">Waarde die doorgegeven moet worden als het item aangekruist is</param>
+		/// <param name="isChecked">Bepaalt de huidige status van de checkbox</param>
+		/// <param name="foutBericht">Indien niet leeg, wordt dit foutbericht na de DisplayText 
+		/// getoond.</param>
+		public CheckBoxListInfo(string value, string displayText, bool isChecked, string foutBericht)
 		{
-			this.Value = value;
-			this.DisplayText = displayText;
-			this.IsChecked = isChecked;
+			Value = value;
+			DisplayText = displayText;
+			IsChecked = isChecked;
+			FoutBericht = foutBericht;
 		}
 
 		public string Value { get; private set; }
 		public string DisplayText { get; private set; }
 		public bool IsChecked { get; private set; }
+		public string FoutBericht { get; set; }
 	}
 
 	/// <summary>
@@ -38,20 +59,20 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 	/// </summary>
 	public static class CheckBoxListHelper
 	{
-		public static string CheckBoxList(this HtmlHelper htmlHelper, string name, List<CheckBoxListInfo> listInfo)
+		public static string CheckBoxList(this HtmlHelper htmlHelper, string name, IEnumerable<CheckBoxListInfo> listInfo)
 		{
 			return htmlHelper.CheckBoxList(name, listInfo,
 				((IDictionary<string, object>)null));
 		}
 
-		public static string CheckBoxList(this HtmlHelper htmlHelper, string name, List<CheckBoxListInfo> listInfo,
+		public static string CheckBoxList(this HtmlHelper htmlHelper, string name, IEnumerable<CheckBoxListInfo> listInfo,
 			object htmlAttributes)
 		{
 			return htmlHelper.CheckBoxList(name, listInfo,
 				((IDictionary<string, object>)new RouteValueDictionary(htmlAttributes)));
 		}
 
-		public static string CheckBoxList(this HtmlHelper htmlHelper, string name, List<CheckBoxListInfo> listInfo,
+		public static string CheckBoxList(this HtmlHelper htmlHelper, string name, IEnumerable<CheckBoxListInfo> listInfo,
 			IDictionary<string, object> htmlAttributes)
 		{
 			if (String.IsNullOrEmpty(name))
@@ -62,7 +83,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 			{
 				throw new ArgumentNullException("listInfo");
 			}
-			if (listInfo.Count < 1)
+			if (listInfo.Count() < 1)
 			{
 				throw new ArgumentException("The list must contain at least one value", "listInfo");
 			}
@@ -83,6 +104,10 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 				sb.Append("\n");
 				sb.Append(builder.ToString(TagRenderMode.SelfClosing));
 				sb.Append(info.DisplayText);
+				if (info.FoutBericht != String.Empty)
+				{
+					sb.Append(String.Format("  <span class='field-validation-error'>{0}</span>", info.FoutBericht));
+				}
 				sb.Append("<br />");
 			}
 

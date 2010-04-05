@@ -21,6 +21,7 @@ using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WebApp.Models;
+using Chiro.Gap.WebApp.HtmlHelpers;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -418,17 +419,23 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.AanvragerID = aanvragerID;
 			AdresInfo a = ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(l => l.AdresMetBewonersOphalen(id));
 
-			model.Bewoners = a.Bewoners;
 			model.Adres = a;
 			model.OudAdresID = id;
-			model.AdresType = (from bewoner in model.Bewoners
+			model.AdresType = (from bewoner in a.Bewoners
 							   where bewoner.PersoonID == persoonID
 							   select bewoner.AdresType).FirstOrDefault();
+
 			model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(a.PostNr);
 
 			// Standaard verhuist iedereen mee.
 			model.PersoonIDs = (from b in a.Bewoners
 								select b.PersoonID).ToList();
+
+			model.Bewoners = (from p in a.Bewoners
+					  select new CheckBoxListInfo(
+						p.PersoonID.ToString(),
+						p.PersoonVolledigeNaam,
+						model.PersoonIDs.Contains(p.PersoonID))).ToArray<CheckBoxListInfo>();
 
 			model.Titel = "Personen Verhuizen";
 			return View("AdresBewerken", model);
@@ -450,7 +457,14 @@ namespace Chiro.Gap.WebApp.Controllers
 			// Dat moet dus niet dubbel geschreven zijn
 
 			BaseModelInit(model, groepID);
-			model.Bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(svc => svc.HuisGenotenOphalen(model.AanvragerID));
+			var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(svc => svc.HuisGenotenOphalen(model.AanvragerID));
+
+			model.Bewoners = (from p in bewoners
+					  select new CheckBoxListInfo(
+						  p.PersoonID.ToString(),
+						  p.PersoonVolledigeNaam,
+						  model.PersoonIDs.Contains(p.PersoonID))).ToArray();
+
 			model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
 
 			return View("AdresBewerken", model);
@@ -496,7 +510,14 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				// Maar ik toon de bewoners wel, dus moeten die hier opnieuw
 				// uit de database gehaald worden:
-				model.Bewoners = (ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(l => l.AdresMetBewonersOphalen(model.OudAdresID))).Bewoners;
+				var bewoners = (ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(l => l.AdresMetBewonersOphalen(model.OudAdresID))).Bewoners;
+
+				model.Bewoners = (from p in bewoners
+						  select new CheckBoxListInfo(
+							  p.PersoonID.ToString(),
+							  p.PersoonVolledigeNaam,
+							  model.PersoonIDs.Contains(p.PersoonID))).ToArray();
+
 				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
 				return View("AdresBewerken", model);
 			}
@@ -553,7 +574,13 @@ namespace Chiro.Gap.WebApp.Controllers
 			BaseModelInit(model, groepID);
 
 			model.AanvragerID = id;
-			model.Bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(l => l.HuisGenotenOphalen(id));
+			var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(l => l.HuisGenotenOphalen(id));
+
+			model.Bewoners = (from p in bewoners
+					  select new CheckBoxListInfo(
+						  p.PersoonID.ToString(),
+						  p.PersoonVolledigeNaam,
+						  p.PersoonID == id)).ToArray();
 
 			// Standaard krijgt alleen de aanvrager een nieuw adres.
 			// Van de aanvrager heb ik het PersoonID nodig, en we hebben nu enkel het
@@ -578,7 +605,14 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult NieuwAdres_WoonplaatsenOphalen(AdresModel model, int groepID)
 		{
 			BaseModelInit(model, groepID);
-			model.Bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(svc => svc.HuisGenotenOphalen(model.AanvragerID));
+			var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(svc => svc.HuisGenotenOphalen(model.AanvragerID));
+
+			model.Bewoners = (from p in bewoners
+					  select new CheckBoxListInfo(
+						  p.PersoonID.ToString(),
+						  p.PersoonVolledigeNaam,
+						  model.PersoonIDs.Contains(p.PersoonID))).ToArray();
+
 			model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
 
 			return View("AdresBewerken", model);
@@ -602,7 +636,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				// steeds opnieuw opgezocht.  Adressen worden nooit
 				// gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
 
-				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenAanPersonen(model.PersoonIDs, model.Adres, model.AdresType));
+				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegen(model.PersoonIDs, model.Adres, model.AdresType));
 
 				return RedirectToAction("EditRest", new
 				{
@@ -617,8 +651,41 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				// De mogelijke bewoners zijn op dit moment vergeten, en moeten dus
 				// terug opgevraagd worden.
-				model.Bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(l => l.HuisGenotenOphalen(model.AanvragerID));
+				var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(l => l.HuisGenotenOphalen(model.AanvragerID));
+
+				model.Bewoners = (from p in bewoners
+						  select new CheckBoxListInfo(
+							  p.PersoonID.ToString(),
+							  p.PersoonVolledigeNaam,
+							  model.PersoonIDs.Contains(p.PersoonID))).ToArray();
+
 				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
+				return View("AdresBewerken", model);
+			}
+			catch (FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>> ex)
+			{
+				BaseModelInit(model, groepID);
+
+				// De mogelijke bewoners zijn op dit moment vergeten, en moeten dus
+				// terug opgevraagd worden.
+				var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(l => l.HuisGenotenOphalen(model.AanvragerID));
+
+				// Extraheer bewoners met problemen uit exceptie
+				var probleemPersIDs = from pa in ex.Detail.Objecten
+						      select pa.PersoonID;
+
+				model.Bewoners = (from p in bewoners
+						  select new CheckBoxListInfo(
+							  p.PersoonID.ToString(),
+							  p.PersoonVolledigeNaam,
+							  model.PersoonIDs.Contains(p.PersoonID),
+							  probleemPersIDs.Contains(p.PersoonID) ? Properties.Resources.WoontDaarAl : string.Empty)).ToArray();
+
+				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
+
+				// TODO: de view moet duidelijk maken welke personen het probleem veroorzaakten (en wat het probleem is
+				// uiteraard ook.)
+
 				return View("AdresBewerken", model);
 			}
 			catch

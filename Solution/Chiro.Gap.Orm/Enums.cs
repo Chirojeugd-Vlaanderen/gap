@@ -61,4 +61,17 @@ namespace Chiro.Gap.Orm
 		[EnumMember]
 		Alles = Groep | Afdelingen | Functies
 	}
+
+	/// <summary>
+	/// Enum om aan te geven welke extra informatie er met een (gelieerde) persoon mee opgehaald moet worden.
+	/// </summary>
+	[DataContract]
+	[Flags]
+	public enum PersoonsExtras
+	{
+		[EnumMember]
+		Geen = 0x00,
+		[EnumMember]
+		Adressen = 0x01
+	}
 }
