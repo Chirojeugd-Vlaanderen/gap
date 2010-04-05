@@ -210,7 +210,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
-				model.Titel = "Ledenoverzicht";
+				model.Titel = "Afdelingen van " + model.HuidigLid.PersoonInfo.VolledigeNaam + "aanpassen";
 				return View("AfdelingBewerken", model);
 			}
 		}
