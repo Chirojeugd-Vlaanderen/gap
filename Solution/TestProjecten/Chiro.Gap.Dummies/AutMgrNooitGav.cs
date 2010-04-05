@@ -21,7 +21,7 @@ namespace Chiro.Gap.Dummies
             return new List<int>();
         }
 
-        public IList<int> EnkelMijnPersonen(IList<int> personenIDs)
+        public IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs)
         {
             return new List<int>();
         }

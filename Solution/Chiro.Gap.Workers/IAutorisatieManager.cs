@@ -28,7 +28,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="personenIDs">Lijst met ID's van personen</param>
 		/// <returns>Enkel de ID's van die personen voor wie de gebruiker GAV is</returns>
-		IList<int> EnkelMijnPersonen(IList<int> personenIDs);
+		IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs);
 
 		/// <summary>
 		/// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV

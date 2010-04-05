@@ -169,9 +169,10 @@ namespace Chiro.Gap.ServiceContracts
 		/// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
 		/// dan krijgt het adres een nieuw ID.</remarks>
 		[OperationContract]
+		[FaultContract(typeof(BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>))]
 		[FaultContract(typeof(OngeldigObjectFault<AdresFoutCode>))]
-		void PersonenVerhuizen(
-			IList<int> persoonIDs,
+		void Verhuizen(
+			IEnumerable<int> persoonIDs,
 			AdresInfo nieuwAdres,
 			int oudAdresID,
 			AdresTypeEnum adresType);

@@ -229,8 +229,8 @@ namespace Chiro.Gap.Services
 		/// </remarks>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void PersonenVerhuizen(
-			IList<int> persoonIDs,
+		public void Verhuizen(
+			IEnumerable<int> persoonIDs,
 			AdresInfo naarAdres,
 			int oudAdresID,
 			AdresTypeEnum adresType)
@@ -257,27 +257,36 @@ namespace Chiro.Gap.Services
 				throw new FaultException<OngeldigObjectFault<AdresFoutCode>>(fault);
 			}
 
-			// Om foefelen te vermijden: we werken enkel op de gelieerde
-			// personen waar de gebruiker GAV voor is.
-			IList<int> mijnPersonen = _auMgr.EnkelMijnPersonen(persoonIDs);
+			// Haal te verhuizen personen op, samen met hun adressen.
 
-			// Haal bronadres en alle bewoners op
-			Adres oudAdres = _adrMgr.AdresMetBewonersOphalen(oudAdresID);
+			IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalen(persoonIDs, PersoonsExtras.Adressen);
 
-			// Selecteer enkel bewoners uit mijnGelieerdePersonen
-			IList<Persoon> teVerhuizen =
-				(from PersoonsAdres pa
-				in oudAdres.PersoonsAdres
-				 where mijnPersonen.Contains(pa.Persoon.ID)
-				 select pa.Persoon).ToList();
+			// Kijk na of het naar-adres toevallig mee opgehaald is.  Zo ja, werken we daarmee verder
+			// (iet of wat consistenter)
 
-			// Bovenstaande query meteen evalueren en resultaten in een lijst.
-			// Als ik dat niet doe, dan verandert het 'in' gedeelte van
-			// de foreach tijdens de loop, en daar kan .net niet mee
-			// lachen.
-			foreach (Persoon verhuizer in teVerhuizen)
+			PersoonsAdres a = personenLijst.SelectMany(prs => prs.PersoonsAdres)
+				.Where(pa => pa.Adres.ID == nieuwAdres.ID).FirstOrDefault();
+
+			if (a != null)
 			{
-				_pMgr.Verhuizen(verhuizer, oudAdres, nieuwAdres, adresType);
+				nieuwAdres = a.Adres;
+			}
+
+			// Het oud adres is normaal gezien gekoppeld aan een van de te verhuizen personen.
+
+			Adres oudAdres = personenLijst.SelectMany(prs => prs.PersoonsAdres)
+				.Where(pa => pa.Adres.ID == oudAdresID).Select(pa=>pa.Adres).FirstOrDefault();
+
+			try
+			{
+				_pMgr.Verhuizen(personenLijst, oudAdres, nieuwAdres, adresType);
+			}
+			catch (BlokkerendeObjectenException<BestaatAlFoutCode, PersoonsAdres> ex)
+			{
+				var fault = Mapper.Map<BlokkerendeObjectenException<BestaatAlFoutCode, PersoonsAdres>,
+					BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>>(ex);
+
+				throw new FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>>(fault);
 			}
 
 			// Persisteren

@@ -20,7 +20,7 @@ namespace Chiro.Gap.Dummies
 			return gelieerdePersonenIDs.ToList();
 		}
 
-		public IList<int> EnkelMijnPersonen(IList<int> personenIDs)
+		public IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs)
 		{
 			return personenIDs.ToList();
 		}

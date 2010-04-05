@@ -200,7 +200,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="personenIDs">Lijst met ID's van personen</param>
 		/// <returns>Enkel de ID's van die personen voor wie de gebruiker GAV is</returns>
-		public IList<int> EnkelMijnPersonen(IList<int> personenIDs)
+		public IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs)
 		{
 			return _autorisatieDao.EnkelMijnPersonen(personenIDs, GebruikersNaamGet());
 		}

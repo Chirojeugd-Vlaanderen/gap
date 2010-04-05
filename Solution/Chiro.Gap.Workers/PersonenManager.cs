@@ -80,35 +80,70 @@ namespace Chiro.Gap.Workers
 		/// Verhuist een persoon van oudAdres naar nieuwAdres.  Persisteert niet.
 		/// </summary>
 		/// <param name="verhuizer">Te verhuizen GelieerdePersoon</param>
-		/// <param name="oudAdres">Oud adres</param>
-		/// <param name="nieuwAdres">Nieuw adres</param>
+		/// <param name="oudAdres">Oud adres, met personen gekoppeld</param>
+		/// <param name="nieuwAdres">Nieuw adres, met personen gekoppeld</param>
 		/// <param name="adresType">Adrestype voor de nieuwe koppeling persoon-adres</param>
 		/// <remarks>Als de persoon niet gekoppeld is aan het oude adres,
 		/// zal hij of zij ook niet verhuizen</remarks>
 		public void Verhuizen(Persoon verhuizer, Adres oudAdres, Adres nieuwAdres, AdresTypeEnum adresType)
 		{
-			if (_autorisatieMgr.IsGavPersoon(verhuizer.ID))
-			{
-				PersoonsAdres persoonsadres
-					= (from PersoonsAdres pa in verhuizer.PersoonsAdres
-					   where pa.Adres.ID == oudAdres.ID
-					   select pa).FirstOrDefault();
+			Verhuizen(new Persoon[] { verhuizer }, oudAdres, nieuwAdres, adresType);
+		}
 
-				if (oudAdres.PersoonsAdres != null)
+		/// <summary>
+		/// Verhuist een persoon van oudAdres naar nieuwAdres.  Persisteert niet.
+		/// </summary>
+		/// <param name="verhuizers">Te verhuizen personen</param>
+		/// <param name="oudAdres">Oud adres, met personen gekoppeld</param>
+		/// <param name="nieuwAdres">Nieuw adres, met personen gekoppeld</param>
+		/// <param name="adresType">Adrestype voor de nieuwe koppeling persoon-adres</param>
+		/// <remarks>Als de persoon niet gekoppeld is aan het oude adres,
+		/// zal hij of zij ook niet verhuizen</remarks>
+		public void Verhuizen(IEnumerable<Persoon> verhuizers, Adres oudAdres, Adres nieuwAdres, AdresTypeEnum adresType)
+		{
+			var persIDs = (from p in verhuizers
+				       select p.ID).ToArray();
+			var mijnPersIDs = _autorisatieMgr.EnkelMijnPersonen(persIDs);
+
+			if (persIDs.Count() == mijnPersIDs.Count())
+			{
+				// Vind personen waarvan het adres al gekoppeld is.
+
+				var bestaand = verhuizers.SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == nieuwAdres.ID));
+
+				if (bestaand.FirstOrDefault() != null)
 				{
-					oudAdres.PersoonsAdres.Remove(persoonsadres);
+					// Geef een exception met daarin de persoonsadresobjecten die al bestaan
+
+					throw new BlokkerendeObjectenException<BestaatAlFoutCode, PersoonsAdres>(
+						BestaatAlFoutCode.PersoonBestaatAl,
+						bestaand.ToArray());
 				}
 
-				persoonsadres.AdresType = adresType;
-				persoonsadres.Adres = nieuwAdres;
+				var oudePersoonsAdressen = verhuizers.SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == oudAdres.ID));
 
-				if (nieuwAdres.PersoonsAdres != null)
+				foreach (var pa in oudePersoonsAdressen)
 				{
-					nieuwAdres.PersoonsAdres.Add(persoonsadres);
+					// verwijder koppeling oud adres->persoonsadres
+
+					pa.Adres.PersoonsAdres.Remove(pa);
+
+					// adrestype
+					
+					pa.AdresType = adresType;
+
+					// koppel persoonsadres aan nieuw adres
+
+					pa.Adres = nieuwAdres;
+
+					nieuwAdres.PersoonsAdres.Add(pa);
 				}
 			}
 			else
 			{
+				// Minstens een persoon waarvoor de user geen GAV is.  Zo'n gepruts verdient
+				// een onverbiddellijke geen-gav-exception.
+
 				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
 			}
 		}
@@ -180,7 +215,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="personenIDs">De ID's van de personen die in de collectie moeten zitten</param>
 		/// <param name="extras">Geeft aan welke gerelateerde entiteiten mee opgehaald moeten worden</param>
 		/// <returns>Een collectie met de gevraagde personen</returns>
-		public IList<Persoon> LijstOphalen(List<int> personenIDs, PersoonsExtras extras)
+		public IList<Persoon> LijstOphalen(IEnumerable<int> personenIDs, PersoonsExtras extras)
 		{
 			AutorisatieManager authMgr = Factory.Maak<AutorisatieManager>();
 

@@ -488,7 +488,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				//
 				// Adressen worden nooit gewijzigd, enkel bijgemaakt.  (en eventueel verwijderd.)
 
-				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersonenVerhuizen(model.PersoonIDs, model.Adres, model.OudAdresID, model.AdresType));
+				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.Verhuizen(model.PersoonIDs, model.Adres, model.OudAdresID, model.AdresType));
 
 				// Toon een persoon die woont op het nieuwe adres.
 				// (wat hier moet gebeuren hangt voornamelijk af van de use case)
