@@ -132,7 +132,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				       select new
 				       {
 					       AdNummer = d.AdNummer,
-					       VolledigeNaam = d.VolledigeNaam,
+					       VolledigeNaam = d.VolledigeNaam(),
 					       GeboorteDatum = String.Format("{0:dd/MM/yyyy}", d.GeboorteDatum),
 					       Geslacht = d.Geslacht == GeslachtsType.Man ? "jongen" : "meisje",
 					       IsLid = d.IsLid ? "(lid)" : ""
@@ -257,37 +257,6 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// Deze actie (TODO:) met onduidelijke naam toont gewoon de personenfiche van de gelieerde
-		/// persoon met id <paramref name="id"/>.
-		/// </summary>
-		/// <param name="id">ID van de te tonen gelieerde persoon</param>
-		/// <param name="groepID">GroepID van de groep waarin de gebruiker aan het werken is</param>
-		/// <returns>De view van de personenfiche</returns>
-		public ActionResult EditRest(int id, int groepID)
-		{
-			var model = new Models.GelieerdePersonenModel();
-			BaseModelInit(model, groepID);
-			model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(id));
-			model.Titel = model.HuidigePersoon.Persoon.VolledigeNaam;
-			return View("EditRest", model);
-		}
-
-		//
-		// POST: /Personen/EditRest/5
-		[AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult EditRest(GelieerdePersonenModel p, int groepID)
-		{
-			var model = new Models.GelieerdePersonenModel();
-			BaseModelInit(model, groepID);
-			model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(p.HuidigePersoon.ID));
-			model.Titel = model.HuidigePersoon.Persoon.VolledigeNaam;
-			return RedirectToAction("EditGegevens", new
-			{
-				id = p.HuidigePersoon.ID
-			});
-		}
-
-		/// <summary>
 		/// Laat toe persoonsgegevens te wijzigen
 		/// </summary>
 		/// <param name="id">GelieerdePersoonID van te wijzigen persoon</param>
@@ -297,6 +266,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			var model = new Models.GelieerdePersonenModel();
 			BaseModelInit(model, groepID);
+			//model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.AlleDetailsOphalen(id, groepID));
 			model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(id));
 			model.Titel = model.HuidigePersoon.Persoon.VolledigeNaam;
 			return View("EditGegevens", model);
@@ -332,6 +302,49 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				id = model.HuidigePersoon.ID
 			});
+		}
+
+		//NEW CODE
+
+		//GET
+		/// <summary>
+		/// Deze actie (TODO:) met onduidelijke naam toont gewoon de personenfiche van de gelieerde
+		/// persoon met id <paramref name="id"/>.
+		/// </summary>
+		/// <param name="id">ID van de te tonen gelieerde persoon</param>
+		/// <param name="groepID">GroepID van de groep waarin de gebruiker aan het werken is</param>
+		/// <returns>De view van de personenfiche</returns>
+		//id = gelieerdepersonenid
+		public ActionResult EditRest(int id, int groepID)
+		{
+			var model = new Models.PersonenLedenModel();
+			BaseModelInit(model, groepID);
+
+			model.PersoonLidInfo = ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(l => l.AlleDetailsOphalen(id, groepID));
+
+			AfdelingenOphalen(model);
+
+			if(model.PersoonLidInfo.LidInfo != null){
+				model.PersoonLidInfo.LidInfo.PersoonInfo = model.PersoonLidInfo.PersoonInfo;
+			}
+			
+			model.Titel = model.PersoonLidInfo.PersoonInfo.VolledigeNaam();
+			return View("EditRest", model);
+		}
+
+		/// <summary>
+		/// Bekijkt model.HuidigLid.  Haalt alle afdelingen van het groepswerkjaar van het lid op, en
+		/// bewaart ze in model.AlleAfdelingen.  In model.AfdelingIDs komen de ID's van de toegekende
+		/// afdelingen voor het lid.
+		/// </summary>
+		/// <param name="model"></param>
+		public void AfdelingenOphalen(PersonenLedenModel model)
+		{
+			if (model.PersoonLidInfo.LidInfo != null)
+			{
+				model.AlleAfdelingen = ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
+				(groep => groep.AfdelingenOphalen(model.PersoonLidInfo.LidInfo.GroepsWerkJaarID));
+			}			
 		}
 
 		#endregion personen

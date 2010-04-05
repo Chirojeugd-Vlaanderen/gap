@@ -65,6 +65,11 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		public Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 	}
 }

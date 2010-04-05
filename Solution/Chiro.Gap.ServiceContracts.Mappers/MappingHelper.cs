@@ -53,14 +53,20 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.GeboorteDatum,
 					opt => opt.MapFrom(src => src.Persoon.GeboorteDatum))
 				.ForMember(
-					dst => dst.VolledigeNaam,
-					opt => opt.MapFrom(src => src.Persoon.VolledigeNaam))
+					dst => dst.Naam,
+					opt => opt.MapFrom(src => src.Persoon.Naam))
+				.ForMember(
+					dst => dst.VoorNaam,
+					opt => opt.MapFrom(src => src.Persoon.VoorNaam))
 				.ForMember(
 					dst => dst.CategorieLijst,
 					opt => opt.MapFrom(src => src.CategorieLijstGet()))
 				.ForMember(
 					dst => dst.Geslacht,
 					opt => opt.MapFrom(src => src.Persoon.Geslacht))
+				.ForMember(
+					dst => dst.ChiroLeeftijd,
+					opt => opt.MapFrom(src => src.ChiroLeefTijd))
 				.ForMember(
 					dst => dst.PersoonID,
 					opt => opt.MapFrom(src => src.Persoon.ID));
@@ -99,6 +105,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.LidID,
 					opt => opt.MapFrom(src => src.ID))
 				.ForMember(
+					dst => dst.PersoonInfo,
+					opt => opt.MapFrom(src => src.GelieerdePersoon == null? null : src.GelieerdePersoon))
+				.ForMember(
 					dst => dst.Type,
 					opt => opt.MapFrom(src => src is Kind ? LidType.Kind : LidType.Leiding))
 				.ForMember(
@@ -115,9 +124,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(
 					dst => dst.AfdelingIdLijst,
 					opt => opt.MapFrom(src => src.AfdelingIdLijstGet()))
-				.ForMember(
-					dst => dst.PersoonInfo,
-					opt => opt.MapFrom(src => src.GelieerdePersoon))
 				.ForMember(
 					dst => dst.Functies,
 					opt => opt.MapFrom(src => src.Functie))
@@ -159,6 +165,31 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.CreateMap<StraatNaam, StraatInfo>();
 			Mapper.CreateMap<WoonPlaats, WoonPlaatsInfo>();
 			Mapper.CreateMap<Categorie, CategorieInfo>();
+			Mapper.CreateMap<CommunicatieVorm, CommunicatieInfo>();
+			Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo>()
+				.ForMember(
+					dst => dst.AdresInfo,
+					opt => opt.MapFrom(src => src.Adres))
+				.ForMember(
+					dst => dst.AdresType,
+					opt => opt.MapFrom(src => src.AdresType));
+
+
+			//Important: als er een lid is, dan is er altijd een gelieerdepersoon, maar niet omgekeerd, 
+			//dus passen we de link aan in de andere richting!
+			Mapper.CreateMap<GelieerdePersoon, PersoonLidInfo>()
+				.ForMember(
+					dst => dst.PersoonInfo,
+					opt => opt.MapFrom(src => src))
+				.ForMember(
+					dst => dst.PersoonsAdresInfo,
+					opt => opt.MapFrom(src => src.Persoon.PersoonsAdres == null ? null : src.Persoon.PersoonsAdres))
+				.ForMember(
+					dst => dst.CommunicatieInfo,
+					opt => opt.MapFrom(src => src.Communicatie == null ? null : src.Communicatie))
+				.ForMember(
+					dst => dst.LidInfo,
+					opt => opt.MapFrom(null));
 
 			#region Mapping van Exceptions naar Faults
 			// TODO: Kan het mappen van die generics niet efficienter?

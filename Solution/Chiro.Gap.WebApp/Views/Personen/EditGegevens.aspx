@@ -104,48 +104,10 @@
      </fieldset>
      
      <%} %>
-    
-    <h3>Adressen</h3>
 
-    <ul>
-    <% foreach (PersoonsAdres pa in ViewData.Model.HuidigePersoon.Persoon.PersoonsAdres)
-       { %>
-       <li>
-            <%=Html.Encode(String.Format("{0} {1}", pa.Adres.StraatNaam.Naam, pa.Adres.HuisNr))%>,
-            <%=Html.Encode(String.Format("{0} {1} {2} ({3}) ", pa.Adres.StraatNaam.PostNummer, pa.Adres.PostCode, pa.Adres.WoonPlaats.Naam, pa.AdresType))%>
-            [verhuizen],[verwijderen]
-        </li>
-    <% } %>
-        <li>[nieuw adres]</li>
-    </ul>   
-    
-    <h3>Communicatie</h3>
-
-    <ul>
-    <% foreach (CommunicatieVorm cv in Model.HuidigePersoon.Communicatie)
-       { %>
-        <li>
-            <%=cv.CommunicatieType.Omschrijving%>:
-            <%=Html.Encode(cv.Nummer)%>
-            <%=cv.Voorkeur ? "(voorkeur)" : ""%>
-        </li>
-    <% } %>
-    </ul>
-    
-    <h3>categorieën</h3>
-
-    <ul>
-    <% foreach (Categorie cv in Model.HuidigePersoon.Categorie)
-    { %>
-    <li>
-            <%=cv.Naam %>
-        </li>
-    <%} %>
-    </ul>
-    
     <% if (Model.HuidigePersoon.ID != 0) { %>
         <%=Html.ActionLink("Stop met aanpassen zonder te bewaren", "EditRest", new { id = Model.HuidigePersoon.ID})%>
     <% } %>
     
-    <% Html.RenderPartial("TerugNaarLijstLinkControl"); %>
+     <%=Html.ActionLink("Terug naar alle persoonsgegevens", "EditRest", new { Controller = "Personen", id = Model.HuidigePersoon.ID})%>
 </asp:Content>

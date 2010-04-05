@@ -116,7 +116,7 @@ namespace Chiro.Gap.Workers
 		/// communicatievormen.
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID gevraagde gelieerde persoon</param>
-		/// <returns>GelieerdePersoon met persoonsgegevens, adressen, categorieën en 
+		/// <returns>GelieerdePersoon met persoonsgegevens, adressen, categorieën, lidgegevens en 
 		/// communicatievormen.</returns>
 		public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
 		{

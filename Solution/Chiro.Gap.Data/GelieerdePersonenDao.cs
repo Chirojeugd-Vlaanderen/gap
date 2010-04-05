@@ -32,7 +32,7 @@ namespace Chiro.Gap.Data.Ef
 			connectedEntities = new Expression<Func<GelieerdePersoon, object>>[] 
 			{ 
 				e => e.Persoon, 
-				e => e.Groep.WithoutUpdate() 
+				e => e.Groep.WithoutUpdate()
 			};
 		}
 
@@ -260,72 +260,11 @@ namespace Chiro.Gap.Data.Ef
 						.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.WoonPlaats)
 						.Include(gp => gp.Groep)
 						.Include(gp => gp.Categorie)
+						//FIXME: dit is vermoedelijk niet nodig, maar eens nakijken of het ergens gebruikt wordt?
 						.Include(gp => gp.Lid.First().GroepsWerkJaar)
 					where gp.ID == gelieerdePersoonID
 					select gp).FirstOrDefault();
 			}
-		}
-
-		/// <summary>
-		/// Haalt een gelieerde persoon op, inclusief Lid/Leidingsobject in het groepswerkjaar bepaald
-		/// door <paramref name="groepsWerkJaarID"/>, met
-		/// daaraan gekoppeld eventuele afdelingsjaren met afdelingen.
-		/// </summary>
-		/// <param name="gelieerdePersoonID">ID van op te halen gelieerde persoon</param>
-		/// <param name="groepsWerkJaarID">ID van het gevraagde groepswerkjaar</param>
-		/// <param name="paths">lambda-expressies die aangeven welke extra info er mee opgehaald moet worden.</param>
-		/// <returns>De gelieerde persoon, inclusief Lid/Leidingsobject in het groepswerkjaar bepaald
-		/// door <paramref name="groepsWerkJaarID"/>, met
-		/// daaraan gekoppeld eventuele afdelingsjaren met afdelingen.</returns>
-		/// <remarks>Het gegeven 'enkel lidinfo in een bepaald groepswerkjaar ophalen' kan niet opgegeven worden
-		/// via een lambda-expressie, omdat gp=>gp.lid de lidobjecten uit alle werkjaren zou ophalen.</remarks>
-		public GelieerdePersoon OphalenMetAfdelingen(
-			int gelieerdePersoonID,
-			int groepsWerkJaarID,
-			params Expression<Func<GelieerdePersoon, object>>[] paths)
-		{
-			GelieerdePersoon resultaat;
-
-			using (var db = new ChiroGroepEntities())
-			{
-				// Query voor gelieerde persoon, inclusief gevraagde extra info.
-
-				var gpQuery = (from gp in db.GelieerdePersoon
-					       where gp.ID == gelieerdePersoonID
-					       select gp) as ObjectQuery<GelieerdePersoon>;
-
-				gpQuery = IncludesToepassen(gpQuery, paths);
-
-				// Query's voor relevante lidobjecten.  Zoek zowel een kindobject als een 
-				// leidingsobject die de gevraagde gelieerde persoon koppelt aan het gevraagde
-				// groepswerkjaar.
-
-				var kindQuery = from l in db.Lid.OfType<Kind>().Include(k => k.AfdelingsJaar.Afdeling)
-						where l.GelieerdePersoon.ID == gelieerdePersoonID
-							&& l.GroepsWerkJaar.ID == groepsWerkJaarID
-						select l;
-
-				var leidingQuery = from l in db.Lid.OfType<Leiding>()
-							   .Include(ld => ld.AfdelingsJaar.First().Afdeling)
-						   where l.GelieerdePersoon.ID == gelieerdePersoonID
-							&& l.GroepsWerkJaar.ID == groepsWerkJaarID
-						   select l;
-				
-				// Voer nu de query's uit via FirstOrDefault().  De objectcontext zal ervoor zorgen
-				// dat, indien een kind gevonden wordt, het kind gekoppeld wordt aan de gelieerde
-				// persoon.  Indien een leid(st)er gevonden is, wordt de leid(st)er aan de gelieerde
-				// persoon gekoppeld.
-
-				resultaat = gpQuery.FirstOrDefault();
-				Kind kind = kindQuery.FirstOrDefault();
-				Leiding leiding = leidingQuery.FirstOrDefault();
-
-				// Iemand kan nooit kind en leiding tegelijk zijn.  Het kan natuurlijk wel dat
-				// je noch kind noch leiding bent, namelijk wanneer je geen lid bent.
-				Debug.Assert(kind == null || leiding == null);
-			}
-
-			return Utility.DetachObjectGraph(resultaat);
 		}
 
 		/// <summary>

@@ -78,5 +78,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		bool IsLeiding(int lidID);
 
 		// void LidMaken(int gelieerdeID);
+
+		Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID);
 	}
 }

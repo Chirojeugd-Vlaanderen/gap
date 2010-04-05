@@ -224,11 +224,11 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="g">De gegeven groep</param>
 		/// <returns>Gevraagde groepswerkjaar</returns>
-		public GroepsWerkJaar RecentsteGroepsWerkJaarGet(Groep g)
+		public GroepsWerkJaar RecentsteGroepsWerkJaarGet(int groepID)
 		{
-			if (_autorisatieMgr.IsGavGroep(g.ID))
+			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				return _groepenDao.RecentsteGroepsWerkJaarGet(g.ID);
+				return _groepenDao.RecentsteGroepsWerkJaarGet(groepID);
 			}
 			else
 			{

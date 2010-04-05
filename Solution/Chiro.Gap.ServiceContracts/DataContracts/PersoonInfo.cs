@@ -23,10 +23,16 @@ namespace Chiro.Gap.ServiceContracts
 		public int GelieerdePersoonID { get; set; }
 
 		[DataMember]
+		public int ChiroLeeftijd { get; set; }
+
+		[DataMember]
 		public int PersoonID { get; set; }
 
 		[DataMember]
-		public string VolledigeNaam { get; set; }
+		public string VoorNaam { get; set; }
+
+		[DataMember]
+		public string Naam { get; set; }
 
 		[DataMember]
 		public DateTime? GeboorteDatum { get; set; }
@@ -39,5 +45,10 @@ namespace Chiro.Gap.ServiceContracts
 
 		[DataMember]
 		public IList<Categorie> CategorieLijst { get; set; }
+
+		public string VolledigeNaam()
+		{
+			return VoorNaam + " " + Naam;
+		}
 	}
 }

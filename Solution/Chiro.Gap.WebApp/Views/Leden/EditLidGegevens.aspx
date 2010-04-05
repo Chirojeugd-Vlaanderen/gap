@@ -35,35 +35,9 @@
     <%=Html.LabelFor(s => s.HuidigLid.NonActief)%>
     <%=Html.EditorFor(s => s.HuidigLid.NonActief)%>
     </p>
-
-	<h3>Afdelingen</h3>  
-           
-	<%if (Model.HuidigLid.Type == LidType.Leiding)
-   {
-	   if (Model.HuidigLid.AfdelingIdLijst.Count == 0)
-	   {
-		   Response.Write(Model.HuidigLid.PersoonInfo.VolledigeNaam + " heeft geen afdelingen.");
-	   }
-	   else
-	   {
-		   Response.Write(Model.HuidigLid.PersoonInfo.VolledigeNaam + " is leiding van:<table>");
-		   foreach (var ai in Model.AlleAfdelingen)
-		   {
-			   if (Model.HuidigLid.AfdelingIdLijst.ElementAt(0) == ai.AfdelingID)
-			   {
-				   Response.Write("<tr><td>" + ai.Naam + "</td></tr>");
-			   }
-		   }
-		   Response.Write("</table>");
-	   }
-   }else{
-	   Response.Write(Model.HuidigLid.PersoonInfo.VolledigeNaam + " is bij de " +
-		   Model.AlleAfdelingen.FirstOrDefault(s => s.AfdelingID == Model.HuidigLid.AfdelingIdLijst.ElementAt(0)).Naam + ".");
-   }%>
-   </br></br>
-   <%= Html.ActionLink("Afdelingen aanpassen", "AfdelingBewerken", new { groepsWerkJaarID = Model.HuidigLid.GroepsWerkJaarID, id = Model.HuidigLid.LidID })%>
        
 	<%= Html.Hidden("HuidigLid.LidID")%>
+	<%= Html.Hidden("HuidigLid.PersoonInfo.GelieerdePersoonID")%>
 	<%= Html.Hidden("HuidigLid.Type")%>
 	<%= Html.Hidden("AfdelingsInfoDictionary")%>
        
@@ -76,5 +50,5 @@
     
     <%} %>
     
-    <% Html.RenderPartial("TerugNaarLijstLinkControl"); %>
+    <%=Html.ActionLink("Terug naar persoonsgegevens", "EditRest", new { Controller = "Personen", id = Model.HuidigLid.PersoonInfo.GelieerdePersoonID})%>
 </asp:Content>

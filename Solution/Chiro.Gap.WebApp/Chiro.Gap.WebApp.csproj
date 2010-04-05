@@ -113,6 +113,7 @@
     <Compile Include="Models\CategorieModel.cs" />
     <Compile Include="Models\CommVormModel.cs" />
     <Compile Include="Models\AfdelingInfoModel.cs" />
+    <Compile Include="Models\PersonenLedenModel.cs" />
     <Compile Include="Models\GroepsInstellingenModel.cs" />
     <Compile Include="Models\IMasterViewModel.cs" />
     <Compile Include="Models\NieuweCommVormModel.cs" />
@@ -171,7 +172,6 @@
     <Content Include="Views\Afdeling\Nieuw.aspx" />
     <Content Include="Views\Personen\NieuweCommVorm.aspx" />
     <Content Include="Views\Personen\EditGegevens.aspx" />
-    <Content Include="Views\Personen\EditRest.aspx" />
     <Content Include="Views\Personen\Index.aspx" />
     <Content Include="Views\Personen\AdresBewerken.aspx" />
     <Content Include="Views\Shared\LedenLijstControl.ascx" />
@@ -250,7 +250,8 @@
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Views\Groep\CategorieVerwijderen.aspx" />
     <Content Include="Views\Groep\Index.aspx" />
-    <Content Include="Views\Leden\EditRest.aspx" />
+    <Content Include="Views\Leden\EditLidGegevens.aspx" />
+    <Content Include="Views\Personen\EditRest.aspx" />
     <Content Include="Views\Shared\LedenLinkControl.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\Date.ascx" />
     <Content Include="Views\Shared\PersonenLinksControl.ascx" />

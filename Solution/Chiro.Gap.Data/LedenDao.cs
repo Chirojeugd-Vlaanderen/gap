@@ -281,5 +281,40 @@ namespace Chiro.Gap.Data.Ef
 				return (l is Leiding);
 			}
 		}
+
+		public Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID)
+		{
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{
+				db.Lid.MergeOption = MergeOption.NoTracking;
+
+				Lid lid = (
+					from t in db.Lid.Include("GelieerdePersoon.Persoon").Include("GroepsWerkJaar.AfdelingsJaar.Afdeling")
+					where t.GelieerdePersoon.ID == gelieerdePersoonID
+							&&
+							t.GroepsWerkJaar.ID == groepsWerkJaarID
+					select t).FirstOrDefault<Lid>();
+
+				if(lid!=null){
+					int lidID = lid.ID;
+
+					if (lid is Kind)
+					{
+						return (
+							from t in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("GroepsWerkJaar.AfdelingsJaar.Afdeling").Include("AfdelingsJaar.Afdeling")
+							where t.ID == lidID
+							select t).FirstOrDefault<Kind>();
+					}
+					else if (lid is Leiding)
+					{
+						return (
+							from t in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("GroepsWerkJaar.AfdelingsJaar.Afdeling").Include("AfdelingsJaar.Afdeling")
+							where t.ID == lidID
+							select t).FirstOrDefault<Leiding>();
+					}
+				}
+				return lid;
+			}
+		}
 	}
 }

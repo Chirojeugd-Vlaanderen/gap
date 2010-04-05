@@ -245,7 +245,7 @@ namespace Chiro.Gap.Data.Test
 			Assert.IsTrue(true);
 		}
 
-		/// <summary>
+/*		/// <summary>
 		/// Test voor het ophalen van een persoon, inclusief lidinfo en afdelingen.  De persoon in kwestie
 		/// is een kind.
 		/// </summary>
@@ -316,7 +316,7 @@ namespace Chiro.Gap.Data.Test
 			// Assert
 
 			Assert.IsTrue(resultaat.Persoon != null);
-		}
+		}*/
 
 		/// <summary>
 		/// Nieuwe (gelieerde) persoon bewaren via GelieerdePersonenDAO.

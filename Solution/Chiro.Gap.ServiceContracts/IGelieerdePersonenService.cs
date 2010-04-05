@@ -75,6 +75,16 @@ namespace Chiro.Gap.ServiceContracts
 		GelieerdePersoon DetailsOphalen(int gelieerdePersoonID);
 
 		/// <summary>
+		/// Haalt gelieerde persoon op ALLE nodige info om het persoons-bewerken scherm te vullen:
+		/// persoonsgegevens, categorieen, communicatievormen, lidinfo, afdelingsinfo, adressen
+		/// functies?
+		/// </summary>
+		/// <param name="gelieerdePersoonID"></param>
+		/// <returns></returns>
+		[OperationContract]
+		PersoonLidInfo AlleDetailsOphalen(int gelieerdePersoonID, int groepID);
+
+		/// <summary>
 		/// Haalt gelieerd persoon op met extra gevraagde info.
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>

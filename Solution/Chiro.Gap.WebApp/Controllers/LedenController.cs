@@ -81,7 +81,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					ServiceHelper.CallService<ILedenService, IList<LidInfo>>
 					(lid => lid.PaginaOphalen(id, out paginas));
 
-				model.Titel = "Ledenoverzicht van het jaar " + model.GroepsWerkJaartalZichtbaar;
+				model.Titel = "Ledenoverzicht van het werkjaar " + model.GroepsWerkJaartalZichtbaar + "-" + model.GroepsWerkJaartalZichtbaar+1;
 			}
 			else
 			{
@@ -93,7 +93,7 @@ namespace Chiro.Gap.WebApp.Controllers
 								   where a.Value.AfdelingID == afdID
 								   select a.Value).FirstOrDefault();
 
-				model.Titel = "Ledenoverzicht van de " + af.Naam + " van het jaar " + model.GroepsWerkJaartalZichtbaar;
+				model.Titel = "Ledenoverzicht van de " + af.Naam + " van het werkjaar " + model.GroepsWerkJaartalZichtbaar + "-" + model.GroepsWerkJaartalZichtbaar + 1;
 			}
 
 			model.PageHuidig = model.GroepsWerkJaarIdZichtbaar;
@@ -132,7 +132,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				       select new
 				       {
 					       AdNummer = l.PersoonInfo.AdNummer,
-					       VolledigeNaam = l.PersoonInfo.VolledigeNaam,
+					       VolledigeNaam = l.PersoonInfo.VolledigeNaam(),
 					       GeboorteDatum = String.Format("{0:dd/MM/yyyy}", l.PersoonInfo.GeboorteDatum),
 					       Geslacht = l.PersoonInfo.Geslacht == GeslachtsType.Man ? "jongen" : "meisje"
 				       };
@@ -249,7 +249,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		//
 		// GET: /Leden/EditRest/{lidID}
-		public ActionResult EditRest(int lidID, int groepID)
+		public ActionResult EditLidGegevens(int lidID, int groepID)
 		{
 			var model = new LedenModel();
 			BaseModelInit(model, groepID);
@@ -257,21 +257,22 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>(l => l.Ophalen(lidID, LidExtras.Groep|LidExtras.Afdelingen));
 			AfdelingenOphalen(model);
 
-			model.Titel = "Overzicht van " + model.HuidigLid.PersoonInfo.VolledigeNaam;
+			model.Titel = "Overzicht van " + model.HuidigLid.PersoonInfo.VolledigeNaam();
 
-			return View("EditRest", model);
+			return View("EditLidGegevens", model);
 		}
 
 		//
 		// POST: /Leden/EditRest/{lidID}
 		[AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult EditRest(LedenModel model, int groepID)
+		public ActionResult EditLidGegevens(LedenModel model, int groepID)
 		{
 			//FIXME: bewaren gaat geen groep en afdelingen inladen, wat dus fout is (want de GET methode doet dit wel)
 			ServiceHelper.CallService<ILedenService>(l => l.Bewaren(model.HuidigLid));
 			//InladenAfdelingsNamen(model);
 			//return View("EditRest", model);
-			return RedirectToAction("EditRest", new { lidID=model.HuidigLid.LidID, groepID=groepID});
+			//return RedirectToAction("EditRest", new { lidID=model.HuidigLid.LidID, groepID=groepID});
+			return RedirectToAction("EditRest", new { Controller = "Personen", id = model.HuidigLid.PersoonInfo.GelieerdePersoonID });
 		}
 
 		/// <summary>

@@ -588,5 +588,17 @@ namespace Chiro.Gap.Workers
 				leiding.NonActief = lidInfo.NonActief;
 			}
 		}
+
+		/// <summary>
+		/// Haalt het lid op van een gelieerdepersoon in een groepswerkjaar als het bestaat, met gelinkte informatie
+		/// van afdelingsjaren en afdelingen
+		/// </summary>
+		/// <param name="gelieerdePersoonID"></param>
+		/// <param name="groepsWerkJaarID"></param>
+		/// <returns></returns>
+		public Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID)
+		{
+			return _daos.LedenDao.OphalenViaPersoon(gelieerdePersoonID, groepsWerkJaarID);
+		}
 	}
 }

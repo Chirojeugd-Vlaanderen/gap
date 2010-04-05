@@ -31,6 +31,7 @@ namespace Chiro.Gap.Services
 
 		private readonly GelieerdePersonenManager _gpMgr;
 		private readonly PersonenManager _pMgr;
+		private readonly LedenManager _lidMgr;
 		private readonly AdressenManager _adrMgr;
 		private readonly GroepenManager _grMgr;
 		private readonly CommVormManager _cvMgr;
@@ -44,7 +45,8 @@ namespace Chiro.Gap.Services
 			GroepenManager gm,
 			CommVormManager cvm,
 			CategorieenManager cm,
-			IAutorisatieManager aum)
+			IAutorisatieManager aum,
+			LedenManager lm)
 		{
 			_gpMgr = gpm;
 			_pMgr = pm;
@@ -53,6 +55,7 @@ namespace Chiro.Gap.Services
 			_grMgr = gm;
 			_cvMgr = cvm;
 			_catMgr = cm;
+			_lidMgr = lm;
 		}
 
 		#endregion
@@ -181,6 +184,21 @@ namespace Chiro.Gap.Services
 		public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
 		{
 			return _gpMgr.DetailsOphalen(gelieerdePersoonID);
+		}
+
+		public PersoonLidInfo AlleDetailsOphalen(int gelieerdePersoonID, int groepID)
+		{
+			GelieerdePersoon gp = _gpMgr.DetailsOphalen(gelieerdePersoonID);
+			PersoonLidInfo pl = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gp);
+			GroepsWerkJaar gwj = _grMgr.RecentsteGroepsWerkJaarGet(groepID);
+			Lid l = _lidMgr.OphalenViaPersoon(gp.ID, gwj.ID);
+			if (l != null)
+			{
+				LidInfo ff = Mapper.Map<Lid, LidInfo>(l);
+				pl.LidInfo = ff;
+			}
+			
+			return pl;
 		}
 
 		/* zie #273 */
