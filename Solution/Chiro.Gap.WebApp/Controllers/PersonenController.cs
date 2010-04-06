@@ -521,6 +521,26 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
 				return View("AdresBewerken", model);
 			}
+			catch (FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>> ex)
+			{
+				BaseModelInit(model, groepID);
+
+				var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(svc => svc.HuisGenotenOphalen(model.AanvragerID));
+
+				var probleemPersIDs = from pa in ex.Detail.Objecten
+						      select pa.PersoonID;
+
+				model.Bewoners = (from p in bewoners
+						  select new CheckBoxListInfo(
+							  p.PersoonID.ToString(),
+							  p.PersoonVolledigeNaam,
+							  model.PersoonIDs.Contains(p.PersoonID),
+							  probleemPersIDs.Contains(p.PersoonID) ? Properties.Resources.WoontDaarAl : string.Empty)).ToArray();
+
+				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
+				return View("AdresBewerken", model);
+
+			}
 			catch
 			{
 				throw;  // onverwachte exceptie gewoon verder throwen
@@ -682,9 +702,6 @@ namespace Chiro.Gap.WebApp.Controllers
 							  probleemPersIDs.Contains(p.PersoonID) ? Properties.Resources.WoontDaarAl : string.Empty)).ToArray();
 
 				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
-
-				// TODO: de view moet duidelijk maken welke personen het probleem veroorzaakten (en wat het probleem is
-				// uiteraard ook.)
 
 				return View("AdresBewerken", model);
 			}
