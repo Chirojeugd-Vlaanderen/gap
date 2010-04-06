@@ -37,6 +37,7 @@ namespace Chiro.Gap.Services
 		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly GelieerdePersonenManager _gelieerdePersonenMgr;
 		private readonly CategorieenManager _categorieenMgr;
+		private readonly FunctiesManager _functiesMgr;
 
 		public GroepenService(
 			GroepenManager gm,
@@ -45,6 +46,7 @@ namespace Chiro.Gap.Services
 			GelieerdePersonenManager gpm,
 			AdressenManager adresMgr,
 			CategorieenManager cm,
+			FunctiesManager fm,
 			IAutorisatieManager am)
 		{
 			_groepenMgr = gm;
@@ -54,6 +56,7 @@ namespace Chiro.Gap.Services
 			_gelieerdePersonenMgr = gpm;
 			_adresMgr = adresMgr;
 			_categorieenMgr = cm;
+			_functiesMgr = fm;
 		}
 
 		#endregion
@@ -326,6 +329,21 @@ namespace Chiro.Gap.Services
 			return Mapper.Map<IList<Afdeling>, IList<AfdelingInfo>>(ongebruikteAfdelingen);
 		}
 
+		#endregion
+
+		#region Functies
+		/// <summary>
+		/// Haalt uit groepswerkjaar met ID <paramref name="groepsWerkJaarID"/> alle beschikbare functies
+		/// op voor een lid van type <paramref name="lidType"/>.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar van de gevraagde functies</param>
+		/// <param name="lidType"><c>LidType.Kind</c> of <c>LidType.Leiding</c></param>
+		/// <returns>De gevraagde lijst afdelingsinfo</returns>
+		public IList<FunctieInfo> FunctiesOphalen(int groepsWerkJaarID, LidType lidType)
+		{
+			IList<Functie> relevanteFuncties = _functiesMgr.OphalenRelevant(groepsWerkJaarID, lidType);
+			return Mapper.Map<IList<Functie>, IList<FunctieInfo>>(relevanteFuncties);
+		}
 		#endregion
 
 		/* zie #273 */

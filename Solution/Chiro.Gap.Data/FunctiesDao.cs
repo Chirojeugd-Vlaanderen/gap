@@ -95,7 +95,6 @@ namespace Chiro.Gap.Data.Ef
 			}
 			return Utility.DetachObjectGraph(resultaat);
 		}
-
 		#endregion
 	}
 }

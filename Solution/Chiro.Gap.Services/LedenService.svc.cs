@@ -210,6 +210,11 @@ namespace Chiro.Gap.Services
 		/// <returns>Lidinfo met gelieerdepersoon en persoon</returns>
 		public LidInfo Ophalen(int lidID, LidExtras extras)
 		{
+			if ((extras & LidExtras.AlleAfdelingen) != 0)
+			{
+				throw new NotImplementedException("Het datacontract LidInfo is niet voorzien op " +
+					"het opleveren van alle afdelingen.");
+			}
 			return Mapper.Map<Lid, LidInfo>(_ledenMgr.Ophalen(lidID, extras));
 		}
 
@@ -222,7 +227,16 @@ namespace Chiro.Gap.Services
 		public void FunctiesVervangen(int lidID, IEnumerable<int> functieIDs)
 		{
 			Lid lid = _ledenMgr.Ophalen(lidID, LidExtras.Groep | LidExtras.Functies);
-			var functies = _functiesMgr.Ophalen(functieIDs);
+			IList<Functie> functies;
+
+			if (functieIDs != null && functieIDs.Count() > 0)
+			{
+				functies = _functiesMgr.Ophalen(functieIDs);
+			}
+			else
+			{
+				functies = new List<Functie>();
+			}
 
 			// Probleem is hier dat de functies en de groepen daaraan gekoppeld uit 'functies'
 			// mogelijk dezelfde zijn als de functies en de groep van 'lid', hoewel het verschillende

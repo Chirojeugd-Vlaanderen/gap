@@ -11,7 +11,7 @@
     
     <fieldset>
     
-    <h3>Lid-info</h3>
+    <legend>Lidinfo</legend>
 
 	<%if (Model.HuidigLid.Type == LidType.Kind){ %>
 	<p>
@@ -35,11 +35,30 @@
     <%=Html.LabelFor(s => s.HuidigLid.NonActief)%>
     <%=Html.EditorFor(s => s.HuidigLid.NonActief)%>
     </p>
+    
+    <%
+        if (Model.AlleFuncties != null && Model.AlleFuncties.FirstOrDefault() != null)
+        {
+    %>
+    
+        <p><strong>Functies:</strong></p>
+        <%
+            List<CheckBoxListInfo> info = (from f in Model.AlleFuncties
+                                           select new CheckBoxListInfo(
+								    f.ID.ToString(),
+								    String.Format("{0} ({1})", f.Naam, f.Code),
+								    Model.FunctieIDs.Contains(f.ID))).ToList();
+        %>
+        
+        <p><%= Html.CheckBoxList("FunctieIDs", info)%></p>
+    
+    <%
+        }
+    %>
        
 	<%= Html.Hidden("HuidigLid.LidID")%>
 	<%= Html.Hidden("HuidigLid.PersoonInfo.GelieerdePersoonID")%>
 	<%= Html.Hidden("HuidigLid.Type")%>
-	<%= Html.Hidden("AfdelingsInfoDictionary")%>
        
 	</fieldset>
 

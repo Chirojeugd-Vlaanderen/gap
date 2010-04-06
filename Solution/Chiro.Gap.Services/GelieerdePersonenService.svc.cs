@@ -186,11 +186,23 @@ namespace Chiro.Gap.Services
 			return _gpMgr.DetailsOphalen(gelieerdePersoonID);
 		}
 
-		public PersoonLidInfo AlleDetailsOphalen(int gelieerdePersoonID, int groepID)
+
+		/// <summary>
+		/// Haalt gelieerde persoon op met ALLE nodige info om het persoons-bewerken scherm te vullen:
+		/// persoonsgegevens, categorieen, communicatievormen, lidinfo, afdelingsinfo, adressen
+		/// functies
+		/// </summary>
+		/// <param name="gelieerdePersoonID">ID van de gevraagde gelieerde persoon</param>
+		/// <returns>
+		/// gelieerde persoon met ALLE nodige info om het persoons-bewerken scherm te vullen:
+		/// persoonsgegevens, categorieen, communicatievormen, lidinfo, afdelingsinfo, adressen
+		/// functies
+		/// </returns>
+		public PersoonLidInfo AlleDetailsOphalen(int gelieerdePersoonID)
 		{
 			GelieerdePersoon gp = _gpMgr.DetailsOphalen(gelieerdePersoonID);
 			PersoonLidInfo pl = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gp);
-			GroepsWerkJaar gwj = _grMgr.RecentsteGroepsWerkJaarGet(groepID);
+			GroepsWerkJaar gwj = _grMgr.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
 			Lid l = _lidMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 			if (l != null)
 			{

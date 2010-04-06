@@ -159,6 +159,18 @@ namespace Chiro.Gap.ServiceContracts
 
 		#endregion
 
+		#region functies
+		/// <summary>
+		/// Haalt uit groepswerkjaar met ID <paramref name="groepsWerkJaarID"/> alle beschikbare functies
+		/// op voor een lid van type <paramref name="lidType"/>.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar van de gevraagde functies</param>
+		/// <param name="lidType"><c>LidType.Kind</c> of <c>LidType.Leiding</c></param>
+		/// <returns>De gevraagde lijst afdelingsinfo</returns>
+		[OperationContract]
+		IList<FunctieInfo> FunctiesOphalen(int groepsWerkJaarID, LidType lidType);
+		#endregion
+
 		#region categorieën
 
 		/// <summary>

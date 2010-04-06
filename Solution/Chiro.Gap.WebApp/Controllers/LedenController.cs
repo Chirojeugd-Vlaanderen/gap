@@ -192,6 +192,9 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>
 				(l => l.Ophalen(id, LidExtras.Groep|LidExtras.Afdelingen));
 
+			// Ik had liever hierboven nog eens LidExtras.AlleAfdelingen meegegeven, maar
+			// het datacontract (LidInfo) voorziet daar niets voor.
+
 			AfdelingenOphalen(model);
 
 			if (model.AlleAfdelingen.FirstOrDefault() == null)
@@ -261,13 +264,14 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>(l => l.Ophalen(
 				id, 
-				LidExtras.Groep|LidExtras.Afdelingen));
-			
-			// @broes: Hier wordt geloof ik nog niets mee gedaan, maar ik ben er wel voorstander
-			// van om het wijzigen van afdelingen bij onder te brengen onder het bewerken van
-			// lidgegevens.
+				LidExtras.Groep|LidExtras.Afdelingen|LidExtras.Functies));
+
+			// Ik had liever hierboven nog eens LidExtras.AlleAfdelingen meegegeven, maar
+			// het datacontract (LidInfo) voorziet daar niets voor.
 
 			AfdelingenOphalen(model);
+			FunctiesOphalen(model);
+			
 
 			model.Titel = String.Format(
 				"{0}: {1}", 
@@ -277,16 +281,20 @@ namespace Chiro.Gap.WebApp.Controllers
 			return View("EditLidGegevens", model);
 		}
 
-		//
-		// POST: /Leden/EditRest/{lidID}
+		/// <summary>
+		/// Bewaart (niet) actief, dp-abonnement, probeerperiode en functies
+		/// </summary>
+		/// <param name="model">LedenModel met te bewaren gegevens (functie-ID's in <c>model.FunctieIDs</c>)</param>
+		/// <param name="groepID">ID van de groep waarin de user momenteel aan het werken is</param>
+		/// <returns>De personenfiche, die de gewijzigde info toont.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult EditLidGegevens(LedenModel model, int groepID)
 		{
-			//FIXME: bewaren gaat geen groep en afdelingen inladen, wat dus fout is (want de GET methode doet dit wel)
+			// TODO: Dit moet een unitaire operatie zijn, om concurrencyproblemen te vermijden.
+
 			ServiceHelper.CallService<ILedenService>(l => l.Bewaren(model.HuidigLid));
-			//InladenAfdelingsNamen(model);
-			//return View("EditRest", model);
-			//return RedirectToAction("EditRest", new { lidID=model.HuidigLid.LidID, groepID=groepID});
+			ServiceHelper.CallService<ILedenService>(l => l.FunctiesVervangen(model.HuidigLid.LidID, model.FunctieIDs));
+			
 			return RedirectToAction("EditRest", new { Controller = "Personen", id = model.HuidigLid.PersoonInfo.GelieerdePersoonID });
 		}
 
@@ -299,9 +307,26 @@ namespace Chiro.Gap.WebApp.Controllers
 		public void AfdelingenOphalen(LedenModel model)
 		{
 			model.AlleAfdelingen = ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
-				(groep => groep.AfdelingenOphalen(model.HuidigLid.GroepsWerkJaarID));
+				(svc => svc.AfdelingenOphalen(model.HuidigLid.GroepsWerkJaarID));
 
 			model.AfdelingIDs = model.HuidigLid.AfdelingIdLijst.ToList();
 		}
+
+		/// <summary>
+		/// Bekijkt model.HuidigLid.  Haalt alle functies van het groepswerkjaar van het lid op, relevant
+		/// voor het type lid (kind/leiding), en bewaart ze in model.AlleFuncties.  
+		/// In model.FunctieIDs komen de ID's van de toegekende functies voor het lid.
+		/// </summary>
+		/// <param name="model">Te bewerken model</param>
+		public void FunctiesOphalen(LedenModel model)
+		{
+			model.AlleFuncties = ServiceHelper.CallService<IGroepenService, IList<FunctieInfo>>
+				(svc => svc.FunctiesOphalen(
+					model.HuidigLid.GroepsWerkJaarID,
+					model.HuidigLid.Type));
+			model.FunctieIDs = (from f in model.HuidigLid.Functies
+					    select f.ID).ToList();
+		}
+
 	}
 }

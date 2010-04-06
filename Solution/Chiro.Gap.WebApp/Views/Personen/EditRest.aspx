@@ -59,7 +59,7 @@
    { %>
 	<fieldset>
    
-   	<legend>Lid gegevens <%= Html.ActionLink("Aanpassen", "EditLidGegevens", new{ Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %></legend>
+   	<legend>Lidgegevens en functies <%= Html.ActionLink("Aanpassen", "EditLidGegevens", new{ Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %></legend>
 
 		<%if (Model.PersoonLidInfo.LidInfo.Type == LidType.Kind)
 	   { %>
@@ -91,6 +91,27 @@
 		<%=Html.DisplayFor(s => s.PersoonLidInfo.LidInfo.NonActief)%>
 		<%=Html.HiddenFor(s => s.PersoonLidInfo.LidInfo.NonActief)%>
 		</p>
+
+		
+		<%
+                    if (Model.PersoonLidInfo.LidInfo.Functies.Count() > 0)
+                    {
+        %>
+        <p>Functies:<p>
+        <ul>
+        <%
+                        foreach (var f in Model.PersoonLidInfo.LidInfo.Functies)
+                        {
+        %>
+            <li><%=f.Naam%> (<%=f.Code%>)</li>
+        <%
+                        }
+        %>
+        </ul>
+        <%
+                    }
+		%>
+		
 	       
 		<%= Html.Hidden("PersoonLidInfo.LidID")%>
 		<%= Html.Hidden("PersoonLidInfo.Type")%>

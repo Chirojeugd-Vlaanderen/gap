@@ -321,7 +321,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new Models.PersonenLedenModel();
 			BaseModelInit(model, groepID);
 
-			model.PersoonLidInfo = ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(l => l.AlleDetailsOphalen(id, groepID));
+			model.PersoonLidInfo = ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(l => l.AlleDetailsOphalen(id));
 
 			AfdelingenOphalen(model);
 

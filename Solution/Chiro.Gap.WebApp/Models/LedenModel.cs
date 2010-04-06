@@ -13,6 +13,9 @@ using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
+	/// <summary>
+	/// Model voor het tonen/bewerken van lidinfo.  Vrij omslachtig; mogelijk kan dat beter (TODO)
+	/// </summary>
 	public class LedenModel : MasterViewModel
 	{
 		/// <summary>
@@ -29,6 +32,17 @@ namespace Chiro.Gap.WebApp.Models
 		/// Bevat de huidige of de nieuwe gewenste afdeling voor een kind
 		/// </summary>
 		public int AfdelingID { get; set; }
+
+		/// <summary>
+		/// Alle functies die relevant zouden kunnen zijn voor HuidigLid. (afhankelijk van lidsoort
+		/// en groepswerkjaar.)
+		/// </summary>
+		public IEnumerable<FunctieInfo> AlleFuncties { get; set; }
+
+		/// <summary>
+		/// ID's van geselecteerde functies in de 'functiecheckboxlist'
+		/// </summary>
+		public IEnumerable<int> FunctieIDs { get; set; }
 
 		public LidInfo HuidigLid { get; set; }
 

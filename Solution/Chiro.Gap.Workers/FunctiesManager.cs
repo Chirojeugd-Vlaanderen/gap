@@ -41,6 +41,7 @@ namespace Chiro.Gap.Workers
 
 		private IFunctiesDao _funDao;
 		private ILedenDao _ledenDao;
+		private IGroepsWerkJaarDao _groepsWjDao;
 		private IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
@@ -48,11 +49,13 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="funDao">Een dao voor data access mbt functies</param>
 		/// <param name="ledenDao">Een dao voor data access mbt leden</param>
+		/// <param name="gwjDao">Data access object voor groepswerkjaren</param>
 		/// <param name="auMgr">Een IAutorisatieManager voor de autorisatie</param>
-		public FunctiesManager(IFunctiesDao funDao, ILedenDao ledenDao, IAutorisatieManager auMgr)
+		public FunctiesManager(IFunctiesDao funDao, ILedenDao ledenDao, IGroepsWerkJaarDao gwjDao, IAutorisatieManager auMgr)
 		{
 			_funDao = funDao;
 			_ledenDao = ledenDao;
+			_groepsWjDao = gwjDao;
 			_autorisatieMgr = auMgr;
 		}
 
@@ -97,6 +100,37 @@ namespace Chiro.Gap.Workers
 			}
 
 			return resultaat.ToList();
+		}
+
+
+		/// <summary>
+		/// Haalt alle functies op die mogelijk toegekend kunnen worden aan een lid uit het groepswerkjaar
+		/// bepaald door <paramref name="groepsWerkJaarID"/> en van het type <paramref name="lidType"/>.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor de relevante functies gevraagd
+		/// zijn.</param>
+		/// <param name="lidType"><c>LidType.Kind</c> of <c>LidType.Leiding</c></param>
+		/// <returns>
+		/// Lijst met functies die mogelijk toegekend kunnen worden aan een lid uit het groepswerkjaar
+		/// bepaald door <paramref name="groepsWerkJaarID"/> en van het type <paramref name="lidType"/>.
+		/// </returns>
+		public IList<Functie> OphalenRelevant(int groepsWerkJaarID, LidType lidType)
+		{
+			if (_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
+			{
+				GroepsWerkJaar gwj = _groepsWjDao.Ophalen(groepsWerkJaarID, grwj => grwj.Groep.Functie);
+
+				return (from f in gwj.Groep.Functie.Union(NationaalBepaaldeFunctiesOphalen())
+					where (f.WerkJaarVan == null || f.WerkJaarVan <= gwj.WerkJaar)
+						&& (f.WerkJaarTot == null || f.WerkJaarTot >= gwj.WerkJaar)
+						&& ((f.Type & lidType) != 0)
+					select f).ToList();
+						     
+			}
+			else
+			{
+				throw new GeenGavException(GeenGavFoutCode.GroepsWerkJaar, Properties.Resources.GeenGavGroepsWerkJaar);
+			}
 		}
 
 		/// <summary>
@@ -356,5 +390,7 @@ namespace Chiro.Gap.Workers
 
 			return cache[NATFUNCTIESCACHEKEY] as IEnumerable<Functie>;
 		}
+
+
 	}
 }

@@ -282,6 +282,16 @@ namespace Chiro.Gap.Data.Ef
 			}
 		}
 
+		/// <summary>
+		/// Haalt het lid op bepaald door <paramref name="gelieerdePersoonID"/> en
+		/// <paramref name="groepsWerkJaarID"/>, inclusief persoon, afdelingen, functies, groepswerkjaar
+		/// </summary>
+		/// <param name="gelieerdePersoonID">ID van de gelieerde persoon waarvoor het lidobject gevraagd is.</param>
+		/// <param name="groepsWerkJaarID">ID van groepswerkjaar in hetwelke het lidobject gevraagd is</param>
+		/// <returns>
+		/// Het lid bepaald door <paramref name="gelieerdePersoonID"/> en
+		/// <paramref name="groepsWerkJaarID"/>, inclusief persoon, afdelingen, functies, groepswerkjaar
+		/// </returns>
 		public Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
@@ -289,7 +299,7 @@ namespace Chiro.Gap.Data.Ef
 				db.Lid.MergeOption = MergeOption.NoTracking;
 
 				Lid lid = (
-					from t in db.Lid.Include("GelieerdePersoon.Persoon").Include("GroepsWerkJaar.AfdelingsJaar.Afdeling")
+					from t in db.Lid
 					where t.GelieerdePersoon.ID == gelieerdePersoonID
 							&&
 							t.GroepsWerkJaar.ID == groepsWerkJaarID
@@ -301,14 +311,22 @@ namespace Chiro.Gap.Data.Ef
 					if (lid is Kind)
 					{
 						return (
-							from t in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("GroepsWerkJaar.AfdelingsJaar.Afdeling").Include("AfdelingsJaar.Afdeling")
+							from t in db.Lid.OfType<Kind>()
+								.Include("GelieerdePersoon.Persoon")
+								.Include("GroepsWerkJaar")
+								.Include("AfdelingsJaar.Afdeling")
+								.Include(knd => knd.Functie)
 							where t.ID == lidID
 							select t).FirstOrDefault<Kind>();
 					}
 					else if (lid is Leiding)
 					{
 						return (
-							from t in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("GroepsWerkJaar.AfdelingsJaar.Afdeling").Include("AfdelingsJaar.Afdeling")
+							from t in db.Lid.OfType<Leiding>()
+								.Include("GelieerdePersoon.Persoon")
+								.Include("GroepsWerkJaar")
+								.Include("AfdelingsJaar.Afdeling")
+								.Include(leid=>leid.Functie)
 							where t.ID == lidID
 							select t).FirstOrDefault<Leiding>();
 					}
