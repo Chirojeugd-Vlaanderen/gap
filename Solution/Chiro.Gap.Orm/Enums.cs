@@ -74,4 +74,20 @@ namespace Chiro.Gap.Orm
 		[EnumMember]
 		Adressen = 0x01
 	}
+
+	/// <summary>
+	/// Extra info die opgehaald kan worden met een groepswerkjaar
+	/// </summary>
+	[DataContract]
+	[Flags]
+	public enum GroepsWerkJaarExtras
+	{
+		[EnumMember]
+		Geen = 0x00,
+		[EnumMember]
+		Afdelingen = 0x01,
+		[EnumMember]
+		Leden = 0x02
+	}
+		
 }

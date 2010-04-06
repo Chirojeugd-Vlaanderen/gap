@@ -88,7 +88,7 @@ namespace Chiro.Gap.Services
 			if ((extras & GroepsExtras.AfdelingenHuidigWerkJaar) == GroepsExtras.AfdelingenHuidigWerkJaar)
 			{
 				int gwjID = _groepsWerkJaarManager.RecentsteGroepsWerkJaarIDGet(groepID);
-				GroepsWerkJaar gwj = _groepsWerkJaarManager.OphalenMetAfdelingen(gwjID);
+				GroepsWerkJaar gwj = _groepsWerkJaarManager.Ophalen(gwjID, GroepsWerkJaarExtras.Afdelingen);
 
 				resultaat.AfdelingenDitWerkJaar = Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingInfo>>(gwj.AfdelingsJaar.ToList());
 			}
@@ -307,7 +307,7 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<AfdelingInfo> AfdelingenOphalen(int groepsWerkJaarID)
 		{
-			var groepswerkjaar = _groepsWerkJaarManager.OphalenMetLeden(groepsWerkJaarID);
+			var groepswerkjaar = _groepsWerkJaarManager.Ophalen(groepsWerkJaarID, GroepsWerkJaarExtras.Afdelingen|GroepsWerkJaarExtras.Leden);
 			return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingInfo>>(groepswerkjaar.AfdelingsJaar.OrderBy(e => e.GeboorteJaarVan).ToList<AfdelingsJaar>());
 		}
 

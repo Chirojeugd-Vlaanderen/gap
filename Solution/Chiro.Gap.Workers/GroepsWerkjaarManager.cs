@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 using Chiro.Gap.Fouten;
@@ -48,51 +49,38 @@ namespace Chiro.Gap.Workers
 
 		/// <summary>
 		/// Haalt het groepswerkjaar op bij een gegeven <paramref name="groepsWerkJaarID"/>
-		/// samen met alle info over het AfdelingsJaar, de Afdeling, de gelinkte
-		/// OfficieleAfdeling, de Kinderen en de Leiding, ...
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het gevraagde GroepsWerkJaar</param>
+		/// <param name="extras">Bepaalt op te halen gerelateerde entiteiten</param>
 		/// <returns>Gevraagde groepswerkjaar</returns>
-		public GroepsWerkJaar OphalenMetLeden(int groepsWerkJaarID)
+		public GroepsWerkJaar Ophalen(int groepsWerkJaarID, GroepsWerkJaarExtras extras)
 		{
 			if (_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
+				var paths = new List<Expression<Func<GroepsWerkJaar, object>>>();
+
+				if ((extras & GroepsWerkJaarExtras.Afdelingen) != 0)
+				{
+					paths.Add(gwj => gwj.AfdelingsJaar.First().Afdeling);
+					paths.Add(gwj => gwj.AfdelingsJaar.First().OfficieleAfdeling);
+				}
+
+				if ((extras & GroepsWerkJaarExtras.Leden) != 0)
+				{
+					paths.Add(gwj => gwj.AfdelingsJaar.First().Kind);
+					paths.Add(gwj => gwj.AfdelingsJaar.First().Leiding);
+				}
+
+
 				GroepsWerkJaar resultaat = _groepsWjDao.Ophalen(
 					groepsWerkJaarID,
-					gwj => gwj.Groep,
-					gwj => gwj.AfdelingsJaar.First().Afdeling,
-					gwj => gwj.AfdelingsJaar.First().OfficieleAfdeling,
-					gwj => gwj.AfdelingsJaar.First().Kind,
-					gwj => gwj.AfdelingsJaar.First().Leiding);
+					paths.ToArray());
 
 				return resultaat;
 			}
 			else
 			{
 				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
-			}
-		}
-
-		/// <summary>
-		/// Haalt een groepswerkjaar op, samen met gekoppelde afdelingsjaren, afdelingen en officiële afdelingen.
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID op te vragen groepswerkjaar</param>
-		/// <returns>
-		/// Groepswerkjaar, samen met gekoppelde afdelingsjaren, afdelingen en officiële afdelingen
-		/// </returns>
-		public GroepsWerkJaar OphalenMetAfdelingen(int groepsWerkJaarID)
-		{
-			if (_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
-			{
-				GroepsWerkJaar resultaat = _groepsWjDao.Ophalen(
-					groepsWerkJaarID,
-					gwj => gwj.AfdelingsJaar.First().Afdeling,
-					gwj => gwj.AfdelingsJaar.First().OfficieleAfdeling);
-				return resultaat;
-			}
-			else
-			{
-				throw new GeenGavException(GeenGavFoutCode.GroepsWerkJaar, Resources.GeenGavGroepsWerkJaar);
 			}
 		}
 
