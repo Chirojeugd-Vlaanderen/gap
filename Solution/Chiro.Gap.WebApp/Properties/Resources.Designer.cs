@@ -124,6 +124,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to lidgegevens.
+        /// </summary>
+        public static string LidGegevens {
+            get {
+                return ResourceManager.GetString("LidGegevens", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Die persoon is nu ingeschreven als lid van je groep..
         /// </summary>
         public static string LidGemaaktFeedback {
@@ -156,6 +165,15 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string NieuwePersoonTitel {
             get {
                 return ResourceManager.GetString("NieuwePersoonTitel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to overzicht.
+        /// </summary>
+        public static string Overzicht {
+            get {
+                return ResourceManager.GetString("Overzicht", resourceCulture);
             }
         }
         

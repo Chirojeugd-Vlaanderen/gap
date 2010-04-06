@@ -59,7 +59,7 @@
    { %>
 	<fieldset>
    
-   	<legend>Lid gegevens <%= Html.ActionLink("Aanpassen", "EditLidGegevens", new{ Controller = "Leden", lidID = Model.PersoonLidInfo.LidInfo.LidID}) %></legend>
+   	<legend>Lid gegevens <%= Html.ActionLink("Aanpassen", "EditLidGegevens", new{ Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %></legend>
 
 		<%if (Model.PersoonLidInfo.LidInfo.Type == LidType.Kind)
 	   { %>

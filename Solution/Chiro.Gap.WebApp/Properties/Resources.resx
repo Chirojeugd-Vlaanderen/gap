@@ -141,6 +141,9 @@
   <data name="GroepsInstellingenTitel" xml:space="preserve">
     <value>Groepsinstellingen</value>
   </data>
+  <data name="LidGegevens" xml:space="preserve">
+    <value>lidgegevens</value>
+  </data>
   <data name="LidGemaaktFeedback" xml:space="preserve">
     <value>Die persoon is nu ingeschreven als lid van je groep.</value>
   </data>
@@ -152,6 +155,9 @@
   </data>
   <data name="NieuwePersoonTitel" xml:space="preserve">
     <value>Nieuwe persoon</value>
+  </data>
+  <data name="Overzicht" xml:space="preserve">
+    <value>overzicht</value>
   </data>
   <data name="WijzigingenOpgeslagenFeedback" xml:space="preserve">
     <value>De wijzigingen zijn opgeslagen</value>

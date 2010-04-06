@@ -248,17 +248,31 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 		}
 
-		//
-		// GET: /Leden/EditRest/{lidID}
-		public ActionResult EditLidGegevens(int lidID, int groepID)
+		/// <summary>
+		/// Toont een view die toelaat de lidgegevens van het lid met LidID <paramref name="id"/> te bewerken.
+		/// </summary>
+		/// <param name="id">LidID te bewerken lid</param>
+		/// <param name="groepID">ID van de huidig geselecteerde groep</param>
+		/// <returns>De view 'EditLidGegevens'</returns>
+		public ActionResult EditLidGegevens(int id, int groepID)
 		{
 			var model = new LedenModel();
 			BaseModelInit(model, groepID);
 
-			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>(l => l.Ophalen(lidID, LidExtras.Groep|LidExtras.Afdelingen));
+			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>(l => l.Ophalen(
+				id, 
+				LidExtras.Groep|LidExtras.Afdelingen));
+			
+			// @broes: Hier wordt geloof ik nog niets mee gedaan, maar ik ben er wel voorstander
+			// van om het wijzigen van afdelingen bij onder te brengen onder het bewerken van
+			// lidgegevens.
+
 			AfdelingenOphalen(model);
 
-			model.Titel = "Overzicht van " + model.HuidigLid.PersoonInfo.VolledigeNaam;
+			model.Titel = String.Format(
+				"{0}: {1}", 
+				model.HuidigLid.PersoonInfo.VolledigeNaam,
+				Properties.Resources.LidGegevens);
 
 			return View("EditLidGegevens", model);
 		}
