@@ -12,6 +12,15 @@ namespace Chiro.Gap.Dummies
 	/// </summary>
 	public class DummyGroepsWerkJaarDao: IGroepsWerkJaarDao
 	{
+		#region IGroepsWerkJaarDao Members
+
+		public Chiro.Gap.Orm.GroepsWerkJaar RecentsteOphalen(int groepID, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.GroepsWerkJaar, object>>[] paths)
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
+
 		#region IDao<GroepsWerkJaar> Members
 
 		public Chiro.Gap.Orm.GroepsWerkJaar Ophalen(int id)

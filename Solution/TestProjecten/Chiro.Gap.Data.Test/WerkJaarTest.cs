@@ -95,10 +95,10 @@ namespace Chiro.Gap.Data.Test
 		public void RecentsteGroepsWerkJaarMetAfdelingsJaren()
 		{
 			// arrange
-			IGroepenDao dao = Factory.Maak<IGroepenDao>();
+			var dao = Factory.Maak<IGroepsWerkJaarDao>();
 
 			// act
-			GroepsWerkJaar gwj = dao.RecentsteGroepsWerkJaarGet(TestInfo.GROEPID);
+			GroepsWerkJaar gwj = dao.RecentsteOphalen(TestInfo.GROEPID, grwj=>grwj.AfdelingsJaar);
 
 			//assert
 			Assert.IsTrue(gwj.AfdelingsJaar.Count >= 1);

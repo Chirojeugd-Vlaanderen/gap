@@ -84,10 +84,27 @@ namespace Chiro.Gap.Orm
 	{
 		[EnumMember]
 		Geen = 0x00,
+		/// <summary>
+		/// Haalt alle afdelingsjaren van het groepswerkjaar mee op, inclusief de gekoppelde afdelingen.
+		/// </summary>
 		[EnumMember]
 		Afdelingen = 0x01,
+		/// <summary>
+		/// Haalt alle leden van het groepswerkjaar mee op
+		/// </summary>
 		[EnumMember]
-		Leden = 0x02
+		Leden = 0x02,
+		/// <summary>
+		/// Haalt de functies van de leden mee op
+		/// </summary>
+		[EnumMember]
+		LidFuncties = 0x04,
+		/// <summary>
+		/// Haalt de groep mee op, samen met al zijn functies (ook diegene die niet relevant zijn in het
+		/// gegeven groepswerkjaar.)
+		/// </summary>
+		[EnumMember]
+		GroepsFuncties = 0x08
 	}
 		
 }

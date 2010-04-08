@@ -57,24 +57,9 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
-				var paths = new List<Expression<Func<GroepsWerkJaar, object>>>();
-
-				if ((extras & GroepsWerkJaarExtras.Afdelingen) != 0)
-				{
-					paths.Add(gwj => gwj.AfdelingsJaar.First().Afdeling);
-					paths.Add(gwj => gwj.AfdelingsJaar.First().OfficieleAfdeling);
-				}
-
-				if ((extras & GroepsWerkJaarExtras.Leden) != 0)
-				{
-					paths.Add(gwj => gwj.AfdelingsJaar.First().Kind);
-					paths.Add(gwj => gwj.AfdelingsJaar.First().Leiding);
-				}
-
-
 				GroepsWerkJaar resultaat = _groepsWjDao.Ophalen(
 					groepsWerkJaarID,
-					paths.ToArray());
+					ExtrasNaarLambdas(extras));
 
 				return resultaat;
 			}
@@ -153,13 +138,14 @@ namespace Chiro.Gap.Workers
 		/// Haalt recentste groepswerkjaar voor een groep op, inclusief afdelingsjaren
 		/// </summary>
 		/// <param name="groepID">ID gevraagde groep</param>
+		/// <param name="extras">Bepaalt eventuele mee op te halen gekoppelde entiteiten</param>
 		/// <returns>Het recentste Groepswerkjaar voor de opgegeven groep</returns>
-		public GroepsWerkJaar RecentsteGroepsWerkJaarGet(int groepID)
+		public GroepsWerkJaar RecentsteOphalen(int groepID, GroepsWerkJaarExtras extras)
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
 				// TODO: cachen, want dit gaan we veel nodig hebben (Zie #251)
-				return _groepenDao.RecentsteGroepsWerkJaarGet(groepID);
+				return _groepsWjDao.RecentsteOphalen(groepID, ExtrasNaarLambdas(extras));
 			}
 			else
 			{
@@ -178,7 +164,7 @@ namespace Chiro.Gap.Workers
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
 				// TODO: cachen, want dit gaan we veel nodig hebben (Zie #251)
-				return _groepenDao.RecentsteGroepsWerkJaarGet(groepID).ID;
+				return _groepsWjDao.RecentsteOphalen(groepID).ID;
 			}
 			else
 			{
@@ -213,7 +199,7 @@ namespace Chiro.Gap.Workers
 					}
 					else
 					{
-						int werkjaar = _groepenDao.RecentsteGroepsWerkJaarGet(groepID).WerkJaar;
+						int werkjaar = _groepsWjDao.RecentsteOphalen(groepID).WerkJaar;
 						Debug.Assert(huidigedatum.Year == werkjaar || werkjaar + 1 == huidigedatum.Year);
 						return werkjaar;
 					}
@@ -243,6 +229,42 @@ namespace Chiro.Gap.Workers
 					return 0;
 				}
 			}
+		}
+
+		/// <summary>
+		/// Converteert de GroepsExtras <paramref name="extras"/> naar lambda-expressies die mee naar 
+		/// de data access moeten om de extra's daadwerkelijk op te halen.
+		/// </summary>
+		/// <param name="extras">Te converteren groepsextra's</param>
+		/// <returns>Lambda-expressies geschikt voor onze DAO's</returns>
+		private Expression<Func<GroepsWerkJaar, object>>[] ExtrasNaarLambdas(GroepsWerkJaarExtras extras)
+		{
+			var paths = new List<Expression<Func<GroepsWerkJaar, object>>>();
+
+			if ((extras & GroepsWerkJaarExtras.Afdelingen) != 0)
+			{
+				paths.Add(gwj => gwj.AfdelingsJaar.First().Afdeling);
+				paths.Add(gwj => gwj.AfdelingsJaar.First().OfficieleAfdeling);
+			}
+
+			if ((extras & GroepsWerkJaarExtras.LidFuncties) != 0)
+			{
+				paths.Add(gwj => gwj.AfdelingsJaar.First().Kind.First().Functie);
+				paths.Add(gwj => gwj.AfdelingsJaar.First().Leiding.First().Functie);
+			}
+			else if ((extras & GroepsWerkJaarExtras.Leden) != 0)
+			{
+				paths.Add(gwj => gwj.AfdelingsJaar.First().Kind);
+				paths.Add(gwj => gwj.AfdelingsJaar.First().Leiding);
+			}
+
+
+			if ((extras & GroepsWerkJaarExtras.GroepsFuncties) != 0)
+			{
+				paths.Add(gwj => gwj.Groep.Functie);
+			}
+
+			return paths.ToArray();
 		}
 	}
 }

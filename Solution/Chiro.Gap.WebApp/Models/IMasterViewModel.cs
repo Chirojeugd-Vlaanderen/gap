@@ -4,6 +4,7 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -37,5 +38,10 @@ namespace Chiro.Gap.WebApp.Models
 		/// Titel van de webpagina
 		/// </summary>
 		string Titel { get; }
+
+		/// <summary>
+		/// Mededelingen die ergens getoond moeten worden
+		/// </summary>
+		IList<Mededeling> Mededelingen { get; set; }
 	}
 }

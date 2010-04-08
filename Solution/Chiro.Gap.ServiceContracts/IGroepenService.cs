@@ -169,6 +169,17 @@ namespace Chiro.Gap.ServiceContracts
 		/// <returns>De gevraagde lijst afdelingsinfo</returns>
 		[OperationContract]
 		IList<FunctieInfo> FunctiesOphalen(int groepsWerkJaarID, LidType lidType);
+
+		/// <summary>
+		/// Zoekt naar problemen ivm de maximum- en minimumaantallen van functies voor het
+		/// huidige werkjaar.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvoor de functies gecontroleerd moeten worden.</param>
+		/// <returns>
+		/// Een rij FunctieProbleemInfo.  Als er geen problemen zijn, is deze leeg.
+		/// </returns>
+		[OperationContract]
+		IEnumerable<FunctieProbleemInfo> FunctiesControleren(int groepID);
 		#endregion
 
 		#region categorieën

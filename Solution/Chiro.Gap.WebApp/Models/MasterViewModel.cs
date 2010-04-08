@@ -45,5 +45,18 @@ namespace Chiro.Gap.WebApp.Models
 		/// Titel van de pagina
 		/// </summary>
 		public string Titel { get; set; }
+
+		/// <summary>
+		/// Mededelingen die ergens getoond moeten worden
+		/// </summary>
+		public IList<Mededeling> Mededelingen { get; set; }
+
+		/// <summary>
+		/// Standaardconstructor maakt gewoon een lege lijst met mededelingen
+		/// </summary>
+		public MasterViewModel()
+		{
+			Mededelingen = new List<Mededeling>();
+		}
 	}
 }

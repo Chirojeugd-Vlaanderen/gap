@@ -24,35 +24,6 @@ namespace Chiro.Gap.Data.Ef
 	/// </summary>
 	public class GroepenDao : Dao<Groep, ChiroGroepEntities>, IGroepenDao
 	{
-		/*
-		TODO creeren(groep) ?
-		*/
-
-		/// <summary>
-		/// Haalt recentste groepswerkjaar op van groep met ID <paramref name="groepID"/>, inclusief 
-		/// afdelingsjaren.
-		/// </summary>
-		/// <param name="groepID">ID van groep waarvan het recentste groepswerkjaar gevraagd is.</param>
-		/// <returns>Groepswerkjaar van groep met ID <paramref name="groepID"/>, met daaraan gekoppeld de
-		/// groep en de afdelingsjaren.</returns>
-		public GroepsWerkJaar RecentsteGroepsWerkJaarGet(int groepID)
-		{
-			GroepsWerkJaar result;
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
-			{
-				db.GroepsWerkJaar.MergeOption = MergeOption.NoTracking;
-
-				var query = (
-					from wj in db.GroepsWerkJaar.Include("AfdelingsJaar").Include("Groep")
-					where wj.Groep.ID == groepID
-					orderby wj.WerkJaar descending
-					select wj);
-
-				result = query.FirstOrDefault<GroepsWerkJaar>();
-			}
-			return result;
-		}
-
 		/// <summary>
 		/// Ophalen van groep, groepswerkjaar, afdeling, afdelingsjaar en officiële afdelingen 
 		/// voor gegeven groepswerkjaar.

@@ -278,7 +278,7 @@ namespace Chiro.Gap.Services
 				throw new NotImplementedException(String.Format(Resources.FouteAfdelingVoorGroepString, g.Naam));
 			}
 
-			GroepsWerkJaar huidigWerkJaar = _groepsWerkJaarManager.RecentsteGroepsWerkJaarGet(g.ID);
+			GroepsWerkJaar huidigWerkJaar = _groepsWerkJaarManager.RecentsteOphalen(g.ID, GroepsWerkJaarExtras.Geen);
 
 			AfdelingsJaar afdjaar = _groepenMgr.AfdelingsJaarMaken(afd, offafd, huidigWerkJaar, geboortejaarbegin, geboortejaareind);
 
@@ -343,6 +343,44 @@ namespace Chiro.Gap.Services
 		{
 			IList<Functie> relevanteFuncties = _functiesMgr.OphalenRelevant(groepsWerkJaarID, lidType);
 			return Mapper.Map<IList<Functie>, IList<FunctieInfo>>(relevanteFuncties);
+		}
+
+		/// <summary>
+		/// Zoekt naar problemen ivm de maximum- en minimumaantallen van functies voor het
+		/// huidige werkjaar.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvoor de functies gecontroleerd moeten worden.</param>
+		/// <returns>
+		/// Indien er problemen zijn, wordt een rij FunctieProbleemInfo opgeleverd.
+		/// </returns>
+		public IEnumerable<FunctieProbleemInfo> FunctiesControleren(int groepID)
+		{
+			var resultaat = new List<FunctieProbleemInfo>();
+
+			GroepsWerkJaar gwj = _groepsWerkJaarManager.RecentsteOphalen(
+				groepID, GroepsWerkJaarExtras.GroepsFuncties|GroepsWerkJaarExtras.LidFuncties);
+
+			IEnumerable<Telling> problemen = _functiesMgr.AantallenControleren(gwj);
+
+			// Blijkbaar kan ik hier niet anders dan de functies terug ophalen.
+
+			foreach (var p in problemen)
+			{
+				Functie f = _functiesMgr.Ophalen(p.ID);
+				resultaat.Add(new FunctieProbleemInfo
+				{
+					Code = f.Code,
+					EffectiefAantal = p.Aantal,
+					ID = f.ID,
+					MaxAantal = p.Max,
+					MinAantal = p.Min,
+					Naam = f.Naam
+				});
+			}
+
+			// Ter info: return resultaat.ToArray() werkt niet; problemen met (de)serializeren?
+
+			return resultaat.ToList();
 		}
 		#endregion
 

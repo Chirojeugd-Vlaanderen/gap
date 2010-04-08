@@ -47,6 +47,8 @@ namespace Chiro.Gap.WebApp.Models
 
 		public string Titel { get; set; }
 
+		public IList<Mededeling> Mededelingen { get; set; }
+
 		#endregion
 	}
 }

@@ -220,41 +220,6 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Haalt recentste groepswerkjaar op voor gegeven groep
-		/// </summary>
-		/// <param name="g">De gegeven groep</param>
-		/// <returns>Gevraagde groepswerkjaar</returns>
-		public GroepsWerkJaar RecentsteGroepsWerkJaarGet(int groepID)
-		{
-			if (_autorisatieMgr.IsGavGroep(groepID))
-			{
-				return _groepenDao.RecentsteGroepsWerkJaarGet(groepID);
-			}
-			else
-			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
-			}
-		}
-
-		// Zit nu in AfdelingsJaarManager.Bewaren
-		///// <summary>
-		///// Persisteert AfdelingsJaar in de database
-		///// </summary>
-		///// <param name="a">Te persisteren AfdelingsJaar</param>
-		///// <returns>De bewaarde groep</returns>
-		// public AfdelingsJaar AfdelingsJaarBewaren(AfdelingsJaar a)
-		// {
-		//    if (_autorisatieMgr.IsGavGroepsWerkJaar(a.GroepsWerkJaar.ID))
-		//    {
-		//        return _afdao.Bewaren(a);
-		//    }
-		//    else
-		//    {
-		//        throw new GeenGavException(Resources.GeenGavGroep);
-		//    }
-		// }
-
-		/// <summary>
 		/// Persisteert groep in de database
 		/// </summary>
 		/// <param name="g">Te persisteren groep</param>

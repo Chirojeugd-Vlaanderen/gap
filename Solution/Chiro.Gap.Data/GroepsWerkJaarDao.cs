@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Objects;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 using Chiro.Cdf.Data.Entity;
@@ -21,7 +22,32 @@ namespace Chiro.Gap.Data.Ef
 	/// </summary>
 	public class GroepsWerkJaarDao : Dao<GroepsWerkJaar, ChiroGroepEntities>, IGroepsWerkJaarDao
 	{
-		// TODO: deze klasse en bijhorende interface mag eigenlijk weg.
-		// Je kan net zo goed Dao<GroepsWerkJaar, ChiroGroepEntities> gebruiken.
+		/// <summary>
+		/// Haalt recentste groepswerkjaar op van groep met ID <paramref name="groepID"/>, inclusief 
+		/// afdelingsjaren.
+		/// </summary>
+		/// <param name="groepID">ID van groep waarvan het recentste groepswerkjaar gevraagd is.</param>
+		/// <param name="paths">lambda-expressies die bepalen welke gekoppelde entiteiten mee opgehaald moeten worden.</param>
+		/// <returns>Groepswerkjaar van groep met ID <paramref name="groepID"/>, met daaraan gekoppeld de
+		/// groep en de afdelingsjaren.</returns>
+		public GroepsWerkJaar RecentsteOphalen(int groepID, params Expression<Func<GroepsWerkJaar, object>>[] paths)
+		{
+			GroepsWerkJaar result;
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{
+				var query = (
+					from wj in db.GroepsWerkJaar
+					where wj.Groep.ID == groepID
+					orderby wj.WerkJaar descending
+					select wj) as ObjectQuery<GroepsWerkJaar>;
+
+				query = IncludesToepassen(query, paths);
+
+				result = query.FirstOrDefault<GroepsWerkJaar>();
+			}
+			result = Utility.DetachObjectGraph(result);
+
+			return result;
+		}
 	}
 }

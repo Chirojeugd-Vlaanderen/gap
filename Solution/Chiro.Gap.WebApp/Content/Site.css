@@ -352,9 +352,21 @@ div#title
 	float: left;
 }
 
+
+.mededelingen
+{
+    right: 4ex;
+	bottom: 0;   
+    position: fixed;
+    width: 40ex;
+    background-color: #E4D096;
+    border: 1px solid black;
+    padding: 1ex 1ex 1ex 4ex;
+}
+
 ul#acties
 {
-	float: right;
+    float: right;
 	margin: 0;
 	text-align: right;
 }
@@ -412,3 +424,4 @@ textarea
     width: 60ex;
     height: 10ex;
 }
+

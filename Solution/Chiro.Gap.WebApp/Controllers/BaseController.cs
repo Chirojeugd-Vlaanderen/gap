@@ -84,6 +84,54 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.Plaats = gi.Plaats;
 				model.StamNummer = gi.StamNummer;
 				model.GroepID = gi.ID;
+
+				var problemen = ServiceHelper.CallService<
+					IGroepenService, 
+					IEnumerable<FunctieProbleemInfo>>(svc => svc.FunctiesControleren(gi.ID));
+
+
+				foreach (var p in problemen)
+				{
+					// Eerst een paar specifieke en veelvoorkomende problemen apart behandelen.
+
+					if (p.MinAantal > 0 && p.EffectiefAantal == 0)
+					{
+						model.Mededelingen.Add(new Mededeling
+						{
+							Type = MededelingsType.Probleem,
+							Info = String.Format(Properties.Resources.FunctieOntbreekt, p.Naam, p.Code)
+						});
+					}
+					else if (p.MaxAantal == 1 && p.EffectiefAantal > 1)
+					{
+						model.Mededelingen.Add(new Mededeling
+						{
+							Type = MededelingsType.Probleem,
+							Info = String.Format(Properties.Resources.FunctieMeerdereKeren, p.Naam, p.Code, p.EffectiefAantal)
+						});
+					}
+
+					// Dan de algemene foutmeldingen
+
+					else if (p.MinAantal > p.EffectiefAantal)
+					{
+						model.Mededelingen.Add(new Mededeling
+						{
+							Type = MededelingsType.Probleem,
+							Info = String.Format(Properties.Resources.FunctieTeWeinig, p.Naam, p.Code, p.EffectiefAantal, p.MinAantal)
+						});
+					}
+					else if (p.EffectiefAantal > p.MaxAantal)
+					{
+						model.Mededelingen.Add(new Mededeling
+						{
+							Type = MededelingsType.Probleem,
+							Info = String.Format(Properties.Resources.FunctieTeVeel, p.Naam, p.Code, p.EffectiefAantal, p.MinAantal)
+						});
+					}
+
+
+				}
 			}
 		}
 	}

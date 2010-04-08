@@ -113,6 +113,7 @@
     <Compile Include="Models\CategorieModel.cs" />
     <Compile Include="Models\CommVormModel.cs" />
     <Compile Include="Models\AfdelingInfoModel.cs" />
+    <Compile Include="Models\Mededeling.cs" />
     <Compile Include="Models\PersonenLedenModel.cs" />
     <Compile Include="Models\GroepsInstellingenModel.cs" />
     <Compile Include="Models\IMasterViewModel.cs" />

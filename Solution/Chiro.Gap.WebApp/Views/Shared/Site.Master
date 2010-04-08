@@ -15,6 +15,7 @@
 </head>
 <body>
     <div class="page">
+    
         <div id="header">
             <div id="logo">
                 <img src="/Content/Chirologo.png" alt="Chirologo" />
@@ -60,15 +61,39 @@
                 </ul>
             </div>
         </div>
+        
+        
+        
         <div id="main">
-            <h2>
-                <%=Html.Encode(ViewData.Model.Titel) %></h2>
+            <h2><%=Html.Encode(ViewData.Model.Titel) %></h2>
+            
             <% if (TempData["feedback"] != null)
                { %>
-            <div class="Feedback">
-                <%= TempData["feedback"] %></div>
+                <div class="Feedback"><%= TempData["feedback"] %></div>
             <% } %>
+            
+            <% if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
+               {
+            %>
+                <ul class="mededelingen">
+            <%
+                   foreach (var m in Model.Mededelingen)
+                   {
+            %>
+                    <li><strong><%=m.Type %>:</strong> <%=m.Info %></li>
+            <%
+                   }
+            %>
+                </ul>
+            <%
+               }
+            %>
+            
+            
+            
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+            
+            
             <div id="footer">
                 <hr />
                 <p>

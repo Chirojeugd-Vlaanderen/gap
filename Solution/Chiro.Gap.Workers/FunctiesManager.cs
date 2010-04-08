@@ -80,6 +80,16 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
+		/// Haalt 1 functie op, samen met de gekoppelde groep
+		/// </summary>
+		/// <param name="functieID">ID op te halen functie</param>
+		/// <returns>De opgehaalde functie met de gekoppelde groep</returns>
+		public Functie Ophalen(int functieID)
+		{
+			return Ophalen(new int[] { functieID }).FirstOrDefault();
+		}
+
+		/// <summary>
 		/// Haalt een lijstje functies op, uiteraard met gekoppelde groepen (indien van toepassing)
 		/// </summary>
 		/// <param name="functieIDs">ID's op te halen functies</param>

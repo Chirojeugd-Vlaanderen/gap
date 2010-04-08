@@ -117,7 +117,7 @@ namespace Chiro.Gap.Workers
 			}
 
 			// Door het groepswerkjaar van de persoon op te halen is de link tussen groepswerkjaar en persoon zeker in orde
-			GroepsWerkJaar gwj = _daos.GroepenDao.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
+			GroepsWerkJaar gwj = _daos.GroepsWerkJaarDao.RecentsteOphalen(gp.Groep.ID, grwj=>grwj.AfdelingsJaar.First().Afdeling);
 
 			return KindMaken(gp, gwj);
 		}
@@ -213,7 +213,7 @@ namespace Chiro.Gap.Workers
 				_daos.GelieerdePersoonDao.GroepLaden(gp);
 			}
 
-			GroepsWerkJaar gwj = _daos.GroepenDao.RecentsteGroepsWerkJaarGet(gp.Groep.ID);
+			GroepsWerkJaar gwj = _daos.GroepsWerkJaarDao.RecentsteOphalen(gp.Groep.ID);
 
 			GelieerdePersoon gpMetDetails;
 			if (!kanLidMaken(gp, gwj, out gpMetDetails))
@@ -246,7 +246,7 @@ namespace Chiro.Gap.Workers
 			}
 
 			// checks:
-			if (lid.GroepsWerkJaar.ID != _daos.GroepenDao.RecentsteGroepsWerkJaarGet(lid.GroepsWerkJaar.Groep.ID).ID)
+			if (lid.GroepsWerkJaar.ID != _daos.GroepsWerkJaarDao.RecentsteOphalen(lid.GroepsWerkJaar.Groep.ID).ID)
 			{
 				throw new OngeldigeActieException("Een lid verwijderen mag enkel als het een lid uit het huidige werkjaar is.");
 			}
