@@ -40,7 +40,7 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		/// <param name="groepID"></param>
 		/// <returns></returns>
-		public IEnumerable<Categorie> OphalenVanGroep(int groepID)
+		public IList<Categorie> AllesOphalen(int groepID)
 		{
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
 			{

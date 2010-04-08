@@ -501,6 +501,19 @@ namespace Chiro.Gap.Services
 			return Mapper.Map<Categorie, CategorieInfo>(_categorieenMgr.Ophalen(groepID, categorieCode));
 		}
 
+		/// <summary>
+		/// Haalt alle categorieeen op van de groep met ID <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvan de categorieen zijn gevraagd</param>
+		/// <returns>Lijst met categorie-info van de categorieen van de gevraagde groep</returns>
+		public IList<CategorieInfo> CategorieenOphalen(int groepID)
+		{
+			var result = _categorieenMgr.AllesOphalen(groepID);
+
+			return Mapper.Map<IList<Categorie>, IList<CategorieInfo>>(result);
+		}
+
+
 		#endregion categorieën
 
 		#region adressen

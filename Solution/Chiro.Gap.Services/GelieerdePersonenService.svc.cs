@@ -479,11 +479,6 @@ namespace Chiro.Gap.Services
 			_gpMgr.CategorieLoskoppelen(gelieerdepersonenIDs, categorie);
 		}
 
-		public IEnumerable<Categorie> CategorieenOphalen(int groepID)
-		{
-			return _gpMgr.CategorieenOphalen(groepID);
-		}
-
 		public IList<GelieerdePersoon> OphalenUitCategorie(int categorieID)
 		{
 			throw new NotImplementedException();

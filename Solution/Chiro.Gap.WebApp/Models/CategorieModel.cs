@@ -22,7 +22,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Nieuwe categorieën voor de gegeven gelieerde personen
 		/// </summary>
-		public IEnumerable<Categorie> Categorieen { get; set; }
+		public IEnumerable<CategorieInfo> Categorieen { get; set; }
 		public List<int> GeselecteerdeCategorieIDs { get; set; }
 
 		public IList<int> GelieerdePersoonIDs { get; set; }

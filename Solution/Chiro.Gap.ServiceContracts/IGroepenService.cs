@@ -227,6 +227,14 @@ namespace Chiro.Gap.ServiceContracts
 		CategorieInfo CategorieOpzoeken(int groepID, string categorieCode);
 
 		/// <summary>
+		/// Haalt alle categorieeen op van de groep met ID <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvan de categorieen zijn gevraagd</param>
+		/// <returns>Lijst met categorie-info van de categorieen van de gevraagde groep</returns>
+		[OperationContract]
+		IList<CategorieInfo> CategorieenOphalen(int groepID);
+
+		/// <summary>
 		/// Zoekt de categorieID op van de categorie bepaald door de gegeven 
 		/// <paramref name="groepID"/> en <paramref name="code"/>.
 		/// </summary>

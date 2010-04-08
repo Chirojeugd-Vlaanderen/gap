@@ -873,7 +873,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			CategorieModel model = new CategorieModel();
 			BaseModelInit(model, groepID);
-			model.Categorieen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<Categorie>>(l => l.CategorieenOphalen(groepID));
+			model.Categorieen = ServiceHelper.CallService<IGroepenService, IEnumerable<CategorieInfo>>(l => l.CategorieenOphalen(groepID));
 
 			if (model.Categorieen.Count() > 0)
 			{

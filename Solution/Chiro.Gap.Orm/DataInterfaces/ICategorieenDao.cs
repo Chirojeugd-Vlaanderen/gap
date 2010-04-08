@@ -16,15 +16,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	/// </summary>
 	public interface ICategorieenDao : IDao<Categorie>
 	{
-		/*/// <summary>
-		/// Haalt de gekoppelde groep van een categorie op uit de database
-		/// (als dat nog niet gebeurd zou zijn)
-		/// </summary>
-		/// <param name="categorie">Categorie met op te halen groep</param>
-		/// <returns>Dezelfde categorie</returns>
-		Categorie GroepLaden(Categorie categorie);*/
-
-		IEnumerable<Categorie> OphalenVanGroep(int groepID);
+		IList<Categorie> AllesOphalen(int groepID);
 
 		/// <summary>
 		/// Zoekt een categorie op op basis van <paramref name="groepID"/> en

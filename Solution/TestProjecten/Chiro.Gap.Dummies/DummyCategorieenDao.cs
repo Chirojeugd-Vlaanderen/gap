@@ -11,11 +11,11 @@ namespace Chiro.Gap.Dummies
 	/// <summary>
 	/// Dummy CategorieenDao, die niets doet
 	/// </summary>
-	class DummyCategorieenDao : DummyDao<Categorie>, ICategorieenDao
+	public class DummyCategorieenDao : DummyDao<Categorie>, ICategorieenDao
 	{
 		#region ICategorieenDao Members
 
-		public IEnumerable<Categorie> OphalenVanGroep(int groepID)
+		public IList<Categorie> AllesOphalen(int groepID)
 		{
 			throw new NotImplementedException();
 		}

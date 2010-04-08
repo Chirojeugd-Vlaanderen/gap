@@ -112,6 +112,23 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
+		/// Haalt alle categorieen op van de groep met ID <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="groepID">ID van groep waarvan categorieen gevraagd</param>
+		/// <returns>Lijst met categorie-info van alle categorieen van de groep</returns>
+		public IList<Categorie> AllesOphalen(int groepID)
+		{
+			if (_autorisatieMgr.IsGavGroep(groepID))
+			{
+				return _dao.AllesOphalen(groepID);
+			}
+			else
+			{
+				throw new GeenGavException(GeenGavFoutCode.Groep, Properties.Resources.GeenGavGroep);
+			}
+		}
+
+		/// <summary>
 		/// Bewaart de categorie, met daaraan gekopped de personen
 		/// </summary>
 		/// <param name="cat">Te bewaren categorie</param>

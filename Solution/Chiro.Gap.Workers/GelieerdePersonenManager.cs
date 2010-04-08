@@ -467,16 +467,6 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// De collectie categorieën ophalen die gebruikt worden door de groep met de opgegeven ID
-		/// </summary>
-		/// <param name="groepID">De ID van de groep waar het over gaat</param>
-		/// <returns>De collectie categorieën van de groep waar het over gaat</returns>
-		public IEnumerable<Categorie> CategorieenOphalen(int groepID)
-		{
-			return _categorieenDao.OphalenVanGroep(groepID);
-		}
-
-		/// <summary>
 		/// Zoekt naar gelieerde personen die gelijkaardig zijn aan een gegeven
 		/// <paramref name="persoon"/>.
 		/// </summary>

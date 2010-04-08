@@ -290,14 +290,6 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		IList<GelieerdePersoon> OphalenUitCategorie(int categorieID);
 
-		/// <summary>
-		/// Haalt een lijst op met alle categorieën voor de opgegeven groep
-		/// </summary>
-		/// <param name="groepID">ID van de groep waarover het gaat</param>
-		/// <returns></returns>
-		[OperationContract]
-		IEnumerable<Categorie> CategorieenOphalen(int groepID);
-
 		#endregion categorieën
 	}
 }
