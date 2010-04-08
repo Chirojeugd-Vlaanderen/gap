@@ -96,7 +96,8 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.Totaal = totaal;
 			}
 
-			model.GroepsCategorieen = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.Ophalen(groepID, GroepsExtras.Categorieen)).Categorie.ToList();
+			model.GroepsCategorieen = ServiceHelper.CallService<IGroepenService, IList<CategorieInfo>>(
+				svc => svc.CategorieenOphalen(groepID)).ToList();
 			model.GroepsCategorieen.Add(new CategorieInfo { ID = 0, Naam = "Alle personen" });
 
 			return View("Index", model);

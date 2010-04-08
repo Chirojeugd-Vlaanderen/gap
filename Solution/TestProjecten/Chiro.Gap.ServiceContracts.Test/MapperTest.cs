@@ -53,7 +53,7 @@ namespace Chiro.Gap.ServiceContracts.Test
 			var testData = new DummyData();
 			GroepInfo gi = Mapper.Map<Groep, GroepInfo>(testData.DummyGroep);
 
-			Assert.IsTrue(gi.Categorie.Count > 0);
+			Assert.IsTrue(gi.StamNummer != string.Empty);
 		}
 
 		/// <summary>

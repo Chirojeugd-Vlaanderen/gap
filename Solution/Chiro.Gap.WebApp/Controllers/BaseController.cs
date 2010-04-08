@@ -76,7 +76,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				GroepInfo gi = (GroepInfo)c.Get(cacheKey);
 				if (gi == null)
 				{
-					gi = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.Ophalen(groepID, GroepsExtras.Geen));
+					gi = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.InfoOphalen(groepID));
 					c.Add(cacheKey, gi, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
 				}
 

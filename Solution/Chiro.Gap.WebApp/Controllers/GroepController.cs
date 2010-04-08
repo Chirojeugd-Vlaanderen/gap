@@ -35,9 +35,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			GroepsInstellingenModel model = new GroepsInstellingenModel();
 
 			model.Titel = Properties.Resources.GroepsInstellingenTitel;
-			model.Info = ServiceHelper.CallService<IGroepenService, GroepInfo>(svc => svc.Ophalen(
-				groepID,
-				GroepsExtras.AfdelingenHuidigWerkJaar | GroepsExtras.Categorieen));
+			model.Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(
+				svc => svc.DetailOphalen(groepID));
 
 			return View(model);
 		}
@@ -94,9 +93,8 @@ namespace Chiro.Gap.WebApp.Controllers
 					}
 
 					model.Titel = Properties.Resources.GroepsInstellingenTitel;
-					model.Info = ServiceHelper.CallService<IGroepenService, GroepInfo>(svc => svc.Ophalen(
-						groepID,
-						GroepsExtras.AfdelingenHuidigWerkJaar | GroepsExtras.Categorieen));
+					model.Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(
+						svc => svc.DetailOphalen(groepID));
 
 					return View(model);
 				}
@@ -109,9 +107,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				// ModelState bevat ongeldige waarden, dus toon de pagina opnieuw
 				model.Titel = Properties.Resources.GroepsInstellingenTitel;
-				model.Info = ServiceHelper.CallService<IGroepenService, GroepInfo>(svc => svc.Ophalen(
-					groepID,
-					GroepsExtras.AfdelingenHuidigWerkJaar | GroepsExtras.Categorieen));
+				model.Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(
+					svc => svc.DetailOphalen(groepID));
 
 				return View(model);
 			}

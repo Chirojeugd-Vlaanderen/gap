@@ -60,6 +60,7 @@
     <Compile Include="DataContracts\CategorieInfo.cs" />
     <Compile Include="DataContracts\CommunicatieInfo.cs" />
     <Compile Include="DataContracts\FunctieProbleemInfo.cs" />
+    <Compile Include="DataContracts\GroepDetail.cs" />
     <Compile Include="DataContracts\PersoonLidInfo.cs" />
     <Compile Include="DataContracts\FunctieInfo.cs" />
     <Compile Include="DataContracts\PersoonsAdresInfo.cs" />

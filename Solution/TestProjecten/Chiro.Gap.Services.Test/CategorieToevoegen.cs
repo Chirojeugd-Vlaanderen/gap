@@ -54,9 +54,9 @@ namespace Chiro.Gap.Services.Test
 		/// </summary>
 		private void VerwijderCategorieToevoegTest()
 		{
-			GroepInfo g = groepenSvc.Ophalen(TestInfo.GROEPID, GroepsExtras.Categorieen);
+			var categorieen = groepenSvc.CategorieenOphalen(TestInfo.GROEPID);
 
-			int catID = (from cInfo in g.Categorie
+			int catID = (from cInfo in categorieen
 				     where String.Compare(cInfo.Code, TestInfo.ONBESTAANDENIEUWECATCODE, true) == 0
 				     select cInfo.ID).FirstOrDefault();
 
@@ -104,49 +104,14 @@ namespace Chiro.Gap.Services.Test
 				TestInfo.ONBESTAANDENIEUWECATCODE);
 			catlijst.Add(catID);
 
-			GroepInfo g = groepenSvc.Ophalen(TestInfo.GROEPID, GroepsExtras.Categorieen);
+			var categorieen = groepenSvc.CategorieenOphalen(TestInfo.GROEPID);
 
-			var query = (from cInfo in g.Categorie
+			var query = (from cInfo in categorieen
 				     where cInfo.ID == catID
 				     select cInfo);
 
 			Assert.IsTrue(query.Count() > 0);
 		}
 
-		/*        [TestMethod]
-			[ExpectedExceptionAttribute(typeof(NotImplementedException))]
-			public void CategorieAanmakenLegeNaam()
-			{
-			    catlijst.Add(gpm.CategorieToevoegen(groepID, "", ""));
-			}
-
-			[TestMethod]
-			[ExpectedExceptionAttribute(typeof(NotImplementedException))]
-			public void CategorieAanmakenGeenNaam()
-			{
-			    catlijst.Add(gpm.CategorieToevoegen(groepID, null, ""));
-			}
-
-			[TestMethod]
-			[ExpectedExceptionAttribute(typeof(NotImplementedException))]
-			public void CategorieAanmakenGeenCode()
-			{
-			    catlijst.Add(gpm.CategorieToevoegen(groepID, "kookies", null));
-			}
-
-			[TestMethod]
-			[ExpectedExceptionAttribute(typeof(NotImplementedException))]
-			public void CategorieAanmakenOnbestaandeGroep()
-			{
-			    catlijst.Add(gpm.CategorieToevoegen(0, "kookies", ""));
-			}
-
-			[TestMethod]
-			[ExpectedExceptionAttribute(typeof(NotImplementedException))]
-			public void CategorieAanmakenBestaandeNaam()
-			{
-			    catlijst.Add(gpm.CategorieToevoegen(groepID, "Kookies", ""));
-			    catlijst.Add(gpm.CategorieToevoegen(groepID, "Kookies", ""));
-			}*/
 	}
 }

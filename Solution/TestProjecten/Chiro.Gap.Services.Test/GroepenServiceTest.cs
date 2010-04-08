@@ -93,65 +93,41 @@ namespace Chiro.Gap.Services.Test
 			#endregion
 
 			#region Act
-			GroepInfo g = svc.Ophalen(TestInfo.GROEPID, GroepsExtras.Geen);
+			GroepInfo g = svc.InfoOphalen(TestInfo.GROEPID);
 			#endregion
 
 			#region Assert
 			Assert.IsTrue(g.ID == TestInfo.GROEPID);
-			Assert.IsTrue(g.Categorie.Count() == 0);
-			Assert.IsTrue(g.AfdelingenDitWerkJaar.Count() == 0);
 			#endregion
 		}
 
 		/// <summary>
-		/// Ophalen groepsinfo met categorieën
+		/// Ophalen groepsinfo met categorieën en afdelingen
 		/// </summary>
 		[TestMethod]
-		public void GroepOphalenMetCategorieen()
+		public void GroepDetailOphalen()
 		{
 			#region Arrange
 			IGroepenService svc = Factory.Maak<GroepenService>();
 			#endregion
 
 			#region Act
-			GroepInfo g = svc.Ophalen(TestInfo.GROEPID, GroepsExtras.Categorieen);
+			GroepDetail g = svc.DetailOphalen(TestInfo.GROEPID);
 
-			CategorieInfo categorie = (from cat in g.Categorie
+			CategorieInfo categorie = (from cat in g.Categorieen
 					           where cat.ID == TestInfo.CATEGORIEID
 					           select cat).FirstOrDefault();
-			#endregion
 
-			#region Assert
-			Assert.IsTrue(g.ID == TestInfo.GROEPID);
-			Assert.IsTrue(categorie != null);
-			Assert.IsTrue(g.AfdelingenDitWerkJaar.Count() == 0);
-			#endregion
-		}
-
-		/// <summary>
-		/// Ophalen groepsinfo met afdelingen
-		/// </summary>
-		[TestMethod]
-		public void GroepOphalenMetAfdelingen()
-		{
-			#region Arrange
-			IGroepenService svc = Factory.Maak<GroepenService>();
-			#endregion
-
-			#region Act
-			GroepInfo g = svc.Ophalen(TestInfo.GROEPID, GroepsExtras.AfdelingenHuidigWerkJaar);
-
-			AfdelingInfo afdeling = (from afd in g.AfdelingenDitWerkJaar
+			AfdelingInfo afdeling = (from afd in g.Afdelingen
 						 where afd.AfdelingID == TestInfo.AFDELING1ID
 						 select afd).FirstOrDefault();
 			#endregion
 
 			#region Assert
 			Assert.IsTrue(g.ID == TestInfo.GROEPID);
+			Assert.IsTrue(categorie != null);
 			Assert.IsTrue(afdeling != null);
-			Assert.IsTrue(g.Categorie.Count() == 0);
 			#endregion
 		}
-
 	}
 }

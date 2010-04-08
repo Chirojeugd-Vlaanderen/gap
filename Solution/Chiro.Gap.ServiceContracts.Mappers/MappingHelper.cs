@@ -31,10 +31,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst => dst.Plaats, opt => opt.MapFrom(
 					src => src is ChiroGroep ? (src as ChiroGroep).Plaats : Properties.Resources.NietVanToepassing))
 				.ForMember(dst => dst.StamNummer, opt => opt.MapFrom(
-					src => src.Code == null ? String.Empty : src.Code.ToUpper()))
-				.ForMember(
-					dst => dst.AfdelingenDitWerkJaar,
-					opt => opt.MapFrom(src => new List<AfdelingInfo>()));
+					src => src.Code == null ? String.Empty : src.Code.ToUpper()));
 
 			// Als de namen van PersoonInfo wat anders gekozen zouden zijn, dan zou dat wel wat
 			// `ForMember'-regels uitsparen.

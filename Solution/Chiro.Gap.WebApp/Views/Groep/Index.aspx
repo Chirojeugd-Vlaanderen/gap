@@ -6,23 +6,23 @@
         <legend>Algemene groepsinfo</legend>    
         
         <p>
-        <%=Html.LabelFor(mdl => mdl.Info.ID) %>
-        <%=Html.DisplayFor(mdl => mdl.Info.ID) %>
+        <%=Html.LabelFor(mdl => mdl.Detail.ID) %>
+        <%=Html.DisplayFor(mdl => mdl.Detail.ID)%>
         </p>
 
         <p>
-        <%=Html.LabelFor(mdl => mdl.Info.Naam) %>
-        <%=Html.DisplayFor(mdl => mdl.Info.Naam) %>
+        <%=Html.LabelFor(mdl => mdl.Detail.Naam)%>
+        <%=Html.DisplayFor(mdl => mdl.Detail.Naam)%>
         </p>
 
         <p>
-        <%=Html.LabelFor(mdl => mdl.Info.Plaats) %>
-        <%=Html.DisplayFor(mdl => mdl.Info.Plaats) %>
+        <%=Html.LabelFor(mdl => mdl.Detail.Plaats)%>
+        <%=Html.DisplayFor(mdl => mdl.Detail.Plaats)%>
         </p>
        
         <p>
-        <%=Html.LabelFor(mdl => mdl.Info.StamNummer) %>
-        <%=Html.DisplayFor(mdl => mdl.Info.StamNummer) %>             
+        <%=Html.LabelFor(mdl => mdl.Detail.StamNummer)%>
+        <%=Html.DisplayFor(mdl => mdl.Detail.StamNummer)%>             
         </p>
         
     </fieldset>
@@ -31,7 +31,7 @@
     
     <ul>
     <%
-        foreach (var afd in Model.Info.AfdelingenDitWerkJaar.OrderByDescending(afd=>afd.GeboorteJaarVan))
+        foreach (var afd in Model.Detail.Afdelingen.OrderByDescending(afd => afd.GeboorteJaarVan))
         {
             %>
             <li><%=Html.Encode(String.Format("{0} - {1} ({2})", afd.Afkorting, afd.Naam, afd.OfficieleAfdelingNaam)) %></li>
@@ -45,7 +45,7 @@
 
     <ul>
     <%
-        foreach (var cat in Model.Info.Categorie.OrderBy(cat=>cat.Code))
+        foreach (var cat in Model.Detail.Categorieen.OrderBy(cat => cat.Code))
         {
             %>
             <li>

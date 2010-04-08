@@ -20,7 +20,8 @@ namespace Chiro.Gap.WebApp.Models
 	/// </remarks>
 	public class GroepsInstellingenModel : IMasterViewModel
 	{
-		public GroepInfo Info { get; set; }
+		public GroepDetail Detail { get; set; }
+		public GroepInfo Info { get { return Detail; } }
 		public CategorieInfo NieuweCategorie { get; set; }
 
 		#region IMasterViewModel Members

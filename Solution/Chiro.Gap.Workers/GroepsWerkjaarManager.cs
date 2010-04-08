@@ -172,45 +172,6 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
-		/// <summary>
-		/// Haalt het huidige werkjaar op (beginjaar) voor een bepaalde groep
-		/// </summary>
-		/// <param name="groepID">ID van de groep</param>
-		/// <returns>Beginjaar van het huidige werkjaar voor die bepaalde groep</returns>
-		public int HuidigWerkJaarGet(int groepID)
-		{
-			// TODO: Beter documenteren!
-
-			if (_autorisatieMgr.IsGavGroep(groepID))
-			{
-				var begindatumnieuwwerkjaar = Properties.Settings.Default.WerkjaarStartNationaal;
-				var deadlinenieuwwerkjaar = Properties.Settings.Default.WerkjaarVerplichteOvergang;
-				var huidigedatum = System.DateTime.Today;
-
-				if (compare(huidigedatum.Day, huidigedatum.Month, begindatumnieuwwerkjaar.Day, begindatumnieuwwerkjaar.Month) < 0)
-				{
-					return huidigedatum.Year;
-				}
-				else
-				{
-					if (compare(deadlinenieuwwerkjaar.Day, deadlinenieuwwerkjaar.Month, huidigedatum.Day, huidigedatum.Month) < 0)
-					{
-						return huidigedatum.Year;
-					}
-					else
-					{
-						int werkjaar = _groepsWjDao.RecentsteOphalen(groepID).WerkJaar;
-						Debug.Assert(huidigedatum.Year == werkjaar || werkjaar + 1 == huidigedatum.Year);
-						return werkjaar;
-					}
-				}
-			}
-			else
-			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Properties.Resources.GeenGavGroep);
-			}
-		}
-
 		// WTF???
 		private int compare(int dag1, int maand1, int dag2, int maand2)
 		{

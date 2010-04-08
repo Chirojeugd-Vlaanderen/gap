@@ -66,35 +66,62 @@ namespace Chiro.Gap.Services
 		/// Ophalen van Groepsinformatie
 		/// </summary>
 		/// <param name="groepID">GroepID van groep waarvan we de informatie willen opvragen</param>
-		/// <param name="extras">Bitset, die aangeeft welke extra informatie er opgehaald moet worden</param>
 		/// <returns>
-		/// GroepInfo-structuur met de gevraagde informatie over de groep met id <paramref name="groepID"/>
+		/// De gevraagde informatie over de groep met id <paramref name="groepID"/>
 		/// </returns>
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public GroepInfo Ophalen(int groepID, GroepsExtras extras)
+		public GroepInfo InfoOphalen(int groepID)
 		{
 			Groep g;
-			GroepInfo resultaat;
 
-			if ((extras & GroepsExtras.Categorieen) == GroepsExtras.Categorieen)
-			{
-				g = _groepenMgr.OphalenMetCategorieen(groepID);
-			}
-			else
-			{
-				g = _groepenMgr.Ophalen(groepID);
-			}
+			Mapper.CreateMap<Groep, GroepInfo>()
+				.ForMember(dst => dst.Plaats, opt => opt.MapFrom(
+					src => src is ChiroGroep ? (src as ChiroGroep).Plaats : String.Empty))
+				.ForMember(dst => dst.StamNummer, opt => opt.MapFrom(
+					src => src.Code == null ? String.Empty : src.Code.ToUpper()));
 
-			resultaat = Mapper.Map<Groep, GroepInfo>(g);
+			g = _groepenMgr.Ophalen(groepID);
+			return Mapper.Map<Groep, GroepInfo>(g);
+		}
 
-			if ((extras & GroepsExtras.AfdelingenHuidigWerkJaar) == GroepsExtras.AfdelingenHuidigWerkJaar)
-			{
-				int gwjID = _groepsWerkJaarManager.RecentsteGroepsWerkJaarIDGet(groepID);
-				GroepsWerkJaar gwj = _groepsWerkJaarManager.Ophalen(gwjID, GroepsWerkJaarExtras.Afdelingen);
+		/// <summary>
+		/// Ophalen van gedetailleerde informatie over de groep met ID <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvoor de informatie opgehaald moet worden</param>
+		/// <returns>Groepsdetails, inclusief categorieen en huidige actieve afdelingen</returns>
+		public GroepDetail DetailOphalen(int groepID)
+		{
+			Groep g;
+			GroepDetail resultaat = new GroepDetail();
 
-				resultaat.AfdelingenDitWerkJaar = Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingInfo>>(gwj.AfdelingsJaar.ToList());
-			}
+			Mapper.CreateMap<Groep, GroepDetail>()
+				.ForMember(dst => dst.Plaats, opt => opt.MapFrom(
+					src => src is ChiroGroep ? (src as ChiroGroep).Plaats : String.Empty))
+				.ForMember(dst => dst.StamNummer, opt => opt.MapFrom(
+					src => src.Code == null ? String.Empty : src.Code.ToUpper()))
+				.ForMember(dst => dst.Categorieen, opt => opt.MapFrom(
+					src => src.Categorie))
+				.ForMember(dst => dst.Afdelingen, opt => opt.Ignore());
+
+			Mapper.CreateMap<AfdelingsJaar, AfdelingInfo>()
+				.ForMember(
+				dst => dst.AfdelingsJaarID,
+				opt => opt.MapFrom(src => src.ID))
+				.ForMember(
+				dst => dst.Naam,
+				opt => opt.MapFrom(src => src.Afdeling.Naam))
+				.ForMember(
+				dst => dst.AfdelingsJaarMagVerwijderdWorden,
+				opt => opt.MapFrom(src => (src.Kind == null && src.Leiding == null) || (src.Kind != null && src.Leiding != null && src.Kind.Count + src.Leiding.Count == 0)))
+				.ForMember(
+				dst => dst.Afkorting,
+				opt => opt.MapFrom(src => src.Afdeling.Afkorting));
+
+
+			g = _groepenMgr.OphalenMetCategorieen(groepID);
+			Mapper.Map<Groep, GroepDetail>(g, resultaat);
+
+			resultaat.Afdelingen = Mapper.Map<IEnumerable<AfdelingsJaar>, List<AfdelingInfo>>(
+				_groepsWerkJaarManager.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen).AfdelingsJaar);
 
 			return resultaat;
 		}
@@ -115,25 +142,6 @@ namespace Chiro.Gap.Services
 		public int RecentsteGroepsWerkJaarIDGet(int groepID)
 		{
 			return _groepsWerkJaarManager.RecentsteGroepsWerkJaarIDGet(groepID);
-		}
-
-		/// <summary>
-		/// TODO: Documentatie bijwerken, en naam veranderen in HuidgWerkJaarOphalen
-		/// (of iets gelijkaardig; zie coding standaard). 
-		/// Deze documentatie is alleszins onvolledig, want ze gaat ervan uit dat groepen
-		/// nooit ophouden te bestaan.  Wat moet deze functie teruggeven als de groep
-		/// geen werking meer heeft?
-		/// <para/>
-		/// Geeft het huidige werkjaar van de gegeven groep terug. Dit is gegarandeerd het huidige jaartal wanneer de
-		/// huidige dag tussen de deadline voor het nieuwe werkjaar en de begindatum van het volgende werkjaar ligt.
-		/// In de tussenperiode hangt het ervan af of de groep de overgang al heeft gemaakt, en dit is te zien aan 
-		/// het laatst gemaakte groepswerkjaar
-		/// </summary>
-		/// <param name="groepID">ID voor de groep waarvan het huidige werkjaar opgehaald wordt</param>
-		/// <returns>Een int die het werkjaar voorstelt (bv. 2009 voor werkjaar 2009-2010)</returns>
-		public int HuidigWerkJaarGet(int groepID)
-		{
-			return _groepsWerkJaarManager.HuidigWerkJaarGet(groepID);
 		}
 
 		#endregion

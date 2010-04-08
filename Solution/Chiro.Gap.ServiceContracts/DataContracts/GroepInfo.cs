@@ -12,6 +12,9 @@ using System.Text;
 
 namespace Chiro.Gap.ServiceContracts
 {
+	/// <summary>
+	/// Datacontract voor beperkte informatie over een groep
+	/// </summary>
 	[DataContract]
 	public class GroepInfo
 	{
@@ -40,23 +43,5 @@ namespace Chiro.Gap.ServiceContracts
 		[DataMember]
 		[DisplayName("Stamnummer")]
 		public string StamNummer { get; set; }
-
-		/// <summary>
-		/// Lijst met info over afdelingen van huidig werkjaar.
-		/// </summary>
-		/// <remarks>
-		/// Kan <c>null</c> blijven indien niet relevant.
-		/// </remarks>
-		[DataMember]
-		public IList<AfdelingInfo> AfdelingenDitWerkJaar { get; set; }
-
-		/// <summary>
-		/// Lijst met info over afdelingen van categorieën.
-		/// </summary>
-		/// <remarks>
-		/// Kan <c>null</c> blijven indien niet relevant.
-		/// </remarks>
-		[DataMember]
-		public IList<CategorieInfo> Categorie { get; set; }
 	}
 }

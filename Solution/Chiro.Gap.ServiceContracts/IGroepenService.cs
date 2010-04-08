@@ -24,12 +24,19 @@ namespace Chiro.Gap.ServiceContracts
 		/// Ophalen van Groepsinformatie
 		/// </summary>
 		/// <param name="groepID">GroepID van groep waarvan we de informatie willen opvragen</param>
-		/// <param name="extras">Bitset, die aangeeft welke extra informatie er opgehaald moet worden</param>
 		/// <returns>
-		/// GroepInfo-structuur met de gevraagde informatie over de groep met id <paramref name="groepID"/>
+		/// De gevraagde informatie over de groep met id <paramref name="groepID"/>
 		/// </returns>
 		[OperationContract]
-		GroepInfo Ophalen(int groepID, GroepsExtras extras);
+		GroepInfo InfoOphalen(int groepID);
+
+		/// <summary>
+		/// Ophalen van gedetailleerde informatie over de groep met ID <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvoor de informatie opgehaald moet worden</param>
+		/// <returns>Groepsdetails, inclusief categorieen en huidige actieve afdelingen</returns>
+		[OperationContract]
+		GroepDetail DetailOphalen(int groepID);
 
 		/// <summary>
 		/// </summary>
@@ -72,13 +79,6 @@ namespace Chiro.Gap.ServiceContracts
 		/// <returns>ID van het recentste GroepsWerkJaar</returns>
 		[OperationContract]
 		int RecentsteGroepsWerkJaarIDGet(int groepID);
-
-		// TODO: Hernoemen naar HuidigWerkJaarOphalen of iets
-		// gelijkaardig.  Een groepswerkjaar is een combinatie
-		// groep en werkjaar, en ik vermoed dat onderstaande functie
-		// bedoeld is om een jaartal te retourneren.
-		[OperationContract]
-		int HuidigWerkJaarGet(int groepID);
 
 		// Alles om gelieerdepersonen op te halen zit in igelieerdepersonenservice
 
