@@ -487,6 +487,20 @@ namespace Chiro.Gap.Services
 			return (cat == null) ? 0 : cat.ID;
 		}
 
+		/// <summary>
+		/// Zoekt een categorie op, op basis van <paramref name="groepID"/> en
+		/// <paramref name="categorieCode"/>
+		/// </summary>
+		/// <param name="groepID">ID van de groep waaraan de categorie gekoppeld moet zijn.</param>
+		/// <param name="categorieCode">Code van de categorie</param>
+		/// <returns>De categorie met code <paramref name="CategorieCode"/> die van toepassing is op
+		/// de groep met ID <paramref name="groepID"/>.</returns>
+		public CategorieInfo CategorieOpzoeken(int groepID, string categorieCode)
+		{
+			Mapper.CreateMap<Categorie, CategorieInfo>();
+			return Mapper.Map<Categorie, CategorieInfo>(_categorieenMgr.Ophalen(groepID, categorieCode));
+		}
+
 		#endregion categorieën
 
 		#region adressen

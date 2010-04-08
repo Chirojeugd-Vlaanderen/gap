@@ -216,6 +216,17 @@ namespace Chiro.Gap.ServiceContracts
 		void CategorieAanpassen(int categorieID, string nieuwenaam);
 
 		/// <summary>
+		/// Zoekt een categorie op, op basis van <paramref name="groepID"/> en
+		/// <paramref name="categorieCode"/>
+		/// </summary>
+		/// <param name="groepID">ID van de groep waaraan de categorie gekoppeld moet zijn.</param>
+		/// <param name="categorieCode">Code van de categorie</param>
+		/// <returns>De categorie met code <paramref name="CategorieCode"/> die van toepassing is op
+		/// de groep met ID <paramref name="groepID"/>.</returns>
+		[OperationContract]
+		CategorieInfo CategorieOpzoeken(int groepID, string categorieCode);
+
+		/// <summary>
 		/// Zoekt de categorieID op van de categorie bepaald door de gegeven 
 		/// <paramref name="groepID"/> en <paramref name="code"/>.
 		/// </summary>
@@ -225,15 +236,6 @@ namespace Chiro.Gap.ServiceContracts
 		int CategorieIDOphalen(int groepID, string code);
 
 		#endregion categorieën
-
-		/*TODO
-            bivakorganiseren(g, b)
-            stelGAVin
-            verwijderGAV (JV: ik zou hier de 'VervalDatum' op nu instellen, zodat geregistreerd blijft dat iemand ooit gav was)
-            maaknieuwesatelliet(g, s)
-            afdelingenreorganiseren(g) (JV: bedoel je het bewaren van de afdelingen gekoppeld aan de groep?)
-            afdelingsjaarverwijderen(g) (JV: kan enkel als er geen leden in dat afdelingsjaar zijn/waren)
-         */
 
 		#region adressen
 		[OperationContract]
