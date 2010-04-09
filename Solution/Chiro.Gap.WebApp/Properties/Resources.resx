@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AfdelingsCodeBestaatAl" xml:space="preserve">
+    <value>Er bestaat al een afdeling met de code '{0}': {1} ({0}).</value>
+  </data>
+  <data name="AfdelingsNaamBestaatAl" xml:space="preserve">
+    <value>Er bestaat al een afdeling met de naam '{1}': {1} ({0}).</value>
+  </data>
   <data name="AlgemeneValidatieFout" xml:space="preserve">
     <value>De opgegeven waarde voldoet niet aan de voorwaarden.</value>
   </data>
@@ -164,6 +170,9 @@
   </data>
   <data name="NiemandGeselecteerdFout" xml:space="preserve">
     <value>Je hebt nog niemand geselecteerd, dus kun je die actie niet uitvoeren</value>
+  </data>
+  <data name="NieuweAfdelingTitel" xml:space="preserve">
+    <value>Nieuwe afdeling</value>
   </data>
   <data name="NieuwePersoonTitel" xml:space="preserve">
     <value>Nieuwe persoon</value>

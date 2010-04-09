@@ -215,8 +215,22 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AfdelingAanmaken(int groepID, string naam, string afkorting)
 		{
-			Groep g = _groepenMgr.Ophalen(groepID);
-			_groepenMgr.AfdelingToevoegen(g, naam, afkorting);
+			Groep g = _groepenMgr.Ophalen(groepID, GroepsExtras.AlleAfdelingen);
+			try
+			{
+				_groepenMgr.AfdelingToevoegen(g, naam, afkorting);
+			}
+			catch (BlokkerendeObjectenException<BestaatAlFoutCode, Afdeling> ex)
+			{
+				var fault = Mapper.Map<
+					BlokkerendeObjectenException<BestaatAlFoutCode, Afdeling>,
+					BlokkerendeObjectenFault<BestaatAlFoutCode, AfdelingsNaamInfo>>(ex);
+
+				throw new FaultException<BlokkerendeObjectenFault<
+					BestaatAlFoutCode, 
+					AfdelingsNaamInfo>>(fault);
+			}
+
 			_groepenMgr.Bewaren(g, e => e.Afdeling);
 		}
 
@@ -331,10 +345,10 @@ namespace Chiro.Gap.Services
 		/// <returns>Info over de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarID)
+		public IList<AfdelingsNaamInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarID)
 		{
 			IList<Afdeling> ongebruikteAfdelingen = _groepsWerkJaarManager.OngebruikteAfdelingenOphalen(groepswerkjaarID);
-			return Mapper.Map<IList<Afdeling>, IList<AfdelingInfo>>(ongebruikteAfdelingen);
+			return Mapper.Map<IList<Afdeling>, IList<AfdelingsNaamInfo>>(ongebruikteAfdelingen);
 		}
 
 		#endregion

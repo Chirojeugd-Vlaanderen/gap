@@ -14,19 +14,13 @@ namespace Chiro.Gap.Orm
 	/// <summary>
 	/// Enum die aangeeft welke extra's er meegeleverd kunnen worden met een groep.
 	/// </summary>
-	/// <remarks>Er zullen nog extra members aan deze enum toegevoegd moeten worden</remarks>
-	[DataContract]
+	/// <remarks>Dit is bewust geen datacontract meer.  Deze enums mogen maar zo weinig mogelijk via de
+	/// service geexposet worden.</remarks>
 	[Flags]
 	public enum GroepsExtras
 	{
-		[EnumMember]
 		Geen = 0x00,
-		[EnumMember]
-		AfdelingenHuidigWerkJaar = 0x01,
-		[EnumMember]
-		Categorieen = 0x02,
-		[EnumMember]
-		Alles = AfdelingenHuidigWerkJaar | Categorieen
+		AlleAfdelingen = 0x01,
 	}
 
 	/// <summary>

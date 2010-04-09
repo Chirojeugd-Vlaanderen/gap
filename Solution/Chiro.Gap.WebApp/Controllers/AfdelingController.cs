@@ -12,8 +12,11 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.Fouten;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
+using System.ServiceModel;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -43,7 +46,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// lijst met de AfdelingInfo voor Afdelingen die in het opgegeven werkjaar voorkomen als AfdelingsJaar
 
 			model.OngebruikteAfdelingLijst
-				= ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>(svc => svc.OngebruikteAfdelingenOphalen(groepsWerkJaarID));
+				= ServiceHelper.CallService<IGroepenService, IList<AfdelingsNaamInfo>>(svc => svc.OngebruikteAfdelingenOphalen(groepsWerkJaarID));
 
 			model.Titel = "Afdelingen";
 			return View("Index", model);
@@ -58,7 +61,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			model.HuidigeAfdeling = new Afdeling();
 
-			model.Titel = "Nieuwe afdeling";
+			model.Titel = Properties.Resources.NieuweAfdelingTitel; 
 			return View("Nieuw", model);
 		}
 
@@ -67,24 +70,61 @@ namespace Chiro.Gap.WebApp.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Nieuw(Models.AfdelingInfoModel model, int groepID)
 		{
+			model.Titel = Properties.Resources.NieuweAfdelingTitel;
 			BaseModelInit(model, groepID);
-			try
+
+			if (ModelState.IsValid)
 			{
-				ServiceHelper.CallService<IGroepenService>(e => e.AfdelingAanmaken(groepID, model.HuidigeAfdeling.Naam, model.HuidigeAfdeling.Afkorting));
+				try
+				{
+					ServiceHelper.CallService<IGroepenService>(e => e.AfdelingAanmaken(groepID, model.HuidigeAfdeling.Naam, model.HuidigeAfdeling.Afkorting));
 
-				TempData["feedback"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+					TempData["feedback"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 
-				// (er wordt hier geredirect ipv de view te tonen,
-				// zodat je bij een 'refresh' niet de vraag krijgt
-				// of je de gegevens opnieuw wil posten.)
-				return RedirectToAction("Index");
+					// (er wordt hier geredirect ipv de view te tonen,
+					// zodat je bij een 'refresh' niet de vraag krijgt
+					// of je de gegevens opnieuw wil posten.)
+					return RedirectToAction("Index");
+				}
+				catch (FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, AfdelingsNaamInfo>> ex)
+				{
+					switch (ex.Detail.FoutCode)
+					{
+						case BestaatAlFoutCode.AfdelingsCodeBestaatAl:
+							{
+								ModelState.AddModelError(
+									"HuidigeAfdeling.Afkorting",
+									string.Format(
+										Properties.Resources.AfdelingsCodeBestaatAl,
+										ex.Detail.Objecten.First().Afkorting,
+										ex.Detail.Objecten.First().Naam));
+								break;
+							}
+						case BestaatAlFoutCode.AfdelingsNaamBestaatAl:
+							{
+								ModelState.AddModelError(
+									"HuidigeAfdeling.Naam",
+									string.Format(
+										Properties.Resources.AfdelingsNaamBestaatAl,
+										ex.Detail.Objecten.First().Afkorting,
+										ex.Detail.Objecten.First().Naam));
+								break;
+							}
+						default:
+							{
+								// Dit was niet verwacht
+								throw;
+							}
+					}
+
+					return View(model);
+				}
 			}
-			catch (Exception ex)
+			else
 			{
-				// TODO: duidelijke foutmelding (is nu meestal "An error has occurred. Check InnerException for details") - ticket #325 
-				// Mogelijkheden: afkorting bestaat al of afdelingsnaam bestaat al
-				TempData["feedback"] = ex.Message.ToString();
-				return RedirectToAction("Nieuw");
+				// Modelstate bevat ongeldige waarden; toon de pagina opnieuw
+
+				return View(model);
 			}
 		}
 

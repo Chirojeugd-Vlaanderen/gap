@@ -23,6 +23,10 @@ namespace Chiro.Gap.Fouten
 		[EnumMember]
 		FunctieNaamBestaatAl,		// er is al een functie met die naam
 		[EnumMember]
+		AfdelingsCodeBestaatAl,		// er is al een afdeling met die code
+		[EnumMember]
+		AfdelingsNaamBestaatAl,		// er is al een afdeling met die naam
+		[EnumMember]
 		LidBestaatAl,			// de persoon is al lid in het gegeven groepswerkjaar
 		[EnumMember]
 		PersoonBestaatAl,		// er is een gelijkaardige persoon gevonden

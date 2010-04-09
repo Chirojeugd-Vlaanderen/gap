@@ -45,12 +45,12 @@
 <th>Afdeling</th><th>Afkorting</th><th>Actie</th>
 </tr>
 
-<% foreach (AfdelingInfo ai in Model.OngebruikteAfdelingLijst)
+<% foreach (AfdelingsNaamInfo ai in Model.OngebruikteAfdelingLijst)
    { %>
     <tr>
         <td><%=ai.Naam %></td>
         <td><%=ai.Afkorting %></td>
-        <td><%=Html.ActionLink("Activeren in huidig werkjaar", "Activeren", new { Controller = "Afdeling", id = ai.AfdelingID } )%></td>
+        <td><%=Html.ActionLink("Activeren in huidig werkjaar", "Activeren", new { Controller = "Afdeling", id = ai.ID } )%></td>
     </tr>
 <% } %>
 

@@ -125,7 +125,8 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Maakt een nieuwe afdeling voor een groep, zonder te persisteren
 		/// </summary>
-		/// <param name="groep">Groep waarvoor afdeling moet worden gemaakt</param>
+		/// <param name="groep">Groep waarvoor afdeling moet worden gemaakt, met daaraan gekoppeld
+		/// de bestaande afdelingen</param>
 		/// <param name="naam">Naam van de afdeling</param>
 		/// <param name="afkorting">Handige afkorting voor in schemaatjes</param>
 		/// <returns>De toegevoegde (maar nog niet gepersisteerde) afdeling</returns>
@@ -133,6 +134,30 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(groep.ID))
 			{
+				// Controleren of de afdeling nog niet bestaat
+
+				var bestaand = from afd in groep.Afdeling
+					       where String.Compare(afd.Afkorting, afkorting, true) == 0
+					       select afd;
+
+				if (bestaand.FirstOrDefault() != null)
+				{
+					// Deze exception moet nog vervangen worden; zie #435.
+					throw new BlokkerendeObjectenException<BestaatAlFoutCode, Afdeling>(
+						BestaatAlFoutCode.AfdelingsCodeBestaatAl, bestaand.FirstOrDefault());
+				}
+
+				bestaand = from afd in groep.Afdeling
+					   where String.Compare(afd.Naam, naam, true) == 0
+					   select afd;
+
+				if (bestaand.FirstOrDefault() != null)
+				{
+					// Deze exception moet nog vervangen worden; zie #435.
+					throw new BlokkerendeObjectenException<BestaatAlFoutCode, Afdeling>(
+						BestaatAlFoutCode.AfdelingsNaamBestaatAl, bestaand.FirstOrDefault());
+				}
+
 				Afdeling a = new Afdeling
 				{
 					Afkorting = afkorting,
@@ -241,12 +266,31 @@ namespace Chiro.Gap.Workers
 		/// Haalt een groepsobject op zonder gerelateerde entiteiten
 		/// </summary>
 		/// <param name="groepID">ID van de op te halen groep</param>
+		/// <param name="extras">Geeft aan of er gekoppelde entiteiten mee opgehaald moeten worden.</param>
 		/// <returns>De groep met de opgegeven ID <paramref name="groepID"/></returns>
 		public Groep Ophalen(int groepID)
 		{
+			return Ophalen(groepID, GroepsExtras.Geen);
+		}
+
+		/// <summary>
+		/// Haalt een groepsobject op
+		/// </summary>
+		/// <param name="groepID">ID van de op te halen groep</param>
+		/// <param name="extras">Geeft aan of er gekoppelde entiteiten mee opgehaald moeten worden.</param>
+		/// <returns>De groep met de opgegeven ID <paramref name="groepID"/></returns>
+		public Groep Ophalen(int groepID, GroepsExtras extras)
+		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				return _groepenDao.Ophalen(groepID);
+				if ((extras | GroepsExtras.AlleAfdelingen) != 0)
+				{
+					return _groepenDao.Ophalen(groepID, grp => grp.Afdeling);
+				}
+				else
+				{
+					return _groepenDao.Ophalen(groepID);
+				}
 			}
 			else
 			{

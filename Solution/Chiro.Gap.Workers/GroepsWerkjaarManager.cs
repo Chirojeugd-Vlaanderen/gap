@@ -193,7 +193,7 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Converteert de GroepsExtras <paramref name="extras"/> naar lambda-expressies die mee naar 
+		/// Converteert de GroepsWerkJaarExtras <paramref name="extras"/> naar lambda-expressies die mee naar 
 		/// de data access moeten om de extra's daadwerkelijk op te halen.
 		/// </summary>
 		/// <param name="extras">Te converteren groepsextra's</param>

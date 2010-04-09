@@ -21,6 +21,14 @@ namespace Chiro.Gap.Fouten.Exceptions
 		private IEnumerable<TEntiteit> _objecten;
 
 		/// <summary>
+		/// Creeert een exception met gegeven foutcode en 1 blokkerende object
+		/// </summary>
+		/// <param name="foutCode">Foutcode voor de exception</param>
+		/// <param name="probleemObject">object dat het probleem veroorzaakt</param>
+		public BlokkerendeObjectenException(TFoutCode foutCode, TEntiteit probleemObject)
+			: this(foutCode, new TEntiteit[] {probleemObject}, null, null) { }
+
+		/// <summary>
 		/// Creeert een exception met gegeven foutcode en blokkerende objecten
 		/// </summary>
 		/// <param name="foutCode">Foutcode voor de exception</param>

@@ -15,12 +15,19 @@
     </ul>
     
     <fieldset>
+    <legend>Nieuwe afdeling</legend>
     
-    <label for="Afdeling_Naam">Naam</label> 
-    <%=Html.TextBox("HuidigeAfdeling.Naam")%><br />
+    <%=Html.LabelFor(mdl => mdl.HuidigeAfdeling.Naam) %>
+    <%=Html.EditorFor(mdl => mdl.HuidigeAfdeling.Naam) %>
+    <br />
+    <%=Html.ValidationMessageFor(mdl => mdl.HuidigeAfdeling.Naam) %>
+    <br />
+
+    <%=Html.LabelFor(mdl => mdl.HuidigeAfdeling.Afkorting) %>
+    <%=Html.EditorFor(mdl => mdl.HuidigeAfdeling.Afkorting)%>
+    <br />
+    <%=Html.ValidationMessageFor(mdl => mdl.HuidigeAfdeling.Afkorting)%>
     
-    <label for="Afdeling_Afkorting">Afkorting</label> 
-    <%=Html.TextBox("HuidigeAfdeling.Afkorting")%><br />
     
     </fieldset>
     

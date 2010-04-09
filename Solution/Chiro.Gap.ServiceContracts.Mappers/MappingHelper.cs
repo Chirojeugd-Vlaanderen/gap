@@ -88,15 +88,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				dst => dst.Afkorting,
 				opt => opt.MapFrom(src => src.Afdeling.Afkorting));
 
-			// AfdelingInfo is eigenlijk bedoeld voor AfdelingsJaar, en niet voor Afdeling.
-			// De niet-gebruikte velden zet ik gewoon op 0.
-			Mapper.CreateMap<Afdeling, AfdelingInfo>()
-				.ForMember(dst => dst.AfdelingID, opt => opt.MapFrom(src => src.ID))
-				.ForMember(dst => dst.AfdelingsJaarID, opt => opt.MapFrom(src => 0))
-				.ForMember(dst => dst.OfficieleAfdelingNaam, opt => opt.MapFrom(src => String.Empty))
-				.ForMember(dst => dst.GeboorteJaarVan, opt => opt.MapFrom(src => 0))
-				.ForMember(dst => dst.GeboorteJaarTot, opt => opt.MapFrom(src => 0))
-				.ForMember(dst => dst.AfdelingsJaarMagVerwijderdWorden, opt => opt.MapFrom(src => false));
+			Mapper.CreateMap<Afdeling, AfdelingsNaamInfo>();
 
 			Mapper.CreateMap<Functie, FunctieInfo>();
 
@@ -206,6 +198,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.Objecten.Take(Properties.Settings.Default.KleinAantal)));
 			Mapper.CreateMap<BlokkerendeObjectenException<BestaatAlFoutCode, PersoonsAdres>,
 					BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>>();
+			Mapper.CreateMap<BlokkerendeObjectenException<BestaatAlFoutCode, Afdeling>,
+					BlokkerendeObjectenFault<BestaatAlFoutCode, AfdelingsNaamInfo>>();
 			#endregion
 
 			// Wel even nakijken of die automagie overal gewerkt heeft:
