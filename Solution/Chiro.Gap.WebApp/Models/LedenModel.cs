@@ -21,7 +21,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Rij met alle afdelingen van het groepswerkjaar
 		/// </summary>
-		public IEnumerable<AfdelingInfo> AlleAfdelingen { get; set; }
+		public IEnumerable<AfdelingDetail> AlleAfdelingen { get; set; }
 
 		/// <summary>
 		/// Bevat de huidige afdelingen van een lid, of de geselecteerde na de ui, voor leiding

@@ -102,7 +102,7 @@ namespace Chiro.Gap.Services
 					src => src.Categorie))
 				.ForMember(dst => dst.Afdelingen, opt => opt.Ignore());
 
-			Mapper.CreateMap<AfdelingsJaar, AfdelingInfo>()
+			Mapper.CreateMap<AfdelingsJaar, AfdelingDetail>()
 				.ForMember(
 				dst => dst.AfdelingsJaarID,
 				opt => opt.MapFrom(src => src.ID))
@@ -110,7 +110,7 @@ namespace Chiro.Gap.Services
 				dst => dst.Naam,
 				opt => opt.MapFrom(src => src.Afdeling.Naam))
 				.ForMember(
-				dst => dst.AfdelingsJaarMagVerwijderdWorden,
+				dst => dst.IsLeeg,
 				opt => opt.MapFrom(src => (src.Kind == null && src.Leiding == null) || (src.Kind != null && src.Leiding != null && src.Kind.Count + src.Leiding.Count == 0)))
 				.ForMember(
 				dst => dst.Afkorting,
@@ -120,7 +120,7 @@ namespace Chiro.Gap.Services
 			g = _groepenMgr.OphalenMetCategorieen(groepID);
 			Mapper.Map<Groep, GroepDetail>(g, resultaat);
 
-			resultaat.Afdelingen = Mapper.Map<IEnumerable<AfdelingsJaar>, List<AfdelingInfo>>(
+			resultaat.Afdelingen = Mapper.Map<IEnumerable<AfdelingsJaar>, List<AfdelingDetail>>(
 				_groepsWerkJaarManager.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen).AfdelingsJaar);
 
 			return resultaat;
@@ -224,11 +224,11 @@ namespace Chiro.Gap.Services
 			{
 				var fault = Mapper.Map<
 					BlokkerendeObjectenException<BestaatAlFoutCode, Afdeling>,
-					BlokkerendeObjectenFault<BestaatAlFoutCode, AfdelingsNaamInfo>>(ex);
+					BlokkerendeObjectenFault<BestaatAlFoutCode, AfdelingInfo>>(ex);
 
 				throw new FaultException<BlokkerendeObjectenFault<
 					BestaatAlFoutCode, 
-					AfdelingsNaamInfo>>(fault);
+					AfdelingInfo>>(fault);
 			}
 
 			_groepenMgr.Bewaren(g, e => e.Afdeling);
@@ -330,10 +330,10 @@ namespace Chiro.Gap.Services
 		/// </returns>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<AfdelingInfo> AfdelingenOphalen(int groepsWerkJaarID)
+		public IList<AfdelingDetail> AfdelingenOphalen(int groepsWerkJaarID)
 		{
 			var groepswerkjaar = _groepsWerkJaarManager.Ophalen(groepsWerkJaarID, GroepsWerkJaarExtras.Afdelingen|GroepsWerkJaarExtras.Leden);
-			return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingInfo>>(groepswerkjaar.AfdelingsJaar.OrderBy(e => e.GeboorteJaarVan).ToList<AfdelingsJaar>());
+			return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingDetail>>(groepswerkjaar.AfdelingsJaar.OrderBy(e => e.GeboorteJaarVan).ToList<AfdelingsJaar>());
 		}
 
 		/// <summary>
@@ -345,10 +345,10 @@ namespace Chiro.Gap.Services
 		/// <returns>Info over de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<AfdelingsNaamInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarID)
+		public IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarID)
 		{
 			IList<Afdeling> ongebruikteAfdelingen = _groepsWerkJaarManager.OngebruikteAfdelingenOphalen(groepswerkjaarID);
-			return Mapper.Map<IList<Afdeling>, IList<AfdelingsNaamInfo>>(ongebruikteAfdelingen);
+			return Mapper.Map<IList<Afdeling>, IList<AfdelingInfo>>(ongebruikteAfdelingen);
 		}
 
 		#endregion

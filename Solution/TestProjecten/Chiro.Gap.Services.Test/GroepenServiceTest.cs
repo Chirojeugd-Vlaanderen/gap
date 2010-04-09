@@ -118,7 +118,7 @@ namespace Chiro.Gap.Services.Test
 					           where cat.ID == TestInfo.CATEGORIEID
 					           select cat).FirstOrDefault();
 
-			AfdelingInfo afdeling = (from afd in g.Afdelingen
+			AfdelingDetail afdeling = (from afd in g.Afdelingen
 						 where afd.AfdelingID == TestInfo.AFDELING1ID
 						 select afd).FirstOrDefault();
 			#endregion

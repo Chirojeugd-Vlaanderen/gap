@@ -344,7 +344,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			if (model.PersoonLidInfo.LidInfo != null)
 			{
-				model.AlleAfdelingen = ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
+				model.AlleAfdelingen = ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>
 				(groep => groep.AfdelingenOphalen(model.PersoonLidInfo.LidInfo.GroepsWerkJaarID));
 			}			
 		}

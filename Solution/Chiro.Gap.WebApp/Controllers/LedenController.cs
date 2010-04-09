@@ -55,11 +55,11 @@ namespace Chiro.Gap.WebApp.Controllers
 			BaseModelInit(model, groepID);
 
 			var list =
-				ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
+				ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>
 				(groep => groep.AfdelingenOphalen(id));
 
-			model.AfdelingsInfoDictionary = new Dictionary<int, AfdelingInfo>();
-			foreach (AfdelingInfo ai in list)
+			model.AfdelingsInfoDictionary = new Dictionary<int, AfdelingDetail>();
+			foreach (AfdelingDetail ai in list)
 			{
 				model.AfdelingsInfoDictionary.Add(ai.AfdelingID, ai);
 			}
@@ -89,7 +89,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					ServiceHelper.CallService<ILedenService, IList<LidInfo>>
 					(lid => lid.PaginaOphalenVolgensAfdeling(id, afdID, out paginas));
 
-				AfdelingInfo af = (from a in model.AfdelingsInfoDictionary.AsQueryable()
+				AfdelingDetail af = (from a in model.AfdelingsInfoDictionary.AsQueryable()
 								   where a.Value.AfdelingID == afdID
 								   select a.Value).FirstOrDefault();
 
@@ -306,7 +306,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="model"></param>
 		public void AfdelingenOphalen(LedenModel model)
 		{
-			model.AlleAfdelingen = ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
+			model.AlleAfdelingen = ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>
 				(svc => svc.AfdelingenOphalen(model.HuidigLid.GroepsWerkJaarID));
 
 			model.AfdelingIDs = model.HuidigLid.AfdelingIdLijst.ToList();

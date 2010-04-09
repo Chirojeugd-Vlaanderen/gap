@@ -23,9 +23,9 @@ namespace Chiro.Gap.WebApp.Models
 
 		public AfdelingsJaar HuidigAfdelingsJaar { get; set; }
 
-		public IList<AfdelingInfo> GebruikteAfdelingLijst { get; set; }
+		public IList<AfdelingDetail> GebruikteAfdelingLijst { get; set; }
 
-		public IList<AfdelingsNaamInfo> OngebruikteAfdelingLijst { get; set; }
+		public IList<AfdelingInfo> OngebruikteAfdelingLijst { get; set; }
 
 		public IList<OfficieleAfdeling> OfficieleAfdelingenLijst { get; set; }
 

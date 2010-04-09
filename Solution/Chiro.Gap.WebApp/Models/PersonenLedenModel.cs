@@ -29,7 +29,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// </summary>
 		public PersoonLidInfo PersoonLidInfo { get; set; }
 
-		public IEnumerable<AfdelingInfo> AlleAfdelingen { get; set; }
+		public IEnumerable<AfdelingDetail> AlleAfdelingen { get; set; }
 
 		/// <summary>
 		/// Standaardconstructor voor GelieerdePersonenModel

@@ -93,7 +93,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="naam">Naam van de afdeling</param>
 		/// <param name="afkorting">Afkorting van de afdeling (voor lijsten, overzichten,...)</param>
 		[OperationContract]
-		[FaultContract(typeof(BlokkerendeObjectenFault<BestaatAlFoutCode, AfdelingsNaamInfo>))]
+		[FaultContract(typeof(BlokkerendeObjectenFault<BestaatAlFoutCode, AfdelingInfo>))]
 		void AfdelingAanmaken(int groepID, string naam, string afkorting);
 
 		[OperationContract]
@@ -152,7 +152,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// ID <paramref name="groepsWerkJaarID"/>
 		/// </returns>
 		[OperationContract]
-		IList<AfdelingInfo> AfdelingenOphalen(int groepsWerkJaarID);
+		IList<AfdelingDetail> AfdelingenOphalen(int groepsWerkJaarID);
 
 		/// <summary>
 		/// Haalt informatie op over de afdelingen van een groep die niet gebruikt zijn in een gegeven 
@@ -162,7 +162,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// opgezocht moeten worden.</param>
 		/// <returns>Info de ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
 		[OperationContract]
-		IList<AfdelingsNaamInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarID);
+		IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarID);
 
 		#endregion
 

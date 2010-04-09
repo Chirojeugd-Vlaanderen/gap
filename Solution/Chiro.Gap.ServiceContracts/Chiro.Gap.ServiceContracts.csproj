@@ -55,9 +55,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataContracts\AfdelingInfo.cs" />
+    <Compile Include="DataContracts\AfdelingDetail.cs" />
     <Compile Include="DataContracts\AdresInfo.cs" />
-    <Compile Include="DataContracts\AfdelingsNaamInfo.cs" />
+    <Compile Include="DataContracts\AfdelingInfo.cs" />
     <Compile Include="DataContracts\CategorieInfo.cs" />
     <Compile Include="DataContracts\CommunicatieInfo.cs" />
     <Compile Include="DataContracts\FunctieProbleemInfo.cs" />

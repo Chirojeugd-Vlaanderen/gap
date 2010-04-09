@@ -38,15 +38,15 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new Models.AfdelingInfoModel();
 			BaseModelInit(model, groepID);
 
-			// lijst met de AfdelingInfo voor Afdelingen die in het opgegeven werkjaar voorkomen als AfdelingsJaar
+			// AfdelingDetails voor Afdelingen die in het opgegeven werkjaar voorkomen als AfdelingsJaar
 			model.GebruikteAfdelingLijst =
-				ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>
+				ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>
 				(groep => groep.AfdelingenOphalen(groepsWerkJaarID));
 
-			// lijst met de AfdelingInfo voor Afdelingen die in het opgegeven werkjaar voorkomen als AfdelingsJaar
+			// AfdelingDetails voor Afdelingen die in het opgegeven werkjaar voorkomen als AfdelingsJaar
 
 			model.OngebruikteAfdelingLijst
-				= ServiceHelper.CallService<IGroepenService, IList<AfdelingsNaamInfo>>(svc => svc.OngebruikteAfdelingenOphalen(groepsWerkJaarID));
+				= ServiceHelper.CallService<IGroepenService, IList<AfdelingInfo>>(svc => svc.OngebruikteAfdelingenOphalen(groepsWerkJaarID));
 
 			model.Titel = "Afdelingen";
 			return View("Index", model);
@@ -86,7 +86,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					// of je de gegevens opnieuw wil posten.)
 					return RedirectToAction("Index");
 				}
-				catch (FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, AfdelingsNaamInfo>> ex)
+				catch (FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, AfdelingInfo>> ex)
 				{
 					switch (ex.Detail.FoutCode)
 					{

@@ -19,7 +19,7 @@
 <th>Afdeling</th><th>Afkorting</th><th>Offici&euml;le afdeling</th><th>Van</th><th>Tot</th><th>Actie</th>
 </tr>
 
-<% foreach (AfdelingInfo ai in Model.GebruikteAfdelingLijst)
+<% foreach (var ai in Model.GebruikteAfdelingLijst)
    { %>
     <tr>
         <td><%=ai.Naam %></td>
@@ -29,7 +29,7 @@
         <td><%=ai.GeboorteJaarTot %></td>
         <td>
             <%=Html.ActionLink("Bewerken", "Bewerken", new { Controller = "Afdeling", id = ai.AfdelingsJaarID } )%>
-            <% if (ai.AfdelingsJaarMagVerwijderdWorden) { %>
+            <% if (ai.IsLeeg) { %>
             <%=Html.ActionLink("Verwijderen", "Verwijderen", new { Controller = "Afdeling", id = ai.AfdelingsJaarID } )%>
             <% } %>
         </td>
@@ -45,7 +45,7 @@
 <th>Afdeling</th><th>Afkorting</th><th>Actie</th>
 </tr>
 
-<% foreach (AfdelingsNaamInfo ai in Model.OngebruikteAfdelingLijst)
+<% foreach (var ai in Model.OngebruikteAfdelingLijst)
    { %>
     <tr>
         <td><%=ai.Naam %></td>
