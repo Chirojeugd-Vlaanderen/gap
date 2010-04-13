@@ -33,7 +33,7 @@
           String s2 = Html.ActionLink("AfdelingBekijken", "List", new { id = Model.GroepsWerkJaarIdZichtbaar, afdID = s.Value.AfdelingID}).ToHtmlString();
           int start = s2.IndexOf("href=\"")+6;
           int end = s2.IndexOf("\"", start);
-          Response.Write("<option value=" + s2.Substring(start, end - start) + ">" + s.Value.Naam + "</option>\n");
+          Response.Write("<option value=" + s2.Substring(start, end - start) + ">" + s.Value.AfdelingNaam + "</option>\n");
       }
       String alles = Html.ActionLink("AfdelingBekijken", "List", new { id = Model.GroepsWerkJaarIdZichtbaar, afdID = 0 }).ToHtmlString();
       int ss = alles.IndexOf("href=\"") + 6;
