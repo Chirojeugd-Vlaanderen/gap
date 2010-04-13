@@ -141,22 +141,29 @@ namespace Chiro.Gap.Workers
 			GeslachtsType geslachtsType, 
 			string versieString)
 		{
-			if (officieleAfdeling.ID != afdelingsJaar.OfficieleAfdeling.ID)
+			if (_autorisatieMgr.IsGavAfdelingsJaar(afdelingsJaar.ID))
 			{
-				// vervang officiele afdeling.  Een beetje gepruts om in de mate van het
-				// mogelijke de state van de entity's consistent te houden.
+				if (officieleAfdeling.ID != afdelingsJaar.OfficieleAfdeling.ID)
+				{
+					// vervang officiele afdeling.  Een beetje gepruts om in de mate van het
+					// mogelijke de state van de entity's consistent te houden.
 
-				// verwijder link vorige off. afdeling - afdelingsjaar
-				afdelingsJaar.OfficieleAfdeling.AfdelingsJaar.Remove(afdelingsJaar);
+					// verwijder link vorige off. afdeling - afdelingsjaar
+					afdelingsJaar.OfficieleAfdeling.AfdelingsJaar.Remove(afdelingsJaar);
 
-				// nieuwe link
-				afdelingsJaar.OfficieleAfdeling = officieleAfdeling;
-				officieleAfdeling.AfdelingsJaar.Add(afdelingsJaar);
+					// nieuwe link
+					afdelingsJaar.OfficieleAfdeling = officieleAfdeling;
+					officieleAfdeling.AfdelingsJaar.Add(afdelingsJaar);
+				}
+				afdelingsJaar.GeboorteJaarVan = geboorteJaarVan;
+				afdelingsJaar.GeboorteJaarTot = geboorteJaarTot;
+				afdelingsJaar.Geslacht = geslachtsType;
+				afdelingsJaar.VersieString = versieString;
 			}
-			afdelingsJaar.GeboorteJaarVan = geboorteJaarVan;
-			afdelingsJaar.GeboorteJaarTot = geboorteJaarTot;
-			afdelingsJaar.Geslacht = geslachtsType;
-			afdelingsJaar.VersieString = versieString;
+			else
+			{
+				throw new GeenGavException(GeenGavFoutCode.Afdeling, "Dit is geen afdeling van jouw groep(en).");
+			}
 		}
 	}
 }
