@@ -110,9 +110,11 @@
     <Compile Include="HtmlHelpers\PagingHelper.cs" />
     <Compile Include="ModelStateWrapper.cs" />
     <Compile Include="Models\AdresVerwijderenModel.cs" />
+    <Compile Include="Models\AfdelingInfoModel.cs" />
+    <Compile Include="Models\AfdelingsOverzichtModel.cs" />
     <Compile Include="Models\CategorieModel.cs" />
     <Compile Include="Models\CommVormModel.cs" />
-    <Compile Include="Models\AfdelingInfoModel.cs" />
+    <Compile Include="Models\AfdelingsJaarModel.cs" />
     <Compile Include="Models\Mededeling.cs" />
     <Compile Include="Models\PersonenLedenModel.cs" />
     <Compile Include="Models\GroepsInstellingenModel.cs" />

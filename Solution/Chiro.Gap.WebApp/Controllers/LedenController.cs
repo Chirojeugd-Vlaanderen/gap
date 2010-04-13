@@ -93,7 +93,7 @@ namespace Chiro.Gap.WebApp.Controllers
 								   where a.Value.AfdelingID == afdID
 								   select a.Value).FirstOrDefault();
 
-				model.Titel = "Ledenoverzicht van de " + af.Naam + " van het werkjaar " + model.GroepsWerkJaartalZichtbaar + "-" + (int)(model.GroepsWerkJaartalZichtbaar + 1);
+				model.Titel = "Ledenoverzicht van de " + af.AfdelingNaam + " van het werkjaar " + model.GroepsWerkJaartalZichtbaar + "-" + (int)(model.GroepsWerkJaartalZichtbaar + 1);
 			}
 
 			model.PageHuidig = model.GroepsWerkJaarIdZichtbaar;

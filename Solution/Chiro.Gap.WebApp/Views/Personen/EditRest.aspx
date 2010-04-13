@@ -137,15 +137,15 @@
 			   {
 				   if (geschreven == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.Count-1)
 				   {
-					   Response.Write("de " + ai.Naam + ".\n");
+					   Response.Write("de " + ai.AfdelingNaam + ".\n");
 				   }
 				   else if (geschreven == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.Count - 2)
 				   {
-					   Response.Write("de " + ai.Naam + " en ");
+					   Response.Write("de " + ai.AfdelingNaam + " en ");
 				   }
 				   else 
 				   {
-					   Response.Write("de " + ai.Naam + ", ");
+					   Response.Write("de " + ai.AfdelingNaam + ", ");
 				   }
 				   geschreven++;
 			   }
@@ -154,7 +154,7 @@
    }else{
 	   //FIXME: nog niet alle info wordt ingeladen( afdelingidlijst is altijd leeg)
 	   Response.Write(Model.PersoonLidInfo.LidInfo.PersoonInfo.VolledigeNaam + " zit in de " +
-		   Model.AlleAfdelingen.FirstOrDefault(s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)).Naam + ".");
+		   Model.AlleAfdelingen.FirstOrDefault(s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)).AfdelingNaam + ".");
    }%>
 
 	<%} %>

@@ -200,8 +200,16 @@ namespace Chiro.Gap.Workers
 		/// /// <param name="gwj">Groepswerkjaar (koppelt de afdeling aan een groep en een werkjaar)</param>
 		/// <param name="geboorteJaarBegin">Geboortejaar van</param>
 		/// <param name="geboorteJaarEind">Geboortejaar tot</param>
+		/// <param name="geslacht">bepaalt of de afdeling een jongensafdeling, meisjesafdeling of
+		/// gemengde afdeling is.</param>
 		/// <returns>Het aangemaakte afdelingsjaar</returns>
-		public AfdelingsJaar AfdelingsJaarMaken(Afdeling a, OfficieleAfdeling oa, GroepsWerkJaar gwj, int geboorteJaarBegin, int geboorteJaarEind)
+		public AfdelingsJaar AfdelingsJaarMaken(
+			Afdeling a, 
+			OfficieleAfdeling oa, 
+			GroepsWerkJaar gwj, 
+			int geboorteJaarBegin, 
+			int geboorteJaarEind,
+			GeslachtsType geslacht)
 		{
 			if (!_autorisatieMgr.IsGavAfdeling(a.ID))
 			{
@@ -226,6 +234,7 @@ namespace Chiro.Gap.Workers
 			afdelingsJaar.GroepsWerkJaar = gwj;
 			afdelingsJaar.GeboorteJaarVan = geboorteJaarBegin;
 			afdelingsJaar.GeboorteJaarTot = geboorteJaarEind;
+			afdelingsJaar.Geslacht = geslacht;
 
 			a.AfdelingsJaar.Add(afdelingsJaar);
 			oa.AfdelingsJaar.Add(afdelingsJaar);
@@ -241,7 +250,17 @@ namespace Chiro.Gap.Workers
 		public IList<OfficieleAfdeling> OfficieleAfdelingenOphalen()
 		{
 			// Iedereen heeft het recht deze op te halen.
-			return _groepenDao.OphalenOfficieleAfdelingen();
+			return _groepenDao.OfficieleAfdelingenOphalen();
+		}
+
+		/// <summary>
+		/// Haalt een officiele afdeling op, op basis van zijn ID
+		/// </summary>
+		/// <param name="officieleAfdelingID">ID van de op te halen officiele afdeling</param>
+		/// <returns>Opgehaalde officiele afdeling</returns>
+		public OfficieleAfdeling OfficieleAfdelingOphalen(int officieleAfdelingID)
+		{
+			return _groepenDao.OfficieleAfdelingOphalen(officieleAfdelingID);
 		}
 
 		/// <summary>

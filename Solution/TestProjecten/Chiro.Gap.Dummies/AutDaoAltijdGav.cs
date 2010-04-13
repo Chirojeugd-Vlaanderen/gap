@@ -80,7 +80,12 @@ namespace Chiro.Gap.Dummies
 
 		public bool IsGavCommVorm(int commvormID, string login)
 		{
-			throw new NotImplementedException();
+			return true;
+		}
+
+		public bool IsGavAfdelingsJaar(string login, int afdelingsJaarID)
+		{
+			return true;
 		}
 	}
 }

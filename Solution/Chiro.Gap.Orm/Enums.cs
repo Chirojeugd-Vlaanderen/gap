@@ -24,6 +24,22 @@ namespace Chiro.Gap.Orm
 	}
 
 	/// <summary>
+	/// Enum die aangeeft welke gerelateerde entity's er meegeleverd kunnen worden met een afdelingsjaar.
+	/// </summary>
+	/// <remarks>Dit is bewust geen datacontract meer.  Deze enums mogen maar zo weinig mogelijk via de
+	/// service geexposet worden.</remarks>
+	[Flags]
+	public enum AfdelingsJaarExtras
+	{
+		Geen = 0x00,
+		Afdeling = 0x01,
+		OfficieleAfdeling = 0x02,
+		GroepsWerkJaar = 0x04,
+		Leden = 0x08,
+		Alles = Afdeling | OfficieleAfdeling | GroepsWerkJaar | Leden
+	}
+
+	/// <summary>
 	/// Enum om aan te geven welke extra informatie er met een lid mee opgehaald moet worden.
 	/// </summary>
 	[DataContract]

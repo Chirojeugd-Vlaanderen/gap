@@ -107,13 +107,13 @@ namespace Chiro.Gap.Services
 				dst => dst.AfdelingsJaarID,
 				opt => opt.MapFrom(src => src.ID))
 				.ForMember(
-				dst => dst.Naam,
+				dst => dst.AfdelingNaam,
 				opt => opt.MapFrom(src => src.Afdeling.Naam))
 				.ForMember(
 				dst => dst.IsLeeg,
 				opt => opt.MapFrom(src => (src.Kind == null && src.Leiding == null) || (src.Kind != null && src.Leiding != null && src.Kind.Count + src.Leiding.Count == 0)))
 				.ForMember(
-				dst => dst.Afkorting,
+				dst => dst.AfdelingAfkorting,
 				opt => opt.MapFrom(src => src.Afdeling.Afkorting));
 
 
@@ -169,7 +169,7 @@ namespace Chiro.Gap.Services
 			    return result;
 			}*/
 
-		public IList<OfficieleAfdeling> OfficieleAfdelingenOphalen()
+		public IEnumerable<OfficieleAfdeling> OfficieleAfdelingenOphalen()
 		{
 			return _groepenMgr.OfficieleAfdelingenOphalen();
 		}
@@ -235,35 +235,60 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
-		/// Bewerkt een AfdelingsJaar: 
+		/// Maakt/bewerkt een AfdelingsJaar: 
 		/// andere OfficieleAfdeling en/of andere leeftijden
 		/// </summary>
-		/// <param name="afdID">ID van het AfdelingsJaar waar het over gaat</param>
-		/// <param name="offafdID">ID van de officiële afdeling waar de afdeling op gemapt wordt</param>
-		/// <param name="geboorteVan">GeboorteJaar van de oudste leden in die afdeling</param>
-		/// <param name="geboorteTot">GeboorteJaar van de jongste leden in die afdeling</param>
-		/// <param name="geslacht">Geeft aan of het een jongensafdeling, een meisjesafdeling
-		/// of een gemengde afdeling is.</param>
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		// TODO: datacontract maken, waar ook de versiestring in zit. (Zie #297)
-		public void AfdelingsJaarBewarenMetWijzigingen(
-			int afdID,
-			int offafdID,
-			int geboorteVan,
-			int geboorteTot,
-			GeslachtsType geslacht)
+		/// <param name="detail">AfdelingsJaarDetail met de gegevens over het aan te maken of te wijzigen
+		/// afdelingsjaar.  <c>detail.AfdelingsJaarID</c> bepaat of het om een bestaand afdelingsjaar gaat
+		/// (ID > 0), of een bestaand (ID == 0)</param>
+		public void AfdelingsJaarBewaren(AfdelingsJaarDetail detail)
 		{
-			AfdelingsJaar aj = _afdelingsJaarMgr.Ophalen(afdID);
-			OfficieleAfdeling oa = _groepenMgr.OfficieleAfdelingenOphalen().Where(a => a.ID == offafdID).FirstOrDefault<OfficieleAfdeling>();
+			AfdelingsJaar afdelingsJaar;
 
-			// TODO: als er een datacontract is, kan een mapper gebruikt worden (#297)
+			Afdeling afd = _groepenMgr.AfdelingOphalen(detail.AfdelingID);
+			OfficieleAfdeling oa = _groepenMgr.OfficieleAfdelingOphalen(detail.OfficieleAfdelingID);
+			GroepsWerkJaar huidigGwj = _groepsWerkJaarManager.RecentsteOphalen(afd.Groep.ID);
 
-			aj.OfficieleAfdeling = oa;
-			aj.GeboorteJaarVan = geboorteVan;
-			aj.GeboorteJaarTot = geboorteTot;
-			aj.Geslacht = geslacht;
-			_afdelingsJaarMgr.Bewaren(aj);
+
+			if (detail.AfdelingsJaarID == 0)
+			{
+				// nieuw maken.
+
+				afdelingsJaar = _groepenMgr.AfdelingsJaarMaken(
+					afd,
+					oa,
+					huidigGwj,
+					detail.GeboorteJaarVan, detail.GeboorteJaarTot,
+					detail.Geslacht);
+			}
+			else
+			{
+				// wijzigen
+
+				afdelingsJaar = _afdelingsJaarMgr.Ophalen(
+					detail.AfdelingsJaarID,
+					AfdelingsJaarExtras.OfficieleAfdeling|AfdelingsJaarExtras.Afdeling|AfdelingsJaarExtras.GroepsWerkJaar);
+
+				if (afdelingsJaar.GroepsWerkJaar.ID != huidigGwj.ID
+					|| afdelingsJaar.Afdeling.ID != detail.AfdelingID)
+				{
+					throw new NotSupportedException("Afdeling en GroepsWerkJaar mogen niet"
+						+ " gewijzigd worden.");
+				}
+
+				_afdelingsJaarMgr.Wijzigen(
+					afdelingsJaar,
+					_groepenMgr.OfficieleAfdelingOphalen(detail.OfficieleAfdelingID),
+					detail.GeboorteJaarVan,
+					detail.GeboorteJaarTot,
+					detail.Geslacht,
+					detail.VersieString);
+				
+			}
+
+			_afdelingsJaarMgr.Bewaren(afdelingsJaar);
+
+			// TODO: Concurrency exception catchen
 		}
 
 		/// <summary>
@@ -280,43 +305,55 @@ namespace Chiro.Gap.Services
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public AfdelingsJaar AfdelingsJaarOphalen(int afdelingsJaarID)
+		public AfdelingsJaarDetail AfdelingsJaarOphalen(int afdelingsJaarID)
 		{
-			return _afdelingsJaarMgr.Ophalen(afdelingsJaarID);
+			AfdelingsJaar aj = _afdelingsJaarMgr.Ophalen(
+				afdelingsJaarID,
+				AfdelingsJaarExtras.Afdeling | AfdelingsJaarExtras.OfficieleAfdeling);
+
+			Mapper.CreateMap<AfdelingsJaar, AfdelingsJaarDetail>()
+				.ForMember(dst => dst.AfdelingsJaarID, opt => opt.MapFrom(src => src.ID));
+
+			return Mapper.Map<AfdelingsJaar, AfdelingsJaarDetail>(aj);
 		}
 
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void AfdelingsJaarAanmaken(int groepID, int afdelingsID, int offiafdelingsID, int geboortejaarbegin, int geboortejaareind)
+		/// <summary>
+		/// Haalt details op van een afdeling, gebaseerd op het <paramref name="afdelingsJaarID"/>
+		/// </summary>
+		/// <param name="afdelingsJaarID">ID van het AFDELINGSJAAR waarvoor de details opgehaald moeten 
+		/// worden.</param>
+		/// <returns>De details van de afdeling in het gegeven afdelingsjaar.</returns>
+		public AfdelingDetail AfdelingDetailOphalen(int afdelingsJaarID)
 		{
-			Groep g = _groepenMgr.OphalenMetAfdelingen(groepID);
-			Afdeling afd = g.Afdeling.Where(a => a.ID == afdelingsID).FirstOrDefault<Afdeling>();
-			OfficieleAfdeling offafd = _groepenMgr.OfficieleAfdelingenOphalen().Where(o => o.ID == offiafdelingsID).FirstOrDefault<OfficieleAfdeling>();
+			AfdelingsJaar aj = _afdelingsJaarMgr.Ophalen(
+				afdelingsJaarID,
+				AfdelingsJaarExtras.Afdeling | AfdelingsJaarExtras.OfficieleAfdeling | AfdelingsJaarExtras.Leden);
 
-			if (afd == null || offafd == null)
-			{
-				// TODO: Check of afdeling wel hoort bij de gevraagde groep, is taak voor business
-				// TODO2: FaultException throwen
-				throw new NotImplementedException(String.Format(Resources.FouteAfdelingVoorGroepString, g.Naam));
-			}
+			// FIXME: Het is eigenlijk te belachelijk om alle leden op te vragen, gewoon om te zien
+			// of er leden zijn.
 
-			GroepsWerkJaar huidigWerkJaar = _groepsWerkJaarManager.RecentsteOphalen(g.ID, GroepsWerkJaarExtras.Geen);
+			bool isLeeg = (aj.Kind.Count() == 0 && aj.Leiding.Count() == 0);
 
-			AfdelingsJaar afdjaar = _groepenMgr.AfdelingsJaarMaken(afd, offafd, huidigWerkJaar, geboortejaarbegin, geboortejaareind);
+			Mapper.CreateMap<AfdelingsJaar, AfdelingDetail>()
+				.ForMember(dst => dst.IsLeeg, opt => opt.MapFrom(src => isLeeg));
 
-			_afdelingsJaarMgr.Bewaren(afdjaar);
+			return Mapper.Map<AfdelingsJaar, AfdelingDetail>(aj);
 		}
+
 
 		/// <summary>
 		/// Haat een afdeling op, op basis van <paramref name="afdelingID"/>
 		/// </summary>
 		/// <param name="afdelingID">ID van op te halen afdeling</param>
-		/// <returns>De gevraagde afdeling</returns>
+		/// <returns>Info van de gevraagde afdeling</returns>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public Afdeling AfdelingOphalen(int afdelingID)
+		public AfdelingInfo AfdelingOphalen(int afdelingID)
 		{
-			return _groepenMgr.AfdelingOphalen(afdelingID);
+			Afdeling a = _groepenMgr.AfdelingOphalen(afdelingID);
+			Mapper.CreateMap<Afdeling, AfdelingInfo>();
+
+			return Mapper.Map<Afdeling, AfdelingInfo>(a);
 		}
 
 		/// <summary>

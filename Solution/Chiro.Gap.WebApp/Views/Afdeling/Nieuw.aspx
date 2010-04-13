@@ -17,16 +17,16 @@
     <fieldset>
     <legend>Nieuwe afdeling</legend>
     
-    <%=Html.LabelFor(mdl => mdl.HuidigeAfdeling.Naam) %>
-    <%=Html.EditorFor(mdl => mdl.HuidigeAfdeling.Naam) %>
+    <%=Html.LabelFor(mdl => mdl.Info.Naam) %>
+    <%=Html.EditorFor(mdl => mdl.Info.Naam)%>
     <br />
-    <%=Html.ValidationMessageFor(mdl => mdl.HuidigeAfdeling.Naam) %>
+    <%=Html.ValidationMessageFor(mdl => mdl.Info.Naam)%>
     <br />
 
-    <%=Html.LabelFor(mdl => mdl.HuidigeAfdeling.Afkorting) %>
-    <%=Html.EditorFor(mdl => mdl.HuidigeAfdeling.Afkorting)%>
+    <%=Html.LabelFor(mdl => mdl.Info.Afkorting)%>
+    <%=Html.EditorFor(mdl => mdl.Info.Afkorting)%>
     <br />
-    <%=Html.ValidationMessageFor(mdl => mdl.HuidigeAfdeling.Afkorting)%>
+    <%=Html.ValidationMessageFor(mdl => mdl.Info.Afkorting)%>
     
     
     </fieldset>

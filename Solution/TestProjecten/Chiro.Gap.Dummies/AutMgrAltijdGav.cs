@@ -85,6 +85,11 @@ namespace Chiro.Gap.Dummies
 			return true;
 		}
 
+		public bool IsGavAfdelingsJaar(int afdelingsJaarID)
+		{
+			return true;
+		}
+
 		#endregion
 	}
 }

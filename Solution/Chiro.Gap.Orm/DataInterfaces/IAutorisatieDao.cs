@@ -91,6 +91,16 @@ namespace Chiro.Gap.Orm.DataInterfaces
 
 		/// <summary>
 		/// Controleert of een gebruiker *nu* GAV is van de groep
+		/// horende bij het gegeven afdelingsJaar
+		/// </summary>
+		/// <param name="login">De gebruikersnaam van de bezoeker</param>
+		/// <param name="afdelingsJaarID">ID van het gegeven afdelingsJaar</param>
+		/// <returns><c>true</c> als de bezoeker Gav is voor het bedoelde afdelingsJaar,
+		/// <c>false</c> als dat niet het geval is</returns>
+		bool IsGavAfdelingsJaar(string login, int afdelingsJaarID);
+
+		/// <summary>
+		/// Controleert of een gebruiker *nu* GAV is van de groep
 		/// horende bij het gegeven lid
 		/// </summary>
 		/// <param name="login">De gebruikersnaam van de bezoeker</param>

@@ -18,7 +18,18 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	{
 		Groep OphalenMetAfdelingen(int groepID);
 
-		IList<OfficieleAfdeling> OphalenOfficieleAfdelingen();
+		/// <summary>
+		/// Haalt alle officiele afdelingen op
+		/// </summary>
+		/// <returns>Lijst officiele afdelingen</returns>
+		IList<OfficieleAfdeling> OfficieleAfdelingenOphalen();
+
+		/// <summary>
+		/// Haalt de officiele afdeling met ID <paramref name="officieleAfdelingID"/> op.
+		/// </summary>
+		/// <param name="officieleAfdelingID">ID van de op te halen officiele afdeling.</param>
+		/// <returns>Officiele afdeling met ID <paramref name="officieleAfdelingID"/></returns>
+		OfficieleAfdeling OfficieleAfdelingOphalen(int officieleAfdelingID);
 
 		/// <summary>
 		/// 

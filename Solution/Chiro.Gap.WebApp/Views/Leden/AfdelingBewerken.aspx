@@ -30,7 +30,7 @@
                       (from pa in Model.AlleAfdelingen
                        select new CheckBoxListInfo(
                                        pa.AfdelingID.ToString()
-                                       , pa.Naam
+                                       , pa.AfdelingNaam
                                        , Model.AfdelingIDs.Contains(pa.AfdelingID))).ToList<CheckBoxListInfo>();
 
                   Response.Write(Html.CheckBoxList("AfdelingIDs", info));
@@ -42,7 +42,7 @@
                   <%
                   foreach(var ai in Model.AlleAfdelingen)
                   {
-                      Response.Write("<p>" + Html.RadioButton("AfdelingID", ai.AfdelingID, Model.HuidigLid.AfdelingIdLijst.ElementAt(0) == ai.AfdelingID)+ ai.Naam + "</p>");   
+                      Response.Write("<p>" + Html.RadioButton("AfdelingID", ai.AfdelingID, Model.HuidigLid.AfdelingIdLijst.ElementAt(0) == ai.AfdelingID)+ ai.AfdelingNaam + "</p>");   
                   }
               }
            %>

@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<AfdelingInfoModel>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<AfdelingsJaarModel>" %>
 <%@ Import Namespace="Chiro.Gap.Orm" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 
@@ -6,51 +6,46 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <% using (Html.BeginForm())
+    <% using (Html.BeginForm("Bewerken", "Afdeling", new { groepID = Model.GroepID }))
        {%>
        
     <ul id="acties">
-        <li><input type="submit" value="Bewaren"/></li>
+        <li><input type="submit" value="Bewaren" /></li>
         <li><input type="reset" value="  Reset  " /></li>
     </ul>
     
     <fieldset>
     
-    <%=Html.LabelFor(mdl=> mdl.HuidigeAfdeling.Naam)%>
-    <%=Html.TextBoxFor(mdl => mdl.HuidigeAfdeling.Naam, new { @readonly = "readonly", title = "Nu niet wijzigbaar", disabled = "disabled" } )%><br />
+    <%=Html.LabelFor(mdl=> mdl.Afdeling.Naam)%>
+    <%=Html.TextBoxFor(mdl => mdl.Afdeling.Naam, new { @readonly = "readonly", title = "Nu niet wijzigbaar", disabled = "disabled" })%><br />
 
-    <%=Html.LabelFor(mdl=> mdl.HuidigeAfdeling.Afkorting)%>
-    <%=Html.TextBoxFor(mdl => mdl.HuidigeAfdeling.Afkorting, new { @readonly = "readonly", title = "Nu niet wijzigbaar", disabled = "disabled" } )%><br />
+    <%=Html.LabelFor(mdl => mdl.Afdeling.Afkorting)%>
+    <%=Html.TextBoxFor(mdl => mdl.Afdeling.Afkorting, new { @readonly = "readonly", title = "Nu niet wijzigbaar", disabled = "disabled" })%><br />
 
-    <%=Html.LabelFor(s => s.HuidigAfdelingsJaar.Geslacht)%>
-    <%= Html.RadioButton("HuidigAfdelingsJaar.Geslacht", GeslachtsType.Gemengd, Model.HuidigAfdelingsJaar.Geslacht == GeslachtsType.Gemengd)%> Gemengd
-    <%= Html.RadioButton("HuidigAfdelingsJaar.Geslacht", GeslachtsType.Man, Model.HuidigAfdelingsJaar.Geslacht == GeslachtsType.Man)%> Jongens
-    <%= Html.RadioButton("HuidigAfdelingsJaar.Geslacht", GeslachtsType.Vrouw, Model.HuidigAfdelingsJaar.Geslacht == GeslachtsType.Vrouw)%> Meisjes
-    <%=Html.ValidationMessageFor(s => s.HuidigAfdelingsJaar.Geslacht)%><br />
+    <%=Html.LabelFor(s => s.AfdelingsJaar.Geslacht)%>
+    <%= Html.RadioButton("AfdelingsJaar.Geslacht", GeslachtsType.Gemengd, Model.AfdelingsJaar.Geslacht == GeslachtsType.Gemengd)%> Gemengd
+    <%= Html.RadioButton("AfdelingsJaar.Geslacht", GeslachtsType.Man, Model.AfdelingsJaar.Geslacht == GeslachtsType.Man)%> Jongens
+    <%= Html.RadioButton("AfdelingsJaar.Geslacht", GeslachtsType.Vrouw, Model.AfdelingsJaar.Geslacht == GeslachtsType.Vrouw)%> Meisjes
+    <%=Html.ValidationMessageFor(s => s.AfdelingsJaar.Geslacht)%><br />
    
-    <%=Html.LabelFor(mdl => mdl.HuidigAfdelingsJaar.GeboorteJaarVan) %>
-    <%=Html.EditorFor(mdl => mdl.HuidigAfdelingsJaar.GeboorteJaarVan) %>
-    <%=Html.ValidationMessageFor(mdl => mdl.HuidigAfdelingsJaar.GeboorteJaarVan) %><br />
+    <%=Html.LabelFor(mdl => mdl.AfdelingsJaar.GeboorteJaarVan)%>
+    <%=Html.EditorFor(mdl => mdl.AfdelingsJaar.GeboorteJaarVan)%>
+    <%=Html.ValidationMessageFor(mdl => mdl.AfdelingsJaar.GeboorteJaarVan)%><br />
 
-    <%=Html.LabelFor(mdl => mdl.HuidigAfdelingsJaar.GeboorteJaarTot) %>
-    <%=Html.EditorFor(mdl => mdl.HuidigAfdelingsJaar.GeboorteJaarTot) %>
-    <%=Html.ValidationMessageFor(mdl => mdl.HuidigAfdelingsJaar.GeboorteJaarTot) %><br />
-    
-    <label for="Afdeling_Afkorting">Afkorting</label> 
-    <%=Html.TextBox("HuidigeAfdeling.Afkorting", Model.HuidigeAfdeling.Afkorting, new { @readonly = "readonly", title = "Nu niet wijzigbaar", disabled = "disabled" })%><br />
-        
-    <label for="AfdelingsJaar_GeboorteJaarVan">Geboren van </label> 
-    <%=Html.TextBox("HuidigAfdelingsJaar.GeboorteJaarVan")%><br />
-    
-    <label for="AfdelingsJaar_GeboorteJaarTot"> tot </label> 
-    <%=Html.TextBox("HuidigAfdelingsJaar.GeboorteJaarTot")%><br />
-    
-    <% var values = from OfficieleAfdeling oa in Model.OfficieleAfdelingenLijst
+    <%=Html.LabelFor(mdl => mdl.AfdelingsJaar.GeboorteJaarTot)%>
+    <%=Html.EditorFor(mdl => mdl.AfdelingsJaar.GeboorteJaarTot)%>
+    <%=Html.ValidationMessageFor(mdl => mdl.AfdelingsJaar.GeboorteJaarTot)%><br />
+       
+    <% var values = from OfficieleAfdeling oa in Model.OfficieleAfdelingen
                     select new { value = oa.ID, text = oa.Naam.ToString() }; 
     %>
     
-    <%=Html.LabelFor(mdl=>mdl.OfficieleAfdelingID) %>
-    <%=Html.DropDownListFor(mdl => mdl.OfficieleAfdelingID, new SelectList(values, "value", "text"))%><br />
+    <%=Html.LabelFor(mdl=>mdl.AfdelingsJaar.OfficieleAfdelingID) %>
+    <%=Html.DropDownListFor(mdl => mdl.AfdelingsJaar.OfficieleAfdelingID, new SelectList(values, "value", "text"))%><br />
+    
+    <%=Html.HiddenFor(mdl=>mdl.AfdelingsJaar.AfdelingID) %>
+    <%=Html.HiddenFor(mdl=>mdl.AfdelingsJaar.AfdelingsJaarID) %>
+    <%=Html.HiddenFor(mdl=>mdl.AfdelingsJaar.VersieString) %>
 
     </fieldset>
     

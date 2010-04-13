@@ -135,7 +135,17 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Haalt recentste groepswerkjaar voor een groep op, inclusief afdelingsjaren
+		/// Haalt recentste groepswerkjaar voor een groep op.
+		/// </summary>
+		/// <param name="groepID">ID gevraagde groep</param>
+		/// <returns>Het recentste Groepswerkjaar voor de opgegeven groep</returns>
+		public GroepsWerkJaar RecentsteOphalen(int groepID)
+		{
+			return RecentsteOphalen(groepID, GroepsWerkJaarExtras.Geen);
+		}
+
+		/// <summary>
+		/// Haalt recentste groepswerkjaar voor een groep op.
 		/// </summary>
 		/// <param name="groepID">ID gevraagde groep</param>
 		/// <param name="extras">Bepaalt eventuele mee op te halen gekoppelde entiteiten</param>

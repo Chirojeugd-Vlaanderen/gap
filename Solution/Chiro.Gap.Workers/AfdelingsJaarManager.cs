@@ -44,14 +44,33 @@ namespace Chiro.Gap.Workers
 		/// Op basis van een ID een afdelingsjaar ophalen
 		/// </summary>
 		/// <param name="afdelingsJaarID">De ID van het afdelingsjaar</param>
+		/// <param name="extras">Bepaalt welke gerelateerde entiteiten mee opgehaald moeten worden.</param>
 		/// <returns>Het afdelingsjaar met de opgegeven ID</returns>
-		public AfdelingsJaar Ophalen(int afdelingsJaarID)
+		public AfdelingsJaar Ophalen(int afdelingsJaarID, AfdelingsJaarExtras extras)
 		{
-			AfdelingsJaar aj = _dao.Ophalen(afdelingsJaarID, a => a.Afdeling, a => a.Leiding, a => a.Kind, a => a.OfficieleAfdeling);
+			var paths = new List<Expression<Func<AfdelingsJaar, object>>>();
 
-			if (_autorisatieMgr.IsGavAfdeling(aj.Afdeling.ID))
+			if ((extras & AfdelingsJaarExtras.Afdeling) != 0)
 			{
-				return aj;
+				paths.Add(aj => aj.Afdeling);
+			}
+			if ((extras & AfdelingsJaarExtras.GroepsWerkJaar) != 0)
+			{
+				paths.Add(aj => aj.GroepsWerkJaar);
+			}
+			if ((extras & AfdelingsJaarExtras.Leden) != 0)
+			{
+				paths.Add(aj => aj.Kind);
+				paths.Add(aj => aj.Leiding);
+			}
+			if ((extras & AfdelingsJaarExtras.OfficieleAfdeling) != 0)
+			{
+				paths.Add(aj => aj.OfficieleAfdeling);
+			}
+
+			if (_autorisatieMgr.IsGavAfdelingsJaar(afdelingsJaarID))
+			{
+				return _dao.Ophalen(afdelingsJaarID, paths.ToArray());
 			}
 			else
 			{
@@ -101,6 +120,43 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(GeenGavFoutCode.Lid, Properties.Resources.GeenGavLid);
 			}
+		}
+
+		/// <summary>
+		/// Wijzigt de property's van <paramref name="afdelingsJaar"/>
+		/// </summary>
+		/// <param name="afdelingsJaar">Te wijzigen afdelingsjaar</param>
+		/// <param name="officieleAfdeling">Officiele afdeling</param>
+		/// <param name="geboorteJaarVan">Ondergrens geboortejaar</param>
+		/// <param name="geboorteJaarTot">Bovengrens geboortejaar</param>
+		/// <param name="geslachtsType">Jongensafdeling, meisjesafdeling of gemengde afdeling</param>
+		/// <param name="versieString">Versiestring uit database voor concurrency controle</param>
+		/// <remarks>Groepswerkjaar en afdeling kunnen niet gewijzigd worden.  Verwijder hiervoor het
+		/// afdelingsjaar, en maak een nieuw.</remarks>
+		public void Wijzigen(
+			AfdelingsJaar afdelingsJaar, 
+			OfficieleAfdeling officieleAfdeling, 
+			int geboorteJaarVan, 
+			int geboorteJaarTot, 
+			GeslachtsType geslachtsType, 
+			string versieString)
+		{
+			if (officieleAfdeling.ID != afdelingsJaar.OfficieleAfdeling.ID)
+			{
+				// vervang officiele afdeling.  Een beetje gepruts om in de mate van het
+				// mogelijke de state van de entity's consistent te houden.
+
+				// verwijder link vorige off. afdeling - afdelingsjaar
+				afdelingsJaar.OfficieleAfdeling.AfdelingsJaar.Remove(afdelingsJaar);
+
+				// nieuwe link
+				afdelingsJaar.OfficieleAfdeling = officieleAfdeling;
+				officieleAfdeling.AfdelingsJaar.Add(afdelingsJaar);
+			}
+			afdelingsJaar.GeboorteJaarVan = geboorteJaarVan;
+			afdelingsJaar.GeboorteJaarTot = geboorteJaarTot;
+			afdelingsJaar.Geslacht = geslachtsType;
+			afdelingsJaar.VersieString = versieString;
 		}
 	}
 }

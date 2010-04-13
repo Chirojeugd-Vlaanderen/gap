@@ -79,13 +79,13 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				dst => dst.OfficieleAfdelingNaam,
 				opt => opt.MapFrom(src => src.OfficieleAfdeling.Naam))
 				.ForMember(
-				dst => dst.Naam,
+				dst => dst.AfdelingNaam,
 				opt => opt.MapFrom(src => src.Afdeling.Naam))
 				.ForMember(
 				dst => dst.IsLeeg,
 				opt => opt.MapFrom(src => (src.Kind == null && src.Leiding == null) || (src.Kind != null && src.Leiding != null && src.Kind.Count + src.Leiding.Count == 0)))
 				.ForMember(
-				dst => dst.Afkorting,
+				dst => dst.AfdelingAfkorting,
 				opt => opt.MapFrom(src => src.Afdeling.Afkorting));
 
 			Mapper.CreateMap<Afdeling, AfdelingInfo>();

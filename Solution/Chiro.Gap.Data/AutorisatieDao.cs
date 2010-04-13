@@ -303,11 +303,13 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// 
+		/// Controleert of een gebruiker *nu* GAV is van de groep
+		/// horende bij de gegeven afdeling
 		/// </summary>
-		/// <param name="login"></param>
-		/// <param name="afdelingsID"></param>
-		/// <returns></returns>
+		/// <param name="login">De gebruikersnaam van de bezoeker</param>
+		/// <param name="afdelingsID">ID van de gegeven afdeling</param>
+		/// <returns><c>True</c> als de bezoeker Gav is voor de bedoelde afdeling,
+		/// <c>false</c> als dat niet het geval is</returns>
 		public bool IsGavAfdeling(string login, int afdelingsID)
 		{
 			bool resultaat;
@@ -333,6 +335,39 @@ namespace Chiro.Gap.Data.Ef
 					select r;
 
 				resultaat = query.Count() > 0;
+			}
+			return resultaat;
+		}
+
+		/// <summary>
+		/// Controleert of een gebruiker *nu* GAV is van de groep
+		/// horende bij het gegeven afdelingsJaar
+		/// </summary>
+		/// <param name="login">De gebruikersnaam van de bezoeker</param>
+		/// <param name="afdelingsJaarID">ID van het gegeven afdelingsJaar</param>
+		/// <returns><c>true</c> als de bezoeker Gav is voor het bedoelde afdelingsJaar,
+		/// <c>false</c> als dat niet het geval is</returns>
+		public bool IsGavAfdelingsJaar(string login, int afdelingsJaarID)
+		{
+			bool resultaat;
+
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{
+				if (afdelingsJaarID == 0)
+				{
+					return true;	// altijd GAV van een nieuw afdelingsjaar.
+				}
+				else
+				{
+					var query =
+						from aj in db.AfdelingsJaar
+						where aj.ID == afdelingsJaarID
+						&& aj.GroepsWerkJaar.Groep.GebruikersRecht.Any(
+							gr => gr.Gav.Login == login && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))
+						select aj;
+
+					resultaat = query.Count() > 0;
+				}
 			}
 			return resultaat;
 		}

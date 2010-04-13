@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<AfdelingInfoModel>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<AfdelingsOverzichtModel>" %>
 <%@ Import Namespace="Chiro.Gap.Orm" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
@@ -19,11 +19,11 @@
 <th>Afdeling</th><th>Afkorting</th><th>Offici&euml;le afdeling</th><th>Van</th><th>Tot</th><th>Actie</th>
 </tr>
 
-<% foreach (var ai in Model.GebruikteAfdelingLijst)
+<% foreach (var ai in Model.Actief)
    { %>
     <tr>
-        <td><%=ai.Naam %></td>
-        <td><%=ai.Afkorting %></td>
+        <td><%=ai.AfdelingNaam %></td>
+        <td><%=ai.AfdelingAfkorting %></td>
         <td><%=ai.OfficieleAfdelingNaam %></td>
         <td><%=ai.GeboorteJaarVan %></td>
         <td><%=ai.GeboorteJaarTot %></td>
@@ -45,7 +45,7 @@
 <th>Afdeling</th><th>Afkorting</th><th>Actie</th>
 </tr>
 
-<% foreach (var ai in Model.OngebruikteAfdelingLijst)
+<% foreach (var ai in Model.NietActief)
    { %>
     <tr>
         <td><%=ai.Naam %></td>

@@ -34,7 +34,7 @@
         foreach (var afd in Model.Detail.Afdelingen.OrderByDescending(afd => afd.GeboorteJaarVan))
         {
             %>
-            <li><%=Html.Encode(String.Format("{0} - {1} ({2})", afd.Afkorting, afd.Naam, afd.OfficieleAfdelingNaam)) %></li>
+            <li><%=Html.Encode(String.Format("{0} - {1} ({2})", afd.AfdelingAfkorting, afd.AfdelingNaam, afd.OfficieleAfdelingNaam)) %></li>
             <%
         }
     %>

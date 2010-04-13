@@ -80,6 +80,15 @@ namespace Chiro.Gap.Workers
 		bool IsGavAfdeling(int afdelingsID);
 
 		/// <summary>
+		/// Controleert of een afdelingsjaar gekoppeld is aan een groep waarvan
+		/// de gebruiker GAV is.
+		/// </summary>
+		/// <param name="afdelingsJaarID">ID gevraagde afdelingsJaar</param>
+		/// <returns><c>True</c> als de gebruiker GAV is van de groep van het
+		/// afdelingsjaar</returns>
+		bool IsGavAfdelingsJaar(int afdelingsJaarID);
+
+		/// <summary>
 		/// Controleert of een lid lid is van een groep waarvan de gebruiker
 		/// GAV is.
 		/// </summary>

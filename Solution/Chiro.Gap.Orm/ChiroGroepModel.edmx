@@ -1006,7 +1006,7 @@
           <Property Name="GeboorteJaarTot" Type="Int32" Nullable="false" />
           <Property Name="GeboorteJaarVan" Type="Int32" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="true" />
+          <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar" FromRole="AfdelingsJaar" ToRole="GroepsWerkJaar" />
           <NavigationProperty Name="Afdeling" Relationship="ChiroGroepModel.FK_AfdelingsJaar_Afdeling" FromRole="AfdelingsJaar" ToRole="Afdeling" />
           <NavigationProperty Name="OfficieleAfdeling" Relationship="ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling" FromRole="AfdelingsJaar" ToRole="OfficieleAfdeling" />

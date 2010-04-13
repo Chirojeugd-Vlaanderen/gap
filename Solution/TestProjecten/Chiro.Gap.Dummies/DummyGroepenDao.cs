@@ -28,7 +28,7 @@ namespace Chiro.Gap.Dummies
             throw new NotImplementedException();
         }
 
-        public IList<OfficieleAfdeling> OphalenOfficieleAfdelingen()
+        public IList<OfficieleAfdeling> OfficieleAfdelingenOphalen()
         {
             throw new NotImplementedException();
         }
@@ -39,5 +39,15 @@ namespace Chiro.Gap.Dummies
         }
 
         #endregion
+
+	#region IGroepenDao Members
+
+
+	public OfficieleAfdeling OfficieleAfdelingOphalen(int officieleAfdelingID)
+	{
+		throw new NotImplementedException();
+	}
+
+	#endregion
     }
 }

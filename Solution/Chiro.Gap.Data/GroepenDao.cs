@@ -93,123 +93,11 @@ namespace Chiro.Gap.Data.Ef
 			return result;
 		}
 
-		/*
-        /// <summary>
-		/// Creeert een nieuwe afdeling.
-		/// </summary>
-		/// <param name="groepID">ID van de groep</param>
-		/// <param name="naam">naam van de afdeling</param>
-		/// <param name="afkorting">afkorting voor de afdeling</param>
-		/// <returns>Een relevant afdelingsobject</returns>
-		public Afdeling AfdelingCreeren(int groepID, string naam, string afkorting)
-		{
-		    Afdeling a = new Afdeling();
-
-
-
-		    using (ChiroGroepEntities db = new ChiroGroepEntities())
-		    {
-			var gp = (
-			    from g in db.Groep
-			    where g.ID == groepID
-			    select g
-			    ).FirstOrDefault<Groep>();
-
-			a.AfdelingsNaam = naam;
-			a.Afkorting = afkorting;
-			a.Groep = gp;
-
-			gp.Afdeling.Add(a);
-
-			db.SaveChanges();
-
-			db.Detach(a);
-		    }
-
-		    return a;
-		}
-         */
-
-		/*/// <summary>
-		/// Creeert een nieuw afdelingsjaar.
-		/// </summary>
-		/// <param name="g">Groep voor afdelingsjaar</param>
-		/// <param name="a">Afdeling voor afdelingsjaar</param>
-		/// <param name="oa">officiële afdeling voor afdelingsjaar</param>
-		/// <param name="geboorteJaarVan">begingeboortejaar voor afdeling</param>
-		/// <param name="geboorteJaarTot">eindgeboortejaar voor afdeling</param>
-		/// <returns>Het nieuwe afdelingsjaar</returns>
-		public AfdelingsJaar AfdelingsJaarCreeren(Groep g, Afdeling a, OfficieleAfdeling oa, int geboorteJaarVan, int geboorteJaarTot)
-		{
-		    AfdelingsJaar afdelingsJaar = new AfdelingsJaar();
-		    GroepsWerkJaar huidigWerkJaar = RecentsteGroepsWerkJaarGet(g.ID);
-
-		    // Omdat we met een combinatie van geattachte en nieuwe objecten
-		    // zitten, geeft het het minste problemen als de we relaties tussen
-		    // de objecten gedetachet leggen, en daarna AttachObjectGraph
-		    // aanroepen.
-
-		    // In theorie zouden de eerstvolgende zaken in Business kunnen gebeuren,
-		    // en zou daarna het resulterende AfdelingsJaar
-		    // doorgespeeld moeten worden aan deze functie, die het dan enkel
-		    // nog moet persisteren.
-
-		    // TODO: verifieren of de afdeling bij de groep hoort door
-		    // de groep van de afdeling op te halen, ipv alle afdelingen
-		    // van de groep.
-
-		    // Groep g heeft niet altijd de afdelingen mee
-		    Groep groepMetAfdelingen = OphalenMetAfdelingen(g.ID);
-
-		    // TODO: deze test hoort thuis in business, niet in DAL:
-
-		    if (!groepMetAfdelingen.Afdeling.Contains(a))
-		    {
-			throw new InvalidOperationException("Afdeling " + a.AfdelingsNaam + " is geen afdeling van Groep " + g.Naam);
-		    }
-
-		    // TODO: test of de officiële afdeling bestaat, heb
-		    // ik voorlopig even weggelaten.  Als de afdeling niet
-		    // bestaat, zal er bij het bewaren toch een exception
-		    // optreden, aangezien het niet de bedoeling is dat
-		    // een officiële afdeling bijgemaakt wordt.
-
-		    //TODO check if no conflicts with existing afdelingsjaar
-		    //TODO: bovenstaande TODO moet ook in business layer gebeuren
-
-		    afdelingsJaar.OfficieleAfdeling = oa;
-		    afdelingsJaar.Afdeling = a;
-		    afdelingsJaar.GroepsWerkJaar = huidigWerkJaar;
-		    afdelingsJaar.GeboorteJaarVan = geboorteJaarVan;
-		    afdelingsJaar.GeboorteJaarTot = geboorteJaarTot;
-
-		    a.AfdelingsJaar.Add(afdelingsJaar);
-		    oa.AfdelingsJaar.Add(afdelingsJaar);
-		    huidigWerkJaar.AfdelingsJaar.Add(afdelingsJaar);
-
-		    using (ChiroGroepEntities db = new ChiroGroepEntities())
-		    {
-			AfdelingsJaar geattachtAfdJr = db.AttachObjectGraph(afdelingsJaar
-			    , aj=>aj.OfficieleAfdeling.WithoutUpdate()
-			    , aj=>aj.Afdeling.WithoutUpdate()
-			    , aj=>aj.GroepsWerkJaar.WithoutUpdate());
-
-			db.SaveChanges();
-
-			// SaveChanges geeft geattachtAfdJr een ID.  Neem dit
-			// id over in het gedetachte afdelingsJaar.
-
-			afdelingsJaar.ID = geattachtAfdJr.ID;
-		    }
-
-		    return afdelingsJaar;
-		}*/
-
 		/// <summary>
-		/// 
+		/// Haalt alle officiele afdelingen op
 		/// </summary>
-		/// <returns></returns>
-		public IList<OfficieleAfdeling> OphalenOfficieleAfdelingen()
+		/// <returns>Lijst officiele afdelingen</returns>
+		public IList<OfficieleAfdeling> OfficieleAfdelingenOphalen()
 		{
 			IList<OfficieleAfdeling> result;
 			using (ChiroGroepEntities db = new ChiroGroepEntities())
@@ -218,6 +106,24 @@ namespace Chiro.Gap.Data.Ef
 						  select d).ToList();
 			}
 			return Utility.DetachObjectGraph(result);
+		}
+
+		/// <summary>
+		/// Haalt de officiele afdeling met ID <paramref name="officieleAfdelingID"/> op.
+		/// </summary>
+		/// <param name="officieleAfdelingID">ID van de op te halen officiele afdeling.</param>
+		/// <returns>Officiele afdeling met ID <paramref name="officieleAfdelingID"/></returns>
+		public OfficieleAfdeling OfficieleAfdelingOphalen(int officieleAfdelingID)
+		{
+			OfficieleAfdeling resultaat;
+			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			{
+				resultaat = (from d in db.OfficieleAfdeling
+					     where d.ID == officieleAfdelingID
+					     select d).FirstOrDefault();
+			}
+			return Utility.DetachObjectGraph(resultaat);
+
 		}
 
 		/// <summary>
