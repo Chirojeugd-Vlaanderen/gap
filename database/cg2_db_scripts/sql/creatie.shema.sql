@@ -54,13 +54,15 @@ GO
 -- --  lid --
 -- ----------
 BEGIN
-	CREATE TABLE [lid].[OfficieleAfdeling](
-		[Naam] [varchar](50) NOT NULL,
-		[officieleAfdelingID] [int] IDENTITY(1,1) NOT NULL,
-		[Versie] [timestamp] NULL,
-		CONSTRAINT [PK_OfficieleAfdeling] PRIMARY KEY CLUSTERED ([officieleAfdelingID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY],
-		CONSTRAINT [UQ_OfficieleAfdeling_Naam] UNIQUE NONCLUSTERED ([Naam] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
-	) ON [PRIMARY]
+	CREATE TABLE lid.OfficieleAfdeling(
+		Naam VARCHAR(50) NOT NULL,
+		OfficieleAfdelingID INT IDENTITY(1,1) NOT NULL,
+		GeboorteJaarVan INT NOT NULL,
+		GeboorteJaarTot INT NOT NULL,
+		Versie TIMESTAMP NULL,
+		CONSTRAINT PK_OfficieleAfdeling PRIMARY KEY CLUSTERED (OfficieleAfdelingID ASC),
+		CONSTRAINT UQ_OfficieleAfdeling_Naam UNIQUE NONCLUSTERED (Naam)
+	)
 END
 GO
 EXEC sys.sp_addextendedproperty 
@@ -162,6 +164,7 @@ BEGIN
 		[GroepsWerkjaarID] [int] NOT NULL,
 		[GelieerdePersoonID] [int] NOT NULL,
 		[Versie] [timestamp] NULL,
+		[EindeInstapPeriode] [smalldatetime] NULL,
 		CONSTRAINT [PK_Lid] PRIMARY KEY NONCLUSTERED ([LidID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
 	) ON [PRIMARY]
 END
@@ -474,7 +477,6 @@ GO
 
 BEGIN
 	CREATE TABLE [lid].[Kind](
-		[EindeInstapPeriode] [smalldatetime] NULL,
 		[kindID] [int] NOT NULL,
 		[afdelingsJaarID] [int] NULL,
 		[Versie] [timestamp] NULL,
