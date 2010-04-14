@@ -24,5 +24,18 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// opgezocht moeten worden.</param>
 		/// <returns>De ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
 		IList<Afdeling> OngebruikteOphalen(int groepsWerkJaarID);
+
+		/// <summary>
+		/// Haalt alle officiele afdelingen op
+		/// </summary>
+		/// <returns>Lijst officiele afdelingen</returns>
+		IList<OfficieleAfdeling> OfficieleAfdelingenOphalen();
+
+		/// <summary>
+		/// Haalt de officiele afdeling met ID <paramref name="officieleAfdelingID"/> op.
+		/// </summary>
+		/// <param name="officieleAfdelingID">ID van de op te halen officiele afdeling.</param>
+		/// <returns>Officiele afdeling met ID <paramref name="officieleAfdelingID"/></returns>
+		OfficieleAfdeling OfficieleAfdelingOphalen(int officieleAfdelingID);
 	}
 }

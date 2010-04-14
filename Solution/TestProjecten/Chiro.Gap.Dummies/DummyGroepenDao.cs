@@ -28,25 +28,10 @@ namespace Chiro.Gap.Dummies
             throw new NotImplementedException();
         }
 
-        public IList<OfficieleAfdeling> OfficieleAfdelingenOphalen()
-        {
-            throw new NotImplementedException();
-        }
-
         public GroepsWerkJaar GroepsWerkJaarOphalen(int groepsWerkJaarID)
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-	#region IGroepenDao Members
-
-
-	public OfficieleAfdeling OfficieleAfdelingOphalen(int officieleAfdelingID)
-	{
-		throw new NotImplementedException();
-	}
 
 	#endregion
     }

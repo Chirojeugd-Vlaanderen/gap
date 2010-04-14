@@ -8,15 +8,6 @@ namespace Chiro.Gap.Dummies
 {
 	public class DummyAfdelingenDao: IAfdelingenDao
 	{
-		#region IAfdelingenDao Members
-
-		public IList<Chiro.Gap.Orm.Afdeling> OngebruikteOphalen(int groepsWerkJaarID)
-		{
-			throw new NotImplementedException();
-		}
-
-		#endregion
-
 		#region IDao<Afdeling> Members
 
 		public Chiro.Gap.Orm.Afdeling Ophalen(int id)
@@ -65,6 +56,26 @@ namespace Chiro.Gap.Dummies
 		}
 
 		public System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Afdeling, object>>[] getConnectedEntities()
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
+
+
+		#region IAfdelingenDao Members
+
+		public IList<Chiro.Gap.Orm.Afdeling> OngebruikteOphalen(int groepsWerkJaarID)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IList<Chiro.Gap.Orm.OfficieleAfdeling> OfficieleAfdelingenOphalen()
+		{
+			throw new NotImplementedException();
+		}
+
+		public Chiro.Gap.Orm.OfficieleAfdeling OfficieleAfdelingOphalen(int officieleAfdelingID)
 		{
 			throw new NotImplementedException();
 		}

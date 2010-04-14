@@ -34,17 +34,20 @@ namespace Chiro.Gap.Services
 		private readonly GroepenManager _groepenMgr;
 		private readonly LedenManager _ledenMgr;
 		private readonly FunctiesManager _functiesMgr;
+		private readonly AfdelingsJaarManager _afdelingsJaarMgr;
 
 		public LedenService(
 			GelieerdePersonenManager gpm, 
 			LedenManager lm, 
 			GroepenManager grm,
-			FunctiesManager fm)
+			FunctiesManager fm,
+			AfdelingsJaarManager ajm)
 		{
-			this._gelieerdePersonenMgr = gpm;
-			this._ledenMgr = lm;
-			this._groepenMgr = grm;
-			this._functiesMgr = fm;
+			_gelieerdePersonenMgr = gpm;
+			_ledenMgr = lm;
+			_groepenMgr = grm;
+			_functiesMgr = fm;
+			_afdelingsJaarMgr = ajm;
 		}
 
 		#endregion
@@ -261,7 +264,7 @@ namespace Chiro.Gap.Services
 
 				throw new InvalidOperationException(Properties.Resources.AccessDenied);
 			}
-			_ledenMgr.AfdelingenVervangen(l, afdelingsjaren);
+			_afdelingsJaarMgr.Vervangen(l, afdelingsjaren);
 
 			return l.GelieerdePersoon.ID;
 		}

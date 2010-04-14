@@ -93,38 +93,6 @@ namespace Chiro.Gap.Data.Ef
 			return result;
 		}
 
-		/// <summary>
-		/// Haalt alle officiele afdelingen op
-		/// </summary>
-		/// <returns>Lijst officiele afdelingen</returns>
-		public IList<OfficieleAfdeling> OfficieleAfdelingenOphalen()
-		{
-			IList<OfficieleAfdeling> result;
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
-			{
-				result = (from d in db.OfficieleAfdeling
-						  select d).ToList();
-			}
-			return Utility.DetachObjectGraph(result);
-		}
-
-		/// <summary>
-		/// Haalt de officiele afdeling met ID <paramref name="officieleAfdelingID"/> op.
-		/// </summary>
-		/// <param name="officieleAfdelingID">ID van de op te halen officiele afdeling.</param>
-		/// <returns>Officiele afdeling met ID <paramref name="officieleAfdelingID"/></returns>
-		public OfficieleAfdeling OfficieleAfdelingOphalen(int officieleAfdelingID)
-		{
-			OfficieleAfdeling resultaat;
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
-			{
-				resultaat = (from d in db.OfficieleAfdeling
-					     where d.ID == officieleAfdelingID
-					     select d).FirstOrDefault();
-			}
-			return Utility.DetachObjectGraph(resultaat);
-
-		}
 
 		/// <summary>
 		/// 

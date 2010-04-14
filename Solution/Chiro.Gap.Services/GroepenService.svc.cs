@@ -171,7 +171,7 @@ namespace Chiro.Gap.Services
 
 		public IEnumerable<OfficieleAfdeling> OfficieleAfdelingenOphalen()
 		{
-			return _groepenMgr.OfficieleAfdelingenOphalen();
+			return _afdelingsJaarMgr.OfficieleAfdelingenOphalen();
 		}
 
 		public IEnumerable<GroepInfo> MijnGroepenOphalen()
@@ -245,8 +245,8 @@ namespace Chiro.Gap.Services
 		{
 			AfdelingsJaar afdelingsJaar;
 
-			Afdeling afd = _groepenMgr.AfdelingOphalen(detail.AfdelingID);
-			OfficieleAfdeling oa = _groepenMgr.OfficieleAfdelingOphalen(detail.OfficieleAfdelingID);
+			Afdeling afd = _afdelingsJaarMgr.AfdelingOphalen(detail.AfdelingID);
+			OfficieleAfdeling oa = _afdelingsJaarMgr.OfficieleAfdelingOphalen(detail.OfficieleAfdelingID);
 			GroepsWerkJaar huidigGwj = _groepsWerkJaarManager.RecentsteOphalen(afd.Groep.ID);
 
 
@@ -254,7 +254,7 @@ namespace Chiro.Gap.Services
 			{
 				// nieuw maken.
 
-				afdelingsJaar = _groepenMgr.AfdelingsJaarMaken(
+				afdelingsJaar = _afdelingsJaarMgr.Aanmaken(
 					afd,
 					oa,
 					huidigGwj,
@@ -278,7 +278,7 @@ namespace Chiro.Gap.Services
 
 				_afdelingsJaarMgr.Wijzigen(
 					afdelingsJaar,
-					_groepenMgr.OfficieleAfdelingOphalen(detail.OfficieleAfdelingID),
+					_afdelingsJaarMgr.OfficieleAfdelingOphalen(detail.OfficieleAfdelingID),
 					detail.GeboorteJaarVan,
 					detail.GeboorteJaarTot,
 					detail.Geslacht,
@@ -350,7 +350,7 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public AfdelingInfo AfdelingOphalen(int afdelingID)
 		{
-			Afdeling a = _groepenMgr.AfdelingOphalen(afdelingID);
+			Afdeling a = _afdelingsJaarMgr.AfdelingOphalen(afdelingID);
 			Mapper.CreateMap<Afdeling, AfdelingInfo>();
 
 			return Mapper.Map<Afdeling, AfdelingInfo>(a);

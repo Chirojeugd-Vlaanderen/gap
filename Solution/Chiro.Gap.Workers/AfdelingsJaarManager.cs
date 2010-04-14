@@ -25,19 +25,89 @@ namespace Chiro.Gap.Workers
 	/// </summary>
 	public class AfdelingsJaarManager
 	{
-		private IAfdelingsJarenDao _dao;
+		private IAfdelingsJarenDao _afdJarenDao;
+		private IAfdelingenDao _afdelingenDao;
+		private IGroepsWerkJaarDao _groepsWjDao;
+		private IKindDao _kindDao;
+		private ILeidingDao _leidingDao;
+
 		private IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
 		/// Deze constructor laat toe om een alternatieve repository voor
 		/// de groepen te gebruiken.  Nuttig voor mocking en testing.
 		/// </summary>
-		/// <param name="dao">Alternatieve dao</param>
+		/// <param name="ajDao">Zorgt voor data-access ivm afdelnigsjaren</param>
+		/// <param name="afdDao">Zorgt voor afdelingsgerelateerde data-access</param>
+		/// <param name="gwjDao">Zorgt voor groepswerkjaargerelateerde data-access</param>
+		/// <param name="kindDao">Zorgt voor kindgerelateerde data-access</param>
+		/// <param name="leidingDao">Zorgt voor leidinggerelateerde data-access</param>
 		/// <param name="autorisatieMgr">Alternatieve autorisatiemanager</param>
-		public AfdelingsJaarManager(IAfdelingsJarenDao dao, IAutorisatieManager autorisatieMgr)
+		public AfdelingsJaarManager(
+			IAfdelingsJarenDao ajDao, 
+			IAfdelingenDao afdDao,
+			IGroepsWerkJaarDao gwjDao,
+			IKindDao kindDao,
+			ILeidingDao leidingDao,
+			IAutorisatieManager autorisatieMgr)
 		{
-			_dao = dao;
+			_afdJarenDao = ajDao;
+			_afdelingenDao = afdDao;
+			_groepsWjDao = gwjDao;
+			_kindDao = kindDao;
+			_leidingDao = leidingDao;
 			_autorisatieMgr = autorisatieMgr;
+		}
+
+		/// <summary>
+		/// Maakt een afdelingsjaar voor een groep en een afdeling
+		/// </summary>
+		/// <param name="a">Afdeling voor nieuw afdelingsjaar</param>
+		/// <param name="oa">Te koppelen officiële afdeling</param>
+		/// <param name="gwj">Groepswerkjaar (koppelt de afdeling aan een groep en een werkjaar)</param>
+		/// <param name="geboorteJaarBegin">Geboortejaar van</param>
+		/// <param name="geboorteJaarEind">Geboortejaar tot</param>
+		/// <param name="geslacht">bepaalt of de afdeling een jongensafdeling, meisjesafdeling of
+		/// gemengde afdeling is.</param>
+		/// <returns>Het aangemaakte afdelingsjaar</returns>
+		public AfdelingsJaar Aanmaken(
+			Afdeling a,
+			OfficieleAfdeling oa,
+			GroepsWerkJaar gwj,
+			int geboorteJaarBegin,
+			int geboorteJaarEind,
+			GeslachtsType geslacht)
+		{
+			if (!_autorisatieMgr.IsGavAfdeling(a.ID))
+			{
+				throw new GeenGavException(GeenGavFoutCode.Afdeling, Resources.GeenGavAfdeling);
+			}
+
+			// Leden moeten minstens in het 1ste leerjaar zitten, alvorens we inschrijven.
+			// De maximumleeftijd is arbitrair nattevingerwerk. :-)
+			if (!(gwj.WerkJaar - geboorteJaarEind >= Properties.Settings.Default.MinLidLeefTijd)
+				|| !(gwj.WerkJaar - geboorteJaarBegin <= Properties.Settings.Default.MaxLidLeefTijd)
+				|| !(geboorteJaarBegin <= geboorteJaarEind))
+			{
+				throw new InvalidOperationException("Ongeldige geboortejaren voor het afdelingsjaar");
+			}
+
+			AfdelingsJaar afdelingsJaar = new AfdelingsJaar();
+
+			// TODO check if no conflicts with existing afdelingsjaar
+
+			afdelingsJaar.OfficieleAfdeling = oa;
+			afdelingsJaar.Afdeling = a;
+			afdelingsJaar.GroepsWerkJaar = gwj;
+			afdelingsJaar.GeboorteJaarVan = geboorteJaarBegin;
+			afdelingsJaar.GeboorteJaarTot = geboorteJaarEind;
+			afdelingsJaar.Geslacht = geslacht;
+
+			a.AfdelingsJaar.Add(afdelingsJaar);
+			oa.AfdelingsJaar.Add(afdelingsJaar);
+			gwj.AfdelingsJaar.Add(afdelingsJaar);
+
+			return afdelingsJaar;
 		}
 
 		/// <summary>
@@ -70,7 +140,7 @@ namespace Chiro.Gap.Workers
 
 			if (_autorisatieMgr.IsGavAfdelingsJaar(afdelingsJaarID))
 			{
-				return _dao.Ophalen(afdelingsJaarID, paths.ToArray());
+				return _afdJarenDao.Ophalen(afdelingsJaarID, paths.ToArray());
 			}
 			else
 			{
@@ -85,7 +155,7 @@ namespace Chiro.Gap.Workers
 		/// <returns><c>True</c> on successful</returns>
 		public bool Verwijderen(int afdelingsJaarID)
 		{
-			AfdelingsJaar aj = _dao.Ophalen(afdelingsJaarID, a => a.Afdeling, a => a.Leiding, a => a.Kind);
+			AfdelingsJaar aj = _afdJarenDao.Ophalen(afdelingsJaarID, a => a.Afdeling, a => a.Leiding, a => a.Kind);
 
 			if (_autorisatieMgr.IsGavAfdeling(aj.Afdeling.ID))
 			{
@@ -96,7 +166,7 @@ namespace Chiro.Gap.Workers
 				else
 				{
 					aj.TeVerwijderen = true;
-					_dao.Bewaren(aj);
+					_afdJarenDao.Bewaren(aj);
 					return true;
 				}
 			}
@@ -114,7 +184,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavAfdeling(aj.Afdeling.ID))
 			{
-				_dao.Bewaren(aj);
+				_afdJarenDao.Bewaren(aj);
 			}
 			else
 			{
@@ -165,5 +235,136 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(GeenGavFoutCode.Afdeling, "Dit is geen afdeling van jouw groep(en).");
 			}
 		}
+
+		/// <summary>
+		/// Haalt een afdeling op, op basis van <paramref name="afdelingID"/>
+		/// </summary>
+		/// <param name="afdelingID">ID van op te halen afdeling</param>
+		/// <returns>De gevraagde afdeling</returns>
+		public Afdeling AfdelingOphalen(int afdelingID)
+		{
+			if (_autorisatieMgr.IsGavAfdeling(afdelingID))
+			{
+				return _afdelingenDao.Ophalen(afdelingID);
+			}
+			else
+			{
+				throw new GeenGavException(GeenGavFoutCode.Afdeling, Resources.GeenGavAfdeling);
+			}
+		}
+
+		/// <summary>
+		/// Haalt lijst officiële afdelingen op.
+		/// </summary>
+		/// <returns>Lijst officiële afdelingen</returns>
+		public IList<OfficieleAfdeling> OfficieleAfdelingenOphalen()
+		{
+			// Iedereen heeft het recht deze op te halen.
+			return _afdelingenDao.OfficieleAfdelingenOphalen();
+		}
+
+		/// <summary>
+		/// Haalt een officiele afdeling op, op basis van zijn ID
+		/// </summary>
+		/// <param name="officieleAfdelingID">ID van de op te halen officiele afdeling</param>
+		/// <returns>Opgehaalde officiele afdeling</returns>
+		public OfficieleAfdeling OfficieleAfdelingOphalen(int officieleAfdelingID)
+		{
+			return _afdelingenDao.OfficieleAfdelingOphalen(officieleAfdelingID);
+		}
+
+		/// <summary>
+		/// De afdelingen van het gegeven lid worden aangepast van whatever momenteel zijn afdelingen zijn naar
+		/// de gegeven lijst nieuwe afdelingen.
+		/// Een kind mag maar 1 afdeling hebben, voor een leider staan daar geen constraints op.
+		/// Persisteert, want ingeval van leiding kan het zijn dat er links lid->afdelingsjaar moeten 
+		/// verdwijnen.
+		/// </summary>
+		/// <param name="l">Lid, geladen met groepswerkjaar met afdelingsjaren</param>
+		/// <param name="afdelingsIDs">De ids van de AFDELING waarvan het kind lid is</param>
+		/// <returns>Lidobject met gekoppeld(e) afdelingsja(a)r(en)</returns>
+		public Lid Vervangen(Lid l, IEnumerable<AfdelingsJaar> afdelingsJaren)
+		{
+			Debug.Assert(l.GroepsWerkJaar != null);
+			Debug.Assert(l.GroepsWerkJaar.Groep != null);
+
+			if (!_autorisatieMgr.IsGavLid(l.ID))
+			{
+				throw new GeenGavException(GeenGavFoutCode.Lid, Properties.Resources.GeenGavLid);
+			}
+			else if (l.GroepsWerkJaar.ID != _groepsWjDao.RecentsteOphalen(l.GroepsWerkJaar.Groep.ID).ID)
+			{
+				throw new FoutCodeException<NietBeschikbaarFoutCode>(
+					NietBeschikbaarFoutCode.GroepsWerkJaar,
+					Properties.Resources.GroepsWerkJaarVoorbij);
+			}
+
+			var probleemgevallen = from aj in afdelingsJaren
+					       where aj.GroepsWerkJaar.ID != l.GroepsWerkJaar.ID
+					       select aj;
+
+			if (probleemgevallen.FirstOrDefault() != null)
+			{
+				throw new FoutCodeException<VerkeerdeGroepFoutCode>(
+					VerkeerdeGroepFoutCode.Afdeling,
+					Properties.Resources.FoutieveGroepAfdeling);
+			}
+
+
+			if (l is Kind)
+			{
+				Kind kind = (Kind)l;
+				if (afdelingsJaren.Count() != 1)
+				{
+					throw new NotSupportedException("Slechts 1 afdeling per kind.");
+				}
+
+				if (kind.AfdelingsJaar.ID != afdelingsJaren.First().ID)
+				{
+					// afdeling moet verwijderd worden.
+
+					afdelingsJaren.First().Kind.Add(kind);
+					kind.AfdelingsJaar = afdelingsJaren.First();
+				}
+
+				_kindDao.Bewaren(kind, knd => knd.AfdelingsJaar);
+
+				// omdat bovenstaande bewaren geen nieuwe ID's zal toekennen, en geen links
+				// zal verwijderen, kunnen we met een gerust geweten het originele kind
+				// opleveren.
+
+				return kind;
+			}
+			else
+			{
+				Leiding leiding = (Leiding)l;
+
+				// Verwijder ontbrekende afdelingen;
+				var teVerwijderenAfdelingen = from aj in leiding.AfdelingsJaar
+							      where !afdelingsJaren.Any(aj2 => aj2.ID == aj.ID)
+							      select aj;
+
+				foreach (var aj in teVerwijderenAfdelingen)
+				{
+					aj.TeVerwijderen = true;
+				}
+
+				// Ken nieuwe afdelingen toe
+				var nieuweAfdelingen = from aj in afdelingsJaren
+						       where !leiding.AfdelingsJaar.Any(aj2 => aj2.ID == aj.ID)
+						       select aj;
+
+				foreach (var aj in nieuweAfdelingen)
+				{
+					leiding.AfdelingsJaar.Add(aj);
+					aj.Leiding.Add(leiding);
+				}
+
+				// Hier moet je wel met de terugkeerwaarde van 'Bewaren' werken, want anders
+				// stuur je afdelingsjaren met TeVerwijderen=true over de lijn. (brr)
+				return _leidingDao.Bewaren(leiding, ldng => ldng.AfdelingsJaar);
+			}
+		}
+
 	}
 }
