@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccessDenied" xml:space="preserve">
+    <value>Geen toegang.</value>
+  </data>
   <data name="FouteAfdelingVoorGroepString" xml:space="preserve">
     <value>De opgegeven afdeling is geen afdeling van groep {0}.</value>
     <comment>Parameter 0: naam van de groep</comment>

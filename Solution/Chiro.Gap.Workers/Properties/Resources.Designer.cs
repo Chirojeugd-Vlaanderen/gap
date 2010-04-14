@@ -133,6 +133,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je kan geen lid van de ene groep koppelen aan een afdeling van een andere..
+        /// </summary>
+        internal static string FoutieveGroepAfdeling {
+            get {
+                return ResourceManager.GetString("FoutieveGroepAfdeling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Je probeert een persoon te koppelen aan een categorie uit een andere groep..
         /// </summary>
         internal static string FoutieveGroepCategorie {
@@ -282,6 +291,15 @@ namespace Chiro.Gap.Workers.Properties {
         internal static string GemeenteNietGevonden {
             get {
                 return ResourceManager.GetString("GemeenteNietGevonden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Je kan geen aanpassingen meer doen aan vorige werkjaren..
+        /// </summary>
+        internal static string GroepsWerkJaarVoorbij {
+            get {
+                return ResourceManager.GetString("GroepsWerkJaarVoorbij", resourceCulture);
             }
         }
         

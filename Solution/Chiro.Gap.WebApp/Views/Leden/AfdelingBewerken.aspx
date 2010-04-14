@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<LedenModel>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<LidAfdelingenModel>" %>
 <%@ Import Namespace="Chiro.Gap.Orm" %>
 <%@ Import Namespace="Chiro.Gap.WebApp" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
@@ -20,29 +20,29 @@
            <legend>Afdelingen</legend>     
            
           <%
-              if (Model.HuidigLid.Type == LidType.Leiding)
+              if (Model.Info.Type == LidType.Leiding)
               {
                   %>
-                  <p>Selecteer de afdeling(en) van <%= Model.HuidigLid.PersoonInfo.VolledigeNaam %></p>
+                  <p>Selecteer afdeling(en) voor <%= Model.Info.VolledigeNaam %></p>
                   <%
                   
                   List<CheckBoxListInfo> info =
-                      (from pa in Model.AlleAfdelingen
+                      (from pa in Model.BeschikbareAfdelingen
                        select new CheckBoxListInfo(
-                                       pa.AfdelingID.ToString()
-                                       , pa.AfdelingNaam
-                                       , Model.AfdelingIDs.Contains(pa.AfdelingID))).ToList<CheckBoxListInfo>();
+                                       pa.AfdelingsJaarID.ToString()
+                                       , pa.Naam
+                                       , Model.Info.AfdelingsJaarIDs.Contains(pa.AfdelingsJaarID))).ToList<CheckBoxListInfo>();
 
-                  Response.Write(Html.CheckBoxList("AfdelingIDs", info));
+                  Response.Write(Html.CheckBoxList("Info.AfdelingsJaarIDs", info));
               }
               else
               {
                   %>
-                  <p>Selecteer de afdeling van <%= Model.HuidigLid.PersoonInfo.VolledigeNaam %></p>
+                  <p>Selecteer de afdeling voor <%= Model.Info.VolledigeNaam %></p>
                   <%
-                  foreach(var ai in Model.AlleAfdelingen)
+                  foreach(var ai in Model.BeschikbareAfdelingen)
                   {
-                      Response.Write("<p>" + Html.RadioButton("AfdelingID", ai.AfdelingID, Model.HuidigLid.AfdelingIdLijst.ElementAt(0) == ai.AfdelingID)+ ai.AfdelingNaam + "</p>");   
+                      Response.Write("<p>" + Html.RadioButton("Info.AfdelingsJaarIDs[0]", ai.AfdelingsJaarID, Model.Info.AfdelingsJaarIDs[0] == ai.AfdelingsJaarID)+ ai.Naam + "</p>");   
                   }
               }
            %>

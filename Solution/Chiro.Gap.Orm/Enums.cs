@@ -68,6 +68,11 @@ namespace Chiro.Gap.Orm
 		/// </summary>
 		[EnumMember]
 		Functies = 0x08,
+		/// <summary>
+		/// Haalt gelieerde persoon en persoon mee op.
+		/// </summary>
+		[EnumMember]
+		Persoon = 0x10,
 		[EnumMember]
 		Alles = Groep | Afdelingen | Functies
 	}

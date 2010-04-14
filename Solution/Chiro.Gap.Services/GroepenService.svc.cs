@@ -374,6 +374,27 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
+		/// Haalt beperkte informatie op over de beschikbare afdelingen van een groep in het huidige
+		/// groepswerkjaar.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvoor de afdelingen gevraagd zijn</param>
+		/// <returns>Lijst van ActieveAfdelingInfo</returns>
+		public IList<ActieveAfdelingInfo> BeschikbareAfdelingenOphalen(int groepID)
+		{
+			var gwj = _groepsWerkJaarManager.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
+
+			Mapper.CreateMap<AfdelingsJaar, ActieveAfdelingInfo>()
+				.ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Afdeling.Naam))
+				.ForMember(dst => dst.Afkorting, opt => opt.MapFrom(src => src.Afdeling.Afkorting))
+				.ForMember(dst => dst.AfdelingsJaarID, opt => opt.MapFrom(src => src.ID))
+				.ForMember(dst => dst.ID, opt => opt.MapFrom(src => src.Afdeling.ID));
+
+			Mapper.AssertConfigurationIsValid();
+
+			return Mapper.Map<IEnumerable<AfdelingsJaar>, IList<ActieveAfdelingInfo>>(gwj.AfdelingsJaar);
+		}
+
+		/// <summary>
 		/// Haalt informatie op over de afdelingen van een groep die niet gebruikt zijn in een gegeven 
 		/// groepswerkjaar, op basis van een <paramref name="groepsWerkJaarID"/>
 		/// </summary>

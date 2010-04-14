@@ -181,23 +181,21 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <summary>
 		/// Toont de view die toelaat om de afdeling(en) van een lid te wijzigen
 		/// </summary>
-		/// <param name="id">LidID van het lid met de te wijzigen afdeling</param>
-		/// <param name="groepID"></param>
-		/// <returns></returns>
+		/// <param name="id">LidID van het lid met de te wijzigen afdeling(en)</param>
+		/// <param name="groepID">Groep waarin de user momenteel werkt</param>
+		/// <returns>De view 'AfdelingBewerken'</returns>
 		public ActionResult AfdelingBewerken(int id, int groepID)
 		{
-			var model = new LedenModel();
+			var model = new LidAfdelingenModel();
 			BaseModelInit(model, groepID);
 
-			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>
-				(l => l.Ophalen(id, LidExtras.Groep|LidExtras.Afdelingen));
+			model.BeschikbareAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<ActieveAfdelingInfo>> (
+				svc => svc.BeschikbareAfdelingenOphalen(groepID));
+			model.Info = ServiceHelper.CallService<ILedenService, LidAfdelingInfo>(
+				svc => svc.AfdelingenOphalen(id));
 
-			// Ik had liever hierboven nog eens LidExtras.AlleAfdelingen meegegeven, maar
-			// het datacontract (LidInfo) voorziet daar niets voor.
 
-			AfdelingenOphalen(model);
-
-			if (model.AlleAfdelingen.FirstOrDefault() == null)
+			if (model.BeschikbareAfdelingen.FirstOrDefault() == null)
 			{
 				// Geen afdelingen.
 
@@ -213,7 +211,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
-				model.Titel = "Afdelingen van " + model.HuidigLid.PersoonInfo.VolledigeNaam + "aanpassen";
+				model.Titel = String.Format(Properties.Resources.AfdelingenAanpassen, model.Info.VolledigeNaam);
 				return View("AfdelingBewerken", model);
 			}
 		}
@@ -221,33 +219,23 @@ namespace Chiro.Gap.WebApp.Controllers
 		//
 		// POST: /Leden/AfdelingBewerken/5
 		[AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult AfdelingBewerken(LedenModel model, int groepID)
+		public ActionResult AfdelingBewerken(LidAfdelingenModel model, int groepID, int id)
 		{
-			IList<int> selectie = new List<int>();
-			if (model.HuidigLid.Type == LidType.Kind)
-			{
-				selectie.Add(model.AfdelingID);
-			}
-			else
-			{
-				if (model.AfdelingIDs != null) // dit komt erop neer dat er iets geselecteerd
-				{
-					selectie = model.AfdelingIDs;
-				}
-			}
-
 			try
 			{
-				int x = selectie.Count;
-				LidInfo tebewarenlid = model.HuidigLid;
-				tebewarenlid.AfdelingIdLijst = selectie;
-				ServiceHelper.CallService<ILedenService>(e => e.BewarenMetAfdelingen(tebewarenlid));
-				//TODO handle exception
-				return RedirectToAction("EditRest", new { Controller = "Personen", id = model.HuidigLid.PersoonInfo.GelieerdePersoonID});
+				// FIXME: Het is geen prachtige code: AfdelingenVervangen die 'toevallig'
+				// een GelieerdePersoonID oplevert, die ik dan in dit specifieke geval
+				// 'toevallig' kan gebruiken om naar de juiste personenfiche om te schakelen.
+
+				int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(
+					svc => svc.AfdelingenVervangen(id, model.Info.AfdelingsJaarIDs));
+				return RedirectToAction(
+					"EditRest", 
+					new { Controller = "Personen", id = gelieerdePersoonID});
 			}
 			catch
 			{
-				return RedirectToAction("List", new { groepsWerkJaarId = Sessie.LaatstePagina, afdID = Sessie.LaatsteActieID });
+				throw;
 			}
 		}
 
@@ -264,7 +252,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>(l => l.Ophalen(
 				id, 
-				LidExtras.Groep|LidExtras.Afdelingen|LidExtras.Functies));
+				LidExtras.Groep|LidExtras.Afdelingen|LidExtras.Functies|LidExtras.Persoon));
 
 			// Ik had liever hierboven nog eens LidExtras.AlleAfdelingen meegegeven, maar
 			// het datacontract (LidInfo) voorziet daar niets voor.

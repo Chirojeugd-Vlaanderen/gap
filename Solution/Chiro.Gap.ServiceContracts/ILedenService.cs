@@ -48,14 +48,6 @@ namespace Chiro.Gap.ServiceContracts
 		void Bewaren(LidInfo lid);
 
 		/// <summary>
-		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. Creëert of verwijdert geen leden, en leden
-		/// kunnen ook niet van werkjaar of van gelieerdepersoon veranderen. Ook de afdelingen worden aangepast.
-		/// </summary>
-		/// <param name="lid">te bewaren lid</param>
-		[OperationContract]
-		void BewarenMetAfdelingen(LidInfo lid);
-
-		/// <summary>
 		/// Vervangt de functies van het lid bepaald door <paramref name="lidID"/> door de functies
 		/// met ID's <paramref name="functieIDs"/>
 		/// </summary>
@@ -63,6 +55,24 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="functieIDs">IDs van nieuwe functies voor het lid</param>
 		[OperationContract]
 		void FunctiesVervangen(int lidID, IEnumerable<int> functieIDs);
+
+		/// <summary>
+		/// Haalt de ID's van de groepswerkjaren van een lid op.
+		/// </summary>
+		/// <param name="lidID">ID van het lid waarin we geinteresseerd zijn</param>
+		/// <returns>Een LidAfdelingInfo-object</returns>
+		[OperationContract]
+		LidAfdelingInfo AfdelingenOphalen(int lidID);
+
+		/// <summary>
+		/// Vervangt de afdelingen van het lid met ID <paramref name="lidID"/> door de afdelingen
+		/// met AFDELINGSJAARIDs gegeven door <paramref name="afdelingsJaarIDs"/>.
+		/// </summary>
+		/// <param name="lidID">Lid dat nieuwe afdelingen moest krijgen</param>
+		/// <param name="afdelingsJaarIDs">ID's van de te koppelen afdelingsjaren</param>
+		/// <returns>De GelieerdePersoonID van het lid</returns>
+		[OperationContract]
+		int AfdelingenVervangen(int lidID, IEnumerable<int> afdelingsJaarIDs);
 
 		/// <summary>
 		/// </summary>

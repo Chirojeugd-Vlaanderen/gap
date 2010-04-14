@@ -115,6 +115,7 @@
     <Compile Include="Models\CategorieModel.cs" />
     <Compile Include="Models\CommVormModel.cs" />
     <Compile Include="Models\AfdelingsJaarModel.cs" />
+    <Compile Include="Models\LidAfdelingenModel.cs" />
     <Compile Include="Models\Mededeling.cs" />
     <Compile Include="Models\PersonenLedenModel.cs" />
     <Compile Include="Models\GroepsInstellingenModel.cs" />

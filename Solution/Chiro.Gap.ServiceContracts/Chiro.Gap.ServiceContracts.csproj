@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataContracts\ActieveAfdelingInfo.cs" />
     <Compile Include="DataContracts\AfdelingDetail.cs" />
     <Compile Include="DataContracts\AdresInfo.cs" />
     <Compile Include="DataContracts\AfdelingInfo.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="DataContracts\CommunicatieInfo.cs" />
     <Compile Include="DataContracts\FunctieProbleemInfo.cs" />
     <Compile Include="DataContracts\GroepDetail.cs" />
+    <Compile Include="DataContracts\LidAfdelingInfo.cs" />
     <Compile Include="DataContracts\PersoonLidInfo.cs" />
     <Compile Include="DataContracts\FunctieInfo.cs" />
     <Compile Include="DataContracts\PersoonsAdresInfo.cs" />

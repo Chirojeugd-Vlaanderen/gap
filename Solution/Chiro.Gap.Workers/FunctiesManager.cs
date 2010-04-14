@@ -159,8 +159,6 @@ namespace Chiro.Gap.Workers
 		/// </remarks>
 		public void Toekennen(Lid lid, IEnumerable<Functie> functies)
 		{
-			Debug.Assert(lid.GelieerdePersoon != null);
-			Debug.Assert(lid.GelieerdePersoon.Persoon != null);
 			Debug.Assert(lid.GroepsWerkJaar != null);
 			Debug.Assert(lid.GroepsWerkJaar.Groep != null);
 

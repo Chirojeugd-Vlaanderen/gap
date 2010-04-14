@@ -61,6 +61,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Afdelingen van {0} bewerken.
+        /// </summary>
+        public static string AfdelingenAanpassen {
+            get {
+                return ResourceManager.GetString("AfdelingenAanpassen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Er bestaat al een afdeling met de code &apos;{0}&apos;: {1} ({0})..
         /// </summary>
         public static string AfdelingsCodeBestaatAl {

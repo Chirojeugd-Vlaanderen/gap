@@ -114,6 +114,8 @@ namespace Chiro.Gap.Fouten
 		[EnumMember]
 		Afdeling,		// Afdeling niet beschikbaar in dit werkjaar
 		[EnumMember]
-		Functie			// Functie niet beschikbaar in dit werkjaar
+		Functie,		// Functie niet beschikbaar in dit werkjaar
+		[EnumMember]
+		GroepsWerkJaar		// Groepswerkjaar is voorbij.
 	}
 }

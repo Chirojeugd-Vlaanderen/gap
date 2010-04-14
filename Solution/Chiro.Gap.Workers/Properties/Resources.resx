@@ -196,4 +196,10 @@
   <data name="StraatNietGevonden" xml:space="preserve">
     <value>Straat {0} met postnummer {1} niet gevonden.</value>
   </data>
+  <data name="FoutieveGroepAfdeling" xml:space="preserve">
+    <value>Je kan geen lid van de ene groep koppelen aan een afdeling van een andere.</value>
+  </data>
+  <data name="GroepsWerkJaarVoorbij" xml:space="preserve">
+    <value>Je kan geen aanpassingen meer doen aan vorige werkjaren.</value>
+  </data>
 </root>

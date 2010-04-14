@@ -61,6 +61,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Geen toegang..
+        /// </summary>
+        internal static string AccessDenied {
+            get {
+                return ResourceManager.GetString("AccessDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De opgegeven afdeling is geen afdeling van groep {0}..
         /// </summary>
         internal static string FouteAfdelingVoorGroepString {

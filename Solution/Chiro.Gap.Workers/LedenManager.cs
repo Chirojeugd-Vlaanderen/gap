@@ -355,9 +355,12 @@ namespace Chiro.Gap.Workers
 				// Leiding: ga via LeidingDAO.
 
 				var paths = new List<Expression<Func<Leiding, object>>>();
-				paths.Add(ld => ld.GelieerdePersoon.Persoon);
 				paths.Add(ld => ld.GroepsWerkJaar);
 
+				if ((extras & LidExtras.Persoon) != 0)
+				{
+					paths.Add(ld => ld.GelieerdePersoon.Persoon);
+				}
 				if ((extras & LidExtras.Groep) != 0)
 				{
 					paths.Add(ld => ld.GroepsWerkJaar.Groep);
@@ -439,7 +442,10 @@ namespace Chiro.Gap.Workers
 			{
 				var paths = new List<Expression<Func<Lid, object>>>();
 
-				paths.Add(ld => ld.GelieerdePersoon.Persoon);
+				if ((extras & LidExtras.Persoon) != 0)
+				{
+					paths.Add(ld => ld.GelieerdePersoon.Persoon);
+				}
 				if ((extras & LidExtras.Groep) != 0)
 				{
 					paths.Add(ld => ld.GroepsWerkJaar.Groep);
@@ -466,80 +472,84 @@ namespace Chiro.Gap.Workers
 		/// De afdelingen van het gegeven lid worden aangepast van whatever momenteel zijn afdelingen zijn naar
 		/// de gegeven lijst nieuwe afdelingen.
 		/// Een kind mag maar 1 afdeling hebben, voor een leider staan daar geen constraints op.
-		/// Persisteert.
+		/// Persisteert, want ingeval van leiding kan het zijn dat er links lid->afdelingsjaar moeten 
+		/// verdwijnen.
 		/// </summary>
 		/// <param name="l">Lid, geladen met groepswerkjaar met afdelingsjaren</param>
 		/// <param name="afdelingsIDs">De ids van de AFDELING waarvan het kind lid is</param>
-		/// <remarks>Deze functie is niet 'compliant' aan de coding standard, zie 
-		/// richtlijnen 85, 83 en 1)</remarks>
 		/// <returns>Lidobject met gekoppeld(e) afdelingsja(a)r(en)</returns>
-		public Lid AanpassenAfdelingenVanLid(Lid l, IList<int> afdelingsIDs)
+		public Lid AfdelingenVervangen(Lid l, IEnumerable<AfdelingsJaar> afdelingsJaren)
 		{
 			Debug.Assert(l.GroepsWerkJaar != null);
-			Debug.Assert(l.GroepsWerkJaar.AfdelingsJaar != null);
+			Debug.Assert(l.GroepsWerkJaar.Groep != null);
+
+			if (!_autorisatieMgr.IsGavLid(l.ID))
+			{
+				throw new GeenGavException(GeenGavFoutCode.Lid, Properties.Resources.GeenGavLid);
+			}
+			else if (l.GroepsWerkJaar.ID != _daos.GroepsWerkJaarDao.RecentsteOphalen(l.GroepsWerkJaar.Groep.ID).ID)
+			{
+				throw new FoutCodeException<NietBeschikbaarFoutCode>(
+					NietBeschikbaarFoutCode.GroepsWerkJaar,
+					Properties.Resources.GroepsWerkJaarVoorbij);
+			}
+
+			var probleemgevallen = from aj in afdelingsJaren
+					       where aj.GroepsWerkJaar.ID != l.GroepsWerkJaar.ID
+					       select aj;
+
+			if (probleemgevallen.FirstOrDefault() != null)
+			{
+				throw new FoutCodeException<VerkeerdeGroepFoutCode>(
+					VerkeerdeGroepFoutCode.Afdeling,
+					Properties.Resources.FoutieveGroepAfdeling);
+			}
+
 
 			if (l is Kind)
 			{
 				Kind kind = (Kind)l;
-				if (afdelingsIDs.Count != 1)
+				if (afdelingsJaren.Count() != 1)
 				{
-					throw new OngeldigeActieException("Een kind moet in exact 1 afdeling zitten.");
+					throw new NotSupportedException("Slechts 1 afdeling per kind.");
 				}
 
-				if (kind.AfdelingsJaar.Afdeling.ID != afdelingsIDs[0]) // anders verandert er niets
+				if (kind.AfdelingsJaar.ID != afdelingsJaren.First().ID)
 				{
-					// Verwijder het kind uit zijn huidige afdelingsjaar
-					kind.AfdelingsJaar.TeVerwijderen = true;
+					// afdeling moet verwijderd worden.
 
-					AfdelingsJaar ajnieuw = kind.GroepsWerkJaar.AfdelingsJaar.FirstOrDefault(e => e.Afdeling.ID == afdelingsIDs[0]);
-					if (ajnieuw == null)
-					{
-						throw new OngeldigeActieException("De gekozen afdeling is geen afdeling van de groep in het gekozen werkjaar.");
-					}
-					ajnieuw.Kind.Add(kind);
+					afdelingsJaren.First().Kind.Add(kind);
+					kind.AfdelingsJaar = afdelingsJaren.First();
 
-					// Pas Chiroleeftijd aan als het kind buiten het veld van de nieuwe afdeling valt
-					if (kind.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year + kind.GelieerdePersoon.ChiroLeefTijd < ajnieuw.GeboorteJaarVan)
-					{
-						kind.GelieerdePersoon.ChiroLeefTijd = ajnieuw.GeboorteJaarVan - kind.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year;
-					}
-					else if (kind.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year + kind.GelieerdePersoon.ChiroLeefTijd > ajnieuw.GeboorteJaarTot)
-					{
-						kind.GelieerdePersoon.ChiroLeefTijd = ajnieuw.GeboorteJaarTot - kind.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year;
-					}
+					// Gepruts met Chiroleeftijd even weggecommentarieerd.  @Broes bewaarde deze wijzigingen toch niet.
+					// en verder moeten we iets voorzien zodat de UI weet dat de chiroleeftijd gemanipuleerd werd.
 
-					kind.AfdelingsJaar = ajnieuw;
-					return _daos.KindDao.Bewaren(kind, knd => knd.AfdelingsJaar);
+					//if (kind.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year + kind.GelieerdePersoon.ChiroLeefTijd < ajnieuw.GeboorteJaarVan)
+					//{
+					//        kind.GelieerdePersoon.ChiroLeefTijd = ajnieuw.GeboorteJaarVan - kind.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year;
+					//}
+					//else if (kind.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year + kind.GelieerdePersoon.ChiroLeefTijd > ajnieuw.GeboorteJaarTot)
+					//{
+					//        kind.GelieerdePersoon.ChiroLeefTijd = ajnieuw.GeboorteJaarTot - kind.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year;
+					//}
 				}
-				else
-				{
-					return kind;
-				}
+
+				_daos.KindDao.Bewaren(kind, knd => knd.AfdelingsJaar);
+
+				// omdat bovenstaande bewaren geen nieuwe ID's zal toekennen, en geen links
+				// zal verwijderen, kunnen we met een gerust geweten het originele kind
+				// opleveren.
+
+				return kind;
 			}
 			else
 			{
 				Leiding leiding = (Leiding)l;
 
-				// Controleer op voorhand of de gevraagde afdelingen wel geactiveerd zijn in het 
-				// groepswerkjaar van het lid.
-				var geldigeAfdelingIDs = from aj in leiding.GroepsWerkJaar.AfdelingsJaar
-										 select aj.Afdeling.ID;
-
-				var nietGevonden = from aid in afdelingsIDs
-								   where !(geldigeAfdelingIDs.Contains(aid))
-								   select aid;
-
-				if (nietGevonden.Count() > 0)
-				{
-					throw new FoutCodeException<NietBeschikbaarFoutCode>(
-						NietBeschikbaarFoutCode.Afdeling,
-						Properties.Resources.AfdelingNietBeschikbaar);
-				}
-
 				// Verwijder ontbrekende afdelingen;
 				var teVerwijderenAfdelingen = from aj in leiding.AfdelingsJaar
-											  where !afdelingsIDs.Contains(aj.Afdeling.ID)
-											  select aj;
+							      where !afdelingsJaren.Any(aj2 => aj2.ID == aj.ID)
+							      select aj;
 
 				foreach (var aj in teVerwijderenAfdelingen)
 				{
@@ -547,9 +557,9 @@ namespace Chiro.Gap.Workers
 				}
 
 				// Ken nieuwe afdelingen toe
-				var nieuweAfdelingen = from aj in leiding.GroepsWerkJaar.AfdelingsJaar
-									   where afdelingsIDs.Contains(aj.Afdeling.ID) && !(leiding.AfdelingsJaar.Contains(aj))
-									   select aj;
+				var nieuweAfdelingen = from aj in afdelingsJaren
+						       where !leiding.AfdelingsJaar.Any(aj2 => aj2.ID == aj.ID)
+						       select aj;
 
 				foreach (var aj in nieuweAfdelingen)
 				{
@@ -557,6 +567,8 @@ namespace Chiro.Gap.Workers
 					aj.Leiding.Add(leiding);
 				}
 
+				// Hier moet je wel met de terugkeerwaarde van 'Bewaren' werken, want anders
+				// stuur je afdelingsjaren met TeVerwijderen=true over de lijn. (brr)
 				return _daos.LeidingDao.Bewaren(leiding, ldng => ldng.AfdelingsJaar);
 			}
 		}

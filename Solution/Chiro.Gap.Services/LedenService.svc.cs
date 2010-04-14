@@ -137,37 +137,6 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
-		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. Creëert of verwijdert geen leden, en leden
-		/// kunnen ook niet van werkjaar of van gelieerdepersoon veranderen. Ook de afdelingen worden aangepast.
-		/// </summary>
-		/// <param name="lid">te bewaren lid</param>
-		[PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void BewarenMetAfdelingen(LidInfo lidinfo)
-		{
-			// Haal oorspronkelijk lid op.
-			Lid lid = _ledenMgr.Ophalen(
-				lidinfo.LidID, 
-				LidExtras.Groep | LidExtras.Afdelingen | LidExtras.AlleAfdelingen);
-
-			// Neem gegevens uit lidinfo over.  
-
-			_ledenMgr.InfoOvernemen(lidinfo, lid);
-		
-			try
-			{
-				// persisteert meteen
-
-				_ledenMgr.AanpassenAfdelingenVanLid(lid, lidinfo.AfdelingIdLijst);
-			}
-			catch (OngeldigeActieException)
-			{
-				// TODO
-				throw;
-			}
-		}
-
-
-		/// <summary>
 		/// Verwijdert het lid met ID <paramref name="lidID"/>
 		/// </summary>
 		/// <param name="lidID">ID van het te verwijderen lid</param>
@@ -175,15 +144,6 @@ namespace Chiro.Gap.Services
 		{
 			Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Groep | LidExtras.Afdelingen);
 			_ledenMgr.Verwijderen(l);	// verwijderen persisteert meteen
-		}
-
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void BewarenMetAfdelingen(int lidID, IList<int> afdelingsIDs)
-		{
-			Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Groep | LidExtras.Afdelingen);
-			_ledenMgr.AanpassenAfdelingenVanLid(l, afdelingsIDs);
-			_ledenMgr.LidBewaren(l);
 		}
 
 		/* zie #273 */
@@ -246,6 +206,66 @@ namespace Chiro.Gap.Services
 
 			_functiesMgr.Vervangen(lid, functies);
 		}
+
+		/// <summary>
+		/// Haalt de ID's van de groepswerkjaren van een lid op.
+		/// </summary>
+		/// <param name="lidID">ID van het lid waarin we geinteresseerd zijn</param>
+		/// <returns>Een LidAfdelingInfo-object</returns>
+		public LidAfdelingInfo AfdelingenOphalen(int lidID)
+		{
+			LidAfdelingInfo resultaat = new LidAfdelingInfo();
+
+			Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Afdelingen | LidExtras.Persoon);
+			resultaat.VolledigeNaam = String.Format(
+				"{0} {1}", 
+				l.GelieerdePersoon.Persoon.VoorNaam,
+				l.GelieerdePersoon.Persoon.Naam);
+			resultaat.Type = l.Type;
+
+			if (l is Kind)
+			{
+				resultaat.AfdelingsJaarIDs = new List<int>();
+				resultaat.AfdelingsJaarIDs.Add((l as Kind).AfdelingsJaar.ID);
+			}
+			else
+			{
+				resultaat.AfdelingsJaarIDs = (from aj in (l as Leiding).AfdelingsJaar
+							      select aj.ID).ToList();
+			}
+
+			return resultaat;
+		}
+
+		/// <summary>
+		/// Vervangt de afdelingen van het lid met ID <paramref name="lidID"/> door de afdelingen
+		/// met AFDELINGSJAARIDs gegeven door <paramref name="afdelingsJaarIDs"/>.
+		/// </summary>
+		/// <param name="lidID">Lid dat nieuwe afdelingen moest krijgen</param>
+		/// <param name="afdelingsJaarIDs">ID's van de te koppelen afdelingsjaren</param>
+		/// <returns>De GelieerdePersoonID van het lid</returns>
+		public int AfdelingenVervangen(int lidID, IEnumerable<int> afdelingsJaarIDs)
+		{
+			Lid l = _ledenMgr.Ophalen(
+				lidID, 
+				LidExtras.Groep | LidExtras.Afdelingen | LidExtras.AlleAfdelingen | LidExtras.Persoon);
+
+			var afdelingsjaren = from aj in l.GroepsWerkJaar.AfdelingsJaar
+					     where afdelingsJaarIDs.Contains(aj.ID)
+					     select aj;
+
+			if (afdelingsJaarIDs.Count() != afdelingsjaren.Count())
+			{
+				// waarschijnlijk afdelingsjaren die niet gekoppeld zijn aan het groepswerkjaar.
+				// Dat wil zeggen dat de user aan het prutsen is.
+
+				throw new InvalidOperationException(Properties.Resources.AccessDenied);
+			}
+			_ledenMgr.AfdelingenVervangen(l, afdelingsjaren);
+
+			return l.GelieerdePersoon.ID;
+		}
+
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
