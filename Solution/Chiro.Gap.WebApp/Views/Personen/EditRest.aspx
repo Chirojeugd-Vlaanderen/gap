@@ -97,7 +97,7 @@
                     if (Model.PersoonLidInfo.LidInfo.Functies.Count() > 0)
                     {
         %>
-        <p>Functies:<p>
+        <p>Functies:</p>
         <ul>
         <%
                         foreach (var f in Model.PersoonLidInfo.LidInfo.Functies)

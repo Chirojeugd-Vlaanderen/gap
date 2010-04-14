@@ -520,18 +520,6 @@ namespace Chiro.Gap.Workers
 
 					afdelingsJaren.First().Kind.Add(kind);
 					kind.AfdelingsJaar = afdelingsJaren.First();
-
-					// Gepruts met Chiroleeftijd even weggecommentarieerd.  @Broes bewaarde deze wijzigingen toch niet.
-					// en verder moeten we iets voorzien zodat de UI weet dat de chiroleeftijd gemanipuleerd werd.
-
-					//if (kind.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year + kind.GelieerdePersoon.ChiroLeefTijd < ajnieuw.GeboorteJaarVan)
-					//{
-					//        kind.GelieerdePersoon.ChiroLeefTijd = ajnieuw.GeboorteJaarVan - kind.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year;
-					//}
-					//else if (kind.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year + kind.GelieerdePersoon.ChiroLeefTijd > ajnieuw.GeboorteJaarTot)
-					//{
-					//        kind.GelieerdePersoon.ChiroLeefTijd = ajnieuw.GeboorteJaarTot - kind.GelieerdePersoon.Persoon.GeboorteDatum.Value.Year;
-					//}
 				}
 
 				_daos.KindDao.Bewaren(kind, knd => knd.AfdelingsJaar);
