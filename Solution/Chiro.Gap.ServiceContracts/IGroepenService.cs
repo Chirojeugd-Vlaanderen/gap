@@ -117,8 +117,14 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		void AfdelingsJaarVerwijderen(int afdelingsJaarID);
 
+		/// <summary>
+		/// Haalt details over alle officiele afdelingen op.
+		/// </summary>
+		/// <param name="groepID">ID van een groep, zodat aan de hand van het recenste groepswerkjaar
+		/// de standaardgeboortejaren van en tot bepaald kunnen worden</param>
+		/// <returns>Rij met details over de officiele afdelingen</returns>
 		[OperationContract]
-		IEnumerable<OfficieleAfdeling> OfficieleAfdelingenOphalen();
+		IEnumerable<OfficieleAfdelingDetail> OfficieleAfdelingenOphalen(int groepID);
 
 		/// <summary>
 		/// Haat een afdeling op, op basis van <paramref name="afdelingID"/>

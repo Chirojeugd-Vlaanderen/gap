@@ -34,7 +34,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_WoonPlaats", "WoonPlaats", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.WoonPlaats), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Adres))]
 
 // Original file name:
-// Generation date: 9/04/2010 14:53:10
+// Generation date: 14/04/2010 16:09:46
 namespace Chiro.Gap.Orm
 {
     
@@ -3195,11 +3195,15 @@ namespace Chiro.Gap.Orm
         /// </summary>
         /// <param name="naam">Initial value of Naam.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static OfficieleAfdeling CreateOfficieleAfdeling(string naam, int id)
+        /// <param name="leefTijdVan">Initial value of LeefTijdVan.</param>
+        /// <param name="leefTijdTot">Initial value of LeefTijdTot.</param>
+        public static OfficieleAfdeling CreateOfficieleAfdeling(string naam, int id, int leefTijdVan, int leefTijdTot)
         {
             OfficieleAfdeling officieleAfdeling = new OfficieleAfdeling();
             officieleAfdeling.Naam = naam;
             officieleAfdeling.ID = id;
+            officieleAfdeling.LeefTijdVan = leefTijdVan;
+            officieleAfdeling.LeefTijdTot = leefTijdTot;
             return officieleAfdeling;
         }
         /// <summary>
@@ -3271,6 +3275,52 @@ namespace Chiro.Gap.Orm
         private byte[] _Versie;
         partial void OnVersieChanging(byte[] value);
         partial void OnVersieChanged();
+        /// <summary>
+        /// There are no comments for Property LeefTijdVan in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int LeefTijdVan
+        {
+            get
+            {
+                return this._LeefTijdVan;
+            }
+            set
+            {
+                this.OnLeefTijdVanChanging(value);
+                this.ReportPropertyChanging("LeefTijdVan");
+                this._LeefTijdVan = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("LeefTijdVan");
+                this.OnLeefTijdVanChanged();
+            }
+        }
+        private int _LeefTijdVan;
+        partial void OnLeefTijdVanChanging(int value);
+        partial void OnLeefTijdVanChanged();
+        /// <summary>
+        /// There are no comments for Property LeefTijdTot in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int LeefTijdTot
+        {
+            get
+            {
+                return this._LeefTijdTot;
+            }
+            set
+            {
+                this.OnLeefTijdTotChanging(value);
+                this.ReportPropertyChanging("LeefTijdTot");
+                this._LeefTijdTot = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("LeefTijdTot");
+                this.OnLeefTijdTotChanged();
+            }
+        }
+        private int _LeefTijdTot;
+        partial void OnLeefTijdTotChanging(int value);
+        partial void OnLeefTijdTotChanged();
         /// <summary>
         /// There are no comments for AfdelingsJaar in the schema.
         /// </summary>

@@ -163,15 +163,27 @@ namespace Chiro.Gap.Services
 			throw new NotImplementedException();
 		}
 
-		/*        public Groep OphalenMetCategorieen(int groepID)
-			{
-			    var result = gm.Ophalen(groepID, e => e.Categorie);
-			    return result;
-			}*/
+		/// <summary>
+		/// Haalt details over alle officiele afdelingen op.
+		/// </summary>
+		/// <param name="groepID">ID van een groep, zodat aan de hand van het recenste groepswerkjaar
+		/// de standaardgeboortejaren van en tot bepaald kunnen worden</param>
+		/// <returns>Rij met details over de officiele afdelingen</returns>
 
-		public IEnumerable<OfficieleAfdeling> OfficieleAfdelingenOphalen()
+		public IEnumerable<OfficieleAfdelingDetail> OfficieleAfdelingenOphalen(int groepID)
 		{
-			return _afdelingsJaarMgr.OfficieleAfdelingenOphalen();
+			GroepsWerkJaar gwj = _groepsWerkJaarManager.RecentsteOphalen(groepID);
+
+			Mapper.CreateMap<OfficieleAfdeling, OfficieleAfdelingDetail>()
+				.ForMember(
+					dst => dst.StandaardGeboorteJaarVan,
+					opt => opt.MapFrom(src => gwj.WerkJaar - src.LeefTijdTot))
+				.ForMember(
+					dst => dst.StandaardGeboorteJaarTot,
+					opt => opt.MapFrom(src => gwj.WerkJaar - src.LeefTijdVan));
+			
+			return Mapper.Map<IEnumerable<OfficieleAfdeling>, IEnumerable<OfficieleAfdelingDetail>>(
+				_afdelingsJaarMgr.OfficieleAfdelingenOphalen());
 		}
 
 		public IEnumerable<GroepInfo> MijnGroepenOphalen()

@@ -331,6 +331,8 @@
           <Property Name="Naam" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="officieleAfdelingID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="LeefTijdVan" Type="int" Nullable="false" />
+          <Property Name="LeefTijdTot" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CommunicatieType">
           <Key>
@@ -1020,7 +1022,8 @@
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Versie" Type="Binary" Nullable="true" />
           <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling" FromRole="OfficieleAfdeling" ToRole="AfdelingsJaar" />
-        </EntityType>
+          <Property Name="LeefTijdVan" Type="Int32" Nullable="false" />
+          <Property Name="LeefTijdTot" Type="Int32" Nullable="false" /></EntityType>
         <Association Name="FK_Afdeling_Groep">
           <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1" />
           <End Type="ChiroGroepModel.Afdeling" Role="Afdeling" Multiplicity="*" /></Association>
@@ -1309,6 +1312,8 @@
           <EntitySetMapping Name="OfficieleAfdeling">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.OfficieleAfdeling)">
               <MappingFragment StoreEntitySet="OfficieleAfdeling">
+                <ScalarProperty Name="LeefTijdTot" ColumnName="LeefTijdTot" />
+                <ScalarProperty Name="LeefTijdVan" ColumnName="LeefTijdVan" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="ID" ColumnName="officieleAfdelingID" />
                 <ScalarProperty Name="Naam" ColumnName="Naam" /></MappingFragment></EntityTypeMapping></EntitySetMapping>

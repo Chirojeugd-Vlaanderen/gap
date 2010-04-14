@@ -33,6 +33,6 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Het lijstje officiele afdelingen
 		/// </summary>
-		public IEnumerable<OfficieleAfdeling> OfficieleAfdelingen { get; set; }
+		public IEnumerable<OfficieleAfdelingDetail> OfficieleAfdelingen { get; set; }
 	}
 }
