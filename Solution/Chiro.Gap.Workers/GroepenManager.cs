@@ -291,7 +291,7 @@ namespace Chiro.Gap.Workers
 				{
 					throw new BlokkerendeObjectenException<BestaatAlFoutCode, Categorie>(
 						BestaatAlFoutCode.CategorieCodeBestaatAl,
-						new Categorie[] {bestaande}
+						bestaande
 						);
 				}
 				else
@@ -305,7 +305,7 @@ namespace Chiro.Gap.Workers
 					{
 						throw new BlokkerendeObjectenException<BestaatAlFoutCode, Categorie>(
 							BestaatAlFoutCode.CategorieNaamBestaatAl,
-							new Categorie[] { bestaande }
+							bestaande
 							);
 					}
 					else
@@ -363,7 +363,7 @@ namespace Chiro.Gap.Workers
 				else if (bestaande != null)
 				{
 					throw new BlokkerendeObjectenException<BestaatAlFoutCode, Functie>(
-						BestaatAlFoutCode.FunctieCodeBestaatAl, new Functie[] { bestaande });
+						BestaatAlFoutCode.FunctieCodeBestaatAl, bestaande);
 				}
 
 				// Hetzelfde voor dubbele naam
@@ -380,7 +380,7 @@ namespace Chiro.Gap.Workers
 				else if (bestaande != null)
 				{
 					throw new BlokkerendeObjectenException<BestaatAlFoutCode, Functie>(
-						BestaatAlFoutCode.FunctieNaamBestaatAl, new Functie[] { bestaande });
+						BestaatAlFoutCode.FunctieNaamBestaatAl, bestaande);
 				}
 
 				// Zonder problemen hier geraakt.  Dan kunnen we verder.

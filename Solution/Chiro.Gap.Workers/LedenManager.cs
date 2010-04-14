@@ -93,7 +93,7 @@ namespace Chiro.Gap.Workers
 			if (x != null) // was dus al lid
 			{
 				throw new BlokkerendeObjectenException<BestaatAlFoutCode, Lid>(
-					BestaatAlFoutCode.LidBestaatAl, new Lid[] {x});
+					BestaatAlFoutCode.LidBestaatAl, x);
 			}
 
 			return true;

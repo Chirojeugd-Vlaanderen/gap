@@ -29,6 +29,11 @@ namespace Chiro.Gap.WebApp.Models
 		public string VolledigeLijstUrl { get; set; }
 
 		/// <summary>
+		/// Totaal aantal personen in volledige lijst
+		/// </summary>
+		public int TotaalAantal { get; set; }
+
+		/// <summary>
 		/// Indien relevant: ID van categorie waar alle personen toe behoren.
 		/// </summary>
 		public int CategorieID { get; set; }

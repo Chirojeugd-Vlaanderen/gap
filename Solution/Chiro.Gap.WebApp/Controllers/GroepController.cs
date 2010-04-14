@@ -138,6 +138,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.Personen = ex.Detail.Objecten;
 				model.CategorieID = id;
 				model.VolledigeLijstUrl = Url.Action("List", "Personen", new RouteValueDictionary(new { id = id, groepID = groepID }));
+				model.TotaalAantal = ex.Detail.Aantal;
 
 				// Vis categorienaam op uit de gekoppelde categorieen van de personen
 				// niet elegant, maar werkt wel.

@@ -14,5 +14,8 @@ namespace Chiro.Gap.ServiceContracts.FaultContracts
 	{
 		[DataMember]
 		public IEnumerable<TObject> Objecten { get; set; }
+
+		[DataMember]
+		public int Aantal { get; set; }
 	}
 }

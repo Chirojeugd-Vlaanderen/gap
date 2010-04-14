@@ -170,6 +170,7 @@ namespace Chiro.Gap.Workers
 				throw new BlokkerendeObjectenException<GekoppeldeObjectenFoutCode, GelieerdePersoon>(
 					GekoppeldeObjectenFoutCode.CategorieNietLeeg,
 					categorie.GelieerdePersoon,
+					categorie.GelieerdePersoon.Count(),
 					Properties.Resources.CategorieNietLeeg);
 			}
 

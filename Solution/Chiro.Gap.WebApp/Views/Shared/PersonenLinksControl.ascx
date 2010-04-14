@@ -5,7 +5,13 @@
 <% foreach (PersoonInfo info in Model.Personen)
    { %>
     <li><% Html.RenderPartial("PersoonsLinkControl", info); %></li>
-<%
-   } %>
-   <li><a href="<%=Model.VolledigeLijstUrl%>">...</a></li>
+     <%
+   }
+   if (Model.Personen.Count() < Model.TotaalAantal)
+   {
+     %>
+   <li><a href="<%=Model.VolledigeLijstUrl%>">(alle <%=Model.TotaalAantal %> personen)</a></li>
+     <%
+    }
+%>
 </ul>

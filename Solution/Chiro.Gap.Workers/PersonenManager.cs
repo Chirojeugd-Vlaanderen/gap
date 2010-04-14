@@ -117,7 +117,8 @@ namespace Chiro.Gap.Workers
 
 					throw new BlokkerendeObjectenException<BestaatAlFoutCode, PersoonsAdres>(
 						BestaatAlFoutCode.PersoonBestaatAl,
-						bestaand.ToArray());
+						bestaand.ToArray(),
+						bestaand.Count());
 				}
 
 				var oudePersoonsAdressen = verhuizers.SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == oudAdres.ID));
@@ -190,7 +191,7 @@ namespace Chiro.Gap.Workers
 
 					throw new BlokkerendeObjectenException<BestaatAlFoutCode, PersoonsAdres>(
 						BestaatAlFoutCode.PersoonsAdresBestaatAl, 
-						bestaandePersoonsAdressen);
+						bestaandePersoonsAdressen, bestaandePersoonsAdressen.Count());
 				}
 
 				foreach (Persoon p in personen)
