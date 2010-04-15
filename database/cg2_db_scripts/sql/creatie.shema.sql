@@ -57,8 +57,8 @@ BEGIN
 	CREATE TABLE lid.OfficieleAfdeling(
 		Naam VARCHAR(50) NOT NULL,
 		OfficieleAfdelingID INT IDENTITY(1,1) NOT NULL,
-		GeboorteJaarVan INT NOT NULL,
-		GeboorteJaarTot INT NOT NULL,
+		LeefTijdVan INT NOT NULL,
+		LeefTijdTot INT NOT NULL,
 		Versie TIMESTAMP NULL,
 		CONSTRAINT PK_OfficieleAfdeling PRIMARY KEY CLUSTERED (OfficieleAfdelingID ASC),
 		CONSTRAINT UQ_OfficieleAfdeling_Naam UNIQUE NONCLUSTERED (Naam)
@@ -169,6 +169,18 @@ BEGIN
 	) ON [PRIMARY]
 END
 GO
+
+EXEC sys.sp_addextendedproperty 
+	@name=N'MS_Description', 
+	@value=N'Er worden enkel  facturen gemaakt voor dit lid als deze datum gepasseerd is.  Tot dat moment kan de groep beslissen om deze persoon uit te schrijven.  Daarna vanzelfsprekend niet meer.' ,
+	@level0type=N'SCHEMA', 
+	@level0name=N'lid', 
+	@level1type=N'TABLE', 
+	@level1name=N'lid', 
+	@level2type=N'COLUMN', 
+	@level2name=N'EindeInstapPeriode'
+GO
+
 
 
 EXEC sys.sp_addextendedproperty 
@@ -485,16 +497,6 @@ BEGIN
 END
 GO
 
-EXEC sys.sp_addextendedproperty 
-	@name=N'MS_Description', 
-	@value=N'Er worden enkel  facturen gemaakt voor dit lid als deze datum gepasseerd is.  Tot dat moment kan de groep beslissen om deze persoon uit te schrijven.  Daarna vanzelfsprekend niet meer.' ,
-	@level0type=N'SCHEMA', 
-	@level0name=N'lid', 
-	@level1type=N'TABLE', 
-	@level1name=N'Kind', 
-	@level2type=N'COLUMN', 
-	@level2name=N'EindeInstapPeriode'
-GO
 
 EXEC sys.sp_addextendedproperty 
 	@name=N'MS_Description', 
@@ -545,29 +547,16 @@ GO
 
 
 
---------------------------------------------
--- nog een view
 
-CREATE VIEW [auth].[vGebruikers] AS
-SELECT DISTINCT ll.Adnr, p.Voornaam, p.Naam, ci.Info AS MailAdres, auth.ufnGenereerGebruikersNaam(p.Voornaam, p.Naam) as Login, cg.StamNr
-, CASE hf.functie WHEN 177 THEN 'KIPDORP' ELSE 'CHIROPUBLIC' END AS Domain
-FROM Kipadmin.dbo.kipHeeftFunctie hf 
-JOIN Kipadmin.lid.lid l ON l.ID = hf.LeidKad
-JOIN Kipadmin.lid.lid ll ON l.AdNr = ll.AdNr
-JOIN Kipadmin.grp.Chirogroep cg ON ll.GroepID = cg.GroepID
-JOIN Kipadmin.dbo.kipPersoon p ON p.AdNr = ll.AdNr 
-JOIN Kipadmin.dbo.kipContactInfo ci ON ci.AdNr = p.Adnr AND ContactTypeID = 3 AND VolgNr = 1
-JOIN Kipadmin.dbo.HuidigWerkJaar wj ON l.werkJaar = wj.werkJaar
-WHERE (hf.functie=216 OR hf.functie=177) AND cg.Type = 'L';
 
 -- Rol voor applicatiegebruiker
 
 IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = 'GapRole' AND type = 'R')
 BEGIN
 CREATE ROLE GapRole
-GO
 EXEC sp_addrolemember N'db_datareader', N'GapRole'
-GRANT EXECUTE ON core.ufnSoundEx TO GapRole
+END
+
 GRANT DELETE,INSERT,UPDATE ON auth.Gav TO GapRole
 GRANT DELETE,INSERT,UPDATE ON auth.GebruikersRecht TO GapRole
 GRANT DELETE,INSERT,UPDATE ON adr.Adres TO GapRole
@@ -589,4 +578,4 @@ GRANT DELETE,INSERT,UPDATE ON pers.PersoonsAdres TO GapRole
 GRANT DELETE,INSERT,UPDATE ON pers.PersoonsCategorie TO GapRole
 GRANT DELETE,INSERT,UPDATE ON pers.PersoonVrijVeld TO GapRole
 GRANT DELETE,INSERT,UPDATE ON pers.PersoonVrijVeldType TO GapRole
-END
+
