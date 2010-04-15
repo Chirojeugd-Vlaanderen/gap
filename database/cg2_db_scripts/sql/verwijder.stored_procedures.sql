@@ -1,5 +1,12 @@
 
-DROP PROCEDURE [dbo].[spGroepUitKipadmin]
+DROP PROCEDURE [data].[spGroepUitKipadmin]
 GO
 
-DROP PROCEDURE [dbo].[spGroepVerwijderen]
+DROP PROCEDURE [data].[spGroepVerwijderen]
+GO
+
+DROP FUNCTION [auth].[ufnGenereerGebruikersNaam]
+GO
+
+DROP FUNCTION [core].[ufnVerwijderAccenten]
+GO

@@ -30,11 +30,6 @@ BEGIN
 	DROP TABLE adr.PostNr
 END
 
-IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('adr.Straat'))
-BEGIN
-	DROP TABLE adr.Straat
-END
-
 IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('auth.Gav'))
 BEGIN
 	DROP TABLE auth.Gav
@@ -68,6 +63,31 @@ END
 IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('core.Categorie'))
 BEGIN
 	DROP TABLE core.Categorie
+END
+
+IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('lid.Kind'))
+BEGIN
+	DROP TABLE lid.Kind
+END
+
+IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('lid.LeidingInAfdelingsJaar'))
+BEGIN
+	DROP TABLE lid.LeidingInAfdelingsJaar
+END
+
+IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('lid.Leiding'))
+BEGIN
+	DROP TABLE lid.Leiding
+END
+
+IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('lid.LidFunctie'))
+BEGIN
+	DROP TABLE lid.LidFunctie
+END
+
+IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('lid.Lid'))
+BEGIN
+	DROP TABLE lid.Lid
 END
 
 IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('pers.PersoonsCategorie'))
@@ -110,30 +130,6 @@ BEGIN
 	DROP TABLE lid.AfdelingsJaar
 END
 
-IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('lid.Kind'))
-BEGIN
-	DROP TABLE lid.Kind
-END
-
-IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('lid.Leiding'))
-BEGIN
-	DROP TABLE lid.Leiding
-END
-
-IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('lid.LeidingInAfdelingsJaar'))
-BEGIN
-	DROP TABLE lid.LeidingInAfdelingsJaar
-END
-
-IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('lid.LidFunctie'))
-BEGIN
-	DROP TABLE lid.LidFunctie
-END
-IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('lid.Lid'))
-BEGIN
-	DROP TABLE lid.Lid
-END
-
 IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('lid.OfficieleAfdeling'))
 BEGIN
 	DROP TABLE lid.OfficieleAfdeling
@@ -174,6 +170,13 @@ BEGIN
 	DROP TABLE pers.PersoonVrijVeldType
 END
 
+-- views
+
+IF EXISTS(SELECT * FROM sys.views WHERE object_id = OBJECT_ID('auth.vGebruikers'))
+BEGIN
+	DROP VIEW auth.vGebruikers
+END
+
 
 
 -- schema's
@@ -212,11 +215,3 @@ IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'data')
 BEGIN
 	DROP SCHEMA [data]
 END
-
-
--- En tenslotte de GapRole
-
-IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = 'GapRole' AND type = 'R')
-BEGIN
-	DROP ROLE GapRole
-END;
