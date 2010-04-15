@@ -38,7 +38,7 @@
 
 </table>
 
-<h3>Overige afdelingen (nog niet actief in huidige werkjaar (i.e. geen AfdelingsJaar))</h3>
+<h3>Overige afdelingen (niet geactiveerd in dit werkjaar)</h3>
     
 <table>
 <tr>
