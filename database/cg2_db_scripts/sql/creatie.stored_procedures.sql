@@ -3,6 +3,11 @@
 GO
 :r ../dataconversie/groepVolledigVerwijderen.sql
 GO
+:r ../dataconversie/GenereerGebruikersNaam.sql
+GO
+:r ../dataconversie/VerwijderAccenten.sql
+GO
+
 
 CREATE FUNCTION core.ufnSoundEx
 (

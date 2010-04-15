@@ -10,3 +10,6 @@ GO
 
 DROP FUNCTION [core].[ufnVerwijderAccenten]
 GO
+
+DROP PROCEDURE [core].[ufnSoundEx]
+GO
