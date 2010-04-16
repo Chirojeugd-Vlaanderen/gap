@@ -18,7 +18,7 @@
     
         <div id="header">
             <div id="logo">
-                <img src="/Content/Chirologo.png" alt="Chirologo" />
+                <img src='<%=ResolveUrl("~/Content/Chirologo.png")%>' alt="Chirologo" />
             </div>
             <div id="title">
                 <h1>
