@@ -10,10 +10,10 @@ using System.Text;
 
 using AutoMapper;
 
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
-using Chiro.Gap.Fouten;
-using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.ServiceContracts.Mappers
 {
@@ -187,19 +187,18 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			#region Mapping van Exceptions naar Faults
 			// TODO: Kan het mappen van die generics niet efficienter?
 
-			Mapper.CreateMap<BlokkerendeObjectenException<BestaatAlFoutCode, Categorie>,
-						BlokkerendeObjectenFault<BestaatAlFoutCode, CategorieInfo>>();
-			Mapper.CreateMap<OngeldigObjectException<AdresFoutCode>,
-					OngeldigObjectFault<AdresFoutCode>>();
-			Mapper.CreateMap<BlokkerendeObjectenException<GekoppeldeObjectenFoutCode, GelieerdePersoon>,
-					BlokkerendeObjectenFault<GekoppeldeObjectenFoutCode, PersoonInfo>>()
+			Mapper.CreateMap<BestaatAlException<Categorie>,
+						BestaatAlFault<CategorieInfo>>();
+			Mapper.CreateMap<OngeldigObjectException, OngeldigObjectFault>();
+			Mapper.CreateMap<BlokkerendeObjectenException<GelieerdePersoon>,
+					BlokkerendeObjectenFault<PersoonInfo>>()
 				.ForMember(
 					dst => dst.Objecten, 
 					opt => opt.MapFrom(src => src.Objecten.Take(Properties.Settings.Default.KleinAantal)));
-			Mapper.CreateMap<BlokkerendeObjectenException<BestaatAlFoutCode, PersoonsAdres>,
-					BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>>();
-			Mapper.CreateMap<BlokkerendeObjectenException<BestaatAlFoutCode, Afdeling>,
-					BlokkerendeObjectenFault<BestaatAlFoutCode, AfdelingInfo>>();
+			Mapper.CreateMap<BlokkerendeObjectenException<PersoonsAdres>,
+					BlokkerendeObjectenFault<PersoonsAdresInfo2>>();
+			Mapper.CreateMap<BestaatAlException<Afdeling>,
+					BestaatAlFault<AfdelingInfo>>();
 			#endregion
 
 			// Wel even nakijken of die automagie overal gewerkt heeft:

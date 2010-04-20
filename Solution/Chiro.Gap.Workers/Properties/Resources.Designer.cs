@@ -187,83 +187,11 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deze afdeling is niet gekoppeld aan je groep(en)..
+        ///   Looks up a localized string similar to Geen toegang..
         /// </summary>
-        internal static string GeenGavAfdeling {
+        internal static string GeenGav {
             get {
-                return ResourceManager.GetString("GeenGavAfdeling", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Deze categorie is niet gekoppeld aan je groep(en)..
-        /// </summary>
-        internal static string GeenGavCategorie {
-            get {
-                return ResourceManager.GetString("GeenGavCategorie", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to De categorie en/of de persoon zijn niet gekoppeld aan je groep(en)..
-        /// </summary>
-        internal static string GeenGavCategoriePersoon {
-            get {
-                return ResourceManager.GetString("GeenGavCategoriePersoon", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dit is geen communicatievorm van een van jouw personen..
-        /// </summary>
-        internal static string GeenGavCommVorm {
-            get {
-                return ResourceManager.GetString("GeenGavCommVorm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Deze functie is niet gekoppeld aan je groep(en)..
-        /// </summary>
-        internal static string GeenGavFunctie {
-            get {
-                return ResourceManager.GetString("GeenGavFunctie", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Deze persoon is niet gekoppeld aan je groep(en)..
-        /// </summary>
-        internal static string GeenGavGelieerdePersoon {
-            get {
-                return ResourceManager.GetString("GeenGavGelieerdePersoon", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Je bent geen GAV van deze groep..
-        /// </summary>
-        internal static string GeenGavGroep {
-            get {
-                return ResourceManager.GetString("GeenGavGroep", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dit werkjaar is niet gekoppeld aan je groep(en)..
-        /// </summary>
-        internal static string GeenGavGroepsWerkJaar {
-            get {
-                return ResourceManager.GetString("GeenGavGroepsWerkJaar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dit lid is niet gekoppeld aan je groep(en)..
-        /// </summary>
-        internal static string GeenGavLid {
-            get {
-                return ResourceManager.GetString("GeenGavLid", resourceCulture);
+                return ResourceManager.GetString("GeenGav", resourceCulture);
             }
         }
         
@@ -273,15 +201,6 @@ namespace Chiro.Gap.Workers.Properties {
         internal static string GeenGeschikteAfdeling {
             get {
                 return ResourceManager.GetString("GeenGeschikteAfdeling", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Deze operatie is enkel beschikbaar voor super-GAV-goden..
-        /// </summary>
-        internal static string GeenSuperGav {
-            get {
-                return ResourceManager.GetString("GeenSuperGav", resourceCulture);
             }
         }
         
@@ -309,6 +228,15 @@ namespace Chiro.Gap.Workers.Properties {
         internal static string StraatNietGevonden {
             get {
                 return ResourceManager.GetString("StraatNietGevonden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Een of meerdere personen wonen al op het aangeduide adres..
+        /// </summary>
+        internal static string WonenDaarAl {
+            get {
+                return ResourceManager.GetString("WonenDaarAl", resourceCulture);
             }
         }
     }

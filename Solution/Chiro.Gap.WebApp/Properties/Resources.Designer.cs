@@ -70,7 +70,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Er bestaat al een afdeling met de code &apos;{0}&apos;: {1} ({0})..
+        ///   Looks up a localized string similar to Er bestaat al een afdeling met code &apos;{0}&apos;: &apos;{1}&apos;..
         /// </summary>
         public static string AfdelingsCodeBestaatAl {
             get {
@@ -79,7 +79,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Er bestaat al een afdeling met de naam &apos;{1}&apos;: {1} ({0})..
+        ///   Looks up a localized string similar to Er bestaat al een afdeling met die naam: &apos;{1}&apos; (&apos;{0}&apos;)..
         /// </summary>
         public static string AfdelingsNaamBestaatAl {
             get {
@@ -97,7 +97,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Er bestaat al een categorie met code &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Er bestaat al een categorie met code &apos;{0}&apos;: &apos;{1}&apos;..
         /// </summary>
         public static string CategorieCodeBestaatAl {
             get {
@@ -106,7 +106,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Er bestaat al een categorie met &apos;{0}&apos; als beschrijving..
+        ///   Looks up a localized string similar to Er bestaat al een categorie met die naam: &apos;{1}&apos; (&apos;{0}&apos;)..
         /// </summary>
         public static string CategorieNaamBestaatAl {
             get {

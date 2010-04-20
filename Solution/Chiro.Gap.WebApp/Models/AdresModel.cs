@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web;
 
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.WebApp.HtmlHelpers;

@@ -15,7 +15,7 @@ using System.Web.Mvc.Ajax;
 
 using Chiro.Cdf.Ioc;
 using Chiro.Cdf.ServiceHelper;
-using Chiro.Gap.Fouten;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
@@ -236,7 +236,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				persoonID = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.GeforceerdAanmaken(model.HuidigePersoon, groepID, model.Forceer));
 			}
-			catch (FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonInfo>> fault)
+			catch (FaultException<BlokkerendeObjectenFault<PersoonInfo>> fault)
 			{
 				model.GelijkaardigePersonen = fault.Detail.Objecten;
 				model.Forceer = true;
@@ -499,7 +499,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					id = model.AanvragerID
 				});
 			}
-			catch (FaultException<OngeldigObjectFault<AdresFoutCode>> ex)
+			catch (FaultException<OngeldigObjectFault> ex)
 			{
 				BaseModelInit(model, groepID);
 
@@ -522,7 +522,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
 				return View("AdresBewerken", model);
 			}
-			catch (FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>> ex)
+			catch (FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>> ex)
 			{
 				BaseModelInit(model, groepID);
 
@@ -664,7 +664,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					id = model.AanvragerID
 				});
 			}
-			catch (FaultException<OngeldigObjectFault<AdresFoutCode>> ex)
+			catch (FaultException<OngeldigObjectFault> ex)
 			{
 				BaseModelInit(model, groepID);
 
@@ -683,7 +683,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
 				return View("AdresBewerken", model);
 			}
-			catch (FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>> ex)
+			catch (FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>> ex)
 			{
 				BaseModelInit(model, groepID);
 

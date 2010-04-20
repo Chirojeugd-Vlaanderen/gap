@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Chiro.Cdf.Ioc;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Workers;
-using Chiro.Cdf.Ioc;
 
 namespace Chiro.Gap.Dummies
 {

@@ -1,5 +1,5 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<AdresModel>" %>
-<%@ Import Namespace="Chiro.Gap.Orm" %>
+<%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.WebApp" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 

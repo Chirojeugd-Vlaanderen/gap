@@ -6,17 +6,17 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
+using System.ServiceModel;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 
 using Chiro.Cdf.ServiceHelper;
-using Chiro.Gap.Fouten;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
-using System.ServiceModel;
 using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
@@ -96,35 +96,36 @@ namespace Chiro.Gap.WebApp.Controllers
 					// of je de gegevens opnieuw wil posten.)
 					return RedirectToAction("Index");
 				}
-				catch (FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, AfdelingInfo>> ex)
+				catch (FaultException<BestaatAlFault<AfdelingInfo>> ex)
 				{
-					switch (ex.Detail.FoutCode)
+					if (string.Compare(
+						ex.Detail.Bestaande.Afkorting,
+						model.Info.Afkorting,
+						true) == 0)
 					{
-						case BestaatAlFoutCode.AfdelingsCodeBestaatAl:
-							{
-								ModelState.AddModelError(
-									"HuidigeAfdeling.Afkorting",
-									string.Format(
-										Properties.Resources.AfdelingsCodeBestaatAl,
-										ex.Detail.Objecten.First().Afkorting,
-										ex.Detail.Objecten.First().Naam));
-								break;
-							}
-						case BestaatAlFoutCode.AfdelingsNaamBestaatAl:
-							{
-								ModelState.AddModelError(
-									"HuidigeAfdeling.Naam",
-									string.Format(
-										Properties.Resources.AfdelingsNaamBestaatAl,
-										ex.Detail.Objecten.First().Afkorting,
-										ex.Detail.Objecten.First().Naam));
-								break;
-							}
-						default:
-							{
-								// Dit was niet verwacht
-								throw;
-							}
+						ModelState.AddModelError(
+							"Info.Afkorting",
+							string.Format(
+								Properties.Resources.AfdelingsCodeBestaatAl,
+								ex.Detail.Bestaande.Afkorting,
+								ex.Detail.Bestaande.Naam));
+					}
+					else if (string.Compare(
+						ex.Detail.Bestaande.Naam,
+						model.Info.Naam,
+						true) == 0)
+					{
+						ModelState.AddModelError(
+							"Info.Naam",
+							string.Format(
+								Properties.Resources.AfdelingsNaamBestaatAl,
+								ex.Detail.Bestaande.Afkorting,
+								ex.Detail.Bestaande.Naam));
+					}
+					else
+					{
+						// Dit kan niet.
+						Debug.Assert(false);
 					}
 
 					return View(model);

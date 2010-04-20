@@ -1,0 +1,105 @@
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+
+using Chiro.Gap.Domain;
+
+namespace Chiro.Gap.Workers.Exceptions
+{
+	/// <summary>
+	/// Exception die toelaat om meerdere foutboodschappen over de members van een object mee te sturen.
+	/// </summary>
+	/// <typeparam name="TFoutCode">Type van de foutcodes gebruikt in de foutboodschappen</typeparam>
+	/// <remarks>TODO: Dit wordt blijkbaar enkel gebruikt voor adressen.  Is heel die constructie dan wel
+	/// nodig? Misschien is een AdresException wel even goed.</remarks>
+	[Serializable]
+	public class OngeldigObjectException : GapException
+	{
+		private IDictionary<string, FoutBericht> _berichten = new Dictionary<string, FoutBericht>();
+
+		/// <summary>
+		/// Berichten bij de exception.  De key is de component van het adres waar de fout betrekking
+		/// op heeft, de value is het foutbericht zelf.
+		/// </summary>
+		public IDictionary<string, FoutBericht> Berichten
+		{
+			get { return _berichten; }
+			set { _berichten = value; }
+		}		
+
+		#region standaardconstructors
+
+		/// <summary>
+		/// Standaardconstructor
+		/// </summary>
+		public OngeldigObjectException() { }
+
+		/// <summary>
+		/// Construeer OngeldigObjectException met bericht <paramref name="message"/>.
+		/// </summary>
+		/// <param name="message">Technische info over de exception; nuttig voor developer</param>
+		public OngeldigObjectException(string message) : base(message) { }
+
+		/// <summary>
+		/// Construeer OngeldigObjectException met bericht <paramref name="message"/> en een inner exception
+		/// <paramref name="innerException"/>
+		/// </summary>
+		/// <param name="message">Technische info over de exception; nuttig voor developer</param>
+		/// <param name="innerException">Andere exception die de deze veroorzaakt</param>
+		public OngeldigObjectException(string message, Exception innerException) : base(message, innerException) { }
+
+		#endregion
+
+		#region serializatie
+
+		/// <summary>
+		/// Constructor voor deserializatie.
+		/// </summary>
+		/// <param name="info">Serializatie-info</param>
+		/// <param name="context">Streamingcontext</param>
+		protected OngeldigObjectException(SerializationInfo info, StreamingContext context)
+			: base(info, context) 
+		{
+			if (info != null)
+			{
+				_berichten = (IDictionary<string, FoutBericht>)info.GetValue("_berichten", typeof(IDictionary<string, FoutBericht>));
+			}
+		}
+
+		/// <summary>
+		/// Serializatie van de exception
+		/// </summary>
+		/// <param name="info">Serializatie-info waarin eigenschappen van exception bewaard moeten worden</param>
+		/// <param name="context"></param>
+		public override void GetObjectData(SerializationInfo info, StreamingContext context)
+		{
+			base.GetObjectData(info, context);
+			if (info != null)
+			{
+				info.AddValue("_berichten", _berichten);
+			}
+		}
+
+		#endregion
+
+		#region custom constructors
+		/// <summary>
+		/// Construeert OngeldigObjectException met meegeleverde <paramref name="berichten"/>.
+		/// </summary>
+		/// <param name="berichten">Lijstje met berichten voor de exception</param>
+		public OngeldigObjectException(IDictionary<string, FoutBericht> berichten)
+			: this()
+		{
+			_berichten = berichten;
+		}
+		#endregion
+
+	}
+}

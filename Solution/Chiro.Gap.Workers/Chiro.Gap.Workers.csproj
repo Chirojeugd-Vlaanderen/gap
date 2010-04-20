@@ -59,6 +59,12 @@
     <Compile Include="ChiroGroepenManager.cs" />
     <Compile Include="CommVormManager.cs" />
     <Compile Include="AfdelingsJaarManager.cs" />
+    <Compile Include="Exceptions\BlokkerendeObjectenException.cs" />
+    <Compile Include="Exceptions\BestaatAlException.cs" />
+    <Compile Include="Exceptions\GapException.cs" />
+    <Compile Include="Exceptions\GeenGavException.cs" />
+    <Compile Include="Exceptions\OngeldigObjectException.cs" />
+    <Compile Include="Exceptions\ValidatieException.cs" />
     <Compile Include="FunctiesManager.cs" />
     <Compile Include="IAuthenticatieManager.cs" />
     <Compile Include="IAutorisatieManager.cs" />
@@ -96,13 +102,13 @@
       <Project>{F9197C38-63BC-4D2F-9F0A-8326C698B536}</Project>
       <Name>Chiro.Gap.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.Fouten\Chiro.Gap.Fouten.csproj">
-      <Project>{D82C1286-8BC6-422C-8688-E178377D3EB6}</Project>
-      <Name>Chiro.Gap.Fouten</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
       <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
       <Name>Chiro.Cdf.Ioc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
+      <Project>{65D1DB34-9F12-48C6-88F8-3943E5A4609B}</Project>
+      <Name>Chiro.Gap.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Orm\Chiro.Gap.Orm.csproj">
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>

@@ -48,14 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\BlokkerendeObjectenException.cs" />
-    <Compile Include="Exceptions\FoutCodeException.cs" />
-    <Compile Include="Exceptions\OngeldigeActieException.cs" />
-    <Compile Include="Exceptions\GeenGavException.cs" />
-    <Compile Include="Exceptions\OngeldigObjectException.cs" />
-    <Compile Include="Exceptions\ValidatieException.cs" />
-    <Compile Include="FoutBericht.cs" />
-    <Compile Include="FoutCodes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

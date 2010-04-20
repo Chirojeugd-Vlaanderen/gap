@@ -11,10 +11,10 @@ using System.Text;
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Data.Ef;
-using Chiro.Gap.Fouten;
-using Chiro.Gap.Fouten.Exceptions;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
 {
@@ -79,7 +79,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -96,7 +96,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -126,7 +126,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -155,7 +155,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -179,7 +179,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -197,7 +197,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -219,7 +219,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -241,7 +241,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -263,7 +263,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Categorie, Properties.Resources.GeenGavCategorie);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -282,7 +282,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -303,7 +303,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -333,7 +333,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -363,7 +363,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -389,21 +389,21 @@ namespace Chiro.Gap.Workers
 			{
 				if (!_autorisatieMgr.IsGavGelieerdePersoon(x.ID))
 				{
-					throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavCategoriePersoon);
+					throw new GeenGavException(Properties.Resources.GeenGav);
 				};
 			}
 
 			if (!_autorisatieMgr.IsGavCategorie(c.ID))
 			{
-				throw new GeenGavException(GeenGavFoutCode.Categorie, Properties.Resources.GeenGavCategoriePersoon);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
 			foreach (GelieerdePersoon x in gelieerdePersonen)
 			{
 				if (!x.Groep.Equals(c.Groep))
 				{
-					throw new FoutCodeException<VerkeerdeGroepFoutCode>(
-						VerkeerdeGroepFoutCode.Categorie, 
+					throw new GapException(
+						FoutNummers.CategorieNietVanGroep, 
 						Properties.Resources.FoutieveGroepCategorie);
 				}
 				x.Categorie.Add(c);
@@ -427,13 +427,13 @@ namespace Chiro.Gap.Workers
 			{
 				if (!_autorisatieMgr.IsGavGelieerdePersoon(x))
 				{
-					throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavCategoriePersoon);
+					throw new GeenGavException(Properties.Resources.GeenGav);
 				};
 			}
 
 			if (!_autorisatieMgr.IsGavCategorie(categorie.ID))
 			{
-				throw new GeenGavException(GeenGavFoutCode.Categorie, Properties.Resources.GeenGavCategoriePersoon);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
 			IList<GelieerdePersoon> gel =
@@ -460,7 +460,7 @@ namespace Chiro.Gap.Workers
 
 			if (!_autorisatieMgr.IsGavCategorie(catID))
 			{
-				throw new GeenGavException(GeenGavFoutCode.Categorie, Properties.Resources.GeenGavCategoriePersoon);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			};
 
 			return _categorieenDao.Ophalen(catID);
@@ -485,7 +485,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 	}

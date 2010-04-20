@@ -1,8 +1,11 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<PersonenLedenModel>" %>
-<%@ Import Namespace="Chiro.Gap.Orm" %>
+<%@ Import Namespace="Chiro.Gap.Domain" %>
+<%@ Import Namespace="Chiro.Gap.Orm"  %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+<!-- FIXME: Import van Orm nog nodig omdat Categorie nog gebruikt wordt in het datacontract PersoonInfo -->
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">

@@ -11,10 +11,10 @@ using System.Linq.Expressions;
 using System.Text;
 
 using Chiro.Cdf.Data;
-using Chiro.Gap.Fouten.Exceptions;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Fouten;
+using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
 {
@@ -71,7 +71,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -88,7 +88,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Categorie, Properties.Resources.GeenGavCategorie);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -107,7 +107,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -124,7 +124,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -148,7 +148,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Properties.Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -167,8 +167,8 @@ namespace Chiro.Gap.Workers
 
 			if (!forceren && categorie.GelieerdePersoon.Count > 0)
 			{
-				throw new BlokkerendeObjectenException<GekoppeldeObjectenFoutCode, GelieerdePersoon>(
-					GekoppeldeObjectenFoutCode.CategorieNietLeeg,
+				throw new BlokkerendeObjectenException<GelieerdePersoon>(
+					FoutNummers.CategorieNietLeeg,
 					categorie.GelieerdePersoon,
 					categorie.GelieerdePersoon.Count(),
 					Properties.Resources.CategorieNietLeeg);
@@ -200,7 +200,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Categorie, Properties.Resources.GeenGavCategorie);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 	}

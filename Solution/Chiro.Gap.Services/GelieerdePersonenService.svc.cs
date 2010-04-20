@@ -13,14 +13,14 @@ using System.Security.Permissions;
 
 using AutoMapper;
 
-using Chiro.Gap.Fouten;
-using Chiro.Gap.Fouten.Exceptions;
-using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
-using Chiro.Gap.Services.Properties;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.ServiceContracts.Mappers;
+using Chiro.Gap.Services.Properties;
 using Chiro.Gap.Workers;
+using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Services
 {
@@ -148,11 +148,11 @@ namespace Chiro.Gap.Services
 
 				if (bestaandePersonen.Count > 0)
 				{
-					var fault = new BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonInfo>{
-						FoutCode = BestaatAlFoutCode.PersoonBestaatAl,
+					var fault = new BlokkerendeObjectenFault<PersoonInfo>{
+						FoutNummer = FoutNummers.BestaatAl,
 						Objecten = Mapper.Map<IList<GelieerdePersoon>, IList<PersoonInfo>>(bestaandePersonen) };
 
-					throw new FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonInfo>>(fault);
+					throw new FaultException<BlokkerendeObjectenFault<PersoonInfo>>(fault);
 
 					// ********************************************************************************
 					// * BELANGRIJK: Als je debugger breakt op deze throw, dan is dat geen probleem.  *
@@ -265,12 +265,11 @@ namespace Chiro.Gap.Services
 					naarAdres.PostNr,
 					String.Empty);	// TODO: buitenlandse adressen (#238)
 			}
-			catch (OngeldigObjectException<AdresFoutCode> ex)
+			catch (OngeldigObjectException ex)
 			{
-				var fault = Mapper.Map<OngeldigObjectException<AdresFoutCode>,
-					OngeldigObjectFault<AdresFoutCode>>(ex);
+				var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
 
-				throw new FaultException<OngeldigObjectFault<AdresFoutCode>>(fault);
+				throw new FaultException<OngeldigObjectFault>(fault);
 			}
 
 			// Haal te verhuizen personen op, samen met hun adressen.
@@ -297,12 +296,12 @@ namespace Chiro.Gap.Services
 			{
 				_pMgr.Verhuizen(personenLijst, oudAdres, nieuwAdres, adresType);
 			}
-			catch (BlokkerendeObjectenException<BestaatAlFoutCode, PersoonsAdres> ex)
+			catch (BlokkerendeObjectenException<PersoonsAdres> ex)
 			{
-				var fault = Mapper.Map<BlokkerendeObjectenException<BestaatAlFoutCode, PersoonsAdres>,
-					BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>>(ex);
+				var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>,
+					BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
 
-				throw new FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>>(fault);
+				throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
 			}
 
 			// Persisteren
@@ -327,12 +326,11 @@ namespace Chiro.Gap.Services
 			{
 				adres = _adrMgr.ZoekenOfMaken(adr.StraatNaamNaam, adr.HuisNr, adr.Bus, adr.WoonPlaatsID, adr.PostNr, String.Empty);
 			}
-			catch (OngeldigObjectException<AdresFoutCode> ex)
+			catch (OngeldigObjectException ex)
 			{
-				var fault = Mapper.Map<OngeldigObjectException<AdresFoutCode>,
-					OngeldigObjectFault<AdresFoutCode>>(ex);
+				var fault = Mapper.Map<OngeldigObjectException,	OngeldigObjectFault>(ex);
 
-				throw new FaultException<OngeldigObjectFault<AdresFoutCode>>(fault);
+				throw new FaultException<OngeldigObjectFault>(fault);
 			}
 
 			// Personen ophalen
@@ -344,12 +342,11 @@ namespace Chiro.Gap.Services
 			{
 				_pMgr.AdresToevoegen(personenLijst, adres, adresType);
 			}
-			catch (BlokkerendeObjectenException<BestaatAlFoutCode, PersoonsAdres> ex)
+			catch (BlokkerendeObjectenException<PersoonsAdres> ex)
 			{
-				var fault = Mapper.Map<BlokkerendeObjectenException<BestaatAlFoutCode, PersoonsAdres>,
-					BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>>(ex);
+				var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>, BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
 
-				throw new FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>>(fault);
+				throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
 			}
 
 			// persisteren

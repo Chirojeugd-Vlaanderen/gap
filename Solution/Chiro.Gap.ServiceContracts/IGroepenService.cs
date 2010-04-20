@@ -10,7 +10,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 
-using Chiro.Gap.Fouten;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
@@ -93,7 +93,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="naam">Naam van de afdeling</param>
 		/// <param name="afkorting">Afkorting van de afdeling (voor lijsten, overzichten,...)</param>
 		[OperationContract]
-		[FaultContract(typeof(BlokkerendeObjectenFault<BestaatAlFoutCode, AfdelingInfo>))]
+		[FaultContract(typeof(BestaatAlFault<AfdelingInfo>))]
 		void AfdelingAanmaken(int groepID, string naam, string afkorting);
 
 		[OperationContract]
@@ -209,7 +209,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="code">Code voor de nieuwe categorie</param>
 		/// <returns>De ID van de aangemaakte categorie</returns>
 		[OperationContract]
-		[FaultContract(typeof(BlokkerendeObjectenFault<BestaatAlFoutCode, CategorieInfo>))]
+		[FaultContract(typeof(BestaatAlFault<CategorieInfo>))]
 		int CategorieToevoegen(int groepID, String naam, String code);
 
 		/// <summary>
@@ -220,7 +220,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// te verwijderen categorie eerst uit de categorie weggehaald.  Indien
 		/// <c>false</c> krijg je een exception als de categorie niet leeg is.</param>
 		[OperationContract]
-		[FaultContract(typeof(BlokkerendeObjectenFault<GekoppeldeObjectenFoutCode, PersoonInfo>))]
+		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonInfo>))]
 		void CategorieVerwijderen(int categorieID, bool forceren);
 
 		/// <summary>

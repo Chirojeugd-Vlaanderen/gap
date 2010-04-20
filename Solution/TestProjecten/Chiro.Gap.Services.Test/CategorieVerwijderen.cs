@@ -5,19 +5,18 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Principal;
+using System.ServiceModel;
 using System.Text;
 using System.Threading;
 
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.Fouten;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Gap.Services;
 using Chiro.Gap.TestDbInfo;
-using System.ServiceModel;
 
 namespace Chiro.Gap.Services.Test
 {
@@ -134,7 +133,7 @@ namespace Chiro.Gap.Services.Test
 		/// exception verwacht.
 		/// </summary>
 		[TestMethod]
-		[ExpectedException(typeof(FaultException<BlokkerendeObjectenFault<GekoppeldeObjectenFoutCode, PersoonInfo>>))]
+		[ExpectedException(typeof(FaultException<BlokkerendeObjectenFault<PersoonInfo>>))]
 		public void CategorieVerwijderenMetPersoon()
 		{
 			// Arrange: categorie opzoeken, en persoon toevoegen.

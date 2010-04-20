@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using System.Web;
@@ -12,11 +13,10 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using System.Web.Routing;
 
-using Chiro.Cdf.ServiceHelper;
-using Chiro.Gap.Fouten;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
@@ -68,28 +68,37 @@ namespace Chiro.Gap.WebApp.Controllers
 
 					return RedirectToAction("Index", new { groepID = groepID });
 				}
-				catch (FaultException<BlokkerendeObjectenFault<BestaatAlFoutCode, CategorieInfo>> ex)
+				catch (FaultException<BestaatAlFault<CategorieInfo>> ex)
 				{
-					// Geef feedback aan de gebruiker: de naam of de code worden al gebruikt
-					if (ex.Detail.FoutCode == BestaatAlFoutCode.CategorieCodeBestaatAl)
+					if (String.Compare(
+						model.NieuweCategorie.Code,
+						ex.Detail.Bestaande.Code,
+						true) == 0)
 					{
+						// Geef feedback aan de gebruiker: de naam of de code worden al gebruikt
 						ModelState.AddModelError(
 							"NieuweCategorie.Code",
 							String.Format(
 								Properties.Resources.CategorieCodeBestaatAl,
-								model.NieuweCategorie.Code));
+								ex.Detail.Bestaande.Code,
+								ex.Detail.Bestaande.Naam));
 					}
-					else if (ex.Detail.FoutCode == BestaatAlFoutCode.CategorieNaamBestaatAl)
+					else if (String.Compare(
+						model.NieuweCategorie.Naam,
+						ex.Detail.Bestaande.Naam,
+						true) == 0)
 					{
+						// Geef feedback aan de gebruiker: de naam of de code worden al gebruikt
 						ModelState.AddModelError(
-							"NieuweCategorie.Naam",
+							"NieuweCategorie.Code",
 							String.Format(
 								Properties.Resources.CategorieNaamBestaatAl,
-								model.NieuweCategorie.Naam));
+								ex.Detail.Bestaande.Code,
+								ex.Detail.Bestaande.Naam));
 					}
 					else
 					{
-						throw new NotImplementedException();
+						Debug.Assert(false);
 					}
 
 					model.Titel = Properties.Resources.GroepsInstellingenTitel;
@@ -128,7 +137,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				ServiceHelper.CallService<IGroepenService>(svc => svc.CategorieVerwijderen(id, false));
 			}
-			catch (FaultException<BlokkerendeObjectenFault<GekoppeldeObjectenFoutCode, PersoonInfo>> ex)
+			catch (FaultException<BlokkerendeObjectenFault<PersoonInfo>> ex)
 			{
 				// Categorie was niet leeg
 

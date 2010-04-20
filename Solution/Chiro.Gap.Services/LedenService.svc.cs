@@ -15,13 +15,12 @@ using System.Text;
 using AutoMapper;
 
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.Fouten;
-using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Gap.Workers;
+using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Services
 {
@@ -67,18 +66,21 @@ namespace Chiro.Gap.Services
 					Lid l = _ledenMgr.KindMaken(gp);
 					leden.Add(l);
 				}
-				catch (BlokkerendeObjectenException<BestaatAlFoutCode, Lid>)
+				catch (BestaatAlException<Lid>)
 				{
 					/*code is reentrant*/
 				}
-				catch (OngeldigeActieException ex)
+				catch (InvalidOperationException ex)
 				{
 					result += ex.Message + "\n";
 				}
 			}
 			if (!result.Equals(String.Empty))
 			{
-				throw new FaultException<OngeldigeActieException>(new OngeldigeActieException(result));
+				// Ne string als faultcontract.  Nog niet geweldig, maar al beter als een
+				// exception.  Zie #463.
+
+				throw new FaultException<string>(result);
 			}
 
 			foreach (Lid l in leden)
@@ -104,18 +106,18 @@ namespace Chiro.Gap.Services
 					Lid l = _ledenMgr.LeidingMaken(gp);
 					leden.Add(l);
 				}
-				catch (BlokkerendeObjectenException<BestaatAlFoutCode, Lid>)
+				catch (BestaatAlException<Lid>)
 				{
 					/*code is reentrant*/
 				}
-				catch (OngeldigeActieException ex)
+				catch (InvalidOperationException ex)
 				{
 					result += ex.Message + "\n";
 				}
 			}
 			if (!result.Equals(String.Empty))
 			{
-				throw new OngeldigeActieException(result);
+				throw new InvalidOperationException(result);
 			}
 
 			foreach (Lid l in leden)

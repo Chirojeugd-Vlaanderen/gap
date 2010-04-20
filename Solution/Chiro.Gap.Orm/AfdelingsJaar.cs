@@ -12,6 +12,7 @@ using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Orm
 {

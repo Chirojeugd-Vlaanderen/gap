@@ -9,17 +9,17 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
 
-namespace Chiro.Gap.Fouten
+namespace Chiro.Gap.Domain
 {
 	/// <summary>
 	/// Klasse voor een foutboodschap.
 	/// </summary>
 	/// <typeparam name="T">Type voor foutcodes (waarschijnlijk meestal enum)</typeparam>
 	[DataContract]
-	public class FoutBericht<T>
+	public class FoutBericht
 	{
 		[DataMember]
-		public T FoutCode { get; set; }
+		public int FoutNummer { get; set; }
 		[DataMember]
 		public string Bericht { get; set; }     // omschrijving
 	}

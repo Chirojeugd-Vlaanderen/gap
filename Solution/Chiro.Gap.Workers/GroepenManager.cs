@@ -13,12 +13,11 @@ using System.Text;
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Data.Ef;
-using Chiro.Gap.Fouten;
-using Chiro.Gap.Fouten.Exceptions;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.ServiceContracts.FaultContracts;
-using Chiro.Gap.Workers.Properties;
+using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
 {
@@ -72,7 +71,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -118,7 +117,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.GeenSuperGav, Properties.Resources.GeenSuperGav);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			};
 		}
 
@@ -138,24 +137,12 @@ namespace Chiro.Gap.Workers
 
 				var bestaand = from afd in groep.Afdeling
 					       where String.Compare(afd.Afkorting, afkorting, true) == 0
+					       || String.Compare(afd.Naam, naam, true) == 0
 					       select afd;
 
 				if (bestaand.FirstOrDefault() != null)
 				{
-					// Deze exception moet nog vervangen worden; zie #435.
-					throw new BlokkerendeObjectenException<BestaatAlFoutCode, Afdeling>(
-						BestaatAlFoutCode.AfdelingsCodeBestaatAl, bestaand.FirstOrDefault());
-				}
-
-				bestaand = from afd in groep.Afdeling
-					   where String.Compare(afd.Naam, naam, true) == 0
-					   select afd;
-
-				if (bestaand.FirstOrDefault() != null)
-				{
-					// Deze exception moet nog vervangen worden; zie #435.
-					throw new BlokkerendeObjectenException<BestaatAlFoutCode, Afdeling>(
-						BestaatAlFoutCode.AfdelingsNaamBestaatAl, bestaand.FirstOrDefault());
+					throw new BestaatAlException<Afdeling>(bestaand.FirstOrDefault());
 				}
 
 				Afdeling a = new Afdeling
@@ -171,7 +158,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -189,7 +176,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -225,7 +212,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -242,7 +229,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -259,7 +246,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -278,45 +265,28 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavGroep(g.ID))
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 			else
 			{
 				// Is er al een categorie met die code?
 				Categorie bestaande = (from ctg in g.Categorie
-									   where String.Compare(ctg.Code, categorieCode) == 0
-									   select ctg).FirstOrDefault();
+						       where String.Compare(ctg.Code, categorieCode, true) == 0
+							|| String.Compare(ctg.Naam, categorieNaam, true) == 0
+						       select ctg).FirstOrDefault();
 
 				if (bestaande != null)
 				{
-					throw new BlokkerendeObjectenException<BestaatAlFoutCode, Categorie>(
-						BestaatAlFoutCode.CategorieCodeBestaatAl,
-						bestaande
-						);
+					throw new BestaatAlException<Categorie>(bestaande);
 				}
 				else
 				{
-					// Is er al een categorie met die beschrijving?
-					bestaande = (from ctg in g.Categorie
-								 where String.Compare(ctg.Naam, categorieNaam) == 0
-								 select ctg).FirstOrDefault();
-
-					if (bestaande != null)
-					{
-						throw new BlokkerendeObjectenException<BestaatAlFoutCode, Categorie>(
-							BestaatAlFoutCode.CategorieNaamBestaatAl,
-							bestaande
-							);
-					}
-					else
-					{
-						Categorie c = new Categorie();
-						c.Naam = categorieNaam;
-						c.Code = categorieCode;
-						c.Groep = g;
-						g.Categorie.Add(c);
-						return c;
-					}
+					Categorie c = new Categorie();
+					c.Naam = categorieNaam;
+					c.Code = categorieCode;
+					c.Groep = g;
+					g.Categorie.Add(c);
+					return c;
 				}
 			}
 		}
@@ -345,7 +315,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavGroep(g.ID))
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 			else
 			{
@@ -353,6 +323,7 @@ namespace Chiro.Gap.Workers
 
 				var bestaande = (from fun in g.Functie
 								 where String.Compare(g.Code, code) == 0
+								 || String.Compare(g.Naam, naam) == 0
 								 select fun).FirstOrDefault();
 
 				if (bestaande != null && bestaande.TeVerwijderen)
@@ -362,26 +333,9 @@ namespace Chiro.Gap.Workers
 				}
 				else if (bestaande != null)
 				{
-					throw new BlokkerendeObjectenException<BestaatAlFoutCode, Functie>(
-						BestaatAlFoutCode.FunctieCodeBestaatAl, bestaande);
+					throw new BestaatAlException<Functie>(bestaande);
 				}
 
-				// Hetzelfde voor dubbele naam
-
-				bestaande = (from fun in g.Functie
-							 where String.Compare(g.Naam, naam) == 0
-							 select fun).FirstOrDefault();
-
-				if (bestaande != null && bestaande.TeVerwijderen)
-				{
-					throw new InvalidOperationException(
-						"Er bestaat al een functie met die naam, gemarkeerd als TeVerwijderen");
-				}
-				else if (bestaande != null)
-				{
-					throw new BlokkerendeObjectenException<BestaatAlFoutCode, Functie>(
-						BestaatAlFoutCode.FunctieNaamBestaatAl, bestaande);
-				}
 
 				// Zonder problemen hier geraakt.  Dan kunnen we verder.
 

@@ -12,6 +12,7 @@ using System.Runtime.Serialization;
 using System.Text;
 
 using Chiro.Gap.Orm;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts
 {

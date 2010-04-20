@@ -6,27 +6,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Runtime.Serialization;
+using System.Text;
+
 using Chiro.Cdf.Data.Entity;
 using Chiro.Cdf.Data;
+using Chiro.Gap.Domain;
+
 namespace Chiro.Gap.Orm
 {
-	/// <summary>
-	/// Bepaalt de 'status' van het adres
-	/// </summary>
-	[DataContract]
-	public enum AdresTypeEnum
-	{
-		[EnumMember]
-		Thuis = 1,
-		[EnumMember]
-		Kot = 2,
-		[EnumMember]
-		Werk = 3,
-		[EnumMember]
-		Overig = 4
-	}
 
 	/// <summary>
 	/// Instantieert een PersoonsAdres-object dat zorgt voor samenwerking met Entity Framework

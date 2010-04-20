@@ -12,11 +12,10 @@ using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Data.Ef;
-using Chiro.Gap.Fouten;
-using Chiro.Gap.Fouten.Exceptions;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Workers.Properties;
+using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
 {
@@ -80,7 +79,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavAfdeling(a.ID))
 			{
-				throw new GeenGavException(GeenGavFoutCode.Afdeling, Resources.GeenGavAfdeling);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
 			// Leden moeten minstens in het 1ste leerjaar zitten, alvorens we inschrijven.
@@ -144,7 +143,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -172,7 +171,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -188,7 +187,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Lid, Properties.Resources.GeenGavLid);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -232,7 +231,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Afdeling, "Dit is geen afdeling van jouw groep(en).");
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -249,7 +248,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Afdeling, Resources.GeenGavAfdeling);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -290,12 +289,12 @@ namespace Chiro.Gap.Workers
 
 			if (!_autorisatieMgr.IsGavLid(l.ID))
 			{
-				throw new GeenGavException(GeenGavFoutCode.Lid, Properties.Resources.GeenGavLid);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 			else if (l.GroepsWerkJaar.ID != _groepsWjDao.RecentsteOphalen(l.GroepsWerkJaar.Groep.ID).ID)
 			{
-				throw new FoutCodeException<NietBeschikbaarFoutCode>(
-					NietBeschikbaarFoutCode.GroepsWerkJaar,
+				throw new GapException(
+					FoutNummers.GroepsWerkJaarNietBeschikbaar,
 					Properties.Resources.GroepsWerkJaarVoorbij);
 			}
 
@@ -305,8 +304,8 @@ namespace Chiro.Gap.Workers
 
 			if (probleemgevallen.FirstOrDefault() != null)
 			{
-				throw new FoutCodeException<VerkeerdeGroepFoutCode>(
-					VerkeerdeGroepFoutCode.Afdeling,
+				throw new GapException(
+					FoutNummers.AfdelingNietVanGroep,
 					Properties.Resources.FoutieveGroepAfdeling);
 			}
 

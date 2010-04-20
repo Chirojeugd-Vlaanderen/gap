@@ -12,6 +12,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.WebApp.Models;

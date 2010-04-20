@@ -12,10 +12,10 @@ using System.Text;
 
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Data.Ef;
-using Chiro.Gap.Fouten;
-using Chiro.Gap.Fouten.Exceptions;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Workers.Exceptions;
 
 
 namespace Chiro.Gap.Workers
@@ -72,7 +72,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -115,10 +115,11 @@ namespace Chiro.Gap.Workers
 				{
 					// Geef een exception met daarin de persoonsadresobjecten die al bestaan
 
-					throw new BlokkerendeObjectenException<BestaatAlFoutCode, PersoonsAdres>(
-						BestaatAlFoutCode.PersoonBestaatAl,
-						bestaand.ToArray(),
-						bestaand.Count());
+					throw new BlokkerendeObjectenException<PersoonsAdres>(
+						FoutNummers.WonenDaarAl,
+						bestaand,
+						bestaand.Count(),
+						Properties.Resources.WonenDaarAl);
 				}
 
 				var oudePersoonsAdressen = verhuizers.SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == oudAdres.ID));
@@ -145,7 +146,7 @@ namespace Chiro.Gap.Workers
 				// Minstens een persoon waarvoor de user geen GAV is.  Zo'n gepruts verdient
 				// een onverbiddellijke geen-gav-exception.
 
-				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -189,9 +190,11 @@ namespace Chiro.Gap.Workers
 
 					var bestaandePersoonsAdressen = bestaand.ToList();
 
-					throw new BlokkerendeObjectenException<BestaatAlFoutCode, PersoonsAdres>(
-						BestaatAlFoutCode.PersoonsAdresBestaatAl, 
-						bestaandePersoonsAdressen, bestaandePersoonsAdressen.Count());
+					throw new BlokkerendeObjectenException<PersoonsAdres>(
+						FoutNummers.WonenDaarAl,
+						bestaand,
+						bestaand.Count(),
+						Properties.Resources.WonenDaarAl);
 				}
 
 				foreach (Persoon p in personen)
@@ -206,7 +209,7 @@ namespace Chiro.Gap.Workers
 				// stiekem personen niet gelieerd aan eigen groep bij in lijst opgenomen.  Geen
 				// tijd aan verspillen; gewoon een GeenGavException.
 
-				throw new GeenGavException(GeenGavFoutCode.Persoon, Properties.Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 

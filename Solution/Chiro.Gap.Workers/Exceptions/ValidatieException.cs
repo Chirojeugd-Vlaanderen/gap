@@ -9,12 +9,12 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Chiro.Gap.Fouten.Exceptions
+namespace Chiro.Gap.Workers.Exceptions
 {
 	/// <summary>
 	/// Exceptie voor fouten tegen validatieregels.
 	/// </summary>
-	public class ValidatieException : System.Exception, ISerializable
+	public class ValidatieException : GapException
 	{
 		/// <summary>
 		/// Instantieert een lege ValidatieException

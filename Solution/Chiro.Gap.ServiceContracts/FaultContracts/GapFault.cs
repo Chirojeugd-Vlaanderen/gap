@@ -9,14 +9,13 @@ namespace Chiro.Gap.ServiceContracts.FaultContracts
 	/// <summary>
 	/// Faultcontract dat een foutcode van type <typeparamref name="T"/> bevat
 	/// </summary>
-	/// <typeparam name="T">Type van de foutcode</typeparam>
 	[DataContract]
-	public class FoutCodeFault<T>
+	public class GapFault
 	{
 		/// <summary>
 		/// De foutcode
 		/// </summary>
 		[DataMember]
-		public T FoutCode { get; set; }
+		public int FoutNummer { get; set; }
 	}
 }

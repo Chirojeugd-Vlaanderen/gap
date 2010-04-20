@@ -12,24 +12,10 @@ using System.Diagnostics;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Orm
 {
-	/// <summary>
-	/// Maakt een onderscheid tussen kinderen en leiding
-	/// </summary>
-	[DataContract]
-	[Flags]
-	public enum LidType
-	{
-		[EnumMember]
-		Kind = 0x01,
-		[EnumMember]
-		Leiding = 0x02,
-		[EnumMember]
-		Alles = Kind|Leiding
-	}
-
 	/// <summary>
 	/// Instantieert een Lid-object dat zorgt voor samenwerking met Entity Framework
 	/// </summary>

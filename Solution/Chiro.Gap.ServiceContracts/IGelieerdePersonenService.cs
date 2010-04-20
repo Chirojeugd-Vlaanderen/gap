@@ -10,7 +10,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 
-using Chiro.Gap.Fouten;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
@@ -117,7 +117,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// en de Chiroleeftijd.  Als de info lijkt op die van een bestaande gelieerde persoon, dan
 		/// wordt een exceptie opgegooid.</remarks>
 		[OperationContract]
-		[FaultContract(typeof(BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonInfo>))]
+		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonInfo>))]
 		int Aanmaken(GelieerdePersoon info, int groepID);
 
 		/// <summary>
@@ -136,7 +136,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// en de Chiroleeftijd.  Ik had deze functie ook graag 'aanmaken' genoemd (zie coding guideline
 		/// 190), maar dat mag blijkbaar niet bij services.</remarks>
 		[OperationContract]
-		[FaultContract(typeof(BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonInfo>))]
+		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonInfo>))]
 		int GeforceerdAanmaken(GelieerdePersoon info, int groepID, bool forceer);
 
 		/// <summary>
@@ -173,8 +173,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
 		/// dan krijgt het adres een nieuw ID.</remarks>
 		[OperationContract]
-		[FaultContract(typeof(BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>))]
-		[FaultContract(typeof(OngeldigObjectFault<AdresFoutCode>))]
+		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
+		[FaultContract(typeof(OngeldigObjectFault))]
 		void Verhuizen(
 			IEnumerable<int> persoonIDs,
 			AdresInfo nieuwAdres,
@@ -200,8 +200,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="adres">Toe te voegen adres</param>
 		/// <param name="adresType">Soort adres (thuis, kot, enz.)</param>
 		[OperationContract]
-		[FaultContract(typeof(OngeldigObjectFault<AdresFoutCode>))]
-		[FaultContract(typeof(BlokkerendeObjectenFault<BestaatAlFoutCode, PersoonsAdresInfo2>))]
+		[FaultContract(typeof(OngeldigObjectFault))]
+		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
 		void AdresToevoegen(List<int> personenIDs, AdresInfo adres, AdresTypeEnum adresType);
 
 		/// <summary>

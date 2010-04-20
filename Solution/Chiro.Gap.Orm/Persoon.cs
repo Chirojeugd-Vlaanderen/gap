@@ -13,27 +13,10 @@ using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Orm
 {
-	/// <summary>
-	/// Enum om informatie over het geslacht over te brengen
-	/// </summary>
-	/// <remarks>Kan zowel over personen als over groepen/afdelingen gaan</remarks>
-	[DataContract]
-	[Flags]
-	public enum GeslachtsType
-	{
-		[EnumMember]
-		Onbekend = 0x00,
-		[EnumMember]
-		Man = 0x01,
-		[EnumMember]
-		Vrouw = 0x02,
-		[EnumMember]
-		Gemengd = Man | Vrouw	// interessant voor gemengde groepen/afdelingen
-	}
-
 	/// <summary>
 	/// Instantieert een Persoon-object dat zorgt voor samenwerking met Entity Framework
 	/// </summary>
@@ -64,7 +47,7 @@ namespace Chiro.Gap.Orm
 			}
 
 			[Verplicht()]
-			public Chiro.Gap.Orm.GeslachtsType Geslacht
+			public GeslachtsType Geslacht
 			{
 				set;
 				get;

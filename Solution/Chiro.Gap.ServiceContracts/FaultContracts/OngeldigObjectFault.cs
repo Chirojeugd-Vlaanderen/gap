@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
+using Chiro.Gap.Domain;
 
-using Chiro.Gap.Fouten;
 
 namespace Chiro.Gap.ServiceContracts.FaultContracts
 {
@@ -21,12 +21,12 @@ namespace Chiro.Gap.ServiceContracts.FaultContracts
 	/// <remarks>TODO: Dit wordt blijkbaar enkel gebruikt voor adressen.  Is heel die constructie dan wel
 	/// nodig? Misschien is een AdresFault wel even goed.</remarks>
 	[DataContract]
-	public class OngeldigObjectFault<TFoutCode> : FoutCodeFault<TFoutCode> 
+	public class OngeldigObjectFault : GapFault 
 	{
 		/// <summary>
 		/// Dictionary die voor elke fout een dictionary-entry (component, foutbericht) bevat.
 		/// </summary>
 		[DataMember]
-		public Dictionary<string, FoutBericht<TFoutCode>> Berichten { get; set; }
+		public Dictionary<string, FoutBericht> Berichten { get; set; }
 	}
 }

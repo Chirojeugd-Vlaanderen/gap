@@ -136,41 +136,11 @@
   <data name="FoutieveGroepCategorie" xml:space="preserve">
     <value>Je probeert een persoon te koppelen aan een categorie uit een andere groep.</value>
   </data>
-  <data name="GeenGavAfdeling" xml:space="preserve">
-    <value>Deze afdeling is niet gekoppeld aan je groep(en).</value>
-  </data>
-  <data name="GeenGavCategorie" xml:space="preserve">
-    <value>Deze categorie is niet gekoppeld aan je groep(en).</value>
-  </data>
-  <data name="GeenGavCategoriePersoon" xml:space="preserve">
-    <value>De categorie en/of de persoon zijn niet gekoppeld aan je groep(en).</value>
-  </data>
-  <data name="GeenGavCommVorm" xml:space="preserve">
-    <value>Dit is geen communicatievorm van een van jouw personen.</value>
-  </data>
-  <data name="GeenGavGelieerdePersoon" xml:space="preserve">
-    <value>Deze persoon is niet gekoppeld aan je groep(en).</value>
-  </data>
-  <data name="GeenGavGroep" xml:space="preserve">
-    <value>Je bent geen GAV van deze groep.</value>
-  </data>
-  <data name="GeenGavGroepsWerkJaar" xml:space="preserve">
-    <value>Dit werkjaar is niet gekoppeld aan je groep(en).</value>
-  </data>
-  <data name="GeenGavLid" xml:space="preserve">
-    <value>Dit lid is niet gekoppeld aan je groep(en).</value>
-  </data>
   <data name="GeenGeschikteAfdeling" xml:space="preserve">
     <value>Er werd geen geschikte afdeling gevonden voor deze persoon.</value>
   </data>
-  <data name="GeenSuperGav" xml:space="preserve">
-    <value>Deze operatie is enkel beschikbaar voor super-GAV-goden.</value>
-  </data>
   <data name="FoutieveGroepFunctie" xml:space="preserve">
     <value>Je probeert een lid te koppelen aan een categorie uit een andere groep.</value>
-  </data>
-  <data name="GeenGavFunctie" xml:space="preserve">
-    <value>Deze functie is niet gekoppeld aan je groep(en).</value>
   </data>
   <data name="GeboorteDatumOntbreekt" xml:space="preserve">
     <value>De geboortedatum moet gekend zijn.</value>
@@ -201,5 +171,12 @@
   </data>
   <data name="GroepsWerkJaarVoorbij" xml:space="preserve">
     <value>Je kan geen aanpassingen meer doen aan vorige werkjaren.</value>
+  </data>
+  <data name="GeenGav" xml:space="preserve">
+    <value>Geen toegang.</value>
+    <comment>Zo weinig mogelijk details voor potentiele krakers.</comment>
+  </data>
+  <data name="WonenDaarAl" xml:space="preserve">
+    <value>Een of meerdere personen wonen al op het aangeduide adres.</value>
   </data>
 </root>

@@ -11,11 +11,11 @@ using System.ServiceModel;
 using System.Text;
 
 using Chiro.Gap.Data.Ef;
-using Chiro.Gap.Fouten;
-using Chiro.Gap.Fouten.Exceptions;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
 {
@@ -97,7 +97,7 @@ namespace Chiro.Gap.Workers
 		/// <remarks>Ieder heeft het recht adressen op te zoeken</remarks>
 		public Adres ZoekenOfMaken(String StraatNaam, int HuisNr, String Bus, int WoonPlaatsID, int PostNr, String PostCode)
 		{
-			var problemen = new Dictionary<string, FoutBericht<AdresFoutCode>>();
+			var problemen = new Dictionary<string, FoutBericht>();
 
 			// Al maar preventief een VerhuisFault aanmaken.  Als daar uiteindelijk
 			// geen foutberichten inzitten, dan is er geen probleem.  Anders
@@ -137,9 +137,9 @@ namespace Chiro.Gap.Workers
 					// heeft betrekking op het datacontract 'AdresInfo', wat helemaal niet
 					// van belang is in deze layer
 
-					problemen.Add("StraatNaamNaam", new FoutBericht<AdresFoutCode>
+					problemen.Add("StraatNaamNaam", new FoutBericht
 					{
-						FoutCode = AdresFoutCode.OnbekendeStraat,
+						FoutNummer = FoutNummers.StraatNietGevonden,
 						Bericht = String.Format(
 							Properties.Resources.StraatNietGevonden,
 							StraatNaam,
@@ -161,16 +161,16 @@ namespace Chiro.Gap.Workers
 
 					// FIXME: hier idem.
 
-					problemen.Add("WoonPlaatsNaam", new FoutBericht<AdresFoutCode>
+					problemen.Add("WoonPlaatsNaam", new FoutBericht
 					{
-						FoutCode = AdresFoutCode.OnbekendeGemeente,
+						FoutNummer = FoutNummers.WoonPlaatsNietGevonden,
 						Bericht = Properties.Resources.GemeenteNietGevonden
 					});
 				}
 
 				if (problemen.Count != 0)
 				{
-					throw new OngeldigObjectException<AdresFoutCode>(problemen);
+					throw new OngeldigObjectException(problemen);
 				}
 
 				if (PostCode != null && !PostCode.Equals(String.Empty))

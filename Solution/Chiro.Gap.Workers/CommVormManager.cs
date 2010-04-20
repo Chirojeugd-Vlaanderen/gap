@@ -11,12 +11,10 @@ using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Data.Ef;
-using Chiro.Gap.Fouten;
-using Chiro.Gap.Fouten.Exceptions;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Validatie;
-using Chiro.Gap.Workers.Properties;
+using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
 {
@@ -60,7 +58,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.CommunicatieVorm, Resources.GeenGavCommVorm);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -77,7 +75,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.CommunicatieVorm, Resources.GeenGavCommVorm);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -113,7 +111,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new GeenGavException(GeenGavFoutCode.CommunicatieVorm, Resources.GeenGavCommVorm);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
 
@@ -127,7 +125,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
 			{
-				throw new GeenGavException(GeenGavFoutCode.Groep, Resources.GeenGavGroep);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 			GelieerdePersoon origineel = _geldao.Ophalen(gelieerdePersoonID, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
 			CommunicatieType type = _typedao.Ophalen(typeID);
@@ -141,7 +139,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new ValidatieException(string.Format(Resources.CommunicatieVormValidatieFeedback, comm.Nummer, comm.CommunicatieType.Omschrijving));
+				throw new ValidatieException(string.Format(Properties.Resources.CommunicatieVormValidatieFeedback, comm.Nummer, comm.CommunicatieType.Omschrijving));
 			}
 		}
 
@@ -160,11 +158,11 @@ namespace Chiro.Gap.Workers
 				// Aangezien er niet getest wordt of de communicatievorm wel hoort bij de 
 				// gegeven persoon, is deze test belachelijk.
 
-				throw new GeenGavException(GeenGavFoutCode.Persoon, Resources.GeenGavGelieerdePersoon);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 			if (!_autorisatieMgr.IsGavCommVorm(comm.ID))
 			{
-				throw new GeenGavException(GeenGavFoutCode.CommunicatieVorm, Resources.GeenGavCommVorm);
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 			comm.TeVerwijderen = true;
 			_dao.Bewaren(comm);
