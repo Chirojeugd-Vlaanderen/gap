@@ -98,7 +98,7 @@ namespace Chiro.Gap.Workers.Exceptions
 		#endregion
 
 
-		#region custom exceptions
+		#region custom constructors
 
 		/// <summary>
 		/// Creeert een Exception omdat er al een entiteit zoals <paramref name="entiteit"/> al bestaat.

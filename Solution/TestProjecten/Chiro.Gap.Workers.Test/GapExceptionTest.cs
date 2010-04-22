@@ -76,15 +76,14 @@ namespace Chiro.Gap.Workers.Test
 		{
 			// Arrange
 
-			GapException target = new GapException();
-			target.FoutNummer = 11;
-			target.Items = new string[] { "een", "twee" };
+			var target = new GapException {FoutNummer = 11, Items = new string[] {"een", "twee"}};
+
 
 			// Act
 
 			using (Stream s = new MemoryStream())
 			{
-				BinaryFormatter formatter = new BinaryFormatter();
+				var formatter = new BinaryFormatter();
 
 				formatter.Serialize(s, target);
 				s.Position = 0;

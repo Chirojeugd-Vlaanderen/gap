@@ -550,10 +550,6 @@ namespace Chiro.Gap.Services
 
 				throw new FaultException<BlokkerendeObjectenFault<PersoonInfo>>(fault);
 			}
-			catch (Exception)
-			{
-				throw;
-			}
 		}
 
 		public void CategorieAanpassen(int categorieID, string nieuwenaam)

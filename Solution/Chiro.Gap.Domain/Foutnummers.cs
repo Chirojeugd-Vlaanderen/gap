@@ -1,38 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-
-namespace Chiro.Gap.Domain
+﻿namespace Chiro.Gap.Domain
 {
-	public static class FoutNummers
+	public class FoutNummers
 	{
-		public static readonly int AlgemeneFout = 0x00;
-		public static readonly int GeenGav = 0x01;
-		public static readonly int BestaatAl = 0x02;
+		private FoutNummers()
+		{
+			// Deze klasse bevat enkel constanten, en mag niet geinstantieerd worden.
+			// Vandaar een private constructor.
+		}
+
+		public const int AlgemeneFout = 0x01;
+		public const int GeenGav = 0x02;
+		public const int BestaatAl = 0x03;
 
 		#region adressen
-		public static readonly int WoonPlaatsNietGevonden = 0x20;
-		public static readonly int StraatNietGevonden = 0x21;
+		public const int WoonPlaatsNietGevonden = 0x20;
+		public const int StraatNietGevonden = 0x21;
 
-		public static readonly int WonenDaarAl = 0x28;
+		public const int WonenDaarAl = 0x28;
 		#endregion
 
 		#region verkeerde groep
-		public static readonly int CategorieNietVanGroep = 0x30;
-		public static readonly int FunctieNietVanGroep = 0x31;
-		public static readonly int AfdelingNietVanGroep = 0x32;
+		public const int CategorieNietVanGroep = 0x30;
+		public const int FunctieNietVanGroep = 0x31;
+		public const int AfdelingNietVanGroep = 0x32;
 		#endregion
 
 		#region niet beschikbaar in werkjaar
-		public static readonly int GroepsWerkJaarNietBeschikbaar = 0x40;
-		public static readonly int FunctieNietBeschikbaar = 0x41;
-		public static readonly int AfdelingNietBeschikbaar = 0x42;
+		public const int GroepsWerkJaarNietBeschikbaar = 0x40;
+		public const int FunctieNietBeschikbaar = 0x41;
+		public const int AfdelingNietBeschikbaar = 0x42;
 		#endregion
 
 		#region nog te verdelen
-		public static readonly int CategorieNietLeeg = 0xf0;
+		public const int CategorieNietLeeg = 0xf0;
 		#endregion
 	}
 }
