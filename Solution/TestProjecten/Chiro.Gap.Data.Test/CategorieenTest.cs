@@ -1,15 +1,22 @@
-﻿using System;
-using System.Text;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Workers;
-using Chiro.Gap.Dummies;
+
 using Chiro.Cdf.Data.Entity;
 using Chiro.Cdf.Ioc;
+using Chiro.Gap.Dummies;
+using Chiro.Gap.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.TestDbInfo;
+using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.Data.Test
 {

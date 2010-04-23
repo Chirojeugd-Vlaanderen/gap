@@ -16,9 +16,9 @@ namespace Chiro.Gap.Orm.Test
 		private TestContext testContextInstance;
 
 		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		///</summary>
+		/// Gets or sets the test context which provides
+		/// information about and functionality for the current test run.
+		/// </summary>
 		public TestContext TestContext
 		{
 			get
@@ -63,8 +63,8 @@ namespace Chiro.Gap.Orm.Test
 
 
 		/// <summary>
-		///Controleert of de gepredefinieerde functie 'Groepsleiding' wordt herekend.
-		///</summary>
+		/// Controleert of de gepredefinieerde functie 'Groepsleiding' wordt herekend.
+		/// </summary>
 		[TestMethod()]
 		public void GepredefinieerdeFunctieTest()
 		{

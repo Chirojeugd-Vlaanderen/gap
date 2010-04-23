@@ -3,10 +3,6 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
 
@@ -19,12 +15,18 @@ namespace Chiro.Gap.Orm
 	{
 		private bool _teVerwijderen = false;
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public bool TeVerwijderen
 		{
 			get { return _teVerwijderen; }
 			set { _teVerwijderen = value; }
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public string VersieString
 		{
 			get { return this.VersieStringGet(); }
@@ -33,11 +35,20 @@ namespace Chiro.Gap.Orm
 
 		#region Identity en equality
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
 		public override int GetHashCode()
 		{
 			return 17;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <returns></returns>
 		public override bool Equals(object obj)
 		{
 			IEfBasisEntiteit andere = obj as Afdeling;

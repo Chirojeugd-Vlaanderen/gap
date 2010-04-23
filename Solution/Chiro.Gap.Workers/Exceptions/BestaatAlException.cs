@@ -4,9 +4,6 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.Serialization;
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
@@ -16,8 +13,9 @@ namespace Chiro.Gap.Workers.Exceptions
 	/// <summary>
 	/// Exception die opgegooid kan worden als een bepaalde entiteit al bestaat
 	/// </summary>
+	/// <typeparam name="TEntiteit"></typeparam>
 	[Serializable]
-	public class BestaatAlException<TEntiteit>: GapException where TEntiteit: IBasisEntiteit
+	public class BestaatAlException<TEntiteit> : GapException where TEntiteit : IBasisEntiteit
 	{
 		private TEntiteit _bestaande;
 
@@ -39,15 +37,19 @@ namespace Chiro.Gap.Workers.Exceptions
 		#region standaardconstructors
 
 		/// <summary>
-		/// Standaardconstructor
+		/// De standaardconstructor
 		/// </summary>
-		public BestaatAlException() : this(null, null) { }
+		public BestaatAlException() : this(null, null)
+		{
+		}
 
 		/// <summary>
 		/// Construeer BestaatAlException met bericht <paramref name="message"/>.
 		/// </summary>
 		/// <param name="message">Technische info over de exception; nuttig voor developer</param>
-		public BestaatAlException(string message) : this(message, null) { }
+		public BestaatAlException(string message) : this(message, null)
+		{
+		}
 
 		/// <summary>
 		/// Construeer BestaatAlException met bericht <paramref name="message"/> en een inner exception
@@ -68,15 +70,15 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// <summary>
 		/// Constructor voor deserializatie.
 		/// </summary>
-		/// <param name="info">Serializatie-info</param>
-		/// <param name="context">Streamingcontext</param>
+		/// <param name="info">De serializatie-info</param>
+		/// <param name="context">De streamingcontext</param>
 		protected BestaatAlException(SerializationInfo info, StreamingContext context)
-			: base(info, context) 
+			: base(info, context)
 		{
 			if (info != null)
 			{
 				_bestaande = (TEntiteit)info.GetValue(
-					"_bestaande", 
+					"_bestaande",
 					typeof(TEntiteit));
 			}
 		}
@@ -85,7 +87,7 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// Serializatie van de exception
 		/// </summary>
 		/// <param name="info">Serializatie-info waarin eigenschappen van exception bewaard moeten worden</param>
-		/// <param name="context"></param>
+		/// <param name="context">De streamingcontext</param>
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			base.GetObjectData(info, context);
@@ -96,8 +98,7 @@ namespace Chiro.Gap.Workers.Exceptions
 		}
 
 		#endregion
-
-
+        
 		#region custom constructors
 
 		/// <summary>

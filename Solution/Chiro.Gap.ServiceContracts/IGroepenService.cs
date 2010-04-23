@@ -5,10 +5,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Text;
 
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
@@ -166,7 +163,7 @@ namespace Chiro.Gap.ServiceContracts
 
 		/// <summary>
 		/// Haalt informatie op over de afdelingen van een groep die niet gebruikt zijn in een gegeven 
-		/// groepswerkjaar, op basis van een <paramref name="groepsWerkJaarID"/>
+		/// groepswerkjaar, op basis van een <paramref name="groepswerkjaarID"/>
 		/// </summary>
 		/// <param name="groepswerkjaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
 		/// opgezocht moeten worden.</param>
@@ -228,7 +225,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="categorieID">De ID van de categorie</param>
 		/// <param name="nieuwenaam">De nieuwe naam van de categorie</param>
-		/// <exception cref="invalidoperation">Gegooit als de naam al bestaat, leeg is of null is</exception>
+		/// <exception cref="InvalidOperationException">Gegooid als de naam al bestaat, leeg is of null is</exception>
 		[OperationContract]
 		void CategorieAanpassen(int categorieID, string nieuwenaam);
 
@@ -238,7 +235,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="groepID">ID van de groep waaraan de categorie gekoppeld moet zijn.</param>
 		/// <param name="categorieCode">Code van de categorie</param>
-		/// <returns>De categorie met code <paramref name="CategorieCode"/> die van toepassing is op
+		/// <returns>De categorie met code <paramref name="categorieCode"/> die van toepassing is op
 		/// de groep met ID <paramref name="groepID"/>.</returns>
 		[OperationContract]
 		CategorieInfo CategorieOpzoeken(int groepID, string categorieCode);
@@ -263,6 +260,11 @@ namespace Chiro.Gap.ServiceContracts
 		#endregion categorieën
 
 		#region adressen
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
 		[OperationContract]
 		IEnumerable<WoonPlaatsInfo> GemeentesOphalen();
 

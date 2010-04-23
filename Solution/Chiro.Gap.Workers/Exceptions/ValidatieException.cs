@@ -4,10 +4,7 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Chiro.Gap.Workers.Exceptions
 {
@@ -20,7 +17,6 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// Instantieert een lege ValidatieException
 		/// </summary>
 		public ValidatieException()
-			: base()
 		{
 		}
 

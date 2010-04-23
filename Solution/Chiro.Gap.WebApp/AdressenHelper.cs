@@ -1,7 +1,11 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
@@ -20,7 +24,7 @@ namespace Chiro.Gap.WebApp
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		/// <param name="serviceHelper">een IServiceHelper die zal instaan voor de service calls.</param>
+		/// <param name="serviceHelper">Een IServiceHelper die zal instaan voor de service calls.</param>
 		public AdressenHelper(IServiceHelper serviceHelper)
 		{
 			_serviceHelper = serviceHelper;

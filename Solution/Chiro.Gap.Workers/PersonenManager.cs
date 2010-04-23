@@ -6,17 +6,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Diagnostics;
 using System.Linq.Expressions;
-using System.Text;
 
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers.Exceptions;
-
 
 namespace Chiro.Gap.Workers
 {
@@ -25,8 +21,8 @@ namespace Chiro.Gap.Workers
 	/// </summary>
 	public class PersonenManager
 	{
-		private IPersonenDao _dao;
-		private IAutorisatieManager _autorisatieMgr;
+		private readonly IPersonenDao _dao;
+		private readonly IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
 		/// Creëert een PersonenManager
@@ -157,7 +153,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="p">Persoon die er een adres bij krijgt, met daaraan gekoppeld zijn huidige
 		/// adressen.</param>
 		/// <param name="adres">Toe te voegen adres</param>
-		/// <param name="adrestype">Het adrestype (thuis, kot, enz.)</param>
+		/// <param name="adresType">Het adrestype (thuis, kot, enz.)</param>
 		public void AdresToevoegen(Persoon p, Adres adres, AdresTypeEnum adresType)
 		{
 			AdresToevoegen(new List<Persoon> { p }, adres, adresType);
@@ -199,7 +195,7 @@ namespace Chiro.Gap.Workers
 
 				foreach (Persoon p in personen)
 				{
-					PersoonsAdres pa = new PersoonsAdres { Adres = adres, Persoon = p, AdresType = adrestype };
+					var pa = new PersoonsAdres { Adres = adres, Persoon = p, AdresType = adrestype };
 					p.PersoonsAdres.Add(pa);
 					adres.PersoonsAdres.Add(pa);
 				}
@@ -221,7 +217,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>Een collectie met de gevraagde personen</returns>
 		public IList<Persoon> LijstOphalen(IEnumerable<int> personenIDs, PersoonsExtras extras)
 		{
-			AutorisatieManager authMgr = Factory.Maak<AutorisatieManager>();
+			var authMgr = Factory.Maak<AutorisatieManager>();
 
 			var paths = new List<Expression<Func<Persoon, object>>>();
 

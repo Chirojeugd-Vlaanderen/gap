@@ -6,12 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Objects;
-using System.Data.Objects.DataClasses;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 
-using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -39,7 +35,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			GebruikersRecht resultaat;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.GebruikersRecht.MergeOption = MergeOption.NoTracking;
 
@@ -75,7 +71,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			GebruikersRecht resultaat;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.GebruikersRecht.MergeOption = MergeOption.NoTracking;
 
@@ -105,7 +101,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns></returns>
 		public bool IsGavGroep(string login, int groepID)
 		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				var query1
 					= from r in db.Groep
@@ -137,7 +133,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			bool resultaat;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
 				var query1
@@ -169,7 +165,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns></returns>
 		public IEnumerable<Groep> GekoppeldeGroepenGet(string login)
 		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				// Hier kan het geen kwaad om wel rekening te houden
 				// met de vervaldatum; dit is een specifieke query.
@@ -195,7 +191,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			List<int> resultaat;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				var query
 					= db.GelieerdePersoon
@@ -219,7 +215,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			List<int> resultaat;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				var query
 					= db.GelieerdePersoon
@@ -243,7 +239,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			bool resultaat;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
 				var query1
@@ -278,7 +274,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			bool resultaat;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
 				var query1
@@ -314,7 +310,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			bool resultaat;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
 				var query1
@@ -351,7 +347,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			bool resultaat;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				if (afdelingsJaarID == 0)
 				{
@@ -382,7 +378,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			bool resultaat;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
 				var query1
@@ -416,7 +412,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			bool resultaat;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
 				var query1
@@ -450,7 +446,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			bool resultaat;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
 				var query1

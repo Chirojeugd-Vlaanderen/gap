@@ -8,10 +8,10 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Dummies
 {
-    /// <summary>
-    /// Dummy LeidingDao die niets implementeert
-    /// </summary>
-    public class DummyLeidingDao: DummyDao<Leiding>, ILeidingDao
-    {
-    }
+	/// <summary>
+	/// Dummy LeidingDao die niets implementeert
+	/// </summary>
+	public class DummyLeidingDao : DummyDao<Leiding>, ILeidingDao
+	{
+	}
 }

@@ -3,12 +3,8 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
@@ -27,15 +23,16 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Informatie over een te tonen of te wijzigen persoon
 		/// </summary>
-		public PersoonLidInfo PersoonLidInfo { get; set; }
-
-		public IEnumerable<AfdelingDetail> AlleAfdelingen { get; set; }
-
-		/// <summary>
-		/// Standaardconstructor voor GelieerdePersonenModel
-		/// </summary>
-		public PersonenLedenModel(): base()
+		public PersoonLidInfo PersoonLidInfo
 		{
+			get;
+			set;
+		}
+
+		public IEnumerable<AfdelingDetail> AlleAfdelingen
+		{
+			get;
+			set;
 		}
 	}
 }

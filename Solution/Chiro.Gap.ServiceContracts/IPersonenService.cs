@@ -3,16 +3,15 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
 
 using Chiro.Gap.Orm;
 
 namespace Chiro.Gap.ServiceContracts
 {
+	/// <summary>
+	/// 
+	/// </summary>
 	[ServiceContract]
 	interface IPersonenService
 	{
@@ -21,7 +20,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <returns></returns>
 		[OperationContract]
-		Gav OphalenGAV();
+		Gav GavOphalen();
 
 		/// <summary>
 		/// Vanuit je huidige GAV-entity alle groepen opvragen waarvan je admin bent

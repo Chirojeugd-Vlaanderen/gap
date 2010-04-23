@@ -10,12 +10,12 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Workers.Test.CustomIoc
 {
-    
-    
-    /// <summary>
-    ///This is a test class for FunctiesManagerTest and is intended
-    ///to contain all FunctiesManagerTest Unit Tests
-    ///</summary>
+
+
+	/// <summary>
+	///This is a test class for FunctiesManagerTest and is intended
+	///to contain all FunctiesManagerTest Unit Tests
+	///</summary>
 	[TestClass()]
 	public class FunctiesManagerTest
 	{
@@ -91,9 +91,11 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 			// Mock voor IFunctieDao, die een lege lijst geeft als de nationaal bepaalde functies
 			// opgevraagd worden.  We willen gewoon tellen hoe dikwijls deze opgevraagd wordt.
 			var funDaoMock = new Mock<IFunctiesDao>();
-			funDaoMock.Setup(dao => dao.NationaalBepaaldeFunctiesOphalen()).Returns(() => {
+			funDaoMock.Setup(dao => dao.NationaalBepaaldeFunctiesOphalen()).Returns(() =>
+			{
 				++aantalAanroepen;
-				return new List<Functie>();});
+				return new List<Functie>();
+			});
 			Factory.InstantieRegistreren<IFunctiesDao>(funDaoMock.Object);
 
 			FunctiesManager target = Factory.Maak<FunctiesManager>();

@@ -3,14 +3,11 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Data.Objects;
 using System.Linq;
-using System.Text;
 
 using Chiro.Cdf.Data.Entity;
-using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 
@@ -30,7 +27,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			Afdeling resultaat;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.Afdeling.MergeOption = MergeOption.NoTracking;
 
@@ -61,7 +58,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>De ongebruikte afdelingen van een groep in het gegeven groepswerkjaar</returns>
 		public IList<Afdeling> OngebruikteOphalen(int groepsWerkJaarID)
 		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.Afdeling.MergeOption = MergeOption.NoTracking;
 
@@ -79,7 +76,7 @@ namespace Chiro.Gap.Data.Ef
 		public IList<OfficieleAfdeling> OfficieleAfdelingenOphalen()
 		{
 			IList<OfficieleAfdeling> result;
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				result = (from d in db.OfficieleAfdeling
 					  select d).ToList();
@@ -95,14 +92,13 @@ namespace Chiro.Gap.Data.Ef
 		public OfficieleAfdeling OfficieleAfdelingOphalen(int officieleAfdelingID)
 		{
 			OfficieleAfdeling resultaat;
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				resultaat = (from d in db.OfficieleAfdeling
 					     where d.ID == officieleAfdelingID
 					     select d).FirstOrDefault();
 			}
 			return Utility.DetachObjectGraph(resultaat);
-
 		}
 	}
 }

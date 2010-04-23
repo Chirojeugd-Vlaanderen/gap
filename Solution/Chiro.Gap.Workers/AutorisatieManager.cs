@@ -6,10 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Chiro.Cdf.Data;
-using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers.Exceptions;
@@ -22,18 +20,18 @@ namespace Chiro.Gap.Workers
 	public class AutorisatieManager : IAutorisatieManager
 	{
 		#region Private members
-		private IAutorisatieDao _autorisatieDao;
-		private IGavDao _gavDao;
-		private IGroepenDao _groepenDao;
-		private IFunctiesDao _functiesDao;
+		private readonly IAutorisatieDao _autorisatieDao;
+		private readonly IGavDao _gavDao;
+		private readonly IGroepenDao _groepenDao;
+		private readonly IFunctiesDao _functiesDao;
 
-		private IAuthenticatieManager _am;
+		private readonly IAuthenticatieManager _am;
 
 		// Eigenlijk IAutorisatieDao ook een IDao<GebruikersRecht>.  Maar voor IAutorisatieDao
 		// wordt soms een mock gebruikt, om bijv. altijd gebruikersrechten te krijgen.
 		// De _gebruikersRechtDao moet gebruikt worden om nieuwe gebruikersrechten te persisteren.
 
-		private IDao<GebruikersRecht> _gebruikersrechtDao;
+		private readonly IDao<GebruikersRecht> _gebruikersrechtDao;
 		#endregion
 
 		#region Constructor
@@ -291,11 +289,11 @@ namespace Chiro.Gap.Workers
 			// Je mag enkel gebruikersrechten toekennen aan groepen waarvan je zelf GAV bent.
 			if (IsGavGroep(groepID))
 			{
-				Gav gav = _gavDao.Ophalen(login);
+				var gav = _gavDao.Ophalen(login);
 
 				// probeer groep al te vinden via huidige gebruikersrechten
 
-				Groep groep = (from recht in gav.GebruikersRecht
+				var groep = (from recht in gav.GebruikersRecht
 							   where recht.Groep.ID == groepID
 							   select recht.Groep).FirstOrDefault();
 
@@ -305,7 +303,7 @@ namespace Chiro.Gap.Workers
 					groep = _groepenDao.Ophalen(groepID, grp => grp.GebruikersRecht.First().Gav);
 				}
 
-				GebruikersRecht resultaat = GebruikersRechtToekennen(gav, groep, vervalDatum);
+				var resultaat = GebruikersRechtToekennen(gav, groep, vervalDatum);
 
 				_gebruikersrechtDao.Bewaren(
 					resultaat,

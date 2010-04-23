@@ -3,12 +3,9 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
 
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;

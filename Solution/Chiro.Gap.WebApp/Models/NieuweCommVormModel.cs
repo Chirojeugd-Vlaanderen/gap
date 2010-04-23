@@ -3,14 +3,9 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
 using Chiro.Gap.Orm;
-using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -32,12 +27,12 @@ namespace Chiro.Gap.WebApp.Models
 		/// </summary>
 		public CommunicatieVorm NieuweCommVorm { get; set; }
 
-		public int geselecteerdeCommVorm { get; set; }
+		public int GeselecteerdeCommVorm { get; set; }
 
 		public IEnumerable<CommunicatieType> Types { get; set; }
 
 		/// <summary>
-		/// Standaardconstructor - creëert leeg NieuweCommVorm
+		/// De standaardconstructor - creëert leeg NieuweCommVorm
 		/// </summary>
 		public NieuweCommVormModel()
 		{

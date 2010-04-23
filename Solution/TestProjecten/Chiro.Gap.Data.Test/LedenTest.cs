@@ -103,9 +103,9 @@ namespace Chiro.Gap.Data.Test
 
 				Kind k = lm.KindMaken(gp);
 				kdao.Bewaren(k
-				    , lmb => lmb.GelieerdePersoon.WithoutUpdate()
-				    , lmb => lmb.AfdelingsJaar.GroepsWerkJaar.WithoutUpdate()
-				    , lmb => lmb.GroepsWerkJaar.WithoutUpdate());
+					, lmb => lmb.GelieerdePersoon.WithoutUpdate()
+					, lmb => lmb.AfdelingsJaar.GroepsWerkJaar.WithoutUpdate()
+					, lmb => lmb.GroepsWerkJaar.WithoutUpdate());
 			}
 		}
 
@@ -175,7 +175,7 @@ namespace Chiro.Gap.Data.Test
 
 				    Assert.IsTrue(l != null && l is Kind);
 			*/
-			#endregion
+					#endregion
 		}
 
 		/// <summary>
@@ -276,8 +276,8 @@ namespace Chiro.Gap.Data.Test
 				ld => ld.GelieerdePersoon.Persoon);
 
 			var opgehaaldeFunctie = (from fun in result.First().Functie
-						 where fun.ID == TestInfo.FUNCTIEID
-						 select fun).First();
+									 where fun.ID == TestInfo.FUNCTIEID
+									 select fun).First();
 			// query nodig om - in geval van meerdere gekoppelde functies -
 			// zeker de juiste te heben
 

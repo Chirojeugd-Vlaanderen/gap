@@ -79,16 +79,16 @@ namespace Chiro.Cdf.Data.Entity
 				// (zie ook ticket #404).  Ik hoop nu wel dat ik nergens anders probemen
 				// introduceer...
 
-				//// Workaround to ensure the assembly containing the entity type is loaded:
-				//// (see: https://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=3405138&SiteID=1)
-				//try
-				//{
+				// // Workaround to ensure the assembly containing the entity type is loaded:
+				// // (see: https://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=3405138&SiteID=1)
+				// try
+				// {
 				//        context.MetadataWorkspace.LoadFromAssembly(entityType.Assembly);
-				//}
-				//catch
-				//{
+				// }
+				// catch
+				// {
 				//        // TODO logica voorzien - zie ticket #334
-				//}
+				// }
 
 				// In onderstaande region worden de al bestaande root
 				// entity's gequery'd, om op die manier al in de

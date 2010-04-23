@@ -3,11 +3,6 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Chiro.Gap.Orm.DataInterfaces
 {
 	/// <summary>
@@ -20,31 +15,37 @@ namespace Chiro.Gap.Orm.DataInterfaces
 			get;
 			set;
 		}
+
 		public IKindDao KindDao
 		{
 			get;
 			set;
 		}
+
 		public ILeidingDao LeidingDao
 		{
 			get;
 			set;
 		}
+
 		public IGroepenDao GroepenDao
 		{
 			get;
 			set;
 		}
+
 		public IGelieerdePersonenDao GelieerdePersoonDao
 		{
 			get;
 			set;
 		}
+
 		public IAfdelingsJarenDao AfdelingsJaarDao
 		{
 			get;
 			set;
 		}
+
 		public IGroepsWerkJaarDao GroepsWerkJaarDao
 		{
 			get;

@@ -4,8 +4,6 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Configuration;
 
 namespace Chiro.Cdf.DependencyInjection

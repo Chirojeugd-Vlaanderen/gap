@@ -3,11 +3,6 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Orm
@@ -27,8 +22,11 @@ namespace Chiro.Gap.Orm
 	{
 		#region IBasisEntiteit Members
 
-		private bool _teVerwijderen = false;
+		private bool _teVerwijderen;
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public bool TeVerwijderen
 		{
 			get { return _teVerwijderen; }

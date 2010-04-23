@@ -58,7 +58,7 @@ namespace Chiro.Cdf.Data
 		/// hebben</returns>
 		/// <remarks>als zowel <paramref name="be"/> als <paramref name="obj"/> ID 0 hebben, wordt
 		/// Object.Equas aangeroepen</remarks>
-		public static bool ChiroEquals<T>(this T be, object obj) where T:class,IBasisEntiteit
+		public static bool ChiroEquals<T>(this T be, object obj) where T : class, IBasisEntiteit
 		{
 			if (obj is T)
 			{

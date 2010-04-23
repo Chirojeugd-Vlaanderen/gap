@@ -3,12 +3,8 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
@@ -26,12 +22,5 @@ namespace Chiro.Gap.WebApp.Models
 		public List<int> GeselecteerdeCategorieIDs { get; set; }
 
 		public IList<int> GelieerdePersoonIDs { get; set; }
-
-		/// <summary>
-		/// Standaardconstructor - creeert lege
-		/// </summary>
-		public CategorieModel()
-		{
-		}
 	}
 }

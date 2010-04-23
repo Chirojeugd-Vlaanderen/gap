@@ -7,12 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Web;
 
 using Chiro.Cdf.Data;
-using Chiro.Cdf.Data.Entity;
-using Chiro.Cdf.Validation;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -39,10 +36,10 @@ namespace Chiro.Gap.Workers
 	{
 		private const string NATFUNCTIESCACHEKEY = "NatFunctiesCacheKey";
 
-		private IFunctiesDao _funDao;
-		private ILedenDao _ledenDao;
-		private IGroepsWerkJaarDao _groepsWjDao;
-		private IAutorisatieManager _autorisatieMgr;
+		private readonly IFunctiesDao _funDao;
+		private readonly ILedenDao _ledenDao;
+		private readonly IGroepsWerkJaarDao _groepsWjDao;
+		private readonly IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
 		/// Instantieert een FunctiesManager-object
@@ -101,17 +98,13 @@ namespace Chiro.Gap.Workers
 					where fn.Groep != null
 					select fn.Groep.ID).Distinct();
 
-			foreach (int id in groepIDs)
+			if (groepIDs.Any(id => !_autorisatieMgr.IsGavGroep(id)))
 			{
-				if (!_autorisatieMgr.IsGavGroep(id))
-				{
-					throw new GeenGavException(Properties.Resources.GeenGav);
-				}
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
 			return resultaat.ToList();
 		}
-
 
 		/// <summary>
 		/// Haalt alle functies op die mogelijk toegekend kunnen worden aan een lid uit het groepswerkjaar
@@ -134,8 +127,7 @@ namespace Chiro.Gap.Workers
 					where (f.WerkJaarVan == null || f.WerkJaarVan <= gwj.WerkJaar)
 						&& (f.WerkJaarTot == null || f.WerkJaarTot >= gwj.WerkJaar)
 						&& ((f.Type & lidType) != 0)
-					select f).ToList();
-						     
+					select f).ToList();		     
 			}
 			else
 			{
@@ -398,7 +390,5 @@ namespace Chiro.Gap.Workers
 
 			return cache[NATFUNCTIESCACHEKEY] as IEnumerable<Functie>;
 		}
-
-
 	}
 }

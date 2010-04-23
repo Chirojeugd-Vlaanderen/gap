@@ -3,16 +3,13 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Data.Objects;
 using System.Linq;
-using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Data.Ef
 {
@@ -30,7 +27,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			ChiroGroep result;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				result = (
 					from g in db.Groep.OfType<ChiroGroep>()
@@ -50,7 +47,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			List<ChiroGroep> result;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.Groep.MergeOption = MergeOption.NoTracking;
 

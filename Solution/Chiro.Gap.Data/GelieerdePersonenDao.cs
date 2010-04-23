@@ -5,12 +5,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Objects;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
@@ -50,7 +48,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			IList<GelieerdePersoon> result;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 				// direct gedetachte gelieerde personen ophalen
@@ -84,7 +82,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			int groepsWerkJaarID;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				// Vind het huidig groepsWerkJaarID
 				groepsWerkJaarID = (from w in db.GroepsWerkJaar
@@ -122,7 +120,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			IList<GelieerdePersoon> lijst;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				// Haal de gelieerde personen op van de gevraagde groep
 				var gpQuery = (from grp in db.Groep
@@ -146,7 +144,7 @@ namespace Chiro.Gap.Data.Ef
 				// entity framework die automagisch koppelen aan de gelieerde personen in 'lijst'.
 
 				IList<int> relevanteGpIDs = (from gp in lijst select gp.ID).ToList();
-				var huidigeLedenUItLijst = (from ld in db.Lid.Include("GelieerdePersoon")
+				var huidigeLedenUitLijst = (from ld in db.Lid.Include("GelieerdePersoon")
 								.Where(Utility.BuildContainsExpression<Lid, int>(
 									l => l.GelieerdePersoon.ID,
 									relevanteGpIDs))
@@ -170,11 +168,9 @@ namespace Chiro.Gap.Data.Ef
 		public IList<GelieerdePersoon> PaginaOphalenMetLidInfoVolgensCategorie(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal)
 		{
 			Groep g;
-			int huidigWj;
-
 			IList<GelieerdePersoon> lijst;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				// Haal de groep van de gevraagde categorie op
 				g = (from c in db.Categorie
@@ -182,11 +178,11 @@ namespace Chiro.Gap.Data.Ef
 					 select c.Groep).FirstOrDefault();
 
 				// Haal het huidige groepswerkjaar van de groep op
-				huidigWj = (
-					from w in db.GroepsWerkJaar
-					where w.Groep.ID == g.ID
-					orderby w.WerkJaar descending
-					select w).FirstOrDefault<GroepsWerkJaar>().WerkJaar;
+				var huidigWj = (
+				               	from w in db.GroepsWerkJaar
+				               	where w.Groep.ID == g.ID
+				               	orderby w.WerkJaar descending
+				               	select w).FirstOrDefault<GroepsWerkJaar>().WerkJaar;
 
 				// Haal alle personen in de gevraagde categorie op
 				var query = (from c in db.Categorie.Include("GelieerdePersoon.Persoon")
@@ -204,12 +200,12 @@ namespace Chiro.Gap.Data.Ef
 				// die DDD-gewijze aan de gelieerde personen gekoppeld.
 
 				// Haal de IDs van alle relevante personen op
-				IList<int> relevanteGpIDS = (from gp in lijst select gp.ID).ToList();
+				IList<int> relevanteGpIDs = (from gp in lijst select gp.ID).ToList();
 
 				// Selecteer nu alle leden van huidig werkjaar met relevant gelieerdePersoonID
 
 				var huidigeLedenUitlijst = (from l in db.Lid.Include("GelieerdePersoon.Categorie")
-								.Where(Utility.BuildContainsExpression<Lid, int>(ld => ld.GelieerdePersoon.ID, relevanteGpIDS))
+								.Where(Utility.BuildContainsExpression<Lid, int>(ld => ld.GelieerdePersoon.ID, relevanteGpIDs))
 											where l.GroepsWerkJaar.WerkJaar == huidigWj
 											select l).ToList();
 			}
@@ -225,7 +221,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns></returns>
 		public override IList<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersonenIDs)
 		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 
@@ -249,7 +245,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>Gelieerde persoon met alle bovenvernoemde details</returns>
 		public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
 		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 				return (
@@ -260,7 +256,7 @@ namespace Chiro.Gap.Data.Ef
 						.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.WoonPlaats)
 						.Include(gp => gp.Groep)
 						.Include(gp => gp.Categorie)
-						//FIXME: dit is vermoedelijk niet nodig, maar eens nakijken of het ergens gebruikt wordt?
+						// FIXME: dit is vermoedelijk niet nodig, maar eens nakijken of het ergens gebruikt wordt?
 						.Include(gp => gp.Lid.First().GroepsWerkJaar)
 					where gp.ID == gelieerdePersoonID
 					select gp).FirstOrDefault();
@@ -286,7 +282,7 @@ namespace Chiro.Gap.Data.Ef
 				// niet bewaard worden.  Aangezien g.Groep == null,
 				// kan het dus niet om een nieuwe persoon gaan.
 
-				using (ChiroGroepEntities db = new ChiroGroepEntities())
+				using (var db = new ChiroGroepEntities())
 				{
 					db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 
@@ -304,12 +300,21 @@ namespace Chiro.Gap.Data.Ef
 		/// <summary>
 		/// 
 		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<CommunicatieType> CommunicatieTypesOphalen()
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
 		/// <param name="groepID"></param>
 		/// <param name="zoekStringNaam"></param>
 		/// <returns></returns>
 		public IList<GelieerdePersoon> ZoekenOpNaam(int groepID, string zoekStringNaam)
 		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 				return (
@@ -349,7 +354,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>Lijst met gevonden matches</returns>
 		public IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam, params Expression<Func<GelieerdePersoon, object>>[] paths)
 		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				// Ik denk dat sql server user defined functions niet aangeroepen kunnen worden via LINQ to entities,
 				// vandaar dat de query in Entity SQL opgesteld wordt.
@@ -357,7 +362,7 @@ namespace Chiro.Gap.Data.Ef
 				// !Herinner van bij de scouts dat die soundex best bij in de tabel terecht komt,
 				// en dat daarop een index moet komen te liggen!
 
-				string esqlQuery = "SELECT VALUE gp FROM ChiroGroepEntities.GelieerdePersoon AS gp " +
+				var esqlQuery = "SELECT VALUE gp FROM ChiroGroepEntities.GelieerdePersoon AS gp " +
 					"WHERE gp.Groep.ID = @groepid " +
 					"AND ChiroGroepModel.Store.ufnSoundEx(gp.Persoon.Naam)=ChiroGroepModel.Store.ufnSoundEx(@naam) " +
 					"AND ChiroGroepModel.Store.ufnSoundEx(gp.Persoon.Voornaam)=ChiroGroepModel.Store.ufnSoundEx(@voornaam)";
@@ -376,7 +381,7 @@ namespace Chiro.Gap.Data.Ef
 
 		/*public IList<GelieerdePersoon> OphalenUitCategorie(int categorieID)
 		{
-		    using (ChiroGroepEntities db = new ChiroGroepEntities())
+		    using (var db = new ChiroGroepEntities())
 		    {
 			db.Categorie.MergeOption = MergeOption.NoTracking;
 
@@ -403,9 +408,9 @@ namespace Chiro.Gap.Data.Ef
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		public IEnumerable<CommunicatieType> ophalenCommunicatieTypes()
+		public IEnumerable<CommunicatieType> OphalenCommunicatieTypes()
 		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.CommunicatieType.MergeOption = MergeOption.NoTracking;
 				return (

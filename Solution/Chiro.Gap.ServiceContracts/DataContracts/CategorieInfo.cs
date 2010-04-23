@@ -3,11 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -24,13 +20,13 @@ namespace Chiro.Gap.ServiceContracts
 		/// <summary>
 		/// Naam van de categorie
 		/// </summary>
-		[Verplicht(), StringLengte(80), StringMinimumLengte(2)]
+		[Verplicht, StringLengte(80), StringMinimumLengte(2)]
 		public string Naam { get; set; }
 
 		/// <summary>
 		/// Code voor de categorie
 		/// </summary>
-		[Verplicht(), StringLengte(10), StringMinimumLengte(2)]
+		[Verplicht, StringLengte(10), StringMinimumLengte(2)]
 		public string Code { get; set; }
 	}
 }

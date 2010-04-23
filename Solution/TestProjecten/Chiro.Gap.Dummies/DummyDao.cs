@@ -11,10 +11,10 @@ using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Gap.Dummies
 {
-	public class DummyDao<T>: IDao<T> where T:IEfBasisEntiteit
+	public class DummyDao<T> : IDao<T> where T : IEfBasisEntiteit
 	{
-		private static int _newID = 10000;	// hoog genoeg, om dubbelzinnigheid met gepdredefinieerde
-							// ID's te vermijden
+		private static int _newID = 10000;	// hoog genoeg, om dubbelzinnigheid met gepredefinieerde
+											// ID's te vermijden
 
 		#region IDao<T> Members
 
@@ -28,10 +28,10 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-        public IList<T> PaginaOphalen(int id, Expression<Func<T, int>> f, int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<T, object>>[] paths)
-        {
-            throw new NotImplementedException();
-        }
+		public IList<T> PaginaOphalen(int id, Expression<Func<T, int>> f, int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<T, object>>[] paths)
+		{
+			throw new NotImplementedException();
+		}
 
 		public IList<T> AllesOphalen()
 		{
@@ -125,7 +125,7 @@ namespace Chiro.Gap.Dummies
 								be.ID = (++_newID);
 							}
 						}
-						else 
+						else
 						{
 							teVerwijderen.Add(be);
 						}

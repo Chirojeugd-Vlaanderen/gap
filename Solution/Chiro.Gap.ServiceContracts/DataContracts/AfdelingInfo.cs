@@ -1,9 +1,10 @@
-using System;
-using System.Collections.Generic;
+// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -18,7 +19,7 @@ namespace Chiro.Gap.ServiceContracts
 		[DataMember]
 		public string Naam { get; set; }
 		[DataMember]
-		[DisplayName("Code")]
+		[DisplayName(@"Code")]
 		public string Afkorting { get; set; }
 	}
 }

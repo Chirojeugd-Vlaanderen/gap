@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ServiceModel.Description;
 using System.ServiceModel;
 using System.ServiceModel.Dispatcher;

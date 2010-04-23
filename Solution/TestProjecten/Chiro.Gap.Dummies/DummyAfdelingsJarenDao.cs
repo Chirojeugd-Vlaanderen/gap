@@ -8,23 +8,23 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Dummies
 {
-    /// <summary>
-    /// Dummy AfdelingsJarenDao, die niets implementeert
-    /// </summary>
-    class DummyAfdelingsJarenDao: DummyDao<AfdelingsJaar>, IAfdelingsJarenDao
-    {
-        #region IAfdelingsJaarDao Members
-
-        public AfdelingsJaar Ophalen(int groepsWerkJaarID, int afdelingID)
-        {
-            throw new NotImplementedException();
-        }
-
-	public AfdelingsJaar Ophalen(int groepsWerkJaarID, int afdelingID, params System.Linq.Expressions.Expression<Func<AfdelingsJaar, object>>[] paths)
+	/// <summary>
+	/// Dummy AfdelingsJarenDao, die niets implementeert
+	/// </summary>
+	class DummyAfdelingsJarenDao : DummyDao<AfdelingsJaar>, IAfdelingsJarenDao
 	{
-		throw new NotImplementedException();
-	}
+		#region IAfdelingsJaarDao Members
 
-	#endregion
-    }
+		public AfdelingsJaar Ophalen(int groepsWerkJaarID, int afdelingID)
+		{
+			throw new NotImplementedException();
+		}
+
+		public AfdelingsJaar Ophalen(int groepsWerkJaarID, int afdelingID, params System.Linq.Expressions.Expression<Func<AfdelingsJaar, object>>[] paths)
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
+	}
 }

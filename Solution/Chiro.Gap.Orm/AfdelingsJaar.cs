@@ -3,12 +3,8 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
@@ -30,12 +26,12 @@ namespace Chiro.Gap.Orm
 		/// </summary>
 		public class AfdelingsJaarAttributen
 		{
-			[DisplayName("Geboortejaar van")]
-			[Verplicht()]
+			[DisplayName(@"Geboortejaar van")]
+			[Verplicht]
 			public int GeboorteJaarVan { get; set; }
 
-			[DisplayName("Geboortejaar tot")]
-			[Verplicht()]
+			[DisplayName(@"Geboortejaar tot")]
+			[Verplicht]
 			public int GeboorteJaarTot { get; set; }
 		}
 
@@ -49,8 +45,8 @@ namespace Chiro.Gap.Orm
 
 		public GeslachtsType Geslacht
 		{
-			get { return (GeslachtsType)this.GeslachtsInt; }
-			set { this.GeslachtsInt = (int)value; }
+			get { return (GeslachtsType)GeslachtsInt; }
+			set { GeslachtsInt = (int)value; }
 		}
 
 		private bool _teVerwijderen = false;
@@ -78,6 +74,5 @@ namespace Chiro.Gap.Orm
 		{
 			return this.ChiroEquals(obj);
 		}
-
 	}
 }

@@ -6,11 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Chiro.Cdf.Data;
-using Chiro.Cdf.Ioc;
-using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -23,10 +20,10 @@ namespace Chiro.Gap.Workers
 	/// </summary>
 	public class GelieerdePersonenManager
 	{
-		private IGelieerdePersonenDao _dao;
-		private IGroepenDao _groepenDao;
-		private ICategorieenDao _categorieenDao;
-		private IAutorisatieManager _autorisatieMgr;
+		private readonly IGelieerdePersonenDao _dao;
+		private readonly IGroepenDao _groepenDao;
+		private readonly ICategorieenDao _categorieenDao;
+		private readonly IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
 		/// Creëert een GelieerdePersonenManager
@@ -159,6 +156,11 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
+		/// <summary>
+		/// TODO: documenteren
+		/// </summary>
+		/// <param name="p"></param>
+		/// <returns></returns>
 		public GelieerdePersoon BewarenMetCommVormen(GelieerdePersoon p)
 		{
 			if (_autorisatieMgr.IsGavGelieerdePersoon(p.ID))
@@ -320,7 +322,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(groep.ID))
 			{
-				GelieerdePersoon resultaat = new GelieerdePersoon();
+				var resultaat = new GelieerdePersoon();
 
 				resultaat.Persoon = persoon;
 				resultaat.Groep = groep;
@@ -367,11 +369,20 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
+		/// <summary>
+		/// TODO: documenteren
+		/// </summary>
+		/// <param name="personenLijst"></param>
 		public void Bewaren(IList<GelieerdePersoon> personenLijst)
 		{
 			throw new NotImplementedException();
 		}
 
+		/// <summary>
+		/// TODO: documenteren
+		/// </summary>
+		/// <param name="gelieerdePersoonID"></param>
+		/// <returns></returns>
 		public bool IsLid(int gelieerdePersoonID)
 		{
 			throw new NotImplementedException();
@@ -385,12 +396,9 @@ namespace Chiro.Gap.Workers
 		public void CategorieKoppelen(IList<GelieerdePersoon> gelieerdePersonen, Categorie c)
 		{
 			// Heeft de gebruiker rechten voor de groep en de categorie?
-			foreach (GelieerdePersoon x in gelieerdePersonen)
+			if (gelieerdePersonen.Any(x => !_autorisatieMgr.IsGavGelieerdePersoon(x.ID)))
 			{
-				if (!_autorisatieMgr.IsGavGelieerdePersoon(x.ID))
-				{
-					throw new GeenGavException(Properties.Resources.GeenGav);
-				};
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
 			if (!_autorisatieMgr.IsGavCategorie(c.ID))
@@ -423,12 +431,9 @@ namespace Chiro.Gap.Workers
 		public Categorie CategorieLoskoppelen(IList<int> gelieerdePersonenIDs, Categorie categorie)
 		{
 			// Heeft de gebruiker rechten voor de groep en de categorie?
-			foreach (int x in gelieerdePersonenIDs)
+			if (gelieerdePersonenIDs.Any(x => !_autorisatieMgr.IsGavGelieerdePersoon(x)))
 			{
-				if (!_autorisatieMgr.IsGavGelieerdePersoon(x))
-				{
-					throw new GeenGavException(Properties.Resources.GeenGav);
-				};
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
 			if (!_autorisatieMgr.IsGavCategorie(categorie.ID))
@@ -461,7 +466,7 @@ namespace Chiro.Gap.Workers
 			if (!_autorisatieMgr.IsGavCategorie(catID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
-			};
+			}
 
 			return _categorieenDao.Ophalen(catID);
 		}

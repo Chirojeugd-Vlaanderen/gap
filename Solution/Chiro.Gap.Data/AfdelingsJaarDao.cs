@@ -4,15 +4,12 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.Data.Objects;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
-using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 
@@ -29,7 +26,7 @@ namespace Chiro.Gap.Data.Ef
 		public AfdelingsJaarDao()
 			: base()
 		{
-			connectedEntities = new System.Linq.Expressions.Expression<Func<AfdelingsJaar, object>>[3]
+			connectedEntities = new Expression<Func<AfdelingsJaar, object>>[3]
 			{
 				aj => aj.Afdeling.WithoutUpdate(),
 				aj => aj.GroepsWerkJaar.WithoutUpdate(),
@@ -74,7 +71,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			AfdelingsJaar resultaat = null;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.AfdelingsJaar.MergeOption = MergeOption.NoTracking;
 
@@ -90,6 +87,5 @@ namespace Chiro.Gap.Data.Ef
 
 			return Utility.DetachObjectGraph(resultaat);
 		}
-
 	}
 }

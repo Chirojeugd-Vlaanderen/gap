@@ -3,14 +3,10 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 using Chiro.Cdf.Data;
-using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Validatie;
@@ -23,10 +19,10 @@ namespace Chiro.Gap.Workers
 	/// </summary>
 	public class CommVormManager
 	{
-		private IDao<CommunicatieType> _typedao;
-		private IDao<CommunicatieVorm> _dao;
-		private IAutorisatieManager _autorisatieMgr;
-		private IGelieerdePersonenDao _geldao;
+		private readonly IDao<CommunicatieType> _typedao;
+		private readonly IDao<CommunicatieVorm> _dao;
+		private readonly IAutorisatieManager _autorisatieMgr;
+		private readonly IGelieerdePersonenDao _geldao;
 
 		/// <summary>
 		/// Deze constructor laat toe om een alternatieve repository voor
@@ -129,7 +125,7 @@ namespace Chiro.Gap.Workers
 			}
 			GelieerdePersoon origineel = _geldao.Ophalen(gelieerdePersoonID, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
 			CommunicatieType type = _typedao.Ophalen(typeID);
-			CommunicatieVormValidator cvValid = new CommunicatieVormValidator();
+			var cvValid = new CommunicatieVormValidator();
 
 			if (cvValid.Valideer(comm))
 			{

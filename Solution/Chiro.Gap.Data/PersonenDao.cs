@@ -3,15 +3,10 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Objects;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
-using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -41,7 +36,7 @@ namespace Chiro.Gap.Data.Ef
 			List<PersoonsAdres> paLijst;
 			List<Persoon> resultaat;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.PersoonsAdres.MergeOption = MergeOption.NoTracking;
 
@@ -93,7 +88,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>Persoon inclusief adresinfo</returns>
 		public Persoon CorresponderendePersoonOphalen(int gelieerdePersoonID)
 		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.Persoon.MergeOption = MergeOption.NoTracking;
 

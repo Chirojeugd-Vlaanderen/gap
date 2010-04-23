@@ -5,9 +5,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.Domain;
@@ -18,37 +16,79 @@ namespace Chiro.Gap.ServiceContracts
 	public class PersoonInfo
 	{
 		[DataMember]
-		public int? AdNummer { get; set; }
+		public int? AdNummer
+		{
+			get;
+			set;
+		}
 
 		[DataMember]
-		public int GelieerdePersoonID { get; set; }
+		public int GelieerdePersoonID
+		{
+			get;
+			set;
+		}
 
 		[DataMember]
-		public int ChiroLeeftijd { get; set; }
+		public int ChiroLeeftijd
+		{
+			get;
+			set;
+		}
 
 		[DataMember]
-		public int PersoonID { get; set; }
+		public int PersoonID
+		{
+			get;
+			set;
+		}
 
 		[DataMember]
-		public string VoorNaam { get; set; }
+		public string VoorNaam
+		{
+			get;
+			set;
+		}
 
 		[DataMember]
-		public string Naam { get; set; }
+		public string Naam
+		{
+			get;
+			set;
+		}
 
 		[DataMember]
-		public DateTime? GeboorteDatum { get; set; }
+		public DateTime? GeboorteDatum
+		{
+			get;
+			set;
+		}
 
 		[DataMember]
-		public GeslachtsType Geslacht { get; set; }
+		public GeslachtsType Geslacht
+		{
+			get;
+			set;
+		}
 
 		[DataMember]
-		public Boolean IsLid { get; set; }
+		public Boolean IsLid
+		{
+			get;
+			set;
+		}
 
 		[DataMember]
-		public IList<Categorie> CategorieLijst { get; set; }
+		public IList<Categorie> CategorieLijst
+		{
+			get;
+			set;
+		}
 
-		public string VolledigeNaam {
-			get {
+		public string VolledigeNaam
+		{
+			get
+			{
 				return VoorNaam + " " + Naam;
 			}
 		}

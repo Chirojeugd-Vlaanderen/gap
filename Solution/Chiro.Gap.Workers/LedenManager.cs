@@ -8,10 +8,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -24,8 +22,8 @@ namespace Chiro.Gap.Workers
 	/// </summary>
 	public class LedenManager
 	{
-		private LedenDaoCollectie _daos;
-		private IAutorisatieManager _autorisatieMgr;
+		private readonly LedenDaoCollectie _daos;
+		private readonly IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
 		/// Maakt een nieuwe ledenmanager aan
@@ -64,7 +62,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="gwj">Het groepswerkjaar waarin je die persoon lid wilt maken</param>
 		/// <param name="gpMetDetails">De gelieerde persoon aangevuld met details</param>
 		/// <returns><c>True</c> als de persoon lid kan worden</returns>
-		private bool kanLidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, out GelieerdePersoon gpMetDetails)
+		private bool KanLidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, out GelieerdePersoon gpMetDetails)
 		{
 			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
@@ -79,7 +77,7 @@ namespace Chiro.Gap.Workers
 			gpMetDetails = gp;
 			if (gp.Persoon == null)
 			{
-				GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
+				var gpm = Factory.Maak<GelieerdePersonenManager>();
 				gpMetDetails = gpm.DetailsOphalen(gp.ID);
 			}
 
@@ -115,7 +113,7 @@ namespace Chiro.Gap.Workers
 			}
 
 			// Door het groepswerkjaar van de persoon op te halen is de link tussen groepswerkjaar en persoon zeker in orde
-			GroepsWerkJaar gwj = _daos.GroepsWerkJaarDao.RecentsteOphalen(gp.Groep.ID, grwj=>grwj.AfdelingsJaar.First().Afdeling);
+			GroepsWerkJaar gwj = _daos.GroepsWerkJaarDao.RecentsteOphalen(gp.Groep.ID, grwj => grwj.AfdelingsJaar.First().Afdeling);
 
 			return KindMaken(gp, gwj);
 		}
@@ -136,10 +134,10 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			GroepenManager gm = Factory.Maak<GroepenManager>();
+			var gm = Factory.Maak<GroepenManager>();
 
 			GelieerdePersoon gpMetDetails;
-			if (!kanLidMaken(gp, gwj, out gpMetDetails))
+			if (!KanLidMaken(gp, gwj, out gpMetDetails))
 			{
 				throw new InvalidOperationException("De gegeven persoon kan geen lid worden in het huidige werkjaar.");
 			}
@@ -183,7 +181,7 @@ namespace Chiro.Gap.Workers
 				aj = afdelingsjaren.First();
 			}
 
-			Kind kind = new Kind();
+			var kind = new Kind();
 			kind.AfdelingsJaar = aj;
 			aj.Kind.Add(kind);
 
@@ -204,7 +202,7 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			GroepsWerkJaarManager mgr = Factory.Maak<GroepsWerkJaarManager>();
+			var mgr = Factory.Maak<GroepsWerkJaarManager>();
 
 			if (gp.Groep == null)
 			{
@@ -214,12 +212,12 @@ namespace Chiro.Gap.Workers
 			GroepsWerkJaar gwj = _daos.GroepsWerkJaarDao.RecentsteOphalen(gp.Groep.ID);
 
 			GelieerdePersoon gpMetDetails;
-			if (!kanLidMaken(gp, gwj, out gpMetDetails))
+			if (!KanLidMaken(gp, gwj, out gpMetDetails))
 			{
 				throw new InvalidOperationException("De gegeven persoon kan geen lid worden in het huidige werkjaar.");
 			}
 
-			Leiding leiding = new Leiding();
+			var leiding = new Leiding();
 
 			LidMaken(leiding, gpMetDetails, gwj);
 			return leiding;
@@ -230,8 +228,8 @@ namespace Chiro.Gap.Workers
 		/// Dit kan enkel als het een lid uit het huidige werkjaar is en als de instapperiode niet verstreken is voor een kind
 		/// Leiding kan niet verwijderd worden.  Persisteert.
 		/// </summary>
-		/// <param name="lid">te verwijderen lid</param>
-		/// <remarks><paramref name="lid"/> moet via het groepswerkjaar gekoppeld
+		/// <param name="lid">Te verwijderen lid</param>
+		/// <remarks>Het <paramref name="lid"/> moet via het groepswerkjaar gekoppeld
 		/// aan zijn groep.  Als het om leiding gaat, moeten ook de afdelingen gekoppeld zijn.</remarks>
 		public void Verwijderen(Lid lid)
 		{
@@ -268,7 +266,6 @@ namespace Chiro.Gap.Workers
 			{
 				_daos.LedenDao.Bewaren(lid);
 			}
-
 		}
 
 		/// <summary>
@@ -302,7 +299,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>De 'pagina' (collectie) met leden</returns>
 		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, out int paginas)
 		{
-			GroepsWerkJaar gwj = _daos.GroepsWerkJaarDao.Ophalen(groepsWerkJaarID, grwj => grwj.Groep);
+			var gwj = _daos.GroepsWerkJaarDao.Ophalen(groepsWerkJaarID, grwj => grwj.Groep);
 			paginas = _daos.GroepenDao.OphalenMetGroepsWerkJaren(gwj.Groep.ID).GroepsWerkJaar.Count;
 			if (_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
@@ -314,6 +311,11 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
+		/// <summary>
+		/// TODO: documenteren
+		/// </summary>
+		/// <param name="lid">Het <paramref name="lid"/> dat bewaard moet worden</param>
+		/// <returns></returns>
 		public Lid LidBewaren(Lid lid)
 		{
 			if (_autorisatieMgr.IsGavLid(lid.ID))
@@ -469,9 +471,9 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Neemt de info uit <paramref name="lidInfo"/> over in <paramref name="lid"/>
 		/// </summary>
-		/// <param name="lidinfo">LidInfo om over te nemen in <paramref name="lid"/></param>
+		/// <param name="lidInfo">LidInfo om over te nemen in <paramref name="lid"/></param>
 		/// <param name="lid">Lid dat <paramref name="lidInfo"/> moet krijgen</param>
-		public void InfoOvernemen(Chiro.Gap.ServiceContracts.LidInfo lidInfo, Lid lid)
+		public void InfoOvernemen(ServiceContracts.LidInfo lidInfo, Lid lid)
 		{
 			Debug.Assert(lid is Leiding || lid is Kind);
 
@@ -486,13 +488,13 @@ namespace Chiro.Gap.Workers
 
 			if (lid is Kind)
 			{
-				Kind kind = (Kind)lid;
+				var kind = (Kind)lid;
 				kind.LidgeldBetaald = lidInfo.LidgeldBetaald;
 				kind.NonActief = lidInfo.NonActief;
 			}
 			else
 			{
-				Leiding leiding = (Leiding)lid;
+				var leiding = (Leiding)lid;
 				leiding.DubbelPuntAbonnement = lidInfo.DubbelPunt;
 				leiding.NonActief = lidInfo.NonActief;
 			}
@@ -502,9 +504,9 @@ namespace Chiro.Gap.Workers
 		/// Haalt het lid op van een gelieerdepersoon in een groepswerkjaar als het bestaat, met gelinkte informatie
 		/// van afdelingsjaren en afdelingen
 		/// </summary>
-		/// <param name="gelieerdePersoonID"></param>
-		/// <param name="groepsWerkJaarID"></param>
-		/// <returns></returns>
+		/// <param name="gelieerdePersoonID">De ID van de gelieerde persoon</param>
+		/// <param name="groepsWerkJaarID">De ID van het groepswerkjaar</param>
+		/// <returns>Een Lid-object</returns>
 		public Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID)
 		{
 			return _daos.LedenDao.OphalenViaPersoon(gelieerdePersoonID, groepsWerkJaarID);

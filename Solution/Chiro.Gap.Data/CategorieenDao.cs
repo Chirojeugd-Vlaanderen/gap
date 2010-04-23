@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Data.Objects;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
@@ -42,7 +41,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns></returns>
 		public IList<Categorie> AllesOphalen(int groepID)
 		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.Categorie.MergeOption = MergeOption.NoTracking;
 
@@ -62,7 +61,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>De gevonden categorie; <c>null</c> indien niet gevonden</returns>
 		public Categorie Ophalen(int groepID, string code)
 		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.Categorie.MergeOption = MergeOption.NoTracking;
 

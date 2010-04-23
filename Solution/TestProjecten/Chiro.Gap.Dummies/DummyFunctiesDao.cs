@@ -8,7 +8,7 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Dummies
 {
-	public class DummyFunctiesDao: DummyDao<Functie>, IFunctiesDao
+	public class DummyFunctiesDao : DummyDao<Functie>, IFunctiesDao
 	{
 		#region IFunctiesDao Members
 

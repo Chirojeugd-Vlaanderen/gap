@@ -5,9 +5,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
+
 using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Orm.DataInterfaces
@@ -58,10 +57,10 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <summary>
 		/// Haalt de persoonsgegevens van alle gelieerde personen van een groep op.
 		/// </summary>
-		/// <param name="GroepID">ID van de groep</param>
+		/// <param name="groepID">ID van de groep</param>
 		/// <param name="paths">Expressies die aangeven welke dependencies mee opgehaald moeten worden</param>
 		/// <returns>Lijst van gelieerde personen</returns>
-		IList<GelieerdePersoon> AllenOphalen(int GroepID, params Expression<Func<GelieerdePersoon, object>>[] paths);
+		IList<GelieerdePersoon> AllenOphalen(int groepID, params Expression<Func<GelieerdePersoon, object>>[] paths);
 
 		/// <summary>
 		/// Haalt een 'pagina' persoonsgegevens van de gelieerde personen van een groep op, inclusief
@@ -114,6 +113,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// Haalt een lijst op met alle communicatietypes
 		/// </summary>
 		/// <returns>Een lijst met alle communicatietypes</returns>
-		IEnumerable<CommunicatieType> ophalenCommunicatieTypes();
+		IEnumerable<CommunicatieType> CommunicatieTypesOphalen();
 	}
 }

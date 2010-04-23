@@ -6,11 +6,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Objects;
-using System.Data.Objects.DataClasses;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
@@ -60,11 +58,11 @@ namespace Chiro.Gap.Data.Ef
 			Debug.Assert(adr.StraatNaam.ID != 0);
 			Debug.Assert(adr.WoonPlaats.ID != 0);
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.PersoonsAdres.MergeOption = MergeOption.NoTracking;
 
-				Adres geattachtAdres = db.AttachObjectGraph(
+				var geattachtAdres = db.AttachObjectGraph(
 									adr,
 									e => e.StraatNaam.WithoutUpdate(),
 									e => e.WoonPlaats.WithoutUpdate(),
@@ -103,7 +101,7 @@ namespace Chiro.Gap.Data.Ef
 			Adres resultaat = null;
 			IList<PersoonsAdres> lijst = null;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.PersoonsAdres.MergeOption = MergeOption.NoTracking;
 
@@ -116,8 +114,8 @@ namespace Chiro.Gap.Data.Ef
 				// los van al de rest.)
 
 				var query
-					= db.PersoonsAdres.Include(pa=>pa.Adres.StraatNaam)
-					.Include(pa=>pa.Adres.WoonPlaats)
+					= db.PersoonsAdres.Include(pa => pa.Adres.StraatNaam)
+					.Include(pa => pa.Adres.WoonPlaats)
 					.Include("Persoon")
 					.Where(pera => pera.Adres.ID == adresID);
 
@@ -154,7 +152,7 @@ namespace Chiro.Gap.Data.Ef
 			{
 				lijst[i].Adres = lijst[0].Adres;
 				lijst[0].Adres.PersoonsAdres.Add(lijst[i]);
-			};
+			}
 
 			resultaat = lijst[0].Adres;
 
@@ -177,7 +175,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			Adres resultaat;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.Adres.MergeOption = MergeOption.NoTracking;
 

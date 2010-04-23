@@ -3,14 +3,10 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 
-using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -23,8 +19,8 @@ namespace Chiro.Gap.Workers
 	/// </summary>
 	public class CategorieenManager
 	{
-		private ICategorieenDao _dao;
-		private IAutorisatieManager _autorisatieMgr;
+		private readonly ICategorieenDao _dao;
+		private readonly IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
 		/// Creëert een CategorieenManager

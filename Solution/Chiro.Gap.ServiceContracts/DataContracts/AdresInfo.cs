@@ -6,11 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-
-using Chiro.Gap.Orm;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -38,11 +34,11 @@ namespace Chiro.Gap.ServiceContracts
 		public int HuisNr { get; set; }
 
 		[DataMember]
-		[DisplayName("Straat")]
+		[DisplayName(@"Straat")]
 		public String StraatNaamNaam { get; set; }
 
 		[DataMember]
-		[DisplayName("Woonplaats")]
+		[DisplayName(@"Woonplaats")]
 		public String WoonPlaatsNaam { get; set; }
 
 		[DataMember]

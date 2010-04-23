@@ -3,10 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Orm;
@@ -29,7 +26,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			WoonPlaats resultaat = null;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				resultaat = (
 					from WoonPlaats s in db.WoonPlaats

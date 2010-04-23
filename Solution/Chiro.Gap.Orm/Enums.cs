@@ -4,10 +4,7 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Chiro.Gap.Orm
 {
@@ -48,31 +45,37 @@ namespace Chiro.Gap.Orm
 	{
 		[EnumMember]
 		Geen = 0x00,
+
 		/// <summary>
 		/// Haalt groepswerkjaar en groep mee op
 		/// </summary>
 		[EnumMember]
 		Groep = 0x01,
+		
 		/// <summary>
 		/// Haalt afdelingsjaren en afdelingen mee op
 		/// </summary>
 		[EnumMember]
 		Afdelingen = 0x02,
+		
 		/// <summary>
 		/// Haalt alle afdelingen van het groepswerkjaar van het lid mee op
 		/// </summary>
 		[EnumMember]
 		AlleAfdelingen = 0x04,
+		
 		/// <summary>
 		/// Haalt functies mee op
 		/// </summary>
 		[EnumMember]
 		Functies = 0x08,
+		
 		/// <summary>
 		/// Haalt gelieerde persoon en persoon mee op.
 		/// </summary>
 		[EnumMember]
 		Persoon = 0x10,
+		
 		[EnumMember]
 		Alles = Groep | Afdelingen | Functies
 	}
@@ -99,21 +102,25 @@ namespace Chiro.Gap.Orm
 	{
 		[EnumMember]
 		Geen = 0x00,
+
 		/// <summary>
 		/// Haalt alle afdelingsjaren van het groepswerkjaar mee op, inclusief de gekoppelde afdelingen.
 		/// </summary>
 		[EnumMember]
 		Afdelingen = 0x01,
+	
 		/// <summary>
 		/// Haalt alle leden van het groepswerkjaar mee op
 		/// </summary>
 		[EnumMember]
 		Leden = 0x02,
+		
 		/// <summary>
 		/// Haalt de functies van de leden mee op
 		/// </summary>
 		[EnumMember]
 		LidFuncties = 0x04,
+		
 		/// <summary>
 		/// Haalt de groep mee op, samen met al zijn functies (ook diegene die niet relevant zijn in het
 		/// gegeven groepswerkjaar.)
@@ -121,5 +128,4 @@ namespace Chiro.Gap.Orm
 		[EnumMember]
 		GroepsFuncties = 0x08
 	}
-		
 }

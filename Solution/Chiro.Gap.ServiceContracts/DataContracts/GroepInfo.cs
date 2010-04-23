@@ -3,12 +3,8 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -41,7 +37,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// Stamnummer, heeft enkel nog nut als zoeksleutel.
 		/// </summary>
 		[DataMember]
-		[DisplayName("Stamnummer")]
+		[DisplayName(@"Stamnummer")]
 		public string StamNummer { get; set; }
 	}
 }

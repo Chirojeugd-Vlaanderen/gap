@@ -9,29 +9,29 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Dummies
 {
-    public class DummyGroepenDao: DummyDao<Groep>, IGroepenDao
-    {
-        #region IGroepenDao Members
+	public class DummyGroepenDao : DummyDao<Groep>, IGroepenDao
+	{
+		#region IGroepenDao Members
 
-        public GroepsWerkJaar RecentsteGroepsWerkJaarGet(int groepID)
-        {
-            throw new NotImplementedException();
-        }
+		public GroepsWerkJaar RecentsteGroepsWerkJaarGet(int groepID)
+		{
+			throw new NotImplementedException();
+		}
 
-        public Groep OphalenMetGroepsWerkJaren(int groepID)
-        {
-            throw new NotImplementedException();
-        }
+		public Groep OphalenMetGroepsWerkJaren(int groepID)
+		{
+			throw new NotImplementedException();
+		}
 
-        public Groep OphalenMetAfdelingen(int groepID)
-        {
-            throw new NotImplementedException();
-        }
+		public Groep OphalenMetAfdelingen(int groepID)
+		{
+			throw new NotImplementedException();
+		}
 
-        public GroepsWerkJaar GroepsWerkJaarOphalen(int groepsWerkJaarID)
-        {
-            throw new NotImplementedException();
-        }
+		public GroepsWerkJaar GroepsWerkJaarOphalen(int groepsWerkJaarID)
+		{
+			throw new NotImplementedException();
+		}
 
 	#endregion
     }

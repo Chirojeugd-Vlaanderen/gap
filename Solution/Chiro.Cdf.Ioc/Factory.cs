@@ -4,11 +4,9 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
+
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 

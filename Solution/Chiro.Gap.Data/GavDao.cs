@@ -3,11 +3,8 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using System.Data.Objects;
 using System.Linq;
-using System.Text;
 
 using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Orm;
@@ -28,7 +25,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>GAV-object met gekoppelde gebruikersrechten en groepen</returns>
 		public Gav Ophalen(string login)
 		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.Gav.MergeOption = MergeOption.NoTracking;
 

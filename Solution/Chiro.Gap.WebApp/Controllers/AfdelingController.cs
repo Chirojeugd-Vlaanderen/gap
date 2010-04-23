@@ -5,24 +5,26 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
-using System.Linq;
 using System.ServiceModel;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
 
 using Chiro.Cdf.ServiceHelper;
-using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
+	/// <summary>
+	/// 
+	/// </summary>
 	public class AfdelingController : BaseController
 	{
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="serviceHelper"></param>
 		public AfdelingController(IServiceHelper serviceHelper) : base(serviceHelper) { }
 
 		// GET: /Afdeling/
@@ -36,7 +38,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		// GET: /Afdeling/List/{groepsWerkJaarId}
 		public ActionResult List(int groepsWerkJaarID, int groepID)
 		{
-			var model = new Models.AfdelingsOverzichtModel();
+			var model = new AfdelingsOverzichtModel();
 			BaseModelInit(model, groepID);
 
 			// AfdelingDetails voor Afdelingen die in het opgegeven werkjaar voorkomen als AfdelingsJaar
@@ -160,7 +162,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>De view 'afdelingsjaar'</returns>
 		public ActionResult Activeren(int groepID, int id)
 		{
-			var model = new Models.AfdelingsJaarModel();
+			var model = new AfdelingsJaarModel();
 			BaseModelInit(model, groepID);
 
 			model.OfficieleAfdelingen =
@@ -186,7 +188,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>De view 'afdelingsjaar'</returns>
 		public ActionResult Bewerken(int groepID, int id)
 		{
-			var model = new Models.AfdelingsJaarModel();
+			var model = new AfdelingsJaarModel();
 			BaseModelInit(model, groepID);
 
 			AfdelingDetail detail = ServiceHelper.CallService<IGroepenService, AfdelingDetail>(
@@ -216,7 +218,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>Het afdelingsoverzicht als de wijzigingen bewaard zijn, en anders opnieuw de
 		/// 'AfdelingsJaarView'.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult Bewerken(Models.AfdelingsJaarModel model, int groepID)
+		public ActionResult Bewerken(AfdelingsJaarModel model, int groepID)
 		{
 			BaseModelInit(model, groepID);
 

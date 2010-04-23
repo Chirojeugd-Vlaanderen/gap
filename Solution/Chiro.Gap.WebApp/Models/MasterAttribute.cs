@@ -3,13 +3,6 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-// met dank aan http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
-// meer info: http://www.davidhayden.com/blog/dave/archive/2008/03/21/ActionFilterAttributeExamplesASPNETMVCFrameworkPreview2.aspx
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Chiro.Gap.WebApp.Controllers;
 
@@ -19,6 +12,10 @@ namespace Chiro.Gap.WebApp.Models
 	/// Zorgt ervoor dat controllers de gegevens van het MasterViewModel doorgeven aan
 	/// het overervend model
 	/// </summary>
+	/// <remarks>
+	/// Met dank aan http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
+	/// Meer info: http://www.davidhayden.com/blog/dave/archive/2008/03/21/ActionFilterAttributeExamplesASPNETMVCFrameworkPreview2.aspx
+	/// </remarks>
 	public class MasterAttribute : ActionFilterAttribute
 	{
 		public override void OnActionExecuted(ActionExecutedContext filterContext)

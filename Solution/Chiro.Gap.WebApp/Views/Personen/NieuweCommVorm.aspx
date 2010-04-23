@@ -19,7 +19,7 @@
         <table>
             <tr>
                 <td>
-                    <%=Html.DropDownListFor(mdl=>mdl.geselecteerdeCommVorm, new SelectList(Model.Types.Select(x => new { value = x.ID, text = x.Omschrijving }), "value", "text"))%>:
+                    <%=Html.DropDownListFor(mdl=>mdl.GeselecteerdeCommVorm, new SelectList(Model.Types.Select(x => new { value = x.ID, text = x.Omschrijving }), "value", "text"))%>:
                 </td>
                 <td>
                     <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nummer) %>

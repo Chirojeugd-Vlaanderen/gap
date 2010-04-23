@@ -3,11 +3,8 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Web;
 
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
@@ -34,7 +31,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Adrestype voor het nieuwe adres
 		/// </summary>
-		[DisplayName("Adrestype")]
+		[DisplayName(@"Adrestype")]
 		public AdresTypeEnum AdresType { get; set; }
 
 		/// <summary>
@@ -63,7 +60,7 @@ namespace Chiro.Gap.WebApp.Models
 		public IEnumerable<WoonPlaatsInfo> WoonPlaatsen { get; set; }
 
 		/// <summary>
-		/// Standaardconstructor voor AdresModel
+		/// De standaardconstructor voor AdresModel
 		/// </summary>
 		public AdresModel()
 		{

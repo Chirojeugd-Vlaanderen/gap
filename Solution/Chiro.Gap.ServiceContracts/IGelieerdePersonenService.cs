@@ -3,12 +3,8 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Text;
 
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
@@ -63,7 +59,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="paginagrootte">Het aantal personen dat je per pagina wilt zien</param>
 		/// <returns>Een lijst van gelieerde personen bij wie het <paramref name="naamgedeelte" />
 		/// in de naam voorkomt</returns>
-		IList<GelieerdePersoon> zoekPersonen(string naamgedeelte, int pagina, int paginagrootte);
+		IList<GelieerdePersoon> PersonenZoeken(string naamgedeelte, int pagina, int paginagrootte);
 		// ... andere zoekmogelijkheden
 
 		/// <summary>
@@ -81,19 +77,19 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID van de gevraagde gelieerde persoon</param>
 		/// <returns>
-		/// gelieerde persoon met ALLE nodige info om het persoons-bewerken scherm te vullen:
+		/// Gelieerde persoon met ALLE nodige info om het persoons-bewerken scherm te vullen:
 		/// persoonsgegevens, categorieen, communicatievormen, lidinfo, afdelingsinfo, adressen
 		/// functies
 		/// </returns>
 		[OperationContract]
 		PersoonLidInfo AlleDetailsOphalen(int gelieerdePersoonID);
 
-		/// <summary>
-		/// Haalt gelieerd persoon op met extra gevraagde info.
-		/// </summary>
-		/// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>
-		/// <param name="gevraagd">Stelt voor welke informatie opgehaald moet worden</param>
-		/// <returns>GelieerdePersoon uitbreiden met meer info mbt het gevraagde onderwerp </returns>
+		///// <summary>
+		///// Haalt gelieerd persoon op met extra gevraagde info.
+		///// </summary>
+		///// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>
+		///// <param name="gevraagd">Stelt voor welke informatie opgehaald moet worden</param>
+		///// <returns>GelieerdePersoon uitbreiden met meer info mbt het gevraagde onderwerp </returns>
 		// [OperationContract(Name = "PersoonOphalenMetCustomDetails")]
 		// GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID, PersoonsInfo gevraagd);
 

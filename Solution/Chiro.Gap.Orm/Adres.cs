@@ -4,9 +4,6 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
@@ -26,6 +23,9 @@ namespace Chiro.Gap.Orm
 	{
 		private bool _teVerwijderen = false;
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public bool TeVerwijderen
 		{
 			get
@@ -52,6 +52,9 @@ namespace Chiro.Gap.Orm
 			PostCode = String.Empty;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public string VersieString
 		{
 			get
@@ -64,6 +67,10 @@ namespace Chiro.Gap.Orm
 			}
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
 		public override int GetHashCode()
 		{
 			return 19;

@@ -3,14 +3,11 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Data.Objects;
 using System.Linq;
-using System.Text;
 
 using Chiro.Cdf.Data.Entity;
-using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 
@@ -22,13 +19,13 @@ namespace Chiro.Gap.Data.Ef
 	public class CommunicatieVormDao : Dao<CommunicatieVorm, ChiroGroepEntities>, ICommunicatieVormDao
 	{
 		/// <summary>
-		/// 
+		/// TODO: documenteren
 		/// </summary>
 		/// <param name="zoekString"></param>
 		/// <returns></returns>
 		public IList<CommunicatieVorm> ZoekenOpNummer(string zoekString)
 		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.CommunicatieVorm.MergeOption = MergeOption.NoTracking;
 

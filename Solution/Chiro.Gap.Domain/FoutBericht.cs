@@ -3,18 +3,13 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Web;
 
 namespace Chiro.Gap.Domain
 {
 	/// <summary>
 	/// Klasse voor een foutboodschap.
 	/// </summary>
-	/// <typeparam name="T">Type voor foutcodes (waarschijnlijk meestal enum)</typeparam>
 	[DataContract]
 	public class FoutBericht
 	{

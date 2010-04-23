@@ -4,12 +4,8 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
@@ -30,15 +26,15 @@ namespace Chiro.Gap.Orm
 		public class Persoon_Validatie
 		{
 			[Verplicht(), StringLengte(160), StringMinimumLengte(2)]
-			[DisplayName("Familienaam")]
+			[DisplayName(@"Familienaam")]
 			public string Naam
 			{
 				get;
 				set;
 			}
 
-			[Verplicht()]
-			[DisplayName("Voornaam")]
+			[Verplicht]
+			[DisplayName(@"Voornaam")]
 			[StringLengte(60), StringMinimumLengte(2)]
 			public string VoorNaam
 			{
@@ -46,14 +42,14 @@ namespace Chiro.Gap.Orm
 				set;
 			}
 
-			[Verplicht()]
+			[Verplicht]
 			public GeslachtsType Geslacht
 			{
 				set;
 				get;
 			}
 
-			[DisplayName("AD-nummer")]
+			[DisplayName(@"AD-nummer")]
 			public Nullable<int> AdNummer
 			{
 				set;
@@ -62,8 +58,8 @@ namespace Chiro.Gap.Orm
 
 			// [DisplayFormat(DataFormatString="{0:d}", ApplyFormatInEditMode=true, ConvertEmptyStringToNull=true)]
 			[DataType(DataType.Date)]
-			[DisplayName("Geboortedatum")]
-			[GeboorteDatumInVerleden()]
+			[DisplayName(@"Geboortedatum")]
+			[GeboorteDatumInVerleden]
 			public DateTime? GeboorteDatum
 			{
 				get;
@@ -131,11 +127,11 @@ namespace Chiro.Gap.Orm
 		{
 			get
 			{
-				return (GeslachtsType)this.GeslachtsInt;
+				return (GeslachtsType)GeslachtsInt;
 			}
 			set
 			{
-				this.GeslachtsInt = (int)value;
+				GeslachtsInt = (int)value;
 			}
 		}
 

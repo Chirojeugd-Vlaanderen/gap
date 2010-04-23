@@ -6,10 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Text;
-using System.Security.Permissions;
 
 using AutoMapper;
 
@@ -17,7 +14,6 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
-using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Gap.Services.Properties;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Workers.Exceptions;
@@ -177,7 +173,7 @@ namespace Chiro.Gap.Services
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<GelieerdePersoon> zoekPersonen(string naamgedeelte, int pagina, int paginagrootte)
+		public IList<GelieerdePersoon> PersonenZoeken(string naamgedeelte, int pagina, int paginagrootte)
 		{
 			throw new NotImplementedException();
 		}
@@ -197,7 +193,7 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID van de gevraagde gelieerde persoon</param>
 		/// <returns>
-		/// gelieerde persoon met ALLE nodige info om het persoons-bewerken scherm te vullen:
+		/// Gelieerde persoon met ALLE nodige info om het persoons-bewerken scherm te vullen:
 		/// persoonsgegevens, categorieen, communicatievormen, lidinfo, afdelingsinfo, adressen
 		/// functies
 		/// </returns>

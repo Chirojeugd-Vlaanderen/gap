@@ -8,10 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
-using Chiro.Cdf.Data;
-using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -24,13 +21,13 @@ namespace Chiro.Gap.Workers
 	/// </summary>
 	public class AfdelingsJaarManager
 	{
-		private IAfdelingsJarenDao _afdJarenDao;
-		private IAfdelingenDao _afdelingenDao;
-		private IGroepsWerkJaarDao _groepsWjDao;
-		private IKindDao _kindDao;
-		private ILeidingDao _leidingDao;
+		private readonly IAfdelingsJarenDao _afdJarenDao;
+		private readonly IAfdelingenDao _afdelingenDao;
+		private readonly IGroepsWerkJaarDao _groepsWjDao;
+		private readonly IKindDao _kindDao;
+		private readonly ILeidingDao _leidingDao;
 
-		private IAutorisatieManager _autorisatieMgr;
+		private readonly IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
 		/// Deze constructor laat toe om een alternatieve repository voor
@@ -66,7 +63,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="gwj">Groepswerkjaar (koppelt de afdeling aan een groep en een werkjaar)</param>
 		/// <param name="geboorteJaarBegin">Geboortejaar van</param>
 		/// <param name="geboorteJaarEind">Geboortejaar tot</param>
-		/// <param name="geslacht">bepaalt of de afdeling een jongensafdeling, meisjesafdeling of
+		/// <param name="geslacht">Bepaalt of de afdeling een jongensafdeling, meisjesafdeling of
 		/// gemengde afdeling is.</param>
 		/// <returns>Het aangemaakte afdelingsjaar</returns>
 		public AfdelingsJaar Aanmaken(
@@ -91,7 +88,7 @@ namespace Chiro.Gap.Workers
 				throw new InvalidOperationException("Ongeldige geboortejaren voor het afdelingsjaar");
 			}
 
-			AfdelingsJaar afdelingsJaar = new AfdelingsJaar();
+			var afdelingsJaar = new AfdelingsJaar();
 
 			// TODO check if no conflicts with existing afdelingsjaar
 
@@ -280,7 +277,7 @@ namespace Chiro.Gap.Workers
 		/// verdwijnen.
 		/// </summary>
 		/// <param name="l">Lid, geladen met groepswerkjaar met afdelingsjaren</param>
-		/// <param name="afdelingsIDs">De ids van de AFDELING waarvan het kind lid is</param>
+		/// <param name="afdelingsJaren">De afdelingsjaren waarvan het kind lid is</param>
 		/// <returns>Lidobject met gekoppeld(e) afdelingsja(a)r(en)</returns>
 		public Lid Vervangen(Lid l, IEnumerable<AfdelingsJaar> afdelingsJaren)
 		{
@@ -308,7 +305,6 @@ namespace Chiro.Gap.Workers
 					FoutNummers.AfdelingNietVanGroep,
 					Properties.Resources.FoutieveGroepAfdeling);
 			}
-
 
 			if (l is Kind)
 			{
@@ -364,6 +360,5 @@ namespace Chiro.Gap.Workers
 				return _leidingDao.Bewaren(leiding, ldng => ldng.AfdelingsJaar);
 			}
 		}
-
 	}
 }

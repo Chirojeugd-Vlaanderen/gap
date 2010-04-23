@@ -3,22 +3,16 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-// Met dank aan http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
-
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-using Chiro.Gap.Orm;
-using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
 	/// <summary>
 	/// Model voor zaken die op de masterpage getoond moeten worden,
 	/// </summary>
+	/// <remarks>
+	/// Met dank aan http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
+	/// </remarks>
 	public class MasterViewModel : IMasterViewModel
 	{
 		/// <summary>
@@ -52,7 +46,7 @@ namespace Chiro.Gap.WebApp.Models
 		public IList<Mededeling> Mededelingen { get; set; }
 
 		/// <summary>
-		/// Standaardconstructor maakt gewoon een lege lijst met mededelingen
+		/// De standaardconstructor maakt gewoon een lege lijst met mededelingen
 		/// </summary>
 		public MasterViewModel()
 		{

@@ -3,19 +3,12 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-
 using Chiro.Cdf.Data.Entity;
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Orm
 {
-
 	/// <summary>
 	/// Instantieert een PersoonsAdres-object dat zorgt voor samenwerking met Entity Framework
 	/// </summary>

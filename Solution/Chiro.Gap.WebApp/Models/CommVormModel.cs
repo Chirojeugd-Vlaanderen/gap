@@ -3,13 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
 using Chiro.Gap.Orm;
-using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -30,7 +24,7 @@ namespace Chiro.Gap.WebApp.Models
 		public CommunicatieVorm NieuweCommVorm { get; set; }
 
 		/// <summary>
-		/// Standaardconstructor - creëert leeg CommVormModel
+		/// De standaardconstructor - creëert leeg CommVormModel
 		/// </summary>
 		public CommVormModel()
 		{

@@ -6,7 +6,7 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Dummies
 {
-	public class DummyAfdelingenDao: IAfdelingenDao
+	public class DummyAfdelingenDao : IAfdelingenDao
 	{
 		#region IDao<Afdeling> Members
 

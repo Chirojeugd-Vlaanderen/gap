@@ -12,10 +12,17 @@ using Microsoft.Practices.Unity;
 
 namespace Chiro.Gap.WebApp
 {
+	/// <summary>
+	/// 
+	/// </summary>
 	public class UnityControllerFactory : DefaultControllerFactory
 	{
 		IUnityContainer container;
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="container"></param>
 		public UnityControllerFactory(IUnityContainer container)
 		{
 			this.container = container;

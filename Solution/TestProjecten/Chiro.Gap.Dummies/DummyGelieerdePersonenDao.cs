@@ -40,7 +40,12 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public IEnumerable<CommunicatieType> ophalenCommunicatieTypes()
+		public IEnumerable<CommunicatieType> CommunicatieTypesOphalen()
+		{
+			throw new NotImplementedException();
+		}
+
+		public IEnumerable<CommunicatieType> OphalenCommunicatieTypes()
 		{
 			throw new NotImplementedException();
 		}

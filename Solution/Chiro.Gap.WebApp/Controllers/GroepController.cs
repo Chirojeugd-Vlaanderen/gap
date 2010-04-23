@@ -4,16 +4,12 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
 using System.Web.Routing;
 
-using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Cdf.ServiceHelper;
@@ -107,10 +103,6 @@ namespace Chiro.Gap.WebApp.Controllers
 
 					return View(model);
 				}
-				catch (Exception)
-				{
-					throw;
-				}
 			}
 			else
 			{
@@ -141,7 +133,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				// Categorie was niet leeg
 
-				var model = new Models.PersonenLinksModel();
+				var model = new PersonenLinksModel();
 				BaseModelInit(model, groepID);
 
 				model.Personen = ex.Detail.Objecten;
@@ -159,11 +151,6 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.Titel = String.Format("Categorie '{0}' verwijderen", categorieNaam);
 
 				return View("CategorieVerwijderen", model);
-			}
-			catch (Exception)
-			{
-				// Onverwachte exception gewoon verder throwen
-				throw;
 			}
 			return RedirectToAction("Index", new { groepID = groepID });
 		}

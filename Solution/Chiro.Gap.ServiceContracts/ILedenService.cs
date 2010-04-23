@@ -3,12 +3,8 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Text;
 
 using Chiro.Gap.Orm;
 
@@ -43,7 +39,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. Creëert of verwijdert geen leden, en leden
 		/// kunnen ook niet van werkjaar of van gelieerdepersoon veranderen.
 		/// </summary>
-		/// <param name="lid">te bewaren lid</param>
+		/// <param name="lid">Te bewaren lid</param>
 		[OperationContract]
 		void Bewaren(LidInfo lid);
 
@@ -95,8 +91,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <summary>
 		/// Haalt een pagina met ledengegevens in een bepaald groepswerkjaar
 		/// </summary>
-		/// <param name="groepID">ID van het betreffende groepwerkjaar</param>
-		/// <param name="paginas">Het totaal aantal pagians</param>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waar het over gaat</param>
+		/// <param name="paginas">Het totaal aantal pagina's</param>
 		/// <returns>Lijst van leden met hun relevante informatie</returns>
 		[OperationContract]
 		IList<LidInfo> PaginaOphalen(int groepsWerkJaarID, out int paginas);
@@ -104,8 +100,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <summary>
 		/// Haalt een pagina met ledengegevens in een bepaald groepswerkjaar, maar alleen leden uit de gegeven afdeling
 		/// </summary>
-		/// <param name="groepID">ID van het betreffende groepwerkjaar</param>
-		/// <param name="afdelingID">ID van de betreffende afdeling</param>
+		/// <param name="groepsWerkJaarID">ID van het betreffende groepwerkjaar</param>
+		/// <param name="afdelingsID">ID van de betreffende afdeling</param>
 		/// <param name="paginas">Het totaal aantal pagians</param>
 		/// <returns>Lijst van leen met hun relevante informatie</returns>
 		[OperationContract]
@@ -115,7 +111,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// Haalt lid op, inclusief gelieerde persoon en persoon
 		/// </summary>
 		/// <param name="lidID">ID op te halen lid</param>
-		/// <param name="extras">geeft aan welke extra entiteiten mee opgehaald moeten worden</param>
+		/// <param name="extras">Geeft aan welke extra entiteiten mee opgehaald moeten worden</param>
 		/// <returns>Lidinfo met gelieerdepersoon en persoon</returns>
 		[OperationContract]
 		LidInfo Ophalen(int lidID, LidExtras extras);

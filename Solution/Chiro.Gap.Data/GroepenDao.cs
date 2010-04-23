@@ -3,15 +3,9 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using System.Data.Objects;
-using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 
-using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
 
 using Chiro.Gap.Orm;
@@ -38,7 +32,7 @@ namespace Chiro.Gap.Data.Ef
 			GroepsWerkJaar groepswj;
 			Groep result;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				// Deze functie geeft een circulaire graaf mee, dus gebruiken ik
 				// MergeOption.NoTracking ipv Utility.DetachObjectGraph.
@@ -93,7 +87,6 @@ namespace Chiro.Gap.Data.Ef
 			return result;
 		}
 
-
 		/// <summary>
 		/// 
 		/// </summary>
@@ -102,7 +95,7 @@ namespace Chiro.Gap.Data.Ef
 		public Groep OphalenMetGroepsWerkJaren(int groepID)
 		{
 			Groep result = null;
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.GroepsWerkJaar.MergeOption = MergeOption.NoTracking;
 

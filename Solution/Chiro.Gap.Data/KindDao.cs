@@ -4,11 +4,7 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.Data.Objects;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;

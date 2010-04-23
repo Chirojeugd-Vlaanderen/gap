@@ -5,20 +5,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
 using System.ServiceModel;
-using System.Text;
 
 using AutoMapper;
 
-using Chiro.Cdf.Ioc;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
-using Chiro.Gap.ServiceContracts.FaultContracts;
-using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Workers.Exceptions;
 
@@ -132,7 +125,7 @@ namespace Chiro.Gap.Services
 		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. Creëert of verwijdert geen leden, en leden
 		/// kunnen ook niet van werkjaar of van gelieerdepersoon veranderen.
 		/// </summary>
-		/// <param name="lid">te bewaren lid</param>
+		/// <param name="lidinfo">Te bewaren lid</param>
 		public void Bewaren(LidInfo lidinfo)
 		{
 			Lid lid = _ledenMgr.Ophalen(lidinfo.LidID, LidExtras.Geen);
@@ -171,7 +164,7 @@ namespace Chiro.Gap.Services
 		/// Haalt lid op, inclusief gelieerde persoon en persoon
 		/// </summary>
 		/// <param name="lidID">ID op te halen lid</param>
-		/// <param name="extras">geeft aan welke extra entiteiten mee opgehaald moeten worden</param>
+		/// <param name="extras">Geeft aan welke extra entiteiten mee opgehaald moeten worden</param>
 		/// <returns>Lidinfo met gelieerdepersoon en persoon</returns>
 		public LidInfo Ophalen(int lidID, LidExtras extras)
 		{
@@ -219,7 +212,7 @@ namespace Chiro.Gap.Services
 		/// <returns>Een LidAfdelingInfo-object</returns>
 		public LidAfdelingInfo AfdelingenOphalen(int lidID)
 		{
-			LidAfdelingInfo resultaat = new LidAfdelingInfo();
+			var resultaat = new LidAfdelingInfo();
 
 			Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Afdelingen | LidExtras.Persoon);
 			resultaat.VolledigeNaam = String.Format(

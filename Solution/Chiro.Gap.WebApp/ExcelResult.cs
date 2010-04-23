@@ -1,5 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -16,22 +20,28 @@ namespace Chiro.Gap.WebApp
 	/// </summary>
 	public class ExcelResult : ActionResult
 	{
-		private string _fileName;
-		private IQueryable _rows;
-		private string[] _headers = null;
+		private readonly string _fileName;
+		private readonly IQueryable _rows;
+		private readonly string[] _headers = null;
 
-		private TableStyle _tableStyle;
-		private TableItemStyle _headerStyle;
-		private TableItemStyle _itemStyle;
+		private readonly TableStyle _tableStyle;
+		private readonly TableItemStyle _headerStyle;
+		private readonly TableItemStyle _itemStyle;
 
 		public string FileName
 		{
-			get { return _fileName; }
+			get
+			{
+				return _fileName;
+			}
 		}
 
 		public IQueryable Rows
 		{
-			get { return _rows; }
+			get
+			{
+				return _rows;
+			}
 		}
 
 
@@ -72,19 +82,21 @@ namespace Chiro.Gap.WebApp
 		public override void ExecuteResult(ControllerContext context)
 		{
 			// Create HtmlTextWriter
-			StringWriter sw = new StringWriter();
-			HtmlTextWriter tw = new HtmlTextWriter(sw);
+			var sw = new StringWriter();
+			var tw = new HtmlTextWriter(sw);
 
 			// Build HTML Table from Items
 			if (_tableStyle != null)
+			{
 				_tableStyle.AddAttributesToRender(tw);
+			}
 			tw.RenderBeginTag(HtmlTextWriterTag.Table);
 
 			// Ik heb hier geen datacontext, dus ik kan daar de headers niet uit halen, zoals dat gebeurde
 			// in het originele artikel. Misschien is er nog wel iets anders op te vinden.
 			if (_headers == null)
 			{
-				//_headers = _dataContext.Mapping.GetMetaType(_rows.ElementType).PersistentDataMembers.Select(m => m.Name).ToArray();
+				// _headers = _dataContext.Mapping.GetMetaType(_rows.ElementType).PersistentDataMembers.Select(m => m.Name).ToArray();
 			}
 
 
@@ -94,7 +106,9 @@ namespace Chiro.Gap.WebApp
 			foreach (String header in _headers)
 			{
 				if (_headerStyle != null)
+				{
 					_headerStyle.AddAttributesToRender(tw);
+				}
 				tw.RenderBeginTag(HtmlTextWriterTag.Th);
 				tw.Write(header);
 				tw.RenderEndTag();
@@ -111,10 +125,12 @@ namespace Chiro.Gap.WebApp
 				foreach (string header in _headers)
 				{
 					var value = row.GetType().GetProperty(header).GetValue(row, null);
-					string strValue = (value == null ? "" : value.ToString());
+					string strValue = (value == null ? string.Empty : value.ToString());
 					strValue = ReplaceSpecialCharacters(strValue);
 					if (_itemStyle != null)
+					{
 						_itemStyle.AddAttributesToRender(tw);
+					}
 					tw.RenderBeginTag(HtmlTextWriterTag.Td);
 					tw.Write(HttpUtility.HtmlEncode(strValue));
 					tw.RenderEndTag();
@@ -143,7 +159,7 @@ namespace Chiro.Gap.WebApp
 			HttpContext context = HttpContext.Current;
 			context.Response.Clear();
 			context.Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
-			context.Response.Charset = "";
+			context.Response.Charset = string.Empty;
 			context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
 			context.Response.ContentType = contentType;
 			context.Response.Write(content);

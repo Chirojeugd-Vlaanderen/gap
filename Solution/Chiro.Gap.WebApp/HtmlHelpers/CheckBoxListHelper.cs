@@ -3,13 +3,10 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-// dank aan http://blogs.msdn.com/miah/archive/2008/11/10/checkboxlist-helper-for-mvc.aspx
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -18,6 +15,9 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 	/// <summary>
 	/// Klasse die de status van een checkbox omschrijft
 	/// </summary>
+	/// <remarks>
+	/// Dank aan http://blogs.msdn.com/miah/archive/2008/11/10/checkboxlist-helper-for-mvc.aspx
+	/// </remarks>
 	public class CheckBoxListInfo
 	{
 		/// <summary>
@@ -25,7 +25,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		/// </summary>
 		/// <param name="displayText">Tekst die de gebruiker te zien krijgt na de checkbox</param>
 		/// <param name="value">Waarde die doorgegeven moet worden als het item aangekruist is</param>
-		/// <param name="isChecked">Bepaalt de huidige status van de checkbox</param>
+		/// <param name="isChecked">Bepaalt de huidige status van de checkbox
 		/// getoond.</param>
 		public CheckBoxListInfo(string value, string displayText, bool isChecked)
 			: this(value, displayText, isChecked, String.Empty) { }

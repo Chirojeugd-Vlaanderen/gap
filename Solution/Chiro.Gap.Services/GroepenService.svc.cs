@@ -5,21 +5,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
 using System.ServiceModel;
-using System.Text;
 
 using AutoMapper;
 
-using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
-using Chiro.Gap.Services.Properties;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Workers.Exceptions;
 
@@ -71,15 +65,13 @@ namespace Chiro.Gap.Services
 		/// </returns>
 		public GroepInfo InfoOphalen(int groepID)
 		{
-			Groep g;
-
 			Mapper.CreateMap<Groep, GroepInfo>()
 				.ForMember(dst => dst.Plaats, opt => opt.MapFrom(
 					src => src is ChiroGroep ? (src as ChiroGroep).Plaats : String.Empty))
 				.ForMember(dst => dst.StamNummer, opt => opt.MapFrom(
 					src => src.Code == null ? String.Empty : src.Code.ToUpper()));
 
-			g = _groepenMgr.Ophalen(groepID);
+			var g = _groepenMgr.Ophalen(groepID);
 			return Mapper.Map<Groep, GroepInfo>(g);
 		}
 
@@ -90,8 +82,7 @@ namespace Chiro.Gap.Services
 		/// <returns>Groepsdetails, inclusief categorieen en huidige actieve afdelingen</returns>
 		public GroepDetail DetailOphalen(int groepID)
 		{
-			Groep g;
-			GroepDetail resultaat = new GroepDetail();
+			var resultaat = new GroepDetail();
 
 			Mapper.CreateMap<Groep, GroepDetail>()
 				.ForMember(dst => dst.Plaats, opt => opt.MapFrom(
@@ -117,7 +108,7 @@ namespace Chiro.Gap.Services
 				opt => opt.MapFrom(src => src.Afdeling.Afkorting));
 
 
-			g = _groepenMgr.OphalenMetCategorieen(groepID);
+			var g = _groepenMgr.OphalenMetCategorieen(groepID);
 			Mapper.Map<Groep, GroepDetail>(g, resultaat);
 
 			resultaat.Afdelingen = Mapper.Map<IEnumerable<AfdelingsJaar>, List<AfdelingDetail>>(
@@ -406,7 +397,7 @@ namespace Chiro.Gap.Services
 
 		/// <summary>
 		/// Haalt informatie op over de afdelingen van een groep die niet gebruikt zijn in een gegeven 
-		/// groepswerkjaar, op basis van een <paramref name="groepsWerkJaarID"/>
+		/// groepswerkjaar, op basis van een <paramref name="groepswerkjaarID"/>
 		/// </summary>
 		/// <param name="groepswerkjaarID">ID van het groepswerkjaar waarvoor de niet-gebruikte afdelingen
 		/// opgezocht moeten worden.</param>
@@ -445,28 +436,19 @@ namespace Chiro.Gap.Services
 		/// </returns>
 		public IEnumerable<FunctieProbleemInfo> FunctiesControleren(int groepID)
 		{
-			var resultaat = new List<FunctieProbleemInfo>();
-
 			GroepsWerkJaar gwj = _groepsWerkJaarManager.RecentsteOphalen(
 				groepID, GroepsWerkJaarExtras.GroepsFuncties|GroepsWerkJaarExtras.LidFuncties);
 
 			IEnumerable<Telling> problemen = _functiesMgr.AantallenControleren(gwj);
 
-			// Blijkbaar kan ik hier niet anders dan de functies terug ophalen.
+			// Blijkbaar kan ik hier niet anders dan de functies weer ophalen.
 
-			foreach (var p in problemen)
-			{
-				Functie f = _functiesMgr.Ophalen(p.ID);
-				resultaat.Add(new FunctieProbleemInfo
-				{
-					Code = f.Code,
-					EffectiefAantal = p.Aantal,
-					ID = f.ID,
-					MaxAantal = p.Max,
-					MinAantal = p.Min,
-					Naam = f.Naam
-				});
-			}
+			var resultaat = (from p in problemen
+			                 let f = _functiesMgr.Ophalen(p.ID)
+			                 select new FunctieProbleemInfo
+			                        	{
+			                        		Code = f.Code, EffectiefAantal = p.Aantal, ID = f.ID, MaxAantal = p.Max, MinAantal = p.Min, Naam = f.Naam
+			                        	}).ToList();
 
 			// Ter info: return resultaat.ToArray() werkt niet; problemen met (de)serializeren?
 
@@ -552,7 +534,12 @@ namespace Chiro.Gap.Services
 			}
 		}
 
-		public void CategorieAanpassen(int categorieID, string nieuwenaam)
+        /// <summary>
+        /// Past de naam van een categorie aan
+        /// </summary>
+        /// <param name="categorieID">De ID van de categorie waar het over gaat</param>
+        /// <param name="nieuwenaam">De nieuwe naam die de categorie moet krijgen</param>
+        public void CategorieAanpassen(int categorieID, string nieuwenaam)
 		{
 			/*Groep g = OphalenMetCategorieen(groepID);
 			Categorie c = null;*/
@@ -578,7 +565,7 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		/// <param name="groepID">ID van de groep waaraan de categorie gekoppeld moet zijn.</param>
 		/// <param name="categorieCode">Code van de categorie</param>
-		/// <returns>De categorie met code <paramref name="CategorieCode"/> die van toepassing is op
+		/// <returns>De categorie met code <paramref name="categorieCode"/> die van toepassing is op
 		/// de groep met ID <paramref name="groepID"/>.</returns>
 		public CategorieInfo CategorieOpzoeken(int groepID, string categorieCode)
 		{

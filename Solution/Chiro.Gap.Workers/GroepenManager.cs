@@ -5,18 +5,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
-using Chiro.Cdf.Data;
-using Chiro.Cdf.Ioc;
-using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
@@ -26,15 +20,15 @@ namespace Chiro.Gap.Workers
 	/// </summary>
 	public class GroepenManager
 	{
-		private IGroepenDao _groepenDao;
-		private IAfdelingsJarenDao _afdJrDao;
-		private IAfdelingenDao _afdelingenDao;
-		private IAutorisatieManager _autorisatieMgr;
-		private ICategorieenDao _categorieenDao;
-		private IGelieerdePersonenDao _gelPersDao;
+		private readonly IGroepenDao _groepenDao;
+		private readonly IAfdelingsJarenDao _afdJrDao;
+		private readonly IAfdelingenDao _afdelingenDao;
+		private readonly IAutorisatieManager _autorisatieMgr;
+		private readonly ICategorieenDao _categorieenDao;
+		private readonly IGelieerdePersonenDao _gelPersDao;
 
 		/// <summary>
-		/// Standaardconstructor voor GroepenManagers
+		/// De standaardconstructor voor GroepenManagers
 		/// </summary>
 		/// <param name="grpDao">Repository voor groepen</param>
 		/// <param name="afjDao">Repository voor afdelingsjaren</param>
@@ -118,7 +112,7 @@ namespace Chiro.Gap.Workers
 			else
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
-			};
+			}
 		}
 
 		/// <summary>
@@ -145,7 +139,7 @@ namespace Chiro.Gap.Workers
 					throw new BestaatAlException<Afdeling>(bestaand.FirstOrDefault());
 				}
 
-				Afdeling a = new Afdeling
+				var a = new Afdeling
 				{
 					Afkorting = afkorting,
 					Naam = naam
@@ -184,7 +178,6 @@ namespace Chiro.Gap.Workers
 		/// Haalt een groepsobject op zonder gerelateerde entiteiten
 		/// </summary>
 		/// <param name="groepID">ID van de op te halen groep</param>
-		/// <param name="extras">Geeft aan of er gekoppelde entiteiten mee opgehaald moeten worden.</param>
 		/// <returns>De groep met de opgegeven ID <paramref name="groepID"/></returns>
 		public Groep Ophalen(int groepID)
 		{
@@ -281,7 +274,7 @@ namespace Chiro.Gap.Workers
 				}
 				else
 				{
-					Categorie c = new Categorie();
+					var c = new Categorie();
 					c.Naam = categorieNaam;
 					c.Code = categorieCode;
 					c.Groep = g;
@@ -336,10 +329,9 @@ namespace Chiro.Gap.Workers
 					throw new BestaatAlException<Functie>(bestaande);
 				}
 
-
 				// Zonder problemen hier geraakt.  Dan kunnen we verder.
 
-				Functie f = new Functie
+				var f = new Functie
 				{
 					Code = code,
 					Groep = g,
@@ -367,7 +359,7 @@ namespace Chiro.Gap.Workers
 		/// <remarks>Persisteert niet.</remarks>
 		public GroepsWerkJaar GroepsWerkJaarMaken(Groep groep, int werkJaar)
 		{
-			GroepsWerkJaar resultaat = new GroepsWerkJaar
+			var resultaat = new GroepsWerkJaar
 			{
 				Groep = groep,
 				WerkJaar = werkJaar

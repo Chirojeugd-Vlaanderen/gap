@@ -3,19 +3,12 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-// Met dank aan http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
-
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Web;
 using System.Web.Caching;
 using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
 
 using Chiro.Cdf.ServiceHelper;
-using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.WebApp.Models;
 
@@ -25,7 +18,10 @@ namespace Chiro.Gap.WebApp.Controllers
 	/// Deze controller bevat de method 'BaseModelInit', het BaseModel initialiseert.
 	/// Verder ga ik hier proberen de IoC te arrangere voor de ServiceHelper
 	/// </summary>
-	/// <remarks>MasterAttribute helpt de overerving regelen</remarks>
+	/// <remarks>
+	/// MasterAttribute helpt de overerving regelen
+	/// Met dank aan http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
+	/// </remarks>
 	[Master]
 	public abstract class BaseController : Controller
 	{
@@ -86,9 +82,8 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.GroepID = gi.ID;
 
 				var problemen = ServiceHelper.CallService<
-					IGroepenService, 
+					IGroepenService,
 					IEnumerable<FunctieProbleemInfo>>(svc => svc.FunctiesControleren(gi.ID));
-
 
 				foreach (var p in problemen)
 				{
@@ -129,8 +124,6 @@ namespace Chiro.Gap.WebApp.Controllers
 							Info = String.Format(Properties.Resources.FunctieTeVeel, p.Naam, p.Code, p.EffectiefAantal, p.MinAantal)
 						});
 					}
-
-
 				}
 			}
 		}

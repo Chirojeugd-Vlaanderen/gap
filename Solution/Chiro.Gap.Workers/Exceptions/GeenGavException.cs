@@ -4,10 +4,7 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 using Chiro.Gap.Domain;
 
@@ -24,7 +21,7 @@ namespace Chiro.Gap.Workers.Exceptions
 		#region standaardconstructors
 
 		/// <summary>
-		/// Standaardconstructor
+		/// De standaardconstructor
 		/// </summary>
 		public GeenGavException() : this(null, null) { }
 
@@ -55,8 +52,8 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// <summary>
 		/// Constructor voor deserializatie.
 		/// </summary>
-		/// <param name="info">Serializatie-info</param>
-		/// <param name="context">Streamingcontext</param>
+		/// <param name="info">De serializatie-info</param>
+		/// <param name="context">De streamingcontext</param>
 		protected GeenGavException(SerializationInfo info, StreamingContext context)
 			: base(info, context) { }
 

@@ -3,11 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization;
 using System.Diagnostics;
 
 using Chiro.Cdf.Data;
@@ -73,16 +69,14 @@ namespace Chiro.Gap.Orm
 			return result;
 		}
 
-
-		//public override int GetHashCode()
-		//{
-		//        return ID.GetHashCode();
-		//}
-
-		//public override bool Equals(object obj)
-		//{
-		//        return this.ChiroEquals(obj);
-		//}
-
+		// public override int GetHashCode()
+		// {
+		//         return ID.GetHashCode();
+		// }
+		 
+		// public override bool Equals(object obj)
+		// {
+		//         return this.ChiroEquals(obj);
+		// }
 	}
 }

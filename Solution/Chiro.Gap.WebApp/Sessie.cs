@@ -13,6 +13,9 @@ using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp
 {
+	/// <summary>
+	/// 
+	/// </summary>
 	public static class Sessie
 	{
 		private const string LijstNaamString = "LaatsteLijst";

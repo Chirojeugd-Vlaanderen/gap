@@ -6,15 +6,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.ServiceModel;
-using System.Text;
 
-using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
@@ -24,10 +19,10 @@ namespace Chiro.Gap.Workers
 	/// </summary>
 	public class AdressenManager
 	{
-		private IAdressenDao _dao;
-		private IStratenDao _stratenDao;
-		private ISubgemeenteDao _subgemeenteDao;
-		private IAutorisatieManager _autorisatieMgr;
+		private readonly IAdressenDao _dao;
+		private readonly IStratenDao _stratenDao;
+		private readonly ISubgemeenteDao _subgemeenteDao;
+		private readonly IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
 		/// Creëert nieuwe adressenmanager
@@ -87,15 +82,15 @@ namespace Chiro.Gap.Workers
 		/// kunnen worden.  Als ook dat laatste niet het geval is,
 		/// wordt een exception gethrowd.
 		/// </summary>
-		/// <param name="StraatNaam">De naam van de straat</param>
-		/// <param name="HuisNr">Het huisnummer</param>
-		/// <param name="Bus">Het eventuele busnummer</param>
-		/// <param name="WoonPlaatsID">De naam van de gemeente</param>
-		/// <param name="PostNr">Het postnummer van de gemeente</param>
-		/// <param name="PostCode">Tekst die in het buitenland volgt op postnummers</param>
+		/// <param name="straatNaam">De naam van de straat</param>
+		/// <param name="huisNr">Het huisnummer</param>
+		/// <param name="bus">Het eventuele busnummer</param>
+		/// <param name="woonPlaatsID">De naam van de gemeente</param>
+		/// <param name="postNr">Het postnummer van de gemeente</param>
+		/// <param name="postCode">Tekst die in het buitenland volgt op postnummers</param>
 		/// <returns>Gevonden adres</returns>
 		/// <remarks>Ieder heeft het recht adressen op te zoeken</remarks>
-		public Adres ZoekenOfMaken(String StraatNaam, int HuisNr, String Bus, int WoonPlaatsID, int PostNr, String PostCode)
+		public Adres ZoekenOfMaken(String straatNaam, int huisNr, String bus, int woonPlaatsID, int postNr, String postCode)
 		{
 			var problemen = new Dictionary<string, FoutBericht>();
 
@@ -105,14 +100,14 @@ namespace Chiro.Gap.Workers
 
 			Adres adresInDb;
 
-			Debug.Assert(StraatNaam != String.Empty);
-			Debug.Assert(PostNr > 0);
+			Debug.Assert(straatNaam != String.Empty);
+			Debug.Assert(postNr > 0);
 			// Debug.Assert(HuisNr > 0);
-			Debug.Assert(WoonPlaatsID > 0);
+			Debug.Assert(woonPlaatsID > 0);
 
-			adresInDb = _dao.Ophalen(StraatNaam, HuisNr, Bus, PostNr, PostCode, WoonPlaatsID, false);
+			adresInDb = _dao.Ophalen(straatNaam, huisNr, bus, postNr, postCode, woonPlaatsID, false);
 
-			Adres adr = new Adres();
+			var adr = new Adres();
 
 			if (adresInDb == null)
 			{
@@ -121,7 +116,7 @@ namespace Chiro.Gap.Workers
 				StraatNaam s;
 				WoonPlaats sg;
 
-				s = _stratenDao.Ophalen(StraatNaam, PostNr);
+				s = _stratenDao.Ophalen(straatNaam, postNr);
 				if (s != null)
 				{
 					// Straat gevonden: aan adres koppelen
@@ -142,12 +137,12 @@ namespace Chiro.Gap.Workers
 						FoutNummer = FoutNummers.StraatNietGevonden,
 						Bericht = String.Format(
 							Properties.Resources.StraatNietGevonden,
-							StraatNaam,
-							PostNr)
+							straatNaam,
+							postNr)
 					});
 				}
 
-				sg = _subgemeenteDao.Ophalen(WoonPlaatsID);
+				sg = _subgemeenteDao.Ophalen(woonPlaatsID);
 				if (sg != null)
 				{
 					// Gemeente gevonden: aan adres koppelen
@@ -173,12 +168,12 @@ namespace Chiro.Gap.Workers
 					throw new OngeldigObjectException(problemen);
 				}
 
-				if (PostCode != null && !PostCode.Equals(String.Empty))
+				if (postCode != null && !postCode.Equals(String.Empty))
 				{
-					adr.PostCode = PostCode;
+					adr.PostCode = postCode;
 				}
-				adr.HuisNr = HuisNr;
-				adr.Bus = Bus;
+				adr.HuisNr = huisNr;
+				adr.Bus = bus;
 
 				adr = _dao.Bewaren(adr);
 				// bewaren brengt Versie en ID automatisch in orde.

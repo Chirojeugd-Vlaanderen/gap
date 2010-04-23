@@ -1,96 +1,94 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+
 using Chiro.Gap.Workers;
 using Chiro.Gap.Orm;
 
 namespace Chiro.Gap.Dummies
 {
-    /// <summary>
-    /// Autorisatiemanager die er steeds van uitgaat dat
-    /// de gebruiker geen rechten heeft.
-    /// (nuttig voor authorisatietests..)
-    /// </summary>
-    public class AutMgrNooitGav: IAutorisatieManager
-    {
-        #region IAutorisatieManager Members
-
-        public IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs)
-        {
-            return new List<int>();
-        }
-
-        public IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs)
-        {
-            return new List<int>();
-        }
-
-        public IEnumerable<Groep> GekoppeldeGroepenGet()
-        {
-            return new List<Groep>();
-        }
-
-        public bool IsGavGelieerdePersoon(int gelieerdePersoonID)
-        {
-            return false;
-        }
-
-        public bool IsGavGroep(int groepID)
-        {
-            return false;
-        }
-
-        public bool IsGavGroepsWerkJaar(int groepsWerkJaarID)
-        {
-            return false;
-        }
-
-        public bool IsGavPersoon(int persoonID)
-        {
-            return false;
-        }
-
-        public string GebruikersNaamGet()
-        {
-            return "Paria";
-        }
-
-        public bool IsGavAfdeling(int afdelingsID)
-        {
-            return false;
-        }
-
-        public bool IsGavLid(int lidID)
-        {
-            return false;
-        }
-
-        public bool IsGavCategorie(int categorieID)
-        {
-            return false;
-        }
-
-        public bool IsGavCommVorm(int commvormID)
-        {
-            return false;
-        }
-
-	public bool IsSuperGavGroep(int groepID)
+	/// <summary>
+	/// Autorisatiemanager die er steeds van uitgaat dat
+	/// de gebruiker geen rechten heeft.
+	/// (nuttig voor authorisatietests..)
+	/// </summary>
+	public class AutMgrNooitGav : IAutorisatieManager
 	{
-		return false;
-	}
+		#region IAutorisatieManager Members
 
-	public bool IsGavFunctie(int functieID)
-	{
-		return false;
-	}
+		public IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs)
+		{
+			return new List<int>();
+		}
 
-	public bool IsGavAfdelingsJaar(int afdelingsJaarID)
-	{
-		return false;
-	}
+		public IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs)
+		{
+			return new List<int>();
+		}
 
-	#endregion
-    }
+		public IEnumerable<Groep> GekoppeldeGroepenGet()
+		{
+			return new List<Groep>();
+		}
+
+		public bool IsGavGelieerdePersoon(int gelieerdePersoonID)
+		{
+			return false;
+		}
+
+		public bool IsGavGroep(int groepID)
+		{
+			return false;
+		}
+
+		public bool IsGavGroepsWerkJaar(int groepsWerkJaarID)
+		{
+			return false;
+		}
+
+		public bool IsGavPersoon(int persoonID)
+		{
+			return false;
+		}
+
+		public string GebruikersNaamGet()
+		{
+			return "Paria";
+		}
+
+		public bool IsGavAfdeling(int afdelingsID)
+		{
+			return false;
+		}
+
+		public bool IsGavLid(int lidID)
+		{
+			return false;
+		}
+
+		public bool IsGavCategorie(int categorieID)
+		{
+			return false;
+		}
+
+		public bool IsGavCommVorm(int commvormID)
+		{
+			return false;
+		}
+
+		public bool IsSuperGavGroep(int groepID)
+		{
+			return false;
+		}
+
+		public bool IsGavFunctie(int functieID)
+		{
+			return false;
+		}
+
+		#endregion
+
+		public bool IsGavAfdelingsJaar(int afdelingsJaarID)
+		{
+			return false;
+		}
+	}
 }

@@ -3,14 +3,10 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
@@ -49,7 +45,7 @@ namespace Chiro.Gap.Orm
 			}
 
 			[Verplicht]
-			[DisplayName("Chiroleeftijd")]
+			[DisplayName(@"Chiroleeftijd")]
 			[Range(-8, +3, ErrorMessage = "{0} is beperkt van {1} tot {2}.")]
 			[DisplayFormat(DataFormatString = "{0:+#0;-#0}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true)]
 			public int ChiroLeefTijd
@@ -84,15 +80,6 @@ namespace Chiro.Gap.Orm
 			{
 				_teVerwijderen = value;
 			}
-		}
-
-		/// <summary>
-		/// Instantieert een GelieerdePersoon-object
-		/// </summary>
-		public GelieerdePersoon()
-			: base()
-		{
-			// _meeGeleverd = null;
 		}
 
 		public string VersieString
@@ -152,12 +139,7 @@ namespace Chiro.Gap.Orm
 
 		public IList<Categorie> CategorieLijstGet()
 		{
-			IList<Categorie> result = new List<Categorie>();
-			foreach (Categorie c in this.Categorie)
-			{
-				result.Add(c);
-			}
-			return result;
+			return Categorie.ToList();
 		}
 	}
 }

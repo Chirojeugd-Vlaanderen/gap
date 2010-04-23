@@ -107,7 +107,10 @@ namespace Chiro.Gap.Data.Test
 		{
 			// Arrange
 
-			Gav gav = new Gav() { Login = TestInfo.NIEUWEGAV };
+			Gav gav = new Gav()
+			{
+				Login = TestInfo.NIEUWEGAV
+			};
 			IDao<Gav> gavDao = Factory.Maak<IDao<Gav>>();
 
 			// Act
@@ -150,8 +153,8 @@ namespace Chiro.Gap.Data.Test
 			#region Assert
 
 			c = (from cat in g.Categorie
-			     where String.Compare(cat.Code, TestInfo.ONBESTAANDENIEUWECATCODE) == 0
-			     select cat).First();
+				 where String.Compare(cat.Code, TestInfo.ONBESTAANDENIEUWECATCODE) == 0
+				 select cat).First();
 
 			Assert.IsTrue(c.ID > 0);
 
@@ -214,7 +217,7 @@ namespace Chiro.Gap.Data.Test
 			var cDao = Factory.Maak<ICategorieenDao>();
 			var mgr = Factory.Maak<GroepenManager>();
 
-			Groep g = gDao.Ophalen(TestInfo.GROEPID, grp=>grp.Categorie);
+			Groep g = gDao.Ophalen(TestInfo.GROEPID, grp => grp.Categorie);
 
 			// categorie maken en toevoegen, zodat we kunnen zien of we ze goed kunnen verwijderen
 
@@ -263,26 +266,26 @@ namespace Chiro.Gap.Data.Test
 				TestInfo.ONBESTAANDENIEUWECATNAAM,
 				TestInfo.ONBESTAANDENIEUWECATCODE);
 
-			g = gDao.Bewaren(g, grp=>grp.Categorie);
+			g = gDao.Bewaren(g, grp => grp.Categorie);
 
 			#endregion
 
 			#region Act
 
 			c = (from cat in g.Categorie
-			     where String.Compare(cat.Code, TestInfo.ONBESTAANDENIEUWECATCODE) == 0
-			     select cat).First();
+				 where String.Compare(cat.Code, TestInfo.ONBESTAANDENIEUWECATCODE) == 0
+				 select cat).First();
 
 			c.TeVerwijderen = true;
-			g = gDao.Bewaren(g, grp=>grp.Categorie);
+			g = gDao.Bewaren(g, grp => grp.Categorie);
 
 			#endregion
 
 			#region Assert
 
 			var gevonden = (from cat in g.Categorie
-					where String.Compare(cat.Code, TestInfo.ONBESTAANDENIEUWECATCODE) == 0
-					select cat).FirstOrDefault();
+							where String.Compare(cat.Code, TestInfo.ONBESTAANDENIEUWECATCODE) == 0
+							select cat).FirstOrDefault();
 
 			Assert.IsNull(gevonden);	// verwacht dat categorie niet meer aan groep hangt
 
@@ -326,7 +329,7 @@ namespace Chiro.Gap.Data.Test
 
 			// Act
 
-			IEnumerable<GelieerdePersoon> opgehaaldePersonen = dao.PaginaOphalen(TestInfo.GROEPID, gprs=>gprs.Groep.ID , 1, 10, out totaal);
+			IEnumerable<GelieerdePersoon> opgehaaldePersonen = dao.PaginaOphalen(TestInfo.GROEPID, gprs => gprs.Groep.ID, 1, 10, out totaal);
 
 			// Assert
 

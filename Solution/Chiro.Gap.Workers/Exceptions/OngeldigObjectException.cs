@@ -5,9 +5,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 using Chiro.Gap.Domain;
 
@@ -16,7 +14,6 @@ namespace Chiro.Gap.Workers.Exceptions
 	/// <summary>
 	/// Exception die toelaat om meerdere foutboodschappen over de members van een object mee te sturen.
 	/// </summary>
-	/// <typeparam name="TFoutCode">Type van de foutcodes gebruikt in de foutboodschappen</typeparam>
 	/// <remarks>TODO: Dit wordt blijkbaar enkel gebruikt voor adressen.  Is heel die constructie dan wel
 	/// nodig? Misschien is een AdresException wel even goed.</remarks>
 	[Serializable]
@@ -37,7 +34,7 @@ namespace Chiro.Gap.Workers.Exceptions
 		#region standaardconstructors
 
 		/// <summary>
-		/// Standaardconstructor
+		/// De standaardconstructor
 		/// </summary>
 		public OngeldigObjectException() { }
 
@@ -62,8 +59,8 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// <summary>
 		/// Constructor voor deserializatie.
 		/// </summary>
-		/// <param name="info">Serializatie-info</param>
-		/// <param name="context">Streamingcontext</param>
+		/// <param name="info">De serializatie-info</param>
+		/// <param name="context">De streamingcontext</param>
 		protected OngeldigObjectException(SerializationInfo info, StreamingContext context)
 			: base(info, context) 
 		{
@@ -77,7 +74,7 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// Serializatie van de exception
 		/// </summary>
 		/// <param name="info">Serializatie-info waarin eigenschappen van exception bewaard moeten worden</param>
-		/// <param name="context"></param>
+		/// <param name="context">De streamingcontext</param>
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			base.GetObjectData(info, context);
@@ -100,6 +97,5 @@ namespace Chiro.Gap.Workers.Exceptions
 			_berichten = berichten;
 		}
 		#endregion
-
 	}
 }

@@ -164,7 +164,7 @@ namespace Chiro.Gap.Workers.Test
 				testData.NieuweFunctieCode,
 				1, 0,
 				LidType.Alles,
-				testData.HuidigGwj.WerkJaar+1);	// pas geldig volgend groepswerkjaar
+				testData.HuidigGwj.WerkJaar + 1);	// pas geldig volgend groepswerkjaar
 
 			IEnumerable<Functie> functies = new Functie[] { f };
 

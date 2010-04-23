@@ -5,8 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.FaultContracts;
@@ -22,7 +20,6 @@ namespace Chiro.Gap.Validatie
 		/// Voegt berichten uit een BusinessFault toe aan een
 		/// 'IValidatieDictionary'
 		/// </summary>
-		/// <typeparam name="T">Type foutcode voor BusinessFault</typeparam>
 		/// <param name="dst">IValidatieDictionary waaraan de berichten
 		/// moeten worden toegevoegd.</param>
 		/// <param name="src">BusinessFault met toe te voegen berichten</param>

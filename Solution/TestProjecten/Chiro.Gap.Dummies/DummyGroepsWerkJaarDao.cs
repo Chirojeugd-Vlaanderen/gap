@@ -10,7 +10,7 @@ namespace Chiro.Gap.Dummies
 	/// <summary>
 	/// Dummy GroepsWerkJaarDao voor unit tests
 	/// </summary>
-	public class DummyGroepsWerkJaarDao: IGroepsWerkJaarDao
+	public class DummyGroepsWerkJaarDao : IGroepsWerkJaarDao
 	{
 		#region IGroepsWerkJaarDao Members
 

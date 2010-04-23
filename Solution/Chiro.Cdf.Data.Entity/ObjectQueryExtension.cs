@@ -33,7 +33,7 @@ namespace Chiro.Cdf.Data.Entity
 
 			// Build string path:
 			StringBuilder sb = new StringBuilder();
-			string separator = String.Empty;
+			String separator = String.Empty;
 			foreach (ExtendedPropertyInfo member in members)
 			{
 				sb.Append(separator);

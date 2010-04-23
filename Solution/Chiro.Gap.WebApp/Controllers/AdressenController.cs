@@ -6,11 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
 
-using Chiro.Cdf.Ioc;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
 
@@ -21,8 +18,12 @@ namespace Chiro.Gap.WebApp.Controllers
 	/// </summary>
 	public class AdressenController : BaseController
 	{
-		private AdressenHelper _adressenHelper;
+		private readonly AdressenHelper _adressenHelper;
 
+		/// <summary>
+		/// TODO: documenteren
+		/// </summary>
+		/// <param name="serviceHelper"></param>
 		public AdressenController(IServiceHelper serviceHelper) : base(serviceHelper) 
 		{
 			_adressenHelper = new AdressenHelper(serviceHelper);
@@ -75,8 +76,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// Stelt op basis van een <paramref name="gedeeltelijkeStraatNaam"/> en een 
-		/// <paramref name="gemeenteNaam"/> een lijst suggesties samen met straatnamen die de
+		/// Stelt op basis van een gedeeltelijke straatnaam en een 
+		/// gemeentenaam een lijst suggesties samen met straatnamen die de
 		/// gebruiker mogelijk zinnes is in te vullen.
 		/// </summary>
 		/// <param name="q">Wat de gebruiker al intikte</param>

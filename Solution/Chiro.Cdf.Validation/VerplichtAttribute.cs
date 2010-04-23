@@ -3,20 +3,17 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace System.ComponentModel.DataAnnotations
 {
+	/// <summary>
+	/// 
+	/// </summary>
 	public class VerplichtAttribute : RequiredAttribute
 	{
 		public VerplichtAttribute()
-			: base()
 		{
-			this.ErrorMessageResourceType = typeof(Properties.Resources);
-			this.ErrorMessageResourceName = "RequiredAttribute_ValidationError";
+			ErrorMessageResourceType = typeof(Properties.Resources);
+			ErrorMessageResourceName = "RequiredAttribute_ValidationError";
 		}
 	}
 }

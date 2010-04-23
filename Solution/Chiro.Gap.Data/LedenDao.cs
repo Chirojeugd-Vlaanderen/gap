@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Data.Objects;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
@@ -57,7 +56,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>Lidobject indien gevonden, anders null</returns>
 		public Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths)
 		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				var query = (from l in db.Lid
 							 where l.GelieerdePersoon.ID == gelieerdePersoonID
@@ -76,7 +75,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			IList<Lid> lijst;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.Lid.MergeOption = MergeOption.NoTracking;
 
@@ -119,7 +118,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			IList<Lid> lijst = new List<Lid>();
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.Lid.MergeOption = MergeOption.NoTracking;
 
@@ -154,6 +153,7 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		/// <param name="groepsWerkJaarID"></param>
 		/// <param name="afdelingsID"></param>
+		/// <returns></returns>
 		/// <remarks>
 		/// Pagineren gebeurt per werkjaar.
 		/// De parameters pagina, paginaGrootte en aantalTotaal zijn niet meer nodig.
@@ -162,7 +162,7 @@ namespace Chiro.Gap.Data.Ef
 		{
 			IList<Lid> lijst;
 
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.Lid.MergeOption = MergeOption.NoTracking;
 
@@ -203,11 +203,11 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>Een lid met afdelingsjaren, afdelingen en gelieerdepersoon</returns>
 		public Lid OphalenMetDetails(int lidID)
 		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.Lid.MergeOption = MergeOption.NoTracking;
 
-				Lid lid = (
+				var lid = (
 			from t in db.Lid.Include("GelieerdePersoon.Persoon").Include("GroepsWerkJaar.AfdelingsJaar.Afdeling")
 			where t.ID == lidID
 			select t).FirstOrDefault<Lid>();
@@ -277,7 +277,9 @@ namespace Chiro.Gap.Data.Ef
 		{
 			using (var db = new ChiroGroepEntities())
 			{
-				Lid l = (from ld in db.Lid where ld.ID == lidID select ld).FirstOrDefault();
+				Lid l = (from ld in db.Lid
+						 where ld.ID == lidID
+						 select ld).FirstOrDefault();
 				return (l is Leiding);
 			}
 		}
@@ -294,18 +296,19 @@ namespace Chiro.Gap.Data.Ef
 		/// </returns>
 		public Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID)
 		{
-			using (ChiroGroepEntities db = new ChiroGroepEntities())
+			using (var db = new ChiroGroepEntities())
 			{
 				db.Lid.MergeOption = MergeOption.NoTracking;
 
-				Lid lid = (
+				var lid = (
 					from t in db.Lid
 					where t.GelieerdePersoon.ID == gelieerdePersoonID
 							&&
 							t.GroepsWerkJaar.ID == groepsWerkJaarID
 					select t).FirstOrDefault<Lid>();
 
-				if(lid!=null){
+				if (lid != null)
+				{
 					int lidID = lid.ID;
 
 					if (lid is Kind)
@@ -326,7 +329,7 @@ namespace Chiro.Gap.Data.Ef
 								.Include("GelieerdePersoon.Persoon")
 								.Include("GroepsWerkJaar")
 								.Include("AfdelingsJaar.Afdeling")
-								.Include(leid=>leid.Functie)
+								.Include(leid => leid.Functie)
 							where t.ID == lidID
 							select t).FirstOrDefault<Leiding>();
 					}

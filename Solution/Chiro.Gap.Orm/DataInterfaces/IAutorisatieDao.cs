@@ -3,10 +3,8 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Orm.DataInterfaces
@@ -33,11 +31,11 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// groep waar de gebruiker GAV van is.)
 		/// </summary>
 		/// <param name="login">De gebruikersnaam van de bezoeker</param>
-		/// <param name="GelieerdePersoonID">ID van gelieerde persoon</param>
+		/// <param name="gelieerdePersoonID">ID van gelieerde persoon</param>
 		/// <returns><c>Null</c> indien geen gebruikersrechten gevonden,
 		/// anders een GebruikersRecht-object</returns>
 		/// <remarks>Let op: de gebruikersrechten kunnen vervallen zijn!</remarks>
-		GebruikersRecht RechtenMbtGelieerdePersoonGet(string login, int GelieerdePersoonID);
+		GebruikersRecht RechtenMbtGelieerdePersoonGet(string login, int gelieerdePersoonID);
 		#endregion
 
 		#region Enkel de niet-vervallen gebruikersrechten

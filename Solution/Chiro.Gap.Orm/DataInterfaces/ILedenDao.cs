@@ -5,8 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Linq.Expressions;
 using Chiro.Cdf.Data;
 
@@ -17,8 +15,19 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	/// </summary>
 	public interface ILedenDao : IDao<Lid>
 	{
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="groepsWerkJaarID"></param>
+		/// <returns></returns>
 		IList<Lid> AllesOphalen(int groepsWerkJaarID);
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="groepsWerkJaarID"></param>
+		/// <param name="afdelingsID"></param>
+		/// <returns></returns>
 		IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID);
 
 		/// <summary>
@@ -68,6 +77,11 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <returns>Lidobject indien gevonden, anders <c>null</c></returns>
 		Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths);
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="lidID"></param>
+		/// <returns></returns>
 		Lid OphalenMetDetails(int lidID);
 
 		/// <summary>
@@ -79,6 +93,12 @@ namespace Chiro.Gap.Orm.DataInterfaces
 
 		// void LidMaken(int gelieerdeID);
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="gelieerdePersoonID"></param>
+		/// <param name="groepsWerkJaarID"></param>
+		/// <returns></returns>
 		Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID);
 	}
 }

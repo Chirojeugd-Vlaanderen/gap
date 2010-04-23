@@ -98,7 +98,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.ID))
 				.ForMember(
 					dst => dst.PersoonInfo,
-					opt => opt.MapFrom(src => src.GelieerdePersoon == null? null : src.GelieerdePersoon))
+					opt => opt.MapFrom(src => src.GelieerdePersoon == null ? null : src.GelieerdePersoon))
 				.ForMember(
 					dst => dst.Type,
 					opt => opt.MapFrom(src => src is Kind ? LidType.Kind : LidType.Leiding))
@@ -110,8 +110,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.LidgeldBetaald))
 				.ForMember(
 					dst => dst.DubbelPunt,
-					//FIXME: geef hier false terug, zodat het in de lidinfo een bool is ipv bool? en het printen
-					//in de ui makkelijker is
+				// FIXME: geef hier false terug, zodat het in de lidinfo een bool is ipv bool? en het printen
+				// in de ui makkelijker is
 					opt => opt.MapFrom(src => src is Leiding ? ((Leiding)src).DubbelPuntAbonnement : false))
 				.ForMember(
 					dst => dst.AfdelingIdLijst,
@@ -167,9 +167,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.AdresType,
 					opt => opt.MapFrom(src => src.AdresType));
 
-
-			//Important: als er een lid is, dan is er altijd een gelieerdepersoon, maar niet omgekeerd, 
-			//dus passen we de link aan in de andere richting!
+			// Important: als er een lid is, dan is er altijd een gelieerdepersoon, maar niet omgekeerd, 
+			// dus passen we de link aan in de andere richting!
 			Mapper.CreateMap<GelieerdePersoon, PersoonLidInfo>()
 				.ForMember(
 					dst => dst.PersoonInfo,
@@ -193,7 +192,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.CreateMap<BlokkerendeObjectenException<GelieerdePersoon>,
 					BlokkerendeObjectenFault<PersoonInfo>>()
 				.ForMember(
-					dst => dst.Objecten, 
+					dst => dst.Objecten,
 					opt => opt.MapFrom(src => src.Objecten.Take(Properties.Settings.Default.KleinAantal)));
 			Mapper.CreateMap<BlokkerendeObjectenException<PersoonsAdres>,
 					BlokkerendeObjectenFault<PersoonsAdresInfo2>>();

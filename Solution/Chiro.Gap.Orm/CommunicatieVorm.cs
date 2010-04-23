@@ -3,16 +3,11 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
-using System.ComponentModel;
 
 namespace Chiro.Gap.Orm
 {
@@ -30,17 +25,17 @@ namespace Chiro.Gap.Orm
 		/// </summary>
 		public class CommuncatieVormValidatie
 		{
-			[Verplicht()]
+			[Verplicht]
 			public string Nummer { get; set; }
 
 			[StringLengte(320)]
 			[DataType(DataType.MultilineText)]
 			public string Nota { get; set; }
 
-			[DisplayName("Voor heel het gezin?")]
+			[DisplayName(@"Voor heel het gezin?")]
 			public bool IsGezinsgebonden { get; set; }
 
-			[DisplayName("Gebruiken om persoon te contacteren?")]
+			[DisplayName(@"Gebruiken om persoon te contacteren?")]
 			public bool Voorkeur { get; set; }
 		}
 

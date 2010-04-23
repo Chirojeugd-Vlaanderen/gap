@@ -1,8 +1,11 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Chiro.Gap.Workers.Exceptions
 {
@@ -11,7 +14,7 @@ namespace Chiro.Gap.Workers.Exceptions
 	/// </summary>
 	/// <remarks>Gebaseerd op http://blog.gurock.com/articles/creating-custom-exceptions-in-dotnet/</remarks>
 	[Serializable]
-	public class GapException : System.Exception
+	public class GapException : Exception
 	{
 		private int _foutNummer;
 		private IEnumerable<string> _items;
@@ -33,7 +36,7 @@ namespace Chiro.Gap.Workers.Exceptions
 		#region standaardconstructors
 
 		/// <summary>
-		/// Standaardconstructor
+		/// De standaardconstructor
 		/// </summary>
 		public GapException() { }
 
@@ -58,8 +61,8 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// <summary>
 		/// Constructor voor deserializatie.
 		/// </summary>
-		/// <param name="info">Serializatie-info</param>
-		/// <param name="context">Streamingcontext</param>
+		/// <param name="info">De serializatie-info</param>
+		/// <param name="context">De streamingcontext</param>
 		protected GapException(SerializationInfo info, StreamingContext context) : base(info, context) 
 		{
 			if (info != null)
@@ -73,7 +76,7 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// Serializatie van de exception
 		/// </summary>
 		/// <param name="info">Serializatie-info waarin eigenschappen van exception bewaard moeten worden</param>
-		/// <param name="context"></param>
+		/// <param name="context">De streamingcontext</param>
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			base.GetObjectData(info, context);
@@ -92,14 +95,13 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// Construeer GapException met bericht <paramref name="message"/> en foutnummer
 		/// <paramref name="foutNummer"/>
 		/// </summary>
-		/// <param name="message">Technische info over de exception; nuttig voor developer</param>
 		/// <param name="foutNummer">Foutnummer van de fout die de exception veroorzaakte</param>
+		/// <param name="message">Technische info over de exception; nuttig voor developer</param>
 		public GapException(int foutNummer, string message) : base(message) 
 		{
 			_foutNummer = foutNummer;
 		}
 		
 		#endregion
-
 	}
 }

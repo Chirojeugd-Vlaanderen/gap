@@ -3,14 +3,9 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
-using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Orm;
 
 namespace Chiro.Gap.Validatie

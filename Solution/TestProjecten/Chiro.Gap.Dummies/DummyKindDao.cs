@@ -8,10 +8,10 @@ using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Dummies
 {
-    /// <summary>
-    /// Dummy KindDao; doet niets
-    /// </summary>
-    public class DummyKindDao: DummyDao<Kind>, IKindDao
-    {
-    }
+	/// <summary>
+	/// Dummy KindDao; doet niets
+	/// </summary>
+	public class DummyKindDao : DummyDao<Kind>, IKindDao
+	{
+	}
 }

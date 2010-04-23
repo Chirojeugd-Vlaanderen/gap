@@ -3,21 +3,18 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 namespace System.ComponentModel.DataAnnotations
 {
+	/// <summary>
+	/// 
+	/// </summary>
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
 	public class StringMinimumLengteAttribute : ValidationAttribute
 	{
 		// Fields
-		public int MinimumLenght
+		public int MinimumLength
 		{
 			get;
 			set;
@@ -34,19 +31,19 @@ namespace System.ComponentModel.DataAnnotations
 			{
 				throw new ArgumentOutOfRangeException("minimumLength", minimumLength, Properties.Resources.StringMinimumLengthAttribute_InvalidMinimumLenght);
 			}
-			this.MinimumLenght = minimumLength;
+			MinimumLength = minimumLength;
 		}
 
 		public override string FormatErrorMessage(string name)
 		{
-			return string.Format(CultureInfo.CurrentCulture, base.ErrorMessageString, new object[] { name, this.MinimumLenght });
+			return string.Format(CultureInfo.CurrentCulture, ErrorMessageString, new object[] { name, MinimumLength });
 		}
 
 		public override bool IsValid(object value)
 		{
 			if (value != null)
 			{
-				return (((string)value).Length >= this.MinimumLenght);
+				return (((string)value).Length >= MinimumLength);
 			}
 			return false;
 		}

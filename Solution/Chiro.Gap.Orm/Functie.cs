@@ -3,11 +3,6 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Domain;
@@ -35,7 +30,7 @@ namespace Chiro.Gap.Orm
 	public partial class Functie : IEfBasisEntiteit
 	{
 		/// <summary>
-		/// Standaardconstructor; maakt een functie die geschikt is voor alle types leden.
+		/// De standaardconstructor; maakt een functie die geschikt is voor alle types leden.
 		/// </summary>
 		public Functie()
 		{
@@ -86,6 +81,5 @@ namespace Chiro.Gap.Orm
 			get { return (LidType)LidTypeInt; }
 			set { LidTypeInt = (int)value; }
 		}
-
 	}
 }

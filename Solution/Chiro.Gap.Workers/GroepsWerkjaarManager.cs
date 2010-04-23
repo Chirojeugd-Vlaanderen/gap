@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
@@ -22,10 +21,10 @@ namespace Chiro.Gap.Workers
 	/// </summary>
 	public class GroepsWerkJaarManager
 	{
-		private IGroepsWerkJaarDao _groepsWjDao;
-		private IGroepenDao _groepenDao;
-		private IAutorisatieManager _autorisatieMgr;
-		private IAfdelingenDao _afdelingenDao;
+		private readonly IGroepsWerkJaarDao _groepsWjDao;
+		private readonly IGroepenDao _groepenDao;
+		private readonly IAutorisatieManager _autorisatieMgr;
+		private readonly IAfdelingenDao _afdelingenDao;
 
 		/// <summary>
 		/// Creëert een GroepsWerkJaarManager
@@ -117,7 +116,7 @@ namespace Chiro.Gap.Workers
 						"De afdeling is niet gekoppeld aan de groep van het groepswerkjaar.");
 			}
 
-			AfdelingsJaar resultaat = new AfdelingsJaar();
+			var resultaat = new AfdelingsJaar();
 
 			resultaat.GeboorteJaarVan = jaarVan;
 			resultaat.GeboorteJaarTot = jaarTot;
@@ -227,7 +226,6 @@ namespace Chiro.Gap.Workers
 				paths.Add(gwj => gwj.AfdelingsJaar.First().Kind);
 				paths.Add(gwj => gwj.AfdelingsJaar.First().Leiding);
 			}
-
 
 			if ((extras & GroepsWerkJaarExtras.GroepsFuncties) != 0)
 			{
