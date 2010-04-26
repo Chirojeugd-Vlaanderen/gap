@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 
+using Chiro.Gap.Domain;
+
 namespace Chiro.Gap.ServiceContracts
 {
 	[DataContract]
@@ -15,6 +17,9 @@ namespace Chiro.Gap.ServiceContracts
 	{
 		private string _bus;
 
+		/// <summary>
+		/// Het AdresID
+		/// </summary>
 		[DataMember]
 		public int ID { get; set; }
 
@@ -43,8 +48,5 @@ namespace Chiro.Gap.ServiceContracts
 
 		[DataMember]
 		public int WoonPlaatsID { get; set; }
-
-		[DataMember]
-		public List<BewonersInfo> Bewoners { get; set; }
 	}
 }

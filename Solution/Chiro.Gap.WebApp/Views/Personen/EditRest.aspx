@@ -2,6 +2,7 @@
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.Orm"  %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
+<%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -165,13 +166,13 @@
     <h3>Adressen</h3>
 
     <ul>
-    <% foreach (Chiro.Gap.ServiceContracts.PersoonsAdresInfo pa in ViewData.Model.PersoonLidInfo.PersoonsAdresInfo)
+    <% foreach (PersoonsAdresInfo pa in ViewData.Model.PersoonLidInfo.PersoonsAdresInfo)
        { %>
        <li>
-            <%=Html.Encode(String.Format("{0} {1}", pa.AdresInfo.StraatNaamNaam, pa.AdresInfo.HuisNr))%>,
-            <%=Html.Encode(String.Format("{0} {1} ({2}) ", pa.AdresInfo.PostNr, pa.AdresInfo.WoonPlaatsNaam, pa.AdresType))%>
-            <%=Html.ActionLink("[verhuizen]", "Verhuizen", new { id = pa.AdresInfo.ID, aanvragerID = ViewData.Model.PersoonLidInfo.PersoonInfo.GelieerdePersoonID })%>
-            <%=Html.ActionLink("[verwijderen]", "AdresVerwijderen", new { id = pa.AdresInfo.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonInfo.GelieerdePersoonID })%>
+            <%=Html.Encode(String.Format("{0} {1}", pa.StraatNaamNaam, pa.HuisNr))%>,
+            <%=Html.Encode(String.Format("{0} {1} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType))%>
+            <%=Html.ActionLink("[verhuizen]", "Verhuizen", new { id = pa.ID, aanvragerID = ViewData.Model.PersoonLidInfo.PersoonInfo.GelieerdePersoonID })%>
+            <%=Html.ActionLink("[verwijderen]", "AdresVerwijderen", new { id = pa.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonInfo.GelieerdePersoonID })%>
         </li>
     <%} %>
         <li><%=Html.ActionLink("[adres toevoegen]", "NieuwAdres", new { id = ViewData.Model.PersoonLidInfo.PersoonInfo.GelieerdePersoonID })%></li>

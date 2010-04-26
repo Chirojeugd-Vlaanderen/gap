@@ -127,10 +127,39 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.CreateMap<Adres, AdresInfo>()
 				.ForMember(
 					dst => dst.PostNr,
-					opt => opt.MapFrom(src => src.StraatNaam.PostNummer))
+					opt => opt.MapFrom(src => src.WoonPlaats.PostNummer));
+
+			Mapper.CreateMap<Adres, GezinInfo>()
+				.ForMember(
+					dst => dst.PostNr,
+					opt => opt.MapFrom(src => src.WoonPlaats.PostNummer))
 				.ForMember(
 					dst => dst.Bewoners,
 					opt => opt.MapFrom(src => src.PersoonsAdres.ToList()));
+
+			// Domme mapping
+			Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo>()
+				.ForMember(
+					dst => dst.Bus,
+					opt => opt.MapFrom(src => src.Adres.Bus))
+				.ForMember(
+					dst => dst.HuisNr,
+					opt => opt.MapFrom(src => src.Adres.HuisNr))
+				.ForMember(
+					dst => dst.ID,
+					opt => opt.MapFrom(src => src.Adres.ID))
+				.ForMember(
+					dst => dst.PostNr,
+					opt => opt.MapFrom(src => src.Adres.StraatNaam.PostNummer))
+				.ForMember(
+					dst => dst.StraatNaamNaam,
+					opt => opt.MapFrom(src => src.Adres.StraatNaam.Naam))
+				.ForMember(
+					dst => dst.WoonPlaatsID,
+					opt => opt.MapFrom(src => src.Adres.WoonPlaats.ID))
+				.ForMember(
+					dst => dst.WoonPlaatsNaam,
+					opt => opt.MapFrom(src => src.Adres.WoonPlaats.Naam));
 
 			Mapper.CreateMap<Persoon, BewonersInfo>()
 				.ForMember(
@@ -159,13 +188,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.CreateMap<Categorie, CategorieInfo>();
 			Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo2>();
 			Mapper.CreateMap<CommunicatieVorm, CommunicatieInfo>();
-			Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo>()
-				.ForMember(
-					dst => dst.AdresInfo,
-					opt => opt.MapFrom(src => src.Adres))
-				.ForMember(
-					dst => dst.AdresType,
-					opt => opt.MapFrom(src => src.AdresType));
+
 
 			// Important: als er een lid is, dan is er altijd een gelieerdepersoon, maar niet omgekeerd, 
 			// dus passen we de link aan in de andere richting!
@@ -175,10 +198,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src))
 				.ForMember(
 					dst => dst.PersoonsAdresInfo,
-					opt => opt.MapFrom(src => src.Persoon.PersoonsAdres == null ? null : src.Persoon.PersoonsAdres))
+					opt => opt.MapFrom(src => src.Persoon.PersoonsAdres))
 				.ForMember(
 					dst => dst.CommunicatieInfo,
-					opt => opt.MapFrom(src => src.Communicatie == null ? null : src.Communicatie))
+					opt => opt.MapFrom(src => src.Communicatie))
 				.ForMember(
 					dst => dst.LidInfo,
 					opt => opt.MapFrom(null));

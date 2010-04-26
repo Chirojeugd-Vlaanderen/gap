@@ -6,8 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Chiro.Cdf.Data.Entity;

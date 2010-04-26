@@ -215,9 +215,12 @@ namespace Chiro.Gap.Services
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public AdresInfo AdresMetBewonersOphalen(int adresID)
+		public GezinInfo GezinOphalen(int adresID)
 		{
-			return Mapper.Map<Adres, AdresInfo>(_adrMgr.AdresMetBewonersOphalen(adresID));
+			var adres = _adrMgr.AdresMetBewonersOphalen(adresID);
+			var resultaat = Mapper.Map<Adres, GezinInfo>(adres);
+
+			return resultaat;
 		}
 
 		/// <summary>
@@ -229,7 +232,6 @@ namespace Chiro.Gap.Services
 		/// <param name="persoonIDs">ID's van te verhuizen Personen (niet gelieerd!)</param>
 		/// <param name="naarAdres">AdresInfo-object met nieuwe adresgegevens</param>
 		/// <param name="oudAdresID">ID van het oude adres</param>
-		/// <param name="adresType">Adrestype dat alle aangepaste PersoonsAdressen zullen krijgen</param>
 		/// <remarks>
 		/// (1) nieuwAdres.ID wordt genegeerd.  Het adresID wordt altijd
 		/// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
@@ -243,9 +245,8 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void Verhuizen(
 			IEnumerable<int> persoonIDs,
-			AdresInfo naarAdres,
-			int oudAdresID,
-			AdresTypeEnum adresType)
+			PersoonsAdresInfo naarAdres,
+			int oudAdresID)
 		{
 			// Zoek adres op in database, of maak een nieuw.
 			// (als straat en gemeente gekend)
@@ -290,7 +291,7 @@ namespace Chiro.Gap.Services
 
 			try
 			{
-				_pMgr.Verhuizen(personenLijst, oudAdres, nieuwAdres, adresType);
+				_pMgr.Verhuizen(personenLijst, oudAdres, nieuwAdres, naarAdres.AdresType);
 			}
 			catch (BlokkerendeObjectenException<PersoonsAdres> ex)
 			{
@@ -310,9 +311,13 @@ namespace Chiro.Gap.Services
 			// Bijgevolg moet het oudeAdres niet gepersisteerd worden.
 		}
 
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void AdresToevoegen(List<int> personenIDs, AdresInfo adr, AdresTypeEnum adresType)
+		/// <summary>
+		/// Voegt een adres toe aan een verzameling personen
+		/// </summary>
+		/// <param name="personenIDs">ID's van Personen
+		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
+		/// <param name="adr">Toe te voegen adres</param>
+		public void AdresToevoegen(List<int> personenIDs, PersoonsAdresInfo adr)
 		{
 			// Dit gaat sterk lijken op verhuizen.
 
@@ -336,7 +341,7 @@ namespace Chiro.Gap.Services
 
 			try
 			{
-				_pMgr.AdresToevoegen(personenLijst, adres, adresType);
+				_pMgr.AdresToevoegen(personenLijst, adres, adr.AdresType);
 			}
 			catch (BlokkerendeObjectenException<PersoonsAdres> ex)
 			{
@@ -357,8 +362,8 @@ namespace Chiro.Gap.Services
 			Adres adr = _adrMgr.AdresMetBewonersOphalen(adresID);
 
 			IList<PersoonsAdres> teVerwijderen = (from pa in adr.PersoonsAdres
-												  where personenIDs.Contains(pa.Persoon.ID)
-												  select pa).ToList();
+								  where personenIDs.Contains(pa.Persoon.ID)
+								  select pa).ToList();
 
 			// TODO: worker method gebruiken 
 

@@ -9,12 +9,12 @@ using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts
 {
+	/// <summary>
+	/// AdresInfo, met als extra informatie het AdresType (thuisadres, werkadres,...)
+	/// </summary>
 	[DataContract]
-	public class PersoonsAdresInfo
+	public class PersoonsAdresInfo: AdresInfo
 	{
-		[DataMember]
-		public AdresInfo AdresInfo { get; set; }
-
 		[DataMember]
 		public AdresTypeEnum AdresType { get; set; }
 	}

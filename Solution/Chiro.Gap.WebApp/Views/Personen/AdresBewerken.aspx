@@ -11,22 +11,22 @@
 <script type="text/javascript">
     // Automatisch invullen gemeentes na keuze postnummer
     $(function() {
-        $("input#Adres_PostNr").change(function() {
+        $("input#PersoonsAdresInfo_PostNr").change(function() {
             $.getJSON('<%=Url.Action("WoonPlaatsenOphalen", "Adressen")%>', { postNummer: $(this).val() }, function(j) {
                 var options = '';
                 for (var i = 0; i < j.length; i++) {
                     options += '<option value="' + j[i].ID + '">' + j[i].Naam + '</option>';
                 }
-                $("select#Adres_WoonPlaatsID").html(options);
+                $("select#PersoonsAdresInfo_WoonPlaatsID").html(options);
             })
         })
     });
 
     // Autocomplete straten
     $(document).ready(function() {
-    $("input#Adres_StraatNaamNaam").autocomplete(
+    $("input#PersoonsAdresInfo_StraatNaamNaam").autocomplete(
         '<%= Url.Action("StratenVoorstellen", "Adressen") %>', 
-        { extraParams: { "postNummer": function() { return $("input#Adres_PostNr").val(); } } });
+        { extraParams: { "postNummer": function() { return $("input#PersoonsAdresInfo_PostNr").val(); } } });
     }); 
 
 </script>
@@ -53,36 +53,36 @@
 				 select new { value = e, text = e.ToString() }; 
 	%>
 
-	<%=Html.LabelFor(mdl => mdl.AdresType) %>
-	<%=Html.DropDownListFor(mdl => mdl.AdresType, new SelectList(values, "value", "text"))%>
+	<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.AdresType) %>
+	<%=Html.DropDownListFor(mdl => mdl.PersoonsAdresInfo.AdresType, new SelectList(values, "value", "text"))%>
 	<br />
 
-	<%=Html.LabelFor(mdl => mdl.Adres.PostNr) %>
-	<%=Html.EditorFor(mdl => mdl.Adres.PostNr) %>
-    <%=Html.ValidationMessageFor(mdl => mdl.Adres.PostNr) %>	
+	<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.PostNr) %>
+	<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.PostNr)%>
+    <%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.PostNr)%>	
     <noscript>
         <input type="submit" name="action" value="Woonplaatsen ophalen" />
     </noscript>
 	<br />
 
-	<%=Html.LabelFor(mdl => mdl.Adres.StraatNaamNaam) %>
-	<%=Html.EditorFor(mdl => mdl.Adres.StraatNaamNaam)%>
-    <%=Html.ValidationMessageFor(mdl => mdl.Adres.StraatNaamNaam)%>	
+	<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.StraatNaamNaam)%>
+	<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.StraatNaamNaam)%>
+    <%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.StraatNaamNaam)%>	
 	<br />
 	
-	<%=Html.LabelFor(mdl => mdl.Adres.HuisNr) %>
-	<%=Html.EditorFor(mdl => mdl.Adres.HuisNr) %>
-    <%=Html.ValidationMessageFor(mdl => mdl.Adres.HuisNr) %>	
+	<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.HuisNr)%>
+	<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.HuisNr)%>
+    <%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.HuisNr)%>	
     <br />
     
-	<%=Html.LabelFor(mdl => mdl.Adres.Bus) %>
-	<%=Html.EditorFor(mdl => mdl.Adres.Bus)%>
-    <%=Html.ValidationMessageFor(mdl => mdl.Adres.Bus)%>	
+	<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.Bus)%>
+	<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.Bus)%>
+    <%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.Bus)%>	
     <br />
 
-	<%=Html.LabelFor(mdl => mdl.Adres.WoonPlaatsNaam) %> 
-    <%=Html.DropDownListFor(mdl => mdl.Adres.WoonPlaatsID, new SelectList(Model.WoonPlaatsen, "ID", "Naam")) %>
-    <%=Html.ValidationMessageFor(mdl => mdl.Adres.WoonPlaatsNaam)%>
+	<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.WoonPlaatsNaam)%> 
+    <%=Html.DropDownListFor(mdl => mdl.PersoonsAdresInfo.WoonPlaatsID, new SelectList(Model.WoonPlaatsen, "ID", "Naam"))%>
+    <%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.WoonPlaatsNaam)%>
 	<br />
 	
    <%=Html.HiddenFor(mdl=>mdl.AanvragerID) %>

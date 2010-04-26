@@ -29,20 +29,14 @@ namespace Chiro.Gap.WebApp.Models
 		public int AanvragerID { get; set; }
 
 		/// <summary>
-		/// Adrestype voor het nieuwe adres
-		/// </summary>
-		[DisplayName(@"Adrestype")]
-		public AdresTypeEnum AdresType { get; set; }
-
-		/// <summary>
 		/// Lijst met bewoners van het huidige adres
 		/// </summary>
 		public IEnumerable<CheckBoxListInfo> Bewoners { get; set; }
 
 		/// <summary>
-		/// Het adres (wordt geladen met het oude adres, komt terug met het nieuwe
+		/// Adresinfo in combinatie met adrestype
 		/// </summary>
-		public AdresInfo Adres { get; set; }
+		public PersoonsAdresInfo PersoonsAdresInfo { get; set; }
 
 		/// <summary>
 		/// Het ID van het oude adres
@@ -66,7 +60,7 @@ namespace Chiro.Gap.WebApp.Models
 		{
 			Bewoners = new List<CheckBoxListInfo>();
 			PersoonIDs = new List<int>();
-			Adres = new AdresInfo();
+			PersoonsAdresInfo = new PersoonsAdresInfo();
 			WoonPlaatsen = new List<WoonPlaatsInfo>();
 		}
 	}

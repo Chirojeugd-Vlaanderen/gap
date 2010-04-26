@@ -35,7 +35,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// met daaraan gekoppeld alle bewoners die de aangelogde gebruiker
 		/// mag zien.
 		/// </summary>
-		public AdresInfo Adres { get; set; }
+		public GezinInfo Adres { get; set; }
 
 		/// <summary>
 		/// Het lijstje PersoonIDs bevat de ID's van de personen van wie

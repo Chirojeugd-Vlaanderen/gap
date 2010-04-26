@@ -153,7 +153,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="adresID">ID op te halen adres</param>
 		/// <returns>Adresobject met gekoppelde personen</returns>
 		[OperationContract]
-		AdresInfo AdresMetBewonersOphalen(int adresID);
+		GezinInfo GezinOphalen(int adresID);
 
 		/// <summary>
 		/// Verhuist gelieerde personen van een oud naar een nieuw
@@ -164,7 +164,6 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="persoonIDs">ID's van te verhuizen Personen (niet gelieerd!)</param>
 		/// <param name="nieuwAdres">AdresInfo-object met nieuwe adresgegevens</param>
 		/// <param name="oudAdresID">ID van het oude adres</param>
-		/// <param name="adresType">Adrestype dat alle aangepaste PersoonsAdressen zullen krijgen</param>
 		/// <remarks>nieuwAdres.ID wordt genegeerd.  Het adresID wordt altijd
 		/// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
 		/// dan krijgt het adres een nieuw ID.</remarks>
@@ -173,9 +172,8 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(OngeldigObjectFault))]
 		void Verhuizen(
 			IEnumerable<int> persoonIDs,
-			AdresInfo nieuwAdres,
-			int oudAdresID,
-			AdresTypeEnum adresType);
+			PersoonsAdresInfo nieuwAdres,
+			int oudAdresID);
 
 		/// <summary>
 		/// Haalt alle personen op die een adres gemeen hebben met de
@@ -194,11 +192,10 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="personenIDs">ID's van Personen
 		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
 		/// <param name="adres">Toe te voegen adres</param>
-		/// <param name="adresType">Soort adres (thuis, kot, enz.)</param>
 		[OperationContract]
 		[FaultContract(typeof(OngeldigObjectFault))]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
-		void AdresToevoegen(List<int> personenIDs, AdresInfo adres, AdresTypeEnum adresType);
+		void AdresToevoegen(List<int> personenIDs, PersoonsAdresInfo adres);
 
 		/// <summary>
 		/// Verwijdert een adres van een verzameling personen

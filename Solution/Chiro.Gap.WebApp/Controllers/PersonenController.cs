@@ -17,6 +17,7 @@ using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WebApp.Models;
 using Chiro.Gap.WebApp.HtmlHelpers;
+using AutoMapper;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -428,11 +429,17 @@ namespace Chiro.Gap.WebApp.Controllers
 			BaseModelInit(model, groepID);
 
 			model.AanvragerID = aanvragerID;
-			AdresInfo a = ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(l => l.AdresMetBewonersOphalen(id));
+			GezinInfo a = ServiceHelper.CallService<IGelieerdePersonenService, GezinInfo>(l => l.GezinOphalen(id));
 
-			model.Adres = a;
+			Mapper.CreateMap<GezinInfo, PersoonsAdresInfo>()
+				.ForMember(
+					dst => dst.AdresType, 
+					opt => opt.MapFrom(src => src.Bewoners.First().AdresType));
+
+			model.PersoonsAdresInfo = Mapper.Map<GezinInfo, PersoonsAdresInfo>(a);
+
 			model.OudAdresID = id;
-			model.AdresType = (from bewoner in a.Bewoners
+			model.PersoonsAdresInfo.AdresType = (from bewoner in a.Bewoners
 							   where bewoner.PersoonID == persoonID
 							   select bewoner.AdresType).FirstOrDefault();
 
@@ -476,7 +483,7 @@ namespace Chiro.Gap.WebApp.Controllers
 								  p.PersoonVolledigeNaam,
 								  model.PersoonIDs.Contains(p.PersoonID))).ToArray();
 
-			model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
+			model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 
 			return View("AdresBewerken", model);
 		}
@@ -499,7 +506,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				//
 				// Adressen worden nooit gewijzigd, enkel bijgemaakt.  (en eventueel verwijderd.)
 
-				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.Verhuizen(model.PersoonIDs, model.Adres, model.OudAdresID, model.AdresType));
+				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.Verhuizen(model.PersoonIDs, model.PersoonsAdresInfo, model.OudAdresID));
 
 				// Toon een persoon die woont op het nieuwe adres.
 				// (wat hier moet gebeuren hangt voornamelijk af van de use case)
@@ -513,7 +520,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				BaseModelInit(model, groepID);
 
-				new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "Adres.");
+				new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "PersoonsAdresInfo.");
 
 				// Als ik de bewoners van het 'Van-adres' niet had getoond in
 				// de view, dan had ik de view meteen kunnen aanroepen met het
@@ -521,7 +528,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				// Maar ik toon de bewoners wel, dus moeten die hier opnieuw
 				// uit de database gehaald worden:
-				var bewoners = (ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(l => l.AdresMetBewonersOphalen(model.OudAdresID))).Bewoners;
+				var bewoners = (ServiceHelper.CallService<IGelieerdePersonenService, GezinInfo>(l => l.GezinOphalen(model.OudAdresID))).Bewoners;
 
 				model.Bewoners = (from p in bewoners
 								  select new CheckBoxListInfo(
@@ -529,7 +536,7 @@ namespace Chiro.Gap.WebApp.Controllers
 									  p.PersoonVolledigeNaam,
 									  model.PersoonIDs.Contains(p.PersoonID))).ToArray();
 
-				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
+				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 				return View("AdresBewerken", model);
 			}
 			catch (FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>> ex)
@@ -548,7 +555,7 @@ namespace Chiro.Gap.WebApp.Controllers
 									  model.PersoonIDs.Contains(p.PersoonID),
 									  probleemPersIDs.Contains(p.PersoonID) ? Properties.Resources.WoontDaarAl : string.Empty)).ToArray();
 
-				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
+				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 				return View("AdresBewerken", model);
 
 			}
@@ -560,7 +567,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			AdresVerwijderenModel model = new AdresVerwijderenModel();
 
 			model.AanvragerID = gelieerdePersoonID;
-			model.Adres = ServiceHelper.CallService<IGelieerdePersonenService, AdresInfo>(foo => foo.AdresMetBewonersOphalen(id));
+			model.Adres = ServiceHelper.CallService<IGelieerdePersonenService, GezinInfo>(foo => foo.GezinOphalen(id));
 
 			// Standaard vervalt enkel het adres van de aanvrager
 			// Van de aanvrager heb ik het PersoonID nodig, en we hebben nu enkel het
@@ -640,7 +647,7 @@ namespace Chiro.Gap.WebApp.Controllers
 								  p.PersoonVolledigeNaam,
 								  model.PersoonIDs.Contains(p.PersoonID))).ToArray();
 
-			model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
+			model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 
 			return View("AdresBewerken", model);
 		}
@@ -663,7 +670,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				// steeds opnieuw opgezocht.  Adressen worden nooit
 				// gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
 
-				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegen(model.PersoonIDs, model.Adres, model.AdresType));
+				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegen(model.PersoonIDs, model.PersoonsAdresInfo));
 
 				return RedirectToAction("EditRest", new
 				{
@@ -674,7 +681,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				BaseModelInit(model, groepID);
 
-				new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "Adres.");
+				new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "PersoonsAdresInfo.");
 
 				// De mogelijke bewoners zijn op dit moment vergeten, en moeten dus
 				// terug opgevraagd worden.
@@ -686,7 +693,7 @@ namespace Chiro.Gap.WebApp.Controllers
 									  p.PersoonVolledigeNaam,
 									  model.PersoonIDs.Contains(p.PersoonID))).ToArray();
 
-				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
+				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 				return View("AdresBewerken", model);
 			}
 			catch (FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>> ex)
@@ -708,7 +715,7 @@ namespace Chiro.Gap.WebApp.Controllers
 									  model.PersoonIDs.Contains(p.PersoonID),
 									  probleemPersIDs.Contains(p.PersoonID) ? Properties.Resources.WoontDaarAl : string.Empty)).ToArray();
 
-				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.Adres.PostNr);
+				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 
 				return View("AdresBewerken", model);
 			}
