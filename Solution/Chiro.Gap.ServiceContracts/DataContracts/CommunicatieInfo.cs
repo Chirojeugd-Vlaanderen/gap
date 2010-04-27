@@ -40,11 +40,13 @@ namespace Chiro.Gap.ServiceContracts
 		}
 
 		[DataMember]
-		public CommunicatieType CommunicatieType
-		{
-			get;
-			set;
-		}
+		public string CommunicatieTypeOmschrijving { get; set; }
+
+		[DataMember]
+		public string CommunicatieTypeValidatie { get; set; }
+
+		[DataMember]
+		public string CommunicatieTypeVoorbeeld { get; set; }
 
 	}
 }

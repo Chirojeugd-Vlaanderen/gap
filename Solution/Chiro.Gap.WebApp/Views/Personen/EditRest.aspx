@@ -183,7 +183,12 @@
 
     <ul>
     <% 
-           var gegroepeerdeComm = Model.PersoonLidInfo.CommunicatieInfo.GroupBy(cv => cv.CommunicatieType);
+           var gegroepeerdeComm = Model.PersoonLidInfo.CommunicatieInfo.GroupBy(cv => new
+                                                                                      	{
+                                                                                      		Omschrijving = cv.CommunicatieTypeOmschrijving, 
+                                                                                                Validatie = cv.CommunicatieTypeValidatie, 
+                                                                                                Voorbeeld = cv.CommunicatieTypeVoorbeeld
+                                                                                      	});
            
            foreach (var commType in gegroepeerdeComm)
            {
