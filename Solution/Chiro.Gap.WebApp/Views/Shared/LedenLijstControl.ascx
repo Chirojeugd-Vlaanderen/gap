@@ -4,7 +4,10 @@
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 
 <div class="pager">
-Pagina: <%= Html.WerkJaarLinks(ViewData.Model.GroepsWerkJaarIdZichtbaar, ViewData.Model.GroepsWerkJaarLijst, i => Url.Action("List", new { groepsWerkJaarId = Model.GroepsWerkJaarLijst[i].ID, afdID = Model.HuidigeAfdeling }))%>
+Pagina: <%= Html.WerkJaarLinks(
+                ViewData.Model.GroepsWerkJaarIdZichtbaar, 
+                ViewData.Model.WerkJaarInfos, 
+                wj => Url.Action("List", new { id = wj.ID, afdID = Model.HuidigeAfdeling }))%>
 </div>
 
 <table class="overzicht">

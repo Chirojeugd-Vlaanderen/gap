@@ -21,7 +21,7 @@ namespace Chiro.Gap.WebApp.Models
 
 		public int GroepsWerkJaarIdZichtbaar { get; set; }
 		public int GroepsWerkJaartalZichtbaar { get; set; }
-		public IList<GroepsWerkJaar> GroepsWerkJaarLijst { get; set; }
+		public IEnumerable<WerkJaarInfo> WerkJaarInfos { get; set; }
 
 		public IList<LidInfo> LidInfoLijst { get; set; }
 	}

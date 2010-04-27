@@ -65,13 +65,13 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.AfdelingsInfoDictionary.Add(ai.AfdelingID, ai);
 			}
 
-			model.GroepsWerkJaarLijst =
-				ServiceHelper.CallService<IGroepenService, IList<GroepsWerkJaar>>
+			model.WerkJaarInfos =
+				ServiceHelper.CallService<IGroepenService, IEnumerable<WerkJaarInfo>>
 					(e => e.WerkJarenOphalen(groepID));
 
-			GroepsWerkJaar huidig = (from g in model.GroepsWerkJaarLijst
-									 where g.ID == id
-									 select g).FirstOrDefault();
+			var huidig = (from g in model.WerkJaarInfos
+					 where g.ID == id
+					 select g).FirstOrDefault();
 
 			model.GroepsWerkJaarIdZichtbaar = id;
 			model.GroepsWerkJaartalZichtbaar = huidig.WerkJaar;

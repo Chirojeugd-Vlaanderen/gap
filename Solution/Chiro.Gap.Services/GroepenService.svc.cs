@@ -458,11 +458,14 @@ namespace Chiro.Gap.Services
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<GroepsWerkJaar> WerkJarenOphalen(int groepsID)
+		public IEnumerable<WerkJaarInfo> WerkJarenOphalen(int groepsID)
 		{
-			return (from gwj in _groepenMgr.OphalenMetGroepsWerkJaren(groepsID).GroepsWerkJaar
+			var werkjaren = (from gwj in _groepenMgr.OphalenMetGroepsWerkJaren(groepsID).GroepsWerkJaar
 					orderby gwj.WerkJaar descending
-					select gwj).ToList();
+					select gwj);
+
+			Mapper.CreateMap<GroepsWerkJaar, WerkJaarInfo>();
+			return Mapper.Map<IEnumerable<GroepsWerkJaar>, IEnumerable<WerkJaarInfo>>(werkjaren);
 		}
 
 		#region categorieën

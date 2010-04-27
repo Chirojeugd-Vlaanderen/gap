@@ -7,10 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
 
-using Chiro.Gap.Orm;
+using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.HtmlHelpers
 {
@@ -36,15 +35,27 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 			return resultaat.ToString();
 		}
 
-		public static string WerkJaarLinks(this HtmlHelper html, int huidigWerkJaar, IList<GroepsWerkJaar> werkjaren, Func<int, string> url)
+		/// <summary>
+		/// Genereert een opeenvolging van links op basis van een rij werkjaren
+		/// </summary>
+		/// <param name="html">HtmlHelper waarvoor dit een extension method is</param>
+		/// <param name="huidigWerkJaarID">GroepsWerkJaarID van te 'highlighten' link</param>
+		/// <param name="werkjaren">rij met werkjaarinfo</param>
+		/// <param name="url">Functie die een url maakt op basis van WerkJaarInro</param>
+		/// <returns></returns>
+		public static string WerkJaarLinks(
+			this HtmlHelper html, 
+			int huidigWerkJaarID, 
+			IEnumerable<WerkJaarInfo> werkjaren, 
+			Func<WerkJaarInfo, string> url)
 		{
-			StringBuilder resultaat = new StringBuilder();
-			for (int i = 0; i < werkjaren.Count; i++)
+			var resultaat = new StringBuilder();
+			foreach (var wj in werkjaren)
 			{
-				TagBuilder tag = new TagBuilder("a");   // Maakt een <a>-tag
-				tag.MergeAttribute("href", url(i));
-				tag.InnerHtml = werkjaren[i].WerkJaar.ToString();
-				if (werkjaren[i].ID == huidigWerkJaar)
+				var tag = new TagBuilder("a");   // Maakt een <a>-tag
+				tag.MergeAttribute("href", url(wj));
+				tag.InnerHtml = string.Format("{0}-{1}", wj.WerkJaar, wj.WerkJaar + 1);
+				if (wj.ID == huidigWerkJaarID)
 				{
 					tag.AddCssClass("geselecteerd");
 				}
