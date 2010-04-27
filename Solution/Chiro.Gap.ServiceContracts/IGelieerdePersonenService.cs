@@ -41,17 +41,6 @@ namespace Chiro.Gap.ServiceContracts
 		IList<PersoonInfo> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal);
 
 		/// <summary>
-		/// Zoekt alle personen die aan de criteria voldoen en geeft daarvan een bepaalde pagina weer
-		/// </summary>
-		/// <param name="naamgedeelte">Een deel van de naam, dat als zoekterm opgegeven wordt</param>
-		/// <param name="pagina">De hoeveelste pagina je wilt zien</param>
-		/// <param name="paginagrootte">Het aantal personen dat je per pagina wilt zien</param>
-		/// <returns>Een lijst van gelieerde personen bij wie het <paramref name="naamgedeelte" />
-		/// in de naam voorkomt</returns>
-		IList<GelieerdePersoon> PersonenZoeken(string naamgedeelte, int pagina, int paginagrootte);
-		// ... andere zoekmogelijkheden
-
-		/// <summary>
 		/// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>

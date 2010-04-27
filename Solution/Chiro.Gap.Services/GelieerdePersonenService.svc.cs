@@ -165,13 +165,6 @@ namespace Chiro.Gap.Services
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<GelieerdePersoon> PersonenZoeken(string naamgedeelte, int pagina, int paginagrootte)
-		{
-			throw new NotImplementedException();
-		}
-
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
 		{
 			return _gpMgr.DetailsOphalen(gelieerdePersoonID);
