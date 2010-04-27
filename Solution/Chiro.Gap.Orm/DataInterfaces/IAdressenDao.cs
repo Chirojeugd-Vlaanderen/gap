@@ -33,11 +33,14 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="bus">Het eventuele busnummer</param>
 		/// <param name="postNr">Het postnummer</param>
 		/// <param name="postCode">De postcode (niet relevant in België)</param>
-		/// <param name="woonPlaatsID">ID van de woonplaats</param>
+		/// <param name="woonPlaatsNaam">Naam van de woonplaats</param>
 		/// <param name="metBewoners">Indien <c>true</c>, worden ook de PersoonsAdressen
 		/// opgehaald.  (ALLE persoonsadressen gekoppeld aan het adres; niet
 		/// zomaar over de lijn sturen dus)</param>
 		/// <returns>Gevraagd adresobject</returns>
-		Adres Ophalen(string straatNaam, int? huisNr, string bus, int postNr, string postCode, int woonPlaatsID, bool metBewoners);
+		Adres Ophalen(
+			string straatNaam, int? huisNr, string bus, 
+			int postNr, string postCode, string woonPlaatsNaam, 
+			bool metBewoners);
 	}
 }

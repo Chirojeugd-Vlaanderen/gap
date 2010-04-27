@@ -167,11 +167,14 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="bus">Het eventuele busnummer</param>
 		/// <param name="postNr">Het postnummer</param>
 		/// <param name="postCode">De lettercode die in het buitenland aan postnummers toegevoegd wordt</param>
-		/// <param name="woonPlaatsID">ID van de woonplaats</param>
+		/// <param name="woonPlaatsNaam">naam van de woonplaats</param>
 		/// <param name="metBewoners">Indien <c>true</c>, worden ook de
 		/// persoonsadressen en gelieerde personen opgehaald</param>
 		/// <returns>Een adres als gevonden, anders null</returns>
-		public Adres Ophalen(string straatNaam, int? huisNr, string bus, int postNr, string postCode, int woonPlaatsID, bool metBewoners)
+		public Adres Ophalen(
+			string straatNaam, int? huisNr, string bus, 
+			int postNr, string postCode, string woonPlaatsNaam, 
+			bool metBewoners)
 		{
 			Adres resultaat;
 
@@ -188,8 +191,8 @@ namespace Chiro.Gap.Data.Ef
 
 				resultaat = (
 					from Adres a in adressentabel
-					where (a.StraatNaam.Naam == straatNaam && a.WoonPlaats.ID == woonPlaatsID
-					&& a.StraatNaam.PostNummer == postNr
+					where (a.StraatNaam.Naam == straatNaam && a.StraatNaam.PostNummer == postNr 
+					&& a.WoonPlaats.Naam == woonPlaatsNaam && a.WoonPlaats.PostNummer == postNr
 					&& a.HuisNr == huisNr && a.Bus == bus && a.PostCode == postCode)
 					select a).FirstOrDefault();
 

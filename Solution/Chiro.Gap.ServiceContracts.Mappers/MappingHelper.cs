@@ -155,9 +155,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.StraatNaamNaam,
 					opt => opt.MapFrom(src => src.Adres.StraatNaam.Naam))
 				.ForMember(
-					dst => dst.WoonPlaatsID,
-					opt => opt.MapFrom(src => src.Adres.WoonPlaats.ID))
-				.ForMember(
 					dst => dst.WoonPlaatsNaam,
 					opt => opt.MapFrom(src => src.Adres.WoonPlaats.Naam));
 

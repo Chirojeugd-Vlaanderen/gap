@@ -12,6 +12,11 @@ using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts
 {
+	/// <summary>
+	/// Datacontract voor een adres.  Het ID wordt enkel gebruikt bij het ophalen van een adres.
+	/// Voor de rest zijn alle members strings (geen straatIDs of woonplaatsIDs), zodat hetzelfde
+	/// contract gebruikt kan worden voor binnenlandse en buitenlandse adressen.
+	/// </summary>
 	[DataContract]
 	public class AdresInfo
 	{
@@ -45,8 +50,5 @@ namespace Chiro.Gap.ServiceContracts
 		[DataMember]
 		[DisplayName(@"Woonplaats")]
 		public String WoonPlaatsNaam { get; set; }
-
-		[DataMember]
-		public int WoonPlaatsID { get; set; }
 	}
 }

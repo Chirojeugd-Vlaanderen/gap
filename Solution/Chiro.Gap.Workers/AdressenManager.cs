@@ -85,12 +85,12 @@ namespace Chiro.Gap.Workers
 		/// <param name="straatNaam">De naam van de straat</param>
 		/// <param name="huisNr">Het huisnummer</param>
 		/// <param name="bus">Het eventuele busnummer</param>
-		/// <param name="woonPlaatsID">De naam van de gemeente</param>
-		/// <param name="postNr">Het postnummer van de gemeente</param>
+		/// <param name="woonPlaatsNaam">De naam van de woonplaats</param>
+		/// <param name="postNr">Het postnummer van straat en woonplaats</param>
 		/// <param name="postCode">Tekst die in het buitenland volgt op postnummers</param>
 		/// <returns>Gevonden adres</returns>
 		/// <remarks>Ieder heeft het recht adressen op te zoeken</remarks>
-		public Adres ZoekenOfMaken(String straatNaam, int huisNr, String bus, int woonPlaatsID, int postNr, String postCode)
+		public Adres ZoekenOfMaken(String straatNaam, int huisNr, String bus, string woonPlaatsNaam, int postNr, String postCode)
 		{
 			var problemen = new Dictionary<string, FoutBericht>();
 
@@ -103,9 +103,9 @@ namespace Chiro.Gap.Workers
 			Debug.Assert(straatNaam != String.Empty);
 			Debug.Assert(postNr > 0);
 			// Debug.Assert(HuisNr > 0);
-			Debug.Assert(woonPlaatsID > 0);
+			Debug.Assert(woonPlaatsNaam != String.Empty);
 
-			adresInDb = _dao.Ophalen(straatNaam, huisNr, bus, postNr, postCode, woonPlaatsID, false);
+			adresInDb = _dao.Ophalen(straatNaam, huisNr, bus, postNr, postCode, woonPlaatsNaam, false);
 
 			var adr = new Adres();
 
@@ -142,7 +142,7 @@ namespace Chiro.Gap.Workers
 					});
 				}
 
-				sg = _subgemeenteDao.Ophalen(woonPlaatsID);
+				sg = _subgemeenteDao.Ophalen(woonPlaatsNaam, postNr);
 				if (sg != null)
 				{
 					// Gemeente gevonden: aan adres koppelen

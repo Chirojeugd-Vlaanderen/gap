@@ -15,9 +15,9 @@
             $.getJSON('<%=Url.Action("WoonPlaatsenOphalen", "Adressen")%>', { postNummer: $(this).val() }, function(j) {
                 var options = '';
                 for (var i = 0; i < j.length; i++) {
-                    options += '<option value="' + j[i].ID + '">' + j[i].Naam + '</option>';
+                    options += '<option value="' + j[i].Naam + '">' + j[i].Naam + '</option>';
                 }
-                $("select#PersoonsAdresInfo_WoonPlaatsID").html(options);
+                $("select#PersoonsAdresInfo_WoonPlaatsNaam").html(options);
             })
         })
     });
@@ -81,7 +81,7 @@
     <br />
 
 	<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.WoonPlaatsNaam)%> 
-    <%=Html.DropDownListFor(mdl => mdl.PersoonsAdresInfo.WoonPlaatsID, new SelectList(Model.WoonPlaatsen, "ID", "Naam"))%>
+    <%=Html.DropDownListFor(mdl => mdl.PersoonsAdresInfo.WoonPlaatsNaam, new SelectList(Model.WoonPlaatsen, "Naam", "Naam"))%>
     <%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.WoonPlaatsNaam)%>
 	<br />
 	
