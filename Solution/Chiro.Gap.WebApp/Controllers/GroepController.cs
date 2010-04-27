@@ -129,7 +129,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				ServiceHelper.CallService<IGroepenService>(svc => svc.CategorieVerwijderen(id, false));
 			}
-			catch (FaultException<BlokkerendeObjectenFault<PersoonInfo>> ex)
+			catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> ex)
 			{
 				// Categorie was niet leeg
 

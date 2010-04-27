@@ -531,9 +531,9 @@ namespace Chiro.Gap.Services
 			catch (BlokkerendeObjectenException<GelieerdePersoon> ex)
 			{
 				var fault = Mapper.Map<BlokkerendeObjectenException<GelieerdePersoon>,
-					BlokkerendeObjectenFault<PersoonInfo>>(ex);
+					BlokkerendeObjectenFault<PersoonDetail>>(ex);
 
-				throw new FaultException<BlokkerendeObjectenFault<PersoonInfo>>(fault);
+				throw new FaultException<BlokkerendeObjectenFault<PersoonDetail>>(fault);
 			}
 		}
 

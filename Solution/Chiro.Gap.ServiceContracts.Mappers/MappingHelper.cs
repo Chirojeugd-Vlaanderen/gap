@@ -36,7 +36,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			// Als de namen van PersoonInfo wat anders gekozen zouden zijn, dan zou dat wel wat
 			// `ForMember'-regels uitsparen.
 
-			Mapper.CreateMap<GelieerdePersoon, PersoonInfo>()
+			Mapper.CreateMap<GelieerdePersoon, PersoonDetail>()
 				.ForMember(
 					dst => dst.GelieerdePersoonID,
 					opt => opt.MapFrom(src => src.ID))
@@ -97,7 +97,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.LidID,
 					opt => opt.MapFrom(src => src.ID))
 				.ForMember(
-					dst => dst.PersoonInfo,
+					dst => dst.PersoonDetail,
 					opt => opt.MapFrom(src => src.GelieerdePersoon == null ? null : src.GelieerdePersoon))
 				.ForMember(
 					dst => dst.Type,
@@ -191,7 +191,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			// dus passen we de link aan in de andere richting!
 			Mapper.CreateMap<GelieerdePersoon, PersoonLidInfo>()
 				.ForMember(
-					dst => dst.PersoonInfo,
+					dst => dst.PersoonDetail,
 					opt => opt.MapFrom(src => src))
 				.ForMember(
 					dst => dst.PersoonsAdresInfo,
@@ -210,7 +210,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 						BestaatAlFault<CategorieInfo>>();
 			Mapper.CreateMap<OngeldigObjectException, OngeldigObjectFault>();
 			Mapper.CreateMap<BlokkerendeObjectenException<GelieerdePersoon>,
-					BlokkerendeObjectenFault<PersoonInfo>>()
+					BlokkerendeObjectenFault<PersoonDetail>>()
 				.ForMember(
 					dst => dst.Objecten,
 					opt => opt.MapFrom(src => src.Objecten.Take(Properties.Settings.Default.KleinAantal)));

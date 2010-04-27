@@ -26,7 +26,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
 		/// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
 		[OperationContract]
-		IList<PersoonInfo> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal);
+		IList<PersoonDetail> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal);
 
 		/// <summary>
 		/// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep die tot de gegeven categorie behoren,
@@ -38,7 +38,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
 		/// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
 		[OperationContract]
-		IList<PersoonInfo> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal);
+		IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal);
 
 		/// <summary>
 		/// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen
@@ -91,7 +91,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// en de Chiroleeftijd.  Als de info lijkt op die van een bestaande gelieerde persoon, dan
 		/// wordt een exceptie opgegooid.</remarks>
 		[OperationContract]
-		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonInfo>))]
+		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonDetail>))]
 		int Aanmaken(GelieerdePersoon info, int groepID);
 
 		/// <summary>
@@ -110,7 +110,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// en de Chiroleeftijd.  Ik had deze functie ook graag 'aanmaken' genoemd (zie coding guideline
 		/// 190), maar dat mag blijkbaar niet bij services.</remarks>
 		[OperationContract]
-		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonInfo>))]
+		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonDetail>))]
 		int GeforceerdAanmaken(GelieerdePersoon info, int groepID, bool forceer);
 
 		/// <summary>

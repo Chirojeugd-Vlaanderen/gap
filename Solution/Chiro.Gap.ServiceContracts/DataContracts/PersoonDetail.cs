@@ -13,7 +13,7 @@ using Chiro.Gap.Domain;
 namespace Chiro.Gap.ServiceContracts
 {
 	[DataContract]
-	public class PersoonInfo
+	public class PersoonDetail
 	{
 		[DataMember]
 		public int? AdNummer

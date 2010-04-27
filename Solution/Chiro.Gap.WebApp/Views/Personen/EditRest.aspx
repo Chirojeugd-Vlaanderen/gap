@@ -14,48 +14,48 @@
     <% using (Html.BeginForm()) {%>
 
     <fieldset>
-    <legend>Persoonlijke gegevens <%=Html.ActionLink("Aanpassen", "EditGegevens", new {id=Model.PersoonLidInfo.PersoonInfo.GelieerdePersoonID}) %></legend>    
+    <legend>Persoonlijke gegevens <%=Html.ActionLink("Aanpassen", "EditGegevens", new {id=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %></legend>    
     
         <p>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.LidInfo.PersoonInfo.AdNummer)%>
-        <%=Html.TextBox("AdNummer", Model.PersoonLidInfo.PersoonInfo.AdNummer, 
+        <%=Html.LabelFor(s => s.PersoonLidInfo.LidInfo.PersoonDetail.AdNummer)%>
+        <%=Html.TextBox("AdNummer", Model.PersoonLidInfo.PersoonDetail.AdNummer, 
                 new Dictionary<string, object> { 
                     {"readonly", "readonly"}, 
                     {"title", "Stamnummer kan niet ingegeven of gewijzigd worden." } })%>
         </p>
         
         <p>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonInfo.VoorNaam)%>
-        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonInfo.VoorNaam)%>
-        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonInfo.VoorNaam)%>
+        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.VoorNaam)%>
+        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.VoorNaam)%>
+        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonDetail.VoorNaam)%>
         </p>
         
         <p>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonInfo.Naam)%>
-        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonInfo.Naam)%>
-        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonInfo.Naam)%>
+        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.Naam)%>
+        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.Naam)%>
+        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonDetail.Naam)%>
         </p>
         
         <p>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonInfo.GeboorteDatum)%>
-        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonInfo.GeboorteDatum)%>
-        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonInfo.GeboorteDatum)%>
+        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>
+        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>
+        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>
         </p>
         
         <p>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonInfo.Geslacht)%>
-        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonInfo.Geslacht)%>
-        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonInfo.Geslacht)%>
+        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.Geslacht)%>
+        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.Geslacht)%>
+        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonDetail.Geslacht)%>
         </p>
         
         <p>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonInfo.ChiroLeeftijd)%>
-        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonInfo.ChiroLeeftijd)%>
-        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonInfo.ChiroLeeftijd)%>
+        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeeftijd)%>
+        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeeftijd)%>
+        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeeftijd)%>
         </p>
         
-        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonInfo.PersoonID)%>
-        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonInfo.GelieerdePersoonID)%>
+        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonDetail.PersoonID)%>
+        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonDetail.GelieerdePersoonID)%>
 
 	</fieldset>
 	
@@ -129,11 +129,11 @@
    {
 	   if (Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.Count == 0)
 	   {
-		   Response.Write(Model.PersoonLidInfo.LidInfo.PersoonInfo.VolledigeNaam + " heeft geen afdelingen.");
+		   Response.Write(Model.PersoonLidInfo.LidInfo.PersoonDetail.VolledigeNaam + " heeft geen afdelingen.");
 	   }
 	   else
 	   {
-		   Response.Write(Model.PersoonLidInfo.LidInfo.PersoonInfo.VolledigeNaam + " is leiding van ");
+		   Response.Write(Model.PersoonLidInfo.LidInfo.PersoonDetail.VolledigeNaam + " is leiding van ");
 		   int geschreven = 0;
 		   foreach (var ai in Model.AlleAfdelingen)
 		   {
@@ -157,7 +157,7 @@
 	   }
    }else{
 	   //FIXME: nog niet alle info wordt ingeladen( afdelingidlijst is altijd leeg)
-	   Response.Write(Model.PersoonLidInfo.LidInfo.PersoonInfo.VolledigeNaam + " zit in de " +
+	   Response.Write(Model.PersoonLidInfo.LidInfo.PersoonDetail.VolledigeNaam + " zit in de " +
 		   Model.AlleAfdelingen.FirstOrDefault(s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)).AfdelingNaam + ".");
    }%>
 
@@ -171,11 +171,11 @@
        <li>
             <%=Html.Encode(String.Format("{0} {1}", pa.StraatNaamNaam, pa.HuisNr))%>,
             <%=Html.Encode(String.Format("{0} {1} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType))%>
-            <%=Html.ActionLink("[verhuizen]", "Verhuizen", new { id = pa.ID, aanvragerID = ViewData.Model.PersoonLidInfo.PersoonInfo.GelieerdePersoonID })%>
-            <%=Html.ActionLink("[verwijderen]", "AdresVerwijderen", new { id = pa.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonInfo.GelieerdePersoonID })%>
+            <%=Html.ActionLink("[verhuizen]", "Verhuizen", new { id = pa.ID, aanvragerID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+            <%=Html.ActionLink("[verwijderen]", "AdresVerwijderen", new { id = pa.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
         </li>
     <%} %>
-        <li><%=Html.ActionLink("[adres toevoegen]", "NieuwAdres", new { id = ViewData.Model.PersoonLidInfo.PersoonInfo.GelieerdePersoonID })%></li>
+        <li><%=Html.ActionLink("[adres toevoegen]", "NieuwAdres", new { id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%></li>
     </ul>   
     
 
@@ -206,11 +206,11 @@
                                 <%=Html.ActionLink(
                                     "[verwijderen]", 
                                     "VerwijderenCommVorm",
-																		new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonInfo.GelieerdePersoonID })%>
+																		new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
                                 <%=Html.ActionLink(
                                     "[bewerken]", 
                                     "BewerkenCommVorm",
-																		new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonInfo.GelieerdePersoonID })%>
+																		new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
                             </li>                            
                             <%
                         }
@@ -220,21 +220,21 @@
                <%
            }
            %>
-    <li><%=Html.ActionLink("[communicatievorm toevoegen]", "NieuweCommVorm", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonInfo.GelieerdePersoonID })%></li>
+    <li><%=Html.ActionLink("[communicatievorm toevoegen]", "NieuweCommVorm", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%></li>
     </ul>     
  
     <h3>categorieën</h3>
 
     <ul>
-    <% foreach (Categorie cv in Model.PersoonLidInfo.PersoonInfo.CategorieLijst)
+    <% foreach (Categorie cv in Model.PersoonLidInfo.PersoonDetail.CategorieLijst)
     { %>
     <li>
             <%=cv.Naam %>
-            <%=Html.ActionLink("[verwijderen]", "VerwijderenCategorie", new { categorieID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonInfo.GelieerdePersoonID })%>
+            <%=Html.ActionLink("[verwijderen]", "VerwijderenCategorie", new { categorieID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
         </li>
     <%} %>
     
-    <li><%=Html.ActionLink("[toevoegen aan categorie]", "ToevoegenAanCategorie", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonInfo.GelieerdePersoonID })%></li>
+    <li><%=Html.ActionLink("[toevoegen aan categorie]", "ToevoegenAanCategorie", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%></li>
     </ul>  
  
     <%} %>

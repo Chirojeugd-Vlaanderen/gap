@@ -76,7 +76,7 @@
     <Compile Include="DataContracts\BewonersInfo.cs" />
     <Compile Include="DataContracts\GroepInfo.cs" />
     <Compile Include="DataContracts\LidInfo.cs" />
-    <Compile Include="DataContracts\PersoonInfo.cs" />
+    <Compile Include="DataContracts\PersoonDetail.cs" />
     <Compile Include="FaultContracts\BestaatAlFault.cs" />
     <Compile Include="FaultContracts\OngeldigObjectFault.cs" />
     <Compile Include="FaultContracts\BlokkerendeObjectenFault.cs" />

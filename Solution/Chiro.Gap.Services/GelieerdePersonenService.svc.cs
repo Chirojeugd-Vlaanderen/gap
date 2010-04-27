@@ -63,20 +63,20 @@ namespace Chiro.Gap.Services
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonInfo> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal)
+		public IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal)
 		{
 			var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfoVolgensCategorie(categorieID, pagina, paginaGrootte, out aantalTotaal);
-			return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonInfo>>(gelieerdePersonen);
+			return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
 		}
 
 		// *BELANGRIJK*: Als het debuggen hier stopt owv een autorisatiefout, kijk dan na of de gebruiker waarmee
 		// je aangemeld bent, op je lokale computer in de groep CgUsers zit.
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonInfo> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
+		public IList<PersoonDetail> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
 		{
 			var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
-			var result = Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonInfo>>(gelieerdePersonen);
+			var result = Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
 			return result;
 		}
 
@@ -136,11 +136,11 @@ namespace Chiro.Gap.Services
 
 				if (bestaandePersonen.Count > 0)
 				{
-					var fault = new BlokkerendeObjectenFault<PersoonInfo>{
+					var fault = new BlokkerendeObjectenFault<PersoonDetail>{
 						FoutNummer = FoutNummers.BestaatAl,
-						Objecten = Mapper.Map<IList<GelieerdePersoon>, IList<PersoonInfo>>(bestaandePersonen) };
+						Objecten = Mapper.Map<IList<GelieerdePersoon>, IList<PersoonDetail>>(bestaandePersonen) };
 
-					throw new FaultException<BlokkerendeObjectenFault<PersoonInfo>>(fault);
+					throw new FaultException<BlokkerendeObjectenFault<PersoonDetail>>(fault);
 
 					// ********************************************************************************
 					// * BELANGRIJK: Als je debugger breakt op deze throw, dan is dat geen probleem.  *

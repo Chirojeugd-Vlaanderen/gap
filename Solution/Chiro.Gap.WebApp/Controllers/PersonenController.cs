@@ -73,7 +73,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (id == 0)
 			{
 				model.PersoonInfos =
-					ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
+					ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
 					(g => g.PaginaOphalenMetLidInfo(groepID, page, 20, out totaal));
 				model.HuidigePagina = page;
 				model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
@@ -84,7 +84,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				// TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
 				model.PersoonInfos =
-					ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
+					ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
 					(g => g.PaginaOphalenUitCategorieMetLidInfo(id, page, 20, out totaal));
 				model.HuidigePagina = page;
 				model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
@@ -119,19 +119,19 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult Download(int groepID, int id)
 		{
 			int totaal = 0;
-			IEnumerable<PersoonInfo> data;
+			IEnumerable<PersoonDetail> data;
 
 			// Alle personen bekijken
 			if (id == 0)
 			{
 				data =
-					ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
+					ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
 					(g => g.PaginaOphalenMetLidInfo(groepID, 1, Int16.MaxValue, out totaal));
 			}
 			else
 			{
 				data =
-					ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonInfo>>
+					ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
 					(g => g.PaginaOphalenUitCategorieMetLidInfo(id, 1, Int16.MaxValue, out totaal));
 			}
 
@@ -246,7 +246,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				persoonID = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.GeforceerdAanmaken(model.HuidigePersoon, groepID, model.Forceer));
 			}
-			catch (FaultException<BlokkerendeObjectenFault<PersoonInfo>> fault)
+			catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> fault)
 			{
 				model.GelijkaardigePersonen = fault.Detail.Objecten;
 				model.Forceer = true;
@@ -338,10 +338,10 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			if (model.PersoonLidInfo.LidInfo != null)
 			{
-				model.PersoonLidInfo.LidInfo.PersoonInfo = model.PersoonLidInfo.PersoonInfo;
+				model.PersoonLidInfo.LidInfo.PersoonDetail = model.PersoonLidInfo.PersoonDetail;
 			}
 
-			model.Titel = model.PersoonLidInfo.PersoonInfo.VolledigeNaam;
+			model.Titel = model.PersoonLidInfo.PersoonDetail.VolledigeNaam;
 			return View("EditRest", model);
 		}
 

@@ -45,7 +45,7 @@ Pagina: <%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.AantalP
 <tr>
 <th><%=Html.CheckBox("checkall") %></th><th>Ad-nr.</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Acties</th><th>Categorie&euml;n</th>
 </tr>
-<% foreach (PersoonInfo p in ViewData.Model.PersoonInfos) {  %>
+<% foreach (PersoonDetail p in ViewData.Model.PersoonInfos) {  %>
 <tr>
     <td><%=Html.CheckBoxList("GekozenGelieerdePersoonIDs", info[j]) %><% j++; %></td>
     <td><%=p.AdNummer %></td>

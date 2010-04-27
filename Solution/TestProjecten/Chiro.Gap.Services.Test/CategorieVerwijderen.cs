@@ -133,7 +133,7 @@ namespace Chiro.Gap.Services.Test
 		/// exception verwacht.
 		/// </summary>
 		[TestMethod]
-		[ExpectedException(typeof(FaultException<BlokkerendeObjectenFault<PersoonInfo>>))]
+		[ExpectedException(typeof(FaultException<BlokkerendeObjectenFault<PersoonDetail>>))]
 		public void CategorieVerwijderenMetPersoon()
 		{
 			// Arrange: categorie opzoeken, en persoon toevoegen.

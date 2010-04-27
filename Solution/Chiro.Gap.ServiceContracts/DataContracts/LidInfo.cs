@@ -20,7 +20,7 @@ namespace Chiro.Gap.ServiceContracts
 		public int LidID { get; set; }
 
 		[DataMember]
-		public PersoonInfo PersoonInfo { get; set; }
+		public PersoonDetail PersoonDetail { get; set; }
 
 		/// <summary>
 		/// Kind of leiding

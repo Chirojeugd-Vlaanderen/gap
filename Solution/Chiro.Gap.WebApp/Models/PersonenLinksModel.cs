@@ -17,7 +17,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Informatie op te lijsten personen
 		/// </summary>
-		public IEnumerable<PersoonInfo> Personen { get; set; }
+		public IEnumerable<PersoonDetail> Personen { get; set; }
 
 		/// <summary>
 		/// Indien niet leeg, wordt de lijst als onvolledig beschouwd, en wordt

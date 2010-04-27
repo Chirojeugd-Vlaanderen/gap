@@ -15,7 +15,7 @@ namespace Chiro.Gap.ServiceContracts
 	public class PersoonLidInfo
 	{
 		[DataMember]
-		public PersoonInfo PersoonInfo { get; set; }
+		public PersoonDetail PersoonDetail { get; set; }
 
 		// TODO booleans voor wat er geladen is
 

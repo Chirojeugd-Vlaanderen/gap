@@ -15,7 +15,7 @@ namespace Chiro.Gap.WebApp.Models
 		public int AantalPaginas { get; set; }
 		public int Totaal { get; set; }
 
-		public IList<PersoonInfo> PersoonInfos { get; set; }
+		public IList<PersoonDetail> PersoonInfos { get; set; }
 
 		public List<int> GekozenGelieerdePersoonIDs { get; set; }
 		public int GekozenActie { get; set; }

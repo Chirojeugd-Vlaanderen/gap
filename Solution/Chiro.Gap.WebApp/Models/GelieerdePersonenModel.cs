@@ -29,7 +29,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Lijst met info over eventueel gelijkaardige personen
 		/// </summary>
-		public IEnumerable<PersoonInfo> GelijkaardigePersonen { get; set; }
+		public IEnumerable<PersoonDetail> GelijkaardigePersonen { get; set; }
 
 		/// <summary>
 		/// Geeft aan of een persoon ook toegevoegd moet worden als er al gelijkaardige

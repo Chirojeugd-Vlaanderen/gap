@@ -19,11 +19,11 @@ Pagina: <%= Html.WerkJaarLinks(
 
 <% foreach (LidInfo l in ViewData.Model.LidInfoLijst) {  %>
 <tr>
-    <td><%=l.PersoonInfo.AdNummer %></td>
+    <td><%=l.PersoonDetail.AdNummer %></td>
     <td><%=l.Type.ToString() %></td>
     <td><% Html.RenderPartial("LedenLinkControl", l); %></td>
-    <td class="right"><%=l.PersoonInfo.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)l.PersoonInfo.GeboorteDatum).ToString("d")%></td>
-    <td><%=l.PersoonInfo.Geslacht.ToString()%></td>
+    <td class="right"><%=l.PersoonDetail.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)l.PersoonDetail.GeboorteDatum).ToString("d")%></td>
+    <td><%=l.PersoonDetail.Geslacht.ToString()%></td>
     <td><%= l.LidgeldBetaald?"Ja":"Nee"%></td>
     <td>
         <%=Html.ActionLink("Verwijderen", "Verwijderen", new { Controller = "Leden", id = l.LidID })%>

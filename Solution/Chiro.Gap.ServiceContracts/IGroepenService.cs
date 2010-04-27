@@ -222,7 +222,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// te verwijderen categorie eerst uit de categorie weggehaald.  Indien
 		/// <c>false</c> krijg je een exception als de categorie niet leeg is.</param>
 		[OperationContract]
-		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonInfo>))]
+		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonDetail>))]
 		void CategorieVerwijderen(int categorieID, bool forceren);
 
 		/// <summary>

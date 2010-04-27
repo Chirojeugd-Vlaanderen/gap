@@ -38,7 +38,7 @@
     
     <ul>
     <% 
-        foreach (PersoonInfo pi in Model.GelijkaardigePersonen)
+        foreach (PersoonDetail pi in Model.GelijkaardigePersonen)
         {
             %>
             <li><%Html.RenderPartial("PersoonsLinkControl", pi);%> - <%=String.Format("{0:d}", pi.GeboorteDatum) %></li>

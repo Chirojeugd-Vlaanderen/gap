@@ -133,10 +133,10 @@ namespace Chiro.Gap.WebApp.Controllers
 			var selectie = from l in lijst
 						   select new
 						   {
-							   AdNummer = l.PersoonInfo.AdNummer,
-							   VolledigeNaam = l.PersoonInfo.VolledigeNaam,
-							   GeboorteDatum = String.Format("{0:dd/MM/yyyy}", l.PersoonInfo.GeboorteDatum),
-							   Geslacht = l.PersoonInfo.Geslacht == GeslachtsType.Man ? "jongen" : "meisje"
+							   AdNummer = l.PersoonDetail.AdNummer,
+							   VolledigeNaam = l.PersoonDetail.VolledigeNaam,
+							   GeboorteDatum = String.Format("{0:dd/MM/yyyy}", l.PersoonDetail.GeboorteDatum),
+							   Geslacht = l.PersoonDetail.Geslacht == GeslachtsType.Man ? "jongen" : "meisje"
 						   };
 
 			return new ExcelResult(
@@ -277,7 +277,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			model.Titel = String.Format(
 				"{0}: {1}",
-				model.HuidigLid.PersoonInfo.VolledigeNaam,
+				model.HuidigLid.PersoonDetail.VolledigeNaam,
 				Properties.Resources.LidGegevens);
 
 			return View("EditLidGegevens", model);
@@ -300,7 +300,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			return RedirectToAction("EditRest", new
 			{
 				Controller = "Personen",
-				id = model.HuidigLid.PersoonInfo.GelieerdePersoonID
+				id = model.HuidigLid.PersoonDetail.GelieerdePersoonID
 			});
 		}
 
