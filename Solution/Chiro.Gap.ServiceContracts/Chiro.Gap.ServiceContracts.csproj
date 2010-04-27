@@ -83,7 +83,6 @@
     <Compile Include="IGelieerdePersonenService.cs" />
     <Compile Include="IGroepenService.cs" />
     <Compile Include="ILedenService.cs" />
-    <Compile Include="IPersonenService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
