@@ -30,7 +30,7 @@ namespace Chiro.Gap.ServiceContracts
 		}
 
 		[DataMember]
-		public IList<Categorie> CategorieLijst
+		public IList<CategorieInfo> CategorieLijst
 		{
 			get;
 			set;

@@ -226,11 +226,11 @@
     <h3>categorieën</h3>
 
     <ul>
-    <% foreach (Categorie cv in Model.PersoonLidInfo.PersoonDetail.CategorieLijst)
+    <% foreach (var info in Model.PersoonLidInfo.PersoonDetail.CategorieLijst)
     { %>
     <li>
-            <%=cv.Naam %>
-            <%=Html.ActionLink("[verwijderen]", "VerwijderenCategorie", new { categorieID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+            <%=info.Naam %>
+            <%=Html.ActionLink("[verwijderen]", "VerwijderenCategorie", new { categorieID = info.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
         </li>
     <%} %>
     

@@ -69,7 +69,7 @@ Pagina: <%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.AantalP
 		   Is lid
         <%} %>
     </td>
-    <td><% foreach (Categorie c in p.CategorieLijst) 
+    <td><% foreach (var c in p.CategorieLijst) 
            { %>
                <%=Html.ActionLink(Html.Encode(c.Code.ToString()), "List", new { Controller = "Personen", id = c.ID }, new { title = c.Naam.ToString() } )%>
         <% } %>
