@@ -155,21 +155,6 @@ namespace Chiro.Gap.Services
 
 		#region ophalen
 
-		public Groep OphalenMetAdressen(int groepID)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Groep OphalenMetFuncties(int groepID)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Groep OphalenMetVrijeVelden(int groepID)
-		{
-			throw new NotImplementedException();
-		}
-
 		/// <summary>
 		/// Haalt details over alle officiele afdelingen op.
 		/// </summary>

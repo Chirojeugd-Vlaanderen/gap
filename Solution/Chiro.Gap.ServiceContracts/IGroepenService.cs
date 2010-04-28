@@ -57,19 +57,6 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		void Bewaren(GroepInfo g);
 
-		#region ophalen
-
-		[OperationContract]
-		Groep OphalenMetAdressen(int groepID);
-
-		[OperationContract]
-		Groep OphalenMetFuncties(int groepID);
-
-		[OperationContract]
-		Groep OphalenMetVrijeVelden(int groepID);
-
-		#endregion
-
 		#region werkjaren
 
 		/// <summary>
