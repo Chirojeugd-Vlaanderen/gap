@@ -21,6 +21,7 @@ using Chiro.Gap.Workers.Exceptions;
 namespace Chiro.Gap.Services
 {
 	// OPM: als je de naam van de class "GelieerdePersonenService" hier verandert, moet je ook de sectie "Services" in web.config aanpassen.
+
 	public class GelieerdePersonenService : IGelieerdePersonenService
 	{
 		#region Manager Injection
@@ -80,12 +81,38 @@ namespace Chiro.Gap.Services
 			return result;
 		}
 
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public int PersoonBewaren(GelieerdePersoon persoon)
+		/// <summary>
+		/// Updatet een persoon op basis van <paramref name="persoonInfo"/>
+		/// </summary>
+		/// <param name="persoonInfo">Info over te bewaren persoon</param>
+		/// <returns>ID van de bewaarde persoon</returns>
+		public int Bewaren(PersoonInfo persoonInfo)
 		{
-			_gpMgr.Bewaren(persoon);
-			return persoon.ID;
+			// Haal eerst gelieerde persoon op.
+			var gp = _gpMgr.Ophalen(persoonInfo.GelieerdePersoonID);
+			gp.ChiroLeefTijd = persoonInfo.ChiroLeefTijd;
+
+			// Map informatie uit persoonInfo naar gp.Persoon
+
+			Mapper.CreateMap<PersoonInfo, Persoon>()
+				.ForMember(dst => dst.ID, opt => opt.Ignore())
+				.ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
+				.ForMember(dst => dst.VolledigeNaam, opt => opt.Ignore())
+				.ForMember(dst => dst.SterfDatum, opt => opt.Ignore())
+				.ForMember(dst => dst.Versie, opt => opt.Ignore())
+				.ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
+				.ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
+				.ForMember(dst => dst.EntityKey, opt => opt.Ignore());
+
+			Mapper.AssertConfigurationIsValid();
+
+			Mapper.Map(persoonInfo, gp.Persoon);
+			// In de hoop dat de members die geen 'Ignore hebben' overschreven worden,
+			// en de andere niet.
+
+			_gpMgr.Bewaren(gp);
+
+			return persoonInfo.GelieerdePersoonID;
 		}
 
 		/// <summary>
@@ -100,7 +127,7 @@ namespace Chiro.Gap.Services
 		/// en de Chiroleeftijd.</remarks>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public int Aanmaken(GelieerdePersoon info, int groepID)
+		public int Aanmaken(PersoonInfo info, int groepID)
 		{
 			return GeforceerdAanmaken(info, groepID, false);
 		}
@@ -121,7 +148,7 @@ namespace Chiro.Gap.Services
 		/// en de Chiroleeftijd.</remarks>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public int GeforceerdAanmaken(GelieerdePersoon info, int groepID, bool forceer)
+		public int GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer)
 		{
 			// Indien 'forceer' niet gezet is, moet een FaultException opgeworpen worden
 			// als de  nieuwe persoon te hard lijkt op een bestaande Gelieerde Persoon.
@@ -129,10 +156,19 @@ namespace Chiro.Gap.Services
 			// FIXME: Deze businesslogica moet in de workers gebeuren, waar dan een exception opgeworpen
 			// kan worden, die we hier mappen op een faultcontract.
 
+			var nieuwePersoon = new Persoon
+			                    	{
+			                    		AdNummer = info.AdNummer,
+			                    		VoorNaam = info.VoorNaam,
+			                    		Naam = info.Naam,
+			                    		GeboorteDatum = info.GeboorteDatum,
+			                    		Geslacht = info.Geslacht
+			                    	};
+
 			if (!forceer)
 			{
 				IList<GelieerdePersoon> bestaandePersonen =
-					_gpMgr.ZoekGelijkaardig(info.Persoon, groepID);
+					_gpMgr.ZoekGelijkaardig(nieuwePersoon, groepID);
 
 				if (bestaandePersonen.Count > 0)
 				{
@@ -158,16 +194,33 @@ namespace Chiro.Gap.Services
 
 			// Gebruik de businesslaag om info.Persoon te koppelen aan de opgehaalde groep.
 
-			GelieerdePersoon gelieerd = _gpMgr.Koppelen(info.Persoon, g, info.ChiroLeefTijd);
+			GelieerdePersoon gelieerd = _gpMgr.Koppelen(nieuwePersoon, g, info.ChiroLeefTijd);
 			gelieerd = _gpMgr.Bewaren(gelieerd);
 			return gelieerd.ID;
 		}
 
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
+		/// <summary>
+		/// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen
+		/// </summary>
+		/// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>
+		/// <returns>GelieerdePersoon met persoonsgegevens, communicatievorm en adressen</returns>
+		public PersoonDetail DetailsOphalen(int gelieerdePersoonID)
 		{
-			return _gpMgr.DetailsOphalen(gelieerdePersoonID);
+			// Nogal een zware definitie van een mapping.
+
+			Mapper.CreateMap<GelieerdePersoon, PersoonDetail>()
+				.ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.Persoon.AdNummer))
+				.ForMember(dst => dst.CategorieLijst, opt => opt.MapFrom(src => src.Categorie))
+				.ForMember(dst => dst.GeboorteDatum, opt => opt.MapFrom(src => src.Persoon.GeboorteDatum))
+				.ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => src.ID))
+				.ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => src.Persoon.Geslacht))
+				.ForMember(dst => dst.IsLid, opt => opt.Ignore())
+				.ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Persoon.Naam))
+				.ForMember(dst => dst.VersieString, opt => opt.MapFrom(src => src.Persoon.VersieString))
+				.ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam));
+			Mapper.AssertConfigurationIsValid();
+
+			return Mapper.Map<GelieerdePersoon, PersoonDetail>(_gpMgr.DetailsOphalen(gelieerdePersoonID));
 		}
 
 

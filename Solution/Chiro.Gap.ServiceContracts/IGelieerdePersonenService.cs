@@ -6,7 +6,6 @@
 using System.Collections.Generic;
 using System.ServiceModel;
 
-using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
@@ -46,7 +45,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>
 		/// <returns>GelieerdePersoon met persoonsgegevens, communicatievorm en adressen</returns>
 		[OperationContract]
-		GelieerdePersoon DetailsOphalen(int gelieerdePersoonID);
+		PersoonDetail DetailsOphalen(int gelieerdePersoonID);
 
 		/// <summary>
 		/// Haalt gelieerde persoon op met ALLE nodige info om het persoons-bewerken scherm te vullen:
@@ -72,34 +71,29 @@ namespace Chiro.Gap.ServiceContracts
 		// GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID, PersoonsInfo gevraagd);
 
 		/// <summary>
-		/// Bewaart gewijzigde gelieerde persoon met zijn groep en zijn persoon
+		/// Updatet een persoon op basis van <paramref name="persoonInfo"/>
 		/// </summary>
-		/// <param name="persoon">Te bewaren persoon</param>
+		/// <param name="persoonInfo">Info over te bewaren persoon</param>
 		/// <returns>ID van de bewaarde persoon</returns>
 		[OperationContract]
-		int PersoonBewaren(GelieerdePersoon persoon);
+		int Bewaren(PersoonInfo persoonInfo);
 
 		/// <summary>
 		/// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven
 		/// <paramref>groepID</paramref>
 		/// </summary>
-		/// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren: Chiroleeftijd, en
-		/// de velden van <c>info.Persoon</c></param>
+		/// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren</param>
 		/// <param name="groepID">ID van de groep waaraan de nieuwe persoon gekoppeld moet worden</param>
 		/// <returns>ID van de bewaarde persoon</returns>
-		/// <remarks>Adressen, Communicatievormen,... worden niet mee gepersisteerd; enkel de persoonsinfo
-		/// en de Chiroleeftijd.  Als de info lijkt op die van een bestaande gelieerde persoon, dan
-		/// wordt een exceptie opgegooid.</remarks>
 		[OperationContract]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonDetail>))]
-		int Aanmaken(GelieerdePersoon info, int groepID);
+		int Aanmaken(PersoonInfo info, int groepID);
 
 		/// <summary>
 		/// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven
 		/// <paramref>groepID</paramref>
 		/// </summary>
-		/// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren: Chiroleeftijd, en
-		/// de velden van <c>info.Persoon</c></param>
+		/// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren</param>
 		/// <param name="groepID">ID van de groep waaraan de nieuwe persoon gekoppeld moet worden</param>
 		/// <returns>ID van de bewaarde persoon</returns>
 		/// <param name="forceer">Als deze <c>true</c> is, wordt de nieuwe persoon sowieso gemaakt, ook
@@ -111,7 +105,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// 190), maar dat mag blijkbaar niet bij services.</remarks>
 		[OperationContract]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonDetail>))]
-		int GeforceerdAanmaken(GelieerdePersoon info, int groepID, bool forceer);
+		int GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer);
 
 		/// <summary>
 		/// Haalt PersoonID op van een gelieerde persoon

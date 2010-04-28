@@ -13,59 +13,10 @@ using Chiro.Gap.Domain;
 namespace Chiro.Gap.ServiceContracts
 {
 	[DataContract]
-	public class PersoonDetail
+	public class PersoonDetail: PersoonInfo
 	{
 		[DataMember]
-		public int? AdNummer
-		{
-			get;
-			set;
-		}
-
-		[DataMember]
-		public int GelieerdePersoonID
-		{
-			get;
-			set;
-		}
-
-		[DataMember]
-		public int ChiroLeeftijd
-		{
-			get;
-			set;
-		}
-
-		[DataMember]
 		public int PersoonID
-		{
-			get;
-			set;
-		}
-
-		[DataMember]
-		public string VoorNaam
-		{
-			get;
-			set;
-		}
-
-		[DataMember]
-		public string Naam
-		{
-			get;
-			set;
-		}
-
-		[DataMember]
-		public DateTime? GeboorteDatum
-		{
-			get;
-			set;
-		}
-
-		[DataMember]
-		public GeslachtsType Geslacht
 		{
 			get;
 			set;

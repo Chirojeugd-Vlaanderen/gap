@@ -217,10 +217,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			var model = new GelieerdePersonenModel();
 			BaseModelInit(model, groepID);
-			model.HuidigePersoon = new GelieerdePersoon
-			{
-				Persoon = new Persoon()
-			};
+			model.HuidigePersoon = new PersoonDetail();
 
 			model.Titel = Properties.Resources.NieuwePersoonTitel;
 			return View("EditGegevens", model);
@@ -279,8 +276,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new GelieerdePersonenModel();
 			BaseModelInit(model, groepID);
 			// model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.AlleDetailsOphalen(id, groepID));
-			model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(id));
-			model.Titel = model.HuidigePersoon.Persoon.VolledigeNaam;
+			model.HuidigePersoon = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailsOphalen(id));
+			model.Titel = model.HuidigePersoon.VolledigeNaam;
 			return View("EditGegevens", model);
 		}
 
@@ -299,7 +296,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				return View("EditGegevens", model);
 			}
 
-			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.PersoonBewaren(model.HuidigePersoon));
+			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.Bewaren(model.HuidigePersoon));
 
 			// Voorlopig opnieuw redirecten naar EditRest;
 			// er zou wel gemeld moeten worden dat het wijzigen
@@ -312,7 +309,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// of je de gegevens opnieuw wil posten.)
 			return RedirectToAction("EditRest", new
 			{
-				id = model.HuidigePersoon.ID
+				id = model.HuidigePersoon.GelieerdePersoonID
 			});
 		}
 
@@ -728,9 +725,9 @@ namespace Chiro.Gap.WebApp.Controllers
 		// GET: /Personen/NieuweCommVorm/gelieerdePersoonID
 		public ActionResult NieuweCommVorm(int gelieerdePersoonID, int groepID)
 		{
-			GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(gelieerdePersoonID));
+			var persoonDetail = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailsOphalen(gelieerdePersoonID));
 			IEnumerable<CommunicatieType> types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.CommunicatieTypesOphalen());
-			NieuweCommVormModel model = new NieuweCommVormModel(g, types);
+			var model = new NieuweCommVormModel(persoonDetail, types);
 			BaseModelInit(model, groepID);
 			model.Titel = "Nieuwe communicatievorm toevoegen";
 			return View("NieuweCommVorm", model);
@@ -760,7 +757,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				BaseModelInit(model, groepID);
 
 				// info voor model herstellen
-				model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(gelieerdePersoonID));
+				model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailsOphalen(gelieerdePersoonID));
 				model.Types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.CommunicatieTypesOphalen());
 				model.Titel = "Nieuwe communicatievorm toevoegen";
 
@@ -790,9 +787,9 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult BewerkenCommVorm(int commvormID, int gelieerdePersoonID, int groepID)
 		{
 			// TODO dit is niet juist broes, want hij haalt 2 keer de persoon op?
-			GelieerdePersoon g = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(gelieerdePersoonID));
+			var persoonDetail = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailsOphalen(gelieerdePersoonID));
 			CommunicatieVorm commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieVorm>(l => l.CommunicatieVormOphalen(commvormID));
-			CommVormModel model = new CommVormModel(g, commv);
+			var model = new CommVormModel(persoonDetail, commv);
 			BaseModelInit(model, groepID);
 			model.Titel = "Communicatievorm bewerken";
 			return View("CommVormBewerken", model);
@@ -829,7 +826,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				BaseModelInit(model, groepID);
 
-				model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, GelieerdePersoon>(l => l.DetailsOphalen(gelieerdePersoonID));
+				model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailsOphalen(gelieerdePersoonID));
 				model.NieuweCommVorm = commVorm;
 				model.Titel = "Communicatievorm bewerken";
 

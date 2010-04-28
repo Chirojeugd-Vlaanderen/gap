@@ -49,9 +49,9 @@
         </p>
         
         <p>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeeftijd)%>
-        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeeftijd)%>
-        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeeftijd)%>
+        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeefTijd)%>
+        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeefTijd)%>
+        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeefTijd)%>
         </p>
         
         <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonDetail.PersoonID)%>

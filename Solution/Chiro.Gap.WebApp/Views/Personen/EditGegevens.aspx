@@ -54,32 +54,32 @@
         <legend>Persoonlijke gegevens</legend>          
             
             <p>
-            <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.AdNummer)%>
-            <%=Html.TextBoxFor(mdl=>mdl.HuidigePersoon.Persoon.AdNummer, 
+            <%=Html.LabelFor(s=>s.HuidigePersoon.AdNummer)%>
+            <%=Html.TextBoxFor(mdl=>mdl.HuidigePersoon.AdNummer, 
                     new Dictionary<string, object> { 
                         {"readonly", "readonly"}, 
                         {"title", "AD-nummer kan niet ingegeven of gewijzigd worden." } })%>     
             </p>
             
             <p>
-            <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.VoorNaam) %>
-            <%=Html.EditorFor(s=>s.HuidigePersoon.Persoon.VoorNaam) %>
+            <%=Html.LabelFor(s=>s.HuidigePersoon.VoorNaam) %>
+            <%=Html.EditorFor(s=>s.HuidigePersoon.VoorNaam) %>
             </p>
             
             <p>
-            <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.Naam) %>
-            <%=Html.EditorFor(s=>s.HuidigePersoon.Persoon.Naam) %>
+            <%=Html.LabelFor(s=>s.HuidigePersoon.Naam) %>
+            <%=Html.EditorFor(s=>s.HuidigePersoon.Naam) %>
             </p>
             
             <p>
-            <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.GeboorteDatum) %>
-            <%=Html.EditorFor(s=>s.HuidigePersoon.Persoon.GeboorteDatum)%>
+            <%=Html.LabelFor(s=>s.HuidigePersoon.GeboorteDatum) %>
+            <%=Html.EditorFor(s=>s.HuidigePersoon.GeboorteDatum)%>
             </p>
             
             <p>
-            <%=Html.LabelFor(s=>s.HuidigePersoon.Persoon.Geslacht)%>
-            <%= Html.RadioButton("HuidigePersoon.Persoon.Geslacht", GeslachtsType.Man,   Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Man)%> Man
-            <%= Html.RadioButton("HuidigePersoon.Persoon.Geslacht", GeslachtsType.Vrouw, Model.HuidigePersoon.Persoon.Geslacht == GeslachtsType.Vrouw)%> Vrouw
+            <%=Html.LabelFor(s=>s.HuidigePersoon.Geslacht)%>
+            <%= Html.RadioButton("HuidigePersoon.Geslacht", GeslachtsType.Man,   Model.HuidigePersoon.Geslacht == GeslachtsType.Man)%> Man
+            <%= Html.RadioButton("HuidigePersoon.Geslacht", GeslachtsType.Vrouw, Model.HuidigePersoon.Geslacht == GeslachtsType.Vrouw)%> Vrouw
             </p>
             
             <p>
@@ -87,10 +87,8 @@
             <%=Html.EditorFor(s=>s.HuidigePersoon.ChiroLeefTijd)%>
             </p>
 
-            <%=Html.HiddenFor(s=>s.HuidigePersoon.ID)%>
+            <%=Html.HiddenFor(s=>s.HuidigePersoon.GelieerdePersoonID)%>
             <%=Html.HiddenFor(s=>s.HuidigePersoon.VersieString)%>
-            <%=Html.HiddenFor(s=>s.HuidigePersoon.Persoon.ID)%>
-            <%=Html.HiddenFor(s=>s.HuidigePersoon.Persoon.VersieString)%>
             <%
                 if (Model.Forceer)
                 {
@@ -105,9 +103,9 @@
      
      <%} %>
 
-    <% if (Model.HuidigePersoon.ID != 0) { %>
-        <%=Html.ActionLink("Stop met aanpassen zonder te bewaren", "EditRest", new { id = Model.HuidigePersoon.ID})%>
+    <% if (Model.HuidigePersoon.GelieerdePersoonID != 0) { %>
+        <%=Html.ActionLink("Stop met aanpassen zonder te bewaren", "EditRest", new { id = Model.HuidigePersoon.GelieerdePersoonID})%>
     <% } %>
     
-     <%=Html.ActionLink("Terug naar alle persoonsgegevens", "EditRest", new { Controller = "Personen", id = Model.HuidigePersoon.ID})%>
+     <%=Html.ActionLink("Terug naar alle persoonsgegevens", "EditRest", new { Controller = "Personen", id = Model.HuidigePersoon.GelieerdePersoonID})%>
 </asp:Content>

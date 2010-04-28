@@ -62,7 +62,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.Geslacht,
 					opt => opt.MapFrom(src => src.Persoon.Geslacht))
 				.ForMember(
-					dst => dst.ChiroLeeftijd,
+					dst => dst.ChiroLeefTijd,
 					opt => opt.MapFrom(src => src.ChiroLeefTijd))
 				.ForMember(
 					dst => dst.PersoonID,

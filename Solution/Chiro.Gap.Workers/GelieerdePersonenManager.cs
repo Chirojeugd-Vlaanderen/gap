@@ -140,7 +140,10 @@ namespace Chiro.Gap.Workers
 				// overschreven wordt, lijkt me wat overkill.  Ik vergelijk
 				// hiet nieuwe AD-nummer gewoon met het bestaande.
 
-				GelieerdePersoon origineel = _dao.Ophalen(p.ID, foo => foo.Persoon);
+				// Er mag niet gepoterd worden met PersoonID en AdNummer
+
+				var origineel = _dao.Ophalen(p.ID, foo => foo.Persoon);
+
 				if (origineel == null || origineel.Persoon.AdNummer == p.Persoon.AdNummer)
 				{
 					return _dao.Bewaren(p);

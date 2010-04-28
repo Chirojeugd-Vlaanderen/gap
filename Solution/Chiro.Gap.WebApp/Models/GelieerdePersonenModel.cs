@@ -24,7 +24,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Informatie over een te tonen of te wijzigen persoon
 		/// </summary>
-		public GelieerdePersoon HuidigePersoon { get; set; }
+		public PersoonDetail HuidigePersoon { get; set; }
 
 		/// <summary>
 		/// Lijst met info over eventueel gelijkaardige personen

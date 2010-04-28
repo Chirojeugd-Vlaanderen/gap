@@ -4,6 +4,7 @@
 // </copyright>
 
 using Chiro.Gap.Orm;
+using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -16,7 +17,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// ID van GelieerdePersoon wiens/wier communicatievorm 
 		/// we bekijken 
 		/// </summary>
-		public GelieerdePersoon Aanvrager { get; set; }
+		public PersoonDetail Aanvrager { get; set; }
 
 		/// <summary>
 		/// Nieuwe input voor de communicatievorm voor de gegeven gelieerde personen
@@ -28,11 +29,11 @@ namespace Chiro.Gap.WebApp.Models
 		/// </summary>
 		public CommVormModel()
 		{
-			Aanvrager = new GelieerdePersoon();
+			Aanvrager = new PersoonDetail();
 			NieuweCommVorm = new CommunicatieVorm();
 		}
 
-		public CommVormModel(GelieerdePersoon aanvrager, CommunicatieVorm v)
+		public CommVormModel(PersoonDetail aanvrager, CommunicatieVorm v)
 			: this()
 		{
 			Aanvrager = aanvrager;

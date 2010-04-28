@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 
 using Chiro.Gap.Orm;
+using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -19,7 +20,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// ID van GelieerdePersoon waarvoor aangeklikt dat
 		/// hij/zij een extra adres nodig heeft
 		/// </summary>
-		public GelieerdePersoon Aanvrager { get; set; }
+		public PersoonDetail Aanvrager { get; set; }
 
 		/// <summary>
 		/// Nieuwe communicatievorm (telefoonnummer, mailadres, ...)
@@ -36,11 +37,11 @@ namespace Chiro.Gap.WebApp.Models
 		/// </summary>
 		public NieuweCommVormModel()
 		{
-			Aanvrager = new GelieerdePersoon();
+			Aanvrager = new PersoonDetail();
 			NieuweCommVorm = new CommunicatieVorm();
 		}
 
-		public NieuweCommVormModel(GelieerdePersoon aanvrager, IEnumerable<CommunicatieType> types)
+		public NieuweCommVormModel(PersoonDetail aanvrager, IEnumerable<CommunicatieType> types)
 			: this()
 		{
 			Aanvrager = aanvrager;
