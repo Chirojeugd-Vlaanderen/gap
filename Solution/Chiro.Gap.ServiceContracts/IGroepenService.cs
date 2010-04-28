@@ -53,10 +53,9 @@ namespace Chiro.Gap.ServiceContracts
 		/// Persisteert een groep in de database
 		/// </summary>
 		/// <param name="g">Te persisteren groep</param>
-		/// <returns>De persoon met eventueel gewijzigde informatie</returns>
 		/// <remarks>FIXME: gedetailleerde exception</remarks>
 		[OperationContract]
-		Groep Bewaren(Groep g);
+		void Bewaren(GroepInfo g);
 
 		#region ophalen
 

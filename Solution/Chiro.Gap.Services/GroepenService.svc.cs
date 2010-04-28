@@ -117,11 +117,27 @@ namespace Chiro.Gap.Services
 			return resultaat;
 		}
 
-		public Groep Bewaren(Groep g)
+		/// <summary>
+		/// Persisteert een groep in de database
+		/// </summary>
+		/// <param name="g">Te persisteren groep</param>
+		/// <remarks>FIXME: gedetailleerde exception</remarks>
+		public void Bewaren(GroepInfo g)
 		{
 			try
 			{
-				return _groepenMgr.Bewaren(g);
+				var groep = _groepenMgr.Ophalen(g.ID);
+
+				Mapper.CreateMap<GroepInfo, Groep>()
+					.ForMember(dst => dst.Code, opt => opt.MapFrom(src => src.StamNummer));
+				Mapper.AssertConfigurationIsValid();
+
+				Mapper.Map(g, groep);
+
+				// TODO: Hier gaat natuurlijk nooit een concurrency exception optreden,
+				// aangezien GroepInfo (nog?) geen versiestring bevat.
+
+				_groepenMgr.Bewaren(groep);
 			}
 			catch (Exception e)
 			{
