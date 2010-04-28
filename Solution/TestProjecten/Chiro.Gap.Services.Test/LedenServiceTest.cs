@@ -83,12 +83,12 @@ namespace Chiro.Gap.Services.Test
 		public void OphalenTest()
 		{
 			// Arrange
-			LedenService target = Factory.Maak<LedenService>();
+			var target = Factory.Maak<LedenService>();
 
 			// Act
-			int lidID = TestInfo.LID3ID;	// is contactpersoon en redactielid.
-			LidExtras extras = LidExtras.Functies;
-			var actual = target.Ophalen(lidID, extras);
+			const int lidID = TestInfo.LID3ID;
+
+			var actual = target.DetailsOphalen(lidID);
 
 			// Assert
 			var ids = (from f in actual.Functies select f.ID);
@@ -119,7 +119,7 @@ namespace Chiro.Gap.Services.Test
 			#endregion
 
 			#region Assert
-			var l = target.Ophalen(lidID, LidExtras.Functies);
+			var l = target.DetailsOphalen(lidID);
 			var funIDs = (from f in l.Functies select f.ID);
 
 			Assert.AreEqual(funIDs.Count(), 3);

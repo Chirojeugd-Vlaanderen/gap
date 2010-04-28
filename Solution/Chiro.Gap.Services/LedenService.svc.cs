@@ -161,19 +161,16 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
-		/// Haalt lid op, inclusief gelieerde persoon en persoon
+		/// Haalt lid op, inclusief gelieerde persoon, persoon, groep, afdelingen en functies
 		/// </summary>
 		/// <param name="lidID">ID op te halen lid</param>
-		/// <param name="extras">Geeft aan welke extra entiteiten mee opgehaald moeten worden</param>
-		/// <returns>Lidinfo met gelieerdepersoon en persoon</returns>
-		public LidInfo Ophalen(int lidID, LidExtras extras)
+		/// <returns>Lidinfo; bevat info over gelieerde persoon, persoon, groep, afdelingen 
+		/// en functies </returns>
+		public LidInfo DetailsOphalen(int lidID)
 		{
-			if ((extras & LidExtras.AlleAfdelingen) != 0)
-			{
-				throw new NotImplementedException("Het datacontract LidInfo is niet voorzien op " +
-					"het opleveren van alle afdelingen.");
-			}
-			return Mapper.Map<Lid, LidInfo>(_ledenMgr.Ophalen(lidID, extras));
+			return Mapper.Map<Lid, LidInfo>(_ledenMgr.Ophalen(
+				lidID,
+				LidExtras.Groep|LidExtras.Afdelingen|LidExtras.Functies|LidExtras.Persoon));
 		}
 
 		/// <summary>

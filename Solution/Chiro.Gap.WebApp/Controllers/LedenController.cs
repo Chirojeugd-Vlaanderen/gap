@@ -265,9 +265,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new LedenModel();
 			BaseModelInit(model, groepID);
 
-			model.HuidigLid = ServiceHelper.CallService<ILedenService, LidInfo>(l => l.Ophalen(
-				id, 
-				LidExtras.Groep|LidExtras.Afdelingen|LidExtras.Functies|LidExtras.Persoon));
+			model.HuidigLid = 
+				ServiceHelper.CallService<ILedenService, LidInfo>(l => l.DetailsOphalen(id));
 
 			// Ik had liever hierboven nog eens LidExtras.AlleAfdelingen meegegeven, maar
 			// het datacontract (LidInfo) voorziet daar niets voor.
