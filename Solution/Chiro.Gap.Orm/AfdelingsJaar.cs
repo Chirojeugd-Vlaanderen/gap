@@ -16,25 +16,8 @@ namespace Chiro.Gap.Orm
 	/// Een afdelingsjaar bepaalt welke geboortejaren, geslacht en officiële afdelingen
 	/// in een bepaald werkjaar overeenkomen met een gegeven afdeling.
 	/// </summary>
-	[MetadataType(typeof(AfdelingsJaarAttributen))]
 	public partial class AfdelingsJaar : IEfBasisEntiteit
 	{
-		/// <summary>
-		/// Geneste klasse om attributen te definiëren.
-		/// (Op de echte property's kan dat niet, want die zijn 
-		/// automatisch gegenereerd.)
-		/// </summary>
-		public class AfdelingsJaarAttributen
-		{
-			[DisplayName(@"Geboortejaar van")]
-			[Verplicht]
-			public int GeboorteJaarVan { get; set; }
-
-			[DisplayName(@"Geboortejaar tot")]
-			[Verplicht]
-			public int GeboorteJaarTot { get; set; }
-		}
-
 		/// <summary>
 		/// Instantieert een lege gemengde afdeling
 		/// </summary>

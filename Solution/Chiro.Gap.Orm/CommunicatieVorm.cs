@@ -15,31 +15,8 @@ namespace Chiro.Gap.Orm
 	/// <summary>
 	/// Instantieert een CommunicatieVorm-object dat zorgt voor samenwerking met Entity Framework
 	/// </summary>
-	[MetadataType(typeof(CommuncatieVormValidatie))]
 	public partial class CommunicatieVorm : IEfBasisEntiteit, ICommunicatie
 	{
-		/// <summary>
-		/// De attributen op de properties van deze geneste class zorgen voor de validatie.
-		/// Je kan de attributen niet rechtstreeks op de properties van CommunicatieVorm zetten,
-		/// omdat Entity Framework de definitie van deze attributen telkens opnieuw genereert.
-		/// (Let op het MetaData-attribute op CommunicatieVorm)
-		/// </summary>
-		public class CommuncatieVormValidatie
-		{
-			[Verplicht]
-			public string Nummer { get; set; }
-
-			[StringLengte(320)]
-			[DataType(DataType.MultilineText)]
-			public string Nota { get; set; }
-
-			[DisplayName(@"Voor heel het gezin?")]
-			public bool IsGezinsgebonden { get; set; }
-
-			[DisplayName(@"Gebruiken om persoon te contacteren?")]
-			public bool Voorkeur { get; set; }
-		}
-
 		private bool _teVerwijderen = false;
 
 		public bool TeVerwijderen

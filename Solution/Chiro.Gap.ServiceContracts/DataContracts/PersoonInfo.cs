@@ -2,6 +2,8 @@
 using System.Runtime.Serialization;
 
 using Chiro.Gap.Domain;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -12,6 +14,7 @@ namespace Chiro.Gap.ServiceContracts
 	[DataContract]
 	public class PersoonInfo
 	{
+		[DisplayName(@"AD-nummer")]
 		[DataMember]
 		public int? AdNummer
 		{
@@ -27,12 +30,16 @@ namespace Chiro.Gap.ServiceContracts
 		}
 
 		[DataMember]
+		[DisplayName(@"Chiroleeftijd")]
 		public int ChiroLeefTijd
 		{
 			get;
 			set;
 		}
 
+		[Verplicht]
+		[DisplayName(@"Voornaam")]
+		[StringLengte(60), StringMinimumLengte(2)]
 		[DataMember]
 		public string VoorNaam
 		{
@@ -40,6 +47,8 @@ namespace Chiro.Gap.ServiceContracts
 			set;
 		}
 
+		[Verplicht(), StringLengte(160), StringMinimumLengte(2)]
+		[DisplayName(@"Familienaam")]
 		[DataMember]
 		public string Naam
 		{
@@ -47,6 +56,10 @@ namespace Chiro.Gap.ServiceContracts
 			set;
 		}
 
+		// [DisplayFormat(DataFormatString="{0:d}", ApplyFormatInEditMode=true, ConvertEmptyStringToNull=true)]
+		[DataType(DataType.Date)]
+		[DisplayName(@"Geboortedatum")]
+		[GeboorteDatumInVerleden]
 		[DataMember]
 		public DateTime? GeboorteDatum
 		{
@@ -54,6 +67,7 @@ namespace Chiro.Gap.ServiceContracts
 			set;
 		}
 
+		[Verplicht]
 		[DataMember]
 		public GeslachtsType Geslacht
 		{

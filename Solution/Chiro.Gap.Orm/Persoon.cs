@@ -16,57 +16,8 @@ namespace Chiro.Gap.Orm
 	/// <summary>
 	/// Instantieert een Persoon-object dat zorgt voor samenwerking met Entity Framework
 	/// </summary>
-	[MetadataType(typeof(Persoon_Validatie))]
 	public partial class Persoon : IEfBasisEntiteit
 	{
-		/// <summary>
-		/// Nested class die toelaat om validatie properties op te zetten, en die gereferencet wordt door het MetadataType attribute
-		/// Dit kan niet op de echte class, want die wordt gegenereerd door de EF Designer
-		/// </summary>
-		public class Persoon_Validatie
-		{
-			[Verplicht(), StringLengte(160), StringMinimumLengte(2)]
-			[DisplayName(@"Familienaam")]
-			public string Naam
-			{
-				get;
-				set;
-			}
-
-			[Verplicht]
-			[DisplayName(@"Voornaam")]
-			[StringLengte(60), StringMinimumLengte(2)]
-			public string VoorNaam
-			{
-				get;
-				set;
-			}
-
-			[Verplicht]
-			public GeslachtsType Geslacht
-			{
-				set;
-				get;
-			}
-
-			[DisplayName(@"AD-nummer")]
-			public Nullable<int> AdNummer
-			{
-				set;
-				get;
-			}
-
-			// [DisplayFormat(DataFormatString="{0:d}", ApplyFormatInEditMode=true, ConvertEmptyStringToNull=true)]
-			[DataType(DataType.Date)]
-			[DisplayName(@"Geboortedatum")]
-			[GeboorteDatumInVerleden]
-			public DateTime? GeboorteDatum
-			{
-				get;
-				set;
-			}
-		}
-
 		private bool _teVerwijderen = false;
 
 		public bool TeVerwijderen

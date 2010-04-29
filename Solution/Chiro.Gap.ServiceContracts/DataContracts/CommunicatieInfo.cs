@@ -1,4 +1,6 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -12,6 +14,7 @@ namespace Chiro.Gap.ServiceContracts
 			set;
 		}
 
+		[Verplicht]
 		[DataMember]
 		public string Nummer
 		{
@@ -20,6 +23,7 @@ namespace Chiro.Gap.ServiceContracts
 		}
 
 		[DataMember]
+		[DisplayName(@"Gebruiken om persoon te contacteren?")]
 		public bool Voorkeur
 		{
 			get;
@@ -27,6 +31,8 @@ namespace Chiro.Gap.ServiceContracts
 		}
 
 		[DataMember]
+		[StringLengte(320)]
+		[DataType(DataType.MultilineText)]
 		public string Nota
 		{
 			get;
@@ -34,6 +40,7 @@ namespace Chiro.Gap.ServiceContracts
 		}
 
 		[DataMember]
+		[DisplayName(@"Voor heel het gezin?")]
 		public bool IsGezinsGebonden { get; set; }
 
 		[DataMember]

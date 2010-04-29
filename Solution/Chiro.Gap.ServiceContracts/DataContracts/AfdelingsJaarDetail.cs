@@ -3,9 +3,11 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 using Chiro.Gap.Domain;
+using System.ComponentModel.DataAnnotations;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -20,10 +22,15 @@ namespace Chiro.Gap.ServiceContracts
 		[DataMember]
 		public int AfdelingID { get; set; }
 		[DataMember]
+		[DisplayName(@"Officiele afdeling")]
 		public int OfficieleAfdelingID { get; set; }
 		[DataMember]
+		[Verplicht]
+		[DisplayName(@"Geboortejaar van")]
 		public int GeboorteJaarVan { get; set; }
 		[DataMember]
+		[Verplicht]
+		[DisplayName(@"Geboortejaar tot")]
 		public int GeboorteJaarTot { get; set; }
 		[DataMember]
 		public GeslachtsType Geslacht { get; set; }
