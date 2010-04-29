@@ -246,14 +246,6 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		void CategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID);
 
-		/// <summary>
-		/// Haalt een lijst op van personen die tot de opgegeven categorie behoren
-		/// </summary>
-		/// <param name="categorieID">ID van de categorie</param>
-		/// <returns>Een lijst van personen die tot de opgegeven categorie behoren</returns>
-		[OperationContract]
-		IList<GelieerdePersoon> OphalenUitCategorie(int categorieID);
-
 		#endregion categorieën
 	}
 }

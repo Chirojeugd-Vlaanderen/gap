@@ -575,12 +575,6 @@ namespace Chiro.Gap.Services
 			// Ontkoppelen en persisteren (verwijderen persisteert altijd meteen)
 			_gpMgr.CategorieLoskoppelen(gelieerdepersonenIDs, categorie);
 		}
-
-		public IList<GelieerdePersoon> OphalenUitCategorie(int categorieID)
-		{
-			throw new NotImplementedException();
-		}
-
 		#endregion categorieën
 
 		#endregion
