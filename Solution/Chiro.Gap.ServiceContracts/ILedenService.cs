@@ -6,8 +6,6 @@
 using System.Collections.Generic;
 using System.ServiceModel;
 
-using Chiro.Gap.Orm;
-
 namespace Chiro.Gap.ServiceContracts
 {
 	// NOTE: If you change the interface name "ILedenService" here, you must also update the reference to "ILedenService" in Web.config.
