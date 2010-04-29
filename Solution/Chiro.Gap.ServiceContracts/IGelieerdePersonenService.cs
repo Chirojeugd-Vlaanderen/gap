@@ -183,11 +183,10 @@ namespace Chiro.Gap.ServiceContracts
 		/// <summary>
 		/// Voegt een commvorm toe aan een gelieerde persoon
 		/// </summary>
-		/// <param name="gelieerdepersonenID">ID van de gelieerde persoon</param>
-		/// <param name="commvorm">De communicatievorm die aan die persoon gekoppeld moet worden</param>
-		/// <param name="typeID">De ID van het communicatietype waartoe <paramref name="commvorm"/> behoort</param>
+		/// <param name="gelieerdePersoonID">ID van de gelieerde persoon</param>
+		/// <param name="commInfo">De communicatievorm die aan die persoon gekoppeld moet worden</param>
 		[OperationContract]
-		void CommunicatieVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm, int typeID);
+		void CommunicatieVormToevoegen(int gelieerdePersoonID, CommunicatieInfo commInfo);
 
 		/// <summary>
 		/// Verwijdert een communicatievorm van een gelieerde persoon
@@ -198,19 +197,19 @@ namespace Chiro.Gap.ServiceContracts
 		void CommunicatieVormVerwijderenVanPersoon(int gelieerdepersonenID, int commvormID);
 
 		/// <summary>
-		/// Gaat aanpassingen aan een bestaande communicatievorm persisteren zonder links naar andere objecten
+		/// Persisteert de wijzigingen aan een bestaande communicatievorm
 		/// </summary>
-		/// <param name="c">De aangepaste communicatievorm</param>
+		/// <param name="c">De aan te passen communicatievorm</param>
 		[OperationContract]
-		void CommunicatieVormAanpassen(CommunicatieVorm c);
+		void CommunicatieVormAanpassen(CommunicatieDetail c);
 
 		/// <summary>
-		/// Haalt een bepaald communicatietype op, op basis van ID
+		/// Haalt info over een bepaald communicatietype op, op basis van ID
 		/// </summary>
 		/// <param name="commTypeID">De ID van het communicatietype</param>
-		/// <returns></returns>
+		/// <returns>Info over het gevraagde communicatietype</returns>
 		[OperationContract]
-		CommunicatieType CommunicatieTypeOphalen(int commTypeID);
+		CommunicatieTypeInfo CommunicatieTypeOphalen(int commTypeID);
 
 		/// <summary>
 		/// Haalt een lijst op met alle communicatietypes
@@ -220,12 +219,12 @@ namespace Chiro.Gap.ServiceContracts
 		IEnumerable<CommunicatieType> CommunicatieTypesOphalen();
 
 		/// <summary>
-		/// Haalt een communicatievorm op
+		/// Haalt detail van een communicatievorm op
 		/// </summary>
 		/// <param name="commvormID">ID van de communicatievorm waarover het gaat</param>
 		/// <returns>De communicatievorm met de opgegeven ID</returns>
 		[OperationContract]
-		CommunicatieVorm CommunicatieVormOphalen(int commvormID);
+		CommunicatieDetail CommunicatieVormOphalen(int commvormID);
 
 		#endregion commvormen
 

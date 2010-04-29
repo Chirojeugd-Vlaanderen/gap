@@ -14,12 +14,12 @@
     </ul>
     <fieldset>
         <legend>Communicatievorm toevoegen voor
-            <%=Model.Aanvrager.Persoon.VolledigeNaam %></legend>
+            <%=Model.Aanvrager.VolledigeNaam %></legend>
         <%=Html.ValidationSummary() %>
         <table>
             <tr>
                 <td>
-                    <%=Html.DropDownListFor(mdl=>mdl.GeselecteerdeCommVorm, new SelectList(Model.Types.Select(x => new { value = x.ID, text = x.Omschrijving }), "value", "text"))%>:
+                    <%=Html.DropDownListFor(mdl=>mdl.NieuweCommVorm.CommunicatieTypeID, new SelectList(Model.Types.Select(x => new { value = x.ID, text = x.Omschrijving }), "value", "text"))%>:
                 </td>
                 <td>
                     <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nummer) %>
@@ -35,10 +35,10 @@
             </tr>
             <tr>
                 <td>
-                    <%=Html.LabelFor(mdl => mdl.NieuweCommVorm.IsGezinsgebonden) %>
+                    <%=Html.LabelFor(mdl => mdl.NieuweCommVorm.IsGezinsGebonden) %>
                 </td>
                 <td>
-                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.IsGezinsgebonden) %>
+                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.IsGezinsGebonden) %>
                 </td>
             </tr>
             <tr>

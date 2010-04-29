@@ -114,23 +114,21 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Een nieuwe communicatievorm opslaan voor de gelieerde persoon met de opgegeven ID
 		/// </summary>
-		/// <param name="comm">De communicatievorm die je wilt opslaan</param>
+		/// <param name="comm">De communicatievorm die je wilt opslaan, met daaraan gekoppeld
+		/// zijn type.</param>
 		/// <param name="gelieerdePersoonID">De ID van de gelieerde persoon over wie het gaat</param>
-		/// <param name="typeID">De ID van het type van de communicatievorm</param>
-		public void CommunicatieVormToevoegen(CommunicatieVorm comm, int gelieerdePersoonID, int typeID)
+		public void CommunicatieVormToevoegen(CommunicatieVorm comm, int gelieerdePersoonID)
 		{
 			if (!_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 			GelieerdePersoon origineel = _geldao.Ophalen(gelieerdePersoonID, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
-			CommunicatieType type = _typedao.Ophalen(typeID);
 			var cvValid = new CommunicatieVormValidator();
 
 			if (cvValid.Valideer(comm))
 			{
 				origineel.Communicatie.Add(comm);
-				comm.CommunicatieType = type;
 				_dao.Bewaren(comm, l => l.CommunicatieType.WithoutUpdate(), l => l.GelieerdePersoon.WithoutUpdate());
 			}
 			else

@@ -51,6 +51,7 @@
     <Compile Include="Enums.cs" />
     <Compile Include="FoutBericht.cs" />
     <Compile Include="Foutnummers.cs" />
+    <Compile Include="ICommunicatie.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

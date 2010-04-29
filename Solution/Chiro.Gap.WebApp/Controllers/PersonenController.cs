@@ -737,16 +737,43 @@ namespace Chiro.Gap.WebApp.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult NieuweCommVorm(NieuweCommVormModel model, int groepID, int gelieerdePersoonID)
 		{
-			CommunicatieVormValidator validator = new CommunicatieVormValidator();
-			CommunicatieType commType = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieType>(l => l.CommunicatieTypeOphalen(model.GeselecteerdeCommVorm));
-			model.NieuweCommVorm.CommunicatieType = commType;
+			// Eerst een hoop gedoe om de CommunicatieInfo uit het model in een
+			// CommunicatieDetail te krijgen, zodat de validatie kan gebeuren.
+
+			var communicatieType = ServiceHelper.CallService<
+				IGelieerdePersonenService,
+				CommunicatieTypeInfo>(svc => svc.CommunicatieTypeOphalen(
+					model.NieuweCommVorm.CommunicatieTypeID));
+
+			Mapper.CreateMap<CommunicatieInfo, CommunicatieDetail>()
+				.ForMember(dst => dst.CommunicatieTypeOmschrijving, opt => opt.Ignore())
+				.ForMember(dst => dst.CommunicatieTypeValidatie, opt => opt.Ignore())
+				.ForMember(dst => dst.CommunicatieTypeVoorbeeld, opt => opt.Ignore());
+
+			Mapper.AssertConfigurationIsValid();
+
+			var communicatieDetail = Mapper.Map<CommunicatieInfo, CommunicatieDetail>(
+				model.NieuweCommVorm);
+
+			communicatieDetail.CommunicatieTypeOmschrijving = communicatieType.Omschrijving;
+			communicatieDetail.CommunicatieTypeValidatie = communicatieType.Validatie;
+			communicatieDetail.CommunicatieTypeVoorbeeld = communicatieType.Voorbeeld;
+
+
+
+			var validator = new CommunicatieVormValidator();
 
 			// De validatie van de vorm van telefoonnrs, e-mailadressen,... kan niet automatisch;
 			// dat doen we eerst.
-			if (!validator.Valideer(model.NieuweCommVorm))
+			if (!validator.Valideer(communicatieDetail))
 			{
 				// voeg gevonden fout toe aan modelstate.
-				ModelState.AddModelError("Model.NieuweCommVorm.Nummer", string.Format(Properties.Resources.FormatValidatieFout, commType.Omschrijving, commType.Voorbeeld));
+				ModelState.AddModelError(
+					"Model.NieuweCommVorm.Nummer", 
+					string.Format(
+						Properties.Resources.FormatValidatieFout, 
+						communicatieDetail.CommunicatieTypeOmschrijving, 
+						communicatieDetail.CommunicatieTypeVoorbeeld));
 			}
 
 			if (!ModelState.IsValid)
@@ -765,7 +792,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
-				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegenAanPersoon(gelieerdePersoonID, model.NieuweCommVorm, model.GeselecteerdeCommVorm));
+				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(gelieerdePersoonID, model.NieuweCommVorm));
 				return RedirectToAction("EditRest", new
 				{
 					id = gelieerdePersoonID
@@ -788,7 +815,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			// TODO dit is niet juist broes, want hij haalt 2 keer de persoon op?
 			var persoonDetail = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailsOphalen(gelieerdePersoonID));
-			CommunicatieVorm commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieVorm>(l => l.CommunicatieVormOphalen(commvormID));
+			var commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieDetail>(l => l.CommunicatieVormOphalen(commvormID));
 			var model = new CommVormModel(persoonDetail, commv);
 			BaseModelInit(model, groepID);
 			model.Titel = "Communicatievorm bewerken";
@@ -802,11 +829,16 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult BewerkenCommVorm(CommVormModel model, int gelieerdePersoonID, int groepID)
 		{
 			var validator = new CommunicatieVormValidator();
-			CommunicatieVorm commVorm = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieVorm>(l => l.CommunicatieVormOphalen(model.NieuweCommVorm.ID));
-			CommunicatieType commType = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieType>(l => l.CommunicatieTypeOphalen(commVorm.CommunicatieType.ID));
+			var commVorm = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieDetail>(l => l.CommunicatieVormOphalen(model.NieuweCommVorm.ID));
 
-			model.NieuweCommVorm.CommunicatieType = commVorm.CommunicatieType;
+			// communicatietype van de oorspronkelijke communicatievorm overnemen.
+			// (gedoe)
 
+			model.NieuweCommVorm.CommunicatieTypeID = commVorm.CommunicatieTypeID;
+			model.NieuweCommVorm.CommunicatieTypeOmschrijving = commVorm.CommunicatieTypeOmschrijving;
+			model.NieuweCommVorm.CommunicatieTypeValidatie = commVorm.CommunicatieTypeValidatie;
+			model.NieuweCommVorm.CommunicatieTypeVoorbeeld = commVorm.CommunicatieTypeVoorbeeld;
+			
 			// De validatie van de vorm van telefoonnrs, e-mailadressen,... kan niet automatisch;
 			// dat doen we eerst.
 			if (!validator.Valideer(model.NieuweCommVorm))
@@ -814,8 +846,8 @@ namespace Chiro.Gap.WebApp.Controllers
 				// voeg gevonden fout toe aan modelstate.
 				ModelState.AddModelError("Model.NieuweCommVorm.Nummer", string.Format(
 					Properties.Resources.FormatValidatieFout,
-					commType.Omschrijving,
-					commType.Voorbeeld));
+					model.NieuweCommVorm.CommunicatieTypeOmschrijving,
+					model.NieuweCommVorm.CommunicatieTypeVoorbeeld));
 			}
 
 			if (!ModelState.IsValid)

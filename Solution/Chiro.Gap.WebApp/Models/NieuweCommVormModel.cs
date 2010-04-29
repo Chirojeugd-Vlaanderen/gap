@@ -26,9 +26,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// Nieuwe communicatievorm (telefoonnummer, mailadres, ...)
 		/// voor de gegeven gelieerde personen
 		/// </summary>
-		public CommunicatieVorm NieuweCommVorm { get; set; }
-
-		public int GeselecteerdeCommVorm { get; set; }
+		public CommunicatieInfo NieuweCommVorm { get; set; }
 
 		public IEnumerable<CommunicatieType> Types { get; set; }
 
@@ -38,7 +36,7 @@ namespace Chiro.Gap.WebApp.Models
 		public NieuweCommVormModel()
 		{
 			Aanvrager = new PersoonDetail();
-			NieuweCommVorm = new CommunicatieVorm();
+			NieuweCommVorm = new CommunicatieInfo();
 		}
 
 		public NieuweCommVormModel(PersoonDetail aanvrager, IEnumerable<CommunicatieType> types)
@@ -46,7 +44,7 @@ namespace Chiro.Gap.WebApp.Models
 		{
 			Aanvrager = aanvrager;
 			Types = types;
-			NieuweCommVorm = new CommunicatieVorm();
+			NieuweCommVorm = new CommunicatieInfo();
 		}
 	}
 }

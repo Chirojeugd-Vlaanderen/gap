@@ -184,7 +184,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.CreateMap<WoonPlaats, WoonPlaatsInfo>();
 			Mapper.CreateMap<Categorie, CategorieInfo>();
 			Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo2>();
-			Mapper.CreateMap<CommunicatieVorm, CommunicatieInfo>();
+			Mapper.CreateMap<CommunicatieVorm, CommunicatieDetail>();
 
 
 			// Important: als er een lid is, dan is er altijd een gelieerdepersoon, maar niet omgekeerd, 

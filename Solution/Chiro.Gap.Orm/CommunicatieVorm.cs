@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Orm
 {
@@ -15,7 +16,7 @@ namespace Chiro.Gap.Orm
 	/// Instantieert een CommunicatieVorm-object dat zorgt voor samenwerking met Entity Framework
 	/// </summary>
 	[MetadataType(typeof(CommuncatieVormValidatie))]
-	public partial class CommunicatieVorm : IEfBasisEntiteit
+	public partial class CommunicatieVorm : IEfBasisEntiteit, ICommunicatie
 	{
 		/// <summary>
 		/// De attributen op de properties van deze geneste class zorgen voor de validatie.
@@ -57,5 +58,21 @@ namespace Chiro.Gap.Orm
 		{
 			return 12;
 		}
+
+		#region ICommunicatie Members
+
+		string ICommunicatie.CommunicatieTypeValidatie
+		{
+			get
+			{
+				return CommunicatieType.Validatie;
+			}
+			set
+			{
+				CommunicatieType.Validatie = value;
+			}
+		}
+
+		#endregion
 	}
 }

@@ -421,11 +421,37 @@ namespace Chiro.Gap.Services
 			return Mapper.Map<IList<Persoon>, IList<BewonersInfo>>(lijst);
 		}
 
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void CommunicatieVormToevoegenAanPersoon(int gelieerdepersonenID, CommunicatieVorm commvorm, int typeID)
+		/// <summary>
+		/// Voegt een commvorm toe aan een gelieerde persoon
+		/// </summary>
+		/// <param name="gelieerdePersoonID">ID van de gelieerde persoon</param>
+		/// <param name="commInfo">De communicatievorm die aan die persoon gekoppeld moet worden</param>
+		public void CommunicatieVormToevoegen(int gelieerdePersoonID, CommunicatieInfo commInfo)
 		{
-			_cvMgr.CommunicatieVormToevoegen(commvorm, gelieerdepersonenID, typeID);
+			// TODO: Deze method moet nog aangepast worden.  De geijkte manier van werken is:
+			// 1. Haal gelieerde persoon op
+			// 2. Creer nieuwe communicatievorm
+			// 3. Gebruik business om te koppelen
+			// 4. Bewaar
+
+			Mapper.CreateMap<CommunicatieInfo, CommunicatieVorm>()
+				.ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
+				.ForMember(dst => dst.Versie, opt => opt.Ignore())
+				.ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
+				.ForMember(dst => dst.GelieerdePersoonReference, opt => opt.Ignore())
+				.ForMember(dst => dst.CommunicatieType, opt => opt.Ignore())
+				.ForMember(dst => dst.CommunicatieTypeReference, opt => opt.Ignore())
+				.ForMember(dst => dst.EntityKey, opt => opt.Ignore());
+
+			Mapper.AssertConfigurationIsValid();
+
+			var communicatieVorm = Mapper.Map<CommunicatieInfo, CommunicatieVorm>(commInfo);
+			communicatieVorm.CommunicatieType = 
+				_cvMgr.CommunicatieTypeOphalen(commInfo.CommunicatieTypeID);
+
+			_cvMgr.CommunicatieVormToevoegen(
+				communicatieVorm, 
+				gelieerdePersoonID);
 		}
 
 		// FIXME: de parameter 'gelieerdePersoonID' is overbodig; zie ticket #145.
@@ -446,21 +472,52 @@ namespace Chiro.Gap.Services
 		}
 
 		// TODO dit moet gecontroleerd worden!
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void CommunicatieVormAanpassen(CommunicatieVorm v)
+		/// <summary>
+		/// Persisteert de wijzigingen aan een bestaande communicatievorm
+		/// </summary>
+		/// <param name="v">De aan te passen communicatievorm</param>
+		public void CommunicatieVormAanpassen(CommunicatieDetail v)
 		{
-			_cvMgr.Bewaren(v);
+			Mapper.CreateMap<CommunicatieDetail, CommunicatieVorm>()
+				.ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
+				.ForMember(dst => dst.Versie, opt => opt.Ignore())
+				.ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
+				.ForMember(dst => dst.GelieerdePersoonReference, opt => opt.Ignore())
+				.ForMember(dst => dst.CommunicatieType, opt => opt.Ignore())
+				.ForMember(dst => dst.CommunicatieTypeReference, opt => opt.Ignore())
+				.ForMember(dst => dst.EntityKey, opt => opt.Ignore());
+
+			Mapper.AssertConfigurationIsValid();
+
+			_cvMgr.Bewaren(Mapper.Map<CommunicatieDetail, CommunicatieVorm>(v));
 		}
 
-		public CommunicatieVorm CommunicatieVormOphalen(int commvormID)
+		/// <summary>
+		/// Haalt detail van een communicatievorm op
+		/// </summary>
+		/// <param name="commvormID">ID van de communicatievorm waarover het gaat</param>
+		/// <returns>De communicatievorm met de opgegeven ID</returns>
+		public CommunicatieDetail CommunicatieVormOphalen(int commvormID)
 		{
-			return _cvMgr.Ophalen(commvormID);
+			Mapper.CreateMap<CommunicatieVorm, CommunicatieDetail>();
+			Mapper.AssertConfigurationIsValid();
+
+
+			return Mapper.Map<CommunicatieVorm, CommunicatieDetail>(_cvMgr.Ophalen(commvormID));
 		}
 
-		public CommunicatieType CommunicatieTypeOphalen(int commTypeID)
+		/// <summary>
+		/// Haalt info over een bepaald communicatietype op, op basis van ID
+		/// </summary>
+		/// <param name="commTypeID">De ID van het communicatietype</param>
+		/// <returns>Info over het gevraagde communicatietype</returns>
+		public CommunicatieTypeInfo CommunicatieTypeOphalen(int commTypeID)
 		{
-			return _cvMgr.CommunicatieTypeOphalen(commTypeID);
+			Mapper.CreateMap<CommunicatieType, CommunicatieTypeInfo>();
+			Mapper.AssertConfigurationIsValid();
+
+			return Mapper.Map<CommunicatieType,CommunicatieTypeInfo>(
+				_cvMgr.CommunicatieTypeOphalen(commTypeID));
 		}
 
 		public IEnumerable<CommunicatieType> CommunicatieTypesOphalen()

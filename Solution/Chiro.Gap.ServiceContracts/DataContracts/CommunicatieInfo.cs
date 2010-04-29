@@ -1,10 +1,4 @@
-// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
-// Mail naar informatica@chiro.be voor alle info over deze broncode
-// </copyright>
-
-using System.Runtime.Serialization;
-using Chiro.Gap.Orm;
+﻿using System.Runtime.Serialization;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -40,13 +34,12 @@ namespace Chiro.Gap.ServiceContracts
 		}
 
 		[DataMember]
-		public string CommunicatieTypeOmschrijving { get; set; }
+		public bool IsGezinsGebonden { get; set; }
 
 		[DataMember]
-		public string CommunicatieTypeValidatie { get; set; }
+		public string VersieString { get; set; }
 
 		[DataMember]
-		public string CommunicatieTypeVoorbeeld { get; set; }
-
+		public int CommunicatieTypeID { get; set; }
 	}
 }

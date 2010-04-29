@@ -17,11 +17,11 @@
            </ul>
            
            <fieldset>
-           <legend>Communicatievorm bewerken voor <%=Model.Aanvrager.Persoon.VolledigeNaam %></legend>     
+           <legend>Communicatievorm bewerken voor <%=Model.Aanvrager.VolledigeNaam %></legend>     
            <%=Html.ValidationSummary() %>
            <table>
            <tr>
-                <td><%=Model.NieuweCommVorm.CommunicatieType.Omschrijving%>:</td>
+                <td><%=Model.NieuweCommVorm.CommunicatieTypeOmschrijving%>:</td>
                 <td>
                     <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nummer) %>
                 </td>
@@ -33,9 +33,9 @@
                 </td>
            </tr>
            <tr>
-                <td><%=Html.LabelFor(mdl => mdl.NieuweCommVorm.IsGezinsgebonden) %></td>
+                <td><%=Html.LabelFor(mdl => mdl.NieuweCommVorm.IsGezinsGebonden) %></td>
                 <td>
-                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.IsGezinsgebonden) %>
+                    <%=Html.EditorFor(mdl => mdl.NieuweCommVorm.IsGezinsGebonden) %>
                 </td>
            </tr>
            <tr>
