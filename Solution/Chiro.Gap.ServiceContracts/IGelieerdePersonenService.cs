@@ -216,7 +216,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <returns>Een lijst op met alle communicatietypes</returns>
 		[OperationContract]
-		IEnumerable<CommunicatieType> CommunicatieTypesOphalen();
+		IEnumerable<CommunicatieTypeInfo> CommunicatieTypesOphalen();
 
 		/// <summary>
 		/// Haalt detail van een communicatievorm op

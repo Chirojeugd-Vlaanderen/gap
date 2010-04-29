@@ -726,7 +726,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult NieuweCommVorm(int gelieerdePersoonID, int groepID)
 		{
 			var persoonDetail = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailsOphalen(gelieerdePersoonID));
-			IEnumerable<CommunicatieType> types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.CommunicatieTypesOphalen());
+			var types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieTypeInfo>>(l => l.CommunicatieTypesOphalen());
 			var model = new NieuweCommVormModel(persoonDetail, types);
 			BaseModelInit(model, groepID);
 			model.Titel = "Nieuwe communicatievorm toevoegen";
@@ -785,7 +785,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				// info voor model herstellen
 				model.Aanvrager = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailsOphalen(gelieerdePersoonID));
-				model.Types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieType>>(l => l.CommunicatieTypesOphalen());
+				model.Types = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<CommunicatieTypeInfo>>(l => l.CommunicatieTypesOphalen());
 				model.Titel = "Nieuwe communicatievorm toevoegen";
 
 				return View("NieuweCommVorm", model);

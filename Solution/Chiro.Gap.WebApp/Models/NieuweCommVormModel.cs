@@ -28,7 +28,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// </summary>
 		public CommunicatieInfo NieuweCommVorm { get; set; }
 
-		public IEnumerable<CommunicatieType> Types { get; set; }
+		public IEnumerable<CommunicatieTypeInfo> Types { get; set; }
 
 		/// <summary>
 		/// De standaardconstructor - creëert leeg NieuweCommVorm
@@ -39,7 +39,7 @@ namespace Chiro.Gap.WebApp.Models
 			NieuweCommVorm = new CommunicatieInfo();
 		}
 
-		public NieuweCommVormModel(PersoonDetail aanvrager, IEnumerable<CommunicatieType> types)
+		public NieuweCommVormModel(PersoonDetail aanvrager, IEnumerable<CommunicatieTypeInfo> types)
 			: this()
 		{
 			Aanvrager = aanvrager;

@@ -520,9 +520,13 @@ namespace Chiro.Gap.Services
 				_cvMgr.CommunicatieTypeOphalen(commTypeID));
 		}
 
-		public IEnumerable<CommunicatieType> CommunicatieTypesOphalen()
+		public IEnumerable<CommunicatieTypeInfo> CommunicatieTypesOphalen()
 		{
-			return _cvMgr.CommunicatieTypesOphalen();
+			Mapper.CreateMap<CommunicatieType, CommunicatieTypeInfo>();
+			Mapper.AssertConfigurationIsValid();
+
+			return Mapper.Map<IEnumerable<CommunicatieType>, IEnumerable<CommunicatieTypeInfo>>(
+				_cvMgr.CommunicatieTypesOphalen());
 		}
 
 		public int PersoonIDGet(int gelieerdePersoonID)
