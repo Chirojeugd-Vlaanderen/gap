@@ -65,11 +65,12 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// <param name="context">De streamingcontext</param>
 		protected GapException(SerializationInfo info, StreamingContext context) : base(info, context) 
 		{
-			if (info != null)
+			if (info == null)
 			{
-				_foutNummer = info.GetInt32("_foutNummer");
-				_items = (IEnumerable<string>)info.GetValue("_items", typeof(IEnumerable<string>));
+				return;
 			}
+			_foutNummer = info.GetInt32("foutNummer");
+			_items = (IEnumerable<string>)info.GetValue("items", typeof(IEnumerable<string>));
 		}
 
 		/// <summary>
@@ -82,8 +83,8 @@ namespace Chiro.Gap.Workers.Exceptions
 			base.GetObjectData(info, context);
 			if (info != null)
 			{
-				info.AddValue("_foutNummer", _foutNummer);
-				info.AddValue("_items", _items);
+				info.AddValue("foutNummer", _foutNummer);
+				info.AddValue("items", _items);
 			}
 		}
 

@@ -75,12 +75,13 @@ namespace Chiro.Gap.Workers.Exceptions
 		protected BestaatAlException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
-			if (info != null)
+			if (info == null)
 			{
-				_bestaande = (TEntiteit)info.GetValue(
-					"_bestaande",
-					typeof(TEntiteit));
+				return;
 			}
+			_bestaande = (TEntiteit)info.GetValue(
+				"bestaande",
+				typeof(TEntiteit));
 		}
 
 		/// <summary>
@@ -93,7 +94,7 @@ namespace Chiro.Gap.Workers.Exceptions
 			base.GetObjectData(info, context);
 			if (info != null)
 			{
-				info.AddValue("_bestaande", _bestaande);
+				info.AddValue("bestaande", _bestaande);
 			}
 		}
 

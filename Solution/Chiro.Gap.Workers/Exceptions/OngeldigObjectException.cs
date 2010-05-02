@@ -66,7 +66,7 @@ namespace Chiro.Gap.Workers.Exceptions
 		{
 			if (info != null)
 			{
-				_berichten = (IDictionary<string, FoutBericht>)info.GetValue("_berichten", typeof(IDictionary<string, FoutBericht>));
+				_berichten = (IDictionary<string, FoutBericht>)info.GetValue("berichten", typeof(IDictionary<string, FoutBericht>));
 			}
 		}
 
@@ -80,7 +80,7 @@ namespace Chiro.Gap.Workers.Exceptions
 			base.GetObjectData(info, context);
 			if (info != null)
 			{
-				info.AddValue("_berichten", _berichten);
+				info.AddValue("berichten", _berichten);
 			}
 		}
 

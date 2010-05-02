@@ -90,13 +90,14 @@ namespace Chiro.Gap.Workers.Exceptions
 		protected BlokkerendeObjectenException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
-			if (info != null)
+			if (info == null)
 			{
-				_aantal = info.GetInt32("_aantal");
-				_objecten = (IEnumerable<TEntiteit>)info.GetValue(
-					"_objecten",
-					typeof(IEnumerable<TEntiteit>));
+				return;
 			}
+			_aantal = info.GetInt32("aantal");
+			_objecten = (IEnumerable<TEntiteit>)info.GetValue(
+				"objecten",
+				typeof(IEnumerable<TEntiteit>));
 		}
 
 		/// <summary>
@@ -109,8 +110,8 @@ namespace Chiro.Gap.Workers.Exceptions
 			base.GetObjectData(info, context);
 			if (info != null)
 			{
-				info.AddValue("_aantal", _aantal);
-				info.AddValue("_objecten", _objecten);
+				info.AddValue("aantal", _aantal);
+				info.AddValue("objecten", _objecten);
 			}
 		}
 
