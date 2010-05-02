@@ -113,7 +113,7 @@ namespace Chiro.Gap.Workers
 			}
 
 			// Door het groepswerkjaar van de persoon op te halen is de link tussen groepswerkjaar en persoon zeker in orde
-			GroepsWerkJaar gwj = _daos.GroepsWerkJaarDao.RecentsteOphalen(gp.Groep.ID, grwj => grwj.AfdelingsJaar.First().Afdeling);
+			var gwj = _daos.GroepsWerkJaarDao.RecentsteOphalen(gp.Groep.ID, grwj => grwj.AfdelingsJaar.First().Afdeling);
 
 			return KindMaken(gp, gwj);
 		}
@@ -134,8 +134,6 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			var gm = Factory.Maak<GroepenManager>();
-
 			GelieerdePersoon gpMetDetails;
 			if (!KanLidMaken(gp, gwj, out gpMetDetails))
 			{
@@ -155,11 +153,11 @@ namespace Chiro.Gap.Workers
 			}
 
 			// Afdeling automatisch bepalen
-			int geboortejaar = gpMetDetails.Persoon.GeboorteDatum.Value.Year;
+			var geboortejaar = gpMetDetails.Persoon.GeboorteDatum.Value.Year;
 			geboortejaar -= gpMetDetails.ChiroLeefTijd;	 // aanpassen aan Chiroleeftijd
 
 			// Relevante afdelingsjaren opzoeken
-			List<AfdelingsJaar> afdelingsjaren =
+			var afdelingsjaren =
 				(from a in gwj.AfdelingsJaar
 				 where a.GeboorteJaarVan <= geboortejaar && geboortejaar <= a.GeboorteJaarTot
 				 select a).ToList();
@@ -202,14 +200,12 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			var mgr = Factory.Maak<GroepsWerkJaarManager>();
-
 			if (gp.Groep == null)
 			{
 				_daos.GelieerdePersoonDao.GroepLaden(gp);
 			}
 
-			GroepsWerkJaar gwj = _daos.GroepsWerkJaarDao.RecentsteOphalen(gp.Groep.ID);
+			var gwj = _daos.GroepsWerkJaarDao.RecentsteOphalen(gp.Groep.ID);
 
 			GelieerdePersoon gpMetDetails;
 			if (!KanLidMaken(gp, gwj, out gpMetDetails))
@@ -276,18 +272,16 @@ namespace Chiro.Gap.Workers
 		/// <returns>Lijst met alle leden uit het gevraagde groepswerkjaar.</returns>
 		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, out int paginas)
 		{
-			if (_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
-			{
-				GroepsWerkJaar gwj = _daos.GroepsWerkJaarDao.Ophalen(groepsWerkJaarID, grwj => grwj.Groep);
-				paginas = _daos.GroepenDao.OphalenMetGroepsWerkJaren(gwj.Groep.ID).GroepsWerkJaar.Count;
-				IList<Lid> list = _daos.LedenDao.AllesOphalen(groepsWerkJaarID);
-				list = list.OrderBy(e => e.GelieerdePersoon.Persoon.Naam).ThenBy(e => e.GelieerdePersoon.Persoon.VoorNaam).ToList();
-				return list;
-			}
-			else
+			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
+
+			var gwj = _daos.GroepsWerkJaarDao.Ophalen(groepsWerkJaarID, grwj => grwj.Groep);
+			paginas = _daos.GroepenDao.OphalenMetGroepsWerkJaren(gwj.Groep.ID).GroepsWerkJaar.Count;
+			var list = _daos.LedenDao.AllesOphalen(groepsWerkJaarID);
+			list = list.OrderBy(e => e.GelieerdePersoon.Persoon.Naam).ThenBy(e => e.GelieerdePersoon.Persoon.VoorNaam).ToList();
+			return list;
 		}
 
 		/// <summary>
@@ -318,24 +312,22 @@ namespace Chiro.Gap.Workers
 		/// <returns></returns>
 		public Lid LidBewaren(Lid lid)
 		{
-			if (_autorisatieMgr.IsGavLid(lid.ID))
-			{
-				Debug.Assert(lid is Kind || lid is Leiding, "Lid moet ofwel Kind ofwel Leiding zijn!");
-				if (lid is Kind)
-				{
-					return _daos.KindDao.Bewaren((Kind)lid);
-				}
-				else if (lid is Leiding)
-				{
-					return _daos.LeidingDao.Bewaren((Leiding)lid);
-				}
-				// Hier mag de code nooit komen (zie assert)
-				return null;
-			}
-			else
+			if (!_autorisatieMgr.IsGavLid(lid.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
+
+			Debug.Assert(lid is Kind || lid is Leiding, "Lid moet ofwel Kind ofwel Leiding zijn!");
+			if (lid is Kind)
+			{
+				return _daos.KindDao.Bewaren((Kind)lid);
+			}
+			if (lid is Leiding)
+			{
+				return _daos.LeidingDao.Bewaren((Leiding)lid);
+			}
+			// Hier mag de code nooit komen (zie assert)
+			return null;
 		}
 
 		/// <summary>
@@ -434,38 +426,55 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
-			else if (!_autorisatieMgr.IsGavFunctie(functieID))
+			if (!_autorisatieMgr.IsGavFunctie(functieID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
-			else
+			var paths = new List<Expression<Func<Lid, object>>>();
+
+			if ((extras & LidExtras.Persoon) != 0)
 			{
-				var paths = new List<Expression<Func<Lid, object>>>();
-
-				if ((extras & LidExtras.Persoon) != 0)
-				{
-					paths.Add(ld => ld.GelieerdePersoon.Persoon);
-				}
-				if ((extras & LidExtras.Groep) != 0)
-				{
-					paths.Add(ld => ld.GroepsWerkJaar.Groep);
-				}
-				if ((extras & LidExtras.Afdelingen) != 0)
-				{
-					// Afdelingen: altijd tricky, want verschillend voor leden
-					// en leiding.
-					throw new NotImplementedException();
-				}
-				if ((extras & LidExtras.Functies) != 0)
-				{
-					paths.Add(ld => ld.Functie);
-				}
-
-				return _daos.LedenDao.OphalenUitFunctie(
-					functieID,
-					groepsWerkJaarID,
-					paths.ToArray());
+				paths.Add(ld => ld.GelieerdePersoon.Persoon);
 			}
+			if ((extras & LidExtras.Groep) != 0)
+			{
+				paths.Add(ld => ld.GroepsWerkJaar.Groep);
+			}
+			if ((extras & LidExtras.Afdelingen) != 0)
+			{
+				// Afdelingen: altijd tricky, want verschillend voor leden
+				// en leiding.
+				throw new NotImplementedException();
+			}
+			if ((extras & LidExtras.Functies) != 0)
+			{
+				paths.Add(ld => ld.Functie);
+			}
+
+			return _daos.LedenDao.OphalenUitFunctie(
+				functieID,
+				groepsWerkJaarID,
+				paths.ToArray());
+		}
+
+		/// <summary>
+		/// Haalt het lid op van een gelieerdepersoon in een groepswerkjaar als het bestaat, met gelinkte informatie
+		/// van afdelingsjaren en afdelingen
+		/// </summary>
+		/// <param name="gelieerdePersoonID">De ID van de gelieerde persoon</param>
+		/// <param name="groepsWerkJaarID">De ID van het groepswerkjaar</param>
+		/// <returns>Een Lid-object</returns>
+		public Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID)
+		{
+			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+			if (!_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+			return _daos.LedenDao.OphalenViaPersoon(gelieerdePersoonID, groepsWerkJaarID);
 		}
 
 		/// <summary>
@@ -498,18 +507,6 @@ namespace Chiro.Gap.Workers
 				leiding.DubbelPuntAbonnement = lidInfo.DubbelPunt;
 				leiding.NonActief = lidInfo.NonActief;
 			}
-		}
-
-		/// <summary>
-		/// Haalt het lid op van een gelieerdepersoon in een groepswerkjaar als het bestaat, met gelinkte informatie
-		/// van afdelingsjaren en afdelingen
-		/// </summary>
-		/// <param name="gelieerdePersoonID">De ID van de gelieerde persoon</param>
-		/// <param name="groepsWerkJaarID">De ID van het groepswerkjaar</param>
-		/// <returns>Een Lid-object</returns>
-		public Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID)
-		{
-			return _daos.LedenDao.OphalenViaPersoon(gelieerdePersoonID, groepsWerkJaarID);
 		}
 	}
 }

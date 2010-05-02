@@ -134,26 +134,7 @@
 	   else
 	   {
 		   Response.Write(Model.PersoonLidInfo.LidInfo.PersoonDetail.VolledigeNaam + " is leiding van ");
-		   int geschreven = 0;
-		   foreach (var ai in Model.AlleAfdelingen)
-		   {
-			   if (Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.Contains(ai.AfdelingID))
-			   {
-				   if (geschreven == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.Count-1)
-				   {
-					   Response.Write("de " + ai.AfdelingNaam + ".\n");
-				   }
-				   else if (geschreven == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.Count - 2)
-				   {
-					   Response.Write("de " + ai.AfdelingNaam + " en ");
-				   }
-				   else 
-				   {
-					   Response.Write("de " + ai.AfdelingNaam + ", ");
-				   }
-				   geschreven++;
-			   }
-		   }
+		   Response.Write(Html.PrintLijst(Model.PersoonLidInfo.LidInfo.AfdelingIdLijst, Model.AlleAfdelingen));
 	   }
    }else{
 	   //FIXME: nog niet alle info wordt ingeladen( afdelingidlijst is altijd leeg)

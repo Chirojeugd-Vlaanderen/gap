@@ -125,35 +125,33 @@ namespace Chiro.Gap.Workers
 		/// <returns>De toegevoegde (maar nog niet gepersisteerde) afdeling</returns>
 		public Afdeling AfdelingToevoegen(Groep groep, string naam, string afkorting)
 		{
-			if (_autorisatieMgr.IsGavGroep(groep.ID))
-			{
-				// Controleren of de afdeling nog niet bestaat
-
-				var bestaand = from afd in groep.Afdeling
-					       where String.Compare(afd.Afkorting, afkorting, true) == 0
-					       || String.Compare(afd.Naam, naam, true) == 0
-					       select afd;
-
-				if (bestaand.FirstOrDefault() != null)
-				{
-					throw new BestaatAlException<Afdeling>(bestaand.FirstOrDefault());
-				}
-
-				var a = new Afdeling
-				{
-					Afkorting = afkorting,
-					Naam = naam
-				};
-
-				a.Groep = groep;
-				groep.Afdeling.Add(a);
-
-				return a;
-			}
-			else
+			if (!_autorisatieMgr.IsGavGroep(groep.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
+		
+			// Controleren of de afdeling nog niet bestaat
+
+			var bestaand = from afd in groep.Afdeling
+					   where String.Compare(afd.Afkorting, afkorting, true) == 0
+					   || String.Compare(afd.Naam, naam, true) == 0
+					   select afd;
+
+			if (bestaand.FirstOrDefault() != null)
+			{
+				throw new BestaatAlException<Afdeling>(bestaand.FirstOrDefault());
+			}
+
+			var a = new Afdeling
+			{
+				Afkorting = afkorting,
+				Naam = naam
+			};
+
+			a.Groep = groep;
+			groep.Afdeling.Add(a);
+
+			return a;
 		}
 
 		/// <summary>
