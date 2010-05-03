@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.OleDb;
 using System.Text;
 
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Pdox.Data
@@ -69,6 +71,63 @@ namespace Chiro.Pdox.Data
 				       	};
 
 			}
+		}
+
+		/// <summary>
+		/// Haalt alle relevante informatie op over de personen in de paradoxtabellen, in een rij
+		/// 'PersoonLidInfo'.  Dit is een voorlopig zeer mottig datacontract, maar ik gebruik het bij
+		/// gebrek aan beter.  De koppeling van LidInfo naar PersoonDetail zal wel null blijven.
+		/// </summary>
+		/// <returns>Lijst met info van alle personen in het bestand</returns>
+		public IEnumerable<PersoonLidInfo> PersonenOphalen()
+		{
+			using (var connectie = new OleDbConnection(_connectionString))
+			{
+				// codes gebruikt in e-mailbestanden voor man en vrouw.
+
+				const string PDOXMAN = "M";
+				const string PDOXVROUW = "V";
+
+				var resultaat = new List<PersoonLidInfo>();
+
+				connectie.Open();
+
+				var query = new OleDbCommand(
+					"SELECT NAAM, VOORNAAM, GEBDATUM, GESLACHT FROM PERSOON",
+					connectie);
+				var reader = query.ExecuteReader();
+
+				while (reader.Read())
+				{
+					GeslachtsType geslacht;
+
+					if (String.Compare(reader["GESLACHT"].ToString(), PDOXMAN, true) == 0)
+					{
+						geslacht = GeslachtsType.Man;
+					}
+					else if (String.Compare(reader["GESLACHT"].ToString(), PDOXVROUW, true) == 0)
+					{
+						geslacht = GeslachtsType.Vrouw;
+					}
+					else
+					{
+						geslacht = GeslachtsType.Onbekend;
+					}
+
+					resultaat.Add(new PersoonLidInfo()
+					              	{	
+					              		PersoonDetail = new PersoonDetail()
+					              			{
+					              				Naam = reader["NAAM"].ToString(),
+					              				VoorNaam = reader["VOORNAAM"].ToString(),
+					              				GeboorteDatum = DateTime.Parse(reader["GEBDATUM"].ToString()),
+					              				Geslacht = geslacht
+					              			}
+					              	});
+				}
+
+				return resultaat;
+			}			
 		}
 	}
 }

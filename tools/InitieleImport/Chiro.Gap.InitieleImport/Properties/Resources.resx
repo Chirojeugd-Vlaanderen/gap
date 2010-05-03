@@ -120,6 +120,10 @@
   <data name="GroepsInfo" xml:space="preserve">
     <value>Gegevens importeren van {0} - {1} ({2})</value>
   </data>
+  <data name="PersoonInfo" xml:space="preserve">
+    <value>{0} {1} - {2:d} {3}</value>
+    <comment>Voornaam, naam, geboortedatum, geslacht</comment>
+  </data>
   <data name="Usage" xml:space="preserve">
     <value>Dit programma verwacht het path naar de database als 1ste command-line parameter.</value>
   </data>

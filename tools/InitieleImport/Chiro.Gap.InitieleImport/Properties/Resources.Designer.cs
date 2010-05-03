@@ -70,6 +70,15 @@ namespace Chiro.Gap.InitieleImport.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} {1} - {2:d} {3}.
+        /// </summary>
+        internal static string PersoonInfo {
+            get {
+                return ResourceManager.GetString("PersoonInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dit programma verwacht het path naar de database als 1ste command-line parameter..
         /// </summary>
         internal static string Usage {

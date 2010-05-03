@@ -25,6 +25,18 @@ namespace Chiro.Gap.InitieleImport
 					groep.StamNummer,
 					groep.Naam,
 					groep.Plaats);
+
+				var personen = lezer.PersonenOphalen();
+
+				foreach (var p in personen)
+				{
+					Console.WriteLine(
+						Properties.Resources.PersoonInfo,
+						p.PersoonDetail.VoorNaam,
+						p.PersoonDetail.Naam,
+						p.PersoonDetail.GeboorteDatum,
+						p.PersoonDetail.Geslacht);
+				}
 			}
 			
 
