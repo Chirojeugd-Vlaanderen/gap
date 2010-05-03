@@ -35,8 +35,12 @@ namespace Chiro.Gap.InitieleImport
 						p.PersoonDetail.VoorNaam,
 						p.PersoonDetail.Naam,
 						p.PersoonDetail.GeboorteDatum,
-						p.PersoonDetail.Geslacht);
+						p.PersoonDetail.Geslacht,
+						p.PersoonDetail.AdNummer,
+						p.LidInfo == null ? String.Empty : p.LidInfo.Type.ToString());
 				}
+
+				Console.WriteLine(Properties.Resources.TotaalInfo, personen.Count());
 			}
 			
 

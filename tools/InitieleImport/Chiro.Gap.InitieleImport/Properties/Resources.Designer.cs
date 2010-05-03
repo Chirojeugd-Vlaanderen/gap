@@ -70,11 +70,20 @@ namespace Chiro.Gap.InitieleImport.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} {1} - {2:d} {3}.
+        ///   Looks up a localized string similar to {5}: ({4})  {0} {1} - {2:d} {3}.
         /// </summary>
         internal static string PersoonInfo {
             get {
                 return ResourceManager.GetString("PersoonInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Totaal aantal personen: {0}.
+        /// </summary>
+        internal static string TotaalInfo {
+            get {
+                return ResourceManager.GetString("TotaalInfo", resourceCulture);
             }
         }
         

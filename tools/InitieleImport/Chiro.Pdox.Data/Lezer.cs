@@ -75,8 +75,8 @@ namespace Chiro.Pdox.Data
 
 		/// <summary>
 		/// Haalt alle relevante informatie op over de personen in de paradoxtabellen, in een rij
-		/// 'PersoonLidInfo'.  Dit is een voorlopig zeer mottig datacontract, maar ik gebruik het bij
-		/// gebrek aan beter.  De koppeling van LidInfo naar PersoonDetail zal wel null blijven.
+		/// 'PersoonLidInfo'.  PersoonLidInfo is een beetje een draak van een datacontract; enkel
+		/// de relevante velden worden ingevuld.
 		/// </summary>
 		/// <returns>Lijst met info van alle personen in het bestand</returns>
 		public IEnumerable<PersoonLidInfo> PersonenOphalen()
@@ -87,19 +87,30 @@ namespace Chiro.Pdox.Data
 
 				const string PDOXMAN = "M";
 				const string PDOXVROUW = "V";
+				
+				// codes gebruikt voor kind en leiding
+
+				const string PDOXKIND = "LD";
+				const string PDOXLEIDING = "LE";
 
 				var resultaat = new List<PersoonLidInfo>();
 
 				connectie.Open();
 
 				var query = new OleDbCommand(
-					"SELECT NAAM, VOORNAAM, GEBDATUM, GESLACHT FROM PERSOON",
+					"SELECT NAAM, VOORNAAM, GEBDATUM, GESLACHT, ADNR, AANSL_NR, SOORT " + 
+					"FROM PERSOON LEFT OUTER JOIN LID ON PERSOON.NR = LID.PERS_NR ",
 					connectie);
 				var reader = query.ExecuteReader();
 
 				while (reader.Read())
 				{
 					GeslachtsType geslacht;
+					LidInfo lid;
+
+					int adNr = reader["ADNR"].ToString().Trim() == String.Empty ?
+						0 : Int32.Parse(reader["ADNR"].ToString());
+
 
 					if (String.Compare(reader["GESLACHT"].ToString(), PDOXMAN, true) == 0)
 					{
@@ -114,15 +125,28 @@ namespace Chiro.Pdox.Data
 						geslacht = GeslachtsType.Onbekend;
 					}
 
+					if (reader["AANSL_NR"] == null)
+					{
+						lid = null;
+					}
+					else
+					{
+						LidType lt = String.Compare(reader["SOORT"].ToString(), PDOXKIND, true) == 0 ? LidType.Kind : LidType.Leiding;
+
+						lid = new LidInfo {Type = lt};
+					}
+
 					resultaat.Add(new PersoonLidInfo()
 					              	{	
 					              		PersoonDetail = new PersoonDetail()
 					              			{
+										AdNummer = adNr,
 					              				Naam = reader["NAAM"].ToString(),
 					              				VoorNaam = reader["VOORNAAM"].ToString(),
 					              				GeboorteDatum = DateTime.Parse(reader["GEBDATUM"].ToString()),
-					              				Geslacht = geslacht
-					              			}
+					              				Geslacht = geslacht,
+					              			},
+								LidInfo = lid
 					              	});
 				}
 
