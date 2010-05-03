@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.OleDb;
-using System.Linq;
 using System.Text;
+
+using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Pdox.Data
 {
@@ -26,6 +26,49 @@ namespace Chiro.Pdox.Data
 			builder.Append(String.Format("Data Source={0};", path));
 
 			_connectionString = builder.ToString();
+		}
+
+		/// <summary>
+		/// Haalt groep op uit de paradoxdatabase
+		/// </summary>
+		/// <returns>GroepInfo van de gevraagde groep</returns>
+		public GroepInfo GroepOphalen()
+		{
+			using (var connectie = new OleDbConnection(_connectionString))
+			{
+				string plaats;
+
+				connectie.Open();
+
+				var query = new OleDbCommand(
+					"SELECT STAMNR, NAAM, GEMEENTE, PAROCHIE FROM GROEP",
+					connectie);
+				var reader = query.ExecuteReader();
+
+				reader.Read();
+
+				var parochie = reader["PAROCHIE"].ToString();
+				var gemeente = reader["GEMEENTE"].ToString();
+
+				if (parochie.Trim() != String.Empty
+					&& String.Compare(parochie, gemeente, true) != 0)
+				{
+					plaats = String.Format("{0} - {1}", parochie, gemeente);
+				}
+				else
+				{
+					plaats = gemeente;
+				}
+
+				return new GroepInfo
+				       	{
+						ID = 0,
+				       		StamNummer = reader["STAMNR"].ToString(),
+				       		Naam = reader["NAAM"].ToString(),
+						Plaats = plaats
+				       	};
+
+			}
 		}
 	}
 }
