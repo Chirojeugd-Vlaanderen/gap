@@ -29,11 +29,11 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		{
 			if (afdelingIdLijst == null || afdelingIdLijst.Count() < 1)
 			{
-				return "";
+				return string.Empty;
 			}
 
 			var sb = new StringBuilder();
-			var geschreven = 0;
+			int geschreven = 0;
 
 			foreach (var ai in afdelingsInfo.Where(ai => afdelingIdLijst.Contains(ai.AfdelingID)))
 			{
