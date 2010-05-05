@@ -61,20 +61,20 @@ namespace System.ComponentModel.DataAnnotations.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to De {0} moet in het verleden liggen..
+        /// </summary>
+        public static string DatumInVerledenAttribute_ValidationError {
+            get {
+                return ResourceManager.GetString("DatumInVerledenAttribute_ValidationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De waarde voor {0} voldoet niet aan de verplichte structuur: {1}.
         /// </summary>
         public static string FormatValidatieFout {
             get {
                 return ResourceManager.GetString("FormatValidatieFout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to De geboortedatum moet in het verleden liggen..
-        /// </summary>
-        public static string GeboorteDatumInVerledenAttribute_ValidationError {
-            get {
-                return ResourceManager.GetString("GeboorteDatumInVerledenAttribute_ValidationError", resourceCulture);
             }
         }
         

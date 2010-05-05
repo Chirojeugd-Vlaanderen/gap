@@ -117,12 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DatumInVerledenAttribute_ValidationError" xml:space="preserve">
+    <value>De {0} moet in het verleden liggen.</value>
+  </data>
   <data name="FormatValidatieFout" xml:space="preserve">
     <value>De waarde voor {0} voldoet niet aan de verplichte structuur: {1}</value>
     <comment>Parameters: 0 = inputcontrol, 1 = formatvoorbeeld</comment>
-  </data>
-  <data name="GeboorteDatumInVerledenAttribute_ValidationError" xml:space="preserve">
-    <value>De geboortedatum moet in het verleden liggen.</value>
   </data>
   <data name="RequiredAttribute_ValidationError" xml:space="preserve">
     <value>The {0} field is required.</value>

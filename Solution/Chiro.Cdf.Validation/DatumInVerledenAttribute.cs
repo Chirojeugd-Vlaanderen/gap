@@ -8,12 +8,12 @@ namespace System.ComponentModel.DataAnnotations
 	/// <summary>
 	/// 
 	/// </summary>
-	public class GeboorteDatumInVerledenAttribute : ValidationAttribute
+	public class DatumInVerledenAttribute : ValidationAttribute
 	{
-		public GeboorteDatumInVerledenAttribute()
+		public DatumInVerledenAttribute()
 		{
 			ErrorMessageResourceType = typeof(Properties.Resources);
-			ErrorMessageResourceName = "GeboorteDatumInVerledenAttribute_ValidationError";
+			ErrorMessageResourceName = "DatumInVerledenAttribute_ValidationError";
 		}
 
 		public override bool IsValid(object value)
