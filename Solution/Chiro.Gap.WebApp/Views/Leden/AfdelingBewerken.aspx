@@ -1,7 +1,5 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<LidAfdelingenModel>" %>
-<%@ Import Namespace="Chiro.Gap.Orm" %>
-<%@ Import Namespace="Chiro.Gap.WebApp" %>
-<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.LidAfdelingenModel>" %>
+<%@ Import Namespace="Chiro.Gap.Domain" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -55,7 +53,4 @@
            
            <%
         } %>
-       
- 
-
 </asp:Content>
