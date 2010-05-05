@@ -64,7 +64,7 @@
 %%
 
 
-\noindent {\Large \bf CODING STANDARD C\#, doc. v. 0.5}
+\noindent {\Large \bf CODING STANDARD C\#, doc. v. 0.6}
 
 \tableofcontents
 
@@ -114,17 +114,23 @@ en de interfaces voor de Data Access Objects (DAO's)
 \item Data -- De Data Access Objects (repository's)
 \item Workers -- De businesslogica: Worker classes waarvan de methods zo
 veel mogelijk met objecten werken.
-\item ServiceContracts -- Interfaces voor WCF-services
+\item ServiceContracts -- Interfaces voor WCF-services (servicecontracts)
+en datacontracts.  De services exposen geen entity's uit 
+`Orm'.\index{datacontracts}\index{servicecontracts}
 \item Services -- WCF-services.  De services doen niet veel meer dan
 objecten ophalen, en daar den de workers op loslaten.
 \end{itemize}
-\item User Interface
+\item Frontend (user interface)
+\item `Domain' (enums en interfaces zowel van toepassing op backend als
+op frontend)
 \end{itemize}
 \item Data Access Objects worden ge\"instantieerd via de Unity
-IoC-container.
-\item We gebruiken Entity Framework voor ORM
+IoC-container.\index{unity}
+\item We gebruiken Entity Framework voor ORM\index{entity framework}
+\item [3-b.] We gebruiken ASP.NET MVC voor webapplicaties\index{MVC}
+\item [3-c.] We gebruiken JQuery als framework voor AJAX\index{JQuery}\index{AJAX}
 \item We gebruiken subversion voor source control en trac voor issue
-tracking.
+tracking.\index{subversion}\index{trac}
 \end{enumerate}
 
 \section{Structuur}
@@ -496,6 +502,7 @@ gemeenschappelijk suffix\index{consistentie}, zoals `\lstinline !PersonenDao!', 
 klassenaam de naam van de interface bevatten.  Zie bijv. listing \ref{lstKlasseNaamgeving}.
 \item Statische klasses\index{klasses!statische}\index{statische klasses} die gebruikt worden als helper\index{helper}, krijgen het suffix
 `\lstinline !Helper!', bijv. \lstinline !EntityFrameworkHelper!.
+\item [74-b.] Datacontracts die ge\"exposed worden door een service, krijgen suffix `\lstinline !Info!' of `\lstinline !Detail!', alnaargelang het om een beperkt of een uitgebreid datacontract gaat.\index{datacontracts}\index{info}\index{detail}
 \end{enumerate}
 
 
@@ -680,7 +687,9 @@ public enum Kleur
 \item Gebruik `\lstinline !var!' voor een variabeledeclaratie als het de
 leesbaarheid van de code vergroot.
 \item Gebruik geen `\lstinline !var!' voor een basistype zoals
-\lstinline !int!\index{int} of \lstinline !string!\index{string}.
+\lstinline !int!\index{int} of \lstinline
+!string!\index{string}.\footnote{Deze regel is niet zo dwingend; zij
+die liever \lstinline !var! gebruiken, mogen dat toch doen.}
 \item Hoe beperkter de scope, hoe meer het gebruik van \lstinline !var!
 gerechtvaardigd is.
 \end{enumerate}
@@ -905,6 +914,7 @@ Bijvoorbeeld: \lstinline !@"Backslashes (\) zijn cool."!
 \item Indien mogelijk, gebruik de interfaces 
 \lstinline !IEnumerable<T>!\index{IEnumerable}
 (voor rijen) en \lstinline !IList<T>!\index{IList} (voor lijsten).
+\item [165-b.] Gebruik LINQ om collecties te doorzoeken (geen loops).\index{LINQ}\index{collecties!zoeken}
 \item Cre\"eer de juiste collectie voor het juiste doel
 
 \begin{tabular}{|c|l|}
