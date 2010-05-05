@@ -35,19 +35,22 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 			var sb = new StringBuilder();
 			var geschreven = 0;
 
-			foreach (var ai in afdelingsInfo.Where(ai => afdelingIdLijst.Contains(ai.OfficieleAfdelingID)))
+			foreach (var ai in afdelingsInfo.Where(ai => afdelingIdLijst.Contains(ai.AfdelingID)))
 			{
 				if (geschreven == afdelingIdLijst.Count() - 1)
 				{
-					sb.Append("de " + ai.OfficieleAfdelingNaam + ".\n");
+                    // de laatste afdeling
+					sb.Append("de " + ai.AfdelingNaam + ".\n");
 				}
 				else if (geschreven == afdelingIdLijst.Count() - 2)
 				{
-					sb.Append("de " + ai.OfficieleAfdelingNaam + " en ");
+                    // tweede en verdere
+					sb.Append("de " + ai.AfdelingNaam + " en ");
 				}
 				else
 				{
-					sb.Append("de " + ai.OfficieleAfdelingNaam + ", ");
+                    // de eerste afdeling
+					sb.Append("de " + ai.AfdelingNaam + ", ");
 				}
 				geschreven++;
 			}
