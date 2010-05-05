@@ -13,7 +13,7 @@
     
     <%=Html.ValidationSummary("Er zijn enkele opmerkingen:") %>
     
-    <% Html.EnableClientValidation(); %>
+    <% Html.EnableClientValidation(); // Deze instructie moet voor de BeginForm komen %>
 
     <% using (Html.BeginForm()) { %>
     <% Html.EnableClientValidation(); %>
