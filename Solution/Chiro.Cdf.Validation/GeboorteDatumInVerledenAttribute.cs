@@ -18,9 +18,19 @@ namespace System.ComponentModel.DataAnnotations
 
 		public override bool IsValid(object value)
 		{
-			// Moeten we nog nagaan of value van het type DateTime is? Of mogen we
+            // Moeten we nog nagaan of value van het type DateTime is? Of mogen we
 			// ervan uitgaan dat deze attribute alleen toegepast wordt op datums?
-			return (DateTime)value <= DateTime.Now;
+            // Natuurlijk moet dat nog gecontroleerd worden. Object kan namelijk alles zijn, en ook null
+		    if (value == null || !(value is DateTime))
+		    {
+		        return false;
+		    }
+		    else
+		    {
+		        return (DateTime)value <= DateTime.Now;
+		    }
+			
+			
 		}
 	}
 }

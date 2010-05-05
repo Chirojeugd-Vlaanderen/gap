@@ -64,16 +64,19 @@
             <p>
             <%=Html.LabelFor(s=>s.HuidigePersoon.VoorNaam) %>
             <%=Html.EditorFor(s=>s.HuidigePersoon.VoorNaam) %>
+            <%=Html.ValidationMessageFor(s => s.HuidigePersoon.VoorNaam) %>
             </p>
             
             <p>
             <%=Html.LabelFor(s=>s.HuidigePersoon.Naam) %>
             <%=Html.EditorFor(s=>s.HuidigePersoon.Naam) %>
+            <%=Html.ValidationMessageFor(s => s.HuidigePersoon.Naam) %>
             </p>
             
             <p>
             <%=Html.LabelFor(s=>s.HuidigePersoon.GeboorteDatum) %>
             <%=Html.EditorFor(s=>s.HuidigePersoon.GeboorteDatum)%>
+            <%=Html.ValidationMessageFor(s => s.HuidigePersoon.GeboorteDatum) %>
             </p>
             
             <p>
@@ -85,6 +88,7 @@
             <p>
             <%=Html.LabelFor(s=>s.HuidigePersoon.ChiroLeefTijd)%>
             <%=Html.EditorFor(s=>s.HuidigePersoon.ChiroLeefTijd)%>
+            <%=Html.ValidationMessageFor(s => s.HuidigePersoon.ChiroLeefTijd) %>
             </p>
 
             <%=Html.HiddenFor(s=>s.HuidigePersoon.GelieerdePersoonID)%>
