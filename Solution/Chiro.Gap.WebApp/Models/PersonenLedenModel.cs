@@ -9,15 +9,6 @@ using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
-	/// <summary>
-	/// In het algemeen bevat het GelieerdePersonenModel informatie over slechts 1 persoon.
-	/// Deze informatie zit dan in <c>HuidigePersoon</c>.
-	/// <para />
-	/// Wanneer dit model gebruikt wordt voor het toevoegen van een nieuwe persoon, dan
-	/// bevat het ook mogelijke gelijkaardige personen (<c>GelijkaardigePersonen</c>) en
-	/// een boolean <c>Forceer</c> die aangeeft of een nieuwe persoon geforceerd moet worden
-	/// ondanks gevonden gelijkaardige personen.
-	/// </summary>
 	public class PersonenLedenModel : MasterViewModel
 	{
 		/// <summary>

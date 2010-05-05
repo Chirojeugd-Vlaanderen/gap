@@ -4,19 +4,23 @@
 <%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.min.js")%>"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>"></script>
     <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>"></script>
     <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>"></script>
+    
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    
+    <% Html.EnableClientValidation(); %>
     <%=Html.ValidationSummary("Er zijn enkele opmerkingen:") %>
     
     <% Html.EnableClientValidation(); // Deze instructie moet voor de BeginForm komen %>
 
     <% using (Html.BeginForm()) { %>
-    <% Html.EnableClientValidation(); %>
+    
     
     
     <ul id="acties">

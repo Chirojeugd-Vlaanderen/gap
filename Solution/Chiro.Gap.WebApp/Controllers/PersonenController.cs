@@ -241,12 +241,13 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			try
 			{
+				// (ivm forceer: 0: false, 1: true)
 				persoonID = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.GeforceerdAanmaken(model.HuidigePersoon, groepID, model.Forceer));
 			}
 			catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> fault)
 			{
 				model.GelijkaardigePersonen = fault.Detail.Objecten;
-				model.Forceer = true;
+				model.Forceer=true;
 				return View("EditGegevens", model);
 			}
 
@@ -746,20 +747,10 @@ namespace Chiro.Gap.WebApp.Controllers
 					model.NieuweCommVorm.CommunicatieTypeID));
 
 			Mapper.CreateMap<CommunicatieInfo, CommunicatieDetail>()
-				.ForMember(dst => dst.CommunicatieTypeOmschrijving, opt => opt.Ignore())
-				.ForMember(dst => dst.CommunicatieTypeValidatie, opt => opt.Ignore())
-				.ForMember(dst => dst.CommunicatieTypeVoorbeeld, opt => opt.Ignore());
-
-			Mapper.AssertConfigurationIsValid();
+				.ForMember(dst => dst.CommunicatieTypeValidatie, opt => opt.Ignore());
 
 			var communicatieDetail = Mapper.Map<CommunicatieInfo, CommunicatieDetail>(
 				model.NieuweCommVorm);
-
-			communicatieDetail.CommunicatieTypeOmschrijving = communicatieType.Omschrijving;
-			communicatieDetail.CommunicatieTypeValidatie = communicatieType.Validatie;
-			communicatieDetail.CommunicatieTypeVoorbeeld = communicatieType.Voorbeeld;
-
-
 
 			var validator = new CommunicatieVormValidator();
 
@@ -772,8 +763,8 @@ namespace Chiro.Gap.WebApp.Controllers
 					"Model.NieuweCommVorm.Nummer", 
 					string.Format(
 						Properties.Resources.FormatValidatieFout, 
-						communicatieDetail.CommunicatieTypeOmschrijving, 
-						communicatieDetail.CommunicatieTypeVoorbeeld));
+						communicatieType.Omschrijving, 
+						communicatieType.Voorbeeld));
 			}
 
 			if (!ModelState.IsValid)

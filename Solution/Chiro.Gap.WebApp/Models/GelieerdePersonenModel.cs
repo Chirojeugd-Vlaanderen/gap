@@ -4,8 +4,6 @@
 // </copyright>
 
 using System.Collections.Generic;
-
-using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
@@ -36,14 +34,5 @@ namespace Chiro.Gap.WebApp.Models
 		/// personen bestaan.
 		/// </summary>
 		public bool Forceer { get; set; }
-
-		/// <summary>
-		/// De standaardconstructor voor GelieerdePersonenModel
-		/// </summary>
-		public GelieerdePersonenModel()
-			: base()
-		{
-			Forceer = false;
-		}
 	}
 }

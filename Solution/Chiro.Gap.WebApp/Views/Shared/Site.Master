@@ -11,6 +11,8 @@
         <%=Html.Encode(ViewData.Model.GroepsNaam) %></title>
     <asp:ContentPlaceHolder ID="head" runat="server" />
     <link href="<%=ResolveUrl("~/Content/Site.css")%>" rel="stylesheet" type="text/css" />
+    <!-- link hieronder nog eens absoluut, zodat Visual Studio geen fouten geeft op niet-gevonden css-classes -->
+    <link href="/Content/Site.css" rel="Stylesheet" type="text/css" />
 
 </head>
 <body>
