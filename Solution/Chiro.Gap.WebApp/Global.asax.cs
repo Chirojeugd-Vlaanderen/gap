@@ -3,18 +3,12 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
-
 using Microsoft.Practices.Unity;
-
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp
 {
@@ -27,9 +21,16 @@ namespace Chiro.Gap.WebApp
 
 		protected void Application_Start()
 		{
-			RegisterRoutes(RouteTable.Routes);
-
 			InitializeContainer();
+
+            RegisterRoutes(RouteTable.Routes);
+
+            // Registreer de nieuwe adapters voor validatie via client side scripting
+            DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(VerplichtAttribute), typeof(VerplichtAttributeAdapter));
+            DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(StringLengteAttribute), typeof(StringLengteAttributeAdapter));
+
+            // Dit mogen we niet op true zetten, want dan zijn de booleans / checkboxen allemaal aan te kruisen
+		    DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
 
 			DefaultModelBinder.ResourceClassKey = "MyResources";
 			ValidationExtensions.ResourceClassKey = "MyResources";
@@ -75,9 +76,5 @@ namespace Chiro.Gap.WebApp
 			ControllerBuilder.Current.SetControllerFactory(controllerFactory);
 		}
 
-		/*public static IEnumerable<StraatInfo> getStraten()
-		{
-			return StratenLijst;
-		}*/
 	}
 }

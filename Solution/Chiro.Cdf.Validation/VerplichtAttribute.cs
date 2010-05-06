@@ -6,8 +6,10 @@
 namespace System.ComponentModel.DataAnnotations
 {
 	/// <summary>
-	/// 
+    /// Naar het Nederlands vertaalde vorm van <see cref="T:System.ComponentModel.DataAnnotations.RequiredAttribute" /> class. 
 	/// </summary>
+    /// <seealso cref="T:System.Web.Mvc.VerplichtAttributeAdapter"/>
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
 	public class VerplichtAttribute : RequiredAttribute
 	{
 		public VerplichtAttribute()

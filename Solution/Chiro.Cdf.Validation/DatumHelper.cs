@@ -11,14 +11,14 @@ namespace Chiro.Cdf.Validation
 	/// Klasse die momenteel enkel dient om leeftijden mee te berekenen.
 	/// (Ik vraag me echt af waarom dat geen standaardfunctionaiteit van DateTime is.)
 	/// </summary>
-	public static class DatumHelper
+	public static class DateTimeExtensions
 	{
 		/// <summary>
 		/// Bepaalt de huidige leeftijd in jaren van iemand met gegeven <paramref name="geboorteDatum"/>.
 		/// </summary>
 		/// <param name="geboorteDatum">Geboortedatum van te 'agen' persoon</param>
 		/// <returns>Leeftijd in jaren</returns>
-		public static int LeefTijd(DateTime geboorteDatum)
+		public static int LeefTijd(this DateTime geboorteDatum)
 		{
 			return LeefTijd(geboorteDatum, DateTime.Now);
 		}
@@ -30,9 +30,9 @@ namespace Chiro.Cdf.Validation
 		/// <param name="geboorteDatum">De geboortedatum</param>
 		/// <param name="referentie">Datum waarop de leeftijd bepaald moet worden</param>
 		/// <returns>De leeftijd in jaren</returns>
-		public static int LeefTijd(DateTime geboorteDatum, DateTime referentie)
+		public static int LeefTijd(this DateTime geboorteDatum, DateTime referentie)
 		{
-			int jaren = referentie.Year - geboorteDatum.Year;
+			var jaren = referentie.Year - geboorteDatum.Year;
 
 			return (referentie.Month < geboorteDatum.Month ||
 					(referentie.Month == geboorteDatum.Month &&

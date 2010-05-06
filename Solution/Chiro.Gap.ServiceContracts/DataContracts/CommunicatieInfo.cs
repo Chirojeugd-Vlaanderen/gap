@@ -16,6 +16,7 @@ namespace Chiro.Gap.ServiceContracts
 
 		[Verplicht]
 		[DataMember]
+        [StringLengte(160)]
 		public string Nummer
 		{
 			get;
@@ -47,6 +48,7 @@ namespace Chiro.Gap.ServiceContracts
 		public string VersieString { get; set; }
 
 		[DataMember]
+        [Verplicht]
 		public int CommunicatieTypeID { get; set; }
 	}
 }

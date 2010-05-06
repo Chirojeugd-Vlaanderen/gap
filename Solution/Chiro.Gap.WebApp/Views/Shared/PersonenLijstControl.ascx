@@ -1,9 +1,6 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<PersoonInfoModel>" %>
-<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
-<%@ Import Namespace="Chiro.Gap.Orm" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.PersoonInfoModel>" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
 
-<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.min.js")%>"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $("#checkall").click(function() {

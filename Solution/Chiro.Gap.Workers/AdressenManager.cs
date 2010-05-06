@@ -90,7 +90,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="postCode">Tekst die in het buitenland volgt op postnummers</param>
 		/// <returns>Gevonden adres</returns>
 		/// <remarks>Ieder heeft het recht adressen op te zoeken</remarks>
-		public Adres ZoekenOfMaken(String straatNaam, int huisNr, String bus, string woonPlaatsNaam, int postNr, String postCode)
+		public Adres ZoekenOfMaken(String straatNaam, int? huisNr, string bus, string woonPlaatsNaam, int postNr, string postCode)
 		{
 			var problemen = new Dictionary<string, FoutBericht>();
 
@@ -98,14 +98,12 @@ namespace Chiro.Gap.Workers
 			// geen foutberichten inzitten, dan is er geen probleem.  Anders
 			// creëer ik een exception met de verhuisfault daarin.
 
-			Adres adresInDb;
-
 			Debug.Assert(straatNaam != String.Empty);
 			Debug.Assert(postNr > 0);
 			// Debug.Assert(HuisNr > 0);
 			Debug.Assert(woonPlaatsNaam != String.Empty);
 
-			adresInDb = _dao.Ophalen(straatNaam, huisNr, bus, postNr, postCode, woonPlaatsNaam, false);
+			var adresInDb = _dao.Ophalen(straatNaam, huisNr, bus, postNr, postCode, woonPlaatsNaam, false);
 
 			var adr = new Adres();
 
@@ -113,10 +111,7 @@ namespace Chiro.Gap.Workers
 			{
 				// Adres niet gevonden.  Probeer straat en gemeente te vinden
 
-				StraatNaam s;
-				WoonPlaats sg;
-
-				s = _stratenDao.Ophalen(straatNaam, postNr);
+				var s = _stratenDao.Ophalen(straatNaam, postNr);
 				if (s != null)
 				{
 					// Straat gevonden: aan adres koppelen
@@ -142,7 +137,7 @@ namespace Chiro.Gap.Workers
 					});
 				}
 
-				sg = _subgemeenteDao.Ophalen(woonPlaatsNaam, postNr);
+				var sg = _subgemeenteDao.Ophalen(woonPlaatsNaam, postNr);
 				if (sg != null)
 				{
 					// Gemeente gevonden: aan adres koppelen

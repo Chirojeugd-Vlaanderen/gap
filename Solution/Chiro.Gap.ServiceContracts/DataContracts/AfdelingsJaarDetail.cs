@@ -19,21 +19,30 @@ namespace Chiro.Gap.ServiceContracts
 	{
 		[DataMember]
 		public int AfdelingsJaarID { get; set; }
+
 		[DataMember]
 		public int AfdelingID { get; set; }
+
 		[DataMember]
 		[DisplayName(@"Officiele afdeling")]
 		public int OfficieleAfdelingID { get; set; }
+
 		[DataMember]
 		[Verplicht]
 		[DisplayName(@"Geboortejaar van")]
+        [Range(1940, 2100, ErrorMessage = "{0} is beperkt van {1} tot {2}.")]
 		public int GeboorteJaarVan { get; set; }
+
 		[DataMember]
 		[Verplicht]
 		[DisplayName(@"Geboortejaar tot")]
+        [Range(1940, 2100, ErrorMessage = "{0} is beperkt van {1} tot {2}.")]
 		public int GeboorteJaarTot { get; set; }
+
 		[DataMember]
+        [Verplicht]
 		public GeslachtsType Geslacht { get; set; }
+
 		[DataMember]
 		public string VersieString { get; set; }
 	}

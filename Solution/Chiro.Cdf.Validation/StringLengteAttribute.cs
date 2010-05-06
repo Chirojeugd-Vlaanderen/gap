@@ -8,6 +8,7 @@ namespace System.ComponentModel.DataAnnotations
 	/// <summary>
 	/// 
 	/// </summary>
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
 	public class StringLengteAttribute : StringLengthAttribute
 	{
 		public StringLengteAttribute(int maximumLength)

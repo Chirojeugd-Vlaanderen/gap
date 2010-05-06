@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 using Chiro.Gap.Domain;
@@ -33,22 +34,30 @@ namespace Chiro.Gap.ServiceContracts
 		{
 			// Vervangt eventuele null door String.Empty
 			// Zie ticket #202: https://develop.chiro.be/trac/cg2/ticket/202
+            // TODO: toch terug kolom nullable maken, zie ticket
 			get { return _bus; }
 			set { _bus = value ?? String.Empty; }
 		}
 
+        [Verplicht]
 		[DataMember]
+        [Range(1000, 9999, ErrorMessage = "{0} is beperkt van {1} tot {2}.")]
 		public int PostNr { get; set; }
 
 		[DataMember]
-		public int HuisNr { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "{0} is beperkt van {1} tot {2}.")]
+		public int? HuisNr { get; set; }
 
 		[DataMember]
 		[DisplayName(@"Straat")]
+        [Verplicht]
+        [StringLengte(80)]
 		public String StraatNaamNaam { get; set; }
 
 		[DataMember]
 		[DisplayName(@"Woonplaats")]
+        [Verplicht]
+        [StringLengte(80)]
 		public String WoonPlaatsNaam { get; set; }
 	}
 }

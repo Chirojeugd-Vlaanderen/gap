@@ -1,12 +1,9 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<PersonenLedenModel>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.PersonenLedenModel>" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
-<%@ Import Namespace="Chiro.Gap.Orm"  %>
-<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
 
-
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-<!-- FIXME: Import van Orm nog nodig omdat Categorie nog gebruikt wordt in het datacontract PersoonInfo -->
+
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -78,9 +75,8 @@
 		  {
 			  Response.Write(" is verlopen");
 		  }else{
-			  %>
-			 <%Response.Write(" tot " + Html.DisplayFor(s => s.PersoonLidInfo.LidInfo.EindeInstapperiode));%>
-		<%} %>
+			  Response.Write(" tot " + Html.DisplayFor(s => s.PersoonLidInfo.LidInfo.EindeInstapperiode));
+		  } %>
 		</p>
 		<%}else{ %>
 		<p>
@@ -96,7 +92,6 @@
 		<%=Html.HiddenFor(s => s.PersoonLidInfo.LidInfo.NonActief)%>
 		</p>
 
-		
 		<%
                     if (Model.PersoonLidInfo.LidInfo.Functies.Count() > 0)
                     {

@@ -4,6 +4,7 @@
 // </copyright>
 
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace Chiro.Gap.ServiceContracts
@@ -16,10 +17,16 @@ namespace Chiro.Gap.ServiceContracts
 	{
 		[DataMember]
 		public int ID { get; set; }
+
+        [Verplicht]
+        [StringLengte(50), StringMinimumLengte(2)]
 		[DataMember]
 		public string Naam { get; set; }
+
 		[DataMember]
 		[DisplayName(@"Code")]
+        [Verplicht]
+        [StringLengte(10), StringMinimumLengte(1)]
 		public string Afkorting { get; set; }
 	}
 }

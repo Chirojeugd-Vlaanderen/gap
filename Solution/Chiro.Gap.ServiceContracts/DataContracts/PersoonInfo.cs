@@ -31,7 +31,8 @@ namespace Chiro.Gap.ServiceContracts
 
 		[DataMember]
 		[DisplayName(@"Chiroleeftijd")]
-        [Verplicht, Range(-8, +3, ErrorMessage = @"{0} is beperkt van {1} tot {2}.")]
+        [Verplicht]
+        [Range(-8, +3, ErrorMessage = "{0} is beperkt van {1} tot {2}.")]
         [DisplayFormat(DataFormatString = "{0:+#0;-#0;#0}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true)]
 		public int ChiroLeefTijd
 		{
@@ -39,8 +40,9 @@ namespace Chiro.Gap.ServiceContracts
 			set;
 		}
 
+		[Verplicht]
 		[DisplayName(@"Voornaam")]
-		[Verplicht, StringLengte(60), StringMinimumLengte(2)]
+		[StringLengte(60), StringMinimumLengte(2)]
 		[DataMember]
 		public string VoorNaam
 		{
@@ -48,7 +50,7 @@ namespace Chiro.Gap.ServiceContracts
 			set;
 		}
 
-		[Verplicht, StringLengte(160), StringMinimumLengte(2)]
+		[Verplicht(), StringLengte(160), StringMinimumLengte(2)]
 		[DisplayName(@"Familienaam")]
 		[DataMember]
 		public string Naam
@@ -58,6 +60,7 @@ namespace Chiro.Gap.ServiceContracts
 		}
 
 		// [DisplayFormat(DataFormatString="{0:d}", ApplyFormatInEditMode=true, ConvertEmptyStringToNull=true)]
+        [Verplicht] // Altijd? Ik ben niet zeker.
 		[DataType(DataType.Date)]
 		[DisplayName(@"Geboortedatum")]
 		[DatumInVerleden]

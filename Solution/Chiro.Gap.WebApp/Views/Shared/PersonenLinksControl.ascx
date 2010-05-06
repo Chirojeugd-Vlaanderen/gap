@@ -2,7 +2,7 @@
 <%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
 
 <ul>
-<% foreach (PersoonDetail info in Model.Personen)
+<% foreach (var info in Model.Personen)
    { %>
     <li><% Html.RenderPartial("PersoonsLinkControl", info); %></li>
      <%

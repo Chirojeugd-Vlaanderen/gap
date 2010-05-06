@@ -1,14 +1,18 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<AdresModel>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.AdresModel>" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
-<%@ Import Namespace="Chiro.Gap.WebApp" %>
-<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.min.js")%>"></script>
-<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery.autocomplete.min.js")%>"></script>
-<link rel="stylesheet" type="text/css" href="<%= ResolveUrl("~/Content/jquery.autocomplete.css")%>" />
+    <script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript"></script>
+    
+    <script src="<%= ResolveUrl("~/Scripts/jquery.autocomplete.js")%>" type="text/javascript"></script>
+    <link  href="<%= ResolveUrl("~/Content/jquery.autocomplete.css")%>" rel="stylesheet" type="text/css"/>
 
-<script type="text/javascript">
+    <script type="text/javascript">
     // Automatisch invullen gemeentes na keuze postnummer
     $(function() {
         $("input#PersoonsAdresInfo_PostNr").change(function() {
@@ -29,11 +33,13 @@
         { extraParams: { "postNummer": function() { return $("input#PersoonsAdresInfo_PostNr").val(); } } });
     }); 
 
-</script>
+    </script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-<% using (Html.BeginForm()){%>
+<% 
+    Html.EnableClientValidation();
+    using (Html.BeginForm()) {%>
  
    <ul id="acties">
    <li><input type="submit" name="action" value="Bewaren" /></li>

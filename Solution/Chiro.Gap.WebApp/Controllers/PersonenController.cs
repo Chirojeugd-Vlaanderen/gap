@@ -11,7 +11,6 @@ using System.Web.Mvc;
 
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Validatie;
@@ -910,7 +909,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				object value;
 				TempData.TryGetValue("list", out value);
 				model.GelieerdePersoonIDs = (List<int>)value;
-				TempData.Remove("list"); // Ik denk dat dit voor MVC2 automatisch gebeurt; na te kijken.
+				TempData.Remove("list"); // TODO: Ik denk dat dit voor MVC2 automatisch gebeurt; na te kijken.
 
 				return View("CategorieToevoegen", model);
 			}

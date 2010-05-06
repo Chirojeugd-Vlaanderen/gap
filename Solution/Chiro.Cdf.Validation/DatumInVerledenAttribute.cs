@@ -8,6 +8,7 @@ namespace System.ComponentModel.DataAnnotations
 	/// <summary>
 	/// 
 	/// </summary>
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
 	public class DatumInVerledenAttribute : ValidationAttribute
 	{
 		public DatumInVerledenAttribute()

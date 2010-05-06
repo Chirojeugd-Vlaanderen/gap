@@ -6,29 +6,22 @@
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AQgAgAAAESICAEgAAAAAACAAAQAAAAAAAAAAEFAAKAI=</HashCode>
+      <HashCode>AAAgwACIASAEAACABAAggAAAAkRAAAAAAEQBABAAAAA=</HashCode>
       <FileName>IGelieerdePersonenService.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Chiro.Gap.ServiceContracts.IGroepenService">
     <Position X="3" Y="0.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AwAAAAAAAGAEAAAiAAAAAAgAAQAEAgARAEAAAQIAAAQ=</HashCode>
+      <HashCode>BDEAACAACAIEAKAAAAAAggCUAAIgBgAABEAhAQAQAAA=</HashCode>
       <FileName>IGroepenService.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Chiro.Gap.ServiceContracts.ILedenService">
     <Position X="5.5" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AABAAAAAAAAEAEAAAgBAAIAAAAAAgAAAIAAAAAAAAiA=</HashCode>
+      <HashCode>AAAAAAgAAAAUAEAAAABhAAQAAIAAgAAAAAAAAAAQAAA=</HashCode>
       <FileName>ILedenService.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Chiro.Gap.ServiceContracts.IPersonenService">
-    <Position X="7.75" Y="0.5" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAQAAAAAAAAAAAQAAAAAAABAAAAAAAAACAAA=</HashCode>
-      <FileName>IPersonenService.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Tahoma" Size="8.25" />

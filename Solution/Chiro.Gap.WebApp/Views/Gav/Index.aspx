@@ -1,7 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<GavModel>" %>
-<%@ Import Namespace="Chiro.Gap.Orm" %>
-<%@ Import Namespace="Chiro.Gap.WebApp" %>
-<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.GavModel>" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
 <link href="/Content/GeenGroepGekozen.css" rel="stylesheet" type="text/css" />

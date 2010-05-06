@@ -1,6 +1,15 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.GroepsInstellingenModel>" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript"></script>
+</asp:Content>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
  
     <fieldset>
         <legend>Algemene groepsinfo</legend>    
@@ -57,8 +66,11 @@
     %>
     </ul>  
 
-<% using (Html.BeginForm())
+<% 
+    Html.EnableClientValidation();
+    using (Html.BeginForm())
    { %>
+   
     <fieldset>
     <legend>Categorie toevoegen</legend>
     <p>
@@ -66,20 +78,17 @@
     <%=Html.EditorFor(mdl=>mdl.NieuweCategorie.Naam) %><br />
     <%=Html.ValidationMessageFor(mdl=>mdl.NieuweCategorie.Naam) %>
     </p>
+    
     <p>
     <%=Html.LabelFor(mdl=>mdl.NieuweCategorie.Code) %>
     <%=Html.EditorFor(mdl=>mdl.NieuweCategorie.Code) %><br />
     <%=Html.ValidationMessageFor(mdl=>mdl.NieuweCategorie.Code) %>
     </p>
+    
     <p>
     <input type="submit" value="Bewaren"/>
     </p>
     </fieldset>        
 <%} %>
 
-
-
-</asp:Content>
-
-<asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
 </asp:Content>

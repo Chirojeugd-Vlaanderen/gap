@@ -4,13 +4,7 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
-
-using Chiro.Gap.Orm;
-using Chiro.Gap.ServiceContracts;
-
 namespace Chiro.Gap.WebApp
 {
 	/// <summary>
@@ -29,7 +23,7 @@ namespace Chiro.Gap.WebApp
 		{
 			get
 			{
-				String lijstnaam = HttpContext.Current.Session[LijstNaamString] as String;
+				string lijstnaam = HttpContext.Current.Session[LijstNaamString] as String;
 				return lijstnaam == null ? string.Empty : (String)lijstnaam;
 			}
 			set
