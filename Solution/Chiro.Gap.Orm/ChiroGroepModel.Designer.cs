@@ -34,7 +34,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_WoonPlaats", "WoonPlaats", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.WoonPlaats), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Adres))]
 
 // Original file name:
-// Generation date: 6/05/2010 14:31:08
+// Generation date: 6/05/2010 15:00:24
 namespace Chiro.Gap.Orm
 {
     
@@ -1560,12 +1560,10 @@ namespace Chiro.Gap.Orm
         /// <summary>
         /// Create a new Adres object.
         /// </summary>
-        /// <param name="postCode">Initial value of PostCode.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static Adres CreateAdres(string postCode, int id)
+        public static Adres CreateAdres(int id)
         {
             Adres adres = new Adres();
-            adres.PostCode = postCode;
             adres.ID = id;
             return adres;
         }
@@ -1618,7 +1616,7 @@ namespace Chiro.Gap.Orm
         /// <summary>
         /// There are no comments for Property PostCode in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string PostCode
         {
@@ -1630,7 +1628,7 @@ namespace Chiro.Gap.Orm
             {
                 this.OnPostCodeChanging(value);
                 this.ReportPropertyChanging("PostCode");
-                this._PostCode = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._PostCode = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("PostCode");
                 this.OnPostCodeChanged();
             }

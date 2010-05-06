@@ -298,7 +298,7 @@ namespace Chiro.Gap.Services
 					naarAdres.Bus,
 					naarAdres.WoonPlaatsNaam,
 					naarAdres.PostNr,
-					String.Empty);	// TODO: buitenlandse adressen (#238)
+					null);	// TODO: buitenlandse adressen (#238)
 			}
 			catch (OngeldigObjectException ex)
 			{
@@ -363,7 +363,7 @@ namespace Chiro.Gap.Services
 			Adres adres = null;
 			try
 			{
-				adres = _adrMgr.ZoekenOfMaken(adr.StraatNaamNaam, adr.HuisNr, adr.Bus, adr.WoonPlaatsNaam, adr.PostNr, String.Empty);
+				adres = _adrMgr.ZoekenOfMaken(adr.StraatNaamNaam, adr.HuisNr, adr.Bus, adr.WoonPlaatsNaam, adr.PostNr, null);
 			}
 			catch (OngeldigObjectException ex)
 			{

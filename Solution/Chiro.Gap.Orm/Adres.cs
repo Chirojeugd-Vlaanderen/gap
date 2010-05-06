@@ -39,20 +39,6 @@ namespace Chiro.Gap.Orm
 		}
 
 		/// <summary>
-		/// Instantieert een Adres-object
-		/// </summary>
-		public Adres()
-			: base()
-		{
-			// Bus en PostCode zijn niet nullable.
-			// Als er geen bus/postcode is, dan moet er
-			// gewoon een lege string staan.
-
-			Bus = String.Empty;
-			PostCode = String.Empty;
-		}
-
-		/// <summary>
 		/// 
 		/// </summary>
 		public string VersieString

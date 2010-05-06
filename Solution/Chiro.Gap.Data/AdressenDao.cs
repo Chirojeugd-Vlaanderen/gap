@@ -182,24 +182,29 @@ namespace Chiro.Gap.Data.Ef
 			{
 				db.Adres.MergeOption = MergeOption.NoTracking;
 
-				var adressentabel = db.Adres.Include("Straat").Include("Subgemeente");
+				var adressentabel = db.Adres.Include(adr=>adr.StraatNaam).Include(adr=>adr.WoonPlaats);
 
 				if (metBewoners)
 				{
-					adressentabel = adressentabel.Include("PersoonsAdres");
+					adressentabel = adressentabel.Include(adr=>adr.PersoonsAdres);
 				}
 
 				resultaat = (
 					from Adres a in adressentabel
 					where (a.StraatNaam.Naam == straatNaam && a.StraatNaam.PostNummer == postNr 
 					&& a.WoonPlaats.Naam == woonPlaatsNaam && a.WoonPlaats.PostNummer == postNr
-					&& a.HuisNr == huisNr && a.Bus == bus && a.PostCode == postCode)
+					&& (a.HuisNr ==  null && huisNr == null || a.HuisNr == huisNr)
+					&& (a.Bus == null && bus == null || a.Bus == bus)
+					&& (a.PostCode == null && postCode == null || a.PostCode == postCode)
+					)
 					select a).FirstOrDefault();
 
-				// Alweer een rariteit met entity framework:
-				// De 'eager loading' van Straat en Subgemeente werkt niet.
-				//
-				// Dan moet het maar zo:
+				// Gekke constructie voor huisnummer, bus en postcode, omdat null anders niet goed
+				// opgevangen wordt.  (je krijgt bijv. where PostCode == null in de SQL query, wat niet werkt)
+
+
+				// 'Eager loading' van straatnaam en woonplaats zou niet werken...
+				// Voorlopig gaat het zo:
 
 				if (resultaat != null)
 				{
