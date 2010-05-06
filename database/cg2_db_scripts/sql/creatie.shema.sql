@@ -419,7 +419,7 @@ BEGIN
 	CREATE TABLE [adr].[PostNr](
 		[PostNr] [int] NOT NULL,
 		[Versie] [timestamp] NULL,
-		CONSTRAINT [PK_PostCode] PRIMARY KEY CLUSTERED ([PostNr] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+		CONSTRAINT [PK_PostNr] PRIMARY KEY CLUSTERED ([PostNr] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
 	) ON [PRIMARY]
 END
 GO
@@ -450,7 +450,7 @@ BEGIN
 	CREATE TABLE [adr].[Adres](
 		[Bus] [varchar](10) NULL,
 		[HuisNr] [int] NULL,
-		[PostCode] [varchar](10) NOT NULL,
+		[PostCode] [varchar](10) NULL,
 		[AdresID] [int] IDENTITY(1,1) NOT NULL,
 		[StraatNaamID] [int] NOT NULL,
 		[WoonPlaatsID] [int] NOT NULL,
