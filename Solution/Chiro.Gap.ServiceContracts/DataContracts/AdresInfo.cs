@@ -30,14 +30,7 @@ namespace Chiro.Gap.ServiceContracts
 		public int ID { get; set; }
 
 		[DataMember]
-		public string Bus
-		{
-			// Vervangt eventuele null door String.Empty
-			// Zie ticket #202: https://develop.chiro.be/trac/cg2/ticket/202
-            // TODO: toch terug kolom nullable maken, zie ticket
-			get { return _bus; }
-			set { _bus = value ?? String.Empty; }
-		}
+		public string Bus { get; set; }
 
         [Verplicht]
 		[DataMember]

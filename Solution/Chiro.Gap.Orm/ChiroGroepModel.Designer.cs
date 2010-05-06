@@ -34,7 +34,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_WoonPlaats", "WoonPlaats", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.WoonPlaats), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Adres))]
 
 // Original file name:
-// Generation date: 14/04/2010 16:09:46
+// Generation date: 6/05/2010 14:31:08
 namespace Chiro.Gap.Orm
 {
     
@@ -1560,13 +1560,11 @@ namespace Chiro.Gap.Orm
         /// <summary>
         /// Create a new Adres object.
         /// </summary>
-        /// <param name="bus">Initial value of Bus.</param>
         /// <param name="postCode">Initial value of PostCode.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static Adres CreateAdres(string bus, string postCode, int id)
+        public static Adres CreateAdres(string postCode, int id)
         {
             Adres adres = new Adres();
-            adres.Bus = bus;
             adres.PostCode = postCode;
             adres.ID = id;
             return adres;
@@ -1574,7 +1572,7 @@ namespace Chiro.Gap.Orm
         /// <summary>
         /// There are no comments for Property Bus in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string Bus
         {
@@ -1586,7 +1584,7 @@ namespace Chiro.Gap.Orm
             {
                 this.OnBusChanging(value);
                 this.ReportPropertyChanging("Bus");
-                this._Bus = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Bus = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Bus");
                 this.OnBusChanged();
             }

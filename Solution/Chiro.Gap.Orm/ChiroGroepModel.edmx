@@ -151,7 +151,7 @@
           <Key>
             <PropertyRef Name="AdresID" />
           </Key>
-          <Property Name="Bus" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="Bus" Type="varchar" Nullable="true" MaxLength="10" />
           <Property Name="HuisNr" Type="int" />
           <Property Name="PostCode" Type="varchar" Nullable="false" MaxLength="10" />
           <Property Name="AdresID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
@@ -912,7 +912,7 @@
         <EntityType Name="Adres">
           <Key>
             <PropertyRef Name="ID" /></Key>
-          <Property Name="Bus" Type="String" Nullable="false" />
+          <Property Name="Bus" Type="String" Nullable="true" />
           <Property Name="HuisNr" Type="Int32" Nullable="true" />
           <Property Name="PostCode" Type="String" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
