@@ -448,7 +448,7 @@ GO
 
 BEGIN
 	CREATE TABLE [adr].[Adres](
-		[Bus] [varchar](10) NOT NULL,
+		[Bus] [varchar](10) NULL,
 		[HuisNr] [int] NULL,
 		[PostCode] [varchar](10) NOT NULL,
 		[AdresID] [int] IDENTITY(1,1) NOT NULL,

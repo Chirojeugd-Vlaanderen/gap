@@ -179,7 +179,7 @@ WHERE gp.GroepID = @groepID
 
 -- Die adressen invoeren die nog niet bestaan in de database.
 INSERT INTO adr.Adres (Bus,HuisNr,PostCode,StraatNaamID,WoonPlaatsID)
-	SELECT Bus,HuisNr,PostCode,StraatNaamID,WoonPlaatsID
+	SELECT CASE Bus WHEN '' THEN NULL ELSE Bus END AS Bus,HuisNr,PostCode,StraatNaamID,WoonPlaatsID
 		FROM #Adres a
 		WHERE NOT EXISTS (SELECT 1 FROM adr.Adres 
 									WHERE Bus COLLATE SQL_Latin1_General_CP1_CI_AI =a.Bus 
