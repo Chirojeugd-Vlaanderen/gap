@@ -102,7 +102,7 @@ namespace Chiro.Pdox.Data
 				var query = new OleDbCommand(
 					"SELECT NAAM, VOORNAAM, GEBDATUM, GESLACHT, ADNR, AANSL_NR, SOORT, " + 
                                         "	STRAAT_NR, POSTNR, GEMEENTE, LAND, STRAAT_NR2, POSTNR2, GEMEENTE2, LAND2, POST_OP, " +
-                                        "	TEL, TEL2, FAX " +
+                                        "	TEL, TEL2, FAX, E_MAIL " +
 					"FROM PERSOON LEFT OUTER JOIN LID ON PERSOON.NR = LID.PERS_NR ",
 					connectie);
 				var reader = query.ExecuteReader();
@@ -175,6 +175,7 @@ namespace Chiro.Pdox.Data
 					string tel1 = helper.FormatteerTelefoonNr(reader["TEL"].ToString());
 					string tel2 = helper.FormatteerTelefoonNr(reader["TEL2"].ToString());
 					string fax = helper.FormatteerTelefoonNr(reader["FAX"].ToString());
+					string eMail = reader["E_MAIL"].ToString();
 
 					if (tel1 != null)
 					{
@@ -202,6 +203,16 @@ namespace Chiro.Pdox.Data
 						{
 							CommunicatieTypeID = 2,
 							Nummer = fax,
+							Voorkeur = true
+						});
+					}
+
+					if (!string.IsNullOrEmpty(eMail))
+					{
+						communicatie.Add(new CommunicatieDetail
+						{
+							CommunicatieTypeID = 3,
+							Nummer = eMail,
 							Voorkeur = true
 						});
 					}
