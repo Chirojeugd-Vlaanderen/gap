@@ -50,6 +50,15 @@ namespace Chiro.Gap.InitieleImport
 							pa.WoonPlaatsNaam,
 							pa.AdresType);
 					}
+
+					foreach (var ci in p.CommunicatieInfo)
+					{
+						Console.WriteLine(
+							Properties.Resources.CommunicatieInfo,
+							ci.Nummer,
+							ci.CommunicatieTypeID,
+							ci.Voorkeur ? "*" : " ");
+					}
 				}
 
 				Console.WriteLine(Properties.Resources.TotaalInfo, personen.Count());

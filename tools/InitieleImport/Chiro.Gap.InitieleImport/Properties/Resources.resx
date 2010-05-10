@@ -121,6 +121,10 @@
     <value>    {0} {1} bus {2}, {3} {4} ({5})</value>
     <comment>Straat, nr, bus, postnr, gemeente, type</comment>
   </data>
+  <data name="CommunicatieInfo" xml:space="preserve">
+    <value>        CommType {1}: {2} {0}</value>
+    <comment>Nr, type, voorkeur</comment>
+  </data>
   <data name="GroepsInfo" xml:space="preserve">
     <value>Gegevens importeren van {0} - {1} ({2})</value>
   </data>

@@ -70,6 +70,15 @@ namespace Chiro.Gap.InitieleImport.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to         CommType {1}: {2} {0}.
+        /// </summary>
+        internal static string CommunicatieInfo {
+            get {
+                return ResourceManager.GetString("CommunicatieInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gegevens importeren van {0} - {1} ({2}).
         /// </summary>
         internal static string GroepsInfo {

@@ -51,6 +51,11 @@ namespace Chiro.Pdox.Data
 		{
 			string cijfers = new string((from c in zootje where Char.IsDigit(c) select c).ToArray());
 
+			if (cijfers == String.Empty)
+			{
+				return null;
+			}
+
 			if (cijfers.First() != '0')
 			{
 				cijfers = '0' + cijfers;

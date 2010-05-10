@@ -101,7 +101,8 @@ namespace Chiro.Pdox.Data
 
 				var query = new OleDbCommand(
 					"SELECT NAAM, VOORNAAM, GEBDATUM, GESLACHT, ADNR, AANSL_NR, SOORT, " + 
-                                        "	STRAAT_NR, POSTNR, GEMEENTE, LAND, STRAAT_NR2, POSTNR2, GEMEENTE2, LAND2, POST_OP " +
+                                        "	STRAAT_NR, POSTNR, GEMEENTE, LAND, STRAAT_NR2, POSTNR2, GEMEENTE2, LAND2, POST_OP, " +
+                                        "	TEL, TEL2, FAX " +
 					"FROM PERSOON LEFT OUTER JOIN LID ON PERSOON.NR = LID.PERS_NR ",
 					connectie);
 				var reader = query.ExecuteReader();
@@ -139,6 +140,7 @@ namespace Chiro.Pdox.Data
 						lid = new LidInfo {Type = lt};
 					}
 
+					#region adressen
 					var adressen = new List<PersoonsAdresInfo>();
 					
 					bool eersteAdresThuis = (int.Parse(reader["POST_OP"].ToString()) == 1);
@@ -160,11 +162,51 @@ namespace Chiro.Pdox.Data
 						reader["GEMEENTE2"].ToString(),
 						reader["LAND2"].ToString(),
 						!eersteAdresThuis ? AdresTypeEnum.Thuis : AdresTypeEnum.Overig);
-					
+
 					if (persoonsAdres != null)
 					{
 						adressen.Add(persoonsAdres);
 					}
+					#endregion
+
+					#region communicatie
+
+					var communicatie = new List<CommunicatieDetail>();
+					string tel1 = helper.FormatteerTelefoonNr(reader["TEL"].ToString());
+					string tel2 = helper.FormatteerTelefoonNr(reader["TEL2"].ToString());
+					string fax = helper.FormatteerTelefoonNr(reader["FAX"].ToString());
+
+					if (tel1 != null)
+					{
+						communicatie.Add(new CommunicatieDetail
+						                 	{
+						                 		CommunicatieTypeID = 1,
+						                 		Nummer = tel1,
+						                 		Voorkeur = true
+						                 	});
+					}
+
+					if (tel2 != null)
+					{
+						communicatie.Add(new CommunicatieDetail
+						{
+							CommunicatieTypeID = 1,
+							Nummer = tel2,
+							Voorkeur = false
+						});
+					}
+
+					if (fax != null)
+					{
+						communicatie.Add(new CommunicatieDetail
+						{
+							CommunicatieTypeID = 2,
+							Nummer = fax,
+							Voorkeur = true
+						});
+					}
+
+					#endregion
 
 					var persoonLidInfo = new PersoonLidInfo()
 	                                	{	
@@ -177,7 +219,8 @@ namespace Chiro.Pdox.Data
 	                                		                		Geslacht = geslacht,
 	                                		                	},
 	                                		LidInfo = lid,
-							PersoonsAdresInfo = adressen
+							PersoonsAdresInfo = adressen,
+							CommunicatieInfo = communicatie
 	                                	};
 
 
