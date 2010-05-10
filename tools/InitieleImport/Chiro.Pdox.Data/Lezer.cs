@@ -81,6 +81,8 @@ namespace Chiro.Pdox.Data
 		/// <returns>Lijst met info van alle personen in het bestand</returns>
 		public IEnumerable<PersoonLidInfo> PersonenOphalen()
 		{
+			var helper = new ImportHelper();
+
 			using (var connectie = new OleDbConnection(_connectionString))
 			{
 				// codes gebruikt in e-mailbestanden voor man en vrouw.
@@ -98,7 +100,8 @@ namespace Chiro.Pdox.Data
 				connectie.Open();
 
 				var query = new OleDbCommand(
-					"SELECT NAAM, VOORNAAM, GEBDATUM, GESLACHT, ADNR, AANSL_NR, SOORT " + 
+					"SELECT NAAM, VOORNAAM, GEBDATUM, GESLACHT, ADNR, AANSL_NR, SOORT, " + 
+                                        "	STRAAT_NR, POSTNR, GEMEENTE, LAND, STRAAT_NR2, POSTNR2, GEMEENTE2, LAND2, POST_OP " +
 					"FROM PERSOON LEFT OUTER JOIN LID ON PERSOON.NR = LID.PERS_NR ",
 					connectie);
 				var reader = query.ExecuteReader();
@@ -136,18 +139,49 @@ namespace Chiro.Pdox.Data
 						lid = new LidInfo {Type = lt};
 					}
 
-					resultaat.Add(new PersoonLidInfo()
-					              	{	
-					              		PersoonDetail = new PersoonDetail()
-					              			{
-										AdNummer = adNr,
-					              				Naam = reader["NAAM"].ToString(),
-					              				VoorNaam = reader["VOORNAAM"].ToString(),
-					              				GeboorteDatum = DateTime.Parse(reader["GEBDATUM"].ToString()),
-					              				Geslacht = geslacht,
-					              			},
-								LidInfo = lid
-					              	});
+					var adressen = new List<PersoonsAdresInfo>();
+					
+					bool eersteAdresThuis = (int.Parse(reader["POST_OP"].ToString()) == 1);
+					var persoonsAdres = helper.MaakAdresInfo(
+						reader["STRAAT_NR"].ToString(),
+						reader["POSTNR"].ToString(),
+						reader["GEMEENTE"].ToString(),
+						reader["LAND"].ToString(),
+						eersteAdresThuis ? AdresTypeEnum.Thuis : AdresTypeEnum.Overig);
+
+					if (persoonsAdres != null)
+					{
+						adressen.Add(persoonsAdres);
+					}
+
+					persoonsAdres = helper.MaakAdresInfo(
+						reader["STRAAT_NR2"].ToString(),
+						reader["POSTNR2"].ToString(),
+						reader["GEMEENTE2"].ToString(),
+						reader["LAND2"].ToString(),
+						!eersteAdresThuis ? AdresTypeEnum.Thuis : AdresTypeEnum.Overig);
+					
+					if (persoonsAdres != null)
+					{
+						adressen.Add(persoonsAdres);
+					}
+
+					var persoonLidInfo = new PersoonLidInfo()
+	                                	{	
+	                                		PersoonDetail = new PersoonDetail()
+	                                		                	{
+	                                		                		AdNummer = adNr,
+	                                		                		Naam = reader["NAAM"].ToString(),
+	                                		                		VoorNaam = reader["VOORNAAM"].ToString(),
+	                                		                		GeboorteDatum = DateTime.Parse(reader["GEBDATUM"].ToString()),
+	                                		                		Geslacht = geslacht,
+	                                		                	},
+	                                		LidInfo = lid,
+							PersoonsAdresInfo = adressen
+	                                	};
+
+
+					resultaat.Add(persoonLidInfo);
 				}
 
 				return resultaat;

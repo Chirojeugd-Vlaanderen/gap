@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Chiro.Gap.InitieleImport.Properties {
+namespace Chiro.Pdox.Data.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Chiro.Gap.InitieleImport.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Chiro.Gap.InitieleImport.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Chiro.Pdox.Data.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,47 +61,11 @@ namespace Chiro.Gap.InitieleImport.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to     {0} {1} bus {2}, {3} {4} ({5}).
+        ///   Looks up a localized string similar to Ongeldige adreslijn..
         /// </summary>
-        internal static string AdresInfo {
+        internal static string OngeldigeAdresLijn {
             get {
-                return ResourceManager.GetString("AdresInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Gegevens importeren van {0} - {1} ({2}).
-        /// </summary>
-        internal static string GroepsInfo {
-            get {
-                return ResourceManager.GetString("GroepsInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {5}: ({4})  {0} {1} - {2:d} {3}.
-        /// </summary>
-        internal static string PersoonInfo {
-            get {
-                return ResourceManager.GetString("PersoonInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Totaal aantal personen: {0}.
-        /// </summary>
-        internal static string TotaalInfo {
-            get {
-                return ResourceManager.GetString("TotaalInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dit programma verwacht het path naar de database als 1ste command-line parameter..
-        /// </summary>
-        internal static string Usage {
-            get {
-                return ResourceManager.GetString("Usage", resourceCulture);
+                return ResourceManager.GetString("OngeldigeAdresLijn", resourceCulture);
             }
         }
     }

@@ -117,21 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AdresInfo" xml:space="preserve">
-    <value>    {0} {1} bus {2}, {3} {4} ({5})</value>
-    <comment>Straat, nr, bus, postnr, gemeente, type</comment>
-  </data>
-  <data name="GroepsInfo" xml:space="preserve">
-    <value>Gegevens importeren van {0} - {1} ({2})</value>
-  </data>
-  <data name="PersoonInfo" xml:space="preserve">
-    <value>{5}: ({4})  {0} {1} - {2:d} {3}</value>
-    <comment>Voornaam, naam, geboortedatum, geslacht, adnr, lidtype</comment>
-  </data>
-  <data name="TotaalInfo" xml:space="preserve">
-    <value>Totaal aantal personen: {0}</value>
-  </data>
-  <data name="Usage" xml:space="preserve">
-    <value>Dit programma verwacht het path naar de database als 1ste command-line parameter.</value>
+  <data name="OngeldigeAdresLijn" xml:space="preserve">
+    <value>Ongeldige adreslijn.</value>
   </data>
 </root>

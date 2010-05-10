@@ -38,6 +38,18 @@ namespace Chiro.Gap.InitieleImport
 						p.PersoonDetail.Geslacht,
 						p.PersoonDetail.AdNummer,
 						p.LidInfo == null ? String.Empty : p.LidInfo.Type.ToString());
+
+					foreach (var pa in p.PersoonsAdresInfo)
+					{
+						Console.WriteLine(
+							Properties.Resources.AdresInfo,
+							pa.StraatNaamNaam,
+							pa.HuisNr,
+							pa.Bus ?? "/",
+							pa.PostNr,
+							pa.WoonPlaatsNaam,
+							pa.AdresType);
+					}
 				}
 
 				Console.WriteLine(Properties.Resources.TotaalInfo, personen.Count());
