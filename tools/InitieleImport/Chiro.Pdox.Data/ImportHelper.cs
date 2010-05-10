@@ -41,6 +41,41 @@ namespace Chiro.Pdox.Data
 				bus = geenBus ? null : match.Groups["bus"].ToString().Trim();
 			}
 		}
+
+		/// <summary>
+		/// Probeert een telefoonnr te formatteren volgens Barts huisstijlregels.
+		/// </summary>
+		/// <param name="zootje">Telefoonnr in eender welke vorm</param>
+		/// <returns>Geformatteerd telefoonnummer, of null als het niet lukte</returns>
+		public string FormatteerTelefoonNr(string zootje)
+		{
+			string cijfers = new string((from c in zootje where Char.IsDigit(c) select c).ToArray());
+
+			if (cijfers.First() != '0')
+			{
+				cijfers = '0' + cijfers;
+			}
+
+			Regex regex;
+			const string VASTELIJNEXPRESSIE = "^(0[2349]|0[15678].)([0-9]{2,3})([0-9]{2})([0-9]{2})$";
+			const string GSMEXPRESSIE = "^(0[1-9]{3})([0-9]{2})([0-9]{2})([0-9]{2})$";
+
+			regex = cijfers.Length == 9 ? new Regex(VASTELIJNEXPRESSIE) : new Regex(GSMEXPRESSIE);
+
+			var match = regex.Match(cijfers);
+
+			if (!match.Success)
+			{
+				return null;
+			}
+
+			string zone = match.Groups[1].ToString();
+			string net = match.Groups[2].ToString();
+			string ab1 = match.Groups[3].ToString();
+			string ab2 = match.Groups[4].ToString();
+
+			return String.Format("{0}-{1} {2} {3}", zone, net, ab1, ab2);
+		}
 		
 		/// <summary>
 		/// Creeert een adres van de typische adresgegevens uit het oude Chirogroepprogramma.  Als het adres

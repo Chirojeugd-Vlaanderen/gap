@@ -128,5 +128,21 @@ namespace Chiro.Gap.InitieleImport.Test
 			Assert.AreEqual(nrExpected, nr);
 			Assert.AreEqual(busExpected, bus);
 		}
+
+		[TestMethod()]
+		public void FormatteerTelefoonNr()
+		{
+			var helper = new ImportHelper();
+
+			string tel1 = helper.FormatteerTelefoonNr("03/485.79.60");
+			string tel2 = helper.FormatteerTelefoonNr("(0)476 362 662");
+			// bovenstaand formaat wordt vaak gebruikt, omdat het chirogroepprogramma standaard (0) geeft
+			// als er geen 'standaardtelefoonzone' ingesteld is.
+
+			// TODO: eigenlijk moet gewoon getest worden of de nummers goed valideren; welk formaat er nu
+			// precies opgeleverd wordt, is van ondergeschikt belang.
+			Assert.AreEqual("03-485 79 60", tel1);
+			Assert.AreEqual("0476-36 26 62", tel2);
+		}
 	}
 }
