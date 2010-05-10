@@ -8,5 +8,9 @@ INSERT INTO [pers].[CommunicatieType] ([Omschrijving],[Validatie],[Voorbeeld]) V
 GO
 INSERT INTO [pers].[CommunicatieType] ([Omschrijving],[Validatie],[Voorbeeld]) VALUES ('MSN', '^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$', 'iemand@chiro.be');
 GO
-INSERT INTO [pers].[CommunicatieType] ([Omschrijving],[Validatie],[Voorbeeld]) VALUES ('Jabber (Google)', '.*', '');
+INSERT INTO [pers].[CommunicatieType] ([Omschrijving],[Validatie],[Voorbeeld]) VALUES ('XMPP (Jabber)', '^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$', 'chiro@chat.facebook.com');
+GO
+INSERT INTO [pers].[CommunicatieType] ([Omschrijving],[Validatie],[Voorbeeld]) VALUES ('Twitter', '^@.*', '@chiro');
+GO
+INSERT INTO [pers].[CommunicatieType] ([Omschrijving],[Validatie],[Voorbeeld]) VALUES ('StatusNet (identi.ca)', '^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$', 'chiro@identi.ca');
 GO
