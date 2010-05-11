@@ -9,6 +9,13 @@ SET @groepID = (SELECT GroepID FROM grp.Groep WHERE Code=@StamNr)
 
 -- verwijder eerst groep en rechtstreekse koppelingen
 
+DELETE leia
+FROM grp.GroepsWerkJaar gwj 
+JOIN lid.Lid l on gwj.GroepsWerkJaarID = l.GroepsWerkJaarID
+JOIN lid.Leiding lei on l.LidID = lei.LeidingID
+JOIN lid.LeidingInAfdelingsJaar leia on lei.LeidingID = leia.LeidingID
+WHERE gwj.GroepID = @groepID
+
 DELETE lei 
 FROM grp.GroepsWerkJaar gwj 
 JOIN lid.Lid l on gwj.GroepsWerkJaarID = l.GroepsWerkJaarID
@@ -19,6 +26,12 @@ DELETE kin
 FROM grp.GroepsWerkJaar gwj 
 JOIN lid.Lid l on gwj.GroepsWerkJaarID = l.GroepsWerkJaarID
 JOIN lid.Kind kin on l.LidID = kin.KindID
+WHERE gwj.GroepID = @groepID
+
+DELETE lf 
+FROM grp.GroepsWerkJaar gwj 
+JOIN lid.Lid l on gwj.GroepsWerkJaarID = l.GroepsWerkJaarID
+JOIN lid.LidFunctie lf on l.LidID = lf.LidID
 WHERE gwj.GroepID = @groepID
 
 DELETE l FROM grp.GroepsWerkJaar gwj JOIN lid.Lid l on gwj.GroepsWerkJaarID = l.GroepsWerkJaarID
