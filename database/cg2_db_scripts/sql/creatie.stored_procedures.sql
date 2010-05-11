@@ -1,6 +1,8 @@
 
 :r 	../dataconversie/GroepsInfoUitKipadmin.sql
 GO
+:r ../dataconversie/groepLeegMaken.sql
+GO
 :r ../dataconversie/groepVolledigVerwijderen.sql
 GO
 :r ../dataconversie/GenereerGebruikersNaam.sql
