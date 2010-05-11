@@ -76,27 +76,6 @@ namespace Chiro.Gap.InitieleImport
 
 					ToonPersoonDetail(p.PersoonDetail);
 
-					foreach (var pa in p.PersoonsAdresInfo)
-					{
-						Console.WriteLine(
-							Properties.Resources.AdresInfo,
-							pa.StraatNaamNaam,
-							pa.HuisNr,
-							pa.Bus ?? "/",
-							pa.PostNr,
-							pa.WoonPlaatsNaam,
-							pa.AdresType);
-					}
-
-					foreach (var ci in p.CommunicatieInfo)
-					{
-						Console.WriteLine(
-							Properties.Resources.CommunicatieInfo,
-							ci.Nummer,
-							ci.CommunicatieTypeID,
-							ci.Voorkeur ? "*" : " ");
-					}
-
 					try
 					{
 						persoonID = serviceHelper.CallService<IGelieerdePersonenService, int>(svc => svc.Aanmaken(p.PersoonDetail, dbGroep.ID));
@@ -107,7 +86,39 @@ namespace Chiro.Gap.InitieleImport
 						persoonID = serviceHelper.CallService<IGelieerdePersonenService, int>(svc => svc.GeforceerdAanmaken(p.PersoonDetail, dbGroep.ID, true));
 						p.PersoonDetail.GelieerdePersoonID = persoonID;
 
-						mogelijkeDubbels.Add(new MogelijkDubbel{Bestaand = ex.Detail.Objecten.First(), Nieuw = p.PersoonDetail});
+						mogelijkeDubbels.Add(new MogelijkDubbel { Bestaand = ex.Detail.Objecten.First(), Nieuw = p.PersoonDetail });
+					}
+
+					foreach (var pa in p.PersoonsAdresInfo)
+					{
+						Console.WriteLine(
+							Properties.Resources.AdresInfo,
+							pa.StraatNaamNaam,
+							pa.HuisNr,
+							pa.Bus ?? "/",
+							pa.PostNr,
+							pa.WoonPlaatsNaam,
+							pa.AdresType);
+						try
+						{
+							serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.AdresToevoegenGelieerdePersonen(
+								new List<int> { persoonID },
+								pa));
+
+						}
+						catch (Exception)
+						{
+							Console.WriteLine(Resources.OnbekendAdres);
+						}
+					}
+
+					foreach (var ci in p.CommunicatieInfo)
+					{
+						Console.WriteLine(
+							Properties.Resources.CommunicatieInfo,
+							ci.Nummer,
+							ci.CommunicatieTypeID,
+							ci.Voorkeur ? "*" : " ");
 					}
 
 				}

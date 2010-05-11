@@ -124,6 +124,15 @@ namespace Chiro.Gap.InitieleImport.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to --&gt; Ongeldig adres genegeerd..
+        /// </summary>
+        internal static string OnbekendAdres {
+            get {
+                return ResourceManager.GetString("OnbekendAdres", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aangemaakt met GelieerdePersoonID {0}..
         /// </summary>
         internal static string PersoonAangemaaktAls {

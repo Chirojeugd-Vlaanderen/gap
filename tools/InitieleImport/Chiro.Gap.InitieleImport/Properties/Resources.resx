@@ -156,4 +156,7 @@
   <data name="MogelijkDubbel" xml:space="preserve">
     <value>Mogelijk dubbel:</value>
   </data>
+  <data name="OnbekendAdres" xml:space="preserve">
+    <value>--&gt; Ongeldig adres genegeerd.</value>
+  </data>
 </root>
