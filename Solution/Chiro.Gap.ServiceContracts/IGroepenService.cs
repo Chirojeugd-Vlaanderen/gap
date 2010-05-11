@@ -281,5 +281,13 @@ namespace Chiro.Gap.ServiceContracts
 		IEnumerable<StraatInfo> StratenOphalenMeerderePostNrs(String straatBegin, IEnumerable<int> postNrs);
 
 		#endregion
+
+		/// <summary>
+		/// Deze method geeft gewoon de gebruikersnaam weer waaronder je de service aanroept.  Vooral om de
+		/// authenticate te testen.
+		/// </summary>
+		/// <returns>Gebruikersnaam waarmee aangemeld</returns>
+		[OperationContract]
+		string WieBenIk();
 	}
 }

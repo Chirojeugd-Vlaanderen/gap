@@ -634,6 +634,18 @@ namespace Chiro.Gap.Services
 		{
 			return Mapper.Map<IList<StraatNaam>, IList<StraatInfo>>(_adresMgr.StratenOphalen(straatBegin, postNrs));
 		}
+
+
+		/// <summary>
+		/// Deze method geeft gewoon de gebruikersnaam weer waaronder je de service aanroept.  Vooral om de
+		/// authenticate te testen.
+		/// </summary>
+		/// <returns>Gebruikersnaam waarmee aangemeld</returns>
+		public string WieBenIk()
+		{
+			return _autorisatieMgr.GebruikersNaamGet();
+		}
+
 		#endregion
 	}
 }
