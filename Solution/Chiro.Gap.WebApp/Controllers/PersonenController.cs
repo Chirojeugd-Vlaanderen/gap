@@ -667,7 +667,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				// steeds opnieuw opgezocht.  Adressen worden nooit
 				// gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
 
-				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegen(model.PersoonIDs, model.PersoonsAdresInfo));
+				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenPersonen(model.PersoonIDs, model.PersoonsAdresInfo));
 
 				return RedirectToAction("EditRest", new
 				{

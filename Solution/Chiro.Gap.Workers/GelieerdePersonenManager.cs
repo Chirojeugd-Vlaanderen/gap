@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Linq.Expressions;
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
@@ -495,6 +495,26 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
+		}
+
+		/// <summary>
+		/// Haalt een rij gelieerde personen op, eventueel met extra info
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">ID's op te halen gelieerde personen</param>
+		/// <param name="extras">geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+		/// <returns>De gevraagde rij gelieerde personen.  De personen komen sowieso mee.</returns>
+		public IEnumerable<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersoonIDs, PersoonsExtras extras)
+		{
+			var paths = new List<Expression<Func<GelieerdePersoon, object>>>();
+
+			paths.Add(gp => gp.Persoon);
+
+			if ((extras & PersoonsExtras.Adressen) != 0)
+			{
+				paths.Add(gp => gp.Persoon.PersoonsAdres.First().Adres);
+			}
+
+			return _dao.Ophalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersoonIDs), paths.ToArray());
 		}
 	}
 }

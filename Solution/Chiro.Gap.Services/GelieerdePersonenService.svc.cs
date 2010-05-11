@@ -355,7 +355,7 @@ namespace Chiro.Gap.Services
 		/// <param name="personenIDs">ID's van Personen
 		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
 		/// <param name="adr">Toe te voegen adres</param>
-		public void AdresToevoegen(List<int> personenIDs, PersoonsAdresInfo adr)
+		public void AdresToevoegenPersonen(List<int> personenIDs, PersoonsAdresInfo adr)
 		{
 			// Dit gaat sterk lijken op verhuizen.
 
@@ -380,6 +380,51 @@ namespace Chiro.Gap.Services
 			try
 			{
 				_pMgr.AdresToevoegen(personenLijst, adres, adr.AdresType);
+			}
+			catch (BlokkerendeObjectenException<PersoonsAdres> ex)
+			{
+				var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>, BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
+
+				throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
+			}
+
+			// persisteren
+			_adrMgr.Bewaren(adres);
+		}
+
+		/// <summary>
+		/// Voegt een adres toe aan een verzameling gelieerde personen
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">ID's van gelieerde personen
+		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
+		/// <param name="persoonsAdresInfo">Toe te voegen adres</param>
+		public void AdresToevoegenGelieerdePersonen(List<int> gelieerdePersoonIDs, PersoonsAdresInfo persoonsAdresInfo)
+		{
+			// Dit gaat sterk lijken op verhuizen.
+
+			// Adres opzoeken in database
+			Adres adres = null;
+			try
+			{
+				adres = _adrMgr.ZoekenOfMaken(persoonsAdresInfo.StraatNaamNaam, persoonsAdresInfo.HuisNr, persoonsAdresInfo.Bus, persoonsAdresInfo.WoonPlaatsNaam, persoonsAdresInfo.PostNr, null);
+			}
+			catch (OngeldigObjectException ex)
+			{
+				var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
+
+				throw new FaultException<OngeldigObjectFault>(fault);
+			}
+
+			// Personen ophalen
+			var gpLijst = _gpMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Adressen);
+			var personenLijst = from gp in gpLijst
+			                    select gp.Persoon;
+
+			// Adres koppelen aan personen
+
+			try
+			{
+				_pMgr.AdresToevoegen(personenLijst, adres, persoonsAdresInfo.AdresType);
 			}
 			catch (BlokkerendeObjectenException<PersoonsAdres> ex)
 			{

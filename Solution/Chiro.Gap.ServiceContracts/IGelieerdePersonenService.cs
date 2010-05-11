@@ -165,7 +165,18 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(OngeldigObjectFault))]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
-		void AdresToevoegen(List<int> personenIDs, PersoonsAdresInfo adres);
+		void AdresToevoegenPersonen(List<int> personenIDs, PersoonsAdresInfo adres);
+
+		/// <summary>
+		/// Voegt een adres toe aan een verzameling gelieerde personen
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">ID's van gelieerde personen
+		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
+		/// <param name="adres">Toe te voegen adres</param>
+		[OperationContract]
+		[FaultContract(typeof(OngeldigObjectFault))]
+		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
+		void AdresToevoegenGelieerdePersonen(List<int> gelieerdePersoonIDs, PersoonsAdresInfo adres);
 
 		/// <summary>
 		/// Verwijdert een adres van een verzameling personen

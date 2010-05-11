@@ -7,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-
-using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -217,8 +215,6 @@ namespace Chiro.Gap.Workers
 		/// <returns>Een collectie met de gevraagde personen</returns>
 		public IList<Persoon> LijstOphalen(IEnumerable<int> personenIDs, PersoonsExtras extras)
 		{
-			var authMgr = Factory.Maak<AutorisatieManager>();
-
 			var paths = new List<Expression<Func<Persoon, object>>>();
 
 			if ((extras & PersoonsExtras.Adressen) != 0)
@@ -226,7 +222,7 @@ namespace Chiro.Gap.Workers
 				paths.Add(p => p.PersoonsAdres.First().Adres);
 			}
 
-			return _dao.Ophalen(authMgr.EnkelMijnPersonen(personenIDs), paths.ToArray());
+			return _dao.Ophalen(_autorisatieMgr.EnkelMijnPersonen(personenIDs), paths.ToArray());
 		}
 	}
 }
