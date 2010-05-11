@@ -24,7 +24,6 @@ namespace Chiro.Gap.ServiceContracts
 		/// De gevraagde informatie over de groep met id <paramref name="groepID"/>
 		/// </returns>
 		[OperationContract]
-		[FaultContract(typeof(GapFault))]
 		GroepInfo InfoOphalen(int groepID);
 
 		/// <summary>
@@ -33,6 +32,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="code">Stamnummer van de groep waarvoor info opgehaald moet worden</param>
 		/// <returns>Groepsinformatie voor groep met code <paramref name="code"/></returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
 		GroepInfo InfoOphalenCode(string code);
 
 		/// <summary>
