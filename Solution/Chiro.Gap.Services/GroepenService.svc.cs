@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-
+using System.Threading;
 using AutoMapper;
 
 using Chiro.Gap.Domain;
@@ -82,13 +82,23 @@ namespace Chiro.Gap.Services
 		/// <returns>Groepsinformatie voor groep met code <paramref name="code"/></returns>
 		public GroepInfo InfoOphalenCode(string code)
 		{
+			Groep g;
+
 			Mapper.CreateMap<Groep, GroepInfo>()
 				.ForMember(dst => dst.Plaats, opt => opt.MapFrom(
 					src => src is ChiroGroep ? (src as ChiroGroep).Plaats : String.Empty))
 				.ForMember(dst => dst.StamNummer, opt => opt.MapFrom(
 					src => src.Code == null ? String.Empty : src.Code.ToUpper()));
 
-			var g = _groepenMgr.Ophalen(code);
+			try
+			{
+				g = _groepenMgr.Ophalen(code);
+			}
+			catch (GeenGavException)
+			{
+				throw new FaultException<GapFault>(new GapFault {FoutNummer = FoutNummers.GeenGav});
+			}
+			
 			return Mapper.Map<Groep, GroepInfo>(g);
 		}
 
