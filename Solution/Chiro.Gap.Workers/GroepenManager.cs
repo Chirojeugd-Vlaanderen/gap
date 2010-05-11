@@ -365,5 +365,21 @@ namespace Chiro.Gap.Workers
 			groep.GroepsWerkJaar.Add(resultaat);
 			return resultaat;
 		}
+
+		/// <summary>
+		/// Haalt groep op met gegeven stamnummer
+		/// </summary>
+		/// <param name="code">Stamnummer op te halen groep</param>
+		/// <returns>Groep met <paramref name="code"/> als stamnummer</returns>
+		public Groep Ophalen(string code)
+		{
+			var resultaat = _groepenDao.Ophalen(code);
+
+			if (_autorisatieMgr.IsGavGroep(resultaat.ID))
+			{
+				return resultaat;
+			}
+			throw new GeenGavException(Properties.Resources.GeenGav);
+		}
 	}
 }

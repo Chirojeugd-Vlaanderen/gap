@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Data.Objects;
 using System.Linq;
 
@@ -104,6 +105,23 @@ namespace Chiro.Gap.Data.Ef
 						  select g).FirstOrDefault();
 			}
 			return Utility.DetachObjectGraph(result);
+		}
+
+		/// <summary>
+		/// Haalt groep op met gegeven stamnummer
+		/// </summary>
+		/// <param name="code">Stamnummer op te halen groep</param>
+		/// <returns>Groep met <paramref name="code"/> als stamnummer</returns>
+		public Groep Ophalen(string code)
+		{
+			using (var db = new ChiroGroepEntities())
+			{
+				db.Groep.MergeOption = MergeOption.NoTracking;
+
+				return (from g in db.Groep
+				        where g.Code == code
+				        select g).FirstOrDefault();
+			}
 		}
 	}
 }

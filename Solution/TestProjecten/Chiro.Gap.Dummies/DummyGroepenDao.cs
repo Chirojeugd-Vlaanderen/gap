@@ -23,6 +23,11 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		public Groep Ophalen(string code)
+		{
+			throw new NotImplementedException();
+		}
+
 		public Groep OphalenMetAfdelingen(int groepID)
 		{
 			throw new NotImplementedException();

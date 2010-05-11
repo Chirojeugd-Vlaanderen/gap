@@ -76,6 +76,23 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
+		/// Haalt info op, uitgaande van code (stamnummer)
+		/// </summary>
+		/// <param name="code">Stamnummer van de groep waarvoor info opgehaald moet worden</param>
+		/// <returns>Groepsinformatie voor groep met code <paramref name="code"/></returns>
+		public GroepInfo InfoOphalenCode(string code)
+		{
+			Mapper.CreateMap<Groep, GroepInfo>()
+				.ForMember(dst => dst.Plaats, opt => opt.MapFrom(
+					src => src is ChiroGroep ? (src as ChiroGroep).Plaats : String.Empty))
+				.ForMember(dst => dst.StamNummer, opt => opt.MapFrom(
+					src => src.Code == null ? String.Empty : src.Code.ToUpper()));
+
+			var g = _groepenMgr.Ophalen(code);
+			return Mapper.Map<Groep, GroepInfo>(g);
+		}
+
+		/// <summary>
 		/// Ophalen van gedetailleerde informatie over de groep met ID <paramref name="groepID"/>
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvoor de informatie opgehaald moet worden</param>

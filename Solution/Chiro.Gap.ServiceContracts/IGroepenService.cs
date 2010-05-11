@@ -27,6 +27,14 @@ namespace Chiro.Gap.ServiceContracts
 		GroepInfo InfoOphalen(int groepID);
 
 		/// <summary>
+		/// Haalt info op, uitgaande van code (stamnummer)
+		/// </summary>
+		/// <param name="code">Stamnummer van de groep waarvoor info opgehaald moet worden</param>
+		/// <returns>Groepsinformatie voor groep met code <paramref name="code"/></returns>
+		[OperationContract]
+		GroepInfo InfoOphalenCode(string code);
+
+		/// <summary>
 		/// Ophalen van gedetailleerde informatie over de groep met ID <paramref name="groepID"/>
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvoor de informatie opgehaald moet worden</param>

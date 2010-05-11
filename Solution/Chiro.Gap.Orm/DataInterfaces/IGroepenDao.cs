@@ -20,5 +20,12 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="groepID">ID van de groep waar het over gaat</param>
 		/// <returns></returns>
 		Groep OphalenMetGroepsWerkJaren(int groepID);
+
+		/// <summary>
+		/// Haalt groep op met gegeven stamnummer
+		/// </summary>
+		/// <param name="code">Stamnummer op te halen groep</param>
+		/// <returns>Groep met <paramref name="code"/> als stamnummer</returns>
+		Groep Ophalen(string code);
 	}
 }
