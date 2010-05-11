@@ -14,6 +14,12 @@ namespace Chiro.Gap.InitieleImport
 {
 	class Program
 	{
+		private struct MogelijkDubbel
+		{
+			public PersoonDetail Nieuw { get; set; }
+			public PersoonDetail Bestaand { get; set; }
+		}
+
 		static void Main(string[] args)
 		{
 			if (args.Count() == 0)
@@ -22,6 +28,8 @@ namespace Chiro.Gap.InitieleImport
 			}
 			else
 			{
+				var mogelijkeDubbels = new List<MogelijkDubbel>();
+
 				Factory.ContainerInit();  // Init IOC
 
 				#region Connectie met services
@@ -59,19 +67,14 @@ namespace Chiro.Gap.InitieleImport
 
 				#endregion
 
-				#region Personen Ophalen
+				#region Personen overzetten
 				var personen = lezer.PersonenOphalen();
 
 				foreach (var p in personen)
 				{
-					Console.WriteLine(
-						Properties.Resources.PersoonInfo,
-						p.PersoonDetail.VoorNaam,
-						p.PersoonDetail.Naam,
-						p.PersoonDetail.GeboorteDatum,
-						p.PersoonDetail.Geslacht,
-						p.PersoonDetail.AdNummer,
-						p.LidInfo == null ? String.Empty : p.LidInfo.Type.ToString());
+					int persoonID;
+
+					ToonPersoonDetail(p.PersoonDetail);
 
 					foreach (var pa in p.PersoonsAdresInfo)
 					{
@@ -93,17 +96,54 @@ namespace Chiro.Gap.InitieleImport
 							ci.CommunicatieTypeID,
 							ci.Voorkeur ? "*" : " ");
 					}
+
+					try
+					{
+						persoonID = serviceHelper.CallService<IGelieerdePersonenService, int>(svc => svc.Aanmaken(p.PersoonDetail, dbGroep.ID));
+						Console.WriteLine(Resources.PersoonAangemaaktAls, persoonID);
+					}
+					catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> ex)
+					{
+						persoonID = serviceHelper.CallService<IGelieerdePersonenService, int>(svc => svc.GeforceerdAanmaken(p.PersoonDetail, dbGroep.ID, true));
+						p.PersoonDetail.GelieerdePersoonID = persoonID;
+
+						mogelijkeDubbels.Add(new MogelijkDubbel{Bestaand = ex.Detail.Objecten.First(), Nieuw = p.PersoonDetail});
+					}
+
 				}
 				#endregion
 
-
 				Console.WriteLine(Properties.Resources.TotaalInfo, personen.Count());
+
+				foreach (var d in mogelijkeDubbels)
+				{
+					Console.WriteLine(Resources.MogelijkDubbel);
+					ToonPersoonDetail(d.Nieuw);
+					ToonPersoonDetail(d.Bestaand);
+				}
 			}
 			
 
 #if DEBUG
 			Console.ReadLine();
 #endif
+		}
+
+		/// <summary>
+		/// PersoonDetail naar output
+		/// </summary>
+		/// <param name="p">'Te outputten' PersoonDetail</param>
+		private static void ToonPersoonDetail(PersoonDetail p)
+		{
+			if (p == null) throw new ArgumentNullException("p");
+
+			Console.WriteLine(
+				Properties.Resources.PersoonInfo,
+				p.VoorNaam,
+				p.Naam,
+				p.GeboorteDatum,
+				p.Geslacht,
+				p.AdNummer);
 		}
 	}
 }

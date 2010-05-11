@@ -112,8 +112,8 @@ namespace Chiro.Pdox.Data
 					GeslachtsType geslacht;
 					LidInfo lid;
 
-					int adNr = reader["ADNR"].ToString().Trim() == String.Empty ?
-						0 : Int32.Parse(reader["ADNR"].ToString());
+					int? adNr = reader["ADNR"].ToString().Trim() == String.Empty ?
+						null : (int?)Int32.Parse(reader["ADNR"].ToString());
 
 
 					if (String.Compare(reader["GESLACHT"].ToString(), PDOXMAN, true) == 0)

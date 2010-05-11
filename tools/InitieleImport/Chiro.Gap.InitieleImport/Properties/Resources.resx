@@ -129,8 +129,8 @@
     <value>Gegevens importeren van {0} - {1} ({2})</value>
   </data>
   <data name="PersoonInfo" xml:space="preserve">
-    <value>{5}: ({4})  {0} {1} - {2:d} {3}</value>
-    <comment>Voornaam, naam, geboortedatum, geslacht, adnr, lidtype</comment>
+    <value>  ({4})  {0} {1} - {2:d} {3}</value>
+    <comment>Voornaam, naam, geboortedatum, geslacht, adnr</comment>
   </data>
   <data name="TotaalInfo" xml:space="preserve">
     <value>Totaal aantal personen: {0}</value>
@@ -138,13 +138,22 @@
   <data name="Usage" xml:space="preserve">
     <value>Dit programma verwacht het path naar de database als 1ste command-line parameter.</value>
   </data>
-	<data name="ServiceUser">
-		<value xml:space="preserve">Geconnecteerd op services als {0}</value>
-	</data>
-	<data name="GroepId">
-		<value xml:space="preserve">GroepID: {0}</value>
-	</data>
-	<data name="GeenGav">
-		<value xml:space="preserve">Je bent geen GAV.</value>
-	</data>
+  <data name="ServiceUser" xml:space="preserve">
+    <value>Geconnecteerd op services als {0}</value>
+  </data>
+  <data name="GroepId" xml:space="preserve">
+    <value>GroepID: {0}</value>
+  </data>
+  <data name="GeenGav" xml:space="preserve">
+    <value>Je bent geen GAV.</value>
+  </data>
+  <data name="PersoonAangemaaktAls" xml:space="preserve">
+    <value>Aangemaakt met GelieerdePersoonID {0}.</value>
+  </data>
+  <data name="LijktTeHardOp" xml:space="preserve">
+    <value>OEPS: {0} {1} lijkt te hard op {2} {3}.</value>
+  </data>
+  <data name="MogelijkDubbel" xml:space="preserve">
+    <value>Mogelijk dubbel:</value>
+  </data>
 </root>

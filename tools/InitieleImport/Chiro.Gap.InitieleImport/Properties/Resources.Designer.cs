@@ -106,7 +106,34 @@ namespace Chiro.Gap.InitieleImport.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {5}: ({4})  {0} {1} - {2:d} {3}.
+        ///   Looks up a localized string similar to OEPS: {0} {1} lijkt te hard op {2} {3}..
+        /// </summary>
+        internal static string LijktTeHardOp {
+            get {
+                return ResourceManager.GetString("LijktTeHardOp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mogelijk dubbel:.
+        /// </summary>
+        internal static string MogelijkDubbel {
+            get {
+                return ResourceManager.GetString("MogelijkDubbel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aangemaakt met GelieerdePersoonID {0}..
+        /// </summary>
+        internal static string PersoonAangemaaktAls {
+            get {
+                return ResourceManager.GetString("PersoonAangemaaktAls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to   ({4})  {0} {1} - {2:d} {3}.
         /// </summary>
         internal static string PersoonInfo {
             get {
