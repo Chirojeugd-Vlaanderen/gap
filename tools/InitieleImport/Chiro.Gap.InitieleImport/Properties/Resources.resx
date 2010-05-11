@@ -138,4 +138,13 @@
   <data name="Usage" xml:space="preserve">
     <value>Dit programma verwacht het path naar de database als 1ste command-line parameter.</value>
   </data>
+	<data name="ServiceUser">
+		<value xml:space="preserve">Geconnecteerd op services als {0}</value>
+	</data>
+	<data name="GroepId">
+		<value xml:space="preserve">GroepID: {0}</value>
+	</data>
+	<data name="GeenGav">
+		<value xml:space="preserve">Je bent geen GAV.</value>
+	</data>
 </root>

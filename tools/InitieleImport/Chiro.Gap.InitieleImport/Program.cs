@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using System.ServiceModel;
+using Chiro.Cdf.Ioc;
+using Chiro.Gap.Domain;
+using Chiro.Gap.InitieleImport.Properties;
+using Chiro.Gap.ServiceContracts;
+using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Pdox.Data;
 
 namespace Chiro.Gap.InitieleImport
@@ -17,8 +22,19 @@ namespace Chiro.Gap.InitieleImport
 			}
 			else
 			{
+				Factory.ContainerInit();  // Init IOC
+
+				#region Connectie met services
+				var serviceHelper = Factory.Maak<IServiceHelper>();
+				string userName = serviceHelper.CallService<IGroepenService, string>(svc => svc.WieBenIk());
+				Console.WriteLine(Resources.ServiceUser, userName);
+				#endregion
+
 				var lezer = new Lezer(args[0]);
+
+				#region Groep Ophalen
 				var groep = lezer.GroepOphalen();
+				GroepInfo dbGroep;
 
 				Console.WriteLine(
 					Properties.Resources.GroepsInfo,
@@ -26,6 +42,24 @@ namespace Chiro.Gap.InitieleImport
 					groep.Naam,
 					groep.Plaats);
 
+				try
+				{
+					dbGroep = serviceHelper.CallService<IGroepenService, GroepInfo>(svc => svc.InfoOphalenCode(groep.StamNummer));
+				}
+				catch (FaultException<GapFault> ex)
+				{
+					if (ex.Detail.FoutNummer == FoutNummers.GeenGav)
+					{
+						Console.WriteLine(Resources.GeenGav);
+					}
+					return;
+				}
+
+				Console.WriteLine(Resources.GroepId, dbGroep.ID);
+
+				#endregion
+
+				#region Personen Ophalen
 				var personen = lezer.PersonenOphalen();
 
 				foreach (var p in personen)
@@ -60,6 +94,8 @@ namespace Chiro.Gap.InitieleImport
 							ci.Voorkeur ? "*" : " ");
 					}
 				}
+				#endregion
+
 
 				Console.WriteLine(Properties.Resources.TotaalInfo, personen.Count());
 			}

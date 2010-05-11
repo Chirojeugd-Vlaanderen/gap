@@ -79,6 +79,24 @@ namespace Chiro.Gap.InitieleImport.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je bent geen GAV..
+        /// </summary>
+        internal static string GeenGav {
+            get {
+                return ResourceManager.GetString("GeenGav", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GroepID: {0}.
+        /// </summary>
+        internal static string GroepId {
+            get {
+                return ResourceManager.GetString("GroepId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gegevens importeren van {0} - {1} ({2}).
         /// </summary>
         internal static string GroepsInfo {
@@ -93,6 +111,15 @@ namespace Chiro.Gap.InitieleImport.Properties {
         internal static string PersoonInfo {
             get {
                 return ResourceManager.GetString("PersoonInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Geconnecteerd op services als {0}.
+        /// </summary>
+        internal static string ServiceUser {
+            get {
+                return ResourceManager.GetString("ServiceUser", resourceCulture);
             }
         }
         
