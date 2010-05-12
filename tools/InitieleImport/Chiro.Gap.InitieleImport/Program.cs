@@ -119,6 +119,10 @@ namespace Chiro.Gap.InitieleImport
 							ci.Nummer,
 							ci.CommunicatieTypeID,
 							ci.Voorkeur ? "*" : " ");
+
+						serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.CommunicatieVormToevoegen(
+							persoonID,
+							ci));
 					}
 
 				}
