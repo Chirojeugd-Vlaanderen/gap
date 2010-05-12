@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 
 namespace Chiro.Gap.ServiceContracts
 {
+	[KnownType(typeof(CommunicatieDetail))]		// nodig voor inheritance
 	[DataContract]
 	public class CommunicatieInfo
 	{
