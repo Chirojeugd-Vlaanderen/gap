@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Chiro.Pdox.Data.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="AansluitingsMap" Type="System.String" Scope="User">
+      <Value Profile="(Default)">//kip-fls05/ADMINISTRATIE-Data/Administratief/Aansluitingen/Email/2009</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
