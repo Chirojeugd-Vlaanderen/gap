@@ -1,5 +1,10 @@
-
-:r 	../dataconversie/GroepsInfoUitKipadmin.sql
+:r ../dataconversie/EnkelCijfers.sql
+GO
+:r ../dataconversie/UcFirst.sql
+GO
+:r ../dataconversie/NieuweGroepUitKipadmin.sql
+GO
+:r 	../dataconversie/GroepsPersonenUitKipadmin.sql
 GO
 :r ../dataconversie/groepLeegMaken.sql
 GO

@@ -1,84 +1,51 @@
-CREATE PROCEDURE data.spGroepUitKipadmin @stamNr VARCHAR(10) AS
+CREATE PROCEDURE data.spGroepsPersonenUitKipadmin @stamNr VARCHAR(10) AS
 -- vult de gegevens van een groep aan met die in Kipadmin.
 
 DECLARE @groepID AS INTEGER
-
 DECLARE @huidigWj AS INTEGER
+
 
 SET @huidigWj = (SELECT WerkJaar FROM Kipadmin.Dbo.HuidigWerkJaar)
 
-----------------------
--- groep overzetten --
-----------------------
 
-PRINT 'Chiro Groep Overzeten'
-PRINT '---------------------'
-IF NOT EXISTS (SELECT 1 FROM grp.Groep WHERE Code=@stamNr)
-BEGIN
-	-- De Chiro Groep bestaat nog niet in de database, 
-	-- de chirogroep dan gewoon invoegen.
-	INSERT INTO grp.Groep(Naam, Code, OprichtingsJaar, WebSite)
-		SELECT Naam, StamNr, Jr_Aanslui, lower(HomePage) 
-		FROM KipAdmin.dbo.Groep
-			WHERE StamNr = @stamNr
-	SET @groepID = scope_identity();
-    INSERT INTO grp.ChiroGroep(ChiroGroepID, Plaats)
-		SELECT @groepID, Gemeente
-		FROM KipAdmin.grp.ChiroGroep
-			WHERE StamNr = @stamNr
-END
-ELSE
-BEGIN
-	-- De ChiroGroep bestaat al in de database, de GroepID opvragen in de CG2 database
-	SET @groepID = (SELECT GroepID FROM grp.Groep WHERE Code=@stamNr)
+exec @groepID = data.spNieuweGroepUitKipadmin @stamNr
 
-	-- Opvragen van Naam, Oprichtingsjaar en Website.
-	-- Hier veronderstellen we dat de Naam, Oprichtingsjaar en Website in KipAdmin 
-	-- steeds van betere kwaliteit zijn dan de al geimporteerde.
-	
-    -- LET OP! De groepid's in kipadmin verschillen van de groepid's in GAP!
-
-	UPDATE dst
-		SET dst.Naam = g.Naam, 
-			dst.OprichtingsJaar = YEAR(g.StartDatum), 
-			dst.WebSite = lower(g.WebSite)
-	FROM grp.Groep dst 
-	JOIN Kipadmin.grp.ChiroGroep cg on dst.Code = cg.StamNr COLLATE SQL_Latin1_General_CP1_CI_AS
-	JOIN Kipadmin.grp.Groep g on cg.GroepID = g.GroepID
-	WHERE dst.GroepID = @groepID
-END
-PRINT 'Chiro groep ingevoegd/aangepast.'
-PRINT ''
 
 --------------------------
 -- personen overzetten ---
 --------------------------
+-- Ik importeer enkel personen uit het recentste werkjaar.
+
 PRINT 'Personen overzetten'
 PRINT '-------------------'
 
 PRINT '-> Reeds bestaande personen aanpassen.'
 -- reeds bestaande personen updaten
 --
--- We beschouwen een persoon die de zelfde Naam - Voornaam - Geboortedatum 
--- en geslacht heeft uniek.
---
--- Ook hier beschouwen we de gegevens van KipAdmin beter dan die al CG2 zitten.
--- We veronderstellen dat de persoon een correct stamnummer heeft, indien niet dan 
--- (@Johan: Beschikt elke persoon vanaf ze ergens gekend zijn door de chiro over een AdNummer?)
+
+-- zowel joinen op ad-nr als op naam, voornaam, geboortedatum
+
 
 UPDATE pGap
 	SET pGap.Naam = p.Naam, 
 		pGap.VoorNaam = p.VoorNaam, 
 		pGap.GeboorteDatum = p.GeboorteDatum,  -- als dat hier crasht, is dat waarschijnlijk owv slechte groepsgegevens 
-		pGap.Geslacht = p.Geslacht
+		pGap.Geslacht = p.Geslacht,
+		pGap.AdNummer = p.AdNr
 	FROM KipAdmin.dbo.kipPersoon p JOIN KipadMin.dbo.kipLidLeidKad lk 
-			ON p.AdNr = lk.AdNr
+			ON (p.AdNr = lk.AdNr)
 		JOIN grp.Groep g 
 			ON lk.StamNr COLLATE SQL_Latin1_General_CP1_CI_AS = g.Code COLLATE SQL_Latin1_General_CP1_CI_AS
-JOIN pers.Persoon pGap on pGap.AdNummer = p.AdNr
-WHERE g.GroepID = @groepID
+		LEFT OUTER JOIN pers.Persoon pGap on (pGap.AdNummer = p.AdNr
+					OR pGap.Naam = p.Naam COLLATE SQL_Latin1_General_CP1_CI_AS
+						AND pGap.VoorNaam = p.VoorNaam COLLATE SQL_Latin1_General_CP1_CI_AS
+						AND pGap.GeboorteDatum = p.GeboorteDatum)
+		WHERE g.GroepID = @groepID AND lk.WerkJaar = @huidigWj
+
 
 -- nog niet geimporteerde personen importeren
+-- omdat de ad-nrs sowieso geupdatet zijn, volstaat het hier enkel op ad-nr te joinen
+
 PRINT '-> Nog niet geimporteerde personen importeren.'
 
 INSERT INTO pers.Persoon(AdNummer, Naam, VoorNaam, GeboorteDatum, Geslacht)
@@ -92,7 +59,7 @@ INSERT INTO pers.Persoon(AdNummer, Naam, VoorNaam, GeboorteDatum, Geslacht)
 				ON p.AdNr = lk.AdNr
 			JOIN grp.Groep g 
 				ON lk.StamNr COLLATE SQL_Latin1_General_CP1_CI_AS = g.Code COLLATE SQL_Latin1_General_CP1_CI_AS
-		WHERE g.GroepID = @groepID
+		WHERE g.GroepID = @groepID AND lk.WerkJaar = @huidigWj
 			AND NOT EXISTS (SELECT 1 FROM pers.Persoon 
 										WHERE AdNummer = p.AdNr)
 
@@ -117,7 +84,7 @@ INSERT INTO pers.GelieerdePersoon(GroepID, PersoonID, ChiroLeefTijd)
 				ON lk.StamNr COLLATE SQL_Latin1_General_CP1_CI_AS = g.Code COLLATE SQL_Latin1_General_CP1_CI_AS
 			JOIN pers.Persoon p 
 				ON lk.AdNr = p.AdNummer
-		WHERE g.GroepID = @groepID
+		WHERE g.GroepID = @groepID AND lk.WerkJaar = @huidigWj
 			AND NOT EXISTS (SELECT 1 FROM pers.GelieerdePersoon 
 									WHERE GroepID = g.GroepID 
 									AND PersoonID = p.PersoonID)
@@ -137,21 +104,20 @@ PRINT '---------------------'
 -- (nog niet bestaande) gegevens over in de definitieve tabel.
 
 CREATE TABLE #Adres(
-	Bus VARCHAR(10) NOT NULL,
-	HuisNr INT NOT NULL,
-	PostCode VARCHAR(10) NOT NULL,
+	Bus VARCHAR(10) NULL,
+	HuisNr INT NULL,
+	PostCode VARCHAR(10) NULL,
 	StraatNaamID INT NOT NULL,
-	WoonPlaatsID INT NOT NULL,
-    PRIMARY KEY(StraatNaamID, WoonPlaatsID, HuisNr, Bus, PostCode));
+	WoonPlaatsID INT NOT NULL);
 
 -- We kennen in Kipadmin geen Bus noch PostCode.
 -- De matching tussen een CRAB AdresID (Adressen bewaard in nieuwe CG2 database, gebaseerd op CRAB)
 -- gebeurd via StraatNaam, SubGemeente en PostNr .
 
 INSERT INTO #Adres 
-	SELECT distinct '' AS Bus, 
-					CAST(kipadmin.dbo.EnkelCijfers(ka.Nr) AS INT) as HuisNr,
-					'' AS PostCode, 
+	SELECT distinct NULL AS Bus, 
+					CASE kipadmin.dbo.EnkelCijfers(ka.Nr) COLLATE SQL_Latin1_General_CP1_CI_AI WHEN '' THEN NULL ELSE CAST(core.ufnEnkelCijfers(ka.Nr) AS INT) END AS HuisNr,
+					NULL AS PostCode, 
 					s.StraatNaamID, 
 					sg.WoonPlaatsID 
 		FROM kipAdmin.dbo.kipAdres ka JOIN adr.StraatNaam s 
@@ -166,7 +132,7 @@ INSERT INTO #Adres
 				ON kw.AdNr = p.AdNummer
 			JOIN pers.GelieerdePersoon gp 
 				ON p.PersoonID = gp.PersoonID
-WHERE gp.GroepID = @groepID
+WHERE gp.GroepID = @groepID 
 
 -- de adressen 
 -- Venstraat 48, 2240 Viersel en
@@ -179,13 +145,14 @@ WHERE gp.GroepID = @groepID
 
 -- Die adressen invoeren die nog niet bestaan in de database.
 INSERT INTO adr.Adres (Bus,HuisNr,PostCode,StraatNaamID,WoonPlaatsID)
-	SELECT CASE Bus WHEN '' THEN NULL ELSE Bus END AS Bus,HuisNr,
-		   CASE PostCode WHEN '' THEN NULL ELSE PostCode END AS PostCode,
+	SELECT Bus,
+		   HuisNr,
+		   PostCode,
 		   StraatNaamID,WoonPlaatsID
 		FROM #Adres a
 		WHERE NOT EXISTS (SELECT 1 FROM adr.Adres 
-									WHERE Bus COLLATE SQL_Latin1_General_CP1_CI_AI =a.Bus 
-										AND HuisNr = a.HuisNr 
+									WHERE (Bus is null and a.Bus is null or Bus COLLATE SQL_Latin1_General_CP1_CI_AI =a.Bus) 
+										AND (HuisNr is null and a.HuisNr is null or HuisNr = a.HuisNr)
 										AND StraatNaamID = a.StraatNaamID
 										AND WoonPlaatsID = a.WoonPlaatsID)
 
@@ -269,7 +236,7 @@ DROP TABLE #PersoonsAdres
 -------------------------------------
 --- communicatievormen overzetten ---
 -------------------------------------
-PRINT 'Communicatie vormen overzetten'
+PRINT 'Communicatievormen overzetten'
 
 -- voeg de nog niet bestaande communicatietypes toe
 -- voorlopig niets als voorkeur
@@ -302,7 +269,12 @@ INSERT INTO pers.CommunicatieVorm(GelieerdePersoonID, CommunicatieTypeID, Nummer
 										ON cv2.GelieerdePersoonID = gp2.GelieerdePersoonID
 									JOIN pers.Persoon p2 
 										ON gp2.PersoonID = p2.PersoonID
-									WHERE p2.AdNummer = p.AdNummer)
+									WHERE p2.AdNummer = p.AdNummer
+									AND cv2.CommunicatieTypeID = pct.CommunicatieTypeID
+									AND (cv2.Nummer = ci.Info COLLATE SQL_Latin1_General_CP1_CI_AI
+											OR cv2.CommunicatieTypeID <= 2 
+												AND core.ufnEnkelCijfers(cv2.Nummer) = core.ufnEnkelCijfers(ci.Info)))
+
 
 -- update voorkeur op basis van kipadmin
 
@@ -315,21 +287,11 @@ UPDATE cv
 				JOIN kipadmin.dbo.kipContactInfo ci 
 					ON p.AdNummer = ci.AdNr 
 						AND ci.ContactTypeID = cv.CommunicatieTypeID 
-						AND ci.Info COLLATE SQL_Latin1_General_CP1_CI_AI = cv.Nummer
+						AND (cv.Nummer = ci.Info COLLATE SQL_Latin1_General_CP1_CI_AI
+											OR cv.CommunicatieTypeID <= 2 
+												AND core.ufnEnkelCijfers(cv.Nummer) = core.ufnEnkelCijfers(ci.Info))
 WHERE gp.GroepID = @groepID
 
--- case VolgNr when 1 then 1 else 0 end as voorkeur
-
-----------------------------------------------------------------------
--- voor het gemak meteen een groepswerkjaar maken voor dit werkjaar --
-----------------------------------------------------------------------
-
-INSERT INTO grp.GroepsWerkJaar(GroepID, WerkJaar)
-	SELECT @groepID, wj.WerkJaar
-	FROM kipadmin.dbo.HuidigWerkJaar wj
-	WHERE NOT EXISTS (SELECT 1 FROM grp.GroepsWerkJaar 
-							WHERE GroepID = @groepID 
-								AND WerkJaar = wj.WerkJaar)
 
 
 PRINT 'GroepID: ' + CAST(@GroepID AS VARCHAR(10))
