@@ -79,6 +79,15 @@ namespace Chiro.Gap.InitieleImport.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ---&gt; Fout formaat; Communicatievorm genegeerd.
+        /// </summary>
+        internal static string CommunicatieVormFoutFormaat {
+            get {
+                return ResourceManager.GetString("CommunicatieVormFoutFormaat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Je bent geen GAV..
         /// </summary>
         internal static string GeenGav {
@@ -93,6 +102,15 @@ namespace Chiro.Gap.InitieleImport.Properties {
         internal static string GroepId {
             get {
                 return ResourceManager.GetString("GroepId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opnieuw aanmaken groep met standaardafdelingsverdeling..
+        /// </summary>
+        internal static string GroepOpnieuwAanmaken {
+            get {
+                return ResourceManager.GetString("GroepOpnieuwAanmaken", resourceCulture);
             }
         }
         
@@ -151,6 +169,15 @@ namespace Chiro.Gap.InitieleImport.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rechten toekennen voor {0}..
+        /// </summary>
+        internal static string RechtenToekennen {
+            get {
+                return ResourceManager.GetString("RechtenToekennen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Geconnecteerd op services als {0}.
         /// </summary>
         internal static string ServiceUser {
@@ -183,6 +210,15 @@ namespace Chiro.Gap.InitieleImport.Properties {
         internal static string Usage {
             get {
                 return ResourceManager.GetString("Usage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Groep wordt volledig verwijderd..
+        /// </summary>
+        internal static string VolledigVerwijderen {
+            get {
+                return ResourceManager.GetString("VolledigVerwijderen", resourceCulture);
             }
         }
     }

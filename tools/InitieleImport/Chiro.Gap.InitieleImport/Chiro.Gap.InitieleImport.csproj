@@ -79,6 +79,10 @@
       <Project>{11A23709-8EA9-43B1-9982-B1DC08A50FD8}</Project>
       <Name>Chiro.Cdf.ServiceHelper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Data.Super\Chiro.Gap.Data.Super.csproj">
+      <Project>{F065F74D-C053-4A1F-BCC9-324018F195D5}</Project>
+      <Name>Chiro.Gap.Data.Super</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
       <Project>{65D1DB34-9F12-48C6-88F8-3943E5A4609B}</Project>
       <Name>Chiro.Gap.Domain</Name>

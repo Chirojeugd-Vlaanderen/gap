@@ -5,6 +5,7 @@ using System.IO.IsolatedStorage;
 using System.Linq;
 using System.ServiceModel;
 using Chiro.Cdf.Ioc;
+using Chiro.Gap.Data.Super;
 using Chiro.Gap.Domain;
 using Chiro.Gap.InitieleImport.Properties;
 using Chiro.Gap.ServiceContracts;
@@ -16,12 +17,18 @@ namespace Chiro.Gap.InitieleImport
 {
 	class Program
 	{
+		private static IServiceHelper _serviceHelper;
+
 		private struct MogelijkDubbel
 		{
 			public PersoonDetail Nieuw { get; set; }
 			public PersoonDetail Bestaand { get; set; }
 		}
 
+		/// <summary>
+		/// Hier gebeurt het!
+		/// </summary>
+		/// <param name="args">Command line argumenten; eerste moet stamnr zijn</param>
 		static void Main(string[] args)
 		{
 			if (args.Count() == 0)
@@ -30,9 +37,18 @@ namespace Chiro.Gap.InitieleImport
 			}
 			else
 			{
+				Factory.ContainerInit();  // Init IOC
+				_serviceHelper = Factory.Maak<IServiceHelper>();
+
 				var helper = new KipdorpHelper();
+				var god = new DataGod();
+
+
 				string stamNrFile = helper.StamNrNaarBestand(args[0]);
 				string aansluitingsBestand = helper.RecentsteAansluitingsBestand(args[0]);
+
+
+				#region Recentste aansluitingsbestand uitpakken
 
 				Console.WriteLine(Resources.UitpakkenVan, aansluitingsBestand);
 
@@ -47,9 +63,42 @@ namespace Chiro.Gap.InitieleImport
 				Directory.CreateDirectory(destdir);
 
 				string dataDir = helper.Uitpakken(aansluitingsBestand, destdir);
+
+				#endregion
+
+				#region Groep leegmaken en opnieuw creeren
+
+				// alles van de groep verwijderen
+                                                             
+				Console.WriteLine(Resources.VolledigVerwijderen);
+				god.GroepVolledigVerwijderen(args[0]);
+
+				// groep opnieuw aanmaken
+
+				Console.WriteLine(Resources.GroepOpnieuwAanmaken);
+				god.GroepUitKipadmin(args[0]);
+
+				#endregion
+
+				#region Gebruikersrecht toekennen
+				// rechten toekennen, zodat je als user de groep kan opvullen
+				// Via de service komen we te weten wat de gebruikersnaam is :)
+
+				string userName = _serviceHelper.CallService<IGroepenService, string>(svc => svc.WieBenIk());
+				Console.WriteLine(Resources.ServiceUser, userName);
+				Console.WriteLine(Resources.RechtenToekennen, userName);
+
+				god.RechtenToekennen(args[0], userName);
+				#endregion
+
+
+				// Import uit Paradox
 				ImporterenUitPdox(dataDir);
 
-				Directory.Delete(destdir, true);
+				// Aanvullen uit Kipadmin
+
+				// Kan directory blijkbaar niet verwijderen, omdat dit proces zelf de directory gebruikt :-/
+				//Directory.Delete(destdir, true);
 			}
 
 
@@ -66,14 +115,6 @@ namespace Chiro.Gap.InitieleImport
 		{
 			var mogelijkeDubbels = new List<MogelijkDubbel>();
 
-			Factory.ContainerInit();  // Init IOC
-
-			#region Connectie met services
-			var serviceHelper = Factory.Maak<IServiceHelper>();
-			string userName = serviceHelper.CallService<IGroepenService, string>(svc => svc.WieBenIk());
-			Console.WriteLine(Resources.ServiceUser, userName);
-			#endregion
-
 			var lezer = new Lezer(path);
 
 			#region Groep Ophalen
@@ -88,7 +129,7 @@ namespace Chiro.Gap.InitieleImport
 
 			try
 			{
-				dbGroep = serviceHelper.CallService<IGroepenService, GroepInfo>(svc => svc.InfoOphalenCode(groep.StamNummer));
+				dbGroep = _serviceHelper.CallService<IGroepenService, GroepInfo>(svc => svc.InfoOphalenCode(groep.StamNummer));
 			}
 			catch (FaultException<GapFault> ex)
 			{
@@ -114,12 +155,12 @@ namespace Chiro.Gap.InitieleImport
 
 				try
 				{
-					persoonID = serviceHelper.CallService<IGelieerdePersonenService, int>(svc => svc.Aanmaken(p.PersoonDetail, dbGroep.ID));
+					persoonID = _serviceHelper.CallService<IGelieerdePersonenService, int>(svc => svc.Aanmaken(p.PersoonDetail, dbGroep.ID));
 					Console.WriteLine(Resources.PersoonAangemaaktAls, persoonID);
 				}
 				catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> ex)
 				{
-					persoonID = serviceHelper.CallService<IGelieerdePersonenService, int>(svc => svc.GeforceerdAanmaken(p.PersoonDetail, dbGroep.ID, true));
+					persoonID = _serviceHelper.CallService<IGelieerdePersonenService, int>(svc => svc.GeforceerdAanmaken(p.PersoonDetail, dbGroep.ID, true));
 					p.PersoonDetail.GelieerdePersoonID = persoonID;
 
 					mogelijkeDubbels.Add(new MogelijkDubbel { Bestaand = ex.Detail.Objecten.First(), Nieuw = p.PersoonDetail });
@@ -137,7 +178,7 @@ namespace Chiro.Gap.InitieleImport
 						pa.AdresType);
 					try
 					{
-						serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.AdresToevoegenGelieerdePersonen(
+						_serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.AdresToevoegenGelieerdePersonen(
 							new List<int> { persoonID },
 							pa));
 
@@ -156,9 +197,20 @@ namespace Chiro.Gap.InitieleImport
 						ci.CommunicatieTypeID,
 						ci.Voorkeur ? "*" : " ");
 
-					serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.CommunicatieVormToevoegen(
-						persoonID,
-						ci));
+					try
+					{
+						_serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.CommunicatieVormToevoegen(
+							persoonID,
+							ci));
+					}
+					catch (Exception)
+					{
+						// TODO: Uitzoeken waarom het catchen van FaultException<GapFault> hier niet werkt.
+
+						Console.WriteLine(Resources.CommunicatieVormFoutFormaat);
+					}
+						
+					
 				}
 
 			}

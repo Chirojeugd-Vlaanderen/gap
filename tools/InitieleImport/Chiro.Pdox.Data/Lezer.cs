@@ -62,13 +62,17 @@ namespace Chiro.Pdox.Data
 					plaats = gemeente;
 				}
 
-				return new GroepInfo
+				var result = new GroepInfo
 				       	{
 						ID = 0,
 				       		StamNummer = reader["STAMNR"].ToString(),
 				       		Naam = reader["NAAM"].ToString(),
 						Plaats = plaats
 				       	};
+
+				connectie.Close();
+
+				return result;
 
 			}
 		}
@@ -111,10 +115,12 @@ namespace Chiro.Pdox.Data
 				{
 					GeslachtsType geslacht;
 					LidInfo lid;
+					DateTime gebDatum;
 
 					int? adNr = reader["ADNR"].ToString().Trim() == String.Empty ?
 						null : (int?)Int32.Parse(reader["ADNR"].ToString());
 
+					DateTime.TryParse(reader["GEBDATUM"].ToString(), out gebDatum);
 
 					if (String.Compare(reader["GESLACHT"].ToString(), PDOXMAN, true) == 0)
 					{
@@ -226,7 +232,7 @@ namespace Chiro.Pdox.Data
 	                                		                		AdNummer = adNr,
 	                                		                		Naam = reader["NAAM"].ToString(),
 	                                		                		VoorNaam = reader["VOORNAAM"].ToString(),
-	                                		                		GeboorteDatum = DateTime.Parse(reader["GEBDATUM"].ToString()),
+	                                		                		GeboorteDatum = (gebDatum == DateTime.MinValue ? null: (DateTime?)gebDatum),
 	                                		                		Geslacht = geslacht,
 	                                		                	},
 	                                		LidInfo = lid,
@@ -238,6 +244,7 @@ namespace Chiro.Pdox.Data
 					resultaat.Add(persoonLidInfo);
 				}
 
+				connectie.Close();
 				return resultaat;
 			}			
 		}

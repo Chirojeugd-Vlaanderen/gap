@@ -162,4 +162,16 @@
 	<data name="UitpakkenVan">
 		<value><![CDATA[Uitpakken van '{0}']]></value>
 	</data>
+	<data name="VolledigVerwijderen">
+		<value xml:space="preserve">Groep wordt volledig verwijderd.</value>
+	</data>
+	<data name="GroepOpnieuwAanmaken">
+		<value xml:space="preserve">Opnieuw aanmaken groep met standaardafdelingsverdeling.</value>
+	</data>
+	<data name="RechtenToekennen">
+		<value xml:space="preserve">Rechten toekennen voor {0}.</value>
+	</data>
+	<data name="CommunicatieVormFoutFormaat">
+		<value><![CDATA[---> Fout formaat; Communicatievorm genegeerd]]></value>
+	</data>
 </root>
