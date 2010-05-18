@@ -494,9 +494,18 @@ namespace Chiro.Gap.Services
 			communicatieVorm.CommunicatieType = 
 				_cvMgr.CommunicatieTypeOphalen(commInfo.CommunicatieTypeID);
 
-			_cvMgr.CommunicatieVormToevoegen(
-				communicatieVorm, 
-				gelieerdePersoonID);
+			try
+			{
+				_cvMgr.CommunicatieVormToevoegen(
+					communicatieVorm,
+					gelieerdePersoonID);
+
+			}
+			catch (ValidatieException ex)
+			{
+				// TODO: specifiekere info bij in de exceptie.  Zie ticket #497.
+				throw new FaultException<GapFault>(new GapFault() {FoutNummer = FoutNummers.ValidatieFout});
+			}
 		}
 
 		// FIXME: de parameter 'gelieerdePersoonID' is overbodig; zie ticket #145.

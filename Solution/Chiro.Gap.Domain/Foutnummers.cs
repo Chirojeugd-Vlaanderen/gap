@@ -16,6 +16,7 @@ namespace Chiro.Gap.Domain
 		public const int AlgemeneFout = 0x01;
 		public const int GeenGav = 0x02;
 		public const int BestaatAl = 0x03;
+		public const int ValidatieFout = 0x04;
 
 		#region adressen
 		public const int WoonPlaatsNietGevonden = 0x20;
