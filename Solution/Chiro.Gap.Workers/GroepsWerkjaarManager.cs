@@ -218,6 +218,7 @@ namespace Chiro.Gap.Workers
 
 			if ((extras & GroepsWerkJaarExtras.LidFuncties) != 0)
 			{
+				paths.Add(gwj => gwj.Lid.First().Functie);
 				paths.Add(gwj => gwj.AfdelingsJaar.First().Kind.First().Functie);
 				paths.Add(gwj => gwj.AfdelingsJaar.First().Leiding.First().Functie);
 			}
