@@ -195,6 +195,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="gelieerdePersoonID">ID van de gelieerde persoon</param>
 		/// <param name="commInfo">De communicatievorm die aan die persoon gekoppeld moet worden</param>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
 		void CommunicatieVormToevoegen(int gelieerdePersoonID, CommunicatieInfo commInfo);
 
 		/// <summary>
