@@ -14,7 +14,8 @@ GO
 GO
 :r ../dataconversie/VerwijderAccenten.sql
 GO
-
+:r ../dataconversie/GebruikersRechtToekennen.sql
+GO
 
 CREATE FUNCTION core.ufnSoundEx
 (
