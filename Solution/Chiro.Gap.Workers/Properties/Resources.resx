@@ -179,4 +179,13 @@
   <data name="WonenDaarAl" xml:space="preserve">
     <value>Een of meerdere personen wonen al op het aangeduide adres.</value>
   </data>
+  <data name="OngeldigPostNummer" xml:space="preserve">
+    <value>Ongeldig postnummer.</value>
+  </data>
+  <data name="StraatOntbreekt" xml:space="preserve">
+    <value>Je gaf geen straatnaam mee.</value>
+  </data>
+  <data name="WoonPlaatsOntbreekt" xml:space="preserve">
+    <value>Je gaf geen woonplaats mee.</value>
+  </data>
 </root>

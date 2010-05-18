@@ -94,14 +94,53 @@ namespace Chiro.Gap.Workers
 		{
 			var problemen = new Dictionary<string, FoutBericht>();
 
-			// Al maar preventief een VerhuisFault aanmaken.  Als daar uiteindelijk
+			// Al maar preventief een collectie fouten verzamelen.  Als daar uiteindelijk
 			// geen foutberichten inzitten, dan is er geen probleem.  Anders
 			// creëer ik een exception met de verhuisfault daarin.
 
-			Debug.Assert(straatNaam != String.Empty);
-			Debug.Assert(postNr > 0);
-			// Debug.Assert(HuisNr > 0);
-			Debug.Assert(woonPlaatsNaam != String.Empty);
+			if (straatNaam == String.Empty)
+			{
+				problemen.Add("StraatNaamNaam", new FoutBericht
+				{
+					FoutNummer = FoutNummers.StraatOntbreekt,
+					Bericht = String.Format(
+						Properties.Resources.StraatOntbreekt,
+						straatNaam,
+						postNr)
+				});
+			}
+
+			if (postNr < 1000 || postNr > 9999)
+			{
+				problemen.Add("PostNr", new FoutBericht
+				{
+					FoutNummer = FoutNummers.OngeldigPostNummer,
+					Bericht = String.Format(
+						Properties.Resources.OngeldigPostNummer,
+						straatNaam,
+						postNr)
+				});
+				
+			}
+			
+			if (woonPlaatsNaam == String.Empty)
+			{
+				problemen.Add("WoonPlaatsNaam", new FoutBericht
+				{
+					FoutNummer = FoutNummers.WoonPlaatsOntbreekt,
+					Bericht = String.Format(
+						Properties.Resources.WoonPlaatsOntbreekt,
+						straatNaam,
+						postNr)
+				});				
+			}
+
+			// Als er hier al fouten zijn: gewoon throwen.  Me hiel 't stad, mor ni me maa!
+
+			if (problemen.Count != 0)
+			{
+				throw new OngeldigObjectException(problemen);
+			}
 
 			var adresInDb = _dao.Ophalen(straatNaam, huisNr, bus, postNr, postCode, woonPlaatsNaam, false);
 

@@ -223,6 +223,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ongeldig postnummer..
+        /// </summary>
+        internal static string OngeldigPostNummer {
+            get {
+                return ResourceManager.GetString("OngeldigPostNummer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Straat {0} met postnummer {1} niet gevonden..
         /// </summary>
         internal static string StraatNietGevonden {
@@ -232,11 +241,29 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je gaf geen straatnaam mee..
+        /// </summary>
+        internal static string StraatOntbreekt {
+            get {
+                return ResourceManager.GetString("StraatOntbreekt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Een of meerdere personen wonen al op het aangeduide adres..
         /// </summary>
         internal static string WonenDaarAl {
             get {
                 return ResourceManager.GetString("WonenDaarAl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Je gaf geen woonplaats mee..
+        /// </summary>
+        internal static string WoonPlaatsOntbreekt {
+            get {
+                return ResourceManager.GetString("WoonPlaatsOntbreekt", resourceCulture);
             }
         }
     }

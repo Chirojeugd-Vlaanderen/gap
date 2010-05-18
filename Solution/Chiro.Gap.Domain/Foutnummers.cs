@@ -21,6 +21,9 @@ namespace Chiro.Gap.Domain
 		#region adressen
 		public const int WoonPlaatsNietGevonden = 0x20;
 		public const int StraatNietGevonden = 0x21;
+		public const int StraatOntbreekt = 0x22;
+		public const int OngeldigPostNummer = 0x23;
+		public const int WoonPlaatsOntbreekt = 0x24;
 
 		public const int WonenDaarAl = 0x28;
 		#endregion
