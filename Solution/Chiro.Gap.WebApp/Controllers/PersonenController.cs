@@ -751,6 +751,10 @@ namespace Chiro.Gap.WebApp.Controllers
 			var communicatieDetail = Mapper.Map<CommunicatieInfo, CommunicatieDetail>(
 				model.NieuweCommVorm);
 
+			communicatieDetail.CommunicatieTypeOmschrijving = communicatieType.Omschrijving;
+			communicatieDetail.CommunicatieTypeValidatie = communicatieType.Validatie;
+			communicatieDetail.CommunicatieTypeVoorbeeld = communicatieType.Voorbeeld;
+
 			var validator = new CommunicatieVormValidator();
 
 			// De validatie van de vorm van telefoonnrs, e-mailadressen,... kan niet automatisch;
