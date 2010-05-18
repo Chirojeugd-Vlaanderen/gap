@@ -12,27 +12,28 @@
     
     <legend>Lidinfo</legend>
 
-	<%if (Model.HuidigLid.Type == LidType.Kind){ %>
+	<%if (Model.HuidigLid.LidInfo.Type == LidType.Kind)
+   { %>
 	<p>
-    <%=Html.LabelFor(s => s.HuidigLid.LidgeldBetaald)%>
-    <%=Html.EditorFor(s => s.HuidigLid.LidgeldBetaald)%>
+    <%=Html.LabelFor(s => s.HuidigLid.LidInfo.LidgeldBetaald)%>
+    <%=Html.EditorFor(s => s.HuidigLid.LidInfo.LidgeldBetaald)%>
     </p>
 	<%}else{ %>
     <p>
-    <%=Html.LabelFor(s => s.HuidigLid.DubbelPunt)%>
-    <%=Html.EditorFor(s => s.HuidigLid.DubbelPunt)%>
+    <%=Html.LabelFor(s => s.HuidigLid.LidInfo.DubbelPunt)%>
+    <%=Html.EditorFor(s => s.HuidigLid.LidInfo.DubbelPunt)%>
     </p>
     
 	<%} %>
 
 	<p>
-    <%=Html.LabelFor(s => s.HuidigLid.EindeInstapperiode) %>
-    <%=(Model.HuidigLid.EindeInstapperiode < DateTime.Today) ? "verlopen" : "tot " + Html.DisplayFor(s => s.HuidigLid.EindeInstapperiode)%>
+    <%=Html.LabelFor(s => s.HuidigLid.LidInfo.EindeInstapperiode)%>
+    <%=(Model.HuidigLid.LidInfo.EindeInstapperiode < DateTime.Today) ? "verlopen" : "tot " + Html.DisplayFor(s => s.HuidigLid.LidInfo.EindeInstapperiode)%>
     </p>
 	
 	<p>
-    <%=Html.LabelFor(s => s.HuidigLid.NonActief)%>
-    <%=Html.EditorFor(s => s.HuidigLid.NonActief)%>
+    <%=Html.LabelFor(s => s.HuidigLid.LidInfo.NonActief)%>
+    <%=Html.EditorFor(s => s.HuidigLid.LidInfo.NonActief)%>
     </p>
     
     <%
@@ -55,9 +56,9 @@
         }
     %>
        
-	<%= Html.Hidden("HuidigLid.LidID")%>
-	<%= Html.Hidden("HuidigLid.PersoonDetail.GelieerdePersoonID")%>
-	<%= Html.Hidden("HuidigLid.Type")%>
+	<%= Html.Hidden("HuidigLid.LidInfo.LidID")%>
+	<%= Html.Hidden("HuidigLid.LidInfo.PersoonDetail.GelieerdePersoonID")%>
+	<%= Html.Hidden("HuidigLid.LidInfo.Type")%>
        
 	</fieldset>
 

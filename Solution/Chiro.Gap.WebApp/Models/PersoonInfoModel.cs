@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {

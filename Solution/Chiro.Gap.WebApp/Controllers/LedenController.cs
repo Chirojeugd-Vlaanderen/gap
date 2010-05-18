@@ -10,8 +10,8 @@ using System.Web.Mvc;
 
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
-using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
@@ -50,7 +50,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			Sessie.LaatsteActieID = afdID;
 			Sessie.LaatstePagina = id;
 
-			int paginas = 0;
+			int paginas;
 
 			var model = new LidInfoModel();
 			BaseModelInit(model, groepID);
@@ -71,7 +71,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			var huidig = (from g in model.WerkJaarInfos
 					 where g.ID == id
-					 select g).FirstOrDefault();
+					 select g).First();
 
 			model.GroepsWerkJaarIdZichtbaar = id;
 			model.GroepsWerkJaartalZichtbaar = huidig.WerkJaar;
@@ -79,22 +79,22 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (afdID == 0)
 			{
 				model.LidInfoLijst =
-					ServiceHelper.CallService<ILedenService, IList<LidInfo>>
+					ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>
 					(lid => lid.PaginaOphalen(id, out paginas));
 
-				model.Titel = "Ledenoverzicht van het werkjaar " + model.GroepsWerkJaartalZichtbaar + "-" + (int)(model.GroepsWerkJaartalZichtbaar + 1);
+				model.Titel = "Ledenoverzicht van het werkjaar " + model.GroepsWerkJaartalZichtbaar + "-" + (model.GroepsWerkJaartalZichtbaar + 1);
 			}
 			else
 			{
 				model.LidInfoLijst =
-					ServiceHelper.CallService<ILedenService, IList<LidInfo>>
+					ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>
 					(lid => lid.PaginaOphalenVolgensAfdeling(id, afdID, out paginas));
 
 				AfdelingDetail af = (from a in model.AfdelingsInfoDictionary.AsQueryable()
 									 where a.Value.AfdelingID == afdID
 									 select a.Value).FirstOrDefault();
 
-				model.Titel = "Ledenoverzicht van de " + af.AfdelingNaam + " van het werkjaar " + model.GroepsWerkJaartalZichtbaar + "-" + (int)(model.GroepsWerkJaartalZichtbaar + 1);
+				model.Titel = "Ledenoverzicht van de " + af.AfdelingNaam + " van het werkjaar " + model.GroepsWerkJaartalZichtbaar + "-" + (model.GroepsWerkJaartalZichtbaar + 1);
 			}
 
 			model.PageHuidig = model.GroepsWerkJaarIdZichtbaar;
@@ -114,19 +114,19 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>Exceldocument met gevraagde ledenlijst</returns>
 		public ActionResult Download(int id, int afdID, int groepID)
 		{
-			IEnumerable<LidInfo> lijst;
+			IEnumerable<PersoonLidInfo> lijst;
 			int paginas;
 
 			if (afdID == 0)
 			{
 				lijst =
-					ServiceHelper.CallService<ILedenService, IList<LidInfo>>
+					ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>
 					(lid => lid.PaginaOphalen(id, out paginas));
 			}
 			else
 			{
 				lijst =
-					ServiceHelper.CallService<ILedenService, IList<LidInfo>>
+					ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>
 					(lid => lid.PaginaOphalenVolgensAfdeling(id, afdID, out paginas));
 			}
 
@@ -223,7 +223,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					groepsWerkJaarId = Sessie.LaatstePagina,
 					afdID = Sessie.LaatsteActieID
 				});
-			}
+			} 
 			else
 			{
 				model.Titel = String.Format(Properties.Resources.AfdelingenAanpassen, model.Info.VolledigeNaam);
@@ -236,22 +236,15 @@ namespace Chiro.Gap.WebApp.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult AfdelingBewerken(LidAfdelingenModel model, int groepID, int id)
 		{
-			try
-			{
-				// FIXME: Het is geen prachtige code: AfdelingenVervangen die 'toevallig'
-				// een GelieerdePersoonID oplevert, die ik dan in dit specifieke geval
-				// 'toevallig' kan gebruiken om naar de juiste personenfiche om te schakelen.
+			// FIXME: Het is geen prachtige code: AfdelingenVervangen die 'toevallig'
+			// een GelieerdePersoonID oplevert, die ik dan in dit specifieke geval
+			// 'toevallig' kan gebruiken om naar de juiste personenfiche om te schakelen.
 
-				int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(
-					svc => svc.AfdelingenVervangen(id, model.Info.AfdelingsJaarIDs));
-				return RedirectToAction(
-					"EditRest", 
-					new { Controller = "Personen", id = gelieerdePersoonID});
-			}
-			catch
-			{
-				throw;
-			}
+			int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(
+				svc => svc.AfdelingenVervangen(id, model.Info.AfdelingsJaarIDs));
+			return RedirectToAction(
+				"EditRest", 
+				new { Controller = "Personen", id = gelieerdePersoonID});
 		}
 
 		/// <summary>
@@ -265,8 +258,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new LedenModel();
 			BaseModelInit(model, groepID);
 
-			model.HuidigLid = 
-				ServiceHelper.CallService<ILedenService, LidInfo>(l => l.DetailsOphalen(id));
+			model.HuidigLid = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(l => l.DetailsOphalen(id));
 
 			// Ik had liever hierboven nog eens LidExtras.AlleAfdelingen meegegeven, maar
 			// het datacontract (LidInfo) voorziet daar niets voor.
@@ -294,7 +286,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// TODO: Dit moet een unitaire operatie zijn, om concurrencyproblemen te vermijden.
 
 			ServiceHelper.CallService<ILedenService>(l => l.Bewaren(model.HuidigLid));
-			ServiceHelper.CallService<ILedenService>(l => l.FunctiesVervangen(model.HuidigLid.LidID, model.FunctieIDs));
+			ServiceHelper.CallService<ILedenService>(l => l.FunctiesVervangen(model.HuidigLid.LidInfo.LidID, model.FunctieIDs));
 
 			return RedirectToAction("EditRest", new
 			{
@@ -312,9 +304,9 @@ namespace Chiro.Gap.WebApp.Controllers
 		public void AfdelingenOphalen(LedenModel model)
 		{
 			model.AlleAfdelingen = ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>
-				(svc => svc.AfdelingenOphalen(model.HuidigLid.GroepsWerkJaarID));
+				(svc => svc.AfdelingenOphalen(model.HuidigLid.LidInfo.GroepsWerkJaarID));
 
-			model.AfdelingIDs = model.HuidigLid.AfdelingIdLijst.ToList();
+			model.AfdelingIDs = model.HuidigLid.LidInfo.AfdelingIdLijst.ToList();
 		}
 
 		/// <summary>
@@ -327,9 +319,9 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			model.AlleFuncties = ServiceHelper.CallService<IGroepenService, IList<FunctieInfo>>
 				(svc => svc.FunctiesOphalen(
-					model.HuidigLid.GroepsWerkJaarID,
-					model.HuidigLid.Type));
-			model.FunctieIDs = (from f in model.HuidigLid.Functies
+					model.HuidigLid.LidInfo.GroepsWerkJaarID,
+					model.HuidigLid.LidInfo.Type));
+			model.FunctieIDs = (from f in model.HuidigLid.LidInfo.Functies
 								select f.ID).ToList();
 		}
 

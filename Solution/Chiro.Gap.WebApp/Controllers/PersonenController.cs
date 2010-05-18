@@ -12,6 +12,7 @@ using System.Web.Mvc;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.WebApp.Models;
@@ -332,11 +333,6 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.PersoonLidInfo = ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(l => l.AlleDetailsOphalen(id));
 
 			AfdelingenOphalen(model);
-
-			if (model.PersoonLidInfo.LidInfo != null)
-			{
-				model.PersoonLidInfo.LidInfo.PersoonDetail = model.PersoonLidInfo.PersoonDetail;
-			}
 
 			model.Titel = model.PersoonLidInfo.PersoonDetail.VolledigeNaam;
 			return View("EditRest", model);

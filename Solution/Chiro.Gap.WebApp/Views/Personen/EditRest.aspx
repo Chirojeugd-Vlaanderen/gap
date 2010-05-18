@@ -14,7 +14,7 @@
     <legend>Persoonlijke gegevens <%=Html.ActionLink("Aanpassen", "EditGegevens", new {id=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %></legend>    
     
         <p>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.LidInfo.PersoonDetail.AdNummer)%>
+        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer)%>
         <%=Html.TextBox("AdNummer", Model.PersoonLidInfo.PersoonDetail.AdNummer, 
                 new Dictionary<string, object> { 
                     {"readonly", "readonly"}, 
@@ -124,16 +124,16 @@
    {
 	   if (Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.Count == 0)
 	   {
-		   Response.Write(Model.PersoonLidInfo.LidInfo.PersoonDetail.VolledigeNaam + " heeft geen afdelingen.");
+		   Response.Write(Model.PersoonLidInfo.PersoonDetail.VolledigeNaam + " heeft geen afdelingen.");
 	   }
 	   else
 	   {
-		   Response.Write(Model.PersoonLidInfo.LidInfo.PersoonDetail.VolledigeNaam + " is leiding van ");
+		   Response.Write(Model.PersoonLidInfo.PersoonDetail.VolledigeNaam + " is leiding van ");
 		   Response.Write(Html.PrintLijst(Model.PersoonLidInfo.LidInfo.AfdelingIdLijst, Model.AlleAfdelingen));
 	   }
    }else{
 	   //FIXME: nog niet alle info wordt ingeladen( afdelingidlijst is altijd leeg)
-	   Response.Write(Model.PersoonLidInfo.LidInfo.PersoonDetail.VolledigeNaam + " zit in de " +
+	   Response.Write(Model.PersoonLidInfo.PersoonDetail.VolledigeNaam + " zit in de " +
 		   Model.AlleAfdelingen.FirstOrDefault(s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)).AfdelingNaam + ".");
    }%>
 
@@ -159,12 +159,13 @@
 
     <ul>
     <% 
-           var gegroepeerdeComm = Model.PersoonLidInfo.CommunicatieInfo.GroupBy(cv => new
-                                                                                      	{
-                                                                                      		Omschrijving = cv.CommunicatieTypeOmschrijving, 
-                                                                                                Validatie = cv.CommunicatieTypeValidatie, 
-                                                                                                Voorbeeld = cv.CommunicatieTypeVoorbeeld
-                                                                                      	});
+           var gegroepeerdeComm = Model.PersoonLidInfo.CommunicatieInfo.GroupBy(
+					cv => new
+					{
+						Omschrijving = cv.CommunicatieTypeOmschrijving, 
+						Validatie = cv.CommunicatieTypeValidatie, 
+						Voorbeeld = cv.CommunicatieTypeVoorbeeld
+					});
            
            foreach (var commType in gegroepeerdeComm)
            {

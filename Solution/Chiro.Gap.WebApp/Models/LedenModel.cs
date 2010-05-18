@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -40,7 +41,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// </summary>
 		public IEnumerable<int> FunctieIDs { get; set; }
 
-		public LidInfo HuidigLid { get; set; }
+		public PersoonLidInfo HuidigLid { get; set; }
 
 		/// <summary>
 		/// De standaardconstructor; er zijn geen afdelingen geselecteerd.

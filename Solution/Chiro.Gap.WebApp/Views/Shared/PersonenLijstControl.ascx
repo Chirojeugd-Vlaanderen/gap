@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.PersoonInfoModel>" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
+<%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 
 <script type="text/javascript">
     $(document).ready(function() {

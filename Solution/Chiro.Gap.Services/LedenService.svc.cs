@@ -12,6 +12,7 @@ using AutoMapper;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.Workers;
 using Chiro.Gap.Workers.Exceptions;
 
@@ -81,7 +82,7 @@ namespace Chiro.Gap.Services
 				_ledenMgr.LidBewaren(l);
 			}
 			return (from l in leden
-					select l.ID).ToList<int>();
+					select l.ID).ToList();
 		}
 
 		/* zie #273 */
@@ -118,7 +119,7 @@ namespace Chiro.Gap.Services
 				_ledenMgr.LidBewaren(l);
 			}
 			return (from l in leden
-					select l.ID).ToList<int>();
+					select l.ID).ToList();
 		}
 
 		/// <summary>
@@ -126,11 +127,11 @@ namespace Chiro.Gap.Services
 		/// kunnen ook niet van werkjaar of van gelieerdepersoon veranderen.
 		/// </summary>
 		/// <param name="lidinfo">Te bewaren lid</param>
-		public void Bewaren(LidInfo lidinfo)
+		public void Bewaren(PersoonLidInfo lidinfo)
 		{
-			Lid lid = _ledenMgr.Ophalen(lidinfo.LidID, LidExtras.Geen);
+			Lid lid = _ledenMgr.Ophalen(lidinfo.LidInfo.LidID, LidExtras.Geen);
 
-			_ledenMgr.InfoOvernemen(lidinfo, lid);
+			_ledenMgr.InfoOvernemen(lidinfo.LidInfo, lid);
 			_ledenMgr.LidBewaren(lid);
 		}
 
@@ -146,18 +147,18 @@ namespace Chiro.Gap.Services
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<LidInfo> PaginaOphalen(int groepsWerkJaarID, out int paginas)
+		public IList<PersoonLidInfo> PaginaOphalen(int groepsWerkJaarID, out int paginas)
 		{
 			var result = _ledenMgr.PaginaOphalen(groepsWerkJaarID, out paginas);
-			return Mapper.Map<IList<Lid>, IList<LidInfo>>(result);
+			return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
 		}
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<LidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, out int paginas)
+		public IList<PersoonLidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, out int paginas)
 		{
 			IList<Lid> result = _ledenMgr.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID, out paginas);
-			return Mapper.Map<IList<Lid>, IList<LidInfo>>(result);
+			return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
 		}
 
 		/// <summary>
@@ -166,9 +167,9 @@ namespace Chiro.Gap.Services
 		/// <param name="lidID">ID op te halen lid</param>
 		/// <returns>Lidinfo; bevat info over gelieerde persoon, persoon, groep, afdelingen 
 		/// en functies </returns>
-		public LidInfo DetailsOphalen(int lidID)
+		public PersoonLidInfo DetailsOphalen(int lidID)
 		{
-			return Mapper.Map<Lid, LidInfo>(_ledenMgr.Ophalen(
+			return Mapper.Map<Lid, PersoonLidInfo>(_ledenMgr.Ophalen(
 				lidID,
 				LidExtras.Groep|LidExtras.Afdelingen|LidExtras.Functies|LidExtras.Persoon));
 		}
@@ -223,7 +224,7 @@ namespace Chiro.Gap.Services
 				resultaat.AfdelingsJaarIDs = new List<int>();
 				resultaat.AfdelingsJaarIDs.Add((l as Kind).AfdelingsJaar.ID);
 			}
-			else
+			else if(l is Leiding)
 			{
 				resultaat.AfdelingsJaarIDs = (from aj in (l as Leiding).AfdelingsJaar
 							      select aj.ID).ToList();
@@ -264,7 +265,7 @@ namespace Chiro.Gap.Services
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public LidInfo BewarenMetVrijeVelden(LidInfo lid)
+		public PersoonLidInfo BewarenMetVrijeVelden(PersoonLidInfo lid)
 		{
 			// TODO
 			throw new NotImplementedException();

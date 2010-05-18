@@ -14,6 +14,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers.Exceptions;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.Workers
 {
@@ -482,7 +483,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="lidInfo">LidInfo om over te nemen in <paramref name="lid"/></param>
 		/// <param name="lid">Lid dat <paramref name="lidInfo"/> moet krijgen</param>
-		public void InfoOvernemen(ServiceContracts.LidInfo lidInfo, Lid lid)
+		public void InfoOvernemen(LidInfo lidInfo, Lid lid)
 		{
 			Debug.Assert(lid is Leiding || lid is Kind);
 

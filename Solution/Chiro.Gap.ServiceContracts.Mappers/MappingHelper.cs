@@ -4,9 +4,7 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using AutoMapper;
 
@@ -14,6 +12,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Workers.Exceptions;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.ServiceContracts.Mappers
 {
@@ -96,9 +95,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(
 					dst => dst.LidID,
 					opt => opt.MapFrom(src => src.ID))
-				.ForMember(
-					dst => dst.PersoonDetail,
-					opt => opt.MapFrom(src => src.GelieerdePersoon == null ? null : src.GelieerdePersoon))
+//				.ForMember(
+//					dst => dst.PersoonDetail,
+//					opt => opt.MapFrom(src => src.GelieerdePersoon == null ? null : src.GelieerdePersoon))
 				.ForMember(
 					dst => dst.Type,
 					opt => opt.MapFrom(src => src is Kind ? LidType.Kind : LidType.Leiding))
@@ -122,6 +121,20 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(
 					dst => dst.GroepsWerkJaarID,
 					opt => opt.MapFrom(src => src.GroepsWerkJaar.ID));
+
+			Mapper.CreateMap<Lid, PersoonLidInfo>()
+				.ForMember(
+					dst => dst.PersoonDetail,
+					opt => opt.MapFrom(src => src.GelieerdePersoon))
+				.ForMember(
+					dst => dst.LidInfo,
+					opt => opt.MapFrom(src => src))
+				.ForMember(
+					dst => dst.PersoonsAdresInfo,
+					opt => opt.MapFrom(null))
+				.ForMember(
+					dst => dst.CommunicatieInfo,
+					opt => opt.MapFrom(null));
 
 			// Zo veel mogelijk automatisch mappen
 			Mapper.CreateMap<Adres, AdresInfo>()
@@ -189,6 +202,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
 			// Important: als er een lid is, dan is er altijd een gelieerdepersoon, maar niet omgekeerd, 
 			// dus passen we de link aan in de andere richting!
+			// Maar kunnen er meerdere leden zijn?
 			Mapper.CreateMap<GelieerdePersoon, PersoonLidInfo>()
 				.ForMember(
 					dst => dst.PersoonDetail,
@@ -201,7 +215,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.Communicatie))
 				.ForMember(
 					dst => dst.LidInfo,
-					opt => opt.MapFrom(null));
+					opt => opt.MapFrom(src => src.Lid));
 
 			#region Mapping van Exceptions naar Faults
 			// TODO: Kan het mappen van die generics niet efficienter?

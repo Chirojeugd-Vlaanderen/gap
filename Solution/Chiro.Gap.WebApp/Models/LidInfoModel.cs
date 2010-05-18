@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -23,6 +24,6 @@ namespace Chiro.Gap.WebApp.Models
 		public int GroepsWerkJaartalZichtbaar { get; set; }
 		public IEnumerable<WerkJaarInfo> WerkJaarInfos { get; set; }
 
-		public IList<LidInfo> LidInfoLijst { get; set; }
+		public IList<PersoonLidInfo> LidInfoLijst { get; set; }
 	}
 }

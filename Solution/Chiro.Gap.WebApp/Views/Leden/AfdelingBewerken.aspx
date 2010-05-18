@@ -1,4 +1,5 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.LidAfdelingenModel>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<LidAfdelingenModel>" %>
+<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -29,7 +30,7 @@
                        select new CheckBoxListInfo(
                                        pa.AfdelingsJaarID.ToString()
                                        , pa.Naam
-                                       , Model.Info.AfdelingsJaarIDs.Contains(pa.AfdelingsJaarID))).ToList<CheckBoxListInfo>();
+                                       , Model.Info.AfdelingsJaarIDs.Contains(pa.AfdelingsJaarID))).ToList();
 
                   Response.Write(Html.CheckBoxList("Info.AfdelingsJaarIDs", info));
               }
@@ -44,11 +45,6 @@
                   }
               }
            %>
-           
-           
-           <%= Html.Hidden("HuidigLid.LidID")%>
-           <%= Html.Hidden("HuidigLid.PersoonDetail.GelieerdePersoonID") %>
-           <%= Html.Hidden("HuidigLid.Type")%>
            </fieldset>
            
            <%

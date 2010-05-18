@@ -5,6 +5,8 @@
 
 using System.Collections.Generic;
 using System.ServiceModel;
+
+using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.ServiceContracts

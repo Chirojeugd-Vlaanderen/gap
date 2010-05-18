@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 
 using Chiro.Gap.Domain;
 
-namespace Chiro.Gap.ServiceContracts
+namespace Chiro.Gap.ServiceContracts.DataContracts
 {
 	[DataContract]
 	public class LidInfo
@@ -19,8 +19,8 @@ namespace Chiro.Gap.ServiceContracts
 		[DataMember]
 		public int LidID { get; set; }
 
-		[DataMember]
-		public PersoonDetail PersoonDetail { get; set; }
+		//[DataMember]
+		//public PersoonDetail PersoonDetail { get; set; }
 
 		/// <summary>
 		/// Kind of leiding

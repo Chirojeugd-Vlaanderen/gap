@@ -1,7 +1,7 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<GelieerdePersonenModel>" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
-<%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
+<%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server" EnableViewState="False">
     <script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript"></script>

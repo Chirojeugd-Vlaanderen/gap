@@ -6,6 +6,8 @@
 using System.Collections.Generic;
 using System.ServiceModel;
 
+using Chiro.Gap.ServiceContracts.DataContracts;
+
 namespace Chiro.Gap.ServiceContracts
 {
 	// NOTE: If you change the interface name "ILedenService" here, you must also update the reference to "ILedenService" in Web.config.
@@ -39,7 +41,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="lid">Te bewaren lid</param>
 		[OperationContract]
-		void Bewaren(LidInfo lid);
+		void Bewaren(PersoonLidInfo lid);
 
 		/// <summary>
 		/// Vervangt de functies van het lid bepaald door <paramref name="lidID"/> door de functies
@@ -73,7 +75,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="lid"></param>
 		/// <returns></returns>
 		[OperationContract]
-		LidInfo BewarenMetVrijeVelden(LidInfo lid);
+		PersoonLidInfo BewarenMetVrijeVelden(PersoonLidInfo lid);
 
 		/// <summary>
 		/// Verwijdert het lid met ID <paramref name="lidID"/>
@@ -93,7 +95,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="paginas">Het totaal aantal pagina's</param>
 		/// <returns>Lijst van leden met hun relevante informatie</returns>
 		[OperationContract]
-		IList<LidInfo> PaginaOphalen(int groepsWerkJaarID, out int paginas);
+		IList<PersoonLidInfo> PaginaOphalen(int groepsWerkJaarID, out int paginas);
 
 		/// <summary>
 		/// Haalt een pagina met ledengegevens in een bepaald groepswerkjaar, maar alleen leden uit de gegeven afdeling
@@ -103,7 +105,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="paginas">Het totaal aantal pagians</param>
 		/// <returns>Lijst van leen met hun relevante informatie</returns>
 		[OperationContract]
-		IList<LidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, out int paginas);
+		IList<PersoonLidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, out int paginas);
 
 		/// <summary>
 		/// Haalt lid op, inclusief gelieerde persoon, persoon, groep, afdelingen en functies
@@ -112,6 +114,6 @@ namespace Chiro.Gap.ServiceContracts
 		/// <returns>Lidinfo; bevat info over gelieerde persoon, persoon, groep, afdelingen 
 		/// en functies </returns>
 		[OperationContract]
-		LidInfo DetailsOphalen(int lidID);
+		PersoonLidInfo DetailsOphalen(int lidID);
 	}
 }

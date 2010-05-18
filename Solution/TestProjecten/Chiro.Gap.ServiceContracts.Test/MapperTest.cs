@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+using Chiro.Gap.ServiceContracts.DataContracts;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Chiro.Cdf.Ioc;		// is nodig voor dummydata in gap.dummies.  dummydata zou beter ergens anders zitten.

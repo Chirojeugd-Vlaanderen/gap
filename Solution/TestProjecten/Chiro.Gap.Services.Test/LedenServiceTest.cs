@@ -91,7 +91,7 @@ namespace Chiro.Gap.Services.Test
 			var actual = target.DetailsOphalen(lidID);
 
 			// Assert
-			var ids = (from f in actual.Functies select f.ID);
+			var ids = (from f in actual.LidInfo.Functies select f.ID);
 			Assert.IsTrue(ids.Contains((int)NationaleFunctie.ContactPersoon));
 			Assert.IsTrue(ids.Contains(TestInfo.FUNCTIEID));
 		}
@@ -120,7 +120,7 @@ namespace Chiro.Gap.Services.Test
 
 			#region Assert
 			var l = target.DetailsOphalen(lidID);
-			var funIDs = (from f in l.Functies select f.ID);
+			var funIDs = (from f in l.LidInfo.Functies select f.ID);
 
 			Assert.AreEqual(funIDs.Count(), 3);
 			Assert.IsTrue(funIDs.Contains((int)NationaleFunctie.FinancieelVerantwoordelijke));
