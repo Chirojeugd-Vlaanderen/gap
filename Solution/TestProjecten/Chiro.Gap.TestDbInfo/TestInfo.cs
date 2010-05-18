@@ -112,6 +112,11 @@
 		/// 'Geboortejaar van' voor nieuw afdelingsjaar afdeling 3
 		/// </summary>
 		public const int AFDELING3VAN = 1998;
+
+		/// <summary>
+		/// Een ongeldig telefoonnummer
+		/// </summary>
+		public const string ONGELDIGTELEFOONNR = "00bla";
 		#endregion;
 	}
 
