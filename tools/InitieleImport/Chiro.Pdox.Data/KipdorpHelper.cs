@@ -78,7 +78,7 @@ namespace Chiro.Pdox.Data
 						}
 					}
 
-					return Path.GetDirectoryName(reader.FileInfo.FileName);
+					return String.Format("{0}/{1}", uitPakPath, Path.GetDirectoryName(reader.FileInfo.FileName));
 
 				}
 			}

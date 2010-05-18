@@ -169,7 +169,16 @@ namespace Chiro.Gap.InitieleImport.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dit programma verwacht het path naar de database als 1ste command-line parameter..
+        ///   Looks up a localized string similar to Uitpakken van &apos;{0}&apos;.
+        /// </summary>
+        internal static string UitpakkenVan {
+            get {
+                return ResourceManager.GetString("UitpakkenVan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dit programma verwacht het stamnummer als 1ste command-line parameter. (Zet het tussen double quotes (&quot;) om problemen met spaties te vermijden..
         /// </summary>
         internal static string Usage {
             get {

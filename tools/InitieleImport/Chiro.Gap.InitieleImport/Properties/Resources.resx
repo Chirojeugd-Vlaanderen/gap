@@ -136,7 +136,7 @@
     <value>Totaal aantal personen: {0}</value>
   </data>
   <data name="Usage" xml:space="preserve">
-    <value>Dit programma verwacht het path naar de database als 1ste command-line parameter.</value>
+    <value>Dit programma verwacht het stamnummer als 1ste command-line parameter. (Zet het tussen double quotes (") om problemen met spaties te vermijden.</value>
   </data>
   <data name="ServiceUser" xml:space="preserve">
     <value>Geconnecteerd op services als {0}</value>
@@ -159,4 +159,7 @@
   <data name="OnbekendAdres" xml:space="preserve">
     <value>--&gt; Ongeldig adres genegeerd.</value>
   </data>
+	<data name="UitpakkenVan">
+		<value><![CDATA[Uitpakken van '{0}']]></value>
+	</data>
 </root>
