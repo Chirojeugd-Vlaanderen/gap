@@ -1,4 +1,4 @@
-ALTER PROCEDURE data.spGroepVerwijderen @stamNr VARCHAR(10) AS
+CREATE PROCEDURE data.spGroepVerwijderen @stamNr VARCHAR(10) AS
 -- Verwijdert alle sporen van een groep
 -- en doet daarna ook opkuis in de tabelentries die nergens aan een groep
 -- gekoppeld zijn.
