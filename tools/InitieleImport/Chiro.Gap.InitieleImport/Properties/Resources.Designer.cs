@@ -187,6 +187,15 @@ namespace Chiro.Gap.InitieleImport.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to *************************** TIMEOUT *******************************.
+        /// </summary>
+        internal static string TimeOut {
+            get {
+                return ResourceManager.GetString("TimeOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Totaal aantal personen: {0}.
         /// </summary>
         internal static string TotaalInfo {

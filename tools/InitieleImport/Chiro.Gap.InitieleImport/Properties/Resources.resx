@@ -174,4 +174,7 @@
 	<data name="CommunicatieVormFoutFormaat">
 		<value><![CDATA[---> Fout formaat; Communicatievorm genegeerd]]></value>
 	</data>
+	<data name="TimeOut">
+		<value xml:space="preserve">*************************** TIMEOUT *******************************</value>
+	</data>
 </root>

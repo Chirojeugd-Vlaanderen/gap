@@ -25,7 +25,8 @@ namespace Chiro.Pdox.Data.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("//kip-fls05/ADMINISTRATIE-Data/Administratief/Aansluitingen/Email/2009")]
+        [global::System.Configuration.DefaultSettingValueAttribute("//kip-fls05.chiro.lokaal/ADMINISTRATIE-Data/Administratief/Aansluitingen/Email/20" +
+            "09")]
         public string AansluitingsMap {
             get {
                 return ((string)(this["AansluitingsMap"]));

@@ -165,52 +165,60 @@ namespace Chiro.Gap.InitieleImport
 
 					mogelijkeDubbels.Add(new MogelijkDubbel { Bestaand = ex.Detail.Objecten.First(), Nieuw = p.PersoonDetail });
 				}
-
-				foreach (var pa in p.PersoonsAdresInfo)
+				catch (TimeoutException)
 				{
-					Console.WriteLine(
-						Properties.Resources.AdresInfo,
-						pa.StraatNaamNaam,
-						pa.HuisNr,
-						pa.Bus ?? "/",
-						pa.PostNr,
-						pa.WoonPlaatsNaam,
-						pa.AdresType);
-					try
-					{
-						_serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.AdresToevoegenGelieerdePersonen(
-							new List<int> { persoonID },
-							pa));
-
-					}
-					catch (Exception)
-					{
-						Console.WriteLine(Resources.OnbekendAdres);
-					}
+					Console.WriteLine(Resources.TimeOut);
+					persoonID = 0;
 				}
 
-				foreach (var ci in p.CommunicatieInfo)
+				if (persoonID != 0)
 				{
-					Console.WriteLine(
-						Properties.Resources.CommunicatieInfo,
-						ci.Nummer,
-						ci.CommunicatieTypeID,
-						ci.Voorkeur ? "*" : " ");
-
-					try
+					foreach (var pa in p.PersoonsAdresInfo)
 					{
-						_serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.CommunicatieVormToevoegen(
-							persoonID,
-							ci));
-					}
-					catch (Exception)
-					{
-						// TODO: Uitzoeken waarom het catchen van FaultException<GapFault> hier niet werkt.
+						Console.WriteLine(
+							Properties.Resources.AdresInfo,
+							pa.StraatNaamNaam,
+							pa.HuisNr,
+							pa.Bus ?? "/",
+							pa.PostNr,
+							pa.WoonPlaatsNaam,
+							pa.AdresType);
+						try
+						{
+							_serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.AdresToevoegenGelieerdePersonen(
+								new List<int> {persoonID},
+								pa));
 
-						Console.WriteLine(Resources.CommunicatieVormFoutFormaat);
+						}
+						catch (Exception)
+						{
+							Console.WriteLine(Resources.OnbekendAdres);
+						}
 					}
-						
-					
+
+					foreach (var ci in p.CommunicatieInfo)
+					{
+						Console.WriteLine(
+							Properties.Resources.CommunicatieInfo,
+							ci.Nummer,
+							ci.CommunicatieTypeID,
+							ci.Voorkeur ? "*" : " ");
+
+						try
+						{
+							_serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.CommunicatieVormToevoegen(
+								persoonID,
+								ci));
+						}
+						catch (Exception)
+						{
+							// TODO: Uitzoeken waarom het catchen van FaultException<GapFault> hier niet werkt.
+
+							Console.WriteLine(Resources.CommunicatieVormFoutFormaat);
+						}
+
+
+					}
 				}
 
 			}
