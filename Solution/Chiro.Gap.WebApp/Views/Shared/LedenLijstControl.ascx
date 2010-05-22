@@ -24,7 +24,13 @@ Pagina: <%= Html.WerkJaarLinks(
     <td><%= pl.PersoonDetail.Geslacht.ToString()%></td>
     <td><%= pl.LidInfo.LidgeldBetaald?"Ja":"Nee"%></td>
     <td>
-        <%=Html.ActionLink("Verwijderen", "Verwijderen", new { Controller = "Leden", id = pl.LidInfo.LidID })%>
+		<%if (pl.LidInfo.NonActief)%>
+		<%{%>
+			<%=Html.ActionLink("Activeren", "Activeren", new { Controller = "Leden", id = pl.LidInfo.LidID })%>
+		<%}else{%>
+			<%=Html.ActionLink("Non-Actief maken", "DesActiveren", new { Controller = "Leden", id = pl.LidInfo.LidID })%>
+		<%} %>
+        
         <%=Html.ActionLink("Afdelingen", "AfdelingBewerken", new { Controller = "Leden", id = pl.LidInfo.LidID })%>
     </td>
     <td><% foreach (int a in pl.LidInfo.AfdelingIdLijst) 

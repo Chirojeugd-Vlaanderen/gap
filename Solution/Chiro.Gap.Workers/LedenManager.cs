@@ -221,14 +221,12 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Verwijdert lid uit database
-		/// Dit kan enkel als het een lid uit het huidige werkjaar is en als de instapperiode niet verstreken is voor een kind
-		/// Leiding kan niet verwijderd worden.  Persisteert.
+		/// Zet kinderen en leiding op non-actief. Geen van beide kunnen ooit verwijderd worden!!!
 		/// </summary>
-		/// <param name="lid">Te verwijderen lid</param>
+		/// <param name="lid"></param>
 		/// <remarks>Het <paramref name="lid"/> moet via het groepswerkjaar gekoppeld
 		/// aan zijn groep.  Als het om leiding gaat, moeten ook de afdelingen gekoppeld zijn.</remarks>
-		public void Verwijderen(Lid lid)
+		public void NonActiefMaken(Lid lid)
 		{
 			Debug.Assert(lid.GroepsWerkJaar != null);
 			Debug.Assert(lid.GroepsWerkJaar.Groep != null);
@@ -241,28 +239,11 @@ namespace Chiro.Gap.Workers
 			// checks:
 			if (lid.GroepsWerkJaar.ID != _daos.GroepsWerkJaarDao.RecentsteOphalen(lid.GroepsWerkJaar.Groep.ID).ID)
 			{
-				throw new InvalidOperationException("Een lid verwijderen mag enkel als het een lid uit het huidige werkjaar is.");
-			}
-			if (lid is Kind && DateTime.Compare(lid.EindeInstapPeriode.Value, DateTime.Today) < 0)
-			{
-				throw new InvalidOperationException("Een kind verwijderen kan niet meer nadat de instapperiode verstreken is.");
+				throw new InvalidOperationException("Een lid non-actief maken mag enkel als het een lid uit het huidige werkjaar is.");
 			}
 
-			lid.TeVerwijderen = true;
-			if (lid is Leiding)
-			{
-				var leiding = lid as Leiding;
-
-				foreach (AfdelingsJaar aj in leiding.AfdelingsJaar)
-				{
-					aj.TeVerwijderen = true;
-				}
-				_daos.LeidingDao.Bewaren(leiding, ld => ld.AfdelingsJaar);
-			}
-			else
-			{
-				_daos.LedenDao.Bewaren(lid);
-			}
+			lid.NonActief = true;
+			_daos.LedenDao.Bewaren(lid);
 		}
 
 		/// <summary>

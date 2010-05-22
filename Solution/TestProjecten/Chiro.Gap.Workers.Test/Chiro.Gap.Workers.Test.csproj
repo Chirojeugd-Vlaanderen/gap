@@ -60,6 +60,7 @@
     <Compile Include="CategorieKoppelen.cs" />
     <Compile Include="CategorieTest.cs" />
     <Compile Include="CategorieToevoegen.cs" />
+    <Compile Include="LedenVerwijderen.cs" />
     <Compile Include="FunctiesManagerTest.cs" />
     <Compile Include="GapExceptionTest.cs" />
     <Compile Include="LedenAanmaken.cs" />

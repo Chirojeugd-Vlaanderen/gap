@@ -147,44 +147,20 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		//
-		// GET: /Leden/Create
-		public ActionResult Create(int groepID)
-		{
-			return View();
-		}
-
-		//
-		// POST: /Leden/Create
-        [AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult Create(FormCollection collection, int groepID)
-		{
-			try
-			{
-				// TODO: Add insert logic here
-
-				return RedirectToAction("List", new
-				{
-					groepsWerkJaarId = Sessie.LaatstePagina,
-					afdID = Sessie.LaatsteActieID
-				});
-			}
-			catch
-			{
-				return View();
-			}
-		}
-
-		//
 		// GET: /Leden/Verwijderen/5
-		public ActionResult Verwijderen(int id, int groepID)
+		public ActionResult DesActiveren(int id, int groepID)
 		{
-			ServiceHelper.CallService<ILedenService>(l => l.Verwijderen(id));
-			TempData["feedback"] = "Lid is verwijderd";
-			return RedirectToAction("List", new
-			{
-				groepsWerkJaarId = Sessie.LaatstePagina,
-				afdID = Sessie.LaatsteActieID
-			});
+
+			ServiceHelper.CallService<ILedenService>(l => l.NonActiefMaken(id));
+			TempData["feedback"] = "Lid is op non-actief gezet.";
+			return RedirectToAction("Index", new { Controller = "Leden", groepID = groepID });
+		}
+
+		public ActionResult Activeren(int id, int groepID)
+		{
+			ServiceHelper.CallService<ILedenService>(l => l.ActiefMaken(id));
+			TempData["feedback"] = "Lid is weer geactiveerd.";
+			return RedirectToAction("Index", new { Controller = "Leden", groepID = groepID });
 		}
 
 		/// <summary>

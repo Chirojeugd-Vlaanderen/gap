@@ -135,14 +135,17 @@ namespace Chiro.Gap.Services
 			_ledenMgr.LidBewaren(lid);
 		}
 
-		/// <summary>
-		/// Verwijdert het lid met ID <paramref name="lidID"/>
-		/// </summary>
-		/// <param name="lidID">ID van het te verwijderen lid</param>
-		public void Verwijderen(int lidID)
+		public void NonActiefMaken(int lidID)
 		{
-			Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Groep | LidExtras.Afdelingen);
-			_ledenMgr.Verwijderen(l);	// verwijderen persisteert meteen
+			Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Groep);
+			_ledenMgr.NonActiefMaken(l);	// verwijderen persisteert meteen
+		}
+
+		public void ActiefMaken(int lidID)
+		{
+			Lid l = _ledenMgr.Ophalen(lidID);
+			l.NonActief = false;
+			_ledenMgr.LidBewaren(l);	// verwijderen persisteert meteen
 		}
 
 		/* zie #273 */

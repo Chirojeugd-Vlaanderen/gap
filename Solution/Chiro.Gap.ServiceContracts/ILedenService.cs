@@ -78,11 +78,18 @@ namespace Chiro.Gap.ServiceContracts
 		PersoonLidInfo BewarenMetVrijeVelden(PersoonLidInfo lid);
 
 		/// <summary>
-		/// Verwijdert het lid met ID <paramref name="lidID"/>
+		/// Maakt lid met gegeven ID nonactief
 		/// </summary>
-		/// <param name="lidID">ID van het te verwijderen lid</param>
+		/// <param name="lidID">ID van het lid</param>
 		[OperationContract]
-		void Verwijderen(int lidID);
+		void NonActiefMaken(int lidID);
+
+		/// <summary>
+		/// Maakt lid met gegeven ID actief
+		/// </summary>
+		/// <param name="lidID">ID van het lid</param>
+		[OperationContract]
+		void ActiefMaken(int lidID);
 
 		// TODO: we vragen leden op per groepswerkjaar. Waarom dit verschil met personen? Personen zijn altijd geldig, 
 		// maar is dit wel de beste oplossing? Want alle leden zijn personen, maar wat dan als ze weggaan en dan terugkomen? 

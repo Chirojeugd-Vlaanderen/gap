@@ -377,11 +377,12 @@ ul#acties li
 	list-style: none;
 }
 
-fieldset label
+/* Doet de layout nogal sterk kapot bij lege paragrafen enzo (omdat hun veld leeg is)*/
+/*fieldset label
 {
 	float: left;
 	width: 120px;
-}
+}*/
 
 td.right
 {
