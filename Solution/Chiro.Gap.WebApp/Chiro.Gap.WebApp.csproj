@@ -35,6 +35,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.0.5022.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">
@@ -75,6 +79,9 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdressenHelper.cs" />
@@ -259,6 +266,7 @@
     </Content>
     <Content Include="Content\Chirologo.png" />
     <Content Include="Content\GeenGroepGekozen.css" />
+    <Compile Include="ExcelExporter.cs" />
     <Content Include="Scripts\MicrosoftMvcJQueryValidation.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Views\Groep\CategorieVerwijderen.aspx" />

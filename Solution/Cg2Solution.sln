@@ -36,6 +36,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{BBABD468-99FA-43E6-8E64-DAA6C3CFF2BE}"
 	ProjectSection(SolutionItems) = preProject
 		References\AutoMapper.dll = References\AutoMapper.dll
+		References\DocumentFormat.OpenXml.dll = References\DocumentFormat.OpenXml.dll
 		References\Moq.dll = References\Moq.dll
 	EndProjectSection
 EndProject
