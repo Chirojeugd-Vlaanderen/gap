@@ -35,7 +35,7 @@ Pagina: <%= Html.WerkJaarLinks(
     </td>
     <td><% foreach (int a in pl.LidInfo.AfdelingIdLijst) 
            { %>
-               <%=Html.ActionLink(Html.Encode(ViewData.Model.AfdelingsInfoDictionary[a].AfdelingAfkorting), "List", new { Controller = "Leden", afdID = a, groepsWerkJaarId = Model.GroepsWerkJaarIdZichtbaar }, new { title = ViewData.Model.AfdelingsInfoDictionary[a].AfdelingNaam } )%>
+               <%=Html.ActionLink(Html.Encode(ViewData.Model.AfdelingsInfoDictionary[a].AfdelingAfkorting), "List", new { Controller = "Leden", afdID = a, id = Model.GroepsWerkJaarIdZichtbaar }, new { title = ViewData.Model.AfdelingsInfoDictionary[a].AfdelingNaam } )%>
         <% } %>
     </td>
 
