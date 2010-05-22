@@ -154,7 +154,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Sessie.cs" />
+    <Compile Include="ClientState.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="UnityControllerFactory.cs" />
   </ItemGroup>

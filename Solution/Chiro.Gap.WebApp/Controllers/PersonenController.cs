@@ -26,7 +26,21 @@ namespace Chiro.Gap.WebApp.Controllers
 
 	public class PersonenController : BaseController
 	{
-		private AdressenHelper _adressenHelper;
+		private readonly AdressenHelper _adressenHelper;
+
+		/// <summary>
+		/// Methode probeert terug te keren naar de vorige (in cookie) opgeslagen pagina. Als dit niet lukt gaat hij naar de indexpagina van de controller terug.
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult TerugNaarVorige()
+		{
+			string url = ClientState.VorigePagina;
+			if (url == null)
+			{
+				return RedirectToAction("Index");
+			}
+			return Redirect(url);
+		}
 
 		public PersonenController(IServiceHelper serviceHelper)
 			: base(serviceHelper)
@@ -41,7 +55,6 @@ namespace Chiro.Gap.WebApp.Controllers
 			// redirect naar alle personen van de groep, pagina 1.
 			return RedirectToAction("List", new
 			{
-				groepID = groepID,
 				page = 1,
 				id = 0
 			});
@@ -59,9 +72,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult List(int page, int groepID, int id)
 		{
 			// Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
-			Sessie.LaatsteActieID = id;
-			Sessie.LaatsteLijst = "Personen";
-			Sessie.LaatstePagina = page;
+			ClientState.VorigePagina = Request.Url.ToString();
 
 			int totaal = 0;
 
@@ -118,7 +129,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>Een 'ExcelResult' met de gevraagde lijst</returns>
 		public ActionResult Download(int groepID, int id)
 		{
-			int totaal = 0;
+			int totaal;
 			IEnumerable<PersoonDetail> data;
 
 			// Alle personen bekijken
@@ -167,8 +178,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				new
 				{
 					page = 1,
-					id = model.GekozenCategorieID,
-					groepID = groepID
+					id = model.GekozenCategorieID
 				});
 		}
 
@@ -187,18 +197,14 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				try
 				{
-					IEnumerable<int> gemaakteleden = ServiceHelper.CallService<ILedenService, IEnumerable<int>>(g => g.LedenMakenEnBewaren(model.GekozenGelieerdePersoonIDs));
+					ServiceHelper.CallService<ILedenService, IEnumerable<int>>(g => g.LedenMakenEnBewaren(model.GekozenGelieerdePersoonIDs));
 					TempData["feedback"] = Properties.Resources.LedenGemaaktFeedback;
 				}
 				catch (Exception ex)
 				{
-					TempData["feedback"] = string.Concat(Properties.Resources.LedenMakenMisluktFout, Environment.NewLine, ex.Message.ToString());
+					TempData["feedback"] = string.Concat(Properties.Resources.LedenMakenMisluktFout, Environment.NewLine, ex.Message);
 				}
-				return RedirectToAction("List", new
-				{
-					page = Sessie.LaatstePagina,
-					id = Sessie.LaatsteActieID
-				});
+				return TerugNaarVorige();
 			}
 			else if (model.GekozenActie == 2 && model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0)
 			{
@@ -208,11 +214,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			else
 			{
 				TempData["feedback"] = Properties.Resources.NiemandGeselecteerdFout;
-				return RedirectToAction("List", new
-				{
-					page = Sessie.LaatstePagina,
-					id = Sessie.LaatsteActieID
-				});
+				return TerugNaarVorige();
 			}
 		}
 
@@ -367,8 +369,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		// GET: /Personen/LidMaken/id
 		public ActionResult LidMaken(int id, int groepID)
 		{
-			List<int> ids = new List<int>();
-			ids.Add(id);
+			IList<int> ids = new List<int> {id};
 			try
 			{
 				ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LedenMakenEnBewaren(ids));
@@ -376,20 +377,15 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			catch (Exception ex)
 			{
-				TempData["feedback"] = string.Concat(Properties.Resources.LidMakenMisluktFout, Environment.NewLine, ex.Message.ToString());
+				TempData["feedback"] = string.Concat(Properties.Resources.LidMakenMisluktFout, Environment.NewLine, ex.Message);
 			}
-			return RedirectToAction("List", new
-			{
-				page = Sessie.LaatstePagina,
-				id = Sessie.LaatsteActieID
-			});
+			return TerugNaarVorige();
 		}
 
 		// GET: /Personen/LidMaken/id
 		public ActionResult LeidingMaken(int id, int groepID)
 		{
-			List<int> ids = new List<int>();
-			ids.Add(id);
+			IList<int> ids = new List<int> {id};
 			try
 			{
 				ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LeidingMakenEnBewaren(ids));
@@ -397,14 +393,10 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			catch (Exception ex)
 			{
-				TempData["feedback"] = string.Concat(Properties.Resources.LidMakenMisluktFout, Environment.NewLine, ex.Message.ToString());
+				TempData["feedback"] = string.Concat(Properties.Resources.LidMakenMisluktFout, Environment.NewLine, ex.Message);
 			}
 
-			return RedirectToAction("List", new
-			{
-				page = Sessie.LaatstePagina,
-				id = Sessie.LaatsteActieID
-			});
+			return TerugNaarVorige();
 		}
 
 		#endregion leden
@@ -564,7 +556,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		// GET: /Personen/AdresVerwijderen/AdresID
 		public ActionResult AdresVerwijderen(int id, int gelieerdePersoonID, int groepID)
 		{
-			AdresVerwijderenModel model = new AdresVerwijderenModel();
+			var model = new AdresVerwijderenModel();
 
 			model.AanvragerID = gelieerdePersoonID;
 			model.Adres = ServiceHelper.CallService<IGelieerdePersonenService, GezinInfo>(foo => foo.GezinOphalen(id));
@@ -604,7 +596,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>De view 'AdresBewerken'</returns>
 		public ActionResult NieuwAdres(int id, int groepID)
 		{
-			AdresModel model = new AdresModel();
+			var model = new AdresModel();
 			BaseModelInit(model, groepID);
 
 			model.AanvragerID = id;
@@ -879,8 +871,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		// GET: /Personen/VerwijderenCategorie/categorieID
 		public ActionResult VerwijderenCategorie(int categorieID, int gelieerdePersoonID, int groepID)
 		{
-			IList<int> list = new List<int>();
-			list.Add(gelieerdePersoonID);
+			IList<int> list = new List<int> {gelieerdePersoonID};
 			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieVerwijderen(list, categorieID));
 			return RedirectToAction("EditRest", new
 			{
@@ -891,8 +882,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		// GET: /Personen/ToevoegenAanCategorie/categorieID
 		public ActionResult ToevoegenAanCategorie(int gelieerdePersoonID, int groepID)
 		{
-			List<int> l = new List<int>();
-			l.Add(gelieerdePersoonID);
+			IList<int> l = new List<int> {gelieerdePersoonID};
 			TempData.Add("list", l);
 			return RedirectToAction("ToevoegenAanCategorieLijst");
 		}
@@ -923,11 +913,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			else
 			{
 				TempData["feedback"] = Properties.Resources.CategoriserenZonderCategorieënFout;
-				return RedirectToAction("List", new
-				{
-					id = Sessie.LaatsteActieID,
-					page = Sessie.LaatstePagina
-				});
+				return TerugNaarVorige();
 			}
 		}
 
@@ -956,11 +942,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
-				return RedirectToAction("List", new
-				{
-					id = Sessie.LaatsteActieID,
-					page = Sessie.LaatstePagina
-				});
+				return TerugNaarVorige();
 			}
 		}
 

@@ -23,13 +23,27 @@ namespace Chiro.Gap.WebApp.Controllers
 		public GroepController(IServiceHelper serviceHelper) : base(serviceHelper) { }
 
 		/// <summary>
+		/// Methode probeert terug te keren naar de vorige (in cookie) opgeslagen pagina. Als dit niet lukt gaat hij naar de indexpagina van de controller terug.
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult TerugNaarVorige()
+		{
+			string url = ClientState.VorigePagina;
+			if (url == null)
+			{
+				return RedirectToAction("Index");
+			}
+			return Redirect(url);
+		}
+
+		/// <summary>
 		/// Genereert een view met algemene gegevens over de groep
 		/// </summary>
 		/// <param name="groepID">ID van de gewenste groep</param>
 		/// <returns>View met algemene gegevens over de groep</returns>
 		public ActionResult Index(int groepID)
 		{
-			GroepsInstellingenModel model = new GroepsInstellingenModel();
+			var model = new GroepsInstellingenModel();
 
 			model.Titel = Properties.Resources.GroepsInstellingenTitel;
 			model.Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(
@@ -63,7 +77,7 @@ namespace Chiro.Gap.WebApp.Controllers
 						model.NieuweCategorie.Naam,
 						model.NieuweCategorie.Code));
 
-					return RedirectToAction("Index", new { groepID = groepID });
+					return RedirectToAction("Index");
 				}
 				catch (FaultException<BestaatAlFault<CategorieInfo>> ex)
 				{
@@ -153,7 +167,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				return View("CategorieVerwijderen", model);
 			}
-			return RedirectToAction("Index", new { groepID = groepID });
+			return RedirectToAction("Index");
 		}
 
 		/// <summary>

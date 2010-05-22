@@ -23,6 +23,20 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 		}
 
+		/// <summary>
+		/// Methode probeert terug te keren naar de vorige (in cookie) opgeslagen pagina. Als dit niet lukt gaat hij naar de indexpagina van de controller terug.
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult TerugNaarVorige()
+		{
+			string url = ClientState.VorigePagina;
+			if (url == null)
+			{
+				return RedirectToAction("Index");
+			}
+			return Redirect(url);
+		}
+
 		//
 		// GET: /Leden/
 		public ActionResult Index(int groepID)
@@ -33,8 +47,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		// De paginering zal gebeuren per groepswerkjaar, niet per grootte van de pagina
 		// Er wordt ook meegegeven welke afdeling er gevraagd is (0 is alles)
-		// GET: /Leden/List/{afdID}/{groepsWerkJaarId}
-
+		// GET: /Leden/List/{afdID}/{id}
 		/// <summary>
 		/// Toont de lijst van leden uit groepswerkjaar met GroepsWerkJaarID <paramref name="id"/>.
 		/// </summary>
@@ -45,10 +58,11 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>De view 'Index' met de ledenlijst</returns>
 		public ActionResult List(int id, int afdID, int groepID)
 		{
-			// Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten. Paginering gebeurt hier per werkjaar.
-			Sessie.LaatsteLijst = "Leden";
-			Sessie.LaatsteActieID = afdID;
-			Sessie.LaatstePagina = id;
+			ClientState.VorigePagina = Request.Url.ToString();
+			/*ClientState.LaatsteLijst = "Leden";
+			ClientState.LaatsteAfdelingID = afdID;
+			ClientState.LaatsteActie = "List";
+			ClientState.LaatstePagina = id;*/
 
 			int paginas;
 
@@ -143,24 +157,26 @@ namespace Chiro.Gap.WebApp.Controllers
 				"Leden.xls",
 				selectie.AsQueryable(),
 				new string[] { "AdNummer", "VolledigeNaam", "GeboorteDatum", "Geslacht" });
-
 		}
 
-		//
-		// GET: /Leden/Verwijderen/5
+		// id = lidid
+		// GET: /Leden/DesActiveren/id
 		public ActionResult DesActiveren(int id, int groepID)
 		{
-
 			ServiceHelper.CallService<ILedenService>(l => l.NonActiefMaken(id));
 			TempData["feedback"] = "Lid is op non-actief gezet.";
-			return RedirectToAction("Index", new { Controller = "Leden", groepID = groepID });
+
+			return TerugNaarVorige();
 		}
 
-		public ActionResult Activeren(int id, int groepID)
+		// id = lidid
+		// GET: /Leden/Activeren/id
+		public ActionResult Activeren(int id, int gwjID, int groepID)
 		{
 			ServiceHelper.CallService<ILedenService>(l => l.ActiefMaken(id));
 			TempData["feedback"] = "Lid is weer geactiveerd.";
-			return RedirectToAction("Index", new { Controller = "Leden", groepID = groepID });
+
+			return TerugNaarVorige();
 		}
 
 		/// <summary>
@@ -169,7 +185,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="id">LidID van het lid met de te wijzigen afdeling(en)</param>
 		/// <param name="groepID">Groep waarin de user momenteel werkt</param>
 		/// <returns>De view 'AfdelingBewerken'</returns>
-		public ActionResult AfdelingBewerken(int id, int groepID)
+		public ActionResult AfdelingBewerken(int id, int gwjID, int groepID)
 		{
 			var model = new LidAfdelingenModel();
 			BaseModelInit(model, groepID);
@@ -194,11 +210,7 @@ namespace Chiro.Gap.WebApp.Controllers
 						groepID = groepID
 					}));
 
-				return RedirectToAction("List", new
-				{
-					groepsWerkJaarId = Sessie.LaatstePagina,
-					afdID = Sessie.LaatsteActieID
-				});
+				return TerugNaarVorige();
 			} 
 			else
 			{
