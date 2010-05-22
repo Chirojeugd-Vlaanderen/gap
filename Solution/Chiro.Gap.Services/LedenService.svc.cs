@@ -53,6 +53,7 @@ namespace Chiro.Gap.Services
 			IList<Lid> leden = new List<Lid>();
 			foreach (int gpID in gelieerdePersoonIDs)
 			{
+				//TODO moet hier ook geen try rond staan?
 				GelieerdePersoon gp = _gelieerdePersonenMgr.DetailsOphalen(gpID);
 
 				try
@@ -66,7 +67,7 @@ namespace Chiro.Gap.Services
 				}
 				catch (InvalidOperationException ex)
 				{
-					result += ex.Message + "\n";
+					result += "Fout voor " + gp.Persoon.VolledigeNaam + ": " + ex.Message + Environment.NewLine;
 				}
 			}
 			if (!result.Equals(String.Empty))
@@ -74,14 +75,14 @@ namespace Chiro.Gap.Services
 				// Ne string als faultcontract.  Nog niet geweldig, maar al beter als een
 				// exception.  Zie #463.
 
-				throw new FaultException<string>(result);
+				throw new FaultException<string>("Kon niet alle personen lid maken", result);
 			}
 
 			foreach (Lid l in leden)
 			{
 				_ledenMgr.LidBewaren(l);
 			}
-			return (from l in leden
+			return (from l in leden 
 					select l.ID).ToList();
 		}
 

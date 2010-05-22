@@ -26,6 +26,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// kan worden. In dat geval wordt geen enkele persoon lid. </throws>
 		/// <remarks>De methode is reentrant, dus zal niet klagen als er personen al lid zijn.</remarks>
 		[OperationContract]
+		[FaultContract(typeof(FaultException<string>))]
 		IEnumerable<int> LedenMakenEnBewaren(IEnumerable<int> gelieerdePersoonIDs);
 
 		/// <summary>

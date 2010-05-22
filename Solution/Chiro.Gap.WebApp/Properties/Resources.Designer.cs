@@ -187,6 +187,24 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to De personen zijn nu ingeschreven als leden van je groep..
+        /// </summary>
+        public static string LedenGemaaktFeedback {
+            get {
+                return ResourceManager.GetString("LedenGemaaktFeedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Er is iets foutgelopen, niet alle personen konden worden ingeschreven als leden in je groep..
+        /// </summary>
+        public static string LedenMakenMisluktFout {
+            get {
+                return ResourceManager.GetString("LedenMakenMisluktFout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to lidgegevens.
         /// </summary>
         public static string LidGegevens {
@@ -196,7 +214,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Die persoon is nu ingeschreven als lid van je groep..
+        ///   Looks up a localized string similar to De persoon is nu ingeschreven als lid van je groep..
         /// </summary>
         public static string LidGemaaktFeedback {
             get {

@@ -165,10 +165,16 @@
     <value>lidgegevens</value>
   </data>
   <data name="LidGemaaktFeedback" xml:space="preserve">
-    <value>Die persoon is nu ingeschreven als lid van je groep.</value>
+    <value>De persoon is nu ingeschreven als lid van je groep.</value>
+  </data>
+  <data name="LedenGemaaktFeedback" xml:space="preserve">
+    <value>De personen zijn nu ingeschreven als leden van je groep.</value>
   </data>
   <data name="LidMakenMisluktFout" xml:space="preserve">
     <value>Er is iets foutgelopen, die persoon is nog niet ingeschreven als lid van je groep.</value>
+  </data>
+  <data name="LedenMakenMisluktFout" xml:space="preserve">
+    <value>Er is iets foutgelopen, niet alle personen konden worden ingeschreven als leden in je groep.</value>
   </data>
   <data name="NiemandGeselecteerdFout" xml:space="preserve">
     <value>Je hebt nog niemand geselecteerd, dus kun je die actie niet uitvoeren</value>

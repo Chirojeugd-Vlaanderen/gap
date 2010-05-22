@@ -67,7 +67,7 @@
             
             <% if (TempData["feedback"] != null)
                { %>
-                <div class="Feedback"><%= TempData["feedback"] %></div>
+                <div class="Feedback"><%= TempData["feedback"].ToString().Replace(Environment.NewLine, "<br>")%></div>
             <% } %>
             
             <% if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)

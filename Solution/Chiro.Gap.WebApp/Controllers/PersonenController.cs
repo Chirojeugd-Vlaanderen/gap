@@ -185,8 +185,15 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			if (model.GekozenActie == 1 && model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0)
 			{
-				IEnumerable<int> gemaakteleden = ServiceHelper.CallService<ILedenService, IEnumerable<int>>(g => g.LedenMakenEnBewaren(model.GekozenGelieerdePersoonIDs));
-				// TODO TempData["feedback"] =  aanpassen
+				try
+				{
+					IEnumerable<int> gemaakteleden = ServiceHelper.CallService<ILedenService, IEnumerable<int>>(g => g.LedenMakenEnBewaren(model.GekozenGelieerdePersoonIDs));
+					TempData["feedback"] = Properties.Resources.LedenGemaaktFeedback;
+				}
+				catch (Exception ex)
+				{
+					TempData["feedback"] = string.Concat(Properties.Resources.LedenMakenMisluktFout, Environment.NewLine, ex.Message.ToString());
+				}
 				return RedirectToAction("List", new
 				{
 					page = Sessie.LaatstePagina,
