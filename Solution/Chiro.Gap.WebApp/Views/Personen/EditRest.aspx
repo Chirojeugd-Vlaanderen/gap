@@ -1,6 +1,7 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.PersonenLedenModel>" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
+<%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
@@ -18,7 +19,7 @@
         <%=Html.TextBox("AdNummer", Model.PersoonLidInfo.PersoonDetail.AdNummer, 
                 new Dictionary<string, object> { 
                     {"readonly", "readonly"}, 
-                    {"title", "Stamnummer kan niet ingegeven of gewijzigd worden." } })%>
+                    {"title", "AD-nummer kan niet ingegeven of gewijzigd worden." } })%>
         </p>
         
         <p>

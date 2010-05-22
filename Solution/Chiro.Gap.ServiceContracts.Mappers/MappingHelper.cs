@@ -215,7 +215,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.Communicatie))
 				.ForMember(
 					dst => dst.LidInfo,
-					opt => opt.MapFrom(src => src.Lid));
+					opt => opt.MapFrom(src => src.Lid.FirstOrDefault())); //omdat je altijd maar 1 lid mag opvragen
 
 			#region Mapping van Exceptions naar Faults
 			// TODO: Kan het mappen van die generics niet efficienter?
