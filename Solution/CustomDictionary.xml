@@ -8,6 +8,8 @@
 			<Word>Chiro</Word>
 			<Word>Adf</Word>
 			<Word>Cg2</Word>
+      <Word>Mvc</Word>
+      <Word>Cdf</Word>
 		</Recognized>
 		<Deprecated>
 			<Term PreferredAlternate="EnterpriseServices">ComPlus</Term>
