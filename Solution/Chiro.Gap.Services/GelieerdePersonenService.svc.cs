@@ -502,7 +502,7 @@ namespace Chiro.Gap.Services
 					gelieerdePersoonID);
 
 			}
-			catch (ValidatieException ex)
+			catch (ValidatieException)
 			{
 				// TODO: specifiekere info bij in de exceptie.  Zie ticket #497.
 				throw new FaultException<GapFault>(new GapFault() {FoutNummer = FoutNummers.ValidatieFout});

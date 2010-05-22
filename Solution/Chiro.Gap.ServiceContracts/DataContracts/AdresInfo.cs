@@ -21,7 +21,6 @@ namespace Chiro.Gap.ServiceContracts
 	[DataContract]
 	public class AdresInfo
 	{
-		private string _bus;
 
 		/// <summary>
 		/// Het AdresID
