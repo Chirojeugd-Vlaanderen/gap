@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="DatumHelper.cs" />
     <Compile Include="DatumInVerledenAttribute.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Mvc\DatumInVerledenAttributeAdapter.cs" />
     <Compile Include="Mvc\StringLengteAttributeAdapter.cs" />
     <Compile Include="Mvc\VerplichtAttributeAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,6 +66,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.nl.resx">
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
+      <Link>CustomDictionary.xml</Link>
+    </CodeAnalysisDictionary>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
