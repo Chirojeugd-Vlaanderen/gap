@@ -35,7 +35,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GelieerdePersoon_PersoonsAdres", "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.PersoonsAdres), "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.GelieerdePersoon))]
 
 // Original file name:
-// Generation date: 23/05/2010 10:39:12
+// Generation date: 23/05/2010 15:24:10
 namespace Chiro.Gap.Orm
 {
     

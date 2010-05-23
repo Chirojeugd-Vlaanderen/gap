@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Chiro.Gap.ServiceContracts.DataContracts;
 
@@ -21,13 +20,6 @@ namespace Chiro.Gap.ServiceContracts.Test
 	[TestClass]
 	public class MapperTest
 	{
-		public MapperTest()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
-
 		[ClassInitialize]
 		public static void Init(TestContext ctx)
 		{
@@ -42,9 +34,9 @@ namespace Chiro.Gap.ServiceContracts.Test
 		public void MapLijstLeden()
 		{
 			var testData = new DummyData();
-			var LidInfoLijst = Mapper.Map<IEnumerable<Lid>, IList<LidInfo>>(testData.HuidigGwj.Lid);
+			var lidInfoLijst = Mapper.Map<IEnumerable<Lid>, IList<LidInfo>>(testData.HuidigGwj.Lid);
 
-			Assert.IsTrue(LidInfoLijst.Count > 0);
+			Assert.IsTrue(lidInfoLijst.Count > 0);
 		}
 
 		/// <summary>

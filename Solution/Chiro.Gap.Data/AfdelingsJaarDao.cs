@@ -84,8 +84,14 @@ namespace Chiro.Gap.Data.Ef
 
 				resultaat = IncludesToepassen(query, paths).FirstOrDefault();
 			}
-
-			return Utility.DetachObjectGraph(resultaat);
+			if (resultaat != null)
+			{
+				return Utility.DetachObjectGraph(resultaat);
+			}
+			else
+			{
+				return null;
+			}
 		}
 	}
 }

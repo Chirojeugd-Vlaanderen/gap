@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
@@ -15,18 +12,18 @@ namespace Chiro.Gap.Dummies
 	/// </summary>
 	public class DummyData
 	{
-		private const string _NIEUWEFUNCODE = "DOM";
-		private const string _NIEUWEFUNNAAM = "Domme functie";
+		private const string NIEUWEFUNCODE = "DOM";
+		private const string NIEUWEFUNNAAM = "Domme functie";
 
-		private Groep _dummyGroep;		// testgroep
-		private GroepsWerkJaar _huidigGwj;	// testgroepswerkjaar
-		private GelieerdePersoon _gelieerdeJos;	// gelieerdePersoon genaamd 'Jos' 
-		private GelieerdePersoon _gelieerdeIrene; // gelieerdePersoon genaamd 'Irene'
-		private GelieerdePersoon _gelieerdeYvonne; // gelieerdePersoon genaamd 'Yvonne'
-		private Categorie _vervelend;		// categorie voor vervelende mensen
-		private Functie _redactie;		// functie voor 1 persoon
-		private Lid _lidJos;			// lidobject Jos
-		private Lid _lidYvonne;			// lidobject Yvonne
+		private readonly Groep _dummyGroep;		// testgroep
+		private readonly GroepsWerkJaar _huidigGwj;	// testgroepswerkjaar
+		private readonly GelieerdePersoon _gelieerdeJos;	// gelieerdePersoon genaamd 'Jos' 
+		private readonly GelieerdePersoon _gelieerdeIrene; // gelieerdePersoon genaamd 'Irene'
+		private readonly GelieerdePersoon _gelieerdeYvonne; // gelieerdePersoon genaamd 'Yvonne'
+		private readonly Categorie _vervelend;		// categorie voor vervelende mensen
+		private readonly Functie _redactie;		// functie voor 1 persoon
+		private readonly Lid _lidJos;			// lidobject Jos
+		private readonly Lid _lidYvonne;			// lidobject Yvonne
 
 		/// <summary>
 		/// Een groep met daaraan gekoppeld een aantal leden
@@ -84,18 +81,17 @@ namespace Chiro.Gap.Dummies
 			// GroepenDao.Bewaren(_dummyGroep, lambda-expressie-die-alles-meeneemt)
 			// aangeroepen moeten worden.
 
-			GroepsWerkJaarManager wjMgr = Factory.Maak<GroepsWerkJaarManager>();
-			GelieerdePersonenManager gpMgr = Factory.Maak<GelieerdePersonenManager>();
-			GroepenManager gMgr = Factory.Maak<GroepenManager>();
-			LedenManager lMgr = Factory.Maak<LedenManager>();
-			CategorieenManager cMgr = Factory.Maak<CategorieenManager>();
-			FunctiesManager fMgr = Factory.Maak<FunctiesManager>();
+			var wjMgr = Factory.Maak<GroepsWerkJaarManager>();
+			var gpMgr = Factory.Maak<GelieerdePersonenManager>();
+			var gMgr = Factory.Maak<GroepenManager>();
+			var lMgr = Factory.Maak<LedenManager>();
+			var cMgr = Factory.Maak<CategorieenManager>();
+			var fMgr = Factory.Maak<FunctiesManager>();
 
 			// Groep en groepswerkjaar
 
 			_dummyGroep = new Groep { Naam = "St.-Unittestius", Code = "tst/0001" };
-
-			_huidigGwj = gMgr.GroepsWerkJaarMaken(_dummyGroep, 2009);
+            _huidigGwj = gMgr.GroepsWerkJaarMaken(_dummyGroep, 2009);
 
 			// Categorie
 
@@ -107,29 +103,29 @@ namespace Chiro.Gap.Dummies
 
 			// Afdelingen gekoppeld aan officiële afdelingen in afdelingsjaren
 
-			OfficieleAfdeling ribbels = new OfficieleAfdeling { Naam = "Ribbels" };
-			OfficieleAfdeling rakwis = new OfficieleAfdeling { Naam = "Rakwi's" };
+			var ribbels = new OfficieleAfdeling { Naam = "Ribbels" };
+			var rakwis = new OfficieleAfdeling { Naam = "Rakwi's" };
 
-			Afdeling unittestjes = gMgr.AfdelingToevoegen(_dummyGroep, "unittestjes", "ut");
-			Afdeling speelkwis = gMgr.AfdelingToevoegen(_dummyGroep, "speelkwi's", "sk");
+			var unittestjes = gMgr.AfdelingToevoegen(_dummyGroep, "unittestjes", "ut");
+			var speelkwis = gMgr.AfdelingToevoegen(_dummyGroep, "speelkwi's", "sk");
 
 			wjMgr.AfdelingsJaarMaken(_huidigGwj, unittestjes, ribbels, 2001, 2003);
 			wjMgr.AfdelingsJaarMaken(_huidigGwj, speelkwis, rakwis, 1998, 2000);
 
 			// Gelieerde personen
 
-			Persoon jos = new Persoon { 
+			var jos = new Persoon { 
 				Naam = "Bosmans", 
 				VoorNaam = "Jos", 
 				GeboorteDatum = new DateTime(2000, 6, 28),
 				AdNummer = 1};
 
-			Persoon irene = new Persoon {
+			var irene = new Persoon {
 				Naam = "Bosmans",
 				VoorNaam = "Irène",
 				GeboorteDatum = new DateTime(1990, 3, 8) };
 			
-			Persoon yvonne = new Persoon
+			var yvonne = new Persoon
 			{
 				Naam = "Bosmans",
 				VoorNaam = "Yvonne",
@@ -137,11 +133,9 @@ namespace Chiro.Gap.Dummies
 
 			};
 
-
 			_gelieerdeJos = gpMgr.Koppelen(jos, _dummyGroep, 0);
 			_gelieerdeIrene = gpMgr.Koppelen(irene, _dummyGroep, 0);
 			_gelieerdeYvonne = gpMgr.Koppelen(yvonne, _dummyGroep, 0);
-
 
 			// Koppelingen allerhanden
 			gpMgr.CategorieKoppelen(new GelieerdePersoon[] { _gelieerdeJos }, _vervelend);
@@ -161,8 +155,6 @@ namespace Chiro.Gap.Dummies
 			// Jos krijgt een functie
 
 			fMgr.Toekennen(_lidJos, new Functie[] { _redactie });
-			
-
 		}
 
 		/// <summary>
@@ -190,11 +182,11 @@ namespace Chiro.Gap.Dummies
 		/// <summary>
 		/// Property voor een code van een niet-bestaande functie
 		/// </summary>
-		public string NieuweFunctieCode { get { return _NIEUWEFUNCODE; } }
+		public string NieuweFunctieCode { get { return NIEUWEFUNCODE; } }
 
 		/// <summary>
 		/// Property voor een naam van een niet-bestaande functie
 		/// </summary>
-		public string NieuweFunctieNaam { get { return _NIEUWEFUNNAAM; } }
+		public string NieuweFunctieNaam { get { return NIEUWEFUNNAAM; } }
 	}
 }

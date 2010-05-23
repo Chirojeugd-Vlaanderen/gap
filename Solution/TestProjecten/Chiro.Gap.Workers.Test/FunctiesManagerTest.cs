@@ -23,25 +23,7 @@ namespace Chiro.Gap.Workers.Test
 	[TestClass()]
 	public class FunctiesManagerTest
 	{
-
-
-		private TestContext testContextInstance;
-
-		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		///</summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
+        private TestContext _testContextInstance;
 
 		#region Additional test attributes
 		// 
@@ -84,10 +66,10 @@ namespace Chiro.Gap.Workers.Test
 
 			var testData = new DummyData();
 
-			FunctiesManager fm = Factory.Maak<FunctiesManager>();
-			GroepenManager gm = Factory.Maak<GroepenManager>();
+			var fm = Factory.Maak<FunctiesManager>();
+			var gm = Factory.Maak<GroepenManager>();
 
-			Functie f = gm.FunctieToevoegen(
+			var f = gm.FunctieToevoegen(
 				testData.DummyGroep,
 				testData.NieuweFunctieNaam,
 				testData.NieuweFunctieCode,
@@ -256,8 +238,8 @@ namespace Chiro.Gap.Workers.Test
 
 			var testData = new DummyData();
 
-			FunctiesManager fm = Factory.Maak<FunctiesManager>();
-			GroepenManager gm = Factory.Maak<GroepenManager>();
+			var fm = Factory.Maak<FunctiesManager>();
+			var gm = Factory.Maak<GroepenManager>();
 
 			Functie f = gm.FunctieToevoegen(
 				testData.DummyGroep,

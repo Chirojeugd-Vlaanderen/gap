@@ -21,12 +21,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Objects.DataClasses;
 using System.Linq;
-using System.Text;
 using System.Linq.Expressions;
 using System.IO;
-using System.Diagnostics;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Chiro.Cdf.Data.Entity

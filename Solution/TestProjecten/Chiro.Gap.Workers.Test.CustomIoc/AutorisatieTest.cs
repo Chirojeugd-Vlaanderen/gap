@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -20,13 +19,6 @@ namespace Chiro.Gap.Workers.Test
 	[TestClass]
 	public class AutorisatieTest
 	{
-		public AutorisatieTest()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
-
 		#region Additional test attributes
 		//
 		// You can use the following additional attributes as you write your tests:
@@ -78,11 +70,11 @@ namespace Chiro.Gap.Workers.Test
 			ledenDaoMock.Setup(foo => foo.AllesOphalen(testData.HuidigGwj.ID)).Returns(new List<Lid>());
 			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(testData.HuidigGwj.ID)).Returns(false);
 
-			Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
-			Factory.InstantieRegistreren<IAutorisatieManager>(autorisatieMgrMock.Object);
+			Factory.InstantieRegistreren(ledenDaoMock.Object);
+			Factory.InstantieRegistreren(autorisatieMgrMock.Object);
 
-			LedenDaoCollectie daos = Factory.Maak<LedenDaoCollectie>();
-			LedenManager lm = Factory.Maak<LedenManager>();
+			var daos = Factory.Maak<LedenDaoCollectie>();
+			var lm = Factory.Maak<LedenManager>();
 
 			// Act
 
@@ -115,13 +107,13 @@ namespace Chiro.Gap.Workers.Test
 			groepsWerkJaarDaoMock.Setup(foo => foo.Ophalen(testData.HuidigGwj.ID)).Returns(testData.HuidigGwj);
 			groepenDaoMock.Setup(foo => foo.OphalenMetGroepsWerkJaren(testData.DummyGroep.ID)).Returns(testData.DummyGroep);
 
-			Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
-			Factory.InstantieRegistreren<IGroepenDao>(groepenDaoMock.Object);
-			Factory.InstantieRegistreren<IAutorisatieManager>(autorisatieMgrMock.Object);
-			Factory.InstantieRegistreren<IGroepsWerkJaarDao>(groepsWerkJaarDaoMock.Object);
+			Factory.InstantieRegistreren(ledenDaoMock.Object);
+			Factory.InstantieRegistreren(groepenDaoMock.Object);
+			Factory.InstantieRegistreren(autorisatieMgrMock.Object);
+			Factory.InstantieRegistreren(groepsWerkJaarDaoMock.Object);
 
-			LedenDaoCollectie daos = Factory.Maak<LedenDaoCollectie>();
-			LedenManager lm = Factory.Maak<LedenManager>();
+			Factory.Maak<LedenDaoCollectie>();
+			var lm = Factory.Maak<LedenManager>();
 
 			// Act
 
@@ -377,9 +369,9 @@ namespace Chiro.Gap.Workers.Test
 			var gpDaoMock = new Mock<IGelieerdePersonenDao>();
 
 			gpDaoMock.Setup(foo => foo.Ophalen(testData.GelieerdeJos.ID
-			    , It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>())).Returns(() => testData.GelieerdeJos);
+			    , It.IsAny<Expression<Func<GelieerdePersoon, Object>>>())).Returns(() => testData.GelieerdeJos);
 
-			// Het stuk It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>()
+			// Het stuk It.IsAny<Expression<Func<GelieerdePersoon, Object>>>()
 			// zorgt ervoor dat de Mock de linq-expressies in 'Ophalen' negeert.
 			//
 			// De constructie in 'Returns' zorgt ervoor dat MaakTestGelieerdePersoon iedere
@@ -388,9 +380,9 @@ namespace Chiro.Gap.Workers.Test
 
 			// Maak nu de GelieerdePersoonenManager aan die we willen testen.
 
-			Factory.InstantieRegistreren<IGelieerdePersonenDao>(gpDaoMock.Object);
+			Factory.InstantieRegistreren(gpDaoMock.Object);
 
-			GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
+			var gpm = Factory.Maak<GelieerdePersonenManager>();
 
 			#endregion
 

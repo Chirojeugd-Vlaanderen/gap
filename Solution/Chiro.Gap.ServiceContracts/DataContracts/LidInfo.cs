@@ -45,7 +45,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		public bool NonActief { get; set; }
 
 		/// <summary>
-		/// Geeft aan of de leid(st)er een abonnement heeft op dubbelpunt
+		/// Geeft aan of de leid(st)er een abonnement heeft op Dubbelpunt
 		/// </summary>
 		[DataMember]
 		public bool Dubbelpunt { get; set; }

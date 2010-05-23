@@ -27,7 +27,7 @@ namespace Chiro.Cdf.Ioc.Test
         [TestMethod]
         public void InstantieerLedenManager()
         {
-            var lm = Factory.Maak<LedenManager>();
+			var lm = Factory.Maak<LedenManager>();
 
             // Flauwe test, maar ik wil niet dat de IOC een
             // exception veroorzaakt.

@@ -14,16 +14,11 @@ using System.Data;
 using System.Data.Metadata.Edm;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.Serialization;
 using System.Text;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Diagnostics;
-
-using Chiro.Cdf.Data;
 
 namespace Chiro.Cdf.Data.Entity
 {

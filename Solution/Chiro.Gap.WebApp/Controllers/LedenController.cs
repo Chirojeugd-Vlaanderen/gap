@@ -18,7 +18,7 @@ namespace Chiro.Gap.WebApp.Controllers
 {
 	public class LedenController : BaseController
 	{
-		public LedenController(IServiceHelper serviceHelper) : base(serviceHelper) {}
+		public LedenController(IServiceHelper serviceHelper) : base(serviceHelper) { }
 
 		/// <summary>
 		/// Methode probeert terug te keren naar de vorige (in cookie) opgeslagen pagina. Als dit niet lukt gaat hij naar de indexpagina van de controller terug.
@@ -81,8 +81,8 @@ namespace Chiro.Gap.WebApp.Controllers
 					(e => e.WerkJarenOphalen(groepID));
 
 			var huidig = (from g in model.WerkJaarInfos
-					 where g.ID == id
-					 select g).First();
+						  where g.ID == id
+						  select g).First();
 
 			model.GroepsWerkJaarIdZichtbaar = id;
 			model.GroepsWerkJaartalZichtbaar = huidig.WerkJaar;
@@ -208,7 +208,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					}));
 
 				return TerugNaarVorige();
-			} 
+			}
 			else
 			{
 				model.Titel = String.Format(Properties.Resources.AfdelingenAanpassen, model.Info.VolledigeNaam);
@@ -228,8 +228,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(
 				svc => svc.AfdelingenVervangen(id, model.Info.AfdelingsJaarIDs));
 			return RedirectToAction(
-				"EditRest", 
-				new { Controller = "Personen", id = gelieerdePersoonID});
+				"EditRest",
+				new { Controller = "Personen", id = gelieerdePersoonID });
 		}
 
 		/// <summary>
@@ -245,18 +245,26 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			model.HuidigLid = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(l => l.DetailsOphalen(id));
 
-			// Ik had liever hierboven nog eens LidExtras.AlleAfdelingen meegegeven, maar
-			// het datacontract (LidInfo) voorziet daar niets voor.
+			if (model.HuidigLid != null)
+			{
+				// Ik had liever hierboven nog eens LidExtras.AlleAfdelingen meegegeven, maar
+				// het datacontract (LidInfo) voorziet daar niets voor.
 
-			AfdelingenOphalen(model);
-			FunctiesOphalen(model);
+				AfdelingenOphalen(model);
+				FunctiesOphalen(model);
 
-			model.Titel = String.Format(
-				"{0}: {1}",
-				model.HuidigLid.PersoonDetail.VolledigeNaam,
-				Properties.Resources.LidGegevens);
+				model.Titel = String.Format(
+					"{0}: {1}",
+					model.HuidigLid.PersoonDetail.VolledigeNaam,
+					Properties.Resources.LidGegevens);
 
-			return View("EditLidGegevens", model);
+				return View("EditLidGegevens", model);
+			}
+			else
+			{
+				TempData["feedback"] = "Er is iets foutgelopen toen we de gegevens wilden opvragen.";
+				return RedirectToAction("Index", groepID);
+			}
 		}
 
 		/// <summary>

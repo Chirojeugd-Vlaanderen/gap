@@ -73,7 +73,7 @@
 		<p>
 			<input type="submit" value="Bewaren" />
 		</p>
-		<%}
-		%>
 	</fieldset>
+	<%}
+	%>
 </asp:Content>

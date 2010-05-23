@@ -121,7 +121,7 @@ namespace Chiro.Cdf.Ioc
 		/// <param name="instantie">Te gebruiken object</param>
 		public static void InstantieRegistreren<T>(T instantie)
 		{
-			Container.RegisterInstance<T>(instantie);
+			Container.RegisterInstance(instantie);
 		}
 	}
 }

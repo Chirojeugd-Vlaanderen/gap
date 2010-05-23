@@ -10,47 +10,19 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	/// </summary>
 	public class LedenDaoCollectie
 	{
-		public ILedenDao LedenDao
-		{
-			get;
-			set;
-		}
+		public ILedenDao LedenDao { get; set; }
 
-		public IKindDao KindDao
-		{
-			get;
-			set;
-		}
+		public IKindDao KindDao { get; set; }
 
-		public ILeidingDao LeidingDao
-		{
-			get;
-			set;
-		}
+		public ILeidingDao LeidingDao { get; set; }
 
-		public IGroepenDao GroepenDao
-		{
-			get;
-			set;
-		}
+		public IGroepenDao GroepenDao { get; set; }
 
-		public IGelieerdePersonenDao GelieerdePersoonDao
-		{
-			get;
-			set;
-		}
+		public IGelieerdePersonenDao GelieerdePersoonDao { get; set; }
 
-		public IAfdelingsJarenDao AfdelingsJaarDao
-		{
-			get;
-			set;
-		}
+		public IAfdelingsJarenDao AfdelingsJaarDao { get; set; }
 
-		public IGroepsWerkJaarDao GroepsWerkJaarDao
-		{
-			get;
-			set;
-		}
+		public IGroepsWerkJaarDao GroepsWerkJaarDao { get; set; }
 
 		/// <summary>
 		/// Instantieert een LedenDaoCollectie-object
