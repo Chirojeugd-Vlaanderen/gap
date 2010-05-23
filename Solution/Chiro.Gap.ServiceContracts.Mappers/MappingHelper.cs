@@ -69,7 +69,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.Persoon.ID))
 				.ForMember(
 					dst => dst.VoorkeursAdresID,
-					opt => opt.MapFrom(src => src.PersoonsAdres.ID))
+					opt => opt.MapFrom(src => src.PersoonsAdres == null ? 0 : src.PersoonsAdres.ID))
 				.ForMember(
 					dst => dst.VolledigeNaam,
 					opt => opt.Ignore());
