@@ -100,7 +100,11 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
 			{
-				return _dao.Ophalen(gelieerdePersoonID, foo => foo.Persoon, foo => foo.Groep, foo => foo.Communicatie);
+				return _dao.Ophalen(gelieerdePersoonID, 
+					foo => foo.Persoon, 
+					foo => foo.Groep, 
+					foo => foo.Communicatie,
+					foo => foo.Communicatie.First().CommunicatieType);
 			}
 			else
 			{
@@ -203,7 +207,7 @@ namespace Chiro.Gap.Workers
 			GelieerdePersoon origineel = _dao.Ophalen(p.ID, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
 			if (origineel.Persoon.AdNummer == p.Persoon.AdNummer)
 			{
-				return _dao.Bewaren(p, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
+				return _dao.Bewaren(p, e => e.Persoon, e => e.Communicatie.First().CommunicatieType.WithoutUpdate());
 			}
 			else
 			{

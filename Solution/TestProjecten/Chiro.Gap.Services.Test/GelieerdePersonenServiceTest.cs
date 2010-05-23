@@ -87,15 +87,15 @@ namespace Chiro.Gap.Services.Test
 		[ExpectedException(typeof(FaultException<GapFault>))]
 		public void CommunicatieVormToevoegenTest()
 		{
-			GelieerdePersonenService target = Factory.Maak<GelieerdePersonenService>();
+			var target = Factory.Maak<GelieerdePersonenService>();
 
-			int gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
+			var gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
 
-			CommunicatieInfo commInfo = new CommunicatieInfo()
-			                            	{
-			                            		CommunicatieTypeID = 1,
-			                            		Nummer = TestInfo.ONGELDIGTELEFOONNR
-			                            	};
+			var commInfo = new CommunicatieInfo()
+                            	{
+                            		CommunicatieTypeID = 1,
+                            		Nummer = TestInfo.ONGELDIGTELEFOONNR
+                            	};
 
 			target.CommunicatieVormToevoegen(gelieerdePersoonID, commInfo);
 			Assert.IsTrue(false);

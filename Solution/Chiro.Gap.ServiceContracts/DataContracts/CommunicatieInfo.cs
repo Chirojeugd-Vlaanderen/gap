@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts
 {
-	[KnownType(typeof(CommunicatieDetail))]		// nodig voor inheritance
 	[DataContract]
-	public class CommunicatieInfo
+	public class CommunicatieInfo: ICommunicatie
 	{
 		[DataMember]
 		public int ID
@@ -51,5 +51,14 @@ namespace Chiro.Gap.ServiceContracts
 		[DataMember]
         [Verplicht]
 		public int CommunicatieTypeID { get; set; }
+
+		[DataMember]
+		public string CommunicatieTypeOmschrijving { get; set; }
+
+		[DataMember]
+		public string CommunicatieTypeValidatie { get; set; }
+
+		[DataMember]
+		public string CommunicatieTypeVoorbeeld { get; set; }
 	}
 }

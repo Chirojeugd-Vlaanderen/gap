@@ -827,10 +827,10 @@ namespace Chiro.Gap.WebApp.Controllers
 				CommunicatieTypeInfo>(svc => svc.CommunicatieTypeOphalen(
 					model.NieuweCommVorm.CommunicatieTypeID));
 
-			Mapper.CreateMap<CommunicatieInfo, CommunicatieDetail>()
+			Mapper.CreateMap<CommunicatieInfo, CommunicatieInfo>()
 				.ForMember(dst => dst.CommunicatieTypeValidatie, opt => opt.Ignore());
 
-			var communicatieDetail = Mapper.Map<CommunicatieInfo, CommunicatieDetail>(
+			var communicatieDetail = Mapper.Map<CommunicatieInfo, CommunicatieInfo>(
 				model.NieuweCommVorm);
 
 			communicatieDetail.CommunicatieTypeOmschrijving = communicatieType.Omschrijving;
@@ -891,7 +891,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			// TODO dit is niet juist broes, want hij haalt 2 keer de persoon op?
 			var persoonDetail = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailsOphalen(gelieerdePersoonID));
-			var commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieDetail>(l => l.CommunicatieVormOphalen(commvormID));
+			var commv = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieInfo>(l => l.CommunicatieVormOphalen(commvormID));
 			var model = new CommVormModel(persoonDetail, commv);
 			BaseModelInit(model, groepID);
 			model.Titel = "Communicatievorm bewerken";
@@ -905,7 +905,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult BewerkenCommVorm(CommVormModel model, int gelieerdePersoonID, int groepID)
 		{
 			var validator = new CommunicatieVormValidator();
-			var commVorm = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieDetail>(l => l.CommunicatieVormOphalen(model.NieuweCommVorm.ID));
+			var commVorm = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieInfo>(l => l.CommunicatieVormOphalen(model.NieuweCommVorm.ID));
 
 			// communicatietype van de oorspronkelijke communicatievorm overnemen.
 			// (gedoe)

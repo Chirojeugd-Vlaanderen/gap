@@ -212,7 +212,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="c">De aan te passen communicatievorm</param>
 		[OperationContract]
-		void CommunicatieVormAanpassen(CommunicatieDetail c);
+		void CommunicatieVormAanpassen(CommunicatieInfo c);
 
 		/// <summary>
 		/// Haalt info over een bepaald communicatietype op, op basis van ID
@@ -235,7 +235,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="commvormID">ID van de communicatievorm waarover het gaat</param>
 		/// <returns>De communicatievorm met de opgegeven ID</returns>
 		[OperationContract]
-		CommunicatieDetail CommunicatieVormOphalen(int commvormID);
+		CommunicatieInfo CommunicatieVormOphalen(int commvormID);
 
 		#endregion commvormen
 

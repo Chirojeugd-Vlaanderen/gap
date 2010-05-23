@@ -23,7 +23,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Nieuwe input voor de communicatievorm voor de gegeven gelieerde personen
 		/// </summary>
-		public CommunicatieDetail NieuweCommVorm { get; set; }
+		public CommunicatieInfo NieuweCommVorm { get; set; }
 
 		/// <summary>
 		/// De standaardconstructor - creëert leeg CommVormModel
@@ -31,10 +31,10 @@ namespace Chiro.Gap.WebApp.Models
 		public CommVormModel()
 		{
 			Aanvrager = new PersoonDetail();
-			NieuweCommVorm = new CommunicatieDetail();
+			NieuweCommVorm = new CommunicatieInfo();
 		}
 
-		public CommVormModel(PersoonDetail aanvrager, CommunicatieDetail v)
+		public CommVormModel(PersoonDetail aanvrager, CommunicatieInfo v)
 			: this()
 		{
 			Aanvrager = aanvrager;

@@ -414,15 +414,13 @@ namespace Chiro.Gap.Services
 			// 4. Bewaar
 
 			var communicatieVorm = Mapper.Map<CommunicatieInfo, CommunicatieVorm>(commInfo);
-			communicatieVorm.CommunicatieType = 
-				_cvMgr.CommunicatieTypeOphalen(commInfo.CommunicatieTypeID);
+			communicatieVorm.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(commInfo.CommunicatieTypeID);
 
 			try
 			{
-				_cvMgr.CommunicatieVormToevoegen(
-					communicatieVorm,
-					gelieerdePersoonID);
-
+				GelieerdePersoon gp = _gpMgr.OphalenMetCommVormen(gelieerdePersoonID);
+				_cvMgr.AanpassingenDoorvoeren(gp, communicatieVorm);
+				_gpMgr.BewarenMetCommVormen(gp);
 			}
 			catch (ValidatieException)
 			{
@@ -453,9 +451,21 @@ namespace Chiro.Gap.Services
 		/// Persisteert de wijzigingen aan een bestaande communicatievorm
 		/// </summary>
 		/// <param name="v">De aan te passen communicatievorm</param>
-		public void CommunicatieVormAanpassen(CommunicatieDetail v)
+		public void CommunicatieVormAanpassen(CommunicatieInfo v)
 		{
-			_cvMgr.Bewaren(Mapper.Map<CommunicatieDetail, CommunicatieVorm>(v));
+			var communicatieVorm = Mapper.Map<CommunicatieInfo, CommunicatieVorm>(v);
+			communicatieVorm.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(v.CommunicatieTypeID);
+
+			try{
+				GelieerdePersoon gp = _cvMgr.OphalenMetGelieerdePersoon(v.ID);
+				_cvMgr.AanpassingenDoorvoeren(gp, communicatieVorm);
+				_gpMgr.BewarenMetCommVormen(gp);
+			}
+			catch (ValidatieException)
+			{
+				// TODO: specifiekere info bij in de exceptie.  Zie ticket #497.
+				throw new FaultException<GapFault>(new GapFault() {FoutNummer = FoutNummers.ValidatieFout});
+			}
 		}
 
 		/// <summary>
@@ -463,9 +473,9 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		/// <param name="commvormID">ID van de communicatievorm waarover het gaat</param>
 		/// <returns>De communicatievorm met de opgegeven ID</returns>
-		public CommunicatieDetail CommunicatieVormOphalen(int commvormID)
+		public CommunicatieInfo CommunicatieVormOphalen(int commvormID)
 		{
-			return Mapper.Map<CommunicatieVorm, CommunicatieDetail>(_cvMgr.Ophalen(commvormID));
+			return Mapper.Map<CommunicatieVorm, CommunicatieInfo>(_cvMgr.Ophalen(commvormID));
 		}
 
 		/// <summary>

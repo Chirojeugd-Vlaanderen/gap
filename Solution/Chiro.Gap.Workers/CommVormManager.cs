@@ -3,12 +3,14 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.Workers.Exceptions;
 
@@ -48,14 +50,28 @@ namespace Chiro.Gap.Workers
 		/// <returns>Gevraagde communicatievorm</returns>
 		public CommunicatieVorm Ophalen(int commvormID)
 		{
-			if (_autorisatieMgr.IsGavCommVorm(commvormID))
-			{
-				return _dao.Ophalen(commvormID, foo => foo.CommunicatieType);
-			}
-			else
+			if (!_autorisatieMgr.IsGavCommVorm(commvormID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
+			return _dao.Ophalen(commvormID, foo => foo.CommunicatieType);
+		}
+
+		/// <summary>
+		/// Haalt gelieerdepersoon en zijn gelinkte commvormen, gegeven een ID van een van zijn commvormen
+		/// </summary>
+		/// <param name="commvormID">ID van een van de persoon zijn communicatievormen</param>
+		/// <returns>Gevraagde communicatievorm</returns>
+		public GelieerdePersoon OphalenMetGelieerdePersoon(int commvormID)
+		{
+			if (!_autorisatieMgr.IsGavCommVorm(commvormID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+			return _dao.Ophalen(commvormID, foo => foo.CommunicatieType,
+											foo => foo.GelieerdePersoon.Persoon, 
+											foo => foo.GelieerdePersoon.Communicatie,
+											foo => foo.GelieerdePersoon.Communicatie.First().CommunicatieType).GelieerdePersoon;
 		}
 
 		/// <summary>
@@ -65,14 +81,11 @@ namespace Chiro.Gap.Workers
 		/// <returns>De bewaarde communicatievorm</returns>
 		public CommunicatieVorm Bewaren(CommunicatieVorm commvorm)
 		{
-			if (_autorisatieMgr.IsGavCommVorm(commvorm.ID))
-			{
-				return _dao.Bewaren(commvorm);
-			}
-			else
+			if (!_autorisatieMgr.IsGavCommVorm(commvorm.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
+			return _dao.Bewaren(commvorm);
 		}
 
 		/// <summary>
@@ -112,32 +125,6 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Een nieuwe communicatievorm opslaan voor de gelieerde persoon met de opgegeven ID
-		/// </summary>
-		/// <param name="comm">De communicatievorm die je wilt opslaan, met daaraan gekoppeld
-		/// zijn type.</param>
-		/// <param name="gelieerdePersoonID">De ID van de gelieerde persoon over wie het gaat</param>
-		public void CommunicatieVormToevoegen(CommunicatieVorm comm, int gelieerdePersoonID)
-		{
-			if (!_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-			GelieerdePersoon origineel = _geldao.Ophalen(gelieerdePersoonID, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
-			var cvValid = new CommunicatieVormValidator();
-
-			if (cvValid.Valideer(comm))
-			{
-				origineel.Communicatie.Add(comm);
-				_dao.Bewaren(comm, l => l.CommunicatieType.WithoutUpdate(), l => l.GelieerdePersoon.WithoutUpdate());
-			}
-			else
-			{
-				throw new ValidatieException(string.Format(Properties.Resources.CommunicatieVormValidatieFeedback, comm.Nummer, comm.CommunicatieType.Omschrijving));
-			}
-		}
-
-		/// <summary>
 		/// Verwijdert een communicatievorm, en persisteert.
 		/// </summary>
 		/// <param name="comm">Te verwijderen communicatievorm</param>
@@ -160,6 +147,51 @@ namespace Chiro.Gap.Workers
 			}
 			comm.TeVerwijderen = true;
 			_dao.Bewaren(comm);
+		}
+
+		public void AanpassingenDoorvoeren(GelieerdePersoon gp, CommunicatieVorm nieuwecv)
+		{
+			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+
+			CommunicatieVorm oudecv = gp.Communicatie.Where(e => e.ID == nieuwecv.ID).FirstOrDefault();
+
+			var cvValid = new CommunicatieVormValidator();
+
+			if (!cvValid.Valideer(nieuwecv))
+			{
+				throw new ValidatieException(string.Format(Properties.Resources.CommunicatieVormValidatieFeedback, nieuwecv.Nummer, nieuwecv.CommunicatieType.Omschrijving));
+			}
+
+			if(oudecv!=null)
+			{
+				gp.Communicatie.Remove(oudecv);
+			}
+
+			gp.Communicatie.Add(nieuwecv);
+			nieuwecv.GelieerdePersoon = gp;
+
+			bool seen = false;
+			foreach(CommunicatieVorm cv in gp.Communicatie)
+			{
+				if (cv.CommunicatieType.ID == nieuwecv.CommunicatieType.ID)
+				{
+					if (cv.Voorkeur && seen)
+					{
+						cv.Voorkeur = false;
+					}
+					if(!seen && cv.Voorkeur)
+					{
+						seen = true;
+					}
+				}
+			}
+			if(!seen)
+			{
+				nieuwecv.Voorkeur = true;
+			}
 		}
 	}
 }

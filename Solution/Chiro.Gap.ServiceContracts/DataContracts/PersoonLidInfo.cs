@@ -26,6 +26,6 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		public IEnumerable<PersoonsAdresInfo> PersoonsAdresInfo { get; set; }
 
 		[DataMember]
-		public IEnumerable<CommunicatieDetail> CommunicatieInfo { get; set; }
+		public IEnumerable<CommunicatieInfo> CommunicatieInfo { get; set; }
 	}
 }
