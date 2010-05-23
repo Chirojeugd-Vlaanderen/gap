@@ -19,27 +19,13 @@ namespace Chiro.Gap.WebApp.Controllers
 	/// <summary>
 	/// 
 	/// </summary>
-	public class AfdelingController : BaseController
+	public class AfdelingenController : BaseController
 	{
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="serviceHelper"></param>
-		public AfdelingController(IServiceHelper serviceHelper) : base(serviceHelper) { }
-
-		/// <summary>
-		/// Methode probeert terug te keren naar de vorige (in cookie) opgeslagen pagina. Als dit niet lukt gaat hij naar de indexpagina van de controller terug.
-		/// </summary>
-		/// <returns></returns>
-		public ActionResult TerugNaarVorige()
-		{
-			string url = ClientState.VorigePagina;
-			if (url == null)
-			{
-				return RedirectToAction("Index");
-			}
-			return Redirect(url);
-		}
+		public AfdelingenController(IServiceHelper serviceHelper) : base(serviceHelper) { }
 
 		// GET: /Afdeling/
 		public ActionResult Index(int groepID)

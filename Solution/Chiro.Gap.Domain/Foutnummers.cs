@@ -42,6 +42,7 @@ namespace Chiro.Gap.Domain
 
 		#region nog te verdelen
 		public const int CategorieNietLeeg = 0xf0;
+		public const int FunctieNietLeeg = 0xf1;
 		#endregion
 	}
 }

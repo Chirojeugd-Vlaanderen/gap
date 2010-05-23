@@ -7,13 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Data.Objects;
-using System.Data;
 using System.Data.Objects.DataClasses;
-
-using Chiro.Cdf.Data;
-using Chiro.Cdf.Data.Entity;
 
 namespace Chiro.Cdf.Data.Entity
 {
@@ -111,26 +106,23 @@ namespace Chiro.Cdf.Data.Entity
 		{
 			IList<TEntiteit> result;
 
-			List<int> list = new List<int>();
+			var list = new List<int>();
 			list.Add(id);
 
-			using (TContext db = new TContext())
+			using (var db = new TContext())
 			{
 				aantalTotaal = (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
-						.Where(Utility.BuildContainsExpression<TEntiteit, int>(f, list))
+						.Where(Utility.BuildContainsExpression(f, list))
 								select t).Count();
 
-				ObjectQuery<TEntiteit> query =
+				var query =
 					(from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
 					 select t).OrderBy(basisent => basisent.ID).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte) as ObjectQuery<TEntiteit>;
 
 				result = (IncludesToepassen(query, paths)).ToList<TEntiteit>();
 			}
 
-			if (result != null)
-			{
-				result = Utility.DetachObjectGraph(result);
-			}
+			result = Utility.DetachObjectGraph(result);
 
 			return result;
 		}
@@ -163,10 +155,8 @@ namespace Chiro.Cdf.Data.Entity
 				result = (IncludesToepassen(query, paths)).ToList<TEntiteit>();
 			}
 
-			if (result != null)
-			{
-				result = Utility.DetachObjectGraph(result);
-			}
+			result = Utility.DetachObjectGraph(result);
+
 			return result;
 		}
 
@@ -202,12 +192,12 @@ namespace Chiro.Cdf.Data.Entity
 		public virtual IList<TEntiteit> AllesOphalen()
 		{
 			List<TEntiteit> result;
-			using (TContext db = new TContext())
+			using (var db = new TContext())
 			{
 				// Constructie met OfType zodat overerving ook werkt.
 				ObjectQuery<TEntiteit> oq = db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>();
 				oq.MergeOption = MergeOption.NoTracking;
-				result = oq.ToList<TEntiteit>();
+				result = oq.ToList();
 			}
 			return result;
 		}
@@ -261,8 +251,8 @@ namespace Chiro.Cdf.Data.Entity
 			// Als er 'root'-entiteiten te verwijderen waren, dan halen we die ook uit de lijst
 
 			return (from entiteit in es
-				where entiteit.TeVerwijderen == false
-				select entiteit).ToArray();
+					where entiteit.TeVerwijderen == false
+					select entiteit).ToArray();
 		}
 		#endregion
 	}

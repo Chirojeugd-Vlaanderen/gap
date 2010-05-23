@@ -19,9 +19,6 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		public int LidID { get; set; }
 
-		//[DataMember]
-		//public PersoonDetail PersoonDetail { get; set; }
-
 		/// <summary>
 		/// Kind of leiding
 		/// </summary>
@@ -44,13 +41,14 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// Geeft aan of het lid inactief is of niet
 		/// </summary>
 		[DataMember]
+		[DisplayName(@"Non-actief")]
 		public bool NonActief { get; set; }
 
 		/// <summary>
 		/// Geeft aan of de leid(st)er een abonnement heeft op dubbelpunt
 		/// </summary>
 		[DataMember]
-		public bool DubbelPunt { get; set; }
+		public bool Dubbelpunt { get; set; }
 
 		/// <summary>
 		/// De lijst van afdelingIDs waarin het lid zit (1 voor een kind)

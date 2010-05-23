@@ -486,7 +486,7 @@ namespace Chiro.Gap.Workers
 			else
 			{
 				var leiding = (Leiding)lid;
-				leiding.DubbelPuntAbonnement = lidInfo.DubbelPunt;
+				leiding.DubbelpuntAbonnement = lidInfo.Dubbelpunt;
 				leiding.NonActief = lidInfo.NonActief;
 			}
 		}

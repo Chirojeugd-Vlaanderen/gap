@@ -143,8 +143,15 @@
     <value>De waarde voor {0} voldoet niet aan de verplichte structuur: {1}</value>
     <comment>Parameters: 0 = inputcontrol, 1 = formatvoorbeeld</comment>
   </data>
+  <data name="FunctieCodeBestaatAl" xml:space="preserve">
+    <value>Je groep heeft al een functie met code '{0}': '{1}'.</value>
+    <comment>Parameters: 0 - code, 1 - naam</comment>
+  </data>
   <data name="FunctieMeerdereKeren" xml:space="preserve">
     <value>Er zijn {2} leden met de functie {0} ({1}), en er mag er zo maar één zijn.</value>
+  </data>
+  <data name="FunctieNaamBestaatAl" xml:space="preserve">
+    <value>Je groep heeft al een functie met die naam: '{1}' ('{0}').</value>
   </data>
   <data name="FunctieOntbreekt" xml:space="preserve">
     <value>Er is nog niemand met de functie {0} ({1}).</value>
@@ -193,5 +200,8 @@
   </data>
   <data name="WoontDaarAl" xml:space="preserve">
     <value>Deze persoon woont al op het gevraagde adres.</value>
+  </data>
+  <data name="WijzigingenNietOpgeslagenFout" xml:space="preserve">
+    <value>Er is iets foutgelopen, de wijzigingen zijn niet opgeslagen</value>
   </data>
 </root>

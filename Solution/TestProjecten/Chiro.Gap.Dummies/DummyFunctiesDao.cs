@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -32,7 +30,7 @@ namespace Chiro.Gap.Dummies
 		/// contactpersoon en financieel verantwoordelijke
 		/// </summary>
 		/// <returns></returns>
-		public IEnumerable<Chiro.Gap.Orm.Functie> NationaalBepaaldeFunctiesOphalen()
+		public IEnumerable<Functie> NationaalBepaaldeFunctiesOphalen()
 		{
 			return new Functie[]
 			{
@@ -51,7 +49,11 @@ namespace Chiro.Gap.Dummies
 			};
 		}
 
-		#endregion
+		public IEnumerable<Functie> FunctiesPerGroepOphalen(int groepID)
+		{
+			throw new NotImplementedException();
+		}
 
+		#endregion
 	}
 }

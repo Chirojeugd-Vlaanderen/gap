@@ -1,6 +1,4 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<AfdelingsOverzichtModel>" %>
-<%@ Import Namespace="Chiro.Gap.Orm" %>
-<%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -28,9 +26,9 @@
         <td><%=ai.GeboorteJaarVan %></td>
         <td><%=ai.GeboorteJaarTot %></td>
         <td>
-            <%=Html.ActionLink("Bewerken", "Bewerken", new { Controller = "Afdeling", id = ai.AfdelingsJaarID } )%>
+            <%=Html.ActionLink("Bewerken", "Bewerken", new { Controller = "Afdelingen", id = ai.AfdelingsJaarID } )%>
             <% if (ai.IsLeeg) { %>
-            <%=Html.ActionLink("Verwijderen", "Verwijderen", new { Controller = "Afdeling", id = ai.AfdelingsJaarID } )%>
+            <%=Html.ActionLink("Verwijderen", "Verwijderen", new { Controller = "Afdelingen", id = ai.AfdelingsJaarID } )%>
             <% } %>
         </td>
     </tr>
@@ -50,7 +48,7 @@
     <tr>
         <td><%=ai.Naam %></td>
         <td><%=ai.Afkorting %></td>
-        <td><%=Html.ActionLink("Activeren in huidig werkjaar", "Activeren", new { Controller = "Afdeling", id = ai.ID } )%></td>
+        <td><%=Html.ActionLink("Activeren in huidig werkjaar", "Activeren", new { Controller = "Afdelingen", id = ai.ID } )%></td>
     </tr>
 <% } %>
 

@@ -16,11 +16,16 @@ namespace Chiro.Adf.ServiceModel
 		/// <typeparam name="I">The service type</typeparam>
 		/// <param name="service">The service instance to perform the opreation on.</param>
 		/// <param name="operation">The operation to invoke.</param>
+		// ReSharper disable InconsistentNaming
 		public static void Call<I>(this I service, Action<I> operation) where I : class
+		// ReSharper restore InconsistentNaming
 		{
-			if (service == null) throw new ArgumentNullException("service");
-			if (operation == null) throw new ArgumentNullException("operation");
-			if (!(service is IClientChannel)) throw new ArgumentException("The Call extension method can only be called in conjuction with IClientChannel proxies.");
+			if (service == null)
+				throw new ArgumentNullException("service");
+			if (operation == null)
+				throw new ArgumentNullException("operation");
+			if (!(service is IClientChannel))
+				throw new ArgumentException("The Call extension method can only be called in conjuction with IClientChannel proxies.");
 
 			try
 			{
@@ -50,11 +55,16 @@ namespace Chiro.Adf.ServiceModel
 		/// <param name="service">The serivice instance to call the operation on.</param>
 		/// <param name="operation">The service operation to invoke.</param>
 		/// <returns>the return value of the service operation.</returns>
+		// ReSharper disable InconsistentNaming
 		public static T Call<I, T>(this I service, Func<I, T> operation) where I : class
+		// ReSharper restore InconsistentNaming
 		{
-			if (service == null) throw new ArgumentNullException("service");
-			if (operation == null) throw new ArgumentNullException("operation");
-			if (!(service is IClientChannel)) throw new ArgumentException("The Call extension method can only be called in conjuction with IClientChannel proxies.");
+			if (service == null)
+				throw new ArgumentNullException("service");
+			if (operation == null)
+				throw new ArgumentNullException("operation");
+			if (!(service is IClientChannel))
+				throw new ArgumentException("The Call extension method can only be called in conjuction with IClientChannel proxies.");
 
 			try
 			{
@@ -85,7 +95,9 @@ namespace Chiro.Adf.ServiceModel
 		/// <example>
 		/// <c>CallService &lt;IMijnService, string&gt; (svc =&gt; svc.IetsDoen(id))</c>
 		/// </example>
+		// ReSharper disable InconsistentNaming
 		public static void CallService<I>(Action<I> operation) where I : class
+		// ReSharper restore InconsistentNaming
 		{
 			Call(ServiceProvider.Default.GetService<I>(), operation);
 		}
@@ -102,7 +114,9 @@ namespace Chiro.Adf.ServiceModel
 		/// <c>string = 
 		///	StaticAdfServiceHelper.CallService &lt;IMijnService, string&gt; (svc =&gt; svc.IetsDoen(id))</c>
 		/// </example>
+		// ReSharper disable InconsistentNaming
 		public static T CallService<I, T>(Func<I, T> operation) where I : class
+		// ReSharper restore InconsistentNaming
 		{
 			return Call(ServiceProvider.Default.GetService<I>(), operation);
 		}
@@ -110,7 +124,8 @@ namespace Chiro.Adf.ServiceModel
 		private static void DisposeServiceInstance(object instance)
 		{
 			var client = instance as IClientChannel;
-			if (client == null || client.State == CommunicationState.Closed) return;
+			if (client == null || client.State == CommunicationState.Closed)
+				return;
 
 			try
 			{

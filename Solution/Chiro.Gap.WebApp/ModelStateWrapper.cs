@@ -16,7 +16,7 @@ namespace Chiro.Gap.WebApp
 	/// </summary>
 	public class ModelStateWrapper : IValidatieDictionary
 	{
-		private ModelStateDictionary _modelState;
+		private readonly ModelStateDictionary _modelState;
 
 		public ModelStateWrapper(ModelStateDictionary modelState)
 		{

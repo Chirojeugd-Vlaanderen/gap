@@ -95,9 +95,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(
 					dst => dst.LidID,
 					opt => opt.MapFrom(src => src.ID))
-//				.ForMember(
-//					dst => dst.PersoonDetail,
-//					opt => opt.MapFrom(src => src.GelieerdePersoon == null ? null : src.GelieerdePersoon))
+				//				.ForMember(
+				//					dst => dst.PersoonDetail,
+				//					opt => opt.MapFrom(src => src.GelieerdePersoon == null ? null : src.GelieerdePersoon))
 				.ForMember(
 					dst => dst.Type,
 					opt => opt.MapFrom(src => src is Kind ? LidType.Kind : LidType.Leiding))
@@ -108,10 +108,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.LidgeldBetaald,
 					opt => opt.MapFrom(src => src.LidgeldBetaald))
 				.ForMember(
-					dst => dst.DubbelPunt,
+					dst => dst.Dubbelpunt,
 				// FIXME: geef hier false terug, zodat het in de lidinfo een bool is ipv bool? en het printen
 				// in de ui makkelijker is
-					opt => opt.MapFrom(src => src is Leiding ? ((Leiding)src).DubbelPuntAbonnement : false))
+					opt => opt.MapFrom(src => src is Leiding ? ((Leiding)src).DubbelpuntAbonnement : false))
 				.ForMember(
 					dst => dst.AfdelingIdLijst,
 					opt => opt.MapFrom(src => src.AfdelingIdLijstGet()))
@@ -120,7 +120,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.Functie))
 				.ForMember(
 					dst => dst.GroepsWerkJaarID,
-					opt => opt.MapFrom(src => src.GroepsWerkJaar.ID));
+					opt => opt.MapFrom(src => src.GroepsWerkJaar != null ? src.GroepsWerkJaar.ID : 0));
 
 			Mapper.CreateMap<Lid, PersoonLidInfo>()
 				.ForMember(
@@ -199,7 +199,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo2>();
 			Mapper.CreateMap<CommunicatieVorm, CommunicatieDetail>();
 
-
 			// Important: als er een lid is, dan is er altijd een gelieerdepersoon, maar niet omgekeerd, 
 			// dus passen we de link aan in de andere richting!
 			// Maar kunnen er meerdere leden zijn?
@@ -230,6 +229,11 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.Objecten.Take(Properties.Settings.Default.KleinAantal)));
 			Mapper.CreateMap<BlokkerendeObjectenException<PersoonsAdres>,
 					BlokkerendeObjectenFault<PersoonsAdresInfo2>>();
+			Mapper.CreateMap<BlokkerendeObjectenException<Lid>,
+				BlokkerendeObjectenFault<PersoonLidInfo>>()
+				.ForMember(
+					dst => dst.Objecten,
+					opt => opt.MapFrom(src => src.Objecten.Take(Properties.Settings.Default.KleinAantal)));
 			Mapper.CreateMap<BestaatAlException<Afdeling>,
 					BestaatAlFault<AfdelingInfo>>();
 			#endregion

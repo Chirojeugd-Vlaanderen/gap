@@ -92,7 +92,7 @@ namespace Chiro.Gap.WebApp.Test
 			// welke service method precies aangeroepen wordt :-(
 
 			IServiceHelper serviceHelper = serviceHelperMock.Object;
-			GroepController target = new GroepController(serviceHelper);
+			CategorieenController target = new CategorieenController(serviceHelper);
 
 			var actual = target.CategorieVerwijderen(DUMMYGROEPID, DUMMYCATID) as RedirectToRouteResult;
 

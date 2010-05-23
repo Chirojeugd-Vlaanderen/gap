@@ -28,7 +28,7 @@ Pagina: <%= Html.WerkJaarLinks(
 		<%{%>
 			<%=Html.ActionLink("Activeren", "Activeren", new { Controller = "Leden", id = pl.LidInfo.LidID })%>
 		<%}else{%>
-			<%=Html.ActionLink("Non-Actief maken", "DesActiveren", new { Controller = "Leden", id = pl.LidInfo.LidID })%>
+			<%=Html.ActionLink("Non-Actief maken", "DeActiveren", new { Controller = "Leden", id = pl.LidInfo.LidID })%>
 		<%} %>
         
         <%=Html.ActionLink("Afdelingen", "AfdelingBewerken", new { Controller = "Leden", id = pl.LidInfo.LidID })%>

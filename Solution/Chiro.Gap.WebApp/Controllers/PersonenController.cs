@@ -385,7 +385,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		// GET: /Personen/LidMaken/id
 		public ActionResult LeidingMaken(int id, int groepID)
 		{
-			IList<int> ids = new List<int> {id};
+			var ids = new List<int> {id};
+
 			try
 			{
 				ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LeidingMakenEnBewaren(ids));

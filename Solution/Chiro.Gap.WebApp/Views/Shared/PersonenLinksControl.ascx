@@ -1,5 +1,4 @@
 <%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.PersonenLinksModel>" %>
-<%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
 
 <ul>
 <% foreach (var info in Model.Personen)

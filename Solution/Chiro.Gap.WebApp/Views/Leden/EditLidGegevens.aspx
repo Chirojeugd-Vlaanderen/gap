@@ -20,8 +20,8 @@
     </p>
 	<%}else{ %>
     <p>
-    <%=Html.LabelFor(s => s.HuidigLid.LidInfo.DubbelPunt)%>
-    <%=Html.EditorFor(s => s.HuidigLid.LidInfo.DubbelPunt)%>
+    <%=Html.LabelFor(s => s.HuidigLid.LidInfo.Dubbelpunt)%>
+    <%=Html.EditorFor(s => s.HuidigLid.LidInfo.Dubbelpunt)%>
     </p>
     
 	<%} %>

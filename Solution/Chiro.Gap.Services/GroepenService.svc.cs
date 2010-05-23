@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using System.Threading;
+
 using AutoMapper;
 
 using Chiro.Gap.Domain;
@@ -97,9 +97,9 @@ namespace Chiro.Gap.Services
 			}
 			catch (GeenGavException)
 			{
-				throw new FaultException<GapFault>(new GapFault {FoutNummer = FoutNummers.GeenGav});
+				throw new FaultException<GapFault>(new GapFault { FoutNummer = FoutNummers.GeenGav });
 			}
-			
+
 			return Mapper.Map<Groep, GroepInfo>(g);
 		}
 
@@ -119,6 +119,8 @@ namespace Chiro.Gap.Services
 					src => src.Code == null ? String.Empty : src.Code.ToUpper()))
 				.ForMember(dst => dst.Categorieen, opt => opt.MapFrom(
 					src => src.Categorie))
+				.ForMember(dst => dst.Functies, opt => opt.MapFrom(
+					src => src.Functie))
 				.ForMember(dst => dst.Afdelingen, opt => opt.Ignore());
 
 			Mapper.CreateMap<AfdelingsJaar, AfdelingDetail>()
@@ -135,9 +137,8 @@ namespace Chiro.Gap.Services
 				dst => dst.AfdelingAfkorting,
 				opt => opt.MapFrom(src => src.Afdeling.Afkorting));
 
-
-			var g = _groepenMgr.OphalenMetCategorieen(groepID);
-			Mapper.Map<Groep, GroepDetail>(g, resultaat);
+			var g = _groepenMgr.OphalenMetIndelingen(groepID);
+			Mapper.Map(g, resultaat);
 
 			resultaat.Afdelingen = Mapper.Map<IEnumerable<AfdelingsJaar>, List<AfdelingDetail>>(
 				_groepsWerkJaarManager.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen).AfdelingsJaar);
@@ -201,7 +202,7 @@ namespace Chiro.Gap.Services
 				.ForMember(
 					dst => dst.StandaardGeboorteJaarTot,
 					opt => opt.MapFrom(src => gwj.WerkJaar - src.LeefTijdVan));
-			
+
 			return Mapper.Map<IEnumerable<OfficieleAfdeling>, IEnumerable<OfficieleAfdelingDetail>>(
 				_afdelingsJaarMgr.OfficieleAfdelingenOphalen());
 		}
@@ -297,7 +298,7 @@ namespace Chiro.Gap.Services
 
 				afdelingsJaar = _afdelingsJaarMgr.Ophalen(
 					detail.AfdelingsJaarID,
-					AfdelingsJaarExtras.OfficieleAfdeling|AfdelingsJaarExtras.Afdeling|AfdelingsJaarExtras.GroepsWerkJaar);
+					AfdelingsJaarExtras.OfficieleAfdeling | AfdelingsJaarExtras.Afdeling | AfdelingsJaarExtras.GroepsWerkJaar);
 
 				if (afdelingsJaar.GroepsWerkJaar.ID != huidigGwj.ID
 					|| afdelingsJaar.Afdeling.ID != detail.AfdelingID)
@@ -313,7 +314,7 @@ namespace Chiro.Gap.Services
 					detail.GeboorteJaarTot,
 					detail.Geslacht,
 					detail.VersieString);
-				
+
 			}
 
 			_afdelingsJaarMgr.Bewaren(afdelingsJaar);
@@ -399,8 +400,8 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<AfdelingDetail> AfdelingenOphalen(int groepsWerkJaarID)
 		{
-			var groepswerkjaar = _groepsWerkJaarManager.Ophalen(groepsWerkJaarID, GroepsWerkJaarExtras.Afdelingen|GroepsWerkJaarExtras.Leden);
-			return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingDetail>>(groepswerkjaar.AfdelingsJaar.OrderBy(e => e.GeboorteJaarVan).ToList<AfdelingsJaar>());
+			var groepswerkjaar = _groepsWerkJaarManager.Ophalen(groepsWerkJaarID, GroepsWerkJaarExtras.Afdelingen | GroepsWerkJaarExtras.Leden);
+			return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingDetail>>(groepswerkjaar.AfdelingsJaar.OrderBy(e => e.GeboorteJaarVan).ToList());
 		}
 
 		/// <summary>
@@ -442,6 +443,7 @@ namespace Chiro.Gap.Services
 		#endregion
 
 		#region Functies
+
 		/// <summary>
 		/// Haalt uit groepswerkjaar met ID <paramref name="groepsWerkJaarID"/> alle beschikbare functies
 		/// op voor een lid van type <paramref name="lidType"/>.
@@ -466,23 +468,103 @@ namespace Chiro.Gap.Services
 		public IEnumerable<FunctieProbleemInfo> FunctiesControleren(int groepID)
 		{
 			GroepsWerkJaar gwj = _groepsWerkJaarManager.RecentsteOphalen(
-				groepID, GroepsWerkJaarExtras.GroepsFuncties|GroepsWerkJaarExtras.LidFuncties);
+				groepID, GroepsWerkJaarExtras.GroepsFuncties | GroepsWerkJaarExtras.LidFuncties);
 
 			IEnumerable<Telling> problemen = _functiesMgr.AantallenControleren(gwj);
 
 			// Blijkbaar kan ik hier niet anders dan de functies weer ophalen.
 
 			var resultaat = (from p in problemen
-			                 let f = _functiesMgr.Ophalen(p.ID)
-			                 select new FunctieProbleemInfo
-			                        	{
-			                        		Code = f.Code, EffectiefAantal = p.Aantal, ID = f.ID, MaxAantal = p.Max, MinAantal = p.Min, Naam = f.Naam
-			                        	}).ToList();
+							 let f = _functiesMgr.Ophalen(p.ID)
+							 select new FunctieProbleemInfo
+										{
+											Code = f.Code,
+											EffectiefAantal = p.Aantal,
+											ID = f.ID,
+											MaxAantal = p.Max,
+											MinAantal = p.Min,
+											Naam = f.Naam
+										}).ToList();
 
 			// Ter info: return resultaat.ToArray() werkt niet; problemen met (de)serializeren?
 
 			return resultaat.ToList();
 		}
+
+		/// <summary>
+		/// Maakt een nieuwe Functie voor de groep met ID <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvoor nieuwe functie wordt gemaakt</param>
+		/// <param name="naam">Naam voor de nieuwe functie</param>
+		/// <param name="code">Code voor de nieuwe functie</param>
+		/// <param name="maxAantal">Eventueel het maximumaantal leden met die functie in een werkjaar</param>
+		/// <param name="minAantal">Het minimumaantal leden met die functie in een werkjaar</param>
+		/// <param name="lidType">Gaat het over een functie voor leden, leiding of beide?</param>
+		/// <param name="werkJaarVan">Eventueel het vroegste werkjaar waarvoor de functie beschikbaar moet zijn</param>
+		/// <returns></returns>
+		public int FunctieToevoegen(int groepID, string naam, string code, int? maxAantal, int minAantal, LidType lidType, int? werkJaarVan)
+		{
+			Groep g = _groepenMgr.OphalenMetFuncties(groepID);
+			try
+			{
+				_groepenMgr.FunctieToevoegen(g, naam, code, maxAantal, minAantal, lidType, werkJaarVan);
+			}
+			catch (BestaatAlException<Functie> ex)
+			{
+				var fault = Mapper.Map<BestaatAlException<Functie>,
+						BestaatAlFault<FunctieInfo>>(ex);
+
+				throw new FaultException<BestaatAlFault<FunctieInfo>>(fault);
+			}
+// ReSharper disable RedundantCatchClause
+			catch (Exception)
+			{
+				// ********************************************************************************
+				// * BELANGRIJK: Als je debugger breakt op deze throw, dan is dat geen probleem.  *
+				// * Dat wil gewoon zeggen dat er een bestaande Functie gevonden is, met        *
+				// * dezelfde code als de nieuwe.  Er gaat een faultexception over de lijn,       *
+				// * die door de UI gecatcht moet worden.  Druk gewoon F5 om verder te gaan.      *
+				// ********************************************************************************
+
+				throw;
+			}
+// ReSharper restore RedundantCatchClause
+
+			g = _groepenMgr.Bewaren(g, e => e.Functie);
+
+			return (from ctg in g.Functie
+					where ctg.Code == code
+					select ctg.ID).FirstOrDefault();
+		}
+
+		/// <summary>
+		/// Verwijdert de functie met gegeven <paramref name="functieID"/>
+		/// </summary>
+		/// <param name="functieID">ID van de te verwijderen functie</param>
+		/// <param name="forceren">Indien <c>true</c>, worden eventuele personen uit de
+		/// te verwijderen functie eerst uit de functie weggehaald.  Indien
+		/// <c>false</c> krijg je een exception als de functie niet leeg is.</param>
+		public void FunctieVerwijderen(int functieID, bool forceren)
+		{
+			// Personen moeten mee opgehaald worden; anders werkt 
+			// functieenManager.Verwijderen niet.
+
+			Functie f = _functiesMgr.Ophalen(functieID, true);
+			
+			try
+			{
+				_functiesMgr.Verwijderen(f, forceren);
+			}
+			catch (BlokkerendeObjectenException<Lid> ex)
+			{
+				var fault = Mapper.Map<BlokkerendeObjectenException<Lid>,
+					BlokkerendeObjectenFault<PersoonLidInfo>>(ex);
+
+				throw new FaultException<BlokkerendeObjectenFault<PersoonLidInfo>>(fault);
+			}
+		}
+
+
 		#endregion
 
 		/* zie #273 */
@@ -490,8 +572,8 @@ namespace Chiro.Gap.Services
 		public IEnumerable<WerkJaarInfo> WerkJarenOphalen(int groepsID)
 		{
 			var werkjaren = (from gwj in _groepenMgr.OphalenMetGroepsWerkJaren(groepsID).GroepsWerkJaar
-					orderby gwj.WerkJaar descending
-					select gwj);
+							 orderby gwj.WerkJaar descending
+							 select gwj);
 
 			Mapper.CreateMap<GroepsWerkJaar, WerkJaarInfo>();
 			return Mapper.Map<IEnumerable<GroepsWerkJaar>, IEnumerable<WerkJaarInfo>>(werkjaren);
@@ -511,7 +593,7 @@ namespace Chiro.Gap.Services
 			Groep g = _groepenMgr.OphalenMetCategorieen(groepID);
 			try
 			{
-				Categorie c = _groepenMgr.CategorieToevoegen(g, naam, code);
+				_groepenMgr.CategorieToevoegen(g, naam, code);
 			}
 			catch (BestaatAlException<Categorie> ex)
 			{
@@ -520,6 +602,7 @@ namespace Chiro.Gap.Services
 
 				throw new FaultException<BestaatAlFault<CategorieInfo>>(fault);
 			}
+// ReSharper disable RedundantCatchClause
 			catch (Exception)
 			{
 				// ********************************************************************************
@@ -531,6 +614,7 @@ namespace Chiro.Gap.Services
 
 				throw;
 			}
+// ReSharper restore RedundantCatchClause
 
 			g = _groepenMgr.Bewaren(g, e => e.Categorie);
 
@@ -566,12 +650,12 @@ namespace Chiro.Gap.Services
 			}
 		}
 
-        /// <summary>
-        /// Past de naam van een categorie aan
-        /// </summary>
-        /// <param name="categorieID">De ID van de categorie waar het over gaat</param>
-        /// <param name="nieuwenaam">De nieuwe naam die de categorie moet krijgen</param>
-        public void CategorieAanpassen(int categorieID, string nieuwenaam)
+		/// <summary>
+		/// Past de naam van een categorie aan
+		/// </summary>
+		/// <param name="categorieID">De ID van de categorie waar het over gaat</param>
+		/// <param name="nieuwenaam">De nieuwe naam die de categorie moet krijgen</param>
+		public void CategorieAanpassen(int categorieID, string nieuwenaam)
 		{
 			/*Groep g = OphalenMetCategorieen(groepID);
 			Categorie c = null;*/

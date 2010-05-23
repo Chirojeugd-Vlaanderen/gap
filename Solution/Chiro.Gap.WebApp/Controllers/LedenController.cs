@@ -18,10 +18,7 @@ namespace Chiro.Gap.WebApp.Controllers
 {
 	public class LedenController : BaseController
 	{
-		public LedenController(IServiceHelper serviceHelper)
-			: base(serviceHelper)
-		{
-		}
+		public LedenController(IServiceHelper serviceHelper) : base(serviceHelper) {}
 
 		/// <summary>
 		/// Methode probeert terug te keren naar de vorige (in cookie) opgeslagen pagina. Als dit niet lukt gaat hij naar de indexpagina van de controller terug.
@@ -160,8 +157,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		// id = lidid
-		// GET: /Leden/DesActiveren/id
-		public ActionResult DesActiveren(int id, int groepID)
+		// GET: /Leden/DeActiveren/id
+		public ActionResult DeActiveren(int id, int groepID)
 		{
 			ServiceHelper.CallService<ILedenService>(l => l.NonActiefMaken(id));
 			TempData["feedback"] = "Lid is op non-actief gezet.";
@@ -183,6 +180,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// Toont de view die toelaat om de afdeling(en) van een lid te wijzigen
 		/// </summary>
 		/// <param name="id">LidID van het lid met de te wijzigen afdeling(en)</param>
+		/// <param name="gwjID">Groepswerkjaar waarin de wijziging moet gebeuren</param>
 		/// <param name="groepID">Groep waarin de user momenteel werkt</param>
 		/// <returns>De view 'AfdelingBewerken'</returns>
 		public ActionResult AfdelingBewerken(int id, int gwjID, int groepID)
@@ -190,7 +188,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new LidAfdelingenModel();
 			BaseModelInit(model, groepID);
 
-			model.BeschikbareAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<ActieveAfdelingInfo>> (
+			model.BeschikbareAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<ActieveAfdelingInfo>>(
 				svc => svc.BeschikbareAfdelingenOphalen(groepID));
 			model.Info = ServiceHelper.CallService<ILedenService, LidAfdelingInfo>(
 				svc => svc.AfdelingenOphalen(id));
@@ -205,7 +203,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				TempData["feedback"] = String.Format(
 					Properties.Resources.GeenActieveAfdelingen,
-					Url.Action("Index", "Afdeling", new
+					Url.Action("Index", "Afdelingen", new
 					{
 						groepID = groepID
 					}));
@@ -272,15 +270,18 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult EditLidGegevens(LedenModel model, int groepID)
 		{
 			// TODO: Dit moet een unitaire operatie zijn, om concurrencyproblemen te vermijden.
-
-			ServiceHelper.CallService<ILedenService>(l => l.Bewaren(model.HuidigLid));
-			ServiceHelper.CallService<ILedenService>(l => l.FunctiesVervangen(model.HuidigLid.LidInfo.LidID, model.FunctieIDs));
-
-			return RedirectToAction("EditRest", new
+			try
 			{
-				Controller = "Personen",
-				id = model.HuidigLid.PersoonDetail.GelieerdePersoonID
-			});
+				ServiceHelper.CallService<ILedenService>(l => l.Bewaren(model.HuidigLid));
+				ServiceHelper.CallService<ILedenService>(l => l.FunctiesVervangen(model.HuidigLid.LidInfo.LidID, model.FunctieIDs));
+				TempData["feedback"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+			}
+			catch (Exception)
+			{
+				TempData["feedback"] = Properties.Resources.WijzigingenNietOpgeslagenFout;
+			}
+
+			return RedirectToAction("EditLidGegevens");
 		}
 
 		/// <summary>

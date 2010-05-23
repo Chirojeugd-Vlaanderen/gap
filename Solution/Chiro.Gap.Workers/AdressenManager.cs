@@ -119,8 +119,7 @@ namespace Chiro.Gap.Workers
 						Properties.Resources.OngeldigPostNummer,
 						straatNaam,
 						postNr)
-				});
-				
+				});	
 			}
 			
 			if (woonPlaatsNaam == String.Empty)

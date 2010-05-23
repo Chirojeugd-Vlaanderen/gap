@@ -241,6 +241,40 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
+		/// <summary>
+		/// Haalt een groep op, met daaraan gekoppeld al zijn functies
+		/// </summary>
+		/// <param name="groepID">ID van de gevraagde groep</param>
+		/// <returns>De gevraagde groep, met daaraan gekoppeld al zijn functies</returns>
+		public Groep OphalenMetFuncties(int groepID)
+		{
+			if (_autorisatieMgr.IsGavGroep(groepID))
+			{
+				return _groepenDao.Ophalen(groepID, grp => grp.Functie);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+		}
+
+		/// <summary>
+		/// Haalt een groep op, met daaraan gekoppeld al zijn categorieën én functies
+		/// </summary>
+		/// <param name="groepID">ID van de gevraagde groep</param>
+		/// <returns>De gevraagde groep, met daaraan gekoppeld al zijn categorieën en functies</returns>
+		public Groep OphalenMetIndelingen(int groepID)
+		{
+			if (_autorisatieMgr.IsGavGroep(groepID))
+			{
+				return _groepenDao.Ophalen(groepID, grp => grp.Categorie, grp => grp.Functie);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+		}
+
 		#region categorieën
 
 		/// <summary>
@@ -290,8 +324,8 @@ namespace Chiro.Gap.Workers
 		/// <param name="g">Groep waarvoor de functie gemaakt wordt</param>
 		/// <param name="naam">Naam van de functie</param>
 		/// <param name="code">Code van de functie</param>
-		/// <param name="maxAantal">Maximum aantal leden in de categorie.  Onbeperkt indien null.</param>
-		/// <param name="minAantal">Minimum aantal leden in de categorie.</param>
+		/// <param name="maxAantal">Maximumaantal leden in de categorie.  Onbeperkt indien null.</param>
+		/// <param name="minAantal">Minimumaantal leden in de categorie.</param>
 		/// <param name="lidType">LidType waarvoor de functie van toepassing is</param>
 		/// <param name="werkJaarVan">Werkjaar vanaf wanneer de categorie gebruikt mag worden.</param>
 		/// <returns>De nieuwe (gekoppelde) functie</returns>

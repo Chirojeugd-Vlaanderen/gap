@@ -238,14 +238,14 @@ namespace Chiro.Gap.Services
 		/// </returns>
 		public PersoonLidInfo AlleDetailsOphalen(int gelieerdePersoonID)
 		{
-			GelieerdePersoon gp = _gpMgr.DetailsOphalen(gelieerdePersoonID);
-			PersoonLidInfo pl = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gp);
-			GroepsWerkJaar gwj = _gwjMgr.RecentsteOphalen(gp.Groep.ID, GroepsWerkJaarExtras.GroepsFuncties);
+			var gp = _gpMgr.DetailsOphalen(gelieerdePersoonID);
+			var pl = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gp);
+			var gwj = _gwjMgr.RecentsteOphalen(gp.Groep.ID, GroepsWerkJaarExtras.GroepsFuncties);
 
-			Lid l = _lidMgr.OphalenViaPersoon(gp.ID, gwj.ID);
+			var l = _lidMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 			if (l != null)
 			{
-				LidInfo ff = Mapper.Map<Lid, LidInfo>(l);
+				var ff = Mapper.Map<Lid, LidInfo>(l);
 				pl.LidInfo = ff;
 			}
 			
@@ -290,7 +290,7 @@ namespace Chiro.Gap.Services
 			// Zoek adres op in database, of maak een nieuw.
 			// (als straat en gemeente gekend)
 
-			Adres nieuwAdres = null;
+			Adres nieuwAdres;
 			try
 			{
 				nieuwAdres = _adrMgr.ZoekenOfMaken(
@@ -361,7 +361,7 @@ namespace Chiro.Gap.Services
 			// Dit gaat sterk lijken op verhuizen.
 
 			// Adres opzoeken in database
-			Adres adres = null;
+			Adres adres;
 			try
 			{
 				adres = _adrMgr.ZoekenOfMaken(adr.StraatNaamNaam, adr.HuisNr, adr.Bus, adr.WoonPlaatsNaam, adr.PostNr, null);
@@ -404,7 +404,7 @@ namespace Chiro.Gap.Services
 			// Dit gaat sterk lijken op verhuizen.
 
 			// Adres opzoeken in database
-			Adres adres = null;
+			Adres adres;
 			try
 			{
 				adres = _adrMgr.ZoekenOfMaken(persoonsAdresInfo.StraatNaamNaam, persoonsAdresInfo.HuisNr, persoonsAdresInfo.Bus, persoonsAdresInfo.WoonPlaatsNaam, persoonsAdresInfo.PostNr, null);
@@ -514,8 +514,8 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void CommunicatieVormVerwijderenVanPersoon(int gelieerdePersoonID, int commvormID)
 		{
-			GelieerdePersoon gp = _gpMgr.OphalenMetCommVormen(gelieerdePersoonID);
-			CommunicatieVorm cv = (from commVorm in gp.Communicatie
+			var gp = _gpMgr.OphalenMetCommVormen(gelieerdePersoonID);
+			var cv = (from commVorm in gp.Communicatie
 									where commVorm.ID == commvormID
 									select commVorm).FirstOrDefault();
 			

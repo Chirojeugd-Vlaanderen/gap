@@ -289,7 +289,7 @@
           <Key>
             <PropertyRef Name="leidingID" />
           </Key>
-          <Property Name="DubbelPuntAbonnement" Type="bit" />
+          <Property Name="DubbelpuntAbonnement" Type="bit" />
           <Property Name="leidingID" Type="int" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
@@ -1037,7 +1037,7 @@
           <End Type="ChiroGroepModel.OfficieleAfdeling" Role="OfficieleAfdeling" Multiplicity="1" />
           <End Type="ChiroGroepModel.AfdelingsJaar" Role="AfdelingsJaar" Multiplicity="*" /></Association>
         <EntityType Name="Leiding" BaseType="ChiroGroepModel.Lid">
-          <Property Name="DubbelPuntAbonnement" Type="Boolean" Nullable="true" />
+          <Property Name="DubbelpuntAbonnement" Type="Boolean" Nullable="true" />
           <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.LeidingInAfdelingsJaar" FromRole="Leiding" ToRole="AfdelingsJaar" /></EntityType>
         <Association Name="LeidingInAfdelingsJaar">
           <End Role ="AfdelingsJaar" Type="ChiroGroepModel.AfdelingsJaar" Multiplicity="*" />
@@ -1242,7 +1242,7 @@
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Leiding)">
               <MappingFragment StoreEntitySet="Leiding">
                 <ScalarProperty Name="ID" ColumnName="leidingID" />
-                <ScalarProperty Name="DubbelPuntAbonnement" ColumnName="DubbelPuntAbonnement" />
+                <ScalarProperty Name="DubbelpuntAbonnement" ColumnName="DubbelpuntAbonnement" />
               </MappingFragment>
             </EntityTypeMapping>
           <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Kind)">

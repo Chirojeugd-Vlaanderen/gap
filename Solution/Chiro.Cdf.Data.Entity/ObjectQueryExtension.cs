@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Objects;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Text;
 
 namespace Chiro.Cdf.Data.Entity
@@ -28,11 +27,11 @@ namespace Chiro.Cdf.Data.Entity
 		public static ObjectQuery<T> Include<T>(this ObjectQuery<T> query, Expression<Func<T, object>> path)
 		{
 			// Retrieve member path:
-			List<ExtendedPropertyInfo> members = new List<ExtendedPropertyInfo>();
+			var members = new List<ExtendedPropertyInfo>();
 			EntityFrameworkHelper.CollectRelationalMembers(path, members);
 
 			// Build string path:
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 			String separator = String.Empty;
 			foreach (ExtendedPropertyInfo member in members)
 			{

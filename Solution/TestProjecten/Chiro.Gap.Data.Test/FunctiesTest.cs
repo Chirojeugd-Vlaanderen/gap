@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -17,37 +13,12 @@ namespace Chiro.Gap.Data.Test
 	[TestClass]
 	public class FunctiesTest
 	{
-		public FunctiesTest()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
-
-		private TestContext testContextInstance;
-
-		/// <summary>
-		/// Gets or sets the test context which provides
-		/// information about and functionality for the current test run.
-		/// </summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
-
 		#region Additional test attributes
 		//
 		// You can use the following additional attributes as you write your tests:
 		//
 		// Use ClassInitialize to run code before running the first test in the class
-		[ClassInitialize()]
+		[ClassInitialize]
 		public static void MyClassInitialize(TestContext testContext) 
 		{
 			Factory.ContainerInit();
@@ -67,24 +38,23 @@ namespace Chiro.Gap.Data.Test
 		//
 		#endregion
 
-
 		/// <summary>
 		/// Kijkt na of de gepredefinieerde functies overeenkomen met hun ID
 		/// </summary>
 		[TestMethod]
-		public void GepredefinieerdeFuncties()
+		public void NationaalBepaaldeFuncties()
 		{
 			// Arrange
-			IFunctiesDao dao = Factory.Maak<IFunctiesDao>();
+			var dao = Factory.Maak<IFunctiesDao>();
 
 			// Act
-			Functie gg1 = dao.Ophalen(NationaleFunctie.ContactPersoon);
-			Functie gg2 = dao.Ophalen(NationaleFunctie.GroepsLeiding);
-			Functie gv1 = dao.Ophalen(NationaleFunctie.Vb);
-			Functie fi = dao.Ophalen(NationaleFunctie.FinancieelVerantwoordelijke);
-			Functie jr = dao.Ophalen(NationaleFunctie.JeugdRaad);
-			Functie kk = dao.Ophalen(NationaleFunctie.KookPloeg);
-			Functie gp = dao.Ophalen(NationaleFunctie.Proost);
+			var gg1 = dao.Ophalen(NationaleFunctie.ContactPersoon);
+			var gg2 = dao.Ophalen(NationaleFunctie.GroepsLeiding);
+			var gv1 = dao.Ophalen(NationaleFunctie.Vb);
+			var fi = dao.Ophalen(NationaleFunctie.FinancieelVerantwoordelijke);
+			var jr = dao.Ophalen(NationaleFunctie.JeugdRaad);
+			var kk = dao.Ophalen(NationaleFunctie.KookPloeg);
+			var gp = dao.Ophalen(NationaleFunctie.Proost);
 
 			// Assert
 			Assert.AreEqual(gg1.Code, "CP", true);
@@ -104,14 +74,13 @@ namespace Chiro.Gap.Data.Test
 		public void EenContactpersoon()
 		{
 			// Arrange
-			IFunctiesDao dao = Factory.Maak<IFunctiesDao>();
+			var dao = Factory.Maak<IFunctiesDao>();
 
 			// Act
-			int aantal = dao.AantalLeden(TestInfo.GROEPID, NationaleFunctie.ContactPersoon);
+			var aantal = dao.AantalLeden(TestInfo.GROEPID, NationaleFunctie.ContactPersoon);
 
 			// Assert
 			Assert.AreEqual(aantal, 1);
-
 		}
 
 	}

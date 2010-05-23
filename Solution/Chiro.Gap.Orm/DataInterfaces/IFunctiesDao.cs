@@ -17,30 +17,30 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	public interface IFunctiesDao : IDao<Functie>
 	{
 		/// <summary>
-		/// Haalt een gepredefinieerde functie op
+		/// Haalt een nationaal bepaalde functie op
 		/// </summary>
-		/// <param name="f">GepredefinieerdeFunctieType dat de op te halen functie bepaalt</param>
-		/// <returns>De gevraagde gepredefinieerde functie</returns>
+		/// <param name="f">NationaleFunctie dat de op te halen functie bepaalt</param>
+		/// <returns>De gevraagde nationaal bepaalde functie</returns>
 		Functie Ophalen(NationaleFunctie f);
 
 		/// <summary>
 		/// Bepaalt het aantal leden uit de groep bepaald door <paramref name="groepID"/> de functie
-		/// hebben bepaad door <paramref name="functieID"/>
+		/// hebben bepaald door <paramref name="functieID"/>
 		/// </summary>
 		/// <param name="groepID">ID van een groep</param>
 		/// <param name="functieID">ID van een functie</param>
 		/// <returns>Aantal leden uit de groep bepaald door <paramref name="groepID"/> de functie
-		/// hebben bepaad door <paramref name="functieID"/></returns>
+		/// hebben bepaald door <paramref name="functieID"/></returns>
 		int AantalLeden(int groepID, int functieID);
 
 		/// <summary>
 		/// Bepaalt het aantal leden uit de groep met ID <paramref name="groepID"/> met 
-		/// gepredefinieerde functie <paramref name="f"/>.
+		/// nationaal bepaalde functie <paramref name="f"/>.
 		/// </summary>
 		/// <param name="groepID">ID van een groep</param>
-		/// <param name="f">Gepredefinieerde functie</param>
+		/// <param name="f">Nationaal bepaalde functie</param>
 		/// <returns>Aantal leden uit de groep met ID <paramref name="groepID"/> met 
-		/// gepredefinieerde functie <paramref name="f"/></returns>
+		/// nationaal bepaalde functie <paramref name="f"/></returns>
 		int AantalLeden(int groepID, NationaleFunctie f);
 
 		/// <summary>

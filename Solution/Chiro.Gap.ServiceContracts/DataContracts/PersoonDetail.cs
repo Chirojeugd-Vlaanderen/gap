@@ -10,7 +10,7 @@ using System.Runtime.Serialization;
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
 	[DataContract]
-	public class PersoonDetail: PersoonInfo
+	public class PersoonDetail : PersoonInfo
 	{
 		[DataMember]
 		public int PersoonID

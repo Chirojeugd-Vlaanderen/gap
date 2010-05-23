@@ -13,7 +13,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <% 
         Html.EnableClientValidation();
-        using (Html.BeginForm("Bewerken", "Afdeling", new { groepID = Model.GroepID }))
+        using (Html.BeginForm("Bewerken", "Afdelingen", new { groepID = Model.GroepID }))
        {%>
        
     <ul id="acties">

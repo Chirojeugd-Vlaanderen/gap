@@ -188,4 +188,7 @@
   <data name="WoonPlaatsOntbreekt" xml:space="preserve">
     <value>Je gaf geen woonplaats mee.</value>
   </data>
+  <data name="FunctieNietLeeg" xml:space="preserve">
+    <value>Er zijn nog leden of leid(st)ers die die functie hebben.</value>
+  </data>
 </root>

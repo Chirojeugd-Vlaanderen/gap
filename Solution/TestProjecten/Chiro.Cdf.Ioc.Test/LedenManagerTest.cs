@@ -1,8 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Gap.Workers;
 
 namespace Chiro.Cdf.Ioc.Test
@@ -13,15 +9,7 @@ namespace Chiro.Cdf.Ioc.Test
     [TestClass]
     public class LedenManagerTest
     {
-        public LedenManagerTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-
-        [ClassInitialize]
+    	[ClassInitialize]
         static public void InitialiseerTests(TestContext tc)
         {
             Factory.ContainerInit();
@@ -39,7 +27,7 @@ namespace Chiro.Cdf.Ioc.Test
         [TestMethod]
         public void InstantieerLedenManager()
         {
-            LedenManager lm = Factory.Maak<LedenManager>();
+            var lm = Factory.Maak<LedenManager>();
 
             // Flauwe test, maar ik wil niet dat de IOC een
             // exception veroorzaakt.

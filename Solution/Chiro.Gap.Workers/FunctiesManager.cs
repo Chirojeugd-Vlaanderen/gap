@@ -13,6 +13,7 @@ using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
@@ -87,6 +88,31 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
+		/// Een functie ophalen op basis van de ID, samen met de gekoppelde leden
+		/// </summary>
+		/// <param name="functieID">ID op te halen functie</param>
+		/// <param name="metLeden">De opgehaalde functie met de gekoppelde leden</param>
+		/// <returns></returns>
+		public Functie Ophalen(int functieID, bool metLeden)
+		{
+			if (_autorisatieMgr.IsGavCategorie(functieID))
+			{
+				if (metLeden)
+				{
+					return _funDao.Ophalen(functieID, fnc => fnc.Groep, fie => fie.Lid);
+				}
+				else
+				{
+					return _funDao.Ophalen(functieID);
+				}
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+		}
+
+		/// <summary>
 		/// Haalt een lijstje functies op, uiteraard met gekoppelde groepen (indien van toepassing)
 		/// </summary>
 		/// <param name="functieIDs">ID's op te halen functies</param>
@@ -123,11 +149,12 @@ namespace Chiro.Gap.Workers
 			{
 				GroepsWerkJaar gwj = _groepsWjDao.Ophalen(groepsWerkJaarID, grwj => grwj.Groep.Functie);
 
+				// TODO: ook groepsgebonden functies ophalen (refs #103)
 				return (from f in gwj.Groep.Functie.Union(NationaalBepaaldeFunctiesOphalen())
 					where (f.WerkJaarVan == null || f.WerkJaarVan <= gwj.WerkJaar)
 						&& (f.WerkJaarTot == null || f.WerkJaarTot >= gwj.WerkJaar)
 						&& ((f.Type & lidType) != 0)
-					select f).ToList();		     
+					select f).ToList();
 			}
 			else
 			{
@@ -269,6 +296,56 @@ namespace Chiro.Gap.Workers
 			// Exception handling laten we over aan Toekennen en LosKoppelen
 			Toekennen(lid, toeTeVoegen);
 			return LosKoppelen(lid, teVerwijderen);	// LosKoppelen persisteert
+		}
+
+		/// <summary>
+		/// Verwijdert een functie (PERSISTEERT!)
+		/// </summary>
+		/// <param name="functie">Te verwijderen functie, inclusief gelieerde personen</param>
+		/// <param name="forceren">Indien <c>true</c> wordt de functie ook verwijderd als er
+		/// personen in de functie zitten.  Anders krijg je een exception.</param>
+		/// <remarks>Deze method gaat ervan uit dat de functie zijn leden bevat.</remarks>
+		public void Verwijderen(Functie functie, bool forceren)
+		{
+			// Leden moeten gekoppeld zijn
+			// (null verschilt hier expliciet van een lege lijst)
+			Debug.Assert(functie.Lid  != null);
+
+			if (!forceren && functie.Lid.Count > 0)
+			{
+				throw new BlokkerendeObjectenException<Lid>(
+					FoutNummers.FunctieNietLeeg,
+					functie.Lid,
+					functie.Lid.Count(),
+					Properties.Resources.FunctieNietLeeg);
+			}
+
+			LeegMaken(functie);  // verwijdert de functie bij alle leden, en persisteert
+
+			functie.TeVerwijderen = true;	// nu de functie zelf nog
+			Bewaren(functie);
+		}
+
+		/// <summary>
+		/// Verwijdert alle gelieerde personen uit de categorie <paramref name="f"/>, en persisteert
+		/// </summary>
+		/// <param name="f">Leeg te maken functie</param>
+		/// <returns>De functie zonder leden</returns>
+		public Functie LeegMaken(Functie f)
+		{
+			if (_autorisatieMgr.IsGavCategorie(f.ID))
+			{
+				foreach (Lid l in f.Lid)
+				{
+					l.TeVerwijderen = true;
+					// dit verwijdert enkel de link naar het lid
+				}
+				return _funDao.Bewaren(f, fie => fie.Lid);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
 		}
 
 		/// <summary>

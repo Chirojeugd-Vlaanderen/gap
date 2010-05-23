@@ -1,6 +1,5 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.PersonenLedenModel>" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
-<%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -81,9 +80,9 @@
 		</p>
 		<%}else{ %>
 		<p>
-		<%=Html.LabelFor(s => s.PersoonLidInfo.LidInfo.DubbelPunt)%>
-		<%=Html.DisplayFor(s => s.PersoonLidInfo.LidInfo.DubbelPunt)%>
-		<%=Html.HiddenFor(s => s.PersoonLidInfo.LidInfo.DubbelPunt)%>
+		<%=Html.LabelFor(s => s.PersoonLidInfo.LidInfo.Dubbelpunt)%>
+		<%=Html.DisplayFor(s => s.PersoonLidInfo.LidInfo.Dubbelpunt)%>
+		<%=Html.HiddenFor(s => s.PersoonLidInfo.LidInfo.Dubbelpunt)%>
 		</p>
 		<%} %>
 		
@@ -201,7 +200,7 @@
     <li><%=Html.ActionLink("[communicatievorm toevoegen]", "NieuweCommVorm", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%></li>
     </ul>     
  
-    <h3>categorieën</h3>
+    <h3>Categorieën</h3>
 
     <ul>
     <% foreach (var info in Model.PersoonLidInfo.PersoonDetail.CategorieLijst)

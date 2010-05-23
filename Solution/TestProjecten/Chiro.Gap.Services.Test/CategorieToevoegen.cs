@@ -1,17 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
 
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.ServiceContracts;
-using Chiro.Gap.Services;
 using Chiro.Gap.TestDbInfo;
 using System.Security.Principal;
 using System.Threading;
@@ -25,13 +18,6 @@ namespace Chiro.Gap.Services.Test
 	[TestClass]
 	public class CategorieToevoegen
 	{
-		public CategorieToevoegen()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
-
 		[ClassInitialize]
 		static public void InitialiseerTests(TestContext tc)
 		{
@@ -46,7 +32,7 @@ namespace Chiro.Gap.Services.Test
 		}
 
 		List<int> catlijst = new List<int>(); //lijst van nieuw aangemaakte categorieën, die nog verwijderd moeten worden
-		IGroepenService groepenSvc;
+		IGroepenService _groepenSvc;
 
 		/// <summary>
 		/// Zoekt de categorie voor de test 'categorie toevoegen', en verwijdert ze uit de database
@@ -54,7 +40,7 @@ namespace Chiro.Gap.Services.Test
 		/// </summary>
 		private void VerwijderCategorieToevoegTest()
 		{
-			var categorieen = groepenSvc.CategorieenOphalen(TestInfo.GROEPID);
+			var categorieen = _groepenSvc.CategorieenOphalen(TestInfo.GROEPID);
 
 			int catID = (from cInfo in categorieen
 				     where String.Compare(cInfo.Code, TestInfo.ONBESTAANDENIEUWECATCODE, true) == 0
@@ -64,22 +50,22 @@ namespace Chiro.Gap.Services.Test
 
 			if (catID != 0)
 			{
-				groepenSvc.CategorieVerwijderen(catID, true);
+				_groepenSvc.CategorieVerwijderen(catID, true);
 			}
 		}
 
 		[TestInitialize]
-		public void initialiseerTest()
+		public void InitialiseerTest()
 		{
-			/// Zorg ervoor dat de PrincipalPermissionAttributes op de service methods
-			/// geen excepties genereren, door te doen alsof de service aangeroepen is met de goede
-			/// 
+			// Zorg ervoor dat de PrincipalPermissionAttributes op de service methods
+			// geen excepties genereren, door te doen alsof de service aangeroepen is met de goede
+			 
 			var identity = new GenericIdentity(Properties.Settings.Default.TestUser);
 			var roles = new[] { Properties.Settings.Default.TestSecurityGroep };
 			var principal = new GenericPrincipal(identity, roles);
 			Thread.CurrentPrincipal = principal;
 
-			groepenSvc = Factory.Maak<GroepenService>();
+			_groepenSvc = Factory.Maak<GroepenService>();
 
 			// CategorieToevoegenNormaal voegt een categorie toe voor:
 			//    - Groep: Properties.Settings.Default.GroepID
@@ -91,7 +77,7 @@ namespace Chiro.Gap.Services.Test
 		}
 
 		[TestCleanup]
-		public void tearDown()
+		public void TearDown()
 		{
 			VerwijderCategorieToevoegTest();
 		}
@@ -99,12 +85,12 @@ namespace Chiro.Gap.Services.Test
 		[TestMethod]
 		public void CategorieToevoegenNormaal()
 		{
-			int catID = groepenSvc.CategorieToevoegen(TestInfo.GROEPID,
+			int catID = _groepenSvc.CategorieToevoegen(TestInfo.GROEPID,
 				TestInfo.CATEGORIENAAM,
 				TestInfo.ONBESTAANDENIEUWECATCODE);
 			catlijst.Add(catID);
 
-			var categorieen = groepenSvc.CategorieenOphalen(TestInfo.GROEPID);
+			var categorieen = _groepenSvc.CategorieenOphalen(TestInfo.GROEPID);
 
 			var query = (from cInfo in categorieen
 				     where cInfo.ID == catID
@@ -112,6 +98,5 @@ namespace Chiro.Gap.Services.Test
 
 			Assert.IsTrue(query.Count() > 0);
 		}
-
 	}
 }

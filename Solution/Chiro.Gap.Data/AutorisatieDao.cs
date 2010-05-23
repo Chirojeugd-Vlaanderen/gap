@@ -199,7 +199,7 @@ namespace Chiro.Gap.Data.Ef
 					.Where(gp => gp.Groep.GebruikersRecht.Any(r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)))
 					.Select(gp => gp.ID);
 
-				resultaat = query.ToList<int>();
+				resultaat = query.ToList();
 			}
 
 			return resultaat;
@@ -223,7 +223,7 @@ namespace Chiro.Gap.Data.Ef
 					.Where(gp => gp.Groep.GebruikersRecht.Any(r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)))
 					.Select(gp => gp.Persoon.ID);
 
-				resultaat = query.ToList<int>();
+				resultaat = query.ToList();
 			}
 
 			return resultaat;

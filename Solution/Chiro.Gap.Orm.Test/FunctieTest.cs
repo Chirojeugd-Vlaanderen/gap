@@ -11,27 +11,7 @@ namespace Chiro.Gap.Orm.Test
 	[TestClass()]
 	public class FunctieTest
 	{
-
-
-		private TestContext testContextInstance;
-
-		/// <summary>
-		/// Gets or sets the test context which provides
-		/// information about and functionality for the current test run.
-		/// </summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
-
-		#region Additional test attributes
+    	#region Additional test attributes
 		// 
 		//You can use the following additional attributes as you write your tests:
 		//
@@ -61,18 +41,14 @@ namespace Chiro.Gap.Orm.Test
 		//
 		#endregion
 
-
 		/// <summary>
-		/// Controleert of de gepredefinieerde functie 'Groepsleiding' wordt herekend.
+		/// Controleert of de nationaal bepaalde functie 'Groepsleiding' wordt herkend.
 		/// </summary>
-		[TestMethod()]
-		public void GepredefinieerdeFunctieTest()
+		[TestMethod]
+		public void NationaalBepaaldeFunctieTest()
 		{
-			Functie f = new Functie(); // TODO: Initialize to an appropriate value
-
-			f.ID = (int)NationaleFunctie.GroepsLeiding;
-
-			Assert.IsTrue(f.Is(NationaleFunctie.GroepsLeiding));
+			var f = new Functie {ID = (int) NationaleFunctie.GroepsLeiding}; 
+            Assert.IsTrue(f.Is(NationaleFunctie.GroepsLeiding));
 		}
 	}
 }

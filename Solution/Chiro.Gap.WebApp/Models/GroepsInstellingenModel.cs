@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
@@ -21,6 +22,9 @@ namespace Chiro.Gap.WebApp.Models
 		public GroepDetail Detail { get; set; }
 		public GroepInfo Info { get { return Detail; } }
 		public CategorieInfo NieuweCategorie { get; set; }
+		public FunctieInfo NieuweFunctie { get; set; }
+
+		public IEnumerable<LidType> Types { get; set; }
 
 		#region IMasterViewModel Members
 

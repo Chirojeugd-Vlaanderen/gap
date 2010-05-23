@@ -31,7 +31,7 @@ namespace Chiro.Gap.WebApp
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(StringMinimumLengteAttribute), typeof(StringMinimumLengteAttributeAdapter));
 
             // Dit mogen we niet op true zetten, want dan zijn de booleans / checkboxen allemaal aan te kruisen
-		    DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
+		    //DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
 
 			DefaultModelBinder.ResourceClassKey = "MyResources";
 			ValidationExtensions.ResourceClassKey = "MyResources";

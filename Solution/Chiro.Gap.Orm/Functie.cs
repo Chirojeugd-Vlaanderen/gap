@@ -37,7 +37,7 @@ namespace Chiro.Gap.Orm
 			Type = LidType.Alles;
 		}
 
-		private bool _teVerwijderen = false;
+		private bool _teVerwijderen;
 
 		public bool TeVerwijderen
 		{

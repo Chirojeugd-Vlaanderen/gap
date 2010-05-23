@@ -12,12 +12,12 @@ namespace Chiro.Gap.WebApp.Models
 	/// <summary>
 	/// Model dat gebruikt kan worden voor een lijstje links naar personen
 	/// </summary>
-	public class PersonenLinksModel : MasterViewModel
+	public class LedenLinksModel : MasterViewModel
 	{
 		/// <summary>
-		/// Informatie op te lijsten personen
+		/// Informatie op te lijsten leden
 		/// </summary>
-		public IEnumerable<PersoonDetail> Personen { get; set; }
+		public IEnumerable<PersoonLidInfo> Leden { get; set; }
 
 		/// <summary>
 		/// Indien niet leeg, wordt de lijst als onvolledig beschouwd, en wordt
@@ -31,8 +31,8 @@ namespace Chiro.Gap.WebApp.Models
 		public int TotaalAantal { get; set; }
 
 		/// <summary>
-		/// Indien relevant: ID van categorie waar alle personen toe behoren.
+		/// Indien relevant: ID van functie die al die personen hebben.
 		/// </summary>
-		public int CategorieID { get; set; }
+		public int FunctieID { get; set; }
 	}
 }

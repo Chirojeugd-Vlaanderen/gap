@@ -37,10 +37,10 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// Haalt een gepredefinieerde functie op
+		/// Haalt een nationaal bepaalde functie op
 		/// </summary>
-		/// <param name="f">GepredefinieerdeFunctieType dat de op te halen functie bepaalt</param>
-		/// <returns>De gevraagde gepredefinieerde functie</returns>
+		/// <param name="f">Type nationale functie dat de op te halen functie bepaalt</param>
+		/// <returns>De gevraagde nationaal bepaalde functie</returns>
 		public Functie Ophalen(NationaleFunctie f)
 		{
 			return Ophalen((int)f);
@@ -67,12 +67,12 @@ namespace Chiro.Gap.Data.Ef
 
 		/// <summary>
 		/// Bepaalt het aantal leden uit de groep met ID <paramref name="groepID"/> met 
-		/// gepredefinieerde functie <paramref name="f"/>.
+		/// nationaal bepaalde functie <paramref name="f"/>.
 		/// </summary>
 		/// <param name="groepID">ID van een groep</param>
-		/// <param name="f">Gepredefinieerde functie</param>
+		/// <param name="f">Nationaal bepaalde functie</param>
 		/// <returns>Aantal leden uit de groep met ID <paramref name="groepID"/> met 
-		/// gepredefinieerde functie <paramref name="f"/></returns>
+		/// nationaal bepaalde functie <paramref name="f"/></returns>
 		public int AantalLeden(int groepID, NationaleFunctie f)
 		{
 			return AantalLeden(groepID, (int)f);
@@ -89,11 +89,30 @@ namespace Chiro.Gap.Data.Ef
 			using (var db = new ChiroGroepEntities())
 			{
 				resultaat = (from f in db.Functie
-					     where f.IsNationaal
-					     select f).ToList();
+							 where f.IsNationaal
+							 select f).ToList();
 			}
 			return Utility.DetachObjectGraph(resultaat);
 		}
+
+		/// <summary>
+		/// Haalt de functies op die de groep zelf aangemaakt heeft
+		/// </summary>
+		/// <param name="groepID">De ID van de groep</param>
+		/// <returns>De rij met eigen functies van de groep met de opgegeven ID</returns>
+		public IEnumerable<Functie> FunctiesPerGroepOphalen(int groepID)
+		{
+			IEnumerable<Functie> resultaat;
+
+			using (var db = new ChiroGroepEntities())
+			{
+				resultaat = (from f in db.Functie
+							 where f.Groep.ID == groepID
+							 select f).ToList();
+			}
+			return Utility.DetachObjectGraph(resultaat);
+		}
+
 		#endregion
 	}
 }

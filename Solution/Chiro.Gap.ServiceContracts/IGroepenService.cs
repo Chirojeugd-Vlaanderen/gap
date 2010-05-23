@@ -194,6 +194,33 @@ namespace Chiro.Gap.ServiceContracts
 		/// </returns>
 		[OperationContract]
 		IEnumerable<FunctieProbleemInfo> FunctiesControleren(int groepID);
+
+		/// <summary>
+		/// Voegt een functie toe aan de groep
+		/// </summary>
+		/// <param name="groepID">De groep waaraan het wordt toegevoegd</param>
+		/// <param name="naam">De naam van de nieuwe functie</param>
+		/// <param name="code">Code voor de nieuwe functie</param>
+		/// <param name="maxAantal">Eventueel het maximumaantal leden met die functie in een werkjaar</param>
+		/// <param name="minAantal">Het minimumaantal leden met die functie in een werkjaar</param>
+		/// <param name="lidType">Gaat het over een functie voor leden, leiding of beide?</param>
+		/// <param name="werkJaarVan">Eventueel het vroegste werkjaar waarvoor de functie beschikbaar moet zijn</param>
+		/// <returns>De ID van de aangemaakte Functie</returns>
+		[OperationContract]
+		[FaultContract(typeof(BestaatAlFault<FunctieInfo>))]
+		int FunctieToevoegen(int groepID, string naam, string code, int? maxAantal, int minAantal, LidType lidType, int? werkJaarVan);
+
+		/// <summary>
+		/// Verwijdert de functie met gegeven <paramref name="functieID"/>
+		/// </summary>
+		/// <param name="functieID">ID van de te verwijderen functie</param>
+		/// <param name="forceren">Indien <c>true</c>, worden eventuele personen uit de
+		/// te verwijderen functie eerst uit de functie weggehaald.  Indien
+		/// <c>false</c> krijg je een exception als de functie niet leeg is.</param>
+		[OperationContract]
+		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonLidInfo>))]
+		void FunctieVerwijderen(int functieID, bool forceren);
+
 		#endregion
 
 		#region categorieën

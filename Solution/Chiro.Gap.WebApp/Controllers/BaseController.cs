@@ -41,7 +41,6 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="serviceHelper">De IServiceHelper die de service calls zal uitvoeren
 		/// (dependency injection)</param>
 		public BaseController(IServiceHelper serviceHelper)
-			: base()
 		{
 			_serviceHelper = serviceHelper;
 		}
@@ -67,13 +66,13 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				string cacheKey = "GI" + groepID.ToString();
 
-				System.Web.Caching.Cache c = System.Web.HttpContext.Current.Cache;
+				var c = System.Web.HttpContext.Current.Cache;
 
-				GroepInfo gi = (GroepInfo)c.Get(cacheKey);
+				var gi = (GroepInfo)c.Get(cacheKey);
 				if (gi == null)
 				{
 					gi = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.InfoOphalen(groepID));
-					c.Add(cacheKey, gi, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
+					c.Add(cacheKey, gi, null, Cache.NoAbsoluteExpiration , new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
 				}
 
 				model.GroepsNaam = gi.Naam;

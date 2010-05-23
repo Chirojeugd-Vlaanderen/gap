@@ -18,20 +18,18 @@ namespace Chiro.Gap.ServiceContracts
 		/// Afdelingen waarvoor er in het recentste groepswerkjaar een afdelingsjaar bestaat.
 		/// </summary>
 		[DataMember]
-		public List<AfdelingDetail> Afdelingen
-		{
-			get;
-			set;
-		}
+		public List<AfdelingDetail> Afdelingen { get; set; }
 
 		/// <summary>
 		/// Beschikbare categorieen
 		/// </summary>
 		[DataMember]
-		public List<CategorieInfo> Categorieen
-		{
-			get;
-			set;
-		}
+		public List<CategorieInfo> Categorieen { get; set; }
+
+		/// <summary>
+		/// Functies die de groep gebruikt
+		/// </summary>
+		[DataMember]
+		public List<FunctieInfo> Functies { get; set; }
 	}
 }
