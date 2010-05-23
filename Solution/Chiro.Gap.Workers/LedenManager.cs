@@ -490,5 +490,35 @@ namespace Chiro.Gap.Workers
 				leiding.NonActief = lidInfo.NonActief;
 			}
 		}
+
+		/// <summary>
+		/// Geeft een lijst terug van alle afdelingen waaraan het lid gegeven gekoppeld is.
+		/// </summary>
+		/// <returns>Lijst met afdelingen</returns>
+		/// <remarks>Een kind is hoogstens aan 1 afdeling gekoppeld</remarks>
+		public static IList<int> AfdelingIdLijstGet(Lid l)
+		{
+			IList<int> result = new List<int>();
+			if (l is Kind)
+			{
+				if ((l as Kind).AfdelingsJaar != null)
+				{
+					result.Add((l as Kind).AfdelingsJaar.Afdeling.ID);
+				}
+			}
+			else if (l is Leiding)
+			{
+				foreach (AfdelingsJaar aj in (l as Leiding).AfdelingsJaar)
+				{
+					result.Add(aj.Afdeling.ID);
+				}
+			}
+			else
+			{
+				Debug.Assert(false, "Lid moet kind of leiding zijn.");
+			}
+
+			return result;
+		}
 	}
 }

@@ -39,36 +39,6 @@ namespace Chiro.Gap.Orm
 			get { return (this is Kind ? LidType.Kind : LidType.Leiding); }
 		}
 
-		/// <summary>
-		/// Geeft een lijst terug van alle afdelingen waaraan het lid gekoppeld is.
-		/// </summary>
-		/// <returns>Lijst met afdelingen</returns>
-		/// <remarks>Een kind is hoogstens aan 1 afdeling gekoppeld</remarks>
-		public IList<int> AfdelingIdLijstGet()
-		{
-			IList<int> result = new List<int>();
-			if (this is Kind)
-			{
-				if ((this as Kind).AfdelingsJaar != null)
-				{
-					result.Add((this as Kind).AfdelingsJaar.Afdeling.ID);
-				}
-			}
-			else if (this is Leiding)
-			{
-				foreach (AfdelingsJaar aj in (this as Leiding).AfdelingsJaar)
-				{
-					result.Add(aj.Afdeling.ID);
-				}
-			}
-			else
-			{
-				Debug.Assert(false, "Lid moet kind of leiding zijn.");
-			}
-
-			return result;
-		}
-
 		// public override int GetHashCode()
 		// {
 		//         return ID.GetHashCode();

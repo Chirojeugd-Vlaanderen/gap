@@ -10,6 +10,7 @@ using AutoMapper;
 
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
+using Chiro.Gap.Workers;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.ServiceContracts.DataContracts;
@@ -117,7 +118,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src is Leiding ? ((Leiding)src).DubbelpuntAbonnement : false))
 				.ForMember(
 					dst => dst.AfdelingIdLijst,
-					opt => opt.MapFrom(src => src.AfdelingIdLijstGet()))
+					opt => opt.MapFrom(src => LedenManager.AfdelingIdLijstGet(src)))
 				.ForMember(
 					dst => dst.Functies,
 					opt => opt.MapFrom(src => src.Functie))
