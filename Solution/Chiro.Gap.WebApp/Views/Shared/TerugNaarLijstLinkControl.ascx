@@ -6,7 +6,7 @@
     //  Welke lijst dat is, wordt door de controllers in de ClientState opgeslagen.
     if (Chiro.Gap.WebApp.ClientState.VorigePagina != null) %>
     <%  { %>
-    <%//=Html.("Terug naar de lijst", Chiro.Gap.WebApp.ClientState.VorigePagina)%>
-    <a href="<%=Chiro.Gap.WebApp.ClientState.VorigePagina%>">Terug naar de lijst</a>
+    <%//=Html.("Terug naar vorig overzicht", Chiro.Gap.WebApp.ClientState.VorigePagina)%>
+    <a href="<%=Chiro.Gap.WebApp.ClientState.VorigePagina%>">Terug naar vorig overzicht</a>
     <%  } %>
 </div>

@@ -15,6 +15,8 @@ namespace Chiro.Gap.ServiceContracts
 	[ServiceContract]
 	public interface IGelieerdePersonenService
 	{
+		#region standaard
+
 		/// <summary>
 		/// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep,
 		/// inclusief eventueel lidobject voor het recentste werkjaar.
@@ -87,7 +89,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <returns>ID van de bewaarde persoon</returns>
 		[OperationContract]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonDetail>))]
-		int Aanmaken(PersoonInfo info, int groepID);
+		PersoonDetail Aanmaken(PersoonInfo info, int groepID);
 
 		/// <summary>
 		/// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven
@@ -105,7 +107,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// 190), maar dat mag blijkbaar niet bij services.</remarks>
 		[OperationContract]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonDetail>))]
-		int GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer);
+		PersoonDetail GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer);
 
 		/// <summary>
 		/// Haalt PersoonID op van een gelieerde persoon
@@ -115,6 +117,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <remarks>Eigenlijk is dit een domme method, maar ze wordt gemakshalve nog gebruikt.</remarks>
 		[OperationContract]
 		int PersoonIDGet(int gelieerdePersoonID);
+
+		#endregion
 
 		#region adressen
 
@@ -142,10 +146,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
 		[FaultContract(typeof(OngeldigObjectFault))]
-		void Verhuizen(
-			IEnumerable<int> persoonIDs,
-			PersoonsAdresInfo nieuwAdres,
-			int oudAdresID);
+		void Verhuizen(IEnumerable<int> persoonIDs,PersoonsAdresInfo nieuwAdres,int oudAdresID);
 
 		/// <summary>
 		/// Haalt alle personen op die een adres gemeen hebben met de
@@ -164,21 +165,11 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="personenIDs">ID's van Personen
 		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
 		/// <param name="adres">Toe te voegen adres</param>
+		/// <param name="voorkeur">Geeft aan of het nieuwe adres het voorkeursadres moet worden</param>
 		[OperationContract]
 		[FaultContract(typeof(OngeldigObjectFault))]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
-		void AdresToevoegenPersonen(List<int> personenIDs, PersoonsAdresInfo adres);
-
-		/// <summary>
-		/// Voegt een adres toe aan een verzameling gelieerde personen
-		/// </summary>
-		/// <param name="gelieerdePersoonIDs">ID's van gelieerde personen
-		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
-		/// <param name="adres">Toe te voegen adres</param>
-		[OperationContract]
-		[FaultContract(typeof(OngeldigObjectFault))]
-		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
-		void AdresToevoegenGelieerdePersonen(List<int> gelieerdePersoonIDs, PersoonsAdresInfo adres);
+		void AdresToevoegenPersonen(List<int> personenIDs, PersoonsAdresInfo adres, bool voorkeur);
 
 		/// <summary>
 		/// Verwijdert een adres van een verzameling personen
@@ -187,6 +178,14 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="adresID">ID van het adres dat losgekoppeld moet worden</param>
 		[OperationContract]
 		void AdresVerwijderenVanPersonen(List<int> personenIDs, int adresID);
+
+		/// <summary>
+		/// Stelt het gegeven persoonsadres in als nieuw voorkeursadres van de gelieerde persoon
+		/// </summary>
+		/// <param name="persoonsAdresID"></param>
+		/// <param name="gelieerdePersoonID"></param>
+		[OperationContract]
+		void VoorkeursAdresMaken(int persoonsAdresID, int gelieerdePersoonID);
 
 		#endregion adressen
 

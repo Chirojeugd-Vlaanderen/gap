@@ -13,25 +13,16 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	public class PersoonDetail : PersoonInfo
 	{
 		[DataMember]
-		public int PersoonID
-		{
-			get;
-			set;
-		}
+		public int PersoonID{get;set;}
 
 		[DataMember]
-		public Boolean IsLid
-		{
-			get;
-			set;
-		}
+		public Boolean IsLid{get;set;}
 
 		[DataMember]
-		public IList<CategorieInfo> CategorieLijst
-		{
-			get;
-			set;
-		}
+		public IList<CategorieInfo> CategorieLijst{ get; set; }
+
+		[DataMember]
+		public int? VoorkeursAdresID { get; set; }
 
 		public string VolledigeNaam
 		{

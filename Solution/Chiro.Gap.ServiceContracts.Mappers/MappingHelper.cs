@@ -67,8 +67,11 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.PersoonID,
 					opt => opt.MapFrom(src => src.Persoon.ID))
 				.ForMember(
+					dst => dst.VoorkeursAdresID,
+					opt => opt.MapFrom(src => src.PersoonsAdres.ID))
+				.ForMember(
 					dst => dst.VolledigeNaam,
-					opt => opt.Ignore());	// @Broes: anders werkt het bij mij niet meer
+					opt => opt.Ignore());
 
 			Mapper.CreateMap<AfdelingsJaar, AfdelingDetail>()
 				.ForMember(
@@ -162,6 +165,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.ID,
 					opt => opt.MapFrom(src => src.Adres.ID))
 				.ForMember(
+					dst => dst.PersoonsAdresID,
+					opt => opt.MapFrom(src => src.ID))
+				.ForMember(
 					dst => dst.PostNr,
 					opt => opt.MapFrom(src => src.Adres.StraatNaam.PostNummer))
 				.ForMember(
@@ -195,9 +201,39 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.CreateMap<PersoonsAdres, BewonersInfo>();
 			Mapper.CreateMap<StraatNaam, StraatInfo>();
 			Mapper.CreateMap<WoonPlaats, WoonPlaatsInfo>();
+			Mapper.CreateMap<CommunicatieType, CommunicatieTypeInfo>();
 			Mapper.CreateMap<Categorie, CategorieInfo>();
 			Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo2>();
 			Mapper.CreateMap<CommunicatieVorm, CommunicatieDetail>();
+
+			Mapper.CreateMap<CommunicatieInfo, CommunicatieVorm>()
+				.ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
+				.ForMember(dst => dst.Versie, opt => opt.Ignore())
+				.ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
+				.ForMember(dst => dst.GelieerdePersoonReference, opt => opt.Ignore())
+				.ForMember(dst => dst.CommunicatieType, opt => opt.Ignore())
+				.ForMember(dst => dst.CommunicatieTypeReference, opt => opt.Ignore())
+				.ForMember(dst => dst.EntityKey, opt => opt.Ignore());
+
+			Mapper.CreateMap<CommunicatieDetail, CommunicatieVorm>()
+				.ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
+				.ForMember(dst => dst.Versie, opt => opt.Ignore())
+				.ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
+				.ForMember(dst => dst.GelieerdePersoonReference, opt => opt.Ignore())
+				.ForMember(dst => dst.CommunicatieType, opt => opt.Ignore())
+				.ForMember(dst => dst.CommunicatieTypeReference, opt => opt.Ignore())
+				.ForMember(dst => dst.EntityKey, opt => opt.Ignore());
+
+			Mapper.CreateMap<PersoonInfo, Persoon>()
+				.ForMember(dst => dst.ID, opt => opt.Ignore())
+				.ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
+				.ForMember(dst => dst.VolledigeNaam, opt => opt.Ignore())
+				.ForMember(dst => dst.SterfDatum, opt => opt.Ignore())
+				.ForMember(dst => dst.Versie, opt => opt.Ignore())
+				.ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
+				.ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
+				.ForMember(dst => dst.EntityKey, opt => opt.Ignore());
+
 
 			// Important: als er een lid is, dan is er altijd een gelieerdepersoon, maar niet omgekeerd, 
 			// dus passen we de link aan in de andere richting!

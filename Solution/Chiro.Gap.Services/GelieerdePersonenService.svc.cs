@@ -93,20 +93,6 @@ namespace Chiro.Gap.Services
 			var gp = _gpMgr.Ophalen(persoonInfo.GelieerdePersoonID);
 			gp.ChiroLeefTijd = persoonInfo.ChiroLeefTijd;
 
-			// Map informatie uit persoonInfo naar gp.Persoon
-
-			Mapper.CreateMap<PersoonInfo, Persoon>()
-				.ForMember(dst => dst.ID, opt => opt.Ignore())
-				.ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
-				.ForMember(dst => dst.VolledigeNaam, opt => opt.Ignore())
-				.ForMember(dst => dst.SterfDatum, opt => opt.Ignore())
-				.ForMember(dst => dst.Versie, opt => opt.Ignore())
-				.ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
-				.ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
-				.ForMember(dst => dst.EntityKey, opt => opt.Ignore());
-
-			Mapper.AssertConfigurationIsValid();
-
 			Mapper.Map(persoonInfo, gp.Persoon);
 			// In de hoop dat de members die geen 'Ignore hebben' overschreven worden,
 			// en de andere niet.
@@ -128,7 +114,7 @@ namespace Chiro.Gap.Services
 		/// en de Chiroleeftijd.</remarks>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public int Aanmaken(PersoonInfo info, int groepID)
+		public PersoonDetail Aanmaken(PersoonInfo info, int groepID)
 		{
 			return GeforceerdAanmaken(info, groepID, false);
 		}
@@ -149,7 +135,7 @@ namespace Chiro.Gap.Services
 		/// en de Chiroleeftijd.</remarks>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public int GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer)
+		public PersoonDetail GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer)
 		{
 			// Indien 'forceer' niet gezet is, moet een FaultException opgeworpen worden
 			// als de  nieuwe persoon te hard lijkt op een bestaande Gelieerde Persoon.
@@ -197,33 +183,18 @@ namespace Chiro.Gap.Services
 
 			GelieerdePersoon gelieerd = _gpMgr.Koppelen(nieuwePersoon, g, info.ChiroLeefTijd);
 			gelieerd = _gpMgr.Bewaren(gelieerd);
-			return gelieerd.ID;
+			return Mapper.Map<GelieerdePersoon, PersoonDetail>(gelieerd);
 		}
 
 		/// <summary>
 		/// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>
-		/// <returns>GelieerdePersoon met persoonsgegevens, communicatievorm en adressen</returns>
+		/// <returns>GelieerdePersoon met persoonsgegevens</returns>
 		public PersoonDetail DetailsOphalen(int gelieerdePersoonID)
 		{
-			// Nogal een zware definitie van een mapping.
-
-			Mapper.CreateMap<GelieerdePersoon, PersoonDetail>()
-				.ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.Persoon.AdNummer))
-				.ForMember(dst => dst.CategorieLijst, opt => opt.MapFrom(src => src.Categorie))
-				.ForMember(dst => dst.GeboorteDatum, opt => opt.MapFrom(src => src.Persoon.GeboorteDatum))
-				.ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => src.ID))
-				.ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => src.Persoon.Geslacht))
-				.ForMember(dst => dst.IsLid, opt => opt.Ignore())
-				.ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Persoon.Naam))
-				.ForMember(dst => dst.VersieString, opt => opt.MapFrom(src => src.Persoon.VersieString))
-				.ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam));
-			Mapper.AssertConfigurationIsValid();
-
 			return Mapper.Map<GelieerdePersoon, PersoonDetail>(_gpMgr.DetailsOphalen(gelieerdePersoonID));
 		}
-
 
 		/// <summary>
 		/// Haalt gelieerde persoon op met ALLE nodige info om het persoons-bewerken scherm te vullen:
@@ -356,7 +327,7 @@ namespace Chiro.Gap.Services
 		/// <param name="personenIDs">ID's van Personen
 		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
 		/// <param name="adr">Toe te voegen adres</param>
-		public void AdresToevoegenPersonen(List<int> personenIDs, PersoonsAdresInfo adr)
+		public void AdresToevoegenPersonen(List<int> personenIDs, PersoonsAdresInfo adr, bool voorkeur)
 		{
 			// Dit gaat sterk lijken op verhuizen.
 
@@ -380,52 +351,7 @@ namespace Chiro.Gap.Services
 
 			try
 			{
-				_pMgr.AdresToevoegen(personenLijst, adres, adr.AdresType);
-			}
-			catch (BlokkerendeObjectenException<PersoonsAdres> ex)
-			{
-				var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>, BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
-
-				throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
-			}
-
-			// persisteren
-			_adrMgr.Bewaren(adres);
-		}
-
-		/// <summary>
-		/// Voegt een adres toe aan een verzameling gelieerde personen
-		/// </summary>
-		/// <param name="gelieerdePersoonIDs">ID's van gelieerde personen
-		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
-		/// <param name="persoonsAdresInfo">Toe te voegen adres</param>
-		public void AdresToevoegenGelieerdePersonen(List<int> gelieerdePersoonIDs, PersoonsAdresInfo persoonsAdresInfo)
-		{
-			// Dit gaat sterk lijken op verhuizen.
-
-			// Adres opzoeken in database
-			Adres adres;
-			try
-			{
-				adres = _adrMgr.ZoekenOfMaken(persoonsAdresInfo.StraatNaamNaam, persoonsAdresInfo.HuisNr, persoonsAdresInfo.Bus, persoonsAdresInfo.WoonPlaatsNaam, persoonsAdresInfo.PostNr, null);
-			}
-			catch (OngeldigObjectException ex)
-			{
-				var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
-
-				throw new FaultException<OngeldigObjectFault>(fault);
-			}
-
-			// Personen ophalen
-			var gpLijst = _gpMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Adressen);
-			var personenLijst = from gp in gpLijst
-			                    select gp.Persoon;
-
-			// Adres koppelen aan personen
-
-			try
-			{
-				_pMgr.AdresToevoegen(personenLijst, adres, persoonsAdresInfo.AdresType);
+				_pMgr.AdresToevoegen(personenLijst, adres, adr.AdresType, voorkeur);
 			}
 			catch (BlokkerendeObjectenException<PersoonsAdres> ex)
 			{
@@ -459,6 +385,13 @@ namespace Chiro.Gap.Services
 			_adrMgr.Bewaren(adr);
 		}
 
+		public void VoorkeursAdresMaken(int persoonsAdresID, int gelieerdePersoonID)
+		{
+			GelieerdePersoon gp = _gpMgr.DetailsOphalen(gelieerdePersoonID);
+			_gpMgr.VoorkeurInstellen(gp, persoonsAdresID);
+			_gpMgr.BewarenMetPersoonsAdressen(gp);
+		}
+
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<BewonersInfo> HuisGenotenOphalen(int gelieerdePersoonID)
@@ -479,17 +412,6 @@ namespace Chiro.Gap.Services
 			// 2. Creer nieuwe communicatievorm
 			// 3. Gebruik business om te koppelen
 			// 4. Bewaar
-
-			Mapper.CreateMap<CommunicatieInfo, CommunicatieVorm>()
-				.ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
-				.ForMember(dst => dst.Versie, opt => opt.Ignore())
-				.ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
-				.ForMember(dst => dst.GelieerdePersoonReference, opt => opt.Ignore())
-				.ForMember(dst => dst.CommunicatieType, opt => opt.Ignore())
-				.ForMember(dst => dst.CommunicatieTypeReference, opt => opt.Ignore())
-				.ForMember(dst => dst.EntityKey, opt => opt.Ignore());
-
-			Mapper.AssertConfigurationIsValid();
 
 			var communicatieVorm = Mapper.Map<CommunicatieInfo, CommunicatieVorm>(commInfo);
 			communicatieVorm.CommunicatieType = 
@@ -533,17 +455,6 @@ namespace Chiro.Gap.Services
 		/// <param name="v">De aan te passen communicatievorm</param>
 		public void CommunicatieVormAanpassen(CommunicatieDetail v)
 		{
-			Mapper.CreateMap<CommunicatieDetail, CommunicatieVorm>()
-				.ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
-				.ForMember(dst => dst.Versie, opt => opt.Ignore())
-				.ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
-				.ForMember(dst => dst.GelieerdePersoonReference, opt => opt.Ignore())
-				.ForMember(dst => dst.CommunicatieType, opt => opt.Ignore())
-				.ForMember(dst => dst.CommunicatieTypeReference, opt => opt.Ignore())
-				.ForMember(dst => dst.EntityKey, opt => opt.Ignore());
-
-			Mapper.AssertConfigurationIsValid();
-
 			_cvMgr.Bewaren(Mapper.Map<CommunicatieDetail, CommunicatieVorm>(v));
 		}
 
@@ -554,10 +465,6 @@ namespace Chiro.Gap.Services
 		/// <returns>De communicatievorm met de opgegeven ID</returns>
 		public CommunicatieDetail CommunicatieVormOphalen(int commvormID)
 		{
-			Mapper.CreateMap<CommunicatieVorm, CommunicatieDetail>();
-			Mapper.AssertConfigurationIsValid();
-
-
 			return Mapper.Map<CommunicatieVorm, CommunicatieDetail>(_cvMgr.Ophalen(commvormID));
 		}
 
@@ -568,18 +475,12 @@ namespace Chiro.Gap.Services
 		/// <returns>Info over het gevraagde communicatietype</returns>
 		public CommunicatieTypeInfo CommunicatieTypeOphalen(int commTypeID)
 		{
-			Mapper.CreateMap<CommunicatieType, CommunicatieTypeInfo>();
-			Mapper.AssertConfigurationIsValid();
-
 			return Mapper.Map<CommunicatieType,CommunicatieTypeInfo>(
 				_cvMgr.CommunicatieTypeOphalen(commTypeID));
 		}
 
 		public IEnumerable<CommunicatieTypeInfo> CommunicatieTypesOphalen()
 		{
-			Mapper.CreateMap<CommunicatieType, CommunicatieTypeInfo>();
-			Mapper.AssertConfigurationIsValid();
-
 			return Mapper.Map<IEnumerable<CommunicatieType>, IEnumerable<CommunicatieTypeInfo>>(
 				_cvMgr.CommunicatieTypesOphalen());
 		}

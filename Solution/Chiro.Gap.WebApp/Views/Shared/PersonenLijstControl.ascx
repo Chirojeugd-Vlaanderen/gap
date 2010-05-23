@@ -59,13 +59,14 @@ Pagina: <%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.AantalP
 			<% } %>
 			<% if (p.GeboorteDatum.HasValue && p.GeboorteDatum.Value.Year < DateTime.Today.Year - 14)
 	  { %>
-				<%=Html.ActionLink("Leiding maken", "LeidingMaken", new { Controller = "Personen", id = p.GelieerdePersoonID })%>
+				<%=Html.ActionLink("Leiding maken", "LeidingMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
 			<% } %>
         <% }
 		   else
 		   { %>
 		   Is lid
         <%} %>
+        <%=Html.ActionLink("Bro/sis maken", "Kloon", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
     </td>
     <td><% foreach (var c in p.CategorieLijst) 
            { %>

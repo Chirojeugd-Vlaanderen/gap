@@ -47,6 +47,11 @@ namespace Chiro.Gap.WebApp.Models
 		public List<int> PersoonIDs { get; set; }
 
 		/// <summary>
+		/// Is dit nieuwe adres iedereen zijn voorkeursadres
+		/// </summary>
+		public bool Voorkeur { get; set; }
+
+		/// <summary>
 		/// Lijstje woonplaatsen dat overeenkomt met Adres.PostNr
 		/// </summary>
 		public IEnumerable<WoonPlaatsInfo> WoonPlaatsen { get; set; }

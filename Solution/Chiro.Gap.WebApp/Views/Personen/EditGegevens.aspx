@@ -93,6 +93,7 @@
             </p>
 
             <%=Html.HiddenFor(s=>s.HuidigePersoon.GelieerdePersoonID)%>
+            <%=Html.HiddenFor(s=>s.BroerzusID)%>
             <%=Html.HiddenFor(s=>s.HuidigePersoon.VersieString)%>
             <%
                 if (Model.Forceer)
@@ -107,10 +108,6 @@
      </fieldset>
      
      <%} %>
-
-    <% if (Model.HuidigePersoon.GelieerdePersoonID != 0) { %>
-        <%=Html.ActionLink("Stop met aanpassen zonder te bewaren", "EditRest", new { id = Model.HuidigePersoon.GelieerdePersoonID})%>
-    <% } %>
     
-     <%=Html.ActionLink("Terug naar alle persoonsgegevens", "EditRest", new { Controller = "Personen", id = Model.HuidigePersoon.GelieerdePersoonID})%>
+      <% Html.RenderPartial("TerugNaarLijstLinkControl"); %>
 </asp:Content>

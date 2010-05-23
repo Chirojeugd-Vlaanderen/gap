@@ -252,6 +252,7 @@ namespace Chiro.Gap.Data.Ef
 					from gp in db.GelieerdePersoon
 						.Include(gp => gp.Persoon)
 						.Include(gp => gp.Communicatie.First().CommunicatieType)
+						.Include(gp => gp.PersoonsAdres)
 						.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.StraatNaam)
 						.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.WoonPlaats)
 						.Include(gp => gp.Groep)
@@ -318,9 +319,11 @@ namespace Chiro.Gap.Data.Ef
 			{
 				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
 				return (
-					from gp in db.GelieerdePersoon.Include("Persoon")
-					.Include("Communicatie")
-					.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.StraatNaam)
+					from gp in db.GelieerdePersoon
+						.Include(gp => gp.Persoon)
+						.Include(gp => gp.Communicatie)
+						.Include(gp => gp.PersoonsAdres)
+						.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.StraatNaam)
 					where (gp.Persoon.VoorNaam + " " + gp.Persoon.Naam + " " + gp.Persoon.VoorNaam)
 					.Contains(zoekStringNaam)
 					select gp).ToList();

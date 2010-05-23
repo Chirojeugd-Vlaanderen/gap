@@ -313,6 +313,5 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.FunctieIDs = (from f in model.HuidigLid.LidInfo.Functies
 								select f.ID).ToList();
 		}
-
 	}
 }

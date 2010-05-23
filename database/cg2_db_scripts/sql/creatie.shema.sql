@@ -342,6 +342,7 @@ BEGIN
 		[ChiroLeefTijd] [int] NOT NULL CONSTRAINT [DF_GelieerdePersoon_ChiroLeefTijd]  DEFAULT ((0)),
 		[GelieerdePersoonID] [int] IDENTITY(1,1) NOT NULL,
 		[Versie] [timestamp] NULL,
+		[VoorkeursAdresID] [int] NULL,
 		CONSTRAINT [PK_GelieerdePersoon] PRIMARY KEY CLUSTERED ([GelieerdePersoonID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
 	) ON [PRIMARY]
 END

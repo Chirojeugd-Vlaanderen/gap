@@ -17,6 +17,12 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	{
 		[DataMember]
 		public AdresTypeEnum AdresType { get; set; }
+
+		/// <summary>
+		/// Het PersoonsAdresID
+		/// </summary>
+		[DataMember]
+		public int PersoonsAdresID { get; set; }
 	}
 
 	/// <summary>

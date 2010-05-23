@@ -53,6 +53,9 @@ GO
 ALTER TABLE [pers].[GelieerdePersoon]  WITH CHECK ADD  CONSTRAINT [FK_GelieerdePersoon_Persoon] FOREIGN KEY([PersoonID]) REFERENCES [pers].[Persoon] ([PersoonID])
 GO
 
+ALTER TABLE [pers].[GelieerdePersoon]  WITH CHECK ADD  CONSTRAINT [FK_GelieerdePersoon_PersoonsAdres] FOREIGN KEY([VoorkeursAdresID]) REFERENCES [pers].[PersoonsAdres] ([PersoonsAdresID])
+GO
+
 ALTER TABLE [core].[Categorie]  WITH CHECK ADD  CONSTRAINT [FK_Categorie_Groep] FOREIGN KEY([GroepID]) REFERENCES [grp].[Groep] ([GroepID])
 GO
 

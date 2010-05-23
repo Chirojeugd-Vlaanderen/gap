@@ -145,19 +145,6 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Koppelt het gegeven Adres via een nieuw PersoonsAdresObject
-		/// aan de gegeven Persoon.  Persisteert niet.
-		/// </summary>
-		/// <param name="p">Persoon die er een adres bij krijgt, met daaraan gekoppeld zijn huidige
-		/// adressen.</param>
-		/// <param name="adres">Toe te voegen adres</param>
-		/// <param name="adresType">Het adrestype (thuis, kot, enz.)</param>
-		public void AdresToevoegen(Persoon p, Adres adres, AdresTypeEnum adresType)
-		{
-			AdresToevoegen(new List<Persoon> { p }, adres, adresType);
-		}
-
-		/// <summary>
 		/// Koppelt het gegeven Adres via nieuwe PersoonsAdresObjecten
 		/// aan de gegeven Personen.  Persisteert niet.
 		/// </summary>
@@ -165,45 +152,48 @@ namespace Chiro.Gap.Workers
 		/// adressen.</param>
 		/// <param name="adres">Toe te voegen adres</param>
 		/// <param name="adrestype">Het adrestype (thuis, kot, enz.)</param>
-		public void AdresToevoegen(IEnumerable<Persoon> personen, Adres adres, AdresTypeEnum adrestype)
+		public void AdresToevoegen(IEnumerable<Persoon> personen, Adres adres, AdresTypeEnum adrestype, bool voorkeur)
 		{
 			var persIDs = (from p in personen
 				       select p.ID).ToList();
 			var mijnPersIDs = _autorisatieMgr.EnkelMijnPersonen(persIDs);
 
-			if (persIDs.Count() == mijnPersIDs.Count())
-			{
-				// Vind personen waaraan het adres al gekoppeld is.
-
-				var bestaand = personen.SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == adres.ID));
-
-				if (bestaand.FirstOrDefault() != null)
-				{
-					// Sommige personen hebben het adres al.  Geef een exception met daarin de
-					// betreffende persoonsadres-objecten.
-
-					var bestaandePersoonsAdressen = bestaand.ToList();
-
-					throw new BlokkerendeObjectenException<PersoonsAdres>(
-						FoutNummers.WonenDaarAl,
-						bestaand,
-						bestaand.Count(),
-						Properties.Resources.WonenDaarAl);
-				}
-
-				foreach (Persoon p in personen)
-				{
-					var pa = new PersoonsAdres { Adres = adres, Persoon = p, AdresType = adrestype };
-					p.PersoonsAdres.Add(pa);
-					adres.PersoonsAdres.Add(pa);
-				}
-			}
-			else
+			if(persIDs.Count() != mijnPersIDs.Count())
 			{
 				// stiekem personen niet gelieerd aan eigen groep bij in lijst opgenomen.  Geen
 				// tijd aan verspillen; gewoon een GeenGavException.
 
 				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+
+			// Vind personen waaraan het adres al gekoppeld is.
+
+			var bestaand = personen.SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == adres.ID));
+
+			if (bestaand.FirstOrDefault() != null)
+			{
+				// Sommige personen hebben het adres al.  Geef een exception met daarin de
+				// betreffende persoonsadres-objecten.
+
+				var bestaandePersoonsAdressen = bestaand.ToList();
+
+				throw new BlokkerendeObjectenException<PersoonsAdres>(
+					FoutNummers.WonenDaarAl,
+					bestaand,
+					bestaand.Count(),
+					Properties.Resources.WonenDaarAl);
+			}
+
+			foreach (Persoon p in personen)
+			{
+				var pa = new PersoonsAdres { Adres = adres, Persoon = p, AdresType = adrestype };
+				p.PersoonsAdres.Add(pa);
+				adres.PersoonsAdres.Add(pa);
+			}
+
+			if(voorkeur)
+			{
+				//extra werk: zorgen dat alle andere voorkeursadressen verwijderd worden en dan de nieuwe voorkeur toevoegen
 			}
 		}
 

@@ -192,25 +192,48 @@ namespace Chiro.Gap.Workers
 		/// <returns></returns>
 		public GelieerdePersoon BewarenMetCommVormen(GelieerdePersoon p)
 		{
-			if (_autorisatieMgr.IsGavGelieerdePersoon(p.ID))
+			if (!_autorisatieMgr.IsGavGelieerdePersoon(p.ID))
 			{
-				// Hier mapping gebruiken om te vermijden dat het AD-nummer
-				// overschreven wordt, lijkt me wat overkill.  Ik vergelijk
-				// hiet nieuwe AD-nummer gewoon met het bestaande.
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+			// Hier mapping gebruiken om te vermijden dat het AD-nummer
+			// overschreven wordt, lijkt me wat overkill.  Ik vergelijk
+			// hiet nieuwe AD-nummer gewoon met het bestaande.
 
-				GelieerdePersoon origineel = _dao.Ophalen(p.ID, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
-				if (origineel.Persoon.AdNummer == p.Persoon.AdNummer)
-				{
-					return _dao.Bewaren(p, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
-				}
-				else
-				{
-					throw new InvalidOperationException(Properties.Resources.AdNummerNietWijzigen);
-				}
+			GelieerdePersoon origineel = _dao.Ophalen(p.ID, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
+			if (origineel.Persoon.AdNummer == p.Persoon.AdNummer)
+			{
+				return _dao.Bewaren(p, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
 			}
 			else
 			{
+				throw new InvalidOperationException(Properties.Resources.AdNummerNietWijzigen);
+			}
+		}
+
+		/// <summary>
+		/// TODO: documenteren
+		/// </summary>
+		/// <param name="gp"></param>
+		/// <returns></returns>
+		public GelieerdePersoon BewarenMetPersoonsAdressen(GelieerdePersoon gp)
+		{
+			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
+			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+			// Hier mapping gebruiken om te vermijden dat het AD-nummer
+			// overschreven wordt, lijkt me wat overkill.  Ik vergelijk
+			// hiet nieuwe AD-nummer gewoon met het bestaande.
+
+			GelieerdePersoon origineel = _dao.Ophalen(gp.ID, e => e.Persoon);
+			if (origineel.Persoon.AdNummer == gp.Persoon.AdNummer)
+			{
+				return _dao.Bewaren(gp, e => e.Persoon, e => e.PersoonsAdres, e => e.Persoon.PersoonsAdres.First());
+			}
+			else
+			{
+				throw new InvalidOperationException(Properties.Resources.AdNummerNietWijzigen);
 			}
 		}
 
@@ -541,6 +564,32 @@ namespace Chiro.Gap.Workers
 			}
 
 			return _dao.Ophalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersoonIDs), paths.ToArray());
+		}
+
+		public void VoorkeurInstellen(GelieerdePersoon gp, int persoonsAdresID)
+		{
+			var nieuwevoorkeur = (from pa in gp.Persoon.PersoonsAdres
+								where pa.ID == persoonsAdresID
+								select pa).FirstOrDefault();
+			if (nieuwevoorkeur == null)
+			{
+				//TODO
+				throw new InvalidOperationException("Persoonsadres hoort niet bij de persoon.");
+			}
+			if (gp.PersoonsAdres != null && gp.PersoonsAdres.ID == nieuwevoorkeur.ID)
+			{
+				return; //het voorkeursadres staat al juist
+			}
+
+			var oudevoorkeur = (from pa in gp.Persoon.PersoonsAdres
+								 where pa.GelieerdePersoon.Contains(gp)
+								 select pa).FirstOrDefault();
+
+			gp.PersoonsAdres = nieuwevoorkeur;
+			if(oudevoorkeur!=null)
+			{
+				oudevoorkeur.GelieerdePersoon.Remove(gp);
+			}
 		}
 	}
 }

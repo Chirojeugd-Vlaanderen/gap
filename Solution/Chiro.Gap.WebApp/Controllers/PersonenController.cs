@@ -238,7 +238,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HttpPost]
 		public ActionResult Nieuw(GelieerdePersonenModel model, int groepID)
 		{
-			int persoonID;
+			
 
 			BaseModelInit(model, groepID);
 			model.Titel = Properties.Resources.NieuwePersoonTitel;
@@ -248,15 +248,16 @@ namespace Chiro.Gap.WebApp.Controllers
 				return View("EditGegevens", model);
 			}
 
+			PersoonDetail gp;
 			try
 			{
 				// (ivm forceer: 0: false, 1: true)
-				persoonID = ServiceHelper.CallService<IGelieerdePersonenService, int>(l => l.GeforceerdAanmaken(model.HuidigePersoon, groepID, model.Forceer));
+				gp = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.GeforceerdAanmaken(model.HuidigePersoon, groepID, model.Forceer));
 			}
 			catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> fault)
 			{
 				model.GelijkaardigePersonen = fault.Detail.Objecten;
-				model.Forceer=true;
+				model.Forceer = true;
 				return View("EditGegevens", model);
 			}
 
@@ -269,11 +270,88 @@ namespace Chiro.Gap.WebApp.Controllers
 			// (er wordt hier geredirect ipv de view te tonen,
 			// zodat je bij een 'refresh' niet de vraag krijgt
 			// of je de gegevens opnieuw wil posten.)
-			return RedirectToAction("EditRest", new
-			{
-				id = persoonID
-			});
+			return RedirectToAction("EditRest", new { id = gp.GelieerdePersoonID });
 		}
+
+		
+
+		// aka maak een broertje of zusje
+		// GET: /Personen/Kloon
+		public ActionResult Kloon(int gelieerdepersoonID, int groepID)
+		{
+			var model = new GelieerdePersonenModel();
+			BaseModelInit(model, groepID);
+			var broerzus = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailsOphalen(gelieerdepersoonID));
+			model.HuidigePersoon = new PersoonDetail();
+
+			model.BroerzusID = broerzus.GelieerdePersoonID;
+			model.HuidigePersoon.Naam = broerzus.Naam;
+
+			model.Titel = Properties.Resources.NieuwePersoonTitel;
+			return View("EditGegevens", model);
+		}
+
+		// POST: /Personen/Nieuw
+		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
+		//TODO dit is mss iets om op de server te draaien?
+		public ActionResult Kloon(GelieerdePersonenModel model, int groepID)
+		{
+			/////BEGIN DUPLICATE CODE
+
+			if(model.BroerzusID == 0)
+			{
+				throw new InvalidOperationException("Zou niet 0 mogen zijn? Als wel zo is, maak volledig nieuwe persoon");
+			}
+
+			BaseModelInit(model, groepID);
+			model.Titel = Properties.Resources.NieuwePersoonTitel;
+
+			if (!ModelState.IsValid)
+			{
+				return View("EditGegevens", model);
+			}
+
+			PersoonDetail gp;
+			try
+			{
+				// (ivm forceer: 0: false, 1: true)
+				gp = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.GeforceerdAanmaken(model.HuidigePersoon, groepID, model.Forceer));
+			}
+			catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> fault)
+			{
+				model.GelijkaardigePersonen = fault.Detail.Objecten;
+				model.Forceer = true;
+				return View("EditGegevens", model);
+			}
+			/////END DUPLICATE CODE
+
+			var broerzus = ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(l => l.AlleDetailsOphalen(model.BroerzusID));
+
+			var voorkeursComm = (from a in broerzus.CommunicatieInfo
+								 where a.Voorkeur && a.IsGezinsGebonden
+								 select a).FirstOrDefault();
+
+			if (voorkeursComm != null)
+			{
+				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(gp.GelieerdePersoonID, voorkeursComm));
+			}
+
+			if(broerzus.PersoonDetail.VoorkeursAdresID!=null)
+			{
+				var voorkeursAdres = (from a in broerzus.PersoonsAdresInfo
+									  where a.PersoonsAdresID == broerzus.PersoonDetail.VoorkeursAdresID
+									  select a).FirstOrDefault();
+				if(voorkeursAdres != null)
+				{
+					var list = new List<int>{gp.PersoonID};
+					ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenPersonen(list, voorkeursAdres, true));
+				}
+			}
+
+			return RedirectToAction("EditRest", new { id = gp.GelieerdePersoonID});
+		}
+
 
 		/// <summary>
 		/// Laat toe persoonsgegevens te wijzigen
@@ -663,7 +741,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				// steeds opnieuw opgezocht.  Adressen worden nooit
 				// gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
 
-				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenPersonen(model.PersoonIDs, model.PersoonsAdresInfo));
+				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenPersonen(model.PersoonIDs, model.PersoonsAdresInfo, model.Voorkeur));
 
 				return RedirectToAction("EditRest", new
 				{
@@ -693,6 +771,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				BaseModelInit(model, groepID);
 
+				//TODO hier wordt niets over geprint!
+
 				// De mogelijke bewoners zijn op dit moment vergeten, en moeten dus
 				// terug opgevraagd worden.
 				var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(l => l.HuisGenotenOphalen(model.AanvragerID));
@@ -712,6 +792,13 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				return View("AdresBewerken", model);
 			}
+		}
+
+		public ActionResult VoorkeurAdresMaken(int persoonsAdresID, int gelieerdePersoonID, int groepID)
+		{
+			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.VoorkeursAdresMaken(persoonsAdresID, gelieerdePersoonID));
+
+			return TerugNaarVorige();
 		}
 
 		#endregion adressen

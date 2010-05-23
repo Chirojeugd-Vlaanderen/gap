@@ -35,5 +35,10 @@ namespace Chiro.Gap.WebApp.Models
 		/// personen bestaan.
 		/// </summary>
 		public bool Forceer { get; set; }
+
+		/// <summary>
+		/// Een eventuele ID als een broer zus waarvan de NIEUWE persoon gemaakt wordt gekend is.
+		/// </summary>
+		public int BroerzusID { get; set; }
 	}
 }

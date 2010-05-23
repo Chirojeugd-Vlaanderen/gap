@@ -59,37 +59,48 @@
 				 select new { value = e, text = e.ToString() }; 
 	%>
 
+<p>
 	<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.AdresType) %>
 	<%=Html.DropDownListFor(mdl => mdl.PersoonsAdresInfo.AdresType, new SelectList(values, "value", "text"))%>
-	<br />
-
+</p>
+<p>
 	<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.PostNr) %>
 	<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.PostNr)%>
     <%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.PostNr)%>	
+</p>
+
     <noscript>
         <input type="submit" name="action" value="Woonplaatsen ophalen" />
     </noscript>
-	<br />
 
+<p>
 	<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.StraatNaamNaam)%>
 	<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.StraatNaamNaam)%>
     <%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.StraatNaamNaam)%>	
-	<br />
+</p>
 	
+	<p>
 	<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.HuisNr)%>
 	<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.HuisNr)%>
     <%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.HuisNr)%>	
-    <br />
+</p>
     
+    <p>
 	<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.Bus)%>
 	<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.Bus)%>
     <%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.Bus)%>	
-    <br />
+</p>
 
+<p>
 	<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.WoonPlaatsNaam)%> 
     <%=Html.DropDownListFor(mdl => mdl.PersoonsAdresInfo.WoonPlaatsNaam, new SelectList(Model.WoonPlaatsen, "Naam", "Naam"))%>
     <%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.WoonPlaatsNaam)%>
-	<br />
+</p>
+
+    <p>
+	Voorkeursadres van de bewoner(s)
+	<%=Html.EditorFor(mdl => mdl.Voorkeur)%>
+	</p>
 	
    <%=Html.HiddenFor(mdl=>mdl.AanvragerID) %>
    <%=Html.HiddenFor(mdl=>mdl.OudAdresID) %>

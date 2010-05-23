@@ -32,9 +32,10 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "LidFunctie", "Functie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Functie), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Lid))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_StraatNaam", "StraatNaam", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.StraatNaam), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Adres))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_WoonPlaats", "WoonPlaats", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.WoonPlaats), "Adres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Adres))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GelieerdePersoon_PersoonsAdres", "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.PersoonsAdres), "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.GelieerdePersoon))]
 
 // Original file name:
-// Generation date: 23/05/2010 0:22:39
+// Generation date: 23/05/2010 10:39:12
 namespace Chiro.Gap.Orm
 {
     
@@ -1545,6 +1546,43 @@ namespace Chiro.Gap.Orm
                 }
             }
         }
+        /// <summary>
+        /// There are no comments for PersoonsAdres in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_GelieerdePersoon_PersoonsAdres", "PersoonsAdres")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public PersoonsAdres PersoonsAdres
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<PersoonsAdres>("ChiroGroepModel.FK_GelieerdePersoon_PersoonsAdres", "PersoonsAdres").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<PersoonsAdres>("ChiroGroepModel.FK_GelieerdePersoon_PersoonsAdres", "PersoonsAdres").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for PersoonsAdres in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<PersoonsAdres> PersoonsAdresReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<PersoonsAdres>("ChiroGroepModel.FK_GelieerdePersoon_PersoonsAdres", "PersoonsAdres");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<PersoonsAdres>("ChiroGroepModel.FK_GelieerdePersoon_PersoonsAdres", "PersoonsAdres", value);
+                }
+            }
+        }
     }
     /// <summary>
     /// There are no comments for ChiroGroepModel.Adres in the schema.
@@ -1964,6 +2002,27 @@ namespace Chiro.Gap.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("ChiroGroepModel.FK_PersoonsAdres_Persoon", "Persoon", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for GelieerdePersoon in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_GelieerdePersoon_PersoonsAdres", "GelieerdePersoon")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<GelieerdePersoon> GelieerdePersoon
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<GelieerdePersoon>("ChiroGroepModel.FK_GelieerdePersoon_PersoonsAdres", "GelieerdePersoon");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<GelieerdePersoon>("ChiroGroepModel.FK_GelieerdePersoon_PersoonsAdres", "GelieerdePersoon", value);
                 }
             }
         }
