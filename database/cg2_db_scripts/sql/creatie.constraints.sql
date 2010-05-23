@@ -130,3 +130,19 @@ GO
 
 ALTER TABLE [pers].[PersoonVrijVeldType]  WITH CHECK ADD  CONSTRAINT [FK_PersoonVrijVeldType_VrijVeldType] FOREIGN KEY([PersoonVrijVeldTypeID]) REFERENCES [core].[VrijVeldType] ([VrijVeldTypeID])
 GO
+
+alter table lid.functie
+add CONSTRAINT [AK_Functie_GroepID_Code] UNIQUE NONCLUSTERED 
+(
+	[GroepID] ASC,
+	[Code] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+
+alter table lid.functie
+add CONSTRAINT [AK_Functie_GroepID_Naam] UNIQUE NONCLUSTERED 
+(
+	[GroepID] ASC,
+	[Naam] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
