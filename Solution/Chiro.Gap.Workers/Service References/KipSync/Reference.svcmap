@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="f4d71bcc-8b6d-4870-b1a9-45e9f032e240" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8000/KipSyncService" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="KipSyncService.xsd" MetadataType="Schema" ID="664b4da9-852a-4098-8cf0-f48b2d4ad48b" SourceId="1" SourceUrl="http://localhost:8000/KipSyncService?xsd=xsd1" />
+    <MetadataFile FileName="KipSyncService1.xsd" MetadataType="Schema" ID="82029537-0b9e-4928-8ae5-62e19e270187" SourceId="1" SourceUrl="http://localhost:8000/KipSyncService?xsd=xsd0" />
+    <MetadataFile FileName="KipSyncService2.xsd" MetadataType="Schema" ID="69003836-2ab3-45f3-bd31-e252a92ab6ad" SourceId="1" SourceUrl="http://localhost:8000/KipSyncService?xsd=xsd2" />
+    <MetadataFile FileName="KipSyncService.disco" MetadataType="Disco" ID="82434a72-2c8a-40b0-b471-3bb6d57c719b" SourceId="1" SourceUrl="http://localhost:8000/KipSyncService?disco" />
+    <MetadataFile FileName="SyncPersoonService.wsdl" MetadataType="Wsdl" ID="133a84eb-51ac-4df7-9455-3aa376c917d2" SourceId="1" SourceUrl="http://localhost:8000/KipSyncService?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

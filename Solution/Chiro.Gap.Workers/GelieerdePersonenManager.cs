@@ -5,13 +5,20 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Transactions;
+
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers.Exceptions;
+using Chiro.Gap.Workers.KipSync;
+
+using CommunicatieType = Chiro.Gap.Orm.CommunicatieType;
+using Persoon = Chiro.Gap.Orm.Persoon;
 
 namespace Chiro.Gap.Workers
 {
@@ -24,6 +31,7 @@ namespace Chiro.Gap.Workers
 		private readonly IGroepenDao _groepenDao;
 		private readonly ICategorieenDao _categorieenDao;
 		private readonly IAutorisatieManager _autorisatieMgr;
+	    private readonly ISyncPersoonService _sync;
 
 		/// <summary>
 		/// Creëert een GelieerdePersonenManager
@@ -34,18 +42,21 @@ namespace Chiro.Gap.Workers
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 		/// <param name="typedao">Repository voor communicatietypes</param>
 		/// <param name="commdao">Repository voor communicatievormen</param>
+		/// <param name="sync">Sync Service met KipAdmin</param>
 		public GelieerdePersonenManager(
 			IGelieerdePersonenDao dao,
 			IGroepenDao groepenDao,
 			ICategorieenDao categorieenDao,
 			IAutorisatieManager autorisatieMgr,
 			IDao<CommunicatieType> typedao,
-			IDao<CommunicatieVorm> commdao)
+			IDao<CommunicatieVorm> commdao,
+            ISyncPersoonService sync)
 		{
 			_dao = dao;
 			_groepenDao = groepenDao;
 			_categorieenDao = categorieenDao;
 			_autorisatieMgr = autorisatieMgr;
+		    _sync = sync;
 		}
 
 		#region proxy naar data access
@@ -146,7 +157,22 @@ namespace Chiro.Gap.Workers
 
 				if (origineel == null || origineel.Persoon.AdNummer == p.Persoon.AdNummer)
 				{
-					return _dao.Bewaren(p);
+                    // TODO: De transacties aanschakelen, nu gaat dat niet omdat we de in een werkgroep zitten
+
+                    //using (var tx = new TransactionScope())
+                    //{
+                    var q = _dao.Bewaren(p);
+
+                    // Map to KipSync and send
+                    AutoMapper.Mapper.CreateMap<Persoon, KipSync.Persoon>();
+                    var syncPersoon = AutoMapper.Mapper.Map<Persoon, KipSync.Persoon>(q.Persoon);
+				    
+                    Debug.WriteLine(syncPersoon);
+
+                    _sync.PersoonUpdated(syncPersoon);
+                    
+                    return q;
+                    //}
 				}
 				else
 				{
