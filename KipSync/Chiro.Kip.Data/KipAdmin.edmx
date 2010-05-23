@@ -1,0 +1,936 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="kipadminModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+        <EntityContainer Name="kipadminModelStoreContainer">
+          <EntitySet Name="kipAdres" EntityType="kipadminModel.Store.kipAdres" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="kipAdresType" EntityType="kipadminModel.Store.kipAdresType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="kipContactInfo" EntityType="kipadminModel.Store.kipContactInfo" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="kipFunctie" EntityType="kipadminModel.Store.kipFunctie" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="kipHeeftFunctie" EntityType="kipadminModel.Store.kipHeeftFunctie" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="kipPersoon" EntityType="kipadminModel.Store.kipPersoon" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="kipWoont" EntityType="kipadminModel.Store.kipWoont" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ChiroGroep" EntityType="kipadminModel.Store.ChiroGroep" store:Type="Tables" Schema="grp" />
+          <EntitySet Name="Groep" EntityType="kipadminModel.Store.Groep" store:Type="Tables" Schema="grp" />
+          <EntitySet Name="Lid" EntityType="kipadminModel.Store.Lid" store:Type="Tables" Schema="lid" />
+          <AssociationSet Name="FK__kipContact__AdNr__6A26A4A8" Association="kipadminModel.Store.FK__kipContact__AdNr__6A26A4A8">
+            <End Role="kipPersoon" EntitySet="kipPersoon" />
+            <End Role="kipContactInfo" EntitySet="kipContactInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__kipHeeftF__funct__4341E1B1" Association="kipadminModel.Store.FK__kipHeeftF__funct__4341E1B1">
+            <End Role="kipFunctie" EntitySet="kipFunctie" />
+            <End Role="kipHeeftFunctie" EntitySet="kipHeeftFunctie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__kipHeeftF__leidk__424DBD78" Association="kipadminModel.Store.FK__kipHeeftF__leidk__424DBD78">
+            <End Role="Lid" EntitySet="Lid" />
+            <End Role="kipHeeftFunctie" EntitySet="kipHeeftFunctie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__kipWoont__AdNr__609D3A6E" Association="kipadminModel.Store.FK__kipWoont__AdNr__609D3A6E">
+            <End Role="kipPersoon" EntitySet="kipPersoon" />
+            <End Role="kipWoont" EntitySet="kipWoont" />
+          </AssociationSet>
+          <AssociationSet Name="FK__kipWoont__AdresI__61915EA7" Association="kipadminModel.Store.FK__kipWoont__AdresI__61915EA7">
+            <End Role="kipAdres" EntitySet="kipAdres" />
+            <End Role="kipWoont" EntitySet="kipWoont" />
+          </AssociationSet>
+          <AssociationSet Name="FK__kipWoont__AdresT__628582E0" Association="kipadminModel.Store.FK__kipWoont__AdresT__628582E0">
+            <End Role="kipAdresType" EntitySet="kipAdresType" />
+            <End Role="kipWoont" EntitySet="kipWoont" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChiroGroep_Groep" Association="kipadminModel.Store.FK_ChiroGroep_Groep">
+            <End Role="Groep" EntitySet="Groep" />
+            <End Role="ChiroGroep" EntitySet="ChiroGroep" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Leid_Kad_Persoon" Association="kipadminModel.Store.FK_Leid_Kad_Persoon">
+            <End Role="kipPersoon" EntitySet="kipPersoon" />
+            <End Role="Lid" EntitySet="Lid" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Lid_Groep" Association="kipadminModel.Store.fk_Lid_Groep">
+            <End Role="Groep" EntitySet="Groep" />
+            <End Role="Lid" EntitySet="Lid" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="kipAdres">
+          <Key>
+            <PropertyRef Name="AdresId" />
+          </Key>
+          <Property Name="AdresId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Straat" Type="varchar" Nullable="false" MaxLength="40" />
+          <Property Name="Nr" Type="varchar" MaxLength="10" />
+          <Property Name="PostNr" Type="varchar" MaxLength="10" />
+          <Property Name="Gemeente" Type="varchar" MaxLength="40" />
+          <Property Name="Land" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="kipAdresType">
+          <Key>
+            <PropertyRef Name="AdresTypeId" />
+          </Key>
+          <Property Name="AdresTypeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Omschrijving" Type="varchar" Nullable="false" MaxLength="30" />
+          <Property Name="Code" Type="char" MaxLength="4" />
+        </EntityType>
+        <EntityType Name="kipContactInfo">
+          <Key>
+            <PropertyRef Name="ContactInfoId" />
+          </Key>
+          <Property Name="ContactInfoId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AdNr" Type="int" Nullable="false" />
+          <Property Name="ContactTypeId" Type="int" Nullable="false" />
+          <Property Name="Info" Type="varchar" Nullable="false" MaxLength="80" />
+          <Property Name="VolgNr" Type="int" Nullable="false" />
+          <Property Name="GeenMailings" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="kipFunctie">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="CODE" Type="varchar" Nullable="false" MaxLength="3" />
+          <Property Name="NAAM" Type="varchar" Nullable="false" MaxLength="30" />
+          <Property Name="geldig" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="soort" Type="int" Nullable="false" />
+          <Property Name="eenPerGroep" Type="bit" Nullable="false" />
+          <Property Name="vrijwilliger" Type="bit" Nullable="false" />
+          <Property Name="beroepskracht" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="kipHeeftFunctie">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="leidkad" Type="int" Nullable="false" />
+          <Property Name="functie" Type="int" Nullable="false" />
+          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="kipPersoon">
+          <Key>
+            <PropertyRef Name="AdNr" />
+          </Key>
+          <Property Name="AdNr" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Naam" Type="varchar" MaxLength="120" />
+          <Property Name="VoorNaam" Type="varchar" MaxLength="30" />
+          <Property Name="GeboorteDatum" Type="datetime" />
+          <Property Name="Geslacht" Type="int" />
+          <Property Name="Nationaliteit" Type="varchar" MaxLength="30" />
+          <Property Name="BurgerlijkeStandId" Type="int" Nullable="false" />
+          <Property Name="RekeningNr" Type="varchar" MaxLength="14" />
+          <Property Name="Beroep" Type="varchar" MaxLength="80" />
+          <Property Name="BeroepsStatusId" Type="int" />
+          <Property Name="Overleden" Type="bit" Nullable="false" />
+          <Property Name="KlantBoekhouding" Type="bit" Nullable="false" />
+          <Property Name="GegevensBoekhoudingOvergezet" Type="bit" Nullable="false" />
+          <Property Name="Stempel" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="kipWoont">
+          <Key>
+            <PropertyRef Name="AdNr" />
+            <PropertyRef Name="AdresId" />
+          </Key>
+          <Property Name="AdNr" Type="int" Nullable="false" />
+          <Property Name="AdresId" Type="int" Nullable="false" />
+          <Property Name="AdresTypeId" Type="int" Nullable="false" />
+          <Property Name="Geldig" Type="bit" Nullable="false" />
+          <Property Name="GeenMailings" Type="bit" Nullable="false" />
+          <Property Name="VolgNr" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ChiroGroep">
+          <Key>
+            <PropertyRef Name="GroepID" />
+          </Key>
+          <Property Name="STAMNR" Type="varchar" Nullable="false" MaxLength="8" />
+          <Property Name="SOORT" Type="varchar" Nullable="false" MaxLength="1" />
+          <Property Name="TYPE" Type="varchar" Nullable="false" MaxLength="1" />
+          <Property Name="GEWESTNR" Type="smallint" />
+          <Property Name="VERBONDNR" Type="smallint" />
+          <Property Name="STRAAT_NR" Type="varchar" MaxLength="40" />
+          <Property Name="POSTNR" Type="varchar" MaxLength="8" />
+          <Property Name="GEMEENTE" Type="varchar" MaxLength="40" />
+          <Property Name="PAROCHIE" Type="varchar" MaxLength="30" />
+          <Property Name="PROVINCIE" Type="varchar" Nullable="false" MaxLength="4" />
+          <Property Name="E_MAIL" Type="varchar" MaxLength="50" />
+          <Property Name="STOP_CODE" Type="varchar" MaxLength="1" />
+          <Property Name="FUSIE_GR" Type="varchar" MaxLength="8" />
+          <Property Name="REK_BENAAM" Type="varchar" MaxLength="50" />
+          <Property Name="REK_ADRES" Type="varchar" MaxLength="40" />
+          <Property Name="REK_GEMEEN" Type="varchar" MaxLength="40" />
+          <Property Name="KOPPIG" Type="varchar" MaxLength="1" />
+          <Property Name="VZW" Type="varchar" MaxLength="1" />
+          <Property Name="CODE_BAN" Type="varchar" MaxLength="8" />
+          <Property Name="AANSL_WIJZ" Type="varchar" MaxLength="1" />
+          <Property Name="ZESDE_AFD" Type="varchar" MaxLength="1" />
+          <Property Name="SPEELCL" Type="varchar" MaxLength="1" />
+          <Property Name="RAKWI" Type="varchar" MaxLength="1" />
+          <Property Name="TITO" Type="varchar" MaxLength="1" />
+          <Property Name="GROEPSFOR" Type="varchar" MaxLength="1" />
+          <Property Name="GROEPSAAN" Type="varchar" MaxLength="1" />
+          <Property Name="STEMPEL" Type="smalldatetime" />
+          <Property Name="NOTA" Type="varchar" MaxLength="30" />
+          <Property Name="VERD_CODE" Type="int" />
+          <Property Name="PINK_NAAM" Type="varchar" MaxLength="50" />
+          <Property Name="EIGLO_NR" Type="int" />
+          <Property Name="HANDI" Type="bit" />
+          <Property Name="OPEN_HANDI" Type="bit" />
+          <Property Name="stadsgroep" Type="bit" Nullable="false" />
+          <Property Name="BET_ADNR" Type="int" />
+          <Property Name="GroepID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Groep">
+          <Key>
+            <PropertyRef Name="GroepID" />
+          </Key>
+          <Property Name="GroepID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Naam" Type="varchar" Nullable="false" MaxLength="60" />
+          <Property Name="StartDatum" Type="datetime" />
+          <Property Name="StopDatum" Type="datetime" />
+          <Property Name="RekeningNummer" Type="varchar" MaxLength="20" />
+          <Property Name="WebSite" Type="varchar" MaxLength="80" />
+          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Lid">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="ADNR" Type="int" Nullable="false" />
+          <Property Name="SOORT" Type="varchar" Nullable="false" MaxLength="2" />
+          <Property Name="AFDELING1" Type="varchar" MaxLength="1" />
+          <Property Name="AFDELING2" Type="varchar" MaxLength="1" />
+          <Property Name="AANSL_NR" Type="smallint" />
+          <Property Name="VERZ_NR" Type="smallint" />
+          <Property Name="EXTRA_VERZ" Type="smallint" />
+          <Property Name="FREELANCE" Type="varchar" MaxLength="1" />
+          <Property Name="ACTIEF" Type="varchar" MaxLength="1" />
+          <Property Name="LIDKAART" Type="varchar" MaxLength="1" />
+          <Property Name="IK_SB" Type="varchar" MaxLength="2" />
+          <Property Name="AANTAL_JA" Type="smallint" />
+          <Property Name="STATUS" Type="varchar" MaxLength="5" />
+          <Property Name="STEMPEL" Type="smalldatetime" />
+          <Property Name="KB_EMAIL" Type="varchar" MaxLength="1" />
+          <Property Name="MAILING_TOEVOEG" Type="bit" />
+          <Property Name="WEB_TOEVOEG" Type="bit" />
+          <Property Name="werkjaar" Type="decimal" Nullable="false" Precision="5" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="GroepID" Type="int" Nullable="false" />
+          <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <Association Name="FK__kipContact__AdNr__6A26A4A8">
+          <End Role="kipPersoon" Type="kipadminModel.Store.kipPersoon" Multiplicity="1" />
+          <End Role="kipContactInfo" Type="kipadminModel.Store.kipContactInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kipPersoon">
+              <PropertyRef Name="AdNr" />
+            </Principal>
+            <Dependent Role="kipContactInfo">
+              <PropertyRef Name="AdNr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__kipHeeftF__funct__4341E1B1">
+          <End Role="kipFunctie" Type="kipadminModel.Store.kipFunctie" Multiplicity="1" />
+          <End Role="kipHeeftFunctie" Type="kipadminModel.Store.kipHeeftFunctie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kipFunctie">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="kipHeeftFunctie">
+              <PropertyRef Name="functie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__kipHeeftF__leidk__424DBD78">
+          <End Role="Lid" Type="kipadminModel.Store.Lid" Multiplicity="1" />
+          <End Role="kipHeeftFunctie" Type="kipadminModel.Store.kipHeeftFunctie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lid">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="kipHeeftFunctie">
+              <PropertyRef Name="leidkad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__kipWoont__AdNr__609D3A6E">
+          <End Role="kipPersoon" Type="kipadminModel.Store.kipPersoon" Multiplicity="1" />
+          <End Role="kipWoont" Type="kipadminModel.Store.kipWoont" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kipPersoon">
+              <PropertyRef Name="AdNr" />
+            </Principal>
+            <Dependent Role="kipWoont">
+              <PropertyRef Name="AdNr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__kipWoont__AdresI__61915EA7">
+          <End Role="kipAdres" Type="kipadminModel.Store.kipAdres" Multiplicity="1" />
+          <End Role="kipWoont" Type="kipadminModel.Store.kipWoont" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kipAdres">
+              <PropertyRef Name="AdresId" />
+            </Principal>
+            <Dependent Role="kipWoont">
+              <PropertyRef Name="AdresId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__kipWoont__AdresT__628582E0">
+          <End Role="kipAdresType" Type="kipadminModel.Store.kipAdresType" Multiplicity="1" />
+          <End Role="kipWoont" Type="kipadminModel.Store.kipWoont" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kipAdresType">
+              <PropertyRef Name="AdresTypeId" />
+            </Principal>
+            <Dependent Role="kipWoont">
+              <PropertyRef Name="AdresTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChiroGroep_Groep">
+          <End Role="Groep" Type="kipadminModel.Store.Groep" Multiplicity="1" />
+          <End Role="ChiroGroep" Type="kipadminModel.Store.ChiroGroep" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Groep">
+              <PropertyRef Name="GroepID" />
+            </Principal>
+            <Dependent Role="ChiroGroep">
+              <PropertyRef Name="GroepID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Leid_Kad_Persoon">
+          <End Role="kipPersoon" Type="kipadminModel.Store.kipPersoon" Multiplicity="1" />
+          <End Role="Lid" Type="kipadminModel.Store.Lid" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kipPersoon">
+              <PropertyRef Name="AdNr" />
+            </Principal>
+            <Dependent Role="Lid">
+              <PropertyRef Name="ADNR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Lid_Groep">
+          <End Role="Groep" Type="kipadminModel.Store.Groep" Multiplicity="1" />
+          <End Role="Lid" Type="kipadminModel.Store.Lid" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groep">
+              <PropertyRef Name="GroepID" />
+            </Principal>
+            <Dependent Role="Lid">
+              <PropertyRef Name="GroepID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="kipadminModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityContainer Name="kipadminEntities">
+          <EntitySet Name="AdresSet" EntityType="kipadminModel.Adres" />
+          <EntitySet Name="AdresTypeSet" EntityType="kipadminModel.AdresType" />
+          <EntitySet Name="ContactInfoSet" EntityType="kipadminModel.ContactInfo" />
+          <EntitySet Name="FunctieSet" EntityType="kipadminModel.Functie" />
+          <EntitySet Name="HeeftFunctieSet" EntityType="kipadminModel.HeeftFunctie" />
+          <EntitySet Name="PersoonSet" EntityType="kipadminModel.Persoon" />
+          <EntitySet Name="WoontSet" EntityType="kipadminModel.Woont" />
+          <EntitySet Name="ChiroGroep" EntityType="kipadminModel.ChiroGroep" />
+          <EntitySet Name="Groep" EntityType="kipadminModel.Groep" />
+          <EntitySet Name="Lid" EntityType="kipadminModel.Lid" />
+          <AssociationSet Name="FK__kipWoont__AdresI__61915EA7" Association="kipadminModel.FK__kipWoont__AdresI__61915EA7">
+            <End Role="kipAdres" EntitySet="AdresSet" />
+            <End Role="kipWoont" EntitySet="WoontSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK__kipWoont__AdresT__628582E0" Association="kipadminModel.FK__kipWoont__AdresT__628582E0">
+            <End Role="kipAdresType" EntitySet="AdresTypeSet" />
+            <End Role="kipWoont" EntitySet="WoontSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK__kipContact__AdNr__6A26A4A8" Association="kipadminModel.FK__kipContact__AdNr__6A26A4A8">
+            <End Role="kipPersoon" EntitySet="PersoonSet" />
+            <End Role="kipContactInfo" EntitySet="ContactInfoSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK__kipHeeftF__funct__4341E1B1" Association="kipadminModel.FK__kipHeeftF__funct__4341E1B1">
+            <End Role="kipFunctie" EntitySet="FunctieSet" />
+            <End Role="kipHeeftFunctie" EntitySet="HeeftFunctieSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK__kipHeeftF__leidk__424DBD78" Association="kipadminModel.FK__kipHeeftF__leidk__424DBD78">
+            <End Role="Lid" EntitySet="Lid" />
+            <End Role="kipHeeftFunctie" EntitySet="HeeftFunctieSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK__kipWoont__AdNr__609D3A6E" Association="kipadminModel.FK__kipWoont__AdNr__609D3A6E">
+            <End Role="kipPersoon" EntitySet="PersoonSet" />
+            <End Role="kipWoont" EntitySet="WoontSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Leid_Kad_Persoon" Association="kipadminModel.FK_Leid_Kad_Persoon">
+            <End Role="kipPersoon" EntitySet="PersoonSet" />
+            <End Role="Lid" EntitySet="Lid" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChiroGroep_Groep" Association="kipadminModel.FK_ChiroGroep_Groep">
+            <End Role="Groep" EntitySet="Groep" />
+            <End Role="ChiroGroep" EntitySet="ChiroGroep" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Lid_Groep" Association="kipadminModel.fk_Lid_Groep">
+            <End Role="Groep" EntitySet="Groep" />
+            <End Role="Lid" EntitySet="Lid" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Adres">
+          <Key>
+            <PropertyRef Name="AdresId" />
+          </Key>
+          <Property Name="AdresId" Type="Int32" Nullable="false" />
+          <Property Name="Straat" Type="String" Nullable="false" MaxLength="40" Unicode="false" FixedLength="false" />
+          <Property Name="Nr" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="PostNr" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="Gemeente" Type="String" MaxLength="40" Unicode="false" FixedLength="false" />
+          <Property Name="Land" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="kipWoont" Relationship="kipadminModel.FK__kipWoont__AdresI__61915EA7" FromRole="kipAdres" ToRole="kipWoont" />
+        </EntityType>
+        <EntityType Name="AdresType">
+          <Key>
+            <PropertyRef Name="AdresTypeId" />
+          </Key>
+          <Property Name="AdresTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Omschrijving" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+          <Property Name="Code" Type="String" MaxLength="4" Unicode="false" FixedLength="true" />
+          <NavigationProperty Name="kipWoont" Relationship="kipadminModel.FK__kipWoont__AdresT__628582E0" FromRole="kipAdresType" ToRole="kipWoont" />
+        </EntityType>
+        <EntityType Name="ContactInfo">
+          <Key>
+            <PropertyRef Name="ContactInfoId" />
+          </Key>
+          <Property Name="ContactInfoId" Type="Int32" Nullable="false" />
+          <Property Name="ContactTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Info" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
+          <Property Name="VolgNr" Type="Int32" Nullable="false" />
+          <Property Name="GeenMailings" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="kipPersoon" Relationship="kipadminModel.FK__kipContact__AdNr__6A26A4A8" FromRole="kipContactInfo" ToRole="kipPersoon" />
+        </EntityType>
+        <EntityType Name="Functie">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="CODE" Type="String" Nullable="false" MaxLength="3" Unicode="false" FixedLength="false" />
+          <Property Name="NAAM" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+          <Property Name="geldig" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="soort" Type="Int32" Nullable="false" />
+          <Property Name="eenPerGroep" Type="Boolean" Nullable="false" />
+          <Property Name="vrijwilliger" Type="Boolean" Nullable="false" />
+          <Property Name="beroepskracht" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="kipHeeftFunctie" Relationship="kipadminModel.FK__kipHeeftF__funct__4341E1B1" FromRole="kipFunctie" ToRole="kipHeeftFunctie" />
+        </EntityType>
+        <EntityType Name="HeeftFunctie">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" />
+          <NavigationProperty Name="Functie" Relationship="kipadminModel.FK__kipHeeftF__funct__4341E1B1" FromRole="kipHeeftFunctie" ToRole="kipFunctie" />
+          <NavigationProperty Name="Lid" Relationship="kipadminModel.FK__kipHeeftF__leidk__424DBD78" FromRole="kipHeeftFunctie" ToRole="Lid" />
+        </EntityType>
+        <EntityType Name="Persoon">
+          <Key>
+            <PropertyRef Name="AdNr" />
+          </Key>
+          <Property Name="AdNr" Type="Int32" Nullable="false" />
+          <Property Name="Naam" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="VoorNaam" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+          <Property Name="GeboorteDatum" Type="DateTime" />
+          <Property Name="Geslacht" Type="Int32" />
+          <Property Name="Nationaliteit" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+          <Property Name="BurgerlijkeStandId" Type="Int32" Nullable="false" />
+          <Property Name="RekeningNr" Type="String" MaxLength="14" Unicode="false" FixedLength="false" />
+          <Property Name="Beroep" Type="String" MaxLength="80" Unicode="false" FixedLength="false" />
+          <Property Name="BeroepsStatusId" Type="Int32" />
+          <Property Name="Overleden" Type="Boolean" Nullable="false" />
+          <Property Name="KlantBoekhouding" Type="Boolean" Nullable="false" />
+          <Property Name="GegevensBoekhoudingOvergezet" Type="Boolean" Nullable="false" />
+          <Property Name="Stempel" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="kipContactInfo" Relationship="kipadminModel.FK__kipContact__AdNr__6A26A4A8" FromRole="kipPersoon" ToRole="kipContactInfo" />
+          <NavigationProperty Name="kipWoont" Relationship="kipadminModel.FK__kipWoont__AdNr__609D3A6E" FromRole="kipPersoon" ToRole="kipWoont" />
+          <NavigationProperty Name="Lid" Relationship="kipadminModel.FK_Leid_Kad_Persoon" FromRole="kipPersoon" ToRole="Lid" />
+        </EntityType>
+        <EntityType Name="Woont">
+          <Key>
+            <PropertyRef Name="AdNr" />
+            <PropertyRef Name="AdresId" />
+          </Key>
+          <Property Name="AdNr" Type="Int32" Nullable="false" />
+          <Property Name="AdresId" Type="Int32" Nullable="false" />
+          <Property Name="Geldig" Type="Boolean" Nullable="false" />
+          <Property Name="GeenMailings" Type="Boolean" Nullable="false" />
+          <Property Name="VolgNr" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="kipAdres" Relationship="kipadminModel.FK__kipWoont__AdresI__61915EA7" FromRole="kipWoont" ToRole="kipAdres" />
+          <NavigationProperty Name="kipAdresType" Relationship="kipadminModel.FK__kipWoont__AdresT__628582E0" FromRole="kipWoont" ToRole="kipAdresType" />
+          <NavigationProperty Name="kipPersoon" Relationship="kipadminModel.FK__kipWoont__AdNr__609D3A6E" FromRole="kipWoont" ToRole="kipPersoon" />
+        </EntityType>
+        <EntityType Name="ChiroGroep">
+          <Key>
+            <PropertyRef Name="GroepID" />
+          </Key>
+          <Property Name="STAMNR" Type="String" Nullable="false" MaxLength="8" Unicode="false" FixedLength="false" />
+          <Property Name="SOORT" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="TYPE" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="GEWESTNR" Type="Int16" />
+          <Property Name="VERBONDNR" Type="Int16" />
+          <Property Name="STRAAT_NR" Type="String" MaxLength="40" Unicode="false" FixedLength="false" />
+          <Property Name="POSTNR" Type="String" MaxLength="8" Unicode="false" FixedLength="false" />
+          <Property Name="GEMEENTE" Type="String" MaxLength="40" Unicode="false" FixedLength="false" />
+          <Property Name="PAROCHIE" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+          <Property Name="PROVINCIE" Type="String" Nullable="false" MaxLength="4" Unicode="false" FixedLength="false" />
+          <Property Name="E_MAIL" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="STOP_CODE" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="FUSIE_GR" Type="String" MaxLength="8" Unicode="false" FixedLength="false" />
+          <Property Name="REK_BENAAM" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="REK_ADRES" Type="String" MaxLength="40" Unicode="false" FixedLength="false" />
+          <Property Name="REK_GEMEEN" Type="String" MaxLength="40" Unicode="false" FixedLength="false" />
+          <Property Name="KOPPIG" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="VZW" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="CODE_BAN" Type="String" MaxLength="8" Unicode="false" FixedLength="false" />
+          <Property Name="AANSL_WIJZ" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="ZESDE_AFD" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="SPEELCL" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="RAKWI" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="TITO" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="GROEPSFOR" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="GROEPSAAN" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="STEMPEL" Type="DateTime" />
+          <Property Name="NOTA" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+          <Property Name="VERD_CODE" Type="Int32" />
+          <Property Name="PINK_NAAM" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="EIGLO_NR" Type="Int32" />
+          <Property Name="HANDI" Type="Boolean" />
+          <Property Name="OPEN_HANDI" Type="Boolean" />
+          <Property Name="stadsgroep" Type="Boolean" Nullable="false" />
+          <Property Name="BET_ADNR" Type="Int32" />
+          <Property Name="GroepID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Groep" Relationship="kipadminModel.FK_ChiroGroep_Groep" FromRole="ChiroGroep" ToRole="Groep" />
+        </EntityType>
+        <EntityType Name="Groep">
+          <Key>
+            <PropertyRef Name="GroepID" />
+          </Key>
+          <Property Name="GroepID" Type="Int32" Nullable="false" />
+          <Property Name="Naam" Type="String" Nullable="false" MaxLength="60" Unicode="false" FixedLength="false" />
+          <Property Name="StartDatum" Type="DateTime" />
+          <Property Name="StopDatum" Type="DateTime" />
+          <Property Name="RekeningNummer" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="WebSite" Type="String" MaxLength="80" Unicode="false" FixedLength="false" />
+          <Property Name="Versie" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" />
+          <NavigationProperty Name="ChiroGroep" Relationship="kipadminModel.FK_ChiroGroep_Groep" FromRole="Groep" ToRole="ChiroGroep" />
+          <NavigationProperty Name="Lid" Relationship="kipadminModel.fk_Lid_Groep" FromRole="Groep" ToRole="Lid" />
+        </EntityType>
+        <EntityType Name="Lid">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="SOORT" Type="String" Nullable="false" MaxLength="2" Unicode="false" FixedLength="false" />
+          <Property Name="AFDELING1" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="AFDELING2" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="AANSL_NR" Type="Int16" />
+          <Property Name="VERZ_NR" Type="Int16" />
+          <Property Name="EXTRA_VERZ" Type="Int16" />
+          <Property Name="FREELANCE" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="ACTIEF" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="LIDKAART" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="IK_SB" Type="String" MaxLength="2" Unicode="false" FixedLength="false" />
+          <Property Name="AANTAL_JA" Type="Int16" />
+          <Property Name="STATUS" Type="String" MaxLength="5" Unicode="false" FixedLength="false" />
+          <Property Name="STEMPEL" Type="DateTime" />
+          <Property Name="KB_EMAIL" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="MAILING_TOEVOEG" Type="Boolean" />
+          <Property Name="WEB_TOEVOEG" Type="Boolean" />
+          <Property Name="werkjaar" Type="Decimal" Nullable="false" Precision="5" Scale="0" />
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" />
+          <NavigationProperty Name="HeeftFunctie" Relationship="kipadminModel.FK__kipHeeftF__leidk__424DBD78" FromRole="Lid" ToRole="kipHeeftFunctie" />
+          <NavigationProperty Name="Persoon" Relationship="kipadminModel.FK_Leid_Kad_Persoon" FromRole="Lid" ToRole="kipPersoon" />
+          <NavigationProperty Name="Groep" Relationship="kipadminModel.fk_Lid_Groep" FromRole="Lid" ToRole="Groep" />
+        </EntityType>
+        <Association Name="FK__kipWoont__AdresI__61915EA7">
+          <End Role="kipAdres" Type="kipadminModel.Adres" Multiplicity="1" />
+          <End Role="kipWoont" Type="kipadminModel.Woont" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kipAdres">
+              <PropertyRef Name="AdresId" />
+            </Principal>
+            <Dependent Role="kipWoont">
+              <PropertyRef Name="AdresId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__kipWoont__AdresT__628582E0">
+          <End Role="kipAdresType" Type="kipadminModel.AdresType" Multiplicity="1" />
+          <End Role="kipWoont" Type="kipadminModel.Woont" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__kipContact__AdNr__6A26A4A8">
+          <End Role="kipPersoon" Type="kipadminModel.Persoon" Multiplicity="1" />
+          <End Role="kipContactInfo" Type="kipadminModel.ContactInfo" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__kipHeeftF__funct__4341E1B1">
+          <End Role="kipFunctie" Type="kipadminModel.Functie" Multiplicity="1" />
+          <End Role="kipHeeftFunctie" Type="kipadminModel.HeeftFunctie" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__kipHeeftF__leidk__424DBD78">
+          <End Role="Lid" Type="kipadminModel.Lid" Multiplicity="1" />
+          <End Role="kipHeeftFunctie" Type="kipadminModel.HeeftFunctie" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__kipWoont__AdNr__609D3A6E">
+          <End Role="kipPersoon" Type="kipadminModel.Persoon" Multiplicity="1" />
+          <End Role="kipWoont" Type="kipadminModel.Woont" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kipPersoon">
+              <PropertyRef Name="AdNr" />
+            </Principal>
+            <Dependent Role="kipWoont">
+              <PropertyRef Name="AdNr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Leid_Kad_Persoon">
+          <End Role="kipPersoon" Type="kipadminModel.Persoon" Multiplicity="1" />
+          <End Role="Lid" Type="kipadminModel.Lid" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_ChiroGroep_Groep">
+          <End Role="Groep" Type="kipadminModel.Groep" Multiplicity="1" />
+          <End Role="ChiroGroep" Type="kipadminModel.ChiroGroep" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Groep">
+              <PropertyRef Name="GroepID" />
+            </Principal>
+            <Dependent Role="ChiroGroep">
+              <PropertyRef Name="GroepID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Lid_Groep">
+          <End Role="Groep" Type="kipadminModel.Groep" Multiplicity="1" />
+          <End Role="Lid" Type="kipadminModel.Lid" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="kipadminModelStoreContainer" CdmEntityContainer="kipadminEntities">
+          <EntitySetMapping Name="AdresSet">
+            <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Adres)">
+              <MappingFragment StoreEntitySet="kipAdres">
+                <ScalarProperty Name="AdresId" ColumnName="AdresId" />
+                <ScalarProperty Name="Straat" ColumnName="Straat" />
+                <ScalarProperty Name="Nr" ColumnName="Nr" />
+                <ScalarProperty Name="PostNr" ColumnName="PostNr" />
+                <ScalarProperty Name="Gemeente" ColumnName="Gemeente" />
+                <ScalarProperty Name="Land" ColumnName="Land" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdresTypeSet">
+            <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.AdresType)">
+              <MappingFragment StoreEntitySet="kipAdresType">
+                <ScalarProperty Name="AdresTypeId" ColumnName="AdresTypeId" />
+                <ScalarProperty Name="Omschrijving" ColumnName="Omschrijving" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContactInfoSet">
+            <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.ContactInfo)">
+              <MappingFragment StoreEntitySet="kipContactInfo">
+                <ScalarProperty Name="ContactInfoId" ColumnName="ContactInfoId" />
+                <ScalarProperty Name="ContactTypeId" ColumnName="ContactTypeId" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="VolgNr" ColumnName="VolgNr" />
+                <ScalarProperty Name="GeenMailings" ColumnName="GeenMailings" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FunctieSet">
+            <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Functie)">
+              <MappingFragment StoreEntitySet="kipFunctie">
+                <ScalarProperty Name="CODE" ColumnName="CODE" />
+                <ScalarProperty Name="NAAM" ColumnName="NAAM" />
+                <ScalarProperty Name="geldig" ColumnName="geldig" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="soort" ColumnName="soort" />
+                <ScalarProperty Name="eenPerGroep" ColumnName="eenPerGroep" />
+                <ScalarProperty Name="vrijwilliger" ColumnName="vrijwilliger" />
+                <ScalarProperty Name="beroepskracht" ColumnName="beroepskracht" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HeeftFunctieSet">
+            <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.HeeftFunctie)">
+              <MappingFragment StoreEntitySet="kipHeeftFunctie">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Versie" ColumnName="Versie" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersoonSet">
+            <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Persoon)">
+              <MappingFragment StoreEntitySet="kipPersoon">
+                <ScalarProperty Name="AdNr" ColumnName="AdNr" />
+                <ScalarProperty Name="Naam" ColumnName="Naam" />
+                <ScalarProperty Name="VoorNaam" ColumnName="VoorNaam" />
+                <ScalarProperty Name="GeboorteDatum" ColumnName="GeboorteDatum" />
+                <ScalarProperty Name="Geslacht" ColumnName="Geslacht" />
+                <ScalarProperty Name="Nationaliteit" ColumnName="Nationaliteit" />
+                <ScalarProperty Name="BurgerlijkeStandId" ColumnName="BurgerlijkeStandId" />
+                <ScalarProperty Name="RekeningNr" ColumnName="RekeningNr" />
+                <ScalarProperty Name="Beroep" ColumnName="Beroep" />
+                <ScalarProperty Name="BeroepsStatusId" ColumnName="BeroepsStatusId" />
+                <ScalarProperty Name="Overleden" ColumnName="Overleden" />
+                <ScalarProperty Name="KlantBoekhouding" ColumnName="KlantBoekhouding" />
+                <ScalarProperty Name="GegevensBoekhoudingOvergezet" ColumnName="GegevensBoekhoudingOvergezet" />
+                <ScalarProperty Name="Stempel" ColumnName="Stempel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WoontSet">
+            <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Woont)">
+              <MappingFragment StoreEntitySet="kipWoont">
+                <ScalarProperty Name="AdNr" ColumnName="AdNr" />
+                <ScalarProperty Name="AdresId" ColumnName="AdresId" />
+                <ScalarProperty Name="Geldig" ColumnName="Geldig" />
+                <ScalarProperty Name="GeenMailings" ColumnName="GeenMailings" />
+                <ScalarProperty Name="VolgNr" ColumnName="VolgNr" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ChiroGroep">
+            <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.ChiroGroep)">
+              <MappingFragment StoreEntitySet="ChiroGroep">
+                <ScalarProperty Name="STAMNR" ColumnName="STAMNR" />
+                <ScalarProperty Name="SOORT" ColumnName="SOORT" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="GEWESTNR" ColumnName="GEWESTNR" />
+                <ScalarProperty Name="VERBONDNR" ColumnName="VERBONDNR" />
+                <ScalarProperty Name="STRAAT_NR" ColumnName="STRAAT_NR" />
+                <ScalarProperty Name="POSTNR" ColumnName="POSTNR" />
+                <ScalarProperty Name="GEMEENTE" ColumnName="GEMEENTE" />
+                <ScalarProperty Name="PAROCHIE" ColumnName="PAROCHIE" />
+                <ScalarProperty Name="PROVINCIE" ColumnName="PROVINCIE" />
+                <ScalarProperty Name="E_MAIL" ColumnName="E_MAIL" />
+                <ScalarProperty Name="STOP_CODE" ColumnName="STOP_CODE" />
+                <ScalarProperty Name="FUSIE_GR" ColumnName="FUSIE_GR" />
+                <ScalarProperty Name="REK_BENAAM" ColumnName="REK_BENAAM" />
+                <ScalarProperty Name="REK_ADRES" ColumnName="REK_ADRES" />
+                <ScalarProperty Name="REK_GEMEEN" ColumnName="REK_GEMEEN" />
+                <ScalarProperty Name="KOPPIG" ColumnName="KOPPIG" />
+                <ScalarProperty Name="VZW" ColumnName="VZW" />
+                <ScalarProperty Name="CODE_BAN" ColumnName="CODE_BAN" />
+                <ScalarProperty Name="AANSL_WIJZ" ColumnName="AANSL_WIJZ" />
+                <ScalarProperty Name="ZESDE_AFD" ColumnName="ZESDE_AFD" />
+                <ScalarProperty Name="SPEELCL" ColumnName="SPEELCL" />
+                <ScalarProperty Name="RAKWI" ColumnName="RAKWI" />
+                <ScalarProperty Name="TITO" ColumnName="TITO" />
+                <ScalarProperty Name="GROEPSFOR" ColumnName="GROEPSFOR" />
+                <ScalarProperty Name="GROEPSAAN" ColumnName="GROEPSAAN" />
+                <ScalarProperty Name="STEMPEL" ColumnName="STEMPEL" />
+                <ScalarProperty Name="NOTA" ColumnName="NOTA" />
+                <ScalarProperty Name="VERD_CODE" ColumnName="VERD_CODE" />
+                <ScalarProperty Name="PINK_NAAM" ColumnName="PINK_NAAM" />
+                <ScalarProperty Name="EIGLO_NR" ColumnName="EIGLO_NR" />
+                <ScalarProperty Name="HANDI" ColumnName="HANDI" />
+                <ScalarProperty Name="OPEN_HANDI" ColumnName="OPEN_HANDI" />
+                <ScalarProperty Name="stadsgroep" ColumnName="stadsgroep" />
+                <ScalarProperty Name="BET_ADNR" ColumnName="BET_ADNR" />
+                <ScalarProperty Name="GroepID" ColumnName="GroepID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Groep">
+            <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Groep)">
+              <MappingFragment StoreEntitySet="Groep">
+                <ScalarProperty Name="GroepID" ColumnName="GroepID" />
+                <ScalarProperty Name="Naam" ColumnName="Naam" />
+                <ScalarProperty Name="StartDatum" ColumnName="StartDatum" />
+                <ScalarProperty Name="StopDatum" ColumnName="StopDatum" />
+                <ScalarProperty Name="RekeningNummer" ColumnName="RekeningNummer" />
+                <ScalarProperty Name="WebSite" ColumnName="WebSite" />
+                <ScalarProperty Name="Versie" ColumnName="Versie" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lid">
+            <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Lid)">
+              <MappingFragment StoreEntitySet="Lid">
+                <ScalarProperty Name="SOORT" ColumnName="SOORT" />
+                <ScalarProperty Name="AFDELING1" ColumnName="AFDELING1" />
+                <ScalarProperty Name="AFDELING2" ColumnName="AFDELING2" />
+                <ScalarProperty Name="AANSL_NR" ColumnName="AANSL_NR" />
+                <ScalarProperty Name="VERZ_NR" ColumnName="VERZ_NR" />
+                <ScalarProperty Name="EXTRA_VERZ" ColumnName="EXTRA_VERZ" />
+                <ScalarProperty Name="FREELANCE" ColumnName="FREELANCE" />
+                <ScalarProperty Name="ACTIEF" ColumnName="ACTIEF" />
+                <ScalarProperty Name="LIDKAART" ColumnName="LIDKAART" />
+                <ScalarProperty Name="IK_SB" ColumnName="IK_SB" />
+                <ScalarProperty Name="AANTAL_JA" ColumnName="AANTAL_JA" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="STEMPEL" ColumnName="STEMPEL" />
+                <ScalarProperty Name="KB_EMAIL" ColumnName="KB_EMAIL" />
+                <ScalarProperty Name="MAILING_TOEVOEG" ColumnName="MAILING_TOEVOEG" />
+                <ScalarProperty Name="WEB_TOEVOEG" ColumnName="WEB_TOEVOEG" />
+                <ScalarProperty Name="werkjaar" ColumnName="werkjaar" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Versie" ColumnName="Versie" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK__kipWoont__AdresI__61915EA7" TypeName="kipadminModel.FK__kipWoont__AdresI__61915EA7" StoreEntitySet="kipWoont">
+            <EndProperty Name="kipAdres">
+              <ScalarProperty Name="AdresId" ColumnName="AdresId" />
+            </EndProperty>
+            <EndProperty Name="kipWoont">
+              <ScalarProperty Name="AdNr" ColumnName="AdNr" />
+              <ScalarProperty Name="AdresId" ColumnName="AdresId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__kipWoont__AdresT__628582E0" TypeName="kipadminModel.FK__kipWoont__AdresT__628582E0" StoreEntitySet="kipWoont">
+            <EndProperty Name="kipAdresType">
+              <ScalarProperty Name="AdresTypeId" ColumnName="AdresTypeId" />
+            </EndProperty>
+            <EndProperty Name="kipWoont">
+              <ScalarProperty Name="AdNr" ColumnName="AdNr" />
+              <ScalarProperty Name="AdresId" ColumnName="AdresId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__kipContact__AdNr__6A26A4A8" TypeName="kipadminModel.FK__kipContact__AdNr__6A26A4A8" StoreEntitySet="kipContactInfo">
+            <EndProperty Name="kipPersoon">
+              <ScalarProperty Name="AdNr" ColumnName="AdNr" />
+            </EndProperty>
+            <EndProperty Name="kipContactInfo">
+              <ScalarProperty Name="ContactInfoId" ColumnName="ContactInfoId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__kipHeeftF__funct__4341E1B1" TypeName="kipadminModel.FK__kipHeeftF__funct__4341E1B1" StoreEntitySet="kipHeeftFunctie">
+            <EndProperty Name="kipFunctie">
+              <ScalarProperty Name="id" ColumnName="functie" />
+            </EndProperty>
+            <EndProperty Name="kipHeeftFunctie">
+              <ScalarProperty Name="id" ColumnName="id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__kipHeeftF__leidk__424DBD78" TypeName="kipadminModel.FK__kipHeeftF__leidk__424DBD78" StoreEntitySet="kipHeeftFunctie">
+            <EndProperty Name="Lid">
+              <ScalarProperty Name="id" ColumnName="leidkad" />
+            </EndProperty>
+            <EndProperty Name="kipHeeftFunctie">
+              <ScalarProperty Name="id" ColumnName="id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__kipWoont__AdNr__609D3A6E" TypeName="kipadminModel.FK__kipWoont__AdNr__609D3A6E" StoreEntitySet="kipWoont">
+            <EndProperty Name="kipPersoon">
+              <ScalarProperty Name="AdNr" ColumnName="AdNr" />
+            </EndProperty>
+            <EndProperty Name="kipWoont">
+              <ScalarProperty Name="AdNr" ColumnName="AdNr" />
+              <ScalarProperty Name="AdresId" ColumnName="AdresId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Leid_Kad_Persoon" TypeName="kipadminModel.FK_Leid_Kad_Persoon" StoreEntitySet="Lid">
+            <EndProperty Name="kipPersoon">
+              <ScalarProperty Name="AdNr" ColumnName="ADNR" />
+            </EndProperty>
+            <EndProperty Name="Lid">
+              <ScalarProperty Name="id" ColumnName="id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_ChiroGroep_Groep" TypeName="kipadminModel.FK_ChiroGroep_Groep" StoreEntitySet="ChiroGroep">
+            <EndProperty Name="Groep">
+              <ScalarProperty Name="GroepID" ColumnName="GroepID" />
+            </EndProperty>
+            <EndProperty Name="ChiroGroep">
+              <ScalarProperty Name="GroepID" ColumnName="GroepID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="fk_Lid_Groep" TypeName="kipadminModel.fk_Lid_Groep" StoreEntitySet="Lid">
+            <EndProperty Name="Groep">
+              <ScalarProperty Name="GroepID" ColumnName="GroepID" />
+            </EndProperty>
+            <EndProperty Name="Lid">
+              <ScalarProperty Name="id" ColumnName="id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram Name="KipAdmin">
+        <EntityTypeShape EntityType="kipadminModel.Adres" Width="1.5" PointX="3.75" PointY="18.5" Height="2.3648893229166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.AdresType" Width="1.5" PointX="3.75" PointY="14.875" Height="1.7879850260416674" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.ContactInfo" Width="1.5" PointX="3" PointY="7.25" Height="2.1725878906250005" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.Functie" Width="1.5" PointX="3" PointY="11" Height="2.7494921874999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.HeeftFunctie" Width="1.5" PointX="5.25" PointY="2.5" Height="1.7879850260416657" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.Persoon" Width="1.5" PointX="0.75" PointY="6.25" Height="4.2879036458333335" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.Woont" Width="1.5" PointX="6" PointY="7.125" Height="2.5571907552083335" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.ChiroGroep" Width="1.5" PointX="3" PointY="22.25" Height="8.1339322916666674" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.Groep" Width="1.5" PointX="0.75" PointY="2" Height="2.7494921874999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.Lid" Width="1.5" PointX="3" PointY="0.75" Height="5.2494108072916656" IsExpanded="true" />
+        <AssociationConnector Association="kipadminModel.FK__kipWoont__AdresI__61915EA7" ManuallyRouted="false">
+          <ConnectorPoint PointX="5.25" PointY="19.682444661458334" />
+          <ConnectorPoint PointX="6.75" PointY="19.682444661458334" />
+          <ConnectorPoint PointX="6.75" PointY="9.6821907552083335" /></AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK__kipWoont__AdresT__628582E0" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.90625" PointY="14.875" />
+          <ConnectorPoint PointX="4.90625" PointY="9.5836393229166656" />
+          <ConnectorPoint PointX="5.510416666666667" PointY="9.5836393229166656" />
+          <ConnectorPoint PointX="5.677083333333333" PointY="9.5836393229166656" />
+          <ConnectorPoint PointX="6" PointY="9.5836393229166656" /></AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK__kipContact__AdNr__6A26A4A8" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="8.3362939453125" />
+          <ConnectorPoint PointX="2.5416666666666665" PointY="8.3362939453125" />
+          <ConnectorPoint PointX="2.7083333333333335" PointY="8.3362939453125" />
+          <ConnectorPoint PointX="3" PointY="8.3362939453125" /></AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK__kipHeeftF__funct__4341E1B1" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="12.37474609375" />
+          <ConnectorPoint PointX="4.822916666666667" PointY="12.37474609375" />
+          <ConnectorPoint PointX="4.989583333333333" PointY="12.37474609375" />
+          <ConnectorPoint PointX="5.59375" PointY="12.37474609375" />
+          <ConnectorPoint PointX="5.59375" PointY="4.2879850260416656" /></AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK__kipHeeftF__leidk__424DBD78" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="3.3939925130208328" />
+          <ConnectorPoint PointX="5.25" PointY="3.3939925130208328" /></AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK__kipWoont__AdNr__609D3A6E" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="7.15625" />
+          <ConnectorPoint PointX="2.5416666666666665" PointY="7.1562499999999991" />
+          <ConnectorPoint PointX="2.7083333333333335" PointY="7.15625" />
+          <ConnectorPoint PointX="5.510416666666667" PointY="7.1562499999999991" />
+          <ConnectorPoint PointX="5.677083333333333" PointY="7.15625" />
+          <ConnectorPoint PointX="6" PointY="7.15625" /></AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK_Leid_Kad_Persoon" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.5" PointY="6.25" />
+          <ConnectorPoint PointX="1.5" PointY="4.9994921875" />
+          <ConnectorPoint PointX="2.5" PointY="4.9994921875" />
+          <ConnectorPoint PointX="2.5" PointY="3.3747054036458328" />
+          <ConnectorPoint PointX="3" PointY="3.3747054036458328" /></AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK_ChiroGroep_Groep" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="4.0620982955729161" />
+          <ConnectorPoint PointX="2.4166666666666665" PointY="4.0620982955729152" />
+          <ConnectorPoint PointX="2.5833333333333335" PointY="4.0620982955729161" />
+          <ConnectorPoint PointX="2.625" PointY="4.0620982955729161" />
+          <ConnectorPoint PointX="2.625" PointY="26.316966145833334" />
+          <ConnectorPoint PointX="3" PointY="26.316966145833334" /></AssociationConnector>
+        <AssociationConnector Association="kipadminModel.fk_Lid_Groep" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="2.6248527018229164" />
+          <ConnectorPoint PointX="3" PointY="2.6248527018229164" /></AssociationConnector></Diagram></edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
