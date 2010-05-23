@@ -19,10 +19,10 @@ namespace Chiro.Gap.ServiceContracts
 	{
 		[DataMember]
 		public int ID { get; set; }
-		[Verplicht]
+		[Verplicht, StringLengte(10), StringMinimumLengte(2)]
 		[DataMember]
 		public string Code { get; set; }
-		[Verplicht]
+		[Verplicht, StringLengte(80), StringMinimumLengte(2)]
 		[DataMember]
 		public string Naam { get; set; }
 		[Verplicht]

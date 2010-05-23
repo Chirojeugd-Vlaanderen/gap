@@ -1,7 +1,22 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.GroepsInstellingenModel>" %>
 
 <%@ Import Namespace="Chiro.Gap.Domain" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+
+	<script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript"></script>
+
+	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
+
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
+
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript"></script>
+
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript"></script>
+
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript"></script>
+
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<h2>
 		Functies bewerken</h2>
 	<ul>
@@ -9,16 +24,17 @@
 			foreach (var fie in Model.Detail.Functies.OrderBy(fie => fie.Code))
 			{
 		%>
-		<li>
-			[<%=Html.ActionLink("verwijderen", "FunctieVerwijderen", new {id = fie.ID }) %>] 
+		<li>[<%=Html.ActionLink("verwijderen", "FunctieVerwijderen", new {id = fie.ID }) %>]
 			<%=Html.Encode(String.Format("{0} ({1}) - Kan toegekend worden aan: {2}", fie.Naam, fie.Code, fie.Type))%>
 		</li>
 		<%
 			}
 		%>
 	</ul>
-	<% using (Html.BeginForm())
-	{%>
+	<% 
+		Html.EnableClientValidation();
+		using (Html.BeginForm())
+		{%>
 	<fieldset>
 		<legend>Functie toevoegen</legend>
 		<p>
@@ -60,6 +76,4 @@
 		<%}
 		%>
 	</fieldset>
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
