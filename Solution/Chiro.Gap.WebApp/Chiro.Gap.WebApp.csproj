@@ -107,7 +107,6 @@
     <Compile Include="DashBoard.aspx.designer.cs">
       <DependentUpon>DashBoard.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ExcelResult.cs" />
     <Compile Include="HtmlHelpers\CheckBoxListHelper.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\GavController.cs" />
@@ -270,7 +269,8 @@
     <Content Include="Content\Chirologo.png" />
     <Content Include="Content\GeenGroepGekozen.css" />
     <Compile Include="Areas\LedenLinksControl\AreaRegistration.cs" />
-    <Compile Include="ExcelExporter.cs" />
+    <Compile Include="ExcelManip.cs" />
+    <Compile Include="ExcelResult.cs" />
     <Compile Include="Models\LedenLinksModel.cs" />
     <Content Include="Scripts\MicrosoftMvcJQueryValidation.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />

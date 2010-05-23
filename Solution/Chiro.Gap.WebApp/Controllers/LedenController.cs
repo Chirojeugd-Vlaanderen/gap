@@ -141,21 +141,20 @@ namespace Chiro.Gap.WebApp.Controllers
 					(lid => lid.PaginaOphalenVolgensAfdeling(id, afdID, out paginas));
 			}
 
-			var selectie = from l in lijst
-						   select new
-						   {
-							   AdNummer = l.PersoonDetail.AdNummer,
-							   VolledigeNaam = l.PersoonDetail.VolledigeNaam,
-							   GeboorteDatum = String.Format("{0:dd/MM/yyyy}", l.PersoonDetail.GeboorteDatum),
-							   Geslacht = l.PersoonDetail.Geslacht == GeslachtsType.Man ? "jongen" : "meisje"
-						   };
+			var selectie = (from l in lijst
+			                select new
+			                       	{
+			                       		AdNummer = l.PersoonDetail.AdNummer,
+			                       		VolledigeNaam = l.PersoonDetail.VolledigeNaam,
+			                       		GeboorteDatum = String.Format("{0:dd/MM/yyyy}", l.PersoonDetail.GeboorteDatum),
+			                       		Geslacht = l.PersoonDetail.Geslacht == GeslachtsType.Man ? "jongen" : "meisje"
+			                       	}).AsQueryable();
 
-			return new ExcelResult(
-				"Leden.xls",
-				selectie.AsQueryable(),
-				new string[] { "AdNummer", "VolledigeNaam", "GeboorteDatum", "Geslacht" });
+			var stream = (new ExcelManip()).ExcelTabel(selectie, it=>it.AdNummer, it=>it.VolledigeNaam, it=>it.GeboorteDatum, it=>it.Geslacht);
+			return new ExcelResult(stream, "leden.xlsx");
+
 		}
-
+		
 		// id = lidid
 		// GET: /Leden/DeActiveren/id
 		public ActionResult DeActiveren(int id, int groepID)

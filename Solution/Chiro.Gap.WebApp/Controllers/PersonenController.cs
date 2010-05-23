@@ -146,7 +146,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					(g => g.PaginaOphalenUitCategorieMetLidInfo(id, 1, Int16.MaxValue, out totaal));
 			}
 
-			var selectie = from d in data
+			var selectie = (from d in data
 						   select new
 						   {
 							   AdNummer = d.AdNummer,
@@ -154,12 +154,11 @@ namespace Chiro.Gap.WebApp.Controllers
 							   GeboorteDatum = String.Format("{0:dd/MM/yyyy}", d.GeboorteDatum),
 							   Geslacht = d.Geslacht == GeslachtsType.Man ? "jongen" : "meisje",
 							   IsLid = d.IsLid ? "(lid)" : string.Empty 
-						   };
+						   }).AsQueryable();
 
-			return new ExcelResult(
-				"Personen.xls",
-				selectie.AsQueryable(),
-				new string[] { "AdNummer", "VolledigeNaam", "GeboorteDatum", "Geslacht", "IsLid" });
+			var stream = (new ExcelManip()).ExcelTabel(selectie, it => it.AdNummer, it => it.VolledigeNaam, it => it.GeboorteDatum, it => it.Geslacht, it=>it.IsLid);
+			return new ExcelResult(stream, "personen.xlsx");
+
 		}
 
 		/// <summary>
