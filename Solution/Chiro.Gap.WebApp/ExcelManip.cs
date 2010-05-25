@@ -46,26 +46,34 @@ namespace Chiro.Gap.WebApp
 				{
 					//InsertText(spreadSheet, selector(rij).ToString(), colIndex, rowIndex);
 					var inhoud = selector(rij);
-					string waarde = inhoud == null ? String.Empty : inhoud.ToString();
 
-					InsertText(spreadSheet, waarde, colIndex, rowIndex);
+					if (inhoud != null)
+					{
+						if (inhoud.GetType() == typeof (int))
+						{
+							InsertNumber(spreadSheet, (double) (int) inhoud, colIndex, rowIndex);
+						}
+						else if (inhoud.GetType() == typeof (double))
+						{
+							InsertNumber(spreadSheet, (double) inhoud, colIndex, rowIndex);
+						}
+						else if (inhoud.GetType() == typeof (DateTime))
+						{
+							InsertDate(spreadSheet, (DateTime) inhoud, colIndex, rowIndex);
+						}
+						else
+						{
+							string waarde = inhoud.ToString();
+							InsertText(spreadSheet, waarde, colIndex, rowIndex);
+						}
+					}
+
 					++colIndex;
 				}
 				++rowIndex;
 			}
 		}
 
-
-		// Given a document name and text, 
-		// inserts a new worksheet and writes the text to cell (colNr, rowNr) of the new worksheet.
-		// (colNr, rowNr are 1-based)
-		public void InsertText(string docName, string text, int colNr, uint rowNr)
-		{
-			using (SpreadsheetDocument spreadSheet = SpreadsheetDocument.Open(docName, true))
-			{
-				InsertText(spreadSheet, text, colNr, rowNr);
-			}
-		}
 
 		// Given a document name and text, 
 		// finds the first worksheet and writes the text to cell (colNr, rowNr) of the new worksheet.
@@ -88,22 +96,65 @@ namespace Chiro.Gap.WebApp
 			// Insert the text into the SharedStringTablePart.
 			int index = InsertSharedStringItem(text, shareStringPart);
 
-			// Find first worksheet
 			WorksheetPart worksheetPart = spreadSheet.WorkbookPart.WorksheetParts.First();
-
-			//// Insert a new worksheet.
-			//WorksheetPart worksheetPart = InsertWorksheet(spreadSheet.WorkbookPart);
-
-			// Insert cell A1 into the new worksheet.
 			Cell cell = InsertCellInWorksheet(column, rowNr, worksheetPart);
-
-			// Set the value of cell A1.
 			cell.CellValue = new CellValue(index.ToString());
 			cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
-
-			// Save the new worksheet.
 			worksheetPart.Worksheet.Save();
 		}
+
+		// Given a document name and int, 
+		// finds the first worksheet and writes the text to cell (colNr, rowNr) of the new worksheet.
+		// (colNr, rowNr are 1-based)
+		public void InsertNumber(SpreadsheetDocument spreadSheet, double getal, int colNr, uint rowNr)
+		{
+			string column = colNumToName(colNr);
+			WorksheetPart worksheetPart = spreadSheet.WorkbookPart.WorksheetParts.First();
+			Cell cell = InsertCellInWorksheet(column, rowNr, worksheetPart);
+			cell.CellValue = new CellValue(getal.ToString(System.Globalization.CultureInfo.InvariantCulture));
+			cell.DataType = new EnumValue<CellValues>(CellValues.Number);
+			worksheetPart.Worksheet.Save();
+		}
+
+		// Given a document name and int, 
+		// finds the first worksheet and writes the date to cell (colNr, rowNr) of the new worksheet.
+		// (colNr, rowNr are 1-based)
+		public void InsertDate(SpreadsheetDocument spreadSheet, DateTime datum, int colNr, uint rowNr)
+		{
+			string column = colNumToName(colNr);
+			WorksheetPart worksheetPart = spreadSheet.WorkbookPart.WorksheetParts.First();
+			Cell cell = InsertCellInWorksheet(column, rowNr, worksheetPart);
+
+			//cell.StyleIndex = (UInt32Value) 1U;
+			cell.CellValue = new CellValue(datum.ToOADate().ToString());
+			cell.DataType = new EnumValue<CellValues>(CellValues.Date);
+
+			worksheetPart.Worksheet.Save();
+		}
+
+
+		// Given a document name and text, 
+		// inserts a new worksheet and writes the text to cell (colNr, rowNr) of the new worksheet.
+		// (colNr, rowNr are 1-based)
+		public void InsertNumber(string docName, double getal, int colNr, uint rowNr)
+		{
+			using (SpreadsheetDocument spreadSheet = SpreadsheetDocument.Open(docName, true))
+			{
+				InsertNumber(spreadSheet, getal, colNr, rowNr);
+			}
+		}
+
+		// Given a document name and text, 
+		// inserts a new worksheet and writes the text to cell (colNr, rowNr) of the new worksheet.
+		// (colNr, rowNr are 1-based)
+		public void InsertText(string docName, string text, int colNr, uint rowNr)
+		{
+			using (SpreadsheetDocument spreadSheet = SpreadsheetDocument.Open(docName, true))
+			{
+				InsertText(spreadSheet, text, colNr, rowNr);
+			}
+		}
+
 
 		// Given text and a SharedStringTablePart, creates a SharedStringItem with the specified text 
 		// and inserts it into the SharedStringTablePart. If the item already exists, returns its index.
@@ -263,6 +314,22 @@ namespace Chiro.Gap.WebApp
 			// Add a WorkbookPart to the document.
 			WorkbookPart workbookpart = spreadsheetDocument.AddWorkbookPart();
 			workbookpart.Workbook = new Workbook();
+
+			//// WoorkBookStylesPart voor stijl datums
+			//WorkbookStylesPart workbookStylesPart1 = workbookpart.AddNewPart<WorkbookStylesPart>("rId3");
+
+			//Stylesheet stylesheet1 = new Stylesheet();
+
+			//CellFormats cellFormats1 = new CellFormats() { Count = (UInt32Value)1U };
+
+			//cellFormats1.Count = (UInt32Value)2U;
+
+			//CellFormat cellFormat1 = new CellFormat() { NumberFormatId = (UInt32Value)14U, FontId = (UInt32Value)0U, FillId = (UInt32Value)0U, BorderId = (UInt32Value)0U, FormatId = (UInt32Value)0U, ApplyNumberFormat = true };
+			//cellFormats1.Append(cellFormat1);
+
+			//stylesheet1.CellFormats = cellFormats1;
+
+			//workbookStylesPart1.Stylesheet = stylesheet1;
 
 			// Add a WorksheetPart to the WorkbookPart.
 			WorksheetPart worksheetPart = workbookpart.AddNewPart<WorksheetPart>();
