@@ -151,7 +151,7 @@ namespace Chiro.Gap.WebApp.Controllers
 						   {
 							   AdNummer = d.AdNummer,
 							   VolledigeNaam = d.VolledigeNaam,
-							   GeboorteDatum = String.Format("{0:dd/MM/yyyy}", d.GeboorteDatum),
+							   GeboorteDatum = d.GeboorteDatum,
 							   Geslacht = d.Geslacht == GeslachtsType.Man ? "jongen" : "meisje",
 							   IsLid = d.IsLid ? "(lid)" : string.Empty 
 						   }).AsQueryable();

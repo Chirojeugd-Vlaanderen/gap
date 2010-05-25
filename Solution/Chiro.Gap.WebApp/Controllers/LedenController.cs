@@ -146,7 +146,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			                       	{
 			                       		AdNummer = l.PersoonDetail.AdNummer,
 			                       		VolledigeNaam = l.PersoonDetail.VolledigeNaam,
-			                       		GeboorteDatum = String.Format("{0:dd/MM/yyyy}", l.PersoonDetail.GeboorteDatum),
+			                       		GeboorteDatum = l.PersoonDetail.GeboorteDatum,
 			                       		Geslacht = l.PersoonDetail.Geslacht == GeslachtsType.Man ? "jongen" : "meisje"
 			                       	}).AsQueryable();
 
