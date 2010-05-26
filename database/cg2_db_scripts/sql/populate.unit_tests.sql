@@ -6,7 +6,7 @@
 -- Afdelingen met codes 
 --		@testAfdelingsAfkorting1
 --		@testAfdelingsAfkorting2
---		@testAfdelingsAfkorting3 - deze mag niet actief zijn in het huidig werkjaar
+--		@testAfdelingsAfkorting3 - **deze mag niet actief zijn in het huidig werkjaar**
 -- AfdelingsWerkJaar en voor afdeling met code @testAfdelingsAfkorting1 in @testHuidigWerkJaar en @testVorigWerkJaar
 --
 -- 5 test GelieerdePersonen
