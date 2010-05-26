@@ -11,7 +11,7 @@ namespace Chiro.Gap.Dummies
 	/// <summary>
 	/// Dummy GelieerdePersonenDao, die niets implementeert
 	/// </summary>
-	class DummyGelieerdePersonenDao : DummyDao<GelieerdePersoon>, IGelieerdePersonenDao
+	public class DummyGelieerdePersonenDao : DummyDao<GelieerdePersoon>, IGelieerdePersonenDao
 	{
 		#region IGelieerdePersonenDao Members
 

@@ -121,6 +121,11 @@ namespace Chiro.Cdf.Ioc
 		/// <param name="instantie">Te gebruiken object</param>
 		public static void InstantieRegistreren<T>(T instantie)
 		{
+			// Als de debugger hier een Exception genereert bij het unittesten, dan is
+			// dat mogelijk geen probleem:
+			// http://unity.codeplex.com/WorkItem/View.aspx?WorkItemId=7019
+			// Maar ik ben daar toch niet zo zeker van :-/
+
 			Container.RegisterInstance(instantie);
 		}
 	}

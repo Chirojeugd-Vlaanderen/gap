@@ -359,7 +359,9 @@ namespace Chiro.Gap.Workers.Test
 			// testData aanmaken.  Voor de zekerheid eerst de AutMgrAltijdGav registreren als
 			// IAutorisatieManager, want het kan goed zijn dat een vorige test dat wijzigde.
 
-			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
+			var autMgr = new AutMgrAltijdGav();
+
+			Factory.InstantieRegistreren<IAutorisatieManager>(autMgr);
 			var testData = new DummyData();
 
 			// GelieerdePersonenDao mocken.  Van een Dao verwachten
@@ -368,8 +370,10 @@ namespace Chiro.Gap.Workers.Test
 
 			var gpDaoMock = new Mock<IGelieerdePersonenDao>();
 
+			// Ophalen geeft gewoon 'GelieerdeJos', en bewaren een kopie daarvan.
 			gpDaoMock.Setup(foo => foo.Ophalen(testData.GelieerdeJos.ID
 			    , It.IsAny<Expression<Func<GelieerdePersoon, Object>>>())).Returns(() => testData.GelieerdeJos);
+			gpDaoMock.Setup(foo => foo.Bewaren(It.IsAny<GelieerdePersoon>())).Returns((GelieerdePersoon foo) => foo);
 
 			// Het stuk It.IsAny<Expression<Func<GelieerdePersoon, Object>>>()
 			// zorgt ervoor dat de Mock de linq-expressies in 'Ophalen' negeert.

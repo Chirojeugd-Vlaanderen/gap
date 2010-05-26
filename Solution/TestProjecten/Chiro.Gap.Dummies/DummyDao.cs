@@ -170,9 +170,14 @@ namespace Chiro.Gap.Dummies
 			}
 		}
 
+		/// <summary>
+		/// Standaard geen 'connected entities'.
+		/// (Ik ben precies nog altijd zo geen voorstander voor diie 'connected entities').
+		/// </summary>
+		/// <returns>Een lege array van connected entitiesa</returns>
 		public System.Linq.Expressions.Expression<Func<T, object>>[] getConnectedEntities()
 		{
-			throw new NotImplementedException();
+			return new System.Linq.Expressions.Expression<Func<T, object>>[0];
 		}
 
 		public IList<T> Ophalen(IEnumerable<int> ids)
