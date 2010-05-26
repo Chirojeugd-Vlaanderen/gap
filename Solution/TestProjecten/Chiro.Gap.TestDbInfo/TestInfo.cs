@@ -38,6 +38,7 @@
 		public const string ZOEKNAAM = "Bosmans";
 		public const string GAV1 = "Yvonne";
 		public const string GAV2 = "Yvette";
+
 		public const int WATINGROEPID = 2;
 		#endregion
 
