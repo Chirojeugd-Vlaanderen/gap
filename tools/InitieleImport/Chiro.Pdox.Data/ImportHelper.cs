@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Pdox.Data.Properties;
 
 namespace Chiro.Pdox.Data

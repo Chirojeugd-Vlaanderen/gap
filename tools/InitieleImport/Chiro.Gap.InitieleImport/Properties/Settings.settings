@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="UitPakDir" Type="System.String" Scope="User">
-      <Value Profile="(Default)">f:\x</Value>
+      <Value Profile="(Default)">e:\x</Value>
     </Setting>
   </Settings>
 </SettingsFile>

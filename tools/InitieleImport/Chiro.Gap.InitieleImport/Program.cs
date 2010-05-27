@@ -10,6 +10,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.InitieleImport.Properties;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Pdox.Data;
 
@@ -155,12 +156,12 @@ namespace Chiro.Gap.InitieleImport
 
 				try
 				{
-					persoonID = _serviceHelper.CallService<IGelieerdePersonenService, int>(svc => svc.Aanmaken(p.PersoonDetail, dbGroep.ID));
+					persoonID = _serviceHelper.CallService<IGelieerdePersonenService, PersoonIDs>(svc => svc.Aanmaken(p.PersoonDetail, dbGroep.ID)).PersoonID;
 					Console.WriteLine(Resources.PersoonAangemaaktAls, persoonID);
 				}
 				catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> ex)
 				{
-					persoonID = _serviceHelper.CallService<IGelieerdePersonenService, int>(svc => svc.GeforceerdAanmaken(p.PersoonDetail, dbGroep.ID, true));
+					persoonID = _serviceHelper.CallService<IGelieerdePersonenService, PersoonIDs>(svc => svc.GeforceerdAanmaken(p.PersoonDetail, dbGroep.ID, true)).PersoonID;
 					p.PersoonDetail.GelieerdePersoonID = persoonID;
 
 					mogelijkeDubbels.Add(new MogelijkDubbel { Bestaand = ex.Detail.Objecten.First(), Nieuw = p.PersoonDetail });
@@ -185,9 +186,10 @@ namespace Chiro.Gap.InitieleImport
 							pa.AdresType);
 						try
 						{
-							_serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.AdresToevoegenGelieerdePersonen(
-								new List<int> {persoonID},
-								pa));
+							_serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.AdresToevoegenPersonen(
+								new List<int> { persoonID },
+								pa,
+								false));
 
 						}
 						catch (Exception)

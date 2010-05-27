@@ -25,7 +25,7 @@ namespace Chiro.Gap.InitieleImport.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("f:\\x")]
+        [global::System.Configuration.DefaultSettingValueAttribute("e:\\x")]
         public string UitPakDir {
             get {
                 return ((string)(this["UitPakDir"]));

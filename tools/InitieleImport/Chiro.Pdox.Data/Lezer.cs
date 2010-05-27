@@ -5,6 +5,7 @@ using System.Text;
 
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Pdox.Data
 {
@@ -177,7 +178,7 @@ namespace Chiro.Pdox.Data
 
 					#region communicatie
 
-					var communicatie = new List<CommunicatieDetail>();
+					var communicatie = new List<CommunicatieInfo>();
 					string tel1 = helper.FormatteerTelefoonNr(reader["TEL"].ToString());
 					string tel2 = helper.FormatteerTelefoonNr(reader["TEL2"].ToString());
 					string fax = helper.FormatteerTelefoonNr(reader["FAX"].ToString());
@@ -185,7 +186,7 @@ namespace Chiro.Pdox.Data
 
 					if (tel1 != null)
 					{
-						communicatie.Add(new CommunicatieDetail
+						communicatie.Add(new CommunicatieInfo
 						                 	{
 						                 		CommunicatieTypeID = 1,
 						                 		Nummer = tel1,
@@ -195,7 +196,7 @@ namespace Chiro.Pdox.Data
 
 					if (tel2 != null)
 					{
-						communicatie.Add(new CommunicatieDetail
+						communicatie.Add(new CommunicatieInfo
 						{
 							CommunicatieTypeID = 1,
 							Nummer = tel2,
@@ -205,7 +206,7 @@ namespace Chiro.Pdox.Data
 
 					if (fax != null)
 					{
-						communicatie.Add(new CommunicatieDetail
+						communicatie.Add(new CommunicatieInfo
 						{
 							CommunicatieTypeID = 2,
 							Nummer = fax,
@@ -215,7 +216,7 @@ namespace Chiro.Pdox.Data
 
 					if (!string.IsNullOrEmpty(eMail))
 					{
-						communicatie.Add(new CommunicatieDetail
+						communicatie.Add(new CommunicatieInfo
 						{
 							CommunicatieTypeID = 3,
 							Nummer = eMail,
