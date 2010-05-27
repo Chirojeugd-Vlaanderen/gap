@@ -237,7 +237,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HttpPost]
 		public ActionResult Nieuw(GelieerdePersonenModel model, int groepID)
 		{
-			
+			PersoonIDs ids;
 
 			BaseModelInit(model, groepID);
 			model.Titel = Properties.Resources.NieuwePersoonTitel;
@@ -247,11 +247,11 @@ namespace Chiro.Gap.WebApp.Controllers
 				return View("EditGegevens", model);
 			}
 
-			PersoonDetail gp;
+			
 			try
 			{
 				// (ivm forceer: 0: false, 1: true)
-				gp = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.GeforceerdAanmaken(model.HuidigePersoon, groepID, model.Forceer));
+				ids = ServiceHelper.CallService<IGelieerdePersonenService, PersoonIDs>(l => l.GeforceerdAanmaken(model.HuidigePersoon, groepID, model.Forceer));
 			}
 			catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> fault)
 			{
@@ -269,7 +269,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// (er wordt hier geredirect ipv de view te tonen,
 			// zodat je bij een 'refresh' niet de vraag krijgt
 			// of je de gegevens opnieuw wil posten.)
-			return RedirectToAction("EditRest", new { id = gp.GelieerdePersoonID });
+			return RedirectToAction("EditRest", new { id = ids.GelieerdePersoonID });
 		}
 
 		
@@ -311,11 +311,11 @@ namespace Chiro.Gap.WebApp.Controllers
 				return View("EditGegevens", model);
 			}
 
-			PersoonDetail gp;
+			PersoonIDs ids;
 			try
 			{
 				// (ivm forceer: 0: false, 1: true)
-				gp = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.GeforceerdAanmaken(model.HuidigePersoon, groepID, model.Forceer));
+				ids = ServiceHelper.CallService<IGelieerdePersonenService, PersoonIDs>(l => l.GeforceerdAanmaken(model.HuidigePersoon, groepID, model.Forceer));
 			}
 			catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> fault)
 			{
@@ -333,7 +333,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			if (voorkeursComm != null)
 			{
-				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(gp.GelieerdePersoonID, voorkeursComm));
+				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(ids.GelieerdePersoonID, voorkeursComm));
 			}
 
 			if(broerzus.PersoonDetail.VoorkeursAdresID!=null)
@@ -343,12 +343,12 @@ namespace Chiro.Gap.WebApp.Controllers
 									  select a).FirstOrDefault();
 				if(voorkeursAdres != null)
 				{
-					var list = new List<int>{gp.PersoonID};
+					var list = new List<int>{ids.PersoonID};
 					ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenPersonen(list, voorkeursAdres, true));
 				}
 			}
 
-			return RedirectToAction("EditRest", new { id = gp.GelieerdePersoonID});
+			return RedirectToAction("EditRest", new { id = ids.GelieerdePersoonID});
 		}
 
 

@@ -109,12 +109,12 @@ namespace Chiro.Gap.Services
 		/// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren: Chiroleeftijd, en
 		/// de velden van <c>info.Persoon</c></param>
 		/// <param name="groepID">ID van de groep waaraan de nieuwe persoon gekoppeld moet worden</param>
-		/// <returns>ID van de bewaarde persoon</returns>
+		/// <returns>ID's van de bewaarde persoon en gelieerde persoon</returns>
 		/// <remarks>Adressen, Communicatievormen,... worden niet mee gepersisteerd; enkel de persoonsinfo
 		/// en de Chiroleeftijd.</remarks>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public PersoonDetail Aanmaken(PersoonInfo info, int groepID)
+		public PersoonIDs Aanmaken(PersoonInfo info, int groepID)
 		{
 			return GeforceerdAanmaken(info, groepID, false);
 		}
@@ -126,7 +126,7 @@ namespace Chiro.Gap.Services
 		/// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren: Chiroleeftijd, en
 		/// de velden van <c>info.Persoon</c></param>
 		/// <param name="groepID">ID van de groep waaraan de nieuwe persoon gekoppeld moet worden</param>
-		/// <returns>ID van de bewaarde persoon</returns>
+		/// <returns>ID's van de bewaarde persoon en gelieerde persoon</returns>
 		/// <param name="forceer">Als deze <c>true</c> is, wordt de nieuwe persoon sowieso gemaakt, ook
 		/// al lijkt hij op een bestaande gelieerde persoon.  Is <paramref>force</paramref>
 		/// <c>false</c>, dan wordt er een exceptie opgegooid als de persoon te hard lijkt op een
@@ -135,7 +135,7 @@ namespace Chiro.Gap.Services
 		/// en de Chiroleeftijd.</remarks>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public PersoonDetail GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer)
+		public PersoonIDs GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer)
 		{
 			// Indien 'forceer' niet gezet is, moet een FaultException opgeworpen worden
 			// als de  nieuwe persoon te hard lijkt op een bestaande Gelieerde Persoon.
@@ -183,7 +183,7 @@ namespace Chiro.Gap.Services
 
 			GelieerdePersoon gelieerd = _gpMgr.Koppelen(nieuwePersoon, g, info.ChiroLeefTijd);
 			gelieerd = _gpMgr.Bewaren(gelieerd);
-			return Mapper.Map<GelieerdePersoon, PersoonDetail>(gelieerd);
+			return new PersoonIDs {GelieerdePersoonID = gelieerd.ID, PersoonID = gelieerd.Persoon.ID};
 		}
 
 		/// <summary>

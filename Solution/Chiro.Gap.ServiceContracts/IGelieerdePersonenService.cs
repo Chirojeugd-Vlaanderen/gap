@@ -86,10 +86,10 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren</param>
 		/// <param name="groepID">ID van de groep waaraan de nieuwe persoon gekoppeld moet worden</param>
-		/// <returns>ID van de bewaarde persoon</returns>
+		/// <returns>ID's van de bewaarde persoon en gelieerde persoon</returns>
 		[OperationContract]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonDetail>))]
-		PersoonDetail Aanmaken(PersoonInfo info, int groepID);
+		PersoonIDs Aanmaken(PersoonInfo info, int groepID);
 
 		/// <summary>
 		/// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven
@@ -97,7 +97,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="info">Informatie om de nieuwe (gelieerde) persoon te construeren</param>
 		/// <param name="groepID">ID van de groep waaraan de nieuwe persoon gekoppeld moet worden</param>
-		/// <returns>ID van de bewaarde persoon</returns>
+		/// <returns>ID's van de bewaarde persoon en gelieerde persoon</returns>
 		/// <param name="forceer">Als deze <c>true</c> is, wordt de nieuwe persoon sowieso gemaakt, ook
 		/// al lijkt hij op een bestaande gelieerde persoon.  Is <paramref>force</paramref>
 		/// <c>false</c>, dan wordt er een exceptie opgegooid als de persoon te hard lijkt op een
@@ -107,7 +107,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// 190), maar dat mag blijkbaar niet bij services.</remarks>
 		[OperationContract]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonDetail>))]
-		PersoonDetail GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer);
+		PersoonIDs GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer);
 
 		/// <summary>
 		/// Haalt PersoonID op van een gelieerde persoon

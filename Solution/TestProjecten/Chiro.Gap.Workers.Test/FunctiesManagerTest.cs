@@ -23,7 +23,6 @@ namespace Chiro.Gap.Workers.Test
 	[TestClass()]
 	public class FunctiesManagerTest
 	{
-        private TestContext _testContextInstance;
 
 		#region Additional test attributes
 		// 
