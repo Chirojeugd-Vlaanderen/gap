@@ -143,7 +143,8 @@ namespace Chiro.Gap.Data.Ef
 
 				if (query1.Count() == 0)
 				{
-					return true;
+					// Geen persoon gevonden => geen GAV.
+					return false;
 				}
 
 				var query

@@ -4,6 +4,7 @@ using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Gap.Services;
 using Chiro.Gap.TestDbInfo;
+using Chiro.Gap.Workers.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 using Chiro.Gap.Workers;
@@ -75,17 +76,26 @@ namespace Chiro.Gap.Services.Test
 		{
 			Factory.ContainerInit();
 			MappingHelper.MappingsDefinieren();
+
+			// Verwijder alle communicatievormen van GelieerdePersoon1, want straks moeten die terug gemaakt
+			// worden.
+
+			var svc = Factory.Maak<GelieerdePersonenService>();
+
+			var gp = svc.AlleDetailsOphalen(TestInfo.GELIEERDEPERSOONID);
+
+			foreach (var cv in gp.CommunicatieInfo)
+			{
+				svc.CommunicatieVormVerwijderenVanPersoon(TestInfo.GELIEERDEPERSOONID, cv.ID);
+			}
 		}
 
 		/// <summary>
 		///A test for CommunicatieVormToevoegen
 		///</summary>
-		// TODO: Ensure that the UrlToTest attribute specifies a URL to an ASP.NET page (for example,
-		// http://.../Default.aspx). This is necessary for the unit test to be executed on the web server,
-		// whether you are testing a page, web service, or a WCF service.
 		[TestMethod()]
 		[ExpectedException(typeof(FaultException<GapFault>))]
-		public void CommunicatieVormToevoegenTest()
+		public void CommunicatieVormToevoegenTestOngeldig()
 		{
 			var target = Factory.Maak<GelieerdePersonenService>();
 
@@ -99,6 +109,50 @@ namespace Chiro.Gap.Services.Test
 
 			target.CommunicatieVormToevoegen(gelieerdePersoonID, commInfo);
 			Assert.IsTrue(false);
+		}
+
+		///<summary>
+		///Toevoegen van een geldig telefoonnr
+		///</summary>
+		[TestMethod()]
+		public void CommunicatieVormToevoegenTestGeldig()
+		{
+			var target = Factory.Maak<GelieerdePersonenService>();
+
+			var gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
+
+			var commInfo = new CommunicatieInfo()
+			{
+				CommunicatieTypeID = 1,
+				Voorkeur = true,
+				Nummer = TestInfo.GELDIGTELEFOONNR
+			};
+
+			target.CommunicatieVormToevoegen(gelieerdePersoonID, commInfo);
+			Assert.IsTrue(true);	// al blij als er geen exception optreedt
+		}
+
+		///<summary>
+		///Toevoegen van een geldig telefoonnr aan een onbestaande gelieerde persoon.  
+		/// Dit moet failen met een GeenGavException
+		///</summary>
+		[ExpectedException(typeof(GeenGavException))]
+		[TestMethod()]
+		public void CommunicatieVormToevoegenTestOnbestaandePersoon()
+		{
+			var target = Factory.Maak<GelieerdePersonenService>();
+
+			var gelieerdePersoonID = TestInfo.ONBESTAANDEGELIEERDEPERSOONID;
+
+			var commInfo = new CommunicatieInfo()
+			{
+				CommunicatieTypeID = 1,
+				Voorkeur = true,
+				Nummer = TestInfo.GELDIGTELEFOONNR
+			};
+
+			target.CommunicatieVormToevoegen(gelieerdePersoonID, commInfo);
+			Assert.IsTrue(false);	// hier mogen we niet geraken; hopelijk hebben we een exception gehad.
 		}
 	}
 }

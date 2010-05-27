@@ -84,7 +84,7 @@ namespace Chiro.Gap.Workers
 		/// <returns><c>True</c> als de user de persoonsgegevens mag zien/bewerken</returns>
 		public bool IsGavGelieerdePersoon(int gelieerdePersoonID)
 		{
-			return _autorisatieDao.IsGavGelieerdePersoon(GebruikersNaamGet(), gelieerdePersoonID);
+			return gelieerdePersoonID == 0 || _autorisatieDao.IsGavGelieerdePersoon(GebruikersNaamGet(), gelieerdePersoonID);
 		}
 
 		/// <summary>

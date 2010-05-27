@@ -31,9 +31,16 @@ namespace Chiro.Gap.Dummies
 			return true;
 		}
 
+		/// <summary>
+		/// Positieve ID: je bent GAV (want je bent altijd GAV).  Bij een negatieve ID, weten
+		/// we dat het ID ongeldig is.  Dan is het resultaat altijd false.
+		/// </summary>
+		/// <param name="login"></param>
+		/// <param name="gelieerdePersoonID"></param>
+		/// <returns></returns>
 		public bool IsGavGelieerdePersoon(string login, int gelieerdePersoonID)
 		{
-			return true;
+			return (gelieerdePersoonID >= 0);
 		}
 
 		public bool IsGavPersoon(string login, int persoonID)

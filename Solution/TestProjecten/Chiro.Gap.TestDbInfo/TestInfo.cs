@@ -118,6 +118,16 @@
 		/// Een ongeldig telefoonnummer
 		/// </summary>
 		public const string ONGELDIGTELEFOONNR = "00bla";
+
+		/// <summary>
+		/// Een geldig telefoonnummer
+		/// </summary>
+		public const string GELDIGTELEFOONNR = "03-484 53 32";
+
+		/// <summary>
+		/// Een ongeldig GelieerdePersoonID
+		/// </summary>
+		public const int ONBESTAANDEGELIEERDEPERSOONID = -1;
 		#endregion;
 	}
 
