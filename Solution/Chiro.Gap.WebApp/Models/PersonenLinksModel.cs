@@ -14,6 +14,11 @@ namespace Chiro.Gap.WebApp.Models
 	/// </summary>
 	public class PersonenLinksModel : MasterViewModel
 	{
+        public PersonenLinksModel()
+        {
+            Personen = new List<PersoonDetail>();
+        }
+
 		/// <summary>
 		/// Informatie op te lijsten personen
 		/// </summary>

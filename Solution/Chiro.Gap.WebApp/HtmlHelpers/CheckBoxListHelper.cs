@@ -61,15 +61,13 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 	{
 		public static string CheckBoxList(this HtmlHelper htmlHelper, string name, IEnumerable<CheckBoxListInfo> listInfo)
 		{
-			return htmlHelper.CheckBoxList(name, listInfo,
-				((IDictionary<string, object>)null));
+			return htmlHelper.CheckBoxList(name, listInfo, null);
 		}
 
 		public static string CheckBoxList(this HtmlHelper htmlHelper, string name, IEnumerable<CheckBoxListInfo> listInfo,
 			object htmlAttributes)
 		{
-			return htmlHelper.CheckBoxList(name, listInfo,
-				((IDictionary<string, object>)new RouteValueDictionary(htmlAttributes)));
+			return htmlHelper.CheckBoxList(name, listInfo, new RouteValueDictionary(htmlAttributes));
 		}
 
 		public static string CheckBoxList(this HtmlHelper htmlHelper, string name, IEnumerable<CheckBoxListInfo> listInfo,
@@ -88,16 +86,16 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 				throw new ArgumentException("The list must contain at least one value", "listInfo");
 			}
 
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 
 			foreach (CheckBoxListInfo info in listInfo)
 			{
-				TagBuilder builder = new TagBuilder("input");
+				var builder = new TagBuilder("input");
 				if (info.IsChecked)
 				{
 					builder.MergeAttribute("checked", "checked");
 				}
-				builder.MergeAttributes<string, object>(htmlAttributes);
+				builder.MergeAttributes(htmlAttributes);
 				builder.MergeAttribute("type", "checkbox");
 				builder.MergeAttribute("value", info.Value);
 				builder.MergeAttribute("name", name);
@@ -123,8 +121,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		/// <returns></returns>
 		public static string CheckBoxList(this HtmlHelper htmlHelper, string name, CheckBoxListInfo info)
 		{
-			return htmlHelper.CheckBoxList(name, info,
-				((IDictionary<string, object>)null));
+			return htmlHelper.CheckBoxList(name, info, null);
 		}
 
 		public static string CheckBoxList(this HtmlHelper htmlHelper, string name, CheckBoxListInfo info,
@@ -139,14 +136,14 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 				throw new ArgumentNullException("listInfo");
 			}
 
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 
-			TagBuilder builder = new TagBuilder("input");
+			var builder = new TagBuilder("input");
 			if (info.IsChecked)
 			{
 				builder.MergeAttribute("checked", "checked");
 			}
-			builder.MergeAttributes<string, object>(htmlAttributes);
+			builder.MergeAttributes(htmlAttributes);
 			builder.MergeAttribute("type", "checkbox");
 			builder.MergeAttribute("value", info.Value);
 			builder.MergeAttribute("name", name);

@@ -15,6 +15,12 @@ namespace Chiro.Gap.WebApp.Models
 	/// </summary>
 	public class LidAfdelingenModel: MasterViewModel
 	{
+        public LidAfdelingenModel()
+        {
+            BeschikbareAfdelingen = new List<ActieveAfdelingInfo>();
+            Info = new LidAfdelingInfo();
+        }
+
 		/// <summary>
 		/// Informatie over de afdelingsjaren gekoppeld aan een lid.
 		/// </summary>

@@ -177,7 +177,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="personenIDs">ID's van de personen over wie het gaat</param>
 		/// <param name="adresID">ID van het adres dat losgekoppeld moet worden</param>
 		[OperationContract]
-		void AdresVerwijderenVanPersonen(List<int> personenIDs, int adresID);
+		void AdresVerwijderenVanPersonen(IList<int> personenIDs, int adresID);
 
 		/// <summary>
 		/// Stelt het gegeven persoonsadres in als nieuw voorkeursadres van de gelieerde persoon

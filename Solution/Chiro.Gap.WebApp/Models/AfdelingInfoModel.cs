@@ -9,6 +9,11 @@ namespace Chiro.Gap.WebApp.Models
 {
 	public class AfdelingInfoModel: MasterViewModel
 	{
+        public AfdelingInfoModel()
+        {
+            Info = new AfdelingInfo();
+        }
+
 		public AfdelingInfo Info { get; set; }
 	}
 }

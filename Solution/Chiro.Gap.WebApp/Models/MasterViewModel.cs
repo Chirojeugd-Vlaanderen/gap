@@ -15,6 +15,14 @@ namespace Chiro.Gap.WebApp.Models
 	/// </remarks>
 	public class MasterViewModel : IMasterViewModel
 	{
+        /// <summary>
+        /// De standaardconstructor maakt gewoon een lege lijst met mededelingen
+        /// </summary>
+        public MasterViewModel()
+        {
+            Mededelingen = new List<Mededeling>();
+        }
+
 		/// <summary>
 		/// ID van de Chirogroep
 		/// </summary>
@@ -44,13 +52,5 @@ namespace Chiro.Gap.WebApp.Models
 		/// Mededelingen die ergens getoond moeten worden
 		/// </summary>
 		public IList<Mededeling> Mededelingen { get; set; }
-
-		/// <summary>
-		/// De standaardconstructor maakt gewoon een lege lijst met mededelingen
-		/// </summary>
-		public MasterViewModel()
-		{
-			Mededelingen = new List<Mededeling>();
-		}
 	}
 }

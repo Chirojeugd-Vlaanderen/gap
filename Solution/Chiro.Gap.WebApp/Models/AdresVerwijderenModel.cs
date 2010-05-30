@@ -23,6 +23,15 @@ namespace Chiro.Gap.WebApp.Models
 	/// GelieerdePersoonID en AdresID zijn.</remarks>
 	public class AdresVerwijderenModel : MasterViewModel
 	{
+        /// <summary>
+        /// Saaie standaardconstructor
+        /// </summary>
+        public AdresVerwijderenModel()
+        {
+            PersoonIDs = new List<int>();
+            Adres = new GezinInfo();
+        }
+
 		/// <summary>
 		/// ID van GelieerdePersoon met het te verwijderen adres.
 		/// Wordt bewaard om achteraf terug naar de details van de
@@ -41,14 +50,6 @@ namespace Chiro.Gap.WebApp.Models
 		/// Het lijstje PersoonIDs bevat de ID's van de personen van wie
 		/// het adres uiteindelijk zal vervallen.
 		/// </summary>
-		public List<int> PersoonIDs { get; set; }
-
-		/// <summary>
-		/// Saaie standaardconstructor
-		/// </summary>
-		public AdresVerwijderenModel()
-		{
-			PersoonIDs = new List<int>();
-		}
+		public IList<int> PersoonIDs { get; set; }
 	}
 }

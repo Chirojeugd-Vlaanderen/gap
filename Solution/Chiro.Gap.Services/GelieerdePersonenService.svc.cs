@@ -366,7 +366,7 @@ namespace Chiro.Gap.Services
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void AdresVerwijderenVanPersonen(List<int> personenIDs, int adresID)
+		public void AdresVerwijderenVanPersonen(IList<int> personenIDs, int adresID)
 		{
 			// Adres ophalen, met bewoners voor GAV
 			Adres adr = _adrMgr.AdresMetBewonersOphalen(adresID);

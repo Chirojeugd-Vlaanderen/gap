@@ -15,6 +15,13 @@ namespace Chiro.Gap.WebApp.Models
 	/// </summary>
 	public class CategorieModel : MasterViewModel
 	{
+        public CategorieModel()
+        {
+            GeselecteerdeCategorieIDs = new List<int>();
+            GelieerdePersoonIDs = new List<int>();
+            Categorieen = new List<CategorieInfo>();
+        }
+
 		/// <summary>
 		/// Nieuwe categorieën voor de gegeven gelieerde personen
 		/// </summary>

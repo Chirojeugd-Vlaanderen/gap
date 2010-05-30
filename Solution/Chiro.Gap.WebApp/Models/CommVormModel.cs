@@ -14,6 +14,22 @@ namespace Chiro.Gap.WebApp.Models
 	/// </summary>
 	public class CommVormModel : MasterViewModel
 	{
+        /// <summary>
+        /// De standaardconstructor - creëert leeg CommVormModel
+        /// </summary>
+        public CommVormModel()
+        {
+            Aanvrager = new PersoonDetail();
+            NieuweCommVorm = new CommunicatieInfo();
+        }
+
+        public CommVormModel(PersoonDetail aanvrager, CommunicatieInfo v)
+            : this()
+        {
+            Aanvrager = aanvrager;
+            NieuweCommVorm = v;
+        }
+
 		/// <summary>
 		/// ID van GelieerdePersoon wiens/wier communicatievorm 
 		/// we bekijken 
@@ -24,21 +40,5 @@ namespace Chiro.Gap.WebApp.Models
 		/// Nieuwe input voor de communicatievorm voor de gegeven gelieerde personen
 		/// </summary>
 		public CommunicatieInfo NieuweCommVorm { get; set; }
-
-		/// <summary>
-		/// De standaardconstructor - creëert leeg CommVormModel
-		/// </summary>
-		public CommVormModel()
-		{
-			Aanvrager = new PersoonDetail();
-			NieuweCommVorm = new CommunicatieInfo();
-		}
-
-		public CommVormModel(PersoonDetail aanvrager, CommunicatieInfo v)
-			: this()
-		{
-			Aanvrager = aanvrager;
-			NieuweCommVorm = v;
-		}
 	}
 }

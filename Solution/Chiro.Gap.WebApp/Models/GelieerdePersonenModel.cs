@@ -20,6 +20,12 @@ namespace Chiro.Gap.WebApp.Models
 	/// </summary>
 	public class GelieerdePersonenModel : MasterViewModel
 	{
+        public GelieerdePersonenModel()
+        {
+            GelijkaardigePersonen = new List<PersoonDetail>();
+            HuidigePersoon = new PersoonDetail();
+        }
+
 		/// <summary>
 		/// Informatie over een te tonen of te wijzigen persoon
 		/// </summary>

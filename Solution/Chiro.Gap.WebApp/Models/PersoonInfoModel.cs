@@ -12,6 +12,13 @@ namespace Chiro.Gap.WebApp.Models
 {
 	public class PersoonInfoModel : MasterViewModel
 	{
+        public PersoonInfoModel()
+        {
+            PersoonInfos = new List<PersoonDetail>();
+            GekozenGelieerdePersoonIDs = new List<int>();
+            GroepsCategorieen = new List<CategorieInfo>();
+        }
+
 		public int HuidigePagina { get; set; }
 		public int AantalPaginas { get; set; }
 		public int Totaal { get; set; }

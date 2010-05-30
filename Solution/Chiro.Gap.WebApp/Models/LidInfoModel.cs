@@ -5,7 +5,6 @@
 
 using System.Collections.Generic;
 
-using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
@@ -13,6 +12,13 @@ namespace Chiro.Gap.WebApp.Models
 {
 	public class LidInfoModel : MasterViewModel
 	{
+        public LidInfoModel()
+        {
+            WerkJaarInfos = new List<WerkJaarInfo>();
+            LidInfoLijst = new List<PersoonLidInfo>();
+            AfdelingsInfoDictionary = new Dictionary<int, AfdelingDetail>();
+        }
+
 		public int PageHuidig { get; set; }
 		public int PageTotaal { get; set; }
 

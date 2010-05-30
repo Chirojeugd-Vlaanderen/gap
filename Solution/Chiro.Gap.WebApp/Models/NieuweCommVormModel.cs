@@ -5,7 +5,6 @@
 
 using System.Collections.Generic;
 
-using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
@@ -17,6 +16,24 @@ namespace Chiro.Gap.WebApp.Models
 	/// </summary>
 	public class NieuweCommVormModel : MasterViewModel
 	{
+        /// <summary>
+        /// De standaardconstructor - creëert leeg NieuweCommVorm
+        /// </summary>
+        public NieuweCommVormModel()
+        {
+            Aanvrager = new PersoonDetail();
+            NieuweCommVorm = new CommunicatieInfo();
+            Types = new List<CommunicatieTypeInfo>();
+        }
+
+        public NieuweCommVormModel(PersoonDetail aanvrager, IEnumerable<CommunicatieTypeInfo> types)
+            : this()
+        {
+            Aanvrager = aanvrager;
+            Types = types;
+            NieuweCommVorm = new CommunicatieInfo();
+        }
+
 		/// <summary>
 		/// ID van GelieerdePersoon waarvoor aangeklikt dat
 		/// hij/zij een extra adres nodig heeft
@@ -30,22 +47,5 @@ namespace Chiro.Gap.WebApp.Models
 		public CommunicatieInfo NieuweCommVorm { get; set; }
 
 		public IEnumerable<CommunicatieTypeInfo> Types { get; set; }
-
-		/// <summary>
-		/// De standaardconstructor - creëert leeg NieuweCommVorm
-		/// </summary>
-		public NieuweCommVormModel()
-		{
-			Aanvrager = new PersoonDetail();
-			NieuweCommVorm = new CommunicatieInfo();
-		}
-
-		public NieuweCommVormModel(PersoonDetail aanvrager, IEnumerable<CommunicatieTypeInfo> types)
-			: this()
-		{
-			Aanvrager = aanvrager;
-			Types = types;
-			NieuweCommVorm = new CommunicatieInfo();
-		}
 	}
 }

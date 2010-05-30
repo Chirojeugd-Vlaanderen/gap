@@ -11,6 +11,11 @@ namespace Chiro.Gap.WebApp.Models
 {
 	public class GavModel : MasterViewModel
 	{
+        public GavModel()
+        {
+            GroepenLijst = new List<GroepInfo>();
+        }
+
 		public IEnumerable<GroepInfo> GroepenLijst { get; set; }
 
 		public int GeselecteerdeGroepID { get; set; }

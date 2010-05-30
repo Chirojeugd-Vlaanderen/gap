@@ -15,6 +15,18 @@ namespace Chiro.Gap.WebApp.Models
 	/// </summary>
 	public class LedenModel : MasterViewModel
 	{
+        /// <summary>
+        /// De standaardconstructor; er zijn geen afdelingen geselecteerd.
+        /// </summary>
+        public LedenModel()
+        {
+            AlleAfdelingen = new List<AfdelingDetail>();
+            AfdelingIDs = new List<int>();
+            AlleFuncties = new List<FunctieInfo>();
+            FunctieIDs = new List<int>();
+            HuidigLid = new PersoonLidInfo();
+        }
+
 		/// <summary>
 		/// Rij met alle afdelingen van het groepswerkjaar
 		/// </summary>
@@ -42,13 +54,5 @@ namespace Chiro.Gap.WebApp.Models
 		public IEnumerable<int> FunctieIDs { get; set; }
 
 		public PersoonLidInfo HuidigLid { get; set; }
-
-		/// <summary>
-		/// De standaardconstructor; er zijn geen afdelingen geselecteerd.
-		/// </summary>
-		public LedenModel() : base() 
-		{
-			AfdelingIDs = new List<int>();
-		}
 	}
 }

@@ -5,7 +5,6 @@
 
 using System.Collections.Generic;
 
-using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp.Models
@@ -16,6 +15,13 @@ namespace Chiro.Gap.WebApp.Models
 	/// </summary>
 	public class AfdelingsJaarModel : MasterViewModel
 	{
+        public AfdelingsJaarModel()
+        {
+            OfficieleAfdelingen = new List<OfficieleAfdelingDetail>();
+            AfdelingsJaar = new AfdelingsJaarDetail();
+            Afdeling = new AfdelingInfo();
+        }
+
 		/// <summary>
 		/// Relevante informatie over het afdelingsjaar
 		/// </summary>
