@@ -55,7 +55,7 @@ Pagina: <%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.AantalP
 		   { %>
 			<% if (p.GeboorteDatum.HasValue && p.GeboorteDatum.Value.Year > DateTime.Today.Year - 21)
 	  { %>
-				<%=Html.ActionLink("Lid maken", "LidMaken", new { Controller = "Personen", id = p.GelieerdePersoonID })%>
+				<%=Html.ActionLink("Lid maken", "LidMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
 			<% } %>
 			<% if (p.GeboorteDatum.HasValue && p.GeboorteDatum.Value.Year < DateTime.Today.Year - 14)
 	  { %>

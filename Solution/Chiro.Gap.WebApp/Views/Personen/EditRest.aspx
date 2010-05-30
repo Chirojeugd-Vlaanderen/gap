@@ -118,7 +118,7 @@
 
     </fieldset>
     
-    <h3>Afdelingen <%= Html.ActionLink("Aanpassen", "AfdelingBewerken", new { Controller="Leden", groepsWerkJaarID = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID, id = Model.PersoonLidInfo.LidInfo.LidID })%></h3>  
+    <h3>Afdelingen <%= Html.ActionLink("Aanpassen", "AfdelingBewerken", new { Controller="Leden", groepsWerkJaarID = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID, lidID = Model.PersoonLidInfo.LidInfo.LidID })%></h3>  
            
 	<%if (Model.PersoonLidInfo.LidInfo.Type == LidType.Leiding)
    {

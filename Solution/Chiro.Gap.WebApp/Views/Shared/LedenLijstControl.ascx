@@ -4,8 +4,8 @@
 <div class="pager">
 Pagina: <%= Html.WerkJaarLinks(
                 ViewData.Model.GroepsWerkJaarIdZichtbaar, 
-                ViewData.Model.WerkJaarInfos, 
-                wj => Url.Action("List", new { id = wj.ID, afdID = Model.HuidigeAfdeling }))%>
+                ViewData.Model.WerkJaarInfos,
+                    wj => Url.Action("List", new { Controller = "Leden", id = wj.ID, afdID = Model.HuidigeAfdeling }))%>
 </div>
 
 <table class="overzicht">
@@ -31,7 +31,7 @@ Pagina: <%= Html.WerkJaarLinks(
 			<%=Html.ActionLink("Non-Actief maken", "DeActiveren", new { Controller = "Leden", id = pl.LidInfo.LidID })%>
 		<%} %>
         
-        <%=Html.ActionLink("Afdelingen", "AfdelingBewerken", new { Controller = "Leden", id = pl.LidInfo.LidID })%>
+        <%=Html.ActionLink("Afdelingen", "AfdelingBewerken", new { Controller = "Leden", lidID = pl.LidInfo.LidID })%>
     </td>
     <td><% foreach (int a in pl.LidInfo.AfdelingIdLijst) 
            { %>

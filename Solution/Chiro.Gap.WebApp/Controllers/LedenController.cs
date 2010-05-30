@@ -178,11 +178,11 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <summary>
 		/// Toont de view die toelaat om de afdeling(en) van een lid te wijzigen
 		/// </summary>
-		/// <param name="id">LidID van het lid met de te wijzigen afdeling(en)</param>
-		/// <param name="gwjID">Groepswerkjaar waarin de wijziging moet gebeuren</param>
+        /// <param name="lidID">LidID van het lid met de te wijzigen afdeling(en)</param>
+        /// <param name="groepsWerkJaarID">Groepswerkjaar waarin de wijziging moet gebeuren</param>
 		/// <param name="groepID">Groep waarin de user momenteel werkt</param>
 		/// <returns>De view 'AfdelingBewerken'</returns>
-		public ActionResult AfdelingBewerken(int id, int gwjID, int groepID)
+        public ActionResult AfdelingBewerken(int lidID, int groepsWerkJaarID, int groepID)
 		{
 			var model = new LidAfdelingenModel();
 			BaseModelInit(model, groepID);
@@ -190,7 +190,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.BeschikbareAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<ActieveAfdelingInfo>>(
 				svc => svc.BeschikbareAfdelingenOphalen(groepID));
 			model.Info = ServiceHelper.CallService<ILedenService, LidAfdelingInfo>(
-				svc => svc.AfdelingenOphalen(id));
+				svc => svc.AfdelingenOphalen(lidID));
 
 
 			if (model.BeschikbareAfdelingen.FirstOrDefault() == null)
@@ -218,15 +218,16 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		//
 		// POST: /Leden/AfdelingBewerken/5
+        //FIXME lidID wordt automatisch ingevuld als er eenzelfde argument in de GET methode van afdelingBewerken staat. Dit is eigenlijk helemaal niet mooi want wordt niet geverifieerd en zelfs 2de niveau afhankelijkheid van aspx.
 		[AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult AfdelingBewerken(LidAfdelingenModel model, int groepID, int id)
+		public ActionResult AfdelingBewerken(LidAfdelingenModel model, int groepID, int lidID)
 		{
 			// FIXME: Het is geen prachtige code: AfdelingenVervangen die 'toevallig'
 			// een GelieerdePersoonID oplevert, die ik dan in dit specifieke geval
 			// 'toevallig' kan gebruiken om naar de juiste personenfiche om te schakelen.
 
 			int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(
-				svc => svc.AfdelingenVervangen(id, model.Info.AfdelingsJaarIDs));
+				svc => svc.AfdelingenVervangen(lidID, model.Info.AfdelingsJaarIDs));
 			return RedirectToAction(
 				"EditRest",
 				new { Controller = "Personen", id = gelieerdePersoonID });

@@ -443,10 +443,10 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		#region leden
 
-		// GET: /Personen/LidMaken/id
-		public ActionResult LidMaken(int id, int groepID)
+        // GET: /Personen/LidMaken/gelieerdepersoonID
+        public ActionResult LidMaken(int gelieerdepersoonID, int groepID)
 		{
-			IList<int> ids = new List<int> {id};
+            IList<int> ids = new List<int> { gelieerdepersoonID };
 			try
 			{
 				ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LedenMakenEnBewaren(ids));
@@ -459,10 +459,10 @@ namespace Chiro.Gap.WebApp.Controllers
 			return TerugNaarVorige();
 		}
 
-		// GET: /Personen/LidMaken/id
-		public ActionResult LeidingMaken(int id, int groepID)
+        // GET: /Personen/LeidingMaken/gelieerdepersoonID
+        public ActionResult LeidingMaken(int gelieerdepersoonID, int groepID)
 		{
-			var ids = new List<int> {id};
+            var ids = new List<int> { gelieerdepersoonID };
 
 			try
 			{
@@ -491,15 +491,15 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult Verhuizen(int id, int aanvragerID, int groepID)
 		{
 			// Haal PersoonID op, om te weten van wie we het adrestype gaan overnemen.
-			int persoonID =
+			var persoonID =
 				ServiceHelper.CallService<IGelieerdePersonenService, int>(
 					srvc => srvc.PersoonIDGet(aanvragerID));
 
-			AdresModel model = new AdresModel();
+			var model = new AdresModel();
 			BaseModelInit(model, groepID);
 
 			model.AanvragerID = aanvragerID;
-			GezinInfo a = ServiceHelper.CallService<IGelieerdePersonenService, GezinInfo>(l => l.GezinOphalen(id));
+			var a = ServiceHelper.CallService<IGelieerdePersonenService, GezinInfo>(l => l.GezinOphalen(id));
 
 			Mapper.CreateMap<GezinInfo, PersoonsAdresInfo>()
 				.ForMember(
@@ -984,7 +984,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>De view 'CategorieToevoegen'</returns>
 		public ActionResult ToevoegenAanCategorieLijst(int groepID)
 		{
-			CategorieModel model = new CategorieModel();
+			var model = new CategorieModel();
 			BaseModelInit(model, groepID);
 			model.Categorieen = ServiceHelper.CallService<IGroepenService, IEnumerable<CategorieInfo>>(l => l.CategorieenOphalen(groepID));
 
