@@ -19,10 +19,9 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-<%using (Html.BeginForm("List"))
-  { %>
-
-    <ul id="acties">
+<%using (Html.BeginForm("List"))%>
+<%{ %>
+   <ul id="acties">
         <li><%= Html.ActionLink("Nieuwe persoon", "Nieuw") %></li>
         <li><%= Html.ActionLink("Lijst downloaden", "Download", new { id = Model.GekozenCategorieID })%></li>
         <li>
@@ -30,13 +29,7 @@
                 <input id="kiesCategorie" type="submit" />
         </li>
     </ul>
-    <%
-  } %>
+<%} %>
 
-    <% Html.RenderPartial("PersonenLijstControl", Model); %>
-
-    <ul id="info">
-        <li>Totaal aantal personen:
-            <%= Model.Totaal %></li>
-    </ul>
+<% Html.RenderPartial("PersonenLijstControl", Model); %>
 </asp:Content>

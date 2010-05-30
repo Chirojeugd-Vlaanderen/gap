@@ -409,15 +409,10 @@ table.overzicht th
 	background-color: #A0A0A0;
 }
 
-ul#info 
+info 
 {
 	float: right;
 	display: block;
-}
-
-ul#info li
-{	
-	list-style: none;
 }
 
 textarea

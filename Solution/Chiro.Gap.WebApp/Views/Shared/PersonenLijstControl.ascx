@@ -1,5 +1,4 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.PersoonInfoModel>" %>
-<%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 
 <script type="text/javascript">
@@ -22,21 +21,22 @@
           select new CheckBoxListInfo(
              pa.GelieerdePersoonID.ToString()
              , ""
-             , false)).ToList<CheckBoxListInfo>();
+             , false)).ToList();
 
     int j = 0;
 %>
 
 <%using (Html.BeginForm("ToepassenOpSelectie", "Personen")){ %>
-<select id="GekozenActie" name="GekozenActie">
-<option value="0">Kies een actie ...</option>
-<option value="1">Lid maken</option>
-<option value="2">In (dezelfde) categorie stoppen</option>
-</select>
-<input id="kiesActie" type="submit" value="Uitvoeren"/>
 
 <div class="pager">
-Pagina: <%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.AantalPaginas, i => Url.Action("List", new { page = i })) %>
+Pagina's <%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.AantalPaginas, i => Url.Action("List", new { Controller="Personen", page = i })) %>  |  Totaal aantal personen: <%= Model.Totaal %>  |  Maak een selectie en 
+
+<select id="GekozenActie" name="GekozenActie">
+<option value="0">kies een actie</option>
+<option value="1">Lid maken</option>
+<option value="2">In dezelfde categorie stoppen</option>
+</select>
+<input id="kiesActie" type="submit" value="Uitvoeren"/>
 </div>
 
 <table class="overzicht">
@@ -70,7 +70,7 @@ Pagina: <%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.AantalP
     </td>
     <td><% foreach (var c in p.CategorieLijst) 
            { %>
-               <%=Html.ActionLink(Html.Encode(c.Code.ToString()), "List", new { Controller = "Personen", id = c.ID }, new { title = c.Naam.ToString() } )%>
+               <%=Html.ActionLink(Html.Encode(c.Code), "List", new { Controller = "Personen", id = c.ID }, new { title = c.Naam } )%>
         <% } %>
     </td>
 </tr>
