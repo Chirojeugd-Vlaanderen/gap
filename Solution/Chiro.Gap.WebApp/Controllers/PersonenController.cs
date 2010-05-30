@@ -774,7 +774,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.VoorkeursAdresMaken(persoonsAdresID, gelieerdePersoonID));
 
-			return TerugNaarVorigeLijst();
+			return TerugNaarVorigeFiche();
 		}
 
 		#endregion adressen
