@@ -197,14 +197,14 @@ namespace Chiro.Gap.Workers
 				if (!f.IsNationaal && f.Groep.ID != lid.GroepsWerkJaar.Groep.ID)
 				{
 					throw new GapException(
-						FoutNummers.FunctieNietVanGroep,
+						FoutNummer.FunctieNietVanGroep,
 						Properties.Resources.FoutieveGroepFunctie);
 				}
 				if (f.WerkJaarTot < lid.GroepsWerkJaar.WerkJaar  // false als wjtot null
 					|| f.WerkJaarVan > lid.GroepsWerkJaar.WerkJaar)	// false als wjvan null
 				{
 					throw new GapException(
-						FoutNummers.FunctieNietBeschikbaar,
+						FoutNummer.FunctieNietBeschikbaar,
 						Properties.Resources.FoutiefGroepsWerkJaarFunctie);
 				}
 
@@ -313,7 +313,7 @@ namespace Chiro.Gap.Workers
 			if (!forceren && functie.Lid.Count > 0)
 			{
 				throw new BlokkerendeObjectenException<Lid>(
-					FoutNummers.FunctieNietLeeg,
+					FoutNummer.FunctieNietLeeg,
 					functie.Lid,
 					functie.Lid.Count(),
 					Properties.Resources.FunctieNietLeeg);

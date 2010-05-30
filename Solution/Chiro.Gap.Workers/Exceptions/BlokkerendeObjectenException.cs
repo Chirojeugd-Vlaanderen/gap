@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Chiro.Cdf.Data;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Workers.Exceptions
 {
@@ -127,7 +128,7 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// <param name="aantalTotaal">Totaal aantal blokkerende objecten</param>
 		/// <param name="message">Technische info over de exception; nuttig voor developer</param>
 		public BlokkerendeObjectenException(
-			int foutNummer,
+            FoutNummer foutNummer,
 			IEnumerable<TEntiteit> objecten,
 			int aantalTotaal,
 			string message)

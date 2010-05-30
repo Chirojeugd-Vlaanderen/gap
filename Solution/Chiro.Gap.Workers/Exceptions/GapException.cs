@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Workers.Exceptions
 {
@@ -16,7 +17,7 @@ namespace Chiro.Gap.Workers.Exceptions
 	[Serializable]
 	public class GapException : Exception
 	{
-		private int _foutNummer;
+        private FoutNummer _foutNummer;
 		private IEnumerable<string> _items;
 
 		#region property's
@@ -24,7 +25,7 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// <summary>
 		/// Foutnummer voor de exception.
 		/// </summary>
-		public int FoutNummer { get { return _foutNummer; } set { _foutNummer = value; } }
+		public FoutNummer FoutNummer { get { return _foutNummer; } set { _foutNummer = value; } }
 
 		/// <summary>
 		/// Worden gebruikt voor substituties in foutberichten
@@ -69,7 +70,7 @@ namespace Chiro.Gap.Workers.Exceptions
 			{
 				return;
 			}
-			_foutNummer = info.GetInt32("foutNummer");
+			_foutNummer = (FoutNummer) info.GetInt32("foutNummer");
 			_items = (IEnumerable<string>)info.GetValue("items", typeof(IEnumerable<string>));
 		}
 
@@ -98,7 +99,8 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// </summary>
 		/// <param name="foutNummer">Foutnummer van de fout die de exception veroorzaakte</param>
 		/// <param name="message">Technische info over de exception; nuttig voor developer</param>
-		public GapException(int foutNummer, string message) : base(message) 
+        public GapException(FoutNummer foutNummer, string message)
+            : base(message) 
 		{
 			_foutNummer = foutNummer;
 		}

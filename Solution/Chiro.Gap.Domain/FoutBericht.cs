@@ -14,7 +14,7 @@ namespace Chiro.Gap.Domain
 	public class FoutBericht
 	{
 		[DataMember]
-		public int FoutNummer { get; set; }
+		public FoutNummer FoutNummer { get; set; }
 		[DataMember]
 		public string Bericht { get; set; }     // omschrijving
 	}

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 
 using Chiro.Gap.Workers.Exceptions;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Workers.Test
 {
@@ -76,7 +77,7 @@ namespace Chiro.Gap.Workers.Test
 		{
 			// Arrange
 
-			var target = new GapException {FoutNummer = 11, Items = new string[] {"een", "twee"}};
+			var target = new GapException {FoutNummer = FoutNummer.GeenGav, Items = new string[] {"een", "twee"}};
 
 
 			// Act

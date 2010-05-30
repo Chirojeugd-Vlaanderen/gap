@@ -467,7 +467,7 @@ namespace Chiro.Gap.Workers
 				if (!x.Groep.Equals(c.Groep))
 				{
 					throw new GapException(
-						FoutNummers.CategorieNietVanGroep, 
+						FoutNummer.CategorieNietVanGroep, 
 						Properties.Resources.FoutieveGroepCategorie);
 				}
 				x.Categorie.Add(c);

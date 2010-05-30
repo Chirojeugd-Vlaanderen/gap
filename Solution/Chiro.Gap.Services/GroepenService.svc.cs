@@ -97,7 +97,7 @@ namespace Chiro.Gap.Services
 			}
 			catch (GeenGavException)
 			{
-				throw new FaultException<GapFault>(new GapFault { FoutNummer = FoutNummers.GeenGav });
+				throw new FaultException<GapFault>(new GapFault { FoutNummer = FoutNummer.GeenGav });
 			}
 
 			return Mapper.Map<Groep, GroepInfo>(g);

@@ -5,44 +5,39 @@
 
 namespace Chiro.Gap.Domain
 {
-	public class FoutNummers
+	public enum FoutNummer
 	{
-		private FoutNummers()
-		{
-			// Deze klasse bevat enkel constanten, en mag niet geinstantieerd worden.
-			// Vandaar een private constructor.
-		}
+        AlgemeneFout,
+        GeenGav,
+        BestaatAl,
+        ValidatieFout,
 
-		public const int AlgemeneFout = 0x01;
-		public const int GeenGav = 0x02;
-		public const int BestaatAl = 0x03;
-		public const int ValidatieFout = 0x04;
+        #region adressen
+        WoonPlaatsNietGevonden,
+        StraatNietGevonden,
+        StraatOntbreekt,
+        OngeldigPostNummer,
+        WoonPlaatsOntbreekt,
+        WonenDaarAl,
+        #endregion
 
-		#region adressen
-		public const int WoonPlaatsNietGevonden = 0x20;
-		public const int StraatNietGevonden = 0x21;
-		public const int StraatOntbreekt = 0x22;
-		public const int OngeldigPostNummer = 0x23;
-		public const int WoonPlaatsOntbreekt = 0x24;
+        #region verkeerde groep
+        CategorieNietVanGroep,
+        FunctieNietVanGroep,
+        AfdelingNietVanGroep,
+        #endregion
 
-		public const int WonenDaarAl = 0x28;
-		#endregion
 
-		#region verkeerde groep
-		public const int CategorieNietVanGroep = 0x30;
-		public const int FunctieNietVanGroep = 0x31;
-		public const int AfdelingNietVanGroep = 0x32;
-		#endregion
+        #region niet beschikbaar in werkjaar
+        GroepsWerkJaarNietBeschikbaar,
+        FunctieNietBeschikbaar,
+        AfdelingNietBeschikbaar,
+        #endregion
 
-		#region niet beschikbaar in werkjaar
-		public const int GroepsWerkJaarNietBeschikbaar = 0x40;
-		public const int FunctieNietBeschikbaar = 0x41;
-		public const int AfdelingNietBeschikbaar = 0x42;
-		#endregion
 
-		#region nog te verdelen
-		public const int CategorieNietLeeg = 0xf0;
-		public const int FunctieNietLeeg = 0xf1;
-		#endregion
+        #region nog te verdelen
+        CategorieNietLeeg,
+        FunctieNietLeeg,
+        #endregion
 	}
 }

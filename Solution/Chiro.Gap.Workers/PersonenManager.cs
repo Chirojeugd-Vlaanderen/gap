@@ -110,7 +110,7 @@ namespace Chiro.Gap.Workers
 					// Geef een exception met daarin de persoonsadresobjecten die al bestaan
 
 					throw new BlokkerendeObjectenException<PersoonsAdres>(
-						FoutNummers.WonenDaarAl,
+						FoutNummer.WonenDaarAl,
 						bestaand,
 						bestaand.Count(),
 						Properties.Resources.WonenDaarAl);
@@ -178,7 +178,7 @@ namespace Chiro.Gap.Workers
 				var bestaandePersoonsAdressen = bestaand.ToList();
 
 				throw new BlokkerendeObjectenException<PersoonsAdres>(
-					FoutNummers.WonenDaarAl,
+					FoutNummer.WonenDaarAl,
 					bestaand,
 					bestaand.Count(),
 					Properties.Resources.WonenDaarAl);

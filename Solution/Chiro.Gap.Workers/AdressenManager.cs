@@ -102,7 +102,7 @@ namespace Chiro.Gap.Workers
 			{
 				problemen.Add("StraatNaamNaam", new FoutBericht
 				{
-					FoutNummer = FoutNummers.StraatOntbreekt,
+					FoutNummer = FoutNummer.StraatOntbreekt,
 					Bericht = String.Format(
 						Properties.Resources.StraatOntbreekt,
 						straatNaam,
@@ -114,7 +114,7 @@ namespace Chiro.Gap.Workers
 			{
 				problemen.Add("PostNr", new FoutBericht
 				{
-					FoutNummer = FoutNummers.OngeldigPostNummer,
+					FoutNummer = FoutNummer.OngeldigPostNummer,
 					Bericht = String.Format(
 						Properties.Resources.OngeldigPostNummer,
 						straatNaam,
@@ -126,7 +126,7 @@ namespace Chiro.Gap.Workers
 			{
 				problemen.Add("WoonPlaatsNaam", new FoutBericht
 				{
-					FoutNummer = FoutNummers.WoonPlaatsOntbreekt,
+					FoutNummer = FoutNummer.WoonPlaatsOntbreekt,
 					Bericht = String.Format(
 						Properties.Resources.WoonPlaatsOntbreekt,
 						straatNaam,
@@ -167,7 +167,7 @@ namespace Chiro.Gap.Workers
 
 					problemen.Add("StraatNaamNaam", new FoutBericht
 					{
-						FoutNummer = FoutNummers.StraatNietGevonden,
+						FoutNummer = FoutNummer.StraatNietGevonden,
 						Bericht = String.Format(
 							Properties.Resources.StraatNietGevonden,
 							straatNaam,
@@ -191,7 +191,7 @@ namespace Chiro.Gap.Workers
 
 					problemen.Add("WoonPlaatsNaam", new FoutBericht
 					{
-						FoutNummer = FoutNummers.WoonPlaatsNietGevonden,
+						FoutNummer = FoutNummer.WoonPlaatsNietGevonden,
 						Bericht = Properties.Resources.GemeenteNietGevonden
 					});
 				}

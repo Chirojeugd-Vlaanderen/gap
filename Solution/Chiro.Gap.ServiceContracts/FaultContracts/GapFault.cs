@@ -4,6 +4,7 @@
 // </copyright>
 
 using System.Runtime.Serialization;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts.FaultContracts
 {
@@ -17,6 +18,6 @@ namespace Chiro.Gap.ServiceContracts.FaultContracts
 		/// De foutcode
 		/// </summary>
 		[DataMember]
-		public int FoutNummer { get; set; }
+        public FoutNummer FoutNummer { get; set; }
 	}
 }

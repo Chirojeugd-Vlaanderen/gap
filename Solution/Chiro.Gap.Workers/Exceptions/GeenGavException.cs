@@ -42,7 +42,7 @@ namespace Chiro.Gap.Workers.Exceptions
 			// Maar 1 foutnummer voor GeenGav.  Eventuele hackers moeten niet te veel details
 			// krijgen over wat er mis gelopen is.
 
-			FoutNummer = FoutNummers.GeenGav;
+			FoutNummer = Domain.FoutNummer.GeenGav;
 		}
 
 		#endregion
