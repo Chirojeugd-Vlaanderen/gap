@@ -182,7 +182,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="lidType"><c>LidType.Kind</c> of <c>LidType.Leiding</c></param>
 		/// <returns>De gevraagde lijst afdelingsinfo</returns>
 		[OperationContract]
-		IList<FunctieInfo> FunctiesOphalen(int groepsWerkJaarID, LidType lidType);
+        IEnumerable<FunctieInfo> FunctiesOphalen(int groepsWerkJaarID, LidType lidType);
 
 		/// <summary>
 		/// Zoekt naar problemen ivm de maximum- en minimumaantallen van functies voor het

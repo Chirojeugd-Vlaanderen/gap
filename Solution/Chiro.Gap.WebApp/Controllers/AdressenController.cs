@@ -114,5 +114,10 @@ namespace Chiro.Gap.WebApp.Controllers
 			// Return the result set as JSON
 			return Json(retValue);
 		}
+
+	    public override ActionResult Index(int groepID)
+	    {
+	        return RedirectToAction("Index", new {Controller = "Personen"});
+	    }
 	}
 }

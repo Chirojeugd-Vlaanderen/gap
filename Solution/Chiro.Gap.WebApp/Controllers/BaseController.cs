@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.WebApp.Models;
+using System.Runtime.InteropServices;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -25,7 +26,7 @@ namespace Chiro.Gap.WebApp.Controllers
 	[Master]
 	public abstract class BaseController : Controller
 	{
-		private IServiceHelper _serviceHelper;
+		private readonly IServiceHelper _serviceHelper;
 
 		protected IServiceHelper ServiceHelper
 		{
@@ -40,10 +41,64 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="serviceHelper">De IServiceHelper die de service calls zal uitvoeren
 		/// (dependency injection)</param>
-		public BaseController(IServiceHelper serviceHelper)
+		protected BaseController(IServiceHelper serviceHelper)
 		{
 			_serviceHelper = serviceHelper;
 		}
+
+        /// <summary>
+        /// Een standaard index pagina die door elke controller geimplementeerd moet zijn om de "terug naar vorige" te kunnen implementeren.
+        /// </summary>
+        /// <param name="groepID"></param>
+        /// <returns></returns>
+        public abstract ActionResult Index([Optional]int groepID);
+
+        /// <summary>
+        /// Methode probeert terug te keren naar de vorige (in cookie) opgeslagen lijst. Als dit niet lukt gaat hij naar de indexpagina van de controller terug.
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult TerugNaarVorigeLijst()
+        {
+            ActionResult r;
+
+            string url = ClientState.VorigeLijst;
+            if (url == null)
+            {
+// ReSharper disable Asp.NotResolved
+                r = RedirectToAction("Index");
+// ReSharper restore Asp.NotResolved
+            }
+            else
+            {
+                r = Redirect(url);
+            }
+
+            return r;
+        }
+
+        /// <summary>
+        /// Methode probeert terug te keren naar de vorige (in cookie) opgeslagen fiche. In tweede instantie probeert hij de vorige lijst, 
+        /// in laatste instantie gaat hij naar de indexpagina van de controller terug.
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult TerugNaarVorigeFiche()
+        {
+            ActionResult r;
+
+            string url = ClientState.VorigeFiche ?? ClientState.VorigeLijst;
+            if (url == null)
+            {
+                // ReSharper disable Asp.NotResolved
+                r = RedirectToAction("Index");
+                // ReSharper restore Asp.NotResolved   
+            }
+            else
+            {
+                r = Redirect(url);
+            }
+
+            return r;
+        }
 
 		/// <summary>
 		/// Vult de groepsgegevens in in de base view.
@@ -64,7 +119,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
-				string cacheKey = "GI" + groepID.ToString();
+			    string cacheKey = "GI" + groepID;
 
 				var c = System.Web.HttpContext.Current.Cache;
 

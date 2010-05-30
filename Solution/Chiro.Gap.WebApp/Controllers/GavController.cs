@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
+using System.Runtime.InteropServices;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -16,24 +17,12 @@ namespace Chiro.Gap.WebApp.Controllers
 	{
 		public GavController(IServiceHelper serviceHelper) : base(serviceHelper) { }
 
-		/// <summary>
-		/// Methode probeert terug te keren naar de vorige (in cookie) opgeslagen pagina. Als dit niet lukt gaat hij naar de indexpagina van de controller terug.
-		/// </summary>
-		/// <returns></returns>
-		public ActionResult TerugNaarVorige()
-		{
-			string url = ClientState.VorigePagina;
-			if (url == null)
-			{
-				return RedirectToAction("Index");
-			}
-			return Redirect(url);
-		}
-
 		//
 		// GET: /Gav/
-		public ActionResult Index()
+        public override ActionResult Index([DefaultParameterValue(0)]int dummyint)
 		{
+		    ActionResult r;
+
 			// Als de gebruiker GAV is van 1 groep, dan wordt er doorgeschakeld naar de
 			// personenlijst van deze groep.  Zo niet krijgt de gebruiker de keuze
 
@@ -43,8 +32,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (groepInfos.Count() == 1)
 			{
 				// Redirect naar personenlijst van gevraagde groep;
-
-				return RedirectToAction("List", new { Controller = "Personen", groepID = groepInfos.First().ID, page = 1 });
+				r = RedirectToAction("List", new { Controller = "Personen", groepID = groepInfos.First().ID, page = 1 });
 			}
 			else
 			{
@@ -55,8 +43,10 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.GroepenLijst = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
 					(g => g.MijnGroepenOphalen());
 
-				return View("Index", model);
+				r = View("Index", model);
 			}
+
+		    return r;
 		}
 	}
 }

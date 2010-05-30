@@ -16,19 +16,12 @@ using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
-	/// <summary>
-	/// 
-	/// </summary>
 	public class AfdelingenController : BaseController
 	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="serviceHelper"></param>
 		public AfdelingenController(IServiceHelper serviceHelper) : base(serviceHelper) { }
 
 		// GET: /Afdeling/
-		public ActionResult Index(int groepID)
+		public override ActionResult Index(int groepID)
 		{
 			// Recentste groepswerkjaar ophalen, en leden tonen.
 			return List(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), groepID);

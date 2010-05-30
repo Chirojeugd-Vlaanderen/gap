@@ -109,5 +109,5 @@
      
      <%} %>
     
-      <% Html.RenderPartial("TerugNaarLijstLinkControl"); %>
+      <% Html.RenderPartial("TerugNaarFicheLinkControl"); %>
 </asp:Content>

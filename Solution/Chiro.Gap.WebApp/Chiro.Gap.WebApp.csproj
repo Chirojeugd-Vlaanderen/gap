@@ -280,6 +280,7 @@
     <Content Include="Views\Groep\Index.aspx" />
     <Content Include="Views\Leden\EditLidGegevens.aspx" />
     <Content Include="Views\Personen\EditRest.aspx" />
+    <Content Include="Views\Shared\TerugNaarFicheLinkControl.ascx" />
     <Content Include="Views\Shared\LedenLinkControl.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\Date.ascx" />
     <Content Include="Views\Shared\PersonenLinksControl.ascx" />

@@ -28,7 +28,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepID">ID van de gewenste groep</param>
 		/// <returns>View met algemene gegevens over de groep</returns>
 		[AcceptVerbs(HttpVerbs.Get)]
-		public ActionResult Index(int groepID)
+		public override ActionResult Index(int groepID)
 		{
 			var model = new GroepsInstellingenModel
 			{

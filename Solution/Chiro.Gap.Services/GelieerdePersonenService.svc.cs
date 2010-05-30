@@ -114,7 +114,7 @@ namespace Chiro.Gap.Services
 		/// en de Chiroleeftijd.</remarks>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public PersoonIDs Aanmaken(PersoonInfo info, int groepID)
+		public IDPersEnGP Aanmaken(PersoonInfo info, int groepID)
 		{
 			return GeforceerdAanmaken(info, groepID, false);
 		}
@@ -135,7 +135,7 @@ namespace Chiro.Gap.Services
 		/// en de Chiroleeftijd.</remarks>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public PersoonIDs GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer)
+		public IDPersEnGP GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer)
 		{
 			// Indien 'forceer' niet gezet is, moet een FaultException opgeworpen worden
 			// als de  nieuwe persoon te hard lijkt op een bestaande Gelieerde Persoon.
@@ -183,7 +183,7 @@ namespace Chiro.Gap.Services
 
 			GelieerdePersoon gelieerd = _gpMgr.Koppelen(nieuwePersoon, g, info.ChiroLeefTijd);
 			gelieerd = _gpMgr.Bewaren(gelieerd);
-			return new PersoonIDs {GelieerdePersoonID = gelieerd.ID, PersoonID = gelieerd.Persoon.ID};
+			return new IDPersEnGP {GelieerdePersoonID = gelieerd.ID, PersoonID = gelieerd.Persoon.ID};
 		}
 
 		/// <summary>

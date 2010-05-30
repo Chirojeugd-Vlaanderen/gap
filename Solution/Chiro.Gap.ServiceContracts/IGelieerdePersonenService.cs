@@ -89,7 +89,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <returns>ID's van de bewaarde persoon en gelieerde persoon</returns>
 		[OperationContract]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonDetail>))]
-		PersoonIDs Aanmaken(PersoonInfo info, int groepID);
+		IDPersEnGP Aanmaken(PersoonInfo info, int groepID);
 
 		/// <summary>
 		/// Maakt een nieuwe persoon aan, en koppelt die als gelieerde persoon aan de groep met gegeven
@@ -107,7 +107,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// 190), maar dat mag blijkbaar niet bij services.</remarks>
 		[OperationContract]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonDetail>))]
-		PersoonIDs GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer);
+		IDPersEnGP GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer);
 
 		/// <summary>
 		/// Haalt PersoonID op van een gelieerde persoon

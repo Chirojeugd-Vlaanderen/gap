@@ -27,7 +27,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="groepID">ID van de gewenste groep</param>
 		/// <returns>View met categorieën van de groep</returns>
-		public ActionResult Index(int groepID)
+		public override ActionResult Index(int groepID)
 		{
 			var model = new GroepsInstellingenModel
 			{

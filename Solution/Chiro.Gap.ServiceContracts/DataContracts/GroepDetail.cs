@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.ServiceContracts
 {

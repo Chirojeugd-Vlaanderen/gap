@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -68,7 +68,7 @@
     <Compile Include="DataContracts\GroepDetail.cs" />
     <Compile Include="DataContracts\LidAfdelingInfo.cs" />
     <Compile Include="DataContracts\OfficieleAfdelingDetail.cs" />
-    <Compile Include="DataContracts\PersoonIDs.cs" />
+    <Compile Include="DataContracts\IDPersEnGP.cs" />
     <Compile Include="DataContracts\PersoonInfo.cs" />
     <Compile Include="DataContracts\PersoonLidInfo.cs" />
     <Compile Include="DataContracts\FunctieInfo.cs" />

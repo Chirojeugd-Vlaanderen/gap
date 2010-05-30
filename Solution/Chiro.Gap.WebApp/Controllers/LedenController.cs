@@ -20,23 +20,9 @@ namespace Chiro.Gap.WebApp.Controllers
 	{
 		public LedenController(IServiceHelper serviceHelper) : base(serviceHelper) { }
 
-		/// <summary>
-		/// Methode probeert terug te keren naar de vorige (in cookie) opgeslagen pagina. Als dit niet lukt gaat hij naar de indexpagina van de controller terug.
-		/// </summary>
-		/// <returns></returns>
-		public ActionResult TerugNaarVorige()
-		{
-			string url = ClientState.VorigePagina;
-			if (url == null)
-			{
-				return RedirectToAction("Index");
-			}
-			return Redirect(url);
-		}
-
 		//
 		// GET: /Leden/
-		public ActionResult Index(int groepID)
+		public override ActionResult Index(int groepID)
 		{
 			// Recentste groepswerkjaar ophalen, en leden tonen.
 			return List(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), 0, groepID);
@@ -55,7 +41,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>De view 'Index' met de ledenlijst</returns>
 		public ActionResult List(int id, int afdID, int groepID)
 		{
-			ClientState.VorigePagina = Request.Url.ToString();
+			ClientState.VorigeLijst = Request.Url.ToString();
 			/*ClientState.LaatsteLijst = "Leden";
 			ClientState.LaatsteAfdelingID = afdID;
 			ClientState.LaatsteActie = "List";
@@ -162,7 +148,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			ServiceHelper.CallService<ILedenService>(l => l.NonActiefMaken(id));
 			TempData["feedback"] = "Lid is op non-actief gezet.";
 
-			return TerugNaarVorige();
+			return TerugNaarVorigeLijst();
 		}
 
 		// id = lidid
@@ -172,7 +158,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			ServiceHelper.CallService<ILedenService>(l => l.ActiefMaken(id));
 			TempData["feedback"] = "Lid is weer geactiveerd.";
 
-			return TerugNaarVorige();
+			return TerugNaarVorigeLijst();
 		}
 
 		/// <summary>
@@ -207,7 +193,7 @@ namespace Chiro.Gap.WebApp.Controllers
 						groepID = groepID
 					}));
 
-				return TerugNaarVorige();
+				return TerugNaarVorigeLijst();
 			}
 			else
 			{
@@ -228,9 +214,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(
 				svc => svc.AfdelingenVervangen(lidID, model.Info.AfdelingsJaarIDs));
-			return RedirectToAction(
-				"EditRest",
-				new { Controller = "Personen", id = gelieerdePersoonID });
+		    return TerugNaarVorigeFiche();
 		}
 
 		/// <summary>
@@ -314,7 +298,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="model">Te bewerken model</param>
 		public void FunctiesOphalen(LedenModel model)
 		{
-			model.AlleFuncties = ServiceHelper.CallService<IGroepenService, IList<FunctieInfo>>
+			model.AlleFuncties = ServiceHelper.CallService<IGroepenService, IEnumerable<FunctieInfo>>
 				(svc => svc.FunctiesOphalen(
 					model.HuidigLid.LidInfo.GroepsWerkJaarID,
 					model.HuidigLid.LidInfo.Type));

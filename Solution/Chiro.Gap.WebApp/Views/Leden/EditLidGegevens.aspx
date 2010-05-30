@@ -69,5 +69,5 @@
     
     <%} %>
     
-    <%=Html.ActionLink("Terug naar persoonsgegevens", "EditRest", new { Controller = "Personen", id = Model.HuidigLid.PersoonDetail.GelieerdePersoonID})%>
+    <% Html.RenderPartial("TerugNaarFicheLinkControl"); %>
 </asp:Content>

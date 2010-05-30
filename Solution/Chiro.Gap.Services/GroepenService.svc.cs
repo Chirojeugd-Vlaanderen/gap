@@ -451,10 +451,10 @@ namespace Chiro.Gap.Services
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar van de gevraagde functies</param>
 		/// <param name="lidType"><c>LidType.Kind</c> of <c>LidType.Leiding</c></param>
 		/// <returns>De gevraagde lijst afdelingsinfo</returns>
-		public IList<FunctieInfo> FunctiesOphalen(int groepsWerkJaarID, LidType lidType)
+        public IEnumerable<FunctieInfo> FunctiesOphalen(int groepsWerkJaarID, LidType lidType)
 		{
-			IList<Functie> relevanteFuncties = _functiesMgr.OphalenRelevant(groepsWerkJaarID, lidType);
-			return Mapper.Map<IList<Functie>, IList<FunctieInfo>>(relevanteFuncties);
+			var relevanteFuncties = _functiesMgr.OphalenRelevant(groepsWerkJaarID, lidType);
+		    return Mapper.Map<IList<Functie>, IList<FunctieInfo>>(relevanteFuncties);
 		}
 
 		/// <summary>
