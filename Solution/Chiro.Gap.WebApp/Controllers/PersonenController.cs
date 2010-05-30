@@ -178,29 +178,50 @@ namespace Chiro.Gap.WebApp.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult ToepassenOpSelectie(PersoonInfoModel model, int groepID)
 		{
-			if (model.GekozenActie == 1 && model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0)
-			{
-				try
-				{
-					ServiceHelper.CallService<ILedenService, IEnumerable<int>>(g => g.LedenMakenEnBewaren(model.GekozenGelieerdePersoonIDs));
-					TempData["feedback"] = Properties.Resources.LedenGemaaktFeedback;
-				}
-				catch (Exception ex)
-				{
-					TempData["feedback"] = string.Concat(Properties.Resources.LedenMakenMisluktFout, Environment.NewLine, ex.Message);
-				}
+            if(model.GekozenGelieerdePersoonIDs == null || model.GekozenGelieerdePersoonIDs.Count == 0)
+            {
+                TempData["feedback"] = Properties.Resources.NiemandGeselecteerdFout;
 				return TerugNaarVorigeLijst();
-			}
-			else if (model.GekozenActie == 2 && model.GekozenGelieerdePersoonIDs != null && model.GekozenGelieerdePersoonIDs.Count > 0)
-			{
-				TempData.Add("list", model.GekozenGelieerdePersoonIDs);
-				return RedirectToAction("ToevoegenAanCategorieLijst");
-			}
-			else
-			{
-				TempData["feedback"] = Properties.Resources.NiemandGeselecteerdFout;
-				return TerugNaarVorigeLijst();
-			}
+            }
+
+		    ActionResult r;
+            switch(model.GekozenActie)
+            {
+                case 1:
+                    try
+				    {
+					    ServiceHelper.CallService<ILedenService, IEnumerable<int>>(g => g.LedenMakenEnBewaren(model.GekozenGelieerdePersoonIDs));
+					    TempData["feedback"] = Properties.Resources.LedenGemaaktFeedback;
+				    }
+				    catch (Exception ex)
+				    {
+					    TempData["feedback"] = string.Concat(Properties.Resources.LedenMakenMisluktFout, Environment.NewLine, ex.Message);
+				    }
+				    r = TerugNaarVorigeLijst();
+                    break;
+                case 2:
+                    try
+                    {
+                        ServiceHelper.CallService<ILedenService, IEnumerable<int>>(g => g.LeidingMakenEnBewaren(model.GekozenGelieerdePersoonIDs));
+                        TempData["feedback"] = Properties.Resources.LeidingGemaaktFeedback;
+                    }
+                    catch (Exception ex)
+                    {
+                        TempData["feedback"] = string.Concat(Properties.Resources.LeidingMakenMisluktFout, Environment.NewLine, ex.Message);
+                    }
+                    r = TerugNaarVorigeLijst();
+                    break;
+                case 3:
+                    TempData.Add("list", model.GekozenGelieerdePersoonIDs);
+				    r = RedirectToAction("ToevoegenAanCategorieLijst");
+                    break;
+                default:
+                    TempData["feedback"] = Properties.Resources.OnbestaandeActieFeedback;
+                    r = TerugNaarVorigeLijst();
+                    break;
+            }
+
+		    return r;
 		}
 
 		#region personen
@@ -509,7 +530,7 @@ namespace Chiro.Gap.WebApp.Controllers
 							  select new CheckBoxListInfo(
 								p.PersoonID.ToString(),
 								p.PersoonVolledigeNaam,
-								model.PersoonIDs.Contains(p.PersoonID))).ToArray<CheckBoxListInfo>();
+								model.PersoonIDs.Contains(p.PersoonID))).ToArray();
 
 			model.Titel = "Personen Verhuizen";
 			return View("AdresBewerken", model);

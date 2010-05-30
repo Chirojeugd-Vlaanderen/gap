@@ -34,7 +34,8 @@ Pagina's <%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.Aantal
 <select id="GekozenActie" name="GekozenActie">
 <option value="0">kies een actie</option>
 <option value="1">Lid maken</option>
-<option value="2">In dezelfde categorie stoppen</option>
+<option value="2">Leiding maken</option>
+<option value="3">In dezelfde categorie stoppen</option>
 </select>
 <input id="kiesActie" type="submit" value="Uitvoeren"/>
 </div>

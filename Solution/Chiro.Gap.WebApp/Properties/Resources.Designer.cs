@@ -223,6 +223,24 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to De personen zijn nu ingeschreven als leiding van je groep..
+        /// </summary>
+        public static string LeidingGemaaktFeedback {
+            get {
+                return ResourceManager.GetString("LeidingGemaaktFeedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Er is iets foutgelopen, niet alle personen konden worden ingeschreven als leiding in je groep..
+        /// </summary>
+        public static string LeidingMakenMisluktFout {
+            get {
+                return ResourceManager.GetString("LeidingMakenMisluktFout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to lidgegevens.
         /// </summary>
         public static string LidGegevens {
@@ -273,6 +291,15 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string NieuwePersoonTitel {
             get {
                 return ResourceManager.GetString("NieuwePersoonTitel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Er bestaat zo geen actie om uit te voeren op een selectie personen..
+        /// </summary>
+        public static string OnbestaandeActieFeedback {
+            get {
+                return ResourceManager.GetString("OnbestaandeActieFeedback", resourceCulture);
             }
         }
         
