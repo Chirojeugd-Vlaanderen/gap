@@ -148,7 +148,7 @@
     <value>Je bent geen GAV.</value>
   </data>
   <data name="PersoonAangemaaktAls" xml:space="preserve">
-    <value>Aangemaakt met GelieerdePersoonID {0}.</value>
+    <value>Aangemaakt met PersoonID {0}, GelieerdePersoonID {1}.</value>
   </data>
   <data name="LijktTeHardOp" xml:space="preserve">
     <value>OEPS: {0} {1} lijkt te hard op {2} {3}.</value>
@@ -159,22 +159,22 @@
   <data name="OnbekendAdres" xml:space="preserve">
     <value>--&gt; Ongeldig adres genegeerd.</value>
   </data>
-	<data name="UitpakkenVan">
-		<value><![CDATA[Uitpakken van '{0}']]></value>
-	</data>
-	<data name="VolledigVerwijderen">
-		<value xml:space="preserve">Groep wordt volledig verwijderd.</value>
-	</data>
-	<data name="GroepOpnieuwAanmaken">
-		<value xml:space="preserve">Opnieuw aanmaken groep met standaardafdelingsverdeling.</value>
-	</data>
-	<data name="RechtenToekennen">
-		<value xml:space="preserve">Rechten toekennen voor {0}.</value>
-	</data>
-	<data name="CommunicatieVormFoutFormaat">
-		<value><![CDATA[---> Fout formaat; Communicatievorm genegeerd]]></value>
-	</data>
-	<data name="TimeOut">
-		<value xml:space="preserve">*************************** TIMEOUT *******************************</value>
-	</data>
+  <data name="UitpakkenVan" xml:space="preserve">
+    <value>Uitpakken van '{0}'</value>
+  </data>
+  <data name="VolledigVerwijderen" xml:space="preserve">
+    <value>Groep wordt volledig verwijderd.</value>
+  </data>
+  <data name="GroepOpnieuwAanmaken" xml:space="preserve">
+    <value>Opnieuw aanmaken groep met standaardafdelingsverdeling.</value>
+  </data>
+  <data name="RechtenToekennen" xml:space="preserve">
+    <value>Rechten toekennen voor {0}.</value>
+  </data>
+  <data name="CommunicatieVormFoutFormaat" xml:space="preserve">
+    <value>---&gt; Fout formaat; Communicatievorm genegeerd</value>
+  </data>
+  <data name="TimeOut" xml:space="preserve">
+    <value>*************************** TIMEOUT *******************************</value>
+  </data>
 </root>

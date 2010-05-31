@@ -134,7 +134,7 @@ namespace Chiro.Gap.InitieleImport
 			}
 			catch (FaultException<GapFault> ex)
 			{
-				if (ex.Detail.FoutNummer == FoutNummers.GeenGav)
+				if (ex.Detail.FoutNummer == FoutNummer.GeenGav)
 				{
 					Console.WriteLine(Resources.GeenGav);
 				}
@@ -150,29 +150,31 @@ namespace Chiro.Gap.InitieleImport
 
 			foreach (var p in personen)
 			{
-				int persoonID;
+				IDPersEnGP ids;
 
 				ToonPersoonDetail(p.PersoonDetail);
 
 				try
 				{
-					persoonID = _serviceHelper.CallService<IGelieerdePersonenService, PersoonIDs>(svc => svc.Aanmaken(p.PersoonDetail, dbGroep.ID)).PersoonID;
-					Console.WriteLine(Resources.PersoonAangemaaktAls, persoonID);
+					ids = _serviceHelper.CallService<IGelieerdePersonenService, IDPersEnGP>(svc => svc.Aanmaken(p.PersoonDetail, dbGroep.ID));
+					Console.WriteLine(Resources.PersoonAangemaaktAls, ids.PersoonID, ids.GelieerdePersoonID);
 				}
 				catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> ex)
 				{
-					persoonID = _serviceHelper.CallService<IGelieerdePersonenService, PersoonIDs>(svc => svc.GeforceerdAanmaken(p.PersoonDetail, dbGroep.ID, true)).PersoonID;
-					p.PersoonDetail.GelieerdePersoonID = persoonID;
+					ids = _serviceHelper.CallService<IGelieerdePersonenService, IDPersEnGP>(svc => svc.GeforceerdAanmaken(p.PersoonDetail, dbGroep.ID, true));
+					p.PersoonDetail.GelieerdePersoonID = ids.GelieerdePersoonID;
 
 					mogelijkeDubbels.Add(new MogelijkDubbel { Bestaand = ex.Detail.Objecten.First(), Nieuw = p.PersoonDetail });
+
+					Console.WriteLine(Resources.PersoonAangemaaktAls, ids.PersoonID, ids.GelieerdePersoonID);
 				}
 				catch (TimeoutException)
 				{
 					Console.WriteLine(Resources.TimeOut);
-					persoonID = 0;
+					ids = null;
 				}
 
-				if (persoonID != 0)
+				if (ids != null)
 				{
 					foreach (var pa in p.PersoonsAdresInfo)
 					{
@@ -187,12 +189,12 @@ namespace Chiro.Gap.InitieleImport
 						try
 						{
 							_serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.AdresToevoegenPersonen(
-								new List<int> { persoonID },
+								new List<int> { ids.GelieerdePersoonID },
 								pa,
 								false));
 
 						}
-						catch (Exception)
+						catch (FaultException<OngeldigObjectFault>)
 						{
 							Console.WriteLine(Resources.OnbekendAdres);
 						}
@@ -209,16 +211,19 @@ namespace Chiro.Gap.InitieleImport
 						try
 						{
 							_serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.CommunicatieVormToevoegen(
-								persoonID,
+								ids.GelieerdePersoonID,
 								ci));
 						}
-						catch (Exception)
+						catch (FaultException<GapFault>)
 						{
 							// TODO: Uitzoeken waarom het catchen van FaultException<GapFault> hier niet werkt.
 
 							Console.WriteLine(Resources.CommunicatieVormFoutFormaat);
 						}
-
+						catch (TimeoutException)
+						{
+							Console.WriteLine(Resources.TimeOut);
+						}
 
 					}
 				}

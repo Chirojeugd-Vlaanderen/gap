@@ -151,7 +151,7 @@ namespace Chiro.Gap.InitieleImport.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aangemaakt met GelieerdePersoonID {0}..
+        ///   Looks up a localized string similar to Aangemaakt met PersoonID {0}, GelieerdePersoonID {1}..
         /// </summary>
         internal static string PersoonAangemaaktAls {
             get {
