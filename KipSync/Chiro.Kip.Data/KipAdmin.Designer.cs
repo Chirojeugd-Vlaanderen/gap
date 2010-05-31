@@ -20,7 +20,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "fk_Lid_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.Groep), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.Lid))]
 
 // Original file name:
-// Generation date: 22/05/2010 16:41:09
+// Generation date: 23/05/2010 16:06:06
 namespace Chiro.Kip.Data
 {
     
@@ -1154,15 +1154,17 @@ namespace Chiro.Kip.Data
         /// Create a new Persoon object.
         /// </summary>
         /// <param name="adNr">Initial value of AdNr.</param>
+        /// <param name="geslacht">Initial value of Geslacht.</param>
         /// <param name="burgerlijkeStandId">Initial value of BurgerlijkeStandId.</param>
         /// <param name="overleden">Initial value of Overleden.</param>
         /// <param name="klantBoekhouding">Initial value of KlantBoekhouding.</param>
         /// <param name="gegevensBoekhoudingOvergezet">Initial value of GegevensBoekhoudingOvergezet.</param>
         /// <param name="stempel">Initial value of Stempel.</param>
-        public static Persoon CreatePersoon(int adNr, int burgerlijkeStandId, bool overleden, bool klantBoekhouding, bool gegevensBoekhoudingOvergezet, global::System.DateTime stempel)
+        public static Persoon CreatePersoon(int adNr, int geslacht, int burgerlijkeStandId, bool overleden, bool klantBoekhouding, bool gegevensBoekhoudingOvergezet, global::System.DateTime stempel)
         {
             Persoon persoon = new Persoon();
             persoon.AdNr = adNr;
+            persoon.Geslacht = geslacht;
             persoon.BurgerlijkeStandId = burgerlijkeStandId;
             persoon.Overleden = overleden;
             persoon.KlantBoekhouding = klantBoekhouding;
@@ -1265,9 +1267,9 @@ namespace Chiro.Kip.Data
         /// <summary>
         /// There are no comments for Property Geslacht in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Nullable<int> Geslacht
+        public int Geslacht
         {
             get
             {
@@ -1282,8 +1284,8 @@ namespace Chiro.Kip.Data
                 this.OnGeslachtChanged();
             }
         }
-        private global::System.Nullable<int> _Geslacht;
-        partial void OnGeslachtChanging(global::System.Nullable<int> value);
+        private int _Geslacht;
+        partial void OnGeslachtChanging(int value);
         partial void OnGeslachtChanged();
         /// <summary>
         /// There are no comments for Property Nationaliteit in the schema.

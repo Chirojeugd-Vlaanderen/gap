@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,11 +32,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=0.4.0.126, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Solution\References\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -63,10 +71,6 @@
       <Project>{6E07BADE-3705-44AB-A77A-41189D14806F}</Project>
       <Name>Chiro.Kip.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chiro.Kip.Workers\Chiro.Kip.Workers.csproj">
-      <Project>{396C728D-D35F-4612-A55F-5D78DA54F5D1}</Project>
-      <Name>Chiro.Kip.Workers</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -80,7 +84,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{3D9AD99F-2412-4246-B90B-4EAA41C64699}">
         <WcfProjectProperties>
-          <AutoStart>True</AutoStart>
+          <AutoStart>False</AutoStart>
         </WcfProjectProperties>
       </FlavorProperties>
     </VisualStudio>

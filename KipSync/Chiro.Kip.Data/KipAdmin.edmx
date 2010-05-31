@@ -439,7 +439,7 @@
           <Property Name="Naam" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
           <Property Name="VoorNaam" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
           <Property Name="GeboorteDatum" Type="DateTime" />
-          <Property Name="Geslacht" Type="Int32" />
+          <Property Name="Geslacht" Type="Int32" Nullable="false" />
           <Property Name="Nationaliteit" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
           <Property Name="BurgerlijkeStandId" Type="Int32" Nullable="false" />
           <Property Name="RekeningNr" Type="String" MaxLength="14" Unicode="false" FixedLength="false" />
