@@ -34,5 +34,17 @@ namespace Chiro.Gap.InitieleImport.Properties {
                 this["UitPakDir"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool VermijdDubbels {
+            get {
+                return ((bool)(this["VermijdDubbels"]));
+            }
+            set {
+                this["VermijdDubbels"] = value;
+            }
+        }
     }
 }

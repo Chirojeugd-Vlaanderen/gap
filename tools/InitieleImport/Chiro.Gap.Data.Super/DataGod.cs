@@ -55,6 +55,25 @@ namespace Chiro.Gap.Data.Super
 		}
 
 		/// <summary>
+		/// Zet de huidige leden uit Kipadmin over naar gelieerde personen in GAP.  Adressen komen mee in de 
+		/// mate van het mogelijke, communicatie in het geheel niet.
+		/// </summary>
+		/// <param name="stamNr">Stamnummer van de groep met over te zetten personen</param>
+		public void GroepsPersonenUitKipadmin(string stamNr)
+		{
+			using (var conn = new SqlConnection(ConnectionString))
+			{
+				conn.Open();
+
+				var cmd = new SqlCommand("data.spGroepsPersonenUitKipadmin", conn);
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new SqlParameter("@stamnr", stamNr));
+
+				cmd.ExecuteNonQuery();
+			}
+		}
+
+		/// <summary>
 		/// Geef gebruker met login <paramref name="userName"/> GAV-rechten op groep met gegeven <paramref name="stamNr"/>.
 		/// </summary>
 		/// <param name="stamNr">stamnummer van groep</param>

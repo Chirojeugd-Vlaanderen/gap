@@ -92,11 +92,16 @@ namespace Chiro.Gap.InitieleImport
 				god.RechtenToekennen(args[0], userName);
 				#endregion
 
+				// Eerst importeren uit paradox, omdat de import uit paradox
+				// bijv. geen telefoonnummers updatet als er al een persoon gevonden is.
 
-				// Import uit Paradox
 				ImporterenUitPdox(dataDir);
 
-				// Aanvullen uit Kipadmin
+				// Aanvullen uit kipadmin.
+
+				god.GroepsPersonenUitKipadmin(args[0]);
+
+
 
 				// Kan directory blijkbaar niet verwijderen, omdat dit proces zelf de directory gebruikt :-/
 				//Directory.Delete(destdir, true);
@@ -146,11 +151,12 @@ namespace Chiro.Gap.InitieleImport
 			#endregion
 
 			#region Personen overzetten
+
 			var personen = lezer.PersonenOphalen();
 
 			foreach (var p in personen)
 			{
-				IDPersEnGP ids;
+				IDPersEnGP ids = null;
 
 				ToonPersoonDetail(p.PersoonDetail);
 
@@ -161,12 +167,17 @@ namespace Chiro.Gap.InitieleImport
 				}
 				catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> ex)
 				{
-					ids = _serviceHelper.CallService<IGelieerdePersonenService, IDPersEnGP>(svc => svc.GeforceerdAanmaken(p.PersoonDetail, dbGroep.ID, true));
-					p.PersoonDetail.GelieerdePersoonID = ids.GelieerdePersoonID;
+					if (!Settings.Default.VermijdDubbels)
+					{
+						ids =
+							_serviceHelper.CallService<IGelieerdePersonenService, IDPersEnGP>(
+								svc => svc.GeforceerdAanmaken(p.PersoonDetail, dbGroep.ID, true));
+						p.PersoonDetail.GelieerdePersoonID = ids.GelieerdePersoonID;
 
-					mogelijkeDubbels.Add(new MogelijkDubbel { Bestaand = ex.Detail.Objecten.First(), Nieuw = p.PersoonDetail });
+						mogelijkeDubbels.Add(new MogelijkDubbel {Bestaand = ex.Detail.Objecten.First(), Nieuw = p.PersoonDetail});
 
-					Console.WriteLine(Resources.PersoonAangemaaktAls, ids.PersoonID, ids.GelieerdePersoonID);
+						Console.WriteLine(Resources.PersoonAangemaaktAls, ids.PersoonID, ids.GelieerdePersoonID);
+					}
 				}
 				catch (TimeoutException)
 				{
@@ -216,8 +227,6 @@ namespace Chiro.Gap.InitieleImport
 						}
 						catch (FaultException<GapFault>)
 						{
-							// TODO: Uitzoeken waarom het catchen van FaultException<GapFault> hier niet werkt.
-
 							Console.WriteLine(Resources.CommunicatieVormFoutFormaat);
 						}
 						catch (TimeoutException)
