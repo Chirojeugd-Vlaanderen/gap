@@ -116,7 +116,7 @@ CREATE TABLE #Adres(
 
 INSERT INTO #Adres 
 	SELECT distinct NULL AS Bus, 
-					CASE kipadmin.dbo.EnkelCijfers(ka.Nr) COLLATE SQL_Latin1_General_CP1_CI_AI WHEN '' THEN NULL ELSE CAST(core.ufnEnkelCijfers(ka.Nr) AS INT) END AS HuisNr,
+					CASE core.ufnEnkelCijfers(ka.Nr) COLLATE SQL_Latin1_General_CP1_CI_AI WHEN '' THEN NULL ELSE CAST(core.ufnEnkelCijfers(ka.Nr) AS INT) END AS HuisNr,
 					NULL AS PostCode, 
 					s.StraatNaamID, 
 					sg.WoonPlaatsID 
@@ -202,7 +202,7 @@ INSERT INTO #PersoonsAdres(Opmerking, PersoonId, AdresId, AdresTypeId)
 			JOIN adr.Adres a 
 				ON a.StraatNaamID = s.StraatNaamID 
 					AND a.WoonPlaatsID = sg.WoonPlaatsID 
-					AND CAST(kipadmin.dbo.EnkelCijfers(ka.Nr) AS INT) = a.HuisNr
+					AND CAST(core.ufnEnkelCijfers(ka.Nr) AS INT) = a.HuisNr
 			JOIN pers.GelieerdePersoon gp 
 				ON p.PersoonID = gp.PersoonID
 			JOIN kipAdmin.dbo.kipAdresType kat
