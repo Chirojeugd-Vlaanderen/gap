@@ -19,6 +19,8 @@ DELETE FROM lid.Afdeling WHERE GroepID = @groepID
 
 DELETE FROM auth.GebruikersRecht WHERE GroepID = @groepID
 
+DELETE FROM lid.Functie WHERE GroepID = @groepID
+
 DELETE FROM grp.Groep WHERE GroepID = @groepID
 
 
