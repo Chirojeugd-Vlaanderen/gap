@@ -96,7 +96,10 @@ namespace Chiro.Gap.Data.Test
 
 				LedenManager lm = Factory.Maak<LedenManager>();
 
-				GelieerdePersoon gp = gpdao.Ophalen(gelieerdePersoon2ID, lmb => lmb.Groep);
+				GelieerdePersoon gp = gpdao.Ophalen(
+					gelieerdePersoon2ID, 
+					lmb => lmb.Groep,
+					lmb => lmb.Persoon);
 
 				// GelieerdePersoon2 moet Kind gemaakt worden, want in de test KindVerwijderen
 				// zal geprobeerd worden op GelieerdePersoon2 te 'ontkinden'.  Zie #184.

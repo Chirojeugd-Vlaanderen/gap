@@ -130,4 +130,13 @@
   <data name="FouteCommunicatieVormVoorPersoonString" xml:space="preserve">
     <value>De communicatievorm behoort niet toe aan de geselecteerde persoon.</value>
   </data>
+  <data name="OngeldigLidType" xml:space="preserve">
+    <value>Ongeldig lidtype.</value>
+  </data>
+  <data name="WasAlLeiding" xml:space="preserve">
+    <value>{0} was al leiding.</value>
+  </data>
+  <data name="WasAlLid" xml:space="preserve">
+    <value>{0} was al lid.</value>
+  </data>
 </root>

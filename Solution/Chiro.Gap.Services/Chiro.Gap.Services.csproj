@@ -39,10 +39,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.Entity">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Runtime.Serialization">
@@ -100,6 +97,10 @@
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Chiro.Adf\Chiro.Adf.csproj">
+      <Project>{BAAC24EC-57C1-4108-94BA-40FC0977762A}</Project>
+      <Name>Chiro.Adf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj">
       <Project>{F4145652-EF28-4F23-A11E-CD68D4AA2A05}</Project>
       <Name>Chiro.Cdf.Data.Entity</Name>

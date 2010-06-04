@@ -92,7 +92,7 @@ namespace Chiro.Gap.Workers.Test
 				target = (GapException)formatter.Deserialize(s);
 			}
 
-			Assert.AreEqual(target.FoutNummer, 11);
+			Assert.AreEqual(target.FoutNummer, FoutNummer.GeenGav);
 			Assert.AreEqual(String.Compare(target.Items.First(), "een"), 0);
 			Assert.AreEqual(String.Compare(target.Items.Last(), "twee"), 0);
 

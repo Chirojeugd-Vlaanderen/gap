@@ -566,6 +566,10 @@ namespace Chiro.Gap.Workers
 			{
 				paths.Add(gp => gp.Persoon.PersoonsAdres.First().Adres);
 			}
+			if ((extras & PersoonsExtras.Groep) != 0)
+			{
+				paths.Add(gp => gp.Groep);
+			}
 
 			return _dao.Ophalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersoonIDs), paths.ToArray());
 		}

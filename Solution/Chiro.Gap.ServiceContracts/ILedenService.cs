@@ -5,7 +5,7 @@
 
 using System.Collections.Generic;
 using System.ServiceModel;
-
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.ServiceContracts
@@ -16,25 +16,20 @@ namespace Chiro.Gap.ServiceContracts
 	public interface ILedenService
 	{
 		/// <summary>
-		/// Gaat een gelieerde persoon ophalen en maakt die lid in het huidige werkjaar. Hiervoor krijgt het
-		/// de eigenschappen die overeenkomen met zijn/haar leeftijd, maar er moet wel de juiste methode worden
-		/// aangeroepen om een kind of een leiding te maken
+		/// Gaat een gelieerde persoon ophalen en maakt die lid in het huidige werkjaar.  Als het om kindleden gaat,
+		/// krjgen ze meteen een afdeling die overeenkomt met leeftijd en geslacht.
 		/// </summary>
-		/// <param name="gelieerdePersoonIDs">ID's van de gelieerde persoon</param>
-		/// <returns>De ids van de personen die lid zijn gemaakt</returns>
-		/// <throws>OngeldigeActieException als om een of andere reden, minstens 1 van de personen geen lid gemaakt 
-		/// kan worden. In dat geval wordt geen enkele persoon lid. </throws>
-		/// <remarks>De methode is reentrant, dus zal niet klagen als er personen al lid zijn.</remarks>
+		/// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
+		/// <param name="type">Bepaalt of de personen als kind of als leiding lid worden.</param>
+		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
+		/// string waarin wat uitleg staat.  TODO: beter systeem vinden voor deze feedback.</param>
+		/// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
+		/// <remarks>
+		/// Als er met bepaalde gelieerde personen een probleem is (geen geboortedatum,...), dan worden
+		/// de personen die geen problemen vertonen *toch* lid gemaakt. 
+		/// </remarks>
 		[OperationContract]
-		[FaultContract(typeof(FaultException<string>))]
-		IEnumerable<int> LedenMakenEnBewaren(IEnumerable<int> gelieerdePersoonIDs);
-
-		/// <summary>
-		/// </summary>
-		/// <param name="gelieerdePersoonIDs"></param>
-		/// <returns></returns>
-		[OperationContract]
-		IEnumerable<int> LeidingMakenEnBewaren(IEnumerable<int> gelieerdePersoonIDs);
+		IEnumerable<int> LedenMaken(IEnumerable<int> gelieerdePersoonIDs, LidType type, out string foutBerichten);
 
 		/// <summary>
 		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. Creëert of verwijdert geen leden, en leden

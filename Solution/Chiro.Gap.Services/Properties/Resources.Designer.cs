@@ -95,5 +95,32 @@ namespace Chiro.Gap.Services.Properties {
                 return ResourceManager.GetString("FouteCommunicatieVormVoorPersoonString", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ongeldig lidtype..
+        /// </summary>
+        internal static string OngeldigLidType {
+            get {
+                return ResourceManager.GetString("OngeldigLidType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} was al leiding..
+        /// </summary>
+        internal static string WasAlLeiding {
+            get {
+                return ResourceManager.GetString("WasAlLeiding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} was al lid..
+        /// </summary>
+        internal static string WasAlLid {
+            get {
+                return ResourceManager.GetString("WasAlLid", resourceCulture);
+            }
+        }
     }
 }

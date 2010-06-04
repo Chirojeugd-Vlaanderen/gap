@@ -7,37 +7,38 @@ namespace Chiro.Gap.Domain
 {
 	public enum FoutNummer
 	{
-        AlgemeneFout,
-        GeenGav,
-        BestaatAl,
-        ValidatieFout,
+		AlgemeneFout,
+		GeenGav,
+		BestaatAl,
+		ValidatieFout,
 
-        #region adressen
-        WoonPlaatsNietGevonden,
-        StraatNietGevonden,
-        StraatOntbreekt,
-        OngeldigPostNummer,
-        WoonPlaatsOntbreekt,
-        WonenDaarAl,
-        #endregion
+		#region adressen
+		WoonPlaatsNietGevonden,
+		StraatNietGevonden,
+		StraatOntbreekt,
+		OngeldigPostNummer,
+		WoonPlaatsOntbreekt,
+		WonenDaarAl,
+		#endregion
 
-        #region verkeerde groep
-        CategorieNietVanGroep,
-        FunctieNietVanGroep,
-        AfdelingNietVanGroep,
-        #endregion
-
-
-        #region niet beschikbaar in werkjaar
-        GroepsWerkJaarNietBeschikbaar,
-        FunctieNietBeschikbaar,
-        AfdelingNietBeschikbaar,
-        #endregion
+		#region verkeerde groep
+		CategorieNietVanGroep,
+		FunctieNietVanGroep,
+		AfdelingNietVanGroep,
+		GroepsWerkJaarNietVanGroep,
+		#endregion
 
 
-        #region nog te verdelen
-        CategorieNietLeeg,
-        FunctieNietLeeg,
-        #endregion
+		#region niet beschikbaar in werkjaar
+		GroepsWerkJaarNietBeschikbaar,
+		FunctieNietBeschikbaar,
+		AfdelingNietBeschikbaar,
+		#endregion
+
+
+		#region nog te verdelen
+		CategorieNietLeeg,
+		FunctieNietLeeg,
+		#endregion
 	}
 }

@@ -9,7 +9,6 @@ using System.Linq;
 using System.ServiceModel;
 
 using AutoMapper;
-
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.ServiceContracts;

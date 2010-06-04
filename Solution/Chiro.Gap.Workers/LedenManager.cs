@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-
+using Chiro.Cdf.Data;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
@@ -40,61 +40,61 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Doet de basic aanpassingen aan het lidobject (alle andere zijn specifiek voor kind of leiding).
+		/// Maakt een gelieerde persoom <paramref name="gp"/> lid in groepswerkjaar <paramref name="gwj"/>,
+		/// met lidtype <paramref name="type"/>
 		/// </summary>
-		/// <param name="lid"></param>
-		/// <param name="gp"></param>
-		/// <param name="gwj"></param>
-		private void LidMaken(Lid lid, GelieerdePersoon gp, GroepsWerkJaar gwj)
+		/// <param name="gp">Lid te maken gelieerde persoon</param>
+		/// <param name="gwj">Groepswerkjaar waarin de gelieerde persoon lid moet worden</param>
+		/// <param name="type">LidType.Kind of LidType.Leiding</param>
+		/// <remarks>Deze method kent geen afdelingen toe.  Ze test ook niet
+		/// of het groepswerkjaar we het recentste is.  (Voor de unit tests moeten
+		/// we ook leden kunnen maken in oude groepswerkjaren.)</remarks>
+		private Lid LidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, LidType type)
 		{
+			Lid lid = null;
+
+			switch (type)
+			{
+				case LidType.Kind:
+					lid = new Kind();
+					break;
+				case LidType.Leiding:
+					lid = new Leiding();
+					break;
+				default:
+					lid = new Lid();
+					break;
+			}
+
+			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID) || !_autorisatieMgr.IsGavGroepsWerkJaar(gwj.ID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+
+			if (gp.Groep.ID != gwj.Groep.ID)
+			{
+				throw new GapException(
+					FoutNummer.GroepsWerkJaarNietVanGroep, 
+					Properties.Resources.GroepsWerkJaarNietVanGroep);
+			}
+
+			// Geboortedatum is verplicht als je lid wilt worden
+			if (gp.Persoon.GeboorteDatum == null)
+			{
+				throw new InvalidOperationException(Properties.Resources.GeboorteDatumOntbreekt);
+			}
+
+
 			// GroepsWerkJaar en GelieerdePersoon invullen
 			lid.GroepsWerkJaar = gwj;
 			lid.GelieerdePersoon = gp;
 			gp.Lid.Add(lid);
 			gwj.Lid.Add(lid);
 			lid.EindeInstapPeriode = DateTime.Today.AddDays(Properties.Settings.Default.DagenInstapPeriode);
+
+			return lid;
 		}
 
-		/// <summary>
-		/// Doet alle nodige checks om na te kijken dat de gegeven gelieerde persoon lid gemaakt kan worden in het
-		/// gegeven groepswerkjaar. In dat geval wordt er true teruggeven
-		/// </summary>
-		/// <param name="gp">De gelieerde persoon die je lid wilt maken</param>
-		/// <param name="gwj">Het groepswerkjaar waarin je die persoon lid wilt maken</param>
-		/// <param name="gpMetDetails">De gelieerde persoon aangevuld met details</param>
-		/// <returns><c>True</c> als de persoon lid kan worden</returns>
-		private bool KanLidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, out GelieerdePersoon gpMetDetails)
-		{
-			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-			if (!_autorisatieMgr.IsGavGroepsWerkJaar(gwj.ID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-
-			// De persoonsgegevens zijn nodig om de afdeling te bepalen.  Haal ze op als ze ontbreken.
-			gpMetDetails = gp;
-			if (gp.Persoon == null)
-			{
-				var gpm = Factory.Maak<GelieerdePersonenManager>();
-				gpMetDetails = gpm.DetailsOphalen(gp.ID);
-			}
-
-			// CONTROLES
-			// Lid bestaat al
-			var x = (from l in gpMetDetails.Lid
-					 where l.GroepsWerkJaar.ID == gwj.ID
-					 select l).FirstOrDefault();
-
-			if (x != null) // was dus al lid
-			{
-				throw new BestaatAlException<Lid>(x);
-			}
-
-			return true;
-		}
 
 		/// <summary>
 		/// Maakt gelieerde persoon een kind (lid) voor het recentste werkjaar
@@ -103,6 +103,8 @@ namespace Chiro.Gap.Workers
 		/// <returns>Nieuw kindobject, niet gepersisteerd</returns>
 		public Kind KindMaken(GelieerdePersoon gp)
 		{
+			Debug.Assert(gp.Persoon != null);	// nodig om geboortedatum te kunnen bepalen
+
 			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
@@ -114,7 +116,10 @@ namespace Chiro.Gap.Workers
 			}
 
 			// Door het groepswerkjaar van de persoon op te halen is de link tussen groepswerkjaar en persoon zeker in orde
-			var gwj = _daos.GroepsWerkJaarDao.RecentsteOphalen(gp.Groep.ID, grwj => grwj.AfdelingsJaar.First().Afdeling);
+			var gwj = _daos.GroepsWerkJaarDao.RecentsteOphalen(
+				gp.Groep.ID, 
+				grwj => grwj.AfdelingsJaar.First().Afdeling,
+				grwj => grwj.Groep);
 
 			return KindMaken(gp, gwj);
 		}
@@ -130,32 +135,20 @@ namespace Chiro.Gap.Workers
 		/// </remarks>
 		public Kind KindMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
 		{
-			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
+			// LidMaken doet de nodige checks ivm GAV-schap, enz.
 
-			GelieerdePersoon gpMetDetails;
-			if (!KanLidMaken(gp, gwj, out gpMetDetails))
-			{
-				throw new InvalidOperationException("De gegeven persoon kan geen lid worden in het huidige werkjaar.");
-			}
+			Kind k = LidMaken(gp, gwj, LidType.Kind) as Kind;
+			Debug.Assert(k != null);
 
-			// Er zijn afdelingen
+			// Probeer nu afdeling te vinden.
 			if (gwj.AfdelingsJaar.Count == 0)
 			{
 				throw new InvalidOperationException("Je kan geen lid maken als de groep geen afdelingen heeft in het huidige werkjaar!");
 			}
 
-			// Geboortedatum is verplicht als je lid wilt worden
-			if (gpMetDetails.Persoon.GeboorteDatum == null)
-			{
-				throw new InvalidOperationException("Je kan geen lid maken als je de geboortedatum van de persoon niet hebt ingegeven");
-			}
-
 			// Afdeling automatisch bepalen
-			var geboortejaar = gpMetDetails.Persoon.GeboorteDatum.Value.Year;
-			geboortejaar -= gpMetDetails.ChiroLeefTijd;	 // aanpassen aan Chiroleeftijd
+			var geboortejaar = gp.Persoon.GeboorteDatum.Value.Year;
+			geboortejaar -= gp.ChiroLeefTijd;	 // aanpassen aan Chiroleeftijd
 
 			// Relevante afdelingsjaren opzoeken
 			var afdelingsjaren =
@@ -172,7 +165,7 @@ namespace Chiro.Gap.Workers
 			if (afdelingsjaren.Count > 1)
 			{
 				aj = (from a in afdelingsjaren
-					  where a.Geslacht == gpMetDetails.Persoon.Geslacht || a.Geslacht == GeslachtsType.Gemengd
+					  where a.Geslacht == gp.Persoon.Geslacht || a.Geslacht == GeslachtsType.Gemengd
 					  select a).FirstOrDefault();
 			}
 			if (aj == null)
@@ -180,13 +173,10 @@ namespace Chiro.Gap.Workers
 				aj = afdelingsjaren.First();
 			}
 
-			var kind = new Kind();
-			kind.AfdelingsJaar = aj;
-			aj.Kind.Add(kind);
+			k.AfdelingsJaar = aj;
+			aj.Kind.Add(k);
 
-			LidMaken(kind, gpMetDetails, gwj);
-
-			return kind;
+			return k;
 		}
 
 		/// <summary>
@@ -208,16 +198,23 @@ namespace Chiro.Gap.Workers
 
 			var gwj = _daos.GroepsWerkJaarDao.RecentsteOphalen(gp.Groep.ID);
 
-			GelieerdePersoon gpMetDetails;
-			if (!KanLidMaken(gp, gwj, out gpMetDetails))
-			{
-				throw new InvalidOperationException("De gegeven persoon kan geen lid worden in het huidige werkjaar.");
-			}
+			return LeidingMaken(gp, gwj);
+		}
 
-			var leiding = new Leiding();
-
-			LidMaken(leiding, gpMetDetails, gwj);
-			return leiding;
+		/// <summary>
+		/// Maakt gelieerde persoon leiding voor het gegeven werkjaar.
+		/// </summary>
+		/// <param name="gp">Gelieerde persoon</param>
+		/// <param name="gwj">Groepswerkjaar waarin leiding te maken</param>
+		/// <returns>Nieuw leidingsobject; niet gepersisteerd</returns>
+		/// <remarks>Deze method mag niet geexposed worden via de services, omdat
+		/// een gebruiker uiteraard enkel in het huidige groepswerkjaar leden
+		/// kan maken.</remarks>
+		public Leiding LeidingMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
+		{
+			// LidMaken doet de nodige checks ivm GAV-schap enz.
+			
+			return LidMaken(gp, gwj, LidType.Leiding) as Leiding;
 		}
 
 		/// <summary>
@@ -299,17 +296,32 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			Debug.Assert(lid is Kind || lid is Leiding, "Lid moet ofwel Kind ofwel Leiding zijn!");
 			if (lid is Kind)
 			{
-				return _daos.KindDao.Bewaren((Kind)lid);
+				try
+				{
+					return _daos.KindDao.Bewaren((Kind)lid);
+				}
+				catch (KeyViolationException<Kind>)
+				{
+					throw new BestaatAlException<Kind>(lid as Kind);
+				}
 			}
-			if (lid is Leiding)
+			else if (lid is Leiding)
 			{
-				return _daos.LeidingDao.Bewaren((Leiding)lid);
+				try
+				{
+					return _daos.LeidingDao.Bewaren((Leiding)lid);
+				}
+				catch (Exception)
+				{
+					throw new BestaatAlException<Leiding>(lid as Leiding);
+				}
 			}
-			// Hier mag de code nooit komen (zie assert)
-			return null;
+			else
+			{
+				throw new NotSupportedException(Properties.Resources.OngeldigLidType);
+			}
 		}
 
 		/// <summary>

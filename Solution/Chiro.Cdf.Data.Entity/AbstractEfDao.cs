@@ -5,6 +5,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Data.Objects;
@@ -243,7 +245,23 @@ namespace Chiro.Cdf.Data.Entity
 				es = db.AttachObjectGraphs(es, paths);
 				// Geattachte graph toekennen aan es, zodat we achteraf de goeie detachen.
 
-				db.SaveChanges();
+				try
+				{
+					db.SaveChanges();
+				}
+				catch (UpdateException ex)
+				{
+					SqlException inner = ex.InnerException as SqlException;
+
+					if (inner != null && inner.Number == 2601)
+					{
+						// We weten op dit moment jammer genoeg niet welke entiteit er nu precies
+						// problemen geeft.
+						throw new KeyViolationException<TEntiteit>();
+					}
+					throw;
+				}
+				
 			}
 
 			es = Utility.DetachObjectGraph(es);

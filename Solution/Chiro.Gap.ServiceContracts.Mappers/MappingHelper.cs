@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 
 using AutoMapper;
-
+using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Workers;

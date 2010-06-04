@@ -232,6 +232,10 @@ namespace Chiro.Gap.Workers
 			{
 				paths.Add(gwj => gwj.Groep.Functie);
 			}
+			else if ((extras & GroepsWerkJaarExtras.Groep) != 0)
+			{
+				paths.Add(gwj => gwj.Groep);
+			}
 
 			return paths.ToArray();
 		}
