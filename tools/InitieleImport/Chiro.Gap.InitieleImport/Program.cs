@@ -120,6 +120,8 @@ namespace Chiro.Gap.InitieleImport
 		private static void ImporterenUitPdox(string path)
 		{
 			var mogelijkeDubbels = new List<MogelijkDubbel>();
+			var gpIdsKinderen = new List<int>();
+			var gpIdsLeiding = new List<int>();
 
 			var lezer = new Lezer(path);
 
@@ -235,9 +237,33 @@ namespace Chiro.Gap.InitieleImport
 						}
 
 					}
-				}
 
+					// Zo nodig lid maken.
+
+					if (p.LidInfo != null)
+					{
+						if (p.LidInfo.Type == LidType.Kind)
+						{
+							gpIdsKinderen.Add(ids.GelieerdePersoonID);
+						}
+						else
+						{
+							gpIdsLeiding.Add(ids.GelieerdePersoonID);
+						}
+					}
+				}
 			}
+
+			string foutBerichten = String.Empty;
+			
+			_serviceHelper.CallService<ILedenService>(svc => svc.LedenMaken(gpIdsKinderen, LidType.Kind, out foutBerichten));
+			Console.WriteLine(Resources.FoutberichtenKind);
+			Console.WriteLine(foutBerichten);
+
+			_serviceHelper.CallService<ILedenService>(svc => svc.LedenMaken(gpIdsLeiding, LidType.Leiding, out foutBerichten));
+			Console.WriteLine(Resources.FoutBerichtenLeiding);
+			Console.WriteLine(foutBerichten);
+
 			#endregion
 
 			Console.WriteLine(Properties.Resources.TotaalInfo, personen.Count());

@@ -88,6 +88,24 @@ namespace Chiro.Gap.InitieleImport.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Foutberichten leden maken:.
+        /// </summary>
+        internal static string FoutberichtenKind {
+            get {
+                return ResourceManager.GetString("FoutberichtenKind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Foutberichten leiding maken:.
+        /// </summary>
+        internal static string FoutBerichtenLeiding {
+            get {
+                return ResourceManager.GetString("FoutBerichtenLeiding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Je bent geen GAV..
         /// </summary>
         internal static string GeenGav {

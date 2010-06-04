@@ -177,4 +177,10 @@
   <data name="TimeOut" xml:space="preserve">
     <value>*************************** TIMEOUT *******************************</value>
   </data>
+	<data name="FoutberichtenKind">
+		<value xml:space="preserve">Foutberichten leden maken:</value>
+	</data>
+	<data name="FoutBerichtenLeiding">
+		<value xml:space="preserve">Foutberichten leiding maken:</value>
+	</data>
 </root>
