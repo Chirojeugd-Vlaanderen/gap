@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -149,7 +151,7 @@ namespace Chiro.Gap.Workers
 		/// aan de gegeven Personen.  Persisteert niet.
 		/// </summary>
 		/// <param name="personen">Personen die er een adres bij krijgen, met daaraan gekoppeld hun huidige
-		/// adressen.</param>
+		/// adressen, en de gelieerde personen waarop de gebruiker GAV-rechten heeft.</param>
 		/// <param name="adres">Toe te voegen adres</param>
 		/// <param name="adrestype">Het adrestype (thuis, kot, enz.)</param>
 		public void AdresToevoegen(IEnumerable<Persoon> personen, Adres adres, AdresTypeEnum adrestype, bool voorkeur)
@@ -184,17 +186,29 @@ namespace Chiro.Gap.Workers
 					Properties.Resources.WonenDaarAl);
 			}
 
+			// En dan nu het echte werk:
 			foreach (Persoon p in personen)
 			{
+				// Maak PersoonsAdres dat het adres aan de persoon koppelt.
+
 				var pa = new PersoonsAdres { Adres = adres, Persoon = p, AdresType = adrestype };
 				p.PersoonsAdres.Add(pa);
 				adres.PersoonsAdres.Add(pa);
+
+				if (voorkeur)
+				{
+					// TODO: Vooral deze code doet me vermoeden dat we het toevoegen van een adres
+					// beter verhuizen naar GelieerdePersonenManager:
+
+					var gpMgr = Factory.Maak<GelieerdePersonenManager>();
+
+					foreach (GelieerdePersoon gp in p.GelieerdePersoon)
+					{
+						gpMgr.VoorkeurInstellen(gp, pa);
+					}
+				}
 			}
 
-			if(voorkeur)
-			{
-				//extra werk: zorgen dat alle andere voorkeursadressen verwijderd worden en dan de nieuwe voorkeur toevoegen
-			}
 		}
 
 		/// <summary>
@@ -216,7 +230,15 @@ namespace Chiro.Gap.Workers
 				paths.Add(p => p.GelieerdePersoon.First().Groep);
 			}
 
-			return _dao.Ophalen(_autorisatieMgr.EnkelMijnPersonen(personenIDs), paths.ToArray());
+			// TODO: dit is nogal veel dubbel werk.  EnkelMijnPersonen laadt alle gelieerde personen,
+			// om te kijken welke personen overeen komen met 'mijn' personen.  Daarna worden, indien
+			// 'extras|PersoonsExtras.MijnGelieerdePersonen' gezet is, nog eens dezelfde gelieerde
+			// persoonsextra's opgehaald.
+			return _dao.Ophalen(
+				_autorisatieMgr.EnkelMijnPersonen(personenIDs), 
+				((extras & PersoonsExtras.MijnGelieerdePersonen) != 0), 
+				_autorisatieMgr.GebruikersNaamGet(),
+				paths.ToArray());
 		}
 	}
 }

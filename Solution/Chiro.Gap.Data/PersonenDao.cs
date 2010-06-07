@@ -3,9 +3,11 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Data.Objects;
 using System.Linq;
+using System.Linq.Expressions;
 
 using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Orm;
@@ -96,6 +98,53 @@ namespace Chiro.Gap.Data.Ef
 						where foo.GelieerdePersoon.Any(bar => bar.ID == gelieerdePersoonID)
 						select foo).FirstOrDefault();
 			}
+		}
+
+		/// <summary>
+		/// Ophalen van een lijst personen met gekoppelde entiteiten
+		/// </summary>
+		/// <param name="ids">PersoonID's van op te halen personen</param>
+		/// <param name="metGelieerdePersonen">Indien true, worden aan elke persoon de gelieerde personen gekoppeld waar
+		/// de gebruiker met login <paramref name="login"/> GAV voor is.</param>
+		/// <param name="login">Enkel relevant indien <paramref name="metGelieerdePersonen"/> <c>true</c> is: de username
+		/// van de gebruiker.</param>
+		/// <param name="paths">Omschrijft mee op te halen gekoppelde entiteiten</param>
+		/// <returns>Een lijst opgehaalde entiteiten</returns>
+		/// <remarks>Deze method breekt de structuur van het programma, of die indruk heb ik toch.  
+		/// TODO: uitzoeken of ze niet vermeden kan worden.</remarks>
+		public IList<Persoon> Ophalen(
+			IEnumerable<int> ids,
+			bool metGelieerdePersonen,
+			string login,
+			params Expression<Func<Persoon, object>>[] paths)
+		{
+			IList<Persoon> result;
+
+			using (var db = new ChiroGroepEntities())
+			{
+				// In eerste instantie doen we hetzelfde als een 'standaardDAO'
+
+				var query = db.Persoon.Where(Utility.BuildContainsExpression<Persoon, int>(
+					ent => ent.ID, 
+					ids)) as ObjectQuery<Persoon>;
+
+				result = (IncludesToepassen(query, paths)).ToList();
+
+				// Nu laden we de gelieerde personen in de objectcontext, zodat ze automagisch gekoppeld worden
+				// aan de personen in 'result'.
+
+				var mijnGeleerdePersonen =
+					(from gp in
+					 	db.GelieerdePersoon.Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(ent => ent.Persoon.ID, ids))
+					 where gp.Groep.GebruikersRecht.Any(gr => String.Compare(gr.Gav.Login, login, true) == 0 &&
+					                                          (gr.VervalDatum == null || gr.VervalDatum >= DateTime.Now))
+					 select gp).ToList();
+						       
+			}
+
+			result = Utility.DetachObjectGraph(result);
+
+			return result;
 		}
 
 		#endregion

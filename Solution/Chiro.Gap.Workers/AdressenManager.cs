@@ -58,7 +58,7 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Persisteert adres in de database
+		/// Persisteert adres in de database, samen met alle gekoppelde personen en gelieerde personen.
 		/// </summary>
 		/// <param name="adr">Te persisteren adres</param>
 		/// <returns>Het adres met eventueel nieuw ID</returns>

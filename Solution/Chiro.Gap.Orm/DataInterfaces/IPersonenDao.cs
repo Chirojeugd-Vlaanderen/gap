@@ -3,7 +3,9 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 using Chiro.Cdf.Data;
 
@@ -36,5 +38,21 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// persoon.</param>
 		/// <returns>Persoon inclusief adresinfo</returns>
 		Persoon CorresponderendePersoonOphalen(int gelieerdePersoonID);
+
+		/// <summary>
+		/// Ophalen van een lijst personen met gekoppelde entiteiten
+		/// </summary>
+		/// <param name="ids">PersoonID's van op te halen personen</param>
+		/// <param name="metGelieerdePersonen">Indien true, worden aan elke persoon de gelieerde personen gekoppeld waar
+		/// de gebruiker met login <paramref name="login"/> GAV voor is.</param>
+		/// <param name="login">Enkel relevant indien <paramref name="metGelieerdePersonen"/> <c>true</c> is: de username
+		/// van de gebruiker.</param>
+		/// <param name="paths">Omschrijft mee op te halen gekoppelde entiteiten</param>
+		/// <returns>Een lijst opgehaalde entiteiten</returns>
+		IList<Persoon> Ophalen(
+			IEnumerable<int> ids,
+			bool metGelieerdePersonen,
+			string login,
+			params Expression<Func<Persoon, object>>[] paths);
 	}
 }

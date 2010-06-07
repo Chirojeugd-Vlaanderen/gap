@@ -244,6 +244,7 @@ namespace Chiro.Gap.Data.Ef
 			{
 				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
 				// TODO: nakijken of je niet beter gewoon test of persoonID == 0.
+				// (en dat dan misschen nog eerder in de business dan hier.)
 				// Ik ben er niet meer van overtuigd of je true moet krijgen als je een onbestaande
 				// persoonID meegeeft.  Bovendien doe je nu 2 query's op de DB, terwijl het ook met
 				// 1 query kan.
@@ -487,6 +488,11 @@ namespace Chiro.Gap.Data.Ef
 		/// <c>false</c>.</returns>
 		public bool IsGavPersoonsAdres(int persoonsAdresID, string login)
 		{
+			if (persoonsAdresID == 0)
+			{
+				// Altijd GAV van een nieuw PersoonsAdres.
+				return true;
+			}
 			using (var db = new ChiroGroepEntities())
 			{
 				var query = from gp in db.GelieerdePersoon

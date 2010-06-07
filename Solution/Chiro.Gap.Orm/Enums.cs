@@ -81,9 +81,22 @@ namespace Chiro.Gap.Orm
 	[Flags]
 	public enum PersoonsExtras
 	{
+		/// <summary>
+		/// Haal niks extra mee op
+		/// </summary>
 		Geen = 0x00,
+		/// <summary>
+		/// Haal de adressen van de (gelieerde) persoon mee op
+		/// </summary>
 		Adressen = 0x01,
-                Groep = 0x02               
+		/// <summary>
+		/// Haal de groep(en) op waar de (gelieerde) personen mee geleerd zijn
+		/// </summary>
+                Groep = 0x02,
+		/// <summary>
+		/// Enkel van toepassing op persoonsobjecten: neem gelieerde personen waar je GAV-rechten hebt mee
+		/// </summary>
+		MijnGelieerdePersonen = 0x04
 	}
 
 	/// <summary>

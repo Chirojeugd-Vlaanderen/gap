@@ -36,10 +36,11 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		// TODO kan deze methode ook vervangen worden door de generische bewaren met lambda expressies??
+		// Ja hoor, maar ik heb nu geen tijd :-)
 
 		/// <summary>
-		/// Bewaart adres en eventuele gekoppelde persoonsadressen en 
-		/// Personen.
+		/// Bewaart adres en eventuele gekoppelde persoonsadressen, 
+		/// Personen en GelieerdePersonen.
 		/// </summary>
 		/// <param name="adr">Te bewaren adres</param>
 		/// <returns>Referentie naar het bewaarde adres</returns>
@@ -67,7 +68,8 @@ namespace Chiro.Gap.Data.Ef
 									e => e.StraatNaam.WithoutUpdate(),
 									e => e.WoonPlaats.WithoutUpdate(),
 									e => e.PersoonsAdres.First().Adres,
-									e => e.PersoonsAdres.First().Persoon.WithoutUpdate());
+									e => e.PersoonsAdres.First().Persoon.WithoutUpdate(),
+									e => e.PersoonsAdres.First().GelieerdePersoon);
 
 				// bewaardAdres is het geattachte adres.  Hiervan neem
 				// ik ID en versie over; de rest laat ik ongemoeid.

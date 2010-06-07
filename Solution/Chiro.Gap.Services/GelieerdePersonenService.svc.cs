@@ -345,7 +345,7 @@ namespace Chiro.Gap.Services
 			}
 
 			// Personen ophalen
-			IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalen(personenIDs, PersoonsExtras.Adressen);
+			IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalen(personenIDs, PersoonsExtras.Adressen|PersoonsExtras.MijnGelieerdePersonen);
 
 			// Adres koppelen aan personen
 

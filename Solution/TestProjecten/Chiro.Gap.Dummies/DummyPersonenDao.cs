@@ -30,6 +30,11 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		public IList<Persoon> Ophalen(IEnumerable<int> ids, bool metGelieerdePersonen, string login, params System.Linq.Expressions.Expression<Func<Persoon, object>>[] paths)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 	}
 }
