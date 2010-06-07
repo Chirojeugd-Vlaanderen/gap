@@ -4,6 +4,7 @@
 // </copyright>
 
 using System.Collections.Generic;
+using System.ComponentModel;
 
 using Chiro.Gap.WebApp.HtmlHelpers;
 using Chiro.Gap.ServiceContracts;
@@ -60,6 +61,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Is dit nieuwe adres iedereen zijn voorkeursadres
 		/// </summary>
+		[DisplayName("Voorkeursadres van de bewoner(s)")]
 		public bool Voorkeur { get; set; }
 
 		/// <summary>

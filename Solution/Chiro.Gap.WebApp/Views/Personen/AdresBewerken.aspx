@@ -97,11 +97,20 @@
     <%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.WoonPlaatsNaam)%>
 </p>
 
+<%
+        if (Model.OudAdresID == 0)
+        {
+            // De mogelijkheid om aan te kruisen of het nieuwe adres het voorkeursadres wordt, krijg je alleen bij een nieuw
+            // adres, en niet bij een verhuis.  I.e. als OudAdresID == 0.
+%>
     <p>
-	Voorkeursadres van de bewoner(s)
+	<%=Html.LabelFor(mdl=>mdl.Voorkeur) %>
 	<%=Html.EditorFor(mdl => mdl.Voorkeur)%>
 	</p>
-	
+<%
+    }
+%>	
+
    <%=Html.HiddenFor(mdl=>mdl.AanvragerID) %>
    <%=Html.HiddenFor(mdl=>mdl.OudAdresID) %>
    
