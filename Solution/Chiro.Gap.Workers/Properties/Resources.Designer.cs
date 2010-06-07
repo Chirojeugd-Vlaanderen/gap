@@ -259,6 +259,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Personen komen niet overeen..
+        /// </summary>
+        internal static string PersonenKomenNietOvereen {
+            get {
+                return ResourceManager.GetString("PersonenKomenNietOvereen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Straat {0} met postnummer {1} niet gevonden..
         /// </summary>
         internal static string StraatNietGevonden {

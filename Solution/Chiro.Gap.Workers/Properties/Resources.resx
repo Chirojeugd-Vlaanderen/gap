@@ -197,4 +197,7 @@
   <data name="OngeldigLidType" xml:space="preserve">
     <value>Ongeldig lidtype.</value>
   </data>
+  <data name="PersonenKomenNietOvereen" xml:space="preserve">
+    <value>Personen komen niet overeen.</value>
+  </data>
 </root>

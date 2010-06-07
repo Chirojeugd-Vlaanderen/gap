@@ -123,6 +123,17 @@ namespace Chiro.Gap.Workers
 		bool IsGavFunctie(int functieID);
 
 		/// <summary>
+		/// Geeft <c>true</c> als het persoonsAdres met ID <paramref name="persoonsAdresID"/> gekoppeld is aan een persoon
+		/// waarop de aangelogde gebruiker momenteel GAV-rechten op heeft.  Anders
+		/// <c>false</c>.
+		/// </summary>
+		/// <param name="persoonsAdresID">ID van de functie</param>
+		/// <returns><c>true</c> als het persoonsAdres met ID <paramref name="persoonsAdresID"/> gekoppeld is aan een persoon
+		/// waarop de aangelogde gebruiker momenteel GAV-rechten op heeft.  Anders
+		/// <c>false</c>.</returns>
+		bool IsGavPersoonsAdres(int persoonsAdresID);
+
+		/// <summary>
 		/// Geeft true als de aangelogde user
 		/// gav is voor de groep met gegeven ID, en 'superrechten' heeft
 		/// (zoals het verwijderen van leden uit vorig werkjaar, het 

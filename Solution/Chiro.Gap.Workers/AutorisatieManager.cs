@@ -182,6 +182,20 @@ namespace Chiro.Gap.Workers
 			return _autorisatieDao.IsGavCommVorm(commvormID, GebruikersNaamGet());
 		}
 
+		/// <summary>
+		/// Geeft <c>true</c> als het persoonsAdres met ID <paramref name="persoonsAdresID"/> gekoppeld is aan een persoon
+		/// waarop de aangelogde gebruiker momenteel GAV-rechten op heeft.  Anders
+		/// <c>false</c>.
+		/// </summary>
+		/// <param name="persoonsAdresID">ID van de functie</param>
+		/// <returns><c>true</c> als het persoonsAdres met ID <paramref name="persoonsAdresID"/> gekoppeld is aan een persoon
+		/// waarop de aangelogde gebruiker momenteel GAV-rechten op heeft.  Anders
+		/// <c>false</c>.</returns>
+		public bool IsGavPersoonsAdres(int persoonsAdresID)
+		{
+			return _autorisatieDao.IsGavPersoonsAdres(persoonsAdresID, GebruikersNaamGet());
+		}
+
 		#region Ophalen/uitfilteren
 		/// <summary>
 		/// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV

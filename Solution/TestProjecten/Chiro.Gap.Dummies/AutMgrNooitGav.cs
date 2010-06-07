@@ -84,11 +84,16 @@ namespace Chiro.Gap.Dummies
 			return false;
 		}
 
-		#endregion
-
 		public bool IsGavAfdelingsJaar(int afdelingsJaarID)
 		{
 			return false;
 		}
+
+		public bool IsGavPersoonsAdres(int persoonsAdresID)
+		{
+			return false;
+		}
+
+		#endregion
 	}
 }

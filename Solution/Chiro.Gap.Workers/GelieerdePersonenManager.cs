@@ -92,6 +92,17 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
+		/// Haalt een gelieerde persoon op, met de gevraagde 'extra's'.
+		/// </summary>
+		/// <param name="gelieerdePersoonID">ID op te halen gelieerde persoon</param>
+		/// <param name="extras">geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+		/// <returns>De gevraagde gelieerde persoon, met de gevraagde gekoppelde entiteiten.</returns>
+		public GelieerdePersoon Ophalen(int gelieerdePersoonID, PersoonsExtras extras)
+		{
+			return Ophalen(new List<int> {gelieerdePersoonID}, extras).FirstOrDefault();
+		}
+
+		/// <summary>
 		/// Een gelieerde persoon ophalen met al zijn/haar communicatievormen
 		/// </summary>
 		/// <param name="gelieerdePersoonID">De ID van de gelieerde persoon</param>
@@ -574,30 +585,45 @@ namespace Chiro.Gap.Workers
 			return _dao.Ophalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersoonIDs), paths.ToArray());
 		}
 
-		public void VoorkeurInstellen(GelieerdePersoon gp, int persoonsAdresID)
+		/// <summary>
+		/// Maakt het persoonsAdres <paramref name="voorkeur"/> het voorkeursadres van de gelieerde persoon
+		/// <paramref name="gp"/>
+		/// </summary>
+		/// <param name="gp">Gelieerde persoon die een nieuw voorkeursadres moet krijgen</param>
+		/// <param name="voorkeur">Persoonsadres dat voorkeursadres moet worden van <paramref name="gp"/>.</param>
+		public void VoorkeurInstellen(GelieerdePersoon gp, PersoonsAdres voorkeur)
 		{
-			var nieuwevoorkeur = (from pa in gp.Persoon.PersoonsAdres
-								where pa.ID == persoonsAdresID
-								select pa).FirstOrDefault();
-			if (nieuwevoorkeur == null)
+			Debug.Assert(gp.Persoon != null);
+			Debug.Assert(voorkeur.Persoon != null);
+
+			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID) || !_autorisatieMgr.IsGavPersoonsAdres(voorkeur.ID))
 			{
-				//TODO
-				throw new InvalidOperationException("Persoonsadres hoort niet bij de persoon.");
-			}
-			if (gp.PersoonsAdres != null && gp.PersoonsAdres.ID == nieuwevoorkeur.ID)
-			{
-				return; //het voorkeursadres staat al juist
+				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			var oudevoorkeur = (from pa in gp.Persoon.PersoonsAdres
-								 where pa.GelieerdePersoon.Contains(gp)
-								 select pa).FirstOrDefault();
+			// Kijk na of gp en voorkeur wel betrekking hebben op dezelfde persoon.
 
-			gp.PersoonsAdres = nieuwevoorkeur;
-			if(oudevoorkeur!=null)
+			if (gp.Persoon.ID != voorkeur.Persoon.ID)
 			{
-				oudevoorkeur.GelieerdePersoon.Remove(gp);
+				throw new InvalidOperationException(Properties.Resources.PersonenKomenNietOvereen);
 			}
+
+			if (gp.PersoonsAdres != null)
+			{
+				// Als het huidige voorkeursadres van de gelieerde persoon gegeven is
+				// verwijder dan de gelieerde persoon
+				// uit de collectie gelieerde personen die dat voorkeursadres hebben.
+
+				gp.PersoonsAdres.GelieerdePersoon.Remove(gp);
+
+				// noot: Aangezien we identity en equality niet goed geimplementeerd hebben,
+				// kunnen we de check of het voorkeursadres mogelijk het bestaande adres is,
+				// hier niet betrouwbaar uitvoeren.  Nogal dikwijls werken we met de ID's, 
+				// maar dat kan hier niet, omdat in pratkijk een nieuw adres ook het voorkeuradres
+				// kan zijn.  (Nieuwe adressen hebben geen geldig ID.)
+			}
+
+			gp.PersoonsAdres = voorkeur;
 		}
 	}
 }

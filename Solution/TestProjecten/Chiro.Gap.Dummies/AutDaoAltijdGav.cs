@@ -68,8 +68,6 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		#endregion
-
 		public bool IsGavAfdeling(string login, int afdelingsID)
 		{
 			return true;
@@ -94,5 +92,12 @@ namespace Chiro.Gap.Dummies
 		{
 			return true;
 		}
+
+		public bool IsGavPersoonsAdres(int persoonsAdresID, string login)
+		{
+			return true;
+		}
+
+		#endregion
 	}
 }

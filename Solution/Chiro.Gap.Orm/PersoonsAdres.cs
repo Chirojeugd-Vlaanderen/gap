@@ -12,6 +12,10 @@ namespace Chiro.Gap.Orm
 	/// <summary>
 	/// Instantieert een PersoonsAdres-object dat zorgt voor samenwerking met Entity Framework
 	/// </summary>
+	/// <remarks>ZEEEER BELANGRIJK! PersoonsAdres koppelt een persoon aan een adres, via PersoonsAdres.Persoon en 
+	/// PersoonsAdres.Adres.  Als het adres het standaardadres is voor de persoon in een bepaalde groep
+	/// (GelieerdePersoon), dan wijst PersoonsAdres.GelieerdePersoon naar de gelieerde persoon die standaard
+	/// op dit adres woont.  KOPPEKE GOED BIJHOUDEN!</remarks>
 	public partial class PersoonsAdres : IEfBasisEntiteit
 	{
 		private bool _teVerwijderen = false;

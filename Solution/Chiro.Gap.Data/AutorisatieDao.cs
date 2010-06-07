@@ -243,6 +243,10 @@ namespace Chiro.Gap.Data.Ef
 			using (var db = new ChiroGroepEntities())
 			{
 				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
+				// TODO: nakijken of je niet beter gewoon test of persoonID == 0.
+				// Ik ben er niet meer van overtuigd of je true moet krijgen als je een onbestaande
+				// persoonID meegeeft.  Bovendien doe je nu 2 query's op de DB, terwijl het ook met
+				// 1 query kan.
 				var query1
 					= from r in db.Persoon
 					  where r.ID == persoonID
@@ -469,6 +473,30 @@ namespace Chiro.Gap.Data.Ef
 				resultaat = query.Count() > 0;
 			}
 			return resultaat;
+		}
+
+		/// <summary>
+		/// Geeft <c>true</c> als het persoonsAdres met ID <paramref name="persoonsAdresID"/> gekoppeld is aan een persoon
+		/// waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten op heeft.  Anders
+		/// <c>false</c>.
+		/// </summary>
+		/// <param name="persoonsAdresID">ID van de functie</param>
+		/// <param name="login">Gebruikersnaam</param>
+		/// <returns><c>true</c> als het persoonsAdres met ID <paramref name="persoonsAdresID"/> gekoppeld is aan een persoon
+		/// waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten op heeft.  Anders
+		/// <c>false</c>.</returns>
+		public bool IsGavPersoonsAdres(int persoonsAdresID, string login)
+		{
+			using (var db = new ChiroGroepEntities())
+			{
+				var query = from gp in db.GelieerdePersoon
+				            where gp.Persoon.PersoonsAdres.Any(pa => pa.ID == persoonsAdresID) &&
+				                  gp.Groep.GebruikersRecht.Any(
+				                  	r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
+				            select gp;
+
+				return query.Count() > 0;
+			}
 		}
 
 		#endregion

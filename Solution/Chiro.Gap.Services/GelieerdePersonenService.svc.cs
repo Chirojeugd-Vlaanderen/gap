@@ -385,10 +385,24 @@ namespace Chiro.Gap.Services
 			_adrMgr.Bewaren(adr);
 		}
 
+		/// <summary>
+		/// Maakt het PersoonsAdres met ID <paramref name="PersoonsAdresID"/> het voorkeursadres van de gelieerde persoon
+		/// met ID <paramref name="gelieerdePersoonID"/>
+		/// </summary>
+		/// <param name="persoonsAdresID">ID van het persoonsadres dat voorkeursadres moet worden</param>
+		/// <param name="gelieerdePersoonID">ID van de gelieerde persoon die het gegeven persoonsadres als voorkeur 
+		/// moet krijgen.</param>
+		/// <remarks>Goed opletten: een PersoonsAdres is gekoppeld aan een persoon; het voorkeursadres is gekoppeld
+		/// aan een *gelieerde* persoon.</remarks>
 		public void VoorkeursAdresMaken(int persoonsAdresID, int gelieerdePersoonID)
 		{
-			GelieerdePersoon gp = _gpMgr.DetailsOphalen(gelieerdePersoonID);
-			_gpMgr.VoorkeurInstellen(gp, persoonsAdresID);
+			GelieerdePersoon gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Adressen);
+
+			var voorkeur = (from pa in gp.Persoon.PersoonsAdres
+			                where pa.ID == persoonsAdresID
+					select pa).FirstOrDefault();
+			
+			_gpMgr.VoorkeurInstellen(gp, voorkeur);
 			_gpMgr.BewarenMetPersoonsAdressen(gp);
 		}
 

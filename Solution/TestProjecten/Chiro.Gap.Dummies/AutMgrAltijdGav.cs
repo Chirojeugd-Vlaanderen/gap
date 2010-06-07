@@ -90,6 +90,11 @@ namespace Chiro.Gap.Dummies
 			return true;
 		}
 
+		public bool IsGavPersoonsAdres(int persoonsAdresID)
+		{
+			return true;
+		}
+
 		#endregion
 	}
 }

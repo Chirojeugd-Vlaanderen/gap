@@ -180,10 +180,14 @@ namespace Chiro.Gap.ServiceContracts
 		void AdresVerwijderenVanPersonen(IList<int> personenIDs, int adresID);
 
 		/// <summary>
-		/// Stelt het gegeven persoonsadres in als nieuw voorkeursadres van de gelieerde persoon
+		/// Maakt het PersoonsAdres met ID <paramref name="PersoonsAdresID"/> het voorkeursadres van de gelieerde persoon
+		/// met ID <paramref name="gelieerdePersoonID"/>
 		/// </summary>
-		/// <param name="persoonsAdresID"></param>
-		/// <param name="gelieerdePersoonID"></param>
+		/// <param name="persoonsAdresID">ID van het persoonsadres dat voorkeursadres moet worden</param>
+		/// <param name="gelieerdePersoonID">ID van de gelieerde persoon die het gegeven persoonsadres als voorkeur 
+		/// moet krijgen.</param>
+		/// <remarks>Goed opletten: een PersoonsAdres is gekoppeld aan een persoon; het voorkeursadres is gekoppeld
+		/// aan een *gelieerde* persoon.</remarks>
 		[OperationContract]
 		void VoorkeursAdresMaken(int persoonsAdresID, int gelieerdePersoonID);
 
