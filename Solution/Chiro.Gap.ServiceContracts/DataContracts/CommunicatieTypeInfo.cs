@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Chiro.Gap.ServiceContracts
+namespace Chiro.Gap.ServiceContracts.DataContracts
 {
 	[DataContract]
 	public class CommunicatieTypeInfo

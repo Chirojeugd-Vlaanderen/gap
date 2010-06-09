@@ -4,14 +4,11 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-using Chiro.Gap.Domain;
-
-namespace Chiro.Gap.ServiceContracts
+namespace Chiro.Gap.ServiceContracts.DataContracts
 {
 	/// <summary>
 	/// Datacontract voor een adres.  Het ID wordt enkel gebruikt bij het ophalen van een adres.

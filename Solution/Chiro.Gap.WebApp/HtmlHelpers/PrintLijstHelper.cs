@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.HtmlHelpers
 {
@@ -25,7 +26,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		/// <param name="afdelingIdLijst"></param>
 		/// <param name="afdelingsInfo"></param>
 		/// <returns></returns>
-		public static string PrintLijst(this HtmlHelper htmlHelper, IEnumerable<int> afdelingIdLijst, IEnumerable<ServiceContracts.AfdelingDetail> afdelingsInfo)
+		public static string PrintLijst(this HtmlHelper htmlHelper, IEnumerable<int> afdelingIdLijst, IEnumerable<AfdelingDetail> afdelingsInfo)
 		{
 			if (afdelingIdLijst == null || afdelingIdLijst.Count() < 1)
 			{

@@ -65,12 +65,6 @@ namespace Chiro.Gap.Services
 		/// </returns>
 		public GroepInfo InfoOphalen(int groepID)
 		{
-			Mapper.CreateMap<Groep, GroepInfo>()
-				.ForMember(dst => dst.Plaats, opt => opt.MapFrom(
-					src => src is ChiroGroep ? (src as ChiroGroep).Plaats : String.Empty))
-				.ForMember(dst => dst.StamNummer, opt => opt.MapFrom(
-					src => src.Code == null ? String.Empty : src.Code.ToUpper()));
-
 			var g = _groepenMgr.Ophalen(groepID);
 			return Mapper.Map<Groep, GroepInfo>(g);
 		}
@@ -83,12 +77,6 @@ namespace Chiro.Gap.Services
 		public GroepInfo InfoOphalenCode(string code)
 		{
 			Groep g;
-
-			Mapper.CreateMap<Groep, GroepInfo>()
-				.ForMember(dst => dst.Plaats, opt => opt.MapFrom(
-					src => src is ChiroGroep ? (src as ChiroGroep).Plaats : String.Empty))
-				.ForMember(dst => dst.StamNummer, opt => opt.MapFrom(
-					src => src.Code == null ? String.Empty : src.Code.ToUpper()));
 
 			try
 			{
@@ -111,31 +99,6 @@ namespace Chiro.Gap.Services
 		{
 			var resultaat = new GroepDetail();
 
-			Mapper.CreateMap<Groep, GroepDetail>()
-				.ForMember(dst => dst.Plaats, opt => opt.MapFrom(
-					src => src is ChiroGroep ? (src as ChiroGroep).Plaats : String.Empty))
-				.ForMember(dst => dst.StamNummer, opt => opt.MapFrom(
-					src => src.Code == null ? String.Empty : src.Code.ToUpper()))
-				.ForMember(dst => dst.Categorieen, opt => opt.MapFrom(
-					src => src.Categorie))
-				.ForMember(dst => dst.Functies, opt => opt.MapFrom(
-					src => src.Functie))
-				.ForMember(dst => dst.Afdelingen, opt => opt.Ignore());
-
-			Mapper.CreateMap<AfdelingsJaar, AfdelingDetail>()
-				.ForMember(
-				dst => dst.AfdelingsJaarID,
-				opt => opt.MapFrom(src => src.ID))
-				.ForMember(
-				dst => dst.AfdelingNaam,
-				opt => opt.MapFrom(src => src.Afdeling.Naam))
-				.ForMember(
-				dst => dst.IsLeeg,
-				opt => opt.MapFrom(src => (src.Kind == null && src.Leiding == null) || (src.Kind != null && src.Leiding != null && src.Kind.Count + src.Leiding.Count == 0)))
-				.ForMember(
-				dst => dst.AfdelingAfkorting,
-				opt => opt.MapFrom(src => src.Afdeling.Afkorting));
-
 			var g = _groepenMgr.OphalenMetIndelingen(groepID);
 			Mapper.Map(g, resultaat);
 
@@ -155,10 +118,6 @@ namespace Chiro.Gap.Services
 			try
 			{
 				var groep = _groepenMgr.Ophalen(g.ID);
-
-				Mapper.CreateMap<GroepInfo, Groep>()
-					.ForMember(dst => dst.Code, opt => opt.MapFrom(src => src.StamNummer));
-				Mapper.AssertConfigurationIsValid();
 
 				Mapper.Map(g, groep);
 
@@ -330,7 +289,15 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AfdelingsJaarVerwijderen(int afdelingsJaarID)
 		{
-			_afdelingsJaarMgr.Verwijderen(afdelingsJaarID);
+			try
+			{
+				_afdelingsJaarMgr.Verwijderen(afdelingsJaarID);
+			}catch(InvalidOperationException)
+			{
+				/*var afdjaar = _afdelingsJaarMgr.Ophalen(afdelingsJaarID, AfdelingsJaarExtras.Afdeling);
+				var afdjaardetail = Mapper.Map<AfdelingsJaar, AfdelingsJaarDetail>(afdjaar);*/
+				throw new FaultException<GapFault>(new GapFault { FoutNummer = FoutNummer.AfdelingNietLeeg });
+			}
 		}
 
 		/* zie #273 */
@@ -340,9 +307,6 @@ namespace Chiro.Gap.Services
 			AfdelingsJaar aj = _afdelingsJaarMgr.Ophalen(
 				afdelingsJaarID,
 				AfdelingsJaarExtras.Afdeling | AfdelingsJaarExtras.OfficieleAfdeling);
-
-			Mapper.CreateMap<AfdelingsJaar, AfdelingsJaarDetail>()
-				.ForMember(dst => dst.AfdelingsJaarID, opt => opt.MapFrom(src => src.ID));
 
 			return Mapper.Map<AfdelingsJaar, AfdelingsJaarDetail>(aj);
 		}
@@ -357,15 +321,7 @@ namespace Chiro.Gap.Services
 		{
 			AfdelingsJaar aj = _afdelingsJaarMgr.Ophalen(
 				afdelingsJaarID,
-				AfdelingsJaarExtras.Afdeling | AfdelingsJaarExtras.OfficieleAfdeling | AfdelingsJaarExtras.Leden);
-
-			// FIXME: Het is eigenlijk te belachelijk om alle leden op te vragen, gewoon om te zien
-			// of er leden zijn.
-
-			bool isLeeg = (aj.Kind.Count() == 0 && aj.Leiding.Count() == 0);
-
-			Mapper.CreateMap<AfdelingsJaar, AfdelingDetail>()
-				.ForMember(dst => dst.IsLeeg, opt => opt.MapFrom(src => isLeeg));
+				AfdelingsJaarExtras.Afdeling | AfdelingsJaarExtras.OfficieleAfdeling);
 
 			return Mapper.Map<AfdelingsJaar, AfdelingDetail>(aj);
 		}
@@ -381,8 +337,6 @@ namespace Chiro.Gap.Services
 		public AfdelingInfo AfdelingOphalen(int afdelingID)
 		{
 			Afdeling a = _afdelingsJaarMgr.AfdelingOphalen(afdelingID);
-			Mapper.CreateMap<Afdeling, AfdelingInfo>();
-
 			return Mapper.Map<Afdeling, AfdelingInfo>(a);
 		}
 
@@ -412,15 +366,6 @@ namespace Chiro.Gap.Services
 		public IList<ActieveAfdelingInfo> BeschikbareAfdelingenOphalen(int groepID)
 		{
 			var gwj = _groepsWerkJaarManager.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
-
-			Mapper.CreateMap<AfdelingsJaar, ActieveAfdelingInfo>()
-				.ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Afdeling.Naam))
-				.ForMember(dst => dst.Afkorting, opt => opt.MapFrom(src => src.Afdeling.Afkorting))
-				.ForMember(dst => dst.AfdelingsJaarID, opt => opt.MapFrom(src => src.ID))
-				.ForMember(dst => dst.ID, opt => opt.MapFrom(src => src.Afdeling.ID));
-
-			Mapper.AssertConfigurationIsValid();
-
 			return Mapper.Map<IEnumerable<AfdelingsJaar>, IList<ActieveAfdelingInfo>>(gwj.AfdelingsJaar);
 		}
 
@@ -574,7 +519,6 @@ namespace Chiro.Gap.Services
 							 orderby gwj.WerkJaar descending
 							 select gwj);
 
-			Mapper.CreateMap<GroepsWerkJaar, WerkJaarInfo>();
 			return Mapper.Map<IEnumerable<GroepsWerkJaar>, IEnumerable<WerkJaarInfo>>(werkjaren);
 		}
 

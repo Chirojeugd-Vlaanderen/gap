@@ -5,7 +5,7 @@
 
 using System.Runtime.Serialization;
 
-namespace Chiro.Gap.ServiceContracts
+namespace Chiro.Gap.ServiceContracts.DataContracts
 {
 	/// <summary>
 	/// Informatie over een afdeling waarvoor er in het huidige werkjaar een groepswerkjaar bestaat.
@@ -30,11 +30,5 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		[DataMember]
 		public string OfficieleAfdelingNaam { get; set; }
-
-		/// <summary>
-		/// <c>True</c> indien geverifieerd werd dat er geen leden zijn in het afdelingsjaar, anders <c>false</c>
-		/// </summary>
-		[DataMember]
-		public bool IsLeeg { get; set; }
 	}
 }

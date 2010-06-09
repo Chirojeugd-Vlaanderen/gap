@@ -44,7 +44,7 @@
     <%=Html.ValidationMessageFor(mdl => mdl.AfdelingsJaar.GeboorteJaarTot)%><br />
        
     <% var values = from oa in Model.OfficieleAfdelingen
-                    select new { value = oa.ID, text = oa.Naam.ToString() }; 
+                    select new { value = oa.ID, text = oa.Naam }; 
     %>
     
     <%=Html.LabelFor(mdl=>mdl.AfdelingsJaar.OfficieleAfdelingID) %>

@@ -5,9 +5,8 @@
 
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Chiro.Gap.ServiceContracts.DataContracts;
 
-namespace Chiro.Gap.ServiceContracts
+namespace Chiro.Gap.ServiceContracts.DataContracts
 {
 	/// <summary>
 	/// Datacontract voor gedetailleerde informatie over een groep

@@ -27,9 +27,7 @@
         <td><%=ai.GeboorteJaarTot %></td>
         <td>
             <%=Html.ActionLink("Bewerken", "Bewerken", new { Controller = "Afdelingen", id = ai.AfdelingsJaarID } )%>
-            <% if (ai.IsLeeg) { %>
             <%=Html.ActionLink("Verwijderen", "Verwijderen", new { Controller = "Afdelingen", id = ai.AfdelingsJaarID } )%>
-            <% } %>
         </td>
     </tr>
 <% } %>

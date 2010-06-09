@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Chiro.Gap.ServiceContracts
+namespace Chiro.Gap.ServiceContracts.DataContracts
 {
 	/// <summary>
 	/// Klein datacontractje om zowel PersoonID als GelieerdePersoonID over de lijn te sturen

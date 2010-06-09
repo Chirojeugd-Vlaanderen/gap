@@ -13,6 +13,7 @@ using Chiro.Gap.ServiceContracts.Mappers;
 using Chiro.Gap.TestDbInfo;
 using System.Security.Principal;
 using System.Threading;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.Services.Test
 {

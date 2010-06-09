@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 using Chiro.Gap.Domain;
 using System.ComponentModel.DataAnnotations;
 
-namespace Chiro.Gap.ServiceContracts
+namespace Chiro.Gap.ServiceContracts.DataContracts
 {
 	/// <summary>
 	/// Datacontract voor gegevens van het afdelingsjaar.

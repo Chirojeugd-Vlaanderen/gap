@@ -5,7 +5,7 @@
 
 using System.Runtime.Serialization;
 
-namespace Chiro.Gap.ServiceContracts
+namespace Chiro.Gap.ServiceContracts.DataContracts
 {
 	/// <summary>
 	/// Datacontract voor een actieve afdeling (afdeling met afdelingsjaar)

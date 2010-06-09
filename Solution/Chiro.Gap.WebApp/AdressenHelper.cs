@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts;
 
 namespace Chiro.Gap.WebApp

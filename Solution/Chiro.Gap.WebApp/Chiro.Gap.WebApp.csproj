@@ -184,7 +184,7 @@
     <Content Include="Views\Leden\Index.aspx" />
     <Content Include="Views\Personen\AdresVerwijderen.aspx" />
     <Content Include="Views\Personen\CommVormBewerken.aspx" />
-    <Content Include="Views\Personen\CategorieToevoegen.aspx" />
+    <Content Include="Views\Personen\CategorieToevoegenAanLijst.aspx" />
     <Content Include="Views\Leden\AfdelingBewerken.aspx" />
     <Content Include="Views\Afdelingen\Nieuw.aspx" />
     <Content Include="Views\Personen\NieuweCommVorm.aspx" />

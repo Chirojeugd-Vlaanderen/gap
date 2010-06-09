@@ -29,7 +29,9 @@
 <%using (Html.BeginForm("ToepassenOpSelectie", "Personen")){ %>
 
 <div class="pager">
-Pagina's <%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.AantalPaginas, i => Url.Action("List", new { Controller="Personen", page = i })) %>  |  Totaal aantal personen: <%= Model.Totaal %>  |  Maak een selectie en 
+Pagina's <%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.AantalPaginas, i => Url.Action("List", new { Controller="Personen", page = i })) %>
+<br/>
+Totaal aantal personen: <%= Model.Totaal %>  |  Maak een selectie en 
 
 <select id="GekozenActie" name="GekozenActie">
 <option value="0">kies een actie</option>
@@ -52,19 +54,14 @@ Pagina's <%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.Aantal
     <td align="right"><%=p.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)p.GeboorteDatum).ToString("d") %></td>
     <td><%=p.Geslacht.ToString() %></td>
     <td>
-        <% if (!p.IsLid)
-		   { %>
-			<% if (p.GeboorteDatum.HasValue && p.GeboorteDatum.Value.Year > DateTime.Today.Year - 21)
-	  { %>
+        <% if (!p.IsLid){ %>
+			<% if (p.GeboorteDatum.HasValue && p.GeboorteDatum.Value.Year > DateTime.Today.Year - 21) { %>
 				<%=Html.ActionLink("Lid maken", "LidMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
 			<% } %>
-			<% if (p.GeboorteDatum.HasValue && p.GeboorteDatum.Value.Year < DateTime.Today.Year - 14)
-	  { %>
+			<% if (p.GeboorteDatum.HasValue && p.GeboorteDatum.Value.Year < DateTime.Today.Year - 14){ %>
 				<%=Html.ActionLink("Leiding maken", "LeidingMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
 			<% } %>
-        <% }
-		   else
-		   { %>
+        <% } else { %>
 		   Is lid
         <%} %>
         <%=Html.ActionLink("Bro/sis maken", "Kloon", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>

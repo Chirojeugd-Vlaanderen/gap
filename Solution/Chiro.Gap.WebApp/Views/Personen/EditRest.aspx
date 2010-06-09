@@ -71,7 +71,7 @@
 		</p>
 		<p>
 		<%=Html.LabelFor(s => s.PersoonLidInfo.LidInfo.EindeInstapperiode)%>
-		<%if (Model.PersoonLidInfo.LidInfo.EindeInstapperiode.Value.CompareTo(DateTime.Today) <= 0)
+		<%if (Model.PersoonLidInfo.LidInfo.EindeInstapperiode.CompareTo(DateTime.Today) <= 0)
 		  {
 			  Response.Write(" is verlopen");
 		  }else{
@@ -132,9 +132,12 @@
 		   Response.Write(Html.PrintLijst(Model.PersoonLidInfo.LidInfo.AfdelingIdLijst, Model.AlleAfdelingen));
 	   }
    }else{
-	   //FIXME: nog niet alle info wordt ingeladen( afdelingidlijst is altijd leeg)
-	   Response.Write(Model.PersoonLidInfo.PersoonDetail.VolledigeNaam + " zit in de " +
-		   Model.AlleAfdelingen.FirstOrDefault(s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)).AfdelingNaam + ".");
+	   if(Model.AlleAfdelingen.FirstOrDefault(s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0))!=null)
+	   {
+	   	Response.Write(Model.PersoonLidInfo.PersoonDetail.VolledigeNaam + " zit in de " +
+	   	               Model.AlleAfdelingen.First(
+	   	               	s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)).AfdelingNaam + ".");
+	   }
    }%>
 
 	<%} %>
@@ -192,12 +195,10 @@
                                 <em><%=Html.Encode(cv.Nota) %></em>
                                 <%=Html.ActionLink(
                                     "[verwijderen]", 
-                                    "VerwijderenCommVorm",
-																		new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+                                    "VerwijderenCommVorm",new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
                                 <%=Html.ActionLink(
                                     "[bewerken]", 
-                                    "BewerkenCommVorm",
-																		new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+                                    "CommVormBewerken",new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
                             </li>                            
                             <%
                         }

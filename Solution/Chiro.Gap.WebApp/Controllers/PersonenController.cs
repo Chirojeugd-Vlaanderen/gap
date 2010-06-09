@@ -857,7 +857,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		// GET: /Personen/CommVormBewerken/gelieerdePersoonID
-		public ActionResult BewerkenCommVorm(int commvormID, int gelieerdePersoonID, int groepID)
+		public ActionResult CommVormBewerken(int commvormID, int gelieerdePersoonID, int groepID)
 		{
 			// TODO dit is niet juist broes, want hij haalt 2 keer de persoon op?
 			var persoonDetail = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailsOphalen(gelieerdePersoonID));
@@ -872,7 +872,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		// POST: /Personen/CommVormBewerken/gelieerdePersoonID
 		[AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult BewerkenCommVorm(CommVormModel model, int gelieerdePersoonID, int groepID)
+		public ActionResult CommVormBewerken(CommVormModel model, int gelieerdePersoonID, int groepID)
 		{
 			var validator = new CommunicatieVormValidator();
 			var commVorm = ServiceHelper.CallService<IGelieerdePersonenService, CommunicatieInfo>(l => l.CommunicatieVormOphalen(model.NieuweCommVorm.ID));
@@ -946,7 +946,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarin de gebruiker momenteel aan het werken is</param>
 		/// <returns>De view 'CategorieToevoegen'</returns>
-		public ActionResult ToevoegenAanCategorieLijst(int groepID)
+		public ActionResult CategorieToevoegenAanLijst(int groepID)
 		{
 			var model = new CategorieModel();
 			BaseModelInit(model, groepID);
@@ -977,7 +977,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>Als 1 persoon aan een categorie toegekend moet worden, wordt geredirect naar de
 		/// details van die persoon.  Anders krijg je de laatst opgroepen lijst.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult ToevoegenAanCategorieLijst(CategorieModel model, int groepID)
+		public ActionResult CategorieToevoegenAanLijst(CategorieModel model, int groepID)
 		{
 			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieKoppelen(
 				model.GelieerdePersoonIDs,

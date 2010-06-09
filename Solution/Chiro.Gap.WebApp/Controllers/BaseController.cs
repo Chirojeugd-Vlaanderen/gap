@@ -12,6 +12,7 @@ using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.WebApp.Models;
 using System.Runtime.InteropServices;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.Controllers
 {

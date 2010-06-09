@@ -34,7 +34,7 @@
                       select new CheckBoxListInfo(
                          pa.PersoonID.ToString()
                          , pa.PersoonVolledigeNaam
-                         , Model.PersoonIDs.Contains(pa.PersoonID) )).ToList<CheckBoxListInfo>();
+                         , Model.PersoonIDs.Contains(pa.PersoonID) )).ToList();
            %>
            
            <%=Html.CheckBoxList("PersoonIDs", info) %>

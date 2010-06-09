@@ -70,6 +70,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to De geselecteerde afdeling bevat leden en kan dus niet verwijderd worden..
+        /// </summary>
+        public static string AfdelingNietLeeg {
+            get {
+                return ResourceManager.GetString("AfdelingNietLeeg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Er bestaat al een afdeling met code &apos;{0}&apos;: &apos;{1}&apos;..
         /// </summary>
         public static string AfdelingsCodeBestaatAl {

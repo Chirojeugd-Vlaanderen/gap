@@ -13,6 +13,7 @@ using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WebApp.Models;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -23,7 +24,6 @@ namespace Chiro.Gap.WebApp.Controllers
 		// GET: /Afdeling/
 		public override ActionResult Index(int groepID)
 		{
-			// Recentste groepswerkjaar ophalen, en leden tonen.
 			return List(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), groepID);
 		}
 
@@ -141,8 +141,19 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult Verwijderen(int groepID, int id)
 		{
 			// Afdeling van afdelingsjaar invullen
-			ServiceHelper.CallService<IGroepenService>
-				(groep => groep.AfdelingsJaarVerwijderen(id));
+			try
+			{
+				ServiceHelper.CallService<IGroepenService>(groep => groep.AfdelingsJaarVerwijderen(id));
+
+				TempData["feedback"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+			}
+			catch (FaultException ex)
+			{
+				TempData["feedback"] = Properties.Resources.AfdelingNietLeeg;
+				// TODO: specifieke exceptions catchen en weergeven via de modelstate, en niet
+				// via tempdata.
+			}
+
 			return RedirectToAction("Index");
 		}
 

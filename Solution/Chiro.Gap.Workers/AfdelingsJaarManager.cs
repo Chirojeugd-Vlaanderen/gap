@@ -153,23 +153,19 @@ namespace Chiro.Gap.Workers
 		{
 			AfdelingsJaar aj = _afdJarenDao.Ophalen(afdelingsJaarID, a => a.Afdeling, a => a.Leiding, a => a.Kind);
 
-			if (_autorisatieMgr.IsGavAfdeling(aj.Afdeling.ID))
-			{
-				if (aj.Kind.Count != 0 || aj.Leiding.Count != 0)
-				{
-					throw new InvalidOperationException("AfdelingsJaar kan niet verwijderd worden omdat er nog leden of leiding in deze afdeling zitten.");
-				}
-				else
-				{
-					aj.TeVerwijderen = true;
-					_afdJarenDao.Bewaren(aj);
-					return true;
-				}
-			}
-			else
-			{
+			if (!_autorisatieMgr.IsGavAfdeling(aj.Afdeling.ID))
+							{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
+
+			if (aj.Kind.Count != 0 || aj.Leiding.Count != 0)
+			{
+				throw new InvalidOperationException("AfdelingsJaar kan niet verwijderd worden omdat er nog leden of leiding in deze afdeling zitten.");
+			}
+			
+			aj.TeVerwijderen = true;
+			_afdJarenDao.Bewaren(aj);
+			return true;
 		}
 
 		/// <summary>

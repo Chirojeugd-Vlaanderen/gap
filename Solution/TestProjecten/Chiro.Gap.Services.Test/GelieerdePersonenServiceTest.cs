@@ -2,13 +2,10 @@
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.ServiceContracts.Mappers;
-using Chiro.Gap.Services;
 using Chiro.Gap.TestDbInfo;
 using Chiro.Gap.Workers.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
-using Chiro.Gap.Workers;
-using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.Services.Test
 {

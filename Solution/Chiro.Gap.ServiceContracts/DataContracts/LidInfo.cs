@@ -35,7 +35,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		[DisplayName(@"Probeerperiode")]
 		[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ConvertEmptyStringToNull = true)]
-		public DateTime? EindeInstapperiode { get; set; }
+		public DateTime EindeInstapperiode { get; set; }
 
 		/// <summary>
 		/// Geeft aan of het lid inactief is of niet

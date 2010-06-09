@@ -39,6 +39,7 @@ namespace Chiro.Gap.Domain
 		#region nog te verdelen
 		CategorieNietLeeg,
 		FunctieNietLeeg,
+		AfdelingNietLeeg,
 		#endregion
 	}
 }
