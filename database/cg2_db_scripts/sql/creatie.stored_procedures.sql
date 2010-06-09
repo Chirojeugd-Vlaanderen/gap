@@ -35,6 +35,29 @@ GO
 GRANT EXECUTE ON core.ufnSoundEx TO GapRole
 GO
 
+create procedure pers.spFixVoorkeursAdres @PersoonID int as
+-- DOEL: zorg ervoor dat iedere gelieerde persoon gekoppeld aan de persoon
+-- met gegeven PersoonID minstens 1 voorkeursadres heeft. 
+-- (aangenomen dat de persoon adressen heeft; anders gebeurt er niets)
+update gp1 
+set gp1.VoorkeursAdresID = nieuw.PersoonsAdresID
+from pers.GelieerdePersoon gp1 join
+(
+select gp.GelieerdePersoonID, max(pa.PersoonsAdresID) as PersoonsAdresID 
+from pers.GelieerdePersoon gp
+join pers.PersoonsAdres pa on gp.PersoonID = pa.PersoonID
+where gp.persoonID = @PersoonID
+	and gp.VoorkeursAdresID is null
+group by gp.GelieerdePersoonID
+) nieuw on gp1.GelieerdePersoonID = nieuw.GelieerdePersoonID
+
+GO
+
+GRANT EXECUTE ON pers.spFixVoorkeursAdres TO GapRole
+GO
+
+
+
 --------------------------------------------
 -- nog een view
 
