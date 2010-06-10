@@ -201,10 +201,10 @@ namespace Chiro.Gap.InitieleImport
 							pa.AdresType);
 						try
 						{
-							_serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.AdresToevoegenPersonen(
+							_serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.AdresToevoegenGelieerdePersonen(
 								new List<int> { ids.GelieerdePersoonID },
 								pa,
-								false));
+								pa.AdresType == AdresTypeEnum.Thuis));
 
 						}
 						catch (FaultException<OngeldigObjectFault>)
