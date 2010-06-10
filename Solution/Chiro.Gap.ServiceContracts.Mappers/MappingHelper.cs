@@ -204,11 +204,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo2>();
 			Mapper.CreateMap<CommunicatieVorm, CommunicatieInfo>();
 
-			Mapper.CreateMap<GroepInfo, Groep>()
-				.ForMember(
-					dst => dst.Code, 
-					opt => opt.MapFrom(src => src.StamNummer));
-
 			Mapper.CreateMap<Groep, GroepInfo>()
 				.ForMember(dst => dst.Plaats, opt => opt.MapFrom(
 					src => src is ChiroGroep ? (src as ChiroGroep).Plaats : Properties.Resources.NietVanToepassing))

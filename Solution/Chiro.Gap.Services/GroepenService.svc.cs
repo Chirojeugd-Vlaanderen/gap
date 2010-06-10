@@ -119,7 +119,13 @@ namespace Chiro.Gap.Services
 			{
 				var groep = _groepenMgr.Ophalen(g.ID);
 
-				Mapper.Map(g, groep);
+				// Ik gebruik hier geen mapper, omdat de entity Groep (en eender welke entity in het algemeen)
+				// heel veel members heeft.  Omdat Automapper.AssertConfigurationIsValid wil gebruiken, zou je
+				// dan al die members moeten ignoren.
+
+				groep.ID = g.ID;
+				groep.Naam = g.Naam;
+				groep.Code = g.StamNummer;
 
 				// TODO: Hier gaat natuurlijk nooit een concurrency exception optreden,
 				// aangezien GroepInfo (nog?) geen versiestring bevat.
