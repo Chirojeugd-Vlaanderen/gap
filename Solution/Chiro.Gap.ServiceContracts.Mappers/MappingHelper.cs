@@ -185,28 +185,18 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.WoonPlaatsNaam,
 					opt => opt.MapFrom(src => src.Adres.WoonPlaats.Naam));
 
-			Mapper.CreateMap<Persoon, BewonersInfo>()
-				.ForMember(
-					dst => dst.PersoonAdNummer,
-					opt => opt.MapFrom(src => src.AdNummer))
-				.ForMember(
-					dst => dst.PersoonGeboorteDatum,
-					opt => opt.MapFrom(src => src.GeboorteDatum))
-				.ForMember(
-					dst => dst.PersoonVolledigeNaam,
-					opt => opt.MapFrom(src => src.VolledigeNaam))
-				.ForMember(
-					dst => dst.PersoonGeslacht,
-					opt => opt.MapFrom(src => src.Geslacht))
-				.ForMember(
-					dst => dst.PersoonID,
-					opt => opt.MapFrom(src => src.ID))
+			Mapper.CreateMap<GelieerdePersoon, BewonersInfo>()
+				.ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => src.ID))
 				.ForMember(dst => dst.AdresType, opt => opt.MapFrom(src => AdresTypeEnum.Overig));
+
+			Mapper.CreateMap<PersoonsAdres, BewonersInfo>()
+				.ForMember(
+					dst => dst.GelieerdePersoonID, 
+					opt => opt.MapFrom(src => src.Persoon.GelieerdePersoon.FirstOrDefault() == null ? 0 : src.Persoon.GelieerdePersoon.First().ID));
 
 			// Als de property's van de doelobjecten strategisch gekozen namen hebben, configureert
 			// Automapper alles automatisch, zoals hieronder:
 
-			Mapper.CreateMap<PersoonsAdres, BewonersInfo>();
 			Mapper.CreateMap<StraatNaam, StraatInfo>();
 			Mapper.CreateMap<WoonPlaats, WoonPlaatsInfo>();
 			Mapper.CreateMap<CommunicatieType, CommunicatieTypeInfo>();

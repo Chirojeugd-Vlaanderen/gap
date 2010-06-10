@@ -114,5 +114,16 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// </summary>
 		/// <returns>Een lijst met alle communicatietypes</returns>
 		IEnumerable<CommunicatieType> CommunicatieTypesOphalen();
+
+		/// <summary>
+		/// Haalt alle personen op die op een zelfde
+		/// adres wonen als de gelieerde persoon met het gegeven ID.
+		/// </summary>
+		/// <param name="gelieerdePersoonID">ID van gegeven gelieerde
+		/// persoon.</param>
+		/// <returns>Lijst met GelieerdePersonen (inc. persoonsinfo)</returns>
+		/// <remarks>Als de persoon nergens woont, is hij toch zijn eigen
+		/// huisgenoot.  Enkel huisgenoten uit dezelfde groep als de gelieerde persoon worden opgeleverd.</remarks>
+		IList<GelieerdePersoon> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID);
 	}
 }

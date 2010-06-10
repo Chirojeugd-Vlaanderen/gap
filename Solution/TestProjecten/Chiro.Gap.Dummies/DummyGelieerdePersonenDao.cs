@@ -75,6 +75,11 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		public IList<GelieerdePersoon> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 	}
 }

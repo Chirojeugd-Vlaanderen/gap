@@ -421,5 +421,48 @@ namespace Chiro.Gap.Data.Ef
 					select gp).ToList();
 			}
 		}
+
+		/// <summary>
+		/// Haalt alle gelieerde personen op (incl persoonsinfo) die op een zelfde
+		/// adres wonen en gelieerd zijn aan dezelfde groep als de gelieerde persoon met het gegeven ID.
+		/// </summary>
+		/// <param name="gelieerdePersoonID">ID van gegeven gelieerde
+		/// persoon.</param>
+		/// <returns>Lijst met GelieerdePersonen (inc. persoonsinfo)</returns>
+		/// <remarks>Als de persoon nergens woont, is hij toch zijn eigen
+		/// huisgenoot.  Enkel huisgenoten uit dezelfde groep als de gelieerde persoon worden opgeleverd.</remarks>
+		public IList<GelieerdePersoon> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID)
+		{
+			using (var db = new ChiroGroepEntities())
+			{
+				// Zoek eerst de geleerde persoon zelf.
+
+				var zelf = (from gp in db.GelieerdePersoon.Include(gp => gp.Persoon).Include(gp => gp.Groep)
+					    where gp.ID == gelieerdePersoonID 
+					    select gp).FirstOrDefault();
+
+				if (zelf == null)
+				{
+					return new List<GelieerdePersoon>();
+				}
+				else
+				{
+					var query = (from gp in db.GelieerdePersoon.Include(gp => gp.Persoon)
+					              where gp.Groep.ID == zelf.Groep.ID &&
+					              	gp.Persoon.PersoonsAdres.Any(
+					              		pa => pa.Adres.PersoonsAdres.Any(pa2=>pa2.Persoon.ID == zelf.Persoon.ID))
+					              select gp);
+
+					if (query.FirstOrDefault() == null)
+					{
+						return new List<GelieerdePersoon> {zelf};
+					}
+					else
+					{
+						return query.ToList();
+					}
+				}
+			}
+		}
 	}
 }

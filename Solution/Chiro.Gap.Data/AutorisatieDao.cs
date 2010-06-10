@@ -198,7 +198,7 @@ namespace Chiro.Gap.Data.Ef
 					= db.GelieerdePersoon
 					.Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.ID, gelieerdePersonenIDs))
 					.Where(gp => gp.Groep.GebruikersRecht.Any(r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)))
-					.Select(gp => gp.ID);
+					.Select(gp => gp.ID).Distinct();
 
 				resultaat = query.ToList();
 			}

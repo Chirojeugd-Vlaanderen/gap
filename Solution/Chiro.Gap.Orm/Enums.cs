@@ -94,9 +94,11 @@ namespace Chiro.Gap.Orm
 		/// </summary>
                 Groep = 0x02,
 		/// <summary>
-		/// Enkel van toepassing op persoonsobjecten: neem gelieerde personen waar je GAV-rechten hebt mee
+		/// Enkel van toepassing op persoonsobjecten: neem *alle* gelieerdepersoonsobjecten mee (ook die van andere groepen).
+		/// Enkel gebruiken als strict noodzakelijk! (bijv als het voorkeursadres in een andere groep mee gemanipuleerd moet 
+		/// worden)
 		/// </summary>
-		MijnGelieerdePersonen = 0x04
+		AlleGelieerdePersonen = 0x04
 	}
 
 	/// <summary>

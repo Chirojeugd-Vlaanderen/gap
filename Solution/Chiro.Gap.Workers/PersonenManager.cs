@@ -154,7 +154,8 @@ namespace Chiro.Gap.Workers
 		/// adressen, en de gelieerde personen waarop de gebruiker GAV-rechten heeft.</param>
 		/// <param name="adres">Toe te voegen adres</param>
 		/// <param name="adrestype">Het adrestype (thuis, kot, enz.)</param>
-		public void AdresToevoegen(IEnumerable<Persoon> personen, Adres adres, AdresTypeEnum adrestype, bool voorkeur)
+		/// <remarks>TODO: Dit lijkt nog te hard op AdresToevoegen in GelieerdePersonenManager.</remarks>
+		public void AdresToevoegen(IEnumerable<Persoon> personen, Adres adres, AdresTypeEnum adrestype)
 		{
 			var persIDs = (from p in personen
 				       select p.ID).ToList();
@@ -194,19 +195,6 @@ namespace Chiro.Gap.Workers
 				var pa = new PersoonsAdres { Adres = adres, Persoon = p, AdresType = adrestype };
 				p.PersoonsAdres.Add(pa);
 				adres.PersoonsAdres.Add(pa);
-
-				if (voorkeur)
-				{
-					// TODO: Vooral deze code doet me vermoeden dat we het toevoegen van een adres
-					// beter verhuizen naar GelieerdePersonenManager:
-
-					var gpMgr = Factory.Maak<GelieerdePersonenManager>();
-
-					foreach (GelieerdePersoon gp in p.GelieerdePersoon)
-					{
-						gpMgr.VoorkeurInstellen(gp, pa);
-					}
-				}
 			}
 
 		}
@@ -225,9 +213,14 @@ namespace Chiro.Gap.Workers
 			{
 				paths.Add(p => p.PersoonsAdres.First().Adres);
 			}
+
 			if ((extras & PersoonsExtras.Groep) != 0)
 			{
 				paths.Add(p => p.GelieerdePersoon.First().Groep);
+			}
+                        else if ((extras & PersoonsExtras.AlleGelieerdePersonen) != 0)
+			{
+				paths.Add(p => p.GelieerdePersoon);
 			}
 
 			// TODO: dit is nogal veel dubbel werk.  EnkelMijnPersonen laadt alle gelieerde personen,
@@ -236,9 +229,35 @@ namespace Chiro.Gap.Workers
 			// persoonsextra's opgehaald.
 			return _dao.Ophalen(
 				_autorisatieMgr.EnkelMijnPersonen(personenIDs), 
-				((extras & PersoonsExtras.MijnGelieerdePersonen) != 0), 
-				_autorisatieMgr.GebruikersNaamGet(),
 				paths.ToArray());
+		}
+
+		/// <summary>
+		/// Haalt een lijst op van personen, op basis van een lijst <paramref name="gelieerdePersoonIDs"/>.
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">ID's van *GELIEERDE* personen, waarvan de corresponderende persoonsobjecten
+		/// opgehaald moeten worden.</param>
+		/// <param name="extras">Bepaalt welke gekoppelde entiteiten mee opgehaald moeten worden.</param>
+		/// <returns>De gevraagde personen</returns>
+		public IEnumerable<Persoon> LijstOphalenViaGelieerdePersoon(IEnumerable<int> gelieerdePersoonIDs, PersoonsExtras extras)
+		{
+			var paths = new List<Expression<Func<Persoon, object>>>();
+
+			if ((extras & PersoonsExtras.Adressen) != 0)
+			{
+				paths.Add(p => p.PersoonsAdres.First().Adres);
+			}
+
+			if ((extras & PersoonsExtras.Groep) != 0)
+			{
+				paths.Add(p => p.GelieerdePersoon.First().Groep);
+			}
+			else if ((extras & PersoonsExtras.AlleGelieerdePersonen) != 0)
+			{
+				paths.Add(p => p.GelieerdePersoon);
+			}
+
+			return _dao.OphalenViaGelieerdePersoon(gelieerdePersoonIDs, paths.ToArray());
 		}
 	}
 }

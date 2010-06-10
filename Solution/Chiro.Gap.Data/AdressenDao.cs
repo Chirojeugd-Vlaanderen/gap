@@ -224,5 +224,38 @@ namespace Chiro.Gap.Data.Ef
 
 			return resultaat;
 		}
+
+		/// <summary>
+		/// Haalt het adres met ID <paramref name="adresID"/> op, inclusief de bewoners uit de groep met ID
+		/// <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="adresID">ID van het op te halen adres</param>
+		/// <param name="groepID">ID van de groep waaruit bewoners moeten worden gehaald</param>
+		/// <returns>Het gevraagde adres met de relevante bewoners.</returns>
+		/// <remarks>Alle andere adressen van de gekoppelde bewoners worden helaas ook mee opgehaald</remarks>
+		public Adres BewonersOphalen(int adresID, int groepID)
+		{
+			Adres adres;
+
+			using (var db = new ChiroGroepEntities())
+			{
+				var gps = (from gp in db.GelieerdePersoon.Include(gp2 => gp2.Persoon.PersoonsAdres.First().Adres)
+				           where gp.Groep.ID == groepID && gp.Persoon.PersoonsAdres.Any(pa => pa.Adres.ID == adresID)
+				           select gp).ToList();
+
+				// Ik heb nu alle gelieerde personen die ik nodig heb, wel met veel te veel adressen, maar soit.
+				// Ik kies uit de eerste het goeie adres, en dan heb ik normaalgezien alles wat ik nodg heb.
+
+				adres = (from pa in gps.First().Persoon.PersoonsAdres
+				             where pa.Adres.ID == adresID
+				             select pa.Adres).FirstOrDefault();
+
+				adres.StraatNaamReference.Load();
+				adres.WoonPlaatsReference.Load();
+			}
+
+			return Utility.DetachObjectGraph(adres);
+		}
+
 	}
 }

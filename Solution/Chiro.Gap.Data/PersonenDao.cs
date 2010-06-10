@@ -94,52 +94,44 @@ namespace Chiro.Gap.Data.Ef
 			{
 				db.Persoon.MergeOption = MergeOption.NoTracking;
 
-				return (from foo in db.Persoon.Include(p => p.PersoonsAdres.First().Adres.StraatNaam).Include(p => p.PersoonsAdres.First().Adres.WoonPlaats)
-						where foo.GelieerdePersoon.Any(bar => bar.ID == gelieerdePersoonID)
-						select foo).FirstOrDefault();
+				return
+					(from foo in
+					 	db.Persoon.Include(p => p.PersoonsAdres.First().Adres.StraatNaam).Include(
+					 		p => p.PersoonsAdres.First().Adres.WoonPlaats)
+					 where foo.GelieerdePersoon.Any(bar => bar.ID == gelieerdePersoonID)
+					 select foo).FirstOrDefault();
 			}
 		}
 
 		/// <summary>
-		/// Ophalen van een lijst personen met gekoppelde entiteiten
+		///  Haalt een lijst op van personen, op basis van een lijst <paramref name="gelieerdePersoonIDs"/>.
 		/// </summary>
-		/// <param name="ids">PersoonID's van op te halen personen</param>
-		/// <param name="metGelieerdePersonen">Indien true, worden aan elke persoon de gelieerde personen gekoppeld waar
-		/// de gebruiker met login <paramref name="login"/> GAV voor is.</param>
-		/// <param name="login">Enkel relevant indien <paramref name="metGelieerdePersonen"/> <c>true</c> is: de username
-		/// van de gebruiker.</param>
-		/// <param name="paths">Omschrijft mee op te halen gekoppelde entiteiten</param>
-		/// <returns>Een lijst opgehaalde entiteiten</returns>
-		/// <remarks>Deze method breekt de structuur van het programma, of die indruk heb ik toch.  
-		/// TODO: uitzoeken of ze niet vermeden kan worden.</remarks>
-		public IList<Persoon> Ophalen(
-			IEnumerable<int> ids,
-			bool metGelieerdePersonen,
-			string login,
-			params Expression<Func<Persoon, object>>[] paths)
+		/// <param name="gelieerdePersoonIDs">ID's van *GELIEERDE* personen, waarvan de corresponderende persoonsobjecten
+		/// opgehaald moeten worden.</param>
+		/// <param name="paths">Bepaalt welke gekoppelde entiteiten mee opgehaald moeten worden.</param>
+		/// <returns>De gevraagde personen></returns>
+		public IEnumerable<Persoon> OphalenViaGelieerdePersoon(IEnumerable<int> gelieerdePersoonIDs, params Expression<Func<Persoon, object>>[] paths)
 		{
 			IList<Persoon> result;
 
 			using (var db = new ChiroGroepEntities())
 			{
-				// In eerste instantie doen we hetzelfde als een 'standaardDAO'
+				//// Ik wil dit bereiken:
 
-				var query = db.Persoon.Where(Utility.BuildContainsExpression<Persoon, int>(
-					ent => ent.ID, 
-					ids)) as ObjectQuery<Persoon>;
+				//var query = (from p in db.Persoon
+				//             where
+				//                p.GelieerdePersoon.Any(gp => gelieerdePersoonIDs.Contains(gp.ID))
+				//             select p) as ObjectQuery<Persoon>;
 
-				result = (IncludesToepassen(query, paths)).ToList();
+				// Maar omdat die 'contains' op die manier niet 'out of the box' werkt, probeer ik
+				// het zo:
 
-				// Nu laden we de gelieerde personen in de objectcontext, zodat ze automagisch gekoppeld worden
-				// aan de personen in 'result'.
-
-				var mijnGeleerdePersonen =
+				var query =
 					(from gp in
-					 	db.GelieerdePersoon.Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(ent => ent.Persoon.ID, ids))
-					 where gp.Groep.GebruikersRecht.Any(gr => String.Compare(gr.Gav.Login, login, true) == 0 &&
-					                                          (gr.VervalDatum == null || gr.VervalDatum >= DateTime.Now))
-					 select gp).ToList();
-						       
+					 	db.GelieerdePersoon.Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.ID, gelieerdePersoonIDs))
+					 select gp.Persoon) as ObjectQuery<Persoon>;
+
+				result = IncludesToepassen(query, paths).ToList();
 			}
 
 			result = Utility.DetachObjectGraph(result);

@@ -23,6 +23,9 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		public int? PersoonAdNummer { get; set; }
 
 		[DataMember]
+		public int GelieerdePersoonID { get; set; }
+
+		[DataMember]
 		public int PersoonID { get; set; }
 
 		[DataMember]

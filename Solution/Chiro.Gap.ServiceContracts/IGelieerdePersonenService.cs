@@ -123,16 +123,17 @@ namespace Chiro.Gap.ServiceContracts
 		#region adressen
 
 		/// <summary>
-		/// Haalt adres op, met daaraan gekoppeld de bewoners waarop de
-		/// gebruiker GAV-rechten heeft.
+		/// Haalt adres op, met daaraan gekoppeld de bewoners uit de groep met ID <paramref name="groepID"/>.
 		/// </summary>
 		/// <param name="adresID">ID op te halen adres</param>
+		/// <param name="groepID">ID van de groep</param>
 		/// <returns>Adresobject met gekoppelde personen</returns>
+		/// <remarks>GelieerdePersoonID's van bewoners worden niet mee opgehaald</remarks>
 		[OperationContract]
-		GezinInfo GezinOphalen(int adresID);
+		GezinInfo GezinOphalen(int adresID, int groepID);
 
 		/// <summary>
-		/// Verhuist gelieerde personen van een oud naar een nieuw
+		/// Verhuist personen van een oud naar een nieuw
 		/// adres.
 		/// (De koppelingen Persoon-Oudadres worden aangepast 
 		/// naar Persoon-NieuwAdres.)
@@ -146,7 +147,23 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
 		[FaultContract(typeof(OngeldigObjectFault))]
-		void Verhuizen(IEnumerable<int> persoonIDs,PersoonsAdresInfo nieuwAdres,int oudAdresID);
+		void PersonenVerhuizen(IEnumerable<int> persoonIDs,PersoonsAdresInfo nieuwAdres,int oudAdresID);
+
+		/// <summary>
+		/// Verhuist gelieerde personen van een oud naar een nieuw adres
+		/// (De koppelingen Persoon-Oudadres worden aangepast 
+		/// naar Persoon-NieuwAdres.)
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">ID's van te verhuizen *GELIEERDE* Personen </param>
+		/// <param name="nieuwAdres">AdresInfo-object met nieuwe adresgegevens</param>
+		/// <param name="oudAdresID">ID van het oude adres</param>
+		/// <remarks>nieuwAdres.ID wordt genegeerd.  Het adresID wordt altijd
+		/// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
+		/// dan krijgt het adres een nieuw ID.</remarks>
+		[OperationContract]
+		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
+		[FaultContract(typeof(OngeldigObjectFault))]
+		void GelieerdePersonenVerhuizen(IEnumerable<int> gelieerdePersoonIDs, PersoonsAdresInfo nieuwAdres, int oudAdresID);
 
 		/// <summary>
 		/// Haalt alle personen op die een adres gemeen hebben met de
@@ -157,7 +174,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// persoon</returns>
 		/// <remarks>Parameters: GELIEERDEpersoonID, returns PERSONEN</remarks>
 		[OperationContract]
-		IList<BewonersInfo> HuisGenotenOphalen(int gelieerdePersoonID);
+		IList<BewonersInfo> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID);
 
 		/// <summary>
 		/// Voegt een adres toe aan een verzameling personen
@@ -165,11 +182,22 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="personenIDs">ID's van Personen
 		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
 		/// <param name="adres">Toe te voegen adres</param>
-		/// <param name="voorkeur">Geeft aan of het nieuwe adres het voorkeursadres moet worden</param>
 		[OperationContract]
 		[FaultContract(typeof(OngeldigObjectFault))]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
-		void AdresToevoegenPersonen(List<int> personenIDs, PersoonsAdresInfo adres, bool voorkeur);
+		void AdresToevoegenPersonen(List<int> personenIDs, PersoonsAdresInfo adres);
+
+		/// <summary>
+		/// Voegt een adres toe aan een verzameling *GELIEERDE* personen
+		/// </summary>
+		/// <param name="gelieerdePersonenIDs">ID's van de gelieerde personen
+		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
+		/// <param name="adr">Toe te voegen adres</param>
+		/// <param name="voorkeur">true indien het nieuwe adres het voorkeursadres moet worden.</param>
+		[OperationContract]
+		[FaultContract(typeof(OngeldigObjectFault))]
+		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
+		void AdresToevoegenGelieerdePersonen(List<int> gelieerdePersonenIDs, PersoonsAdresInfo adr, bool voorkeur);
 
 		/// <summary>
 		/// Verwijdert een adres van een verzameling personen

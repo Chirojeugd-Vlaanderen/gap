@@ -48,7 +48,7 @@
    <fieldset>
    <legend>Adres </legend>
    
-   <%=Html.CheckBoxList("PersoonIDs", Model.Bewoners)%>
+   <%=Html.CheckBoxList("GelieerdePersoonIDs", Model.Bewoners)%>
    
    </fieldset>
 

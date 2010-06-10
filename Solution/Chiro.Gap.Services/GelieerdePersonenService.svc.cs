@@ -223,18 +223,23 @@ namespace Chiro.Gap.Services
 			return pl;
 		}
 
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public GezinInfo GezinOphalen(int adresID)
+		/// <summary>
+		/// Haalt adres op, met daaraan gekoppeld de bewoners uit de groep met ID <paramref name="groepID"/>.
+		/// </summary>
+		/// <param name="adresID">ID op te halen adres</param>
+		/// <param name="groepID">ID van de groep</param>
+		/// <returns>Adresobject met gekoppelde personen</returns>
+		/// <remarks>GelieerdePersoonID's van bewoners worden niet mee opgehaald</remarks>
+		public GezinInfo GezinOphalen(int adresID, int groepID)
 		{
-			var adres = _adrMgr.AdresMetBewonersOphalen(adresID);
+			var adres = _adrMgr.AdresMetBewonersOphalen(adresID, groepID);
 			var resultaat = Mapper.Map<Adres, GezinInfo>(adres);
 
 			return resultaat;
 		}
 
 		/// <summary>
-		/// Verhuist gelieerde personen van een oud naar een nieuw
+		/// Verhuist personen van een oud naar een nieuw
 		/// adres.
 		/// (De koppelingen Persoon-Oudadres worden aangepast 
 		/// naar Persoon-NieuwAdres.)
@@ -253,11 +258,14 @@ namespace Chiro.Gap.Services
 		/// </remarks>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void Verhuizen(
+		public void PersonenVerhuizen(
 			IEnumerable<int> persoonIDs,
 			PersoonsAdresInfo naarAdres,
 			int oudAdresID)
 		{
+			// TODO: Dit lijkt te veel op 'GelieerdePersonenVerhuizen'.  Bovendien wordt deze functie waarschijnlijk
+			// niet meer gebruikt; ze mag weg.
+			 
 			// Zoek adres op in database, of maak een nieuw.
 			// (als straat en gemeente gekend)
 
@@ -321,13 +329,150 @@ namespace Chiro.Gap.Services
 			// Bijgevolg moet het oudeAdres niet gepersisteerd worden.
 		}
 
+
+		/// <summary>
+		/// Verhuist gelieerde personen van een oud naar een nieuw adres
+		/// (De koppelingen Persoon-Oudadres worden aangepast 
+		/// naar Persoon-NieuwAdres.)
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">ID's van te verhuizen *GELIEERDE* Personen </param>
+		/// <param name="naarAdres">AdresInfo-object met nieuwe adresgegevens</param>
+		/// <param name="oudAdresID">ID van het oude adres</param>
+		/// <remarks>nieuwAdres.ID wordt genegeerd.  Het adresID wordt altijd
+		/// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
+		/// dan krijgt het adres een nieuw ID.</remarks>
+		public void GelieerdePersonenVerhuizen(
+			IEnumerable<int> gelieerdePersoonIDs,
+			PersoonsAdresInfo naarAdres,
+			int oudAdresID)
+		{
+			// TODO: Dit lijkt te veel op 'PersonenVerhuizen'.  'PersonenVerhuizen' mag weg.
+
+			// Zoek adres op in database, of maak een nieuw.
+			// (als straat en gemeente gekend)
+
+			Adres nieuwAdres;
+
+			try
+			{
+				nieuwAdres = _adrMgr.ZoekenOfMaken(
+					naarAdres.StraatNaamNaam,
+					naarAdres.HuisNr,
+					naarAdres.Bus,
+					naarAdres.WoonPlaatsNaam,
+					naarAdres.PostNr,
+					null);	// TODO: buitenlandse adressen (#238)
+			}
+			catch (OngeldigObjectException ex)
+			{
+				var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
+
+				throw new FaultException<OngeldigObjectFault>(fault);
+			}
+
+			// Haal te verhuizen personen op, samen met hun adressen.
+
+			IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalenViaGelieerdePersoon(gelieerdePersoonIDs, PersoonsExtras.Adressen);
+
+			// Kijk na of het naar-adres toevallig mee opgehaald is.  Zo ja, werken we daarmee verder
+			// (iet of wat consistenter)
+
+			PersoonsAdres a = personenLijst.SelectMany(prs => prs.PersoonsAdres)
+				.Where(pa => pa.Adres.ID == nieuwAdres.ID).FirstOrDefault();
+
+			if (a != null)
+			{
+				nieuwAdres = a.Adres;
+			}
+
+			// Het oud adres is normaal gezien gekoppeld aan een van de te verhuizen personen.
+
+			Adres oudAdres = personenLijst.SelectMany(prs => prs.PersoonsAdres)
+				.Where(pa => pa.Adres.ID == oudAdresID).Select(pa => pa.Adres).FirstOrDefault();
+
+			try
+			{
+				_pMgr.Verhuizen(personenLijst, oudAdres, nieuwAdres, naarAdres.AdresType);
+			}
+			catch (BlokkerendeObjectenException<PersoonsAdres> ex)
+			{
+				var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>,
+					BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
+
+				throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
+			}
+
+			// Persisteren
+			_adrMgr.Bewaren(nieuwAdres);
+
+			// Bij een verhuis, blijven de PersoonsAdresobjecten dezelfde,
+			// maar worden ze aan een ander adres gekoppeld.  Een post
+			// van het nieuwe adres (met persoonsadressen) koppelt bijgevolg
+			// de persoonsobjecten los van het oude adres.
+			// Bijgevolg moet het oudeAdres niet gepersisteerd worden.
+		}
+
+
+		/// <summary>
+		/// Voegt een adres toe aan een verzameling *GELIEERDE* personen
+		/// </summary>
+		/// <param name="gelieerdePersonenIDs">ID's van de gelieerde personen
+		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
+		/// <param name="adr">Toe te voegen adres</param>
+		/// <param name="voorkeur">true indien het nieuwe adres het voorkeursadres moet worden.</param>
+		public void AdresToevoegenGelieerdePersonen(List<int> gelieerdePersonenIDs, PersoonsAdresInfo adr, bool voorkeur)
+		{
+			// Adres opzoeken in database
+			Adres adres;
+			try
+			{
+				adres = _adrMgr.ZoekenOfMaken(adr.StraatNaamNaam, adr.HuisNr, adr.Bus, adr.WoonPlaatsNaam, adr.PostNr, null);
+			}
+			catch (OngeldigObjectException ex)
+			{
+				var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
+
+				throw new FaultException<OngeldigObjectFault>(fault);
+			}
+
+			// Personen ophalen.  Haal ook gelieerde personen uit andere groepen op, omdat daarvan
+			// mogelijk ook het voorkeursadres verandert (indien er bijv. geen voorkeursadres is, of
+			// indien een voorkeursadres verdwijnt, en bijgevolg verwijderd moet worden.)
+
+			IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalenViaGelieerdePersoon(
+				gelieerdePersonenIDs, PersoonsExtras.Adressen | PersoonsExtras.AlleGelieerdePersonen);
+
+			// Voor het adres te koppelen, gebruiken we enkel de gelieerde personen met ID's uit gelieerdePersonenIDs.  
+			//   - het nieuwe adres wordt aan persoon gekoppeld, en niet aan gelieerde persoon
+			//   - de parameter 'voorkeur' is van toepassing op de gp's met ID's uit gelieerdePersonenIDs
+
+			var gpLijst = from gp in personenLijst.SelectMany(p => p.GelieerdePersoon)
+			              where gelieerdePersonenIDs.Contains(gp.ID)
+			              select gp;
+
+			try
+			{
+				_gpMgr.AdresToevoegen(gpLijst, adres, adr.AdresType, voorkeur);
+			}
+			catch (BlokkerendeObjectenException<PersoonsAdres> ex)
+			{
+				var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>, BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
+
+				throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
+			}
+
+			// persisteren
+			_adrMgr.Bewaren(adres);
+		}
+
+
 		/// <summary>
 		/// Voegt een adres toe aan een verzameling personen
 		/// </summary>
 		/// <param name="personenIDs">ID's van Personen
 		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
 		/// <param name="adr">Toe te voegen adres</param>
-		public void AdresToevoegenPersonen(List<int> personenIDs, PersoonsAdresInfo adr, bool voorkeur)
+		public void AdresToevoegenPersonen(List<int> personenIDs, PersoonsAdresInfo adr)
 		{
 			// Dit gaat sterk lijken op verhuizen.
 
@@ -345,13 +490,13 @@ namespace Chiro.Gap.Services
 			}
 
 			// Personen ophalen
-			IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalen(personenIDs, PersoonsExtras.Adressen|PersoonsExtras.MijnGelieerdePersonen);
+			IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalen(personenIDs, PersoonsExtras.Adressen);
 
 			// Adres koppelen aan personen
 
 			try
 			{
-				_pMgr.AdresToevoegen(personenLijst, adres, adr.AdresType, voorkeur);
+				_pMgr.AdresToevoegen(personenLijst, adres, adr.AdresType);
 			}
 			catch (BlokkerendeObjectenException<PersoonsAdres> ex)
 			{
@@ -408,10 +553,14 @@ namespace Chiro.Gap.Services
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<BewonersInfo> HuisGenotenOphalen(int gelieerdePersoonID)
+		public IList<BewonersInfo> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID)
 		{
-			IList<Persoon> lijst = _pMgr.HuisGenotenOphalen(gelieerdePersoonID);
-			return Mapper.Map<IList<Persoon>, IList<BewonersInfo>>(lijst);
+			IList<GelieerdePersoon> lijst = _gpMgr.HuisGenotenOphalenZelfdeGroep(gelieerdePersoonID);
+
+			// Opgelet: als de return een exception throwt, dan is er waarschijnljk een ongeldig adrestype
+			// mee gemoeid.
+
+			return Mapper.Map<IList<GelieerdePersoon>, IList<BewonersInfo>>(lijst);
 		}
 
 		/// <summary>

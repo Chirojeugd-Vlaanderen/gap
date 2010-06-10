@@ -58,6 +58,25 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
+		/// Haalt het adres met ID <paramref name="adresID"/> op, inclusief de bewoners uit de groep met ID
+		/// <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="adresID">ID van het op te halen adres</param>
+		/// <param name="groepID">ID van de groep waaruit bewoners moeten worden gehaald</param>
+		/// <returns>Het gevraagde adres met de relevante bewoners.</returns>
+		public Adres AdresMetBewonersOphalen(int adresID, int groepID)
+		{
+			if (_autorisatieMgr.IsGavGroep(groepID))
+			{
+				return _dao.BewonersOphalen(adresID, groepID);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+		}
+
+		/// <summary>
 		/// Persisteert adres in de database, samen met alle gekoppelde personen en gelieerde personen.
 		/// </summary>
 		/// <param name="adr">Te persisteren adres</param>

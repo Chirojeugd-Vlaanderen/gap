@@ -26,6 +26,15 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		Adres BewonersOphalen(int adresID, string user);
 
 		/// <summary>
+		/// Haalt het adres met ID <paramref name="adresID"/> op, inclusief de bewoners uit de groep met ID
+		/// <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="adresID">ID van het op te halen adres</param>
+		/// <param name="groepID">ID van de groep waaruit bewoners moeten worden gehaald</param>
+		/// <returns>Het gevraagde adres met de relevante bewoners.</returns>
+		Adres BewonersOphalen(int adresID, int groepID);
+
+		/// <summary>
 		/// Haalt adres op, op basis van de adresgegevens
 		/// </summary>
 		/// <param name="straatNaam">Naam van de straat</param>

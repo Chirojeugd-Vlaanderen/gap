@@ -26,7 +26,7 @@ namespace Chiro.Gap.WebApp.Models
         public AdresModel()
         {
             Bewoners = new List<CheckBoxListInfo>();
-            PersoonIDs = new List<int>();
+            GelieerdePersoonIDs = new List<int>();
             PersoonsAdresInfo = new PersoonsAdresInfo();
             WoonPlaatsen = new List<WoonPlaatsInfo>();
         }
@@ -56,7 +56,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// De IDs van de gekozen gelieerdepersonen die mee verhuizen (subset van de bewoners).
 		/// </summary>
-		public List<int> PersoonIDs { get; set; }
+		public List<int> GelieerdePersoonIDs { get; set; }
 
 		/// <summary>
 		/// Is dit nieuwe adres iedereen zijn voorkeursadres

@@ -17,6 +17,8 @@ using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.Workers.KipSync;
 
+using Adres = Chiro.Gap.Orm.Adres;
+using AdresTypeEnum = Chiro.Gap.Domain.AdresTypeEnum;
 using CommunicatieType = Chiro.Gap.Orm.CommunicatieType;
 using Persoon = Chiro.Gap.Orm.Persoon;
 
@@ -577,6 +579,7 @@ namespace Chiro.Gap.Workers
 			{
 				paths.Add(gp => gp.Persoon.PersoonsAdres.First().Adres);
 			}
+
 			if ((extras & PersoonsExtras.Groep) != 0)
 			{
 				paths.Add(gp => gp.Groep);
@@ -624,6 +627,96 @@ namespace Chiro.Gap.Workers
 			}
 
 			gp.PersoonsAdres = voorkeur;
+		}
+
+		/// <summary>
+		/// Koppelt het gegeven Adres via nieuwe PersoonsAdresObjecten
+		/// aan de Personen gekoppeld aan de gelieerde personen <paramref name="gelieerdePersonen"/>.  
+		/// Persisteert niet.
+		/// </summary>
+		/// <param name="gelieerdePersonen">Gelieerde  die er een adres bij krijgen, met daaraan gekoppeld hun huidige
+		/// adressen, en de gelieerde personen waarop de gebruiker GAV-rechten heeft.</param>
+		/// <param name="adres">Toe te voegen adres</param>
+		/// <param name="adrestype">Het adrestype (thuis, kot, enz.)</param>
+		/// <param name="voorkeur">Indien true, wordt het nieuwe adres voorkeursadres van de gegeven gelieerde personen</param>
+		/// <remarks>TODO: Dit lijkt nog te hard op AdresToevoegen in PersonenManager.</remarks>
+		public void AdresToevoegen(IEnumerable<GelieerdePersoon> gelieerdePersonen, Adres adres, AdresTypeEnum adrestype, bool voorkeur)
+		{
+			var gpersIDs = (from p in gelieerdePersonen
+				       select p.ID).ToList();
+			var mijngPersIDs = _autorisatieMgr.EnkelMijnGelieerdePersonen(gpersIDs);
+
+			if (gpersIDs.Count() != mijngPersIDs.Count())
+			{
+				// stiekem personen niet gelieerd aan eigen groep bij in lijst opgenomen.  Geen
+				// tijd aan verspillen; gewoon een GeenGavException.
+
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+
+			// Vind personen waaraan het adres al gekoppeld is.
+			// (We hebben chance dat we hier in praktijk nooit komen met een nieuw adres, anders
+			// zou onderstaande problemen geven.)
+
+			var bestaand = gelieerdePersonen.Select(gp=>gp.Persoon).SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == adres.ID));
+
+			if (bestaand.FirstOrDefault() != null)
+			{
+				// Sommige personen hebben het adres al.  Geef een exception met daarin de
+				// betreffende persoonsadres-objecten.
+
+				var bestaandePersoonsAdressen = bestaand.ToList();
+
+				throw new BlokkerendeObjectenException<PersoonsAdres>(
+					FoutNummer.WonenDaarAl,
+					bestaand,
+					bestaand.Count(),
+					Properties.Resources.WonenDaarAl);
+			}
+
+			// En dan nu het echte werk:
+			foreach (var gelieerdePersoon in gelieerdePersonen)
+			{
+				// Maak PersoonsAdres dat het adres aan de persoon koppelt.
+
+				// TODO: mogelijk hebben we hier een probleem als 2 verschillende gelieerde personen gekoppeld
+				// aan dezelfde persoon in gelieerdePersonen zitten.
+
+				var pa = new PersoonsAdres { Adres = adres, Persoon = gelieerdePersoon.Persoon, AdresType = adrestype };
+				gelieerdePersoon.Persoon.PersoonsAdres.Add(pa);
+				adres.PersoonsAdres.Add(pa);
+
+				if (voorkeur)
+				{
+					VoorkeurInstellen(gelieerdePersoon, pa);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Haalt gelieerde personen op die een adres gemeen hebben met de 
+		/// GelieerdePersoon met gegeven ID
+		/// </summary>
+		/// <param name="gelieerdePersoonID">ID van GelieerdePersoon waarvan huisgenoten
+		/// gevraagd zijn</param>
+		/// <returns>Lijstje met gelieerde personen</returns>
+		/// <remarks>Enkel de huisgenoten die gelieerd zijn aan de groep van de originele gelieerde persoon worden
+		/// mee opgehaald, ongeacht of er misschien nog huisgenoten zijn in een andere groep waar de gebruiker ook
+		/// GAV-rechten op heeft.</remarks>
+		public IList<GelieerdePersoon> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID)
+		{
+			if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
+			{
+				// Haal alle huisgenoten op
+
+				IList<GelieerdePersoon> resultaat = _dao.HuisGenotenOphalenZelfdeGroep(gelieerdePersoonID);
+
+				return resultaat.ToList();
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
 		}
 	}
 }

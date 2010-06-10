@@ -21,8 +21,8 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	public interface IPersonenDao : IDao<Persoon>
 	{
 		/// <summary>
-		/// Haalt alle personen op die op een zelfde
-		/// adres wonen als de gelieerde persoon met het gegeven ID.
+		/// Haalt alle gelieerde personen op (incl persoonsinfo) die op een zelfde
+		/// adres wonen en gelieerd zijn aan dezelfde groep als de gelieerde persoon met het gegeven ID.
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID van gegeven gelieerde
 		/// persoon.</param>
@@ -40,19 +40,12 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		Persoon CorresponderendePersoonOphalen(int gelieerdePersoonID);
 
 		/// <summary>
-		/// Ophalen van een lijst personen met gekoppelde entiteiten
+		///  Haalt een lijst op van personen, op basis van een lijst <paramref name="gelieerdePersoonIDs"/>.
 		/// </summary>
-		/// <param name="ids">PersoonID's van op te halen personen</param>
-		/// <param name="metGelieerdePersonen">Indien true, worden aan elke persoon de gelieerde personen gekoppeld waar
-		/// de gebruiker met login <paramref name="login"/> GAV voor is.</param>
-		/// <param name="login">Enkel relevant indien <paramref name="metGelieerdePersonen"/> <c>true</c> is: de username
-		/// van de gebruiker.</param>
-		/// <param name="paths">Omschrijft mee op te halen gekoppelde entiteiten</param>
-		/// <returns>Een lijst opgehaalde entiteiten</returns>
-		IList<Persoon> Ophalen(
-			IEnumerable<int> ids,
-			bool metGelieerdePersonen,
-			string login,
-			params Expression<Func<Persoon, object>>[] paths);
+		/// <param name="gelieerdePersoonIDs">ID's van *GELIEERDE* personen, waarvan de corresponderende persoonsobjecten
+		/// opgehaald moeten worden.</param>
+		/// <param name="paths">Bepaalt welke gekoppelde entiteiten mee opgehaald moeten worden.</param>
+		/// <returns>De gevraagde personen></returns>
+		IEnumerable<Persoon> OphalenViaGelieerdePersoon(IEnumerable<int> gelieerdePersoonIDs, params Expression<Func<Persoon, object>>[] paths);
 	}
 }
