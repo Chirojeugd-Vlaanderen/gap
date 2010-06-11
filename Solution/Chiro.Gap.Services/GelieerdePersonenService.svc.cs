@@ -436,8 +436,7 @@ namespace Chiro.Gap.Services
 			}
 
 			// Personen ophalen.  Haal ook gelieerde personen uit andere groepen op, omdat daarvan
-			// mogelijk ook het voorkeursadres verandert (indien er bijv. geen voorkeursadres is, of
-			// indien een voorkeursadres verdwijnt, en bijgevolg verwijderd moet worden.)
+			// mogelijk ook het voorkeursadres verandert (indien er bijv. geen voorkeursadres is)
 
 			IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalenViaGelieerdePersoon(
 				gelieerdePersonenIDs, PersoonsExtras.Adressen | PersoonsExtras.AlleGelieerdePersonen);
@@ -472,6 +471,9 @@ namespace Chiro.Gap.Services
 		/// <param name="personenIDs">ID's van Personen
 		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
 		/// <param name="adr">Toe te voegen adres</param>
+		/// <remarks>Als het adres het eerste adres van de persoon is, maakt deze code hier geen standaardadres van.
+		/// Gebruik liever 'AdresToevoegenGelieerdePersonen'.</remarks>
+		[Obsolete]
 		public void AdresToevoegenPersonen(List<int> personenIDs, PersoonsAdresInfo adr)
 		{
 			// Dit gaat sterk lijken op verhuizen.

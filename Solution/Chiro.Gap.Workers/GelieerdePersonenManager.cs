@@ -596,10 +596,28 @@ namespace Chiro.Gap.Workers
 		/// <param name="voorkeur">Persoonsadres dat voorkeursadres moet worden van <paramref name="gp"/>.</param>
 		public void VoorkeurInstellen(GelieerdePersoon gp, PersoonsAdres voorkeur)
 		{
+			VoorkeurInstellen(gp, voorkeur, true);
+		}
+
+		/// <summary>
+		/// Maakt het persoonsAdres <paramref name="voorkeur"/> het voorkeursadres van de gelieerde persoon
+		/// <paramref name="gp"/>
+		/// </summary>
+		/// <param name="gp">Gelieerde persoon die een nieuw voorkeursadres moet krijgen</param>
+		/// <param name="voorkeur">Persoonsadres dat voorkeursadres moet worden van <paramref name="gp"/>.</param>
+		/// <param name="checkGav">Indien <paramref name="checkGav"/> <c>false</c> is, mag je het voorkeursadres
+		/// van een gelieerde persoon ook wijzigen als je geen GAV bent van die gelieerde persoon.  (Je moet altijd
+		/// sowieso GAV zijn van het persoonsadres.)  Dat is nodig in uitzonderlijke gevallen,
+		/// bijv. als je iemand een eerste adres geeft, moet dat ook het voorkeursadres worden van de gelieerde personen
+		/// in andere groepen, ook al ben je geen GAV van deze groepen.</param>
+		/// <remarks>Deze method is private, en dat moet zo blijven.  Het is niet de bedoeling dat het gemakkelijk is
+		/// om zonder GAV-rechten een adresvoorkeur te veranderen.</remarks>
+		private void VoorkeurInstellen(GelieerdePersoon gp, PersoonsAdres voorkeur, bool checkGav)
+		{
 			Debug.Assert(gp.Persoon != null);
 			Debug.Assert(voorkeur.Persoon != null);
 
-			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID) || !_autorisatieMgr.IsGavPersoonsAdres(voorkeur.ID))
+			if (checkGav && !_autorisatieMgr.IsGavGelieerdePersoon(gp.ID) || !_autorisatieMgr.IsGavPersoonsAdres(voorkeur.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
@@ -679,14 +697,23 @@ namespace Chiro.Gap.Workers
 			{
 				// Maak PersoonsAdres dat het adres aan de persoon koppelt.
 
-				// TODO: mogelijk hebben we hier een probleem als 2 verschillende gelieerde personen gekoppeld
-				// aan dezelfde persoon in gelieerdePersonen zitten.
-
 				var pa = new PersoonsAdres { Adres = adres, Persoon = gelieerdePersoon.Persoon, AdresType = adrestype };
 				gelieerdePersoon.Persoon.PersoonsAdres.Add(pa);
 				adres.PersoonsAdres.Add(pa);
 
-				if (voorkeur)
+				if (gelieerdePersoon.Persoon.PersoonsAdres.Count() == 1)
+				{
+					// Eerste adres van de gelieerde persoon.  Dit moet bij elke gelieerde persoon het voorkeursadres
+					// worden.
+
+					foreach (var gp2 in gelieerdePersoon.Persoon.GelieerdePersoon)
+					{
+						VoorkeurInstellen(gp2, pa, false);
+						// De extra parameter 'false' laat toe het voorkeursadres te wijzigen van
+						// een gelieerde persoon waarvoor je geen GAV bent.
+					}
+				}
+                                else if (voorkeur)
 				{
 					VoorkeurInstellen(gelieerdePersoon, pa);
 				}

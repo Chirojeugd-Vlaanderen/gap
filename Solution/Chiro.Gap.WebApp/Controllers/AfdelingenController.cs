@@ -147,7 +147,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				TempData["feedback"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 			}
-			catch (FaultException ex)
+			catch (FaultException)
 			{
 				TempData["feedback"] = Properties.Resources.AfdelingNietLeeg;
 				// TODO: specifieke exceptions catchen en weergeven via de modelstate, en niet

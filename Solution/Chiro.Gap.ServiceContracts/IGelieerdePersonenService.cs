@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.ServiceModel;
 
@@ -181,11 +182,14 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="personenIDs">ID's van Personen
 		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
-		/// <param name="adres">Toe te voegen adres</param>
+		/// <param name="adr">Toe te voegen adres</param>
+		/// <remarks>Als het adres het eerste adres van de persoon is, maakt deze code hier geen standaardadres van.
+		/// Gebruik liever 'AdresToevoegenGelieerdePersonen'.</remarks>
 		[OperationContract]
+		[Obsolete]
 		[FaultContract(typeof(OngeldigObjectFault))]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
-		void AdresToevoegenPersonen(List<int> personenIDs, PersoonsAdresInfo adres);
+		void AdresToevoegenPersonen(List<int> personenIDs, PersoonsAdresInfo adr);
 
 		/// <summary>
 		/// Voegt een adres toe aan een verzameling *GELIEERDE* personen

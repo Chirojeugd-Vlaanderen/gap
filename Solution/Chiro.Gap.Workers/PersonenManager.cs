@@ -154,7 +154,9 @@ namespace Chiro.Gap.Workers
 		/// adressen, en de gelieerde personen waarop de gebruiker GAV-rechten heeft.</param>
 		/// <param name="adres">Toe te voegen adres</param>
 		/// <param name="adrestype">Het adrestype (thuis, kot, enz.)</param>
-		/// <remarks>TODO: Dit lijkt nog te hard op AdresToevoegen in GelieerdePersonenManager.</remarks>
+		/// <remarks>Gebruik GelieerdePersonenManager.AdresToevoegen, zodat bij een eerste adres het standaardadres
+		/// ook in orde komt voor gelieerde personen van andere groepen.</remarks>
+		[Obsolete]
 		public void AdresToevoegen(IEnumerable<Persoon> personen, Adres adres, AdresTypeEnum adrestype)
 		{
 			var persIDs = (from p in personen
