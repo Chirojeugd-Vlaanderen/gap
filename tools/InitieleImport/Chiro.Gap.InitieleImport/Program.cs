@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.IsolatedStorage;
 using System.Linq;
 using System.ServiceModel;
 using Chiro.Cdf.Ioc;
@@ -26,91 +25,97 @@ namespace Chiro.Gap.InitieleImport
 			public PersoonDetail Bestaand { get; set; }
 		}
 
-		/// <summary>
-		/// Hier gebeurt het!
-		/// </summary>
-		/// <param name="args">Command line argumenten; eerste moet stamnr zijn</param>
 		static void Main(string[] args)
 		{
-			if (args.Count() == 0)
-			{
-				Console.WriteLine(Properties.Resources.Usage);
-			}
-			else
-			{
-				Factory.ContainerInit();  // Init IOC
-				_serviceHelper = Factory.Maak<IServiceHelper>();
+			Factory.ContainerInit(); // Init IOC
+			_serviceHelper = Factory.Maak<IServiceHelper>();
 
-				var helper = new KipdorpHelper();
+			foreach (string stamnr in Users.Lijst.Select(info=>info.StamNr).Distinct())
+			{
+				ImporteerGroepsGegevens(stamnr);
+			}
+
+			foreach (var loginInfo in Users.Lijst)
+			{
 				var god = new DataGod();
 
-
-				string stamNrFile = helper.StamNrNaarBestand(args[0]);
-				string aansluitingsBestand = helper.RecentsteAansluitingsBestand(args[0]);
-
-
-				#region Recentste aansluitingsbestand uitpakken
-
-				Console.WriteLine(Resources.UitpakkenVan, aansluitingsBestand);
-
-				// TODO: temporary directory maken, met unieke naam.  Daar zal wellicht wel iets voor
-				// bestaan in .NET.
-
-				// !UitPakDir kort houden, owv de 65-karakterlimiet van paradoxpaden.
-				
-				string destdir = String.Format("{0}/{1}", Settings.Default.UitPakDir, stamNrFile);
-
-				// pak recentste aansluitingsbestand uit
-				Directory.CreateDirectory(destdir);
-
-				string dataDir = helper.Uitpakken(aansluitingsBestand, destdir);
-
-				#endregion
-
-				#region Groep leegmaken en opnieuw creeren
-
-				// alles van de groep verwijderen
-                                                             
-				Console.WriteLine(Resources.VolledigVerwijderen);
-				god.GroepVolledigVerwijderen(args[0]);
-
-				// groep opnieuw aanmaken
-
-				Console.WriteLine(Resources.GroepOpnieuwAanmaken);
-				god.GroepUitKipadmin(args[0]);
-
-				#endregion
-
-				#region Gebruikersrecht toekennen
-				// rechten toekennen, zodat je als user de groep kan opvullen
-				// Via de service komen we te weten wat de gebruikersnaam is :)
-
-				string userName = _serviceHelper.CallService<IGroepenService, string>(svc => svc.WieBenIk());
-				Console.WriteLine(Resources.ServiceUser, userName);
-				Console.WriteLine(Resources.RechtenToekennen, userName);
-
-				god.RechtenToekennen(args[0], userName);
-				#endregion
-
-				// Eerst importeren uit paradox, omdat de import uit paradox
-				// bijv. geen telefoonnummers updatet als er al een persoon gevonden is.
-
-				ImporterenUitPdox(dataDir);
-
-				// Aanvullen uit kipadmin.
-
-				god.GroepsPersonenUitKipadmin(args[0]);
-
-
-
-				// Kan directory blijkbaar niet verwijderen, omdat dit proces zelf de directory gebruikt :-/
-				//Directory.Delete(destdir, true);
+				god.RechtenToekennen(loginInfo.StamNr, loginInfo.Login);
 			}
 
-
-#if DEBUG
 			Console.ReadLine();
-#endif
+		}
+
+		/// <summary>
+		/// Importeert de gegevens van de groep met stamnummer <paramref name="stamNr"/>
+		/// </summary>
+		/// <param name="stamNr">Stamnummer van de groep met te importeren gegevens.</param>
+		static void ImporteerGroepsGegevens(string stamNr)
+		{
+
+			var helper = new KipdorpHelper();
+			var god = new DataGod();
+
+
+			string stamNrFile = helper.StamNrNaarBestand(stamNr);
+			string aansluitingsBestand = helper.RecentsteAansluitingsBestand(stamNr);
+
+			#region Recentste aansluitingsbestand uitpakken
+
+			Console.WriteLine(Resources.UitpakkenVan, aansluitingsBestand);
+
+			// TODO: temporary directory maken, met unieke naam.  Daar zal wellicht wel iets voor
+			// bestaan in .NET.
+
+			// !UitPakDir kort houden, owv de 65-karakterlimiet van paradoxpaden.
+
+			string destdir = String.Format("{0}/{1}", Settings.Default.UitPakDir, stamNrFile);
+
+			// pak recentste aansluitingsbestand uit
+			Directory.CreateDirectory(destdir);
+
+			string dataDir = helper.Uitpakken(aansluitingsBestand, destdir);
+
+			#endregion
+
+			#region Groep leegmaken en opnieuw creeren
+
+			// alles van de groep verwijderen
+
+			Console.WriteLine(Resources.VolledigVerwijderen);
+			god.GroepVolledigVerwijderen(stamNr);
+
+			// groep opnieuw aanmaken
+
+			Console.WriteLine(Resources.GroepOpnieuwAanmaken);
+			god.GroepUitKipadmin(stamNr);
+
+			#endregion
+
+			#region Gebruikersrecht toekennen
+
+			// rechten toekennen, zodat je als user de groep kan opvullen
+			// Via de service komen we te weten wat de gebruikersnaam is :)
+
+			string userName = _serviceHelper.CallService<IGroepenService, string>(svc => svc.WieBenIk());
+			Console.WriteLine(Resources.ServiceUser, userName);
+			Console.WriteLine(Resources.RechtenToekennen, userName);
+
+			god.RechtenToekennen(stamNr, userName);
+
+			#endregion
+
+			// Eerst importeren uit paradox, omdat de import uit paradox
+			// bijv. geen telefoonnummers updatet als er al een persoon gevonden is.
+
+			ImporterenUitPdox(dataDir);
+
+			// Aanvullen uit kipadmin.
+
+			god.GroepsPersonenUitKipadmin(stamNr);
+
+
+			// Kan directory blijkbaar niet verwijderen, omdat dit proces zelf de directory gebruikt :-/
+			//Directory.Delete(destdir, true);
 		}
 
 		/// <summary>
@@ -235,6 +240,10 @@ namespace Chiro.Gap.InitieleImport
 						{
 							Console.WriteLine(Resources.TimeOut);
 						}
+						catch (Exception)
+						{
+							Console.WriteLine(Resources.Oeps);
+						}
 
 					}
 
@@ -255,12 +264,28 @@ namespace Chiro.Gap.InitieleImport
 			}
 
 			string foutBerichten = String.Empty;
-			
-			_serviceHelper.CallService<ILedenService>(svc => svc.LedenMaken(gpIdsKinderen, LidType.Kind, out foutBerichten));
+
+			try
+			{
+				_serviceHelper.CallService<ILedenService>(svc => svc.LedenMaken(gpIdsKinderen, LidType.Kind, out foutBerichten));
+			}
+			catch (CommunicationException)
+			{
+				Console.WriteLine(Properties.Resources.TimeOut);
+			}
+
 			Console.WriteLine(Resources.FoutberichtenKind);
 			Console.WriteLine(foutBerichten);
 
-			_serviceHelper.CallService<ILedenService>(svc => svc.LedenMaken(gpIdsLeiding, LidType.Leiding, out foutBerichten));
+			try
+			{
+				_serviceHelper.CallService<ILedenService>(svc => svc.LedenMaken(gpIdsLeiding, LidType.Leiding, out foutBerichten));
+			}
+			catch (CommunicationException)
+			{
+				Console.WriteLine(Properties.Resources.TimeOut);
+			}
+			
 			Console.WriteLine(Resources.FoutBerichtenLeiding);
 			Console.WriteLine(foutBerichten);
 

@@ -160,6 +160,15 @@ namespace Chiro.Gap.InitieleImport.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OEPS! Er ging iets anders mis..
+        /// </summary>
+        internal static string Oeps {
+            get {
+                return ResourceManager.GetString("Oeps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to --&gt; Ongeldig adres genegeerd..
         /// </summary>
         internal static string OnbekendAdres {
