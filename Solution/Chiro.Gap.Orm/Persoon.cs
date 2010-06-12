@@ -16,6 +16,17 @@ namespace Chiro.Gap.Orm
 	/// <summary>
 	/// Instantieert een Persoon-object dat zorgt voor samenwerking met Entity Framework
 	/// </summary>
+	/// <remarks>
+	/// Als er een persoon met adressen over de service gestuurd wordt,
+	/// en een PersoonsAdres uit de lijst met PersoonsAdressen 
+	/// is TeVerwijderen, dan is het de bedoeling dat
+	/// het PersoonsAdresobject mee verdwijnt uit de database.  Om daarvoor
+	/// te zorgen, is attribuut AssociationEndBehavior
+	/// nodig.  (Als dat attribuut er niet stond, zou enkel
+	/// de koppeling tussen Persoon en Persoonsadres verdwijnen, en
+	/// dat heeft dan weer een key violation tot gevolg.)
+	/// </remarks>
+	[AssociationEndBehavior("PersoonsAdres", Owned = true)]
 	public partial class Persoon : IEfBasisEntiteit
 	{
 		private bool _teVerwijderen = false;

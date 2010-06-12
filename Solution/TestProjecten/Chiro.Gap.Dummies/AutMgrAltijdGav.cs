@@ -25,7 +25,7 @@ namespace Chiro.Gap.Dummies
 			return personenIDs.ToList();
 		}
 
-		public IEnumerable<Chiro.Gap.Orm.Groep> GekoppeldeGroepenGet()
+		public IEnumerable<Chiro.Gap.Orm.Groep> MijnGroepenOphalen()
 		{
 			throw new NotImplementedException();
 		}
@@ -91,6 +91,22 @@ namespace Chiro.Gap.Dummies
 		}
 
 		public bool IsGavPersoonsAdres(int persoonsAdresID)
+		{
+			return true;
+		}
+
+
+		public bool IsGavGroepen(IEnumerable<int> groepIDs)
+		{
+			return true;
+		}
+
+		public IEnumerable<int> MijnGroepIDsOphalen()
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs)
 		{
 			return true;
 		}

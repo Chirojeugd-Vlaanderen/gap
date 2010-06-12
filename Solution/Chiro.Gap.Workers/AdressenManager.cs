@@ -58,17 +58,54 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Haalt het adres met ID <paramref name="adresID"/> op, inclusief de bewoners uit de groep met ID
+		/// Haalt het adres met ID <paramref name="adresID"/> op, inclusief de bewoners (gelieerde personen) uit de groep met ID
 		/// <paramref name="groepID"/>
 		/// </summary>
 		/// <param name="adresID">ID van het op te halen adres</param>
 		/// <param name="groepID">ID van de groep waaruit bewoners moeten worden gehaald</param>
+		/// <param name="alleGelieerdePersonen">Indien true, worden alle gelieerde personen van de bewoners mee opgehaald,
+		/// ook diegene waar je geen GAV voor bent.</param>
 		/// <returns>Het gevraagde adres met de relevante bewoners.</returns>
 		public Adres AdresMetBewonersOphalen(int adresID, int groepID)
 		{
+			return AdresMetBewonersOphalen(adresID, groepID, false);
+		}
+
+		/// <summary>
+		/// Haalt het adres met ID <paramref name="adresID"/> op, inclusief de bewoners (gelieerde personen) uit de groep met ID
+		/// <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="adresID">ID van het op te halen adres</param>
+		/// <param name="groepID">ID van de groep waaruit bewoners moeten worden gehaald</param>
+		/// <param name="alleGelieerdePersonen">Indien true, worden alle gelieerde personen van de bewoners mee opgehaald,
+		/// ook diegene waar je geen GAV voor bent.</param>
+		/// <returns>Het gevraagde adres met de relevante bewoners.</returns>
+		public Adres AdresMetBewonersOphalen(int adresID, int groepID, bool alleGelieerdePersonen)
+		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				return _dao.BewonersOphalen(adresID, groepID);
+				return _dao.BewonersOphalen(adresID, new int[] {groepID}, alleGelieerdePersonen);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+		}
+
+		/// <summary>
+		/// Haalt het adres met ID <paramref name="adresID"/> op, inclusief de bewoners (gelieerde personen) uit de groepen met ID
+		/// in <paramref name="groepIDs"/>
+		/// </summary>
+		/// <param name="adresID">ID van het op te halen adres</param>
+		/// <param name="groepIDs">ID van de groepen waaruit bewoners moeten worden gehaald</param>
+		/// <param name="alleGelieerdePersonen">Indien true, worden alle gelieerde personen van de bewoners mee opgehaald,
+		/// ook diegene waar je geen GAV voor bent.</param>
+		/// <returns>Het gevraagde adres met de relevante bewoners.</returns>
+		public Adres AdresMetBewonersOphalen(int adresID, IEnumerable<int> groepIDs, bool alleGelieerdePersonen)
+		{
+			if (_autorisatieMgr.IsGavGroepen(groepIDs))
+			{
+				return _dao.BewonersOphalen(adresID, groepIDs, alleGelieerdePersonen);
 			}
 			else
 			{

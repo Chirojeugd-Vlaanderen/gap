@@ -94,6 +94,27 @@ namespace Chiro.Gap.Dummies
 			return false;
 		}
 
+
+		public IEnumerable<Groep> MijnGroepenOphalen()
+		{
+			return new List<Groep>();
+		}
+
+		public bool IsGavGroepen(IEnumerable<int> groepIDs)
+		{
+			return false;
+		}
+
+		public IEnumerable<int> MijnGroepIDsOphalen()
+		{
+			return new List<int>();
+		}
+
+		public bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs)
+		{
+			return false;
+		}
+
 		#endregion
 	}
 }

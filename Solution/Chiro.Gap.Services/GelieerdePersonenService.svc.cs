@@ -224,7 +224,7 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
-		/// Haalt adres op, met daaraan gekoppeld de bewoners uit de groep met ID <paramref name="groepID"/>.
+		/// Haalt adres op, met daaraan gekoppeld de bewoners (gelieerde personen) uit de groep met ID <paramref name="groepID"/>.
 		/// </summary>
 		/// <param name="adresID">ID op te halen adres</param>
 		/// <param name="groepID">ID van de groep</param>
@@ -516,20 +516,13 @@ namespace Chiro.Gap.Services
 		public void AdresVerwijderenVanPersonen(IList<int> personenIDs, int adresID)
 		{
 			// Adres ophalen, met bewoners voor GAV
-			Adres adr = _adrMgr.AdresMetBewonersOphalen(adresID);
+			Adres adr = _adrMgr.AdresMetBewonersOphalen(adresID, _auMgr.MijnGroepIDsOphalen(), true);
 
 			IList<PersoonsAdres> teVerwijderen = (from pa in adr.PersoonsAdres
 								  where personenIDs.Contains(pa.Persoon.ID)
 								  select pa).ToList();
 
-			// TODO: worker method gebruiken 
-
-			foreach (PersoonsAdres pa in teVerwijderen)
-			{
-				pa.TeVerwijderen = true;
-			}
-
-			_adrMgr.Bewaren(adr);
+			_gpMgr.AdresVerwijderen(teVerwijderen);
 		}
 
 		/// <summary>

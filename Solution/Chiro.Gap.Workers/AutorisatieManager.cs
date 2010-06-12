@@ -77,6 +77,19 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
+		/// IsGavGroepen geeft <c>true</c> als de aangelogde user
+		/// gav is voor alle groepen met gegeven ID's
+		/// </summary>
+		/// <param name="groepIDs">ID's van de groepen</param>
+		/// <returns><c>True</c> (enkel) als user GAV is van alle groepen</returns>
+		public bool IsGavGroepen(IEnumerable<int> groepIDs)
+		{
+			// TODO: functionalieit in autorisatieDao inbouwen zoat dit efficienter kan.
+
+			return groepIDs.All(id => _autorisatieDao.IsGavGroep(GebruikersNaamGet(), id));
+		}
+
+		/// <summary>
 		/// Nagaan of de ingelogde user overeenkomt met een GAV van een groep 
 		/// gelieerd aan de gelieerde persoon met gegeven ID
 		/// </summary>
@@ -158,7 +171,7 @@ namespace Chiro.Gap.Workers
 
 			return (f.IsNationaal || IsGavGroep(f.Groep.ID));
 		}
-		#endregion
+
 
 		/// <summary>
 		/// Controleert of de huidig aangelogde gebruiker momenteel
@@ -196,14 +209,42 @@ namespace Chiro.Gap.Workers
 			return _autorisatieDao.IsGavPersoonsAdres(persoonsAdresID, GebruikersNaamGet());
 		}
 
+		/// <summary>
+		/// Geeft <c>true</c> als alle persoonsAdressen met ID in <paramref name="persoonsAdresIDs"/> gekoppeld zijn aan een 
+		/// personen waarop de aangelogde gebruiker momenteel GAV-rechten op heeft.  Anders
+		/// <c>false</c>.
+		/// </summary>
+		/// <param name="persoonsAdresIDs">ID van de functie</param>
+		/// <returns><c>true</c> als alle persoonsAdressen met ID in <paramref name="persoonsAdresIDs"/> gekoppeld zijn aan een 
+		/// personen waarop de aangelogde gebruiker momenteel GAV-rechten op heeft.  Anders
+		/// <c>false</c>.</returns>
+		public bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs)
+		{
+			// TODO: functionalieit in autorisatieDao inbouwen zoat dit efficienter kan.
+
+			return persoonsAdresIDs.All(id => _autorisatieDao.IsGavPersoonsAdres(id, GebruikersNaamGet()));			
+		}
+
+		#endregion
+
 		#region Ophalen/uitfilteren
 		/// <summary>
 		/// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV
 		/// </summary>
-		/// <returns>ID's van gekoppelde groepen</returns>
-		public IEnumerable<Groep> GekoppeldeGroepenGet()
+		/// <returns>Gekoppelde groepen</returns>
+		public IEnumerable<Groep> MijnGroepenOphalen()
 		{
-			return _autorisatieDao.GekoppeldeGroepenGet(GebruikersNaamGet());
+			return _autorisatieDao.MijnGroepenOphalen(GebruikersNaamGet());
+		}
+
+
+		/// <summary>
+		/// Ophalen van ID's van HUIDIGE gekoppelde groepen voor een aangemelde GAV
+		/// </summary>
+		/// <returns>ID's van gekoppelde groepen</returns>
+		public IEnumerable<int> MijnGroepIDsOphalen()
+		{
+			return (from g in MijnGroepenOphalen() select g.ID).ToArray();
 		}
 
 		/// <summary>
@@ -342,5 +383,8 @@ namespace Chiro.Gap.Workers
 			return _am.GebruikersNaamGet();
 		}
 		#endregion
+
+
+
 	}
 }

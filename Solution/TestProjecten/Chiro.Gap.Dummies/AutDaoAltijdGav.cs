@@ -53,7 +53,7 @@ namespace Chiro.Gap.Dummies
 			return true;
 		}
 
-		public IEnumerable<Groep> GekoppeldeGroepenGet(string login)
+		public IEnumerable<Groep> MijnGroepenOphalen(string login)
 		{
 			throw new NotImplementedException();
 		}

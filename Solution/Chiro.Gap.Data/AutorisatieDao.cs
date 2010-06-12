@@ -164,7 +164,7 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		/// <param name="login"></param>
 		/// <returns></returns>
-		public IEnumerable<Groep> GekoppeldeGroepenGet(string login)
+		public IEnumerable<Groep> MijnGroepenOphalen(string login)
 		{
 			using (var db = new ChiroGroepEntities())
 			{

@@ -173,7 +173,7 @@ namespace Chiro.Gap.Services
 
 		public IEnumerable<GroepInfo> MijnGroepenOphalen()
 		{
-			var result = _autorisatieMgr.GekoppeldeGroepenGet();
+			var result = _autorisatieMgr.MijnGroepenOphalen();
 			return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(result);
 		}
 

@@ -3,6 +3,8 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System.Collections.Generic;
+
 using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Orm.DataInterfaces
@@ -26,13 +28,15 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		Adres BewonersOphalen(int adresID, string user);
 
 		/// <summary>
-		/// Haalt het adres met ID <paramref name="adresID"/> op, inclusief de bewoners uit de groep met ID
-		/// <paramref name="groepID"/>
+		/// Haalt het adres met ID <paramref name="adresID"/> op, inclusief de bewoners uit de groepen met ID
+		/// in <paramref name="groepIDs"/>
 		/// </summary>
 		/// <param name="adresID">ID van het op te halen adres</param>
-		/// <param name="groepID">ID van de groep waaruit bewoners moeten worden gehaald</param>
+		/// <param name="groepIDs">ID's van de groepen waaruit bewoners moeten worden gehaald</param>
+		/// <param name="metAlleGelieerdePersonen">Haalt alle gelieerde personen op, gekoppeld aan de personen (ook al zijn
+		/// ze gelieerd aan een andere groep dan de jouwe.</param>
 		/// <returns>Het gevraagde adres met de relevante bewoners.</returns>
-		Adres BewonersOphalen(int adresID, int groepID);
+		Adres BewonersOphalen(int adresID, IEnumerable<int> groepIDs, bool metAlleGelieerdePersonen);
 
 		/// <summary>
 		/// Haalt adres op, op basis van de adresgegevens

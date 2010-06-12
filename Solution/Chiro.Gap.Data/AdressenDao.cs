@@ -226,32 +226,62 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// Haalt het adres met ID <paramref name="adresID"/> op, inclusief de bewoners uit de groep met ID
-		/// <paramref name="groepID"/>
+		/// Haalt het adres met ID <paramref name="adresID"/> op, inclusief de bewoners (gelieerde personen) uit de groepen
+		/// met IDs in <paramref name="groepIDs"/>
 		/// </summary>
 		/// <param name="adresID">ID van het op te halen adres</param>
-		/// <param name="groepID">ID van de groep waaruit bewoners moeten worden gehaald</param>
+		/// <param name="groepIDs">ID van de groep waaruit bewoners moeten worden gehaald</param>
+		/// <param name="alleGelieerdePersonen">Indien <c>true</c> worden alle gelieerde personen van de bewoners mee opgehaald, 
+		/// inclusief de gelieerde personen die tot een andere groep behoren.</param>
 		/// <returns>Het gevraagde adres met de relevante bewoners.</returns>
 		/// <remarks>Alle andere adressen van de gekoppelde bewoners worden helaas ook mee opgehaald</remarks>
-		public Adres BewonersOphalen(int adresID, int groepID)
+		public Adres BewonersOphalen(int adresID, IEnumerable<int> groepIDs, bool alleGelieerdePersonen)
 		{
 			Adres adres;
 
 			using (var db = new ChiroGroepEntities())
 			{
-				var gps = (from gp in db.GelieerdePersoon.Include(gp2 => gp2.Persoon.PersoonsAdres.First().Adres)
-				           where gp.Groep.ID == groepID && gp.Persoon.PersoonsAdres.Any(pa => pa.Adres.ID == adresID)
-				           select gp).ToList();
+				IEnumerable<GelieerdePersoon> gps;
+
+				if (alleGelieerdePersonen == false)
+				{
+					// alle gelieerde personen gelieerd aan groep, en wonend op adres
+
+					gps = (from gp in db.GelieerdePersoon
+							.Include(gp2 => gp2.Persoon.PersoonsAdres.First().Adres)
+							.Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.Groep.ID, groepIDs))
+					       where gp.Persoon.PersoonsAdres.Any(pa => pa.Adres.ID == adresID)
+					       select gp).ToArray();
+				}
+				else
+				{
+					// Personen gekoppeld aan de gelieerde personen uit de gevraagde groepen wonend op de gevraagde
+					// adressen.
+
+					var pers = (from gp in db.GelieerdePersoon
+							.Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.Groep.ID, groepIDs))
+					       where gp.Persoon.PersoonsAdres.Any(pa => pa.Adres.ID == adresID)
+					       select gp.Persoon);
+
+					// selecteer nu alle gelieerde personen gekoppeld aan de personen
+
+					var query = (from gp in pers.SelectMany(p => p.GelieerdePersoon) select gp) as ObjectQuery<GelieerdePersoon>;
+
+					gps = query.Include(gp => gp.Persoon.PersoonsAdres.First().Adres).ToArray();
+				}
 
 				// Ik heb nu alle gelieerde personen die ik nodig heb, wel met veel te veel adressen, maar soit.
 				// Ik kies uit de eerste het goeie adres, en dan heb ik normaalgezien alles wat ik nodg heb.
 
 				adres = (from pa in gps.First().Persoon.PersoonsAdres
-				             where pa.Adres.ID == adresID
-				             select pa.Adres).FirstOrDefault();
+				         where pa.Adres.ID == adresID
+				         select pa.Adres).FirstOrDefault();
 
-				adres.StraatNaamReference.Load();
-				adres.WoonPlaatsReference.Load();
+				if (adres != null)
+				{
+					adres.StraatNaamReference.Load();
+					adres.WoonPlaatsReference.Load();
+				}
 			}
 
 			return Utility.DetachObjectGraph(adres);

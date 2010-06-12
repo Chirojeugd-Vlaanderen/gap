@@ -113,7 +113,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// </summary>
 		/// <param name="login">Gebruikersnaam van de GAV</param>
 		/// <returns>Lijst met groepen</returns>
-		IEnumerable<Groep> GekoppeldeGroepenGet(string login);
+		IEnumerable<Groep> MijnGroepenOphalen(string login);
 
 		/// <summary>
 		/// Verwijdert uit een lijst met GelieerdePersonenID's de ID's

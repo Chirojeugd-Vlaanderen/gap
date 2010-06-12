@@ -29,35 +29,39 @@ namespace Chiro.Gap.Workers
 	/// </summary>
 	public class GelieerdePersonenManager
 	{
-		private readonly IGelieerdePersonenDao _dao;
+		private readonly IGelieerdePersonenDao _gelieerdePersonenDao;
 		private readonly IGroepenDao _groepenDao;
 		private readonly ICategorieenDao _categorieenDao;
+		private readonly IPersonenDao _personenDao;
 		private readonly IAutorisatieManager _autorisatieMgr;
-	    private readonly ISyncPersoonService _sync;
+		private readonly ISyncPersoonService _sync;
 
 		/// <summary>
 		/// Creëert een GelieerdePersonenManager
 		/// </summary>
-		/// <param name="dao">Repository voor gelieerde personen</param>
+		/// <param name="gelieerdePersonenDao">Repository voor gelieerde personen</param>
 		/// <param name="groepenDao">Repository voor groepen</param>
 		/// <param name="categorieenDao">Repository voor categorieën</param>
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 		/// <param name="typedao">Repository voor communicatietypes</param>
 		/// <param name="commdao">Repository voor communicatievormen</param>
+		/// <param name="pDao">Repository voor personen</param>
 		/// <param name="sync">Sync Service met KipAdmin</param>
 		public GelieerdePersonenManager(
-			IGelieerdePersonenDao dao,
+			IGelieerdePersonenDao gelieerdePersonenDao,
 			IGroepenDao groepenDao,
 			ICategorieenDao categorieenDao,
 			IAutorisatieManager autorisatieMgr,
 			IDao<CommunicatieType> typedao,
 			IDao<CommunicatieVorm> commdao,
+			IPersonenDao pDao,
             ISyncPersoonService sync)
 		{
-			_dao = dao;
+			_gelieerdePersonenDao = gelieerdePersonenDao;
 			_groepenDao = groepenDao;
 			_categorieenDao = categorieenDao;
 			_autorisatieMgr = autorisatieMgr;
+			_personenDao = pDao;
 		    _sync = sync;
 		}
 
@@ -85,7 +89,7 @@ namespace Chiro.Gap.Workers
 				// er aan die groepsinfo toch niets zal wijzigen.  Vandaar dat
 				// die groepsinfo hier niet mee komt.
 
-				return _dao.Ophalen(gelieerdePersoonID, foo => foo.Persoon);
+				return _gelieerdePersonenDao.Ophalen(gelieerdePersoonID, foo => foo.Persoon);
 			}
 			else
 			{
@@ -113,7 +117,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
 			{
-				return _dao.Ophalen(gelieerdePersoonID, 
+				return _gelieerdePersonenDao.Ophalen(gelieerdePersoonID, 
 					foo => foo.Persoon, 
 					foo => foo.Groep, 
 					foo => foo.Communicatie,
@@ -133,7 +137,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>Lijst met gelieerde personen</returns>
 		public IList<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersonenIDs)
 		{
-			return _dao.Ophalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs));
+			return _gelieerdePersonenDao.Ophalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersonenIDs));
 		}
 
 		/// <summary>
@@ -147,7 +151,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
 			{
-				return _dao.DetailsOphalen(gelieerdePersoonID);
+				return _gelieerdePersonenDao.DetailsOphalen(gelieerdePersoonID);
 			}
 			else
 			{
@@ -170,7 +174,7 @@ namespace Chiro.Gap.Workers
 
 				// Er mag niet gepoterd worden met PersoonID en AdNummer
 
-				var origineel = _dao.Ophalen(p.ID, foo => foo.Persoon);
+				var origineel = _gelieerdePersonenDao.Ophalen(p.ID, foo => foo.Persoon);
 
 				if (origineel == null || origineel.Persoon.AdNummer == p.Persoon.AdNummer)
 				{
@@ -178,7 +182,7 @@ namespace Chiro.Gap.Workers
 
                     //using (var tx = new TransactionScope())
                     //{
-                    var q = _dao.Bewaren(p);
+                    var q = _gelieerdePersonenDao.Bewaren(p);
 
                     // Map to KipSync and send
                     AutoMapper.Mapper.CreateMap<Persoon, KipSync.Persoon>();
@@ -217,10 +221,10 @@ namespace Chiro.Gap.Workers
 			// overschreven wordt, lijkt me wat overkill.  Ik vergelijk
 			// hiet nieuwe AD-nummer gewoon met het bestaande.
 
-			GelieerdePersoon origineel = _dao.Ophalen(p.ID, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
+			GelieerdePersoon origineel = _gelieerdePersonenDao.Ophalen(p.ID, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
 			if (origineel.Persoon.AdNummer == p.Persoon.AdNummer)
 			{
-				return _dao.Bewaren(p, e => e.Persoon, e => e.Communicatie.First().CommunicatieType.WithoutUpdate());
+				return _gelieerdePersonenDao.Bewaren(p, e => e.Persoon, e => e.Communicatie.First().CommunicatieType.WithoutUpdate());
 			}
 			else
 			{
@@ -243,10 +247,10 @@ namespace Chiro.Gap.Workers
 			// overschreven wordt, lijkt me wat overkill.  Ik vergelijk
 			// hiet nieuwe AD-nummer gewoon met het bestaande.
 
-			GelieerdePersoon origineel = _dao.Ophalen(gp.ID, e => e.Persoon);
+			GelieerdePersoon origineel = _gelieerdePersonenDao.Ophalen(gp.ID, e => e.Persoon);
 			if (origineel.Persoon.AdNummer == gp.Persoon.AdNummer)
 			{
-				return _dao.Bewaren(gp, e => e.Persoon, e => e.PersoonsAdres, e => e.Persoon.PersoonsAdres.First());
+				return _gelieerdePersonenDao.Bewaren(gp, e => e.Persoon, e => e.PersoonsAdres, e => e.Persoon.PersoonsAdres.First());
 			}
 			else
 			{
@@ -264,7 +268,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				return _dao.AllenOphalen(groepID);
+				return _gelieerdePersonenDao.AllenOphalen(groepID);
 			}
 			else
 			{
@@ -284,7 +288,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				IList<GelieerdePersoon> list = _dao.PaginaOphalen(groepID, e => e.Groep.ID, pagina, paginaGrootte, out aantalTotaal);
+				IList<GelieerdePersoon> list = _gelieerdePersonenDao.PaginaOphalen(groepID, e => e.Groep.ID, pagina, paginaGrootte, out aantalTotaal);
 				list.OrderBy(e => e.Persoon.Naam).ThenBy(e => e.Persoon.VoorNaam);
 				return list;
 			}
@@ -308,7 +312,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				return _dao.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
+				return _gelieerdePersonenDao.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
 			}
 			else
 			{
@@ -330,7 +334,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavCategorie(categorieID))
 			{
-				return _dao.PaginaOphalenMetLidInfoVolgensCategorie(categorieID, pagina, paginaGrootte, out aantalTotaal);
+				return _gelieerdePersonenDao.PaginaOphalenMetLidInfoVolgensCategorie(categorieID, pagina, paginaGrootte, out aantalTotaal);
 			}
 			else
 			{
@@ -349,7 +353,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
 			{
-				return _dao.GroepLaden(gp);
+				return _gelieerdePersonenDao.GroepLaden(gp);
 			}
 			else
 			{
@@ -370,7 +374,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				return _dao.ZoekenOpNaamOngeveer(groepID, naam, voornaam);
+				return _gelieerdePersonenDao.ZoekenOpNaamOngeveer(groepID, naam, voornaam);
 			}
 			else
 			{
@@ -430,7 +434,7 @@ namespace Chiro.Gap.Workers
 					cv.TeVerwijderen = true;
 				}
 
-				_dao.Bewaren(gp, gpers => gpers.Persoon.PersoonsAdres, gpers => gpers.Communicatie);
+				_gelieerdePersonenDao.Bewaren(gp, gpers => gpers.Persoon.PersoonsAdres, gpers => gpers.Communicatie);
 			}
 			else
 			{
@@ -555,7 +559,7 @@ namespace Chiro.Gap.Workers
 				// ik kan me voorstellen dat deze functie in de toekomst wat
 				// gesofisticeerder wordt.
 
-				return _dao.ZoekenOpNaamOngeveer(groepID, persoon.Naam, persoon.VoorNaam);
+				return _gelieerdePersonenDao.ZoekenOpNaamOngeveer(groepID, persoon.Naam, persoon.VoorNaam);
 			}
 			else
 			{
@@ -585,7 +589,7 @@ namespace Chiro.Gap.Workers
 				paths.Add(gp => gp.Groep);
 			}
 
-			return _dao.Ophalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersoonIDs), paths.ToArray());
+			return _gelieerdePersonenDao.Ophalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersoonIDs), paths.ToArray());
 		}
 
 		/// <summary>
@@ -736,7 +740,7 @@ namespace Chiro.Gap.Workers
 			{
 				// Haal alle huisgenoten op
 
-				IList<GelieerdePersoon> resultaat = _dao.HuisGenotenOphalenZelfdeGroep(gelieerdePersoonID);
+				IList<GelieerdePersoon> resultaat = _gelieerdePersonenDao.HuisGenotenOphalenZelfdeGroep(gelieerdePersoonID);
 
 				return resultaat.ToList();
 			}
@@ -744,6 +748,87 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
+		}
+
+		/// <summary>
+		/// Verwijder persoonsadressen, en persisteer.  Als ergens een voorkeuradres wegvalt, dan wordt een willekeurig
+		/// ander adres voorkeuradres van de gelieerde persoon.
+		/// </summary>
+		/// <param name="persoonsAdressen">Te verwijderen persoonsadressen</param>
+		/// <remarks>Deze method staat wat vreemd onder GelieerdePersonenManager, maar past wel voorkeursadressen
+		/// van gelieerde personen aan.</remarks>
+		public void AdresVerwijderen(IEnumerable<PersoonsAdres> persoonsAdressen)
+		{
+			if (!_autorisatieMgr.IsGavPersoonsAdressen(from pa in persoonsAdressen select pa.ID))
+			{
+				throw new GeenGavException();
+			}
+
+			var personen = from pa in persoonsAdressen select pa.Persoon;
+			var gelieerdePersonen = personen.SelectMany(p => p.GelieerdePersoon);
+
+			// overloop te verwijderen persoonsadressen
+
+			foreach (PersoonsAdres pa in persoonsAdressen)
+			{
+				if (pa.GelieerdePersoon.FirstOrDefault() != null)
+				{
+					// persoonsadres is voorkeuradres van sommige gelieerde personen.
+					// Voor die gelieerde personen moet
+					// een nieuw voorkeursadres gekozen worden.  Dit gebeurt willekeurig uit de overige
+					// adressen.  Als er geen andere adressen zijn, is er ook geen voorkeuradres meer.
+
+					PersoonsAdres nieuwVoorkeursAdres;
+
+					var alleAdressen = pa.GelieerdePersoon.First().Persoon.PersoonsAdres;
+
+					// Probeer eerste en laatste adres...
+
+					if (alleAdressen.First().ID != pa.ID)
+					{
+						nieuwVoorkeursAdres = alleAdressen.First();
+					}
+					else if (alleAdressen.Last().ID != pa.ID)
+					{
+						nieuwVoorkeursAdres = alleAdressen.Last();
+					}
+					else
+					{
+						// Als zowel eerste als laatste PersoonsAdres het te verwijderen adres is,
+						// dan had de persoon maar 1 adres.  Aangezien dat wordt verwijderd, komt er
+						// geen voorkeursadres.
+
+						nieuwVoorkeursAdres = null;
+					}
+
+
+					foreach (var pineut in pa.GelieerdePersoon.ToArray())
+					{
+						if (nieuwVoorkeursAdres == null)
+						{
+							pineut.PersoonsAdres = null;
+
+							// 'Vergeet' even het voorkeursadres, zodat we geen conflicten krijgen
+							// bij het bewaren.
+						}
+						else
+						{
+							VoorkeurInstellen(pineut, nieuwVoorkeursAdres, false);	
+						}
+					}
+				}
+
+				pa.TeVerwijderen = true;
+			}
+
+			// TODO: Bewaren in 1 transactie
+
+			// bewaar al dan niet aangepaste voorkeursadres
+			_gelieerdePersonenDao.Bewaren(gelieerdePersonen, gp => gp.PersoonsAdres);
+
+			// verwijder te verwijderen persoonsadres
+			_personenDao.Bewaren(personen, p => p.PersoonsAdres.First().GelieerdePersoon);
+
 		}
 	}
 }

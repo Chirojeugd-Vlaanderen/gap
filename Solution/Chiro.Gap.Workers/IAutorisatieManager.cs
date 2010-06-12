@@ -33,7 +33,7 @@ namespace Chiro.Gap.Workers
 		/// Ophalen van HUIDIGE gekoppelde groepen voor een aangemelde GAV
 		/// </summary>
 		/// <returns>ID's van gekoppelde groepen</returns>
-		IEnumerable<Groep> GekoppeldeGroepenGet();
+		IEnumerable<Groep> MijnGroepenOphalen();
 
 		/// <summary>
 		/// Geeft true als (en slechts als) de ingelogde user correspondeert
@@ -51,6 +51,14 @@ namespace Chiro.Gap.Workers
 		/// <param name="groepID">ID van de groep</param>
 		/// <returns><c>True</c> (enkel) als user GAV is</returns>
 		bool IsGavGroep(int groepID);
+
+		/// <summary>
+		/// IsGavGroepen geeft <c>true</c> als de aangelogde user
+		/// gav is voor alle groepen met gegeven ID's
+		/// </summary>
+		/// <param name="groepIDs">ID's van de groepen</param>
+		/// <returns><c>True</c> (enkel) als user GAV is van alle groepen</returns>
+		bool IsGavGroepen(IEnumerable<int> groepIDs);
 
 		/// <summary>
 		/// Geeft true alss de aangemelde user correspondeert
@@ -134,6 +142,17 @@ namespace Chiro.Gap.Workers
 		bool IsGavPersoonsAdres(int persoonsAdresID);
 
 		/// <summary>
+		/// Geeft <c>true</c> als alle persoonsAdressen met ID in <paramref name="persoonsAdresIDs"/> gekoppeld zijn aan een 
+		/// personen waarop de aangelogde gebruiker momenteel GAV-rechten op heeft.  Anders
+		/// <c>false</c>.
+		/// </summary>
+		/// <param name="persoonsAdresIDs">ID van de functie</param>
+		/// <returns><c>true</c> als alle persoonsAdressen met ID in <paramref name="persoonsAdresIDs"/> gekoppeld zijn aan een 
+		/// personen waarop de aangelogde gebruiker momenteel GAV-rechten op heeft.  Anders
+		/// <c>false</c>.</returns>
+		bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs);
+
+		/// <summary>
 		/// Geeft true als de aangelogde user
 		/// gav is voor de groep met gegeven ID, en 'superrechten' heeft
 		/// (zoals het verwijderen van leden uit vorig werkjaar, het 
@@ -149,5 +168,11 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <returns>Username aangemelde gebruiker</returns>
 		string GebruikersNaamGet();
+
+		/// <summary>
+		/// Levert het lijstje groepID's op van de groepen waarvoor de gebruiker GAV is.
+		/// </summary>
+		/// <returns>GroepID's van de goepen waarvoor de gebruiker GAV is.</returns>
+		IEnumerable<int> MijnGroepIDsOphalen();
 	}
 }
