@@ -81,6 +81,7 @@
     <Compile Include="DataContracts\LidInfo.cs" />
     <Compile Include="DataContracts\PersoonDetail.cs" />
     <Compile Include="FaultContracts\BestaatAlFault.cs" />
+    <Compile Include="FaultContracts\FoutNummerFault.cs" />
     <Compile Include="FaultContracts\OngeldigObjectFault.cs" />
     <Compile Include="FaultContracts\BlokkerendeObjectenFault.cs" />
     <Compile Include="FaultContracts\GapFault.cs" />

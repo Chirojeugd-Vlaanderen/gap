@@ -201,7 +201,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					break;
 				case 3:
 					TempData.Add("list", model.GekozenGelieerdePersoonIDs);
-					r = RedirectToAction("ToevoegenAanCategorieLijst");
+					r = RedirectToAction("CategorieToevoegenAanLijst");
 					break;
 				default:
 					TempData["feedback"] = Properties.Resources.OnbestaandeActieFeedback;
@@ -241,7 +241,6 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				return View("EditGegevens", model);
 			}
-
 
 			try
 			{
@@ -939,7 +938,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			IList<int> l = new List<int> { gelieerdePersoonID };
 			TempData.Add("list", l);
-			return RedirectToAction("ToevoegenAanCategorieLijst");
+			return RedirectToAction("CategorieToevoegenAanLijst");
 		}
 
 		/// <summary>
@@ -963,7 +962,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.GelieerdePersoonIDs = (List<int>)value;
 				TempData.Remove("list"); // TODO: Ik denk dat dit voor MVC2 automatisch gebeurt; na te kijken.
 
-				return View("CategorieToevoegen", model);
+				return View("CategorieToevoegenAanLijst", model);
 			}
 			else
 			{

@@ -73,7 +73,7 @@ namespace Chiro.Gap.Workers
 
 			if (gp.Groep.ID != gwj.Groep.ID)
 			{
-				throw new GapException(
+				throw new FoutNummerException(
 					FoutNummer.GroepsWerkJaarNietVanGroep, 
 					Properties.Resources.GroepsWerkJaarNietVanGroep);
 			}

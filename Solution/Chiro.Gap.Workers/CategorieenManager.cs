@@ -164,7 +164,6 @@ namespace Chiro.Gap.Workers
 			if (!forceren && categorie.GelieerdePersoon.Count > 0)
 			{
 				throw new BlokkerendeObjectenException<GelieerdePersoon>(
-					FoutNummer.CategorieNietLeeg,
 					categorie.GelieerdePersoon,
 					categorie.GelieerdePersoon.Count(),
 					Properties.Resources.CategorieNietLeeg);

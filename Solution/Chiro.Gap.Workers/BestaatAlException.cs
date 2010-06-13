@@ -60,7 +60,6 @@ namespace Chiro.Gap.Workers.Exceptions
 		public BestaatAlException(string message, Exception innerException)
 			: base(message, innerException)
 		{
-			FoutNummer = Domain.FoutNummer.BestaatAl;
 		}
 
 		#endregion

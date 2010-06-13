@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Transactions;
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
@@ -188,7 +187,7 @@ namespace Chiro.Gap.Workers
                     AutoMapper.Mapper.CreateMap<Persoon, KipSync.Persoon>();
                     var syncPersoon = AutoMapper.Mapper.Map<Persoon, KipSync.Persoon>(q.Persoon);
 				    
-                    Debug.WriteLine(syncPersoon);
+                    //Debug.WriteLine(syncPersoon);
 
                     _sync.PersoonUpdated(syncPersoon);
                     
@@ -483,7 +482,7 @@ namespace Chiro.Gap.Workers
 			{
 				if (!x.Groep.Equals(c.Groep))
 				{
-					throw new GapException(
+					throw new FoutNummerException(
 						FoutNummer.CategorieNietVanGroep, 
 						Properties.Resources.FoutieveGroepCategorie);
 				}
@@ -687,10 +686,7 @@ namespace Chiro.Gap.Workers
 				// Sommige personen hebben het adres al.  Geef een exception met daarin de
 				// betreffende persoonsadres-objecten.
 
-				var bestaandePersoonsAdressen = bestaand.ToList();
-
 				throw new BlokkerendeObjectenException<PersoonsAdres>(
-					FoutNummer.WonenDaarAl,
 					bestaand,
 					bestaand.Count(),
 					Properties.Resources.WonenDaarAl);

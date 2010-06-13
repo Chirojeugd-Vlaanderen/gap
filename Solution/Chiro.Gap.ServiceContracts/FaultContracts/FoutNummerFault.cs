@@ -3,15 +3,16 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using Chiro.Gap.Domain;
 using System.Runtime.Serialization;
-
 namespace Chiro.Gap.ServiceContracts.FaultContracts
 {
-	/// <summary>
-	/// Faultcontract dat een foutcode van type <typeparamref name="T"/> bevat
-	/// </summary>
-	[DataContract]
-	public class GapFault
+	public class FoutNummerFault : GapFault
 	{
+		/// <summary>
+		/// De foutcode
+		/// </summary>
+		[DataMember]
+		public FoutNummer FoutNummer { get; set; }
 	}
 }

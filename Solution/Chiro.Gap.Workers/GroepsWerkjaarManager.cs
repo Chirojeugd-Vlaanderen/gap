@@ -111,7 +111,7 @@ namespace Chiro.Gap.Workers
 
 			if (!gwj.Groep.Equals(afd.Groep))
 			{
-				throw new GapException(
+				throw new FoutNummerException(
 						FoutNummer.AfdelingNietVanGroep,
 						"De afdeling is niet gekoppeld aan de groep van het groepswerkjaar.");
 			}

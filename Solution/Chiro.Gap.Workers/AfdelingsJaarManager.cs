@@ -286,7 +286,7 @@ namespace Chiro.Gap.Workers
 			}
 			else if (l.GroepsWerkJaar.ID != _groepsWjDao.RecentsteOphalen(l.GroepsWerkJaar.Groep.ID).ID)
 			{
-				throw new GapException(
+				throw new FoutNummerException(
 					FoutNummer.GroepsWerkJaarNietBeschikbaar,
 					Properties.Resources.GroepsWerkJaarVoorbij);
 			}
@@ -297,7 +297,7 @@ namespace Chiro.Gap.Workers
 
 			if (probleemgevallen.FirstOrDefault() != null)
 			{
-				throw new GapException(
+				throw new FoutNummerException(
 					FoutNummer.AfdelingNietVanGroep,
 					Properties.Resources.FoutieveGroepAfdeling);
 			}

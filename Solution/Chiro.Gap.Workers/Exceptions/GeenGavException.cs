@@ -39,10 +39,6 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// <param name="innerException">Andere exception die de deze veroorzaakt</param>
 		public GeenGavException(string message, Exception innerException) : base(message, innerException) 
 		{
-			// Maar 1 foutnummer voor GeenGav.  Eventuele hackers moeten niet te veel details
-			// krijgen over wat er mis gelopen is.
-
-			FoutNummer = Domain.FoutNummer.GeenGav;
 		}
 
 		#endregion

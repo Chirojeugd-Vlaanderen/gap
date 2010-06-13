@@ -70,6 +70,7 @@
     <Compile Include="CommVormManager.cs" />
     <Compile Include="AfdelingsJaarManager.cs" />
     <Compile Include="Exceptions\BlokkerendeObjectenException.cs" />
+    <Compile Include="Exceptions\FoutNummerException.cs" />
     <Compile Include="Exceptions\GapException.cs" />
     <Compile Include="Exceptions\GeenGavException.cs" />
     <Compile Include="Exceptions\OngeldigObjectException.cs" />

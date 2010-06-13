@@ -160,7 +160,6 @@ namespace Chiro.Gap.Services
 				if (bestaandePersonen.Count > 0)
 				{
 					var fault = new BlokkerendeObjectenFault<PersoonDetail>{
-						FoutNummer = FoutNummer.BestaatAl,
 						Objecten = Mapper.Map<IList<GelieerdePersoon>, IList<PersoonDetail>>(bestaandePersonen) };
 
 					throw new FaultException<BlokkerendeObjectenFault<PersoonDetail>>(fault);
@@ -583,7 +582,7 @@ namespace Chiro.Gap.Services
 			catch (ValidatieException)
 			{
 				// TODO: specifiekere info bij in de exceptie.  Zie ticket #497.
-				throw new FaultException<GapFault>(new GapFault() {FoutNummer = FoutNummer.ValidatieFout});
+				throw new FaultException<GapFault>(new FoutNummerFault() {FoutNummer = FoutNummer.ValidatieFout});
 			}
 		}
 
@@ -622,7 +621,7 @@ namespace Chiro.Gap.Services
 			catch (ValidatieException)
 			{
 				// TODO: specifiekere info bij in de exceptie.  Zie ticket #497.
-				throw new FaultException<GapFault>(new GapFault() {FoutNummer = FoutNummer.ValidatieFout});
+				throw new FaultException<GapFault>(new FoutNummerFault() {FoutNummer = FoutNummer.ValidatieFout});
 			}
 		}
 

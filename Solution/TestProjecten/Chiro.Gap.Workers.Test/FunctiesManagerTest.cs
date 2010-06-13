@@ -128,7 +128,7 @@ namespace Chiro.Gap.Workers.Test
 		/// Het toekennen van een functie die niet geldig is in het huidige werkjaar, moet
 		/// een exception opleveren
 		/// </summary>
-		[ExpectedException(typeof(GapException))]
+		[ExpectedException(typeof(FoutNummerException))]
 		[TestMethod()]
 		public void ToekennenFunctieOngeldigWerkJaar()
 		{

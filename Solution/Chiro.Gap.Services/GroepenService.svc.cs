@@ -84,7 +84,7 @@ namespace Chiro.Gap.Services
 			}
 			catch (GeenGavException)
 			{
-				throw new FaultException<GapFault>(new GapFault { FoutNummer = FoutNummer.GeenGav });
+				throw new FaultException<GapFault>(new FoutNummerFault { FoutNummer = FoutNummer.GeenGav });
 			}
 
 			return Mapper.Map<Groep, GroepInfo>(g);
@@ -302,7 +302,7 @@ namespace Chiro.Gap.Services
 			{
 				/*var afdjaar = _afdelingsJaarMgr.Ophalen(afdelingsJaarID, AfdelingsJaarExtras.Afdeling);
 				var afdjaardetail = Mapper.Map<AfdelingsJaar, AfdelingsJaarDetail>(afdjaar);*/
-				throw new FaultException<GapFault>(new GapFault { FoutNummer = FoutNummer.AfdelingNietLeeg });
+				throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.AfdelingNietLeeg });
 			}
 		}
 

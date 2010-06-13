@@ -77,7 +77,7 @@ namespace Chiro.Gap.Workers.Test
 		{
 			// Arrange
 
-			var target = new GapException {FoutNummer = FoutNummer.GeenGav, Items = new string[] {"een", "twee"}};
+			var target = new FoutNummerException() {FoutNummer = FoutNummer.GeenGav, Items = new string[] {"een", "twee"}};
 
 
 			// Act
@@ -89,7 +89,7 @@ namespace Chiro.Gap.Workers.Test
 				formatter.Serialize(s, target);
 				s.Position = 0;
 
-				target = (GapException)formatter.Deserialize(s);
+				target = (FoutNummerException)formatter.Deserialize(s);
 			}
 
 			Assert.AreEqual(target.FoutNummer, FoutNummer.GeenGav);

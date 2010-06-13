@@ -223,7 +223,7 @@
     <%} %>
     
     <li><%=Html.ActionLink("[toevoegen aan categorie]", "ToevoegenAanCategorie", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%></li>
-    </ul>  
+    </ul>
  
     <%} %>
     

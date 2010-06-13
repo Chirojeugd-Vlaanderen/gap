@@ -123,18 +123,15 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// <summary>
 		/// Construeer BlokkerendeObjectenException met alle relevante info
 		/// </summary>
-		/// <param name="foutNummer">Foutnummer van de fout die de exception veroorzaakt</param>
 		/// <param name="objecten">De objecten die een operatie blokkeren (als er veel zijn, is het maar een selectie)</param>
 		/// <param name="aantalTotaal">Totaal aantal blokkerende objecten</param>
 		/// <param name="message">Technische info over de exception; nuttig voor developer</param>
 		public BlokkerendeObjectenException(
-            FoutNummer foutNummer,
 			IEnumerable<TEntiteit> objecten,
 			int aantalTotaal,
 			string message)
 			: base(message)
 		{
-			FoutNummer = foutNummer;
 			_objecten = objecten;
 			_aantal = aantalTotaal;
 		}
