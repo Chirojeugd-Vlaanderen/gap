@@ -191,6 +191,11 @@ namespace Chiro.Gap.InitieleImport
 					Console.WriteLine(Resources.TimeOut);
 					ids = null;
 				}
+				catch (Exception)
+				{
+					// TODO: Ongeldige geboortedata opvangen aan kant van de service.
+					Console.WriteLine(Resources.Oeps);
+				}
 
 				if (ids != null)
 				{
