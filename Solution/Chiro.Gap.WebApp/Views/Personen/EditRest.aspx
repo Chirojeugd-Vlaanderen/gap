@@ -92,26 +92,15 @@
 		<%=Html.HiddenFor(s => s.PersoonLidInfo.LidInfo.NonActief)%>
 		</p>
 
-		<%
-                    if (Model.PersoonLidInfo.LidInfo.Functies.Count() > 0)
-                    {
-        %>
-        <p>Functies:</p>
-        <ul>
-        <%
-                        foreach (var f in Model.PersoonLidInfo.LidInfo.Functies)
-                        {
-        %>
-            <li><%=f.Naam%> (<%=f.Code%>)</li>
-        <%
-                        }
-        %>
-        </ul>
-        <%
-                    }
-		%>
+		<%if (Model.PersoonLidInfo.LidInfo.Functies.Count() > 0){%>
+			<p>Functies:</p>
+			<ul>
+			<%foreach (var f in Model.PersoonLidInfo.LidInfo.Functies){%>
+				<li><%=f.Naam%> (<%=f.Code%>)</li>
+			<%}%>
+			</ul>
+        <%}%>
 		
-	       
 		<%= Html.Hidden("PersoonLidInfo.LidID")%>
 		<%= Html.Hidden("PersoonLidInfo.Type")%>
 		<%= Html.Hidden("AfdelingsInfoDictionary")%>
@@ -172,42 +161,31 @@
 
     <ul>
     <% 
-           var gegroepeerdeComm = Model.PersoonLidInfo.CommunicatieInfo.GroupBy(
-					cv => new
-					{
-						Omschrijving = cv.CommunicatieTypeOmschrijving, 
-						Validatie = cv.CommunicatieTypeValidatie, 
-						Voorbeeld = cv.CommunicatieTypeVoorbeeld
-					});
-           
-           foreach (var commType in gegroepeerdeComm)
-           {
-               %>
-               <li>
-                    <%=commType.Key.Omschrijving %>
-                    <ul>
-                    <%
-                        foreach (var cv in commType)
-                        {
-                            %>
-                            <li>
-                                <%=cv.Voorkeur ? "<strong>" + Html.Encode(cv.Nummer) + "</strong>" : Html.Encode(cv.Nummer)%>.
-                                <em><%=Html.Encode(cv.Nota) %></em>
-                                <%=Html.ActionLink(
-                                    "[verwijderen]", 
-                                    "VerwijderenCommVorm",new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
-                                <%=Html.ActionLink(
-                                    "[bewerken]", 
-                                    "CommVormBewerken",new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
-                            </li>                            
-                            <%
-                        }
-                    %>
-                    </ul>
-               </li>
-               <%
-           }
-           %>
+		var gegroepeerdeComm = Model.PersoonLidInfo.CommunicatieInfo.GroupBy(
+				cv => new
+				{
+					Omschrijving = cv.CommunicatieTypeOmschrijving, 
+					Validatie = cv.CommunicatieTypeValidatie, 
+					Voorbeeld = cv.CommunicatieTypeVoorbeeld
+				});
+
+		foreach (var commType in gegroepeerdeComm){
+		   %>
+		   <li><%=commType.Key.Omschrijving %>
+				<ul>
+				<%foreach (var cv in commType){%>
+					<li>
+						<%=cv.Voorkeur ? "<strong>" + Html.Encode(cv.Nummer + " ") + "</strong>" : Html.Encode(cv.Nummer + " ")%>
+						<em><%=Html.Encode(cv.Nota)%></em>
+						<%=Html.ActionLink("[verwijderen]", "VerwijderenCommVorm", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+						<%=Html.ActionLink("[bewerken]", "CommVormBewerken", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+					</li>                            
+				<%}%>
+				</ul>
+		   </li>
+		   <%
+		}
+		%>
     <li><%=Html.ActionLink("[communicatievorm toevoegen]", "NieuweCommVorm", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%></li>
     </ul>     
  
