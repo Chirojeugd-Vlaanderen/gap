@@ -79,6 +79,29 @@ namespace Chiro.Gap.Services
 		{
 			var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
 			var result = Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
+
+			/*
+			 * TODO dit staat mss niet op de beste plek
+			 * Ophalen afdelingsjaren in het huidige werkjaar (TODO niet als een vorig werkjaar bekeken wordt)
+			 * Voor elk persoonsdetail kijken of iemand die nog geen lid is, in een afdeling zou passen
+			 * als dit het geval is, kanlidworden op true zetten
+			 */
+			GroepsWerkJaar gwj = _gwjMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
+			foreach (var p in result) 
+			{
+				if(p.GeboorteDatum == null)
+				{
+					continue;
+				}
+				int geboortejaar = p.GeboorteDatum.Value.Year;
+				var afd = (from a in gwj.AfdelingsJaar
+							where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
+							select a).FirstOrDefault();
+				if(afd != null)
+				{
+					p.KanLidWorden = true;
+				}
+			}
 			return result;
 		}
 
