@@ -234,8 +234,8 @@ namespace Chiro.Gap.Services
 		/// andere OfficieleAfdeling en/of andere leeftijden
 		/// </summary>
 		/// <param name="detail">AfdelingsJaarDetail met de gegevens over het aan te maken of te wijzigen
-		/// afdelingsjaar.  <c>detail.AfdelingsJaarID</c> bepaat of het om een bestaand afdelingsjaar gaat
-		/// (ID > 0), of een bestaand (ID == 0)</param>
+		/// afdelingsjaar.  <c>detail.AfdelingsJaarID</c> bepaalt of het om een bestaand afdelingsjaar gaat
+		/// (ID > 0), of een bestaande (ID == 0)</param>
 		public void AfdelingsJaarBewaren(AfdelingsJaarDetail detail)
 		{
 			AfdelingsJaar afdelingsJaar;

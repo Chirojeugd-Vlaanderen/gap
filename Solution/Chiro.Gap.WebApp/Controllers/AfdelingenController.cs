@@ -150,8 +150,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			catch (FaultException)
 			{
 				TempData["feedback"] = Properties.Resources.AfdelingNietLeeg;
-				// TODO: specifieke exceptions catchen en weergeven via de modelstate, en niet
-				// via tempdata.
+				// TODO: specifieke exceptions catchen en weergeven via de modelstate, en niet via tempdata.
 			}
 
 			return RedirectToAction("Index");
@@ -237,7 +236,6 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			try
 			{
-				// TODO: hier (of beter: in de service) moeten dezelfde controles gebeuren als bij AfdelingActiveren - zie ticket #326
 				ServiceHelper.CallService<IGroepenService>(e => e.AfdelingsJaarBewaren(model.AfdelingsJaar));
 
 				TempData["feedback"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
@@ -246,11 +244,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			catch (Exception ex)
 			{
-				// TODO: duidelijke foutmelding - zie #325
-
 				TempData["feedback"] = ex.Message.ToString();
-				// TODO: specifieke exceptions catchen en weergeven via de modelstate, en niet
-				// via tempdata.
+				// TODO: specifieke exceptions catchen en weergeven via de modelstate, en niet via tempdata.
 
 				// Vul model aan, en toon de view AfdelingsJaar opnieuw
 
