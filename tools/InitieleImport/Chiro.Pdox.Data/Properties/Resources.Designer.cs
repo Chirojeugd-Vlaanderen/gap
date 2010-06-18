@@ -61,6 +61,15 @@ namespace Chiro.Pdox.Data.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FormatException bij adres.  Waarschijnlijk fout postnummer..
+        /// </summary>
+        internal static string FormatException {
+            get {
+                return ResourceManager.GetString("FormatException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ongeldige adreslijn..
         /// </summary>
         internal static string OngeldigeAdresLijn {

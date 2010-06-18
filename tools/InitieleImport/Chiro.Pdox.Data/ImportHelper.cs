@@ -116,7 +116,11 @@ namespace Chiro.Pdox.Data
 
 			SpitsStraatNr(straatNr, out straat, out nr, out bus);
 
-			return new PersoonsAdresInfo
+			PersoonsAdresInfo resultaat = null;
+
+			try
+			{
+				resultaat = new PersoonsAdresInfo
 			          	{
 		                		StraatNaamNaam = straat,
 		                		HuisNr = nr,
@@ -125,6 +129,12 @@ namespace Chiro.Pdox.Data
 			                	WoonPlaatsNaam = gemeente,
 						AdresType = type
 			        	};
+			}
+			catch (Exception)
+			{
+				Console.WriteLine(Resources.FormatException);
+			}
+			return resultaat;
 
 		}
 	}

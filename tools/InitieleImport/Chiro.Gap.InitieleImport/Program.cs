@@ -30,7 +30,7 @@ namespace Chiro.Gap.InitieleImport
 			Factory.ContainerInit(); // Init IOC
 			_serviceHelper = Factory.Maak<IServiceHelper>();
 
-			foreach (string stamnr in Users.Lijst.Select(info=>info.StamNr).Distinct())
+			foreach (string stamnr in Users.Lijst.Select(info => info.StamNr).Distinct())
 			{
 				ImporteerGroepsGegevens(stamnr);
 			}
@@ -42,6 +42,7 @@ namespace Chiro.Gap.InitieleImport
 				god.RechtenToekennen(loginInfo.StamNr, loginInfo.Login);
 			}
 
+			Console.WriteLine("Klaar!");
 			Console.ReadLine();
 		}
 
@@ -220,6 +221,11 @@ namespace Chiro.Gap.InitieleImport
 						catch (FaultException<OngeldigObjectFault>)
 						{
 							Console.WriteLine(Resources.OnbekendAdres);
+						}
+						catch (Exception)
+						{
+							// TODO: opvangen ongeldige 'bus' (te lang)
+							Console.WriteLine(Resources.Oeps);
 						}
 					}
 
