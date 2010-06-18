@@ -145,7 +145,7 @@ namespace Chiro.Gap.InitieleImport
 			{
 				dbGroep = _serviceHelper.CallService<IGroepenService, GroepInfo>(svc => svc.InfoOphalenCode(groep.StamNummer));
 			}
-			catch (FaultException<GapFault> ex)
+			catch (FaultException<FoutNummerFault> ex)
 			{
 				if (ex.Detail.FoutNummer == FoutNummer.GeenGav)
 				{
