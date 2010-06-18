@@ -80,6 +80,11 @@ namespace Chiro.Adf.ServiceModel
 				((IClientChannel)service).Abort();
 				throw;
 			}
+			catch (FaultException)
+			{
+				((IClientChannel)service).Close();
+				throw;
+			}
 			catch (CommunicationException)
 			{
 				((IClientChannel)service).Abort();
