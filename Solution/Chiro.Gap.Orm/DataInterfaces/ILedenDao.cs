@@ -31,6 +31,14 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID);
 
 		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="groepsWerkJaarID"></param>
+		/// <param name="functieID"></param>
+		/// <returns></returns>
+		IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID);
+
+		/// <summary>
 		/// Zoekt lid op op basis van GelieerdePersoonID en GroepsWerkJaarID
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID van gelieerde persoon</param>

@@ -25,11 +25,15 @@ namespace Chiro.Gap.WebApp.Models
 		public int HuidigeAfdeling { get; set; }
 
 		public Dictionary<int, AfdelingDetail> AfdelingsInfoDictionary { get; set; }
+		public Dictionary<int, FunctieInfo> FunctieInfoDictionary { get; set; }
 
-		public int GroepsWerkJaarIdZichtbaar { get; set; }
-		public int GroepsWerkJaartalZichtbaar { get; set; }
+		public int IDGetoondGroepsWerkJaar { get; set; }
+		public int JaartalGetoondGroepsWerkJaar { get; set; }
 		public IEnumerable<WerkJaarInfo> WerkJaarInfos { get; set; }
 
 		public IList<PersoonLidInfo> LidInfoLijst { get; set; }
+
+		public int GekozenAfdeling { get; set; }
+		public int GekozenFunctie { get; set; }
 	}
 }

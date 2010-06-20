@@ -2,33 +2,31 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>"></script>
-
-    <%
-        //HEEL BELANGRIJK: voor een dropdownlist moet het select statement zowel een id als een name hebben, die dezelfde zijn, en die moet ook in het event gebruikt worden
-        // (Broes, ik snap niet wat je met bovenstaande bedoelt.)
-    %>
-
     <script type="text/javascript">
         $(document).ready(function() {
-        $('#kiesCategorie').hide();
-        $("#GekozenCategorieID").change(function() {
-                $('#kiesCategorie').click();
-            });
+			$('#kiesCategorie').hide();
+			$("#GekozenCategorieID").change(function() {
+				$('#kiesCategorie').click();
+			});
         });
     </script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-<%using (Html.BeginForm("List"))%>
-<%{ %>
-   <ul id="acties">
-        <li><%= Html.ActionLink("Nieuwe persoon", "Nieuw") %></li>
-        <li><%= Html.ActionLink("Lijst downloaden", "Download", new { id = Model.GekozenCategorieID })%></li>
-        <li>
-                <%= Html.DropDownListFor(mdl => mdl.GekozenCategorieID, new SelectList(Model.GroepsCategorieen, "ID", "Naam"))%>
-                <input id="kiesCategorie" type="submit" />
-        </li>
-    </ul>
+<%using (Html.BeginForm("List", "Personen")){ %>
+<ul id="acties">
+    <li><%= Html.ActionLink("Nieuwe persoon", "Nieuw") %></li>
+    <li><%= Html.ActionLink("Lijst downloaden", "Download", new { id = Model.GekozenCategorieID })%></li>
+    <li>
+		<select id="GekozenCategorieID" name="GekozenCategorieID">
+		<option value="">Categorie</option>
+		<% foreach (var s in Model.GroepsCategorieen){%>
+		<option value="<%=s.ID%>"> <%=s.Naam%></option>
+		<%}%>
+		</select>
+		<input id="kiesCategorie" type="submit" value="Uitvoeren"/>
+    </li>
+</ul>
 <%} %>
 
 <% Html.RenderPartial("PersonenLijstControl", Model); %>

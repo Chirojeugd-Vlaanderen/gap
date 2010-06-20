@@ -1,19 +1,17 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.LidInfoModel>" %>
-<%@ Import Namespace="Chiro.Gap.ServiceContracts" %>
 
 <div class="pager">
 Pagina: <%= Html.WerkJaarLinks(
-                ViewData.Model.GroepsWerkJaarIdZichtbaar, 
+                ViewData.Model.IDGetoondGroepsWerkJaar, 
                 ViewData.Model.WerkJaarInfos,
-                    wj => Url.Action("List", new { Controller = "Leden", id = wj.ID, afdID = Model.HuidigeAfdeling }))%>
+        				//TODO momentele wordt er altijd terug naar de volledige lijst gegaan, dit kan nog aangepast worden door een huidigeafdeling en een huidigefunctie bij te houden.
+				wj => Url.Action("AfdelingsLijst", new { Controller = "Leden", groepsWerkJaarID = wj.ID/*, afdID = Model.HuidigeAfdeling*/ }))%>
 </div>
 
 <table class="overzicht">
 <tr>
-<th>Ad-nr.</th><th>Type</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Betaald</th><th>Acties</th><th>Afdeling</th>
+<th>Ad-nr.</th><th>Type</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Betaald</th><th>Acties</th><th>Afdeling</th><th>Functie</th>
 </tr>
-
-<!-- TODO: terug naar vorige lijst heeft andere argumenten nodig, dus zou niet dezelfde standaard mogen zijn als bij personen -->
 
 <% foreach (Chiro.Gap.ServiceContracts.DataContracts.PersoonLidInfo pl in ViewData.Model.LidInfoLijst) {  %>
 <tr>
@@ -33,12 +31,16 @@ Pagina: <%= Html.WerkJaarLinks(
         
         <%=Html.ActionLink("Afdelingen", "AfdelingBewerken", new { Controller = "Leden", lidID = pl.LidInfo.LidID })%>
     </td>
-    <td><% foreach (int a in pl.LidInfo.AfdelingIdLijst) 
+    <td><% foreach (var a in pl.LidInfo.AfdelingIdLijst) 
            { %>
-               <%=Html.ActionLink(Html.Encode(ViewData.Model.AfdelingsInfoDictionary[a].AfdelingAfkorting), "List", new { Controller = "Leden", afdID = a, id = Model.GroepsWerkJaarIdZichtbaar }, new { title = ViewData.Model.AfdelingsInfoDictionary[a].AfdelingNaam } )%>
+               <%=Html.ActionLink(Html.Encode(ViewData.Model.AfdelingsInfoDictionary[a].AfdelingAfkorting), "AfdelingsLijst", new { Controller = "Leden", afdID = a, groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar }, new { title = ViewData.Model.AfdelingsInfoDictionary[a].AfdelingNaam })%>
         <% } %>
     </td>
-
+    <td><% foreach (var a in pl.LidInfo.Functies) 
+           { %>
+               <%=Html.ActionLink(Html.Encode(ViewData.Model.FunctieInfoDictionary[a.ID].Code), "FunctieLijst", new { Controller = "Leden", funcID = a.ID, groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar }, new { title = ViewData.Model.FunctieInfoDictionary[a.ID].Naam })%>
+        <% } %>
+    </td>
 </tr>
 <% } %>
 

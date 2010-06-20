@@ -247,17 +247,14 @@ namespace Chiro.Gap.Workers
 		/// Haal een pagina op met leden van een groepswerkjaar.
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
-		/// <param name="paginas">Totaal aantal groepswerkjaren van de groep</param>
 		/// <returns>Lijst met alle leden uit het gevraagde groepswerkjaar.</returns>
-		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, out int paginas)
+		public IList<Lid> PaginaOphalen(int groepsWerkJaarID)
 		{
 			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			var gwj = _daos.GroepsWerkJaarDao.Ophalen(groepsWerkJaarID, grwj => grwj.Groep);
-			paginas = _daos.GroepenDao.OphalenMetGroepsWerkJaren(gwj.Groep.ID).GroepsWerkJaar.Count;
 			var list = _daos.LedenDao.AllesOphalen(groepsWerkJaarID);
 			list = list.OrderBy(e => e.GelieerdePersoon.Persoon.Naam).ThenBy(e => e.GelieerdePersoon.Persoon.VoorNaam).ToList();
 			return list;
@@ -268,20 +265,31 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
 		/// <param name="afdelingsID">ID gevraagde afdeling</param>
-		/// <param name="paginas">De 'pagina' met leden uit een bepaald GroepsWerkJaar</param>
 		/// <returns>De 'pagina' (collectie) met leden</returns>
-		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, out int paginas)
+		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID)
 		{
-			var gwj = _daos.GroepsWerkJaarDao.Ophalen(groepsWerkJaarID, grwj => grwj.Groep);
-			paginas = _daos.GroepenDao.OphalenMetGroepsWerkJaren(gwj.Groep.ID).GroepsWerkJaar.Count;
-			if (_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
-			{
-				return _daos.LedenDao.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID);
-			}
-			else
+			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
+			
+			return _daos.LedenDao.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID);
+		}
+
+		/// <summary>
+		/// Haalt een 'pagina' op met leden uit een bepaald GroepsWerkJaar
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
+		/// <param name="functieID">ID gevraagde functie</param>
+		/// <returns></returns>
+		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID)
+		{
+			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+
+			return _daos.LedenDao.PaginaOphalenVolgensFunctie(groepsWerkJaarID, functieID);
 		}
 
 		/// <summary>

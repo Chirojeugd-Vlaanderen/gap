@@ -24,6 +24,11 @@ namespace Chiro.Gap.Dummies
 			return new List<Lid>();
 		}
 
+		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID)
+		{
+			return new List<Lid>();
+		}
+
 		public IList<Lid> AllesOphalen(int groepsWerkJaarID)
 		{
 			return new List<Lid>();

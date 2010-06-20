@@ -78,8 +78,7 @@ namespace Chiro.Gap.Workers.Test
 
 			// Act
 
-			int paginas;
-			lm.PaginaOphalen(testData.HuidigGwj.ID, out paginas);
+			lm.PaginaOphalen(testData.HuidigGwj.ID);
 
 			// Verwacht exception
 		}
@@ -117,11 +116,9 @@ namespace Chiro.Gap.Workers.Test
 
 			// Act
 
-			int paginas = 0;
-
 			try
 			{
-				lm.PaginaOphalen(testData.HuidigGwj.ID, out paginas);
+				lm.PaginaOphalen(testData.HuidigGwj.ID);
 			}
 			catch (GeenGavException)
 			{
@@ -129,7 +126,7 @@ namespace Chiro.Gap.Workers.Test
 				gecatcht = true;
 			}
 
-			Assert.IsTrue(gecatcht && paginas == 0);
+			Assert.IsTrue(gecatcht);
 			// verwacht dat de exception gecatcht is, en dat het aantal groepswerkjaren
 			// niet meegegeven werd.
 			// TODO: geen catch-structuur, maar wel [ExpectedException]-Attribuut op test
@@ -218,8 +215,7 @@ namespace Chiro.Gap.Workers.Test
 			LedenManager lm = Factory.Maak<LedenManager>();
 
 			// Act
-			int paginas;
-			IList<Lid> lijst = lm.PaginaOphalen(testData.HuidigGwj.ID, out paginas);
+			IList<Lid> lijst = lm.PaginaOphalen(testData.HuidigGwj.ID);
 
 			// Assert
 

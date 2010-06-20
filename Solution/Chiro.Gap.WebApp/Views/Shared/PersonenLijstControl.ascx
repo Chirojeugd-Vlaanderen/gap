@@ -8,7 +8,6 @@
         });
 
         $('#kiesActie').hide();
-        
         $("#GekozenActie").change(function() {
             $('#kiesActie').click();
         });

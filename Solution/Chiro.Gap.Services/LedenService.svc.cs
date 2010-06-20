@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.ServiceModel;
 using System.Text;
 using AutoMapper;
 using Chiro.Gap.Domain;
@@ -152,8 +151,7 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
-		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. Creëert of verwijdert geen leden, en leden
-		/// kunnen ook niet van werkjaar of van gelieerdepersoon veranderen.
+		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. Creëert of verwijdert geen leden, en leden kunnen ook niet van werkjaar of van gelieerdepersoon veranderen.
 		/// </summary>
 		/// <param name="lidinfo">Te bewaren lid</param>
 		public void Bewaren(PersoonLidInfo lidinfo)
@@ -179,17 +177,24 @@ namespace Chiro.Gap.Services
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonLidInfo> PaginaOphalen(int groepsWerkJaarID, out int paginas)
+		public IList<PersoonLidInfo> PaginaOphalen(int groepsWerkJaarID)
 		{
-			var result = _ledenMgr.PaginaOphalen(groepsWerkJaarID, out paginas);
+			var result = _ledenMgr.PaginaOphalen(groepsWerkJaarID);
 			return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
 		}
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonLidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, out int paginas)
+		public IList<PersoonLidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID)
 		{
-			IList<Lid> result = _ledenMgr.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID, out paginas);
+			IList<Lid> result = _ledenMgr.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID);
+			return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
+		}
+
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public IList<PersoonLidInfo> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functiID)
+		{
+			IList<Lid> result = _ledenMgr.PaginaOphalenVolgensFunctie(groepsWerkJaarID, functiID);
 			return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
 		}
 
