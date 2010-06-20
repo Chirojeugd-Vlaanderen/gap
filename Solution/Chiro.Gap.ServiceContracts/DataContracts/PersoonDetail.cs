@@ -22,6 +22,12 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		public Boolean KanLidWorden { get; set; }
 
+		/// <summary>
+		/// Geeft aan of de persoon de juiste leeftijd heeft om leiding te kunnen worden
+		/// </summary>
+		[DataMember]
+		public Boolean KanLeidingWorden { get; set; }
+
 		[DataMember]
 		public IList<CategorieInfo> CategorieLijst{ get; set; }
 

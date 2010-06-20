@@ -59,6 +59,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			// Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
 			ClientState.VorigeLijst = Request.Url.ToString();
+			ClientState.VorigeFiche = ""; //Op null zetten zodat die eigenlijk "vergeten" wordt nu
 
 			int totaal = 0;
 
@@ -446,7 +447,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LedenMaken(ids, LidType.Kind, out foutBerichten));
 			TempData["feedback"] = String.IsNullOrEmpty(foutBerichten) ? Properties.Resources.LidGemaaktFeedback : string.Concat(Properties.Resources.LidMakenMisluktFout, Environment.NewLine, foutBerichten);
 
-			return TerugNaarVorigeLijst();
+			return TerugNaarVorigeFiche();
 		}
 
 		// GET: /Personen/LeidingMaken/gelieerdepersoonID
@@ -458,7 +459,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LedenMaken(ids, LidType.Leiding, out foutBerichten));
 			TempData["feedback"] = String.IsNullOrEmpty(foutBerichten) ? Properties.Resources.LidGemaaktFeedback : string.Concat(Properties.Resources.LidMakenMisluktFout, Environment.NewLine, foutBerichten);
 
-			return TerugNaarVorigeLijst();
+			return TerugNaarVorigeFiche();
 		}
 
 		#endregion leden

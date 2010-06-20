@@ -216,7 +216,4 @@
   <data name="OnbestaandeActieFeedback" xml:space="preserve">
     <value>Er bestaat zo geen actie om uit te voeren op een selectie personen.</value>
   </data>
-  <data name="LeidingVanafLeeftijd" xml:space="preserve">
-    <value>15</value>
-  </data>
 </root>

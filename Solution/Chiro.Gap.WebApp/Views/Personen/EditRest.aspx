@@ -56,8 +56,7 @@
 
 	</fieldset>
 	
-	<%if (Model.PersoonLidInfo.LidInfo != null)
-   { %>
+	<%if (Model.PersoonLidInfo.PersoonDetail.IsLid){ %>
 	<fieldset>
    
    	<legend>Lidgegevens en functies <%= Html.ActionLink("Aanpassen", "EditLidGegevens", new{ Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %></legend>
@@ -129,8 +128,29 @@
 	   }
    }%>
 
-	<%} %>
-        
+	<%}else{ 
+		if (Model.PersoonLidInfo.PersoonDetail.KanLidWorden || Model.PersoonLidInfo.PersoonDetail.KanLeidingWorden)
+		{
+			%><fieldset>
+			<legend>Lidgegevens en functies: is geen lid</legend>
+			<ul>
+			<%if (Model.PersoonLidInfo.PersoonDetail.KanLidWorden){%>
+				<li>
+				<%=Html.ActionLink("Lid maken", "LidMaken", new { Controller = "Personen", gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+				 </li>
+			<%}
+			if (Model.PersoonLidInfo.PersoonDetail.KanLeidingWorden)
+			{%>
+				<li>
+				<%=Html.ActionLink("Leiding maken","LeidingMaken",new{Controller = "Personen",gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID})%>
+				</li>
+			<%}%>
+			</ul>
+			</fieldset><%
+		}
+    }%>
+    
+    
     <h3>Adressen</h3>
 
     <ul>

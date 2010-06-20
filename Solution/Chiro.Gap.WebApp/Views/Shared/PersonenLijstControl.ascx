@@ -57,7 +57,7 @@ Totaal aantal personen: <%= Model.Totaal %>  |  Maak een selectie en
 			<% if (p.KanLidWorden) { %>
 				<%=Html.ActionLink("Lid maken", "LidMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
 			<% } %>
-			<% if (p.GeboorteDatum.HasValue && p.GeboorteDatum.Value.Year < DateTime.Today.Year - Int32.Parse(Chiro.Gap.WebApp.Properties.Resources.LeidingVanafLeeftijd) + p.ChiroLeefTijd){ %>
+			<% if (p.KanLeidingWorden){ %>
 				<%=Html.ActionLink("Leiding maken", "LeidingMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
 			<% } %>
         <% } else { %>

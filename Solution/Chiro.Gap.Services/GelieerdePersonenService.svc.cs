@@ -84,7 +84,10 @@ namespace Chiro.Gap.Services
 			 * TODO dit staat mss niet op de beste plek
 			 * Ophalen afdelingsjaren in het huidige werkjaar (TODO niet als een vorig werkjaar bekeken wordt)
 			 * Voor elk persoonsdetail kijken of iemand die nog geen lid is, in een afdeling zou passen
-			 * als dit het geval is, kanlidworden op true zetten
+			 * als dit het geval is, kanlidworden op true zetten.
+			 * kanleidingworden wordt true als de persoon de juiste leeftijd heeft
+			 * 
+			 * TODO dubbele code in detailsophalen
 			 */
 			GroepsWerkJaar gwj = _gwjMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
 			foreach (var p in result) 
@@ -100,6 +103,10 @@ namespace Chiro.Gap.Services
 				if(afd != null)
 				{
 					p.KanLidWorden = true;
+				}
+				if (p.GeboorteDatum.Value.Year < DateTime.Today.Year - Int32.Parse(Resources.LeidingVanafLeeftijd) + p.ChiroLeefTijd)
+				{
+					p.KanLeidingWorden = true;
 				}
 			}
 			return result;
@@ -215,7 +222,8 @@ namespace Chiro.Gap.Services
 		/// <returns>GelieerdePersoon met persoonsgegevens</returns>
 		public PersoonDetail DetailsOphalen(int gelieerdePersoonID)
 		{
-			return Mapper.Map<GelieerdePersoon, PersoonDetail>(_gpMgr.DetailsOphalen(gelieerdePersoonID));
+			var p = Mapper.Map<GelieerdePersoon, PersoonDetail>(_gpMgr.DetailsOphalen(gelieerdePersoonID));
+			return p;
 		}
 
 		/// <summary>
@@ -233,7 +241,7 @@ namespace Chiro.Gap.Services
 		{
 			var gp = _gpMgr.DetailsOphalen(gelieerdePersoonID);
 			var pl = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gp);
-			var gwj = _gwjMgr.RecentsteOphalen(gp.Groep.ID, GroepsWerkJaarExtras.GroepsFuncties);
+			var gwj = _gwjMgr.RecentsteOphalen(gp.Groep.ID, GroepsWerkJaarExtras.GroepsFuncties | GroepsWerkJaarExtras.Afdelingen);
 
 			var l = _lidMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 			if (l != null)
@@ -241,7 +249,24 @@ namespace Chiro.Gap.Services
 				var ff = Mapper.Map<Lid, LidInfo>(l);
 				pl.LidInfo = ff;
 			}
-			
+
+			var p = pl.PersoonDetail;
+			if (p.GeboorteDatum != null)
+			{
+				int geboortejaar = p.GeboorteDatum.Value.Year;
+				var afd = (from a in gwj.AfdelingsJaar
+						   where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
+						   select a).FirstOrDefault();
+				if (afd != null)
+				{
+					p.KanLidWorden = true;
+				}
+				if (geboortejaar < DateTime.Today.Year - Int32.Parse(Resources.LeidingVanafLeeftijd) + p.ChiroLeefTijd)
+				{
+					p.KanLeidingWorden = true;
+				}
+			}
+
 			return pl;
 		}
 

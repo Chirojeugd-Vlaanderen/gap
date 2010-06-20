@@ -250,15 +250,6 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 15.
-        /// </summary>
-        public static string LeidingVanafLeeftijd {
-            get {
-                return ResourceManager.GetString("LeidingVanafLeeftijd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to lidgegevens.
         /// </summary>
         public static string LidGegevens {

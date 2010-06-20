@@ -40,6 +40,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.KanLidWorden,
 					opt => opt.MapFrom(src => false))
 				.ForMember(
+					dst => dst.KanLeidingWorden,
+					opt => opt.MapFrom(src => false))
+				.ForMember(
 					dst => dst.AdNummer,
 					opt => opt.MapFrom(src => src.Persoon.AdNummer))
 				.ForMember(
