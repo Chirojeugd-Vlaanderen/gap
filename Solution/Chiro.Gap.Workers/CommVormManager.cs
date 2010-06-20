@@ -62,7 +62,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="commvormID">ID van een van de persoon zijn communicatievormen</param>
 		/// <returns>Gevraagde communicatievorm</returns>
-		public GelieerdePersoon OphalenMetGelieerdePersoon(int commvormID)
+		public CommunicatieVorm OphalenMetGelieerdePersoon(int commvormID)
 		{
 			if (!_autorisatieMgr.IsGavCommVorm(commvormID))
 			{
@@ -71,7 +71,7 @@ namespace Chiro.Gap.Workers
 			return _dao.Ophalen(commvormID, foo => foo.CommunicatieType,
 											foo => foo.GelieerdePersoon.Persoon, 
 											foo => foo.GelieerdePersoon.Communicatie,
-											foo => foo.GelieerdePersoon.Communicatie.First().CommunicatieType).GelieerdePersoon;
+											foo => foo.GelieerdePersoon.Communicatie.First().CommunicatieType);
 		}
 
 		/// <summary>
@@ -128,17 +128,10 @@ namespace Chiro.Gap.Workers
 		/// Verwijdert een communicatievorm, en persisteert.
 		/// </summary>
 		/// <param name="comm">Te verwijderen communicatievorm</param>
-		/// <param name="origineel">Gekoppelde persoon.  Deze parameter moet verdwijnen; die informatie
-		/// moet komen uit comm.GelieerdePersoon.</param>
-		public void CommunicatieVormVerwijderen(CommunicatieVorm comm, GelieerdePersoon origineel)
+		public void CommunicatieVormVerwijderen(CommunicatieVorm comm)
 		{
-			// FIXME: de parameter 'gelieerdePersoon' is overbodig; zie ticket #145.
-
-			if (!_autorisatieMgr.IsGavGelieerdePersoon(origineel.ID))
+			if (!_autorisatieMgr.IsGavGelieerdePersoon(comm.GelieerdePersoon.ID))
 			{
-				// Aangezien er niet getest wordt of de communicatievorm wel hoort bij de 
-				// gegeven persoon, is deze test belachelijk.
-
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 			if (!_autorisatieMgr.IsGavCommVorm(comm.ID))

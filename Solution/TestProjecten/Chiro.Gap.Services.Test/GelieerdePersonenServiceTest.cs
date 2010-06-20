@@ -83,7 +83,7 @@ namespace Chiro.Gap.Services.Test
 
 			foreach (var cv in gp.CommunicatieInfo)
 			{
-				svc.CommunicatieVormVerwijderenVanPersoon(TestInfo.GELIEERDEPERSOONID, cv.ID);
+				svc.CommunicatieVormVerwijderenVanPersoon(cv.ID);
 			}
 		}
 

@@ -145,14 +145,14 @@ namespace Chiro.Gap.Workers.Test
 
 			// fake gelieerde persoon zonder communicatiemiddelen.
 
-			GelieerdePersoon communicatielozePersoon = new GelieerdePersoon();
+			var communicatielozePersoon = new GelieerdePersoon();
 			communicatielozePersoon.Communicatie = new System.Data.Objects.DataClasses.EntityCollection<CommunicatieVorm>();
 
 			// GelieerdePersonenDao mocken, zodat die steeds de fake persoon oproept
 
 			var gpDaoMock = new Mock<IGelieerdePersonenDao>();
 			gpDaoMock.Setup(foo => foo.Ophalen(It.IsAny<int>()
-			    , It.IsAny<System.Linq.Expressions.Expression<Func<GelieerdePersoon, object>>[]>())).Returns(communicatielozePersoon);
+			    , It.IsAny<Expression<Func<GelieerdePersoon, object>>[]>())).Returns(communicatielozePersoon);
 
 			// GroepenDao mocken.
 
@@ -165,7 +165,7 @@ namespace Chiro.Gap.Workers.Test
 			Factory.InstantieRegistreren<IGroepenDao>(groepenDaoMock.Object);
 			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrNooitGav());
 
-			CommVormManager gpMgr = Factory.Maak<CommVormManager>();
+			var gpMgr = Factory.Maak<CommVormManager>();
 			#endregion
 
 			#region act
@@ -175,7 +175,7 @@ namespace Chiro.Gap.Workers.Test
 			// CommunicatieVormID en GelieerdePersoonID zijn irrelevant owv de mocking,
 			// maar als je hier null meegeeft voor parameter 'origineel' 
 			// throwt gpMgr een NullRefereneException omdat hij origineel.ID opvraagt
-			gpMgr.CommunicatieVormVerwijderen(null, communicatielozePersoon);
+			gpMgr.CommunicatieVormVerwijderen(null);
 
 			#endregion
 

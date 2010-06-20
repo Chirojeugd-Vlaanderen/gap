@@ -177,7 +177,7 @@
 					<li>
 						<%=cv.Voorkeur ? "<strong>" + Html.Encode(cv.Nummer + " ") + "</strong>" : Html.Encode(cv.Nummer + " ")%>
 						<em><%=Html.Encode(cv.Nota)%></em>
-						<%=Html.ActionLink("[verwijderen]", "VerwijderenCommVorm", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+						<%=Html.ActionLink("[verwijderen]", "VerwijderenCommVorm", new { commvormID = cv.ID })%>
 						<%=Html.ActionLink("[bewerken]", "CommVormBewerken", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
 					</li>                            
 				<%}%>

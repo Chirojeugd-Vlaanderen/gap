@@ -853,9 +853,9 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		// GET: /Personen/VerwijderenCommVorm/commvormid
-		public ActionResult VerwijderenCommVorm(int commvormID, int gelieerdePersoonID, int groepID)
+		public ActionResult VerwijderenCommVorm(int commvormID, int groepID)
 		{
-			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormVerwijderenVanPersoon(gelieerdePersoonID, commvormID));
+			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormVerwijderenVanPersoon(commvormID));
 			return TerugNaarVorigeFiche();
 		}
 

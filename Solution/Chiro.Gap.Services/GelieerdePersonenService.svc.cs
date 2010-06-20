@@ -609,21 +609,16 @@ namespace Chiro.Gap.Services
 			}
 		}
 
-		// FIXME: de parameter 'gelieerdePersoonID' is overbodig; zie ticket #145.
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void CommunicatieVormVerwijderenVanPersoon(int gelieerdePersoonID, int commvormID)
+		public void CommunicatieVormVerwijderenVanPersoon(int commvormID)
 		{
-			var gp = _gpMgr.OphalenMetCommVormen(gelieerdePersoonID);
-			var cv = (from commVorm in gp.Communicatie
-									where commVorm.ID == commvormID
-									select commVorm).FirstOrDefault();
-			
+			var cv = _cvMgr.OphalenMetGelieerdePersoon(commvormID);
 			if (cv == null)
 			{
 				throw new ArgumentException(Resources.FouteCommunicatieVormVoorPersoonString);
 			}
-			_cvMgr.CommunicatieVormVerwijderen(cv, gp);	// persisteert
+			_cvMgr.CommunicatieVormVerwijderen(cv);	// persisteert
 		}
 
 		// TODO dit moet gecontroleerd worden!
@@ -637,7 +632,8 @@ namespace Chiro.Gap.Services
 			communicatieVorm.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(v.CommunicatieTypeID);
 
 			try{
-				GelieerdePersoon gp = _cvMgr.OphalenMetGelieerdePersoon(v.ID);
+				var cv = _cvMgr.OphalenMetGelieerdePersoon(v.ID);
+				var gp = cv.GelieerdePersoon;
 				_cvMgr.AanpassingenDoorvoeren(gp, communicatieVorm);
 				_gpMgr.BewarenMetCommVormen(gp);
 			}

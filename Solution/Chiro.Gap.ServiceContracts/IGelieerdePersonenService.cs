@@ -238,10 +238,9 @@ namespace Chiro.Gap.ServiceContracts
 		/// <summary>
 		/// Verwijdert een communicatievorm van een gelieerde persoon
 		/// </summary>
-		/// <param name="gelieerdepersonenID">ID van de gelieerde persoon</param>
 		/// <param name="commvormID">ID van de communicatievorm</param>
 		[OperationContract]
-		void CommunicatieVormVerwijderenVanPersoon(int gelieerdepersonenID, int commvormID);
+		void CommunicatieVormVerwijderenVanPersoon(int commvormID);
 
 		/// <summary>
 		/// Persisteert de wijzigingen aan een bestaande communicatievorm
