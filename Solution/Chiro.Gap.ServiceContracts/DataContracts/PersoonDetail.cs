@@ -18,6 +18,9 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		public Boolean IsLid{get;set;}
 
+		[DataMember]
+		public Boolean IsLeiding { get; set; }
+
 		///Geeft aan of er plaats is in een van de afdelingen om iemand lid te maken
 		[DataMember]
 		public Boolean KanLidWorden { get; set; }

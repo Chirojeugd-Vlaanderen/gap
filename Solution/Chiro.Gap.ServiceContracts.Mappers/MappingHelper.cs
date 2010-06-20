@@ -35,7 +35,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.ID))
 				.ForMember(
 					dst => dst.IsLid,
-					opt => opt.MapFrom(src => (src.Lid.Count > 0)))
+					opt => opt.MapFrom(src => (src.Lid.Any(e => e.Type == LidType.Kind))))
+				.ForMember(
+					dst => dst.IsLeiding,
+					opt => opt.MapFrom(src => (src.Lid.Any(e => e.Type == LidType.Leiding))))
 				.ForMember(
 					dst => dst.KanLidWorden,
 					opt => opt.MapFrom(src => false))

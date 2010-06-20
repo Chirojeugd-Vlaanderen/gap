@@ -140,7 +140,7 @@ namespace Chiro.Gap.WebApp.Controllers
 						VolledigeNaam = d.VolledigeNaam,
 						GeboorteDatum = d.GeboorteDatum,
 						Geslacht = d.Geslacht == GeslachtsType.Man ? "jongen" : "meisje",
-						IsLid = d.IsLid ? "(lid)" : string.Empty
+						IsLid = d.IsLid ? "(lid)" : d.IsLeiding? "(leiding)": string.Empty
 					}).AsQueryable();
 
 			var stream = (new ExcelManip()).ExcelTabel(selectie, it => it.AdNummer, it => it.VolledigeNaam, it => it.GeboorteDatum, it => it.Geslacht, it => it.IsLid);

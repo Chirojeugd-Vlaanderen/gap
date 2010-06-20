@@ -53,16 +53,17 @@ Totaal aantal personen: <%= Model.Totaal %>  |  Maak een selectie en
     <td align="right"><%=p.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)p.GeboorteDatum).ToString("d") %></td>
     <td><%=p.Geslacht.ToString() %></td>
     <td>
-        <% if (!p.IsLid){ %>
-			<% if (p.KanLidWorden) { %>
-				<%=Html.ActionLink("Lid maken", "LidMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
-			<% } %>
-			<% if (p.KanLeidingWorden){ %>
-				<%=Html.ActionLink("Leiding maken", "LeidingMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
-			<% } %>
-        <% } else { %>
-		   Is lid
+        <% if(p.IsLid){ %>
+			Is lid
+        <%} if (p.IsLeiding){ %>
+			Is Leiding
         <%} %>
+        <% if (!p.IsLid && p.KanLidWorden) { %>
+				<%=Html.ActionLink("Lid maken", "LidMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
+		<% } %>
+		<% if (!p.IsLeiding && p.KanLeidingWorden){ %>
+				<%=Html.ActionLink("Leiding maken", "LeidingMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
+		<% } %>
         <%=Html.ActionLink("Bro/sis maken", "Kloon", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
     </td>
     <td><% foreach (var c in p.CategorieLijst) 

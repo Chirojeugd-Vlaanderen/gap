@@ -56,7 +56,7 @@
 
 	</fieldset>
 	
-	<%if (Model.PersoonLidInfo.PersoonDetail.IsLid){ %>
+	<%if (Model.PersoonLidInfo.PersoonDetail.IsLid || Model.PersoonLidInfo.PersoonDetail.IsLeiding){ %>
 	<fieldset>
    
    	<legend>Lidgegevens en functies <%= Html.ActionLink("Aanpassen", "EditLidGegevens", new{ Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %></legend>
