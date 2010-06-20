@@ -946,7 +946,7 @@
             <PropertyRef Name="ID" /></Key>
           <Property Name="Opmerking" Type="String" Nullable="true" />
           <Property Name="AdresTypeInt" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="true" />
+          <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Adres" FromRole="PersoonsAdres" ToRole="Adres" />
           <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_PersoonsAdres_Persoon" FromRole="PersoonsAdres" ToRole="Persoon" />
           <Property Name="ID" Type="Int32" Nullable="false" />
@@ -967,7 +967,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_GroepsWerkjaar_Groep" FromRole="GroepsWerkJaar" ToRole="Groep" />
           <NavigationProperty Name="Lid" Relationship="ChiroGroepModel.FK_Lid_GroepsWerkjaar" FromRole="GroepsWerkJaar" ToRole="Lid" />
-          <Property Name="Versie" Type="Binary" Nullable="true" />
+          <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar" FromRole="GroepsWerkJaar" ToRole="AfdelingsJaar" />
         </EntityType>
         <EntityType Name="Lid">
@@ -979,7 +979,7 @@
           <Property Name="Verwijderd" Type="Boolean" Nullable="false" />
           <Property Name="VolgendWerkjaarInt" Type="Int16" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="true" />
+          <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_Lid_GroepsWerkjaar" FromRole="Lid" ToRole="GroepsWerkJaar" />
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_Lid_GelieerdePersoon" FromRole="Lid" ToRole="GelieerdePersoon" />
           <NavigationProperty Name="Functie" Relationship="ChiroGroepModel.LidFunctie" FromRole="Lid" ToRole="Functie" />
@@ -999,13 +999,13 @@
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Login" Type="String" Nullable="false" />
           <NavigationProperty Name="GebruikersRecht" Relationship="ChiroGroepModel.FK_GebruikersRecht_Gav" FromRole="Gav" ToRole="GebruikersRecht" />
-          <Property Name="Versie" Type="Binary" Nullable="true" /></EntityType>
+          <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" /></EntityType>
         <EntityType Name="GebruikersRecht">
           <Key>
             <PropertyRef Name="ID" /></Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="VervalDatum" Type="DateTime" Nullable="true" />
-          <Property Name="Versie" Type="Binary" Nullable="true" />
+          <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="Gav" Relationship="ChiroGroepModel.FK_GebruikersRecht_Gav" FromRole="GebruikersRecht" ToRole="Gav" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_GebruikersRecht_Groep" FromRole="GebruikersRecht" ToRole="Groep" /></EntityType>
         <Association Name="FK_GebruikersRecht_Gav">
@@ -1020,7 +1020,7 @@
           <Property Name="Naam" Type="String" Nullable="false" />
           <Property Name="Afkorting" Type="String" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="true" />
+          <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_Afdeling_Groep" FromRole="Afdeling" ToRole="Groep" />
           <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.FK_AfdelingsJaar_Afdeling" FromRole="Afdeling" ToRole="AfdelingsJaar" />
         </EntityType>
@@ -1042,7 +1042,7 @@
             <PropertyRef Name="ID" /></Key>
           <Property Name="Naam" Type="String" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="true" />
+          <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling" FromRole="OfficieleAfdeling" ToRole="AfdelingsJaar" />
           <Property Name="LeefTijdVan" Type="Int32" Nullable="false" />
           <Property Name="LeefTijdTot" Type="Int32" Nullable="false" /></EntityType>
@@ -1078,7 +1078,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Naam" Type="String" Nullable="false" />
           <Property Name="Code" Type="String" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="true" />
+          <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_Categorie_Groep" FromRole="Categorie" ToRole="Groep"/>
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.PersoonsCategorie" FromRole="Categorie" ToRole="GelieerdePersoon" /></EntityType>
         <Association Name="FK_Categorie_Groep">
@@ -1096,7 +1096,7 @@
           <Property Name="Omschrijving" Type="String" Nullable="true" />
           <Property Name="Validatie" Type="String" Nullable="true" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="true" />
+          <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="CommunicatieVorm" Relationship="ChiroGroepModel.FK_CommunicatieVorm_CommunicatieType" FromRole="CommunicatieType" ToRole="CommunicatieVorm" />
           <Property Name="Voorbeeld" Type="String" Nullable="true" /></EntityType>
         <Association Name="FK_CommunicatieVorm_CommunicatieType">
@@ -1108,7 +1108,7 @@
           <Property Name="Naam" Type="String" Nullable="false" />
           <Property Name="Code" Type="String" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="true" />
+          <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" />
           <Property Name="MaxAantal" Type="Int32" Nullable="true" />
           <Property Name="MinAantal" Type="Int32" Nullable="false" />
           <Property Name="WerkJaarVan" Type="Int32" Nullable="true" />
@@ -1131,7 +1131,7 @@
           <Property Name="Naam" Type="String" Nullable="false" />
           <Property Name="TaalID" Type="Int32" Nullable="false" />
           <Property Name="CrabSubstraatID" Type="Int32" Nullable="true" />
-          <Property Name="Versie" Type="Binary" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="false" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_Adres_StraatNaam" FromRole="StraatNaam" ToRole="Adres" /></EntityType>
         <EntityType Name="WoonPlaats">
           <Key>
@@ -1141,7 +1141,7 @@
           <Property Name="Naam" Type="String" Nullable="false" />
           <Property Name="TaalID" Type="Int32" Nullable="false" />
           <Property Name="CrabPostKantonID" Type="Int32" Nullable="true" />
-          <Property Name="Versie" Type="Binary" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="false" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_Adres_WoonPlaats" FromRole="WoonPlaats" ToRole="Adres" /></EntityType>
         <Association Name="FK_Adres_StraatNaam">
           <End Type="ChiroGroepModel.StraatNaam" Role="StraatNaam" Multiplicity="1" />
