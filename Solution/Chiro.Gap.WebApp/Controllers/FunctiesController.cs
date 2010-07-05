@@ -36,7 +36,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(
 					svc => svc.DetailOphalen(groepID))
 			};
-			
+
 			return View(model);
 		}
 
@@ -52,20 +52,20 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				// Functie was niet leeg
 
-				var model = new LedenLinksModel() ;
+				var model = new LedenLinksModel();
 				BaseModelInit(model, groepID);
 
-				model.Leden  = ex.Detail.Objecten;
-                model.FunctieID = id;
+				model.Leden = ex.Detail.Objecten;
+				model.FunctieID = id;
 				model.VolledigeLijstUrl = Url.Action("List", "Leden", new RouteValueDictionary(new { id = id, groepID = groepID }));
 				model.TotaalAantal = ex.Detail.Aantal;
 
 				// Vis functienaam op uit de gekoppelde functies van de leden.
 				// Niet elegant, maar werkt wel.
 
-				var functieNaam = (from f in model.Leden.First().LidInfo.Functies 
-				                   where f.ID == id
-				                   select f).First().Naam;
+				var functieNaam = (from f in model.Leden.First().LidInfo.Functies
+								   where f.ID == id
+								   select f).First().Naam;
 				model.Titel = String.Format("Functie '{0}' verwijderen", functieNaam);
 
 				return View("FunctieVerwijderen", model);
@@ -114,7 +114,7 @@ namespace Chiro.Gap.WebApp.Controllers
 						model.NieuweFunctie.MaxAantal,
 						model.NieuweFunctie.MinAantal,
 						model.NieuweFunctie.Type,
-						model.NieuweFunctie.WerkJaarVan 
+						model.NieuweFunctie.WerkJaarVan
 						));
 
 					return RedirectToAction("Index", new { groepID });

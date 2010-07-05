@@ -161,13 +161,12 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <c>false</c>.
 		/// </summary>
 		/// <param name="persoonsAdresID">ID van de functie</param>
-		/// <param name="login">Gebruikersnaam</param>
+		/// <param name="login">De gebruikersnaam</param>
 		/// <returns><c>true</c> als het persoonsAdres met ID <paramref name="persoonsAdresID"/> gekoppeld is aan een persoon
 		/// waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten op heeft.  Anders
 		/// <c>false</c>.</returns>
 		bool IsGavPersoonsAdres(int persoonsAdresID, string login);
 
 		#endregion
-
 	}
 }

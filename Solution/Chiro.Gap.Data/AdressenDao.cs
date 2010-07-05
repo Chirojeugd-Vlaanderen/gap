@@ -174,8 +174,8 @@ namespace Chiro.Gap.Data.Ef
 		/// persoonsadressen en gelieerde personen opgehaald</param>
 		/// <returns>Een adres als gevonden, anders null</returns>
 		public Adres Ophalen(
-			string straatNaam, int? huisNr, string bus, 
-			int postNr, string postCode, string woonPlaatsNaam, 
+			string straatNaam, int? huisNr, string bus,
+			int postNr, string postCode, string woonPlaatsNaam,
 			bool metBewoners)
 		{
 			Adres resultaat;
@@ -184,18 +184,18 @@ namespace Chiro.Gap.Data.Ef
 			{
 				db.Adres.MergeOption = MergeOption.NoTracking;
 
-				var adressentabel = db.Adres.Include(adr=>adr.StraatNaam).Include(adr=>adr.WoonPlaats);
+				var adressentabel = db.Adres.Include(adr => adr.StraatNaam).Include(adr => adr.WoonPlaats);
 
 				if (metBewoners)
 				{
-					adressentabel = adressentabel.Include(adr=>adr.PersoonsAdres);
+					adressentabel = adressentabel.Include(adr => adr.PersoonsAdres);
 				}
 
 				resultaat = (
 					from Adres a in adressentabel
-					where (a.StraatNaam.Naam == straatNaam && a.StraatNaam.PostNummer == postNr 
+					where (a.StraatNaam.Naam == straatNaam && a.StraatNaam.PostNummer == postNr
 					&& a.WoonPlaats.Naam == woonPlaatsNaam && a.WoonPlaats.PostNummer == postNr
-					&& (a.HuisNr ==  null && huisNr == null || a.HuisNr == huisNr)
+					&& (a.HuisNr == null && huisNr == null || a.HuisNr == huisNr)
 					&& (a.Bus == null && bus == null || a.Bus == bus)
 					&& (a.PostCode == null && postCode == null || a.PostCode == postCode)
 					)
@@ -203,7 +203,6 @@ namespace Chiro.Gap.Data.Ef
 
 				// Gekke constructie voor huisnummer, bus en postcode, omdat null anders niet goed
 				// opgevangen wordt.  (je krijgt bijv. where PostCode == null in de SQL query, wat niet werkt)
-
 
 				// 'Eager loading' van straatnaam en woonplaats zou niet werken...
 				// Voorlopig gaat het zo:
@@ -250,8 +249,8 @@ namespace Chiro.Gap.Data.Ef
 					gps = (from gp in db.GelieerdePersoon
 							.Include(gp2 => gp2.Persoon.PersoonsAdres.First().Adres)
 							.Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.Groep.ID, groepIDs))
-					       where gp.Persoon.PersoonsAdres.Any(pa => pa.Adres.ID == adresID)
-					       select gp).ToArray();
+						   where gp.Persoon.PersoonsAdres.Any(pa => pa.Adres.ID == adresID)
+						   select gp).ToArray();
 				}
 				else
 				{
@@ -260,8 +259,8 @@ namespace Chiro.Gap.Data.Ef
 
 					var pers = (from gp in db.GelieerdePersoon
 							.Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.Groep.ID, groepIDs))
-					       where gp.Persoon.PersoonsAdres.Any(pa => pa.Adres.ID == adresID)
-					       select gp.Persoon);
+								where gp.Persoon.PersoonsAdres.Any(pa => pa.Adres.ID == adresID)
+								select gp.Persoon);
 
 					// selecteer nu alle gelieerde personen gekoppeld aan de personen
 
@@ -274,8 +273,8 @@ namespace Chiro.Gap.Data.Ef
 				// Ik kies uit de eerste het goeie adres, en dan heb ik normaalgezien alles wat ik nodg heb.
 
 				adres = (from pa in gps.First().Persoon.PersoonsAdres
-				         where pa.Adres.ID == adresID
-				         select pa.Adres).FirstOrDefault();
+						 where pa.Adres.ID == adresID
+						 select pa.Adres).FirstOrDefault();
 
 				if (adres != null)
 				{
@@ -286,6 +285,5 @@ namespace Chiro.Gap.Data.Ef
 
 			return Utility.DetachObjectGraph(adres);
 		}
-
 	}
 }

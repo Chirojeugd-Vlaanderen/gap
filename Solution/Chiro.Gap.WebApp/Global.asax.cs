@@ -77,6 +77,5 @@ namespace Chiro.Gap.WebApp
 
 			ControllerBuilder.Current.SetControllerFactory(controllerFactory);
 		}
-
 	}
 }

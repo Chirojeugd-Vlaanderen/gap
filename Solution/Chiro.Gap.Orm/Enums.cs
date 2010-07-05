@@ -7,7 +7,6 @@ using System;
 
 namespace Chiro.Gap.Orm
 {
-
 	// Deze enums mogen geen datacontracts zijn; de '-Extra's' mogen niet over de lijn.
 	// Zie ticket #439
 

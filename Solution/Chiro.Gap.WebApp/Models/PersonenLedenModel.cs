@@ -12,17 +12,17 @@ namespace Chiro.Gap.WebApp.Models
 {
 	public class PersonenLedenModel : MasterViewModel
 	{
-        public PersonenLedenModel()
-        {
-            AlleAfdelingen = new List<AfdelingDetail>();
-            PersoonLidInfo = new PersoonLidInfo();
-        }
+		public PersonenLedenModel()
+		{
+			AlleAfdelingen = new List<AfdelingDetail>();
+			PersoonLidInfo = new PersoonLidInfo();
+		}
 
 		/// <summary>
 		/// Informatie over een te tonen of te wijzigen persoon
 		/// </summary>
-		public PersoonLidInfo PersoonLidInfo{ get; set; }
+		public PersoonLidInfo PersoonLidInfo { get; set; }
 
-		public IEnumerable<AfdelingDetail> AlleAfdelingen{ get; set; }
+		public IEnumerable<AfdelingDetail> AlleAfdelingen { get; set; }
 	}
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +8,6 @@ using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Dummies;
 using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Workers;
 using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers.Test
@@ -20,7 +18,7 @@ namespace Chiro.Gap.Workers.Test
 	///This is a test class for FunctiesManagerTest and is intended
 	///to contain all FunctiesManagerTest Unit Tests
 	///</summary>
-	[TestClass()]
+	[TestClass]
 	public class FunctiesManagerTest
 	{
 
@@ -29,7 +27,7 @@ namespace Chiro.Gap.Workers.Test
 		//You can use the following additional attributes as you write your tests:
 		//
 		//Use ClassInitialize to run code before running the first test in the class
-		[ClassInitialize()]
+		[ClassInitialize]
 		public static void MyClassInitialize(TestContext testContext)
 		{
 			Factory.ContainerInit();
@@ -58,7 +56,7 @@ namespace Chiro.Gap.Workers.Test
 		/// <summary>
 		/// Opsporen functie met te veel aantal members
 		/// </summary>
-		[TestMethod()]
+		[TestMethod]
 		public void TweeKeerUniekeFunctieToekennenTestVerschillendLid()
 		{
 			// Arrange
@@ -93,7 +91,7 @@ namespace Chiro.Gap.Workers.Test
 		/// Als een functie maar 1 keer mag voorkomen, maar ze wordt 2 keer toegekend aan dezelfde
 		/// persoon, dan moet dat zonder problemen kunnen.  
 		/// </summary>
-		[TestMethod()]
+		[TestMethod]
 		public void TweeKeerUniekeFunctieToekennenTestZelfdeLid()
 		{
 			// Arrange
@@ -129,7 +127,7 @@ namespace Chiro.Gap.Workers.Test
 		/// een exception opleveren
 		/// </summary>
 		[ExpectedException(typeof(FoutNummerException))]
-		[TestMethod()]
+		[TestMethod]
 		public void ToekennenFunctieOngeldigWerkJaar()
 		{
 			// Arrange
@@ -161,7 +159,7 @@ namespace Chiro.Gap.Workers.Test
 		/// Functies voor leiding mogen niet aan een kind toegewezen worden.
 		/// </summary>
 		[ExpectedException(typeof(InvalidOperationException))]
-		[TestMethod()]
+		[TestMethod]
 		public void ToekennenLeidingsFunctieAanLid()
 		{
 			// Arrange
@@ -191,7 +189,7 @@ namespace Chiro.Gap.Workers.Test
 		/// <summary>
 		/// Verplichte functie die niet toegekend wordt
 		/// </summary>
-		[TestMethod()]
+		[TestMethod]
 		public void NietToegekendeVerplichteFunctie()
 		{
 			// Arrange
@@ -230,7 +228,7 @@ namespace Chiro.Gap.Workers.Test
 		/// Kijkt na of de verplichte aantallen genegeerd worden voor functies die niet geldig zijn
 		/// in het gegeven groepswerkjaar.
 		/// </summary>
-		[TestMethod()]
+		[TestMethod]
 		public void IrrelevanteVerplichteFunctie()
 		{
 			// Arrange
@@ -265,7 +263,7 @@ namespace Chiro.Gap.Workers.Test
 		/// Standaard 'AantallenControleren'.  Nakijken of rekening wordt gehouden
 		/// met nationaal bepaalde functies.
 		/// </summary>
-		[TestMethod()]
+		[TestMethod]
 		public void OntbrekendeNationaalBepaaldeFuncties()
 		{
 			// Arrange
@@ -289,7 +287,7 @@ namespace Chiro.Gap.Workers.Test
 		/// <summary>
 		/// Test of regelementaire 'FunctieBewaren' geen exception oplevert.
 		/// </summary>
-		[TestMethod()]
+		[TestMethod]
 		public void FunctieBewarenTest()
 		{
 			// Arrange
@@ -319,7 +317,7 @@ namespace Chiro.Gap.Workers.Test
 		/// <summary>
 		/// Test op exception bij poging tot bewaren van nationaal bepaalde functie.
 		/// </summary>
-		[TestMethod()]
+		[TestMethod]
 		[ExpectedException(typeof(GeenGavException))]
 		public void NationaalBepaaldeFunctieBewarenTest()
 		{
@@ -327,9 +325,9 @@ namespace Chiro.Gap.Workers.Test
 
 			var testData = new DummyData();
 
-			FunctiesManager fm = Factory.Maak<FunctiesManager>();
+			var fm = Factory.Maak<FunctiesManager>();
 
-			Functie f = fm.NationaalBepaaldeFunctiesOphalen().First();
+			var f = fm.NationaalBepaaldeFunctiesOphalen().First();
 
 			// Act
 
@@ -342,17 +340,17 @@ namespace Chiro.Gap.Workers.Test
 		}
 
 		/// <summary>
-		/// Test functies vervangen
+		/// Testfuncties vervangen
 		/// </summary>
-		[TestMethod()]
+		[TestMethod]
 		public void FunctiesVervangen()
 		{
 			// Arrange
 
 			var testData = new DummyData();
 
-			FunctiesManager fm = Factory.Maak<FunctiesManager>();
-			GroepenManager gm = Factory.Maak<GroepenManager>();
+			var fm = Factory.Maak<FunctiesManager>();
+			var gm = Factory.Maak<GroepenManager>();
 
 			Functie f = gm.FunctieToevoegen(
 				testData.DummyGroep,

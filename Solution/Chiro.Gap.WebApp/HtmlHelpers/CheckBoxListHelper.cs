@@ -30,7 +30,6 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		public CheckBoxListInfo(string value, string displayText, bool isChecked)
 			: this(value, displayText, isChecked, String.Empty) { }
 
-
 		/// <summary>
 		/// Constructor voor CheckBoxListInfo
 		/// </summary>

@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace System.Web.Mvc
 {
-
     /// <summary>Provides an adapter for the <see cref="T:System.ComponentModel.DataAnnotations.DatumInVerledenAttribute" /> attribute.</summary>
     public class DatumInVerledenAttributeAdapter : DataAnnotationsModelValidator<DatumInVerledenAttribute>
     {

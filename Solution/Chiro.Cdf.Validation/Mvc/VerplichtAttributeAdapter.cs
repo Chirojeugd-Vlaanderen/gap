@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace System.Web.Mvc
 {
-
     /// <summary>Provides an adapter for the <see cref="T:System.ComponentModel.DataAnnotations.VerplichtAttribute" /> attribute.</summary>
     public class VerplichtAttributeAdapter : DataAnnotationsModelValidator<VerplichtAttribute>
     {

@@ -98,7 +98,7 @@ namespace Chiro.Gap.Workers
 		public void Verhuizen(IEnumerable<Persoon> verhuizers, Adres oudAdres, Adres nieuwAdres, AdresTypeEnum adresType)
 		{
 			var persIDs = (from p in verhuizers
-				       select p.ID).ToArray();
+						   select p.ID).ToArray();
 			var mijnPersIDs = _autorisatieMgr.EnkelMijnPersonen(persIDs);
 
 			if (persIDs.Count() == mijnPersIDs.Count())
@@ -126,7 +126,7 @@ namespace Chiro.Gap.Workers
 					pa.Adres.PersoonsAdres.Remove(pa);
 
 					// adrestype
-					
+
 					pa.AdresType = adresType;
 
 					// koppel persoonsadres aan nieuw adres
@@ -159,10 +159,10 @@ namespace Chiro.Gap.Workers
 		public void AdresToevoegen(IEnumerable<Persoon> personen, Adres adres, AdresTypeEnum adrestype)
 		{
 			var persIDs = (from p in personen
-				       select p.ID).ToList();
+						   select p.ID).ToList();
 			var mijnPersIDs = _autorisatieMgr.EnkelMijnPersonen(persIDs);
 
-			if(persIDs.Count() != mijnPersIDs.Count())
+			if (persIDs.Count() != mijnPersIDs.Count())
 			{
 				// stiekem personen niet gelieerd aan eigen groep bij in lijst opgenomen.  Geen
 				// tijd aan verspillen; gewoon een GeenGavException.
@@ -196,7 +196,6 @@ namespace Chiro.Gap.Workers
 				p.PersoonsAdres.Add(pa);
 				adres.PersoonsAdres.Add(pa);
 			}
-
 		}
 
 		/// <summary>
@@ -218,7 +217,7 @@ namespace Chiro.Gap.Workers
 			{
 				paths.Add(p => p.GelieerdePersoon.First().Groep);
 			}
-                        else if ((extras & PersoonsExtras.AlleGelieerdePersonen) != 0)
+			else if ((extras & PersoonsExtras.AlleGelieerdePersonen) != 0)
 			{
 				paths.Add(p => p.GelieerdePersoon);
 			}
@@ -228,7 +227,7 @@ namespace Chiro.Gap.Workers
 			// 'extras|PersoonsExtras.MijnGelieerdePersonen' gezet is, nog eens dezelfde gelieerde
 			// persoonsextra's opgehaald.
 			return _dao.Ophalen(
-				_autorisatieMgr.EnkelMijnPersonen(personenIDs), 
+				_autorisatieMgr.EnkelMijnPersonen(personenIDs),
 				paths.ToArray());
 		}
 

@@ -5,7 +5,6 @@
 
 using System.Collections.Generic;
 
-using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.Models
@@ -13,13 +12,13 @@ namespace Chiro.Gap.WebApp.Models
 	/// <summary>
 	/// Model dat gebruikt wordt om de afdeling(en) van een lid te wijzigen
 	/// </summary>
-	public class LidAfdelingenModel: MasterViewModel
+	public class LidAfdelingenModel : MasterViewModel
 	{
-        public LidAfdelingenModel()
-        {
-            BeschikbareAfdelingen = new List<ActieveAfdelingInfo>();
-            Info = new LidAfdelingInfo();
-        }
+		public LidAfdelingenModel()
+		{
+			BeschikbareAfdelingen = new List<ActieveAfdelingInfo>();
+			Info = new LidAfdelingInfo();
+		}
 
 		/// <summary>
 		/// Informatie over de afdelingsjaren gekoppeld aan een lid.

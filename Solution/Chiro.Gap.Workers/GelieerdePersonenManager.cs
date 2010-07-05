@@ -100,7 +100,7 @@ namespace Chiro.Gap.Workers
 		/// Haalt een gelieerde persoon op, met de gevraagde 'extra's'.
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID op te halen gelieerde persoon</param>
-		/// <param name="extras">geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+		/// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
 		/// <returns>De gevraagde gelieerde persoon, met de gevraagde gekoppelde entiteiten.</returns>
 		public GelieerdePersoon Ophalen(int gelieerdePersoonID, PersoonsExtras extras)
 		{
@@ -570,7 +570,7 @@ namespace Chiro.Gap.Workers
 		/// Haalt een rij gelieerde personen op, eventueel met extra info
 		/// </summary>
 		/// <param name="gelieerdePersoonIDs">ID's op te halen gelieerde personen</param>
-		/// <param name="extras">geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+		/// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
 		/// <returns>De gevraagde rij gelieerde personen.  De personen komen sowieso mee.</returns>
 		public IEnumerable<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersoonIDs, PersoonsExtras extras)
 		{

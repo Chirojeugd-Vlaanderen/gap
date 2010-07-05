@@ -49,6 +49,7 @@ namespace Chiro.Gap.Workers
 		/// <remarks>Deze method kent geen afdelingen toe.  Ze test ook niet
 		/// of het groepswerkjaar we het recentste is.  (Voor de unit tests moeten
 		/// we ook leden kunnen maken in oude groepswerkjaren.)</remarks>
+		/// <returns>Het aangepaste Lid-object</returns>
 		private Lid LidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, LidType type)
 		{
 			Lid lid = null;
@@ -84,7 +85,6 @@ namespace Chiro.Gap.Workers
 				throw new InvalidOperationException(Properties.Resources.GeboorteDatumOntbreekt);
 			}
 
-
 			// GroepsWerkJaar en GelieerdePersoon invullen
 			lid.GroepsWerkJaar = gwj;
 			lid.GelieerdePersoon = gp;
@@ -94,7 +94,6 @@ namespace Chiro.Gap.Workers
 
 			return lid;
 		}
-
 
 		/// <summary>
 		/// Maakt gelieerde persoon een kind (lid) voor het recentste werkjaar

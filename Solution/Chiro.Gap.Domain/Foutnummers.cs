@@ -5,6 +5,9 @@
 
 namespace Chiro.Gap.Domain
 {
+	/// <summary>
+	/// Identificatie van de fout
+	/// </summary>
 	public enum FoutNummer
 	{
 		AlgemeneFout,
@@ -28,13 +31,11 @@ namespace Chiro.Gap.Domain
 		GroepsWerkJaarNietVanGroep,
 		#endregion
 
-
 		#region niet beschikbaar in werkjaar
 		GroepsWerkJaarNietBeschikbaar,
 		FunctieNietBeschikbaar,
 		AfdelingNietBeschikbaar,
 		#endregion
-
 
 		#region nog te verdelen
 		CategorieNietLeeg,

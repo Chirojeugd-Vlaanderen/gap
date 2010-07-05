@@ -7,12 +7,12 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.Models
 {
-	public class AfdelingInfoModel: MasterViewModel
+	public class AfdelingInfoModel : MasterViewModel
 	{
-        public AfdelingInfoModel()
-        {
-            Info = new AfdelingInfo();
-        }
+		public AfdelingInfoModel()
+		{
+			Info = new AfdelingInfo();
+		}
 
 		public AfdelingInfo Info { get; set; }
 	}

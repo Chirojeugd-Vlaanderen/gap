@@ -23,30 +23,11 @@ namespace Chiro.Gap.Data.Test
 	[TestClass]
 	public class AfdelingsTest
 	{
-		public AfdelingsTest()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
-
-		private TestContext testContextInstance;
-
 		/// <summary>
 		/// Gets or sets the test context which provides
 		/// information about and functionality for the current test run.
 		/// </summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
+		public TestContext TestContext { get; set; }
 
 		#region Additional test attributes
 		//
@@ -70,8 +51,7 @@ namespace Chiro.Gap.Data.Test
 		//
 		#endregion
 
-
-		[ClassInitialize]
+        [ClassInitialize]
 		static public void TestsInitialiseren(TestContext context)
 		{
 			// Initialiseer IoC-container.  Niet zeker van of dit
@@ -85,8 +65,8 @@ namespace Chiro.Gap.Data.Test
 			// REKENING HOUDEN MET het feit dat afdelng3 normaalgezien geen afdelingsjaar
 			// heeft; check op null is wel degelijk nodig.
 
-			IAfdelingsJarenDao ajDao = Factory.Maak<IAfdelingsJarenDao>();
-			AfdelingsJaar aj = ajDao.Ophalen(gwjID, afd3ID, afdj => afdj.Leiding, afdj => afdj.Kind);
+			var ajDao = Factory.Maak<IAfdelingsJarenDao>();
+			var aj = ajDao.Ophalen(gwjID, afd3ID, afdj => afdj.Leiding, afdj => afdj.Kind);
 
 			if (aj != null)
 			{

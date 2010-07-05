@@ -3,7 +3,7 @@
 namespace Chiro.Adf.ServiceModel.Test
 {
     /// <summary>
-    /// Summary description for UnitTest1
+	/// Summary description for ServiceAanroepen
     /// </summary>
     [TestClass]
     public class ServiceAanroepen

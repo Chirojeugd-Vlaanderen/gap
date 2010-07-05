@@ -25,7 +25,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// TODO: documenteren
 		/// </summary>
 		/// <param name="serviceHelper"></param>
-		public AdressenController(IServiceHelper serviceHelper) : base(serviceHelper) 
+		public AdressenController(IServiceHelper serviceHelper)
+			: base(serviceHelper)
 		{
 			_adressenHelper = new AdressenHelper(serviceHelper);
 		}
@@ -69,9 +70,9 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult WoonPlaatsenOphalen(int postNummer)
 		{
 			var resultaat = (from g in _adressenHelper.WoonPlaatsenOphalen()
-					 where g.PostNummer == postNummer
-					 orderby g.Naam
-					 select g);
+							 where g.PostNummer == postNummer
+							 orderby g.Naam
+							 select g);
 
 			return Json(resultaat, JsonRequestBehavior.AllowGet);
 		}
@@ -116,9 +117,9 @@ namespace Chiro.Gap.WebApp.Controllers
 			return Json(retValue);
 		}
 
-	    public override ActionResult Index(int groepID)
-	    {
-	        return RedirectToAction("Index", new {Controller = "Personen"});
-	    }
+		public override ActionResult Index(int groepID)
+		{
+			return RedirectToAction("Index", new { Controller = "Personen" });
+		}
 	}
 }

@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -56,22 +61,22 @@ namespace Chiro.Gap.WebApp
 
 				foreach (var selector in cols)
 				{
-					//InsertText(spreadSheet, selector(rij).ToString(), colIndex, rowIndex);
+					// InsertText(spreadSheet, selector(rij).ToString(), colIndex, rowIndex);
 					var inhoud = selector(rij);
 
 					if (inhoud != null)
 					{
-						if (inhoud.GetType() == typeof (int))
+						if (inhoud.GetType() == typeof(int))
 						{
-							InsertNumber(spreadSheet, (double) (int) inhoud, colIndex, rowIndex);
+							InsertNumber(spreadSheet, (double)(int)inhoud, colIndex, rowIndex);
 						}
-						else if (inhoud.GetType() == typeof (double))
+						else if (inhoud.GetType() == typeof(double))
 						{
-							InsertNumber(spreadSheet, (double) inhoud, colIndex, rowIndex);
+							InsertNumber(spreadSheet, (double)inhoud, colIndex, rowIndex);
 						}
-						else if (inhoud.GetType() == typeof (DateTime))
+						else if (inhoud.GetType() == typeof(DateTime))
 						{
-							InsertDate(spreadSheet, (DateTime) inhoud, colIndex, rowIndex);
+							InsertDate(spreadSheet, (DateTime)inhoud, colIndex, rowIndex);
 						}
 						else
 						{
@@ -85,7 +90,6 @@ namespace Chiro.Gap.WebApp
 				++rowIndex;
 			}
 		}
-
 
 		/// <summary>
 		/// Plaatst een tekst in een gegeven (lege) cel van een spreadsheetdocument.
@@ -149,13 +153,12 @@ namespace Chiro.Gap.WebApp
 			WorksheetPart worksheetPart = spreadSheet.WorkbookPart.WorksheetParts.First();
 			Cell cell = InsertCellInWorksheet(column, rowNr, worksheetPart);
 
-			cell.StyleIndex = (UInt32Value) 1U;
+			cell.StyleIndex = (UInt32Value)1U;
 			cell.CellValue = new CellValue(date.ToOADate().ToString());
 			cell.DataType = new EnumValue<CellValues>(CellValues.Date);
 
 			worksheetPart.Worksheet.Save();
 		}
-
 
 		/// <summary>
 		/// Given text and a SharedStringTablePart, creates a SharedStringItem with the specified text 
@@ -197,8 +200,7 @@ namespace Chiro.Gap.WebApp
 		/// </summary>
 		/// <param name="workbookPart">WorkbookPart waaraan een nieuwe worksheet toegevoegd moet worden</param>
 		/// <returns>De nieuwe worksheet</returns>
- 
-		private WorksheetPart InsertWorksheet(WorkbookPart workbookPart)
+        private WorksheetPart InsertWorksheet(WorkbookPart workbookPart)
 		{
 			// Add a new worksheet part to the workbook.
 			WorksheetPart newWorksheetPart = workbookPart.AddNewPart<WorksheetPart>();
@@ -246,7 +248,6 @@ namespace Chiro.Gap.WebApp
 			result.Append((char)(withinNum + 'a'));
 			return (result.ToString());
 		}
-
 
 		/// <summary>
 		/// Given a column name, a rowNr index, and a WorksheetPart, inserts a cell into the worksheet. 
@@ -300,7 +301,6 @@ namespace Chiro.Gap.WebApp
 			}
 		}
 
-
 		/// <summary>
 		/// Creeert een nieuw Exceldocument in de memorystream <paramref name="stream"/>.
 		/// </summary>
@@ -335,8 +335,5 @@ namespace Chiro.Gap.WebApp
 			// Close the document.
 			spreadsheetDocument.Close();
 		}
-
-
-
 	}
 }

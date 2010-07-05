@@ -118,7 +118,7 @@ namespace Chiro.Gap.Data.Ef
 			{
 				//// Ik wil dit bereiken:
 
-				//var query = (from p in db.Persoon
+				// var query = (from p in db.Persoon
 				//             where
 				//                p.GelieerdePersoon.Any(gp => gelieerdePersoonIDs.Contains(gp.ID))
 				//             select p) as ObjectQuery<Persoon>;

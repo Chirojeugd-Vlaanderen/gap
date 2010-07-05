@@ -175,7 +175,11 @@ namespace Chiro.Gap.Workers.Test
 			// CommunicatieVormID en GelieerdePersoonID zijn irrelevant owv de mocking,
 			// maar als je hier null meegeeft voor parameter 'origineel' 
 			// throwt gpMgr een NullRefereneException omdat hij origineel.ID opvraagt
-			gpMgr.CommunicatieVormVerwijderen(null);
+			var commVorm = new CommunicatieVorm();
+			commVorm.ID = 0;
+			commVorm.GelieerdePersoon = new GelieerdePersoon();
+			commVorm.GelieerdePersoon.ID = 0;
+			gpMgr.CommunicatieVormVerwijderen(commVorm);
 
 			#endregion
 
@@ -212,7 +216,7 @@ namespace Chiro.Gap.Workers.Test
 			Factory.InstantieRegistreren<IGroepenDao>(groepenDaoMock.Object);
 			Factory.InstantieRegistreren<IGroepsWerkJaarDao>(groepsWerkJaarDaoMock.Object);
 
-			LedenManager lm = Factory.Maak<LedenManager>();
+			var lm = Factory.Maak<LedenManager>();
 
 			// Act
 			IList<Lid> lijst = lm.PaginaOphalen(testData.HuidigGwj.ID);

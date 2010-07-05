@@ -13,9 +13,16 @@ namespace Chiro.Gap.Domain
 	[DataContract]
 	public class FoutBericht
 	{
+		/// <summary>
+		/// Identificatiecode van de fout
+		/// </summary>
 		[DataMember]
 		public FoutNummer FoutNummer { get; set; }
+
+		/// <summary>
+		/// Omschrijving van wat er foutgelopen is
+		/// </summary>
 		[DataMember]
-		public string Bericht { get; set; }     // omschrijving
+		public string Bericht { get; set; }
 	}
 }

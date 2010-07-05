@@ -134,8 +134,6 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 		}
 
-
-
 		//
 		// GET: /Afdeling/Verwijderen/afdelingsJaarId
 		public ActionResult Verwijderen(int groepID, int id)

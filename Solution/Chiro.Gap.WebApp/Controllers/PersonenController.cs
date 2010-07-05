@@ -59,7 +59,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			// Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
 			ClientState.VorigeLijst = Request.Url.ToString();
-			ClientState.VorigeFiche = ""; //Op null zetten zodat die eigenlijk "vergeten" wordt nu
+			ClientState.VorigeFiche = string.Empty; // Op null zetten zodat die eigenlijk "vergeten" wordt nu
 
 			int totaal = 0;
 
@@ -88,8 +88,8 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
 
 				String naam = (from c in model.PersoonInfos.First().CategorieLijst
-					       where c.ID == id
-					       select c).First().Naam;
+							   where c.ID == id
+							   select c).First().Naam;
 
 				model.Titel = "Overzicht " + naam;
 				model.Totaal = totaal;
@@ -134,18 +134,17 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 
 			var selectie = (from d in data
-					select new
-					{
-						AdNummer = d.AdNummer,
-						VolledigeNaam = d.VolledigeNaam,
-						GeboorteDatum = d.GeboorteDatum,
-						Geslacht = d.Geslacht == GeslachtsType.Man ? "jongen" : "meisje",
-						IsLid = d.IsLid ? "(lid)" : d.IsLeiding? "(leiding)": string.Empty
-					}).AsQueryable();
+							select new
+							{
+								AdNummer = d.AdNummer,
+								VolledigeNaam = d.VolledigeNaam,
+								GeboorteDatum = d.GeboorteDatum,
+								Geslacht = d.Geslacht == GeslachtsType.Man ? "jongen" : "meisje",
+								IsLid = d.IsLid ? "(lid)" : d.IsLeiding ? "(leiding)" : string.Empty
+							}).AsQueryable();
 
 			var stream = (new ExcelManip()).ExcelTabel(selectie, it => it.AdNummer, it => it.VolledigeNaam, it => it.GeboorteDatum, it => it.Geslacht, it => it.IsLid);
 			return new ExcelResult(stream, "personen.xlsx");
-
 		}
 
 		/// <summary>
@@ -195,7 +194,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 					ServiceHelper.CallService<ILedenService, IEnumerable<int>>(g => g.LedenMaken(
 						model.GekozenGelieerdePersoonIDs,
-						model.GekozenActie == 1 ? LidType.Kind: LidType.Leiding,
+						model.GekozenActie == 1 ? LidType.Kind : LidType.Leiding,
 						out foutBerichten));
 					TempData["feedback"] = String.IsNullOrEmpty(foutBerichten) ? Properties.Resources.LedenGemaaktFeedback : foutBerichten;
 					r = TerugNaarVorigeLijst();
@@ -267,8 +266,6 @@ namespace Chiro.Gap.WebApp.Controllers
 			return RedirectToAction("EditRest", new { id = ids.GelieerdePersoonID });
 		}
 
-
-
 		// aka maak een broertje of zusje
 		// GET: /Personen/Kloon
 		public ActionResult Kloon(int gelieerdepersoonID, int groepID)
@@ -288,7 +285,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		// POST: /Personen/Nieuw
 		[AcceptVerbs(HttpVerbs.Post)]
 		[HttpPost]
-		//TODO dit is mss iets om op de server te draaien?
+		// TODO dit is mss iets om op de server te draaien?
 		public ActionResult Kloon(GelieerdePersonenModel model, int groepID)
 		{
 			/////BEGIN DUPLICATE CODE
@@ -323,8 +320,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			var broerzus = ServiceHelper.CallService<IGelieerdePersonenService, PersoonLidInfo>(l => l.AlleDetailsOphalen(model.BroerzusID));
 
 			var voorkeursComm = (from a in broerzus.CommunicatieInfo
-					     where a.Voorkeur && a.IsGezinsGebonden
-					     select a).FirstOrDefault();
+								 where a.Voorkeur && a.IsGezinsGebonden
+								 select a).FirstOrDefault();
 
 			if (voorkeursComm != null)
 			{
@@ -334,18 +331,17 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (broerzus.PersoonDetail.VoorkeursAdresID != null)
 			{
 				var voorkeursAdres = (from a in broerzus.PersoonsAdresInfo
-						      where a.PersoonsAdresID == broerzus.PersoonDetail.VoorkeursAdresID
-						      select a).FirstOrDefault();
+									  where a.PersoonsAdresID == broerzus.PersoonDetail.VoorkeursAdresID
+									  select a).FirstOrDefault();
 				if (voorkeursAdres != null)
 				{
-					var list = new List<int> {ids.GelieerdePersoonID };
+					var list = new List<int> { ids.GelieerdePersoonID };
 					ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenGelieerdePersonen(list, voorkeursAdres, true));
 				}
 			}
 
 			return RedirectToAction("EditRest", new { id = ids.GelieerdePersoonID });
 		}
-
 
 		/// <summary>
 		/// Laat toe persoonsgegevens te wijzigen
@@ -475,7 +471,6 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>De view 'AdresBewerken'</returns>
 		public ActionResult Verhuizen(int id, int aanvragerID, int groepID)
 		{
-
 			var model = new AdresModel();
 			BaseModelInit(model, groepID);
 
@@ -491,20 +486,20 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			model.OudAdresID = id;
 			model.PersoonsAdresInfo.AdresType = (from bewoner in a.Bewoners
-							     where bewoner.GelieerdePersoonID == aanvragerID
-							     select bewoner.AdresType).FirstOrDefault();
+												 where bewoner.GelieerdePersoonID == aanvragerID
+												 select bewoner.AdresType).FirstOrDefault();
 
 			model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(a.PostNr);
 
 			// Standaard verhuist iedereen mee.
 			model.GelieerdePersoonIDs = (from b in a.Bewoners
-					    select b.GelieerdePersoonID).ToList();
+										 select b.GelieerdePersoonID).ToList();
 
 			model.Bewoners = (from p in a.Bewoners
-					  select new CheckBoxListInfo(
-						p.GelieerdePersoonID.ToString(),
-						p.PersoonVolledigeNaam,
-						model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
+							  select new CheckBoxListInfo(
+								p.GelieerdePersoonID.ToString(),
+								p.PersoonVolledigeNaam,
+								model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
 			model.Titel = "Personen Verhuizen";
 			return View("AdresBewerken", model);
@@ -529,10 +524,10 @@ namespace Chiro.Gap.WebApp.Controllers
 			var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(svc => svc.HuisGenotenOphalenZelfdeGroep(model.AanvragerID));
 
 			model.Bewoners = (from p in bewoners
-					  select new CheckBoxListInfo(
-						  p.GelieerdePersoonID.ToString(),
-						  p.PersoonVolledigeNaam,
-						  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
+							  select new CheckBoxListInfo(
+								  p.GelieerdePersoonID.ToString(),
+								  p.PersoonVolledigeNaam,
+								  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
 			model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 
@@ -579,10 +574,10 @@ namespace Chiro.Gap.WebApp.Controllers
 				var bewoners = (ServiceHelper.CallService<IGelieerdePersonenService, GezinInfo>(l => l.GezinOphalen(model.OudAdresID, groepID))).Bewoners;
 
 				model.Bewoners = (from p in bewoners
-						  select new CheckBoxListInfo(
-							  p.GelieerdePersoonID.ToString(),
-							  p.PersoonVolledigeNaam,
-							  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
+								  select new CheckBoxListInfo(
+									  p.GelieerdePersoonID.ToString(),
+									  p.PersoonVolledigeNaam,
+									  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
 				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 				return View("AdresBewerken", model);
@@ -594,18 +589,17 @@ namespace Chiro.Gap.WebApp.Controllers
 				var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(svc => svc.HuisGenotenOphalenZelfdeGroep(model.AanvragerID));
 
 				var probleemPersIDs = from pa in ex.Detail.Objecten
-						      select pa.PersoonID;
+									  select pa.PersoonID;
 
 				model.Bewoners = (from p in bewoners
-						  select new CheckBoxListInfo(
-							  p.GelieerdePersoonID.ToString(),
-							  p.PersoonVolledigeNaam,
-							  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID),
-							  probleemPersIDs.Contains(p.PersoonID) ? Properties.Resources.WoontDaarAl : string.Empty)).ToArray();
+								  select new CheckBoxListInfo(
+									  p.GelieerdePersoonID.ToString(),
+									  p.PersoonVolledigeNaam,
+									  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID),
+									  probleemPersIDs.Contains(p.PersoonID) ? Properties.Resources.WoontDaarAl : string.Empty)).ToArray();
 
 				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 				return View("AdresBewerken", model);
-
 			}
 		}
 
@@ -619,15 +613,15 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult AdresVerwijderen(int id, int gelieerdePersoonID, int groepID)
 		{
 			var model = new AdresVerwijderenModel
-			            	{
-			            		AanvragerID = gelieerdePersoonID,
-			            		Adres = ServiceHelper.CallService<IGelieerdePersonenService, GezinInfo>(foo => foo.GezinOphalen(id, groepID)),
-			            		PersoonIDs = new List<int>
+							{
+								AanvragerID = gelieerdePersoonID,
+								Adres = ServiceHelper.CallService<IGelieerdePersonenService, GezinInfo>(foo => foo.GezinOphalen(id, groepID)),
+								PersoonIDs = new List<int>
 			            		             	{
 			            		             		ServiceHelper.CallService<IGelieerdePersonenService, int>(
 			            		             			srvc => srvc.PersoonIDGet(gelieerdePersoonID))
 			            		             	}
-			            	};
+							};
 
 			// Standaard vervalt enkel het adres van de aanvrager
 			// Van de aanvrager heb ik het PersoonID nodig, en we hebben nu enkel het
@@ -663,10 +657,10 @@ namespace Chiro.Gap.WebApp.Controllers
 			var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(l => l.HuisGenotenOphalenZelfdeGroep(id));
 
 			model.Bewoners = (from p in bewoners
-					  select new CheckBoxListInfo(
-						  p.GelieerdePersoonID.ToString(),
-						  p.PersoonVolledigeNaam,
-						  p.GelieerdePersoonID == id)).ToArray();
+							  select new CheckBoxListInfo(
+								  p.GelieerdePersoonID.ToString(),
+								  p.PersoonVolledigeNaam,
+								  p.GelieerdePersoonID == id)).ToArray();
 
 			// Standaard krijgt alleen de aanvrager een nieuw adres.
 
@@ -690,16 +684,15 @@ namespace Chiro.Gap.WebApp.Controllers
 			var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(svc => svc.HuisGenotenOphalenZelfdeGroep(model.AanvragerID));
 
 			model.Bewoners = (from p in bewoners
-					  select new CheckBoxListInfo(
-						  p.GelieerdePersoonID.ToString(),
-						  p.PersoonVolledigeNaam,
-						  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
+							  select new CheckBoxListInfo(
+								  p.GelieerdePersoonID.ToString(),
+								  p.PersoonVolledigeNaam,
+								  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
 			model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 
 			return View("AdresBewerken", model);
 		}
-
 
 		/// <summary>
 		/// Actie voor post van nieuw adres
@@ -720,12 +713,12 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenGelieerdePersonen(model.GelieerdePersoonIDs, model.PersoonsAdresInfo, model.Voorkeur));
 
-				//return TerugNaarVorigeFiche();
+				// return TerugNaarVorigeFiche();
 
 				// Door het AanvragerID te gebruiken ipv het tijdelijke cookie (uit TerugNaarVorigeFiche) werkt de
 				// redirect ook naar behoren als ondertussen in een andere tab een andere persoon bekeken is.
 
-				return RedirectToAction("EditRest", new {id = model.AanvragerID});
+				return RedirectToAction("EditRest", new { id = model.AanvragerID });
 			}
 			catch (FaultException<OngeldigObjectFault> ex)
 			{
@@ -738,10 +731,10 @@ namespace Chiro.Gap.WebApp.Controllers
 				var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(l => l.HuisGenotenOphalenZelfdeGroep(model.AanvragerID));
 
 				model.Bewoners = (from p in bewoners
-						  select new CheckBoxListInfo(
-							  p.GelieerdePersoonID.ToString(),
-							  p.PersoonVolledigeNaam,
-							  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
+								  select new CheckBoxListInfo(
+									  p.GelieerdePersoonID.ToString(),
+									  p.PersoonVolledigeNaam,
+									  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
 				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 				return View("AdresBewerken", model);
@@ -750,7 +743,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				BaseModelInit(model, groepID);
 
-				//TODO hier wordt niets over geprint!
+				// TODO hier wordt niets over geprint!
 
 				// De mogelijke bewoners zijn op dit moment vergeten, en moeten dus
 				// terug opgevraagd worden.
@@ -758,14 +751,14 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				// Extraheer bewoners met problemen uit exceptie
 				var probleemPersIDs = from pa in ex.Detail.Objecten
-						      select pa.PersoonID;
+									  select pa.PersoonID;
 
 				model.Bewoners = (from p in bewoners
-						  select new CheckBoxListInfo(
-							  p.GelieerdePersoonID.ToString(),
-							  p.PersoonVolledigeNaam,
-							  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID),
-							  probleemPersIDs.Contains(p.PersoonID) ? Properties.Resources.WoontDaarAl : string.Empty)).ToArray();
+								  select new CheckBoxListInfo(
+									  p.GelieerdePersoonID.ToString(),
+									  p.PersoonVolledigeNaam,
+									  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID),
+									  probleemPersIDs.Contains(p.PersoonID) ? Properties.Resources.WoontDaarAl : string.Empty)).ToArray();
 
 				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 
@@ -954,6 +947,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			var model = new CategorieModel();
 			BaseModelInit(model, groepID);
+			model.Titel = "Toevoegen aan categorie";
 			model.Categorieen = ServiceHelper.CallService<IGroepenService, IEnumerable<CategorieInfo>>(l => l.CategorieenOphalen(groepID));
 
 			if (model.Categorieen.Count() > 0)
@@ -961,7 +955,6 @@ namespace Chiro.Gap.WebApp.Controllers
 				object value;
 				TempData.TryGetValue("list", out value);
 				model.GelieerdePersoonIDs = (List<int>)value;
-				TempData.Remove("list"); // TODO: Ik denk dat dit voor MVC2 automatisch gebeurt; na te kijken.
 
 				return View("CategorieToevoegenAanLijst", model);
 			}

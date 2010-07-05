@@ -12,13 +12,13 @@ namespace Chiro.Gap.WebApp.Models
 	/// <summary>
 	/// Model voor het lijstje van actieve en niet-actieve afdelingen
 	/// </summary>
-	public class AfdelingsOverzichtModel: MasterViewModel
+	public class AfdelingsOverzichtModel : MasterViewModel
 	{
-        public AfdelingsOverzichtModel()
-        {
-            NietActief = new List<AfdelingInfo>();
-            Actief = new List<AfdelingDetail>();
-        }
+		public AfdelingsOverzichtModel()
+		{
+			NietActief = new List<AfdelingInfo>();
+			Actief = new List<AfdelingDetail>();
+		}
 
 		/// <summary>
 		/// Afdelingen niet-actief dit werkjaar

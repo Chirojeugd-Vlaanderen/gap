@@ -179,10 +179,10 @@ namespace Chiro.Gap.Data.Ef
 
 				// Haal het huidige groepswerkjaar van de groep op
 				var huidigWj = (
-				               	from w in db.GroepsWerkJaar
-				               	where w.Groep.ID == g.ID
-				               	orderby w.WerkJaar descending
-				               	select w).FirstOrDefault<GroepsWerkJaar>().WerkJaar;
+								from w in db.GroepsWerkJaar
+								where w.Groep.ID == g.ID
+								orderby w.WerkJaar descending
+								select w).FirstOrDefault<GroepsWerkJaar>().WerkJaar;
 
 				// Haal alle personen in de gevraagde categorie op
 				var query = (from c in db.Categorie.Include("GelieerdePersoon.Persoon")
@@ -438,8 +438,8 @@ namespace Chiro.Gap.Data.Ef
 				// Zoek eerst de geleerde persoon zelf.
 
 				var zelf = (from gp in db.GelieerdePersoon.Include(gp => gp.Persoon).Include(gp => gp.Groep)
-					    where gp.ID == gelieerdePersoonID 
-					    select gp).FirstOrDefault();
+							where gp.ID == gelieerdePersoonID
+							select gp).FirstOrDefault();
 
 				if (zelf == null)
 				{
@@ -448,14 +448,14 @@ namespace Chiro.Gap.Data.Ef
 				else
 				{
 					var query = (from gp in db.GelieerdePersoon.Include(gp => gp.Persoon)
-					              where gp.Groep.ID == zelf.Groep.ID &&
-					              	gp.Persoon.PersoonsAdres.Any(
-					              		pa => pa.Adres.PersoonsAdres.Any(pa2=>pa2.Persoon.ID == zelf.Persoon.ID))
-					              select gp);
+								 where gp.Groep.ID == zelf.Groep.ID &&
+								   gp.Persoon.PersoonsAdres.Any(
+									   pa => pa.Adres.PersoonsAdres.Any(pa2 => pa2.Persoon.ID == zelf.Persoon.ID))
+								 select gp);
 
 					if (query.FirstOrDefault() == null)
 					{
-						return new List<GelieerdePersoon> {zelf};
+						return new List<GelieerdePersoon> { zelf };
 					}
 					else
 					{

@@ -29,15 +29,15 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		private LidInfoModel LijstModelInitialiseren(int groepsWerkJaarID, int groepID)
 		{
-			//Er wordt een nieuwe lijst opgevraagd, dus wordt deze vanaf hier bijgehouden als de lijst om terug naar te springen
+			// Er wordt een nieuwe lijst opgevraagd, dus wordt deze vanaf hier bijgehouden als de lijst om terug naar te springen
 			ClientState.VorigeLijst = Request.Url.ToString();
 
 			var model = new LidInfoModel();
 			BaseModelInit(model, groepID);
 
-			//TODO check dat het gegeven groepswerkjaar id wel degelijk van de gegeven groep is
+			// TODO check dat het gegeven groepswerkjaar id wel degelijk van de gegeven groep is
 
-			//Laadt de lijst van werkjaren in van de groep en zet de juiste info over het te tonen werkjaar
+			// Laadt de lijst van werkjaren in van de groep en zet de juiste info over het te tonen werkjaar
 			model.WerkJaarInfos = ServiceHelper.CallService<IGroepenService, IEnumerable<WerkJaarInfo>>(e => e.WerkJarenOphalen(groepID));
 
 			var gevraagdwerkjaar = (from g in model.WerkJaarInfos
@@ -47,17 +47,17 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.IDGetoondGroepsWerkJaar = groepsWerkJaarID;
 			model.JaartalGetoondGroepsWerkJaar = gevraagdwerkjaar.WerkJaar;
 
-			//Haal alle afdelingsjaren op van de groep in het groepswerkjaar
+			// Haal alle afdelingsjaren op van de groep in het groepswerkjaar
 			var list = ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>(groep => groep.AfdelingenOphalen(groepsWerkJaarID));
 
-			//Laadt de afdelingen in het model in via een dictionary
+			// Laadt de afdelingen in het model in via een dictionary
 			model.AfdelingsInfoDictionary = new Dictionary<int, AfdelingDetail>();
 			foreach (AfdelingDetail ai in list)
 			{
 				model.AfdelingsInfoDictionary.Add(ai.AfdelingID, ai);
 			}
 
-			//Haal alle functies op van de groep in het groepswerkjaar
+			// Haal alle functies op van de groep in het groepswerkjaar
 			var list2 = ServiceHelper.CallService<IGroepenService, IEnumerable<FunctieInfo>>(groep => groep.FunctiesOphalen(groepsWerkJaarID, LidType.Alles));
 
 			model.FunctieInfoDictionary = new Dictionary<int, FunctieInfo>();
@@ -81,7 +81,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			var model = LijstModelInitialiseren(groepsWerkJaarID, groepID);
 
-			//TODO check dat de gegeven afdeling id wel degelijk van de gegeven groep is
+			// TODO check dat de gegeven afdeling id wel degelijk van de gegeven groep is
 
 			model.LidInfoLijst =
 				ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>
@@ -109,7 +109,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			var model = LijstModelInitialiseren(groepsWerkJaarID, groepID);
 
-			//TODO check dat de gegeven afdeling id wel degelijk van de gegeven groep is
+			// TODO check dat de gegeven afdeling id wel degelijk van de gegeven groep is
 
 			model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>(lid => lid.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdID));
 
@@ -138,21 +138,21 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			var model = LijstModelInitialiseren(groepsWerkJaarID, groepID);
 
-			//TODO check dat de gegeven functie id wel degelijk van de gegeven groep is
+			// TODO check dat de gegeven functie id wel degelijk van de gegeven groep is
 
 			model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>(lid => lid.PaginaOphalenVolgensFunctie(groepsWerkJaarID, funcID));
 
-			//TODO functienaam
+			// TODO functienaam
 			model.Titel = "Ledenoverzicht van leden met functie TODO in het werkjaar " + model.JaartalGetoondGroepsWerkJaar + "-" + (model.JaartalGetoondGroepsWerkJaar + 1);
 
-			//TODO naar volged werkjaar kunnen gaan met behoud van functie
+			// TODO naar volged werkjaar kunnen gaan met behoud van functie
 			return View("Index", model);
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult FunctieLijst(LidInfoModel model, int groepID)
 		{
-			return RedirectToAction("FunctieLijst", new {groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, funcID = model.GekozenFunctie, groepID = groepID});
+			return RedirectToAction("FunctieLijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, funcID = model.GekozenFunctie, groepID = groepID });
 		}
 
 		/// <summary>
@@ -182,19 +182,18 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 
 			var selectie = (from l in lijst
-			                select new
-			                       	{
-			                       		AdNummer = l.PersoonDetail.AdNummer,
-			                       		VolledigeNaam = l.PersoonDetail.VolledigeNaam,
-			                       		GeboorteDatum = l.PersoonDetail.GeboorteDatum,
-			                       		Geslacht = l.PersoonDetail.Geslacht == GeslachtsType.Man ? "jongen" : "meisje"
-			                       	}).AsQueryable();
+							select new
+									{
+										AdNummer = l.PersoonDetail.AdNummer,
+										VolledigeNaam = l.PersoonDetail.VolledigeNaam,
+										GeboorteDatum = l.PersoonDetail.GeboorteDatum,
+										Geslacht = l.PersoonDetail.Geslacht == GeslachtsType.Man ? "jongen" : "meisje"
+									}).AsQueryable();
 
-			var stream = (new ExcelManip()).ExcelTabel(selectie, it=>it.AdNummer, it=>it.VolledigeNaam, it=>it.GeboorteDatum, it=>it.Geslacht);
+			var stream = (new ExcelManip()).ExcelTabel(selectie, it => it.AdNummer, it => it.VolledigeNaam, it => it.GeboorteDatum, it => it.Geslacht);
 			return new ExcelResult(stream, "leden.xlsx");
-
 		}
-		
+
 		// id = lidid
 		// GET: /Leden/DeActiveren/id
 		public ActionResult DeActiveren(int id, int groepID)
@@ -218,11 +217,11 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <summary>
 		/// Toont de view die toelaat om de afdeling(en) van een lid te wijzigen
 		/// </summary>
-        /// <param name="lidID">LidID van het lid met de te wijzigen afdeling(en)</param>
-        /// <param name="groepsWerkJaarID">Groepswerkjaar waarin de wijziging moet gebeuren</param>
+		/// <param name="lidID">LidID van het lid met de te wijzigen afdeling(en)</param>
+		/// <param name="groepsWerkJaarID">Groepswerkjaar waarin de wijziging moet gebeuren</param>
 		/// <param name="groepID">Groep waarin de user momenteel werkt</param>
 		/// <returns>De view 'AfdelingBewerken'</returns>
-        public ActionResult AfdelingBewerken(int lidID, int groepsWerkJaarID, int groepID)
+		public ActionResult AfdelingBewerken(int lidID, int groepsWerkJaarID, int groepID)
 		{
 			var model = new LidAfdelingenModel();
 			BaseModelInit(model, groepID);
@@ -231,7 +230,6 @@ namespace Chiro.Gap.WebApp.Controllers
 				svc => svc.BeschikbareAfdelingenOphalen(groepID));
 			model.Info = ServiceHelper.CallService<ILedenService, LidAfdelingInfo>(
 				svc => svc.AfdelingenOphalen(lidID));
-
 
 			if (model.BeschikbareAfdelingen.FirstOrDefault() == null)
 			{
@@ -256,9 +254,9 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 		}
 
-		//
+		// 
 		// POST: /Leden/AfdelingBewerken/5
-        //FIXME lidID wordt automatisch ingevuld als er eenzelfde argument in de GET methode van afdelingBewerken staat. Dit is eigenlijk helemaal niet mooi want wordt niet geverifieerd en zelfs 2de niveau afhankelijkheid van aspx.
+		// FIXME lidID wordt automatisch ingevuld als er eenzelfde argument in de GET methode van afdelingBewerken staat. Dit is eigenlijk helemaal niet mooi want wordt niet geverifieerd en zelfs 2de niveau afhankelijkheid van aspx.
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult AfdelingBewerken(LidAfdelingenModel model, int groepID, int lidID)
 		{
@@ -268,7 +266,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(
 				svc => svc.AfdelingenVervangen(lidID, model.Info.AfdelingsJaarIDs));
-		    return TerugNaarVorigeFiche();
+			return TerugNaarVorigeFiche();
 		}
 
 		/// <summary>

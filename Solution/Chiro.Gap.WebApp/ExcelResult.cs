@@ -37,10 +37,9 @@ namespace Chiro.Gap.WebApp
 			context.Response.Charset = string.Empty;
 			context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
 			context.Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-			//context.Response.Write(content);
+			// context.Response.Write(content);
 			context.Response.BinaryWrite(_stream.ToArray());
 			context.Response.End();
 		}
 	}
-
 }

@@ -30,8 +30,6 @@ namespace System.ComponentModel.DataAnnotations
 		    {
 		        return (DateTime)value <= DateTime.Now;
 		    }
-			
-			
 		}
 	}
 }

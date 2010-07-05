@@ -13,7 +13,6 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.HtmlHelpers
 {
-
 	/// <summary>
 	/// HTML-helper die een lijst van elementen uitschrijft in een nederlandse zin (overal "de" voorzetten, juiste komma's en "en").
 	/// </summary>
