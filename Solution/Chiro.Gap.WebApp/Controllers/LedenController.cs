@@ -27,6 +27,13 @@ namespace Chiro.Gap.WebApp.Controllers
 			return AfdelingsLijst(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), 0, groepID);
 		}
 
+		/// <summary>
+		/// Maakt een 'leeg' model voor een lijst met leden uit een gegeven groepswerkjaar.  Dat wil zeggen: ophalen van beschikbare
+		/// groepswerkjaren, afdelingen, en functies, en vastleggen van geselecteerd groepswerkjaar.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het gevraagde groepswerkjaar</param>
+		/// <param name="groepID"></param>
+		/// <returns></returns>
 		private LidInfoModel LijstModelInitialiseren(int groepsWerkJaarID, int groepID)
 		{
 			// Er wordt een nieuwe lijst opgevraagd, dus wordt deze vanaf hier bijgehouden als de lijst om terug naar te springen
@@ -72,6 +79,13 @@ namespace Chiro.Gap.WebApp.Controllers
 			return model;
 		}
 
+		/// <summary>
+		/// Toont een lijst met alle leden uit een gevraagd groepswerkjaar.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">gevraagd groepswerkjaar.  Indien 0, het recentste groepswerkjaar van de groep
+		/// met ID <paramref name="groepID"/>.</param>
+		/// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
+		/// <returns></returns>
 		public ActionResult Lijst(int groepsWerkJaarID, int groepID)
 		{
 			if (groepsWerkJaarID == 0)

@@ -5,6 +5,8 @@ Pagina: <%= Html.WerkJaarLinks(
                 ViewData.Model.IDGetoondGroepsWerkJaar, 
                 ViewData.Model.WerkJaarInfos,
         				//TODO momentele wordt er altijd terug naar de volledige lijst gegaan, dit kan nog aangepast worden door een huidigeafdeling en een huidigefunctie bij te houden.
+                        // (overigens is het niet zeker dat de huidig geselecteerde afdeling ook in het andere werkjaar
+                        // beschikbaar is.
 				wj => Url.Action("AfdelingsLijst", new { Controller = "Leden", groepsWerkJaarID = wj.ID/*, afdID = Model.HuidigeAfdeling*/ }))%>
 </div>
 
