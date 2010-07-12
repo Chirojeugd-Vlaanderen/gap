@@ -14,3 +14,5 @@ GO
 GO
 :r ./sql/populate.lid.Functie.sql
 GO
+:r ./sql/populate.verz.VerzekeringsType.sql
+GO

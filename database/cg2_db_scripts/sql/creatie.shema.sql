@@ -18,6 +18,8 @@ GO
 EXEC sys.sp_executesql N'CREATE SCHEMA [lid] AUTHORIZATION [dbo]'
 GO
 EXEC sys.sp_executesql N'CREATE SCHEMA [pers] AUTHORIZATION [dbo]'
+GO
+EXEC sys.sp_executesql N'CREATE SCHEMA [verz] AUTHORIZATION [dbo]'
 
 
 -- Creatie van de tabellen:
@@ -546,8 +548,26 @@ CREATE TABLE lid.LidFunctie(
 )
 GO
 
+-- verzekeringstype
+
+CREATE TABLE verz.VerzekeringsType(
+	VerzekeringsTypeID INT IDENTITY(1,1) NOT NULL,
+	Code VARCHAR(10) NOT NULL,
+	Naam VARCHAR(40) NOT NULL,
+	Omschrijving TEXT,
+	CONSTRAINT PK_VerzekeringsType PRIMARY KEY(VerzekeringsTypeID))
+GO
+
+CREATE TABLE verz.PersoonsVerzekering(
+	PersoonID INT NOT NULL,
+	VerzekeringsTypeID INT NOT NULL,
+	Van DATETIME NOT NULL,
+	Tot DATETIME NOT NULL,
+	CONSTRAINT PK_PersoonsVerzekering PRIMARY KEY(PersoonID, VerzekeringsTypeID))
+GO
 
 
+-- persoonsverzekering
 
 
 -- Rol voor applicatiegebruiker
