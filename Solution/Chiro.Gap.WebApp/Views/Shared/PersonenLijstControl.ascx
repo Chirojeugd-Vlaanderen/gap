@@ -58,10 +58,10 @@ Totaal aantal personen: <%= Model.Totaal %>  |  Maak een selectie en
         <%} if (p.IsLeiding){ %>
 			Is Leiding
         <%} %>
-        <% if (!p.IsLid && p.KanLidWorden) { %>
+        <% if (!p.IsLid && !p.IsLeiding && p.KanLidWorden) { %>
 				<%=Html.ActionLink("Lid maken", "LidMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
 		<% } %>
-		<% if (!p.IsLeiding && p.KanLeidingWorden){ %>
+		<% if (!p.IsLeiding && !p.IsLid && p.KanLeidingWorden){ %>
 				<%=Html.ActionLink("Leiding maken", "LeidingMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
 		<% } %>
         <%=Html.ActionLink("Bro/sis maken", "Kloon", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>

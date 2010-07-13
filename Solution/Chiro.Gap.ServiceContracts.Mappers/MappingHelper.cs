@@ -26,9 +26,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 		/// </summary>
 		public static void MappingsDefinieren()
 		{
-			// Als de namen van PersoonInfo wat anders gekozen zouden zijn, dan zou dat wel wat
-			// `ForMember'-regels uitsparen.
-
 			Mapper.CreateMap<GelieerdePersoon, PersoonDetail>()
 				.ForMember(
 					dst => dst.GelieerdePersoonID,
