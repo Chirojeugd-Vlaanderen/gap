@@ -131,7 +131,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.Dubbelpunt,
 				// FIXME: geef hier false terug, zodat het in de lidinfo een bool is ipv bool? en het printen
 				// in de ui makkelijker is
-					opt => opt.MapFrom(src => src is Leiding ? ((Leiding)src).DubbelpuntAbonnement : false))
+					opt => opt.MapFrom(src => src is Leiding ? ((Leiding)src).DubbelPuntAbonnement : false))
 				.ForMember(
 					dst => dst.AfdelingIdLijst,
 					opt => opt.MapFrom(src => LedenManager.AfdelingIdLijstGet(src)))
@@ -246,7 +246,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst => dst.Versie, opt => opt.Ignore())
 				.ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
 				.ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
-				.ForMember(dst => dst.EntityKey, opt => opt.Ignore());
+				.ForMember(dst => dst.EntityKey, opt => opt.Ignore())
+				.ForMember(dst => dst.PersoonsVerzekering, opt => opt.Ignore());
 
 			// Important: als er een lid is, dan is er altijd een gelieerdepersoon, maar niet omgekeerd, 
 			// dus passen we de link aan in de andere richting!

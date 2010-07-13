@@ -149,3 +149,12 @@ add CONSTRAINT [AK_Functie_GroepID_Naam] UNIQUE NONCLUSTERED
 	[Naam] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 GO
+
+ALTER TABLE verz.PersoonsVerzekering
+ADD CONSTRAINT FK_PersoonsVerzekering_Persoon FOREIGN KEY(PersoonID) REFERENCES pers.Persoon(PersoonID);
+GO
+
+ALTER TABLE verz.PersoonsVerzekering
+ADD CONSTRAINT FK_PersoonsVerzekering_VerzekeringsType 
+	FOREIGN KEY(VerzekeringsTypeID) REFERENCES verz.VerzekeringsType(VerzekeringsTypeID);
+GO
