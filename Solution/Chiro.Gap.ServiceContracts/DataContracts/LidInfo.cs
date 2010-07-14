@@ -62,7 +62,16 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		public IList<FunctieInfo> Functies { get; set; }
 
+		/// <summary>
+		/// Groepswerkjaar waarvoor het lid ingeschreven is
+		/// </summary>
 		[DataMember]
 		public int GroepsWerkJaarID { get; set; }
+
+		/// <summary>
+		/// Geeft aan of het lid verzekerd is tegen loonverlies
+		/// </summary>
+		[DataMember]
+		public bool VerzekeringLoonVerlies { get; set; }
 	}
 }

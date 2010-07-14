@@ -58,5 +58,23 @@ namespace Chiro.Gap.WebApp.Properties {
                 return ((int)(this["KleinAantalPersonen"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("16")]
+        public int LoonVerliesVanafLeeftijd {
+            get {
+                return ((int)(this["LoonVerliesVanafLeeftijd"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2.11")]
+        public decimal PrijsVerzekeringLoonVerlies {
+            get {
+                return ((decimal)(this["PrijsVerzekeringLoonVerlies"]));
+            }
+        }
     }
 }

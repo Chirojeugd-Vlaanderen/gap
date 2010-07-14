@@ -112,9 +112,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(
 					dst => dst.LidID,
 					opt => opt.MapFrom(src => src.ID))
-				//				.ForMember(
-				//					dst => dst.PersoonDetail,
-				//					opt => opt.MapFrom(src => src.GelieerdePersoon == null ? null : src.GelieerdePersoon))
 				.ForMember(
 					dst => dst.Type,
 					opt => opt.MapFrom(src => src is Kind ? LidType.Kind : LidType.Leiding))
@@ -137,7 +134,12 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.Functie))
 				.ForMember(
 					dst => dst.GroepsWerkJaarID,
-					opt => opt.MapFrom(src => src.GroepsWerkJaar != null ? src.GroepsWerkJaar.ID : 0));
+					opt => opt.MapFrom(src => src.GroepsWerkJaar != null ? src.GroepsWerkJaar.ID : 0))
+				.ForMember(
+					dst => dst.VerzekeringLoonVerlies,
+					opt => opt.MapFrom(src => IsVerzekerd(
+						src, 
+						Verzekering.LoonVerlies)));
 
 			Mapper.CreateMap<Lid, PersoonLidInfo>()
 				.ForMember(
@@ -289,5 +291,30 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
 			Mapper.AssertConfigurationIsValid();
 		}
+
+		#region Helperfunctie waarvan ik niet zeker ben of ze hier goed staan.
+
+		/// <summary>
+		/// Controleert of een lid <paramref name="src"/>in zijn werkjaar verzekerd is wat betreft de verzekering gegeven
+		/// door <paramref name="verzekerng"/>.
+		/// </summary>
+		/// <param name="src">lid waarvan moet nagekeken worden of het verzekerd is</param>
+		/// <param name="verzekering">type verzekering waarop gecontroleerd moet worden</param>
+		/// <returns></returns>
+		private static bool IsVerzekerd(Lid src, Verzekering verzekering)
+		{
+				var persoonsverzekeringen = from v in src.GelieerdePersoon.Persoon.PersoonsVerzekering
+							    where v.VerzekeringsType.ID == (int)verzekering &&
+								  (LedenManager.DatumInWerkJaar(v.Van, src.GroepsWerkJaar.WerkJaar) ||
+								   LedenManager.DatumInWerkJaar(v.Tot, src.GroepsWerkJaar.WerkJaar))
+							    select v;
+
+				return persoonsverzekeringen.FirstOrDefault() != null;
+		}
+
+
+
+		#endregion
+
 	}
 }

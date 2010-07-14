@@ -15,6 +15,7 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {
@@ -538,6 +539,27 @@ namespace Chiro.Gap.Workers
 			}
 
 			return result;
+		}
+
+		/// <summary>
+		/// Controleert of de datum <paramref name="dateTime"/> zich in het werkjaar <paramref name="p"/> bevindt.
+		/// </summary>
+		/// <param name="dateTime">Te controleren datum</param>
+		/// <param name="p">Werkjaar.  (2010 voor 2010-2011 enz.)</param>
+		/// <returns><c>true</c> als <paramref name="dateTime"/> zich in het werkjaar bevindt; anders <c>false</c>.</returns>
+		public static bool DatumInWerkJaar(DateTime dateTime, int p)
+		{
+			DateTime werkJaarStart = new DateTime(
+				p,
+				Properties.Settings.Default.WerkjaarStartNationaal.Month,
+				Properties.Settings.Default.WerkjaarStartNationaal.Day);
+
+			DateTime werkJaarStop = new DateTime(
+				p + 1,
+				Properties.Settings.Default.WerkjaarStartNationaal.Month,
+				Properties.Settings.Default.WerkjaarStartNationaal.Day).AddDays(-1);
+
+			return werkJaarStart <= dateTime && dateTime <= werkJaarStop;
 		}
 	}
 }

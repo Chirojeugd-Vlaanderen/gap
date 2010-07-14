@@ -411,6 +411,12 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			AfdelingenOphalen(model);
 
+			model.KanVerzekerenLoonVerlies = model.PersoonLidInfo.PersoonDetail.GeboorteDatum != null &&
+			                                 DateTime.Today.Year -
+			                                 ((DateTime) model.PersoonLidInfo.PersoonDetail.GeboorteDatum).Year >=
+			                                 Properties.Settings.Default.LoonVerliesVanafLeeftijd;
+			model.PrijsVerzekeringLoonVerlies = Properties.Settings.Default.PrijsVerzekeringLoonVerlies;
+
 			model.Titel = model.PersoonLidInfo.PersoonDetail.VolledigeNaam;
 			return View("EditRest", model);
 		}

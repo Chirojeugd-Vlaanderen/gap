@@ -24,5 +24,15 @@ namespace Chiro.Gap.WebApp.Models
 		public PersoonLidInfo PersoonLidInfo { get; set; }
 
 		public IEnumerable<AfdelingDetail> AlleAfdelingen { get; set; }
+
+		/// <summary>
+		/// Geef de gebruiker de optie om een verzekering te geven voor loonverlies
+		/// </summary>
+		public bool KanVerzekerenLoonVerlies { get; set; }
+
+		/// <summary>
+		/// De kost om iemand bij te verzekeren tegen loonverlies
+		/// </summary>
+		public decimal PrijsVerzekeringLoonVerlies { get; set; }
 	}
 }

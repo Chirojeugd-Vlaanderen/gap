@@ -56,4 +56,14 @@ namespace Chiro.Gap.Domain
 		[EnumMember]
 		Overig = 4
 	}
+
+	/// <summary>
+	/// Types verzekering; moet overeenkomen met database!0
+	/// </summary>
+	[DataContract]
+	public enum Verzekering
+	{
+		[EnumMember]
+		LoonVerlies = 1
+	}
 }

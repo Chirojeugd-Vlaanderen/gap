@@ -14,5 +14,11 @@
     <Setting Name="KleinAantalPersonen" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">5</Value>
     </Setting>
+    <Setting Name="LoonVerliesVanafLeeftijd" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">16</Value>
+    </Setting>
+    <Setting Name="PrijsVerzekeringLoonVerlies" Type="System.Decimal" Scope="Application">
+      <Value Profile="(Default)">2.11</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

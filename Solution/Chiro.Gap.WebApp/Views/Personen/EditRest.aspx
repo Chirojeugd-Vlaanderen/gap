@@ -150,6 +150,18 @@
        
        <%= Html.ActionLink("[aanpassen]", "AfdelingBewerken", new { Controller="Leden", groepsWerkJaarID = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID, lidID = Model.PersoonLidInfo.LidInfo.LidID })%>
 	</li>
+	
+	<% if (Model.PersoonLidInfo.LidInfo.VerzekeringLoonVerlies) {%>
+	<li>Verzekerd tegen loonverlies</li>
+    <% }
+    else if (Model.PersoonLidInfo.PersoonDetail.GeboorteDatum != null && Model.KanVerzekerenLoonVerlies)
+    { %>
+            	<li>Niet extra verzekerd tegen loonverlies. 
+            	<%=Html.ActionLink("[verzekeren tegen loonverlies]", "VerzekerLoonverlies", "Leden", new {id = Model.PersoonLidInfo.LidInfo.LidID}) %>
+            	(Kostprijs: &euro; <%=Model.PrijsVerzekeringLoonVerlies %>)
+            	</li>
+    <%}%>
+        
 	<!-- Dubbelpunt moet verhuisd worden naar personenniveau -->
 	</ul>
  
