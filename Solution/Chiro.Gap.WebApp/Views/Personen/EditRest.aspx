@@ -7,150 +7,82 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    
-    <% using (Html.BeginForm()) {%>
 
-    <fieldset>
-    <legend>Persoonlijke gegevens <%=Html.ActionLink("Aanpassen", "EditGegevens", new {id=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %></legend>    
-    
-        <p>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer)%>
-        <%=Html.TextBox("AdNummer", Model.PersoonLidInfo.PersoonDetail.AdNummer, 
-                new Dictionary<string, object> { 
-                    {"readonly", "readonly"}, 
-                    {"title", "AD-nummer kan niet ingegeven of gewijzigd worden." } })%>
-        </p>
-        
-        <p>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.VoorNaam)%>
-        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.VoorNaam)%>
-        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonDetail.VoorNaam)%>
-        </p>
-        
-        <p>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.Naam)%>
-        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.Naam)%>
-        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonDetail.Naam)%>
-        </p>
-        
-        <p>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>
-        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>
-        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>
-        </p>
-        
-        <p>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.Geslacht)%>
-        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.Geslacht)%>
-        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonDetail.Geslacht)%>
-        </p>
-        
-        <p>
-        <%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeefTijd)%>
-        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeefTijd)%>
-        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeefTijd)%>
-        </p>
-        
-        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonDetail.PersoonID)%>
-        <%=Html.HiddenFor(s => s.PersoonLidInfo.PersoonDetail.GelieerdePersoonID)%>
+    <div class="opzij">
+    <h3>Contact</h3>
+    <ul>
+    <% 
+		var gegroepeerdeComm = Model.PersoonLidInfo.CommunicatieInfo.GroupBy(
+				cv => new
+				{
+					Omschrijving = cv.CommunicatieTypeOmschrijving, 
+					Validatie = cv.CommunicatieTypeValidatie, 
+					Voorbeeld = cv.CommunicatieTypeVoorbeeld
+				});
 
-	</fieldset>
-	
-	<%if (Model.PersoonLidInfo.PersoonDetail.IsLid || Model.PersoonLidInfo.PersoonDetail.IsLeiding){ %>
-	<fieldset>
-   
-   	<legend>Lidgegevens en functies <%= Html.ActionLink("Aanpassen", "EditLidGegevens", new{ Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %></legend>
-
-		<%if (Model.PersoonLidInfo.LidInfo.Type == LidType.Kind)
-	   { %>
-		<p>
-		<%=Html.LabelFor(s => s.PersoonLidInfo.LidInfo.LidgeldBetaald)%>
-		<%=Html.DisplayFor(s => s.PersoonLidInfo.LidInfo.LidgeldBetaald)%>
-		<%=Html.HiddenFor(s => s.PersoonLidInfo.LidInfo.LidgeldBetaald)%>
-		</p>
-		<p>
-		<%=Html.LabelFor(s => s.PersoonLidInfo.LidInfo.EindeInstapperiode)%>
-		<%if (Model.PersoonLidInfo.LidInfo.EindeInstapperiode.CompareTo(DateTime.Today) <= 0)
-		  {
-			  Response.Write(" is verlopen");
-		  }else{
-			  Response.Write(" tot " + Html.DisplayFor(s => s.PersoonLidInfo.LidInfo.EindeInstapperiode));
-		  } %>
-		</p>
-		<%}else{ %>
-		<p>
-		<%=Html.LabelFor(s => s.PersoonLidInfo.LidInfo.Dubbelpunt)%>
-		<%=Html.DisplayFor(s => s.PersoonLidInfo.LidInfo.Dubbelpunt)%>
-		<%=Html.HiddenFor(s => s.PersoonLidInfo.LidInfo.Dubbelpunt)%>
-		</p>
-		<%} %>
-		
-		<p>
-		<%=Html.LabelFor(s => s.PersoonLidInfo.LidInfo.NonActief)%>
-		<%=Html.DisplayFor(s => s.PersoonLidInfo.LidInfo.NonActief)%>
-		<%=Html.HiddenFor(s => s.PersoonLidInfo.LidInfo.NonActief)%>
-		</p>
-
-		<%if (Model.PersoonLidInfo.LidInfo.Functies.Count() > 0){%>
-			<p>Functies:</p>
-			<ul>
-			<%foreach (var f in Model.PersoonLidInfo.LidInfo.Functies){%>
-				<li><%=f.Naam%> (<%=f.Code%>)</li>
-			<%}%>
-			</ul>
-        <%}%>
-		
-		<%= Html.Hidden("PersoonLidInfo.LidID")%>
-		<%= Html.Hidden("PersoonLidInfo.Type")%>
-		<%= Html.Hidden("AfdelingsInfoDictionary")%>
-
-    </fieldset>
-    
-    <h3>Afdelingen <%= Html.ActionLink("Aanpassen", "AfdelingBewerken", new { Controller="Leden", groepsWerkJaarID = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID, lidID = Model.PersoonLidInfo.LidInfo.LidID })%></h3>  
-           
-	<%if (Model.PersoonLidInfo.LidInfo.Type == LidType.Leiding)
-   {
-	   if (Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.Count == 0)
-	   {
-		   Response.Write(Model.PersoonLidInfo.PersoonDetail.VolledigeNaam + " heeft geen afdelingen.");
-	   }
-	   else
-	   {
-		   Response.Write(Model.PersoonLidInfo.PersoonDetail.VolledigeNaam + " is leiding van ");
-		   Response.Write(Html.PrintLijst(Model.PersoonLidInfo.LidInfo.AfdelingIdLijst, Model.AlleAfdelingen));
-	   }
-   }else{
-	   if(Model.AlleAfdelingen.FirstOrDefault(s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0))!=null)
-	   {
-	   	Response.Write(Model.PersoonLidInfo.PersoonDetail.VolledigeNaam + " zit in de " +
-	   	               Model.AlleAfdelingen.First(
-	   	               	s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)).AfdelingNaam + ".");
-	   }
-   }%>
-
-	<%}else{ 
-		if (Model.PersoonLidInfo.PersoonDetail.KanLidWorden || Model.PersoonLidInfo.PersoonDetail.KanLeidingWorden)
-		{
-			%><fieldset>
-			<legend>Lidgegevens en functies: is geen lid</legend>
-			<ul>
-			<%if (Model.PersoonLidInfo.PersoonDetail.KanLidWorden){%>
-				<li>
-				<%=Html.ActionLink("Lid maken", "LidMaken", new { Controller = "Personen", gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
-				 </li>
-			<%}
-			if (Model.PersoonLidInfo.PersoonDetail.KanLeidingWorden)
-			{%>
-				<li>
-				<%=Html.ActionLink("Leiding maken","LeidingMaken",new{Controller = "Personen",gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID})%>
-				</li>
-			<%}%>
-			</ul>
-			</fieldset><%
+		foreach (var commType in gegroepeerdeComm){
+		   %>
+		   <li><%=commType.Key.Omschrijving %>
+				<ul>
+				<%foreach (var cv in commType){
+	                string ctTekst = String.Format(
+		                cv.CommunicatieTypeID == 3 ? "<a href='mailto:{0}'>{0}</a>" : "{0}",
+		                Html.Encode(cv.Nummer));
+                    %>
+					<li>
+						<%=cv.Voorkeur ? "<strong>" + ctTekst + "</strong>" : ctTekst%>
+						<em><%=Html.Encode(cv.Nota)%></em>
+						<%=Html.ActionLink("[verwijderen]", "VerwijderenCommVorm", new { commvormID = cv.ID })%>
+						<%=Html.ActionLink("[bewerken]", "CommVormBewerken", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+					</li>                            
+				<%}%>
+				</ul>
+		   </li>
+		   <%
 		}
-    }%>
+		%>
+    <li><%=Html.ActionLink("[communicatievorm toevoegen]", "NieuweCommVorm", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%></li>
+    </ul>     
+
+    <h3>Categorieën</h3>
+
+    <ul>
+    <% foreach (var info in Model.PersoonLidInfo.PersoonDetail.CategorieLijst)
+    { %>
+    <li>
+				<%=Html.ActionLink(String.Format("{0} ({1})", info.Naam, info.Code), 
+				    "List", 
+			        "Personen",
+				    new { page = 1, id = info.ID, groepID = Model.GroepID },
+				    new { title= info.Naam })%>    
+            <%=Html.ActionLink("[verwijderen]", "VerwijderenCategorie", new { categorieID = info.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+        </li>
+    <%} %>
     
-    
+    <li><%=Html.ActionLink("[toevoegen aan categorie]", "ToevoegenAanCategorie", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%></li>
+    </ul>
+
+
+    </div>
+
+
+        <h3>Persoonlijke gegevens</h3>
+		<%=Model.PersoonLidInfo.PersoonDetail.Geslacht == GeslachtsType.Man ? "&#9794;" :
+		Model.PersoonLidInfo.PersoonDetail.Geslacht == GeslachtsType.Vrouw ? "&#9792;" : "&#9794;&#9792;?"%>
+
+        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.VolledigeNaam) %>
+		<br />
+
+        <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>
+        &nbsp;Chiroleeftijd: <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeefTijd)%><br />
+        
+        <%if (Model.PersoonLidInfo.PersoonDetail.AdNummer != null)
+          {%>
+        AD-nummer: <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer)%><br />
+        <%
+          }%>
+        <%=Html.ActionLink("[persoonlijke gegevens aanpassen]", "EditGegevens", new {id=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %>
+        
     <h3>Adressen</h3>
 
     <ul>
@@ -174,56 +106,75 @@
         </li>
     <%} %>
         <li><%=Html.ActionLink("[adres toevoegen]", "NieuwAdres", new { id = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%></li>
-    </ul>   
-    
+    </ul>          
+	
+	<%if ((Model.PersoonLidInfo.PersoonDetail.IsLid || Model.PersoonLidInfo.PersoonDetail.IsLeiding) && 
+       !Model.PersoonLidInfo.LidInfo.NonActief){ 
+       
+       // Lidgegevens worden enkel getoond voor actieve leden.
+       %>
+	<h3>Lidgegevens</h3>
+	
+	<ul>
+	<li>Betaalde <%= Model.PersoonLidInfo.LidInfo.LidgeldBetaald ? String.Empty : "nog geen" %> lidgeld. 
+	<%= Html.ActionLink("[aanpassen]", "EditLidGegevens", new{ Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %></li>
+	<li>Instapperiode <%= String.Format(
+	                      Model.PersoonLidInfo.LidInfo.EindeInstapperiode < DateTime.Today ? "verliep op {0:d}" : "t/m {0:d}",
+	                                         Model.PersoonLidInfo.LidInfo.EindeInstapperiode)  %></li>
+	<li>Functies:
+				<%foreach (var f in Model.PersoonLidInfo.LidInfo.Functies){%>
+				<%=Html.ActionLink(f.Code, 
+				    "FunctieLijst", 
+			        "Leden",
+				    new { groepsWerkJaarID = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID,
+                                        funcID = f.ID,
+                                        groepID = Model.GroepID },
+				    new { title= f.Naam })%>
+                <% }%>
+	<%= Html.ActionLink("[functies aanpassen]", "EditLidGegevens", new{ Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %></li>
+	
+	<li>
+	    <%if (Model.PersoonLidInfo.LidInfo.Type == LidType.Leiding)
+       {
+           Response.Write(String.Format(
+               "Afdeling(en): {0} ", 
+               Html.PrintLijst(Model.PersoonLidInfo.LidInfo.AfdelingIdLijst, Model.AlleAfdelingen)));
+       }else{
+	       if(Model.AlleAfdelingen.FirstOrDefault(s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0))!=null)
+	       {
+	   	    Response.Write(String.Format("Afdeling: {0} ",
+	   	                   Model.AlleAfdelingen.First(
+	   	               	    s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)).AfdelingNaam));
+	       }
+       }%>	
+       
+       <%= Html.ActionLink("[aanpassen]", "AfdelingBewerken", new { Controller="Leden", groepsWerkJaarID = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID, lidID = Model.PersoonLidInfo.LidInfo.LidID })%>
+	</li>
+	<!-- Dubbelpunt moet verhuisd worden naar personenniveau -->
+	</ul>
+ 
 
-    <h3>Communicatie</h3>
-
-    <ul>
-    <% 
-		var gegroepeerdeComm = Model.PersoonLidInfo.CommunicatieInfo.GroupBy(
-				cv => new
-				{
-					Omschrijving = cv.CommunicatieTypeOmschrijving, 
-					Validatie = cv.CommunicatieTypeValidatie, 
-					Voorbeeld = cv.CommunicatieTypeVoorbeeld
-				});
-
-		foreach (var commType in gegroepeerdeComm){
-		   %>
-		   <li><%=commType.Key.Omschrijving %>
-				<ul>
-				<%foreach (var cv in commType){%>
-					<li>
-						<%=cv.Voorkeur ? "<strong>" + Html.Encode(cv.Nummer + " ") + "</strong>" : Html.Encode(cv.Nummer + " ")%>
-						<em><%=Html.Encode(cv.Nota)%></em>
-						<%=Html.ActionLink("[verwijderen]", "VerwijderenCommVorm", new { commvormID = cv.ID })%>
-						<%=Html.ActionLink("[bewerken]", "CommVormBewerken", new { commvormID = cv.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
-					</li>                            
-				<%}%>
-				</ul>
-		   </li>
-		   <%
+	<%}else{ 
+		if (Model.PersoonLidInfo.PersoonDetail.KanLidWorden || Model.PersoonLidInfo.PersoonDetail.KanLeidingWorden)
+		{
+			%>
+			
+			<h3><%=Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> is niet ingeschreven</h3>
+			
+			<%if (Model.PersoonLidInfo.PersoonDetail.KanLidWorden){%>
+				<p>
+				<%=Html.ActionLink("Inschrijven als lid", "LidMaken", new { Controller = "Personen", gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
+				 </p>
+			<%}
+			if (Model.PersoonLidInfo.PersoonDetail.KanLeidingWorden)
+			{%>
+				<p>
+				<%=Html.ActionLink("Inschrijven als leiding","LeidingMaken",new{Controller = "Personen",gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID})%>
+				</p>
+			<%}
 		}
-		%>
-    <li><%=Html.ActionLink("[communicatievorm toevoegen]", "NieuweCommVorm", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%></li>
-    </ul>     
- 
-    <h3>Categorieën</h3>
-
-    <ul>
-    <% foreach (var info in Model.PersoonLidInfo.PersoonDetail.CategorieLijst)
-    { %>
-    <li>
-            <%=info.Naam %>
-            <%=Html.ActionLink("[verwijderen]", "VerwijderenCategorie", new { categorieID = info.ID, gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
-        </li>
-    <%} %>
+    }%>
     
-    <li><%=Html.ActionLink("[toevoegen aan categorie]", "ToevoegenAanCategorie", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%></li>
-    </ul>
  
-    <%} %>
-    
     <% Html.RenderPartial("TerugNaarLijstLinkControl"); %>
 </asp:Content>

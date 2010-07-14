@@ -421,3 +421,12 @@ textarea
     height: 10ex;
 }
 
+.opzij
+{
+    float: right;
+    background:#ddd;
+    width: 36%;
+    padding: 0 1%;
+    margin: 0;
+    display: inline;
+}

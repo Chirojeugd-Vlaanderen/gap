@@ -29,7 +29,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		{
 			if (afdelingIdLijst == null || afdelingIdLijst.Count() < 1)
 			{
-				return string.Empty;
+				return "(geen)";
 			}
 
 			var sb = new StringBuilder();
@@ -40,17 +40,17 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 				if (geschreven == afdelingIdLijst.Count() - 1)
 				{
                     // de laatste afdeling
-					sb.Append("de " + ai.AfdelingNaam + ".\n");
+					sb.Append(ai.AfdelingNaam);
 				}
 				else if (geschreven == afdelingIdLijst.Count() - 2)
 				{
                     // tweede en verdere
-					sb.Append("de " + ai.AfdelingNaam + " en ");
+					sb.Append(ai.AfdelingNaam + " en ");
 				}
 				else
 				{
                     // de eerste afdeling
-					sb.Append("de " + ai.AfdelingNaam + ", ");
+					sb.Append(ai.AfdelingNaam + ", ");
 				}
 				geschreven++;
 			}
