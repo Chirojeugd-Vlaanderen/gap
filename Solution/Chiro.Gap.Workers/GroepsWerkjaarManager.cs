@@ -245,9 +245,10 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="groepsWerkJaar">Groepswerkjaar, met daaraan gekoppeld een werkjaarobject</param>
 		/// <returns>Einddatum van het gekoppelde werkjaar.</returns>
-		public DateTime EindDatum(GroepsWerkJaar groepsWerkJaar)
+		public static DateTime EindDatum(GroepsWerkJaar groepsWerkJaar)
 		{
-			throw new NotImplementedException();
+			DateTime wjStart = Properties.Settings.Default.WerkjaarStartNationaal;
+			return new DateTime(groepsWerkJaar.WerkJaar + 1, wjStart.Month, wjStart.Day).AddDays(-1);
 		}
 	}
 }

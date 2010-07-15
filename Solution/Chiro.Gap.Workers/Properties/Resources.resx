@@ -200,4 +200,14 @@
   <data name="PersonenKomenNietOvereen" xml:space="preserve">
     <value>Personen komen niet overeen.</value>
   </data>
+  <data name="FouteDatumVolgorde" xml:space="preserve">
+    <value>Begindatum mag niet later zijn dan einddatum</value>
+    <comment>.</comment>
+  </data>
+  <data name="OngeldigeEindDatumVerzekering" xml:space="preserve">
+    <value>De einddatum is niet geldig voor dit type verzekering.</value>
+  </data>
+  <data name="OverlappendeVerzekering" xml:space="preserve">
+    <value>Deze persoon heeft al een dergelijke verzekering gedurende een overlappende periode.</value>
+  </data>
 </root>

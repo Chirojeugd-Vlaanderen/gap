@@ -96,6 +96,7 @@
     <Compile Include="Lid.cs" />
     <Compile Include="Persoon.cs" />
     <Compile Include="PersoonsAdres.cs" />
+    <Compile Include="PersoonsVerzekering.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

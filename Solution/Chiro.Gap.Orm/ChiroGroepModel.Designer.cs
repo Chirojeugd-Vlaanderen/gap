@@ -37,7 +37,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsVerzekering_VerzekeringsType", "VerzekeringsType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.VerzekeringsType), "PersoonsVerzekering", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.PersoonsVerzekering))]
 
 // Original file name:
-// Generation date: 12/07/2010 16:10:30
+// Generation date: 15/07/2010 14:22:49
 namespace Chiro.Gap.Orm
 {
     
@@ -4638,8 +4638,7 @@ namespace Chiro.Gap.Orm
     /// There are no comments for ChiroGroepModel.PersoonsVerzekering in the schema.
     /// </summary>
     /// <KeyProperties>
-    /// PersoonID
-    /// VerzekeringsTypeID
+    /// ID
     /// </KeyProperties>
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="PersoonsVerzekering")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
@@ -4649,65 +4648,17 @@ namespace Chiro.Gap.Orm
         /// <summary>
         /// Create a new PersoonsVerzekering object.
         /// </summary>
-        /// <param name="persoonID">Initial value of PersoonID.</param>
-        /// <param name="verzekeringsTypeID">Initial value of VerzekeringsTypeID.</param>
         /// <param name="van">Initial value of Van.</param>
         /// <param name="tot">Initial value of Tot.</param>
-        public static PersoonsVerzekering CreatePersoonsVerzekering(int persoonID, int verzekeringsTypeID, global::System.DateTime van, global::System.DateTime tot)
+        /// <param name="id">Initial value of ID.</param>
+        public static PersoonsVerzekering CreatePersoonsVerzekering(global::System.DateTime van, global::System.DateTime tot, int id)
         {
             PersoonsVerzekering persoonsVerzekering = new PersoonsVerzekering();
-            persoonsVerzekering.PersoonID = persoonID;
-            persoonsVerzekering.VerzekeringsTypeID = verzekeringsTypeID;
             persoonsVerzekering.Van = van;
             persoonsVerzekering.Tot = tot;
+            persoonsVerzekering.ID = id;
             return persoonsVerzekering;
         }
-        /// <summary>
-        /// There are no comments for Property PersoonID in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int PersoonID
-        {
-            get
-            {
-                return this._PersoonID;
-            }
-            set
-            {
-                this.OnPersoonIDChanging(value);
-                this.ReportPropertyChanging("PersoonID");
-                this._PersoonID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("PersoonID");
-                this.OnPersoonIDChanged();
-            }
-        }
-        private int _PersoonID;
-        partial void OnPersoonIDChanging(int value);
-        partial void OnPersoonIDChanged();
-        /// <summary>
-        /// There are no comments for Property VerzekeringsTypeID in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int VerzekeringsTypeID
-        {
-            get
-            {
-                return this._VerzekeringsTypeID;
-            }
-            set
-            {
-                this.OnVerzekeringsTypeIDChanging(value);
-                this.ReportPropertyChanging("VerzekeringsTypeID");
-                this._VerzekeringsTypeID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("VerzekeringsTypeID");
-                this.OnVerzekeringsTypeIDChanged();
-            }
-        }
-        private int _VerzekeringsTypeID;
-        partial void OnVerzekeringsTypeIDChanging(int value);
-        partial void OnVerzekeringsTypeIDChanged();
         /// <summary>
         /// There are no comments for Property Van in the schema.
         /// </summary>
@@ -4754,6 +4705,52 @@ namespace Chiro.Gap.Orm
         private global::System.DateTime _Tot;
         partial void OnTotChanging(global::System.DateTime value);
         partial void OnTotChanged();
+        /// <summary>
+        /// There are no comments for Property ID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int ID
+        {
+            get
+            {
+                return this._ID;
+            }
+            set
+            {
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
+            }
+        }
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
+        /// <summary>
+        /// There are no comments for Property Versie in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Versie
+        {
+            get
+            {
+                return global::System.Data.Objects.DataClasses.StructuralObject.GetValidValue(this._Versie);
+            }
+            set
+            {
+                this.OnVersieChanging(value);
+                this.ReportPropertyChanging("Versie");
+                this._Versie = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Versie");
+                this.OnVersieChanged();
+            }
+        }
+        private byte[] _Versie;
+        partial void OnVersieChanging(byte[] value);
+        partial void OnVersieChanged();
         /// <summary>
         /// There are no comments for Persoon in the schema.
         /// </summary>
@@ -4846,12 +4843,16 @@ namespace Chiro.Gap.Orm
         /// <param name="id">Initial value of ID.</param>
         /// <param name="code">Initial value of Code.</param>
         /// <param name="naam">Initial value of Naam.</param>
-        public static VerzekeringsType CreateVerzekeringsType(int id, string code, string naam)
+        /// <param name="enkelLeden">Initial value of EnkelLeden.</param>
+        /// <param name="totEindeWerkJaar">Initial value of TotEindeWerkJaar.</param>
+        public static VerzekeringsType CreateVerzekeringsType(int id, string code, string naam, bool enkelLeden, bool totEindeWerkJaar)
         {
             VerzekeringsType verzekeringsType = new VerzekeringsType();
             verzekeringsType.ID = id;
             verzekeringsType.Code = code;
             verzekeringsType.Naam = naam;
+            verzekeringsType.EnkelLeden = enkelLeden;
+            verzekeringsType.TotEindeWerkJaar = totEindeWerkJaar;
             return verzekeringsType;
         }
         /// <summary>
@@ -4946,6 +4947,52 @@ namespace Chiro.Gap.Orm
         private string _Omschrijving;
         partial void OnOmschrijvingChanging(string value);
         partial void OnOmschrijvingChanged();
+        /// <summary>
+        /// There are no comments for Property EnkelLeden in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public bool EnkelLeden
+        {
+            get
+            {
+                return this._EnkelLeden;
+            }
+            set
+            {
+                this.OnEnkelLedenChanging(value);
+                this.ReportPropertyChanging("EnkelLeden");
+                this._EnkelLeden = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("EnkelLeden");
+                this.OnEnkelLedenChanged();
+            }
+        }
+        private bool _EnkelLeden;
+        partial void OnEnkelLedenChanging(bool value);
+        partial void OnEnkelLedenChanged();
+        /// <summary>
+        /// There are no comments for Property TotEindeWerkJaar in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public bool TotEindeWerkJaar
+        {
+            get
+            {
+                return this._TotEindeWerkJaar;
+            }
+            set
+            {
+                this.OnTotEindeWerkJaarChanging(value);
+                this.ReportPropertyChanging("TotEindeWerkJaar");
+                this._TotEindeWerkJaar = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("TotEindeWerkJaar");
+                this.OnTotEindeWerkJaarChanged();
+            }
+        }
+        private bool _TotEindeWerkJaar;
+        partial void OnTotEindeWerkJaarChanging(bool value);
+        partial void OnTotEindeWerkJaarChanged();
         /// <summary>
         /// There are no comments for PersoonsVerzekering in the schema.
         /// </summary>

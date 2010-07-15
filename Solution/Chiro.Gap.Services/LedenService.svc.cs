@@ -188,10 +188,15 @@ namespace Chiro.Gap.Services
 		/// die per definitie enkel voor leden bestaat.</remarks>
 		public int LoonVerliesVerzekeren(int lidID)
 		{
-			Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Verzekeringen|LidExtras.WerkJaar);
+			Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Verzekeringen);
 			VerzekeringsType verz = _verzekeringenMgr.Ophalen(Verzekering.LoonVerlies);
 
-			_verzekeringenMgr.Verzekeren(l, verz, DateTime.Today, _groepwsWjMgr.EindDatum(l.GroepsWerkJaar));
+			var verzekering = _verzekeringenMgr.Verzekeren(
+				l, 
+				verz, 
+				DateTime.Today, GroepsWerkJaarManager.EindDatum(l.GroepsWerkJaar));
+
+			_verzekeringenMgr.PersoonsVerzekeringBewaren(verzekering);
 
 			return l.GelieerdePersoon.ID;
 		}

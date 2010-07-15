@@ -14,6 +14,7 @@ namespace Chiro.Gap.Domain
 		GeenGav,
 		BestaatAl,
 		ValidatieFout,
+		CronologieFout,		// fout ivm volgorde datums
 
 		#region adressen
 		WoonPlaatsNietGevonden,

@@ -371,13 +371,9 @@ namespace Chiro.Gap.Workers
 				{
 					paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().Afdeling);
 				}
-				if ((extras & LidExtras.WerkJaar) != 0)
-				{
-					paths.Add(ld => ld.GroepsWerkJaar.WerkJaar);
-				}
 				if ((extras & LidExtras.Verzekeringen) != 0)
 				{
-					paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsVerzekering);
+					paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsVerzekering.First().VerzekeringsType);
 				}
 
 				return _daos.LeidingDao.Ophalen(lidID, paths.ToArray());
@@ -409,13 +405,9 @@ namespace Chiro.Gap.Workers
 				{
 					paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().Afdeling);
 				}
-				if ((extras & LidExtras.WerkJaar) != 0)
-				{
-					paths.Add(ld => ld.GroepsWerkJaar.WerkJaar);
-				}
 				if ((extras & LidExtras.Verzekeringen) != 0)
 				{
-					paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsVerzekering);
+					paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsVerzekering.First().VerzekeringsType);
 				}
 
 				return _daos.KindDao.Ophalen(lidID, paths.ToArray());
@@ -471,13 +463,9 @@ namespace Chiro.Gap.Workers
 			{
 				paths.Add(ld => ld.Functie);
 			}
-			if ((extras & LidExtras.WerkJaar) != 0)
-			{
-				paths.Add(ld => ld.GroepsWerkJaar.WerkJaar);
-			}
 			if ((extras & LidExtras.Verzekeringen) != 0)
 			{
-				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsVerzekering);
+				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsVerzekering.First().VerzekeringsType);
 			}
 
 			return _daos.LedenDao.OphalenUitFunctie(

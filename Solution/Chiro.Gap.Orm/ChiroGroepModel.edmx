@@ -152,14 +152,6 @@
             <End Role="GelieerdePersoon" EntitySet="GelieerdePersoon" />
             <End Role="PersoonsCategorie" EntitySet="PersoonsCategorie" />
           </AssociationSet>
-          <AssociationSet Name="FK_PersoonsVerzekering_Persoon" Association="ChiroGroepModel.Store.FK_PersoonsVerzekering_Persoon">
-            <End Role="Persoon" EntitySet="Persoon" />
-            <End Role="PersoonsVerzekering" EntitySet="PersoonsVerzekering" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PersoonsVerzekering_VerzekeringsType" Association="ChiroGroepModel.Store.FK_PersoonsVerzekering_VerzekeringsType">
-            <End Role="VerzekeringsType" EntitySet="VerzekeringsType" />
-            <End Role="PersoonsVerzekering" EntitySet="PersoonsVerzekering" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Adres">
           <Key>
@@ -416,13 +408,14 @@
         </EntityType>
         <EntityType Name="PersoonsVerzekering">
           <Key>
-            <PropertyRef Name="PersoonID" />
-            <PropertyRef Name="VerzekeringsTypeID" />
+            <PropertyRef Name="PersoonsVerzekeringID" />
           </Key>
+          <Property Name="PersoonsVerzekeringID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="PersoonID" Type="int" Nullable="false" />
           <Property Name="VerzekeringsTypeID" Type="int" Nullable="false" />
           <Property Name="Van" Type="datetime" Nullable="false" />
           <Property Name="Tot" Type="datetime" Nullable="false" />
+          <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="VerzekeringsType">
           <Key>
@@ -432,6 +425,8 @@
           <Property Name="Code" Type="varchar" Nullable="false" MaxLength="10" />
           <Property Name="Naam" Type="varchar" Nullable="false" MaxLength="40" />
           <Property Name="Omschrijving" Type="text" />
+          <Property Name="EnkelLeden" Type="bit" Nullable="false" />
+          <Property Name="TotEindeWerkJaar" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_Adres_StraatNaam">
           <End Role="StraatNaam" Type="ChiroGroepModel.Store.StraatNaam" Multiplicity="1" />
@@ -790,30 +785,6 @@
             </Principal>
             <Dependent Role="PersoonsCategorie">
               <PropertyRef Name="GelieerdePersoonID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PersoonsVerzekering_Persoon">
-          <End Role="Persoon" Type="ChiroGroepModel.Store.Persoon" Multiplicity="1" />
-          <End Role="PersoonsVerzekering" Type="ChiroGroepModel.Store.PersoonsVerzekering" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Persoon">
-              <PropertyRef Name="PersoonID" />
-            </Principal>
-            <Dependent Role="PersoonsVerzekering">
-              <PropertyRef Name="PersoonID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PersoonsVerzekering_VerzekeringsType">
-          <End Role="VerzekeringsType" Type="ChiroGroepModel.Store.VerzekeringsType" Multiplicity="1" />
-          <End Role="PersoonsVerzekering" Type="ChiroGroepModel.Store.PersoonsVerzekering" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VerzekeringsType">
-              <PropertyRef Name="VerzekeringsTypeID" />
-            </Principal>
-            <Dependent Role="PersoonsVerzekering">
-              <PropertyRef Name="VerzekeringsTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1215,14 +1186,13 @@
           <End Type="ChiroGroepModel.GelieerdePersoon" Role="GelieerdePersoon" Multiplicity="*" /></Association>
         <EntityType Name="PersoonsVerzekering">
           <Key>
-            <PropertyRef Name="PersoonID" />
-            <PropertyRef Name="VerzekeringsTypeID" /></Key>
-          <Property Name="PersoonID" Type="Int32" Nullable="false" />
-          <Property Name="VerzekeringsTypeID" Type="Int32" Nullable="false" />
+            <PropertyRef Name="ID" /></Key>
           <Property Name="Van" Type="DateTime" Nullable="false" />
           <Property Name="Tot" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_PersoonsVerzekering_Persoon" FromRole="PersoonsVerzekering" ToRole="Persoon" />
-          <NavigationProperty Name="VerzekeringsType" Relationship="ChiroGroepModel.FK_PersoonsVerzekering_VerzekeringsType" FromRole="PersoonsVerzekering" ToRole="VerzekeringsType" /></EntityType>
+          <NavigationProperty Name="VerzekeringsType" Relationship="ChiroGroepModel.FK_PersoonsVerzekering_VerzekeringsType" FromRole="PersoonsVerzekering" ToRole="VerzekeringsType" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" /></EntityType>
         <EntityType Name="VerzekeringsType">
           <Key>
             <PropertyRef Name="ID" /></Key>
@@ -1230,23 +1200,17 @@
           <Property Name="Code" Type="String" Nullable="false" />
           <Property Name="Naam" Type="String" Nullable="false" />
           <Property Name="Omschrijving" Type="String" Nullable="true" />
-          <NavigationProperty Name="PersoonsVerzekering" Relationship="ChiroGroepModel.FK_PersoonsVerzekering_VerzekeringsType" FromRole="VerzekeringsType" ToRole="PersoonsVerzekering" /></EntityType>
+          <NavigationProperty Name="PersoonsVerzekering" Relationship="ChiroGroepModel.FK_PersoonsVerzekering_VerzekeringsType" FromRole="VerzekeringsType" ToRole="PersoonsVerzekering" />
+          <Property Name="EnkelLeden" Type="Boolean" Nullable="false" />
+          <Property Name="TotEindeWerkJaar" Type="Boolean" Nullable="false" /></EntityType>
         <Association Name="FK_PersoonsVerzekering_Persoon">
           <End Type="ChiroGroepModel.Persoon" Role="Persoon" Multiplicity="1" />
           <End Type="ChiroGroepModel.PersoonsVerzekering" Role="PersoonsVerzekering" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Persoon">
-              <PropertyRef Name="ID" /></Principal>
-            <Dependent Role="PersoonsVerzekering">
-              <PropertyRef Name="PersoonID" /></Dependent></ReferentialConstraint></Association>
+          </Association>
         <Association Name="FK_PersoonsVerzekering_VerzekeringsType">
           <End Type="ChiroGroepModel.VerzekeringsType" Role="VerzekeringsType" Multiplicity="1" />
           <End Type="ChiroGroepModel.PersoonsVerzekering" Role="PersoonsVerzekering" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VerzekeringsType">
-              <PropertyRef Name="ID" /></Principal>
-            <Dependent Role="PersoonsVerzekering">
-              <PropertyRef Name="VerzekeringsTypeID" /></Dependent></ReferentialConstraint></Association></Schema>
+          </Association></Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1581,27 +1545,28 @@
           <EntitySetMapping Name="PersoonsVerzekering">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.PersoonsVerzekering)">
               <MappingFragment StoreEntitySet="PersoonsVerzekering">
+                <ScalarProperty Name="Versie" ColumnName="Versie" />
+                <ScalarProperty Name="ID" ColumnName="PersoonsVerzekeringID" />
                 <ScalarProperty Name="Tot" ColumnName="Tot" />
                 <ScalarProperty Name="Van" ColumnName="Van" />
-                <ScalarProperty Name="VerzekeringsTypeID" ColumnName="VerzekeringsTypeID" />
-                <ScalarProperty Name="PersoonID" ColumnName="PersoonID" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+                </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="VerzekeringsType">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.VerzekeringsType)">
               <MappingFragment StoreEntitySet="VerzekeringsType">
+                <ScalarProperty Name="TotEindeWerkJaar" ColumnName="TotEindeWerkJaar" />
+                <ScalarProperty Name="EnkelLeden" ColumnName="EnkelLeden" />
                 <ScalarProperty Name="Omschrijving" ColumnName="Omschrijving" />
                 <ScalarProperty Name="Naam" ColumnName="Naam" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="ID" ColumnName="VerzekeringsTypeID" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
           <AssociationSetMapping Name="FK_PersoonsVerzekering_Persoon" TypeName="ChiroGroepModel.FK_PersoonsVerzekering_Persoon" StoreEntitySet="PersoonsVerzekering">
             <EndProperty Name="PersoonsVerzekering">
-              <ScalarProperty Name="VerzekeringsTypeID" ColumnName="VerzekeringsTypeID" />
-              <ScalarProperty Name="PersoonID" ColumnName="PersoonID" /></EndProperty>
+              <ScalarProperty Name="ID" ColumnName="PersoonsVerzekeringID" /></EndProperty>
             <EndProperty Name="Persoon">
               <ScalarProperty Name="ID" ColumnName="PersoonID" /></EndProperty></AssociationSetMapping>
           <AssociationSetMapping Name="FK_PersoonsVerzekering_VerzekeringsType" TypeName="ChiroGroepModel.FK_PersoonsVerzekering_VerzekeringsType" StoreEntitySet="PersoonsVerzekering">
             <EndProperty Name="PersoonsVerzekering">
-              <ScalarProperty Name="VerzekeringsTypeID" ColumnName="VerzekeringsTypeID" />
-              <ScalarProperty Name="PersoonID" ColumnName="PersoonID" /></EndProperty>
+              <ScalarProperty Name="ID" ColumnName="PersoonsVerzekeringID" /></EndProperty>
             <EndProperty Name="VerzekeringsType">
               <ScalarProperty Name="ID" ColumnName="VerzekeringsTypeID" /></EndProperty></AssociationSetMapping></EntityContainerMapping>
       </Mapping>
@@ -1833,14 +1798,14 @@
           <ConnectorPoint PointX="11.75" PointY="7" />
           </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_GelieerdePersoon_PersoonsAdres" />
-        <EntityTypeShape EntityType="ChiroGroepModel.PersoonsVerzekering" Width="1.5" PointX="16.25" PointY="1.25" Height="1.9210009765624998" />
+        <EntityTypeShape EntityType="ChiroGroepModel.PersoonsVerzekering" Width="1.5" PointX="16.25" PointY="1.25" Height="1.7566536458333331" />
         <EntityTypeShape EntityType="ChiroGroepModel.VerzekeringsType" Width="1.5" PointX="14" PointY="14.375" Height="1.7566536458333317" />
         <AssociationConnector Association="ChiroGroepModel.FK_PersoonsVerzekering_Persoon" >
-          <ConnectorPoint PointX="15.5" PointY="2.21050048828125" />
-          <ConnectorPoint PointX="16.25" PointY="2.21050048828125" /></AssociationConnector>
+          <ConnectorPoint PointX="15.5" PointY="2.1283268229166667" />
+          <ConnectorPoint PointX="16.25" PointY="2.1283268229166667" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_PersoonsVerzekering_VerzekeringsType" >
-          <ConnectorPoint PointX="15.5" PointY="15.253326822916666" />
-          <ConnectorPoint PointX="17" PointY="15.253326822916666" />
-          <ConnectorPoint PointX="17" PointY="3.1710009765624996" /></AssociationConnector></Diagram></edmx:Diagrams>
+          <ConnectorPoint PointX="15.5" PointY="15.417674153645834" />
+          <ConnectorPoint PointX="17" PointY="15.417674153645834" />
+          <ConnectorPoint PointX="17" PointY="3.0066536458333331" /></AssociationConnector></Diagram></edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

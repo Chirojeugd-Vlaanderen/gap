@@ -136,6 +136,20 @@ namespace Chiro.Gap.Workers.Exceptions
 			_aantal = aantalTotaal;
 		}
 
+		/// <summary>
+		/// Construeer BlokkerendeObjectenException voor precies 1 blokkerend object
+		/// </summary>
+		/// <param name="obj">Oject dat een operatie blokkeert</param>
+		/// <param name="message">Technische info over de exception; nuttig voor developer</param>
+		public BlokkerendeObjectenException(
+			TEntiteit obj,
+			string message)
+			: base(message)
+		{
+			_objecten = new TEntiteit[] {obj};
+			_aantal = 1;
+		}
+
 		#endregion
 	}
 }

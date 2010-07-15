@@ -41,6 +41,7 @@ namespace Chiro.Gap.Orm
 	/// <summary>
 	/// Enum om aan te geven welke extra informatie er met een lid mee opgehaald moet worden.
 	/// </summary>
+	/// <remarks>GroepsWerkJaar wordt blijkbaar steeds standaard mee opgenomen.</remarks>
 	[Flags]
 	public enum LidExtras
 	{
@@ -72,16 +73,11 @@ namespace Chiro.Gap.Orm
 		Persoon = 0x10,
 
 		/// <summary>
-		/// Haalt groepswerkjaar en werkjaar mee op
-		/// </summary>
-		WerkJaar = 0x20,
-
-		/// <summary>
 		/// Haalt personen en verzekeringen mee op
 		/// </summary>
-		Verzekeringen = 0x40,
+		Verzekeringen = 0x20,
 		
-		Alles = Groep | Afdelingen | Functies | Persoon | WerkJaar | Verzekeringen
+		Alles = Groep | Afdelingen | Functies | Persoon | Verzekeringen
 	}
 
 	/// <summary>
