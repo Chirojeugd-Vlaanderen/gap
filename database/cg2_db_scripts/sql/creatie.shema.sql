@@ -566,6 +566,7 @@ CREATE TABLE verz.PersoonsVerzekering(
 	VerzekeringsTypeID INT NOT NULL,
 	Van DATETIME NOT NULL,
 	Tot DATETIME NOT NULL,
+	Versie TIMESTAMP NULL,
 	CONSTRAINT PK_PersoonsVerzekering PRIMARY KEY(PersoonsVerzekeringID))
 GO
 
