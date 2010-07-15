@@ -371,17 +371,28 @@ namespace Chiro.Gap.Workers
 				{
 					paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().Afdeling);
 				}
+				if ((extras & LidExtras.WerkJaar) != 0)
+				{
+					paths.Add(ld => ld.GroepsWerkJaar.WerkJaar);
+				}
+				if ((extras & LidExtras.Verzekeringen) != 0)
+				{
+					paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsVerzekering);
+				}
 
 				return _daos.LeidingDao.Ophalen(lidID, paths.ToArray());
 			}
 			else
 			{
-				// Nog eens ongeveer hetzelfde voor kinderen.  Waarschijnlijk kan dit
-				// properder.
+				// Nog eens ongeveer hetzelfde voor kinderen.  TODO: Waarschijnlijk kan dit properder.
 				var paths = new List<Expression<Func<Kind, object>>>();
 				paths.Add(ld => ld.GelieerdePersoon.Persoon);
 				paths.Add(ld => ld.GroepsWerkJaar);
 
+				if ((extras & LidExtras.Persoon) != 0)
+				{
+					paths.Add(ld => ld.GelieerdePersoon.Persoon);
+				}
 				if ((extras & LidExtras.Groep) != 0)
 				{
 					paths.Add(ld => ld.GroepsWerkJaar.Groep);
@@ -397,6 +408,14 @@ namespace Chiro.Gap.Workers
 				if ((extras & LidExtras.AlleAfdelingen) != 0)
 				{
 					paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().Afdeling);
+				}
+				if ((extras & LidExtras.WerkJaar) != 0)
+				{
+					paths.Add(ld => ld.GroepsWerkJaar.WerkJaar);
+				}
+				if ((extras & LidExtras.Verzekeringen) != 0)
+				{
+					paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsVerzekering);
 				}
 
 				return _daos.KindDao.Ophalen(lidID, paths.ToArray());
@@ -451,6 +470,14 @@ namespace Chiro.Gap.Workers
 			if ((extras & LidExtras.Functies) != 0)
 			{
 				paths.Add(ld => ld.Functie);
+			}
+			if ((extras & LidExtras.WerkJaar) != 0)
+			{
+				paths.Add(ld => ld.GroepsWerkJaar.WerkJaar);
+			}
+			if ((extras & LidExtras.Verzekeringen) != 0)
+			{
+				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsVerzekering);
 			}
 
 			return _daos.LedenDao.OphalenUitFunctie(

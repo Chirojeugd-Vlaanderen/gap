@@ -103,6 +103,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="StraatNaam.cs" />
+    <Compile Include="VerzekeringsType.cs" />
     <Compile Include="WoonPlaats.cs" />
   </ItemGroup>
   <ItemGroup>

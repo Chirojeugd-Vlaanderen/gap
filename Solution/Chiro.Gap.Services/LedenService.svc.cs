@@ -29,6 +29,7 @@ namespace Chiro.Gap.Services
 		private readonly FunctiesManager _functiesMgr;
 		private readonly AfdelingsJaarManager _afdelingsJaarMgr;
 		private readonly GroepsWerkJaarManager _groepwsWjMgr;
+		private readonly VerzekeringenManager _verzekeringenMgr;
 
 		public LedenService(
 			GelieerdePersonenManager gpm, 
@@ -36,7 +37,8 @@ namespace Chiro.Gap.Services
 			GroepenManager grm,
 			FunctiesManager fm,
 			AfdelingsJaarManager ajm,
-			GroepsWerkJaarManager gwjm)
+			GroepsWerkJaarManager gwjm,
+			VerzekeringenManager vrzm)
 		{
 			_gelieerdePersonenMgr = gpm;
 			_ledenMgr = lm;
@@ -44,6 +46,7 @@ namespace Chiro.Gap.Services
 			_functiesMgr = fm;
 			_afdelingsJaarMgr = ajm;
 			_groepwsWjMgr = gwjm;
+			_verzekeringenMgr = vrzm;
 		}
 
 		#endregion
@@ -185,7 +188,12 @@ namespace Chiro.Gap.Services
 		/// die per definitie enkel voor leden bestaat.</remarks>
 		public int LoonVerliesVerzekeren(int lidID)
 		{
-			throw new NotImplementedException();
+			Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Verzekeringen|LidExtras.WerkJaar);
+			VerzekeringsType verz = _verzekeringenMgr.Ophalen(Verzekering.LoonVerlies);
+
+			_verzekeringenMgr.Verzekeren(l, verz, DateTime.Today, _groepwsWjMgr.EindDatum(l.GroepsWerkJaar));
+
+			return l.GelieerdePersoon.ID;
 		}
 
 		/* zie #273 */

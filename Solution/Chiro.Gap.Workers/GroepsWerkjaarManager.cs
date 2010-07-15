@@ -239,5 +239,15 @@ namespace Chiro.Gap.Workers
 
 			return paths.ToArray();
 		}
+
+		/// <summary>
+		/// Berekent de theoretische einddatum van het gegeven groepswerkjaar.
+		/// </summary>
+		/// <param name="groepsWerkJaar">Groepswerkjaar, met daaraan gekoppeld een werkjaarobject</param>
+		/// <returns>Einddatum van het gekoppelde werkjaar.</returns>
+		public DateTime EindDatum(GroepsWerkJaar groepsWerkJaar)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

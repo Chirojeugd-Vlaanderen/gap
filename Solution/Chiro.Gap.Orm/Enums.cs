@@ -70,8 +70,18 @@ namespace Chiro.Gap.Orm
 		/// Haalt gelieerde persoon en persoon mee op.
 		/// </summary>
 		Persoon = 0x10,
+
+		/// <summary>
+		/// Haalt groepswerkjaar en werkjaar mee op
+		/// </summary>
+		WerkJaar = 0x20,
+
+		/// <summary>
+		/// Haalt personen en verzekeringen mee op
+		/// </summary>
+		Verzekeringen = 0x40,
 		
-		Alles = Groep | Afdelingen | Functies
+		Alles = Groep | Afdelingen | Functies | Persoon | WerkJaar | Verzekeringen
 	}
 
 	/// <summary>
