@@ -55,9 +55,9 @@
                     <li>
                         <%= Html.ActionLink("Groep", "Index", "Groep")%></li>
                     <li>
-                        <%= Html.ActionLink("Personen", "Index", "Personen")%></li>
+                        <%= Html.ActionLink("Iedereen", "Index", "Personen")%></li>
                     <li>
-                        <%= Html.ActionLink("Leden", "Index", "Leden")%></li>
+                        <%= Html.ActionLink("Ingeschreven", "Index", "Leden")%></li>
                 </ul>
             </div>
         </div>

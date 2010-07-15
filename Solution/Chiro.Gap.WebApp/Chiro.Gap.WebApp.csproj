@@ -270,6 +270,7 @@
     <Compile Include="ExcelManip.cs" />
     <Compile Include="ExcelManip.WoorkbookStyles.cs" />
     <Compile Include="ExcelResult.cs" />
+    <Compile Include="HtmlHelpers\GeslachtHelper.cs" />
     <Compile Include="Models\LedenLinksModel.cs" />
     <Compile Include="Models\LoonVerliesModel.cs" />
     <Content Include="Scripts\MicrosoftMvcJQueryValidation.js" />

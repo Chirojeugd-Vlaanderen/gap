@@ -67,8 +67,7 @@
 
 
         <h3>Persoonlijke gegevens</h3>
-		<%=Model.PersoonLidInfo.PersoonDetail.Geslacht == GeslachtsType.Man ? "&#9794;" :
-		Model.PersoonLidInfo.PersoonDetail.Geslacht == GeslachtsType.Vrouw ? "&#9792;" : "&#9794;&#9792;?"%>
+		<%=Html.Geslacht(Model.PersoonLidInfo.PersoonDetail.Geslacht) %>
 
         <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.VolledigeNaam) %>
 		<br />

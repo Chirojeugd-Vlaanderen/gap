@@ -51,7 +51,7 @@ Totaal aantal personen: <%= Model.Totaal %>  |  Maak een selectie en
     <td><%=p.AdNummer %></td>
     <td><% Html.RenderPartial("PersoonsLinkControl", p); %></td>
     <td align="right"><%=p.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)p.GeboorteDatum).ToString("d") %></td>
-    <td><%=p.Geslacht.ToString() %></td>
+    <td><%=Html.Geslacht(p.Geslacht) %></td>
     <td>
         <% if(p.IsLid){ %>
 			Is lid
