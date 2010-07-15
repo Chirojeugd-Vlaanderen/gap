@@ -175,6 +175,19 @@ namespace Chiro.Gap.Services
 			_ledenMgr.LidBewaren(l);	// verwijderen persisteert meteen
 		}
 
+		/// <summary>
+		/// Verzekert lid met ID <paramref name="lidID"/> tegen loonverlies
+		/// </summary>
+		/// <param name="lidID">ID van te verzekeren lid</param>
+		/// <returns>GelieerdePersoonID van het verzekerde lid</returns>
+		/// <remarks>Dit is nogal een specifieke method.  In ons domain model is gegeven dat verzekeringen gekoppeld zijn aan
+		/// personen, voor een bepaalde periode.  Maar in eerste instantie zal alleen de verzekering loonverlies gebruikt worden,
+		/// die per definitie enkel voor leden bestaat.</remarks>
+		public int LoonVerliesVerzekeren(int lidID)
+		{
+			throw new NotImplementedException();
+		}
+
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<PersoonLidInfo> PaginaOphalen(int groepsWerkJaarID)

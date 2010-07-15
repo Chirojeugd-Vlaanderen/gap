@@ -157,7 +157,7 @@
     else if (Model.PersoonLidInfo.PersoonDetail.GeboorteDatum != null && Model.KanVerzekerenLoonVerlies)
     { %>
             	<li>Niet extra verzekerd tegen loonverlies. 
-            	<%=Html.ActionLink("[verzekeren tegen loonverlies]", "VerzekerLoonverlies", "Leden", new {id = Model.PersoonLidInfo.LidInfo.LidID}) %>
+            	<%=Html.ActionLink("[verzekeren tegen loonverlies]", "LoonVerliesVerzekeren", new {Controller="Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %>
             	(Kostprijs: &euro; <%=Model.PrijsVerzekeringLoonVerlies %>)
             	</li>
     <%}%>

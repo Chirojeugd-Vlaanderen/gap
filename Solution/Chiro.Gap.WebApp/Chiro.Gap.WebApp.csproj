@@ -271,6 +271,7 @@
     <Compile Include="ExcelManip.WoorkbookStyles.cs" />
     <Compile Include="ExcelResult.cs" />
     <Compile Include="Models\LedenLinksModel.cs" />
+    <Compile Include="Models\LoonVerliesModel.cs" />
     <Content Include="Scripts\MicrosoftMvcJQueryValidation.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Views\Categorieen\Index.aspx" />
@@ -279,6 +280,7 @@
     <Content Include="Views\Categorieen\CategorieVerwijderen.aspx" />
     <Content Include="Views\Groep\Index.aspx" />
     <Content Include="Views\Leden\EditLidGegevens.aspx" />
+    <Content Include="Views\Leden\LoonVerliesVerzekeren.aspx" />
     <Content Include="Views\Personen\EditRest.aspx" />
     <Content Include="Views\Shared\TerugNaarFicheLinkControl.ascx" />
     <Content Include="Views\Shared\LedenLinkControl.ascx" />

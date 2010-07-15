@@ -87,6 +87,17 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		void ActiefMaken(int lidID);
 
+		/// <summary>
+		/// Verzekert lid met ID <paramref name="lidID"/> tegen loonverlies
+		/// </summary>
+		/// <param name="lidID">ID van te verzekeren lid</param>
+		/// <returns>GelieerdePersoonID van het verzekerde lid</returns>
+		/// <remarks>Dit is nogal een specifieke method.  In ons domain model is gegeven dat verzekeringen gekoppeld zijn aan
+		/// personen, voor een bepaalde periode.  Maar in eerste instantie zal alleen de verzekering loonverlies gebruikt worden,
+		/// die per definitie enkel voor leden bestaat.</remarks>
+		[OperationContract]
+		int LoonVerliesVerzekeren(int lidID);
+
 		// TODO: we vragen leden op per groepswerkjaar. Waarom dit verschil met personen? Personen zijn altijd geldig, 
 		// maar is dit wel de beste oplossing? Want alle leden zijn personen, maar wat dan als ze weggaan en dan terugkomen? 
 		// Moeten ze dan expliciet gedeletet worden?...?

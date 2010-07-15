@@ -284,6 +284,47 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
+		/// Toont een view waarin gevraagd wordt te bevestigen dat het lid met LidID <paramref name="id"/> verzekerd moet worden
+		/// tegen loonverlies.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarin we momenteel werken</param>
+		/// <param name="id">LidID van het te verzekeren lid</param>
+		/// <returns>
+		/// een view waarin gevraagd wordt te bevestigen dat het lid met LidID <paramref name="id"/> verzekerd moet worden
+		/// </returns>
+		public ActionResult LoonVerliesVerzekeren(int groepID, int id)
+		{
+			var model = new LoonVerliesModel();
+			BaseModelInit(model, groepID);
+
+			// TODO: DetalsOphalen is eigenlijk overkill; we hebben enkel de volledige naam en 
+			// het GelieerdePersoonID nodig.
+			var info = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(svc => svc.DetailsOphalen(id));
+
+			model.LidID = id;
+			model.GelieerdePersoonID = info.PersoonDetail.GelieerdePersoonID;
+			model.VolledigeNaam = info.PersoonDetail.VolledigeNaam;
+			model.Prijs = Properties.Settings.Default.PrijsVerzekeringLoonVerlies;
+			model.Titel = String.Format("{0} verzekeren tegen loonverlies", model.VolledigeNaam);
+
+			return View(model);
+		}
+
+		/// <summary>
+		/// Verzekert het lid met LidID <paramref name="id"/> voor loonverlies, en redirect naar de detailfiche van de persoon.
+		/// </summary>
+		/// <param name="model">Een LoonVerliesModel, puur pro forma, want alle relevante info zit in de url</param>
+		/// <param name="groepID">ID van de groep waarin wordt gewerkt</param>
+		/// <param name="id">LidID van te verzekeren lid</param>
+		/// <returns>Redirect naar detailfiche van het betreffende lid</returns>
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult LoonVerliesVerzekeren(LoonVerliesModel model, int groepID, int id)
+		{
+			int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(svc => svc.LoonVerliesVerzekeren(id));
+			return RedirectToAction("EditRest", "Personen", new {id = gelieerdePersoonID});
+		}
+
+		/// <summary>
 		/// Toont een view die toelaat de lidgegevens van het lid met LidID <paramref name="id"/> te bewerken.
 		/// </summary>
 		/// <param name="id">LidID te bewerken lid</param>
