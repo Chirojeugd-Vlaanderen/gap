@@ -259,6 +259,7 @@ namespace Chiro.Gap.Data.Ef
 						.Include(gp => gp.Categorie)
 						// FIXME: dit is vermoedelijk niet nodig, maar eens nakijken of het ergens gebruikt wordt?
 						.Include(gp => gp.Lid.First().GroepsWerkJaar)
+						.Include(gp => gp.Persoon.PersoonsVerzekering.First().VerzekeringsType)
 					where gp.ID == gelieerdePersoonID
 					select gp).FirstOrDefault();
 			}
