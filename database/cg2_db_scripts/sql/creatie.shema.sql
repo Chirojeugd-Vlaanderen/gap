@@ -555,6 +555,8 @@ CREATE TABLE verz.VerzekeringsType(
 	Code VARCHAR(10) NOT NULL,
 	Naam VARCHAR(40) NOT NULL,
 	Omschrijving TEXT,
+	EnkelLeden BIT NOT NULL,
+	TotEindeWerkJaar BIT NOT NULL,
 	CONSTRAINT PK_VerzekeringsType PRIMARY KEY(VerzekeringsTypeID))
 GO
 
