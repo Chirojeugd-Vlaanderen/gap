@@ -603,4 +603,4 @@ GRANT DELETE,INSERT,UPDATE ON pers.PersoonsAdres TO GapRole
 GRANT DELETE,INSERT,UPDATE ON pers.PersoonsCategorie TO GapRole
 GRANT DELETE,INSERT,UPDATE ON pers.PersoonVrijVeld TO GapRole
 GRANT DELETE,INSERT,UPDATE ON pers.PersoonVrijVeldType TO GapRole
-
+GRANT INSERT ON pers.PersoonsVerzekering TO GapRole
