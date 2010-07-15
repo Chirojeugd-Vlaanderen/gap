@@ -561,11 +561,12 @@ CREATE TABLE verz.VerzekeringsType(
 GO
 
 CREATE TABLE verz.PersoonsVerzekering(
+	PersoonsVerzekeringID INT IDENTITY(1,1) NOT NULL,
 	PersoonID INT NOT NULL,
 	VerzekeringsTypeID INT NOT NULL,
 	Van DATETIME NOT NULL,
 	Tot DATETIME NOT NULL,
-	CONSTRAINT PK_PersoonsVerzekering PRIMARY KEY(PersoonID, VerzekeringsTypeID))
+	CONSTRAINT PK_PersoonsVerzekering PRIMARY KEY(PersoonsVerzekeringID))
 GO
 
 
