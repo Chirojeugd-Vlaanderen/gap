@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.LidInfoModel>" %>
+<%@ Import Namespace="Chiro.Gap.Domain" %>
 
 <div class="pager">
 Pagina: <%= Html.WerkJaarLinks(
@@ -12,7 +13,15 @@ Pagina: <%= Html.WerkJaarLinks(
 
 <table class="overzicht">
 <tr>
-<th>Ad-nr.</th><th>Type</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Betaald</th><th>Acties</th><th>Afdeling</th><th>Functie</th>
+    <th>Ad-nr.</th>
+    <th>Type</th>
+    <th>Naam</th>
+    <th>Geboortedatum</th>
+    <th><%=Html.Geslacht(GeslachtsType.Man) %> <%=Html.Geslacht(GeslachtsType.Vrouw) %></th>
+    <th>Betaald</th>
+    <th>Afd.</th>
+    <th>Func.</th>
+    <th>Acties</th>  
 </tr>
 
 <% foreach (Chiro.Gap.ServiceContracts.DataContracts.PersoonLidInfo pl in ViewData.Model.LidInfoLijst) {  %>
@@ -23,16 +32,6 @@ Pagina: <%= Html.WerkJaarLinks(
     <td class="right"><%=pl.PersoonDetail.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)pl.PersoonDetail.GeboorteDatum).ToString("d")%></td>
     <td><%= Html.Geslacht(pl.PersoonDetail.Geslacht)%></td>
     <td><%= pl.LidInfo.LidgeldBetaald?"Ja":"Nee"%></td>
-    <td>
-		<%if (pl.LidInfo.NonActief)%>
-		<%{%>
-			<%=Html.ActionLink("Activeren", "Activeren", new { Controller = "Leden", id = pl.LidInfo.LidID })%>
-		<%}else{%>
-			<%=Html.ActionLink("Non-Actief maken", "DeActiveren", new { Controller = "Leden", id = pl.LidInfo.LidID })%>
-		<%} %>
-        
-        <%=Html.ActionLink("Afdelingen", "AfdelingBewerken", new { Controller = "Leden", lidID = pl.LidInfo.LidID })%>
-    </td>
     <td><% foreach (var a in pl.LidInfo.AfdelingIdLijst) 
            { %>
                <%=Html.ActionLink(Html.Encode(ViewData.Model.AfdelingsInfoDictionary[a].AfdelingAfkorting), "AfdelingsLijst", new { Controller = "Leden", afdID = a, groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar }, new { title = ViewData.Model.AfdelingsInfoDictionary[a].AfdelingNaam })%>
@@ -43,6 +42,16 @@ Pagina: <%= Html.WerkJaarLinks(
                <%=Html.ActionLink(Html.Encode(ViewData.Model.FunctieInfoDictionary[a.ID].Code), "FunctieLijst", new { Controller = "Leden", funcID = a.ID, groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar }, new { title = ViewData.Model.FunctieInfoDictionary[a.ID].Naam })%>
         <% } %>
     </td>
+    <td>
+		<%if (pl.LidInfo.NonActief)%>
+		<%{%>
+			<%=Html.ActionLink("inschrijven", "Activeren", new { Controller = "Leden", id = pl.LidInfo.LidID })%>
+		<%}else{%>
+			<%=Html.ActionLink("uitschrijven", "DeActiveren", new { Controller = "Leden", id = pl.LidInfo.LidID })%>
+		<%} %>
+        
+        <%=Html.ActionLink("afd.", "AfdelingBewerken", new { Controller = "Leden", lidID = pl.LidInfo.LidID })%>
+    </td>    
 </tr>
 <% } %>
 

@@ -1,23 +1,11 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.GroepsInstellingenModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-
-	<script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript"></script>
-
-	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
-
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
-
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript"></script>
-
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript"></script>
-
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript"></script>
-
 </asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-	<fieldset>
-		<legend>Algemene groepsinfo</legend>
+	<div class="kaderke">
+		<div class="kadertitel">Algemene groepsinfo</div>
 		<p>
 			<%=Html.LabelFor(mdl => mdl.Detail.ID) %>
 			<%=Html.DisplayFor(mdl => mdl.Detail.ID)%>
@@ -34,9 +22,9 @@
 			<%=Html.LabelFor(mdl => mdl.Detail.StamNummer)%>
 			<%=Html.DisplayFor(mdl => mdl.Detail.StamNummer)%>
 		</p>
-	</fieldset>
-	<fieldset>
-		<legend>Actieve afdelingen dit werkjaar</legend>
+	</div>
+	<div class="kaderke">
+		<div class="kadertitel">Actieve afdelingen dit werkjaar</div>
 		<ul>
 			<%
 				foreach (var afd in Model.Detail.Afdelingen.OrderByDescending(afd => afd.GeboorteJaarVan))
@@ -49,9 +37,9 @@
 			%>
 		</ul>
 		[<%=Html.ActionLink("afdelingsverdeling aanpassen", "Index", "Afdelingen") %>]
-	</fieldset>
-	<fieldset>
-		<legend>Categorieën voor personen en leden</legend>
+	</div>
+	<div class="kaderke">
+		<div class="kadertitel">Categorieën voor ingeschreven en niet-ingeschreven personen</div>
 		<ul>
 			<%
 				foreach (var cat in Model.Detail.Categorieen.OrderBy(cat => cat.Code))
@@ -64,10 +52,10 @@
 				}
 			%>
 		</ul>
-		[<%=Html.ActionLink("categorieënlijst bewerken", "Index", "Categorieen") %>]
-	</fieldset>
-	<fieldset>
-		<legend>Groepsgebonden functies</legend>
+		[<%=Html.ActionLink("categorieën toevoegen/verwijderen", "Index", "Categorieen") %>]
+	</div>
+	<div class="kaderke">
+		<div class="kadertitel">Eigen functies voor ingeschreven leden en leiding</div>
 		<ul>
 			<%
 				foreach (var fie in Model.Detail.Functies.OrderBy(fie => fie.Type))
@@ -80,6 +68,6 @@
 			<%
 				}%>
 		</ul>
-		[<%=Html.ActionLink("groepsgebonden functies bewerken", "Index", "Functies") %>]
-	</fieldset>
+		[<%=Html.ActionLink("functies toevoegen/verwijderen", "Index", "Functies") %>]
+	</div>
 </asp:Content>

@@ -430,3 +430,30 @@ textarea
     margin: 0;
     display: inline;
 }
+
+
+
+.kaderke
+{
+	margin: 1em 0;
+	padding: 1em;
+	border: 1px solid #CCC;
+}
+
+.kaderke p
+{
+	margin: 2px 12px 10px 10px;
+}
+
+.kadertitel
+{
+	font-size: 1.1em;
+	font-weight: 600;
+	padding: 2px 4px 8px 4px;
+	margin: -22px 3px 0 1px;
+	background-color: #fff;
+	white-space: nowrap;
+	position: absolute;
+	display: block;
+	overflow: visible;
+}

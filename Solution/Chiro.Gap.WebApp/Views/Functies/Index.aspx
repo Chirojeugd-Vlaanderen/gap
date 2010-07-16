@@ -17,8 +17,6 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-	<h2>
-		Functies bewerken</h2>
 	<ul>
 		<%
 			foreach (var fie in Model.Detail.Functies.OrderBy(fie => fie.Code))
@@ -66,7 +64,11 @@
 			<%=Html.LabelFor(mdl => mdl.NieuweFunctie.Type ) %>
 			<%
 				var values = from LidType lt in Enum.GetValues(typeof(LidType))
-							 select new { value = lt, text = lt.ToString() };
+							 select new { 
+                                 value = lt, 
+                                 text = String.Format(
+                                    "Ingeschreven {0}",
+                                    lt == LidType.Kind ? "leden" : lt == LidType.Leiding ? "leiding" : "leden en leiding") };
 			%>
 			<%=Html.DropDownListFor( mdl => mdl.NieuweFunctie.Type, new SelectList(values, "value", "text")) %>
 		</p>

@@ -32,7 +32,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			var model = new GroepsInstellingenModel
 			{
-				Titel = Properties.Resources.GroepsInstellingenTitel,
+				Titel = Properties.Resources.FunctiesBewerkenTitel,
 				Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(
 					svc => svc.DetailOphalen(groepID))
 			};

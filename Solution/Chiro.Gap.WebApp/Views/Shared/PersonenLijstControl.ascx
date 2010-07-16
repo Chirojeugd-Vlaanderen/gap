@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.PersoonInfoModel>" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
+<%@ Import Namespace="Chiro.Gap.Domain" %>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -43,7 +44,14 @@ Totaal aantal personen: <%= Model.Totaal %>  |  Maak een selectie en
 
 <table class="overzicht">
 <tr>
-<th><%=Html.CheckBox("checkall") %></th><th>Ad-nr.</th><th>Naam</th><th>Geboortedatum</th><th>Geslacht</th><th>Acties</th><th>Categorie&euml;n</th>
+    <th><%=Html.CheckBox("checkall") %></th>
+    <th>Ad-nr.</th>
+    <th>Naam</th>
+    <th>Geboortedatum</th>
+    <th><%=Html.Geslacht(GeslachtsType.Man) %> <%=Html.Geslacht(GeslachtsType.Vrouw) %></th>
+    <th>Cat.</th>
+    <th>Ingeschr.</th>
+    <th>Acties</th>
 </tr>
 <% foreach (PersoonDetail p in ViewData.Model.PersoonInfos) {  %>
 <tr>
@@ -52,24 +60,20 @@ Totaal aantal personen: <%= Model.Totaal %>  |  Maak een selectie en
     <td><% Html.RenderPartial("PersoonsLinkControl", p); %></td>
     <td align="right"><%=p.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)p.GeboorteDatum).ToString("d") %></td>
     <td><%=Html.Geslacht(p.Geslacht) %></td>
-    <td>
-        <% if(p.IsLid){ %>
-			Is lid
-        <%} if (p.IsLeiding){ %>
-			Is Leiding
-        <%} %>
-        <% if (!p.IsLid && !p.IsLeiding && p.KanLidWorden) { %>
-				<%=Html.ActionLink("Lid maken", "LidMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
-		<% } %>
-		<% if (!p.IsLeiding && !p.IsLid && p.KanLeidingWorden){ %>
-				<%=Html.ActionLink("Leiding maken", "LeidingMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
-		<% } %>
-        <%=Html.ActionLink("Bro/sis maken", "Kloon", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
-    </td>
     <td><% foreach (var c in p.CategorieLijst) 
            { %>
                <%=Html.ActionLink(Html.Encode(c.Code), "List", new { Controller = "Personen", id = c.ID }, new { title = c.Naam } )%>
         <% } %>
+    </td>
+    <td><%=p.IsLid ? "lid" : p.IsLeiding ? "leiding" : "--" %></td>  
+    <td>
+        <% if (!p.IsLid && !p.IsLeiding && p.KanLidWorden) { %>
+				<%=Html.ActionLink("inschrijven als lid", "LidMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
+		<% } %>
+		<% if (!p.IsLeiding && !p.IsLid && p.KanLeidingWorden){ %>
+				<%=Html.ActionLink("inschrijven als leiding", "LeidingMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
+		<% } %>
+        <%=Html.ActionLink("zus/broer maken", "Kloon", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
     </td>
 </tr>
 <% } %>

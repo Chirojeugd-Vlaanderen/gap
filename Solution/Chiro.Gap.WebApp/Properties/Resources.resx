@@ -121,7 +121,7 @@
     <value>Afdelingen van {0} bewerken</value>
   </data>
   <data name="AfdelingNietLeeg" xml:space="preserve">
-    <value>De geselecteerde afdeling bevat leden en kan dus niet verwijderd worden.</value>
+    <value>De geselecteerde afdeling bevat leden of leiding, en kan dus niet verwijderd worden.</value>
   </data>
   <data name="AfdelingsCodeBestaatAl" xml:space="preserve">
     <value>Er bestaat al een afdeling met code '{0}': '{1}'.</value>
@@ -151,7 +151,7 @@
     <comment>Parameters: 0 - code, 1 - naam</comment>
   </data>
   <data name="FunctieMeerdereKeren" xml:space="preserve">
-    <value>Er zijn {2} leden met de functie {0} ({1}), en er mag er zo maar één zijn.</value>
+    <value>Er zijn {2} ingeschreven personen met de functie {0} ({1}), en er mag er zo maar één zijn.</value>
   </data>
   <data name="FunctieNaamBestaatAl" xml:space="preserve">
     <value>Je groep heeft al een functie met die naam: '{1}' ('{0}').</value>
@@ -163,7 +163,7 @@
     <value>Er zijn te veel leden met de functie {0} ({1}).  Huidig aantal: {2}, verplicht maximum: {3}.</value>
   </data>
   <data name="FunctieTeWeinig" xml:space="preserve">
-    <value>Er zijn te weinig leden met de functie {0} ({1}).  Huidig aantal: {2}, verplicht minimum: {3}.</value>
+    <value>Er zijn te weinig ingeschreven personen met de functie {0} ({1}).  Huidig aantal: {2}, verplicht minimum: {3}.</value>
   </data>
   <data name="GeenActieveAfdelingen" xml:space="preserve">
     <value>Er zijn geen afdelingen geactiveerd voor dit werkjaar.  Pas eerst je &lt;a href='{0}'&gt;afdelingsverdeling&lt;/a&gt; aan.</value>
@@ -172,10 +172,10 @@
     <value>Groepsinstellingen</value>
   </data>
   <data name="LidGegevens" xml:space="preserve">
-    <value>lidgegevens</value>
+    <value>inschrijvingsgegevens</value>
   </data>
   <data name="LidGemaaktFeedback" xml:space="preserve">
-    <value>De persoon is nu ingeschreven als lid van je groep.</value>
+    <value>De persoon is nu ingeschreven.</value>
   </data>
   <data name="LedenGemaaktFeedback" xml:space="preserve">
     <value>De personen zijn nu ingeschreven als leden van je groep.</value>
@@ -184,7 +184,7 @@
     <value>De personen zijn nu ingeschreven als leiding van je groep.</value>
   </data>
   <data name="LidMakenMisluktFout" xml:space="preserve">
-    <value>Er is iets foutgelopen, die persoon is nog niet ingeschreven als lid van je groep.</value>
+    <value>Er is iets foutgelopen, die persoon is nog niet ingeschreven.</value>
   </data>
   <data name="LedenMakenMisluktFout" xml:space="preserve">
     <value>Er is iets foutgelopen, niet alle personen konden worden ingeschreven als leden in je groep.</value>
@@ -221,5 +221,8 @@
   </data>
   <data name="OngeldigeGeboortejarenVoorAfdeling" xml:space="preserve">
     <value>Ongeldige geboortejaren voor het afdelingsjaar</value>
+  </data>
+  <data name="FunctiesBewerkenTitel" xml:space="preserve">
+    <value>Functies bewerken</value>
   </data>
 </root>

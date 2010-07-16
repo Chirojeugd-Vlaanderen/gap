@@ -70,7 +70,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to De geselecteerde afdeling bevat leden en kan dus niet verwijderd worden..
+        ///   Looks up a localized string similar to De geselecteerde afdeling bevat leden of leiding, en kan dus niet verwijderd worden..
         /// </summary>
         public static string AfdelingNietLeeg {
             get {
@@ -160,7 +160,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Er zijn {2} leden met de functie {0} ({1}), en er mag er zo maar één zijn..
+        ///   Looks up a localized string similar to Er zijn {2} ingeschreven personen met de functie {0} ({1}), en er mag er zo maar één zijn..
         /// </summary>
         public static string FunctieMeerdereKeren {
             get {
@@ -187,6 +187,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Functies bewerken.
+        /// </summary>
+        public static string FunctiesBewerkenTitel {
+            get {
+                return ResourceManager.GetString("FunctiesBewerkenTitel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Er zijn te veel leden met de functie {0} ({1}).  Huidig aantal: {2}, verplicht maximum: {3}..
         /// </summary>
         public static string FunctieTeVeel {
@@ -196,7 +205,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Er zijn te weinig leden met de functie {0} ({1}).  Huidig aantal: {2}, verplicht minimum: {3}..
+        ///   Looks up a localized string similar to Er zijn te weinig ingeschreven personen met de functie {0} ({1}).  Huidig aantal: {2}, verplicht minimum: {3}..
         /// </summary>
         public static string FunctieTeWeinig {
             get {
@@ -259,7 +268,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to lidgegevens.
+        ///   Looks up a localized string similar to inschrijvingsgegevens.
         /// </summary>
         public static string LidGegevens {
             get {
@@ -268,7 +277,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to De persoon is nu ingeschreven als lid van je groep..
+        ///   Looks up a localized string similar to De persoon is nu ingeschreven..
         /// </summary>
         public static string LidGemaaktFeedback {
             get {
@@ -277,7 +286,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Er is iets foutgelopen, die persoon is nog niet ingeschreven als lid van je groep..
+        ///   Looks up a localized string similar to Er is iets foutgelopen, die persoon is nog niet ingeschreven..
         /// </summary>
         public static string LidMakenMisluktFout {
             get {
