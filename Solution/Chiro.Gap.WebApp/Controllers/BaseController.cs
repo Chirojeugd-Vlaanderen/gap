@@ -128,6 +128,9 @@ namespace Chiro.Gap.WebApp.Controllers
 				if (gi == null)
 				{
 					gi = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.InfoOphalen(groepID));
+					// TODO: als de gebruiker geen GAV is, krijgen we hier een exception die niet goed opgevangen wordt (zie #553)
+					// De volgende regel geeft een NullReference, en verderop krijgen we een parameterexception. Als de gebruiker geen GAV is,
+					// moeten we direct een foutpagina laten zien zonder verder te proberen om gegevens op te halen.
 					c.Add(cacheKey, gi, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
 				}
 

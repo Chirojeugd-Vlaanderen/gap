@@ -242,7 +242,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			catch (Exception ex)
 			{
-				TempData["feedback"] = ex.Message.ToString();
+				TempData["feedback"] = ex.Message;
 				// TODO: specifieke exceptions catchen en weergeven via de modelstate, en niet via tempdata.
 
 				// Vul model aan, en toon de view AfdelingsJaar opnieuw
@@ -250,6 +250,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.Afdeling = ServiceHelper.CallService<IGroepenService, AfdelingInfo>(svc => svc.AfdelingOphalen(model.AfdelingsJaar.AfdelingID));
 				model.OfficieleAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(svc => svc.OfficieleAfdelingenOphalen(groepID));
 
+				model.Titel = "Afdeling bewerken";
 				return View("AfdelingsJaar", model);
 			}
 		}

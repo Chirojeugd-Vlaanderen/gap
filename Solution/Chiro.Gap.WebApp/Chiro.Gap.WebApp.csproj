@@ -276,6 +276,7 @@
     <Content Include="Scripts\MicrosoftMvcJQueryValidation.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Views\Categorieen\Index.aspx" />
+    <Content Include="Views\Fout\Onbekend.aspx" />
     <Content Include="Views\Functies\FunctieVerwijderen.aspx" />
     <Content Include="Views\Functies\Index.aspx" />
     <Content Include="Views\Categorieen\CategorieVerwijderen.aspx" />

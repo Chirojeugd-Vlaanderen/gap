@@ -12,10 +12,16 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	{
 		[DataMember]
 		public int ID { get; set; }
+
 		[DataMember]
 		public string Omschrijving { get; set; }
+
+		[DataMember]
+		public bool IsOptIn { get; set; }
+
 		[DataMember]
 		public string Validatie { get; set; }
+
 		[DataMember]
 		public string Voorbeeld { get; set; }
 	}

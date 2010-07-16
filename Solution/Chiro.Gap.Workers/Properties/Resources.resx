@@ -200,6 +200,12 @@
   <data name="PersonenKomenNietOvereen" xml:space="preserve">
     <value>Personen komen niet overeen.</value>
   </data>
+  <data name="OngeldigeGeboortejarenVoorAfdeling" xml:space="preserve">
+    <value>Ongeldige geboortejaren voor het afdelingsjaar</value>
+  </data>
+  <data name="AfdelingsJaarBevatLeden" xml:space="preserve">
+    <value>AfdelingsJaar kan niet verwijderd worden omdat er nog leden of leiding in deze afdeling zitten.</value>
+  </data>
   <data name="FouteDatumVolgorde" xml:space="preserve">
     <value>Begindatum mag niet later zijn dan einddatum</value>
     <comment>.</comment>

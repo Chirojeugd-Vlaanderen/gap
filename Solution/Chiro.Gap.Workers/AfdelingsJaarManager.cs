@@ -79,13 +79,13 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			// Leden moeten minstens in het 1ste leerjaar zitten, alvorens we inschrijven.
+			// Leden moeten minstens in het 1ste leerjaar zitten voor we ze inschrijven.
 			// De maximumleeftijd is arbitrair nattevingerwerk. :-)
 			if (!(gwj.WerkJaar - geboorteJaarEind >= Properties.Settings.Default.MinLidLeefTijd)
 				|| !(gwj.WerkJaar - geboorteJaarBegin <= Properties.Settings.Default.MaxLidLeefTijd)
 				|| !(geboorteJaarBegin <= geboorteJaarEind))
 			{
-				throw new InvalidOperationException("Ongeldige geboortejaren voor het afdelingsjaar");
+				throw new InvalidOperationException(Properties.Resources.OngeldigeGeboortejarenVoorAfdeling);
 			}
 
 			var afdelingsJaar = new AfdelingsJaar();
@@ -160,7 +160,7 @@ namespace Chiro.Gap.Workers
 
 			if (aj.Kind.Count != 0 || aj.Leiding.Count != 0)
 			{
-				throw new InvalidOperationException("AfdelingsJaar kan niet verwijderd worden omdat er nog leden of leiding in deze afdeling zitten.");
+				throw new InvalidOperationException(Properties.Resources.AfdelingsJaarBevatLeden);
 			}
 			
 			aj.TeVerwijderen = true;

@@ -3,8 +3,6 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using Chiro.Gap.Orm;
-using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.Models
@@ -23,8 +21,7 @@ namespace Chiro.Gap.WebApp.Models
             NieuweCommVorm = new CommunicatieInfo();
         }
 
-        public CommVormModel(PersoonDetail aanvrager, CommunicatieInfo v)
-            : this()
+        public CommVormModel(PersoonDetail aanvrager, CommunicatieInfo v) : this()
         {
             Aanvrager = aanvrager;
             NieuweCommVorm = v;
@@ -42,3 +39,4 @@ namespace Chiro.Gap.WebApp.Models
 		public CommunicatieInfo NieuweCommVorm { get; set; }
 	}
 }
+

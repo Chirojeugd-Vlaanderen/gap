@@ -142,6 +142,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string FouteGeboortejarenVoorAfdelingFout {
+            get {
+                return ResourceManager.GetString("FouteGeboortejarenVoorAfdelingFout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Je groep heeft al een functie met code &apos;{0}&apos;: &apos;{1}&apos;..
         /// </summary>
         public static string FunctieCodeBestaatAl {
@@ -309,6 +318,15 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string OnbestaandeActieFeedback {
             get {
                 return ResourceManager.GetString("OnbestaandeActieFeedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ongeldige geboortejaren voor het afdelingsjaar.
+        /// </summary>
+        public static string OngeldigeGeboortejarenVoorAfdeling {
+            get {
+                return ResourceManager.GetString("OngeldigeGeboortejarenVoorAfdeling", resourceCulture);
             }
         }
         

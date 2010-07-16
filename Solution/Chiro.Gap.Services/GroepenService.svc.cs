@@ -248,13 +248,20 @@ namespace Chiro.Gap.Services
 			if (detail.AfdelingsJaarID == 0)
 			{
 				// nieuw maken.
-
-				afdelingsJaar = _afdelingsJaarMgr.Aanmaken(
-					afd,
-					oa,
-					huidigGwj,
-					detail.GeboorteJaarVan, detail.GeboorteJaarTot,
-					detail.Geslacht);
+				// OPM: als dit foutloopt, moet de juiste foutmelding doorgegeven worden (zie #553)
+				try
+				{
+					afdelingsJaar = _afdelingsJaarMgr.Aanmaken(
+										afd,
+										oa,
+										huidigGwj,
+										detail.GeboorteJaarVan, detail.GeboorteJaarTot,
+										detail.Geslacht);
+				}
+				catch (ValidatieException)
+				{
+					throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.FouteGeboortejarenVoorAfdeling });
+				}
 			}
 			else
 			{
@@ -267,7 +274,7 @@ namespace Chiro.Gap.Services
 				if (afdelingsJaar.GroepsWerkJaar.ID != huidigGwj.ID
 					|| afdelingsJaar.Afdeling.ID != detail.AfdelingID)
 				{
-					throw new NotSupportedException("Afdeling en GroepsWerkJaar mogen niet"
+					throw new NotSupportedException("Afdeling en Groepswerkjaar mogen niet"
 						+ " gewijzigd worden.");
 				}
 
@@ -298,7 +305,8 @@ namespace Chiro.Gap.Services
 			try
 			{
 				_afdelingsJaarMgr.Verwijderen(afdelingsJaarID);
-			}catch(InvalidOperationException)
+			}
+			catch(InvalidOperationException)
 			{
 				/*var afdjaar = _afdelingsJaarMgr.Ophalen(afdelingsJaarID, AfdelingsJaarExtras.Afdeling);
 				var afdjaardetail = Mapper.Map<AfdelingsJaar, AfdelingsJaarDetail>(afdjaar);*/

@@ -26,8 +26,7 @@ namespace Chiro.Gap.WebApp.Models
             Types = new List<CommunicatieTypeInfo>();
         }
 
-        public NieuweCommVormModel(PersoonDetail aanvrager, IEnumerable<CommunicatieTypeInfo> types)
-            : this()
+        public NieuweCommVormModel(PersoonDetail aanvrager, IEnumerable<CommunicatieTypeInfo> types) : this()
         {
             Aanvrager = aanvrager;
             Types = types;

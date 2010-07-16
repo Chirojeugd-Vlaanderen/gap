@@ -14,37 +14,25 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	public class CommunicatieInfo: ICommunicatie
 	{
 		[DataMember]
-		public int ID
-		{
-			get;
-			set;
-		}
+		public int ID { get; set; }
 
 		[Verplicht]
 		[DataMember]
         [StringLengte(160)]
-		public string Nummer
-		{
-			get;
-			set;
-		}
+		public string Nummer { get; set; }
+
+		[DataMember]
+		[DisplayName(@"Mag gebruikt worden voor Snelleberichtenlijsten?")]
+		public bool IsVoorOptIn { get; set; }
 
 		[DataMember]
 		[DisplayName(@"Gebruiken om persoon te contacteren?")]
-		public bool Voorkeur
-		{
-			get;
-			set;
-		}
+		public bool Voorkeur { get; set; }
 
 		[DataMember]
 		[StringLengte(320)]
 		[DataType(DataType.MultilineText)]
-		public string Nota
-		{
-			get;
-			set;
-		}
+		public string Nota { get; set; }
 
 		[DataMember]
 		[DisplayName(@"Voor heel het gezin?")]
@@ -56,6 +44,9 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
         [Verplicht]
 		public int CommunicatieTypeID { get; set; }
+
+		[DataMember]
+		public bool CommunicatieTypeIsOptIn { get; set; }
 
 		[DataMember]
 		public string CommunicatieTypeOmschrijving { get; set; }
