@@ -82,6 +82,7 @@ GO
 BEGIN
 	CREATE TABLE [pers].[CommunicatieType](
 		[Omschrijving] [varchar](80) NULL,
+		IsOptIn BIT NOT NULL,
 		[Validatie] [varchar](160) NULL,
 		[CommunicatieTypeID] [int] IDENTITY(1,1) NOT NULL,
 		[Voorbeeld] [varchar](160) NULL,
@@ -392,6 +393,7 @@ BEGIN
 		[Nummer] [varchar](160) NOT NULL,
 		[CommunicatieVormID] [int] IDENTITY(1,1) NOT NULL,
 		[CommunicatieTypeID] [int] NOT NULL,
+		IsVoorOptIn BIT NOT NULL,
 		[IsGezinsgebonden] [bit] NOT NULL CONSTRAINT [DF_CommunicatieVorm_IsGezinsgebonden]  DEFAULT ((0)),
 		[Voorkeur] [bit] NOT NULL CONSTRAINT [DF_CommunicatieVorm_Voorkeur]  DEFAULT ((0)),
 		[GelieerdePersoonID] [int] NULL,
