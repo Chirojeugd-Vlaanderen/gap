@@ -140,9 +140,10 @@ namespace Chiro.Gap.Data.Test
 			int aantalTotaal;
 
 			// act
-			var pagina = _gpdao.PaginaOphalenMetLidInfoVolgensCategorie(
+			var pagina = _gpdao.PaginaOphalenUitCategorie(
 				TestInfo.CATEGORIEID, 
 				1, 10, 
+				false,
 				out aantalTotaal);
 
 			// assert
@@ -159,10 +160,12 @@ namespace Chiro.Gap.Data.Test
 			int aantalTotaal;
 
 			// act
-			var pagina = _gpdao.PaginaOphalenMetLidInfoVolgensCategorie(
+			var pagina = _gpdao.PaginaOphalenUitCategorie(
 				TestInfo.CATEGORIE2ID,
 				1, 10,
-				out aantalTotaal);
+				false,
+				out aantalTotaal,
+				gp => gp.Lid);
 
 			// assert
 			GelieerdePersoon lid = (from gp in pagina

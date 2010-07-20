@@ -208,7 +208,7 @@ namespace Chiro.Gap.Workers
 		{
 			var paths = new List<Expression<Func<Persoon, object>>>();
 
-			if ((extras & PersoonsExtras.Communicatie) != 0)
+			if ((extras & (PersoonsExtras.Communicatie|PersoonsExtras.Categorieen)) != 0)
 			{
 				// niet ondersteund, want dan moeten we eerst nog gaan uitvlooien
 				// welke gelieerde persoon we precies nodig hebben.
@@ -228,7 +228,7 @@ namespace Chiro.Gap.Workers
 			{
 				paths.Add(p => p.GelieerdePersoon);
 			}
-
+			
 			// TODO: dit is nogal veel dubbel werk.  EnkelMijnPersonen laadt alle gelieerde personen,
 			// om te kijken welke personen overeen komen met 'mijn' personen.  Daarna worden, indien
 			// 'extras|PersoonsExtras.MijnGelieerdePersonen' gezet is, nog eens dezelfde gelieerde
@@ -249,7 +249,7 @@ namespace Chiro.Gap.Workers
 		{
 			var paths = new List<Expression<Func<Persoon, object>>>();
 
-			if ((extras & PersoonsExtras.Communicatie) != 0)
+			if ((extras & (PersoonsExtras.Communicatie|PersoonsExtras.Categorieen)) != 0)
 			{
 				// niet ondersteund, want dan moeten we eerst nog gaan uitvlooien
 				// welke gelieerde persoon we precies nodig hebben.

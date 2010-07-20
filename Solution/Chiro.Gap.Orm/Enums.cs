@@ -104,11 +104,15 @@ namespace Chiro.Gap.Orm
 		/// </summary>
 		Communicatie = 0x04,
 		/// <summary>
+		/// De categorieen van de gelieerde persoon
+		/// </summary>
+		Categorieen = 0x08,
+		/// <summary>
 		/// Enkel van toepassing op persoonsobjecten: neem *alle* gelieerdepersoonsobjecten mee (ook die van andere groepen).
 		/// Enkel gebruiken als strict noodzakelijk! (bijv als het voorkeursadres in een andere groep mee gemanipuleerd moet 
 		/// worden)
 		/// </summary>
-		AlleGelieerdePersonen = 0x08
+		AlleGelieerdePersonen = 0x10
 	}
 
 	/// <summary>

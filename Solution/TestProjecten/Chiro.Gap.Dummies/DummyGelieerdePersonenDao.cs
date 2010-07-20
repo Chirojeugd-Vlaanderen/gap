@@ -20,11 +20,6 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
-		{
-			throw new NotImplementedException();
-		}
-
 		public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
 		{
 			throw new NotImplementedException();
@@ -45,16 +40,6 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public IEnumerable<CommunicatieType> OphalenCommunicatieTypes()
-		{
-			throw new NotImplementedException();
-		}
-
-		public IList<GelieerdePersoon> PaginaOphalenMetLidInfoVolgensCategorie(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal)
-		{
-			throw new NotImplementedException();
-		}
-
 		public IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam)
 		{
 			throw new NotImplementedException();
@@ -70,12 +55,12 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public GelieerdePersoon OphalenMetAfdelingen(int gelieerdePersoonID, int groepsWerkJaarID, params System.Linq.Expressions.Expression<Func<GelieerdePersoon, object>>[] paths)
+		public IList<GelieerdePersoon> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IList<GelieerdePersoon> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID)
+		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, bool metHuidigLidInfo, out int aantalTotaal, params System.Linq.Expressions.Expression<Func<GelieerdePersoon, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}

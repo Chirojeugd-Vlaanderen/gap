@@ -327,14 +327,29 @@ namespace Chiro.Gap.Workers
 		/// <param name="categorieID">ID gevraagde categorie</param>
 		/// <param name="pagina">Paginanummer (minstens 1)</param>
 		/// <param name="paginaGrootte">Aantal personen per pagina</param>
+		/// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+		/// <param name="metHuidigLidInfo">Als <c>true</c> worden ook eventuele lidobjecten *van dit werkjaar* 
+		/// mee opgehaald.</param>
 		/// <param name="aantalTotaal">Outputparameter voor totaal aantal
 		/// personen in de groep</param>
 		/// <returns>Lijst met GelieerdePersonen</returns>
-		public IList<GelieerdePersoon> PaginaOphalenMetLidInfoVolgensCategorie(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal)
+		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(
+			int categorieID, 
+			int pagina, 
+			int paginaGrootte, 
+			PersoonsExtras extras,
+			bool metHuidigLidInfo,
+			out int aantalTotaal)
 		{
 			if (_autorisatieMgr.IsGavCategorie(categorieID))
 			{
-				return _gelieerdePersonenDao.PaginaOphalenMetLidInfoVolgensCategorie(categorieID, pagina, paginaGrootte, out aantalTotaal);
+				return _gelieerdePersonenDao.PaginaOphalenUitCategorie(
+					categorieID, 
+					pagina, 
+					paginaGrootte, 
+					metHuidigLidInfo,
+					out aantalTotaal,
+					ExtrasNaarLambdas(extras));
 			}
 			else
 			{
@@ -803,8 +818,10 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="extras">Te converteren PersoonsExtra's</param>
 		/// <returns>Lambda-expressies geschikt voor onze DAO's</returns>
-		/// <remarks>Het gekoppeld persoonsobject wordt *altijd* mee opgehaald.  (Dit is min of meer
-		/// historisch gegroeid)</remarks>
+		/// <remarks>
+		/// Het gekoppeld persoonsobject wordt *altijd* mee opgehaald.  (Dit is min of meer
+		/// historisch gegroeid)
+		/// </remarks>
 		private static Expression<Func<GelieerdePersoon, object>>[] ExtrasNaarLambdas(PersoonsExtras extras)
 		{
 			var paths = new List<Expression<Func<GelieerdePersoon, object>>> {gp => gp.Persoon};
@@ -827,6 +844,11 @@ namespace Chiro.Gap.Workers
 			if ((extras & PersoonsExtras.Communicatie) != 0)
 			{
 				paths.Add(gp => gp.Communicatie.First().CommunicatieType);
+			}
+
+			if ((extras & PersoonsExtras.Categorieen) != 0)
+			{
+				paths.Add(gp => gp.Categorie);
 			}
 
 			return paths.ToArray();

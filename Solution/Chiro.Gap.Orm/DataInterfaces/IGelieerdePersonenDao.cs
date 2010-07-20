@@ -75,16 +75,24 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal);
 
 		/// <summary>
-		/// Haalt een 'pagina' persoonsgegevens van de gelieerde personen van een groep op behorende tot de gegeven categorie
-		/// inclusief eventueel lidobject in het recentste werkjaar.
+		/// Haal een pagina op met gelieerde personen uit een categorie, inclusief lidinfo voor het huidige
+		/// werkjaar.
 		/// </summary>
-		/// <param name="categorieID">ID van de categorie die we nodig hebben</param>
-		/// <param name="pagina">Paginanummer (1 of groter)</param>
-		/// <param name="paginaGrootte">Aantal records op een pagina</param>
-		/// <param name="aantalTotaal">Outputparameter voor totaal aantal
-		/// personen gelieerd aan de groep.</param>
-		/// <returns>Lijst met gelieerde personen</returns>
-		IList<GelieerdePersoon> PaginaOphalenMetLidInfoVolgensCategorie(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal);
+		/// <param name="categorieID">ID van de gevraagde categorie</param>
+		/// <param name="pagina">Gevraagde pagina</param>
+		/// <param name="paginaGrootte">Grootte van de pagina</param>
+		/// <param name="paths">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+		/// <param name="metHuidigLidInfo">Als <c>true</c> worden ook eventuele lidobjecten *van dit werkjaar* 
+		/// mee opgehaald.</param>
+		/// <param name="aantalTotaal">Outputparameter die het totaal aantal personen in de categorie weergeeft</param>
+		/// <returns>Lijst gelieerde personen</returns>
+		IList<GelieerdePersoon> PaginaOphalenUitCategorie(
+			int categorieID,
+			int pagina,
+			int paginaGrootte,
+			bool metHuidigLidInfo,
+			out int aantalTotaal,
+			params Expression<Func<GelieerdePersoon, object>>[] paths);
 
 		/// <summary>
 		/// Haalt persoonsgegevens van een gelieerd persoon op, incl. adressen en communicatievormen

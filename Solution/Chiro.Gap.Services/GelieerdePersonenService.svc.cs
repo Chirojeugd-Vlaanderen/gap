@@ -176,7 +176,13 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal)
 		{
-			var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfoVolgensCategorie(categorieID, pagina, paginaGrootte, out aantalTotaal);
+			var gelieerdePersonen = _gpMgr.PaginaOphalenUitCategorie(
+				categorieID, 
+				pagina, 
+				paginaGrootte, 
+				PersoonsExtras.Categorieen,
+				true,
+				out aantalTotaal);
 			return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
 		}
 
@@ -301,12 +307,12 @@ namespace Chiro.Gap.Services
 		{
 			int totaal;
 
-			// TODO: Dit werkt nog niet, want er komen geen adressen of communicatie mee.
-
-			var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfoVolgensCategorie(
+			var gelieerdePersonen = _gpMgr.PaginaOphalenUitCategorie(
 				categorieID, 
 				1, 
 				int.MaxValue, 
+				PersoonsExtras.Adressen|PersoonsExtras.Communicatie,
+				false,
 				out totaal);
 
 			return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);

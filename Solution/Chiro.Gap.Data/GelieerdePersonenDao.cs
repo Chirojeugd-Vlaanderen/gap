@@ -166,51 +166,83 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="categorieID">ID van de gevraagde categorie</param>
 		/// <param name="pagina">Gevraagde pagina</param>
 		/// <param name="paginaGrootte">Grootte van de pagina</param>
+		/// <param name="paths">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+		/// <param name="metHuidigLidInfo">Als <c>true</c> worden ook eventuele lidobjecten *van dit werkjaar* 
+		/// mee opgehaald.</param>
 		/// <param name="aantalTotaal">Outputparameter die het totaal aantal personen in de categorie weergeeft</param>
 		/// <returns>Lijst gelieerde personen</returns>
-		public IList<GelieerdePersoon> PaginaOphalenMetLidInfoVolgensCategorie(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal)
+		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(
+			int categorieID, 
+			int pagina, 
+			int paginaGrootte,
+			bool metHuidigLidInfo,
+			out int aantalTotaal,
+			params Expression<Func<GelieerdePersoon, object>>[] paths)
 		{
 			Groep g;
 			IList<GelieerdePersoon> lijst;
 
 			using (var db = new ChiroGroepEntities())
 			{
-				// Haal de groep van de gevraagde categorie op
-				g = (from c in db.Categorie
-					 where c.ID == categorieID
-					 select c.Groep).FirstOrDefault();
-
-				// Haal het huidige groepswerkjaar van de groep op
-				var huidigWj = (
-								from w in db.GroepsWerkJaar
-								where w.Groep.ID == g.ID
-								orderby w.WerkJaar descending
-								select w).FirstOrDefault<GroepsWerkJaar>().WerkJaar;
-
 				// Haal alle personen in de gevraagde categorie op
-				var query = (from c in db.Categorie.Include("GelieerdePersoon.Persoon")
-							 where c.ID == categorieID
-							 select c).FirstOrDefault().GelieerdePersoon;
+				
+				// Met de oorspronkelijke query kreeg ik het niet geregeld:
+                                //                              
+				//  var query = (from c in db.Categorie.Include(cat => cat.GelieerdePersoon.First().Persoon)
+				//                         where c.ID == categorieID
+				//                         select c).FirstOrDefault().GelieerdePersoon;
+
+
+				var query = from gp in db.GelieerdePersoon.Include(gp => gp.Categorie)
+				            where gp.Categorie.Any(cat => cat.ID == categorieID)
+				            select gp;
+
+				var queryMetExtras = IncludesToepassen(
+					query as ObjectQuery<GelieerdePersoon>,
+					paths);
+
+				// Pas Extra's toe
 
 				// Sorteer ze en bepaal totaal aantal personen
-				lijst = query.OrderBy(e => e.Persoon.Naam)
+				lijst = queryMetExtras.OrderBy(e => e.Persoon.Naam)
 						  .Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte)
 						  .ToList();
 				aantalTotaal = query.Count();
 
-				// Lijst is geattacht aan de objectcontext.  Als we nu ook de lidojecten van de 
-				// gelieerdepersonen in de lijst ophalen voor het gegeven werkjaar, dan worden
-				// die DDD-gewijze aan de gelieerde personen gekoppeld.
+				// haal indien gevraagd huidige lidobjecten mee op
 
-				// Haal de IDs van alle relevante personen op
-				IList<int> relevanteGpIDs = (from gp in lijst select gp.ID).ToList();
+				if (metHuidigLidInfo)
+				{
+					// Haal de groep van de gevraagde categorie op
+					g = (from c in db.Categorie
+					     where c.ID == categorieID
+					     select c.Groep).FirstOrDefault();
 
-				// Selecteer nu alle leden van huidig werkjaar met relevant gelieerdePersoonID
+					// Haal het huidige groepswerkjaar van de groep op
+					var huidigWj = (
+									from w in db.GroepsWerkJaar
+									where w.Groep.ID == g.ID
+									orderby w.WerkJaar descending
+									select w).FirstOrDefault<GroepsWerkJaar>().WerkJaar;
 
-				var huidigeLedenUitlijst = (from l in db.Lid.Include("GelieerdePersoon.Categorie")
-								.Where(Utility.BuildContainsExpression<Lid, int>(ld => ld.GelieerdePersoon.ID, relevanteGpIDs))
-											where l.GroepsWerkJaar.WerkJaar == huidigWj
-											select l).ToList();
+					// Lijst is geattacht aan de objectcontext.  Als we nu ook de lidojecten van de 
+					// gelieerdepersonen in de lijst ophalen voor het gegeven werkjaar, dan worden
+					// die DDD-gewijze aan de gelieerde personen gekoppeld.
+
+					// Haal de IDs van alle relevante personen op
+					IList<int> relevanteGpIDs = (from gp in lijst select gp.ID).ToList();
+
+					// Selecteer nu alle leden van huidig werkjaar met relevant gelieerdePersoonID
+
+					var huidigeLedenUitlijst = (from l in db.Lid.Include(ld => ld.GelieerdePersoon)
+					                            	.Where(Utility.BuildContainsExpression<Lid, int>(ld => ld.GelieerdePersoon.ID,
+					                            	                                                 relevanteGpIDs))
+					                            where l.GroepsWerkJaar.WerkJaar == huidigWj
+					                            select l).ToList();
+
+					// !LET OP! Bovenstaande variabele is weliswaar never used, maar is wel nodig
+					// om de huidige leden in de objectcontext te laden! Laten staan dus!
+				}
 			}
 			Utility.DetachObjectGraph(lijst);
 
