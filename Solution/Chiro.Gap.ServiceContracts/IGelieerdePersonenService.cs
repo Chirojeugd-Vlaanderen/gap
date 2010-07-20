@@ -16,7 +16,7 @@ namespace Chiro.Gap.ServiceContracts
 	[ServiceContract]
 	public interface IGelieerdePersonenService
 	{
-		#region standaard
+		#region ophalen
 
 		/// <summary>
 		/// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep,
@@ -64,14 +64,26 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		PersoonLidInfo AlleDetailsOphalen(int gelieerdePersoonID);
 
-		///// <summary>
-		///// Haalt gelieerd persoon op met extra gevraagde info.
-		///// </summary>
-		///// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>
-		///// <param name="gevraagd">Stelt voor welke informatie opgehaald moet worden</param>
-		///// <returns>GelieerdePersoon uitbreiden met meer info mbt het gevraagde onderwerp </returns>
-		// [OperationContract(Name = "PersoonOphalenMetCustomDetails")]
-		// GelieerdePersoon PersoonOphalenMetDetails(int gelieerdePersoonID, PersoonsInfo gevraagd);
+		/// <summary>
+		/// Haalt gegevens op van alle personen uit categorie met ID <paramref name="categorieID"/>
+		/// </summary>
+		/// <param name="categorieID">Indien verschillend van 0, worden alle personen uit de categore met
+		/// gegeven CategoreID opgehaald.  Anders alle personen tout court.</param>
+		/// <returns>Lijst 'PersoonOverzicht'-objecten van alle gelieerde personen uit de categorie</returns>
+		[OperationContract]
+		IEnumerable<PersoonOverzicht> OphalenUitCategorie(int categorieID);
+
+		/// <summary>
+		/// Haalt gegevens op van alle personen uit groep met ID <paramref name="groepID"/>.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waaruit de personen gehaald moeten worden</param>
+		/// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
+		[OperationContract]
+		IEnumerable<PersoonOverzicht> OphalenUitGroep(int groepID);
+
+		#endregion ophalen
+
+		#region bewaren
 
 		/// <summary>
 		/// Updatet een persoon op basis van <paramref name="persoonInfo"/>

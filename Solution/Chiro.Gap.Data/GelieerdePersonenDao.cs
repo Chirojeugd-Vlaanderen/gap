@@ -50,8 +50,8 @@ namespace Chiro.Gap.Data.Ef
 
 			using (var db = new ChiroGroepEntities())
 			{
-				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
-				// direct gedetachte gelieerde personen ophalen
+				// Eerst alles 'gewoon' ophalen'.  Op die manier komen straatnamen en woonplaatsen
+				// niet dubbel over voor alle adressen en standaardadres.
 
 				var query = (from gp in db.GelieerdePersoon
 							 where gp.Groep.ID == groepID
@@ -59,7 +59,10 @@ namespace Chiro.Gap.Data.Ef
 
 				result = (IncludesToepassen(query, paths)).ToList();
 			}
-			Utility.DetachObjectGraph(result);
+
+			// Dan detachen
+
+			result = Utility.DetachObjectGraph(result);
 
 			return result;
 		}

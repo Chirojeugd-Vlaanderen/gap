@@ -73,6 +73,23 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.VolledigeNaam,
 					opt => opt.Ignore());
 
+			Mapper.CreateMap<GelieerdePersoon, PersoonOverzicht>()
+				.ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.Persoon.AdNummer))
+				.ForMember(dst => dst.Bus, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.Bus))
+				.ForMember(dst => dst.Email, opt => opt.MapFrom(src => VoorkeurCommunicatie(src, CommunicatieTypeEnum.Email)))
+				.ForMember(dst => dst.GeboorteDatum, opt => opt.MapFrom(src => src.Persoon.GeboorteDatum))
+				.ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => src.ID))
+				.ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => src.Persoon.Geslacht))
+				.ForMember(dst => dst.HuisNummer, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.HuisNr))
+				.ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Persoon.Naam))
+				.ForMember(dst => dst.PostNummer, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : (int?)src.PersoonsAdres.Adres.WoonPlaats.PostNummer))
+				.ForMember(dst => dst.StraatNaam, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.StraatNaam.Naam))
+				.ForMember(dst => dst.TelefoonNummer,
+				           opt => opt.MapFrom(src => VoorkeurCommunicatie(src, CommunicatieTypeEnum.TelefoonNummer)))
+				.ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam))
+				.ForMember(dst => dst.WoonPlaats, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null: src.PersoonsAdres.Adres.WoonPlaats.Naam));
+
+
 			Mapper.CreateMap<AfdelingsJaar, AfdelingDetail>()
 				.ForMember(
 					dst => dst.AfdelingsJaarID,
@@ -292,7 +309,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.AssertConfigurationIsValid();
 		}
 
-		#region Helperfunctie waarvan ik niet zeker ben of ze hier goed staan.
+		#region Helperfuncties waarvan ik niet zeker ben of ze hier goed staan.
 
 		/// <summary>
 		/// Controleert of een lid <paramref name="src"/>in zijn werkjaar verzekerd is wat betreft de verzekering gegeven
@@ -312,7 +329,21 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				return persoonsverzekeringen.FirstOrDefault() != null;
 		}
 
+		/// <summary>
+		/// Voorkeurtelefoonnr, voorkeure-maialdres,... van een gelieerde persoon
+		/// </summary>
+		/// <param name="gp">Gelieerde persoon</param>
+		/// <param name="type">Communicatietype waarvan voorkeur gevraagd wordt.</param>
+		/// <returns>Voorkeurtelefoonnr, -maiadres,... van de gelieerde persoon.  
+		/// <c>null</c> indien onbestaand.</returns>
+		private static string VoorkeurCommunicatie(GelieerdePersoon gp, CommunicatieTypeEnum type)
+		{
+			var query = from c in gp.Communicatie
+			             where (c.CommunicatieType.ID == (int)type) && c.Voorkeur
+			             select c.Nummer;
 
+			return query.FirstOrDefault();
+		}
 
 		#endregion
 

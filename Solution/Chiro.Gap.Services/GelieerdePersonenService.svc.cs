@@ -63,55 +63,7 @@ namespace Chiro.Gap.Services
 
 		#region IGelieerdePersonenService Members
 
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal)
-		{
-			var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfoVolgensCategorie(categorieID, pagina, paginaGrootte, out aantalTotaal);
-			return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
-		}
-
-		// *BELANGRIJK*: Als het debuggen hier stopt owv een autorisatiefout, kijk dan na of de gebruiker waarmee
-		// je aangemeld bent, op je lokale computer in de groep CgUsers zit.
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonDetail> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
-		{
-			var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
-			var result = Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
-
-			/*
-			 * TODO dit staat mss niet op de beste plek
-			 * Ophalen afdelingsjaren in het huidige werkjaar (TODO niet als een vorig werkjaar bekeken wordt)
-			 * Voor elk persoonsdetail kijken of iemand die nog geen lid is, in een afdeling zou passen
-			 * als dit het geval is, kanlidworden op true zetten.
-			 * kanleidingworden wordt true als de persoon de juiste leeftijd heeft
-			 * 
-			 * TODO dubbele code in detailsophalen
-			 */
-			GroepsWerkJaar gwj = _gwjMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
-			foreach (var p in result) 
-			{
-				if(p.GeboorteDatum == null)
-				{
-					continue;
-				}
-				int geboortejaar = p.GeboorteDatum.Value.Year;
-				var afd = (from a in gwj.AfdelingsJaar
-							where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
-							select a).FirstOrDefault();
-				if(afd != null)
-				{
-					p.KanLidWorden = true;
-				}
-				if (p.GeboorteDatum.Value.Year < DateTime.Today.Year - Int32.Parse(Resources.LeidingVanafLeeftijd) + p.ChiroLeefTijd)
-				{
-					p.KanLeidingWorden = true;
-				}
-			}
-			return result;
-		}
-
+		#region Bewaren
 		/// <summary>
 		/// Updatet een persoon op basis van <paramref name="persoonInfo"/>
 		/// </summary>
@@ -169,18 +121,18 @@ namespace Chiro.Gap.Services
 		{
 			// Indien 'forceer' niet gezet is, moet een FaultException opgeworpen worden
 			// als de  nieuwe persoon te hard lijkt op een bestaande Gelieerde Persoon.
-			
+
 			// FIXME: Deze businesslogica moet in de workers gebeuren, waar dan een exception opgeworpen
 			// kan worden, die we hier mappen op een faultcontract.
 
 			var nieuwePersoon = new Persoon
-			                    	{
-			                    		AdNummer = info.AdNummer,
-			                    		VoorNaam = info.VoorNaam,
-			                    		Naam = info.Naam,
-			                    		GeboorteDatum = info.GeboorteDatum,
-			                    		Geslacht = info.Geslacht
-			                    	};
+			{
+				AdNummer = info.AdNummer,
+				VoorNaam = info.VoorNaam,
+				Naam = info.Naam,
+				GeboorteDatum = info.GeboorteDatum,
+				Geslacht = info.Geslacht
+			};
 
 			if (!forceer)
 			{
@@ -189,8 +141,10 @@ namespace Chiro.Gap.Services
 
 				if (bestaandePersonen.Count > 0)
 				{
-					var fault = new BlokkerendeObjectenFault<PersoonDetail>{
-						Objecten = Mapper.Map<IList<GelieerdePersoon>, IList<PersoonDetail>>(bestaandePersonen) };
+					var fault = new BlokkerendeObjectenFault<PersoonDetail>
+					{
+						Objecten = Mapper.Map<IList<GelieerdePersoon>, IList<PersoonDetail>>(bestaandePersonen)
+					};
 
 					throw new FaultException<BlokkerendeObjectenFault<PersoonDetail>>(fault);
 
@@ -212,7 +166,61 @@ namespace Chiro.Gap.Services
 
 			GelieerdePersoon gelieerd = _gpMgr.Koppelen(nieuwePersoon, g, info.ChiroLeefTijd);
 			gelieerd = _gpMgr.Bewaren(gelieerd);
-			return new IDPersEnGP {GelieerdePersoonID = gelieerd.ID, PersoonID = gelieerd.Persoon.ID};
+			return new IDPersEnGP { GelieerdePersoonID = gelieerd.ID, PersoonID = gelieerd.Persoon.ID };
+		}
+		#endregion
+
+		#region Ophalen
+
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal)
+		{
+			var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfoVolgensCategorie(categorieID, pagina, paginaGrootte, out aantalTotaal);
+			return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
+		}
+
+		// *BELANGRIJK*: Als het debuggen hier stopt owv een autorisatiefout, kijk dan na of de gebruiker waarmee
+		// je aangemeld bent, op je lokale computer in de groep CgUsers zit.
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public IList<PersoonDetail> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
+		{
+			var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
+			var result = Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
+
+			/*
+			 * TODO dit staat mss niet op de beste plek
+			 * TODO: hoort deze logica niet eerder thuis in business?
+			 * Ophalen afdelingsjaren in het huidige werkjaar (TODO niet als een vorig werkjaar bekeken wordt)
+			 * Voor elk persoonsdetail kijken of iemand die nog geen lid is, in een afdeling zou passen
+			 * als dit het geval is, kanlidworden op true zetten.
+			 * kanleidingworden wordt true als de persoon de juiste leeftijd heeft
+			 * 
+			 * TODO dubbele code in detailsophalen
+			 */
+			GroepsWerkJaar gwj = _gwjMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
+			foreach (var p in result) 
+			{
+				if(p.GeboorteDatum == null)
+				{
+					continue;
+				}
+
+				int geboortejaar = p.GeboorteDatum.Value.Year;
+				var afd = (from a in gwj.AfdelingsJaar
+							where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
+							select a).FirstOrDefault();
+				if(afd != null)
+				{
+					p.KanLidWorden = true;
+				}
+				if (p.GeboorteDatum.Value.Year < DateTime.Today.Year - Int32.Parse(Resources.LeidingVanafLeeftijd) + p.ChiroLeefTijd)
+				{
+					p.KanLeidingWorden = true;
+				}
+			}
+			return result;
 		}
 
 		/// <summary>
@@ -282,6 +290,42 @@ namespace Chiro.Gap.Services
 
 			return pl;
 		}
+
+		/// <summary>
+		/// Haalt gegevens op van alle personen uit categorie met ID <paramref name="categorieID"/>
+		/// </summary>
+		/// <param name="categorieID">Indien verschillend van 0, worden alle personen uit de categore met
+		/// gegeven CategoreID opgehaald.  Anders alle personen tout court.</param>
+		/// <returns>Lijst 'PersoonOverzicht'-objecten van alle gelieerde personen uit de categorie</returns>
+		public IEnumerable<PersoonOverzicht> OphalenUitCategorie(int categorieID)
+		{
+			int totaal;
+
+			// TODO: Dit werkt nog niet, want er komen geen adressen of communicatie mee.
+
+			var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfoVolgensCategorie(
+				categorieID, 
+				1, 
+				int.MaxValue, 
+				out totaal);
+
+			return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);
+		}
+		
+		/// <summary>
+		/// Haalt gegevens op van alle personen uit groep met ID <paramref name="groepID"/>.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waaruit de personen gehaald moeten worden</param>
+		/// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
+		public IEnumerable<PersoonOverzicht> OphalenUitGroep(int groepID)
+		{
+			var gelieerdePersonen = _gpMgr.AllenOphalen(groepID, PersoonsExtras.Adressen|PersoonsExtras.Communicatie);
+			return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);
+		}
+
+		#endregion
+
+		#region Gezinnen en adressen
 
 		/// <summary>
 		/// Haalt adres op, met daaraan gekoppeld de bewoners (gelieerde personen) uit de groep met ID <paramref name="groepID"/>.
@@ -618,6 +662,10 @@ namespace Chiro.Gap.Services
 			return Mapper.Map<IList<GelieerdePersoon>, IList<BewonersInfo>>(lijst);
 		}
 
+		#endregion
+
+		#region Communicatie
+
 		/// <summary>
 		/// Voegt een commvorm toe aan een gelieerde persoon
 		/// </summary>
@@ -709,13 +757,9 @@ namespace Chiro.Gap.Services
 				_cvMgr.CommunicatieTypesOphalen());
 		}
 
-		public int PersoonIDGet(int gelieerdePersoonID)
-		{
-			// TODO: Heel de gelieerde persoon + persoon ophalen voor enkel 1 ID is nog altijd overkill; zie issue #154
-			return _gpMgr.Ophalen(gelieerdePersoonID).Persoon.ID;
-		}
+		#endregion
 
-		#region categorieën
+		#region Categorieën
 		/// <summary>
 		/// Koppelt een lijst gebruikers aan een categorie
 		/// </summary>
@@ -756,6 +800,13 @@ namespace Chiro.Gap.Services
 			_gpMgr.CategorieLoskoppelen(gelieerdepersonenIDs, categorie);
 		}
 		#endregion categorieën
+
+		public int PersoonIDGet(int gelieerdePersoonID)
+		{
+			// TODO: Heel de gelieerde persoon + persoon ophalen voor enkel 1 ID is nog altijd overkill; zie issue #154
+			return _gpMgr.Ophalen(gelieerdePersoonID).Persoon.ID;
+		}
+
 
 		#endregion
 	}

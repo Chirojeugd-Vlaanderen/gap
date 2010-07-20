@@ -116,34 +116,37 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>Een 'ExcelResult' met de gevraagde lijst</returns>
 		public ActionResult Download(int groepID, int id)
 		{
-			int totaal;
-			IEnumerable<PersoonDetail> data;
+			IEnumerable<PersoonOverzicht> data;
 
 			// Alle personen bekijken
 			if (id == 0)
 			{
 				data =
-					ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
-					(g => g.PaginaOphalenMetLidInfo(groepID, 1, Int16.MaxValue, out totaal));
+					ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonOverzicht>>
+					(g => g.OphalenUitGroep(groepID));
 			}
 			else
 			{
 				data =
-					ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
-					(g => g.PaginaOphalenUitCategorieMetLidInfo(id, 1, Int16.MaxValue, out totaal));
+					ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonOverzicht>>
+					(g => g.OphalenUitCategorie(id));
 			}
 
-			var selectie = (from d in data
-							select new
-							{
-								AdNummer = d.AdNummer,
-								VolledigeNaam = d.VolledigeNaam,
-								GeboorteDatum = d.GeboorteDatum,
-								Geslacht = d.Geslacht == GeslachtsType.Man ? "jongen" : "meisje",
-								IsLid = d.IsLid ? "(lid)" : d.IsLeiding ? "(leiding)" : string.Empty
-							}).AsQueryable();
 
-			var stream = (new ExcelManip()).ExcelTabel(selectie, it => it.AdNummer, it => it.VolledigeNaam, it => it.GeboorteDatum, it => it.Geslacht, it => it.IsLid);
+			var stream = (new ExcelManip()).ExcelTabel(
+				data, 
+				it => it.AdNummer, 
+				it => it.VoorNaam,
+				it => it.Naam,
+				it => it.GeboorteDatum, 
+				it => it.Geslacht,
+				it => it.StraatNaam,
+				it => it.HuisNummer,
+				it => it.Bus,
+				it => it.PostNummer,
+				it => it.WoonPlaats,
+				it => it.TelefoonNummer,
+				it => it.Email);
 			return new ExcelResult(stream, "personen.xlsx");
 		}
 

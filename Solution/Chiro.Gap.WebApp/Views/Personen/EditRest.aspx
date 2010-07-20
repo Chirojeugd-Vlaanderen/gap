@@ -26,7 +26,7 @@
 				<ul>
 				<%foreach (var cv in commType){
 	                string ctTekst = String.Format(
-		                cv.CommunicatieTypeID == 3 ? "<a href='mailto:{0}'>{0}</a>" : "{0}",
+		                cv.CommunicatieTypeID == (int)CommunicatieTypeEnum.Email ? "<a href='mailto:{0}'>{0}</a>" : "{0}",
 		                Html.Encode(cv.Nummer));
                     %>
 					<li>

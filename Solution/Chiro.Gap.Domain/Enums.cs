@@ -57,6 +57,19 @@ namespace Chiro.Gap.Domain
 		Overig = 4
 	}
 
+	[DataContract]
+	public enum CommunicatieTypeEnum
+	{
+		[EnumMember] TelefoonNummer = 1,
+		[EnumMember] Fax = 2,
+		[EnumMember] Email = 3,
+		[EnumMember] WebSite = 4,
+		[EnumMember] Msn = 5,
+		[EnumMember] Xmpp = 6,
+		[EnumMember] Twitter = 7,
+		[EnumMember] StatusNet = 8
+	}
+
 	/// <summary>
 	/// Types verzekering; moet overeenkomen met database!0
 	/// </summary>

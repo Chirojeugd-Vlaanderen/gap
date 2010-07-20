@@ -258,16 +258,17 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Haal een lijst op met alle gelieerde personen van een groep, inclusief persoons- en lidinfo.
+		/// Haal een lijst op met alle gelieerde personen van een groep
 		/// </summary>
 		/// <param name="groepID">GroepID van gevraagde groep</param>
-		/// <returns>Lijst met alle gelieerde personen, inclusief persoons- en lidinfo</returns>
+		/// <param name="extras">Bepaalt gekoppelde entity's die mee moeten worden opgehaald</param>
+		/// <returns>Lijst met alle gelieerde personen</returns>
 		/// <remarks>Opgelet! Dit kan een zware query zijn!</remarks>
-		public IList<GelieerdePersoon> AllenOphalen(int groepID)
+		public IList<GelieerdePersoon> AllenOphalen(int groepID, PersoonsExtras extras)
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				return _gelieerdePersonenDao.AllenOphalen(groepID);
+				return _gelieerdePersonenDao.AllenOphalen(groepID, ExtrasNaarLambdas(extras));
 			}
 			else
 			{
@@ -527,23 +528,6 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Een categorie ophalen op basis van de opgegeven ID
-		/// </summary>
-		/// <param name="catID">De ID van de categorie die je nodig hebt</param>
-		/// <returns>De categorie met de opgegeven ID</returns>
-		public Categorie OphalenCategorie(int catID)
-		{
-			// Heeft de gebruiker rechten voor de groep en de categorie?
-
-			if (!_autorisatieMgr.IsGavCategorie(catID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-
-			return _categorieenDao.Ophalen(catID);
-		}
-
-		/// <summary>
 		/// Zoekt naar gelieerde personen die gelijkaardig zijn aan een gegeven
 		/// <paramref name="persoon"/>.
 		/// </summary>
@@ -574,21 +558,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>De gevraagde rij gelieerde personen.  De personen komen sowieso mee.</returns>
 		public IEnumerable<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersoonIDs, PersoonsExtras extras)
 		{
-			var paths = new List<Expression<Func<GelieerdePersoon, object>>>();
-
-			paths.Add(gp => gp.Persoon);
-
-			if ((extras & PersoonsExtras.Adressen) != 0)
-			{
-				paths.Add(gp => gp.Persoon.PersoonsAdres.First().Adres);
-			}
-
-			if ((extras & PersoonsExtras.Groep) != 0)
-			{
-				paths.Add(gp => gp.Groep);
-			}
-
-			return _gelieerdePersonenDao.Ophalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersoonIDs), paths.ToArray());
+			return _gelieerdePersonenDao.Ophalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersoonIDs), ExtrasNaarLambdas(extras));
 		}
 
 		/// <summary>
@@ -825,6 +795,41 @@ namespace Chiro.Gap.Workers
 			// verwijder te verwijderen persoonsadres
 			_personenDao.Bewaren(personen, p => p.PersoonsAdres.First().GelieerdePersoon);
 
+		}
+
+		/// <summary>
+		/// Converteert de PersoonsExtras <paramref name="extras"/> naar lambda-expressies die mee naar 
+		/// de data access moeten om de extra's daadwerkelijk op te halen.
+		/// </summary>
+		/// <param name="extras">Te converteren PersoonsExtra's</param>
+		/// <returns>Lambda-expressies geschikt voor onze DAO's</returns>
+		/// <remarks>Het gekoppeld persoonsobject wordt *altijd* mee opgehaald.  (Dit is min of meer
+		/// historisch gegroeid)</remarks>
+		private static Expression<Func<GelieerdePersoon, object>>[] ExtrasNaarLambdas(PersoonsExtras extras)
+		{
+			var paths = new List<Expression<Func<GelieerdePersoon, object>>> {gp => gp.Persoon};
+
+			if ((extras & PersoonsExtras.Adressen) != 0)
+			{
+				// alle adressen
+				paths.Add(gp => gp.Persoon.PersoonsAdres.First().Adres.StraatNaam);
+				paths.Add(gp => gp.Persoon.PersoonsAdres.First().Adres.WoonPlaats);
+
+				// standaardadres
+				paths.Add(gp => gp.PersoonsAdres.Adres);
+			}
+
+			if ((extras & PersoonsExtras.Groep) != 0)
+			{
+				paths.Add(gp => gp.Groep);
+			}
+
+			if ((extras & PersoonsExtras.Communicatie) != 0)
+			{
+				paths.Add(gp => gp.Communicatie.First().CommunicatieType);
+			}
+
+			return paths.ToArray();
 		}
 	}
 }

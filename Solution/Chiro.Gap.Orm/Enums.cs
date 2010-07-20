@@ -99,11 +99,16 @@ namespace Chiro.Gap.Orm
 		/// </summary>
                 Groep = 0x02,
 		/// <summary>
+		/// Haal alle communicatievormen van de gelieerde persoon mee op, met gekoppeld
+		/// communicatietype.
+		/// </summary>
+		Communicatie = 0x04,
+		/// <summary>
 		/// Enkel van toepassing op persoonsobjecten: neem *alle* gelieerdepersoonsobjecten mee (ook die van andere groepen).
 		/// Enkel gebruiken als strict noodzakelijk! (bijv als het voorkeursadres in een andere groep mee gemanipuleerd moet 
 		/// worden)
 		/// </summary>
-		AlleGelieerdePersonen = 0x04
+		AlleGelieerdePersonen = 0x08
 	}
 
 	/// <summary>

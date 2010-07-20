@@ -208,6 +208,13 @@ namespace Chiro.Gap.Workers
 		{
 			var paths = new List<Expression<Func<Persoon, object>>>();
 
+			if ((extras & PersoonsExtras.Communicatie) != 0)
+			{
+				// niet ondersteund, want dan moeten we eerst nog gaan uitvlooien
+				// welke gelieerde persoon we precies nodig hebben.
+				throw new NotSupportedException();
+			}
+
 			if ((extras & PersoonsExtras.Adressen) != 0)
 			{
 				paths.Add(p => p.PersoonsAdres.First().Adres);
@@ -241,6 +248,14 @@ namespace Chiro.Gap.Workers
 		public IEnumerable<Persoon> LijstOphalenViaGelieerdePersoon(IEnumerable<int> gelieerdePersoonIDs, PersoonsExtras extras)
 		{
 			var paths = new List<Expression<Func<Persoon, object>>>();
+
+			if ((extras & PersoonsExtras.Communicatie) != 0)
+			{
+				// niet ondersteund, want dan moeten we eerst nog gaan uitvlooien
+				// welke gelieerde persoon we precies nodig hebben.
+				throw new NotSupportedException();
+			}
+
 
 			if ((extras & PersoonsExtras.Adressen) != 0)
 			{

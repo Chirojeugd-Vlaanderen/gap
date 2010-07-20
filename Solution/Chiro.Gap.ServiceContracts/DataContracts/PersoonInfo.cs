@@ -16,6 +16,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	/// Minimale persoonsinformatie
 	/// </summary>
 	[KnownType(typeof(PersoonDetail))]	// Anders pakt de inheritance niet
+	[KnownType(typeof(PersoonOverzicht))]
 	[DataContract]
 	public class PersoonInfo
 	{
