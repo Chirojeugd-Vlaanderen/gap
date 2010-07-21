@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -28,6 +29,7 @@ namespace Chiro.Gap.WebApp.Models
 		public List<int> GekozenGelieerdePersoonIDs { get; set; }
 		public int GekozenActie { get; set; }
 		public int GekozenCategorieID { get; set; }
+		public PersoonSorteringsEnum Sortering { get; set; }
 
 		public IList<CategorieInfo> GroepsCategorieen { get; set; }
 	}

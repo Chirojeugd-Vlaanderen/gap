@@ -26,6 +26,9 @@
 		</select>
 		<input id="kiesCategorie" type="submit" value="Uitvoeren"/>
     </li>
+    <li><%= Html.ActionLink("Sorteren op naam", "List", new { page=Model.HuidigePagina, id=Model.GekozenCategorieID, sortering = Chiro.Gap.Domain.PersoonSorteringsEnum.Naam}) %></li>
+    <li><%= Html.ActionLink("Sorteren op leeftijd", "List", new { page = Model.HuidigePagina, id = Model.GekozenCategorieID, sortering = Chiro.Gap.Domain.PersoonSorteringsEnum.Leeftijd })%></li>
+    <li><%= Html.ActionLink("Sorteren op categorie", "List", new { page = Model.HuidigePagina, id = Model.GekozenCategorieID, sortering = Chiro.Gap.Domain.PersoonSorteringsEnum.Categorie })%></li>
 </ul>
 <%} %>
 

@@ -247,14 +247,12 @@ namespace Chiro.Gap.Workers
 			// hiet nieuwe AD-nummer gewoon met het bestaande.
 
 			GelieerdePersoon origineel = _gelieerdePersonenDao.Ophalen(gp.ID, e => e.Persoon);
-			if (origineel.Persoon.AdNummer == gp.Persoon.AdNummer)
+			if (origineel.Persoon.AdNummer != gp.Persoon.AdNummer)
 			{
-				return _gelieerdePersonenDao.Bewaren(gp, e => e.Persoon, e => e.PersoonsAdres, e => e.Persoon.PersoonsAdres.First());
+				throw new InvalidOperationException(Properties.Resources.AdNummerNietWijzigen);				
 			}
-			else
-			{
-				throw new InvalidOperationException(Properties.Resources.AdNummerNietWijzigen);
-			}
+
+			return _gelieerdePersonenDao.Bewaren(gp, e => e.Persoon, e => e.PersoonsAdres, e => e.Persoon.PersoonsAdres.First());
 		}
 
 		/// <summary>
@@ -266,14 +264,12 @@ namespace Chiro.Gap.Workers
 		/// <remarks>Opgelet! Dit kan een zware query zijn!</remarks>
 		public IList<GelieerdePersoon> AllenOphalen(int groepID, PersoonsExtras extras)
 		{
-			if (_autorisatieMgr.IsGavGroep(groepID))
-			{
-				return _gelieerdePersonenDao.AllenOphalen(groepID, ExtrasNaarLambdas(extras));
-			}
-			else
+			if (!_autorisatieMgr.IsGavGroep(groepID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
+
+			return _gelieerdePersonenDao.AllenOphalen(groepID, ExtrasNaarLambdas(extras));
 		}
 
 		/// <summary>
@@ -305,14 +301,15 @@ namespace Chiro.Gap.Workers
 		/// <param name="groepID">GroepID gevraagde groep</param>
 		/// <param name="pagina">Paginanummer (>=1)</param>
 		/// <param name="paginaGrootte">Aantal personen per pagina</param>
+		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <param name="aantalTotaal">Outputparameter voor totaal aantal
 		/// personen in de groep</param>
 		/// <returns>Lijst met GelieerdePersonen</returns>
-		public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
+		public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal)
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				return _gelieerdePersonenDao.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
+				return _gelieerdePersonenDao.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, sortering, out aantalTotaal);
 			}
 			else
 			{
@@ -327,34 +324,21 @@ namespace Chiro.Gap.Workers
 		/// <param name="categorieID">ID gevraagde categorie</param>
 		/// <param name="pagina">Paginanummer (minstens 1)</param>
 		/// <param name="paginaGrootte">Aantal personen per pagina</param>
+		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
 		/// <param name="metHuidigLidInfo">Als <c>true</c> worden ook eventuele lidobjecten *van dit werkjaar* 
 		/// mee opgehaald.</param>
 		/// <param name="aantalTotaal">Outputparameter voor totaal aantal
 		/// personen in de groep</param>
 		/// <returns>Lijst met GelieerdePersonen</returns>
-		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(
-			int categorieID, 
-			int pagina, 
-			int paginaGrootte, 
-			PersoonsExtras extras,
-			bool metHuidigLidInfo,
-			out int aantalTotaal)
+		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, PersoonsExtras extras, bool metHuidigLidInfo, out int aantalTotaal)
 		{
-			if (_autorisatieMgr.IsGavCategorie(categorieID))
-			{
-				return _gelieerdePersonenDao.PaginaOphalenUitCategorie(
-					categorieID, 
-					pagina, 
-					paginaGrootte, 
-					metHuidigLidInfo,
-					out aantalTotaal,
-					ExtrasNaarLambdas(extras));
-			}
-			else
+			if (!_autorisatieMgr.IsGavCategorie(categorieID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
+				
 			}
+			return _gelieerdePersonenDao.PaginaOphalenUitCategorie(categorieID, pagina, paginaGrootte, sortering, metHuidigLidInfo, out aantalTotaal, ExtrasNaarLambdas(extras));
 		}
 
 		/// <summary>

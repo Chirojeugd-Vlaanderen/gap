@@ -203,24 +203,24 @@ namespace Chiro.Gap.Services
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonLidInfo> PaginaOphalen(int groepsWerkJaarID)
+		public IList<PersoonLidInfo> PaginaOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
 		{
-			var result = _ledenMgr.PaginaOphalen(groepsWerkJaarID);
+			var result = _ledenMgr.PaginaOphalen(groepsWerkJaarID, sortering);
 			return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
 		}
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonLidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID)
+		public IList<PersoonLidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering)
 		{
-			IList<Lid> result = _ledenMgr.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID);
+			IList<Lid> result = _ledenMgr.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID, sortering);
 			return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
 		}
 
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonLidInfo> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functiID)
+		public IList<PersoonLidInfo> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functiID, LedenSorteringsEnum sortering)
 		{
-			IList<Lid> result = _ledenMgr.PaginaOphalenVolgensFunctie(groepsWerkJaarID, functiID);
+			IList<Lid> result = _ledenMgr.PaginaOphalenVolgensFunctie(groepsWerkJaarID, functiID, sortering);
 			return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
 		}
 

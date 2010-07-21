@@ -8,7 +8,7 @@ Pagina: <%= Html.WerkJaarLinks(
         				//TODO momentele wordt er altijd terug naar de volledige lijst gegaan, dit kan nog aangepast worden door een huidigeafdeling en een huidigefunctie bij te houden.
                         // (overigens is het niet zeker dat de huidig geselecteerde afdeling ook in het andere werkjaar
                         // beschikbaar is.
-				wj => Url.Action("AfdelingsLijst", new { Controller = "Leden", groepsWerkJaarID = wj.ID/*, afdID = Model.HuidigeAfdeling*/ }))%>
+				wj => Url.Action("AfdelingsLijst", new { Controller = "Leden", groepsWerkJaarID = wj.ID, sortering = Model.GekozenSortering/*, afdID = Model.HuidigeAfdeling*/ }))%>
 </div>
 
 <table class="overzicht">
@@ -34,12 +34,12 @@ Pagina: <%= Html.WerkJaarLinks(
     <td><%= pl.LidInfo.LidgeldBetaald?"Ja":"Nee"%></td>
     <td><% foreach (var a in pl.LidInfo.AfdelingIdLijst) 
            { %>
-               <%=Html.ActionLink(Html.Encode(ViewData.Model.AfdelingsInfoDictionary[a].AfdelingAfkorting), "AfdelingsLijst", new { Controller = "Leden", afdID = a, groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar }, new { title = ViewData.Model.AfdelingsInfoDictionary[a].AfdelingNaam })%>
+               <%=Html.ActionLink(Html.Encode(ViewData.Model.AfdelingsInfoDictionary[a].AfdelingAfkorting), "AfdelingsLijst", new { Controller = "Leden", afdID = a, groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar , sortering = Model.GekozenSortering}, new { title = ViewData.Model.AfdelingsInfoDictionary[a].AfdelingNaam })%>
         <% } %>
     </td>
     <td><% foreach (var a in pl.LidInfo.Functies) 
            { %>
-               <%=Html.ActionLink(Html.Encode(ViewData.Model.FunctieInfoDictionary[a.ID].Code), "FunctieLijst", new { Controller = "Leden", funcID = a.ID, groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar }, new { title = ViewData.Model.FunctieInfoDictionary[a.ID].Naam })%>
+               <%=Html.ActionLink(Html.Encode(ViewData.Model.FunctieInfoDictionary[a.ID].Code), "FunctieLijst", new { Controller = "Leden", funcID = a.ID, groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering=Model.GekozenSortering }, new { title = ViewData.Model.FunctieInfoDictionary[a.ID].Naam })%>
         <% } %>
     </td>
     <td>

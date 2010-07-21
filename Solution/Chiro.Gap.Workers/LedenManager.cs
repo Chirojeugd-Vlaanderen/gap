@@ -248,15 +248,14 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
 		/// <returns>Lijst met alle leden uit het gevraagde groepswerkjaar.</returns>
-		public IList<Lid> PaginaOphalen(int groepsWerkJaarID)
+		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
 		{
 			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			var list = _daos.LedenDao.AllesOphalen(groepsWerkJaarID);
-			list = list.OrderBy(e => e.GelieerdePersoon.Persoon.Naam).ThenBy(e => e.GelieerdePersoon.Persoon.VoorNaam).ToList();
+			var list = _daos.LedenDao.AllesOphalen(groepsWerkJaarID, sortering);
 			return list;
 		}
 
@@ -266,14 +265,14 @@ namespace Chiro.Gap.Workers
 		/// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
 		/// <param name="afdelingsID">ID gevraagde afdeling</param>
 		/// <returns>De 'pagina' (collectie) met leden</returns>
-		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID)
+		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering)
 		{
 			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 			
-			return _daos.LedenDao.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID);
+			return _daos.LedenDao.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID, sortering);
 		}
 
 		/// <summary>
@@ -282,14 +281,14 @@ namespace Chiro.Gap.Workers
 		/// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
 		/// <param name="functieID">ID gevraagde functie</param>
 		/// <returns></returns>
-		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID)
+		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LedenSorteringsEnum sortering)
 		{
 			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			return _daos.LedenDao.PaginaOphalenVolgensFunctie(groepsWerkJaarID, functieID);
+			return _daos.LedenDao.PaginaOphalenVolgensFunctie(groepsWerkJaarID, functieID, sortering);
 		}
 
 		/// <summary>

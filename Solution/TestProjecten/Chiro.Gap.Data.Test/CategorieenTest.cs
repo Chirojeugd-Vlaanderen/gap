@@ -6,6 +6,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using Chiro.Gap.Domain;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Chiro.Cdf.Data.Entity;
@@ -142,7 +145,7 @@ namespace Chiro.Gap.Data.Test
 			// act
 			var pagina = _gpdao.PaginaOphalenUitCategorie(
 				TestInfo.CATEGORIEID, 
-				1, 10, 
+				1, 10, PersoonSorteringsEnum.Naam,
 				false,
 				out aantalTotaal);
 
@@ -162,7 +165,7 @@ namespace Chiro.Gap.Data.Test
 			// act
 			var pagina = _gpdao.PaginaOphalenUitCategorie(
 				TestInfo.CATEGORIE2ID,
-				1, 10,
+				1, 10, PersoonSorteringsEnum.Naam,
 				false,
 				out aantalTotaal,
 				gp => gp.Lid);

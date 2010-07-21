@@ -29,7 +29,7 @@
 <%using (Html.BeginForm("ToepassenOpSelectie", "Personen")){ %>
 
 <div class="pager">
-Pagina's <%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.AantalPaginas, i => Url.Action("List", new { Controller="Personen", page = i })) %>
+Pagina's <%= Html.PagerLinks(ViewData.Model.HuidigePagina, ViewData.Model.AantalPaginas, i => Url.Action("List", new { Controller="Personen", page = i, sortering=Model.Sortering })) %>
 <br/>
 Totaal aantal personen: <%= Model.Totaal %>  |  Maak een selectie en 
 
@@ -74,6 +74,11 @@ Totaal aantal personen: <%= Model.Totaal %>  |  Maak een selectie en
 				<%=Html.ActionLink("inschrijven als leiding", "LeidingMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
 		<% } %>
         <%=Html.ActionLink("zus/broer maken", "Kloon", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
+    </td>
+    <td><% foreach (var c in p.CategorieLijst) 
+           { %>
+               <%=Html.ActionLink(Html.Encode(c.Code), "List", new { Controller = "Personen", id = c.ID, sortering=Model.Sortering }, new { title = c.Naam } )%>
+        <% } %>
     </td>
 </tr>
 <% } %>

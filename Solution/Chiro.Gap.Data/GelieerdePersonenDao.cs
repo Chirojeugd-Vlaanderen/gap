@@ -14,6 +14,7 @@ using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Data.Ef
 {
@@ -68,12 +69,59 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
+		/// Sorteert een lijst van personen. Eerst volgens de gegeven ordening, dan steeds op naam.
+		/// 
+		/// De sortering is vrij complex om met meerdere opties rekening te houden.
+		/// 
+		/// Steeds wordt eerst gesorteerd op lege velden/gevulde velden, de lege komen laatst.
+		/// Dan wordt gesorteerd op "sortering"
+		///		Naam => Naam+Voornaam
+		///		Categorie => Naam van de categorie die eerst in de lijst staat #TODO dit is mss niet optimaal
+		///		Leeftijd => Op leeftijd, jongste eerst
+		/// Dan worden overblijvende gelijke records op naam+voornaam gesorteerd
+		/// </summary>
+		/// <param name="lijst">De te sorteren lijst</param>
+		/// <param name="sortering">Hoe te sorteren</param>
+		/// <returns>De gesorteerde lijst!!! In place sorteren lijkt niet mogelijk!!!</returns>
+		private static IEnumerable<GelieerdePersoon> SorteerLijst(IEnumerable<GelieerdePersoon> gpQuery, PersoonSorteringsEnum sortering)
+		{
+			switch (sortering)
+			{
+				case PersoonSorteringsEnum.Naam:
+					return gpQuery
+						.OrderBy(gp => String.Format(
+									"{0} {1}",
+									gp.Persoon.Naam,
+									gp.Persoon.VoorNaam));
+				case PersoonSorteringsEnum.Leeftijd:
+					return gpQuery
+						.OrderBy(gp => gp.Persoon.GeboorteDatum == null)
+						.ThenByDescending(gp => gp.Persoon.GeboorteDatum)
+						.ThenBy(gp => String.Format(
+									"{0} {1}",
+									gp.Persoon.Naam,
+									gp.Persoon.VoorNaam));
+				case PersoonSorteringsEnum.Categorie:
+					return gpQuery
+						.OrderBy(gp => gp.Categorie.FirstOrDefault()== null)
+						.ThenBy(gp => (gp.Categorie.FirstOrDefault() == null ? null : gp.Categorie.First().Naam))
+						.ThenBy(gp => String.Format(
+									"{0} {1}",
+									gp.Persoon.Naam,
+									gp.Persoon.VoorNaam));
+				default: //Stom dat C# niet kan detecteren dat alle cases gecontroleerd zijn?
+					throw new Exception();
+			}
+		}
+
+		/// <summary>
 		/// Haal een pagina op met gelieerde personen van een groep, inclusief hun categorieën en relevante 
 		/// lidinfo voor het recentste werkjaar.
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvan gelieerde personen op te halen zijn</param>
 		/// <param name="pagina">Gevraagde pagina</param>
 		/// <param name="paginaGrootte">Aantal personen per pagina</param>
+		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <param name="aantalTotaal">Out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
 		/// zijn. </param>
 		/// <returns>De gevraagde lijst gelieerde personen</returns>
@@ -81,6 +129,7 @@ namespace Chiro.Gap.Data.Ef
 			int groepID,
 			int pagina,
 			int paginaGrootte,
+			PersoonSorteringsEnum sortering,
 			out int aantalTotaal)
 		{
 			int groepsWerkJaarID;
@@ -99,6 +148,7 @@ namespace Chiro.Gap.Data.Ef
 				groepsWerkJaarID,
 				pagina,
 				paginaGrootte,
+				sortering, 
 				out aantalTotaal);
 		}
 
@@ -111,6 +161,7 @@ namespace Chiro.Gap.Data.Ef
 		/// lidinfo.</param>
 		/// <param name="pagina">Gevraagde pagina</param>
 		/// <param name="paginaGrootte">Aantal personen per pagina</param>
+		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <param name="aantalTotaal">Out-parameter die weergeeft hoeveel gelieerde personen er in totaal 
 		/// zijn. </param>
 		/// <returns>De gevraagde lijst gelieerde personen</returns>
@@ -119,6 +170,7 @@ namespace Chiro.Gap.Data.Ef
 			int groepsWerkJaarID,
 			int pagina,
 			int paginaGrootte,
+			PersoonSorteringsEnum sortering, 
 			out int aantalTotaal)
 		{
 			IList<GelieerdePersoon> lijst;
@@ -133,13 +185,9 @@ namespace Chiro.Gap.Data.Ef
 							   select grp).FirstOrDefault().GelieerdePersoon;
 
 				// Selecteer gewenste pagina, en bepaal totaal aantal personen
-				lijst = gpQuery
-						.OrderBy(gp => String.Format(
-							"{0} {1}",
-							gp.Persoon.Naam,
-							gp.Persoon.VoorNaam))
-						.Skip((pagina - 1) * paginaGrootte)
-						.Take(paginaGrootte).ToList();
+
+				lijst = SorteerLijst(gpQuery, sortering).Paging(pagina, paginaGrootte).ToList();
+
 				aantalTotaal = gpQuery.Count();
 
 				// De gelieerde personen in 'lijst' zijn geattacht aan de objectcontext.  Als nu
@@ -147,12 +195,13 @@ namespace Chiro.Gap.Data.Ef
 				// entity framework die automagisch koppelen aan de gelieerde personen in 'lijst'.
 
 				IList<int> relevanteGpIDs = (from gp in lijst select gp.ID).ToList();
-				var huidigeLedenUitLijst = (from ld in db.Lid.Include("GelieerdePersoon")
-								.Where(Utility.BuildContainsExpression<Lid, int>(
-									l => l.GelieerdePersoon.ID,
-									relevanteGpIDs))
-											where ld.GroepsWerkJaar.ID == groepsWerkJaarID
-											select ld).ToList();
+				(from ld in db.Lid.Include("GelieerdePersoon")
+						.Where(Utility.BuildContainsExpression<Lid, int>(
+							l => l.GelieerdePersoon.ID,
+							relevanteGpIDs))
+				 where ld.GroepsWerkJaar.ID == groepsWerkJaarID
+				 select ld
+				).ToList();
 			}
 
 			Utility.DetachObjectGraph(lijst);
@@ -166,18 +215,13 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="categorieID">ID van de gevraagde categorie</param>
 		/// <param name="pagina">Gevraagde pagina</param>
 		/// <param name="paginaGrootte">Grootte van de pagina</param>
+		/// <param name="sortering">Sortering van de lijst</param>
 		/// <param name="paths">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
 		/// <param name="metHuidigLidInfo">Als <c>true</c> worden ook eventuele lidobjecten *van dit werkjaar* 
 		/// mee opgehaald.</param>
 		/// <param name="aantalTotaal">Outputparameter die het totaal aantal personen in de categorie weergeeft</param>
 		/// <returns>Lijst gelieerde personen</returns>
-		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(
-			int categorieID, 
-			int pagina, 
-			int paginaGrootte,
-			bool metHuidigLidInfo,
-			out int aantalTotaal,
-			params Expression<Func<GelieerdePersoon, object>>[] paths)
+		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, bool metHuidigLidInfo, out int aantalTotaal, params Expression<Func<GelieerdePersoon, object>>[] paths)
 		{
 			Groep g;
 			IList<GelieerdePersoon> lijst;
@@ -204,9 +248,8 @@ namespace Chiro.Gap.Data.Ef
 				// Pas Extra's toe
 
 				// Sorteer ze en bepaal totaal aantal personen
-				lijst = queryMetExtras.OrderBy(e => e.Persoon.Naam)
-						  .Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte)
-						  .ToList();
+				lijst = SorteerLijst(queryMetExtras, sortering).Paging(pagina, paginaGrootte).ToList();
+
 				aantalTotaal = query.Count();
 
 				// haal indien gevraagd huidige lidobjecten mee op
@@ -223,7 +266,7 @@ namespace Chiro.Gap.Data.Ef
 									from w in db.GroepsWerkJaar
 									where w.Groep.ID == g.ID
 									orderby w.WerkJaar descending
-									select w).FirstOrDefault<GroepsWerkJaar>().WerkJaar;
+									select w).FirstOrDefault().WerkJaar;
 
 					// Lijst is geattacht aan de objectcontext.  Als we nu ook de lidojecten van de 
 					// gelieerdepersonen in de lijst ophalen voor het gegeven werkjaar, dan worden
@@ -234,11 +277,10 @@ namespace Chiro.Gap.Data.Ef
 
 					// Selecteer nu alle leden van huidig werkjaar met relevant gelieerdePersoonID
 
-					var huidigeLedenUitlijst = (from l in db.Lid.Include(ld => ld.GelieerdePersoon)
-					                            	.Where(Utility.BuildContainsExpression<Lid, int>(ld => ld.GelieerdePersoon.ID,
-					                            	                                                 relevanteGpIDs))
-					                            where l.GroepsWerkJaar.WerkJaar == huidigWj
-					                            select l).ToList();
+					(from l in db.Lid.Include(ld => ld.GelieerdePersoon)
+						.Where(Utility.BuildContainsExpression<Lid, int>(ld => ld.GelieerdePersoon.ID, relevanteGpIDs))
+							where l.GroepsWerkJaar.WerkJaar == huidigWj
+							select l).ToList();
 
 					// !LET OP! Bovenstaande variabele is weliswaar never used, maar is wel nodig
 					// om de huidige leden in de objectcontext te laden! Laten staan dus!

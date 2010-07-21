@@ -174,12 +174,13 @@ namespace Chiro.Gap.Services
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal)
+		public IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal)
 		{
 			var gelieerdePersonen = _gpMgr.PaginaOphalenUitCategorie(
 				categorieID, 
 				pagina, 
 				paginaGrootte, 
+				sortering,
 				PersoonsExtras.Categorieen,
 				true,
 				out aantalTotaal);
@@ -190,14 +191,13 @@ namespace Chiro.Gap.Services
 		// je aangemeld bent, op je lokale computer in de groep CgUsers zit.
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonDetail> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
+		public IList<PersoonDetail> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal)
 		{
-			var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, out aantalTotaal);
+			var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, sortering, out aantalTotaal);
 			var result = Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
 
 			/*
 			 * TODO dit staat mss niet op de beste plek
-			 * TODO: hoort deze logica niet eerder thuis in business?
 			 * Ophalen afdelingsjaren in het huidige werkjaar (TODO niet als een vorig werkjaar bekeken wordt)
 			 * Voor elk persoonsdetail kijken of iemand die nog geen lid is, in een afdeling zou passen
 			 * als dit het geval is, kanlidworden op true zetten.
@@ -206,18 +206,17 @@ namespace Chiro.Gap.Services
 			 * TODO dubbele code in detailsophalen
 			 */
 			GroepsWerkJaar gwj = _gwjMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
-			foreach (var p in result) 
+			foreach (var p in result)
 			{
-				if(p.GeboorteDatum == null)
+				if (p.GeboorteDatum == null)
 				{
 					continue;
 				}
-
 				int geboortejaar = p.GeboorteDatum.Value.Year;
 				var afd = (from a in gwj.AfdelingsJaar
-							where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
-							select a).FirstOrDefault();
-				if(afd != null)
+						   where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
+						   select a).FirstOrDefault();
+				if (afd != null)
 				{
 					p.KanLidWorden = true;
 				}
@@ -302,8 +301,9 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		/// <param name="categorieID">Indien verschillend van 0, worden alle personen uit de categore met
 		/// gegeven CategoreID opgehaald.  Anders alle personen tout court.</param>
+		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <returns>Lijst 'PersoonOverzicht'-objecten van alle gelieerde personen uit de categorie</returns>
-		public IEnumerable<PersoonOverzicht> OphalenUitCategorie(int categorieID)
+		public IEnumerable<PersoonOverzicht> AllenOphalenUitCategorie(int categorieID, PersoonSorteringsEnum sortering)
 		{
 			int totaal;
 
@@ -311,6 +311,7 @@ namespace Chiro.Gap.Services
 				categorieID, 
 				1, 
 				int.MaxValue, 
+				sortering, 
 				PersoonsExtras.Adressen|PersoonsExtras.Communicatie,
 				false,
 				out totaal);
@@ -322,10 +323,14 @@ namespace Chiro.Gap.Services
 		/// Haalt gegevens op van alle personen uit groep met ID <paramref name="groepID"/>.
 		/// </summary>
 		/// <param name="groepID">ID van de groep waaruit de personen gehaald moeten worden</param>
+		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
-		public IEnumerable<PersoonOverzicht> OphalenUitGroep(int groepID)
+		public IEnumerable<PersoonOverzicht> AllenOphalenUitGroep(int groepID, PersoonSorteringsEnum sortering)
 		{
 			var gelieerdePersonen = _gpMgr.AllenOphalen(groepID, PersoonsExtras.Adressen|PersoonsExtras.Communicatie);
+			//TODO SORTERING TOEPASSEN!!!
+			//TODO in gpmgr: PaginaOphalen bevat nog geen sortering en geen extras
+			//TODO in gpmgr: PaginaOphalen bevat nog geen extras
 			return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);
 		}
 

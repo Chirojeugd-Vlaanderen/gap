@@ -19,7 +19,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 <ul id="acties">
 <li>
-	<%=Html.ActionLink("Alle leden bekijken", "Lijst", new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar })%>
+	<%=Html.ActionLink("Alle leden bekijken", "Lijst", new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering=Model.GekozenSortering })%>
 </li>
 <li>
 	<%using (Html.BeginForm("AfdelingsLijst", "Leden")){ %>
@@ -31,6 +31,7 @@
 		</select>
 		<input id="kiesAfdeling" type="submit" value="Afdeling bekijken"/>
 		<%=Html.HiddenFor(s => s.IDGetoondGroepsWerkJaar)%>
+		<%=Html.HiddenFor(s => s.GekozenSortering)%>
 	<%} %>
 </li>
 <li>
@@ -43,8 +44,12 @@
 		</select>
 		<input id="kiesFunctie" type="submit" value="Functie bekijken"/>
 		<%=Html.HiddenFor(s => s.IDGetoondGroepsWerkJaar)%>
+		<%=Html.HiddenFor(s => s.GekozenSortering)%>
 	<%} %>
 </li>
+    <li><%= Html.ActionLink("Sorteren op naam", "Lijst", new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Chiro.Gap.Domain.LedenSorteringsEnum.Naam })%></li>
+    <li><%= Html.ActionLink("Sorteren op leeftijd", "Lijst", new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Chiro.Gap.Domain.LedenSorteringsEnum.Leeftijd })%></li>
+    <li><%= Html.ActionLink("Sorteren op afdeling", "Lijst", new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Chiro.Gap.Domain.LedenSorteringsEnum.Afdeling })%></li>
 </ul>
 
 <% Html.RenderPartial("LedenLijstControl"); %>

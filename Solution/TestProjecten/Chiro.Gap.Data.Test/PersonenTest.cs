@@ -10,6 +10,7 @@ using Chiro.Gap.Orm.DataInterfaces;
 using System.IO;
 using System.Runtime.Serialization;
 using Chiro.Gap.TestDbInfo;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Data.Test
 {
@@ -227,7 +228,7 @@ namespace Chiro.Gap.Data.Test
 
 			// Haal 30 personen op, daar zitten allicht leden bij
 			var lijst = dao.PaginaOphalenMetLidInfo(
-				TestInfo.GROEPID, 1, 30, out totaal);
+				TestInfo.GROEPID, 1, 30, PersoonSorteringsEnum.Naam, out totaal);
 
 			using (MemoryStream stream = new MemoryStream())
 			{

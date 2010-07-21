@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -35,5 +36,6 @@ namespace Chiro.Gap.WebApp.Models
 
 		public int GekozenAfdeling { get; set; }
 		public int GekozenFunctie { get; set; }
+		public LedenSorteringsEnum GekozenSortering { get; set; }
 	}
 }

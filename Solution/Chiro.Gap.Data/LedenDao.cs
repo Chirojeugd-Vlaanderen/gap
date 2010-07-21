@@ -11,11 +11,11 @@ using System.Linq.Expressions;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
-
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Domain;
 
-namespace Chiro.Gap.Data.Ef
+namespace Chiro.Gap.Data
 {
 	/// <summary>
 	/// Gegevenstoegangsobject voor leden
@@ -67,13 +67,117 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
+		/// Sorteert een lijst van leiding. Eerst volgens de gegeven ordening, dan steeds op naam.
+		/// 
+		/// De sortering is vrij complex om met meerdere opties rekening te houden.
+		/// 
+		/// Steeds wordt eerst gesorteerd op lege velden/gevulde velden, de lege komen laatst.
+		/// Dan wordt gesorteerd op "sortering"
+		///		Naam => Naam+Voornaam
+		///		Afdeling => Naam van de afdeling van het afdelingsjaar dat eerst in de lijst staat #TODO dit is mss niet optimaal
+		///		Leeftijd => Op leeftijd, jongste eerst
+		/// Dan worden overblijvende gelijke records op naam+voornaam gesorteerd
+		/// </summary>
+		/// <param name="lijst">De te sorteren lijst</param>
+		/// <param name="sortering">Hoe te sorteren</param>
+		/// <returns>De gesorteerde lijst!!! In place sorteren lijkt niet mogelijk!!!</returns>
+		private static List<Leiding> SorteerLijst(IEnumerable<Leiding> lijst, LedenSorteringsEnum sortering)
+		{
+			IEnumerable<Leiding> lijst2;
+			switch (sortering)
+			{
+				case LedenSorteringsEnum.Naam:
+					lijst2 = lijst.OrderBy(gp => String.Format(
+									"{0} {1}",
+									gp.GelieerdePersoon.Persoon.Naam,
+									gp.GelieerdePersoon.Persoon.VoorNaam));
+					break;
+				case LedenSorteringsEnum.Leeftijd:
+					lijst2 = lijst
+						.OrderBy(gp => gp.GelieerdePersoon.Persoon.GeboorteDatum == null)
+						.ThenByDescending(gp => gp.GelieerdePersoon.Persoon.GeboorteDatum)
+						.ThenBy(gp => String.Format(
+							"{0} {1}",
+							gp.GelieerdePersoon.Persoon.Naam,
+							gp.GelieerdePersoon.Persoon.VoorNaam));
+					break;
+				case LedenSorteringsEnum.Afdeling:
+					lijst2 = lijst
+						.OrderBy(gp => gp.AfdelingsJaar.FirstOrDefault() == null)
+						.ThenBy(
+							gp => (gp.AfdelingsJaar.FirstOrDefault() == null ? null : gp.AfdelingsJaar.First().Afdeling.Naam))
+						.ThenBy(gp => String.Format(
+							"{0} {1}",
+							gp.GelieerdePersoon.Persoon.Naam,
+							gp.GelieerdePersoon.Persoon.VoorNaam));
+					break;
+				default: //Stom dat C# niet kan detecteren dat alle cases gecontroleerd zijn?
+					lijst2 = new List<Leiding>();
+					break;
+			}
+			return lijst2.ToList();
+		}
+
+		/// <summary>
+		/// Sorteert een lijst van kinderen. Eerst volgens de gegeven ordening, dan steeds op naam.
+		/// 
+		/// De sortering is vrij complex om met meerdere opties rekening te houden.
+		/// 
+		/// Steeds wordt eerst gesorteerd op lege velden/gevulde velden, de lege komen laatst.
+		/// Dan wordt gesorteerd op "sortering"
+		///		Naam => Naam+Voornaam
+		///		Afdeling => Naam van de afdeling van het afdelingsjaar dat eerst in de lijst staat #TODO dit is mss niet optimaal
+		///		Leeftijd => Op leeftijd, jongste eerst
+		/// Dan worden overblijvende gelijke records op naam+voornaam gesorteerd
+		/// </summary>
+		/// <param name="lijst">De te sorteren lijst</param>
+		/// <param name="sortering">Hoe te sorteren</param>
+		/// <returns>De gesorteerde lijst!!! In place sorteren lijkt niet mogelijk!!!</returns>
+		private static List<Kind> SorteerLijst(IEnumerable<Kind> lijst, LedenSorteringsEnum sortering)
+		{
+			IEnumerable<Kind> lijst2;
+			switch (sortering)
+			{
+				case LedenSorteringsEnum.Naam:
+					lijst2 = lijst.OrderBy(gp => String.Format(
+									"{0} {1}",
+									gp.GelieerdePersoon.Persoon.Naam,
+									gp.GelieerdePersoon.Persoon.VoorNaam));
+					break;
+				case LedenSorteringsEnum.Leeftijd:
+					lijst2 = lijst
+						.OrderBy(gp => gp.GelieerdePersoon.Persoon.GeboorteDatum == null)
+						.ThenByDescending(gp => gp.GelieerdePersoon.Persoon.GeboorteDatum)
+						.ThenBy(gp => String.Format(
+							"{0} {1}",
+							gp.GelieerdePersoon.Persoon.Naam,
+							gp.GelieerdePersoon.Persoon.VoorNaam));
+					break;
+				case LedenSorteringsEnum.Afdeling:
+					lijst2 = lijst
+						.OrderBy(gp => gp.AfdelingsJaar == null)
+						.ThenBy(gp => (gp.AfdelingsJaar.Afdeling.Naam))
+						.ThenBy(gp => String.Format(
+							"{0} {1}",
+							gp.GelieerdePersoon.Persoon.Naam,
+							gp.GelieerdePersoon.Persoon.VoorNaam));
+					break;
+				default: //Stom dat C# niet kan detecteren dat alle cases gecontroleerd zijn?
+					lijst2 = lijst;
+					break;
+			}
+			return lijst2.ToList();
+		}
+
+		/// <summary>
 		/// Een lijst ophalen van alle leden voor het opgegeven groepswerkjaar
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+		/// <param name="sortering"></param>
 		/// <returns>Een lijst alle leden voor het opgegeven groepswerkjaar</returns>
-		public IList<Lid> AllesOphalen(int groepsWerkJaarID)
+		public IList<Lid> AllesOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
 		{
-			IList<Lid> lijst;
+			var lijst = new List<Lid>();
 
 			using (var db = new ChiroGroepEntities())
 			{
@@ -83,23 +187,19 @@ namespace Chiro.Gap.Data.Ef
 					from l in db.Lid.OfType<Kind>().Include("GroepsWerkJaar").Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling").Include("Functie")
 					where l.GroepsWerkJaar.ID == groepsWerkJaarID
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-					select l).ToList<Kind>();
+					select l).ToList();
 
 				var leiding = (
 					from l in db.Lid.OfType<Leiding>().Include("GroepsWerkJaar").Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling").Include("Functie")
 					where l.GroepsWerkJaar.ID == groepsWerkJaarID
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-					select l).ToList<Leiding>();
+					select l).ToList();
 
-				lijst = new List<Lid>();
-				foreach (Lid lid in kinderen)
-				{
-					lijst.Add(lid);
-				}
-				foreach (Lid lid in leiding)
-				{
-					lijst.Add(lid);
-				}
+				kinderen = SorteerLijst(kinderen, sortering);
+				leiding = SorteerLijst(leiding, sortering);
+
+				lijst.AddRange(kinderen.Cast<Lid>());
+				lijst.AddRange(leiding.Cast<Lid>());
 			}
 
 			return lijst;
@@ -109,14 +209,15 @@ namespace Chiro.Gap.Data.Ef
 		/// 
 		/// </summary>
 		/// <param name="groepsWerkJaarID"></param>
+		/// <param name="sortering"></param>
 		/// <returns></returns>
 		/// <remarks>
 		/// Pagineren gebeurt per werkjaar.
 		/// De parameters pagina, paginaGrootte en aantalTotaal zijn niet meer nodig.
 		/// </remarks>
-		public IList<Lid> PaginaOphalen(int groepsWerkJaarID)
+		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
 		{
-			IList<Lid> lijst = new List<Lid>();
+			var lijst = new List<Lid>();
 
 			using (var db = new ChiroGroepEntities())
 			{
@@ -126,23 +227,19 @@ namespace Chiro.Gap.Data.Ef
 					from l in db.Lid.OfType<Kind>().Include("GroepsWerkJaar").Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling").Include("Functie")
 					where l.GroepsWerkJaar.ID == groepsWerkJaarID
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-					select l).ToList<Kind>();
+					select l).ToList();
 
 				var leiding = (
 					from l in db.Lid.OfType<Leiding>().Include("GroepsWerkJaar").Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling").Include("Functie")
 					where l.GroepsWerkJaar.ID == groepsWerkJaarID
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-					select l).ToList<Leiding>();
+					select l).ToList();
 
-				// TODO: onderstaande moet eleganter kunnen.
-				foreach (Lid lid in kinderen)
-				{
-					lijst.Add(lid);
-				}
-				foreach (Lid lid in leiding)
-				{
-					lijst.Add(lid);
-				}
+				kinderen = SorteerLijst(kinderen, sortering);
+				leiding = SorteerLijst(leiding, sortering);
+
+				lijst.AddRange(kinderen.Cast<Lid>());
+				lijst.AddRange(leiding.Cast<Lid>());
 			}
 
 			return lijst;
@@ -153,11 +250,12 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		/// <param name="groepsWerkJaarID"></param>
 		/// <param name="afdelingsID"></param>
+		/// <param name="sortering"></param>
 		/// <returns></returns>
 		/// <remarks>
 		/// Pagineren gebeurt per werkjaar.
 		/// </remarks>
-		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID)
+		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering)
 		{
 			IList<Lid> lijst;
 
@@ -171,7 +269,7 @@ namespace Chiro.Gap.Data.Ef
 						&&
 					  l.AfdelingsJaar.Afdeling.ID == afdelingsID
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-					select l).ToList<Kind>();
+					select l).ToList();
 
 				var leiding = (
 					from l in db.Lid.OfType<Leiding>().Include("GroepsWerkJaar").Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling").Include("Functie")
@@ -179,7 +277,10 @@ namespace Chiro.Gap.Data.Ef
 						&&
 					  l.AfdelingsJaar.Any(x => x.Afdeling.ID == afdelingsID)
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-					select l).ToList<Leiding>();
+					select l).ToList();
+
+				kinderen = SorteerLijst(kinderen, sortering);
+				leiding = SorteerLijst(leiding, sortering);
 
 				lijst = new List<Lid>();
 				foreach (Kind lid in kinderen)
@@ -200,8 +301,9 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		/// <param name="groepsWerkJaarID"></param>
 		/// <param name="functieID"></param>
+		/// <param name="sortering"></param>
 		/// <returns></returns>
-		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID)
+		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LedenSorteringsEnum sortering)
 		{
 			IList<Lid> lijst;
 
@@ -224,6 +326,9 @@ namespace Chiro.Gap.Data.Ef
 					  l.Functie.Any(e => e.ID == functieID)
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 					select l).ToList();
+
+				kinderen = SorteerLijst(kinderen, sortering);
+				leiding = SorteerLijst(leiding, sortering);
 
 				lijst = new List<Lid>();
 				foreach (Kind lid in kinderen)
@@ -253,21 +358,21 @@ namespace Chiro.Gap.Data.Ef
 				var lid = (
 			from t in db.Lid.Include("GelieerdePersoon.Persoon").Include("GroepsWerkJaar.AfdelingsJaar.Afdeling").Include("Functie")
 			where t.ID == lidID
-			select t).FirstOrDefault<Lid>();
+			select t).FirstOrDefault();
 
 				if (lid is Kind)
 				{
 					return (
 						from t in db.Lid.OfType<Kind>().Include("GelieerdePersoon.Persoon").Include("GroepsWerkJaar.AfdelingsJaar.Afdeling").Include("AfdelingsJaar.Afdeling").Include("Functie")
 						where t.ID == lidID
-						select t).FirstOrDefault<Kind>();
+						select t).FirstOrDefault();
 				}
-				else if (lid is Leiding)
+				if (lid is Leiding)
 				{
 					return (
 						from t in db.Lid.OfType<Leiding>().Include("GelieerdePersoon.Persoon").Include("GroepsWerkJaar.AfdelingsJaar.Afdeling").Include("AfdelingsJaar.Afdeling").Include("Functie")
 						where t.ID == lidID
-						select t).FirstOrDefault<Leiding>();
+						select t).FirstOrDefault();
 				}
 				return lid;
 			}
@@ -348,7 +453,7 @@ namespace Chiro.Gap.Data.Ef
 					where t.GelieerdePersoon.ID == gelieerdePersoonID
 							&&
 							t.GroepsWerkJaar.ID == groepsWerkJaarID
-					select t).FirstOrDefault<Lid>();
+					select t).FirstOrDefault();
 
 				if (lid != null)
 				{
@@ -363,9 +468,9 @@ namespace Chiro.Gap.Data.Ef
 								.Include("AfdelingsJaar.Afdeling")
 								.Include(knd => knd.Functie)
 							where t.ID == lidID
-							select t).FirstOrDefault<Kind>();
+							select t).FirstOrDefault();
 					}
-					else if (lid is Leiding)
+					if (lid is Leiding)
 					{
 						return (
 							from t in db.Lid.OfType<Leiding>()
@@ -374,7 +479,7 @@ namespace Chiro.Gap.Data.Ef
 								.Include("AfdelingsJaar.Afdeling")
 								.Include(leid => leid.Functie)
 							where t.ID == lidID
-							select t).FirstOrDefault<Leiding>();
+							select t).FirstOrDefault();
 					}
 				}
 				return lid;

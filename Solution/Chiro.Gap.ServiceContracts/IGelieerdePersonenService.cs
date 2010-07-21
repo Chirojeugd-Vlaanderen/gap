@@ -9,6 +9,7 @@ using System.ServiceModel;
 
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -25,10 +26,11 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="groepID">ID van de betreffende groep</param>
 		/// <param name="pagina">Paginanummer (1 of hoger)</param>
 		/// <param name="paginaGrootte">Aantal records per pagina (1 of meer)</param>
+		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
 		/// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
 		[OperationContract]
-		IList<PersoonDetail> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal);
+		IList<PersoonDetail> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal);
 
 		/// <summary>
 		/// Haalt een pagina met persoonsgegevens op van gelieerde personen van een groep die tot de gegeven categorie behoren,
@@ -37,10 +39,11 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="categorieID">ID van de gevraagde categorie</param>
 		/// <param name="pagina">Paginanummer (1 of hoger)</param>
 		/// <param name="paginaGrootte">Aantal records per pagina (1 of meer)</param>
+		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
 		/// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
 		[OperationContract]
-		IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, out int aantalTotaal);
+		IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal);
 
 		/// <summary>
 		/// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen
@@ -69,17 +72,19 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="categorieID">Indien verschillend van 0, worden alle personen uit de categore met
 		/// gegeven CategoreID opgehaald.  Anders alle personen tout court.</param>
+		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <returns>Lijst 'PersoonOverzicht'-objecten van alle gelieerde personen uit de categorie</returns>
 		[OperationContract]
-		IEnumerable<PersoonOverzicht> OphalenUitCategorie(int categorieID);
+		IEnumerable<PersoonOverzicht> AllenOphalenUitCategorie(int categorieID, PersoonSorteringsEnum sortering);
 
 		/// <summary>
 		/// Haalt gegevens op van alle personen uit groep met ID <paramref name="groepID"/>.
 		/// </summary>
 		/// <param name="groepID">ID van de groep waaruit de personen gehaald moeten worden</param>
+		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
 		[OperationContract]
-		IEnumerable<PersoonOverzicht> OphalenUitGroep(int groepID);
+		IEnumerable<PersoonOverzicht> AllenOphalenUitGroep(int groepID, PersoonSorteringsEnum sortering);
 
 		#endregion ophalen
 

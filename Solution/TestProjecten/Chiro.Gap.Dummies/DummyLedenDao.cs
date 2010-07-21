@@ -5,6 +5,7 @@ using System.Text;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Dummies
 {
@@ -19,22 +20,22 @@ namespace Chiro.Gap.Dummies
 		{
 			return new List<Lid>();
 		}
-		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID)
+		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering)
 		{
 			return new List<Lid>();
 		}
 
-		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID)
+		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LedenSorteringsEnum sortering)
 		{
 			return new List<Lid>();
 		}
 
-		public IList<Lid> AllesOphalen(int groepsWerkJaarID)
+		public IList<Lid> AllesOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
 		{
 			return new List<Lid>();
 		}
 
-		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal)
+		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal, LedenSorteringsEnum sortering)
 		{
 			aantalTotaal = 0;
 			return new List<Lid>();

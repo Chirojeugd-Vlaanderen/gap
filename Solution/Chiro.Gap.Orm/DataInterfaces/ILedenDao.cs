@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Chiro.Cdf.Data;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Orm.DataInterfaces
 {
@@ -20,7 +21,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// </summary>
 		/// <param name="groepsWerkJaarID"></param>
 		/// <returns></returns>
-		IList<Lid> AllesOphalen(int groepsWerkJaarID);
+		IList<Lid> AllesOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering);
 
 		/// <summary>
 		/// 
@@ -28,7 +29,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="groepsWerkJaarID"></param>
 		/// <param name="afdelingsID"></param>
 		/// <returns></returns>
-		IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID);
+		IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering);
 
 		/// <summary>
 		/// 
@@ -36,7 +37,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="groepsWerkJaarID"></param>
 		/// <param name="functieID"></param>
 		/// <returns></returns>
-		IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID);
+		IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LedenSorteringsEnum sortering);
 
 		/// <summary>
 		/// Zoekt lid op op basis van GelieerdePersoonID en GroepsWerkJaarID

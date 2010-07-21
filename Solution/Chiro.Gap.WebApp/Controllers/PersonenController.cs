@@ -42,7 +42,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			return RedirectToAction("List", new
 			{
 				page = 1,
-				id = 0
+				id = 0,
+				sortering = PersoonSorteringsEnum.Naam
 			});
 		}
 
@@ -54,8 +55,10 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepID">Huidige groep waarin de gebruiker aan het werken is</param>
 		/// <param name="id">ID van de gevraagde categorie.  Kan ook 0 zijn; dan worden alle personen
 		/// geselecteerd.</param>
+		/// <param name="sortering">Geeft de sortering van de pagina en lijst aan</param>
 		/// <returns>De personenlijst in de view 'Index'</returns>
-		public ActionResult List(int page, int groepID, int id)
+		//		public ActionResult List(int page, int groepID, int id)
+		public ActionResult List(int page, int groepID, int id, PersoonSorteringsEnum sortering)
 		{
 			// Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
 			ClientState.VorigeLijst = Request.Url.ToString();
@@ -66,13 +69,14 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new PersoonInfoModel();
 			BaseModelInit(model, groepID);
 			model.GekozenCategorieID = id;
+			model.Sortering = sortering;
 
 			// Alle personen bekijken
 			if (id == 0)
 			{
 				model.PersoonInfos =
 					ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
-					(g => g.PaginaOphalenMetLidInfo(groepID, page, 20, out totaal));
+					(g => g.PaginaOphalenMetLidInfo(groepID, page, 20, sortering, out totaal));
 				model.HuidigePagina = page;
 				model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
 				model.Titel = "Personenoverzicht";
@@ -83,7 +87,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				// TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
 				model.PersoonInfos =
 					ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
-					(g => g.PaginaOphalenUitCategorieMetLidInfo(id, page, 20, out totaal));
+					(g => g.PaginaOphalenUitCategorieMetLidInfo(id, page, 20, sortering, out totaal));
 				model.HuidigePagina = page;
 				model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
 
@@ -123,13 +127,13 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				data =
 					ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonOverzicht>>
-					(g => g.OphalenUitGroep(groepID));
+					(g => g.AllenOphalenUitGroep(groepID, PersoonSorteringsEnum.Naam));
 			}
 			else
 			{
 				data =
 					ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonOverzicht>>
-					(g => g.OphalenUitCategorie(id));
+					(g => g.AllenOphalenUitCategorie(id, PersoonSorteringsEnum.Naam));
 			}
 
 
@@ -166,7 +170,8 @@ namespace Chiro.Gap.WebApp.Controllers
 				new
 				{
 					page = 1,
-					id = model.GekozenCategorieID
+					id = model.GekozenCategorieID,
+					PersoonSorteringsEnum.Naam
 				});
 		}
 

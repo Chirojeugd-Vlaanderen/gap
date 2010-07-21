@@ -20,7 +20,7 @@
                // TODO: die string zou beter in het model zitten denk ik
                String.Format("{0} - {1} ({2})", item.StamNummer, item.Naam, item.Plaats),
                 "List", 
-                new {Controller = "Personen", page = 1, groepID = item.ID})%></li>
+                new {Controller = "Personen", page = 1, groepID = item.ID, sortering=Chiro.Gap.Domain.PersoonSorteringsEnum.Naam})%></li>
 <%
            
        }

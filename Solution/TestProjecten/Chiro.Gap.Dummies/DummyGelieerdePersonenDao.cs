@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Linq.Expressions;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Dummies
 {
@@ -20,7 +20,17 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
+		public IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering,  out int aantalTotaal)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, bool metHuidigLidInfo, out int aantalTotaal, params Expression<Func<GelieerdePersoon, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}
@@ -36,6 +46,11 @@ namespace Chiro.Gap.Dummies
 		}
 
 		public IEnumerable<CommunicatieType> CommunicatieTypesOphalen()
+		{
+			throw new NotImplementedException();
+		}
+
+		public IEnumerable<CommunicatieType> OphalenCommunicatieTypes()
 		{
 			throw new NotImplementedException();
 		}

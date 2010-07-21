@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 
 using Chiro.Cdf.Data;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Orm.DataInterfaces
 {
@@ -69,30 +70,26 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="groepID">ID van de groep</param>
 		/// <param name="pagina">Paginanummer (1 of groter)</param>
 		/// <param name="paginaGrootte">Aantal records op een pagina</param>
+		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <param name="aantalTotaal">Outputparameter voor totaal aantal
 		/// personen gelieerd aan de groep.</param>
 		/// <returns>Lijst met gelieerde personen</returns>
-		IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, out int aantalTotaal);
+		IList<GelieerdePersoon> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal);
 
 		/// <summary>
 		/// Haal een pagina op met gelieerde personen uit een categorie, inclusief lidinfo voor het huidige
 		/// werkjaar.
 		/// </summary>
 		/// <param name="categorieID">ID van de gevraagde categorie</param>
-		/// <param name="pagina">Gevraagde pagina</param>
-		/// <param name="paginaGrootte">Grootte van de pagina</param>
+		/// <param name="pagina">Paginanummer (1 of groter)</param>
+		/// <param name="paginaGrootte">Aantal records op een pagina</param>
+		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <param name="paths">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
 		/// <param name="metHuidigLidInfo">Als <c>true</c> worden ook eventuele lidobjecten *van dit werkjaar* 
 		/// mee opgehaald.</param>
 		/// <param name="aantalTotaal">Outputparameter die het totaal aantal personen in de categorie weergeeft</param>
 		/// <returns>Lijst gelieerde personen</returns>
-		IList<GelieerdePersoon> PaginaOphalenUitCategorie(
-			int categorieID,
-			int pagina,
-			int paginaGrootte,
-			bool metHuidigLidInfo,
-			out int aantalTotaal,
-			params Expression<Func<GelieerdePersoon, object>>[] paths);
+		IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, bool metHuidigLidInfo, out int aantalTotaal, params Expression<Func<GelieerdePersoon, object>>[] paths);
 
 		/// <summary>
 		/// Haalt persoonsgegevens van een gelieerd persoon op, incl. adressen en communicatievormen

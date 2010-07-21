@@ -24,7 +24,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		public override ActionResult Index(int groepID)
 		{
 			// Recentste groepswerkjaar ophalen, en leden tonen.
-			return AfdelingsLijst(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), 0, groepID);
+			return AfdelingsLijst(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), 0, groepID, LedenSorteringsEnum.Naam);
 		}
 
 		/// <summary>
@@ -34,7 +34,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepsWerkJaarID">ID van het gevraagde groepswerkjaar</param>
 		/// <param name="groepID"></param>
 		/// <returns></returns>
-		private LidInfoModel LijstModelInitialiseren(int groepsWerkJaarID, int groepID)
+		private LidInfoModel LijstModelInitialiseren(int groepsWerkJaarID, int groepID, LedenSorteringsEnum sortering)
 		{
 			// Er wordt een nieuwe lijst opgevraagd, dus wordt deze vanaf hier bijgehouden als de lijst om terug naar te springen
 			ClientState.VorigeLijst = Request.Url.ToString();
@@ -76,6 +76,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.PageHuidig = model.IDGetoondGroepsWerkJaar;
 			model.PageTotaal = model.WerkJaarInfos.Count();
 
+			model.GekozenSortering = sortering;
+
 			return model;
 		}
 
@@ -86,20 +88,20 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// met ID <paramref name="groepID"/>.</param>
 		/// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
 		/// <returns></returns>
-		public ActionResult Lijst(int groepsWerkJaarID, int groepID)
+		public ActionResult Lijst(int groepsWerkJaarID, int groepID, LedenSorteringsEnum sortering)
 		{
 			if (groepsWerkJaarID == 0)
 			{
 				groepsWerkJaarID = ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID));
 			}
 
-			var model = LijstModelInitialiseren(groepsWerkJaarID, groepID);
+			var model = LijstModelInitialiseren(groepsWerkJaarID, groepID, sortering);
 
 			// TODO check dat de gegeven afdeling id wel degelijk van de gegeven groep is
 
 			model.LidInfoLijst =
 				ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>
-				(lid => lid.PaginaOphalen(groepsWerkJaarID));
+				(lid => lid.PaginaOphalen(groepsWerkJaarID, sortering));
 
 			model.Titel = "Ledenoverzicht van het werkjaar " + model.JaartalGetoondGroepsWerkJaar + "-" + (model.JaartalGetoondGroepsWerkJaar + 1);
 
@@ -114,18 +116,18 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="afdID">Indien 0, worden alle leden getoond, anders enkel de leden uit de afdeling met het gegeven AfdelingsID</param>
 		/// <param name="groepID">ID van de groep</param>
 		/// <returns>De view 'Index' met een ledenlijst</returns>
-		public ActionResult AfdelingsLijst(int groepsWerkJaarID, int afdID, int groepID)
+		public ActionResult AfdelingsLijst(int groepsWerkJaarID, int afdID, int groepID, LedenSorteringsEnum sortering)
 		{
 			if (afdID == 0)
 			{
-				return Lijst(groepsWerkJaarID, groepID);
+				return Lijst(groepsWerkJaarID, groepID, sortering);
 			}
 
-			var model = LijstModelInitialiseren(groepsWerkJaarID, groepID);
+			var model = LijstModelInitialiseren(groepsWerkJaarID, groepID, sortering);
 
 			// TODO check dat de gegeven afdeling id wel degelijk van de gegeven groep is
 
-			model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>(lid => lid.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdID));
+			model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>(lid => lid.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdID, sortering));
 
 			AfdelingDetail af = (from a in model.AfdelingsInfoDictionary.AsQueryable()
 								 where a.Value.AfdelingID == afdID
@@ -140,21 +142,21 @@ namespace Chiro.Gap.WebApp.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult AfdelingsLijst(LidInfoModel model, int groepID)
 		{
-			return RedirectToAction("AfdelingsLijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, afdID = model.GekozenAfdeling, groepID = groepID });
+			return RedirectToAction("AfdelingsLijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, afdID = model.GekozenAfdeling, groepID = groepID, sortering=model.GekozenSortering });
 		}
 
-		public ActionResult FunctieLijst(int groepsWerkJaarID, int funcID, int groepID)
+		public ActionResult FunctieLijst(int groepsWerkJaarID, int funcID, int groepID, LedenSorteringsEnum sortering)
 		{
 			if (funcID == 0)
 			{
-				return Lijst(groepsWerkJaarID, groepID);
+				return Lijst(groepsWerkJaarID, groepID, sortering);
 			}
 
-			var model = LijstModelInitialiseren(groepsWerkJaarID, groepID);
+			var model = LijstModelInitialiseren(groepsWerkJaarID, groepID, sortering);
 
 			// TODO check dat de gegeven functie id wel degelijk van de gegeven groep is
 
-			model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>(lid => lid.PaginaOphalenVolgensFunctie(groepsWerkJaarID, funcID));
+			model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>(lid => lid.PaginaOphalenVolgensFunctie(groepsWerkJaarID, funcID, sortering));
 
 			// TODO functienaam
 			model.Titel = "Ledenoverzicht van leden met functie TODO in het werkjaar " + model.JaartalGetoondGroepsWerkJaar + "-" + (model.JaartalGetoondGroepsWerkJaar + 1);
@@ -166,7 +168,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult FunctieLijst(LidInfoModel model, int groepID)
 		{
-			return RedirectToAction("FunctieLijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, funcID = model.GekozenFunctie, groepID = groepID });
+			return RedirectToAction("FunctieLijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, funcID = model.GekozenFunctie, groepID = groepID, sortering=model.GekozenSortering });
 		}
 
 		/// <summary>
@@ -186,13 +188,13 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				lijst =
 					ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>
-					(lid => lid.PaginaOphalen(id));
+					(lid => lid.PaginaOphalen(id, LedenSorteringsEnum.Naam));
 			}
 			else
 			{
 				lijst =
 					ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>
-					(lid => lid.PaginaOphalenVolgensAfdeling(id, afdID));
+					(lid => lid.PaginaOphalenVolgensAfdeling(id, afdID, LedenSorteringsEnum.Naam));
 			}
 
 			var selectie = (from l in lijst

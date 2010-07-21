@@ -57,6 +57,34 @@ namespace Chiro.Gap.Domain
 		Overig = 4
 	}
 
+	/// <summary>
+	/// Sorteringsopties van een lijst van personen
+	/// </summary>
+	[DataContract]
+	public enum PersoonSorteringsEnum
+	{
+		[EnumMember]
+		Naam = 1,
+		[EnumMember]
+		Leeftijd = 2,
+		[EnumMember]
+		Categorie = 3
+	}
+
+	/// <summary>
+	/// Sorteringsopties van een lijst van leden
+	/// </summary>
+	[DataContract]
+	public enum LedenSorteringsEnum
+	{
+		[EnumMember]
+		Naam = 1,
+		[EnumMember]
+		Leeftijd = 2,
+		[EnumMember]
+		Afdeling = 3
+	}
+
 	[DataContract]
 	public enum CommunicatieTypeEnum
 	{
