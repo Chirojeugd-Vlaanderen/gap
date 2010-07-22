@@ -15,7 +15,7 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Domain;
 
-namespace Chiro.Gap.Data
+namespace Chiro.Gap.Data.Ef
 {
 	/// <summary>
 	/// Gegevenstoegangsobject voor leden
