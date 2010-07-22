@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
+﻿using System.Runtime.Serialization;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
@@ -12,6 +8,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	/// voorkeursmailadres worden mee opgenomen
 	/// </summary>
 	[DataContract]
+	[KnownType(typeof(LidOverzicht))]
 	public class PersoonOverzicht: PersoonInfo
 	{
 		[DataMember] public string StraatNaam;

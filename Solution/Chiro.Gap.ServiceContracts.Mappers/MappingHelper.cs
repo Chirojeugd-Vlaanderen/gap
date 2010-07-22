@@ -4,6 +4,8 @@
 // </copyright>
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 using AutoMapper;
@@ -89,6 +91,53 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam))
 				.ForMember(dst => dst.WoonPlaats, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null: src.PersoonsAdres.Adres.WoonPlaats.Naam));
 
+			Mapper.CreateMap<Lid, LidOverzicht>()
+				.ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.AdNummer))
+				.ForMember(dst => dst.Bus,
+				           opt =>
+				           opt.MapFrom(
+				           	src => src.GelieerdePersoon.PersoonsAdres == null ? null : src.GelieerdePersoon.PersoonsAdres.Adres.Bus))
+				.ForMember(dst => dst.Email,
+				           opt => opt.MapFrom(src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.Email)))
+				.ForMember(dst => dst.GeboorteDatum, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.GeboorteDatum))
+				.ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => src.GelieerdePersoon.ID))
+				.ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Geslacht))
+				.ForMember(dst => dst.HuisNummer,
+				           opt =>
+				           opt.MapFrom(
+				           	src =>
+				           	src.GelieerdePersoon.PersoonsAdres == null ? null : src.GelieerdePersoon.PersoonsAdres.Adres.HuisNr))
+				.ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Naam))
+				.ForMember(dst => dst.PostNummer,
+				           opt =>
+				           opt.MapFrom(
+				           	src =>
+				           	src.GelieerdePersoon.PersoonsAdres == null
+				           		? null
+				           		: (int?) src.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats.PostNummer))
+				.ForMember(dst => dst.StraatNaam,
+				           opt =>
+				           opt.MapFrom(
+				           	src =>
+				           	src.GelieerdePersoon.PersoonsAdres == null
+				           		? null
+				           		: src.GelieerdePersoon.PersoonsAdres.Adres.StraatNaam.Naam))
+				.ForMember(dst => dst.TelefoonNummer,
+				           opt =>
+				           opt.MapFrom(src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.TelefoonNummer)))
+				.ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VoorNaam))
+				.ForMember(dst => dst.WoonPlaats,
+				           opt =>
+				           opt.MapFrom(
+				           	src =>
+				           	src.GelieerdePersoon.PersoonsAdres == null
+				           		? null
+				           		: src.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats.Naam))
+				.ForMember(dst => dst.Functies, opt => opt.MapFrom(src => src.Functie))
+				.ForMember(dst => dst.Afdelingen, opt => opt.MapFrom(Afdelingen))
+				//.ForMember(dst => dst.Functies, opt => opt.Ignore())
+				//.ForMember(dst => dst.Afdelingen, opt => opt.Ignore())
+				.ForMember(dst => dst.ChiroLeefTijd, opt => opt.MapFrom(src => src.GelieerdePersoon.ChiroLeefTijd));
 
 			Mapper.CreateMap<AfdelingsJaar, AfdelingDetail>()
 				.ForMember(
@@ -123,7 +172,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
 			Mapper.CreateMap<Afdeling, AfdelingInfo>();
 
+			Mapper.CreateMap<Functie, FunctieInfo>();
 			Mapper.CreateMap<Functie, FunctieDetail>();
+
+
 
 			Mapper.CreateMap<Lid, LidInfo>()
 				.ForMember(
@@ -350,6 +402,30 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			             select c.Nummer;
 
 			return query.FirstOrDefault();
+		}
+
+		/// <summary>
+		/// Geeft de rij afdelingen weer waaraan een lid gekoppeld is.  Voor een kind bevat de lijst precies
+		/// 1 afdeling, voor een leiding kunnen het er ook geen of veel zijn.
+		/// </summary>
+		/// <param name="l">lid waarvan afdelingen op te halen</param>
+		/// <returns>rij afdelngen van het lid <paramref name="l"/></returns>
+		private static IEnumerable<AfdelingInfo> Afdelingen(Lid l)
+		{
+			if (l is Kind)
+			{
+				return new AfdelingInfo[] {Mapper.Map<Afdeling, AfdelingInfo>((l as Kind).AfdelingsJaar.Afdeling)};
+			}
+			else if (l is Leiding)
+			{
+				return
+					Mapper.Map<IEnumerable<Afdeling>, IEnumerable<AfdelingInfo>>((l as Leiding).AfdelingsJaar.Select(aj => aj.Afdeling));
+			}
+			else
+			{
+				// Enkel kinderen en leiding
+				throw new NotSupportedException();
+			}
 		}
 
 		#endregion

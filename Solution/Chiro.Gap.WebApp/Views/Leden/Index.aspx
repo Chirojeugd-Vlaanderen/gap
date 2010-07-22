@@ -21,6 +21,7 @@
 <li>
 	<%=Html.ActionLink("Alle leden bekijken", "Lijst", new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering=Model.GekozenSortering })%>
 </li>
+<li><%= Html.ActionLink("Lijst downloaden", "Download", new { id = Model.IDGetoondGroepsWerkJaar, afdelingID = Model.GekozenAfdeling, functieID = Model.GekozenFunctie })%></li>
 <li>
 	<%using (Html.BeginForm("AfdelingsLijst", "Leden")){ %>
 		<select id="GekozenAfdeling" name="GekozenAfdeling">

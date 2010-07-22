@@ -175,38 +175,60 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// Downloadt de lijst van leden uit groepswerkjaar met GroepsWerkJaarID <paramref name="id"/> als
 		/// Exceldocument.
 		/// </summary>
-		/// <param name="id">ID van het gevraagde groepswerkjaar</param>
-		/// <param name="afdID">Indien 0, worden alle leden getoond, anders enkel de leden uit de afdeling
-		/// met het gegeven AfdelingsID</param>
-		/// <param name="groepID">ID van de groep</param>
+		/// <param name="id">ID van het gevraagde groepswerkjaar (komt uit url)</param>
+		/// <param name="afdelingID">Als verschillend van 0, worden enkel de leden met afdelng bepaald door dit ID
+		/// getoond.</param>
+		/// <param name="functieID">Als verschillend van 0, worden enkel de leden met de functie bepaald door
+		/// dit ID getoond.</param>
+		/// <param name="groepID">ID van de groep (komt uit url)</param>
 		/// <returns>Exceldocument met gevraagde ledenlijst</returns>
-		public ActionResult Download(int id, int afdID, int groepID)
+		public ActionResult Download(int id, int afdelingID, int functieID, int groepID)
 		{
-			IEnumerable<PersoonLidInfo> lijst;
+			IEnumerable<LidOverzicht> lijst;
 
-			if (afdID == 0)
+			if (afdelingID != 0 && functieID != 0)
+			{
+				// Fiteren op zowel afdelngsID als functieID is (nog?) niet ondersteund.
+				// Bovendien is dat iets dat je niet kan als javascript aanstaat.
+
+				throw new NotSupportedException();
+			}
+			if (afdelingID != 0)
 			{
 				lijst =
-					ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>
-					(lid => lid.PaginaOphalen(id, LedenSorteringsEnum.Naam));
+					ServiceHelper.CallService<ILedenService, IEnumerable<LidOverzicht>>
+						(lid => lid.OphalenUitAfdelingsJaar(id, afdelingID));
 			}
-			else
+			else if (functieID != 0)
+			{
+				lijst = ServiceHelper.CallService<ILedenService, IEnumerable<LidOverzicht>>
+					(lid => lid.OphalenUitFunctie(id, functieID));
+			}
+			else 
 			{
 				lijst =
-					ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>
-					(lid => lid.PaginaOphalenVolgensAfdeling(id, afdID, LedenSorteringsEnum.Naam));
+					ServiceHelper.CallService<ILedenService, IEnumerable<LidOverzicht>>
+						(lid => lid.OphalenUitGroepsWerkJaar(id));
 			}
 
-			var selectie = (from l in lijst
-							select new
-									{
-										AdNummer = l.PersoonDetail.AdNummer,
-										VolledigeNaam = l.PersoonDetail.VolledigeNaam,
-										GeboorteDatum = l.PersoonDetail.GeboorteDatum,
-										Geslacht = l.PersoonDetail.Geslacht == GeslachtsType.Man ? "jongen" : "meisje"
-									}).AsQueryable();
+			var stream = (new ExcelManip()).ExcelTabel(
+				lijst,
+				it => it.Type,
+				it => it.AdNummer,
+				it => it.VoorNaam,
+				it => it.Naam,
+				it => it.Afdelingen == null ? String.Empty : String.Concat(it.Afdelingen.Select(afd => afd.Afkorting + " ").ToArray()),
+				it => it.Functies == null ? String.Empty : String.Concat(it.Functies.Select(fun => fun.Code + " ").ToArray()),
+				it => it.GeboorteDatum,
+				it => it.Geslacht,
+				it => it.StraatNaam,
+				it => it.HuisNummer,
+				it => it.Bus,
+				it => it.PostNummer,
+				it => it.WoonPlaats,
+				it => it.TelefoonNummer,
+				it => it.Email);
 
-			var stream = (new ExcelManip()).ExcelTabel(selectie, it => it.AdNummer, it => it.VolledigeNaam, it => it.GeboorteDatum, it => it.Geslacht);
 			return new ExcelResult(stream, "leden.xlsx");
 		}
 

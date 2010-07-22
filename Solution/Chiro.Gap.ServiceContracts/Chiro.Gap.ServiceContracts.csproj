@@ -68,6 +68,7 @@
     <Compile Include="DataContracts\GezinInfo.cs" />
     <Compile Include="DataContracts\GroepDetail.cs" />
     <Compile Include="DataContracts\LidAfdelingInfo.cs" />
+    <Compile Include="DataContracts\LidOverzicht.cs" />
     <Compile Include="DataContracts\OfficieleAfdelingDetail.cs" />
     <Compile Include="DataContracts\IDPersEnGP.cs" />
     <Compile Include="DataContracts\PersoonInfo.cs" />

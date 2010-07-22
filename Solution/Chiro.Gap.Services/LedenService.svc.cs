@@ -201,42 +201,6 @@ namespace Chiro.Gap.Services
 			return l.GelieerdePersoon.ID;
 		}
 
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonLidInfo> PaginaOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
-		{
-			var result = _ledenMgr.PaginaOphalen(groepsWerkJaarID, sortering);
-			return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
-		}
-
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonLidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering)
-		{
-			IList<Lid> result = _ledenMgr.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID, sortering);
-			return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
-		}
-
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonLidInfo> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functiID, LedenSorteringsEnum sortering)
-		{
-			IList<Lid> result = _ledenMgr.PaginaOphalenVolgensFunctie(groepsWerkJaarID, functiID, sortering);
-			return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
-		}
-
-		/// <summary>
-		/// Haalt lid op, inclusief gelieerde persoon, persoon, groep, afdelingen en functies
-		/// </summary>
-		/// <param name="lidID">ID op te halen lid</param>
-		/// <returns>Lidinfo; bevat info over gelieerde persoon, persoon, groep, afdelingen 
-		/// en functies </returns>
-		public PersoonLidInfo DetailsOphalen(int lidID)
-		{
-			return Mapper.Map<Lid, PersoonLidInfo>(_ledenMgr.Ophalen(
-				lidID,
-				LidExtras.Groep|LidExtras.Afdelingen|LidExtras.Functies|LidExtras.Persoon));
-		}
-
 		/// <summary>
 		/// Vervangt de functies van het lid bepaald door <paramref name="lidID"/> door de functies
 		/// met ID's <paramref name="functieIDs"/>
@@ -333,5 +297,84 @@ namespace Chiro.Gap.Services
 			// TODO
 			throw new NotImplementedException();
 		}
+
+		#region Ophalen
+
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public IList<PersoonLidInfo> PaginaOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
+		{
+			var result = _ledenMgr.PaginaOphalen(groepsWerkJaarID, sortering);
+			return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
+		}
+
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public IList<PersoonLidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering)
+		{
+			IList<Lid> result = _ledenMgr.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID, sortering);
+			return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
+		}
+
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public IList<PersoonLidInfo> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functiID, LedenSorteringsEnum sortering)
+		{
+			IList<Lid> result = _ledenMgr.PaginaOphalenVolgensFunctie(groepsWerkJaarID, functiID, sortering);
+			return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
+		}
+
+		/// <summary>
+		/// Haalt lid op, inclusief gelieerde persoon, persoon, groep, afdelingen en functies
+		/// </summary>
+		/// <param name="lidID">ID op te halen lid</param>
+		/// <returns>Lidinfo; bevat info over gelieerde persoon, persoon, groep, afdelingen 
+		/// en functies </returns>
+		public PersoonLidInfo DetailsOphalen(int lidID)
+		{
+			return Mapper.Map<Lid, PersoonLidInfo>(_ledenMgr.Ophalen(
+				lidID,
+				LidExtras.Groep | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Persoon));
+		}
+
+		/// <summary>
+		/// Haalt informatie op over alle leden uit het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
+		/// die lid zijn in de afdeling bepaald door <paramref name="afdID"/>.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waaruit de leden opgehaald moeten worden</param>
+		/// <param name="afdID">ID van de afdeling waaruit de leden opgehaald moeten worden.</param>
+		/// <returns>Een rij 'LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
+		public IList<LidOverzicht> OphalenUitAfdelingsJaar(int groepsWerkJaarID, int afdID)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Haalt informatie op over alle leden uit het groepswerkjaar bepaald door 
+		/// <paramref name="groepsWerkJaarID"/> die de functie bepaald door <paramref name="functieID"/> hebben.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van groepswerkjaar waaruit leden moeten worden opgehaald</param>
+		/// <param name="functieID">ID van functie die opgehaalde leden moeten hebben</param>
+		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
+		public IList<LidOverzicht> OphalenUitFunctie(int groepsWerkJaarID, int functieID)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Haalt informatie op over alle leden uit een gegeven groepswerkjaar
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waaruit de leden moeten worden opgehaald</param>
+		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
+		public IList<LidOverzicht> OphalenUitGroepsWerkJaar(int groepsWerkJaarID)
+		{
+			// Ik sorteer hier arbitrair op afdeling.
+
+			var leden = _ledenMgr.PaginaOphalen(groepsWerkJaarID, LedenSorteringsEnum.Afdeling);
+			var resultaat = Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(leden);
+
+			return resultaat;
+		}
+
+		#endregion
 	}
 }

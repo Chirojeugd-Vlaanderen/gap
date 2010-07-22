@@ -98,6 +98,8 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		int LoonVerliesVerzekeren(int lidID);
 
+		#region Ophalen
+
 		// TODO: we vragen leden op per groepswerkjaar. Waarom dit verschil met personen? Personen zijn altijd geldig, 
 		// maar is dit wel de beste oplossing? Want alle leden zijn personen, maar wat dan als ze weggaan en dan terugkomen? 
 		// Moeten ze dan expliciet gedeletet worden?...?
@@ -130,5 +132,35 @@ namespace Chiro.Gap.ServiceContracts
 		/// en functies </returns>
 		[OperationContract]
 		PersoonLidInfo DetailsOphalen(int lidID);
+
+		/// <summary>
+		/// Haalt informatie op over alle leden uit het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
+		/// die lid zijn in de afdeling bepaald door <paramref name="afdID"/>.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waaruit de leden opgehaald moeten worden</param>
+		/// <param name="afdID">ID van de afdeling waaruit de leden opgehaald moeten worden.</param>
+		/// <returns>Een rij 'LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
+		[OperationContract]
+		IList<LidOverzicht> OphalenUitAfdelingsJaar(int groepsWerkJaarID, int afdID);
+
+		/// <summary>
+		/// Haalt informatie op over alle leden uit het groepswerkjaar bepaald door 
+		/// <paramref name="groepsWerkJaarID"/> die de functie bepaald door <paramref name="functieID"/> hebben.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van groepswerkjaar waaruit leden moeten worden opgehaald</param>
+		/// <param name="functieID">ID van functie die opgehaalde leden moeten hebben</param>
+		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
+		[OperationContract]
+		IList<LidOverzicht> OphalenUitFunctie(int groepsWerkJaarID, int functieID);
+
+		/// <summary>
+		/// Haalt informatie op over alle leden uit een gegeven groepswerkjaar
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waaruit de leden moeten worden opgehaald</param>
+		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
+		[OperationContract]
+		IList<LidOverzicht> OphalenUitGroepsWerkJaar(int groepsWerkJaarID);
+
+		#endregion
 	}
 }

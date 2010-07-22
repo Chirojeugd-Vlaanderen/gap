@@ -34,8 +34,8 @@ namespace Chiro.Gap.WebApp.Models
 
 		public IList<PersoonLidInfo> LidInfoLijst { get; set; }
 
-		public int GekozenAfdeling { get; set; }
-		public int GekozenFunctie { get; set; }
+		public int GekozenAfdeling { get; set; }	// TODO: Hernoem als GekozenAfdelingID
+		public int GekozenFunctie { get; set; }		// TODO: Hernoem als GekozenFunctieID
 		public LedenSorteringsEnum GekozenSortering { get; set; }
 	}
 }
