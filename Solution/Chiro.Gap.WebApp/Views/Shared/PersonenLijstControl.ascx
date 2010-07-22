@@ -62,7 +62,7 @@ Totaal aantal personen: <%= Model.Totaal %>  |  Maak een selectie en
     <td><%=Html.Geslacht(p.Geslacht) %></td>
     <td><% foreach (var c in p.CategorieLijst) 
            { %>
-               <%=Html.ActionLink(Html.Encode(c.Code), "List", new { Controller = "Personen", id = c.ID }, new { title = c.Naam } )%>
+               <%=Html.ActionLink(Html.Encode(c.Code), "List", new { Controller = "Personen", id = c.ID, sortering = Model.Sortering }, new { title = c.Naam })%>
         <% } %>
     </td>
     <td><%=p.IsLid ? "lid" : p.IsLeiding ? "leiding" : "--" %></td>  
@@ -74,11 +74,6 @@ Totaal aantal personen: <%= Model.Totaal %>  |  Maak een selectie en
 				<%=Html.ActionLink("inschrijven als leiding", "LeidingMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
 		<% } %>
         <%=Html.ActionLink("zus/broer maken", "Kloon", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
-    </td>
-    <td><% foreach (var c in p.CategorieLijst) 
-           { %>
-               <%=Html.ActionLink(Html.Encode(c.Code), "List", new { Controller = "Personen", id = c.ID, sortering=Model.Sortering }, new { title = c.Naam } )%>
-        <% } %>
     </td>
 </tr>
 <% } %>
