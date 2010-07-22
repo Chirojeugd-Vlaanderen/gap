@@ -63,6 +63,7 @@
     <Compile Include="DataContracts\CategorieInfo.cs" />
     <Compile Include="DataContracts\CommunicatieInfo.cs" />
     <Compile Include="DataContracts\CommunicatieTypeInfo.cs" />
+    <Compile Include="DataContracts\FunctieInfo.cs" />
     <Compile Include="DataContracts\FunctieProbleemInfo.cs" />
     <Compile Include="DataContracts\GezinInfo.cs" />
     <Compile Include="DataContracts\GroepDetail.cs" />
@@ -71,7 +72,7 @@
     <Compile Include="DataContracts\IDPersEnGP.cs" />
     <Compile Include="DataContracts\PersoonInfo.cs" />
     <Compile Include="DataContracts\PersoonLidInfo.cs" />
-    <Compile Include="DataContracts\FunctieInfo.cs" />
+    <Compile Include="DataContracts\FunctieDetail.cs" />
     <Compile Include="DataContracts\PersoonOverzicht.cs" />
     <Compile Include="DataContracts\PersoonsAdresInfo.cs" />
     <Compile Include="DataContracts\StraatInfo.cs" />

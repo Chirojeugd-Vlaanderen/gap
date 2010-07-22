@@ -22,7 +22,7 @@ namespace Chiro.Gap.WebApp.Models
         {
             AlleAfdelingen = new List<AfdelingDetail>();
             AfdelingIDs = new List<int>();
-            AlleFuncties = new List<FunctieInfo>();
+            AlleFuncties = new List<FunctieDetail>();
             FunctieIDs = new List<int>();
             HuidigLid = new PersoonLidInfo();
         }
@@ -46,7 +46,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// Alle functies die relevant zouden kunnen zijn voor HuidigLid. (afhankelijk van lidsoort
 		/// en groepswerkjaar.)
 		/// </summary>
-		public IEnumerable<FunctieInfo> AlleFuncties { get; set; }
+		public IEnumerable<FunctieDetail> AlleFuncties { get; set; }
 
 		/// <summary>
 		/// ID's van geselecteerde functies in de 'functiecheckboxlist'

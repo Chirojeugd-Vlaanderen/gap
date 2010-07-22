@@ -60,7 +60,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// Functies van het lid
 		/// </summary>
 		[DataMember]
-		public IList<FunctieInfo> Functies { get; set; }
+		public IList<FunctieDetail> Functies { get; set; }
 
 		/// <summary>
 		/// Groepswerkjaar waarvoor het lid ingeschreven is

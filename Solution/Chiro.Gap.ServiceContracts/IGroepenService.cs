@@ -183,7 +183,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="lidType"><c>LidType.Kind</c> of <c>LidType.Leiding</c></param>
 		/// <returns>De gevraagde lijst afdelingsinfo</returns>
 		[OperationContract]
-        IEnumerable<FunctieInfo> FunctiesOphalen(int groepsWerkJaarID, LidType lidType);
+        IEnumerable<FunctieDetail> FunctiesOphalen(int groepsWerkJaarID, LidType lidType);
 
 		/// <summary>
 		/// Zoekt naar problemen ivm de maximum- en minimumaantallen van functies voor het
@@ -208,7 +208,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="werkJaarVan">Eventueel het vroegste werkjaar waarvoor de functie beschikbaar moet zijn</param>
 		/// <returns>De ID van de aangemaakte Functie</returns>
 		[OperationContract]
-		[FaultContract(typeof(BestaatAlFault<FunctieInfo>))]
+		[FaultContract(typeof(BestaatAlFault<FunctieDetail>))]
 		int FunctieToevoegen(int groepID, string naam, string code, int? maxAantal, int minAantal, LidType lidType, int? werkJaarVan);
 
 		/// <summary>

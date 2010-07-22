@@ -30,6 +30,6 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// Functies die de groep gebruikt
 		/// </summary>
 		[DataMember]
-		public List<FunctieInfo> Functies { get; set; }
+		public List<FunctieDetail> Functies { get; set; }
 	}
 }

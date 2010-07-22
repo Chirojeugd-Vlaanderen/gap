@@ -409,10 +409,10 @@ namespace Chiro.Gap.Services
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar van de gevraagde functies</param>
 		/// <param name="lidType"><c>LidType.Kind</c> of <c>LidType.Leiding</c></param>
 		/// <returns>De gevraagde lijst afdelingsinfo</returns>
-        public IEnumerable<FunctieInfo> FunctiesOphalen(int groepsWerkJaarID, LidType lidType)
+        public IEnumerable<FunctieDetail> FunctiesOphalen(int groepsWerkJaarID, LidType lidType)
 		{
 			var relevanteFuncties = _functiesMgr.OphalenRelevant(groepsWerkJaarID, lidType);
-		    return Mapper.Map<IList<Functie>, IList<FunctieInfo>>(relevanteFuncties);
+		    return Mapper.Map<IList<Functie>, IList<FunctieDetail>>(relevanteFuncties);
 		}
 
 		/// <summary>
@@ -470,9 +470,9 @@ namespace Chiro.Gap.Services
 			catch (BestaatAlException<Functie> ex)
 			{
 				var fault = Mapper.Map<BestaatAlException<Functie>,
-						BestaatAlFault<FunctieInfo>>(ex);
+						BestaatAlFault<FunctieDetail>>(ex);
 
-				throw new FaultException<BestaatAlFault<FunctieInfo>>(fault);
+				throw new FaultException<BestaatAlFault<FunctieDetail>>(fault);
 			}
 // ReSharper disable RedundantCatchClause
 			catch (Exception)

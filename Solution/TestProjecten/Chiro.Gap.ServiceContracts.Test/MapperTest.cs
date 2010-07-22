@@ -52,13 +52,13 @@ namespace Chiro.Gap.ServiceContracts.Test
 		}
 
 		/// <summary>
-		/// Controleert mapping Functie -> FunctieInfo
+		/// Controleert mapping Functie -> FunctieDetail
 		/// </summary>
 		[TestMethod]
 		public void MapFunctieInfo()
 		{
 			var testData = new DummyData();
-			FunctieInfo fi = Mapper.Map<Functie, FunctieInfo>(testData.UniekeFunctie);
+			FunctieDetail fi = Mapper.Map<Functie, FunctieDetail>(testData.UniekeFunctie);
 			Assert.AreEqual(fi.Code, testData.UniekeFunctie.Code);
 		}
 

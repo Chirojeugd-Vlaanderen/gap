@@ -65,10 +65,10 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 
 			// Haal alle functies op van de groep in het groepswerkjaar
-			var list2 = ServiceHelper.CallService<IGroepenService, IEnumerable<FunctieInfo>>(groep => groep.FunctiesOphalen(groepsWerkJaarID, LidType.Alles));
+			var list2 = ServiceHelper.CallService<IGroepenService, IEnumerable<FunctieDetail>>(groep => groep.FunctiesOphalen(groepsWerkJaarID, LidType.Alles));
 
-			model.FunctieInfoDictionary = new Dictionary<int, FunctieInfo>();
-			foreach (FunctieInfo fi in list2)
+			model.FunctieInfoDictionary = new Dictionary<int, FunctieDetail>();
+			foreach (FunctieDetail fi in list2)
 			{
 				model.FunctieInfoDictionary.Add(fi.ID, fi);
 			}
@@ -407,7 +407,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="model">Te bewerken model</param>
 		public void FunctiesOphalen(LedenModel model)
 		{
-			model.AlleFuncties = ServiceHelper.CallService<IGroepenService, IEnumerable<FunctieInfo>>
+			model.AlleFuncties = ServiceHelper.CallService<IGroepenService, IEnumerable<FunctieDetail>>
 				(svc => svc.FunctiesOphalen(
 					model.HuidigLid.LidInfo.GroepsWerkJaarID,
 					model.HuidigLid.LidInfo.Type));

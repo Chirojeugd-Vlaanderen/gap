@@ -123,7 +123,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
 			Mapper.CreateMap<Afdeling, AfdelingInfo>();
 
-			Mapper.CreateMap<Functie, FunctieInfo>();
+			Mapper.CreateMap<Functie, FunctieDetail>();
 
 			Mapper.CreateMap<Lid, LidInfo>()
 				.ForMember(
@@ -313,13 +313,19 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
 		/// <summary>
 		/// Controleert of een lid <paramref name="src"/>in zijn werkjaar verzekerd is wat betreft de verzekering gegeven
-		/// door <paramref name="verzekerng"/>.
+		/// door <paramref name="verzekering"/>.
 		/// </summary>
 		/// <param name="src">lid waarvan moet nagekeken worden of het verzekerd is</param>
 		/// <param name="verzekering">type verzekering waarop gecontroleerd moet worden</param>
-		/// <returns></returns>
+		/// <returns><c>true</c> alss het lid een verzekering loonverlies heeft.</returns>
 		private static bool IsVerzekerd(Lid src, Verzekering verzekering)
 		{
+			if (src.GelieerdePersoon == null)
+			{
+				return false;
+			}
+			else
+			{
 				var persoonsverzekeringen = from v in src.GelieerdePersoon.Persoon.PersoonsVerzekering
 							    where v.VerzekeringsType.ID == (int)verzekering &&
 								  (LedenManager.DatumInWerkJaar(v.Van, src.GroepsWerkJaar.WerkJaar) ||
@@ -327,6 +333,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 							    select v;
 
 				return persoonsverzekeringen.FirstOrDefault() != null;
+			}
 		}
 
 		/// <summary>

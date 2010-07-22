@@ -24,7 +24,7 @@ namespace Chiro.Gap.WebApp.Models
         {
             Detail = new GroepDetail();
             NieuweCategorie = new CategorieInfo();
-            NieuweFunctie = new FunctieInfo();
+            NieuweFunctie = new FunctieDetail();
             Types = new List<LidType>();
             Mededelingen = new List<Mededeling>();
         }
@@ -32,7 +32,7 @@ namespace Chiro.Gap.WebApp.Models
 		public GroepDetail Detail { get; set; }
 		public GroepInfo Info { get { return Detail; } }
 		public CategorieInfo NieuweCategorie { get; set; }
-		public FunctieInfo NieuweFunctie { get; set; }
+		public FunctieDetail NieuweFunctie { get; set; }
 
 		public IEnumerable<LidType> Types { get; set; }
 
