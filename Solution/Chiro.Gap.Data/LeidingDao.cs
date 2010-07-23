@@ -60,5 +60,32 @@ namespace Chiro.Gap.Data.Ef
 
 			return lijst;	
 		}
+
+		/// <summary>
+		/// Haalt alle leiding op uit afdelingsjaar bepaald door <paramref name="groepsWerkJaarID"/>
+		/// en <paramref name="afdelingID"/>.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van groepswerkjaar van afdelingsjaar</param>
+		/// <param name="afdelingID">ID van afdeling van afdelingsjaar</param>
+		/// <param name="paths">Bepaalt de mee op te halen entiteiten</param>
+		/// <returns>Alle kinderen van het gevraagde afdelngsjaar</returns>
+		public IEnumerable<Leiding> OphalenUitAfdelingsJaar(int groepsWerkJaarID, int afdelingID, Expression<Func<Leiding, object>>[] paths)
+		{
+			Leiding[] lijst;
+
+			using (var db = new ChiroGroepEntities())
+			{
+				var kinderen = (
+					from l in db.Lid.OfType<Leiding>()
+					where l.GroepsWerkJaar.ID == groepsWerkJaarID
+					&& l.AfdelingsJaar.Any(aj=>aj.Afdeling.ID == afdelingID)
+					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+					select l) as ObjectQuery<Leiding>;
+
+				lijst = IncludesToepassen(kinderen, paths).ToArray();
+			}
+
+			return lijst;
+		}
 	}
 }

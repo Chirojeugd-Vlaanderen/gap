@@ -296,12 +296,43 @@ namespace Chiro.Gap.Workers
 		/// <returns>De 'pagina' (collectie) met leden</returns>
 		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering)
 		{
+			// TODO: Mergen met PaginaOphalenVolgensAfdelng(groepsWerkJaarID, afdelingsID, extras)
+			// (Ik wacht hier even mee tot Broes' sortering stabiel is)
+
 			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 			
 			return _daos.LedenDao.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID, sortering);
+		}
+
+		/// <summary>
+		/// Haalt een 'pagina' op met leden uit een bepaald GroepsWerkJaar
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
+		/// <param name="afdelingID">ID gevraagde afdeling</param>
+		/// <returns>De 'pagina' (collectie) met leden</returns>
+		public IEnumerable<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingID, LidExtras extras)
+		{
+			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+
+			// Ik haal leden en leiding apart op, omdat de lambda-expressies verschillend zijn als er
+			// afdelingen bij in de 'extra's' zitten.
+
+			IEnumerable<Lid> kindLijst = _daos.KindDao.OphalenUitAfdelingsJaar(groepsWerkJaarID, afdelingID, ExtrasNaarLambdasKind(extras)).Cast<Lid>();
+			IEnumerable<Lid> leidingLijst = _daos.LeidingDao.OphalenUitAfdelingsJaar(groepsWerkJaarID, afdelingID, ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
+
+			var list = kindLijst.Union(leidingLijst);
+
+			// TODO: lijst sorteren, maar ik wacht hier nog mee tot Broes' sorteercode wat stabiliseert
+			// voorlopig sorteer ik gewoon op naam
+
+			return
+				list.OrderBy(ld => ld.GelieerdePersoon.Persoon.Naam).ThenBy(ld => ld.GelieerdePersoon.Persoon.VoorNaam).ToList();			
 		}
 
 		/// <summary>

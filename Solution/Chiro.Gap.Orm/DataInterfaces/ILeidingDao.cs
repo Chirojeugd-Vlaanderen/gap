@@ -23,5 +23,16 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="paths">Geeft aan welke entiteiten mee opgehaald moeten worden</param>
 		/// <returns>Rij opgehaalde leiding</returns>
 		IEnumerable<Leiding> OphalenUitGroepsWerkJaar(int groepsWerkJaarID, Expression<Func<Leiding, object>>[] paths);
+
+		/// <summary>
+		/// Haalt alle leiding op uit afdelingsjaar bepaald door <paramref name="groepsWerkJaarID"/>
+		/// en <paramref name="afdelingID"/>.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van groepswerkjaar van afdelingsjaar</param>
+		/// <param name="afdelingID">ID van afdeling van afdelingsjaar</param>
+		/// <param name="paths">Bepaalt de mee op te halen entiteiten</param>
+		/// <returns>Alle kinderen van het gevraagde afdelngsjaar</returns>
+		IEnumerable<Leiding> OphalenUitAfdelingsJaar(int groepsWerkJaarID, int afdelingID, Expression<Func<Leiding, object>>[] paths);
+
 	}
 }

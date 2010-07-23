@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
@@ -22,5 +23,15 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="paths">Geeft aan welke entiteiten mee opgehaald moeten worden</param>
 		/// <returns>Rij opgehaalde kinderen</returns>
 		IEnumerable<Kind> OphalenUitGroepsWerkJaar(int groepsWerkJaarID, Expression<System.Func<Kind, object>>[] paths);
+
+		/// <summary>
+		/// Haalt alle kinderen op uit afdelingsjaar bepaald door <paramref name="groepsWerkJaarID"/>
+		/// en <paramref name="afdelingID"/>.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van groepswerkjaar van afdelingsjaar</param>
+		/// <param name="afdelingID">ID van afdeling van afdelingsjaar</param>
+		/// <param name="paths">Bepaalt de mee op te halen entiteiten</param>
+		/// <returns>Alle kinderen van het gevraagde afdelngsjaar</returns>
+		IEnumerable<Kind> OphalenUitAfdelingsJaar(int groepsWerkJaarID, int afdelingID, Expression<Func<Kind, object>>[] paths);
 	}
 }

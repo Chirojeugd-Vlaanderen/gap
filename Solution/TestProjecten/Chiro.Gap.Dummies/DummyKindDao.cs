@@ -18,5 +18,10 @@ namespace Chiro.Gap.Dummies
 		{
 			throw new NotImplementedException();
 		}
+
+		public IEnumerable<Kind> OphalenUitAfdelingsJaar(int groepsWerkJaarID, int afdelingID, Expression<Func<Kind, object>>[] paths)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

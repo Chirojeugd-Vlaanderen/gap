@@ -124,6 +124,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 
 			var model = LijstModelInitialiseren(groepsWerkJaarID, groepID, sortering);
+			model.GekozenAfdeling = afdID;
+			model.GekozenFunctie = 0;
 
 			// TODO check dat de gegeven afdeling id wel degelijk van de gegeven groep is
 

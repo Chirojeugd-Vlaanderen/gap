@@ -345,7 +345,12 @@ namespace Chiro.Gap.Services
 		/// <returns>Een rij 'LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
 		public IList<LidOverzicht> OphalenUitAfdelingsJaar(int groepsWerkJaarID, int afdID)
 		{
-			throw new NotImplementedException();
+			IList<Lid> result = _ledenMgr.PaginaOphalenVolgensAfdeling(
+				groepsWerkJaarID, 
+				afdID,
+				LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Adressen | LidExtras.Communicatie).ToList();
+			return Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(result);
+
 		}
 
 		/// <summary>
