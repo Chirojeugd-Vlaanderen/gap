@@ -6,6 +6,7 @@ using Chiro.Cdf.Ioc;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Cdf.Data;
 using Chiro.Gap.TestDbInfo;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Data.Test
 {
@@ -153,7 +154,7 @@ namespace Chiro.Gap.Data.Test
 			IAfdelingsJarenDao ajDao = Factory.Maak<IAfdelingsJarenDao>();
 			IDao<OfficieleAfdeling> oaDao = Factory.Maak<IDao<OfficieleAfdeling>>();
 
-			GroepsWerkJaarManager wjm = Factory.Maak<GroepsWerkJaarManager>();
+			var afdMgr = Factory.Maak<AfdelingsJaarManager>();
 
 			int gwjID = TestInfo.GROEPSWERKJAARID;
 			int afd3ID = TestInfo.AFDELING3ID;
@@ -171,7 +172,7 @@ namespace Chiro.Gap.Data.Test
 
 			// Het afdelingsjaar wordt gemaakt door een worker.
 
-			AfdelingsJaar aj = wjm.AfdelingsJaarMaken(gw, afd, oa, van, tot);
+			AfdelingsJaar aj = afdMgr.Aanmaken(afd, oa, gw, van, tot, GeslachtsType.Gemengd);
 
 			// Act
 

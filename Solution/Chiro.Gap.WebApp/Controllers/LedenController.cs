@@ -55,7 +55,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.JaartalGetoondGroepsWerkJaar = gevraagdwerkjaar.WerkJaar;
 
 			// Haal alle afdelingsjaren op van de groep in het groepswerkjaar
-			var list = ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>(groep => groep.AfdelingenOphalen(groepsWerkJaarID));
+			var list = ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>(groep => groep.ActieveAfdelingenOphalen(groepsWerkJaarID));
 
 			// Laadt de afdelingen in het model in via een dictionary
 			model.AfdelingsInfoDictionary = new Dictionary<int, AfdelingDetail>();
@@ -266,7 +266,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new LidAfdelingenModel();
 			BaseModelInit(model, groepID);
 
-			model.BeschikbareAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<ActieveAfdelingInfo>>(
+			model.BeschikbareAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingInfo>>(
 				svc => svc.BeschikbareAfdelingenOphalen(groepID));
 			model.Info = ServiceHelper.CallService<ILedenService, LidAfdelingInfo>(
 				svc => svc.AfdelingenOphalen(lidID));
@@ -418,7 +418,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		public void AfdelingenOphalen(LedenModel model)
 		{
 			model.AlleAfdelingen = ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>
-				(svc => svc.AfdelingenOphalen(model.HuidigLid.LidInfo.GroepsWerkJaarID));
+				(svc => svc.ActieveAfdelingenOphalen(model.HuidigLid.LidInfo.GroepsWerkJaarID));
 
 			model.AfdelingIDs = model.HuidigLid.LidInfo.AfdelingIdLijst.ToList();
 		}

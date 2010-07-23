@@ -63,6 +63,7 @@
     <Compile Include="DataContracts\CategorieInfo.cs" />
     <Compile Include="DataContracts\CommunicatieInfo.cs" />
     <Compile Include="DataContracts\CommunicatieTypeInfo.cs" />
+    <Compile Include="DataContracts\TeActiverenAfdeling.cs" />
     <Compile Include="DataContracts\FunctieInfo.cs" />
     <Compile Include="DataContracts\FunctieProbleemInfo.cs" />
     <Compile Include="DataContracts\GezinInfo.cs" />

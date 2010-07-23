@@ -16,7 +16,7 @@ namespace Chiro.Gap.WebApp.Models
 	{
 		public LidAfdelingenModel()
 		{
-			BeschikbareAfdelingen = new List<ActieveAfdelingInfo>();
+			BeschikbareAfdelingen = new List<AfdelingInfo>();
 			Info = new LidAfdelingInfo();
 		}
 
@@ -28,6 +28,6 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Lijst met de actieve afdelingen dit werkjaar
 		/// </summary>
-		public IEnumerable<ActieveAfdelingInfo> BeschikbareAfdelingen { get; set; }
+		public IEnumerable<AfdelingInfo> BeschikbareAfdelingen { get; set; }
 	}
 }

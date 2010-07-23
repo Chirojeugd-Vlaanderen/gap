@@ -37,7 +37,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// AfdelingDetails voor Afdelingen die in het opgegeven werkjaar voorkomen als AfdelingsJaar
 			model.Actief =
 				ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>
-				(groep => groep.AfdelingenOphalen(groepsWerkJaarID));
+				(groep => groep.ActieveAfdelingenOphalen(groepsWerkJaarID));
 
 			// AfdelingDetails voor Afdelingen die in het opgegeven werkjaar voorkomen als AfdelingsJaar
 

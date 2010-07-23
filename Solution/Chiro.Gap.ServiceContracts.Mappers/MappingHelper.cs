@@ -4,7 +4,6 @@
 // </copyright>
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -174,8 +173,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
 			Mapper.CreateMap<Functie, FunctieInfo>();
 			Mapper.CreateMap<Functie, FunctieDetail>();
-
-
 
 			Mapper.CreateMap<Lid, LidInfo>()
 				.ForMember(
@@ -376,16 +373,14 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			{
 				return false;
 			}
-			else
-			{
-				var persoonsverzekeringen = from v in src.GelieerdePersoon.Persoon.PersoonsVerzekering
-							    where v.VerzekeringsType.ID == (int)verzekering &&
-								  (LedenManager.DatumInWerkJaar(v.Van, src.GroepsWerkJaar.WerkJaar) ||
-								   LedenManager.DatumInWerkJaar(v.Tot, src.GroepsWerkJaar.WerkJaar))
-							    select v;
 
-				return persoonsverzekeringen.FirstOrDefault() != null;
-			}
+			var persoonsverzekeringen = from v in src.GelieerdePersoon.Persoon.PersoonsVerzekering
+						    where v.VerzekeringsType.ID == (int)verzekering &&
+							  (LedenManager.DatumInWerkJaar(v.Van, src.GroepsWerkJaar.WerkJaar) ||
+							   LedenManager.DatumInWerkJaar(v.Tot, src.GroepsWerkJaar.WerkJaar))
+						    select v;
+
+			return persoonsverzekeringen.FirstOrDefault() != null;
 		}
 
 		/// <summary>

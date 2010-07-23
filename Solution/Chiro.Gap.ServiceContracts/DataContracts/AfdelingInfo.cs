@@ -28,5 +28,11 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
         [Verplicht]
         [StringLengte(10), StringMinimumLengte(1)]
 		public string Afkorting { get; set; }
+
+		/// <summary>
+		/// Naam van de corresponderende officiële afdeling
+		/// </summary>
+		[DataMember]
+		public string OfficieleAfdelingNaam { get; set; }
 	}
 }

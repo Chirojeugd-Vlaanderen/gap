@@ -86,6 +86,7 @@ namespace Chiro.Gap.Dummies
 			var gMgr = Factory.Maak<GroepenManager>();
 			var lMgr = Factory.Maak<LedenManager>();
 			var cMgr = Factory.Maak<CategorieenManager>();
+			var afdMgr = Factory.Maak<AfdelingsJaarManager>();
 			var fMgr = Factory.Maak<FunctiesManager>();
 
 			// Groep en groepswerkjaar
@@ -109,8 +110,8 @@ namespace Chiro.Gap.Dummies
 			var unittestjes = gMgr.AfdelingToevoegen(_dummyGroep, "unittestjes", "ut");
 			var speelkwis = gMgr.AfdelingToevoegen(_dummyGroep, "speelkwi's", "sk");
 
-			wjMgr.AfdelingsJaarMaken(_huidigGwj, unittestjes, ribbels, 2001, 2003);
-			wjMgr.AfdelingsJaarMaken(_huidigGwj, speelkwis, rakwis, 1998, 2000);
+			afdMgr.Aanmaken(unittestjes, ribbels, _huidigGwj, 2001, 2003, GeslachtsType.Gemengd);
+			afdMgr.Aanmaken(speelkwis, rakwis, _huidigGwj, 1998, 2000, GeslachtsType.Gemengd);
 
 			// Gelieerde personen
 

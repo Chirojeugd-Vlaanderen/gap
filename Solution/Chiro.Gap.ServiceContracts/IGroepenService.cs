@@ -93,6 +93,13 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(BestaatAlFault<AfdelingInfo>))]
 		void AfdelingAanmaken(int groepID, string naam, string afkorting);
 
+		/// <summary>
+		/// Bewaart een afdeling met de nieuwe informatie.
+		/// </summary>
+		/// <param name="info"></param>
+		[OperationContract]
+		void AfdelingBewaren(AfdelingInfo info);
+
 		[OperationContract]
 		AfdelingsJaarDetail AfdelingsJaarOphalen(int afdelingsJaarID);
 
@@ -151,7 +158,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// ID <paramref name="groepsWerkJaarID"/>
 		/// </returns>
 		[OperationContract]
-		IList<AfdelingDetail> AfdelingenOphalen(int groepsWerkJaarID);
+		IList<AfdelingDetail> ActieveAfdelingenOphalen(int groepsWerkJaarID);
 
 		/// <summary>
 		/// Haalt beperkte informatie op over de beschikbare afdelingen van een groep in het huidige
@@ -160,7 +167,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="groepID">ID van de groep waarvoor de afdelingen gevraagd zijn</param>
 		/// <returns>Lijst van ActieveAfdelingInfo</returns>
 		[OperationContract]
-		IList<ActieveAfdelingInfo> BeschikbareAfdelingenOphalen(int groepID);
+		IList<AfdelingInfo> BeschikbareAfdelingenOphalen(int groepID);
 
 		/// <summary>
 		/// Haalt informatie op over de afdelingen van een groep die niet gebruikt zijn in een gegeven 
@@ -317,6 +324,13 @@ namespace Chiro.Gap.ServiceContracts
 		/// WCF-functies met dezelfde naam in 1 service hebben.  Spijtig.</remarks>
 		[OperationContract]
 		IEnumerable<StraatInfo> StratenOphalenMeerderePostNrs(String straatBegin, IEnumerable<int> postNrs);
+
+		#endregion
+
+		#region jaarovergang
+
+		[OperationContract]
+		void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdeling> teactiveren, int groepID);
 
 		#endregion
 

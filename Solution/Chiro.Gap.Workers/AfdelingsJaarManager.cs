@@ -172,6 +172,21 @@ namespace Chiro.Gap.Workers
 		/// Het opgegeven afdelingsjaar opslaan
 		/// </summary>
 		/// <param name="aj">Het afdelingsjaar dat opgeslagen moet worden</param>
+		public void Bewaren(Afdeling aj)
+		{
+			if (!_autorisatieMgr.IsGavAfdeling(aj.ID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+				
+			}
+
+			_afdelingenDao.Bewaren(aj);
+		}
+
+		/// <summary>
+		/// Het opgegeven afdelingsjaar opslaan
+		/// </summary>
+		/// <param name="aj">Het afdelingsjaar dat opgeslagen moet worden</param>
 		public void Bewaren(AfdelingsJaar aj)
 		{
 			if (_autorisatieMgr.IsGavAfdeling(aj.Afdeling.ID))

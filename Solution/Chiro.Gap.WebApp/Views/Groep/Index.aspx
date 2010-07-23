@@ -7,10 +7,6 @@
 	<div class="kaderke">
 		<div class="kadertitel">Algemene groepsinfo</div>
 		<p>
-			<%=Html.LabelFor(mdl => mdl.Detail.ID) %>
-			<%=Html.DisplayFor(mdl => mdl.Detail.ID)%>
-		</p>
-		<p>
 			<%=Html.LabelFor(mdl => mdl.Detail.Naam)%>
 			<%=Html.DisplayFor(mdl => mdl.Detail.Naam)%>
 		</p>

@@ -80,59 +80,6 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Maakt een nieuw afdelingsjaar op basis van groepswerkjaar,
-		/// afdeling en officiële afdeling.
-		/// </summary>
-		/// <param name="gwj">Groepswerkjaar voor afdelingsjaar</param>
-		/// <param name="afd">Afdeling voor afdelingswerkjaar</param>
-		/// <param name="oa">Corresponderende officiële afdeling voor afd</param>
-		/// <param name="jaarVan">Startpunt interval geboortejaren</param>
-		/// <param name="jaarTot">Eindpunt interval geboortejaren</param>
-		/// <returns>Afdelingsjaar met daaraan gekoppeld groepswerkjaar
-		/// , afdeling en officiële afdeling.</returns>
-		/// <remarks>gwj.Groep en afd.Groep mogen niet null zijn</remarks>
-		public AfdelingsJaar AfdelingsJaarMaken(GroepsWerkJaar gwj, Afdeling afd, OfficieleAfdeling oa, int jaarVan, int jaarTot)
-		{
-			if (!_autorisatieMgr.IsGavGroepsWerkJaar(gwj.ID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-			if (!_autorisatieMgr.IsGavAfdeling(afd.ID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-
-			Debug.Assert(gwj.Groep != null);
-			Debug.Assert(afd.Groep != null);
-
-			// FIXME: Eigenlijk zou onderstaande if ook moeten
-			// werken zonder de .ID's, want ik heb equals geoverload.
-			// Maar dat is blijkbaar niet zo evident.
-
-			if (!gwj.Groep.Equals(afd.Groep))
-			{
-				throw new FoutNummerException(
-						FoutNummer.AfdelingNietVanGroep,
-						"De afdeling is niet gekoppeld aan de groep van het groepswerkjaar.");
-			}
-
-			var resultaat = new AfdelingsJaar();
-
-			resultaat.GeboorteJaarVan = jaarVan;
-			resultaat.GeboorteJaarTot = jaarTot;
-
-			resultaat.GroepsWerkJaar = gwj;
-			resultaat.Afdeling = afd;
-			resultaat.OfficieleAfdeling = oa;
-
-			gwj.AfdelingsJaar.Add(resultaat);
-			afd.AfdelingsJaar.Add(resultaat);
-			oa.AfdelingsJaar.Add(resultaat);
-
-			return resultaat;
-		}
-
-		/// <summary>
 		/// Haalt recentste groepswerkjaar voor een groep op.
 		/// </summary>
 		/// <param name="groepID">ID gevraagde groep</param>
@@ -177,26 +124,6 @@ namespace Chiro.Gap.Workers
 			else
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-		}
-
-		// WTF???
-		private int compare(int dag1, int maand1, int dag2, int maand2)
-		{
-			if (maand1 < maand2 || (maand1 == maand2 && dag1 < dag2))
-			{
-				return -1;
-			}
-			else
-			{
-				if (maand1 > maand2 || (maand1 == maand2 && dag1 > dag2))
-				{
-					return 1;
-				}
-				else
-				{
-					return 0;
-				}
 			}
 		}
 
@@ -249,6 +176,31 @@ namespace Chiro.Gap.Workers
 		{
 			DateTime wjStart = Properties.Settings.Default.WerkjaarStartNationaal;
 			return new DateTime(groepsWerkJaar.WerkJaar + 1, wjStart.Month, wjStart.Day).AddDays(-1);
+		}
+
+		/// <summary>
+		/// Maakt een nieuw groepswerkjaar in het gevraagde werkjaar.
+		/// </summary>
+		/// <param name="g"></param>
+		/// <param name="werkjaar"></param>
+		/// <returns></returns>
+		public GroepsWerkJaar OvergangDoen(Groep g, int werkjaar)
+		{
+			if (!_autorisatieMgr.IsGavGroep(g.ID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+
+			var allegwjs = _groepsWjDao.AllesOphalen();
+
+			if(allegwjs.Any(e =>e.WerkJaar == werkjaar))
+			{
+				throw new OngeldigObjectException("Er bestaat al een groepswerkjaar in dat werkjaar");
+			}
+
+			var nieuwgwj = new GroepsWerkJaar {Groep = g, WerkJaar = werkjaar };
+
+			return _groepsWjDao.Bewaren(nieuwgwj);
 		}
 	}
 }

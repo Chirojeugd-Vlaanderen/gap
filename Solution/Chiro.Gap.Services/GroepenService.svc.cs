@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using System.Transactions;
 
 using AutoMapper;
 using Chiro.Gap.Domain;
@@ -229,6 +230,21 @@ namespace Chiro.Gap.Services
 			_groepenMgr.Bewaren(g, e => e.Afdeling);
 		}
 
+		public void AfdelingBewaren(AfdelingInfo info)
+		{
+			Afdeling ai = _afdelingsJaarMgr.AfdelingOphalen(info.ID);
+			if(info.Naam != null && info.Naam.CompareTo(ai.Naam)!=0)
+			{
+				ai.Naam = info.Naam;
+			}
+			if (info.Afkorting != null && info.Afkorting.CompareTo(ai.Afkorting) != 0)
+			{
+				ai.Afkorting = info.Afkorting;
+			}
+
+			_afdelingsJaarMgr.Bewaren(ai);
+		}
+
 		/// <summary>
 		/// Maakt/bewerkt een AfdelingsJaar: 
 		/// andere OfficieleAfdeling en/of andere leeftijden
@@ -365,7 +381,7 @@ namespace Chiro.Gap.Services
 		/// </returns>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<AfdelingDetail> AfdelingenOphalen(int groepsWerkJaarID)
+		public IList<AfdelingDetail> ActieveAfdelingenOphalen(int groepsWerkJaarID)
 		{
 			var groepswerkjaar = _groepsWerkJaarManager.Ophalen(groepsWerkJaarID, GroepsWerkJaarExtras.Afdelingen | GroepsWerkJaarExtras.Leden);
 			return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingDetail>>(groepswerkjaar.AfdelingsJaar.OrderBy(e => e.GeboorteJaarVan).ToList());
@@ -376,11 +392,11 @@ namespace Chiro.Gap.Services
 		/// groepswerkjaar.
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvoor de afdelingen gevraagd zijn</param>
-		/// <returns>Lijst van ActieveAfdelingInfo</returns>
-		public IList<ActieveAfdelingInfo> BeschikbareAfdelingenOphalen(int groepID)
+		/// <returns>Lijst van AfdelingInfo</returns>
+		public IList<AfdelingInfo> BeschikbareAfdelingenOphalen(int groepID)
 		{
-			var gwj = _groepsWerkJaarManager.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
-			return Mapper.Map<IEnumerable<AfdelingsJaar>, IList<ActieveAfdelingInfo>>(gwj.AfdelingsJaar);
+			var groep = _groepenMgr.OphalenMetAfdelingen(groepID);
+			return Mapper.Map<IEnumerable<Afdeling>, IList<AfdelingInfo>>(groep.Afdeling);
 		}
 
 		/// <summary>
@@ -713,6 +729,74 @@ namespace Chiro.Gap.Services
 		public string WieBenIk()
 		{
 			return _autorisatieMgr.GebruikersNaamGet();
+		}
+
+		#endregion
+
+		#region jaarovergang
+
+		/// <summary>
+		/// Eens de gebruiker alle informatie heeft ingegeven, wordt de gewenste afdelingsverdeling naar de server gestuurd.
+		/// 
+		/// Dit in de vorm van een lijst van afdelingsjaardetails, met volgende info:
+		///		AFDELINGID van de afdelingen die geactiveerd zullen worden
+		///		Geboortejaren voor elk van die afdelingen
+		/// </summary>
+		/// <param name="teactiveren"></param>
+		///<param name="groepID"></param>
+		public void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdeling> teactiveren, int groepID)
+		{
+			using (var scope = new TransactionScope())
+			{
+				//Berekend gewenste werkjaar
+				int werkjaar;
+				var startdate = new DateTime(DateTime.Today.Year, 8, 15);
+				if(DateTime.Today.CompareTo(startdate)<0) //earlier
+				{
+					werkjaar = DateTime.Today.Year - 1;
+				}else
+				{
+					werkjaar = DateTime.Today.Year;
+				}
+
+				//Groep ophalen
+				var g = _groepenMgr.Ophalen(groepID, GroepsExtras.AlleAfdelingen);
+
+				var gwj = _groepsWerkJaarManager.OvergangDoen(g, werkjaar);
+
+				var offafdelingen = _afdelingsJaarMgr.OfficieleAfdelingenOphalen();
+
+				foreach (var afdinfo in teactiveren)
+				{
+					//Hier zit schijnbaar een probleem, maar ik snap het niet voldoende om te zien waarom resharper zijn oplossing wel juist is
+					//alleszins, hier gaat c# toch de lelijke toer op
+					//duidelijke info: http://stackoverflow.com/questions/2951037/modified-closure-warning-in-resharper
+					var afd = (from a in g.Afdeling
+								where afdinfo.AfdelingID == a.ID
+								select a).FirstOrDefault();
+
+					if(afd==null)
+					{
+						throw new OngeldigObjectException("Een van de afdelingsIDs bestaat niet in de opgegeven groep.");
+					}
+
+					var offafd = (from a in offafdelingen
+							   where afdinfo.OfficieleAfdelingID == a.ID
+							   select a).FirstOrDefault();
+
+					if (offafd == null)
+					{
+						throw new OngeldigObjectException("Een van de officiele afdelingsIDs bestaat niet in de opgegeven groep.");
+					}
+
+					//TODO handle more exceptions
+					_afdelingsJaarMgr.Aanmaken(afd, offafd, gwj, afdinfo.GeboorteJaarVan, afdinfo.GeboorteJaarTot, afdinfo.Geslacht);
+				}
+
+				_gelieerdePersonenMgr.VerdeelAlleOudeLeden();
+
+				scope.Complete();
+			}
 		}
 
 		#endregion
