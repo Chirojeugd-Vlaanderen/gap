@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 using Chiro.Gap.Orm;
@@ -13,5 +14,9 @@ namespace Chiro.Gap.Dummies
 	/// </summary>
 	public class DummyLeidingDao : DummyDao<Leiding>, ILeidingDao
 	{
+		public IEnumerable<Leiding> OphalenUitGroepsWerkJaar(int groepsWerkJaarID, Expression<Func<Leiding, object>>[] paths)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

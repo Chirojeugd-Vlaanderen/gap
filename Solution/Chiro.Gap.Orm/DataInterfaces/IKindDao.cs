@@ -3,6 +3,9 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System.Collections.Generic;
+using System.Linq.Expressions;
+
 using Chiro.Cdf.Data;
 
 namespace Chiro.Gap.Orm.DataInterfaces
@@ -12,5 +15,12 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	/// </summary>
 	public interface IKindDao : IDao<Kind>
 	{
+		/// <summary>
+		/// Haalt alle kinderen op uit een gegeven groepswerkjaar
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+		/// <param name="paths">Geeft aan welke entiteiten mee opgehaald moeten worden</param>
+		/// <returns>Rij opgehaalde kinderen</returns>
+		IEnumerable<Kind> OphalenUitGroepsWerkJaar(int groepsWerkJaarID, Expression<System.Func<Kind, object>>[] paths);
 	}
 }

@@ -367,9 +367,9 @@ namespace Chiro.Gap.Services
 		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
 		public IList<LidOverzicht> OphalenUitGroepsWerkJaar(int groepsWerkJaarID)
 		{
-			// Ik sorteer hier arbitrair op afdeling.
-
-			var leden = _ledenMgr.PaginaOphalen(groepsWerkJaarID, LedenSorteringsEnum.Afdeling);
+			var leden = _ledenMgr.PaginaOphalen(
+				groepsWerkJaarID, 
+				LidExtras.Persoon|LidExtras.Afdelingen|LidExtras.Functies|LidExtras.Adressen|LidExtras.Communicatie);
 			var resultaat = Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(leden);
 
 			return resultaat;

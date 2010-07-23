@@ -4,6 +4,9 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
+using System.Data.Objects;
+using System.Linq;
 using System.Linq.Expressions;
 
 using Chiro.Cdf.Data;
@@ -25,13 +28,37 @@ namespace Chiro.Gap.Data.Ef
 		public KindDao()
 		{
 			connectedEntities = new Expression<Func<Kind, object>>[] 
-            { 
-                                        e => e.GroepsWerkJaar.WithoutUpdate(), 
-                                        e => e.GelieerdePersoon.WithoutUpdate(), 
-										e => e.GelieerdePersoon.Persoon.WithoutUpdate(), 
-										e => e.AfdelingsJaar.WithoutUpdate(),
-                                        e => e.AfdelingsJaar.Afdeling.WithoutUpdate() 
-            };
+			    { 
+				e => e.GroepsWerkJaar.WithoutUpdate(), 
+				e => e.GelieerdePersoon.WithoutUpdate(), 
+				e => e.GelieerdePersoon.Persoon.WithoutUpdate(), 
+				e => e.AfdelingsJaar.WithoutUpdate(),
+				e => e.AfdelingsJaar.Afdeling.WithoutUpdate() 
+			    };
+		}
+
+		/// <summary>
+		/// Haalt alle kinderen op uit een gegeven groepswerkjaar
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+		/// <param name="paths">Geeft aan welke entiteiten mee opgehaald moeten worden</param>
+		/// <returns>Rij opgehaalde kinderen</returns>
+		public IEnumerable<Kind> OphalenUitGroepsWerkJaar(int groepsWerkJaarID, Expression<Func<Kind, object>>[] paths)
+		{
+			Kind[] lijst;
+
+			using (var db = new ChiroGroepEntities())
+			{
+				var kinderen = (
+					from l in db.Lid.OfType<Kind>()
+					where l.GroepsWerkJaar.ID == groepsWerkJaarID
+					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+					select l) as ObjectQuery<Kind>;
+
+				lijst = IncludesToepassen(kinderen, paths).ToArray();
+			}
+
+			return lijst;			
 		}
 	}
 }

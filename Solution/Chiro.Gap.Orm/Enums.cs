@@ -76,8 +76,18 @@ namespace Chiro.Gap.Orm
 		/// Haalt personen en verzekeringen mee op
 		/// </summary>
 		Verzekeringen = 0x20,
+
+		/// <summary>
+		/// Haalt adressen van de personen mee op
+		/// </summary>
+		Adressen = 0x40,
+
+		/// <summary>
+		/// Communicatiemiddelen mee ophalen
+		/// </summary>
+		Communicatie = 0x80,
 		
-		Alles = Groep | Afdelingen | Functies | Persoon | Verzekeringen
+		Alles = Groep | Afdelingen | Functies | Persoon | Verzekeringen | Adressen | Communicatie
 	}
 
 	/// <summary>

@@ -9,13 +9,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using Chiro.Cdf.Data;
-using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.ServiceContracts.DataContracts;
-using Chiro.Gap.Workers.Properties;
 
 namespace Chiro.Gap.Workers
 {
@@ -250,6 +248,9 @@ namespace Chiro.Gap.Workers
 		/// <returns>Lijst met alle leden uit het gevraagde groepswerkjaar.</returns>
 		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
 		{
+			// TODO: deze functie mergen met PaginaOphalen(groepsWerkJaarID, extras).
+			// Ik wacht hier nog mee tot Broes' sorteercode op punt staat.
+
 			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
@@ -257,6 +258,34 @@ namespace Chiro.Gap.Workers
 
 			var list = _daos.LedenDao.AllesOphalen(groepsWerkJaarID, sortering);
 			return list;
+		}
+
+		/// <summary>
+		/// Haal een pagina op met leden van een groepswerkjaar.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+		/// <param name="extras">Bepaalt welke extra entiteiten mee opgevraagd worden</param>
+		/// <returns>Lijst met alle leden uit het gevraagde groepswerkjaar.</returns>
+		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, LidExtras extras)
+		{
+			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+
+			// Ik haal leden en leiding apart op, omdat de lambda-expressies verschillend zijn als er
+			// afdelingen bij in de 'extra's' zitten.
+
+			IEnumerable<Lid> kindLijst = _daos.KindDao.OphalenUitGroepsWerkJaar(groepsWerkJaarID, ExtrasNaarLambdasKind(extras)).Cast<Lid>();
+			IEnumerable<Lid> leidingLijst = _daos.LeidingDao.OphalenUitGroepsWerkJaar(groepsWerkJaarID, ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
+
+			var list = kindLijst.Union(leidingLijst);
+
+			// TODO: lijst sorteren, maar ik wacht hier nog mee tot Broes' sorteercode wat stabiliseert
+			// voorlopig sorteer ik gewoon op naam
+
+			return
+				list.OrderBy(ld => ld.GelieerdePersoon.Persoon.Naam).ThenBy(ld => ld.GelieerdePersoon.Persoon.VoorNaam).ToList();
 		}
 
 		/// <summary>
@@ -336,7 +365,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="lidID">ID gevraagde lid</param>
 		/// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
-		/// <returns>Kind of Leiding met persoonsgegevens en <paramref name="extras"/>.</returns>
+		/// <returns>Kind of Leiding met gevraagde <paramref name="extras"/>.</returns>
 		public Lid Ophalen(int lidID, LidExtras extras)
 		{
 			if (!_autorisatieMgr.IsGavLid(lidID))
@@ -345,71 +374,11 @@ namespace Chiro.Gap.Workers
 			}
 			if (_daos.LedenDao.IsLeiding(lidID))
 			{
-				// Leiding: ga via LeidingDAO.
-
-				var paths = new List<Expression<Func<Leiding, object>>>();
-				paths.Add(ld => ld.GroepsWerkJaar);
-
-				if ((extras & LidExtras.Persoon) != 0)
-				{
-					paths.Add(ld => ld.GelieerdePersoon.Persoon);
-				}
-				if ((extras & LidExtras.Groep) != 0)
-				{
-					paths.Add(ld => ld.GroepsWerkJaar.Groep);
-				}
-				if ((extras & LidExtras.Afdelingen) != 0)
-				{
-					paths.Add(ld => ld.AfdelingsJaar.First().Afdeling);
-				}
-				if ((extras & LidExtras.Functies) != 0)
-				{
-					paths.Add(ld => ld.Functie);
-				}
-				if ((extras & LidExtras.AlleAfdelingen) != 0)
-				{
-					paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().Afdeling);
-				}
-				if ((extras & LidExtras.Verzekeringen) != 0)
-				{
-					paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsVerzekering.First().VerzekeringsType);
-				}
-
-				return _daos.LeidingDao.Ophalen(lidID, paths.ToArray());
+				return _daos.LeidingDao.Ophalen(lidID, ExtrasNaarLambdasLeiding(extras));
 			}
 			else
 			{
-				// Nog eens ongeveer hetzelfde voor kinderen.  TODO: Waarschijnlijk kan dit properder.
-				var paths = new List<Expression<Func<Kind, object>>>();
-				paths.Add(ld => ld.GelieerdePersoon.Persoon);
-				paths.Add(ld => ld.GroepsWerkJaar);
-
-				if ((extras & LidExtras.Persoon) != 0)
-				{
-					paths.Add(ld => ld.GelieerdePersoon.Persoon);
-				}
-				if ((extras & LidExtras.Groep) != 0)
-				{
-					paths.Add(ld => ld.GroepsWerkJaar.Groep);
-				}
-				if ((extras & LidExtras.Afdelingen) != 0)
-				{
-					paths.Add(ld => ld.AfdelingsJaar.Afdeling);
-				}
-				if ((extras & LidExtras.Functies) != 0)
-				{
-					paths.Add(ld => ld.Functie);
-				}
-				if ((extras & LidExtras.AlleAfdelingen) != 0)
-				{
-					paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().Afdeling);
-				}
-				if ((extras & LidExtras.Verzekeringen) != 0)
-				{
-					paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsVerzekering.First().VerzekeringsType);
-				}
-
-				return _daos.KindDao.Ophalen(lidID, paths.ToArray());
+				return _daos.KindDao.Ophalen(lidID, ExtrasNaarLambdasKind(extras));			
 			}
 		}
 
@@ -442,30 +411,7 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
-			var paths = new List<Expression<Func<Lid, object>>>();
-
-			if ((extras & LidExtras.Persoon) != 0)
-			{
-				paths.Add(ld => ld.GelieerdePersoon.Persoon);
-			}
-			if ((extras & LidExtras.Groep) != 0)
-			{
-				paths.Add(ld => ld.GroepsWerkJaar.Groep);
-			}
-			if ((extras & LidExtras.Afdelingen) != 0)
-			{
-				// Afdelingen: altijd tricky, want verschillend voor leden
-				// en leiding.
-				throw new NotImplementedException();
-			}
-			if ((extras & LidExtras.Functies) != 0)
-			{
-				paths.Add(ld => ld.Functie);
-			}
-			if ((extras & LidExtras.Verzekeringen) != 0)
-			{
-				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsVerzekering.First().VerzekeringsType);
-			}
+			var paths = ExtrasNaarLambdasLid(extras);
 
 			return _daos.LedenDao.OphalenUitFunctie(
 				functieID,
@@ -575,5 +521,114 @@ namespace Chiro.Gap.Workers
 
 			return werkJaarStart <= dateTime && dateTime <= werkJaarStop;
 		}
+
+		/// <summary>
+		/// Converteert lidextras <paramref name="extras"/> naar lambda-expresses voor een
+		/// KindDao
+		/// </summary>
+		/// <param name="extras">te converteren lidextras</param>
+		/// <returns>lambda-expresses voor een KindDao</returns>
+		private static Expression<Func<Kind, object>>[] ExtrasNaarLambdasKind(LidExtras extras)
+		{
+			var paths = ExtrasNaarLambdas<Kind>(extras & ~LidExtras.Afdelingen);
+
+			if ((extras & LidExtras.Afdelingen) != 0)
+			{
+				paths.Add(ld => ld.AfdelingsJaar.Afdeling);
+			}
+
+			return paths.ToArray();
+		}
+
+		/// <summary>
+		/// Converteert lidextras <paramref name="extras"/> naar lambda-expresses voor een
+		/// LeidingDao.
+		/// </summary>
+		/// <param name="extras">te converteren lidextras</param>
+		/// <returns>lambda-expresses voor een LeidingDao</returns>
+		private static Expression<Func<Leiding, object>>[] ExtrasNaarLambdasLeiding(LidExtras extras)
+		{
+			var paths = ExtrasNaarLambdas<Leiding>(extras & ~LidExtras.Afdelingen);
+
+			if ((extras & LidExtras.Afdelingen) != 0)
+			{
+				paths.Add(ld => ld.AfdelingsJaar.First().Afdeling);
+			}
+
+			return paths.ToArray();
+		}
+
+		/// <summary>
+		/// Converteert lidextras <paramref name="extras"/> naar lambda-expresses voor een
+		/// LedenDao.
+		/// </summary>
+		/// <param name="extras">te converteren lidextras</param>
+		/// <returns>lambda-expresses voor een LedenDao</returns>
+		private static Expression<Func<Lid, object>>[] ExtrasNaarLambdasLid(LidExtras extras)
+		{
+			return ExtrasNaarLambdas<Lid>(extras & ~LidExtras.Afdelingen).ToArray();
+		}
+
+		/// <summary>
+		/// Converteert LidExtra's naar lambda-expressies voor de data-access
+		/// </summary>
+		/// <param name="extras">Te converteren lidextra's</param>
+		/// <returns>Lijst lambda-expressies geschikt voor de LedenDAO</returns>
+		private static IList<Expression<Func<T, object>>> ExtrasNaarLambdas<T>(LidExtras extras) where T:Lid
+		{
+			var paths = new List<Expression<Func<T, object>>>();
+
+			paths.Add(ld => ld.GroepsWerkJaar);
+
+			if ((extras & LidExtras.Adressen) != 0)
+			{
+				// alle adressen
+				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsAdres.First().Adres.WoonPlaats);
+				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsAdres.First().Adres.StraatNaam);
+
+				// link naar standaardadres
+				paths.Add(ld => ld.GelieerdePersoon.PersoonsAdres.Adres);			
+			}
+			else if ((extras & LidExtras.Persoon) != 0)
+			{
+				paths.Add(ld => ld.GelieerdePersoon.Persoon);
+			}
+
+			if ((extras & LidExtras.Communicatie) != 0)
+			{
+				paths.Add(ld => ld.GelieerdePersoon.Communicatie.First().CommunicatieType);
+			}
+
+			if ((extras & LidExtras.Groep) != 0)
+			{
+				paths.Add(ld => ld.GroepsWerkJaar.Groep);
+			}
+			if ((extras & LidExtras.Afdelingen) != 0)
+			{
+				//// Onderstaande had cool geweest; dan hadden we de generieke <T> niet nodig. 
+				//// Maar helaas lukt dat (nog??) niet met AttachObjectGraph:
+				
+				//paths.Add(ld => ld is Kind ? (ld as Kind).AfdelingsJaar.Afdeling : ld is Leiding ? (ld as Leiding).AfdelingsJaar.First().Afdeling : null);
+
+				//// Zodus:
+
+				throw new NotSupportedException();
+			}
+			if ((extras & LidExtras.Functies) != 0)
+			{
+				paths.Add(ld => ld.Functie);
+			}
+			if ((extras & LidExtras.AlleAfdelingen) != 0)
+			{
+				paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().Afdeling);
+			}
+			if ((extras & LidExtras.Verzekeringen) != 0)
+			{
+				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsVerzekering.First().VerzekeringsType);
+			}
+			return paths;
+		}
+
+
 	}
 }
