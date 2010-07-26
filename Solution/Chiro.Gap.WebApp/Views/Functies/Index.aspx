@@ -23,7 +23,11 @@
 			{
 		%>
 		<li>[<%=Html.ActionLink("verwijderen", "FunctieVerwijderen", new {id = fie.ID }) %>]
-			<%=Html.Encode(String.Format("{0} ({1}) - Kan toegekend worden aan: {2}", fie.Naam, fie.Code, fie.Type))%>
+			<%=Html.Encode(String.Format(
+			    "{0} ({1}) - Kan toegekend worden aan ingeschreven {2}", 
+			    fie.Naam, 
+                fie.Code, 
+                fie.Type == LidType.Kind ? "leden" : fie.Type == LidType.Leiding ? "leiding" : "leden en leiding"))%>
 		</li>
 		<%
 			}

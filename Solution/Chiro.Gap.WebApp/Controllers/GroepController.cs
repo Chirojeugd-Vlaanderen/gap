@@ -3,16 +3,10 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Diagnostics;
-using System.Linq;
-using System.ServiceModel;
 using System.Web.Mvc;
-using System.Web.Routing;
 
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
-using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.WebApp.Models;
 
