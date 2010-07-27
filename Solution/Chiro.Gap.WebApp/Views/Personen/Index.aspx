@@ -25,6 +25,7 @@
 		<%}%>
 		</select>
 		<input id="kiesCategorie" type="submit" value="Uitvoeren"/>
+		<%=Html.HiddenFor(e => e.Sortering) %>
     </li>
 </ul>
 <%} %>

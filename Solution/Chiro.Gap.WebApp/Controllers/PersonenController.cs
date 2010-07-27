@@ -171,7 +171,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				{
 					page = 1,
 					id = model.GekozenCategorieID,
-					sortering = PersoonSorteringsEnum.Naam
+					sortering = model.Sortering
 				});
 		}
 

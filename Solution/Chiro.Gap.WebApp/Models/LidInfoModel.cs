@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.Domain;
+using Chiro.Gap.WebApp.Controllers;
 
 namespace Chiro.Gap.WebApp.Models
 {
@@ -33,8 +34,10 @@ namespace Chiro.Gap.WebApp.Models
 
 		public IList<PersoonLidInfo> LidInfoLijst { get; set; }
 
-		public int GekozenAfdeling { get; set; }	// TODO: Hernoem als GekozenAfdelingID
-		public int GekozenFunctie { get; set; }		// TODO: Hernoem als GekozenFunctieID
+		public int GekozenAfdeling { get; set; }
+		public int GekozenFunctie { get; set; }
+		public int GekozenID { get; set; }
+		public LijstEnum GekozenLijst { get; set; }
 		public LedenSorteringsEnum GekozenSortering { get; set; }
 
 		/// <summary>

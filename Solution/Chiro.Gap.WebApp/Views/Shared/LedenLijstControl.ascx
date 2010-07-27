@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.LidInfoModel>" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
+<%@ Import Namespace="Chiro.Gap.WebApp.Controllers" %>
 
 <div class="pager">
 Pagina: <%= Html.WerkJaarLinks(
@@ -15,11 +16,11 @@ Pagina: <%= Html.WerkJaarLinks(
 <tr>
     <th>Ad-nr.</th>
     <th>Type</th>
-    <th><%= Html.ActionLink("Naam", "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Chiro.Gap.Domain.LedenSorteringsEnum.Naam })%></th>
-    <th><%= Html.ActionLink("Geboortedatum", "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Chiro.Gap.Domain.LedenSorteringsEnum.Leeftijd })%></th>
+    <th><%= Html.ActionLink("Naam", "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = LedenSorteringsEnum.Naam, lijst = Model.GekozenLijst, ID = Model.GekozenID })%></th>
+    <th><%= Html.ActionLink("Geboortedatum", "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = LedenSorteringsEnum.Leeftijd, lijst = Model.GekozenLijst, ID = Model.GekozenID  })%></th>
     <th><%=Html.Geslacht(GeslachtsType.Man) %> <%=Html.Geslacht(GeslachtsType.Vrouw) %></th>
     <th>Betaald</th>
-    <th><%= Html.ActionLink("Afd.", "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Chiro.Gap.Domain.LedenSorteringsEnum.Afdeling })%></th>
+    <th><%= Html.ActionLink("Afd.", "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = LedenSorteringsEnum.Afdeling, lijst = Model.GekozenLijst, ID = Model.GekozenID })%></th>
     <th>Func.</th>
     <%=Model.KanLedenBewerken ? "<th>Acties</th>" : String.Empty %>  
 </tr>
@@ -34,12 +35,12 @@ Pagina: <%= Html.WerkJaarLinks(
     <td><%= pl.LidInfo.LidgeldBetaald?"Ja":"Nee"%></td>
     <td><% foreach (var a in pl.LidInfo.AfdelingIdLijst) 
            { %>
-               <%=Html.ActionLink(Html.Encode(ViewData.Model.AfdelingsInfoDictionary[a].AfdelingAfkorting), "AfdelingsLijst", new { Controller = "Leden", afdID = a, groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar , sortering = Model.GekozenSortering}, new { title = ViewData.Model.AfdelingsInfoDictionary[a].AfdelingNaam })%>
+               <%=Html.ActionLink(Html.Encode(ViewData.Model.AfdelingsInfoDictionary[a].AfdelingAfkorting), "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Model.GekozenSortering, lijst = LijstEnum.Afdeling, ID = a }, new { title = ViewData.Model.AfdelingsInfoDictionary[a].AfdelingNaam })%>
         <% } %>
     </td>
     <td><% foreach (var a in pl.LidInfo.Functies) 
            { %>
-               <%=Html.ActionLink(Html.Encode(ViewData.Model.FunctieInfoDictionary[a.ID].Code), "FunctieLijst", new { Controller = "Leden", funcID = a.ID, groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering=Model.GekozenSortering }, new { title = ViewData.Model.FunctieInfoDictionary[a.ID].Naam })%>
+               <%=Html.ActionLink(Html.Encode(ViewData.Model.FunctieInfoDictionary[a.ID].Code), "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Model.GekozenSortering, lijst = LijstEnum.Functie, ID = a.ID }, new { title = ViewData.Model.FunctieInfoDictionary[a.ID].Naam })%>
         <% } %>
     </td>
     <%if (Model.KanLedenBewerken)
