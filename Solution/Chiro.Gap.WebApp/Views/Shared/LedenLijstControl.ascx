@@ -27,7 +27,7 @@ Pagina: <%= Html.WerkJaarLinks(
 <% foreach (Chiro.Gap.ServiceContracts.DataContracts.PersoonLidInfo pl in ViewData.Model.LidInfoLijst) {  %>
 <tr>
     <td><%= pl.PersoonDetail.AdNummer %></td>
-    <td><%= pl.LidInfo.Type.ToString() %></td>
+    <td><%= pl.LidInfo.Type == LidType.Kind ? "Lid" : "Leiding" %></td>
     <td><% Html.RenderPartial("LedenLinkControl", pl); %></td>
     <td class="right"><%=pl.PersoonDetail.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)pl.PersoonDetail.GeboorteDatum).ToString("d")%></td>
     <td><%= Html.Geslacht(pl.PersoonDetail.Geslacht)%></td>

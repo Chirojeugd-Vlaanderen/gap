@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-
+using System.Transactions;
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
@@ -177,22 +177,22 @@ namespace Chiro.Gap.Workers
 
 				if (origineel == null || origineel.Persoon.AdNummer == p.Persoon.AdNummer)
 				{
-                    // TODO: De transacties aanschakelen, nu gaat dat niet omdat we de in een werkgroep zitten
+					//// TODO: De transacties aanschakelen, nu gaat dat niet omdat we de in een werkgroep zitten
 
-                    //using (var tx = new TransactionScope())
-                    //{
-                    var q = _gelieerdePersonenDao.Bewaren(p);
+					//using (var tx = new TransactionScope())
+					//{
+						var q = _gelieerdePersonenDao.Bewaren(p);
 
-                    // Map to KipSync and send
-                    AutoMapper.Mapper.CreateMap<Persoon, KipSync.Persoon>();
-                    var syncPersoon = AutoMapper.Mapper.Map<Persoon, KipSync.Persoon>(q.Persoon);
-				    
-                    //Debug.WriteLine(syncPersoon);
+						// Map to KipSync and send
+						AutoMapper.Mapper.CreateMap<Persoon, KipSync.Persoon>();
+						var syncPersoon = AutoMapper.Mapper.Map<Persoon, KipSync.Persoon>(q.Persoon);
 
-                    _sync.PersoonUpdated(syncPersoon);
-                    
-                    return q;
-                    //}
+						//Debug.WriteLine(syncPersoon);
+
+						_sync.PersoonUpdated(syncPersoon);
+
+						return q;
+					//}
 				}
 				else
 				{
