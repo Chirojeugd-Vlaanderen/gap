@@ -38,8 +38,8 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		[DisplayName(@"Chiroleeftijd")]
         [Verplicht]
-		[Range(-8, +3, ErrorMessage = @"{0} is beperkt van {1} tot {2}.")]
-        [DisplayFormat(DataFormatString = "{0:+#0;-#0;#0}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true)]
+		[Range(-8, 3, ErrorMessage = @"{0} is beperkt van {1} tot {2}.")]
+        [DisplayFormat(DataFormatString = "{0:#0;-#0;#0}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true)]
 		public int ChiroLeefTijd
 		{
 			get;
