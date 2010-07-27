@@ -271,8 +271,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new LidAfdelingenModel();
 			BaseModelInit(model, groepID);
 
-			model.BeschikbareAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingInfo>>(
-				svc => svc.BeschikbareAfdelingenOphalen(groepID));
+			model.BeschikbareAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<ActieveAfdelingInfo>>(
+				svc => svc.BeschikbareAfdelingsJarenOphalen(groepID));
 			model.Info = ServiceHelper.CallService<ILedenService, LidAfdelingInfo>(
 				svc => svc.AfdelingenOphalen(lidID));
 

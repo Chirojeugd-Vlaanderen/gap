@@ -29,9 +29,9 @@
                   List<CheckBoxListInfo> info =
                       (from pa in Model.BeschikbareAfdelingen
                        select new CheckBoxListInfo(
-                                       pa.ID.ToString()
+                                       pa.AfdelingsJaarID.ToString()
                                        , pa.Naam
-                                       , Model.Info.AfdelingsJaarIDs.Contains(pa.ID))).ToList();
+                                       , Model.Info.AfdelingsJaarIDs.Contains(pa.AfdelingsJaarID))).ToList();
 
                   Response.Write(Html.CheckBoxList("Info.AfdelingsJaarIDs", info));
               }
@@ -42,7 +42,7 @@
                   <%
                   foreach(var ai in Model.BeschikbareAfdelingen)
                   {
-                      Response.Write("<p>" + Html.RadioButton("Info.AfdelingsJaarIDs[0]", ai.ID, Model.Info.AfdelingsJaarIDs[0] == ai.ID)+ ai.Naam + "</p>");   
+                      Response.Write("<p>" + Html.RadioButton("Info.AfdelingsJaarIDs[0]", ai.AfdelingsJaarID, Model.Info.AfdelingsJaarIDs[0] == ai.AfdelingsJaarID)+ ai.Naam + "</p>");   
                   }
               }
            %>

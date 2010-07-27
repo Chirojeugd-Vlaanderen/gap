@@ -138,20 +138,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				//.ForMember(dst => dst.Afdelingen, opt => opt.Ignore())
 				.ForMember(dst => dst.ChiroLeefTijd, opt => opt.MapFrom(src => src.GelieerdePersoon.ChiroLeefTijd));
 
-			Mapper.CreateMap<AfdelingsJaar, AfdelingDetail>()
-				.ForMember(
-					dst => dst.AfdelingsJaarID,
-					opt => opt.MapFrom(src => src.ID))
-				.ForMember(
-					dst => dst.OfficieleAfdelingNaam,
-					opt => opt.MapFrom(src => src.OfficieleAfdeling.Naam))
-				.ForMember(
-					dst => dst.AfdelingNaam,
-					opt => opt.MapFrom(src => src.Afdeling.Naam))
-				.ForMember(
-					dst => dst.AfdelingAfkorting,
-					opt => opt.MapFrom(src => src.Afdeling.Afkorting));
-
             Mapper.CreateMap<Groep, GroepDetail>()
 				.ForMember(
 					dst => dst.Plaats, opt => opt.MapFrom(
@@ -291,6 +277,20 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst => dst.CommunicatieType, opt => opt.Ignore())
 				.ForMember(dst => dst.CommunicatieTypeReference, opt => opt.Ignore())
 				.ForMember(dst => dst.EntityKey, opt => opt.Ignore());
+
+			Mapper.CreateMap<AfdelingsJaar, AfdelingDetail>()
+				.ForMember(
+					dst => dst.AfdelingsJaarID,
+					opt => opt.MapFrom(src => src.ID))
+				.ForMember(
+					dst => dst.OfficieleAfdelingNaam,
+					opt => opt.MapFrom(src => src.OfficieleAfdeling.Naam))
+				.ForMember(
+					dst => dst.AfdelingNaam,
+					opt => opt.MapFrom(src => src.Afdeling.Naam))
+				.ForMember(
+					dst => dst.AfdelingAfkorting,
+					opt => opt.MapFrom(src => src.Afdeling.Afkorting));
 
 			Mapper.CreateMap<AfdelingsJaar, ActieveAfdelingInfo>()
 				.ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Afdeling.Naam))

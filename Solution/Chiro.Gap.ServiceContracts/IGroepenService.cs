@@ -169,6 +169,16 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		IList<AfdelingInfo> BeschikbareAfdelingenOphalen(int groepID);
 
+
+		/// <summary>
+		/// Haalt informatie op over de beschikbare afdelingsjaren en hun gelinkte afdelingen van een groep in het huidige
+		/// groepswerkjaar.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvoor de info gevraagd is</param>
+		/// <returns>Lijst van AfdelingInfo</returns>
+		[OperationContract]
+		IList<ActieveAfdelingInfo> BeschikbareAfdelingsJarenOphalen(int groepID);
+
 		/// <summary>
 		/// Haalt informatie op over de afdelingen van een groep die niet gebruikt zijn in een gegeven 
 		/// groepswerkjaar, op basis van een <paramref name="groepswerkjaarID"/>

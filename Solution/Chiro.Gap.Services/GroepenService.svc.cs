@@ -400,6 +400,18 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
+		/// Haalt informatie op over de beschikbare afdelingsjaren en hun gelinkte afdelingen van een groep in het huidige
+		/// groepswerkjaar.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvoor de info gevraagd is</param>
+		/// <returns>Lijst van AfdelingInfo</returns>
+		public IList<ActieveAfdelingInfo> BeschikbareAfdelingsJarenOphalen(int groepID)
+		{
+			var gwj = _groepsWerkJaarManager.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
+			return Mapper.Map<IEnumerable<AfdelingsJaar>, IList<ActieveAfdelingInfo>>(gwj.AfdelingsJaar);
+		}
+
+		/// <summary>
 		/// Haalt informatie op over de afdelingen van een groep die niet gebruikt zijn in een gegeven 
 		/// groepswerkjaar, op basis van een <paramref name="groepswerkjaarID"/>
 		/// </summary>
