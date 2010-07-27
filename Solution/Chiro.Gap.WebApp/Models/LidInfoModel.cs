@@ -5,7 +5,6 @@
 
 using System.Collections.Generic;
 
-using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.Domain;
 
@@ -37,5 +36,10 @@ namespace Chiro.Gap.WebApp.Models
 		public int GekozenAfdeling { get; set; }	// TODO: Hernoem als GekozenAfdelingID
 		public int GekozenFunctie { get; set; }		// TODO: Hernoem als GekozenFunctieID
 		public LedenSorteringsEnum GekozenSortering { get; set; }
+
+		/// <summary>
+		/// Kunnen de gegevens van de leden gewijzigd worden?
+		/// </summary>
+		public bool KanLedenBewerken { get; set; }
 	}
 }

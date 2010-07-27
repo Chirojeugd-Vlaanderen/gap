@@ -97,6 +97,11 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			var model = LijstModelInitialiseren(groepsWerkJaarID, groepID, sortering);
 
+			model.KanLedenBewerken = groepsWerkJaarID == (from wj in model.WerkJaarInfos
+			                                              orderby wj.WerkJaar descending
+			                                              select wj.ID).FirstOrDefault();
+
+
 			// TODO check dat de gegeven afdeling id wel degelijk van de gegeven groep is
 			// @broes, welke gegeven afdeling?
 
