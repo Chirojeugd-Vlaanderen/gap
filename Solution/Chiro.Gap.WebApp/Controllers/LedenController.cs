@@ -264,10 +264,9 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// Toont de view die toelaat om de afdeling(en) van een lid te wijzigen
 		/// </summary>
 		/// <param name="lidID">LidID van het lid met de te wijzigen afdeling(en)</param>
-		/// <param name="groepsWerkJaarID">Groepswerkjaar waarin de wijziging moet gebeuren</param>
 		/// <param name="groepID">Groep waarin de user momenteel werkt</param>
 		/// <returns>De view 'AfdelingBewerken'</returns>
-		public ActionResult AfdelingBewerken(int lidID, int groepsWerkJaarID, int groepID)
+		public ActionResult AfdelingBewerken(int lidID, int groepID)
 		{
 			var model = new LidAfdelingenModel();
 			BaseModelInit(model, groepID);

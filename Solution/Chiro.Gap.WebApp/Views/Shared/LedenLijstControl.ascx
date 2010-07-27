@@ -58,7 +58,7 @@ Pagina: <%= Html.WerkJaarLinks(
 		    <%
 	    }%>
             
-            <%=Html.ActionLink("afd.", "AfdelingBewerken", new {Controller = "Leden", lidID = pl.LidInfo.LidID})%>
+            <%=Html.ActionLink("afd.", "AfdelingBewerken", new { Controller = "Leden", lidID = pl.LidInfo.LidID })%>
         </td>    
         <%
     }%>
