@@ -124,6 +124,7 @@ BEGIN
 		[GeboorteDatum] [datetime] NULL,
 		[Geslacht] [int] NOT NULL,
 		[SterfDatum] [smalldatetime] NULL,
+		DubbelPuntAbonnement BIT NOT NULL DEFAULT 0,
 		[PersoonID] [int] IDENTITY(1,1) NOT NULL,
 		[Versie] [timestamp] NULL,
 		CONSTRAINT [PK_Persoon] PRIMARY KEY CLUSTERED ([PersoonID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
@@ -476,7 +477,6 @@ END
 
 BEGIN
 	CREATE TABLE [lid].[Leiding](
-		[DubbelPuntAbonnement] [bit] NULL,
 		[leidingID] [int] NOT NULL,
 		[Versie] [timestamp] NULL,
 		CONSTRAINT [PK_Leiding] PRIMARY KEY CLUSTERED ([leidingID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
