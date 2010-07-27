@@ -46,10 +46,10 @@ Totaal aantal personen: <%= Model.Totaal %>  |  Maak een selectie en
 <tr>
     <th><%=Html.CheckBox("checkall") %></th>
     <th>Ad-nr.</th>
-    <th>Naam</th>
-    <th>Geboortedatum</th>
+    <th><%= Html.ActionLink("Naam", "List", new { Controller = "Personen", page=Model.HuidigePagina, id=Model.GekozenCategorieID, sortering = Chiro.Gap.Domain.PersoonSorteringsEnum.Naam}) %></th>
+    <th><%= Html.ActionLink("Geboortedatum", "List", new { Controller = "Personen", page = Model.HuidigePagina, id = Model.GekozenCategorieID, sortering = Chiro.Gap.Domain.PersoonSorteringsEnum.Leeftijd })%></th>
     <th><%=Html.Geslacht(GeslachtsType.Man) %> <%=Html.Geslacht(GeslachtsType.Vrouw) %></th>
-    <th>Cat.</th>
+    <th><%= Html.ActionLink("Cat.", "List", new { Controller = "Personen", page = Model.HuidigePagina, id = Model.GekozenCategorieID, sortering = Chiro.Gap.Domain.PersoonSorteringsEnum.Categorie })%></th>
     <th>Ingeschr.</th>
     <th>Acties</th>
 </tr>

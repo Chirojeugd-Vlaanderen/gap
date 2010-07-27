@@ -48,9 +48,6 @@
 		<%=Html.HiddenFor(s => s.GekozenSortering)%>
 	<%} %>
 </li>
-    <li><%= Html.ActionLink("Sorteren op naam", "Lijst", new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Chiro.Gap.Domain.LedenSorteringsEnum.Naam })%></li>
-    <li><%= Html.ActionLink("Sorteren op leeftijd", "Lijst", new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Chiro.Gap.Domain.LedenSorteringsEnum.Leeftijd })%></li>
-    <li><%= Html.ActionLink("Sorteren op afdeling", "Lijst", new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Chiro.Gap.Domain.LedenSorteringsEnum.Afdeling })%></li>
 </ul>
 
 <% Html.RenderPartial("LedenLijstControl"); %>

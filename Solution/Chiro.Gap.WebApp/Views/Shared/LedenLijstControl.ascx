@@ -15,11 +15,11 @@ Pagina: <%= Html.WerkJaarLinks(
 <tr>
     <th>Ad-nr.</th>
     <th>Type</th>
-    <th>Naam</th>
-    <th>Geboortedatum</th>
+    <th><%= Html.ActionLink("Naam", "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Chiro.Gap.Domain.LedenSorteringsEnum.Naam })%></th>
+    <th><%= Html.ActionLink("Geboortedatum", "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Chiro.Gap.Domain.LedenSorteringsEnum.Leeftijd })%></th>
     <th><%=Html.Geslacht(GeslachtsType.Man) %> <%=Html.Geslacht(GeslachtsType.Vrouw) %></th>
     <th>Betaald</th>
-    <th>Afd.</th>
+    <th><%= Html.ActionLink("Afd.", "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Chiro.Gap.Domain.LedenSorteringsEnum.Afdeling })%></th>
     <th>Func.</th>
     <%=Model.KanLedenBewerken ? "<th>Acties</th>" : String.Empty %>  
 </tr>
