@@ -192,11 +192,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.LidgeldBetaald,
 					opt => opt.MapFrom(src => src.LidgeldBetaald))
 				.ForMember(
-					dst => dst.Dubbelpunt,
-				// FIXME: geef hier false terug, zodat het in de lidinfo een bool is ipv bool? en het printen
-				// in de ui makkelijker is
-					opt => opt.MapFrom(src => src is Leiding ? ((Leiding)src).DubbelPuntAbonnement : false))
-				.ForMember(
 					dst => dst.AfdelingIdLijst,
 					opt => opt.MapFrom(src => LedenManager.AfdelingIdLijstGet(src)))
 				.ForMember(

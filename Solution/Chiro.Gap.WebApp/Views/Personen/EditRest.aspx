@@ -160,8 +160,7 @@
             	(Kostprijs: &euro; <%=Model.PrijsVerzekeringLoonVerlies %>)
             	</li>
     <%}%>
-        
-	<!-- Dubbelpunt moet verhuisd worden naar personenniveau -->
+
 	</ul>
  
 

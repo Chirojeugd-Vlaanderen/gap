@@ -1095,7 +1095,6 @@
           <End Type="ChiroGroepModel.AfdelingsJaar" Role="AfdelingsJaar" Multiplicity="*" /></Association>
         <EntityType Name="Leiding" BaseType="ChiroGroepModel.Lid">
           <NavigationProperty Name="AfdelingsJaar" Relationship="ChiroGroepModel.LeidingInAfdelingsJaar" FromRole="Leiding" ToRole="AfdelingsJaar" />
-          <Property Name="DubbelPuntAbonnement" Type="Boolean" Nullable="true" />
         </EntityType>
         <Association Name="LeidingInAfdelingsJaar">
           <End Role ="AfdelingsJaar" Type="ChiroGroepModel.AfdelingsJaar" Multiplicity="*" />
@@ -1331,7 +1330,6 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Leiding)">
               <MappingFragment StoreEntitySet="Leiding">
-                <ScalarProperty Name="DubbelPuntAbonnement" ColumnName="DubbelPuntAbonnement" />
                 <ScalarProperty Name="ID" ColumnName="leidingID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1667,17 +1665,17 @@
           <ConnectorPoint PointX="8.40625" PointY="5.46875" />
           <ConnectorPoint PointX="8.40625" PointY="9.375" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar" >
-          <ConnectorPoint PointX="4" PointY="11.422587890625" />
-          <ConnectorPoint PointX="4" PointY="12.595896809895834" />
-          <ConnectorPoint PointX="4.822916666666667" PointY="12.595896809895834" />
-          <ConnectorPoint PointX="4.989583333333333" PointY="12.595896809895834" />
-          <ConnectorPoint PointX="5.8619776666666672" PointY="12.595896809895834" />
-          <ConnectorPoint PointX="6.0286443333333333" PointY="12.595896809895834" />
-          <ConnectorPoint PointX="6.3697936666666672" PointY="12.595896809895834" />
-          <ConnectorPoint PointX="6.5364603333333333" PointY="12.595896809895834" />
-          <ConnectorPoint PointX="11.010416666666666" PointY="12.595896809895834" />
-          <ConnectorPoint PointX="11.177083333333334" PointY="12.595896809895834" />
-          <ConnectorPoint PointX="13.375" PointY="12.595896809895834" />
+          <ConnectorPoint PointX="4" PointY="11.1710009765625" />
+          <ConnectorPoint PointX="4" PointY="12.207313578715947" />
+          <ConnectorPoint PointX="4.822916666666667" PointY="12.207313578715947" />
+          <ConnectorPoint PointX="4.989583333333333" PointY="12.207313578715947" />
+          <ConnectorPoint PointX="5.8619776666666672" PointY="12.207313578715947" />
+          <ConnectorPoint PointX="6.0286443333333333" PointY="12.207313578715947" />
+          <ConnectorPoint PointX="6.3697936666666672" PointY="12.207313578715947" />
+          <ConnectorPoint PointX="6.5364603333333333" PointY="12.207313578715947" />
+          <ConnectorPoint PointX="11.010416666666666" PointY="12.207313578715947" />
+          <ConnectorPoint PointX="11.177083333333334" PointY="12.207313578715947" />
+          <ConnectorPoint PointX="13.375" PointY="12.207313578715947" />
           </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_Lid_GroepsWerkjaar1" >
           <ConnectorPoint PointX="4.75" PointY="10.876511230468751" />
@@ -1695,7 +1693,7 @@
         <AssociationConnector Association="ChiroGroepModel.FK_Lid_GelieerdePersoon1" >
           <ConnectorPoint PointX="5.84375" PointY="7.41404296875" />
           <ConnectorPoint PointX="5.84375" PointY="9.125" /></AssociationConnector>
-        <EntityTypeShape EntityType="ChiroGroepModel.Leiding" Width="2.875" PointX="9.625" PointY="13.125" Height="1.4033821614583317" />
+        <EntityTypeShape EntityType="ChiroGroepModel.Leiding" Width="2.875" PointX="9.625" PointY="13.125" Height="1.0992643229166657" />
         <EntityTypeShape EntityType="ChiroGroepModel.LeidingInAfdelingsJaar" Width="1.5" PointX="11" PointY="13.5" Height="1.7566536458333317" />
         <AssociationConnector Association="ChiroGroepModel.FK_GroepsWerkjaar_Groep1" >
           <ConnectorPoint PointX="3.6875" PointY="8.0320849609375" />
@@ -1722,7 +1720,7 @@
           <ConnectorPoint PointX="11" PointY="14.256805826822916" />
           </AssociationConnector>
         <InheritanceConnector EntityType="ChiroGroepModel.Leiding" ManuallyRouted="false">
-          <ConnectorPoint PointX="5.945311" PointY="12.066793619791666" />
+          <ConnectorPoint PointX="5.945311" PointY="11.703390299479166" />
           <ConnectorPoint PointX="5.945311" PointY="13.40625" />
           <ConnectorPoint PointX="6.3697936666666672" PointY="13.40625" />
           <ConnectorPoint PointX="6.5364603333333333" PointY="13.40625" />
@@ -1751,17 +1749,17 @@
           <ConnectorPoint PointX="12.625" PointY="10.470413411458333" />
           <ConnectorPoint PointX="13.375" PointY="10.470413411458333" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_Kind_AfdelingsJaar" >
-          <ConnectorPoint PointX="13.375" PointY="12.860450904947918" />
-          <ConnectorPoint PointX="11.177083333333334" PointY="12.860450904947918" />
-          <ConnectorPoint PointX="11.010416666666666" PointY="12.860450904947918" />
-          <ConnectorPoint PointX="7.5625" PointY="12.860450904947918" />
+          <ConnectorPoint PointX="13.375" PointY="12.549104439097558" />
+          <ConnectorPoint PointX="11.177083333333334" PointY="12.549104439097558" />
+          <ConnectorPoint PointX="11.010416666666666" PointY="12.549104439097558" />
+          <ConnectorPoint PointX="7.5625" PointY="12.549104439097558" />
           <ConnectorPoint PointX="7.5625" PointY="13.75" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_Lid_GelieerdePersoon1" >
           <ConnectorPoint PointX="5.84375" PointY="7.2496956380208326" />
           <ConnectorPoint PointX="5.84375" PointY="9.125" /></AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.LeidingInAfdelingsJaar">
-          <ConnectorPoint PointX="13.375" PointY="11.747345377604166" />
-          <ConnectorPoint PointX="11.09375" PointY="11.747345377604166" />
+          <ConnectorPoint PointX="13.375" PointY="11.490157033498598" />
+          <ConnectorPoint PointX="11.09375" PointY="11.490157033498598" />
           <ConnectorPoint PointX="11.09375" PointY="13.125" />
           </AssociationConnector>
         <AssociationConnector Association="ChiroGroepModel.FK_PersoonsAdres_Persoon">
@@ -1769,7 +1767,7 @@
           <ConnectorPoint PointX="14.5" PointY="4.375" />
           </AssociationConnector>
         <InheritanceConnector EntityType="ChiroGroepModel.Kind" ManuallyRouted="false">
-          <ConnectorPoint PointX="6.453127" PointY="12.066793619791666" />
+          <ConnectorPoint PointX="6.453127" PointY="11.703390299479166" />
           <ConnectorPoint PointX="6.453127" PointY="14.355540364583334" />
           <ConnectorPoint PointX="6.75" PointY="14.355540364583334" />
           </InheritanceConnector>

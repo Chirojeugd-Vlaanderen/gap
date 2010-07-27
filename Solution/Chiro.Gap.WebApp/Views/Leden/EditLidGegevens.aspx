@@ -18,12 +18,6 @@
     <%=Html.LabelFor(s => s.HuidigLid.LidInfo.LidgeldBetaald)%>
     <%=Html.EditorFor(s => s.HuidigLid.LidInfo.LidgeldBetaald)%>
     </p>
-	<%}else{ %>
-    <p>
-    <%=Html.LabelFor(s => s.HuidigLid.LidInfo.Dubbelpunt)%>
-    <%=Html.EditorFor(s => s.HuidigLid.LidInfo.Dubbelpunt)%>
-    </p>
-    
 	<%} %>
 
 	<p>

@@ -37,7 +37,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsVerzekering_VerzekeringsType", "VerzekeringsType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.VerzekeringsType), "PersoonsVerzekering", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.PersoonsVerzekering))]
 
 // Original file name:
-// Generation date: 23/07/2010 10:36:24
+// Generation date: 27/07/2010 14:42:17
 namespace Chiro.Gap.Orm
 {
     
@@ -3517,29 +3517,6 @@ namespace Chiro.Gap.Orm
             leiding.ID = id;
             return leiding;
         }
-        /// <summary>
-        /// There are no comments for Property DubbelPuntAbonnement in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Nullable<bool> DubbelPuntAbonnement
-        {
-            get
-            {
-                return this._DubbelPuntAbonnement;
-            }
-            set
-            {
-                this.OnDubbelPuntAbonnementChanging(value);
-                this.ReportPropertyChanging("DubbelPuntAbonnement");
-                this._DubbelPuntAbonnement = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("DubbelPuntAbonnement");
-                this.OnDubbelPuntAbonnementChanged();
-            }
-        }
-        private global::System.Nullable<bool> _DubbelPuntAbonnement;
-        partial void OnDubbelPuntAbonnementChanging(global::System.Nullable<bool> value);
-        partial void OnDubbelPuntAbonnementChanged();
         /// <summary>
         /// There are no comments for AfdelingsJaar in the schema.
         /// </summary>
