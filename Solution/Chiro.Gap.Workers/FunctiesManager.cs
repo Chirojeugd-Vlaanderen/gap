@@ -185,6 +185,13 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
+			if (!_groepsWjDao.IsRecentste(lid.GroepsWerkJaar.ID))
+			{
+				throw new FoutNummerException(
+					FoutNummer.GroepsWerkJaarNietBeschikbaar,
+					Properties.Resources.GroepsWerkJaarVoorbij);
+			}
+
 			// Eerst alle checks, zodat als er ergens een exceptie optreedt, er geen enkele
 			// functie wordt toegekend.
 
@@ -285,6 +292,9 @@ namespace Chiro.Gap.Workers
 		/// <remarks>Aan <paramref name="lid"/>moeten de huidige functies gekoppeld zijn</remarks>
 		public Lid Vervangen(Lid lid, IEnumerable<Functie> functies)
 		{
+			// In deze method zitten geen checks op GAV-schap, juiste werkjaar,... dat gebeurt al in
+			// 'Toekennen' en 'Loskoppelen', dewelke door deze method worden aangeroepen.
+
 			IList<Functie> toeTeVoegen = (from fn in functies
 						      where !lid.Functie.Contains(fn)
 						      select fn).ToList();
@@ -292,7 +302,6 @@ namespace Chiro.Gap.Workers
 						    where !functies.Contains(fn)
 						    select fn.ID).ToList();
 
-			// Exception handling laten we over aan Toekennen en LosKoppelen
 			Toekennen(lid, toeTeVoegen);
 			return LosKoppelen(lid, teVerwijderen);	// LosKoppelen persisteert
 		}

@@ -24,5 +24,13 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <returns>Groepswerkjaar van groep met ID <paramref name="groepID"/>, met daaraan gekoppeld de
 		/// groep en de afdelingsjaren.</returns>
 		GroepsWerkJaar RecentsteOphalen(int groepID, params Expression<Func<GroepsWerkJaar, object>>[] paths);
+
+		/// <summary>
+		/// Kijkt na of het groepswerkjaar met ID <paramref name="groepsWerkJaarID"/> het recentste groepswerkjaar
+		/// van zijn groep is.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+		/// <returns><c>true</c> alss het groepswerkjaar het recentste is</returns>
+		bool IsRecentste(int groepsWerkJaarID);
 	}
 }

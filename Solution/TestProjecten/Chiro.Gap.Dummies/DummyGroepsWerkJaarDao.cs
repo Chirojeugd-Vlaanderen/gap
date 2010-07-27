@@ -19,6 +19,16 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		/// <summary>
+		/// Voor 't gemak gaan we er altijd vanuit dat we in het recentste groepswerkjaar werken.
+		/// </summary>
+		/// <param name="groepsWerkJaarID"></param>
+		/// <returns></returns>
+		public bool IsRecentste(int groepsWerkJaarID)
+		{
+			return true;
+		}
+
 		#endregion
 
 		#region IDao<GroepsWerkJaar> Members

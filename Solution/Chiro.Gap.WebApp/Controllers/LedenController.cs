@@ -98,6 +98,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = LijstModelInitialiseren(groepsWerkJaarID, groepID, sortering);
 
 			// TODO check dat de gegeven afdeling id wel degelijk van de gegeven groep is
+			// @broes, welke gegeven afdeling?
 
 			model.LidInfoLijst =
 				ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>

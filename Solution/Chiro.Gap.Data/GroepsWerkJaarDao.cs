@@ -46,5 +46,28 @@ namespace Chiro.Gap.Data.Ef
 
 			return result;
 		}
+
+		/// <summary>
+		/// Kijkt na of het groepswerkjaar met ID <paramref name="groepsWerkJaarID"/> het recentste groepswerkjaar
+		/// van zijn groep is.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+		/// <returns><c>true</c> alss het groepswerkjaar het recentste is</returns>
+		public bool IsRecentste(int groepsWerkJaarID)
+		{
+			int recentsteID;
+
+			using (var db = new ChiroGroepEntities())
+			{
+				var gwjQuery = (from g in db.Groep
+				             where g.GroepsWerkJaar.Any(gwj => gwj.ID == groepsWerkJaarID)
+				             select g.GroepsWerkJaar).FirstOrDefault();
+
+				recentsteID = (from gwj in gwjQuery
+				                      orderby gwj.WerkJaar descending
+				                      select gwj.ID).FirstOrDefault();
+			}
+			return recentsteID == groepsWerkJaarID;
+		}
 	}
 }

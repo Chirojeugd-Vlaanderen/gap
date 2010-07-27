@@ -234,7 +234,9 @@ namespace Chiro.Gap.Workers
 			// checks:
 			if (lid.GroepsWerkJaar.ID != _daos.GroepsWerkJaarDao.RecentsteOphalen(lid.GroepsWerkJaar.Groep.ID).ID)
 			{
-				throw new InvalidOperationException("Een lid non-actief maken mag enkel als het een lid uit het huidige werkjaar is.");
+				throw new FoutNummerException(
+					FoutNummer.GroepsWerkJaarNietBeschikbaar,
+					Properties.Resources.GroepsWerkJaarVoorbij);
 			}
 
 			lid.NonActief = true;
@@ -478,6 +480,18 @@ namespace Chiro.Gap.Workers
 		public void InfoOvernemen(LidInfo lidInfo, Lid lid)
 		{
 			Debug.Assert(lid is Leiding || lid is Kind);
+
+			if (!_autorisatieMgr.IsGavLid(lid.ID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+
+			if (!_daos.GroepsWerkJaarDao.IsRecentste(lid.GroepsWerkJaar.ID))
+			{
+				throw new FoutNummerException(
+					FoutNummer.GroepsWerkJaarNietBeschikbaar,
+					Properties.Resources.GroepsWerkJaarVoorbij);
+			}
 
 			if (lid is Kind && lidInfo.Type == LidType.Leiding)
 			{
