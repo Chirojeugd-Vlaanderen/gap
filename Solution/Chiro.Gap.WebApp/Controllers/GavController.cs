@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Web.Mvc;
 
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 
@@ -33,7 +34,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (groepInfos.Count() == 1)
 			{
 				// Redirect naar personenlijst van gevraagde groep;
-				r = RedirectToAction("List", new { Controller = "Personen", groepID = groepInfos.First().ID, page = 1 });
+				r = RedirectToAction("Index", new { Controller = "Personen", groepID = groepInfos.First().ID});
 			}
 			else
 			{
