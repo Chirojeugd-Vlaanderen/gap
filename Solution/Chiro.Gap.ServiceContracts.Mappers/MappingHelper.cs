@@ -311,11 +311,14 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
 				.ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
 				.ForMember(dst => dst.EntityKey, opt => opt.Ignore())
-				.ForMember(dst => dst.PersoonsVerzekering, opt => opt.Ignore());
+				.ForMember(dst => dst.PersoonsVerzekering, opt => opt.Ignore())
+				.ForMember(dst => dst.DubbelPuntAbonnement, opt => opt.Ignore());
 
 			// Important: als er een lid is, dan is er altijd een gelieerdepersoon, maar niet omgekeerd, 
 			// dus passen we de link aan in de andere richting!
 			// Maar kunnen er meerdere leden zijn?
+			// @Broes: Ja.  Typisch als de persoon gedurende meer dan 1 werkjaar lid is.
+
 			Mapper.CreateMap<GelieerdePersoon, PersoonLidInfo>()
 				.ForMember(
 					dst => dst.PersoonDetail,

@@ -37,7 +37,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsVerzekering_VerzekeringsType", "VerzekeringsType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.VerzekeringsType), "PersoonsVerzekering", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.PersoonsVerzekering))]
 
 // Original file name:
-// Generation date: 27/07/2010 14:42:17
+// Generation date: 27/07/2010 16:11:27
 namespace Chiro.Gap.Orm
 {
     
@@ -888,12 +888,14 @@ namespace Chiro.Gap.Orm
         /// <param name="naam">Initial value of Naam.</param>
         /// <param name="voorNaam">Initial value of VoorNaam.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static Persoon CreatePersoon(string naam, string voorNaam, int id)
+        /// <param name="dubbelPuntAbonnement">Initial value of DubbelPuntAbonnement.</param>
+        public static Persoon CreatePersoon(string naam, string voorNaam, int id, bool dubbelPuntAbonnement)
         {
             Persoon persoon = new Persoon();
             persoon.Naam = naam;
             persoon.VoorNaam = voorNaam;
             persoon.ID = id;
+            persoon.DubbelPuntAbonnement = dubbelPuntAbonnement;
             return persoon;
         }
         /// <summary>
@@ -1080,6 +1082,29 @@ namespace Chiro.Gap.Orm
         private byte[] _Versie;
         partial void OnVersieChanging(byte[] value);
         partial void OnVersieChanged();
+        /// <summary>
+        /// There are no comments for Property DubbelPuntAbonnement in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public bool DubbelPuntAbonnement
+        {
+            get
+            {
+                return this._DubbelPuntAbonnement;
+            }
+            set
+            {
+                this.OnDubbelPuntAbonnementChanging(value);
+                this.ReportPropertyChanging("DubbelPuntAbonnement");
+                this._DubbelPuntAbonnement = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("DubbelPuntAbonnement");
+                this.OnDubbelPuntAbonnementChanged();
+            }
+        }
+        private bool _DubbelPuntAbonnement;
+        partial void OnDubbelPuntAbonnementChanging(bool value);
+        partial void OnDubbelPuntAbonnementChanged();
         /// <summary>
         /// There are no comments for GelieerdePersoon in the schema.
         /// </summary>
