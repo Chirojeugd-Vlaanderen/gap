@@ -64,6 +64,11 @@ namespace Chiro.Gap.Workers
 				throw new FoutNummerException(FoutNummer.CronologieFout, Properties.Resources.FouteDatumVolgorde);
 			}
 
+			if (beginDatum > DateTime.Now)
+			{
+				throw new FoutNummerException(FoutNummer.CronologieFout, Properties.Resources.VerzekeringInVerleden);
+			}
+
 			if (verz.TotEindeWerkJaar && eindDatum != GroepsWerkJaarManager.EindDatum(l.GroepsWerkJaar))
 			{
 				throw new FoutNummerException(

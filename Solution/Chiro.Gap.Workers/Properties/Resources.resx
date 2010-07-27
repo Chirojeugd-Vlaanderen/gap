@@ -216,4 +216,7 @@
   <data name="OverlappendeVerzekering" xml:space="preserve">
     <value>Deze persoon heeft al een dergelijke verzekering gedurende een overlappende periode.</value>
   </data>
+  <data name="VerzekeringInVerleden" xml:space="preserve">
+    <value>De begindatum van een verzekering kan niet in het verleden liggen.</value>
+  </data>
 </root>
