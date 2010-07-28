@@ -29,11 +29,11 @@
 		public const int AFDELINGSJAAR1ID = 1;
 		public const int AFDELING1VAN = 2003;
 		public const int AFDELING1TOT = 2004;
-		public const int AFDELING2ID = 3;
-		public const int AFDELING3ID = 2;
-		public const int AFDELINGSJAAR2ID = 2;
+		public const int AFDELING2ID = 2;
+		public const int AFDELINGSJAAR2ID = 4;
 		public const int AFDELING2VAN = 2003;
 		public const int AFDELING2TOT = 2004;
+		public const int AFDELING3ID = 3;
 		public const int GROEPSWERKJAARID = 1;
 		public const string ZOEKNAAM = "Bosmans";
 		public const string GAV1 = "Yvonne";
