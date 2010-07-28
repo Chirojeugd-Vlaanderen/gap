@@ -202,7 +202,6 @@
     <Content Include="Scripts\MicrosoftAjax.debug.js" />
     <Content Include="Scripts\MicrosoftMvcAjax.js" />
     <Content Include="Scripts\MicrosoftMvcAjax.debug.js" />
-    <Content Include="Views\Shared\Error.aspx" />
     <Content Include="Views\Shared\Site.Master" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
@@ -214,6 +213,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Content Include="Views\Shared\Fout.Master" />
+    <Content Include="Views\Shared\Globaal.Master" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chiro.Adf.ServiceModel\Chiro.Adf.ServiceModel.csproj">
@@ -256,6 +257,10 @@
       <Project>{853B7FDF-27B6-48BC-A220-F68CCE610B6B}</Project>
       <Name>Chiro.Gap.Validatie</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
+      <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
+      <Name>Chiro.Gap.Workers</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\MyResources.resx">
@@ -267,7 +272,11 @@
       <LastGenOutput>MyResources.nl.designer.cs</LastGenOutput>
     </Content>
     <Content Include="Content\Chirologo.png" />
+    <Content Include="Content\favicon.ico" />
     <Content Include="Content\GeenGroepGekozen.css" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\GavTakenController.cs" />
+    <Compile Include="Controllers\HandleidingController.cs" />
     <Compile Include="Controllers\JaarOvergangController.cs" />
     <Compile Include="ExcelManip.cs" />
     <Compile Include="ExcelManip.WoorkbookStyles.cs" />
@@ -275,10 +284,13 @@
     <Compile Include="HtmlHelpers\DropDownListHelper.cs" />
     <Compile Include="HtmlHelpers\TextFieldListHelper.cs" />
     <Compile Include="HtmlHelpers\GeslachtHelper.cs" />
+    <Compile Include="Models\GavTakenModel.cs" />
+    <Compile Include="Models\HandleidingModel.cs" />
     <Compile Include="Models\JaarOvergangAfdelingsJaarModel.cs" />
     <Compile Include="Models\JaarOvergangAfdelingsModel.cs" />
     <Compile Include="Models\LedenLinksModel.cs" />
     <Compile Include="Models\LoonVerliesModel.cs" />
+    <Content Include="Help\HelloWorld.htm" />
     <Content Include="Scripts\MicrosoftMvcJQueryValidation.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Views\Categorieen\Index.aspx" />
@@ -286,13 +298,19 @@
     <Content Include="Views\Functies\FunctieVerwijderen.aspx" />
     <Content Include="Views\Functies\Index.aspx" />
     <Content Include="Views\Categorieen\CategorieVerwijderen.aspx" />
+    <Content Include="Views\GavTaken\Index.aspx" />
     <Content Include="Views\Groep\Index.aspx" />
+    <Content Include="Views\Handleiding\BestandTonen.aspx" />
+    <Content Include="Views\Handleiding\Index.aspx" />
     <Content Include="Views\JaarOvergang\AfdelingenAanmaken.aspx" />
     <Content Include="Views\JaarOvergang\AfdelingenVerdelen.aspx" />
     <Content Include="Views\JaarOvergang\AfdelingMaken.aspx" />
     <Content Include="Views\Leden\EditLidGegevens.aspx" />
     <Content Include="Views\Leden\LoonVerliesVerzekeren.aspx" />
     <Content Include="Views\Personen\EditRest.aspx" />
+    <Content Include="Views\Shared\AlleHelpLinks.ascx" />
+    <Content Include="Views\Shared\CustomError.aspx" />
+    <Content Include="Views\Shared\Error.aspx" />
     <Content Include="Views\Shared\TerugNaarFicheLinkControl.ascx" />
     <Content Include="Views\Shared\LedenLinkControl.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\Date.ascx" />

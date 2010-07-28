@@ -1,0 +1,19 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" MasterPageFile="~/Views/Shared/Globaal.Master" %>
+
+<asp:Content ContentPlaceHolderID="HeaderTitleContent" runat="server">
+	Foutpagina</asp:Content>
+<asp:Content ContentPlaceHolderID="PaginaTitelContent" runat="server">
+	<h1>
+		Er is iets foutgelopen</h1>
+</asp:Content>
+<asp:Content ContentPlaceHolderID="NavigatieContent" runat="server">
+	<ul>
+		<li>
+			<%= Html.ActionLink("Handleiding", "Index", "Handleiding") %></li>
+		<li>
+			<%= Html.ActionLink("Startpagina", "Index", "Gav") %></li>
+	</ul>
+</asp:Content>
+<asp:Content ContentPlaceHolderID="BodyContent" runat="server">
+	<asp:ContentPlaceHolder ID="MainContent" runat="server" />
+</asp:Content>

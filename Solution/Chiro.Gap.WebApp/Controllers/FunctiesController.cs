@@ -18,6 +18,7 @@ using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
+	[HandleError]
 	public class FunctiesController : BaseController
 	{
 		public FunctiesController(IServiceHelper serviceHelper) : base(serviceHelper) { }
@@ -28,6 +29,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepID">ID van de gewenste groep</param>
 		/// <returns>View met algemene gegevens over de groep</returns>
 		[AcceptVerbs(HttpVerbs.Get)]
+		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
 			var model = new GroepsInstellingenModel
@@ -40,12 +42,13 @@ namespace Chiro.Gap.WebApp.Controllers
 			return View(model);
 		}
 
+		[HandleError]
 		public ActionResult FunctieVerwijderen(int groepID, int id)
 		{
 			try
 			{
 				ServiceHelper.CallService<IGroepenService>(svc => svc.FunctieVerwijderen(id, false));
-				TempData["feedback"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 				return RedirectToAction("Index", new { groepID = groepID });
 			}
 			catch (FaultException<BlokkerendeObjectenFault<PersoonLidInfo>> ex)
@@ -78,6 +81,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="model">LedenLinkModel, waarvan enkel GroepID en FunctieID van belang zijn</param>
 		/// <returns>Een redirect naar de actie 'Index'</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult FunctieVerwijderen(LedenLinksModel model)
 		{
 			ServiceHelper.CallService<IGroepenService>(svc => svc.FunctieVerwijderen(
@@ -94,6 +98,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepID">ID van de gewenste groep</param>
 		/// <returns>Opnieuw de view Functies/Index</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult Index(GroepsInstellingenModel model, int groepID)
 		{
 			// Ik heb chance, want momenteel staan er enkel constraints op de velden die de

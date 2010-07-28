@@ -23,11 +23,13 @@ namespace Chiro.Gap.WebApp.Controllers
 		Functie = 3
 	}
 
+	[HandleError]
 	public class LedenController : BaseController
 	{
 		public LedenController(IServiceHelper serviceHelper) : base(serviceHelper) { }
 
 		// GET: /Leden/
+		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
 			// Recentste groepswerkjaar ophalen, en leden tonen.
@@ -42,6 +44,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepID"></param>
 		/// <returns></returns>
 		/// TODO deze code moet opgekuist worden
+		[HandleError]
 		private LidInfoModel LijstModelInitialiseren(int groepsWerkJaarID, int groepID, LedenSorteringsEnum sortering)
 		{
 			// Er wordt een nieuwe lijst opgevraagd, dus wordt deze vanaf hier bijgehouden als de lijst om terug naar te springen
@@ -99,6 +102,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="lijst"></param>
 		/// <param name="ID"></param>
 		/// <returns></returns>
+		[HandleError]
 		public ActionResult Lijst(int groepsWerkJaarID, LijstEnum lijst, int ID, LedenSorteringsEnum sortering, int groepID)
 		{
 			LidInfoModel model = LijstModelInitialiseren(groepsWerkJaarID, groepID, sortering);
@@ -172,11 +176,13 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult AfdelingsLijst(LidInfoModel model, int groepID)
 		{
 			return RedirectToAction("Lijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, groepID = groepID, sortering=model.GekozenSortering, lijst = LijstEnum.Afdeling, ID = model.GekozenAfdeling });
 		}
 
+		[HandleError]
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult FunctieLijst(LidInfoModel model, int groepID)
 		{
@@ -184,6 +190,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult Lijst(LidInfoModel model, int groepID)
 		{
 			return RedirectToAction("Lijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, groepID = groepID, sortering = model.GekozenSortering, lijst = LijstEnum.Alles, ID = model.GekozenID });
@@ -202,6 +209,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// dit ID getoond.</param>
 		/// <param name="groepID">ID van de groep (komt uit url)</param>
 		/// <returns>Exceldocument met gevraagde ledenlijst</returns>
+		[HandleError]
 		public ActionResult Download(int id, int afdelingID, int functieID, int groepID)
 		{
 			IEnumerable<LidOverzicht> lijst;
@@ -254,20 +262,22 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		// id = lidid
 		// GET: /Leden/DeActiveren/id
+		[HandleError]
 		public ActionResult DeActiveren(int id, int groepID)
 		{
 			ServiceHelper.CallService<ILedenService>(l => l.NonActiefMaken(id));
-			TempData["feedback"] = "Lid is op non-actief gezet.";
+			TempData["succes"] = Properties.Resources.LidNonActiefGemaakt;
 
 			return TerugNaarVorigeLijst();
 		}
 
 		// id = lidid
 		// GET: /Leden/Activeren/id
+		[HandleError]
 		public ActionResult Activeren(int id, int gwjID, int groepID)
 		{
 			ServiceHelper.CallService<ILedenService>(l => l.ActiefMaken(id));
-			TempData["feedback"] = "Lid is weer geactiveerd.";
+			TempData["succes"] = Properties.Resources.LidActiefGemaakt;
 
 			return TerugNaarVorigeLijst();
 		}
@@ -292,15 +302,12 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				// Geen afdelingen.
 
-				// Workaround via TempData["feedback"].  Niet zeker of dat een geweldig goed
+				// Workaround via TempData["fout"].  Niet zeker of dat een geweldig goed
 				// idee is.
 
-				TempData["feedback"] = String.Format(
+				TempData["fout"] = String.Format(
 					Properties.Resources.GeenActieveAfdelingen,
-					Url.Action("Index", "Afdelingen", new
-					{
-						groepID = groepID
-					}));
+					Url.Action("Index", "Afdelingen", new { groepID }));
 
 				return TerugNaarVorigeLijst();
 			}
@@ -315,6 +322,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		// POST: /Leden/AfdelingBewerken/5
 		// FIXME lidID wordt automatisch ingevuld als er eenzelfde argument in de GET methode van afdelingBewerken staat. Dit is eigenlijk helemaal niet mooi want wordt niet geverifieerd en zelfs 2de niveau afhankelijkheid van aspx.
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult AfdelingBewerken(LidAfdelingenModel model, int groepID, int lidID)
 		{
 			// FIXME: Het is geen prachtige code: AfdelingenVervangen die 'toevallig'
@@ -335,6 +343,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>
 		/// een view waarin gevraagd wordt te bevestigen dat het lid met LidID <paramref name="id"/> verzekerd moet worden
 		/// </returns>
+		[HandleError]
 		public ActionResult LoonVerliesVerzekeren(int groepID, int id)
 		{
 			var model = new LoonVerliesModel();
@@ -361,6 +370,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="id">LidID van te verzekeren lid</param>
 		/// <returns>Redirect naar detailfiche van het betreffende lid</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult LoonVerliesVerzekeren(LoonVerliesModel model, int groepID, int id)
 		{
 			int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(svc => svc.LoonVerliesVerzekeren(id));
@@ -373,6 +383,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="id">LidID te bewerken lid</param>
 		/// <param name="groepID">ID van de huidig geselecteerde groep</param>
 		/// <returns>De view 'EditLidGegevens'</returns>
+		[HandleError]
 		public ActionResult EditLidGegevens(int id, int groepID)
 		{
 			var model = new LedenModel();
@@ -397,7 +408,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
-				TempData["feedback"] = "Er is iets foutgelopen toen we de gegevens wilden opvragen.";
+				TempData["fout"] = Properties.Resources.GegevensOpvragenMisluktFout;
 				return RedirectToAction("Index", groepID);
 			}
 		}
@@ -409,6 +420,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepID">ID van de groep waarin de user momenteel aan het werken is</param>
 		/// <returns>De personenfiche, die de gewijzigde info toont.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult EditLidGegevens(LedenModel model, int groepID)
 		{
 			// TODO: Dit moet een unitaire operatie zijn, om concurrencyproblemen te vermijden.
@@ -416,11 +428,11 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				ServiceHelper.CallService<ILedenService>(l => l.Bewaren(model.HuidigLid));
 				ServiceHelper.CallService<ILedenService>(l => l.FunctiesVervangen(model.HuidigLid.LidInfo.LidID, model.FunctieIDs));
-				TempData["feedback"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 			}
 			catch (Exception)
 			{
-				TempData["feedback"] = Properties.Resources.WijzigingenNietOpgeslagenFout;
+				TempData["fout"] = Properties.Resources.WijzigingenNietOpgeslagenFout;
 			}
 
 			return RedirectToAction("EditLidGegevens");
@@ -432,6 +444,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// afdelingen voor het lid.
 		/// </summary>
 		/// <param name="model"></param>
+		[HandleError]
 		public void AfdelingenOphalen(LedenModel model)
 		{
 			model.AlleAfdelingen = ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>
@@ -446,6 +459,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// In model.FunctieIDs komen de ID's van de toegekende functies voor het lid.
 		/// </summary>
 		/// <param name="model">Te bewerken model</param>
+		[HandleError]
 		public void FunctiesOphalen(LedenModel model)
 		{
 			model.AlleFuncties = ServiceHelper.CallService<IGroepenService, IEnumerable<FunctieDetail>>

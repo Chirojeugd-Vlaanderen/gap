@@ -17,6 +17,7 @@ namespace Chiro.Gap.WebApp.Controllers
 	/// <summary>
 	/// Deze controller zal in eerste instantie voornamelijk gegevens opleveren voor de autosuggestie.
 	/// </summary>
+	[HandleError]
 	public class AdressenController : BaseController
 	{
 		private readonly AdressenHelper _adressenHelper;
@@ -25,8 +26,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// TODO: documenteren
 		/// </summary>
 		/// <param name="serviceHelper"></param>
-		public AdressenController(IServiceHelper serviceHelper)
-			: base(serviceHelper)
+		public AdressenController(IServiceHelper serviceHelper) : base(serviceHelper)
 		{
 			_adressenHelper = new AdressenHelper(serviceHelper);
 		}
@@ -37,6 +37,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="q">Eerste letters van de te zoeken deelgemeente</param>
 		/// <param name="limit">Maximale lengte van de lijst.  Indien 0, wordt de standaardlengte gekozen.</param>
 		/// <returns></returns>
+		[HandleError]
 		public ActionResult GemeentesVoorstellen(String q, int limit)
 		{
 			if (limit == 0)
@@ -67,6 +68,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// JSON-lijst met WoonPlaatsInfo corresponderend met het gegeven
 		/// <paramref name="postNummer"/>.
 		/// </returns>
+		[HandleError]
 		public ActionResult WoonPlaatsenOphalen(int postNummer)
 		{
 			var resultaat = (from g in _adressenHelper.WoonPlaatsenOphalen()
@@ -85,6 +87,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="q">Wat de gebruiker al intikte</param>
 		/// <param name="postNummer">Postnummer waarin gezocht moet worden</param>
 		/// <returns>Voorgestelde straatnamen in plain text, nieuwe regel na elke straat</returns>
+		[HandleError]
 		public ActionResult StratenVoorstellen(String q, int postNummer)
 		{
 			IEnumerable<StraatInfo> mogelijkeStraten =
@@ -104,6 +107,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="gemeente">Naam van de deelgemeente</param>
 		/// <returns>Een willekeurig postnummer dat hoort bij de deelgemeentenaam</returns>
 		/// <remarks>Dit is nogal een omslachtige search voor iets dat eigenlijk weinig zinvol is.</remarks>
+		[HandleError]
 		public ActionResult PostNrVoorstellen(String gemeente)
 		{
 			IEnumerable<WoonPlaatsInfo> tags = _adressenHelper.WoonPlaatsenOphalen().Where(x => x.Naam.Equals(gemeente, StringComparison.CurrentCultureIgnoreCase));
@@ -117,6 +121,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			return Json(retValue);
 		}
 
+		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
 			return RedirectToAction("Index", new { Controller = "Personen" });

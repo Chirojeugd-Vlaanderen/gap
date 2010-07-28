@@ -71,6 +71,7 @@
     <Compile Include="GroepControllerTest.cs" />
     <Compile Include="MockContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoutingTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />

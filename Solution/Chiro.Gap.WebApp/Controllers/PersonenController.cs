@@ -24,6 +24,7 @@ namespace Chiro.Gap.WebApp.Controllers
 	// Om te zorgen dat het terugkeren naar de vorige lijst en dergelijke werkt in samenwerking met het opvragen van subsets
 	// (categorieën of zo), hebben we steeds een default (categorie, ...) die aangeeft dat alle personen moeten worden meegegeven
 
+	[HandleError]
 	public class PersonenController : BaseController
 	{
 		private readonly AdressenHelper _adressenHelper;
@@ -36,6 +37,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		// TODO er moeten ook nog een laatst gebruikte "actie" worden toegevoegd, niet alleen actie id
 
 		// GET: /Personen/
+		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
 			// redirect naar alle personen van de groep, pagina 1.
@@ -57,6 +59,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// geselecteerd.</param>
 		/// <param name="sortering">Geeft de sortering van de pagina en lijst aan</param>
 		/// <returns>De personenlijst in de view 'Index'</returns>
+		[HandleError]
 		//		public ActionResult List(int page, int groepID, int id)
 		public ActionResult List(int page, int groepID, int id, PersoonSorteringsEnum sortering)
 		{
@@ -118,6 +121,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="id">ID van de gevraagde categorie.  Kan ook 0 zijn; dan worden alle personen
 		/// geselecteerd.</param>
 		/// <returns>Een 'ExcelResult' met de gevraagde lijst</returns>
+		[HandleError]
 		public ActionResult Download(int groepID, int id)
 		{
 			IEnumerable<PersoonOverzicht> data;
@@ -163,6 +167,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepID">ID van de groep waarin de gebruiker momenteel werkt</param>
 		/// <returns>Een redirect naar de juiste lijst</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult List(PersoonInfoModel model, int groepID)
 		{
 			return RedirectToAction(
@@ -184,11 +189,12 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepID">ID van de groep waarin de gebruiker op dit moment aan het werken is.</param>
 		/// <returns>Een redirect naar de juiste controller action</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult ToepassenOpSelectie(PersoonInfoModel model, int groepID)
 		{
 			if (model.GekozenGelieerdePersoonIDs == null || model.GekozenGelieerdePersoonIDs.Count == 0)
 			{
-				TempData["feedback"] = Properties.Resources.NiemandGeselecteerdFout;
+				TempData["fout"] = Properties.Resources.NiemandGeselecteerdFout;
 				return TerugNaarVorigeLijst();
 			}
 
@@ -204,7 +210,16 @@ namespace Chiro.Gap.WebApp.Controllers
 						model.GekozenGelieerdePersoonIDs,
 						model.GekozenActie == 1 ? LidType.Kind : LidType.Leiding,
 						out foutBerichten));
-					TempData["feedback"] = String.IsNullOrEmpty(foutBerichten) ? Properties.Resources.LedenGemaaktFeedback : foutBerichten;
+
+					if(String.IsNullOrEmpty(foutBerichten))
+					{
+						TempData["succes"] = Properties.Resources.LedenGemaaktFeedback;
+					}
+					else
+					{
+						TempData["fout"] =  foutBerichten;
+					}
+
 					r = TerugNaarVorigeLijst();
 					break;
 				case 3:
@@ -212,7 +227,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					r = RedirectToAction("CategorieToevoegenAanLijst");
 					break;
 				default:
-					TempData["feedback"] = Properties.Resources.OnbestaandeActieFeedback;
+					TempData["fout"] = Properties.Resources.OnbestaandeActieFeedback;
 					r = TerugNaarVorigeLijst();
 					break;
 			}
@@ -224,6 +239,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		//
 		// GET: /Personen/Nieuw
+		[HandleError]
 		public ActionResult Nieuw(int groepID)
 		{
 			var model = new GelieerdePersonenModel();
@@ -238,6 +254,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		// POST: /Personen/Nieuw
 		[AcceptVerbs(HttpVerbs.Post)]
 		[HttpPost]
+		[HandleError]
 		public ActionResult Nieuw(GelieerdePersonenModel model, int groepID)
 		{
 			IDPersEnGP ids;
@@ -266,7 +283,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// er zou wel gemeld moeten worden dat het wijzigen
 			// gelukt is.
 			// TODO: wat als er een fout optreedt bij PersoonBewaren?
-			TempData["feedback"] = "Wijzigingen zijn opgeslagen";
+			TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 
 			// (er wordt hier geredirect ipv de view te tonen,
 			// zodat je bij een 'refresh' niet de vraag krijgt
@@ -276,6 +293,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		// aka maak een broertje of zusje
 		// GET: /Personen/Kloon
+		[HandleError]
 		public ActionResult Kloon(int gelieerdepersoonID, int groepID)
 		{
 			var model = new GelieerdePersonenModel();
@@ -294,6 +312,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		[HttpPost]
 		// TODO dit is mss iets om op de server te draaien?
+		[HandleError]
 		public ActionResult Kloon(GelieerdePersonenModel model, int groepID)
 		{
 			/////BEGIN DUPLICATE CODE
@@ -357,6 +376,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="id">GelieerdePersoonID van te wijzigen persoon</param>
 		/// <param name="groepID">GroepID van de huidig geselecteerde groep</param>
 		/// <returns>De view 'EditGegevens'</returns>
+		[HandleError]
 		public ActionResult EditGegevens(int id, int groepID)
 		{
 			var model = new GelieerdePersonenModel();
@@ -375,6 +395,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>Redirect naar overzicht persoonsinfo indien alles ok, anders opnieuw de view
 		/// 'EditGegevens'.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult EditGegevens(GelieerdePersonenModel model, int groepID)
 		{
 			if (!ModelState.IsValid)
@@ -388,7 +409,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// er zou wel gemeld moeten worden dat het wijzigen
 			// gelukt is.
 			// TODO: wat als er een fout optreedt bij PersoonBewaren?
-			TempData["feedback"] = "Wijzigingen zijn opgeslagen";
+			TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 
 			// (er wordt hier geredirect ipv de view te tonen,
 			// zodat je bij een 'refresh' niet de vraag krijgt
@@ -407,6 +428,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepID">GroepID van de groep waarin de gebruiker aan het werken is</param>
 		/// <returns>De view van de personenfiche</returns>
 		// id = gelieerdepersonenid
+		[HandleError]
 		public ActionResult EditRest(int id, int groepID)
 		{
 			// Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
@@ -435,6 +457,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// afdelingen voor het lid.
 		/// </summary>
 		/// <param name="model"></param>
+		[HandleError]
 		private void AfdelingenOphalen(PersonenLedenModel model)
 		{
 			if (model.PersoonLidInfo.LidInfo != null)
@@ -449,25 +472,41 @@ namespace Chiro.Gap.WebApp.Controllers
 		#region leden
 
 		// GET: /Personen/LidMaken/gelieerdepersoonID
+		[HandleError]
 		public ActionResult LidMaken(int gelieerdepersoonID, int groepID)
 		{
 			IList<int> ids = new List<int> { gelieerdepersoonID };
 			string foutBerichten = String.Empty;
 
 			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LedenMaken(ids, LidType.Kind, out foutBerichten));
-			TempData["feedback"] = String.IsNullOrEmpty(foutBerichten) ? Properties.Resources.LidGemaaktFeedback : string.Concat(Properties.Resources.LidMakenMisluktFout, Environment.NewLine, foutBerichten);
+			if(String.IsNullOrEmpty(foutBerichten))
+			{
+				TempData["succes"] = Properties.Resources.LidGemaaktFeedback;
+			}
+			else
+			{
+				TempData["fout"] = string.Concat(Properties.Resources.LidMakenMisluktFout, Environment.NewLine, foutBerichten);
+			}
 
 			return TerugNaarVorigeFiche();
 		}
 
 		// GET: /Personen/LeidingMaken/gelieerdepersoonID
+		[HandleError]
 		public ActionResult LeidingMaken(int gelieerdepersoonID, int groepID)
 		{
 			IList<int> ids = new List<int> { gelieerdepersoonID };
 			string foutBerichten = String.Empty;
 
 			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LedenMaken(ids, LidType.Leiding, out foutBerichten));
-			TempData["feedback"] = String.IsNullOrEmpty(foutBerichten) ? Properties.Resources.LidGemaaktFeedback : string.Concat(Properties.Resources.LidMakenMisluktFout, Environment.NewLine, foutBerichten);
+			if(String.IsNullOrEmpty(foutBerichten))
+			{
+				TempData["succes"] = Properties.Resources.LidGemaaktFeedback;
+			}
+			else
+			{
+				TempData["fout"] = string.Concat(Properties.Resources.LidMakenMisluktFout, Environment.NewLine, foutBerichten);
+			}
 
 			return TerugNaarVorigeFiche();
 		}
@@ -483,6 +522,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="aanvragerID">GelieerdePersoonID van de verhuizer</param>
 		/// <param name="groepID">Momenteel geselecteerde groep</param>
 		/// <returns>De view 'AdresBewerken'</returns>
+		[HandleError]
 		public ActionResult Verhuizen(int id, int aanvragerID, int groepID)
 		{
 			var model = new AdresModel();
@@ -529,6 +569,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		[ActionName("Verhuizen")]
 		[AcceptVerbs(HttpVerbs.Post)]
 		[ParameterAccepteren(Naam = "action", Waarde = "Woonplaatsen ophalen")]
+		[HandleError]
 		public ActionResult Verhuizen_WoonplaatsenOphalen(AdresModel model, int groepID)
 		{
 			// TODO: Deze method is identiek aan NieuwAdres_WoonPlaatsenOphalen.
@@ -557,6 +598,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>De view 'EditRest' indien OK, anders opnieuw de view 'AdresBewerken'.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
 		[ParameterAccepteren(Naam = "action", Waarde = "Bewaren")]
+		[HandleError]
 		public ActionResult Verhuizen(AdresModel model, int groepID)
 		{
 			try
@@ -624,6 +666,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="gelieerdePersoonID">ID van de gelieerde persoon waarvan we komen.</param>
 		/// <param name="groepID">ID van de groep waarin momenteel gewerkt wordt</param>
 		/// <returns></returns>
+		[HandleError]
 		public ActionResult AdresVerwijderen(int id, int gelieerdePersoonID, int groepID)
 		{
 			var model = new AdresVerwijderenModel
@@ -649,6 +692,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		// POST: /Personen/AdresVerwijderen
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult AdresVerwijderen(AdresVerwijderenModel model, int groepID)
 		{
 			BaseModelInit(model, groepID);
@@ -662,6 +706,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="id">GelieerdePersoonID van de persoon die een nieuw adres moet krijgen</param>
 		/// <param name="groepID">ID van de huidige geselecteerde groep</param>
 		/// <returns>De view 'AdresBewerken'</returns>
+		[HandleError]
 		public ActionResult NieuwAdres(int id, int groepID)
 		{
 			var model = new AdresModel();
@@ -692,6 +737,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		[ActionName("NieuwAdres")]
 		[AcceptVerbs(HttpVerbs.Post)]
 		[ParameterAccepteren(Naam = "action", Waarde = "Woonplaatsen ophalen")]
+		[HandleError]
 		public ActionResult NieuwAdres_WoonplaatsenOphalen(AdresModel model, int groepID)
 		{
 			BaseModelInit(model, groepID);
@@ -717,6 +763,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// bij een ongeldig adres krijg je opnieuw de view 'AdresBewerken'.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
 		[ParameterAccepteren(Naam = "action", Waarde = "Bewaren")]
+		[HandleError]
 		public ActionResult NieuwAdres(AdresModel model, int groepID)
 		{
 			try
@@ -780,6 +827,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 		}
 
+		[HandleError]
 		public ActionResult VoorkeurAdresMaken(int persoonsAdresID, int gelieerdePersoonID, int groepID)
 		{
 			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.VoorkeursAdresMaken(persoonsAdresID, gelieerdePersoonID));
@@ -792,6 +840,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		#region commvormen
 
 		// GET: /Personen/NieuweCommVorm/gelieerdePersoonID
+		[HandleError]
 		public ActionResult NieuweCommVorm(int gelieerdePersoonID, int groepID)
 		{
 			var persoonDetail = ServiceHelper.CallService<IGelieerdePersonenService, PersoonDetail>(l => l.DetailsOphalen(gelieerdePersoonID));
@@ -804,6 +853,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		// post: /Personen/NieuweCommVorm
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult NieuweCommVorm(NieuweCommVormModel model, int groepID, int gelieerdePersoonID)
 		{
 			// Eerst een hoop gedoe om de CommunicatieInfo uit het model in een
@@ -861,6 +911,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		// GET: /Personen/VerwijderenCommVorm/commvormid
+		[HandleError]
 		public ActionResult VerwijderenCommVorm(int commvormID, int groepID)
 		{
 			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormVerwijderenVanPersoon(commvormID));
@@ -868,6 +919,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		// GET: /Personen/CommVormBewerken/gelieerdePersoonID
+		[HandleError]
 		public ActionResult CommVormBewerken(int commvormID, int gelieerdePersoonID, int groepID)
 		{
 			// TODO dit is niet juist broes, want hij haalt 2 keer de persoon op?
@@ -883,6 +935,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		// POST: /Personen/CommVormBewerken/gelieerdePersoonID
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult CommVormBewerken(CommVormModel model, int gelieerdePersoonID, int groepID)
 		{
 			var validator = new CommunicatieVormValidator();
@@ -934,6 +987,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		#region categorieën
 
 		// GET: /Personen/VerwijderenCategorie/categorieID
+		[HandleError]
 		public ActionResult VerwijderenCategorie(int categorieID, int gelieerdePersoonID, int groepID)
 		{
 			IList<int> list = new List<int> { gelieerdePersoonID };
@@ -942,6 +996,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		// GET: /Personen/ToevoegenAanCategorie/categorieID
+		[HandleError]
 		public ActionResult ToevoegenAanCategorie(int gelieerdePersoonID, int groepID)
 		{
 			IList<int> l = new List<int> { gelieerdePersoonID };
@@ -957,6 +1012,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarin de gebruiker momenteel aan het werken is</param>
 		/// <returns>De view 'CategorieToevoegen'</returns>
+		[HandleError]
 		public ActionResult CategorieToevoegenAanLijst(int groepID)
 		{
 			var model = new CategorieModel();
@@ -974,7 +1030,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
-				TempData["feedback"] = Properties.Resources.CategoriserenZonderCategorieënFout;
+				TempData["fout"] = Properties.Resources.CategoriserenZonderCategorieënFout;
 				return TerugNaarVorigeLijst();
 			}
 		}
@@ -988,6 +1044,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>Als 1 persoon aan een categorie toegekend moet worden, wordt geredirect naar de
 		/// details van die persoon.  Anders krijg je de laatst opgroepen lijst.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult CategorieToevoegenAanLijst(CategorieModel model, int groepID)
 		{
 			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CategorieKoppelen(

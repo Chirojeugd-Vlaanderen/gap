@@ -23,22 +23,22 @@ namespace Chiro.Gap.WebApp
 		{
 			InitializeContainer();
 
-            RegisterRoutes(RouteTable.Routes);
+			RegisterRoutes(RouteTable.Routes);
 
-            // Registreer de nieuwe adapters voor validatie via client side scripting
-            DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(VerplichtAttribute), typeof(VerplichtAttributeAdapter));
-            DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(StringLengteAttribute), typeof(StringLengteAttributeAdapter));
-            DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(StringMinimumLengteAttribute), typeof(StringMinimumLengteAttributeAdapter));
+			// Registreer de nieuwe adapters voor validatie via client side scripting
+			DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(VerplichtAttribute), typeof(VerplichtAttributeAdapter));
+			DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(StringLengteAttribute), typeof(StringLengteAttributeAdapter));
+			DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(StringMinimumLengteAttribute), typeof(StringMinimumLengteAttributeAdapter));
 
-            // Dit mogen we niet op true zetten, want dan zijn de booleans / checkboxen allemaal aan te kruisen
+			// Dit mogen we niet op true zetten, want dan zijn de booleans / checkboxen allemaal aan te kruisen
 			// Dit mag toch niet weg ook niet!
-		    DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
+			DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
 
 			DefaultModelBinder.ResourceClassKey = "MyResources";
 			ValidationExtensions.ResourceClassKey = "MyResources";
 		}
 
-		private static void RegisterRoutes(RouteCollection routes)
+		public static void RegisterRoutes(RouteCollection routes)
 		{
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
@@ -51,17 +51,44 @@ namespace Chiro.Gap.WebApp
 					action = "Index"
 				});
 
-			// (personencontroller indien geen controller meegegeven)
+			routes.MapRoute(
+				"Actions zonder paging",
+				"{groepID}/{controller}/{action}/{id}",
+				new
+				{
+					controller = "Handleiding",
+					action = "Index"
+				},
+				new
+				{
+					id = @"\d+"
+				});
+
+			// (GavTakenController indien geen controller meegegeven)
 			routes.MapRoute(
 				"Default",
 				"{groepID}/{controller}/{action}/{id}/{page}",
 				new
 				{
-					controller = "Personen",
+					controller = "GavTaken",
 					action = "Index",
 					page = "1",
 					id = "0"
-				});
+				}
+				,
+				new
+					{
+						groepID = @"\d+",
+						id = @"\d+",
+						page = @"\d+" // groepID, ID en page moeten een getal zijn
+					});
+
+			// Opvang voor url's die niet aan de opgelegde patronen voldoen
+			routes.MapRoute(
+				"Catch All",
+				"{*path}",
+				new { controller = "Error", action = "NotFound" }
+				);
 		}
 
 		private static void InitializeContainer()

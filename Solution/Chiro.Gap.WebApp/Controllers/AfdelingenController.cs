@@ -3,7 +3,6 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.ServiceModel;
@@ -17,11 +16,13 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
+	[HandleError]
 	public class AfdelingenController : BaseController
 	{
 		public AfdelingenController(IServiceHelper serviceHelper) : base(serviceHelper) { }
 
 		// GET: /Afdeling/
+		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
 			return List(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), groepID);
@@ -29,6 +30,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		//
 		// GET: /Afdeling/List/{groepsWerkJaarId}
+		[HandleError]
 		public ActionResult List(int groepsWerkJaarID, int groepID)
 		{
 			var model = new AfdelingsOverzichtModel();
@@ -53,6 +55,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="groepID">Groep waarvoor de afdeling gemaakt moet worden</param>
 		/// <returns>De view die toelaat een nieuwe afdeling te maken.</returns>
+		[HandleError]
 		public ActionResult Nieuw(int groepID)
 		{
 			var model = new AfdelingInfoModel();
@@ -73,6 +76,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>Het overzicht van de afdelingen, indien de nieuwe afdeling goed gemaakt is.
 		/// In het andere geval opnieuw de view om een afdeling bij te maken.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult Nieuw(AfdelingInfoModel model, int groepID)
 		{
 			model.Titel = Properties.Resources.NieuweAfdelingTitel;
@@ -84,7 +88,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				{
 					ServiceHelper.CallService<IGroepenService>(e => e.AfdelingAanmaken(groepID, model.Info.Naam, model.Info.Afkorting));
 
-					TempData["feedback"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+					TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 
 					// (er wordt hier geredirect ipv de view te tonen,
 					// zodat je bij een 'refresh' niet de vraag krijgt
@@ -136,6 +140,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		//
 		// GET: /Afdeling/Verwijderen/afdelingsJaarId
+		[HandleError]
 		public ActionResult Verwijderen(int groepID, int id)
 		{
 			// Afdeling van afdelingsjaar invullen
@@ -143,11 +148,11 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				ServiceHelper.CallService<IGroepenService>(groep => groep.AfdelingsJaarVerwijderen(id));
 
-				TempData["feedback"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 			}
 			catch (FaultException)
 			{
-				TempData["feedback"] = Properties.Resources.AfdelingNietLeeg;
+				TempData["fout"] = Properties.Resources.AfdelingNietLeeg;
 				// TODO: specifieke exceptions catchen en weergeven via de modelstate, en niet via tempdata.
 			}
 
@@ -161,6 +166,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepID">ID van de geselecteerde groep</param>
 		/// <param name="id">AfdelingID van de te activeren afdeling</param>
 		/// <returns>De view 'afdelingsjaar'</returns>
+		[HandleError]
 		public ActionResult Activeren(int groepID, int id)
 		{
 			var model = new AfdelingsJaarModel();
@@ -187,6 +193,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepID">ID van de geselecteerde groep</param>
 		/// <param name="id">ID van het te bewerken afdelingsjaar</param>
 		/// <returns>De view 'afdelingsjaar'</returns>
+		[HandleError]
 		public ActionResult Bewerken(int groepID, int id)
 		{
 			var model = new AfdelingsJaarModel();
@@ -219,6 +226,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>Het afdelingsoverzicht als de wijzigingen bewaard zijn, en anders opnieuw de
 		/// 'AfdelingsJaarView'.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult Bewerken(AfdelingsJaarModel model, int groepID)
 		{
 			BaseModelInit(model, groepID);
@@ -236,17 +244,15 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				ServiceHelper.CallService<IGroepenService>(e => e.AfdelingsJaarBewaren(model.AfdelingsJaar));
 
-				TempData["feedback"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 
 				return RedirectToAction("Index");
 			}
-			catch (Exception ex)
+			catch (FaultException<FoutNummerFault> ex)
 			{
-				TempData["feedback"] = ex.Message;
-				// TODO: specifieke exceptions catchen en weergeven via de modelstate, en niet via tempdata.
+				ModelState.AddModelError("fout", ex.Detail.Bericht);
 
 				// Vul model aan, en toon de view AfdelingsJaar opnieuw
-
 				model.Afdeling = ServiceHelper.CallService<IGroepenService, AfdelingInfo>(svc => svc.AfdelingOphalen(model.AfdelingsJaar.AfdelingID));
 				model.OfficieleAfdelingen = ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(svc => svc.OfficieleAfdelingenOphalen(groepID));
 

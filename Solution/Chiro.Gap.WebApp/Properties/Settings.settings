@@ -20,5 +20,8 @@
     <Setting Name="PrijsVerzekeringLoonVerlies" Type="System.Decimal" Scope="Application">
       <Value Profile="(Default)">2.11</Value>
     </Setting>
+    <Setting Name="LogBestandPad" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Errors\GAP-Foutlog.txt</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

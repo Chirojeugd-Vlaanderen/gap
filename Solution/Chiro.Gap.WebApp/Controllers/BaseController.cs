@@ -5,7 +5,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using System.Text;
 using System.Web.Caching;
 using System.Web.Mvc;
 
@@ -25,6 +25,7 @@ namespace Chiro.Gap.WebApp.Controllers
 	/// Met dank aan http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
 	/// </remarks>
 	[Master]
+	[HandleError]
 	public abstract class BaseController : Controller
 	{
 		private readonly IServiceHelper _serviceHelper;
@@ -52,13 +53,15 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="groepID"></param>
 		/// <returns></returns>
-		public abstract ActionResult Index([Optional]int groepID);
+		[HandleError]
+		public abstract ActionResult Index(int groepID);
 
 		/// <summary>
 		/// Methode probeert terug te keren naar de vorige (in cookie) opgeslagen lijst. Als dit niet lukt gaat hij naar de indexpagina van de controller terug.
 		/// </summary>
 		/// <returns></returns>
-		public ActionResult TerugNaarVorigeLijst()
+		[HandleError]
+		protected ActionResult TerugNaarVorigeLijst()
 		{
 			ActionResult r;
 
@@ -82,7 +85,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// in laatste instantie gaat hij naar de indexpagina van de controller terug.
 		/// </summary>
 		/// <returns></returns>
-		public ActionResult TerugNaarVorigeFiche()
+		[HandleError]
+		protected ActionResult TerugNaarVorigeFiche()
 		{
 			ActionResult r;
 
@@ -106,6 +110,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="model">Te initialiseren model</param>
 		/// <param name="groepID">ID van de gewenste groep</param>
+		[HandleError]
 		protected void BaseModelInit(MasterViewModel model, int groepID)
 		{
 			if (groepID == 0)
@@ -185,5 +190,31 @@ namespace Chiro.Gap.WebApp.Controllers
 				}
 			}
 		}
+
+		//protected override void OnException(ExceptionContext filterContext)
+		//{
+		//    try
+		//    {
+		//        LogSchrijven(Properties.Settings.Default.LogBestandPad,
+		//     string.Format("Gebruiker '{0}' veroorzaakte de volgende fout tussen {1} en {2}, op controller {3}: {4}",
+		//                   HttpContext.User.Identity.Name,
+		//                   Request.UrlReferrer, Request.Url,
+		//                   filterContext.Controller, filterContext.Exception));
+		//    }
+		//    catch (Exception)
+		//    {
+		//        // Tja, wat doen we in zo'n geval?
+		//    }
+		//}
+
+		//static void LogSchrijven(string pad, string tekst)
+		//{
+		//    var boodschap = new StringBuilder();
+		//    boodschap.AppendLine(DateTime.Now.ToString());
+		//    boodschap.AppendLine(tekst);
+		//    boodschap.AppendLine("=====================================");
+
+		//    System.IO.File.AppendAllText(pad, boodschap.ToString());
+		//}
 	}
 }

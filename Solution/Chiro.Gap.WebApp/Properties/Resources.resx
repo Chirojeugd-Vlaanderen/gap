@@ -225,4 +225,13 @@
   <data name="FunctiesBewerkenTitel" xml:space="preserve">
     <value>Functies bewerken</value>
   </data>
+  <data name="GegevensOpvragenMisluktFout" xml:space="preserve">
+    <value>Er is iets foutgelopen toen we de gegevens wilden opvragen.</value>
+  </data>
+  <data name="LidActiefGemaakt" xml:space="preserve">
+    <value>Lid is opnieuw op actief gezet.</value>
+  </data>
+  <data name="LidNonActiefGemaakt" xml:space="preserve">
+    <value>Lid is op non-actief gezet.</value>
+  </data>
 </root>

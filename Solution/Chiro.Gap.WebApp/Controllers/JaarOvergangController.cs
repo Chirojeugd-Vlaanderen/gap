@@ -37,7 +37,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			IEnumerable<AfdelingInfo> lijst = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingInfo>>(g => g.BeschikbareAfdelingenOphalen(groepID));
 
 			model.Afdelingen = lijst;
-
+    		model.Titel = "Jaarovergang initiëren";
 			return View("AfdelingenAanmaken", model);
 		}
 
@@ -187,7 +187,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				ServiceHelper.CallService<IGroepenService>(e => e.AfdelingAanmaken(groepID, model.Info.Naam, model.Info.Afkorting));
 
-				TempData["feedback"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 
 				return RedirectToAction("Index");
 			}
@@ -238,13 +238,13 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				ServiceHelper.CallService<IGroepenService>(e => e.AfdelingBewaren(model.Info));
 
-				TempData["feedback"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 
 				return RedirectToAction("Index");
 			}
 			catch (Exception ex)
 			{
-				TempData["feedback"] = ex.Message;
+				TempData["fout"] = ex.Message;
 
 				model.Info = ServiceHelper.CallService<IGroepenService, AfdelingInfo>(svc => svc.AfdelingOphalen(model.Info.ID));
 

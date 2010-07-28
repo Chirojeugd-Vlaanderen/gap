@@ -11,6 +11,7 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <%= Html.ValidationSummary() %>
     <% 
         Html.EnableClientValidation();
         using (Html.BeginForm("Bewerken", "Afdelingen", new { groepID = Model.GroepID }))

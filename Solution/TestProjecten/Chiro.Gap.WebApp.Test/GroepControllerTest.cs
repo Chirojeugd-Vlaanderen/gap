@@ -1,14 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
+
 using System;
-using System.ServiceModel;
 using System.Web.Mvc;
 
 using Moq;
 
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
-using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WebApp.Controllers;
 
 namespace Chiro.Gap.WebApp.Test
@@ -19,30 +17,10 @@ namespace Chiro.Gap.WebApp.Test
     ///This is a test class for GroepControllerTest and is intended
     ///to contain all GroepControllerTest Unit Tests
     ///</summary>
-	[TestClass()]
+	[TestClass]
 	public class GroepControllerTest
 	{
-
-
-		private TestContext testContextInstance;
-
-		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		///</summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
-
-		#region Additional test attributes
+    	#region Additional test attributes
 		// 
 		//You can use the following additional attributes as you write your tests:
 		//
@@ -72,12 +50,11 @@ namespace Chiro.Gap.WebApp.Test
 		//
 		#endregion
 
-
 		/// <summary>
 		/// Controleert of de action Groep/CategorieVerwijderen de categorieenservice aanroept,
 		/// en of achteraf terug de view met de groepsinstellingen getoond wordt.
 		/// </summary>
-		[TestMethod()]
+		[TestMethod]
 		public void CategorieVerwijderenTest()
 		{
 			const int DUMMYCATID = 9;
@@ -92,7 +69,7 @@ namespace Chiro.Gap.WebApp.Test
 			// welke service method precies aangeroepen wordt :-(
 
 			IServiceHelper serviceHelper = serviceHelperMock.Object;
-			CategorieenController target = new CategorieenController(serviceHelper);
+			var target = new CategorieenController(serviceHelper);
 
 			var actual = target.CategorieVerwijderen(DUMMYGROEPID, DUMMYCATID) as RedirectToRouteResult;
 
@@ -100,6 +77,7 @@ namespace Chiro.Gap.WebApp.Test
 			serviceHelperMock.VerifyAll();
 
 			// Verwacht de view met de groepsinstellingen.
+			Assert.IsNotNull(actual);
 			Assert.AreEqual("Index", actual.RouteValues["action"]);
 		}
 

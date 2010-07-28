@@ -18,6 +18,7 @@ using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
+	[HandleError]
 	public class CategorieenController : BaseController
     {
 		public CategorieenController(IServiceHelper serviceHelper) : base(serviceHelper) { }
@@ -27,6 +28,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="groepID">ID van de gewenste groep</param>
 		/// <returns>View met categorieën van de groep</returns>
+		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
 			var model = new GroepsInstellingenModel
@@ -47,12 +49,13 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="id">CategorieID van te verwijderen categorie</param>
 		/// <returns>Opnieuw de Index als de categorie leeg was, en anders de view CategorieVerwijderen.
 		/// </returns>
+		[HandleError]
 		public ActionResult CategorieVerwijderen(int groepID, int id)
 		{
 			try
 			{
 				ServiceHelper.CallService<IGroepenService>(svc => svc.CategorieVerwijderen(id, false));
-				TempData["feedback"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 				return RedirectToAction("Index", new { groepID = groepID });
 			}
 			catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> ex)
@@ -86,6 +89,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="model">PersonenLinkModel, waarvan enkel GroepID en CategorieID van belang zijn</param>
 		/// <returns>Een redirect naar de actie 'Index'</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult CategorieVerwijderen(PersonenLinksModel model)
 		{
 			ServiceHelper.CallService<IGroepenService>(svc => svc.CategorieVerwijderen(
@@ -102,6 +106,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepID">ID van de gewenste groep</param>
 		/// <returns>Opnieuw de view Categorieen/Index</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
+		[HandleError]
 		public ActionResult Index(GroepsInstellingenModel model, int groepID)
 		{
 			// Ik heb chance, want momenteel staan er enkel constraints op de velden die de

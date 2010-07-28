@@ -3,25 +3,40 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
-
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<div class="kaderke">
-		<div class="kadertitel">Algemene groepsinfo</div>
-		<p>
-			<%=Html.LabelFor(mdl => mdl.Detail.Naam)%>
-			<%=Html.DisplayFor(mdl => mdl.Detail.Naam)%>
-		</p>
-		<p>
-			<%=Html.LabelFor(mdl => mdl.Detail.Plaats)%>
-			<%=Html.DisplayFor(mdl => mdl.Detail.Plaats)%>
-		</p>
-		<p>
-			<%=Html.LabelFor(mdl => mdl.Detail.StamNummer)%>
-			<%=Html.DisplayFor(mdl => mdl.Detail.StamNummer)%>
-		</p>
+		<div class="kadertitel">
+			Algemene groepsinfo</div>
+		<table border="0">
+			<tr>
+				<td>
+					<%=Html.LabelFor(mdl => mdl.Detail.Naam)%>
+				</td>
+				<td>
+					<%=Html.DisplayFor(mdl => mdl.Detail.Naam)%>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<%=Html.LabelFor(mdl => mdl.Detail.Plaats)%>
+				</td>
+				<td>
+					<%=Html.DisplayFor(mdl => mdl.Detail.Plaats)%>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<%=Html.LabelFor(mdl => mdl.Detail.StamNummer)%>
+				</td>
+				<td>
+					<%=Html.DisplayFor(mdl => mdl.Detail.StamNummer)%>
+				</td>
+			</tr>
+		</table>
 	</div>
 	<div class="kaderke">
-		<div class="kadertitel">Actieve afdelingen dit werkjaar</div>
+		<div class="kadertitel">
+			Actieve afdelingen dit werkjaar</div>
 		<ul>
 			<%
 				foreach (var afd in Model.Detail.Afdelingen.OrderByDescending(afd => afd.GeboorteJaarVan))
@@ -36,7 +51,8 @@
 		[<%=Html.ActionLink("afdelingsverdeling aanpassen", "Index", "Afdelingen") %>]
 	</div>
 	<div class="kaderke">
-		<div class="kadertitel">Categorieën voor ingeschreven en niet-ingeschreven personen</div>
+		<div class="kadertitel">
+			Categorieën voor ingeschreven en niet-ingeschreven personen</div>
 		<ul>
 			<%
 				foreach (var cat in Model.Detail.Categorieen.OrderBy(cat => cat.Code))
@@ -52,7 +68,8 @@
 		[<%=Html.ActionLink("categorieën toevoegen/verwijderen", "Index", "Categorieen") %>]
 	</div>
 	<div class="kaderke">
-		<div class="kadertitel">Eigen functies voor ingeschreven leden en leiding</div>
+		<div class="kadertitel">
+			Eigen functies voor ingeschreven leden en leiding</div>
 		<ul>
 			<%
 				foreach (var fie in Model.Detail.Functies.OrderBy(fie => fie.Type))

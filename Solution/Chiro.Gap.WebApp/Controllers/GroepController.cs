@@ -12,6 +12,7 @@ using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
+	[HandleError]
 	public class GroepController : BaseController
 	{
 		public GroepController(IServiceHelper serviceHelper) : base(serviceHelper) { }
@@ -21,6 +22,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="groepID">ID van de gewenste groep</param>
 		/// <returns>View met algemene gegevens over de groep</returns>
+		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
 			var model = new GroepsInstellingenModel

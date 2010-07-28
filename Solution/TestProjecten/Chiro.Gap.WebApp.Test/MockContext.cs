@@ -38,23 +38,23 @@ namespace MvcWebApp2.Tests
             Request.Setup(x => x.Form).Returns(new NameValueCollection());
 
             // Geef de mockcontext door aan de controller
-            RequestContext rc = new RequestContext(HttpContext.Object, new RouteData());
+            var rc = new RequestContext(HttpContext.Object, new RouteData());
             controller.ControllerContext = new ControllerContext(rc, controller);
         }
 
         // Gebruik een gesimuleerde HttpSessionBase (is moeilijk te mocken met Moq)
         private class FakeSessionState : HttpSessionStateBase
         {
-            Dictionary<string, object> items = new Dictionary<string, object>();
+        	readonly Dictionary<string, object> _items = new Dictionary<string, object>();
             public override object this[string name]
             {
                 get
                 {
-                    return items.ContainsKey(name) ? items[name] : null;
+                    return _items.ContainsKey(name) ? _items[name] : null;
                 }
                 set
                 {
-                    items[name] = value;
+                    _items[name] = value;
                 }
             }
         }

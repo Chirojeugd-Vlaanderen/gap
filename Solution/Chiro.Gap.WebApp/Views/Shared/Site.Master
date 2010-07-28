@@ -1,102 +1,69 @@
-<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage<Chiro.Gap.WebApp.Models.IMasterViewModel>" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title>
-        <%=Html.Encode(ViewData.Model.Titel) %>
-        |
-        <%=Html.Encode(ViewData.Model.GroepsNaam) %></title>
-    <asp:ContentPlaceHolder ID="head" runat="server" />
-    <link href="<%=ResolveUrl("~/Content/Site.css")%>" rel="stylesheet" type="text/css" />
-    <!-- link hieronder nog eens absoluut, zodat Visual Studio geen fouten geeft op niet-gevonden css-classes -->
-    <link href="/Content/Site.css" rel="Stylesheet" type="text/css" />
+<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage<Chiro.Gap.WebApp.Models.IMasterViewModel>"
+	MasterPageFile="~/Views/Shared/Globaal.Master" %>
 
-</head>
-<body>
-    <div class="page">
-    
-        <div id="header">
-            <div id="logo">
-                <img src='<%=ResolveUrl("~/Content/Chirologo.png")%>' alt="Chirologo" />
-            </div>
-            <div id="title">
-                <h1>
-                    <%=Html.Encode(ViewData.Model.GroepsNaam) %>
-                </h1>
-                <%  if (ViewData.Model.Plaats != "geen" && ViewData.Model.Plaats != "nvt")
-                    { %>
-                <p>
-                    <%=Html.Encode(ViewData.Model.Plaats)%>
-                    <br />
-                    Stamnummer:
-                    <%=Html.Encode(ViewData.Model.StamNummer)%>
-                </p>
-                <%  }
-                    else
-                    { %>
-                <p>
-                    Stamnummer:
-                    <%=Html.Encode(ViewData.Model.StamNummer)%></p>
-                <%  }
-                %>
-            </div>
-            <div id="settingsmenu">
-                Aangemeld als
-                <% =HttpContext.Current.User.Identity.Name %><br />
-                [<a href="https://extranet.chiro.be/Gebruiker" title="Je wachtwoord veranderen">Wachtwoord
-                    wijzigen</a>]<br />
-                    <div id="AndereGroepLink">
-                [<%= Html.ActionLink("Andere groep", "Index", "Gav")%>]
-                </div>
-            </div>
-            <div id="topNavigatie">
-                <ul>
-                    <li>
-                        <%= Html.ActionLink("Groep", "Index", "Groep")%></li>
-                    <li>
-                        <%= Html.ActionLink("Iedereen", "Index", "Personen")%></li>
-                    <li>
-                        <%= Html.ActionLink("Ingeschreven", "Index", "Leden")%></li>
-                    <li>
-                        <%= Html.ActionLink("Jaarovergang", "Index", "JaarOvergang")%></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div id="main">
-            <h2><%=Html.Encode(ViewData.Model.Titel) %></h2>
-            
-            <% if (TempData["feedback"] != null)
-               { %>
-                <div class="Feedback"><%= TempData["feedback"].ToString().Replace(Environment.NewLine, "<br>")%></div>
-            <% } %>
-            
-            <% if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
-               {
-            %>
-                <ul class="mededelingen">
-            <%
-                   foreach (var m in Model.Mededelingen)
-                   {
-            %>
-                    <li><strong><%=m.Type %>:</strong> <%=m.Info %></li>
-            <%
-                   }
-            %>
-                </ul>
-            <%
-               }
-            %>
-            
-            <asp:ContentPlaceHolder ID="MainContent" runat="server" />
-            
-            <div id="footer">
-                <hr />
-                <p>
-                    &copy; Chirojeugd-Vlaanderen vzw 2007-<%= DateTime.Now.Year.ToString() %></p>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+<asp:Content ContentPlaceHolderID="HeaderTitleContent" runat="server">
+	<%=Html.Encode(ViewData.Model.Titel) %>
+	|
+	<%=Html.Encode(ViewData.Model.GroepsNaam) %>
+</asp:Content>
+<asp:Content ContentPlaceHolderID="HeadContent" runat="server">
+	<asp:ContentPlaceHolder runat="server" ID="head" />
+</asp:Content>
+<asp:Content ContentPlaceHolderID="PaginaTitelContent" runat="server">
+	<h1>
+		<%=Html.Encode(ViewData.Model.GroepsNaam) %>
+	</h1>
+	<%  if (ViewData.Model.Plaats != "geen" && ViewData.Model.Plaats != "nvt")
+	 { %>
+	<p>
+		<%=Html.Encode(ViewData.Model.Plaats)%>
+		<br />
+		Stamnummer:
+		<%=Html.Encode(ViewData.Model.StamNummer)%>
+	</p>
+	<%  }
+	 else
+	 { %>
+	<p>
+		Stamnummer:
+		<%=Html.Encode(ViewData.Model.StamNummer)%></p>
+	<%  }
+	%>
+</asp:Content>
+<asp:Content ContentPlaceHolderID="NavigatieContent" runat="server">
+	<ul>
+		<li>
+			<%= Html.ActionLink("Handleiding", "Index", "Handleiding") %></li>
+		<li>
+			<%= Html.ActionLink("Groep", "Index", "Groep")%></li>
+		<li>
+			<%= Html.ActionLink("Iedereen", "Index", "Personen")%></li>
+		<li>
+			<%= Html.ActionLink("Ingeschreven", "Index", "Leden")%></li>
+		<li>
+			<%= Html.ActionLink("Jaarovergang", "Index", "JaarOvergang")%></li>
+	</ul>
+</asp:Content>
+<asp:Content ContentPlaceHolderID="BodyContent" runat="server">
+	<h2>
+		<%=Html.Encode(ViewData.Model.Titel) %></h2>
+	<% if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
+	{
+	%>
+	<ul class="mededelingen">
+		<%
+			foreach (var m in Model.Mededelingen)
+			{
+		%>
+		<li><strong>
+			<%=m.Type %>:</strong>
+			<%=m.Info %></li>
+		<%
+			}
+		%>
+	</ul>
+	<%
+		}
+	%>
+	<asp:ContentPlaceHolder ID="MainContent" runat="server" />
+</asp:Content>

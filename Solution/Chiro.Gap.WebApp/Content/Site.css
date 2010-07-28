@@ -56,7 +56,7 @@ h1
 }
 h2
 {
-	padding: 0 0 10px 0;
+	padding: 0 0 5px 0;
 }
 h3
 {
@@ -91,7 +91,7 @@ first child of the left and right table columns */
 #header
 {
 	position: relative;
-	margin-bottom: 50px;
+	margin-bottom: 30px;
 	color: #000;
 	padding: 0;
 	border: solid 1px #fff; /* hack voor FF */
@@ -113,7 +113,7 @@ first child of the left and right table columns */
 {
 	float: none;
 	clear: both;
-	padding: 10px 30px 10px 30px;
+	padding: 5px 25px 10px 25px;
 	background-color: #fff;
 	margin-bottom: 30px;
 }
@@ -127,6 +127,7 @@ first child of the left and right table columns */
 	margin-top: 20px;
 	padding-top: 10px;
 	font-size: .9em;
+	clear: both;
 }
 
 /* TAB MENU   
@@ -364,39 +365,66 @@ div#title
     padding: 1ex 1ex 1ex 4ex;
 }
 
-ul#acties
+#acties h1
+{
+	font-size: small;
+}
+
+#acties
 {
     float: right;
-	margin: 0;
-	text-align: right;
+    margin: 25px;
 }
 
-ul#acties li
+#acties ul
 {
-	display: inline;
-	list-style: none;
+	margin: 0 4px 0 -10px;
+	text-align: left;	
 }
 
-/* Doet de layout nogal sterk kapot bij lege paragrafen enzo (omdat hun veld leeg is)*/
-/*fieldset label
+#acties li
 {
-	float: left;
-	width: 120px;
-}*/
-
-td.right
-{
-	text-align: right;
-}
-
-div.Feedback
-{
-	border: Solid 1px #FF0000;
-	background-color: #FFF8C6;
-	padding: 1em 1em 1em 1em;
 	display: block;
-	color: #FF0000;
-	margin-bottom: 2em;
+	list-style: none;
+	margin-left: -20px;
+}
+
+.right
+{
+	text-align: right;
+}
+
+.center
+{
+	text-align: center;
+}
+
+.left
+{
+	text-align: left;
+}
+
+div.Foutmelding, div.Succesmelding
+{
+	font-size: 13px;
+	border: solid 1px;
+	margin: 2px 2px 2px 2px;
+	color: #000;
+	margin-top: 1em;
+	width: 60%;
+	padding: 15px 8px 15px 8px;
+}
+
+div.Foutmelding
+{
+	border-color: Red;
+	background-color: #FFF2F2;
+}
+
+div.Succesmelding
+{
+	border-color: Green;
+	background-color: #DFD;
 }
 
 table.overzicht 
@@ -456,4 +484,19 @@ textarea
 	position: absolute;
 	display: block;
 	overflow: visible;
+}
+
+#helpmenu
+{
+	float: left;
+	background-color: #ddd;
+	width: 200px;
+	margin: 0 5px 2px 0;
+}
+
+#help
+{
+	float: left;
+	margin-bottom: 15px;
+	padding: 2px 2px 2px 2px;
 }
