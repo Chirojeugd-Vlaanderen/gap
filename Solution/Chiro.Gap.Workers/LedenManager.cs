@@ -116,7 +116,17 @@ namespace Chiro.Gap.Workers
 			}else
 			{
 				//In het andere geval was de persoon vorig jaar geen lid (of was er geen vorig jaar), dus krijgt hij de standaard periode om te bedenken.
-				lid.EindeInstapPeriode = DateTime.Today.AddDays(Properties.Settings.Default.LengteProbeerPeriode);
+				//Of als de overgang nog verder in de toekomst ligt, wordt dat de datum
+				DateTime een = gwj.GetEindeJaarovergang();
+				DateTime twee = DateTime.Today.AddDays(Properties.Settings.Default.LengteProbeerPeriode);
+				if(een.CompareTo(twee)<0)
+				{
+					lid.EindeInstapPeriode = twee;
+				}else
+				{
+					lid.EindeInstapPeriode = een;
+				}
+				
 			}
 
 			return lid;
