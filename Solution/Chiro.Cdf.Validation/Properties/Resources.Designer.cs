@@ -61,6 +61,15 @@ namespace System.ComponentModel.DataAnnotations.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} is beperkt van {1} tot {2}..
+        /// </summary>
+        public static string AfdelingsJaarDetail_GeboorteJaar_RangeFout {
+            get {
+                return ResourceManager.GetString("AfdelingsJaarDetail_GeboorteJaar_RangeFout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De {0} moet in het verleden liggen..
         /// </summary>
         public static string DatumInVerledenAttribute_ValidationError {

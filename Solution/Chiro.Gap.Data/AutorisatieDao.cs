@@ -94,41 +94,36 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// 
+		/// Kijkt in de tabel Gebruikersrecht of er een record is dat de  opgegeven 
+		/// <paramref name="login"/> aan de opgegeven <paramref name="groepID"/> koppelt.
 		/// </summary>
-		/// <param name="login"></param>
-		/// <param name="groepID"></param>
-		/// <returns></returns>
+		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
+		/// <param name="groepID">De ID van de groep die de gebruiker wil zien en/of bewerken</param>
+		/// <returns><c>True</c> als de bezoeker GAV is van de gevraagde groep, 
+		/// <c>false</c> in het andere geval</returns>
 		public bool IsGavGroep(string login, int groepID)
 		{
 			using (var db = new ChiroGroepEntities())
 			{
-				var query1
-					= from r in db.Groep
-					  where r.ID == groepID
-					  select r;
-
-				if (query1.Count() == 0)
-				{
-					return true;
-				}
-
-				var query2
+				var query
 					= from r in db.GebruikersRecht
 					  where r.Groep.ID == groepID && r.Gav.Login == login
 					  && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
 					  select r;
 
-				return query2.Count() > 0;
+				return query.Count() > 0;
 			}
 		}
 
 		/// <summary>
-		/// 
+		/// Kijkt na in de tabel Gebruikersrecht of de persoon gelieerd is aan een groep
+		/// waar de gebruiker GAV van is
 		/// </summary>
-		/// <param name="login"></param>
-		/// <param name="gelieerdePersoonID"></param>
-		/// <returns></returns>
+		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
+		/// <param name="gelieerdePersoonID">De ID van de gelieerde persoon 
+		/// die de gebruiker wil zien en/of bewerken</param>
+		/// <returns><c>True</c> als de bezoeker GAV is van de groep waar de persoon aan gelieerd is, 
+		/// <c>false</c> in het andere geval</returns>
 		public bool IsGavGelieerdePersoon(string login, int gelieerdePersoonID)
 		{
 			bool resultaat;
@@ -233,9 +228,10 @@ namespace Chiro.Gap.Data.Ef
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="login"></param>
+		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
 		/// <param name="persoonID"></param>
-		/// <returns></returns>
+		/// <returns><c>True</c> als de bezoeker GAV is, 
+		/// <c>false</c> in het andere geval</returns>
 		public bool IsGavPersoon(string login, int persoonID)
 		{
 			bool resultaat;
@@ -273,9 +269,10 @@ namespace Chiro.Gap.Data.Ef
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="login"></param>
+		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
 		/// <param name="groepsWerkJaarID"></param>
-		/// <returns></returns>
+		/// <returns><c>True</c> als de bezoeker GAV is van de gevraagde groep in het
+		/// gekoppelde werkjaar, <c>false</c> in het andere geval</returns>
 		public bool IsGavGroepsWerkJaar(string login, int groepsWerkJaarID)
 		{
 			bool resultaat;
@@ -308,7 +305,7 @@ namespace Chiro.Gap.Data.Ef
 		/// Controleert of een gebruiker *nu* GAV is van de groep
 		/// horende bij de gegeven afdeling
 		/// </summary>
-		/// <param name="login">De gebruikersnaam van de bezoeker</param>
+		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
 		/// <param name="afdelingsID">ID van de gegeven afdeling</param>
 		/// <returns><c>True</c> als de bezoeker Gav is voor de bedoelde afdeling,
 		/// <c>false</c> als dat niet het geval is</returns>
@@ -345,9 +342,9 @@ namespace Chiro.Gap.Data.Ef
 		/// Controleert of een gebruiker *nu* GAV is van de groep
 		/// horende bij het gegeven afdelingsJaar
 		/// </summary>
-		/// <param name="login">De gebruikersnaam van de bezoeker</param>
+		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
 		/// <param name="afdelingsJaarID">ID van het gegeven afdelingsJaar</param>
-		/// <returns><c>true</c> als de bezoeker Gav is voor het bedoelde afdelingsJaar,
+		/// <returns><c>True</c> als de bezoeker Gav is voor het bedoelde afdelingsJaar,
 		/// <c>false</c> als dat niet het geval is</returns>
 		public bool IsGavAfdelingsJaar(string login, int afdelingsJaarID)
 		{
@@ -377,9 +374,10 @@ namespace Chiro.Gap.Data.Ef
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="login"></param>
+		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
 		/// <param name="lidID"></param>
-		/// <returns></returns>
+		/// <returns><c>True</c> als de bezoeker GAV is van de groep waar het lid ingeschreven is, 
+		/// <c>false</c> in het andere geval</returns>
 		public bool IsGavLid(string login, int lidID)
 		{
 			bool resultaat;
@@ -412,8 +410,9 @@ namespace Chiro.Gap.Data.Ef
 		/// 
 		/// </summary>
 		/// <param name="categorieID"></param>
-		/// <param name="login"></param>
-		/// <returns></returns>
+		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
+		/// <returns><c>True</c> als de bezoeker GAV is van de groep waar die categorie gebruikt wordt, 
+		/// <c>false</c> in het andere geval</returns>
 		public bool IsGavCategorie(int categorieID, string login)
 		{
 			bool resultaat;
@@ -446,8 +445,9 @@ namespace Chiro.Gap.Data.Ef
 		/// 
 		/// </summary>
 		/// <param name="commvormID"></param>
-		/// <param name="login"></param>
-		/// <returns></returns>
+		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
+		/// <returns><c>True</c> als de bezoeker GAV is van de groep waar die communicatievorm geregistreerd is, 
+		/// <c>false</c> in het andere geval</returns>
 		public bool IsGavCommVorm(int commvormID, string login)
 		{
 			bool resultaat;
@@ -482,8 +482,8 @@ namespace Chiro.Gap.Data.Ef
 		/// <c>false</c>.
 		/// </summary>
 		/// <param name="persoonsAdresID">ID van de functie</param>
-		/// <param name="login">Gebruikersnaam</param>
-		/// <returns><c>true</c> als het persoonsAdres met ID <paramref name="persoonsAdresID"/> gekoppeld is aan een persoon
+		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
+		/// <returns><c>True</c> als het persoonsAdres met ID <paramref name="persoonsAdresID"/> gekoppeld is aan een persoon
 		/// waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten op heeft.  Anders
 		/// <c>false</c>.</returns>
 		public bool IsGavPersoonsAdres(int persoonsAdresID, string login)

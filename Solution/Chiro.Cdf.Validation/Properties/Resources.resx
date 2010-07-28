@@ -136,4 +136,7 @@
   <data name="StringMinimumLengthAttribute_InvalidMinimumLenght" xml:space="preserve">
     <value>The minimum lenght must be a nonnegative integer.</value>
   </data>
+	<data name="AfdelingsJaarDetail_GeboorteJaar_RangeFout">
+		<value xml:space="preserve">{0} is beperkt van {1} tot {2}.</value>
+	</data>
 </root>
