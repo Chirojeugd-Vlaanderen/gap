@@ -51,6 +51,8 @@ namespace Chiro.Gap.Services
 
 		#endregion
 
+		#region ledenmanagen
+
 		/// <summary>
 		/// Gegeven een lijst van IDs van gelieerde personen.
 		/// Haal al die gelieerde personen op en probeer ze in het huidige werkjaar lid te maken in het gegeven lidtype.
@@ -68,7 +70,7 @@ namespace Chiro.Gap.Services
 		/// teruggegeven.
 		/// </remarks>
 		/// <throws>NotSupportedException</throws> //TODO handle
-		public IEnumerable<int> LedenMaken(IEnumerable<int> gelieerdePersoonIDs, LidType type, out string foutBerichten)
+		public IEnumerable<int> NieuwInschrijven(IEnumerable<int> gelieerdePersoonIDs, LidType type, out string foutBerichten)
 		{
 			if(type!=LidType.Kind && type!=LidType.Leiding)
 			{
@@ -144,6 +146,81 @@ namespace Chiro.Gap.Services
 			return lidIDs;
 		}
 
+		public IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
+		{
+			var lidIDs = new List<int>();
+			var foutBerichtenBuilder = new StringBuilder();
+
+			var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Groep);
+			var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
+
+			foreach (var g in groepen)
+			{
+				var gwj = _groepwsWjMgr.RecentsteOphalen(g.ID, GroepsWerkJaarExtras.Afdelingen | GroepsWerkJaarExtras.Groep);
+
+				foreach (var gp in g.GelieerdePersoon)
+				{
+					var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
+
+					if (l == null)
+					{
+						foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogNietIngeschreven, gp.Persoon.VolledigeNaam));
+						continue;
+					}
+					if (!l.NonActief)
+					{
+						foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
+						continue;
+					}
+
+					l.NonActief = false;
+					_ledenMgr.LidBewaren(l);
+				}
+			}
+
+			foutBerichten = foutBerichtenBuilder.ToString();
+
+			return lidIDs;
+		}
+
+		public void Uitschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
+		{
+			var foutBerichtenBuilder = new StringBuilder();
+
+			var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Groep);
+			var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
+
+			foreach (var g in groepen)
+			{
+				var gwj = _groepwsWjMgr.RecentsteOphalen(g.ID, GroepsWerkJaarExtras.Afdelingen | GroepsWerkJaarExtras.Groep);
+
+				foreach (var gp in g.GelieerdePersoon)
+				{
+					var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
+					
+					if(l==null)
+					{
+						foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogNietIngeschreven, gp.Persoon.VolledigeNaam));
+						continue;
+					}
+					if(l.NonActief)
+					{
+						foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsAlUitgeschreven, gp.Persoon.VolledigeNaam));
+						continue;
+					}
+
+					l.NonActief = true;
+					_ledenMgr.LidBewaren(l);
+				}
+			}
+
+			foutBerichten = foutBerichtenBuilder.ToString();
+		}
+
+		#endregion
+
+		#region bewaren
+
 		/// <summary>
 		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. Creëert of verwijdert geen leden, en leden kunnen ook niet van werkjaar of van gelieerdepersoon veranderen.
 		/// </summary>
@@ -156,18 +233,17 @@ namespace Chiro.Gap.Services
 			_ledenMgr.LidBewaren(lid);
 		}
 
-		public void NonActiefMaken(int lidID)
+		/* zie #273 */
+		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
+		public PersoonLidInfo BewarenMetVrijeVelden(PersoonLidInfo lid)
 		{
-			Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Groep);
-			_ledenMgr.NonActiefMaken(l);	// verwijderen persisteert meteen
+			// TODO
+			throw new NotImplementedException();
 		}
 
-		public void ActiefMaken(int lidID)
-		{
-			Lid l = _ledenMgr.Ophalen(lidID);
-			l.NonActief = false;
-			_ledenMgr.LidBewaren(l);	// verwijderen persisteert meteen
-		}
+		#endregion
+
+		#region verzekeren
 
 		/// <summary>
 		/// Verzekert lid met ID <paramref name="lidID"/> tegen loonverlies
@@ -191,6 +267,10 @@ namespace Chiro.Gap.Services
 
 			return l.GelieerdePersoon.ID;
 		}
+
+		#endregion
+
+		#region vervangen
 
 		/// <summary>
 		/// Vervangt de functies van het lid bepaald door <paramref name="lidID"/> door de functies
@@ -222,36 +302,6 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
-		/// Haalt de ID's van de groepswerkjaren van een lid op.
-		/// </summary>
-		/// <param name="lidID">ID van het lid waarin we geinteresseerd zijn</param>
-		/// <returns>Een LidAfdelingInfo-object</returns>
-		public LidAfdelingInfo AfdelingenOphalen(int lidID)
-		{
-			var resultaat = new LidAfdelingInfo();
-
-			Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Afdelingen | LidExtras.Persoon);
-			resultaat.VolledigeNaam = String.Format(
-				"{0} {1}", 
-				l.GelieerdePersoon.Persoon.VoorNaam,
-				l.GelieerdePersoon.Persoon.Naam);
-			resultaat.Type = l.Type;
-
-			if (l is Kind)
-			{
-				resultaat.AfdelingsJaarIDs = new List<int>();
-				resultaat.AfdelingsJaarIDs.Add((l as Kind).AfdelingsJaar.ID);
-			}
-			else if(l is Leiding)
-			{
-				resultaat.AfdelingsJaarIDs = (from aj in (l as Leiding).AfdelingsJaar
-							      select aj.ID).ToList();
-			}
-
-			return resultaat;
-		}
-
-		/// <summary>
 		/// Vervangt de afdelingen van het lid met ID <paramref name="lidID"/> door de afdelingen
 		/// met AFDELINGSJAARIDs gegeven door <paramref name="afdelingsJaarIDs"/>.
 		/// </summary>
@@ -280,14 +330,7 @@ namespace Chiro.Gap.Services
 			return l.GelieerdePersoon.ID;
 		}
 
-
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public PersoonLidInfo BewarenMetVrijeVelden(PersoonLidInfo lid)
-		{
-			// TODO
-			throw new NotImplementedException();
-		}
+		#endregion
 
 		#region Ophalen
 
@@ -367,6 +410,36 @@ namespace Chiro.Gap.Services
 				groepsWerkJaarID, 
 				LidExtras.Persoon|LidExtras.Afdelingen|LidExtras.Functies|LidExtras.Adressen|LidExtras.Communicatie);
 			var resultaat = Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(leden);
+
+			return resultaat;
+		}
+
+		/// <summary>
+		/// Haalt de ID's van de groepswerkjaren van een lid op.
+		/// </summary>
+		/// <param name="lidID">ID van het lid waarin we geinteresseerd zijn</param>
+		/// <returns>Een LidAfdelingInfo-object</returns>
+		public LidAfdelingInfo AfdelingenOphalen(int lidID)
+		{
+			var resultaat = new LidAfdelingInfo();
+
+			Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Afdelingen | LidExtras.Persoon);
+			resultaat.VolledigeNaam = String.Format(
+				"{0} {1}",
+				l.GelieerdePersoon.Persoon.VoorNaam,
+				l.GelieerdePersoon.Persoon.Naam);
+			resultaat.Type = l.Type;
+
+			if (l is Kind)
+			{
+				resultaat.AfdelingsJaarIDs = new List<int>();
+				resultaat.AfdelingsJaarIDs.Add((l as Kind).AfdelingsJaar.ID);
+			}
+			else if (l is Leiding)
+			{
+				resultaat.AfdelingsJaarIDs = (from aj in (l as Leiding).AfdelingsJaar
+											  select aj.ID).ToList();
+			}
 
 			return resultaat;
 		}

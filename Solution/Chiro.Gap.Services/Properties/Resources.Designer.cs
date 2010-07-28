@@ -97,6 +97,33 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} was al uitgeschreven uit je groep..
+        /// </summary>
+        internal static string IsAlUitgeschreven {
+            get {
+                return ResourceManager.GetString("IsAlUitgeschreven", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} was is al ingeschreven in je groep..
+        /// </summary>
+        internal static string IsNogIngeschreven {
+            get {
+                return ResourceManager.GetString("IsNogIngeschreven", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is nog niet ingeschreven in je groep..
+        /// </summary>
+        internal static string IsNogNietIngeschreven {
+            get {
+                return ResourceManager.GetString("IsNogNietIngeschreven", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 15.
         /// </summary>
         internal static string LeidingVanafLeeftijd {

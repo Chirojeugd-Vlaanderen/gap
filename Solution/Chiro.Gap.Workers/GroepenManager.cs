@@ -85,7 +85,7 @@ namespace Chiro.Gap.Workers
 			{
 				// Alle gelieerde personen van de groep ophalen
 				IList<GelieerdePersoon> allePersonen = _gelPersDao.AllenOphalen(
-					groepID,
+					groepID, PersoonSorteringsEnum.Naam,
 					gp => gp.Lid, gp => gp.Persoon);
 
 				// Alle gelieerde personen als 'te verwijderen' markeren

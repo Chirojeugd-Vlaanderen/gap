@@ -65,7 +65,7 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public IList<GelieerdePersoon> AllenOphalen(int GroepID, params System.Linq.Expressions.Expression<Func<GelieerdePersoon, object>>[] paths)
+		public IList<GelieerdePersoon> AllenOphalen(int GroepID, PersoonSorteringsEnum sortering, params System.Linq.Expressions.Expression<Func<GelieerdePersoon, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}

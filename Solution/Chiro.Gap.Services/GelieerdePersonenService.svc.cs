@@ -327,10 +327,7 @@ namespace Chiro.Gap.Services
 		/// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
 		public IEnumerable<PersoonOverzicht> AllenOphalenUitGroep(int groepID, PersoonSorteringsEnum sortering)
 		{
-			var gelieerdePersonen = _gpMgr.AllenOphalen(groepID, PersoonsExtras.Adressen|PersoonsExtras.Communicatie);
-			//TODO SORTERING TOEPASSEN!!!
-			//TODO in gpmgr: PaginaOphalen bevat nog geen sortering en geen extras
-			//TODO in gpmgr: PaginaOphalen bevat nog geen extras
+			var gelieerdePersonen = _gpMgr.AllenOphalen(groepID, PersoonsExtras.Adressen|PersoonsExtras.Communicatie, sortering);
 			return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);
 		}
 

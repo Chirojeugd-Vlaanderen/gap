@@ -136,6 +136,15 @@
   <data name="OngeldigLidType" xml:space="preserve">
     <value>Ongeldig lidtype.</value>
   </data>
+	<data name="IsNogNietIngeschreven" xml:space="preserve">
+    <value>{0} is nog niet ingeschreven in je groep.</value>
+  </data>
+	<data name="IsAlUitgeschreven" xml:space="preserve">
+    <value>{0} was al uitgeschreven uit je groep.</value>
+  </data>
+	<data name="IsNogIngeschreven" xml:space="preserve">
+    <value>{0} was is al ingeschreven in je groep.</value>
+  </data>
   <data name="WasAlLeiding" xml:space="preserve">
     <value>{0} was al leiding.</value>
   </data>

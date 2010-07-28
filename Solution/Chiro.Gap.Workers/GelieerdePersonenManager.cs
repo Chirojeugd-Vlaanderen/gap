@@ -260,16 +260,17 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="groepID">GroepID van gevraagde groep</param>
 		/// <param name="extras">Bepaalt gekoppelde entity's die mee moeten worden opgehaald</param>
+		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <returns>Lijst met alle gelieerde personen</returns>
 		/// <remarks>Opgelet! Dit kan een zware query zijn!</remarks>
-		public IList<GelieerdePersoon> AllenOphalen(int groepID, PersoonsExtras extras)
+		public IList<GelieerdePersoon> AllenOphalen(int groepID, PersoonsExtras extras, PersoonSorteringsEnum sortering)
 		{
 			if (!_autorisatieMgr.IsGavGroep(groepID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			return _gelieerdePersonenDao.AllenOphalen(groepID, ExtrasNaarLambdas(extras));
+			return _gelieerdePersonenDao.AllenOphalen(groepID, sortering, ExtrasNaarLambdas(extras));
 		}
 
 		/// <summary>
@@ -278,9 +279,10 @@ namespace Chiro.Gap.Workers
 		/// <param name="groepID">GroepID gevraagde groep</param>
 		/// <param name="pagina">Paginanummer (>=1)</param>
 		/// <param name="paginaGrootte">Grootte van de pagina's</param>
+		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <param name="aantalTotaal">Totaal aantal personen in de groep</param>
 		/// <returns>Lijst met een pagina aan gelieerde personen.</returns>
-		public IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, out int aantalTotaal)
+		public IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal)
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{

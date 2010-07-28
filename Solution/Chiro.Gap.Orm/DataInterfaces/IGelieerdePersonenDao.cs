@@ -59,9 +59,10 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// Haalt de persoonsgegevens van alle gelieerde personen van een groep op.
 		/// </summary>
 		/// <param name="groepID">ID van de groep</param>
+		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <param name="paths">Expressies die aangeven welke dependencies mee opgehaald moeten worden</param>
 		/// <returns>Lijst van gelieerde personen</returns>
-		IList<GelieerdePersoon> AllenOphalen(int groepID, params Expression<Func<GelieerdePersoon, object>>[] paths);
+		IList<GelieerdePersoon> AllenOphalen(int groepID, PersoonSorteringsEnum sortering, params Expression<Func<GelieerdePersoon, object>>[] paths);
 
 		/// <summary>
 		/// Haalt een 'pagina' persoonsgegevens van de gelieerde personen van een groep op, inclusief

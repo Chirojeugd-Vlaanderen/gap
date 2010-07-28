@@ -16,6 +16,7 @@ namespace Chiro.Gap.ServiceContracts
 	public interface ILedenService
 	{
 		/// <summary>
+		/// TODO is niet meer up to date (na combinatie met activeren)
 		/// Gaat een gelieerde persoon ophalen en maakt die lid in het huidige werkjaar.  Als het om kindleden gaat,
 		/// krjgen ze meteen een afdeling die overeenkomt met leeftijd en geslacht.
 		/// </summary>
@@ -29,7 +30,18 @@ namespace Chiro.Gap.ServiceContracts
 		/// de personen die geen problemen vertonen *toch* lid gemaakt. 
 		/// </remarks>
 		[OperationContract]
-		IEnumerable<int> LedenMaken(IEnumerable<int> gelieerdePersoonIDs, LidType type, out string foutBerichten);
+		IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten);
+		[OperationContract]
+		IEnumerable<int> NieuwInschrijven(IEnumerable<int> gelieerdePersoonIDs, LidType type, out string foutBerichten);
+
+		/// <summary>
+		/// Maakt lid met gegeven ID nonactief
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
+		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
+		/// string waarin wat uitleg staat.  TODO: beter systeem vinden voor deze feedback.</param>
+		[OperationContract]
+		void Uitschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten);
 
 		/// <summary>
 		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. Creëert of verwijdert geen leden, en leden
@@ -72,20 +84,6 @@ namespace Chiro.Gap.ServiceContracts
 		/// <returns></returns>
 		[OperationContract]
 		PersoonLidInfo BewarenMetVrijeVelden(PersoonLidInfo lid);
-
-		/// <summary>
-		/// Maakt lid met gegeven ID nonactief
-		/// </summary>
-		/// <param name="lidID">ID van het lid</param>
-		[OperationContract]
-		void NonActiefMaken(int lidID);
-
-		/// <summary>
-		/// Maakt lid met gegeven ID actief
-		/// </summary>
-		/// <param name="lidID">ID van het lid</param>
-		[OperationContract]
-		void ActiefMaken(int lidID);
 
 		/// <summary>
 		/// Verzekert lid met ID <paramref name="lidID"/> tegen loonverlies

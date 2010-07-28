@@ -265,7 +265,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public ActionResult DeActiveren(int id, int groepID)
 		{
-			ServiceHelper.CallService<ILedenService>(l => l.NonActiefMaken(id));
+			string fouten; //TODO fouten opvangen
+			ServiceHelper.CallService<ILedenService>(l => l.Uitschrijven(new List<int> {id}, out fouten));
 			TempData["succes"] = Properties.Resources.LidNonActiefGemaakt;
 
 			return TerugNaarVorigeLijst();
@@ -274,9 +275,10 @@ namespace Chiro.Gap.WebApp.Controllers
 		// id = lidid
 		// GET: /Leden/Activeren/id
 		[HandleError]
-		public ActionResult Activeren(int id, int gwjID, int groepID)
+		public ActionResult Activeren(int id, int groepID)
 		{
-			ServiceHelper.CallService<ILedenService>(l => l.ActiefMaken(id));
+			string fouten; //TODO fouten opvangen
+			ServiceHelper.CallService<ILedenService>(l => l.Inschrijven(new List<int> { id }, out fouten));
 			TempData["succes"] = Properties.Resources.LidActiefGemaakt;
 
 			return TerugNaarVorigeLijst();

@@ -40,11 +40,13 @@ namespace Chiro.Gap.Data.Ef
 		/// in <paramref name="paths"/>
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvan we de gelieerde personen willen opvragen</param>
+		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <param name="paths">Een array van lambda-expressions die de mee op te halen gerelateerde entity's
 		/// bepaalt</param>
 		/// <returns>De gevraagde lijst gelieerde personen</returns>
 		public IList<GelieerdePersoon> AllenOphalen(
 			int groepID,
+			PersoonSorteringsEnum sortering, 
 			params Expression<Func<GelieerdePersoon, object>>[] paths)
 		{
 			IList<GelieerdePersoon> result;
@@ -58,7 +60,7 @@ namespace Chiro.Gap.Data.Ef
 							 where gp.Groep.ID == groepID
 							 select gp) as ObjectQuery<GelieerdePersoon>;
 
-				result = (IncludesToepassen(query, paths)).ToList();
+				result = SorteerLijst(IncludesToepassen(query, paths), sortering).ToList();
 			}
 
 			// Dan detachen

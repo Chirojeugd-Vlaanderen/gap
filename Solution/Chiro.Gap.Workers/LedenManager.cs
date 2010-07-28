@@ -110,16 +110,14 @@ namespace Chiro.Gap.Workers
 
 			//Als er vorig jaar een werkjaar was en de persoon was toen lid, dan zal zijn probeerperiode maximum tot 15 oktober zijn, 
 			//eender wanneer de persoon lid wordt.
-
-			//TODO #14: Lid moet eerst mee worden opgehaald, anders heeft dit geen zin
-			/*if(voriggwj!=null && gp.Lid.Any(e => e.GroepsWerkJaar.ID == voriggwj.ID))
+			if(voriggwj!=null && OphalenViaPersoon(gp.ID, voriggwj.ID)!=null)
 			{
 				lid.EindeInstapPeriode = gwj.GetEindeJaarovergang();
 			}else
-			{*/
+			{
 				//In het andere geval was de persoon vorig jaar geen lid (of was er geen vorig jaar), dus krijgt hij de standaard periode om te bedenken.
 				lid.EindeInstapPeriode = DateTime.Today.AddDays(Properties.Settings.Default.LengteProbeerPeriode);
-			//}
+			}
 
 			return lid;
 		}
@@ -440,18 +438,14 @@ namespace Chiro.Gap.Workers
 
 		/// <summary>
 		/// Haalt het lid op van een gelieerdepersoon in een groepswerkjaar als het bestaat, met gelinkte informatie
-		/// van afdelingsjaren en afdelingen
+		/// van afdelingsjaren en afdelingen, anders null
 		/// </summary>
 		/// <param name="gelieerdePersoonID">De ID van de gelieerde persoon</param>
 		/// <param name="groepsWerkJaarID">De ID van het groepswerkjaar</param>
 		/// <returns>Een Lid-object</returns>
 		public Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID)
 		{
-			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-			if (!_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
+			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID) || !_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}

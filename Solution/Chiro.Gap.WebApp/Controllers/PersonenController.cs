@@ -206,7 +206,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				case 2:
 					string foutBerichten = String.Empty;
 
-					ServiceHelper.CallService<ILedenService, IEnumerable<int>>(g => g.LedenMaken(
+					ServiceHelper.CallService<ILedenService, IEnumerable<int>>(g => g.NieuwInschrijven(
 						model.GekozenGelieerdePersoonIDs,
 						model.GekozenActie == 1 ? LidType.Kind : LidType.Leiding,
 						out foutBerichten));
@@ -478,7 +478,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			IList<int> ids = new List<int> { gelieerdepersoonID };
 			string foutBerichten = String.Empty;
 
-			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LedenMaken(ids, LidType.Kind, out foutBerichten));
+			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.NieuwInschrijven(ids, LidType.Kind, out foutBerichten));
 			if(String.IsNullOrEmpty(foutBerichten))
 			{
 				TempData["succes"] = Properties.Resources.LidGemaaktFeedback;
@@ -498,7 +498,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			IList<int> ids = new List<int> { gelieerdepersoonID };
 			string foutBerichten = String.Empty;
 
-			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.LedenMaken(ids, LidType.Leiding, out foutBerichten));
+			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.NieuwInschrijven(ids, LidType.Leiding, out foutBerichten));
 			if(String.IsNullOrEmpty(foutBerichten))
 			{
 				TempData["succes"] = Properties.Resources.LidGemaaktFeedback;

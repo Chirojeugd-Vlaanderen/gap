@@ -169,6 +169,19 @@ namespace Chiro.Gap.Data.Ef
 			return lijst2.ToList();
 		}
 
+		private static List<Lid> MaakLedenLijst(List<Kind> kinderen, List<Leiding> leiding, LedenSorteringsEnum sortering)
+		{
+
+			kinderen = SorteerLijst(kinderen, sortering);
+			leiding = SorteerLijst(leiding, sortering);
+
+			var lijst = new List<Lid>();
+			lijst.AddRange(leiding.Cast<Lid>());
+			lijst.AddRange(kinderen.Cast<Lid>());
+
+			return lijst.OrderBy(e => e.NonActief).ToList();
+		}
+
 		/// <summary>
 		/// Een lijst ophalen van alle leden voor het opgegeven groepswerkjaar
 		/// </summary>
@@ -177,8 +190,6 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>Een lijst alle leden voor het opgegeven groepswerkjaar</returns>
 		public IList<Lid> AllesOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
 		{
-			var lijst = new List<Lid>();
-
 			using (var db = new ChiroGroepEntities())
 			{
 				db.Lid.MergeOption = MergeOption.NoTracking;
@@ -195,14 +206,8 @@ namespace Chiro.Gap.Data.Ef
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 					select l).ToList();
 
-				kinderen = SorteerLijst(kinderen, sortering);
-				leiding = SorteerLijst(leiding, sortering);
-
-				lijst.AddRange(kinderen.Cast<Lid>());
-				lijst.AddRange(leiding.Cast<Lid>());
+				return MaakLedenLijst(kinderen, leiding, sortering);
 			}
-
-			return lijst;
 		}
 
 		/// <summary>
@@ -217,8 +222,6 @@ namespace Chiro.Gap.Data.Ef
 		/// </remarks>
 		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
 		{
-			var lijst = new List<Lid>();
-
 			using (var db = new ChiroGroepEntities())
 			{
 				db.Lid.MergeOption = MergeOption.NoTracking;
@@ -235,14 +238,8 @@ namespace Chiro.Gap.Data.Ef
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 					select l).ToList();
 
-				kinderen = SorteerLijst(kinderen, sortering);
-				leiding = SorteerLijst(leiding, sortering);
-
-				lijst.AddRange(kinderen.Cast<Lid>());
-				lijst.AddRange(leiding.Cast<Lid>());
+				return MaakLedenLijst(kinderen, leiding, sortering);
 			}
-
-			return lijst;
 		}
 
 		/// <summary>
@@ -257,8 +254,6 @@ namespace Chiro.Gap.Data.Ef
 		/// </remarks>
 		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering)
 		{
-			IList<Lid> lijst;
-
 			using (var db = new ChiroGroepEntities())
 			{
 				db.Lid.MergeOption = MergeOption.NoTracking;
@@ -279,21 +274,8 @@ namespace Chiro.Gap.Data.Ef
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 					select l).ToList();
 
-				kinderen = SorteerLijst(kinderen, sortering);
-				leiding = SorteerLijst(leiding, sortering);
-
-				lijst = new List<Lid>();
-				foreach (Kind lid in kinderen)
-				{
-					lijst.Add(lid);
-				}
-				foreach (Leiding lid in leiding)
-				{
-					lijst.Add(lid);
-				}
+				return MaakLedenLijst(kinderen, leiding, sortering);
 			}
-
-			return lijst;
 		}
 
 		/// <summary>
@@ -305,8 +287,6 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns></returns>
 		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LedenSorteringsEnum sortering)
 		{
-			IList<Lid> lijst;
-
 			using (var db = new ChiroGroepEntities())
 			{
 				db.Lid.MergeOption = MergeOption.NoTracking;
@@ -327,21 +307,8 @@ namespace Chiro.Gap.Data.Ef
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 					select l).ToList();
 
-				kinderen = SorteerLijst(kinderen, sortering);
-				leiding = SorteerLijst(leiding, sortering);
-
-				lijst = new List<Lid>();
-				foreach (Kind lid in kinderen)
-				{
-					lijst.Add(lid);
-				}
-				foreach (Leiding lid in leiding)
-				{
-					lijst.Add(lid);
-				}
+				return MaakLedenLijst(kinderen, leiding, sortering);
 			}
-
-			return lijst;
 		}
 
 		/// <summary>
