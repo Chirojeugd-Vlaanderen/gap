@@ -30,7 +30,7 @@ namespace Chiro.Gap.InitieleImport
 			Factory.ContainerInit(); // Init IOC
 			_serviceHelper = Factory.Maak<IServiceHelper>();
 
-			foreach (string stamnr in Users.Lijst.Select(info => info.StamNr).Distinct())
+			foreach (string stamnr in Users.AlleStamNummers)
 			{
 				ImporteerGroepsGegevens(stamnr);
 			}
@@ -114,6 +114,9 @@ namespace Chiro.Gap.InitieleImport
 
 			god.GroepsPersonenUitKipadmin(stamNr);
 
+			// Rechten terug afnemen, om check op GAV niet te zwaar te belasten
+
+			god.RechtenAfnemen(stamNr, userName);
 
 			// Kan directory blijkbaar niet verwijderen, omdat dit proces zelf de directory gebruikt :-/
 			//Directory.Delete(destdir, true);

@@ -92,5 +92,26 @@ namespace Chiro.Gap.Data.Super
 				cmd.ExecuteNonQuery();
 			}
 		}
+
+		/// <summary>
+		/// Ontneem gebruker met login <paramref name="userName"/> GAV-rechten op groep met gegeven 
+		/// <paramref name="stamNr"/>.
+		/// </summary>
+		/// <param name="stamNr">stamnummer van groep</param>
+		/// <param name="userName">login van user</param>
+		public void RechtenAfnemen(string stamNr, string userName)
+		{
+			using (var conn = new SqlConnection(ConnectionString))
+			{
+				conn.Open();
+
+				var cmd = new SqlCommand("auth.spGebruikersRechtOntnemen", conn);
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new SqlParameter("@stamnr", stamNr));
+				cmd.Parameters.Add(new SqlParameter("@login", userName));
+
+				cmd.ExecuteNonQuery();
+			}
+		}
 	}
 }
