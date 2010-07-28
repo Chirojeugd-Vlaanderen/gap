@@ -91,7 +91,7 @@ end
 
 PRINT '// aan te passen in Gap.Orm.Functie.cs:'
 PRINT ''
-PRINT 'public enum GepredefinieerdeFunctie {';
+PRINT 'public enum NationaleFunctie {';
 PRINT '		Geen = 0,'
 PRINT '		ContactPersoon = ' + CAST(@gg1ID AS VARCHAR(10)) + ',';
 PRINT '		GroepsLeiding = ' + CAST(@gg2ID AS VARCHAR(10)) + ',';
