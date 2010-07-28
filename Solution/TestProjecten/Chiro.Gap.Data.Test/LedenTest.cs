@@ -56,36 +56,36 @@ namespace Chiro.Gap.Data.Test
 		{
 			Factory.ContainerInit();
 
-			int afdelingsJaarID = TestInfo.AFDELINGSJAAR1ID;
+			var afdelingsJaarID = TestInfo.AFDELINGSJAAR1ID;
 
-			IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
-			AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
+			var ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
+			var aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
 
 			// Voeg kind toe (GelieerdePersoonID2 in AfdelingsJaarID) om in test te kunnen verwijderen
 
-			int gelieerdePersoon2ID = TestInfo.GELIEERDEPERSOON2ID;
+			var gelieerdePersoon2ID = TestInfo.GELIEERDEPERSOON2ID;
 
-			IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
-			IDao<Kind> kdao = Factory.Maak<IDao<Kind>>();
-			ILedenDao ldao = Factory.Maak<ILedenDao>();
+			var gpdao = Factory.Maak<IGelieerdePersonenDao>();
+			var kdao = Factory.Maak<IDao<Kind>>();
+			var ldao = Factory.Maak<ILedenDao>();
 
-			Lid l2 = ldao.Ophalen(gelieerdePersoon2ID, aj.GroepsWerkJaar.ID);
+			var l2 = ldao.Ophalen(gelieerdePersoon2ID, aj.GroepsWerkJaar.ID);
 
 			if (l2 == null)
 			{
 				// enkel toevoegen als nog niet bestaat
 
-				LedenManager lm = Factory.Maak<LedenManager>();
+				var lm = Factory.Maak<LedenManager>();
 
-				GelieerdePersoon gp = gpdao.Ophalen(
+				var gp = gpdao.Ophalen(
 					gelieerdePersoon2ID, 
 					lmb => lmb.Groep,
 					lmb => lmb.Persoon);
 
 				// GelieerdePersoon2 moet Kind gemaakt worden, want in de test KindVerwijderen
 				// zal geprobeerd worden op GelieerdePersoon2 te 'ontkinden'.  Zie #184.
-
-				Kind k = lm.KindMaken(gp);
+				
+				var k = lm.KindMaken(gp, aj.GroepsWerkJaar);
 				kdao.Bewaren(k
 					, lmb => lmb.GelieerdePersoon.WithoutUpdate()
 					, lmb => lmb.AfdelingsJaar.GroepsWerkJaar.WithoutUpdate()

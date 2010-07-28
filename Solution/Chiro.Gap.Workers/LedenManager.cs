@@ -17,6 +17,16 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.Workers
 {
+
+	public static class GroepsWerkJaarHelper
+	{
+		public static DateTime GetEindeJaarovergang(this GroepsWerkJaar gwj)
+		{
+			//TODO is werkjaar altijd het JAAR waarin het werkjaar begint???
+			return new DateTime(gwj.WerkJaar, 10, 15);
+		}
+	}
+
 	/// <summary>
 	/// Worker die alle businesslogica i.v.m. leden bevat
 	/// </summary>
@@ -49,9 +59,12 @@ namespace Chiro.Gap.Workers
 		/// of het groepswerkjaar we het recentste is.  (Voor de unit tests moeten
 		/// we ook leden kunnen maken in oude groepswerkjaren.)</remarks>
 		/// <returns>Het aangepaste Lid-object</returns>
+		/// <throws>FoutNummerException</throws>
+		/// <throws>GeenGavException</throws>
+		/// <throws>InvalidOperationException</throws>
 		private Lid LidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, LidType type)
 		{
-			Lid lid = null;
+			Lid lid;
 
 			switch (type)
 			{
@@ -73,9 +86,7 @@ namespace Chiro.Gap.Workers
 
 			if (gp.Groep.ID != gwj.Groep.ID)
 			{
-				throw new FoutNummerException(
-					FoutNummer.GroepsWerkJaarNietVanGroep, 
-					Properties.Resources.GroepsWerkJaarNietVanGroep);
+				throw new FoutNummerException(FoutNummer.GroepsWerkJaarNietVanGroep, Properties.Resources.GroepsWerkJaarNietVanGroep);
 			}
 
 			// Geboortedatum is verplicht als je lid wilt worden
@@ -89,41 +100,36 @@ namespace Chiro.Gap.Workers
 			lid.GelieerdePersoon = gp;
 			gp.Lid.Add(lid);
 			gwj.Lid.Add(lid);
-			lid.EindeInstapPeriode = DateTime.Today.AddDays(Properties.Settings.Default.DagenInstapPeriode);
+
+			//Instapperiode invullen
+			//Haal alle groepswerkjaren op //TODO in de toekomst niet efficient genoeg!
+			//en selecteert het werkjaar van een jaar geleden als het bestaat
+			var voriggwj = (from oudgwj in _daos.GroepsWerkJaarDao.AllesOphalen()
+			                where oudgwj.WerkJaar == gwj.WerkJaar - 1
+			                select oudgwj).FirstOrDefault();
+
+			//Als er vorig jaar een werkjaar was en de persoon was toen lid, dan zal zijn probeerperiode maximum tot 15 oktober zijn, 
+			//eender wanneer de persoon lid wordt.
+
+			//TODO #14: Lid moet eerst mee worden opgehaald, anders heeft dit geen zin
+			/*if(voriggwj!=null && gp.Lid.Any(e => e.GroepsWerkJaar.ID == voriggwj.ID))
+			{
+				lid.EindeInstapPeriode = gwj.GetEindeJaarovergang();
+			}else
+			{*/
+				//In het andere geval was de persoon vorig jaar geen lid (of was er geen vorig jaar), dus krijgt hij de standaard periode om te bedenken.
+				lid.EindeInstapPeriode = DateTime.Today.AddDays(Properties.Settings.Default.LengteProbeerPeriode);
+			//}
 
 			return lid;
 		}
 
 		/// <summary>
-		/// Maakt gelieerde persoon een kind (lid) voor het recentste werkjaar
-		/// </summary>
-		/// <param name="gp">Gelieerde persoon</param>
-		/// <returns>Nieuw kindobject, niet gepersisteerd</returns>
-		public Kind KindMaken(GelieerdePersoon gp)
-		{
-			Debug.Assert(gp.Persoon != null);	// nodig om geboortedatum te kunnen bepalen
-
-			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-
-			if (gp.Groep == null)
-			{
-				_daos.GelieerdePersoonDao.GroepLaden(gp);
-			}
-
-			// Door het groepswerkjaar van de persoon op te halen is de link tussen groepswerkjaar en persoon zeker in orde
-			var gwj = _daos.GroepsWerkJaarDao.RecentsteOphalen(
-				gp.Groep.ID, 
-				grwj => grwj.AfdelingsJaar.First().Afdeling,
-				grwj => grwj.Groep);
-
-			return KindMaken(gp, gwj);
-		}
-
-		/// <summary>
-		/// Maakt gelieerde persoon een kind (lid) voor het gegeven werkjaar
+		/// Maakt gelieerde persoon een kind (lid) voor het gegeven werkjaar.
+		/// 
+		/// Dit komt neer op 
+		///		Automatisch een afdeling voor het kind bepalen. Een exception als dit niet mogelijk is.
+		///		De probeerperiode zetten op binnen 3 weken als het een nieuw lid is, maar op 15 oktober als de persoon vorig jaar al lid was.
 		/// </summary>
 		/// <param name="gp">Gelieerde persoon, gekoppeld aan groep</param>
 		/// <param name="gwj">Groepswerkjaar waarin lid te maken</param>
@@ -131,22 +137,23 @@ namespace Chiro.Gap.Workers
 		/// <remarks>De user zal nooit zelf mogen kiezen in welk groepswerkjaar een kind lid wordt.  Maar 
 		/// om testdata voor unit tests op te bouwen, hebben we deze functionaliteit wel nodig.
 		/// </remarks>
+		/// <throws>FoutNummerException</throws>
+		/// <throws>GeenGavException</throws>
+		/// <throws>InvalidOperationException</throws>
 		public Kind KindMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
 		{
 			// LidMaken doet de nodige checks ivm GAV-schap, enz.
-
-			Kind k = LidMaken(gp, gwj, LidType.Kind) as Kind;
-			Debug.Assert(k != null);
+			var k = LidMaken(gp, gwj, LidType.Kind) as Kind;
 
 			// Probeer nu afdeling te vinden.
 			if (gwj.AfdelingsJaar.Count == 0)
 			{
-				throw new InvalidOperationException("Je kan geen lid maken als de groep geen afdelingen heeft in het huidige werkjaar!");
+				throw new InvalidOperationException("Je kan geen kinderen inschrijven als je groep geen afdelingen heeft in het huidige werkjaar!");
 			}
 
 			// Afdeling automatisch bepalen
-			var geboortejaar = gp.Persoon.GeboorteDatum.Value.Year;
-			geboortejaar -= gp.ChiroLeefTijd;	 // aanpassen aan Chiroleeftijd
+			//Bepaal het geboortejaar, aangepast volgens de chiroleeftijd.
+			var geboortejaar = gp.Persoon.GeboorteDatum.Value.Year - gp.ChiroLeefTijd;
 
 			// Relevante afdelingsjaren opzoeken
 			var afdelingsjaren =
@@ -156,16 +163,15 @@ namespace Chiro.Gap.Workers
 
 			if (afdelingsjaren.Count == 0)
 			{
-				throw new InvalidOperationException("Er is geen afdeling in jullie groep voor die leeftijd. Je maakt er best eerst een aan (of controleert de leeftijd van het kind).");
+				throw new InvalidOperationException("Er is geen afdeling in jullie groep voor die leeftijd. Je maakt er best eerst een aan (of controleert de leeftijd van wie je wilt inschrijven).");
 			}
 
-			AfdelingsJaar aj = null;
-			if (afdelingsjaren.Count > 1)
-			{
-				aj = (from a in afdelingsjaren
+			//Kijk of er een afdeling is met een overeenkomend geslacht
+			var aj = (from a in afdelingsjaren
 					  where a.Geslacht == gp.Persoon.Geslacht || a.Geslacht == GeslachtsType.Gemengd
 					  select a).FirstOrDefault();
-			}
+
+			//Als dit niet zo is, kies dan de eerste afdeling die voldoet aan de leeftijdsgrenzen.
 			if (aj == null)
 			{
 				aj = afdelingsjaren.First();
@@ -178,28 +184,6 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Maakt de gelieerdepersoon leiding in het huidige werkjaar.
-		/// </summary>
-		/// <param name="gp">De gelieerde persoon die je leiding wilt maken</param>
-		/// <returns>Het leidingsobject van de gelieerde persoon die leiding geworden is</returns>
-		public Leiding LeidingMaken(GelieerdePersoon gp)
-		{
-			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-
-			if (gp.Groep == null)
-			{
-				_daos.GelieerdePersoonDao.GroepLaden(gp);
-			}
-
-			var gwj = _daos.GroepsWerkJaarDao.RecentsteOphalen(gp.Groep.ID);
-
-			return LeidingMaken(gp, gwj);
-		}
-
-		/// <summary>
 		/// Maakt gelieerde persoon leiding voor het gegeven werkjaar.
 		/// </summary>
 		/// <param name="gp">Gelieerde persoon</param>
@@ -208,10 +192,12 @@ namespace Chiro.Gap.Workers
 		/// <remarks>Deze method mag niet geexposed worden via de services, omdat
 		/// een gebruiker uiteraard enkel in het huidige groepswerkjaar leden
 		/// kan maken.</remarks>
+		/// <throws>FoutNummerException</throws>
+		/// <throws>GeenGavException</throws>
+		/// <throws>InvalidOperationException</throws>
 		public Leiding LeidingMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
 		{
 			// LidMaken doet de nodige checks ivm GAV-schap enz.
-			
 			return LidMaken(gp, gwj, LidType.Leiding) as Leiding;
 		}
 

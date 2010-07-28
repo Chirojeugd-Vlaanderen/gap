@@ -52,100 +52,91 @@ namespace Chiro.Gap.Services
 		#endregion
 
 		/// <summary>
+		/// Gegeven een lijst van IDs van gelieerde personen.
+		/// Haal al die gelieerde personen op en probeer ze in het huidige werkjaar lid te maken in het gegeven lidtype.
+		/// 
 		/// Gaat een gelieerde persoon ophalen en maakt die lid in het huidige werkjaar.  Als het om kindleden gaat,
 		/// krjgen ze meteen een afdeling die overeenkomt met leeftijd en geslacht.
 		/// </summary>
 		/// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
 		/// <param name="type">Bepaalt of de personen als kind of als leiding lid worden.</param>
 		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
-		/// string waarin wat uitleg staat.  TODO: beter systeem vinden voor deze feedback.</param>
+		/// string waarin wat uitleg staat. TODO: beter systeem vinden voor deze feedback.</param>
 		/// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
 		/// <remarks>
-		/// Als er met bepaalde gelieerde personen een probleem is (geen geboortedatum,...), dan worden
-		/// de personen die geen problemen vertonen *toch* lid gemaakt. 
+		/// Iedereen die kan lid gemaakt worden, wordt lid, zelfs als dit voor andere personen niet lukt. Voor die personen worden dan foutberichten
+		/// teruggegeven.
 		/// </remarks>
+		/// <throws>NotSupportedException</throws> //TODO handle
 		public IEnumerable<int> LedenMaken(IEnumerable<int> gelieerdePersoonIDs, LidType type, out string foutBerichten)
 		{
+			if(type!=LidType.Kind && type!=LidType.Leiding)
+			{
+				throw new NotSupportedException(Properties.Resources.OngeldigLidType);
+			}
+
 			var lidIDs = new List<int>();
-			StringBuilder foutBerichtenBuilder = new StringBuilder();
+			var foutBerichtenBuilder = new StringBuilder();
 
 			// Haal meteen alle gelieerde personen op, gecombineerd met hun groep
-
 			var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Groep);
 
 			// Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
-			// al die groepen.  Is dat niet het geval, dan werd hierboven al een exception gethrowd.
-
+			// al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
 			var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
 			
 			// Ter controle bij debuggen even kijken of de distinct goed werkt.
+			Debug.Assert(groepen.Count() == (from gp in gelieerdePersonen select gp.Groep.ID).Distinct().Count());
 
-			var groepIDs = (from gp in gelieerdePersonen select gp.Groep.ID).Distinct();
-			Debug.Assert(groepen.Count() == groepIDs.Count());
-
-			foreach (Groep g in groepen)
+			foreach (var g in groepen)
 			{
 				// Per groep lid maken.
 				// Zoek eerst recentste groepswerkjaar.
+				var gwj = _groepwsWjMgr.RecentsteOphalen(g.ID, GroepsWerkJaarExtras.Afdelingen|GroepsWerkJaarExtras.Groep);
 
-				var gwj = _groepwsWjMgr.RecentsteOphalen(
-					g.ID, 
-					GroepsWerkJaarExtras.Afdelingen|GroepsWerkJaarExtras.Groep);
-
-                                foreach (GelieerdePersoon gp in g.GelieerdePersoon)
-                                {
-                                	Lid l = null;
-
-                                	try
-                                	{
-						switch (type)
-						{
-							case LidType.Kind: 
-								l = _ledenMgr.KindMaken(gp, gwj);
-								break;
-							case LidType.Leiding:
-								l = _ledenMgr.LeidingMaken(gp, gwj);
-								break;
-							default:
-								throw new NotSupportedException(Properties.Resources.OngeldigLidType);
-						}
-						
-                                	}
-                                	catch (InvalidOperationException ex)
-                                	{
-						// TODO: beter systeem voor feedback
-                                		foutBerichtenBuilder.AppendLine(String.Format(
-							"Fout voor {0}: {1}", 
-							gp.Persoon.VolledigeNaam,
-                                		        ex.Message));
-                                	}
-
-					// Bewaar leden 1 voor 1, en niet allemaal tegelijk, om te vermijden dat 1 dubbel lid
-					// verhindert dat de rest bewaard wordt.
-
-					if (l != null)
+				foreach (var gp in g.GelieerdePersoon)
+				{
+					try
 					{
-						try
+						Lid l;
+						if (type == LidType.Kind)
+						{
+							l = _ledenMgr.KindMaken(gp, gwj);
+						}
+						else
+						{
+							l = _ledenMgr.LeidingMaken(gp, gwj);
+						}
+
+						// Bewaar leden 1 voor 1, en niet allemaal tegelijk, om te vermijden dat 1 dubbel lid
+						// verhindert dat de rest bewaard wordt.
+						if (l != null)
 						{
 							l = _ledenMgr.LidBewaren(l);
 							lidIDs.Add(l.ID);
 						}
-						catch (BestaatAlException<Kind>)
-						{
-							foutBerichtenBuilder.AppendLine(String.Format(
-								Properties.Resources.WasAlLid,
-								gp.Persoon.VolledigeNaam));
-						}
-						catch (BestaatAlException<Leiding>)
-						{
-							foutBerichtenBuilder.AppendLine(String.Format(
-								Properties.Resources.WasAlLeiding,
-								gp.Persoon.VolledigeNaam));							
-						}
 					}
-
-                                }
-
+            		catch (InvalidOperationException ex)
+            		{
+            			foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
+            		}
+					catch(GeenGavException ex)
+					{
+						foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
+					}
+					catch(FoutNummerException ex)
+					{
+						foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
+					}
+					catch (BestaatAlException<Kind>)
+					{
+						foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLid,gp.Persoon.VolledigeNaam));
+					}
+					catch (BestaatAlException<Leiding>)
+					{
+						foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLeiding,gp.Persoon.VolledigeNaam));
+					}
+				}
 			}
 
 			foutBerichten = foutBerichtenBuilder.ToString();
