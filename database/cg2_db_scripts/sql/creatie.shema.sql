@@ -82,7 +82,7 @@ GO
 BEGIN
 	CREATE TABLE [pers].[CommunicatieType](
 		[Omschrijving] [varchar](80) NULL,
-		IsOptIn BIT NOT NULL,
+		IsOptIn BIT NOT NULL DEFAULT 1,
 		[Validatie] [varchar](160) NULL,
 		[CommunicatieTypeID] [int] IDENTITY(1,1) NOT NULL,
 		[Voorbeeld] [varchar](160) NULL,
