@@ -7,6 +7,9 @@ using Chiro.Gap.Domain;
 using System.Runtime.Serialization;
 namespace Chiro.Gap.ServiceContracts.FaultContracts
 {
+	/// <summary>
+	/// Faultcontract voor een fout waar een foutnummer aan toegekend werd
+	/// </summary>
 	public class FoutNummerFault : GapFault
 	{
 		/// <summary>
@@ -14,5 +17,8 @@ namespace Chiro.Gap.ServiceContracts.FaultContracts
 		/// </summary>
 		[DataMember]
 		public FoutNummer FoutNummer { get; set; }
+
+		[DataMember]
+		public string Bericht { get; set; }
 	}
 }

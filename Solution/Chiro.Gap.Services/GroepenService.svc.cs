@@ -233,7 +233,7 @@ namespace Chiro.Gap.Services
 		public void AfdelingBewaren(AfdelingInfo info)
 		{
 			Afdeling ai = _afdelingsJaarMgr.AfdelingOphalen(info.ID);
-			if(info.Naam != null && info.Naam.CompareTo(ai.Naam)!=0)
+			if (info.Naam != null && info.Naam.CompareTo(ai.Naam) != 0)
 			{
 				ai.Naam = info.Naam;
 			}
@@ -274,9 +274,9 @@ namespace Chiro.Gap.Services
 										detail.GeboorteJaarVan, detail.GeboorteJaarTot,
 										detail.Geslacht);
 				}
-				catch (ValidatieException)
+				catch (ValidatieException ex)
 				{
-					throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.FouteGeboortejarenVoorAfdeling });
+					throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = ex.Foutnummer }, new FaultReason(ex.Message));
 				}
 			}
 			else
@@ -322,7 +322,7 @@ namespace Chiro.Gap.Services
 			{
 				_afdelingsJaarMgr.Verwijderen(afdelingsJaarID);
 			}
-			catch(InvalidOperationException)
+			catch (InvalidOperationException)
 			{
 				/*var afdjaar = _afdelingsJaarMgr.Ophalen(afdelingsJaarID, AfdelingsJaarExtras.Afdeling);
 				var afdjaardetail = Mapper.Map<AfdelingsJaar, AfdelingsJaarDetail>(afdjaar);*/
@@ -437,10 +437,10 @@ namespace Chiro.Gap.Services
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar van de gevraagde functies</param>
 		/// <param name="lidType"><c>LidType.Kind</c> of <c>LidType.Leiding</c></param>
 		/// <returns>De gevraagde lijst afdelingsinfo</returns>
-        public IEnumerable<FunctieDetail> FunctiesOphalen(int groepsWerkJaarID, LidType lidType)
+		public IEnumerable<FunctieDetail> FunctiesOphalen(int groepsWerkJaarID, LidType lidType)
 		{
 			var relevanteFuncties = _functiesMgr.OphalenRelevant(groepsWerkJaarID, lidType);
-		    return Mapper.Map<IList<Functie>, IList<FunctieDetail>>(relevanteFuncties);
+			return Mapper.Map<IList<Functie>, IList<FunctieDetail>>(relevanteFuncties);
 		}
 
 		/// <summary>
@@ -502,7 +502,7 @@ namespace Chiro.Gap.Services
 
 				throw new FaultException<BestaatAlFault<FunctieDetail>>(fault);
 			}
-// ReSharper disable RedundantCatchClause
+			// ReSharper disable RedundantCatchClause
 			catch (Exception)
 			{
 				// ********************************************************************************
@@ -514,7 +514,7 @@ namespace Chiro.Gap.Services
 
 				throw;
 			}
-// ReSharper restore RedundantCatchClause
+			// ReSharper restore RedundantCatchClause
 
 			g = _groepenMgr.Bewaren(g, e => e.Functie);
 
@@ -536,7 +536,7 @@ namespace Chiro.Gap.Services
 			// functieenManager.Verwijderen niet.
 
 			Functie f = _functiesMgr.Ophalen(functieID, true);
-			
+
 			try
 			{
 				_functiesMgr.Verwijderen(f, forceren);
@@ -587,7 +587,7 @@ namespace Chiro.Gap.Services
 
 				throw new FaultException<BestaatAlFault<CategorieInfo>>(fault);
 			}
-// ReSharper disable RedundantCatchClause
+			// ReSharper disable RedundantCatchClause
 			catch (Exception)
 			{
 				// ********************************************************************************
@@ -599,7 +599,7 @@ namespace Chiro.Gap.Services
 
 				throw;
 			}
-// ReSharper restore RedundantCatchClause
+			// ReSharper restore RedundantCatchClause
 
 			g = _groepenMgr.Bewaren(g, e => e.Categorie);
 
@@ -763,10 +763,11 @@ namespace Chiro.Gap.Services
 				//Berekend gewenste werkjaar
 				int werkjaar;
 				var startdate = new DateTime(DateTime.Today.Year, 8, 15);
-				if(DateTime.Today.CompareTo(startdate)<0) //earlier
+				if (DateTime.Today.CompareTo(startdate) < 0) //earlier
 				{
 					werkjaar = DateTime.Today.Year - 1;
-				}else
+				}
+				else
 				{
 					werkjaar = DateTime.Today.Year;
 				}
@@ -784,17 +785,17 @@ namespace Chiro.Gap.Services
 					//alleszins, hier gaat c# toch de lelijke toer op
 					//duidelijke info: http://stackoverflow.com/questions/2951037/modified-closure-warning-in-resharper
 					var afd = (from a in g.Afdeling
-								where afdinfo.AfdelingID == a.ID
-								select a).FirstOrDefault();
+							   where afdinfo.AfdelingID == a.ID
+							   select a).FirstOrDefault();
 
-					if(afd==null)
+					if (afd == null)
 					{
 						throw new OngeldigObjectException("Een van de afdelingsIDs bestaat niet in de opgegeven groep.");
 					}
 
 					var offafd = (from a in offafdelingen
-							   where afdinfo.OfficieleAfdelingID == a.ID
-							   select a).FirstOrDefault();
+								  where afdinfo.OfficieleAfdelingID == a.ID
+								  select a).FirstOrDefault();
 
 					if (offafd == null)
 					{

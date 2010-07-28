@@ -111,6 +111,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// afdelingsjaar.  <c>aj.AfdelingsJaarID</c> bepaat of het om een bestaand afdelingsjaar gaat
 		/// (ID > 0), of een bestaand (ID == 0)</param>
 		[OperationContract]
+		[FaultContract(typeof(FoutNummerFault))]
 		void AfdelingsJaarBewaren(AfdelingsJaarDetail aj);
 
 		/// <summary>

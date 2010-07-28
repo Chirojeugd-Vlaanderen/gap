@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 namespace Chiro.Gap.ServiceContracts.FaultContracts
 {
 	/// <summary>
-	/// Faultcontract dat een foutcode van type <typeparamref name="T"/> bevat
+	/// Faultcontract voor een algemene fout
 	/// </summary>
 	[DataContract]
 	public class GapFault

@@ -8,7 +8,8 @@ using System.Runtime.Serialization;
 namespace Chiro.Gap.ServiceContracts.FaultContracts
 {
 	/// <summary>
-	/// Faultcontract dat gebruikt wordt als een bestaande entiteit/object een operatie verhindert
+	/// Faultcontract dat gebruikt wordt als een bestaand(e) entiteit/object verhindert
+	/// dat bepaalde gegevens opgeslagen worden
 	/// </summary>
 	[DataContract]
 	public class BestaatAlFault<TObject> : GapFault

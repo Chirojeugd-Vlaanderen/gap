@@ -85,7 +85,7 @@ namespace Chiro.Gap.Workers
 				|| !(gwj.WerkJaar - geboorteJaarBegin <= Properties.Settings.Default.MaxLidLeefTijd)
 				|| !(geboorteJaarBegin <= geboorteJaarEind))
 			{
-				throw new InvalidOperationException(Properties.Resources.OngeldigeGeboortejarenVoorAfdeling);
+				throw new ValidatieException(Properties.Resources.OngeldigeGeboortejarenVoorAfdeling, FoutNummer.FouteGeboortejarenVoorAfdeling);
 			}
 
 			var afdelingsJaar = new AfdelingsJaar();

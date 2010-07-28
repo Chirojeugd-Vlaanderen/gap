@@ -6,6 +6,8 @@
 using System;
 using System.Runtime.Serialization;
 
+using Chiro.Gap.Domain;
+
 namespace Chiro.Gap.Workers.Exceptions
 {
 	/// <summary>
@@ -13,6 +15,8 @@ namespace Chiro.Gap.Workers.Exceptions
 	/// </summary>
 	public class ValidatieException : GapException
 	{
+		public FoutNummer Foutnummer { get; set; }
+
 		/// <summary>
 		/// Instantieert een lege ValidatieException
 		/// </summary>
@@ -24,9 +28,18 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// Instantieert een ValidatieException met een opgegeven foutboodschap
 		/// </summary>
 		/// <param name="message">De foutboodschap die doorgegeven moet worden</param>
-		public ValidatieException(string message)
-			: base(message)
+		public ValidatieException(string message) : base(message)
 		{
+		}
+
+		/// <summary>
+		/// Instantieert een ValidatieException met een opgegeven foutboodschap en een foutnummer
+		/// </summary>
+		/// <param name="message">De foutboodschap die doorgegeven moet worden</param>
+		/// <param name="foutNummer">Het foutnummer</param>
+		public ValidatieException(string message, FoutNummer foutNummer) : base(message)
+		{
+			Foutnummer = foutNummer;
 		}
 
 		/// <summary>
@@ -34,8 +47,7 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// </summary>
 		/// <param name="message"></param>
 		/// <param name="inner"></param>
-		public ValidatieException(string message, Exception inner)
-			: base(message, inner)
+		public ValidatieException(string message, Exception inner) : base(message, inner)
 		{
 		}
 
@@ -44,8 +56,7 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// </summary>
 		/// <param name="info"></param>
 		/// <param name="context"></param>
-		public ValidatieException(SerializationInfo info, StreamingContext context)
-			: base(info, context)
+		public ValidatieException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 		}
 	}

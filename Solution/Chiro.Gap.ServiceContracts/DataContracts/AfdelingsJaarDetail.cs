@@ -4,6 +4,7 @@
 // </copyright>
 
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Properties;
 using System.Runtime.Serialization;
 
 using Chiro.Gap.Domain;
@@ -27,16 +28,19 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DisplayName(@"Officiele afdeling")]
 		public int OfficieleAfdelingID { get; set; }
 
+		// TODO: onder- en bovengrens van geboortejaren mag hier niet hard gecodeerd zijn (ticket #595)
+		// Verplaatsen naar settings lukt niet, dus hebben we een attribuut nodig met eigen logica.
+
 		[DataMember]
 		[Verplicht]
 		[DisplayName(@"Geboortejaar van")]
-        [Range(1940, 2100, ErrorMessage = "{0} is beperkt van {1} tot {2}.")]
+        [Range(1940, 2100, ErrorMessageResourceType = typeof (Resources), ErrorMessageResourceName = "AfdelingsJaarDetail_GeboorteJaar_RangeFout")]
 		public int GeboorteJaarVan { get; set; }
 
 		[DataMember]
 		[Verplicht]
 		[DisplayName(@"Geboortejaar tot")]
-        [Range(1940, 2100, ErrorMessage = "{0} is beperkt van {1} tot {2}.")]
+        [Range(1940, 2100, ErrorMessageResourceType = typeof (Resources), ErrorMessageResourceName = "AfdelingsJaarDetail_GeboorteJaar_RangeFout")]
 		public int GeboorteJaarTot { get; set; }
 
 		[DataMember]
