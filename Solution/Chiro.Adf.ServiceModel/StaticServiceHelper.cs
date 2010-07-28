@@ -82,7 +82,14 @@ namespace Chiro.Adf.ServiceModel
 			}
 			catch (FaultException)
 			{
-				((IClientChannel)service).Close();
+				if (((IClientChannel) service).State == CommunicationState.Faulted)
+				{
+					((IClientChannel) service).Abort();
+				}
+				else
+				{
+					((IClientChannel) service).Close();
+				}
 				throw;
 			}
 			catch (CommunicationException)

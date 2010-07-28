@@ -86,14 +86,14 @@ namespace Chiro.Cdf.Data.Entity
 		{
 			T gedetacht;
 
-			using (MemoryStream stream = new MemoryStream())
+			using (var stream = new MemoryStream())
 			{
 				// NetDataContractSerializer serializer = new NetDataContractSerializer();
 
 				// Met een DataContractSerializer werkt het blijkbaar niet.
 				// Met een binaryFormatter wel.
 
-				BinaryFormatter serializer = new BinaryFormatter();
+				var serializer = new BinaryFormatter();
 
 				serializer.Serialize(stream, entity);
 				stream.Position = 0;
@@ -106,7 +106,7 @@ namespace Chiro.Cdf.Data.Entity
 
 		public static IEnumerable<T> DetachObjectGraph<T>(IEnumerable<T> entities) where T : IEfBasisEntiteit
 		{
-			using (MemoryStream stream = new MemoryStream())
+			using (var stream = new MemoryStream())
 			{
 				var serializer = new BinaryFormatter();
 				serializer.Serialize(stream, entities);
@@ -117,7 +117,7 @@ namespace Chiro.Cdf.Data.Entity
 
 		public static IList<T> DetachObjectGraph<T>(IList<T> entities) where T : IEfBasisEntiteit
 		{
-			using (MemoryStream stream = new MemoryStream())
+			using (var stream = new MemoryStream())
 			{
 				var serializer = new BinaryFormatter();
 				serializer.Serialize(stream, entities);
