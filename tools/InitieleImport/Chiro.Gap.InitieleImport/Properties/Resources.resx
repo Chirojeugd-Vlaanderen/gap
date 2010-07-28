@@ -186,4 +186,7 @@
   <data name="Oeps" xml:space="preserve">
     <value>OEPS! Er ging iets anders mis.</value>
   </data>
+  <data name="DubbeleNaam" xml:space="preserve">
+    <value>Dubbele naam in groep: {0} -- negeren.</value>
+  </data>
 </root>

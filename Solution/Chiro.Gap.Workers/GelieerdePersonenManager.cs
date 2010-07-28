@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Transactions;
+
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
@@ -54,14 +55,14 @@ namespace Chiro.Gap.Workers
 			IDao<CommunicatieType> typedao,
 			IDao<CommunicatieVorm> commdao,
 			IPersonenDao pDao,
-            ISyncPersoonService sync)
+	    ISyncPersoonService sync)
 		{
 			_gelieerdePersonenDao = gelieerdePersonenDao;
 			_groepenDao = groepenDao;
 			_categorieenDao = categorieenDao;
 			_autorisatieMgr = autorisatieMgr;
 			_personenDao = pDao;
-		    _sync = sync;
+			_sync = sync;
 		}
 
 		#region proxy naar data access
@@ -104,7 +105,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>De gevraagde gelieerde persoon, met de gevraagde gekoppelde entiteiten.</returns>
 		public GelieerdePersoon Ophalen(int gelieerdePersoonID, PersoonsExtras extras)
 		{
-			return Ophalen(new List<int> {gelieerdePersoonID}, extras).FirstOrDefault();
+			return Ophalen(new List<int> { gelieerdePersoonID }, extras).FirstOrDefault();
 		}
 
 		/// <summary>
@@ -116,9 +117,9 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
 			{
-				return _gelieerdePersonenDao.Ophalen(gelieerdePersoonID, 
-					foo => foo.Persoon, 
-					foo => foo.Groep, 
+				return _gelieerdePersonenDao.Ophalen(gelieerdePersoonID,
+					foo => foo.Persoon,
+					foo => foo.Groep,
 					foo => foo.Communicatie,
 					foo => foo.Communicatie.First().CommunicatieType);
 			}
@@ -483,7 +484,7 @@ namespace Chiro.Gap.Workers
 				if (!x.Groep.Equals(c.Groep))
 				{
 					throw new FoutNummerException(
-						FoutNummer.CategorieNietVanGroep, 
+						FoutNummer.CategorieNietVanGroep,
 						Properties.Resources.FoutieveGroepCategorie);
 				}
 				x.Categorie.Add(c);
@@ -633,7 +634,7 @@ namespace Chiro.Gap.Workers
 		public void AdresToevoegen(IEnumerable<GelieerdePersoon> gelieerdePersonen, Adres adres, AdresTypeEnum adrestype, bool voorkeur)
 		{
 			var gpersIDs = (from p in gelieerdePersonen
-				       select p.ID).ToList();
+					select p.ID).ToList();
 			var mijngPersIDs = _autorisatieMgr.EnkelMijnGelieerdePersonen(gpersIDs);
 
 			if (gpersIDs.Count() != mijngPersIDs.Count())
@@ -648,7 +649,7 @@ namespace Chiro.Gap.Workers
 			// (We hebben chance dat we hier in praktijk nooit komen met een nieuw adres, anders
 			// zou onderstaande problemen geven.)
 
-			var bestaand = gelieerdePersonen.Select(gp=>gp.Persoon).SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == adres.ID));
+			var bestaand = gelieerdePersonen.Select(gp => gp.Persoon).SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == adres.ID));
 
 			if (bestaand.FirstOrDefault() != null)
 			{
@@ -682,7 +683,7 @@ namespace Chiro.Gap.Workers
 						// een gelieerde persoon waarvoor je geen GAV bent.
 					}
 				}
-                                else if (voorkeur)
+				else if (voorkeur)
 				{
 					VoorkeurInstellen(gelieerdePersoon, pa);
 				}
@@ -778,7 +779,7 @@ namespace Chiro.Gap.Workers
 						}
 						else
 						{
-							VoorkeurInstellen(pineut, nieuwVoorkeursAdres, false);	
+							VoorkeurInstellen(pineut, nieuwVoorkeursAdres, false);
 						}
 					}
 				}

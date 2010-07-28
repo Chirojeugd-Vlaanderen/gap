@@ -30,7 +30,11 @@ namespace Chiro.Gap.InitieleImport
 			Factory.ContainerInit(); // Init IOC
 			_serviceHelper = Factory.Maak<IServiceHelper>();
 
-			foreach (string stamnr in Users.AlleStamNummers)
+			var alleStamNummers = Users.AlleStamNummers;
+
+			//var alleStamNummers = new string[] {"mg /0112"};  // gewoon testen
+
+			foreach (string stamnr in alleStamNummers)
 			{
 				ImporteerGroepsGegevens(stamnr);
 			}
@@ -163,118 +167,135 @@ namespace Chiro.Gap.InitieleImport
 
 			#region Personen overzetten
 
+			// amateuristisch systeem om dubbels te vermijden
+			// ('vermoedelijk dubbel' is niet streng genoeg om broers en zussen te 
+			// onderscheiden)
+
+			string vorigePersoonNaam = String.Empty;
+
 			var personen = lezer.PersonenOphalen();
 
-			foreach (var p in personen)
+			foreach (var p in personen.OrderBy(prs => prs.PersoonDetail.VolledigeNaam))
 			{
-				IDPersEnGP ids = null;
-
-				ToonPersoonDetail(p.PersoonDetail);
-
-				try
+				if (String.Compare(vorigePersoonNaam, p.PersoonDetail.VolledigeNaam, true) == 0)
 				{
-					ids = _serviceHelper.CallService<IGelieerdePersonenService, IDPersEnGP>(svc => svc.Aanmaken(p.PersoonDetail, dbGroep.ID));
-					Console.WriteLine(Resources.PersoonAangemaaktAls, ids.PersoonID, ids.GelieerdePersoonID);
+					Console.WriteLine(String.Format(Resources.DubbeleNaam, vorigePersoonNaam));
 				}
-				catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> ex)
+				else
 				{
-					if (!Settings.Default.VermijdDubbels)
+					vorigePersoonNaam = p.PersoonDetail.VolledigeNaam;
+
+					IDPersEnGP ids = null;
+
+					ToonPersoonDetail(p.PersoonDetail);
+
+					try
 					{
-						ids =
-							_serviceHelper.CallService<IGelieerdePersonenService, IDPersEnGP>(
-								svc => svc.GeforceerdAanmaken(p.PersoonDetail, dbGroep.ID, true));
-						p.PersoonDetail.GelieerdePersoonID = ids.GelieerdePersoonID;
-
-						mogelijkeDubbels.Add(new MogelijkDubbel {Bestaand = ex.Detail.Objecten.First(), Nieuw = p.PersoonDetail});
-
+						ids = _serviceHelper.CallService<IGelieerdePersonenService, IDPersEnGP>(svc => svc.Aanmaken(p.PersoonDetail, dbGroep.ID));
 						Console.WriteLine(Resources.PersoonAangemaaktAls, ids.PersoonID, ids.GelieerdePersoonID);
 					}
-				}
-				catch (TimeoutException)
-				{
-					Console.WriteLine(Resources.TimeOut);
-					ids = null;
-				}
-				catch (Exception)
-				{
-					// TODO: Ongeldige geboortedata opvangen aan kant van de service.
-					Console.WriteLine(Resources.Oeps);
-				}
-
-				if (ids != null)
-				{
-					foreach (var pa in p.PersoonsAdresInfo)
+					catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> ex)
 					{
-						Console.WriteLine(
-							Properties.Resources.AdresInfo,
-							pa.StraatNaamNaam,
-							pa.HuisNr,
-							pa.Bus ?? "/",
-							pa.PostNr,
-							pa.WoonPlaatsNaam,
-							pa.AdresType);
-						try
+						if (!Settings.Default.VermijdDubbels)
 						{
-							_serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.AdresToevoegenGelieerdePersonen(
-								new List<int> { ids.GelieerdePersoonID },
-								pa,
-								pa.AdresType == AdresTypeEnum.Thuis));
+							ids =
+								_serviceHelper.CallService<IGelieerdePersonenService, IDPersEnGP>(
+									svc => svc.GeforceerdAanmaken(p.PersoonDetail, dbGroep.ID, true));
+							p.PersoonDetail.GelieerdePersoonID = ids.GelieerdePersoonID;
 
-						}
-						catch (FaultException<OngeldigObjectFault>)
-						{
-							Console.WriteLine(Resources.OnbekendAdres);
-						}
-						catch (Exception)
-						{
-							// TODO: opvangen ongeldige 'bus' (te lang)
-							Console.WriteLine(Resources.Oeps);
+							mogelijkeDubbels.Add(new MogelijkDubbel { Bestaand = ex.Detail.Objecten.First(), Nieuw = p.PersoonDetail });
+
+							Console.WriteLine(Resources.PersoonAangemaaktAls, ids.PersoonID, ids.GelieerdePersoonID);
 						}
 					}
-
-					foreach (var ci in p.CommunicatieInfo)
+					catch (TimeoutException)
 					{
-						Console.WriteLine(
-							Properties.Resources.CommunicatieInfo,
-							ci.Nummer,
-							ci.CommunicatieTypeID,
-							ci.Voorkeur ? "*" : " ");
-
-						try
-						{
-							_serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.CommunicatieVormToevoegen(
-								ids.GelieerdePersoonID,
-								ci));
-						}
-						catch (FaultException<GapFault>)
-						{
-							Console.WriteLine(Resources.CommunicatieVormFoutFormaat);
-						}
-						catch (TimeoutException)
-						{
-							Console.WriteLine(Resources.TimeOut);
-						}
-						catch (Exception)
-						{
-							Console.WriteLine(Resources.Oeps);
-						}
-
+						Console.WriteLine(Resources.TimeOut);
+						ids = null;
+					}
+					catch (Exception)
+					{
+						// TODO: Ongeldige geboortedata opvangen aan kant van de service.
+						Console.WriteLine(Resources.Oeps);
 					}
 
-					// Zo nodig lid maken.
-
-					if (p.LidInfo != null)
+					if (ids != null)
 					{
-						if (p.LidInfo.Type == LidType.Kind)
+						foreach (var pa in p.PersoonsAdresInfo)
 						{
-							gpIdsKinderen.Add(ids.GelieerdePersoonID);
+							Console.WriteLine(
+								Properties.Resources.AdresInfo,
+								pa.StraatNaamNaam,
+								pa.HuisNr,
+								pa.Bus ?? "/",
+								pa.PostNr,
+								pa.WoonPlaatsNaam,
+								pa.AdresType);
+							try
+							{
+								_serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.AdresToevoegenGelieerdePersonen(
+									new List<int> { ids.GelieerdePersoonID },
+									pa,
+									pa.AdresType == AdresTypeEnum.Thuis));
+
+							}
+							catch (FaultException<OngeldigObjectFault>)
+							{
+								Console.WriteLine(Resources.OnbekendAdres);
+							}
+							catch (Exception)
+							{
+								// TODO: opvangen ongeldige 'bus' (te lang)
+								Console.WriteLine(Resources.Oeps);
+							}
 						}
-						else
+
+						foreach (var ci in p.CommunicatieInfo)
 						{
-							gpIdsLeiding.Add(ids.GelieerdePersoonID);
+							Console.WriteLine(
+								Properties.Resources.CommunicatieInfo,
+								ci.Nummer,
+								ci.CommunicatieTypeID,
+								ci.Voorkeur ? "*" : " ");
+
+							try
+							{
+								_serviceHelper.CallService<IGelieerdePersonenService>(svc => svc.CommunicatieVormToevoegen(
+									ids.GelieerdePersoonID,
+									ci));
+							}
+							catch (FaultException<GapFault>)
+							{
+								Console.WriteLine(Resources.CommunicatieVormFoutFormaat);
+							}
+							catch (TimeoutException)
+							{
+								Console.WriteLine(Resources.TimeOut);
+							}
+							catch (Exception)
+							{
+								Console.WriteLine(Resources.Oeps);
+							}
+
 						}
+
+						// Zo nodig lid maken.
+
+						if (p.LidInfo != null)
+						{
+							if (p.LidInfo.Type == LidType.Kind)
+							{
+								gpIdsKinderen.Add(ids.GelieerdePersoonID);
+							}
+							else
+							{
+								gpIdsLeiding.Add(ids.GelieerdePersoonID);
+							}
+						}
+
 					}
 				}
+
 			}
 
 			string foutBerichten = String.Empty;
@@ -299,7 +320,7 @@ namespace Chiro.Gap.InitieleImport
 			{
 				Console.WriteLine(Properties.Resources.TimeOut);
 			}
-			
+
 			Console.WriteLine(Resources.FoutBerichtenLeiding);
 			Console.WriteLine(foutBerichten);
 

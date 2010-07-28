@@ -88,6 +88,15 @@ namespace Chiro.Gap.InitieleImport.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dubbele naam in groep: {0} -- negeren..
+        /// </summary>
+        internal static string DubbeleNaam {
+            get {
+                return ResourceManager.GetString("DubbeleNaam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Foutberichten leden maken:.
         /// </summary>
         internal static string FoutberichtenKind {
