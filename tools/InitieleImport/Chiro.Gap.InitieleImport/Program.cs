@@ -78,7 +78,7 @@ namespace Chiro.Gap.InitieleImport
 			// pak recentste aansluitingsbestand uit
 			Directory.CreateDirectory(destdir);
 
-			if (aansluitingsBestand != String.Empty)
+			if (!String.IsNullOrEmpty(aansluitingsBestand))
 			{
 				dataDir = helper.Uitpakken(aansluitingsBestand, destdir);
 			}
@@ -115,7 +115,7 @@ namespace Chiro.Gap.InitieleImport
 			// Eerst importeren uit paradox, omdat de import uit paradox
 			// bijv. geen telefoonnummers updatet als er al een persoon gevonden is.
 
-			if (aansluitingsBestand != String.Empty)
+			if (!String.IsNullOrEmpty(aansluitingsBestand))
 			{
 				ImporterenUitPdox(dataDir);
 			}

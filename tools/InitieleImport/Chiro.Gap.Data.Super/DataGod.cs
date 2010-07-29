@@ -69,7 +69,15 @@ namespace Chiro.Gap.Data.Super
 				cmd.CommandType = CommandType.StoredProcedure;
 				cmd.Parameters.Add(new SqlParameter("@stamnr", stamNr));
 
-				cmd.ExecuteNonQuery();
+				try
+				{
+					cmd.ExecuteNonQuery();
+				}
+				catch (SqlException)
+				{
+					// Dit durft blijkbaar wel eens te crashen op een 
+					// conversie-error.  Spijtig dan.
+				}
 			}
 		}
 
