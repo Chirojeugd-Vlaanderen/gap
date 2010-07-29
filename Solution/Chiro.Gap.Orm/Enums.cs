@@ -122,7 +122,11 @@ namespace Chiro.Gap.Orm
 		/// Enkel gebruiken als strict noodzakelijk! (bijv als het voorkeursadres in een andere groep mee gemanipuleerd moet 
 		/// worden)
 		/// </summary>
-		AlleGelieerdePersonen = 0x10
+		AlleGelieerdePersonen = 0x10,
+		/// <summary>
+		/// Haalt alle lidobjecten van de gelieerde persoon op, incl. groepswerkjaren
+		/// </summary>
+		GroepsWerkJaren = 0x20
 	}
 
 	/// <summary>

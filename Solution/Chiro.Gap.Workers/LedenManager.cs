@@ -55,9 +55,15 @@ namespace Chiro.Gap.Workers
 		/// <param name="gp">Lid te maken gelieerde persoon</param>
 		/// <param name="gwj">Groepswerkjaar waarin de gelieerde persoon lid moet worden</param>
 		/// <param name="type">LidType.Kind of LidType.Leiding</param>
-		/// <remarks>Deze method kent geen afdelingen toe.  Ze test ook niet
+		/// <remarks>
+		/// Deze method kent geen afdelingen toe.  Ze test ook niet
 		/// of het groepswerkjaar we het recentste is.  (Voor de unit tests moeten
-		/// we ook leden kunnen maken in oude groepswerkjaren.)</remarks>
+		/// we ook leden kunnen maken in oude groepswerkjaren.)
+		/// <para/>
+		/// Voorlopig gaan we ervan uit dat aan een gelieerde persoon al zijn vorige lidobjecten met
+		/// groepswerkjaren gekoppeld zijn.  Dit wordt gebruikt om na te kijken of een gelieerde persoon al eerder
+		/// lid was.  Dit lijkt me echter niet nodig; zie de commentaar verderop.
+		/// </remarks>
 		/// <returns>Het aangepaste Lid-object</returns>
 		/// <throws>FoutNummerException</throws>
 		/// <throws>GeenGavException</throws>
@@ -101,16 +107,18 @@ namespace Chiro.Gap.Workers
 			gp.Lid.Add(lid);
 			gwj.Lid.Add(lid);
 
+                                              
 			//Instapperiode invullen
 			//Haal alle groepswerkjaren op //TODO in de toekomst niet efficient genoeg!
 			//en selecteert het werkjaar van een jaar geleden als het bestaat
-			var voriggwj = (from oudgwj in _daos.GroepsWerkJaarDao.AllesOphalen()
-			                where oudgwj.WerkJaar == gwj.WerkJaar - 1
-			                select oudgwj).FirstOrDefault();
+
+			var voriggwj = (from ld in gp.Lid
+			                where ld.GroepsWerkJaar.WerkJaar == gwj.WerkJaar - 1
+			                select ld.GroepsWerkJaar).FirstOrDefault();
 
 			//Als er vorig jaar een werkjaar was en de persoon was toen lid, dan zal zijn probeerperiode maximum tot 15 oktober zijn, 
 			//eender wanneer de persoon lid wordt.
-			if(voriggwj!=null && OphalenViaPersoon(gp.ID, voriggwj.ID)!=null)
+			if(voriggwj!=null)
 			{
 				lid.EindeInstapPeriode = gwj.GetEindeJaarovergang();
 
@@ -150,6 +158,11 @@ namespace Chiro.Gap.Workers
 		/// <returns>Nieuw kindobject, niet gepersisteerd</returns>
 		/// <remarks>De user zal nooit zelf mogen kiezen in welk groepswerkjaar een kind lid wordt.  Maar 
 		/// om testdata voor unit tests op te bouwen, hebben we deze functionaliteit wel nodig.
+		/// <para/>
+		/// Voorlopig gaan we ervan uit dat aan een gelieerde persoon al zijn vorige lidobjecten met
+		/// groepswerkjaren gekoppeld zijn.  Dit wordt gebruikt in LidMaken
+		///  om na te kijken of een gelieerde persoon al eerder
+		/// lid was.  Dit lijkt me echter niet nodig; zie de commentaar aldaar.
 		/// </remarks>
 		/// <throws>FoutNummerException</throws>
 		/// <throws>GeenGavException</throws>
@@ -205,7 +218,13 @@ namespace Chiro.Gap.Workers
 		/// <returns>Nieuw leidingsobject; niet gepersisteerd</returns>
 		/// <remarks>Deze method mag niet geexposed worden via de services, omdat
 		/// een gebruiker uiteraard enkel in het huidige groepswerkjaar leden
-		/// kan maken.</remarks>
+		/// kan maken.
+		/// <para/>
+		/// Voorlopig gaan we ervan uit dat aan een gelieerde persoon al zijn vorige lidobjecten met
+		/// groepswerkjaren gekoppeld zijn.  Dit wordt gebruikt in LidMaken
+		///  om na te kijken of een gelieerde persoon al eerder
+		/// lid was.  Dit lijkt me echter niet nodig; zie de commentaar aldaar.
+		/// </remarks>
 		/// <throws>FoutNummerException</throws>
 		/// <throws>GeenGavException</throws>
 		/// <throws>InvalidOperationException</throws>

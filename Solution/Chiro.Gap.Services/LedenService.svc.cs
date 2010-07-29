@@ -81,7 +81,12 @@ namespace Chiro.Gap.Services
 			var foutBerichtenBuilder = new StringBuilder();
 
 			// Haal meteen alle gelieerde personen op, gecombineerd met hun groep
-			var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Groep);
+			// Ik haal nu ook de groepswerkjaren mee op, omdat 'LidMaken' daar straks in zal kijken.
+			// TODO: Dat kan volgens mij ook zonder, maar daarvoor moet LedenManager.LidMaken aangepast wdn
+
+			var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(
+				gelieerdePersoonIDs, 
+				PersoonsExtras.Groep|PersoonsExtras.GroepsWerkJaren);
 
 			// Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
 			// al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.

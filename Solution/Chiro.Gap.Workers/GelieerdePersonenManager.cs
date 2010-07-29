@@ -837,6 +837,11 @@ namespace Chiro.Gap.Workers
 				paths.Add(gp => gp.Categorie);
 			}
 
+			if ((extras & PersoonsExtras.GroepsWerkJaren) != 0)
+			{
+				paths.Add(gp => gp.Lid.First().GroepsWerkJaar);
+			}
+
 			return paths.ToArray();
 		}
 

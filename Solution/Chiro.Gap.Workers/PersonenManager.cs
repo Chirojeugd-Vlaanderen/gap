@@ -228,6 +228,11 @@ namespace Chiro.Gap.Workers
 			{
 				paths.Add(p => p.GelieerdePersoon);
 			}
+
+			if ((extras & PersoonsExtras.GroepsWerkJaren) != 0)
+			{
+				throw new NotSupportedException();
+			}
 			
 			// TODO: dit is nogal veel dubbel werk.  EnkelMijnPersonen laadt alle gelieerde personen,
 			// om te kijken welke personen overeen komen met 'mijn' personen.  Daarna worden, indien
@@ -256,6 +261,10 @@ namespace Chiro.Gap.Workers
 				throw new NotSupportedException();
 			}
 
+			if ((extras & PersoonsExtras.GroepsWerkJaren) != 0)
+			{
+				throw new NotSupportedException();
+			}
 
 			if ((extras & PersoonsExtras.Adressen) != 0)
 			{
@@ -270,6 +279,7 @@ namespace Chiro.Gap.Workers
 			{
 				paths.Add(p => p.GelieerdePersoon);
 			}
+
 
 			return _dao.OphalenViaGelieerdePersoon(gelieerdePersoonIDs, paths.ToArray());
 		}
