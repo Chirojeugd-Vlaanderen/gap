@@ -118,8 +118,17 @@ namespace Chiro.Pdox.Data
 					LidInfo lid;
 					DateTime gebDatum;
 
-					int? adNr = reader["ADNR"].ToString().Trim() == String.Empty ?
-						null : (int?)Int32.Parse(reader["ADNR"].ToString());
+					int adInt;
+					int? adNr;
+
+					if (int.TryParse(reader["ADNR"].ToString().Trim(), out adInt))
+					{
+						adNr = adInt;
+					}
+					else
+					{
+						adNr = null;
+					}
 
 					DateTime.TryParse(reader["GEBDATUM"].ToString(), out gebDatum);
 
