@@ -29,13 +29,24 @@ namespace Chiro.Pdox.Data
 		/// 'aansluitingenmap'
 		/// </summary>
 		/// <param name="stamnr">Stamnummer van de groep</param>
-		/// <returns>Recentste aansluitingsbestand van groep met stamnummer <paramref name="stamnr"/></returns>
+		/// <returns>Recentste aansluitingsbestand van groep met stamnummer <paramref name="stamnr"/>.
+		/// Lege string als geen bestand gevonden.</returns>
 		public string RecentsteAansluitingsBestand(string stamnr)
 		{
 			string directory = String.Format(@"{0}/{1}", Properties.Settings.Default.AansluitingsMap, StamNrNaarBestand(stamnr));
 
 			var di = new DirectoryInfo(directory);
-			var files = di.GetFiles("*.a*");
+			FileInfo[] files;
+
+			try
+			{
+				files = di.GetFiles("*.a*");
+			}
+			catch (DirectoryNotFoundException)
+			{
+				// groep heeft geen aansluitingsbestand
+				return String.Empty;
+			}
 
 			var fileQuery = from file in files
 			                where !file.Name.EndsWith("adr", true, null)

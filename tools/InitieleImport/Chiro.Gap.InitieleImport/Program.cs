@@ -112,7 +112,10 @@ namespace Chiro.Gap.InitieleImport
 			// Eerst importeren uit paradox, omdat de import uit paradox
 			// bijv. geen telefoonnummers updatet als er al een persoon gevonden is.
 
-			ImporterenUitPdox(dataDir);
+			if (aansluitingsBestand != String.Empty)
+			{
+				ImporterenUitPdox(dataDir);
+			}
 
 			// Aanvullen uit kipadmin.
 
