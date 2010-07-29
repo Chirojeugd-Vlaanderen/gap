@@ -45,6 +45,7 @@ namespace Chiro.Gap.Domain
 		AfdelingNietLeeg,
 		#endregion
 
-		GeenDatabaseVerbinding
+		GeenDatabaseVerbinding,
+		Concurrecncy
 	}
 }

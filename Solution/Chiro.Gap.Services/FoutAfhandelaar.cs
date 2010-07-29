@@ -8,7 +8,6 @@ using System.ServiceModel;
 
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.FaultContracts;
-using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Services
 {
@@ -18,16 +17,19 @@ namespace Chiro.Gap.Services
 		{
 			switch (ex.GetType().Name)
 			{
+				/*
+				 * Hier worden algemene fouten opgevangen en op de goede manier doorgegeven. ALls de debugger hier breakt, 
+				 * mag je gewoon op F5 duwen om verder te gaan.
+				 */
 				case "GeenGavException":
 					throw new FaultException<GapFault>(new FoutNummerFault { FoutNummer = FoutNummer.GeenGav }, new FaultReason(ex.Message));
 				case "EntityException":
 				case "EntityCommandExecutionException":
 					throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.GeenDatabaseVerbinding }, new FaultReason(ex.Message));
-					// de volgende throws moeten nog een fault meegeven
 				case "OptimisticConcurrencyException":
-					throw new FaultException(ex.Message, new FaultCode("Optimistic Concurrency Exception"));
+					throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.Concurrecncy }, new FaultReason(ex.Message));
 				default:
-					throw new GapException("Niet-geanticipeerde fout");
+					throw new FaultException<GapFault>(new GapFault(), new FaultReason(ex.Message));
 			}
 		}
 	}

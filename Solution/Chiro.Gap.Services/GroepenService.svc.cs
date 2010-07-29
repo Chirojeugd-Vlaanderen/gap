@@ -331,19 +331,13 @@ namespace Chiro.Gap.Services
 				{
 					// nieuw maken.
 					// OPM: als dit foutloopt, moet de juiste foutmelding doorgegeven worden (zie #553)
-					try
-					{
 						afdelingsJaar = _afdelingsJaarMgr.Aanmaken(
 											afd,
 											oa,
 											huidigGwj,
 											detail.GeboorteJaarVan, detail.GeboorteJaarTot,
 											detail.Geslacht);
-					}
-					catch (ValidatieException ex)
-					{
-						throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = ex.Foutnummer }, new FaultReason(ex.Message));
-					}
+
 				}
 				else
 				{
@@ -371,6 +365,10 @@ namespace Chiro.Gap.Services
 				}
 
 				_afdelingsJaarMgr.Bewaren(afdelingsJaar);
+			}
+			catch (ValidatieException ex)
+			{
+				throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = ex.Foutnummer, Bericht = ex.Message }, new FaultReason(ex.Message));
 			}
 			catch (Exception ex)
 			{
