@@ -113,6 +113,12 @@ namespace Chiro.Gap.Workers
 			if(voriggwj!=null && OphalenViaPersoon(gp.ID, voriggwj.ID)!=null)
 			{
 				lid.EindeInstapPeriode = gwj.GetEindeJaarovergang();
+
+				// @Broes: Het enige moment waarop dit relevant is, is bij de overgang naar een
+				// nieuw werkjaar.  Is het dan niet te doen om in de procedure van de overgang,
+				// gewoon achteraf alle probeerperiodes van de overgezette leden op 15/10 te laten
+				// eindigen?
+
 			}else
 			{
 				//In het andere geval was de persoon vorig jaar geen lid (of was er geen vorig jaar), dus krijgt hij de standaard periode om te bedenken.
