@@ -30,6 +30,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
 		/// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		IList<PersoonDetail> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal);
 
 		/// <summary>
@@ -43,6 +45,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="aantalTotaal">Outputparameter; geeft het totaal aantal personen weer in de lijst</param>
 		/// <returns>Lijst van gelieerde personen met persoonsinfo</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal);
 
 		/// <summary>
@@ -51,6 +55,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>
 		/// <returns>GelieerdePersoon met persoonsgegevens, communicatievorm en adressen</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		PersoonDetail DetailsOphalen(int gelieerdePersoonID);
 
 		/// <summary>
@@ -65,6 +71,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// functies
 		/// </returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		PersoonLidInfo AlleDetailsOphalen(int gelieerdePersoonID);
 
 		/// <summary>
@@ -75,6 +83,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <returns>Lijst 'PersoonOverzicht'-objecten van alle gelieerde personen uit de categorie</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		IEnumerable<PersoonOverzicht> AllenOphalenUitCategorie(int categorieID, PersoonSorteringsEnum sortering);
 
 		/// <summary>
@@ -84,6 +94,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
 		/// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		IEnumerable<PersoonOverzicht> AllenOphalenUitGroep(int groepID, PersoonSorteringsEnum sortering);
 
 		#endregion ophalen
@@ -96,6 +108,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="persoonInfo">Info over te bewaren persoon</param>
 		/// <returns>ID van de bewaarde persoon</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		int Bewaren(PersoonInfo persoonInfo);
 
 		/// <summary>
@@ -107,6 +121,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <returns>ID's van de bewaarde persoon en gelieerde persoon</returns>
 		[OperationContract]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonDetail>))]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		IDPersEnGP Aanmaken(PersoonInfo info, int groepID);
 
 		/// <summary>
@@ -125,6 +141,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// 190), maar dat mag blijkbaar niet bij services.</remarks>
 		[OperationContract]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonDetail>))]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		IDPersEnGP GeforceerdAanmaken(PersoonInfo info, int groepID, bool forceer);
 
 		/// <summary>
@@ -134,6 +152,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <returns>PersoonID van de persoon gekoppeld aan de gelieerde persoon bepaald door <paramref name="gelieerdePersoonID"/></returns>
 		/// <remarks>Eigenlijk is dit een domme method, maar ze wordt gemakshalve nog gebruikt.</remarks>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		int PersoonIDGet(int gelieerdePersoonID);
 
 		#endregion
@@ -148,6 +168,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <returns>Adresobject met gekoppelde personen</returns>
 		/// <remarks>GelieerdePersoonID's van bewoners worden niet mee opgehaald</remarks>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		GezinInfo GezinOphalen(int adresID, int groepID);
 
 		/// <summary>
@@ -165,6 +187,8 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
 		[FaultContract(typeof(OngeldigObjectFault))]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		void PersonenVerhuizen(IEnumerable<int> persoonIDs,PersoonsAdresInfo nieuwAdres,int oudAdresID);
 
 		/// <summary>
@@ -181,6 +205,8 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
 		[FaultContract(typeof(OngeldigObjectFault))]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		void GelieerdePersonenVerhuizen(IEnumerable<int> gelieerdePersoonIDs, PersoonsAdresInfo nieuwAdres, int oudAdresID);
 
 		/// <summary>
@@ -192,6 +218,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// persoon</returns>
 		/// <remarks>Parameters: GELIEERDEpersoonID, returns PERSONEN</remarks>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		IList<BewonersInfo> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID);
 
 		/// <summary>
@@ -206,6 +234,8 @@ namespace Chiro.Gap.ServiceContracts
 		[Obsolete]
 		[FaultContract(typeof(OngeldigObjectFault))]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		void AdresToevoegenPersonen(List<int> personenIDs, PersoonsAdresInfo adr);
 
 		/// <summary>
@@ -218,6 +248,8 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(OngeldigObjectFault))]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		void AdresToevoegenGelieerdePersonen(List<int> gelieerdePersonenIDs, PersoonsAdresInfo adr, bool voorkeur);
 
 		/// <summary>
@@ -226,10 +258,12 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="personenIDs">ID's van de personen over wie het gaat</param>
 		/// <param name="adresID">ID van het adres dat losgekoppeld moet worden</param>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		void AdresVerwijderenVanPersonen(IList<int> personenIDs, int adresID);
 
 		/// <summary>
-		/// Maakt het PersoonsAdres met ID <paramref name="PersoonsAdresID"/> het voorkeursadres van de gelieerde persoon
+		/// Maakt het PersoonsAdres met ID <paramref name="persoonsAdresID"/> het voorkeursadres van de gelieerde persoon
 		/// met ID <paramref name="gelieerdePersoonID"/>
 		/// </summary>
 		/// <param name="persoonsAdresID">ID van het persoonsadres dat voorkeursadres moet worden</param>
@@ -238,6 +272,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <remarks>Goed opletten: een PersoonsAdres is gekoppeld aan een persoon; het voorkeursadres is gekoppeld
 		/// aan een *gelieerde* persoon.</remarks>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		void VoorkeursAdresMaken(int persoonsAdresID, int gelieerdePersoonID);
 
 		#endregion adressen
@@ -250,6 +286,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="commInfo">De communicatievorm die aan die persoon gekoppeld moet worden</param>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		void CommunicatieVormToevoegen(int gelieerdePersoonID, CommunicatieInfo commInfo);
 
 		/// <summary>
@@ -257,6 +294,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="commvormID">ID van de communicatievorm</param>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		void CommunicatieVormVerwijderenVanPersoon(int commvormID);
 
 		/// <summary>
@@ -264,6 +303,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="c">De aan te passen communicatievorm</param>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		void CommunicatieVormAanpassen(CommunicatieInfo c);
 
 		/// <summary>
@@ -272,6 +313,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="commTypeID">De ID van het communicatietype</param>
 		/// <returns>Info over het gevraagde communicatietype</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		CommunicatieTypeInfo CommunicatieTypeOphalen(int commTypeID);
 
 		/// <summary>
@@ -279,6 +322,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <returns>Een lijst op met alle communicatietypes</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		IEnumerable<CommunicatieTypeInfo> CommunicatieTypesOphalen();
 
 		/// <summary>
@@ -287,6 +332,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="commvormID">ID van de communicatievorm waarover het gaat</param>
 		/// <returns>De communicatievorm met de opgegeven ID</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		CommunicatieInfo CommunicatieVormOphalen(int commvormID);
 
 		#endregion commvormen
@@ -299,6 +346,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="gelieerdepersonenIDs">ID's van de gelieerde personen</param>
 		/// <param name="categorieIDs">ID's van de categorieën waaraan ze toegevoegd moeten worden</param>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		void CategorieKoppelen(IList<int> gelieerdepersonenIDs, IList<int> categorieIDs);
 
 		/// <summary>
@@ -307,6 +356,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="gelieerdepersonenIDs">ID's van de gelieerde personen over wie het gaat</param>
 		/// <param name="categorieID">ID van de categorie waaruit ze verwijderd moeten worden</param>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		void CategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID);
 
 		#endregion categorieën

@@ -61,6 +61,7 @@ namespace Chiro.Gap.WebApp
 				},
 				new
 				{
+					groepID = @"\d+",
 					id = @"\d+"
 				});
 
@@ -83,11 +84,39 @@ namespace Chiro.Gap.WebApp
 						page = @"\d+" // groepID, ID en page moeten een getal zijn
 					});
 
+			// Handleiding
+			routes.MapRoute(
+				"Handleiding",
+				"{controller}/{action}",
+				new
+				{
+					controller = "Handleiding",
+					action = "Index"
+				},
+				new
+				{
+					controller = "Handleiding"
+				});
+
+			// Foutpagina's
+			routes.MapRoute(
+				"Foutpagina",
+				"{controller}/{action}",
+				new
+					{
+						controller = "Error",
+						action = "Index"
+					},
+				new
+					{
+						controller = "Error"
+					});
+
 			// Opvang voor url's die niet aan de opgelegde patronen voldoen
 			routes.MapRoute(
 				"Catch All",
 				"{*path}",
-				new { controller = "Error", action = "NotFound" }
+				new { controller = "Error", action = "NietGevonden" }
 				);
 		}
 

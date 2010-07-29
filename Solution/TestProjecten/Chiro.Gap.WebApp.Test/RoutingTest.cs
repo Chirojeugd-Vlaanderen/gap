@@ -9,7 +9,8 @@ using Moq;
 namespace Chiro.Gap.WebApp.Test
 {
 	/// <summary>
-	/// Bevat tests of routering goed gebeurt
+	/// Bevat tests of routering goed gebeurt. Heeft dus niets te maken met de interne werking 
+	/// van controllers en hun actions.
 	/// </summary>
 	[TestClass]
 	public class RoutingTest
@@ -27,11 +28,12 @@ namespace Chiro.Gap.WebApp.Test
 		[TestMethod]
 		public void Enkel_GroepID_Gaat_Naar_Default()
 		{
-			TestRoute("~/15000",				// zeker niet toegekende groepID
-				new								// en dit zijn de defaults zoals ze ingesteld zijn in global.asax
+			TestRoute("~/15000",				// willekeurige groepID, hoeft niet te bestaan
+				new								// dit zijn de defaults zoals ze ingesteld zijn in global.asax
 				{
 					controller = "GavTaken",
-					action = "Index"
+					action = "Index",
+					groepID = 15000
 				});
 		}
 
@@ -42,7 +44,7 @@ namespace Chiro.Gap.WebApp.Test
 					new
 					{
 						controller = "Error",
-						action = "NotFound"
+						action = "NietGevonden"
 					});
 		}
 
@@ -53,24 +55,26 @@ namespace Chiro.Gap.WebApp.Test
 					new
 					{
 						controller = "JaarOvergang",
-						action = "AfdelingMaken"
+						action = "AfdelingMaken",
+						groepID = 15000
 					});
 		}
 
 		[TestMethod]
 		public void Afdeling_Bewerken_In_Jaarovergang()
 		{
-			TestRoute("~/15000/JaarOvergang/AfdelingAanpassen/15000",
+			TestRoute("~/15000/JaarOvergang/AfdelingAanpassen/15999",
 					new
 					{
 						controller = "JaarOvergang",
 						action = "AfdelingAanpassen",
-						afdelingID = 15000
+						groepID = 15000,
+						afdelingID = 15999
 					});
 		}
 
 		[TestMethod]
-		public void Foutpagina_Wordt_Weergegeven()
+		public void Foutcontroller_Wordt_Juist_Opgeroepen()
 		{
 			TestRoute("~/Error/NotFound",
 				new

@@ -21,6 +21,10 @@ using Chiro.Gap.Workers.Exceptions;
 namespace Chiro.Gap.Services
 {
 	// OPM: als je de naam van de class "GroepenService" hier verandert, moet je ook de sectie "Services" in web.config aanpassen.
+
+	/// <summary>
+	/// Service voor operaties op groepsniveau
+	/// </summary>
 	public class GroepenService : IGroepenService
 	{
 		#region Manager Injection
@@ -57,6 +61,7 @@ namespace Chiro.Gap.Services
 		#endregion
 
 		#region algemene members
+
 		/// <summary>
 		/// Ophalen van Groepsinformatie
 		/// </summary>
@@ -66,8 +71,16 @@ namespace Chiro.Gap.Services
 		/// </returns>
 		public GroepInfo InfoOphalen(int groepID)
 		{
-			var g = _groepenMgr.Ophalen(groepID);
-			return Mapper.Map<Groep, GroepInfo>(g);
+			try
+			{
+				var g = _groepenMgr.Ophalen(groepID);
+				return Mapper.Map<Groep, GroepInfo>(g);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		/// <summary>
@@ -77,18 +90,16 @@ namespace Chiro.Gap.Services
 		/// <returns>Groepsinformatie voor groep met code <paramref name="code"/></returns>
 		public GroepInfo InfoOphalenCode(string code)
 		{
-			Groep g;
-
 			try
 			{
-				g = _groepenMgr.Ophalen(code);
+				var g = _groepenMgr.Ophalen(code);
+				return Mapper.Map<Groep, GroepInfo>(g);
 			}
-			catch (GeenGavException)
+			catch (Exception ex)
 			{
-				throw new FaultException<GapFault>(new FoutNummerFault { FoutNummer = FoutNummer.GeenGav });
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
 			}
-
-			return Mapper.Map<Groep, GroepInfo>(g);
 		}
 
 		/// <summary>
@@ -98,15 +109,23 @@ namespace Chiro.Gap.Services
 		/// <returns>Groepsdetails, inclusief categorieen en huidige actieve afdelingen</returns>
 		public GroepDetail DetailOphalen(int groepID)
 		{
-			var resultaat = new GroepDetail();
+			try
+			{
+				var resultaat = new GroepDetail();
 
-			var g = _groepenMgr.OphalenMetIndelingen(groepID);
-			Mapper.Map(g, resultaat);
+				var g = _groepenMgr.OphalenMetIndelingen(groepID);
+				Mapper.Map(g, resultaat);
 
-			resultaat.Afdelingen = Mapper.Map<IEnumerable<AfdelingsJaar>, List<AfdelingDetail>>(
-				_groepsWerkJaarManager.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen).AfdelingsJaar);
+				resultaat.Afdelingen = Mapper.Map<IEnumerable<AfdelingsJaar>, List<AfdelingDetail>>(
+					_groepsWerkJaarManager.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen).AfdelingsJaar);
 
-			return resultaat;
+				return resultaat;
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		/// <summary>
@@ -133,16 +152,28 @@ namespace Chiro.Gap.Services
 
 				_groepenMgr.Bewaren(groep);
 			}
-			catch (Exception e)
+			catch (Exception ex)
 			{
-				// TODO: fatsoenlijke exception handling
-				throw new FaultException(e.Message, new FaultCode("Optimistic Concurrency Exception"));
+				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="groepID"></param>
+		/// <returns></returns>
 		public int RecentsteGroepsWerkJaarIDGet(int groepID)
 		{
-			return _groepsWerkJaarManager.RecentsteGroepsWerkJaarIDGet(groepID);
+			try
+			{
+				return _groepsWerkJaarManager.RecentsteGroepsWerkJaarIDGet(groepID);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return 0;
+			}
 		}
 
 		#endregion
@@ -155,27 +186,46 @@ namespace Chiro.Gap.Services
 		/// <param name="groepID">ID van een groep, zodat aan de hand van het recenste groepswerkjaar
 		/// de standaardgeboortejaren van en tot bepaald kunnen worden</param>
 		/// <returns>Rij met details over de officiele afdelingen</returns>
-
 		public IEnumerable<OfficieleAfdelingDetail> OfficieleAfdelingenOphalen(int groepID)
 		{
-			GroepsWerkJaar gwj = _groepsWerkJaarManager.RecentsteOphalen(groepID);
+			try
+			{
+				GroepsWerkJaar gwj = _groepsWerkJaarManager.RecentsteOphalen(groepID);
 
-			Mapper.CreateMap<OfficieleAfdeling, OfficieleAfdelingDetail>()
-				.ForMember(
-					dst => dst.StandaardGeboorteJaarVan,
-					opt => opt.MapFrom(src => gwj.WerkJaar - src.LeefTijdTot))
-				.ForMember(
-					dst => dst.StandaardGeboorteJaarTot,
-					opt => opt.MapFrom(src => gwj.WerkJaar - src.LeefTijdVan));
+				Mapper.CreateMap<OfficieleAfdeling, OfficieleAfdelingDetail>()
+					.ForMember(
+						dst => dst.StandaardGeboorteJaarVan,
+						opt => opt.MapFrom(src => gwj.WerkJaar - src.LeefTijdTot))
+					.ForMember(
+						dst => dst.StandaardGeboorteJaarTot,
+						opt => opt.MapFrom(src => gwj.WerkJaar - src.LeefTijdVan));
 
-			return Mapper.Map<IEnumerable<OfficieleAfdeling>, IEnumerable<OfficieleAfdelingDetail>>(
-				_afdelingsJaarMgr.OfficieleAfdelingenOphalen());
+				return Mapper.Map<IEnumerable<OfficieleAfdeling>, IEnumerable<OfficieleAfdelingDetail>>(
+					_afdelingsJaarMgr.OfficieleAfdelingenOphalen());
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
+		/// <summary>
+		/// Haalt de groepen op waarvoor de gebruiker (GAV-)rechten heeft
+		/// </summary>
+		/// <returns>(Informatie over) de groepen van de gebruiker</returns>
 		public IEnumerable<GroepInfo> MijnGroepenOphalen()
 		{
-			var result = _autorisatieMgr.MijnGroepenOphalen();
-			return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(result);
+			try
+			{
+				var result = _autorisatieMgr.MijnGroepenOphalen();
+				return Mapper.Map<IEnumerable<Groep>, IEnumerable<GroepInfo>>(result);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		#endregion
@@ -217,6 +267,7 @@ namespace Chiro.Gap.Services
 			try
 			{
 				_groepenMgr.AfdelingToevoegen(g, naam, afkorting);
+				_groepenMgr.Bewaren(g, e => e.Afdeling);
 			}
 			catch (BestaatAlException<Afdeling> ex)
 			{
@@ -226,23 +277,36 @@ namespace Chiro.Gap.Services
 
 				throw new FaultException<BestaatAlFault<AfdelingInfo>>(fault);
 			}
-
-			_groepenMgr.Bewaren(g, e => e.Afdeling);
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+			}
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="info"></param>
 		public void AfdelingBewaren(AfdelingInfo info)
 		{
-			Afdeling ai = _afdelingsJaarMgr.AfdelingOphalen(info.ID);
-			if (info.Naam != null && info.Naam.CompareTo(ai.Naam) != 0)
+			try
 			{
-				ai.Naam = info.Naam;
-			}
-			if (info.Afkorting != null && info.Afkorting.CompareTo(ai.Afkorting) != 0)
-			{
-				ai.Afkorting = info.Afkorting;
-			}
+				Afdeling ai = _afdelingsJaarMgr.AfdelingOphalen(info.ID);
+				if (info.Naam != null && info.Naam.CompareTo(ai.Naam) != 0)
+				{
+					ai.Naam = info.Naam;
+				}
+				if (info.Afkorting != null && info.Afkorting.CompareTo(ai.Afkorting) != 0)
+				{
+					ai.Afkorting = info.Afkorting;
+				}
 
-			_afdelingsJaarMgr.Bewaren(ai);
+				_afdelingsJaarMgr.Bewaren(ai);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+			}
 		}
 
 		/// <summary>
@@ -254,59 +318,67 @@ namespace Chiro.Gap.Services
 		/// (ID > 0), of een bestaande (ID == 0)</param>
 		public void AfdelingsJaarBewaren(AfdelingsJaarDetail detail)
 		{
-			AfdelingsJaar afdelingsJaar;
-
-			Afdeling afd = _afdelingsJaarMgr.AfdelingOphalen(detail.AfdelingID);
-			OfficieleAfdeling oa = _afdelingsJaarMgr.OfficieleAfdelingOphalen(detail.OfficieleAfdelingID);
-			GroepsWerkJaar huidigGwj = _groepsWerkJaarManager.RecentsteOphalen(afd.Groep.ID);
-
-
-			if (detail.AfdelingsJaarID == 0)
+			try
 			{
-				// nieuw maken.
-				// OPM: als dit foutloopt, moet de juiste foutmelding doorgegeven worden (zie #553)
-				try
+				AfdelingsJaar afdelingsJaar;
+
+				Afdeling afd = _afdelingsJaarMgr.AfdelingOphalen(detail.AfdelingID);
+				OfficieleAfdeling oa = _afdelingsJaarMgr.OfficieleAfdelingOphalen(detail.OfficieleAfdelingID);
+				GroepsWerkJaar huidigGwj = _groepsWerkJaarManager.RecentsteOphalen(afd.Groep.ID);
+
+
+				if (detail.AfdelingsJaarID == 0)
 				{
-					afdelingsJaar = _afdelingsJaarMgr.Aanmaken(
-										afd,
-										oa,
-										huidigGwj,
-										detail.GeboorteJaarVan, detail.GeboorteJaarTot,
-										detail.Geslacht);
+					// nieuw maken.
+					// OPM: als dit foutloopt, moet de juiste foutmelding doorgegeven worden (zie #553)
+					try
+					{
+						afdelingsJaar = _afdelingsJaarMgr.Aanmaken(
+											afd,
+											oa,
+											huidigGwj,
+											detail.GeboorteJaarVan, detail.GeboorteJaarTot,
+											detail.Geslacht);
+					}
+					catch (ValidatieException ex)
+					{
+						throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = ex.Foutnummer }, new FaultReason(ex.Message));
+					}
 				}
-				catch (ValidatieException ex)
+				else
 				{
-					throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = ex.Foutnummer }, new FaultReason(ex.Message));
+					// wijzigen
+
+					afdelingsJaar = _afdelingsJaarMgr.Ophalen(
+						detail.AfdelingsJaarID,
+						AfdelingsJaarExtras.OfficieleAfdeling | AfdelingsJaarExtras.Afdeling | AfdelingsJaarExtras.GroepsWerkJaar);
+
+					if (afdelingsJaar.GroepsWerkJaar.ID != huidigGwj.ID
+						|| afdelingsJaar.Afdeling.ID != detail.AfdelingID)
+					{
+						throw new NotSupportedException("Afdeling en Groepswerkjaar mogen niet"
+							+ " gewijzigd worden.");
+					}
+
+					_afdelingsJaarMgr.Wijzigen(
+						afdelingsJaar,
+						_afdelingsJaarMgr.OfficieleAfdelingOphalen(detail.OfficieleAfdelingID),
+						detail.GeboorteJaarVan,
+						detail.GeboorteJaarTot,
+						detail.Geslacht,
+						detail.VersieString);
+
 				}
+
+				_afdelingsJaarMgr.Bewaren(afdelingsJaar);
 			}
-			else
+			catch (Exception ex)
 			{
-				// wijzigen
-
-				afdelingsJaar = _afdelingsJaarMgr.Ophalen(
-					detail.AfdelingsJaarID,
-					AfdelingsJaarExtras.OfficieleAfdeling | AfdelingsJaarExtras.Afdeling | AfdelingsJaarExtras.GroepsWerkJaar);
-
-				if (afdelingsJaar.GroepsWerkJaar.ID != huidigGwj.ID
-					|| afdelingsJaar.Afdeling.ID != detail.AfdelingID)
-				{
-					throw new NotSupportedException("Afdeling en Groepswerkjaar mogen niet"
-						+ " gewijzigd worden.");
-				}
-
-				_afdelingsJaarMgr.Wijzigen(
-					afdelingsJaar,
-					_afdelingsJaarMgr.OfficieleAfdelingOphalen(detail.OfficieleAfdelingID),
-					detail.GeboorteJaarVan,
-					detail.GeboorteJaarTot,
-					detail.Geslacht,
-					detail.VersieString);
-
+				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
-
-			_afdelingsJaarMgr.Bewaren(afdelingsJaar);
 
 			// TODO: Concurrency exception catchen
+			// OPM: FoutAfhandelaar.FoutAfhandelen vangt OptimisticConcurrencyException op. Zijn er nog andere?
 		}
 
 		/// <summary>
@@ -328,17 +400,29 @@ namespace Chiro.Gap.Services
 				var afdjaardetail = Mapper.Map<AfdelingsJaar, AfdelingsJaarDetail>(afdjaar);*/
 				throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.AfdelingNietLeeg });
 			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+			}
 		}
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public AfdelingsJaarDetail AfdelingsJaarOphalen(int afdelingsJaarID)
 		{
-			AfdelingsJaar aj = _afdelingsJaarMgr.Ophalen(
+			try
+			{
+				AfdelingsJaar aj = _afdelingsJaarMgr.Ophalen(
 				afdelingsJaarID,
 				AfdelingsJaarExtras.Afdeling | AfdelingsJaarExtras.OfficieleAfdeling);
 
-			return Mapper.Map<AfdelingsJaar, AfdelingsJaarDetail>(aj);
+				return Mapper.Map<AfdelingsJaar, AfdelingsJaarDetail>(aj);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		/// <summary>
@@ -349,16 +433,24 @@ namespace Chiro.Gap.Services
 		/// <returns>De details van de afdeling in het gegeven afdelingsjaar.</returns>
 		public AfdelingDetail AfdelingDetailOphalen(int afdelingsJaarID)
 		{
-			AfdelingsJaar aj = _afdelingsJaarMgr.Ophalen(
+			try
+			{
+				AfdelingsJaar aj = _afdelingsJaarMgr.Ophalen(
 				afdelingsJaarID,
 				AfdelingsJaarExtras.Afdeling | AfdelingsJaarExtras.OfficieleAfdeling);
 
-			return Mapper.Map<AfdelingsJaar, AfdelingDetail>(aj);
+				return Mapper.Map<AfdelingsJaar, AfdelingDetail>(aj);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 
 		/// <summary>
-		/// Haat een afdeling op, op basis van <paramref name="afdelingID"/>
+		/// Haalt een afdeling op, op basis van <paramref name="afdelingID"/>
 		/// </summary>
 		/// <param name="afdelingID">ID van op te halen afdeling</param>
 		/// <returns>Info van de gevraagde afdeling</returns>
@@ -366,8 +458,16 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public AfdelingInfo AfdelingOphalen(int afdelingID)
 		{
-			Afdeling a = _afdelingsJaarMgr.AfdelingOphalen(afdelingID);
-			return Mapper.Map<Afdeling, AfdelingInfo>(a);
+			try
+			{
+				Afdeling a = _afdelingsJaarMgr.AfdelingOphalen(afdelingID);
+				return Mapper.Map<Afdeling, AfdelingInfo>(a);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		/// <summary>
@@ -383,8 +483,16 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<AfdelingDetail> ActieveAfdelingenOphalen(int groepsWerkJaarID)
 		{
-			var groepswerkjaar = _groepsWerkJaarManager.Ophalen(groepsWerkJaarID, GroepsWerkJaarExtras.Afdelingen | GroepsWerkJaarExtras.Leden);
-			return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingDetail>>(groepswerkjaar.AfdelingsJaar.OrderBy(e => e.GeboorteJaarVan).ToList());
+			try
+			{
+				var groepswerkjaar = _groepsWerkJaarManager.Ophalen(groepsWerkJaarID, GroepsWerkJaarExtras.Afdelingen | GroepsWerkJaarExtras.Leden);
+				return Mapper.Map<IList<AfdelingsJaar>, IList<AfdelingDetail>>(groepswerkjaar.AfdelingsJaar.OrderBy(e => e.GeboorteJaarVan).ToList());
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		/// <summary>
@@ -395,8 +503,16 @@ namespace Chiro.Gap.Services
 		/// <returns>Lijst van AfdelingInfo</returns>
 		public IList<AfdelingInfo> BeschikbareAfdelingenOphalen(int groepID)
 		{
-			var groep = _groepenMgr.OphalenMetAfdelingen(groepID);
-			return Mapper.Map<IEnumerable<Afdeling>, IList<AfdelingInfo>>(groep.Afdeling);
+			try
+			{
+				var groep = _groepenMgr.OphalenMetAfdelingen(groepID);
+				return Mapper.Map<IEnumerable<Afdeling>, IList<AfdelingInfo>>(groep.Afdeling);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		/// <summary>
@@ -407,8 +523,16 @@ namespace Chiro.Gap.Services
 		/// <returns>Lijst van AfdelingInfo</returns>
 		public IList<ActieveAfdelingInfo> BeschikbareAfdelingsJarenOphalen(int groepID)
 		{
-			var gwj = _groepsWerkJaarManager.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
-			return Mapper.Map<IEnumerable<AfdelingsJaar>, IList<ActieveAfdelingInfo>>(gwj.AfdelingsJaar);
+			try
+			{
+				var gwj = _groepsWerkJaarManager.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
+				return Mapper.Map<IEnumerable<AfdelingsJaar>, IList<ActieveAfdelingInfo>>(gwj.AfdelingsJaar);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		/// <summary>
@@ -422,8 +546,16 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<AfdelingInfo> OngebruikteAfdelingenOphalen(int groepswerkjaarID)
 		{
-			IList<Afdeling> ongebruikteAfdelingen = _groepsWerkJaarManager.OngebruikteAfdelingenOphalen(groepswerkjaarID);
-			return Mapper.Map<IList<Afdeling>, IList<AfdelingInfo>>(ongebruikteAfdelingen);
+			try
+			{
+				IList<Afdeling> ongebruikteAfdelingen = _groepsWerkJaarManager.OngebruikteAfdelingenOphalen(groepswerkjaarID);
+				return Mapper.Map<IList<Afdeling>, IList<AfdelingInfo>>(ongebruikteAfdelingen);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		#endregion
@@ -439,8 +571,16 @@ namespace Chiro.Gap.Services
 		/// <returns>De gevraagde lijst afdelingsinfo</returns>
 		public IEnumerable<FunctieDetail> FunctiesOphalen(int groepsWerkJaarID, LidType lidType)
 		{
-			var relevanteFuncties = _functiesMgr.OphalenRelevant(groepsWerkJaarID, lidType);
-			return Mapper.Map<IList<Functie>, IList<FunctieDetail>>(relevanteFuncties);
+			try
+			{
+				var relevanteFuncties = _functiesMgr.OphalenRelevant(groepsWerkJaarID, lidType);
+				return Mapper.Map<IList<Functie>, IList<FunctieDetail>>(relevanteFuncties);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		/// <summary>
@@ -453,28 +593,36 @@ namespace Chiro.Gap.Services
 		/// </returns>
 		public IEnumerable<FunctieProbleemInfo> FunctiesControleren(int groepID)
 		{
-			GroepsWerkJaar gwj = _groepsWerkJaarManager.RecentsteOphalen(
+			try
+			{
+				GroepsWerkJaar gwj = _groepsWerkJaarManager.RecentsteOphalen(
 				groepID, GroepsWerkJaarExtras.GroepsFuncties | GroepsWerkJaarExtras.LidFuncties);
 
-			IEnumerable<Telling> problemen = _functiesMgr.AantallenControleren(gwj);
+				IEnumerable<Telling> problemen = _functiesMgr.AantallenControleren(gwj);
 
-			// Blijkbaar kan ik hier niet anders dan de functies weer ophalen.
+				// Blijkbaar kan ik hier niet anders dan de functies weer ophalen.
 
-			var resultaat = (from p in problemen
-							 let f = _functiesMgr.Ophalen(p.ID)
-							 select new FunctieProbleemInfo
-										{
-											Code = f.Code,
-											EffectiefAantal = p.Aantal,
-											ID = f.ID,
-											MaxAantal = p.Max,
-											MinAantal = p.Min,
-											Naam = f.Naam
-										}).ToList();
+				var resultaat = (from p in problemen
+								 let f = _functiesMgr.Ophalen(p.ID)
+								 select new FunctieProbleemInfo
+								 {
+									 Code = f.Code,
+									 EffectiefAantal = p.Aantal,
+									 ID = f.ID,
+									 MaxAantal = p.Max,
+									 MinAantal = p.Min,
+									 Naam = f.Naam
+								 }).ToList();
 
-			// Ter info: return resultaat.ToArray() werkt niet; problemen met (de)serializeren?
+				// Ter info: return resultaat.ToArray() werkt niet; problemen met (de)serializeren?
 
-			return resultaat.ToList();
+				return resultaat.ToList();
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		/// <summary>
@@ -490,10 +638,16 @@ namespace Chiro.Gap.Services
 		/// <returns></returns>
 		public int FunctieToevoegen(int groepID, string naam, string code, int? maxAantal, int minAantal, LidType lidType, int? werkJaarVan)
 		{
-			Groep g = _groepenMgr.OphalenMetFuncties(groepID);
 			try
 			{
+				Groep g = _groepenMgr.OphalenMetFuncties(groepID);
+
 				_groepenMgr.FunctieToevoegen(g, naam, code, maxAantal, minAantal, lidType, werkJaarVan);
+				g = _groepenMgr.Bewaren(g, e => e.Functie);
+
+				return (from ctg in g.Functie
+						where ctg.Code == code
+						select ctg.ID).FirstOrDefault();
 			}
 			catch (BestaatAlException<Functie> ex)
 			{
@@ -502,25 +656,11 @@ namespace Chiro.Gap.Services
 
 				throw new FaultException<BestaatAlFault<FunctieDetail>>(fault);
 			}
-			// ReSharper disable RedundantCatchClause
-			catch (Exception)
+			catch (Exception ex)
 			{
-				// ********************************************************************************
-				// * BELANGRIJK: Als je debugger breakt op deze throw, dan is dat geen probleem.  *
-				// * Dat wil gewoon zeggen dat er een bestaande Functie gevonden is, met        *
-				// * dezelfde code als de nieuwe.  Er gaat een faultexception over de lijn,       *
-				// * die door de UI gecatcht moet worden.  Druk gewoon F5 om verder te gaan.      *
-				// ********************************************************************************
-
-				throw;
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return 0;
 			}
-			// ReSharper restore RedundantCatchClause
-
-			g = _groepenMgr.Bewaren(g, e => e.Functie);
-
-			return (from ctg in g.Functie
-					where ctg.Code == code
-					select ctg.ID).FirstOrDefault();
 		}
 
 		/// <summary>
@@ -534,11 +674,10 @@ namespace Chiro.Gap.Services
 		{
 			// Personen moeten mee opgehaald worden; anders werkt 
 			// functieenManager.Verwijderen niet.
-
-			Functie f = _functiesMgr.Ophalen(functieID, true);
-
 			try
 			{
+				Functie f = _functiesMgr.Ophalen(functieID, true);
+
 				_functiesMgr.Verwijderen(f, forceren);
 			}
 			catch (BlokkerendeObjectenException<Lid> ex)
@@ -547,6 +686,10 @@ namespace Chiro.Gap.Services
 					BlokkerendeObjectenFault<PersoonLidInfo>>(ex);
 
 				throw new FaultException<BlokkerendeObjectenFault<PersoonLidInfo>>(fault);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
 		}
 
@@ -557,11 +700,19 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IEnumerable<WerkJaarInfo> WerkJarenOphalen(int groepsID)
 		{
-			var werkjaren = (from gwj in _groepenMgr.OphalenMetGroepsWerkJaren(groepsID).GroepsWerkJaar
-							 orderby gwj.WerkJaar descending
-							 select gwj);
+			try
+			{
+				var werkjaren = (from gwj in _groepenMgr.OphalenMetGroepsWerkJaren(groepsID).GroepsWerkJaar
+								 orderby gwj.WerkJaar descending
+								 select gwj);
 
-			return Mapper.Map<IEnumerable<GroepsWerkJaar>, IEnumerable<WerkJaarInfo>>(werkjaren);
+				return Mapper.Map<IEnumerable<GroepsWerkJaar>, IEnumerable<WerkJaarInfo>>(werkjaren);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		#region categorieën
@@ -575,10 +726,17 @@ namespace Chiro.Gap.Services
 		/// <returns></returns>
 		public int CategorieToevoegen(int groepID, string naam, string code)
 		{
-			Groep g = _groepenMgr.OphalenMetCategorieen(groepID);
 			try
 			{
+				Groep g = _groepenMgr.OphalenMetCategorieen(groepID);
+
 				_groepenMgr.CategorieToevoegen(g, naam, code);
+
+				g = _groepenMgr.Bewaren(g, e => e.Categorie);
+
+				return (from ctg in g.Categorie
+						where ctg.Code == code
+						select ctg.ID).FirstOrDefault();
 			}
 			catch (BestaatAlException<Categorie> ex)
 			{
@@ -587,25 +745,11 @@ namespace Chiro.Gap.Services
 
 				throw new FaultException<BestaatAlFault<CategorieInfo>>(fault);
 			}
-			// ReSharper disable RedundantCatchClause
-			catch (Exception)
+			catch (Exception ex)
 			{
-				// ********************************************************************************
-				// * BELANGRIJK: Als je debugger breakt op deze throw, dan is dat geen probleem.  *
-				// * Dat wil gewoon zeggen dat er een bestaande categorie gevonden is, met        *
-				// * dezelfde code als de nieuwe.  Er gaat een faultexception over de lijn,       *
-				// * die door de UI gecatcht moet worden.  Druk gewoon F5 om verder te gaan.      *
-				// ********************************************************************************
-
-				throw;
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return 0;
 			}
-			// ReSharper restore RedundantCatchClause
-
-			g = _groepenMgr.Bewaren(g, e => e.Categorie);
-
-			return (from ctg in g.Categorie
-					where ctg.Code == code
-					select ctg.ID).FirstOrDefault();
 		}
 
 		/// <summary>
@@ -619,11 +763,9 @@ namespace Chiro.Gap.Services
 		{
 			// Personen moeten mee opgehaald worden; anders werkt 
 			// CategorieenManager.Verwijderen niet.
-
-			Categorie c = _categorieenMgr.Ophalen(categorieID, true);
-
 			try
 			{
+				Categorie c = _categorieenMgr.Ophalen(categorieID, true);
 				_categorieenMgr.Verwijderen(c, forceren);
 			}
 			catch (BlokkerendeObjectenException<GelieerdePersoon> ex)
@@ -632,6 +774,10 @@ namespace Chiro.Gap.Services
 					BlokkerendeObjectenFault<PersoonDetail>>(ex);
 
 				throw new FaultException<BlokkerendeObjectenFault<PersoonDetail>>(fault);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
 		}
 
@@ -656,8 +802,16 @@ namespace Chiro.Gap.Services
 		/// <returns>Het categorieID als de categorie gevonden is, anders 0.</returns>
 		public int CategorieIDOphalen(int groepID, string code)
 		{
-			Categorie cat = _categorieenMgr.Ophalen(groepID, code);
-			return (cat == null) ? 0 : cat.ID;
+			try
+			{
+				Categorie cat = _categorieenMgr.Ophalen(groepID, code);
+				return (cat == null) ? 0 : cat.ID;
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return 0;
+			}
 		}
 
 		/// <summary>
@@ -670,8 +824,16 @@ namespace Chiro.Gap.Services
 		/// de groep met ID <paramref name="groepID"/>.</returns>
 		public CategorieInfo CategorieOpzoeken(int groepID, string categorieCode)
 		{
-			Mapper.CreateMap<Categorie, CategorieInfo>();
-			return Mapper.Map<Categorie, CategorieInfo>(_categorieenMgr.Ophalen(groepID, categorieCode));
+			try
+			{
+				Mapper.CreateMap<Categorie, CategorieInfo>();
+				return Mapper.Map<Categorie, CategorieInfo>(_categorieenMgr.Ophalen(groepID, categorieCode));
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		/// <summary>
@@ -681,9 +843,16 @@ namespace Chiro.Gap.Services
 		/// <returns>Lijst met categorie-info van de categorieen van de gevraagde groep</returns>
 		public IList<CategorieInfo> CategorieenOphalen(int groepID)
 		{
-			var result = _categorieenMgr.AllesOphalen(groepID);
-
-			return Mapper.Map<IList<Categorie>, IList<CategorieInfo>>(result);
+			try
+			{
+				var result = _categorieenMgr.AllesOphalen(groepID);
+				return Mapper.Map<IList<Categorie>, IList<CategorieInfo>>(result);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 
@@ -699,7 +868,15 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IEnumerable<WoonPlaatsInfo> GemeentesOphalen()
 		{
-			return Mapper.Map<IEnumerable<WoonPlaats>, IList<WoonPlaatsInfo>>(_adresMgr.GemeentesOphalen());
+			try
+			{
+				return Mapper.Map<IEnumerable<WoonPlaats>, IList<WoonPlaatsInfo>>(_adresMgr.GemeentesOphalen());
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		/// <summary>
@@ -713,7 +890,15 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IEnumerable<StraatInfo> StratenOphalen(String straatBegin, int postNr)
 		{
-			return Mapper.Map<IList<StraatNaam>, IList<StraatInfo>>(_adresMgr.StratenOphalen(straatBegin, postNr));
+			try
+			{
+				return Mapper.Map<IList<StraatNaam>, IList<StraatInfo>>(_adresMgr.StratenOphalen(straatBegin, postNr));
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		/// <summary>
@@ -729,7 +914,15 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IEnumerable<StraatInfo> StratenOphalenMeerderePostNrs(String straatBegin, IEnumerable<int> postNrs)
 		{
-			return Mapper.Map<IList<StraatNaam>, IList<StraatInfo>>(_adresMgr.StratenOphalen(straatBegin, postNrs));
+			try
+			{
+				return Mapper.Map<IList<StraatNaam>, IList<StraatInfo>>(_adresMgr.StratenOphalen(straatBegin, postNrs));
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 
@@ -740,7 +933,15 @@ namespace Chiro.Gap.Services
 		/// <returns>Gebruikersnaam waarmee aangemeld</returns>
 		public string WieBenIk()
 		{
-			return _autorisatieMgr.GebruikersNaamGet();
+			try
+			{
+				return _autorisatieMgr.GebruikersNaamGet();
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		#endregion
@@ -802,7 +1003,7 @@ namespace Chiro.Gap.Services
 						throw new OngeldigObjectException("Een van de officiele afdelingsIDs bestaat niet in de opgegeven groep.");
 					}
 
-					//TODO handle more exceptions
+					// TODO handle more exceptions
 					_afdelingsJaarMgr.Aanmaken(afd, offafd, gwj, afdinfo.GeboorteJaarVan, afdinfo.GeboorteJaarTot, afdinfo.Geslacht);
 				}
 

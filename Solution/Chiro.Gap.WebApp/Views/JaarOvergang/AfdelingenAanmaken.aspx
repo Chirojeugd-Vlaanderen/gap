@@ -35,7 +35,7 @@
         <td><%=ai.Naam %></td>
         <td><%=ai.Afkorting %></td>
         <td><%=ai.OfficieleAfdelingNaam %></td>
-        <td><%=Html.ActionLink("Afdeling aanpassen", "AfdelingAanpassen", new {Controller = "JaarOvergang", id=ai.ID }) %></td>
+        <td><%=Html.ActionLink("Afdeling aanpassen", "AfdelingAanpassen", new { Controller = "JaarOvergang", afdelingID = ai.ID })%></td>
     </tr>
 <% } %>
 </table>

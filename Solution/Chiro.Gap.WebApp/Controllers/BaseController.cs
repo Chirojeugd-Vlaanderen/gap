@@ -191,30 +191,30 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 		}
 
-		//protected override void OnException(ExceptionContext filterContext)
-		//{
-		//    try
-		//    {
-		//        LogSchrijven(Properties.Settings.Default.LogBestandPad,
-		//     string.Format("Gebruiker '{0}' veroorzaakte de volgende fout tussen {1} en {2}, op controller {3}: {4}",
-		//                   HttpContext.User.Identity.Name,
-		//                   Request.UrlReferrer, Request.Url,
-		//                   filterContext.Controller, filterContext.Exception));
-		//    }
-		//    catch (Exception)
-		//    {
-		//        // Tja, wat doen we in zo'n geval?
-		//    }
-		//}
+		protected override void OnException(ExceptionContext filterContext)
+		{
+			try
+			{
+				LogSchrijven(Properties.Settings.Default.LogBestandPad,
+			 string.Format("Gebruiker '{0}' veroorzaakte de volgende fout tussen {1} en {2}, op controller {3}: {4}",
+						   HttpContext.User.Identity.Name,
+						   Request.UrlReferrer, Request.Url,
+						   filterContext.Controller, filterContext.Exception));
+			}
+			catch (Exception)
+			{
+				// Tja, wat doen we in zo'n geval?
+			}
+		}
 
-		//static void LogSchrijven(string pad, string tekst)
-		//{
-		//    var boodschap = new StringBuilder();
-		//    boodschap.AppendLine(DateTime.Now.ToString());
-		//    boodschap.AppendLine(tekst);
-		//    boodschap.AppendLine("=====================================");
+		static void LogSchrijven(string pad, string tekst)
+		{
+			var boodschap = new StringBuilder();
+			boodschap.AppendLine(DateTime.Now.ToString());
+			boodschap.AppendLine(tekst);
+			boodschap.AppendLine("=====================================");
 
-		//    System.IO.File.AppendAllText(pad, boodschap.ToString());
-		//}
+			System.IO.File.AppendAllText(pad, boodschap.ToString());
+		}
 	}
 }

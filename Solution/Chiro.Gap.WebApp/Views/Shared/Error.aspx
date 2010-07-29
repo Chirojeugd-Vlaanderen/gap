@@ -1,25 +1,12 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Fout.Master" Inherits="System.Web.Mvc.ViewPage<System.Web.Mvc.HandleErrorInfo>" %>
-
-<%@ Import Namespace="Chiro.Gap.Workers.Exceptions" %>
 <%@ Import Namespace="System.ServiceModel" %>
-<%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Net" %>
 <asp:Content ID="errorContent" ContentPlaceHolderID="MainContent" runat="server">
 	<%
 		String boodschap;
 		if (Model != null)
 		{
-			if (Model.Exception.GetType() == typeof(FaultException<GeenGavException>))
-			{
-				boodschap = "Je hebt een pagina opgevraagd waar je niet de juiste rechten voor hebt.";
-				// FIXME: dit wordt niet getoond, een GeenGavException wordt opgevangen als FaultException<ExceptionDetail>
-				// Dat moet in elk ServiceContract als attribuut toegevoegd worden
-			}
-			else if (Model.Exception.GetType() == typeof(FaultException<EntityException>) || Model.Exception.GetType() == typeof(FaultException<CommunicationException>))
-			{
-				boodschap = "aangepast";
-			}
-			else if (Model.Exception.GetType() == typeof(FaultException<ExceptionDetail>))
+			if (Model.Exception.GetType() == typeof(FaultException<ExceptionDetail>))
 			{
 				boodschap = Model.Exception.Message; // Hebben alle FaultExceptions aangepaste foutmeldingen? => Nee: fouten in DAL of servicelayer niet
 			}

@@ -4,7 +4,11 @@
 // </copyright>
 
 using System.Net;
+using System.ServiceModel;
 using System.Web.Mvc;
+
+using Chiro.Gap.Domain;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -15,15 +19,42 @@ namespace Chiro.Gap.WebApp.Controllers
         public ActionResult Index()
         {
 			Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            return View("Error");
+            return View();
         }
 
-		//
-		// GET: /Error/NotFound
-		public ActionResult NotFound()
+		public ActionResult Index(ExceptionContext exceptionContext)
+		{
+			if(exceptionContext.Exception.GetType() == typeof(FaultException<FoutNummerFault>))
+			{
+				var fault = (FaultException<FoutNummerFault>) exceptionContext.Exception;
+				if(fault.Detail.FoutNummer == FoutNummer.GeenDatabaseVerbinding)
+				{
+					return View("GeenVerbinding");
+				}
+				else
+				{
+					return View();	
+				}
+			}
+			else
+			{
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				return View();
+			}
+		}
+
+    	//
+		// GET: /Error/NietGevonden
+		public ActionResult NietGevonden()
 		{
 			Response.StatusCode = (int) HttpStatusCode.NotFound;
-			return View("Error");
+			return View("Index");
+		}
+
+		public ActionResult GeenVerbinding()
+		{
+			Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+			return View("GeenVerbinding");
 		}
     }
 }

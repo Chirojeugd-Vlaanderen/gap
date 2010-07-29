@@ -92,12 +92,12 @@ namespace Chiro.Gap.Workers.Test
 		/// Verwacht een exception.
 		/// </summary>
 		[TestMethod]
+		[ExpectedException(typeof(GeenGavException))]
 		public void LijstLedenGeenGavAantalGwj()
 		{
 			// Arrange
 
 			var testData = new DummyData();
-			bool gecatcht = false;
 
 			var ledenDaoMock = new Mock<ILedenDao>();
 			var autorisatieMgrMock = new Mock<IAutorisatieManager>();
@@ -118,21 +118,9 @@ namespace Chiro.Gap.Workers.Test
 			var lm = Factory.Maak<LedenManager>();
 
 			// Act
+            lm.PaginaOphalen(testData.HuidigGwj.ID, LedenSorteringsEnum.Naam);
 
-			try
-			{
-				lm.PaginaOphalen(testData.HuidigGwj.ID, LedenSorteringsEnum.Naam);
-			}
-			catch (GeenGavException)
-			{
-				// Catch de verwachte GeenGavException
-				gecatcht = true;
-			}
-
-			Assert.IsTrue(gecatcht);
-			// verwacht dat de exception gecatcht is, en dat het aantal groepswerkjaren
-			// niet meegegeven werd.
-			// TODO: geen catch-structuur, maar wel [ExpectedException]-Attribuut op test
+			// Verwacht exception
 		}
 
 		/// <summary>

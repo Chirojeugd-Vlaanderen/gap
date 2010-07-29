@@ -39,10 +39,12 @@ namespace Chiro.Gap.Domain
 		AfdelingNietBeschikbaar,
 		#endregion
 
-		#region nog te verdelen
+		#region container niet leeg
 		CategorieNietLeeg,
 		FunctieNietLeeg,
 		AfdelingNietLeeg,
 		#endregion
+
+		GeenDatabaseVerbinding
 	}
 }

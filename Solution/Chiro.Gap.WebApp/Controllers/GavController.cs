@@ -3,14 +3,18 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.ServiceModel;
 using System.Web.Mvc;
 
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -27,29 +31,39 @@ namespace Chiro.Gap.WebApp.Controllers
 		    ActionResult r;
 
 			// Als de gebruiker GAV is van 1 groep, dan wordt er doorgeschakeld naar de
-			// personenlijst van deze groep.  Zo niet krijgt de gebruiker de keuze
+			// personenlijst van deze groep.  Zo niet krijgt de gebruiker de keuze.
 
-			var groepInfos = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
+			try
+			{
+				var groepInfos = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
 				(g => g.MijnGroepenOphalen());
+				if (groepInfos.Count() == 1)
+				{
+					// Redirect naar personenlijst van gevraagde groep;
+					r = RedirectToAction("Index", new { Controller = "Handleiding", groepID = groepInfos.First().ID });
+				}
+				else
+				{
+					var model = new Models.GavModel();
+					BaseModelInit(model, 0);    // 0:nog geen groep gekozen
 
-			if (groepInfos.Count() == 1)
-			{
-				// Redirect naar personenlijst van gevraagde groep;
-				r = RedirectToAction("Index", new { Controller = "Handleiding", groepID = groepInfos.First().ID});
+					model.Titel = "Kies je Chirogroep";
+					model.GroepenLijst = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
+						(g => g.MijnGroepenOphalen());
+
+					r = View("Index", model);
+				}
 			}
-			else
+			catch (FaultException<FoutNummerFault> ex)
 			{
-				var model = new Models.GavModel();
-				BaseModelInit(model, 0);    // 0:nog geen groep gekozen
-
-				model.Titel = "Kies je Chirogroep";
-				model.GroepenLijst = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
-					(g => g.MijnGroepenOphalen());
-
-				r = View("Index", model);
+				r = RedirectToAction(ex.Detail.FoutNummer == FoutNummer.GeenDatabaseVerbinding ? "GeenVerbinding" : "Index", "Error");
+			}
+			catch (Exception)
+			{
+				r = RedirectToAction("Index", "Error");
 			}
 
-		    return r;
+			return r;
 		}
 	}
 }

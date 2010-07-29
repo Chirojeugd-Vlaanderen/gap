@@ -25,7 +25,7 @@
 			Filteren</h1>
 		<ul>
 			<li>
-				<%=Html.ActionLink("Alle leden bekijken", "Lijst", new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering=Model.GekozenSortering })%>
+				<%=Html.ActionLink("Alle leden bekijken", "Lijst", new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering=Model.GekozenSortering, lijst=LijstEnum.Alles })%>
 			</li>
 			<li>
 				<%using (Html.BeginForm("AfdelingsLijst", "Leden"))

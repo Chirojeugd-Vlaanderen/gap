@@ -42,6 +42,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het gevraagde groepswerkjaar</param>
 		/// <param name="groepID"></param>
+		/// <param name="sortering"></param>
 		/// <returns></returns>
 		/// TODO deze code moet opgekuist worden
 		[HandleError]
@@ -100,56 +101,50 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="sortering"></param>
 		/// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
 		/// <param name="lijst"></param>
-		/// <param name="ID"></param>
+		/// <param name="id"></param>
 		/// <returns></returns>
 		[HandleError]
-		public ActionResult Lijst(int groepsWerkJaarID, LijstEnum lijst, int ID, LedenSorteringsEnum sortering, int groepID)
+		public ActionResult Lijst(int groepsWerkJaarID, LijstEnum lijst, int id, LedenSorteringsEnum sortering, int groepID)
 		{
 			LidInfoModel model = LijstModelInitialiseren(groepsWerkJaarID, groepID, sortering);
-			model.GekozenID = ID;
+			model.GekozenID = id;
 			model.GekozenLijst = lijst;
 
-			if(lijst==LijstEnum.Functie)
+			if (lijst == LijstEnum.Functie)
 			{
-				if (ID == 0)
+				if (id == 0)
 				{
 					return Lijst(groepsWerkJaarID, LijstEnum.Alles, 0, sortering, groepID);
 				}
 
-				// TODO check dat de gegeven functie id wel degelijk van de gegeven groep is
+				// TODO check dat de gegeven functieID wel degelijk van de gegeven groep is
 
-				model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>(lid => lid.PaginaOphalenVolgensFunctie(groepsWerkJaarID, ID, sortering));
+				model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>(lid => lid.PaginaOphalenVolgensFunctie(groepsWerkJaarID, id, sortering));
 
-				// TODO functienaam
+				// TODO functienaam (zie #564)
 				model.Titel = "Ledenoverzicht van leden met functie TODO in het werkjaar " + model.JaartalGetoondGroepsWerkJaar + "-" + (model.JaartalGetoondGroepsWerkJaar + 1);
 
-				// TODO naar volged werkjaar kunnen gaan met behoud van functie
+				// TODO naar volgend werkjaar kunnen gaan met behoud van functie
 				return View("Index", model);
-			}else if(lijst == LijstEnum.Afdeling)
+			}
+			else if (lijst == LijstEnum.Afdeling)
 			{
-				/// <summary>
-				/// Toont de lijst van leden uit groepswerkjaar met GroepsWerkJaarID <paramref name="groepsWerkJaarID"/> volgens een gekozen afdeling. De paginering gebeurt per groepswerkjaar, niet per grootte van de pagina
-				/// </summary>
-				/// <param name="groepsWerkJaarID">ID van het gevraagde groepswerkjaar</param>
-				/// <param name="afdID">Indien 0, worden alle leden getoond, anders enkel de leden uit de afdeling met het gegeven AfdelingsID</param>
-				/// <param name="groepID">ID van de groep</param>
-				/// <returns>De view 'Index' met een ledenlijst</returns>
-				if (ID == 0)
+				if (id == 0)
 				{
 					return Lijst(groepsWerkJaarID, LijstEnum.Alles, 0, sortering, groepID);
 				}
 
-				// TODO check dat de gegeven afdeling id wel degelijk van de gegeven groep is
+				// TODO check dat de gegeven afdelingID wel degelijk van de gegeven groep is
 
-				model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>(lid => lid.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, ID, sortering));
+				model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>(lid => lid.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, id, sortering));
 
 				AfdelingDetail af = (from a in model.AfdelingsInfoDictionary.AsQueryable()
-									 where a.Value.AfdelingID == ID
+									 where a.Value.AfdelingID == id
 									 select a.Value).FirstOrDefault();
 
 				model.Titel = "Ledenoverzicht van de " + af.AfdelingNaam + " van het werkjaar " + model.JaartalGetoondGroepsWerkJaar + "-" + (model.JaartalGetoondGroepsWerkJaar + 1);
 
-				model.HuidigeAfdeling = ID;
+				model.HuidigeAfdeling = id;
 				return View("Index", model);
 			}
 
@@ -179,21 +174,21 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public ActionResult AfdelingsLijst(LidInfoModel model, int groepID)
 		{
-			return RedirectToAction("Lijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, groepID = groepID, sortering=model.GekozenSortering, lijst = LijstEnum.Afdeling, ID = model.GekozenAfdeling });
+			return RedirectToAction("Lijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, groepID, sortering = model.GekozenSortering, lijst = LijstEnum.Afdeling, ID = model.GekozenAfdeling });
 		}
 
 		[HandleError]
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult FunctieLijst(LidInfoModel model, int groepID)
 		{
-			return RedirectToAction("Lijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, groepID = groepID, sortering = model.GekozenSortering, lijst = LijstEnum.Functie, ID = model.GekozenFunctie });
+			return RedirectToAction("Lijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, groepID, sortering = model.GekozenSortering, lijst = LijstEnum.Functie, ID = model.GekozenFunctie });
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
 		[HandleError]
 		public ActionResult Lijst(LidInfoModel model, int groepID)
 		{
-			return RedirectToAction("Lijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, groepID = groepID, sortering = model.GekozenSortering, lijst = LijstEnum.Alles, ID = model.GekozenID });
+			return RedirectToAction("Lijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, groepID, sortering = model.GekozenSortering, lijst = LijstEnum.Alles, ID = model.GekozenID });
 
 			//return RedirectToAction("FunctieLijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, funcID = model.GekozenFunctie, groepID = groepID, sortering=model.GekozenSortering });
 		}
@@ -232,7 +227,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				lijst = ServiceHelper.CallService<ILedenService, IEnumerable<LidOverzicht>>
 					(lid => lid.OphalenUitFunctie(id, functieID));
 			}
-			else 
+			else
 			{
 				lijst =
 					ServiceHelper.CallService<ILedenService, IEnumerable<LidOverzicht>>
@@ -266,7 +261,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult DeActiveren(int id, int groepID)
 		{
 			string fouten; //TODO fouten opvangen
-			ServiceHelper.CallService<ILedenService>(l => l.Uitschrijven(new List<int> {id}, out fouten));
+			ServiceHelper.CallService<ILedenService>(l => l.Uitschrijven(new List<int> { id }, out fouten));
 			TempData["succes"] = Properties.Resources.LidNonActiefGemaakt;
 
 			return TerugNaarVorigeLijst();
@@ -376,7 +371,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult LoonVerliesVerzekeren(LoonVerliesModel model, int groepID, int id)
 		{
 			int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(svc => svc.LoonVerliesVerzekeren(id));
-			return RedirectToAction("EditRest", "Personen", new {id = gelieerdePersoonID});
+			return RedirectToAction("EditRest", "Personen", new { id = gelieerdePersoonID });
 		}
 
 		/// <summary>

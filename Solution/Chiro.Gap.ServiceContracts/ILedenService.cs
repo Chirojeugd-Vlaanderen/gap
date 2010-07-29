@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -21,7 +22,6 @@ namespace Chiro.Gap.ServiceContracts
 		/// krjgen ze meteen een afdeling die overeenkomt met leeftijd en geslacht.
 		/// </summary>
 		/// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
-		/// <param name="type">Bepaalt of de personen als kind of als leiding lid worden.</param>
 		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
 		/// string waarin wat uitleg staat.  TODO: beter systeem vinden voor deze feedback.</param>
 		/// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
@@ -30,8 +30,13 @@ namespace Chiro.Gap.ServiceContracts
 		/// de personen die geen problemen vertonen *toch* lid gemaakt. 
 		/// </remarks>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten);
+		
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		IEnumerable<int> NieuwInschrijven(IEnumerable<int> gelieerdePersoonIDs, LidType type, out string foutBerichten);
 
 		/// <summary>
@@ -41,6 +46,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
 		/// string waarin wat uitleg staat.  TODO: beter systeem vinden voor deze feedback.</param>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		void Uitschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten);
 
 		/// <summary>
@@ -49,6 +56,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="lid">Te bewaren lid</param>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		void Bewaren(PersoonLidInfo lid);
 
 		/// <summary>
@@ -58,6 +67,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="lidID">ID van lid met te vervangen functies</param>
 		/// <param name="functieIDs">IDs van nieuwe functies voor het lid</param>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		void FunctiesVervangen(int lidID, IEnumerable<int> functieIDs);
 
 		/// <summary>
@@ -66,6 +77,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="lidID">ID van het lid waarin we geinteresseerd zijn</param>
 		/// <returns>Een LidAfdelingInfo-object</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		LidAfdelingInfo AfdelingenOphalen(int lidID);
 
 		/// <summary>
@@ -76,6 +89,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="afdelingsJaarIDs">ID's van de te koppelen afdelingsjaren</param>
 		/// <returns>De GelieerdePersoonID van het lid</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		int AfdelingenVervangen(int lidID, IEnumerable<int> afdelingsJaarIDs);
 
 		/// <summary>
@@ -83,6 +98,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="lid"></param>
 		/// <returns></returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		PersoonLidInfo BewarenMetVrijeVelden(PersoonLidInfo lid);
 
 		/// <summary>
@@ -94,6 +111,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// personen, voor een bepaalde periode.  Maar in eerste instantie zal alleen de verzekering loonverlies gebruikt worden,
 		/// die per definitie enkel voor leden bestaat.</remarks>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		int LoonVerliesVerzekeren(int lidID);
 
 		#region Ophalen
@@ -109,6 +128,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="sortering">Het soort gegevens waarop er gesorteerd moet worden</param>
 		/// <returns>Lijst van leden met hun relevante informatie</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		IList<PersoonLidInfo> PaginaOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering);
 
 		/// <summary>
@@ -119,6 +140,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="sortering">Het soort gegevens waarop er gesorteerd moet worden</param>
 		/// <returns>Lijst van leen met hun relevante informatie</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		IList<PersoonLidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering);
 
 		/// <summary>
@@ -129,6 +152,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="sortering">Het soort gegevens waarop er gesorteerd moet worden</param>
 		/// <returns>Lijst van leden met hun relevante informatie</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		IList<PersoonLidInfo> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LedenSorteringsEnum sortering);
 
 		/// <summary>
@@ -138,6 +163,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <returns>Lidinfo; bevat info over gelieerde persoon, persoon, groep, afdelingen 
 		/// en functies </returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		PersoonLidInfo DetailsOphalen(int lidID);
 
 		/// <summary>
@@ -148,6 +175,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="afdID">ID van de afdeling waaruit de leden opgehaald moeten worden.</param>
 		/// <returns>Een rij 'LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		IList<LidOverzicht> OphalenUitAfdelingsJaar(int groepsWerkJaarID, int afdID);
 
 		/// <summary>
@@ -158,6 +187,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="functieID">ID van functie die opgehaalde leden moeten hebben</param>
 		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		IList<LidOverzicht> OphalenUitFunctie(int groepsWerkJaarID, int functieID);
 
 		/// <summary>
@@ -166,6 +197,8 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waaruit de leden moeten worden opgehaald</param>
 		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		IList<LidOverzicht> OphalenUitGroepsWerkJaar(int groepsWerkJaarID);
 
 		#endregion

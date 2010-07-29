@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Objects;
 using System.Linq;
 
@@ -105,13 +106,13 @@ namespace Chiro.Gap.Data.Ef
 		{
 			using (var db = new ChiroGroepEntities())
 			{
-				var query
-					= from r in db.GebruikersRecht
-					  where r.Groep.ID == groepID && r.Gav.Login == login
-					  && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
-					  select r;
+					var query
+										= from r in db.GebruikersRecht
+										  where r.Groep.ID == groepID && r.Gav.Login == login
+										  && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
+										  select r;
 
-				return query.Count() > 0;
+					return query.Count() > 0;
 			}
 		}
 
@@ -496,10 +497,10 @@ namespace Chiro.Gap.Data.Ef
 			using (var db = new ChiroGroepEntities())
 			{
 				var query = from gp in db.GelieerdePersoon
-				            where gp.Persoon.PersoonsAdres.Any(pa => pa.ID == persoonsAdresID) &&
-				                  gp.Groep.GebruikersRecht.Any(
-				                  	r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
-				            select gp;
+							where gp.Persoon.PersoonsAdres.Any(pa => pa.ID == persoonsAdresID) &&
+								  gp.Groep.GebruikersRecht.Any(
+									r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
+							select gp;
 
 				return query.Count() > 0;
 			}

@@ -91,7 +91,7 @@ namespace Chiro.Gap.Services.Test
 		///A test for CommunicatieVormToevoegen
 		///</summary>
 		[TestMethod()]
-		[ExpectedException(typeof(FaultException<GapFault>))]
+		[ExpectedException(typeof(FaultException<FoutNummerFault>))]
 		public void CommunicatieVormToevoegenTestOngeldig()
 		{
 			var target = Factory.Maak<GelieerdePersonenService>();
@@ -133,8 +133,8 @@ namespace Chiro.Gap.Services.Test
 		///Toevoegen van een geldig telefoonnr aan een onbestaande gelieerde persoon.  
 		/// Dit moet failen met een GeenGavException
 		///</summary>
-		[ExpectedException(typeof(GeenGavException))]
-		[TestMethod()]
+		[ExpectedException(typeof(FaultException<GapFault>))]
+		[TestMethod]
 		public void CommunicatieVormToevoegenTestOnbestaandePersoon()
 		{
 			var target = Factory.Maak<GelieerdePersonenService>();

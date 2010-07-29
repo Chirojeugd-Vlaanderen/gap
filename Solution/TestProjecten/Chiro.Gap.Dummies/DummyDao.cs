@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
@@ -23,7 +22,7 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public T Ophalen(int id, params System.Linq.Expressions.Expression<Func<T, object>>[] paths)
+		public T Ophalen(int id, params Expression<Func<T, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}
@@ -43,7 +42,7 @@ namespace Chiro.Gap.Dummies
 			return Bewaren(entiteit, getConnectedEntities());
 		}
 
-		public T Bewaren(T entiteit, params System.Linq.Expressions.Expression<Func<T, object>>[] paths)
+		public T Bewaren(T entiteit, params Expression<Func<T, object>>[] paths)
 		{
 			var resultaat = Bewaren(new T[] { entiteit }, paths);
 			return (resultaat.Count() == 1) ? resultaat.First() : default(T);
@@ -56,9 +55,9 @@ namespace Chiro.Gap.Dummies
 		/// </summary>
 		/// <param name="es">Entiteiten die zogezegd gepersisteerd moeten worden</param>
 		/// <param name="paths">Gerelateerde entiteiten om te persisteren</param>
-		/// <returns>De niet-verwijderde entiteiten uit <paramref name="efs"/>, 0-ID's zijn vervangen
+		/// <returns>De niet-verwijderde entiteiten uit <paramref name="es"/>, 0-ID's zijn vervangen
 		/// door 'echte' ID's, en zonder te verwijderen entiteiten nodes in de graaf.</returns>
-		public IEnumerable<T> Bewaren(IEnumerable<T> es, params System.Linq.Expressions.Expression<Func<T, object>>[] paths)
+		public IEnumerable<T> Bewaren(IEnumerable<T> es, params Expression<Func<T, object>>[] paths)
 		{
 			var resultaat = new List<T>();
 
@@ -175,9 +174,9 @@ namespace Chiro.Gap.Dummies
 		/// (Ik ben precies nog altijd zo geen voorstander voor diie 'connected entities').
 		/// </summary>
 		/// <returns>Een lege array van connected entitiesa</returns>
-		public System.Linq.Expressions.Expression<Func<T, object>>[] getConnectedEntities()
+		public Expression<Func<T, object>>[] getConnectedEntities()
 		{
-			return new System.Linq.Expressions.Expression<Func<T, object>>[0];
+			return new Expression<Func<T, object>>[0];
 		}
 
 		public IList<T> Ophalen(IEnumerable<int> ids)
@@ -185,7 +184,7 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public IList<T> Ophalen(IEnumerable<int> ids, params System.Linq.Expressions.Expression<Func<T, object>>[] paths)
+		public IList<T> Ophalen(IEnumerable<int> ids, params Expression<Func<T, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}

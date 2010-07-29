@@ -23,6 +23,9 @@ namespace Chiro.Gap.Services
 {
 	// OPM: als je de naam van de class "GelieerdePersonenService" hier verandert, moet je ook de sectie "Services" in web.config aanpassen.
 
+	/// <summary>
+	/// Service voor operaties op gelieerde personen
+	/// </summary>
 	public class GelieerdePersonenService : IGelieerdePersonenService
 	{
 		#region Manager Injection
@@ -71,17 +74,25 @@ namespace Chiro.Gap.Services
 		/// <returns>ID van de bewaarde persoon</returns>
 		public int Bewaren(PersoonInfo persoonInfo)
 		{
-			// Haal eerst gelieerde persoon op.
-			var gp = _gpMgr.Ophalen(persoonInfo.GelieerdePersoonID);
-			gp.ChiroLeefTijd = persoonInfo.ChiroLeefTijd;
+			try
+			{
+				// Haal eerst gelieerde persoon op.
+				var gp = _gpMgr.Ophalen(persoonInfo.GelieerdePersoonID);
+				gp.ChiroLeefTijd = persoonInfo.ChiroLeefTijd;
 
-			Mapper.Map(persoonInfo, gp.Persoon);
-			// In de hoop dat de members die geen 'Ignore hebben' overschreven worden,
-			// en de andere niet.
+				Mapper.Map(persoonInfo, gp.Persoon);
+				// In de hoop dat de members die geen 'Ignore hebben' overschreven worden,
+				// en de andere niet.
 
-			_gpMgr.Bewaren(gp);
+				_gpMgr.Bewaren(gp);
 
-			return persoonInfo.GelieerdePersoonID;
+				return persoonInfo.GelieerdePersoonID;
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return 0;
+			}
 		}
 
 		/// <summary>
@@ -176,15 +187,25 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal)
 		{
-			var gelieerdePersonen = _gpMgr.PaginaOphalenUitCategorie(
-				categorieID, 
-				pagina, 
-				paginaGrootte, 
-				sortering,
-				PersoonsExtras.Categorieen,
-				true,
-				out aantalTotaal);
-			return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
+			try
+			{
+				var gelieerdePersonen = _gpMgr.PaginaOphalenUitCategorie(
+					categorieID,
+					pagina,
+					paginaGrootte,
+					sortering,
+					PersoonsExtras.Categorieen,
+					true,
+					out aantalTotaal);
+				return Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				aantalTotaal = 0;
+				return null;
+			}
+
 		}
 
 		// *BELANGRIJK*: Als het debuggen hier stopt owv een autorisatiefout, kijk dan na of de gebruiker waarmee
@@ -193,39 +214,49 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<PersoonDetail> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal)
 		{
-			var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, sortering, out aantalTotaal);
-			var result = Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
-
-			/*
-			 * TODO dit staat mss niet op de beste plek
-			 * Ophalen afdelingsjaren in het huidige werkjaar (TODO niet als een vorig werkjaar bekeken wordt)
-			 * Voor elk persoonsdetail kijken of iemand die nog geen lid is, in een afdeling zou passen
-			 * als dit het geval is, kanlidworden op true zetten.
-			 * kanleidingworden wordt true als de persoon de juiste leeftijd heeft
-			 * 
-			 * TODO dubbele code in detailsophalen
-			 */
-			GroepsWerkJaar gwj = _gwjMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
-			foreach (var p in result)
+			try
 			{
-				if (p.GeboorteDatum == null)
+				var gelieerdePersonen = _gpMgr.PaginaOphalenMetLidInfo(groepID, pagina, paginaGrootte, sortering, out aantalTotaal);
+				var result = Mapper.Map<IEnumerable<GelieerdePersoon>, IList<PersoonDetail>>(gelieerdePersonen);
+
+				/*
+				 * TODO dit staat mss niet op de beste plek
+				 * Ophalen afdelingsjaren in het huidige werkjaar (TODO niet als een vorig werkjaar bekeken wordt)
+				 * Voor elk persoonsdetail kijken of iemand die nog geen lid is, in een afdeling zou passen
+				 * als dit het geval is, kanlidworden op true zetten.
+				 * kanleidingworden wordt true als de persoon de juiste leeftijd heeft
+				 * 
+				 * TODO dubbele code in detailsophalen
+				 */
+				GroepsWerkJaar gwj = _gwjMgr.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
+				foreach (var p in result)
 				{
-					continue;
+					if (p.GeboorteDatum == null)
+					{
+						continue;
+					}
+					int geboortejaar = p.GeboorteDatum.Value.Year;
+					var afd = (from a in gwj.AfdelingsJaar
+							   where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
+							   select a).FirstOrDefault();
+					if (afd != null)
+					{
+						p.KanLidWorden = true;
+					}
+					if (p.GeboorteDatum.Value.Year < DateTime.Today.Year - Int32.Parse(Resources.LeidingVanafLeeftijd) + p.ChiroLeefTijd)
+					{
+						p.KanLeidingWorden = true;
+					}
 				}
-				int geboortejaar = p.GeboorteDatum.Value.Year;
-				var afd = (from a in gwj.AfdelingsJaar
-						   where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
-						   select a).FirstOrDefault();
-				if (afd != null)
-				{
-					p.KanLidWorden = true;
-				}
-				if (p.GeboorteDatum.Value.Year < DateTime.Today.Year - Int32.Parse(Resources.LeidingVanafLeeftijd) + p.ChiroLeefTijd)
-				{
-					p.KanLeidingWorden = true;
-				}
+				return result;
 			}
-			return result;
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				aantalTotaal = 0;
+				return null;
+			}
+
 		}
 
 		/// <summary>
@@ -235,8 +266,15 @@ namespace Chiro.Gap.Services
 		/// <returns>GelieerdePersoon met persoonsgegevens</returns>
 		public PersoonDetail DetailsOphalen(int gelieerdePersoonID)
 		{
-			var p = Mapper.Map<GelieerdePersoon, PersoonDetail>(_gpMgr.DetailsOphalen(gelieerdePersoonID));
-			return p;
+			try
+			{
+				return Mapper.Map<GelieerdePersoon, PersoonDetail>(_gpMgr.DetailsOphalen(gelieerdePersoonID));
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		/// <summary>
@@ -252,48 +290,56 @@ namespace Chiro.Gap.Services
 		/// </returns>
 		public PersoonLidInfo AlleDetailsOphalen(int gelieerdePersoonID)
 		{
-			// TODO: Dit moet properder!
-
-			var gp = _gpMgr.DetailsOphalen(gelieerdePersoonID);
-
-			// TODO: Bovenstaande haalt alle lidobjecten ever van de gelieerde persoon op.  Dat is ofwel een bug
-			// in DetailsOphalen, ofwel een bug in deze method.  Ik vermoed het eerste.
-
-			var pl = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gp);
-			var gwj = _gwjMgr.RecentsteOphalen(gp.Groep.ID, GroepsWerkJaarExtras.GroepsFuncties | GroepsWerkJaarExtras.Afdelingen);
-
-			var l = _lidMgr.OphalenViaPersoon(gp.ID, gwj.ID);
-			if (l != null)
+			try
 			{
-				// Een beetje foefelare et trukare: het lidobject koppelen aan de opgehaalde
-				// gelieerde persoon, zodat we bij het mappen meteen weten of het lid verzekerd is tegen
-				// loonverlies
+				// TODO: Dit moet properder!
 
-				l.GelieerdePersoon = gp;
-				gp.Lid.Add(l);
-				
-				var ff = Mapper.Map<Lid, LidInfo>(l);
-				pl.LidInfo = ff;
+				var gp = _gpMgr.DetailsOphalen(gelieerdePersoonID);
+
+				// TODO: Bovenstaande haalt alle lidobjecten ever van de gelieerde persoon op.  Dat is ofwel een bug
+				// in DetailsOphalen, ofwel een bug in deze method.  Ik vermoed het eerste.
+
+				var pl = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gp);
+				var gwj = _gwjMgr.RecentsteOphalen(gp.Groep.ID, GroepsWerkJaarExtras.GroepsFuncties | GroepsWerkJaarExtras.Afdelingen);
+
+				var l = _lidMgr.OphalenViaPersoon(gp.ID, gwj.ID);
+				if (l != null)
+				{
+					// Een beetje foefelare et trukare: het lidobject koppelen aan de opgehaalde
+					// gelieerde persoon, zodat we bij het mappen meteen weten of het lid verzekerd is tegen
+					// loonverlies
+
+					l.GelieerdePersoon = gp;
+					gp.Lid.Add(l);
+
+					var ff = Mapper.Map<Lid, LidInfo>(l);
+					pl.LidInfo = ff;
+				}
+
+				var p = pl.PersoonDetail;
+				if (p.GeboorteDatum != null)
+				{
+					int geboortejaar = p.GeboorteDatum.Value.Year;
+					var afd = (from a in gwj.AfdelingsJaar
+							   where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
+							   select a).FirstOrDefault();
+					if (afd != null)
+					{
+						p.KanLidWorden = true;
+					}
+					if (geboortejaar < DateTime.Today.Year - Int32.Parse(Resources.LeidingVanafLeeftijd) + p.ChiroLeefTijd)
+					{
+						p.KanLeidingWorden = true;
+					}
+				}
+
+				return pl;
 			}
-
-			var p = pl.PersoonDetail;
-			if (p.GeboorteDatum != null)
+			catch (Exception ex)
 			{
-				int geboortejaar = p.GeboorteDatum.Value.Year;
-				var afd = (from a in gwj.AfdelingsJaar
-						   where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
-						   select a).FirstOrDefault();
-				if (afd != null)
-				{
-					p.KanLidWorden = true;
-				}
-				if (geboortejaar < DateTime.Today.Year - Int32.Parse(Resources.LeidingVanafLeeftijd) + p.ChiroLeefTijd)
-				{
-					p.KanLeidingWorden = true;
-				}
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
 			}
-
-			return pl;
 		}
 
 		/// <summary>
@@ -305,20 +351,28 @@ namespace Chiro.Gap.Services
 		/// <returns>Lijst 'PersoonOverzicht'-objecten van alle gelieerde personen uit de categorie</returns>
 		public IEnumerable<PersoonOverzicht> AllenOphalenUitCategorie(int categorieID, PersoonSorteringsEnum sortering)
 		{
-			int totaal;
+			try
+			{
+				int totaal;
 
-			var gelieerdePersonen = _gpMgr.PaginaOphalenUitCategorie(
-				categorieID, 
-				1, 
-				int.MaxValue, 
-				sortering, 
-				PersoonsExtras.Adressen|PersoonsExtras.Communicatie,
-				false,
-				out totaal);
+				var gelieerdePersonen = _gpMgr.PaginaOphalenUitCategorie(
+					categorieID,
+					1,
+					int.MaxValue,
+					sortering,
+					PersoonsExtras.Adressen | PersoonsExtras.Communicatie,
+					false,
+					out totaal);
 
-			return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);
+				return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
-		
+
 		/// <summary>
 		/// Haalt gegevens op van alle personen uit groep met ID <paramref name="groepID"/>.
 		/// </summary>
@@ -327,8 +381,16 @@ namespace Chiro.Gap.Services
 		/// <returns>Rij 'PersoonOverzicht'-objecten van alle gelieerde personen uit de groep.</returns>
 		public IEnumerable<PersoonOverzicht> AllenOphalenUitGroep(int groepID, PersoonSorteringsEnum sortering)
 		{
-			var gelieerdePersonen = _gpMgr.AllenOphalen(groepID, PersoonsExtras.Adressen|PersoonsExtras.Communicatie, sortering);
-			return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);
+			try
+			{
+				var gelieerdePersonen = _gpMgr.AllenOphalen(groepID, PersoonsExtras.Adressen | PersoonsExtras.Communicatie, sortering);
+				return Mapper.Map<IEnumerable<GelieerdePersoon>, IEnumerable<PersoonOverzicht>>(gelieerdePersonen);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		#endregion
@@ -344,10 +406,18 @@ namespace Chiro.Gap.Services
 		/// <remarks>GelieerdePersoonID's van bewoners worden niet mee opgehaald</remarks>
 		public GezinInfo GezinOphalen(int adresID, int groepID)
 		{
-			var adres = _adrMgr.AdresMetBewonersOphalen(adresID, groepID);
-			var resultaat = Mapper.Map<Adres, GezinInfo>(adres);
+			try
+			{
+				var adres = _adrMgr.AdresMetBewonersOphalen(adresID, groepID);
+				var resultaat = Mapper.Map<Adres, GezinInfo>(adres);
 
-			return resultaat;
+				return resultaat;
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		/// <summary>
@@ -370,75 +440,81 @@ namespace Chiro.Gap.Services
 		/// </remarks>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void PersonenVerhuizen(
-			IEnumerable<int> persoonIDs,
-			PersoonsAdresInfo naarAdres,
-			int oudAdresID)
+		public void PersonenVerhuizen(IEnumerable<int> persoonIDs,
+										PersoonsAdresInfo naarAdres,
+										int oudAdresID)
 		{
 			// TODO: Dit lijkt te veel op 'GelieerdePersonenVerhuizen'.  Bovendien wordt deze functie waarschijnlijk
 			// niet meer gebruikt; ze mag weg.
-			 
+
 			// Zoek adres op in database, of maak een nieuw.
 			// (als straat en gemeente gekend)
 
-			Adres nieuwAdres;
 			try
 			{
-				nieuwAdres = _adrMgr.ZoekenOfMaken(
-					naarAdres.StraatNaamNaam,
-					naarAdres.HuisNr,
-					naarAdres.Bus,
-					naarAdres.WoonPlaatsNaam,
-					naarAdres.PostNr,
-					null);	// TODO: buitenlandse adressen (#238)
+				Adres nieuwAdres;
+				try
+				{
+					nieuwAdres = _adrMgr.ZoekenOfMaken(
+						naarAdres.StraatNaamNaam,
+						naarAdres.HuisNr,
+						naarAdres.Bus,
+						naarAdres.WoonPlaatsNaam,
+						naarAdres.PostNr,
+						null);	// TODO: buitenlandse adressen (#238)
+				}
+				catch (OngeldigObjectException ex)
+				{
+					var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
+
+					throw new FaultException<OngeldigObjectFault>(fault);
+				}
+
+				// Haal te verhuizen personen op, samen met hun adressen.
+
+				IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalen(persoonIDs, PersoonsExtras.Adressen);
+
+				// Kijk na of het naar-adres toevallig mee opgehaald is.  Zo ja, werken we daarmee verder
+				// (iet of wat consistenter)
+
+				PersoonsAdres a = personenLijst.SelectMany(prs => prs.PersoonsAdres)
+					.Where(pa => pa.Adres.ID == nieuwAdres.ID).FirstOrDefault();
+
+				if (a != null)
+				{
+					nieuwAdres = a.Adres;
+				}
+
+				// Het oud adres is normaal gezien gekoppeld aan een van de te verhuizen personen.
+
+				Adres oudAdres = personenLijst.SelectMany(prs => prs.PersoonsAdres)
+					.Where(pa => pa.Adres.ID == oudAdresID).Select(pa => pa.Adres).FirstOrDefault();
+
+				try
+				{
+					_pMgr.Verhuizen(personenLijst, oudAdres, nieuwAdres, naarAdres.AdresType);
+				}
+				catch (BlokkerendeObjectenException<PersoonsAdres> ex)
+				{
+					var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>,
+						BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
+
+					throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
+				}
+
+				// Persisteren
+				_adrMgr.Bewaren(nieuwAdres);
+
+				// Bij een verhuis, blijven de PersoonsAdresobjecten dezelfde,
+				// maar worden ze aan een ander adres gekoppeld.  Een post
+				// van het nieuwe adres (met persoonsadressen) koppelt bijgevolg
+				// de persoonsobjecten los van het oude adres.
+				// Bijgevolg moet het oudeAdres niet gepersisteerd worden.
 			}
-			catch (OngeldigObjectException ex)
+			catch (Exception ex)
 			{
-				var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
-
-				throw new FaultException<OngeldigObjectFault>(fault);
+				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
-
-			// Haal te verhuizen personen op, samen met hun adressen.
-
-			IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalen(persoonIDs, PersoonsExtras.Adressen);
-
-			// Kijk na of het naar-adres toevallig mee opgehaald is.  Zo ja, werken we daarmee verder
-			// (iet of wat consistenter)
-
-			PersoonsAdres a = personenLijst.SelectMany(prs => prs.PersoonsAdres)
-				.Where(pa => pa.Adres.ID == nieuwAdres.ID).FirstOrDefault();
-
-			if (a != null)
-			{
-				nieuwAdres = a.Adres;
-			}
-
-			// Het oud adres is normaal gezien gekoppeld aan een van de te verhuizen personen.
-
-			Adres oudAdres = personenLijst.SelectMany(prs => prs.PersoonsAdres)
-				.Where(pa => pa.Adres.ID == oudAdresID).Select(pa=>pa.Adres).FirstOrDefault();
-
-			try
-			{
-				_pMgr.Verhuizen(personenLijst, oudAdres, nieuwAdres, naarAdres.AdresType);
-			}
-			catch (BlokkerendeObjectenException<PersoonsAdres> ex)
-			{
-				var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>,
-					BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
-
-				throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
-			}
-
-			// Persisteren
-			_adrMgr.Bewaren(nieuwAdres);
-
-			// Bij een verhuis, blijven de PersoonsAdresobjecten dezelfde,
-			// maar worden ze aan een ander adres gekoppeld.  Een post
-			// van het nieuwe adres (met persoonsadressen) koppelt bijgevolg
-			// de persoonsobjecten los van het oude adres.
-			// Bijgevolg moet het oudeAdres niet gepersisteerd worden.
 		}
 
 
@@ -453,75 +529,80 @@ namespace Chiro.Gap.Services
 		/// <remarks>nieuwAdres.ID wordt genegeerd.  Het adresID wordt altijd
 		/// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
 		/// dan krijgt het adres een nieuw ID.</remarks>
-		public void GelieerdePersonenVerhuizen(
-			IEnumerable<int> gelieerdePersoonIDs,
-			PersoonsAdresInfo naarAdres,
-			int oudAdresID)
+		public void GelieerdePersonenVerhuizen(IEnumerable<int> gelieerdePersoonIDs,
+												PersoonsAdresInfo naarAdres,
+												int oudAdresID)
 		{
 			// TODO: Dit lijkt te veel op 'PersonenVerhuizen'.  'PersonenVerhuizen' mag weg.
 
-			// Zoek adres op in database, of maak een nieuw.
-			// (als straat en gemeente gekend)
-
-			Adres nieuwAdres;
-
 			try
 			{
-				nieuwAdres = _adrMgr.ZoekenOfMaken(
-					naarAdres.StraatNaamNaam,
-					naarAdres.HuisNr,
-					naarAdres.Bus,
-					naarAdres.WoonPlaatsNaam,
-					naarAdres.PostNr,
-					null);	// TODO: buitenlandse adressen (#238)
+				// Zoek adres op in database, of maak een nieuw.
+				// (als straat en gemeente gekend)
+				Adres nieuwAdres;
+
+				try
+				{
+					nieuwAdres = _adrMgr.ZoekenOfMaken(
+						naarAdres.StraatNaamNaam,
+						naarAdres.HuisNr,
+						naarAdres.Bus,
+						naarAdres.WoonPlaatsNaam,
+						naarAdres.PostNr,
+						null);	// TODO: buitenlandse adressen (#238)
+				}
+				catch (OngeldigObjectException ex)
+				{
+					var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
+
+					throw new FaultException<OngeldigObjectFault>(fault);
+				}
+
+				// Haal te verhuizen personen op, samen met hun adressen.
+
+				IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalenViaGelieerdePersoon(gelieerdePersoonIDs, PersoonsExtras.Adressen);
+
+				// Kijk na of het naar-adres toevallig mee opgehaald is.  Zo ja, werken we daarmee verder
+				// (iet of wat consistenter)
+
+				PersoonsAdres a = personenLijst.SelectMany(prs => prs.PersoonsAdres)
+					.Where(pa => pa.Adres.ID == nieuwAdres.ID).FirstOrDefault();
+
+				if (a != null)
+				{
+					nieuwAdres = a.Adres;
+				}
+
+				// Het oud adres is normaal gezien gekoppeld aan een van de te verhuizen personen.
+
+				Adres oudAdres = personenLijst.SelectMany(prs => prs.PersoonsAdres)
+					.Where(pa => pa.Adres.ID == oudAdresID).Select(pa => pa.Adres).FirstOrDefault();
+
+				try
+				{
+					_pMgr.Verhuizen(personenLijst, oudAdres, nieuwAdres, naarAdres.AdresType);
+				}
+				catch (BlokkerendeObjectenException<PersoonsAdres> ex)
+				{
+					var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>,
+						BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
+
+					throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
+				}
+
+				// Persisteren
+				_adrMgr.Bewaren(nieuwAdres);
+
+				// Bij een verhuis, blijven de PersoonsAdresobjecten dezelfde,
+				// maar worden ze aan een ander adres gekoppeld.  Een post
+				// van het nieuwe adres (met persoonsadressen) koppelt bijgevolg
+				// de persoonsobjecten los van het oude adres.
+				// Bijgevolg moet het oudeAdres niet gepersisteerd worden.
 			}
-			catch (OngeldigObjectException ex)
+			catch (Exception ex)
 			{
-				var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
-
-				throw new FaultException<OngeldigObjectFault>(fault);
+				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
-
-			// Haal te verhuizen personen op, samen met hun adressen.
-
-			IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalenViaGelieerdePersoon(gelieerdePersoonIDs, PersoonsExtras.Adressen);
-
-			// Kijk na of het naar-adres toevallig mee opgehaald is.  Zo ja, werken we daarmee verder
-			// (iet of wat consistenter)
-
-			PersoonsAdres a = personenLijst.SelectMany(prs => prs.PersoonsAdres)
-				.Where(pa => pa.Adres.ID == nieuwAdres.ID).FirstOrDefault();
-
-			if (a != null)
-			{
-				nieuwAdres = a.Adres;
-			}
-
-			// Het oud adres is normaal gezien gekoppeld aan een van de te verhuizen personen.
-
-			Adres oudAdres = personenLijst.SelectMany(prs => prs.PersoonsAdres)
-				.Where(pa => pa.Adres.ID == oudAdresID).Select(pa => pa.Adres).FirstOrDefault();
-
-			try
-			{
-				_pMgr.Verhuizen(personenLijst, oudAdres, nieuwAdres, naarAdres.AdresType);
-			}
-			catch (BlokkerendeObjectenException<PersoonsAdres> ex)
-			{
-				var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>,
-					BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
-
-				throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
-			}
-
-			// Persisteren
-			_adrMgr.Bewaren(nieuwAdres);
-
-			// Bij een verhuis, blijven de PersoonsAdresobjecten dezelfde,
-			// maar worden ze aan een ander adres gekoppeld.  Een post
-			// van het nieuwe adres (met persoonsadressen) koppelt bijgevolg
-			// de persoonsobjecten los van het oude adres.
-			// Bijgevolg moet het oudeAdres niet gepersisteerd worden.
 		}
 
 
@@ -534,46 +615,53 @@ namespace Chiro.Gap.Services
 		/// <param name="voorkeur"><c>True</c> als het nieuwe adres het voorkeursadres moet worden.</param>
 		public void AdresToevoegenGelieerdePersonen(List<int> gelieerdePersonenIDs, PersoonsAdresInfo adr, bool voorkeur)
 		{
-			// Adres opzoeken in database
-			Adres adres;
 			try
 			{
-				adres = _adrMgr.ZoekenOfMaken(adr.StraatNaamNaam, adr.HuisNr, adr.Bus, adr.WoonPlaatsNaam, adr.PostNr, null);
+				// Adres opzoeken in database
+				Adres adres;
+				try
+				{
+					adres = _adrMgr.ZoekenOfMaken(adr.StraatNaamNaam, adr.HuisNr, adr.Bus, adr.WoonPlaatsNaam, adr.PostNr, null);
+				}
+				catch (OngeldigObjectException ex)
+				{
+					var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
+
+					throw new FaultException<OngeldigObjectFault>(fault);
+				}
+
+				// Personen ophalen.  Haal ook gelieerde personen uit andere groepen op, omdat daarvan
+				// mogelijk ook het voorkeursadres verandert (indien er bijv. geen voorkeursadres is)
+
+				IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalenViaGelieerdePersoon(
+					gelieerdePersonenIDs, PersoonsExtras.Adressen | PersoonsExtras.AlleGelieerdePersonen);
+
+				// Voor het adres te koppelen, gebruiken we enkel de gelieerde personen met ID's uit gelieerdePersonenIDs.  
+				//   - het nieuwe adres wordt aan persoon gekoppeld, en niet aan gelieerde persoon
+				//   - de parameter 'voorkeur' is van toepassing op de gp's met ID's uit gelieerdePersonenIDs
+
+				var gpLijst = from gp in personenLijst.SelectMany(p => p.GelieerdePersoon)
+							  where gelieerdePersonenIDs.Contains(gp.ID)
+							  select gp;
+
+				try
+				{
+					_gpMgr.AdresToevoegen(gpLijst, adres, adr.AdresType, voorkeur);
+				}
+				catch (BlokkerendeObjectenException<PersoonsAdres> ex)
+				{
+					var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>, BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
+
+					throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
+				}
+
+				// persisteren
+				_adrMgr.Bewaren(adres);
 			}
-			catch (OngeldigObjectException ex)
+			catch (Exception ex)
 			{
-				var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
-
-				throw new FaultException<OngeldigObjectFault>(fault);
+				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
-
-			// Personen ophalen.  Haal ook gelieerde personen uit andere groepen op, omdat daarvan
-			// mogelijk ook het voorkeursadres verandert (indien er bijv. geen voorkeursadres is)
-
-			IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalenViaGelieerdePersoon(
-				gelieerdePersonenIDs, PersoonsExtras.Adressen | PersoonsExtras.AlleGelieerdePersonen);
-
-			// Voor het adres te koppelen, gebruiken we enkel de gelieerde personen met ID's uit gelieerdePersonenIDs.  
-			//   - het nieuwe adres wordt aan persoon gekoppeld, en niet aan gelieerde persoon
-			//   - de parameter 'voorkeur' is van toepassing op de gp's met ID's uit gelieerdePersonenIDs
-
-			var gpLijst = from gp in personenLijst.SelectMany(p => p.GelieerdePersoon)
-			              where gelieerdePersonenIDs.Contains(gp.ID)
-			              select gp;
-
-			try
-			{
-				_gpMgr.AdresToevoegen(gpLijst, adres, adr.AdresType, voorkeur);
-			}
-			catch (BlokkerendeObjectenException<PersoonsAdres> ex)
-			{
-				var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>, BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
-
-				throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
-			}
-
-			// persisteren
-			_adrMgr.Bewaren(adres);
 		}
 
 
@@ -588,57 +676,71 @@ namespace Chiro.Gap.Services
 		[Obsolete]
 		public void AdresToevoegenPersonen(List<int> personenIDs, PersoonsAdresInfo adr)
 		{
-			// Dit gaat sterk lijken op verhuizen.
-
-			// Adres opzoeken in database
-			Adres adres;
 			try
 			{
-				adres = _adrMgr.ZoekenOfMaken(adr.StraatNaamNaam, adr.HuisNr, adr.Bus, adr.WoonPlaatsNaam, adr.PostNr, null);
+				// Dit gaat sterk lijken op verhuizen.
+
+				// Adres opzoeken in database
+				Adres adres;
+				try
+				{
+					adres = _adrMgr.ZoekenOfMaken(adr.StraatNaamNaam, adr.HuisNr, adr.Bus, adr.WoonPlaatsNaam, adr.PostNr, null);
+				}
+				catch (OngeldigObjectException ex)
+				{
+					var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
+
+					throw new FaultException<OngeldigObjectFault>(fault);
+				}
+
+				// Personen ophalen
+				IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalen(personenIDs, PersoonsExtras.Adressen);
+
+				// Adres koppelen aan personen
+
+				try
+				{
+					_pMgr.AdresToevoegen(personenLijst, adres, adr.AdresType);
+				}
+				catch (BlokkerendeObjectenException<PersoonsAdres> ex)
+				{
+					var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>, BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
+
+					throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
+				}
+
+				// persisteren
+				_adrMgr.Bewaren(adres);
 			}
-			catch (OngeldigObjectException ex)
+			catch (Exception ex)
 			{
-				var fault = Mapper.Map<OngeldigObjectException,	OngeldigObjectFault>(ex);
-
-				throw new FaultException<OngeldigObjectFault>(fault);
+				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
-
-			// Personen ophalen
-			IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalen(personenIDs, PersoonsExtras.Adressen);
-
-			// Adres koppelen aan personen
-
-			try
-			{
-				_pMgr.AdresToevoegen(personenLijst, adres, adr.AdresType);
-			}
-			catch (BlokkerendeObjectenException<PersoonsAdres> ex)
-			{
-				var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>, BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
-
-				throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
-			}
-
-			// persisteren
-			_adrMgr.Bewaren(adres);
 		}
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AdresVerwijderenVanPersonen(IList<int> personenIDs, int adresID)
 		{
-			// Adres ophalen, met bewoners voor GAV
-			Adres adr = _adrMgr.AdresMetBewonersOphalen(adresID, _auMgr.MijnGroepIDsOphalen(), true);
+			try
+			{
+				// Adres ophalen, met bewoners voor GAV
+				Adres adr = _adrMgr.AdresMetBewonersOphalen(adresID, _auMgr.MijnGroepIDsOphalen(), true);
 
-			IList<PersoonsAdres> teVerwijderen = (from pa in adr.PersoonsAdres
-								  where personenIDs.Contains(pa.Persoon.ID)
-								  select pa).ToList();
+				IList<PersoonsAdres> teVerwijderen = (from pa in adr.PersoonsAdres
+													  where personenIDs.Contains(pa.Persoon.ID)
+													  select pa).ToList();
 
-			_gpMgr.AdresVerwijderen(teVerwijderen);
+				_gpMgr.AdresVerwijderen(teVerwijderen);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+			}
 		}
 
 		/// <summary>
-		/// Maakt het PersoonsAdres met ID <paramref name="PersoonsAdresID"/> het voorkeursadres van de gelieerde persoon
+		/// Maakt het PersoonsAdres met ID <paramref name="persoonsAdresID"/> het voorkeursadres van de gelieerde persoon
 		/// met ID <paramref name="gelieerdePersoonID"/>
 		/// </summary>
 		/// <param name="persoonsAdresID">ID van het persoonsadres dat voorkeursadres moet worden</param>
@@ -648,26 +750,42 @@ namespace Chiro.Gap.Services
 		/// aan een *gelieerde* persoon.</remarks>
 		public void VoorkeursAdresMaken(int persoonsAdresID, int gelieerdePersoonID)
 		{
-			GelieerdePersoon gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Adressen);
+			try
+			{
+				GelieerdePersoon gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Adressen);
 
-			var voorkeur = (from pa in gp.Persoon.PersoonsAdres
-			                where pa.ID == persoonsAdresID
-					select pa).FirstOrDefault();
-			
-			_gpMgr.VoorkeurInstellen(gp, voorkeur);
-			_gpMgr.BewarenMetPersoonsAdressen(gp);
+				var voorkeur = (from pa in gp.Persoon.PersoonsAdres
+								where pa.ID == persoonsAdresID
+								select pa).FirstOrDefault();
+
+				_gpMgr.VoorkeurInstellen(gp, voorkeur);
+				_gpMgr.BewarenMetPersoonsAdressen(gp);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+			}
 		}
 
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<BewonersInfo> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID)
 		{
-			IList<GelieerdePersoon> lijst = _gpMgr.HuisGenotenOphalenZelfdeGroep(gelieerdePersoonID);
+			try
+			{
+				IList<GelieerdePersoon> lijst = _gpMgr.HuisGenotenOphalenZelfdeGroep(gelieerdePersoonID);
 
-			// Opgelet: als de return een exception throwt, dan is er waarschijnljk een ongeldig adrestype
-			// mee gemoeid.
+				// Opgelet: als de return een exception throwt, dan is er waarschijnljk een ongeldig adrestype
+				// mee gemoeid. Eventueel moet hier nog een specifiek catch-block toegevoegd worden.
 
-			return Mapper.Map<IList<GelieerdePersoon>, IList<BewonersInfo>>(lijst);
+				return Mapper.Map<IList<GelieerdePersoon>, IList<BewonersInfo>>(lijst);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
+
 		}
 
 		#endregion
@@ -681,25 +799,30 @@ namespace Chiro.Gap.Services
 		/// <param name="commInfo">De communicatievorm die aan die persoon gekoppeld moet worden</param>
 		public void CommunicatieVormToevoegen(int gelieerdePersoonID, CommunicatieInfo commInfo)
 		{
-			// TODO: Deze method moet nog aangepast worden.  De geijkte manier van werken is:
-			// 1. Haal gelieerde persoon op
-			// 2. Creer nieuwe communicatievorm
-			// 3. Gebruik business om te koppelen
-			// 4. Bewaar
-
-			var communicatieVorm = Mapper.Map<CommunicatieInfo, CommunicatieVorm>(commInfo);
-			communicatieVorm.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(commInfo.CommunicatieTypeID);
-
 			try
 			{
+				// TODO: Deze method moet nog aangepast worden.  De geijkte manier van werken is:
+				// 1. Haal gelieerde persoon op
+				// 2. Creer nieuwe communicatievorm
+				// 3. Gebruik business om te koppelen
+				// 4. Bewaar
+
+				var communicatieVorm = Mapper.Map<CommunicatieInfo, CommunicatieVorm>(commInfo);
+				communicatieVorm.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(commInfo.CommunicatieTypeID);
+
 				GelieerdePersoon gp = _gpMgr.OphalenMetCommVormen(gelieerdePersoonID);
 				_cvMgr.AanpassingenDoorvoeren(gp, communicatieVorm);
 				_gpMgr.BewarenMetCommVormen(gp);
 			}
-			catch (ValidatieException)
+			catch (ValidatieException ex)
 			{
 				// TODO: specifiekere info bij in de exceptie.  Zie ticket #497.
-				throw new FaultException<GapFault>(new FoutNummerFault() {FoutNummer = FoutNummer.ValidatieFout});
+				// OPM: ex.Message als bericht opgenomen in de FoutNummerFault. Is dat voldoende?
+				throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.ValidatieFout, Bericht = ex.Message });
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
 		}
 
@@ -707,12 +830,19 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void CommunicatieVormVerwijderenVanPersoon(int commvormID)
 		{
-			var cv = _cvMgr.OphalenMetGelieerdePersoon(commvormID);
-			if (cv == null)
+			try
 			{
-				throw new ArgumentException(Resources.FouteCommunicatieVormVoorPersoonString);
+				var cv = _cvMgr.OphalenMetGelieerdePersoon(commvormID);
+				if (cv == null)
+				{
+					throw new ArgumentException(Resources.FouteCommunicatieVormVoorPersoonString);
+				}
+				_cvMgr.CommunicatieVormVerwijderen(cv);	// persisteert
 			}
-			_cvMgr.CommunicatieVormVerwijderen(cv);	// persisteert
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+			}
 		}
 
 		// TODO dit moet gecontroleerd worden!
@@ -722,19 +852,24 @@ namespace Chiro.Gap.Services
 		/// <param name="v">De aan te passen communicatievorm</param>
 		public void CommunicatieVormAanpassen(CommunicatieInfo v)
 		{
-			var communicatieVorm = Mapper.Map<CommunicatieInfo, CommunicatieVorm>(v);
-			communicatieVorm.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(v.CommunicatieTypeID);
+			try
+			{
+				var communicatieVorm = Mapper.Map<CommunicatieInfo, CommunicatieVorm>(v);
+				communicatieVorm.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(v.CommunicatieTypeID);
 
-			try{
 				var cv = _cvMgr.OphalenMetGelieerdePersoon(v.ID);
 				var gp = cv.GelieerdePersoon;
 				_cvMgr.AanpassingenDoorvoeren(gp, communicatieVorm);
 				_gpMgr.BewarenMetCommVormen(gp);
 			}
-			catch (ValidatieException)
+			catch (ValidatieException ex)
 			{
 				// TODO: specifiekere info bij in de exceptie.  Zie ticket #497.
-				throw new FaultException<GapFault>(new FoutNummerFault() {FoutNummer = FoutNummer.ValidatieFout});
+				throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.ValidatieFout, Bericht = ex.Message });
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
 		}
 
@@ -745,7 +880,15 @@ namespace Chiro.Gap.Services
 		/// <returns>De communicatievorm met de opgegeven ID</returns>
 		public CommunicatieInfo CommunicatieVormOphalen(int commvormID)
 		{
-			return Mapper.Map<CommunicatieVorm, CommunicatieInfo>(_cvMgr.Ophalen(commvormID));
+			try
+			{
+				return Mapper.Map<CommunicatieVorm, CommunicatieInfo>(_cvMgr.Ophalen(commvormID));
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		/// <summary>
@@ -755,14 +898,30 @@ namespace Chiro.Gap.Services
 		/// <returns>Info over het gevraagde communicatietype</returns>
 		public CommunicatieTypeInfo CommunicatieTypeOphalen(int commTypeID)
 		{
-			return Mapper.Map<CommunicatieType,CommunicatieTypeInfo>(
-				_cvMgr.CommunicatieTypeOphalen(commTypeID));
+			try
+			{
+				return Mapper.Map<CommunicatieType, CommunicatieTypeInfo>(
+					_cvMgr.CommunicatieTypeOphalen(commTypeID));
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		public IEnumerable<CommunicatieTypeInfo> CommunicatieTypesOphalen()
 		{
-			return Mapper.Map<IEnumerable<CommunicatieType>, IEnumerable<CommunicatieTypeInfo>>(
-				_cvMgr.CommunicatieTypesOphalen());
+			try
+			{
+				return Mapper.Map<IEnumerable<CommunicatieType>, IEnumerable<CommunicatieTypeInfo>>(
+					_cvMgr.CommunicatieTypesOphalen());
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		#endregion
@@ -777,18 +936,26 @@ namespace Chiro.Gap.Services
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void CategorieKoppelen(IList<int> gelieerdepersonenIDs, IList<int> categorieIDs)
 		{
-			IList<GelieerdePersoon> gelpersonen = _gpMgr.Ophalen(gelieerdepersonenIDs);
-
-			foreach (int catID in categorieIDs)
+			try
 			{
-				Categorie categorie = _catMgr.Ophalen(catID);
+				IList<GelieerdePersoon> gelpersonen = _gpMgr.Ophalen(gelieerdepersonenIDs);
 
-				// Koppelen
-				_gpMgr.CategorieKoppelen(gelpersonen, categorie);
+				foreach (int catID in categorieIDs)
+				{
+					Categorie categorie = _catMgr.Ophalen(catID);
 
-				// Bewaren
-				_catMgr.BewarenMetPersonen(categorie);
+					// Koppelen
+					_gpMgr.CategorieKoppelen(gelpersonen, categorie);
+
+					// Bewaren
+					_catMgr.BewarenMetPersonen(categorie);
+				}
 			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+			}
+
 		}
 
 		/// <summary>
@@ -798,6 +965,8 @@ namespace Chiro.Gap.Services
 		/// <param name="categorieID">ID van de categorie</param>
 		public void CategorieVerwijderen(IList<int> gelieerdepersonenIDs, int categorieID)
 		{
+			try
+			{
 			// Haal personen op met groep
 			IList<GelieerdePersoon> gelieerdePersonen = _gpMgr.Ophalen(gelieerdepersonenIDs);
 
@@ -806,15 +975,27 @@ namespace Chiro.Gap.Services
 
 			// Ontkoppelen en persisteren (verwijderen persisteert altijd meteen)
 			_gpMgr.CategorieLoskoppelen(gelieerdepersonenIDs, categorie);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+			}
 		}
 		#endregion categorieën
 
 		public int PersoonIDGet(int gelieerdePersoonID)
 		{
-			// TODO: Heel de gelieerde persoon + persoon ophalen voor enkel 1 ID is nog altijd overkill; zie issue #154
-			return _gpMgr.Ophalen(gelieerdePersoonID).Persoon.ID;
+			try
+			{
+				// TODO: Heel de gelieerde persoon + persoon ophalen voor enkel 1 ID is nog altijd overkill; zie issue #154
+				return _gpMgr.Ophalen(gelieerdePersoonID).Persoon.ID;
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return 0;
+			}
 		}
-
 
 		#endregion
 	}

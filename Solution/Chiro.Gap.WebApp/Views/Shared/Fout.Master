@@ -9,9 +9,7 @@
 <asp:Content ContentPlaceHolderID="NavigatieContent" runat="server">
 	<ul>
 		<li>
-			<%= Html.ActionLink("Handleiding", "Index", "Handleiding") %></li>
-		<li>
-			<%= Html.ActionLink("Startpagina", "Index", "Gav") %></li>
+			<%= Html.ActionLink("Opnieuw proberen", "Index", "Gav") %></li>
 	</ul>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="BodyContent" runat="server">
