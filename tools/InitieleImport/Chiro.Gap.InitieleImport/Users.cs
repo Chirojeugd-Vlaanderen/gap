@@ -15,11 +15,11 @@ namespace Chiro.Gap.InitieleImport
 
 		public static IEnumerable<string> AlleStamNummers = new string[]
 		                                                    	{
-		                                                    		"AG /0103",
-		                                                    		"AG /0104",
-		                                                    		"AG /0108",
-		                                                    		"AG /0201",
-		                                                    		"AG /0202",
+										//"AG /0103",
+										//"AG /0104",
+										//"AG /0108",
+										//"AG /0201",
+										//"AG /0202",
 		                                                    		"AG /0203",
 		                                                    		"AG /0207",
 		                                                    		"AG /0209",

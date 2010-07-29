@@ -60,7 +60,7 @@ namespace Chiro.Gap.InitieleImport
 			var helper = new KipdorpHelper();
 			var god = new DataGod();
 
-
+			string dataDir = String.Empty;
 			string stamNrFile = helper.StamNrNaarBestand(stamNr);
 			string aansluitingsBestand = helper.RecentsteAansluitingsBestand(stamNr);
 
@@ -78,7 +78,10 @@ namespace Chiro.Gap.InitieleImport
 			// pak recentste aansluitingsbestand uit
 			Directory.CreateDirectory(destdir);
 
-			string dataDir = helper.Uitpakken(aansluitingsBestand, destdir);
+			if (aansluitingsBestand != String.Empty)
+			{
+				dataDir = helper.Uitpakken(aansluitingsBestand, destdir);
+			}
 
 			#endregion
 
