@@ -79,9 +79,10 @@ END
 ----------------------------------------------------------------------
 
 -- eventueel ribbels (met groepsgekozen naam)
+-- 3 letters voor ribbelcode, zo is er geen clash met de standaardafdelingen
 
 INSERT INTO lid.Afdeling(AfdelingsNaam, Afkorting, GroepID)
-SELECT core.ufnUcFirst(g.Pink_Naam) AS AfdelingsNaam, LEFT(g.Pink_Naam, 2) AS Afkorting, @groepID AS GroepID FROM kipadmin.dbo.Groep g
+SELECT core.ufnUcFirst(g.Pink_Naam) AS AfdelingsNaam, LEFT(g.Pink_Naam, 3) AS Afkorting, @groepID AS GroepID FROM kipadmin.dbo.Groep g
 WHERE StamNr = @stamNr
 	AND g.Verd_Code = 2
 	AND NOT EXISTS (SELECT 1 FROM lid.Afdeling WHERE GroepID=@groepID AND AfdelingsNaam=g.Pink_Naam  COLLATE SQL_Latin1_General_CP1_CI_AS)
