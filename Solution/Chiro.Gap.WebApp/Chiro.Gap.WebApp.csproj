@@ -274,6 +274,7 @@
     <Content Include="Content\Chirologo.png" />
     <Content Include="Content\favicon.ico" />
     <Content Include="Content\GeenGroepGekozen.css" />
+    <Compile Include="Controllers\AbonnementenController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\GavTakenController.cs" />
     <Compile Include="Controllers\HandleidingController.cs" />
@@ -284,15 +285,16 @@
     <Compile Include="HtmlHelpers\DropDownListHelper.cs" />
     <Compile Include="HtmlHelpers\TextFieldListHelper.cs" />
     <Compile Include="HtmlHelpers\GeslachtHelper.cs" />
+    <Compile Include="Models\BevestigingsModel.cs" />
     <Compile Include="Models\GavTakenModel.cs" />
     <Compile Include="Models\HandleidingModel.cs" />
     <Compile Include="Models\JaarOvergangAfdelingsJaarModel.cs" />
     <Compile Include="Models\JaarOvergangAfdelingsModel.cs" />
     <Compile Include="Models\LedenLinksModel.cs" />
-    <Compile Include="Models\LoonVerliesModel.cs" />
     <Content Include="Help\HelloWorld.htm" />
     <Content Include="Scripts\MicrosoftMvcJQueryValidation.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
+    <Content Include="Views\Abonnementen\DubbelpuntAanvragen.aspx" />
     <Content Include="Views\Categorieen\Index.aspx" />
     <Content Include="Views\Error\GeenVerbinding.aspx" />
     <Content Include="Views\Error\Index.aspx" />

@@ -1032,6 +1032,16 @@ namespace Chiro.Gap.Services
 				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
 		}
+		
+		/// <summary>
+		/// Bestelt Dubbelpunt voor de persoon met GelieerdePersoonID <paramref name="gelieerdePersoonID"/>.
+		/// </summary>
+		/// <param name="gelieerdePersoonID">ID van gelieerde persoon van persoon die Dubbelpunt wil</param>
+		public void DubbelPuntBestellen(int gelieerdePersoonID)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion categorieën
 
 		/// <summary>

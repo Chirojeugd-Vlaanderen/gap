@@ -343,7 +343,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public ActionResult LoonVerliesVerzekeren(int groepID, int id)
 		{
-			var model = new LoonVerliesModel();
+			var model = new BevestigingsModel();
 			BaseModelInit(model, groepID);
 
 			// TODO: DetalsOphalen is eigenlijk overkill; we hebben enkel de volledige naam en 
@@ -362,13 +362,13 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <summary>
 		/// Verzekert het lid met LidID <paramref name="id"/> voor loonverlies, en redirect naar de detailfiche van de persoon.
 		/// </summary>
-		/// <param name="model">Een LoonVerliesModel, puur pro forma, want alle relevante info zit in de url</param>
+		/// <param name="model">Een BevestigingsModel, puur pro forma, want alle relevante info zit in de url</param>
 		/// <param name="groepID">ID van de groep waarin wordt gewerkt</param>
 		/// <param name="id">LidID van te verzekeren lid</param>
 		/// <returns>Redirect naar detailfiche van het betreffende lid</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
 		[HandleError]
-		public ActionResult LoonVerliesVerzekeren(LoonVerliesModel model, int groepID, int id)
+		public ActionResult LoonVerliesVerzekeren(BevestigingsModel model, int groepID, int id)
 		{
 			int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(svc => svc.LoonVerliesVerzekeren(id));
 			return RedirectToAction("EditRest", "Personen", new { id = gelieerdePersoonID });

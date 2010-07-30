@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.LoonVerliesModel>" MasterPageFile="~/Views/Shared/Site.Master" %>
+<%@ Page Title="" Language="C#" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.BevestigingsModel>" MasterPageFile="~/Views/Shared/Site.Master" %>
 <asp:Content runat="server" ID="Content" ContentPlaceHolderID="head"></asp:Content>
 <asp:Content runat="server" ID="Content1" ContentPlaceHolderID="MainContent">
 

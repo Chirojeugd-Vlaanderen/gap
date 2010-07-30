@@ -63,6 +63,9 @@ namespace Chiro.Gap.WebApp.Test
 		[TestMethod]
 		public void Afdeling_Bewerken_In_Jaarovergang()
 		{
+			// Ik vermoed dat deze test failt omdat de jaarovergang nog niet
+			// geimplementeerd is?
+
 			TestRoute("~/15000/JaarOvergang/AfdelingAanpassen/15999",
 					new
 					{

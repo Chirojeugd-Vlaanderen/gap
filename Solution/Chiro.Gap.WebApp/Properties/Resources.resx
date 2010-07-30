@@ -234,4 +234,7 @@
   <data name="LidNonActiefGemaakt" xml:space="preserve">
     <value>Lid is op non-actief gezet.</value>
   </data>
+  <data name="DubbelPuntBestellen" xml:space="preserve">
+    <value>Dubbelpunt bestellen voor {0}.</value>
+  </data>
 </root>

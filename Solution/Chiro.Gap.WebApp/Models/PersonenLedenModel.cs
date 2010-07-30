@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 
 using Chiro.Gap.ServiceContracts;
@@ -34,5 +35,10 @@ namespace Chiro.Gap.WebApp.Models
 		/// De kost om iemand bij te verzekeren tegen loonverlies
 		/// </summary>
 		public decimal PrijsVerzekeringLoonVerlies { get; set; }
+
+		/// <summary>
+		/// De kost voor een dubbelpuntabonnement van een jaar
+		/// </summary>
+		public decimal PrijsDubbelPunt { get; set; }
 	}
 }
