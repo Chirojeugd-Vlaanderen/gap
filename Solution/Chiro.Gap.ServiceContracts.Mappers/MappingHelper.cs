@@ -86,59 +86,59 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst => dst.PostNummer, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : (int?)src.PersoonsAdres.Adres.WoonPlaats.PostNummer))
 				.ForMember(dst => dst.StraatNaam, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.StraatNaam.Naam))
 				.ForMember(dst => dst.TelefoonNummer,
-				           opt => opt.MapFrom(src => VoorkeurCommunicatie(src, CommunicatieTypeEnum.TelefoonNummer)))
+						   opt => opt.MapFrom(src => VoorkeurCommunicatie(src, CommunicatieTypeEnum.TelefoonNummer)))
 				.ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam))
-				.ForMember(dst => dst.WoonPlaats, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null: src.PersoonsAdres.Adres.WoonPlaats.Naam));
+				.ForMember(dst => dst.WoonPlaats, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.WoonPlaats.Naam));
 
 			Mapper.CreateMap<Lid, LidOverzicht>()
 				.ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.AdNummer))
 				.ForMember(dst => dst.Bus,
-				           opt =>
-				           opt.MapFrom(
-				           	src => src.GelieerdePersoon.PersoonsAdres == null ? null : src.GelieerdePersoon.PersoonsAdres.Adres.Bus))
+						   opt =>
+						   opt.MapFrom(
+							src => src.GelieerdePersoon.PersoonsAdres == null ? null : src.GelieerdePersoon.PersoonsAdres.Adres.Bus))
 				.ForMember(dst => dst.Email,
-				           opt => opt.MapFrom(src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.Email)))
+						   opt => opt.MapFrom(src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.Email)))
 				.ForMember(dst => dst.GeboorteDatum, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.GeboorteDatum))
 				.ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => src.GelieerdePersoon.ID))
 				.ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Geslacht))
 				.ForMember(dst => dst.HuisNummer,
-				           opt =>
-				           opt.MapFrom(
-				           	src =>
-				           	src.GelieerdePersoon.PersoonsAdres == null ? null : src.GelieerdePersoon.PersoonsAdres.Adres.HuisNr))
+						   opt =>
+						   opt.MapFrom(
+							src =>
+							src.GelieerdePersoon.PersoonsAdres == null ? null : src.GelieerdePersoon.PersoonsAdres.Adres.HuisNr))
 				.ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Naam))
 				.ForMember(dst => dst.PostNummer,
-				           opt =>
-				           opt.MapFrom(
-				           	src =>
-				           	src.GelieerdePersoon.PersoonsAdres == null
-				           		? null
-				           		: (int?) src.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats.PostNummer))
+						   opt =>
+						   opt.MapFrom(
+							src =>
+							src.GelieerdePersoon.PersoonsAdres == null
+								? null
+								: (int?)src.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats.PostNummer))
 				.ForMember(dst => dst.StraatNaam,
-				           opt =>
-				           opt.MapFrom(
-				           	src =>
-				           	src.GelieerdePersoon.PersoonsAdres == null
-				           		? null
-				           		: src.GelieerdePersoon.PersoonsAdres.Adres.StraatNaam.Naam))
+						   opt =>
+						   opt.MapFrom(
+							src =>
+							src.GelieerdePersoon.PersoonsAdres == null
+								? null
+								: src.GelieerdePersoon.PersoonsAdres.Adres.StraatNaam.Naam))
 				.ForMember(dst => dst.TelefoonNummer,
-				           opt =>
-				           opt.MapFrom(src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.TelefoonNummer)))
+						   opt =>
+						   opt.MapFrom(src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.TelefoonNummer)))
 				.ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VoorNaam))
 				.ForMember(dst => dst.WoonPlaats,
-				           opt =>
-				           opt.MapFrom(
-				           	src =>
-				           	src.GelieerdePersoon.PersoonsAdres == null
-				           		? null
-				           		: src.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats.Naam))
+						   opt =>
+						   opt.MapFrom(
+							src =>
+							src.GelieerdePersoon.PersoonsAdres == null
+								? null
+								: src.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats.Naam))
 				.ForMember(dst => dst.Functies, opt => opt.MapFrom(src => src.Functie))
 				.ForMember(dst => dst.Afdelingen, opt => opt.MapFrom(Afdelingen))
-				//.ForMember(dst => dst.Functies, opt => opt.Ignore())
-				//.ForMember(dst => dst.Afdelingen, opt => opt.Ignore())
+				// .ForMember(dst => dst.Functies, opt => opt.Ignore())
+				// .ForMember(dst => dst.Afdelingen, opt => opt.Ignore())
 				.ForMember(dst => dst.ChiroLeefTijd, opt => opt.MapFrom(src => src.GelieerdePersoon.ChiroLeefTijd));
 
-            Mapper.CreateMap<Groep, GroepDetail>()
+			Mapper.CreateMap<Groep, GroepDetail>()
 				.ForMember(
 					dst => dst.Plaats, opt => opt.MapFrom(
 					src => src is ChiroGroep ? (src as ChiroGroep).Plaats : String.Empty))
@@ -152,7 +152,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.Functies, opt => opt.MapFrom(
 					src => src.Functie))
 				.ForMember(
-					dst => dst.Afdelingen, 
+					dst => dst.Afdelingen,
 					opt => opt.Ignore());
 
 			Mapper.CreateMap<Afdeling, AfdelingInfo>()
@@ -189,7 +189,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(
 					dst => dst.VerzekeringLoonVerlies,
 					opt => opt.MapFrom(src => IsVerzekerd(
-						src, 
+						src,
 						Verzekering.LoonVerlies)));
 
 			Mapper.CreateMap<Lid, PersoonLidInfo>()
@@ -250,7 +250,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
 			Mapper.CreateMap<PersoonsAdres, BewonersInfo>()
 				.ForMember(
-					dst => dst.GelieerdePersoonID, 
+					dst => dst.GelieerdePersoonID,
 					opt => opt.MapFrom(src => src.Persoon.GelieerdePersoon.FirstOrDefault() == null ? 0 : src.Persoon.GelieerdePersoon.First().ID));
 
 			// Als de property's van de doelobjecten strategisch gekozen namen hebben, configureert
@@ -331,7 +331,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.Communicatie))
 				.ForMember(
 					dst => dst.LidInfo,
-					opt => opt.MapFrom(src => src.Lid.FirstOrDefault())); //omdat je altijd maar 1 lid mag opvragen
+					opt => opt.MapFrom(src => src.Lid.FirstOrDefault())); // omdat je altijd maar 1 lid mag opvragen
 
 			#region Mapping van Exceptions naar Faults
 			// TODO: Kan het mappen van die generics niet efficienter?
@@ -366,9 +366,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 		/// Controleert of een lid <paramref name="src"/>in zijn werkjaar verzekerd is wat betreft de verzekering gegeven
 		/// door <paramref name="verzekering"/>.
 		/// </summary>
-		/// <param name="src">lid waarvan moet nagekeken worden of het verzekerd is</param>
-		/// <param name="verzekering">type verzekering waarop gecontroleerd moet worden</param>
-		/// <returns><c>true</c> alss het lid een verzekering loonverlies heeft.</returns>
+		/// <param name="src">Lid van wie moet nagekeken worden of het verzekerd is</param>
+		/// <param name="verzekering">Type verzekering waarop gecontroleerd moet worden</param>
+		/// <returns><c>True</c> alss het lid een verzekering loonverlies heeft.</returns>
 		private static bool IsVerzekerd(Lid src, Verzekering verzekering)
 		{
 			if (src.GelieerdePersoon == null)
@@ -377,10 +377,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			}
 
 			var persoonsverzekeringen = from v in src.GelieerdePersoon.Persoon.PersoonsVerzekering
-						    where v.VerzekeringsType.ID == (int)verzekering &&
-							  (LedenManager.DatumInWerkJaar(v.Van, src.GroepsWerkJaar.WerkJaar) ||
-							   LedenManager.DatumInWerkJaar(v.Tot, src.GroepsWerkJaar.WerkJaar))
-						    select v;
+										where v.VerzekeringsType.ID == (int)verzekering &&
+										  (LedenManager.DatumInWerkJaar(v.Van, src.GroepsWerkJaar.WerkJaar) ||
+										   LedenManager.DatumInWerkJaar(v.Tot, src.GroepsWerkJaar.WerkJaar))
+										select v;
 
 			return persoonsverzekeringen.FirstOrDefault() != null;
 		}
@@ -395,8 +395,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 		private static string VoorkeurCommunicatie(GelieerdePersoon gp, CommunicatieTypeEnum type)
 		{
 			var query = from c in gp.Communicatie
-			             where (c.CommunicatieType.ID == (int)type) && c.Voorkeur
-			             select c.Nummer;
+						where (c.CommunicatieType.ID == (int)type) && c.Voorkeur
+						select c.Nummer;
 
 			return query.FirstOrDefault();
 		}
@@ -405,13 +405,13 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 		/// Geeft de rij afdelingen weer waaraan een lid gekoppeld is.  Voor een kind bevat de lijst precies
 		/// 1 afdeling, voor een leiding kunnen het er ook geen of veel zijn.
 		/// </summary>
-		/// <param name="l">lid waarvan afdelingen op te halen</param>
-		/// <returns>rij afdelngen van het lid <paramref name="l"/></returns>
+		/// <param name="l">Lid van wie we afdelingen moeten ophalen</param>
+		/// <returns>Rij afdelngen van het lid <paramref name="l"/></returns>
 		private static IEnumerable<AfdelingInfo> Afdelingen(Lid l)
 		{
 			if (l is Kind)
 			{
-				return new AfdelingInfo[] {Mapper.Map<Afdeling, AfdelingInfo>((l as Kind).AfdelingsJaar.Afdeling)};
+				return new AfdelingInfo[] { Mapper.Map<Afdeling, AfdelingInfo>((l as Kind).AfdelingsJaar.Afdeling) };
 			}
 			else if (l is Leiding)
 			{
@@ -426,6 +426,5 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 		}
 
 		#endregion
-
 	}
 }

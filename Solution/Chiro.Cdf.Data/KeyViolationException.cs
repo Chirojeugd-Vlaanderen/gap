@@ -13,7 +13,7 @@ namespace Chiro.Cdf.Data
 	/// </summary>
 	/// <typeparam name="TEntiteit"></typeparam>
 	[Serializable]
-	public class KeyViolationException<TEntiteit> : Exception where TEntiteit: IBasisEntiteit
+	public class KeyViolationException<TEntiteit> : Exception where TEntiteit : IBasisEntiteit
 	{
 		private TEntiteit _bestaande;
 

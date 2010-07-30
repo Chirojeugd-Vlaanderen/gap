@@ -69,7 +69,7 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 			return _dao.Ophalen(commvormID, foo => foo.CommunicatieType,
-											foo => foo.GelieerdePersoon.Persoon, 
+											foo => foo.GelieerdePersoon.Persoon,
 											foo => foo.GelieerdePersoon.Communicatie,
 											foo => foo.GelieerdePersoon.Communicatie.First().CommunicatieType);
 		}
@@ -142,6 +142,13 @@ namespace Chiro.Gap.Workers
 			_dao.Bewaren(comm);
 		}
 
+		/// <summary>
+		/// Vervangt eventueel de oude gegevens van de communicatievorm door de nieuwe,
+		/// gaat na of er al een andere communicatievorm van dat type is, om te garanderen
+		/// dat er een voorkeurscommunicatievorm van dat type is
+		/// </summary>
+		/// <param name="gp">De gelieerde persoon voor wie de communicatievorm toegevoegd of aangepast wordt</param>
+		/// <param name="nieuwecv">De nieuwe gegevens voor de communicatievorm</param>
 		public void AanpassingenDoorvoeren(GelieerdePersoon gp, CommunicatieVorm nieuwecv)
 		{
 			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
@@ -158,7 +165,7 @@ namespace Chiro.Gap.Workers
 				throw new ValidatieException(string.Format(Properties.Resources.CommunicatieVormValidatieFeedback, nieuwecv.Nummer, nieuwecv.CommunicatieType.Omschrijving));
 			}
 
-			if(oudecv!=null)
+			if (oudecv != null)
 			{
 				gp.Communicatie.Remove(oudecv);
 			}
@@ -167,7 +174,7 @@ namespace Chiro.Gap.Workers
 			nieuwecv.GelieerdePersoon = gp;
 
 			bool seen = false;
-			foreach(CommunicatieVorm cv in gp.Communicatie)
+			foreach (CommunicatieVorm cv in gp.Communicatie)
 			{
 				if (cv.CommunicatieType.ID == nieuwecv.CommunicatieType.ID)
 				{
@@ -175,13 +182,13 @@ namespace Chiro.Gap.Workers
 					{
 						cv.Voorkeur = false;
 					}
-					if(!seen && cv.Voorkeur)
+					if (!seen && cv.Voorkeur)
 					{
 						seen = true;
 					}
 				}
 			}
-			if(!seen)
+			if (!seen)
 			{
 				nieuwecv.Voorkeur = true;
 			}

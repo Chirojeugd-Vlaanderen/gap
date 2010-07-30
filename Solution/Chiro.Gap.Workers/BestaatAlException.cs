@@ -13,7 +13,7 @@ namespace Chiro.Gap.Workers.Exceptions
 	/// <summary>
 	/// Exception die opgegooid kan worden als een bepaalde entiteit al bestaat
 	/// </summary>
-	/// <typeparam name="TEntiteit"></typeparam>
+	/// <typeparam name="TEntiteit">De bestaande entiteit</typeparam>
 	[Serializable]
 	public class BestaatAlException<TEntiteit> : GapException where TEntiteit : IBasisEntiteit
 	{

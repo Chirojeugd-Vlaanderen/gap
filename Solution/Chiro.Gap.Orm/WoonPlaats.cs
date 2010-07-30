@@ -25,7 +25,7 @@ namespace Chiro.Gap.Orm
 		private bool _teVerwijderen;
 
 		/// <summary>
-		/// 
+		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren
 		/// </summary>
 		public bool TeVerwijderen
 		{
@@ -33,8 +33,12 @@ namespace Chiro.Gap.Orm
 			set { _teVerwijderen = value; }
 		}
 
-		// SubGemeente wordt nooit geüpdatet, dus ook nooit
-		// concurrency.  VersieString is dus niet nodig.
+		/// <summary>
+		/// Geeft stringrepresentatie van Versie weer (hex).
+		/// Nodig om versie te bewaren in MVC view, voor concurrencycontrole.
+		/// </summary>
+		/// <remarks> SubGemeente wordt nooit geüpdatet, dus ook nooit
+		/// concurrency.  VersieString is dus niet nodig.</remarks>
 		public string VersieString
 		{
 			get { return null; }
@@ -43,6 +47,10 @@ namespace Chiro.Gap.Orm
 
 		#endregion
 
+		/// <summary>
+		/// Een arbitraire waarde waarmee we het object kunnen identificeren
+		/// </summary>
+		/// <returns>Een int waarmee we het object kunnen identificeren</returns>
 		public override int GetHashCode()
 		{
 			return 18;

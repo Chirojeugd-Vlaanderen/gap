@@ -4,8 +4,6 @@
 // </copyright>
 
 using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
@@ -31,37 +29,42 @@ namespace Chiro.Gap.Orm
 	{
 		private bool _teVerwijderen = false;
 
+		/// <summary>
+		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren
+		/// </summary>
 		public bool TeVerwijderen
 		{
-			get
-			{
-				return _teVerwijderen;
-			}
-			set
-			{
-				_teVerwijderen = value;
-			}
+			get { return _teVerwijderen; }
+			set { _teVerwijderen = value; }
 		}
 
+		/// <summary>
+		/// Geeft stringrepresentatie van Versie weer (hex).
+		/// Nodig om versie te bewaren in MVC view, voor concurrencycontrole.
+		/// </summary>
 		public string VersieString
 		{
-			get
-			{
-				return this.VersieStringGet();
-			}
-			set
-			{
-				this.VersieStringSet(value);
-			}
+			get { return this.VersieStringGet(); }
+			set { this.VersieStringSet(value); }
 		}
 
 		#region Identity en equality
 
+		/// <summary>
+		/// Een arbitraire waarde waarmee we het object kunnen identificeren
+		/// </summary>
+		/// <returns>Een int waarmee we het object kunnen identificeren</returns>
 		public override int GetHashCode()
 		{
 			return 3;
 		}
 
+		/// <summary>
+		/// Vergelijkt het huidige object met een ander om te zien of het over
+		/// twee instanties van hetzelfde object gaat
+		/// </summary>
+		/// <param name="obj">Het object waarmee we het huidige willen vergelijken</param>
+		/// <returns><c>True</c> als het schijnbaar om twee instanties van hetzelfde object gaat</returns>
 		public override bool Equals(object obj)
 		{
 			IEfBasisEntiteit andere = obj as Persoon;
@@ -85,6 +88,9 @@ namespace Chiro.Gap.Orm
 
 		#endregion
 
+		/// <summary>
+		/// Een enumwaarde voor het geslacht van de persoon
+		/// </summary>
 		public GeslachtsType Geslacht
 		{
 			get
@@ -97,6 +103,9 @@ namespace Chiro.Gap.Orm
 			}
 		}
 
+		/// <summary>
+		/// Concatenatie van voornaam en naam
+		/// </summary>
 		public string VolledigeNaam
 		{
 			get

@@ -28,7 +28,7 @@ namespace Chiro.Gap.Workers
 		public int? Max;
 		public int Min;
 	}
-		
+
 	/// <summary>
 	/// Businesslogica ivm functies
 	/// </summary>
@@ -90,8 +90,8 @@ namespace Chiro.Gap.Workers
 		/// Een functie ophalen op basis van de ID, samen met de gekoppelde leden
 		/// </summary>
 		/// <param name="functieID">ID op te halen functie</param>
-		/// <param name="metLeden">De opgehaalde functie met de gekoppelde leden</param>
-		/// <returns></returns>
+		/// <param name="metLeden">Bij <c>true</c> moeten de leden mee opgehaald worden die die functie hebben</param>
+		/// <returns>De opgehaalde functie met de gekoppelde leden</returns>
 		public Functie Ophalen(int functieID, bool metLeden)
 		{
 			if (_autorisatieMgr.IsGavCategorie(functieID))
@@ -119,9 +119,9 @@ namespace Chiro.Gap.Workers
 		public IList<Functie> Ophalen(IEnumerable<int> functieIDs)
 		{
 			var resultaat = _funDao.Ophalen(functieIDs, fn => fn.Groep);
-			var groepIDs = (from fn in resultaat 
-					where fn.Groep != null
-					select fn.Groep.ID).Distinct();
+			var groepIDs = (from fn in resultaat
+							where fn.Groep != null
+							select fn.Groep.ID).Distinct();
 
 			if (groepIDs.Any(id => !_autorisatieMgr.IsGavGroep(id)))
 			{
@@ -150,10 +150,10 @@ namespace Chiro.Gap.Workers
 
 				// TODO: ook groepsgebonden functies ophalen (refs #103)
 				return (from f in gwj.Groep.Functie.Union(NationaalBepaaldeFunctiesOphalen())
-					where (f.WerkJaarVan == null || f.WerkJaarVan <= gwj.WerkJaar)
-						&& (f.WerkJaarTot == null || f.WerkJaarTot >= gwj.WerkJaar)
-						&& ((f.Type & lidType) != 0)
-					select f).ToList();
+						where (f.WerkJaarVan == null || f.WerkJaarVan <= gwj.WerkJaar)
+							&& (f.WerkJaarTot == null || f.WerkJaarTot >= gwj.WerkJaar)
+							&& ((f.Type & lidType) != 0)
+						select f).ToList();
 			}
 			else
 			{
@@ -265,9 +265,9 @@ namespace Chiro.Gap.Workers
 			}
 
 			var losTeKoppelen = (from fun in lid.Functie
-					     where functieIDs.Contains(fun.ID)
-					     select fun);
-			
+								 where functieIDs.Contains(fun.ID)
+								 select fun);
+
 			foreach (Functie f in losTeKoppelen)
 			{
 				// Ik test hier bewust niet of er niet te weinig leden zijn met de functie;
@@ -296,11 +296,11 @@ namespace Chiro.Gap.Workers
 			// 'Toekennen' en 'Loskoppelen', dewelke door deze method worden aangeroepen.
 
 			IList<Functie> toeTeVoegen = (from fn in functies
-						      where !lid.Functie.Contains(fn)
-						      select fn).ToList();
+										  where !lid.Functie.Contains(fn)
+										  select fn).ToList();
 			IList<int> teVerwijderen = (from fn in lid.Functie
-						    where !functies.Contains(fn)
-						    select fn.ID).ToList();
+										where !functies.Contains(fn)
+										select fn.ID).ToList();
 
 			Toekennen(lid, toeTeVoegen);
 			return LosKoppelen(lid, teVerwijderen);	// LosKoppelen persisteert
@@ -317,7 +317,7 @@ namespace Chiro.Gap.Workers
 		{
 			// Leden moeten gekoppeld zijn
 			// (null verschilt hier expliciet van een lege lijst)
-			Debug.Assert(functie.Lid  != null);
+			Debug.Assert(functie.Lid != null);
 
 			if (!forceren && functie.Lid.Count > 0)
 			{
@@ -372,7 +372,7 @@ namespace Chiro.Gap.Workers
 			var eigenFuncties = from fn in groepsWerkJaar.Groep.Functie select fn;
 
 			return AantallenControleren(
-				groepsWerkJaar, 
+				groepsWerkJaar,
 				eigenFuncties.Union(NationaalBepaaldeFunctiesOphalen()));
 		}
 
@@ -412,10 +412,10 @@ namespace Chiro.Gap.Workers
 						.Where(fn => functies.Contains(fn));
 
 				var nietToegekendeFuncties = from fn in functies
-							     where !toegekendeFuncties.Contains(fn)
-								&& (fn.IsNationaal || fn.Groep == groepsWerkJaar.Groep)
-								// bovenstaande vermijdt groepsvreemde functies
-							     select fn;
+											 where !toegekendeFuncties.Contains(fn)
+											&& (fn.IsNationaal || fn.Groep == groepsWerkJaar.Groep)
+											 // bovenstaande vermijdt groepsvreemde functies
+											 select fn;
 
 				// toegekende functies waarvan er te veel of te weinig zijn
 

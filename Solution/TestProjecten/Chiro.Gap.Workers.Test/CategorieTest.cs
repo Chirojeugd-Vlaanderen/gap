@@ -11,10 +11,10 @@ namespace Chiro.Gap.Workers.Test
 
 
 	/// <summary>
-	///This is a test class for GelieerdePersonenManagerTest and is intended
-	///to contain all GelieerdePersonenManagerTest Unit Tests
-	///</summary>
-	[TestClass()]
+	/// This is a test class for GelieerdePersonenManagerTest and is intended
+	/// to contain all GelieerdePersonenManagerTest Unit Tests
+	/// </summary>
+	[TestClass]
 	public class CategorieTest
 	{
 
@@ -49,7 +49,7 @@ namespace Chiro.Gap.Workers.Test
 		//}
 		//
 		//Use TestInitialize to run code before running each test
-		//[TestInitialize()]
+		//[TestInitialize]
 		//public void MyTestInitialize()
 		//{
 		//}

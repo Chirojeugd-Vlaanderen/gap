@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Linq;
 
 using Chiro.Cdf.Data;
@@ -14,14 +19,16 @@ namespace Chiro.Gap.Workers
 	/// </summary>
 	public class VerzekeringenManager
 	{
-		private IDao<VerzekeringsType> _verzekeringenDao;
-		private IDao<PersoonsVerzekering> _persoonsVerzekeringenDao;
-		private IAutorisatieManager _autorisatieMgr;
+		private readonly IDao<VerzekeringsType> _verzekeringenDao;
+		private readonly IDao<PersoonsVerzekering> _persoonsVerzekeringenDao;
+		private readonly IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
 		/// Construeert een nieuwe verzekeringenmanager
 		/// </summary>
 		/// <param name="vdao">Data Access Object voor verzekeringstypes</param>
+		/// <param name="pvdao">Data Access Object voor persoonsverzekeringen</param>
+		/// <param name="auMgr">Data Access Object voor autorisatie</param>
 		public VerzekeringenManager(
 			IDao<VerzekeringsType> vdao, 
 			IDao<PersoonsVerzekering> pvdao,
@@ -31,7 +38,6 @@ namespace Chiro.Gap.Workers
 			_persoonsVerzekeringenDao = pvdao;
 			_autorisatieMgr = auMgr;
 		}
-
 
 		/// <summary>
 		/// Haalt een verzekeringstype op uit de database
@@ -83,7 +89,6 @@ namespace Chiro.Gap.Workers
 				    where v.VerzekeringsType.ID == verz.ID
 					  && (v.Tot >= beginDatum || v.Van <= eindDatum)
 				    select v;
-
 
 			var bestaande = query.FirstOrDefault();
 

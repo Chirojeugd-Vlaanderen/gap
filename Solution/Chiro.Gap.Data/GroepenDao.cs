@@ -3,7 +3,6 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Data.Objects;
 using System.Linq;
 
@@ -23,7 +22,7 @@ namespace Chiro.Gap.Data.Ef
 		/// Ophalen van groep, groepswerkjaar, afdeling, afdelingsjaar en officiële afdelingen 
 		/// voor gegeven groepswerkjaar.
 		/// </summary>
-		/// <remarks>Deze functie haande origineel de afdelingen op voor een groep in het
+		/// <remarks>Deze functie haalde origineel de afdelingen op voor een groep in het
 		/// huidige werkjaar, maar 'huidige werkjaar' vind ik precies wat veel business
 		/// voor in de DAL.</remarks>
 		/// <param name="groepsWerkJaarID">ID van gevraagde groepswerkjaar</param>
@@ -71,7 +70,7 @@ namespace Chiro.Gap.Data.Ef
 				groepswj.Groep = result;
 				result.GroepsWerkJaar.Add(groepswj);
 
-				if (result != null)
+				if (result != null) // OPM: Als (result == null) krijg je al een error op de vorige regel. ReSharper vindt ook dat die voorwaarde altijd true is.
 				{
 					// Koppel gevonden afdelingsjaren aan groep en aan groepswerkjaar
 
@@ -89,13 +88,13 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// 
+		/// Haalt een groep op met de werkjaren waarin ze aangesloten leden had
 		/// </summary>
-		/// <param name="groepID"></param>
-		/// <returns></returns>
+		/// <param name="groepID">ID van de groep in kwestie</param>
+		/// <returns>De groep met haar groepswerkjaren</returns>
 		public Groep OphalenMetGroepsWerkJaren(int groepID)
 		{
-			Groep result = null;
+			Groep result;
 			using (var db = new ChiroGroepEntities())
 			{
 				db.GroepsWerkJaar.MergeOption = MergeOption.NoTracking;

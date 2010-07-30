@@ -17,10 +17,10 @@ namespace Chiro.Gap.Services.Test
     
     
     /// <summary>
-    ///This is a test class for LedenServiceTest and is intended
-    ///to contain all LedenServiceTest Unit Tests
-    ///</summary>
-	[TestClass()]
+    /// This is a test class for LedenServiceTest and is intended
+    /// to contain all LedenServiceTest Unit Tests
+    /// </summary>
+	[TestClass]
 	public class LedenServiceTest
 	{
 
@@ -30,7 +30,7 @@ namespace Chiro.Gap.Services.Test
 		/// <summary>
 		///Gets or sets the test context which provides
 		///information about and functionality for the current test run.
-		///</summary>
+		/// </summary>
 		public TestContext TestContext
 		{
 			get
@@ -62,7 +62,7 @@ namespace Chiro.Gap.Services.Test
 		//}
 		//
 		//Use TestInitialize to run code before running each test
-		//[TestInitialize()]
+		//[TestInitialize]
 		//public void MyTestInitialize()
 		//{
 		//}
@@ -78,8 +78,8 @@ namespace Chiro.Gap.Services.Test
 
 		/// <summary>
 		///Kijkt na of opgehaalde functies goed gemapt worden.
-		///</summary>
-		[TestMethod()]
+		/// </summary>
+		[TestMethod]
 		public void OphalenTest()
 		{
 			// Arrange
@@ -98,8 +98,8 @@ namespace Chiro.Gap.Services.Test
 
 		///<summary>
 		///A test for FunctiesVervangen
-		///</summary>
-		[TestMethod()]
+		/// </summary>
+		[TestMethod]
 		public void FunctiesVervangenTest()
 		{
 			#region arrange

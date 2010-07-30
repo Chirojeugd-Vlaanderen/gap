@@ -69,7 +69,7 @@ namespace Chiro.Gap.WebApp.Test
 						controller = "JaarOvergang",
 						action = "AfdelingAanpassen",
 						groepID = 15000,
-						afdelingID = 15999
+						id = 15999
 					});
 		}
 

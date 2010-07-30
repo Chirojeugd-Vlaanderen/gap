@@ -124,4 +124,7 @@
   <data name="RequiredAttribute_ValidationError" xml:space="preserve">
     <value>{0} is een verplicht veld.</value>
   </data>
+	<data name="RangeError">
+		<value xml:space="preserve">{0} is beperkt van {1} tot {2}.</value>
+	</data>
 </root>

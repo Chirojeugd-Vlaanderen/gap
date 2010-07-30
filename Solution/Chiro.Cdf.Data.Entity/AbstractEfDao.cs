@@ -260,8 +260,7 @@ namespace Chiro.Cdf.Data.Entity
 						throw new KeyViolationException<TEntiteit>();
 					}
 					throw;
-				}
-				
+				}	
 			}
 
 			es = Utility.DetachObjectGraph(es);

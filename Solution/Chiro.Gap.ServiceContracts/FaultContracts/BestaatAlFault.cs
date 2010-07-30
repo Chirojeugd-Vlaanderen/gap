@@ -11,9 +11,13 @@ namespace Chiro.Gap.ServiceContracts.FaultContracts
 	/// Faultcontract dat gebruikt wordt als een bestaand(e) entiteit/object verhindert
 	/// dat bepaalde gegevens opgeslagen worden
 	/// </summary>
+	/// <typeparam name="TObject"></typeparam>
 	[DataContract]
 	public class BestaatAlFault<TObject> : GapFault
 	{
+		/// <summary>
+		/// Het bestaande object
+		/// </summary>
 		[DataMember]
 		public TObject Bestaande { get; set; }
 	}

@@ -75,8 +75,7 @@ namespace Chiro.Gap.WebApp
 					action = "Index",
 					page = "1",
 					id = "0"
-				}
-				,
+				},
 				new
 					{
 						groepID = @"\d+",

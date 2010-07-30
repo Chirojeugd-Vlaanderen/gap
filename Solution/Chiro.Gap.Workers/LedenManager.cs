@@ -17,13 +17,20 @@ using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.Workers
 {
-
+	/// <summary>
+	/// TODO: documenteren
+	/// </summary>
 	public static class GroepsWerkJaarHelper
 	{
+		/// <summary>
+		/// TODO: documenteren
+		/// </summary>
+		/// <param name="gwj">Het groepswerkjaar waarvoor we het einde van de jaarovergang willen berekenen</param>
+		/// <returns>De datum waarom de jaarovergang eindigt</returns>
 		public static DateTime GetEindeJaarovergang(this GroepsWerkJaar gwj)
 		{
-			//TODO is werkjaar altijd het JAAR waarin het werkjaar begint???
-			return new DateTime(gwj.WerkJaar, 10, 15);
+			// TODO is werkjaar altijd het JAAR waarin het werkjaar begint??? => antwoord: ja
+			return new DateTime(gwj.WerkJaar, 10, 15); // TODO: 15 oktober mag niet hardgecodeerd zijn, dat hoort thuis in de settings - zie #610
 		}
 	}
 
@@ -57,10 +64,10 @@ namespace Chiro.Gap.Workers
 		/// <param name="type">LidType.Kind of LidType.Leiding</param>
 		/// <remarks>
 		/// Deze method kent geen afdelingen toe.  Ze test ook niet
-		/// of het groepswerkjaar we het recentste is.  (Voor de unit tests moeten
+		/// of het groepswerkjaar wel het recentste is.  (Voor de unit tests moeten
 		/// we ook leden kunnen maken in oude groepswerkjaren.)
 		/// <para/>
-		/// Voorlopig gaan we ervan uit dat aan een gelieerde persoon al zijn vorige lidobjecten met
+		/// Voorlopig gaan we ervan uit dat aan een gelieerde persoon al zijn/haar vorige lidobjecten met
 		/// groepswerkjaren gekoppeld zijn.  Dit wordt gebruikt om na te kijken of een gelieerde persoon al eerder
 		/// lid was.  Dit lijkt me echter niet nodig; zie de commentaar verderop.
 		/// </remarks>
@@ -107,18 +114,17 @@ namespace Chiro.Gap.Workers
 			gp.Lid.Add(lid);
 			gwj.Lid.Add(lid);
 
-                                              
-			//Instapperiode invullen
-			//Haal alle groepswerkjaren op //TODO in de toekomst niet efficient genoeg!
-			//en selecteert het werkjaar van een jaar geleden als het bestaat
+			// Instapperiode invullen
+			// Haal alle groepswerkjaren op //TODO in de toekomst niet efficient genoeg!
+			// en selecteert het werkjaar van een jaar geleden als het bestaat
 
 			var voriggwj = (from ld in gp.Lid
-			                where ld.GroepsWerkJaar.WerkJaar == gwj.WerkJaar - 1
-			                select ld.GroepsWerkJaar).FirstOrDefault();
+							where ld.GroepsWerkJaar.WerkJaar == gwj.WerkJaar - 1
+							select ld.GroepsWerkJaar).FirstOrDefault();
 
-			//Als er vorig jaar een werkjaar was en de persoon was toen lid, dan zal zijn probeerperiode maximum tot 15 oktober zijn, 
-			//eender wanneer de persoon lid wordt.
-			if(voriggwj!=null)
+			// Als er vorig jaar een werkjaar was en de persoon was toen lid, dan zal zijn probeerperiode maximum tot 15 oktober zijn, 
+			// eender wanneer de persoon lid wordt.
+			if (voriggwj != null)
 			{
 				lid.EindeInstapPeriode = gwj.GetEindeJaarovergang();
 
@@ -126,21 +132,14 @@ namespace Chiro.Gap.Workers
 				// nieuw werkjaar.  Is het dan niet te doen om in de procedure van de overgang,
 				// gewoon achteraf alle probeerperiodes van de overgezette leden op 15/10 te laten
 				// eindigen?
-
-			}else
+			}
+			else
 			{
-				//In het andere geval was de persoon vorig jaar geen lid (of was er geen vorig jaar), dus krijgt hij de standaard periode om te bedenken.
-				//Of als de overgang nog verder in de toekomst ligt, wordt dat de datum
+				// In het andere geval was de persoon vorig jaar geen lid (of was er geen vorig jaar), dus krijgt hij de standaard periode om te bedenken.
+				// Of als de overgang nog verder in de toekomst ligt, wordt dat de datum
 				DateTime een = gwj.GetEindeJaarovergang();
 				DateTime twee = DateTime.Today.AddDays(Properties.Settings.Default.LengteProbeerPeriode);
-				if(een.CompareTo(twee)<0)
-				{
-					lid.EindeInstapPeriode = twee;
-				}else
-				{
-					lid.EindeInstapPeriode = een;
-				}
-				
+				lid.EindeInstapPeriode = een.CompareTo(twee) < 0 ? twee : een;
 			}
 
 			return lid;
@@ -148,7 +147,7 @@ namespace Chiro.Gap.Workers
 
 		/// <summary>
 		/// Maakt gelieerde persoon een kind (lid) voor het gegeven werkjaar.
-		/// 
+		/// <para />
 		/// Dit komt neer op 
 		///		Automatisch een afdeling voor het kind bepalen. Een exception als dit niet mogelijk is.
 		///		De probeerperiode zetten op binnen 3 weken als het een nieuw lid is, maar op 15 oktober als de persoon vorig jaar al lid was.
@@ -175,11 +174,11 @@ namespace Chiro.Gap.Workers
 			// Probeer nu afdeling te vinden.
 			if (gwj.AfdelingsJaar.Count == 0)
 			{
-				throw new InvalidOperationException("Je kan geen kinderen inschrijven als je groep geen afdelingen heeft in het huidige werkjaar!");
+				throw new InvalidOperationException(Properties.Resources.InschrijvenZonderAfdelingen);
 			}
 
 			// Afdeling automatisch bepalen
-			//Bepaal het geboortejaar, aangepast volgens de chiroleeftijd.
+			// Bepaal het geboortejaar, aangepast volgens de chiroleeftijd.
 			var geboortejaar = gp.Persoon.GeboorteDatum.Value.Year - gp.ChiroLeefTijd;
 
 			// Relevante afdelingsjaren opzoeken
@@ -190,15 +189,15 @@ namespace Chiro.Gap.Workers
 
 			if (afdelingsjaren.Count == 0)
 			{
-				throw new InvalidOperationException("Er is geen afdeling in jullie groep voor die leeftijd. Je maakt er best eerst een aan (of controleert de leeftijd van wie je wilt inschrijven).");
+				throw new InvalidOperationException(Properties.Resources.GeenAfdelingVoorLeeftijd);
 			}
 
-			//Kijk of er een afdeling is met een overeenkomend geslacht
+			// Kijk of er een afdeling is met een overeenkomend geslacht
 			var aj = (from a in afdelingsjaren
 					  where a.Geslacht == gp.Persoon.Geslacht || a.Geslacht == GeslachtsType.Gemengd
 					  select a).FirstOrDefault();
 
-			//Als dit niet zo is, kies dan de eerste afdeling die voldoet aan de leeftijdsgrenzen.
+			// Als dit niet zo is, kies dan de eerste afdeling die voldoet aan de leeftijdsgrenzen.
 			if (aj == null)
 			{
 				aj = afdelingsjaren.First();
@@ -237,7 +236,7 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Zet kinderen en leiding op non-actief. Geen van beide kunnen ooit verwijderd worden!!!
 		/// </summary>
-		/// <param name="lid"></param>
+		/// <param name="lid">Het lid dat we non-actief willen maken</param>
 		/// <remarks>Het <paramref name="lid"/> moet via het groepswerkjaar gekoppeld
 		/// aan zijn groep.  Als het om leiding gaat, moeten ook de afdelingen gekoppeld zijn.</remarks>
 		public void NonActiefMaken(Lid lid)
@@ -266,6 +265,7 @@ namespace Chiro.Gap.Workers
 		/// Haal een pagina op met leden van een groepswerkjaar.
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+		/// <param name="sortering">De parameter waarop de gegevens gesorteerd moeten worden</param>
 		/// <returns>Lijst met alle leden uit het gevraagde groepswerkjaar.</returns>
 		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
 		{
@@ -314,6 +314,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
 		/// <param name="afdelingsID">ID gevraagde afdeling</param>
+		/// <param name="sortering">De parameter waarop de gegevens gesorteerd moeten worden</param>
 		/// <returns>De 'pagina' (collectie) met leden</returns>
 		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering)
 		{
@@ -324,7 +325,7 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
-			
+
 			return _daos.LedenDao.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID, sortering);
 		}
 
@@ -333,6 +334,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
 		/// <param name="afdelingID">ID gevraagde afdeling</param>
+		/// <param name="extras">Beschrijving van de extra gegevens die opgehaald moeten worden</param>
 		/// <returns>De 'pagina' (collectie) met leden</returns>
 		public IEnumerable<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingID, LidExtras extras)
 		{
@@ -353,7 +355,7 @@ namespace Chiro.Gap.Workers
 			// voorlopig sorteer ik gewoon op naam
 
 			return
-				list.OrderBy(ld => ld.GelieerdePersoon.Persoon.Naam).ThenBy(ld => ld.GelieerdePersoon.Persoon.VoorNaam).ToList();			
+				list.OrderBy(ld => ld.GelieerdePersoon.Persoon.Naam).ThenBy(ld => ld.GelieerdePersoon.Persoon.VoorNaam).ToList();
 		}
 
 		/// <summary>
@@ -361,7 +363,9 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
 		/// <param name="functieID">ID gevraagde functie</param>
-		/// <returns></returns>
+		/// <param name="sortering">De parameter waarop de gegevens gesorteerd moeten worden</param>
+		/// <returns>De lijst van leden die in het opgegeven GroepsWerkJaar de opgegeven functie hadden/hebben,
+		/// gesorteerd volgens de opgegeven parameter</returns>
 		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LedenSorteringsEnum sortering)
 		{
 			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
@@ -430,7 +434,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				return _daos.KindDao.Ophalen(lidID, ExtrasNaarLambdasKind(extras));			
+				return _daos.KindDao.Ophalen(lidID, ExtrasNaarLambdasKind(extras));
 			}
 		}
 
@@ -533,6 +537,7 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Geeft een lijst terug van alle afdelingen waaraan het lid gegeven gekoppeld is.
 		/// </summary>
+		/// <param name="l">Het gegeven lid</param>
 		/// <returns>Lijst met afdelingen</returns>
 		/// <remarks>Een kind is hoogstens aan 1 afdeling gekoppeld</remarks>
 		public static IList<int> AfdelingIdLijstGet(Lid l)
@@ -568,7 +573,7 @@ namespace Chiro.Gap.Workers
 		/// <returns><c>true</c> als <paramref name="dateTime"/> zich in het werkjaar bevindt; anders <c>false</c>.</returns>
 		public static bool DatumInWerkJaar(DateTime dateTime, int p)
 		{
-			DateTime werkJaarStart = new DateTime(
+			var werkJaarStart = new DateTime(
 				p,
 				Properties.Settings.Default.WerkjaarStartNationaal.Month,
 				Properties.Settings.Default.WerkjaarStartNationaal.Day);
@@ -585,8 +590,8 @@ namespace Chiro.Gap.Workers
 		/// Converteert lidextras <paramref name="extras"/> naar lambda-expresses voor een
 		/// KindDao
 		/// </summary>
-		/// <param name="extras">te converteren lidextras</param>
-		/// <returns>lambda-expresses voor een KindDao</returns>
+		/// <param name="extras">Te converteren lidextras</param>
+		/// <returns>Lambda-expresses voor een KindDao</returns>
 		private static Expression<Func<Kind, object>>[] ExtrasNaarLambdasKind(LidExtras extras)
 		{
 			var paths = ExtrasNaarLambdas<Kind>(extras & ~LidExtras.Afdelingen);
@@ -603,8 +608,8 @@ namespace Chiro.Gap.Workers
 		/// Converteert lidextras <paramref name="extras"/> naar lambda-expresses voor een
 		/// LeidingDao.
 		/// </summary>
-		/// <param name="extras">te converteren lidextras</param>
-		/// <returns>lambda-expresses voor een LeidingDao</returns>
+		/// <param name="extras">Te converteren lidextras</param>
+		/// <returns>Lambda-expresses voor een LeidingDao</returns>
 		private static Expression<Func<Leiding, object>>[] ExtrasNaarLambdasLeiding(LidExtras extras)
 		{
 			var paths = ExtrasNaarLambdas<Leiding>(extras & ~LidExtras.Afdelingen);
@@ -621,8 +626,8 @@ namespace Chiro.Gap.Workers
 		/// Converteert lidextras <paramref name="extras"/> naar lambda-expresses voor een
 		/// LedenDao.
 		/// </summary>
-		/// <param name="extras">te converteren lidextras</param>
-		/// <returns>lambda-expresses voor een LedenDao</returns>
+		/// <param name="extras">Te converteren lidextras</param>
+		/// <returns>Lambda-expresses voor een LedenDao</returns>
 		private static Expression<Func<Lid, object>>[] ExtrasNaarLambdasLid(LidExtras extras)
 		{
 			return ExtrasNaarLambdas<Lid>(extras & ~LidExtras.Afdelingen).ToArray();
@@ -632,8 +637,9 @@ namespace Chiro.Gap.Workers
 		/// Converteert LidExtra's naar lambda-expressies voor de data-access
 		/// </summary>
 		/// <param name="extras">Te converteren lidextra's</param>
+		/// <typeparam name="T"></typeparam>
 		/// <returns>Lijst lambda-expressies geschikt voor de LedenDAO</returns>
-		private static IList<Expression<Func<T, object>>> ExtrasNaarLambdas<T>(LidExtras extras) where T:Lid
+		private static IList<Expression<Func<T, object>>> ExtrasNaarLambdas<T>(LidExtras extras) where T : Lid
 		{
 			var paths = new List<Expression<Func<T, object>>>();
 
@@ -646,7 +652,7 @@ namespace Chiro.Gap.Workers
 				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsAdres.First().Adres.StraatNaam);
 
 				// link naar standaardadres
-				paths.Add(ld => ld.GelieerdePersoon.PersoonsAdres.Adres);			
+				paths.Add(ld => ld.GelieerdePersoon.PersoonsAdres.Adres);
 			}
 			else if ((extras & LidExtras.Persoon) != 0)
 			{
@@ -666,11 +672,10 @@ namespace Chiro.Gap.Workers
 			{
 				//// Onderstaande had cool geweest; dan hadden we de generieke <T> niet nodig. 
 				//// Maar helaas lukt dat (nog??) niet met AttachObjectGraph:
-				
-				//paths.Add(ld => ld is Kind ? (ld as Kind).AfdelingsJaar.Afdeling : ld is Leiding ? (ld as Leiding).AfdelingsJaar.First().Afdeling : null);
 
-				//// Zodus:
+				// paths.Add(ld => ld is Kind ? (ld as Kind).AfdelingsJaar.Afdeling : ld is Leiding ? (ld as Leiding).AfdelingsJaar.First().Afdeling : null);
 
+				//// Dus:
 				throw new NotSupportedException();
 			}
 			if ((extras & LidExtras.Functies) != 0)
@@ -687,7 +692,5 @@ namespace Chiro.Gap.Workers
 			}
 			return paths;
 		}
-
-
 	}
 }

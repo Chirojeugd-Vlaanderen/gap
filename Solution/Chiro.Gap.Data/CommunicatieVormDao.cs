@@ -19,10 +19,11 @@ namespace Chiro.Gap.Data.Ef
 	public class CommunicatieVormDao : Dao<CommunicatieVorm, ChiroGroepEntities>, ICommunicatieVormDao
 	{
 		/// <summary>
-		/// TODO: documenteren
+		/// Zoekt een lijst van communicatievormen waarbij de waarde (het 'nummer',
+		/// maar dat kan ook bv. een mailadres zijn) overeenkomt met de zoekterm
 		/// </summary>
-		/// <param name="zoekString"></param>
-		/// <returns></returns>
+		/// <param name="zoekString">De zoekterm</param>
+		/// <returns>Een lijst van communicatievormen die de zoekterm als waarde hebben</returns>
 		public IList<CommunicatieVorm> ZoekenOpNummer(string zoekString)
 		{
 			using (var db = new ChiroGroepEntities())

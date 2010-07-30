@@ -85,6 +85,10 @@ namespace Chiro.Gap.Domain
 		Afdeling = 3
 	}
 
+	/// <summary>
+	/// Enum voor ondersteunde communicatietypes
+	/// </summary>
+	/// <remarks>Moet overeenkomen met de database!</remarks>
 	[DataContract]
 	public enum CommunicatieTypeEnum
 	{
@@ -99,7 +103,7 @@ namespace Chiro.Gap.Domain
 	}
 
 	/// <summary>
-	/// Types verzekering; moet overeenkomen met database!0
+	/// Types verzekering; moet overeenkomen met database!
 	/// </summary>
 	[DataContract]
 	public enum Verzekering

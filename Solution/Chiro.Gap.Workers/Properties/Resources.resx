@@ -219,4 +219,13 @@
   <data name="VerzekeringInVerleden" xml:space="preserve">
     <value>De begindatum van een verzekering kan niet in het verleden liggen.</value>
   </data>
+  <data name="DubbelGroepswerkjaar" xml:space="preserve">
+    <value>Er bestaat al een groepswerkjaar in dat werkjaar</value>
+  </data>
+  <data name="GeenAfdelingVoorLeeftijd" xml:space="preserve">
+    <value>Er is geen afdeling in jullie groep voor die leeftijd. Je maakt er best eerst een aan (of controleert de leeftijd van wie je wilt inschrijven).</value>
+  </data>
+  <data name="InschrijvenZonderAfdelingen" xml:space="preserve">
+    <value>Je kan geen kinderen inschrijven als je groep geen afdelingen heeft in het huidige werkjaar!</value>
+  </data>
 </root>

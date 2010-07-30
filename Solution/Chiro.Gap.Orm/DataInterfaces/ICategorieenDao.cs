@@ -15,10 +15,10 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	public interface ICategorieenDao : IDao<Categorie>
 	{
 		/// <summary>
-		/// 
+		/// Haalt een lijst op met alle categorieën van de opgegeven groep
 		/// </summary>
-		/// <param name="groepID"></param>
-		/// <returns></returns>
+		/// <param name="groepID">ID van de groep waar we de categorieën voor ophalen</param>
+		/// <returns>Een lijst van categorieën</returns>
 		IList<Categorie> AllesOphalen(int groepID);
 
 		/// <summary>

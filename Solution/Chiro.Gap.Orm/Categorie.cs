@@ -15,12 +15,19 @@ namespace Chiro.Gap.Orm
 	{
 		private bool _teVerwijderen = false;
 
+		/// <summary>
+		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren
+		/// </summary>
 		public bool TeVerwijderen
 		{
 			get { return _teVerwijderen; }
 			set { _teVerwijderen = value; }
 		}
 
+		/// <summary>
+		/// Geeft stringrepresentatie van Versie weer (hex).
+		/// Nodig om versie te bewaren in MVC view, voor concurrencycontrole.
+		/// </summary>
 		public string VersieString
 		{
 			get { return this.VersieStringGet(); }

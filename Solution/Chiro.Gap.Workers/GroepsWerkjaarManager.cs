@@ -181,9 +181,9 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Maakt een nieuw groepswerkjaar in het gevraagde werkjaar.
 		/// </summary>
-		/// <param name="g"></param>
-		/// <param name="werkjaar"></param>
-		/// <returns></returns>
+		/// <param name="g">De groep waarvoor een groepswerkjaar aangemaakt moet worden</param>
+		/// <param name="werkjaar">Het werkjaar waar het over gaat</param>
+		/// <returns>Het nieuwe groepswerkjaar</returns>
 		public GroepsWerkJaar OvergangDoen(Groep g, int werkjaar)
 		{
 			if (!_autorisatieMgr.IsGavGroep(g.ID))
@@ -193,12 +193,12 @@ namespace Chiro.Gap.Workers
 
 			var allegwjs = _groepsWjDao.AllesOphalen();
 
-			if(allegwjs.Any(e =>e.WerkJaar == werkjaar))
+			if (allegwjs.Any(e => e.WerkJaar == werkjaar))
 			{
-				throw new OngeldigObjectException("Er bestaat al een groepswerkjaar in dat werkjaar");
+				throw new OngeldigObjectException(Properties.Resources.DubbelGroepswerkjaar);
 			}
 
-			var nieuwgwj = new GroepsWerkJaar {Groep = g, WerkJaar = werkjaar };
+			var nieuwgwj = new GroepsWerkJaar { Groep = g, WerkJaar = werkjaar };
 
 			return _groepsWjDao.Bewaren(nieuwgwj);
 		}

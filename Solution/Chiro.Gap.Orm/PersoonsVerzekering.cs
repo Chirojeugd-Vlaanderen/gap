@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
@@ -11,12 +11,12 @@ namespace Chiro.Gap.Orm
 	/// <summary>
 	/// Entity voor PersoonsVerzekering
 	/// </summary>
-	public partial class PersoonsVerzekering: IEfBasisEntiteit
+	public partial class PersoonsVerzekering : IEfBasisEntiteit
 	{
 		private bool _teVerwijderen;
 
 		/// <summary>
-		/// Wordt gebruikt om te verwjderen entiteiten mee te markeren
+		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren
 		/// </summary>
 		public bool TeVerwijderen
 		{
@@ -25,7 +25,8 @@ namespace Chiro.Gap.Orm
 		}
 
 		/// <summary>
-		/// Versiestring voor concurrency control
+		/// Geeft stringrepresentatie van Versie weer (hex).
+		/// Nodig om versie te bewaren in MVC view, voor concurrencycontrole.
 		/// </summary>
 		public string VersieString
 		{
@@ -40,19 +41,21 @@ namespace Chiro.Gap.Orm
 		}
 
 		/// <summary>
-		/// Hashcode gewoon overnemen van ID
+		/// Een waarde waarmee we het object kunnen identificeren,
+		/// overgenomen van de ID
 		/// </summary>
-		/// <returns>De hashcode</returns>
+		/// <returns>Een int waarmee we het object kunnen identificeren</returns>
 		public override int GetHashCode()
 		{
 			return ID.GetHashCode();
 		}
 
 		/// <summary>
-		/// 
+		/// Vergelijkt het huidige object met een ander om te zien of het over
+		/// twee instanties van hetzelfde object gaat
 		/// </summary>
-		/// <param name="obj"></param>
-		/// <returns></returns>
+		/// <param name="obj">Het object waarmee we het huidige willen vergelijken</param>
+		/// <returns><c>True</c> als het schijnbaar om twee instanties van hetzelfde object gaat</returns>
 		public override bool Equals(object obj)
 		{
 			IEfBasisEntiteit andere = obj as VerzekeringsType;

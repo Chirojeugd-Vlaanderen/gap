@@ -9,11 +9,11 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 {
 	/// <summary>
 	/// Informatie over een afdeling waarvoor er in het huidige werkjaar een afdelingsjaar bestaat.
-	/// 
+	/// <para />
 	/// Dit is geen specialisatie van afdelingInfo omdat er dan minder code duplicatie is, maar bevat dus wel opnieuw naam en afkorting.
 	/// </summary>
 	[DataContract]
-	public class AfdelingDetail: AfdelingsJaarDetail
+	public class AfdelingDetail : AfdelingsJaarDetail
 	{
 		/// <summary>
 		/// Naam van de afdeling

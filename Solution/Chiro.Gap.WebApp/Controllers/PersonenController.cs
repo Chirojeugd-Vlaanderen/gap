@@ -142,11 +142,11 @@ namespace Chiro.Gap.WebApp.Controllers
 
 
 			var stream = (new ExcelManip()).ExcelTabel(
-				data, 
-				it => it.AdNummer, 
+				data,
+				it => it.AdNummer,
 				it => it.VoorNaam,
 				it => it.Naam,
-				it => it.GeboorteDatum, 
+				it => it.GeboorteDatum,
 				it => it.Geslacht,
 				it => it.StraatNaam,
 				it => it.HuisNummer,
@@ -211,13 +211,13 @@ namespace Chiro.Gap.WebApp.Controllers
 						model.GekozenActie == 1 ? LidType.Kind : LidType.Leiding,
 						out foutBerichten));
 
-					if(String.IsNullOrEmpty(foutBerichten))
+					if (String.IsNullOrEmpty(foutBerichten))
 					{
 						TempData["succes"] = Properties.Resources.LedenGemaaktFeedback;
 					}
 					else
 					{
-						TempData["fout"] =  foutBerichten;
+						TempData["fout"] = foutBerichten;
 					}
 
 					r = TerugNaarVorigeLijst();
@@ -442,9 +442,9 @@ namespace Chiro.Gap.WebApp.Controllers
 			AfdelingenOphalen(model);
 
 			model.KanVerzekerenLoonVerlies = model.PersoonLidInfo.PersoonDetail.GeboorteDatum != null &&
-			                                 DateTime.Today.Year -
-			                                 ((DateTime) model.PersoonLidInfo.PersoonDetail.GeboorteDatum).Year >=
-			                                 Properties.Settings.Default.LoonVerliesVanafLeeftijd;
+											 DateTime.Today.Year -
+											 ((DateTime)model.PersoonLidInfo.PersoonDetail.GeboorteDatum).Year >=
+											 Properties.Settings.Default.LoonVerliesVanafLeeftijd;
 			model.PrijsVerzekeringLoonVerlies = Properties.Settings.Default.PrijsVerzekeringLoonVerlies;
 
 			model.Titel = model.PersoonLidInfo.PersoonDetail.VolledigeNaam;
@@ -479,7 +479,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			string foutBerichten = String.Empty;
 
 			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.NieuwInschrijven(ids, LidType.Kind, out foutBerichten));
-			if(String.IsNullOrEmpty(foutBerichten))
+			if (String.IsNullOrEmpty(foutBerichten))
 			{
 				TempData["succes"] = Properties.Resources.LidGemaaktFeedback;
 			}
@@ -499,7 +499,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			string foutBerichten = String.Empty;
 
 			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.NieuwInschrijven(ids, LidType.Leiding, out foutBerichten));
-			if(String.IsNullOrEmpty(foutBerichten))
+			if (String.IsNullOrEmpty(foutBerichten))
 			{
 				TempData["succes"] = Properties.Resources.LidGemaaktFeedback;
 			}

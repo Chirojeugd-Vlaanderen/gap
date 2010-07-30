@@ -11,8 +11,11 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	/// Datacontract voor een actieve afdeling (afdeling met afdelingsjaar)
 	/// </summary>
 	[DataContract]
-	public class ActieveAfdelingInfo: AfdelingInfo
+	public class ActieveAfdelingInfo : AfdelingInfo
 	{
+		/// <summary>
+		/// De ID van het afdelingsjaar
+		/// </summary>
 		[DataMember]
 		public int AfdelingsJaarID { get; set; }
 	}

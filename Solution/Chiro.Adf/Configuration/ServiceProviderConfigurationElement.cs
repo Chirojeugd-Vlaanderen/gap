@@ -40,7 +40,7 @@ namespace Chiro.Adf.Configuration
 
 		///<summary>
 		///Gets a value indicating whether an unknown attribute is encountered during deserialization.
-		///</summary>
+		/// </summary>
 		///
 		///<returns>
 		///true when an unknown attribute is encountered while deserializing; otherwise, false.

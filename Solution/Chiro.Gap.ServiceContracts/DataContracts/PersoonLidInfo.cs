@@ -9,22 +9,35 @@ using System.Runtime.Serialization;
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
 	/// <summary>
-	/// 
+	/// DataContract waarin een persoon, zijn/haar LidInfo, zijn/haar adressen 
+	/// en zijn/haar communicatievormen aan elkaar koppeld zijn
 	/// </summary>
 	[DataContract]
 	public class PersoonLidInfo
 	{
+		/// <summary>
+		/// Uitgebreid info-object over de persoon
+		/// </summary>
 		[DataMember]
 		public PersoonDetail PersoonDetail { get; set; }
 
 		// TODO booleans voor wat er geladen is
 
+		/// <summary>
+		/// Info-object van het lidmaatschap van de persoon
+		/// </summary>
 		[DataMember]
 		public LidInfo LidInfo { get; set; }
 
+		/// <summary>
+		/// De lijst van adressen waar de persoon zoal verblijft
+		/// </summary>
 		[DataMember]
 		public IEnumerable<PersoonsAdresInfo> PersoonsAdresInfo { get; set; }
 
+		/// <summary>
+		/// De lijst van communicatievormen die de persoon gebruikt
+		/// </summary>
 		[DataMember]
 		public IEnumerable<CommunicatieInfo> CommunicatieInfo { get; set; }
 	}

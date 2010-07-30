@@ -15,6 +15,9 @@ namespace Chiro.Gap.Workers.Exceptions
 	/// </summary>
 	public class ValidatieException : GapException
 	{
+		/// <summary>
+		/// Enumwaarde die meer info geeft over de aard van de exceptie
+		/// </summary>
 		public FoutNummer Foutnummer { get; set; }
 
 		/// <summary>
@@ -45,8 +48,8 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// <summary>
 		/// Instantieert een ValidatieException met een opgegeven foutboodschap en 'inner exception'
 		/// </summary>
-		/// <param name="message"></param>
-		/// <param name="inner"></param>
+		/// <param name="message">De foutboodschap die doorgegeven moet worden</param>
+		/// <param name="inner">De 'inner exception'</param>
 		public ValidatieException(string message, Exception inner) : base(message, inner)
 		{
 		}
@@ -54,8 +57,8 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// <summary>
 		/// Instantieert een ValidatieException met een opgegeven SerializationInfo en StreamingContext
 		/// </summary>
-		/// <param name="info"></param>
-		/// <param name="context"></param>
+		/// <param name="info">De SerializationInfo</param>
+		/// <param name="context">De StreamingContext</param>
 		public ValidatieException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 		}

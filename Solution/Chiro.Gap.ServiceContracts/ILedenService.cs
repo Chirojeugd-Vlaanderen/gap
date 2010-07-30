@@ -13,6 +13,9 @@ namespace Chiro.Gap.ServiceContracts
 {
 	// NOTE: If you change the interface name "ILedenService" here, you must also update the reference to "ILedenService" in Web.config.
 
+	/// <summary>
+	/// ServiceContract voor de LedenService
+	/// </summary>
 	[ServiceContract]
 	public interface ILedenService
 	{
@@ -34,6 +37,15 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
 		IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten);
 		
+		/// <summary>
+		/// Probeert de opgegeven gelieerde personen in te schrijven (aan te sluiten),
+		/// en geeft per geval feedback als dat niet gelukt is
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">Lijst van ID's van gelieerde personen die ingeschreven moeten worden</param>
+		/// <param name="type">Het type dat aangeeft of die gelieerde personen lid (kind) zijn of leiding</param>
+		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
+		/// string waarin wat uitleg staat. TODO: beter systeem vinden voor deze feedback.</param>
+		/// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
@@ -43,7 +55,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// Maakt lid met gegeven ID nonactief
 		/// </summary>
 		/// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
-		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
+		/// <param name="foutBerichten">Als voor sommige personen die actie mislukte, bevat foutBerichten een
 		/// string waarin wat uitleg staat.  TODO: beter systeem vinden voor deze feedback.</param>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
@@ -94,9 +106,10 @@ namespace Chiro.Gap.ServiceContracts
 		int AfdelingenVervangen(int lidID, IEnumerable<int> afdelingsJaarIDs);
 
 		/// <summary>
+		/// Bewaart lidinfo, inclusief wat in vrije velden ingevuld werd
 		/// </summary>
-		/// <param name="lid"></param>
-		/// <returns></returns>
+		/// <param name="lid">De info die opgeslagen moet worden</param>
+		/// <returns>De bijgewerkte lidinfo</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]

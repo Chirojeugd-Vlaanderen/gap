@@ -14,6 +14,10 @@ using Chiro.Gap.ServiceContracts.FaultContracts;
 namespace Chiro.Gap.ServiceContracts
 {
 	// NOTE: If you change the interface name "IGroepenService" here, you must also update the reference to "IGroepenService" in Web.config.
+	
+	/// <summary>
+	/// ServiceContract voor de GroepenService
+	/// </summary>
 	[ServiceContract]
 	public interface IGroepenService
 	{
@@ -50,8 +54,9 @@ namespace Chiro.Gap.ServiceContracts
 		GroepDetail DetailOphalen(int groepID);
 
 		/// <summary>
+		/// Haalt de groepen op waarvoor de gebruiker (GAV-)rechten heeft
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>De (informatie over de) groepen van de gebruiker</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
@@ -111,12 +116,17 @@ namespace Chiro.Gap.ServiceContracts
 		/// <summary>
 		/// Bewaart een afdeling met de nieuwe informatie.
 		/// </summary>
-		/// <param name="info"></param>
+		/// <param name="info">De afdelingsinfo die opgeslagen moet worden</param>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		void AfdelingBewaren(AfdelingInfo info);
 
+		/// <summary>
+		/// Uitgebreide info ophalen over het afdelingsjaar met de opgegeven ID
+		/// </summary>
+		/// <param name="afdelingsJaarID">De ID van het afdelingsjaar in kwestie</param>
+		/// <returns>Uitgebreide info over het afdelingsjaar met de opgegeven ID</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
@@ -200,7 +210,6 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		IList<AfdelingInfo> BeschikbareAfdelingenOphalen(int groepID);
-
 
 		/// <summary>
 		/// Haalt informatie op over de beschikbare afdelingsjaren en hun gelinkte afdelingen van een groep in het huidige
@@ -361,9 +370,10 @@ namespace Chiro.Gap.ServiceContracts
 		#region adressen
 
 		/// <summary>
-		/// 
+		/// Maakt een lijst met alle deelgemeentes uit de database; nuttig voor autocompletion
+		/// in de ui.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>Lijst met alle beschikbare deelgemeentes</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
@@ -399,10 +409,19 @@ namespace Chiro.Gap.ServiceContracts
 
 		#region jaarovergang
 
+		/// <summary>
+		/// Eens de gebruiker alle informatie heeft ingegeven, wordt de gewenste afdelingsverdeling naar de server gestuurd.
+		/// <para />
+		/// Dit in de vorm van een lijst van afdelingsjaardetails, met volgende info:
+		///		AFDELINGID van de afdelingen die geactiveerd zullen worden
+		///		Geboortejaren voor elk van die afdelingen
+		/// </summary>
+		/// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkjaar</param>
+		/// <param name="groepID">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdeling> teactiveren, int groepID);
+		void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdeling> teActiveren, int groepID);
 
 		#endregion
 

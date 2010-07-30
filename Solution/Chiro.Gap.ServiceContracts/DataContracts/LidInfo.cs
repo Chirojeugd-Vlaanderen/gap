@@ -13,9 +13,15 @@ using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
+	/// <summary>
+	/// DataContract voor summiere info over leden/leiding
+	/// </summary>
 	[DataContract]
 	public class LidInfo
 	{
+		/// <summary>
+		/// De ID van het lid
+		/// </summary>
 		[DataMember]
 		public int LidID { get; set; }
 
@@ -25,6 +31,9 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		public LidType Type { get; set; }
 
+		/// <summary>
+		/// Geeft aan of het lidgeld voor dat lid al betaald is of niet
+		/// </summary>
 		[DataMember]
 		public bool LidgeldBetaald { get; set; }
 

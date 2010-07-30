@@ -13,7 +13,7 @@ namespace Chiro.Adf.ServiceModel.Extensions
 
         ///<summary>
         ///Gets the type of behavior.
-        ///</summary>
+        /// </summary>
         ///
         ///<returns>
         ///A <see cref="T:System.Type" />.
@@ -26,7 +26,7 @@ namespace Chiro.Adf.ServiceModel.Extensions
 
         ///<summary>
         ///Creates a behavior extension based on the current configuration settings.
-        ///</summary>
+        /// </summary>
         ///
         ///<returns>
         ///The behavior extension.

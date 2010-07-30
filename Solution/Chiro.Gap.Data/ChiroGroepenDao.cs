@@ -19,10 +19,10 @@ namespace Chiro.Gap.Data.Ef
 	public class ChiroGroepenDao : Dao<ChiroGroep, ChiroGroepEntities>, IDao<ChiroGroep>
 	{
 		/// <summary>
-		/// 
+		/// Haalt de ChiroGroep op met de gegeven ID
 		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
+		/// <param name="id">ID van de Chirogroep in kwestie</param>
+		/// <returns>De ChiroGroep met de gegeven ID</returns>
 		ChiroGroep IDao<ChiroGroep>.Ophalen(int id)
 		{
 			ChiroGroep result;
@@ -40,9 +40,9 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// 
+		/// Haalt alle Chirogroepen op
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>Een lijst met alle Chirogroepen</returns>
 		IList<ChiroGroep> IDao<ChiroGroep>.AllesOphalen()
 		{
 			List<ChiroGroep> result;

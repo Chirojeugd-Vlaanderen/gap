@@ -22,6 +22,9 @@ namespace Chiro.Gap.Services
 {
 	// OPM: als je de naam van de class "GroepenService" hier verandert, moet je ook de sectie "Services" in web.config aanpassen.
 
+	// *BELANGRIJK*: Als het debuggen hier stopt owv een autorisatiefout, kijk dan na of de gebruiker waarmee
+	// je aangemeld bent, op je lokale computer in de groep CgUsers zit.
+
 	/// <summary>
 	/// Service voor operaties op groepsniveau
 	/// </summary>
@@ -38,6 +41,17 @@ namespace Chiro.Gap.Services
 		private readonly CategorieenManager _categorieenMgr;
 		private readonly FunctiesManager _functiesMgr;
 
+		/// <summary>
+		/// Constructor met via IoC toegekende workers
+		/// </summary>
+		/// <param name="gm">De worker voor Groepen</param>
+		/// <param name="ajm">De worker voor AfdelingsJaren</param>
+		/// <param name="wm">De worker voor GroepsWerkJaren</param>
+		/// <param name="gpm">De worker voor GelieerdePersonen</param>
+		/// <param name="adresMgr">De worker voor Adressen</param>
+		/// <param name="cm">De worker voor Categorieën</param>
+		/// <param name="fm">De worker voor Functies</param>
+		/// <param name="am">De worker voor Autorisatie</param>
 		public GroepenService(
 			GroepenManager gm,
 			AfdelingsJaarManager ajm,
@@ -159,10 +173,11 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
-		/// 
+		/// Haalt GroepsWerkJaarID van het recentst gemaakte groepswerkjaar
+		/// voor een gegeven groep op.
 		/// </summary>
-		/// <param name="groepID"></param>
-		/// <returns></returns>
+		/// <param name="groepID">GroepID van groep</param>
+		/// <returns>ID van het recentste GroepsWerkJaar</returns>
 		public int RecentsteGroepsWerkJaarIDGet(int groepID)
 		{
 			try
@@ -213,7 +228,7 @@ namespace Chiro.Gap.Services
 		/// <summary>
 		/// Haalt de groepen op waarvoor de gebruiker (GAV-)rechten heeft
 		/// </summary>
-		/// <returns>(Informatie over) de groepen van de gebruiker</returns>
+		/// <returns>De (informatie over de) groepen van de gebruiker</returns>
 		public IEnumerable<GroepInfo> MijnGroepenOphalen()
 		{
 			try
@@ -271,9 +286,8 @@ namespace Chiro.Gap.Services
 			}
 			catch (BestaatAlException<Afdeling> ex)
 			{
-				var fault = Mapper.Map<
-					BestaatAlException<Afdeling>,
-					BestaatAlFault<AfdelingInfo>>(ex);
+				var fault = Mapper.Map<BestaatAlException<Afdeling>,
+										BestaatAlFault<AfdelingInfo>>(ex);
 
 				throw new FaultException<BestaatAlFault<AfdelingInfo>>(fault);
 			}
@@ -284,9 +298,9 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
-		/// 
+		/// Bewaart een afdeling met de nieuwe informatie.
 		/// </summary>
-		/// <param name="info"></param>
+		/// <param name="info">De afdelingsinfo die opgeslagen moet worden</param>
 		public void AfdelingBewaren(AfdelingInfo info)
 		{
 			try
@@ -326,18 +340,16 @@ namespace Chiro.Gap.Services
 				OfficieleAfdeling oa = _afdelingsJaarMgr.OfficieleAfdelingOphalen(detail.OfficieleAfdelingID);
 				GroepsWerkJaar huidigGwj = _groepsWerkJaarManager.RecentsteOphalen(afd.Groep.ID);
 
-
 				if (detail.AfdelingsJaarID == 0)
 				{
 					// nieuw maken.
 					// OPM: als dit foutloopt, moet de juiste foutmelding doorgegeven worden (zie #553)
-						afdelingsJaar = _afdelingsJaarMgr.Aanmaken(
-											afd,
-											oa,
-											huidigGwj,
-											detail.GeboorteJaarVan, detail.GeboorteJaarTot,
-											detail.Geslacht);
-
+					afdelingsJaar = _afdelingsJaarMgr.Aanmaken(
+										afd,
+										oa,
+										huidigGwj,
+										detail.GeboorteJaarVan, detail.GeboorteJaarTot,
+										detail.Geslacht);
 				}
 				else
 				{
@@ -361,7 +373,6 @@ namespace Chiro.Gap.Services
 						detail.GeboorteJaarTot,
 						detail.Geslacht,
 						detail.VersieString);
-
 				}
 
 				_afdelingsJaarMgr.Bewaren(afdelingsJaar);
@@ -403,7 +414,12 @@ namespace Chiro.Gap.Services
 				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
 		}
-
+		
+		/// <summary>
+		/// Gegevens ophalen van het afdelingsjaar met de opgegeven ID
+		/// </summary>
+		/// <param name="afdelingsJaarID">De ID van het afdelingsjaar dat we nodig hebben</param>
+		/// <returns>De gegevens van het AfdelingsJaar</returns>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public AfdelingsJaarDetail AfdelingsJaarOphalen(int afdelingsJaarID)
@@ -445,7 +461,6 @@ namespace Chiro.Gap.Services
 				return null;
 			}
 		}
-
 
 		/// <summary>
 		/// Haalt een afdeling op, op basis van <paramref name="afdelingID"/>
@@ -633,7 +648,7 @@ namespace Chiro.Gap.Services
 		/// <param name="minAantal">Het minimumaantal leden met die functie in een werkjaar</param>
 		/// <param name="lidType">Gaat het over een functie voor leden, leiding of beide?</param>
 		/// <param name="werkJaarVan">Eventueel het vroegste werkjaar waarvoor de functie beschikbaar moet zijn</param>
-		/// <returns></returns>
+		/// <returns>De ID van de aangemaakte Functie</returns>
 		public int FunctieToevoegen(int groepID, string naam, string code, int? maxAantal, int minAantal, LidType lidType, int? werkJaarVan)
 		{
 			try
@@ -691,16 +706,21 @@ namespace Chiro.Gap.Services
 			}
 		}
 
-
 		#endregion
-
+		
+		/// <summary>
+		/// Haalt de werkjaren op waarin de groep aangesloten was (te beginnen met het werkjaar voor
+		/// deze applicatie in gebruik genomen werd)
+		/// </summary>
+		/// <param name="groepID">De ID van de Groep die we willen bekijken</param>
+		/// <returns>Een lijstje van werkjaren</returns>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IEnumerable<WerkJaarInfo> WerkJarenOphalen(int groepsID)
+		public IEnumerable<WerkJaarInfo> WerkJarenOphalen(int groepID)
 		{
 			try
 			{
-				var werkjaren = (from gwj in _groepenMgr.OphalenMetGroepsWerkJaren(groepsID).GroepsWerkJaar
+				var werkjaren = (from gwj in _groepenMgr.OphalenMetGroepsWerkJaren(groepID).GroepsWerkJaar
 								 orderby gwj.WerkJaar descending
 								 select gwj);
 
@@ -721,7 +741,7 @@ namespace Chiro.Gap.Services
 		/// <param name="groepID">ID van de groep waarvoor nieuwe categorie wordt gemaakt</param>
 		/// <param name="naam">Naam voor de nieuwe categorie</param>
 		/// <param name="code">Code voor de nieuwe categorie</param>
-		/// <returns></returns>
+		/// <returns>De ID van de aangemaakte categorie</returns>
 		public int CategorieToevoegen(int groepID, string naam, string code)
 		{
 			try
@@ -853,10 +873,10 @@ namespace Chiro.Gap.Services
 			}
 		}
 
-
 		#endregion categorieën
 
 		#region adressen
+
 		/// <summary>
 		/// Maakt een lijst met alle deelgemeentes uit de database; nuttig voor autocompletion
 		/// in de ui.
@@ -923,7 +943,6 @@ namespace Chiro.Gap.Services
 			}
 		}
 
-
 		/// <summary>
 		/// Deze method geeft gewoon de gebruikersnaam weer waaronder je de service aanroept.  Vooral om de
 		/// authenticate te testen.
@@ -948,21 +967,21 @@ namespace Chiro.Gap.Services
 
 		/// <summary>
 		/// Eens de gebruiker alle informatie heeft ingegeven, wordt de gewenste afdelingsverdeling naar de server gestuurd.
-		/// 
+		/// <para />
 		/// Dit in de vorm van een lijst van afdelingsjaardetails, met volgende info:
 		///		AFDELINGID van de afdelingen die geactiveerd zullen worden
 		///		Geboortejaren voor elk van die afdelingen
 		/// </summary>
-		/// <param name="teactiveren"></param>
-		///<param name="groepID"></param>
-		public void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdeling> teactiveren, int groepID)
+		/// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkjaar</param>
+		/// <param name="groepID">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
+		public void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdeling> teActiveren, int groepID)
 		{
 			using (var scope = new TransactionScope())
 			{
-				//Berekend gewenste werkjaar
+				// Bereken gewenste werkjaar
 				int werkjaar;
 				var startdate = new DateTime(DateTime.Today.Year, 8, 15);
-				if (DateTime.Today.CompareTo(startdate) < 0) //earlier
+				if (DateTime.Today.CompareTo(startdate) < 0) // vroeger
 				{
 					werkjaar = DateTime.Today.Year - 1;
 				}
@@ -971,18 +990,18 @@ namespace Chiro.Gap.Services
 					werkjaar = DateTime.Today.Year;
 				}
 
-				//Groep ophalen
+				// Groep ophalen
 				var g = _groepenMgr.Ophalen(groepID, GroepsExtras.AlleAfdelingen);
 
 				var gwj = _groepsWerkJaarManager.OvergangDoen(g, werkjaar);
 
 				var offafdelingen = _afdelingsJaarMgr.OfficieleAfdelingenOphalen();
 
-				foreach (var afdinfo in teactiveren)
+				foreach (var afdinfo in teActiveren)
 				{
-					//Hier zit schijnbaar een probleem, maar ik snap het niet voldoende om te zien waarom resharper zijn oplossing wel juist is
-					//alleszins, hier gaat c# toch de lelijke toer op
-					//duidelijke info: http://stackoverflow.com/questions/2951037/modified-closure-warning-in-resharper
+					// Hier zit schijnbaar een probleem, maar ik snap het niet voldoende om te zien waarom resharper zijn oplossing wel juist is
+					// alleszins, hier gaat c# toch de lelijke toer op
+					// duidelijke info: http://stackoverflow.com/questions/2951037/modified-closure-warning-in-resharper
 					var afd = (from a in g.Afdeling
 							   where afdinfo.AfdelingID == a.ID
 							   select a).FirstOrDefault();

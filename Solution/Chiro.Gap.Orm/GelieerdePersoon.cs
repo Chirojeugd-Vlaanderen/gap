@@ -10,6 +10,7 @@ using System.Linq;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
+using Chiro.Gap.Orm.Properties;
 
 namespace Chiro.Gap.Orm
 {
@@ -23,20 +24,26 @@ namespace Chiro.Gap.Orm
 	public partial class GelieerdePersoon : IEfBasisEntiteit
 	{
 		/// <summary>
-		/// Nested class die toelaat om validatie properties op te zetten, en die gereferencet wordt door het MetadataType attribute
+		/// Nested class die toelaat om validatieproperties op te zetten, en die gereferencet wordt door het MetadataType attribute
 		/// Dit kan niet op de echte class, want die wordt gegenereerd door de EF Designer
 		/// </summary>
 		public class GelieerdePersoon_Validatie
 		{
+			/// <summary>
+			/// De groep waar de persoon aan gelieerd is
+			/// </summary>
 			public Groep Groep
 			{
 				get;
 				set;
 			}
 
+			/// <summary>
+			/// Het aantal jaren dat de persoon afwijkt van de anderen van zijn/haar generatie
+			/// </summary>
 			[Verplicht]
 			[DisplayName(@"Chiroleeftijd")]
-			[Range(-8, +3, ErrorMessage = "{0} is beperkt van {1} tot {2}.")]
+			[Range(-8, 3, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RangeError")]
 			[DisplayFormat(DataFormatString = "{0:+#0;-#0}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true)]
 			public int ChiroLeefTijd
 			{
@@ -44,6 +51,9 @@ namespace Chiro.Gap.Orm
 				set;
 			}
 
+			/// <summary>
+			/// De persoon die gelieerd is aan een groep
+			/// </summary>
 			public Persoon Persoon
 			{
 				get;
@@ -58,37 +68,31 @@ namespace Chiro.Gap.Orm
 		// private IList<PersoonsInfo> _meeGeleverd;
 
 		#region Standaarddingen IBasisEntiteit
-		private bool _teVerwijderen = false;
 
-		public bool TeVerwijderen
-		{
-			get
-			{
-				return _teVerwijderen;
-			}
-			set
-			{
-				_teVerwijderen = value;
-			}
-		}
+		/// <summary>
+		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren
+		/// </summary>
+		public bool TeVerwijderen { get; set; }
 
+		/// <summary>
+		/// Geeft stringrepresentatie van Versie weer (hex).
+		/// Nodig om versie te bewaren in MVC view, voor concurrencycontrole.
+		/// </summary>
 		public string VersieString
 		{
-			get
-			{
-				return this.VersieStringGet();
-			}
-			set
-			{
-				this.VersieStringSet(value);
-			}
+			get { return this.VersieStringGet(); }
+			set { this.VersieStringSet(value); }
 		}
 		#endregion
 
 		#region Identity en equality
 
 		/// <summary>
-		/// Wordt geoverride om in overeenstemming te zijn met de equals override:
+		/// Een arbitraire waarde waarmee we het object kunnen identificeren
+		/// </summary>
+		/// <returns>Een int waarmee we het object kunnen herkennen</returns>
+		/// <remarks>
+		/// Wordt overridden om in overeenstemming te zijn met de equals override:
 		/// 2 objecten die equal zijn moeten dezelfde hashcode hebben.
 		/// Omdat dit niet te garanderen was op basis van de entiteitseigenschappen tijdens deserializen (worden niet altijd gezet
 		/// voor het wordt opgeroepen), wordt er niet geimplementeerd dat objecten met hetzelfde ID dezelfde hashcode hebben, maar
@@ -96,13 +100,18 @@ namespace Chiro.Gap.Orm
 		/// <para />
 		/// Het is mogelijk dat dit performantieproblemen geeft, maar vermoed wordt van niet, omdat uit ID weinig andere eigenschappen
 		/// worden afgeleid.
-		/// </summary>
-		/// <returns>De HashCode van de GelieerdePersoon</returns>
+		/// </remarks>
 		public override int GetHashCode()
 		{
 			return 9;
 		}
 
+		/// <summary>
+		/// Vergelijkt het huidige object met een ander om te zien of het over
+		/// twee instanties van hetzelfde object gaat
+		/// </summary>
+		/// <param name="obj">Het object waarmee we het huidige willen vergelijken</param>
+		/// <returns><c>True</c> als het schijnbaar om twee instanties van hetzelfde object gaat</returns>
 		public override bool Equals(object obj)
 		{
 			bool result;
@@ -127,6 +136,10 @@ namespace Chiro.Gap.Orm
 
 		#endregion
 
+		/// <summary>
+		/// Haalt een lijst op van de categorieën waar de gelieerde persoon aan toegevoegd is
+		/// </summary>
+		/// <returns>Een lijst van categorieën</returns>
 		public IList<Categorie> CategorieLijstGet()
 		{
 			return Categorie.ToList();

@@ -12,11 +12,12 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	/// Informatie over mensen die eenzelfde adres delen
 	/// </summary>
 	[DataContract]
-	public class GezinInfo: AdresInfo
+	public class GezinInfo : AdresInfo
 	{
 		/// <summary>
 		/// Personen die wonen op het gegeven adres
 		/// </summary>
-		[DataMember] public IList<BewonersInfo> Bewoners;
+		[DataMember]
+		public IList<BewonersInfo> Bewoners;
 	}
 }

@@ -61,29 +61,29 @@ namespace System.ComponentModel.DataAnnotations.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} is beperkt van {1} tot {2}..
+        ///   Looks up a localized string similar to The value for {0} doesn&apos;t comply to the necessary format: {1}.
         /// </summary>
-        public static string AfdelingsJaarDetail_GeboorteJaar_RangeFout {
+        public static string Format_ValidationError {
             get {
-                return ResourceManager.GetString("AfdelingsJaarDetail_GeboorteJaar_RangeFout", resourceCulture);
+                return ResourceManager.GetString("Format_ValidationError", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to De {0} moet in het verleden liggen..
+        ///   Looks up a localized string similar to {0} must be in the past..
         /// </summary>
-        public static string DatumInVerledenAttribute_ValidationError {
+        public static string PastDate_ValidationError {
             get {
-                return ResourceManager.GetString("DatumInVerledenAttribute_ValidationError", resourceCulture);
+                return ResourceManager.GetString("PastDate_ValidationError", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to De waarde voor {0} voldoet niet aan de verplichte structuur: {1}.
+        ///   Looks up a localized string similar to The value for {0} must be between {1} and {2}..
         /// </summary>
-        public static string FormatValidatieFout {
+        public static string RangeError {
             get {
-                return ResourceManager.GetString("FormatValidatieFout", resourceCulture);
+                return ResourceManager.GetString("RangeError", resourceCulture);
             }
         }
         

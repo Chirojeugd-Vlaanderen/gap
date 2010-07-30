@@ -15,9 +15,9 @@ namespace Chiro.Gap.Workers.Test
 
 
 	/// <summary>
-	///This is a test class for FunctiesManagerTest and is intended
-	///to contain all FunctiesManagerTest Unit Tests
-	///</summary>
+	/// This is a test class for FunctiesManagerTest and is intended
+	/// to contain all FunctiesManagerTest Unit Tests
+	/// </summary>
 	[TestClass]
 	public class FunctiesManagerTest
 	{
@@ -40,7 +40,7 @@ namespace Chiro.Gap.Workers.Test
 		//}
 		//
 		//Use TestInitialize to run code before running each test
-		//[TestInitialize()]
+		//[TestInitialize]
 		//public void MyTestInitialize()
 		//{
 		//}

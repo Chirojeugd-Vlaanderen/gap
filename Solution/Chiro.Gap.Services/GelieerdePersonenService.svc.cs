@@ -23,6 +23,9 @@ namespace Chiro.Gap.Services
 {
 	// OPM: als je de naam van de class "GelieerdePersonenService" hier verandert, moet je ook de sectie "Services" in web.config aanpassen.
 
+	// *BELANGRIJK*: Als het debuggen hier stopt owv een autorisatiefout, kijk dan na of de gebruiker waarmee
+	// je aangemeld bent, op je lokale computer in de groep CgUsers zit.
+
 	/// <summary>
 	/// Service voor operaties op gelieerde personen
 	/// </summary>
@@ -40,6 +43,18 @@ namespace Chiro.Gap.Services
 		private readonly CategorieenManager _catMgr;
 		private readonly IAutorisatieManager _auMgr;
 
+		/// <summary>
+		/// Constructor met via IoC toegekende workers
+		/// </summary>
+		/// <param name="gpm">De worker voor GelieerdePersonen</param>
+		/// <param name="pm">De worker voor Personen</param>
+		/// <param name="adm">De worker voor Adressen</param>
+		/// <param name="gm">De worker voor Groepen</param>
+		/// <param name="gwjm">De worker voor GroepsWerkJaren</param>
+		/// <param name="cvm">De worker voor CommunicatieVormen</param>
+		/// <param name="cm">De worker voor Categorieën</param>
+		/// <param name="aum">De worker voor Autorisatie</param>
+		/// <param name="lm">De worker voor Leden</param>
 		public GelieerdePersonenService(
 			GelieerdePersonenManager gpm,
 			PersonenManager pm,
@@ -67,6 +82,7 @@ namespace Chiro.Gap.Services
 		#region IGelieerdePersonenService Members
 
 		#region Bewaren
+		
 		/// <summary>
 		/// Updatet een persoon op basis van <paramref name="persoonInfo"/>
 		/// </summary>
@@ -183,6 +199,17 @@ namespace Chiro.Gap.Services
 
 		#region Ophalen
 
+		/// <summary>
+		/// Haalt gelieerde personen op die in een bepaalde categorie zitten, met lidinfo, 
+		/// volgens de pagineringsparameters,
+		/// en telt over hoeveel personen het gaat
+		/// </summary>
+		/// <param name="categorieID">De ID van de categorie waartoe de gelieerde personen moeten behoren</param>
+		/// <param name="pagina">Het volgnummer van de 'pagina' die we willen bekijken</param>
+		/// <param name="paginaGrootte">Het aantal personen dat er per pagina weergegeven moet worden</param>
+		/// <param name="sortering">De parameter waarop de gegevens gesorteerd moeten worden</param>
+		/// <param name="aantalTotaal">Het totaal aantal personen in de opgegeven categorie</param>
+		/// <returns>Een lijst van persoonsgegevens</returns>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal)
@@ -205,11 +232,19 @@ namespace Chiro.Gap.Services
 				aantalTotaal = 0;
 				return null;
 			}
-
 		}
-
-		// *BELANGRIJK*: Als het debuggen hier stopt owv een autorisatiefout, kijk dan na of de gebruiker waarmee
-		// je aangemeld bent, op je lokale computer in de groep CgUsers zit.
+	
+		/// <summary>
+		/// Haalt gelieerde personen op, met lidinfo, 
+		/// volgens de pagineringsparameters,
+		/// en telt over hoeveel personen het gaat
+		/// </summary>
+		/// <param name="groepID">De ID van de groep waartoe de gelieerde personen moeten behoren</param>
+		/// <param name="pagina">Het volgnummer van de 'pagina' die we willen bekijken</param>
+		/// <param name="paginaGrootte">Het aantal personen dat er per pagina weergegeven moet worden</param>
+		/// <param name="sortering">De parameter waarop de gegevens gesorteerd moeten worden</param>
+		/// <param name="aantalTotaal">Het totaal aantal personen in de opgegeven categorie</param>
+		/// <returns>Een lijst van persoonsgegevens</returns>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<PersoonDetail> PaginaOphalenMetLidInfo(int groepID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal)
@@ -256,7 +291,6 @@ namespace Chiro.Gap.Services
 				aantalTotaal = 0;
 				return null;
 			}
-
 		}
 
 		/// <summary>
@@ -517,7 +551,6 @@ namespace Chiro.Gap.Services
 			}
 		}
 
-
 		/// <summary>
 		/// Verhuist gelieerde personen van een oud naar een nieuw adres
 		/// (De koppelingen Persoon-Oudadres worden aangepast 
@@ -605,7 +638,6 @@ namespace Chiro.Gap.Services
 			}
 		}
 
-
 		/// <summary>
 		/// Voegt een adres toe aan een verzameling *GELIEERDE* personen
 		/// </summary>
@@ -664,7 +696,6 @@ namespace Chiro.Gap.Services
 			}
 		}
 
-
 		/// <summary>
 		/// Voegt een adres toe aan een verzameling personen
 		/// </summary>
@@ -718,6 +749,11 @@ namespace Chiro.Gap.Services
 			}
 		}
 
+		/// <summary>
+		/// Verwijdert voor de personen met de opgegeven ID's de link met het adres met de opgegeven ID
+		/// </summary>
+		/// <param name="personenIDs">De ID's van de personen over wie het gaat</param>
+		/// <param name="adresID">De ID van het adres in kwestie</param>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void AdresVerwijderenVanPersonen(IList<int> personenIDs, int adresID)
@@ -767,6 +803,12 @@ namespace Chiro.Gap.Services
 			}
 		}
 
+		/// <summary>
+		/// Haalt de relevante info op van personen die op hetzelfde adres wonen als de gelieerde persoon
+		/// met de opgegeven ID
+		/// </summary>
+		/// <param name="gelieerdePersoonID">De ID van de gelieerde persoon in kwestie</param>
+		/// <returns>Een lijst met identificatiegegevens van de huisgenoten van de gelieerde persoon</returns>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<BewonersInfo> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID)
@@ -785,7 +827,6 @@ namespace Chiro.Gap.Services
 				FoutAfhandelaar.FoutAfhandelen(ex);
 				return null;
 			}
-
 		}
 
 		#endregion
@@ -826,6 +867,11 @@ namespace Chiro.Gap.Services
 			}
 		}
 
+		/// <summary>
+		/// Verwijdert de link tussen een persoon en de communicatievorm met de opgegeven ID
+		/// </summary>
+		/// <param name="commvormID">De ID van de communicatievorm die niet langer aan de
+		/// persoon in kwestie gelinkt moet zijn</param>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public void CommunicatieVormVerwijderenVanPersoon(int commvormID)
@@ -846,6 +892,7 @@ namespace Chiro.Gap.Services
 		}
 
 		// TODO dit moet gecontroleerd worden!
+
 		/// <summary>
 		/// Persisteert de wijzigingen aan een bestaande communicatievorm
 		/// </summary>
@@ -910,6 +957,10 @@ namespace Chiro.Gap.Services
 			}
 		}
 
+		/// <summary>
+		/// Een lijst ophalen van beschikbare communicatietypes
+		/// </summary>
+		/// <returns>Een lijst van beschikbare communicatietypes</returns>
 		public IEnumerable<CommunicatieTypeInfo> CommunicatieTypesOphalen()
 		{
 			try
@@ -927,6 +978,7 @@ namespace Chiro.Gap.Services
 		#endregion
 
 		#region Categorieën
+
 		/// <summary>
 		/// Koppelt een lijst gebruikers aan een categorie
 		/// </summary>
@@ -955,7 +1007,6 @@ namespace Chiro.Gap.Services
 			{
 				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
-
 		}
 
 		/// <summary>
@@ -983,6 +1034,11 @@ namespace Chiro.Gap.Services
 		}
 		#endregion categorieën
 
+		/// <summary>
+		/// Haalt de PersoonID op van de gelieerde persoon met de opgegeven ID
+		/// </summary>
+		/// <param name="gelieerdePersoonID">De ID van de gelieerde persoon in kwestie</param>
+		/// <returns>De persoonID van de gelieerde persoon in kwestie</returns>
 		public int PersoonIDGet(int gelieerdePersoonID)
 		{
 			try

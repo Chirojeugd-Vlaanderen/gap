@@ -15,14 +15,23 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	[DataContract]
 	public class AfdelingInfo
 	{
+		/// <summary>
+		/// De ID van de afdeling
+		/// </summary>
 		[DataMember]
 		public int ID { get; set; }
 
+		/// <summary>
+		/// Naam van de afdeling
+		/// </summary>
         [Verplicht]
         [StringLengte(50), StringMinimumLengte(2)]
 		[DataMember]
 		public string Naam { get; set; }
 
+		/// <summary>
+		/// Afkorting voor de afdeling
+		/// </summary>
 		[DataMember]
 		[DisplayName(@"Code")]
         [Verplicht]

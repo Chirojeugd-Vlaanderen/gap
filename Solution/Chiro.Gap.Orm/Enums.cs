@@ -100,29 +100,35 @@ namespace Chiro.Gap.Orm
 		/// Haal niks extra mee op
 		/// </summary>
 		Geen = 0x00,
+
 		/// <summary>
 		/// Haal de adressen van de (gelieerde) persoon mee op
 		/// </summary>
 		Adressen = 0x01,
+		
 		/// <summary>
 		/// Haal de groep(en) op waar de (gelieerde) personen mee geleerd zijn
 		/// </summary>
-                Groep = 0x02,
+        Groep = 0x02,
+
 		/// <summary>
 		/// Haal alle communicatievormen van de gelieerde persoon mee op, met gekoppeld
 		/// communicatietype.
 		/// </summary>
 		Communicatie = 0x04,
+	
 		/// <summary>
 		/// De categorieen van de gelieerde persoon
 		/// </summary>
 		Categorieen = 0x08,
+		
 		/// <summary>
 		/// Enkel van toepassing op persoonsobjecten: neem *alle* gelieerdepersoonsobjecten mee (ook die van andere groepen).
 		/// Enkel gebruiken als strict noodzakelijk! (bijv als het voorkeursadres in een andere groep mee gemanipuleerd moet 
 		/// worden)
 		/// </summary>
 		AlleGelieerdePersonen = 0x10,
+		
 		/// <summary>
 		/// Haalt alle lidobjecten van de gelieerde persoon op, incl. groepswerkjaren
 		/// </summary>

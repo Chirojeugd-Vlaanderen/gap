@@ -12,10 +12,10 @@ namespace Chiro.Gap.Workers.Test
     
     
     /// <summary>
-    ///This is a test class for GapExceptionTest and is intended
-    ///to contain all GapExceptionTest Unit Tests
-    ///</summary>
-	[TestClass()]
+    /// This is a test class for GapExceptionTest and is intended
+    /// to contain all GapExceptionTest Unit Tests
+    /// </summary>
+	[TestClass]
 	public class GapExceptionTest
 	{
 
@@ -25,7 +25,7 @@ namespace Chiro.Gap.Workers.Test
 		/// <summary>
 		///Gets or sets the test context which provides
 		///information about and functionality for the current test run.
-		///</summary>
+		/// </summary>
 		public TestContext TestContext
 		{
 			get
@@ -55,7 +55,7 @@ namespace Chiro.Gap.Workers.Test
 		//}
 		//
 		//Use TestInitialize to run code before running each test
-		//[TestInitialize()]
+		//[TestInitialize]
 		//public void MyTestInitialize()
 		//{
 		//}
@@ -71,8 +71,8 @@ namespace Chiro.Gap.Workers.Test
 
 		/// <summary>
 		///Test de (de)serializatie van de GapException
-		///</summary>
-		[TestMethod()]
+		/// </summary>
+		[TestMethod]
 		public void GapExceptionConstructorTest()
 		{
 			// Arrange

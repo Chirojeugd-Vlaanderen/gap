@@ -12,10 +12,10 @@ namespace Chiro.Gap.Services.Test
     
     
     /// <summary>
-    ///This is a test class for GelieerdePersonenServiceTest and is intended
-    ///to contain all GelieerdePersonenServiceTest Unit Tests
-    ///</summary>
-	[TestClass()]
+    /// This is a test class for GelieerdePersonenServiceTest and is intended
+    /// to contain all GelieerdePersonenServiceTest Unit Tests
+    /// </summary>
+	[TestClass]
 	public class GelieerdePersonenServiceTest
 	{
 
@@ -25,7 +25,7 @@ namespace Chiro.Gap.Services.Test
 		/// <summary>
 		///Gets or sets the test context which provides
 		///information about and functionality for the current test run.
-		///</summary>
+		/// </summary>
 		public TestContext TestContext
 		{
 			get
@@ -55,7 +55,7 @@ namespace Chiro.Gap.Services.Test
 		//}
 		//
 		//Use TestInitialize to run code before running each test
-		//[TestInitialize()]
+		//[TestInitialize]
 		//public void MyTestInitialize()
 		//{
 		//}
@@ -89,8 +89,8 @@ namespace Chiro.Gap.Services.Test
 
 		/// <summary>
 		///A test for CommunicatieVormToevoegen
-		///</summary>
-		[TestMethod()]
+		/// </summary>
+		[TestMethod]
 		[ExpectedException(typeof(FaultException<FoutNummerFault>))]
 		public void CommunicatieVormToevoegenTestOngeldig()
 		{
@@ -110,8 +110,8 @@ namespace Chiro.Gap.Services.Test
 
 		///<summary>
 		///Toevoegen van een geldig telefoonnr
-		///</summary>
-		[TestMethod()]
+		/// </summary>
+		[TestMethod]
 		public void CommunicatieVormToevoegenTestGeldig()
 		{
 			var target = Factory.Maak<GelieerdePersonenService>();
@@ -132,7 +132,7 @@ namespace Chiro.Gap.Services.Test
 		///<summary>
 		///Toevoegen van een geldig telefoonnr aan een onbestaande gelieerde persoon.  
 		/// Dit moet failen met een GeenGavException
-		///</summary>
+		/// </summary>
 		[ExpectedException(typeof(FaultException<GapFault>))]
 		[TestMethod]
 		public void CommunicatieVormToevoegenTestOnbestaandePersoon()

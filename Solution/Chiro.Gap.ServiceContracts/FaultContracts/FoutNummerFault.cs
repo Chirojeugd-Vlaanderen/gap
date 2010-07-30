@@ -3,8 +3,10 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using Chiro.Gap.Domain;
 using System.Runtime.Serialization;
+
+using Chiro.Gap.Domain;
+
 namespace Chiro.Gap.ServiceContracts.FaultContracts
 {
 	/// <summary>
@@ -18,6 +20,9 @@ namespace Chiro.Gap.ServiceContracts.FaultContracts
 		[DataMember]
 		public FoutNummer FoutNummer { get; set; }
 
+		/// <summary>
+		/// Meer uitleg over het probleem
+		/// </summary>
 		[DataMember]
 		public string Bericht { get; set; }
 	}

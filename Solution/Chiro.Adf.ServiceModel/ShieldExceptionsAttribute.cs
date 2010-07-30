@@ -28,7 +28,7 @@ namespace Chiro.Adf.ServiceModel
 
 		///<summary>
 		/// Adds the specified fault contracts to the service contract.
-		///</summary>
+		/// </summary>
 		public void AddBindingParameters(ContractDescription contractDescription, ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
 		{
 			foreach (var op in contractDescription.Operations)
@@ -42,7 +42,7 @@ namespace Chiro.Adf.ServiceModel
 
 		///<summary>
 		/// Adds the ExceptionShieldingMessageInspector to the client runtime.
-		///</summary>
+		/// </summary>
 		public void ApplyClientBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint, ClientRuntime clientRuntime)
 		{
 			clientRuntime.MessageInspectors.Add(new ExceptionShieldingMessageInspector(knownFaultTypes));
@@ -58,7 +58,7 @@ namespace Chiro.Adf.ServiceModel
 
 		///<summary>
 		/// Ensures the specified exception and fault contract types are valid.
-		///</summary>
+		/// </summary>
 		public void Validate(ContractDescription contractDescription, ServiceEndpoint endpoint)
 		{
 			if (knownFaultTypes.Length != exceptionTypes.Length)

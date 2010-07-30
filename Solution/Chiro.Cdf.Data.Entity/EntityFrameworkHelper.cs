@@ -84,6 +84,12 @@ namespace Chiro.Cdf.Data.Entity
 
 		public bool NoUpdate { get; set; }
 
+		/// <summary>
+		/// Vergelijkt het huidige object met een ander om te zien of het over
+		/// twee instanties van hetzelfde object gaat
+		/// </summary>
+		/// <param name="obj">Het object waarmee we het huidige willen vergelijken</param>
+		/// <returns><c>True</c> als het schijnbaar om twee instanties van hetzelfde object gaat</returns>
 		public override bool Equals(object obj)
 		{
 			return Equals(obj as ExtendedPropertyInfo);
@@ -101,6 +107,10 @@ namespace Chiro.Cdf.Data.Entity
 			}
 		}
 
+		/// <summary>
+		/// Een waarde waarmee we het object kunnen identificeren
+		/// </summary>
+		/// <returns>Een int waarmee we het object kunnen identificeren</returns>
 		public override int GetHashCode()
 		{
 			return GetType().GetHashCode() ^ PropertyInfo.GetHashCode();

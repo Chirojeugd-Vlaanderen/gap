@@ -16,28 +16,29 @@ using Chiro.Gap.WebApp.Models;
 namespace Chiro.Gap.WebApp.Controllers
 {
 	public class JaarOvergangController : BaseController
-    {
-        //
-        // GET: /JaarOvergang/
+	{
+		//
+		// GET: /JaarOvergang/
 
-    	public JaarOvergangController(IServiceHelper serviceHelper) : base(serviceHelper)
-    	{
-    	}
+		public JaarOvergangController(IServiceHelper serviceHelper)
+			: base(serviceHelper)
+		{
+		}
 
 		public ActionResult AfdelingenGemaakt()
 		{
 			return null;
 		}
 
-    	public override ActionResult Index(int groepID)
-    	{
+		public override ActionResult Index(int groepID)
+		{
 			var model = new JaarOvergangAfdelingsModel();
 			BaseModelInit(model, groepID);
 
 			IEnumerable<AfdelingInfo> lijst = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingInfo>>(g => g.BeschikbareAfdelingenOphalen(groepID));
 
 			model.Afdelingen = lijst;
-    		model.Titel = "Jaarovergang initiëren";
+			model.Titel = "Jaarovergang initiëren";
 			return View("AfdelingenAanmaken", model);
 		}
 
@@ -59,41 +60,42 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			//actieve info inladen
 			var volledigelijst = new List<AfdelingDetail>();
-			foreach(var afd in lijst)
+			foreach (var afd in lijst)
 			{
-				if(!model1.GekozenAfdelingsIDs.Contains(afd.ID))
+				if (!model1.GekozenAfdelingsIDs.Contains(afd.ID))
 				{
 					continue;
 				}
 
 				var act = (from actafd in actievelijst
-							where actafd.AfdelingID == afd.ID
-							select actafd).FirstOrDefault();
+						   where actafd.AfdelingID == afd.ID
+						   select actafd).FirstOrDefault();
 
-				if(act!=null)
+				if (act != null)
 				{
 					//TODO geboortejaren aanpassen aan nieuwe jaar (vergelijken met huidige werkjaar)
 					volledigelijst.Add(new AfdelingDetail
-					                   	{
-					                   		AfdelingAfkorting = afd.Afkorting,
-					                   		AfdelingID = afd.ID,
-					                   		AfdelingNaam = afd.Naam,
+										{
+											AfdelingAfkorting = afd.Afkorting,
+											AfdelingID = afd.ID,
+											AfdelingNaam = afd.Naam,
 											OfficieleAfdelingNaam = act.OfficieleAfdelingNaam,
-					                   		GeboorteJaarTot = act.GeboorteJaarTot,
-					                   		GeboorteJaarVan = act.GeboorteJaarVan,
-					                   		Geslacht = act.Geslacht
-					                   	});
-				}else
+											GeboorteJaarTot = act.GeboorteJaarTot,
+											GeboorteJaarVan = act.GeboorteJaarVan,
+											Geslacht = act.Geslacht
+										});
+				}
+				else
 				{
 					volledigelijst.Add(new AfdelingDetail
-					                   	{
-					                   		AfdelingAfkorting = afd.Afkorting,
-					                   		AfdelingID = afd.ID,
-					                   		AfdelingNaam = afd.Naam,
-					                   		GeboorteJaarTot = 0,
-					                   		GeboorteJaarVan = 0,
-					                   		Geslacht = GeslachtsType.Onbekend
-					                   	});
+										{
+											AfdelingAfkorting = afd.Afkorting,
+											AfdelingID = afd.ID,
+											AfdelingNaam = afd.Naam,
+											GeboorteJaarTot = 0,
+											GeboorteJaarVan = 0,
+											Geslacht = GeslachtsType.Onbekend
+										});
 				}
 			}
 
@@ -118,7 +120,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			var teactiveren = new List<TeActiverenAfdeling>();
 
-			if(model.TotLijst.Count != model.GeslLijst.Count || model.TotLijst.Count != model.VanLijst.Count)
+			if (model.TotLijst.Count != model.GeslLijst.Count || model.TotLijst.Count != model.VanLijst.Count)
 			{
 				//TODO
 				throw new NotImplementedException();
@@ -129,12 +131,12 @@ namespace Chiro.Gap.WebApp.Controllers
 			for (int i = 0; i < model.VanLijst.Count; i++)
 			{
 				var x = new TeActiverenAfdeling
-				        	{
-				        		AfdelingID = Int32.Parse(model.AfdelingsIDs[i]),
+							{
+								AfdelingID = Int32.Parse(model.AfdelingsIDs[i]),
 								OfficieleAfdelingID = Int32.Parse(model.OfficieleAfdelingsIDs[i]),
-				        		GeboorteJaarTot = Int32.Parse(model.TotLijst[i]),
-				        		GeboorteJaarVan = Int32.Parse(model.VanLijst[i])
-				        	};
+								GeboorteJaarTot = Int32.Parse(model.TotLijst[i]),
+								GeboorteJaarVan = Int32.Parse(model.VanLijst[i])
+							};
 
 				teactiveren.Add(x);
 			}
@@ -177,7 +179,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.Titel = Properties.Resources.NieuweAfdelingTitel;
 			BaseModelInit(model, groepID);
 
-			if(!ModelState.IsValid)
+			if (!ModelState.IsValid)
 			{
 				// Modelstate bevat ongeldige waarden; toon de pagina opnieuw
 				return View(model);
@@ -193,18 +195,18 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			catch (FaultException<BestaatAlFault<AfdelingInfo>> ex)
 			{
-				if (string.Compare(ex.Detail.Bestaande.Afkorting,model.Info.Afkorting,true) == 0)
+				if (string.Compare(ex.Detail.Bestaande.Afkorting, model.Info.Afkorting, true) == 0)
 				{
 					ModelState.AddModelError(
 						"Info.Afkorting",
-						string.Format(Properties.Resources.AfdelingsCodeBestaatAl,ex.Detail.Bestaande.Afkorting,ex.Detail.Bestaande.Naam));
+						string.Format(Properties.Resources.AfdelingsCodeBestaatAl, ex.Detail.Bestaande.Afkorting, ex.Detail.Bestaande.Naam));
 				}
-				else if (string.Compare(ex.Detail.Bestaande.Naam,model.Info.Naam,true) == 0)
+				else if (string.Compare(ex.Detail.Bestaande.Naam, model.Info.Naam, true) == 0)
 				{
 					ModelState.AddModelError(
 						"Info.Naam",
 						string.Format(
-							Properties.Resources.AfdelingsNaamBestaatAl,ex.Detail.Bestaande.Afkorting,ex.Detail.Bestaande.Naam));
+							Properties.Resources.AfdelingsNaamBestaatAl, ex.Detail.Bestaande.Afkorting, ex.Detail.Bestaande.Naam));
 				}
 				else
 				{
@@ -252,5 +254,5 @@ namespace Chiro.Gap.WebApp.Controllers
 				return View("AfdelingMaken", model);
 			}
 		}
-    }
+	}
 }

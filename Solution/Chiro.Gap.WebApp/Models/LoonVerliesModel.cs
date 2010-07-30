@@ -8,7 +8,7 @@ namespace Chiro.Gap.WebApp.Models
 	/// <summary>
 	/// Model voor de aanvraag van een verzekering loonverlies
 	/// </summary>
-	public class LoonVerliesModel: MasterViewModel
+	public class LoonVerliesModel : MasterViewModel
 	{
 		/// <summary>
 		/// ID van het lid dat verzekerd moet worden tegen loonverlies (enkel leden kunnen deze verzekering krijgen)

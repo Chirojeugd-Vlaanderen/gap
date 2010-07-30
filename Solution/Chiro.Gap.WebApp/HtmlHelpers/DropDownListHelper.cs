@@ -39,9 +39,9 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 			{
 				var option1 = new TagBuilder("option");
 				option1.MergeAttribute("value", afdeling.ID.ToString());
-				if(officieleAfdelingNaam!=null && officieleAfdelingNaam.Equals(afdeling.Naam))
+				if (officieleAfdelingNaam != null && officieleAfdelingNaam.Equals(afdeling.Naam))
 				{
-					option1.MergeAttribute("selected", "yes");	
+					option1.MergeAttribute("selected", "yes");
 				}
 				sb.Append(option1.ToString(TagRenderMode.StartTag));
 				sb.Append(afdeling.Naam);
@@ -71,7 +71,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 			{
 				var option1 = new TagBuilder("option");
 				option1.MergeAttribute("value", geslacht.ToString());
-				if((GeslachtsType)geslacht==g)
+				if ((GeslachtsType)geslacht == g)
 				{
 					option1.MergeAttribute("selected", "yes");
 				}

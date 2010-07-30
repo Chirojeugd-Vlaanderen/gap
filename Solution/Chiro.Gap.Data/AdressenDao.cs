@@ -169,8 +169,8 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="bus">Het eventuele busnummer</param>
 		/// <param name="postNr">Het postnummer</param>
 		/// <param name="postCode">De lettercode die in het buitenland aan postnummers toegevoegd wordt</param>
-		/// <param name="woonPlaatsNaam">naam van de woonplaats</param>
-		/// <param name="metBewoners">Indien <c>true</c>, worden ook de
+		/// <param name="woonPlaatsNaam">Naam van de woonplaats</param>
+		/// <param name="metBewoners">Bij <c>true</c> worden ook de
 		/// persoonsadressen en gelieerde personen opgehaald</param>
 		/// <returns>Een adres als gevonden, anders null</returns>
 		public Adres Ophalen(
@@ -197,8 +197,7 @@ namespace Chiro.Gap.Data.Ef
 					&& a.WoonPlaats.Naam == woonPlaatsNaam && a.WoonPlaats.PostNummer == postNr
 					&& (a.HuisNr == null && huisNr == null || a.HuisNr == huisNr)
 					&& (a.Bus == null && bus == null || a.Bus == bus)
-					&& (a.PostCode == null && postCode == null || a.PostCode == postCode)
-					)
+					&& (a.PostCode == null && postCode == null || a.PostCode == postCode))
 					select a).FirstOrDefault();
 
 				// Gekke constructie voor huisnummer, bus en postcode, omdat null anders niet goed

@@ -12,9 +12,15 @@ namespace Chiro.Gap.Workers.KipSync
     //    public WorkaroundSyncPersoonServiceClient() : base() { }
     // }
 
+	/// <summary>
+	/// TODO: documenteren
+	/// </summary>
     public partial class SyncPersoonServiceClient
     {
-        // Make sure tis constructor is used by Unity:
+		/// <summary>
+		/// Make sure this constructor is used by Unity:
+		/// </summary>
+		/// <param name="dummy"></param>
         [InjectionConstructor]
         public SyncPersoonServiceClient(object dummy) : this()
         {

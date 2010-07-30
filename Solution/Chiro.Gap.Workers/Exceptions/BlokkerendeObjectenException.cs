@@ -14,7 +14,7 @@ namespace Chiro.Gap.Workers.Exceptions
 	/// <summary>
 	/// Exception die opgegooid kan worden als bepaalde objecten/entiteiten een operatie verhinderen.
 	/// </summary>
-	/// <typeparam name="TEntiteit"></typeparam>
+	/// <typeparam name="TEntiteit">Het blokkerende object</typeparam>
 	[Serializable]
 	public class BlokkerendeObjectenException<TEntiteit> : GapException where TEntiteit : IBasisEntiteit
 	{
@@ -57,7 +57,8 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// <summary>
 		/// De standaardconstructor
 		/// </summary>
-		public BlokkerendeObjectenException() : base()
+		public BlokkerendeObjectenException()
+			: base()
 		{
 		}
 
@@ -65,7 +66,8 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// Construeer BlokkerendeObjectenException met bericht <paramref name="message"/>.
 		/// </summary>
 		/// <param name="message">Technische info over de exception; nuttig voor developer</param>
-		public BlokkerendeObjectenException(string message) : base(message)
+		public BlokkerendeObjectenException(string message)
+			: base(message)
 		{
 		}
 
@@ -75,7 +77,8 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// </summary>
 		/// <param name="message">Technische info over de exception; nuttig voor developer</param>
 		/// <param name="innerException">Andere exception die de deze veroorzaakt</param>
-		public BlokkerendeObjectenException(string message, Exception innerException) : base(message, innerException)
+		public BlokkerendeObjectenException(string message, Exception innerException)
+			: base(message, innerException)
 		{
 		}
 
@@ -146,7 +149,7 @@ namespace Chiro.Gap.Workers.Exceptions
 			string message)
 			: base(message)
 		{
-			_objecten = new TEntiteit[] {obj};
+			_objecten = new TEntiteit[] { obj };
 			_aantal = 1;
 		}
 

@@ -15,10 +15,11 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	public interface ICommunicatieVormDao : IDao<CommunicatieVorm>
 	{
 		/// <summary>
-		/// 
+		/// Zoekt een lijst van communicatievormen waarbij de waarde (het 'nummer',
+		/// maar dat kan ook bv. een mailadres zijn) overeenkomt met de zoekterm
 		/// </summary>
-		/// <param name="zoekString"></param>
-		/// <returns></returns>
+		/// <param name="zoekString">De zoekterm</param>
+		/// <returns>Een lijst van communicatievormen die de zoekterm als waarde hebben</returns>
 		IList<CommunicatieVorm> ZoekenOpNummer(string zoekString);
 	}
 }

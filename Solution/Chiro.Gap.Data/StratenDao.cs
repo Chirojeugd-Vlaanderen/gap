@@ -18,11 +18,12 @@ namespace Chiro.Gap.Data.Ef
 	public class StratenDao : Dao<StraatNaam, ChiroGroepEntities>, IStratenDao
 	{
 		/// <summary>
-		/// 
+		/// Haalt het straatnaamobject op dat staat voor de gevraagde straat(naam) 
+		/// in de gemeente met het gegeven postnummer
 		/// </summary>
-		/// <param name="naam"></param>
-		/// <param name="postNr"></param>
-		/// <returns></returns>
+		/// <param name="naam">De straatnaam</param>
+		/// <param name="postNr">Het postnummer</param>
+		/// <returns>Het straatnaamobject waar de gegeven naam gekoppeld is aan het gegeven postnummer</returns>
 		public StraatNaam Ophalen(string naam, int postNr)
 		{
 			StraatNaam resultaat = null;

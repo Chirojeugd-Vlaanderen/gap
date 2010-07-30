@@ -24,7 +24,7 @@ namespace Chiro.Gap.Orm
 		private bool _teVerwijderen = false;
 
 		/// <summary>
-		/// 
+		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren
 		/// </summary>
 		public bool TeVerwijderen
 		{
@@ -39,7 +39,8 @@ namespace Chiro.Gap.Orm
 		}
 
 		/// <summary>
-		/// 
+		/// Geeft stringrepresentatie van Versie weer (hex).
+		/// Nodig om versie te bewaren in MVC view, voor concurrencycontrole.
 		/// </summary>
 		public string VersieString
 		{
@@ -54,9 +55,9 @@ namespace Chiro.Gap.Orm
 		}
 
 		/// <summary>
-		/// 
+		/// Een arbitraire waarde waarmee we het object kunnen identificeren
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>Een int waarmee we het object kunnen identificeren</returns>
 		public override int GetHashCode()
 		{
 			return 19;

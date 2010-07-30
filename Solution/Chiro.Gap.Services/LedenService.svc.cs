@@ -20,6 +20,9 @@ namespace Chiro.Gap.Services
 {
 	// OPM: als je de naam van de class "LedenService" hier verandert, moet je ook de sectie "Services" in web.config aanpassen.
 
+	// *BELANGRIJK*: Als het debuggen hier stopt owv een autorisatiefout, kijk dan na of de gebruiker waarmee
+	// je aangemeld bent, op je lokale computer in de groep CgUsers zit.
+
 	/// <summary>
 	/// Service voor operaties op leden en leiding
 	/// </summary>
@@ -35,6 +38,16 @@ namespace Chiro.Gap.Services
 		private readonly GroepsWerkJaarManager _groepwsWjMgr;
 		private readonly VerzekeringenManager _verzekeringenMgr;
 
+		/// <summary>
+		/// Constructor met via IoC toegekende workers
+		/// </summary>
+		/// <param name="gpm">De worker voor GelieerdePersonen</param>
+		/// <param name="lm">De worker voor Leden</param>
+		/// <param name="grm">De worker voor Groepen</param>
+		/// <param name="fm">De worker voor Functies</param>
+		/// <param name="ajm">De worker voor AfdelingsJaren</param>
+		/// <param name="gwjm">De worker voor GroepsWerkJaren</param>
+		/// <param name="vrzm">De worker voor Verzekeringen</param>
 		public LedenService(
 			GelieerdePersonenManager gpm,
 			LedenManager lm,
@@ -68,12 +81,12 @@ namespace Chiro.Gap.Services
 		/// <param name="type">Bepaalt of de personen als kind of als leiding lid worden.</param>
 		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
 		/// string waarin wat uitleg staat. TODO: beter systeem vinden voor deze feedback.</param>
-		/// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
+		/// <returns>De LidID's van de personen die lid zijn gemaakt</returns>
 		/// <remarks>
 		/// Iedereen die kan lid gemaakt worden, wordt lid, zelfs als dit voor andere personen niet lukt. Voor die personen worden dan foutberichten
 		/// teruggegeven.
 		/// </remarks>
-		/// <throws>NotSupportedException</throws> //TODO handle
+		/// <throws>NotSupportedException</throws> // TODO handle
 		public IEnumerable<int> NieuwInschrijven(IEnumerable<int> gelieerdePersoonIDs, LidType type, out string foutBerichten)
 		{
 			try
@@ -86,20 +99,20 @@ namespace Chiro.Gap.Services
 				var lidIDs = new List<int>();
 				var foutBerichtenBuilder = new StringBuilder();
 
-			// Haal meteen alle gelieerde personen op, gecombineerd met hun groep
-			// Ik haal nu ook de groepswerkjaren mee op, omdat 'LidMaken' daar straks in zal kijken.
-			// TODO: Dat kan volgens mij ook zonder, maar daarvoor moet LedenManager.LidMaken aangepast wdn
+				// Haal meteen alle gelieerde personen op, gecombineerd met hun groep
+				// Ik haal nu ook de groepswerkjaren mee op, omdat 'LidMaken' daar straks in zal kijken.
+				// TODO: Dat kan volgens mij ook zonder, maar daarvoor moet LedenManager.LidMaken aangepast wdn
 
-			var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(
-				gelieerdePersoonIDs, 
-				PersoonsExtras.Groep|PersoonsExtras.GroepsWerkJaren);
+				var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(
+					gelieerdePersoonIDs,
+					PersoonsExtras.Groep | PersoonsExtras.GroepsWerkJaren);
 
-			// Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
-			// al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
-			var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
-			
-			// Ter controle bij debuggen even kijken of de distinct goed werkt.
-			Debug.Assert(groepen.Count() == (from gp in gelieerdePersonen select gp.Groep.ID).Distinct().Count());
+				// Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
+				// al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
+				var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
+
+				// Ter controle bij debuggen even kijken of de distinct goed werkt.
+				Debug.Assert(groepen.Count() == (from gp in gelieerdePersonen select gp.Groep.ID).Distinct().Count());
 
 				// Ter controle bij debuggen even kijken of de distinct goed werkt.
 				Debug.Assert(groepen.Count() == (from gp in gelieerdePersonen select gp.Groep.ID).Distinct().Count());
@@ -168,11 +181,12 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
-		/// 
+		/// TODO: documenteren (overeenkomstige documentatie in ILedenService is blijkbaar niet meer actueel)
 		/// </summary>
-		/// <param name="gelieerdePersoonIDs"></param>
-		/// <param name="foutBerichten"></param>
-		/// <returns></returns>
+		/// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
+		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
+		/// string waarin wat uitleg staat.  TODO: beter systeem vinden voor deze feedback.</param>
+		/// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
 		public IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
 		{
 			try
@@ -220,10 +234,11 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
-		/// 
+		/// Maakt lid met gegeven ID nonactief
 		/// </summary>
-		/// <param name="gelieerdePersoonIDs"></param>
-		/// <param name="foutBerichten"></param>
+		/// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
+		/// <param name="foutBerichten">Als voor sommige personen die actie mislukte, bevat foutBerichten een
+		/// string waarin wat uitleg staat.  TODO: beter systeem vinden voor deze feedback.</param>
 		public void Uitschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
 		{
 			try
@@ -289,6 +304,11 @@ namespace Chiro.Gap.Services
 			}
 		}
 
+		/// <summary>
+		/// Bewaart lidinfo, inclusief wat in vrije velden ingevuld werd
+		/// </summary>
+		/// <param name="lid">De info die opgeslagen moet worden</param>
+		/// <returns>De bijgewerkte lidinfo</returns>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public PersoonLidInfo BewarenMetVrijeVelden(PersoonLidInfo lid)
@@ -413,6 +433,14 @@ namespace Chiro.Gap.Services
 
 		#region Ophalen
 
+		/// <summary>
+		/// Haalt relevante info op van personen die lid zijn in het opgegeven GroepsWerkJaar,
+		/// gesorteerd op de opgegeven parameter
+		/// </summary>
+		/// <param name="groepsWerkJaarID">De ID van het GroepsWerkJaar waarvan we info willen</param>
+		/// <param name="sortering">De parameter waarop het resultaat gesorteerd moet worden</param>
+		/// <returns>Een lijst met relevante gegevens over personen die lid zijn/waren in het
+		/// opgegeven GroepsWerkJaar</returns>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<PersoonLidInfo> PaginaOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
@@ -429,6 +457,15 @@ namespace Chiro.Gap.Services
 			}
 		}
 
+		/// <summary>
+		/// Haalt relevante info op van personen die in het opgegeven GroepsWerkJaar
+		/// lid zijn/waren van de opgegeven afdeling, gesorteerd op de opgegeven parameter
+		/// </summary>
+		/// <param name="groepsWerkJaarID">De ID van het GroepsWerkJaar waarvan we info willen</param>
+		/// <param name="afdelingsID">De ID van de afdeling waarvan de personen lid moeten zijn</param>
+		/// <param name="sortering">De parameter waarop het resultaat gesorteerd moet worden</param>
+		/// <returns>Een lijst met relevante gegevens over personen die lid zijn/waren in het
+		/// opgegeven GroepsWerkJaar</returns>
 		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
 		public IList<PersoonLidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering)
@@ -445,12 +482,22 @@ namespace Chiro.Gap.Services
 			}
 		}
 
+		/// <summary>
+		/// Haalt relevante info op van personen die in het opgegeven GroepsWerkJaar
+		/// lid zijn/waren en de opgegeven functie hadden, gesorteerd op de opgegeven parameter
+		/// </summary>
+		/// <param name="groepsWerkJaarID">De ID van het GroepsWerkJaar waarvan we info willen</param>
+		/// <param name="functieID">De ID van de functie die de personen moeten hebben</param>
+		/// <param name="sortering">De parameter waarop het resultaat gesorteerd moet worden</param>
+		/// <returns>Een lijst met relevante gegevens over personen die lid zijn/waren in het
+		/// opgegeven GroepsWerkJaar</returns>
+		/* zie #273 */
 		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonLidInfo> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functiID, LedenSorteringsEnum sortering)
+		public IList<PersoonLidInfo> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LedenSorteringsEnum sortering)
 		{
 			try
 			{
-				IList<Lid> result = _ledenMgr.PaginaOphalenVolgensFunctie(groepsWerkJaarID, functiID, sortering);
+				IList<Lid> result = _ledenMgr.PaginaOphalenVolgensFunctie(groepsWerkJaarID, functieID, sortering);
 				return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
 			}
 			catch (Exception ex)
@@ -538,7 +585,6 @@ namespace Chiro.Gap.Services
 				FoutAfhandelaar.FoutAfhandelen(ex);
 				return null;
 			}
-
 		}
 
 		/// <summary>

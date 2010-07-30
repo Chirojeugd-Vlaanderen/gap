@@ -19,24 +19,46 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	[DataContract]
 	public class BewonersInfo
 	{
+		/// <summary>
+		/// AD-nummer van de bewoner
+		/// </summary>
 		[DataMember]
 		public int? PersoonAdNummer { get; set; }
 
+		/// <summary>
+		/// De ID van de bewoner als gelieerde persoon
+		/// </summary>
 		[DataMember]
 		public int GelieerdePersoonID { get; set; }
 
+		/// <summary>
+		/// De ID van de bewoner als persoon
+		/// </summary>
 		[DataMember]
 		public int PersoonID { get; set; }
 
+		/// <summary>
+		/// Voornaam en naam van de bewoner
+		/// </summary>
 		[DataMember]
 		public string PersoonVolledigeNaam { get; set; }
 
+		/// <summary>
+		/// Geboortedatum van de bewoner
+		/// </summary>
 		[DataMember]
 		public DateTime? PersoonGeboorteDatum { get; set; }
 
+		/// <summary>
+		/// Geslacht van de bewoner
+		/// </summary>
 		[DataMember]
 		public GeslachtsType PersoonGeslacht { get; set; }
 
+		/// <summary>
+		/// Het type dat de relatie van de bewoner met het adres beschrijft
+		/// (bv. 'kotadres')
+		/// </summary>
 		[DataMember]
 		public AdresTypeEnum AdresType { get; set; }
 	}

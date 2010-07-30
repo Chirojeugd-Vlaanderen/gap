@@ -176,8 +176,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (!_autorisatieMgr.IsGavAfdeling(aj.ID))
 			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-				
+				throw new GeenGavException(Properties.Resources.GeenGav);	
 			}
 
 			_afdelingenDao.Bewaren(aj);

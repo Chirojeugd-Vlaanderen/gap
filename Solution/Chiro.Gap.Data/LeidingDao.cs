@@ -58,7 +58,7 @@ namespace Chiro.Gap.Data.Ef
 				lijst = IncludesToepassen(leiding, paths).ToArray();
 			}
 
-			return lijst;	
+			return lijst;
 		}
 
 		/// <summary>
@@ -78,7 +78,7 @@ namespace Chiro.Gap.Data.Ef
 				var kinderen = (
 					from l in db.Lid.OfType<Leiding>()
 					where l.GroepsWerkJaar.ID == groepsWerkJaarID
-					&& l.AfdelingsJaar.Any(aj=>aj.Afdeling.ID == afdelingID)
+					&& l.AfdelingsJaar.Any(aj => aj.Afdeling.ID == afdelingID)
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 					select l) as ObjectQuery<Leiding>;
 

@@ -33,6 +33,5 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="paths">Bepaalt de mee op te halen entiteiten</param>
 		/// <returns>Alle kinderen van het gevraagde afdelngsjaar</returns>
 		IEnumerable<Leiding> OphalenUitAfdelingsJaar(int groepsWerkJaarID, int afdelingID, Expression<Func<Leiding, object>>[] paths);
-
 	}
 }

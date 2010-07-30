@@ -1,4 +1,9 @@
-﻿using System.Runtime.Serialization;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System.Runtime.Serialization;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
@@ -9,14 +14,27 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	/// </summary>
 	[DataContract]
 	[KnownType(typeof(LidOverzicht))]
-	public class PersoonOverzicht: PersoonInfo
+	public class PersoonOverzicht : PersoonInfo
 	{
-		[DataMember] public string StraatNaam;
-		[DataMember] public int? HuisNummer;
-		[DataMember] public string Bus;
-		[DataMember] public int? PostNummer;
-		[DataMember] public string WoonPlaats;
-		[DataMember] public string TelefoonNummer;
-		[DataMember] public string Email;
+		[DataMember]
+		public string StraatNaam;
+
+		[DataMember]
+		public int? HuisNummer;
+		
+		[DataMember]
+		public string Bus;
+		
+		[DataMember]
+		public int? PostNummer;
+		
+		[DataMember]
+		public string WoonPlaats;
+		
+		[DataMember]
+		public string TelefoonNummer;
+		
+		[DataMember]
+		public string Email;
 	}
 }

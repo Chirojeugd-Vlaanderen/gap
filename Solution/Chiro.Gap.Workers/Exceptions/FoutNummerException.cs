@@ -3,15 +3,18 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Chiro.Gap.Domain;
-using System;
 
 namespace Chiro.Gap.Workers.Exceptions
 {
+	/// <summary>
+	/// Specifieke GapException met een foutnummer
+	/// </summary>
 	[Serializable]
-	public class FoutNummerException: GapException
+	public class FoutNummerException : GapException
 	{
 		private FoutNummer _foutNummer;
 		private IEnumerable<string> _items;
@@ -30,7 +33,7 @@ namespace Chiro.Gap.Workers.Exceptions
 
 		#endregion
 
-				#region standaardconstructors
+		#region standaardconstructors
 
 		/// <summary>
 		/// De standaardconstructor
@@ -60,13 +63,14 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// </summary>
 		/// <param name="info">De serializatie-info</param>
 		/// <param name="context">De streamingcontext</param>
-		protected FoutNummerException(SerializationInfo info, StreamingContext context) : base(info, context) 
+		protected FoutNummerException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
 		{
 			if (info == null)
 			{
 				return;
 			}
-			_foutNummer = (FoutNummer) info.GetInt32("foutNummer");
+			_foutNummer = (FoutNummer)info.GetInt32("foutNummer");
 			_items = (IEnumerable<string>)info.GetValue("items", typeof(IEnumerable<string>));
 		}
 
@@ -96,11 +100,11 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// <param name="foutNummer">Foutnummer van de fout die de exception veroorzaakte</param>
 		/// <param name="message">Technische info over de exception; nuttig voor developer</param>
 		public FoutNummerException(FoutNummer foutNummer, string message)
-            : base(message) 
+			: base(message)
 		{
 			_foutNummer = foutNummer;
 		}
-		
+
 		#endregion
 	}
 }

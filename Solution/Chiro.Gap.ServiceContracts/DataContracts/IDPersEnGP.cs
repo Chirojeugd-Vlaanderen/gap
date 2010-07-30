@@ -13,9 +13,15 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	[DataContract]
 	public class IDPersEnGP
 	{
+		/// <summary>
+		/// De ID van de geassocieerde persoon
+		/// </summary>
 		[DataMember]
 		public int PersoonID { get; set; }
 
+		/// <summary>
+		/// De ID van de geassocieerde gelieerde persoon
+		/// </summary>
 		[DataMember]
 		public int GelieerdePersoonID { get; set; }
 	}

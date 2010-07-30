@@ -13,8 +13,11 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	/// AdresInfo, met als extra informatie het AdresType (thuisadres, werkadres,...)
 	/// </summary>
 	[DataContract]
-	public class PersoonsAdresInfo: AdresInfo
+	public class PersoonsAdresInfo : AdresInfo
 	{
+		/// <summary>
+		/// Enumwaarde die de relatie van de persoon tot het adres beschrijft (bv. 'kotadres', 'thuis')
+		/// </summary>
 		[DataMember]
 		public AdresTypeEnum AdresType { get; set; }
 
@@ -33,8 +36,15 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	[DataContract]
 	public class PersoonsAdresInfo2
 	{
+		/// <summary>
+		/// De ID van de persoon
+		/// </summary>
 		[DataMember]
 		public int PersoonID { get; set; }
+
+		/// <summary>
+		/// De ID van het adres
+		/// </summary>
 		[DataMember]
 		public int AdresID { get; set; }
 	}

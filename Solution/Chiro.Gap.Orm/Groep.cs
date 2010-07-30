@@ -17,6 +17,9 @@ namespace Chiro.Gap.Orm
 	{
 		private bool _teVerwijderen = false;
 
+		/// <summary>
+		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren
+		/// </summary>
 		public bool TeVerwijderen
 		{
 			get
@@ -29,6 +32,10 @@ namespace Chiro.Gap.Orm
 			}
 		}
 
+		/// <summary>
+		/// Geeft stringrepresentatie van Versie weer (hex).
+		/// Nodig om versie te bewaren in MVC view, voor concurrencycontrole.
+		/// </summary>
 		public string VersieString
 		{
 			get
@@ -43,11 +50,21 @@ namespace Chiro.Gap.Orm
 
 		#region Identity en equality
 
+		/// <summary>
+		/// Een arbitraire waarde waarmee we het object kunnen identificeren
+		/// </summary>
+		/// <returns>Een int waarmee we het object kunnen herkennen</returns>
 		public override int GetHashCode()
 		{
 			return 7;
 		}
 
+		/// <summary>
+		/// Vergelijkt het huidige object met een ander om te zien of het over
+		/// twee instanties van hetzelfde object gaat
+		/// </summary>
+		/// <param name="obj">Het object waarmee we het huidige willen vergelijken</param>
+		/// <returns><c>True</c> als het schijnbaar om twee instanties van hetzelfde object gaat</returns>
 		public override bool Equals(object obj)
 		{
 			var andere = obj as Groep;

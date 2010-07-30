@@ -19,12 +19,19 @@ namespace Chiro.Gap.Orm
 	{
 		private bool _teVerwijderen = false;
 
+		/// <summary>
+		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren
+		/// </summary>
 		public bool TeVerwijderen
 		{
 			get { return _teVerwijderen; }
 			set { _teVerwijderen = value; }
 		}
 
+		/// <summary>
+		/// Geeft stringrepresentatie van Versie weer (hex).
+		/// Nodig om versie te bewaren in MVC view, voor concurrencycontrole.
+		/// </summary>
 		public string VersieString
 		{
 			get { return this.VersieStringGet(); }
@@ -39,11 +46,22 @@ namespace Chiro.Gap.Orm
 			get { return (this is Kind ? LidType.Kind : LidType.Leiding); }
 		}
 
+		///// <summary>
+		///// Een waarde waarmee we het object kunnen identificeren,
+		///// overgenomen van de ID
+		///// </summary>
+		///// <returns>Een int waarmee we het object kunnen identificeren</returns>
 		// public override int GetHashCode()
 		// {
 		//         return ID.GetHashCode();
 		// }
-		 
+
+		///// <summary>
+		///// Vergelijkt het huidige object met een ander om te zien of het over
+		///// twee instanties van hetzelfde object gaat
+		///// </summary>
+		///// <param name="obj">Het object waarmee we het huidige willen vergelijken</param>
+		///// <returns><c>True</c> als het schijnbaar om twee instanties van hetzelfde object gaat</returns>
 		// public override bool Equals(object obj)
 		// {
 		//         return this.ChiroEquals(obj);

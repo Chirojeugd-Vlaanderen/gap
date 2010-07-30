@@ -68,9 +68,9 @@ namespace Chiro.Gap.Data.Ef
 
 		/// <summary>
 		/// Sorteert een lijst van leiding. Eerst volgens de gegeven ordening, dan steeds op naam.
-		/// 
+		/// <para />
 		/// De sortering is vrij complex om met meerdere opties rekening te houden.
-		/// 
+		/// <para />
 		/// Steeds wordt eerst gesorteerd op lege velden/gevulde velden, de lege komen laatst.
 		/// Dan wordt gesorteerd op "sortering"
 		///		Naam => Naam+Voornaam
@@ -111,7 +111,7 @@ namespace Chiro.Gap.Data.Ef
 							gp.GelieerdePersoon.Persoon.Naam,
 							gp.GelieerdePersoon.Persoon.VoorNaam));
 					break;
-				default: //Stom dat C# niet kan detecteren dat alle cases gecontroleerd zijn?
+				default: // Stom dat C# niet kan detecteren dat alle cases gecontroleerd zijn?
 					lijst2 = new List<Leiding>();
 					break;
 			}
@@ -120,9 +120,9 @@ namespace Chiro.Gap.Data.Ef
 
 		/// <summary>
 		/// Sorteert een lijst van kinderen. Eerst volgens de gegeven ordening, dan steeds op naam.
-		/// 
+		/// <para />
 		/// De sortering is vrij complex om met meerdere opties rekening te houden.
-		/// 
+		/// <para />
 		/// Steeds wordt eerst gesorteerd op lege velden/gevulde velden, de lege komen laatst.
 		/// Dan wordt gesorteerd op "sortering"
 		///		Naam => Naam+Voornaam
@@ -162,16 +162,23 @@ namespace Chiro.Gap.Data.Ef
 							gp.GelieerdePersoon.Persoon.Naam,
 							gp.GelieerdePersoon.Persoon.VoorNaam));
 					break;
-				default: //Stom dat C# niet kan detecteren dat alle cases gecontroleerd zijn?
+				default: // Stom dat C# niet kan detecteren dat alle cases gecontroleerd zijn?
 					lijst2 = lijst;
 					break;
 			}
 			return lijst2.ToList();
 		}
 
+		/// <summary>
+		/// Maak een lijst van de gegeven ingeschreven leden (kinderen en leiding),
+		/// gesorteerd volgens de opgegeven parameter
+		/// </summary>
+		/// <param name="kinderen">De lijst van kinderen</param>
+		/// <param name="leiding">De lijst van leiders en/of leidsters</param>
+		/// <param name="sortering">De parameter waarop de samengestelde lijst gesorteerd moet worden</param>
+		/// <returns>De samengestelde en daarna gesorteerde lijst</returns>
 		private static List<Lid> MaakLedenLijst(List<Kind> kinderen, List<Leiding> leiding, LedenSorteringsEnum sortering)
 		{
-
 			kinderen = SorteerLijst(kinderen, sortering);
 			leiding = SorteerLijst(leiding, sortering);
 
@@ -186,7 +193,7 @@ namespace Chiro.Gap.Data.Ef
 		/// Een lijst ophalen van alle leden voor het opgegeven groepswerkjaar
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
-		/// <param name="sortering"></param>
+		/// <param name="sortering">Parameter waarop de gegevens gesorteerd moeten worden</param>
 		/// <returns>Een lijst alle leden voor het opgegeven groepswerkjaar</returns>
 		public IList<Lid> AllesOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
 		{
@@ -211,14 +218,16 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// 
+		/// Haalt een pagina op van de gevraagde gegevens:
+		/// leden van een bepaalde groep in een gegeven werkjaar
 		/// </summary>
-		/// <param name="groepsWerkJaarID"></param>
-		/// <param name="sortering"></param>
-		/// <returns></returns>
+		/// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkjaar</param>
+		/// <param name="sortering">Parameter waarop de gegevens gesorteerd zijn</param>
+		/// <returns>De leden die de groep in dat werkjaar heeft/had</returns>
 		/// <remarks>
 		/// Pagineren gebeurt per werkjaar.
-		/// De parameters pagina, paginaGrootte en aantalTotaal zijn niet meer nodig.
+		/// De parameters pagina, paginaGrootte en aantalTotaal zijn hier niet nodig
+		/// omdat alle leden van dat werkjaar samen getoond worden.
 		/// </remarks>
 		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
 		{
@@ -243,12 +252,13 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// 
+		/// Haalt een pagina op van de gevraagde gegevens:
+		/// leden van een bepaalde groep in een gegeven werkjaar, die in de gegeven afdeling zitten
 		/// </summary>
-		/// <param name="groepsWerkJaarID"></param>
-		/// <param name="afdelingsID"></param>
-		/// <param name="sortering"></param>
-		/// <returns></returns>
+		/// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkjaar</param>
+		/// <param name="afdelingsID">ID van de afdeling waar de leden in moeten zitten</param>
+		/// <param name="sortering">Parameter waarop de gegevens gesorteerd zijn</param>
+		/// <returns>De leden die de groep in dat werkjaar heeft/had en die in de gegeven afdeling zitten/zaten</returns>
 		/// <remarks>
 		/// Pagineren gebeurt per werkjaar.
 		/// </remarks>
@@ -279,12 +289,17 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// Haalt GEEN afdeling mee op (nakijken of dit ook effectief niet nodig is?
+		/// Haalt een pagina op van de gevraagde gegevens:
+		/// leden van een bepaalde groep in een gegeven werkjaar, die een bepaalde functie hebben/hadden
 		/// </summary>
-		/// <param name="groepsWerkJaarID"></param>
-		/// <param name="functieID"></param>
-		/// <param name="sortering"></param>
-		/// <returns></returns>
+		/// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkjaar</param>
+		/// <param name="functieID">ID van de functie die de leden moeten hebben</param>
+		/// <param name="sortering">Parameter waarop de gegevens gesorteerd zijn</param>
+		/// <returns>De leden met de gegeven functie die de groep in dat werkjaar heeft/had</returns>
+		/// <remarks>
+		/// Pagineren gebeurt per werkjaar.
+		/// Haalt GEEN afdeling mee op (nakijken of dit ook effectief niet nodig is?)
+		/// </remarks>
 		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LedenSorteringsEnum sortering)
 		{
 			using (var db = new ChiroGroepEntities())

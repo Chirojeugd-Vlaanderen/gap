@@ -10,18 +10,39 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	/// </summary>
 	public class LedenDaoCollectie
 	{
+		/// <summary>
+		/// Data Access Object voor leden (= ingeschreven kinderen/leiding)
+		/// </summary>
 		public ILedenDao LedenDao { get; set; }
 
+		/// <summary>
+		/// Data Access Object voor kinderen
+		/// </summary>
 		public IKindDao KindDao { get; set; }
 
+		/// <summary>
+		/// Data Access Object voor leiding
+		/// </summary>
 		public ILeidingDao LeidingDao { get; set; }
 
+		/// <summary>
+		/// Data Access Object voor groepen
+		/// </summary>
 		public IGroepenDao GroepenDao { get; set; }
 
+		/// <summary>
+		/// Data Access Object voor gelieerde personen
+		/// </summary>
 		public IGelieerdePersonenDao GelieerdePersoonDao { get; set; }
 
+		/// <summary>
+		/// Data Access Object voor afdelingsjaren
+		/// </summary>
 		public IAfdelingsJarenDao AfdelingsJaarDao { get; set; }
 
+		/// <summary>
+		/// Data Access Object voor groepswerkjaren
+		/// </summary>
 		public IGroepsWerkJaarDao GroepsWerkJaarDao { get; set; }
 
 		/// <summary>

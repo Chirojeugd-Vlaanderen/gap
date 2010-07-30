@@ -172,7 +172,6 @@ namespace Chiro.Gap.Workers
 			return (f.IsNationaal || IsGavGroep(f.Groep.ID));
 		}
 
-
 		/// <summary>
 		/// Controleert of de huidig aangelogde gebruiker momenteel
 		/// GAV is van de groep gekoppeld aan een zekere categorie.
@@ -236,7 +235,6 @@ namespace Chiro.Gap.Workers
 		{
 			return _autorisatieDao.MijnGroepenOphalen(GebruikersNaamGet());
 		}
-
 
 		/// <summary>
 		/// Ophalen van ID's van HUIDIGE gekoppelde groepen voor een aangemelde GAV
@@ -383,8 +381,5 @@ namespace Chiro.Gap.Workers
 			return _am.GebruikersNaamGet();
 		}
 		#endregion
-
-
-
 	}
 }

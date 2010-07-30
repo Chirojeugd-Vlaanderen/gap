@@ -117,11 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DatumInVerledenAttribute_ValidationError" xml:space="preserve">
-    <value>De {0} moet in het verleden liggen.</value>
+  <data name="PastDate_ValidationError" xml:space="preserve">
+    <value>{0} must be in the past.</value>
   </data>
-  <data name="FormatValidatieFout" xml:space="preserve">
-    <value>De waarde voor {0} voldoet niet aan de verplichte structuur: {1}</value>
+  <data name="Format_ValidationError" xml:space="preserve">
+    <value>The value for {0} doesn't comply to the necessary format: {1}</value>
     <comment>Parameters: 0 = inputcontrol, 1 = formatvoorbeeld</comment>
   </data>
   <data name="RequiredAttribute_ValidationError" xml:space="preserve">
@@ -136,7 +136,7 @@
   <data name="StringMinimumLengthAttribute_InvalidMinimumLenght" xml:space="preserve">
     <value>The minimum lenght must be a nonnegative integer.</value>
   </data>
-	<data name="AfdelingsJaarDetail_GeboorteJaar_RangeFout">
-		<value xml:space="preserve">{0} is beperkt van {1} tot {2}.</value>
+	<data name="RangeError">
+		<value xml:space="preserve">The value for {0} must be between {1} and {2}.</value>
 	</data>
 </root>

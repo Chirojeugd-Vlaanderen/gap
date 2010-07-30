@@ -11,14 +11,21 @@ using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.Services
 {
+	/// <summary>
+	/// Static class om algemene fouten te behandelen. De Exception moet als FaultException doorgegeven worden.
+	/// </summary>
 	public static class FoutAfhandelaar
 	{
+		/// <summary>
+		/// Throw de juiste FaultException naargelang de opgevangen Exception.
+		/// </summary>
+		/// <param name="ex">De opgevangen Exception</param>
 		public static void FoutAfhandelen(Exception ex)
 		{
 			switch (ex.GetType().Name)
 			{
 				/*
-				 * Hier worden algemene fouten opgevangen en op de goede manier doorgegeven. ALls de debugger hier breakt, 
+				 * Hier worden algemene fouten opgevangen en op de goede manier doorgegeven. Als de debugger hier ergens breakt, 
 				 * mag je gewoon op F5 duwen om verder te gaan.
 				 */
 				case "GeenGavException":

@@ -14,6 +14,10 @@ using Chiro.Gap.Domain;
 namespace Chiro.Gap.ServiceContracts
 {
 	// NOTE: If you change the interface name "IGelieerdePersonenService" here, you must also update the reference to "IGelieerdePersonenService" in Web.config.
+	
+	/// <summary>
+	/// ServiceContract voor de GelieerdePersonenService
+	/// </summary>
 	[ServiceContract]
 	public interface IGelieerdePersonenService
 	{
@@ -189,7 +193,7 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(OngeldigObjectFault))]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		void PersonenVerhuizen(IEnumerable<int> persoonIDs,PersoonsAdresInfo nieuwAdres,int oudAdresID);
+		void PersonenVerhuizen(IEnumerable<int> persoonIDs, PersoonsAdresInfo nieuwAdres, int oudAdresID);
 
 		/// <summary>
 		/// Verhuist gelieerde personen van een oud naar een nieuw adres
@@ -244,7 +248,7 @@ namespace Chiro.Gap.ServiceContracts
 		/// <param name="gelieerdePersonenIDs">ID's van de gelieerde personen
 		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
 		/// <param name="adr">Toe te voegen adres</param>
-		/// <param name="voorkeur">true indien het nieuwe adres het voorkeursadres moet worden.</param>
+		/// <param name="voorkeur"><c>True</c> als het nieuwe adres het voorkeursadres moet worden.</param>
 		[OperationContract]
 		[FaultContract(typeof(OngeldigObjectFault))]
 		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]

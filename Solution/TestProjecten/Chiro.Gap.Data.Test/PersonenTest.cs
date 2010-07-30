@@ -32,7 +32,7 @@ namespace Chiro.Gap.Data.Test
 		/// <summary>
 		///Gets or sets the test context which provides
 		///information about and functionality for the current test run.
-		///</summary>
+		/// </summary>
 		public TestContext TestContext
 		{
 			get
@@ -58,7 +58,7 @@ namespace Chiro.Gap.Data.Test
 		// public static void MyClassCleanup() { }
 		//
 		// Use TestInitialize to run code before running each test 
-		// [TestInitialize()]
+		// [TestInitialize]
 		// public void MyTestInitialize() { }
 		//
 		// Use TestCleanup to run code after each test has run

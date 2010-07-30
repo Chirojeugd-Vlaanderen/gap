@@ -27,7 +27,7 @@ namespace Chiro.Adf.Collections.Generic
 
 		///<summary>
 		///Removes the element with the specified key from the <see cref="T:System.Collections.Generic.IDictionary`2" />.
-		///</summary>
+		/// </summary>
 		///
 		///<returns>
 		///true if the element is successfully removed; otherwise, false.  This method also returns false if <paramref name="key" /> was not found in the original <see cref="T:System.Collections.Generic.IDictionary`2" />.
@@ -44,7 +44,7 @@ namespace Chiro.Adf.Collections.Generic
 
 		///<summary>
 		///Determines whether the <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the specified key.
-		///</summary>
+		/// </summary>
 		///
 		///<returns>
 		///true if the <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the key; otherwise, false.
@@ -60,7 +60,7 @@ namespace Chiro.Adf.Collections.Generic
 
 		///<summary>
 		///Gets the value associated with the specified key.
-		///</summary>
+		/// </summary>
 		///
 		///<returns>
 		///true if the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the specified key; otherwise, false.
@@ -77,7 +77,7 @@ namespace Chiro.Adf.Collections.Generic
 
 		///<summary>
 		///Gets or sets the element with the specified key.
-		///</summary>
+		/// </summary>
 		///
 		///<returns>
 		///The element with the specified key.
@@ -103,7 +103,7 @@ namespace Chiro.Adf.Collections.Generic
 
 		///<summary>
 		///Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the <see cref="T:System.Collections.Generic.IDictionary`2" />.
-		///</summary>
+		/// </summary>
 		///
 		///<returns>
 		///An <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" />.
@@ -116,7 +116,7 @@ namespace Chiro.Adf.Collections.Generic
 
 		///<summary>
 		///Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the values in the <see cref="T:System.Collections.Generic.IDictionary`2" />.
-		///</summary>
+		/// </summary>
 		///
 		///<returns>
 		///An <see cref="T:System.Collections.Generic.ICollection`1" /> containing the values in the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" />.
@@ -133,7 +133,7 @@ namespace Chiro.Adf.Collections.Generic
 
 		///<summary>
 		///Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />.
-		///</summary>
+		/// </summary>
 		///
 		///<exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only. </exception>
 		public virtual void Clear()
@@ -144,7 +144,7 @@ namespace Chiro.Adf.Collections.Generic
 
 		///<summary>
 		///Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
-		///</summary>
+		/// </summary>
 		///
 		///<returns>
 		///The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
@@ -161,7 +161,7 @@ namespace Chiro.Adf.Collections.Generic
 
 		///<summary>
 		///Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific value.
-		///</summary>
+		/// </summary>
 		///
 		///<returns>
 		///true if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false.
@@ -176,7 +176,7 @@ namespace Chiro.Adf.Collections.Generic
 
 		///<summary>
 		///Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.
-		///</summary>
+		/// </summary>
 		///
 		///<param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
 		///<exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.</exception>
@@ -188,7 +188,7 @@ namespace Chiro.Adf.Collections.Generic
 
 		///<summary>
 		///Adds an element with the provided key and value to the <see cref="T:System.Collections.Generic.IDictionary`2" />.
-		///</summary>
+		/// </summary>
 		///
 		///<param name="key">The object to use as the key of the element to add.</param>
 		///<param name="value">The object to use as the value of the element to add.</param>
@@ -203,7 +203,7 @@ namespace Chiro.Adf.Collections.Generic
 
 		///<summary>
 		///Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.
-		///</summary>
+		/// </summary>
 		///
 		///<returns>
 		///true if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false. This method also returns false if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.
@@ -219,7 +219,7 @@ namespace Chiro.Adf.Collections.Generic
 
 		///<summary>
 		///Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.
-		///</summary>
+		/// </summary>
 		///
 		///<param name="array">The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1" />. The <see cref="T:System.Array" /> must have zero-based indexing.</param>
 		///<param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
@@ -234,7 +234,7 @@ namespace Chiro.Adf.Collections.Generic
 
 		///<summary>
 		///Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
-		///</summary>
+		/// </summary>
 		///
 		///<returns>
 		///true if the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only; otherwise, false.
@@ -251,7 +251,7 @@ namespace Chiro.Adf.Collections.Generic
 
 		///<summary>
 		///Returns an enumerator that iterates through the collection.
-		///</summary>
+		/// </summary>
 		///
 		///<returns>
 		///A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
@@ -261,7 +261,7 @@ namespace Chiro.Adf.Collections.Generic
 
 		///<summary>
 		///Returns an enumerator that iterates through a collection.
-		///</summary>
+		/// </summary>
 		///
 		///<returns>
 		///An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.

@@ -8,15 +8,27 @@ using System.Runtime.Serialization;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
+	/// <summary>
+	/// DataContract voor summiere info over iemands woonplaats
+	/// </summary>
 	[DataContract]
 	public class WoonPlaatsInfo
 	{
+		/// <summary>
+		/// ID van de woonplaats
+		/// </summary>
 		[DataMember]
 		public int ID { get; set; }
 
+		/// <summary>
+		/// Het postnummer van de gemeente waar de woonplaats zich bevindt
+		/// </summary>
 		[DataMember]
 		public int PostNummer { get; set; }
 
+		/// <summary>
+		/// De straatnaam
+		/// </summary>
 		[DataMember]
 		public String Naam { get; set; }
 	}

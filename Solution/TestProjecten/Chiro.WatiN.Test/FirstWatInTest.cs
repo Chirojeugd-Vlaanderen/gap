@@ -34,7 +34,7 @@ namespace Chiro.WatiN.Test
 		/// Dit is een eerste voorbeeldje dat niks specifiek test, de bedoeling hier is enkel om aan te
 		/// tonen hoe we de gemeenschappelijke delen van een test schrijven.
 		///
-		///</summary>
+		/// </summary>
 		///<remarks>
 		///</remarks>
 		public TestContext TestContext
@@ -68,7 +68,7 @@ namespace Chiro.WatiN.Test
 		// public static void MyClassCleanup() { }
 		//
 		// Use TestInitialize to run code before running each test 
-		// [TestInitialize()]
+		// [TestInitialize]
 		// public void MyTestInitialize() { }
 		//
 		// Use TestCleanup to run code after each test has run
@@ -183,7 +183,7 @@ namespace Chiro.WatiN.Test
 		}
 
 		// Use TestCleanup to run code after each test has run
-		[TestInitialize()]
+		[TestInitialize]
 		public void MyTestInitialize()
 		{
 			// Tussen elke test moeten we er voor zorgen dat alle data leeg is, dit wil zeggen dat voor

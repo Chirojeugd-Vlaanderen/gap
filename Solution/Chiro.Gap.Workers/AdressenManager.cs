@@ -63,8 +63,6 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="adresID">ID van het op te halen adres</param>
 		/// <param name="groepID">ID van de groep waaruit bewoners moeten worden gehaald</param>
-		/// <param name="alleGelieerdePersonen">Indien true, worden alle gelieerde personen van de bewoners mee opgehaald,
-		/// ook diegene waar je geen GAV voor bent.</param>
 		/// <returns>Het gevraagde adres met de relevante bewoners.</returns>
 		public Adres AdresMetBewonersOphalen(int adresID, int groepID)
 		{
@@ -84,7 +82,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				return _dao.BewonersOphalen(adresID, new int[] {groepID}, alleGelieerdePersonen);
+				return _dao.BewonersOphalen(adresID, new int[] { groepID }, alleGelieerdePersonen);
 			}
 			else
 			{
@@ -175,9 +173,9 @@ namespace Chiro.Gap.Workers
 						Properties.Resources.OngeldigPostNummer,
 						straatNaam,
 						postNr)
-				});	
+				});
 			}
-			
+
 			if (woonPlaatsNaam == String.Empty)
 			{
 				problemen.Add("WoonPlaatsNaam", new FoutBericht
@@ -187,7 +185,7 @@ namespace Chiro.Gap.Workers
 						Properties.Resources.WoonPlaatsOntbreekt,
 						straatNaam,
 						postNr)
-				});				
+				});
 			}
 
 			// Als er hier al fouten zijn: gewoon throwen.  Me hiel 't stad, mor ni me maa!

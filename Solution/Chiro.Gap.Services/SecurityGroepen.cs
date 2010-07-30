@@ -5,6 +5,9 @@
 
 namespace Chiro.Gap.Services
 {
+	/// <summary>
+	/// Static class met informatie over de securitygroepen die toegang mogen krijgen
+	/// </summary>
 	internal static class SecurityGroepen
 	{
 		public const string Gebruikers = @"CgUsers";

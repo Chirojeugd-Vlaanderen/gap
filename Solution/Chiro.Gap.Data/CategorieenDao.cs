@@ -35,10 +35,10 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// 
+		/// Alle categorieën ophalen die in de gegeven groep gebruikt worden (of werden)
 		/// </summary>
-		/// <param name="groepID"></param>
-		/// <returns></returns>
+		/// <param name="groepID">ID van de groep in kwestie</param>
+		/// <returns>Een lijst van categorieën</returns>
 		public IList<Categorie> AllesOphalen(int groepID)
 		{
 			using (var db = new ChiroGroepEntities())

@@ -1,8 +1,10 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 using Chiro.Gap.Domain;
 
@@ -13,18 +15,20 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	/// Excelexport, maar later hopelijk voor meer bruikbaar.
 	/// </summary>
 	[DataContract]
-	public class LidOverzicht: PersoonOverzicht
+	public class LidOverzicht : PersoonOverzicht
 	{
 		/// <summary>
 		/// Type lid (kind, leiding)
 		/// </summary>
 		[DataMember]
 		public LidType Type { get; set; }
+
 		/// <summary>
 		/// Afdelingen van lid
 		/// </summary>
 		[DataMember]
 		public List<AfdelingInfo> Afdelingen { get; set; }
+		
 		/// <summary>
 		/// Functies van lid
 		/// </summary>

@@ -17,26 +17,38 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	public interface ILedenDao : IDao<Lid>
 	{
 		/// <summary>
-		/// 
+		/// Een lijst ophalen van alle leden voor het opgegeven groepswerkjaar
 		/// </summary>
-		/// <param name="groepsWerkJaarID"></param>
-		/// <returns></returns>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+		/// <param name="sortering">Parameter waarop de gegevens gesorteerd moeten worden</param>
+		/// <returns>Een lijst alle leden voor het opgegeven groepswerkjaar</returns>
 		IList<Lid> AllesOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering);
 
 		/// <summary>
-		/// 
+		/// Haalt een pagina op van de gevraagde gegevens:
+		/// leden van een bepaalde groep in een gegeven werkjaar, die in de gegeven afdeling zitten
 		/// </summary>
-		/// <param name="groepsWerkJaarID"></param>
-		/// <param name="afdelingsID"></param>
-		/// <returns></returns>
+		/// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkjaar</param>
+		/// <param name="afdelingsID">ID van de afdeling waar de leden in moeten zitten</param>
+		/// <param name="sortering">Parameter waarop de gegevens gesorteerd zijn</param>
+		/// <returns>De leden die de groep in dat werkjaar heeft/had en die in de gegeven afdeling zitten/zaten</returns>
+		/// <remarks>
+		/// Pagineren gebeurt per werkjaar.
+		/// </remarks>
 		IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering);
 
 		/// <summary>
-		/// 
+		/// Haalt een pagina op van de gevraagde gegevens:
+		/// leden van een bepaalde groep in een gegeven werkjaar, die een bepaalde functie hebben/hadden
 		/// </summary>
-		/// <param name="groepsWerkJaarID"></param>
-		/// <param name="functieID"></param>
-		/// <returns></returns>
+		/// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkjaar</param>
+		/// <param name="functieID">ID van de functie die de leden moeten hebben</param>
+		/// <param name="sortering">Parameter waarop de gegevens gesorteerd zijn</param>
+		/// <returns>De leden met de gegeven functie die de groep in dat werkjaar heeft/had</returns>
+		/// <remarks>
+		/// Pagineren gebeurt per werkjaar.
+		/// Haalt GEEN afdeling mee op (nakijken of dit ook effectief niet nodig is?)
+		/// </remarks>
 		IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LedenSorteringsEnum sortering);
 
 		/// <summary>
@@ -87,10 +99,10 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths);
 
 		/// <summary>
-		/// 
+		/// Lid met afdelingsjaren, afdelingen en gelieerdepersoon
 		/// </summary>
-		/// <param name="lidID"></param>
-		/// <returns></returns>
+		/// <param name="lidID">ID van het lid waarvan we gegevens willen opvragen</param>
+		/// <returns>Een lid met afdelingsjaren, afdelingen en gelieerdepersoon</returns>
 		Lid OphalenMetDetails(int lidID);
 
 		/// <summary>
@@ -103,11 +115,15 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		// void LidMaken(int gelieerdeID);
 
 		/// <summary>
-		/// 
+		/// Haalt het lid op bepaald door <paramref name="gelieerdePersoonID"/> en
+		/// <paramref name="groepsWerkJaarID"/>, inclusief persoon, afdelingen, functies, groepswerkjaar
 		/// </summary>
-		/// <param name="gelieerdePersoonID"></param>
-		/// <param name="groepsWerkJaarID"></param>
-		/// <returns></returns>
+		/// <param name="gelieerdePersoonID">ID van de gelieerde persoon waarvoor het lidobject gevraagd is.</param>
+		/// <param name="groepsWerkJaarID">ID van groepswerkjaar in hetwelke het lidobject gevraagd is</param>
+		/// <returns>
+		/// Het lid bepaald door <paramref name="gelieerdePersoonID"/> en
+		/// <paramref name="groepsWerkJaarID"/>, inclusief persoon, afdelingen, functies, groepswerkjaar
+		/// </returns>
 		Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID);
 	}
 }

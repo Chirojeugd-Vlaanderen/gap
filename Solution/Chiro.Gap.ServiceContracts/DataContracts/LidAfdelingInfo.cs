@@ -10,6 +10,9 @@ using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
+	/// <summary>
+	/// DataContract voor summiere info over aangesloten leden/leiding en hun afdeling(en)
+	/// </summary>
 	[DataContract]
 	public class LidAfdelingInfo
 	{

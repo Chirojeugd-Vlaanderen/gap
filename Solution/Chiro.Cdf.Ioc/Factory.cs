@@ -14,9 +14,9 @@ namespace Chiro.Cdf.Ioc
 {
 	public static class Factory
 	{
-		private static object threadLock = new object();
+		private static readonly object ThreadLock = new object();
 
-		private static IUnityContainer _container = null;
+		private static IUnityContainer _container;
 		private static string _containerNaam = String.Empty;
 
 		public static IUnityContainer Container
@@ -50,7 +50,7 @@ namespace Chiro.Cdf.Ioc
 		/// <param name="containerNaam">Naam van de te gebruiken container</param>
 		public static void ContainerInit(string containerNaam)
 		{
-			lock (threadLock)
+			lock (ThreadLock)
 			{
 				if (_container != null /*&& _containerNaam != containerNaam*/)   // zie ticket #155
 				{
@@ -77,7 +77,7 @@ namespace Chiro.Cdf.Ioc
 
 		public static void Dispose()
 		{
-			lock (threadLock)
+			lock (ThreadLock)
 			{
 				if (_container != null)
 				{

@@ -4,11 +4,12 @@
 // </copyright>
 
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Properties;
 using System.Runtime.Serialization;
 
 using Chiro.Gap.Domain;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
@@ -20,63 +21,60 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	[DataContract]
 	public class PersoonInfo
 	{
+		/// <summary>
+		/// Het administratief nummer dat Chirojeugd Vlaanderen aan de persoon toekende
+		/// </summary>
 		[DisplayName(@"AD-nummer")]
 		[DataMember]
-		public int? AdNummer
-		{
-			get;
-			set;
-		}
+		public int? AdNummer { get; set; }
 
+		/// <summary>
+		/// De ID van de gelieerde persoon
+		/// </summary>
 		[DataMember]
-		public int GelieerdePersoonID
-		{
-			get;
-			set;
-		}
+		public int GelieerdePersoonID { get; set; }
 
+		/// <summary>
+		/// Het aantal jaren dat de persoon in leeftijd afwijkt van zijn/haar Chirogeneratiegenoten
+		/// </summary>
 		[DataMember]
 		[DisplayName(@"Chiroleeftijd")]
-        [Verplicht]
-		[Range(-8, 3, ErrorMessage = @"{0} is beperkt van {1} tot {2}.")]
-        [DisplayFormat(DataFormatString = "{0:#0;-#0;#0}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true)]
-		public int ChiroLeefTijd
-		{
-			get;
-			set;
-		}
+		[Verplicht]
+		[Range(-8, 3, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RangeError")]
+		[DisplayFormat(DataFormatString = "{0:#0;-#0;#0}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true)]
+		public int ChiroLeefTijd { get; set; }
 
+		/// <summary>
+		/// De voornaam van de persoon
+		/// </summary>
 		[Verplicht]
 		[DisplayName(@"Voornaam")]
 		[StringLengte(60), StringMinimumLengte(2)]
 		[DataMember]
-		public string VoorNaam
-		{
-			get;
-			set;
-		}
+		public string VoorNaam { get; set; }
 
+		/// <summary>
+		/// De familienaam van de persoon
+		/// </summary>
 		[Verplicht, StringLengte(160), StringMinimumLengte(2)]
 		[DisplayName(@"Familienaam")]
 		[DataMember]
-		public string Naam
-		{
-			get;
-			set;
-		}
+		public string Naam { get; set; }
 
-		// [DisplayFormat(DataFormatString="{0:d}", ApplyFormatInEditMode=true, ConvertEmptyStringToNull=true)]
-        [Verplicht] // Altijd? Ik ben niet zeker.
+		/// <summary>
+		/// De geboortedatum van de persoon
+		/// </summary>
+		[Verplicht] // OPM: Altijd? Ik ben niet zeker.
 		[DataType(DataType.Date)]
 		[DisplayName(@"Geboortedatum")]
+		// [DisplayFormat(DataFormatString="{0:d}", ApplyFormatInEditMode=true, ConvertEmptyStringToNull=true)]
 		[DatumInVerleden]
 		[DataMember]
-		public DateTime? GeboorteDatum
-		{
-			get;
-			set;
-		}
+		public DateTime? GeboorteDatum { get; set; }
 
+		/// <summary>
+		/// Enumwaarde voor het geslacht van de persoon
+		/// </summary>
 		[Verplicht]
 		[DataMember]
 		public GeslachtsType Geslacht

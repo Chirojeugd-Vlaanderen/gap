@@ -12,28 +12,28 @@ using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
-    public class ErrorController : Controller
-    {
-        //
-        // GET: /Error/
-        public ActionResult Index()
-        {
+	public class ErrorController : Controller
+	{
+		//
+		// GET: /Error/
+		public ActionResult Index()
+		{
 			Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            return View();
-        }
+			return View();
+		}
 
 		public ActionResult Index(ExceptionContext exceptionContext)
 		{
-			if(exceptionContext.Exception.GetType() == typeof(FaultException<FoutNummerFault>))
+			if (exceptionContext.Exception.GetType() == typeof(FaultException<FoutNummerFault>))
 			{
-				var fault = (FaultException<FoutNummerFault>) exceptionContext.Exception;
-				if(fault.Detail.FoutNummer == FoutNummer.GeenDatabaseVerbinding)
+				var fault = (FaultException<FoutNummerFault>)exceptionContext.Exception;
+				if (fault.Detail.FoutNummer == FoutNummer.GeenDatabaseVerbinding)
 				{
 					return View("GeenVerbinding");
 				}
 				else
 				{
-					return View();	
+					return View();
 				}
 			}
 			else
@@ -43,11 +43,11 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 		}
 
-    	//
+		//
 		// GET: /Error/NietGevonden
 		public ActionResult NietGevonden()
 		{
-			Response.StatusCode = (int) HttpStatusCode.NotFound;
+			Response.StatusCode = (int)HttpStatusCode.NotFound;
 			return View("Index");
 		}
 
@@ -56,5 +56,5 @@ namespace Chiro.Gap.WebApp.Controllers
 			Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 			return View("GeenVerbinding");
 		}
-    }
+	}
 }

@@ -1,14 +1,11 @@
-﻿using Chiro.Gap.Orm;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Chiro.Gap.Orm.Test
 {
-    
-    
     /// <summary>
-    ///This is a test class for FunctieTest and is intended
-    ///to contain all FunctieTest Unit Tests
-    ///</summary>
-	[TestClass()]
+    /// This is a test class for FunctieTest and is intended
+    /// to contain all FunctieTest Unit Tests
+    /// </summary>
+	[TestClass]
 	public class FunctieTest
 	{
     	#region Additional test attributes
@@ -28,7 +25,7 @@ namespace Chiro.Gap.Orm.Test
 		//}
 		//
 		//Use TestInitialize to run code before running each test
-		//[TestInitialize()]
+		//[TestInitialize]
 		//public void MyTestInitialize()
 		//{
 		//}

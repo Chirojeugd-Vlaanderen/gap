@@ -6,6 +6,7 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Properties;
 using System.Runtime.Serialization;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
@@ -18,35 +19,49 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	[DataContract]
 	public class AdresInfo
 	{
-
 		/// <summary>
 		/// Het AdresID
 		/// </summary>
 		[DataMember]
 		public int ID { get; set; }
 
+		/// <summary>
+		/// Het busnummer of de buscode
+		/// </summary>
 		[DataMember]
 		public string Bus { get; set; }
 
-        [Verplicht]
+		/// <summary>
+		/// Het postnummer
+		/// </summary>
+		[Verplicht]
 		[DataMember]
-        [Range(1000, 9999, ErrorMessage = "{0} is beperkt van {1} tot {2}.")]
+		[Range(1000, 9999, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RangeError")]
 		public int PostNr { get; set; }
 
+		/// <summary>
+		/// Het huisnummer
+		/// </summary>
 		[DataMember]
-        [Range(0, int.MaxValue, ErrorMessage = "{0} is beperkt van {1} tot {2}.")]
+		[Range(0, 2147483647, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RangeError")]
 		public int? HuisNr { get; set; }
 
+		/// <summary>
+		/// Naam van de straat
+		/// </summary>
 		[DataMember]
 		[DisplayName(@"Straat")]
-        [Verplicht]
-        [StringLengte(80)]
+		[Verplicht]
+		[StringLengte(80)]
 		public String StraatNaamNaam { get; set; }
 
+		/// <summary>
+		/// Naam van de stad of gemeente
+		/// </summary>
 		[DataMember]
 		[DisplayName(@"Woonplaats")]
-        [Verplicht]
-        [StringLengte(80)]
+		[Verplicht]
+		[StringLengte(80)]
 		public String WoonPlaatsNaam { get; set; }
 	}
 }

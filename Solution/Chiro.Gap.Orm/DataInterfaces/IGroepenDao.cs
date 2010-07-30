@@ -12,13 +12,22 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	/// </summary>
 	public interface IGroepenDao : IDao<Groep>
 	{
-		Groep OphalenMetAfdelingen(int groepID);
+		/// <summary>
+		/// Ophalen van groep, groepswerkjaar, afdeling, afdelingsjaar en officiële afdelingen 
+		/// voor gegeven groepswerkjaar.
+		/// </summary>
+		/// <remarks>Deze functie haalde origineel de afdelingen op voor een groep in het
+		/// huidige werkjaar, maar 'huidige werkjaar' vind ik precies wat veel business
+		/// voor in de DAL.</remarks>
+		/// <param name="groepsWerkJaarID">ID van gevraagde groepswerkjaar</param>
+		/// <returns>Groep, afdelingsjaar, afdelingen en officiële afdelingen</returns>
+		Groep OphalenMetAfdelingen(int groepsWerkJaarID);
 
 		/// <summary>
-		/// 
+		/// Haalt een groep op met de werkjaren waarin ze aangesloten leden had
 		/// </summary>
-		/// <param name="groepID">ID van de groep waar het over gaat</param>
-		/// <returns></returns>
+		/// <param name="groepID">ID van de groep in kwestie</param>
+		/// <returns>De groep met haar groepswerkjaren</returns>
 		Groep OphalenMetGroepsWerkJaren(int groepID);
 
 		/// <summary>

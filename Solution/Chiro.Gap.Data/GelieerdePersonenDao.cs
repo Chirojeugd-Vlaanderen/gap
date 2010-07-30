@@ -46,7 +46,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>De gevraagde lijst gelieerde personen</returns>
 		public IList<GelieerdePersoon> AllenOphalen(
 			int groepID,
-			PersoonSorteringsEnum sortering, 
+			PersoonSorteringsEnum sortering,
 			params Expression<Func<GelieerdePersoon, object>>[] paths)
 		{
 			IList<GelieerdePersoon> result;
@@ -72,9 +72,9 @@ namespace Chiro.Gap.Data.Ef
 
 		/// <summary>
 		/// Sorteert een lijst van personen. Eerst volgens de gegeven ordening, dan steeds op naam.
-		/// 
+		/// <para />
 		/// De sortering is vrij complex om met meerdere opties rekening te houden.
-		/// 
+		/// <para />
 		/// Steeds wordt eerst gesorteerd op lege velden/gevulde velden, de lege komen laatst.
 		/// Dan wordt gesorteerd op "sortering"
 		///		Naam => Naam+Voornaam
@@ -85,18 +85,18 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="lijst">De te sorteren lijst</param>
 		/// <param name="sortering">Hoe te sorteren</param>
 		/// <returns>De gesorteerde lijst!!! In place sorteren lijkt niet mogelijk!!!</returns>
-		private static IEnumerable<GelieerdePersoon> SorteerLijst(IEnumerable<GelieerdePersoon> gpQuery, PersoonSorteringsEnum sortering)
+		private static IEnumerable<GelieerdePersoon> SorteerLijst(IEnumerable<GelieerdePersoon> lijst, PersoonSorteringsEnum sortering)
 		{
 			switch (sortering)
 			{
 				case PersoonSorteringsEnum.Naam:
-					return gpQuery
+					return lijst
 						.OrderBy(gp => String.Format(
 									"{0} {1}",
 									gp.Persoon.Naam,
 									gp.Persoon.VoorNaam));
 				case PersoonSorteringsEnum.Leeftijd:
-					return gpQuery
+					return lijst
 						.OrderBy(gp => gp.Persoon.GeboorteDatum == null)
 						.ThenByDescending(gp => gp.Persoon.GeboorteDatum)
 						.ThenBy(gp => String.Format(
@@ -104,15 +104,15 @@ namespace Chiro.Gap.Data.Ef
 									gp.Persoon.Naam,
 									gp.Persoon.VoorNaam));
 				case PersoonSorteringsEnum.Categorie:
-					return gpQuery
-						.OrderBy(gp => gp.Categorie.FirstOrDefault()== null)
+					return lijst
+						.OrderBy(gp => gp.Categorie.FirstOrDefault() == null)
 						.ThenBy(gp => (gp.Categorie.FirstOrDefault() == null ? null : gp.Categorie.First().Naam))
 						.ThenBy(gp => String.Format(
 									"{0} {1}",
 									gp.Persoon.Naam,
 									gp.Persoon.VoorNaam));
-				default: //Stom dat C# niet kan detecteren dat alle cases gecontroleerd zijn?
-					throw new Exception();
+				default:
+					throw new NotImplementedException();
 			}
 		}
 
@@ -150,7 +150,7 @@ namespace Chiro.Gap.Data.Ef
 				groepsWerkJaarID,
 				pagina,
 				paginaGrootte,
-				sortering, 
+				sortering,
 				out aantalTotaal);
 		}
 
@@ -172,7 +172,7 @@ namespace Chiro.Gap.Data.Ef
 			int groepsWerkJaarID,
 			int pagina,
 			int paginaGrootte,
-			PersoonSorteringsEnum sortering, 
+			PersoonSorteringsEnum sortering,
 			out int aantalTotaal)
 		{
 			IList<GelieerdePersoon> lijst;
@@ -202,8 +202,7 @@ namespace Chiro.Gap.Data.Ef
 							l => l.GelieerdePersoon.ID,
 							relevanteGpIDs))
 				 where ld.GroepsWerkJaar.ID == groepsWerkJaarID
-				 select ld
-				).ToList();
+				 select ld).ToList();
 			}
 
 			Utility.DetachObjectGraph(lijst);
@@ -231,17 +230,16 @@ namespace Chiro.Gap.Data.Ef
 			using (var db = new ChiroGroepEntities())
 			{
 				// Haal alle personen in de gevraagde categorie op
-				
+
 				// Met de oorspronkelijke query kreeg ik het niet geregeld:
-                                //                              
+				//                              
 				//  var query = (from c in db.Categorie.Include(cat => cat.GelieerdePersoon.First().Persoon)
 				//                         where c.ID == categorieID
 				//                         select c).FirstOrDefault().GelieerdePersoon;
 
-
 				var query = from gp in db.GelieerdePersoon.Include(gp => gp.Categorie)
-				            where gp.Categorie.Any(cat => cat.ID == categorieID)
-				            select gp;
+							where gp.Categorie.Any(cat => cat.ID == categorieID)
+							select gp;
 
 				var queryMetExtras = IncludesToepassen(
 					query as ObjectQuery<GelieerdePersoon>,
@@ -260,8 +258,8 @@ namespace Chiro.Gap.Data.Ef
 				{
 					// Haal de groep van de gevraagde categorie op
 					g = (from c in db.Categorie
-					     where c.ID == categorieID
-					     select c.Groep).FirstOrDefault();
+						 where c.ID == categorieID
+						 select c.Groep).FirstOrDefault();
 
 					// Haal het huidige groepswerkjaar van de groep op
 					var huidigWj = (
@@ -281,8 +279,8 @@ namespace Chiro.Gap.Data.Ef
 
 					(from l in db.Lid.Include(ld => ld.GelieerdePersoon)
 						.Where(Utility.BuildContainsExpression<Lid, int>(ld => ld.GelieerdePersoon.ID, relevanteGpIDs))
-							where l.GroepsWerkJaar.WerkJaar == huidigWj
-							select l).ToList();
+					 where l.GroepsWerkJaar.WerkJaar == huidigWj
+					 select l).ToList();
 
 					// !LET OP! Bovenstaande variabele is weliswaar never used, maar is wel nodig
 					// om de huidige leden in de objectcontext te laden! Laten staan dus!
@@ -294,10 +292,10 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// 
+		/// Haalt de gelieerde personen op die bij de gegeven ID's horen
 		/// </summary>
-		/// <param name="gelieerdePersonenIDs"></param>
-		/// <returns></returns>
+		/// <param name="gelieerdePersonenIDs">Een lijst van ID's van gelieerde personen</param>
+		/// <returns>De gelieerde personen die bij de <paramref name="gelieerdePersonenIDs"/> horen</returns>
 		public override IList<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersonenIDs)
 		{
 			using (var db = new ChiroGroepEntities())
@@ -345,10 +343,10 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// 
+		/// Plakt de groep aan de gelieerde persoon
 		/// </summary>
-		/// <param name="p"></param>
-		/// <returns></returns>
+		/// <param name="p">De gelieerde persoon in kwestie</param>
+		/// <returns>De gelieerde persoon met zijn/haar groep</returns>
 		public GelieerdePersoon GroepLaden(GelieerdePersoon p)
 		{
 			Debug.Assert(p != null);
@@ -379,7 +377,7 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// 
+		/// TODO: (implementeren en) documenteren
 		/// </summary>
 		/// <returns></returns>
 		public IEnumerable<CommunicatieType> CommunicatieTypesOphalen()
@@ -388,11 +386,13 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// 
+		/// Haalt een lijst op van gelieerde personen (met persoons-, adres- en communicatiegegevens)
+		/// die gekoppeld zijn aan de gegeven groep en bij wie de <paramref name="zoekStringNaam"/>
+		/// voorkomt in hun naam
 		/// </summary>
-		/// <param name="groepID"></param>
-		/// <param name="zoekStringNaam"></param>
-		/// <returns></returns>
+		/// <param name="groepID">ID van de groep waar de gelieerde persoon aan gekoppeld moet zijn</param>
+		/// <param name="zoekStringNaam">De zoekterm</param>
+		/// <returns>Een lijst van gelieerde personen die aan de voorwaarden voldoen</returns>
 		public IList<GelieerdePersoon> ZoekenOpNaam(int groepID, string zoekStringNaam)
 		{
 			using (var db = new ChiroGroepEntities())
@@ -488,9 +488,9 @@ namespace Chiro.Gap.Data.Ef
 		}*/
 
 		/// <summary>
-		/// 
+		/// Haalt een lijst op met de communicatietypes
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>Een lijst met communicatietypes</returns>
 		public IEnumerable<CommunicatieType> OphalenCommunicatieTypes()
 		{
 			using (var db = new ChiroGroepEntities())

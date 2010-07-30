@@ -17,10 +17,10 @@ namespace Chiro.Gap.Data.Ef
 	public class CommunicatieTypeDao : Dao<CommunicatieType, ChiroGroepEntities>, ICommunicatieTypeDao
 	{
 		/// <summary>
-		/// 
+		/// Haalt het communicatietype op met de gegeven ID
 		/// </summary>
-		/// <param name="communicatieTypeID"></param>
-		/// <returns></returns>
+		/// <param name="communicatieTypeID">ID van het communicatietype in kwestie</param>
+		/// <returns>Het communicatietype met de gegeven ID</returns>
 		public override CommunicatieType Ophalen(int communicatieTypeID)
 		{
 			using (var db = new ChiroGroepEntities())

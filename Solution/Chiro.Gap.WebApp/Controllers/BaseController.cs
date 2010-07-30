@@ -191,6 +191,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 		}
 
+		/*
 		protected override void OnException(ExceptionContext filterContext)
 		{
 			try
@@ -216,5 +217,6 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			System.IO.File.AppendAllText(pad, boodschap.ToString());
 		}
+		 */
 	}
 }

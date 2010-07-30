@@ -8,12 +8,21 @@ using System.Runtime.Serialization;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
+	/// <summary>
+	/// DataContract voor summiere info over straten
+	/// </summary>
 	[DataContract]
 	public class StraatInfo
 	{
+		/// <summary>
+		/// Het postnummer van de gemeente waar de straat ligt
+		/// </summary>
 		[DataMember]
 		public int PostNummer { get; set; }
 
+		/// <summary>
+		/// De straatnaam zelf
+		/// </summary>
 		[DataMember]
 		public String Naam { get; set; }
 	}

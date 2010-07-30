@@ -14,9 +14,9 @@ namespace Chiro.Gap.WebApp.Test
     
     
     /// <summary>
-    ///This is a test class for GroepControllerTest and is intended
-    ///to contain all GroepControllerTest Unit Tests
-    ///</summary>
+    /// This is a test class for GroepControllerTest and is intended
+    /// to contain all GroepControllerTest Unit Tests
+    /// </summary>
 	[TestClass]
 	public class GroepControllerTest
 	{
@@ -37,7 +37,7 @@ namespace Chiro.Gap.WebApp.Test
 		//}
 		//
 		//Use TestInitialize to run code before running each test
-		//[TestInitialize()]
+		//[TestInitialize]
 		//public void MyTestInitialize()
 		//{
 		//}
