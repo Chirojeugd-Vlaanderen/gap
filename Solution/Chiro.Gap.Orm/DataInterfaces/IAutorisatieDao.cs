@@ -15,13 +15,17 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	public interface IAutorisatieDao : IDao<GebruikersRecht>
 	{
 		#region Alle records in GebruikersRecht doorzoeken
+		
 		/// <summary>
-		/// Haalt rechten op die een gebruiker heeft op een groep.
+		/// Haalt de rechten op die de gebruiker met de opgegeven <paramref name="login"/> heeft of had
+		/// voor de groep met de opgegeven <paramref name="groepID"/>
 		/// </summary>
 		/// <param name="login">De gebruikersnaam van de bezoeker</param>
 		/// <param name="groepID">ID van de groep</param>
-		/// <returns><c>Null</c> als geen gebruikersrechten gevonden,
-		/// anders een GebruikersRecht-object</returns>
+		/// <returns>
+		/// Een GebruikersRecht-object waarmee we kunnen nagaan welke rechten de gebruiker heeft of had
+		/// m.b.t. de groep waar het over gaat
+		/// </returns>
 		/// <remarks>Let op: de gebruikersrechten kunnen vervallen zijn!</remarks>
 		GebruikersRecht RechtenMbtGroepGet(string login, int groepID);
 
@@ -30,7 +34,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// (Dit komt erop neer dat de gelieerde persoon gelieerd is aan een
 		/// groep waar de gebruiker GAV van is.)
 		/// </summary>
-		/// <param name="login">De gebruikersnaam van de bezoeker</param>
+		/// <param name="login">De login van de gebruiker in kwestie</param>
 		/// <param name="gelieerdePersoonID">ID van gelieerde persoon</param>
 		/// <returns><c>Null</c> indien geen gebruikersrechten gevonden,
 		/// anders een GebruikersRecht-object</returns>
@@ -44,8 +48,8 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// Controleert of een gebruiker *nu* GAV is van een
 		/// gegeven groep
 		/// </summary>
-		/// <param name="login">De gebruikersnaam </param>
-		/// <param name="groepID">ID van de groep</param>
+		/// <param name="login">De login van de gebruiker in kwestie</param>
+		/// <param name="groepID">De ID van de groep die de gebruiker wil zien en/of bewerken</param>
 		/// <returns><c>True</c> als de gebruiker nu GAV is</returns>
 		bool IsGavGroep(string login, int groepID);
 
@@ -108,32 +112,30 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		bool IsGavLid(string login, int lidID);
 
 		/// <summary>
-		/// Haalt lijst groepen op waaraan de GAV met gegeven
-		/// login MOMENTEEL gekoppeld is
+		/// Haalt de groepen op waarvoor de gebruiker met de opgegeven login
+		/// *op dit moment* Gebruikersrechten heeft
 		/// </summary>
-		/// <param name="login">Gebruikersnaam van de GAV</param>
-		/// <returns>Lijst met groepen</returns>
+		/// <param name="login">De login van de gebruiker in kwestie</param>
+		/// <returns>Lijst met een of meerdere groepen</returns>
 		IEnumerable<Groep> MijnGroepenOphalen(string login);
 
 		/// <summary>
-		/// Verwijdert uit een lijst met GelieerdePersonenID's de ID's
-		/// waarvan een gegeven gebruiker geen GAV is
+		/// Haalt uit een lijst van ID's gelieerde personen degene die onder de *huidige* gebruikersrechten vallen
+		/// van de gebruiker met de opgegeven login
 		/// </summary>
-		/// <param name="gelieerdePersonenIDs">Lijst met GelieerdePersonenID's</param>
-		/// <param name="login">De gebruikersnaam van de bezoeker</param>
-		/// <returns>Een lijst met de ID's van GelieerdePersonen waar de gebruiker
-		/// GAV over is. (hoeveel indirectie kan er in 1 zin?)</returns>
+		/// <param name="gelieerdePersonenIDs">Een lijst van ID's van gelieerde personen</param>
+		/// <param name="login">De login van de gebruiker in kwestie</param>
+		/// <returns>Een lijst van ID's van de gelieerde personen die de gebruiker mag bekijken en bewerken</returns>
 		IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs, string login);
 
 		/// <summary>
-		/// Verwijdert uit een lijst met PersonenID's de ID's
-		/// waarvan een gegeven gebruiker geen GAV is
+		/// Haalt uit een lijst van ID's personen degene die onder de *huidige* gebruikersrechten vallen
+		/// van de gebruiker met de opgegeven login
 		/// </summary>
 		/// <param name="personenIDs">Lijst met PersonenID's</param>
-		/// <param name="p"></param>
-		/// <returns>Een lijst met de ID's van Personen waar de gebruiker
-		/// GAV over is. (hoeveel indirectie kan er in 1 zin?)</returns>
-		IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs, string p); // TODO: parameter p documenteren (#340)
+		/// <param name="login">De login van de gebruiker in kwestie</param>
+		/// <returns>Een lijst van ID's van de personen die de gebruiker mag bekijken en bewerken</returns>
+		IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs, string login);
 
 		/// <summary>
 		/// Controleert of een gegeven gebruiker GAV is van de groep

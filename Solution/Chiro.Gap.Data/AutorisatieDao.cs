@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Objects;
 using System.Linq;
 
@@ -27,11 +26,12 @@ namespace Chiro.Gap.Data.Ef
 		/// voor de groep met de opgegeven <paramref name="groepID"/>
 		/// </summary>
 		/// <param name="login">De gebruikersnaam van de bezoeker</param>
-		/// <param name="groepID">ID van de groep die de bezoeker wil bekijken/bewerken</param>
+		/// <param name="groepID">ID van de groep</param>
 		/// <returns>
 		/// Een GebruikersRecht-object waarmee we kunnen nagaan welke rechten de gebruiker heeft of had
 		/// m.b.t. de groep waar het over gaat
 		/// </returns>
+		/// <remarks>Let op: de gebruikersrechten kunnen vervallen zijn!</remarks>
 		public GebruikersRecht RechtenMbtGroepGet(string login, int groepID)
 		{
 			GebruikersRecht resultaat;
@@ -62,12 +62,11 @@ namespace Chiro.Gap.Data.Ef
 		/// Haalt de rechten op die de gebruiker met de opgegeven <paramref name="login"/> heeft of had
 		/// voor de gelieerde persoon met de opgegeven <paramref name="gelieerdePersoonID"/>
 		/// </summary>
-		/// <param name="login"></param>
-		/// <param name="gelieerdePersoonID"></param>
-		/// <returns>
-		/// Een GebruikersRecht-object waarmee we kunnen nagaan welke rechten de gebruiker heeft of had
-		/// m.b.t. de gelieerde persoon waar het over gaat
-		/// </returns>
+		/// <param name="login">De gebruikersnaam van de bezoeker</param>
+		/// <param name="gelieerdePersoonID">ID van gelieerde persoon</param>
+		/// <returns><c>Null</c> indien geen gebruikersrechten gevonden,
+		/// anders een GebruikersRecht-object</returns>
+		/// <remarks>Let op: de gebruikersrechten kunnen vervallen zijn!</remarks>
 		public GebruikersRecht RechtenMbtGelieerdePersoonGet(string login, int gelieerdePersoonID)
 		{
 			GebruikersRecht resultaat;
@@ -98,21 +97,20 @@ namespace Chiro.Gap.Data.Ef
 		/// Kijkt in de tabel Gebruikersrecht of er een record is dat de  opgegeven 
 		/// <paramref name="login"/> aan de opgegeven <paramref name="groepID"/> koppelt.
 		/// </summary>
-		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
+		/// <param name="login">De login van de gebruiker in kwestie</param>
 		/// <param name="groepID">De ID van de groep die de gebruiker wil zien en/of bewerken</param>
-		/// <returns><c>True</c> als de bezoeker GAV is van de gevraagde groep, 
-		/// <c>false</c> in het andere geval</returns>
+		/// <returns><c>True</c> als de gebruiker nu GAV is</returns>
 		public bool IsGavGroep(string login, int groepID)
 		{
 			using (var db = new ChiroGroepEntities())
 			{
-					var query
-										= from r in db.GebruikersRecht
-										  where r.Groep.ID == groepID && r.Gav.Login == login
-										  && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
-										  select r;
+				var query
+									= from r in db.GebruikersRecht
+									  where r.Groep.ID == groepID && r.Gav.Login == login
+									  && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
+									  select r;
 
-					return query.Count() > 0;
+				return query.Count() > 0;
 			}
 		}
 
@@ -120,46 +118,37 @@ namespace Chiro.Gap.Data.Ef
 		/// Kijkt na in de tabel Gebruikersrecht of de persoon gelieerd is aan een groep
 		/// waar de gebruiker GAV van is
 		/// </summary>
-		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
-		/// <param name="gelieerdePersoonID">De ID van de gelieerde persoon 
-		/// die de gebruiker wil zien en/of bewerken</param>
-		/// <returns><c>True</c> als de bezoeker GAV is van de groep waar de persoon aan gelieerd is, 
+		/// <param name="login">De login van de gebruiker in kwestie</param>
+		/// <param name="gelieerdePersoonID">De ID van de gelieerde persoon</param>
+		/// <returns><c>True</c> als de bezoeker nu GAV is van de groep waar de persoon aan gelieerd is, 
 		/// <c>false</c> in het andere geval</returns>
 		public bool IsGavGelieerdePersoon(string login, int gelieerdePersoonID)
 		{
-			bool resultaat;
-
-			using (var db = new ChiroGroepEntities())
+			if (gelieerdePersoonID == 0) // is het geval bij een nieuwe gelieerde persoon
 			{
-				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
-				var query1
-					= from r in db.GelieerdePersoon
-					  where r.ID == gelieerdePersoonID
-					  select r;
-
-				if (query1.Count() == 0)
-				{
-					// Geen persoon gevonden => geen GAV.
-					return false;
-				}
-
-				var query
-					= from GebruikersRecht r in db.GebruikersRecht
-					  where r.Gav.Login == login && r.Groep.GelieerdePersoon.Any(gp => gp.ID == gelieerdePersoonID)
-					  && (r.VervalDatum == null || r.VervalDatum >= DateTime.Now)
-					  select r;
-
-				resultaat = query.Count() > 0;
+				return true;
 			}
+			else
+			{
+				using (var db = new ChiroGroepEntities())
+				{
+					var query
+						= from GebruikersRecht r in db.GebruikersRecht
+						  where r.Gav.Login == login && r.Groep.GelieerdePersoon.Any(gp => gp.ID == gelieerdePersoonID)
+						  && (r.VervalDatum == null || r.VervalDatum >= DateTime.Now)
+						  select r;
 
-			return resultaat;
+					return query.Count() > 0;
+				}
+			}
 		}
 
 		/// <summary>
-		/// 
+		/// Haalt de groepen op waarvoor de gebruiker met de opgegeven login
+		/// *op dit moment* Gebruikersrechten heeft
 		/// </summary>
-		/// <param name="login"></param>
-		/// <returns></returns>
+		/// <param name="login">De login van de gebruiker in kwestie</param>
+		/// <returns>Lijst met een of meerdere groepen</returns>
 		public IEnumerable<Groep> MijnGroepenOphalen(string login)
 		{
 			using (var db = new ChiroGroepEntities())
@@ -179,11 +168,12 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// 
+		/// Haalt uit een lijst van ID's gelieerde personen degene die onder de *huidige* gebruikersrechten vallen
+		/// van de gebruiker met de opgegeven login
 		/// </summary>
-		/// <param name="gelieerdePersonenIDs"></param>
-		/// <param name="login"></param>
-		/// <returns></returns>
+		/// <param name="gelieerdePersonenIDs">Een lijst van ID's van gelieerde personen</param>
+		/// <param name="login">De login van de gebruiker in kwestie</param>
+		/// <returns>Een lijst van ID's van de gelieerde personen die de gebruiker mag bekijken en bewerken</returns>
 		public IList<int> EnkelMijnGelieerdePersonen(IEnumerable<int> gelieerdePersonenIDs, string login)
 		{
 			List<int> resultaat;
@@ -203,11 +193,12 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// 
+		/// Haalt uit een lijst van ID's personen degene die onder de *huidige* gebruikersrechten vallen
+		/// van de gebruiker met de opgegeven login
 		/// </summary>
-		/// <param name="personenIDs"></param>
-		/// <param name="login"></param>
-		/// <returns></returns>
+		/// <param name="personenIDs">Een lijst van ID's van personen</param>
+		/// <param name="login">De login van de gebruiker in kwestie</param>
+		/// <returns>Een lijst van ID's van de personen die de gebruiker mag bekijken en bewerken</returns>
 		public IList<int> EnkelMijnPersonen(IEnumerable<int> personenIDs, string login)
 		{
 			List<int> resultaat;
@@ -227,282 +218,238 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// 
+		/// Gaat na of de gebruiker met de opgegeven login *nu* GAV-rechten heeft 
+		/// op de persoon met de opgegeven ID
 		/// </summary>
-		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
-		/// <param name="persoonID"></param>
+		/// <param name="login">De login van de gebruiker in kwestie</param>
+		/// <param name="persoonID">De ID van de persoon over wie het gaat</param>
 		/// <returns><c>True</c> als de bezoeker GAV is, 
 		/// <c>false</c> in het andere geval</returns>
 		public bool IsGavPersoon(string login, int persoonID)
 		{
-			bool resultaat;
-
-			using (var db = new ChiroGroepEntities())
+			// (moet deze test misschen eerder in de business dan hier?)
+			if (persoonID == 0)  // is het geval bij nieuwe personen
 			{
-				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
-				// TODO: nakijken of je niet beter gewoon test of persoonID == 0.
-				// (en dat dan misschen nog eerder in de business dan hier.)
-				// Ik ben er niet meer van overtuigd of je true moet krijgen als je een onbestaande
-				// persoonID meegeeft.  Bovendien doe je nu 2 query's op de DB, terwijl het ook met
-				// 1 query kan.
-				var query1
-					= from r in db.Persoon
-					  where r.ID == persoonID
-					  select r;
-
-				if (query1.Count() == 0)
-				{
-					return true;
-				}
-
-				var query2
-					= from GebruikersRecht r in db.GebruikersRecht
-					  where r.Gav.Login == login && r.Groep.GelieerdePersoon.Any(gp => gp.Persoon.ID == persoonID)
-					  && (r.VervalDatum == null || r.VervalDatum >= DateTime.Now)
-					  select r;
-
-				resultaat = query2.Count() > 0;
+				return true;
 			}
+			else
+			{
+				using (var db = new ChiroGroepEntities())
+				{
+					var query
+						= from GebruikersRecht r in db.GebruikersRecht
+						  where r.Gav.Login == login && r.Groep.GelieerdePersoon.Any(gp => gp.Persoon.ID == persoonID)
+								&& (r.VervalDatum == null || r.VervalDatum >= DateTime.Now)
+						  select r;
 
-			return resultaat;
+					return query.Count() > 0;
+				}
+			}
 		}
 
 		/// <summary>
-		/// 
+		/// Gaat na of de gebruiker met de opgegeven login *nu* GAV-rechten heeft 
+		/// voor het groepswerkjaar met de opgegeven ID
 		/// </summary>
-		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
-		/// <param name="groepsWerkJaarID"></param>
+		/// <param name="login">De login van de gebruiker in kwestie</param>
+		/// <param name="groepsWerkJaarID">De ID van het groepswerkjaar in kwestie</param>
 		/// <returns><c>True</c> als de bezoeker GAV is van de gevraagde groep in het
 		/// gekoppelde werkjaar, <c>false</c> in het andere geval</returns>
 		public bool IsGavGroepsWerkJaar(string login, int groepsWerkJaarID)
 		{
-			bool resultaat;
-
-			using (var db = new ChiroGroepEntities())
+			if (groepsWerkJaarID == 0) // is het geval bij een nieuw groepswerkjaar
 			{
-				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
-				var query1
-					= from r in db.GroepsWerkJaar
-					  where r.ID == groepsWerkJaarID
-					  select r;
-
-				if (query1.Count() == 0)
-				{
-					return true;
-				}
-
-				var query
-					= from GebruikersRecht r in db.GebruikersRecht
-					  where r.Gav.Login == login && r.Groep.GroepsWerkJaar.Any(gwj => gwj.ID == groepsWerkJaarID)
-					  && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
-					  select r;
-
-				resultaat = query.Count() > 0;
+				return true;
 			}
-			return resultaat;
+			else
+			{
+				using (var db = new ChiroGroepEntities())
+				{
+					var query
+						= from GebruikersRecht r in db.GebruikersRecht
+						  where r.Gav.Login == login && r.Groep.GroepsWerkJaar.Any(gwj => gwj.ID == groepsWerkJaarID)
+								&& (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
+						  select r;
+
+					return query.Count() > 0;
+				}
+			}
 		}
 
 		/// <summary>
-		/// Controleert of een gebruiker *nu* GAV is van de groep
-		/// horende bij de gegeven afdeling
+		/// Gaat na of de gebruiker met de opgegeven login *nu* GAV-rechten heeft 
+		/// voor de groep die bij de gegeven afdeling hoort
 		/// </summary>
-		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
-		/// <param name="afdelingsID">ID van de gegeven afdeling</param>
-		/// <returns><c>True</c> als de bezoeker Gav is voor de bedoelde afdeling,
+		/// <param name="login">De login van de gebruiker in kwestie</param>
+		/// <param name="afdelingsID">ID van de afdeling in kwestie</param>
+		/// <returns><c>True</c> als de bezoeker GAV is voor de bedoelde afdeling,
 		/// <c>false</c> als dat niet het geval is</returns>
 		public bool IsGavAfdeling(string login, int afdelingsID)
 		{
-			bool resultaat;
-
-			using (var db = new ChiroGroepEntities())
+			if (afdelingsID == 0) // is het geval bij nieuwe afdelingen
 			{
-				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
-				var query1
-					= from r in db.Afdeling
-					  where r.ID == afdelingsID
-					  select r;
-
-				if (query1.Count() == 0)
-				{
-					return true;
-				}
-
-				var query =
-					from r in db.GebruikersRecht
-					where r.Gav.Login == login
-					&& r.Groep.Afdeling.Any(afd => afd.ID == afdelingsID)
-					&& (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
-					select r;
-
-				resultaat = query.Count() > 0;
+				return true;
 			}
-			return resultaat;
+			else
+			{
+				using (var db = new ChiroGroepEntities())
+				{
+					var query =
+						from r in db.GebruikersRecht
+						where r.Gav.Login == login
+							  && r.Groep.Afdeling.Any(afd => afd.ID == afdelingsID)
+							  && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
+						select r;
+
+					return query.Count() > 0;
+				}
+			}
 		}
 
 		/// <summary>
-		/// Controleert of een gebruiker *nu* GAV is van de groep
-		/// horende bij het gegeven afdelingsJaar
+		/// Gaat na of de gebruiker met de opgegeven login *nu* GAV-rechten heeft 
+		/// voor de groep die bij het gegeven afdelingsJaar hoort
 		/// </summary>
-		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
+		/// <param name="login">De login van de gebruiker in kwestie</param>
 		/// <param name="afdelingsJaarID">ID van het gegeven afdelingsJaar</param>
-		/// <returns><c>True</c> als de bezoeker Gav is voor het bedoelde afdelingsJaar,
+		/// <returns><c>True</c> als de bezoeker GAV is voor het bedoelde afdelingsJaar,
 		/// <c>false</c> als dat niet het geval is</returns>
 		public bool IsGavAfdelingsJaar(string login, int afdelingsJaarID)
 		{
-			bool resultaat;
-
-			using (var db = new ChiroGroepEntities())
+			if (afdelingsJaarID == 0) // is het geval bij een nieuw afdelingsjaar
 			{
-				if (afdelingsJaarID == 0)
-				{
-					return true;	// altijd GAV van een nieuw afdelingsjaar.
-				}
-				else
+				return true;
+			}
+			else
+			{
+				using (var db = new ChiroGroepEntities())
 				{
 					var query =
 						from aj in db.AfdelingsJaar
 						where aj.ID == afdelingsJaarID
-						&& aj.GroepsWerkJaar.Groep.GebruikersRecht.Any(
-							gr => gr.Gav.Login == login && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))
+							  && aj.GroepsWerkJaar.Groep.GebruikersRecht.Any(
+								gr => gr.Gav.Login == login && (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))
 						select aj;
 
-					resultaat = query.Count() > 0;
+					return query.Count() > 0;
 				}
 			}
-			return resultaat;
 		}
 
 		/// <summary>
-		/// 
+		/// Gaat na of de gebruiker met de opgegeven login *nu* GAV-rechten heeft 
+		/// voor het gegeven lid
 		/// </summary>
-		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
-		/// <param name="lidID"></param>
+		/// <param name="login">De login van de gebruiker in kwestie</param>
+		/// <param name="lidID">ID van het lid in kwestie</param>
 		/// <returns><c>True</c> als de bezoeker GAV is van de groep waar het lid ingeschreven is, 
 		/// <c>false</c> in het andere geval</returns>
 		public bool IsGavLid(string login, int lidID)
 		{
-			bool resultaat;
-
-			using (var db = new ChiroGroepEntities())
+			if (lidID == 0) // is het geval bij een nieuw lid
 			{
-				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
-				var query1
-					= from r in db.Lid
-					  where r.ID == lidID
-					  select r;
-
-				if (query1.Count() == 0)
-				{
-					return true;
-				}
-
-				var query =
-					from l in db.Lid
-					where l.ID == lidID
-					&& l.GroepsWerkJaar.Groep.GebruikersRecht.Any(r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
-					select l;
-
-				resultaat = query.Count() > 0;
+				return true;
 			}
-			return resultaat;
+			else
+			{
+				using (var db = new ChiroGroepEntities())
+				{
+					var query =
+						from l in db.Lid
+						where l.ID == lidID
+						&& l.GroepsWerkJaar.Groep.GebruikersRecht.Any(r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
+						select l;
+
+					return query.Count() > 0;
+				}
+			}
 		}
 
 		/// <summary>
-		/// 
+		/// Gaat na of de gebruiker met de opgegeven login *nu* GAV-rechten heeft 
+		/// op (de groep met) de gegeven categorie
 		/// </summary>
-		/// <param name="categorieID"></param>
-		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
+		/// <param name="categorieID">ID van de categorie in kwestie</param>
+		/// <param name="login">De login van de gebruiker in kwestie</param>
 		/// <returns><c>True</c> als de bezoeker GAV is van de groep waar die categorie gebruikt wordt, 
 		/// <c>false</c> in het andere geval</returns>
 		public bool IsGavCategorie(int categorieID, string login)
 		{
-			bool resultaat;
-
-			using (var db = new ChiroGroepEntities())
+			if (categorieID == 0) // is het geval bij een nieuwe categorie
 			{
-				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
-				var query1
-					= from r in db.Categorie
-					  where r.ID == categorieID
-					  select r;
-
-				if (query1.Count() == 0)
-				{
-					return true;
-				}
-
-				var query =
-					from l in db.Categorie
-					where l.ID == categorieID
-					&& l.Groep.GebruikersRecht.Any(r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
-					select l;
-
-				resultaat = query.Count() > 0;
+				return true;
 			}
-			return resultaat;
+			else
+			{
+				using (var db = new ChiroGroepEntities())
+				{
+					var query =
+						from l in db.Categorie
+						where l.ID == categorieID
+						&& l.Groep.GebruikersRecht.Any(r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
+						select l;
+
+					return query.Count() > 0;
+				}
+			}
 		}
 
 		/// <summary>
-		/// 
+		/// Gaat na of de gebruiker met de opgegeven login *nu* GAV-rechten heeft 
+		/// op (de persoon met) de gegeven communicatievorm
 		/// </summary>
-		/// <param name="commvormID"></param>
-		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
+		/// <param name="commvormID">ID van de communicatievorm in kwestie</param>
+		/// <param name="login">De login van de gebruiker in kwestie</param>
 		/// <returns><c>True</c> als de bezoeker GAV is van de groep waar die communicatievorm geregistreerd is, 
 		/// <c>false</c> in het andere geval</returns>
 		public bool IsGavCommVorm(int commvormID, string login)
 		{
-			bool resultaat;
-
-			using (var db = new ChiroGroepEntities())
+			if (commvormID == 0) // is het geval bij een nieuwe communicatievorm
 			{
-				// Dit is nodig om bijvoorbeeld een nieuwe persoon te maken
-				var query1
-					= from r in db.CommunicatieVorm
-					  where r.ID == commvormID
-					  select r;
-
-				if (query1.Count() == 0)
-				{
-					return true;
-				}
-
-				var query =
-					from l in db.CommunicatieVorm
-					where l.ID == commvormID
-					&& l.GelieerdePersoon.Groep.GebruikersRecht.Any(r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
-					select l;
-
-				resultaat = query.Count() > 0;
+				return true;
 			}
-			return resultaat;
+			else
+			{
+				using (var db = new ChiroGroepEntities())
+				{
+					var query =
+						from l in db.CommunicatieVorm
+						where l.ID == commvormID
+						&& l.GelieerdePersoon.Groep.GebruikersRecht.Any(r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
+						select l;
+
+					return query.Count() > 0;
+				}
+			}
 		}
 
 		/// <summary>
-		/// Geeft <c>true</c> als het persoonsAdres met ID <paramref name="persoonsAdresID"/> gekoppeld is aan een persoon
-		/// waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten op heeft.  Anders
-		/// <c>false</c>.
+		/// Gaat na of de gebruiker met de opgegeven login *nu* GAV-rechten heeft 
+		/// op (de persoon met) het gegeven adres
 		/// </summary>
-		/// <param name="persoonsAdresID">ID van de functie</param>
-		/// <param name="login">De gebruikersnaam van de aangemelde bezoeker</param>
+		/// <param name="persoonsAdresID">ID van het persoonsadres</param>
+		/// <param name="login">De login van de gebruiker in kwestie</param>
 		/// <returns><c>True</c> als het persoonsAdres met ID <paramref name="persoonsAdresID"/> gekoppeld is aan een persoon
 		/// waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten op heeft.  Anders
 		/// <c>false</c>.</returns>
 		public bool IsGavPersoonsAdres(int persoonsAdresID, string login)
 		{
-			if (persoonsAdresID == 0)
+			if (persoonsAdresID == 0) // is het geval bij een nieuw persoonsadres
 			{
-				// Altijd GAV van een nieuw PersoonsAdres.
 				return true;
 			}
-			using (var db = new ChiroGroepEntities())
+			else
 			{
-				var query = from gp in db.GelieerdePersoon
-							where gp.Persoon.PersoonsAdres.Any(pa => pa.ID == persoonsAdresID) &&
-								  gp.Groep.GebruikersRecht.Any(
-									r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
-							select gp;
+				using (var db = new ChiroGroepEntities())
+				{
+					var query = from gp in db.GelieerdePersoon
+								where gp.Persoon.PersoonsAdres.Any(pa => pa.ID == persoonsAdresID) &&
+									  gp.Groep.GebruikersRecht.Any(
+										r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
+								select gp;
 
-				return query.Count() > 0;
+					return query.Count() > 0;
+				}
 			}
 		}
 
