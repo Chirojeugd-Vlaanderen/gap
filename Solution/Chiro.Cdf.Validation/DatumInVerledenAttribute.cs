@@ -14,7 +14,7 @@ namespace System.ComponentModel.DataAnnotations
 		public DatumInVerledenAttribute()
 		{
 			ErrorMessageResourceType = typeof(Properties.Resources);
-			ErrorMessageResourceName = "DatumInVerledenAttribute_ValidationError";
+			ErrorMessageResourceName = "PastDate_ValidationError";
 		}
 
 		public override bool IsValid(object value)
