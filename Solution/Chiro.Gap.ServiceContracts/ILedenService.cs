@@ -19,23 +19,6 @@ namespace Chiro.Gap.ServiceContracts
 	[ServiceContract]
 	public interface ILedenService
 	{
-		/// <summary>
-		/// TODO is niet meer up to date (na combinatie met activeren)
-		/// Gaat een gelieerde persoon ophalen en maakt die lid in het huidige werkjaar.  Als het om kindleden gaat,
-		/// krjgen ze meteen een afdeling die overeenkomt met leeftijd en geslacht.
-		/// </summary>
-		/// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
-		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
-		/// string waarin wat uitleg staat.  TODO: beter systeem vinden voor deze feedback.</param>
-		/// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
-		/// <remarks>
-		/// Als er met bepaalde gelieerde personen een probleem is (geen geboortedatum,...), dan worden
-		/// de personen die geen problemen vertonen *toch* lid gemaakt. 
-		/// </remarks>
-		[OperationContract]
-		[FaultContract(typeof(GapFault))]
-		[FaultContract(typeof(FoutNummerFault))]
-		IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten);
 		
 		/// <summary>
 		/// Probeert de opgegeven gelieerde personen in te schrijven (aan te sluiten),
@@ -49,7 +32,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IEnumerable<int> NieuwInschrijven(IEnumerable<int> gelieerdePersoonIDs, LidType type, out string foutBerichten);
+		IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, LidType type, out string foutBerichten);
 
 		/// <summary>
 		/// Maakt lid met gegeven ID nonactief

@@ -31,15 +31,18 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(
 					dst => dst.GelieerdePersoonID,
 					opt => opt.MapFrom(src => src.ID))
+				//TODO dit is eigenlijk al vrij business om in de mapper te zitten
 				.ForMember(
 					dst => dst.IsLid,
-					opt => opt.MapFrom(src => (src.Lid.Any(e => e.Type == LidType.Kind))))
+					opt => opt.MapFrom(src => (src.Lid.Any(e => e.Type == LidType.Kind && !e.NonActief))))
 				.ForMember(
 					dst => dst.IsLeiding,
-					opt => opt.MapFrom(src => (src.Lid.Any(e => e.Type == LidType.Leiding))))
+					opt => opt.MapFrom(src => (src.Lid.Any(e => e.Type == LidType.Leiding && !e.NonActief))))
+				//Wordt in de service ingevuld, te ingewikkelde code
 				.ForMember(
 					dst => dst.KanLidWorden,
 					opt => opt.MapFrom(src => false))
+				//Wordt in de service ingevuld, te ingewikkelde code
 				.ForMember(
 					dst => dst.KanLeidingWorden,
 					opt => opt.MapFrom(src => false))

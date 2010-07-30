@@ -87,7 +87,7 @@ namespace Chiro.Gap.Services
 		/// teruggegeven.
 		/// </remarks>
 		/// <throws>NotSupportedException</throws> // TODO handle
-		public IEnumerable<int> NieuwInschrijven(IEnumerable<int> gelieerdePersoonIDs, LidType type, out string foutBerichten)
+		public IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, LidType type, out string foutBerichten)
 		{
 			try
 			{
@@ -103,19 +103,12 @@ namespace Chiro.Gap.Services
 				// Ik haal nu ook de groepswerkjaren mee op, omdat 'LidMaken' daar straks in zal kijken.
 				// TODO: Dat kan volgens mij ook zonder, maar daarvoor moet LedenManager.LidMaken aangepast wdn
 
-				var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(
-					gelieerdePersoonIDs,
-					PersoonsExtras.Groep | PersoonsExtras.GroepsWerkJaren);
+				var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs,
+				                                                      PersoonsExtras.Groep | PersoonsExtras.GroepsWerkJaren);
 
 				// Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
 				// al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
 				var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
-
-				// Ter controle bij debuggen even kijken of de distinct goed werkt.
-				Debug.Assert(groepen.Count() == (from gp in gelieerdePersonen select gp.Groep.ID).Distinct().Count());
-
-				// Ter controle bij debuggen even kijken of de distinct goed werkt.
-				Debug.Assert(groepen.Count() == (from gp in gelieerdePersonen select gp.Groep.ID).Distinct().Count());
 
 				foreach (var g in groepen)
 				{
@@ -127,14 +120,33 @@ namespace Chiro.Gap.Services
 					{
 						try
 						{
-							Lid l;
-							if (type == LidType.Kind)
+							var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
+
+							if (l != null) //uitgeschreven
 							{
-								l = _ledenMgr.KindMaken(gp, gwj);
+								if (l.Type != type)
+								{
+									//TODO maak ander lidobject aan #
+									throw new NotImplementedException();
+									continue;
+								}
+								if (!l.NonActief)
+								{
+									foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
+									continue;
+								}
+								l.NonActief = false;
 							}
-							else
+							else //nieuw lid
 							{
-								l = _ledenMgr.LeidingMaken(gp, gwj);
+								if (type == LidType.Kind)
+								{
+									l = _ledenMgr.KindMaken(gp, gwj);
+								}
+								else
+								{
+									l = _ledenMgr.LeidingMaken(gp, gwj);
+								}
 							}
 
 							// Bewaar leden 1 voor 1, en niet allemaal tegelijk, om te vermijden dat 1 dubbel lid
@@ -165,59 +177,6 @@ namespace Chiro.Gap.Services
 						{
 							foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLeiding, gp.Persoon.VolledigeNaam));
 						}
-					}
-				}
-
-				foutBerichten = foutBerichtenBuilder.ToString();
-
-				return lidIDs;
-			}
-			catch (Exception ex)
-			{
-				FoutAfhandelaar.FoutAfhandelen(ex);
-				foutBerichten = null;
-				return null;
-			}
-		}
-
-		/// <summary>
-		/// TODO: documenteren (overeenkomstige documentatie in ILedenService is blijkbaar niet meer actueel)
-		/// </summary>
-		/// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
-		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
-		/// string waarin wat uitleg staat.  TODO: beter systeem vinden voor deze feedback.</param>
-		/// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
-		public IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
-		{
-			try
-			{
-				var lidIDs = new List<int>();
-				var foutBerichtenBuilder = new StringBuilder();
-
-				var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs, PersoonsExtras.Groep);
-				var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
-
-				foreach (var g in groepen)
-				{
-					var gwj = _groepwsWjMgr.RecentsteOphalen(g.ID, GroepsWerkJaarExtras.Afdelingen | GroepsWerkJaarExtras.Groep);
-
-					foreach (var gp in g.GelieerdePersoon)
-					{
-						var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
-
-						if (l == null)
-						{
-							foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogNietIngeschreven, gp.Persoon.VolledigeNaam));
-							continue;
-						}
-						if (!l.NonActief)
-						{
-							foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
-							continue;
-						}
-
-						l.NonActief = false;
-						_ledenMgr.LidBewaren(l);
 					}
 				}
 

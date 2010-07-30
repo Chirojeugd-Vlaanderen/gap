@@ -76,18 +76,7 @@
 		<%if (Model.KanLedenBewerken)
 	{%>
 		<td>
-			<%
-				if (pl.LidInfo.NonActief)%>
-			<%
-				{%>
-			<%=Html.ActionLink("inschrijven", "Activeren", new {Controller = "Leden", id = pl.LidInfo.LidID})%>
-			<%
-				}
-		else
-		{%>
-			<%=Html.ActionLink("uitschrijven", "DeActiveren", new {Controller = "Leden", id = pl.LidInfo.LidID})%>
-			<%
-				}%>
+			<%=Html.ActionLink("uitschrijven", "DeActiveren", new { Controller = "Leden", id = pl.PersoonDetail.GelieerdePersoonID })%>
 			<%=Html.ActionLink("afd.", "AfdelingBewerken", new { Controller = "Leden", lidID = pl.LidInfo.LidID })%>
 		</td>
 		<%

@@ -269,7 +269,8 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		// id = lidid
 		// GET: /Leden/Activeren/id
-		[HandleError]
+		// Er worden alleen actieve leden getoond in de lijsten, dus is dit niet meer relevant (voor al de rest wordt "lid maken" gebruikt).
+		/*[HandleError]
 		public ActionResult Activeren(int id, int groepID)
 		{
 			string fouten; //TODO fouten opvangen
@@ -277,7 +278,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			TempData["succes"] = Properties.Resources.LidActiefGemaakt;
 
 			return TerugNaarVorigeLijst();
-		}
+		}*/
 
 		/// <summary>
 		/// Toont de view die toelaat om de afdeling(en) van een lid te wijzigen

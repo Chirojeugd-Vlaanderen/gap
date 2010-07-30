@@ -190,7 +190,7 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// Een lijst ophalen van alle leden voor het opgegeven groepswerkjaar
+		/// Een lijst ophalen van alle leden voor het opgegeven groepswerkjaar op.
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
 		/// <param name="sortering">Parameter waarop de gegevens gesorteerd moeten worden</param>
@@ -218,8 +218,36 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
+		/// Een lijst ophalen van alle NIET-UITGESCHREVEN leden voor het opgegeven groepswerkjaar op.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
+		/// <param name="sortering">Parameter waarop de gegevens gesorteerd moeten worden</param>
+		/// <returns>Een lijst alle leden voor het opgegeven groepswerkjaar</returns>
+		public IList<Lid> AlleNietUitgeschrevenOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
+		{
+			using (var db = new ChiroGroepEntities())
+			{
+				db.Lid.MergeOption = MergeOption.NoTracking;
+
+				var kinderen = (
+					from l in db.Lid.OfType<Kind>().Include("GroepsWerkJaar").Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling").Include("Functie")
+					where l.GroepsWerkJaar.ID == groepsWerkJaarID && !l.NonActief
+					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+					select l).ToList();
+
+				var leiding = (
+					from l in db.Lid.OfType<Leiding>().Include("GroepsWerkJaar").Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling").Include("Functie")
+					where l.GroepsWerkJaar.ID == groepsWerkJaarID && !l.NonActief
+					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+					select l).ToList();
+
+				return MaakLedenLijst(kinderen, leiding, sortering);
+			}
+		}
+
+		/// <summary>
 		/// Haalt een pagina op van de gevraagde gegevens:
-		/// leden van een bepaalde groep in een gegeven werkjaar
+		/// leden van een bepaalde groep in een gegeven werkjaar en die niet uitgeschreven zijn
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkjaar</param>
 		/// <param name="sortering">Parameter waarop de gegevens gesorteerd zijn</param>
@@ -237,7 +265,7 @@ namespace Chiro.Gap.Data.Ef
 
 				var kinderen = (
 					from l in db.Lid.OfType<Kind>().Include("GroepsWerkJaar").Include("GelieerdePersoon.Persoon").Include("AfdelingsJaar.Afdeling").Include("Functie")
-					where l.GroepsWerkJaar.ID == groepsWerkJaarID
+					where l.GroepsWerkJaar.ID == groepsWerkJaarID && !l.NonActief
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 					select l).ToList();
 
@@ -253,7 +281,7 @@ namespace Chiro.Gap.Data.Ef
 
 		/// <summary>
 		/// Haalt een pagina op van de gevraagde gegevens:
-		/// leden van een bepaalde groep in een gegeven werkjaar, die in de gegeven afdeling zitten
+		/// leden van een bepaalde groep in een gegeven werkjaar, die in de gegeven afdeling zitten en die niet uitgeschreven zijn
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkjaar</param>
 		/// <param name="afdelingsID">ID van de afdeling waar de leden in moeten zitten</param>
@@ -273,6 +301,8 @@ namespace Chiro.Gap.Data.Ef
 					where l.GroepsWerkJaar.ID == groepsWerkJaarID
 						&&
 					  l.AfdelingsJaar.Afdeling.ID == afdelingsID
+					   && 
+					   !l.NonActief
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 					select l).ToList();
 
@@ -290,7 +320,7 @@ namespace Chiro.Gap.Data.Ef
 
 		/// <summary>
 		/// Haalt een pagina op van de gevraagde gegevens:
-		/// leden van een bepaalde groep in een gegeven werkjaar, die een bepaalde functie hebben/hadden
+		/// leden van een bepaalde groep in een gegeven werkjaar, die een bepaalde functie hebben/hadden en die niet uitgeschreven zijn
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het aan een groep gekoppelde werkjaar</param>
 		/// <param name="functieID">ID van de functie die de leden moeten hebben</param>
@@ -311,6 +341,8 @@ namespace Chiro.Gap.Data.Ef
 					where l.GroepsWerkJaar.ID == groepsWerkJaarID
 						&&
 					  l.Functie.Any(e => e.ID == functieID)
+					   && 
+					   !l.NonActief
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 					select l).ToList();
 

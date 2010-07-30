@@ -35,6 +35,11 @@ namespace Chiro.Gap.Dummies
 			return new List<Lid>();
 		}
 
+		public IList<Lid> AlleNietUitgeschrevenOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
+		{
+			return new List<Lid>();
+		}
+
 		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal, LedenSorteringsEnum sortering)
 		{
 			aantalTotaal = 0;

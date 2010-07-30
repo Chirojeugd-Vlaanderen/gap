@@ -24,6 +24,8 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <returns>Een lijst alle leden voor het opgegeven groepswerkjaar</returns>
 		IList<Lid> AllesOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering);
 
+		IList<Lid> AlleNietUitgeschrevenOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering);
+        
 		/// <summary>
 		/// Haalt een pagina op van de gevraagde gegevens:
 		/// leden van een bepaalde groep in een gegeven werkjaar, die in de gegeven afdeling zitten
