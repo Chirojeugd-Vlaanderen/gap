@@ -128,7 +128,6 @@ namespace Chiro.Gap.Services
 								{
 									//TODO maak ander lidobject aan #
 									throw new NotImplementedException();
-									continue;
 								}
 								if (!l.NonActief)
 								{

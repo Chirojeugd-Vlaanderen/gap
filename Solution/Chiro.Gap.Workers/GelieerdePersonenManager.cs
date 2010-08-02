@@ -159,11 +159,13 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Bewaart een gelieerde persoon, zonder koppelingen
+		/// Bewaart een gelieerde persoon, inclusief persoonsgegevens en extra koppelingen bepaald
+		/// door <paramref name="extras"/>.
 		/// </summary>
 		/// <param name="p">Te bewaren gelieerde persoon</param>
+		/// <param name="extras">Bepaalt de mee te bewaren gekoppelde entiteiten</param>
 		/// <returns>De bewaarde gelieerde persoon</returns>
-		public GelieerdePersoon Bewaren(GelieerdePersoon p)
+		public GelieerdePersoon Bewaren(GelieerdePersoon p, PersoonsExtras extras)
 		{
 			if (_autorisatieMgr.IsGavGelieerdePersoon(p.ID))
 			{
@@ -173,26 +175,33 @@ namespace Chiro.Gap.Workers
 
 				// Er mag niet gepoterd worden met PersoonID en AdNummer
 
-				var origineel = _gelieerdePersonenDao.Ophalen(p.ID, foo => foo.Persoon);
+				var origineel = _gelieerdePersonenDao.Ophalen(p.ID, gp=>gp.Persoon);
 
 				if (origineel == null || origineel.Persoon.AdNummer == p.Persoon.AdNummer)
 				{
-					//// TODO: De transacties aanschakelen, nu gaat dat niet omdat we de in een werkgroep zitten
+					// TODO: De transacties aanschakelen, nu gaat dat niet omdat we de in een werkgroep zitten
 
-					// using (var tx = new TransactionScope())
-					// {
-					var q = _gelieerdePersonenDao.Bewaren(p);
+#if KIPDORP
+					using (var tx = new TransactionScope())
+					{
+#endif
+						var q = _gelieerdePersonenDao.Bewaren(p, ExtrasNaarLambdas(extras));
 
-					// Map to KipSync and send
-					AutoMapper.Mapper.CreateMap<Persoon, KipSync.Persoon>();
-					var syncPersoon = AutoMapper.Mapper.Map<Persoon, KipSync.Persoon>(q.Persoon);
+						// Map to KipSync and send
+						AutoMapper.Mapper.CreateMap<Persoon, KipSync.Persoon>()
+							.ForMember(src => src.AdNr, opt => opt.MapFrom(src => src.AdNummer))
+							.ForMember(src => src.ExtensionData, opt => opt.Ignore());
 
-					// Debug.WriteLine(syncPersoon);
+						var syncPersoon = AutoMapper.Mapper.Map<Persoon, KipSync.Persoon>(q.Persoon);
 
-					_sync.PersoonUpdated(syncPersoon);
+						// Debug.WriteLine(syncPersoon);
 
-					return q;
-					// }
+						_sync.PersoonUpdated(syncPersoon);
+
+						return q;
+#if KIPDORP
+					}
+#endif
 				}
 				else
 				{
@@ -203,56 +212,6 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
-		}
-
-		/// <summary>
-		/// TODO: documenteren
-		/// </summary>
-		/// <param name="gp">De gelieerde persoon voor wie er wijzigingen opgeslagen moeten worden</param>
-		/// <returns>De bijgewerkte gelieerde persoon</returns>
-		public GelieerdePersoon BewarenMetCommVormen(GelieerdePersoon gp)
-		{
-			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-			// Hier mapping gebruiken om te vermijden dat het AD-nummer
-			// overschreven wordt, lijkt me wat overkill.  Ik vergelijk
-			// hiet nieuwe AD-nummer gewoon met het bestaande.
-
-			GelieerdePersoon origineel = _gelieerdePersonenDao.Ophalen(gp.ID, e => e.Persoon, e => e.Communicatie.First().CommunicatieType);
-			if (origineel.Persoon.AdNummer == gp.Persoon.AdNummer)
-			{
-				return _gelieerdePersonenDao.Bewaren(gp, e => e.Persoon, e => e.Communicatie.First().CommunicatieType.WithoutUpdate());
-			}
-			else
-			{
-				throw new InvalidOperationException(Properties.Resources.AdNummerNietWijzigen);
-			}
-		}
-
-		/// <summary>
-		/// TODO: documenteren
-		/// </summary>
-		/// <param name="gp">De gelieerde persoon voor wie er wijzigingen opgeslagen moeten worden</param>
-		/// <returns>De bijgewerkte gelieerde persoon</returns>
-		public GelieerdePersoon BewarenMetPersoonsAdressen(GelieerdePersoon gp)
-		{
-			if (!_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-			// Hier mapping gebruiken om te vermijden dat het AD-nummer
-			// overschreven wordt, lijkt me wat overkill.  Ik vergelijk
-			// hiet nieuwe AD-nummer gewoon met het bestaande.
-
-			GelieerdePersoon origineel = _gelieerdePersonenDao.Ophalen(gp.ID, e => e.Persoon);
-			if (origineel.Persoon.AdNummer != gp.Persoon.AdNummer)
-			{
-				throw new InvalidOperationException(Properties.Resources.AdNummerNietWijzigen);
-			}
-
-			return _gelieerdePersonenDao.Bewaren(gp, e => e.Persoon, e => e.PersoonsAdres, e => e.Persoon.PersoonsAdres.First());
 		}
 
 		/// <summary>
@@ -812,8 +771,8 @@ namespace Chiro.Gap.Workers
 			if ((extras & PersoonsExtras.Adressen) != 0)
 			{
 				// alle adressen
-				paths.Add(gp => gp.Persoon.PersoonsAdres.First().Adres.StraatNaam);
-				paths.Add(gp => gp.Persoon.PersoonsAdres.First().Adres.WoonPlaats);
+				paths.Add(gp => gp.Persoon.PersoonsAdres.First().Adres.StraatNaam.WithoutUpdate());
+				paths.Add(gp => gp.Persoon.PersoonsAdres.First().Adres.WoonPlaats.WithoutUpdate());
 
 				// standaardadres
 				paths.Add(gp => gp.PersoonsAdres.Adres);
@@ -821,22 +780,22 @@ namespace Chiro.Gap.Workers
 
 			if ((extras & PersoonsExtras.Groep) != 0)
 			{
-				paths.Add(gp => gp.Groep);
+				paths.Add(gp => gp.Groep.WithoutUpdate());
 			}
 
 			if ((extras & PersoonsExtras.Communicatie) != 0)
 			{
-				paths.Add(gp => gp.Communicatie.First().CommunicatieType);
+				paths.Add(gp => gp.Communicatie.First().CommunicatieType.WithoutUpdate());
 			}
 
 			if ((extras & PersoonsExtras.Categorieen) != 0)
 			{
-				paths.Add(gp => gp.Categorie);
+				paths.Add(gp => gp.Categorie.First().WithoutUpdate());
 			}
 
 			if ((extras & PersoonsExtras.GroepsWerkJaren) != 0)
 			{
-				paths.Add(gp => gp.Lid.First().GroepsWerkJaar);
+				paths.Add(gp => gp.Lid.First().GroepsWerkJaar.WithoutUpdate());
 			}
 
 			return paths.ToArray();

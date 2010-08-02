@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 
@@ -100,7 +101,7 @@ namespace Chiro.Gap.Services
 				// In de hoop dat de members die geen 'Ignore hebben' overschreven worden,
 				// en de andere niet.
 
-				_gpMgr.Bewaren(gp);
+				_gpMgr.Bewaren(gp, PersoonsExtras.Geen);
 
 				return persoonInfo.GelieerdePersoonID;
 			}
@@ -192,7 +193,7 @@ namespace Chiro.Gap.Services
 			// Gebruik de businesslaag om info.Persoon te koppelen aan de opgehaalde groep.
 
 			GelieerdePersoon gelieerd = _gpMgr.Koppelen(nieuwePersoon, g, info.ChiroLeefTijd);
-			gelieerd = _gpMgr.Bewaren(gelieerd);
+			gelieerd = _gpMgr.Bewaren(gelieerd, PersoonsExtras.Geen);
 			return new IDPersEnGP { GelieerdePersoonID = gelieerd.ID, PersoonID = gelieerd.Persoon.ID };
 		}
 		#endregion
@@ -795,7 +796,7 @@ namespace Chiro.Gap.Services
 								select pa).FirstOrDefault();
 
 				_gpMgr.VoorkeurInstellen(gp, voorkeur);
-				_gpMgr.BewarenMetPersoonsAdressen(gp);
+				_gpMgr.Bewaren(gp, PersoonsExtras.Adressen);
 			}
 			catch (Exception ex)
 			{
@@ -853,7 +854,7 @@ namespace Chiro.Gap.Services
 
 				GelieerdePersoon gp = _gpMgr.OphalenMetCommVormen(gelieerdePersoonID);
 				_cvMgr.AanpassingenDoorvoeren(gp, communicatieVorm);
-				_gpMgr.BewarenMetCommVormen(gp);
+				_gpMgr.Bewaren(gp, PersoonsExtras.Communicatie);
 			}
 			catch (ValidatieException ex)
 			{
@@ -907,7 +908,7 @@ namespace Chiro.Gap.Services
 				var cv = _cvMgr.OphalenMetGelieerdePersoon(v.ID);
 				var gp = cv.GelieerdePersoon;
 				_cvMgr.AanpassingenDoorvoeren(gp, communicatieVorm);
-				_gpMgr.BewarenMetCommVormen(gp);
+				_gpMgr.Bewaren(gp, PersoonsExtras.Communicatie);
 			}
 			catch (ValidatieException ex)
 			{
@@ -1039,6 +1040,19 @@ namespace Chiro.Gap.Services
 		/// <param name="gelieerdePersoonID">ID van gelieerde persoon van persoon die Dubbelpunt wil</param>
 		public void DubbelPuntBestellen(int gelieerdePersoonID)
 		{
+			GelieerdePersoon gp = null;
+			try
+			{
+				gp = _gpMgr.Ophalen(gelieerdePersoonID);
+			}
+			catch (GeenGavException ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+			}
+
+			Debug.Assert(gp != null);
+
+			gp.Persoon.DubbelPuntAbonnement = true;
 			throw new NotImplementedException();
 		}
 

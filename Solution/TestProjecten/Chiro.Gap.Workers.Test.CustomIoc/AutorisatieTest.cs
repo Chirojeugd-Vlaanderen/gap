@@ -181,11 +181,11 @@ namespace Chiro.Gap.Workers.Test
 		}
 
 		/// <summary>
-		/// Probeert ledenlijst op te halen als wel GAV
+		/// Probeert lijst actieve leden op te halen als wel GAV
 		/// Verwacht geen exception.
 		/// </summary>
 		[TestMethod]
-		public void LijstLedenGav()
+		public void LijstActieveLedenGav()
 		{
 			// Arrange
 
@@ -195,8 +195,8 @@ namespace Chiro.Gap.Workers.Test
 			var autorisatieMgrMock = new Mock<IAutorisatieManager>();
 			var groepsWerkJaarDaoMock = new Mock<IGroepsWerkJaarDao>();
 
-			ledenDaoMock.Setup(foo => foo.AllesOphalen(testData.HuidigGwj.ID, LedenSorteringsEnum.Naam)).Returns(new List<Lid>());
-			ledenDaoMock.Setup(foo => foo.AllesOphalen(It.IsAny<int>(), LedenSorteringsEnum.Naam)).Returns(new List<Lid>());
+			ledenDaoMock.Setup(foo => foo.AlleNietUitgeschrevenOphalen(testData.HuidigGwj.ID, LedenSorteringsEnum.Naam)).Returns(new List<Lid>());
+			//ledenDaoMock.Setup(foo => foo.AllesOphalen(It.IsAny<int>(), LedenSorteringsEnum.Naam)).Returns(new List<Lid>());
 			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(testData.HuidigGwj.ID)).Returns(true);
 
 			groepsWerkJaarDaoMock.Setup(foo => foo.Ophalen(testData.HuidigGwj.ID, It.IsAny<Expression<Func<GroepsWerkJaar, object>>>())).Returns(testData.HuidigGwj);
@@ -330,7 +330,7 @@ namespace Chiro.Gap.Workers.Test
 			++gp.Persoon.AdNummer;
 
 			// Probeer te bewaren
-			gpm.Bewaren(gp);
+			gpm.Bewaren(gp, PersoonsExtras.Geen);
 			#endregion
 
 			#region Assert
@@ -365,7 +365,12 @@ namespace Chiro.Gap.Workers.Test
 			// Ophalen geeft gewoon 'GelieerdeJos', en bewaren een kopie daarvan.
 			gpDaoMock.Setup(foo => foo.Ophalen(testData.GelieerdeJos.ID
 			    , It.IsAny<Expression<Func<GelieerdePersoon, Object>>>())).Returns(() => testData.GelieerdeJos);
-			gpDaoMock.Setup(foo => foo.Bewaren(It.IsAny<GelieerdePersoon>())).Returns((GelieerdePersoon foo) => foo);
+
+			gpDaoMock.Setup(foo => foo.Bewaren(
+				It.IsAny<GelieerdePersoon>(), 
+				It.IsAny<Expression<Func<GelieerdePersoon, object>>[]>())).Returns((
+					GelieerdePersoon foo, 
+					Expression<Func<GelieerdePersoon, object>>[] bar) => foo);
 
 			// Het stuk It.IsAny<Expression<Func<GelieerdePersoon, Object>>>()
 			// zorgt ervoor dat de Mock de linq-expressies in 'Ophalen' negeert.
@@ -387,7 +392,7 @@ namespace Chiro.Gap.Workers.Test
 			GelieerdePersoon gp = gpm.Ophalen(testData.GelieerdeJos.ID);
 
 			// Probeer te bewaren
-			gpm.Bewaren(gp);
+			gpm.Bewaren(gp,	PersoonsExtras.Geen);
 			#endregion
 
 			#region Assert
