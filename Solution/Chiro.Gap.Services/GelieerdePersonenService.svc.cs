@@ -1040,6 +1040,8 @@ namespace Chiro.Gap.Services
 		/// <param name="gelieerdePersoonID">ID van gelieerde persoon van persoon die Dubbelpunt wil</param>
 		public void DubbelPuntBestellen(int gelieerdePersoonID)
 		{
+			// TODO: exceptions op databaseniveau catchen
+
 			GelieerdePersoon gp = null;
 			try
 			{
@@ -1053,7 +1055,8 @@ namespace Chiro.Gap.Services
 			Debug.Assert(gp != null);
 
 			gp.Persoon.DubbelPuntAbonnement = true;
-			throw new NotImplementedException();
+
+			_gpMgr.Bewaren(gp, PersoonsExtras.Geen);
 		}
 
 		#endregion categorieën

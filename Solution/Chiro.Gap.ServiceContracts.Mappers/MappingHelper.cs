@@ -308,6 +308,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.CreateMap<AfdelingsJaar, AfdelingsJaarDetail>()
 				.ForMember(dst => dst.AfdelingsJaarID, opt => opt.MapFrom(src => src.ID));
 
+			// Alwat hieronder ignore krijgt, wordt niet meegenomen van een teruggestuurde
+			// PersoonInfo.
+
 			Mapper.CreateMap<PersoonInfo, Persoon>()
 				.ForMember(dst => dst.ID, opt => opt.Ignore())
 				.ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
