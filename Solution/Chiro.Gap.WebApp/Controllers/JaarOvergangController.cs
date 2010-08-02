@@ -35,7 +35,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new JaarOvergangAfdelingsModel();
 			BaseModelInit(model, groepID);
 
-			IEnumerable<AfdelingInfo> lijst = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingInfo>>(g => g.BeschikbareAfdelingenOphalen(groepID));
+			IEnumerable<AfdelingInfo> lijst = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingInfo>>(g => g.AlleAfdelingenOphalen(groepID));
 
 			model.Afdelingen = lijst;
 			model.Titel = "Jaarovergang initiëren";
@@ -52,7 +52,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(
 					e => e.OfficieleAfdelingenOphalen(groepID));
 
-			IEnumerable<AfdelingInfo> lijst = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingInfo>>(g => g.BeschikbareAfdelingenOphalen(groepID));
+			IEnumerable<AfdelingInfo> lijst = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingInfo>>(g => g.AlleAfdelingenOphalen(groepID));
 
 			int werkjaarID = ServiceHelper.CallService<IGroepenService, int>(g => g.RecentsteGroepsWerkJaarIDGet(groepID));
 

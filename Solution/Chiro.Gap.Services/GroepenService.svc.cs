@@ -509,12 +509,11 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
-		/// Haalt beperkte informatie op over de beschikbare afdelingen van een groep in het huidige
-		/// groepswerkjaar.
+		/// Haalt beperkte informatie op over alle afdelingen die een groep ooit gebruikt heeft.
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvoor de afdelingen gevraagd zijn</param>
 		/// <returns>Lijst van AfdelingInfo</returns>
-		public IList<AfdelingInfo> BeschikbareAfdelingenOphalen(int groepID)
+		public IList<AfdelingInfo> AlleAfdelingenOphalen(int groepID)
 		{
 			try
 			{
@@ -534,7 +533,7 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvoor de info gevraagd is</param>
 		/// <returns>Lijst van AfdelingInfo</returns>
-		public IList<ActieveAfdelingInfo> BeschikbareAfdelingsJarenOphalen(int groepID)
+		public IList<ActieveAfdelingInfo> HuidigeAfdelingsJarenOphalen(int groepID)
 		{
 			try
 			{
@@ -976,8 +975,10 @@ namespace Chiro.Gap.Services
 		/// <param name="groepID">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
 		public void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdeling> teActiveren, int groepID)
 		{
+#if KIPDORP
 			using (var scope = new TransactionScope())
 			{
+#endif
 				// Bereken gewenste werkjaar
 				int werkjaar;
 				var startdate = new DateTime(DateTime.Today.Year, 8, 15);
@@ -1026,8 +1027,10 @@ namespace Chiro.Gap.Services
 
 				_gelieerdePersonenMgr.VerdeelAlleOudeLeden();
 
+#if KIPDORP
 				scope.Complete();
 			}
+#endif
 		}
 
 		#endregion
