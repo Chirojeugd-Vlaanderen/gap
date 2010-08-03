@@ -40,6 +40,7 @@ namespace Chiro.Gap.Services
 		private readonly GelieerdePersonenManager _gelieerdePersonenMgr;
 		private readonly CategorieenManager _categorieenMgr;
 		private readonly FunctiesManager _functiesMgr;
+		private readonly LedenManager _ledenMgr;
 
 		/// <summary>
 		/// Constructor met via IoC toegekende workers
@@ -60,6 +61,7 @@ namespace Chiro.Gap.Services
 			AdressenManager adresMgr,
 			CategorieenManager cm,
 			FunctiesManager fm,
+			LedenManager lm,
 			IAutorisatieManager am)
 		{
 			_groepenMgr = gm;
@@ -70,6 +72,7 @@ namespace Chiro.Gap.Services
 			_adresMgr = adresMgr;
 			_categorieenMgr = cm;
 			_functiesMgr = fm;
+			_ledenMgr = lm;
 		}
 
 		#endregion
@@ -975,29 +978,26 @@ namespace Chiro.Gap.Services
 		/// <param name="groepID">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
 		public void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdeling> teActiveren, int groepID)
 		{
+			//TODO unit tests
+			//TODO check dat roll-back gebeurd
+			//TODO check dat juiste periode is om overgang te doen
+			//TODO propere exception handeling
 #if KIPDORP
 			using (var scope = new TransactionScope())
 			{
 #endif
-				// Bereken gewenste werkjaar
-				int werkjaar;
-				var startdate = new DateTime(DateTime.Today.Year, 8, 15);
-				if (DateTime.Today.CompareTo(startdate) < 0) // vroeger
-				{
-					werkjaar = DateTime.Today.Year - 1;
-				}
-				else
-				{
-					werkjaar = DateTime.Today.Year;
-				}
+				var voriggwj = _groepsWerkJaarManager.RecentsteOphalen(groepID);
 
 				// Groep ophalen
 				var g = _groepenMgr.Ophalen(groepID, GroepsExtras.AlleAfdelingen);
 
-				var gwj = _groepsWerkJaarManager.OvergangDoen(g, werkjaar);
+				// Gewenste werkjaar berekenen
+				var gwj = _groepsWerkJaarManager.OvergangDoen(g);
 
+				// Officiele afdelingen ophalen
 				var offafdelingen = _afdelingsJaarMgr.OfficieleAfdelingenOphalen();
 
+				// Alle gevraagde afdelingen aanmaken
 				foreach (var afdinfo in teActiveren)
 				{
 					// Hier zit schijnbaar een probleem, maar ik snap het niet voldoende om te zien waarom resharper zijn oplossing wel juist is
@@ -1009,7 +1009,7 @@ namespace Chiro.Gap.Services
 
 					if (afd == null)
 					{
-						throw new OngeldigObjectException("Een van de afdelingsIDs bestaat niet in de opgegeven groep.");
+						throw new OngeldigObjectException("Een van de afdelingen bestaat niet voor de gegeven groep.");
 					}
 
 					var offafd = (from a in offafdelingen
@@ -1018,14 +1018,30 @@ namespace Chiro.Gap.Services
 
 					if (offafd == null)
 					{
-						throw new OngeldigObjectException("Een van de officiele afdelingsIDs bestaat niet in de opgegeven groep.");
+						throw new OngeldigObjectException("Een van de officiele afdelingen bestaat niet.");
 					}
 
 					// TODO handle more exceptions
-					_afdelingsJaarMgr.Aanmaken(afd, offafd, gwj, afdinfo.GeboorteJaarVan, afdinfo.GeboorteJaarTot, afdinfo.Geslacht);
+
+					try
+					{
+						_afdelingsJaarMgr.Aanmaken(afd, offafd, gwj, afdinfo.GeboorteJaarVan, afdinfo.GeboorteJaarTot, afdinfo.Geslacht);
+					}
+					catch (ValidatieException e)
+					{
+						//TODO handle
+					}					
 				}
 
-				_gelieerdePersonenMgr.VerdeelAlleOudeLeden();
+				// Haal alle leden op uit het vorige werkjaar
+				var ledenlijst = _ledenMgr.PaginaOphalen(voriggwj.ID, LidExtras.Persoon);
+
+				foreach (var lid in ledenlijst)
+				{
+					//TODO catch all exceptions zoals in de service gebeurt (al die foutboodschappen moeten dus eigenlijk gecatcht kunnen worden in de service, niet in de worders
+					var l = _ledenMgr.AutomatischLidMaken(lid.GelieerdePersoon, gwj);
+					_ledenMgr.LidBewaren(l);
+				}
 
 #if KIPDORP
 				scope.Complete();

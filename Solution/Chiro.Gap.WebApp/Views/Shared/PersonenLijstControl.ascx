@@ -83,13 +83,8 @@
 			<%=p.IsLid ? "lid" : p.IsLeiding ? "leiding" : "--" %>
 		</td>
 		<td>
-			<% if (!p.IsLid && !p.IsLeiding && p.KanLidWorden)
-	  { %>
-			<%=Html.ActionLink("inschrijven als lid", "LidMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
-			<% } %>
-			<% if (!p.IsLeiding && !p.IsLid && p.KanLeidingWorden)
-	  { %>
-			<%=Html.ActionLink("inschrijven als leiding", "LeidingMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
+			<% if (!p.IsLid && !p.IsLeiding && (p.KanLidWorden || p.KanLeidingWorden)){ %>
+			<%=Html.ActionLink("inschrijven", "AutomatischLidMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
 			<% } %>
 			<%=Html.ActionLink("zus/broer maken", "Kloon", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
 		</td>

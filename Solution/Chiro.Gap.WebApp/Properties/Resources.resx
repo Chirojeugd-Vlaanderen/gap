@@ -174,23 +174,17 @@
   <data name="LidGegevens" xml:space="preserve">
     <value>inschrijvingsgegevens</value>
   </data>
-  <data name="LidGemaaktFeedback" xml:space="preserve">
-    <value>De persoon is nu ingeschreven.</value>
+  <data name="IngeschrevenFeedback" xml:space="preserve">
+    <value>De persoon is nu ingeschreven in je groep.</value>
   </data>
-  <data name="LedenGemaaktFeedback" xml:space="preserve">
-    <value>De personen zijn nu ingeschreven als leden van je groep.</value>
+  <data name="MultiIngeschrevenFeedback" xml:space="preserve">
+    <value>De personen zijn nu ingeschreven in je groep.</value>
   </data>
-  <data name="LeidingGemaaktFeedback" xml:space="preserve">
-    <value>De personen zijn nu ingeschreven als leiding van je groep.</value>
+	<data name="InschrijvenMisluktFout" xml:space="preserve">
+    <value>Er is iets foutgelopen, de persoon kon niet worden ingeschreven.</value>
   </data>
-  <data name="LidMakenMisluktFout" xml:space="preserve">
-    <value>Er is iets foutgelopen, die persoon is nog niet ingeschreven.</value>
-  </data>
-  <data name="LedenMakenMisluktFout" xml:space="preserve">
-    <value>Er is iets foutgelopen, niet alle personen konden worden ingeschreven als leden in je groep.</value>
-  </data>
-  <data name="LeidingMakenMisluktFout" xml:space="preserve">
-    <value>Er is iets foutgelopen, niet alle personen konden worden ingeschreven als leiding in je groep.</value>
+	<data name="MultiInschrijvenMisluktFout" xml:space="preserve">
+    <value>Er is iets foutgelopen, niet alle personen konden worden ingeschreven.</value>
   </data>
   <data name="NiemandGeselecteerdFout" xml:space="preserve">
     <value>Je hebt nog niemand geselecteerd, dus kun je die actie niet uitvoeren</value>

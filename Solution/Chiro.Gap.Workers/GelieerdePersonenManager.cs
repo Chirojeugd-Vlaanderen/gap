@@ -33,6 +33,8 @@ namespace Chiro.Gap.Workers
 		private readonly ICategorieenDao _categorieenDao;
 		private readonly IPersonenDao _personenDao;
 		private readonly IAutorisatieManager _autorisatieMgr;
+		private readonly LedenManager _ledenMgr;
+		private readonly GroepsWerkJaarManager _groepsWerkJaarMgr;
 		private readonly ISyncPersoonService _sync;
 
 		/// <summary>
@@ -799,14 +801,6 @@ namespace Chiro.Gap.Workers
 			}
 
 			return paths.ToArray();
-		}
-
-		/// <summary>
-		/// TODO: documenteren
-		/// </summary>
-		public void VerdeelAlleOudeLeden()
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

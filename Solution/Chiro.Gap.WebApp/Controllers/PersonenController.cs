@@ -213,7 +213,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 					if (String.IsNullOrEmpty(foutBerichten))
 					{
-						TempData["succes"] = Properties.Resources.LedenGemaaktFeedback;
+						TempData["succes"] = Properties.Resources.MultiIngeschrevenFeedback;
 					}
 					else
 					{
@@ -472,6 +472,26 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		#region leden
 
+		// GET: /Personen/AutomatischLidMaken/gelieerdepersoonID
+		[HandleError]
+		public ActionResult AutomatischLidMaken(int gelieerdepersoonID, int groepID)
+		{
+			IList<int> ids = new List<int> { gelieerdepersoonID };
+			string foutBerichten = String.Empty;
+
+			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.AutomatischInschrijven(ids, out foutBerichten));
+			if (String.IsNullOrEmpty(foutBerichten))
+			{
+				TempData["succes"] = Properties.Resources.IngeschrevenFeedback;
+			}
+			else
+			{
+				TempData["fout"] = string.Concat(Properties.Resources.InschrijvenMisluktFout, Environment.NewLine, foutBerichten);
+			}
+
+			return TerugNaarVorigeFiche();
+		}
+
 		// GET: /Personen/LidMaken/gelieerdepersoonID
 		[HandleError]
 		public ActionResult LidMaken(int gelieerdepersoonID, int groepID)
@@ -482,11 +502,11 @@ namespace Chiro.Gap.WebApp.Controllers
 			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.Inschrijven(ids, LidType.Kind, out foutBerichten));
 			if (String.IsNullOrEmpty(foutBerichten))
 			{
-				TempData["succes"] = Properties.Resources.LidGemaaktFeedback;
+				TempData["succes"] = Properties.Resources.IngeschrevenFeedback;
 			}
 			else
 			{
-				TempData["fout"] = string.Concat(Properties.Resources.LidMakenMisluktFout, Environment.NewLine, foutBerichten);
+				TempData["fout"] = string.Concat(Properties.Resources.InschrijvenMisluktFout, Environment.NewLine, foutBerichten);
 			}
 
 			return TerugNaarVorigeFiche();
@@ -502,11 +522,11 @@ namespace Chiro.Gap.WebApp.Controllers
 			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.Inschrijven(ids, LidType.Leiding, out foutBerichten));
 			if (String.IsNullOrEmpty(foutBerichten))
 			{
-				TempData["succes"] = Properties.Resources.LidGemaaktFeedback;
+				TempData["succes"] = Properties.Resources.IngeschrevenFeedback;
 			}
 			else
 			{
-				TempData["fout"] = string.Concat(Properties.Resources.LidMakenMisluktFout, Environment.NewLine, foutBerichten);
+				TempData["fout"] = string.Concat(Properties.Resources.InschrijvenMisluktFout, Environment.NewLine, foutBerichten);
 			}
 
 			return TerugNaarVorigeFiche();

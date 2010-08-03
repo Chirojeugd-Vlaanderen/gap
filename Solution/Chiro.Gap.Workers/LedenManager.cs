@@ -233,6 +233,30 @@ namespace Chiro.Gap.Workers
 			return LidMaken(gp, gwj, LidType.Leiding) as Leiding;
 		}
 
+		public Lid AutomatischLidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
+		{
+			if(gp.Persoon.GeboorteDatum==null)
+			{
+				throw new OngeldigObjectException("Persoon moet een geboortedatum hebben om lid te worden");
+			}
+
+			// Bepaal of het een kind of leiding wordt
+			var afdeling =
+				(from a in gwj.AfdelingsJaar where gp.Persoon.GeboorteDatum.Value.Year - gp.ChiroLeefTijd <= a.GeboorteJaarTot select a).
+					FirstOrDefault();
+
+			if(afdeling!=null)
+			{
+				return KindMaken(gp, gwj);
+			}else if(gp.Persoon.GeboorteDatum.Value.Year - gp.ChiroLeefTijd > 15) //TODO leeftijden niet hard coderen!
+			{
+				return LeidingMaken(gp, gwj);	
+			}else
+			{
+				throw new OngeldigObjectException("Kan persoon geen leiding maken");
+			}
+		}
+
 		/// <summary>
 		/// Zet kinderen en leiding op non-actief. Geen van beide kunnen ooit verwijderd worden!!!
 		/// </summary>

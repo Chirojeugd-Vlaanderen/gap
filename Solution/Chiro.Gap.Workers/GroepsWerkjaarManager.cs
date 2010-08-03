@@ -180,15 +180,30 @@ namespace Chiro.Gap.Workers
 
 		/// <summary>
 		/// Maakt een nieuw groepswerkjaar in het gevraagde werkjaar.
+		/// Persisteert WEL
 		/// </summary>
 		/// <param name="g">De groep waarvoor een groepswerkjaar aangemaakt moet worden</param>
 		/// <param name="werkjaar">Het werkjaar waar het over gaat</param>
 		/// <returns>Het nieuwe groepswerkjaar</returns>
-		public GroepsWerkJaar OvergangDoen(Groep g, int werkjaar)
+		/// <throws>OngeldigObjectException</throws>
+		public GroepsWerkJaar OvergangDoen(Groep g)
 		{
 			if (!_autorisatieMgr.IsGavGroep(g.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+
+			// Bereken gewenste werkjaar
+			int werkjaar;
+			//TODO moet setting beginovergangsperiode worden
+			var startdate = new DateTime(DateTime.Today.Year, 8, 15);
+			if (DateTime.Today.CompareTo(startdate) < 0) // vroeger
+			{
+				werkjaar = DateTime.Today.Year - 1;
+			}
+			else
+			{
+				werkjaar = DateTime.Today.Year;
 			}
 
 			var allegwjs = _groepsWjDao.AllesOphalen();

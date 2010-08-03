@@ -25,12 +25,12 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 		}
 
-		public ActionResult AfdelingenGemaakt()
+		public override ActionResult Index(int groepID)
 		{
-			return null;
+			return AfdelingenMaken(groepID);
 		}
 
-		public override ActionResult Index(int groepID)
+		public ActionResult AfdelingenMaken(int groepID)
 		{
 			var model = new JaarOvergangAfdelingsModel();
 			BaseModelInit(model, groepID);
@@ -43,7 +43,12 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult AfdelingenGemaakt(JaarOvergangAfdelingsModel model1, int groepID)
+		public ActionResult AfdelingenMaken(JaarOvergangAfdelingsModel model1, int groepID)
+		{
+			return VerdelingMaken(model1.GekozenAfdelingsIDs, groepID);
+		}
+
+		public ActionResult VerdelingMaken(IEnumerable<int> gekozenAfdelingsIDs, int groepID)
 		{
 			var model2 = new JaarOvergangAfdelingsJaarModel();
 			BaseModelInit(model2, groepID);
@@ -62,7 +67,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			var volledigelijst = new List<AfdelingDetail>();
 			foreach (var afd in lijst)
 			{
-				if (!model1.GekozenAfdelingsIDs.Contains(afd.ID))
+				if (!gekozenAfdelingsIDs.Contains(afd.ID))
 				{
 					continue;
 				}
@@ -75,35 +80,33 @@ namespace Chiro.Gap.WebApp.Controllers
 				{
 					//TODO geboortejaren aanpassen aan nieuwe jaar (vergelijken met huidige werkjaar)
 					volledigelijst.Add(new AfdelingDetail
-										{
-											AfdelingAfkorting = afd.Afkorting,
-											AfdelingID = afd.ID,
-											AfdelingNaam = afd.Naam,
-											OfficieleAfdelingNaam = act.OfficieleAfdelingNaam,
-											GeboorteJaarTot = act.GeboorteJaarTot,
-											GeboorteJaarVan = act.GeboorteJaarVan,
-											Geslacht = act.Geslacht
-										});
+					{
+						AfdelingAfkorting = afd.Afkorting,
+						AfdelingID = afd.ID,
+						AfdelingNaam = afd.Naam,
+						OfficieleAfdelingNaam = act.OfficieleAfdelingNaam,
+						GeboorteJaarTot = act.GeboorteJaarTot,
+						GeboorteJaarVan = act.GeboorteJaarVan,
+						Geslacht = act.Geslacht
+					});
 				}
 				else
 				{
 					volledigelijst.Add(new AfdelingDetail
-										{
-											AfdelingAfkorting = afd.Afkorting,
-											AfdelingID = afd.ID,
-											AfdelingNaam = afd.Naam,
-											GeboorteJaarTot = 0,
-											GeboorteJaarVan = 0,
-											Geslacht = GeslachtsType.Onbekend
-										});
+					{
+						AfdelingAfkorting = afd.Afkorting,
+						AfdelingID = afd.ID,
+						AfdelingNaam = afd.Naam,
+						GeboorteJaarTot = 0,
+						GeboorteJaarVan = 0,
+						Geslacht = GeslachtsType.Onbekend
+					});
 				}
 			}
 
 			model2.Afdelingen = volledigelijst;
 
-			//TODO leden verwijderen voor 15 okt moet het lid-object VERWIJDEREN, niet non-actief maken!
 			//TODO extra info paginas voor en confirmatiepagina na deze
-			//TODO andere MASTER pagina, zodat ze niet weg kunnen klikken
 			//TODO volgende - vorige links
 			//TODO kan validatie in de listhelper worden bijgecodeerd?
 			//TODO foutmeldingen
@@ -116,14 +119,14 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
-		public void VerdelingGemaakt(JaarOvergangAfdelingsJaarModel model, int groepID)
+		public ActionResult VerdelingMaken(JaarOvergangAfdelingsJaarModel model, int groepID)
 		{
 			var teactiveren = new List<TeActiverenAfdeling>();
 
 			if (model.TotLijst.Count != model.GeslLijst.Count || model.TotLijst.Count != model.VanLijst.Count)
 			{
-				//TODO
-				throw new NotImplementedException();
+				TempData["fout"] = "Niet alle informatie is ingevuld, gelieve aan te vullen.";
+				return View("AfdelingenVerdelen", model);
 			}
 
 			//Probleem: is er de garantie dat de volgorde bewaard blijft? (want we zijn per record de ID kwijt natuurlijk
@@ -142,11 +145,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 
 			ServiceHelper.CallService<IGroepenService>(s => s.JaarovergangUitvoeren(teactiveren, groepID));
-		}
 
-		public ActionResult AfdelingAanpassen(int afdelingID)
-		{
-			throw new NotImplementedException();
+			return RedirectToAction("Index", "Leden");
 		}
 
 		/// <summary>
@@ -219,13 +219,12 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 		}
 
-		public ActionResult Bewerken(int groepID, int id)
+		public ActionResult Bewerken(int groepID, int afdelingID)
 		{
 			var model = new AfdelingInfoModel();
 			BaseModelInit(model, groepID);
 
-			model.Info = ServiceHelper.CallService<IGroepenService, AfdelingInfo>(
-				svc => svc.AfdelingOphalen(id));
+			model.Info = ServiceHelper.CallService<IGroepenService, AfdelingInfo>(svc => svc.AfdelingOphalen(afdelingID));
 
 			model.Titel = "Afdeling bewerken";
 			return View("AfdelingMaken", model);

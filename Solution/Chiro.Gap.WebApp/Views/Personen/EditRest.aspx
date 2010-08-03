@@ -188,9 +188,8 @@
 	</ul>
  
 
-	<%}else{ 
-		if (Model.PersoonLidInfo.PersoonDetail.KanLidWorden || Model.PersoonLidInfo.PersoonDetail.KanLeidingWorden)
-		{
+	<%}else{
+		if (Model.PersoonLidInfo.PersoonDetail.KanLidWorden || Model.PersoonLidInfo.PersoonDetail.KanLeidingWorden){
 			%>
 			
 			<h3><%=Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> is niet ingeschreven</h3>
@@ -198,7 +197,7 @@
 			<%if (Model.PersoonLidInfo.PersoonDetail.KanLidWorden){%>
 				<p>
 				<%=Html.ActionLink("Inschrijven als lid", "LidMaken", new { Controller = "Personen", gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
-				 </p>
+				</p>
 			<%}
 			if (Model.PersoonLidInfo.PersoonDetail.KanLeidingWorden)
 			{%>

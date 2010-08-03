@@ -23,7 +23,7 @@
     int j = 0;
 %>
 
-<%using (Html.BeginForm("AfdelingenGemaakt", "JaarOvergang"))
+<%using (Html.BeginForm("AfdelingenMaken", "JaarOvergang"))
   { %>
 
 <table>
@@ -35,7 +35,7 @@
         <td><%=ai.Naam %></td>
         <td><%=ai.Afkorting %></td>
         <td><%=ai.OfficieleAfdelingNaam %></td>
-        <td><%=Html.ActionLink("Afdeling aanpassen", "AfdelingAanpassen", new { Controller = "JaarOvergang", afdelingID = ai.ID })%></td>
+        <td><%=Html.ActionLink("Afdeling aanpassen", "Bewerken", new { Controller = "JaarOvergang", afdelingID = ai.ID })%></td>
     </tr>
 <% } %>
 </table>

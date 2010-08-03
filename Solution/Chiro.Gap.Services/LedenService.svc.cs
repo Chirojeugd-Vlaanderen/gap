@@ -192,6 +192,108 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
+		/// Gegeven een lijst van IDs van gelieerde personen.
+		/// Haal al die gelieerde personen op en probeer ze in het huidige werkjaar lid te maken in het gegeven lidtype.
+		/// <para />
+		/// Gaat een gelieerde persoon ophalen en maakt die lid op de plaats die overeenkomt met hun leeftijd in het huidige werkjaar.
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
+		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
+		/// string waarin wat uitleg staat. TODO: beter systeem vinden voor deze feedback.</param>
+		/// <returns>De LidID's van de personen die lid zijn gemaakt</returns>
+		/// <remarks>
+		/// Iedereen die kan lid gemaakt worden, wordt lid, zelfs als dit voor andere personen niet lukt. Voor die personen worden dan foutberichten
+		/// teruggegeven.
+		/// </remarks>
+		/// <throws>NotSupportedException</throws> // TODO handle
+		public IEnumerable<int> AutomatischInschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
+		{
+			try
+			{
+				var lidIDs = new List<int>();
+				var foutBerichtenBuilder = new StringBuilder();
+
+				// Haal meteen alle gelieerde personen op, gecombineerd met hun groep
+				// Ik haal nu ook de groepswerkjaren mee op, omdat 'LidMaken' daar straks in zal kijken.
+				// TODO: Dat kan volgens mij ook zonder, maar daarvoor moet LedenManager.LidMaken aangepast wdn
+
+				var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs,
+																	  PersoonsExtras.Groep | PersoonsExtras.GroepsWerkJaren);
+
+				// Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
+				// al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
+				var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
+
+				foreach (var g in groepen)
+				{
+					// Per groep lid maken.
+					// Zoek eerst recentste groepswerkjaar.
+					var gwj = _groepwsWjMgr.RecentsteOphalen(g.ID, GroepsWerkJaarExtras.Afdelingen | GroepsWerkJaarExtras.Groep);
+
+					foreach (var gp in g.GelieerdePersoon)
+					{
+						try
+						{
+							var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
+
+							if (l != null) //uitgeschreven
+							{
+								if (!l.NonActief)
+								{
+									foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
+									continue;
+								}
+								l.NonActief = false;
+							}
+							else //nieuw lid
+							{
+								l = _ledenMgr.AutomatischLidMaken(gp, gwj);
+							}
+
+							// Bewaar leden 1 voor 1, en niet allemaal tegelijk, om te vermijden dat 1 dubbel lid
+							// verhindert dat de rest bewaard wordt.
+							if (l != null)
+							{
+								l = _ledenMgr.LidBewaren(l);
+								lidIDs.Add(l.ID);
+							}
+						}
+						catch (InvalidOperationException ex)
+						{
+							foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
+						}
+						catch (GeenGavException ex)
+						{
+							foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
+						}
+						catch (FoutNummerException ex)
+						{
+							foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
+						}
+						catch (BestaatAlException<Kind>)
+						{
+							foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLid, gp.Persoon.VolledigeNaam));
+						}
+						catch (BestaatAlException<Leiding>)
+						{
+							foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLeiding, gp.Persoon.VolledigeNaam));
+						}
+					}
+				}
+
+				foutBerichten = foutBerichtenBuilder.ToString();
+
+				return lidIDs;
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				foutBerichten = null;
+				return null;
+			}
+		}
+
+		/// <summary>
 		/// Maakt lid met gegeven ID nonactief
 		/// </summary>
 		/// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>

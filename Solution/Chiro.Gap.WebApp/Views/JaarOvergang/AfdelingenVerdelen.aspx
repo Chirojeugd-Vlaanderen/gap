@@ -4,7 +4,10 @@
 
 <h2>AfdelingenVerdelen</h2>
 
-<%using (Html.BeginForm("VerdelingGemaakt", "JaarOvergang"))
+<!-- TODO Kan dit met dezelfde functionaliteit als de browserknop vorige? (nu zullen geselecteerde afdelingen dat niet meer zijn! -->
+<%=Html.ActionLink("Vorige", "AfdelingenMaken", new { Controller = "JaarOvergang" }) %>
+
+<%using (Html.BeginForm("VerdelingMaken", "JaarOvergang"))
   { %>
 
 <table>
@@ -21,7 +24,7 @@
 <% } %>
 </table>
 
-<input id="volgende" type="submit" value="Volgende"/>
+<input id="volgende" type="submit" value="Verdeling bewaren en vorige leden herinschrijven."/>
 <%} %>
 
 </asp:Content>
