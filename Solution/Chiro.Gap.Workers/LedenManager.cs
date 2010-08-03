@@ -401,11 +401,11 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// TODO: documenteren
+		/// Persisteert een lid met de gekoppelde entiteiten bepaald door <paramref name="extras"/>.
 		/// </summary>
 		/// <param name="lid">Het <paramref name="lid"/> dat bewaard moet worden</param>
-		/// <returns></returns>
-		public Lid LidBewaren(Lid lid)
+		/// <returns>Een kloon van het lid en de extra's, met eventuele nieuwe ID's ingevuld</returns>
+		public Lid LidBewaren(Lid lid, LidExtras extras)
 		{
 			if (!_autorisatieMgr.IsGavLid(lid.ID))
 			{
@@ -416,7 +416,7 @@ namespace Chiro.Gap.Workers
 			{
 				try
 				{
-					return _daos.KindDao.Bewaren((Kind)lid);
+					return _daos.KindDao.Bewaren((Kind)lid, ExtrasNaarLambdasKind(extras));
 				}
 				catch (KeyViolationException<Kind>)
 				{
@@ -427,7 +427,8 @@ namespace Chiro.Gap.Workers
 			{
 				try
 				{
-					return _daos.LeidingDao.Bewaren((Leiding)lid);
+					
+					return _daos.LeidingDao.Bewaren((Leiding)lid, ExtrasNaarLambdasLeiding(extras));
 				}
 				catch (Exception)
 				{
@@ -500,19 +501,25 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Haalt het lid op van een gelieerdepersoon in een groepswerkjaar als het bestaat, met gelinkte informatie
-		/// van afdelingsjaren en afdelingen, anders null
+		/// Haalt het lid op bepaald door <paramref name="gelieerdePersoonID"/> en
+		/// <paramref name="groepsWerkJaarID"/>, inclusief persoon, afdelingen, functies, groepswerkjaar
 		/// </summary>
-		/// <param name="gelieerdePersoonID">De ID van de gelieerde persoon</param>
-		/// <param name="groepsWerkJaarID">De ID van het groepswerkjaar</param>
-		/// <returns>Een Lid-object</returns>
+		/// <param name="gelieerdePersoonID">ID van de gelieerde persoon waarvoor het lidobject gevraagd is.</param>
+		/// <param name="groepsWerkJaarID">ID van groepswerkjaar in hetwelke het lidobject gevraagd is</param>
+		/// <returns>
+		/// Het lid bepaald door <paramref name="gelieerdePersoonID"/> en
+		/// <paramref name="groepsWerkJaarID"/>, inclusief persoon, afdelingen, functies, groepswerkjaar
+		/// </returns>
 		public Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID)
 		{
 			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID) || !_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
-			return _daos.LedenDao.OphalenViaPersoon(gelieerdePersoonID, groepsWerkJaarID);
+
+			return _daos.LedenDao.OphalenViaPersoon(
+				gelieerdePersoonID, 
+				groepsWerkJaarID);
 		}
 
 		/// <summary>
@@ -622,7 +629,7 @@ namespace Chiro.Gap.Workers
 
 			if ((extras & LidExtras.Afdelingen) != 0)
 			{
-				paths.Add(ld => ld.AfdelingsJaar.Afdeling);
+				paths.Add(ld => ld.AfdelingsJaar.Afdeling.WithoutUpdate());
 			}
 
 			return paths.ToArray();
@@ -640,7 +647,7 @@ namespace Chiro.Gap.Workers
 
 			if ((extras & LidExtras.Afdelingen) != 0)
 			{
-				paths.Add(ld => ld.AfdelingsJaar.First().Afdeling);
+				paths.Add(ld => ld.AfdelingsJaar.First().Afdeling.WithoutUpdate());
 			}
 
 			return paths.ToArray();
@@ -667,13 +674,13 @@ namespace Chiro.Gap.Workers
 		{
 			var paths = new List<Expression<Func<T, object>>>();
 
-			paths.Add(ld => ld.GroepsWerkJaar);
+			paths.Add(ld => ld.GroepsWerkJaar.WithoutUpdate());
 
 			if ((extras & LidExtras.Adressen) != 0)
 			{
 				// alle adressen
-				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsAdres.First().Adres.WoonPlaats);
-				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsAdres.First().Adres.StraatNaam);
+				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsAdres.First().Adres.WoonPlaats.WithoutUpdate());
+				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsAdres.First().Adres.StraatNaam.WithoutUpdate());
 
 				// link naar standaardadres
 				paths.Add(ld => ld.GelieerdePersoon.PersoonsAdres.Adres);
@@ -685,12 +692,12 @@ namespace Chiro.Gap.Workers
 
 			if ((extras & LidExtras.Communicatie) != 0)
 			{
-				paths.Add(ld => ld.GelieerdePersoon.Communicatie.First().CommunicatieType);
+				paths.Add(ld => ld.GelieerdePersoon.Communicatie.First().CommunicatieType.WithoutUpdate());
 			}
 
 			if ((extras & LidExtras.Groep) != 0)
 			{
-				paths.Add(ld => ld.GroepsWerkJaar.Groep);
+				paths.Add(ld => ld.GroepsWerkJaar.Groep.WithoutUpdate());
 			}
 			if ((extras & LidExtras.Afdelingen) != 0)
 			{
@@ -704,15 +711,15 @@ namespace Chiro.Gap.Workers
 			}
 			if ((extras & LidExtras.Functies) != 0)
 			{
-				paths.Add(ld => ld.Functie);
+				paths.Add(ld => ld.Functie.First().WithoutUpdate());
 			}
 			if ((extras & LidExtras.AlleAfdelingen) != 0)
 			{
-				paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().Afdeling);
+				paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().Afdeling.WithoutUpdate());
 			}
 			if ((extras & LidExtras.Verzekeringen) != 0)
 			{
-				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsVerzekering.First().VerzekeringsType);
+				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsVerzekering.First().VerzekeringsType.WithoutUpdate());
 			}
 			return paths;
 		}

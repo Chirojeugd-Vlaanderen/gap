@@ -18,7 +18,6 @@ using Chiro.Gap.Workers.KipSync;
 
 using Adres = Chiro.Gap.Orm.Adres;
 using AdresTypeEnum = Chiro.Gap.Domain.AdresTypeEnum;
-using CommunicatieType = Chiro.Gap.Orm.CommunicatieType;
 using Persoon = Chiro.Gap.Orm.Persoon;
 
 namespace Chiro.Gap.Workers
@@ -29,37 +28,27 @@ namespace Chiro.Gap.Workers
 	public class GelieerdePersonenManager
 	{
 		private readonly IGelieerdePersonenDao _gelieerdePersonenDao;
-		private readonly IGroepenDao _groepenDao;
 		private readonly ICategorieenDao _categorieenDao;
 		private readonly IPersonenDao _personenDao;
 		private readonly IAutorisatieManager _autorisatieMgr;
-		private readonly LedenManager _ledenMgr;
-		private readonly GroepsWerkJaarManager _groepsWerkJaarMgr;
 		private readonly ISyncPersoonService _sync;
 
 		/// <summary>
 		/// Creëert een GelieerdePersonenManager
 		/// </summary>
 		/// <param name="gelieerdePersonenDao">Repository voor gelieerde personen</param>
-		/// <param name="groepenDao">Repository voor groepen</param>
 		/// <param name="categorieenDao">Repository voor categorieën</param>
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
-		/// <param name="typedao">Repository voor communicatietypes</param>
-		/// <param name="commdao">Repository voor communicatievormen</param>
 		/// <param name="pDao">Repository voor personen</param>
 		/// <param name="sync">Sync Service met KipAdmin</param>
 		public GelieerdePersonenManager(
 			IGelieerdePersonenDao gelieerdePersonenDao,
-			IGroepenDao groepenDao,
 			ICategorieenDao categorieenDao,
 			IAutorisatieManager autorisatieMgr,
-			IDao<CommunicatieType> typedao,
-			IDao<CommunicatieVorm> commdao,
 			IPersonenDao pDao,
 			ISyncPersoonService sync)
 		{
 			_gelieerdePersonenDao = gelieerdePersonenDao;
-			_groepenDao = groepenDao;
 			_categorieenDao = categorieenDao;
 			_autorisatieMgr = autorisatieMgr;
 			_personenDao = pDao;

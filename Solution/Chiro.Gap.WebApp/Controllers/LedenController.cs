@@ -255,14 +255,33 @@ namespace Chiro.Gap.WebApp.Controllers
 			return new ExcelResult(stream, "leden.xlsx");
 		}
 
-		// id = lidid
-		// GET: /Leden/DeActiveren/id
+		/// <summary>
+		/// Schrijft een gelieerde persoon uit, en toont de bijgewerkte ledenlijst
+		/// </summary>
+		/// <param name="id">GelieerdePersoonID van uit te schrijven gelieerde persoon</param>
+		/// <param name="groepID">ID van de groep waarin de gebruker werkt</param>
+		/// <returns></returns>
+		/// <remarks>Uitschrijven wil zeggen: maak de leden gekoppeld aan de gelieerde persoon met
+		/// GelieerdePersoonID <paramref name="id"/> inactief</remarks>
 		[HandleError]
 		public ActionResult DeActiveren(int id, int groepID)
 		{
-			string fouten; //TODO fouten opvangen
+			string fouten = String.Empty; //TODO fouten opvangen
 			ServiceHelper.CallService<ILedenService>(l => l.Uitschrijven(new List<int> { id }, out fouten));
-			TempData["succes"] = Properties.Resources.LidNonActiefGemaakt;
+
+			// TODO: beter manier om problemen op te vangen dan via een string
+
+			if (fouten == String.Empty)
+			{
+				TempData["succes"] = Properties.Resources.LidNonActiefGemaakt;
+			}
+			else
+			{
+				// TODO: vermijden dat output van de back-end rechtstreeks zichtbaar wordt voor
+				// de user.
+
+				TempData["fout"] = fouten;
+			}
 
 			return TerugNaarVorigeLijst();
 		}

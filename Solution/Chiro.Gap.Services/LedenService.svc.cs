@@ -152,7 +152,7 @@ namespace Chiro.Gap.Services
 							// verhindert dat de rest bewaard wordt.
 							if (l != null)
 							{
-								l = _ledenMgr.LidBewaren(l);
+								l = _ledenMgr.LidBewaren(l, LidExtras.Geen);
 								lidIDs.Add(l.ID);
 							}
 						}
@@ -254,7 +254,7 @@ namespace Chiro.Gap.Services
 							// verhindert dat de rest bewaard wordt.
 							if (l != null)
 							{
-								l = _ledenMgr.LidBewaren(l);
+								l = _ledenMgr.LidBewaren(l, LidExtras.Afdelingen);
 								lidIDs.Add(l.ID);
 							}
 						}
@@ -316,6 +316,8 @@ namespace Chiro.Gap.Services
 					{
 						var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
+						// TODO: Is dit niet eerder iets voor 'den business':
+
 						if (l == null)
 						{
 							foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogNietIngeschreven, gp.Persoon.VolledigeNaam));
@@ -328,7 +330,13 @@ namespace Chiro.Gap.Services
 						}
 
 						l.NonActief = true;
-						_ledenMgr.LidBewaren(l);
+
+						foreach (var fn in l.Functie)
+						{
+							l.TeVerwijderen = true;
+						}
+
+						_ledenMgr.LidBewaren(l, LidExtras.Functies);
 					}
 				}
 
@@ -356,7 +364,7 @@ namespace Chiro.Gap.Services
 				Lid lid = _ledenMgr.Ophalen(lidinfo.LidInfo.LidID, LidExtras.Geen);
 
 				_ledenMgr.InfoOvernemen(lidinfo.LidInfo, lid);
-				_ledenMgr.LidBewaren(lid);
+				_ledenMgr.LidBewaren(lid, LidExtras.Geen);
 			}
 			catch (Exception ex)
 			{
