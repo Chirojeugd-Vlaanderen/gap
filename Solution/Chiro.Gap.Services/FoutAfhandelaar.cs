@@ -4,10 +4,12 @@
 // </copyright>
 
 using System;
+using System.Data;
 using System.ServiceModel;
 
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Services
 {
@@ -22,21 +24,26 @@ namespace Chiro.Gap.Services
 		/// <param name="ex">De opgevangen Exception</param>
 		public static void FoutAfhandelen(Exception ex)
 		{
-			switch (ex.GetType().Name)
+			/*
+			 * Hier worden algemene fouten opgevangen en op de goede manier doorgegeven. Als de debugger hier ergens breakt, 
+			 * mag je gewoon op F5 duwen om verder te gaan.
+			 */
+
+			if(ex is GeenGavException)
 			{
-				/*
-				 * Hier worden algemene fouten opgevangen en op de goede manier doorgegeven. Als de debugger hier ergens breakt, 
-				 * mag je gewoon op F5 duwen om verder te gaan.
-				 */
-				case "GeenGavException":
-					throw new FaultException<GapFault>(new FoutNummerFault { FoutNummer = FoutNummer.GeenGav }, new FaultReason(ex.Message));
-				case "EntityException":
-				case "EntityCommandExecutionException":
-					throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.GeenDatabaseVerbinding }, new FaultReason(ex.Message));
-				case "OptimisticConcurrencyException":
-					throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.Concurrecncy }, new FaultReason(ex.Message));
-				default:
-					throw new FaultException<GapFault>(new GapFault(), new FaultReason(ex.Message));
+				throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.GeenGav }, new FaultReason(ex.Message));
+			}
+			else if (ex is EntityException | ex is EntityCommandExecutionException)
+			{
+				throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.GeenDatabaseVerbinding }, new FaultReason(ex.Message));
+			}
+			else if (ex is OptimisticConcurrencyException)
+			{
+				throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.Concurrecncy }, new FaultReason(ex.Message));
+			}
+			else
+			{
+				throw ex;
 			}
 		}
 	}

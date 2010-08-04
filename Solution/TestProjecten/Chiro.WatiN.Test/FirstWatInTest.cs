@@ -214,7 +214,7 @@ namespace Chiro.WatiN.Test
 		/// Deze procedure gaat in het window naar de gevraagde pagina.
 		/// </summary>
 		/// <param name="window">Het browser window</param>
-		/// <param name="Pagina">De pagina die je wil openen</param>
+		/// <param name="pagina">De pagina die je wil openen</param>
 		public void GaNaarMenuPagina(IE window, Paginas pagina)
 		{
 			// We gaan we moeten controlleren of de normale gebruiker dit kan doen, en moeten 

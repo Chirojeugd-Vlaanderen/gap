@@ -31,7 +31,7 @@ namespace Chiro.Gap.WebApp.Test
 			TestRoute("~/15000",				// willekeurige groepID, hoeft niet te bestaan
 				new								// dit zijn de defaults zoals ze ingesteld zijn in global.asax
 				{
-					controller = "GavTaken",
+					controller = "Handleiding",
 					action = "Index",
 					groepID = 15000
 				});
@@ -79,11 +79,11 @@ namespace Chiro.Gap.WebApp.Test
 		[TestMethod]
 		public void Foutcontroller_Wordt_Juist_Opgeroepen()
 		{
-			TestRoute("~/Error/NotFound",
+			TestRoute("~/Error/NietGevonden",
 				new
 					{
 						controller = "Error",
-						action = "NotFound"
+						action = "NietGevonden"
 					}
 				);
 		}

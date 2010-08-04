@@ -1,20 +1,39 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Fout.Master" Inherits="System.Web.Mvc.ViewPage<System.Web.Mvc.HandleErrorInfo>" %>
+
 <%@ Import Namespace="System.ServiceModel" %>
 <%@ Import Namespace="System.Net" %>
+<%@ Import Namespace="Chiro.Gap.ServiceContracts.FaultContracts" %>
+<%@ Import Namespace="Chiro.Gap.Domain" %>
 <asp:Content ID="errorContent" ContentPlaceHolderID="MainContent" runat="server">
 	<%
-		String boodschap;
+		String boodschap = string.Empty;
 		if (Model != null)
 		{
-			if (Model.Exception.GetType() == typeof(FaultException<ExceptionDetail>))
+			if (Model.Exception is FaultException<FoutNummerFault>)
+			{
+				var ex = (FaultException<FoutNummerFault>)Model.Exception;
+				switch (ex.Detail.FoutNummer)
+				{
+					case FoutNummer.GeenGav:
+						Html.RenderPartial("GeenToegangControl");
+						break;
+					case FoutNummer.GeenDatabaseVerbinding:
+						Html.RenderPartial("GeenVerbindingControl");
+						break;
+					default:
+						boodschap = "Er is iets foutgelopen, maar het is niet helemaal duidelijk wat.";
+						break;
+				}
+			}
+			else if (Model.Exception is FaultException<ExceptionDetail>)
 			{
 				boodschap = Model.Exception.Message; // Hebben alle FaultExceptions aangepaste foutmeldingen? => Nee: fouten in DAL of servicelayer niet
 			}
-			else if (Model.Exception.GetType() == typeof(CommunicationObjectFaultedException))
+			else if (Model.Exception is CommunicationObjectFaultedException)
 			{
-				boodschap = "De service die gegevens ophaalt, is momenteel niet beschikbaar.";
+				Html.RenderPartial("GeenVerbindingControl");
 			}
-			else if (Model.Exception.GetType() == typeof(ArgumentException))
+			else if (Model.Exception is ArgumentException)
 			{
 				boodschap = "Foute gegevens doorgegeven.";
 			}
@@ -23,7 +42,10 @@
 				boodschap = "Er is iets foutgelopen, maar het is niet helemaal duidelijk wat.";
 			}
 
-			boodschap += String.Format(" ({0})", Response.StatusCode);
+			if (boodschap != string.Empty)
+			{
+				boodschap += String.Format(" ({0})", Response.StatusCode);
+			}
 		}
 		else
 		{
@@ -38,13 +60,22 @@
 				case (int)HttpStatusCode.InternalServerError:
 					boodschap = "Er is intern iets foutgegaan.";
 					break;
+				case (int)HttpStatusCode.ServiceUnavailable:
+					Html.RenderPartial("GeenVerbindingControl");
+					break;
+				case (int)HttpStatusCode.Forbidden:
+					Html.RenderPartial("GeenToegangControl");
+					break;
 				default:
 					boodschap = "Er is iets foutgegaan maar het is niet duidelijk wat.";
 					break;
 			}
 		}
-	%>
+
+		if (boodschap != string.Empty)
+		{	%>
 	<div class="Foutmelding">
 		<%=boodschap %>
 	</div>
+	<% } %>
 </asp:Content>

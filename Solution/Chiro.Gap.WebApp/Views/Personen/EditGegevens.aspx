@@ -20,12 +20,7 @@
 
     <% using (Html.BeginForm()) { %>  
     
-    <ul id="acties">
-        <li><input type="submit" value="Bewaren"/></li>
-        <li><input type="reset"  value=" Reset "/></li>
-    </ul>
-    <br />
-    <%
+   <%
         if (Model.GelijkaardigePersonen != null && Model.GelijkaardigePersonen.Count() > 0)
         {
             // Toon gelijkaardige personen
@@ -50,7 +45,10 @@
     <%      
         }
     %>
-    
+     <ul id="acties">
+        <li><input type="submit" value="Bewaren"/></li>
+        <li><input type="reset"  value=" Reset "/></li>
+    </ul>
     <fieldset>
         <legend>Persoonlijke gegevens</legend>          
             

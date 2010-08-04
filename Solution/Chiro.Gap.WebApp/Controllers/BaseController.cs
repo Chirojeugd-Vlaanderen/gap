@@ -5,7 +5,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Web.Caching;
 using System.Web.Mvc;
 
@@ -116,27 +116,30 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (groepID == 0)
 			{
 				// De Gekozen groep is nog niet gekend, zet defaults
-				// TODO: De defaults op een zinvollere plaats definieren.
-
-				model.GroepsNaam = "Nog geen Chirogroep geselecteerd";
-				model.Plaats = "geen";
-				model.StamNummer = "--";
+				model.GroepsNaam = Properties.Resources.GroepsnaamDefault;
+				model.Plaats = Properties.Resources.GroepPlaatsDefault;
+				model.StamNummer = Properties.Resources.StamNrDefault;
 				// model.GroepsCategorieen = new List<SelectListItem>();
 			}
 			else
 			{
-				string cacheKey = "GI" + groepID;
+				string groepCacheKey = "GI" + groepID;
+				string aantalProblemenCacheKey = Properties.Resources.ProblemenTellingCacheKey + groepID;
+				string problemenCacheKey = Properties.Resources.ProblemenCacheKey + groepID;
 
 				var c = System.Web.HttpContext.Current.Cache;
 
-				var gi = (GroepInfo)c.Get(cacheKey);
+				var gi = (GroepInfo)c.Get(groepCacheKey);
 				if (gi == null)
 				{
 					gi = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.InfoOphalen(groepID));
-					// TODO: als de gebruiker geen GAV is, krijgen we hier een exception die niet goed opgevangen wordt (zie #553)
-					// De volgende regel geeft een NullReference, en verderop krijgen we een parameterexception. Als de gebruiker geen GAV is,
-					// moeten we direct een foutpagina laten zien zonder verder te proberen om gegevens op te halen.
-					c.Add(cacheKey, gi, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
+
+					// Als de gebruiker geen GAV is, krijgen we hier een FaultException. Die wordt niet opgevangen,
+					// maar als je in web.config <customErrors="On"> instelt (ipv "Off" of "RemoteOnly"), dan
+					// word je automatisch doorverwezen naar de foutpagina, waar de exception 'afgehandeld' wordt.
+
+					// OPM: kan gi nog null zijn? 
+					c.Add(groepCacheKey, gi, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
 				}
 
 				model.GroepsNaam = gi.Naam;
@@ -144,79 +147,126 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.StamNummer = gi.StamNummer;
 				model.GroepID = gi.ID;
 
-				var problemen = ServiceHelper.CallService<
-					IGroepenService,
-					IEnumerable<FunctieProbleemInfo>>(svc => svc.FunctiesControleren(gi.ID));
+				// We werken met twee cache-items om te vermijden dat we te veel naar de databank moeten. Het is ook nodig omdat we 
+				// geen null kunnen cachen. Als er geen problemen zijn, moeten we dat dus op een andere manier opslaan:
+				// daarvoor dient de teller.
+				// Als de tellingcache leeg is (leeggemaakt na toekenning of 'ontslag'), of als de telling niet overeenkomt 
+				// met de problemencache, dan halen we de problemen opnieuw op. 
+				// Elke operatie waarbij functies toegekend of afgenomen worden, moet de tellingcache en de problemencache clearen.
+				var telling = (int?)c.Get(aantalProblemenCacheKey);
+				var problemen = (IEnumerable<FunctieProbleemInfo>)c.Get(problemenCacheKey);
 
-				foreach (var p in problemen)
+				if (telling == null || telling != problemen.Count()) // er zit niets in de cache
 				{
-					// Eerst een paar specifieke en veelvoorkomende problemen apart behandelen.
+					// problemen ophalen
+					problemen =
+						ServiceHelper.CallService<IGroepenService, IEnumerable<FunctieProbleemInfo>>(svc => svc.FunctiesControleren(gi.ID));
 
-					if (p.MinAantal > 0 && p.EffectiefAantal == 0)
+					// eventueel de problemen cachen
+					if (problemen == null)
 					{
-						model.Mededelingen.Add(new Mededeling
-						{
-							Type = MededelingsType.Probleem,
-							Info = String.Format(Properties.Resources.FunctieOntbreekt, p.Naam, p.Code)
-						});
+						telling = 0;
+						c.Remove(problemenCacheKey);
 					}
-					else if (p.MaxAantal == 1 && p.EffectiefAantal > 1)
+					else
 					{
-						model.Mededelingen.Add(new Mededeling
-						{
-							Type = MededelingsType.Probleem,
-							Info = String.Format(Properties.Resources.FunctieMeerdereKeren, p.Naam, p.Code, p.EffectiefAantal)
-						});
+						telling = problemen.Count();
+
+						c.Add(problemenCacheKey,
+							  problemen,
+							  null,
+							  Cache.NoAbsoluteExpiration,
+							  new TimeSpan(2, 0, 0),
+							  CacheItemPriority.NotRemovable,
+							  null);
 					}
 
-					// Dan de algemene foutmeldingen
+					// aantal problemen in cache steken
+					c.Add(aantalProblemenCacheKey,
+							telling,
+							null,
+							Cache.NoAbsoluteExpiration,
+							new TimeSpan(2, 0, 0),
+							CacheItemPriority.NotRemovable,
+							null);
+				}
 
-					else if (p.MinAantal > p.EffectiefAantal)
+				if (problemen != null)
+				{
+					foreach (var p in problemen)
 					{
-						model.Mededelingen.Add(new Mededeling
+						// Eerst een paar specifieke en veelvoorkomende problemen apart behandelen.
+
+						if (p.MinAantal > 0 && p.EffectiefAantal == 0)
 						{
-							Type = MededelingsType.Probleem,
-							Info = String.Format(Properties.Resources.FunctieTeWeinig, p.Naam, p.Code, p.EffectiefAantal, p.MinAantal)
-						});
-					}
-					else if (p.EffectiefAantal > p.MaxAantal)
-					{
-						model.Mededelingen.Add(new Mededeling
+							model.Mededelingen.Add(new Mededeling
+							{
+								Type = MededelingsType.Probleem,
+								Info = String.Format(Properties.Resources.FunctieOntbreekt, p.Naam, p.Code)
+							});
+						}
+						else if (p.MaxAantal == 1 && p.EffectiefAantal > 1)
 						{
-							Type = MededelingsType.Probleem,
-							Info = String.Format(Properties.Resources.FunctieTeVeel, p.Naam, p.Code, p.EffectiefAantal, p.MinAantal)
-						});
+							model.Mededelingen.Add(new Mededeling
+							{
+								Type = MededelingsType.Probleem,
+								Info = String.Format(Properties.Resources.FunctieMeerdereKeren, p.Naam, p.Code, p.EffectiefAantal)
+							});
+						}
+
+						// Dan de algemene foutmeldingen
+
+						else if (p.MinAantal > p.EffectiefAantal)
+						{
+							model.Mededelingen.Add(new Mededeling
+							{
+								Type = MededelingsType.Probleem,
+								Info = String.Format(Properties.Resources.FunctieTeWeinig, p.Naam, p.Code, p.EffectiefAantal, p.MinAantal)
+							});
+						}
+						else if (p.EffectiefAantal > p.MaxAantal)
+						{
+							model.Mededelingen.Add(new Mededeling
+							{
+								Type = MededelingsType.Probleem,
+								Info = String.Format(Properties.Resources.FunctieTeVeel, p.Naam, p.Code, p.EffectiefAantal, p.MinAantal)
+							});
+						}
 					}
 				}
+
+				// TODO: ook vermelden dat het werkjaar nog geïnitieerd moet worden als dat nog niet gebeurde!
 			}
 		}
 
-		/*
-		protected override void OnException(ExceptionContext filterContext)
-		{
-			try
-			{
-				LogSchrijven(Properties.Settings.Default.LogBestandPad,
-			 string.Format("Gebruiker '{0}' veroorzaakte de volgende fout tussen {1} en {2}, op controller {3}: {4}",
-						   HttpContext.User.Identity.Name,
-						   Request.UrlReferrer, Request.Url,
-						   filterContext.Controller, filterContext.Exception));
-			}
-			catch (Exception)
-			{
-				// Tja, wat doen we in zo'n geval?
-			}
-		}
+		/* Wordt voorlopig alleen - en bij momenten - gebruikt door Bart
+		 * 
+		//protected override void OnException(ExceptionContext filterContext)
+		//{
+		//    try
+		//    {
+		//        LogSchrijven(Properties.Settings.Default.LogBestandPad,
+		//                     string.Format("Gebruiker '{0}' veroorzaakte de volgende fout tussen {1} en {2}, op controller {3}: {4}",
+		//                   HttpContext.User.Identity.Name,
+		//                   Request.UrlReferrer, Request.Url,
+		//                   filterContext.Controller, filterContext.Exception));
+		//    }
+		//    catch (Exception)
+		//    {
+		//        // Tja, wat doen we in zo'n geval?
+		//    }
+		//}
 
-		static void LogSchrijven(string pad, string tekst)
-		{
-			var boodschap = new StringBuilder();
-			boodschap.AppendLine(DateTime.Now.ToString());
-			boodschap.AppendLine(tekst);
-			boodschap.AppendLine("=====================================");
+		//static void LogSchrijven(string pad, string tekst)
+		//{
+		//    var boodschap = new StringBuilder();
+		//    boodschap.AppendLine(DateTime.Now.ToString());
+		//    boodschap.AppendLine(tekst);
+		//    boodschap.AppendLine("=====================================");
 
-			System.IO.File.AppendAllText(pad, boodschap.ToString());
-		}
-		 */
+		//    System.IO.File.AppendAllText(pad, boodschap.ToString());
+		//}
+		//
+		*/
 	}
 }

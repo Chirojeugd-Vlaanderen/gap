@@ -25,7 +25,7 @@
                   <p>Selecteer afdeling(en) voor <%= Model.Info.VolledigeNaam %></p>
                   <%
                   
-				  //TODO dit moeten beschikbare afdelingsjaren zijn, code is verkeerd!!!!!
+				  // TODO dit moeten beschikbare afdelingsjaren zijn, code is verkeerd!!!!!
                   List<CheckBoxListInfo> info =
                       (from pa in Model.BeschikbareAfdelingen
                        select new CheckBoxListInfo(

@@ -65,13 +65,13 @@ namespace Chiro.Gap.WebApp
 					id = @"\d+"
 				});
 
-			// (GavTakenController indien geen controller meegegeven)
+			// (Handleiding indien geen controller meegegeven)
 			routes.MapRoute(
 				"Default",
 				"{groepID}/{controller}/{action}/{id}/{page}",
 				new
 				{
-					controller = "GavTaken",
+					controller = "Handleiding",
 					action = "Index",
 					page = "1",
 					id = "0"
@@ -100,16 +100,16 @@ namespace Chiro.Gap.WebApp
 			// Foutpagina's
 			routes.MapRoute(
 				"Foutpagina",
-				"{controller}/{action}",
+				"{controller}/{action}/{*path}",
 				new
-					{
-						controller = "Error",
-						action = "Index"
-					},
+				{
+					controller = "Error",
+					action = "Index"		// Defaults
+				},
 				new
-					{
-						controller = "Error"
-					});
+				{
+					controller = "Error"	// Constraint
+				});
 
 			// Opvang voor url's die niet aan de opgelegde patronen voldoen
 			routes.MapRoute(

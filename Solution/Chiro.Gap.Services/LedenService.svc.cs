@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using AutoMapper;
@@ -122,11 +121,13 @@ namespace Chiro.Gap.Services
 						{
 							var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
-							if (l != null) //uitgeschreven
+							// TODO: hier moet nog ergens een controle gebeuren of de persoon niet overleden is - zie ticket #632
+
+							if (l != null) // uitgeschreven
 							{
 								if (l.Type != type)
 								{
-									//TODO maak ander lidobject aan #
+									// TODO maak ander lidobject aan #
 									throw new NotImplementedException();
 								}
 								if (!l.NonActief)
@@ -136,7 +137,7 @@ namespace Chiro.Gap.Services
 								}
 								l.NonActief = false;
 							}
-							else //nieuw lid
+							else // nieuw lid
 							{
 								if (type == LidType.Kind)
 								{
@@ -354,7 +355,8 @@ namespace Chiro.Gap.Services
 		#region bewaren
 
 		/// <summary>
-		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. Creëert of verwijdert geen leden, en leden kunnen ook niet van werkjaar of van gelieerdepersoon veranderen.
+		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. 
+		/// Creëert of verwijdert geen leden, en leden kunnen ook niet van werkjaar of van gelieerdepersoon veranderen.
 		/// </summary>
 		/// <param name="lidinfo">Te bewaren lid</param>
 		public void Bewaren(PersoonLidInfo lidinfo)

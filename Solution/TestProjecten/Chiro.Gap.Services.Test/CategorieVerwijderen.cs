@@ -59,9 +59,9 @@ namespace Chiro.Gap.Services.Test
 		[TestInitialize]
 		public void setUp()
 		{
-			/// Zorg ervoor dat de PrincipalPermissionAttributes op de service methods
-			/// geen excepties genereren, door te doen alsof de service aangeroepen is met de goede
-			/// 
+			// Zorg ervoor dat de PrincipalPermissionAttributes op de service methods
+			// geen excepties genereren, door te doen alsof de service aangeroepen is met de goede
+			// 
 			var identity = new GenericIdentity(Properties.Settings.Default.TestUser);
 			var roles = new[] { Properties.Settings.Default.TestSecurityGroep };
 			var principal = new GenericPrincipal(identity, roles);

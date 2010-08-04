@@ -133,7 +133,7 @@ namespace Chiro.Gap.Services.Test
 		///Toevoegen van een geldig telefoonnr aan een onbestaande gelieerde persoon.  
 		/// Dit moet failen met een GeenGavException
 		/// </summary>
-		[ExpectedException(typeof(FaultException<GapFault>))]
+		[ExpectedException(typeof(FaultException<FoutNummerFault>))]
 		[TestMethod]
 		public void CommunicatieVormToevoegenTestOnbestaandePersoon()
 		{

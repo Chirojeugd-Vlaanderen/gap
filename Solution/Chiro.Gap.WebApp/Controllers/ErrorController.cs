@@ -4,11 +4,7 @@
 // </copyright>
 
 using System.Net;
-using System.ServiceModel;
 using System.Web.Mvc;
-
-using Chiro.Gap.Domain;
-using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -18,29 +14,9 @@ namespace Chiro.Gap.WebApp.Controllers
 		// GET: /Error/
 		public ActionResult Index()
 		{
+			// Normaal gezien passeren we hier nooit, want de defaultRedirect in web.config gaat naar ~/Shared/Error.aspx.
 			Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-			return View();
-		}
-
-		public ActionResult Index(ExceptionContext exceptionContext)
-		{
-			if (exceptionContext.Exception.GetType() == typeof(FaultException<FoutNummerFault>))
-			{
-				var fault = (FaultException<FoutNummerFault>)exceptionContext.Exception;
-				if (fault.Detail.FoutNummer == FoutNummer.GeenDatabaseVerbinding)
-				{
-					return View("GeenVerbinding");
-				}
-				else
-				{
-					return View();
-				}
-			}
-			else
-			{
-				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-				return View();
-			}
+			return View("Error");
 		}
 
 		//
@@ -48,13 +24,19 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult NietGevonden()
 		{
 			Response.StatusCode = (int)HttpStatusCode.NotFound;
-			return View("Index");
+			return View("Error");
 		}
 
 		public ActionResult GeenVerbinding()
 		{
-			Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-			return View("GeenVerbinding");
+			Response.StatusCode = (int)HttpStatusCode.ServiceUnavailable;
+			return View("Error");
+		}
+
+		public ActionResult GeenToegang()
+		{
+			Response.StatusCode = (int) HttpStatusCode.Forbidden;
+			return View("Error");
 		}
 	}
 }

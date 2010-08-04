@@ -180,10 +180,10 @@
   <data name="MultiIngeschrevenFeedback" xml:space="preserve">
     <value>De personen zijn nu ingeschreven in je groep.</value>
   </data>
-	<data name="InschrijvenMisluktFout" xml:space="preserve">
+  <data name="InschrijvenMisluktFout" xml:space="preserve">
     <value>Er is iets foutgelopen, de persoon kon niet worden ingeschreven.</value>
   </data>
-	<data name="MultiInschrijvenMisluktFout" xml:space="preserve">
+  <data name="MultiInschrijvenMisluktFout" xml:space="preserve">
     <value>Er is iets foutgelopen, niet alle personen konden worden ingeschreven.</value>
   </data>
   <data name="NiemandGeselecteerdFout" xml:space="preserve">
@@ -230,5 +230,22 @@
   </data>
   <data name="DubbelPuntBestellen" xml:space="preserve">
     <value>Dubbelpunt bestellen voor {0}.</value>
+  </data>
+  <data name="GroepPlaatsDefault" xml:space="preserve">
+    <value />
+  </data>
+  <data name="GroepsnaamDefault" xml:space="preserve">
+    <value>Nog geen Chirogroep geselecteerd</value>
+  </data>
+  <data name="StamNrDefault" xml:space="preserve">
+    <value>---/----</value>
+  </data>
+  <data name="ProblemenCacheKey" xml:space="preserve">
+    <value>Problemen</value>
+    <comment>aan te vullen met groepID</comment>
+  </data>
+  <data name="ProblemenTellingCacheKey" xml:space="preserve">
+    <value>AantalProblemen</value>
+    <comment>aan te vullen met groepID</comment>
   </data>
 </root>

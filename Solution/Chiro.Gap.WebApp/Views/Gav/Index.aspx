@@ -17,7 +17,7 @@
 			<%=Html.ActionLink(
                String.Format("{0} - {1} ({2})", item.StamNummer, item.Naam, item.Plaats),
                 "Index", 
-                new {Controller = "GavTaken", groepID = item.ID})%></li>
+                new {Controller = "Handleiding", groepID = item.ID})%></li>
 		<%
            
 			}

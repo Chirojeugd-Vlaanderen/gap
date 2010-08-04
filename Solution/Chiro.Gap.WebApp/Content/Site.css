@@ -356,13 +356,14 @@ div#title
 
 .mededelingen
 {
-    right: 4ex;
-	bottom: 0;   
-    position: fixed;
-    width: 40ex;
-    background-color: #E4D096;
-    border: 1px solid black;
-    padding: 1ex 1ex 1ex 4ex;
+	right: 4ex;
+	bottom: 0;
+	position: fixed;
+	width: 34ex;
+	background-color: #E4D096;
+	border: 1px solid black;
+	padding: 1ex 1ex 1ex 2ex;
+	margin: 0 10px 10px 0;
 }
 
 #acties h1
@@ -372,14 +373,14 @@ div#title
 
 #acties
 {
-    float: right;
-    margin: 25px;
+	float: right;
+	margin: 25px;
 }
 
 #acties ul
 {
 	margin: 0 4px 0 -10px;
-	text-align: left;	
+	text-align: left;
 }
 
 #acties li
@@ -427,17 +428,17 @@ div.Succesmelding
 	background-color: #DFD;
 }
 
-table.overzicht 
+table.overzicht
 {
 	background-color: #E0E0E0;
 }
 
-table.overzicht th 
+table.overzicht th
 {
 	background-color: #A0A0A0;
 }
 
-info 
+info
 {
 	float: right;
 	display: block;
@@ -445,21 +446,19 @@ info
 
 textarea
 {
-    width: 60ex;
-    height: 10ex;
+	width: 60ex;
+	height: 10ex;
 }
 
 .opzij
 {
-    float: right;
-    background:#ddd;
-    width: 36%;
-    padding: 0 1%;
-    margin: 0;
-    display: inline;
+	float: right;
+	background: #ddd;
+	width: 36%;
+	padding: 0 1%;
+	margin: 0;
+	display: inline;
 }
-
-
 
 .kaderke
 {
@@ -490,8 +489,21 @@ textarea
 {
 	float: left;
 	background-color: #ddd;
-	width: 200px;
+	max-width: 200px;
+	width: 20%;
 	margin: 0 5px 2px 0;
+	padding: 5px 6px 15px 6px;
+	font-size: 80%;
+}
+
+#helpmenu p
+{
+	margin: 5px 0 0 0;
+}
+
+#helpmenu ul
+{
+	margin: 0 0 0 0;
 }
 
 #help
@@ -499,4 +511,11 @@ textarea
 	float: left;
 	margin-bottom: 15px;
 	padding: 2px 2px 2px 2px;
+	max-width: 510px;
+	width: 80%;
+}
+
+ul.Woordenlijst li
+{
+	margin-bottom: 5px;
 }

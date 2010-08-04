@@ -291,14 +291,25 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Content Include="Help\Groep.htm" />
     <Content Include="Help\HelloWorld.htm" />
+    <Content Include="Help\PersoonlijkeGegevensfiche.htm" />
+    <Content Include="Help\Iedereen.htm" />
+    <Content Include="Help\Ingeschreven.htm" />
+    <Content Include="Help\Jaarovergang.htm" />
+    <Content Include="Help\NieuweAfdeling.htm" />
+    <Content Include="Help\NieuweCategorie.htm" />
+    <Content Include="Help\NieuweFunctie.htm" />
+    <Content Include="Help\NieuwePersoon.htm" />
+    <Content Include="Help\NieuwLid.htm" />
+    <Content Include="Help\Persoonsfiche.htm" />
+    <Content Include="Help\Trefwoorden.htm" />
     <Content Include="Scripts\MicrosoftMvcJQueryValidation.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Views\Abonnementen\DubbelpuntAanvragen.aspx" />
     <Content Include="Views\Categorieen\Index.aspx" />
-    <Content Include="Views\Error\GeenVerbinding.aspx" />
-    <Content Include="Views\Error\Index.aspx" />
-    <Content Include="Views\Fout\Onbekend.aspx" />
+    <Content Include="Views\Shared\GeenToegangControl.ascx" />
+    <Content Include="Views\Shared\GeenVerbindingControl.ascx" />
     <Content Include="Views\Functies\FunctieVerwijderen.aspx" />
     <Content Include="Views\Functies\Index.aspx" />
     <Content Include="Views\Categorieen\CategorieVerwijderen.aspx" />
@@ -313,6 +324,7 @@
     <Content Include="Views\Leden\LoonVerliesVerzekeren.aspx" />
     <Content Include="Views\Personen\EditRest.aspx" />
     <Content Include="Views\Shared\AlleHelpLinks.ascx" />
+    <Content Include="Views\Shared\Error.aspx" />
     <Content Include="Views\Shared\TerugNaarFicheLinkControl.ascx" />
     <Content Include="Views\Shared\LedenLinkControl.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\Date.ascx" />

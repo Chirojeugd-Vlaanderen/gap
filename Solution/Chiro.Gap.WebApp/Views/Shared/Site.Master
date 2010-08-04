@@ -49,21 +49,27 @@
 		<%=Html.Encode(ViewData.Model.Titel) %></h2>
 	<% if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
 	{
+		if (Model.Mededelingen.Count() == 1)
+		{
 	%>
-	<ul class="mededelingen">
-		<%
-			foreach (var m in Model.Mededelingen)
-			{
-		%>
-		<li><strong>
-			<%=m.Type %>:</strong>
-			<%=m.Info %></li>
-		<%
-			}
-		%>
-	</ul>
+	<div class="mededelingen">
+		<strong>Opgelet:</strong> er is nog
+		<%=Html.ActionLink("1 zaak", "Index", "GavTaken")%>
+		die je in orde moet brengen.
+	</div>
 	<%
 		}
+		else
+		{
+	%>
+	<div class="mededelingen">
+		<strong>Opgelet:</strong> er zijn nog
+		<%=Html.ActionLink(Model.Mededelingen.Count + " zaken", "Index", "GavTaken")%>
+		die je in orde moet brengen.
+	</div>
+	<%
+		}
+	}
 	%>
 	<asp:ContentPlaceHolder ID="MainContent" runat="server" />
 </asp:Content>

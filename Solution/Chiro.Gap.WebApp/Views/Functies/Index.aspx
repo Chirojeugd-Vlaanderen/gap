@@ -17,6 +17,10 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+	<ul id="acties">
+		<li>
+			<input type="submit" value="Bewaren" /></li>
+	</ul>
 	<ul>
 		<%
 			foreach (var fie in Model.Detail.Functies.OrderBy(fie => fie.Code))
@@ -68,16 +72,15 @@
 			<%=Html.LabelFor(mdl => mdl.NieuweFunctie.Type ) %>
 			<%
 				var values = from LidType lt in Enum.GetValues(typeof(LidType))
-							 select new { 
-                                 value = lt, 
-                                 text = String.Format(
-                                    "Ingeschreven {0}",
-                                    lt == LidType.Kind ? "leden" : lt == LidType.Leiding ? "leiding" : "leden en leiding") };
+							 select new
+							 {
+								 value = lt,
+								 text = String.Format(
+									"Ingeschreven {0}",
+									lt == LidType.Kind ? "leden" : lt == LidType.Leiding ? "leiding" : "leden en leiding")
+							 };
 			%>
 			<%=Html.DropDownListFor( mdl => mdl.NieuweFunctie.Type, new SelectList(values, "value", "text")) %>
-		</p>
-		<p>
-			<input type="submit" value="Bewaren" />
 		</p>
 	</fieldset>
 	<%}

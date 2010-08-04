@@ -115,7 +115,7 @@ namespace Chiro.Gap.Workers
 			gwj.Lid.Add(lid);
 
 			// Instapperiode invullen
-			// Haal alle groepswerkjaren op //TODO in de toekomst niet efficient genoeg!
+			// Haal alle groepswerkjaren op // TODO in de toekomst niet efficient genoeg!
 			// en selecteert het werkjaar van een jaar geleden als het bestaat
 
 			var voriggwj = (from ld in gp.Lid

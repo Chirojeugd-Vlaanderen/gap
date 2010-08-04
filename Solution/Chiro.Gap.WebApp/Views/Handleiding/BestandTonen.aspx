@@ -5,7 +5,6 @@
 	<div id="help">
 		<%= ViewData.Model.HelpBestand %>
 	</div>
-	<br clear="all" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
 </asp:Content>

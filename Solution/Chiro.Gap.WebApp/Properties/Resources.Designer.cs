@@ -241,11 +241,29 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string GroepPlaatsDefault {
+            get {
+                return ResourceManager.GetString("GroepPlaatsDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Groepsinstellingen.
         /// </summary>
         public static string GroepsInstellingenTitel {
             get {
                 return ResourceManager.GetString("GroepsInstellingenTitel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nog geen Chirogroep geselecteerd.
+        /// </summary>
+        public static string GroepsnaamDefault {
+            get {
+                return ResourceManager.GetString("GroepsnaamDefault", resourceCulture);
             }
         }
         
@@ -363,6 +381,33 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string Overzicht {
             get {
                 return ResourceManager.GetString("Overzicht", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Problemen.
+        /// </summary>
+        public static string ProblemenCacheKey {
+            get {
+                return ResourceManager.GetString("ProblemenCacheKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AantalProblemen.
+        /// </summary>
+        public static string ProblemenTellingCacheKey {
+            get {
+                return ResourceManager.GetString("ProblemenTellingCacheKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ---/----.
+        /// </summary>
+        public static string StamNrDefault {
+            get {
+                return ResourceManager.GetString("StamNrDefault", resourceCulture);
             }
         }
         

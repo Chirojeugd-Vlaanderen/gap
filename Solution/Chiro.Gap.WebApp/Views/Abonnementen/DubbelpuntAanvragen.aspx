@@ -12,6 +12,10 @@
 	
 	Je staat op het punt om een <a href='http://www.chiro.be/dubbelpunt'>Dubbelpuntabonnement</a> 
 	te bestellen voor <%=Html.ActionLink(Model.VolledigeNaam, "EditRest", new { Controller="Personen", id = Model.GelieerdePersoonID }) %>.<br />
+	<% 
+		   
+	%>
+	
 	Hiervoor zal <strong>&euro; <%=Model.Prijs %></strong> aangerekend worden. 
 	
 	Klik op &lsquo;bevestigen&rsquo; om Dubbelpunt te bestellen.
