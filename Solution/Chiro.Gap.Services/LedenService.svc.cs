@@ -153,7 +153,7 @@ namespace Chiro.Gap.Services
 							// verhindert dat de rest bewaard wordt.
 							if (l != null)
 							{
-								l = _ledenMgr.LidBewaren(l, LidExtras.Geen);
+								l = _ledenMgr.LidBewaren(l, LidExtras.Persoon|LidExtras.Afdelingen);
 								lidIDs.Add(l.ID);
 							}
 						}

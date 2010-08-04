@@ -84,7 +84,10 @@
 		</td>
 		<td>
 			<% if (!p.IsLid && !p.IsLeiding && (p.KanLidWorden || p.KanLeidingWorden)){ %>
-			<%=Html.ActionLink("inschrijven", "AutomatischLidMaken", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
+			<%=Html.ActionLink(
+				String.Format("inschrijven als {0}", p.KanLeidingWorden ? "leiding": "lid"), 
+				"AutomatischLidMaken", 
+				new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
 			<% } %>
 			<%=Html.ActionLink("zus/broer maken", "Kloon", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
 		</td>
