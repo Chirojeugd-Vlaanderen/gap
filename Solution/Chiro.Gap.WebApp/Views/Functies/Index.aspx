@@ -17,6 +17,10 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+	<% 
+		Html.EnableClientValidation();
+		using (Html.BeginForm())
+		{%>
 	<ul id="acties">
 		<li>
 			<input type="submit" value="Bewaren" /></li>
@@ -37,10 +41,6 @@
 			}
 		%>
 	</ul>
-	<% 
-		Html.EnableClientValidation();
-		using (Html.BeginForm())
-		{%>
 	<fieldset>
 		<legend>Functie toevoegen</legend>
 		<p>

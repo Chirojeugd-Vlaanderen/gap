@@ -541,7 +541,7 @@ namespace Chiro.Gap.Services
 			try
 			{
 				var gwj = _groepsWerkJaarManager.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Afdelingen);
-				return Mapper.Map<IEnumerable<AfdelingsJaar>, IList<ActieveAfdelingInfo>>(gwj.AfdelingsJaar);
+				return Mapper.Map<IEnumerable<AfdelingsJaar>, IList<ActieveAfdelingInfo>>(gwj.AfdelingsJaar.OrderBy(aj => aj.GeboorteJaarVan));
 			}
 			catch (Exception ex)
 			{

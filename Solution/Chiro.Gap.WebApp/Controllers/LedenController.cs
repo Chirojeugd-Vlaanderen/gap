@@ -41,10 +41,10 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// groepswerkjaren, afdelingen, en functies, en vastleggen van geselecteerd groepswerkjaar.
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het gevraagde groepswerkjaar</param>
-		/// <param name="groepID"></param>
-		/// <param name="sortering"></param>
+		/// <param name="groepID">ID van de groep waar het over gaat</param>
+		/// <param name="sortering">Enumwaarde die aangeeft op welke parameter de lijst gesorteerd moet worden</param>
 		/// <returns></returns>
-		/// TODO deze code moet opgekuist worden
+		// TODO deze code moet opgekuist worden
 		[HandleError]
 		private LidInfoModel LijstModelInitialiseren(int groepsWerkJaarID, int groepID, LedenSorteringsEnum sortering)
 		{
@@ -56,7 +56,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			// TODO check dat het gegeven groepswerkjaar id wel degelijk van de gegeven groep is
 
-			// Laadt de lijst van werkjaren in van de groep en zet de juiste info over het te tonen werkjaar
+			// Laad de lijst van werkjaren in van de groep en zet de juiste info over het te tonen werkjaar
 			model.WerkJaarInfos = ServiceHelper.CallService<IGroepenService, IEnumerable<WerkJaarInfo>>(e => e.WerkJarenOphalen(groepID));
 
 			var gevraagdwerkjaar = (from g in model.WerkJaarInfos
@@ -69,7 +69,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// Haal alle afdelingsjaren op van de groep in het groepswerkjaar
 			var list = ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>(groep => groep.ActieveAfdelingenOphalen(groepsWerkJaarID));
 
-			// Laadt de afdelingen in het model in via een dictionary
+			// Laad de afdelingen in het model in via een dictionary
 			model.AfdelingsInfoDictionary = new Dictionary<int, AfdelingDetail>();
 			foreach (AfdelingDetail ai in list)
 			{
@@ -98,10 +98,10 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="groepsWerkJaarID">gevraagd groepswerkjaar.  Indien 0, het recentste groepswerkjaar van de groep
 		/// met ID <paramref name="groepID"/>.</param>
-		/// <param name="sortering"></param>
+		/// <param name="sortering">Enumwaarde die aangeeft op welke parameter de lijst gesorteerd moet worden</param>
 		/// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
-		/// <param name="lijst"></param>
-		/// <param name="id"></param>
+		/// <param name="lijst">Enumwaarde die aangeeft wat voor lijst we moeten tonen</param>
+		/// <param name="id">ID van de functie; OPM: waarom is dat dan niet functieID?</param>
 		/// <returns></returns>
 		[HandleError]
 		public ActionResult Lijst(int groepsWerkJaarID, LijstEnum lijst, int id, LedenSorteringsEnum sortering, int groepID)
@@ -122,6 +122,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>(lid => lid.PaginaOphalenVolgensFunctie(groepsWerkJaarID, id, sortering));
 
 				// TODO functienaam (zie #564)
+				// Kun je die naam van de functie niet mee laten posten? Dan moet je ze niet meer opzoeken.
 				model.Titel = "Ledenoverzicht van leden met functie TODO in het werkjaar " + model.JaartalGetoondGroepsWerkJaar + "-" + (model.JaartalGetoondGroepsWerkJaar + 1);
 
 				// TODO naar volgend werkjaar kunnen gaan met behoud van functie
@@ -142,7 +143,7 @@ namespace Chiro.Gap.WebApp.Controllers
 									 where a.Value.AfdelingID == id
 									 select a.Value).FirstOrDefault();
 
-				model.Titel = "Ledenoverzicht van de " + af.AfdelingNaam + " van het werkjaar " + model.JaartalGetoondGroepsWerkJaar + "-" + (model.JaartalGetoondGroepsWerkJaar + 1);
+				model.Titel = "Ledenoverzicht van de " + af.AfdelingNaam.ToLower() + " van het werkjaar " + model.JaartalGetoondGroepsWerkJaar + "-" + (model.JaartalGetoondGroepsWerkJaar + 1);
 
 				model.HuidigeAfdeling = id;
 				return View("Index", model);
@@ -330,6 +331,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
+				// TODO: afdelingen sorteren. Bij voorkeur op leeftijd, anders alfabetisch.
 				model.Titel = String.Format(Properties.Resources.AfdelingenAanpassen, model.Info.VolledigeNaam);
 				return View("AfdelingBewerken", model);
 			}
@@ -358,7 +360,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepID">ID van de groep waarin we momenteel werken</param>
 		/// <param name="id">LidID van het te verzekeren lid</param>
 		/// <returns>
-		/// een view waarin gevraagd wordt te bevestigen dat het lid met LidID <paramref name="id"/> verzekerd moet worden
+		/// Een view waarin gevraagd wordt te bevestigen dat het lid met LidID <paramref name="id"/> verzekerd moet worden
 		/// </returns>
 		[HandleError]
 		public ActionResult LoonVerliesVerzekeren(int groepID, int id)

@@ -91,10 +91,6 @@
     <Compile Include="Controllers\CategorieenController.cs" />
     <Compile Include="Controllers\FunctiesController.cs" />
     <Compile Include="Controllers\GroepController.cs" />
-    <Compile Include="DashBoard.aspx.cs">
-      <DependentUpon>DashBoard.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="App_GlobalResources\MyResources.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -104,9 +100,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MyResources.nl.resx</DependentUpon>
-    </Compile>
-    <Compile Include="DashBoard.aspx.designer.cs">
-      <DependentUpon>DashBoard.aspx</DependentUpon>
     </Compile>
     <Compile Include="HtmlHelpers\CheckBoxListHelper.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -161,7 +154,6 @@
     </CodeAnalysisDictionary>
     <Content Include="Content\indicator.gif" />
     <Content Include="Content\jquery.autocomplete.css" />
-    <Content Include="DashBoard.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery.autocomplete.js" />
@@ -292,7 +284,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Content Include="Help\Groep.htm" />
-    <Content Include="Help\HelloWorld.htm" />
     <Content Include="Help\PersoonlijkeGegevensfiche.htm" />
     <Content Include="Help\Iedereen.htm" />
     <Content Include="Help\Ingeschreven.htm" />

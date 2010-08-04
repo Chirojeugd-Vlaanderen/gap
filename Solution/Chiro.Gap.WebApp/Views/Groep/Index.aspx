@@ -43,7 +43,7 @@
 				{
 			%>
 			<li>
-				<%=Html.Encode(String.Format("{0} - {1} ({2})", afd.AfdelingAfkorting, afd.AfdelingNaam, afd.OfficieleAfdelingNaam)) %></li>
+				<%=Html.Encode(String.Format("{0} ({1}) -- officiële variant: {2}", afd.AfdelingNaam, afd.AfdelingAfkorting, afd.OfficieleAfdelingNaam.ToLower())) %></li>
 			<%
 				}
 			%>
@@ -59,7 +59,7 @@
 				{
 			%>
 			<li>
-				<%=Html.Encode(String.Format("{0} - {1}", cat.Code, cat.Naam)) %>
+				<%=Html.Encode(String.Format("{0} ({1})", cat.Naam, cat.Code))%>
 			</li>
 			<%
 				}
@@ -76,7 +76,7 @@
 				{
 			%>
 			<li><%=Html.Encode(String.Format(
-			    "{0} ({1}) - Kan toegekend worden aan ingeschreven {2}", 
+			    "{0} ({1}) -- kan toegekend worden aan ingeschreven {2}", 
 			    fie.Naam, 
                 fie.Code, 
                 fie.Type == LidType.Kind ? "leden" : fie.Type == LidType.Leiding ? "leiding" : "leden en leiding"))%>

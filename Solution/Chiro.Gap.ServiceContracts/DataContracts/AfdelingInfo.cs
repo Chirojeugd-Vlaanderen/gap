@@ -3,7 +3,6 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
@@ -33,7 +32,6 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// Afkorting voor de afdeling
 		/// </summary>
 		[DataMember]
-		[DisplayName(@"Code")]
         [Verplicht]
         [StringLengte(10), StringMinimumLengte(1)]
 		public string Afkorting { get; set; }
