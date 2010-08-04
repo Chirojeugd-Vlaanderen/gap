@@ -60,7 +60,7 @@ namespace Chiro.Gap.Data.Ef
 							 where gp.Groep.ID == groepID
 							 select gp) as ObjectQuery<GelieerdePersoon>;
 
-				result = SorteerLijst(IncludesToepassen(query, paths), sortering).ToList();
+				result = Sorteren(IncludesToepassen(query, paths), sortering).ToList();
 			}
 
 			// Dan detachen
@@ -71,46 +71,37 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// Sorteert een lijst van personen. Eerst volgens de gegeven ordening, dan steeds op naam.
+		/// Sorteert een 'queryable' van gelieerde personen. Eerst volgens de gegeven ordening, dan steeds op naam.
 		/// <para />
 		/// De sortering is vrij complex om met meerdere opties rekening te houden.
 		/// <para />
 		/// Steeds wordt eerst gesorteerd op lege velden/gevulde velden, de lege komen laatst.
 		/// Dan wordt gesorteerd op "sortering"
-		///		Naam => Naam+Voornaam
+		///		Naam => Naam, Voornaam
 		///		Categorie => Naam van de categorie die eerst in de lijst staat #TODO dit is mss niet optimaal
 		///		Leeftijd => Op leeftijd, jongste eerst
-		/// Dan worden overblijvende gelijke records op naam+voornaam gesorteerd
+		/// Dan worden overblijvende gelijke records op naam en voornaam gesorteerd
 		/// </summary>
-		/// <param name="lijst">De te sorteren lijst</param>
+		/// <param name="lijst">De te sorteren 'queryable'</param>
 		/// <param name="sortering">Hoe te sorteren</param>
-		/// <returns>De gesorteerde lijst!!! In place sorteren lijkt niet mogelijk!!!</returns>
-		private static IEnumerable<GelieerdePersoon> SorteerLijst(IEnumerable<GelieerdePersoon> lijst, PersoonSorteringsEnum sortering)
+		/// <returns>Een nieuwe queryable, die de resultaten op de gewenste manier sorteert</returns>
+		private static IQueryable<GelieerdePersoon> Sorteren(IQueryable<GelieerdePersoon> lijst, PersoonSorteringsEnum sortering)
 		{
 			switch (sortering)
 			{
 				case PersoonSorteringsEnum.Naam:
 					return lijst
-						.OrderBy(gp => String.Format(
-									"{0} {1}",
-									gp.Persoon.Naam,
-									gp.Persoon.VoorNaam));
+						.OrderBy(gp => gp.Persoon.Naam).ThenBy(gp => gp.Persoon.VoorNaam);
 				case PersoonSorteringsEnum.Leeftijd:
 					return lijst
 						.OrderBy(gp => gp.Persoon.GeboorteDatum == null)
 						.ThenByDescending(gp => gp.Persoon.GeboorteDatum)
-						.ThenBy(gp => String.Format(
-									"{0} {1}",
-									gp.Persoon.Naam,
-									gp.Persoon.VoorNaam));
+						.ThenBy(gp => gp.Persoon.Naam).ThenBy(gp => gp.Persoon.VoorNaam);
 				case PersoonSorteringsEnum.Categorie:
 					return lijst
 						.OrderBy(gp => gp.Categorie.FirstOrDefault() == null)
 						.ThenBy(gp => (gp.Categorie.FirstOrDefault() == null ? null : gp.Categorie.First().Naam))
-						.ThenBy(gp => String.Format(
-									"{0} {1}",
-									gp.Persoon.Naam,
-									gp.Persoon.VoorNaam));
+						.ThenBy(gp => gp.Persoon.Naam).ThenBy(gp => gp.Persoon.VoorNaam);
 				default:
 					throw new NotImplementedException();
 			}
@@ -180,15 +171,17 @@ namespace Chiro.Gap.Data.Ef
 			using (var db = new ChiroGroepEntities())
 			{
 				// Haal de gelieerde personen op van de gevraagde groep
-				var gpQuery = (from grp in db.Groep
-							   .Include("GelieerdePersoon.Persoon")
-							   .Include("GelieerdePersoon.Categorie")
-							   where grp.ID == groepID
-							   select grp).FirstOrDefault().GelieerdePersoon;
+
+				var gpQuery = (from gp in db.GelieerdePersoon
+				               	.Include(gpe => gpe.Persoon)
+				               	.Include(gpe => gpe.Categorie)
+				               	.Include(gpe => gpe.Groep)
+				               where gp.Groep.ID == groepID
+				               select gp);
 
 				// Selecteer gewenste pagina, en bepaal totaal aantal personen
 
-				lijst = SorteerLijst(gpQuery, sortering).Paging(pagina, paginaGrootte).ToList();
+				lijst = Sorteren(gpQuery, sortering).PaginaSelecteren(pagina, paginaGrootte).ToList();
 
 				aantalTotaal = gpQuery.Count();
 
@@ -248,7 +241,7 @@ namespace Chiro.Gap.Data.Ef
 				// Pas Extra's toe
 
 				// Sorteer ze en bepaal totaal aantal personen
-				lijst = SorteerLijst(queryMetExtras, sortering).Paging(pagina, paginaGrootte).ToList();
+				lijst = Sorteren(queryMetExtras, sortering).PaginaSelecteren(pagina, paginaGrootte).ToList();
 
 				aantalTotaal = query.Count();
 

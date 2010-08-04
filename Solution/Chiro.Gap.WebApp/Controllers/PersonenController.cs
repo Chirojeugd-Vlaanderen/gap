@@ -60,7 +60,6 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="sortering">Geeft de sortering van de pagina en lijst aan</param>
 		/// <returns>De personenlijst in de view 'Index'</returns>
 		[HandleError]
-		//		public ActionResult List(int page, int groepID, int id)
 		public ActionResult List(int page, int groepID, int id, PersoonSorteringsEnum sortering)
 		{
 			// Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten

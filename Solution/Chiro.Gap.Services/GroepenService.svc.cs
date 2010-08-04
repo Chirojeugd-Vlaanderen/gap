@@ -1027,7 +1027,7 @@ namespace Chiro.Gap.Services
 					{
 						_afdelingsJaarMgr.Aanmaken(afd, offafd, gwj, afdinfo.GeboorteJaarVan, afdinfo.GeboorteJaarTot, afdinfo.Geslacht);
 					}
-					catch (ValidatieException e)
+					catch (ValidatieException)
 					{
 						//TODO handle
 					}					
