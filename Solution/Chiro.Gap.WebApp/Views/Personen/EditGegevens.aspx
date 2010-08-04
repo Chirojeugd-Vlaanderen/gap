@@ -56,6 +56,7 @@
 	</ul>
 	<fieldset>
 		<legend>Persoonlijke gegevens</legend>
+		<%=Html.HiddenFor(s => s.HuidigePersoon.AdNummer) %>
 		<p>
 			<%=Html.LabelFor(s => s.HuidigePersoon.VoorNaam) %>
 			<%=Html.EditorFor(s => s.HuidigePersoon.VoorNaam) %>
