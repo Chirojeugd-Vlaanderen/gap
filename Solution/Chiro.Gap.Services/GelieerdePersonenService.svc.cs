@@ -193,7 +193,7 @@ namespace Chiro.Gap.Services
 			// Gebruik de businesslaag om info.Persoon te koppelen aan de opgehaalde groep.
 
 			GelieerdePersoon gelieerd = _gpMgr.Koppelen(nieuwePersoon, g, info.ChiroLeefTijd);
-			gelieerd = _gpMgr.Bewaren(gelieerd, PersoonsExtras.Geen);
+			gelieerd = _gpMgr.Bewaren(gelieerd, PersoonsExtras.Groep);
 			return new IDPersEnGP { GelieerdePersoonID = gelieerd.ID, PersoonID = gelieerd.Persoon.ID };
 		}
 		#endregion
