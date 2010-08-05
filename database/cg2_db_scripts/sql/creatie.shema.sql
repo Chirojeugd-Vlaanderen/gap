@@ -606,3 +606,4 @@ GRANT DELETE,INSERT,UPDATE ON pers.PersoonsCategorie TO GapRole
 GRANT DELETE,INSERT,UPDATE ON pers.PersoonVrijVeld TO GapRole
 GRANT DELETE,INSERT,UPDATE ON pers.PersoonVrijVeldType TO GapRole
 GRANT INSERT ON verz.PersoonsVerzekering TO GapRole
+GRANT INSERT ON grp.GroepsWerkJaar TO GapRole
