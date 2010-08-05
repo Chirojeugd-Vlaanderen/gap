@@ -195,8 +195,12 @@ namespace Chiro.Gap.Workers
 
 			// Bereken gewenste werkjaar
 			int werkjaar;
-			//TODO moet setting beginovergangsperiode worden
-			var startdate = new DateTime(DateTime.Today.Year, 8, 15);
+			
+			var startdate = new DateTime(
+				DateTime.Today.Year, 
+				Properties.Settings.Default.BeginOvergangsPeriode.Month, 
+				Properties.Settings.Default.BeginOvergangsPeriode.Day);
+
 			if (DateTime.Today.CompareTo(startdate) < 0) // vroeger
 			{
 				werkjaar = DateTime.Today.Year - 1;
@@ -215,7 +219,7 @@ namespace Chiro.Gap.Workers
 
 			var nieuwgwj = new GroepsWerkJaar { Groep = g, WerkJaar = werkjaar };
 
-			return _groepsWjDao.Bewaren(nieuwgwj);
+			return _groepsWjDao.Bewaren(nieuwgwj, gwj=>gwj.Groep);
 		}
 	}
 }
