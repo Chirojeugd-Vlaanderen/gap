@@ -242,8 +242,10 @@ namespace Chiro.Gap.Workers
 
 			// Bepaal of het een kind of leiding wordt
 			var afdeling =
-				(from a in gwj.AfdelingsJaar where gp.Persoon.GeboorteDatum.Value.Year - gp.ChiroLeefTijd <= a.GeboorteJaarTot select a).
-					FirstOrDefault();
+				(from a in gwj.AfdelingsJaar where 
+					 (gp.Persoon.GeboorteDatum.Value.Year - gp.ChiroLeefTijd <= a.GeboorteJaarTot 
+					  && a.GeboorteJaarVan <= gp.Persoon.GeboorteDatum.Value.Year)
+				 select a).FirstOrDefault();
 
 			if(afdeling!=null)
 			{
