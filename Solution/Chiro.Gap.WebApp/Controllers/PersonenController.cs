@@ -9,15 +9,16 @@ using System.Linq;
 using System.ServiceModel;
 using System.Web.Mvc;
 
+using AutoMapper;
+
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Validatie;
-using Chiro.Gap.WebApp.Models;
 using Chiro.Gap.WebApp.HtmlHelpers;
-using AutoMapper;
+using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
@@ -73,8 +74,15 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.GekozenCategorieID = id;
 			model.Sortering = sortering;
 
-			// Alle personen bekijken
-			if (id == 0)
+			model.GroepsCategorieen = ServiceHelper.CallService<IGroepenService, IList<CategorieInfo>>(
+				svc => svc.CategorieenOphalen(groepID)).ToList();
+			model.GroepsCategorieen.Add(new CategorieInfo
+			{
+				ID = 0,
+				Naam = "Alle personen"
+			});
+
+			if (id == 0)  // Alle personen bekijken
 			{
 				model.PersoonInfos =
 					ServiceHelper.CallService<IGelieerdePersonenService, IList<PersoonDetail>>
@@ -84,7 +92,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.Titel = "Personenoverzicht";
 				model.Totaal = totaal;
 			}
-			else
+			else	// Alleen personen uit de gekozen categorie bekijken
 			{
 				// TODO de catID is eigenlijk niet echt type-safe, maar wel het makkelijkste om te doen (lijkt teveel op PaginaOphalenLidInfo(groepid, ...))
 				model.PersoonInfos =
@@ -93,21 +101,14 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.HuidigePagina = page;
 				model.AantalPaginas = (int)Math.Ceiling(totaal / 20d);
 
-				String naam = (from c in model.PersoonInfos.First().CategorieLijst
+				// Ga in het lijstje met categorieën na welke er geselecteerd werd, zodat we de naam in de paginatitel kunnen zetten
+				String naam = (from c in model.GroepsCategorieen
 							   where c.ID == id
 							   select c).First().Naam;
 
 				model.Titel = "Overzicht " + naam;
 				model.Totaal = totaal;
 			}
-
-			model.GroepsCategorieen = ServiceHelper.CallService<IGroepenService, IList<CategorieInfo>>(
-				svc => svc.CategorieenOphalen(groepID)).ToList();
-			model.GroepsCategorieen.Add(new CategorieInfo
-			{
-				ID = 0,
-				Naam = "Alle personen"
-			});
 
 			return View("Index", model);
 		}

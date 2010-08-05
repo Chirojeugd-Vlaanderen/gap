@@ -101,7 +101,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="sortering">Enumwaarde die aangeeft op welke parameter de lijst gesorteerd moet worden</param>
 		/// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
 		/// <param name="lijst">Enumwaarde die aangeeft wat voor lijst we moeten tonen</param>
-		/// <param name="id">ID van de functie; OPM: waarom is dat dan niet functieID?</param>
+		/// <param name="id">ID van de functie</param>
 		/// <returns></returns>
 		[HandleError]
 		public ActionResult Lijst(int groepsWerkJaarID, LijstEnum lijst, int id, LedenSorteringsEnum sortering, int groepID)
@@ -121,11 +121,17 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>(lid => lid.PaginaOphalenVolgensFunctie(groepsWerkJaarID, id, sortering));
 
-				// TODO functienaam (zie #564)
-				// Kun je die naam van de functie niet mee laten posten? Dan moet je ze niet meer opzoeken.
-				model.Titel = "Ledenoverzicht van leden met functie TODO in het werkjaar " + model.JaartalGetoondGroepsWerkJaar + "-" + (model.JaartalGetoondGroepsWerkJaar + 1);
+				// Naam van de functie opzoeken, zodat we ze kunnen invullen in de paginatitel
+				String functie = (from fi in model.FunctieInfoDictionary
+							   where fi.Key == id
+							   select fi).First().Value.Naam;
 
-				// TODO naar volgend werkjaar kunnen gaan met behoud van functie
+				model.Titel = string.Format("Ledenoverzicht van leden met functie {0} in het werkjaar {1}-{2}",
+				                            functie,
+				                            model.JaartalGetoondGroepsWerkJaar,
+				                            (model.JaartalGetoondGroepsWerkJaar + 1));
+
+				// TODO naar volgend werkjaar kunnen gaan met behoud van functie)
 				return View("Index", model);
 			}
 			else if (lijst == LijstEnum.Afdeling)
