@@ -149,7 +149,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					{
 						// Geef feedback aan de gebruiker: de naam of de code worden al gebruikt
 						ModelState.AddModelError(
-							"NieuweCategorie.Code",
+							"NieuweCategorie.Naam",
 							String.Format(
 								Properties.Resources.CategorieNaamBestaatAl,
 								ex.Detail.Bestaande.Code,
