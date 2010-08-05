@@ -8,7 +8,12 @@
 	</title>
 	<asp:ContentPlaceHolder ID="HeadContent" runat="server" />
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<link href="/Content/Site.css" rel="Stylesheet" type="text/css" />
+	<!-- De stylesheet wordt hier 2 keer gereferencet.  De eerste is in principe niet nodig, maar als die
+	ontbreekt, protesteert de aspx-editor dat hij klasses niet vindt.  De tweede is nodig als de app niet in
+	de 'root' van de webserver staat.  (zoals het geval in de live-omgeving) -->
+	
+	<link href="/Content/Site.css" rel="stylesheet" type="text/css" />
+	<link href="<%=ResolveUrl("~/Content/Site.css")%>" rel="stylesheet" type="text/css" />
 	<link rel="shortcut icon" href="/Content/favicon.ico" />
 </head>
 <body>
