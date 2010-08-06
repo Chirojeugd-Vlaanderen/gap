@@ -19,7 +19,7 @@ namespace System.Web.Mvc
         /// <returns>A list of required-value client validation rules.</returns>
         public override IEnumerable<ModelClientValidationRule> GetClientValidationRules()
         {
-            return new ModelClientValidationRequiredRule[] { new ModelClientValidationRequiredRule(base.ErrorMessage) };
+            return new[] { new ModelClientValidationRequiredRule(ErrorMessage) };
         }
     }
 }

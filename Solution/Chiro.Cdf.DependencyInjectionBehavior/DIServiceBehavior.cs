@@ -5,11 +5,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.ServiceModel.Description;
-using System.ServiceModel;
-using System.ServiceModel.Dispatcher;
-using System.ServiceModel.Channels;
 using System.Collections.ObjectModel;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
 
 namespace Chiro.Cdf.DependencyInjection
 {
@@ -23,12 +23,10 @@ namespace Chiro.Cdf.DependencyInjection
 		List<TypeMapping> typeMappings = new List<TypeMapping>();
 
 		public DIServiceBehavior()
-			: base()
 		{
 		}
 
 		public DIServiceBehavior(IList<TypeMapping> typeMappings)
-			: base()
 		{
 			this.typeMappings.AddRange(typeMappings);
 		}
@@ -37,7 +35,7 @@ namespace Chiro.Cdf.DependencyInjection
 		{
 			foreach (ChannelDispatcherBase cdb in serviceHostBase.ChannelDispatchers)
 			{
-				ChannelDispatcher cd = cdb as ChannelDispatcher;
+				var cd = cdb as ChannelDispatcher;
 
 				if (cd != null)
 				{

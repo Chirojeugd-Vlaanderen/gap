@@ -3,8 +3,8 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using Chiro.Cdf.Data.Entity;
 using Chiro.Cdf.Data;
+using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Orm
@@ -18,7 +18,7 @@ namespace Chiro.Gap.Orm
 	/// op dit adres woont.  KOPPEKE GOED BIJHOUDEN!</remarks>
 	public partial class PersoonsAdres : IEfBasisEntiteit
 	{
-		private bool _teVerwijderen = false;
+		private bool _teVerwijderen;
 
 		/// <summary>
 		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren
@@ -58,11 +58,11 @@ namespace Chiro.Gap.Orm
 		{
 			get
 			{
-				return (AdresTypeEnum)this.AdresTypeInt;
+				return (AdresTypeEnum)AdresTypeInt;
 			}
 			set
 			{
-				this.AdresTypeInt = (int)value;
+				AdresTypeInt = (int)value;
 			}
 		}
 

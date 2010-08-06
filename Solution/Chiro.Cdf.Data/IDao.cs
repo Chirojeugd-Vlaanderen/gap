@@ -95,6 +95,6 @@ namespace Chiro.Cdf.Data
 		/// </summary>
 		/// <returns>Lambda-expressies die bepalen welke gekoppelde entiteiten er standaard mee bewaard
 		/// of opgevraagd worden.</returns>
-		Expression<Func<T, object>>[] getConnectedEntities();
+		Expression<Func<T, object>>[] GetConnectedEntities();
 	}
 }

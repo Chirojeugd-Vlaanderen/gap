@@ -40,7 +40,7 @@ namespace Chiro.Gap.Data.Ef
 
 				query = IncludesToepassen(query, paths);
 
-				result = query.FirstOrDefault<GroepsWerkJaar>();
+				result = query.FirstOrDefault();
 			}
 			result = Utility.DetachObjectGraph(result);
 

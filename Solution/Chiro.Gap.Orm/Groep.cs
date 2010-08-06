@@ -15,7 +15,7 @@ namespace Chiro.Gap.Orm
 	[AssociationEndBehavior("Categorie", Owned = true)]
 	public partial class Groep : IEfBasisEntiteit
 	{
-		private bool _teVerwijderen = false;
+		private bool _teVerwijderen;
 
 		/// <summary>
 		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren

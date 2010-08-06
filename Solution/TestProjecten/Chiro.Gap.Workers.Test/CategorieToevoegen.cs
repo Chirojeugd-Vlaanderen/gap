@@ -23,28 +23,22 @@ namespace Chiro.Gap.Workers.Test
 		String categorienaam = Properties.Settings.Default.CategorieNaam;
 		GroepenManager gm;
 
-		public CategorieToevoegen()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
-
+		#region initialiseren en afronden
 
         [ClassInitialize]
-        static public void InitialiseerTests(TestContext tc)
+		static public void TestsInitialiseren(TestContext tc)
         {
             Factory.ContainerInit();
         }
 
         [ClassCleanup]
-        static public void AfsluitenTests()
+		static public void TestsAfsluiten()
         {
             Factory.Dispose();
         }
 
 		[TestInitialize]
-		public void setUp()
+		public void SetUp()
 		{
 			gm = Factory.Maak<GroepenManager>();
 		}
@@ -69,6 +63,8 @@ namespace Chiro.Gap.Workers.Test
 		// [TestCleanup()]
 		// public void MyTestCleanup() { }
 		//
+		#endregion
+		
 		#endregion
 
 		[TestMethod]

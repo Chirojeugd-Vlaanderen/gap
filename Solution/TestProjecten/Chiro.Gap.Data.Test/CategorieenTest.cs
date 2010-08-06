@@ -3,21 +3,16 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
+
 using System.Linq;
 
-using Chiro.Gap.Domain;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Chiro.Cdf.Data.Entity;
 using Chiro.Cdf.Ioc;
-using Chiro.Gap.Dummies;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.TestDbInfo;
-using Chiro.Gap.Workers;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chiro.Gap.Data.Test
 {
@@ -35,11 +30,9 @@ namespace Chiro.Gap.Data.Test
 		// [AssociationEndBehavior("PersoonsCategorie", Owned=true)]
 		// dus TODO apart verwijderen van categorie toelaten!
 
-		ICategorieenDao _catdao = null;
-		IGelieerdePersonenDao _gpdao = null;
+		ICategorieenDao _catdao;
+		IGelieerdePersonenDao _gpdao;
 		int _gp2ID;
-
-		public CategorieenTest() { }
 
 		/// <summary>
 		/// Gets or sets the test context which provides
@@ -70,7 +63,7 @@ namespace Chiro.Gap.Data.Test
 		[ClassInitialize]
 		static public void TestInit(TestContext context)
 		{
-			Chiro.Cdf.Ioc.Factory.ContainerInit();
+			Factory.ContainerInit();
 		}
 
 		[TestInitialize]
@@ -85,8 +78,8 @@ namespace Chiro.Gap.Data.Test
 
 			var cat = _catdao.Ophalen(TestInfo.CATEGORIE3ID, ct => ct.GelieerdePersoon);
 			var gevondenPersoon = (from gpers in cat.GelieerdePersoon
-					       where gpers.ID == _gp2ID
-					       select gpers).FirstOrDefault();
+									where gpers.ID == _gp2ID
+									select gpers).FirstOrDefault();
 
 			if (gevondenPersoon != null)
 			{
@@ -99,7 +92,7 @@ namespace Chiro.Gap.Data.Test
 			}
 		}
 
-		[TestCleanup()]
+		[TestCleanup]
 		public void MyTestCleanup()
 		{
 		}
@@ -144,11 +137,11 @@ namespace Chiro.Gap.Data.Test
 
 			// act
 			var pagina = _gpdao.PaginaOphalenUitCategorie(
-				TestInfo.CATEGORIEID, 
+				TestInfo.CATEGORIEID,
 				1, 10, PersoonSorteringsEnum.Naam,
 				false,
 				out aantalTotaal,
-				gp=>gp.Persoon);
+				gp => gp.Persoon);
 
 			// assert
 			Assert.IsTrue(aantalTotaal == TestInfo.AANTALINCATEGORIE);
@@ -173,13 +166,16 @@ namespace Chiro.Gap.Data.Test
 
 			// assert
 			GelieerdePersoon lid = (from gp in pagina
-						where gp.ID == TestInfo.GELIEERDEPERSOON3ID
-						select gp).FirstOrDefault();
+									where gp.ID == TestInfo.GELIEERDEPERSOON3ID
+									select gp).FirstOrDefault();
 			GelieerdePersoon geenLid = (from gp in pagina
-						    where gp.ID == TestInfo.GELIEERDEPERSOON2ID
-						    select gp).FirstOrDefault();
+										where gp.ID == TestInfo.GELIEERDEPERSOON2ID
+										select gp).FirstOrDefault();
 
+			Assert.IsNotNull(lid);
 			Assert.IsTrue(lid.Lid.First().ID > 0);
+
+			Assert.IsNotNull((geenLid));
 			Assert.IsTrue(geenLid.Lid.Count() == 0);
 		}
 
@@ -212,10 +208,10 @@ namespace Chiro.Gap.Data.Test
 			_catdao.Bewaren(cat);
 
 			// Assert
-			var opgehaald = _catdao.Ophalen(TestInfo.CATEGORIE3ID, ctg=>ctg.GelieerdePersoon);
+			var opgehaald = _catdao.Ophalen(TestInfo.CATEGORIE3ID, ctg => ctg.GelieerdePersoon);
 			var toegevoegd = (from gpers in opgehaald.GelieerdePersoon
-					  where gpers.ID == _gp2ID
-					  select gpers).FirstOrDefault();
+								where gpers.ID == _gp2ID
+								select gpers).FirstOrDefault();
 			Assert.IsTrue(toegevoegd != null);
 
 			// Cleanup
@@ -227,13 +223,13 @@ namespace Chiro.Gap.Data.Test
 		[TestMethod]
 		public void TestHashCodes()
 		{
-			GelieerdePersoon p1 = new GelieerdePersoon();
+			var p1 = new GelieerdePersoon();
 			p1.ID = 10;
-			GelieerdePersoon p2 = new GelieerdePersoon();
+			var p2 = new GelieerdePersoon();
 			p2.ID = 10;
-			Categorie c1 = new Categorie();
+			var c1 = new Categorie();
 			c1.ID = 100;
-			Categorie c2 = new Categorie();
+			var c2 = new Categorie();
 			c2.ID = 10;
 
 			Assert.AreEqual(p1.GetHashCode(), p2.GetHashCode());

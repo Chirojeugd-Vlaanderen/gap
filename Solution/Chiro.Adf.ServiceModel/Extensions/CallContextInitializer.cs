@@ -6,27 +6,27 @@ using System.ServiceModel.Dispatcher;
 namespace Chiro.Adf.ServiceModel.Extensions
 {
     /// <summary>
-    /// TODO: Documenteren!
+    /// TODO (#190): Documenteren!
     /// </summary>
     public class CallContextInitializer : ICallContextInitializer
     {
-        private readonly Type contextType;
+        private readonly Type _contextType;
 
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
         /// <param name="contextType"></param>
         public CallContextInitializer(Type contextType)
         {
-            this.contextType = contextType;
+            _contextType = contextType;
         }
 
         object ICallContextInitializer.BeforeInvoke(System.ServiceModel.InstanceContext instanceContext, System.ServiceModel.IClientChannel channel, Message message)
         {
-            CallContext.Current = Activator.CreateInstance(contextType) as CallContext;
+            CallContext.Current = Activator.CreateInstance(_contextType) as CallContext;
 
             if (CallContext.Current == null)
-                throw new ConfigurationErrorsException(string.Format("The type '{0}' could not be initialized.", contextType));
+                throw new ConfigurationErrorsException(string.Format("The type '{0}' could not be initialized.", _contextType));
 
             CallContext.Current.Initialize();
 

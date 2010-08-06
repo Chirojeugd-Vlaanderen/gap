@@ -13,7 +13,7 @@ namespace Chiro.Gap.Orm
 	/// </summary>
 	public partial class OfficieleAfdeling : IEfBasisEntiteit
 	{
-		private bool _teVerwijderen = false;
+		private bool _teVerwijderen;
 
 		/// <summary>
 		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren

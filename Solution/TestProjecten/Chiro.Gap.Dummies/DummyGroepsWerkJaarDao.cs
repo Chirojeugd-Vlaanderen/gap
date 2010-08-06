@@ -1,8 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
 
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+
+using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Dummies
@@ -14,7 +19,7 @@ namespace Chiro.Gap.Dummies
 	{
 		#region IGroepsWerkJaarDao Members
 
-		public Chiro.Gap.Orm.GroepsWerkJaar RecentsteOphalen(int groepID, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.GroepsWerkJaar, object>>[] paths)
+		public GroepsWerkJaar RecentsteOphalen(int groepID, params Expression<Func<GroepsWerkJaar, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}
@@ -33,52 +38,52 @@ namespace Chiro.Gap.Dummies
 
 		#region IDao<GroepsWerkJaar> Members
 
-		public Chiro.Gap.Orm.GroepsWerkJaar Ophalen(int id)
+		public GroepsWerkJaar Ophalen(int id)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Chiro.Gap.Orm.GroepsWerkJaar Ophalen(int id, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.GroepsWerkJaar, object>>[] paths)
+		public GroepsWerkJaar Ophalen(int id, params Expression<Func<GroepsWerkJaar, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IList<Chiro.Gap.Orm.GroepsWerkJaar> Ophalen(IEnumerable<int> ids)
+		public IList<GroepsWerkJaar> Ophalen(IEnumerable<int> ids)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IList<Chiro.Gap.Orm.GroepsWerkJaar> Ophalen(IEnumerable<int> ids, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.GroepsWerkJaar, object>>[] paths)
+		public IList<GroepsWerkJaar> Ophalen(IEnumerable<int> ids, params Expression<Func<GroepsWerkJaar, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IList<Chiro.Gap.Orm.GroepsWerkJaar> PaginaOphalen(int id, System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.GroepsWerkJaar, int>> f, int pagina, int paginaGrootte, out int aantalTotaal, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.GroepsWerkJaar, object>>[] paths)
+		public IList<GroepsWerkJaar> PaginaOphalen(int id, Expression<Func<GroepsWerkJaar, int>> f, int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<GroepsWerkJaar, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IList<Chiro.Gap.Orm.GroepsWerkJaar> AllesOphalen()
+		public IList<GroepsWerkJaar> AllesOphalen()
 		{
 			throw new NotImplementedException();
 		}
 
-		public Chiro.Gap.Orm.GroepsWerkJaar Bewaren(Chiro.Gap.Orm.GroepsWerkJaar entiteit)
+		public GroepsWerkJaar Bewaren(GroepsWerkJaar entiteit)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Chiro.Gap.Orm.GroepsWerkJaar Bewaren(Chiro.Gap.Orm.GroepsWerkJaar entiteit, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.GroepsWerkJaar, object>>[] paths)
+		public GroepsWerkJaar Bewaren(GroepsWerkJaar entiteit, params Expression<Func<GroepsWerkJaar, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IEnumerable<Chiro.Gap.Orm.GroepsWerkJaar> Bewaren(IEnumerable<Chiro.Gap.Orm.GroepsWerkJaar> es, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.GroepsWerkJaar, object>>[] paths)
+		public IEnumerable<GroepsWerkJaar> Bewaren(IEnumerable<GroepsWerkJaar> es, params Expression<Func<GroepsWerkJaar, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}
 
-		public System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.GroepsWerkJaar, object>>[] getConnectedEntities()
+		public Expression<Func<GroepsWerkJaar, object>>[] GetConnectedEntities()
 		{
 			throw new NotImplementedException();
 		}

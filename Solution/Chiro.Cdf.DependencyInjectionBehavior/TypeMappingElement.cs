@@ -4,19 +4,14 @@
 // </copyright>
 
 using System;
-using System.Configuration;
 using System.ComponentModel;
+using System.Configuration;
 
 namespace Chiro.Cdf.DependencyInjection
 {
 	public class TypeMappingElement : ConfigurationElement
 	{
 		private AssemblyQualifiedTypeNameConverter typeConverter = new AssemblyQualifiedTypeNameConverter();
-
-		public TypeMappingElement()
-			: base()
-		{
-		}
 
 		[ConfigurationProperty("name")]
 		public string Name
@@ -73,7 +68,7 @@ namespace Chiro.Cdf.DependencyInjection
 		{
 			if (value != null)
 			{
-				Type typeValue = value as Type;
+				var typeValue = value as Type;
 				if (typeValue == null)
 				{
 					throw new ArgumentException("The type specified can not be loaded");
@@ -96,7 +91,7 @@ namespace Chiro.Cdf.DependencyInjection
 		/// <returns>Type of the data</returns>
 		public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
 		{
-			string stringValue = (string)value;
+			var stringValue = (string)value;
 			if (!string.IsNullOrEmpty(stringValue))
 			{
 				Type result = Type.GetType(stringValue, false);

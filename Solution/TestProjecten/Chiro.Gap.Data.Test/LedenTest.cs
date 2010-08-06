@@ -1,15 +1,18 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Workers;
-using Chiro.Cdf.Ioc;
-using Chiro.Cdf.Data.Entity;
-using Chiro.Gap.Orm.DataInterfaces;
+
 using Chiro.Cdf.Data;
+using Chiro.Cdf.Ioc;
+using Chiro.Gap.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.TestDbInfo;
+using Chiro.Gap.Workers;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chiro.Gap.Data.Test
 {
@@ -104,10 +107,10 @@ namespace Chiro.Gap.Data.Test
 			int gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
 			int afdelingsJaarID = TestInfo.AFDELINGSJAAR1ID;
 
-			IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
+			var ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
 			AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
 
-			ILedenDao ldao = Factory.Maak<ILedenDao>();
+			var ldao = Factory.Maak<ILedenDao>();
 			Lid l = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.ID);
 
 			if (l != null)
@@ -130,11 +133,11 @@ namespace Chiro.Gap.Data.Test
 			int gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
 			int afdelingsJaarID = TestInfo.AFDELINGSJAAR1ID;
 
-			LedenManager lm = Factory.Maak<LedenManager>();
+			var lm = Factory.Maak<LedenManager>();
 
-			IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
-			IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
-			IDao<Kind> kdao = Factory.Maak<IDao<Kind>>();
+			var gpdao = Factory.Maak<IGelieerdePersonenDao>();
+			var ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
+			var kdao = Factory.Maak<IDao<Kind>>();
 
 			GelieerdePersoon gp = gpdao.Ophalen(gelieerdePersoonID, lmb => lmb.Groep);
 			AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
@@ -171,10 +174,10 @@ namespace Chiro.Gap.Data.Test
 			int gelieerdePersoonID = TestInfo.GELIEERDEPERSOON2ID;
 			int afdelingsJaarID = TestInfo.AFDELINGSJAAR1ID;
 
-			IDao<AfdelingsJaar> ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
+			var ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
 			AfdelingsJaar aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
 
-			ILedenDao ldao = Factory.Maak<ILedenDao>();
+			var ldao = Factory.Maak<ILedenDao>();
 			Lid l = ldao.Ophalen(gelieerdePersoonID, aj.GroepsWerkJaar.ID);
 
 			// Act
@@ -198,7 +201,7 @@ namespace Chiro.Gap.Data.Test
 
 			int lid3ID = TestInfo.LID3ID;
 
-			ILeidingDao ldao = Factory.Maak<ILeidingDao>();
+			var ldao = Factory.Maak<ILeidingDao>();
 			Leiding l = ldao.Ophalen(lid3ID);
 
 			// Act
@@ -218,7 +221,7 @@ namespace Chiro.Gap.Data.Test
 		{
 			// Arrange
 
-			ILedenDao dao = Factory.Maak<ILedenDao>();
+			var dao = Factory.Maak<ILedenDao>();
 
 			// Act
 
@@ -246,7 +249,7 @@ namespace Chiro.Gap.Data.Test
 		{
 			// Arrange
 
-			ILedenDao dao = Factory.Maak<ILedenDao>();
+			var dao = Factory.Maak<ILedenDao>();
 
 			// Act
 

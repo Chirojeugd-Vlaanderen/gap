@@ -1,7 +1,6 @@
 using System;
 using System.Configuration;
 using System.ServiceModel.Configuration;
-using Chiro.Adf.ServiceModel.Extensions;
 
 namespace Chiro.Adf.ServiceModel
 {
@@ -10,10 +9,10 @@ namespace Chiro.Adf.ServiceModel
 	/// </summary>
 	public class LocalizationBehaviorExtensionElement : BehaviorExtensionElement
 	{
-		private ConfigurationPropertyCollection properties;
+		private ConfigurationPropertyCollection _properties;
 
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
         /// <returns></returns>
 		protected override object CreateBehavior()
@@ -22,7 +21,7 @@ namespace Chiro.Adf.ServiceModel
 		}
 
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
 		public override Type BehaviorType
 		{
@@ -30,17 +29,17 @@ namespace Chiro.Adf.ServiceModel
 		}
 
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
 		protected override ConfigurationPropertyCollection Properties
 		{
 			get
 			{
-				if (properties == null)
+				if (_properties == null)
 				{
-					properties = new ConfigurationPropertyCollection { new ConfigurationProperty("contextType", typeof(string)) };
+					_properties = new ConfigurationPropertyCollection { new ConfigurationProperty("contextType", typeof(string)) };
 				}
-				return properties;
+				return _properties;
 			}
 		}
 	}

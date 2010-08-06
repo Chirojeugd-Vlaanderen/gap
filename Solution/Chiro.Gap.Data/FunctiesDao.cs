@@ -30,10 +30,10 @@ namespace Chiro.Gap.Data.Ef
 		/// </remarks>
 		public FunctiesDao()
 		{
-			connectedEntities = new System.Linq.Expressions.Expression<Func<Functie, object>>[]
-            {
+			ConnectedEntities = new System.Linq.Expressions.Expression<Func<Functie, object>>[]
+			{
 				fnc => fnc.Groep
-            };
+			};
 		}
 
 		/// <summary>

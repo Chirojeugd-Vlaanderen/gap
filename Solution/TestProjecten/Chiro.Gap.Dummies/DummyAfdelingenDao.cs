@@ -1,7 +1,13 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Linq.Expressions;
+
+using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 
 namespace Chiro.Gap.Dummies
@@ -10,52 +16,52 @@ namespace Chiro.Gap.Dummies
 	{
 		#region IDao<Afdeling> Members
 
-		public Chiro.Gap.Orm.Afdeling Ophalen(int id)
+		public Afdeling Ophalen(int id)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Chiro.Gap.Orm.Afdeling Ophalen(int id, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Afdeling, object>>[] paths)
+		public Afdeling Ophalen(int id, params Expression<Func<Afdeling, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IList<Chiro.Gap.Orm.Afdeling> Ophalen(IEnumerable<int> ids)
+		public IList<Afdeling> Ophalen(IEnumerable<int> ids)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IList<Chiro.Gap.Orm.Afdeling> Ophalen(IEnumerable<int> ids, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Afdeling, object>>[] paths)
+		public IList<Afdeling> Ophalen(IEnumerable<int> ids, params Expression<Func<Afdeling, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IList<Chiro.Gap.Orm.Afdeling> PaginaOphalen(int id, System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Afdeling, int>> f, int pagina, int paginaGrootte, out int aantalTotaal, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Afdeling, object>>[] paths)
+		public IList<Afdeling> PaginaOphalen(int id, Expression<Func<Afdeling, int>> f, int pagina, int paginaGrootte, out int aantalTotaal, params Expression<Func<Afdeling, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IList<Chiro.Gap.Orm.Afdeling> AllesOphalen()
+		public IList<Afdeling> AllesOphalen()
 		{
 			throw new NotImplementedException();
 		}
 
-		public Chiro.Gap.Orm.Afdeling Bewaren(Chiro.Gap.Orm.Afdeling entiteit)
+		public Afdeling Bewaren(Afdeling entiteit)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Chiro.Gap.Orm.Afdeling Bewaren(Chiro.Gap.Orm.Afdeling entiteit, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Afdeling, object>>[] paths)
+		public Afdeling Bewaren(Afdeling entiteit, params Expression<Func<Afdeling, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IEnumerable<Chiro.Gap.Orm.Afdeling> Bewaren(IEnumerable<Chiro.Gap.Orm.Afdeling> es, params System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Afdeling, object>>[] paths)
+		public IEnumerable<Afdeling> Bewaren(IEnumerable<Afdeling> es, params Expression<Func<Afdeling, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}
 
-		public System.Linq.Expressions.Expression<Func<Chiro.Gap.Orm.Afdeling, object>>[] getConnectedEntities()
+		public Expression<Func<Afdeling, object>>[] GetConnectedEntities()
 		{
 			throw new NotImplementedException();
 		}
@@ -65,17 +71,17 @@ namespace Chiro.Gap.Dummies
 
 		#region IAfdelingenDao Members
 
-		public IList<Chiro.Gap.Orm.Afdeling> OngebruikteOphalen(int groepsWerkJaarID)
+		public IList<Afdeling> OngebruikteOphalen(int groepsWerkJaarID)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IList<Chiro.Gap.Orm.OfficieleAfdeling> OfficieleAfdelingenOphalen()
+		public IList<OfficieleAfdeling> OfficieleAfdelingenOphalen()
 		{
 			throw new NotImplementedException();
 		}
 
-		public Chiro.Gap.Orm.OfficieleAfdeling OfficieleAfdelingOphalen(int officieleAfdelingID)
+		public OfficieleAfdeling OfficieleAfdelingOphalen(int officieleAfdelingID)
 		{
 			throw new NotImplementedException();
 		}

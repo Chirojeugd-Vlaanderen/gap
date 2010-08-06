@@ -3,9 +3,6 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Domain;
@@ -17,7 +14,7 @@ namespace Chiro.Gap.Orm
 	/// </summary>
 	public partial class CommunicatieVorm : IEfBasisEntiteit, ICommunicatie
 	{
-		private bool _teVerwijderen = false;
+		private bool _teVerwijderen;
 
 		/// <summary>
 		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren

@@ -3,7 +3,6 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Chiro.Gap.Data

@@ -12,9 +12,9 @@ using System.Linq.Expressions;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Data.Ef
 {
@@ -28,7 +28,7 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		public GelieerdePersonenDao()
 		{
-			connectedEntities = new Expression<Func<GelieerdePersoon, object>>[] 
+			ConnectedEntities = new Expression<Func<GelieerdePersoon, object>>[] 
 			{ 
 				e => e.Persoon, 
 				e => e.Groep.WithoutUpdate()
@@ -103,7 +103,8 @@ namespace Chiro.Gap.Data.Ef
 						.ThenBy(gp => (gp.Categorie.FirstOrDefault() == null ? null : gp.Categorie.First().Naam))
 						.ThenBy(gp => gp.Persoon.Naam).ThenBy(gp => gp.Persoon.VoorNaam);
 				default:
-					throw new NotImplementedException();
+					throw new NotImplementedException(); 
+				// TODO: moet dat geen NotSupportedException zijn? NotImplemented lijkt te suggereren dat we dat wel nog van plan zijn
 			}
 		}
 
@@ -370,7 +371,7 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// TODO: (implementeren en) documenteren
+		/// TODO (#190): documenteren
 		/// </summary>
 		/// <returns></returns>
 		public IEnumerable<CommunicatieType> CommunicatieTypesOphalen()
@@ -438,14 +439,14 @@ namespace Chiro.Gap.Data.Ef
 				// !Herinner van bij de scouts dat die soundex best bij in de tabel terecht komt,
 				// en dat daarop een index moet komen te liggen!
 
-				var esqlQuery = "SELECT VALUE gp FROM ChiroGroepEntities.GelieerdePersoon AS gp " +
-					"WHERE gp.Groep.ID = @groepid " +
-					"AND ChiroGroepModel.Store.ufnSoundEx(gp.Persoon.Naam)=ChiroGroepModel.Store.ufnSoundEx(@naam) " +
-					"AND ChiroGroepModel.Store.ufnSoundEx(gp.Persoon.Voornaam)=ChiroGroepModel.Store.ufnSoundEx(@voornaam)";
+				const string ESQL_QUERY = "SELECT VALUE gp FROM ChiroGroepEntities.GelieerdePersoon AS gp " +
+				                         "WHERE gp.Groep.ID = @groepid " +
+				                         "AND ChiroGroepModel.Store.ufnSoundEx(gp.Persoon.Naam)=ChiroGroepModel.Store.ufnSoundEx(@naam) " +
+				                         "AND ChiroGroepModel.Store.ufnSoundEx(gp.Persoon.Voornaam)=ChiroGroepModel.Store.ufnSoundEx(@voornaam)";
 
 				// Query casten naar ObjectQuery, om zodadelijk de includes te kunnen toepassen.
 
-				var query = db.CreateQuery<GelieerdePersoon>(esqlQuery) as ObjectQuery<GelieerdePersoon>;
+				var query = db.CreateQuery<GelieerdePersoon>(ESQL_QUERY);
 
 				query.Parameters.Add(new ObjectParameter("groepid", groepID));
 				query.Parameters.Add(new ObjectParameter("voornaam", voornaam));

@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <Dictionary>
 	<Words>
 		<Unrecognized>
@@ -8,8 +9,8 @@
 			<Word>Chiro</Word>
 			<Word>Adf</Word>
 			<Word>Cg2</Word>
-      <Word>Mvc</Word>
-      <Word>Cdf</Word>
+			<Word>Mvc</Word>
+			<Word>Cdf</Word>
 		</Recognized>
 		<Deprecated>
 			<Term PreferredAlternate="EnterpriseServices">ComPlus</Term>

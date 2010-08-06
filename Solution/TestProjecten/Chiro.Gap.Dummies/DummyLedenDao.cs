@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
 
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Dummies
 {
@@ -51,7 +55,7 @@ namespace Chiro.Gap.Dummies
 			return null;
 		}
 
-		public Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID, params System.Linq.Expressions.Expression<Func<Lid, object>>[] paths)
+		public Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths)
 		{
 			return null;
 		}
@@ -61,12 +65,12 @@ namespace Chiro.Gap.Dummies
 			return null;
 		}
 
-		public IList<Lid> OphalenUitFunctie(int functieID, int groepsWerkJaarID, params System.Linq.Expressions.Expression<Func<Lid, object>>[] paths)
+		public IList<Lid> OphalenUitFunctie(int functieID, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IList<Lid> OphalenUitFunctie(NationaleFunctie f, int groepsWerkJaarID, params System.Linq.Expressions.Expression<Func<Lid, object>>[] paths)
+		public IList<Lid> OphalenUitFunctie(NationaleFunctie f, int groepsWerkJaarID, params Expression<Func<Lid, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}

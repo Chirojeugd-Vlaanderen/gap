@@ -14,11 +14,11 @@ using System.Data;
 using System.Data.Metadata.Edm;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
-using System.Diagnostics;
 
 namespace Chiro.Cdf.Data.Entity
 {
@@ -41,7 +41,7 @@ namespace Chiro.Cdf.Data.Entity
 		/// value van deze functie!</remarks>
 		public static T AttachObjectGraph<T>(this ObjectContext context, T entity, params Expression<Func<T, object>>[] paths) where T : IEfBasisEntiteit
 		{
-			return AttachObjectGraphs(context, new T[] { entity }, paths)[0];
+			return AttachObjectGraphs(context, new[] { entity }, paths)[0];
 		}
 
 		/// <summary>
@@ -61,7 +61,7 @@ namespace Chiro.Cdf.Data.Entity
 		public static T[] AttachObjectGraphs<T>(this ObjectContext context, IEnumerable<T> entities, params Expression<Func<T, object>>[] paths) where T : IEfBasisEntiteit
 		{
 			T[] unattachedEntities = entities.ToArray();
-			T[] attachedEntities = new T[unattachedEntities.Length];
+			var attachedEntities = new T[unattachedEntities.Length];
 			Type entityType = typeof(T);
 
 			// Deze method doet enkel iets als er daadwerkelijk
@@ -82,7 +82,7 @@ namespace Chiro.Cdf.Data.Entity
 				// }
 				// catch
 				// {
-				//        // TODO logica voorzien - zie ticket #334
+				//        // TODO (#334): logica voorzien
 				// }
 
 				// In onderstaande region worden de al bestaande root
@@ -97,8 +97,8 @@ namespace Chiro.Cdf.Data.Entity
 				#region Automatic preload root entities
 
 				// Create a WHERE clause for preload the root entities:
-				StringBuilder where = new StringBuilder("(1=0)");
-				List<ObjectParameter> pars = new List<ObjectParameter>();
+				var where = new StringBuilder("(1=0)");
+				var pars = new List<ObjectParameter>();
 				int pid = 0;
 				foreach (T entity in unattachedEntities)
 				{
@@ -163,10 +163,7 @@ namespace Chiro.Cdf.Data.Entity
 				{
 					// Construct query:
 					ObjectQuery<T> query = new ObjectQuery<T>(GetEntitySetName(context, typeof(T)), context).OfType<T>();
-					foreach (var path in paths)
-					{
-						query = query.Include(path);
-					}
+					query = paths.Aggregate(query, (current, path) => current.Include(path));
 					query = query.Where(where.ToString(), pars.ToArray());
 
 					// Execute query and load entities:
@@ -194,10 +191,10 @@ namespace Chiro.Cdf.Data.Entity
 					// de nodes de Properties zijn die de te attachen
 					// graaf bepalen.
 
-					TreeNode<ExtendedPropertyInfo> root = new TreeNode<ExtendedPropertyInfo>(null);
+					var root = new TreeNode<ExtendedPropertyInfo>(null);
 					foreach (var path in paths)
 					{
-						List<ExtendedPropertyInfo> members = new List<ExtendedPropertyInfo>();
+						var members = new List<ExtendedPropertyInfo>();
 						EntityFrameworkHelper.CollectRelationalMembers(path, members);
 						root.AddPath(members);
 					}
@@ -237,7 +234,7 @@ namespace Chiro.Cdf.Data.Entity
 		{
 			if (entity.ID == 0)
 			{
-				IEfBasisEntiteit attachedEntity = GetShallowEntityClone(entity) as IEfBasisEntiteit;
+				var attachedEntity = GetShallowEntityClone(entity) as IEfBasisEntiteit;
 
 				Debug.Assert(attachedEntity != null);
 
@@ -258,7 +255,7 @@ namespace Chiro.Cdf.Data.Entity
 
 				EntityKey entityKey = entity.EntityKey;
 
-				IEfBasisEntiteit attachedEntity = context.GetObjectByKey(entityKey) as IEfBasisEntiteit;
+				var attachedEntity = context.GetObjectByKey(entityKey) as IEfBasisEntiteit;
 
 				Debug.Assert(attachedEntity != null);
 
@@ -290,8 +287,9 @@ namespace Chiro.Cdf.Data.Entity
 					var container = context.MetadataWorkspace.GetEntityContainer(context.DefaultContainerName, DataSpace.CSpace);
 
 					// Retrieve the name of the entityset matching the given types EdmEntityTypeAttribute:
+					EdmEntityTypeAttribute typeattr1 = typeattr;
 					string entitySetName = (from meta in container.BaseEntitySets
-											where meta.ElementType.FullName == typeattr.NamespaceName + "." + typeattr.Name
+											where meta.ElementType.FullName == typeattr1.NamespaceName + "." + typeattr1.Name
 											select meta.Name)
 								.FirstOrDefault();
 
@@ -346,7 +344,7 @@ namespace Chiro.Cdf.Data.Entity
 					// wordt de veel-kant van attachedowner in de context geladen.
 
 					object attachedlist = property.PropertyInfo.GetValue(attachedowner, null);
-					RelatedEnd relatedEnd = (RelatedEnd)attachedlist;
+					var relatedEnd = (RelatedEnd)attachedlist;
 					if (((EntityObject)attachedowner).EntityState != EntityState.Added && !relatedEnd.IsLoaded)
 					{
 						relatedEnd.Load();
@@ -356,11 +354,11 @@ namespace Chiro.Cdf.Data.Entity
 					// het geattachte object
 
 					// Recursively navigate through new members:
-					List<IBasisEntiteit> newlist = new List<IBasisEntiteit>();
+					var newlist = new List<IBasisEntiteit>();
 
 					foreach (object relatedinstance in (IEnumerable)related)
 					{
-						IEfBasisEntiteit be = relatedinstance as IEfBasisEntiteit;
+						var be = relatedinstance as IEfBasisEntiteit;
 
 						// We gaan er in ons project van uit dat elke entiteit erft
 						// van IBasisEntiteit.  Is dat niet het geval, dan is er iets mis.
@@ -408,7 +406,7 @@ namespace Chiro.Cdf.Data.Entity
 					// wordt eerst de bestaande property aan de context geattacht,
 
 					// Load reference of currently attached in context:
-					RelatedEnd relatedEnd = (RelatedEnd)attachedowner.PublicGetProperty(property.PropertyInfo.Name + "Reference");
+					var relatedEnd = (RelatedEnd)attachedowner.PublicGetProperty(property.PropertyInfo.Name + "Reference");
 					if (((EntityObject)attachedowner).EntityState != EntityState.Added && !relatedEnd.IsLoaded)
 					{
 						relatedEnd.Load();
@@ -441,7 +439,7 @@ namespace Chiro.Cdf.Data.Entity
 						property.PropertyInfo.SetValue(attachedowner, attachedinstance, null);
 
 						// Als related te verwijderen was, doe dat dan ook.
-						if ((related as IBasisEntiteit).TeVerwijderen)
+						if (((IBasisEntiteit) related).TeVerwijderen)
 						{
 							context.DeleteObject(attachedinstance);
 						}
@@ -515,7 +513,7 @@ namespace Chiro.Cdf.Data.Entity
 		/// bewaard worden</param>
 		private static void SyncList(IEnumerable targetlist, IList<IBasisEntiteit> sourcelist, out IList<IBasisEntiteit> removedItems)
 		{
-			List<IBasisEntiteit> toremove = new List<IBasisEntiteit>();
+			var toremove = new List<IBasisEntiteit>();
 
 			// targetlist: zo zit het nu in de database
 			// sourcelist: zo zouden we het willen
@@ -557,18 +555,17 @@ namespace Chiro.Cdf.Data.Entity
 			// foreach (object item in toremove)
 			//    targetlist.PublicInvokeMethod("Remove", item);
 
-			for (int i = 0; i < sourcelist.Count; ++i)
+			foreach (IBasisEntiteit t in sourcelist)
 			{
 				// Ik hoop dat de info in TeVerwijderen niet
 				// in de vlucht is verdwenen.
 
-				// FIXME: die Add en Remove moeten toch ook
-				// aangeroepen kunnen worden zonder reflectie.
+				// FIXME: die Add en Remove moeten toch ook aangeroepen kunnen worden zonder reflectie.
 
-				if (sourcelist[i].TeVerwijderen)
+				if (t.TeVerwijderen)
 				{
-					toremove.Add(sourcelist[i]);
-					targetlist.PublicInvokeMethod("Remove", sourcelist[i]);
+					toremove.Add(t);
+					targetlist.PublicInvokeMethod("Remove", t);
 				}
 				else
 				{
@@ -576,7 +573,7 @@ namespace Chiro.Cdf.Data.Entity
 					// in targetlist? In het beste geval negeert EF
 					// automatisch dubbele add's...
 
-					targetlist.PublicInvokeMethod("Add", sourcelist[i]);
+					targetlist.PublicInvokeMethod("Add", t);
 				}
 			}
 

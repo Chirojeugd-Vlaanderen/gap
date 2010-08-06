@@ -4,9 +4,6 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Reflection;
 
 namespace Chiro.Cdf.Data.Entity
@@ -14,11 +11,11 @@ namespace Chiro.Cdf.Data.Entity
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public sealed class AssociationEndBehaviorAttribute : Attribute
 	{
-		private static AssociationEndBehaviorAttribute defaultInstance = new AssociationEndBehaviorAttribute(String.Empty);
+		private static readonly AssociationEndBehaviorAttribute DefaultInstance = new AssociationEndBehaviorAttribute(String.Empty);
 
 		public AssociationEndBehaviorAttribute(string endName)
 		{
-			this.EndName = endName;
+			EndName = endName;
 		}
 
 		public string EndName { get; private set; }
@@ -40,7 +37,7 @@ namespace Chiro.Cdf.Data.Entity
 				}
 			}
 			// If none found, return default one:
-			return defaultInstance;
+			return DefaultInstance;
 		}
 	}
 }

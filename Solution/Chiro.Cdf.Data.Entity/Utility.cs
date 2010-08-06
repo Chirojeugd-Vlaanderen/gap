@@ -21,9 +21,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Chiro.Cdf.Data.Entity
@@ -63,7 +63,7 @@ namespace Chiro.Cdf.Data.Entity
 			}
 
 			var equals = values.Select(value => (Expression)Expression.Equal(valueSelector.Body, Expression.Constant(value, typeof(TValue))));
-			var body = equals.Aggregate<Expression>((accumulate, equal) => Expression.Or(accumulate, equal));
+			var body = equals.Aggregate(Expression.Or);
 
 			return Expression.Lambda<Func<TElement, bool>>(body, p);
 		}

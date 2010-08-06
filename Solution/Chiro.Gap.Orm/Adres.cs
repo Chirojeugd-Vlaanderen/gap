@@ -3,8 +3,6 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
 
@@ -21,7 +19,7 @@ namespace Chiro.Gap.Orm
 	[AssociationEndBehavior("PersoonsAdres", Owned = true)]
 	public partial class Adres : IEfBasisEntiteit
 	{
-		private bool _teVerwijderen = false;
+		private bool _teVerwijderen;
 
 		/// <summary>
 		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren

@@ -8,12 +8,12 @@ using System.ServiceModel.Dispatcher;
 namespace Chiro.Adf.ServiceModel
 {
 	/// <summary>
-	/// Makes sure that expected or unexpected exceptions are properly shielded fro; the client and translated to SOAP faults.
+	/// Makes sure that expected or unexpected exceptions are properly shielded from the client and translated to SOAP faults.
 	/// </summary>
 	public class ShieldExceptionsAttribute : Attribute, IContractBehavior
 	{
-		private readonly Type[] knownFaultTypes;
-		private readonly Type[] exceptionTypes;
+		private readonly Type[] _knownFaultTypes;
+		private readonly Type[] _exceptionTypes;
 
 		/// <summary>
 		/// Creates a new instance of the ShieldExceptionsAttribute class.
@@ -22,8 +22,8 @@ namespace Chiro.Adf.ServiceModel
 		/// <param name="knownFaultTypes">An array of corresponding fault types to which the exceptions should be translated.</param>
 		public ShieldExceptionsAttribute(Type[] exceptionTypes, Type[] knownFaultTypes)
 		{
-			this.knownFaultTypes = knownFaultTypes;
-			this.exceptionTypes = exceptionTypes;
+			_knownFaultTypes = knownFaultTypes;
+			_exceptionTypes = exceptionTypes;
 		}
 
 		///<summary>
@@ -32,10 +32,11 @@ namespace Chiro.Adf.ServiceModel
 		public void AddBindingParameters(ContractDescription contractDescription, ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
 		{
 			foreach (var op in contractDescription.Operations)
-				foreach (var knownFaultType in knownFaultTypes)
+				foreach (var knownFaultType in _knownFaultTypes)
 				{
 					// Add fault contract if it is not yet present
-					if (!op.Faults.Any(f => f.DetailType == knownFaultType))
+					Type type = knownFaultType;
+					if (!op.Faults.Any(f => f.DetailType == type))
 						op.Faults.Add(new FaultDescription(knownFaultType.Name) { DetailType = knownFaultType, Name = knownFaultType.Name });
 				}
 		}
@@ -45,7 +46,7 @@ namespace Chiro.Adf.ServiceModel
 		/// </summary>
 		public void ApplyClientBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint, ClientRuntime clientRuntime)
 		{
-			clientRuntime.MessageInspectors.Add(new ExceptionShieldingMessageInspector(knownFaultTypes));
+			clientRuntime.MessageInspectors.Add(new ExceptionShieldingMessageInspector(_knownFaultTypes));
 		}
 
 		/// <summary>
@@ -53,7 +54,7 @@ namespace Chiro.Adf.ServiceModel
 		/// </summary>
 		public void ApplyDispatchBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint, DispatchRuntime dispatchRuntime)
 		{
-			dispatchRuntime.ChannelDispatcher.ErrorHandlers.Add(new ExceptionShieldingErrorHandler(knownFaultTypes, exceptionTypes));
+			dispatchRuntime.ChannelDispatcher.ErrorHandlers.Add(new ExceptionShieldingErrorHandler(_knownFaultTypes, _exceptionTypes));
 		}
 
 		///<summary>
@@ -61,14 +62,14 @@ namespace Chiro.Adf.ServiceModel
 		/// </summary>
 		public void Validate(ContractDescription contractDescription, ServiceEndpoint endpoint)
 		{
-			if (knownFaultTypes.Length != exceptionTypes.Length)
+			if (_knownFaultTypes.Length != _exceptionTypes.Length)
 				throw new ArgumentException("The ShieldExceptions behavior needs a corresponding exception type for each possible fault to shield.");
 
-			var badType = knownFaultTypes.FirstOrDefault(t => !t.IsDefined(typeof(DataContractAttribute), true));
+			var badType = _knownFaultTypes.FirstOrDefault(t => !t.IsDefined(typeof(DataContractAttribute), true));
 			if (badType != null)
 				throw new ArgumentException(string.Format("The specified fault '{0}' is no data contract. Did you forget to decorate the class with the DataContractAttirbute attribute?", badType));
 
-			var badExceptionType = exceptionTypes.FirstOrDefault(t => t != typeof(Exception) && !t.IsSubclassOf(typeof(Exception)));
+			var badExceptionType = _exceptionTypes.FirstOrDefault(t => t != typeof(Exception) && !t.IsSubclassOf(typeof(Exception)));
 			if (badExceptionType != null)
 				throw new ArgumentException(string.Format("The specified type '{0}' is not an Exception-derived type.", badExceptionType));
 		}

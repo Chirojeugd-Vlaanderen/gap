@@ -21,7 +21,7 @@ namespace System.Web.Mvc
         {
             return null;
             // TODO: find rule
-            return new ModelClientValidationRequiredRule[] { new ModelClientValidationRequiredRule(base.ErrorMessage) };
+            // return new[] { new ModelClientValidationRequiredRule(base.ErrorMessage) };
         }
     }
 }

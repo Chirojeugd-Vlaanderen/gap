@@ -1,16 +1,21 @@
-﻿using System;
-using System.Text;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Chiro.Gap.Orm;
-using Chiro.Gap.Workers;
-using Chiro.Cdf.Ioc;
-using Chiro.Gap.Orm.DataInterfaces;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
-using Chiro.Gap.TestDbInfo;
+
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
+using Chiro.Gap.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.TestDbInfo;
+using Chiro.Gap.Workers;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chiro.Gap.Data.Test
 {
@@ -20,30 +25,11 @@ namespace Chiro.Gap.Data.Test
 	[TestClass]
 	public class PersonenTest
 	{
-		public PersonenTest()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
-
-		private TestContext testContextInstance;
-
 		/// <summary>
 		///Gets or sets the test context which provides
 		///information about and functionality for the current test run.
 		/// </summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
+		public TestContext TestContext { get; set; }
 
 		#region Additional test attributes
 		//
@@ -79,14 +65,14 @@ namespace Chiro.Gap.Data.Test
 			string naam = TestInfo.NIEUWEPERSOONNAAM;
 			string voornaam = TestInfo.TEVERWIJDERENVOORNAAM;
 
-			IGroepenDao gdao = Factory.Maak<IGroepenDao>();
+			var gdao = Factory.Maak<IGroepenDao>();
 			Groep g = gdao.Ophalen(groepID);
 
-			GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
+			var gpm = Factory.Maak<GelieerdePersonenManager>();
 
 			// Creeer gloednieuwe persoon
 
-			Persoon p = new Persoon();
+			var p = new Persoon();
 			p.VoorNaam = voornaam;
 			p.Naam = naam;
 
@@ -94,7 +80,7 @@ namespace Chiro.Gap.Data.Test
 
 			GelieerdePersoon gp = gpm.Koppelen(p, g, 0);
 
-			IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
+			var gpdao = Factory.Maak<IGelieerdePersonenDao>();
 			// Hier moeten we via de DAO gaan, en niet via de worker, omdat 
 			// we de DAO willen testen, en niet willen failen op fouten in
 			// de worker.
@@ -105,7 +91,6 @@ namespace Chiro.Gap.Data.Test
 		/// <summary>
 		/// Opkuis na de test; verwijdert bijgemaakte personen
 		/// </summary>
-		/// <param name="context"></param>
 		[ClassCleanup]
 		static public void Opkuis()
 		{
@@ -113,12 +98,12 @@ namespace Chiro.Gap.Data.Test
 			string naam = TestInfo.NIEUWEPERSOONNAAM;
 			string voornaam = TestInfo.NIEUWEPERSOONVOORNAAM;
 
-			GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
+			var mgr = Factory.Maak<GelieerdePersonenManager>();
 
 			// nog niet alle functionaliteit wordt aangeboden in de worker,
 			// dus ik werk hier en daar rechtstreeks op de dao.
 
-			IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
+			var dao = Factory.Maak<IGelieerdePersonenDao>();
 
 			IList<GelieerdePersoon> gevonden = dao.ZoekenOpNaam(groepID, naam + ' ' + voornaam);
 
@@ -135,7 +120,7 @@ namespace Chiro.Gap.Data.Test
 			string zoekString = TestInfo.ZOEKNAAM;
 			int groepID = TestInfo.GROEPID;
 
-			IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
+			var dao = Factory.Maak<IGelieerdePersonenDao>();
 
 			// act
 			IList<GelieerdePersoon> lijst = dao.ZoekenOpNaam(groepID, zoekString);
@@ -151,7 +136,7 @@ namespace Chiro.Gap.Data.Test
 		public void ZoekenOpNaamOngeveer()
 		{
 			// arrange
-			IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
+			var dao = Factory.Maak<IGelieerdePersonenDao>();
 
 			// act
 			IList<GelieerdePersoon> lijst = dao.ZoekenOpNaamOngeveer(
@@ -172,7 +157,7 @@ namespace Chiro.Gap.Data.Test
 		{
 			// arange
 			int gpID = TestInfo.GELIEERDEPERSOONID;
-			IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
+			var dao = Factory.Maak<IGelieerdePersonenDao>();
 
 			// act
 			GelieerdePersoon gp = dao.DetailsOphalen(gpID);
@@ -192,10 +177,10 @@ namespace Chiro.Gap.Data.Test
 			GelieerdePersoon gp, kloon;
 
 			int gpID = TestInfo.GELIEERDEPERSOONID;
-			IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
+			var dao = Factory.Maak<IGelieerdePersonenDao>();
 
 
-			using (MemoryStream stream = new MemoryStream())
+			using (var stream = new MemoryStream())
 			{
 				// act
 
@@ -222,7 +207,7 @@ namespace Chiro.Gap.Data.Test
 			// arange
 			int totaal;
 
-			IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
+			var dao = Factory.Maak<IGelieerdePersonenDao>();
 
 			// act
 
@@ -230,14 +215,14 @@ namespace Chiro.Gap.Data.Test
 			var lijst = dao.PaginaOphalenMetLidInfo(
 				TestInfo.GROEPID, 1, 30, PersoonSorteringsEnum.Naam, out totaal);
 
-			using (MemoryStream stream = new MemoryStream())
+			using (var stream = new MemoryStream())
 			{
 				// act
 
 				var serializer = new NetDataContractSerializer();
 				serializer.Serialize(stream, lijst);
 				stream.Position = 0;
-				IEnumerable<GelieerdePersoon> kloon = (IEnumerable<GelieerdePersoon>)serializer.Deserialize(stream);
+				var kloon = (IEnumerable<GelieerdePersoon>)serializer.Deserialize(stream);
 			}
 
 			// assert
@@ -331,14 +316,14 @@ namespace Chiro.Gap.Data.Test
 			string naam = TestInfo.NIEUWEPERSOONNAAM;
 			string voornaam = TestInfo.NIEUWEPERSOONVOORNAAM;
 
-			IGroepenDao gdao = Factory.Maak<IGroepenDao>();
+			var gdao = Factory.Maak<IGroepenDao>();
 			Groep g = gdao.Ophalen(groepID);
 
-			GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
+			var gpm = Factory.Maak<GelieerdePersonenManager>();
 
 			// Creeer gloednieuwe persoon
 
-			Persoon p = new Persoon();
+			var p = new Persoon();
 			p.VoorNaam = voornaam;
 			p.Naam = naam;
 
@@ -346,7 +331,7 @@ namespace Chiro.Gap.Data.Test
 
 			GelieerdePersoon gp = gpm.Koppelen(p, g, 0);
 
-			IGelieerdePersonenDao gpdao = Factory.Maak<IGelieerdePersonenDao>();
+			var gpdao = Factory.Maak<IGelieerdePersonenDao>();
 			#endregion
 
 			#region Act
@@ -378,12 +363,12 @@ namespace Chiro.Gap.Data.Test
 			string naam = TestInfo.NIEUWEPERSOONNAAM;
 			string voornaam = TestInfo.TEVERWIJDERENVOORNAAM;
 
-			GelieerdePersonenManager mgr = Factory.Maak<GelieerdePersonenManager>();
+			var mgr = Factory.Maak<GelieerdePersonenManager>();
 
 			// nog niet alle functionaliteit wordt aangeboden in de worker,
 			// dus ik werk hier en daar rechtstreeks op de dao.
 
-			IGelieerdePersonenDao dao = Factory.Maak<IGelieerdePersonenDao>();
+			var dao = Factory.Maak<IGelieerdePersonenDao>();
 
 			IList<GelieerdePersoon> gevonden = dao.ZoekenOpNaam(groepID, naam + ' ' + voornaam);
 			#endregion

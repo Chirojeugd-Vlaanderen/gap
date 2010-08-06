@@ -28,18 +28,15 @@ namespace Chiro.Gap.Services.Test
 	[TestClass]
 	public class CategorieVerwijderen
 	{
-		public CategorieVerwijderen()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
+		IGroepenService _groepenSvc;
+		IGelieerdePersonenService _personenSvc;
+
+		#region initialisatie en afronding
 
 		[ClassInitialize]
 		static public void InitialiseerTests(TestContext tc)
 		{
-
-			// Dit gebeurt normaalgesproken bij het starten van de service,
+			// Dit gebeurt normaal gesproken bij het starten van de service,
 			// maar blijkbaar is het moeilijk de service te herstarten bij het testen.
 			// Vandaar op deze manier:
 
@@ -48,20 +45,17 @@ namespace Chiro.Gap.Services.Test
 		}
 
 		[ClassCleanup]
-		static public void AfsluitenTests()
+		static public void TestsAfsluiten()
 		{
 			Factory.Dispose();
 		}
 
-		IGroepenService _groepenSvc;
-		IGelieerdePersonenService _personenSvc;
-		
 		[TestInitialize]
-		public void setUp()
+		public void SetUp()
 		{
 			// Zorg ervoor dat de PrincipalPermissionAttributes op de service methods
 			// geen excepties genereren, door te doen alsof de service aangeroepen is met de goede
-			// 
+			
 			var identity = new GenericIdentity(Properties.Settings.Default.TestUser);
 			var roles = new[] { Properties.Settings.Default.TestSecurityGroep };
 			var principal = new GenericPrincipal(identity, roles);
@@ -90,7 +84,7 @@ namespace Chiro.Gap.Services.Test
 		/// Verwijder eventuele overblijvende categorieën
 		/// </summary>
 		[TestCleanup]
-		public void tearDown()
+		public void TearDown()
 		{
 			foreach (string code in TestInfo.ONBESTAANDECATEGORIECODES)
 			{
@@ -103,7 +97,7 @@ namespace Chiro.Gap.Services.Test
 			}
 		}
 
-
+		#endregion
 
 		/// <summary>
 		/// Verwijderen van een lege categorie

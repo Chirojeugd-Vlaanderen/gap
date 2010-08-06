@@ -32,7 +32,7 @@ namespace Chiro.Gap.Orm
 			set { GeslachtsInt = (int)value; }
 		}
 
-		private bool _teVerwijderen = false;
+		private bool _teVerwijderen;
 
 		/// <summary>
 		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren

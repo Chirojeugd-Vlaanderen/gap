@@ -7,26 +7,26 @@ using System.ServiceModel.Dispatcher;
 namespace Chiro.Adf.ServiceModel
 {
     /// <summary>
-    /// TODO: Documenteren!
+    /// TODO (#190): Documenteren!
     /// </summary>
 	public class ExceptionShieldingErrorHandler : IErrorHandler
 	{
-		private readonly Type[] knownFaultTypes;
-		private readonly Type[] exceptionTypes;
+		private readonly Type[] _knownFaultTypes;
+		private readonly Type[] _exceptionTypes;
 
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
         /// <param name="knownFaultTypes"></param>
         /// <param name="exceptionTypes"></param>
 		public ExceptionShieldingErrorHandler(Type[] knownFaultTypes, Type[] exceptionTypes)
 		{
-			this.knownFaultTypes = knownFaultTypes;
-			this.exceptionTypes = exceptionTypes;
+			_knownFaultTypes = knownFaultTypes;
+			_exceptionTypes = exceptionTypes;
 		}
 
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
         /// <param name="error"></param>
         /// <returns></returns>
@@ -36,7 +36,7 @@ namespace Chiro.Adf.ServiceModel
 		}
 
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
         /// <param name="error"></param>
         /// <param name="version"></param>
@@ -45,16 +45,16 @@ namespace Chiro.Adf.ServiceModel
 		{
 			if (error is FaultException) return;
 
-			var exceptionType = exceptionTypes.FirstOrDefault(t => error.GetType() == t || error.GetType().IsSubclassOf(t));
+			var exceptionType = _exceptionTypes.FirstOrDefault(t => error.GetType() == t || error.GetType().IsSubclassOf(t));
 			if (exceptionType != null)
 			{
-				var faultType = knownFaultTypes[Array.IndexOf(exceptionTypes, exceptionType)];
+				var faultType = _knownFaultTypes[Array.IndexOf(_exceptionTypes, exceptionType)];
 				fault = Message.CreateMessage(version, CreateFaultException(faultType, error).CreateMessageFault(), faultType.Name);
 			}
 		}
 
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
         /// <param name="faultType"></param>
         /// <param name="exception"></param>

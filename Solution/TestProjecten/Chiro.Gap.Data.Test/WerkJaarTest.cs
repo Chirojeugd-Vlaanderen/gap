@@ -1,12 +1,14 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+ 
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Cdf.Ioc;
 using Chiro.Gap.TestDbInfo;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chiro.Gap.Data.Test
 {
@@ -16,30 +18,11 @@ namespace Chiro.Gap.Data.Test
 	[TestClass]
 	public class WerkJaarTest
 	{
-		public WerkJaarTest()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
-
-		private TestContext testContextInstance;
-
 		/// <summary>
 		///Gets or sets the test context which provides
 		///information about and functionality for the current test run.
 		/// </summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
+		public TestContext TestContext { get; set; }
 
 		#region Additional test attributes
 		//
@@ -73,7 +56,7 @@ namespace Chiro.Gap.Data.Test
 		public void GroepsWerkJaarZoeken()
 		{
 			#region Arrange
-			IGroepsWerkJaarDao gwjDao = Factory.Maak<IGroepsWerkJaarDao>();
+			var gwjDao = Factory.Maak<IGroepsWerkJaarDao>();
 			int gwjID = TestInfo.GROEPSWERKJAARID;
 			int testGroepID = TestInfo.GROEPID;
 			#endregion

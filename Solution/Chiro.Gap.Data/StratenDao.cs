@@ -33,7 +33,7 @@ namespace Chiro.Gap.Data.Ef
 				resultaat = (
 					from StraatNaam s in db.StraatNaam
 					where s.Naam == naam && s.PostNummer == postNr
-					select s).FirstOrDefault<StraatNaam>();
+					select s).FirstOrDefault();
 
 				if (resultaat != null)
 				{
@@ -53,7 +53,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>Gegevens van de gevonden straten</returns>
 		public IList<StraatNaam> MogelijkhedenOphalen(string naamBegin, int postNr)
 		{
-			return MogelijkhedenOphalen(naamBegin, new int[] { postNr });
+			return MogelijkhedenOphalen(naamBegin, new[] { postNr });
 		}
 
 		/// <summary>

@@ -21,7 +21,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 		//You can use the following additional attributes as you write your tests:
 		//
 		//Use ClassInitialize to run code before running the first test in the class
-		[ClassInitialize()]
+		[ClassInitialize]
 		public static void MyClassInitialize(TestContext testContext)
 		{
 			Factory.ContainerInit();
@@ -72,9 +72,9 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 				++aantalAanroepen;
 				return new List<Functie>();
 			});
-			Factory.InstantieRegistreren<IFunctiesDao>(funDaoMock.Object);
+			Factory.InstantieRegistreren(funDaoMock.Object);
 
-			FunctiesManager target = Factory.Maak<FunctiesManager>();
+			var target = Factory.Maak<FunctiesManager>();
 
 			#endregion
 

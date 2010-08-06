@@ -6,11 +6,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Objects;
+using System.Data.Objects.DataClasses;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Data.Objects;
-using System.Data.Objects.DataClasses;
 
 namespace Chiro.Cdf.Data.Entity
 {
@@ -29,16 +29,16 @@ namespace Chiro.Cdf.Data.Entity
 	{
 		#region IDao<T> Members
 
-		protected Expression<Func<TEntiteit, object>>[] connectedEntities;
+		protected Expression<Func<TEntiteit, object>>[] ConnectedEntities;
 
 		public Dao()
 		{
-			connectedEntities = new Expression<Func<TEntiteit, object>>[0];
+			ConnectedEntities = new Expression<Func<TEntiteit, object>>[0];
 		}
 
-		public virtual Expression<Func<TEntiteit, object>>[] getConnectedEntities()
+		public virtual Expression<Func<TEntiteit, object>>[] GetConnectedEntities()
 		{
-			return connectedEntities;
+			return ConnectedEntities;
 		}
 
 		/// <summary>
@@ -48,7 +48,7 @@ namespace Chiro.Cdf.Data.Entity
 		/// <returns></returns>
 		public virtual TEntiteit Ophalen(int id)
 		{
-			Expression<Func<TEntiteit, object>>[] paths = getConnectedEntities();
+			Expression<Func<TEntiteit, object>>[] paths = GetConnectedEntities();
 			return Ophalen(id, paths);
 		}
 
@@ -60,20 +60,20 @@ namespace Chiro.Cdf.Data.Entity
 		/// <remarks>Virtueel gemaakt omdat PersonenDao overridet</remarks>
 		public virtual IList<TEntiteit> Ophalen(IEnumerable<int> ids)
 		{
-			return Ophalen(ids, getConnectedEntities());
+			return Ophalen(ids, GetConnectedEntities());
 		}
 
 		public virtual TEntiteit Ophalen(int id, params Expression<Func<TEntiteit, object>>[] paths)
 		{
 			TEntiteit result;
 
-			using (TContext db = new TContext())
+			using (var db = new TContext())
 			{
 				// Constructie db.CreateQuery<T>("[" + db.GetEntitySetName(typeof(T)) + "]").OfType<T>()
 				// zorgt ervoor dat dit ook werkt voor overervende types.  (In dat geval is
 				// de EntitySetName niet gelijk aan de naam van het type.)
 
-				ObjectQuery<TEntiteit> query = (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
+				var query = (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
 												where t.ID == id
 												select t) as ObjectQuery<TEntiteit>;
 
@@ -82,7 +82,7 @@ namespace Chiro.Cdf.Data.Entity
 				// objecten gedetacht zijn.  Maar dat is niet het geval.  (??) Vandaar
 				// dat ik verderop toch DetachObjectGraph gebruik.
 
-				result = (IncludesToepassen(query, paths)).FirstOrDefault<TEntiteit>();
+				result = (IncludesToepassen(query, paths)).FirstOrDefault();
 			}
 
 			if (result != null)
@@ -121,7 +121,7 @@ namespace Chiro.Cdf.Data.Entity
 					(from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
 					 select t).OrderBy(basisent => basisent.ID).Skip((pagina - 1) * paginaGrootte).Take(paginaGrootte) as ObjectQuery<TEntiteit>;
 
-				result = (IncludesToepassen(query, paths)).ToList<TEntiteit>();
+				result = (IncludesToepassen(query, paths)).ToList();
 			}
 
 			result = Utility.DetachObjectGraph(result);
@@ -139,7 +139,7 @@ namespace Chiro.Cdf.Data.Entity
 		{
 			IList<TEntiteit> result;
 
-			using (TContext db = new TContext())
+			using (var db = new TContext())
 			{
 				// onderstaande lukt niet, omdat Contains niet werkt voor LINQ to entities:
 				// ObjectQuery<TEntiteit> query = (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
@@ -150,11 +150,11 @@ namespace Chiro.Cdf.Data.Entity
 				// zorgt ervoor dat dit ook werkt voor overervende types.  (In dat geval is
 				// de EntitySetName niet gelijk aan de naam van het type.)
 
-				ObjectQuery<TEntiteit> query = (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
+				var query = (from t in db.CreateQuery<TEntiteit>("[" + db.GetEntitySetName(typeof(TEntiteit)) + "]").OfType<TEntiteit>()
 								.Where(Utility.BuildContainsExpression<TEntiteit, int>(ent => ent.ID, ids))
 												select t) as ObjectQuery<TEntiteit>;
 
-				result = (IncludesToepassen(query, paths)).ToList<TEntiteit>();
+				result = (IncludesToepassen(query, paths)).ToList();
 			}
 
 			result = Utility.DetachObjectGraph(result);
@@ -177,11 +177,8 @@ namespace Chiro.Cdf.Data.Entity
 				// Workaround om de Includes te laten werken
 				// overgenomen van 
 				// http://blogs.msdn.com/alexj/archive/2009/06/02/tip-22-how-to-make-include-really-include.aspx
-
-				foreach (var v in paths)
-				{
-					resultaat = resultaat.Include(v);
-				}
+				// en daarna via ReSharper omgezet in een Linq-expressie
+				resultaat = paths.Aggregate(resultaat, (current, v) => current.Include(v));
 			}
 
 			return resultaat;
@@ -214,7 +211,7 @@ namespace Chiro.Cdf.Data.Entity
 		/// In dat laatste geval is de terugkeerwaarde null.</remarks>
 		public virtual TEntiteit Bewaren(TEntiteit entiteit)
 		{
-			return Bewaren(entiteit, getConnectedEntities());
+			return Bewaren(entiteit, GetConnectedEntities());
 		}
 
 		/// <summary>
@@ -227,7 +224,7 @@ namespace Chiro.Cdf.Data.Entity
 		/// expressions meekrijgt</remarks>
 		public virtual TEntiteit Bewaren(TEntiteit entiteit, params Expression<Func<TEntiteit, object>>[] paths)
 		{
-			var resultaat = Bewaren(new TEntiteit[] { entiteit }, paths);
+			var resultaat = Bewaren(new[] { entiteit }, paths);
 			return (resultaat.Count() == 1) ? resultaat.First() : null;
 		}
 
@@ -240,7 +237,7 @@ namespace Chiro.Cdf.Data.Entity
 		/// <returns>De bewaarde entiteiten, maar gedetacht</returns>
 		public virtual IEnumerable<TEntiteit> Bewaren(IEnumerable<TEntiteit> es, params Expression<Func<TEntiteit, object>>[] paths)
 		{
-			using (TContext db = new TContext())
+			using (var db = new TContext())
 			{
 				es = db.AttachObjectGraphs(es, paths);
 				// Geattachte graph toekennen aan es, zodat we achteraf de goeie detachen.
@@ -251,7 +248,7 @@ namespace Chiro.Cdf.Data.Entity
 				}
 				catch (UpdateException ex)
 				{
-					SqlException inner = ex.InnerException as SqlException;
+					var inner = ex.InnerException as SqlException;
 
 					if (inner != null && inner.Number == 2601)
 					{

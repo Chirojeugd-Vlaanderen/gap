@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
+
 using Chiro.Cdf.Ioc;
 
 namespace Chiro.Cdf.DependencyInjection
@@ -19,8 +20,10 @@ namespace Chiro.Cdf.DependencyInjection
 	/// </summary>
 	public class DIInstanceProvider : IInstanceProvider
 	{
-		private Type serviceType;
-		List<TypeMapping> typeMappings;
+		private readonly Type _serviceType;
+// ReSharper disable UnaccessedField.Local
+		List<TypeMapping> _typeMappings;
+// ReSharper restore UnaccessedField.Local
 
 		/// <summary>
 		/// Instantieert een DIInstanceProvider-object
@@ -29,8 +32,8 @@ namespace Chiro.Cdf.DependencyInjection
 		/// <param name="typeMappings">Type mappings</param>
 		public DIInstanceProvider(Type serviceType, List<TypeMapping> typeMappings)
 		{
-			this.serviceType = serviceType;
-			this.typeMappings = typeMappings;
+			_serviceType = serviceType;
+			_typeMappings = typeMappings;
 		}
 
 		/// <summary>
@@ -57,7 +60,7 @@ namespace Chiro.Cdf.DependencyInjection
 			//    container.RegisterTypeMapping(typeMapping.TypeRequested, typeMapping.TypeToBuild);
 			// }
 
-			return Factory.Maak(this.serviceType);
+			return Factory.Maak(_serviceType);
 		}
 
 		/// <summary>

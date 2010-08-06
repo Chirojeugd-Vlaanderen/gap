@@ -8,23 +8,23 @@ using System.ServiceModel.Dispatcher;
 namespace Chiro.Adf.ServiceModel
 {
     /// <summary>
-    /// TODO: Documenteren!
+    /// TODO (#190): Documenteren!
     /// </summary>
 	public class ExceptionShieldingMessageInspector : IClientMessageInspector
 	{
-		private readonly Type[] knownFaultTypes;
+		private readonly Type[] _knownFaultTypes;
 
         /// <summary>
-        /// TODO: Documenteren
+        /// TODO (#190): Documenteren
         /// </summary>
         /// <param name="knownFaultTypes"></param>
 		public ExceptionShieldingMessageInspector(Type[] knownFaultTypes)
 		{
-			this.knownFaultTypes = knownFaultTypes;
+			_knownFaultTypes = knownFaultTypes;
 		}
 
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
         /// <param name="request"></param>
         /// <param name="channel"></param>
@@ -35,7 +35,7 @@ namespace Chiro.Adf.ServiceModel
 		}
 
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
         /// <param name="reply"></param>
         /// <param name="correlationState"></param>
@@ -44,7 +44,7 @@ namespace Chiro.Adf.ServiceModel
 			if (!reply.IsFault) return;
 
 			var action = reply.Headers.Action;
-			var faultType = knownFaultTypes.FirstOrDefault(t => t.Name == action);
+			var faultType = _knownFaultTypes.FirstOrDefault(t => t.Name == action);
 
 			if (faultType != null)
 			{
@@ -52,12 +52,15 @@ namespace Chiro.Adf.ServiceModel
 				var exceptionType = typeof(FaultException<>).MakeGenericType(faultType);
 				var faultException = Activator.CreateInstance(exceptionType, detail, "Server exception has been shielded.") as Exception;
 
-				throw faultException;
+				if (faultException != null)
+				{
+					throw faultException;
+				}
 			}
 		}
 
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
         /// <param name="reply"></param>
         /// <param name="faultType"></param>

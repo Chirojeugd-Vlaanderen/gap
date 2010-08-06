@@ -24,7 +24,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 
 		/// <summary>
 		/// Haalt alle straten op uit een gegeven <paramref name="postNr"/>, waarvan de naam begint
-		/// met het gegeven <paramref name="straatBegin"/>.
+		/// met het gegeven <paramref name="naamBegin"/>.
 		/// </summary>
 		/// <param name="naamBegin">Eerste letters van de te zoeken straatnamen</param>
 		/// <param name="postNr">Postnummer waarin te zoeken</param>
@@ -33,7 +33,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 
 		/// <summary>
 		/// Haalt alle straten op uit een gegeven rij <paramref name="postNrs"/>, waarvan de naam begint
-		/// met het gegeven <paramref name="straatBegin"/>.
+		/// met het gegeven <paramref name="naamBegin"/>.
 		/// </summary>
 		/// <param name="naamBegin">Eerste letters van de te zoeken straatnamen</param>
 		/// <param name="postNrs">Postnummers waarin te zoeken</param>

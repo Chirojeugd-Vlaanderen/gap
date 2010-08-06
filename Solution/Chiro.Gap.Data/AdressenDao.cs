@@ -27,7 +27,7 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		public AdressenDao()
 		{
-			connectedEntities = new Expression<Func<Adres, object>>[3] 
+			ConnectedEntities = new Expression<Func<Adres, object>>[3] 
             { 
 				e => e.StraatNaam.WithoutUpdate(),
 				e => e.WoonPlaats.WithoutUpdate(),
@@ -35,7 +35,7 @@ namespace Chiro.Gap.Data.Ef
             };
 		}
 
-		// TODO kan deze methode ook vervangen worden door de generische bewaren met lambda expressies??
+		// TODO (#655): kan deze methode ook vervangen worden door de generische 'bewaren met lambda expressies'??
 		// Ja hoor, maar ik heb nu geen tijd :-)
 
 		/// <summary>
@@ -140,9 +140,8 @@ namespace Chiro.Gap.Data.Ef
 				lijst = query.ToList();
 			}
 
-			// FIXME: Voor het gemak ga ik ervan uit dat er steeds minstens
-			// iemand op het gezochte adres woont.  Dat is uiteraard niet 
-			// noodzakelijk het geval.
+			// FIXME: Voor het gemak ga ik ervan uit dat er steeds minstens iemand op het gezochte adres woont.
+			// Dat is uiteraard niet noodzakelijk het geval.
 
 			// Als deze assert failt, dan zou het ook kunnen dat het adres niet bestaat!
 			Debug.Assert(lijst.Count > 0);

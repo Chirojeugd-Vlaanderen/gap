@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
-using Chiro.Adf.Configuration;
 using System.Globalization;
-using System.Collections;
+
+using Chiro.Adf.Configuration;
 
 namespace Chiro.Adf
 {
@@ -14,14 +15,14 @@ namespace Chiro.Adf
 	{
 		#region static members
 
-		private static readonly ServiceProvider defaultInstance = new ServiceProvider();
+		private static readonly ServiceProvider DefaultInstance = new ServiceProvider();
 
 		static ServiceProvider()
 		{
 			var configSection = ConfigurationManager.GetSection(AdfConfigurationSection.DefaultAdfConfigurationSectionName) as AdfConfigurationSection;
 
 			if (configSection != null)
-				defaultInstance.ApplyConfiguration(configSection);
+				DefaultInstance.ApplyConfiguration(configSection);
 		}
 
 
@@ -30,12 +31,12 @@ namespace Chiro.Adf
 		/// </summary>
 		public static ServiceProvider Default
 		{
-			get { return defaultInstance; }
+			get { return DefaultInstance; }
 		}
 
 		#endregion
 
-		private readonly IList<IServiceProvider> serviceProviders = new List<IServiceProvider>();
+		private readonly IList<IServiceProvider> _serviceProviders = new List<IServiceProvider>();
         
 		/// <summary>
 		/// Initializes a new instance of the ServiceProvider class.
@@ -74,7 +75,7 @@ namespace Chiro.Adf
 		}
 
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
         /// <typeparam name="I"></typeparam>
         /// <param name="arguments"></param>
@@ -106,7 +107,7 @@ namespace Chiro.Adf
 		}
 
         /// <summary>
-        /// TODO: Documenteren
+        /// TODO (#190): Documenteren
         /// </summary>
         /// <param name="type"></param>
         /// <param name="instanceName"></param>
@@ -173,9 +174,9 @@ namespace Chiro.Adf
 		public void RegisterProvider(IServiceProvider provider)
 		{
 			if (provider == null) throw new ArgumentNullException("provider");
-            if(serviceProviders.Contains(provider)) throw new ArgumentException("The specified provider is already registered.", "provider");
+            if(_serviceProviders.Contains(provider)) throw new ArgumentException("The specified provider is already registered.", "provider");
 
-			serviceProviders.Add(provider);
+			_serviceProviders.Add(provider);
 		}
 
         /// <summary>
@@ -184,9 +185,9 @@ namespace Chiro.Adf
         public void UnregisterProvider(IServiceProvider provider)
         {
             if (provider == null) throw new ArgumentNullException("provider");
-            if (!serviceProviders.Contains(provider)) throw new ArgumentException("The specified provider is not registered.", "provider");
+            if (!_serviceProviders.Contains(provider)) throw new ArgumentException("The specified provider is not registered.", "provider");
 
-            serviceProviders.Remove(provider);
+            _serviceProviders.Remove(provider);
         }
 
 		/// <summary>
@@ -197,10 +198,10 @@ namespace Chiro.Adf
 		{
 			if (configurationSection == null) throw new ArgumentNullException("configurationSection");
 
-			if(serviceProviders.Count > 0) throw new InvalidOperationException("Configuration cannot be applied twice.");
+			if(_serviceProviders.Count > 0) throw new InvalidOperationException("Configuration cannot be applied twice.");
 
 			foreach (ServiceProviderConfigurationElement providerSettings in configurationSection.ServiceProviders)
-				serviceProviders.Add(CreateProvider(providerSettings));
+				_serviceProviders.Add(CreateProvider(providerSettings));
 		}
 
         /// <summary>
@@ -208,14 +209,14 @@ namespace Chiro.Adf
         /// </summary>
         public void ClearProviders()
         {
-            serviceProviders.Clear();
+            _serviceProviders.Clear();
         }
         
 		private I CallProviders<I>(Func<IServiceProvider, I> func, string exceptionMessage) where I : class
 		{
 			try
 			{
-				foreach (var provider in serviceProviders)
+				foreach (var provider in _serviceProviders)
 				{
 					try
 					{

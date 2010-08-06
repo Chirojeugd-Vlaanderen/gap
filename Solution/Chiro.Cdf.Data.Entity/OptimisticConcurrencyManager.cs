@@ -15,7 +15,7 @@ namespace Chiro.Cdf.Data.Entity
 	/// </summary>
 	public class OptimisticConcurrencyManager : IDisposable
 	{
-		private ObjectContext context;
+		private ObjectContext _context;
 
 		/// <summary>
 		/// Instantiates a new OptimisticConcurrencyManager for the
@@ -24,8 +24,8 @@ namespace Chiro.Cdf.Data.Entity
 		/// <param name="context"></param>
 		public OptimisticConcurrencyManager(ObjectContext context)
 		{
-			this.context = context;
-			this.context.SavingChanges += new EventHandler(WhenSavingChanges);
+			_context = context;
+			_context.SavingChanges += WhenSavingChanges;
 		}
 
 		/// <summary>
@@ -34,10 +34,10 @@ namespace Chiro.Cdf.Data.Entity
 		/// </summary>
 		public void Dispose()
 		{
-			if (this.context != null)
+			if (_context != null)
 			{
-				this.context.SavingChanges -= new EventHandler(WhenSavingChanges);
-				this.context = null;
+				_context.SavingChanges -= WhenSavingChanges;
+				_context = null;
 			}
 		}
 
@@ -50,14 +50,14 @@ namespace Chiro.Cdf.Data.Entity
 		void WhenSavingChanges(object sender, EventArgs e)
 		{
 			// Update the concurrency properties of modified entities:
-			foreach (var item in this.context.ObjectStateManager.GetObjectStateEntries(System.Data.EntityState.Modified))
+			foreach (var item in _context.ObjectStateManager.GetObjectStateEntries(EntityState.Modified))
 			{
 				object entity = item.Entity;
 				foreach (var attr in OptimisticConcurrencyAttribute.GetConcurrencyAttributes(entity.GetType()))
 				{
 					// Verify the property was not yet updated, which could
 					// indicate an optimistic concurrency violation:
-					if (attr.HasPropertyChanged(this.context, entity))
+					if (attr.HasPropertyChanged(_context, entity))
 					{
 						throw new OptimisticConcurrencyException(String.Format("Concurrency property {0}.{1} contains invalid update.", entity.GetType(), attr.PropertyName));
 					}

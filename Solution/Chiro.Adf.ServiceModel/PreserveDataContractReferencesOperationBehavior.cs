@@ -1,27 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
-using System.Text;
 using System.Xml;
 
 namespace Chiro.Adf.ServiceModel
 {
     /// <summary>
-    /// TODO: Documenteren!
+    /// TODO (#190): Documenteren!
     /// </summary>
 	public class ReferencePreservingDataContractSerializerOperationBehavior : DataContractSerializerOperationBehavior
 	{
         /// <summary>
-        /// TODO: Documenteren
+        /// TODO (#190): Documenteren
         /// </summary>
         /// <param name="operationDescription"></param>
 		public ReferencePreservingDataContractSerializerOperationBehavior(OperationDescription operationDescription) : base(operationDescription) { }
 
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
         /// <param name="type"></param>
         /// <param name="name"></param>
@@ -34,7 +32,7 @@ namespace Chiro.Adf.ServiceModel
 		}
 
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
         /// <param name="type"></param>
         /// <param name="name"></param>
@@ -47,7 +45,7 @@ namespace Chiro.Adf.ServiceModel
         }
         
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
         /// <param name="type"></param>
         /// <param name="name"></param>
@@ -65,19 +63,19 @@ namespace Chiro.Adf.ServiceModel
 	}
 
     /// <summary>
-    /// TODO: Documenteren!
+    /// TODO (#190): Documenteren!
     /// </summary>
 	public class ReferencePreservingDataContractFormatAttribute : Attribute, IOperationBehavior
 	{
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
         /// <param name="description"></param>
         /// <param name="parameters"></param>
 		public void AddBindingParameters(OperationDescription description, BindingParameterCollection parameters) { }
         
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
         /// <param name="description"></param>
         /// <param name="proxy"></param>
@@ -88,7 +86,7 @@ namespace Chiro.Adf.ServiceModel
 		}
 
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
         /// <param name="description"></param>
         /// <param name="dispatch"></param>
@@ -99,7 +97,7 @@ namespace Chiro.Adf.ServiceModel
 		}
         
         /// <summary>
-        /// TODO: Documenteren!
+        /// TODO (#190): Documenteren!
         /// </summary>
         /// <param name="description"></param>
 		public void Validate(OperationDescription description)

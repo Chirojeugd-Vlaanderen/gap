@@ -24,9 +24,8 @@ namespace Chiro.Gap.Data.Ef
 		/// Instantieert een gegevenstoegangsobject voor AfdelingsJaren
 		/// </summary>
 		public AfdelingsJaarDao()
-			: base()
 		{
-			connectedEntities = new Expression<Func<AfdelingsJaar, object>>[3]
+			ConnectedEntities = new Expression<Func<AfdelingsJaar, object>>[3]
 			{
 				aj => aj.Afdeling.WithoutUpdate(),
 				aj => aj.GroepsWerkJaar.WithoutUpdate(),
@@ -48,7 +47,7 @@ namespace Chiro.Gap.Data.Ef
 		/// gevraagde groepswerkjaar.</remarks>
 		public AfdelingsJaar Ophalen(int groepsWerkJaarID, int afdelingID)
 		{
-			return Ophalen(groepsWerkJaarID, afdelingID, connectedEntities);
+			return Ophalen(groepsWerkJaarID, afdelingID, ConnectedEntities);
 		}
 
 		/// <summary>

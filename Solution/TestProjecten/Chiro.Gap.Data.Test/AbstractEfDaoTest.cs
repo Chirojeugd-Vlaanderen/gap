@@ -3,13 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
 
 using Chiro.Cdf.Data;
-using Chiro.Cdf.Data.Entity;
 using Chiro.Cdf.Ioc;
-
-using Chiro.Gap.Data.Ef;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.TestDbInfo;
@@ -23,30 +19,11 @@ namespace Chiro.Gap.Data.Test
 	[TestClass]
 	public class AbstractEfDaoTest
 	{
-		public AbstractEfDaoTest()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
-
-		private TestContext testContextInstance;
-
 		/// <summary>
 		/// Gets or sets the test context which provides
 		/// information about and functionality for the current test run.
 		/// </summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
+		public TestContext TestContext { get; set; }
 
 		#region Additional test attributes
 		//
@@ -76,7 +53,7 @@ namespace Chiro.Gap.Data.Test
 			Factory.ContainerInit();
 
 			// Verwijder GAV die we straks zullen aanmaken.
-			IGavDao gavDao = Factory.Maak<IGavDao>();
+			var gavDao = Factory.Maak<IGavDao>();
 
 			Gav gav = gavDao.Ophalen(TestInfo.NIEUWEGAV);
 			if (gav != null)
@@ -107,11 +84,11 @@ namespace Chiro.Gap.Data.Test
 		{
 			// Arrange
 
-			Gav gav = new Gav()
-			{
+			var gav = new Gav
+			          	{
 				Login = TestInfo.NIEUWEGAV
 			};
-			IDao<Gav> gavDao = Factory.Maak<IDao<Gav>>();
+			var gavDao = Factory.Maak<IDao<Gav>>();
 
 			// Act
 
@@ -177,7 +154,7 @@ namespace Chiro.Gap.Data.Test
 		public void AllesOphalenIsDetacht()
 		{
 			// Arrange
-			IDao<Groep> dao = Factory.Maak<IDao<Groep>>();
+			var dao = Factory.Maak<IDao<Groep>>();
 
 			// Act
 			IList<Groep> g = dao.AllesOphalen();
@@ -194,7 +171,7 @@ namespace Chiro.Gap.Data.Test
 		public void GedetachtNaBewaren()
 		{
 			// Arrange
-			IDao<Groep> dao = Factory.Maak<IDao<Groep>>();
+			var dao = Factory.Maak<IDao<Groep>>();
 
 			// Act            
 			Groep g = dao.Ophalen(TestInfo.GROEPID);
@@ -304,7 +281,7 @@ namespace Chiro.Gap.Data.Test
 		{
 			// Arrange
 
-			IDao<GelieerdePersoon> dao = Factory.Maak<IDao<GelieerdePersoon>>();
+			var dao = Factory.Maak<IDao<GelieerdePersoon>>();
 			int[] gpIDs = { TestInfo.GELIEERDEPERSOONID, TestInfo.GELIEERDEPERSOON2ID };
 
 			// Act
@@ -325,7 +302,7 @@ namespace Chiro.Gap.Data.Test
 			// Arrange
 
 			int totaal;
-			IDao<GelieerdePersoon> dao = Factory.Maak<IDao<GelieerdePersoon>>();
+			var dao = Factory.Maak<IDao<GelieerdePersoon>>();
 
 			// Act
 

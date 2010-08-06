@@ -15,9 +15,9 @@ namespace Chiro.Adf.Collections.Generic
 	{
 		private readonly IDictionary<TKey, TValue> dict = new Dictionary<TKey, TValue>();
 
-		[NonSerialized] 
+		[NonSerialized]
 		private ReaderWriterLockSlim dictionaryLock;
-		
+
 		/// <summary>
 		/// Initializes a new instance of the SynchronizedDictionary&lt;TKey, TValue&gt; class.
 		/// </summary>
@@ -218,14 +218,17 @@ namespace Chiro.Adf.Collections.Generic
 		}
 
 		///<summary>
-		///Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.
+		///Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an <see cref="T:System.Array" />, 
+		/// starting at a particular <see cref="T:System.Array" /> index.
 		/// </summary>
-		///
-		///<param name="array">The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1" />. The <see cref="T:System.Array" /> must have zero-based indexing.</param>
+		///<param name="array">The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied 
+		/// from <see cref="T:System.Collections.Generic.ICollection`1" />. The <see cref="T:System.Array" /> must have zero-based indexing.</param>
 		///<param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
 		///<exception cref="T:System.ArgumentNullException"><paramref name="array" /> is null.</exception>
 		///<exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex" /> is less than 0.</exception>
-		///<exception cref="T:System.ArgumentException"><paramref name="array" /> is multidimensional.-or-<paramref name="arrayIndex" /> is equal to or greater than the length of <paramref name="array" />.-or-The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1" /> is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.-or-Type <paramref name="T" /> cannot be cast automatically to the type of the destination <paramref name="array" />.</exception>
+		///<exception cref="T:System.ArgumentException"><paramref name="array" /> is multidimensional.-or-<paramref name="arrayIndex" /> is equal to 
+		/// or greater than the length of <paramref name="array" />.-or-The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1" /> 
+		/// is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.</exception>
 		public virtual void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
 		{
 			using (new ReadLock(dictionaryLock))
@@ -355,7 +358,7 @@ namespace Chiro.Adf.Collections.Generic
 		public ReadLock(ReaderWriterLockSlim locks)
 			: base(locks) { Locks.GetReadLock(ref _Locks); }
 
-        public override void Dispose() { Locks.ReleaseReadLock(ref _Locks); GC.SuppressFinalize(this); }
+		public override void Dispose() { Locks.ReleaseReadLock(ref _Locks); GC.SuppressFinalize(this); }
 	}
 
 	internal class WriteLock : ObjectLock
@@ -363,6 +366,6 @@ namespace Chiro.Adf.Collections.Generic
 		public WriteLock(ReaderWriterLockSlim locks)
 			: base(locks) { Locks.GetWriteLock(ref _Locks); }
 
-        public override void Dispose() { Locks.ReleaseWriteLock(ref _Locks); GC.SuppressFinalize(this); }
+		public override void Dispose() { Locks.ReleaseWriteLock(ref _Locks); GC.SuppressFinalize(this); }
 	}
 }

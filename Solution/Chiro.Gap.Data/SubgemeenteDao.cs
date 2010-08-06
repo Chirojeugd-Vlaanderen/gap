@@ -31,7 +31,7 @@ namespace Chiro.Gap.Data.Ef
 				resultaat = (
 					from WoonPlaats s in db.WoonPlaats
 					where s.Naam == naam && s.PostNummer == postNr
-					select s).FirstOrDefault<WoonPlaats>();
+					select s).FirstOrDefault();
 
 				if (resultaat != null)
 				{

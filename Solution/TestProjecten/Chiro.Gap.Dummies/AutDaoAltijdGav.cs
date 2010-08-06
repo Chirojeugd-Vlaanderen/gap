@@ -1,7 +1,11 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -21,7 +25,7 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public GebruikersRecht RechtenMbtGelieerdePersoonGet(string login, int GelieerdePersoonID)
+		public GebruikersRecht RechtenMbtGelieerdePersoonGet(string login, int gelieerdePersoonID)
 		{
 			throw new NotImplementedException();
 		}

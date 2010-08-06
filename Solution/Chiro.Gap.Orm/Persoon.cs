@@ -27,7 +27,7 @@ namespace Chiro.Gap.Orm
 	[AssociationEndBehavior("PersoonsAdres", Owned = true)]
 	public partial class Persoon : IEfBasisEntiteit
 	{
-		private bool _teVerwijderen = false;
+		private bool _teVerwijderen;
 
 		/// <summary>
 		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren

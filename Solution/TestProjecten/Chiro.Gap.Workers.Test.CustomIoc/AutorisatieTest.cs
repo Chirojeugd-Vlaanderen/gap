@@ -152,8 +152,8 @@ namespace Chiro.Gap.Workers.Test
 			// GelieerdePersonenManager aanmaken, waarbij autorisatieManager steeds 'false'
 			// antwoordt.
 
-			Factory.InstantieRegistreren<IGelieerdePersonenDao>(gpDaoMock.Object);
-			Factory.InstantieRegistreren<IGroepenDao>(groepenDaoMock.Object);
+			Factory.InstantieRegistreren(gpDaoMock.Object);
+			Factory.InstantieRegistreren(groepenDaoMock.Object);
 			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrNooitGav());
 
 			var gpMgr = Factory.Maak<CommVormManager>();
@@ -203,10 +203,10 @@ namespace Chiro.Gap.Workers.Test
 			groepsWerkJaarDaoMock.Setup(foo => foo.IsRecentste(testData.HuidigGwj.ID)).Returns(true);
 			groepenDaoMock.Setup(foo => foo.OphalenMetGroepsWerkJaren(testData.DummyGroep.ID)).Returns(testData.DummyGroep);
 			
-			Factory.InstantieRegistreren<ILedenDao>(ledenDaoMock.Object);
-			Factory.InstantieRegistreren<IAutorisatieManager>(autorisatieMgrMock.Object);
-			Factory.InstantieRegistreren<IGroepenDao>(groepenDaoMock.Object);
-			Factory.InstantieRegistreren<IGroepsWerkJaarDao>(groepsWerkJaarDaoMock.Object);
+			Factory.InstantieRegistreren(ledenDaoMock.Object);
+			Factory.InstantieRegistreren(autorisatieMgrMock.Object);
+			Factory.InstantieRegistreren(groepenDaoMock.Object);
+			Factory.InstantieRegistreren(groepsWerkJaarDaoMock.Object);
 
 			var lm = Factory.Maak<LedenManager>();
 
@@ -234,9 +234,9 @@ namespace Chiro.Gap.Workers.Test
 			// adres wonen, en waarbij 2 van die 3 personen gelieerd
 			// zijn aan jouw groep.
 
-			Persoon p1 = new Persoon { ID = 1 };
-			Persoon p2 = new Persoon { ID = 2 };
-			Persoon p3 = new Persoon { ID = 3 };
+			var p1 = new Persoon { ID = 1 };
+			var p2 = new Persoon { ID = 2 };
+			var p3 = new Persoon { ID = 3 };
 
 			// Creeer nu PersonenDaoMock, dia alle huisgenoten van p1 ophaalt.
 
@@ -253,10 +253,10 @@ namespace Chiro.Gap.Workers.Test
 			// Tenslotte de personenManager die we willen
 			// testen.
 
-			Factory.InstantieRegistreren<IPersonenDao>(pDaoMock.Object);
-			Factory.InstantieRegistreren<IAutorisatieManager>(auManMock.Object);
+			Factory.InstantieRegistreren(pDaoMock.Object);
+			Factory.InstantieRegistreren(auManMock.Object);
 
-			PersonenManager pm = Factory.Maak<PersonenManager>();
+			var pm = Factory.Maak<PersonenManager>();
 
 			#endregion
 
@@ -303,8 +303,7 @@ namespace Chiro.Gap.Workers.Test
 
 			gpDaoMock.Setup(
 			    foo => foo.Ophalen(testData.GelieerdeJos.ID,
-			    It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>())).Returns(
-				() => testData.KloonJos());
+			    It.IsAny<Expression<Func<GelieerdePersoon, Object>>>())).Returns(testData.KloonJos);
 
 			// Het stuk It.IsAny<System.Linq.Expressions.Expression<System.Func<GelieerdePersoon, Object>>>()
 			// zorgt ervoor dat de Mock de linq-expressies in 'Ophalen' negeert.
@@ -315,10 +314,10 @@ namespace Chiro.Gap.Workers.Test
 
 			// Maak nu de GelieerdePersoonenManager aan die we willen testen.
 
-			Factory.InstantieRegistreren<IGelieerdePersonenDao>(gpDaoMock.Object);
+			Factory.InstantieRegistreren(gpDaoMock.Object);
 			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
 
-			GelieerdePersonenManager gpm = Factory.Maak<GelieerdePersonenManager>();
+			var gpm = Factory.Maak<GelieerdePersonenManager>();
 
 			#endregion
 

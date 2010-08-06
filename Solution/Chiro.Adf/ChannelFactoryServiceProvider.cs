@@ -51,7 +51,7 @@ namespace Chiro.Adf
 		/// <param name="instanceName"></param>
 		/// <param name="arguments"></param>
 		/// <returns></returns>
-		public I GetService<I>(string instanceName, object arguments) where I : class { throw new System.NotSupportedException(); }
+		public I GetService<I>(string instanceName, object arguments) where I : class { throw new NotSupportedException(); }
 
 		/// <summary>
 		/// Gets all configured service instances of the specified interface type.
@@ -105,7 +105,7 @@ namespace Chiro.Adf
 		}
 
         /// <summary>
-        /// TODO: Documenteren
+        /// TODO (#190): Documenteren
         /// </summary>
         /// <typeparam name="I"></typeparam>
         /// <param name="service"></param>
@@ -117,7 +117,7 @@ namespace Chiro.Adf
 		}
 
         /// <summary>
-        /// TODO: Documenteren
+        /// TODO (#190): Documenteren
         /// </summary>
         /// <param name="type"></param>
         /// <param name="service"></param>

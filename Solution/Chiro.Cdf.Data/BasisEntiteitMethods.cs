@@ -4,9 +4,6 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Chiro.Cdf.Data
 {
@@ -15,8 +12,6 @@ namespace Chiro.Cdf.Data
 	/// </summary>
 	public static class BasisEntiteitMethods
 	{
-		const int DefaultID = 0;
-
 		/// <summary>
 		/// Sql rowversion als string, om gemakkelijk te kunnen gebruiken
 		/// met MVC model binding in forms
@@ -62,7 +57,7 @@ namespace Chiro.Cdf.Data
 		{
 			if (obj is T)
 			{
-				T f = obj as T;
+				var f = obj as T;
 
 				if (f.ID != 0 && f.ID == be.ID)
 				{
@@ -70,7 +65,7 @@ namespace Chiro.Cdf.Data
 				}
 				else if (f.ID == 0 && be.ID == 0)
 				{
-					return Object.ReferenceEquals(be, obj);
+					return ReferenceEquals(be, obj);
 				}
 				else
 				{

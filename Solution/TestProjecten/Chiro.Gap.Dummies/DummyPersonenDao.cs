@@ -1,10 +1,14 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Linq.Expressions;
+
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-
 
 namespace Chiro.Gap.Dummies
 {
@@ -30,12 +34,12 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public IList<Persoon> Ophalen(IEnumerable<int> ids, bool metGelieerdePersonen, string login, params System.Linq.Expressions.Expression<Func<Persoon, object>>[] paths)
+		public IList<Persoon> Ophalen(IEnumerable<int> ids, bool metGelieerdePersonen, string login, params Expression<Func<Persoon, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IEnumerable<Persoon> OphalenViaGelieerdePersoon(IEnumerable<int> gelieerdePersoonIDs, params System.Linq.Expressions.Expression<Func<Persoon, object>>[] paths)
+		public IEnumerable<Persoon> OphalenViaGelieerdePersoon(IEnumerable<int> gelieerdePersoonIDs, params Expression<Func<Persoon, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}

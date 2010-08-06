@@ -11,7 +11,6 @@ using System.Linq.Expressions;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
-
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 
@@ -27,14 +26,14 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		public KindDao()
 		{
-			connectedEntities = new Expression<Func<Kind, object>>[] 
-			    { 
+			ConnectedEntities = new Expression<Func<Kind, object>>[] 
+			{ 
 				e => e.GroepsWerkJaar.WithoutUpdate(), 
 				e => e.GelieerdePersoon.WithoutUpdate(), 
 				e => e.GelieerdePersoon.Persoon.WithoutUpdate(), 
 				e => e.AfdelingsJaar.WithoutUpdate(),
 				e => e.AfdelingsJaar.Afdeling.WithoutUpdate() 
-			    };
+			};
 		}
 
 		/// <summary>

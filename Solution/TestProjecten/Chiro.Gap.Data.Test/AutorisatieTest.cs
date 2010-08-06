@@ -1,9 +1,5 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Chiro.Gap.Workers;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Data.Ef;
@@ -17,30 +13,11 @@ namespace Chiro.Gap.Data.Test
 	[TestClass]
 	public class AutorisatieTest
 	{
-		public AutorisatieTest()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
-
-		private TestContext testContextInstance;
-
 		/// <summary>
 		/// Gets or sets the test context which provides
 		/// information about and functionality for the current test run.
 		/// </summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
+		public TestContext TestContext { get; set; }
 
 		#region Additional test attributes
 		//
@@ -63,7 +40,6 @@ namespace Chiro.Gap.Data.Test
 		// public void MyTestCleanup() { }
 		//
 		#endregion
-
 
 		/// <summary>
 		/// Uit te voeren voor de 1ste test:

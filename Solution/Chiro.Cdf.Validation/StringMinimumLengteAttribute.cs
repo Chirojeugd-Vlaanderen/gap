@@ -21,11 +21,11 @@ namespace System.ComponentModel.DataAnnotations
 		}
 
 		// Methods
+
+// ReSharper disable ConvertToLambdaExpression
 		public StringMinimumLengteAttribute(int minimumLength)
-			: base(delegate
-			{
-				return Properties.Resources.StringMinimumLengthAttribute_ErrorMessage;
-			})
+            : base(delegate { return Properties.Resources.StringMinimumLengthAttribute_ErrorMessage; })
+// ReSharper restore ConvertToLambdaExpression
 		{
 			if (minimumLength < 0)
 			{

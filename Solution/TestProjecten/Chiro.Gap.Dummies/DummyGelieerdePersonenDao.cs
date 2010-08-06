@@ -60,12 +60,12 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam, params System.Linq.Expressions.Expression<Func<GelieerdePersoon, object>>[] paths)
+		public IList<GelieerdePersoon> ZoekenOpNaamOngeveer(int groepID, string naam, string voornaam, params Expression<Func<GelieerdePersoon, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IList<GelieerdePersoon> AllenOphalen(int GroepID, PersoonSorteringsEnum sortering, params System.Linq.Expressions.Expression<Func<GelieerdePersoon, object>>[] paths)
+		public IList<GelieerdePersoon> AllenOphalen(int GroepID, PersoonSorteringsEnum sortering, params Expression<Func<GelieerdePersoon, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}
@@ -75,7 +75,7 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, bool metHuidigLidInfo, out int aantalTotaal, params System.Linq.Expressions.Expression<Func<GelieerdePersoon, object>>[] paths)
+		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, bool metHuidigLidInfo, out int aantalTotaal, params Expression<Func<GelieerdePersoon, object>>[] paths)
 		{
 			throw new NotImplementedException();
 		}

@@ -32,7 +32,7 @@ namespace Chiro.Gap.Data.Ef
 				result = (
 					from g in db.Groep.OfType<ChiroGroep>()
 					where g.ID == id
-					select g).FirstOrDefault<ChiroGroep>();
+					select g).FirstOrDefault();
 
 				db.Detach(result);
 			}
@@ -53,7 +53,7 @@ namespace Chiro.Gap.Data.Ef
 
 				result = (
 					from g in db.Groep.OfType<ChiroGroep>()
-					select g).ToList<ChiroGroep>();
+					select g).ToList();
 			}
 			return result;
 		}

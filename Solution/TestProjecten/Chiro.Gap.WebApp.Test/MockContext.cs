@@ -1,9 +1,7 @@
 ﻿// Met dank aan "Pro ASP.NET MVC Framework", het Apress-handboek van Steven Sanderson
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using Moq;
 using System.Web;
 using System.Web.Routing;

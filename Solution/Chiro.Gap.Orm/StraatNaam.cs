@@ -21,7 +21,7 @@ namespace Chiro.Gap.Orm
 	public partial class StraatNaam : IEfBasisEntiteit
 	{
 		#region IBasisEntiteit Members
-		private bool _teVerwijderen = false;
+		private bool _teVerwijderen;
 
 		/// <summary>
 		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren

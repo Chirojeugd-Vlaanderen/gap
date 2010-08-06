@@ -25,7 +25,7 @@ namespace Chiro.Adf.ServiceModel
 		/// </example>
 		public T CallService<I, T>(Func<I, T> operation) where I : class
 		{
-			return StaticServiceHelper.CallService<I, T>(operation);
+			return StaticServiceHelper.CallService(operation);
 		}
 
 		/// <summary>
@@ -39,7 +39,7 @@ namespace Chiro.Adf.ServiceModel
 		/// </example>
 		public void CallService<I>(Action<I> operation) where I : class
 		{
-			StaticServiceHelper.CallService<I>(operation);
+			StaticServiceHelper.CallService(operation);
 		}
 
 		#endregion

@@ -167,7 +167,7 @@ namespace Chiro.Gap.Dummies
 		{
 			var testData = new DummyData();
 
-			GelieerdePersoon gp = new GelieerdePersoon();
+			var gp = new GelieerdePersoon();
 			gp.Persoon = new Persoon();
 
 			gp.ID = testData.GelieerdeJos.ID;

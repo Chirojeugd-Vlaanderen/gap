@@ -107,10 +107,10 @@
     <XML>
       <FormatSettings />
     </XML>
-    <FileHeader><![CDATA[// <copyright company="Chirojeugd-Vlaanderen vzw">
-// Copyright (c) 2007-2010
-// Mail naar informatica@chiro.be voor alle info over deze broncode
-// </copyright>
+    <FileHeader><![CDATA[<copyright company="Chirojeugd-Vlaanderen vzw">
+Copyright (c) 2007-2010
+Mail naar informatica@chiro.be voor alle info over deze broncode
+</copyright>
 ]]></FileHeader>
     <GenerateMemberBody />
     <Naming2>
@@ -121,7 +121,9 @@
         <ExtraRule Prefix="" Suffix="_Validatie" Style="AaBb" />
       </PredefinedRule>
       <PredefinedRule Inspect="True" Prefix="I" Suffix="" Style="AaBb" ElementKind="Interfaces" />
-      <PredefinedRule Inspect="True" Prefix="T" Suffix="" Style="AaBb" ElementKind="TypeParameters" />
+      <PredefinedRule Inspect="False" Prefix="T" Suffix="" Style="AaBb" ElementKind="TypeParameters">
+        <ExtraRule Prefix="I" Suffix="" Style="AaBb" />
+      </PredefinedRule>
       <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="MethodPropertyEvent" />
       <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="Locals" />
       <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AA_BB" ElementKind="LocalConstants" />
@@ -138,4 +140,12 @@
       <Abbreviation Text="DI" />
     </Naming2>
   </CodeStyleSettings>
+  <Daemon.SolutionSettings>
+    <SkipFilesAndFolders>
+      <Item>61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01</Item>
+      <Item>95AAE40F-B33D-4266-B134-F98FF7E115A7</Item>
+      <Item>AC33A7F9-7FFA-4AC2-9362-3409BE1C4BB3</Item>
+      <Item>FF5B16C6-BC4B-4150-A266-7A6EE1BD914F</Item>
+    </SkipFilesAndFolders>
+  </Daemon.SolutionSettings>
 </Configuration>

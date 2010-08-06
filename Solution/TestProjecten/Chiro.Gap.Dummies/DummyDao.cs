@@ -39,7 +39,7 @@ namespace Chiro.Gap.Dummies
 
 		public T Bewaren(T entiteit)
 		{
-			return Bewaren(entiteit, getConnectedEntities());
+			return Bewaren(entiteit, GetConnectedEntities());
 		}
 
 		public T Bewaren(T entiteit, params Expression<Func<T, object>>[] paths)
@@ -136,7 +136,7 @@ namespace Chiro.Gap.Dummies
 						// Als een entiteit te verwijderen kan zijn, moet de collectie
 						// maar een method 'Remove' hebben.
 
-						((object)related).PublicInvokeMethod("Remove", be);
+						related.PublicInvokeMethod("Remove", be);
 					}
 				}
 				else if (!typeof(IEnumerable).IsAssignableFrom(property.PropertyInfo.PropertyType))
@@ -174,7 +174,7 @@ namespace Chiro.Gap.Dummies
 		/// (Ik ben precies nog altijd zo geen voorstander voor diie 'connected entities').
 		/// </summary>
 		/// <returns>Een lege array van connected entitiesa</returns>
-		public Expression<Func<T, object>>[] getConnectedEntities()
+		public Expression<Func<T, object>>[] GetConnectedEntities()
 		{
 			return new Expression<Func<T, object>>[0];
 		}

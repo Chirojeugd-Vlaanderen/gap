@@ -7,7 +7,6 @@ using System.Data.Objects;
 using System.Linq;
 
 using Chiro.Cdf.Data.Entity;
-
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 
@@ -30,7 +29,6 @@ namespace Chiro.Gap.Data.Ef
 		public Groep OphalenMetAfdelingen(int groepsWerkJaarID)
 		{
 			GroepsWerkJaar groepswj;
-			Groep result;
 
 			using (var db = new ChiroGroepEntities())
 			{
@@ -53,38 +51,32 @@ namespace Chiro.Gap.Data.Ef
 				// Ik selecteer dus de groep apart, en koppel daarna alle gevonden
 				// afdelingen.
 
-				result = (
-					from gwj in db.GroepsWerkJaar
-					where gwj.ID == groepsWerkJaarID
-					select gwj.Groep).FirstOrDefault();
+				// Een beetje prutsen om het originele groepswerkjaar aan de groep te koppelen.
+				// TODO: Kan dit niet in 1 keer? => Poging gedaan, nog uitgebreider te controleren
+				// Dit is een kortere versie van wat er eerst stond, maar het derde statement maakt duidelijk dat het inderdaad gepruts is :)
 
-				// Een beetje prutsen om het originele groepswerkjaar
-				// aan de groep te koppelen.
-				// TODO: Kan dit niet in 1 keer?
+				groepswj = (from gwj in db.GroepsWerkJaar
+							where gwj.ID == groepsWerkJaarID
+							select gwj).FirstOrDefault();
 
-				groepswj = (
-					from gwj in db.GroepsWerkJaar
-					where gwj.ID == groepsWerkJaarID
-					select gwj).FirstOrDefault();
+				groepswj.Groep = (from gwj in db.GroepsWerkJaar
+								  where gwj.ID == groepsWerkJaarID
+								  select gwj.Groep).FirstOrDefault();
 
-				groepswj.Groep = result;
-				result.GroepsWerkJaar.Add(groepswj);
+				groepswj.Groep.GroepsWerkJaar.Add(groepswj);
 
-				if (result != null) // OPM: Als (result == null) krijg je al een error op de vorige regel. ReSharper vindt ook dat die voorwaarde altijd true is.
+				// Koppel gevonden afdelingsjaren aan groep en aan groepswerkjaar
+				foreach (AfdelingsJaar aj in ajQuery)
 				{
-					// Koppel gevonden afdelingsjaren aan groep en aan groepswerkjaar
+					aj.Afdeling.Groep = groepswj.Groep;
+					groepswj.Groep.Afdeling.Add(aj.Afdeling);
 
-					foreach (AfdelingsJaar aj in ajQuery)
-					{
-						aj.Afdeling.Groep = result;
-						result.Afdeling.Add(aj.Afdeling);
-
-						aj.GroepsWerkJaar = result.GroepsWerkJaar.First();
-						result.GroepsWerkJaar.First().AfdelingsJaar.Add(aj);
-					}
+					aj.GroepsWerkJaar = groepswj.Groep.GroepsWerkJaar.First();
+					groepswj.Groep.GroepsWerkJaar.First().AfdelingsJaar.Add(aj);
 				}
 			}
-			return result;
+
+			return groepswj.Groep;
 		}
 
 		/// <summary>
@@ -118,8 +110,8 @@ namespace Chiro.Gap.Data.Ef
 				db.Groep.MergeOption = MergeOption.NoTracking;
 
 				return (from g in db.Groep
-				        where g.Code == code
-				        select g).FirstOrDefault();
+						where g.Code == code
+						select g).FirstOrDefault();
 			}
 		}
 	}

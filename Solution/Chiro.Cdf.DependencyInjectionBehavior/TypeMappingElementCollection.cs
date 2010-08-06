@@ -10,11 +10,6 @@ namespace Chiro.Cdf.DependencyInjection
 {
 	public class TypeMappingElementCollection : ConfigurationElementCollection
 	{
-		public TypeMappingElementCollection()
-			: base()
-		{
-		}
-
 		protected override ConfigurationElement CreateNewElement()
 		{
 			return new TypeMappingElement();
@@ -41,11 +36,11 @@ namespace Chiro.Cdf.DependencyInjection
 			}
 		}
 
-		new public TypeMappingElement this[string Name]
+		new public TypeMappingElement this[string name]
 		{
 			get
 			{
-				return (TypeMappingElement)BaseGet(Name);
+				return (TypeMappingElement)BaseGet(name);
 			}
 		}
 

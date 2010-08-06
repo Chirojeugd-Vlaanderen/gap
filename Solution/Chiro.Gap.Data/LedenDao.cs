@@ -11,9 +11,9 @@ using System.Linq.Expressions;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Data.Ef
 {
@@ -27,11 +27,11 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		public LedenDao()
 		{
-			connectedEntities = new Expression<Func<Lid, object>>[] 
-            { 
+			ConnectedEntities = new Expression<Func<Lid, object>>[] 
+			{ 
 				e => e.GroepsWerkJaar.WithoutUpdate(), 
 				e => e.GelieerdePersoon.Persoon.WithoutUpdate()
-            };
+			};
 		}
 
 		/// <summary>
@@ -42,7 +42,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>Lidobject indien gevonden, anders null</returns>
 		public Lid Ophalen(int gelieerdePersoonID, int groepsWerkJaarID)
 		{
-			return Ophalen(gelieerdePersoonID, groepsWerkJaarID, getConnectedEntities());
+			return Ophalen(gelieerdePersoonID, groepsWerkJaarID, GetConnectedEntities());
 		}
 
 		/// <summary>

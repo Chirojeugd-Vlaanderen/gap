@@ -3,10 +3,8 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Chiro.Cdf.Data
 {
@@ -32,9 +30,9 @@ namespace Chiro.Cdf.Data
 		/// <param name="item"></param>
 		public TreeNode(TreeNode<T> parent, T item)
 		{
-			this.Parent = parent;
-			this.Item = item;
-			this.Children = new HashSet<TreeNode<T>>();
+			Parent = parent;
+			Item = item;
+			Children = new HashSet<TreeNode<T>>();
 		}
 
 		/// <summary>
@@ -71,7 +69,8 @@ namespace Chiro.Cdf.Data
 				// Look for a matching node in the children of the parent node:
 				if (!extendingTree)
 				{
-					itemNode = node.Children.Where(p => p.Item.Equals(item)).FirstOrDefault();
+					T item1 = item;
+					itemNode = node.Children.Where(p => p.Item.Equals(item1)).FirstOrDefault();
 				}
 
 				// Extend the tree with a new node if none found:

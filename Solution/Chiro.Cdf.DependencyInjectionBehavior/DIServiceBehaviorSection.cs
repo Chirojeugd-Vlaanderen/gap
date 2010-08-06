@@ -4,9 +4,9 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.ServiceModel.Configuration;
 using System.Configuration;
+using System.Linq;
+using System.ServiceModel.Configuration;
 
 namespace Chiro.Cdf.DependencyInjection
 {
@@ -15,11 +15,6 @@ namespace Chiro.Cdf.DependencyInjection
 	/// </summary>
 	public class DIServiceBehaviorSection : BehaviorExtensionElement
 	{
-		public DIServiceBehaviorSection()
-			: base()
-		{
-		}
-
 		[ConfigurationProperty("typeMappings")]
 		public TypeMappingElementCollection TypeMappings
 		{
@@ -36,12 +31,8 @@ namespace Chiro.Cdf.DependencyInjection
 
 		protected override object CreateBehavior()
 		{
-			List<TypeMapping> typeMappings = new List<TypeMapping>();
-			foreach (TypeMappingElement typeMappingElement in this.TypeMappings)
-			{
-				TypeMapping typeMapping = new TypeMapping(typeMappingElement.TypeRequested, typeMappingElement.TypeToBuild);
-				typeMappings.Add(typeMapping);
-			}
+			var typeMappings = (from TypeMappingElement typeMappingElement in TypeMappings
+			                    select new TypeMapping(typeMappingElement.TypeRequested, typeMappingElement.TypeToBuild)).ToList();
 
 			return new DIServiceBehavior(typeMappings);
 		}

@@ -19,7 +19,7 @@ namespace System.Web.Mvc
 		/// <returns>A list of required-value client validation rules.</returns>
 		public override IEnumerable<ModelClientValidationRule> GetClientValidationRules()
 		{
-			return new ModelClientValidationStringLengthRule[] { new ModelClientValidationStringLengthRule(base.ErrorMessage, 0, base.Attribute.MaximumLength) };
+			return new[] { new ModelClientValidationStringLengthRule(ErrorMessage, 0, Attribute.MaximumLength) };
 		}
 	}
 
@@ -39,7 +39,7 @@ namespace System.Web.Mvc
 		/// <returns>A list of required-value client validation rules.</returns>
 		public override IEnumerable<ModelClientValidationRule> GetClientValidationRules()
 		{
-			return new ModelClientValidationStringLengthRule[] { new ModelClientValidationStringLengthRule(base.ErrorMessage, base.Attribute.MinimumLength, int.MaxValue) };
+			return new[] { new ModelClientValidationStringLengthRule(ErrorMessage, Attribute.MinimumLength, int.MaxValue) };
 		}
 	}
 }

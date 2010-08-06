@@ -20,7 +20,6 @@ namespace Chiro.Gap.Workers.Test
             //
         }
 
-
         [ClassInitialize]
         static public void InitialiseerTests(TestContext tc)
         {

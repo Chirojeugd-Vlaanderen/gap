@@ -63,7 +63,7 @@ namespace Chiro.Gap.WebApp.Test
 			var serviceHelperMock = new Mock<IServiceHelper>();
 
 			// Verwacht dat de groepenservice aangeroepen wordt.
-			serviceHelperMock.Setup(hlpr => hlpr.CallService<IGroepenService>(It.IsAny<Action<IGroepenService>>()));
+			serviceHelperMock.Setup(hlpr => hlpr.CallService(It.IsAny<Action<IGroepenService>>()));
 
 			// Met onze servicehelperconstructie kan ik het mockobject blijkbaar niet laten controleren
 			// welke service method precies aangeroepen wordt :-(

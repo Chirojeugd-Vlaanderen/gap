@@ -16,9 +16,9 @@ namespace Chiro.Cdf.Data.Entity
 	[AttributeUsage(AttributeTargets.Class)]
 	public sealed class OptimisticConcurrencyAttribute : Attribute
 	{
-		private string propertyName;
-		private Type concurrencyResolverType;
-		private object concurrencyResolver;
+		private string _propertyName;
+		private Type _concurrencyResolverType;
+		private readonly object _concurrencyResolver;
 
 		/// <summary>
 		/// Declares the optimistic concurrency attribute and its resolvertype.
@@ -27,9 +27,9 @@ namespace Chiro.Cdf.Data.Entity
 		/// <param name="concurrencyResolverType"></param>
 		public OptimisticConcurrencyAttribute(string propertyName, Type concurrencyResolverType)
 		{
-			this.propertyName = propertyName;
-			this.concurrencyResolverType = concurrencyResolverType;
-			this.concurrencyResolver = Activator.CreateInstance(concurrencyResolverType);
+			_propertyName = propertyName;
+			_concurrencyResolverType = concurrencyResolverType;
+			_concurrencyResolver = Activator.CreateInstance(concurrencyResolverType);
 		}
 
 		/// <summary>
@@ -37,8 +37,8 @@ namespace Chiro.Cdf.Data.Entity
 		/// </summary>
 		public string PropertyName
 		{
-			get { return this.propertyName; }
-			set { this.propertyName = value; }
+			get { return _propertyName; }
+			set { _propertyName = value; }
 		}
 
 		/// <summary>
@@ -46,8 +46,8 @@ namespace Chiro.Cdf.Data.Entity
 		/// </summary>
 		public Type ConcurrencyResolverType
 		{
-			get { return this.concurrencyResolverType; }
-			set { this.concurrencyResolverType = value; }
+			get { return _concurrencyResolverType; }
+			set { _concurrencyResolverType = value; }
 		}
 
 		/// <summary>
@@ -58,7 +58,7 @@ namespace Chiro.Cdf.Data.Entity
 		/// <returns></returns>
 		public bool HasPropertyChanged(ObjectContext context, object instance)
 		{
-			return context.ObjectStateManager.GetObjectStateEntry(instance).GetModifiedProperties().Contains(this.propertyName);
+			return context.ObjectStateManager.GetObjectStateEntry(instance).GetModifiedProperties().Contains(_propertyName);
 		}
 
 		/// <summary>
@@ -68,16 +68,16 @@ namespace Chiro.Cdf.Data.Entity
 		public void UpdateInstance(object instance)
 		{
 			// Retrieve the property instance:
-			PropertyInfo property = instance.GetType().GetProperty(this.propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+			PropertyInfo property = instance.GetType().GetProperty(_propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 			if (property == null)
 			{
-				throw new ArgumentException(String.Format("ConcurrencyAttribute's PropertyName \"{0}\" not found.", this.propertyName));
+				throw new ArgumentException(String.Format("ConcurrencyAttribute's PropertyName \"{0}\" not found.", _propertyName));
 			}
 
 			// Invoke the NextValue method on the concurrency resolver, given the actual property value:
 			object actualValue = property.GetValue(instance, null);
 			Type iftype = typeof(IConcurrencyResolver<>).MakeGenericType(property.PropertyType);
-			object nextValue = this.concurrencyResolverType.GetInterfaceMap(iftype).TargetMethods[0].Invoke(this.concurrencyResolver, new object[1] { actualValue });
+			object nextValue = _concurrencyResolverType.GetInterfaceMap(iftype).TargetMethods[0].Invoke(_concurrencyResolver, new object[1] { actualValue });
 
 			// Assign NextValue:
 			property.SetValue(instance, nextValue, null);

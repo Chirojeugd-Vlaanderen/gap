@@ -1,5 +1,5 @@
-﻿using System.Configuration;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Configuration;
 
 namespace Chiro.Adf.Configuration
 {
@@ -8,7 +8,7 @@ namespace Chiro.Adf.Configuration
 	/// </summary>
 	public class ServiceProviderConfigurationElement : ConfigurationElement
 	{
-		private readonly IDictionary<string, string> constructorParameters = new Dictionary<string, string>();
+		private readonly IDictionary<string, string> _constructorParameters = new Dictionary<string, string>();
 
 		/// <summary>
 		/// Gets the logical configuration name of the service provider.
@@ -35,7 +35,7 @@ namespace Chiro.Adf.Configuration
 		/// </summary>
 		public IDictionary<string, string> ConstructorParameters
 		{
-			get { return constructorParameters; }
+			get { return _constructorParameters; }
 		}
 
 		///<summary>
@@ -50,7 +50,7 @@ namespace Chiro.Adf.Configuration
 		///<param name="value">The value of the unrecognized attribute.</param>
 		protected override bool OnDeserializeUnrecognizedAttribute(string name, string value)
 		{
-			constructorParameters.Add(name, value);
+			_constructorParameters.Add(name, value);
 			return true;
 		}
 
