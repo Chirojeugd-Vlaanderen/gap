@@ -8,29 +8,30 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
 {
 	/// <summary>
-	/// TODO: documenteren
+	/// TODO (#190): Documenteren
 	/// </summary>
 	public static class GroepsWerkJaarHelper
 	{
 		/// <summary>
-		/// TODO: documenteren
+		/// TODO (#190): Documenteren
 		/// </summary>
 		/// <param name="gwj">Het groepswerkjaar waarvoor we het einde van de jaarovergang willen berekenen</param>
 		/// <returns>De datum waarom de jaarovergang eindigt</returns>
 		public static DateTime GetEindeJaarovergang(this GroepsWerkJaar gwj)
 		{
 			// TODO is werkjaar altijd het JAAR waarin het werkjaar begint??? => antwoord: ja
-			return new DateTime(gwj.WerkJaar, 10, 15); // TODO: 15 oktober mag niet hardgecodeerd zijn, dat hoort thuis in de settings - zie #610
+			return new DateTime(gwj.WerkJaar, 10, 15); // TODO (#610): 15 oktober mag niet hardgecodeerd zijn, dat hoort thuis in de settings
 		}
 	}
 
@@ -56,7 +57,7 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Maakt een gelieerde persoom <paramref name="gp"/> lid in groepswerkjaar <paramref name="gwj"/>,
+		/// Maakt een gelieerde persoon <paramref name="gp"/> lid in groepswerkjaar <paramref name="gwj"/>,
 		/// met lidtype <paramref name="type"/>
 		/// </summary>
 		/// <param name="gp">Lid te maken gelieerde persoon</param>
@@ -150,7 +151,7 @@ namespace Chiro.Gap.Workers
 		/// <para />
 		/// Dit komt neer op 
 		///		Automatisch een afdeling voor het kind bepalen. Een exception als dit niet mogelijk is.
-		///		De probeerperiode zetten op binnen 3 weken als het een nieuw lid is, maar op 15 oktober als de persoon vorig jaar al lid was.
+		///		De probeerperiode zetten op binnen 3 weken als het een nieuw lid is, en op 15 oktober als de persoon vorig jaar al lid was.
 		/// </summary>
 		/// <param name="gp">Gelieerde persoon, gekoppeld aan groep</param>
 		/// <param name="gwj">Groepswerkjaar waarin lid te maken</param>
@@ -160,7 +161,7 @@ namespace Chiro.Gap.Workers
 		/// <para/>
 		/// Voorlopig gaan we ervan uit dat aan een gelieerde persoon al zijn vorige lidobjecten met
 		/// groepswerkjaren gekoppeld zijn.  Dit wordt gebruikt in LidMaken
-		///  om na te kijken of een gelieerde persoon al eerder
+		/// om na te kijken of een gelieerde persoon al eerder
 		/// lid was.  Dit lijkt me echter niet nodig; zie de commentaar aldaar.
 		/// </remarks>
 		/// <throws>FoutNummerException</throws>
@@ -178,8 +179,11 @@ namespace Chiro.Gap.Workers
 			}
 
 			// Afdeling automatisch bepalen
-			// Bepaal het geboortejaar, aangepast volgens de chiroleeftijd.
+			// Bepaal het geboortejaar, aangepast volgens de Chiroleeftijd.
+// ReSharper disable PossibleInvalidOperationException
+			// Controle of geboortedatum null is, gebeurde al in LidMaken
 			var geboortejaar = gp.Persoon.GeboorteDatum.Value.Year - gp.ChiroLeefTijd;
+// ReSharper restore PossibleInvalidOperationException
 
 			// Relevante afdelingsjaren opzoeken
 			var afdelingsjaren =
@@ -203,7 +207,10 @@ namespace Chiro.Gap.Workers
 				aj = afdelingsjaren.First();
 			}
 
+// ReSharper disable PossibleNullReferenceException
+			// Elk scenario waarbij k null is, leidt tot een exception, maar dat gebeurt deels in LidMaken, dus ziet ReSharper dat niet
 			k.AfdelingsJaar = aj;
+// ReSharper restore PossibleNullReferenceException
 			aj.Kind.Add(k);
 
 			return k;
@@ -235,25 +242,34 @@ namespace Chiro.Gap.Workers
 
 		public Lid AutomatischLidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
 		{
-			if(gp.Persoon.GeboorteDatum==null)
+			if (gp.Persoon.GeboorteDatum == null)
 			{
-				throw new OngeldigObjectException("Persoon moet een geboortedatum hebben om lid te worden");
+				throw new OngeldigObjectException("De geboortedatum moet ingevuld zijn voor je iemand lid kunt maken.");
 			}
 
-			// Bepaal of het een kind of leiding wordt
-			var afdeling =
-				(from a in gwj.AfdelingsJaar where 
-					 (gp.Persoon.GeboorteDatum.Value.Year - gp.ChiroLeefTijd <= a.GeboorteJaarTot 
-					  && a.GeboorteJaarVan <= gp.Persoon.GeboorteDatum.Value.Year)
-				 select a).FirstOrDefault();
+			// Bepaal of het een kind of leiding wordt. 
 
-			if(afdeling!=null)
+			// Stop de geboortedatum in een lokale variabele voor gebruik in Linq-statement. 
+			// (zie [wiki:VeelVoorkomendeWaarschuwingen#PossibleInvalidOperationinLinq-statement])
+			var gebdat = gp.Persoon.GeboorteDatum;
+			var afdeling = (from a in gwj.AfdelingsJaar
+							where
+								(gebdat.Value.Year - gp.ChiroLeefTijd <= a.GeboorteJaarTot
+								&& a.GeboorteJaarVan <= gebdat.Value.Year)
+							select a).FirstOrDefault();
+
+			if (afdeling != null)
 			{
 				return KindMaken(gp, gwj);
-			}else if(gp.Persoon.GeboorteDatum.Value.Year - gp.ChiroLeefTijd > 15) //TODO leeftijden niet hard coderen!
+			}
+			else if (gp.Persoon.GeboorteDatum.Value.Year - gp.ChiroLeefTijd > Properties.Settings.Default.MinLeidingLeefTijd)
 			{
-				return LeidingMaken(gp, gwj);	
-			}else
+				// OPM: nu wordt hier arbitrair bepaald vanaf welke leeftijd iemand als leiding ingeschreven wordt.
+				// Dat moet eigenlijk afhangen van de afdelinsgverdeling: je moet minstens een jaar ouder zijn dan de oudste aspi's.
+				// TODO (#657): als er afdelingen zijn, moeten die bepalen of iemand kind of leiding wordt
+				return LeidingMaken(gp, gwj);
+			}
+			else
 			{
 				throw new OngeldigObjectException("Kan persoon geen leiding maken");
 			}
@@ -406,6 +422,7 @@ namespace Chiro.Gap.Workers
 		/// Persisteert een lid met de gekoppelde entiteiten bepaald door <paramref name="extras"/>.
 		/// </summary>
 		/// <param name="lid">Het <paramref name="lid"/> dat bewaard moet worden</param>
+		/// <param name="extras">De gekoppelde entiteiten</param>
 		/// <returns>Een kloon van het lid en de extra's, met eventuele nieuwe ID's ingevuld</returns>
 		public Lid LidBewaren(Lid lid, LidExtras extras)
 		{
@@ -429,7 +446,7 @@ namespace Chiro.Gap.Workers
 			{
 				try
 				{
-					
+
 					return _daos.LeidingDao.Bewaren((Leiding)lid, ExtrasNaarLambdasLeiding(extras));
 				}
 				catch (Exception)
@@ -520,7 +537,7 @@ namespace Chiro.Gap.Workers
 			}
 
 			return _daos.LedenDao.OphalenViaPersoon(
-				gelieerdePersoonID, 
+				gelieerdePersoonID,
 				groepsWerkJaarID);
 		}
 
@@ -585,10 +602,13 @@ namespace Chiro.Gap.Workers
 			}
 			else if (l is Leiding)
 			{
+// ReSharper disable LoopCanBeConvertedToQuery
+				// Als ReShaper hier een Linq-query van maakt, staat er result.AddRange, en dat wordt niet herkend
 				foreach (AfdelingsJaar aj in (l as Leiding).AfdelingsJaar)
 				{
 					result.Add(aj.Afdeling.ID);
 				}
+// ReSharper restore LoopCanBeConvertedToQuery
 			}
 			else
 			{

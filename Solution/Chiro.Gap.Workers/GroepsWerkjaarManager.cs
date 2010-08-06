@@ -5,11 +5,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 
-using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers.Exceptions;
@@ -99,7 +97,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				// TODO: cachen, want dit gaan we veel nodig hebben (Zie #251)
+				// TODO (#251): cachen, want dit gaan we veel nodig hebben
 				return _groepsWjDao.RecentsteOphalen(groepID, ExtrasNaarLambdas(extras));
 			}
 			else
@@ -118,7 +116,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				// TODO: cachen, want dit gaan we veel nodig hebben (Zie #251)
+				// TODO (#251): cachen, want dit gaan we veel nodig hebben
 				return _groepsWjDao.RecentsteOphalen(groepID).ID;
 			}
 			else
@@ -183,7 +181,6 @@ namespace Chiro.Gap.Workers
 		/// Persisteert WEL
 		/// </summary>
 		/// <param name="g">De groep waarvoor een groepswerkjaar aangemaakt moet worden</param>
-		/// <param name="werkjaar">Het werkjaar waar het over gaat</param>
 		/// <returns>Het nieuwe groepswerkjaar</returns>
 		/// <throws>OngeldigObjectException</throws>
 		public GroepsWerkJaar OvergangDoen(Groep g)

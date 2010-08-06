@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-using Chiro.Cdf.Ioc;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -83,7 +82,7 @@ namespace Chiro.Gap.Workers
 		/// zal hij of zij ook niet verhuizen</remarks>
 		public void Verhuizen(Persoon verhuizer, Adres oudAdres, Adres nieuwAdres, AdresTypeEnum adresType)
 		{
-			Verhuizen(new Persoon[] { verhuizer }, oudAdres, nieuwAdres, adresType);
+			Verhuizen(new[] { verhuizer }, oudAdres, nieuwAdres, adresType);
 		}
 
 		/// <summary>

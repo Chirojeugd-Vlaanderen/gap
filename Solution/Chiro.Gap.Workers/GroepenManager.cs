@@ -139,7 +139,7 @@ namespace Chiro.Gap.Workers
 
 			if (bestaand.FirstOrDefault() != null)
 			{
-				// TODO: Check op bestaande afdeling door DB.  Zie #507
+				// TODO (#507): Check op bestaande afdeling door DB
 				throw new BestaatAlException<Afdeling>(bestaand.FirstOrDefault());
 			}
 
@@ -303,7 +303,7 @@ namespace Chiro.Gap.Workers
 
 				if (bestaande != null)
 				{
-					// TODO: Check op bestaande afdeling door DB.  Zie #507
+					// TODO (#507): Check op bestaande afdeling door DB
 					throw new BestaatAlException<Categorie>(bestaande);
 				}
 				else
@@ -360,7 +360,7 @@ namespace Chiro.Gap.Workers
 				}
 				else if (bestaande != null)
 				{
-					// TODO: Check op bestaande afdeling door DB.  Zie #507
+					// TODO (#507): Check op bestaande afdeling door DB
 					throw new BestaatAlException<Functie>(bestaande);
 				}
 

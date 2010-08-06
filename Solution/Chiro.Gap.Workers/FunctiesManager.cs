@@ -83,7 +83,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>De opgehaalde functie met de gekoppelde groep</returns>
 		public Functie Ophalen(int functieID)
 		{
-			return Ophalen(new int[] { functieID }).FirstOrDefault();
+			return Ophalen(new[] { functieID }).FirstOrDefault();
 		}
 
 		/// <summary>
@@ -148,7 +148,7 @@ namespace Chiro.Gap.Workers
 			{
 				GroepsWerkJaar gwj = _groepsWjDao.Ophalen(groepsWerkJaarID, grwj => grwj.Groep.Functie);
 
-				// TODO: ook groepsgebonden functies ophalen (refs #103)
+				// TODO (#103): ook groepsgebonden functies ophalen
 				return (from f in gwj.Groep.Functie.Union(NationaalBepaaldeFunctiesOphalen())
 						where (f.WerkJaarVan == null || f.WerkJaarVan <= gwj.WerkJaar)
 							&& (f.WerkJaarTot == null || f.WerkJaarTot >= gwj.WerkJaar)
@@ -231,7 +231,9 @@ namespace Chiro.Gap.Workers
 
 			foreach (var f in functies)
 			{
-				if ((from fnc in lid.Functie where fnc.ID == f.ID select fnc).FirstOrDefault() == null)
+				// Lokale variabele om "Access to modified closure" te vermijden [wiki:VeelVoorkomendeWaarschuwingen#Accesstomodifiedclosure]
+				Functie f1 = f;
+				if ((from fnc in lid.Functie where fnc.ID == f1.ID select fnc).FirstOrDefault() == null)
 				{
 					lid.Functie.Add(f);
 				}

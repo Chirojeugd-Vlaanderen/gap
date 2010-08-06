@@ -82,7 +82,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				return _dao.BewonersOphalen(adresID, new int[] { groepID }, alleGelieerdePersonen);
+				return _dao.BewonersOphalen(adresID, new[] { groepID }, alleGelieerdePersonen);
 			}
 			else
 			{
@@ -296,7 +296,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>Gegevens van de gevonden straten</returns>
 		public IList<StraatNaam> StratenOphalen(String straatBegin, int postNr)
 		{
-			return StratenOphalen(straatBegin, new int[] { postNr });
+			return StratenOphalen(straatBegin, new[] { postNr });
 		}
 
 		/// <summary>

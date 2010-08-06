@@ -6,8 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+
 using Chiro.Cdf.Data;
-using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Workers.Exceptions
 {
@@ -58,7 +58,6 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// De standaardconstructor
 		/// </summary>
 		public BlokkerendeObjectenException()
-			: base()
 		{
 		}
 
@@ -149,7 +148,7 @@ namespace Chiro.Gap.Workers.Exceptions
 			string message)
 			: base(message)
 		{
-			_objecten = new TEntiteit[] { obj };
+			_objecten = new[] { obj };
 			_aantal = 1;
 		}
 

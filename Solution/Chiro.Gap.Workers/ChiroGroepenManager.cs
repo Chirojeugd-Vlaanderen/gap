@@ -13,7 +13,7 @@ namespace Chiro.Gap.Workers
 	/// </summary>
 	public class ChiroGroepenManager
 	{
-		private IDao<ChiroGroep> _dao = null;
+		private IDao<ChiroGroep> _dao;
 
 		/// <summary>
 		/// Creëert een ChiroGroepenManager

@@ -20,5 +20,8 @@
     <Setting Name="BeginOvergangsPeriode" Type="System.DateTime" Scope="Application">
       <Value Profile="(Default)">2000-08-01</Value>
     </Setting>
+    <Setting Name="MinLeidingLeefTijd" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">15</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

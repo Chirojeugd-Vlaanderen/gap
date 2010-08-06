@@ -5,8 +5,8 @@
 
 using System;
 using System.Runtime.Serialization;
+
 using Chiro.Cdf.Data;
-using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Workers.Exceptions
 {

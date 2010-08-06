@@ -3,14 +3,12 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
-using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.Workers.Exceptions;
 

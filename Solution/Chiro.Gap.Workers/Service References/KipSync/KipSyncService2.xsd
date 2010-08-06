@@ -1,137 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:8000/KipSyncService?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-  <xs:complexType name="Persoon">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="AdNr" nillable="true" type="xs:int" />
-      <xs:element minOccurs="0" name="Geboortedatum" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="Geslacht" type="tns:GeslachtsEnum" />
-      <xs:element minOccurs="0" name="Id" type="xs:int" />
-      <xs:element minOccurs="0" name="Naam" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Sterfdatum" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="Voornaam" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="Persoon" nillable="true" type="tns:Persoon" />
-  <xs:simpleType name="GeslachtsEnum">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Onbekend" />
-      <xs:enumeration value="Man" />
-      <xs:enumeration value="Vrouw" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="GeslachtsEnum" nillable="true" type="tns:GeslachtsEnum" />
-  <xs:complexType name="ArrayOfAdres">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Adres" nillable="true" type="tns:Adres" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfAdres" nillable="true" type="tns:ArrayOfAdres" />
-  <xs:complexType name="Adres">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="AdresType" type="tns:AdresTypeEnum" />
-      <xs:element minOccurs="0" name="Bus" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="HuisNr" nillable="true" type="xs:int" />
-      <xs:element minOccurs="0" name="Land" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Postcode" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Postnummer" type="xs:int" />
-      <xs:element minOccurs="0" name="Straat" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Woonplaats" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="Adres" nillable="true" type="tns:Adres" />
-  <xs:simpleType name="AdresTypeEnum">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="THUIS">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="KOT">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="WERK">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="ANDER">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="AdresTypeEnum" nillable="true" type="tns:AdresTypeEnum" />
-  <xs:complexType name="ArrayOfCommunicatiemiddel">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Communicatiemiddel" nillable="true" type="tns:Communicatiemiddel" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCommunicatiemiddel" nillable="true" type="tns:ArrayOfCommunicatiemiddel" />
-  <xs:complexType name="Communicatiemiddel">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="GeenMailings" type="xs:boolean" />
-      <xs:element minOccurs="0" name="Type" type="tns:CommunicatieType" />
-      <xs:element minOccurs="0" name="Waarde" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="Communicatiemiddel" nillable="true" type="tns:Communicatiemiddel" />
-  <xs:simpleType name="CommunicatieType">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Telefoon">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="Fax">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="Email">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="Website">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="Msn">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">5</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="Jabber">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">6</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="CommunicatieType" nillable="true" type="tns:CommunicatieType" />
+	<xs:import schemaLocation="http://localhost:8000/KipSyncService?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+	<xs:complexType name="Persoon">
+		<xs:sequence>
+			<xs:element minOccurs="0" name="AdNr" nillable="true" type="xs:int" />
+			<xs:element minOccurs="0" name="Geboortedatum" nillable="true" type="xs:dateTime" />
+			<xs:element minOccurs="0" name="Geslacht" type="tns:GeslachtsEnum" />
+			<xs:element minOccurs="0" name="Id" type="xs:int" />
+			<xs:element minOccurs="0" name="Naam" nillable="true" type="xs:string" />
+			<xs:element minOccurs="0" name="Sterfdatum" nillable="true" type="xs:dateTime" />
+			<xs:element minOccurs="0" name="Voornaam" nillable="true" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Persoon" nillable="true" type="tns:Persoon" />
+	<xs:simpleType name="GeslachtsEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Onbekend" />
+			<xs:enumeration value="Man" />
+			<xs:enumeration value="Vrouw" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="GeslachtsEnum" nillable="true" type="tns:GeslachtsEnum" />
+	<xs:complexType name="ArrayOfAdres">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="Adres" nillable="true" type="tns:Adres" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ArrayOfAdres" nillable="true" type="tns:ArrayOfAdres" />
+	<xs:complexType name="Adres">
+		<xs:sequence>
+			<xs:element minOccurs="0" name="AdresType" type="tns:AdresTypeEnum" />
+			<xs:element minOccurs="0" name="Bus" nillable="true" type="xs:string" />
+			<xs:element minOccurs="0" name="HuisNr" nillable="true" type="xs:int" />
+			<xs:element minOccurs="0" name="Land" nillable="true" type="xs:string" />
+			<xs:element minOccurs="0" name="Postcode" nillable="true" type="xs:string" />
+			<xs:element minOccurs="0" name="Postnummer" type="xs:int" />
+			<xs:element minOccurs="0" name="Straat" nillable="true" type="xs:string" />
+			<xs:element minOccurs="0" name="Woonplaats" nillable="true" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Adres" nillable="true" type="tns:Adres" />
+	<xs:simpleType name="AdresTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="THUIS">
+				<xs:annotation>
+					<xs:appinfo>
+						<EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KOT">
+				<xs:annotation>
+					<xs:appinfo>
+						<EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WERK">
+				<xs:annotation>
+					<xs:appinfo>
+						<EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ANDER">
+				<xs:annotation>
+					<xs:appinfo>
+						<EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="AdresTypeEnum" nillable="true" type="tns:AdresTypeEnum" />
+	<xs:complexType name="ArrayOfCommunicatiemiddel">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="Communicatiemiddel" nillable="true" type="tns:Communicatiemiddel" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ArrayOfCommunicatiemiddel" nillable="true" type="tns:ArrayOfCommunicatiemiddel" />
+	<xs:complexType name="Communicatiemiddel">
+		<xs:sequence>
+			<xs:element minOccurs="0" name="GeenMailings" type="xs:boolean" />
+			<xs:element minOccurs="0" name="Type" type="tns:CommunicatieType" />
+			<xs:element minOccurs="0" name="Waarde" nillable="true" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Communicatiemiddel" nillable="true" type="tns:Communicatiemiddel" />
+	<xs:simpleType name="CommunicatieType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Telefoon">
+				<xs:annotation>
+					<xs:appinfo>
+						<EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Fax">
+				<xs:annotation>
+					<xs:appinfo>
+						<EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Email">
+				<xs:annotation>
+					<xs:appinfo>
+						<EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Website">
+				<xs:annotation>
+					<xs:appinfo>
+						<EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Msn">
+				<xs:annotation>
+					<xs:appinfo>
+						<EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">5</EnumerationValue>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Jabber">
+				<xs:annotation>
+					<xs:appinfo>
+						<EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">6</EnumerationValue>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="CommunicatieType" nillable="true" type="tns:CommunicatieType" />
 </xs:schema>

@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers.Exceptions;
@@ -134,11 +133,10 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavCategorie(cat.ID))
 			{
-				// TODO: (bug ) Eigenlijk zou de lambda-expressie hieronder
+				// TODO (#116): (bug ) Eigenlijk zou de lambda-expressie hieronder
 				// cgrie => cgrie.GelieerdePersoon.First().WithoutUpdate()
 				// moeten zijn.  Maar met WithoutUpdate worden blijkbaar de
 				// TeVerwijderen categorieën genegeerd.
-				// Zie ticket #116.
 
 				return _dao.Bewaren(cat, cgrie => cgrie.GelieerdePersoon.First());
 			}

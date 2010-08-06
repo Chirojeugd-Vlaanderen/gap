@@ -13,7 +13,7 @@ namespace Chiro.Gap.Workers.KipSync
     // }
 
 	/// <summary>
-	/// TODO: documenteren
+	/// TODO (#190): Documenteren
 	/// </summary>
     public partial class SyncPersoonServiceClient
     {

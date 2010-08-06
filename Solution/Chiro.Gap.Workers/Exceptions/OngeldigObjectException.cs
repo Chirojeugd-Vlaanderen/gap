@@ -14,11 +14,13 @@ namespace Chiro.Gap.Workers.Exceptions
 	/// <summary>
 	/// Exception die toelaat om meerdere foutboodschappen over de members van een object mee te sturen.
 	/// </summary>
-	/// <remarks>TODO: Dit wordt blijkbaar enkel gebruikt voor adressen.  Is heel die constructie dan wel
-	/// nodig? Misschien is een AdresException wel even goed.</remarks>
+	/// <remarks></remarks>
 	[Serializable]
 	public class OngeldigObjectException : GapException
 	{
+		// TODO: Dit wordt blijkbaar enkel gebruikt voor adressen.  Is heel die constructie dan wel nodig?
+		// Misschien is een AdresException wel even goed.
+
 		private IDictionary<string, FoutBericht> _berichten = new Dictionary<string, FoutBericht>();
 
 		/// <summary>
@@ -29,7 +31,7 @@ namespace Chiro.Gap.Workers.Exceptions
 		{
 			get { return _berichten; }
 			set { _berichten = value; }
-		}		
+		}
 
 		#region standaardconstructors
 
@@ -62,7 +64,7 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// <param name="info">De serializatie-info</param>
 		/// <param name="context">De streamingcontext</param>
 		protected OngeldigObjectException(SerializationInfo info, StreamingContext context)
-			: base(info, context) 
+			: base(info, context)
 		{
 			if (info != null)
 			{

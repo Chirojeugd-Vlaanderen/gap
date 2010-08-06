@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Transactions;
+
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
@@ -162,15 +162,15 @@ namespace Chiro.Gap.Workers
 			{
 				// Hier mapping gebruiken om te vermijden dat het AD-nummer
 				// overschreven wordt, lijkt me wat overkill.  Ik vergelijk
-				// hiet nieuwe AD-nummer gewoon met het bestaande.
+				// het nieuwe AD-nummer gewoon met het bestaande.
 
 				// Er mag niet gepoterd worden met PersoonID en AdNummer
 
-				var origineel = _gelieerdePersonenDao.Ophalen(p.ID, gp=>gp.Persoon);
+				var origineel = _gelieerdePersonenDao.Ophalen(p.ID, gp => gp.Persoon);
 
 				if (origineel == null || origineel.Persoon.AdNummer == p.Persoon.AdNummer)
 				{
-					// TODO: De transacties aanschakelen, nu gaat dat niet omdat we de in een werkgroep zitten
+					// TODO (#511): De transacties aanschakelen, nu gaat dat niet omdat we de in een werkgroep zitten
 
 #if KIPDORP
 					using (var tx = new TransactionScope())
@@ -393,7 +393,7 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// TODO: documenteren
+		/// TODO (#190): Documenteren
 		/// </summary>
 		/// <param name="personenLijst"></param>
 		public void Bewaren(IList<GelieerdePersoon> personenLijst)
@@ -402,7 +402,7 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// TODO: documenteren
+		/// TODO (#190): Documenteren
 		/// </summary>
 		/// <param name="gelieerdePersoonID"></param>
 		/// <returns></returns>
@@ -580,9 +580,10 @@ namespace Chiro.Gap.Workers
 		/// <param name="adres">Toe te voegen adres</param>
 		/// <param name="adrestype">Het adrestype (thuis, kot, enz.)</param>
 		/// <param name="voorkeur">Indien true, wordt het nieuwe adres voorkeursadres van de gegeven gelieerde personen</param>
-		/// <remarks>TODO: Dit lijkt nog te hard op AdresToevoegen in PersonenManager.</remarks>
 		public void AdresToevoegen(IEnumerable<GelieerdePersoon> gelieerdePersonen, Adres adres, AdresTypeEnum adrestype, bool voorkeur)
 		{
+			// TODO: Dit lijkt nog te hard op AdresToevoegen in PersonenManager
+
 			var gpersIDs = (from p in gelieerdePersonen
 							select p.ID).ToList();
 			var mijngPersIDs = _autorisatieMgr.EnkelMijnGelieerdePersonen(gpersIDs);

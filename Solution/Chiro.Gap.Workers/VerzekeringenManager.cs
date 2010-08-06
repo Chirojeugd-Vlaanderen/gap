@@ -14,7 +14,7 @@ using Chiro.Gap.Workers.Exceptions;
 namespace Chiro.Gap.Workers
 {
 	/// <summary>
-	/// Manager voor alwat met verzekeringen te maken heeft.
+	/// Manager voor al wat met verzekeringen te maken heeft.
 	/// TODO: Dit was misschien beter een 'PersoonsVerzekeringenManager' geweest?
 	/// </summary>
 	public class VerzekeringenManager
@@ -99,7 +99,7 @@ namespace Chiro.Gap.Workers
 					Properties.Resources.OverlappendeVerzekering);
 			}
 
-			PersoonsVerzekering pv = new PersoonsVerzekering
+			var pv = new PersoonsVerzekering
 			                         	{
 			                         		Van = beginDatum,
 			                         		Tot = eindDatum,

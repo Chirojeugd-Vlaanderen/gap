@@ -318,7 +318,7 @@ namespace Chiro.Gap.Workers
 
 			if (l is Kind)
 			{
-				Kind kind = (Kind)l;
+				var kind = (Kind)l;
 				if (afdelingsJaren.Count() != 1)
 				{
 					throw new NotSupportedException("Slechts 1 afdeling per kind.");
@@ -342,7 +342,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				Leiding leiding = (Leiding)l;
+				var leiding = (Leiding)l;
 
 				// Verwijder ontbrekende afdelingen;
 				var teVerwijderenAfdelingen = from aj in leiding.AfdelingsJaar
