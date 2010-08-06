@@ -1,24 +1,18 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<GelieerdePersonenModel>" %>
+<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<GelieerdePersonenModel>" %>
 
-<%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
+<%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server" EnableViewState="False">
-
-	<script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript"></script>
-
-	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
-
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
-
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript"></script>
-
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript"></script>
-
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript"></script>
-
+	<script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript" />
+	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript" />
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript" />
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript" />
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript" />
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript" />
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server" EnableViewState="False">
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server"
+	EnableViewState="False">
 	<%=Html.ValidationSummary("Er zijn enkele opmerkingen:") %>
 	<% Html.EnableClientValidation(); // Deze instructie moet (enkel) voor de BeginForm komen %>
 	<% using (Html.BeginForm())
@@ -26,14 +20,30 @@
 	<%
 		if (Model.GelijkaardigePersonen != null && Model.GelijkaardigePersonen.Count() > 0)
 		{
-			// Toon gelijkaardige personen
+			if (Model.GelijkaardigePersonen.Count() == 1)
+			{
 	%>
 	<p class="validation-summary-errors">
-		Let op! Uw nieuwe persoon lijkt verdacht veel op (een) reeds bestaande perso(o)n(en).
-		Als u zeker bent dat u niemand dubbel toevoegt, klik dan opnieuw op &lsquo;Bewaren&rsquo;.
+		Pas op! Je nieuwe persoon lijkt verdacht veel op iemand die al gekend is in
+		de Chiroadministratie. Als je zeker bent dat je niemand dubbel toevoegt, klik
+		dan opnieuw op &lsquo;Bewaren&rsquo;.
 	</p>
+	<%
+		}
+			else
+			{
+	%>
+	<p class="validation-summary-errors">
+		Pas op! Je nieuwe persoon lijkt verdacht veel op personen die al gekend zijn
+		in de Chiroadministratie. Als je zeker bent dat je niemand dubbel toevoegt,
+		klik dan opnieuw op &lsquo;Bewaren&rsquo;.
+	</p>
+	<%
+		}
+	%>
 	<ul>
 		<% 
+			// Toon gelijkaardige personen
 			foreach (PersoonDetail pi in Model.GelijkaardigePersonen)
 			{
 		%>
@@ -56,7 +66,6 @@
 	</ul>
 	<fieldset>
 		<legend>Persoonlijke gegevens</legend>
-		<%=Html.HiddenFor(s => s.HuidigePersoon.AdNummer) %>
 		<p>
 			<%=Html.LabelFor(s => s.HuidigePersoon.VoorNaam) %>
 			<%=Html.EditorFor(s => s.HuidigePersoon.VoorNaam) %>
@@ -84,6 +93,7 @@
 			<%=Html.EditorFor(s => s.HuidigePersoon.ChiroLeefTijd)%>
 			<%=Html.ValidationMessageFor(s => s.HuidigePersoon.ChiroLeefTijd) %>
 		</p>
+		<%=Html.HiddenFor(s => s.HuidigePersoon.AdNummer) %>
 		<%=Html.HiddenFor(s => s.HuidigePersoon.GelieerdePersoonID)%>
 		<%=Html.HiddenFor(s => s.BroerzusID)%>
 		<%=Html.HiddenFor(s => s.HuidigePersoon.VersieString)%>

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Web;
+
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
@@ -21,7 +21,7 @@ namespace Chiro.Gap.WebApp
 	public partial class ExcelManip
 	{
 		/// <summary>
-		/// Genereer een Exceldocument op basis van een rij objecten van type <paramref name="T"/>.
+		/// Genereer een Exceldocument op basis van een rij objecten van type <typeparamref name="T"/>.
 		/// </summary>
 		/// <typeparam name="T">Type van de objecten</typeparam>
 		/// <param name="rows">Objecten die in een rij terecht moeten komen</param>
@@ -68,7 +68,7 @@ namespace Chiro.Gap.WebApp
 					{
 						if (inhoud.GetType() == typeof(int))
 						{
-							InsertNumber(spreadSheet, (double)(int)inhoud, colIndex, rowIndex);
+							InsertNumber(spreadSheet, (int)inhoud, colIndex, rowIndex);
 						}
 						else if (inhoud.GetType() == typeof(double))
 						{
@@ -104,6 +104,7 @@ namespace Chiro.Gap.WebApp
 
 			// Get the SharedStringTablePart. If it does not exist, create a new one.
 			SharedStringTablePart shareStringPart;
+// ReSharper disable ConvertIfStatementToConditionalTernaryExpression
 			if (spreadSheet.WorkbookPart.GetPartsOfType<SharedStringTablePart>().Count() > 0)
 			{
 				shareStringPart = spreadSheet.WorkbookPart.GetPartsOfType<SharedStringTablePart>().First();
@@ -112,6 +113,7 @@ namespace Chiro.Gap.WebApp
 			{
 				shareStringPart = spreadSheet.WorkbookPart.AddNewPart<SharedStringTablePart>();
 			}
+// ReSharper restore ConvertIfStatementToConditionalTernaryExpression
 
 			// Insert the text into the SharedStringTablePart.
 			int index = InsertSharedStringItem(text, shareStringPart);
@@ -153,7 +155,7 @@ namespace Chiro.Gap.WebApp
 			WorksheetPart worksheetPart = spreadSheet.WorkbookPart.WorksheetParts.First();
 			Cell cell = InsertCellInWorksheet(column, rowNr, worksheetPart);
 
-			cell.StyleIndex = (UInt32Value)1U;
+			cell.StyleIndex = 1U;
 			cell.CellValue = new CellValue(date.ToOADate().ToString());
 			cell.DataType = new EnumValue<CellValues>(CellValues.Date);
 
@@ -189,7 +191,7 @@ namespace Chiro.Gap.WebApp
 			}
 
 			// The text does not exist in the part. Create the SharedStringItem and return its index.
-			shareStringPart.SharedStringTable.AppendChild(new SharedStringItem(new DocumentFormat.OpenXml.Spreadsheet.Text(text)));
+			shareStringPart.SharedStringTable.AppendChild(new SharedStringItem(new Text(text)));
 			shareStringPart.SharedStringTable.Save();
 
 			return i;
@@ -203,11 +205,11 @@ namespace Chiro.Gap.WebApp
         private WorksheetPart InsertWorksheet(WorkbookPart workbookPart)
 		{
 			// Add a new worksheet part to the workbook.
-			WorksheetPart newWorksheetPart = workbookPart.AddNewPart<WorksheetPart>();
+			var newWorksheetPart = workbookPart.AddNewPart<WorksheetPart>();
 			newWorksheetPart.Worksheet = new Worksheet(new SheetData());
 			newWorksheetPart.Worksheet.Save();
 
-			Sheets sheets = workbookPart.Workbook.GetFirstChild<Sheets>();
+			var sheets = workbookPart.Workbook.GetFirstChild<Sheets>();
 			string relationshipId = workbookPart.GetIdOfPart(newWorksheetPart);
 
 			// Get a unique ID for the new sheet.
@@ -220,7 +222,7 @@ namespace Chiro.Gap.WebApp
 			string sheetName = "Sheet" + sheetId;
 
 			// Append the new worksheet and associate it with the workbook.
-			Sheet sheet = new Sheet() { Id = relationshipId, SheetId = sheetId, Name = sheetName };
+			var sheet = new Sheet { Id = relationshipId, SheetId = sheetId, Name = sheetName };
 			sheets.Append(sheet);
 			workbookPart.Workbook.Save();
 
@@ -234,7 +236,7 @@ namespace Chiro.Gap.WebApp
 		/// <returns>De overeenkomstige kolomnaam</returns>
 		private String colNumToName(int colNum)
 		{
-			StringBuilder result = new StringBuilder();
+			var result = new StringBuilder();
 
 			--colNum;
 
@@ -260,7 +262,7 @@ namespace Chiro.Gap.WebApp
 		private Cell InsertCellInWorksheet(string columnName, uint rowIndex, WorksheetPart worksheetPart)
 		{
 			Worksheet worksheet = worksheetPart.Worksheet;
-			SheetData sheetData = worksheet.GetFirstChild<SheetData>();
+			var sheetData = worksheet.GetFirstChild<SheetData>();
 			string cellReference = columnName + rowIndex;
 
 			// If the worksheet does not contain a row with the specified row index, insert one.
@@ -271,7 +273,7 @@ namespace Chiro.Gap.WebApp
 			}
 			else
 			{
-				row = new Row() { RowIndex = rowIndex };
+				row = new Row { RowIndex = rowIndex };
 				sheetData.Append(row);
 			}
 
@@ -283,17 +285,9 @@ namespace Chiro.Gap.WebApp
 			else
 			{
 				// Cells must be in sequential order according to CellReference. Determine where to insert the new cell.
-				Cell refCell = null;
-				foreach (Cell cell in row.Elements<Cell>())
-				{
-					if (string.Compare(cell.CellReference.Value, cellReference, true) > 0)
-					{
-						refCell = cell;
-						break;
-					}
-				}
+				Cell refCell = row.Elements<Cell>().FirstOrDefault(cell => string.Compare(cell.CellReference.Value, cellReference, true) > 0);
 
-				Cell newCell = new Cell() { CellReference = cellReference };
+				var newCell = new Cell { CellReference = cellReference };
 				row.InsertBefore(newCell, refCell);
 
 				worksheet.Save();
@@ -316,18 +310,18 @@ namespace Chiro.Gap.WebApp
 			workbookpart.Workbook = new Workbook();
 
 			// WoorkBookStylesPart voor stijl datums
-			WorkbookStylesPart workbookStylesPart = workbookpart.AddNewPart<WorkbookStylesPart>();
+			var workbookStylesPart = workbookpart.AddNewPart<WorkbookStylesPart>();
 			GenerateWorkbookStylesPartContent(workbookStylesPart);
 
 			// Add a WorksheetPart to the WorkbookPart.
-			WorksheetPart worksheetPart = workbookpart.AddNewPart<WorksheetPart>();
+			var worksheetPart = workbookpart.AddNewPart<WorksheetPart>();
 			worksheetPart.Worksheet = new Worksheet(new SheetData());
 
 			// Add Sheets to the Workbook.
-			Sheets sheets = spreadsheetDocument.WorkbookPart.Workbook.AppendChild<Sheets>(new Sheets());
+			Sheets sheets = spreadsheetDocument.WorkbookPart.Workbook.AppendChild(new Sheets());
 
 			// Append a new worksheet and associate it with the workbook.
-			Sheet sheet = new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = "mySheet" };
+			var sheet = new Sheet { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = "mySheet" };
 			sheets.Append(sheet);
 
 			workbookpart.Workbook.Save();

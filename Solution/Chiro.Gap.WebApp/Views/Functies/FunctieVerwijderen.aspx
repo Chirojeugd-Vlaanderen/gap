@@ -1,6 +1,9 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.LedenLinksModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<LedenLinksModel>" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<p class="validation-summary-errors">
 		Er zijn nog leden of leid(st)ers die de functie hebben die je wilt verwijderen.
 		Ben je er zeker van dat je de functie wilt verwijderen?
@@ -19,6 +22,4 @@
 		personen.</p>
 	<%=Html.HiddenFor(mdl => mdl.FunctieID) %>
 	<%} %>
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
 </asp:Content>

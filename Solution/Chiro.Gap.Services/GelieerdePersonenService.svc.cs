@@ -83,7 +83,7 @@ namespace Chiro.Gap.Services
 		#region IGelieerdePersonenService Members
 
 		#region Bewaren
-		
+
 		/// <summary>
 		/// Updatet een persoon op basis van <paramref name="persoonInfo"/>
 		/// </summary>
@@ -185,6 +185,7 @@ namespace Chiro.Gap.Services
 				}
 			}
 
+
 			// De parameter 'info' wordt hier eigenlijk niet gebruikt als GelieerdePersoon,
 			// maar als datacontract dat de persoonsinfo en de Chiroleeftijd bevat.
 
@@ -234,7 +235,7 @@ namespace Chiro.Gap.Services
 				return null;
 			}
 		}
-	
+
 		/// <summary>
 		/// Haalt gelieerde personen op, met lidinfo, 
 		/// volgens de pagineringsparameters,
@@ -327,7 +328,7 @@ namespace Chiro.Gap.Services
 		{
 			try
 			{
-				// TODO: Dit moet properder!
+				// TODO (#656): Dit moet properder!
 
 				var gp = _gpMgr.DetailsOphalen(gelieerdePersoonID);
 
@@ -456,103 +457,6 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
-		/// Verhuist personen van een oud naar een nieuw
-		/// adres.
-		/// (De koppelingen Persoon-Oudadres worden aangepast 
-		/// naar Persoon-NieuwAdres.)
-		/// </summary>
-		/// <param name="persoonIDs">ID's van te verhuizen Personen (niet gelieerd!)</param>
-		/// <param name="naarAdres">AdresInfo-object met nieuwe adresgegevens</param>
-		/// <param name="oudAdresID">ID van het oude adres</param>
-		/// <remarks>
-		/// (1) nieuwAdres.ID wordt genegeerd.  Het adresID wordt altijd
-		/// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
-		/// dan krijgt het adres een nieuw ID. 
-		/// <para/>
-		/// (2) Deze functie werkt op PersoonID's en niet op
-		/// GelieerdePersoonID's, en bijgevolg hoort dit eerder thuis
-		/// in een PersonenService dan in een GelieerdePersonenService.
-		/// </remarks>
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public void PersonenVerhuizen(IEnumerable<int> persoonIDs,
-										PersoonsAdresInfo naarAdres,
-										int oudAdresID)
-		{
-			// TODO: Dit lijkt te veel op 'GelieerdePersonenVerhuizen'.  Bovendien wordt deze functie waarschijnlijk
-			// niet meer gebruikt; ze mag weg.
-
-			// Zoek adres op in database, of maak een nieuw.
-			// (als straat en gemeente gekend)
-
-			try
-			{
-				Adres nieuwAdres;
-				try
-				{
-					nieuwAdres = _adrMgr.ZoekenOfMaken(
-						naarAdres.StraatNaamNaam,
-						naarAdres.HuisNr,
-						naarAdres.Bus,
-						naarAdres.WoonPlaatsNaam,
-						naarAdres.PostNr,
-						null);	// TODO: buitenlandse adressen (#238)
-				}
-				catch (OngeldigObjectException ex)
-				{
-					var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
-
-					throw new FaultException<OngeldigObjectFault>(fault);
-				}
-
-				// Haal te verhuizen personen op, samen met hun adressen.
-
-				IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalen(persoonIDs, PersoonsExtras.Adressen);
-
-				// Kijk na of het naar-adres toevallig mee opgehaald is.  Zo ja, werken we daarmee verder
-				// (iet of wat consistenter)
-
-				PersoonsAdres a = personenLijst.SelectMany(prs => prs.PersoonsAdres)
-					.Where(pa => pa.Adres.ID == nieuwAdres.ID).FirstOrDefault();
-
-				if (a != null)
-				{
-					nieuwAdres = a.Adres;
-				}
-
-				// Het oud adres is normaal gezien gekoppeld aan een van de te verhuizen personen.
-
-				Adres oudAdres = personenLijst.SelectMany(prs => prs.PersoonsAdres)
-					.Where(pa => pa.Adres.ID == oudAdresID).Select(pa => pa.Adres).FirstOrDefault();
-
-				try
-				{
-					_pMgr.Verhuizen(personenLijst, oudAdres, nieuwAdres, naarAdres.AdresType);
-				}
-				catch (BlokkerendeObjectenException<PersoonsAdres> ex)
-				{
-					var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>,
-						BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
-
-					throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
-				}
-
-				// Persisteren
-				_adrMgr.Bewaren(nieuwAdres);
-
-				// Bij een verhuis, blijven de PersoonsAdresobjecten dezelfde,
-				// maar worden ze aan een ander adres gekoppeld.  Een post
-				// van het nieuwe adres (met persoonsadressen) koppelt bijgevolg
-				// de persoonsobjecten los van het oude adres.
-				// Bijgevolg moet het oudeAdres niet gepersisteerd worden.
-			}
-			catch (Exception ex)
-			{
-				FoutAfhandelaar.FoutAfhandelen(ex);
-			}
-		}
-
-		/// <summary>
 		/// Verhuist gelieerde personen van een oud naar een nieuw adres
 		/// (De koppelingen Persoon-Oudadres worden aangepast 
 		/// naar Persoon-NieuwAdres.)
@@ -567,8 +471,6 @@ namespace Chiro.Gap.Services
 												PersoonsAdresInfo naarAdres,
 												int oudAdresID)
 		{
-			// TODO: Dit lijkt te veel op 'PersonenVerhuizen'.  'PersonenVerhuizen' mag weg.
-
 			try
 			{
 				// Zoek adres op in database, of maak een nieuw.
@@ -599,8 +501,11 @@ namespace Chiro.Gap.Services
 				// Kijk na of het naar-adres toevallig mee opgehaald is.  Zo ja, werken we daarmee verder
 				// (iet of wat consistenter)
 
+				// Loop-variabele kopiëren naar lokale variabele om "Access to modified closure" te vermijden 
+				// - zie [wiki:VeelVoorkomendeWaarschuwingen#Accesstomodifiedclosure]
+				Adres adres = nieuwAdres;
 				PersoonsAdres a = personenLijst.SelectMany(prs => prs.PersoonsAdres)
-					.Where(pa => pa.Adres.ID == nieuwAdres.ID).FirstOrDefault();
+									.Where(pa => pa.Adres.ID == adres.ID).FirstOrDefault();
 
 				if (a != null)
 				{
@@ -610,7 +515,7 @@ namespace Chiro.Gap.Services
 				// Het oud adres is normaal gezien gekoppeld aan een van de te verhuizen personen.
 
 				Adres oudAdres = personenLijst.SelectMany(prs => prs.PersoonsAdres)
-					.Where(pa => pa.Adres.ID == oudAdresID).Select(pa => pa.Adres).FirstOrDefault();
+									.Where(pa => pa.Adres.ID == oudAdresID).Select(pa => pa.Adres).FirstOrDefault();
 
 				try
 				{
@@ -627,7 +532,7 @@ namespace Chiro.Gap.Services
 				// Persisteren
 				_adrMgr.Bewaren(nieuwAdres);
 
-				// Bij een verhuis, blijven de PersoonsAdresobjecten dezelfde,
+				// Bij een verhuis blijven de PersoonsAdresobjecten dezelfde,
 				// maar worden ze aan een ander adres gekoppeld.  Een post
 				// van het nieuwe adres (met persoonsadressen) koppelt bijgevolg
 				// de persoonsobjecten los van het oude adres.
@@ -858,7 +763,7 @@ namespace Chiro.Gap.Services
 			}
 			catch (ValidatieException ex)
 			{
-				// TODO: specifiekere info bij in de exceptie.  Zie ticket #497.
+				// TODO (#497): specifiekere info bij in de exceptie.
 				// OPM: ex.Message als bericht opgenomen in de FoutNummerFault. Is dat voldoende?
 				throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.ValidatieFout, Bericht = ex.Message });
 			}
@@ -912,7 +817,7 @@ namespace Chiro.Gap.Services
 			}
 			catch (ValidatieException ex)
 			{
-				// TODO: specifiekere info bij in de exceptie.  Zie ticket #497.
+				// TODO (#497): specifiekere info bij in de exceptie
 				throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.ValidatieFout, Bericht = ex.Message });
 			}
 			catch (Exception ex)
@@ -1019,21 +924,18 @@ namespace Chiro.Gap.Services
 		{
 			try
 			{
-			// Haal personen op met groep
-			IList<GelieerdePersoon> gelieerdePersonen = _gpMgr.Ophalen(gelieerdepersonenIDs);
+				// Haal categorie op met groep
+				Categorie categorie = _catMgr.Ophalen(categorieID);
 
-			// Haal categorie op met groep
-			Categorie categorie = _catMgr.Ophalen(categorieID);
-
-			// Ontkoppelen en persisteren (verwijderen persisteert altijd meteen)
-			_gpMgr.CategorieLoskoppelen(gelieerdepersonenIDs, categorie);
+				// Ontkoppelen en persisteren (verwijderen persisteert altijd meteen)
+				_gpMgr.CategorieLoskoppelen(gelieerdepersonenIDs, categorie);
 			}
 			catch (Exception ex)
 			{
 				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
 		}
-		
+
 		/// <summary>
 		/// Bestelt Dubbelpunt voor de persoon met GelieerdePersoonID <paramref name="gelieerdePersoonID"/>.
 		/// </summary>

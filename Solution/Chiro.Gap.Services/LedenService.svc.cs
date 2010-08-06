@@ -123,11 +123,11 @@ namespace Chiro.Gap.Services
 
 							// TODO: hier moet nog ergens een controle gebeuren of de persoon niet overleden is - zie ticket #632
 
-							if (l != null) // uitgeschreven
+							if (l != null) // al ingeschreven of non-actief
 							{
-								if (l.Type != type)
+								if (l.Type != type) // lid wordt als leiding ingeschreven of omgekeerd
 								{
-									// TODO maak ander lidobject aan #
+									// TODO (#616): maak ander lidobject aan
 									throw new NotImplementedException();
 								}
 								if (!l.NonActief)

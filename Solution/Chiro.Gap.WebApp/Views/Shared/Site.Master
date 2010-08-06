@@ -49,6 +49,7 @@
 		<%=Html.Encode(ViewData.Model.Titel) %></h2>
 	<% if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
 	{
+		// ReSharper disable ConvertIfStatementToConditionalTernaryExpression
 		if (Model.Mededelingen.Count() == 1)
 		{
 	%>
@@ -70,6 +71,7 @@
 	<%
 		}
 	}
+		// ReSharper restore ConvertIfStatementToConditionalTernaryExpression
 	%>
 	<asp:ContentPlaceHolder ID="MainContent" runat="server" />
 </asp:Content>

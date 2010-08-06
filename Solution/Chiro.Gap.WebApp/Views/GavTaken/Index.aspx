@@ -1,6 +1,9 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.GavTakenModel>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<GavTakenModel>" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<p>
 		Hier kun je zien welke administratieve taken er nog op jou liggen te wachten.</p>
 	<% if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
@@ -21,6 +24,4 @@
 	<%
 		}
 	%>
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
 </asp:Content>

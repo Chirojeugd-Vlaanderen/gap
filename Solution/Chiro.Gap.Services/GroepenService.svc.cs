@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using System.Transactions;
 
 using AutoMapper;
 using Chiro.Gap.Domain;
@@ -52,6 +51,7 @@ namespace Chiro.Gap.Services
 		/// <param name="adresMgr">De worker voor Adressen</param>
 		/// <param name="cm">De worker voor Categorieën</param>
 		/// <param name="fm">De worker voor Functies</param>
+		/// <param name="lm">De worker voor Leden</param>
 		/// <param name="am">De worker voor Autorisatie</param>
 		public GroepenService(
 			GroepenManager gm,
@@ -1000,11 +1000,12 @@ namespace Chiro.Gap.Services
 				// Alle gevraagde afdelingen aanmaken
 				foreach (var afdinfo in teActiveren)
 				{
-					// Hier zit schijnbaar een probleem, maar ik snap het niet voldoende om te zien waarom resharper zijn oplossing wel juist is
-					// alleszins, hier gaat c# toch de lelijke toer op
-					// duidelijke info: http://stackoverflow.com/questions/2951037/modified-closure-warning-in-resharper
+					TeActiverenAfdeling afdinfo1 = afdinfo; 
+					// Deze lokale variabele binnen de loop vermijdt de ReSharper-waarschuwing over "access to modified closure".
+					// Meer uitleg: https://develop.chiro.be/trac/cg2/wiki/VeelVoorkomendeWaarschuwingen#Accesstomodifiedclosure
+					
 					var afd = (from a in g.Afdeling
-							   where afdinfo.AfdelingID == a.ID
+							   where afdinfo1.AfdelingID == a.ID
 							   select a).FirstOrDefault();
 
 					if (afd == null)
@@ -1012,8 +1013,9 @@ namespace Chiro.Gap.Services
 						throw new OngeldigObjectException("Een van de afdelingen bestaat niet voor de gegeven groep.");
 					}
 
+					
 					var offafd = (from a in offafdelingen
-								  where afdinfo.OfficieleAfdelingID == a.ID
+								  where afdinfo1.OfficieleAfdelingID == a.ID
 								  select a).FirstOrDefault();
 
 					if (offafd == null)

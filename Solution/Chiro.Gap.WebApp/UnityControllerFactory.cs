@@ -4,10 +4,8 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+
 using Microsoft.Practices.Unity;
 
 namespace Chiro.Gap.WebApp
@@ -17,7 +15,7 @@ namespace Chiro.Gap.WebApp
 	/// </summary>
 	public class UnityControllerFactory : DefaultControllerFactory
 	{
-		IUnityContainer container;
+		readonly IUnityContainer _container;
 
 		/// <summary>
 		/// 
@@ -25,7 +23,7 @@ namespace Chiro.Gap.WebApp
 		/// <param name="container"></param>
 		public UnityControllerFactory(IUnityContainer container)
 		{
-			this.container = container;
+			_container = container;
 		}
 
 		protected override IController GetControllerInstance(System.Web.Routing.RequestContext requestContext, Type controllerType)
@@ -43,7 +41,7 @@ namespace Chiro.Gap.WebApp
 				throw new ArgumentException(string.Format("Type requested {0} is not a controller", controllerType));
 			}
 
-			return container.Resolve(controllerType) as IController;
+			return _container.Resolve(controllerType) as IController;
 		}
 	}
 }

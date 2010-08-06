@@ -74,7 +74,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		{
 			if (String.IsNullOrEmpty(name))
 			{
-				throw new ArgumentException("The argument must have a value", "name");
+				throw new ArgumentException(@"The argument must have a value", "name");
 			}
 			if (listInfo == null)
 			{
@@ -82,7 +82,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 			}
 			if (listInfo.Count() < 1)
 			{
-				throw new ArgumentException("The list must contain at least one value", "listInfo");
+				throw new ArgumentException(@"The list must contain at least one value", "listInfo");
 			}
 
 			var sb = new StringBuilder();
@@ -92,10 +92,10 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 				var builder = new TagBuilder("input");
 				if (info.IsChecked)
 				{
-					builder.MergeAttribute("checked", "checked");
+					builder.MergeAttribute("checked", @"checked");
 				}
 				builder.MergeAttributes(htmlAttributes);
-				builder.MergeAttribute("type", "checkbox");
+				builder.MergeAttribute("type", @"checkbox");
 				builder.MergeAttribute("value", info.Value);
 				builder.MergeAttribute("name", name);
 				sb.Append("\n");
@@ -128,11 +128,11 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		{
 			if (String.IsNullOrEmpty(name))
 			{
-				throw new ArgumentException("The argument must have a value", "name");
+				throw new ArgumentException(@"The argument must have a value", "name");
 			}
 			if (info == null)
 			{
-				throw new ArgumentNullException("listInfo");
+				throw new ArgumentNullException("info");
 			}
 
 			var sb = new StringBuilder();
@@ -140,10 +140,10 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 			var builder = new TagBuilder("input");
 			if (info.IsChecked)
 			{
-				builder.MergeAttribute("checked", "checked");
+				builder.MergeAttribute("checked", @"checked");
 			}
 			builder.MergeAttributes(htmlAttributes);
-			builder.MergeAttribute("type", "checkbox");
+			builder.MergeAttribute("type", @"checkbox");
 			builder.MergeAttribute("value", info.Value);
 			builder.MergeAttribute("name", name);
 			// sb.Append("\n");

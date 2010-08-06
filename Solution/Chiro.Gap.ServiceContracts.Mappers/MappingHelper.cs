@@ -8,12 +8,13 @@ using System.Collections.Generic;
 using System.Linq;
 
 using AutoMapper;
+
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
-using Chiro.Gap.Workers;
-using Chiro.Gap.ServiceContracts.FaultContracts;
-using Chiro.Gap.Workers.Exceptions;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.Workers;
+using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.ServiceContracts.Mappers
 {
@@ -420,7 +421,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 		{
 			if (l is Kind)
 			{
-				return new AfdelingInfo[] { Mapper.Map<Afdeling, AfdelingInfo>((l as Kind).AfdelingsJaar.Afdeling) };
+				return new[] { Mapper.Map<Afdeling, AfdelingInfo>((l as Kind).AfdelingsJaar.Afdeling) };
 			}
 			else if (l is Leiding)
 			{

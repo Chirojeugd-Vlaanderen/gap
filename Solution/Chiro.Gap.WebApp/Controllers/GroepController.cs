@@ -5,9 +5,9 @@
 
 using System.Web.Mvc;
 
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
-using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers

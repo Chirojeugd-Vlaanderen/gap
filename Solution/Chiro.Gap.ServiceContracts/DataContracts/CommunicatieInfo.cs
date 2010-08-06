@@ -6,6 +6,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+
 using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts

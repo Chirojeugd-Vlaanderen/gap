@@ -1,10 +1,9 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.LidInfoModel>" %>
+<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<LidInfoModel>" %>
+
+<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Controllers" %>
-
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-
-	<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>"></script>
-
+	<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" />
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#kiesAfdeling').hide();
@@ -17,7 +16,6 @@
 			});
 		});
 	</script>
-
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<div id="acties">

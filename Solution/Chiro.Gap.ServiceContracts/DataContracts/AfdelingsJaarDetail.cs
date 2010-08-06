@@ -37,7 +37,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DisplayName(@"Officiele afdeling")]
 		public int OfficieleAfdelingID { get; set; }
 
-		// TODO: onder- en bovengrens van geboortejaren mag hier niet hard gecodeerd zijn (ticket #595)
+		// TODO (#595): onder- en bovengrens van geboortejaren mag hier niet hard gecodeerd zijn
 		// Verplaatsen naar settings lukt niet, dus hebben we een attribuut nodig met eigen logica.
 		// Bij de range van postnummers ligt de situatie anders, die is niet arbitrair en ze schuift ook niet op.
 
@@ -47,7 +47,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		[Verplicht]
 		[DisplayName(@"Geboortejaar van")]
-		[Range(1940, 2100, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "AfdelingsJaarDetail_GeboorteJaar_RangeFout")]
+        [Range(1940, 2100, ErrorMessageResourceType = typeof (Resources), ErrorMessageResourceName = "RangeError")]
 		public int GeboorteJaarVan { get; set; }
 
 		/// <summary>
@@ -56,7 +56,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		[Verplicht]
 		[DisplayName(@"Geboortejaar tot")]
-		[Range(1940, 2100, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "AfdelingsJaarDetail_GeboorteJaar_RangeFout")]
+		[Range(1940, 2100, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RangeError")]
 		public int GeboorteJaarTot { get; set; }
 
 		/// <summary>

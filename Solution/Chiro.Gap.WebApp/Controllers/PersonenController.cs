@@ -848,6 +848,13 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 		}
 
+		/// <summary>
+		/// TODO (#190): documenteren!
+		/// </summary>
+		/// <param name="persoonsAdresID"></param>
+		/// <param name="gelieerdePersoonID"></param>
+		/// <param name="groepID"></param>
+		/// <returns></returns>
 		[HandleError]
 		public ActionResult VoorkeurAdresMaken(int persoonsAdresID, int gelieerdePersoonID, int groepID)
 		{

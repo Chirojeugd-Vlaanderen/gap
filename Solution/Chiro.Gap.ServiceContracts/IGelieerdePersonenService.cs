@@ -7,9 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.ServiceModel;
 
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
-using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -175,25 +175,6 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		GezinInfo GezinOphalen(int adresID, int groepID);
-
-		/// <summary>
-		/// Verhuist personen van een oud naar een nieuw
-		/// adres.
-		/// (De koppelingen Persoon-Oudadres worden aangepast 
-		/// naar Persoon-NieuwAdres.)
-		/// </summary>
-		/// <param name="persoonIDs">ID's van te verhuizen Personen (niet gelieerd!)</param>
-		/// <param name="nieuwAdres">AdresInfo-object met nieuwe adresgegevens</param>
-		/// <param name="oudAdresID">ID van het oude adres</param>
-		/// <remarks>nieuwAdres.ID wordt genegeerd.  Het adresID wordt altijd
-		/// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
-		/// dan krijgt het adres een nieuw ID.</remarks>
-		[OperationContract]
-		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
-		[FaultContract(typeof(OngeldigObjectFault))]
-		[FaultContract(typeof(GapFault))]
-		[FaultContract(typeof(FoutNummerFault))]
-		void PersonenVerhuizen(IEnumerable<int> persoonIDs, PersoonsAdresInfo nieuwAdres, int oudAdresID);
 
 		/// <summary>
 		/// Verhuist gelieerde personen van een oud naar een nieuw adres

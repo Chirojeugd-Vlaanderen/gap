@@ -19,10 +19,10 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 	{
 		public static string PagerLinks(this HtmlHelper html, int huidigePagina, int aantalPaginas, Func<int, string> url)
 		{
-			StringBuilder resultaat = new StringBuilder();
+			var resultaat = new StringBuilder();
 			for (int i = 1; i <= aantalPaginas; i++)
 			{
-				TagBuilder tag = new TagBuilder("a");   // Maakt een <a>-tag
+				var tag = new TagBuilder("a");   // Maakt een <a>-tag
 				tag.MergeAttribute("href", url(i));
 				tag.InnerHtml = i.ToString();
 				if (i == huidigePagina)
@@ -43,9 +43,9 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		/// <param name="url">Functie die een url maakt op basis van WerkJaarInro</param>
 		/// <returns></returns>
 		public static string WerkJaarLinks(
-			this HtmlHelper html, 
-			int huidigWerkJaarID, 
-			IEnumerable<WerkJaarInfo> werkjaren, 
+			this HtmlHelper html,
+			int huidigWerkJaarID,
+			IEnumerable<WerkJaarInfo> werkjaren,
 			Func<WerkJaarInfo, string> url)
 		{
 			var resultaat = new StringBuilder();

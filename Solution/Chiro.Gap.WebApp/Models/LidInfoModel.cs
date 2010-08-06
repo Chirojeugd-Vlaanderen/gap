@@ -5,8 +5,8 @@
 
 using System.Collections.Generic;
 
-using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.Domain;
+using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.Controllers;
 
 namespace Chiro.Gap.WebApp.Models

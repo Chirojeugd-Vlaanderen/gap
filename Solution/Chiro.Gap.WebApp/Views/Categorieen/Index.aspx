@@ -1,16 +1,16 @@
-<%@ Page Title="" Language="C#" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.GroepsInstellingenModel>"
-	MasterPageFile="~/Views/Shared/Site.Master" %>
+<%@ Page Language="C#" Inherits="ViewPage<GroepsInstellingenModel>" MasterPageFile="~/Views/Shared/Site.Master" %>
 
-<asp:Content runat="server" ID="Content" ContentPlaceHolderID="head">
-    <script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript"></script>
-    <script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
-    <script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
-    <script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript"></script>
-    <script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript"></script>
-    <script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript"></script>
+<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
+<asp:Content runat="server" ID="Content1" ContentPlaceHolderID="head">
+	<script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript" />
+	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript" />
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript" />
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript" />
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript" />
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript" />
 </asp:Content>
-<asp:Content runat="server" ID="Content1" ContentPlaceHolderID="MainContent">
-<fieldset>
+<asp:Content runat="server" ID="Content2" ContentPlaceHolderID="MainContent">
+	<fieldset>
 		<legend>Persoonscategorie&euml;n</legend>
 		<ul>
 			<%
@@ -47,5 +47,4 @@
 		</p>
 	</fieldset>
 	<%} %>
-	
 </asp:Content>

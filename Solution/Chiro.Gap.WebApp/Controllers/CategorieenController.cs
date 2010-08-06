@@ -10,10 +10,10 @@ using System.ServiceModel;
 using System.Web.Mvc;
 using System.Web.Routing;
 
+using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
-using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
@@ -56,7 +56,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				ServiceHelper.CallService<IGroepenService>(svc => svc.CategorieVerwijderen(id, false));
 				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
-				return RedirectToAction("Index", new { groepID = groepID });
+				return RedirectToAction("Index", new {groepID });
 			}
 			catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> ex)
 			{
@@ -67,7 +67,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				model.Personen = ex.Detail.Objecten;
 				model.CategorieID = id;
-				model.VolledigeLijstUrl = Url.Action("List", "Personen", new RouteValueDictionary(new { id = id, groepID = groepID }));
+				model.VolledigeLijstUrl = Url.Action("List", "Personen", new RouteValueDictionary(new {id, groepID }));
 				model.TotaalAantal = ex.Detail.Aantal;
 
 				// Vis categorienaam op uit de gekoppelde categorieen van de personen
@@ -125,7 +125,7 @@ namespace Chiro.Gap.WebApp.Controllers
 						model.NieuweCategorie.Naam,
 						model.NieuweCategorie.Code));
 
-					return RedirectToAction("Index", new { groepID = groepID });
+					return RedirectToAction("Index", new {groepID });
 				}
 				catch (FaultException<BestaatAlFault<CategorieInfo>> ex)
 				{

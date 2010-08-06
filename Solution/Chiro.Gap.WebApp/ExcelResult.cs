@@ -3,13 +3,8 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Linq;
-using System.Web;
-using System.Web.UI.WebControls;
-using System.Drawing;
 using System.IO;
-using System.Web.UI;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Chiro.Gap.WebApp

@@ -1,9 +1,8 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Fout.Master" Inherits="System.Web.Mvc.ViewPage<System.Web.Mvc.HandleErrorInfo>" %>
-
-<%@ Import Namespace="System.ServiceModel" %>
-<%@ Import Namespace="System.Net" %>
-<%@ Import Namespace="Chiro.Gap.ServiceContracts.FaultContracts" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Fout.Master" Inherits="ViewPage<HandleErrorInfo>" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
+<%@ Import Namespace="Chiro.Gap.ServiceContracts.FaultContracts" %>
+<%@ Import Namespace="System.Net" %>
+<%@ Import Namespace="System.ServiceModel" %>
 <asp:Content ID="errorContent" ContentPlaceHolderID="MainContent" runat="server">
 	<%
 		String boodschap = string.Empty;
@@ -27,11 +26,12 @@
 			}
 			else if (Model.Exception is FaultException<ExceptionDetail>)
 			{
-				boodschap = Model.Exception.Message; // Hebben alle FaultExceptions aangepaste foutmeldingen? => Nee: fouten in DAL of servicelayer niet
+				boodschap = "Tijdens je bewerking is er iets foutgelopen, waarschijnlijk is ze mislukt. Kijk voor de zekerheid je gegevens eens na.";
+				// boodschap = Model.Exception.Message; // Hebben alle FaultExceptions aangepaste foutmeldingen? => Nee: fouten in DAL of servicelayer niet
 			}
 			else if (Model.Exception is CommunicationObjectFaultedException)
 			{
-				Html.RenderPartial("GeenVerbindingControl");
+				boodschap = "Tijdens je bewerking is er iets foutgelopen, waarschijnlijk is ze mislukt. Kijk voor de zekerheid je gegevens eens na.";
 			}
 			else if (Model.Exception is ArgumentException)
 			{
@@ -44,7 +44,7 @@
 
 			if (boodschap != string.Empty)
 			{
-				boodschap += String.Format(" ({0})", Response.StatusCode);
+				boodschap += String.Format(" (foutcode {0})", Response.StatusCode);
 			}
 		}
 		else

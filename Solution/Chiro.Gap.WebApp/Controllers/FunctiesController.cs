@@ -42,6 +42,12 @@ namespace Chiro.Gap.WebApp.Controllers
 			return View(model);
 		}
 
+		/// <summary>
+		/// TODO (#190): documenteren!
+		/// </summary>
+		/// <param name="groepID"></param>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		[HandleError]
 		public ActionResult FunctieVerwijderen(int groepID, int id)
 		{
@@ -49,7 +55,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				ServiceHelper.CallService<IGroepenService>(svc => svc.FunctieVerwijderen(id, false));
 				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
-				return RedirectToAction("Index", new { groepID = groepID });
+				return RedirectToAction("Index", new {groepID });
 			}
 			catch (FaultException<BlokkerendeObjectenFault<PersoonLidInfo>> ex)
 			{
@@ -60,7 +66,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				model.Leden = ex.Detail.Objecten;
 				model.FunctieID = id;
-				model.VolledigeLijstUrl = Url.Action("List", "Leden", new RouteValueDictionary(new { id = id, groepID = groepID }));
+				model.VolledigeLijstUrl = Url.Action("Lijst", "Leden", new RouteValueDictionary(new {id, groepID }));
 				model.TotaalAantal = ex.Detail.Aantal;
 
 				// Vis functienaam op uit de gekoppelde functies van de leden.
@@ -124,10 +130,10 @@ namespace Chiro.Gap.WebApp.Controllers
 
 					return RedirectToAction("Index", new { groepID });
 				}
-				catch (FaultException<BestaatAlFault<CategorieInfo>> ex)
+				catch (FaultException<BestaatAlFault<FunctieInfo>> ex)
 				{
 					if (String.Compare(
-						model.NieuweCategorie.Code,
+						model.NieuweFunctie.Code,
 						ex.Detail.Bestaande.Code,
 						true) == 0)
 					{

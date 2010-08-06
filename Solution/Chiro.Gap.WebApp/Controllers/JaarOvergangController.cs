@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
-using System.Transactions;
 using System.Web.Mvc;
 
 using Chiro.Cdf.ServiceHelper;
@@ -72,13 +71,15 @@ namespace Chiro.Gap.WebApp.Controllers
 					continue;
 				}
 
+				// Lokale variabele om "Access to modified closure" te vermijden [wiki:VeelVoorkomendeWaarschuwingen#Accesstomodifiedclosure]
+				AfdelingInfo afd1 = afd;
 				var act = (from actafd in actievelijst
-						   where actafd.AfdelingID == afd.ID
+						   where actafd.AfdelingID == afd1.ID
 						   select actafd).FirstOrDefault();
 
 				if (act != null)
 				{
-					//TODO geboortejaren aanpassen aan nieuwe jaar (vergelijken met huidige werkjaar)
+					// TODO geboortejaren aanpassen aan nieuwe jaar (vergelijken met huidige werkjaar)
 					volledigelijst.Add(new AfdelingDetail
 					{
 						AfdelingAfkorting = afd.Afkorting,
@@ -131,6 +132,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			//Probleem: is er de garantie dat de volgorde bewaard blijft? (want we zijn per record de ID kwijt natuurlijk
 
+// ReSharper disable LoopCanBeConvertedToQuery
 			for (int i = 0; i < model.VanLijst.Count; i++)
 			{
 				var x = new TeActiverenAfdeling
@@ -143,6 +145,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				teactiveren.Add(x);
 			}
+// ReSharper restore LoopCanBeConvertedToQuery
 
 			ServiceHelper.CallService<IGroepenService>(s => s.JaarovergangUitvoeren(teactiveren, groepID));
 

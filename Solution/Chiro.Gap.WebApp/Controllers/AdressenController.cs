@@ -23,7 +23,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		private readonly AdressenHelper _adressenHelper;
 
 		/// <summary>
-		/// TODO: documenteren
+		/// TODO (#190): Documenteren
 		/// </summary>
 		/// <param name="serviceHelper"></param>
 		public AdressenController(IServiceHelper serviceHelper) : base(serviceHelper)
@@ -98,7 +98,7 @@ namespace Chiro.Gap.WebApp.Controllers
 						 orderby straat.Naam
 						 select straat.Naam).Distinct();
 
-			return Content(String.Join("\n", namen.ToArray<string>()));
+			return Content(String.Join("\n", namen.ToArray()));
 		}
 
 		/// <summary>

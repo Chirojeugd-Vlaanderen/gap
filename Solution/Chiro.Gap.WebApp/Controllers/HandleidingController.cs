@@ -35,7 +35,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// minstens 3 characters, alleen alfanumeriek (dan kan de gebruiker geen bestandspad invullen - cfr. ticket #600)
 			{
 				helpBestand = helpBestand + ".htm";
-				helpBestand = System.IO.Path.Combine(Server.MapPath("/Help"), helpBestand);
+				helpBestand = System.IO.Path.Combine(Server.MapPath("~/Help"), helpBestand);
 				if (System.IO.File.Exists(helpBestand))
 				{
 					model.HelpBestand = Server.HtmlDecode(System.IO.File.ReadAllText(helpBestand));

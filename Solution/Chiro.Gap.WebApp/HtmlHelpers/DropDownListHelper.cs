@@ -5,10 +5,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Web.Mvc;
-using System.Web.Routing;
 
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
@@ -25,7 +23,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		{
 			if (String.IsNullOrEmpty(name))
 			{
-				throw new ArgumentException("The argument must have a value", "name");
+				throw new ArgumentException(@"The argument must have a value", "name");
 			}
 
 			var sb = new StringBuilder();
@@ -41,7 +39,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 				option1.MergeAttribute("value", afdeling.ID.ToString());
 				if (officieleAfdelingNaam != null && officieleAfdelingNaam.Equals(afdeling.Naam))
 				{
-					option1.MergeAttribute("selected", "yes");
+					option1.MergeAttribute("selected", @"yes");
 				}
 				sb.Append(option1.ToString(TagRenderMode.StartTag));
 				sb.Append(afdeling.Naam);
@@ -57,7 +55,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		{
 			if (String.IsNullOrEmpty(name))
 			{
-				throw new ArgumentException("The argument must have a value", "name");
+				throw new ArgumentException(@"The argument must have a value", "name");
 			}
 
 			var sb = new StringBuilder();
@@ -73,7 +71,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 				option1.MergeAttribute("value", geslacht.ToString());
 				if ((GeslachtsType)geslacht == g)
 				{
-					option1.MergeAttribute("selected", "yes");
+					option1.MergeAttribute("selected", @"yes");
 				}
 				sb.Append(option1.ToString(TagRenderMode.StartTag));
 				sb.Append(geslacht.ToString());

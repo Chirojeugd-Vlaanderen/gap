@@ -3,6 +3,8 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+// Dank aan http://blogs.msdn.com/miah/archive/2008/11/10/checkboxlist-helper-for-mvc.aspx
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +17,6 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 	/// <summary>
 	/// Klasse die de status van een checkbox omschrijft
 	/// </summary>
-	/// <remarks>
-	/// Dank aan http://blogs.msdn.com/miah/archive/2008/11/10/checkboxlist-helper-for-mvc.aspx
-	/// </remarks>
 	public class TextFieldListInfo
 	{
 		/// <summary>
@@ -25,7 +24,6 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		/// </summary>
 		/// <param name="displayText">Tekst die de gebruiker te zien krijgt na de checkbox</param>
 		/// <param name="value">Waarde die doorgegeven moet worden als het item aangekruist is</param>
-		/// getoond.</param>
 		public TextFieldListInfo(string value, string displayText)
 			: this(value, displayText, String.Empty) { }
 
@@ -70,7 +68,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		{
 			if (String.IsNullOrEmpty(name))
 			{
-				throw new ArgumentException("The argument must have a value", "name");
+				throw new ArgumentException(@"The argument must have a value", "name");
 			}
 			if (listInfo == null)
 			{
@@ -78,7 +76,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 			}
 			if (listInfo.Count() < 1)
 			{
-				throw new ArgumentException("The list must contain at least one value", "listInfo");
+				throw new ArgumentException(@"The list must contain at least one value", "listInfo");
 			}
 
 			var sb = new StringBuilder();
@@ -86,9 +84,9 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 			foreach (TextFieldListInfo info in listInfo)
 			{
 				var builder = new TagBuilder("input");
-				
+
 				builder.MergeAttributes(htmlAttributes);
-				builder.MergeAttribute("type", "text");
+				builder.MergeAttribute("type", @"text");
 				builder.MergeAttribute("value", info.Value);
 				builder.MergeAttribute("name", name);
 				sb.Append("\n");
@@ -121,18 +119,18 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		{
 			if (String.IsNullOrEmpty(name))
 			{
-				throw new ArgumentException("The argument must have a value", "name");
+				throw new ArgumentException(@"The argument must have a value", "name");
 			}
 			if (info == null)
 			{
-				throw new ArgumentNullException("listInfo");
+				throw new ArgumentNullException("info");
 			}
 
 			var sb = new StringBuilder();
 
 			var builder = new TagBuilder("input");
 			builder.MergeAttributes(htmlAttributes);
-			builder.MergeAttribute("type", "text");
+			builder.MergeAttribute("type", @"text");
 			builder.MergeAttribute("value", info.Value);
 			builder.MergeAttribute("name", name);
 			// sb.Append("\n");
@@ -147,17 +145,17 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 		{
 			if (String.IsNullOrEmpty(name))
 			{
-				throw new ArgumentException("The argument must have a value", "name");
+				throw new ArgumentException(@"The argument must have a value", "name");
 			}
 			if (info == null)
 			{
-				throw new ArgumentNullException("listInfo");
+				throw new ArgumentNullException("info");
 			}
 
 			var sb = new StringBuilder();
 
 			var builder = new TagBuilder("input");
-			builder.MergeAttribute("type", "hidden");
+			builder.MergeAttribute("type", @"hidden");
 			builder.MergeAttribute("value", info.Value);
 			builder.MergeAttribute("id", name);
 			builder.MergeAttribute("name", name);

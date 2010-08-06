@@ -1,6 +1,7 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.LidInfoModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<LidInfoModel>" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Controllers" %>
+<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <div class="pager">
 	Pagina:
 	<%= Html.WerkJaarLinks(
@@ -13,12 +14,8 @@
 </div>
 <table class="overzicht">
 	<tr>
-		<th>
-			Ad-nr.
-		</th>
-		<th>
-			Type
-		</th>
+		<th>Ad-nr. </th>
+		<th>Type </th>
 		<th>
 			<%= Html.ActionLink("Naam", "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = LedenSorteringsEnum.Naam, lijst = Model.GekozenLijst, ID = Model.GekozenID })%>
 		</th>
@@ -29,15 +26,11 @@
 			<%=Html.Geslacht(GeslachtsType.Man) %>
 			<%=Html.Geslacht(GeslachtsType.Vrouw) %>
 		</th>
-		<th>
-			Betaald
-		</th>
+		<th>Betaald </th>
 		<th>
 			<%= Html.ActionLink("Afd.", "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = LedenSorteringsEnum.Afdeling, lijst = Model.GekozenLijst, ID = Model.GekozenID })%>
 		</th>
-		<th>
-			Func.
-		</th>
+		<th>Func. </th>
 		<%=Model.KanLedenBewerken ? "<th>Acties</th>" : String.Empty %>
 	</tr>
 	<% foreach (Chiro.Gap.ServiceContracts.DataContracts.PersoonLidInfo pl in ViewData.Model.LidInfoLijst)
@@ -70,7 +63,7 @@
 		<td>
 			<% foreach (var a in pl.LidInfo.Functies)
 	  { %>
-			<%=Html.ActionLink(Html.Encode(ViewData.Model.FunctieInfoDictionary[a.ID].Code), "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Model.GekozenSortering, lijst = LijstEnum.Functie, ID = a.ID }, new { title = ViewData.Model.FunctieInfoDictionary[a.ID].Naam })%>
+			<%=Html.ActionLink(Html.Encode(ViewData.Model.FunctieInfoDictionary[a.ID].Code), "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Model.GekozenSortering, lijst = LijstEnum.Functie, a.ID }, new { title = ViewData.Model.FunctieInfoDictionary[a.ID].Naam })%>
 			<% } %>
 		</td>
 		<%if (Model.KanLedenBewerken)

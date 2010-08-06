@@ -64,7 +64,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// <summary>
 		/// De geboortedatum van de persoon
 		/// </summary>
-		[Verplicht] // OPM: Altijd? Ik ben niet zeker.
+		[Verplicht] // OPM: Altijd? Ik ben niet zeker. => Voor contactpersonen van de parochie of de jeugdraad is dat inderdaad niet relevant en dikwijls niet gekend
 		[DataType(DataType.Date)]
 		[DisplayName(@"Geboortedatum")]
 		// [DisplayFormat(DataFormatString="{0:d}", ApplyFormatInEditMode=true, ConvertEmptyStringToNull=true)]

@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Chiro.Cdf.ServiceHelper;
-using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.DataContracts;
 
 namespace Chiro.Gap.WebApp
 {
@@ -50,10 +50,8 @@ namespace Chiro.Gap.WebApp
 		/// <returns>Een lijst met alle beschikbare woonplaatsen</returns>
 		public IEnumerable<WoonPlaatsInfo> WoonPlaatsenOphalen()
 		{
-			string cacheKey = WOONPLAATSENCACHEKEY;
-
 			var cache = System.Web.HttpContext.Current.Cache;
-			var result = (IEnumerable<WoonPlaatsInfo>)cache.Get(cacheKey);
+			var result = (IEnumerable<WoonPlaatsInfo>)cache.Get(WOONPLAATSENCACHEKEY);
 
 			if (result == null)
 			{
@@ -63,7 +61,7 @@ namespace Chiro.Gap.WebApp
 					IEnumerable<WoonPlaatsInfo>>(g => g.GemeentesOphalen());
 
 				cache.Add(
-					cacheKey,
+					WOONPLAATSENCACHEKEY,
 					result,
 					null,
 					System.Web.Caching.Cache.NoAbsoluteExpiration,

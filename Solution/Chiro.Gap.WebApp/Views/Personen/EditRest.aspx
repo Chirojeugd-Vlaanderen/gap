@@ -1,6 +1,7 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.PersonenLedenModel>" %>
+<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<PersonenLedenModel>" %>
 
 <%@ Import Namespace="Chiro.Gap.Domain" %>
+<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -76,11 +77,11 @@
 		<%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %><br />
 		<%
 			}%>
-		
 		<%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>:
 		<%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>
 		<br />
-		Chiroleeftijd: <%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeefTijd)%><br />
+		Chiroleeftijd:
+		<%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeefTijd)%><br />
 		<%=Html.ActionLink("[persoonlijke gegevens aanpassen]", "EditGegevens", new {id=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %><br />
 	</p>
 	<p>
@@ -208,7 +209,7 @@
 		<%=Html.ActionLink("Inschrijven als leiding","LeidingMaken",new{Controller = "Personen",gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID})%>
 	</p>
 	<%}
-		}
+	   }
    }%>
 	<% Html.RenderPartial("TerugNaarLijstLinkControl"); %>
 </asp:Content>

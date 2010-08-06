@@ -1,9 +1,8 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.PersoonInfoModel>" %>
+<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<PersoonInfoModel>" %>
 
+<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-
-	<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>"></script>
-
+	<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" />
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#kiesCategorie').hide();
@@ -12,7 +11,6 @@
 			});
 		});
 	</script>
-
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<%using (Html.BeginForm("List", "Personen"))
@@ -43,6 +41,6 @@
 			</li>
 		</ul>
 	</div>
-<%} %>
+	<%} %>
 	<% Html.RenderPartial("PersonenLijstControl", Model); %>
 </asp:Content>

@@ -3,10 +3,6 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Chiro.Gap.WebApp
@@ -45,7 +41,7 @@ namespace Chiro.Gap.WebApp
 		public override bool IsValidForRequest(ControllerContext controllerContext, System.Reflection.MethodInfo methodInfo)
 		{
 			var req = controllerContext.RequestContext.HttpContext.Request;
-			return req.Form[this.Naam] == this.Waarde;
+			return req.Form[Naam] == Waarde;
 		}
 	}
 }

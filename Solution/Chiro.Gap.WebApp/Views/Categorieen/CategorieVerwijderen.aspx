@@ -1,12 +1,14 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.PersonenLinksModel>" %>
+<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<PersonenLinksModel>" %>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
+<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<p class="validation-summary-errors">
-		Er zijn personen gekoppeld aan de categorie die je wilt verwijderen. Als je de categorie
-		verwijdert, dan blijven deze personen bestaan, maar verdwijnt uiteraard hun koppeling
-		met de categorie. Ben je er zeker van dat je de categorie wilt verwijderen?
+		Er zijn personen gekoppeld aan de categorie die je wilt verwijderen. Als je
+		de categorie verwijdert, dan blijven deze personen bestaan, maar verdwijnt uiteraard
+		hun koppeling met de categorie. Ben je er zeker van dat je de categorie wilt
+		verwijderen?
 	</p>
 	<% using (Html.BeginForm())
 	{ %>

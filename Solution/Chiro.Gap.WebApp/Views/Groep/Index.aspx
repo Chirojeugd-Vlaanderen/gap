@@ -1,6 +1,7 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Chiro.Gap.WebApp.Models.GroepsInstellingenModel>" %>
-<%@ Import Namespace="Chiro.Gap.Domain" %>
+<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<GroepsInstellingenModel>" %>
 
+<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
+<%@ Import Namespace="Chiro.Gap.Domain" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -75,7 +76,8 @@
 				foreach (var fie in Model.Detail.Functies.OrderBy(fie => fie.Type))
 				{
 			%>
-			<li><%=Html.Encode(String.Format(
+			<li>
+				<%=Html.Encode(String.Format(
 			    "{0} ({1}) -- kan toegekend worden aan ingeschreven {2}", 
 			    fie.Naam, 
                 fie.Code, 

@@ -1,7 +1,7 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.PersoonInfoModel>" %>
-<%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<PersoonInfoModel>" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
-
+<%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
+<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#checkall").click(function() {

@@ -7,9 +7,5 @@ namespace Chiro.Gap.WebApp.Models
 {
 	public class GavTakenModel : MasterViewModel
 	{
-		public GavTakenModel()
-		{
-			// TODO: taken ophalen
-		}
 	}
 }
