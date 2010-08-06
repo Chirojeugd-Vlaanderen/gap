@@ -41,7 +41,7 @@ end
 
 if not exists (select 1 from lid.Functie where code=@gv1Code)
 begin
-	insert into lid.Functie(Naam, Code, MinAantal, MaxAantal, LidType, WerkJaarVan, WerkJaarTot) values('VB', @gv1Code, 0, 0, 18, null, null);
+	insert into lid.Functie(Naam, Code, MinAantal, MaxAantal, LidType, WerkJaarVan, WerkJaarTot) values('VB', @gv1Code, 0, 0, 2, null, null);
 	set @gv1ID = scope_identity();
 end
 else
