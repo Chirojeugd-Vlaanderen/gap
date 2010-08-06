@@ -52,6 +52,7 @@ Gebruik: $(basename $0) -h -a [creatie | verwijder | beide ]  \\
             We kennen de volgende types:
                 - shema: We gaan het shema creeren of verwijderen 
 			(afh van optie -a)
+		- indexes: Belangrijk voor performant opzoeken
                 - constraints: We gaan de constraints creeren of verwijderen 
 			(afh van optie -a)
 		- stored_procedures: We gaan de stored procedures creeren 
@@ -62,9 +63,6 @@ Gebruik: $(basename $0) -h -a [creatie | verwijder | beide ]  \\
 			Communictie types, .... 
                 - test: We gaan de geevens nodig voor de test omgeving 
 			creeren of verwijderen (afh van optie -a)
-		- indexes: Belangrijk voor performant opzoeken, maar best
-			pas creeren als alle initiele data geimporteerd is
-			(anders kan je lang wachten op 160000 straten)
 				
 	-n name: We willen de database met naam verwijderen/creeren.
 		

@@ -18,6 +18,8 @@ GO
 GO
 :r ../dataconversie/GebruikersRechtOntnemen.sql
 GO
+:r ../dataconversie/PersonenOpkuisen.sql
+GO
 
 CREATE FUNCTION core.ufnSoundEx
 (
