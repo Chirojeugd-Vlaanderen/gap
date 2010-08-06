@@ -77,6 +77,12 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 
 			// Haal alle functies op van de groep in het groepswerkjaar
+
+			// *****************************************************
+			// ** OPGELET! Als je debugger hieronder crasht, dan  **
+			// ** zit er waarschijnlijk een functie met ongeldig  **
+			// ** lidtype in de databank!                         **
+			// *****************************************************
 			var list2 = ServiceHelper.CallService<IGroepenService, IEnumerable<FunctieDetail>>(groep => groep.FunctiesOphalen(groepsWerkJaarID, LidType.Alles));
 
 			model.FunctieInfoDictionary = new Dictionary<int, FunctieDetail>();
