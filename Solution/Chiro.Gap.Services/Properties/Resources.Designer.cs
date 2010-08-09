@@ -70,6 +70,15 @@ namespace Chiro.Gap.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} was al als {1} ingeschreven..
+        /// </summary>
+        internal static string AlAndersIngeschreven {
+            get {
+                return ResourceManager.GetString("AlAndersIngeschreven", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De opgegeven afdeling is geen afdeling van groep {0}..
         /// </summary>
         internal static string FouteAfdelingVoorGroepString {

@@ -71,7 +71,7 @@
 			<%=p.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)p.GeboorteDatum).ToString("d") %>
 		</td>
 		<td class="center">
-			<%=Html.Geslacht(p.Geslacht) %>
+			<%=p.Geslacht == GeslachtsType.Onbekend? "<span class=\"error\">??</span>" : Html.Geslacht(p.Geslacht) %>
 		</td>
 		<td>
 			<% foreach (var c in p.CategorieLijst)

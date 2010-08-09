@@ -7,6 +7,12 @@
 	<%=Html.Encode(ViewData.Model.GroepsNaam) %>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="HeadContent" runat="server">
+	<% if (Model.MeerdereGroepen != false)
+	{ %>
+	<link href="<%=ResolveUrl("~/Content/MeerdereGroepen.css")%>" rel="stylesheet"
+		type="text/css" />
+	<%		}
+	%>
 	<asp:ContentPlaceHolder runat="server" ID="head" />
 </asp:Content>
 <asp:Content ContentPlaceHolderID="PaginaTitelContent" runat="server">

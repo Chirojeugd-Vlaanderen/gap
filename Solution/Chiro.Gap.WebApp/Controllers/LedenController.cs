@@ -279,7 +279,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public ActionResult DeActiveren(int id, int groepID)
 		{
-			string fouten = String.Empty; //TODO fouten opvangen
+			string fouten = String.Empty; // TODO fouten opvangen
 			ServiceHelper.CallService<ILedenService>(l => l.Uitschrijven(new List<int> { id }, out fouten));
 
 			// TODO: beter manier om problemen op te vangen dan via een string
@@ -305,7 +305,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/*[HandleError]
 		public ActionResult Activeren(int id, int groepID)
 		{
-			string fouten; //TODO fouten opvangen
+			string fouten; // TODO fouten opvangen
 			ServiceHelper.CallService<ILedenService>(l => l.Inschrijven(new List<int> { id }, out fouten));
 			TempData["succes"] = Properties.Resources.LidActiefGemaakt;
 
@@ -343,25 +343,24 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
-				// TODO: afdelingen sorteren. Bij voorkeur op leeftijd, anders alfabetisch.
 				model.Titel = String.Format(Properties.Resources.AfdelingenAanpassen, model.Info.VolledigeNaam);
 				return View("AfdelingBewerken", model);
 			}
 		}
 
 		// 
-		// POST: /Leden/AfdelingBewerken/5
+		// POST: /Leden/AfdelingBewerken?lidID=5
 		// FIXME lidID wordt automatisch ingevuld als er eenzelfde argument in de GET methode van afdelingBewerken staat. Dit is eigenlijk helemaal niet mooi want wordt niet geverifieerd en zelfs 2de niveau afhankelijkheid van aspx.
 		[AcceptVerbs(HttpVerbs.Post)]
 		[HandleError]
-		public ActionResult AfdelingBewerken(LidAfdelingenModel model, int groepID, int lidID)
+		public ActionResult AfdelingBewerken(LidAfdelingenModel model, int lidID)
 		{
 			// FIXME: Het is geen prachtige code: AfdelingenVervangen die 'toevallig'
 			// een GelieerdePersoonID oplevert, die ik dan in dit specifieke geval
 			// 'toevallig' kan gebruiken om naar de juiste personenfiche om te schakelen.
 
-			int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(
-				svc => svc.AfdelingenVervangen(lidID, model.Info.AfdelingsJaarIDs));
+			// De returnwaarde van de volgende call hebben we nergens voor nodig.
+			ServiceHelper.CallService<ILedenService, int>(svc => svc.AfdelingenVervangen(lidID, model.Info.AfdelingsJaarIDs));
 			return TerugNaarVorigeFiche();
 		}
 

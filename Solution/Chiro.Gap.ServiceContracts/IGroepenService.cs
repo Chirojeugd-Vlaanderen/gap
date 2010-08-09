@@ -14,7 +14,7 @@ using Chiro.Gap.ServiceContracts.FaultContracts;
 namespace Chiro.Gap.ServiceContracts
 {
 	// NOTE: If you change the interface name "IGroepenService" here, you must also update the reference to "IGroepenService" in Web.config.
-	
+
 	/// <summary>
 	/// ServiceContract voor de GroepenService
 	/// </summary>
@@ -247,7 +247,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-        IEnumerable<FunctieDetail> FunctiesOphalen(int groepsWerkJaarID, LidType lidType);
+		IEnumerable<FunctieDetail> FunctiesOphalen(int groepsWerkJaarID, LidType lidType);
 
 		/// <summary>
 		/// Zoekt naar problemen ivm de maximum- en minimumaantallen van functies voor het

@@ -10,7 +10,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 	<%	// De stylesheet en de shortcut icon worden hier 2 keer gereferencet. De eerste is in principe niet nodig, maar als die
 		// ontbreekt, protesteert de aspx-editor dat hij klasses niet vindt. De tweede is nodig als de app niet in
-		// de 'root' van de webserver staat (zoals het geval in de live-omgeving). 
+		// de 'root' van de webserver staat (zoals het geval is in de live-omgeving). 
 		// En dit staat in servercomments ipv html-comments omdat gebruikers daar geen zaken mee hebben. :)		%>
 	<link href="/Content/Site.css" rel="stylesheet" type="text/css" />
 	<link href="<%=ResolveUrl("~/Content/Site.css")%>" rel="stylesheet" type="text/css" />
@@ -32,6 +32,10 @@
 				%><br />
 				[<a href="https://extranet.chiro.be/Gebruiker" title="Je wachtwoord veranderen">Wachtwoord
 					wijzigen</a>]<br />
+				<div id="AndereGroepLink" visible="false">
+					<br />
+					[<%=Html.ActionLink("Andere groep kiezen", "Index", "Gav") %>]
+				</div>
 			</div>
 			<div id="topNavigatie">
 				<asp:ContentPlaceHolder ID="NavigatieContent" runat="server" />
@@ -39,16 +43,16 @@
 		</div>
 		<div id="main">
 			<% if (TempData["fout"] != null)
-				{ %>
-					<div class="Foutmelding">
-						<%= TempData["fout"].ToString().Replace(Environment.NewLine, "<br />")%>
-					</div>
-				<% } %>
+	  { %>
+			<div class="Foutmelding">
+				<%= TempData["fout"].ToString().Replace(Environment.NewLine, "<br />")%>
+			</div>
+			<% } %>
 			<% if (TempData["succes"] != null)
-				{ %>
-					<div class="Succesmelding">
-						<%= TempData["succes"].ToString().Replace(Environment.NewLine, "<br />")%>
-					</div>
+	  { %>
+			<div class="Succesmelding">
+				<%= TempData["succes"].ToString().Replace(Environment.NewLine, "<br />")%>
+			</div>
 			<% } %>
 			<asp:ContentPlaceHolder ID="BodyContent" runat="server" />
 			<div id="footer">

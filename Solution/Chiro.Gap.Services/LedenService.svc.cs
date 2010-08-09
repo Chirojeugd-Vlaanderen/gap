@@ -82,8 +82,8 @@ namespace Chiro.Gap.Services
 		/// string waarin wat uitleg staat. TODO: beter systeem vinden voor deze feedback.</param>
 		/// <returns>De LidID's van de personen die lid zijn gemaakt</returns>
 		/// <remarks>
-		/// Iedereen die kan lid gemaakt worden, wordt lid, zelfs als dit voor andere personen niet lukt. Voor die personen worden dan foutberichten
-		/// teruggegeven.
+		/// Iedereen die lid gemaakt kan worden, wordt lid - zelfs als dat voor andere personen niet lukt. 
+		/// Voor die anderen worden dan foutberichten teruggegeven.
 		/// </remarks>
 		/// <throws>NotSupportedException</throws> // TODO handle
 		public IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, LidType type, out string foutBerichten)
@@ -121,14 +121,16 @@ namespace Chiro.Gap.Services
 						{
 							var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
-							// TODO: hier moet nog ergens een controle gebeuren of de persoon niet overleden is - zie ticket #632
+							// TODO (#632): hier moet nog ergens een controle gebeuren of de persoon niet overleden is
 
 							if (l != null) // al ingeschreven of non-actief
 							{
 								if (l.Type != type) // lid wordt als leiding ingeschreven of omgekeerd
 								{
-									// TODO (#616): maak ander lidobject aan
-									throw new NotImplementedException();
+									// TODO (#616): maak ander lidobject aan (maak lid leiding of omgekeerd)
+									// Nu laten we gewoon weten dat de persoon al ingeschreven is
+									foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.AlAndersIngeschreven, gp.Persoon.VolledigeNaam, l.Type));
+									continue;
 								}
 								if (!l.NonActief)
 								{

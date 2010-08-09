@@ -485,7 +485,7 @@ namespace Chiro.Gap.Services
 						naarAdres.Bus,
 						naarAdres.WoonPlaatsNaam,
 						naarAdres.PostNr,
-						null);	// TODO: buitenlandse adressen (#238)
+						null);	// TODO (#238): buitenlandse adressen 
 				}
 				catch (OngeldigObjectException ex)
 				{
@@ -972,7 +972,7 @@ namespace Chiro.Gap.Services
 		{
 			try
 			{
-				// TODO: Heel de gelieerde persoon + persoon ophalen voor enkel 1 ID is nog altijd overkill; zie issue #154
+				// TODO (#154): Heel de gelieerde persoon + persoon ophalen voor enkel 1 ID is nog altijd overkill
 				return _gpMgr.Ophalen(gelieerdePersoonID).Persoon.ID;
 			}
 			catch (Exception ex)

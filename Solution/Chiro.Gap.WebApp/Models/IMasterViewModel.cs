@@ -39,6 +39,11 @@ namespace Chiro.Gap.WebApp.Models
 		string Titel { get; }
 
 		/// <summary>
+		/// Kan de GAV meerdere groepen beheren?
+		/// </summary>
+		bool? MeerdereGroepen { get; set; }
+
+		/// <summary>
 		/// Mededelingen die ergens getoond moeten worden
 		/// </summary>
 		IList<Mededeling> Mededelingen { get; set; }

@@ -283,6 +283,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Content Include="Content\MeerdereGroepen.css" />
     <Content Include="Help\Groep.htm" />
     <Content Include="Help\PersoonlijkeGegevensfiche.htm" />
     <Content Include="Help\Iedereen.htm" />

@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 
 using Chiro.Gap.Domain;
@@ -59,6 +60,8 @@ namespace Chiro.Gap.WebApp.Models
 
 		public string Titel { get; set; }
 
+		public bool? MeerdereGroepen { get; set; }
+		
 		public IList<Mededeling> Mededelingen { get; set; }
 
 		#endregion

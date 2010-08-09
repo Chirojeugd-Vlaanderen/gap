@@ -313,6 +313,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MeerGroepen.
+        /// </summary>
+        public static string MeerdereGroepenCacheKey {
+            get {
+                return ResourceManager.GetString("MeerdereGroepenCacheKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De personen zijn nu ingeschreven in je groep..
         /// </summary>
         public static string MultiIngeschrevenFeedback {

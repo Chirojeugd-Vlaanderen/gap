@@ -527,3 +527,8 @@ li.nietgoed
 li.goed
 {
 }
+
+#AndereGroepLink
+{
+	visibility: hidden;
+}

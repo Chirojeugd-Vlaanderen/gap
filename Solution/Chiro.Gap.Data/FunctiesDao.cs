@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.Orm;
@@ -30,7 +31,7 @@ namespace Chiro.Gap.Data.Ef
 		/// </remarks>
 		public FunctiesDao()
 		{
-			ConnectedEntities = new System.Linq.Expressions.Expression<Func<Functie, object>>[]
+			ConnectedEntities = new Expression<Func<Functie, object>>[]
 			{
 				fnc => fnc.Groep
 			};

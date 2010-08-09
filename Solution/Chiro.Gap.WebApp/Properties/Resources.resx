@@ -248,4 +248,7 @@
     <value>AantalProblemen</value>
     <comment>aan te vullen met groepID</comment>
   </data>
+  <data name="MeerdereGroepenCacheKey" xml:space="preserve">
+    <value>MeerGroepen</value>
+  </data>
 </root>

@@ -16,7 +16,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 	{
 		public static string Geslacht(this HtmlHelper htmlHelper, GeslachtsType g)
 		{
-			return g == GeslachtsType.Man ? "&#9794;" : g == GeslachtsType.Vrouw ? "&#9792;" : "&#9794;&#9792;?";
+			return g == GeslachtsType.Man ? "&#9794;" : g == GeslachtsType.Vrouw ? "&#9792;" : "??";
 		}
 	}
 }

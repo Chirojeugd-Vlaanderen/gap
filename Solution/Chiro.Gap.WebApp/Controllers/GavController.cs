@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.ServiceModel;
+using System.Web.Caching;
 using System.Web.Mvc;
 
 using Chiro.Cdf.ServiceHelper;
@@ -28,19 +29,28 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public override ActionResult Index([DefaultParameterValue(0)]int dummyint)
 		{
-		    ActionResult r;
+			ActionResult r;
+			var c = System.Web.HttpContext.Current.Cache;
+			string meerdereGroepenCacheKey = Properties.Resources.MeerdereGroepenCacheKey + User.Identity.Name;
 
 			// Als de gebruiker GAV is van 1 groep, dan wordt er doorgeschakeld naar de
-			// personenlijst van deze groep.  Zo niet krijgt de gebruiker de keuze.
+			// 'startpagina' van deze groep.  Zo niet krijgt de gebruiker de keuze.
 
 			try
 			{
-				var groepInfos = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
-				(g => g.MijnGroepenOphalen());
+				var groepInfos = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>(g => g.MijnGroepenOphalen());
 				if (groepInfos.Count() == 1)
 				{
 					// Redirect naar personenlijst van gevraagde groep;
 					r = RedirectToAction("Index", new { Controller = "Handleiding", groepID = groepInfos.First().ID });
+
+					c.Add(meerdereGroepenCacheKey,
+							  false,
+							  null,
+							  Cache.NoAbsoluteExpiration,
+							  new TimeSpan(2, 0, 0),
+							  CacheItemPriority.Normal,
+							  null);
 				}
 				else
 				{
@@ -50,6 +60,14 @@ namespace Chiro.Gap.WebApp.Controllers
 					model.Titel = "Kies je Chirogroep";
 					model.GroepenLijst = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
 						(g => g.MijnGroepenOphalen());
+					
+					c.Add(meerdereGroepenCacheKey,
+							  model.GroepenLijst.Count() > 1,
+							  null,
+							  Cache.NoAbsoluteExpiration,
+							  new TimeSpan(2, 0, 0),
+							  CacheItemPriority.Normal,
+							  null);
 
 					r = View("Index", model);
 				}

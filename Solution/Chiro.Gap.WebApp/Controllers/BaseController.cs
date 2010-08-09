@@ -119,15 +119,17 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.GroepsNaam = Properties.Resources.GroepsnaamDefault;
 				model.Plaats = Properties.Resources.GroepPlaatsDefault;
 				model.StamNummer = Properties.Resources.StamNrDefault;
+				model.MeerdereGroepen = false;
 				// model.GroepsCategorieen = new List<SelectListItem>();
 			}
 			else
 			{
+				var c = System.Web.HttpContext.Current.Cache;
+
 				string groepCacheKey = "GI" + groepID;
 				string aantalProblemenCacheKey = Properties.Resources.ProblemenTellingCacheKey + groepID;
 				string problemenCacheKey = Properties.Resources.ProblemenCacheKey + groepID;
-
-				var c = System.Web.HttpContext.Current.Cache;
+				string meerdereGroepenCacheKey = Properties.Resources.MeerdereGroepenCacheKey + User.Identity.Name;
 
 				var gi = (GroepInfo)c.Get(groepCacheKey);
 				if (gi == null)
@@ -147,6 +149,23 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.StamNummer = gi.StamNummer;
 				model.GroepID = gi.ID;
 
+				model.MeerdereGroepen = (bool?)c.Get(meerdereGroepenCacheKey);
+                if(model.MeerdereGroepen == null)
+				{
+					var aantal = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
+						(g => g.MijnGroepenOphalen()).Count();
+
+                    model.MeerdereGroepen = aantal > 1;
+
+					c.Add(meerdereGroepenCacheKey,
+							  aantal > 1,
+							  null,
+							  Cache.NoAbsoluteExpiration,
+							  new TimeSpan(2, 0, 0),
+							  CacheItemPriority.Normal,
+							  null);
+				}
+                
 				// We werken met twee cache-items om te vermijden dat we te veel naar de databank moeten. Het is ook nodig omdat we 
 				// geen null kunnen cachen. Als er geen problemen zijn, moeten we dat dus op een andere manier opslaan:
 				// daarvoor dient de teller.

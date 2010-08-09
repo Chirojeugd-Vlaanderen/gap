@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 
 namespace Chiro.Gap.WebApp.Models
@@ -15,13 +16,13 @@ namespace Chiro.Gap.WebApp.Models
 	/// </remarks>
 	public class MasterViewModel : IMasterViewModel
 	{
-        /// <summary>
-        /// De standaardconstructor maakt gewoon een lege lijst met mededelingen
-        /// </summary>
-        public MasterViewModel()
-        {
-            Mededelingen = new List<Mededeling>();
-        }
+		/// <summary>
+		/// De standaardconstructor maakt gewoon een lege lijst met mededelingen
+		/// </summary>
+		public MasterViewModel()
+		{
+			Mededelingen = new List<Mededeling>();
+		}
 
 		/// <summary>
 		/// ID van de Chirogroep
@@ -47,6 +48,12 @@ namespace Chiro.Gap.WebApp.Models
 		/// Titel van de pagina
 		/// </summary>
 		public string Titel { get; set; }
+
+		/// <summary>
+		/// Kan de GAV meerdere groepen beheren?
+		/// Deze waarde bepaalt of we de link tonen waar je een andere groep kunt kiezen.
+		/// </summary>
+		public bool? MeerdereGroepen { get; set; }
 
 		/// <summary>
 		/// Mededelingen die ergens getoond moeten worden
