@@ -81,7 +81,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// *****************************************************
 			// ** OPGELET! Als je debugger hieronder crasht, dan  **
 			// ** zit er waarschijnlijk een functie met ongeldig  **
-			// ** lidtype in de databank!                         **
+			// ** lidtype in de functietabel!                     **
 			// *****************************************************
 			var list2 = ServiceHelper.CallService<IGroepenService, IEnumerable<FunctieDetail>>(groep => groep.FunctiesOphalen(groepsWerkJaarID, LidType.Alles));
 
