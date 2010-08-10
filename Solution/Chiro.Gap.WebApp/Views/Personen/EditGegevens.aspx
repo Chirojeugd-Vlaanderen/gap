@@ -4,12 +4,14 @@
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server" EnableViewState="False">
-	<script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript" />
-	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript" />
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript" />
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript" />
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript" />
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript" />
+	<!-- OPGELET: de opening en closing tag voor 'script' niet vervangen door 1 enkele tag, want dan
+	toont de browser blijkbaar niets meer van dit form.  (Zie #664) -->
+	<script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript"></script>
+	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript"></script>
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript"></script>
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server"
 	EnableViewState="False">

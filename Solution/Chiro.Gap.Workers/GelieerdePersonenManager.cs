@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+#if KIPDORP
+using System.Transactions;
+#endif
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
