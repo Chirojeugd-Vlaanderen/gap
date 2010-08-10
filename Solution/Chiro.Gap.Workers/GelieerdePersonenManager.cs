@@ -181,16 +181,20 @@ namespace Chiro.Gap.Workers
 #endif
 						var q = _gelieerdePersonenDao.Bewaren(p, ExtrasNaarLambdas(extras));
 
-						// Map to KipSync and send
-						AutoMapper.Mapper.CreateMap<Persoon, KipSync.Persoon>()
-							.ForMember(src => src.AdNr, opt => opt.MapFrom(src => src.AdNummer))
-							.ForMember(src => src.ExtensionData, opt => opt.Ignore());
+						if (p.Persoon.AdNummer != null)
+						{
+							// Wijzigingen van personen met ad-nummer worden doorgesluisd
+							// naar Kipadmin.
 
-						var syncPersoon = AutoMapper.Mapper.Map<Persoon, KipSync.Persoon>(q.Persoon);
+							// Map to KipSync and send
+							AutoMapper.Mapper.CreateMap<Persoon, KipSync.Persoon>()
+								.ForMember(src => src.AdNr, opt => opt.MapFrom(src => src.AdNummer))
+								.ForMember(src => src.ExtensionData, opt => opt.Ignore());
 
-						// Debug.WriteLine(syncPersoon);
+							var syncPersoon = AutoMapper.Mapper.Map<Persoon, KipSync.Persoon>(q.Persoon);
 
-						_sync.PersoonUpdated(syncPersoon);
+							_sync.PersoonUpdated(syncPersoon);
+						}
 
 						return q;
 #if KIPDORP
