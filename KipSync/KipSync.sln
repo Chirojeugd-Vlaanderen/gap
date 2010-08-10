@@ -55,4 +55,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{BD1B30CF-F53D-47DB-B429-EF6C7E65985E} = {59077D46-383E-4E2D-A59C-81FFB5F9597A}
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = .
+	EndGlobalSection
 EndGlobal
