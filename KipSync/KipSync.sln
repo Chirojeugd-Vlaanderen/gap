@@ -19,6 +19,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjecten", "TestProjec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.Services.Test", "Test\Chiro.Kip.Services.Test\Chiro.Kip.Services.Test.csproj", "{BD1B30CF-F53D-47DB-B429-EF6C7E65985E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Data.Entity", "Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj", "{F4145652-EF28-4F23-A11E-CD68D4AA2A05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Data", "Chiro.Cdf.Data\Chiro.Cdf.Data.csproj", "{72F61656-2949-4763-9381-678B2D07AE0B}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = KipSync.vsmdi
@@ -48,6 +52,14 @@ Global
 		{BD1B30CF-F53D-47DB-B429-EF6C7E65985E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD1B30CF-F53D-47DB-B429-EF6C7E65985E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD1B30CF-F53D-47DB-B429-EF6C7E65985E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72F61656-2949-4763-9381-678B2D07AE0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72F61656-2949-4763-9381-678B2D07AE0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72F61656-2949-4763-9381-678B2D07AE0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72F61656-2949-4763-9381-678B2D07AE0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

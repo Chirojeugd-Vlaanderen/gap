@@ -20,7 +20,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "fk_Lid_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.Groep), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.Lid))]
 
 // Original file name:
-// Generation date: 11/08/2010 12:18:32
+// Generation date: 11/08/2010 22:31:58
 namespace Chiro.Kip.Data
 {
     
@@ -279,7 +279,7 @@ namespace Chiro.Kip.Data
     /// There are no comments for kipadminModel.Adres in the schema.
     /// </summary>
     /// <KeyProperties>
-    /// AdresId
+    /// ID
     /// </KeyProperties>
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="kipadminModel", Name="Adres")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
@@ -289,38 +289,38 @@ namespace Chiro.Kip.Data
         /// <summary>
         /// Create a new Adres object.
         /// </summary>
-        /// <param name="adresId">Initial value of AdresId.</param>
+        /// <param name="id">Initial value of ID.</param>
         /// <param name="straat">Initial value of Straat.</param>
-        public static Adres CreateAdres(int adresId, string straat)
+        public static Adres CreateAdres(int id, string straat)
         {
             Adres adres = new Adres();
-            adres.AdresId = adresId;
+            adres.ID = id;
             adres.Straat = straat;
             return adres;
         }
         /// <summary>
-        /// There are no comments for Property AdresId in the schema.
+        /// There are no comments for Property ID in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int AdresId
+        public int ID
         {
             get
             {
-                return this._AdresId;
+                return this._ID;
             }
             set
             {
-                this.OnAdresIdChanging(value);
-                this.ReportPropertyChanging("AdresId");
-                this._AdresId = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("AdresId");
-                this.OnAdresIdChanged();
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
             }
         }
-        private int _AdresId;
-        partial void OnAdresIdChanging(int value);
-        partial void OnAdresIdChanged();
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
         /// <summary>
         /// There are no comments for Property Straat in the schema.
         /// </summary>
@@ -462,7 +462,7 @@ namespace Chiro.Kip.Data
     /// There are no comments for kipadminModel.AdresType in the schema.
     /// </summary>
     /// <KeyProperties>
-    /// AdresTypeId
+    /// ID
     /// </KeyProperties>
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="kipadminModel", Name="AdresType")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
@@ -472,38 +472,38 @@ namespace Chiro.Kip.Data
         /// <summary>
         /// Create a new AdresType object.
         /// </summary>
-        /// <param name="adresTypeId">Initial value of AdresTypeId.</param>
+        /// <param name="id">Initial value of ID.</param>
         /// <param name="omschrijving">Initial value of Omschrijving.</param>
-        public static AdresType CreateAdresType(int adresTypeId, string omschrijving)
+        public static AdresType CreateAdresType(int id, string omschrijving)
         {
             AdresType adresType = new AdresType();
-            adresType.AdresTypeId = adresTypeId;
+            adresType.ID = id;
             adresType.Omschrijving = omschrijving;
             return adresType;
         }
         /// <summary>
-        /// There are no comments for Property AdresTypeId in the schema.
+        /// There are no comments for Property ID in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int AdresTypeId
+        public int ID
         {
             get
             {
-                return this._AdresTypeId;
+                return this._ID;
             }
             set
             {
-                this.OnAdresTypeIdChanging(value);
-                this.ReportPropertyChanging("AdresTypeId");
-                this._AdresTypeId = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("AdresTypeId");
-                this.OnAdresTypeIdChanged();
+                this.OnIDChanging(value);
+                this.ReportPropertyChanging("ID");
+                this._ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ID");
+                this.OnIDChanged();
             }
         }
-        private int _AdresTypeId;
-        partial void OnAdresTypeIdChanging(int value);
-        partial void OnAdresTypeIdChanged();
+        private int _ID;
+        partial void OnIDChanging(int value);
+        partial void OnIDChanged();
         /// <summary>
         /// There are no comments for Property Omschrijving in the schema.
         /// </summary>

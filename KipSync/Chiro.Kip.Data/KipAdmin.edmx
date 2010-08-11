@@ -378,9 +378,9 @@
         </EntityContainer>
         <EntityType Name="Adres">
           <Key>
-            <PropertyRef Name="AdresId" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="AdresId" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Straat" Type="String" Nullable="false" MaxLength="40" Unicode="false" FixedLength="false" />
           <Property Name="Nr" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
           <Property Name="PostNr" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
@@ -390,9 +390,9 @@
         </EntityType>
         <EntityType Name="AdresType">
           <Key>
-            <PropertyRef Name="AdresTypeId" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="AdresTypeId" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Omschrijving" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
           <Property Name="Code" Type="String" MaxLength="4" Unicode="false" FixedLength="true" />
           <NavigationProperty Name="kipWoont" Relationship="kipadminModel.FK__kipWoont__AdresT__628582E0" FromRole="kipAdresType" ToRole="kipWoont" />
@@ -555,7 +555,7 @@
           <End Role="kipWoont" Type="kipadminModel.Woont" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="kipAdres">
-              <PropertyRef Name="AdresId" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="kipWoont">
               <PropertyRef Name="AdresId" />
@@ -619,7 +619,7 @@
           <EntitySetMapping Name="AdresSet">
             <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Adres)">
               <MappingFragment StoreEntitySet="kipAdres">
-                <ScalarProperty Name="AdresId" ColumnName="AdresId" />
+                <ScalarProperty Name="ID" ColumnName="AdresId" />
                 <ScalarProperty Name="Straat" ColumnName="Straat" />
                 <ScalarProperty Name="Nr" ColumnName="Nr" />
                 <ScalarProperty Name="PostNr" ColumnName="PostNr" />
@@ -631,7 +631,7 @@
           <EntitySetMapping Name="AdresTypeSet">
             <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.AdresType)">
               <MappingFragment StoreEntitySet="kipAdresType">
-                <ScalarProperty Name="AdresTypeId" ColumnName="AdresTypeId" />
+                <ScalarProperty Name="ID" ColumnName="AdresTypeId" />
                 <ScalarProperty Name="Omschrijving" ColumnName="Omschrijving" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
               </MappingFragment>
@@ -784,7 +784,7 @@
           </EntitySetMapping>
           <AssociationSetMapping Name="FK__kipWoont__AdresI__61915EA7" TypeName="kipadminModel.FK__kipWoont__AdresI__61915EA7" StoreEntitySet="kipWoont">
             <EndProperty Name="kipAdres">
-              <ScalarProperty Name="AdresId" ColumnName="AdresId" />
+              <ScalarProperty Name="ID" ColumnName="AdresId" />
             </EndProperty>
             <EndProperty Name="kipWoont">
               <ScalarProperty Name="AdNr" ColumnName="AdNr" />
@@ -793,7 +793,7 @@
           </AssociationSetMapping>
           <AssociationSetMapping Name="FK__kipWoont__AdresT__628582E0" TypeName="kipadminModel.FK__kipWoont__AdresT__628582E0" StoreEntitySet="kipWoont">
             <EndProperty Name="kipAdresType">
-              <ScalarProperty Name="AdresTypeId" ColumnName="AdresTypeId" />
+              <ScalarProperty Name="ID" ColumnName="AdresTypeId" />
             </EndProperty>
             <EndProperty Name="kipWoont">
               <ScalarProperty Name="AdNr" ColumnName="AdNr" />
@@ -875,7 +875,7 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram Name="KipAdmin">
+      <Diagram Name="KipAdmin" ZoomLevel="89">
         <EntityTypeShape EntityType="kipadminModel.Adres" Width="1.5" PointX="3.75" PointY="18.5" Height="2.3648893229166674" IsExpanded="true" />
         <EntityTypeShape EntityType="kipadminModel.AdresType" Width="1.5" PointX="3.75" PointY="14.875" Height="1.7879850260416674" IsExpanded="true" />
         <EntityTypeShape EntityType="kipadminModel.ContactInfo" Width="1.5" PointX="3" PointY="7.25" Height="2.1725878906250005" IsExpanded="true" />

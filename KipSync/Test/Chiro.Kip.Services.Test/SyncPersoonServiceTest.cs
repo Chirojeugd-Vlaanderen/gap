@@ -65,55 +65,25 @@ namespace Chiro.Kip.Services.Test
         //
         #endregion
 
+    	/// <summary>
+    	///A test for AdresUpdated
+    	///</summary>
+    	[TestMethod]
+    	public void AdresUpdatedTest()
+    	{
+    		var target = new SyncPersoonService(); // TODO: Initialize to an appropriate value
 
-        /// <summary>
-        ///A test for AdresUpdated
-        ///</summary>
-        [TestMethod()]
-        public void AdresUpdatedTest()
-        {
-            var target = new SyncPersoonService(); // TODO: Initialize to an appropriate value
-            var persoon = new Persoon()
-            {
-                AdNr = 17903,
-                Geboortedatum = new DateTime(1971, 5, 14),
-                Geslacht = GeslachtsEnum.Man,
-                ID = 205,
-                Naam = "Haepers",
-                Sterfdatum = null,
-                Voornaam = "Tommy"
-            };
-
-            var adreslijst = new List<Adres>()
-                                 {
-                                     new Adres()
-
-                                         {
-                                             AdresType = AdresTypeEnum.Thuis,
-                                             Straat = "Nijverheidsstraat",
-                                               HuisNr = 58,
-                                                Postnummer = 2840,
-                                             Woonplaats = "Rumst",
-                                            Land = "België"
-                                         },
-                                         new Adres()
-                                             {
-                                                 AdresType = AdresTypeEnum.Werk,
-                                             Straat = "Bessenveldstraat",
-                                               HuisNr = 19,
-                                                Postnummer = 1831,
-                                             Woonplaats = "Diegem",
-                                            Land = "België"
-                                             }
-                                 }
-
-                ;
-
-
-            IEnumerable<Adres> adreses = adreslijst;
-            target.AdresUpdated(persoon, adreses);
-            
-        }
+    		var a = new Adres
+    		        	{
+    		        		AdresType = AdresTypeEnum.Thuis,
+    		        		Straat = "Kipdorp",
+    		        		HuisNr = 30,
+    		        		Postnummer = 2000,
+    		        		Woonplaats = "Antwerpen",
+    		        		Land = ""
+    		        	};
+    		target.VoorkeurAdresUpdated(a, new int[] {39198, 85111});
+    	}
 
         /// <summary>
         ///A test for CommunicatieUpdated
