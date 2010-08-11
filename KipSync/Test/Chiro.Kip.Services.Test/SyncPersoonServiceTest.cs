@@ -78,7 +78,7 @@ namespace Chiro.Kip.Services.Test
                 AdNr = 17903,
                 Geboortedatum = new DateTime(1971, 5, 14),
                 Geslacht = GeslachtsEnum.Man,
-                Id = 205,
+                ID = 205,
                 Naam = "Haepers",
                 Sterfdatum = null,
                 Voornaam = "Tommy"
@@ -127,7 +127,7 @@ namespace Chiro.Kip.Services.Test
                 AdNr = 17903,
                 Geboortedatum = new DateTime(1971, 5, 14),
                 Geslacht = GeslachtsEnum.Man,
-                Id = 205,
+                ID = 205,
                 Naam = "Haepers",
                 Sterfdatum = null,
                 Voornaam = "Tommy"
@@ -150,7 +150,7 @@ namespace Chiro.Kip.Services.Test
                                       AdNr = 17903,
                                       Geboortedatum = new DateTime(1971, 5, 14),
                                       Geslacht = GeslachtsEnum.Man,
-                                      Id = 205,
+                                      ID = 205,
                                       Naam = "Haepers",
                                       Sterfdatum = null,
                                       Voornaam = "Tommy"
@@ -171,7 +171,7 @@ namespace Chiro.Kip.Services.Test
             {
                 Geboortedatum = new DateTime(1971, 5, 14),
                 Geslacht = GeslachtsEnum.Man,
-                Id = 2000,
+                ID = 2000,
                 Naam = "HaepersNew",
                 Sterfdatum = null,
                 Voornaam = "Benny"

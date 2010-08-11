@@ -19,7 +19,7 @@ namespace Chiro.Kip.Services.DataContracts
     public class Persoon
     {
         [DataMember]
-        public int Id { get; set; }
+        public int ID { get; set; }
 
         [DataMember]
         public int? AdNr { get; set; }

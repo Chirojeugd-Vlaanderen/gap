@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="kipadminModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+    <Schema Namespace="kipadminModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
         <EntityContainer Name="kipadminModelStoreContainer">
           <EntitySet Name="kipAdres" EntityType="kipadminModel.Store.kipAdres" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="kipAdresType" EntityType="kipadminModel.Store.kipAdresType" store:Type="Tables" Schema="dbo" />
@@ -123,6 +123,7 @@
           <Property Name="KlantBoekhouding" Type="bit" Nullable="false" />
           <Property Name="GegevensBoekhoudingOvergezet" Type="bit" Nullable="false" />
           <Property Name="Stempel" Type="datetime" Nullable="false" />
+          <Property Name="GapID" Type="int" />
         </EntityType>
         <EntityType Name="kipWoont">
           <Key>
@@ -323,8 +324,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="kipadminModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
@@ -452,7 +452,7 @@
           <NavigationProperty Name="kipContactInfo" Relationship="kipadminModel.FK__kipContact__AdNr__6A26A4A8" FromRole="kipPersoon" ToRole="kipContactInfo" />
           <NavigationProperty Name="kipWoont" Relationship="kipadminModel.FK__kipWoont__AdNr__609D3A6E" FromRole="kipPersoon" ToRole="kipWoont" />
           <NavigationProperty Name="Lid" Relationship="kipadminModel.FK_Leid_Kad_Persoon" FromRole="kipPersoon" ToRole="Lid" />
-        </EntityType>
+          <Property Name="GapID" Type="Int32" Nullable="true" /></EntityType>
         <EntityType Name="Woont">
           <Key>
             <PropertyRef Name="AdNr" />
@@ -673,6 +673,7 @@
           <EntitySetMapping Name="PersoonSet">
             <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Persoon)">
               <MappingFragment StoreEntitySet="kipPersoon">
+                <ScalarProperty Name="GapID" ColumnName="GapID" />
                 <ScalarProperty Name="AdNr" ColumnName="AdNr" />
                 <ScalarProperty Name="Naam" ColumnName="Naam" />
                 <ScalarProperty Name="VoorNaam" ColumnName="VoorNaam" />
