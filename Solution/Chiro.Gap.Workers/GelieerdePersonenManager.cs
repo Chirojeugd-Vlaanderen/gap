@@ -173,13 +173,14 @@ namespace Chiro.Gap.Workers
 
 				if (origineel == null || origineel.Persoon.AdNummer == p.Persoon.AdNummer)
 				{
-					// TODO (#511): De transacties aanschakelen, nu gaat dat niet omdat we de in een werkgroep zitten
+					GelieerdePersoon q; // hier komt de bewaarde persoon, met eventuele
+							    // nieuwe ID's
 
 #if KIPDORP
 					using (var tx = new TransactionScope())
 					{
 #endif
-						var q = _gelieerdePersonenDao.Bewaren(p, ExtrasNaarLambdas(extras));
+						q = _gelieerdePersonenDao.Bewaren(p, ExtrasNaarLambdas(extras));
 
 						if (p.Persoon.AdNummer != null)
 						{
@@ -195,11 +196,11 @@ namespace Chiro.Gap.Workers
 
 							_sync.PersoonUpdated(syncPersoon);
 						}
-
-						return q;
 #if KIPDORP
+						tx.Complete();
 					}
 #endif
+					return q;
 				}
 				else
 				{
