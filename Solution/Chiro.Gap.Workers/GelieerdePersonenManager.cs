@@ -11,6 +11,7 @@ using System.Linq.Expressions;
 #if KIPDORP
 using System.Transactions;
 #endif
+using System.Transactions;
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
@@ -771,13 +772,53 @@ namespace Chiro.Gap.Workers
 				pa.TeVerwijderen = true;
 			}
 
-			// TODO: Bewaren in 1 transactie
+#if KIPDORP
+			using (var tx = new TransactionScope())
+			{
+#endif
+				// eerst syncen naar kipadmin (gewoon om debugtechnische redenen; we zitten toch in
+				// een transactie.)
+				// geef nieuwe voorkeursadressen van personen met ad-nummer door aan kipadmin
+				var voorKeursAdressen = (from gp in gelieerdePersonen
+				                         select gp.PersoonsAdres.Adres).Distinct();
 
-			// bewaar al dan niet aangepaste voorkeursadres
-			_gelieerdePersonenDao.Bewaren(gelieerdePersonen, gp => gp.PersoonsAdres);
+				// TODO: (#238) Buitenlandse adressen.
+				// TODO: het syncen van voorkeursadres gebeurt op 3 verschillende plaatsen, telkens
+				// op min of meer dezelfde manier.  Kan dat niet beter?
 
-			// verwijder te verwijderen persoonsadres
-			_personenDao.Bewaren(personen, p => p.PersoonsAdres.First().GelieerdePersoon);
+				foreach (var vka in voorKeursAdressen)
+				{
+					var syncAdres = new KipSync.Adres
+					                	{
+					                		Bus = vka.Bus,
+					                		HuisNr = vka.HuisNr,
+					                		Land = "",
+					                		PostNr = vka.StraatNaam.PostNummer,
+					                		Straat = vka.StraatNaam.Naam,
+					                		WoonPlaats = vka.WoonPlaats.Naam
+					                	};
+					var syncBewoners = from gp in gelieerdePersonen
+					                   where gp.PersoonsAdres.Adres == vka && gp.Persoon.AdNummer != null
+					                   select new KipSync.Bewoner
+					                          	{
+					                          		AdNummer = (int) gp.Persoon.AdNummer,
+					                          		AdresType = (KipSync.AdresTypeEnum) gp.PersoonsAdres.AdresType
+					                          	};
+					_sync.VoorkeurAdresUpdated(syncAdres, syncBewoners.ToList());
+				}
+
+				// dan bewaren in GAP
+				// bewaar al dan niet aangepaste voorkeursadres
+				_gelieerdePersonenDao.Bewaren(gelieerdePersonen, gp => gp.PersoonsAdres);
+
+				// verwijder te verwijderen persoonsadres
+				_personenDao.Bewaren(personen, p => p.PersoonsAdres.First().GelieerdePersoon);
+
+
+#if KIPDORP
+				tx.Complete();
+			}
+#endif
 		}
 
 		/// <summary>

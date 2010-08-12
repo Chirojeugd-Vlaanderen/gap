@@ -91,6 +91,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="alleGelieerdePersonen">Indien true, worden alle gelieerde personen van de bewoners mee opgehaald,
 		/// ook diegene waar je geen GAV voor bent.</param>
 		/// <returns>Het gevraagde adres met de relevante bewoners.</returns>
+		/// <remarks>ALLE ANDERE ADRESSEN VAN DE GEKOPPELDE BEWONERS WORDEN OOK MEE OPGEHAALD</remarks>
 		public Adres AdresMetBewonersOphalen(int adresID, int groepID, bool alleGelieerdePersonen)
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
@@ -109,9 +110,10 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="adresID">ID van het op te halen adres</param>
 		/// <param name="groepIDs">ID van de groepen waaruit bewoners moeten worden gehaald</param>
-		/// <param name="alleGelieerdePersonen">Indien true, worden alle gelieerde personen van de bewoners mee opgehaald,
-		/// ook diegene waar je geen GAV voor bent.</param>
+		/// <param name="alleGelieerdePersonen">Indien true, worden alle gelieerde personen van de bewoners 
+		/// mee opgehaald, ook diegene waar je geen GAV voor bent.</param>
 		/// <returns>Het gevraagde adres met de relevante bewoners.</returns>
+		/// <remarks>ALLE ANDERE ADRESSEN VAN DE GEKOPPELDE BEWONERS WORDEN OOK MEE OPGEHAALD</remarks>
 		public Adres AdresMetBewonersOphalen(int adresID, IEnumerable<int> groepIDs, bool alleGelieerdePersonen)
 		{
 			if (_autorisatieMgr.IsGavGroepen(groepIDs))

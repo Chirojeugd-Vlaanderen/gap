@@ -35,6 +35,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="groepIDs">ID's van de groepen waaruit bewoners moeten worden gehaald</param>
 		/// <param name="metAlleGelieerdePersonen">Haalt alle gelieerde personen op, gekoppeld aan de personen (ook al zijn
 		/// ze gelieerd aan een andere groep dan de jouwe.</param>
+		/// <remarks>ALLE ANDERE ADRESSEN VAN DE GEKOPPELDE BEWONERS WORDEN OOK MEE OPGEHAALD</remarks>
 		/// <returns>Het gevraagde adres met de relevante bewoners.</returns>
 		Adres BewonersOphalen(int adresID, IEnumerable<int> groepIDs, bool metAlleGelieerdePersonen);
 

@@ -231,7 +231,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="alleGelieerdePersonen">Indien <c>true</c> worden alle gelieerde personen van de bewoners mee opgehaald, 
 		/// inclusief de gelieerde personen die tot een andere groep behoren.</param>
 		/// <returns>Het gevraagde adres met de relevante bewoners.</returns>
-		/// <remarks>Alle andere adressen van de gekoppelde bewoners worden helaas ook mee opgehaald</remarks>
+		/// <remarks>ALLE ANDERE ADRESSEN VAN DE GEKOPPELDE BEWONERS WORDEN OOK MEE OPGEHAALD</remarks>
 		public Adres BewonersOphalen(int adresID, IEnumerable<int> groepIDs, bool alleGelieerdePersonen)
 		{
 			Adres adres;
@@ -245,7 +245,8 @@ namespace Chiro.Gap.Data.Ef
 					// alle gelieerde personen gelieerd aan groep, en wonend op adres
 
 					gps = (from gp in db.GelieerdePersoon
-							.Include(gp2 => gp2.Persoon.PersoonsAdres.First().Adres)
+							.Include(gp2 => gp2.Persoon.PersoonsAdres.First().Adres.StraatNaam)
+							.Include(gp2 => gp2.Persoon.PersoonsAdres.First().Adres.WoonPlaats)
 							.Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.Groep.ID, groepIDs))
 						   where gp.Persoon.PersoonsAdres.Any(pa => pa.Adres.ID == adresID)
 						   select gp).ToArray();
@@ -264,7 +265,10 @@ namespace Chiro.Gap.Data.Ef
 
 					var query = (from gp in pers.SelectMany(p => p.GelieerdePersoon) select gp) as ObjectQuery<GelieerdePersoon>;
 
-					gps = query.Include(gp => gp.Persoon.PersoonsAdres.First().Adres).ToArray();
+					gps = query
+						.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.StraatNaam)
+						.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.WoonPlaats)
+						.ToArray();
 				}
 
 				// Ik heb nu alle gelieerde personen die ik nodig heb, wel met veel te veel adressen, maar soit.
