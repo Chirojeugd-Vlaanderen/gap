@@ -19,19 +19,23 @@ using Chiro.Gap.Workers.Exceptions;
 namespace Chiro.Gap.Workers
 {
 	/// <summary>
-	/// TODO (#190): Documenteren
+	/// DONE (#190): Documenteren
+	/// Klasse met extra methode om het einde van de jaarovergang in een groepswerkjaar op te vragen.
 	/// </summary>
 	public static class GroepsWerkJaarHelper
 	{
 		/// <summary>
-		/// TODO (#190): Documenteren
+		/// DONE (#190): Documenteren
+		/// Berekend aan de hand van een gegeven werkjaar de datum van het verplichte einde van de instapperiode in dat jaar.
+		/// Belangrijk => volgens de HUIDIGE settings van dat werkjaareinde (moest dat in de toekomst veranderen en we hebben dat van vroeger nodig)
 		/// </summary>
 		/// <param name="gwj">Het groepswerkjaar waarvoor we het einde van de jaarovergang willen berekenen</param>
 		/// <returns>De datum waarom de jaarovergang eindigt</returns>
 		public static DateTime GetEindeJaarovergang(this GroepsWerkJaar gwj)
 		{
-			// TODO is werkjaar altijd het JAAR waarin het werkjaar begint??? => antwoord: ja
-			return new DateTime(gwj.WerkJaar, 10, 15); // TODO (#610): 15 oktober mag niet hardgecodeerd zijn, dat hoort thuis in de settings
+			var dt = Properties.Settings.Default.WerkjaarVerplichteOvergang;
+			dt.AddYears(gwj.WerkJaar - dt.Year);
+			return dt; // DONE (#610): 15 oktober mag niet hardgecodeerd zijn, dat hoort thuis in de settings
 		}
 	}
 
@@ -128,11 +132,6 @@ namespace Chiro.Gap.Workers
 			if (voriggwj != null)
 			{
 				lid.EindeInstapPeriode = gwj.GetEindeJaarovergang();
-
-				// @Broes: Het enige moment waarop dit relevant is, is bij de overgang naar een
-				// nieuw werkjaar.  Is het dan niet te doen om in de procedure van de overgang,
-				// gewoon achteraf alle probeerperiodes van de overgezette leden op 15/10 te laten
-				// eindigen?
 			}
 			else
 			{
@@ -202,10 +201,7 @@ namespace Chiro.Gap.Workers
 					  select a).FirstOrDefault();
 
 			// Als dit niet zo is, kies dan de eerste afdeling die voldoet aan de leeftijdsgrenzen.
-			if (aj == null)
-			{
-				aj = afdelingsjaren.First();
-			}
+			aj = aj ?? afdelingsjaren.First();
 
 // ReSharper disable PossibleNullReferenceException
 			// Elk scenario waarbij k null is, leidt tot een exception, maar dat gebeurt deels in LidMaken, dus ziet ReSharper dat niet
@@ -262,17 +258,16 @@ namespace Chiro.Gap.Workers
 			{
 				return KindMaken(gp, gwj);
 			}
-			else if (gp.Persoon.GeboorteDatum.Value.Year - gp.ChiroLeefTijd > Properties.Settings.Default.MinLeidingLeefTijd)
+			
+			if (gp.Persoon.GeboorteDatum.Value.Year - gp.ChiroLeefTijd < Properties.Settings.Default.MinLeidingLeefTijd)
 			{
-				// OPM: nu wordt hier arbitrair bepaald vanaf welke leeftijd iemand als leiding ingeschreven wordt.
-				// Dat moet eigenlijk afhangen van de afdelinsgverdeling: je moet minstens een jaar ouder zijn dan de oudste aspi's.
-				// TODO (#657): als er afdelingen zijn, moeten die bepalen of iemand kind of leiding wordt
-				return LeidingMaken(gp, gwj);
+				throw new OngeldigObjectException("De persoon is te jong om leiding te worden.");
 			}
-			else
-			{
-				throw new OngeldigObjectException("Kan persoon geen leiding maken");
-			}
+
+			// OPM: nu wordt hier arbitrair bepaald vanaf welke leeftijd iemand als leiding ingeschreven wordt.
+			// Dat moet eigenlijk afhangen van de afdelinsgverdeling: je moet minstens een jaar ouder zijn dan de oudste aspi's.
+			// TODO (#657): als er afdelingen zijn, moeten die bepalen of iemand kind of leiding wordt
+			return LeidingMaken(gp, gwj);
 		}
 
 		/// <summary>
@@ -431,11 +426,12 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
+			Lid nieuwlid;
 			if (lid is Kind)
 			{
 				try
 				{
-					return _daos.KindDao.Bewaren((Kind)lid, ExtrasNaarLambdasKind(extras));
+					nieuwlid = _daos.KindDao.Bewaren((Kind)lid, ExtrasNaarLambdasKind(extras));
 				}
 				catch (KeyViolationException<Kind>)
 				{
@@ -447,7 +443,7 @@ namespace Chiro.Gap.Workers
 				try
 				{
 
-					return _daos.LeidingDao.Bewaren((Leiding)lid, ExtrasNaarLambdasLeiding(extras));
+					nieuwlid = _daos.LeidingDao.Bewaren((Leiding)lid, ExtrasNaarLambdasLeiding(extras));
 				}
 				catch (Exception)
 				{
@@ -458,6 +454,8 @@ namespace Chiro.Gap.Workers
 			{
 				throw new NotSupportedException(Properties.Resources.OngeldigLidType);
 			}
+
+			return nieuwlid;
 		}
 
 		/// <summary>
@@ -472,14 +470,17 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
+
+			Lid lid;
 			if (_daos.LedenDao.IsLeiding(lidID))
 			{
-				return _daos.LeidingDao.Ophalen(lidID, ExtrasNaarLambdasLeiding(extras));
+				lid = _daos.LeidingDao.Ophalen(lidID, ExtrasNaarLambdasLeiding(extras));
 			}
 			else
 			{
-				return _daos.KindDao.Ophalen(lidID, ExtrasNaarLambdasKind(extras));
+				lid = _daos.KindDao.Ophalen(lidID, ExtrasNaarLambdasKind(extras));
 			}
+			return lid;
 		}
 
 		/// <summary>
@@ -566,7 +567,7 @@ namespace Chiro.Gap.Workers
 			{
 				throw new NotImplementedException();
 			}
-			else if (lid is Leiding && lidInfo.Type == LidType.Kind)
+			if (lid is Leiding && lidInfo.Type == LidType.Kind)
 			{
 				throw new NotImplementedException();
 			}
@@ -681,7 +682,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="extras">Te converteren lidextras</param>
 		/// <returns>Lambda-expresses voor een LedenDao</returns>
-		private static Expression<Func<Lid, object>>[] ExtrasNaarLambdasLid(LidExtras extras)
+		private static IEnumerable<Expression<Func<Lid, object>>> ExtrasNaarLambdasLid(LidExtras extras)
 		{
 			return ExtrasNaarLambdas<Lid>(extras & ~LidExtras.Afdelingen).ToArray();
 		}
@@ -694,9 +695,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>Lijst lambda-expressies geschikt voor de LedenDAO</returns>
 		private static IList<Expression<Func<T, object>>> ExtrasNaarLambdas<T>(LidExtras extras) where T : Lid
 		{
-			var paths = new List<Expression<Func<T, object>>>();
-
-			paths.Add(ld => ld.GroepsWerkJaar.WithoutUpdate());
+			var paths = new List<Expression<Func<T, object>>> {ld => ld.GroepsWerkJaar.WithoutUpdate()};
 
 			if ((extras & LidExtras.Adressen) != 0)
 			{
