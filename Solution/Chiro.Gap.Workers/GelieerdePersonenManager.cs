@@ -185,6 +185,10 @@ namespace Chiro.Gap.Workers
 
 						if (gelieerdePersoon.Persoon.AdNummer != null)
 						{
+							#region KipSync
+							// TODO: dat syncen misschien naar ergens anders verhuizen, want nu is dat
+							// nogal een groot blok code dat hier maar staat te staan.
+
 							// Wijzigingen van personen met ad-nummer worden doorgesluisd
 							// naar Kipadmin.
 
@@ -221,6 +225,18 @@ namespace Chiro.Gap.Workers
 
 								_sync.VoorkeurAdresUpdated(syncAdres, new List<Bewoner> {syncBewoner});
 							}
+							if ((extras & PersoonsExtras.Communicatie) != 0 && gelieerdePersoon.Communicatie != null)
+							{
+								var syncCommunicatie = from comm in gelieerdePersoon.Communicatie
+								                       select new KipSync.CommunicatieMiddel
+								                              	{
+								                              		GeenMailings = !comm.IsVoorOptIn,
+								                              		Type = (KipSync.CommunicatieType) comm.CommunicatieType.ID,
+								                              		Waarde = comm.Nummer
+								                              	};
+								_sync.CommunicatieToevoegen((int)gelieerdePersoon.Persoon.AdNummer, syncCommunicatie.ToList());
+							}
+							#endregion
 
 						}
 #if KIPDORP

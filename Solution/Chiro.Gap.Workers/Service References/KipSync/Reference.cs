@@ -389,9 +389,9 @@ namespace Chiro.Gap.Workers.KipSync {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Communicatiemiddel", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CommunicatieMiddel", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts")]
     [System.SerializableAttribute()]
-    public partial class Communicatiemiddel : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    public partial class CommunicatieMiddel : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
@@ -469,7 +469,7 @@ namespace Chiro.Gap.Workers.KipSync {
     public enum CommunicatieType : int {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Telefoon = 1,
+        TelefoonNummer = 1,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
         Fax = 2,
@@ -478,13 +478,19 @@ namespace Chiro.Gap.Workers.KipSync {
         Email = 3,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Website = 4,
+        WebSite = 4,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
         Msn = 5,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Jabber = 6,
+        Xmpp = 6,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Twitter = 7,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        StatusNet = 8,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -497,8 +503,8 @@ namespace Chiro.Gap.Workers.KipSync {
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/VoorkeurAdresUpdated")]
         void VoorkeurAdresUpdated(Chiro.Gap.Workers.KipSync.Adres adres, System.Collections.Generic.List<Chiro.Gap.Workers.KipSync.Bewoner> bewoners);
         
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/CommunicatieUpdated")]
-        void CommunicatieUpdated(Chiro.Gap.Workers.KipSync.Persoon persoon, System.Collections.Generic.List<Chiro.Gap.Workers.KipSync.Communicatiemiddel> communicatiemiddelen);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/CommunicatieToevoegen")]
+        void CommunicatieToevoegen(int adNr, System.Collections.Generic.List<Chiro.Gap.Workers.KipSync.CommunicatieMiddel> communicatieMiddelen);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -536,8 +542,8 @@ namespace Chiro.Gap.Workers.KipSync {
             base.Channel.VoorkeurAdresUpdated(adres, bewoners);
         }
         
-        public void CommunicatieUpdated(Chiro.Gap.Workers.KipSync.Persoon persoon, System.Collections.Generic.List<Chiro.Gap.Workers.KipSync.Communicatiemiddel> communicatiemiddelen) {
-            base.Channel.CommunicatieUpdated(persoon, communicatiemiddelen);
+        public void CommunicatieToevoegen(int adNr, System.Collections.Generic.List<Chiro.Gap.Workers.KipSync.CommunicatieMiddel> communicatieMiddelen) {
+            base.Channel.CommunicatieToevoegen(adNr, communicatieMiddelen);
         }
     }
 }

@@ -16,11 +16,11 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="CommunicatieUpdated">
+  <xs:element name="CommunicatieToevoegen">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="persoon" nillable="true" type="q4:Persoon" />
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="communicatiemiddelen" nillable="true" type="q5:ArrayOfCommunicatiemiddel" />
+        <xs:element minOccurs="0" name="adNr" type="xs:int" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="communicatieMiddelen" nillable="true" type="q4:ArrayOfCommunicatieMiddel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

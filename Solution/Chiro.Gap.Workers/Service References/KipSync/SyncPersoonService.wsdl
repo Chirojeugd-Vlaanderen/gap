@@ -21,8 +21,8 @@
   <wsdl:message name="ISyncPersoonService_VoorkeurAdresUpdated_InputMessage">
     <wsdl:part name="parameters" element="tns:VoorkeurAdresUpdated" />
   </wsdl:message>
-  <wsdl:message name="ISyncPersoonService_CommunicatieUpdated_InputMessage">
-    <wsdl:part name="parameters" element="tns:CommunicatieUpdated" />
+  <wsdl:message name="ISyncPersoonService_CommunicatieToevoegen_InputMessage">
+    <wsdl:part name="parameters" element="tns:CommunicatieToevoegen" />
   </wsdl:message>
   <wsdl:portType name="ISyncPersoonService">
     <wsdl:operation name="PersoonUpdated">
@@ -31,8 +31,8 @@
     <wsdl:operation name="VoorkeurAdresUpdated">
       <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/VoorkeurAdresUpdated" message="tns:ISyncPersoonService_VoorkeurAdresUpdated_InputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="CommunicatieUpdated">
-      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/CommunicatieUpdated" message="tns:ISyncPersoonService_CommunicatieUpdated_InputMessage" />
+    <wsdl:operation name="CommunicatieToevoegen">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/CommunicatieToevoegen" message="tns:ISyncPersoonService_CommunicatieToevoegen_InputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="NetMsmqBinding_ISyncPersoonService" type="tns:ISyncPersoonService">
@@ -50,8 +50,8 @@
         <soap12:body use="literal" />
       </wsdl:input>
     </wsdl:operation>
-    <wsdl:operation name="CommunicatieUpdated">
-      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/CommunicatieUpdated" style="document" />
+    <wsdl:operation name="CommunicatieToevoegen">
+      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/CommunicatieToevoegen" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

@@ -79,23 +79,23 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="AdresTypeEnum" nillable="true" type="tns:AdresTypeEnum" />
-  <xs:complexType name="ArrayOfCommunicatiemiddel">
+  <xs:complexType name="ArrayOfCommunicatieMiddel">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Communicatiemiddel" nillable="true" type="tns:Communicatiemiddel" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommunicatieMiddel" nillable="true" type="tns:CommunicatieMiddel" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfCommunicatiemiddel" nillable="true" type="tns:ArrayOfCommunicatiemiddel" />
-  <xs:complexType name="Communicatiemiddel">
+  <xs:element name="ArrayOfCommunicatieMiddel" nillable="true" type="tns:ArrayOfCommunicatieMiddel" />
+  <xs:complexType name="CommunicatieMiddel">
     <xs:sequence>
       <xs:element minOccurs="0" name="GeenMailings" type="xs:boolean" />
       <xs:element minOccurs="0" name="Type" type="tns:CommunicatieType" />
       <xs:element minOccurs="0" name="Waarde" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="Communicatiemiddel" nillable="true" type="tns:Communicatiemiddel" />
+  <xs:element name="CommunicatieMiddel" nillable="true" type="tns:CommunicatieMiddel" />
   <xs:simpleType name="CommunicatieType">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Telefoon">
+      <xs:enumeration value="TelefoonNummer">
         <xs:annotation>
           <xs:appinfo>
             <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
@@ -116,7 +116,7 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="Website">
+      <xs:enumeration value="WebSite">
         <xs:annotation>
           <xs:appinfo>
             <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
@@ -130,10 +130,24 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:enumeration>
-      <xs:enumeration value="Jabber">
+      <xs:enumeration value="Xmpp">
         <xs:annotation>
           <xs:appinfo>
             <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">6</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Twitter">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">7</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="StatusNet">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">8</EnumerationValue>
           </xs:appinfo>
         </xs:annotation>
       </xs:enumeration>

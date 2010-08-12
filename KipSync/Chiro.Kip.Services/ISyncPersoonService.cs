@@ -18,7 +18,13 @@ namespace Chiro.Kip.Services
 		[OperationContract(IsOneWay = true)]
 		void VoorkeurAdresUpdated(Adres adres, IEnumerable<Bewoner> bewoners);
 
+		/// <summary>
+		/// Aan te roepen met 'contactinfo'.  De nieuwe contactinfo wordt vooraan toegevoegd aan de lijst
+		/// met bestaande contactinfo van hetzelfde type
+		/// </summary>
+		/// <param name="adNr">AD-nummer van persoon waarvoor contactinfo toe te voegen</param>
+		/// <param name="communicatieMiddelen">toe te voegen contactinfo</param>
 		[OperationContract(IsOneWay = true)]
-		void CommunicatieUpdated(Persoon persoon, IEnumerable<Communicatiemiddel> communicatiemiddelen);
+		void CommunicatieToevoegen(int adNr, IEnumerable<CommunicatieMiddel> communicatieMiddelen);
 	}
 }

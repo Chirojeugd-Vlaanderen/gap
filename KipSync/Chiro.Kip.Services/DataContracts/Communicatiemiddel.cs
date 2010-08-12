@@ -9,16 +9,26 @@ namespace Chiro.Kip.Services.DataContracts
     [DataContract]
     public enum CommunicatieType
     {
-        [EnumMember] Telefoon = 1,
-        [EnumMember] Fax = 2,
-        [EnumMember] Email = 3,
-        [EnumMember] Website = 4,
-        [EnumMember] Msn = 5,
-        [EnumMember] Jabber = 6
+	    [EnumMember]
+	    TelefoonNummer = 1,
+	    [EnumMember]
+	    Fax = 2,
+	    [EnumMember]
+	    Email = 3,
+	    [EnumMember]
+	    WebSite = 4,
+	    [EnumMember]
+	    Msn = 5,
+	    [EnumMember]
+	    Xmpp = 6,
+	    [EnumMember]
+	    Twitter = 7,
+	    [EnumMember]
+	    StatusNet = 8
     }
 
     [DataContract]
-    public class Communicatiemiddel
+    public class CommunicatieMiddel
     {
         [DataMember]
         public CommunicatieType Type { get; set; }
@@ -27,7 +37,7 @@ namespace Chiro.Kip.Services.DataContracts
         public string Waarde { get; set; }
 
         /// <summary>
-        /// De persoon wenst op dit Communicatiemiddel geen mailings te ontvangen
+        /// De persoon wenst via dit Communicatiemiddel geen mailings te ontvangen
         /// </summary>
         [DataMember]
         public bool GeenMailings { get; set; }

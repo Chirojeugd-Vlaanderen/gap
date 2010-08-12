@@ -209,10 +209,111 @@ namespace Chiro.Kip.Services
 		}
 
 
-		public void CommunicatieUpdated(Persoon persoon, IEnumerable<Communicatiemiddel> communicatiemiddelen)
+		/// <summary>
+		/// Aan te roepen met 'contactinfo'.  De nieuwe contactinfo wordt vooraan toegevoegd aan de lijst
+		/// met bestaande contactinfo van hetzelfde type
+		/// </summary>
+		/// <param name="adNr">AD-nummer van persoon waarvoor contactinfo toe te voegen</param>
+		/// <param name="communicatieMiddelen">toe te voegen contactinfo</param>
+		public void CommunicatieToevoegen(int adNr, IEnumerable<CommunicatieMiddel> communicatieMiddelen)
 		{
-			Debug.WriteLine(string.Format("You entered: {0}", persoon.ID));
-			Console.WriteLine("You entered: {0}", persoon.ID);
+			var communicatieTypes = (from cm in communicatieMiddelen select cm.Type).Distinct();
+
+			// werk per type af.
+
+#if KIPDORP
+			using (var tx = new TransactionScope())
+			{
+#endif
+				using (var context = new kipadminEntities())
+				{
+					// Haal eerst persoon op met alle communicatie-info gekend in Kipadmin.
+
+					var persoon = (from p in context.PersoonSet.Include(p => p.kipContactInfo)
+					               where p.AdNr == adNr
+					               select p).FirstOrDefault();
+
+					// TODO: Opkuis in deze waarschijnlijk te veel loops en te veel db-ops
+
+					foreach (var ctype in communicatieTypes)
+					{
+						// Voeg de gegeven communicatievormen toe met eerste volgnummer
+						// Hernummer alles, te beginnen van een hoog nummer, om problemen met 
+						// de unieke index op (type, volgnr, adnr) te vermijden
+						// Haal dubbels er uit.
+
+						var nieuweComm = (from cm in communicatieMiddelen
+								   where cm.Type == ctype
+								   select new ContactInfo
+								          	{
+								          		ContactInfoId = 0,
+											ContactTypeId = (int)ctype,
+											GeenMailings = cm.GeenMailings,
+											Info = cm.Waarde,
+											kipPersoon = persoon
+								          	}).ToList();
+
+						var bestaandeComm = (from cm in persoon.kipContactInfo
+						                     where cm.ContactTypeId == (int) ctype
+						                     select cm).OrderBy(cm => cm.VolgNr).ToList();
+
+						int teller = nieuweComm.Count() + bestaandeComm.Count();
+
+						foreach (var comm in nieuweComm)
+						{
+							comm.VolgNr = ++teller;
+							context.AddToContactInfoSet(comm);
+						}
+                                                                                           
+						foreach (var comm in bestaandeComm)
+						{
+							comm.VolgNr = ++teller;
+						}
+
+						var alleComm = nieuweComm.Union(bestaandeComm).OrderBy(cm => cm.Info).ThenBy(cm => cm.VolgNr);
+
+						// Ik geef toe dat dit echt op niks trekt...
+
+						string vorige = String.Empty;
+
+						foreach (var comm in alleComm)
+						{
+							// TODO: Slimmer vergelijken (bijv. van telefoonnummers enkel de cijfers)
+							if (String.Compare(comm.Info, vorige, true) == 0)
+							{
+								context.DeleteObject(comm);
+							}
+							else
+							{
+								vorige = comm.Info;
+							}
+						}
+
+						// Tussentijds bewaren
+
+						context.SaveChanges();
+
+						// En nu hernummeren
+
+						teller = 0;
+						bestaandeComm = (from cm in persoon.kipContactInfo
+								 where cm.ContactTypeId == (int)ctype
+								 select cm).OrderBy(cm => cm.VolgNr).ToList();
+
+						foreach (var comm in bestaandeComm)
+						{
+							comm.VolgNr = ++teller;
+						}
+
+						Console.WriteLine("Toevoegen communicatie: AD{0}", adNr);
+
+						context.SaveChanges();
+					}
+				}
+#if KIPDORP
+				tx.Complete();
+			}
+#endif
 		}
 	}
 }

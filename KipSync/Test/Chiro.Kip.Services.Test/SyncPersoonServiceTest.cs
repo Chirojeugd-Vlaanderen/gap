@@ -86,28 +86,39 @@ namespace Chiro.Kip.Services.Test
 			new Bewoner{AdNummer = 39198, AdresType = AdresTypeEnum.Werk}});
     	}
 
-        /// <summary>
-        ///A test for CommunicatieUpdated
-        ///</summary>
-        [TestMethod()]
-        public void CommunicatieUpdatedTest()
-        {
-            var target = new SyncPersoonService(); // TODO: Initialize to an appropriate value
-            var persoon = new Persoon()
-            {
-                AdNr = 17903,
-                Geboortedatum = new DateTime(1971, 5, 14),
-                Geslacht = GeslachtsEnum.Man,
-                ID = 205,
-                Naam = "Haepers",
-                Sterfdatum = null,
-                Voornaam = "Tommy"
-            };
+	/// <summary>
+	///A test for VoorkeurCommunicatieUpdated
+	///</summary>
+	[TestMethod()]
+	public void CommunicatieUpdatedTest()
+	{
+		var target = new SyncPersoonService(); // TODO: Initialize to an appropriate value
+		int adNr = 17903;
 
-            IEnumerable<Communicatiemiddel> communicatiemiddelen = null; // TODO: Initialize to an appropriate value
-            target.CommunicatieUpdated(persoon, communicatiemiddelen);
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
-        }
+		IEnumerable<CommunicatieMiddel> communicatiemiddelen = new CommunicatieMiddel[]
+		                                                       	{
+		                                                       		new CommunicatieMiddel
+		                                                       			{
+		                                                       				GeenMailings = true,
+		                                                       				Type = CommunicatieType.Email,
+		                                                       				Waarde = "tommy@microsoft.com"
+		                                                       			},
+		                                                       		new CommunicatieMiddel
+		                                                       			{
+		                                                       				GeenMailings = false,
+		                                                       				Type = CommunicatieType.Email,
+		                                                       				Waarde = "haepeto@chiro.be"
+		                                                       			},
+		                                                       		new CommunicatieMiddel
+		                                                       			{
+		                                                       				Type = CommunicatieType.TelefoonNummer,
+		                                                       				Waarde = "03-297 61 10"
+		                                                       			}
+		                                                       	};
+
+		target.CommunicatieToevoegen(adNr, communicatiemiddelen);
+		Assert.Inconclusive("A method that does not return a value cannot be verified.");
+	}
 
         /// <summary>
         ///A test for PersoonUpdated
