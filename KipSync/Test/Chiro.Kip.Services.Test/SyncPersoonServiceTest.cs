@@ -75,14 +75,15 @@ namespace Chiro.Kip.Services.Test
 
     		var a = new Adres
     		        	{
-    		        		AdresType = AdresTypeEnum.Thuis,
     		        		Straat = "Kipdorp",
-    		        		HuisNr = 30,
+    		        		HuisNr = 28,
     		        		Postnummer = 2000,
     		        		Woonplaats = "Antwerpen",
     		        		Land = ""
     		        	};
-    		target.VoorkeurAdresUpdated(a, new int[] {39198, 85111});
+    		target.VoorkeurAdresUpdated(a, new Bewoner[] {
+			new Bewoner{AdNummer = 85111, AdresType = AdresTypeEnum.Kot},
+			new Bewoner{AdNummer = 39198, AdresType = AdresTypeEnum.Werk}});
     	}
 
         /// <summary>

@@ -14,9 +14,9 @@ namespace Chiro.Kip.Services
 		/// Aan te roepen als een voorkeursadres gewijzigd moet worden.
 		/// </summary>
 		/// <param name="adres">Nieuw voorkeursadres</param>
-		/// <param name="adNummers">AD-nummers van personen de dat adres moeten krijgen</param>
+		/// <param name="bewoners">AD-nummers en adrestypes voor personen de dat adres moeten krijgen</param>
 		[OperationContract(IsOneWay = true)]
-		void VoorkeurAdresUpdated(Adres adres, IEnumerable<int> adNummers);
+		void VoorkeurAdresUpdated(Adres adres, IEnumerable<Bewoner> bewoners);
 
 		[OperationContract(IsOneWay = true)]
 		void CommunicatieUpdated(Persoon persoon, IEnumerable<Communicatiemiddel> communicatiemiddelen);

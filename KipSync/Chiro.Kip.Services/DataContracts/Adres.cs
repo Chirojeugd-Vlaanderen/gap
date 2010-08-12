@@ -39,9 +39,5 @@ namespace Chiro.Kip.Services.DataContracts
         [DataMember]
         public string Land { get; set; }
 
-        [DataMember]
-        public AdresTypeEnum AdresType { get; set;}
-
-
     }
 }
