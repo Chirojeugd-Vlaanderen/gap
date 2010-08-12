@@ -108,7 +108,7 @@ namespace Chiro.Gap.Workers
 			}
 
 			// Geboortedatum is verplicht als je lid wilt worden
-			if (gp.Persoon.GeboorteDatum == null)
+			if (!gp.LeefTijd.HasValue)
 			{
 				throw new InvalidOperationException(Properties.Resources.GeboorteDatumOntbreekt);
 			}
@@ -181,7 +181,7 @@ namespace Chiro.Gap.Workers
 			// Bepaal het geboortejaar, aangepast volgens de Chiroleeftijd.
 // ReSharper disable PossibleInvalidOperationException
 			// Controle of geboortedatum null is, gebeurde al in LidMaken
-			var geboortejaar = gp.Persoon.GeboorteDatum.Value.Year - gp.ChiroLeefTijd;
+			var geboortejaar = gp.LeefTijd.Value.Year;
 // ReSharper restore PossibleInvalidOperationException
 
 			// Relevante afdelingsjaren opzoeken
@@ -238,7 +238,7 @@ namespace Chiro.Gap.Workers
 
 		public Lid AutomatischLidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
 		{
-			if (gp.Persoon.GeboorteDatum == null)
+			if (!gp.LeefTijd.HasValue)
 			{
 				throw new OngeldigObjectException("De geboortedatum moet ingevuld zijn voor je iemand lid kunt maken.");
 			}
@@ -247,27 +247,26 @@ namespace Chiro.Gap.Workers
 
 			// Stop de geboortedatum in een lokale variabele voor gebruik in Linq-statement. 
 			// (zie [wiki:VeelVoorkomendeWaarschuwingen#PossibleInvalidOperationinLinq-statement])
-			var gebdat = gp.Persoon.GeboorteDatum;
+			var geboortejaar = gp.LeefTijd.Value.Year;
 			var afdeling = (from a in gwj.AfdelingsJaar
 							where
-								(gebdat.Value.Year - gp.ChiroLeefTijd <= a.GeboorteJaarTot
-								&& a.GeboorteJaarVan <= gebdat.Value.Year)
+								(geboortejaar <= a.GeboorteJaarTot
+								&& a.GeboorteJaarVan <= geboortejaar)
 							select a).FirstOrDefault();
 
-			if (afdeling != null)
+			Lid nieuwlid;
+			if (afdeling != null) //Er is een afdeling met de gewenste leeftijd
 			{
-				return KindMaken(gp, gwj);
-			}
-			
-			if (gp.Persoon.GeboorteDatum.Value.Year - gp.ChiroLeefTijd < Properties.Settings.Default.MinLeidingLeefTijd)
+				nieuwlid = KindMaken(gp, gwj);
+			} else if (gp.LeefTijd.Value.CompareTo(Properties.Settings.Default.MinLeidingLeefTijd) >= 0) 
 			{
-				throw new OngeldigObjectException("De persoon is te jong om leiding te worden.");
+				nieuwlid = LeidingMaken(gp, gwj);
+			} else
+			{
+				throw new OngeldigObjectException("De persoon is te jong om leiding te worden en je groep heeft geen afdeling voor die leeftijd.");
 			}
 
-			// OPM: nu wordt hier arbitrair bepaald vanaf welke leeftijd iemand als leiding ingeschreven wordt.
-			// Dat moet eigenlijk afhangen van de afdelinsgverdeling: je moet minstens een jaar ouder zijn dan de oudste aspi's.
-			// TODO (#657): als er afdelingen zijn, moeten die bepalen of iemand kind of leiding wordt
-			return LeidingMaken(gp, gwj);
+			return nieuwlid;
 		}
 
 		/// <summary>

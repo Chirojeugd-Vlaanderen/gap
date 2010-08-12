@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -143,6 +144,17 @@ namespace Chiro.Gap.Orm
 		public IList<Categorie> CategorieLijstGet()
 		{
 			return Categorie.ToList();
+		}
+
+		/// <summary>
+		/// Leeftijd van de persoon, rekening houdende met geboortedatum en chiroleeftijd
+		/// </summary>
+		public DateTime? LeefTijd
+		{
+			get
+			{
+				return Persoon.GeboorteDatum.HasValue ? Persoon.GeboorteDatum.Value.AddYears(-ChiroLeefTijd) : Persoon.GeboorteDatum;
+			}
 		}
 	}
 }
