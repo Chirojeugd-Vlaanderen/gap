@@ -18,8 +18,8 @@
   <wsdl:message name="ISyncPersoonService_PersoonUpdated_InputMessage">
     <wsdl:part name="parameters" element="tns:PersoonUpdated" />
   </wsdl:message>
-  <wsdl:message name="ISyncPersoonService_AdresUpdated_InputMessage">
-    <wsdl:part name="parameters" element="tns:AdresUpdated" />
+  <wsdl:message name="ISyncPersoonService_VoorkeurAdresUpdated_InputMessage">
+    <wsdl:part name="parameters" element="tns:VoorkeurAdresUpdated" />
   </wsdl:message>
   <wsdl:message name="ISyncPersoonService_CommunicatieUpdated_InputMessage">
     <wsdl:part name="parameters" element="tns:CommunicatieUpdated" />
@@ -28,8 +28,8 @@
     <wsdl:operation name="PersoonUpdated">
       <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/PersoonUpdated" message="tns:ISyncPersoonService_PersoonUpdated_InputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="AdresUpdated">
-      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/AdresUpdated" message="tns:ISyncPersoonService_AdresUpdated_InputMessage" />
+    <wsdl:operation name="VoorkeurAdresUpdated">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/VoorkeurAdresUpdated" message="tns:ISyncPersoonService_VoorkeurAdresUpdated_InputMessage" />
     </wsdl:operation>
     <wsdl:operation name="CommunicatieUpdated">
       <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/CommunicatieUpdated" message="tns:ISyncPersoonService_CommunicatieUpdated_InputMessage" />
@@ -44,8 +44,8 @@
         <soap12:body use="literal" />
       </wsdl:input>
     </wsdl:operation>
-    <wsdl:operation name="AdresUpdated">
-      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/AdresUpdated" style="document" />
+    <wsdl:operation name="VoorkeurAdresUpdated">
+      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/VoorkeurAdresUpdated" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

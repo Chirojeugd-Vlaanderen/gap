@@ -6,11 +6,16 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Transactions;
 
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers.Exceptions;
+using Chiro.Gap.Workers.KipSync;
+
+using Adres = Chiro.Gap.Orm.Adres;
 
 namespace Chiro.Gap.Workers
 {
@@ -23,6 +28,7 @@ namespace Chiro.Gap.Workers
 		private readonly IStratenDao _stratenDao;
 		private readonly ISubgemeenteDao _subgemeenteDao;
 		private readonly IAutorisatieManager _autorisatieMgr;
+		private readonly ISyncPersoonService _sync;
 
 		/// <summary>
 		/// Creëert nieuwe adressenmanager
@@ -31,12 +37,19 @@ namespace Chiro.Gap.Workers
 		/// <param name="stratenDao">Repository voor straten</param>
 		/// <param name="subgemeenteDao">Repository voor 'subgemeentes'</param>
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
-		public AdressenManager(IAdressenDao dao, IStratenDao stratenDao, ISubgemeenteDao subgemeenteDao, IAutorisatieManager autorisatieMgr)
+		/// <param name="sync">Synchronisatieservice naar Kipadmin</param>
+		public AdressenManager(
+			IAdressenDao dao, 
+			IStratenDao stratenDao, 
+			ISubgemeenteDao subgemeenteDao, 
+			IAutorisatieManager autorisatieMgr,
+			ISyncPersoonService sync)
 		{
 			_dao = dao;
 			_stratenDao = stratenDao;
 			_subgemeenteDao = subgemeenteDao;
 			_autorisatieMgr = autorisatieMgr;
+			_sync = sync;
 		}
 
 		#region proxy naar data acces
@@ -118,7 +131,55 @@ namespace Chiro.Gap.Workers
 		/// <returns>Het adres met eventueel nieuw ID</returns>
 		public Adres Bewaren(Adres adr)
 		{
-			return _dao.Bewaren(adr);
+			Adres resultaat;
+#if KIPDORP
+			using (var tx = new TransactionScope())
+			{
+#endif
+				// enkel voorkeursadressen van personen met ad-nummer naar Kipadmin
+				// Dit kan voor heen-en-weer-effecten in Kipadmin zorgen, als 2 groepen
+				// beurtelings hun voorkeuradres aanpassen.
+				// (Gelukkig wordt er momenteel niet teruggesynct van kipadmin naar gap)
+
+				// check op voorkeursadres is een beetje tricky:
+				// als een persoonsadres een gelieerde persoon heeft, dan wil dat zeggen dat
+				// het persoonsadres het voorkeursadres is van die gelieerde persoon.
+				// De persoon van het persoonsadres moet altijd dezelfde zijn als de persoon van
+				// de gelieerde persoon.
+				//
+				// Bijwerking: als je een adres wijzigt, dat voor jouw groep niet standaard is,
+				// maar voor een andere groep wel, dan gaat dat adres *toch* als standaardadres
+				// naar Kipadmin.  Maar dat is op zich geen probleem.
+
+				var teSyncen = from pa in adr.PersoonsAdres
+				               where pa.GelieerdePersoon.Count > 0 // voorkeursadres
+				                     && pa.Persoon.AdNummer != null	// met ad-nummer
+				               select new KipSync.Bewoner
+				                      	{
+				                      		AdNummer = pa.Persoon.AdNummer ?? 0,
+								AdresType = (KipSync.AdresTypeEnum)pa.AdresType
+				                      	};
+
+				// TODO (#238): Buitenlandse adressen!
+
+				var syncAdres = new KipSync.Adres
+				                	{
+				                		Bus = adr.Bus,
+				                		HuisNr = adr.HuisNr,
+				                		Land = "",
+				                		PostNr = adr.StraatNaam.PostNummer,
+				                		Straat = adr.StraatNaam.Naam,
+				                		WoonPlaats = adr.WoonPlaats.Naam
+				                	};
+
+				_sync.VoorkeurAdresUpdated(syncAdres, teSyncen.ToList());
+
+				resultaat = _dao.Bewaren(adr);
+#if KIPDORP
+				tx.Complete();
+			}
+#endif
+			return resultaat;
 		}
 
 		#endregion

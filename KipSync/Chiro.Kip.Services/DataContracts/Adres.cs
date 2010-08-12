@@ -28,13 +28,13 @@ namespace Chiro.Kip.Services.DataContracts
         public string Bus { get; set; }
 
         [DataMember]
-        public int Postnummer { get; set; }
+        public int PostNr { get; set; }
 
         [DataMember]
-        public string Postcode { get; set; }
+        public string PostCode { get; set; }
 
         [DataMember]
-        public string Woonplaats { get; set; }
+        public string WoonPlaats { get; set; }
 
         [DataMember]
         public string Land { get; set; }

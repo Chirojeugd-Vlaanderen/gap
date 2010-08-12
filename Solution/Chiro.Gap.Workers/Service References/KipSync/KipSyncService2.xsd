@@ -21,25 +21,31 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="GeslachtsEnum" nillable="true" type="tns:GeslachtsEnum" />
-  <xs:complexType name="ArrayOfAdres">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Adres" nillable="true" type="tns:Adres" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfAdres" nillable="true" type="tns:ArrayOfAdres" />
   <xs:complexType name="Adres">
     <xs:sequence>
-      <xs:element minOccurs="0" name="AdresType" type="tns:AdresTypeEnum" />
       <xs:element minOccurs="0" name="Bus" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="HuisNr" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="Land" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Postcode" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Postnummer" type="xs:int" />
+      <xs:element minOccurs="0" name="PostCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PostNr" type="xs:int" />
       <xs:element minOccurs="0" name="Straat" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Woonplaats" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WoonPlaats" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Adres" nillable="true" type="tns:Adres" />
+  <xs:complexType name="ArrayOfBewoner">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Bewoner" nillable="true" type="tns:Bewoner" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBewoner" nillable="true" type="tns:ArrayOfBewoner" />
+  <xs:complexType name="Bewoner">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AdNummer" type="xs:int" />
+      <xs:element minOccurs="0" name="AdresType" type="tns:AdresTypeEnum" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Bewoner" nillable="true" type="tns:Bewoner" />
   <xs:simpleType name="AdresTypeEnum">
     <xs:restriction base="xs:string">
       <xs:enumeration value="THUIS">

@@ -178,9 +178,6 @@ namespace Chiro.Gap.Workers.KipSync {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Chiro.Gap.Workers.KipSync.AdresTypeEnum AdresTypeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string BusField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -190,16 +187,16 @@ namespace Chiro.Gap.Workers.KipSync {
         private string LandField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string PostcodeField;
+        private string PostCodeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int PostnummerField;
+        private int PostNrField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string StraatField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string WoonplaatsField;
+        private string WoonPlaatsField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -208,19 +205,6 @@ namespace Chiro.Gap.Workers.KipSync {
             }
             set {
                 this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public Chiro.Gap.Workers.KipSync.AdresTypeEnum AdresType {
-            get {
-                return this.AdresTypeField;
-            }
-            set {
-                if ((this.AdresTypeField.Equals(value) != true)) {
-                    this.AdresTypeField = value;
-                    this.RaisePropertyChanged("AdresType");
-                }
             }
         }
         
@@ -264,27 +248,27 @@ namespace Chiro.Gap.Workers.KipSync {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Postcode {
+        public string PostCode {
             get {
-                return this.PostcodeField;
+                return this.PostCodeField;
             }
             set {
-                if ((object.ReferenceEquals(this.PostcodeField, value) != true)) {
-                    this.PostcodeField = value;
-                    this.RaisePropertyChanged("Postcode");
+                if ((object.ReferenceEquals(this.PostCodeField, value) != true)) {
+                    this.PostCodeField = value;
+                    this.RaisePropertyChanged("PostCode");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Postnummer {
+        public int PostNr {
             get {
-                return this.PostnummerField;
+                return this.PostNrField;
             }
             set {
-                if ((this.PostnummerField.Equals(value) != true)) {
-                    this.PostnummerField = value;
-                    this.RaisePropertyChanged("Postnummer");
+                if ((this.PostNrField.Equals(value) != true)) {
+                    this.PostNrField = value;
+                    this.RaisePropertyChanged("PostNr");
                 }
             }
         }
@@ -303,14 +287,75 @@ namespace Chiro.Gap.Workers.KipSync {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Woonplaats {
+        public string WoonPlaats {
             get {
-                return this.WoonplaatsField;
+                return this.WoonPlaatsField;
             }
             set {
-                if ((object.ReferenceEquals(this.WoonplaatsField, value) != true)) {
-                    this.WoonplaatsField = value;
-                    this.RaisePropertyChanged("Woonplaats");
+                if ((object.ReferenceEquals(this.WoonPlaatsField, value) != true)) {
+                    this.WoonPlaatsField = value;
+                    this.RaisePropertyChanged("WoonPlaats");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Bewoner", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts")]
+    [System.SerializableAttribute()]
+    public partial class Bewoner : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int AdNummerField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Chiro.Gap.Workers.KipSync.AdresTypeEnum AdresTypeField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int AdNummer {
+            get {
+                return this.AdNummerField;
+            }
+            set {
+                if ((this.AdNummerField.Equals(value) != true)) {
+                    this.AdNummerField = value;
+                    this.RaisePropertyChanged("AdNummer");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Chiro.Gap.Workers.KipSync.AdresTypeEnum AdresType {
+            get {
+                return this.AdresTypeField;
+            }
+            set {
+                if ((this.AdresTypeField.Equals(value) != true)) {
+                    this.AdresTypeField = value;
+                    this.RaisePropertyChanged("AdresType");
                 }
             }
         }
@@ -449,8 +494,8 @@ namespace Chiro.Gap.Workers.KipSync {
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/PersoonUpdated")]
         void PersoonUpdated(Chiro.Gap.Workers.KipSync.Persoon persoon);
         
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/AdresUpdated")]
-        void AdresUpdated(Chiro.Gap.Workers.KipSync.Persoon persoon, System.Collections.Generic.List<Chiro.Gap.Workers.KipSync.Adres> adressen);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/VoorkeurAdresUpdated")]
+        void VoorkeurAdresUpdated(Chiro.Gap.Workers.KipSync.Adres adres, System.Collections.Generic.List<Chiro.Gap.Workers.KipSync.Bewoner> bewoners);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/CommunicatieUpdated")]
         void CommunicatieUpdated(Chiro.Gap.Workers.KipSync.Persoon persoon, System.Collections.Generic.List<Chiro.Gap.Workers.KipSync.Communicatiemiddel> communicatiemiddelen);
@@ -487,8 +532,8 @@ namespace Chiro.Gap.Workers.KipSync {
             base.Channel.PersoonUpdated(persoon);
         }
         
-        public void AdresUpdated(Chiro.Gap.Workers.KipSync.Persoon persoon, System.Collections.Generic.List<Chiro.Gap.Workers.KipSync.Adres> adressen) {
-            base.Channel.AdresUpdated(persoon, adressen);
+        public void VoorkeurAdresUpdated(Chiro.Gap.Workers.KipSync.Adres adres, System.Collections.Generic.List<Chiro.Gap.Workers.KipSync.Bewoner> bewoners) {
+            base.Channel.VoorkeurAdresUpdated(adres, bewoners);
         }
         
         public void CommunicatieUpdated(Chiro.Gap.Workers.KipSync.Persoon persoon, System.Collections.Generic.List<Chiro.Gap.Workers.KipSync.Communicatiemiddel> communicatiemiddelen) {

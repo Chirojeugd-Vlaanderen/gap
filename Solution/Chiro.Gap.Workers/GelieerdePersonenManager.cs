@@ -156,12 +156,12 @@ namespace Chiro.Gap.Workers
 		/// Bewaart een gelieerde persoon, inclusief persoonsgegevens en extra koppelingen bepaald
 		/// door <paramref name="extras"/>.
 		/// </summary>
-		/// <param name="p">Te bewaren gelieerde persoon</param>
+		/// <param name="gelieerdePersoon">Te bewaren gelieerde persoon</param>
 		/// <param name="extras">Bepaalt de mee te bewaren gekoppelde entiteiten</param>
 		/// <returns>De bewaarde gelieerde persoon</returns>
-		public GelieerdePersoon Bewaren(GelieerdePersoon p, PersoonsExtras extras)
+		public GelieerdePersoon Bewaren(GelieerdePersoon gelieerdePersoon, PersoonsExtras extras)
 		{
-			if (_autorisatieMgr.IsGavGelieerdePersoon(p.ID))
+			if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoon.ID))
 			{
 				// Hier mapping gebruiken om te vermijden dat het AD-nummer
 				// overschreven wordt, lijkt me wat overkill.  Ik vergelijk
@@ -169,9 +169,9 @@ namespace Chiro.Gap.Workers
 
 				// Er mag niet gepoterd worden met PersoonID en AdNummer
 
-				var origineel = _gelieerdePersonenDao.Ophalen(p.ID, gp => gp.Persoon);
+				var origineel = _gelieerdePersonenDao.Ophalen(gelieerdePersoon.ID, gp => gp.Persoon);
 
-				if (origineel == null || origineel.Persoon.AdNummer == p.Persoon.AdNummer)
+				if (origineel == null || origineel.Persoon.AdNummer == gelieerdePersoon.Persoon.AdNummer)
 				{
 					GelieerdePersoon q; // hier komt de bewaarde persoon, met eventuele
 							    // nieuwe ID's
@@ -180,9 +180,9 @@ namespace Chiro.Gap.Workers
 					using (var tx = new TransactionScope())
 					{
 #endif
-						q = _gelieerdePersonenDao.Bewaren(p, ExtrasNaarLambdas(extras));
+						q = _gelieerdePersonenDao.Bewaren(gelieerdePersoon, ExtrasNaarLambdas(extras));
 
-						if (p.Persoon.AdNummer != null)
+						if (gelieerdePersoon.Persoon.AdNummer != null)
 						{
 							// Wijzigingen van personen met ad-nummer worden doorgesluisd
 							// naar Kipadmin.
@@ -195,6 +195,32 @@ namespace Chiro.Gap.Workers
 							var syncPersoon = AutoMapper.Mapper.Map<Persoon, KipSync.Persoon>(q.Persoon);
 
 							_sync.PersoonUpdated(syncPersoon);
+							if ((extras & PersoonsExtras.Adressen) != 0 && gelieerdePersoon.PersoonsAdres != null)
+							{
+								// Adressen worden mee bewaard.  Update standaardadres, als dat er is
+								// (standaardadres is gelieerdePersoon.PersoonsAdres;
+								// alle adressen in gelieerdePersoon.Persoon.PersoonsAdres).
+
+								// TODO (#238): Buitenlandse adressen!
+								var syncAdres = new KipSync.Adres
+								                	{
+								                		Bus = gelieerdePersoon.PersoonsAdres.Adres.Bus,
+								                		HuisNr = gelieerdePersoon.PersoonsAdres.Adres.HuisNr,
+								                		Land = "",
+								                		PostNr = gelieerdePersoon.PersoonsAdres.Adres.StraatNaam.PostNummer,
+								                		Straat = gelieerdePersoon.PersoonsAdres.Adres.StraatNaam.Naam,
+								                		WoonPlaats = gelieerdePersoon.PersoonsAdres.Adres.WoonPlaats.Naam
+								                	};
+
+								var syncBewoner = new KipSync.Bewoner
+								                  	{
+								                  		AdNummer = (int)gelieerdePersoon.Persoon.AdNummer,
+								                  		AdresType = (KipSync.AdresTypeEnum) gelieerdePersoon.PersoonsAdres.AdresType
+								                  	};
+
+								_sync.VoorkeurAdresUpdated(syncAdres, new List<Bewoner> {syncBewoner});
+							}
+
 						}
 #if KIPDORP
 						tx.Complete();

@@ -103,13 +103,13 @@ namespace Chiro.Kip.Services
 					// Als dat linq to sql is, dan gebeurt het zoeken sowieso hoofdletterongevoelig.
 
 					string huisNr = adres.HuisNr.ToString();
-					string postNr = adres.Postnummer.ToString();
+					string postNr = adres.PostNr.ToString();
 
 					var adresInDb = (from adr in dc.AdresSet.Include("kipWoont.kipPersoon").Include("kipWoont.kipAdresType")
 					                 where adr.Straat == adres.Straat
 					                       && adr.Nr == huisNr
 					                       && adr.PostNr == postNr
-					                       && adr.Gemeente == adres.Woonplaats
+					                       && adr.Gemeente == adres.WoonPlaats
 					                 select adr).FirstOrDefault();
 
 					if (adresInDb == null)
@@ -119,8 +119,8 @@ namespace Chiro.Kip.Services
 						            		ID = 0,
 						            		Straat = adres.Straat,
 						            		Nr = adres.HuisNr == null ? null : adres.HuisNr.ToString(),
-						            		PostNr = adres.Postnummer.ToString(),
-						            		Gemeente = adres.Woonplaats
+						            		PostNr = adres.PostNr.ToString(),
+						            		Gemeente = adres.WoonPlaats
 						            		// TODO (#238) Buitenlandse adressen.
 						            	};
 						dc.AddToAdresSet(adresInDb);

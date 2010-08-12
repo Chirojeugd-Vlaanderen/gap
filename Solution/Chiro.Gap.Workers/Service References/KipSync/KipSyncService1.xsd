@@ -8,11 +8,11 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="AdresUpdated">
+  <xs:element name="VoorkeurAdresUpdated">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="persoon" nillable="true" type="q2:Persoon" />
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="adressen" nillable="true" type="q3:ArrayOfAdres" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="adres" nillable="true" type="q2:Adres" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="bewoners" nillable="true" type="q3:ArrayOfBewoner" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

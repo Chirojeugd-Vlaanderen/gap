@@ -77,8 +77,8 @@ namespace Chiro.Kip.Services.Test
     		        	{
     		        		Straat = "Kipdorp",
     		        		HuisNr = 28,
-    		        		Postnummer = 2000,
-    		        		Woonplaats = "Antwerpen",
+    		        		PostNr = 2000,
+    		        		WoonPlaats = "Antwerpen",
     		        		Land = ""
     		        	};
     		target.VoorkeurAdresUpdated(a, new Bewoner[] {
