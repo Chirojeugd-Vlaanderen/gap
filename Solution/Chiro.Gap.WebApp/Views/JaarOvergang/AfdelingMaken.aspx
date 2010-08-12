@@ -31,6 +31,8 @@
 		<%=Html.EditorFor(mdl => mdl.Info.Afkorting)%>
 		<br />
 		<%=Html.ValidationMessageFor(mdl => mdl.Info.Afkorting)%>
+		
+		<%=Html.HiddenFor(mdl => mdl.Info.ID) %>
 	</fieldset>
 	<%} %>
 </asp:Content>

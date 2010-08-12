@@ -1,30 +1,53 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<JaarOvergangAfdelingsJaarModel>" %>
 
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-	<h2>
-		AfdelingenVerdelen</h2>
-	<!-- TODO Kan dit met dezelfde functionaliteit als de browserknop vorige? (nu zullen geselecteerde afdelingen dat niet meer zijn! -->
-	<%=Html.ActionLink("Vorige", "AfdelingenMaken", new { Controller = "JaarOvergang" }) %>
-	<%using (Html.BeginForm("VerdelingMaken", "JaarOvergang"))
-   { %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+	<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" />
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$("#checkall").click(function() {
+		$("INPUT[@name=GekozenAfdelingsIDs][type='checkbox']").attr('checked', $("#checkall").is(':checked'));
+		});
+	});
+</script>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+	<%=Html.ActionLink("Terug naar stap 1", "AfdelingenMaken", new { Controller = "JaarOvergang" }) %>
+	<br /><br />
+	
+	<%
+		List<CheckBoxListInfo> info
+		   = (from pa in Model.Afdelingen
+			  select new CheckBoxListInfo(
+				 pa.AfdelingID.ToString()
+				 , ""
+				 , true)).ToList();
+
+		int j = 0;
+	%>
+	
+	<%using (Html.BeginForm("VerdelingMaken", "JaarOvergang")){ %>
 	<table>
 		<tr>
+			<th><%=Html.CheckBox("checkall", true) %></th>
 			<th>Afdeling</th>
 			<th>Officiële afdeling</th>
-			<td>
-				Leeftijd van
-			</td>
-			<td>
-				Leeftijd tot
-			</td>
-			<td>
+			<th>
+				Vanaf geboortejaar
+			</th>
+			<th>
+				Tot geboortejaar
+			</th>
+			<th>
 				Geslacht
-			</td>
+			</th>
 		</tr>
 		<% foreach (var ai in Model.Afdelingen)
 	 { %>
 		<tr>
+			<td>
+				<%=Html.CheckBoxList("GekozenAfdelingsIDs", info[j])%><% j++; %>
+			</td>
 			<td>
 				<%=Html.LabelFieldList("AfdelingsIDs", new TextFieldListInfo(ai.AfdelingID.ToString(), ai.AfdelingNaam))%>
 			</td>
@@ -43,8 +66,8 @@
 		</tr>
 		<% } %>
 	</table>
-	<input id="volgende" type="submit" value="Verdeling bewaren en vorige leden herinschrijven." />
+	<br /><br />
+	
+	<input id="volgende" type="submit" value="Verdeling bewaren en huidige leden herinschrijven" />
 	<%} %>
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
 </asp:Content>

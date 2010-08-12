@@ -223,7 +223,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
 		/// <param name="sortering">Parameter waarop de gegevens gesorteerd moeten worden</param>
 		/// <returns>Een lijst alle leden voor het opgegeven groepswerkjaar</returns>
-		public IList<Lid> AlleNietUitgeschrevenOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
+		public IList<Lid> ActieveLedenOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
 		{
 			using (var db = new ChiroGroepEntities())
 			{

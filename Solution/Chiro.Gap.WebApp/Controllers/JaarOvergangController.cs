@@ -37,7 +37,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			IEnumerable<AfdelingInfo> lijst = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingInfo>>(g => g.AlleAfdelingenOphalen(groepID));
 
 			model.Afdelingen = lijst;
-			model.Titel = "Jaarovergang initiëren";
+			model.Titel = "Jaarovergang stap 1: welke afdelingen heeft je groep volgend jaar?";
 			return View("AfdelingenAanmaken", model);
 		}
 
@@ -116,6 +116,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			//model2.Afdelingen.Add(new AfdelingInfo { ID = 10, Afkorting = "BC", Naam = "Broes", OfficieleAfdelingNaam = "Broesen" });
 			//model2.Afdelingen.Add(new AfdelingInfo { ID = 5, Afkorting = "EV", Naam = "Ellen", OfficieleAfdelingNaam = "Ellens" });
 
+			model2.Titel = "Jaarovergang stap 2: verdelen van je afdelingen over geboortejaren";
 			return View("AfdelingenVerdelen", model2);
 		}
 

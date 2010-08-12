@@ -313,7 +313,7 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			var list = _daos.LedenDao.AlleNietUitgeschrevenOphalen(groepsWerkJaarID, sortering);
+			var list = _daos.LedenDao.ActieveLedenOphalen(groepsWerkJaarID, sortering);
 			return list;
 		}
 

@@ -39,7 +39,7 @@ namespace Chiro.Gap.Dummies
 			return new List<Lid>();
 		}
 
-		public IList<Lid> AlleNietUitgeschrevenOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
+		public IList<Lid> ActieveLedenOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
 		{
 			return new List<Lid>();
 		}

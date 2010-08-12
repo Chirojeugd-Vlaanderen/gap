@@ -2,17 +2,17 @@
 
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" />
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#checkall").click(function() {
+		$("INPUT[@name=GekozenAfdelingsIDs][type='checkbox']").attr('checked', $("#checkall").is(':checked'));
+		});
+	});
+</script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#checkall").click(function() {
-				$("INPUT[@name=GekozenAfdelingsIDs][type='checkbox']").attr('checked', $("#checkall").is(':checked'));
-			});
-		});
-	</script>
-	<h2>
-		Afdelingen aanmaken</h2>
+
 	<%
 		List<CheckBoxListInfo> info
 		   = (from pa in Model.Afdelingen
@@ -23,15 +23,16 @@
 
 		int j = 0;
 	%>
+	Selecteer de afdelingen die je groep volgend werkjaar zal gebruiken. <br/><br/>
+	Als er afdelingen van naam veranderen of als er nieuwe bijkomen kan je die hier aanpassen. <br/><br/>
+	
 	<%using (Html.BeginForm("AfdelingenMaken", "JaarOvergang"))
    { %>
 	<table>
 		<tr>
-			<th>
-				<%=Html.CheckBox("checkall") %></th>
+			<th><%=Html.CheckBox("checkall") %></th>
 			<th>Afdeling</th>
 			<th>Afkorting</th>
-			<th>Officiële afdeling</th>
 		</tr>
 		<% foreach (var ai in Model.Afdelingen)
 	 { %>
@@ -46,15 +47,13 @@
 				<%=ai.Afkorting %>
 			</td>
 			<td>
-				<%=ai.OfficieleAfdelingNaam %>
-			</td>
-			<td>
 				<%=Html.ActionLink("Afdeling aanpassen", "Bewerken", new { Controller = "JaarOvergang", afdelingID = ai.ID })%>
 			</td>
 		</tr>
 		<% } %>
 	</table>
-	<%=Html.ActionLink("Afdeling aanmaken", "AfdelingMaken", new {Controller = "JaarOvergang" }) %>
-	<input id="volgende" type="submit" value="Volgende" />
+	<br />
+	<%=Html.ActionLink("Afdeling aanmaken", "AfdelingMaken", new {Controller = "JaarOvergang" }) %> <br /><br />
+	<input id="volgende" type="submit" value="Naar stap 2" />
 	<%} %>
 </asp:Content>
