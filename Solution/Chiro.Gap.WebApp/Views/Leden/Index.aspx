@@ -20,6 +20,11 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<div id="acties">
 		<h1>
+			Acties</h1>
+		<ul>
+			<li>
+				<%= Html.ActionLink("Lijst downloaden", "Download", new { id = Model.IDGetoondGroepsWerkJaar, afdelingID = Model.GekozenAfdeling, functieID = Model.GekozenFunctie })%></li></ul>
+		<h1>
 			Filteren</h1>
 		<ul>
 			<li>
