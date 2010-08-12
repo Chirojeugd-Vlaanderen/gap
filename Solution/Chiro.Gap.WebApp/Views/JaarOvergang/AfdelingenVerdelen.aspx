@@ -15,7 +15,7 @@
 	<%=Html.ActionLink("Terug naar stap 1", "AfdelingenMaken", new { Controller = "JaarOvergang" }) %>
 	<br /><br />
 	
-	<%
+	<!--<%
 		List<CheckBoxListInfo> info
 		   = (from pa in Model.Afdelingen
 			  select new CheckBoxListInfo(
@@ -24,12 +24,11 @@
 				 , true)).ToList();
 
 		int j = 0;
-	%>
+	%>-->
 	
 	<%using (Html.BeginForm("VerdelingMaken", "JaarOvergang")){ %>
 	<table>
 		<tr>
-			<th><%=Html.CheckBox("checkall", true) %></th>
 			<th>Afdeling</th>
 			<th>Officiële afdeling</th>
 			<th>
@@ -41,13 +40,17 @@
 			<th>
 				Geslacht
 			</th>
+			<!--<th><%=Html.CheckBox("checkall", true) %></th> 
+				TODO dit zou niet logisch zijn: je wilt geen afdeling uitsluiten waar je nu mensen insteekt, je wilt
+				een afdeling die je al had niet opnieuw verdelen, bvb akabe
+			-->
 		</tr>
 		<% foreach (var ai in Model.Afdelingen)
 	 { %>
 		<tr>
-			<td>
+			<!--<td>
 				<%=Html.CheckBoxList("GekozenAfdelingsIDs", info[j])%><% j++; %>
-			</td>
+			</td>-->
 			<td>
 				<%=Html.LabelFieldList("AfdelingsIDs", new TextFieldListInfo(ai.AfdelingID.ToString(), ai.AfdelingNaam))%>
 			</td>
