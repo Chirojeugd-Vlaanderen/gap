@@ -49,6 +49,44 @@ namespace Chiro.Gap.WebApp.Test
 		}
 
 		[TestMethod]
+		public void HandleidingController_Zonder_GroepID_Geeft_Handleiding()
+		{
+			TestRoute("~/Handleiding",
+				new
+				{
+					controller = "Handleiding",
+					action = "ByPassIndex",
+					helpBestand = "Inleiding"
+				});
+		}
+
+		[TestMethod]
+		public void HandleidingController_Met_Helpbestand_Zonder_GroepID_Geeft_Handleiding()
+		{
+			TestRoute("~/Handleiding/Jaarovergang",
+				new
+				{
+					controller = "Handleiding",
+					action = "ByPassIndex",
+					helpBestand = "Jaarovergang"
+				});
+
+		}
+
+		[TestMethod]
+		public void HandleidingController_Met_Helpbestand_Geeft_Handleiding()
+		{
+			TestRoute("~/16000/Handleiding/Jaarovergang",
+				new
+				{
+					controller = "Handleiding",
+					action = "BestandTonen",
+					helpBestand = "Jaarovergang"
+				});
+
+		}
+
+		[TestMethod]
 		public void Afdeling_Maken_In_Jaarovergang()
 		{
 			TestRoute("~/15000/JaarOvergang/AfdelingMaken",

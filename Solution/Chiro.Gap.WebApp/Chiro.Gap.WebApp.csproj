@@ -200,6 +200,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Content Include="Views\Shared\Handleiding.Master" />
     <Content Include="Views\Shared\Fout.Master" />
     <Content Include="Views\Shared\Globaal.Master" />
   </ItemGroup>
@@ -284,7 +285,18 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Content Include="Content\MeerdereGroepen.css" />
+    <Content Include="Help\AfdelingActiveren.htm" />
+    <Content Include="Help\AfdelingsverdelingAanpassen.htm" />
+    <Content Include="Help\Categoriseren.htm" />
+    <Content Include="Help\EtikettenInWord2003.htm" />
+    <Content Include="Help\EtikettenInWordMetRibbon.htm" />
+    <Content Include="Help\EtikettenInWriter.htm" />
+    <Content Include="Help\EtikettenMaken.htm" />
+    <Content Include="Help\Fusioneren.htm" />
     <Content Include="Help\Groep.htm" />
+    <Content Include="Help\Inleiding.htm" />
+    <Content Include="Help\JaarovergangUitvoeren.htm" />
+    <Content Include="Help\LijstDownloaden.htm" />
     <Content Include="Help\PersoonlijkeGegevensfiche.htm" />
     <Content Include="Help\Iedereen.htm" />
     <Content Include="Help\Ingeschreven.htm" />
@@ -296,10 +308,12 @@
     <Content Include="Help\NieuwLid.htm" />
     <Content Include="Help\Persoonsfiche.htm" />
     <Content Include="Help\Trefwoorden.htm" />
+    <Content Include="Help\ZusBroer.htm" />
     <Content Include="Scripts\MicrosoftMvcJQueryValidation.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Views\Abonnementen\DubbelpuntAanvragen.aspx" />
     <Content Include="Views\Categorieen\Index.aspx" />
+    <Content Include="Views\Handleiding\AlleenHandleidingTonen.aspx" />
     <Content Include="Views\Shared\GeenToegangControl.ascx" />
     <Content Include="Views\Shared\GeenVerbindingControl.ascx" />
     <Content Include="Views\Functies\FunctieVerwijderen.aspx" />

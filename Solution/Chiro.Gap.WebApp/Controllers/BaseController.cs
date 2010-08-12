@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web.Caching;
 using System.Web.Mvc;
 
@@ -150,12 +151,12 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.GroepID = gi.ID;
 
 				model.MeerdereGroepen = (bool?)c.Get(meerdereGroepenCacheKey);
-                if(model.MeerdereGroepen == null)
+				if (model.MeerdereGroepen == null)
 				{
 					var aantal = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
 						(g => g.MijnGroepenOphalen()).Count();
 
-                    model.MeerdereGroepen = aantal > 1;
+					model.MeerdereGroepen = aantal > 1;
 
 					c.Add(meerdereGroepenCacheKey,
 							  aantal > 1,
@@ -165,7 +166,7 @@ namespace Chiro.Gap.WebApp.Controllers
 							  CacheItemPriority.Normal,
 							  null);
 				}
-                
+
 				// We werken met twee cache-items om te vermijden dat we te veel naar de databank moeten. Het is ook nodig omdat we 
 				// geen null kunnen cachen. Als er geen problemen zijn, moeten we dat dus op een andere manier opslaan:
 				// daarvoor dient de teller.
@@ -258,34 +259,46 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 		}
 
-		/* Wordt voorlopig alleen - en bij momenten - gebruikt door Bart
+		/// <summary>
+		/// Vult de groepsgegevens én de paginatitel in in de base view
+		/// </summary>
+		/// <param name="model">Te initialiseren model</param>
+		/// <param name="groepID">ID van de gewenste groep</param>
+		/// <param name="titel">Titel van de pagina</param>
+		[HandleError]
+		protected void BaseModelInit(MasterViewModel model, int groepID, string titel)
+		{
+			BaseModelInit(model, groepID);
+			model.Titel = titel;
+		}
+
+		/*	Wordt alleen door Bart gebruikt
 		 * 
-		//protected override void OnException(ExceptionContext filterContext)
-		//{
-		//    try
-		//    {
-		//        LogSchrijven(Properties.Settings.Default.LogBestandPad,
-		//                     string.Format("Gebruiker '{0}' veroorzaakte de volgende fout tussen {1} en {2}, op controller {3}: {4}",
-		//                   HttpContext.User.Identity.Name,
-		//                   Request.UrlReferrer, Request.Url,
-		//                   filterContext.Controller, filterContext.Exception));
-		//    }
-		//    catch (Exception)
-		//    {
-		//        // Tja, wat doen we in zo'n geval?
-		//    }
-		//}
+		//        protected override void OnException(ExceptionContext filterContext)
+		//        {
+		//            try
+		//            {
+		//                LogSchrijven(Properties.Settings.Default.LogBestandPad,
+		//                             string.Format("Gebruiker '{0}' veroorzaakte de volgende fout tussen {1} en {2}, op controller {3}: {4}",
+		//                           HttpContext.User.Identity.Name,
+		//                           Request.UrlReferrer, Request.Url,
+		//                           filterContext.Controller, filterContext.Exception));
+		//            }
+		//            catch (Exception)
+		//            {
+		//                // Tja, wat doen we in zo'n geval?
+		//            }
+		//        }
 
-		//static void LogSchrijven(string pad, string tekst)
-		//{
-		//    var boodschap = new StringBuilder();
-		//    boodschap.AppendLine(DateTime.Now.ToString());
-		//    boodschap.AppendLine(tekst);
-		//    boodschap.AppendLine("=====================================");
+		//        static void LogSchrijven(string pad, string tekst)
+		//        {
+		//            var boodschap = new StringBuilder();
+		//            boodschap.AppendLine(DateTime.Now.ToString());
+		//            boodschap.AppendLine(tekst);
+		//            boodschap.AppendLine("=====================================");
 
-		//    System.IO.File.AppendAllText(pad, boodschap.ToString());
-		//}
-		//
+		//            System.IO.File.AppendAllText(pad, boodschap.ToString());
+		//        }
 		*/
 	}
 }

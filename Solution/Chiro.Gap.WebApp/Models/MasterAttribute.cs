@@ -30,6 +30,8 @@ namespace Chiro.Gap.WebApp.Models
 				var viewModel = (IMasterViewModel)((ViewResultBase)filterContext.Result).ViewData.Model;
 				var controller = (BaseController)filterContext.Controller;
 				// controller.SetModel(viewModel);
+				// Dat de regel hiervoor in comments staat, doet vermoeden dat dit hele bestand niet meer nodig is.
+				// Of toch alleszins deze if-constructie niet.
 			}
 		}
 	}

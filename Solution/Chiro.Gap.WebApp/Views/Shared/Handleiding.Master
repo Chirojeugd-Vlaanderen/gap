@@ -1,0 +1,23 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage<Chiro.Gap.WebApp.Models.IMasterViewModel>"
+	MasterPageFile="~/Views/Shared/Globaal.Master" %>
+
+<asp:Content ContentPlaceHolderID="HeaderTitleContent" runat="server">
+	<asp:ContentPlaceHolder runat="server" ID="title" />
+</asp:Content>
+<asp:Content ContentPlaceHolderID="HeadContent" runat="server">
+	<% // css? scripts? %>
+</asp:Content>
+<asp:Content ContentPlaceHolderID="BodyContent" runat="server">
+	<% Html.RenderPartial("AlleHelpLinks"); %>
+	<div id="help">
+		<asp:ContentPlaceHolder ID="helpContent" runat="server" />
+	</div>
+</asp:Content>
+<asp:Content ContentPlaceHolderID="PaginaTitelContent" runat="server">
+</asp:Content>
+<asp:Content ContentPlaceHolderID="NavigatieContent" runat="server">
+	<ul>
+		<li>
+			<% =Html.ActionLink("Probeer aan te melden bij een groep", "Index", "Gav")%></li>
+	</ul>
+</asp:Content>

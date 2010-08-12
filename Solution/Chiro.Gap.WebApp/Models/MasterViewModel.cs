@@ -3,7 +3,6 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 
 namespace Chiro.Gap.WebApp.Models

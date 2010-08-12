@@ -54,20 +54,48 @@ namespace Chiro.Gap.WebApp
 				});
 
 			routes.MapRoute(
-				"Actions zonder paging",
-				"{groepID}/{controller}/{action}/{id}",
+				"Handleiding",
+				"{groepID}/{controller}/{helpBestand}",
 				new
 				{
-					controller = "Handleiding",
-					action = "Index"
+					action = "BestandTonen",
+					helpBestand = "Inleiding"
 				},
 				new
 				{
 					groepID = @"\d+",
-					id = @"\d+"
+					controller = "Handleiding"
 				});
 
-			// (Handleiding indien geen controller meegegeven)
+			routes.MapRoute(
+				"Handleiding zonder groepID",
+				"{controller}/{helpBestand}",
+				new
+				{
+					action = "ByPassIndex",
+					helpBestand = "Inleiding",
+					master = "Handleiding"
+				},
+				new
+				{
+					controller = "Handleiding"
+				});
+
+			// Defaults
+			routes.MapRoute(
+				"Actions zonder paging",
+				"{groepID}/{controller}/{action}/{id}",
+				new
+					{
+						controller = "Handleiding",
+						action = "Index"
+					},
+				new
+					{
+						groepID = @"\d+",
+						id = @"\d+"
+					});
+
 			routes.MapRoute(
 				"Default",
 				"{groepID}/{controller}/{action}/{id}/{page}",
@@ -85,27 +113,12 @@ namespace Chiro.Gap.WebApp
 						page = @"\d+" // groepID, ID en page moeten een getal zijn
 					});
 
-			// Handleiding
-			routes.MapRoute(
-				"Handleiding",
-				"{controller}/{action}",
-				new
-				{
-					controller = "Handleiding",
-					action = "Index"
-				},
-				new
-				{
-					controller = "Handleiding"
-				});
-
 			// Foutpagina's
 			routes.MapRoute(
 				"Foutpagina",
 				"{controller}/{action}/{*path}",
 				new
 				{
-					controller = "Error",
 					action = "Index"		// Defaults
 				},
 				new
