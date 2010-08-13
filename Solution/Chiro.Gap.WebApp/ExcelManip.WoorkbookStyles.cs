@@ -15,16 +15,18 @@ namespace Chiro.Gap.WebApp
 	public partial class ExcelManip
 	{
 		/// <summary>
-		/// Dit blok lelijke code is overgenomen uit een bestaand Exceldocument.
-		/// Het enige wat hier in moet gebeuren, is een style definieren voor datumweergave.
-		/// (De stijl met volgnummer 1).  De rest is bloat, en mag weg.
-		/// (Alleen is het niet gemakkelijk uit te vissen wat er precies moet blijven staan.
-		/// Tsss... Naar 't schijnt is dit met ODF veel gemakkelijker :-P.)
+		/// Definieert opmaak voor een Excel-bestand, onder andere voor de datum
 		/// </summary>
 		/// <param name="workbookStylesPart">Het 'workbooksStylePart' waarvoor de inhoud gemaakt
 		/// moet worden :-/ </param>
 		private void GenerateWorkbookStylesPartContent(WorkbookStylesPart workbookStylesPart)
 		{
+			// Dit blok lelijke code is overgenomen uit een bestaand Exceldocument.
+			// Het enige wat hier in moet gebeuren, is een style definieren voor datumweergave.
+			// (De stijl met volgnummer 1).  De rest is bloat, en mag weg.
+			// (Alleen is het niet gemakkelijk uit te vissen wat er precies moet blijven staan.
+			// Tsss... Naar 't schijnt is dit met ODF veel gemakkelijker :-P.)
+
 			var stylesheet1 = new Stylesheet();
 
 			var fonts1 = new Fonts { Count = 19U };
@@ -32,7 +34,7 @@ namespace Chiro.Gap.WebApp
 			var font1 = new Font();
 			var fontSize1 = new FontSize { Val = 11D };
 			var color1 = new Color { Theme = 1U };
-			var fontName1 = new FontName { Val = "Calibri" };
+			var fontName1 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering1 = new FontFamilyNumbering { Val = 2 };
 			var fontScheme1 = new FontScheme { Val = FontSchemeValues.Minor };
 
@@ -45,7 +47,7 @@ namespace Chiro.Gap.WebApp
 			var font2 = new Font();
 			var fontSize2 = new FontSize { Val = 11D };
 			var color2 = new Color { Indexed = 8U };
-			var fontName2 = new FontName { Val = "Calibri" };
+			var fontName2 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering2 = new FontFamilyNumbering { Val = 2 };
 
 			font2.Append(fontSize2);
@@ -56,7 +58,7 @@ namespace Chiro.Gap.WebApp
 			var font3 = new Font();
 			var fontSize3 = new FontSize { Val = 11D };
 			var color3 = new Color { Theme = 1U };
-			var fontName3 = new FontName { Val = "Calibri" };
+			var fontName3 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering3 = new FontFamilyNumbering { Val = 2 };
 			var fontScheme2 = new FontScheme { Val = FontSchemeValues.Minor };
 
@@ -69,7 +71,7 @@ namespace Chiro.Gap.WebApp
 			var font4 = new Font();
 			var fontSize4 = new FontSize { Val = 11D };
 			var color4 = new Color { Theme = 0U };
-			var fontName4 = new FontName { Val = "Calibri" };
+			var fontName4 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering4 = new FontFamilyNumbering { Val = 2 };
 			var fontScheme3 = new FontScheme { Val = FontSchemeValues.Minor };
 
@@ -82,7 +84,7 @@ namespace Chiro.Gap.WebApp
 			var font5 = new Font();
 			var fontSize5 = new FontSize { Val = 11D };
 			var color5 = new Color { Rgb = "FF9C0006" };
-			var fontName5 = new FontName { Val = "Calibri" };
+			var fontName5 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering5 = new FontFamilyNumbering { Val = 2 };
 			var fontScheme4 = new FontScheme { Val = FontSchemeValues.Minor };
 
@@ -96,7 +98,7 @@ namespace Chiro.Gap.WebApp
 			var bold1 = new Bold();
 			var fontSize6 = new FontSize { Val = 11D };
 			var color6 = new Color { Rgb = "FFFA7D00" };
-			var fontName6 = new FontName { Val = "Calibri" };
+			var fontName6 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering6 = new FontFamilyNumbering { Val = 2 };
 			var fontScheme5 = new FontScheme { Val = FontSchemeValues.Minor };
 
@@ -111,7 +113,7 @@ namespace Chiro.Gap.WebApp
 			var bold2 = new Bold();
 			var fontSize7 = new FontSize { Val = 11D };
 			var color7 = new Color { Theme = 0U };
-			var fontName7 = new FontName { Val = "Calibri" };
+			var fontName7 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering7 = new FontFamilyNumbering { Val = 2 };
 			var fontScheme6 = new FontScheme { Val = FontSchemeValues.Minor };
 
@@ -126,7 +128,7 @@ namespace Chiro.Gap.WebApp
 			var italic1 = new Italic();
 			var fontSize8 = new FontSize { Val = 11D };
 			var color8 = new Color { Rgb = "FF7F7F7F" };
-			var fontName8 = new FontName { Val = "Calibri" };
+			var fontName8 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering8 = new FontFamilyNumbering { Val = 2 };
 			var fontScheme7 = new FontScheme { Val = FontSchemeValues.Minor };
 
@@ -140,7 +142,7 @@ namespace Chiro.Gap.WebApp
 			var font9 = new Font();
 			var fontSize9 = new FontSize { Val = 11D };
 			var color9 = new Color { Rgb = "FF006100" };
-			var fontName9 = new FontName { Val = "Calibri" };
+			var fontName9 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering9 = new FontFamilyNumbering { Val = 2 };
 			var fontScheme8 = new FontScheme { Val = FontSchemeValues.Minor };
 
@@ -154,7 +156,7 @@ namespace Chiro.Gap.WebApp
 			var bold3 = new Bold();
 			var fontSize10 = new FontSize { Val = 15D };
 			var color10 = new Color { Theme = 3U };
-			var fontName10 = new FontName { Val = "Calibri" };
+			var fontName10 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering10 = new FontFamilyNumbering { Val = 2 };
 			var fontScheme9 = new FontScheme { Val = FontSchemeValues.Minor };
 
@@ -169,7 +171,7 @@ namespace Chiro.Gap.WebApp
 			var bold4 = new Bold();
 			var fontSize11 = new FontSize { Val = 13D };
 			var color11 = new Color { Theme = 3U };
-			var fontName11 = new FontName { Val = "Calibri" };
+			var fontName11 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering11 = new FontFamilyNumbering { Val = 2 };
 			var fontScheme10 = new FontScheme { Val = FontSchemeValues.Minor };
 
@@ -184,7 +186,7 @@ namespace Chiro.Gap.WebApp
 			var bold5 = new Bold();
 			var fontSize12 = new FontSize { Val = 11D };
 			var color12 = new Color { Theme = 3U };
-			var fontName12 = new FontName { Val = "Calibri" };
+			var fontName12 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering12 = new FontFamilyNumbering { Val = 2 };
 			var fontScheme11 = new FontScheme { Val = FontSchemeValues.Minor };
 
@@ -198,7 +200,7 @@ namespace Chiro.Gap.WebApp
 			var font13 = new Font();
 			var fontSize13 = new FontSize { Val = 11D };
 			var color13 = new Color { Rgb = "FF3F3F76" };
-			var fontName13 = new FontName { Val = "Calibri" };
+			var fontName13 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering13 = new FontFamilyNumbering { Val = 2 };
 			var fontScheme12 = new FontScheme { Val = FontSchemeValues.Minor };
 
@@ -211,7 +213,7 @@ namespace Chiro.Gap.WebApp
 			var font14 = new Font();
 			var fontSize14 = new FontSize { Val = 11D };
 			var color14 = new Color { Rgb = "FFFA7D00" };
-			var fontName14 = new FontName { Val = "Calibri" };
+			var fontName14 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering14 = new FontFamilyNumbering { Val = 2 };
 			var fontScheme13 = new FontScheme { Val = FontSchemeValues.Minor };
 
@@ -224,7 +226,7 @@ namespace Chiro.Gap.WebApp
 			var font15 = new Font();
 			var fontSize15 = new FontSize { Val = 11D };
 			var color15 = new Color { Rgb = "FF9C6500" };
-			var fontName15 = new FontName { Val = "Calibri" };
+			var fontName15 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering15 = new FontFamilyNumbering { Val = 2 };
 			var fontScheme14 = new FontScheme { Val = FontSchemeValues.Minor };
 
@@ -238,7 +240,7 @@ namespace Chiro.Gap.WebApp
 			var bold6 = new Bold();
 			var fontSize16 = new FontSize { Val = 11D };
 			var color16 = new Color { Rgb = "FF3F3F3F" };
-			var fontName16 = new FontName { Val = "Calibri" };
+			var fontName16 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering16 = new FontFamilyNumbering { Val = 2 };
 			var fontScheme15 = new FontScheme { Val = FontSchemeValues.Minor };
 
@@ -268,7 +270,7 @@ namespace Chiro.Gap.WebApp
 			var bold8 = new Bold();
 			var fontSize18 = new FontSize { Val = 11D };
 			var color18 = new Color { Theme = 1U };
-			var fontName18 = new FontName { Val = "Calibri" };
+			var fontName18 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering18 = new FontFamilyNumbering { Val = 2 };
 			var fontScheme17 = new FontScheme { Val = FontSchemeValues.Minor };
 
@@ -282,7 +284,7 @@ namespace Chiro.Gap.WebApp
 			var font19 = new Font();
 			var fontSize19 = new FontSize { Val = 11D };
 			var color19 = new Color { Rgb = "FFFF0000" };
-			var fontName19 = new FontName { Val = "Calibri" };
+			var fontName19 = new FontName { Val = "Arial" };
 			var fontFamilyNumbering19 = new FontFamilyNumbering { Val = 2 };
 			var fontScheme18 = new FontScheme { Val = FontSchemeValues.Minor };
 

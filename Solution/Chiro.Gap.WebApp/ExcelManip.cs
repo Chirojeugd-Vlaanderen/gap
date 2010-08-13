@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 using DocumentFormat.OpenXml;
@@ -31,7 +32,7 @@ namespace Chiro.Gap.WebApp
 		{
 			var result = new MemoryStream();
 
-			// Creeer een nieuw document in de stream
+			// Creëer een nieuw document in de stream
 			CreateSpreadsheetWorkbook(result);
 
 			// Importeer de tabel in het document 
@@ -44,6 +45,45 @@ namespace Chiro.Gap.WebApp
 		}
 
 		/// <summary>
+		/// Genereer een Exceldocument op basis van een rij objecten van type <typeparamref name="T"/>,
+		/// en gebruikt de waarden in <paramref name="koppen"/> als kolomtitels
+		/// </summary>
+		/// <typeparam name="T">Type van de objecten</typeparam>
+		/// <param name="rows">Objecten die in een rij terecht moeten komen</param>
+		/// <param name="cols">Een (param)array van lambda-expressies, die de kolommen van het document bepaalt</param>
+		/// <param name="koppen">Een (param)array van strings die als kolomkoppen in het Exceldocument moeten komen</param>
+		/// <returns>Een memorystream met daarin het Exceldocument</returns>
+		public MemoryStream ExcelTabel<T>(IEnumerable<T> rows, string[] koppen, params Func<T, object>[] cols)
+		{
+			var result = new MemoryStream();
+
+			// Creëer een nieuw document in de stream
+			CreateSpreadsheetWorkbook(result);
+
+			// Importeer de tabel in het document 
+			using (var spreadSheet = SpreadsheetDocument.Open(result, true))
+			{
+				KolomTitelsInvullen(spreadSheet, koppen);
+
+				WriteRows(spreadSheet, rows, cols);
+			}
+
+			return result;
+		}
+
+		private void KolomTitelsInvullen(SpreadsheetDocument spreadSheet, string[] koppen)
+		{
+			int colIndex = 1;
+
+			foreach (var kop in koppen)
+			{
+				// Zet de kolomtitels in de eerste rij
+				InsertText(spreadSheet, kop, colIndex, 1);
+				++colIndex;
+			}
+		}
+
+		/// <summary>
 		/// Maak een tabel in de eerste worksheet van een bestaand Exceldocument, op basis van een rij objecten
 		/// van het type <typeparamref name="T"/>.
 		/// </summary>
@@ -53,8 +93,8 @@ namespace Chiro.Gap.WebApp
 		/// <param name="cols">(param)array van lambda-expressies, die de kolommen bepalen</param>
 		public void WriteRows<T>(SpreadsheetDocument spreadSheet, IEnumerable<T> rows, params Func<T, object>[] cols)
 		{
-			uint rowIndex = 1;
-
+			uint rowIndex = 2; // In de eerste rij vulden we al kolomtitels in
+			
 			foreach (var rij in rows)
 			{
 				int colIndex = 1;
@@ -164,7 +204,7 @@ namespace Chiro.Gap.WebApp
 
 		/// <summary>
 		/// Given text and a SharedStringTablePart, creates a SharedStringItem with the specified text 
-		//  and inserts it into the SharedStringTablePart. If the item already exists, returns its index
+		/// and inserts it into the SharedStringTablePart. If the item already exists, returns its index
 		/// </summary>
 		/// <param name="text">Tekst voor de toe te voegen sharedstring</param>
 		/// <param name="shareStringPart">SharedStringPart waaraan <paramref name="text"/> toe te voegen is</param>
@@ -219,7 +259,7 @@ namespace Chiro.Gap.WebApp
 				sheetId = sheets.Elements<Sheet>().Select(s => s.SheetId.Value).Max() + 1;
 			}
 
-			string sheetName = "Sheet" + sheetId;
+			string sheetName = "Werkblad" + sheetId;
 
 			// Append the new worksheet and associate it with the workbook.
 			var sheet = new Sheet { Id = relationshipId, SheetId = sheetId, Name = sheetName };
@@ -296,9 +336,9 @@ namespace Chiro.Gap.WebApp
 		}
 
 		/// <summary>
-		/// Creeert een nieuw Exceldocument in de memorystream <paramref name="stream"/>.
+		/// Creëert een nieuw Exceldocument in de memorystream <paramref name="stream"/>.
 		/// </summary>
-		/// <param name="stream">memorystream waarin het Exceldocument gemaakt moet worden</param>
+		/// <param name="stream">Memorystream waarin het Exceldocument gemaakt moet worden</param>
 		public void CreateSpreadsheetWorkbook(MemoryStream stream)
 		{
 			// Create a spreadsheet document by supplying the filepath.
@@ -321,7 +361,7 @@ namespace Chiro.Gap.WebApp
 			Sheets sheets = spreadsheetDocument.WorkbookPart.Workbook.AppendChild(new Sheets());
 
 			// Append a new worksheet and associate it with the workbook.
-			var sheet = new Sheet { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = "mySheet" };
+			var sheet = new Sheet { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = "Gegevens" };
 			sheets.Append(sheet);
 
 			workbookpart.Workbook.Save();

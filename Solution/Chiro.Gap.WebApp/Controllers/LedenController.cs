@@ -44,10 +44,11 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepID">ID van de groep waar het over gaat</param>
 		/// <param name="sortering">Enumwaarde die aangeeft op welke parameter de lijst gesorteerd moet worden</param>
 		/// <returns></returns>
-		// TODO deze code moet opgekuist worden
 		[HandleError]
 		private LidInfoModel LijstModelInitialiseren(int groepsWerkJaarID, int groepID, LedenSorteringsEnum sortering)
 		{
+			// TODO: deze code moet opgekuist worden
+
 			// Er wordt een nieuwe lijst opgevraagd, dus wordt deze vanaf hier bijgehouden als de lijst om terug naar te springen
 			ClientState.VorigeLijst = Request.Url.ToString();
 
@@ -247,8 +248,16 @@ namespace Chiro.Gap.WebApp.Controllers
 						(lid => lid.OphalenUitGroepsWerkJaar(id));
 			}
 
+			// Als ExcelManip de kolomkoppen kan afleiden uit de (param)array, en dan liefst nog de DisplayName
+			// gebruikt van de PersoonOverzicht-velden, dan is de regel hieronder niet nodig.
+			string[] kolomkoppen = {
+			                       	"Type", "AD-nr", "Voornaam", "Naam", "Afdelingen", "Functies", "Geboortedatum", "Geslacht",
+			                       	"Straat", "Nr", "Bus", "Postcode", "Gemeente", "Tel", "Mail"
+			                       };
+
 			var stream = (new ExcelManip()).ExcelTabel(
 				lijst,
+				kolomkoppen,
 				it => it.Type,
 				it => it.AdNummer,
 				it => it.VoorNaam,

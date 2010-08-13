@@ -140,9 +140,16 @@ namespace Chiro.Gap.WebApp.Controllers
 					(g => g.AllenOphalenUitCategorie(id, PersoonSorteringsEnum.Naam));
 			}
 
-
+			// Als ExcelManip de kolomkoppen kan afleiden uit de (param)array, en dan liefst nog de DisplayName
+			// gebruikt van de PersoonOverzicht-velden, dan is de regel hieronder niet nodig.
+			string[] kolomkoppen = {
+			                       	"AD-nr", "Voornaam", "Naam", "Geboortedatum", "Geslacht", "Straat", "Nr", "Bus", "Postcode",
+			                       	"Gemeente", "Tel", "Mail"
+			                       };
+            
 			var stream = (new ExcelManip()).ExcelTabel(
 				data,
+				kolomkoppen,
 				it => it.AdNummer,
 				it => it.VoorNaam,
 				it => it.Naam,
