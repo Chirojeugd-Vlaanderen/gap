@@ -3,6 +3,7 @@
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
+<%@ Import Namespace="Chiro.Gap.WebApp.Controllers" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -150,11 +151,14 @@
 			<%foreach (var f in Model.PersoonLidInfo.LidInfo.Functies)
 	 {%>
 			<%=Html.ActionLink(f.Code, 
-				    "FunctieLijst", 
+				    "Lijst", 
 			        "Leden",
 				    new { groepsWerkJaarID = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID,
-                                        funcID = f.ID,
-                                        groepID = Model.GroepID },
+							id = f.ID,
+							groepID = Model.GroepID, 
+							sortering = LedenSorteringsEnum.Naam,
+							lijst = LijstEnum.Functie
+						},
 				    new { title= f.Naam })%>
 			<% }%>
 			<%= Html.ActionLink("[functies aanpassen]", "EditLidGegevens", new{ Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %></li>
