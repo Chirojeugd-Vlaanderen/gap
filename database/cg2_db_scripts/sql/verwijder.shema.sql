@@ -228,3 +228,8 @@ IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'data')
 BEGIN
 	DROP SCHEMA [data]
 END
+
+IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'verz')
+BEGIN
+	DROP SCHEMA [verz]
+END
