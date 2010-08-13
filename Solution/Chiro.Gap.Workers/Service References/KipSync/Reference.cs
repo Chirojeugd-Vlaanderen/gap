@@ -505,6 +505,9 @@ namespace Chiro.Gap.Workers.KipSync {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/CommunicatieToevoegen")]
         void CommunicatieToevoegen(int adNr, System.Collections.Generic.List<Chiro.Gap.Workers.KipSync.CommunicatieMiddel> communicatieMiddelen);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/CommunicatieVerwijderen")]
+        void CommunicatieVerwijderen(int adNr, Chiro.Gap.Workers.KipSync.CommunicatieMiddel communicatie);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -544,6 +547,10 @@ namespace Chiro.Gap.Workers.KipSync {
         
         public void CommunicatieToevoegen(int adNr, System.Collections.Generic.List<Chiro.Gap.Workers.KipSync.CommunicatieMiddel> communicatieMiddelen) {
             base.Channel.CommunicatieToevoegen(adNr, communicatieMiddelen);
+        }
+        
+        public void CommunicatieVerwijderen(int adNr, Chiro.Gap.Workers.KipSync.CommunicatieMiddel communicatie) {
+            base.Channel.CommunicatieVerwijderen(adNr, communicatie);
         }
     }
 }

@@ -315,5 +315,34 @@ namespace Chiro.Kip.Services
 			}
 #endif
 		}
+
+		/// <summary>
+		/// Verwijdert een communicatiemiddel uit Kipadmin.
+		/// </summary>
+		/// <param name="adNr">AD-nummer van persoon die communicatiemiddel moet verliezen</param>
+		/// <param name="communicatie">Gegevens over het te verwijderen communicatiemiddel</param>
+		public void CommunicatieVerwijderen(int adNr, CommunicatieMiddel communicatie)
+		{
+			using (var db = new kipadminEntities())
+			{
+				// We gaan ervan uit dat er geen dubbele communicatievormen in de database
+				// zitten; we verwijderen enkel de FirstOrDefault.
+
+				int communicatieTypeID = (int)communicatie.Type;
+
+				var teVerwijderen = (from ci in db.ContactInfoSet
+				                     where ci.kipPersoon.AdNr == adNr
+				                           && ci.ContactTypeId == communicatieTypeID
+				                           && ci.Info == communicatie.Waarde
+						     select ci).FirstOrDefault();
+
+				if (teVerwijderen != null)
+				{
+					Console.WriteLine("Verwijderen communicatie: AD{0} {1}", adNr, communicatie.Waarde);
+					db.DeleteObject(teVerwijderen);
+					db.SaveChanges();
+				}
+			}
+		}
 	}
 }

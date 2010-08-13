@@ -26,5 +26,13 @@ namespace Chiro.Kip.Services
 		/// <param name="communicatieMiddelen">toe te voegen contactinfo</param>
 		[OperationContract(IsOneWay = true)]
 		void CommunicatieToevoegen(int adNr, IEnumerable<CommunicatieMiddel> communicatieMiddelen);
+
+		/// <summary>
+		/// Verwijdert een communicatiemiddel uit Kipadmin.
+		/// </summary>
+		/// <param name="adNr">AD-nummer van persoon die communicatiemiddel moet verliezen</param>
+		/// <param name="communicatie">Gegevens over het te verwijderen communicatiemiddel</param>
+		[OperationContract(IsOneWay = true)]
+		void CommunicatieVerwijderen(int adNr, CommunicatieMiddel communicatie);
 	}
 }

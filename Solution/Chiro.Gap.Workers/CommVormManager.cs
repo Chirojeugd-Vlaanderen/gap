@@ -5,12 +5,18 @@
 
 using System.Collections.Generic;
 using System.Linq;
+#if KIPDORP
+using System.Transactions;
+#endif
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.Workers.Exceptions;
+using Chiro.Gap.Workers.KipSync;
+
+using CommunicatieType = Chiro.Gap.Orm.CommunicatieType;
 
 namespace Chiro.Gap.Workers
 {
@@ -22,7 +28,7 @@ namespace Chiro.Gap.Workers
 		private readonly IDao<CommunicatieType> _typedao;
 		private readonly IDao<CommunicatieVorm> _dao;
 		private readonly IAutorisatieManager _autorisatieMgr;
-		private readonly IGelieerdePersonenDao _geldao;
+		private readonly ISyncPersoonService _sync;
 
 		/// <summary>
 		/// Deze constructor laat toe om een alternatieve repository voor
@@ -33,12 +39,12 @@ namespace Chiro.Gap.Workers
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 		/// <param name="geldao">Repository voor gelieerde personen</param>
 		public CommVormManager(IDao<CommunicatieType> typedao, IDao<CommunicatieVorm> commdao, IAutorisatieManager autorisatieMgr,
-								IGelieerdePersonenDao geldao)
+								ISyncPersoonService sync)
 		{
 			_typedao = typedao;
 			_dao = commdao;
 			_autorisatieMgr = autorisatieMgr;
-			_geldao = geldao;
+			_sync = sync;
 		}
 
 		/// <summary>
@@ -137,7 +143,26 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 			comm.TeVerwijderen = true;
-			_dao.Bewaren(comm);
+#if KIPDORP
+			using (var tx = new TransactionScope())
+			{
+#endif
+				// Indien ad-nummer: syncen
+				if (comm.GelieerdePersoon.Persoon.AdNummer != null)
+				{
+					_sync.CommunicatieVerwijderen(
+						(int) comm.GelieerdePersoon.Persoon.AdNummer,
+						new KipSync.CommunicatieMiddel
+							{
+								Type = (KipSync.CommunicatieType) comm.CommunicatieType.ID,
+								Waarde = comm.Nummer
+							});
+				}
+				_dao.Bewaren(comm);
+#if KIPDORP
+				tx.Complete();
+			}
+#endif
 		}
 
 		/// <summary>
