@@ -49,5 +49,3 @@ CREATE INDEX IX_PersoonsAdres_AdresID on pers.PersoonsAdres(AdresID)
 CREATE INDEX IDX_CommunicatieVorm_GelieerdePersoonID_CommunicatieTypeID_CommunicatieVormID ON pers.CommunicatieVorm(GelieerdePersoonID, CommunicatieTypeID, CommunicatieVormID) INCLUDE (Nota, Nummer, IsGezinsgebonden, Voorkeur, Versie) 
 GO
 
-CREATE INDEX IDX_Lid_GroepsWerkJaarID ON lid.LID(GroepsWerkJaarID)
-GO
