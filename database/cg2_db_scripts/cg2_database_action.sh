@@ -20,8 +20,8 @@ LOG_FILE=$(mktemp /tmp/$(basename $0)_XXXX)
   {
      cat <<EOF
 	 
-Gebruik: $(basename $0) -h -a [creatie | verwijder | beide ]  \\
-	   -t [ shema | constraints | stored_procedures | gegevens | test ] \\
+Gebruik: $(basename $0) -h -a [creatie | verwijder | beide]  \\
+	   -t [shema | constraints | stored_procedures | gegevens | test | indexes] \\
 	   -n <db_name> -f -s <servernaam>
 	 
 	   -h: Toon deze helppagina
