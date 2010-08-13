@@ -5,6 +5,13 @@ DROP FUNCTION [core].[ufnSoundEx]
 
 
 -- Nu de tabellen
+
+
+IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('pers.GelieerdePersoon'))
+BEGIN
+	DROP TABLE pers.GelieerdePersoon
+END
+
 IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('pers.PersoonsAdres'))
 BEGIN
 	DROP TABLE pers.PersoonsAdres
@@ -95,10 +102,6 @@ BEGIN
 	DROP TABLE pers.PersoonsCategorie
 END
 
-IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('pers.GelieerdePersoon'))
-BEGIN
-	DROP TABLE pers.GelieerdePersoon
-END
 
 IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('grp.GroepsWerkJaar'))
 BEGIN
@@ -148,6 +151,16 @@ END
 IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('pers.CommunicatieVorm'))
 BEGIN
 	DROP TABLE pers.CommunicatieVorm
+END
+
+IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('verz.PersoonsVerzekering'))
+BEGIN
+	DROP TABLE verz.PersoonsVerzekering
+END
+
+IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('verz.VerzekeringsType'))
+BEGIN
+	DROP TABLE verz.VerzekeringsType
 END
 
 IF EXISTS(SELECT * FROM sys.tables WHERE object_id = OBJECT_ID('pers.Persoon'))
