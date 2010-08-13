@@ -229,6 +229,8 @@ namespace Chiro.Gap.InitieleImport
 					{
 						foreach (var pa in p.PersoonsAdresInfo)
 						{
+							FixAdresInfo(pa);
+
 							Console.WriteLine(
 								Properties.Resources.AdresInfo,
 								pa.StraatNaamNaam,
@@ -340,6 +342,37 @@ namespace Chiro.Gap.InitieleImport
 				ToonPersoonDetail(d.Nieuw);
 				ToonPersoonDetail(d.Bestaand);
 			}
+		}
+
+		/// <summary>
+		/// Pas gemeentes aan aan rariteiten in CRAB
+		/// </summary>
+		/// <param name="pa">Persoonsadres met aan te passen gemeentes</param>
+		private static void FixAdresInfo(PersoonsAdresInfo pa)
+		{
+			WijzigWoonPlaats(pa, "amandsberg", "Sint-Amandsberg (Gent)");
+			WijzigWoonPlaats(pa, "deurne", "Deurne (Antwerpen)");
+			WijzigWoonPlaats(pa, "kessel-lo", "Kessel-Lo (Leuven)");
+			WijzigWoonPlaats(pa, "kapellen", "Kapellen (Antw.)");
+			WijzigWoonPlaats(pa, "vith", "Sankt Vith");
+			WijzigWoonPlaats(pa, "nieuwkerken", "Nieuwkerken-Waas");
+			WijzigWoonPlaats(pa, "wijgmaal", "Wijgmaal (Brabant)");
+			WijzigWoonPlaats(pa, "wilrijk", "Wilrijk (Antwerpen)");
+			WijzigWoonPlaats(pa, "borsbeek", "Borsbeek (Antw.)");
+
+		}
+
+		/// <summary>
+		/// Als substring <paramref name="zoek" /> voorkomt in de woonplaats van 
+		/// <paramref name="pa"/>, wordt die woonplaats vervangen door <paramref name="crabNaam"/>
+		/// </summary>
+		/// <param name="pa">Te manipuleren persoonsadres</param>
+		/// <param name="zoek">Te zoeken string in woonplaats</param>
+		/// <param name="crabNaam">Nieuwe woonplaatsnaam, voor wanneer <paramref name="zoek"/> substring is
+		/// van de huidige woonplaatsnaam</param>
+		private static void WijzigWoonPlaats(PersoonsAdresInfo pa, string zoek, string crabNaam)
+		{
+			if (pa.WoonPlaatsNaam.ToUpper().Contains(zoek.ToUpper())) pa.WoonPlaatsNaam = crabNaam;
 		}
 
 		/// <summary>
