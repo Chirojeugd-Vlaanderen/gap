@@ -145,9 +145,11 @@ namespace Chiro.Pdox.Data
 						geslacht = GeslachtsType.Onbekend;
 					}
 
-					// Importeer enkel kindleden.  De rest moet maar uit kipadmin komen.
+
 					
-					if (reader["AANSL_NR"] != null && String.Compare(reader["SOORT"].ToString(), PDOXKIND, true) == 0)
+					if (reader["AANSL_NR"] != null && 
+						(String.Compare(reader["SOORT"].ToString(), PDOXKIND, true) == 0 ||
+						String.Compare(reader["SOORT"].ToString(), PDOXLEIDING, true) == 0))
 					{
 						LidType lt = String.Compare(reader["SOORT"].ToString(), PDOXKIND, true) == 0 ? LidType.Kind : LidType.Leiding;
 						lid = new LidInfo { Type = lt };
