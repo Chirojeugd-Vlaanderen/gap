@@ -145,15 +145,16 @@ namespace Chiro.Pdox.Data
 						geslacht = GeslachtsType.Onbekend;
 					}
 
-					if (reader["AANSL_NR"] == null)
+					// Importeer enkel kindleden.  De rest moet maar uit kipadmin komen.
+					
+					if (reader["AANSL_NR"] != null && String.Compare(reader["SOORT"].ToString(), PDOXKIND, true) == 0)
 					{
-						lid = null;
+						LidType lt = String.Compare(reader["SOORT"].ToString(), PDOXKIND, true) == 0 ? LidType.Kind : LidType.Leiding;
+						lid = new LidInfo { Type = lt };
 					}
 					else
 					{
-						LidType lt = String.Compare(reader["SOORT"].ToString(), PDOXKIND, true) == 0 ? LidType.Kind : LidType.Leiding;
-
-						lid = new LidInfo {Type = lt};
+						lid = null;
 					}
 
 					#region adressen

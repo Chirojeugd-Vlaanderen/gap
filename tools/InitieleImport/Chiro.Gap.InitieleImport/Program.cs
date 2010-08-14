@@ -39,12 +39,12 @@ namespace Chiro.Gap.InitieleImport
 				ImporteerGroepsGegevens(stamnr);
 			}
 
-			foreach (var loginInfo in Users.Lijst)
-			{
-				var god = new DataGod();
+			//foreach (var loginInfo in Users.Lijst)
+			//{
+			//        var god = new DataGod();
 
-				god.RechtenToekennen(loginInfo.StamNr, loginInfo.Login);
-			}
+			//        god.RechtenToekennen(loginInfo.StamNr, loginInfo.Login);
+			//}
 
 			Console.WriteLine("Klaar!");
 			Console.ReadLine();
