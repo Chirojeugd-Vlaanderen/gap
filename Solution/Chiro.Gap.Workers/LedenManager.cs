@@ -258,10 +258,12 @@ namespace Chiro.Gap.Workers
 			if (afdeling != null) //Er is een afdeling met de gewenste leeftijd
 			{
 				nieuwlid = KindMaken(gp, gwj);
-			} else if (gp.LeefTijd.Value.CompareTo(Properties.Settings.Default.MinLeidingLeefTijd) >= 0) 
+			} 
+			else if (gwj.WerkJaar - gp.LeefTijd.Value.Year >= Properties.Settings.Default.MinLeidingLeefTijd) 
 			{
 				nieuwlid = LeidingMaken(gp, gwj);
-			} else
+			} 
+			else
 			{
 				throw new OngeldigObjectException("De persoon is te jong om leiding te worden en je groep heeft geen afdeling voor die leeftijd.");
 			}
