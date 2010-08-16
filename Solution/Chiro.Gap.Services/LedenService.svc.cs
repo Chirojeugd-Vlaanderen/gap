@@ -71,7 +71,8 @@ namespace Chiro.Gap.Services
 
 		/// <summary>
 		/// Gegeven een lijst van IDs van gelieerde personen.
-		/// Haal al die gelieerde personen op en probeer ze in het huidige werkjaar lid te maken in het gegeven lidtype.
+		/// Haal al die gelieerde personen op en probeer ze in het huidige werkjaar in te schrijven als
+		/// <paramref name="type"/>.
 		/// <para />
 		/// Gaat een gelieerde persoon ophalen en maakt die lid in het huidige werkjaar.  Als het om kindleden gaat,
 		/// krjgen ze meteen een afdeling die overeenkomt met leeftijd en geslacht.
@@ -155,7 +156,7 @@ namespace Chiro.Gap.Services
 							// verhindert dat de rest bewaard wordt.
 							if (l != null)
 							{
-								l = _ledenMgr.LidBewaren(l, LidExtras.Persoon|LidExtras.Afdelingen);
+								l = _ledenMgr.Bewaren(l, LidExtras.Persoon|LidExtras.Afdelingen);
 								lidIDs.Add(l.ID);
 							}
 						}
@@ -257,7 +258,7 @@ namespace Chiro.Gap.Services
 							// verhindert dat de rest bewaard wordt.
 							if (l != null)
 							{
-								l = _ledenMgr.LidBewaren(l, LidExtras.Afdelingen|LidExtras.Persoon);
+								l = _ledenMgr.Bewaren(l, LidExtras.Afdelingen|LidExtras.Persoon);
 								lidIDs.Add(l.ID);
 							}
 						}
@@ -339,7 +340,7 @@ namespace Chiro.Gap.Services
 							l.TeVerwijderen = true;
 						}
 
-						_ledenMgr.LidBewaren(l, LidExtras.Functies);
+						_ledenMgr.Bewaren(l, LidExtras.Functies);
 					}
 				}
 
@@ -368,25 +369,12 @@ namespace Chiro.Gap.Services
 				Lid lid = _ledenMgr.Ophalen(lidinfo.LidInfo.LidID, LidExtras.Geen);
 
 				_ledenMgr.InfoOvernemen(lidinfo.LidInfo, lid);
-				_ledenMgr.LidBewaren(lid, LidExtras.Geen);
+				_ledenMgr.Bewaren(lid, LidExtras.Geen);
 			}
 			catch (Exception ex)
 			{
 				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
-		}
-
-		/// <summary>
-		/// Bewaart lidinfo, inclusief wat in vrije velden ingevuld werd
-		/// </summary>
-		/// <param name="lid">De info die opgeslagen moet worden</param>
-		/// <returns>De bijgewerkte lidinfo</returns>
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public PersoonLidInfo BewarenMetVrijeVelden(PersoonLidInfo lid)
-		{
-			// TODO
-			throw new NotImplementedException();
 		}
 
 		#endregion

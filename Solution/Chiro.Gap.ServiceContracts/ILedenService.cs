@@ -103,16 +103,6 @@ namespace Chiro.Gap.ServiceContracts
 		int AfdelingenVervangen(int lidID, IEnumerable<int> afdelingsJaarIDs);
 
 		/// <summary>
-		/// Bewaart lidinfo, inclusief wat in vrije velden ingevuld werd
-		/// </summary>
-		/// <param name="lid">De info die opgeslagen moet worden</param>
-		/// <returns>De bijgewerkte lidinfo</returns>
-		[OperationContract]
-		[FaultContract(typeof(GapFault))]
-		[FaultContract(typeof(FoutNummerFault))]
-		PersoonLidInfo BewarenMetVrijeVelden(PersoonLidInfo lid);
-
-		/// <summary>
 		/// Verzekert lid met ID <paramref name="lidID"/> tegen loonverlies
 		/// </summary>
 		/// <param name="lidID">ID van te verzekeren lid</param>

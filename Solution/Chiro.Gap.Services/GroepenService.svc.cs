@@ -1042,7 +1042,7 @@ namespace Chiro.Gap.Services
 				{
 					//TODO catch all exceptions zoals in de service gebeurt (al die foutboodschappen moeten dus eigenlijk gecatcht kunnen worden in de service, niet in de worders
 					var l = _ledenMgr.AutomatischLidMaken(lid.GelieerdePersoon, gwj);
-					_ledenMgr.LidBewaren(l, LidExtras.Afdelingen);
+					_ledenMgr.Bewaren(l, LidExtras.Afdelingen);
 				}
 
 #if KIPDORP

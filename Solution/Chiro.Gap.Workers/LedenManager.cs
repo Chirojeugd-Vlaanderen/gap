@@ -179,10 +179,11 @@ namespace Chiro.Gap.Workers
 
 			// Afdeling automatisch bepalen
 			// Bepaal het geboortejaar, aangepast volgens de Chiroleeftijd.
-// ReSharper disable PossibleInvalidOperationException
+
+			Debug.Assert(gp.LeefTijd != null);
 			// Controle of geboortedatum null is, gebeurde al in LidMaken
+
 			var geboortejaar = gp.LeefTijd.Value.Year;
-// ReSharper restore PossibleInvalidOperationException
 
 			// Relevante afdelingsjaren opzoeken
 			var afdelingsjaren =
@@ -203,10 +204,11 @@ namespace Chiro.Gap.Workers
 			// Als dit niet zo is, kies dan de eerste afdeling die voldoet aan de leeftijdsgrenzen.
 			aj = aj ?? afdelingsjaren.First();
 
-// ReSharper disable PossibleNullReferenceException
 			// Elk scenario waarbij k null is, leidt tot een exception, maar dat gebeurt deels in LidMaken, dus ziet ReSharper dat niet
+			// Je kan de foutmelding van resharper dan als volgt vermijden:
+			Debug.Assert(k != null);
+
 			k.AfdelingsJaar = aj;
-// ReSharper restore PossibleNullReferenceException
 			aj.Kind.Add(k);
 
 			return k;
@@ -420,7 +422,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="lid">Het <paramref name="lid"/> dat bewaard moet worden</param>
 		/// <param name="extras">De gekoppelde entiteiten</param>
 		/// <returns>Een kloon van het lid en de extra's, met eventuele nieuwe ID's ingevuld</returns>
-		public Lid LidBewaren(Lid lid, LidExtras extras)
+		public Lid Bewaren(Lid lid, LidExtras extras)
 		{
 			if (!_autorisatieMgr.IsGavLid(lid.ID))
 			{
