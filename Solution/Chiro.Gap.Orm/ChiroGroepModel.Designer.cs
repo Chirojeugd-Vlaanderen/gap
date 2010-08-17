@@ -37,7 +37,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsVerzekering_VerzekeringsType", "VerzekeringsType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.VerzekeringsType), "PersoonsVerzekering", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.PersoonsVerzekering))]
 
 // Original file name:
-// Generation date: 6/08/2010 10:26:47
+// Generation date: 17/08/2010 15:01:43
 namespace Chiro.Gap.Orm
 {
     
@@ -3074,12 +3074,14 @@ namespace Chiro.Gap.Orm
         /// <param name="geboorteJaarTot">Initial value of GeboorteJaarTot.</param>
         /// <param name="geboorteJaarVan">Initial value of GeboorteJaarVan.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static AfdelingsJaar CreateAfdelingsJaar(int geboorteJaarTot, int geboorteJaarVan, int id)
+        /// <param name="geenAutoVerdeling">Initial value of GeenAutoVerdeling.</param>
+        public static AfdelingsJaar CreateAfdelingsJaar(int geboorteJaarTot, int geboorteJaarVan, int id, bool geenAutoVerdeling)
         {
             AfdelingsJaar afdelingsJaar = new AfdelingsJaar();
             afdelingsJaar.GeboorteJaarTot = geboorteJaarTot;
             afdelingsJaar.GeboorteJaarVan = geboorteJaarVan;
             afdelingsJaar.ID = id;
+            afdelingsJaar.GeenAutoVerdeling = geenAutoVerdeling;
             return afdelingsJaar;
         }
         /// <summary>
@@ -3197,6 +3199,29 @@ namespace Chiro.Gap.Orm
         private int _GeslachtsInt;
         partial void OnGeslachtsIntChanging(int value);
         partial void OnGeslachtsIntChanged();
+        /// <summary>
+        /// There are no comments for Property GeenAutoVerdeling in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public bool GeenAutoVerdeling
+        {
+            get
+            {
+                return this._GeenAutoVerdeling;
+            }
+            set
+            {
+                this.OnGeenAutoVerdelingChanging(value);
+                this.ReportPropertyChanging("GeenAutoVerdeling");
+                this._GeenAutoVerdeling = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("GeenAutoVerdeling");
+                this.OnGeenAutoVerdelingChanged();
+            }
+        }
+        private bool _GeenAutoVerdeling;
+        partial void OnGeenAutoVerdelingChanging(bool value);
+        partial void OnGeenAutoVerdelingChanged();
         /// <summary>
         /// There are no comments for GroepsWerkJaar in the schema.
         /// </summary>

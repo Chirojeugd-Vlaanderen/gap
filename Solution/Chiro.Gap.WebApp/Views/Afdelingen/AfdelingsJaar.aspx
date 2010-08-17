@@ -3,12 +3,13 @@
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-	<script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript" />
-	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript" />
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript" />
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript" />
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript" />
-	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript" />
+	<!-- Opgelet! Voor scripts de expliciete closing tag laten staan; anders krijg je een lege pagina. (zie #694) -->
+	<script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript"></script>
+	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftAjax.js")%>" type="text/javascript"></script>
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcAjax.js")%>" type="text/javascript"></script>
+	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcValidation.js")%>" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<%= Html.ValidationSummary() %>
@@ -46,6 +47,8 @@
 		%>
 		<%=Html.LabelFor(mdl=>mdl.AfdelingsJaar.OfficieleAfdelingID) %>
 		<%=Html.DropDownListFor(mdl => mdl.AfdelingsJaar.OfficieleAfdelingID, new SelectList(values, "value", "text"))%><br />
+		<%=Html.LabelFor(mdl=>mdl.AfdelingsJaar.GeenAutoVerdeling) %>
+		<%=Html.CheckBoxFor(mdl=>mdl.AfdelingsJaar.GeenAutoVerdeling) %> <br />
 		<%=Html.HiddenFor(mdl=>mdl.AfdelingsJaar.AfdelingID) %>
 		<%=Html.HiddenFor(mdl=>mdl.AfdelingsJaar.AfdelingsJaarID) %>
 		<%=Html.HiddenFor(mdl=>mdl.AfdelingsJaar.VersieString) %>

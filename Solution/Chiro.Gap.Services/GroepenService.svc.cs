@@ -351,8 +351,10 @@ namespace Chiro.Gap.Services
 										afd,
 										oa,
 										huidigGwj,
-										detail.GeboorteJaarVan, detail.GeboorteJaarTot,
-										detail.Geslacht);
+										detail.GeboorteJaarVan, 
+										detail.GeboorteJaarTot,
+										detail.Geslacht, 
+										detail.GeenAutoVerdeling);
 				}
 				else
 				{
@@ -375,7 +377,8 @@ namespace Chiro.Gap.Services
 						detail.GeboorteJaarVan,
 						detail.GeboorteJaarTot,
 						detail.Geslacht,
-						detail.VersieString);
+						detail.VersieString,
+						detail.GeenAutoVerdeling);
 				}
 
 				_afdelingsJaarMgr.Bewaren(afdelingsJaar);
@@ -976,7 +979,7 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		/// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkjaar</param>
 		/// <param name="groepID">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
-		public void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdeling> teActiveren, int groepID)
+		public void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdelingInfo> teActiveren, int groepID)
 		{
 			//TODO unit tests
 			//TODO check dat roll-back gebeurd
@@ -1000,7 +1003,7 @@ namespace Chiro.Gap.Services
 				// Alle gevraagde afdelingen aanmaken
 				foreach (var afdinfo in teActiveren)
 				{
-					TeActiverenAfdeling afdinfo1 = afdinfo; 
+					TeActiverenAfdelingInfo afdinfo1 = afdinfo; 
 					// Deze lokale variabele binnen de loop vermijdt de ReSharper-waarschuwing over "access to modified closure".
 					// Meer uitleg: https://develop.chiro.be/trac/cg2/wiki/VeelVoorkomendeWaarschuwingen#Accesstomodifiedclosure
 					
@@ -1027,7 +1030,7 @@ namespace Chiro.Gap.Services
 
 					try
 					{
-						_afdelingsJaarMgr.Aanmaken(afd, offafd, gwj, afdinfo.GeboorteJaarVan, afdinfo.GeboorteJaarTot, afdinfo.Geslacht);
+						_afdelingsJaarMgr.Aanmaken(afd, offafd, gwj, afdinfo.GeboorteJaarVan, afdinfo.GeboorteJaarTot, afdinfo.Geslacht, afdinfo.GeenAutoVerdeling);
 					}
 					catch (ValidatieException)
 					{

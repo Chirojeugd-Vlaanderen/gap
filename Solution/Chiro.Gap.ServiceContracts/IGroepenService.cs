@@ -421,7 +421,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdeling> teActiveren, int groepID);
+		void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdelingInfo> teActiveren, int groepID);
 
 		#endregion
 

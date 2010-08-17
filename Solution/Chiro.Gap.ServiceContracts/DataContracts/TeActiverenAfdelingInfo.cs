@@ -16,7 +16,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	/// DataContract voor een afdeling die geactiveerd moet worden in een bepaald groepswerkjaar
 	/// </summary>
 	[DataContract]
-	public class TeActiverenAfdeling
+	public class TeActiverenAfdelingInfo
 	{
 		/// <summary>
 		/// ID van de afdeling
@@ -54,5 +54,12 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		[Verplicht]
 		public GeslachtsType Geslacht { get; set; }
+
+		/// <summary>
+		/// Indien <c>true</c>, wordt deze afdeling uitgesloten van de automatische afdelingsverdeling
+		/// </summary>
+		[DataMember]
+		[Verplicht]
+		public bool GeenAutoVerdeling { get; set; }
 	}
 }

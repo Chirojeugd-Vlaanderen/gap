@@ -72,5 +72,13 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// </summary>
 		[DataMember]
 		public string VersieString { get; set; }
+
+		/// <summary>
+		/// Indien true, wordt deze afdeling uitgesloten van de automatische afdelingsverdeling
+		/// </summary>
+		[DataMember]
+		[Verplicht]
+		[DisplayName(@"Uitsluiten bij automatische afdelingsverdeling")]
+		public bool GeenAutoVerdeling { get; set; }
 	}
 }

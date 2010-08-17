@@ -274,6 +274,7 @@
           <Property Name="GroepsWerkJaarID" Type="int" Nullable="false" />
           <Property Name="OfficieleAfdelingID" Type="int" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="GeenAutoVerdeling" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Functie">
           <Key>
@@ -1104,7 +1105,8 @@
           <NavigationProperty Name="OfficieleAfdeling" Relationship="ChiroGroepModel.FK_AfdelingsJaar_OfficieleAfdeling" FromRole="AfdelingsJaar" ToRole="OfficieleAfdeling" />
           <NavigationProperty Name="Leiding" Relationship="ChiroGroepModel.LeidingInAfdelingsJaar" FromRole="AfdelingsJaar" ToRole="Leiding" />
           <NavigationProperty Name="Kind" Relationship="ChiroGroepModel.FK_Kind_AfdelingsJaar" FromRole="AfdelingsJaar" ToRole="Kind" />
-          <Property Name="GeslachtsInt" Type="Int32" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" /></EntityType>
+          <Property Name="GeslachtsInt" Type="Int32" Nullable="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" />
+          <Property Name="GeenAutoVerdeling" Type="Boolean" Nullable="false" /></EntityType>
         <EntityType Name="OfficieleAfdeling">
           <Key>
             <PropertyRef Name="ID" />
@@ -1428,6 +1430,7 @@
           <EntitySetMapping Name="AfdelingsJaar">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.AfdelingsJaar)">
               <MappingFragment StoreEntitySet="AfdelingsJaar">
+                <ScalarProperty Name="GeenAutoVerdeling" ColumnName="GeenAutoVerdeling" />
                 <ScalarProperty Name="GeslachtsInt" ColumnName="Geslacht" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="ID" ColumnName="AfdelingsJaarID" />

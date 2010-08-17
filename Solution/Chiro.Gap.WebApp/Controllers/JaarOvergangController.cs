@@ -119,7 +119,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult VerdelingMaken(JaarOvergangAfdelingsJaarModel model, int groepID)
 		{
-			var teactiveren = new List<TeActiverenAfdeling>();
+			var teactiveren = new List<TeActiverenAfdelingInfo>();
 
 			if (model.TotLijst.Count != model.GeslLijst.Count || model.TotLijst.Count != model.VanLijst.Count)
 			{
@@ -132,7 +132,7 @@ namespace Chiro.Gap.WebApp.Controllers
 // ReSharper disable LoopCanBeConvertedToQuery
 			for (int i = 0; i < model.VanLijst.Count; i++)
 			{
-				var x = new TeActiverenAfdeling
+				var x = new TeActiverenAfdelingInfo
 							{
 								AfdelingID = Int32.Parse(model.AfdelingsIDs[i]),
 								OfficieleAfdelingID = Int32.Parse(model.OfficieleAfdelingsIDs[i]),

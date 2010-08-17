@@ -65,6 +65,8 @@ namespace Chiro.Gap.Workers
 		/// <param name="geboorteJaarEind">Geboortejaar tot</param>
 		/// <param name="geslacht">Bepaalt of de afdeling een jongensafdeling, meisjesafdeling of
 		/// gemengde afdeling is.</param>
+		/// <param name="geenAutomatischeVerdeling">Indien <c>true</c>, wordt dit afdelingsjaar genegeerd
+		/// bij de automatische afdelingsverdeling.</param>
 		/// <returns>Het aangemaakte afdelingsjaar</returns>
 		public AfdelingsJaar Aanmaken(
 			Afdeling a,
@@ -72,7 +74,8 @@ namespace Chiro.Gap.Workers
 			GroepsWerkJaar gwj,
 			int geboorteJaarBegin,
 			int geboorteJaarEind,
-			GeslachtsType geslacht)
+			GeslachtsType geslacht,
+			bool geenAutomatischeVerdeling)
 		{
 			if (!_autorisatieMgr.IsGavAfdeling(a.ID))
 			{
@@ -98,6 +101,7 @@ namespace Chiro.Gap.Workers
 			afdelingsJaar.GeboorteJaarVan = geboorteJaarBegin;
 			afdelingsJaar.GeboorteJaarTot = geboorteJaarEind;
 			afdelingsJaar.Geslacht = geslacht;
+			afdelingsJaar.GeenAutoVerdeling = geenAutomatischeVerdeling;
 
 			a.AfdelingsJaar.Add(afdelingsJaar);
 			oa.AfdelingsJaar.Add(afdelingsJaar);
@@ -207,6 +211,8 @@ namespace Chiro.Gap.Workers
 		/// <param name="geboorteJaarTot">Bovengrens geboortejaar</param>
 		/// <param name="geslachtsType">Jongensafdeling, meisjesafdeling of gemengde afdeling</param>
 		/// <param name="versieString">Versiestring uit database voor concurrency controle</param>
+		/// <param name="geenAutomatischeVerdeling">Indien <c>true</c>, wordt dit afdelingsjaar genegeerd
+		/// bij de automatische afdelingsverdeling.</param>
 		/// <remarks>Groepswerkjaar en afdeling kunnen niet gewijzigd worden.  Verwijder hiervoor het
 		/// afdelingsjaar, en maak een nieuw.</remarks>
 		public void Wijzigen(
@@ -215,7 +221,8 @@ namespace Chiro.Gap.Workers
 			int geboorteJaarVan, 
 			int geboorteJaarTot, 
 			GeslachtsType geslachtsType, 
-			string versieString)
+			string versieString,
+			bool geenAutomatischeVerdeling)
 		{
 			if (_autorisatieMgr.IsGavAfdelingsJaar(afdelingsJaar.ID))
 			{
@@ -235,6 +242,7 @@ namespace Chiro.Gap.Workers
 				afdelingsJaar.GeboorteJaarTot = geboorteJaarTot;
 				afdelingsJaar.Geslacht = geslachtsType;
 				afdelingsJaar.VersieString = versieString;
+				afdelingsJaar.GeenAutoVerdeling = geenAutomatischeVerdeling;
 			}
 			else
 			{

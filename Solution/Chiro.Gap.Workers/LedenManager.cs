@@ -189,6 +189,7 @@ namespace Chiro.Gap.Workers
 			var afdelingsjaren =
 				(from a in gwj.AfdelingsJaar
 				 where a.GeboorteJaarVan <= geboortejaar && geboortejaar <= a.GeboorteJaarTot
+				       && !a.GeenAutoVerdeling
 				 select a).ToList();
 
 			if (afdelingsjaren.Count == 0)
@@ -251,7 +252,7 @@ namespace Chiro.Gap.Workers
 			// (zie [wiki:VeelVoorkomendeWaarschuwingen#PossibleInvalidOperationinLinq-statement])
 			var geboortejaar = gp.LeefTijd.Value.Year;
 			var afdeling = (from a in gwj.AfdelingsJaar
-							where
+							where !a.GeenAutoVerdeling &&
 								(geboortejaar <= a.GeboorteJaarTot
 								&& a.GeboorteJaarVan <= geboortejaar)
 							select a).FirstOrDefault();
