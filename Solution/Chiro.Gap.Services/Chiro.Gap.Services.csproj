@@ -128,6 +128,10 @@
       <Project>{8FAF739D-1058-4240-9466-BCA5DB8525D4}</Project>
       <Name>Chiro.Gap.ServiceContracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Sync\Chiro.Gap.Sync.csproj">
+      <Project>{C934C8CE-39C8-45B7-AC38-F487CEA9B2D5}</Project>
+      <Name>Chiro.Gap.Sync</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Workers\Chiro.Gap.Workers.csproj">
       <Project>{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}</Project>
       <Name>Chiro.Gap.Workers</Name>
