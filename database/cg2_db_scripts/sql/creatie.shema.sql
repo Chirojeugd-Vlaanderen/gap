@@ -471,6 +471,7 @@ BEGIN
 		[AfdelingsJaarID] [int] NOT NULL,
 		[LeidingID] [int] NOT NULL,
 		[Versie] [timestamp] NULL,
+		GeenAutoVerdeling BIT NOT NULL DEFAULT 0,
 		CONSTRAINT [PK_LeidingInAfdelingsJaar] PRIMARY KEY CLUSTERED ([LeidingID] ASC,[AfdelingsJaarID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
 	) ON [PRIMARY]
 END
