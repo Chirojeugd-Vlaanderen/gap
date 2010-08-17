@@ -8,5 +8,6 @@ namespace Chiro.Gap.WebApp.Models
 	public class HandleidingModel : MasterViewModel
 	{
 		public string HelpBestand { get; set; }
+		public bool MetScreenshots { get; set; }
 	}
 }

@@ -3,7 +3,7 @@
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-	<!-- OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #669) -->
+	<% // OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #669) %>
 	<script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript"></script>
 	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
 	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
@@ -38,10 +38,10 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<% 
 		Html.EnableClientValidation();
-// ReSharper disable Asp.NotResolved
+		// ReSharper disable Asp.NotResolved
 		using (Html.BeginForm())	// ReSharper geeft een foutmelding omdat er geen action bestaat die AdresBewerken heet,
-									// maar de view wordt in andere actions opgeroepen
-// ReSharper restore Asp.NotResolved
+		// maar de view wordt in andere actions opgeroepen
+		// ReSharper restore Asp.NotResolved
 		{ %>
 	<ul id="acties">
 		<li>
@@ -53,6 +53,11 @@
 	</fieldset>
 	<fieldset>
 		<legend>Adresgegevens</legend>
+		<p>
+			<strong>Opgelet:</strong> alleen de officiële spelling van de straatnaam wordt geaccepteerd.<br />
+			Ben je zeker van de straatnaam maar wordt ze geweigerd? Lees in
+			<%=Html.ActionLink("de handleiding", "BestandTonen", new { Controller="Handleiding", helpBestand = "NieuweStraatnaam"})%>
+			hoe we daar een mouw aan kunnen passen.</p>
 		<% var values = from AdresTypeEnum e in Enum.GetValues(typeof(AdresTypeEnum))
 				  select new { value = e, text = e.ToString() }; 
 		%>

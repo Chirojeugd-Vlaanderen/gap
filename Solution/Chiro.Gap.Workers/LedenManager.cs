@@ -445,7 +445,6 @@ namespace Chiro.Gap.Workers
 			{
 				try
 				{
-
 					nieuwlid = _daos.LeidingDao.Bewaren((Leiding)lid, ExtrasNaarLambdasLeiding(extras));
 				}
 				catch (Exception)

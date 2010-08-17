@@ -490,9 +490,10 @@ textarea
 	float: left;
 	background-color: #ddd;
 	max-width: 200px;
+	min-width: 180px;
 	width: 20%;
 	margin: 0 5px 2px 0;
-	padding: 5px 6px 15px 6px;
+	padding: 25px 6px 35px 6px;
 	font-size: 80%;
 }
 
@@ -509,10 +510,15 @@ textarea
 #help
 {
 	float: left;
-	margin-bottom: 15px;
+	margin: 0 0 15px 10px;
 	padding: 2px 2px 2px 2px;
 	max-width: 510px;
 	width: 80%;
+}
+
+a.anchor:hover
+{
+	color: #000 !important;
 }
 
 ul.Woordenlijst li
@@ -521,7 +527,7 @@ ul.Woordenlijst li
 }
 
 li.nietgoed
-{	
+{
 }
 
 li.goed
@@ -531,4 +537,10 @@ li.goed
 #AndereGroepLink
 {
 	visibility: hidden;
+}
+
+img.screenshot
+{
+	border: Solid 2px Gray;
+	display: block;
 }

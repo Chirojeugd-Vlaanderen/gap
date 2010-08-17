@@ -58,8 +58,8 @@ namespace Chiro.Gap.WebApp
 				"{groepID}/{controller}/{helpBestand}",
 				new
 				{
-					action = "BestandTonen",
-					helpBestand = "Inleiding"
+					action = "ViewTonen", // "BestandTonen",
+					helpBestand = "Jaarovergang"
 				},
 				new
 				{
@@ -72,9 +72,9 @@ namespace Chiro.Gap.WebApp
 				"{controller}/{helpBestand}",
 				new
 				{
-					action = "ByPassIndex",
-					helpBestand = "Inleiding",
-					master = "Handleiding"
+					action = "ViewTonen",
+					helpBestand = "Jaarovergang" //"Inleiding",
+					// master = "Handleiding"
 				},
 				new
 				{

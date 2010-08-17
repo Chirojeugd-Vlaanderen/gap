@@ -1,6 +1,7 @@
-﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage<Chiro.Gap.WebApp.Models.IMasterViewModel>"
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage<IMasterViewModel>"
 	MasterPageFile="~/Views/Shared/Globaal.Master" %>
 
+<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <asp:Content ContentPlaceHolderID="HeaderTitleContent" runat="server">
 	<asp:ContentPlaceHolder runat="server" ID="title" />
 </asp:Content>
@@ -8,16 +9,28 @@
 	<% // css? scripts? %>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="BodyContent" runat="server">
-	<% Html.RenderPartial("AlleHelpLinks"); %>
+	<% Html.RenderPartial("AlleHelpLinksControl"); %>
 	<div id="help">
 		<asp:ContentPlaceHolder ID="helpContent" runat="server" />
 	</div>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="PaginaTitelContent" runat="server">
-</asp:Content>
-<asp:Content ContentPlaceHolderID="NavigatieContent" runat="server">
+	<% if (Model.GroepID > 0)
+	{
+		Html.RenderPartial("GroepsGegevensControl");
+	}%>
+	</asp:Content>
+	<asp:Content ContentPlaceHolderID="NavigatieContent" runat="server">
+		<% if (Model.GroepID > 0)
+	 {
+		 Html.RenderPartial("NavigatieVolledigControl");
+	 }
+	 else
+	 {%>
 	<ul>
 		<li>
 			<% =Html.ActionLink("Probeer aan te melden bij een groep", "Index", "Gav")%></li>
 	</ul>
+	<%
+		}%>
 </asp:Content>

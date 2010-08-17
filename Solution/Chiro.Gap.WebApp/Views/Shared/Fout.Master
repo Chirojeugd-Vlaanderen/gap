@@ -8,7 +8,7 @@
 </asp:Content>
 <asp:Content ContentPlaceHolderID="NavigatieContent" runat="server">
 	<ul>
-	<li><%= Html.ActionLink("Handleiding", "ByPassIndex", "Handleiding") %></li>
+	<li><%= Html.ActionLink("Handleiding", "ViewTonen", "Handleiding") %></li>
 		<li>
 			<%= Html.ActionLink("Opnieuw proberen", "Index", "Gav") %></li>
 	</ul>

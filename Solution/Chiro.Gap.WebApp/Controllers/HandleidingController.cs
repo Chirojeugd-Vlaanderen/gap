@@ -21,7 +21,6 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			var model = new HandleidingModel();
 			BaseModelInit(model, groepID, "Handleiding");
-			model.Titel = "Handleiding";
 			return View(model);
 		}
 
@@ -67,7 +66,6 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (Regex.IsMatch(helpBestand, "^[A-Za-z0-9]{3,}$"))
 			// minstens 3 characters, alleen alfanumeriek (dan kan de gebruiker geen bestandspad invullen - cfr. ticket #600)
 			{
-				model.Titel = "Handleiding: " + helpBestand;
 				helpBestand = helpBestand + ".htm";
 				helpBestand = System.IO.Path.Combine(Server.MapPath("~/Help"), helpBestand);
 				if (System.IO.File.Exists(helpBestand))
@@ -86,6 +84,23 @@ namespace Chiro.Gap.WebApp.Controllers
 				TempData["fout"] = @"Ongeldige verwijzing naar de handleiding";
 				return View(model);
 			}
+		}
+
+		[HandleError]
+		public ActionResult ViewTonen(int? groepID, string helpBestand)
+		{
+			var model = new HandleidingModel();
+			model.Titel = "Handleiding";
+
+			if (groepID != null && groepID > 0)
+			{
+				BaseModelInit(model, (int)groepID);
+			}
+			else
+			{
+				model.GroepID = 0;
+			}
+			return View(helpBestand, "Handleiding", model);
 		}
 
 		//[HandleError]
