@@ -104,6 +104,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="StraatNaam.cs" />
+    <Compile Include="SyncInterfaces\IAdressenSync.cs" />
+    <Compile Include="SyncInterfaces\ICommunicatieSync.cs" />
+    <Compile Include="SyncInterfaces\IPersonenSync.cs" />
     <Compile Include="VerzekeringsType.cs" />
     <Compile Include="WoonPlaats.cs" />
   </ItemGroup>

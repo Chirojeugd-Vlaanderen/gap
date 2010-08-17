@@ -11,10 +11,9 @@ using System.Transactions;
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Orm;
-using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Validatie;
 using Chiro.Gap.Workers.Exceptions;
-using Chiro.Gap.Workers.KipSync;
 
 using CommunicatieType = Chiro.Gap.Orm.CommunicatieType;
 
@@ -28,7 +27,7 @@ namespace Chiro.Gap.Workers
 		private readonly IDao<CommunicatieType> _typedao;
 		private readonly IDao<CommunicatieVorm> _dao;
 		private readonly IAutorisatieManager _autorisatieMgr;
-		private readonly ISyncPersoonService _sync;
+		private readonly ICommunicatieSync _sync;
 
 		/// <summary>
 		/// Deze constructor laat toe om een alternatieve repository voor
@@ -37,9 +36,12 @@ namespace Chiro.Gap.Workers
 		/// <param name="typedao">Repository voor communicatietypes</param>
 		/// <param name="commdao">Repository voor communicatievormen</param>
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
-		/// <param name="geldao">Repository voor gelieerde personen</param>
-		public CommVormManager(IDao<CommunicatieType> typedao, IDao<CommunicatieVorm> commdao, IAutorisatieManager autorisatieMgr,
-								ISyncPersoonService sync)
+		/// <param name="sync">Syncer naar Kipadmin voor communicatiemiddelen</param>
+		public CommVormManager(
+			IDao<CommunicatieType> typedao, 
+			IDao<CommunicatieVorm> commdao, 
+			IAutorisatieManager autorisatieMgr,
+			ICommunicatieSync sync)
 		{
 			_typedao = typedao;
 			_dao = commdao;
@@ -150,13 +152,7 @@ namespace Chiro.Gap.Workers
 				// Indien ad-nummer: syncen
 				if (comm.GelieerdePersoon.Persoon.AdNummer != null)
 				{
-					_sync.CommunicatieVerwijderen(
-						(int) comm.GelieerdePersoon.Persoon.AdNummer,
-						new KipSync.CommunicatieMiddel
-							{
-								Type = (KipSync.CommunicatieType) comm.CommunicatieType.ID,
-								Waarde = comm.Nummer
-							});
+					_sync.Verwijderen(comm);
 				}
 				_dao.Bewaren(comm);
 #if KIPDORP

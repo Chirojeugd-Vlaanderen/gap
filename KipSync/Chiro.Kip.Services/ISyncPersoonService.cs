@@ -8,7 +8,7 @@ namespace Chiro.Kip.Services
 	public interface ISyncPersoonService
 	{
 		[OperationContract(IsOneWay = true)]
-		void PersoonUpdated(Persoon persoon);
+		void PersoonUpdaten(Persoon persoon);
 
 		/// <summary>
 		/// Aan te roepen als een voorkeursadres gewijzigd moet worden.
@@ -16,16 +16,16 @@ namespace Chiro.Kip.Services
 		/// <param name="adres">Nieuw voorkeursadres</param>
 		/// <param name="bewoners">AD-nummers en adrestypes voor personen de dat adres moeten krijgen</param>
 		[OperationContract(IsOneWay = true)]
-		void VoorkeurAdresUpdated(Adres adres, IEnumerable<Bewoner> bewoners);
+		void StandaardAdresBewaren(Adres adres, IEnumerable<Bewoner> bewoners);
 
 		/// <summary>
-		/// Aan te roepen met 'contactinfo'.  De nieuwe contactinfo wordt vooraan toegevoegd aan de lijst
-		/// met bestaande contactinfo van hetzelfde type
+		/// Verwijdert alle bestaande contactinfo, en vervangt door de contactinfo meegegeven in 
+		/// <paramref name="communicatieMiddelen"/>.
 		/// </summary>
 		/// <param name="adNr">AD-nummer van persoon waarvoor contactinfo toe te voegen</param>
-		/// <param name="communicatieMiddelen">toe te voegen contactinfo</param>
+		/// <param name="communicatieMiddelen">te bewaren contactinfo</param>
 		[OperationContract(IsOneWay = true)]
-		void CommunicatieToevoegen(int adNr, IEnumerable<CommunicatieMiddel> communicatieMiddelen);
+		void CommunicatieBewaren(int adNr, IEnumerable<CommunicatieMiddel> communicatieMiddelen);
 
 		/// <summary>
 		/// Verwijdert een communicatiemiddel uit Kipadmin.

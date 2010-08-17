@@ -94,12 +94,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="GroepsWerkjaarManager.cs" />
-    <Compile Include="Service References\KipSync\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="KipSync\UnityWorkArounds.cs" />
     <Compile Include="VerzekeringenManager.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -147,9 +141,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Service References\KipSync\KipSyncService.xsd" />
-    <None Include="Service References\KipSync\KipSyncService1.xsd" />
-    <None Include="Service References\KipSync\KipSyncService2.xsd" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -162,28 +153,6 @@
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
       <Link>CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\KipSync\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\KipSync\KipSyncService.disco" />
-    <None Include="Service References\KipSync\SyncPersoonService.wsdl" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\KipSync\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\KipSync\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\KipSync\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

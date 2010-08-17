@@ -12,8 +12,8 @@ using System.Transactions;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Workers.Exceptions;
-using Chiro.Gap.Workers.KipSync;
 
 using Adres = Chiro.Gap.Orm.Adres;
 
@@ -28,7 +28,7 @@ namespace Chiro.Gap.Workers
 		private readonly IStratenDao _stratenDao;
 		private readonly ISubgemeenteDao _subgemeenteDao;
 		private readonly IAutorisatieManager _autorisatieMgr;
-		private readonly ISyncPersoonService _sync;
+		private readonly IAdressenSync _sync;
 
 		/// <summary>
 		/// Creëert nieuwe adressenmanager
@@ -37,13 +37,12 @@ namespace Chiro.Gap.Workers
 		/// <param name="stratenDao">Repository voor straten</param>
 		/// <param name="subgemeenteDao">Repository voor 'subgemeentes'</param>
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
-		/// <param name="sync">Synchronisatieservice naar Kipadmin</param>
 		public AdressenManager(
 			IAdressenDao dao, 
 			IStratenDao stratenDao, 
 			ISubgemeenteDao subgemeenteDao, 
 			IAutorisatieManager autorisatieMgr,
-			ISyncPersoonService sync)
+			IAdressenSync sync)
 		{
 			_dao = dao;
 			_stratenDao = stratenDao;
@@ -156,25 +155,11 @@ namespace Chiro.Gap.Workers
 				var teSyncen = from pa in adr.PersoonsAdres
 				               where pa.GelieerdePersoon.Count > 0 // voorkeursadres
 				                     && pa.Persoon.AdNummer != null	// met ad-nummer
-				               select new KipSync.Bewoner
-				                      	{
-				                      		AdNummer = pa.Persoon.AdNummer ?? 0,
-								AdresType = (KipSync.AdresTypeEnum)pa.AdresType
-				                      	};
+				               select pa;
 
 				// TODO (#238): Buitenlandse adressen!
 
-				var syncAdres = new KipSync.Adres
-				                	{
-				                		Bus = adr.Bus,
-				                		HuisNr = adr.HuisNr,
-				                		Land = "",
-				                		PostNr = adr.StraatNaam.PostNummer,
-				                		Straat = adr.StraatNaam.Naam,
-				                		WoonPlaats = adr.WoonPlaats.Naam
-				                	};
-
-				_sync.VoorkeurAdresUpdated(syncAdres, teSyncen.ToList());
+				_sync.StandaardAdressenBewaren(teSyncen);
 
 				resultaat = _dao.Bewaren(adr);
 #if KIPDORP

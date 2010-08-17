@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Chiro.Gap.Workers.KipSync {
+namespace Chiro.Gap.Sync.SyncService {
     using System.Runtime.Serialization;
     using System;
     
@@ -29,7 +29,7 @@ namespace Chiro.Gap.Workers.KipSync {
         private System.Nullable<System.DateTime> GeboortedatumField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Chiro.Gap.Workers.KipSync.GeslachtsEnum GeslachtField;
+        private Chiro.Gap.Sync.SyncService.GeslachtsEnum GeslachtField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IDField;
@@ -80,7 +80,7 @@ namespace Chiro.Gap.Workers.KipSync {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Chiro.Gap.Workers.KipSync.GeslachtsEnum Geslacht {
+        public Chiro.Gap.Sync.SyncService.GeslachtsEnum Geslacht {
             get {
                 return this.GeslachtField;
             }
@@ -322,7 +322,7 @@ namespace Chiro.Gap.Workers.KipSync {
         private int AdNummerField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Chiro.Gap.Workers.KipSync.AdresTypeEnum AdresTypeField;
+        private Chiro.Gap.Sync.SyncService.AdresTypeEnum AdresTypeField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -348,7 +348,7 @@ namespace Chiro.Gap.Workers.KipSync {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Chiro.Gap.Workers.KipSync.AdresTypeEnum AdresType {
+        public Chiro.Gap.Sync.SyncService.AdresTypeEnum AdresType {
             get {
                 return this.AdresTypeField;
             }
@@ -400,7 +400,7 @@ namespace Chiro.Gap.Workers.KipSync {
         private bool GeenMailingsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Chiro.Gap.Workers.KipSync.CommunicatieType TypeField;
+        private Chiro.Gap.Sync.SyncService.CommunicatieType TypeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string WaardeField;
@@ -429,7 +429,7 @@ namespace Chiro.Gap.Workers.KipSync {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Chiro.Gap.Workers.KipSync.CommunicatieType Type {
+        public Chiro.Gap.Sync.SyncService.CommunicatieType Type {
             get {
                 return this.TypeField;
             }
@@ -494,29 +494,29 @@ namespace Chiro.Gap.Workers.KipSync {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="KipSync.ISyncPersoonService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="SyncService.ISyncPersoonService")]
     public interface ISyncPersoonService {
         
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/PersoonUpdated")]
-        void PersoonUpdated(Chiro.Gap.Workers.KipSync.Persoon persoon);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/PersoonUpdaten")]
+        void PersoonUpdaten(Chiro.Gap.Sync.SyncService.Persoon persoon);
         
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/VoorkeurAdresUpdated")]
-        void VoorkeurAdresUpdated(Chiro.Gap.Workers.KipSync.Adres adres, System.Collections.Generic.List<Chiro.Gap.Workers.KipSync.Bewoner> bewoners);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/StandaardAdresBewaren")]
+        void StandaardAdresBewaren(Chiro.Gap.Sync.SyncService.Adres adres, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.Bewoner> bewoners);
         
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/CommunicatieToevoegen")]
-        void CommunicatieToevoegen(int adNr, System.Collections.Generic.List<Chiro.Gap.Workers.KipSync.CommunicatieMiddel> communicatieMiddelen);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/CommunicatieBewaren")]
+        void CommunicatieBewaren(int adNr, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.CommunicatieMiddel> communicatieMiddelen);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/CommunicatieVerwijderen")]
-        void CommunicatieVerwijderen(int adNr, Chiro.Gap.Workers.KipSync.CommunicatieMiddel communicatie);
+        void CommunicatieVerwijderen(int adNr, Chiro.Gap.Sync.SyncService.CommunicatieMiddel communicatie);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    public interface ISyncPersoonServiceChannel : Chiro.Gap.Workers.KipSync.ISyncPersoonService, System.ServiceModel.IClientChannel {
+    public interface ISyncPersoonServiceChannel : Chiro.Gap.Sync.SyncService.ISyncPersoonService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    public partial class SyncPersoonServiceClient : System.ServiceModel.ClientBase<Chiro.Gap.Workers.KipSync.ISyncPersoonService>, Chiro.Gap.Workers.KipSync.ISyncPersoonService {
+    public partial class SyncPersoonServiceClient : System.ServiceModel.ClientBase<Chiro.Gap.Sync.SyncService.ISyncPersoonService>, Chiro.Gap.Sync.SyncService.ISyncPersoonService {
         
         public SyncPersoonServiceClient() {
         }
@@ -537,19 +537,19 @@ namespace Chiro.Gap.Workers.KipSync {
                 base(binding, remoteAddress) {
         }
         
-        public void PersoonUpdated(Chiro.Gap.Workers.KipSync.Persoon persoon) {
-            base.Channel.PersoonUpdated(persoon);
+        public void PersoonUpdaten(Chiro.Gap.Sync.SyncService.Persoon persoon) {
+            base.Channel.PersoonUpdaten(persoon);
         }
         
-        public void VoorkeurAdresUpdated(Chiro.Gap.Workers.KipSync.Adres adres, System.Collections.Generic.List<Chiro.Gap.Workers.KipSync.Bewoner> bewoners) {
-            base.Channel.VoorkeurAdresUpdated(adres, bewoners);
+        public void StandaardAdresBewaren(Chiro.Gap.Sync.SyncService.Adres adres, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.Bewoner> bewoners) {
+            base.Channel.StandaardAdresBewaren(adres, bewoners);
         }
         
-        public void CommunicatieToevoegen(int adNr, System.Collections.Generic.List<Chiro.Gap.Workers.KipSync.CommunicatieMiddel> communicatieMiddelen) {
-            base.Channel.CommunicatieToevoegen(adNr, communicatieMiddelen);
+        public void CommunicatieBewaren(int adNr, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.CommunicatieMiddel> communicatieMiddelen) {
+            base.Channel.CommunicatieBewaren(adNr, communicatieMiddelen);
         }
         
-        public void CommunicatieVerwijderen(int adNr, Chiro.Gap.Workers.KipSync.CommunicatieMiddel communicatie) {
+        public void CommunicatieVerwijderen(int adNr, Chiro.Gap.Sync.SyncService.CommunicatieMiddel communicatie) {
             base.Channel.CommunicatieVerwijderen(adNr, communicatie);
         }
     }

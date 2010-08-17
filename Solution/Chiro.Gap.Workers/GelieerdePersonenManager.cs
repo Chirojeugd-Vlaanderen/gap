@@ -11,14 +11,13 @@ using System.Linq.Expressions;
 #if KIPDORP
 using System.Transactions;
 #endif
-using System.Transactions;
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Workers.Exceptions;
-using Chiro.Gap.Workers.KipSync;
 
 using Adres = Chiro.Gap.Orm.Adres;
 using AdresTypeEnum = Chiro.Gap.Domain.AdresTypeEnum;
@@ -35,28 +34,32 @@ namespace Chiro.Gap.Workers
 		private readonly ICategorieenDao _categorieenDao;
 		private readonly IPersonenDao _personenDao;
 		private readonly IAutorisatieManager _autorisatieMgr;
-		private readonly ISyncPersoonService _sync;
+		private readonly IPersonenSync _personenSync;
+		private readonly IAdressenSync _adressenSync;
 
 		/// <summary>
 		/// Creëert een GelieerdePersonenManager
 		/// </summary>
 		/// <param name="gelieerdePersonenDao">Repository voor gelieerde personen</param>
 		/// <param name="categorieenDao">Repository voor categorieën</param>
-		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 		/// <param name="pDao">Repository voor personen</param>
-		/// <param name="sync">Sync Service met KipAdmin</param>
+		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
+		/// <param name="personenSync">zorgt voor synchronisate van personen naar kipadmin</param>
+		/// <param name="adressenSync">zorgt voor synchronisate van adressen naar kipadmin</param>
 		public GelieerdePersonenManager(
-			IGelieerdePersonenDao gelieerdePersonenDao,
-			ICategorieenDao categorieenDao,
+			IGelieerdePersonenDao gelieerdePersonenDao, 
+			ICategorieenDao categorieenDao, 
+			IPersonenDao pDao, 
 			IAutorisatieManager autorisatieMgr,
-			IPersonenDao pDao,
-			ISyncPersoonService sync)
+			IPersonenSync personenSync,
+			IAdressenSync adressenSync)
 		{
 			_gelieerdePersonenDao = gelieerdePersonenDao;
 			_categorieenDao = categorieenDao;
 			_autorisatieMgr = autorisatieMgr;
 			_personenDao = pDao;
-			_sync = sync;
+			_personenSync = personenSync;
+			_adressenSync = adressenSync;
 		}
 
 		#region proxy naar data access
@@ -185,59 +188,10 @@ namespace Chiro.Gap.Workers
 
 						if (gelieerdePersoon.Persoon.AdNummer != null)
 						{
-							#region KipSync
-							// TODO: dat syncen misschien naar ergens anders verhuizen, want nu is dat
-							// nogal een groot blok code dat hier maar staat te staan.
-
-							// Wijzigingen van personen met ad-nummer worden doorgesluisd
-							// naar Kipadmin.
-
-							// Map to KipSync and send
-							AutoMapper.Mapper.CreateMap<Persoon, KipSync.Persoon>()
-								.ForMember(src => src.AdNr, opt => opt.MapFrom(src => src.AdNummer))
-								.ForMember(src => src.ExtensionData, opt => opt.Ignore());
-
-							var syncPersoon = AutoMapper.Mapper.Map<Persoon, KipSync.Persoon>(q.Persoon);
-
-							_sync.PersoonUpdated(syncPersoon);
-							if ((extras & PersoonsExtras.Adressen) != 0 && gelieerdePersoon.PersoonsAdres != null)
-							{
-								// Adressen worden mee bewaard.  Update standaardadres, als dat er is
-								// (standaardadres is gelieerdePersoon.PersoonsAdres;
-								// alle adressen in gelieerdePersoon.Persoon.PersoonsAdres).
-
-								// TODO (#238): Buitenlandse adressen!
-								var syncAdres = new KipSync.Adres
-								                	{
-								                		Bus = gelieerdePersoon.PersoonsAdres.Adres.Bus,
-								                		HuisNr = gelieerdePersoon.PersoonsAdres.Adres.HuisNr,
-								                		Land = "",
-								                		PostNr = gelieerdePersoon.PersoonsAdres.Adres.StraatNaam.PostNummer,
-								                		Straat = gelieerdePersoon.PersoonsAdres.Adres.StraatNaam.Naam,
-								                		WoonPlaats = gelieerdePersoon.PersoonsAdres.Adres.WoonPlaats.Naam
-								                	};
-
-								var syncBewoner = new KipSync.Bewoner
-								                  	{
-								                  		AdNummer = (int)gelieerdePersoon.Persoon.AdNummer,
-								                  		AdresType = (KipSync.AdresTypeEnum) gelieerdePersoon.PersoonsAdres.AdresType
-								                  	};
-
-								_sync.VoorkeurAdresUpdated(syncAdres, new List<Bewoner> {syncBewoner});
-							}
-							if ((extras & PersoonsExtras.Communicatie) != 0 && gelieerdePersoon.Communicatie != null)
-							{
-								var syncCommunicatie = from comm in gelieerdePersoon.Communicatie
-								                       select new KipSync.CommunicatieMiddel
-								                              	{
-								                              		GeenMailings = !comm.IsVoorOptIn,
-								                              		Type = (KipSync.CommunicatieType) comm.CommunicatieType.ID,
-								                              		Waarde = comm.Nummer
-								                              	};
-								_sync.CommunicatieToevoegen((int)gelieerdePersoon.Persoon.AdNummer, syncCommunicatie.ToList());
-							}
-							#endregion
-
+							_personenSync.Bewaren(
+								gelieerdePersoon,
+								(extras & PersoonsExtras.Adressen) != 0,
+								(extras & PersoonsExtras.Communicatie) != 0);
 						}
 #if KIPDORP
 						tx.Complete();
@@ -796,32 +750,10 @@ namespace Chiro.Gap.Workers
 				// een transactie.)
 				// geef nieuwe voorkeursadressen van personen met ad-nummer door aan kipadmin
 				var voorKeursAdressen = (from gp in gelieerdePersonen
-				                         select gp.PersoonsAdres.Adres).Distinct();
+							 where gp.Persoon.AdNummer != null
+				                         select gp.PersoonsAdres);
 
-				// TODO: (#238) Buitenlandse adressen.
-				// TODO: het syncen van voorkeursadres gebeurt op 3 verschillende plaatsen, telkens
-				// op min of meer dezelfde manier.  Kan dat niet beter?
-
-				foreach (var vka in voorKeursAdressen)
-				{
-					var syncAdres = new KipSync.Adres
-					                	{
-					                		Bus = vka.Bus,
-					                		HuisNr = vka.HuisNr,
-					                		Land = "",
-					                		PostNr = vka.StraatNaam.PostNummer,
-					                		Straat = vka.StraatNaam.Naam,
-					                		WoonPlaats = vka.WoonPlaats.Naam
-					                	};
-					var syncBewoners = from gp in gelieerdePersonen
-					                   where gp.PersoonsAdres.Adres == vka && gp.Persoon.AdNummer != null
-					                   select new KipSync.Bewoner
-					                          	{
-					                          		AdNummer = (int) gp.Persoon.AdNummer,
-					                          		AdresType = (KipSync.AdresTypeEnum) gp.PersoonsAdres.AdresType
-					                          	};
-					_sync.VoorkeurAdresUpdated(syncAdres, syncBewoners.ToList());
-				}
+				_adressenSync.StandaardAdressenBewaren(voorKeursAdressen);
 
 				// dan bewaren in GAP
 				// bewaar al dan niet aangepaste voorkeursadres

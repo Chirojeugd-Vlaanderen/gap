@@ -21,5 +21,13 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="zoekString">De zoekterm</param>
 		/// <returns>Een lijst van communicatievormen die de zoekterm als waarde hebben</returns>
 		IList<CommunicatieVorm> ZoekenOpNummer(string zoekString);
+
+		/// <summary>
+		/// Zoekt alle communicatievormen van een persoon (dus over de verschillende gelieerde
+		/// personen heen).  Inclusief communicatietype.
+		/// </summary>
+		/// <param name="persoonID">ID van de persoon van dewelke we geinteresseerd zijn in de communicatie</param>
+		/// <returns>Lijstje met communicatievormen</returns>
+		IEnumerable<CommunicatieVorm> ZoekenOpPersoon(int persoonID);
 	}
 }

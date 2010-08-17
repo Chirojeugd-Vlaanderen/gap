@@ -81,7 +81,7 @@ namespace Chiro.Kip.Services.Test
     		        		WoonPlaats = "Antwerpen",
     		        		Land = ""
     		        	};
-    		target.VoorkeurAdresUpdated(a, new Bewoner[] {
+    		target.StandaardAdresBewaren(a, new Bewoner[] {
 			new Bewoner{AdNummer = 85111, AdresType = AdresTypeEnum.Kot},
 			new Bewoner{AdNummer = 39198, AdresType = AdresTypeEnum.Werk}});
     	}
@@ -109,19 +109,19 @@ namespace Chiro.Kip.Services.Test
 		                                                       				Type = CommunicatieType.Email,
 		                                                       				Waarde = "haepeto@chiro.be"
 		                                                       			},
-		                                                       		new CommunicatieMiddel
+										new CommunicatieMiddel
 		                                                       			{
 		                                                       				Type = CommunicatieType.TelefoonNummer,
 		                                                       				Waarde = "03-297 61 10"
 		                                                       			}
 		                                                       	};
 
-		target.CommunicatieToevoegen(adNr, communicatiemiddelen);
+		target.CommunicatieBewaren(adNr, communicatiemiddelen);
 		Assert.Inconclusive("A method that does not return a value cannot be verified.");
 	}
 
         /// <summary>
-        ///A test for PersoonUpdated
+        ///A test for PersoonUpdaten
         ///</summary>
         [TestMethod()]
         public void PersoonUpdatedTest()
@@ -138,12 +138,12 @@ namespace Chiro.Kip.Services.Test
                                       Voornaam = "Tommy"
                                   };
 
-            target.PersoonUpdated(persoon);
+            target.PersoonUpdaten(persoon);
 
         }
 
         /// <summary>
-        ///A test for PersoonUpdated
+        ///A test for PersoonUpdaten
         ///</summary>
         [TestMethod()]
         public void PersoonUpdatedNewTest()
@@ -159,7 +159,7 @@ namespace Chiro.Kip.Services.Test
                 Voornaam = "Benny"
             };
 
-            target.PersoonUpdated(persoon);
+            target.PersoonUpdaten(persoon);
 
         }
     }
