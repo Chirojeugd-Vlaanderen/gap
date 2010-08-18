@@ -15,6 +15,8 @@
 		Je komt hier als je op de tab 'Iedereen' klikt op de link 'Nieuwe persoon',
 		of als je een naam aanklikt en dan op de persoonsfiche klikt op de link 'persoonlijke
 		gegevens aanpassen'.</p>
+		
+<img src="<%=ResolveUrl("~/Content/Screenshots/Persoonlijkegegevensfiche.png") %>" alt="De persoonlijkegegevensfiche" />
 	<h3>
 		Wat zie je hier?</h3>
 	<p>

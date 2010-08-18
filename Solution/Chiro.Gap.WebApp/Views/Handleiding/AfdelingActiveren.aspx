@@ -46,7 +46,10 @@
 					je de nodige aanpassingen nog kunt doen. Het kan bijvoorbeeld zijn dat je geboortejaren
 					invulde die niet overeenkomen met die van de corresponderende offici&euml;le
 					afdeling. Je mag bijvoorbeeld wel drie jaar speelclub hebben, maar minstens
-					één van die drie geboortejaren moet bij de offici&euml;le speelclub staan.</li>
+					één van die drie geboortejaren moet bij de offici&euml;le speelclub staan. Of
+					misschien hield je geen rekening met <a href="http://www.chiro.be/minimumleeftijd"
+						title="Uitleg over de minimumleeftijd voor Chiroleden">de minimumleeftijd</a>:
+					de Chiro sluit geen kleuters aan.</li>
 				<li class="goed">Als er geen problemen meer zijn, keer je automatisch terug naar
 					het overzicht van je afdelingen. De geactiveerde afdeling staat nu ook bovenaan.</li>
 			</ul>

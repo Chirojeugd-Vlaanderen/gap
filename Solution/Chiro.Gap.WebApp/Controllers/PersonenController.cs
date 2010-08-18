@@ -583,7 +583,7 @@ namespace Chiro.Gap.WebApp.Controllers
 								p.PersoonVolledigeNaam,
 								model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
-			model.Titel = "Personen Verhuizen";
+			model.Titel = "Personen verhuizen";
 			return View("AdresBewerken", model);
 		}
 

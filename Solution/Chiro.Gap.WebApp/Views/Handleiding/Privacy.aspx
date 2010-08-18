@@ -20,8 +20,7 @@
 		<li>Geboortedatum</li>
 		<li>Geslacht</li>
 		<li>Het voorkeursadres</li>
-		<li>Het voorkeursmailadres</li>
-		<li>Het voorkeurstelefoonnummer</li>
+		<li>Mailadressen en telefoonnummers</li>
 	</ul>
 	<p>
 		Van leden houden we bij in welke afdeling ze zitten, van leiders en leidsters
@@ -44,4 +43,16 @@
 		studenten een enquête willen afnemen, is het het nationaal secretariaat dat
 		de adresetiketten afprint en de formulieren verstuurt. Als organisaties of bedrijven
 		reclame willen maken bij Chiroleden, kan dat alleen via de Chiropublicaties.</p>
+	<p>
+		Chirojeugd Vlaanderen gebruikt mailadressen in principe niet, tenzij in twee gevallen:</p>
+	<ul>
+		<li>Via de Snelleberichtenlijst versturen we dringende berichtjes. De VRT zoekt
+			een groep die op kamp is in de provincie Limburg, er zijn nog maar een paar
+			plaatsen op Aspitrant of het leger houdt een stockverkoop: dat soort info kan
+			niet wachten tot de volgende Dubbelpunt. We versturen niet veel mails, en het
+			zijn altijd korte berichtjes zonder bijlagen. Je kunt per adres aanvinken of
+			het ingeschreven moet worden. Meer info: www.chiro.be/snelleberichtenlijst.</li>
+		<li>Voor enquêtes gebruiken we willekeurige adressen uit ons bestand, op basis van
+			de steekproef. De kans dat je zo’n mail krijgt, is dus klein.</li>
+	</ul>
 </asp:Content>

@@ -21,6 +21,7 @@
 	<h3>
 		Wat kun je hier doen?</h3>
 	<ul>
-		<li><%=Html.ActionLink("De jaarovergang uitvoeren", "ViewTonen", new { controller = "Handleiding", helpBestand = "JaarovergangUitvoeren" })%></li>
+		<li>
+			<%=Html.ActionLink("De jaarovergang uitvoeren", "ViewTonen", new { controller = "Handleiding", helpBestand = "JaarovergangUitvoeren" })%></li>
 	</ul>
 </asp:Content>

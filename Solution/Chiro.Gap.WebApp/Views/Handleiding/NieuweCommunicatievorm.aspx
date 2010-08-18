@@ -27,7 +27,14 @@
 		<li>Klik op het tabblad 'Ingeschreven' of 'Iedereen'.</li>
 		<li>Klik daar op de naam van degene voor wie je een adres wilt toevoegen. Je komt
 			dan op de persoonsfiche.</li>
-		<li>Klik daar op de link 'communicatievorm toevoegen'. Je komt dan op een formuliertje.</li>
+	</ul>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/EditRest_communicatievormenlink.png") %>"
+		alt="Een nieuwe communicatoevorm toevoegen vanop de persoonsfiche" />
+	<ul>
+		<li>Klik daar op de link 'communicatievorm toevoegen'. Je komt dan op een formuliertje.</li></ul>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/Formulier_Nieuwe_communicatievorm.png") %>"
+		alt="Een nieuwe communicatievorm toevoegen" />
+	<ul>
 		<li>Selecteer het type: mailadres, telefoonnummer, enz.</li>
 		<li>Vul het nummer of het mailadres in.</li>
 		<li>Je kunt aanvinken of de communicatievorm gezinsgebonden

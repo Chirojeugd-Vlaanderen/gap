@@ -4,8 +4,8 @@
 <%@ Import Namespace="Chiro.Gap.Domain" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server" EnableViewState="False">
-	<!-- OPGELET: de opening en closing tag voor 'script' niet vervangen door 1 enkele tag, want dan
-	toont de browser blijkbaar niets meer van dit form.  (Zie #664) -->
+	<%	// OPGELET: de opening en closing tag voor 'script' niet vervangen door 1 enkele tag, want dan
+		// toont de browser blijkbaar niets meer van dit form.  (Zie #664) %>
 	<script src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" type="text/javascript"></script>
 	<script src="<%= ResolveUrl("~/Scripts/jquery.validate.js")%>" type="text/javascript"></script>
 	<script src="<%= ResolveUrl("~/Scripts/MicrosoftMvcJQueryValidation.js")%>" type="text/javascript"></script>
@@ -68,6 +68,18 @@
 	</ul>
 	<fieldset>
 		<legend>Persoonlijke gegevens</legend>
+		<%	if (Model.HuidigePersoon.AdNummer == null)
+		{
+			Html.HiddenFor(s => s.HuidigePersoon.AdNummer);
+		}
+		else
+		{ %>
+		<p>
+			<%=Html.LabelFor(s => s.HuidigePersoon.AdNummer) %>
+			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "AD-nummer", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een AD-nummer?" } ) %>
+			<%=Html.DisplayFor(s => s.HuidigePersoon.AdNummer) %>
+		</p>
+		<% } %>
 		<p>
 			<%=Html.LabelFor(s => s.HuidigePersoon.VoorNaam) %>
 			<%=Html.EditorFor(s => s.HuidigePersoon.VoorNaam) %>
@@ -92,10 +104,10 @@
 		</p>
 		<p>
 			<%=Html.LabelFor(s => s.HuidigePersoon.ChiroLeefTijd)%>
+			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Chiroleeftijd", new { helpBestand = "Trefwoorden" }, new { title = "Wat is je Chiroleeftijd?" } ) %>
 			<%=Html.EditorFor(s => s.HuidigePersoon.ChiroLeefTijd)%>
 			<%=Html.ValidationMessageFor(s => s.HuidigePersoon.ChiroLeefTijd) %>
 		</p>
-		<%=Html.HiddenFor(s => s.HuidigePersoon.AdNummer) %>
 		<%=Html.HiddenFor(s => s.HuidigePersoon.GelieerdePersoonID)%>
 		<%=Html.HiddenFor(s => s.BroerzusID)%>
 		<%=Html.HiddenFor(s => s.HuidigePersoon.VersieString)%>

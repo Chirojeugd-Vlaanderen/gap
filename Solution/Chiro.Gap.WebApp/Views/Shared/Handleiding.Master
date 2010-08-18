@@ -13,20 +13,24 @@
 	<div id="help">
 		<asp:ContentPlaceHolder ID="helpContent" runat="server" />
 	</div>
+	<%if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
+  {
+	  Html.RenderPartial("MededelingenControl"); 
+  }%>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="PaginaTitelContent" runat="server">
 	<% if (Model.GroepID > 0)
 	{
 		Html.RenderPartial("GroepsGegevensControl");
 	}%>
-	</asp:Content>
-	<asp:Content ContentPlaceHolderID="NavigatieContent" runat="server">
-		<% if (Model.GroepID > 0)
-	 {
-		 Html.RenderPartial("NavigatieVolledigControl");
-	 }
-	 else
-	 {%>
+</asp:Content>
+<asp:Content ContentPlaceHolderID="NavigatieContent" runat="server">
+	<% if (Model.GroepID > 0)
+	{
+		Html.RenderPartial("NavigatieVolledigControl");
+	}
+	else
+	{%>
 	<ul>
 		<li>
 			<% =Html.ActionLink("Probeer aan te melden bij een groep", "Index", "Gav")%></li>

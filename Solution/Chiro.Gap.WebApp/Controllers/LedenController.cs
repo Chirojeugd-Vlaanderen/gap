@@ -453,7 +453,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// Bewaart (niet) actief, dp-abonnement, probeerperiode en functies
+		/// Bewaart (niet) actief, dp-abonnement, instapperiode en functies
 		/// </summary>
 		/// <param name="model">LedenModel met te bewaren gegevens (functie-ID's in <c>model.FunctieIDs</c>)</param>
 		/// <param name="groepID">ID van de groep waarin de user momenteel aan het werken is</param>

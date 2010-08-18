@@ -9,6 +9,14 @@
 	<h2>
 		Een nieuwe persoon toevoegen</h2>
 	<p>
+		Zit er al een broer of een zus van die persoon in je gegevens, dan kun je jezelf
+		werk besparen: dankzij de procedure
+		<%=Html.ActionLink("Zus/broer maken", "ViewTonen", new { controller = "Handleiding", helpBestand = "ZusBroer" })%>
+		kun je de adres- en andere gezinsgebonden info kopiëren. Dan moet je alleen
+		nog de voornaam, de geboortedatum en het geslacht invullen. Gaat het echt over
+		iemand die nieuw is? Volg dan de stappen hieronder.
+	</p>
+	<p>
 		Stappen in het proces:</p>
 	<ul>
 		<li>Klik op het tabblad 'Iedereen'.</li>
@@ -43,5 +51,5 @@
 		</li>
 	</ul>
 	<p>
-		Vanaf nu kun je die nieuwe persoon eventueel inschrijven als lid.</p>
+		Voeg zeker nog een adres toe als die persoon lid moet worden van je groep. Vanaf dan kun je hem of haar inschrijven.</p>
 </asp:Content>

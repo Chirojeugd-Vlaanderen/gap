@@ -23,6 +23,10 @@
 	<ul>
 		<li>Vink het hokje aan voor al de personen die tot de categorie moeten behoren.</li>
 		<li>Selecteer boven de tabel de actie 'In dezelfde categorie stoppen'.</li>
+	</ul>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/Categoriseren_MeerdereMensen.png") %>"
+		alt="Meerdere mensen tegelijk in een categorie stoppen" />
+	<ul>
 		<li>$$$ aan te vullen na bugfix $$$</li>
 	</ul>
 	<a class="anchor" id="Individueel" />
@@ -34,7 +38,12 @@
 		<li>Klik op het tabblad 'Iedereen' of 'Ingeschreven'.</li>
 		<li>Klik op de naam van degene die je in een categorie wilt stoppen. Zo ga je naar
 			de persoonsfiche.</li>
+	</ul>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/EditRest_categorielink.png") %>"
+		alt="Iemands categorieën aanpassen" />
+	<ul>
 		<li>Klik op de link 'toevoegen aan categorie'</li>
+		<% // TODO (#649): screenshot maken en toevoegen %>
 		<li>$$$ aan te vullen na bugfix $$$</li>
 	</ul>
 </asp:Content>

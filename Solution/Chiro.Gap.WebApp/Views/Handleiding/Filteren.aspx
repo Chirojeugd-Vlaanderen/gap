@@ -12,12 +12,14 @@
 		Er zijn twee plaatsen waar je lijsten te zien krijgt: op het tabblad 'Ingeschreven'
 		en op het tabblad 'Iedereen'. Je kunt die gegevens filteren met het selectielijstje
 		rechts ervan.</p>
+		<img src="<%=ResolveUrl("~/Content/Screenshots/Filteren_op_categorie.png") %>" alt="Filteren op categorie" />
 	<p>
 		Op die pagina's staat ook een link waarmee je de gegevens kunt downloaden als
 		Excel-bestand. Als je een filter gebruikte, staan alleen de mensen uit je selectie
 		in dat bestand. Zo kun je dus een lijstje van een afdeling
 		<%=Html.ActionLink("downloaden", "ViewTonen", new { controller = "Handleiding", helpBestand = "LijstDownloaden" })%>,
-		of van de kookploeg, enz.</p>
+		of van de kookploeg, enz. Je ziet aan de titel boven de tabel welke filter er
+		toegepast is.</p>
 	<p>
 		Afdelingen en functies kun je alleen toekennen aan ingeschreven leden en leiding,
 		en alleen voor het huidige werkjaar. Categorieën

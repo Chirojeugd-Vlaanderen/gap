@@ -74,14 +74,16 @@
 		<br />
 		<%if (Model.PersoonLidInfo.PersoonDetail.AdNummer != null)
 	{%>
-		<%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %>:
+		<%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %>
+		<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "AD-nummer", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een AD-nummer?" } ) %>:
 		<%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.AdNummer) %><br />
 		<%
 			}%>
 		<%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>:
 		<%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>
 		<br />
-		Chiroleeftijd:
+		Chiroleeftijd
+		<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Chiroleeftijd", new { helpBestand = "Trefwoorden" }, new { title = "Wat is je Chiroleeftijd?" } ) %>:
 		<%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeefTijd)%><br />
 		<%=Html.ActionLink("[persoonlijke gegevens aanpassen]", "EditGegevens", new {id=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %><br />
 	</p>

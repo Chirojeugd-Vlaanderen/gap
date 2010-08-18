@@ -20,16 +20,19 @@
 		<li>Klik daar op de naam van degene voor wie je een adres wilt toevoegen. Je komt
 			dan op de persoonsfiche.</li>
 	</ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/EditRest_nieuwadreslink.png") %>" alt="Link 'nieuw adres' op Persoonsfiche" />
+	<img src="<%=ResolveUrl("~/Content/Screenshots/EditRest_nieuwadreslink.png") %>"
+		alt="Link 'nieuw adres' op Persoonsfiche" />
 	<ul>
 		<li>Klik op de link 'adres toevoegen'. Je komt dan op een formuliertje.</li>
-		</ul>
-	<img src="<%= ResolveUrl("~/Content/Screenshots/Adresformulier_met_autosuggestie.png") %>" alt="Staatnaamsuggestie" />
+	</ul>
+	<img src="<%= ResolveUrl("~/Content/Screenshots/Formulier_Nieuw_adres.png") %>"
+		alt="Staatnaamsuggestie" />
 	<ul>
 		<li>Vul de nodige gegevens in.
 			<ul>
 				<li>Het type adres: thuis, kot, enz.</li>
-				<li>Het adres zelf: zodra je de straatnaam begint te typen, krijg je een suggestielijstje op basis van de postcode</li>
+				<li>Het adres zelf: zodra je de straatnaam begint te typen, krijg je een suggestielijstje
+					op basis van de postcode</li>
 				<li>Je kunt aangeven of het als voorkeursadres opgeslagen moet worden</li>
 			</ul>
 		</li>

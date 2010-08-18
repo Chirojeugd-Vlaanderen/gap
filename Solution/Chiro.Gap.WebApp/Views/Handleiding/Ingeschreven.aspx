@@ -16,11 +16,15 @@
 		Andere links hebben met lidgegevens te maken. Die kun je alleen aanpassen in
 		het huidige werkjaar. Gegevens over het verleden staan vast, daar kun je niets
 		meer aan veranderen.</p>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/Tabblad_Ingeschreven.png") %>"
+		alt="Het tabblad 'Ingeschreven'" />
 	<h3>
 		Wat kun je hier doen?</h3>
 	<ul>
-		<li>Leiding verzekeren tegen loonverlies</li>
-		<li>Iemand bij een (andere) afdeling zetten</li>
+		<li>
+			<%= Html.ActionLink("Leiding verzekeren tegen loonverlies", "ViewTonen", "Handleiding", null, null, "Categorie", new { helpBestand = "VerzekeringLoonverlies" }, null)%></li>
+		<li>
+			<%= Html.ActionLink("Iemand bij een (andere) afdeling zetten", "ViewTonen", "Handleiding", null, null, "Categorie", new { helpBestand = "VeranderenVanAfdeling" }, null)%></li>
 		<li>
 			<%= Html.ActionLink("Filteren op afdeling of functie", "ViewTonen", "Handleiding", null, null, "Categorie", new { helpBestand = "Filteren" }, null)%></li>
 		<li>

@@ -223,7 +223,7 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Er is geen afdeling in jullie groep voor die leeftijd. Je maakt er best eerst een aan (of controleert de leeftijd van wie je wilt inschrijven)..
+        ///   Looks up a localized string similar to Er is geen afdeling in jullie groep voor die leeftijd. Je maakt er best eerst een aan (of controleer de leeftijd van wie je wilt inschrijven)..
         /// </summary>
         internal static string GeenAfdelingVoorLeeftijd {
             get {
@@ -241,7 +241,7 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Er werd geen geschikte afdeling gevonden voor deze persoon..
+        ///   Looks up a localized string similar to Er is geen geschikte afdeling gevonden voor deze persoon..
         /// </summary>
         internal static string GeenGeschikteAfdeling {
             get {

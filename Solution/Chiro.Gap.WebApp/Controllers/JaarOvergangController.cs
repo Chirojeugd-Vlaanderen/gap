@@ -112,7 +112,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			//TODO foutmeldingen
 			//TODO voorstel voor geboortejaren geven in de pagina
 
-			model2.Titel = "Jaarovergang stap 2: verdelen van je afdelingen over geboortejaren";
+			model2.Titel = "Jaarovergang stap 2:  instellingen van je afdelingen";
 			return View("AfdelingenVerdelen", model2);
 		}
 

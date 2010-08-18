@@ -9,12 +9,16 @@
 	<h2>
 		Een nieuw lid of een nieuwe leid(st)er toevoegen</h2>
 	<p>
+		Voeg wanneer nodig eerst nog een nieuwe persoon toe</p>
+	<p>
 		Stappen in het proces:</p>
 	<ul>
-		<li>Voeg wanneer nodig eerst nog een nieuwe persoon toe</li>
-		<li>Klik op het tabblad 'Iedereen'</li>
-		<li>Klik op de naam van degene die je wilt inschrijven om de persoonsfiche te bekijken</li>
-		<li>Klik onderaan op de link waarmee je de persoon kunt inschrijven
+		<li>Klik op het tabblad 'Iedereen'.</li>
+		<li>Klik op de naam van degene die je wilt inschrijven om de persoonsfiche te bekijken.</li>
+		</ul>
+		<img src="<%=ResolveUrl("~/Content/Screenshots/EditRest_inschrijvenlink.png") %>" alt="Iemand inschrijven van op de persoonsfiche" />
+		<ul>
+		<li>Klik onderaan op de link waarmee je de persoon kunt inschrijven.
 			<ul>
 				<li class="nietgoed">Als er iets foutliep, krijg je daar een foutmelding voor zodat
 					je de nodige aanpassingen nog kunt doen. Het kan bijvoorbeeld zijn dat de geboortedatum
@@ -27,9 +31,14 @@
 	<p>
 		Er is nog een <strong>kortere manier</strong>:</p>
 	<ul>
-		<li>Klik op het tabblad 'Iedereen'</li>
+		<li>Klik op het tabblad 'Iedereen'.</li>
+	</ul>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/Link_Inschrijven_op_overzicht.png") %>"
+		alt="Iemand inschrijven op het tabblad 'Iedereen'" />
+	<ul>
 		<li>Klik achter de naam van degene die je wilt inschrijven op de link 'inschrijven
-			als lid' of 'inschrijven als leiding'<ul>
+			als lid' of 'inschrijven als leiding'
+			<ul>
 				<li class="nietgoed">Als er iets foutliep, krijg je daar een foutmelding voor zodat
 					je de nodige aanpassingen nog kunt doen. Normaal gezien moet je daarvoor op
 					de persoonsfiche zijn. Klik daarvoor op de naam van die persoon.</li>
@@ -44,6 +53,9 @@
 		inschrijven:</p>
 	<ul>
 		<li>Klik op het tabblad 'Iedereen'</li>
+		</ul>
+		<img src="<%=ResolveUrl("~/Content/Screenshots/Inschrijven_MeerdereMensen.png") %>" alt="Meerdere mensen ineens inschrijven" />
+		<ul>
 		<li>Vink de personen aan die je wilt inschrijven en selecteer boven de tabel de
 			actie 'inschrijven als lid'.
 			<ul>

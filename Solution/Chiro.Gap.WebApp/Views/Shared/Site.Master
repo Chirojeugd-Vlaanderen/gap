@@ -43,11 +43,11 @@
 	%>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="NavigatieContent" runat="server">
-	<% if(Model.GroepID > 0)
+	<% if (Model.GroepID > 0)
 	{
 		Html.RenderPartial("NavigatieVolledigControl");
 	}
-	%> 
+	%>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="BodyContent" runat="server">
 	<% if (Model.Titel != string.Empty)
@@ -55,31 +55,10 @@
 	<h2>
 		<%=Html.Encode(ViewData.Model.Titel) %></h2>
 	<% }
+
 	if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
 	{
-		// ReSharper disable ConvertIfStatementToConditionalTernaryExpression
-		if (Model.Mededelingen.Count() == 1)
-		{
-	%>
-	<div class="mededelingen">
-		<strong>Opgelet:</strong> er is nog
-		<%=Html.ActionLink("1 zaak", "Index", "GavTaken")%>
-		die je in orde moet brengen.
-	</div>
-	<%
-		}
-		else
-		{
-	%>
-	<div class="mededelingen">
-		<strong>Opgelet:</strong> er zijn nog
-		<%=Html.ActionLink(Model.Mededelingen.Count + " zaken", "Index", "GavTaken")%>
-		die je in orde moet brengen.
-	</div>
-	<%
-		}
-	}
-		// ReSharper restore ConvertIfStatementToConditionalTernaryExpression
-	%>
+		Html.RenderPartial("MededelingenControl");
+	}%>
 	<asp:ContentPlaceHolder ID="MainContent" runat="server" />
 </asp:Content>

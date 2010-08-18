@@ -23,7 +23,9 @@
 			Voor leden die een jaar zijn blijven zitten of om een andere reden niet bij
 			degenen van hun leeftijd zitten, wil je dat niet. Pas voor hen de Chiroleeftijd
 			aan: bv. -1 voor iemand die een jaar is blijven zitten, dan gaat hij of zij
-			altijd mee met degenen die een jaar jonger zijn.</li>
+			altijd mee met degenen die een jaar jonger zijn.
+			<%=Html.ActionLink("Hoe doe je dat?", "ViewTonen", new { controller = "Handleiding", helpBestand = "ChiroleeftijdAanpassen" })%>
+		</li>
 		<li><b><a class="anchor" id="Factuur">Factuur</a></b>: op geregelde tijdstippen
 			verzamelt het nationaal secretariaat alle bewerkingen die je deed en waarvoor
 			er betaald moet worden. Je kunt facturen krijgen voor aansluitingen, Dubbelpuntabonnementen
@@ -48,6 +50,12 @@
 			minimumleeftijd hebben om lid te mogen worden. De Chiro sluit namelijk geen
 			kleuters aan - zie <a href="http://www.chiro.be/minimumleeftijd" title="Uitleg over de minimumleeftijd voor Chiroleden">
 				de Chirosite</a>.</li>
+		<li><b><a class="anchor" id="Instapperiode">Instapperiode</a></b>: iedereen die
+			je inschrijft in je groep krijgt een instapperiode. De einddatum vind je op
+			de persoonsfiche. De GAV's krijgen een mailtje wanneer er zo'n einddatum nadert.
+			Is de einddatum verstreken, dan geldt die persoon als definitief ingeschreven.
+			Op dat moment wordt hij of zij aangesloten bij Chirojeugd Vlaanderen. Dat betekent
+			dat je groep een factuur zal krijgen voor zijn of haar lidgeld.</li>
 		<li><b><a class="anchor" id="Ledenuitgave">Ledenuitgave</a></b>: Chirojeugd Vlaanderen
 			maakt verschillende publicaties voor leden. Voor de jongste afdelingen sturen
 			we een boekje of een spel naar de afdelingsleiding, keti's en aspi's krijgen
@@ -65,7 +73,7 @@
 			aan je groep betalen om aan de activiteiten te mogen deelnemen. Je groep betaalt
 			aan Chirojeugd Vlaanderen voor de aansluiting en dus de verzekering. Iedereen
 			die ingeschreven is, is verzekerd. Iedereen die ingeschreven is én voor wie
-			de probeerperiode verstreken is, is aangesloten.</li>
+			de instapperiode verstreken is, is aangesloten.</li>
 		<li><b><a class="anchor" id="Persoon">Persoon</a></b>: in deze handleiding bedoelen
 			we met een persoon om het even wie van wie je gegevens wilt bijhouden in je
 			groepsadministratie. Dat zijn in de eerste plaats de mensen die ingeschreven
@@ -75,12 +83,6 @@
 			alle <a href="#GAV">GAV</a>'s van je groep. En wil je al die mensen makkelijk
 			terugvinden tussen die honderden personen? Stop ze dan in duidelijke <a href="#Categorie">
 				categorieën</a>.</li>
-		<li><b><a class="anchor" id="Probeerperiode">Probeerperiode</a></b>: iedereen die
-			je inschrijft in je groep krijgt een probeerperiode. De einddatum vind je op
-			de persoonsfiche. De GAV's krijgen een mailtje wanneer er zo'n einddatum nadert.
-			Is de einddatum verstreken, dan geldt die persoon als definitief ingeschreven.
-			Op dat moment wordt hij of zij aangesloten bij Chirojeugd Vlaanderen. Dat betekent
-			dat je groep een factuur zal krijgen voor zijn of haar lidgeld.</li>
 		<li><b><a class="anchor" id="Snelleberichtenlijsten">Snelleberichtenlijsten</a></b>:
 			Chirojeugd Vlaanderen heeft een aantal mailinglijsten. We gebruiken die niet
 			om je te overstelpen met mails, wel om je snel te kunnen bereiken als we dringend

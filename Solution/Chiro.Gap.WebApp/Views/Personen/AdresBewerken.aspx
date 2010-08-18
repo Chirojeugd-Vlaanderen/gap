@@ -38,10 +38,10 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<% 
 		Html.EnableClientValidation();
-		// ReSharper disable Asp.NotResolved
+// ReSharper disable Asp.NotResolved
 		using (Html.BeginForm())	// ReSharper geeft een foutmelding omdat er geen action bestaat die AdresBewerken heet,
-		// maar de view wordt in andere actions opgeroepen
-		// ReSharper restore Asp.NotResolved
+									// maar de view wordt in andere actions opgeroepen
+// ReSharper restore Asp.NotResolved
 		{ %>
 	<ul id="acties">
 		<li>

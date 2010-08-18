@@ -22,28 +22,30 @@
 	<fieldset>
 		<legend>Communicatievorm toevoegen voor
 			<%=Model.Aanvrager.VolledigeNaam %></legend>
+		<p>
+			Bij het type communicatievorm in het selectievakje zie je telkens een voorbeeldje,
+			zodat je ziet aan welke vormvereisten je gegevens moeten voldoen. Vooral bij
+			telefoonnummers is dat van belang!</p>
 		<%=Html.ValidationSummary() %>
 		<table>
 			<tr>
 				<td>
-					<%=Html.DropDownListFor(mdl=>mdl.NieuweCommVorm.CommunicatieTypeID, new SelectList(Model.Types.Select(x => new { value = x.ID, text = x.Omschrijving }), "value", "text"))%>:
+					<%=Html.DropDownListFor(
+						mdl=>mdl.NieuweCommVorm.CommunicatieTypeID, 
+						new SelectList(Model.Types.Select(x => new { value = x.ID, text = string.Format("{0}  ({1})", x.Omschrijving, x.Voorbeeld)}), "value", "text"))%>:
 				</td>
 				<td>
 					<%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nummer) %>
-				</td>
-				<td>
 					<%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.Nummer) %>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<%=Html.LabelFor(mdl => mdl.NieuweCommVorm.IsVoorOptIn)%>
+					<%=Html.LabelFor(mdl => mdl.NieuweCommVorm.IsVoorOptIn)%><br />
+					<em>(alleen bij mailadressen van toepassing)</em>
 				</td>
 				<td>
 					<%=Html.EditorFor(mdl => mdl.NieuweCommVorm.IsVoorOptIn) %>
-				</td>
-				<td>
-					<em>(alleen bij mailadressen van toepassing)</em>
 				</td>
 			</tr>
 			<tr>
@@ -52,8 +54,6 @@
 				</td>
 				<td>
 					<%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Voorkeur) %>
-				</td>
-				<td>
 					<%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.Voorkeur) %>
 				</td>
 			</tr>
@@ -63,8 +63,6 @@
 				</td>
 				<td>
 					<%=Html.EditorFor(mdl => mdl.NieuweCommVorm.IsGezinsGebonden) %>
-				</td>
-				<td>
 					<%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.IsGezinsGebonden) %>
 				</td>
 			</tr>
@@ -74,8 +72,6 @@
 				</td>
 				<td>
 					<%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nota) %><br />
-				</td>
-				<td>
 					<%=Html.ValidationMessageFor(mdl => mdl.NieuweCommVorm.Nota) %>
 				</td>
 			</tr>

@@ -1,7 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Handleiding.Master"
 	Inherits="System.Web.Mvc.ViewPage" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="HelpContent" runat="server">
+<asp:Content ID="Content1" ContentPlaceHolderID="title" runat="server">
+	Handleiding: De jaarovergang uitvoeren
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="HelpContent" runat="server">
 	<h2>
 		De jaarovergang initiëren</h2>
 	<p>
@@ -26,8 +29,8 @@
 		alt="Afdelingen verdelen in jaarovergang" />
 	<ul>
 		<li>Al wie vorig jaar lid was, is nu ingeschreven. Ze hebben wel nog allemaal een
-			probeerperiode. Pas na die probeerperiode
-			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Probeerperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is die probeerperiode?" } ) %>
+			instapperiode. Pas na die instapperiode
+			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Instapperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is die instapperiode?" } ) %>
 			krijg je een factuur voor de aansluitingen, dus je hebt nog tijd om mensen eventueel
 			uit te schrijven.</li>
 	</ul>

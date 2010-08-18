@@ -18,12 +18,28 @@
 	<ul>
 		<li>Open Base, het databaseprogramma van OpenOffice.org. Je krijgt dan eerst een
 			klein venstertje te zien dat je een procedure doet doorlopen.</li>
+	</ul>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/assistent_database_01.png") %>"
+		alt="Database-assistent OpenOffice.org" />
+	<ul>
 		<li>Kies 'Met een bestaande database verbinden', met als bestandstype 'Werkblad'
 			(in plaats van 'JDBC'). Klik op Volgende.</li>
+	</ul>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/assistent_database_02.png") %>"
+		alt="Database-assistent OpenOffice.org" />
+	<ul>
 		<li>Selecteer het bestand dat je gedownload hebt.</li>
+	</ul>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/assistent_database_03.png") %>"
+		alt="Database-assistent OpenOffice.org" />
+	<ul>
 		<li>Klik op Volgende en daarna op Voltooien. Nu moet je de database nog een naam
 			geven - standaard staat er 'Nieuwe Database.odb' maar dat is natuurlijk geen
 			goede keuze.</li>
+	</ul>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/assistent_database_04.png") %>"
+		alt="Database-assistent OpenOffice.org" />
+	<ul>
 		<li>Je krijgt nu het database-bestand te zien. Dat mag je gewoon sluiten.</li>
 	</ul>
 	<p>
@@ -31,6 +47,10 @@
 	<ul>
 		<li>Open Writer.</li>
 		<li>Klik op Bestand > Nieuw > Etiketten. Je krijgt nu een klein venstertje te zien.</li>
+		</ul>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/etikettenwizard_schermpje_01.png") %>"
+		alt="Etiketten-assistent OpenOffice.org" />
+	<ul>
 		<li>Selecteer rechtsboven, onder 'Database', de naam die je aan het database-bestand
 			gegeven hebt.</li>
 		<li>Selecteer daaronder de naam van het werkblad. Normaal heb je maar één keuze,
