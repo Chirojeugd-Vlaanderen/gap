@@ -20,6 +20,9 @@ namespace Chiro.Gap.Orm
 	{
 		Geen = 0x00,
 		AlleAfdelingen = 0x01,
+		Functies = 0x02,
+		Categorieen = 0x03,
+		GroepsWerkJaren = 0x04,
 	}
 
 	/// <summary>

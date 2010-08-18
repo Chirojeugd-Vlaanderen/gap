@@ -28,6 +28,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>Groep, afdelingsjaar, afdelingen en officiële afdelingen</returns>
 		public Groep OphalenMetAfdelingen(int groepsWerkJaarID)
 		{
+			// TODO ik denk dat deze niet meer nuttig gebruikt wordt behalve in tests
 			GroepsWerkJaar groepswj;
 
 			using (var db = new ChiroGroepEntities())
@@ -77,25 +78,6 @@ namespace Chiro.Gap.Data.Ef
 			}
 
 			return groepswj.Groep;
-		}
-
-		/// <summary>
-		/// Haalt een groep op met de werkjaren waarin ze aangesloten leden had
-		/// </summary>
-		/// <param name="groepID">ID van de groep in kwestie</param>
-		/// <returns>De groep met haar groepswerkjaren</returns>
-		public Groep OphalenMetGroepsWerkJaren(int groepID)
-		{
-			Groep result;
-			using (var db = new ChiroGroepEntities())
-			{
-				db.GroepsWerkJaar.MergeOption = MergeOption.NoTracking;
-
-				result = (from g in db.Groep.Include("GroepsWerkJaar")
-						  where g.ID == groepID
-						  select g).FirstOrDefault();
-			}
-			return Utility.DetachObjectGraph(result);
 		}
 
 		/// <summary>

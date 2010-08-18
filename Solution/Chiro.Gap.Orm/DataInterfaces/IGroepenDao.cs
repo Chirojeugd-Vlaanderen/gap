@@ -24,13 +24,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		Groep OphalenMetAfdelingen(int groepsWerkJaarID);
 
 		/// <summary>
-		/// Haalt een groep op met de werkjaren waarin ze aangesloten leden had
-		/// </summary>
-		/// <param name="groepID">ID van de groep in kwestie</param>
-		/// <returns>De groep met haar groepswerkjaren</returns>
-		Groep OphalenMetGroepsWerkJaren(int groepID);
-
-		/// <summary>
 		/// Haalt groep op met gegeven stamnummer
 		/// </summary>
 		/// <param name="code">Stamnummer op te halen groep</param>

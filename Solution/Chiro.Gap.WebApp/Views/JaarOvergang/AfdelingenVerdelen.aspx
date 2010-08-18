@@ -73,4 +73,21 @@
 	
 	<input id="volgende" type="submit" value="Verdeling bewaren en huidige leden herinschrijven" />
 	<%} %>
+	
+	<p>
+		Ter informatie de &lsquo;standaardafdelingen&rsquo; voor dit werkjaar:
+	</p>
+	<table>
+		<!--TODO exentsion method die gegeven een werkjaar, het standaard geboortejaar berekend. Nu is het niet correct. -->
+		<%  foreach (var oa in Model.OfficieleAfdelingen.OrderBy(ofaf => ofaf.LeefTijdTot)){%>
+		<tr>
+			<td>
+				<%=oa.Naam %>
+			</td>
+			<td>
+				<%=oa.StandaardGeboorteJaarVan(Model.NieuwWerkjaar) %>-<%=oa.StandaardGeboorteJaarTot(Model.NieuwWerkjaar)%>
+			</td>
+		</tr>
+		<%}%>
+	</table>
 </asp:Content>

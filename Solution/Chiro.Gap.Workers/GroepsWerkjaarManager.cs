@@ -192,11 +192,34 @@ namespace Chiro.Gap.Workers
 			}
 
 			// Bereken gewenste werkjaar
+			int werkjaar = NieuweWerkJaar();
+
+			// Controle op dubbels moet gebeuren door data access.  (Zie #507)
+			var nieuwgwj = new GroepsWerkJaar { Groep = g, WerkJaar = werkjaar };
+
+			try
+			{
+				return _groepsWjDao.Bewaren(nieuwgwj, gwj => gwj.Groep);
+			}
+			catch (DubbeleEntiteitException<GroepsWerkJaar>)
+			{
+				throw new BestaatAlException<GroepsWerkJaar>(nieuwgwj);
+			}
+		}
+
+		/// <summary>
+		/// Berekent wat het nieuwe werkjaar zal zijn als op deze moment de jaarovergang zou gebeuren.
+		/// </summary>
+		/// <returns></returns>
+		public int NieuweWerkJaar()
+		{
+			// Bereken gewenste werkjaar
 			int werkjaar;
-			
+
+
 			var startdate = new DateTime(
-				DateTime.Today.Year, 
-				Properties.Settings.Default.BeginOvergangsPeriode.Month, 
+				DateTime.Today.Year,
+				Properties.Settings.Default.BeginOvergangsPeriode.Month,
 				Properties.Settings.Default.BeginOvergangsPeriode.Day);
 
 			if (DateTime.Today.CompareTo(startdate) < 0) // vroeger
@@ -208,21 +231,7 @@ namespace Chiro.Gap.Workers
 				werkjaar = DateTime.Today.Year;
 			}
 
-			var allegwjs = _groepsWjDao.AllesOphalen();
-
-			// Controle op dubbels moet gebeuren door data access.  (Zie #507)
-
-			var nieuwgwj = new GroepsWerkJaar { Groep = g, WerkJaar = werkjaar };
-
-			try
-			{
-				return _groepsWjDao.Bewaren(nieuwgwj, gwj => gwj.Groep);
-			}
-			catch (DubbeleEntiteitException<GroepsWerkJaar>)
-			{
-				throw new BestaatAlException<GroepsWerkJaar>(nieuwgwj);
-			}
-			
+			return werkjaar;
 		}
 
 		/// <summary>

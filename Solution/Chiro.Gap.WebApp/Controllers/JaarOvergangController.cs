@@ -112,6 +112,9 @@ namespace Chiro.Gap.WebApp.Controllers
 			//TODO foutmeldingen
 			//TODO voorstel voor geboortejaren geven in de pagina
 
+			var nieuwewerkjaar = ServiceHelper.CallService<IGroepenService, int>(g => g.NieuwWerkJaarOphalen());
+
+			model2.NieuwWerkjaar = nieuwewerkjaar;
 			model2.Titel = "Jaarovergang stap 2:  instellingen van je afdelingen";
 			return View("AfdelingenVerdelen", model2);
 		}
@@ -121,7 +124,13 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			var teactiveren = new List<TeActiverenAfdelingInfo>();
 
-			if (model.TotLijst.Count != model.GeslLijst.Count || model.TotLijst.Count != model.VanLijst.Count)
+			if (model.AfdelingsIDs.Count != model.TotLijst.Count || model.TotLijst.Count != model.GeslLijst.Count || model.TotLijst.Count != model.VanLijst.Count)
+			{
+				TempData["fout"] = "Niet alle informatie is ingevuld, gelieve aan te vullen.";
+				return View("AfdelingenVerdelen", model);
+			}
+
+			if (model.TotLijst.Any(e => e.Equals("")) || model.VanLijst.Any(e => e.Equals("")))
 			{
 				TempData["fout"] = "Niet alle informatie is ingevuld, gelieve aan te vullen.";
 				return View("AfdelingenVerdelen", model);

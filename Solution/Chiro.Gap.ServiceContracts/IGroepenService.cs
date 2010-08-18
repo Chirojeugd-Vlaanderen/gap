@@ -428,6 +428,13 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
 		void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdelingInfo> teActiveren, int groepID);
 
+		/// <summary>
+		/// Berekent wat het nieuwe werkjaar zal zijn als op deze moment de jaarovergang zou gebeuren.
+		/// </summary>
+		/// <returns></returns>
+		[OperationContract]
+		int NieuwWerkJaarOphalen();
+
 		#endregion
 
 		/// <summary>

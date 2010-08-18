@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -50,23 +51,6 @@ namespace Chiro.Gap.Workers
 			_autorisatieMgr = autorisatieMgr;
 			_categorieenDao = categorieenDao;
 			_gelPersDao = gelPersDao;
-		}
-
-		/// <summary>
-		/// Haalt een groep op, met daaraan gekoppeld alle groepswerkjaren
-		/// </summary>
-		/// <param name="groepID">ID van de op te halen groep</param>
-		/// <returns>De gevraagde groep, met daaraan gekoppeld al zijn groepswerkjaren</returns>
-		public Groep OphalenMetGroepsWerkJaren(int groepID)
-		{
-			if (_autorisatieMgr.IsGavGroep(groepID))
-			{
-				return _groepenDao.OphalenMetGroepsWerkJaren(groepID);
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
 		}
 
 		/// <summary>
@@ -184,6 +168,32 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
+		/// Converteert lidextras <paramref name="extras"/> naar lambda-expresses voor een
+		/// KindDao
+		/// </summary>
+		/// <param name="extras">Te converteren lidextras</param>
+		/// <returns>Lambda-expresses voor een KindDao</returns>
+		private static IEnumerable<Expression<Func<Groep, object>>> ExtrasNaarLambdas(GroepsExtras extras)
+		{
+			var paths = new List<Expression<Func<Groep, object>>> {ld => ld.GroepsWerkJaar};
+
+			if ((extras & GroepsExtras.AlleAfdelingen) != 0)
+			{
+				paths.Add(ld => ld.Afdeling);
+			}
+			if ((extras & GroepsExtras.Categorieen) != 0)
+			{
+				paths.Add(ld => ld.Categorie);
+			}
+
+			if ((extras & GroepsExtras.Functies) != 0)
+			{
+				paths.Add(ld => ld.Functie);
+			}
+			return paths;
+		}
+
+		/// <summary>
 		/// Haalt een groepsobject op
 		/// </summary>
 		/// <param name="groepID">ID van de op te halen groep</param>
@@ -191,89 +201,13 @@ namespace Chiro.Gap.Workers
 		/// <returns>De groep met de opgegeven ID <paramref name="groepID"/></returns>
 		public Groep Ophalen(int groepID, GroepsExtras extras)
 		{
-			if (_autorisatieMgr.IsGavGroep(groepID))
-			{
-				if ((extras | GroepsExtras.AlleAfdelingen) != 0)
-				{
-					return _groepenDao.Ophalen(groepID, grp => grp.Afdeling);
-				}
-				else
-				{
-					return _groepenDao.Ophalen(groepID);
-				}
-			}
-			else
+			if (!_autorisatieMgr.IsGavGroep(groepID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
-		}
 
-		/// <summary>
-		/// Haalt een groep op, met daaraan gekoppeld al zijn afdelingen
-		/// </summary>
-		/// <param name="groepID">ID van de gevraagde groep</param>
-		/// <returns>De gevraagde groep, met daaraan gekoppeld al zijn afdelingen</returns>
-		public Groep OphalenMetAfdelingen(int groepID)
-		{
-			if (_autorisatieMgr.IsGavGroep(groepID))
-			{
-				return _groepenDao.Ophalen(groepID, grp => grp.Afdeling);
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-		}
-
-		/// <summary>
-		/// Haalt een groep op, met daaraan gekoppeld al zijn categorieën
-		/// </summary>
-		/// <param name="groepID">ID van de gevraagde groep</param>
-		/// <returns>De gevraagde groep, met daaraan gekoppeld al zijn categorieën</returns>
-		public Groep OphalenMetCategorieen(int groepID)
-		{
-			if (_autorisatieMgr.IsGavGroep(groepID))
-			{
-				return _groepenDao.Ophalen(groepID, grp => grp.Categorie);
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-		}
-
-		/// <summary>
-		/// Haalt een groep op, met daaraan gekoppeld al zijn functies
-		/// </summary>
-		/// <param name="groepID">ID van de gevraagde groep</param>
-		/// <returns>De gevraagde groep, met daaraan gekoppeld al zijn functies</returns>
-		public Groep OphalenMetFuncties(int groepID)
-		{
-			if (_autorisatieMgr.IsGavGroep(groepID))
-			{
-				return _groepenDao.Ophalen(groepID, grp => grp.Functie);
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-		}
-
-		/// <summary>
-		/// Haalt een groep op, met daaraan gekoppeld al zijn categorieën én functies
-		/// </summary>
-		/// <param name="groepID">ID van de gevraagde groep</param>
-		/// <returns>De gevraagde groep, met daaraan gekoppeld al zijn categorieën en functies</returns>
-		public Groep OphalenMetIndelingen(int groepID)
-		{
-			if (_autorisatieMgr.IsGavGroep(groepID))
-			{
-				return _groepenDao.Ophalen(groepID, grp => grp.Categorie, grp => grp.Functie);
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
+			var paths = ExtrasNaarLambdas(extras);
+			return _groepenDao.Ophalen(groepID, paths.ToArray());
 		}
 
 		#region categorieën
@@ -344,45 +278,42 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
-			else
+			// Controleer op dubbele code
+
+			var bestaande = (from fun in g.Functie
+							 where String.Compare(g.Code, code) == 0
+							 || String.Compare(g.Naam, naam) == 0
+							 select fun).FirstOrDefault();
+
+			if (bestaande != null && bestaande.TeVerwijderen)
 			{
-				// Controleer op dubbele code
-
-				var bestaande = (from fun in g.Functie
-								 where String.Compare(g.Code, code) == 0
-								 || String.Compare(g.Naam, naam) == 0
-								 select fun).FirstOrDefault();
-
-				if (bestaande != null && bestaande.TeVerwijderen)
-				{
-					throw new InvalidOperationException(
-						"Er bestaat al een functie met die code, gemarkeerd als TeVerwijderen");
-				}
-				else if (bestaande != null)
-				{
-					// TODO (#507): Check op bestaande afdeling door DB
-					throw new BestaatAlException<Functie>(bestaande);
-				}
-
-				// Zonder problemen hier geraakt.  Dan kunnen we verder.
-
-				var f = new Functie
-				{
-					Code = code,
-					Groep = g,
-					MaxAantal = maxAantal,
-					MinAantal = minAantal,
-					Type = lidType,
-					Naam = naam,
-					WerkJaarTot = null,
-					WerkJaarVan = werkJaarVan, 
-					IsNationaal = false
-				};
-
-				g.Functie.Add(f);
-
-				return f;
+				throw new InvalidOperationException(
+					"Er bestaat al een functie met die code, gemarkeerd als TeVerwijderen");
 			}
+			if (bestaande != null)
+			{
+				// TODO (#507): Check op bestaande afdeling door DB
+				throw new BestaatAlException<Functie>(bestaande);
+			}
+
+			// Zonder problemen hier geraakt.  Dan kunnen we verder.
+
+			var f = new Functie
+			{
+				Code = code,
+				Groep = g,
+				MaxAantal = maxAantal,
+				MinAantal = minAantal,
+				Type = lidType,
+				Naam = naam,
+				WerkJaarTot = null,
+				WerkJaarVan = werkJaarVan, 
+				IsNationaal = false
+			};
+
+			g.Functie.Add(f);
+
+			return f;
 		}
 
 		/// <summary>

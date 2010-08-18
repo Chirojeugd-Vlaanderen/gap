@@ -107,7 +107,7 @@ namespace Chiro.Gap.Workers.Test
 			ledenDaoMock.Setup(foo => foo.AllesOphalen(testData.HuidigGwj.ID, LedenSorteringsEnum.Naam)).Returns(new List<Lid>());
 			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(testData.HuidigGwj.ID)).Returns(false);
 			groepsWerkJaarDaoMock.Setup(foo => foo.Ophalen(testData.HuidigGwj.ID)).Returns(testData.HuidigGwj);
-			groepenDaoMock.Setup(foo => foo.OphalenMetGroepsWerkJaren(testData.DummyGroep.ID)).Returns(testData.DummyGroep);
+			groepenDaoMock.Setup(foo => foo.Ophalen(testData.DummyGroep.ID)).Returns(testData.DummyGroep);
 
 			Factory.InstantieRegistreren(ledenDaoMock.Object);
 			Factory.InstantieRegistreren(groepenDaoMock.Object);
@@ -201,7 +201,7 @@ namespace Chiro.Gap.Workers.Test
 
 			groepsWerkJaarDaoMock.Setup(foo => foo.Ophalen(testData.HuidigGwj.ID, It.IsAny<Expression<Func<GroepsWerkJaar, object>>>())).Returns(testData.HuidigGwj);
 			groepsWerkJaarDaoMock.Setup(foo => foo.IsRecentste(testData.HuidigGwj.ID)).Returns(true);
-			groepenDaoMock.Setup(foo => foo.OphalenMetGroepsWerkJaren(testData.DummyGroep.ID)).Returns(testData.DummyGroep);
+			groepenDaoMock.Setup(foo => foo.Ophalen(testData.DummyGroep.ID, e => e.GroepsWerkJaar)).Returns(testData.DummyGroep);
 			
 			Factory.InstantieRegistreren(ledenDaoMock.Object);
 			Factory.InstantieRegistreren(autorisatieMgrMock.Object);

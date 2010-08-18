@@ -26,15 +26,35 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		public int ID { get; set; }
 
 		/// <summary>
-		/// Standaard 'geboortejaar van' voor dit werkjaar
+		/// Standaard oudste leeftijd voor deze afdeling
 		/// </summary>
 		[DataMember]
-		public int StandaardGeboorteJaarVan { get; set; }
+		public int LeefTijdVan { get; set; }
 
 		/// <summary>
-		/// Standaard 'geboortejaar tot' voor dit werkjaar
+		/// Standaard jongste leeftijd voor deze afdeling
 		/// </summary>
 		[DataMember]
-		public int StandaardGeboorteJaarTot { get; set; }
+		public int LeefTijdTot { get; set; }
+
+		/// <summary>
+		/// Standaard 'geboortejaar van' voor gegeven werkjaar
+		/// </summary>
+		/// <param name="werkjaar"></param>
+		/// <returns></returns>
+		public int StandaardGeboorteJaarVan(int werkjaar)
+		{
+			return werkjaar - LeefTijdTot;
+		}
+
+		/// <summary>
+		/// Standaard 'geboortejaar van' voor dit werkjaar
+		/// </summary>
+		/// <param name="werkjaar"></param>
+		/// <returns></returns>
+		public int StandaardGeboorteJaarTot(int werkjaar)
+		{
+			return werkjaar - LeefTijdVan;
+		}
 	}
 }

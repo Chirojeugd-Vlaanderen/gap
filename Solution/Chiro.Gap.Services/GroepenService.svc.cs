@@ -130,7 +130,7 @@ namespace Chiro.Gap.Services
 			{
 				var resultaat = new GroepDetail();
 
-				var g = _groepenMgr.OphalenMetIndelingen(groepID);
+				var g = _groepenMgr.Ophalen(groepID, GroepsExtras.Categorieen | GroepsExtras.Functies);
 				Mapper.Map(g, resultaat);
 
 				resultaat.Afdelingen = Mapper.Map<IEnumerable<AfdelingsJaar>, List<AfdelingDetail>>(
@@ -238,16 +238,6 @@ namespace Chiro.Gap.Services
 		{
 			try
 			{
-				GroepsWerkJaar gwj = _groepsWerkJaarManager.RecentsteOphalen(groepID);
-
-				Mapper.CreateMap<OfficieleAfdeling, OfficieleAfdelingDetail>()
-					.ForMember(
-						dst => dst.StandaardGeboorteJaarVan,
-						opt => opt.MapFrom(src => gwj.WerkJaar - src.LeefTijdTot))
-					.ForMember(
-						dst => dst.StandaardGeboorteJaarTot,
-						opt => opt.MapFrom(src => gwj.WerkJaar - src.LeefTijdVan));
-
 				return Mapper.Map<IEnumerable<OfficieleAfdeling>, IEnumerable<OfficieleAfdelingDetail>>(
 					_afdelingsJaarMgr.OfficieleAfdelingenOphalen());
 			}
@@ -553,7 +543,7 @@ namespace Chiro.Gap.Services
 		{
 			try
 			{
-				var groep = _groepenMgr.OphalenMetAfdelingen(groepID);
+				var groep = _groepenMgr.Ophalen(groepID, GroepsExtras.AlleAfdelingen);
 				return Mapper.Map<IEnumerable<Afdeling>, IList<AfdelingInfo>>(groep.Afdeling);
 			}
 			catch (Exception ex)
@@ -688,7 +678,7 @@ namespace Chiro.Gap.Services
 		{
 			try
 			{
-				Groep g = _groepenMgr.OphalenMetFuncties(groepID);
+				Groep g = _groepenMgr.Ophalen(groepID, GroepsExtras.Functies);
 
 				_groepenMgr.FunctieToevoegen(g, naam, code, maxAantal, minAantal, lidType, werkJaarVan);
 				g = _groepenMgr.Bewaren(g, e => e.Functie);
@@ -755,7 +745,7 @@ namespace Chiro.Gap.Services
 		{
 			try
 			{
-				var werkjaren = (from gwj in _groepenMgr.OphalenMetGroepsWerkJaren(groepID).GroepsWerkJaar
+				var werkjaren = (from gwj in _groepenMgr.Ophalen(groepID, GroepsExtras.GroepsWerkJaren).GroepsWerkJaar
 								 orderby gwj.WerkJaar descending
 								 select gwj);
 
@@ -781,7 +771,7 @@ namespace Chiro.Gap.Services
 		{
 			try
 			{
-				Groep g = _groepenMgr.OphalenMetCategorieen(groepID);
+				Groep g = _groepenMgr.Ophalen(groepID, GroepsExtras.Categorieen);
 
 				_groepenMgr.CategorieToevoegen(g, naam, code);
 
@@ -1013,7 +1003,7 @@ namespace Chiro.Gap.Services
 		{
 			//TODO unit tests
 			//TODO check dat roll-back gebeurd
-			//TODO check dat juiste periode is om overgang te doen
+			//TODO check dat juiste periode is om overgang te doen!!!
 			//TODO propere exception handeling
 #if KIPDORP
 			using (var scope = new TransactionScope())
@@ -1022,7 +1012,7 @@ namespace Chiro.Gap.Services
 				var voriggwj = _groepsWerkJaarManager.RecentsteOphalen(groepID);
 
 				// Groep ophalen
-				var g = _groepenMgr.Ophalen(groepID, GroepsExtras.AlleAfdelingen);
+				var g = _groepenMgr.Ophalen(groepID, GroepsExtras.AlleAfdelingen | GroepsExtras.GroepsWerkJaren);
 
 				// Gewenste werkjaar berekenen
 				var gwj = _groepsWerkJaarManager.OvergangDoen(g);
@@ -1069,7 +1059,7 @@ namespace Chiro.Gap.Services
 				}
 
 				// Haal alle leden op uit het vorige werkjaar
-				var ledenlijst = _ledenMgr.PaginaOphalen(voriggwj.ID, LidExtras.Persoon);
+				var ledenlijst = _ledenMgr.PaginaOphalen(voriggwj.ID, LidExtras.Persoon | LidExtras.Groep);
 
 				foreach (var lid in ledenlijst)
 				{
@@ -1082,6 +1072,15 @@ namespace Chiro.Gap.Services
 				scope.Complete();
 			}
 #endif
+		}
+
+		/// <summary>
+		/// Berekent wat het nieuwe werkjaar zal zijn als op deze moment de jaarovergang zou gebeuren.
+		/// </summary>
+		/// <returns></returns>
+		public int NieuwWerkJaarOphalen()
+		{
+			return _groepsWerkJaarManager.NieuweWerkJaar();
 		}
 
 		#endregion

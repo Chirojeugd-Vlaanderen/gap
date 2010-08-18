@@ -316,6 +316,13 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.CreateMap<AfdelingsJaar, AfdelingsJaarDetail>()
 				.ForMember(dst => dst.AfdelingsJaarID, opt => opt.MapFrom(src => src.ID));
 
+			Mapper.CreateMap<OfficieleAfdeling, OfficieleAfdelingDetail>()
+				.ForMember(dst => dst.LeefTijdTot, opt => opt.MapFrom(src => src.LeefTijdTot))
+				.ForMember(dst => dst.LeefTijdVan, opt => opt.MapFrom(src => src.LeefTijdVan))
+				.ForMember(dst => dst.ID, opt => opt.MapFrom(src => src.ID))
+				.ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Naam))
+				;
+
 			// Alwat hieronder ignore krijgt, wordt niet meegenomen van een teruggestuurde
 			// PersoonInfo.
 

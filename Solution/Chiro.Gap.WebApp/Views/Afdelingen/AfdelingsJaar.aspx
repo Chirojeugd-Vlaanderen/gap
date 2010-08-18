@@ -53,13 +53,16 @@
 		<%=Html.HiddenFor(mdl=>mdl.AfdelingsJaar.AfdelingsJaarID) %>
 		<%=Html.HiddenFor(mdl=>mdl.AfdelingsJaar.VersieString) %>
 	</fieldset>
+
+	<%
+		} 
+	%>
+	
 	<p>
 		Ter informatie de &lsquo;standaardafdelingen&rsquo; voor dit werkjaar:
 	</p>
 	<table>
-		<%  foreach (var oa in Model.OfficieleAfdelingen.OrderByDescending(ofaf => ofaf.StandaardGeboorteJaarTot))
-	  {
-		%>
+		<%  foreach (var oa in Model.OfficieleAfdelingen.OrderByDescending(ofaf => ofaf.StandaardGeboorteJaarTot)){%>
 		<tr>
 			<td>
 				<%=oa.Naam %>
@@ -68,10 +71,6 @@
 				<%=oa.StandaardGeboorteJaarVan %>-<%=oa.StandaardGeboorteJaarTot%>
 			</td>
 		</tr>
-		<%  }
-		%>
+		<%}%>
 	</table>
-	<%
-		} 
-	%>
 </asp:Content>
