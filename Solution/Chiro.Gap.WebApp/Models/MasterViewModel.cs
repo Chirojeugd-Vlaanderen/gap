@@ -49,6 +49,17 @@ namespace Chiro.Gap.WebApp.Models
 		public string Titel { get; set; }
 
 		/// <summary>
+		/// Int die het *jaartal* van het huidige werkjaar voor de groep bepaalt.
+		/// (Bijv. 2010 voor 2010-2011)
+		/// </summary>
+		public int HuidigWerkJaar { get; set; }
+
+		/// <summary>
+		/// <c>true</c> indien de overgang naar het nieuwe werkjaar kan gebeuren
+		/// </summary>
+		public bool IsInOvergangsPeriode { get; set; }
+
+		/// <summary>
 		/// Kan de GAV meerdere groepen beheren?
 		/// Deze waarde bepaalt of we de link tonen waar je een andere groep kunt kiezen.
 		/// </summary>

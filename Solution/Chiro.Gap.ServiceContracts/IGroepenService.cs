@@ -95,6 +95,11 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(FoutNummerFault))]
 		int RecentsteGroepsWerkJaarIDGet(int groepID);
 
+		[OperationContract]
+		[FaultContract(typeof (GapFault))]
+		[FaultContract(typeof (FoutNummerFault))]
+		GroepsWerkJaarDetail RecentsteGroepsWerkJaarOphalen(int groepid);
+
 		// Alles om gelieerdepersonen op te halen zit in igelieerdepersonenservice
 
 		#endregion

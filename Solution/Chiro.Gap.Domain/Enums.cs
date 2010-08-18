@@ -111,4 +111,22 @@ namespace Chiro.Gap.Domain
 		[EnumMember]
 		LoonVerlies = 1
 	}
+
+	/// <summary>
+	/// Geeft aan of een werkjaar voorbij is, bezig is, of op zijn einde loopt (in overgang)
+	/// </summary>
+	[DataContract]
+	[Flags]
+	public enum WerkJaarStatus
+	{
+		[EnumMember]
+		Onbekend = 0x00,
+		[EnumMember]
+		Voorbij = 0x01,
+		[EnumMember]
+		Bezig = 0x02,
+		[EnumMember]
+		InOvergang = 0x06	// bewust 0x06, omdat een werkjaar in overgang dan ook bezig is.
+	}
+
 }

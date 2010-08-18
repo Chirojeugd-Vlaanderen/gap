@@ -194,6 +194,36 @@ namespace Chiro.Gap.Services
 			}
 		}
 
+		/// <summary>
+		/// Haalt de details op over het recentste groepswerkjaar van de groep met ID
+		/// <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvan de werkjaardetails gevraagd zijn</param>
+		/// <returns>De details op over het recentste groepswerkjaar van de groep met ID
+		/// <paramref name="groepID"/></returns>
+		public GroepsWerkJaarDetail RecentsteGroepsWerkJaarOphalen(int groepID)
+		{
+			GroepsWerkJaar gwj;
+
+			try
+			{
+				gwj = _groepsWerkJaarManager.RecentsteOphalen(groepID, GroepsWerkJaarExtras.Groep);
+			}
+			catch (GeenGavException ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
+
+			var result = Mapper.Map<GroepsWerkJaar, GroepsWerkJaarDetail>(gwj);
+
+			result.Status = (DateTime.Now >= _groepsWerkJaarManager.StartOvergang(gwj.WerkJaar)
+			                 	? WerkJaarStatus.InOvergang
+			                 	: WerkJaarStatus.Bezig);
+
+			return result;
+		}
+
 		#endregion
 
 		#region ophalen

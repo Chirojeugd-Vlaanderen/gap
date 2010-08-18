@@ -251,4 +251,7 @@
   <data name="MeerdereGroepenCacheKey" xml:space="preserve">
     <value>MeerGroepen</value>
   </data>
+  <data name="WerkJaarInOvergang" xml:space="preserve">
+    <value>De overgang naar werkjaar {0}-{1} moet nog gebeuren.</value>
+  </data>
 </root>

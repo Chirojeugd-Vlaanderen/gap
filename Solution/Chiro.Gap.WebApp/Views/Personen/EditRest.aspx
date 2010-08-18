@@ -49,7 +49,7 @@
 				<%=Html.ActionLink("[communicatievorm toevoegen]", "NieuweCommVorm", new { gelieerdePersoonID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%></li>
 		</ul>
 		<h3>
-			Categorieën</h3>
+			Categorie&euml;n</h3>
 		<ul>
 			<% foreach (var info in Model.PersoonLidInfo.PersoonDetail.CategorieLijst)
 	  { %>
@@ -136,8 +136,7 @@
 
 	   // Lidgegevens worden enkel getoond voor actieve leden.
 	%>
-	<h3>
-		Lidgegevens</h3>
+	<h3>Lidgegevens <%=Model.HuidigWerkJaar%>-<%=Model.HuidigWerkJaar+1%></h3>
 	<ul>
 		<li>Betaalde
 			<%= Model.PersoonLidInfo.LidInfo.LidgeldBetaald ? String.Empty : "nog geen" %>

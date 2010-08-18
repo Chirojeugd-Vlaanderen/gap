@@ -218,5 +218,16 @@ namespace Chiro.Gap.Workers
 
 			return _groepsWjDao.Bewaren(nieuwgwj, gwj=>gwj.Groep);
 		}
+
+		/// <summary>
+		/// Bepaalt de datum vanaf wanneer het volgende werkjaar begonnen kan worden
+		/// </summary>
+		/// <param name="werkJaar">Jaartal van het 'huidige' werkjaar (i.e. 2010 voor 2010-2011 enz)</param>
+		/// <returns>Datum in het gegeven werkjaar vanaf wanneer het nieuwe aangemaakt mag worden</returns>
+		public DateTime StartOvergang(int werkJaar)
+		{
+			DateTime datum = Properties.Settings.Default.BeginOvergangsPeriode;
+			return new DateTime(werkJaar + 1, datum.Month, datum.Day);
+		}
 	}
 }

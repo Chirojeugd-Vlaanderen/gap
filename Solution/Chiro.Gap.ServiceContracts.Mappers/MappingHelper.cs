@@ -276,6 +276,13 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst => dst.StamNummer, opt => opt.MapFrom(
 					src => src.Code == null ? String.Empty : src.Code.ToUpper()));
 
+			Mapper.CreateMap<GroepsWerkJaar, GroepsWerkJaarDetail>()
+				.ForMember(dst => dst.Status, opt=>opt.MapFrom(src => WerkJaarStatus.Onbekend))
+				.ForMember(dst => dst.GroepPlaats,
+				           opt => opt.MapFrom(
+				           	src => src.Groep is ChiroGroep ? (src.Groep as ChiroGroep).Plaats : Properties.Resources.NietVanToepassing));
+
+
 			Mapper.CreateMap<CommunicatieInfo, CommunicatieVorm>()
 				.ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
 				.ForMember(dst => dst.Versie, opt => opt.Ignore())

@@ -17,7 +17,13 @@
 </asp:Content>
 <asp:Content ContentPlaceHolderID="PaginaTitelContent" runat="server">
 	<h1>
-		<%=Html.Encode(ViewData.Model.GroepsNaam) %>
+		<%=Html.Encode(ViewData.Model.GroepsNaam)%> 
+<% if (ViewData.Model.HuidigWerkJaar > 0)
+   {%>
+	<%=ViewData.Model.HuidigWerkJaar%>-<%=ViewData.Model.HuidigWerkJaar + 1%>
+<%
+   }
+%>
 	</h1>
 	<%  if (ViewData.Model.Plaats != "geen" && ViewData.Model.Plaats != "nvt")
 	 { %>

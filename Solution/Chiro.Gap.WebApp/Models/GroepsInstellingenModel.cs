@@ -64,6 +64,10 @@ namespace Chiro.Gap.WebApp.Models
 		
 		public IList<Mededeling> Mededelingen { get; set; }
 
+		public int HuidigWerkJaar { get; set; }
+
+		public bool IsInOvergangsPeriode { get; set; }
+
 		#endregion
 	}
 }

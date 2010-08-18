@@ -11,6 +11,7 @@ using System.Web.Caching;
 using System.Web.Mvc;
 
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.Models;
@@ -127,28 +128,36 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				var c = System.Web.HttpContext.Current.Cache;
 
+				#region gekozen groep en werkjaar
+
 				string groepCacheKey = "GI" + groepID;
 				string aantalProblemenCacheKey = Properties.Resources.ProblemenTellingCacheKey + groepID;
 				string problemenCacheKey = Properties.Resources.ProblemenCacheKey + groepID;
 				string meerdereGroepenCacheKey = Properties.Resources.MeerdereGroepenCacheKey + User.Identity.Name;
 
-				var gi = (GroepInfo)c.Get(groepCacheKey);
-				if (gi == null)
+				var gwjDetail = (GroepsWerkJaarDetail)c.Get(groepCacheKey);
+				if (gwjDetail == null)
 				{
-					gi = ServiceHelper.CallService<IGroepenService, GroepInfo>(g => g.InfoOphalen(groepID));
+					gwjDetail = ServiceHelper.CallService<IGroepenService, GroepsWerkJaarDetail>(g => g.RecentsteGroepsWerkJaarOphalen(groepID));
 
 					// Als de gebruiker geen GAV is, krijgen we hier een FaultException. Die wordt niet opgevangen,
 					// maar als je in web.config <customErrors="On"> instelt (ipv "Off" of "RemoteOnly"), dan
 					// word je automatisch doorverwezen naar de foutpagina, waar de exception 'afgehandeld' wordt.
 
 					// OPM: kan gi nog null zijn? 
-					c.Add(groepCacheKey, gi, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
+					c.Add(groepCacheKey, gwjDetail, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
 				}
 
-				model.GroepsNaam = gi.Naam;
-				model.Plaats = gi.Plaats;
-				model.StamNummer = gi.StamNummer;
-				model.GroepID = gi.ID;
+				model.GroepsNaam = gwjDetail.GroepNaam;
+				model.Plaats = gwjDetail.GroepPlaats;
+				model.StamNummer = gwjDetail.GroepCode;
+				model.GroepID = gwjDetail.GroepID;
+				model.HuidigWerkJaar = gwjDetail.WerkJaar;
+				model.IsInOvergangsPeriode = gwjDetail.Status == WerkJaarStatus.InOvergang;
+
+				#endregion
+
+				#region GAV over meerdere groepen?
 
 				model.MeerdereGroepen = (bool?)c.Get(meerdereGroepenCacheKey);
 				if (model.MeerdereGroepen == null)
@@ -167,6 +176,27 @@ namespace Chiro.Gap.WebApp.Controllers
 							  null);
 				}
 
+				#endregion
+
+				#region Mededelingen
+
+				// Eerst algemene mededelingen
+
+				if (gwjDetail.Status == WerkJaarStatus.InOvergang)
+				{
+					model.Mededelingen.Add(new Mededeling
+					{
+						Type = MededelingsType.Probleem,
+						Info = String.Format(
+							Properties.Resources.WerkJaarInOvergang,
+							gwjDetail.WerkJaar + 1,
+							gwjDetail.WerkJaar + 2)
+					});
+
+				}
+
+				// Dan de zaken die als functieprobleem gerapporteerd worden door de service
+
 				// We werken met twee cache-items om te vermijden dat we te veel naar de databank moeten. Het is ook nodig omdat we 
 				// geen null kunnen cachen. Als er geen problemen zijn, moeten we dat dus op een andere manier opslaan:
 				// daarvoor dient de teller.
@@ -180,7 +210,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				{
 					// problemen ophalen
 					problemen =
-						ServiceHelper.CallService<IGroepenService, IEnumerable<FunctieProbleemInfo>>(svc => svc.FunctiesControleren(gi.ID));
+						ServiceHelper.CallService<IGroepenService, IEnumerable<FunctieProbleemInfo>>(svc => svc.FunctiesControleren(gwjDetail.GroepID));
 
 					// eventueel de problemen cachen
 					if (problemen == null)
@@ -216,7 +246,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					foreach (var p in problemen)
 					{
 						// Eerst een paar specifieke en veelvoorkomende problemen apart behandelen.
-
+						
 						if (p.MinAantal > 0 && p.EffectiefAantal == 0)
 						{
 							model.Mededelingen.Add(new Mededeling
@@ -254,8 +284,10 @@ namespace Chiro.Gap.WebApp.Controllers
 						}
 					}
 				}
+				#endregion
 
-				// TODO: ook vermelden dat het werkjaar nog geïnitieerd moet worden als dat nog niet gebeurde!
+				// TODO (#637): ook vermelden dat het werkjaar nog geïnitieerd moet worden als dat nog 
+				// niet gebeurde!
 			}
 		}
 

@@ -8,6 +8,13 @@
 			<%= Html.ActionLink("Iedereen", "Index", "Personen")%></li>
 		<li>
 			<%= Html.ActionLink("Ingeschreven", "Index", "Leden")%></li>
-		<li>
-			<%= Html.ActionLink("Jaarovergang", "Index", "JaarOvergang")%></li>
+<% 
+   if (Model.IsInOvergangsPeriode)
+   {
+%>
+		<li><%=Html.ActionLink("Jaarovergang", "Index", "JaarOvergang")%></li>
+<%
+   }
+%>
+			
 	</ul>
