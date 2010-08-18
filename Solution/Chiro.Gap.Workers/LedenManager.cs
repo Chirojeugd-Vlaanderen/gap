@@ -437,7 +437,7 @@ namespace Chiro.Gap.Workers
 				{
 					nieuwlid = _daos.KindDao.Bewaren((Kind)lid, ExtrasNaarLambdasKind(extras));
 				}
-				catch (KeyViolationException<Kind>)
+				catch (DubbeleEntiteitException<Kind>)
 				{
 					throw new BestaatAlException<Kind>(lid as Kind);
 				}

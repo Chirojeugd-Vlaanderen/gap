@@ -13,7 +13,7 @@ namespace Chiro.Cdf.Data
 	/// </summary>
 	/// <typeparam name="TEntiteit"></typeparam>
 	[Serializable]
-	public class KeyViolationException<TEntiteit> : Exception where TEntiteit : IBasisEntiteit
+	public class DubbeleEntiteitException<TEntiteit> : Exception where TEntiteit : IBasisEntiteit
 	{
 		private TEntiteit _bestaande;
 
@@ -37,25 +37,25 @@ namespace Chiro.Cdf.Data
 		/// <summary>
 		/// De standaardconstructor
 		/// </summary>
-		public KeyViolationException() : this(null, null)
+		public DubbeleEntiteitException() : this(null, null)
 		{
 		}
 
 		/// <summary>
-		/// Construeer KeyViolationException met bericht <paramref name="message"/>.
+		/// Construeer DubbeleEntiteitException met bericht <paramref name="message"/>.
 		/// </summary>
 		/// <param name="message">Technische info over de exception; nuttig voor developer</param>
-		public KeyViolationException(string message) : this(message, null)
+		public DubbeleEntiteitException(string message) : this(message, null)
 		{
 		}
 
 		/// <summary>
-		/// Construeer KeyViolationException met bericht <paramref name="message"/> en een inner exception
+		/// Construeer DubbeleEntiteitException met bericht <paramref name="message"/> en een inner exception
 		/// <paramref name="innerException"/>
 		/// </summary>
 		/// <param name="message">Technische info over de exception; nuttig voor developer</param>
 		/// <param name="innerException">Andere exception die de deze veroorzaakt</param>
-		public KeyViolationException(string message, Exception innerException)
+		public DubbeleEntiteitException(string message, Exception innerException)
 			: base(message, innerException)
 		{
 		}
@@ -69,7 +69,7 @@ namespace Chiro.Cdf.Data
 		/// </summary>
 		/// <param name="info">De serializatie-info</param>
 		/// <param name="context">De streamingcontext</param>
-		protected KeyViolationException(SerializationInfo info, StreamingContext context)
+		protected DubbeleEntiteitException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 			if (info == null)
@@ -103,7 +103,7 @@ namespace Chiro.Cdf.Data
 		/// Creeert een Exception omdat er al een entiteit zoals <paramref name="entiteit"/> al bestaat.
 		/// </summary>
 		/// <param name="entiteit">De bestaande entiteit, die de nieuwe in de weg staat.</param>
-		public KeyViolationException(TEntiteit entiteit)
+		public DubbeleEntiteitException(TEntiteit entiteit)
 			: this(null, null)
 		{
 			_bestaande = entiteit;

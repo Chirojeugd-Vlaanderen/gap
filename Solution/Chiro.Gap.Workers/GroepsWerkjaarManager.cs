@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
+using Chiro.Cdf.Data;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Workers.Exceptions;
@@ -209,14 +210,19 @@ namespace Chiro.Gap.Workers
 
 			var allegwjs = _groepsWjDao.AllesOphalen();
 
-			if (allegwjs.Any(e => e.WerkJaar == werkjaar))
-			{
-				throw new OngeldigObjectException(Properties.Resources.DubbelGroepswerkjaar);
-			}
+			// Controle op dubbels moet gebeuren door data access.  (Zie #507)
 
 			var nieuwgwj = new GroepsWerkJaar { Groep = g, WerkJaar = werkjaar };
 
-			return _groepsWjDao.Bewaren(nieuwgwj, gwj=>gwj.Groep);
+			try
+			{
+				return _groepsWjDao.Bewaren(nieuwgwj, gwj => gwj.Groep);
+			}
+			catch (DubbeleEntiteitException<GroepsWerkJaar>)
+			{
+				throw new BestaatAlException<GroepsWerkJaar>(nieuwgwj);
+			}
+			
 		}
 
 		/// <summary>

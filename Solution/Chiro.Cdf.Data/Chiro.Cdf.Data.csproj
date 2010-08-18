@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasisEntiteitMethods.cs" />
-    <Compile Include="KeyViolationException.cs" />
+    <Compile Include="DubbeleEntiteitException.cs" />
     <Compile Include="IBasisEntiteit.cs" />
     <Compile Include="IDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -250,11 +250,11 @@ namespace Chiro.Cdf.Data.Entity
 				{
 					var inner = ex.InnerException as SqlException;
 
-					if (inner != null && inner.Number == 2601)
+					if (inner != null && (inner.Number == 2601 || inner.Number == 2627))
 					{
 						// We weten op dit moment jammer genoeg niet welke entiteit er nu precies
 						// problemen geeft.
-						throw new KeyViolationException<TEntiteit>();
+						throw new DubbeleEntiteitException<TEntiteit>();
 					}
 					throw;
 				}	
