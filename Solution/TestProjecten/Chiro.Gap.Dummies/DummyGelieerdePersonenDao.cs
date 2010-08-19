@@ -20,6 +20,11 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		public IEnumerable<GelieerdePersoon> ZoekenOpNaam(int groepID, string naam, string voornaam)
+		{
+			throw new NotImplementedException();
+		}
+
 		public IList<GelieerdePersoon> PaginaOphalen(int groepID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering,  out int aantalTotaal)
 		{
 			throw new NotImplementedException();

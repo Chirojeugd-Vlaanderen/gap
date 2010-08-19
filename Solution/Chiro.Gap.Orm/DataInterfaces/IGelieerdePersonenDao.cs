@@ -32,6 +32,18 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		IList<GelieerdePersoon> ZoekenOpNaam(int groepID, string zoekStringNaam);
 
 		/// <summary>
+		/// Gelieerde personen opzoeken op (exacte) naam en voornaam.
+		/// Gelieerde persoon, persoonsgegevens, adressen en communicatie
+		/// worden opgehaald.
+		/// </summary>
+		/// <param name="groepID">ID van groep</param>
+		/// <param name="naam">Exacte naam om op te zoeken</param>
+		/// <param name="voornaam">Exacte voornaam om op te zoeken</param>
+		/// <returns>Lijst met gevonden gelieerde personen</returns>
+		IEnumerable<GelieerdePersoon> ZoekenOpNaam(int groepID, string naam, string voornaam);
+
+
+		/// <summary>
 		/// Zoekt naar gelieerde personen van een bepaalde groep (met ID <paramref name="groepID"/> met naam 
 		/// en voornaam gelijkaardig aan <paramref name="naam"/> en <paramref name="voornaam"/>.
 		/// (inclusief communicatie en adressen)
@@ -131,5 +143,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <remarks>Als de persoon nergens woont, is hij toch zijn eigen
 		/// huisgenoot.  Enkel huisgenoten uit dezelfde groep als de gelieerde persoon worden opgeleverd.</remarks>
 		IList<GelieerdePersoon> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID);
+
 	}
 }

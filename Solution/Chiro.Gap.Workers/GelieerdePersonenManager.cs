@@ -350,7 +350,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				return _gelieerdePersonenDao.ZoekenOpNaam(groepID, string.Format("{0} {1}", naam, voornaam));
+				return _gelieerdePersonenDao.ZoekenOpNaam(groepID, naam, voornaam);
 			}
 			else
 			{
