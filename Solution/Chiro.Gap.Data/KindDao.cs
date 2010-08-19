@@ -57,7 +57,7 @@ namespace Chiro.Gap.Data.Ef
 				lijst = IncludesToepassen(kinderen, paths).ToArray();
 			}
 
-			return lijst;			
+			return Utility.DetachObjectGraph<Kind>(lijst);			
 		}
 
 		/// <summary>
