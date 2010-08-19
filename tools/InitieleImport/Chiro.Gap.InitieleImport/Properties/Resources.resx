@@ -189,4 +189,13 @@
   <data name="DubbeleNaam" xml:space="preserve">
     <value>Dubbele naam in groep: {0} -- negeren.</value>
   </data>
+  <data name="LedenVerwijderen" xml:space="preserve">
+    <value>Leden worden weggehaald</value>
+  </data>
+  <data name="AfdeliingsJarenMaken" xml:space="preserve">
+    <value>Afdelingsjaren worden gemaakt.</value>
+  </data>
+  <data name="TotaalInfoLeden" xml:space="preserve">
+    <value>Aantal leden/leiding: {0}.</value>
+  </data>
 </root>

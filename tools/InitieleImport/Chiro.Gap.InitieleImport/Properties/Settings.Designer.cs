@@ -46,5 +46,29 @@ namespace Chiro.Gap.InitieleImport.Properties {
                 this["VermijdDubbels"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2010")]
+        public int FoutWerkJaar {
+            get {
+                return ((int)(this["FoutWerkJaar"]));
+            }
+            set {
+                this["FoutWerkJaar"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2009")]
+        public int WerkJaar {
+            get {
+                return ((int)(this["WerkJaar"]));
+            }
+            set {
+                this["WerkJaar"] = value;
+            }
+        }
     }
 }

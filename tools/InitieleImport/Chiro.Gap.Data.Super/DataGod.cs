@@ -35,11 +35,12 @@ namespace Chiro.Gap.Data.Super
 
 		/// <summary>
 		/// Maakt een nieuwe groep, op basis van de gegevens in Kipadmin.  Er wordt ook een standaardafdelingsindeling
-		/// gemaakt voor het huidige werkjaar.
+		/// gemaakt voor werkjaar <paramref name="werkjaar"/>
 		/// </summary>
 		/// <param name="stamNr">Stamnummer van de gevraagde groep</param>
+		/// <param name="werkjaar">Werkjaar waarvoor de afdelingsjaren gemaakt moeten worden</param>
 		/// <remarks>Als de groep al bestaat, dan worden hoogstens de groepsgegevens geupdatet</remarks>
-		public void GroepUitKipadmin(string stamNr)
+		public void GroepUitKipadmin(string stamNr, int werkjaar)
 		{
 			using (var conn = new SqlConnection(ConnectionString))
 			{
@@ -48,6 +49,7 @@ namespace Chiro.Gap.Data.Super
 				var cmd = new SqlCommand("data.spNieuweGroepUitKipadmin", conn);
 				cmd.CommandType = CommandType.StoredProcedure;
 				cmd.Parameters.Add(new SqlParameter("@stamnr", stamNr));
+				cmd.Parameters.Add(new SqlParameter("@werkjaar", werkjaar));
 
 				cmd.ExecuteNonQuery();
 			}
@@ -97,7 +99,16 @@ namespace Chiro.Gap.Data.Super
 				cmd.Parameters.Add(new SqlParameter("@stamnr", stamNr));
 				cmd.Parameters.Add(new SqlParameter("@login", userName));
 
-				cmd.ExecuteNonQuery();
+				try
+				{
+					cmd.ExecuteNonQuery();
+				}
+				catch (Exception)
+				{
+					// GVD: er is gepoterd met gebruikersrechten toekennen, zodanig
+					// dat die niet meer werkt als de gebruikersrechten er al zijn.
+				}
+				
 			}
 		}
 
@@ -117,6 +128,27 @@ namespace Chiro.Gap.Data.Super
 				cmd.CommandType = CommandType.StoredProcedure;
 				cmd.Parameters.Add(new SqlParameter("@stamnr", stamNr));
 				cmd.Parameters.Add(new SqlParameter("@login", userName));
+
+				cmd.ExecuteNonQuery();
+			}
+		}
+
+		/// <summary>
+		/// Verwijdert groepwswerkjaar van werkjaar <paramref name="p"/> van groep met stamnummer
+		/// <paramref name="stamNr"/>.
+		/// </summary>
+		/// <param name="stamNr">Stamnummer van groep met te verwijderen groepswerkjaar</param>
+		/// <param name="p">Werkjaar</param>
+		public void GroepsWerkJaarVerwijderen(string stamNr, int p)
+		{
+			using (var conn = new SqlConnection(ConnectionString))
+			{
+				conn.Open();
+
+				var cmd = new SqlCommand("data.spGroepsWerkJaarVerwijderen", conn);
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new SqlParameter("@stamnr", stamNr));
+				cmd.Parameters.Add(new SqlParameter("@werkjaar", p));
 
 				cmd.ExecuteNonQuery();
 			}

@@ -30,13 +30,14 @@ namespace Chiro.Gap.InitieleImport
 			Factory.ContainerInit(); // Init IOC
 			_serviceHelper = Factory.Maak<IServiceHelper>();
 
-			var alleStamNummers = Users.AlleStamNummers;
+			//var alleStamNummers = Users.AlleStamNummers;
 
-			//var alleStamNummers = new string[] {"mg /0112"};  // gewoon testen
+			var alleStamNummers = new string[] {"mg /0113"};  // gewoon testen
 
 			foreach (string stamnr in alleStamNummers)
 			{
-				ImporteerGroepsGegevens(stamnr);
+				//ImporteerGroepsGegevens(stamnr);
+				FixLeden(stamnr);
 			}
 
 			//foreach (var loginInfo in Users.Lijst)
@@ -48,6 +49,215 @@ namespace Chiro.Gap.InitieleImport
 
 			Console.WriteLine("Klaar!");
 			Console.ReadLine();
+		}
+
+		/// <summary>
+		/// Workaround: verwijdert foutief gemaakt groepswerkjaar 2010-2011, en maakt nieuwe leden voor
+		/// 2009-2010
+		/// </summary>
+		/// <param name="stamNr">Stamnummer van de groep</param>
+		private static void FixLeden(string stamNr)
+		{
+
+			var helper = new KipdorpHelper();
+			var god = new DataGod();
+
+			string dataDir = String.Empty;
+			string stamNrFile = helper.StamNrNaarBestand(stamNr);
+			string aansluitingsBestand = helper.RecentsteAansluitingsBestand(stamNr);
+
+			#region Recentste aansluitingsbestand uitpakken
+
+			Console.WriteLine(Resources.UitpakkenVan, aansluitingsBestand);
+
+			// TODO: temporary directory maken, met unieke naam.  Daar zal wellicht wel iets voor
+			// bestaan in .NET.
+
+			// !UitPakDir kort houden, owv de 65-karakterlimiet van paradoxpaden.
+
+			string destdir = String.Format("{0}/{1}", Settings.Default.UitPakDir, stamNrFile);
+
+			// pak recentste aansluitingsbestand uit
+			Directory.CreateDirectory(destdir);
+
+			if (!String.IsNullOrEmpty(aansluitingsBestand))
+			{
+				dataDir = helper.Uitpakken(aansluitingsBestand, destdir);
+			}
+
+			#endregion
+
+			#region Vorige leden weghalen, en deze keer een juist groepswerkjaar maken
+
+			// vorige leden van de groep verwijderen
+
+			Console.WriteLine(Resources.LedenVerwijderen);
+			god.GroepsWerkJaarVerwijderen(stamNr, Properties.Settings.Default.FoutWerkJaar);
+
+			// afdelingsjaren maken
+
+			Console.WriteLine(Resources.AfdeliingsJarenMaken);
+			god.GroepUitKipadmin(stamNr, Properties.Settings.Default.WerkJaar);
+
+			#endregion
+
+			#region Gebruikersrecht toekennen
+
+			// rechten toekennen, zodat je als user de groep kan opvullen
+			// Via de service komen we te weten wat de gebruikersnaam is :)
+
+			string userName = _serviceHelper.CallService<IGroepenService, string>(svc => svc.WieBenIk());
+			Console.WriteLine(Resources.ServiceUser, userName);
+			Console.WriteLine(Resources.RechtenToekennen, userName);
+
+			god.RechtenToekennen(stamNr, userName);
+
+			#endregion
+
+			// Eerst importeren uit paradox, omdat de import uit paradox
+			// bijv. geen telefoonnummers updatet als er al een persoon gevonden is.
+
+			if (!String.IsNullOrEmpty(aansluitingsBestand))
+			{
+				LedenUitPdox(dataDir);
+			}
+
+			// Rechten terug afnemen, om check op GAV niet te zwaar te belasten
+
+			god.RechtenAfnemen(stamNr, userName);
+		}
+
+		/// <summary>
+		/// Probeert de leden uit paradox over te nemen in GAP.  Personen moeten al geimporteerd zijn.
+		/// </summary>
+		/// <param name="path">Plaats waar paradoxarchief uitgepakt is</param>
+		private static void LedenUitPdox(string path)
+		{
+			var mogelijkeDubbels = new List<MogelijkDubbel>();
+			var gpIdsKinderen = new List<int>();
+			var gpIdsLeiding = new List<int>();
+
+			var lezer = new Lezer(path);
+
+			#region Groep Ophalen
+			var groep = lezer.GroepOphalen();
+			GroepInfo dbGroep;
+
+			Console.WriteLine(
+				Properties.Resources.GroepsInfo,
+				groep.StamNummer,
+				groep.Naam,
+				groep.Plaats);
+
+			try
+			{
+				dbGroep = _serviceHelper.CallService<IGroepenService, GroepInfo>(svc => svc.InfoOphalenCode(groep.StamNummer));
+			}
+			catch (FaultException<FoutNummerFault> ex)
+			{
+				if (ex.Detail.FoutNummer == FoutNummer.GeenGav)
+				{
+					Console.WriteLine(Resources.GeenGav);
+				}
+				return;
+			}
+
+			Console.WriteLine(Resources.GroepId, dbGroep.ID);
+
+			#endregion
+
+			#region Personen overzetten
+
+			// amateuristisch systeem om dubbels te vermijden
+			// ('vermoedelijk dubbel' is niet streng genoeg om broers en zussen te 
+			// onderscheiden)
+
+			string vorigePersoonNaam = String.Empty;
+
+			var personen = lezer.LedenOphalen();
+
+			foreach (var p in personen.OrderBy(prs => prs.PersoonDetail.VolledigeNaam))
+			{
+				if (String.Compare(vorigePersoonNaam, p.PersoonDetail.VolledigeNaam, true) == 0)
+				{
+					Console.WriteLine(String.Format(Resources.DubbeleNaam, vorigePersoonNaam));
+				}
+				else
+				{
+					vorigePersoonNaam = p.PersoonDetail.VolledigeNaam;
+
+					IDPersEnGP ids = null;
+
+					ToonPersoonDetail(p.PersoonDetail);
+
+					try
+					{
+						ids =
+							_serviceHelper.CallService<IGelieerdePersonenService, IEnumerable<IDPersEnGP>>(
+								svc => svc.Opzoeken(dbGroep.ID, p.PersoonDetail.Naam, p.PersoonDetail.VoorNaam)).FirstOrDefault();
+					}
+					catch (TimeoutException)
+					{
+						Console.WriteLine(Resources.TimeOut);
+						ids = null;
+					}
+					catch (Exception)
+					{
+						// TODO: Ongeldige geboortedata opvangen aan kant van de service.
+						Console.WriteLine(Resources.Oeps);
+					}
+
+					if (ids != null)
+					{
+						// In lijstje te maken leden/leiding
+
+						if (p.LidInfo != null)
+						{
+							if (p.LidInfo.Type == LidType.Kind)
+							{
+								gpIdsKinderen.Add(ids.GelieerdePersoonID);
+							}
+							else
+							{
+								gpIdsLeiding.Add(ids.GelieerdePersoonID);
+							}
+						}
+
+					}
+				}
+
+			}
+
+			string foutBerichten = String.Empty;
+
+			try
+			{
+				_serviceHelper.CallService<ILedenService>(svc => svc.Inschrijven(gpIdsKinderen, LidType.Kind, out foutBerichten));
+			}
+			catch (CommunicationException)
+			{
+				Console.WriteLine(Properties.Resources.TimeOut);
+			}
+
+			Console.WriteLine(Resources.FoutberichtenKind);
+			Console.WriteLine(foutBerichten);
+
+			try
+			{
+				_serviceHelper.CallService<ILedenService>(svc => svc.Inschrijven(gpIdsLeiding, LidType.Leiding, out foutBerichten));
+			}
+			catch (CommunicationException)
+			{
+				Console.WriteLine(Properties.Resources.TimeOut);
+			}
+
+			Console.WriteLine(Resources.FoutBerichtenLeiding);
+			Console.WriteLine(foutBerichten);
+
+			#endregion
+
+			Console.WriteLine(Properties.Resources.TotaalInfoLeden, personen.Count());
+
 		}
 
 		/// <summary>
@@ -95,7 +305,7 @@ namespace Chiro.Gap.InitieleImport
 			// groep opnieuw aanmaken
 
 			Console.WriteLine(Resources.GroepOpnieuwAanmaken);
-			god.GroepUitKipadmin(stamNr);
+			god.GroepUitKipadmin(stamNr, Properties.Settings.Default.WerkJaar);
 
 			#endregion
 
@@ -310,7 +520,7 @@ namespace Chiro.Gap.InitieleImport
 
 			try
 			{
-				_serviceHelper.CallService<ILedenService>(svc => svc.LedenMaken(gpIdsKinderen, LidType.Kind, out foutBerichten));
+				_serviceHelper.CallService<ILedenService>(svc => svc.Inschrijven(gpIdsKinderen, LidType.Kind, out foutBerichten));
 			}
 			catch (CommunicationException)
 			{
@@ -322,7 +532,7 @@ namespace Chiro.Gap.InitieleImport
 
 			try
 			{
-				_serviceHelper.CallService<ILedenService>(svc => svc.LedenMaken(gpIdsLeiding, LidType.Leiding, out foutBerichten));
+				_serviceHelper.CallService<ILedenService>(svc => svc.Inschrijven(gpIdsLeiding, LidType.Leiding, out foutBerichten));
 			}
 			catch (CommunicationException)
 			{

@@ -70,6 +70,15 @@ namespace Chiro.Gap.InitieleImport.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Afdelingsjaren worden gemaakt..
+        /// </summary>
+        internal static string AfdeliingsJarenMaken {
+            get {
+                return ResourceManager.GetString("AfdeliingsJarenMaken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to         CommType {1}: {2} {0}.
         /// </summary>
         internal static string CommunicatieInfo {
@@ -147,6 +156,15 @@ namespace Chiro.Gap.InitieleImport.Properties {
         internal static string GroepsInfo {
             get {
                 return ResourceManager.GetString("GroepsInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leden worden weggehaald.
+        /// </summary>
+        internal static string LedenVerwijderen {
+            get {
+                return ResourceManager.GetString("LedenVerwijderen", resourceCulture);
             }
         }
         
@@ -237,6 +255,15 @@ namespace Chiro.Gap.InitieleImport.Properties {
         internal static string TotaalInfo {
             get {
                 return ResourceManager.GetString("TotaalInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aantal leden/leiding: {0}..
+        /// </summary>
+        internal static string TotaalInfoLeden {
+            get {
+                return ResourceManager.GetString("TotaalInfoLeden", resourceCulture);
             }
         }
         
