@@ -139,7 +139,7 @@ namespace Chiro.Gap.Workers
 			if ((extras & GroepsWerkJaarExtras.Afdelingen) != 0)
 			{
 				paths.Add(gwj => gwj.AfdelingsJaar.First().Afdeling);
-				paths.Add(gwj => gwj.AfdelingsJaar.First().OfficieleAfdeling);
+				paths.Add(gwj => gwj.AfdelingsJaar.First().OfficieleAfdeling.WithoutUpdate());
 			}
 
 			if ((extras & GroepsWerkJaarExtras.LidFuncties) != 0)
@@ -179,12 +179,12 @@ namespace Chiro.Gap.Workers
 
 		/// <summary>
 		/// Maakt een nieuw groepswerkjaar in het gevraagde werkjaar.
-		/// Persisteert WEL
+		/// Persisteert niet ;-P
 		/// </summary>
 		/// <param name="g">De groep waarvoor een groepswerkjaar aangemaakt moet worden</param>
 		/// <returns>Het nieuwe groepswerkjaar</returns>
 		/// <throws>OngeldigObjectException</throws>
-		public GroepsWerkJaar OvergangDoen(Groep g)
+		public GroepsWerkJaar VolgendGroepsWerkJaarMaken(Groep g)
 		{
 			if (!_autorisatieMgr.IsGavGroep(g.ID))
 			{
@@ -195,16 +195,7 @@ namespace Chiro.Gap.Workers
 			int werkjaar = NieuweWerkJaar();
 
 			// Controle op dubbels moet gebeuren door data access.  (Zie #507)
-			var nieuwgwj = new GroepsWerkJaar { Groep = g, WerkJaar = werkjaar };
-
-			try
-			{
-				return _groepsWjDao.Bewaren(nieuwgwj, gwj => gwj.Groep);
-			}
-			catch (DubbeleEntiteitException<GroepsWerkJaar>)
-			{
-				throw new BestaatAlException<GroepsWerkJaar>(nieuwgwj);
-			}
+			return new GroepsWerkJaar { Groep = g, WerkJaar = werkjaar };
 		}
 
 		/// <summary>
@@ -243,6 +234,30 @@ namespace Chiro.Gap.Workers
 		{
 			DateTime datum = Properties.Settings.Default.BeginOvergangsPeriode;
 			return new DateTime(werkJaar + 1, datum.Month, datum.Day);
+		}
+
+		/// <summary>
+		/// Persisteert een groepswerkjaar in de database
+		/// </summary>
+		/// <param name="gwj">te persisteren groepswerkjaar, gekoppeld aan de groep</param>
+		/// <param name="groepsWerkJaarExtras">bepaalt welke gerelateerde entiteiten mee gepersisteerd
+		/// moeten worden</param>
+		/// <returns>Het gepersisteerde groepswerkjaar, met eventuele nieuwe ID's</returns>
+		public GroepsWerkJaar Bewaren(GroepsWerkJaar gwj, GroepsWerkJaarExtras groepsWerkJaarExtras)
+		{
+			if (!_autorisatieMgr.IsGavGroep(gwj.Groep.ID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+
+			try
+			{
+				return _groepsWjDao.Bewaren(gwj, ExtrasNaarLambdas(groepsWerkJaarExtras));
+			}
+			catch (DubbeleEntiteitException<GroepsWerkJaar>)
+			{
+				throw new BestaatAlException<GroepsWerkJaar>(gwj);
+			}
 		}
 	}
 }

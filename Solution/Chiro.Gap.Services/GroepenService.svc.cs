@@ -1015,7 +1015,7 @@ namespace Chiro.Gap.Services
 				var g = _groepenMgr.Ophalen(groepID, GroepsExtras.AlleAfdelingen | GroepsExtras.GroepsWerkJaren);
 
 				// Gewenste werkjaar berekenen
-				var gwj = _groepsWerkJaarManager.OvergangDoen(g);
+				var gwj = _groepsWerkJaarManager.VolgendGroepsWerkJaarMaken(g);
 
 				// Officiele afdelingen ophalen
 				var offafdelingen = _afdelingsJaarMgr.OfficieleAfdelingenOphalen();
@@ -1055,8 +1055,14 @@ namespace Chiro.Gap.Services
 					catch (ValidatieException)
 					{
 						//TODO handle
-					}					
+					}
 				}
+
+				// We gaan voor de veiligheid die afdelingsjaren hier toch al bewaren
+				// In principe moet dat ook zo kunnen, maar in dat geval moeten alle
+				// leden tegelijk bewaard worden, en dat is nu ook niet het geval.
+
+				gwj = _groepsWerkJaarManager.Bewaren(gwj, GroepsWerkJaarExtras.Groep|GroepsWerkJaarExtras.Afdelingen);
 
 				// Haal alle leden op uit het vorige werkjaar
 				var ledenlijst = _ledenMgr.PaginaOphalen(voriggwj.ID, LidExtras.Persoon | LidExtras.Groep);
@@ -1065,7 +1071,7 @@ namespace Chiro.Gap.Services
 				{
 					//TODO catch all exceptions zoals in de service gebeurt (al die foutboodschappen moeten dus eigenlijk gecatcht kunnen worden in de service, niet in de worders
 					var l = _ledenMgr.AutomatischLidMaken(lid.GelieerdePersoon, gwj);
-					_ledenMgr.Bewaren(l, LidExtras.Afdelingen);
+					_ledenMgr.Bewaren(l, LidExtras.Afdelingen|LidExtras.Persoon);
 				}
 
 #if KIPDORP
