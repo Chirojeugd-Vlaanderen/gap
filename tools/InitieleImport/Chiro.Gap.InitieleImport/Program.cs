@@ -32,7 +32,7 @@ namespace Chiro.Gap.InitieleImport
 
 			//var alleStamNummers = Users.AlleStamNummers;
 
-			var alleStamNummers = new string[] {"mg /0113"};  // gewoon testen
+			var alleStamNummers = new string[] {"oj /2306"};  // gewoon testen
 
 			foreach (string stamnr in alleStamNummers)
 			{
