@@ -1,13 +1,11 @@
-CREATE PROCEDURE data.spNieuweGroepUitKipadmin @stamNr VARCHAR(10) AS
+CREATE PROCEDURE data.spNieuweGroepUitKipadmin @stamNr VARCHAR(10), @werkJaar INT AS
 -- vult de gegevens van een groep aan met die in Kipadmin.
 
 DECLARE @groepID AS INTEGER
-DECLARE @huidigWj AS INTEGER
 DECLARE @verdCode AS INTEGER
 DECLARE @geslacht AS INTEGER
 DECLARE @groepsWjID AS INTEGER
 
-SET @huidigWj = (SELECT WerkJaar FROM Kipadmin.Dbo.HuidigWerkJaar)
 SET @verdCode = (SELECT Verd_Code FROM Kipadmin.dbo.Groep WHERE StamNr = @stamnr)
 SET @geslacht = (SELECT CASE Soort WHEN 'J' THEN 1 WHEN 'M' THEN 2 ELSE 3 END FROM Kipadmin.Dbo.Groep WHERE StamNr = @stamNr)
 
@@ -60,18 +58,16 @@ PRINT ''
 ----------------------------------------------------------------------
 
 IF NOT EXISTS (SELECT 1 FROM grp.GroepsWerkJaar gwj 
-						JOIN kipadmin.dbo.HuidigWerkJaar wj on gwj.WerkJaar = wj.WerKjaar
-				WHERE gwj.GroepID = @groepID AND gwj.WerkJaar = wj.WerkJaar)
+				WHERE gwj.GroepID = @groepID AND gwj.WerkJaar = @werkJaar)
 BEGIN
 	INSERT INTO grp.GroepsWerkJaar(GroepID, WerkJaar)
-		SELECT @groepID, wj.WerkJaar FROM kipadmin.dbo.HuidigWerkJaar wj
+		VALUES(@groepID, @werkJaar)
 	SET @groepsWjID = scope_identity();
 END
 ELSE
 BEGIN
 	SET @groepsWjID = (SELECT GroepsWerkJaarID FROM grp.GroepsWerkJaar gwj 
-						JOIN kipadmin.dbo.HuidigWerkJaar wj on gwj.WerkJaar = wj.WerKjaar
-					  WHERE gwj.GroepID = @groepID AND gwj.WerkJaar = wj.WerkJaar)
+					  WHERE gwj.GroepID = @groepID AND gwj.WerkJaar = @werkJaar)
 END
 
 ----------------------------------------------------------------------
@@ -106,8 +102,8 @@ SELECT
 	@geslacht as Geslacht,
 	@groepsWjID as GroepsWerkJaarID,
 	oa.OfficieleAfdelingID as OfficieleAfdelingID,
-	@huidigWj - oa.LeefTijdTot AS GeboorteJaarVan,
-	@huidigWj - oa.LeefTijdVan AS GeboorteJaarTot
+	@werkJaar - oa.LeefTijdTot AS GeboorteJaarVan,
+	@werkJaar - oa.LeefTijdVan AS GeboorteJaarTot
 FROM lid.OfficieleAfdeling oa
 JOIN lid.Afdeling a on oa.Naam = a.AfdelingsNaam
 WHERE a.GroepID=@groepID AND oa.OfficieleAfdelingID > 3
@@ -121,8 +117,8 @@ IF (@verdCode = 2) BEGIN
 		@geslacht as Geslacht,
 		@groepsWjID as GroepsWerkJaarID,
 		oa.OfficieleAfdelingID as OfficieleAfdelingID,
-		@huidigWj - oa.LeefTijdTot AS GeboorteJaarVan,
-		@huidigWj - oa.LeefTijdVan AS GeboorteJaarTot
+		@werkJaar - oa.LeefTijdTot AS GeboorteJaarVan,
+		@werkJaar - oa.LeefTijdVan AS GeboorteJaarTot
 	FROM lid.OfficieleAfdeling oa
 	JOIN lid.Afdeling a on oa.Naam = a.AfdelingsNaam
 	WHERE a.GroepID=@groepID AND oa.OfficieleAfdelingID in (2,3)
@@ -135,8 +131,8 @@ IF (@verdCode = 2) BEGIN
 		@geslacht as Geslacht,
 		@groepsWjID as GroepsWerkJaarID,
 		1 as OfficieleAfdelingID,
-		@huidigWj - 7 AS GeboorteJaarVan,
-		@huidigWj - 6 AS GeboorteJaarTot
+		@werkJaar - 7 AS GeboorteJaarVan,
+		@werkJaar - 6 AS GeboorteJaarTot
 	FROM Kipadmin.dbo.Groep g
 	JOIN lid.Afdeling a ON g.Pink_Naam = a.AfdelingsNaam COLLATE SQL_Latin1_General_CP1_CI_AS
 	WHERE a.GroepID = @groepID AND g.StamNr = @stamNr
@@ -151,8 +147,8 @@ BEGIN
 		@geslacht as Geslacht,
 		@groepsWjID as GroepsWerkJaarID,
 		3 as OfficieleAfdelingID,
-		@huidigWj - 11 AS GeboorteJaarVan,
-		@huidigWj - 9 AS GeboorteJaarTot
+		@werkJaar - 11 AS GeboorteJaarVan,
+		@werkJaar - 9 AS GeboorteJaarTot
 	FROM lid.Afdeling a
 	WHERE a.AfdelingsNaam='Rakwi''s' and a.GroepID = @groepID
 	AND NOT EXISTS (SELECT 1 FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID=@groepsWjID AND AfdelingID=a.AfdelingID)
@@ -164,8 +160,8 @@ BEGIN
 		@geslacht as Geslacht,
 		@groepsWjID as GroepsWerkJaarID,
 		2 as OfficieleAfdelingID,
-		@huidigWj - 8 AS GeboorteJaarVan,
-		@huidigWj - 6 AS GeboorteJaarTot
+		@werkJaar - 8 AS GeboorteJaarVan,
+		@werkJaar - 6 AS GeboorteJaarTot
 	FROM lid.Afdeling a
 	WHERE a.AfdelingsNaam='Speelclub' and a.GroepID = @groepID
 	AND NOT EXISTS (SELECT 1 FROM lid.AfdelingsJaar WHERE GroepsWerkJaarID=@groepsWjID AND AfdelingID=a.AfdelingID)
