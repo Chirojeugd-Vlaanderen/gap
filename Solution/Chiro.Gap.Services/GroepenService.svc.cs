@@ -7,6 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+#if KIPDORP
+using System.Transactions;
+#endif
 
 using AutoMapper;
 using Chiro.Gap.Domain;
