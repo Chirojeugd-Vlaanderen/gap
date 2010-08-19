@@ -62,13 +62,13 @@
 		Ter informatie de &lsquo;standaardafdelingen&rsquo; voor dit werkjaar:
 	</p>
 	<table>
-		<%  foreach (var oa in Model.OfficieleAfdelingen.OrderByDescending(ofaf => ofaf.StandaardGeboorteJaarTot)){%>
+		<%  foreach (var oa in Model.OfficieleAfdelingen.OrderBy(ofaf => ofaf.LeefTijdTot)){%>
 		<tr>
 			<td>
 				<%=oa.Naam %>
 			</td>
 			<td>
-				<%=oa.StandaardGeboorteJaarVan %>-<%=oa.StandaardGeboorteJaarTot%>
+				<%=oa.StandaardGeboorteJaarVan(Model.HuidigWerkJaar) %>-<%=oa.StandaardGeboorteJaarTot(Model.HuidigWerkJaar)%>
 			</td>
 		</tr>
 		<%}%>
