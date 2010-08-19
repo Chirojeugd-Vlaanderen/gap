@@ -20,6 +20,8 @@ GO
 GO
 :r ../dataconversie/PersonenOpkuisen.sql
 GO
+:r ../dataconversie/GroepsWerkJaarVerwijderen.sql
+GO
 
 CREATE FUNCTION core.ufnSoundEx
 (
