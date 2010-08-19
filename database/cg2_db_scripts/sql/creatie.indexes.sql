@@ -45,10 +45,14 @@ CREATE UNIQUE INDEX AK_PersoonsAdres_PersoonID_AdresID ON pers.PersoonsAdres(Per
 GO
 
 CREATE INDEX IX_PersoonsAdres_AdresID on pers.PersoonsAdres(AdresID)
+GO
 
 CREATE INDEX IDX_CommunicatieVorm_GelieerdePersoonID_CommunicatieTypeID_CommunicatieVormID ON pers.CommunicatieVorm(GelieerdePersoonID, CommunicatieTypeID, CommunicatieVormID) INCLUDE (Nota, Nummer, IsGezinsgebonden, Voorkeur, Versie) 
 GO
 
 
 CREATE INDEX IX_Lid_AfdelingsJaarID ON lid.Kind(AfdelingsJaarID)
+GO
+
+CREATE INDEX IX_Persoon_Naam_VoorNaam ON pers.Persoon(Naam,VoorNaam)
 GO
