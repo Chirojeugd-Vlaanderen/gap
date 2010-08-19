@@ -5,8 +5,10 @@
 	<h3>
 		Algemeen:</h3>
 	<ul>
+		<li><a href="http://drupal.chiro.be/eloket/feedback-gap">Vragen of feedback?</a></li>
 		<li>
 			<%=Html.ActionLink("Trefwoorden", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Trefwoorden" }) %></li>
+			<li><%=Html.ActionLink("Veelgestelde vragen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "VeelgesteldeVragen" }) %></li>
 	</ul>
 	<h3>
 		Info per tabblad:</h3>
@@ -73,5 +75,13 @@
 			<%=Html.ActionLink("Lijsten downloaden", "ViewTonen", new { Controller = "Handleiding", helpBestand = "LijstDownloaden" })%></li>
 		<li>
 			<%=Html.ActionLink("Etiketten maken", "ViewTonen", new { Controller = "Handleiding", helpBestand = "EtikettenMaken" })%></li>
+	</ul>
+	<h3>
+		Extra info:</h3>
+	<ul>
+		<li>
+			<%=Html.ActionLink("Privacystatement", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Privacy" })%></li>
+		<li>
+			<%=Html.ActionLink("Colofon", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Colofon" })%></li>
 	</ul>
 </div>

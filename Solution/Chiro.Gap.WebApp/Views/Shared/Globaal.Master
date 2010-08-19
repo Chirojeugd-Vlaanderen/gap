@@ -59,7 +59,11 @@
 				<hr />
 				<p>
 					&copy; Chirojeugd-Vlaanderen vzw 2007-<%= DateTime.Now.Year.ToString()
-					%></p>
+					%>
+					|| Vragen? <a href="http://drupal.chiro.be/eloket/feedback-gap">Stel ze!</a>
+					Opmerkingen of suggesties? <a href="http://drupal.chiro.be/eloket/feedback-gap">
+						Geef ze door!</a>
+				</p>
 			</div>
 		</div>
 	</div>

@@ -13,11 +13,16 @@
 		2007. Als je Office 2003 hebt en je krijgt het bestand niet open, dan moet je
 		eerst een <a href="http://www.microsoft.com/downloads/details.aspx?familyid=941b3470-3ae9-4aee-8f43-c6bb74cd1466&displaylang=nl"
 			title="Hulpprogramma om Office 2007-bestanden te kunnen openen in Office 2003">
-			extra programma</a> installeren. Open dan eerst het Excel-bestand en sla
-		het op in de 2003-indeling - anders kan Word er niet mee overweg.</p>
-	<% // TODO (#649): screenshot maken en toevoegen: opslaan als %>
+			extra programma</a> installeren. Zorg ook dat je <a href="http://update.microsoft.com">
+				de recentste updates van Office</a> geïnstalleerd hebt.</p>
 	<p>
 		Stappen in het proces:</p>
+	<ul>
+		<li>Open het Excel-bestand.</li>
+		<li>Klik dan op Bestand > Opslaan als. Kies in het venstertje de indeling "Microsoft
+			Excel Werkblad" in plaats van Excel 2007 en sla het bestand op.</li>
+	</ul>
+	<% // TODO (#649): screenshot maken en toevoegen: opslaan als %>
 	<ul>
 		<li>Open Word.</li>
 	</ul>
@@ -68,20 +73,20 @@
 	</ul>
 	<img src="<%=ResolveUrl("~/Content/Screenshots/word2003_etiketten09.png") %>"
 		alt="Klik op 'Meer items' om gegevens op te halen uit het Excel-bestand" />
-		<img src="<%=ResolveUrl("~/Content/Screenshots/word2003_etiketten10.png") %>"
+	<img src="<%=ResolveUrl("~/Content/Screenshots/word2003_etiketten10.png") %>"
 		alt="Selecteer telkens het veld dat je nodig hebt en klik op 'Invoegen'" /><% // TODO (#649): screenshot maken en toevoegen %>
 	<ul>
 		<li>Voeg de nodige spaties en regeleinden toe om het er als een adresetiket te laten
 			uitzien.</li>
 		<li>Als je tevreden bent over je etiket, klik je in het paneel op de knop 'Alle
 			etiketten bijwerken'.</li>
-		</ul>
+	</ul>
 	<img src="<%=ResolveUrl("~/Content/Screenshots/word2003_etiketten12.png") %>"
 		alt="Klik op 'Etiketten bijwerken' om het blad af te werken" />
-	<ul>	
+	<ul>
 		<li>Klik op 'Volgende: Labelvoorbeeld', en je krijgt je eerste etikettenblad te
 			zien.</li>
-			</ul>
+	</ul>
 	<img src="<%=ResolveUrl("~/Content/Screenshots/word2003_etiketten13.png") %>"
 		alt="Een voorbeeldblad met de gegevens van de eerste pagina" />
 	<ul>

@@ -29,9 +29,9 @@
 		alt="Afdelingen verdelen in jaarovergang" />
 	<ul>
 		<li>Al wie vorig jaar lid was, is nu ingeschreven. Ze hebben wel nog allemaal een
-			instapperiode. Pas na die instapperiode
-			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Instapperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is die instapperiode?" } ) %>
-			krijg je een factuur voor de aansluitingen, dus je hebt nog tijd om mensen eventueel
-			uit te schrijven.</li>
+			instapperiode
+			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Instapperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is die instapperiode?" } ) %>.
+			Pas na die instapperiode krijg je een factuur voor de aansluitingen, dus je
+			hebt nog tijd om mensen eventueel uit te schrijven.</li>
 	</ul>
 </asp:Content>

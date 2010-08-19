@@ -13,11 +13,13 @@
 	<p>
 		Het tabblad voor de jaarovergang wordt zichtbaar in de periode dat het nationaal
 		secretariaat aan het nieuwe werkjaar begint, dus rond 1 september. Het blijft
-		zichtbaar tot een GAV van je groep het proces doorlopen heeft. Dat moet <b>voor
-			15 oktober</b> gebeuren. Neem daar wel je tijd voor! Er moet op dat moment
-		veel gebeuren, en het is het beste dat je het allemaal ineens doet - anders
-		kun je een factuur krijgen voor de aansluiting van mensen die je eigenlijk niet
-		wilt inschrijven.</p>
+		zichtbaar tot een GAV
+		<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "GAV", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een GAV?"})%> van
+		je groep het proces doorlopen heeft. Dat moet <b>voor 15 oktober</b> gebeuren.
+		Neem daar wel je tijd voor! Er moet op dat moment veel gebeuren, en het is het
+		beste dat je het allemaal ineens doet - anders kun je een factuur
+		<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Factuur", new { helpBestand = "Trefwoorden" }, new { title = "Uitleg over facturatie"})%>
+		krijgen voor de aansluiting <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Factuur", new { helpBestand = "Trefwoorden" }, new { title = "Uitleg over facturatie"})%>van mensen die je eigenlijk niet wilt inschrijven.</p>
 	<h3>
 		Wat kun je hier doen?</h3>
 	<ul>

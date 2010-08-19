@@ -37,7 +37,7 @@
 			geven - standaard staat er 'Nieuwe Database.odb' maar dat is natuurlijk geen
 			goede keuze.</li>
 	</ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/assistent_database_04.png") %>"
+	<img src="<%=ResolveUrl("~/Content/Screenshots/assistent_database_04_Opslaan.png") %>"
 		alt="Database-assistent OpenOffice.org" />
 	<ul>
 		<li>Je krijgt nu het database-bestand te zien. Dat mag je gewoon sluiten.</li>
@@ -46,30 +46,42 @@
 		Stap 2 in het proces: de etiketten maken</p>
 	<ul>
 		<li>Open Writer.</li>
-		<li>Klik op Bestand > Nieuw > Etiketten. Je krijgt nu een klein venstertje te zien.</li>
-		</ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/etikettenwizard_schermpje_01.png") %>"
-		alt="Etiketten-assistent OpenOffice.org" />
+		<li>Klik op Bestand > Nieuw > Etiketten.</li>
+	</ul>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/writer_Bestand_Nieuw.png") %>"
+		alt="Een nieuw etikettenbestand maken" />
 	<ul>
-		<li>Selecteer rechtsboven, onder 'Database', de naam die je aan het database-bestand
-			gegeven hebt.</li>
+		<li>Je krijgt nu een klein venstertje te zien. Selecteer rechtsboven, onder 'Database',
+			de naam die je aan het database-bestand gegeven hebt.</li>
 		<li>Selecteer daaronder de naam van het werkblad. Normaal heb je maar één keuze,
 			dus dat is de goede.</li>
 		<li>Selecteer in het derde selectielijstje een veld dat op je etiket moet komen
 			en klik op het pijltje links ervan. In het kadertje ernaast zie je hoe je etiket
 			geordend is. Zo plaats je alle nodige velden op het etiket. Vergeet de spaties
 			en regeleinden niet.</li>
+	</ul>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/writer_Etikettenwizard.png") %>"
+		alt="Het etiket opmaken met de etiketten-assistent" />
+	<ul>
 		<li>Selecteer onderaan het formaat van de etiketten. (De meest gebruikte etiketten
 			zijn er van 21 op een blad (3 bij 7): Standaard Avery A4/A5, formaat L7160.)</li>
 		<li>Klik op de knop 'Nieuw document' om je etikettenblad te maken. Daar zie je aanvankelijk
-			alleen de codes staan die naar de velden in de database verwijzen. Je zit ook
-			maar één etiket, maar dat is geen probleem.</li>
+			alleen de codes staan die naar de velden in de database verwijzen.</li>
+	</ul>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/writer_Etikettenblad_met_codes.png") %>"
+		alt="Het voorlopige etikettenblad" />
+	<ul>
 		<li>Klik op Bestand > Afdrukken. Je krijgt dan een klein venstertje dat je eraan
 			herinnert dat er database-velden in je bestand staan, en het vraagt of je een
 			standaardbrief wilt afdrukken. De vraag is wat ongelukkig, maar ja, dat is wel
 			degelijk wat je wilt doen. Klik dus op Ja.</li>
+	</ul>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/writer_Samenvoegen.png") %>" alt="Afdruk samenvoegen" />
+	<ul>
 		<li>In een volgend venstertje krijg je een voorproefje van de gegevens die op je
-			etiketten zullen komen, maar nog gewoon in een tabel. Hier kun je kiezen om
-			je etiketten af te printen of om er een apart bestand van te maken.</li>
+			etiketten zullen komen, maar nog gewoon in een tabel. Hier kun je - onder 'Uitgave'
+			- kiezen om je etiketten af te printen of om er een apart bestand van te maken.
+			Die tweede optie laat je toe om eerst nog eens de etiketten na te kijken voor
+			je ze print.</li>
 	</ul>
 </asp:Content>

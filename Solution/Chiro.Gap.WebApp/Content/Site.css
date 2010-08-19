@@ -130,6 +130,17 @@ first child of the left and right table columns */
 	clear: both;
 }
 
+#footer a 
+{
+	color: #999;
+}
+
+#footer a:hover
+{
+	color: #999;
+	text-decoration: none;
+}
+
 /* TAB MENU   
 ----------------------------------------------------------*/
 
@@ -521,9 +532,14 @@ a.anchor:hover
 	color: #000 !important;
 }
 
-ul.Woordenlijst li
+dl.Woordenlijst dt
 {
-	margin-bottom: 5px;
+	margin: 10px 0 10px 0;
+}
+
+dl.Woordenlijst dd
+{
+	margin-bottom: 15px;
 }
 
 li.nietgoed
