@@ -24,7 +24,7 @@
 	<img src="<%=ResolveUrl("~/Content/Screenshots/wordribbon_stap02.png") %>" alt="Etikettenformaat instellen" />
 	<ul>
 		<li>Klik in de ribbon op de knop 'Adressen selecteren' en kies 'Bestaande lijst
-			selecteren'.</li>
+			gebruiken'.</li>
 	</ul>
 	<img src="<%=ResolveUrl("~/Content/Screenshots/wordribbon_stap03.png") %>" alt="Etikettenformaat instellen" />
 	<ul>
@@ -33,7 +33,7 @@
 	<img src="<%=ResolveUrl("~/Content/Screenshots/wordribbon_stap04.png") %>" alt="Het Excel-bestand koppelen" />
 	<ul>
 		<li>Heb je het bestand geselecteerd en op de knop 'Openen' geklikt, dan krijg je
-			normaal gezien een venstertje waarin je moet aangeven op welk werkblad de gegevens
+			een venstertje waarin je moet aangeven op welk werkblad de gegevens
 			staan (er is er maar één). Klik op 'OK' om verder te gaan.</li>
 	</ul>
 	<img src="<%=ResolveUrl("~/Content/Screenshots/wordribbon_stap05.png") %>" alt="Werkblad selecteren in het Excel-bestand" />
@@ -45,8 +45,8 @@
 	</ul>
 	<img src="<%=ResolveUrl("~/Content/Screenshots/wordribbon_stap06.png") %>" alt="Gegevens op het etiket zetten" />
 	<ul>
-		<li>Klik op de opties om de gegevens in je etiket te zetten en typ er de nodige
-			spaties en nieuwe regels bij.</li>
+		<li>Klik op de veldnamen om de gegevens in je etiket te zetten en typ er de nodige
+			spaties en nieuwe regels bij. Vergeet het busnummer niet!</li>
 		<li>Een kleine truc: selecteer de hele tabel, klik in de ribbon op het tabblad Indeling,
 			onder 'Hulpmiddelen voor tabellen', en klik daar op de knop om linksmidden uit
 			te lijnen.</li>

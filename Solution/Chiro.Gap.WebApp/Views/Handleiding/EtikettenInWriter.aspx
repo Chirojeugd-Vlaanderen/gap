@@ -56,9 +56,9 @@
 		<li>Selecteer daaronder de naam van het werkblad. Normaal heb je maar één keuze,
 			dus dat is de goede.</li>
 		<li>Selecteer in het derde selectielijstje een veld dat op je etiket moet komen
-			en klik op het pijltje links ervan. In het kadertje ernaast zie je hoe je etiket
-			geordend is. Zo plaats je alle nodige velden op het etiket. Vergeet de spaties
-			en regeleinden niet.</li>
+			en klik op het pijltje links ervan. Vergeet het busnummer niet!<br />
+			In het kadertje ernaast zie je hoe je etiket geordend is. Zo plaats je alle
+			nodige velden op het etiket. Voeg de nodige spaties en regeleinden toe.</li>
 	</ul>
 	<img src="<%=ResolveUrl("~/Content/Screenshots/writer_Etikettenwizard.png") %>"
 		alt="Het etiket opmaken met de etiketten-assistent" />
