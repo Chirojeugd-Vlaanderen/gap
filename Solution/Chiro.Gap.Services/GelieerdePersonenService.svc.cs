@@ -429,6 +429,31 @@ namespace Chiro.Gap.Services
 			}
 		}
 
+		/// <summary>
+		/// Zoekt naar (gelieerde)persoonID's op basis van naam, voornaam en groepid
+		/// </summary>
+		/// <param name="groepID">ID van de groep met de te vinden persoon</param>
+		/// <param name="naam">familienaam van de te vinden persoon</param>
+		/// <param name="voornaam">voornaam van de te vinden persoon</param>
+		/// <returns>GelieerdePersoonID en PersoonID van de gevonden personen, of <c>null</c> als
+		/// niet gevonden.</returns>
+		/// <remarks>Dit is nogal een domme method, maar ze is nodig om ticket #710 te fixen.</remarks>
+		public IEnumerable<IDPersEnGP> Opzoeken(int groepID, string naam, string voornaam)
+		{
+			try
+			{
+				var gevonden = _gpMgr.ZoekenOpNaam(groepID, naam, voornaam);
+
+				return (from g in gevonden
+				        select new IDPersEnGP {GelieerdePersoonID = g.ID, PersoonID = g.Persoon.ID}).ToArray();
+			}
+			catch (GeenGavException ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
+		}
+
 		#endregion
 
 		#region Gezinnen en adressen
