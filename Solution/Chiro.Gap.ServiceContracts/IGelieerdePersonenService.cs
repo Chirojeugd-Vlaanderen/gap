@@ -172,7 +172,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IEnumerable<IDPersEnGP> Opzoeken(int groepID, string naam, string voornaam);
+		IDPersEnGP[] Opzoeken(int groepID, string naam, string voornaam);
 
 		#endregion
 

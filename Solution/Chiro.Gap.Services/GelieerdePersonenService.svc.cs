@@ -438,7 +438,7 @@ namespace Chiro.Gap.Services
 		/// <returns>GelieerdePersoonID en PersoonID van de gevonden personen, of <c>null</c> als
 		/// niet gevonden.</returns>
 		/// <remarks>Dit is nogal een domme method, maar ze is nodig om ticket #710 te fixen.</remarks>
-		public IEnumerable<IDPersEnGP> Opzoeken(int groepID, string naam, string voornaam)
+		public IDPersEnGP[] Opzoeken(int groepID, string naam, string voornaam)
 		{
 			try
 			{
