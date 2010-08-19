@@ -201,7 +201,7 @@ namespace Chiro.Gap.Workers.Test
 
 			groepsWerkJaarDaoMock.Setup(foo => foo.Ophalen(testData.HuidigGwj.ID, It.IsAny<Expression<Func<GroepsWerkJaar, object>>>())).Returns(testData.HuidigGwj);
 			groepsWerkJaarDaoMock.Setup(foo => foo.IsRecentste(testData.HuidigGwj.ID)).Returns(true);
-			groepenDaoMock.Setup(foo => foo.Ophalen(testData.DummyGroep.ID, e => e.GroepsWerkJaar)).Returns(testData.DummyGroep);
+			groepenDaoMock.Setup(foo => foo.Ophalen(testData.DummyGroep.ID, It.IsAny<Expression<Func<Groep, object>>>())).Returns(testData.DummyGroep);
 			
 			Factory.InstantieRegistreren(ledenDaoMock.Object);
 			Factory.InstantieRegistreren(autorisatieMgrMock.Object);
