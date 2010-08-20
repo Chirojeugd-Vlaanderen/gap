@@ -3,7 +3,8 @@
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Controllers" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-	<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" />
+	<% // OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #713) %>
+	<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#kiesAfdeling').hide();
