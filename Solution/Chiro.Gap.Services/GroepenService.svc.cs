@@ -10,6 +10,7 @@ using System.ServiceModel;
 #if KIPDORP
 using System.Transactions;
 #endif
+using System.Text;
 
 using AutoMapper;
 using Chiro.Gap.Domain;
@@ -39,7 +40,6 @@ namespace Chiro.Gap.Services
 		private readonly AdressenManager _adresMgr;
 		private readonly GroepsWerkJaarManager _groepsWerkJaarManager;
 		private readonly IAutorisatieManager _autorisatieMgr;
-		private readonly GelieerdePersonenManager _gelieerdePersonenMgr;
 		private readonly CategorieenManager _categorieenMgr;
 		private readonly FunctiesManager _functiesMgr;
 		private readonly LedenManager _ledenMgr;
@@ -50,7 +50,6 @@ namespace Chiro.Gap.Services
 		/// <param name="gm">De worker voor Groepen</param>
 		/// <param name="ajm">De worker voor AfdelingsJaren</param>
 		/// <param name="wm">De worker voor GroepsWerkJaren</param>
-		/// <param name="gpm">De worker voor GelieerdePersonen</param>
 		/// <param name="adresMgr">De worker voor Adressen</param>
 		/// <param name="cm">De worker voor Categorieën</param>
 		/// <param name="fm">De worker voor Functies</param>
@@ -60,7 +59,6 @@ namespace Chiro.Gap.Services
 			GroepenManager gm,
 			AfdelingsJaarManager ajm,
 			GroepsWerkJaarManager wm,
-			GelieerdePersonenManager gpm,
 			AdressenManager adresMgr,
 			CategorieenManager cm,
 			FunctiesManager fm,
@@ -71,7 +69,6 @@ namespace Chiro.Gap.Services
 			_afdelingsJaarMgr = ajm;
 			_groepsWerkJaarManager = wm;
 			_autorisatieMgr = am;
-			_gelieerdePersonenMgr = gpm;
 			_adresMgr = adresMgr;
 			_categorieenMgr = cm;
 			_functiesMgr = fm;
@@ -221,8 +218,8 @@ namespace Chiro.Gap.Services
 			var result = Mapper.Map<GroepsWerkJaar, GroepsWerkJaarDetail>(gwj);
 
 			result.Status = (DateTime.Now >= _groepsWerkJaarManager.StartOvergang(gwj.WerkJaar)
-			                 	? WerkJaarStatus.InOvergang
-			                 	: WerkJaarStatus.Bezig);
+								? WerkJaarStatus.InOvergang
+								: WerkJaarStatus.Bezig);
 
 			return result;
 		}
@@ -374,9 +371,9 @@ namespace Chiro.Gap.Services
 										afd,
 										oa,
 										huidigGwj,
-										detail.GeboorteJaarVan, 
+										detail.GeboorteJaarVan,
 										detail.GeboorteJaarTot,
-										detail.Geslacht, 
+										detail.Geslacht,
 										detail.GeenAutoVerdeling);
 				}
 				else
@@ -443,7 +440,7 @@ namespace Chiro.Gap.Services
 				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
 		}
-		
+
 		/// <summary>
 		/// Gegevens ophalen van het afdelingsjaar met de opgegeven ID
 		/// </summary>
@@ -735,7 +732,7 @@ namespace Chiro.Gap.Services
 		}
 
 		#endregion
-		
+
 		/// <summary>
 		/// Haalt de werkjaren op waarin de groep aangesloten was (te beginnen met het werkjaar voor
 		/// deze applicatie in gebruik genomen werd)
@@ -1002,12 +999,24 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		/// <param name="teActiveren">Lijst van de afdelingen die geactiveerd moeten worden in het nieuwe werkjaar</param>
 		/// <param name="groepID">ID van de groep voor wie een nieuw groepswerkjaar aangemaakt moet worden</param>
-		public void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdelingInfo> teActiveren, int groepID)
+		/// <param name="foutBerichten">Een boodschap met welke leden wel of niet konden worden aangemaakt</param>
+		public void JaarovergangUitvoeren(IEnumerable<TeActiverenAfdelingInfo> teActiveren, int groepID, out string foutBerichten)
 		{
-			//TODO unit tests
-			//TODO check dat roll-back gebeurd
-			//TODO check dat juiste periode is om overgang te doen!!!
-			//TODO propere exception handeling
+			foutBerichten = "";
+
+			try
+			{
+				var oudegwj = RecentsteGroepsWerkJaarOphalen(groepID);
+				if (DateTime.Today <= _groepsWerkJaarManager.StartOvergang(oudegwj.WerkJaar))
+				{
+					throw new GapException("De jaarovergang is enkel toegelaten vanaf een vooropgestelde datum.");
+				}
+
+				// TODO unit tests
+				// TODO check dat roll-back gebeurt
+				// TODO check of er meer voorwaarden gecontroleerd moeten worden
+				// TODO aangeven dat deze operatie wel wat tijd in beslag kan nemen
+				//		=> time-out exceptions mogelijk?
 #if KIPDORP
 			using (var scope = new TransactionScope())
 			{
@@ -1017,74 +1026,105 @@ namespace Chiro.Gap.Services
 				// Groep ophalen
 				var g = _groepenMgr.Ophalen(groepID, GroepsExtras.AlleAfdelingen | GroepsExtras.GroepsWerkJaren);
 
-				// Gewenste werkjaar berekenen
+				// Gewenste werkjaar berekenen en opslaan
 				var gwj = _groepsWerkJaarManager.VolgendGroepsWerkJaarMaken(g);
+				gwj = _groepsWerkJaarManager.Bewaren(gwj, GroepsWerkJaarExtras.Groep | GroepsWerkJaarExtras.Afdelingen);
 
 				// Officiele afdelingen ophalen
 				var offafdelingen = _afdelingsJaarMgr.OfficieleAfdelingenOphalen();
 
-				// Alle gevraagde afdelingen aanmaken
+				// Alle gevraagde afdelingen aanmaken en opslaan
 				foreach (var afdinfo in teActiveren)
 				{
-					TeActiverenAfdelingInfo afdinfo1 = afdinfo; 
-					// Deze lokale variabele binnen de loop vermijdt de ReSharper-waarschuwing over "access to modified closure".
-					// Meer uitleg: https://develop.chiro.be/trac/cg2/wiki/VeelVoorkomendeWaarschuwingen#Accesstomodifiedclosure
-					
+					TeActiverenAfdelingInfo afdinfo1 = afdinfo;
+					// Lokale variabele om "Access to modified closure" te vermijden [wiki:VeelVoorkomendeWaarschuwingen#Accesstomodifiedclosure]
+
+					// Zoek de afdeling van de groep met het gevraagde ID
 					var afd = (from a in g.Afdeling
 							   where afdinfo1.AfdelingID == a.ID
 							   select a).FirstOrDefault();
 
 					if (afd == null)
 					{
-						throw new OngeldigObjectException("Een van de afdelingen bestaat niet voor de gegeven groep.");
+						throw new OngeldigObjectException("Een van de gevraagde afdelingen is geen afdeling van de gegeven groep.");
 					}
 
-					
+					// Zoek de officiële afdeling met het gevraagde ID
 					var offafd = (from a in offafdelingen
 								  where afdinfo1.OfficieleAfdelingID == a.ID
 								  select a).FirstOrDefault();
 
 					if (offafd == null)
 					{
-						throw new OngeldigObjectException("Een van de officiele afdelingen bestaat niet.");
+						throw new OngeldigObjectException("Een van de gevraagde afdelingen is geen bestaande officiële afdeling.");
 					}
 
-					// TODO handle more exceptions
+					// Maak het afdelingsjaar aan en bewaar het
+					var afdj = _afdelingsJaarMgr.Aanmaken(afd,
+					                                      offafd,
+					                                      gwj,
+					                                      afdinfo.GeboorteJaarVan,
+					                                      afdinfo.GeboorteJaarTot,
+					                                      afdinfo.Geslacht,
+					                                      afdinfo.GeenAutoVerdeling);
 
-					try
-					{
-						_afdelingsJaarMgr.Aanmaken(afd, offafd, gwj, afdinfo.GeboorteJaarVan, afdinfo.GeboorteJaarTot, afdinfo.Geslacht, afdinfo.GeenAutoVerdeling);
-					}
-					catch (ValidatieException)
-					{
-						//TODO handle
-					}
+					_afdelingsJaarMgr.Bewaren(afdj);
 				}
 
-				// We gaan voor de veiligheid die afdelingsjaren hier toch al bewaren
-				// In principe moet dat ook zo kunnen, maar in dat geval moeten alle
-				// leden tegelijk bewaard worden, en dat is nu ook niet het geval.
+				var foutBerichtenBuilder = new StringBuilder();
 
-				gwj = _groepsWerkJaarManager.Bewaren(gwj, GroepsWerkJaarExtras.Groep|GroepsWerkJaarExtras.Afdelingen);
-
-				// Haal alle leden op uit het vorige werkjaar
+				// Haal alle leden op uit het vorige werkjaar en maak die een voor een lid
 				var ledenlijst = _ledenMgr.PaginaOphalen(voriggwj.ID, LidExtras.Persoon | LidExtras.Groep);
 
 				foreach (var lid in ledenlijst)
 				{
-					//TODO catch all exceptions zoals in de service gebeurt (al die foutboodschappen moeten dus eigenlijk gecatcht kunnen worden in de service, niet in de worders
-					var l = _ledenMgr.AutomatischLidMaken(lid.GelieerdePersoon, gwj);
-					_ledenMgr.Bewaren(l, LidExtras.Afdelingen|LidExtras.Persoon);
+					var gp = lid.GelieerdePersoon;
+
+					try
+					{
+						var l = _ledenMgr.AutomatischLidMaken(gp, gwj);
+						if (l != null)
+						{
+							_ledenMgr.Bewaren(l, LidExtras.Afdelingen | LidExtras.Persoon);
+						}
+					}// Catches zijn dubbele code met LedenService.AutomatischInschrijven
+					catch (InvalidOperationException ex)
+					{
+						foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
+					}
+					catch (GeenGavException ex)
+					{
+						foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
+					}
+					catch (FoutNummerException ex)
+					{
+						foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
+					}
+					catch (BestaatAlException<Kind>)
+					{
+						foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLid, gp.Persoon.VolledigeNaam));
+					}
+					catch (BestaatAlException<Leiding>)
+					{
+						foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLeiding, gp.Persoon.VolledigeNaam));
+					}	
 				}
+
+				foutBerichten = foutBerichtenBuilder.ToString();
 
 #if KIPDORP
 				scope.Complete();
 			}
 #endif
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+			}
 		}
 
 		/// <summary>
-		/// Berekent wat het nieuwe werkjaar zal zijn als op deze moment de jaarovergang zou gebeuren.
+		/// Berekent wat het nieuwe werkjaar zal zijn als op dit moment de jaarovergang zou gebeuren.
 		/// </summary>
 		/// <returns></returns>
 		public int NieuwWerkJaarOphalen()

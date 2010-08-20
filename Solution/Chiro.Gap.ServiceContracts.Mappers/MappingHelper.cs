@@ -39,14 +39,12 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(
 					dst => dst.IsLeiding,
 					opt => opt.MapFrom(src => (src.Lid.Any(e => e.Type == LidType.Leiding && !e.NonActief))))
-				//Wordt in de service ingevuld, te ingewikkelde code
 				.ForMember(
 					dst => dst.KanLidWorden,
-					opt => opt.MapFrom(src => false))
-				//Wordt in de service ingevuld, te ingewikkelde code
+					opt => opt.MapFrom(src => false)) // Wordt in de service ingevuld, te ingewikkelde code
 				.ForMember(
 					dst => dst.KanLeidingWorden,
-					opt => opt.MapFrom(src => false))
+					opt => opt.MapFrom(src => false)) // Wordt in de service ingevuld, te ingewikkelde code
 				.ForMember(
 					dst => dst.AdNummer,
 					opt => opt.MapFrom(src => src.Persoon.AdNummer))

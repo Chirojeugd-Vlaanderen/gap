@@ -56,7 +56,7 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Maakt een afdelingsjaar voor een groep en een afdeling
+		/// Maakt een afdelingsjaar voor een groep en een afdeling, persisteert niet.
 		/// </summary>
 		/// <param name="a">Afdeling voor nieuw afdelingsjaar</param>
 		/// <param name="oa">Te koppelen officiële afdeling</param>
@@ -91,17 +91,18 @@ namespace Chiro.Gap.Workers
 				throw new ValidatieException(Properties.Resources.OngeldigeGeboortejarenVoorAfdeling, FoutNummer.FouteGeboortejarenVoorAfdeling);
 			}
 
-			var afdelingsJaar = new AfdelingsJaar();
+			var afdelingsJaar = new AfdelingsJaar
+			                    	{
+			                    		OfficieleAfdeling = oa,
+			                    		Afdeling = a,
+			                    		GroepsWerkJaar = gwj,
+			                    		GeboorteJaarVan = geboorteJaarBegin,
+			                    		GeboorteJaarTot = geboorteJaarEind,
+			                    		Geslacht = geslacht,
+			                    		GeenAutoVerdeling = geenAutomatischeVerdeling
+			                    	};
 
 			// TODO check if no conflicts with existing afdelingsjaar
-
-			afdelingsJaar.OfficieleAfdeling = oa;
-			afdelingsJaar.Afdeling = a;
-			afdelingsJaar.GroepsWerkJaar = gwj;
-			afdelingsJaar.GeboorteJaarVan = geboorteJaarBegin;
-			afdelingsJaar.GeboorteJaarTot = geboorteJaarEind;
-			afdelingsJaar.Geslacht = geslacht;
-			afdelingsJaar.GeenAutoVerdeling = geenAutomatischeVerdeling;
 
 			a.AfdelingsJaar.Add(afdelingsJaar);
 			oa.AfdelingsJaar.Add(afdelingsJaar);

@@ -17,6 +17,11 @@ namespace Chiro.Gap.WebApp.Models
 		public JaarOvergangAfdelingsJaarModel()
 		{
 			Afdelingen = new List<AfdelingDetail>();
+			AfdelingsIDs = new List<string>();
+			OfficieleAfdelingsIDs = new List<string>();
+			VanLijst = new List<string>();
+			TotLijst = new List<string>();
+			GeslLijst = new List<string>();
 		}
 
 		/// <summary>

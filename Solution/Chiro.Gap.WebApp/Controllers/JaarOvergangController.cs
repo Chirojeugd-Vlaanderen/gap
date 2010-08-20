@@ -107,10 +107,9 @@ namespace Chiro.Gap.WebApp.Controllers
 								 orderby a.GeboorteJaarTot == 0 descending
 								select a);
 
-			//TODO extra info paginas voor en confirmatiepagina na deze
+			//TODO extra info pagina voor jaarovergang
 			//TODO kan validatie in de listhelper worden bijgecodeerd?
 			//TODO foutmeldingen
-			//TODO voorstel voor geboortejaren geven in de pagina
 
 			var nieuwewerkjaar = ServiceHelper.CallService<IGroepenService, int>(g => g.NieuwWerkJaarOphalen());
 
@@ -153,7 +152,13 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 // ReSharper restore LoopCanBeConvertedToQuery
 
-			ServiceHelper.CallService<IGroepenService>(s => s.JaarovergangUitvoeren(teactiveren, groepID));
+			string foutberichten = "";
+			ServiceHelper.CallService<IGroepenService>(s => s.JaarovergangUitvoeren(teactiveren, groepID, out foutberichten));
+
+			if(foutberichten!=null && !foutberichten.Equals(""))
+			{
+				TempData["fout"] = foutberichten;
+			}
 
 			return RedirectToAction("Index", "Leden");
 		}

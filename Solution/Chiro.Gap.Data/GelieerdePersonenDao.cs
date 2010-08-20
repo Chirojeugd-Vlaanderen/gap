@@ -309,31 +309,44 @@ namespace Chiro.Gap.Data.Ef
 		///   - adressen
 		///   - groepen
 		///   - categorieen
-		///   - ALLE lidobjecten van alle groepswerkjaren waarin de persoon actief was,
-		///     (inclusief groepswerkjaren)  (@Broes, is dat echt wat je wil? zie changeset [742])
+		///   - lidobjecten in het huidige werkjaar
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID van de gevraagde gelieerde persoon</param>
 		/// <returns>Gelieerde persoon met alle bovenvernoemde details</returns>
 		public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
 		{
+			GelieerdePersoon gelpers;
+
 			using (var db = new ChiroGroepEntities())
 			{
-				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
-				return (
-					from gp in db.GelieerdePersoon
-						.Include(gp => gp.Persoon)
-						.Include(gp => gp.Communicatie.First().CommunicatieType)
-						.Include(gp => gp.PersoonsAdres)
-						.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.StraatNaam)
-						.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.WoonPlaats)
-						.Include(gp => gp.Groep)
-						.Include(gp => gp.Categorie)
-						// FIXME: dit is vermoedelijk niet nodig, maar eens nakijken of het ergens gebruikt wordt?
-						.Include(gp => gp.Lid.First().GroepsWerkJaar)
-						.Include(gp => gp.Persoon.PersoonsVerzekering.First().VerzekeringsType)
-					where gp.ID == gelieerdePersoonID
-					select gp).FirstOrDefault();
+				gelpers = (
+				          	from gp in db.GelieerdePersoon
+				          		.Include(gp => gp.Persoon)
+				          		.Include(gp => gp.Communicatie.First().CommunicatieType)
+				          		.Include(gp => gp.PersoonsAdres)
+				          		.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.StraatNaam)
+				          		.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.WoonPlaats)
+				          		.Include(gp => gp.Groep)
+				          		.Include(gp => gp.Categorie)
+				          		.Include(gp => gp.Persoon.PersoonsVerzekering.First().VerzekeringsType)
+				          	where gp.ID == gelieerdePersoonID
+				          	select gp).FirstOrDefault();
+
+				var gwj = (from g in db.GroepsWerkJaar
+				           where g.Groep.ID == gelpers.Groep.ID
+						   orderby g.WerkJaar descending
+				           select g).FirstOrDefault();
+
+				if(gwj != null)
+				{
+					(from l in db.Lid
+					 	.Include(l => l.GelieerdePersoon)
+					 where l.GroepsWerkJaar.ID == gwj.ID
+					 select l).ToList();
+				}
 			}
+
+			return Utility.DetachObjectGraph(gelpers);
 		}
 
 		/// <summary>

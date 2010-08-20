@@ -30,7 +30,6 @@ namespace Chiro.Gap.Services
 		#region Manager Injection
 
 		private readonly GelieerdePersonenManager _gelieerdePersonenMgr;
-		private readonly GroepenManager _groepenMgr;
 		private readonly LedenManager _ledenMgr;
 		private readonly FunctiesManager _functiesMgr;
 		private readonly AfdelingsJaarManager _afdelingsJaarMgr;
@@ -42,7 +41,6 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		/// <param name="gpm">De worker voor GelieerdePersonen</param>
 		/// <param name="lm">De worker voor Leden</param>
-		/// <param name="grm">De worker voor Groepen</param>
 		/// <param name="fm">De worker voor Functies</param>
 		/// <param name="ajm">De worker voor AfdelingsJaren</param>
 		/// <param name="gwjm">De worker voor GroepsWerkJaren</param>
@@ -50,7 +48,6 @@ namespace Chiro.Gap.Services
 		public LedenService(
 			GelieerdePersonenManager gpm,
 			LedenManager lm,
-			GroepenManager grm,
 			FunctiesManager fm,
 			AfdelingsJaarManager ajm,
 			GroepsWerkJaarManager gwjm,
@@ -58,7 +55,6 @@ namespace Chiro.Gap.Services
 		{
 			_gelieerdePersonenMgr = gpm;
 			_ledenMgr = lm;
-			_groepenMgr = grm;
 			_functiesMgr = fm;
 			_afdelingsJaarMgr = ajm;
 			_groepwsWjMgr = gwjm;
@@ -100,11 +96,7 @@ namespace Chiro.Gap.Services
 				var foutBerichtenBuilder = new StringBuilder();
 
 				// Haal meteen alle gelieerde personen op, gecombineerd met hun groep
-				// Ik haal nu ook de groepswerkjaren mee op, omdat 'LidMaken' daar straks in zal kijken.
-				// TODO: Dat kan volgens mij ook zonder, maar daarvoor moet LedenManager.LidMaken aangepast wdn
-
-				var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs,
-				                                                      PersoonsExtras.Groep | PersoonsExtras.GroepsWerkJaren);
+				var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs,PersoonsExtras.Groep);
 
 				// Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
 				// al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
@@ -121,8 +113,6 @@ namespace Chiro.Gap.Services
 						try
 						{
 							var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
-
-							// TODO (#632): hier moet nog ergens een controle gebeuren of de persoon niet overleden is
 
 							if (l != null) // al ingeschreven of non-actief
 							{
@@ -218,11 +208,7 @@ namespace Chiro.Gap.Services
 				var foutBerichtenBuilder = new StringBuilder();
 
 				// Haal meteen alle gelieerde personen op, gecombineerd met hun groep
-				// Ik haal nu ook de groepswerkjaren mee op, omdat 'LidMaken' daar straks in zal kijken.
-				// TODO: Dat kan volgens mij ook zonder, maar daarvoor moet LedenManager.LidMaken aangepast wdn
-
-				var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs,
-																	  PersoonsExtras.Groep | PersoonsExtras.GroepsWerkJaren);
+				var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs,PersoonsExtras.Groep);
 
 				// Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
 				// al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
@@ -320,8 +306,6 @@ namespace Chiro.Gap.Services
 					{
 						var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
 
-						// TODO: Is dit niet eerder iets voor 'den business':
-
 						if (l == null)
 						{
 							foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogNietIngeschreven, gp.Persoon.VolledigeNaam));
@@ -337,7 +321,7 @@ namespace Chiro.Gap.Services
 
 						foreach (var fn in l.Functie)
 						{
-							l.TeVerwijderen = true;
+							fn.TeVerwijderen = true;
 						}
 
 						_ledenMgr.Bewaren(l, LidExtras.Functies);
@@ -667,8 +651,7 @@ namespace Chiro.Gap.Services
 
 				if (l is Kind)
 				{
-					resultaat.AfdelingsJaarIDs = new List<int>();
-					resultaat.AfdelingsJaarIDs.Add((l as Kind).AfdelingsJaar.ID);
+					resultaat.AfdelingsJaarIDs = new List<int> {(l as Kind).AfdelingsJaar.ID};
 				}
 				else if (l is Leiding)
 				{

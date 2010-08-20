@@ -21,7 +21,6 @@ namespace Chiro.Gap.Workers
 	public class GroepsWerkJaarManager
 	{
 		private readonly IGroepsWerkJaarDao _groepsWjDao;
-		private readonly IGroepenDao _groepenDao;
 		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly IAfdelingenDao _afdelingenDao;
 
@@ -29,17 +28,14 @@ namespace Chiro.Gap.Workers
 		/// Creëert een GroepsWerkJaarManager
 		/// </summary>
 		/// <param name="groepsWjDao">Repository voor groepswerkjaren</param>
-		/// <param name="groepenDao">Repository voor groepen</param>
 		/// <param name="afdelingenDao">Repository voor afdelingen</param>
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 		public GroepsWerkJaarManager(
 			IGroepsWerkJaarDao groepsWjDao,
-			IGroepenDao groepenDao,
 			IAfdelingenDao afdelingenDao,
 			IAutorisatieManager autorisatieMgr)
 		{
 			_groepsWjDao = groepsWjDao;
-			_groepenDao = groepenDao;
 			_autorisatieMgr = autorisatieMgr;
 			_afdelingenDao = afdelingenDao;
 		}
@@ -52,18 +48,17 @@ namespace Chiro.Gap.Workers
 		/// <returns>Gevraagde groepswerkjaar</returns>
 		public GroepsWerkJaar Ophalen(int groepsWerkJaarID, GroepsWerkJaarExtras extras)
 		{
-			if (_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
+			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
-				GroepsWerkJaar resultaat = _groepsWjDao.Ophalen(
+				throw new GeenGavException(Properties.Resources.GeenGav);
+				
+			}
+
+			GroepsWerkJaar resultaat = _groepsWjDao.Ophalen(
 					groepsWerkJaarID,
 					ExtrasNaarLambdas(extras));
 
-				return resultaat;
-			}
-			else
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
+			return resultaat;
 		}
 
 		/// <summary>
@@ -96,15 +91,13 @@ namespace Chiro.Gap.Workers
 		/// <returns>Het recentste Groepswerkjaar voor de opgegeven groep</returns>
 		public GroepsWerkJaar RecentsteOphalen(int groepID, GroepsWerkJaarExtras extras)
 		{
-			if (_autorisatieMgr.IsGavGroep(groepID))
-			{
-				// TODO (#251): cachen, want dit gaan we veel nodig hebben
-				return _groepsWjDao.RecentsteOphalen(groepID, ExtrasNaarLambdas(extras));
-			}
-			else
+			if (!_autorisatieMgr.IsGavGroep(groepID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
+
+			// TODO (#251): cachen, want dit gaan we veel nodig hebben
+			return _groepsWjDao.RecentsteOphalen(groepID, ExtrasNaarLambdas(extras));
 		}
 
 		/// <summary>
@@ -115,15 +108,14 @@ namespace Chiro.Gap.Workers
 		/// <returns>ID van het recentste GroepsWerkJaar</returns>
 		public int RecentsteGroepsWerkJaarIDGet(int groepID)
 		{
-			if (_autorisatieMgr.IsGavGroep(groepID))
-			{
-				// TODO (#251): cachen, want dit gaan we veel nodig hebben
-				return _groepsWjDao.RecentsteOphalen(groepID).ID;
-			}
-			else
+			if (!_autorisatieMgr.IsGavGroep(groepID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
+				
 			}
+
+			// TODO (#251): cachen, want dit gaan we veel nodig hebben
+			return _groepsWjDao.RecentsteOphalen(groepID).ID;
 		}
 
 		/// <summary>
@@ -132,7 +124,7 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="extras">Te converteren groepsextra's</param>
 		/// <returns>Lambda-expressies geschikt voor onze DAO's</returns>
-		private Expression<Func<GroepsWerkJaar, object>>[] ExtrasNaarLambdas(GroepsWerkJaarExtras extras)
+		private static Expression<Func<GroepsWerkJaar, object>>[] ExtrasNaarLambdas(GroepsWerkJaarExtras extras)
 		{
 			var paths = new List<Expression<Func<GroepsWerkJaar, object>>>();
 
@@ -192,7 +184,7 @@ namespace Chiro.Gap.Workers
 			}
 
 			// Bereken gewenste werkjaar
-			int werkjaar = NieuweWerkJaar();
+			var werkjaar = NieuweWerkJaar();
 
 			// Controle op dubbels moet gebeuren door data access.  (Zie #507)
 			return new GroepsWerkJaar { Groep = g, WerkJaar = werkjaar };

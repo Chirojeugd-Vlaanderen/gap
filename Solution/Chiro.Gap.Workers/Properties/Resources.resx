@@ -145,6 +145,9 @@
   <data name="GeboorteDatumOntbreekt" xml:space="preserve">
     <value>De geboortedatum moet gekend zijn.</value>
   </data>
+  <data name="PersoonIsOverleden" xml:space="preserve">
+    <value>De persoon die je lid wilt maken is reeds overleden.</value>
+  </data>
   <data name="FunctieVol" xml:space="preserve">
     <value>Slechts {0} leden mogen de functie '{1}' hebben.</value>
   </data>

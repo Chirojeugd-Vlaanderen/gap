@@ -332,30 +332,13 @@ namespace Chiro.Gap.Services
 
 				var gp = _gpMgr.DetailsOphalen(gelieerdePersoonID);
 
-				// TODO: Bovenstaande haalt alle lidobjecten ever van de gelieerde persoon op.  Dat is ofwel een bug
-				// in DetailsOphalen, ofwel een bug in deze method.  Ik vermoed het eerste.
-
 				var pl = Mapper.Map<GelieerdePersoon, PersoonLidInfo>(gp);
 				var gwj = _gwjMgr.RecentsteOphalen(gp.Groep.ID, GroepsWerkJaarExtras.GroepsFuncties | GroepsWerkJaarExtras.Afdelingen);
-
-				var l = _lidMgr.OphalenViaPersoon(gp.ID, gwj.ID);
-				if (l != null)
-				{
-					// Een beetje foefelare et trukare: het lidobject koppelen aan de opgehaalde
-					// gelieerde persoon, zodat we bij het mappen meteen weten of het lid verzekerd is tegen
-					// loonverlies
-
-					l.GelieerdePersoon = gp;
-					gp.Lid.Add(l);
-
-					var ff = Mapper.Map<Lid, LidInfo>(l);
-					pl.LidInfo = ff;
-				}
 
 				var p = pl.PersoonDetail;
 				if (p.GeboorteDatum != null)
 				{
-					int geboortejaar = p.GeboorteDatum.Value.Year - p.ChiroLeefTijd;
+					var geboortejaar = p.GeboorteDatum.Value.Year - p.ChiroLeefTijd;
 					var afd = (from a in gwj.AfdelingsJaar
 							   where a.GeboorteJaarTot >= geboortejaar && a.GeboorteJaarVan <= geboortejaar
 							   select a).FirstOrDefault();

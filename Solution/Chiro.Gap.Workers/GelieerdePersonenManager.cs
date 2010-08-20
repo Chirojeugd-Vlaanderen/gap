@@ -142,18 +142,15 @@ namespace Chiro.Gap.Workers
 		/// communicatievormen.
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID gevraagde gelieerde persoon</param>
-		/// <returns>GelieerdePersoon met persoonsgegevens, adressen, categorieën, lidgegevens en 
-		/// communicatievormen.</returns>
+		/// <returns>GelieerdePersoon met persoonsgegevens, adressen, categorieën, communicatievormen en eventuele lidgegevens uit het gegeven werkjaar.</returns>
 		public GelieerdePersoon DetailsOphalen(int gelieerdePersoonID)
 		{
-			if (_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
-			{
-				return _gelieerdePersonenDao.DetailsOphalen(gelieerdePersoonID);
-			}
-			else
+			if (!_autorisatieMgr.IsGavGelieerdePersoon(gelieerdePersoonID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
+
+			return _gelieerdePersonenDao.DetailsOphalen(gelieerdePersoonID);
 		}
 
 		/// <summary>

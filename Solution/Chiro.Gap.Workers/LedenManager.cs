@@ -62,9 +62,9 @@ namespace Chiro.Gap.Workers
 
 		/// <summary>
 		/// Maakt een gelieerde persoon <paramref name="gp"/> lid in groepswerkjaar <paramref name="gwj"/>,
-		/// met lidtype <paramref name="type"/>
+		/// met lidtype <paramref name="type"/>, persisteert niet.
 		/// </summary>
-		/// <param name="gp">Lid te maken gelieerde persoon</param>
+		/// <param name="gp">Lid te maken gelieerde persoon, gekoppeld met groep en persoon</param>
 		/// <param name="gwj">Groepswerkjaar waarin de gelieerde persoon lid moet worden</param>
 		/// <param name="type">LidType.Kind of LidType.Leiding</param>
 		/// <remarks>
@@ -113,6 +113,12 @@ namespace Chiro.Gap.Workers
 				throw new InvalidOperationException(Properties.Resources.GeboorteDatumOntbreekt);
 			}
 
+			// Nog leven ook
+			if(gp.Persoon.SterfDatum.HasValue)
+			{
+				throw new InvalidOperationException(Properties.Resources.PersoonIsOverleden);
+			}
+
 			// GroepsWerkJaar en GelieerdePersoon invullen
 			lid.GroepsWerkJaar = gwj;
 			lid.GelieerdePersoon = gp;
@@ -120,14 +126,14 @@ namespace Chiro.Gap.Workers
 			gwj.Lid.Add(lid);
 
 			// Instapperiode invullen
-			// Haal alle groepswerkjaren op // TODO in de toekomst niet efficient genoeg!
-			// en selecteert het werkjaar van een jaar geleden als het bestaat
-
+			// Kijk of er vorig jaar een werkjaar was en of de persoon in dat werkjaar lid was
+			// (dit moet vrij slim gebeuren om niet teveel op te halen, dus schenden we hier ophalen - business- bewaren even)
+			// TODO LID + WERKJAAR IS MOMENTEEL NIET INGELADEN
 			var voriggwj = (from ld in gp.Lid
 							where ld.GroepsWerkJaar.WerkJaar == gwj.WerkJaar - 1
 							select ld.GroepsWerkJaar).FirstOrDefault();
 
-			// Als er vorig jaar een werkjaar was en de persoon was toen lid, dan zal zijn probeerperiode maximum tot 15 oktober zijn, 
+			// Als de persoon vorig jaar lid was, dan zal zijn probeerperiode maximum tot 15 oktober zijn, 
 			// eender wanneer de persoon lid wordt.
 			if (voriggwj != null)
 			{
@@ -152,8 +158,8 @@ namespace Chiro.Gap.Workers
 		///		Automatisch een afdeling voor het kind bepalen. Een exception als dit niet mogelijk is.
 		///		De probeerperiode zetten op binnen 3 weken als het een nieuw lid is, en op 15 oktober als de persoon vorig jaar al lid was.
 		/// </summary>
-		/// <param name="gp">Gelieerde persoon, gekoppeld aan groep</param>
-		/// <param name="gwj">Groepswerkjaar waarin lid te maken</param>
+		/// <param name="gp">Gelieerde persoon, gekoppeld aan groep en persoon</param>
+		/// <param name="gwj">Groepswerkjaar waarin lid te maken, gekoppeld met afdelingsjaren</param>
 		/// <returns>Nieuw kindobject, niet gepersisteerd</returns>
 		/// <remarks>De user zal nooit zelf mogen kiezen in welk groepswerkjaar een kind lid wordt.  Maar 
 		/// om testdata voor unit tests op te bouwen, hebben we deze functionaliteit wel nodig.
@@ -178,11 +184,9 @@ namespace Chiro.Gap.Workers
 			}
 
 			// Afdeling automatisch bepalen
-			// Bepaal het geboortejaar, aangepast volgens de Chiroleeftijd.
 
 			Debug.Assert(gp.LeefTijd != null);
-			// Controle of geboortedatum null is, gebeurde al in LidMaken
-
+			// Om resharper blij te houden, is al gecontroleerd.
 			var geboortejaar = gp.LeefTijd.Value.Year;
 
 			// Relevante afdelingsjaren opzoeken
@@ -218,7 +222,7 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Maakt gelieerde persoon leiding voor het gegeven werkjaar.
 		/// </summary>
-		/// <param name="gp">Gelieerde persoon</param>
+		/// <param name="gp">Gelieerde persoon, gekoppeld met groep en persoon</param>
 		/// <param name="gwj">Groepswerkjaar waarin leiding te maken</param>
 		/// <returns>Nieuw leidingsobject; niet gepersisteerd</returns>
 		/// <remarks>Deze method mag niet geexposed worden via de services, omdat
@@ -239,6 +243,16 @@ namespace Chiro.Gap.Workers
 			return LidMaken(gp, gwj, LidType.Leiding) as Leiding;
 		}
 
+		/// <summary>
+		/// Schrijft een gelieerde persoon zo automatisch mogelijk in, persisteert niet.
+		///	
+		/// Als de persoon in een afdeling past, krijgt hij die afdeling. Als er meerdere passen, wordt er een gekozen.
+		///	Als de persoon niet in een afdeling past, wordt hij leiding als hij oud genoeg is.
+		///	Anders wordt een foutmelding gegeven.
+		/// </summary>
+		/// <param name="gp">De persoon om in te schrijven, gekoppeld met groep en persoon</param>
+		/// <param name="gwj">Het groepswerkjaar waarin moet worden ingeschreven, gekoppeld met afdelingsjaren</param>
+		/// <returns>Het aangemaakte lid object</returns>
 		public Lid AutomatischLidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
 		{
 			if (!gp.LeefTijd.HasValue)
@@ -248,27 +262,28 @@ namespace Chiro.Gap.Workers
 
 			// Bepaal of het een kind of leiding wordt. 
 
-			// Stop de geboortedatum in een lokale variabele voor gebruik in Linq-statement. 
-			// (zie [wiki:VeelVoorkomendeWaarschuwingen#PossibleInvalidOperationinLinq-statement])
+			// Stop de geboortedatum in een lokale variabele [wiki:VeelVoorkomendeWaarschuwingen#PossibleInvalidOperationinLinq-statement]
 			var geboortejaar = gp.LeefTijd.Value.Year;
-			var afdeling = (from a in gwj.AfdelingsJaar
-							where !a.GeenAutoVerdeling &&
-								(geboortejaar <= a.GeboorteJaarTot
-								&& a.GeboorteJaarVan <= geboortejaar)
-							select a).FirstOrDefault();
+			var afdelingsjaar = (from a in gwj.AfdelingsJaar
+			                     where !a.GeenAutoVerdeling &&
+			                           (geboortejaar <= a.GeboorteJaarTot
+			                            && a.GeboorteJaarVan <= geboortejaar)
+			                     select a).FirstOrDefault();
 
 			Lid nieuwlid;
-			if (afdeling != null) //Er is een afdeling met de gewenste leeftijd
+				// Kijk of er een passend afdelingsjaar is
+			if (afdelingsjaar != null)
 			{
 				nieuwlid = KindMaken(gp, gwj);
 			} 
-			else if (gwj.WerkJaar - gp.LeefTijd.Value.Year >= Properties.Settings.Default.MinLeidingLeefTijd) 
+				// Kijk of de persoon oud genoeg is om leiding te worden
+			else if (gwj.WerkJaar - gp.LeefTijd.Value.Year >= Properties.Settings.Default.MinLeidingLeefTijd)
 			{
 				nieuwlid = LeidingMaken(gp, gwj);
 			} 
 			else
 			{
-				throw new OngeldigObjectException("De persoon is te jong om leiding te worden en je groep heeft geen afdeling voor die leeftijd.");
+				throw new OngeldigObjectException("Je groep heeft geen afdeling voor die leeftijd en de persoon is te jong om leiding te worden.");
 			}
 
 			return nieuwlid;
@@ -540,9 +555,7 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			return _daos.LedenDao.OphalenViaPersoon(
-				gelieerdePersoonID,
-				groepsWerkJaarID);
+			return _daos.LedenDao.OphalenViaPersoon(gelieerdePersoonID,groepsWerkJaarID);
 		}
 
 		/// <summary>
