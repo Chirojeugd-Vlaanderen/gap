@@ -1004,10 +1004,11 @@ namespace Chiro.Gap.Services
 		{
 			foutBerichten = "";
 
+			var voriggwj = _groepsWerkJaarManager.RecentsteOphalen(groepID);
+
 			try
 			{
-				var oudegwj = RecentsteGroepsWerkJaarOphalen(groepID);
-				if (DateTime.Today <= _groepsWerkJaarManager.StartOvergang(oudegwj.WerkJaar))
+				if (DateTime.Today <= _groepsWerkJaarManager.StartOvergang(voriggwj.WerkJaar))
 				{
 					throw new GapException("De jaarovergang is enkel toegelaten vanaf een vooropgestelde datum.");
 				}
@@ -1021,14 +1022,18 @@ namespace Chiro.Gap.Services
 			using (var scope = new TransactionScope())
 			{
 #endif
-				var voriggwj = _groepsWerkJaarManager.RecentsteOphalen(groepID);
+				
 
 				// Groep ophalen
 				var g = _groepenMgr.Ophalen(groepID, GroepsExtras.AlleAfdelingen | GroepsExtras.GroepsWerkJaren);
 
-				// Gewenste werkjaar berekenen en opslaan
+				// Nieuw groepswerkjaarobject maken
 				var gwj = _groepsWerkJaarManager.VolgendGroepsWerkJaarMaken(g);
-				gwj = _groepsWerkJaarManager.Bewaren(gwj, GroepsWerkJaarExtras.Groep | GroepsWerkJaarExtras.Afdelingen);
+
+				// Dat nieuwe groepswerkjaar gaan we nu nog niet bewaren, maar zodadelijk meteen 
+				// met de afdelingsjaren bij.  Op die manier hebben we de juiste koppelingen ook
+				// hier in de servicelaag.
+
 
 				// Officiele afdelingen ophalen
 				var offafdelingen = _afdelingsJaarMgr.OfficieleAfdelingenOphalen();
@@ -1068,8 +1073,16 @@ namespace Chiro.Gap.Services
 					                                      afdinfo.Geslacht,
 					                                      afdinfo.GeenAutoVerdeling);
 
-					_afdelingsJaarMgr.Bewaren(afdj);
+					// De afdelingsjaren bewaren we straks allemaal tegelijk, samen met het
+					// groepswerkjaar.  Op die manier krijgen we in het resultaat meteen
+					// de juiste koppelingen.
 				}
+
+				// Bewaar nu 'in 1 trek'  meteen groepswerkjaar *en* afdelingsjaren.
+
+				gwj = _groepsWerkJaarManager.Bewaren(gwj, GroepsWerkJaarExtras.Groep | GroepsWerkJaarExtras.Afdelingen);
+				// gwj is nu meteen gekoppeld aan de afdelngsjaren, en vice versa.
+
 
 				var foutBerichtenBuilder = new StringBuilder();
 

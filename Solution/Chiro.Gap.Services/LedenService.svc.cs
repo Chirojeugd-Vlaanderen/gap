@@ -76,7 +76,7 @@ namespace Chiro.Gap.Services
 		/// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
 		/// <param name="type">Bepaalt of de personen als kind of als leiding lid worden.</param>
 		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
-		/// string waarin wat uitleg staat. TODO: beter systeem vinden voor deze feedback.</param>
+		/// string waarin wat uitleg staat. TODO: beter systeem vinden voor deze feedback.  Zie #463.</param>
 		/// <returns>De LidID's van de personen die lid zijn gemaakt</returns>
 		/// <remarks>
 		/// Iedereen die lid gemaakt kan worden, wordt lid - zelfs als dat voor andere personen niet lukt. 
