@@ -310,6 +310,7 @@ namespace Chiro.Gap.Data.Ef
 		///   - groepen
 		///   - categorieen
 		///   - lidobjecten in het huidige werkjaar
+		///   - afdelingen en functies van die lidobjecen
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID van de gevraagde gelieerde persoon</param>
 		/// <returns>Gelieerde persoon met alle bovenvernoemde details</returns>
@@ -339,10 +340,42 @@ namespace Chiro.Gap.Data.Ef
 
 				if(gwj != null)
 				{
-					(from l in db.Lid
-					 	.Include(l => l.GelieerdePersoon)
-					 where l.GroepsWerkJaar.ID == gwj.ID
-					 select l).ToList();
+					// Lidgegevens ophalen.  Koppelen aan persoon en groepswerkjaar.  Ook afdelingen
+					// en functies ophalen.
+
+					Lid lid = (from l in db.Lid
+					           	.Include(l => l.GelieerdePersoon)
+					           where l.GroepsWerkJaar.ID == gwj.ID && l.GelieerdePersoon.ID == gelpers.ID
+					           select l).FirstOrDefault();
+
+					if (lid != null)
+					{
+						int lidID = lid.ID;
+
+						if (lid is Kind)
+						{
+							// Haal opnieuw op met afdelingen
+							lid = (
+								from t in db.Lid.OfType<Kind>()
+									.Include("GelieerdePersoon.Persoon")
+									.Include("GroepsWerkJaar")
+									.Include("AfdelingsJaar.Afdeling")
+									.Include(knd => knd.Functie)
+								where t.ID == lidID
+								select t).FirstOrDefault();
+						}
+						if (lid is Leiding)
+						{
+							lid = (
+								from t in db.Lid.OfType<Leiding>()
+									.Include("GelieerdePersoon.Persoon")
+									.Include("GroepsWerkJaar")
+									.Include("AfdelingsJaar.Afdeling")
+									.Include(leid => leid.Functie)
+								where t.ID == lidID
+								select t).FirstOrDefault();
+						}
+					}
 				}
 			}
 

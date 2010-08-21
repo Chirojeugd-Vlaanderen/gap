@@ -104,11 +104,19 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <returns>Lijst gelieerde personen</returns>
 		IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, bool metHuidigLidInfo, out int aantalTotaal, params Expression<Func<GelieerdePersoon, object>>[] paths);
 
+
 		/// <summary>
-		/// Haalt persoonsgegevens van een gelieerd persoon op, incl. adressen en communicatievormen
+		/// Haalt een gelieerde persoon op, inclusief
+		///   - persoon
+		///   - communicatievormen
+		///   - adressen
+		///   - groepen
+		///   - categorieen
+		///   - lidobjecten in het huidige werkjaar
+		///   - afdelingen en functies van die lidobjecen
 		/// </summary>
-		/// <param name="gelieerdePersoonID">ID van op te halen gelieerde persoon</param>
-		/// <returns>Gelieerde persoon met persoonsgegevens, adressen en communicatievormen</returns>
+		/// <param name="gelieerdePersoonID">ID van de gevraagde gelieerde persoon</param>
+		/// <returns>Gelieerde persoon met alle bovenvernoemde details</returns>
 		GelieerdePersoon DetailsOphalen(int gelieerdePersoonID);
 
 		/// <summary>
