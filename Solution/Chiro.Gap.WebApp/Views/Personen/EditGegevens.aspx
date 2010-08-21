@@ -68,9 +68,11 @@
 	</ul>
 	<fieldset>
 		<legend>Persoonlijke gegevens</legend>
-		<%	if (Model.HuidigePersoon.AdNummer == null)
+		<%	if (Model.HuidigePersoon.AdNummer != null)
 		{
-			Html.HiddenFor(s => s.HuidigePersoon.AdNummer);
+        %>
+			<%=Html.HiddenFor(s => s.HuidigePersoon.AdNummer)  %>
+		<%
 		}
 		else
 		{ %>
