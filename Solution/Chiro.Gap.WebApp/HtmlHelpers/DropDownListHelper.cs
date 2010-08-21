@@ -68,7 +68,7 @@ namespace Chiro.Gap.WebApp.HtmlHelpers
 			foreach (var geslacht in Enum.GetValues(typeof(GeslachtsType)))
 			{
 				var option1 = new TagBuilder("option");
-				option1.MergeAttribute("value", geslacht.ToString());
+				option1.MergeAttribute("value", ((int)geslacht).ToString());
 				if ((GeslachtsType)geslacht == g)
 				{
 					option1.MergeAttribute("selected", @"yes");

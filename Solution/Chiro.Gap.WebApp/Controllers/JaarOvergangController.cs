@@ -145,21 +145,34 @@ namespace Chiro.Gap.WebApp.Controllers
 								AfdelingID = Int32.Parse(model.AfdelingsIDs[i]),
 								OfficieleAfdelingID = Int32.Parse(model.OfficieleAfdelingsIDs[i]),
 								GeboorteJaarTot = Int32.Parse(model.TotLijst[i]),
-								GeboorteJaarVan = Int32.Parse(model.VanLijst[i])
+								GeboorteJaarVan = Int32.Parse(model.VanLijst[i]),
+								Geslacht = (GeslachtsType)Int32.Parse(model.GeslLijst[i])
 							};
 
 				teactiveren.Add(x);
 			}
 // ReSharper restore LoopCanBeConvertedToQuery
 
-			string foutberichten = "";
+			string foutberichten = String.Empty;
 			ServiceHelper.CallService<IGroepenService>(s => s.JaarovergangUitvoeren(teactiveren, groepID, out foutberichten));
 
-			if(foutberichten!=null && !foutberichten.Equals(""))
+			if(!String.IsNullOrEmpty(foutberichten))
 			{
 				TempData["fout"] = foutberichten;
 			}
 
+			// Invalidate cache dingen
+			// TODO: alles ivm cache ergens bij elkaar zetten, zodat zeker dezelfde keys gebruikt worden
+
+			var c = System.Web.HttpContext.Current.Cache;
+			string groepCacheKey = "GI" + groepID;
+			string aantalProblemenCacheKey = Properties.Resources.ProblemenTellingCacheKey + groepID;
+			string problemenCacheKey = Properties.Resources.ProblemenCacheKey + groepID;
+
+			c.Remove(groepCacheKey);
+			c.Remove(aantalProblemenCacheKey);
+			c.Remove(problemenCacheKey);
+			
 			return RedirectToAction("Index", "Leden");
 		}
 
