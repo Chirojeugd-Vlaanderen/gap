@@ -23,6 +23,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Data.Entity", "Ch
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Data", "Chiro.Cdf.Data\Chiro.Cdf.Data.csproj", "{72F61656-2949-4763-9381-678B2D07AE0B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{548BB87E-3E31-4340-8295-0A444668EBC6}"
+	ProjectSection(SolutionItems) = preProject
+		References\AutoMapper.dll = References\AutoMapper.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = KipSync.vsmdi
