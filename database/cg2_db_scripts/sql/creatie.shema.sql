@@ -159,18 +159,18 @@ END
 GO
 
 BEGIN
-	CREATE TABLE [lid].[Lid](
-		[LidgeldBetaald] [bit] NULL,
-		[NonActief] [bit] NULL,
-		[Verwijderd] [bit] NULL,
-		[VolgendWerkjaar] [smallint] NULL,
-		[LidID] [int] IDENTITY(1,1) NOT NULL,
-		[GroepsWerkjaarID] [int] NOT NULL,
-		[GelieerdePersoonID] [int] NOT NULL,
-		[Versie] [timestamp] NULL,
-		[EindeInstapPeriode] [smalldatetime] NULL,
-		CONSTRAINT [PK_Lid] PRIMARY KEY NONCLUSTERED ([LidID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
-	) ON [PRIMARY]
+	CREATE TABLE lid.Lid(
+		LidgeldBetaald BIT NULL,
+		NonActief BIT NULL,
+		Verwijderd BIT NULL,
+		VolgendWerkjaar SMALLINT NULL,
+		LidID INT IDENTITY(1,1) NOT NULL,
+		GroepsWerkjaarID INT NOT NULL,
+		GelieerdePersoonID INT NOT NULL,
+		Versie timestamp NULL,
+		EindeInstapPeriode SMALLDATETIME NULL,
+		IsOvergetzet BIT NOT NULL DEFAULT 0,
+		CONSTRAINT PK_Lid PRIMARY KEY NONCLUSTERED (LidID ASC))
 END
 GO
 
@@ -207,6 +207,8 @@ EXEC sys.sp_addextendedproperty
 	@level1name=N'Lid', 
 	@level2type=N'COLUMN', 
 	@level2name=N'Verwijderd'
+
+-- Hmmmm... Dat toekomstperspectief, dat hebben we precies niet meer nodig.
 
 GO
 EXEC sys.sp_addextendedproperty 

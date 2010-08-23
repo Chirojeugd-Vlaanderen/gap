@@ -329,6 +329,7 @@
           <Property Name="GelieerdePersoonID" Type="int" Nullable="false" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
           <Property Name="EindeInstapPeriode" Type="smalldatetime" />
+          <Property Name="IsOvergezet" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="LidFunctie">
           <Key>
@@ -1052,7 +1053,8 @@
           <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_Lid_GroepsWerkjaar" FromRole="Lid" ToRole="GroepsWerkJaar" />
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_Lid_GelieerdePersoon" FromRole="Lid" ToRole="GelieerdePersoon" />
           <NavigationProperty Name="Functie" Relationship="ChiroGroepModel.LidFunctie" FromRole="Lid" ToRole="Functie" />
-          <Property Name="EindeInstapPeriode" Type="DateTime" Nullable="true" /></EntityType>
+          <Property Name="EindeInstapPeriode" Type="DateTime" Nullable="true" />
+          <Property Name="IsOvergezet" Type="Boolean" Nullable="false" /></EntityType>
         <Association Name="FK_GroepsWerkjaar_Groep">
           <End Type="ChiroGroepModel.Groep" Role="Groep" Multiplicity="1" />
           <End Type="ChiroGroepModel.GroepsWerkJaar" Role="GroepsWerkJaar" Multiplicity="*" /></Association>
@@ -1357,6 +1359,7 @@
           <EntitySetMapping Name="Lid">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Lid)">
               <MappingFragment StoreEntitySet="Lid">
+                <ScalarProperty Name="IsOvergezet" ColumnName="IsOvergezet" />
                 <ScalarProperty Name="EindeInstapPeriode" ColumnName="EindeInstapPeriode" />
                 <ScalarProperty Name="ID" ColumnName="LidID" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />

@@ -37,7 +37,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsVerzekering_VerzekeringsType", "VerzekeringsType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.VerzekeringsType), "PersoonsVerzekering", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.PersoonsVerzekering))]
 
 // Original file name:
-// Generation date: 17/08/2010 15:01:43
+// Generation date: 23/08/2010 14:54:58
 namespace Chiro.Gap.Orm
 {
     
@@ -2336,13 +2336,15 @@ namespace Chiro.Gap.Orm
         /// <param name="verwijderd">Initial value of Verwijderd.</param>
         /// <param name="volgendWerkjaarInt">Initial value of VolgendWerkjaarInt.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static Lid CreateLid(bool nonActief, bool verwijderd, short volgendWerkjaarInt, int id)
+        /// <param name="isOvergezet">Initial value of IsOvergezet.</param>
+        public static Lid CreateLid(bool nonActief, bool verwijderd, short volgendWerkjaarInt, int id, bool isOvergezet)
         {
             Lid lid = new Lid();
             lid.NonActief = nonActief;
             lid.Verwijderd = verwijderd;
             lid.VolgendWerkjaarInt = volgendWerkjaarInt;
             lid.ID = id;
+            lid.IsOvergezet = isOvergezet;
             return lid;
         }
         /// <summary>
@@ -2506,6 +2508,29 @@ namespace Chiro.Gap.Orm
         private global::System.Nullable<global::System.DateTime> _EindeInstapPeriode;
         partial void OnEindeInstapPeriodeChanging(global::System.Nullable<global::System.DateTime> value);
         partial void OnEindeInstapPeriodeChanged();
+        /// <summary>
+        /// There are no comments for Property IsOvergezet in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsOvergezet
+        {
+            get
+            {
+                return this._IsOvergezet;
+            }
+            set
+            {
+                this.OnIsOvergezetChanging(value);
+                this.ReportPropertyChanging("IsOvergezet");
+                this._IsOvergezet = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("IsOvergezet");
+                this.OnIsOvergezetChanged();
+            }
+        }
+        private bool _IsOvergezet;
+        partial void OnIsOvergezetChanging(bool value);
+        partial void OnIsOvergezetChanged();
         /// <summary>
         /// There are no comments for GroepsWerkJaar in the schema.
         /// </summary>
@@ -3558,13 +3583,15 @@ namespace Chiro.Gap.Orm
         /// <param name="verwijderd">Initial value of Verwijderd.</param>
         /// <param name="volgendWerkjaarInt">Initial value of VolgendWerkjaarInt.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static Leiding CreateLeiding(bool nonActief, bool verwijderd, short volgendWerkjaarInt, int id)
+        /// <param name="isOvergezet">Initial value of IsOvergezet.</param>
+        public static Leiding CreateLeiding(bool nonActief, bool verwijderd, short volgendWerkjaarInt, int id, bool isOvergezet)
         {
             Leiding leiding = new Leiding();
             leiding.NonActief = nonActief;
             leiding.Verwijderd = verwijderd;
             leiding.VolgendWerkjaarInt = volgendWerkjaarInt;
             leiding.ID = id;
+            leiding.IsOvergezet = isOvergezet;
             return leiding;
         }
         /// <summary>
@@ -3607,13 +3634,15 @@ namespace Chiro.Gap.Orm
         /// <param name="verwijderd">Initial value of Verwijderd.</param>
         /// <param name="volgendWerkjaarInt">Initial value of VolgendWerkjaarInt.</param>
         /// <param name="id">Initial value of ID.</param>
-        public static Kind CreateKind(bool nonActief, bool verwijderd, short volgendWerkjaarInt, int id)
+        /// <param name="isOvergezet">Initial value of IsOvergezet.</param>
+        public static Kind CreateKind(bool nonActief, bool verwijderd, short volgendWerkjaarInt, int id, bool isOvergezet)
         {
             Kind kind = new Kind();
             kind.NonActief = nonActief;
             kind.Verwijderd = verwijderd;
             kind.VolgendWerkjaarInt = volgendWerkjaarInt;
             kind.ID = id;
+            kind.IsOvergezet = isOvergezet;
             return kind;
         }
         /// <summary>
