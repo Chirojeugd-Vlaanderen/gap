@@ -66,11 +66,17 @@
 		<li>
 			<input type="reset" value=" Reset " /></li>
 	</ul>
+	<% if(Model.BroerzusID != 0)
+{
+	%>
+	<p>Het adres en de gezinsgebonden communicatievormen <%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "GezinsgebondenCommunicatievorm", new { helpBestand = "Trefwoorden" }, new { title = "Wat zijn 'gezinsgebonden communicatievormen'?" })%> worden gekopieerd van de broer of zus. <%=Html.ActionLink("Meer uitleg nodig over 'zus/broer maken'?", "ViewTonen", new { Controller = "Handleiding", helpBestand = "ZusBroer" }) %></p>	
+	<%
+} %>
 	<fieldset>
 		<legend>Persoonlijke gegevens</legend>
-		<%	if (Model.HuidigePersoon.AdNummer != null)
+		<%	if (Model.HuidigePersoon.AdNummer == null)
 		{
-        %>
+			// AD-nr is null, maar er moet op de pagina wel een placeholder staan zodat de waarde mee in het model geraakt %>
 			<%=Html.HiddenFor(s => s.HuidigePersoon.AdNummer)  %>
 		<%
 		}

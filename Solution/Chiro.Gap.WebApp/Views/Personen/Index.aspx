@@ -21,9 +21,9 @@
 			Acties</h1>
 		<ul>
 			<li>
-				<%= Html.ActionLink("Nieuwe persoon", "Nieuw") %></li>
+				<%= Html.ActionLink("Nieuwe persoon", "Nieuw", new{ title="Voeg een nieuwe persoon toe in je gegevensbestand"}) %></li>
 			<li>
-				<%= Html.ActionLink("Lijst downloaden", "Download", new { id = Model.GekozenCategorieID })%></li>
+				<%= Html.ActionLink("Lijst downloaden", "Download", new { id = Model.GekozenCategorieID }, new { title = "Download de geselecteerde gegevens in een Excel-bestand"}) %></li>
 		</ul>
 		<h1>
 			Filteren</h1>
@@ -40,6 +40,15 @@
 				<input id="kiesCategorie" type="submit" value="Uitvoeren" />
 				<%=Html.HiddenFor(e => e.Sortering) %>
 			</li>
+		</ul>
+		<h1>
+			Uitleg</h1>
+		<ul>
+			<li>
+				<%=Html.ActionLink("Wat betekent 'zus/broer maken'?", "ViewTonen", new { Controller = "Handleiding", helpBestand = "ZusBroer" }) %>
+			</li>
+			<li>
+				<%= Html.ActionLink("Wat betekent 'inschrijven'?", "ViewTonen", "Handleiding", null, null, "Inschrijven", new { helpBestand = "Trefwoorden" }, new { title = "Lees in de handleiding wat de gevolgen zijn wanneer je iemand inschrijft" })%></li>
 		</ul>
 	</div>
 	<%} %>
