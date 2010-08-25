@@ -269,15 +269,15 @@ namespace Chiro.Gap.Workers
 		#endregion
 
 		#region Misc
+
 		/// <summary>
 		/// Controleert of de aangelogde user
-		/// gav is voor de groep met gegeven ID, en 'superrechten' heeft
+		/// 'superrechten' heeft
 		/// (zoals leden verwijderen uit vorig werkjaar, 
 		/// leden verwijderen voor wie de probeerperiode voorbij is, enz.)
 		/// </summary>
-		/// <param name="groepID">ID van de groep</param>
 		/// <returns><c>True</c> (enkel) als user supergav is</returns>
-		public bool IsSuperGavGroep(int groepID)
+		public bool IsSuperGav()
 		{
 			return false;  // voorlopig zijn er geen supergebruikers
 		}

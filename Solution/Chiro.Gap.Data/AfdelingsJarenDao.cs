@@ -18,12 +18,12 @@ namespace Chiro.Gap.Data.Ef
 	/// <summary>
 	/// Gegevenstoegangsobject voor AfdelingsJaren
 	/// </summary>
-	public class AfdelingsJaarDao : Dao<AfdelingsJaar, ChiroGroepEntities>, IAfdelingsJarenDao
+	public class AfdelingsJarenDao : Dao<AfdelingsJaar, ChiroGroepEntities>, IAfdelingsJarenDao
 	{
 		/// <summary>
 		/// Instantieert een gegevenstoegangsobject voor AfdelingsJaren
 		/// </summary>
-		public AfdelingsJaarDao()
+		public AfdelingsJarenDao()
 		{
 			ConnectedEntities = new Expression<Func<AfdelingsJaar, object>>[3]
 			{

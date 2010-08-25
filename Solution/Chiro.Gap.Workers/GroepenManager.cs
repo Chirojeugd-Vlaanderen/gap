@@ -65,7 +65,7 @@ namespace Chiro.Gap.Workers
 		/// <remarks>Deze functie vereist super-GAV-rechten</remarks>
 		public void GelieerdePersonenVerwijderen(int groepID, bool verwijderPersonen)
 		{
-			if (_autorisatieMgr.IsSuperGavGroep(groepID))
+			if (_autorisatieMgr.IsSuperGav())
 			{
 				// Alle gelieerde personen van de groep ophalen
 				IList<GelieerdePersoon> allePersonen = _gelPersDao.AllenOphalen(

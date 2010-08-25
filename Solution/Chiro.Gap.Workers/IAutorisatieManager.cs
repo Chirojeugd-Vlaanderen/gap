@@ -155,13 +155,12 @@ namespace Chiro.Gap.Workers
 
 		/// <summary>
 		/// Geeft true als de aangelogde user
-		/// gav is voor de groep met gegeven ID, en 'superrechten' heeft
+		/// 'superrechten' heeft
 		/// (zoals het verwijderen van leden uit vorig werkjaar, het 
 		/// verwijderen van leden waarvan de probeerperiode voorbij is,...)
 		/// </summary>
-		/// <param name="groepID">ID van de groep</param>
 		/// <returns><c>True</c> (enkel) als user supergav is</returns>
-		bool IsSuperGavGroep(int groepID);
+		bool IsSuperGav();
 
 		/// <summary>
 		/// Bepaalt de gebruikersnaam van de huidig aangemelde gebruiker.

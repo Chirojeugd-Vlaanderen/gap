@@ -81,7 +81,7 @@ namespace Chiro.Gap.Dummies
 			return true;
 		}
 
-		public bool IsSuperGavGroep(int groepID)
+		public bool IsSuperGav()
 		{
 			return true;
 		}

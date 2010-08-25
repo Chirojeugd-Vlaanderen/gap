@@ -760,5 +760,14 @@ namespace Chiro.Gap.Workers
 			}
 			return paths;
 		}
+
+		/// <summary>
+		/// Zoekt de niet-overgezette leden op wier probeerperiode voorbij is, en stuurt diens gegevens
+		/// naar KipSync.
+		/// </summary>
+		public void LedenOverZetten()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
