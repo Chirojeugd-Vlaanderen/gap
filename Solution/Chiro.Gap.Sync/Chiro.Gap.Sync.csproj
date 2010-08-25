@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="AdressenSync.cs" />
     <Compile Include="CommunicatieSync.cs" />
+    <Compile Include="LedenSync.cs" />
     <Compile Include="PersonenSync.cs" />
     <Compile Include="SyncService\UnityWorkArounds.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -499,5 +499,45 @@ namespace Chiro.Gap.Data.Ef
 				return lid;
 			}
 		}
+
+		/// <summary>
+		/// Haalt alle leden op met probeerperiode die voorbij is, inclusief persoonsgegevens, adressen,
+		/// communicatie, functies, afdelingen
+		/// </summary>
+		/// <returns>alle leden met probeerperiode die voorbij is, inclusief persoonsgegevens, adressen,
+		/// communicatie, functies, afdelingen</returns>
+		public IEnumerable<Lid> OverTeZettenOphalen()
+		{
+			// We moeten dit apart doen voor leden en leiding, omdat de afdelingen anders geregeld zijn.
+
+			var resultaat = new List<Lid>();
+
+			using (var db = new ChiroGroepEntities())
+			{
+				var leiding = (from l in db.Lid.OfType<Leiding>()
+				               	.Include(lei => lei.GelieerdePersoon.Persoon)
+						.Include(lei => lei.GelieerdePersoon.PersoonsAdres.Adres.StraatNaam)
+						.Include(lei => lei.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats)
+				               	.Include(lei => lei.GelieerdePersoon.Communicatie.First().CommunicatieType)
+				               	.Include(lei => lei.Functie)
+				               	.Include(lei => lei.AfdelingsJaar.First().OfficieleAfdeling)
+				               where l.EindeInstapPeriode < DateTime.Now && !l.IsOvergezet
+				               select l as Lid);
+
+				var kinderen = (from l in db.Lid.OfType<Kind>()
+						.Include(kin => kin.GelieerdePersoon.Persoon)
+						.Include(kin => kin.GelieerdePersoon.PersoonsAdres.Adres.StraatNaam)
+						.Include(kin => kin.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats)
+						.Include(kin => kin.GelieerdePersoon.Communicatie.First().CommunicatieType)
+				               	.Include(kin => kin.Functie)
+				               	.Include(kin => kin.AfdelingsJaar.OfficieleAfdeling)
+				               where l.EindeInstapPeriode < DateTime.Now && !l.IsOvergezet
+				               select l as Lid);
+
+				resultaat = leiding.Union(kinderen).ToList();
+			}
+
+			return Utility.DetachObjectGraph<Lid>(resultaat);
+		}
 	}
 }

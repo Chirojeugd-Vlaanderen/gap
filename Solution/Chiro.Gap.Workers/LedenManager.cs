@@ -8,11 +8,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+#if KIPDORP
+using System.Transactions;
+#endif
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.Workers.Exceptions;
 
@@ -46,6 +50,7 @@ namespace Chiro.Gap.Workers
 	{
 		private readonly LedenDaoCollectie _daos;
 		private readonly IAutorisatieManager _autorisatieMgr;
+		private readonly ILedenSync _sync;
 
 		/// <summary>
 		/// Maakt een nieuwe ledenmanager aan
@@ -54,10 +59,12 @@ namespace Chiro.Gap.Workers
 		/// voor data access.</param>
 		/// <param name="autorisatie">Een IAuthorisatieManager, die
 		/// de GAV-permissies van de huidige user controleert.</param>
-		public LedenManager(LedenDaoCollectie daos, IAutorisatieManager autorisatie)
+		/// <param name="sync">wordt gebruikt om lidgegevens naar Kipadmin te syncen</param>
+		public LedenManager(LedenDaoCollectie daos, IAutorisatieManager autorisatie, ILedenSync sync)
 		{
 			_daos = daos;
 			_autorisatieMgr = autorisatie;
+			_sync = sync;
 		}
 
 		/// <summary>
@@ -767,7 +774,29 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		public void LedenOverZetten()
 		{
-			throw new NotImplementedException();
+			if (!_autorisatieMgr.IsSuperGav())
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+
+			IEnumerable<Lid> teSyncen = _daos.LedenDao.OverTeZettenOphalen();
+
+			foreach (Lid l in teSyncen)
+			{
+#if KIPDORP
+				using (var tx = new TransactionScope())
+				{
+#endif
+					_sync.Bewaren(l);
+					l.IsOvergezet = true;
+					_daos.LedenDao.Bewaren(l);
+
+					tx.Complete();
+#if KIPDORP
+				}
+#endif			
+
+			}
 		}
 	}
 }

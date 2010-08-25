@@ -128,5 +128,13 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <paramref name="groepsWerkJaarID"/>, inclusief persoon, afdelingen, functies, groepswerkjaar
 		/// </returns>
 		Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID);
+
+		/// <summary>
+		/// Haalt alle leden op met probeerperiode die voorbij is, inclusief persoonsgegevens, adressen,
+		/// communicatie, functies, afdelingen
+		/// </summary>
+		/// <returns>alle leden met probeerperiode die voorbij is, inclusief persoonsgegevens, adressen,
+		/// communicatie, functies, afdelingen</returns>
+		IEnumerable<Lid> OverTeZettenOphalen();
 	}
 }
