@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Chiro.Gap.Domain;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Orm.DataInterfaces;

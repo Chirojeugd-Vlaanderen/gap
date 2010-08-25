@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 
 using Chiro.Cdf.Data;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Orm.DataInterfaces
 {

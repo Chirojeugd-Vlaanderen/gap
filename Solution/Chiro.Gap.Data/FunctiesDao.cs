@@ -9,6 +9,7 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using Chiro.Cdf.Data.Entity;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 

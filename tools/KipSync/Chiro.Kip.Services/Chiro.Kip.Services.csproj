@@ -60,6 +60,7 @@
     <Compile Include="DataContracts\Adres.cs" />
     <Compile Include="DataContracts\Bewoner.cs" />
     <Compile Include="DataContracts\Communicatiemiddel.cs" />
+    <Compile Include="DataContracts\Enums.cs" />
     <Compile Include="DataContracts\Persoon.cs" />
     <Compile Include="ISyncPersoonService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

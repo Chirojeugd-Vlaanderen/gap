@@ -7,15 +7,6 @@ using System.Text;
 namespace Chiro.Kip.Services.DataContracts
 {
     [DataContract]
-    public enum AdresTypeEnum
-    {
-        [EnumMember(Value = "THUIS")] Thuis = 1,
-        [EnumMember(Value = "KOT")] Kot = 2,
-        [EnumMember(Value = "WERK")] Werk = 3,
-        [EnumMember(Value = "ANDER")] Overige = 4
-    }
-
-    [DataContract]
     public class Adres
     {
         [DataMember]

@@ -505,36 +505,40 @@ namespace Chiro.Gap.Data.Ef
 		/// communicatie, functies, afdelingen
 		/// </summary>
 		/// <returns>alle leden met probeerperiode die voorbij is, inclusief persoonsgegevens, adressen,
-		/// communicatie, functies, afdelingen</returns>
+		/// functies, afdelingen.  Communicatie niet!</returns>
 		public IEnumerable<Lid> OverTeZettenOphalen()
 		{
 			// We moeten dit apart doen voor leden en leiding, omdat de afdelingen anders geregeld zijn.
 
-			var resultaat = new List<Lid>();
+			Lid[] resultaat;
+
+			// communicatie wordt hier niet mee opgehaald, want wanneer de info naar kipadmin gaat,
+			// moet sowieso de communicatie van mogelijk andere gelieerde personen opnieuw opgezocht
+			// worden.
 
 			using (var db = new ChiroGroepEntities())
 			{
 				var leiding = (from l in db.Lid.OfType<Leiding>()
+					        .Include(lei => lei.GroepsWerkJaar.Groep)
 				               	.Include(lei => lei.GelieerdePersoon.Persoon)
 						.Include(lei => lei.GelieerdePersoon.PersoonsAdres.Adres.StraatNaam)
 						.Include(lei => lei.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats)
-				               	.Include(lei => lei.GelieerdePersoon.Communicatie.First().CommunicatieType)
 				               	.Include(lei => lei.Functie)
 				               	.Include(lei => lei.AfdelingsJaar.First().OfficieleAfdeling)
-				               where l.EindeInstapPeriode < DateTime.Now && !l.IsOvergezet
-				               select l as Lid);
+				               where !l.NonActief && l.EindeInstapPeriode < DateTime.Now && !l.IsOvergezet
+				               select l).ToArray();
 
 				var kinderen = (from l in db.Lid.OfType<Kind>()
+						.Include(kin => kin.GroepsWerkJaar.Groep)
 						.Include(kin => kin.GelieerdePersoon.Persoon)
 						.Include(kin => kin.GelieerdePersoon.PersoonsAdres.Adres.StraatNaam)
 						.Include(kin => kin.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats)
-						.Include(kin => kin.GelieerdePersoon.Communicatie.First().CommunicatieType)
 				               	.Include(kin => kin.Functie)
 				               	.Include(kin => kin.AfdelingsJaar.OfficieleAfdeling)
-				               where l.EindeInstapPeriode < DateTime.Now && !l.IsOvergezet
-				               select l as Lid);
+				               where !l.NonActief && l.EindeInstapPeriode < DateTime.Now && !l.IsOvergezet
+				               select l).ToArray();
 
-				resultaat = leiding.Union(kinderen).ToList();
+				resultaat = leiding.Union<Lid>(kinderen).ToArray();
 			}
 
 			return Utility.DetachObjectGraph<Lid>(resultaat);

@@ -65,6 +65,10 @@
       <Project>{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}</Project>
       <Name>Chiro.Cdf.Validation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.Domain\Chiro.Gap.Domain.csproj">
+      <Project>{65D1DB34-9F12-48C6-88F8-3943E5A4609B}</Project>
+      <Name>Chiro.Gap.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Gap.Orm\Chiro.Gap.Orm.csproj">
       <Project>{A724B865-E18D-4CAE-A97E-7CC9EB4BF2BD}</Project>
       <Name>Chiro.Gap.Orm</Name>

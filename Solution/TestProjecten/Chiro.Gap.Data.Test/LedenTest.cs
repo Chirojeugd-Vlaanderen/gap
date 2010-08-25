@@ -7,6 +7,7 @@ using System.Linq;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Ioc;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.TestDbInfo;

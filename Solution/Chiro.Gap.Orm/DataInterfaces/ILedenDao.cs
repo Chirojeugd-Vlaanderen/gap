@@ -134,7 +134,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// communicatie, functies, afdelingen
 		/// </summary>
 		/// <returns>alle leden met probeerperiode die voorbij is, inclusief persoonsgegevens, adressen,
-		/// communicatie, functies, afdelingen</returns>
+		/// communicatie, functies, afdelingen.  Communicatie niet!</returns>
 		IEnumerable<Lid> OverTeZettenOphalen();
 	}
 }

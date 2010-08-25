@@ -129,4 +129,33 @@ namespace Chiro.Gap.Domain
 		InOvergang = 0x06	// bewust 0x06, omdat een werkjaar in overgang dan ook bezig is.
 	}
 
+	/// <summary>
+	/// Sommige functies zijn gepredefinieerd, en hun codes moeten constant zijn.
+	/// (Dit is enkel van toepassing op nationaal gedefinieerde functies)
+	/// </summary>
+	public enum NationaleFunctie
+	{
+		ContactPersoon = 1,
+		GroepsLeiding = 2,
+		Vb = 3,
+		FinancieelVerantwoordelijke = 4,
+		JeugdRaad = 5,
+		KookPloeg = 6,
+		Proost = 7
+	};
+
+	/// <summary>
+	/// De ID's van de officiele afdelingen in GAP
+	/// </summary>
+	public enum NationaleAfdeling
+	{
+		Ribbels = 1,
+		Speelclub = 2,
+		Rakwis = 3,
+		Titos = 4,
+		Ketis = 5,
+		Aspis = 6,
+		Speciaal = 7
+	}
+
 }

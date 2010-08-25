@@ -9,20 +9,7 @@ using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Orm
 {
-	/// <summary>
-	/// Sommige functies zijn gepredefinieerd, en hun codes moeten constant zijn.
-	/// (Dit is enkel van toepassing op nationaal gedefinieerde functies)
-	/// </summary>
-	public enum NationaleFunctie
-	{
-		ContactPersoon = 1,
-		GroepsLeiding = 2,
-		Vb = 3,
-		FinancieelVerantwoordelijke = 4,
-		JeugdRaad = 5,
-		KookPloeg = 6,
-		Proost = 7
-	};
+
 
 	/// <summary>
 	/// Functie op lidniveau

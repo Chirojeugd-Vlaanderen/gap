@@ -493,6 +493,72 @@ namespace Chiro.Gap.Sync.SyncService {
         StatusNet = 8,
     }
     
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="LidTypeEnum", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts")]
+    public enum LidTypeEnum : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Kind = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Leiding = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Kader = 2,
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="FunctieEnum", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts")]
+    public enum FunctieEnum : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        ContactPersoon = 168,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        GroepsLeiding = 169,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Vb = 170,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        FinancieelVerantwoordelijke = 153,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        JeugdRaad = 17,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        KookPloeg = 185,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Proost = 172,
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AfdelingEnum", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts")]
+    public enum AfdelingEnum : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Ribbels = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Speelclub = 2,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Rakwis = 3,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Titos = 4,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Ketis = 5,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Aspis = 6,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Speciaal = 7,
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="SyncService.ISyncPersoonService")]
     public interface ISyncPersoonService {
@@ -508,6 +574,9 @@ namespace Chiro.Gap.Sync.SyncService {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/CommunicatieVerwijderen")]
         void CommunicatieVerwijderen(int adNr, Chiro.Gap.Sync.SyncService.CommunicatieMiddel communicatie);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/LidBewaren")]
+        void LidBewaren(int adNummer, string stamNummer, int werkJaar, Chiro.Gap.Sync.SyncService.LidTypeEnum lidType, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.FunctieEnum> nationaalBepaaldeFuncties, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.AfdelingEnum> officieleAfdelingen);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -551,6 +620,10 @@ namespace Chiro.Gap.Sync.SyncService {
         
         public void CommunicatieVerwijderen(int adNr, Chiro.Gap.Sync.SyncService.CommunicatieMiddel communicatie) {
             base.Channel.CommunicatieVerwijderen(adNr, communicatie);
+        }
+        
+        public void LidBewaren(int adNummer, string stamNummer, int werkJaar, Chiro.Gap.Sync.SyncService.LidTypeEnum lidType, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.FunctieEnum> nationaalBepaaldeFuncties, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.AfdelingEnum> officieleAfdelingen) {
+            base.Channel.LidBewaren(adNummer, stamNummer, werkJaar, lidType, nationaalBepaaldeFuncties, officieleAfdelingen);
         }
     }
 }

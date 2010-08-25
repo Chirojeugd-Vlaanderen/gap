@@ -310,5 +310,27 @@ namespace Chiro.Kip.Services
 				}
 			}
 		}
+
+		/// <summary>
+		/// Maakt een persoon met gekend ad-nummer lid, of updatet een bestaand lid
+		/// </summary>
+		/// <param name="adNummer">AD-nummer van de persoon</param>
+		/// <param name="stamNummer">Stamnummer van groep waarvan lid te maken</param>
+		/// <param name="werkJaar">Werkjaar waarin ld te maken</param>
+		/// <param name="lidType">Lidtype: kind, leiding, of kader</param>
+		/// <param name="nationaalBepaaldeFuncties">Alle nationaal bepaalde functies die toegekend moeten zijn
+		/// aan dit lid.</param>
+		/// <param name="officieleAfdelingen">Alle officiele afdelingen die toegekend moeten zijn aan dit lid.
+		/// </param>
+		public void LidBewaren(
+			int adNummer, 
+			string stamNummer, 
+			int werkJaar, 
+			LidTypeEnum lidType, 
+			IEnumerable<FunctieEnum> nationaalBepaaldeFuncties, 
+			IEnumerable<AfdelingEnum> officieleAfdelingen)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

@@ -1,4 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Chiro.Gap.Domain;
+
 namespace Chiro.Gap.Orm.Test
 {
     /// <summary>
