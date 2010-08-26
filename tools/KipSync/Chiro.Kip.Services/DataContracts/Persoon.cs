@@ -3,17 +3,6 @@ using System.Runtime.Serialization;
 
 namespace Chiro.Kip.Services.DataContracts
 {
-    [DataContract]
-    public enum GeslachtsEnum
-    {
-        [EnumMember]
-        Onbekend = 0,
-        [EnumMember]
-        Man = 1,
-        [EnumMember]
-        Vrouw = 2
-
-    }
 
     [DataContract]
     public class Persoon

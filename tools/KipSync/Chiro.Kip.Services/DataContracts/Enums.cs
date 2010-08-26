@@ -57,4 +57,19 @@ namespace Chiro.Kip.Services.DataContracts
 		[EnumMember] Aspis = 6,
 		[EnumMember] Speciaal = 7
 	}
+
+	/// <summary>
+	/// Geslachten
+	/// </summary>
+	[DataContract]
+	public enum GeslachtsEnum
+	{
+		[EnumMember]
+		Onbekend = 0,
+		[EnumMember]
+		Man = 1,
+		[EnumMember]
+		Vrouw = 2
+	}
+
 }

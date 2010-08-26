@@ -6,6 +6,7 @@
     <edmx:StorageModels>
     <Schema Namespace="kipadminModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
         <EntityContainer Name="kipadminModelStoreContainer">
+          <EntitySet Name="AFDELING" EntityType="kipadminModel.Store.AFDELING" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="kipAdres" EntityType="kipadminModel.Store.kipAdres" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="kipAdresType" EntityType="kipadminModel.Store.kipAdresType" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="kipContactInfo" EntityType="kipadminModel.Store.kipContactInfo" store:Type="Tables" Schema="dbo" />
@@ -13,8 +14,10 @@
           <EntitySet Name="kipHeeftFunctie" EntityType="kipadminModel.Store.kipHeeftFunctie" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="kipPersoon" EntityType="kipadminModel.Store.kipPersoon" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="kipWoont" EntityType="kipadminModel.Store.kipWoont" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="REKENING" EntityType="kipadminModel.Store.REKENING" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ChiroGroep" EntityType="kipadminModel.Store.ChiroGroep" store:Type="Tables" Schema="grp" />
           <EntitySet Name="Groep" EntityType="kipadminModel.Store.Groep" store:Type="Tables" Schema="grp" />
+          <EntitySet Name="Aansluiting" EntityType="kipadminModel.Store.Aansluiting" store:Type="Tables" Schema="lid" />
           <EntitySet Name="Lid" EntityType="kipadminModel.Store.Lid" store:Type="Tables" Schema="lid" />
           <AssociationSet Name="FK__kipContact__AdNr__6A26A4A8" Association="kipadminModel.Store.FK__kipContact__AdNr__6A26A4A8">
             <End Role="kipPersoon" EntitySet="kipPersoon" />
@@ -40,6 +43,14 @@
             <End Role="kipAdresType" EntitySet="kipAdresType" />
             <End Role="kipWoont" EntitySet="kipWoont" />
           </AssociationSet>
+          <AssociationSet Name="FK_Aansluiting_Groep" Association="kipadminModel.Store.FK_Aansluiting_Groep">
+            <End Role="Groep" EntitySet="Groep" />
+            <End Role="Aansluiting" EntitySet="Aansluiting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Aansluiting_Rekening" Association="kipadminModel.Store.FK_Aansluiting_Rekening">
+            <End Role="REKENING" EntitySet="REKENING" />
+            <End Role="Aansluiting" EntitySet="Aansluiting" />
+          </AssociationSet>
           <AssociationSet Name="FK_ChiroGroep_Groep" Association="kipadminModel.Store.FK_ChiroGroep_Groep">
             <End Role="Groep" EntitySet="Groep" />
             <End Role="ChiroGroep" EntitySet="ChiroGroep" />
@@ -52,7 +63,19 @@
             <End Role="Groep" EntitySet="Groep" />
             <End Role="Lid" EntitySet="Lid" />
           </AssociationSet>
+          <AssociationSet Name="FK_Rekening_Persoon" Association="kipadminModel.Store.FK_Rekening_Persoon">
+            <End Role="kipPersoon" EntitySet="kipPersoon" />
+            <End Role="REKENING" EntitySet="REKENING" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="AFDELING">
+          <Key>
+            <PropertyRef Name="AFD_ID" />
+          </Key>
+          <Property Name="AFD_ID" Type="int" Nullable="false" />
+          <Property Name="AFD_NAAM" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="AFD_OMSCHR" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="kipAdres">
           <Key>
             <PropertyRef Name="AdresId" />
@@ -136,6 +159,59 @@
           <Property Name="Geldig" Type="bit" Nullable="false" />
           <Property Name="GeenMailings" Type="bit" Nullable="false" />
           <Property Name="VolgNr" Type="int" Nullable="false" />
+          <Property Name="GapID" Type="int" />
+        </EntityType>
+        <EntityType Name="REKENING">
+          <Key>
+            <PropertyRef Name="NR" />
+          </Key>
+          <Property Name="NR" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TYPE" Type="varchar" Nullable="false" MaxLength="1" />
+          <Property Name="REK_BRON" Type="varchar" Nullable="false" MaxLength="8" />
+          <Property Name="VERWIJSNR" Type="int" />
+          <Property Name="STAMNR" Type="varchar" MaxLength="8" />
+          <Property Name="DAT_REK" Type="datetime" Nullable="false" />
+          <Property Name="BEDRAG_BEF" Type="smallmoney" />
+          <Property Name="BEDRAG_EUR" Type="smallmoney" Nullable="false" />
+          <Property Name="FACTUUR" Type="varchar" Nullable="false" MaxLength="1" />
+          <Property Name="FACTUUR2" Type="varchar" Nullable="false" MaxLength="1" />
+          <Property Name="AFDRUK_DAT" Type="smalldatetime" />
+          <Property Name="MEDEDELING" Type="varchar" MaxLength="50" />
+          <Property Name="FACTUURNR" Type="varchar" MaxLength="10" />
+          <Property Name="BOEKING1" Type="varchar" MaxLength="8" />
+          <Property Name="BOEKING2" Type="varchar" MaxLength="8" />
+          <Property Name="BOEKING3" Type="varchar" MaxLength="8" />
+          <Property Name="BOEKING4" Type="varchar" MaxLength="8" />
+          <Property Name="BOEKING5" Type="varchar" MaxLength="8" />
+          <Property Name="BOEKING6" Type="varchar" MaxLength="8" />
+          <Property Name="BOEKING7" Type="varchar" MaxLength="8" />
+          <Property Name="BOEKING8" Type="varchar" MaxLength="8" />
+          <Property Name="BOEKING9" Type="varchar" MaxLength="8" />
+          <Property Name="OPSPL_BEF1" Type="smallmoney" />
+          <Property Name="OPSPL_BEF2" Type="smallmoney" />
+          <Property Name="OPSPL_BEF3" Type="smallmoney" />
+          <Property Name="OPSPL_BEF4" Type="smallmoney" />
+          <Property Name="OPSPL_BEF5" Type="smallmoney" />
+          <Property Name="OPSPL_BEF6" Type="smallmoney" />
+          <Property Name="OPSPL_BEF7" Type="smallmoney" />
+          <Property Name="OPSPL_BEF8" Type="smallmoney" />
+          <Property Name="OPSPL_BEF9" Type="smallmoney" />
+          <Property Name="OPSPL_EUR1" Type="smallmoney" />
+          <Property Name="OPSPL_EUR2" Type="smallmoney" />
+          <Property Name="OPSPL_EUR3" Type="smallmoney" />
+          <Property Name="OPSPL_EUR4" Type="smallmoney" />
+          <Property Name="OPSPL_EUR5" Type="smallmoney" />
+          <Property Name="OPSPL_EUR6" Type="smallmoney" />
+          <Property Name="OPSPL_EUR7" Type="smallmoney" />
+          <Property Name="OPSPL_EUR8" Type="smallmoney" />
+          <Property Name="OPSPL_EUR9" Type="smallmoney" />
+          <Property Name="DOORGEBOE" Type="varchar" Nullable="false" MaxLength="1" />
+          <Property Name="STEMPEL" Type="datetime" />
+          <Property Name="NOTA" Type="varchar" MaxLength="30" />
+          <Property Name="FACLIJNEN" Type="text" />
+          <Property Name="BET_VOOR" Type="datetime" />
+          <Property Name="ADNR" Type="int" />
+          <Property Name="WERKJAAR" Type="smallint" />
         </EntityType>
         <EntityType Name="ChiroGroep">
           <Key>
@@ -189,6 +265,39 @@
           <Property Name="RekeningNummer" Type="varchar" MaxLength="20" />
           <Property Name="WebSite" Type="varchar" MaxLength="80" />
           <Property Name="Versie" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Aansluiting">
+          <Key>
+            <PropertyRef Name="AansluitingID" />
+          </Key>
+          <Property Name="AansluitingID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="GroepID" Type="int" Nullable="false" />
+          <Property Name="WerkJaar" Type="int" Nullable="false" />
+          <Property Name="VolgNummer" Type="int" Nullable="false" />
+          <Property Name="Datum" Type="datetime" Nullable="false" />
+          <Property Name="RekeningID" Type="int" />
+          <Property Name="Wijze" Type="char" Nullable="false" MaxLength="1" />
+          <Property Name="RibbelsJ" Type="int" />
+          <Property Name="RibbelsM" Type="int" />
+          <Property Name="SpeelClubJ" Type="int" />
+          <Property Name="SpeelClubM" Type="int" />
+          <Property Name="RakwisJ" Type="int" />
+          <Property Name="RakwisM" Type="int" />
+          <Property Name="TitosJ" Type="int" />
+          <Property Name="TitosM" Type="int" />
+          <Property Name="KetisJ" Type="int" />
+          <Property Name="KetisM" Type="int" />
+          <Property Name="AspisJ" Type="int" />
+          <Property Name="AspisM" Type="int" />
+          <Property Name="LeidingJ" Type="int" Nullable="false" />
+          <Property Name="LeidingM" Type="int" Nullable="false" />
+          <Property Name="Vb" Type="int" Nullable="false" />
+          <Property Name="Proost" Type="int" Nullable="false" />
+          <Property Name="Freelance" Type="int" Nullable="false" />
+          <Property Name="SolidariteitsBijdrageBef" Type="int" />
+          <Property Name="SolidariteitsBijdrage" Type="int" />
+          <Property Name="Noot" Type="varchar" MaxLength="160" />
+          <Property Name="Stempel" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Lid">
           <Key>
@@ -288,6 +397,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Aansluiting_Groep">
+          <End Role="Groep" Type="kipadminModel.Store.Groep" Multiplicity="1" />
+          <End Role="Aansluiting" Type="kipadminModel.Store.Aansluiting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groep">
+              <PropertyRef Name="GroepID" />
+            </Principal>
+            <Dependent Role="Aansluiting">
+              <PropertyRef Name="GroepID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Aansluiting_Rekening">
+          <End Role="REKENING" Type="kipadminModel.Store.REKENING" Multiplicity="0..1" />
+          <End Role="Aansluiting" Type="kipadminModel.Store.Aansluiting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REKENING">
+              <PropertyRef Name="NR" />
+            </Principal>
+            <Dependent Role="Aansluiting">
+              <PropertyRef Name="RekeningID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ChiroGroep_Groep">
           <End Role="Groep" Type="kipadminModel.Store.Groep" Multiplicity="1" />
           <End Role="ChiroGroep" Type="kipadminModel.Store.ChiroGroep" Multiplicity="0..1" />
@@ -324,6 +457,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Rekening_Persoon">
+          <End Role="kipPersoon" Type="kipadminModel.Store.kipPersoon" Multiplicity="0..1" />
+          <End Role="REKENING" Type="kipadminModel.Store.REKENING" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kipPersoon">
+              <PropertyRef Name="AdNr" />
+            </Principal>
+            <Dependent Role="REKENING">
+              <PropertyRef Name="ADNR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -336,7 +481,6 @@
           <EntitySet Name="HeeftFunctieSet" EntityType="kipadminModel.HeeftFunctie" />
           <EntitySet Name="PersoonSet" EntityType="kipadminModel.Persoon" />
           <EntitySet Name="WoontSet" EntityType="kipadminModel.Woont" />
-          <EntitySet Name="ChiroGroep" EntityType="kipadminModel.ChiroGroep" />
           <EntitySet Name="Groep" EntityType="kipadminModel.Groep" />
           <EntitySet Name="Lid" EntityType="kipadminModel.Lid" />
           <AssociationSet Name="FK__kipWoont__AdresI__61915EA7" Association="kipadminModel.FK__kipWoont__AdresI__61915EA7">
@@ -367,15 +511,22 @@
             <End Role="kipPersoon" EntitySet="PersoonSet" />
             <End Role="Lid" EntitySet="Lid" />
           </AssociationSet>
-          <AssociationSet Name="FK_ChiroGroep_Groep" Association="kipadminModel.FK_ChiroGroep_Groep">
-            <End Role="Groep" EntitySet="Groep" />
-            <End Role="ChiroGroep" EntitySet="ChiroGroep" />
-          </AssociationSet>
           <AssociationSet Name="fk_Lid_Groep" Association="kipadminModel.fk_Lid_Groep">
             <End Role="Groep" EntitySet="Groep" />
             <End Role="Lid" EntitySet="Lid" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="RekeningSet" EntityType="kipadminModel.Rekening" />
+          <EntitySet Name="Aansluiting" EntityType="kipadminModel.Aansluiting" />
+          <AssociationSet Name="FK_Rekening_Persoon" Association="kipadminModel.FK_Rekening_Persoon">
+            <End Role="Persoon" EntitySet="PersoonSet" />
+            <End Role="REKENING" EntitySet="RekeningSet" /></AssociationSet>
+          <AssociationSet Name="FK_Aansluiting_Rekening" Association="kipadminModel.FK_Aansluiting_Rekening">
+            <End Role="REKENING" EntitySet="RekeningSet" />
+            <End Role="Aansluiting" EntitySet="Aansluiting" /></AssociationSet>
+          <AssociationSet Name="FK_Aansluiting_Groep" Association="kipadminModel.FK_Aansluiting_Groep">
+            <End Role="Groep" EntitySet="Groep" />
+            <End Role="Aansluiting" EntitySet="Aansluiting" /></AssociationSet>
+          <EntitySet Name="AfdelingSet" EntityType="kipadminModel.Afdeling" /></EntityContainer>
         <EntityType Name="Adres">
           <Key>
             <PropertyRef Name="ID" />
@@ -452,7 +603,8 @@
           <NavigationProperty Name="kipContactInfo" Relationship="kipadminModel.FK__kipContact__AdNr__6A26A4A8" FromRole="kipPersoon" ToRole="kipContactInfo" />
           <NavigationProperty Name="kipWoont" Relationship="kipadminModel.FK__kipWoont__AdNr__609D3A6E" FromRole="kipPersoon" ToRole="kipWoont" />
           <NavigationProperty Name="Lid" Relationship="kipadminModel.FK_Leid_Kad_Persoon" FromRole="kipPersoon" ToRole="Lid" />
-          <Property Name="GapID" Type="Int32" Nullable="true" /></EntityType>
+          <Property Name="GapID" Type="Int32" Nullable="true" />
+          <NavigationProperty Name="REKENING" Relationship="kipadminModel.FK_Rekening_Persoon" FromRole="Persoon" ToRole="REKENING" /></EntityType>
         <EntityType Name="Woont">
           <Key>
             <PropertyRef Name="AdNr" />
@@ -466,11 +618,8 @@
           <NavigationProperty Name="kipAdres" Relationship="kipadminModel.FK__kipWoont__AdresI__61915EA7" FromRole="kipWoont" ToRole="kipAdres" />
           <NavigationProperty Name="kipAdresType" Relationship="kipadminModel.FK__kipWoont__AdresT__628582E0" FromRole="kipWoont" ToRole="kipAdresType" />
           <NavigationProperty Name="kipPersoon" Relationship="kipadminModel.FK__kipWoont__AdNr__609D3A6E" FromRole="kipWoont" ToRole="kipPersoon" />
-        </EntityType>
-        <EntityType Name="ChiroGroep">
-          <Key>
-            <PropertyRef Name="GroepID" />
-          </Key>
+          <Property Name="GapID" Type="Int32" Nullable="true" /></EntityType>
+        <EntityType Name="ChiroGroep" BaseType="kipadminModel.Groep">
           <Property Name="STAMNR" Type="String" Nullable="false" MaxLength="8" Unicode="false" FixedLength="false" />
           <Property Name="SOORT" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="false" />
           <Property Name="TYPE" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="false" />
@@ -506,8 +655,6 @@
           <Property Name="OPEN_HANDI" Type="Boolean" />
           <Property Name="stadsgroep" Type="Boolean" Nullable="false" />
           <Property Name="BET_ADNR" Type="Int32" />
-          <Property Name="GroepID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Groep" Relationship="kipadminModel.FK_ChiroGroep_Groep" FromRole="ChiroGroep" ToRole="Groep" />
         </EntityType>
         <EntityType Name="Groep">
           <Key>
@@ -520,9 +667,8 @@
           <Property Name="RekeningNummer" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
           <Property Name="WebSite" Type="String" MaxLength="80" Unicode="false" FixedLength="false" />
           <Property Name="Versie" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" />
-          <NavigationProperty Name="ChiroGroep" Relationship="kipadminModel.FK_ChiroGroep_Groep" FromRole="Groep" ToRole="ChiroGroep" />
           <NavigationProperty Name="Lid" Relationship="kipadminModel.fk_Lid_Groep" FromRole="Groep" ToRole="Lid" />
-        </EntityType>
+          <NavigationProperty Name="Aansluiting" Relationship="kipadminModel.FK_Aansluiting_Groep" FromRole="Groep" ToRole="Aansluiting" /></EntityType>
         <EntityType Name="Lid">
           <Key>
             <PropertyRef Name="id" />
@@ -594,23 +740,107 @@
           <End Role="kipPersoon" Type="kipadminModel.Persoon" Multiplicity="1" />
           <End Role="Lid" Type="kipadminModel.Lid" Multiplicity="*" />
         </Association>
-        <Association Name="FK_ChiroGroep_Groep">
-          <End Role="Groep" Type="kipadminModel.Groep" Multiplicity="1" />
-          <End Role="ChiroGroep" Type="kipadminModel.ChiroGroep" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Groep">
-              <PropertyRef Name="GroepID" />
-            </Principal>
-            <Dependent Role="ChiroGroep">
-              <PropertyRef Name="GroepID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_Lid_Groep">
           <End Role="Groep" Type="kipadminModel.Groep" Multiplicity="1" />
           <End Role="Lid" Type="kipadminModel.Lid" Multiplicity="*" />
         </Association>
-      </Schema>
+        <EntityType Name="Rekening">
+          <Key>
+            <PropertyRef Name="NR" /></Key>
+          <Property Name="NR" Type="Int32" Nullable="false" />
+          <Property Name="TYPE" Type="String" Nullable="false" />
+          <Property Name="REK_BRON" Type="String" Nullable="false" />
+          <Property Name="VERWIJSNR" Type="Int32" Nullable="true" />
+          <Property Name="STAMNR" Type="String" Nullable="true" />
+          <Property Name="DAT_REK" Type="DateTime" Nullable="false" />
+          <Property Name="BEDRAG_BEF" Type="Decimal" Nullable="true" />
+          <Property Name="BEDRAG_EUR" Type="Decimal" Nullable="false" />
+          <Property Name="FACTUUR" Type="String" Nullable="false" />
+          <Property Name="FACTUUR2" Type="String" Nullable="false" />
+          <Property Name="AFDRUK_DAT" Type="DateTime" Nullable="true" />
+          <Property Name="MEDEDELING" Type="String" Nullable="true" />
+          <Property Name="FACTUURNR" Type="String" Nullable="true" />
+          <Property Name="BOEKING1" Type="String" Nullable="true" />
+          <Property Name="BOEKING2" Type="String" Nullable="true" />
+          <Property Name="BOEKING3" Type="String" Nullable="true" />
+          <Property Name="BOEKING4" Type="String" Nullable="true" />
+          <Property Name="BOEKING5" Type="String" Nullable="true" />
+          <Property Name="BOEKING6" Type="String" Nullable="true" />
+          <Property Name="BOEKING7" Type="String" Nullable="true" />
+          <Property Name="BOEKING8" Type="String" Nullable="true" />
+          <Property Name="BOEKING9" Type="String" Nullable="true" />
+          <Property Name="OPSPL_BEF1" Type="Decimal" Nullable="true" />
+          <Property Name="OPSPL_BEF2" Type="Decimal" Nullable="true" />
+          <Property Name="OPSPL_BEF3" Type="Decimal" Nullable="true" />
+          <Property Name="OPSPL_BEF4" Type="Decimal" Nullable="true" />
+          <Property Name="OPSPL_BEF5" Type="Decimal" Nullable="true" />
+          <Property Name="OPSPL_BEF6" Type="Decimal" Nullable="true" />
+          <Property Name="OPSPL_BEF7" Type="Decimal" Nullable="true" />
+          <Property Name="OPSPL_BEF8" Type="Decimal" Nullable="true" />
+          <Property Name="OPSPL_BEF9" Type="Decimal" Nullable="true" />
+          <Property Name="OPSPL_EUR1" Type="Decimal" Nullable="true" />
+          <Property Name="OPSPL_EUR2" Type="Decimal" Nullable="true" />
+          <Property Name="OPSPL_EUR3" Type="Decimal" Nullable="true" />
+          <Property Name="OPSPL_EUR4" Type="Decimal" Nullable="true" />
+          <Property Name="OPSPL_EUR5" Type="Decimal" Nullable="true" />
+          <Property Name="OPSPL_EUR6" Type="Decimal" Nullable="true" />
+          <Property Name="OPSPL_EUR7" Type="Decimal" Nullable="true" />
+          <Property Name="OPSPL_EUR8" Type="Decimal" Nullable="true" />
+          <Property Name="OPSPL_EUR9" Type="Decimal" Nullable="true" />
+          <Property Name="DOORGEBOE" Type="String" Nullable="false" />
+          <Property Name="STEMPEL" Type="DateTime" Nullable="true" />
+          <Property Name="NOTA" Type="String" Nullable="true" />
+          <Property Name="FACLIJNEN" Type="String" Nullable="true" />
+          <Property Name="BET_VOOR" Type="DateTime" Nullable="true" />
+          <Property Name="WERKJAAR" Type="Int16" Nullable="true" />
+          <NavigationProperty Name="kipPersoon" Relationship="kipadminModel.FK_Rekening_Persoon" FromRole="REKENING" ToRole="Persoon" />
+          <NavigationProperty Name="Aansluiting" Relationship="kipadminModel.FK_Aansluiting_Rekening" FromRole="REKENING" ToRole="Aansluiting" /></EntityType>
+        <EntityType Name="Aansluiting">
+          <Key>
+            <PropertyRef Name="AansluitingID" /></Key>
+          <Property Name="AansluitingID" Type="Int32" Nullable="false" />
+          <Property Name="WerkJaar" Type="Int32" Nullable="false" />
+          <Property Name="VolgNummer" Type="Int32" Nullable="false" />
+          <Property Name="Datum" Type="DateTime" Nullable="false" />
+          <Property Name="Wijze" Type="String" Nullable="false" />
+          <Property Name="RibbelsJ" Type="Int32" Nullable="true" />
+          <Property Name="RibbelsM" Type="Int32" Nullable="true" />
+          <Property Name="SpeelClubJ" Type="Int32" Nullable="true" />
+          <Property Name="SpeelClubM" Type="Int32" Nullable="true" />
+          <Property Name="RakwisJ" Type="Int32" Nullable="true" />
+          <Property Name="RakwisM" Type="Int32" Nullable="true" />
+          <Property Name="TitosJ" Type="Int32" Nullable="true" />
+          <Property Name="TitosM" Type="Int32" Nullable="true" />
+          <Property Name="KetisJ" Type="Int32" Nullable="true" />
+          <Property Name="KetisM" Type="Int32" Nullable="true" />
+          <Property Name="AspisJ" Type="Int32" Nullable="true" />
+          <Property Name="AspisM" Type="Int32" Nullable="true" />
+          <Property Name="LeidingJ" Type="Int32" Nullable="false" />
+          <Property Name="LeidingM" Type="Int32" Nullable="false" />
+          <Property Name="Vb" Type="Int32" Nullable="false" />
+          <Property Name="Proost" Type="Int32" Nullable="false" />
+          <Property Name="Freelance" Type="Int32" Nullable="false" />
+          <Property Name="SolidariteitsBijdrageBef" Type="Int32" Nullable="true" />
+          <Property Name="SolidariteitsBijdrage" Type="Int32" Nullable="true" />
+          <Property Name="Noot" Type="String" Nullable="true" />
+          <Property Name="Stempel" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="REKENING" Relationship="kipadminModel.FK_Aansluiting_Rekening" FromRole="Aansluiting" ToRole="REKENING" />
+          <NavigationProperty Name="Groep" Relationship="kipadminModel.FK_Aansluiting_Groep" FromRole="Aansluiting" ToRole="Groep" /></EntityType>
+        <Association Name="FK_Rekening_Persoon">
+          <End Type="kipadminModel.Persoon" Role="Persoon" Multiplicity="0..1" />
+          <End Type="kipadminModel.Rekening" Role="REKENING" Multiplicity="*" /></Association>
+        <Association Name="FK_Aansluiting_Rekening">
+          <End Type="kipadminModel.Rekening" Role="REKENING" Multiplicity="0..1" />
+          <End Type="kipadminModel.Aansluiting" Role="Aansluiting" Multiplicity="*" /></Association>
+        <Association Name="FK_Aansluiting_Groep">
+          <End Type="kipadminModel.Groep" Role="Groep" Multiplicity="1" />
+          <End Type="kipadminModel.Aansluiting" Role="Aansluiting" Multiplicity="*" /></Association>
+        <EntityType Name="Afdeling">
+          <Key>
+            <PropertyRef Name="AFD_ID" /></Key>
+          <Property Name="AFD_ID" Type="Int32" Nullable="false" />
+          <Property Name="AFD_NAAM" Type="String" Nullable="false" />
+          <Property Name="AFD_OMSCHR" Type="String" Nullable="true" /></EntityType></Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -694,6 +924,7 @@
           <EntitySetMapping Name="WoontSet">
             <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Woont)">
               <MappingFragment StoreEntitySet="kipWoont">
+                <ScalarProperty Name="GapID" ColumnName="GapID" />
                 <ScalarProperty Name="AdNr" ColumnName="AdNr" />
                 <ScalarProperty Name="AdresId" ColumnName="AdresId" />
                 <ScalarProperty Name="Geldig" ColumnName="Geldig" />
@@ -702,9 +933,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ChiroGroep">
-            <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.ChiroGroep)">
+          <EntitySetMapping Name="Groep">
+            <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Groep)">
+              <MappingFragment StoreEntitySet="Groep">
+                <ScalarProperty Name="GroepID" ColumnName="GroepID" />
+                <ScalarProperty Name="Naam" ColumnName="Naam" />
+                <ScalarProperty Name="StartDatum" ColumnName="StartDatum" />
+                <ScalarProperty Name="StopDatum" ColumnName="StopDatum" />
+                <ScalarProperty Name="RekeningNummer" ColumnName="RekeningNummer" />
+                <ScalarProperty Name="WebSite" ColumnName="WebSite" />
+                <ScalarProperty Name="Versie" ColumnName="Versie" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.ChiroGroep)">
               <MappingFragment StoreEntitySet="ChiroGroep">
+                <ScalarProperty Name="GroepID" ColumnName="GroepID" />
                 <ScalarProperty Name="STAMNR" ColumnName="STAMNR" />
                 <ScalarProperty Name="SOORT" ColumnName="SOORT" />
                 <ScalarProperty Name="TYPE" ColumnName="TYPE" />
@@ -740,23 +983,8 @@
                 <ScalarProperty Name="OPEN_HANDI" ColumnName="OPEN_HANDI" />
                 <ScalarProperty Name="stadsgroep" ColumnName="stadsgroep" />
                 <ScalarProperty Name="BET_ADNR" ColumnName="BET_ADNR" />
-                <ScalarProperty Name="GroepID" ColumnName="GroepID" />
               </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Groep">
-            <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Groep)">
-              <MappingFragment StoreEntitySet="Groep">
-                <ScalarProperty Name="GroepID" ColumnName="GroepID" />
-                <ScalarProperty Name="Naam" ColumnName="Naam" />
-                <ScalarProperty Name="StartDatum" ColumnName="StartDatum" />
-                <ScalarProperty Name="StopDatum" ColumnName="StopDatum" />
-                <ScalarProperty Name="RekeningNummer" ColumnName="RekeningNummer" />
-                <ScalarProperty Name="WebSite" ColumnName="WebSite" />
-                <ScalarProperty Name="Versie" ColumnName="Versie" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+            </EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Lid">
             <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Lid)">
               <MappingFragment StoreEntitySet="Lid">
@@ -841,14 +1069,6 @@
               <ScalarProperty Name="id" ColumnName="id" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_ChiroGroep_Groep" TypeName="kipadminModel.FK_ChiroGroep_Groep" StoreEntitySet="ChiroGroep">
-            <EndProperty Name="Groep">
-              <ScalarProperty Name="GroepID" ColumnName="GroepID" />
-            </EndProperty>
-            <EndProperty Name="ChiroGroep">
-              <ScalarProperty Name="GroepID" ColumnName="GroepID" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="fk_Lid_Groep" TypeName="kipadminModel.fk_Lid_Groep" StoreEntitySet="Lid">
             <EndProperty Name="Groep">
               <ScalarProperty Name="GroepID" ColumnName="GroepID" />
@@ -857,7 +1077,107 @@
               <ScalarProperty Name="id" ColumnName="id" />
             </EndProperty>
           </AssociationSetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="RekeningSet">
+            <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Rekening)">
+              <MappingFragment StoreEntitySet="REKENING">
+                <ScalarProperty Name="WERKJAAR" ColumnName="WERKJAAR" />
+                <ScalarProperty Name="BET_VOOR" ColumnName="BET_VOOR" />
+                <ScalarProperty Name="FACLIJNEN" ColumnName="FACLIJNEN" />
+                <ScalarProperty Name="NOTA" ColumnName="NOTA" />
+                <ScalarProperty Name="STEMPEL" ColumnName="STEMPEL" />
+                <ScalarProperty Name="DOORGEBOE" ColumnName="DOORGEBOE" />
+                <ScalarProperty Name="OPSPL_EUR9" ColumnName="OPSPL_EUR9" />
+                <ScalarProperty Name="OPSPL_EUR8" ColumnName="OPSPL_EUR8" />
+                <ScalarProperty Name="OPSPL_EUR7" ColumnName="OPSPL_EUR7" />
+                <ScalarProperty Name="OPSPL_EUR6" ColumnName="OPSPL_EUR6" />
+                <ScalarProperty Name="OPSPL_EUR5" ColumnName="OPSPL_EUR5" />
+                <ScalarProperty Name="OPSPL_EUR4" ColumnName="OPSPL_EUR4" />
+                <ScalarProperty Name="OPSPL_EUR3" ColumnName="OPSPL_EUR3" />
+                <ScalarProperty Name="OPSPL_EUR2" ColumnName="OPSPL_EUR2" />
+                <ScalarProperty Name="OPSPL_EUR1" ColumnName="OPSPL_EUR1" />
+                <ScalarProperty Name="OPSPL_BEF9" ColumnName="OPSPL_BEF9" />
+                <ScalarProperty Name="OPSPL_BEF8" ColumnName="OPSPL_BEF8" />
+                <ScalarProperty Name="OPSPL_BEF7" ColumnName="OPSPL_BEF7" />
+                <ScalarProperty Name="OPSPL_BEF6" ColumnName="OPSPL_BEF6" />
+                <ScalarProperty Name="OPSPL_BEF5" ColumnName="OPSPL_BEF5" />
+                <ScalarProperty Name="OPSPL_BEF4" ColumnName="OPSPL_BEF4" />
+                <ScalarProperty Name="OPSPL_BEF3" ColumnName="OPSPL_BEF3" />
+                <ScalarProperty Name="OPSPL_BEF2" ColumnName="OPSPL_BEF2" />
+                <ScalarProperty Name="OPSPL_BEF1" ColumnName="OPSPL_BEF1" />
+                <ScalarProperty Name="BOEKING9" ColumnName="BOEKING9" />
+                <ScalarProperty Name="BOEKING8" ColumnName="BOEKING8" />
+                <ScalarProperty Name="BOEKING7" ColumnName="BOEKING7" />
+                <ScalarProperty Name="BOEKING6" ColumnName="BOEKING6" />
+                <ScalarProperty Name="BOEKING5" ColumnName="BOEKING5" />
+                <ScalarProperty Name="BOEKING4" ColumnName="BOEKING4" />
+                <ScalarProperty Name="BOEKING3" ColumnName="BOEKING3" />
+                <ScalarProperty Name="BOEKING2" ColumnName="BOEKING2" />
+                <ScalarProperty Name="BOEKING1" ColumnName="BOEKING1" />
+                <ScalarProperty Name="FACTUURNR" ColumnName="FACTUURNR" />
+                <ScalarProperty Name="MEDEDELING" ColumnName="MEDEDELING" />
+                <ScalarProperty Name="AFDRUK_DAT" ColumnName="AFDRUK_DAT" />
+                <ScalarProperty Name="FACTUUR2" ColumnName="FACTUUR2" />
+                <ScalarProperty Name="FACTUUR" ColumnName="FACTUUR" />
+                <ScalarProperty Name="BEDRAG_EUR" ColumnName="BEDRAG_EUR" />
+                <ScalarProperty Name="BEDRAG_BEF" ColumnName="BEDRAG_BEF" />
+                <ScalarProperty Name="DAT_REK" ColumnName="DAT_REK" />
+                <ScalarProperty Name="STAMNR" ColumnName="STAMNR" />
+                <ScalarProperty Name="VERWIJSNR" ColumnName="VERWIJSNR" />
+                <ScalarProperty Name="REK_BRON" ColumnName="REK_BRON" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="NR" ColumnName="NR" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Aansluiting">
+            <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Aansluiting)">
+              <MappingFragment StoreEntitySet="Aansluiting">
+                <ScalarProperty Name="Stempel" ColumnName="Stempel" />
+                <ScalarProperty Name="Noot" ColumnName="Noot" />
+                <ScalarProperty Name="SolidariteitsBijdrage" ColumnName="SolidariteitsBijdrage" />
+                <ScalarProperty Name="SolidariteitsBijdrageBef" ColumnName="SolidariteitsBijdrageBef" />
+                <ScalarProperty Name="Freelance" ColumnName="Freelance" />
+                <ScalarProperty Name="Proost" ColumnName="Proost" />
+                <ScalarProperty Name="Vb" ColumnName="Vb" />
+                <ScalarProperty Name="LeidingM" ColumnName="LeidingM" />
+                <ScalarProperty Name="LeidingJ" ColumnName="LeidingJ" />
+                <ScalarProperty Name="AspisM" ColumnName="AspisM" />
+                <ScalarProperty Name="AspisJ" ColumnName="AspisJ" />
+                <ScalarProperty Name="KetisM" ColumnName="KetisM" />
+                <ScalarProperty Name="KetisJ" ColumnName="KetisJ" />
+                <ScalarProperty Name="TitosM" ColumnName="TitosM" />
+                <ScalarProperty Name="TitosJ" ColumnName="TitosJ" />
+                <ScalarProperty Name="RakwisM" ColumnName="RakwisM" />
+                <ScalarProperty Name="RakwisJ" ColumnName="RakwisJ" />
+                <ScalarProperty Name="SpeelClubM" ColumnName="SpeelClubM" />
+                <ScalarProperty Name="SpeelClubJ" ColumnName="SpeelClubJ" />
+                <ScalarProperty Name="RibbelsM" ColumnName="RibbelsM" />
+                <ScalarProperty Name="RibbelsJ" ColumnName="RibbelsJ" />
+                <ScalarProperty Name="Wijze" ColumnName="Wijze" />
+                <ScalarProperty Name="Datum" ColumnName="Datum" />
+                <ScalarProperty Name="VolgNummer" ColumnName="VolgNummer" />
+                <ScalarProperty Name="WerkJaar" ColumnName="WerkJaar" />
+                <ScalarProperty Name="AansluitingID" ColumnName="AansluitingID" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <AssociationSetMapping Name="FK_Rekening_Persoon" TypeName="kipadminModel.FK_Rekening_Persoon" StoreEntitySet="REKENING">
+            <EndProperty Name="REKENING">
+              <ScalarProperty Name="NR" ColumnName="NR" /></EndProperty>
+            <EndProperty Name="Persoon">
+              <ScalarProperty Name="AdNr" ColumnName="ADNR" /></EndProperty>
+            <Condition ColumnName="ADNR" IsNull="false" /></AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Aansluiting_Rekening" TypeName="kipadminModel.FK_Aansluiting_Rekening" StoreEntitySet="Aansluiting">
+            <EndProperty Name="Aansluiting">
+              <ScalarProperty Name="AansluitingID" ColumnName="AansluitingID" /></EndProperty>
+            <EndProperty Name="REKENING">
+              <ScalarProperty Name="NR" ColumnName="RekeningID" /></EndProperty>
+            <Condition ColumnName="RekeningID" IsNull="false" /></AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Aansluiting_Groep" TypeName="kipadminModel.FK_Aansluiting_Groep" StoreEntitySet="Aansluiting">
+            <EndProperty Name="Aansluiting">
+              <ScalarProperty Name="AansluitingID" ColumnName="AansluitingID" /></EndProperty>
+            <EndProperty Name="Groep">
+              <ScalarProperty Name="GroepID" ColumnName="GroepID" /></EndProperty></AssociationSetMapping>
+          <EntitySetMapping Name="AfdelingSet">
+            <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Afdeling)">
+              <MappingFragment StoreEntitySet="AFDELING">
+                <ScalarProperty Name="AFD_OMSCHR" ColumnName="AFD_OMSCHR" />
+                <ScalarProperty Name="AFD_NAAM" ColumnName="AFD_NAAM" />
+                <ScalarProperty Name="AFD_ID" ColumnName="AFD_ID" /></MappingFragment></EntityTypeMapping></EntitySetMapping></EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
@@ -883,55 +1203,78 @@
         <EntityTypeShape EntityType="kipadminModel.HeeftFunctie" Width="1.5" PointX="5.25" PointY="2.5" Height="1.7879850260416657" IsExpanded="true" />
         <EntityTypeShape EntityType="kipadminModel.Persoon" Width="1.5" PointX="0.75" PointY="6.25" Height="4.2879036458333335" IsExpanded="true" />
         <EntityTypeShape EntityType="kipadminModel.Woont" Width="1.5" PointX="6" PointY="7.125" Height="2.5571907552083335" IsExpanded="true" />
-        <EntityTypeShape EntityType="kipadminModel.ChiroGroep" Width="1.5" PointX="3" PointY="22.25" Height="8.1339322916666674" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.ChiroGroep" Width="1.5" PointX="3" PointY="22.25" Height="6.6870735677083353" IsExpanded="true" />
         <EntityTypeShape EntityType="kipadminModel.Groep" Width="1.5" PointX="0.75" PointY="2" Height="2.7494921874999996" IsExpanded="true" />
         <EntityTypeShape EntityType="kipadminModel.Lid" Width="1.5" PointX="3" PointY="0.75" Height="5.2494108072916656" IsExpanded="true" />
         <AssociationConnector Association="kipadminModel.FK__kipWoont__AdresI__61915EA7" ManuallyRouted="false">
-          <ConnectorPoint PointX="5.25" PointY="19.682444661458334" />
-          <ConnectorPoint PointX="6.75" PointY="19.682444661458334" />
-          <ConnectorPoint PointX="6.75" PointY="9.6821907552083335" /></AssociationConnector>
+          <ConnectorPoint PointX="5.25" PointY="19.542674153645834" />
+          <ConnectorPoint PointX="5.6875" PointY="19.542674153645834" />
+          <ConnectorPoint PointX="5.6875" PointY="8.2301741536458337" />
+          <ConnectorPoint PointX="6" PointY="8.2301741536458337" /></AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK__kipWoont__AdresT__628582E0" ManuallyRouted="false">
           <ConnectorPoint PointX="4.90625" PointY="14.875" />
-          <ConnectorPoint PointX="4.90625" PointY="9.5836393229166656" />
-          <ConnectorPoint PointX="5.510416666666667" PointY="9.5836393229166656" />
-          <ConnectorPoint PointX="5.677083333333333" PointY="9.5836393229166656" />
-          <ConnectorPoint PointX="6" PointY="9.5836393229166656" /></AssociationConnector>
+          <ConnectorPoint PointX="4.90625" PointY="9.38627197265625" />
+          <ConnectorPoint PointX="5.510416666666667" PointY="9.3862719726562478" />
+          <ConnectorPoint PointX="5.770833333333333" PointY="9.38627197265625" />
+          <ConnectorPoint PointX="6" PointY="9.38627197265625" /></AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK__kipContact__AdNr__6A26A4A8" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="8.3362939453125" />
-          <ConnectorPoint PointX="2.5416666666666665" PointY="8.3362939453125" />
-          <ConnectorPoint PointX="2.7083333333333335" PointY="8.3362939453125" />
-          <ConnectorPoint PointX="3" PointY="8.3362939453125" /></AssociationConnector>
+          <ConnectorPoint PointX="2.25" PointY="8.21050048828125" />
+          <ConnectorPoint PointX="2.4791666666666665" PointY="8.21050048828125" />
+          <ConnectorPoint PointX="2.7083333333333335" PointY="8.21050048828125" />
+          <ConnectorPoint PointX="3" PointY="8.21050048828125" /></AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK__kipHeeftF__funct__4341E1B1" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="12.37474609375" />
-          <ConnectorPoint PointX="4.822916666666667" PointY="12.37474609375" />
-          <ConnectorPoint PointX="4.989583333333333" PointY="12.37474609375" />
-          <ConnectorPoint PointX="5.59375" PointY="12.37474609375" />
-          <ConnectorPoint PointX="5.59375" PointY="4.2879850260416656" /></AssociationConnector>
+          <ConnectorPoint PointX="4.5" PointY="12.207021484375" />
+          <ConnectorPoint PointX="4.822916666666667" PointY="12.207021484375" />
+          <ConnectorPoint PointX="4.989583333333333" PointY="12.207021484375" />
+          <ConnectorPoint PointX="5.59375" PointY="12.207021484375" />
+          <ConnectorPoint PointX="5.59375" PointY="4.0923063151041665" /></AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK__kipHeeftF__leidk__424DBD78" ManuallyRouted="false">
           <ConnectorPoint PointX="4.5" PointY="3.3939925130208328" />
           <ConnectorPoint PointX="5.25" PointY="3.3939925130208328" /></AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK__kipWoont__AdNr__609D3A6E" ManuallyRouted="false">
           <ConnectorPoint PointX="2.25" PointY="7.15625" />
-          <ConnectorPoint PointX="2.5416666666666665" PointY="7.1562499999999991" />
+          <ConnectorPoint PointX="2.4791666666666665" PointY="7.1562499999999991" />
           <ConnectorPoint PointX="2.7083333333333335" PointY="7.15625" />
           <ConnectorPoint PointX="5.510416666666667" PointY="7.1562499999999991" />
           <ConnectorPoint PointX="5.677083333333333" PointY="7.15625" />
           <ConnectorPoint PointX="6" PointY="7.15625" /></AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Leid_Kad_Persoon" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.5" PointY="6.25" />
-          <ConnectorPoint PointX="1.5" PointY="4.9994921875" />
-          <ConnectorPoint PointX="2.5" PointY="4.9994921875" />
-          <ConnectorPoint PointX="2.5" PointY="3.3747054036458328" />
-          <ConnectorPoint PointX="3" PointY="3.3747054036458328" /></AssociationConnector>
-        <AssociationConnector Association="kipadminModel.FK_ChiroGroep_Groep" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="4.0620982955729161" />
-          <ConnectorPoint PointX="2.4166666666666665" PointY="4.0620982955729152" />
-          <ConnectorPoint PointX="2.5833333333333335" PointY="4.0620982955729161" />
-          <ConnectorPoint PointX="2.625" PointY="4.0620982955729161" />
-          <ConnectorPoint PointX="2.625" PointY="26.316966145833334" />
-          <ConnectorPoint PointX="3" PointY="26.316966145833334" /></AssociationConnector>
+          <ConnectorPoint PointX="2.25" PointY="9.290260382161458" />
+          <ConnectorPoint PointX="2.625" PointY="9.290260382161458" />
+          <ConnectorPoint PointX="2.625" PointY="4.1510613883957568" />
+          <ConnectorPoint PointX="2.6666666666666665" PointY="4.1510613883957559" />
+          <ConnectorPoint PointX="2.8333333333333335" PointY="4.1510613883957568" />
+          <ConnectorPoint PointX="3" PointY="4.1510613883957568" /></AssociationConnector>
         <AssociationConnector Association="kipadminModel.fk_Lid_Groep" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="2.6248527018229164" />
-          <ConnectorPoint PointX="3" PointY="2.6248527018229164" /></AssociationConnector></Diagram></edmx:Diagrams>
+          <ConnectorPoint PointX="2.25" PointY="2.6886716314217605" />
+          <ConnectorPoint PointX="3" PointY="2.6886716314217605" /></AssociationConnector>
+        <InheritanceConnector EntityType="kipadminModel.ChiroGroep">
+          <ConnectorPoint PointX="2.25" PointY="3.4511190099087585" />
+          <ConnectorPoint PointX="2.5625" PointY="3.4511190099087585" />
+          <ConnectorPoint PointX="2.5625" PointY="25.593536783854169" />
+          <ConnectorPoint PointX="3" PointY="25.593536783854169" /></InheritanceConnector>
+        <EntityTypeShape EntityType="kipadminModel.Rekening" Width="1.5" PointX="3" PointY="29.875" Height="8.823588867187496" />
+        <EntityTypeShape EntityType="kipadminModel.Aansluiting" Width="1.5" PointX="6.25" PointY="16.625" Height="5.5366422526041674" />
+        <AssociationConnector Association="kipadminModel.FK_Rekening_Persoon" >
+          <ConnectorPoint PointX="1.5" PointY="10.307516276041666" />
+          <ConnectorPoint PointX="1.5" PointY="34.286794433593748" />
+          <ConnectorPoint PointX="3" PointY="34.286794433593748" /></AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK_Aansluiting_Rekening" >
+          <ConnectorPoint PointX="4.5" PointY="34.286794433593748" />
+          <ConnectorPoint PointX="7" PointY="34.286794433593748" />
+          <ConnectorPoint PointX="7" PointY="22.161642252604167" /></AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK_Aansluiting_Groep" >
+          <ConnectorPoint PointX="2.25" PointY="3.8323426991522576" />
+          <ConnectorPoint PointX="2.4791666666666665" PointY="3.8323426991522571" />
+          <ConnectorPoint PointX="2.6458333333333335" PointY="3.8323426991522576" />
+          <ConnectorPoint PointX="2.75" PointY="3.8323426991522576" />
+          <ConnectorPoint PointX="2.75" PointY="6.875" />
+          <ConnectorPoint PointX="5.510416666666667" PointY="6.8749999999999991" />
+          <ConnectorPoint PointX="5.677083333333333" PointY="6.875" />
+          <ConnectorPoint PointX="7.75" PointY="6.875" />
+          <ConnectorPoint PointX="7.75" PointY="16.25" />
+          <ConnectorPoint PointX="7" PointY="16.25" />
+          <ConnectorPoint PointX="7" PointY="16.625" /></AssociationConnector>
+        <EntityTypeShape EntityType="kipadminModel.Afdeling" Width="1.5" PointX="7.375" PointY="0.75" Height="1.4279589843749998" /></Diagram></edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

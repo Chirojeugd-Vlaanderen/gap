@@ -16,11 +16,13 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK__kipHeeftF__leidk__424DBD78", "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.Lid), "kipHeeftFunctie", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.HeeftFunctie))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK__kipWoont__AdNr__609D3A6E", "kipPersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.Persoon), "kipWoont", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.Woont))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_Leid_Kad_Persoon", "kipPersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.Persoon), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.Lid))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_ChiroGroep_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.Groep), "ChiroGroep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.ChiroGroep))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "fk_Lid_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.Groep), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.Lid))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_Rekening_Persoon", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Persoon), "REKENING", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.Rekening))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_Aansluiting_Rekening", "REKENING", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Rekening), "Aansluiting", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.Aansluiting))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_Aansluiting_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.Groep), "Aansluiting", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.Aansluiting))]
 
 // Original file name:
-// Generation date: 11/08/2010 22:31:58
+// Generation date: 26/08/2010 14:00:35
 namespace Chiro.Kip.Data
 {
     
@@ -160,21 +162,6 @@ namespace Chiro.Kip.Data
         }
         private global::System.Data.Objects.ObjectQuery<Woont> _WoontSet;
         /// <summary>
-        /// There are no comments for ChiroGroep in the schema.
-        /// </summary>
-        public global::System.Data.Objects.ObjectQuery<ChiroGroep> ChiroGroep
-        {
-            get
-            {
-                if ((this._ChiroGroep == null))
-                {
-                    this._ChiroGroep = base.CreateQuery<ChiroGroep>("[ChiroGroep]");
-                }
-                return this._ChiroGroep;
-            }
-        }
-        private global::System.Data.Objects.ObjectQuery<ChiroGroep> _ChiroGroep;
-        /// <summary>
         /// There are no comments for Groep in the schema.
         /// </summary>
         public global::System.Data.Objects.ObjectQuery<Groep> Groep
@@ -204,6 +191,51 @@ namespace Chiro.Kip.Data
             }
         }
         private global::System.Data.Objects.ObjectQuery<Lid> _Lid;
+        /// <summary>
+        /// There are no comments for RekeningSet in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<Rekening> RekeningSet
+        {
+            get
+            {
+                if ((this._RekeningSet == null))
+                {
+                    this._RekeningSet = base.CreateQuery<Rekening>("[RekeningSet]");
+                }
+                return this._RekeningSet;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<Rekening> _RekeningSet;
+        /// <summary>
+        /// There are no comments for Aansluiting in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<Aansluiting> Aansluiting
+        {
+            get
+            {
+                if ((this._Aansluiting == null))
+                {
+                    this._Aansluiting = base.CreateQuery<Aansluiting>("[Aansluiting]");
+                }
+                return this._Aansluiting;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<Aansluiting> _Aansluiting;
+        /// <summary>
+        /// There are no comments for AfdelingSet in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<Afdeling> AfdelingSet
+        {
+            get
+            {
+                if ((this._AfdelingSet == null))
+                {
+                    this._AfdelingSet = base.CreateQuery<Afdeling>("[AfdelingSet]");
+                }
+                return this._AfdelingSet;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<Afdeling> _AfdelingSet;
         /// <summary>
         /// There are no comments for AdresSet in the schema.
         /// </summary>
@@ -254,13 +286,6 @@ namespace Chiro.Kip.Data
             base.AddObject("WoontSet", woont);
         }
         /// <summary>
-        /// There are no comments for ChiroGroep in the schema.
-        /// </summary>
-        public void AddToChiroGroep(ChiroGroep chiroGroep)
-        {
-            base.AddObject("ChiroGroep", chiroGroep);
-        }
-        /// <summary>
         /// There are no comments for Groep in the schema.
         /// </summary>
         public void AddToGroep(Groep groep)
@@ -273,6 +298,27 @@ namespace Chiro.Kip.Data
         public void AddToLid(Lid lid)
         {
             base.AddObject("Lid", lid);
+        }
+        /// <summary>
+        /// There are no comments for RekeningSet in the schema.
+        /// </summary>
+        public void AddToRekeningSet(Rekening rekening)
+        {
+            base.AddObject("RekeningSet", rekening);
+        }
+        /// <summary>
+        /// There are no comments for Aansluiting in the schema.
+        /// </summary>
+        public void AddToAansluiting(Aansluiting aansluiting)
+        {
+            base.AddObject("Aansluiting", aansluiting);
+        }
+        /// <summary>
+        /// There are no comments for AfdelingSet in the schema.
+        /// </summary>
+        public void AddToAfdelingSet(Afdeling afdeling)
+        {
+            base.AddObject("AfdelingSet", afdeling);
         }
     }
     /// <summary>
@@ -1580,6 +1626,27 @@ namespace Chiro.Kip.Data
                 }
             }
         }
+        /// <summary>
+        /// There are no comments for REKENING in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Rekening_Persoon", "REKENING")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Rekening> REKENING
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Rekening>("kipadminModel.FK_Rekening_Persoon", "REKENING");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Rekening>("kipadminModel.FK_Rekening_Persoon", "REKENING", value);
+                }
+            }
+        }
     }
     /// <summary>
     /// There are no comments for kipadminModel.Woont in the schema.
@@ -1727,6 +1794,29 @@ namespace Chiro.Kip.Data
         partial void OnVolgNrChanging(int value);
         partial void OnVolgNrChanged();
         /// <summary>
+        /// There are no comments for Property GapID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> GapID
+        {
+            get
+            {
+                return this._GapID;
+            }
+            set
+            {
+                this.OnGapIDChanging(value);
+                this.ReportPropertyChanging("GapID");
+                this._GapID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("GapID");
+                this.OnGapIDChanged();
+            }
+        }
+        private global::System.Nullable<int> _GapID;
+        partial void OnGapIDChanging(global::System.Nullable<int> value);
+        partial void OnGapIDChanged();
+        /// <summary>
         /// There are no comments for kipAdres in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK__kipWoont__AdresI__61915EA7", "kipAdres")]
@@ -1847,26 +1937,30 @@ namespace Chiro.Kip.Data
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="kipadminModel", Name="ChiroGroep")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
-    public partial class ChiroGroep : global::System.Data.Objects.DataClasses.EntityObject
+    public partial class ChiroGroep : Groep
     {
         /// <summary>
         /// Create a new ChiroGroep object.
         /// </summary>
+        /// <param name="groepID">Initial value of GroepID.</param>
+        /// <param name="naam">Initial value of Naam.</param>
+        /// <param name="versie">Initial value of Versie.</param>
         /// <param name="sTAMNR">Initial value of STAMNR.</param>
         /// <param name="sOORT">Initial value of SOORT.</param>
         /// <param name="tYPE">Initial value of TYPE.</param>
         /// <param name="pROVINCIE">Initial value of PROVINCIE.</param>
         /// <param name="stadsgroep">Initial value of stadsgroep.</param>
-        /// <param name="groepID">Initial value of GroepID.</param>
-        public static ChiroGroep CreateChiroGroep(string sTAMNR, string sOORT, string tYPE, string pROVINCIE, bool stadsgroep, int groepID)
+        public static ChiroGroep CreateChiroGroep(int groepID, string naam, byte[] versie, string sTAMNR, string sOORT, string tYPE, string pROVINCIE, bool stadsgroep)
         {
             ChiroGroep chiroGroep = new ChiroGroep();
+            chiroGroep.GroepID = groepID;
+            chiroGroep.Naam = naam;
+            chiroGroep.Versie = versie;
             chiroGroep.STAMNR = sTAMNR;
             chiroGroep.SOORT = sOORT;
             chiroGroep.TYPE = tYPE;
             chiroGroep.PROVINCIE = pROVINCIE;
             chiroGroep.stadsgroep = stadsgroep;
-            chiroGroep.GroepID = groepID;
             return chiroGroep;
         }
         /// <summary>
@@ -2674,66 +2768,6 @@ namespace Chiro.Kip.Data
         private global::System.Nullable<int> _BET_ADNR;
         partial void OnBET_ADNRChanging(global::System.Nullable<int> value);
         partial void OnBET_ADNRChanged();
-        /// <summary>
-        /// There are no comments for Property GroepID in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public int GroepID
-        {
-            get
-            {
-                return this._GroepID;
-            }
-            set
-            {
-                this.OnGroepIDChanging(value);
-                this.ReportPropertyChanging("GroepID");
-                this._GroepID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("GroepID");
-                this.OnGroepIDChanged();
-            }
-        }
-        private int _GroepID;
-        partial void OnGroepIDChanging(int value);
-        partial void OnGroepIDChanged();
-        /// <summary>
-        /// There are no comments for Groep in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_ChiroGroep_Groep", "Groep")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Groep Groep
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_ChiroGroep_Groep", "Groep").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_ChiroGroep_Groep", "Groep").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for Groep in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Groep> GroepReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_ChiroGroep_Groep", "Groep");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Groep>("kipadminModel.FK_ChiroGroep_Groep", "Groep", value);
-                }
-            }
-        }
     }
     /// <summary>
     /// There are no comments for kipadminModel.Groep in the schema.
@@ -2744,6 +2778,7 @@ namespace Chiro.Kip.Data
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="kipadminModel", Name="Groep")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
+    [global::System.Runtime.Serialization.KnownTypeAttribute(typeof(global::Chiro.Kip.Data.ChiroGroep))]
     public partial class Groep : global::System.Data.Objects.DataClasses.EntityObject
     {
         /// <summary>
@@ -2922,43 +2957,6 @@ namespace Chiro.Kip.Data
         partial void OnVersieChanging(byte[] value);
         partial void OnVersieChanged();
         /// <summary>
-        /// There are no comments for ChiroGroep in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_ChiroGroep_Groep", "ChiroGroep")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public ChiroGroep ChiroGroep
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ChiroGroep>("kipadminModel.FK_ChiroGroep_Groep", "ChiroGroep").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ChiroGroep>("kipadminModel.FK_ChiroGroep_Groep", "ChiroGroep").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for ChiroGroep in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<ChiroGroep> ChiroGroepReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ChiroGroep>("kipadminModel.FK_ChiroGroep_Groep", "ChiroGroep");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<ChiroGroep>("kipadminModel.FK_ChiroGroep_Groep", "ChiroGroep", value);
-                }
-            }
-        }
-        /// <summary>
         /// There are no comments for Lid in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "fk_Lid_Groep", "Lid")]
@@ -2976,6 +2974,27 @@ namespace Chiro.Kip.Data
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Lid>("kipadminModel.fk_Lid_Groep", "Lid", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Aansluiting in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Aansluiting_Groep", "Aansluiting")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Aansluiting> Aansluiting
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Aansluiting>("kipadminModel.FK_Aansluiting_Groep", "Aansluiting");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Aansluiting>("kipadminModel.FK_Aansluiting_Groep", "Aansluiting", value);
                 }
             }
         }
@@ -3539,5 +3558,1964 @@ namespace Chiro.Kip.Data
                 }
             }
         }
+    }
+    /// <summary>
+    /// There are no comments for kipadminModel.Rekening in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// NR
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="kipadminModel", Name="Rekening")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class Rekening : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new Rekening object.
+        /// </summary>
+        /// <param name="nR">Initial value of NR.</param>
+        /// <param name="tYPE">Initial value of TYPE.</param>
+        /// <param name="rEK_BRON">Initial value of REK_BRON.</param>
+        /// <param name="dAT_REK">Initial value of DAT_REK.</param>
+        /// <param name="bEDRAG_EUR">Initial value of BEDRAG_EUR.</param>
+        /// <param name="fACTUUR">Initial value of FACTUUR.</param>
+        /// <param name="fACTUUR2">Initial value of FACTUUR2.</param>
+        /// <param name="dOORGEBOE">Initial value of DOORGEBOE.</param>
+        public static Rekening CreateRekening(int nR, string tYPE, string rEK_BRON, global::System.DateTime dAT_REK, decimal bEDRAG_EUR, string fACTUUR, string fACTUUR2, string dOORGEBOE)
+        {
+            Rekening rekening = new Rekening();
+            rekening.NR = nR;
+            rekening.TYPE = tYPE;
+            rekening.REK_BRON = rEK_BRON;
+            rekening.DAT_REK = dAT_REK;
+            rekening.BEDRAG_EUR = bEDRAG_EUR;
+            rekening.FACTUUR = fACTUUR;
+            rekening.FACTUUR2 = fACTUUR2;
+            rekening.DOORGEBOE = dOORGEBOE;
+            return rekening;
+        }
+        /// <summary>
+        /// There are no comments for Property NR in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int NR
+        {
+            get
+            {
+                return this._NR;
+            }
+            set
+            {
+                this.OnNRChanging(value);
+                this.ReportPropertyChanging("NR");
+                this._NR = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("NR");
+                this.OnNRChanged();
+            }
+        }
+        private int _NR;
+        partial void OnNRChanging(int value);
+        partial void OnNRChanged();
+        /// <summary>
+        /// There are no comments for Property TYPE in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string TYPE
+        {
+            get
+            {
+                return this._TYPE;
+            }
+            set
+            {
+                this.OnTYPEChanging(value);
+                this.ReportPropertyChanging("TYPE");
+                this._TYPE = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("TYPE");
+                this.OnTYPEChanged();
+            }
+        }
+        private string _TYPE;
+        partial void OnTYPEChanging(string value);
+        partial void OnTYPEChanged();
+        /// <summary>
+        /// There are no comments for Property REK_BRON in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string REK_BRON
+        {
+            get
+            {
+                return this._REK_BRON;
+            }
+            set
+            {
+                this.OnREK_BRONChanging(value);
+                this.ReportPropertyChanging("REK_BRON");
+                this._REK_BRON = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("REK_BRON");
+                this.OnREK_BRONChanged();
+            }
+        }
+        private string _REK_BRON;
+        partial void OnREK_BRONChanging(string value);
+        partial void OnREK_BRONChanged();
+        /// <summary>
+        /// There are no comments for Property VERWIJSNR in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> VERWIJSNR
+        {
+            get
+            {
+                return this._VERWIJSNR;
+            }
+            set
+            {
+                this.OnVERWIJSNRChanging(value);
+                this.ReportPropertyChanging("VERWIJSNR");
+                this._VERWIJSNR = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("VERWIJSNR");
+                this.OnVERWIJSNRChanged();
+            }
+        }
+        private global::System.Nullable<int> _VERWIJSNR;
+        partial void OnVERWIJSNRChanging(global::System.Nullable<int> value);
+        partial void OnVERWIJSNRChanged();
+        /// <summary>
+        /// There are no comments for Property STAMNR in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string STAMNR
+        {
+            get
+            {
+                return this._STAMNR;
+            }
+            set
+            {
+                this.OnSTAMNRChanging(value);
+                this.ReportPropertyChanging("STAMNR");
+                this._STAMNR = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("STAMNR");
+                this.OnSTAMNRChanged();
+            }
+        }
+        private string _STAMNR;
+        partial void OnSTAMNRChanging(string value);
+        partial void OnSTAMNRChanged();
+        /// <summary>
+        /// There are no comments for Property DAT_REK in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.DateTime DAT_REK
+        {
+            get
+            {
+                return this._DAT_REK;
+            }
+            set
+            {
+                this.OnDAT_REKChanging(value);
+                this.ReportPropertyChanging("DAT_REK");
+                this._DAT_REK = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("DAT_REK");
+                this.OnDAT_REKChanged();
+            }
+        }
+        private global::System.DateTime _DAT_REK;
+        partial void OnDAT_REKChanging(global::System.DateTime value);
+        partial void OnDAT_REKChanged();
+        /// <summary>
+        /// There are no comments for Property BEDRAG_BEF in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> BEDRAG_BEF
+        {
+            get
+            {
+                return this._BEDRAG_BEF;
+            }
+            set
+            {
+                this.OnBEDRAG_BEFChanging(value);
+                this.ReportPropertyChanging("BEDRAG_BEF");
+                this._BEDRAG_BEF = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("BEDRAG_BEF");
+                this.OnBEDRAG_BEFChanged();
+            }
+        }
+        private global::System.Nullable<decimal> _BEDRAG_BEF;
+        partial void OnBEDRAG_BEFChanging(global::System.Nullable<decimal> value);
+        partial void OnBEDRAG_BEFChanged();
+        /// <summary>
+        /// There are no comments for Property BEDRAG_EUR in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public decimal BEDRAG_EUR
+        {
+            get
+            {
+                return this._BEDRAG_EUR;
+            }
+            set
+            {
+                this.OnBEDRAG_EURChanging(value);
+                this.ReportPropertyChanging("BEDRAG_EUR");
+                this._BEDRAG_EUR = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("BEDRAG_EUR");
+                this.OnBEDRAG_EURChanged();
+            }
+        }
+        private decimal _BEDRAG_EUR;
+        partial void OnBEDRAG_EURChanging(decimal value);
+        partial void OnBEDRAG_EURChanged();
+        /// <summary>
+        /// There are no comments for Property FACTUUR in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string FACTUUR
+        {
+            get
+            {
+                return this._FACTUUR;
+            }
+            set
+            {
+                this.OnFACTUURChanging(value);
+                this.ReportPropertyChanging("FACTUUR");
+                this._FACTUUR = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("FACTUUR");
+                this.OnFACTUURChanged();
+            }
+        }
+        private string _FACTUUR;
+        partial void OnFACTUURChanging(string value);
+        partial void OnFACTUURChanged();
+        /// <summary>
+        /// There are no comments for Property FACTUUR2 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string FACTUUR2
+        {
+            get
+            {
+                return this._FACTUUR2;
+            }
+            set
+            {
+                this.OnFACTUUR2Changing(value);
+                this.ReportPropertyChanging("FACTUUR2");
+                this._FACTUUR2 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("FACTUUR2");
+                this.OnFACTUUR2Changed();
+            }
+        }
+        private string _FACTUUR2;
+        partial void OnFACTUUR2Changing(string value);
+        partial void OnFACTUUR2Changed();
+        /// <summary>
+        /// There are no comments for Property AFDRUK_DAT in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<global::System.DateTime> AFDRUK_DAT
+        {
+            get
+            {
+                return this._AFDRUK_DAT;
+            }
+            set
+            {
+                this.OnAFDRUK_DATChanging(value);
+                this.ReportPropertyChanging("AFDRUK_DAT");
+                this._AFDRUK_DAT = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("AFDRUK_DAT");
+                this.OnAFDRUK_DATChanged();
+            }
+        }
+        private global::System.Nullable<global::System.DateTime> _AFDRUK_DAT;
+        partial void OnAFDRUK_DATChanging(global::System.Nullable<global::System.DateTime> value);
+        partial void OnAFDRUK_DATChanged();
+        /// <summary>
+        /// There are no comments for Property MEDEDELING in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string MEDEDELING
+        {
+            get
+            {
+                return this._MEDEDELING;
+            }
+            set
+            {
+                this.OnMEDEDELINGChanging(value);
+                this.ReportPropertyChanging("MEDEDELING");
+                this._MEDEDELING = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("MEDEDELING");
+                this.OnMEDEDELINGChanged();
+            }
+        }
+        private string _MEDEDELING;
+        partial void OnMEDEDELINGChanging(string value);
+        partial void OnMEDEDELINGChanged();
+        /// <summary>
+        /// There are no comments for Property FACTUURNR in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string FACTUURNR
+        {
+            get
+            {
+                return this._FACTUURNR;
+            }
+            set
+            {
+                this.OnFACTUURNRChanging(value);
+                this.ReportPropertyChanging("FACTUURNR");
+                this._FACTUURNR = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("FACTUURNR");
+                this.OnFACTUURNRChanged();
+            }
+        }
+        private string _FACTUURNR;
+        partial void OnFACTUURNRChanging(string value);
+        partial void OnFACTUURNRChanged();
+        /// <summary>
+        /// There are no comments for Property BOEKING1 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string BOEKING1
+        {
+            get
+            {
+                return this._BOEKING1;
+            }
+            set
+            {
+                this.OnBOEKING1Changing(value);
+                this.ReportPropertyChanging("BOEKING1");
+                this._BOEKING1 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("BOEKING1");
+                this.OnBOEKING1Changed();
+            }
+        }
+        private string _BOEKING1;
+        partial void OnBOEKING1Changing(string value);
+        partial void OnBOEKING1Changed();
+        /// <summary>
+        /// There are no comments for Property BOEKING2 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string BOEKING2
+        {
+            get
+            {
+                return this._BOEKING2;
+            }
+            set
+            {
+                this.OnBOEKING2Changing(value);
+                this.ReportPropertyChanging("BOEKING2");
+                this._BOEKING2 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("BOEKING2");
+                this.OnBOEKING2Changed();
+            }
+        }
+        private string _BOEKING2;
+        partial void OnBOEKING2Changing(string value);
+        partial void OnBOEKING2Changed();
+        /// <summary>
+        /// There are no comments for Property BOEKING3 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string BOEKING3
+        {
+            get
+            {
+                return this._BOEKING3;
+            }
+            set
+            {
+                this.OnBOEKING3Changing(value);
+                this.ReportPropertyChanging("BOEKING3");
+                this._BOEKING3 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("BOEKING3");
+                this.OnBOEKING3Changed();
+            }
+        }
+        private string _BOEKING3;
+        partial void OnBOEKING3Changing(string value);
+        partial void OnBOEKING3Changed();
+        /// <summary>
+        /// There are no comments for Property BOEKING4 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string BOEKING4
+        {
+            get
+            {
+                return this._BOEKING4;
+            }
+            set
+            {
+                this.OnBOEKING4Changing(value);
+                this.ReportPropertyChanging("BOEKING4");
+                this._BOEKING4 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("BOEKING4");
+                this.OnBOEKING4Changed();
+            }
+        }
+        private string _BOEKING4;
+        partial void OnBOEKING4Changing(string value);
+        partial void OnBOEKING4Changed();
+        /// <summary>
+        /// There are no comments for Property BOEKING5 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string BOEKING5
+        {
+            get
+            {
+                return this._BOEKING5;
+            }
+            set
+            {
+                this.OnBOEKING5Changing(value);
+                this.ReportPropertyChanging("BOEKING5");
+                this._BOEKING5 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("BOEKING5");
+                this.OnBOEKING5Changed();
+            }
+        }
+        private string _BOEKING5;
+        partial void OnBOEKING5Changing(string value);
+        partial void OnBOEKING5Changed();
+        /// <summary>
+        /// There are no comments for Property BOEKING6 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string BOEKING6
+        {
+            get
+            {
+                return this._BOEKING6;
+            }
+            set
+            {
+                this.OnBOEKING6Changing(value);
+                this.ReportPropertyChanging("BOEKING6");
+                this._BOEKING6 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("BOEKING6");
+                this.OnBOEKING6Changed();
+            }
+        }
+        private string _BOEKING6;
+        partial void OnBOEKING6Changing(string value);
+        partial void OnBOEKING6Changed();
+        /// <summary>
+        /// There are no comments for Property BOEKING7 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string BOEKING7
+        {
+            get
+            {
+                return this._BOEKING7;
+            }
+            set
+            {
+                this.OnBOEKING7Changing(value);
+                this.ReportPropertyChanging("BOEKING7");
+                this._BOEKING7 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("BOEKING7");
+                this.OnBOEKING7Changed();
+            }
+        }
+        private string _BOEKING7;
+        partial void OnBOEKING7Changing(string value);
+        partial void OnBOEKING7Changed();
+        /// <summary>
+        /// There are no comments for Property BOEKING8 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string BOEKING8
+        {
+            get
+            {
+                return this._BOEKING8;
+            }
+            set
+            {
+                this.OnBOEKING8Changing(value);
+                this.ReportPropertyChanging("BOEKING8");
+                this._BOEKING8 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("BOEKING8");
+                this.OnBOEKING8Changed();
+            }
+        }
+        private string _BOEKING8;
+        partial void OnBOEKING8Changing(string value);
+        partial void OnBOEKING8Changed();
+        /// <summary>
+        /// There are no comments for Property BOEKING9 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string BOEKING9
+        {
+            get
+            {
+                return this._BOEKING9;
+            }
+            set
+            {
+                this.OnBOEKING9Changing(value);
+                this.ReportPropertyChanging("BOEKING9");
+                this._BOEKING9 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("BOEKING9");
+                this.OnBOEKING9Changed();
+            }
+        }
+        private string _BOEKING9;
+        partial void OnBOEKING9Changing(string value);
+        partial void OnBOEKING9Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_BEF1 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_BEF1
+        {
+            get
+            {
+                return this._OPSPL_BEF1;
+            }
+            set
+            {
+                this.OnOPSPL_BEF1Changing(value);
+                this.ReportPropertyChanging("OPSPL_BEF1");
+                this._OPSPL_BEF1 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_BEF1");
+                this.OnOPSPL_BEF1Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_BEF1;
+        partial void OnOPSPL_BEF1Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_BEF1Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_BEF2 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_BEF2
+        {
+            get
+            {
+                return this._OPSPL_BEF2;
+            }
+            set
+            {
+                this.OnOPSPL_BEF2Changing(value);
+                this.ReportPropertyChanging("OPSPL_BEF2");
+                this._OPSPL_BEF2 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_BEF2");
+                this.OnOPSPL_BEF2Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_BEF2;
+        partial void OnOPSPL_BEF2Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_BEF2Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_BEF3 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_BEF3
+        {
+            get
+            {
+                return this._OPSPL_BEF3;
+            }
+            set
+            {
+                this.OnOPSPL_BEF3Changing(value);
+                this.ReportPropertyChanging("OPSPL_BEF3");
+                this._OPSPL_BEF3 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_BEF3");
+                this.OnOPSPL_BEF3Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_BEF3;
+        partial void OnOPSPL_BEF3Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_BEF3Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_BEF4 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_BEF4
+        {
+            get
+            {
+                return this._OPSPL_BEF4;
+            }
+            set
+            {
+                this.OnOPSPL_BEF4Changing(value);
+                this.ReportPropertyChanging("OPSPL_BEF4");
+                this._OPSPL_BEF4 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_BEF4");
+                this.OnOPSPL_BEF4Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_BEF4;
+        partial void OnOPSPL_BEF4Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_BEF4Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_BEF5 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_BEF5
+        {
+            get
+            {
+                return this._OPSPL_BEF5;
+            }
+            set
+            {
+                this.OnOPSPL_BEF5Changing(value);
+                this.ReportPropertyChanging("OPSPL_BEF5");
+                this._OPSPL_BEF5 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_BEF5");
+                this.OnOPSPL_BEF5Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_BEF5;
+        partial void OnOPSPL_BEF5Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_BEF5Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_BEF6 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_BEF6
+        {
+            get
+            {
+                return this._OPSPL_BEF6;
+            }
+            set
+            {
+                this.OnOPSPL_BEF6Changing(value);
+                this.ReportPropertyChanging("OPSPL_BEF6");
+                this._OPSPL_BEF6 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_BEF6");
+                this.OnOPSPL_BEF6Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_BEF6;
+        partial void OnOPSPL_BEF6Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_BEF6Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_BEF7 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_BEF7
+        {
+            get
+            {
+                return this._OPSPL_BEF7;
+            }
+            set
+            {
+                this.OnOPSPL_BEF7Changing(value);
+                this.ReportPropertyChanging("OPSPL_BEF7");
+                this._OPSPL_BEF7 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_BEF7");
+                this.OnOPSPL_BEF7Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_BEF7;
+        partial void OnOPSPL_BEF7Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_BEF7Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_BEF8 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_BEF8
+        {
+            get
+            {
+                return this._OPSPL_BEF8;
+            }
+            set
+            {
+                this.OnOPSPL_BEF8Changing(value);
+                this.ReportPropertyChanging("OPSPL_BEF8");
+                this._OPSPL_BEF8 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_BEF8");
+                this.OnOPSPL_BEF8Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_BEF8;
+        partial void OnOPSPL_BEF8Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_BEF8Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_BEF9 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_BEF9
+        {
+            get
+            {
+                return this._OPSPL_BEF9;
+            }
+            set
+            {
+                this.OnOPSPL_BEF9Changing(value);
+                this.ReportPropertyChanging("OPSPL_BEF9");
+                this._OPSPL_BEF9 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_BEF9");
+                this.OnOPSPL_BEF9Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_BEF9;
+        partial void OnOPSPL_BEF9Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_BEF9Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_EUR1 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_EUR1
+        {
+            get
+            {
+                return this._OPSPL_EUR1;
+            }
+            set
+            {
+                this.OnOPSPL_EUR1Changing(value);
+                this.ReportPropertyChanging("OPSPL_EUR1");
+                this._OPSPL_EUR1 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_EUR1");
+                this.OnOPSPL_EUR1Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_EUR1;
+        partial void OnOPSPL_EUR1Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_EUR1Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_EUR2 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_EUR2
+        {
+            get
+            {
+                return this._OPSPL_EUR2;
+            }
+            set
+            {
+                this.OnOPSPL_EUR2Changing(value);
+                this.ReportPropertyChanging("OPSPL_EUR2");
+                this._OPSPL_EUR2 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_EUR2");
+                this.OnOPSPL_EUR2Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_EUR2;
+        partial void OnOPSPL_EUR2Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_EUR2Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_EUR3 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_EUR3
+        {
+            get
+            {
+                return this._OPSPL_EUR3;
+            }
+            set
+            {
+                this.OnOPSPL_EUR3Changing(value);
+                this.ReportPropertyChanging("OPSPL_EUR3");
+                this._OPSPL_EUR3 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_EUR3");
+                this.OnOPSPL_EUR3Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_EUR3;
+        partial void OnOPSPL_EUR3Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_EUR3Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_EUR4 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_EUR4
+        {
+            get
+            {
+                return this._OPSPL_EUR4;
+            }
+            set
+            {
+                this.OnOPSPL_EUR4Changing(value);
+                this.ReportPropertyChanging("OPSPL_EUR4");
+                this._OPSPL_EUR4 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_EUR4");
+                this.OnOPSPL_EUR4Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_EUR4;
+        partial void OnOPSPL_EUR4Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_EUR4Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_EUR5 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_EUR5
+        {
+            get
+            {
+                return this._OPSPL_EUR5;
+            }
+            set
+            {
+                this.OnOPSPL_EUR5Changing(value);
+                this.ReportPropertyChanging("OPSPL_EUR5");
+                this._OPSPL_EUR5 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_EUR5");
+                this.OnOPSPL_EUR5Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_EUR5;
+        partial void OnOPSPL_EUR5Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_EUR5Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_EUR6 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_EUR6
+        {
+            get
+            {
+                return this._OPSPL_EUR6;
+            }
+            set
+            {
+                this.OnOPSPL_EUR6Changing(value);
+                this.ReportPropertyChanging("OPSPL_EUR6");
+                this._OPSPL_EUR6 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_EUR6");
+                this.OnOPSPL_EUR6Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_EUR6;
+        partial void OnOPSPL_EUR6Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_EUR6Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_EUR7 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_EUR7
+        {
+            get
+            {
+                return this._OPSPL_EUR7;
+            }
+            set
+            {
+                this.OnOPSPL_EUR7Changing(value);
+                this.ReportPropertyChanging("OPSPL_EUR7");
+                this._OPSPL_EUR7 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_EUR7");
+                this.OnOPSPL_EUR7Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_EUR7;
+        partial void OnOPSPL_EUR7Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_EUR7Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_EUR8 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_EUR8
+        {
+            get
+            {
+                return this._OPSPL_EUR8;
+            }
+            set
+            {
+                this.OnOPSPL_EUR8Changing(value);
+                this.ReportPropertyChanging("OPSPL_EUR8");
+                this._OPSPL_EUR8 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_EUR8");
+                this.OnOPSPL_EUR8Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_EUR8;
+        partial void OnOPSPL_EUR8Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_EUR8Changed();
+        /// <summary>
+        /// There are no comments for Property OPSPL_EUR9 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<decimal> OPSPL_EUR9
+        {
+            get
+            {
+                return this._OPSPL_EUR9;
+            }
+            set
+            {
+                this.OnOPSPL_EUR9Changing(value);
+                this.ReportPropertyChanging("OPSPL_EUR9");
+                this._OPSPL_EUR9 = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("OPSPL_EUR9");
+                this.OnOPSPL_EUR9Changed();
+            }
+        }
+        private global::System.Nullable<decimal> _OPSPL_EUR9;
+        partial void OnOPSPL_EUR9Changing(global::System.Nullable<decimal> value);
+        partial void OnOPSPL_EUR9Changed();
+        /// <summary>
+        /// There are no comments for Property DOORGEBOE in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string DOORGEBOE
+        {
+            get
+            {
+                return this._DOORGEBOE;
+            }
+            set
+            {
+                this.OnDOORGEBOEChanging(value);
+                this.ReportPropertyChanging("DOORGEBOE");
+                this._DOORGEBOE = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("DOORGEBOE");
+                this.OnDOORGEBOEChanged();
+            }
+        }
+        private string _DOORGEBOE;
+        partial void OnDOORGEBOEChanging(string value);
+        partial void OnDOORGEBOEChanged();
+        /// <summary>
+        /// There are no comments for Property STEMPEL in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<global::System.DateTime> STEMPEL
+        {
+            get
+            {
+                return this._STEMPEL;
+            }
+            set
+            {
+                this.OnSTEMPELChanging(value);
+                this.ReportPropertyChanging("STEMPEL");
+                this._STEMPEL = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("STEMPEL");
+                this.OnSTEMPELChanged();
+            }
+        }
+        private global::System.Nullable<global::System.DateTime> _STEMPEL;
+        partial void OnSTEMPELChanging(global::System.Nullable<global::System.DateTime> value);
+        partial void OnSTEMPELChanged();
+        /// <summary>
+        /// There are no comments for Property NOTA in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string NOTA
+        {
+            get
+            {
+                return this._NOTA;
+            }
+            set
+            {
+                this.OnNOTAChanging(value);
+                this.ReportPropertyChanging("NOTA");
+                this._NOTA = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("NOTA");
+                this.OnNOTAChanged();
+            }
+        }
+        private string _NOTA;
+        partial void OnNOTAChanging(string value);
+        partial void OnNOTAChanged();
+        /// <summary>
+        /// There are no comments for Property FACLIJNEN in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string FACLIJNEN
+        {
+            get
+            {
+                return this._FACLIJNEN;
+            }
+            set
+            {
+                this.OnFACLIJNENChanging(value);
+                this.ReportPropertyChanging("FACLIJNEN");
+                this._FACLIJNEN = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("FACLIJNEN");
+                this.OnFACLIJNENChanged();
+            }
+        }
+        private string _FACLIJNEN;
+        partial void OnFACLIJNENChanging(string value);
+        partial void OnFACLIJNENChanged();
+        /// <summary>
+        /// There are no comments for Property BET_VOOR in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<global::System.DateTime> BET_VOOR
+        {
+            get
+            {
+                return this._BET_VOOR;
+            }
+            set
+            {
+                this.OnBET_VOORChanging(value);
+                this.ReportPropertyChanging("BET_VOOR");
+                this._BET_VOOR = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("BET_VOOR");
+                this.OnBET_VOORChanged();
+            }
+        }
+        private global::System.Nullable<global::System.DateTime> _BET_VOOR;
+        partial void OnBET_VOORChanging(global::System.Nullable<global::System.DateTime> value);
+        partial void OnBET_VOORChanged();
+        /// <summary>
+        /// There are no comments for Property WERKJAAR in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<short> WERKJAAR
+        {
+            get
+            {
+                return this._WERKJAAR;
+            }
+            set
+            {
+                this.OnWERKJAARChanging(value);
+                this.ReportPropertyChanging("WERKJAAR");
+                this._WERKJAAR = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("WERKJAAR");
+                this.OnWERKJAARChanged();
+            }
+        }
+        private global::System.Nullable<short> _WERKJAAR;
+        partial void OnWERKJAARChanging(global::System.Nullable<short> value);
+        partial void OnWERKJAARChanged();
+        /// <summary>
+        /// There are no comments for kipPersoon in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Rekening_Persoon", "Persoon")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Persoon kipPersoon
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Rekening_Persoon", "Persoon").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Rekening_Persoon", "Persoon").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for kipPersoon in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Persoon> kipPersoonReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Persoon>("kipadminModel.FK_Rekening_Persoon", "Persoon");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Persoon>("kipadminModel.FK_Rekening_Persoon", "Persoon", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Aansluiting in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Aansluiting_Rekening", "Aansluiting")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Aansluiting> Aansluiting
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Aansluiting>("kipadminModel.FK_Aansluiting_Rekening", "Aansluiting");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Aansluiting>("kipadminModel.FK_Aansluiting_Rekening", "Aansluiting", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for kipadminModel.Aansluiting in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// AansluitingID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="kipadminModel", Name="Aansluiting")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class Aansluiting : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new Aansluiting object.
+        /// </summary>
+        /// <param name="aansluitingID">Initial value of AansluitingID.</param>
+        /// <param name="werkJaar">Initial value of WerkJaar.</param>
+        /// <param name="volgNummer">Initial value of VolgNummer.</param>
+        /// <param name="datum">Initial value of Datum.</param>
+        /// <param name="wijze">Initial value of Wijze.</param>
+        /// <param name="leidingJ">Initial value of LeidingJ.</param>
+        /// <param name="leidingM">Initial value of LeidingM.</param>
+        /// <param name="vb">Initial value of Vb.</param>
+        /// <param name="proost">Initial value of Proost.</param>
+        /// <param name="freelance">Initial value of Freelance.</param>
+        /// <param name="stempel">Initial value of Stempel.</param>
+        public static Aansluiting CreateAansluiting(int aansluitingID, int werkJaar, int volgNummer, global::System.DateTime datum, string wijze, int leidingJ, int leidingM, int vb, int proost, int freelance, global::System.DateTime stempel)
+        {
+            Aansluiting aansluiting = new Aansluiting();
+            aansluiting.AansluitingID = aansluitingID;
+            aansluiting.WerkJaar = werkJaar;
+            aansluiting.VolgNummer = volgNummer;
+            aansluiting.Datum = datum;
+            aansluiting.Wijze = wijze;
+            aansluiting.LeidingJ = leidingJ;
+            aansluiting.LeidingM = leidingM;
+            aansluiting.Vb = vb;
+            aansluiting.Proost = proost;
+            aansluiting.Freelance = freelance;
+            aansluiting.Stempel = stempel;
+            return aansluiting;
+        }
+        /// <summary>
+        /// There are no comments for Property AansluitingID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int AansluitingID
+        {
+            get
+            {
+                return this._AansluitingID;
+            }
+            set
+            {
+                this.OnAansluitingIDChanging(value);
+                this.ReportPropertyChanging("AansluitingID");
+                this._AansluitingID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("AansluitingID");
+                this.OnAansluitingIDChanged();
+            }
+        }
+        private int _AansluitingID;
+        partial void OnAansluitingIDChanging(int value);
+        partial void OnAansluitingIDChanged();
+        /// <summary>
+        /// There are no comments for Property WerkJaar in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int WerkJaar
+        {
+            get
+            {
+                return this._WerkJaar;
+            }
+            set
+            {
+                this.OnWerkJaarChanging(value);
+                this.ReportPropertyChanging("WerkJaar");
+                this._WerkJaar = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("WerkJaar");
+                this.OnWerkJaarChanged();
+            }
+        }
+        private int _WerkJaar;
+        partial void OnWerkJaarChanging(int value);
+        partial void OnWerkJaarChanged();
+        /// <summary>
+        /// There are no comments for Property VolgNummer in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int VolgNummer
+        {
+            get
+            {
+                return this._VolgNummer;
+            }
+            set
+            {
+                this.OnVolgNummerChanging(value);
+                this.ReportPropertyChanging("VolgNummer");
+                this._VolgNummer = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("VolgNummer");
+                this.OnVolgNummerChanged();
+            }
+        }
+        private int _VolgNummer;
+        partial void OnVolgNummerChanging(int value);
+        partial void OnVolgNummerChanged();
+        /// <summary>
+        /// There are no comments for Property Datum in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.DateTime Datum
+        {
+            get
+            {
+                return this._Datum;
+            }
+            set
+            {
+                this.OnDatumChanging(value);
+                this.ReportPropertyChanging("Datum");
+                this._Datum = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Datum");
+                this.OnDatumChanged();
+            }
+        }
+        private global::System.DateTime _Datum;
+        partial void OnDatumChanging(global::System.DateTime value);
+        partial void OnDatumChanged();
+        /// <summary>
+        /// There are no comments for Property Wijze in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Wijze
+        {
+            get
+            {
+                return this._Wijze;
+            }
+            set
+            {
+                this.OnWijzeChanging(value);
+                this.ReportPropertyChanging("Wijze");
+                this._Wijze = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Wijze");
+                this.OnWijzeChanged();
+            }
+        }
+        private string _Wijze;
+        partial void OnWijzeChanging(string value);
+        partial void OnWijzeChanged();
+        /// <summary>
+        /// There are no comments for Property RibbelsJ in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> RibbelsJ
+        {
+            get
+            {
+                return this._RibbelsJ;
+            }
+            set
+            {
+                this.OnRibbelsJChanging(value);
+                this.ReportPropertyChanging("RibbelsJ");
+                this._RibbelsJ = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("RibbelsJ");
+                this.OnRibbelsJChanged();
+            }
+        }
+        private global::System.Nullable<int> _RibbelsJ;
+        partial void OnRibbelsJChanging(global::System.Nullable<int> value);
+        partial void OnRibbelsJChanged();
+        /// <summary>
+        /// There are no comments for Property RibbelsM in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> RibbelsM
+        {
+            get
+            {
+                return this._RibbelsM;
+            }
+            set
+            {
+                this.OnRibbelsMChanging(value);
+                this.ReportPropertyChanging("RibbelsM");
+                this._RibbelsM = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("RibbelsM");
+                this.OnRibbelsMChanged();
+            }
+        }
+        private global::System.Nullable<int> _RibbelsM;
+        partial void OnRibbelsMChanging(global::System.Nullable<int> value);
+        partial void OnRibbelsMChanged();
+        /// <summary>
+        /// There are no comments for Property SpeelClubJ in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> SpeelClubJ
+        {
+            get
+            {
+                return this._SpeelClubJ;
+            }
+            set
+            {
+                this.OnSpeelClubJChanging(value);
+                this.ReportPropertyChanging("SpeelClubJ");
+                this._SpeelClubJ = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("SpeelClubJ");
+                this.OnSpeelClubJChanged();
+            }
+        }
+        private global::System.Nullable<int> _SpeelClubJ;
+        partial void OnSpeelClubJChanging(global::System.Nullable<int> value);
+        partial void OnSpeelClubJChanged();
+        /// <summary>
+        /// There are no comments for Property SpeelClubM in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> SpeelClubM
+        {
+            get
+            {
+                return this._SpeelClubM;
+            }
+            set
+            {
+                this.OnSpeelClubMChanging(value);
+                this.ReportPropertyChanging("SpeelClubM");
+                this._SpeelClubM = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("SpeelClubM");
+                this.OnSpeelClubMChanged();
+            }
+        }
+        private global::System.Nullable<int> _SpeelClubM;
+        partial void OnSpeelClubMChanging(global::System.Nullable<int> value);
+        partial void OnSpeelClubMChanged();
+        /// <summary>
+        /// There are no comments for Property RakwisJ in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> RakwisJ
+        {
+            get
+            {
+                return this._RakwisJ;
+            }
+            set
+            {
+                this.OnRakwisJChanging(value);
+                this.ReportPropertyChanging("RakwisJ");
+                this._RakwisJ = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("RakwisJ");
+                this.OnRakwisJChanged();
+            }
+        }
+        private global::System.Nullable<int> _RakwisJ;
+        partial void OnRakwisJChanging(global::System.Nullable<int> value);
+        partial void OnRakwisJChanged();
+        /// <summary>
+        /// There are no comments for Property RakwisM in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> RakwisM
+        {
+            get
+            {
+                return this._RakwisM;
+            }
+            set
+            {
+                this.OnRakwisMChanging(value);
+                this.ReportPropertyChanging("RakwisM");
+                this._RakwisM = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("RakwisM");
+                this.OnRakwisMChanged();
+            }
+        }
+        private global::System.Nullable<int> _RakwisM;
+        partial void OnRakwisMChanging(global::System.Nullable<int> value);
+        partial void OnRakwisMChanged();
+        /// <summary>
+        /// There are no comments for Property TitosJ in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> TitosJ
+        {
+            get
+            {
+                return this._TitosJ;
+            }
+            set
+            {
+                this.OnTitosJChanging(value);
+                this.ReportPropertyChanging("TitosJ");
+                this._TitosJ = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("TitosJ");
+                this.OnTitosJChanged();
+            }
+        }
+        private global::System.Nullable<int> _TitosJ;
+        partial void OnTitosJChanging(global::System.Nullable<int> value);
+        partial void OnTitosJChanged();
+        /// <summary>
+        /// There are no comments for Property TitosM in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> TitosM
+        {
+            get
+            {
+                return this._TitosM;
+            }
+            set
+            {
+                this.OnTitosMChanging(value);
+                this.ReportPropertyChanging("TitosM");
+                this._TitosM = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("TitosM");
+                this.OnTitosMChanged();
+            }
+        }
+        private global::System.Nullable<int> _TitosM;
+        partial void OnTitosMChanging(global::System.Nullable<int> value);
+        partial void OnTitosMChanged();
+        /// <summary>
+        /// There are no comments for Property KetisJ in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> KetisJ
+        {
+            get
+            {
+                return this._KetisJ;
+            }
+            set
+            {
+                this.OnKetisJChanging(value);
+                this.ReportPropertyChanging("KetisJ");
+                this._KetisJ = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("KetisJ");
+                this.OnKetisJChanged();
+            }
+        }
+        private global::System.Nullable<int> _KetisJ;
+        partial void OnKetisJChanging(global::System.Nullable<int> value);
+        partial void OnKetisJChanged();
+        /// <summary>
+        /// There are no comments for Property KetisM in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> KetisM
+        {
+            get
+            {
+                return this._KetisM;
+            }
+            set
+            {
+                this.OnKetisMChanging(value);
+                this.ReportPropertyChanging("KetisM");
+                this._KetisM = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("KetisM");
+                this.OnKetisMChanged();
+            }
+        }
+        private global::System.Nullable<int> _KetisM;
+        partial void OnKetisMChanging(global::System.Nullable<int> value);
+        partial void OnKetisMChanged();
+        /// <summary>
+        /// There are no comments for Property AspisJ in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> AspisJ
+        {
+            get
+            {
+                return this._AspisJ;
+            }
+            set
+            {
+                this.OnAspisJChanging(value);
+                this.ReportPropertyChanging("AspisJ");
+                this._AspisJ = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("AspisJ");
+                this.OnAspisJChanged();
+            }
+        }
+        private global::System.Nullable<int> _AspisJ;
+        partial void OnAspisJChanging(global::System.Nullable<int> value);
+        partial void OnAspisJChanged();
+        /// <summary>
+        /// There are no comments for Property AspisM in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> AspisM
+        {
+            get
+            {
+                return this._AspisM;
+            }
+            set
+            {
+                this.OnAspisMChanging(value);
+                this.ReportPropertyChanging("AspisM");
+                this._AspisM = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("AspisM");
+                this.OnAspisMChanged();
+            }
+        }
+        private global::System.Nullable<int> _AspisM;
+        partial void OnAspisMChanging(global::System.Nullable<int> value);
+        partial void OnAspisMChanged();
+        /// <summary>
+        /// There are no comments for Property LeidingJ in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int LeidingJ
+        {
+            get
+            {
+                return this._LeidingJ;
+            }
+            set
+            {
+                this.OnLeidingJChanging(value);
+                this.ReportPropertyChanging("LeidingJ");
+                this._LeidingJ = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("LeidingJ");
+                this.OnLeidingJChanged();
+            }
+        }
+        private int _LeidingJ;
+        partial void OnLeidingJChanging(int value);
+        partial void OnLeidingJChanged();
+        /// <summary>
+        /// There are no comments for Property LeidingM in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int LeidingM
+        {
+            get
+            {
+                return this._LeidingM;
+            }
+            set
+            {
+                this.OnLeidingMChanging(value);
+                this.ReportPropertyChanging("LeidingM");
+                this._LeidingM = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("LeidingM");
+                this.OnLeidingMChanged();
+            }
+        }
+        private int _LeidingM;
+        partial void OnLeidingMChanging(int value);
+        partial void OnLeidingMChanged();
+        /// <summary>
+        /// There are no comments for Property Vb in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int Vb
+        {
+            get
+            {
+                return this._Vb;
+            }
+            set
+            {
+                this.OnVbChanging(value);
+                this.ReportPropertyChanging("Vb");
+                this._Vb = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Vb");
+                this.OnVbChanged();
+            }
+        }
+        private int _Vb;
+        partial void OnVbChanging(int value);
+        partial void OnVbChanged();
+        /// <summary>
+        /// There are no comments for Property Proost in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int Proost
+        {
+            get
+            {
+                return this._Proost;
+            }
+            set
+            {
+                this.OnProostChanging(value);
+                this.ReportPropertyChanging("Proost");
+                this._Proost = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Proost");
+                this.OnProostChanged();
+            }
+        }
+        private int _Proost;
+        partial void OnProostChanging(int value);
+        partial void OnProostChanged();
+        /// <summary>
+        /// There are no comments for Property Freelance in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int Freelance
+        {
+            get
+            {
+                return this._Freelance;
+            }
+            set
+            {
+                this.OnFreelanceChanging(value);
+                this.ReportPropertyChanging("Freelance");
+                this._Freelance = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Freelance");
+                this.OnFreelanceChanged();
+            }
+        }
+        private int _Freelance;
+        partial void OnFreelanceChanging(int value);
+        partial void OnFreelanceChanged();
+        /// <summary>
+        /// There are no comments for Property SolidariteitsBijdrageBef in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> SolidariteitsBijdrageBef
+        {
+            get
+            {
+                return this._SolidariteitsBijdrageBef;
+            }
+            set
+            {
+                this.OnSolidariteitsBijdrageBefChanging(value);
+                this.ReportPropertyChanging("SolidariteitsBijdrageBef");
+                this._SolidariteitsBijdrageBef = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("SolidariteitsBijdrageBef");
+                this.OnSolidariteitsBijdrageBefChanged();
+            }
+        }
+        private global::System.Nullable<int> _SolidariteitsBijdrageBef;
+        partial void OnSolidariteitsBijdrageBefChanging(global::System.Nullable<int> value);
+        partial void OnSolidariteitsBijdrageBefChanged();
+        /// <summary>
+        /// There are no comments for Property SolidariteitsBijdrage in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> SolidariteitsBijdrage
+        {
+            get
+            {
+                return this._SolidariteitsBijdrage;
+            }
+            set
+            {
+                this.OnSolidariteitsBijdrageChanging(value);
+                this.ReportPropertyChanging("SolidariteitsBijdrage");
+                this._SolidariteitsBijdrage = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("SolidariteitsBijdrage");
+                this.OnSolidariteitsBijdrageChanged();
+            }
+        }
+        private global::System.Nullable<int> _SolidariteitsBijdrage;
+        partial void OnSolidariteitsBijdrageChanging(global::System.Nullable<int> value);
+        partial void OnSolidariteitsBijdrageChanged();
+        /// <summary>
+        /// There are no comments for Property Noot in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Noot
+        {
+            get
+            {
+                return this._Noot;
+            }
+            set
+            {
+                this.OnNootChanging(value);
+                this.ReportPropertyChanging("Noot");
+                this._Noot = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Noot");
+                this.OnNootChanged();
+            }
+        }
+        private string _Noot;
+        partial void OnNootChanging(string value);
+        partial void OnNootChanged();
+        /// <summary>
+        /// There are no comments for Property Stempel in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.DateTime Stempel
+        {
+            get
+            {
+                return this._Stempel;
+            }
+            set
+            {
+                this.OnStempelChanging(value);
+                this.ReportPropertyChanging("Stempel");
+                this._Stempel = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Stempel");
+                this.OnStempelChanged();
+            }
+        }
+        private global::System.DateTime _Stempel;
+        partial void OnStempelChanging(global::System.DateTime value);
+        partial void OnStempelChanged();
+        /// <summary>
+        /// There are no comments for REKENING in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Aansluiting_Rekening", "REKENING")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Rekening REKENING
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Rekening>("kipadminModel.FK_Aansluiting_Rekening", "REKENING").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Rekening>("kipadminModel.FK_Aansluiting_Rekening", "REKENING").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for REKENING in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Rekening> REKENINGReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Rekening>("kipadminModel.FK_Aansluiting_Rekening", "REKENING");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Rekening>("kipadminModel.FK_Aansluiting_Rekening", "REKENING", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_Aansluiting_Groep", "Groep")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Groep Groep
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_Aansluiting_Groep", "Groep").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_Aansluiting_Groep", "Groep").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Groep> GroepReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_Aansluiting_Groep", "Groep");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Groep>("kipadminModel.FK_Aansluiting_Groep", "Groep", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for kipadminModel.Afdeling in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// AFD_ID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="kipadminModel", Name="Afdeling")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class Afdeling : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new Afdeling object.
+        /// </summary>
+        /// <param name="aFD_ID">Initial value of AFD_ID.</param>
+        /// <param name="aFD_NAAM">Initial value of AFD_NAAM.</param>
+        public static Afdeling CreateAfdeling(int aFD_ID, string aFD_NAAM)
+        {
+            Afdeling afdeling = new Afdeling();
+            afdeling.AFD_ID = aFD_ID;
+            afdeling.AFD_NAAM = aFD_NAAM;
+            return afdeling;
+        }
+        /// <summary>
+        /// There are no comments for Property AFD_ID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int AFD_ID
+        {
+            get
+            {
+                return this._AFD_ID;
+            }
+            set
+            {
+                this.OnAFD_IDChanging(value);
+                this.ReportPropertyChanging("AFD_ID");
+                this._AFD_ID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("AFD_ID");
+                this.OnAFD_IDChanged();
+            }
+        }
+        private int _AFD_ID;
+        partial void OnAFD_IDChanging(int value);
+        partial void OnAFD_IDChanged();
+        /// <summary>
+        /// There are no comments for Property AFD_NAAM in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string AFD_NAAM
+        {
+            get
+            {
+                return this._AFD_NAAM;
+            }
+            set
+            {
+                this.OnAFD_NAAMChanging(value);
+                this.ReportPropertyChanging("AFD_NAAM");
+                this._AFD_NAAM = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("AFD_NAAM");
+                this.OnAFD_NAAMChanged();
+            }
+        }
+        private string _AFD_NAAM;
+        partial void OnAFD_NAAMChanging(string value);
+        partial void OnAFD_NAAMChanged();
+        /// <summary>
+        /// There are no comments for Property AFD_OMSCHR in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string AFD_OMSCHR
+        {
+            get
+            {
+                return this._AFD_OMSCHR;
+            }
+            set
+            {
+                this.OnAFD_OMSCHRChanging(value);
+                this.ReportPropertyChanging("AFD_OMSCHR");
+                this._AFD_OMSCHR = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("AFD_OMSCHR");
+                this.OnAFD_OMSCHRChanged();
+            }
+        }
+        private string _AFD_OMSCHR;
+        partial void OnAFD_OMSCHRChanging(string value);
+        partial void OnAFD_OMSCHRChanged();
     }
 }
