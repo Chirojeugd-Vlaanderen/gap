@@ -17,7 +17,7 @@ namespace Chiro.Kip.Services
 {
 	public class SyncPersoonService : ISyncPersoonService
 	{
-		private static Object _lidMakenToken;
+		private static readonly Object _lidMakenToken = new object();
 
 		/// <summary>
 		/// Updatet een persoon in Kipadmin op basis van de gegevens in 
@@ -333,10 +333,10 @@ namespace Chiro.Kip.Services
 		{
 			lock (_lidMakenToken)
 			{
-#if KIPDORP
-				using (var tx = new TransactionScope())
-				{
-#endif
+				// Aangezien 1 'savechanges' van entity framework ook een transaction is, moet ik geen
+				// distributed transaction opzetten.  Misschien... En de lock zorgt ervoor dat dit stuk
+				// code maar 1 keer tegelijk loopt.
+
 					using (var db = new kipadminEntities())
 					{
 						// Vind de groep, zodat we met groepID kunnen werken ipv stamnummer.
@@ -626,10 +626,7 @@ namespace Chiro.Kip.Services
 						}
 
 					}
-#if KIPDORP
-					tx.Complete();
-				}
-#endif
+
 			}
 		}
 	}
