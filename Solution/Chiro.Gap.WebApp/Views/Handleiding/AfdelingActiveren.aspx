@@ -38,8 +38,9 @@
 			overeenkomen. Je hoeft je daar niet aan te houden, ze staan er gewoon als hulp.
 			Eén van de keuzes die je moet maken, is wel met welke offici&euml;le afdeling
 			de jouwe overeenkomt. Zo weet het nationaal secretariaat welke ledenuitgave
-			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Ledenuitgave", new { helpBestand = "Trefwoorden" }, new{ title="Wat is een ledenuitgave?"}) %>
-			we moeten opsturen voor die leden.</li>
+			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Ledenuitgave", new { helpBestand = "Trefwoorden" }, new { title="Wat is een ledenuitgave?" }) %>
+			we moeten opsturen voor die leden.
+			<%=Html.ActionLink("Meer uitleg nodig over speciale afdelingen?", "ViewTonen", "Handleiding", new { title = "Hoe moet je speciale afdelingen koppelen aan officiële?" })%></li>
 		<li>Wanneer je de nodige gegevens ingevuld hebt, klik je op de knop 'Bewaren'.
 			<ul>
 				<li class="nietgoed">Als er iets foutliep, krijg je daar een foutmelding voor zodat

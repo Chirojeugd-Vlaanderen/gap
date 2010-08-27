@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
 
 using Microsoft.Practices.Unity;
 
@@ -18,6 +18,6 @@ namespace Chiro.Gap.Sync.SyncService
 		/// <param name="dummy">Parameter zonder doel, maar deze signature is blijkbaar wel nodig voor
 		/// de InjectionConstructor</param>
 		[InjectionConstructor]
-		public SyncPersoonServiceClient(object dummy): this() {}
+		public SyncPersoonServiceClient(object dummy) : this() { }
 	}
 }

@@ -43,7 +43,7 @@
 		Adres- en andere gegevens worden nooit doorgegeven aan derden. Als bijvoorbeeld
 		studenten een enquête willen afnemen, is het het nationaal secretariaat dat
 		de adresetiketten afprint en de formulieren verstuurt. Als organisaties of bedrijven
-		reclame willen maken bij Chiroleden, kan dat alleen via de Chiropublicaties.</p>
+		reclame willen maken bij Chiroleden kan dat alleen via de Chiropublicaties.</p>
 	<p>
 		Chirojeugd Vlaanderen gebruikt mailadressen in principe niet, tenzij in twee
 		gevallen:</p>

@@ -24,12 +24,12 @@
 			Acties</h1>
 		<ul>
 			<li>
-				<%= Html.ActionLink("Lijst downloaden", "Download", new { id = Model.IDGetoondGroepsWerkJaar, afdelingID = Model.GekozenAfdeling, functieID = Model.GekozenFunctie })%></li></ul>
+				<%= Html.ActionLink("Lijst downloaden", "Download", new { id = Model.IDGetoondGroepsWerkJaar, afdelingID = Model.GekozenAfdeling, functieID = Model.GekozenFunctie }, new { title = "Download de geselecteerde gegevens in een Excel-bestand" })%></li></ul>
 		<h1>
 			Filteren</h1>
 		<ul>
 			<li>
-				<%=Html.ActionLink("Alle leden bekijken", "Lijst", new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering=Model.GekozenSortering, lijst=LijstEnum.Alles })%>
+				<%=Html.ActionLink("Alle leden bekijken", "Lijst", new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Model.GekozenSortering, lijst = LijstEnum.Alles })%>
 			</li>
 			<li>
 				<%using (Html.BeginForm("AfdelingsLijst", "Leden"))
@@ -63,6 +63,12 @@
 				<%=Html.HiddenFor(s => s.GekozenSortering)%>
 				<%} %>
 			</li>
+		</ul>
+		<h1>
+			Uitleg</h1>
+		<ul>
+			<li>
+				<%= Html.ActionLink("Wat betekent 'uitschrijven'?", "ViewTonen", "Handleiding", null, null, "Uitschrijven", new { helpBestand = "Trefwoorden" }, new { title = "Lees in de handleiding wat de gevolgen zijn wanneer je iemand uitschrijft" })%></li>
 		</ul>
 	</div>
 	<% Html.RenderPartial("LedenLijstControl"); %>

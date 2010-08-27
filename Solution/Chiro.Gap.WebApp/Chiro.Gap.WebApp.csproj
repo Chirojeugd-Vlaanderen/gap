@@ -302,6 +302,13 @@
     <Content Include="Content\Screenshots\EditRest_nieuwadreslink.png" />
     <Content Include="Content\Screenshots\Adresformulier_met_autosuggestie.png" />
     <Content Include="Content\Screenshots\EditRest_nieuwe_persoon.png" />
+    <Content Include="Content\Screenshots\excel2003_Opslaan_als.png" />
+    <Content Include="Content\Screenshots\word2003_etiketten06.png" />
+    <Content Include="Content\Screenshots\word2003_etiketten06b.png" />
+    <Content Include="Content\Screenshots\word2003_etiketten07.png" />
+    <Content Include="Content\Screenshots\word2003_etiketten08.png" />
+    <Content Include="Content\Screenshots\word2003_etiketten10.png" />
+    <Content Include="Content\Screenshots\word2003_etiketten11.png" />
     <Content Include="Content\Screenshots\wordribbon_stap01.png" />
     <Content Include="Content\Screenshots\wordribbon_stap02.png" />
     <Content Include="Content\Screenshots\wordribbon_stap03.png" />
@@ -389,6 +396,7 @@
     <Content Include="Views\Handleiding\PersoonlijkeGegevensFiche.aspx" />
     <Content Include="Views\Handleiding\Persoonsfiche.aspx" />
     <Content Include="Views\Handleiding\Privacy.aspx" />
+    <Content Include="Views\Handleiding\SpecialeAfdelingen.aspx" />
     <Content Include="Views\Handleiding\Trefwoorden.aspx" />
     <Content Include="Views\Handleiding\Uitschrijven.aspx" />
     <Content Include="Views\Handleiding\VeelgesteldeVragen.aspx" />

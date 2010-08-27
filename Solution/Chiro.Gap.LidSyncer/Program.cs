@@ -1,4 +1,9 @@
-﻿using Chiro.Cdf.Ioc;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using Chiro.Cdf.Ioc;
 using Chiro.Gap.Workers;
 
 using Moq;
@@ -22,7 +27,7 @@ namespace Chiro.Gap.LidSyncer
 			auMgrMock.Setup(mgr => mgr.IsSuperGav()).Returns(true);
 			Factory.InstantieRegistreren(auMgrMock.Object);
 
-			// Creeer nu de ledenmanager
+			// Creëer nu de ledenmanager
 
 			var ledenMgr = Factory.Maak<LedenManager>();
 

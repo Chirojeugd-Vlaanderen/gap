@@ -63,7 +63,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// Haal de huidige actieve afdelingen op, om zoveel mogelijk informatie te kunnen overnemen in het scherm
 			var actievelijst = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingDetail>>(g => g.ActieveAfdelingenOphalen(werkjaarID));
 
-			//actieve info inladen
+			// actieve info inladen
 			var volledigelijst = new List<AfdelingDetail>();
 			foreach (var afd in lijst)
 			{
@@ -93,7 +93,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					afddetail.OfficieleAfdelingNaam = act.OfficieleAfdelingNaam;
 					afddetail.Geslacht = act.Geslacht;
 
-					//TODO dit is incorrect als het laatste actieve werkjaar niet een jaar geleden was
+					// TODO dit is niet correct als het laatste actieve werkjaar niet een jaar geleden was
 					afddetail.GeboorteJaarTot = act.GeboorteJaarTot+1;
 					afddetail.GeboorteJaarVan = act.GeboorteJaarVan+1;
 				}
@@ -101,15 +101,15 @@ namespace Chiro.Gap.WebApp.Controllers
 				volledigelijst.Add(afddetail);
 			}
 
-			//Sorteer de afdelingsjaren: eerst die zonder gegevens, dan van ribbels naar aspiranten
+			// Sorteer de afdelingsjaren: eerst die zonder gegevens, dan van ribbels naar aspiranten
 			model2.Afdelingen = (from a in volledigelijst
 								 orderby  a.GeboorteJaarTot descending
 								 orderby a.GeboorteJaarTot == 0 descending
 								select a);
 
-			//TODO extra info pagina voor jaarovergang
-			//TODO kan validatie in de listhelper worden bijgecodeerd?
-			//TODO foutmeldingen
+			// TODO extra info pagina voor jaarovergang
+			// TODO kan validatie in de listhelper worden bijgecodeerd?
+			// TODO foutmeldingen
 
 			var nieuwewerkjaar = ServiceHelper.CallService<IGroepenService, int>(g => g.NieuwWerkJaarOphalen());
 

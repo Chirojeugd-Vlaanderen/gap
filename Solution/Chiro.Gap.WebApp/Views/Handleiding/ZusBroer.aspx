@@ -15,8 +15,8 @@
 	<p>
 		Stappen in het proces:</p>
 	<ul>
-		<li>Klik op het tabblad 'Iedereen'</li>
-		<li>Zoek de persoon voor wie je een broer of zus wilt toevoegen</li>
+		<li>Klik op het tabblad 'Iedereen'.</li>
+		<li>Zoek de persoon voor wie je een broer of zus wilt toevoegen. Ga eventueel nog na of het thuisadres en bijvoorbeeld het telefoonnummer van de ouders ingevuld is.</li>
 	</ul>
 	<img src="<%=ResolveUrl("~/Content/Screenshots/Link_Broer_of_zus.png") %>" alt="Gegevens voor een zus of broer toevoegen" />
 	<ul>

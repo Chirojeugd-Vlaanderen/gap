@@ -37,6 +37,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="stratenDao">Repository voor straten</param>
 		/// <param name="subgemeenteDao">Repository voor 'subgemeentes'</param>
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
+		/// <param name="sync">Zorgt voor synchronisate van adressen naar KipAdmin</param>
 		public AdressenManager(
 			IAdressenDao dao, 
 			IStratenDao stratenDao, 

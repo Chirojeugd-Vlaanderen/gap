@@ -14,4 +14,11 @@
 		je suggesties voor verbeteringen of uitbreiding? <a href="http://drupal.chiro.be/eloket/feedback-gap"
 			title="Stel vragen, of geef opmerkingen en suggesties door">Laat het dan zeker
 			weten!</a></p>
+	<p>
+		Je kunt discussiëren over hoe handig het systeem wel of niet is, en je
+		kunt elkaar helpen om het te leren gebruiken: op het <a href="http://forum.chiro.be/forum/144">
+			Chiroforum</a>.</p>
+	<p>
+		En zit je heel erg in de knoop en heb je dringend hulp nodig? Dan kun je altijd
+		nog bellen naar het nationaal secretariaat: 03-231&nbsp;07&nbsp;95.</p>
 </asp:Content>

@@ -108,7 +108,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="sortering">Enumwaarde die aangeeft op welke parameter de lijst gesorteerd moet worden</param>
 		/// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
 		/// <param name="lijst">Enumwaarde die aangeeft wat voor lijst we moeten tonen</param>
-		/// <param name="id">ID van de functie</param>
+		/// <param name="id">ID van de functie of de afdeling</param>
 		/// <returns></returns>
 		[HandleError]
 		public ActionResult Lijst(int groepsWerkJaarID, LijstEnum lijst, int id, LedenSorteringsEnum sortering, int groepID)
@@ -130,15 +130,16 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				// Naam van de functie opzoeken, zodat we ze kunnen invullen in de paginatitel
 				String functie = (from fi in model.FunctieInfoDictionary
-							   where fi.Key == id
-							   select fi).First().Value.Naam;
+								  where fi.Key == id
+								  select fi).First().Value.Naam;
 
 				model.Titel = string.Format("Ledenoverzicht van leden met functie {0} in het werkjaar {1}-{2}",
-				                            functie,
-				                            model.JaartalGetoondGroepsWerkJaar,
-				                            (model.JaartalGetoondGroepsWerkJaar + 1));
+											functie,
+											model.JaartalGetoondGroepsWerkJaar,
+											(model.JaartalGetoondGroepsWerkJaar + 1));
 
-				// TODO naar volgend werkjaar kunnen gaan met behoud van functie)
+				// TODO naar volgend werkjaar kunnen gaan met behoud van functie
+				model.GekozenFunctie = id;
 				return View("Index", model);
 			}
 			else if (lijst == LijstEnum.Afdeling)
@@ -159,6 +160,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.Titel = "Ledenoverzicht van de " + af.AfdelingNaam.ToLower() + " van het werkjaar " + model.JaartalGetoondGroepsWerkJaar + "-" + (model.JaartalGetoondGroepsWerkJaar + 1);
 
 				model.HuidigeAfdeling = id;
+				model.GekozenAfdeling = id;  // OPM: kunnen die waarden verschillen? anders zou ik één van de twee gebruiken
 				return View("Index", model);
 			}
 
@@ -222,10 +224,18 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult Download(int id, int afdelingID, int functieID, int groepID)
 		{
 			IEnumerable<LidOverzicht> lijst;
+			string bestandsnaam;
+
+			// Als ExcelManip de kolomkoppen kan afleiden uit de (param)array, en dan liefst nog de DisplayName
+			// gebruikt van de PersoonOverzicht-velden, dan is de regel hieronder niet nodig.
+			string[] kolomkoppen = {
+			                       	"Type", "AD-nr", "Voornaam", "Naam", "Afdelingen", "Functies", "Geboortedatum", "Geslacht",
+			                       	"Straat", "Nr", "Bus", "Postcode", "Gemeente", "Tel", "Mail"
+			                       };
 
 			if (afdelingID != 0 && functieID != 0)
 			{
-				// Fiteren op zowel afdelngsID als functieID is (nog?) niet ondersteund.
+				// Fiteren op zowel afdelingsID als functieID is (nog?) niet ondersteund.
 				// Bovendien is dat iets dat je niet kan als javascript aanstaat.
 
 				throw new NotSupportedException();
@@ -235,25 +245,22 @@ namespace Chiro.Gap.WebApp.Controllers
 				lijst =
 					ServiceHelper.CallService<ILedenService, IEnumerable<LidOverzicht>>
 						(lid => lid.OphalenUitAfdelingsJaar(id, afdelingID));
+				bestandsnaam = "Afdelingslijst.xlsx";
 			}
 			else if (functieID != 0)
 			{
+				// TODO (#586): gegevens ophalen lukt, behalve voor de afdelingen
 				lijst = ServiceHelper.CallService<ILedenService, IEnumerable<LidOverzicht>>
 					(lid => lid.OphalenUitFunctie(id, functieID));
+				bestandsnaam = "Functielijst.xlsx";
 			}
 			else
 			{
 				lijst =
 					ServiceHelper.CallService<ILedenService, IEnumerable<LidOverzicht>>
 						(lid => lid.OphalenUitGroepsWerkJaar(id));
+				bestandsnaam = "Leden.xlsx";
 			}
-
-			// Als ExcelManip de kolomkoppen kan afleiden uit de (param)array, en dan liefst nog de DisplayName
-			// gebruikt van de PersoonOverzicht-velden, dan is de regel hieronder niet nodig.
-			string[] kolomkoppen = {
-			                       	"Type", "AD-nr", "Voornaam", "Naam", "Afdelingen", "Functies", "Geboortedatum", "Geslacht",
-			                       	"Straat", "Nr", "Bus", "Postcode", "Gemeente", "Tel", "Mail"
-			                       };
 
 			var stream = (new ExcelManip()).ExcelTabel(
 				lijst,
@@ -274,7 +281,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				it => it.TelefoonNummer,
 				it => it.Email);
 
-			return new ExcelResult(stream, "leden.xlsx");
+			return new ExcelResult(stream, bestandsnaam);
 		}
 
 		/// <summary>
@@ -467,7 +474,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				ServiceHelper.CallService<ILedenService>(l => l.Bewaren(model.HuidigLid));
 				ServiceHelper.CallService<ILedenService>(l => l.FunctiesVervangen(model.HuidigLid.LidInfo.LidID, model.FunctieIDs));
-				
+
 				// Problemen met functies moeten opgenieuw opgehaald worden na deze operatie. BaseController gaat na
 				// of dat nodig is door naar de telling te kijken, maar ook de gecachete problemen moeten verwijderd worden.
 				// Als het nieuwe aantal problemen even groot is als het vorige, worden ze anders niet vervangen.

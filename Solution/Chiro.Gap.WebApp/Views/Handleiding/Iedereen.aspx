@@ -24,7 +24,7 @@
 		<li>
 			<%=Html.ActionLink("Een nieuwe persoon toevoegen", "ViewTonen", new { controller = "Handleiding", helpBestand = "NieuwePersoon" })%></li>
 		<li>
-			<%=Html.ActionLink("Een zus/broer toevoegen", "ViewTonen", new { controller = "Handleiding", helpBestand = "ZusBroer" })%>
+			<%=Html.ActionLink("Een zus/broer toevoegen", "ViewTonen", new { controller = "Handleiding", helpBestand = "ZusBroer" }, new { title = "Iemands adres en gezinsgebonden communicatievormen kopiëren voor een broer of zus" })%>
 			van een geregistreerde persoon</li>
 		<li>
 			<%=Html.ActionLink("De persoonsfiche bekijken", "ViewTonen", new { controller = "Handleiding", helpBestand = "Persoonsfiche" })%></li>

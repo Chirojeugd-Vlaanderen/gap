@@ -1,12 +1,16 @@
-﻿using System;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Sync.SyncService;
+
+using Adres = Chiro.Gap.Sync.SyncService.Adres;
 
 namespace Chiro.Gap.Sync
 {
@@ -38,19 +42,19 @@ namespace Chiro.Gap.Sync
 			foreach (var adr in persoonsAdressen.Select(pa => pa.Adres).Distinct())
 			{
 				var bewoners = from pa in adr.PersoonsAdres
-					       select new SyncService.Bewoner
+					       select new Bewoner
 					       {
 						       AdNummer = pa.Persoon.AdNummer ?? 0,
-						       AdresType = (SyncService.AdresTypeEnum)pa.AdresType
+						       AdresType = (AdresTypeEnum)pa.AdresType
 					       };
 
 				// TODO (#238): Buitenlandse adressen!
 
-				var adres = new SyncService.Adres
+				var adres = new Adres
 				{
 					Bus = adr.Bus,
 					HuisNr = adr.HuisNr,
-					Land = "",
+					Land = string.Empty,
 					PostNr = adr.StraatNaam.PostNummer,
 					Straat = adr.StraatNaam.Naam,
 					WoonPlaats = adr.WoonPlaats.Naam

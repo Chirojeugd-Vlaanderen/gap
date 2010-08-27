@@ -51,7 +51,6 @@ namespace Chiro.Gap.Workers
 			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
-				
 			}
 
 			GroepsWerkJaar resultaat = _groepsWjDao.Ophalen(
@@ -111,7 +110,6 @@ namespace Chiro.Gap.Workers
 			if (!_autorisatieMgr.IsGavGroep(groepID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
-				
 			}
 
 			// TODO (#251): cachen, want dit gaan we veel nodig hebben
@@ -193,12 +191,11 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Berekent wat het nieuwe werkjaar zal zijn als op deze moment de jaarovergang zou gebeuren.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>Het jaar waarin dat nieuwe werkjaar begint</returns>
 		public int NieuweWerkJaar()
 		{
 			// Bereken gewenste werkjaar
 			int werkjaar;
-
 
 			var startdate = new DateTime(
 				DateTime.Today.Year,
@@ -231,8 +228,8 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Persisteert een groepswerkjaar in de database
 		/// </summary>
-		/// <param name="gwj">te persisteren groepswerkjaar, gekoppeld aan de groep</param>
-		/// <param name="groepsWerkJaarExtras">bepaalt welke gerelateerde entiteiten mee gepersisteerd
+		/// <param name="gwj">Te persisteren groepswerkjaar, gekoppeld aan de groep</param>
+		/// <param name="groepsWerkJaarExtras">Bepaalt welke gerelateerde entiteiten mee gepersisteerd
 		/// moeten worden</param>
 		/// <returns>Het gepersisteerde groepswerkjaar, met eventuele nieuwe ID's</returns>
 		public GroepsWerkJaar Bewaren(GroepsWerkJaar gwj, GroepsWerkJaarExtras groepsWerkJaarExtras)

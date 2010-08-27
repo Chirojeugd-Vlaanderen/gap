@@ -15,7 +15,14 @@
 	<p>
 		Je kunt iemand een functie toekennen of ze weer afnemen. Als je iemand
 		<%=Html.ActionLink("uitschrijft", "ViewTonen", new { controller = "Handleiding", helpBestand = "Uitschrijven" })%>,
-		worden de toegekende functies automatisch afgenomen.</p>
+		worden de toegekende functies automatisch afgenomen. Bij de jaarovergang worden
+		<em>alle</em> functies afgenomen.</p>
+	<p>
+		Er zijn twee functies die elke groep <em>moet</em> invullen:</p>
+	<ul>
+		<li>Contactpersoon: dat is degene die de post zal ontvangen van het nationaal secretariaat.</li>
+		<li>Financieel verantwoordelijke: dat is degene naar wie de facturen opgestuurd worden</li>
+	</ul>
 	<p>
 		Stappen in het proces:</p>
 	<ul>

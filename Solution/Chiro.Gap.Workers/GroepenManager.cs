@@ -113,13 +113,13 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
-		
+
 			// Controleren of de afdeling nog niet bestaat
 
 			var bestaand = from afd in groep.Afdeling
-					   where String.Compare(afd.Afkorting, afkorting, true) == 0
-					   || String.Compare(afd.Naam, naam, true) == 0
-					   select afd;
+						   where String.Compare(afd.Afkorting, afkorting, true) == 0
+						   || String.Compare(afd.Naam, naam, true) == 0
+						   select afd;
 
 			if (bestaand.FirstOrDefault() != null)
 			{
@@ -175,7 +175,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>Lambda-expresses voor een KindDao</returns>
 		private static IEnumerable<Expression<Func<Groep, object>>> ExtrasNaarLambdas(GroepsExtras extras)
 		{
-			var paths = new List<Expression<Func<Groep, object>>> {ld => ld.GroepsWerkJaar};
+			var paths = new List<Expression<Func<Groep, object>>> { ld => ld.GroepsWerkJaar };
 
 			if ((extras & GroepsExtras.AlleAfdelingen) != 0)
 			{
@@ -231,9 +231,9 @@ namespace Chiro.Gap.Workers
 			{
 				// Is er al een categorie met die code?
 				Categorie bestaande = (from ctg in g.Categorie
-						       where String.Compare(ctg.Code, categorieCode, true) == 0
-							|| String.Compare(ctg.Naam, categorieNaam, true) == 0
-						       select ctg).FirstOrDefault();
+									   where String.Compare(ctg.Code, categorieCode, true) == 0
+									|| String.Compare(ctg.Naam, categorieNaam, true) == 0
+									   select ctg).FirstOrDefault();
 
 				if (bestaande != null)
 				{
@@ -307,7 +307,7 @@ namespace Chiro.Gap.Workers
 				Type = lidType,
 				Naam = naam,
 				WerkJaarTot = null,
-				WerkJaarVan = werkJaarVan, 
+				WerkJaarVan = werkJaarVan,
 				IsNationaal = false
 			};
 

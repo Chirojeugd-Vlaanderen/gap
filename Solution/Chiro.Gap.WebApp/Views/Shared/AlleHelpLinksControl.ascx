@@ -26,19 +26,21 @@
 		Nieuwe gegevens toevoegen:</h3>
 	<ul>
 		<li>
-			<%=Html.ActionLink("Afdeling", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuweAfdeling" }) %></li>
+			<%=Html.ActionLink("Afdeling", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuweAfdeling" }, new { title = "Een nieuwe afdeling aanmaken" }) %></li>
 		<li>
-			<%=Html.ActionLink("Categorie", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuweCategorie" }) %></li>
+			<%=Html.ActionLink("Categorie", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuweCategorie" }, new { title = "Een nieuwe categorie aanmaken" })%></li>
 		<li>
-			<%=Html.ActionLink("Functie", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuweFunctie" }) %></li>
+			<%=Html.ActionLink("Functie", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuweFunctie" }, new { title = "Een nieuwe functie aanmaken" })%></li>
 		<li>
-			<%=Html.ActionLink("Lid/leiding", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuwLid" }) %></li>
+			<%=Html.ActionLink("Lid/leiding", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuwLid" }, new { title = "Gegevens van een nieuw lid toevoegen (= iemand inschrijven)" })%></li>
 		<li>
-			<%=Html.ActionLink("Persoon", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuwePersoon" }) %></li>
+			<%=Html.ActionLink("Persoon", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuwePersoon" }, new { title = "Gegevens van een nieuwe persoon toevoegen" })%></li>
 		<li>
-			<%=Html.ActionLink("Adres", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuwAdres" }) %></li>
+			<%=Html.ActionLink("Zus/broer", "ViewTonen", new { Controller = "Handleiding", helpBestand = "ZusBroer" }, new { title = "Gegevens toevoegen voor de zus of broer van iemand die al in je gegevensbestand zit" })%></li>
 		<li>
-			<%=Html.ActionLink("Straatnaam", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuweStraatnaam" }) %></li>
+			<%=Html.ActionLink("Adres", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuwAdres" }, new { title = "Een nieuw adres toevoegen voor iemand die al in je gegevensbestand zit" })%></li>
+		<li>
+			<%=Html.ActionLink("Straatnaam", "ViewTonen", new { Controller = "Handleiding", helpBestand = "NieuweStraatnaam" }, new { title = "Een aanvraag indienen om een straatnaam toe te voegen aan het vaste lijstje" })%></li>
 	</ul>
 	<h3>
 		Gegevens aanpassen:</h3>
@@ -62,9 +64,9 @@
 		Aanvragen:</h3>
 	<ul>
 		<li>
-			<%=Html.ActionLink("Verzekering loonverlies", "ViewTonen", new { Controller = "Handleiding", helpBestand = "VerzekeringLoonverlies" })%></li>
+			<%=Html.ActionLink("Verzekering loonverlies", "ViewTonen", new { Controller = "Handleiding", helpBestand = "VerzekeringLoonverlies" }, new { title = "Werkende leiding extra verzekeren" })%></li>
 		<li>
-			<%=Html.ActionLink("Dubbelpunt", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Dubbelpuntabonnement" })%></li>
+			<%=Html.ActionLink("Dubbelpunt", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Dubbelpuntabonnement" }, new { title = "Een Dubbelpuntabonnement aanvragen" })%></li>
 	</ul>
 	<h3>
 		Gegevens opzoeken en gebruiken:</h3>

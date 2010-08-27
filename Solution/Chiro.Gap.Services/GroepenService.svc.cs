@@ -239,7 +239,7 @@ namespace Chiro.Gap.Services
 			try
 			{
 				return Mapper.Map<IEnumerable<OfficieleAfdeling>, IEnumerable<OfficieleAfdelingDetail>>(
-					_afdelingsJaarMgr.OfficieleAfdelingenOphalen());
+					_afdelingsJaarMgr.OfficieleAfdelingenOphalen().OrderBy(e => e.LeefTijdVan));
 			}
 			catch (Exception ex)
 			{
@@ -1022,7 +1022,7 @@ namespace Chiro.Gap.Services
 			using (var scope = new TransactionScope())
 			{
 #endif
-				
+
 
 				// Groep ophalen
 				var g = _groepenMgr.Ophalen(groepID, GroepsExtras.AlleAfdelingen | GroepsExtras.GroepsWerkJaren);
@@ -1065,13 +1065,13 @@ namespace Chiro.Gap.Services
 					}
 
 					// Maak het afdelingsjaar aan en bewaar het
-					var afdj = _afdelingsJaarMgr.Aanmaken(afd,
-					                                      offafd,
-					                                      gwj,
-					                                      afdinfo.GeboorteJaarVan,
-					                                      afdinfo.GeboorteJaarTot,
-					                                      afdinfo.Geslacht,
-					                                      afdinfo.GeenAutoVerdeling);
+					_afdelingsJaarMgr.Aanmaken(afd,
+											  offafd,
+											  gwj,
+											  afdinfo.GeboorteJaarVan,
+											  afdinfo.GeboorteJaarTot,
+											  afdinfo.Geslacht,
+											  afdinfo.GeenAutoVerdeling);
 
 					// De afdelingsjaren bewaren we straks allemaal tegelijk, samen met het
 					// groepswerkjaar.  Op die manier krijgen we in het resultaat meteen
@@ -1120,7 +1120,7 @@ namespace Chiro.Gap.Services
 					catch (BestaatAlException<Leiding>)
 					{
 						foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLeiding, gp.Persoon.VolledigeNaam));
-					}	
+					}
 				}
 
 				foutBerichten = foutBerichtenBuilder.ToString();

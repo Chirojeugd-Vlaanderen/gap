@@ -583,10 +583,11 @@ namespace Chiro.Gap.Services
 		{
 			try
 			{
-				IList<Lid> result = _ledenMgr.PaginaOphalenVolgensAfdeling(
+				var result = _ledenMgr.PaginaOphalenVolgensAfdeling(
 					groepsWerkJaarID,
 					afdID,
 					LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Adressen | LidExtras.Communicatie).ToList();
+				
 				return Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(result);
 			}
 			catch (Exception ex)
@@ -605,7 +606,20 @@ namespace Chiro.Gap.Services
 		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
 		public IList<LidOverzicht> OphalenUitFunctie(int groepsWerkJaarID, int functieID)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				var leden = _ledenMgr.Ophalen(
+					functieID,
+					groepsWerkJaarID,
+					LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Adressen | LidExtras.Communicatie).ToList();
+
+				return Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(leden);
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
 		}
 
 		/// <summary>

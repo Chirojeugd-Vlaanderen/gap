@@ -35,6 +35,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// Geeft aan of het lidgeld voor dat lid al betaald is of niet
 		/// </summary>
 		[DataMember]
+		[DisplayName(@"Lidgeld betaald?")]
 		public bool LidgeldBetaald { get; set; }
 
 		/// <summary>

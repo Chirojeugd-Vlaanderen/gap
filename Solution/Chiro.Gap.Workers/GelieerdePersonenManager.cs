@@ -44,8 +44,8 @@ namespace Chiro.Gap.Workers
 		/// <param name="categorieenDao">Repository voor categorieën</param>
 		/// <param name="pDao">Repository voor personen</param>
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
-		/// <param name="personenSync">zorgt voor synchronisate van personen naar kipadmin</param>
-		/// <param name="adressenSync">zorgt voor synchronisate van adressen naar kipadmin</param>
+		/// <param name="personenSync">Zorgt voor synchronisate van personen naar KipAdmin</param>
+		/// <param name="adressenSync">Zorgt voor synchronisate van adressen naar KipAdmin</param>
 		public GelieerdePersonenManager(
 			IGelieerdePersonenDao gelieerdePersonenDao, 
 			ICategorieenDao categorieenDao, 
@@ -425,10 +425,11 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// TODO (#190): Documenteren
+		/// Gaat na of een gelieerde persoon dit werkjaar ingeschreven is als lid
 		/// </summary>
-		/// <param name="gelieerdePersoonID"></param>
-		/// <returns></returns>
+		/// <param name="gelieerdePersoonID">De ID van de gelieerde persoon in kwestie</param>
+		/// <returns><c>True</c> als de gelieerde persoon dit werkjaar ingeschreven is als lid,
+		/// <c>false</c> in het andere geval</returns>
 		public bool IsLid(int gelieerdePersoonID)
 		{
 			throw new NotImplementedException();
@@ -779,7 +780,6 @@ namespace Chiro.Gap.Workers
 
 				// verwijder te verwijderen persoonsadres
 				_personenDao.Bewaren(personen, p => p.PersoonsAdres.First().GelieerdePersoon);
-
 
 #if KIPDORP
 				tx.Complete();

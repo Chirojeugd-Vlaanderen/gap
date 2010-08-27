@@ -1,8 +1,15 @@
-﻿using System.Diagnostics;
+﻿// <copyright company="Chirojeugd-Vlaanderen vzw">
+// Copyright (c) 2007-2010
+// Mail naar informatica@chiro.be voor alle info over deze broncode
+// </copyright>
+
+using System.Diagnostics;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Sync.SyncService;
+
+using CommunicatieType = Chiro.Gap.Sync.SyncService.CommunicatieType;
 
 namespace Chiro.Gap.Sync
 {
@@ -22,7 +29,6 @@ namespace Chiro.Gap.Sync
 			_svc = svc;	
 		}
 
-
 		/// <summary>
 		/// Verwijdert een communicatievorm uit Kipadmin
 		/// </summary>
@@ -38,7 +44,7 @@ namespace Chiro.Gap.Sync
 				(int)communicatieVorm.GelieerdePersoon.Persoon.AdNummer,
 				new CommunicatieMiddel
 				{
-					Type = (SyncService.CommunicatieType)communicatieVorm.CommunicatieType.ID,
+					Type = (CommunicatieType)communicatieVorm.CommunicatieType.ID,
 					Waarde = communicatieVorm.Nummer
 				});
 		}

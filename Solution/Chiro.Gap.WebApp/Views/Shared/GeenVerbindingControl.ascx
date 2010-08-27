@@ -11,5 +11,5 @@
 	Laatste poging ondernomen om
 	<%=DateTime.Now.ToLongTimeString() %>.</p>
 <p>
-	Als het probleem blijft bestaan, neem dan contact op met het nationaal secretariaat:
-	03-231 07 95.</p>
+	Als het probleem blijft bestaan, neem dan contact op met <a
+		href="mailto:helpdesk@chiro.be">de helpdesk</a> (03-231 07 95).</p>

@@ -34,7 +34,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// De ID van de corresponderende officiële afdeling
 		/// </summary>
 		[DataMember]
-		[DisplayName(@"Officiele afdeling")]
+		[DisplayName(@"Officiële afdeling")]
 		public int OfficieleAfdelingID { get; set; }
 
 		// TODO (#595): onder- en bovengrens van geboortejaren mag hier niet hard gecodeerd zijn

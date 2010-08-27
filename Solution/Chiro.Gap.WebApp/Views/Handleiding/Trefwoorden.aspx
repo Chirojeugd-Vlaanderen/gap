@@ -32,6 +32,8 @@
 			dan gaat hij of zij altijd mee met degenen die een jaar jonger zijn.
 			<%=Html.ActionLink("Hoe doe je dat?", "ViewTonen", new { controller = "Handleiding", helpBestand = "ChiroleeftijdAanpassen" })%>
 		</dd>
+		<dt><strong><a class="anchor" id="Contactpersoon">Contactpersoon</a></strong>:</dt>
+		<dd>De contactpersoon is degene die de post van het nationaal secretariaat zal ontvangen.</dd>
 		<dt><strong><a class="anchor" id="Factuur">Factuur</a></strong>:</dt>
 		<dd>Op geregelde tijdstippen verzamelt het nationaal secretariaat alle bewerkingen
 			die groepen deden en waarvoor er betaald moet worden. De eerste keer gebeurt
@@ -41,11 +43,14 @@
 			Je kunt facturen krijgen voor aansluitingen, Dubbelpuntabonnementen en bijkomende
 			verzekeringen. De prijs van abonnementen en verzekeringen staat altijd ergens
 			vermeld - zo kom je niet voor verrassingen te staan.</dd>
+		<dt><strong><a class="anchor" id="FinancieelVerantwoordelijke">Financieel verantwoordelijke</a></strong>:</dt>
+		<dd>De financieel verantwoordelijke is degene naar wie de facturen opgestuurd worden.</dd>
 		<dt><strong><a class="anchor" id="GAV">GAV</a></strong>:</dt>
 		<dd>Groepsadministratieverantwoordelijke. Aangezien jij deze website gebruikt, ben
 			je een GAV van jouw groep. Een groep kan zoveel GAV's hebben als je zelf wilt.
 			Ze moeten wel allemaal een eigen login hebben voor deze website.</dd>
-		<dt><strong><a class="anchor" id="GezinsgebondenCommunicatievorm">Gezinsgebonden communicatievormen</a></strong>:</dt>
+		<dt><strong><a class="anchor" id="GezinsgebondenCommunicatievorm">Gezinsgebonden
+			communicatievormen</a></strong>:</dt>
 		<dd>Een communicatievorm is bijvoorbeeld een telefoonnummer of een mailadres. Je
 			kunt die allemaal met hetzelfde formulier toevoegen. Zo'n communicatievorm is
 			gezinsgebonden als je er alle gezinsleden mee kunt bereiken - en dus ook de
@@ -107,6 +112,15 @@
 			nieuws hebben. Zo zijn er lijsten voor leiding, kaderleiding, groepsleiding,
 			VB's en jeugdraadvertegenwoordigers. Meer info vind je <a href="http://www.chiro.be/Snelleberichtenlijst">
 				op de Chirosite</a>.</dd>
+		<dt><a class="anchor" id="Uitschrijven"></a><strong>Uitschrijven</strong>:</dt>
+		<dd>Iemand uitschrijven is een drastische maatregel. In principe kan het ook niet
+			- toch niet voor het nationaal secretariaat. Wanneer je iemand aansluit, is
+			dat voor een heel werkjaar. Je kunt dus ook geen lidgeld terugvorderen, want
+			daar zijn al een hoop vaste kosten mee betaald, zoals de verzekering.<br />
+			In je groep kun je wel de beslissing nemen om iemand uit te schrijven. In het
+			programma heet dat: 'op non-actief zetten'. De persoon blijft wel in je gegevensbestand
+			zitten, maar hij of zij verschijnt niet meer bij de ingeschreven leden.
+			<%=Html.ActionLink("Hoe doe je dat?", "ViewTonen", new { controller = "Handleiding", helpBestand = "Uitschrijven" })%></dd>
 		<dt><strong><a class="anchor" id="Voorkeursadres">Voorkeursadres</a></strong>:</dt>
 		<dd>Elke persoon kan verschillende adressen hebben, van verschillende types (thuis,
 			kot, enz.). Het voorkeursadres is waar de post moet aankomen. Dat is dus het

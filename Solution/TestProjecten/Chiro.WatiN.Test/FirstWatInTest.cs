@@ -72,7 +72,7 @@ namespace Chiro.WatiN.Test
 		private const string VIRTUAL_DIRECTORY = "/";
 
 		private const string WEB_DEV_SERVER_PATH =
-			@"C:\Program Files\Common Files\Microsoft Shared\DevServer\9.0\WebDev.WebServer.EXE";
+			@"C:\Program Files (x86)\Common Files\microsoft shared\DevServer\9.0\WebDev.WebServer.EXE";
 
 		private static string _solutionRoot;
 

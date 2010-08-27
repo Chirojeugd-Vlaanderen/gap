@@ -17,10 +17,10 @@
 		<th>Ad-nr. </th>
 		<th>Type </th>
 		<th>
-			<%= Html.ActionLink("Naam", "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = LedenSorteringsEnum.Naam, lijst = Model.GekozenLijst, ID = Model.GekozenID })%>
+			<%= Html.ActionLink("Naam", "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = LedenSorteringsEnum.Naam, lijst = Model.GekozenLijst, ID = Model.GekozenID }, new { title = "Sorteren op naam" })%>
 		</th>
 		<th>
-			<%= Html.ActionLink("Geboortedatum", "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = LedenSorteringsEnum.Leeftijd, lijst = Model.GekozenLijst, ID = Model.GekozenID  })%>
+			<%= Html.ActionLink("Geboortedatum", "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = LedenSorteringsEnum.Leeftijd, lijst = Model.GekozenLijst, ID = Model.GekozenID  }, new { title="Sorteren op geboortedatum"})%>
 		</th>
 		<th>
 			<%=Html.Geslacht(GeslachtsType.Man) %>
@@ -28,7 +28,7 @@
 		</th>
 		<th>Betaald </th>
 		<th>
-			<%= Html.ActionLink("Afd.", "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = LedenSorteringsEnum.Afdeling, lijst = Model.GekozenLijst, ID = Model.GekozenID })%>
+			<%= Html.ActionLink("Afd.", "Lijst", new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = LedenSorteringsEnum.Afdeling, lijst = Model.GekozenLijst, ID = Model.GekozenID }, new { title = "Sorteren op afdeling" })%>
 		</th>
 		<th>Func. </th>
 		<%=Model.KanLedenBewerken ? "<th>Acties</th>" : String.Empty %>
@@ -69,8 +69,8 @@
 		<%if (Model.KanLedenBewerken)
 	{%>
 		<td>
-			<%=Html.ActionLink("uitschrijven", "DeActiveren", new { Controller = "Leden", id = pl.PersoonDetail.GelieerdePersoonID })%>
-			<%=Html.ActionLink("afd.", "AfdelingBewerken", new { Controller = "Leden", lidID = pl.LidInfo.LidID })%>
+			<%=Html.ActionLink("uitschrijven", "DeActiveren", new { Controller = "Leden", id = pl.PersoonDetail.GelieerdePersoonID }, new { title = "Op non-actief zetten, zodat de persoon niet meer in de ledenlijst verschijnt" })%>
+			<%=Html.ActionLink("afd.", "AfdelingBewerken", new { Controller = "Leden", lidID = pl.LidInfo.LidID }, new { title = "Bij een (andere) afdeling zetten" })%>
 		</td>
 		<%
 			}%>

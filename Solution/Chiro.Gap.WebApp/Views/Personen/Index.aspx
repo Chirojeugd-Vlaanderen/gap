@@ -21,7 +21,7 @@
 			Acties</h1>
 		<ul>
 			<li>
-				<%= Html.ActionLink("Nieuwe persoon", "Nieuw", new{ title="Voeg een nieuwe persoon toe in je gegevensbestand"}) %></li>
+				<strong><%= Html.ActionLink("Nieuwe persoon", "Nieuw", new{ title="Voeg een nieuwe persoon toe in je gegevensbestand"}) %></strong></li>
 			<li>
 				<%= Html.ActionLink("Lijst downloaden", "Download", new { id = Model.GekozenCategorieID }, new { title = "Download de geselecteerde gegevens in een Excel-bestand"}) %></li>
 		</ul>

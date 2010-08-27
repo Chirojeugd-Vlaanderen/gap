@@ -55,8 +55,8 @@ namespace Chiro.Gap.WebApp.Test
 				new
 				{
 					controller = "Handleiding",
-					action = "ByPassIndex",
-					helpBestand = "Inleiding"
+					action = "ViewTonen",
+					helpBestand = "Index"
 				});
 		}
 
@@ -67,7 +67,7 @@ namespace Chiro.Gap.WebApp.Test
 				new
 				{
 					controller = "Handleiding",
-					action = "ByPassIndex",
+					action = "ViewTonen",
 					helpBestand = "Jaarovergang"
 				});
 
@@ -80,7 +80,7 @@ namespace Chiro.Gap.WebApp.Test
 				new
 				{
 					controller = "Handleiding",
-					action = "BestandTonen",
+					action = "ViewTonen",
 					helpBestand = "Jaarovergang"
 				});
 

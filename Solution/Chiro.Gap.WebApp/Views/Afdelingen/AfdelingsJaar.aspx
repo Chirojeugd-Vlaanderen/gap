@@ -46,9 +46,7 @@
 				  select new { value = oa.ID, text = oa.Naam }; 
 		%>
 		<%=Html.LabelFor(mdl=>mdl.AfdelingsJaar.OfficieleAfdelingID) %>
-		<%=Html.DropDownListFor(mdl => mdl.AfdelingsJaar.OfficieleAfdelingID, new SelectList(values, "value", "text"))%><br />
-		<%=Html.LabelFor(mdl=>mdl.AfdelingsJaar.GeenAutoVerdeling) %>
-		<%=Html.CheckBoxFor(mdl=>mdl.AfdelingsJaar.GeenAutoVerdeling) %> <br />
+		<%=Html.DropDownListFor(mdl => mdl.AfdelingsJaar.OfficieleAfdelingID, new SelectList(values, "value", "text"))%> 
 		<%=Html.HiddenFor(mdl=>mdl.AfdelingsJaar.AfdelingID) %>
 		<%=Html.HiddenFor(mdl=>mdl.AfdelingsJaar.AfdelingsJaarID) %>
 		<%=Html.HiddenFor(mdl=>mdl.AfdelingsJaar.VersieString) %>
@@ -73,4 +71,6 @@
 		</tr>
 		<%}%>
 	</table>
+	<p>
+		<%=Html.ActionLink("Meer weten over afdelingen die een speciaal geval zijn?", "ViewTonen", new { controller = "Handleiding", helpBestand = "SpecialeAfdelingen" })%></p>
 </asp:Content>

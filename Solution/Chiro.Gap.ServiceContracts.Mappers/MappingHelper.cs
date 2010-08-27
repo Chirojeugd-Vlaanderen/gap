@@ -425,10 +425,10 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
 		/// <summary>
 		/// Geeft de rij afdelingen weer waaraan een lid gekoppeld is.  Voor een kind bevat de lijst precies
-		/// 1 afdeling, voor een leiding kunnen het er ook geen of veel zijn.
+		/// 1 afdeling, voor leiding kunnen het er ook geen of veel zijn.
 		/// </summary>
 		/// <param name="l">Lid van wie we afdelingen moeten ophalen</param>
-		/// <returns>Rij afdelngen van het lid <paramref name="l"/></returns>
+		/// <returns>Rij afdelingen van het lid <paramref name="l"/></returns>
 		private static IEnumerable<AfdelingInfo> Afdelingen(Lid l)
 		{
 			if (l is Kind)

@@ -23,13 +23,11 @@ using Chiro.Gap.Workers.Exceptions;
 namespace Chiro.Gap.Workers
 {
 	/// <summary>
-	/// DONE (#190): Documenteren
 	/// Klasse met extra methode om het einde van de jaarovergang in een groepswerkjaar op te vragen.
 	/// </summary>
 	public static class GroepsWerkJaarHelper
 	{
 		/// <summary>
-		/// DONE (#190): Documenteren
 		/// Berekend aan de hand van een gegeven werkjaar de datum van het verplichte einde van de instapperiode in dat jaar.
 		/// Belangrijk => volgens de HUIDIGE settings van dat werkjaareinde (moest dat in de toekomst veranderen en we hebben dat van vroeger nodig)
 		/// </summary>
@@ -37,9 +35,10 @@ namespace Chiro.Gap.Workers
 		/// <returns>De datum waarom de jaarovergang eindigt</returns>
 		public static DateTime GetEindeJaarovergang(this GroepsWerkJaar gwj)
 		{
+			// Haal de einddatum voor de overgang/aansluiting uit de settings, en bereken wanneer die datum valt in dit werkjaar
 			var dt = Properties.Settings.Default.WerkjaarVerplichteOvergang;
 			dt.AddYears(gwj.WerkJaar - dt.Year);
-			return dt; // DONE (#610): 15 oktober mag niet hardgecodeerd zijn, dat hoort thuis in de settings
+			return dt;
 		}
 	}
 
@@ -59,7 +58,7 @@ namespace Chiro.Gap.Workers
 		/// voor data access.</param>
 		/// <param name="autorisatie">Een IAuthorisatieManager, die
 		/// de GAV-permissies van de huidige user controleert.</param>
-		/// <param name="sync">wordt gebruikt om lidgegevens naar Kipadmin te syncen</param>
+		/// <param name="sync">Zorgt voor synchronisate van adressen naar KipAdmin</param>
 		public LedenManager(LedenDaoCollectie daos, IAutorisatieManager autorisatie, ILedenSync sync)
 		{
 			_daos = daos;
@@ -121,7 +120,7 @@ namespace Chiro.Gap.Workers
 			}
 
 			// Nog leven ook
-			if(gp.Persoon.SterfDatum.HasValue)
+			if (gp.Persoon.SterfDatum.HasValue)
 			{
 				throw new InvalidOperationException(Properties.Resources.PersoonIsOverleden);
 			}
@@ -200,7 +199,7 @@ namespace Chiro.Gap.Workers
 			var afdelingsjaren =
 				(from a in gwj.AfdelingsJaar
 				 where a.GeboorteJaarVan <= geboortejaar && geboortejaar <= a.GeboorteJaarTot
-				       && !a.GeenAutoVerdeling
+					   && !a.GeenAutoVerdeling
 				 select a).ToList();
 
 			if (afdelingsjaren.Count == 0)
@@ -252,7 +251,7 @@ namespace Chiro.Gap.Workers
 
 		/// <summary>
 		/// Schrijft een gelieerde persoon zo automatisch mogelijk in, persisteert niet.
-		///	
+		///	<para />
 		/// Als de persoon in een afdeling past, krijgt hij die afdeling. Als er meerdere passen, wordt er een gekozen.
 		///	Als de persoon niet in een afdeling past, wordt hij leiding als hij oud genoeg is.
 		///	Anders wordt een foutmelding gegeven.
@@ -272,22 +271,22 @@ namespace Chiro.Gap.Workers
 			// Stop de geboortedatum in een lokale variabele [wiki:VeelVoorkomendeWaarschuwingen#PossibleInvalidOperationinLinq-statement]
 			var geboortejaar = gp.LeefTijd.Value.Year;
 			var afdelingsjaar = (from a in gwj.AfdelingsJaar
-			                     where !a.GeenAutoVerdeling &&
-			                           (geboortejaar <= a.GeboorteJaarTot
-			                            && a.GeboorteJaarVan <= geboortejaar)
-			                     select a).FirstOrDefault();
+								 where !a.GeenAutoVerdeling &&
+									   (geboortejaar <= a.GeboorteJaarTot
+										&& a.GeboorteJaarVan <= geboortejaar)
+								 select a).FirstOrDefault();
 
 			Lid nieuwlid;
-				// Kijk of er een passend afdelingsjaar is
+			// Kijk of er een passend afdelingsjaar is
 			if (afdelingsjaar != null)
 			{
 				nieuwlid = KindMaken(gp, gwj);
-			} 
-				// Kijk of de persoon oud genoeg is om leiding te worden
+			}
+			// Kijk of de persoon oud genoeg is om leiding te worden
 			else if (gwj.WerkJaar - gp.LeefTijd.Value.Year >= Properties.Settings.Default.MinLeidingLeefTijd)
 			{
 				nieuwlid = LeidingMaken(gp, gwj);
-			} 
+			}
 			else
 			{
 				throw new OngeldigObjectException("Je groep heeft geen afdeling voor die leeftijd en de persoon is te jong om leiding te worden.");
@@ -562,7 +561,7 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			return _daos.LedenDao.OphalenViaPersoon(gelieerdePersoonID,groepsWerkJaarID);
+			return _daos.LedenDao.OphalenViaPersoon(gelieerdePersoonID, groepsWerkJaarID);
 		}
 
 		/// <summary>
@@ -626,13 +625,13 @@ namespace Chiro.Gap.Workers
 			}
 			else if (l is Leiding)
 			{
-// ReSharper disable LoopCanBeConvertedToQuery
+				// ReSharper disable LoopCanBeConvertedToQuery
 				// Als ReShaper hier een Linq-query van maakt, staat er result.AddRange, en dat wordt niet herkend
 				foreach (AfdelingsJaar aj in (l as Leiding).AfdelingsJaar)
 				{
 					result.Add(aj.Afdeling.ID);
 				}
-// ReSharper restore LoopCanBeConvertedToQuery
+				// ReSharper restore LoopCanBeConvertedToQuery
 			}
 			else
 			{
@@ -718,7 +717,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>Lijst lambda-expressies geschikt voor de LedenDAO</returns>
 		private static IList<Expression<Func<T, object>>> ExtrasNaarLambdas<T>(LidExtras extras) where T : Lid
 		{
-			var paths = new List<Expression<Func<T, object>>> {ld => ld.GroepsWerkJaar.WithoutUpdate()};
+			var paths = new List<Expression<Func<T, object>>> { ld => ld.GroepsWerkJaar.WithoutUpdate() };
 
 			if ((extras & LidExtras.Adressen) != 0)
 			{
@@ -787,15 +786,14 @@ namespace Chiro.Gap.Workers
 				using (var tx = new TransactionScope())
 				{
 #endif
-					_sync.Bewaren(l);
-					l.IsOvergezet = true;
-					_daos.LedenDao.Bewaren(l);
-
-					tx.Complete();
+				_sync.Bewaren(l);
+				l.IsOvergezet = true;
+				_daos.LedenDao.Bewaren(l);
 #if KIPDORP
-				}
-#endif			
+					tx.Complete();
 
+				}
+#endif
 			}
 		}
 	}

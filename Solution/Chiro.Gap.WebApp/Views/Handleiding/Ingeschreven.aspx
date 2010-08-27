@@ -22,14 +22,14 @@
 		Wat kun je hier doen?</h3>
 	<ul>
 		<li>
-			<%= Html.ActionLink("Leiding verzekeren tegen loonverlies", "ViewTonen", "Handleiding", null, null, "Categorie", new { helpBestand = "VerzekeringLoonverlies" }, null)%></li>
+			<%= Html.ActionLink("Leiding verzekeren tegen loonverlies", "ViewTonen", new { controller = "Handleiding", helpBestand = "VerzekeringLoonverlies" }, new { title = "Werkende leiding extra verzekeren"})%></li>
 		<li>
-			<%= Html.ActionLink("Iemand bij een (andere) afdeling zetten", "ViewTonen", "Handleiding", null, null, "Categorie", new { helpBestand = "VeranderenVanAfdeling" }, null)%></li>
+			<%= Html.ActionLink("Iemand bij een (andere) afdeling zetten", "ViewTonen", new { controller = "Handleiding", helpBestand = "VeranderenVanAfdeling" }, new { title = "Leden in of leiding bij een andere afdeling zetten" })%></li>
 		<li>
-			<%= Html.ActionLink("Filteren op afdeling of functie", "ViewTonen", "Handleiding", null, null, "Categorie", new { helpBestand = "Filteren" }, null)%></li>
+			<%= Html.ActionLink("Filteren op afdeling of functie", "ViewTonen", new { controller = "Handleiding", helpBestand = "Filteren" }, new { title = "De ledenlijst filteren op afdeling of functie" })%></li>
 		<li>
-			<%=Html.ActionLink("Een lijst downloaden", "ViewTonen", new { controller = "Handleiding", helpBestand = "LijstDownloaden" })%>
+			<%=Html.ActionLink("Een lijst downloaden", "ViewTonen", new { controller = "Handleiding", helpBestand = "LijstDownloaden" }, new { title = "Gegevens downloaden als Excel-bestand" })%>
 			(bv. om
-			<%=Html.ActionLink("etiketten te maken", "ViewTonen", new { controller = "Handleiding", helpBestand = "EtikettenMaken" })%>)</li>
+			<%=Html.ActionLink("etiketten te maken", "ViewTonen", new { controller = "Handleiding", helpBestand = "EtikettenMaken" }, new { title = "Etiketten maken met gegevens uit een Excel-bestand" })%>)</li>
 	</ul>
 </asp:Content>
