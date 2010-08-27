@@ -17,6 +17,7 @@ namespace Chiro.Kip.Services
 {
 	public class SyncPersoonService : ISyncPersoonService
 	{
+		private static Object _lidMakenToken;
 
 		/// <summary>
 		/// Updatet een persoon in Kipadmin op basis van de gegevens in 
@@ -330,307 +331,306 @@ namespace Chiro.Kip.Services
 			IEnumerable<FunctieEnum> nationaalBepaaldeFuncties, 
 			IEnumerable<AfdelingEnum> officieleAfdelingen)
 		{
-//#if KIPDORP
-//                        using (var tx = new TransactionScope())
-//                        {
-//#endif
-				using (var db = new kipadminEntities())
+			lock (_lidMakenToken)
+			{
+#if KIPDORP
+				using (var tx = new TransactionScope())
 				{
-					// Vind de groep, zodat we met groepID kunnen werken ipv stamnummer.
-
-					Groep groep = (from g in db.Groep.OfType<ChiroGroep>()
-					               where g.STAMNR == stamNummer
-					               select g).FirstOrDefault();
-
-					// Bestaat het lid al?
-					// De moeilijkheid is dat bij het begin van het nieuwe werkjaar standaard
-					// alle leden van het vorige werkjaar in kipadmin zitten, met 'aansl_nr' = 0.
-					// Negeer dus die records.  Op het moment dat het eerste lid van het nieuwe
-					// werkjaar wordt overgezet, verdwijnen de leden met aansl_jr = 0
-
-					Lid lid = (from l in db.Lid.Include(ld => ld.HeeftFunctie.First().Functie)
-					           where
-							l.AANSL_NR > 0 && 
-					           	l.Persoon.AdNr == adNummer &&
-					           	l.Groep.GroepID == groep.GroepID &&
-					           	l.werkjaar == werkJaar
-					           select l).FirstOrDefault();
-
-					// Aan het hoeveelste jaar van dit lid zijn we?
-
-					int aantalJaren = (from l in db.Lid
-					                   where l.AANSL_NR > 0 &&
-					                         l.Persoon.AdNr == adNummer && 
-								 l.Groep.GroepID == groep.GroepID && 
-								 l.werkjaar < werkJaar
-					                   select l.werkjaar).Distinct().Count() + 1;
-
-					if (lid != null)
+#endif
+					using (var db = new kipadminEntities())
 					{
-						// In praktijk zullen we nooit een bestaand lid met functies en afdelingen
-						// tegelijk updateten.  Dus het is niet erg dat dit stuk nog niet geimplementeerd
-						// is :-)
+						// Vind de groep, zodat we met groepID kunnen werken ipv stamnummer.
 
-						throw new NotImplementedException();
-					}
-					else
-					{
-						int volgNummer = 1;
+						Groep groep = (from g in db.Groep.OfType<ChiroGroep>()
+						               where g.STAMNR == stamNummer
+						               select g).FirstOrDefault();
 
-						// Nieuw lid.
+						// Bestaat het lid al?
+						// De moeilijkheid is dat bij het begin van het nieuwe werkjaar standaard
+						// alle leden van het vorige werkjaar in kipadmin zitten, met 'aansl_nr' = 0.
+						// Negeer dus die records.  Op het moment dat het eerste lid van het nieuwe
+						// werkjaar wordt overgezet, verdwijnen de leden met aansl_jr = 0
 
-						// Zoek persoon op.
+						Lid lid = (from l in db.Lid.Include(ld => ld.HeeftFunctie.First().Functie)
+						           where
+						           	l.AANSL_NR > 0 &&
+						           	l.Persoon.AdNr == adNummer &&
+						           	l.Groep.GroepID == groep.GroepID &&
+						           	l.werkjaar == werkJaar
+						           select l).FirstOrDefault();
 
-						var persoon = (from p in db.PersoonSet
-						               where p.AdNr == adNummer
-						               select p).FirstOrDefault();
+						// Aan het hoeveelste jaar van dit lid zijn we?
 
-						// Zoek eerst naar een geschikte aansluiting om het lid aan
-						// toe te voegen.
+						int aantalJaren = (from l in db.Lid
+						                   where l.AANSL_NR > 0 &&
+						                         l.Persoon.AdNr == adNummer &&
+						                         l.Groep.GroepID == groep.GroepID &&
+						                         l.werkjaar < werkJaar
+						                   select l.werkjaar).Distinct().Count() + 1;
 
-						// TODO: Als we kader gaan aansluiten, dan zijn er geen rekeningen
-						// gekoppeld aan de aansluiting!  Dan loopt het dus anders.
-
-						var aansluitingenDitWerkjaar = (from a in db.Aansluiting.Include(asl=>asl.REKENING)
-						                                where a.WerkJaar == werkJaar
-						                                      && a.Groep.GroepID == groep.GroepID
-						                                select a).OrderByDescending(aa => aa.VolgNummer);
-
-						// Laatste aansluiting opzoeken
-						
-						var aansluiting = aansluitingenDitWerkjaar.FirstOrDefault();
-
-						if (aansluiting == null)
+						if (lid != null)
 						{
-							// Eerste lid voor dit werkjaar.  Verwijder alle huidige
-							// leden, die er nog in zitten als kopietje van vorig jaar.
+							// In praktijk zullen we nooit een bestaand lid met functies en afdelingen
+							// tegelijk updateten.  Dus het is niet erg dat dit stuk nog niet geimplementeerd
+							// is :-)
 
-							var teVerwijderenLeden = (from l in db.Lid.Include(ld=>ld.HeeftFunctie)
-							                          where l.Groep.GroepID == groep.GroepID
-							                                && l.werkjaar == werkJaar
-							                          select l).ToList();
+							throw new NotImplementedException();
+						}
+						else
+						{
+							int volgNummer = 1;
 
-							var teVerwijderenFuncties = teVerwijderenLeden.SelectMany(ld => ld.HeeftFunctie).ToList();
+							// Nieuw lid.
 
-							foreach (var hf in teVerwijderenFuncties)
+							// Zoek persoon op.
+
+							var persoon = (from p in db.PersoonSet
+							               where p.AdNr == adNummer
+							               select p).FirstOrDefault();
+
+							// Zoek eerst naar een geschikte aansluiting om het lid aan
+							// toe te voegen.
+
+							// TODO: Als we kader gaan aansluiten, dan zijn er geen rekeningen
+							// gekoppeld aan de aansluiting!  Dan loopt het dus anders.
+
+							var aansluitingenDitWerkjaar = (from a in db.Aansluiting.Include(asl => asl.REKENING)
+							                                where a.WerkJaar == werkJaar
+							                                      && a.Groep.GroepID == groep.GroepID
+							                                select a).OrderByDescending(aa => aa.VolgNummer);
+
+							// Laatste aansluiting opzoeken
+
+							var aansluiting = aansluitingenDitWerkjaar.FirstOrDefault();
+
+							if (aansluiting == null)
 							{
-								db.DeleteObject(hf);
+								// Eerste lid voor dit werkjaar.  Verwijder alle huidige
+								// leden, die er nog in zitten als kopietje van vorig jaar.
+
+								var teVerwijderenLeden = (from l in db.Lid.Include(ld => ld.HeeftFunctie)
+								                          where l.Groep.GroepID == groep.GroepID
+								                                && l.werkjaar == werkJaar
+								                          select l).ToList();
+
+								var teVerwijderenFuncties = teVerwijderenLeden.SelectMany(ld => ld.HeeftFunctie).ToList();
+
+								foreach (var hf in teVerwijderenFuncties)
+								{
+									db.DeleteObject(hf);
+								}
+
+								foreach (var l in teVerwijderenLeden)
+								{
+									db.DeleteObject(l);
+								}
+
+								// Om zodadelijk geen conflicten te krijgen, gaan we dat
+								// al eens bewaren.
+
+								db.SaveChanges();
 							}
 
-							// Om zodadelijk geen conflicten te krijgen, gaan we dat
-							// al eens bewaren.
+							// Als de laatste aansluiting nog niet doorgeboekt is, dan gaat het
+							// nieuwe lid gewoon bij die laatste aansluiting.
+
+							// Is er nog geen laatste aansluiting, of was de laatste wel
+							// doorgeboekt, dan maken we er een nieuwe.
+
+							if (aansluiting == null || aansluiting.REKENING.DOORGEBOE != "N")
+							{
+								// Creeer nieuwe aansluiting, en meteen ook een rekening.
+								// Die rekening mag nog leeg zijn; kipadmin berekent de
+								// bedragen bij het overzetten van de factuur.
+
+								volgNummer = (aansluiting == null ? 1 : aansluiting.VolgNummer + 1);
+
+								var rekening = new Rekening
+								               	{
+								               		WERKJAAR = (short) werkJaar,
+								               		TYPE = "F",
+								               		REK_BRON = "AANSLUIT",
+								               		STAMNR = stamNummer,
+								               		VERWIJSNR = volgNummer,
+								               		FACTUUR = "N",
+								               		FACTUUR2 = "N",
+								               		DOORGEBOE = "N",
+								               		DAT_REK = DateTime.Now
+								               	};
+
+								aansluiting = new Aansluiting
+								              	{
+								              		RibbelsJ = 0,
+								              		RibbelsM = 0,
+								              		SpeelClubJ = 0,
+								              		SpeelClubM = 0,
+								              		RakwisJ = 0,
+								              		RakwisM = 0,
+								              		TitosJ = 0,
+								              		TitosM = 0,
+								              		KetisJ = 0,
+								              		KetisM = 0,
+								              		AspisJ = 0,
+								              		AspisM = 0,
+								              		LeidingJ = 0,
+								              		LeidingM = 0,
+								              		Proost = 0,
+								              		Vb = 0,
+								              		Freelance = 0,
+								              		AansluitingID = 0,
+								              		Groep = groep,
+								              		Noot = null,
+								              		REKENING = rekening,
+								              		SolidariteitsBijdrage = 0,
+								              		VolgNummer = volgNummer,
+								              		WerkJaar = werkJaar
+								              	};
+
+								db.AddToRekeningSet(rekening);
+								db.AddToAansluiting(aansluiting);
+
+							}
+
+							// aansluiting bevat nu het aansluitingsrecord waaraan het lid
+							// toegevoegd kan worden.
+
+							aansluiting.Datum = DateTime.Now; // aansluitingsdatum is datum recentste lid.
+							aansluiting.Stempel = DateTime.Now;
+							aansluiting.Wijze = "G";
+
+							lid = new Lid
+							      	{
+							      		AANSL_NR = (short) volgNummer,
+							      		AANTAL_JA = (short) aantalJaren,
+							      		ACTIEF = "J",
+							      		AFDELING1 = null,
+							      		AFDELING2 = null,
+							      		Groep = groep,
+							      		HeeftFunctie = null,
+							      		MAILING_TOEVOEG = null,
+							      		Persoon = persoon,
+							      		SOORT = lidType == LidTypeEnum.Kind ? "LI" : "LE",
+							      		STATUS = null,
+							      		STEMPEL = DateTime.Now,
+							      		VERZ_NR = 0,
+							      		WEB_TOEVOEG = null,
+							      		werkjaar = werkJaar
+							      	};
+
+							// 2 afdelingen kunnen we overnemen.
+
+							if (officieleAfdelingen.Count() >= 1)
+							{
+								int afdid = (int) officieleAfdelingen.First();
+								lid.AFDELING1 = (from a in db.AfdelingSet
+								                 where a.AFD_ID == afdid
+								                 select a.AFD_NAAM).FirstOrDefault();
+							}
+
+							if (officieleAfdelingen.Count() >= 2)
+							{
+								int afdid = (int) officieleAfdelingen.Skip(1).First();
+								lid.AFDELING2 = (from a in db.AfdelingSet
+								                 where a.AFD_ID == afdid
+								                 select a.AFD_NAAM).FirstOrDefault();
+							}
+
+							// Functies
+
+							var toeTeKennen =
+								db.FunctieSet.Where(Utility.BuildContainsExpression<Functie, int>(f => f.id,
+								                                                                  nationaalBepaaldeFuncties.Cast<int>()));
+
+							foreach (var functie in toeTeKennen)
+							{
+								var hf = new HeeftFunctie
+								         	{
+								         		Lid = lid,
+								         		Functie = functie
+								         	};
+								db.AddToHeeftFunctieSet(hf);
+							}
+
+							// Domme telling in aansluitingslijn
+
+							if (lidType == LidTypeEnum.Kind && persoon.Geslacht == (int) GeslachtsEnum.Man)
+							{
+								switch (officieleAfdelingen.First())
+								{
+									case AfdelingEnum.Ribbels:
+										++aansluiting.RibbelsJ;
+										break;
+									case AfdelingEnum.Speelclub:
+										++aansluiting.SpeelClubJ;
+										break;
+									case AfdelingEnum.Rakwis:
+										++aansluiting.RakwisJ;
+										break;
+									case AfdelingEnum.Titos:
+										++aansluiting.TitosJ;
+										break;
+									case AfdelingEnum.Ketis:
+										++aansluiting.KetisJ;
+										break;
+									case AfdelingEnum.Aspis:
+										++aansluiting.AspisJ;
+										break;
+									default:
+										break;
+								}
+
+							}
+							else if (lidType == LidTypeEnum.Kind && persoon.Geslacht == (int) GeslachtsEnum.Vrouw)
+							{
+								switch (officieleAfdelingen.First())
+								{
+									case AfdelingEnum.Ribbels:
+										++aansluiting.RibbelsM;
+										break;
+									case AfdelingEnum.Speelclub:
+										++aansluiting.SpeelClubM;
+										break;
+									case AfdelingEnum.Rakwis:
+										++aansluiting.RakwisM;
+										break;
+									case AfdelingEnum.Titos:
+										++aansluiting.TitosM;
+										break;
+									case AfdelingEnum.Ketis:
+										++aansluiting.KetisM;
+										break;
+									case AfdelingEnum.Aspis:
+										++aansluiting.AspisM;
+										break;
+									default:
+										break;
+								}
+
+							}
+							else if (lidType == LidTypeEnum.Leiding)
+							{
+								if (nationaalBepaaldeFuncties.Contains(FunctieEnum.Vb)) ++aansluiting.Vb;
+								else if (nationaalBepaaldeFuncties.Contains(FunctieEnum.Proost)) ++aansluiting.Proost;
+								else if (persoon.Geslacht == (int) GeslachtsEnum.Man) ++aansluiting.LeidingJ;
+								else if (persoon.Geslacht == (int) GeslachtsEnum.Vrouw) ++aansluiting.LeidingM;
+							}
+
+							// Lid toevoegen aan datacontext, en bewaren.
+
+							db.AddToLid(lid);
 
 							db.SaveChanges();
 
-							foreach (var l in teVerwijderenLeden)
-							{
-								db.DeleteObject(l);
-							}
-
-							// Om zodadelijk geen conflicten te krijgen, gaan we dat
-							// al eens bewaren.
-
-							db.SaveChanges();
+							Console.WriteLine(String.Format("Persoon met AD-nr. {0} ingeschreven als lid voor {1} in {2}", adNummer,
+							                                stamNummer, werkJaar));
 						}
 
-						// Als de laatste aansluiting nog niet doorgeboekt is, dan gaat het
-						// nieuwe lid gewoon bij die laatste aansluiting.
-
-						// Is er nog geen laatste aansluiting, of was de laatste wel
-						// doorgeboekt, dan maken we er een nieuwe.
-
-						if (aansluiting == null || aansluiting.REKENING.DOORGEBOE != "J")
-						{
-							// Creeer nieuwe aansluiting, en meteen ook een rekening.
-							// Die rekening mag nog leeg zijn; kipadmin berekent de
-							// bedragen bij het overzetten van de factuur.
-
-							volgNummer = (aansluiting == null ? 1 : aansluiting.VolgNummer + 1);
-
-							var rekening = new Rekening
-							               	{
-							               		WERKJAAR = (short) werkJaar,
-							               		TYPE = "F",
-							               		REK_BRON = "AANSLUIT",
-							               		STAMNR = stamNummer,
-							               		VERWIJSNR = volgNummer,
-							               		FACTUUR = "N",
-							               		FACTUUR2 = "N",
-							               		DOORGEBOE = "N",
-										DAT_REK = DateTime.Now
-							               	};
-
-							aansluiting = new Aansluiting
-							              	{
-							              		RibbelsJ = 0,
-							              		RibbelsM = 0,
-							              		SpeelClubJ = 0,
-							              		SpeelClubM = 0,
-							              		RakwisJ = 0,
-							              		RakwisM = 0,
-							              		TitosJ = 0,
-							              		TitosM = 0,
-							              		KetisJ = 0,
-							              		KetisM = 0,
-							              		AspisJ = 0,
-							              		AspisM = 0,
-							              		LeidingJ = 0,
-							              		LeidingM = 0,
-							              		Proost = 0,
-							              		Vb = 0,
-							              		Freelance = 0,
-							              		AansluitingID = 0,
-							              		Groep = groep,
-							              		Noot = null,
-							              		REKENING = rekening,
-							              		SolidariteitsBijdrage = 0,
-							              		VolgNummer = volgNummer,
-							              		WerkJaar = werkJaar
-							              	};
-
-							db.AddToRekeningSet(rekening);
-							db.AddToAansluiting(aansluiting);
-
-						}
-
-						// aansluiting bevat nu het aansluitingsrecord waaraan het lid
-						// toegevoegd kan worden.
-
-						aansluiting.Datum = DateTime.Now; // aansluitingsdatum is datum recentste lid.
-						aansluiting.Stempel = DateTime.Now;
-						aansluiting.Wijze = "G";
-
-						lid = new Lid
-						      	{
-						      		AANSL_NR = (short) volgNummer,
-						      		AANTAL_JA = (short) aantalJaren,
-						      		ACTIEF = "J",
-						      		AFDELING1 = null,
-						      		AFDELING2 = null,
-						      		Groep = groep,
-						      		HeeftFunctie = null,
-						      		MAILING_TOEVOEG = null,
-						      		Persoon = persoon,
-						      		SOORT = lidType == LidTypeEnum.Kind ? "LI" : "LE",
-						      		STATUS = null,
-						      		STEMPEL = DateTime.Now,
-						      		VERZ_NR = 0,
-						      		WEB_TOEVOEG = null,
-						      		werkjaar = werkJaar
-						      	};
-
-						// 2 afdelingen kunnen we overnemen.
-
-						if (officieleAfdelingen.Count() >= 1)
-						{
-							int afdid = (int) officieleAfdelingen.First();
-							lid.AFDELING1 = (from a in db.AfdelingSet
-							                 where a.AFD_ID == afdid
-							                 select a.AFD_NAAM).FirstOrDefault();
-						}
-
-						if (officieleAfdelingen.Count() >= 2)
-						{
-							int afdid = (int)officieleAfdelingen.Skip(1).First();
-							lid.AFDELING2 = (from a in db.AfdelingSet
-							                 where a.AFD_ID == afdid
-							                 select a.AFD_NAAM).FirstOrDefault();
-						}
-
-						// Functies
-
-						var toeTeKennen =
-							db.FunctieSet.Where(Utility.BuildContainsExpression<Functie, int>(f => f.id, nationaalBepaaldeFuncties.Cast<int>()));
-
-						foreach (var functie in toeTeKennen)
-						{
-							var hf = new HeeftFunctie
-							         	{
-							         		Lid = lid,
-							         		Functie = functie
-							         	};
-							db.AddToHeeftFunctieSet(hf);
-						}
-
-						// Domme telling in aansluitingslijn
-
-						if (lidType == LidTypeEnum.Kind && persoon.Geslacht == (int) GeslachtsEnum.Man)
-						{
-							switch (officieleAfdelingen.First())
-							{
-								case AfdelingEnum.Ribbels:
-									++aansluiting.RibbelsJ;
-									break;
-								case AfdelingEnum.Speelclub:
-									++aansluiting.SpeelClubJ;
-									break;
-								case AfdelingEnum.Rakwis:
-									++aansluiting.RakwisJ;
-									break;
-								case AfdelingEnum.Titos:
-									++aansluiting.TitosJ;
-									break;
-								case AfdelingEnum.Ketis:
-									++aansluiting.KetisJ;
-									break;
-								case AfdelingEnum.Aspis:
-									++aansluiting.AspisJ;
-									break;
-								default:
-									break;
-							}
-
-						}
-						else if (lidType == LidTypeEnum.Kind && persoon.Geslacht == (int) GeslachtsEnum.Vrouw)
-						{
-							switch (officieleAfdelingen.First())
-							{
-								case AfdelingEnum.Ribbels:
-									++aansluiting.RibbelsM;
-									break;
-								case AfdelingEnum.Speelclub:
-									++aansluiting.SpeelClubM;
-									break;
-								case AfdelingEnum.Rakwis:
-									++aansluiting.RakwisM;
-									break;
-								case AfdelingEnum.Titos:
-									++aansluiting.TitosM;
-									break;
-								case AfdelingEnum.Ketis:
-									++aansluiting.KetisM;
-									break;
-								case AfdelingEnum.Aspis:
-									++aansluiting.AspisM;
-									break;
-								default:
-									break;
-							}
-
-						}
-						else if (lidType == LidTypeEnum.Leiding)
-						{
-							if (nationaalBepaaldeFuncties.Contains(FunctieEnum.Vb)) ++aansluiting.Vb;
-							else if (nationaalBepaaldeFuncties.Contains(FunctieEnum.Proost)) ++aansluiting.Proost;
-							else if (persoon.Geslacht == (int) GeslachtsEnum.Man) ++aansluiting.LeidingJ;
-							else if (persoon.Geslacht == (int) GeslachtsEnum.Vrouw) ++aansluiting.LeidingM;
-						}
-
-						// Lid toevoegen aan datacontext, en bewaren.
-
-						db.AddToLid(lid);
-
-						db.SaveChanges();
-
-						Console.WriteLine(String.Format("Persoon met AD-nr. {0} ingeschreven als lid voor {1} in {2}", adNummer,
-						                                stamNummer, werkJaar));
 					}
-
+#if KIPDORP
+					tx.Complete();
 				}
-//#if KIPDORP
-//                                tx.Complete();
-//                        }
-//#endif
+#endif
+			}
 		}
 	}
 }
