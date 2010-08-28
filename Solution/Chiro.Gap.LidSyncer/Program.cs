@@ -4,6 +4,7 @@
 // </copyright>
 
 using Chiro.Cdf.Ioc;
+using Chiro.Gap.Sync;
 using Chiro.Gap.Workers;
 
 using Moq;
@@ -19,6 +20,7 @@ namespace Chiro.Gap.LidSyncer
 		static void Main(string[] args)
 		{
 			Factory.ContainerInit();
+			MappingHelper.MappingsDefinieren();
 
 			// Leden overzetten vereist super-gav-rechten
 			// We regelen dit via mocking.

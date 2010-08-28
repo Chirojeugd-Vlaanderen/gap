@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=0.4.0.126, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -52,6 +56,7 @@
     <Compile Include="AdressenSync.cs" />
     <Compile Include="CommunicatieSync.cs" />
     <Compile Include="LedenSync.cs" />
+    <Compile Include="MappingHelper.cs" />
     <Compile Include="PersonenSync.cs" />
     <Compile Include="SyncService\UnityWorkArounds.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -38,21 +38,26 @@ namespace Chiro.Kip.Services
 		/// <summary>
 		/// Maakt een persoon met gekend ad-nummer lid, of updatet een bestaand lid
 		/// </summary>
-		/// <param name="adNummer">AD-nummer van de persoon</param>
-		/// <param name="stamNummer">Stamnummer van groep waarvan lid te maken</param>
-		/// <param name="werkJaar">Werkjaar waarin ld te maken</param>
-		/// <param name="lidType">Lidtype: kind, leiding, of kader</param>
-		/// <param name="nationaalBepaaldeFuncties">Alle nationaal bepaalde functies die toegekend moeten zijn
-		/// aan dit lid.</param>
-		/// <param name="officieleAfdelingen">Alle officiele afdelingen die toegekend moeten zijn aan dit lid.
-		/// </param>
+		/// <param name="gedoe">de nodige info voor het lid.</param>
 		[OperationContract(IsOneWay = true)]
 		void LidBewaren(
 			int adNummer,
-			string stamNummer,
-			int werkJaar,
-			LidTypeEnum lidType,
-			IEnumerable<FunctieEnum> nationaalBepaaldeFuncties,
-			IEnumerable<AfdelingEnum> officieleAfdelingen);
+			LidGedoe gedoe);
+
+		/// <summary>
+		/// Maakt een persoon zonder ad-nummer lid.
+		/// </summary>
+		/// <param name="persoon">Persoonsgegevens van de lid te maken persoon</param>
+		/// <param name="adres">Voorkeursadres voor de persoon</param>
+        /// <param name="adresType">Adrestype van dat voorkeursadres</param>
+		/// <param name="communicatieMiddelen">Lijst met communicatiemiddelen van de persoon</param>
+		/// <param name="lidGedoe">nodige info om lid te kunnen maken</param>
+		[OperationContract(IsOneWay = true)]
+		void NieuwLidBewaren(
+			Persoon persoon,
+			Adres adres,
+            AdresTypeEnum adresType,
+			IEnumerable<CommunicatieMiddel> communicatieMiddelen,
+			LidGedoe lidGedoe);
 	}
 }

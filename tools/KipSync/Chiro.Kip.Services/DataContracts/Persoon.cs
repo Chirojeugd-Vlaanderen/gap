@@ -11,19 +11,19 @@ namespace Chiro.Kip.Services.DataContracts
         public int ID { get; set; }
 
         [DataMember]
-        public int? AdNr { get; set; }
+        public int? AdNummer { get; set; }
 
         [DataMember]
-        public string Voornaam { get; set; }
+        public string VoorNaam { get; set; }
 
         [DataMember]
         public string Naam { get; set; }
 
         [DataMember]
-        public DateTime? Geboortedatum { get; set; }
+        public DateTime? GeboorteDatum { get; set; }
 
         [DataMember]
-        public DateTime? Sterfdatum { get; set; }
+        public DateTime? SterfDatum { get; set; }
 
         [DataMember]
         public GeslachtsEnum Geslacht { get; set; }

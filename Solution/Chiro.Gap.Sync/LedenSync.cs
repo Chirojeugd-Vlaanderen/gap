@@ -8,10 +8,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
+using AutoMapper;
+
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
+using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Sync.SyncService;
+
+using Adres = Chiro.Gap.Orm.Adres;
+using AdresTypeEnum = Chiro.Gap.Sync.SyncService.AdresTypeEnum;
+using Persoon = Chiro.Gap.Orm.Persoon;
 
 namespace Chiro.Gap.Sync
 {
@@ -21,6 +28,7 @@ namespace Chiro.Gap.Sync
 	public class LedenSync : ILedenSync
 	{
 		private readonly ISyncPersoonService _svc;
+		private readonly ICommunicatieVormDao _cVormDao;
 
 		// TODO: Dit gaat waarschijnlijk ook met AutoMapper
 		private readonly Dictionary<NationaleFunctie, SyncService.FunctieEnum> _functieVertalng =
@@ -51,9 +59,11 @@ namespace Chiro.Gap.Sync
 		/// <paramref name="svc"/>
 		/// </summary>
 		/// <param name="svc">te gebruiken KipSyncService voor communicatie met Kipadmn</param>
-		public LedenSync(ISyncPersoonService svc)
+		/// <param name="cVormDao">Data access object voor communicatievormen</param>
+		public LedenSync(ISyncPersoonService svc, ICommunicatieVormDao cVormDao)
 		{
 			_svc = svc;
+			_cVormDao = cVormDao;
 		}
 
 		/// <summary>
@@ -86,20 +96,45 @@ namespace Chiro.Gap.Sync
 				                       select _afdelingVertaling[(NationaleAfdeling) a.OfficieleAfdeling.ID]).ToList();
 			}
 
+			var lidGedoe = new LidGedoe
+			               	{
+			               		StamNummer = l.GroepsWerkJaar.Groep.Code,
+			               		WerkJaar = l.GroepsWerkJaar.WerkJaar,
+			               		LidType = l is Kind ? LidTypeEnum.Kind : LidTypeEnum.Leiding,
+			               		NationaleFuncties = nationaleFuncties,
+			               		OfficieleAfdelingen = officieleAfdelingen
+			               	};
+
 			if (l.GelieerdePersoon.Persoon.AdNummer != null)
 			{
-				_svc.LidBewaren(
-					(int) l.GelieerdePersoon.Persoon.AdNummer,
-					l.GroepsWerkJaar.Groep.Code,
-					l.GroepsWerkJaar.WerkJaar,
-					l is Kind ? LidTypeEnum.Kind : LidTypeEnum.Leiding,
-					nationaleFuncties,
-					officieleAfdelingen);
+				_svc.LidBewaren((int) l.GelieerdePersoon.Persoon.AdNummer, lidGedoe);
 			}
 			else
 			{
 				// Ook persoonsgegevens meesturen
-				throw new NotImplementedException();
+
+				var syncPersoon = Mapper.Map<Persoon, SyncService.Persoon>(l.GelieerdePersoon.Persoon);
+				SyncService.Adres syncAdres = null;
+				SyncService.AdresTypeEnum syncAdresType = AdresTypeEnum.ANDER;
+
+				// Laat ons hopen dat onze persoon een adres heeft.
+
+				if (l.GelieerdePersoon.PersoonsAdres != null)
+				{
+					syncAdres = Mapper.Map<Adres, SyncService.Adres>(l.GelieerdePersoon.PersoonsAdres.Adres);
+					syncAdresType = (SyncService.AdresTypeEnum) l.GelieerdePersoon.PersoonsAdres.AdresType;
+				}
+
+				// Communicatie
+
+				var syncCommunicatie = Mapper.Map<IEnumerable<CommunicatieVorm>, List<CommunicatieMiddel>>(_cVormDao.ZoekenOpPersoon(l.GelieerdePersoon.Persoon.ID));
+
+				_svc.NieuwLidBewaren(
+					syncPersoon,
+					syncAdres,
+					syncAdresType,
+					syncCommunicatie,
+					lidGedoe);
 			}
 		}
 	}

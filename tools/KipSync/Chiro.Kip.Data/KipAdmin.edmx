@@ -584,9 +584,9 @@
         </EntityType>
         <EntityType Name="Persoon">
           <Key>
-            <PropertyRef Name="AdNr" />
+            <PropertyRef Name="AdNummer" />
           </Key>
-          <Property Name="AdNr" Type="Int32" Nullable="false" />
+          <Property Name="AdNummer" Type="Int32" Nullable="false" />
           <Property Name="Naam" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
           <Property Name="VoorNaam" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
           <Property Name="GeboorteDatum" Type="DateTime" />
@@ -729,7 +729,7 @@
           <End Role="kipWoont" Type="kipadminModel.Woont" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="kipPersoon">
-              <PropertyRef Name="AdNr" />
+              <PropertyRef Name="AdNummer" />
             </Principal>
             <Dependent Role="kipWoont">
               <PropertyRef Name="AdNr" />
@@ -904,7 +904,7 @@
             <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Persoon)">
               <MappingFragment StoreEntitySet="kipPersoon">
                 <ScalarProperty Name="GapID" ColumnName="GapID" />
-                <ScalarProperty Name="AdNr" ColumnName="AdNr" />
+                <ScalarProperty Name="AdNummer" ColumnName="AdNr" />
                 <ScalarProperty Name="Naam" ColumnName="Naam" />
                 <ScalarProperty Name="VoorNaam" ColumnName="VoorNaam" />
                 <ScalarProperty Name="GeboorteDatum" ColumnName="GeboorteDatum" />
@@ -1030,7 +1030,7 @@
           </AssociationSetMapping>
           <AssociationSetMapping Name="FK__kipContact__AdNr__6A26A4A8" TypeName="kipadminModel.FK__kipContact__AdNr__6A26A4A8" StoreEntitySet="kipContactInfo">
             <EndProperty Name="kipPersoon">
-              <ScalarProperty Name="AdNr" ColumnName="AdNr" />
+              <ScalarProperty Name="AdNummer" ColumnName="AdNr" />
             </EndProperty>
             <EndProperty Name="kipContactInfo">
               <ScalarProperty Name="ContactInfoId" ColumnName="ContactInfoId" />
@@ -1054,7 +1054,7 @@
           </AssociationSetMapping>
           <AssociationSetMapping Name="FK__kipWoont__AdNr__609D3A6E" TypeName="kipadminModel.FK__kipWoont__AdNr__609D3A6E" StoreEntitySet="kipWoont">
             <EndProperty Name="kipPersoon">
-              <ScalarProperty Name="AdNr" ColumnName="AdNr" />
+              <ScalarProperty Name="AdNummer" ColumnName="AdNr" />
             </EndProperty>
             <EndProperty Name="kipWoont">
               <ScalarProperty Name="AdNr" ColumnName="AdNr" />
@@ -1063,7 +1063,7 @@
           </AssociationSetMapping>
           <AssociationSetMapping Name="FK_Leid_Kad_Persoon" TypeName="kipadminModel.FK_Leid_Kad_Persoon" StoreEntitySet="Lid">
             <EndProperty Name="kipPersoon">
-              <ScalarProperty Name="AdNr" ColumnName="ADNR" />
+              <ScalarProperty Name="AdNummer" ColumnName="ADNR" />
             </EndProperty>
             <EndProperty Name="Lid">
               <ScalarProperty Name="id" ColumnName="id" />
@@ -1159,7 +1159,7 @@
             <EndProperty Name="REKENING">
               <ScalarProperty Name="NR" ColumnName="NR" /></EndProperty>
             <EndProperty Name="Persoon">
-              <ScalarProperty Name="AdNr" ColumnName="ADNR" /></EndProperty>
+              <ScalarProperty Name="AdNummer" ColumnName="ADNR" /></EndProperty>
             <Condition ColumnName="ADNR" IsNull="false" /></AssociationSetMapping>
           <AssociationSetMapping Name="FK_Aansluiting_Rekening" TypeName="kipadminModel.FK_Aansluiting_Rekening" StoreEntitySet="Aansluiting">
             <EndProperty Name="Aansluiting">

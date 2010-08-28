@@ -36,11 +36,18 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="adNummer" type="xs:int" />
-        <xs:element minOccurs="0" name="stamNummer" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="werkJaar" type="xs:int" />
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="lidType" type="q6:LidTypeEnum" />
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="nationaalBepaaldeFuncties" nillable="true" type="q7:ArrayOfFunctieEnum" />
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="officieleAfdelingen" nillable="true" type="q8:ArrayOfAfdelingEnum" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="gedoe" nillable="true" type="q6:LidGedoe" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NieuwLidBewaren">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="persoon" nillable="true" type="q7:Persoon" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="adres" nillable="true" type="q8:Adres" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="adresType" type="q9:AdresTypeEnum" />
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="communicatieMiddelen" nillable="true" type="q10:ArrayOfCommunicatieMiddel" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="lidGedoe" nillable="true" type="q11:LidGedoe" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

@@ -7,14 +7,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
+using AutoMapper;
+
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Sync.SyncService;
 
-using Adres = Chiro.Gap.Sync.SyncService.Adres;
+using Adres = Chiro.Gap.Orm.Adres;
 using CommunicatieType = Chiro.Gap.Sync.SyncService.CommunicatieType;
-using Persoon = Chiro.Gap.Sync.SyncService.Persoon;
+using Persoon = Chiro.Gap.Orm.Persoon;
 
 namespace Chiro.Gap.Sync
 {
@@ -52,16 +54,7 @@ namespace Chiro.Gap.Sync
 
 			Debug.Assert(gp.Persoon.AdNummer != null);
 
-			var syncPersoon = new Persoon
-			                  	{
-			                  		AdNr = gp.Persoon.AdNummer,
-							Geboortedatum = gp.Persoon.GeboorteDatum,
-							Geslacht = (GeslachtsEnum)gp.Persoon.Geslacht,
-							ID = gp.Persoon.ID,
-							Naam = gp.Persoon.Naam,
-							Sterfdatum = gp.Persoon.SterfDatum,
-							Voornaam = gp.Persoon.VoorNaam
-			                  	};
+			var syncPersoon = Mapper.Map<Persoon, SyncService.Persoon>(gp.Persoon);
 
 			_svc.PersoonUpdaten(syncPersoon);
 
@@ -72,15 +65,7 @@ namespace Chiro.Gap.Sync
 				// alle adressen in gelieerdePersoon.Persoon.PersoonsAdres).
 
 				// TODO (#238): Buitenlandse adressen!
-				var syncAdres = new Adres
-				{
-					Bus = gp.PersoonsAdres.Adres.Bus,
-					HuisNr = gp.PersoonsAdres.Adres.HuisNr,
-					Land = string.Empty,
-					PostNr = gp.PersoonsAdres.Adres.StraatNaam.PostNummer,
-					Straat = gp.PersoonsAdres.Adres.StraatNaam.Naam,
-					WoonPlaats = gp.PersoonsAdres.Adres.WoonPlaats.Naam
-				};
+				var syncAdres = Mapper.Map<Adres, SyncService.Adres>(gp.PersoonsAdres.Adres);
 
 				var syncBewoner = new Bewoner
 				{
@@ -95,14 +80,9 @@ namespace Chiro.Gap.Sync
 				// Haal expliciet alle communicatievormen op, want de aanroepende method
 				// kent waarschijnlijk enkel de communicatievormen van 1 gelieerde persoon
 
-				var syncCommunicatie = from comm in _cVormDao.ZoekenOpPersoon(gp.Persoon.ID)
-						       select new CommunicatieMiddel
-						       {
-							       GeenMailings = !comm.IsVoorOptIn,
-							       Type = (CommunicatieType)comm.CommunicatieType.ID,
-							       Waarde = comm.Nummer
-						       };
-				_svc.CommunicatieBewaren((int)gp.Persoon.AdNummer, syncCommunicatie.ToList());
+				var syncCommunicatie = Mapper.Map<IEnumerable<CommunicatieVorm>, List<CommunicatieMiddel>>(_cVormDao.ZoekenOpPersoon(gp.Persoon.ID));
+
+				_svc.CommunicatieBewaren((int)gp.Persoon.AdNummer, syncCommunicatie);
 			}
 		}
 	}

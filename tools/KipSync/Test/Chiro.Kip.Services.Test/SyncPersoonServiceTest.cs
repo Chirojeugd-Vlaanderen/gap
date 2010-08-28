@@ -129,13 +129,13 @@ namespace Chiro.Kip.Services.Test
             var target = new SyncPersoonService(); // TODO: Initialize to an appropriate value
             var persoon = new Persoon()
                                   {
-                                      AdNr = 17903,
-                                      Geboortedatum = new DateTime(1971, 5, 14),
+                                      AdNummer = 17903,
+                                      GeboorteDatum = new DateTime(1971, 5, 14),
                                       Geslacht = GeslachtsEnum.Man,
                                       ID = 205,
                                       Naam = "Haepers",
-                                      Sterfdatum = null,
-                                      Voornaam = "Tommy"
+                                      SterfDatum = null,
+                                      VoorNaam = "Tommy"
                                   };
 
             target.PersoonUpdaten(persoon);
@@ -151,12 +151,12 @@ namespace Chiro.Kip.Services.Test
             var target = new SyncPersoonService(); // TODO: Initialize to an appropriate value
             var persoon = new Persoon()
             {
-                Geboortedatum = new DateTime(1971, 5, 14),
+                GeboorteDatum = new DateTime(1971, 5, 14),
                 Geslacht = GeslachtsEnum.Man,
                 ID = 2000,
                 Naam = "HaepersNew",
-                Sterfdatum = null,
-                Voornaam = "Benny"
+                SterfDatum = null,
+                VoorNaam = "Benny"
             };
 
             target.PersoonUpdaten(persoon);

@@ -30,6 +30,9 @@
   <wsdl:message name="ISyncPersoonService_LidBewaren_InputMessage">
     <wsdl:part name="parameters" element="tns:LidBewaren" />
   </wsdl:message>
+  <wsdl:message name="ISyncPersoonService_NieuwLidBewaren_InputMessage">
+    <wsdl:part name="parameters" element="tns:NieuwLidBewaren" />
+  </wsdl:message>
   <wsdl:portType name="ISyncPersoonService">
     <wsdl:operation name="PersoonUpdaten">
       <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/PersoonUpdaten" message="tns:ISyncPersoonService_PersoonUpdaten_InputMessage" />
@@ -45,6 +48,9 @@
     </wsdl:operation>
     <wsdl:operation name="LidBewaren">
       <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/LidBewaren" message="tns:ISyncPersoonService_LidBewaren_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="NieuwLidBewaren">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/NieuwLidBewaren" message="tns:ISyncPersoonService_NieuwLidBewaren_InputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="NetMsmqBinding_ISyncPersoonService" type="tns:ISyncPersoonService">
@@ -76,6 +82,12 @@
     </wsdl:operation>
     <wsdl:operation name="LidBewaren">
       <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/LidBewaren" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="NieuwLidBewaren">
+      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/NieuwLidBewaren" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

@@ -74,20 +74,14 @@
 } %>
 	<fieldset>
 		<legend>Persoonlijke gegevens</legend>
-		<%	if (Model.HuidigePersoon.AdNummer == null)
-		{
-			// AD-nr is null, maar er moet op de pagina wel een placeholder staan zodat de waarde mee in het model geraakt %>
-			<%=Html.HiddenFor(s => s.HuidigePersoon.AdNummer)  %>
-		<%
-		}
-		else
-		{ %>
 		<p>
 			<%=Html.LabelFor(s => s.HuidigePersoon.AdNummer) %>
 			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "AD-nummer", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een AD-nummer?" } ) %>
 			<%=Html.DisplayFor(s => s.HuidigePersoon.AdNummer) %>
+			<%=Html.HiddenFor(s => s.HuidigePersoon.AdNummer)  %>
+			<% // Het AD-nummer moet mee terug gepost worden, zowel als het null is als wanneer het niet null is:
+               // De service zal wel protesteren als het ad-nummer niet overeenkomt met het oorspronkelijke. %>
 		</p>
-		<% } %>
 		<p>
 			<%=Html.LabelFor(s => s.HuidigePersoon.VoorNaam) %>
 			<%=Html.EditorFor(s => s.HuidigePersoon.VoorNaam) %>

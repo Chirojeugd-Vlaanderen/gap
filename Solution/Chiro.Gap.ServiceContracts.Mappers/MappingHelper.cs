@@ -23,6 +23,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 	/// </summary>
 	public static class MappingHelper
 	{
+		#region Mappings voor service
+
 		/// <summary>
 		/// Definieert meteen alle nodige mappings.
 		/// </summary>
@@ -381,6 +383,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
 			Mapper.AssertConfigurationIsValid();
 		}
+
+		#endregion
+
 
 		#region Helperfuncties waarvan ik niet zeker ben of ze hier goed staan.
 
