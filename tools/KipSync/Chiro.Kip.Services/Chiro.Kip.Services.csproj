@@ -79,6 +79,10 @@
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
       <Name>Chiro.Cdf.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Gap.KipUpdate\Chiro.Gap.KipUpdate.csproj">
+      <Project>{AE14C231-DAD5-41C6-898E-153328F42985}</Project>
+      <Name>Chiro.Gap.KipUpdate</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chiro.Kip.Data\Chiro.Kip.Data.csproj">
       <Project>{6E07BADE-3705-44AB-A77A-41189D14806F}</Project>
       <Name>Chiro.Kip.Data</Name>

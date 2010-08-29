@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Transactions;
 using AutoMapper;
 using Chiro.Cdf.Data.Entity;
+using Chiro.Gap.KipUpdate;
 using Chiro.Kip.Data;
 using Chiro.Kip.Services.DataContracts;
 using System.Linq;
@@ -22,12 +23,24 @@ namespace Chiro.Kip.Services
 	public class SyncPersoonService : ISyncPersoonService
 	{
 		private static readonly Object _lidMakenToken = new object();
+		private readonly IPersoonUpdater _persoonUpdater;
 
 		/// <summary>
-		/// Updatet een persoon in Kipadmin op basis van de gegevens in 
-		/// <paramref name="persoon"/>
+		/// Standaardconstructor
+		/// </summary>
+		public SyncPersoonService()
+		{
+			// TODO (#736): Inversion of control
+			_persoonUpdater = new PersoonUpdater();
+		}
+
+		/// <summary>
+		/// Updatet een persoon in Kipadmin op basis van de gegevens in.  Als er geen AD-nummer is, dan doen we
+		/// een schamele poging om de persoon al te vinden.   Als ook dat niet lukt, maken we een nieuwe persoon aan,
+		/// en wordt het AD-nummer van <paramref name="persoon"/> ingevuld.
 		/// </summary>
 		/// <param name="persoon">Informatie over een geupdatete persoon in GAP</param>
+		/// <remarks>Als AD-nummer ontbreekt, wordt er sowieso een nieuwe persoon gemaakt.</remarks>
 		public void PersoonUpdaten(Persoon persoon)
 		{
 			Mapper.CreateMap<Persoon, KipPersoon>()
@@ -45,9 +58,7 @@ namespace Chiro.Kip.Services
 					if (q != null)
 					{
 						Mapper.Map<Persoon, KipPersoon>(persoon, q);
-
 						q.Stempel = DateTime.Now;
-
 						dc.SaveChanges();
 
 						Console.WriteLine("You saved: ID{0} {1} {2} AD{3}", persoon.ID, persoon.VoorNaam, persoon.Naam, persoon.AdNummer);
@@ -72,9 +83,11 @@ namespace Chiro.Kip.Services
 					dc.AddToPersoonSet(q);
 					dc.SaveChanges();
 
+					persoon.AdNummer = q.AdNummer;
+
 					Console.WriteLine("You saved: GapID{0} {1} {2} AD{3}", persoon.ID, q.VoorNaam, q.Naam, q.AdNummer);
 
-					// TODO: AdNr terug sturen
+					_persoonUpdater.AdNummerZetten(persoon.ID, q.AdNummer);
 
 				}
 			}
@@ -630,21 +643,89 @@ namespace Chiro.Kip.Services
 		}
 
 		/// <summary>
-		/// Maakt een persoon zonder ad-nummer lid.
+		/// Maakt een persoon zonder ad-nummer lid.  Dit is een dure operatie, omdat er gezocht zal worden of de persoon
+		/// al bestaat.  Zeker de eerste keer op 16 oktober, gaat dit zwaar zijn.  Vanaf volgend jaar, zal het merendeel
+		/// van de leden al een ad-nummer hebben.
 		/// </summary>
 		/// <param name="persoon">Persoonsgegevens van de lid te maken persoon</param>
 		/// <param name="adres">Voorkeursadres voor de persoon</param>
 		/// <param name="adresType">Adrestype van dat voorkeursadres</param>
 		/// <param name="communicatieMiddelen">Lijst met communicatiemiddelen van de persoon</param>
 		/// <param name="lidGedoe">nodige info om lid te kunnen maken</param>
+		/// <remarks>We gaan sowieso op zoek naar een bestaande persoon</remarks>
 		public void NieuwLidBewaren(
 			Persoon persoon,
 			Adres adres,
-	    AdresTypeEnum adresType,
+			AdresTypeEnum adresType,
 			IEnumerable<CommunicatieMiddel> communicatieMiddelen,
 			LidGedoe lidGedoe)
 		{
-			throw new NotImplementedException();
+			// Als het AD-nummer al gekend is, moet (gewoon) 'LidBewaren' gebruikt worden.
+
+			Debug.Assert(persoon.AdNummer == null);
+
+			Chiro.Kip.Data.Persoon poging; // poging om persoon al te vinden in database.
+
+			using (var db = new kipadminEntities())
+			{
+				// Probeer eerst de gevraagde persoon te vinden.
+
+				int geslacht = (int) persoon.Geslacht;
+
+				var naamgenoten = (from p in db.PersoonSet
+				                   	.Include(prs => prs.kipContactInfo)
+				                   	.Include(prs => prs.kipWoont.First().kipAdres)
+				                   where p.Naam == persoon.Naam && p.VoorNaam == persoon.VoorNaam
+				                         && p.Geslacht == geslacht
+				                   select p);
+
+				// Als we er eentje vinden met een overeenkomstige contactinfo, dan nemen we gewoon die.
+				// (Na!)
+
+				var alleCommunicatie = from cm in communicatieMiddelen
+				                       select cm.Waarde;
+
+				poging = naamgenoten.SelectMany(ng => ng.kipContactInfo)
+					.Where(Utility.BuildContainsExpression<ContactInfo, string>(ci => ci.Info, alleCommunicatie))
+					.Select(ci => ci.kipPersoon).FirstOrDefault();
+
+				if (poging == null)
+				{
+					// Niet gevonden.  Probeer nog eens op geboortedatum en postnummer
+
+					string postNummerString = adres.PostNr.ToString();
+
+					poging = (from ng in naamgenoten
+					          where ng.GeboorteDatum == persoon.GeboorteDatum
+					                && ng.kipWoont.Any(wnt => wnt.kipAdres.PostNr == postNummerString)
+					          select ng).FirstOrDefault();
+				}
+			}
+
+			// Als er iemand gevonden is: AD-nummer overnemen
+
+			if (poging != null)
+			{
+				persoon.AdNummer = poging.AdNummer;
+			}
+
+			// En nu komt het.
+
+			PersoonUpdaten(persoon); // updatet persoon en stuurt AD-nummer naar GAP
+
+			// Als er nog geen AD-nummer was, dan heeft PersoonUpdaten er nu eentje gemaakt.
+
+			Debug.Assert(persoon.AdNummer != null);
+
+			LidBewaren((int) persoon.AdNummer, lidGedoe);
+
+			StandaardAdresBewaren(
+				adres,
+				new Bewoner[] {new Bewoner {AdNummer = (int) persoon.AdNummer, AdresType = adresType}});
+
+			CommunicatieBewaren((int) persoon.AdNummer, communicatieMiddelen);
+
+			Console.WriteLine("Nieuw lid bewaard: ID{0} AD{1}", persoon.ID, persoon.AdNummer);
 		}
 	}
 }
