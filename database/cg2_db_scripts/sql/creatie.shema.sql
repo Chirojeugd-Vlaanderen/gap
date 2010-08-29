@@ -610,3 +610,13 @@ GRANT DELETE,INSERT,UPDATE ON pers.PersoonVrijVeld TO GapRole
 GRANT DELETE,INSERT,UPDATE ON pers.PersoonVrijVeldType TO GapRole
 GRANT INSERT ON verz.PersoonsVerzekering TO GapRole
 GRANT INSERT ON grp.GroepsWerkJaar TO GapRole
+
+GO
+
+-- Rol voor kipsync
+
+IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = 'KipSyncRole' AND type = 'R')
+BEGIN
+CREATE ROLE KipSyncRole
+-- deze rol zal voorlopig enkel ad-nummers mogen zetten
+END
