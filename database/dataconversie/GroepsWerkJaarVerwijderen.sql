@@ -4,6 +4,13 @@ create procedure data.spGroepsWerkJaarVerwijderen(
 )
 as
 begin
+
+delete laj
+from grp.groep g join grp.groepsWerkJaar gwj on g.groepid = gwj.groepid
+join lid.lid l on l.groepsWerkJaarID = gwj.GroepsWerkJaarID
+join lid.leidingInAfdelingsJaar laj on l.LidID = laj.LeidingID
+where g.code=@stamnr and gwj.werkjaar=@werkjaar
+
 delete lei
 from grp.groep g join grp.groepsWerkJaar gwj on g.groepid = gwj.groepid
 join lid.lid l on l.groepsWerkJaarID = gwj.GroepsWerkJaarID
@@ -14,6 +21,12 @@ delete k
 from grp.groep g join grp.groepsWerkJaar gwj on g.groepid = gwj.groepid
 join lid.lid l on l.groepsWerkJaarID = gwj.GroepsWerkJaarID
 join lid.kind k on l.lidID = k.kindID
+where g.code=@stamnr and gwj.werkjaar=@werkjaar
+
+delete lf
+from grp.groep g join grp.groepsWerkJaar gwj on g.groepid = gwj.groepid
+join lid.lid l on l.groepsWerkJaarID = gwj.GroepsWerkJaarID
+join lid.lidFunctie lf on l.LidID = lf.LidID
 where g.code=@stamnr and gwj.werkjaar=@werkjaar
 
 delete l

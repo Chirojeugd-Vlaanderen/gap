@@ -23,6 +23,10 @@ namespace Chiro.Kip.Services
 	public class SyncPersoonService : ISyncPersoonService
 	{
 		private static readonly Object _lidMakenToken = new object();
+		private static readonly Object _adresManipulerenToken = new object();
+		private static readonly Object _nieuwePersoonToken = new object();
+		private static readonly Object _communicatieToken = new object();
+
 		private readonly IPersoonUpdater _persoonUpdater;
 
 		/// <summary>
@@ -100,130 +104,136 @@ namespace Chiro.Kip.Services
 		/// <param name="bewoners">AD-nummers en adrestypes voor personen de dat adres moeten krijgen</param>
 		public void StandaardAdresBewaren(Adres adres, IEnumerable<Bewoner> bewoners)
 		{
-			// We gebruiken een transactie, want hier gebeurt nogal wat.
+			// 1 keer tegelijk, anders krijgen we concurrencyproblemen als er 2 personen tegelijk hetzelfde
+			// adres krijgen.
 
-#if KIPDORP
-			using (var tx = new TransactionScope())
+			lock (_adresManipulerenToken)
 			{
-#endif
-				using (var dc = new kipadminEntities())
-				{
-					var adNummers = from b in bewoners select b.AdNummer;
+				// We gebruiken een transactie, want hier gebeurt nogal wat.
 
-					// Vind personen met gegeven adnummers.
-
-					var personen = from p in dc.PersoonSet.Include("kipWoont.kipAdres")
-							.Where(Utility.BuildContainsExpression<Chiro.Kip.Data.Persoon, int>(prs => prs.AdNummer, adNummers))
-						       select p;
-
-					// Vind of maak adres
-
-					// Als dat linq to sql is, dan gebeurt het zoeken sowieso hoofdletterongevoelig.
-
-					string huisNr = adres.HuisNr.ToString();
-					string postNr = adres.PostNr.ToString();
-
-					var adresInDb = (from adr in dc.AdresSet.Include("kipWoont.kipPersoon").Include("kipWoont.kipAdresType")
-							 where adr.Straat == adres.Straat
-							       && adr.Nr == huisNr
-							       && adr.PostNr == postNr
-							       && adr.Gemeente == adres.WoonPlaats
-							 select adr).FirstOrDefault();
-
-					if (adresInDb == null)
-					{
-						adresInDb = new Chiro.Kip.Data.Adres
-								{
-									ID = 0,
-									Straat = adres.Straat,
-									Nr = adres.HuisNr == null ? null : adres.HuisNr.ToString(),
-									PostNr = adres.PostNr.ToString(),
-									Gemeente = adres.WoonPlaats
-									// TODO (#238) Buitenlandse adressen.
-								};
-						dc.AddToAdresSet(adresInDb);
-					}
-
-					// Bewaar hier de changes al eens, zodat het nieuwe adres een ID krijgt.
-
-					dc.SaveChanges();
-
-					// We zitten met het gedoe dat in Kipadmin de adressen een volgnummer hebben.  De voorkeurs-
-					// adressen moeten bewaard worden met volgnummer 1.
-					//
-					// We gaan dat pragmatisch oplossen :-)
-					//  - verwijder van alle personen het adres met volgnummer 1
-					//  - als er nog personen zijn die al aan het doeladres gekoppeld zijn, dan moeten die
-					//    adressen volgnummer 1 krijgen
-					//  - personen die het adres nog niet hebben moeten het krijgen met volgnummer 1
-
-					var eersteAdressen = personen.SelectMany(prs => prs.kipWoont).Where(kw => kw.VolgNr == 1);
-
-					foreach (var wnt in eersteAdressen.ToArray())
-					{
-						dc.DeleteObject(wnt);
-					}
-
-					// Oude objecten met volgnr 1 al verwijderen, om duplicates (adnr,volgnr) in woont
-					// te vermijden.
-
-					dc.SaveChanges();
-
-					// Dat ID hebben we nu hier nodig:
-
-					var goeieAdressen = personen.SelectMany(prs => prs.kipWoont).Where(kw => kw.kipAdres.ID == adresInDb.ID);
-
-					// TODO: Het adrestype bepalen is iedere keer een linq-expressie, en dus iedere
-					// keer een loop.  Kan dat niet efficienter?
-
-					foreach (var wnt in goeieAdressen)
-					{
-						wnt.VolgNr = 1;
-
-						int adresTypeID = (int)(from b in bewoners
-									where b.AdNummer == wnt.kipPersoon.AdNummer
-									select b.AdresType).FirstOrDefault();
-
-						wnt.kipAdresType = (from at in dc.AdresTypeSet
-								    where at.ID == adresTypeID
-								    select at).FirstOrDefault();
-
-						Console.WriteLine("Update voorkeuradres: AD{0}", wnt.kipPersoon.AdNummer);
-					}
-
-					var overigePersonen = from p in personen
-							      where !goeieAdressen.Any(wnt => wnt.kipPersoon.AdNummer == p.AdNummer)
-							      select p;
-
-					foreach (var p in overigePersonen)
-					{
-						int adresTypeID = (int)(from b in bewoners
-									where b.AdNummer == p.AdNummer
-									select b.AdresType).FirstOrDefault();
-
-						var adresType = (from at in dc.AdresTypeSet
-								 where at.ID == adresTypeID
-								 select at).FirstOrDefault();
-
-						dc.AddToWoontSet(new Woont
-									{
-										kipAdres = adresInDb,
-										kipPersoon = p,
-										VolgNr = 1,
-										kipAdresType = adresType,
-										Geldig = true
-									});
-						Console.WriteLine("Update voorkeuradres: AD{0}", p.AdNummer);
-					}
-
-					// fingers crossed:
-
-					dc.SaveChanges();
-				}
 #if KIPDORP
-				tx.Complete();
-			}
+				using (var tx = new TransactionScope())
+				{
 #endif
+					using (var dc = new kipadminEntities())
+					{
+						var adNummers = from b in bewoners select b.AdNummer;
+
+						// Vind personen met gegeven adnummers.
+
+						var personen = from p in dc.PersoonSet.Include("kipWoont.kipAdres")
+						               	.Where(Utility.BuildContainsExpression<Chiro.Kip.Data.Persoon, int>(prs => prs.AdNummer, adNummers))
+						               select p;
+
+						// Vind of maak adres
+
+						// Als dat linq to sql is, dan gebeurt het zoeken sowieso hoofdletterongevoelig.
+
+						string huisNr = adres.HuisNr.ToString();
+						string postNr = adres.PostNr.ToString();
+
+						var adresInDb = (from adr in dc.AdresSet.Include("kipWoont.kipPersoon").Include("kipWoont.kipAdresType")
+						                 where adr.Straat == adres.Straat
+						                       && adr.Nr == huisNr
+						                       && adr.PostNr == postNr
+						                       && adr.Gemeente == adres.WoonPlaats
+						                 select adr).FirstOrDefault();
+
+						if (adresInDb == null)
+						{
+							adresInDb = new Chiro.Kip.Data.Adres
+							            	{
+							            		ID = 0,
+							            		Straat = adres.Straat,
+							            		Nr = adres.HuisNr == null ? null : adres.HuisNr.ToString(),
+							            		PostNr = adres.PostNr.ToString(),
+							            		Gemeente = adres.WoonPlaats
+							            		// TODO (#238) Buitenlandse adressen.
+							            	};
+							dc.AddToAdresSet(adresInDb);
+						}
+
+						// Bewaar hier de changes al eens, zodat het nieuwe adres een ID krijgt.
+
+						dc.SaveChanges();
+
+						// We zitten met het gedoe dat in Kipadmin de adressen een volgnummer hebben.  De voorkeurs-
+						// adressen moeten bewaard worden met volgnummer 1.
+						//
+						// We gaan dat pragmatisch oplossen :-)
+						//  - verwijder van alle personen het adres met volgnummer 1
+						//  - als er nog personen zijn die al aan het doeladres gekoppeld zijn, dan moeten die
+						//    adressen volgnummer 1 krijgen
+						//  - personen die het adres nog niet hebben moeten het krijgen met volgnummer 1
+
+						var eersteAdressen = personen.SelectMany(prs => prs.kipWoont).Where(kw => kw.VolgNr == 1);
+
+						foreach (var wnt in eersteAdressen.ToArray())
+						{
+							dc.DeleteObject(wnt);
+						}
+
+						// Oude objecten met volgnr 1 al verwijderen, om duplicates (adnr,volgnr) in woont
+						// te vermijden.
+
+						dc.SaveChanges();
+
+						// Dat ID hebben we nu hier nodig:
+
+						var goeieAdressen = personen.SelectMany(prs => prs.kipWoont).Where(kw => kw.kipAdres.ID == adresInDb.ID);
+
+						// TODO: Het adrestype bepalen is iedere keer een linq-expressie, en dus iedere
+						// keer een loop.  Kan dat niet efficienter?
+
+						foreach (var wnt in goeieAdressen)
+						{
+							wnt.VolgNr = 1;
+
+							int adresTypeID = (int) (from b in bewoners
+							                         where b.AdNummer == wnt.kipPersoon.AdNummer
+							                         select b.AdresType).FirstOrDefault();
+
+							wnt.kipAdresType = (from at in dc.AdresTypeSet
+							                    where at.ID == adresTypeID
+							                    select at).FirstOrDefault();
+
+							Console.WriteLine("Update voorkeuradres: AD{0}", wnt.kipPersoon.AdNummer);
+						}
+
+						var overigePersonen = from p in personen
+						                      where !goeieAdressen.Any(wnt => wnt.kipPersoon.AdNummer == p.AdNummer)
+						                      select p;
+
+						foreach (var p in overigePersonen)
+						{
+							int adresTypeID = (int) (from b in bewoners
+							                         where b.AdNummer == p.AdNummer
+							                         select b.AdresType).FirstOrDefault();
+
+							var adresType = (from at in dc.AdresTypeSet
+							                 where at.ID == adresTypeID
+							                 select at).FirstOrDefault();
+
+							dc.AddToWoontSet(new Woont
+							                 	{
+							                 		kipAdres = adresInDb,
+							                 		kipPersoon = p,
+							                 		VolgNr = 1,
+							                 		kipAdresType = adresType,
+							                 		Geldig = true
+							                 	});
+							Console.WriteLine("Update voorkeuradres: AD{0}", p.AdNummer);
+						}
+
+						// fingers crossed:
+
+						dc.SaveChanges();
+					}
+#if KIPDORP
+					tx.Complete();
+				}
+#endif
+			}
 		}
 
 
@@ -238,66 +248,68 @@ namespace Chiro.Kip.Services
 			IEnumerable<CommunicatieMiddel> communicatieMiddelen)
 		{
 
-
-#if KIPDORP
-			using (var tx = new TransactionScope())
+			lock (_communicatieToken)
 			{
-#endif
-				using (var db = new kipadminEntities())
-				{
-					// Haal eerst persoon op met alle communicatie-info gekend in Kipadmin.
-
-					var persoon = (from p in db.PersoonSet.Include(p => p.kipContactInfo)
-						       where p.AdNummer == adNr
-						       select p).FirstOrDefault();
-
-					// Verwijder gewoon alle bestaande communicatie
-
-					var teVerwijderen = (from cv in persoon.kipContactInfo
-							     select cv).ToArray();
-
-					foreach (var cv in teVerwijderen)
-					{
-						db.DeleteObject(cv);
-					}
-
-					// Bewaar tussentijds om key voiolations te vermijden
-					db.SaveChanges();
-
-					// Voeg nu de meegeleverde communicatie opnieuw toe.
-
-					var nieuweComm = (from cm in communicatieMiddelen
-							  select new ContactInfo
-									{
-										ContactInfoId = 0,
-										ContactTypeId = (int)cm.Type,
-										GeenMailings = cm.GeenMailings,
-										Info = cm.Waarde,
-										kipPersoon = persoon
-									}).OrderBy(nc => nc.ContactTypeId).ToList();
-
-					// Nummeren per type.
-
-					int teller = 0;
-					int vorigType = -1;
-
-					foreach (var comm in nieuweComm)
-					{
-						if (comm.ContactTypeId != vorigType)
-						{
-							teller = 0;
-							vorigType = comm.ContactTypeId;
-						}
-						comm.VolgNr = ++teller;
-						db.AddToContactInfoSet(comm);
-					}
-
-					db.SaveChanges();
-				}
 #if KIPDORP
-				tx.Complete();
-			}
+				using (var tx = new TransactionScope())
+				{
 #endif
+					using (var db = new kipadminEntities())
+					{
+						// Haal eerst persoon op met alle communicatie-info gekend in Kipadmin.
+
+						var persoon = (from p in db.PersoonSet.Include(p => p.kipContactInfo)
+						               where p.AdNummer == adNr
+						               select p).FirstOrDefault();
+
+						// Verwijder gewoon alle bestaande communicatie
+
+						var teVerwijderen = (from cv in persoon.kipContactInfo
+						                     select cv).ToArray();
+
+						foreach (var cv in teVerwijderen)
+						{
+							db.DeleteObject(cv);
+						}
+
+						// Bewaar tussentijds om key voiolations te vermijden
+						db.SaveChanges();
+
+						// Voeg nu de meegeleverde communicatie opnieuw toe.
+
+						var nieuweComm = (from cm in communicatieMiddelen
+						                  select new ContactInfo
+						                         	{
+						                         		ContactInfoId = 0,
+						                         		ContactTypeId = (int) cm.Type,
+						                         		GeenMailings = cm.GeenMailings,
+						                         		Info = cm.Waarde,
+						                         		kipPersoon = persoon
+						                         	}).OrderBy(nc => nc.ContactTypeId).ToList();
+
+						// Nummeren per type.
+
+						int teller = 0;
+						int vorigType = -1;
+
+						foreach (var comm in nieuweComm)
+						{
+							if (comm.ContactTypeId != vorigType)
+							{
+								teller = 0;
+								vorigType = comm.ContactTypeId;
+							}
+							comm.VolgNr = ++teller;
+							db.AddToContactInfoSet(comm);
+						}
+
+						db.SaveChanges();
+					}
+#if KIPDORP
+					tx.Complete();
+				}
+#endif
+			}
 		}
 
 		/// <summary>
@@ -666,39 +678,46 @@ namespace Chiro.Kip.Services
 
 			Chiro.Kip.Data.Persoon poging; // poging om persoon al te vinden in database.
 
-			using (var db = new kipadminEntities())
+			// maar 1 keer tegelijk een nieuwe persoon aanmaken, omdat er gezocht wordt
+			// naar een bestaande.  Wat lastig is op het moment dat er een andere aangemaakt
+			// wordt...
+
+			lock (_nieuwePersoonToken)
 			{
-				// Probeer eerst de gevraagde persoon te vinden.
-
-				int geslacht = (int) persoon.Geslacht;
-
-				var naamgenoten = (from p in db.PersoonSet
-				                   	.Include(prs => prs.kipContactInfo)
-				                   	.Include(prs => prs.kipWoont.First().kipAdres)
-				                   where p.Naam == persoon.Naam && p.VoorNaam == persoon.VoorNaam
-				                         && p.Geslacht == geslacht
-				                   select p);
-
-				// Als we er eentje vinden met een overeenkomstige contactinfo, dan nemen we gewoon die.
-				// (Na!)
-
-				var alleCommunicatie = from cm in communicatieMiddelen
-				                       select cm.Waarde;
-
-				poging = naamgenoten.SelectMany(ng => ng.kipContactInfo)
-					.Where(Utility.BuildContainsExpression<ContactInfo, string>(ci => ci.Info, alleCommunicatie))
-					.Select(ci => ci.kipPersoon).FirstOrDefault();
-
-				if (poging == null)
+				using (var db = new kipadminEntities())
 				{
-					// Niet gevonden.  Probeer nog eens op geboortedatum en postnummer
+					// Probeer eerst de gevraagde persoon te vinden.
 
-					string postNummerString = adres.PostNr.ToString();
+					int geslacht = (int) persoon.Geslacht;
 
-					poging = (from ng in naamgenoten
-					          where ng.GeboorteDatum == persoon.GeboorteDatum
-					                && ng.kipWoont.Any(wnt => wnt.kipAdres.PostNr == postNummerString)
-					          select ng).FirstOrDefault();
+					var naamgenoten = (from p in db.PersoonSet
+					                   	.Include(prs => prs.kipContactInfo)
+					                   	.Include(prs => prs.kipWoont.First().kipAdres)
+					                   where p.Naam == persoon.Naam && p.VoorNaam == persoon.VoorNaam
+					                         && p.Geslacht == geslacht
+					                   select p);
+
+					// Als we er eentje vinden met een overeenkomstige contactinfo, dan nemen we gewoon die.
+					// (Na!)
+
+					var alleCommunicatie = from cm in communicatieMiddelen
+					                       select cm.Waarde;
+
+					poging = naamgenoten.SelectMany(ng => ng.kipContactInfo)
+						.Where(Utility.BuildContainsExpression<ContactInfo, string>(ci => ci.Info, alleCommunicatie))
+						.Select(ci => ci.kipPersoon).FirstOrDefault();
+
+					if (poging == null)
+					{
+						// Niet gevonden.  Probeer nog eens op geboortedatum en postnummer
+
+						string postNummerString = adres == null ? String.Empty: adres.PostNr.ToString();
+
+						poging = (from ng in naamgenoten
+						          where ng.GeboorteDatum == persoon.GeboorteDatum
+						                && ng.kipWoont.Any(wnt => wnt.kipAdres.PostNr == postNummerString)
+						          select ng).FirstOrDefault();
+					}
 				}
 			}
 
@@ -719,13 +738,16 @@ namespace Chiro.Kip.Services
 
 			LidBewaren((int) persoon.AdNummer, lidGedoe);
 
-			StandaardAdresBewaren(
-				adres,
-				new Bewoner[] {new Bewoner {AdNummer = (int) persoon.AdNummer, AdresType = adresType}});
+			if (adres != null)
+			{
+				StandaardAdresBewaren(
+					adres,
+					new Bewoner[] {new Bewoner {AdNummer = (int) persoon.AdNummer, AdresType = adresType}});
+			}
 
 			CommunicatieBewaren((int) persoon.AdNummer, communicatieMiddelen);
-
 			Console.WriteLine("Nieuw lid bewaard: ID{0} AD{1}", persoon.ID, persoon.AdNummer);
 		}
+		
 	}
 }
