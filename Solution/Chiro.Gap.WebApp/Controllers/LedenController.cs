@@ -424,15 +424,15 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// Toont een view die toelaat de lidgegevens van het lid met LidID <paramref name="id"/> te bewerken.
+		/// Toont een view die toelaat de functies van het lid met LidID <paramref name="id"/> te bewerken.
 		/// </summary>
 		/// <param name="id">LidID te bewerken lid</param>
 		/// <param name="groepID">ID van de huidig geselecteerde groep</param>
-		/// <returns>De view 'EditLidGegevens'</returns>
+		/// <returns>De view 'FunctiesToekennen'</returns>
 		[HandleError]
-		public ActionResult EditLidGegevens(int id, int groepID)
+		public ActionResult FunctiesToekennen(int id, int groepID)
 		{
-			var model = new LedenModel();
+			var model = new LidFunctiesModel();
 			BaseModelInit(model, groepID);
 
 			model.HuidigLid = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(l => l.DetailsOphalen(id));
@@ -442,15 +442,14 @@ namespace Chiro.Gap.WebApp.Controllers
 				// Ik had liever hierboven nog eens LidExtras.AlleAfdelingen meegegeven, maar
 				// het datacontract (LidInfo) voorziet daar niets voor.
 
-				AfdelingenOphalen(model);
 				FunctiesOphalen(model);
 
 				model.Titel = String.Format(
 					"{0}: {1}",
 					model.HuidigLid.PersoonDetail.VolledigeNaam,
-					Properties.Resources.LidGegevens);
+					Properties.Resources.FunctiesVan);
 
-				return View("EditLidGegevens", model);
+				return View("FunctiesToekennen", model);
 			}
 			else
 			{
@@ -460,20 +459,20 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// Bewaart (niet) actief, dp-abonnement, instapperiode en functies
+		/// Bewaart functies
 		/// </summary>
-		/// <param name="model">LedenModel met te bewaren gegevens (functie-ID's in <c>model.FunctieIDs</c>)</param>
+		/// <param name="model">LidFunctiesModel met te bewaren gegevens (functie-ID's in <c>model.FunctieIDs</c>)</param>
 		/// <param name="groepID">ID van de groep waarin de user momenteel aan het werken is</param>
+		/// <param name="id">LidID te bewerken lid</param>
 		/// <returns>De personenfiche, die de gewijzigde info toont.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
 		[HandleError]
-		public ActionResult EditLidGegevens(LedenModel model, int groepID)
+		public ActionResult FunctiesToekennen(LidFunctiesModel model, int id, int groepID)
 		{
 			// TODO: Dit moet een unitaire operatie zijn, om concurrencyproblemen te vermijden.
 			try
 			{
-				ServiceHelper.CallService<ILedenService>(l => l.Bewaren(model.HuidigLid));
-				ServiceHelper.CallService<ILedenService>(l => l.FunctiesVervangen(model.HuidigLid.LidInfo.LidID, model.FunctieIDs));
+				ServiceHelper.CallService<ILedenService>(l => l.FunctiesVervangen(id, model.FunctieIDs));
 
 				// Problemen met functies moeten opgenieuw opgehaald worden na deze operatie. BaseController gaat na
 				// of dat nodig is door naar de telling te kijken, maar ook de gecachete problemen moeten verwijderd worden.
@@ -482,28 +481,15 @@ namespace Chiro.Gap.WebApp.Controllers
 				HttpContext.Cache.Remove(Properties.Resources.ProblemenCacheKey + groepID);
 
 				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
+				return RedirectToAction("EditRest", "Personen", new { groepID, id = model.HuidigLid.PersoonDetail.GelieerdePersoonID });
 			}
 			catch (Exception)
 			{
+				model.HuidigLid = ServiceHelper.CallService<ILedenService, PersoonLidInfo>(l => l.DetailsOphalen(id));
 				TempData["fout"] = Properties.Resources.WijzigingenNietOpgeslagenFout;
+				return View("FunctiesToekennen", model);
+
 			}
-
-			return RedirectToAction("EditLidGegevens");
-		}
-
-		/// <summary>
-		/// Bekijkt model.HuidigLid.  Haalt alle afdelingen van het groepswerkjaar van het lid op, en
-		/// bewaart ze in model.AlleAfdelingen.  In model.AfdelingIDs komen de ID's van de toegekende
-		/// afdelingen voor het lid.
-		/// </summary>
-		/// <param name="model"></param>
-		[HandleError]
-		public void AfdelingenOphalen(LedenModel model)
-		{
-			model.AlleAfdelingen = ServiceHelper.CallService<IGroepenService, IList<AfdelingDetail>>
-				(svc => svc.ActieveAfdelingenOphalen(model.HuidigLid.LidInfo.GroepsWerkJaarID));
-
-			model.AfdelingIDs = model.HuidigLid.LidInfo.AfdelingIdLijst.ToList();
 		}
 
 		/// <summary>
@@ -513,7 +499,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// </summary>
 		/// <param name="model">Te bewerken model</param>
 		[HandleError]
-		public void FunctiesOphalen(LedenModel model)
+		public void FunctiesOphalen(LidFunctiesModel model)
 		{
 			model.AlleFuncties = ServiceHelper.CallService<IGroepenService, IEnumerable<FunctieDetail>>
 				(svc => svc.FunctiesOphalen(
@@ -521,6 +507,20 @@ namespace Chiro.Gap.WebApp.Controllers
 					model.HuidigLid.LidInfo.Type));
 			model.FunctieIDs = (from f in model.HuidigLid.LidInfo.Functies
 								select f.ID).ToList();
+		}
+
+		/// <summary>
+		/// 'Togglet' het vlaggetje 'lidgeld betaald' van een lid.
+		/// </summary>
+		/// <param name="id">LidID van lid met te toggelen vlagje</param>
+		/// <param name="groepID">ID van de groep waarin wordt gewerkt</param>
+		/// <returns>Daarna wordt terugverwezen naar de persoonsfiche</returns>
+		[HandleError]
+		public ActionResult LidGeldToggle(int id, int groepID)
+		{
+			int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(svc => svc.LidGeldToggle(id));
+
+			return RedirectToAction("EditRest", "Personen", new {groepID, id = gelieerdePersoonID});
 		}
 	}
 }

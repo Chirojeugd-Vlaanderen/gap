@@ -646,6 +646,30 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
+		/// 'Togglet' het vlagje 'lidgeld betaald' van het lid met LidID <paramref name="id"/>.  Geeft als resultaat
+		/// het GelieerdePersoonID.  (Niet proper, maar wel interessant voor redirect.)
+		/// </summary>
+		/// <param name="id">ID van lid met te togglen lidgeld</param>
+		/// <returns>GelieerdePersoonID van lid</returns>
+		public int LidGeldToggle(int id)
+		{
+			try
+			{
+				var lid = _ledenMgr.Ophalen(id, LidExtras.Persoon);
+
+				// Eigenlijk heeft het weinig zin om dat nullable te maken...
+				lid.LidgeldBetaald = (lid.LidgeldBetaald == null || lid.LidgeldBetaald == false);
+				_ledenMgr.Bewaren(lid, LidExtras.Geen);
+				return lid.GelieerdePersoon.ID;
+			}
+			catch (GeenGavException ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return 0;
+			}
+		}
+
+		/// <summary>
 		/// Haalt de ID's van de groepswerkjaren van een lid op.
 		/// </summary>
 		/// <param name="lidID">ID van het lid waarin we geinteresseerd zijn</param>

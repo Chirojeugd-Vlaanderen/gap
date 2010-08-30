@@ -205,6 +205,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Functies van {0}.
+        /// </summary>
+        public static string FunctiesVan {
+            get {
+                return ResourceManager.GetString("FunctiesVan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Er zijn te veel leden met de functie {0} ({1}).  Huidig aantal: {2}, verplicht maximum: {3}..
         /// </summary>
         public static string FunctieTeVeel {

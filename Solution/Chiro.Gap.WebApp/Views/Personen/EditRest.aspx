@@ -143,7 +143,7 @@
 		<li>Betaalde
 			<%= Model.PersoonLidInfo.LidInfo.LidgeldBetaald ? String.Empty : "nog geen" %>
 			lidgeld.
-			<%= Html.ActionLink("[aanpassen]", "EditLidGegevens", new{ Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %></li>
+			<%= Html.ActionLink("[aanpassen]", "LidGeldToggle", new{ Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %></li>
 		<li>Instapperiode
 			<%= String.Format(
 	                      Model.PersoonLidInfo.LidInfo.EindeInstapperiode < DateTime.Today ? "verliep op {0:d}" : "t/m {0:d}",
@@ -162,7 +162,7 @@
 						},
 				    new { title= f.Naam })%>
 			<% }%>
-			<%= Html.ActionLink("[functies aanpassen]", "EditLidGegevens", new{ Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %></li>
+			<%= Html.ActionLink("[functies aanpassen]", "FunctiesToekennen", new { Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID })%></li>
 		<li>
 			<%if (Model.PersoonLidInfo.LidInfo.Type == LidType.Leiding)
 	 {

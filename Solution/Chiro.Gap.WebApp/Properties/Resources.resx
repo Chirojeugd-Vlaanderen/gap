@@ -254,4 +254,7 @@
   <data name="WerkJaarInOvergang" xml:space="preserve">
     <value>De overgang naar werkjaar {0}-{1} moet nog gebeuren.</value>
   </data>
+  <data name="FunctiesVan" xml:space="preserve">
+    <value>Functies van {0}</value>
+  </data>
 </root>

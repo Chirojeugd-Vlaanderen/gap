@@ -202,5 +202,16 @@ namespace Chiro.Gap.ServiceContracts
 		IList<LidOverzicht> OphalenUitGroepsWerkJaar(int groepsWerkJaarID);
 
 		#endregion
+
+		/// <summary>
+		/// 'Togglet' het vlagje 'lidgeld betaald' van het lid met LidID <paramref name="id"/>.  Geeft als resultaat
+		/// het GelieerdePersoonID.  (Niet proper, maar wel interessant voor redirect.)
+		/// </summary>
+		/// <param name="id">ID van lid met te togglen lidgeld</param>
+		/// <returns>GelieerdePersoonID van lid</returns>
+		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
+		int LidGeldToggle(int id);
 	}
 }

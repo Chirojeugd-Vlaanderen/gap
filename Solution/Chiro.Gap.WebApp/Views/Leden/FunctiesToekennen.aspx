@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<LedenModel>" %>
+<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<LidFunctiesModel>" %>
 
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
@@ -12,28 +12,11 @@
 			<input type="submit" value="Gegevens wijzigen" /></li>
 	</ul>
 	<fieldset>
-		<legend>Lidinfo</legend>
-		<%if (Model.HuidigLid.LidInfo.Type == LidType.Kind)
-	{ %>
-		<p>
-			<%=Html.LabelFor(s => s.HuidigLid.LidInfo.LidgeldBetaald)%>
-			<%=Html.EditorFor(s => s.HuidigLid.LidInfo.LidgeldBetaald)%>
-		</p>
-		<%} %>
-		<p>
-			<%=Html.LabelFor(s => s.HuidigLid.LidInfo.EindeInstapperiode)%>
-			<%=(Model.HuidigLid.LidInfo.EindeInstapperiode < DateTime.Today) ? "verlopen" : "tot " + Html.DisplayFor(s => s.HuidigLid.LidInfo.EindeInstapperiode)%>
-		</p>
-		<p>
-			<%=Html.LabelFor(s => s.HuidigLid.LidInfo.NonActief)%>
-			<%=Html.EditorFor(s => s.HuidigLid.LidInfo.NonActief)%>
-		</p>
+		<legend>Functies</legend>
 		<%
 			if (Model.AlleFuncties != null && Model.AlleFuncties.FirstOrDefault() != null)
 			{
 		%>
-		<p>
-			<strong>Functies:</strong></p>
 		<%
 			List<CheckBoxListInfo> info = (from f in Model.AlleFuncties
 										   select new CheckBoxListInfo(
@@ -46,7 +29,7 @@
 		<%
 			}
 		%>
-		<%= Html.Hidden("HuidigLid.LidInfo.LidID")%>
+		<%= Html.HiddenFor(mdl=>mdl.HuidigLid.PersoonDetail.GelieerdePersoonID) %>
 	</fieldset>
 	<br />
 	<%} %>

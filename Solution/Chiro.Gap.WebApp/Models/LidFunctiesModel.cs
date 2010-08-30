@@ -12,29 +12,17 @@ namespace Chiro.Gap.WebApp.Models
 	/// <summary>
 	/// Model voor het tonen/bewerken van lidinfo.  Vrij omslachtig; mogelijk kan dat beter (TODO)
 	/// </summary>
-	public class LedenModel : MasterViewModel
+	public class LidFunctiesModel : MasterViewModel
 	{
-        /// <summary>
-        /// De standaardconstructor; er zijn geen afdelingen geselecteerd.
-        /// </summary>
-        public LedenModel()
-        {
-            AlleAfdelingen = new List<AfdelingDetail>();
-            AfdelingIDs = new List<int>();
-            AlleFuncties = new List<FunctieDetail>();
-            FunctieIDs = new List<int>();
-            HuidigLid = new PersoonLidInfo();
-        }
-
 		/// <summary>
-		/// Rij met alle afdelingen van het groepswerkjaar
+		/// De standaardconstructor; er zijn geen afdelingen geselecteerd.
 		/// </summary>
-		public IEnumerable<AfdelingDetail> AlleAfdelingen { get; set; }
-
-		/// <summary>
-		/// Bevat de huidige afdelingen van een lid, of de geselecteerde na de ui, voor leiding
-		/// </summary>
-		public IList<int> AfdelingIDs { get; set; }
+		public LidFunctiesModel()
+		{
+			AlleFuncties = new List<FunctieDetail>();
+			FunctieIDs = new List<int>();
+			HuidigLid = new PersoonLidInfo();
+		}
 
 		/// <summary>
 		/// Bevat de huidige of de nieuwe gewenste afdeling voor een kind
