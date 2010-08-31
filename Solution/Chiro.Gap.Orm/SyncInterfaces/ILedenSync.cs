@@ -15,5 +15,11 @@ namespace Chiro.Gap.Orm.SyncInterfaces
 		/// </summary>
 		/// <param name="l">Te bewaren lid</param>
 		void Bewaren(Lid l);
+
+		/// <summary>
+		/// Updatet de functies van het lid in Kipadmin
+		/// </summary>
+		/// <param name="lid">Lid met functies</param>
+		void FunctiesUpdaten(Lid lid);
 	}
 }

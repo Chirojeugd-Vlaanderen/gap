@@ -28,5 +28,9 @@ namespace Chiro.Gap.Dummies
 		public void Bewaren(Lid l)
 		{
 		}
+
+		public void FunctiesUpdaten(Lid lid)
+		{
+		}
 	}
 }

@@ -28,6 +28,7 @@ namespace Chiro.Gap.Sync
 	public class LedenSync : ILedenSync
 	{
 		private readonly ISyncPersoonService _svc;
+		private readonly ILedenDao _ledenDao;
 		private readonly ICommunicatieVormDao _cVormDao;
 
 		// TODO: Dit gaat waarschijnlijk ook met AutoMapper
@@ -60,10 +61,11 @@ namespace Chiro.Gap.Sync
 		/// </summary>
 		/// <param name="svc">te gebruiken KipSyncService voor communicatie met Kipadmn</param>
 		/// <param name="cVormDao">Data access object voor communicatievormen</param>
-		public LedenSync(ISyncPersoonService svc, ICommunicatieVormDao cVormDao)
+		public LedenSync(ISyncPersoonService svc, ICommunicatieVormDao cVormDao, ILedenDao ledenDao)
 		{
 			_svc = svc;
 			_cVormDao = cVormDao;
+			_ledenDao = ledenDao;
 		}
 
 		/// <summary>
@@ -136,6 +138,33 @@ namespace Chiro.Gap.Sync
 					syncCommunicatie,
 					lidGedoe);
 			}
+		}
+
+		/// <summary>
+		/// Updatet de functies van het lid in Kipadmin
+		/// </summary>
+		/// <param name="lid">Lid met functies</param>
+		/// <remarks>Als geen persoonsgegevens meegeleverd zijn, dan zoeken we die wel even op in de database.</remarks>
+		public void FunctiesUpdaten(Lid lid)
+		{
+			Lid l;
+
+			if (lid.GelieerdePersoon == null || lid.GelieerdePersoon.Persoon == null)
+			{
+				// Als we geen persoonsgegevens hebben, halen we die op.  (AD-nummer nodig)
+				l = _ledenDao.Ophalen(lid.ID, ld => ld.GelieerdePersoon.Persoon, ld=>ld.Functie);
+			}
+			else
+			{
+				l = lid;
+			}
+
+			var kipFunctieIDs = (from f in l.Functie
+			                     where f.IsNationaal
+			                     select _functieVertalng[(NationaleFunctie) f.ID]).ToArray();
+
+
+			throw new NotImplementedException();
 		}
 	}
 }

@@ -7,12 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Transactions;
 using System.Web;
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
@@ -41,6 +43,8 @@ namespace Chiro.Gap.Workers
 		private readonly IGroepsWerkJaarDao _groepsWjDao;
 		private readonly IAutorisatieManager _autorisatieMgr;
 
+		private readonly ILedenSync _ledenSync;
+
 		/// <summary>
 		/// Instantieert een FunctiesManager-object
 		/// </summary>
@@ -48,12 +52,20 @@ namespace Chiro.Gap.Workers
 		/// <param name="ledenDao">Een dao voor data access mbt leden</param>
 		/// <param name="gwjDao">Data access object voor groepswerkjaren</param>
 		/// <param name="auMgr">Een IAutorisatieManager voor de autorisatie</param>
-		public FunctiesManager(IFunctiesDao funDao, ILedenDao ledenDao, IGroepsWerkJaarDao gwjDao, IAutorisatieManager auMgr)
+		/// <param name="ledenSync">Wordt gebruikt om lidinformatie te syncen naar kipadmin</param>
+		public FunctiesManager(
+			IFunctiesDao funDao, 
+			ILedenDao ledenDao, 
+			IGroepsWerkJaarDao gwjDao, 
+			IAutorisatieManager auMgr,
+			ILedenSync ledenSync)
 		{
 			_funDao = funDao;
 			_ledenDao = ledenDao;
 			_groepsWjDao = gwjDao;
 			_autorisatieMgr = auMgr;
+
+			_ledenSync = ledenSync;
 		}
 
 		/// <summary>
@@ -294,6 +306,8 @@ namespace Chiro.Gap.Workers
 		/// <remarks>Aan <paramref name="lid"/>moeten de huidige functies gekoppeld zijn</remarks>
 		public Lid Vervangen(Lid lid, IEnumerable<Functie> functies)
 		{
+			Lid resultaat;
+
 			// In deze method zitten geen checks op GAV-schap, juiste werkjaar,... dat gebeurt al in
 			// 'Toekennen' en 'Loskoppelen', dewelke door deze method worden aangeroepen.
 
@@ -304,8 +318,24 @@ namespace Chiro.Gap.Workers
 										where !functies.Contains(fn)
 										select fn.ID).ToList();
 
-			Toekennen(lid, toeTeVoegen);
-			return LosKoppelen(lid, teVerwijderen);	// LosKoppelen persisteert
+#if KIPDORP
+			using (var tx = new TransactionScope())
+			{
+#endif
+				Toekennen(lid, toeTeVoegen);
+				resultaat = LosKoppelen(lid, teVerwijderen); // LosKoppelen persisteert
+
+				if (lid.IsOvergezet)
+				{
+					// Als het lid al bestaat in Kipadmin, komen al zijn functies mee.
+					_ledenSync.FunctiesUpdaten(lid);
+				}
+
+#if KIPDORP
+				tx.Complete();
+			}
+#endif
+			return resultaat;
 		}
 
 		/// <summary>
