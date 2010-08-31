@@ -30,6 +30,7 @@ namespace Chiro.Gap.Sync
 		private readonly ISyncPersoonService _svc;
 		private readonly ILedenDao _ledenDao;
 		private readonly ICommunicatieVormDao _cVormDao;
+		private readonly IPersonenDao _personenDao;
 
 		// TODO: Dit gaat waarschijnlijk ook met AutoMapper
 		private readonly Dictionary<NationaleFunctie, SyncService.FunctieEnum> _functieVertalng =
@@ -61,11 +62,14 @@ namespace Chiro.Gap.Sync
 		/// </summary>
 		/// <param name="svc">te gebruiken KipSyncService voor communicatie met Kipadmn</param>
 		/// <param name="cVormDao">Data access object voor communicatievormen</param>
-		public LedenSync(ISyncPersoonService svc, ICommunicatieVormDao cVormDao, ILedenDao ledenDao)
+		/// <param name="ledenDao">Data access object voor leden</param>
+		/// <param name="personenDao">Data access object voor personen</param>
+		public LedenSync(ISyncPersoonService svc, ICommunicatieVormDao cVormDao, ILedenDao ledenDao, IPersonenDao personenDao)
 		{
 			_svc = svc;
 			_cVormDao = cVormDao;
 			_ledenDao = ledenDao;
+			_personenDao = personenDao;
 		}
 
 		/// <summary>
@@ -113,6 +117,11 @@ namespace Chiro.Gap.Sync
 			}
 			else
 			{
+				// Markeer AD-nummer als zijnde 'in aanvraag'
+
+				l.GelieerdePersoon.Persoon.AdInAanvraag = true;
+				_personenDao.Bewaren(l.GelieerdePersoon.Persoon);
+
 				// Ook persoonsgegevens meesturen
 
 				var syncPersoon = Mapper.Map<Persoon, SyncService.Persoon>(l.GelieerdePersoon.Persoon);

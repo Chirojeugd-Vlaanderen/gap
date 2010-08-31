@@ -62,9 +62,9 @@ GO
 GRANT EXECUTE ON pers.spFixVoorkeursAdres TO GapRole
 GO
 
-CREATE PROCEDURE pers.spZetAdNummer @PersoonID int, @AdNummer INT AS
+CREATE PROCEDURE pers.spAdNummerZetten @PersoonID int, @AdNummer INT AS
 -- DOEL: Het AD-Nummer van een gelieerde persoon zetten
-UPDATE pers.Persoon SET AdNummer=@AdNummer WHERE PersoonID=@PersoonID
+UPDATE pers.Persoon SET AdNummer=@AdNummer, AdInAanvraag=0 WHERE PersoonID=@PersoonID
 GO
 
 GRANT EXECUTE ON pers.spZetAdNummer TO KipSyncRole

@@ -168,7 +168,7 @@ namespace Chiro.Gap.Workers
 				// overschreven wordt, lijkt me wat overkill.  Ik vergelijk
 				// het nieuwe AD-nummer gewoon met het bestaande.
 
-				// Er mag niet gepoterd worden met PersoonID en AdNummer
+				// Er mag niet gepoterd worden met AdNummer
 
 				var origineel = _gelieerdePersonenDao.Ophalen(gelieerdePersoon.ID, gp => gp.Persoon);
 

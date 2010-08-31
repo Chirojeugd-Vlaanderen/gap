@@ -377,7 +377,7 @@ namespace Chiro.Kip.Services
 					Lid lid = (from l in db.Lid.Include(ld => ld.HeeftFunctie.First().Functie)
 						   where
 							l.AANSL_NR > 0 &&
-			    l.Persoon.AdNummer == adNummer &&
+							l.Persoon.AdNummer == adNummer &&
 							l.Groep.GroepID == groep.GroepID &&
 							l.werkjaar == gedoe.WerkJaar
 						   select l).FirstOrDefault();

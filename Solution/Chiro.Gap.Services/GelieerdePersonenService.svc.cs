@@ -100,6 +100,7 @@ namespace Chiro.Gap.Services
 				Mapper.Map(persoonInfo, gp.Persoon);
 				// In de hoop dat de members die geen 'Ignore hebben' overschreven worden,
 				// en de andere niet.
+				// Zo moet bijv. 'AdInAanvraag' bewaard blijven.
 
 				_gpMgr.Bewaren(gp, PersoonsExtras.Geen);
 

@@ -336,7 +336,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
 				.ForMember(dst => dst.EntityKey, opt => opt.Ignore())
 				.ForMember(dst => dst.PersoonsVerzekering, opt => opt.Ignore())
-				.ForMember(dst => dst.DubbelPuntAbonnement, opt => opt.Ignore());
+				.ForMember(dst => dst.DubbelPuntAbonnement, opt => opt.Ignore())
+				.ForMember(dst => dst.AdInAanvraag, opt => opt.Ignore());
 
 			// Important: als er een lid is, dan is er altijd een gelieerdepersoon, maar niet omgekeerd, 
 			// dus passen we de link aan in de andere richting!

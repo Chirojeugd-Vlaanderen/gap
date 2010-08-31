@@ -398,6 +398,7 @@
           <Property Name="DubbelPuntAbonnement" Type="bit" Nullable="false" />
           <Property Name="PersoonID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Versie" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="AdInAanvraag" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PersoonsAdres">
           <Key>
@@ -966,7 +967,8 @@
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_GelieerdePersoon_Persoon" FromRole="Persoon" ToRole="GelieerdePersoon" />
           <NavigationProperty Name="PersoonsAdres" Relationship="ChiroGroepModel.FK_PersoonsAdres_Persoon" FromRole="Persoon" ToRole="PersoonsAdres" />
           <NavigationProperty Name="PersoonsVerzekering" Relationship="ChiroGroepModel.FK_PersoonsVerzekering_Persoon" FromRole="Persoon" ToRole="PersoonsVerzekering" />
-          <Property Name="DubbelPuntAbonnement" Type="Boolean" Nullable="false" /></EntityType>
+          <Property Name="DubbelPuntAbonnement" Type="Boolean" Nullable="false" />
+          <Property Name="AdInAanvraag" Type="Boolean" Nullable="false" /></EntityType>
         <EntityType Name="CommunicatieVorm">
           <Key>
             <PropertyRef Name="ID" /></Key>
@@ -1280,6 +1282,7 @@
           <EntitySetMapping Name="Persoon">
             <EntityTypeMapping TypeName="IsTypeOf(ChiroGroepModel.Persoon)">
               <MappingFragment StoreEntitySet="Persoon">
+                <ScalarProperty Name="AdInAanvraag" ColumnName="AdInAanvraag" />
                 <ScalarProperty Name="DubbelPuntAbonnement" ColumnName="DubbelPuntAbonnement" />
                 <ScalarProperty Name="AdNummer" ColumnName="AdNummer" />
                 <ScalarProperty Name="Naam" ColumnName="Naam" />

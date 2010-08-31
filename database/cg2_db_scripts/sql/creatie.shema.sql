@@ -117,17 +117,18 @@ GO
 --
 
 BEGIN
-	CREATE TABLE [pers].[Persoon](
-		[AdNummer] [int] NULL,
-		[Naam] [varchar](160) NOT NULL,
-		[VoorNaam] [varchar](60) NOT NULL,
-		[GeboorteDatum] [datetime] NULL,
-		[Geslacht] [int] NOT NULL,
-		[SterfDatum] [smalldatetime] NULL,
+	CREATE TABLE pers.Persoon(
+		AdNummer INT NULL,
+		AdInAanvraag BIT NOT NULL DEFAULT 0,
+		Naam VARCHAR(160) NOT NULL,
+		VoorNaam VARCHAR(60) NOT NULL,
+		GeboorteDatum DATETIME NULL,
+		Geslacht INT NOT NULL,
+		SterfDatum SMALLDATETIME NULL,
 		DubbelPuntAbonnement BIT NOT NULL DEFAULT 0,
-		[PersoonID] [int] IDENTITY(1,1) NOT NULL,
-		[Versie] [timestamp] NULL,
-		CONSTRAINT [PK_Persoon] PRIMARY KEY CLUSTERED ([PersoonID] ASC)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+		PersoonID INT IDENTITY(1,1) NOT NULL,
+		Versie TIMESTAMP NULL,
+		CONSTRAINT PK_Persoon PRIMARY KEY CLUSTERED (PersoonID)
 	) ON [PRIMARY]
 END
 GO

@@ -37,7 +37,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsVerzekering_VerzekeringsType", "VerzekeringsType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.VerzekeringsType), "PersoonsVerzekering", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.PersoonsVerzekering))]
 
 // Original file name:
-// Generation date: 23/08/2010 14:54:58
+// Generation date: 31/08/2010 10:50:48
 namespace Chiro.Gap.Orm
 {
     
@@ -889,13 +889,15 @@ namespace Chiro.Gap.Orm
         /// <param name="voorNaam">Initial value of VoorNaam.</param>
         /// <param name="id">Initial value of ID.</param>
         /// <param name="dubbelPuntAbonnement">Initial value of DubbelPuntAbonnement.</param>
-        public static Persoon CreatePersoon(string naam, string voorNaam, int id, bool dubbelPuntAbonnement)
+        /// <param name="adInAanvraag">Initial value of AdInAanvraag.</param>
+        public static Persoon CreatePersoon(string naam, string voorNaam, int id, bool dubbelPuntAbonnement, bool adInAanvraag)
         {
             Persoon persoon = new Persoon();
             persoon.Naam = naam;
             persoon.VoorNaam = voorNaam;
             persoon.ID = id;
             persoon.DubbelPuntAbonnement = dubbelPuntAbonnement;
+            persoon.AdInAanvraag = adInAanvraag;
             return persoon;
         }
         /// <summary>
@@ -1105,6 +1107,29 @@ namespace Chiro.Gap.Orm
         private bool _DubbelPuntAbonnement;
         partial void OnDubbelPuntAbonnementChanging(bool value);
         partial void OnDubbelPuntAbonnementChanged();
+        /// <summary>
+        /// There are no comments for Property AdInAanvraag in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public bool AdInAanvraag
+        {
+            get
+            {
+                return this._AdInAanvraag;
+            }
+            set
+            {
+                this.OnAdInAanvraagChanging(value);
+                this.ReportPropertyChanging("AdInAanvraag");
+                this._AdInAanvraag = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("AdInAanvraag");
+                this.OnAdInAanvraagChanged();
+            }
+        }
+        private bool _AdInAanvraag;
+        partial void OnAdInAanvraagChanging(bool value);
+        partial void OnAdInAanvraagChanged();
         /// <summary>
         /// There are no comments for GelieerdePersoon in the schema.
         /// </summary>
