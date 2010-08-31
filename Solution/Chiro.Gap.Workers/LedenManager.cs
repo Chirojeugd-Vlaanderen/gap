@@ -320,6 +320,7 @@ namespace Chiro.Gap.Workers
 			}
 
 			lid.NonActief = true;
+			// TODO (#683): functies afpakken
 			_daos.LedenDao.Bewaren(lid);
 		}
 

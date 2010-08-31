@@ -43,10 +43,10 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// TODO (#190): documenteren!
+		/// Van een groepsgebonden functie aangeven dat de groep ze niet meer wil gebruiken
 		/// </summary>
-		/// <param name="groepID"></param>
-		/// <param name="id"></param>
+		/// <param name="groepID">De ID van de groep</param>
+		/// <param name="id">De ID van de functie</param>
 		/// <returns></returns>
 		[HandleError]
 		public ActionResult FunctieVerwijderen(int groepID, int id)
