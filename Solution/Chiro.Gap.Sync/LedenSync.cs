@@ -152,7 +152,7 @@ namespace Chiro.Gap.Sync
 		/// <summary>
 		/// Updatet de functies van het lid in Kipadmin
 		/// </summary>
-		/// <param name="lid">Lid met functies</param>
+		/// <param name="lid">Lid met functies en groep</param>
 		/// <remarks>Als geen persoonsgegevens meegeleverd zijn, dan zoeken we die wel even op in de database.</remarks>
 		public void FunctiesUpdaten(Lid lid)
 		{
@@ -161,19 +161,30 @@ namespace Chiro.Gap.Sync
 			if (lid.GelieerdePersoon == null || lid.GelieerdePersoon.Persoon == null)
 			{
 				// Als we geen persoonsgegevens hebben, halen we die op.  (AD-nummer nodig)
-				l = _ledenDao.Ophalen(lid.ID, ld => ld.GelieerdePersoon.Persoon, ld=>ld.Functie);
+				l = _ledenDao.Ophalen(lid.ID, ld => ld.GelieerdePersoon.Persoon, ld=>ld.Functie, ld=>ld.GroepsWerkJaar.Groep);
 			}
 			else
 			{
 				l = lid;
 			}
 
+			Debug.Assert(l.GroepsWerkJaar != null);
+			Debug.Assert(l.GroepsWerkJaar.Groep != null);
+
+			var chiroGroep = (l.GroepsWerkJaar.Groep as ChiroGroep);
+			// TODO (#555): Dit gaat problemen geven met oud-leidingsploegen
+
+			Debug.Assert(chiroGroep != null);
+
 			var kipFunctieIDs = (from f in l.Functie
 			                     where f.IsNationaal
-			                     select _functieVertalng[(NationaleFunctie) f.ID]).ToArray();
+			                     select _functieVertalng[(NationaleFunctie) f.ID]).ToList();
 
-
-			throw new NotImplementedException();
+			_svc.FunctiesUpdaten(Mapper.Map<Persoon, SyncService.Persoon>(
+				l.GelieerdePersoon.Persoon),
+			                     chiroGroep.Code,
+			                     l.GroepsWerkJaar.WerkJaar,
+			                     kipFunctieIDs);
 		}
 	}
 }

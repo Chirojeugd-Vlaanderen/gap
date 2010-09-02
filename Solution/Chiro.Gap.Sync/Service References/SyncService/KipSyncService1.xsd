@@ -59,4 +59,14 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="FunctiesUpdaten">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="persoon" nillable="true" type="q16:Persoon" />
+        <xs:element minOccurs="0" name="stamNummer" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="werkJaar" type="xs:int" />
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="functies" nillable="true" type="q17:ArrayOfFunctieEnum" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

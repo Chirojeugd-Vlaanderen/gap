@@ -42,7 +42,7 @@ namespace Chiro.Kip.Services
 	/// </summary>
 	public class SyncPersoonService : ISyncPersoonService
 	{
-		private static readonly Object _lidMakenToken = new object();
+		private static readonly Object _ledenToken = new object();
 		private static readonly Object _adresManipulerenToken = new object();
 		private static readonly Object _persoonManipulerenToken = new object();
 		private static readonly Object _communicatieToken = new object();
@@ -511,7 +511,7 @@ namespace Chiro.Kip.Services
 			LidGedoe gedoe)
 		{
 			string feedback;
-			lock (_lidMakenToken)
+			lock (_ledenToken)
 			{
 				// Aangezien 1 'savechanges' van entity framework ook een transaction is, moet ik geen
 				// distributed transaction opzetten.  Misschien... En de lock zorgt ervoor dat dit stuk
@@ -900,6 +900,108 @@ namespace Chiro.Kip.Services
 			AlleCommunicatieBewaren(persoon, communicatieMiddelen);
 			Console.WriteLine(feedback);
 		}
-	
+
+		/// <summary>
+		/// Updatet de functies van een lid.
+		/// </summary>
+		/// <param name="persoon">Persoon waarvan de lidfuncties geupdatet moeten worden</param>
+		/// <param name="stamNummer">Stamnummer van de groep waarin de persoon lid is</param>
+		/// <param name="werkJaar">Werkjaar waarin de persoon lid is</param>
+		/// <param name="functies">Toe te kennen functies.  Eventuele andere reeds toegekende functies worden 
+		/// verwijderd.</param>
+		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+		public void FunctiesUpdaten(
+			Persoon pers, 
+			string stamNummer, 
+			int werkJaar, 
+			IEnumerable<FunctieEnum> functies)
+		{
+			StringBuilder feedback = new StringBuilder();
+
+			Mapper.CreateMap<Persoon, PersoonZoekInfo>()
+			    .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int)src.Geslacht))
+			    .ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
+
+			using (var db = new kipadminEntities())
+			{
+				KipPersoon persoon;
+
+				// Eens kijken of we het lid waarvan sprake kunnen vinden.
+
+				var mgr = new PersonenManager();
+				var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(pers);
+
+				lock (_persoonManipulerenToken)
+				{
+					persoon = mgr.Zoeken(zoekInfo, false, db);
+				}
+
+				if (persoon == null)
+				{
+					throw new InvalidOperationException(String.Format(
+						Properties.Resources.PersoonNietGevonden,
+						pers.VoorNaam,
+						pers.Naam));
+				}
+
+				lock (_ledenToken)
+				{
+					// TODO (#555): Van zodra we met oud-leidingsploegen werken, zullen
+					// we GroepID's uit Kipadmin moeten gebruiken.  Maar voorlopig dus
+					// met stamnummer.
+
+					int groepID = (from g in db.Groep.OfType<ChiroGroep>()
+					               where g.STAMNR == stamNummer
+					               select g.GroepID).FirstOrDefault();
+
+					// Haal betreffende lid op met functies.
+
+					var lid = (from l in db.Lid.Include(ld=>ld.HeeftFunctie.First().Functie)
+					           where l.Persoon.AdNummer == persoon.AdNummer
+					                 && l.Groep.GroepID == groepID
+					                 && l.werkjaar == werkJaar
+					           select l).FirstOrDefault();
+
+					// pragmatisch: eerst bestaande functies verwijderen.
+
+					foreach (var hf in lid.HeeftFunctie)
+					{
+						db.DeleteObject(hf);
+					}
+					db.SaveChanges();
+					feedback.AppendLine(String.Format(
+						"Functies verwijderd van ID{0} {1} {2} AD{3}",
+						persoon.GapID,
+						persoon.VoorNaam,
+						persoon.Naam,
+						persoon.AdNummer));
+
+
+					var toeTeKennen = db.FunctieSet.Where(Utility.BuildContainsExpression<Functie, int>(
+						f => f.id,
+						functies.Cast<int>()));
+
+					foreach (var functie in toeTeKennen)
+					{
+						var hf = new HeeftFunctie
+						         	{
+						         		Lid = lid,
+						         		Functie = functie
+						         	};
+						db.AddToHeeftFunctieSet(hf);
+						feedback.AppendLine(String.Format(
+							"Functie toegekend aan ID{0} {1} {2} AD{3}: {4}",
+							persoon.GapID,
+							persoon.VoorNaam,
+							persoon.Naam,
+							persoon.AdNummer,
+							functie.CODE));
+					}
+					db.SaveChanges();
+
+				}
+			}
+			Console.WriteLine(feedback);
+		}
 	}
 }

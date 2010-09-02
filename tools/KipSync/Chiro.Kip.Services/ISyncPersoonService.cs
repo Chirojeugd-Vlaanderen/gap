@@ -74,15 +74,25 @@ namespace Chiro.Kip.Services
 		/// </summary>
 		/// <param name="persoon">Persoonsgegevens van de lid te maken persoon</param>
 		/// <param name="adres">Voorkeursadres voor de persoon</param>
-        /// <param name="adresType">Adrestype van dat voorkeursadres</param>
+		/// <param name="adresType">Adrestype van dat voorkeursadres</param>
 		/// <param name="communicatieMiddelen">Lijst met communicatiemiddelen van de persoon</param>
 		/// <param name="lidGedoe">nodige info om lid te kunnen maken</param>
 		[OperationContract(IsOneWay = true)]
 		void NieuwLidBewaren(
 			Persoon persoon,
 			Adres adres,
-            AdresTypeEnum adresType,
+			AdresTypeEnum adresType,
 			IEnumerable<CommunicatieMiddel> communicatieMiddelen,
 			LidGedoe lidGedoe);
+
+		/// <summary>
+		/// Updatet de functies van een lid.
+		/// </summary>
+		/// <param name="persoon">Persoon waarvan de lidfuncties geupdatet moeten worden</param>
+		/// <param name="stamNummer">Stamnummer van de groep waarin de persoon lid is</param>
+		/// <param name="werkJaar">Werkjaar waarin de persoon lid is</param>
+		/// <param name="functies">Toe te kennen functies.  Eventuele andere reeds toegekende functies worden verwijderd.</param>
+		[OperationContract(IsOneWay = true)]
+		void FunctiesUpdaten(Persoon persoon, string stamNummer, int werkJaar, IEnumerable<FunctieEnum> functies);
 	}
 }
