@@ -6,11 +6,14 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using AutoMapper;
+
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Sync.SyncService;
 
 using Adres = Chiro.Gap.Sync.SyncService.Adres;
+using Persoon = Chiro.Gap.Orm.Persoon;
 
 namespace Chiro.Gap.Sync
 {
@@ -44,7 +47,7 @@ namespace Chiro.Gap.Sync
 				var bewoners = from pa in adr.PersoonsAdres
 					       select new Bewoner
 					       {
-						       AdNummer = pa.Persoon.AdNummer ?? 0,
+						       Persoon = Mapper.Map<Persoon, SyncService.Persoon>(pa.Persoon),
 						       AdresType = (AdresTypeEnum)pa.AdresType
 					       };
 

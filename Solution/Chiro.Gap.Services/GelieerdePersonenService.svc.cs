@@ -768,7 +768,7 @@ namespace Chiro.Gap.Services
 
 				GelieerdePersoon gp = _gpMgr.OphalenMetCommVormen(gelieerdePersoonID);
 				_cvMgr.AanpassingenDoorvoeren(gp, communicatieVorm);
-				_gpMgr.Bewaren(gp, PersoonsExtras.Communicatie);
+				_cvMgr.Bewaren(communicatieVorm);
 			}
 			catch (ValidatieException ex)
 			{
@@ -822,7 +822,7 @@ namespace Chiro.Gap.Services
 				var cv = _cvMgr.OphalenMetGelieerdePersoon(v.ID);
 				var gp = cv.GelieerdePersoon;
 				_cvMgr.AanpassingenDoorvoeren(gp, communicatieVorm);
-				_gpMgr.Bewaren(gp, PersoonsExtras.Communicatie);
+				_cvMgr.Bewaren(communicatieVorm);
 			}
 			catch (ValidatieException ex)
 			{

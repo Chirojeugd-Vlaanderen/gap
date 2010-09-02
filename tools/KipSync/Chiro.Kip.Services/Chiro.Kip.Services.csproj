@@ -65,6 +65,11 @@
     <Compile Include="DataContracts\Persoon.cs" />
     <Compile Include="ISyncPersoonService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SyncPersoonService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +92,16 @@
       <Project>{6E07BADE-3705-44AB-A77A-41189D14806F}</Project>
       <Name>Chiro.Kip.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chiro.Kip.Workers\Chiro.Kip.Workers.csproj">
+      <Project>{9DD68140-0958-4C53-A32F-518BC225B417}</Project>
+      <Name>Chiro.Kip.Workers</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

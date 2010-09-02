@@ -21,7 +21,15 @@ namespace Chiro.Gap.Dummies
 		{
 		}
 
+		public void Toevoegen(CommunicatieVorm commvorm)
+		{
+		}
+
 		public void Bewaren(Chiro.Gap.Orm.GelieerdePersoon gp, bool metStandaardAdres, bool metCommunicatie)
+		{
+		}
+
+		public void CommunicatieUpdaten(GelieerdePersoon gp)
 		{
 		}
 

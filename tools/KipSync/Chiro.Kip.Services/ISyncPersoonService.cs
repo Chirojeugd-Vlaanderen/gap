@@ -4,6 +4,23 @@ using Chiro.Kip.Services.DataContracts;
 
 namespace Chiro.Kip.Services
 {
+	/// <summary>
+	/// Servicecontract voor communicatie GAP->KIP
+	/// 
+	/// BELANGRIJK: Oorspronkelijk werden voor de meeste methods geen personen over de lijn gestuurd, maar enkel
+	/// AD-nummers.  Het idee daarachter was dat toch enkel gegevens van personen met AD-nummer naar kipadmin
+	/// gesynct moeten worden.
+	/// 
+	/// Maar met het AD-nummer alleen kom je er niet.  Het kan namelijk goed zijn dat een persoon gewijzigd wordt
+	/// tussen het moment dat hij voor het eerst lid wordt, en het moment dat hij zijn AD-nummer krijgt.  Deze
+	/// wijzigingen willen we niet verliezen.
+	/// 
+	/// Het PersoonID van GAP meesturen helpt in de meeste gevallen.  Maar dat kan mis gaan op het moment dat een persoon
+	/// uit kipadmin nog dubbel in GAP zit.  Vooraleer deze persoon zijn AD-nummer krijgt, weten we dat immers niet.
+	/// 
+	/// Vandaar dat nu alle methods volledige persoonsobjecten gebruiken, zodat het opzoeken van een persoon zo optimaal
+	/// mogelijk kan gebeuren.  Het persoonsobject een AD-nummer heeft, wordt er niet naar de rest gekeken.
+	/// </summary>
 	[ServiceContract]
 	public interface ISyncPersoonService
 	{
@@ -19,21 +36,29 @@ namespace Chiro.Kip.Services
 		void StandaardAdresBewaren(Adres adres, IEnumerable<Bewoner> bewoners);
 
 		/// <summary>
+		/// Voegt 1 communicatiemiddel toe aan de communicatiemiddelen van een persoon
+		/// </summary>
+		/// <param name="persoon">Persoon die het nieuwe communicatiemiddel krijgt</param>
+		/// <param name="communicatieMiddel"></param>
+		[OperationContract(IsOneWay = true)]
+		void CommunicatieToevoegen(Persoon persoon, CommunicatieMiddel communicatieMiddel);
+
+		/// <summary>
 		/// Verwijdert alle bestaande contactinfo, en vervangt door de contactinfo meegegeven in 
 		/// <paramref name="communicatieMiddelen"/>.
 		/// </summary>
-		/// <param name="adNr">AD-nummer van persoon waarvoor contactinfo toe te voegen</param>
-		/// <param name="communicatieMiddelen">te bewaren contactinfo</param>
+		/// <param name="persoon">persoon waarvoor contactinfo te updaten</param>
+		/// <param name="communicatieMiddelen">te updaten contactinfo</param>
 		[OperationContract(IsOneWay = true)]
-		void CommunicatieBewaren(int adNr, IEnumerable<CommunicatieMiddel> communicatieMiddelen);
+		void AlleCommunicatieBewaren(Persoon persoon, IEnumerable<CommunicatieMiddel> communicatieMiddelen);
 
 		/// <summary>
 		/// Verwijdert een communicatiemiddel uit Kipadmin.
 		/// </summary>
-		/// <param name="adNr">AD-nummer van persoon die communicatiemiddel moet verliezen</param>
+		/// <param name="pers">Persoonsgegevens van de persoon waarvan het communicatiemiddel moet verdwijnen.</param>
 		/// <param name="communicatie">Gegevens over het te verwijderen communicatiemiddel</param>
 		[OperationContract(IsOneWay = true)]
-		void CommunicatieVerwijderen(int adNr, CommunicatieMiddel communicatie);
+		void CommunicatieVerwijderen(Persoon pers, CommunicatieMiddel communicatie);
 
 		/// <summary>
 		/// Maakt een persoon met gekend ad-nummer lid, of updatet een bestaand lid

@@ -21,8 +21,11 @@
   <wsdl:message name="ISyncPersoonService_StandaardAdresBewaren_InputMessage">
     <wsdl:part name="parameters" element="tns:StandaardAdresBewaren" />
   </wsdl:message>
-  <wsdl:message name="ISyncPersoonService_CommunicatieBewaren_InputMessage">
-    <wsdl:part name="parameters" element="tns:CommunicatieBewaren" />
+  <wsdl:message name="ISyncPersoonService_CommunicatieToevoegen_InputMessage">
+    <wsdl:part name="parameters" element="tns:CommunicatieToevoegen" />
+  </wsdl:message>
+  <wsdl:message name="ISyncPersoonService_AlleCommunicatieBewaren_InputMessage">
+    <wsdl:part name="parameters" element="tns:AlleCommunicatieBewaren" />
   </wsdl:message>
   <wsdl:message name="ISyncPersoonService_CommunicatieVerwijderen_InputMessage">
     <wsdl:part name="parameters" element="tns:CommunicatieVerwijderen" />
@@ -40,8 +43,11 @@
     <wsdl:operation name="StandaardAdresBewaren">
       <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/StandaardAdresBewaren" message="tns:ISyncPersoonService_StandaardAdresBewaren_InputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="CommunicatieBewaren">
-      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/CommunicatieBewaren" message="tns:ISyncPersoonService_CommunicatieBewaren_InputMessage" />
+    <wsdl:operation name="CommunicatieToevoegen">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/CommunicatieToevoegen" message="tns:ISyncPersoonService_CommunicatieToevoegen_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AlleCommunicatieBewaren">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/AlleCommunicatieBewaren" message="tns:ISyncPersoonService_AlleCommunicatieBewaren_InputMessage" />
     </wsdl:operation>
     <wsdl:operation name="CommunicatieVerwijderen">
       <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/CommunicatieVerwijderen" message="tns:ISyncPersoonService_CommunicatieVerwijderen_InputMessage" />
@@ -68,8 +74,14 @@
         <soap12:body use="literal" />
       </wsdl:input>
     </wsdl:operation>
-    <wsdl:operation name="CommunicatieBewaren">
-      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/CommunicatieBewaren" style="document" />
+    <wsdl:operation name="CommunicatieToevoegen">
+      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/CommunicatieToevoegen" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="AlleCommunicatieBewaren">
+      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/AlleCommunicatieBewaren" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

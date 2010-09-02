@@ -41,8 +41,8 @@
   <xs:element name="ArrayOfBewoner" nillable="true" type="tns:ArrayOfBewoner" />
   <xs:complexType name="Bewoner">
     <xs:sequence>
-      <xs:element minOccurs="0" name="AdNummer" type="xs:int" />
       <xs:element minOccurs="0" name="AdresType" type="tns:AdresTypeEnum" />
+      <xs:element minOccurs="0" name="Persoon" nillable="true" type="tns:Persoon" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Bewoner" nillable="true" type="tns:Bewoner" />
@@ -79,12 +79,6 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="AdresTypeEnum" nillable="true" type="tns:AdresTypeEnum" />
-  <xs:complexType name="ArrayOfCommunicatieMiddel">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommunicatieMiddel" nillable="true" type="tns:CommunicatieMiddel" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCommunicatieMiddel" nillable="true" type="tns:ArrayOfCommunicatieMiddel" />
   <xs:complexType name="CommunicatieMiddel">
     <xs:sequence>
       <xs:element minOccurs="0" name="GeenMailings" type="xs:boolean" />
@@ -154,6 +148,12 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="CommunicatieType" nillable="true" type="tns:CommunicatieType" />
+  <xs:complexType name="ArrayOfCommunicatieMiddel">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommunicatieMiddel" nillable="true" type="tns:CommunicatieMiddel" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommunicatieMiddel" nillable="true" type="tns:ArrayOfCommunicatieMiddel" />
   <xs:complexType name="LidGedoe">
     <xs:sequence>
       <xs:element minOccurs="0" name="LidType" type="tns:LidTypeEnum" />

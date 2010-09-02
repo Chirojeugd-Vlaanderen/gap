@@ -1,8 +1,11 @@
 ﻿using System;
+using Chiro.Kip.Data;
 using Chiro.Kip.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Kip.Services.DataContracts;
 using System.Collections.Generic;
+using Adres = Chiro.Kip.Services.DataContracts.Adres;
+using Persoon = Chiro.Kip.Services.DataContracts.Persoon;
 
 namespace Chiro.Kip.Services.Test
 {
@@ -73,17 +76,20 @@ namespace Chiro.Kip.Services.Test
     	{
     		var target = new SyncPersoonService(); // TODO: Initialize to an appropriate value
 
+    		var p1 = new Persoon {AdNummer = 39198};
+    		var p2 = new Persoon {AdNummer = 85111};
+
     		var a = new Adres
     		        	{
     		        		Straat = "Kipdorp",
-    		        		HuisNr = 28,
+    		        		HuisNr = 18,
     		        		PostNr = 2000,
     		        		WoonPlaats = "Antwerpen",
     		        		Land = ""
     		        	};
     		target.StandaardAdresBewaren(a, new Bewoner[] {
-			new Bewoner{AdNummer = 85111, AdresType = AdresTypeEnum.Kot},
-			new Bewoner{AdNummer = 39198, AdresType = AdresTypeEnum.Werk}});
+			new Bewoner{Persoon = p1, AdresType = AdresTypeEnum.Kot},
+			new Bewoner{Persoon = p2, AdresType = AdresTypeEnum.Werk}});
     	}
 
 	/// <summary>
@@ -93,7 +99,16 @@ namespace Chiro.Kip.Services.Test
 	public void CommunicatieUpdatedTest()
 	{
 		var target = new SyncPersoonService(); // TODO: Initialize to an appropriate value
-		int adNr = 17903;
+		var persoon = new Persoon()
+		{
+			AdNummer = 17903,
+			GeboorteDatum = new DateTime(1971, 5, 14),
+			Geslacht = GeslachtsEnum.Man,
+			ID = 205,
+			Naam = "Haepers",
+			SterfDatum = null,
+			VoorNaam = "Tommy"
+		};
 
 		IEnumerable<CommunicatieMiddel> communicatiemiddelen = new CommunicatieMiddel[]
 		                                                       	{
@@ -116,7 +131,7 @@ namespace Chiro.Kip.Services.Test
 		                                                       			}
 		                                                       	};
 
-		target.CommunicatieBewaren(adNr, communicatiemiddelen);
+		target.AlleCommunicatieBewaren(persoon, communicatiemiddelen);
 		Assert.Inconclusive("A method that does not return a value cannot be verified.");
 	}
 
@@ -126,7 +141,7 @@ namespace Chiro.Kip.Services.Test
         [TestMethod()]
         public void PersoonUpdatedTest()
         {
-            var target = new SyncPersoonService(); // TODO: Initialize to an appropriate value
+            var target = new SyncPersoonService(new DummyPersoonUpdater()); // TODO: Initialize to an appropriate value
             var persoon = new Persoon()
                                   {
                                       AdNummer = 17903,
@@ -148,12 +163,12 @@ namespace Chiro.Kip.Services.Test
         [TestMethod()]
         public void PersoonUpdatedNewTest()
         {
-            var target = new SyncPersoonService(); // TODO: Initialize to an appropriate value
+		var target = new SyncPersoonService(new DummyPersoonUpdater()); // TODO: Initialize to an appropriate value
             var persoon = new Persoon()
             {
                 GeboorteDatum = new DateTime(1971, 5, 14),
                 Geslacht = GeslachtsEnum.Man,
-                ID = 2000,
+                ID = -2,
                 Naam = "HaepersNew",
                 SterfDatum = null,
                 VoorNaam = "Benny"

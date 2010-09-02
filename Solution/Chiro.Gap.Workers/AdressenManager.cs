@@ -155,7 +155,7 @@ namespace Chiro.Gap.Workers
 
 				var teSyncen = from pa in adr.PersoonsAdres
 				               where pa.GelieerdePersoon.Count > 0 // voorkeursadres
-				                     && pa.Persoon.AdNummer != null	// met ad-nummer
+				                     && (pa.Persoon.AdNummer != null || pa.Persoon.AdInAanvraag)	// met ad-nummer
 				               select pa;
 
 				// TODO (#238): Buitenlandse adressen!

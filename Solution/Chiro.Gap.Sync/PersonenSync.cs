@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -52,10 +53,9 @@ namespace Chiro.Gap.Sync
 			// Wijzigingen van personen met ad-nummer worden doorgesluisd
 			// naar Kipadmin.
 
-			Debug.Assert(gp.Persoon.AdNummer != null);
+			Debug.Assert(gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag);
 
 			var syncPersoon = Mapper.Map<Persoon, SyncService.Persoon>(gp.Persoon);
-
 			_svc.PersoonUpdaten(syncPersoon);
 
 			if (metStandaardAdres && gp.PersoonsAdres != null)
@@ -69,7 +69,7 @@ namespace Chiro.Gap.Sync
 
 				var syncBewoner = new Bewoner
 				{
-					AdNummer = (int)gp.Persoon.AdNummer,
+					Persoon = Mapper.Map<Persoon, SyncService.Persoon>(gp.Persoon),
 					AdresType = (AdresTypeEnum)gp.PersoonsAdres.AdresType
 				};
 
@@ -82,8 +82,21 @@ namespace Chiro.Gap.Sync
 
 				var syncCommunicatie = Mapper.Map<IEnumerable<CommunicatieVorm>, List<CommunicatieMiddel>>(_cVormDao.ZoekenOpPersoon(gp.Persoon.ID));
 
-				_svc.CommunicatieBewaren((int)gp.Persoon.AdNummer, syncCommunicatie);
+				_svc.AlleCommunicatieBewaren(syncPersoon, syncCommunicatie);
 			}
+		}
+
+		/// <summary>
+		/// Stuurt *alle* communicatie van de persoon gekoppeld aan <paramref name="gp"/> naar Kipadmin 
+		/// (dus ook de communicatie gekend bij andere groepen)
+		/// </summary>
+		/// <param name="gp">Gelieerde persoon</param>
+		public void CommunicatieUpdaten(GelieerdePersoon gp)
+		{
+			var syncPersoon = Mapper.Map<Persoon, SyncService.Persoon>(gp.Persoon);
+			var syncCommunicatie = Mapper.Map<IEnumerable<CommunicatieVorm>, List<CommunicatieMiddel>>(_cVormDao.ZoekenOpPersoon(gp.Persoon.ID));
+
+			_svc.AlleCommunicatieBewaren(syncPersoon, syncCommunicatie);
 		}
 	}
 }

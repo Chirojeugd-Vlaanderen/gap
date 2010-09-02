@@ -32,6 +32,7 @@ namespace Chiro.Gap.Workers
 	{
 		private readonly IGelieerdePersonenDao _gelieerdePersonenDao;
 		private readonly ICategorieenDao _categorieenDao;
+		private readonly ICommunicatieVormDao _communicatieVormDao;
 		private readonly IPersonenDao _personenDao;
 		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly IPersonenSync _personenSync;
@@ -43,13 +44,15 @@ namespace Chiro.Gap.Workers
 		/// <param name="gelieerdePersonenDao">Repository voor gelieerde personen</param>
 		/// <param name="categorieenDao">Repository voor categorieën</param>
 		/// <param name="pDao">Repository voor personen</param>
+		/// <param name="cvDao">Repostiory voor communicatievormen</param>
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
-		/// <param name="personenSync">Zorgt voor synchronisate van personen naar KipAdmin</param>
-		/// <param name="adressenSync">Zorgt voor synchronisate van adressen naar KipAdmin</param>
+		/// <param name="personenSync">Zorgt voor synchronisate van personen naar Kipadmin</param>
+		/// <param name="adressenSync">Zorgt voor synchronisate van adressen naar Kipadmin</param>
 		public GelieerdePersonenManager(
 			IGelieerdePersonenDao gelieerdePersonenDao, 
 			ICategorieenDao categorieenDao, 
 			IPersonenDao pDao, 
+			ICommunicatieVormDao cvDao,
 			IAutorisatieManager autorisatieMgr,
 			IPersonenSync personenSync,
 			IAdressenSync adressenSync)
@@ -60,6 +63,7 @@ namespace Chiro.Gap.Workers
 			_personenDao = pDao;
 			_personenSync = personenSync;
 			_adressenSync = adressenSync;
+			_communicatieVormDao = cvDao;
 		}
 
 		#region proxy naar data access
@@ -183,7 +187,7 @@ namespace Chiro.Gap.Workers
 #endif
 						q = _gelieerdePersonenDao.Bewaren(gelieerdePersoon, ExtrasNaarLambdas(extras));
 
-						if (gelieerdePersoon.Persoon.AdNummer != null)
+						if (gelieerdePersoon.Persoon.AdNummer != null || gelieerdePersoon.Persoon.AdInAanvraag)
 						{
 							_personenSync.Bewaren(
 								gelieerdePersoon,
@@ -769,7 +773,7 @@ namespace Chiro.Gap.Workers
 				// een transactie.)
 				// geef nieuwe voorkeursadressen van personen met ad-nummer door aan kipadmin
 				var voorKeursAdressen = (from gp in gelieerdePersonen
-							 where gp.Persoon.AdNummer != null
+							 where gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag
 				                         select gp.PersoonsAdres);
 
 				_adressenSync.StandaardAdressenBewaren(voorKeursAdressen);

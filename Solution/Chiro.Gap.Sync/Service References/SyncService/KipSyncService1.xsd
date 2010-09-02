@@ -16,19 +16,27 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="CommunicatieBewaren">
+  <xs:element name="CommunicatieToevoegen">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="adNr" type="xs:int" />
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="communicatieMiddelen" nillable="true" type="q4:ArrayOfCommunicatieMiddel" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="persoon" nillable="true" type="q4:Persoon" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="communicatieMiddel" nillable="true" type="q5:CommunicatieMiddel" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AlleCommunicatieBewaren">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="persoon" nillable="true" type="q6:Persoon" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="communicatieMiddelen" nillable="true" type="q7:ArrayOfCommunicatieMiddel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="CommunicatieVerwijderen">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="adNr" type="xs:int" />
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="communicatie" nillable="true" type="q5:CommunicatieMiddel" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="pers" nillable="true" type="q8:Persoon" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="communicatie" nillable="true" type="q9:CommunicatieMiddel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -36,18 +44,18 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="adNummer" type="xs:int" />
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="gedoe" nillable="true" type="q6:LidGedoe" />
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="gedoe" nillable="true" type="q10:LidGedoe" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="NieuwLidBewaren">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="persoon" nillable="true" type="q7:Persoon" />
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="adres" nillable="true" type="q8:Adres" />
-        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="adresType" type="q9:AdresTypeEnum" />
-        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="communicatieMiddelen" nillable="true" type="q10:ArrayOfCommunicatieMiddel" />
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="lidGedoe" nillable="true" type="q11:LidGedoe" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="persoon" nillable="true" type="q11:Persoon" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="adres" nillable="true" type="q12:Adres" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="adresType" type="q13:AdresTypeEnum" />
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="communicatieMiddelen" nillable="true" type="q14:ArrayOfCommunicatieMiddel" />
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="lidGedoe" nillable="true" type="q15:LidGedoe" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

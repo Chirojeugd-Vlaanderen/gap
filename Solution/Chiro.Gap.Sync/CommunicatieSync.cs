@@ -3,13 +3,17 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Diagnostics;
+
+using AutoMapper;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Sync.SyncService;
 
 using CommunicatieType = Chiro.Gap.Sync.SyncService.CommunicatieType;
+using Persoon = Chiro.Gap.Orm.Persoon;
 
 namespace Chiro.Gap.Sync
 {
@@ -38,10 +42,25 @@ namespace Chiro.Gap.Sync
 		{
 			Debug.Assert(communicatieVorm.GelieerdePersoon != null);
 			Debug.Assert(communicatieVorm.GelieerdePersoon.Persoon != null);
-			Debug.Assert(communicatieVorm.GelieerdePersoon.Persoon.AdNummer != null);
 
-			_svc.CommunicatieVerwijderen(
-				(int)communicatieVorm.GelieerdePersoon.Persoon.AdNummer,
+			_svc.CommunicatieVerwijderen(Mapper.Map<Persoon, SyncService.Persoon>(communicatieVorm.GelieerdePersoon.Persoon),
+				new CommunicatieMiddel
+				{
+					Type = (CommunicatieType)communicatieVorm.CommunicatieType.ID,
+					Waarde = communicatieVorm.Nummer
+				});
+		}
+
+		/// <summary>
+		/// Bewaart een communicatievorm in Kipadmin
+		/// </summary>
+		/// <param name="commvorm">Te bewaren communicatievorm, gekoppeld aan persoon</param>
+		public void Toevoegen(CommunicatieVorm communicatieVorm)
+		{
+			Debug.Assert(communicatieVorm.GelieerdePersoon != null);
+			Debug.Assert(communicatieVorm.GelieerdePersoon.Persoon != null);
+
+			_svc.CommunicatieToevoegen(Mapper.Map<Persoon, SyncService.Persoon>(communicatieVorm.GelieerdePersoon.Persoon),
 				new CommunicatieMiddel
 				{
 					Type = (CommunicatieType)communicatieVorm.CommunicatieType.ID,

@@ -4,6 +4,7 @@
 // </copyright>
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 #if KIPDORP
 using System.Transactions;
@@ -27,7 +28,8 @@ namespace Chiro.Gap.Workers
 		private readonly IDao<CommunicatieType> _typedao;
 		private readonly IDao<CommunicatieVorm> _dao;
 		private readonly IAutorisatieManager _autorisatieMgr;
-		private readonly ICommunicatieSync _sync;
+		private readonly ICommunicatieSync _communicatieSync;
+		private readonly IPersonenSync _personenSync;
 
 		/// <summary>
 		/// Deze constructor laat toe om een alternatieve repository voor
@@ -36,17 +38,19 @@ namespace Chiro.Gap.Workers
 		/// <param name="typedao">Repository voor communicatietypes</param>
 		/// <param name="commdao">Repository voor communicatievormen</param>
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
-		/// <param name="sync">Syncer naar Kipadmin voor communicatiemiddelen</param>
+		/// <param name="communicatieSync">Syncer naar Kipadmin voor communicatiemiddelen</param>
 		public CommVormManager(
 			IDao<CommunicatieType> typedao, 
 			IDao<CommunicatieVorm> commdao, 
 			IAutorisatieManager autorisatieMgr,
-			ICommunicatieSync sync)
+			ICommunicatieSync communicatieSync,
+			IPersonenSync personenSync)
 		{
 			_typedao = typedao;
 			_dao = commdao;
 			_autorisatieMgr = autorisatieMgr;
-			_sync = sync;
+			_communicatieSync = communicatieSync;
+			_personenSync = personenSync;
 		}
 
 		/// <summary>
@@ -85,13 +89,47 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="commvorm">Te persisteren communicatievorm</param>
 		/// <returns>De bewaarde communicatievorm</returns>
+		/// <remarks>Persoon moet gekoppeld zijn</remarks>
 		public CommunicatieVorm Bewaren(CommunicatieVorm commvorm)
 		{
+			bool isNieuw = (commvorm.ID == 0);
+
+			CommunicatieVorm resultaat;
+
+			Debug.Assert(commvorm.GelieerdePersoon != null);
+			Debug.Assert(commvorm.GelieerdePersoon.Persoon != null);
+
 			if (!_autorisatieMgr.IsGavCommVorm(commvorm.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
-			return _dao.Bewaren(commvorm);
+#if KIPDORP
+			using (var tx = new TransactionScope())
+			{
+#endif
+				resultaat = _dao.Bewaren(
+					commvorm, 
+					cv => cv.GelieerdePersoon.WithoutUpdate(),
+					cv => cv.CommunicatieType.WithoutUpdate());
+				if (commvorm.GelieerdePersoon.Persoon.AdNummer != null || commvorm.GelieerdePersoon.Persoon.AdInAanvraag)
+				{
+					if (isNieuw)
+					{
+						_communicatieSync.Toevoegen(commvorm);
+					}
+					else
+					{
+						// bij update moet *alle* communicatie opnieuw naar Kipadmin, omdat we niet weten welke 
+						// precies de te vervangen communicatievorm is.
+
+						_personenSync.CommunicatieUpdaten(commvorm.GelieerdePersoon);
+					}
+				}
+#if KIPDORP
+				tx.Complete();
+			}
+#endif
+			return resultaat;
 		}
 
 		/// <summary>
@@ -150,9 +188,9 @@ namespace Chiro.Gap.Workers
 			{
 #endif
 				// Indien ad-nummer: syncen
-				if (comm.GelieerdePersoon.Persoon.AdNummer != null)
+				if (comm.GelieerdePersoon.Persoon.AdNummer != null || comm.GelieerdePersoon.Persoon.AdInAanvraag)
 				{
-					_sync.Verwijderen(comm);
+					_communicatieSync.Verwijderen(comm);
 				}
 				_dao.Bewaren(comm);
 #if KIPDORP

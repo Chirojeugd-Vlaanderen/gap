@@ -13,13 +13,13 @@ namespace Chiro.Kip.Services.DataContracts
 	public class Bewoner
 	{
 		/// <summary>
-		/// AD-nummer van de bewoner
+		/// De persoon die woont
 		/// </summary>
 		[DataMember]
-		public int AdNummer { get; set; }
+		public Persoon Persoon { get; set; }
 
 		/// <summary>
-		/// Adrestype
+		/// Hoedanigheid van het adres mbt de persoon (kot, thuis, werk,...)
 		/// </summary>
 		[DataMember]
 		public AdresTypeEnum AdresType { get; set; }

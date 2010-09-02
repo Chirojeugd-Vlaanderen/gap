@@ -445,6 +445,9 @@ namespace Chiro.Gap.Workers
 		/// <param name="lid">Het <paramref name="lid"/> dat bewaard moet worden</param>
 		/// <param name="extras">De gekoppelde entiteiten</param>
 		/// <returns>Een kloon van het lid en de extra's, met eventuele nieuwe ID's ingevuld</returns>
+		/// <remarks>BELANGRIJK! Een nieuw lid mag niet direct gesynct worden naar Kipadmin! Dit gebeurt
+		/// pas bij het verstrijken van de probeerperiode, zie de method 'OverZettenNaProbeerPeriode'.  Enkel wijzigingen
+		/// van reeds bestaande leden mogen hier naar de queue geduwd worden.</remarks>
 		public Lid Bewaren(Lid lid, LidExtras extras)
 		{
 			if (!_autorisatieMgr.IsGavLid(lid.ID))
@@ -772,7 +775,7 @@ namespace Chiro.Gap.Workers
 		/// Zoekt de niet-overgezette leden op wier probeerperiode voorbij is, en stuurt diens gegevens
 		/// naar KipSync.
 		/// </summary>
-		public void LedenOverZetten()
+		public void OverZettenNaProbeerPeriode()
 		{
 			if (!_autorisatieMgr.IsSuperGav())
 			{

@@ -33,7 +33,7 @@ namespace Chiro.Gap.LidSyncer
 
 			var ledenMgr = Factory.Maak<LedenManager>();
 
-			ledenMgr.LedenOverZetten();
+			ledenMgr.OverZettenNaProbeerPeriode();
 		}
 	}
 }
