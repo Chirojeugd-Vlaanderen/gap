@@ -68,7 +68,7 @@ namespace Chiro.Gap.Services
 		/// <summary>
 		/// Gegeven een lijst van IDs van gelieerde personen.
 		/// Haal al die gelieerde personen op en probeer ze in het huidige werkjaar in te schrijven als
-		/// <paramref name="type"/>.
+		/// <paramref name="type"/>.  (!Niet gebruiken voor automatische jaarovergang!)
 		/// <para />
 		/// Gaat een gelieerde persoon ophalen en maakt die lid in het huidige werkjaar.  Als het om kindleden gaat,
 		/// krjgen ze meteen een afdeling die overeenkomt met leeftijd en geslacht.
@@ -134,11 +134,11 @@ namespace Chiro.Gap.Services
 							{
 								if (type == LidType.Kind)
 								{
-									l = _ledenMgr.KindMaken(gp, gwj);
+									l = _ledenMgr.KindMaken(gp, gwj, false);
 								}
 								else
 								{
-									l = _ledenMgr.LeidingMaken(gp, gwj);
+									l = _ledenMgr.LeidingMaken(gp, gwj, false);
 								}
 							}
 
@@ -188,6 +188,7 @@ namespace Chiro.Gap.Services
 		/// <summary>
 		/// Gegeven een lijst van IDs van gelieerde personen.
 		/// Haal al die gelieerde personen op en probeer ze in het huidige werkjaar lid te maken in het gegeven lidtype.
+		/// !Niet gebruiken voor automatische jaarovergang!
 		/// <para />
 		/// Gaat een gelieerde persoon ophalen en maakt die lid op de plaats die overeenkomt met hun leeftijd in het huidige werkjaar.
 		/// </summary>
@@ -237,7 +238,7 @@ namespace Chiro.Gap.Services
 							}
 							else //nieuw lid
 							{
-								l = _ledenMgr.AutomatischLidMaken(gp, gwj);
+								l = _ledenMgr.AutomatischLidMaken(gp, gwj, false);
 							}
 
 							// Bewaar leden 1 voor 1, en niet allemaal tegelijk, om te vermijden dat 1 dubbel lid

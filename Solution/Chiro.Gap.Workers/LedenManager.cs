@@ -37,8 +37,7 @@ namespace Chiro.Gap.Workers
 		{
 			// Haal de einddatum voor de overgang/aansluiting uit de settings, en bereken wanneer die datum valt in dit werkjaar
 			var dt = Properties.Settings.Default.WerkjaarVerplichteOvergang;
-			dt.AddYears(gwj.WerkJaar - dt.Year);
-			return dt;
+			return new DateTime(gwj.WerkJaar, dt.Month, dt.Day);
 		}
 	}
 
@@ -73,20 +72,18 @@ namespace Chiro.Gap.Workers
 		/// <param name="gp">Lid te maken gelieerde persoon, gekoppeld met groep en persoon</param>
 		/// <param name="gwj">Groepswerkjaar waarin de gelieerde persoon lid moet worden</param>
 		/// <param name="type">LidType.Kind of LidType.Leiding</param>
+		/// <param name="isJaarOvergang">Als deze true is, is einde probeerperiode steeds 
+		/// 15 oktober als het nog geen 15 oktober is</param>
 		/// <remarks>
-		/// Deze method kent geen afdelingen toe.  Ze test ook niet
+		/// Deze method test niet
 		/// of het groepswerkjaar wel het recentste is.  (Voor de unit tests moeten
 		/// we ook leden kunnen maken in oude groepswerkjaren.)
-		/// <para/>
-		/// Voorlopig gaan we ervan uit dat aan een gelieerde persoon al zijn/haar vorige lidobjecten met
-		/// groepswerkjaren gekoppeld zijn.  Dit wordt gebruikt om na te kijken of een gelieerde persoon al eerder
-		/// lid was.  Dit lijkt me echter niet nodig; zie de commentaar verderop.
 		/// </remarks>
 		/// <returns>Het aangepaste Lid-object</returns>
 		/// <throws>FoutNummerException</throws>
 		/// <throws>GeenGavException</throws>
 		/// <throws>InvalidOperationException</throws>
-		private Lid LidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, LidType type)
+		private Lid LidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, LidType type, bool isJaarOvergang)
 		{
 			Lid lid;
 
@@ -131,27 +128,20 @@ namespace Chiro.Gap.Workers
 			gp.Lid.Add(lid);
 			gwj.Lid.Add(lid);
 
-			// Instapperiode invullen
-			// Kijk of er vorig jaar een werkjaar was en of de persoon in dat werkjaar lid was
-			// (dit moet vrij slim gebeuren om niet teveel op te halen, dus schenden we hier ophalen - business- bewaren even)
-			// TODO LID + WERKJAAR IS MOMENTEEL NIET INGELADEN
-			var voriggwj = (from ld in gp.Lid
-							where ld.GroepsWerkJaar.WerkJaar == gwj.WerkJaar - 1
-							select ld.GroepsWerkJaar).FirstOrDefault();
+			var stdProbeerPeriode = DateTime.Today.AddDays(Properties.Settings.Default.LengteProbeerPeriode);
 
-			// Als de persoon vorig jaar lid was, dan zal zijn probeerperiode maximum tot 15 oktober zijn, 
-			// eender wanneer de persoon lid wordt.
-			if (voriggwj != null)
+			if (!isJaarOvergang)
 			{
-				lid.EindeInstapPeriode = gwj.GetEindeJaarovergang();
+				lid.EindeInstapPeriode = gwj.GetEindeJaarovergang() >= stdProbeerPeriode
+				                         	? gwj.GetEindeJaarovergang()
+				                         	: stdProbeerPeriode;
 			}
 			else
 			{
-				// In het andere geval was de persoon vorig jaar geen lid (of was er geen vorig jaar), dus krijgt hij de standaard periode om te bedenken.
-				// Of als de overgang nog verder in de toekomst ligt, wordt dat de datum
-				DateTime een = gwj.GetEindeJaarovergang();
-				DateTime twee = DateTime.Today.AddDays(Properties.Settings.Default.LengteProbeerPeriode);
-				lid.EindeInstapPeriode = een.CompareTo(twee) < 0 ? twee : een;
+				lid.EindeInstapPeriode = gwj.GetEindeJaarovergang() >= DateTime.Now
+								? gwj.GetEindeJaarovergang()
+								: stdProbeerPeriode;
+				
 			}
 
 			return lid;
@@ -166,7 +156,9 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="gp">Gelieerde persoon, gekoppeld aan groep en persoon</param>
 		/// <param name="gwj">Groepswerkjaar waarin lid te maken, gekoppeld met afdelingsjaren</param>
-		/// <returns>Nieuw kindobject, niet gepersisteerd</returns>
+		///<param name="isJaarOvergang">Geeft aan of het lid gemaakt wordt voor de automatische jaarovergang; relevant
+		/// voor probeerperiode.</param>
+		///<returns>Nieuw kindobject, niet gepersisteerd</returns>
 		/// <remarks>De user zal nooit zelf mogen kiezen in welk groepswerkjaar een kind lid wordt.  Maar 
 		/// om testdata voor unit tests op te bouwen, hebben we deze functionaliteit wel nodig.
 		/// <para/>
@@ -178,10 +170,10 @@ namespace Chiro.Gap.Workers
 		/// <throws>FoutNummerException</throws>
 		/// <throws>GeenGavException</throws>
 		/// <throws>InvalidOperationException</throws>
-		public Kind KindMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
+		public Kind KindMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang)
 		{
 			// LidMaken doet de nodige checks ivm GAV-schap, enz.
-			var k = LidMaken(gp, gwj, LidType.Kind) as Kind;
+			var k = LidMaken(gp, gwj, LidType.Kind, isJaarOvergang) as Kind;
 
 			// Probeer nu afdeling te vinden.
 			if (gwj.AfdelingsJaar.Count == 0)
@@ -230,6 +222,8 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="gp">Gelieerde persoon, gekoppeld met groep en persoon</param>
 		/// <param name="gwj">Groepswerkjaar waarin leiding te maken</param>
+		/// <param name="isJaarovergang">geeft aan of het over de automatische jaarovergang gaat.
+		/// (relevant voor probeerperiode)</param>
 		/// <returns>Nieuw leidingsobject; niet gepersisteerd</returns>
 		/// <remarks>Deze method mag niet geexposed worden via de services, omdat
 		/// een gebruiker uiteraard enkel in het huidige groepswerkjaar leden
@@ -243,10 +237,10 @@ namespace Chiro.Gap.Workers
 		/// <throws>FoutNummerException</throws>
 		/// <throws>GeenGavException</throws>
 		/// <throws>InvalidOperationException</throws>
-		public Leiding LeidingMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
+		public Leiding LeidingMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarovergang)
 		{
 			// LidMaken doet de nodige checks ivm GAV-schap enz.
-			return LidMaken(gp, gwj, LidType.Leiding) as Leiding;
+			return LidMaken(gp, gwj, LidType.Leiding, isJaarovergang) as Leiding;
 		}
 
 		/// <summary>
@@ -258,8 +252,10 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="gp">De persoon om in te schrijven, gekoppeld met groep en persoon</param>
 		/// <param name="gwj">Het groepswerkjaar waarin moet worden ingeschreven, gekoppeld met afdelingsjaren</param>
-		/// <returns>Het aangemaakte lid object</returns>
-		public Lid AutomatischLidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj)
+		///<param name="isJaarOvergang">geeft aan of het over de automatische jaarovergang gaat; relevant voor de
+		/// probeerperiode</param>
+		///<returns>Het aangemaakte lid object</returns>
+		public Lid AutomatischLidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang)
 		{
 			if (!gp.LeefTijd.HasValue)
 			{
@@ -280,12 +276,12 @@ namespace Chiro.Gap.Workers
 			// Kijk of er een passend afdelingsjaar is
 			if (afdelingsjaar != null)
 			{
-				nieuwlid = KindMaken(gp, gwj);
+				nieuwlid = KindMaken(gp, gwj, isJaarOvergang);
 			}
 			// Kijk of de persoon oud genoeg is om leiding te worden
 			else if (gwj.WerkJaar - gp.LeefTijd.Value.Year >= Properties.Settings.Default.MinLeidingLeefTijd)
 			{
-				nieuwlid = LeidingMaken(gp, gwj);
+				nieuwlid = LeidingMaken(gp, gwj, isJaarOvergang);
 			}
 			else
 			{

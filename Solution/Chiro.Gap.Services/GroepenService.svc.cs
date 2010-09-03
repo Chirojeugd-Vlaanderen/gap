@@ -1095,7 +1095,7 @@ namespace Chiro.Gap.Services
 
 					try
 					{
-						var l = _ledenMgr.AutomatischLidMaken(gp, gwj);
+						var l = _ledenMgr.AutomatischLidMaken(gp, gwj, true);
 						if (l != null)
 						{
 							_ledenMgr.Bewaren(l, LidExtras.Afdelingen | LidExtras.Persoon);

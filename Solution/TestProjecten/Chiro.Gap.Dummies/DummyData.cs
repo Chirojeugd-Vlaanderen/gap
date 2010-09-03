@@ -144,8 +144,8 @@ namespace Chiro.Gap.Dummies
 			// We moeten hier expliciet lid maken in _huidigGwj, anders werken een aantal
 			// unit tests niet meer.  (Zie #259)
 
-			_lidJos = lMgr.KindMaken(_gelieerdeJos, _huidigGwj);
-			_lidYvonne = lMgr.KindMaken(_gelieerdeYvonne, _huidigGwj);
+			_lidJos = lMgr.KindMaken(_gelieerdeJos, _huidigGwj, false);
+			_lidYvonne = lMgr.KindMaken(_gelieerdeYvonne, _huidigGwj, false);
 
 			// ID's worden niet toegekend als de DAO's gemockt zijn, dus delen we die manueel
 			// uit.
