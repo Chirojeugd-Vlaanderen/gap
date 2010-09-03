@@ -8,8 +8,8 @@ using Chiro.Kip.Data;
 namespace Chiro.Kip.Workers
 {
 	/// <summary>
-	/// Wat 'businesslogica' aan kipadminkant mbt personen.  Maar helemaal niet zo proper als in GAP; de objectcontext (data layer)
-	/// is hier alomtegenwoordig.
+	/// Wat 'businesslogica' aan kipadminkant mbt personen, en stiekem ook leden.  Maar helemaal niet zo proper als in GAP; 
+	/// de objectcontext (data layer) is hier alomtegenwoordig.
 	/// </summary>
 	public class PersonenManager
 	{
@@ -103,6 +103,40 @@ namespace Chiro.Kip.Workers
 			db.AddToPersoonSet(resultaat);
 
 			return resultaat;
+		}
+
+		/// <summary>
+		/// Zoekt een lid op in de database, aan de hand van <paramref name="zoekInfo"/>, <paramref name="stamNummer"/>
+		/// en <paramref name="werkJaar"/>
+		/// </summary>
+		/// <param name="zoekInfo">informatie om persoon te vinden</param>
+		/// <param name="stamNummer">stamnummer van groep waarin lid</param>
+		/// <param name="werkJaar">werkjaar waarin lid</param>
+		/// <param name="db">objectcontext</param>
+		/// <returns>gevonden lid met functies en persoon, of <c>null</c> indien niet gevonden</returns>
+		public Lid LidZoeken(PersoonZoekInfo zoekInfo, string stamNummer, int werkJaar, kipadminEntities db)
+		{
+			// TODO (#555): Van zodra we met oud-leidingsploegen werken, zullen
+			// we GroepID's uit Kipadmin moeten gebruiken.  Maar voorlopig dus
+			// met stamnummer.
+
+			var persoon = Zoeken(zoekInfo, false, db);
+			if (persoon == null)
+			{
+				return null;
+			}
+
+			int groepID = (from g in db.Groep.OfType<ChiroGroep>()
+				       where g.STAMNR == stamNummer
+				       select g.GroepID).FirstOrDefault();
+
+			var lid = (from l in db.Lid.Include(ld => ld.HeeftFunctie.First().Functie).Include(ld=>ld.Persoon)
+				   where l.Persoon.AdNummer == persoon.AdNummer
+					 && l.Groep.GroepID == groepID
+					 && l.werkjaar == werkJaar
+				   select l).FirstOrDefault();
+
+			return lid;
 		}
 	}
 

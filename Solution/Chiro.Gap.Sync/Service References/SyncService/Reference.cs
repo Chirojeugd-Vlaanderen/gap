@@ -695,6 +695,9 @@ namespace Chiro.Gap.Sync.SyncService {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/FunctiesUpdaten")]
         void FunctiesUpdaten(Chiro.Gap.Sync.SyncService.Persoon persoon, string stamNummer, int werkJaar, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.FunctieEnum> functies);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/AfdelingenUpdaten")]
+        void AfdelingenUpdaten(Chiro.Gap.Sync.SyncService.Persoon persoon, string stamNummer, int werkJaar, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.AfdelingEnum> afdelingen);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -754,6 +757,10 @@ namespace Chiro.Gap.Sync.SyncService {
         
         public void FunctiesUpdaten(Chiro.Gap.Sync.SyncService.Persoon persoon, string stamNummer, int werkJaar, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.FunctieEnum> functies) {
             base.Channel.FunctiesUpdaten(persoon, stamNummer, werkJaar, functies);
+        }
+        
+        public void AfdelingenUpdaten(Chiro.Gap.Sync.SyncService.Persoon persoon, string stamNummer, int werkJaar, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.AfdelingEnum> afdelingen) {
+            base.Channel.AfdelingenUpdaten(persoon, stamNummer, werkJaar, afdelingen);
         }
     }
 }

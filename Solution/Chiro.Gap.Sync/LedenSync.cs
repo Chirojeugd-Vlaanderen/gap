@@ -29,6 +29,8 @@ namespace Chiro.Gap.Sync
 	{
 		private readonly ISyncPersoonService _svc;
 		private readonly ILedenDao _ledenDao;
+		private readonly IKindDao _kindDao;
+		private readonly ILeidingDao _leidingDao;
 		private readonly ICommunicatieVormDao _cVormDao;
 		private readonly IPersonenDao _personenDao;
 
@@ -63,12 +65,22 @@ namespace Chiro.Gap.Sync
 		/// <param name="svc">te gebruiken KipSyncService voor communicatie met Kipadmn</param>
 		/// <param name="cVormDao">Data access object voor communicatievormen</param>
 		/// <param name="ledenDao">Data access object voor leden</param>
+		/// <param name="leidingDao">Data access object voor leiding</param>
 		/// <param name="personenDao">Data access object voor personen</param>
-		public LedenSync(ISyncPersoonService svc, ICommunicatieVormDao cVormDao, ILedenDao ledenDao, IPersonenDao personenDao)
+		/// <param name="kindDao">Data access object voor kinderen</param>
+		public LedenSync(
+			ISyncPersoonService svc, 
+			ICommunicatieVormDao cVormDao, 
+			ILedenDao ledenDao, 
+			IKindDao kindDao,
+			ILeidingDao leidingDao,
+			IPersonenDao personenDao)
 		{
 			_svc = svc;
 			_cVormDao = cVormDao;
 			_ledenDao = ledenDao;
+			_kindDao = kindDao;
+			_leidingDao = leidingDao;
 			_personenDao = personenDao;
 		}
 
@@ -185,6 +197,63 @@ namespace Chiro.Gap.Sync
 			                     chiroGroep.Code,
 			                     l.GroepsWerkJaar.WerkJaar,
 			                     kipFunctieIDs);
+		}
+
+		/// <summary>
+		/// Updatet de afdelingen van <paramref name="lid"/> in Kipadmin
+		/// </summary>
+		/// <param name="lid">Lid</param>
+		/// <remarks>*Alle* relevante gegevens van het lidobject worden hier sowieso opnieuw opgehaald, anders was het
+		/// te veel een gedoe.</remarks>
+		public void AfdelingenUpdaten(Lid lid)
+		{
+			Lid l;
+
+			if (lid is Kind)
+			{
+				l = _kindDao.Ophalen(
+					lid.ID,
+					ld => ld.GelieerdePersoon.Persoon,
+					ld => ld.GroepsWerkJaar.Groep,
+					ld => ld.AfdelingsJaar.OfficieleAfdeling);
+			}
+			else
+			{
+				l = _leidingDao.Ophalen(
+					lid.ID,
+					ld => ld.GelieerdePersoon.Persoon,
+					ld => ld.GroepsWerkJaar.Groep,
+					ld => ld.AfdelingsJaar.First().OfficieleAfdeling);
+			}
+
+
+			var chiroGroep = (l.GroepsWerkJaar.Groep as ChiroGroep);
+			// TODO (#555): Dit gaat problemen geven met oud-leidingsploegen
+
+			Debug.Assert(chiroGroep != null);
+
+			List<AfdelingEnum> kipAfdelingen;
+
+			if (l is Kind)
+			{
+				kipAfdelingen = new List<AfdelingEnum>
+				                	{
+				                		_afdelingVertaling[(NationaleAfdeling) ((l as Kind).AfdelingsJaar.OfficieleAfdeling.ID)]
+				                	};
+			}
+			else
+			{
+				var leiding = l as Leiding;
+				Debug.Assert(leiding != null);
+
+				kipAfdelingen = (from aj in leiding.AfdelingsJaar
+				                 select _afdelingVertaling[(NationaleAfdeling) (aj.OfficieleAfdeling.ID)]).ToList();
+			}
+
+			_svc.AfdelingenUpdaten(Mapper.Map<Persoon, SyncService.Persoon>(l.GelieerdePersoon.Persoon),
+					     chiroGroep.Code,
+					     l.GroepsWerkJaar.WerkJaar,
+					     kipAfdelingen);
 		}
 	}
 }

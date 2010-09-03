@@ -40,5 +40,9 @@ namespace Chiro.Gap.Dummies
 		public void FunctiesUpdaten(Lid lid)
 		{
 		}
+
+		public void AfdelingenUpdaten(Lid lid)
+		{
+		}
 	}
 }

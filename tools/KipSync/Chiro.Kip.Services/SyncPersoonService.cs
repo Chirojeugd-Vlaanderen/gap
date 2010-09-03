@@ -916,7 +916,7 @@ namespace Chiro.Kip.Services
 			int werkJaar, 
 			IEnumerable<FunctieEnum> functies)
 		{
-			StringBuilder feedback = new StringBuilder();
+			var feedback = new StringBuilder();
 
 			Mapper.CreateMap<Persoon, PersoonZoekInfo>()
 			    .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int)src.Geslacht))
@@ -924,44 +924,33 @@ namespace Chiro.Kip.Services
 
 			using (var db = new kipadminEntities())
 			{
-				KipPersoon persoon;
+				Lid lid;
 
 				// Eens kijken of we het lid waarvan sprake kunnen vinden.
 
 				var mgr = new PersonenManager();
 				var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(pers);
 
+				// locking gebeurt niet helemaal juist.  Maar uiteindelijk ga ik toch geen
+				// meerdere threads gebruiken.
+
 				lock (_persoonManipulerenToken)
 				{
-					persoon = mgr.Zoeken(zoekInfo, false, db);
+					lid = mgr.LidZoeken(zoekInfo, stamNummer, werkJaar, db);
 				}
 
-				if (persoon == null)
+				if (lid == null)
 				{
 					throw new InvalidOperationException(String.Format(
-						Properties.Resources.PersoonNietGevonden,
+						Properties.Resources.LidNietGevonden,
 						pers.VoorNaam,
-						pers.Naam));
+						pers.Naam,
+						stamNummer,
+						werkJaar));
 				}
 
 				lock (_ledenToken)
 				{
-					// TODO (#555): Van zodra we met oud-leidingsploegen werken, zullen
-					// we GroepID's uit Kipadmin moeten gebruiken.  Maar voorlopig dus
-					// met stamnummer.
-
-					int groepID = (from g in db.Groep.OfType<ChiroGroep>()
-					               where g.STAMNR == stamNummer
-					               select g.GroepID).FirstOrDefault();
-
-					// Haal betreffende lid op met functies.
-
-					var lid = (from l in db.Lid.Include(ld=>ld.HeeftFunctie.First().Functie)
-					           where l.Persoon.AdNummer == persoon.AdNummer
-					                 && l.Groep.GroepID == groepID
-					                 && l.werkjaar == werkJaar
-					           select l).FirstOrDefault();
-
 					// pragmatisch: eerst bestaande functies verwijderen.
 
 					foreach (var hf in lid.HeeftFunctie)
@@ -971,10 +960,10 @@ namespace Chiro.Kip.Services
 					db.SaveChanges();
 					feedback.AppendLine(String.Format(
 						"Functies verwijderd van ID{0} {1} {2} AD{3}",
-						persoon.GapID,
-						persoon.VoorNaam,
-						persoon.Naam,
-						persoon.AdNummer));
+						lid.Persoon.GapID,
+						lid.Persoon.VoorNaam,
+						lid.Persoon.Naam,
+						lid.Persoon.AdNummer));
 
 
 					var toeTeKennen = db.FunctieSet.Where(Utility.BuildContainsExpression<Functie, int>(
@@ -991,15 +980,99 @@ namespace Chiro.Kip.Services
 						db.AddToHeeftFunctieSet(hf);
 						feedback.AppendLine(String.Format(
 							"Functie toegekend aan ID{0} {1} {2} AD{3}: {4}",
-							persoon.GapID,
-							persoon.VoorNaam,
-							persoon.Naam,
-							persoon.AdNummer,
+							lid.Persoon.GapID,
+							lid.Persoon.VoorNaam,
+							lid.Persoon.Naam,
+							lid.Persoon.AdNummer,
 							functie.CODE));
 					}
 					db.SaveChanges();
 
 				}
+			}
+			Console.WriteLine(feedback);
+		}
+
+		/// <summary>
+		/// Updatet de afdelingen van een lid.
+		/// </summary>
+		/// <param name="pers">Persoon waarvan de afdelingen geupdatet moeten worden</param>
+		/// <param name="stamNummer">Stamnummer van de groep waarin de persoon lid is</param>
+		/// <param name="werkJaar">Werkjaar waarin de persoon lid is</param>
+		/// <param name="afdelingen">Toe te kennen afdelingen.  Eventuele andere reeds toegekende functies worden verwijderd.</param>
+		/// <remarks>Er is in Kipadmin maar plaats voor 2 afdelingen/lid</remarks>
+		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+		public void AfdelingenUpdaten(Persoon pers, string stamNummer, int werkJaar, IEnumerable<AfdelingEnum> afdelingen)
+		{
+			var feedback = new StringBuilder();
+
+			Mapper.CreateMap<Persoon, PersoonZoekInfo>()
+			    .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int)src.Geslacht))
+			    .ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
+
+			using (var db = new kipadminEntities())
+			{
+				Lid lid;
+
+				// Eens kijken of we het lid waarvan sprake kunnen vinden.
+
+				var mgr = new PersonenManager();
+				var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(pers);
+
+				// locking gebeurt niet helemaal juist.  Maar uiteindelijk ga ik toch geen
+				// meerdere threads gebruiken.
+
+				lock (_persoonManipulerenToken)
+				{
+					lid = mgr.LidZoeken(zoekInfo, stamNummer, werkJaar, db);
+				}
+
+				if (lid == null)
+				{
+					throw new InvalidOperationException(String.Format(
+						Properties.Resources.LidNietGevonden,
+						pers.VoorNaam,
+						pers.Naam,
+						stamNummer,
+						werkJaar));
+				}
+
+				lock (_ledenToken)
+				{
+					if (afdelingen.Count() >= 1)
+					{
+						int afdid = (int) afdelingen.First();
+						lid.AFDELING1 = (from a in db.AfdelingSet
+						                 where a.AFD_ID == afdid
+						                 select a.AFD_NAAM).FirstOrDefault();
+					}
+					else
+					{
+						lid.AFDELING1 = null;
+					}
+
+					if (afdelingen.Count() >= 2)
+					{
+						int afdid = (int) afdelingen.Skip(1).First();
+						lid.AFDELING2 = (from a in db.AfdelingSet
+						                 where a.AFD_ID == afdid
+						                 select a.AFD_NAAM).FirstOrDefault();
+					}
+					else
+					{
+						lid.AFDELING2 = null;
+					}
+
+					db.SaveChanges();
+					feedback.AppendLine(String.Format(
+						"Afdelingen van ID{0} {1} {2} AD{3}: {4} {5}",
+						lid.Persoon.GapID,
+						lid.Persoon.VoorNaam,
+						lid.Persoon.Naam,
+						lid.Persoon.AdNummer, lid.AFDELING1, lid.AFDELING2));
+
+				}
+
 			}
 			Console.WriteLine(feedback);
 		}

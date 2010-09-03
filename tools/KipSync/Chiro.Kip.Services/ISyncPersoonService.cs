@@ -94,5 +94,16 @@ namespace Chiro.Kip.Services
 		/// <param name="functies">Toe te kennen functies.  Eventuele andere reeds toegekende functies worden verwijderd.</param>
 		[OperationContract(IsOneWay = true)]
 		void FunctiesUpdaten(Persoon persoon, string stamNummer, int werkJaar, IEnumerable<FunctieEnum> functies);
+
+		/// <summary>
+		/// Updatet de afdelingen van een lid.
+		/// </summary>
+		/// <param name="persoon">Persoon waarvan de afdelingen geupdatet moeten worden</param>
+		/// <param name="stamNummer">Stamnummer van de groep waarin de persoon lid is</param>
+		/// <param name="werkJaar">Werkjaar waarin de persoon lid is</param>
+		/// <param name="afdelingen">Toe te kennen afdelingen.  Eventuele andere reeds toegekende functies worden verwijderd.</param>
+		/// <remarks>Er is in Kipadmin maar plaats voor 2 afdelingen/lid</remarks>
+		[OperationContract(IsOneWay = true)]
+		void AfdelingenUpdaten(Persoon persoon, string stamNummer, int werkJaar, IEnumerable<AfdelingEnum> afdelingen);
 	}
 }

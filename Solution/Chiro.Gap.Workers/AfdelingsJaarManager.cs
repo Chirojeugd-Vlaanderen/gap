@@ -8,10 +8,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Transactions;
 
+using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
+using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
@@ -26,6 +29,7 @@ namespace Chiro.Gap.Workers
 		private readonly IGroepsWerkJaarDao _groepsWjDao;
 		private readonly IKindDao _kindDao;
 		private readonly ILeidingDao _leidingDao;
+		private readonly ILedenSync _ledenSync;
 
 		private readonly IAutorisatieManager _autorisatieMgr;
 
@@ -45,7 +49,8 @@ namespace Chiro.Gap.Workers
 			IGroepsWerkJaarDao gwjDao,
 			IKindDao kindDao,
 			ILeidingDao leidingDao,
-			IAutorisatieManager autorisatieMgr)
+			IAutorisatieManager autorisatieMgr,
+			ILedenSync ledenSync)
 		{
 			_afdJarenDao = ajDao;
 			_afdelingenDao = afdDao;
@@ -53,6 +58,7 @@ namespace Chiro.Gap.Workers
 			_kindDao = kindDao;
 			_leidingDao = leidingDao;
 			_autorisatieMgr = autorisatieMgr;
+			_ledenSync = ledenSync;
 		}
 
 		/// <summary>
@@ -303,6 +309,8 @@ namespace Chiro.Gap.Workers
 			Debug.Assert(l.GroepsWerkJaar != null);
 			Debug.Assert(l.GroepsWerkJaar.Groep != null);
 
+			Lid resultaat;
+
 			if (!_autorisatieMgr.IsGavLid(l.ID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
@@ -324,60 +332,78 @@ namespace Chiro.Gap.Workers
 					FoutNummer.AfdelingNietVanGroep,
 					Properties.Resources.FoutieveGroepAfdeling);
 			}
-
-			if (l is Kind)
+#if KIPDORP
+			using (var tx = new TransactionScope())
 			{
-				var kind = (Kind)l;
-				if (afdelingsJaren.Count() != 1)
+#endif
+
+				if (l is Kind)
 				{
-					throw new NotSupportedException("Slechts 1 afdeling per kind.");
-				}
+					var kind = (Kind) l;
+					if (afdelingsJaren.Count() != 1)
+					{
+						throw new NotSupportedException("Slechts 1 afdeling per kind.");
+					}
 
-				if (kind.AfdelingsJaar.ID != afdelingsJaren.First().ID)
+					if (kind.AfdelingsJaar.ID != afdelingsJaren.First().ID)
+					{
+						// afdeling moet verwijderd worden.
+
+						afdelingsJaren.First().Kind.Add(kind);
+						kind.AfdelingsJaar = afdelingsJaren.First();
+					}
+
+					_kindDao.Bewaren(kind, knd => knd.AfdelingsJaar.WithoutUpdate());
+
+					// omdat bovenstaande bewaren geen nieuwe ID's zal toekennen, en geen links
+					// zal verwijderen, kunnen we met een gerust geweten het originele kind
+					// opleveren.
+
+					resultaat = kind;
+				}
+				else
 				{
-					// afdeling moet verwijderd worden.
+					var leiding = (Leiding) l;
 
-					afdelingsJaren.First().Kind.Add(kind);
-					kind.AfdelingsJaar = afdelingsJaren.First();
+					// Verwijder ontbrekende afdelingen;
+					var teVerwijderenAfdelingen = from aj in leiding.AfdelingsJaar
+					                              where !afdelingsJaren.Any(aj2 => aj2.ID == aj.ID)
+					                              select aj;
+
+					foreach (var aj in teVerwijderenAfdelingen)
+					{
+						aj.TeVerwijderen = true;
+					}
+
+					// Ken nieuwe afdelingen toe
+					var nieuweAfdelingen = from aj in afdelingsJaren
+					                       where !leiding.AfdelingsJaar.Any(aj2 => aj2.ID == aj.ID)
+					                       select aj;
+
+					foreach (var aj in nieuweAfdelingen)
+					{
+						leiding.AfdelingsJaar.Add(aj);
+						aj.Leiding.Add(leiding);
+					}
+
+					// Hier moet je wel met de terugkeerwaarde van 'Bewaren' werken, want anders
+					// stuur je afdelingsjaren met TeVerwijderen=true over de lijn. (brr)
+
+					// WithoutUpdate mag niet in dit geval, omdat anders te verwijderen afdelingsjaren niet
+					// verwijderd worden.
+					// Dit is een bug in AttachObjectGraph. (#116)
+
+					resultaat = _leidingDao.Bewaren(leiding, ldng => ldng.AfdelingsJaar.First());
 				}
-
-				_kindDao.Bewaren(kind, knd => knd.AfdelingsJaar);
-
-				// omdat bovenstaande bewaren geen nieuwe ID's zal toekennen, en geen links
-				// zal verwijderen, kunnen we met een gerust geweten het originele kind
-				// opleveren.
-
-				return kind;
+				if (l.IsOvergezet)
+				{
+					_ledenSync.AfdelingenUpdaten(resultaat);
+				}
+#if KIPDORP
+				tx.Complete();
 			}
-			else
-			{
-				var leiding = (Leiding)l;
-
-				// Verwijder ontbrekende afdelingen;
-				var teVerwijderenAfdelingen = from aj in leiding.AfdelingsJaar
-							      where !afdelingsJaren.Any(aj2 => aj2.ID == aj.ID)
-							      select aj;
-
-				foreach (var aj in teVerwijderenAfdelingen)
-				{
-					aj.TeVerwijderen = true;
-				}
-
-				// Ken nieuwe afdelingen toe
-				var nieuweAfdelingen = from aj in afdelingsJaren
-						       where !leiding.AfdelingsJaar.Any(aj2 => aj2.ID == aj.ID)
-						       select aj;
-
-				foreach (var aj in nieuweAfdelingen)
-				{
-					leiding.AfdelingsJaar.Add(aj);
-					aj.Leiding.Add(leiding);
-				}
-
-				// Hier moet je wel met de terugkeerwaarde van 'Bewaren' werken, want anders
-				// stuur je afdelingsjaren met TeVerwijderen=true over de lijn. (brr)
-				return _leidingDao.Bewaren(leiding, ldng => ldng.AfdelingsJaar);
-			}
+#endif
+			return resultaat;
 		}
 	}
 }

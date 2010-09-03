@@ -20,6 +20,15 @@ namespace Chiro.Gap.Orm.SyncInterfaces
 		/// Updatet de functies van het lid in Kipadmin
 		/// </summary>
 		/// <param name="lid">Lid met functies</param>
+		/// <remarks>Als er geen persoonsgegevens meegeleverd zijn, halen we die wel even op :)</remarks>
 		void FunctiesUpdaten(Lid lid);
+
+		/// <summary>
+		/// Updatet de afdelingen van <paramref name="lid"/> in Kipadmin
+		/// </summary>
+		/// <param name="lid">Lid</param>
+		/// <remarks>*Alle* relevante gegevens van het lidobject worden hier sowieso opnieuw opgehaald, anders was het
+		/// te veel een gedoe.</remarks>
+		void AfdelingenUpdaten(Lid lid);
 	}
 }

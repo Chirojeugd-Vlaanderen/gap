@@ -377,8 +377,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public ActionResult AfdelingBewerken(LidAfdelingenModel model, int lidID)
 		{
-			// FIXME: Het is geen prachtige code: AfdelingenVervangen die 'toevallig'
-			// een GelieerdePersoonID oplevert, die ik dan in dit specifieke geval
+			// FIXME: Het is geen prachtige code: een call van AfdelingenVervangen levert 'toevallig'
+			// een GelieerdePersoonID op, die ik dan in dit specifieke geval
 			// 'toevallig' kan gebruiken om naar de juiste personenfiche om te schakelen.
 
 			// De returnwaarde van de volgende call hebben we nergens voor nodig.
