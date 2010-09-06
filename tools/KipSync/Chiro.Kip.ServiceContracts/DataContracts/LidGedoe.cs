@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
-namespace Chiro.Kip.Services.DataContracts
+namespace Chiro.Kip.ServiceContracts.DataContracts
 {
 	/// <summary>
 	/// Gegevens die je nodig hebt om een lid te maken, met uitzondering van de persoonsgegevens.

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
+﻿using System.Runtime.Serialization;
 
-namespace Chiro.Kip.Services.DataContracts
+namespace Chiro.Kip.ServiceContracts.DataContracts
 {
     [DataContract]
     public enum CommunicatieType

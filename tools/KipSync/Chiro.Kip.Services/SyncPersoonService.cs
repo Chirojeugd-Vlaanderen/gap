@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Objects;
 using System.Diagnostics;
 using System.ServiceModel;
 using System.Text;
-using System.Transactions;
 using AutoMapper;
 using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.KipUpdate;
 using Chiro.Kip.Data;
-using Chiro.Kip.Services.DataContracts;
 using System.Linq;
+using Chiro.Kip.ServiceContracts;
+using Chiro.Kip.ServiceContracts.DataContracts;
 using Chiro.Kip.Workers;
-using Adres = Chiro.Kip.Services.DataContracts.Adres;
-using Persoon = Chiro.Kip.Services.DataContracts.Persoon;
+using Adres = Chiro.Kip.ServiceContracts.DataContracts.Adres;
 using KipPersoon = Chiro.Kip.Data.Persoon;
-using KipAdres = Chiro.Kip.Data.Adres;
+using Persoon = Chiro.Kip.ServiceContracts.DataContracts.Persoon;
 
 namespace Chiro.Kip.Services
 {

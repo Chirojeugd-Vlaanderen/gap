@@ -72,6 +72,10 @@
       <Project>{6E07BADE-3705-44AB-A77A-41189D14806F}</Project>
       <Name>Chiro.Kip.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj">
+      <Project>{6E81A10A-AD85-47A0-8B5D-70361F393CDD}</Project>
+      <Name>Chiro.Kip.ServiceContracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Kip.Services\Chiro.Kip.Services.csproj">
       <Project>{EE6869D3-FA60-4DBA-9A0D-F459F8DC6E9B}</Project>
       <Name>Chiro.Kip.Services</Name>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Chiro.Kip.Services.DataContracts
+namespace Chiro.Kip.ServiceContracts.DataContracts
 {
 
     [DataContract]

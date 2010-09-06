@@ -1,11 +1,7 @@
 ﻿using System;
-using Chiro.Kip.Data;
-using Chiro.Kip.Services;
+using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Chiro.Kip.Services.DataContracts;
 using System.Collections.Generic;
-using Adres = Chiro.Kip.Services.DataContracts.Adres;
-using Persoon = Chiro.Kip.Services.DataContracts.Persoon;
 
 namespace Chiro.Kip.Services.Test
 {

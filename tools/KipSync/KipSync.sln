@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.KipUpdate", "Chir
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.Workers", "Chiro.Kip.Workers\Chiro.Kip.Workers.csproj", "{9DD68140-0958-4C53-A32F-518BC225B417}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.ServiceContracts", "Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj", "{6E81A10A-AD85-47A0-8B5D-70361F393CDD}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = KipSync.vsmdi
@@ -77,6 +79,10 @@ Global
 		{9DD68140-0958-4C53-A32F-518BC225B417}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DD68140-0958-4C53-A32F-518BC225B417}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DD68140-0958-4C53-A32F-518BC225B417}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E81A10A-AD85-47A0-8B5D-70361F393CDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E81A10A-AD85-47A0-8B5D-70361F393CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E81A10A-AD85-47A0-8B5D-70361F393CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E81A10A-AD85-47A0-8B5D-70361F393CDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

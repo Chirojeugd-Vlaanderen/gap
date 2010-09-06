@@ -15,7 +15,7 @@ namespace Chiro.Gap.Sync.SyncService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Persoon", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Persoon", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts")]
     [System.SerializableAttribute()]
     public partial class Persoon : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -155,7 +155,7 @@ namespace Chiro.Gap.Sync.SyncService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="GeslachtsEnum", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="GeslachtsEnum", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts")]
     public enum GeslachtsEnum : int {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
@@ -170,7 +170,7 @@ namespace Chiro.Gap.Sync.SyncService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Adres", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Adres", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts")]
     [System.SerializableAttribute()]
     public partial class Adres : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -311,7 +311,7 @@ namespace Chiro.Gap.Sync.SyncService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Bewoner", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Bewoner", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts")]
     [System.SerializableAttribute()]
     public partial class Bewoner : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -371,7 +371,7 @@ namespace Chiro.Gap.Sync.SyncService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="AdresTypeEnum", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AdresTypeEnum", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts")]
     public enum AdresTypeEnum : int {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
@@ -389,7 +389,7 @@ namespace Chiro.Gap.Sync.SyncService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CommunicatieMiddel", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CommunicatieMiddel", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts")]
     [System.SerializableAttribute()]
     public partial class CommunicatieMiddel : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -465,7 +465,7 @@ namespace Chiro.Gap.Sync.SyncService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CommunicatieType", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CommunicatieType", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts")]
     public enum CommunicatieType : int {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
@@ -495,7 +495,7 @@ namespace Chiro.Gap.Sync.SyncService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="LidGedoe", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="LidGedoe", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts")]
     [System.SerializableAttribute()]
     public partial class LidGedoe : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -603,7 +603,7 @@ namespace Chiro.Gap.Sync.SyncService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="LidTypeEnum", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="LidTypeEnum", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts")]
     public enum LidTypeEnum : int {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
@@ -617,7 +617,7 @@ namespace Chiro.Gap.Sync.SyncService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="FunctieEnum", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="FunctieEnum", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts")]
     public enum FunctieEnum : int {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
@@ -643,7 +643,7 @@ namespace Chiro.Gap.Sync.SyncService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="AfdelingEnum", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AfdelingEnum", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts")]
     public enum AfdelingEnum : int {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]

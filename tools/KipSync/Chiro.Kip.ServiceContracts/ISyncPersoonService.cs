@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ServiceModel;
-using Chiro.Kip.Services.DataContracts;
+using Chiro.Kip.ServiceContracts.DataContracts;
 
-namespace Chiro.Kip.Services
+namespace Chiro.Kip.ServiceContracts
 {
 	/// <summary>
 	/// Servicecontract voor communicatie GAP->KIP

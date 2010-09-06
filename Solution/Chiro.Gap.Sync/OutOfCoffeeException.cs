@@ -10,5 +10,8 @@ namespace Chiro.Gap.Sync
 	/// </summary>
 	public class OutOfCoffeeException: Exception
 	{
+		public OutOfCoffeeException(string message):base(message)
+		{
+		}
 	}
 }
