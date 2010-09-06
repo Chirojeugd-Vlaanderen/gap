@@ -516,7 +516,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				TempData["fout"] = string.Concat(Properties.Resources.InschrijvenMisluktFout, Environment.NewLine, foutBerichten);
 			}
 
-			return TerugNaarVorigeFiche();
+			return RedirectToAction("EditRest", new {groepID, id = gelieerdepersoonID});
 		}
 
 		// GET: /Personen/LeidingMaken/gelieerdepersoonID
@@ -536,7 +536,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				TempData["fout"] = string.Concat(Properties.Resources.InschrijvenMisluktFout, Environment.NewLine, foutBerichten);
 			}
 
-			return TerugNaarVorigeFiche();
+			return RedirectToAction("EditRest", new { groepID, id = gelieerdepersoonID });
 		}
 
 		#endregion leden
