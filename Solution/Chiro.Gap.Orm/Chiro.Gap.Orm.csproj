@@ -106,6 +106,7 @@
     <Compile Include="StraatNaam.cs" />
     <Compile Include="SyncInterfaces\IAdressenSync.cs" />
     <Compile Include="SyncInterfaces\ICommunicatieSync.cs" />
+    <Compile Include="SyncInterfaces\IDubbelpuntSync.cs" />
     <Compile Include="SyncInterfaces\ILedenSync.cs" />
     <Compile Include="SyncInterfaces\IPersonenSync.cs" />
     <Compile Include="VerzekeringsType.cs" />

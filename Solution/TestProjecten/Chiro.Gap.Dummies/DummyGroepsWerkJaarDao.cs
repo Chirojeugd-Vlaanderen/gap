@@ -24,6 +24,11 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		public GroepsWerkJaar RecentsteOphalen(GelieerdePersoon gp, params Expression<Func<GroepsWerkJaar, object>>[] paths)
+		{
+			throw new NotImplementedException();
+		}
+
 		/// <summary>
 		/// Voor 't gemak gaan we er altijd vanuit dat we in het recentste groepswerkjaar werken.
 		/// </summary>

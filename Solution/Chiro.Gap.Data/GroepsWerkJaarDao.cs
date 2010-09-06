@@ -48,6 +48,33 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
+		/// Haalt het recentste groepswerkjaar op van de groep waar de gelieerde persoon <paramref name="gp"/>
+		/// aan gekoppeld is.
+		/// </summary>
+		/// <param name="gp">Gelieerde persoon met op te halen groepswerkjaar</param>
+		/// <param name="paths">Bepaalt de mee op te halen gekoppelde entiteiten</param>
+		/// <returns>Het gevraagde groepswerkjaar met de gevraagde gekoppelde entiteiten</returns>
+		public GroepsWerkJaar RecentsteOphalen(GelieerdePersoon gp, params Expression<Func<GroepsWerkJaar, object>>[] paths)
+		{
+			GroepsWerkJaar result;
+			using (var db = new ChiroGroepEntities())
+			{
+				var query = (
+					from wj in db.GroepsWerkJaar
+					where wj.Groep.GelieerdePersoon.Any(gelp => gelp.ID == gp.ID)
+					orderby wj.WerkJaar descending
+					select wj) as ObjectQuery<GroepsWerkJaar>;
+
+				query = IncludesToepassen(query, paths);
+
+				result = query.FirstOrDefault();
+			}
+			result = Utility.DetachObjectGraph(result);
+
+			return result;
+		}
+
+		/// <summary>
 		/// Kijkt na of het groepswerkjaar met ID <paramref name="groepsWerkJaarID"/> het recentste groepswerkjaar
 		/// van zijn groep is.
 		/// </summary>

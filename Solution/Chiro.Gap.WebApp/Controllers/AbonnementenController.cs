@@ -80,11 +80,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					throw;
 				}
 			}
-			catch (Exception ex)
-			{
-				// Redundant, inderdaad, maar wel handig om te debuggen.
-				throw;
-			}
+
 			return RedirectToAction("EditRest", "Personen", new { id });
 		}
 

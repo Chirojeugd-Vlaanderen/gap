@@ -37,6 +37,7 @@ namespace Chiro.Gap.Workers
 		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly IPersonenSync _personenSync;
 		private readonly IAdressenSync _adressenSync;
+		private readonly IDubbelpuntSync _dubbelpuntSync;
 
 		/// <summary>
 		/// Creëert een GelieerdePersonenManager
@@ -55,7 +56,8 @@ namespace Chiro.Gap.Workers
 			ICommunicatieVormDao cvDao,
 			IAutorisatieManager autorisatieMgr,
 			IPersonenSync personenSync,
-			IAdressenSync adressenSync)
+			IAdressenSync adressenSync,
+			IDubbelpuntSync dubbelpuntSync)
 		{
 			_gelieerdePersonenDao = gelieerdePersonenDao;
 			_categorieenDao = categorieenDao;
@@ -63,6 +65,7 @@ namespace Chiro.Gap.Workers
 			_personenDao = pDao;
 			_personenSync = personenSync;
 			_adressenSync = adressenSync;
+			_dubbelpuntSync = dubbelpuntSync;
 			_communicatieVormDao = cvDao;
 		}
 
@@ -186,6 +189,17 @@ namespace Chiro.Gap.Workers
 					{
 #endif
 						q = _gelieerdePersonenDao.Bewaren(gelieerdePersoon, ExtrasNaarLambdas(extras));
+
+						Debug.Assert(origineel != null);  // Hier zijn we zeker van, maar anders doet 
+						                                  // resharper lastig
+
+						Debug.Assert(origineel.Persoon != null);
+						if (!origineel.Persoon.DubbelPuntAbonnement && gelieerdePersoon.Persoon.DubbelPuntAbonnement)
+						{
+							// Dubbelpuntabonnement werd aangevinkt.
+							_dubbelpuntSync.Abonneren(gelieerdePersoon);
+	
+						}
 
 						if (gelieerdePersoon.Persoon.AdNummer != null || gelieerdePersoon.Persoon.AdInAanvraag)
 						{

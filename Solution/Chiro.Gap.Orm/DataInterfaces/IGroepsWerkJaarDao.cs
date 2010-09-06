@@ -26,6 +26,15 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		GroepsWerkJaar RecentsteOphalen(int groepID, params Expression<Func<GroepsWerkJaar, object>>[] paths);
 
 		/// <summary>
+		/// Haalt het recentste groepswerkjaar op van de groep waar de gelieerde persoon <paramref name="gp"/>
+		/// aan gekoppeld is.
+		/// </summary>
+		/// <param name="gp">Gelieerde persoon met op te halen groepswerkjaar</param>
+		/// <param name="paths">Bepaalt de mee op te halen gekoppelde entiteiten</param>
+		/// <returns>Het gevraagde groepswerkjaar met de gevraagde gekoppelde entiteiten</returns>
+		GroepsWerkJaar RecentsteOphalen(GelieerdePersoon gp, params Expression<Func<GroepsWerkJaar, object>>[] paths);
+
+		/// <summary>
 		/// Kijkt na of het groepswerkjaar met ID <paramref name="groepsWerkJaarID"/> het recentste groepswerkjaar
 		/// van zijn groep is.
 		/// </summary>

@@ -105,5 +105,14 @@ namespace Chiro.Kip.Services
 		/// <remarks>Er is in Kipadmin maar plaats voor 2 afdelingen/lid</remarks>
 		[OperationContract(IsOneWay = true)]
 		void AfdelingenUpdaten(Persoon persoon, string stamNummer, int werkJaar, IEnumerable<AfdelingEnum> afdelingen);
+
+		/// <summary>
+		/// Bestelt dubbelpunt voor de gegeven persoon in het gegeven groepswerkjaar.
+		/// </summary>
+		/// <param name="persoon">Persoon die Dubbelpunt wil</param>
+		/// <param name="stamNummer">Groep die Dubbelpunt betaalt</param>
+		/// <param name="werkJaar">Werkjaar waarvoor Dubbelpuntabonnement</param>
+		[OperationContract(IsOneWay = true)]
+		void DubbelpuntBestellen(Persoon persoon, string stamNummer, int werkJaar);
 	}
 }

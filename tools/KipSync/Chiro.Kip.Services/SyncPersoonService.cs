@@ -1076,5 +1076,16 @@ namespace Chiro.Kip.Services
 			}
 			Console.WriteLine(feedback);
 		}
+
+		/// <summary>
+		/// Bestelt dubbelpunt voor de gegeven persoon in het gegeven groepswerkjaar.
+		/// </summary>
+		/// <param name="persoon">Persoon die Dubbelpunt wil</param>
+		/// <param name="stamNummer">Groep die Dubbelpunt betaalt</param>
+		/// <param name="werkJaar">Werkjaar waarvoor Dubbelpuntabonnement</param>
+		public void DubbelpuntBestellen(Persoon persoon, string stamNummer, int werkJaar)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
