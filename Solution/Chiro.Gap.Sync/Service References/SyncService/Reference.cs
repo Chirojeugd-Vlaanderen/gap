@@ -700,7 +700,7 @@ namespace Chiro.Gap.Sync.SyncService {
         void AfdelingenUpdaten(Chiro.Gap.Sync.SyncService.Persoon persoon, string stamNummer, int werkJaar, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.AfdelingEnum> afdelingen);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/DubbelpuntBestellen")]
-        void DubbelpuntBestellen(Chiro.Gap.Sync.SyncService.Persoon persoon, string stamNummer, int werkJaar);
+        void DubbelpuntBestellen(int adNummer, string stamNummer, int werkJaar);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -766,8 +766,8 @@ namespace Chiro.Gap.Sync.SyncService {
             base.Channel.AfdelingenUpdaten(persoon, stamNummer, werkJaar, afdelingen);
         }
         
-        public void DubbelpuntBestellen(Chiro.Gap.Sync.SyncService.Persoon persoon, string stamNummer, int werkJaar) {
-            base.Channel.DubbelpuntBestellen(persoon, stamNummer, werkJaar);
+        public void DubbelpuntBestellen(int adNummer, string stamNummer, int werkJaar) {
+            base.Channel.DubbelpuntBestellen(adNummer, stamNummer, werkJaar);
         }
     }
 }

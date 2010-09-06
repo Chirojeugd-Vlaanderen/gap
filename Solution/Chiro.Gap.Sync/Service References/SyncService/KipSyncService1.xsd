@@ -82,7 +82,7 @@
   <xs:element name="DubbelpuntBestellen">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/Chiro.Kip.Services.DataContracts" minOccurs="0" name="persoon" nillable="true" type="q20:Persoon" />
+        <xs:element minOccurs="0" name="adNummer" type="xs:int" />
         <xs:element minOccurs="0" name="stamNummer" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="werkJaar" type="xs:int" />
       </xs:sequence>

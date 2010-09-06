@@ -107,12 +107,13 @@ namespace Chiro.Kip.Services
 		void AfdelingenUpdaten(Persoon persoon, string stamNummer, int werkJaar, IEnumerable<AfdelingEnum> afdelingen);
 
 		/// <summary>
-		/// Bestelt dubbelpunt voor de gegeven persoon in het gegeven groepswerkjaar.
+		/// Bestelt dubbelpunt voor de gegeven persoon in het gegeven groepswerkjaar, gegeven dat de persoon
+		/// een AD-nummer heeft
 		/// </summary>
-		/// <param name="persoon">Persoon die Dubbelpunt wil</param>
+		/// <param name="adNummer">AD-nummer van persoon die Dubbelpunt wil</param>
 		/// <param name="stamNummer">Groep die Dubbelpunt betaalt</param>
 		/// <param name="werkJaar">Werkjaar waarvoor Dubbelpuntabonnement</param>
 		[OperationContract(IsOneWay = true)]
-		void DubbelpuntBestellen(Persoon persoon, string stamNummer, int werkJaar);
+		void DubbelpuntBestellen(int adNummer, string stamNummer, int werkJaar);
 	}
 }
