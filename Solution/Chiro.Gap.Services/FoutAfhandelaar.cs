@@ -41,6 +41,10 @@ namespace Chiro.Gap.Services
 			{
 				throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.Concurrecncy }, new FaultReason(ex.Message));
 			}
+			else if (ex is FoutNummerException)
+			{
+				throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = (ex as FoutNummerException).FoutNummer} ,new FaultReason(ex.Message));
+			}
 			else
 			{
 				throw ex;

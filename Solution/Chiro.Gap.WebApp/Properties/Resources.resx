@@ -257,4 +257,7 @@
   <data name="FunctiesVan" xml:space="preserve">
     <value>Functies van {0}</value>
   </data>
+  <data name="DubbelPuntZonderAdres" xml:space="preserve">
+    <value>Je kan geen Dubbelpunt bestellen voor een persoon zonder voorkeursadres.</value>
+  </data>
 </root>

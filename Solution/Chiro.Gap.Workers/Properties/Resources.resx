@@ -231,4 +231,7 @@
   <data name="InschrijvenZonderAfdelingen" xml:space="preserve">
     <value>Je kan geen kinderen inschrijven als je groep geen afdelingen heeft in het huidige werkjaar!</value>
   </data>
+  <data name="DubbelPuntZonderAdres" xml:space="preserve">
+    <value>Je hebt nog geen voorkeursadres ingegeven voor {0}; je kan er dus ook geen Dubbelpuntabonnement voor bestellen.</value>
+  </data>
 </root>

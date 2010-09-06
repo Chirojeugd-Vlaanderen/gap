@@ -142,6 +142,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je kan geen Dubbelpunt bestellen voor een persoon zonder voorkeursadres..
+        /// </summary>
+        public static string DubbelPuntZonderAdres {
+            get {
+                return ResourceManager.GetString("DubbelPuntZonderAdres", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De waarde voor {0} voldoet niet aan de verplichte structuur: {1}.
         /// </summary>
         public static string FormatValidatieFout {

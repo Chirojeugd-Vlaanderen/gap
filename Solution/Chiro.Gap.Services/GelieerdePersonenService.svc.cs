@@ -956,16 +956,28 @@ namespace Chiro.Gap.Services
 			GelieerdePersoon gp = null;
 			try
 			{
-				gp = _gpMgr.Ophalen(gelieerdePersoonID);
+				gp = _gpMgr.Ophalen(gelieerdePersoonID, PersoonsExtras.Adressen);
 			}
 			catch (GeenGavException ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+			}
+			catch (FoutNummerException ex)
 			{
 				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
 
 			Debug.Assert(gp != null);
 
-			gp.Persoon.DubbelPuntAbonnement = true;
+			try
+			{
+				_gpMgr.DubbelpuntBestellen(gp);
+			}
+			catch (FoutNummerException ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+			}
+			
 
 			_gpMgr.Bewaren(gp, PersoonsExtras.Geen);
 		}

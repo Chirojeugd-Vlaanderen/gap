@@ -837,5 +837,30 @@ namespace Chiro.Gap.Workers
 
 			return paths.ToArray();
 		}
+
+		/// <summary>
+		/// Bestelt Dubbelpunt voor gelieerde persoon <paramref name="gp"/>.  PERSISTEERT NIET!
+		/// </summary>
+		/// <param name="gp">Gelieerde persoon waarvoor dubbelpunt moet worden besteld, met daaraan
+		/// gekoppeld zijn voorkeursadres.</param>
+		public void DubbelpuntBestellen(GelieerdePersoon gp)
+		{
+			if (_autorisatieMgr.IsGavGelieerdePersoon(gp.ID))
+			{
+				if (gp.PersoonsAdres == null)
+				{
+					throw new FoutNummerException(
+						FoutNummer.AdresOntbreekt, 
+						String.Format(
+							Properties.Resources.DubbelPuntZonderAdres,
+							gp.Persoon.VolledigeNaam));
+				}
+				gp.Persoon.DubbelPuntAbonnement = true;
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+		}
 	}
 }

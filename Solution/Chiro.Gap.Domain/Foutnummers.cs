@@ -24,6 +24,7 @@ namespace Chiro.Gap.Domain
 		OngeldigPostNummer,
 		WoonPlaatsOntbreekt,
 		WonenDaarAl,
+		AdresOntbreekt,
 		#endregion
 
 		#region verkeerde groep
