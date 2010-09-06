@@ -5,6 +5,7 @@
 
 using System;
 using System.Web;
+using System.Web.Caching;
 
 namespace Chiro.Gap.WebApp
 {
@@ -69,6 +70,20 @@ namespace Chiro.Gap.WebApp
 				}
 				s.Value = value;
 			}
+		}
+
+		/// <summary>
+		/// Verwijdert de gecachete problemen van een bepaalde groep
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvan de problemencache leeg te maken</param>
+		/// <param name="cache">cache die de problemen bevat</param>
+		public static void ProblemenCacheResetten(int groepID, Cache cache)
+		{
+				// Problemen met functies moeten opgenieuw opgehaald worden na deze operatie. BaseController gaat na
+				// of dat nodig is door naar de telling te kijken, maar ook de gecachete problemen moeten verwijderd worden.
+				// Als het nieuwe aantal problemen even groot is als het vorige, worden ze anders niet vervangen.
+				cache.Remove(Properties.Resources.ProblemenTellingCacheKey + groepID);
+				cache.Remove(Properties.Resources.ProblemenCacheKey + groepID);			
 		}
 	}
 }

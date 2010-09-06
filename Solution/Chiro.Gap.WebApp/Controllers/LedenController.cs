@@ -304,11 +304,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				TempData["succes"] = Properties.Resources.LidNonActiefGemaakt;
 
-				// Problemen met functies moeten opgenieuw opgehaald worden na deze operatie. BaseController gaat na
-				// of dat nodig is door naar de telling te kijken, maar ook de gecachete problemen moeten verwijderd worden.
-				// Als het nieuwe aantal problemen even groot is als het vorige, worden ze anders niet vervangen.
-				HttpContext.Cache.Remove(Properties.Resources.ProblemenTellingCacheKey + groepID);
-				HttpContext.Cache.Remove(Properties.Resources.ProblemenCacheKey + groepID);
+				ClientState.ProblemenCacheResetten(groepID, HttpContext.Cache);
 			}
 			else
 			{
@@ -480,11 +476,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				ServiceHelper.CallService<ILedenService>(l => l.FunctiesVervangen(id, model.FunctieIDs));
 
-				// Problemen met functies moeten opgenieuw opgehaald worden na deze operatie. BaseController gaat na
-				// of dat nodig is door naar de telling te kijken, maar ook de gecachete problemen moeten verwijderd worden.
-				// Als het nieuwe aantal problemen even groot is als het vorige, worden ze anders niet vervangen.
-				HttpContext.Cache.Remove(Properties.Resources.ProblemenTellingCacheKey + groepID);
-				HttpContext.Cache.Remove(Properties.Resources.ProblemenCacheKey + groepID);
+				ClientState.ProblemenCacheResetten(groepID, HttpContext.Cache);
 
 				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 				return RedirectToAction("EditRest", "Personen", new { groepID, id = model.HuidigLid.PersoonDetail.GelieerdePersoonID });

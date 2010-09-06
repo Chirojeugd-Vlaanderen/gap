@@ -726,7 +726,7 @@ namespace Chiro.Gap.Workers
 				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsAdres.First().Adres.StraatNaam.WithoutUpdate());
 
 				// link naar standaardadres
-				paths.Add(ld => ld.GelieerdePersoon.PersoonsAdres.Adres);
+				paths.Add(ld => ld.GelieerdePersoon.PersoonsAdres.Adres.WithoutUpdate());
 			}
 			else if ((extras & LidExtras.Persoon) != 0)
 			{
@@ -754,7 +754,8 @@ namespace Chiro.Gap.Workers
 			}
 			if ((extras & LidExtras.Functies) != 0)
 			{
-				paths.Add(ld => ld.Functie.First().WithoutUpdate());
+				// FIXME (#116): Hieronder zou 'WithoutUpdate' gebruikt moeten worden, maar owv #116 kan dat nog niet.
+				paths.Add(ld => ld.Functie.First());
 			}
 			if ((extras & LidExtras.AlleAfdelingen) != 0)
 			{

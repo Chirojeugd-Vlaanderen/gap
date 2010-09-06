@@ -323,7 +323,6 @@ namespace Chiro.Gap.Services
 						foreach (var fn in l.Functie)
 						{
 							fn.TeVerwijderen = true;
-							// TODO (#683): functies afpakken. Die TeVerwijderen is blijkbaar niet voldoende.
 						}
 
 						_ledenMgr.Bewaren(l, LidExtras.Functies);
