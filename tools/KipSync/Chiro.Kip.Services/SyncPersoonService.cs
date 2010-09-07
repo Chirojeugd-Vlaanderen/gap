@@ -1132,6 +1132,16 @@ namespace Chiro.Kip.Services
 			DubbelpuntBestellen(adnr, stamNummer, werkJaar);
 		}
 
+		public void LoonVerliesVerzekeren(int adNummer, string stamNummer, int werkJaar)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void LoonVerliesVerzekerenAdOnbekend(PersoonDetails details, string stamNummer, int werkJaar)
+		{
+			throw new NotImplementedException();
+		}
+
 		/// <summary>
 		/// Probeert een persoon te vinden op basis van persoonsgegevens, adressen en communicatie.
 		/// Als dat lukt, worden de meegegeven persoonsgegevens, adressen, communicatie overgenomen in de

@@ -797,6 +797,12 @@ namespace Chiro.Gap.Sync.SyncService {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/DubbelpuntBestellenNieuwePersoon")]
         void DubbelpuntBestellenNieuwePersoon(Chiro.Gap.Sync.SyncService.PersoonDetails details, string stamNummer, int werkJaar);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/LoonVerliesVerzekeren")]
+        void LoonVerliesVerzekeren(int adNummer, string stamNummer, int werkJaar);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/LoonVerliesVerzekerenAdOnbekend")]
+        void LoonVerliesVerzekerenAdOnbekend(Chiro.Gap.Sync.SyncService.PersoonDetails details, string stamNummer, int werkJaar);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -868,6 +874,14 @@ namespace Chiro.Gap.Sync.SyncService {
         
         public void DubbelpuntBestellenNieuwePersoon(Chiro.Gap.Sync.SyncService.PersoonDetails details, string stamNummer, int werkJaar) {
             base.Channel.DubbelpuntBestellenNieuwePersoon(details, stamNummer, werkJaar);
+        }
+        
+        public void LoonVerliesVerzekeren(int adNummer, string stamNummer, int werkJaar) {
+            base.Channel.LoonVerliesVerzekeren(adNummer, stamNummer, werkJaar);
+        }
+        
+        public void LoonVerliesVerzekerenAdOnbekend(Chiro.Gap.Sync.SyncService.PersoonDetails details, string stamNummer, int werkJaar) {
+            base.Channel.LoonVerliesVerzekerenAdOnbekend(details, stamNummer, werkJaar);
         }
     }
 }

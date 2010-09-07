@@ -48,6 +48,12 @@
   <wsdl:message name="ISyncPersoonService_DubbelpuntBestellenNieuwePersoon_InputMessage">
     <wsdl:part name="parameters" element="tns:DubbelpuntBestellenNieuwePersoon" />
   </wsdl:message>
+  <wsdl:message name="ISyncPersoonService_LoonVerliesVerzekeren_InputMessage">
+    <wsdl:part name="parameters" element="tns:LoonVerliesVerzekeren" />
+  </wsdl:message>
+  <wsdl:message name="ISyncPersoonService_LoonVerliesVerzekerenAdOnbekend_InputMessage">
+    <wsdl:part name="parameters" element="tns:LoonVerliesVerzekerenAdOnbekend" />
+  </wsdl:message>
   <wsdl:portType name="ISyncPersoonService">
     <wsdl:operation name="PersoonUpdaten">
       <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/PersoonUpdaten" message="tns:ISyncPersoonService_PersoonUpdaten_InputMessage" />
@@ -81,6 +87,12 @@
     </wsdl:operation>
     <wsdl:operation name="DubbelpuntBestellenNieuwePersoon">
       <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/DubbelpuntBestellenNieuwePersoon" message="tns:ISyncPersoonService_DubbelpuntBestellenNieuwePersoon_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoonVerliesVerzekeren">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/LoonVerliesVerzekeren" message="tns:ISyncPersoonService_LoonVerliesVerzekeren_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoonVerliesVerzekerenAdOnbekend">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/LoonVerliesVerzekerenAdOnbekend" message="tns:ISyncPersoonService_LoonVerliesVerzekerenAdOnbekend_InputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="NetMsmqBinding_ISyncPersoonService" type="tns:ISyncPersoonService">
@@ -148,6 +160,18 @@
     </wsdl:operation>
     <wsdl:operation name="DubbelpuntBestellenNieuwePersoon">
       <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/DubbelpuntBestellenNieuwePersoon" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="LoonVerliesVerzekeren">
+      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/LoonVerliesVerzekeren" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="LoonVerliesVerzekerenAdOnbekend">
+      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/LoonVerliesVerzekerenAdOnbekend" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

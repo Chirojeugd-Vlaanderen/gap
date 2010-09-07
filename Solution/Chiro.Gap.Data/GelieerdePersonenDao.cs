@@ -71,6 +71,28 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
+		/// Haalt een gelieerde persoon op op basis van <paramref name="persoonID"/> en <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="persoonID">ID van de *persoon* waarvoor de gelieerde persoon opgehaald moet worden</param>
+		/// <param name="groepID">ID van de groep waaraan de gelieerde persoon gelieerd moet zijn</param>
+		/// <param name="paths">bepaalt op te halen gekoppelde entiteiten</param>
+		/// <returns>De gevraagde gelieerde persoon</returns>
+		public GelieerdePersoon Ophalen(int persoonID, int groepID, params Expression<Func<GelieerdePersoon, object>>[] paths)
+		{
+			GelieerdePersoon result;
+
+			using (var db = new ChiroGroepEntities())
+			{
+				var query = (from gp in db.GelieerdePersoon
+				             where gp.Persoon.ID == persoonID && gp.Groep.ID == groepID
+				             select gp) as ObjectQuery<GelieerdePersoon>;
+				result = IncludesToepassen(query, paths).FirstOrDefault();
+			}
+
+			return Utility.DetachObjectGraph(result);
+		}
+
+		/// <summary>
 		/// Sorteert een 'queryable' van gelieerde personen. Eerst volgens de gegeven ordening, dan steeds op naam.
 		/// <para />
 		/// De sortering is vrij complex om met meerdere opties rekening te houden.

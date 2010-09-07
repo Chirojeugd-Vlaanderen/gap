@@ -77,6 +77,15 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		IList<GelieerdePersoon> AllenOphalen(int groepID, PersoonSorteringsEnum sortering, params Expression<Func<GelieerdePersoon, object>>[] paths);
 
 		/// <summary>
+		/// Haalt een gelieerde persoon op op basis van <paramref name="persoonID"/> en <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="persoonID">ID van de *persoon* waarvoor de gelieerde persoon opgehaald moet worden</param>
+		/// <param name="groepID">ID van de groep waaraan de gelieerde persoon gelieerd moet zijn</param>
+		/// <param name="paths">bepaalt op te halen gekoppelde entiteiten</param>
+		/// <returns>De gevraagde gelieerde persoon</returns>
+		GelieerdePersoon Ophalen(int persoonID, int groepID, params Expression<Func<GelieerdePersoon, object>>[] paths);
+
+		/// <summary>
 		/// Haalt een 'pagina' persoonsgegevens van de gelieerde personen van een groep op, inclusief
 		/// eventueel lidobject in het recentste werkjaar.
 		/// </summary>
@@ -127,14 +136,6 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// geladen zijn</returns>
 		GelieerdePersoon GroepLaden(GelieerdePersoon p);
 
-		/*/// <summary>
-		/// Geeft de gelieerde personen uit een categorie (inc. persoonsinfo)
-		/// TODO: Misschien moet deze functie een lijst van PersoonsInfo ophalen.
-		/// </summary>
-		/// <param name="categorieID">ID van een categorie</param>
-		/// <returns>Lijst van gelieerde personen met persoonsinfo in de categorie</returns>
-		IList<GelieerdePersoon> OphalenUitCategorie(int categorieID);*/
-
 		/// <summary>
 		/// Haalt een lijst op met alle communicatietypes
 		/// </summary>
@@ -151,6 +152,5 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <remarks>Als de persoon nergens woont, is hij toch zijn eigen
 		/// huisgenoot.  Enkel huisgenoten uit dezelfde groep als de gelieerde persoon worden opgeleverd.</remarks>
 		IList<GelieerdePersoon> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID);
-
 	}
 }

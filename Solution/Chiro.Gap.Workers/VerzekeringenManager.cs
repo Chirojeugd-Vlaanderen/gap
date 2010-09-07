@@ -4,11 +4,14 @@
 // </copyright>
 
 using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Transactions;
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
+using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Workers.Exceptions;
 
 namespace Chiro.Gap.Workers
@@ -22,6 +25,7 @@ namespace Chiro.Gap.Workers
 		private readonly IDao<VerzekeringsType> _verzekeringenDao;
 		private readonly IDao<PersoonsVerzekering> _persoonsVerzekeringenDao;
 		private readonly IAutorisatieManager _autorisatieMgr;
+		private readonly IVerzekeringenSync _sync;
 
 		/// <summary>
 		/// Construeert een nieuwe verzekeringenmanager
@@ -29,14 +33,17 @@ namespace Chiro.Gap.Workers
 		/// <param name="vdao">Data Access Object voor verzekeringstypes</param>
 		/// <param name="pvdao">Data Access Object voor persoonsverzekeringen</param>
 		/// <param name="auMgr">Data Access Object voor autorisatie</param>
+		/// <param name="sync">Proxy naar service om verzekeringen te syncen met Kipadmin</param>
 		public VerzekeringenManager(
 			IDao<VerzekeringsType> vdao, 
 			IDao<PersoonsVerzekering> pvdao,
-			IAutorisatieManager auMgr)
+			IAutorisatieManager auMgr,
+			IVerzekeringenSync sync)
 		{
 			_verzekeringenDao = vdao;
 			_persoonsVerzekeringenDao = pvdao;
 			_autorisatieMgr = auMgr;
+			_sync = sync;
 		}
 
 		/// <summary>
@@ -117,14 +124,28 @@ namespace Chiro.Gap.Workers
 		/// Persisteert een persoonsverzekering, inclusief koppeling naar persoon en verzekeringstype
 		/// </summary>
 		/// <param name="verzekering">Te persisteren persoonsverzekering</param>
+		/// <param name="gwj">Bepaalt werkjaar en groep die de factuur zal krijgen (Groep moet meegeleverd zijn)</param>
 		/// <returns>De bewaarde versie van de persoonsverzekering</returns>
-		public PersoonsVerzekering PersoonsVerzekeringBewaren(PersoonsVerzekering verzekering)
+		public PersoonsVerzekering PersoonsVerzekeringBewaren(PersoonsVerzekering verzekering, GroepsWerkJaar gwj)
 		{
 			if (_autorisatieMgr.IsGavPersoon(verzekering.Persoon.ID))
 			{
-				return _persoonsVerzekeringenDao.Bewaren(verzekering,
-				                                  pv => pv.Persoon.WithoutUpdate(),
-				                                  pv => pv.VerzekeringsType.WithoutUpdate());
+				PersoonsVerzekering resultaat;
+
+#if KIPDORP
+				using (var tx = new TransactionScope())
+				{
+#endif
+					resultaat = _persoonsVerzekeringenDao.Bewaren(verzekering,
+					                                              pv => pv.Persoon.WithoutUpdate(),
+					                                              pv => pv.VerzekeringsType.WithoutUpdate());
+
+					_sync.Bewaren(resultaat, gwj);
+#if KIPDORP
+					tx.Complete();
+				}
+#endif
+				return resultaat;
 			}
 			else
 			{

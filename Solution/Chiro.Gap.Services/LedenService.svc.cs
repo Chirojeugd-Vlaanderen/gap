@@ -378,7 +378,7 @@ namespace Chiro.Gap.Services
 		{
 			try
 			{
-				Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Verzekeringen);
+				Lid l = _ledenMgr.Ophalen(lidID, LidExtras.Verzekeringen|LidExtras.Groep);
 				VerzekeringsType verz = _verzekeringenMgr.Ophalen(Verzekering.LoonVerlies);
 
 				var verzekering = _verzekeringenMgr.Verzekeren(
@@ -386,7 +386,7 @@ namespace Chiro.Gap.Services
 					verz,
 					DateTime.Today, GroepsWerkJaarManager.EindDatum(l.GroepsWerkJaar));
 
-				_verzekeringenMgr.PersoonsVerzekeringBewaren(verzekering);
+				_verzekeringenMgr.PersoonsVerzekeringBewaren(verzekering, l.GroepsWerkJaar);
 
 				return l.GelieerdePersoon.ID;
 			}

@@ -109,6 +109,7 @@
     <Compile Include="SyncInterfaces\IDubbelpuntSync.cs" />
     <Compile Include="SyncInterfaces\ILedenSync.cs" />
     <Compile Include="SyncInterfaces\IPersonenSync.cs" />
+    <Compile Include="SyncInterfaces\IVerzekeringenSync.cs" />
     <Compile Include="VerzekeringsType.cs" />
     <Compile Include="WoonPlaats.cs" />
   </ItemGroup>

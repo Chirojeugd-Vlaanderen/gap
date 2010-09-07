@@ -118,5 +118,25 @@ namespace Chiro.Kip.ServiceContracts
 		/// <param name="werkJaar">Werkjaar waarvoor Dubbelpuntabonnement</param>
 		[OperationContract(IsOneWay = true)]
 		void DubbelpuntBestellenNieuwePersoon(PersoonDetails details, string stamNummer, int werkJaar);
+
+		/// <summary>
+		/// Verzekert de gegeven persoon in het gegeven groepswerkjaar tegen loonverlies, gegeven dat de persoon
+		/// een AD-nummer heeft
+		/// </summary>
+		/// <param name="adNummer">AD-nummer van te verzekeren persoon</param>
+		/// <param name="stamNummer">Stamnummer van betalende groep</param>
+		/// <param name="werkJaar">Werkjaar voor de verzekering</param>
+		[OperationContract(IsOneWay = true)]
+		void LoonVerliesVerzekeren(int adNummer, string stamNummer, int werkJaar);
+
+		/// <summary>
+		/// Verzekert een persoon waarvan we het AD-nummer nog niet kennen tegen loonverlies
+		/// </summary>
+		/// <param name="details">Details van de te verzekeren persoon</param>
+		/// <param name="stamNummer">Stamnummer van betalende groep</param>
+		/// <param name="werkJaar">Werkjaar voor de verzekering</param>
+		[OperationContract(IsOneWay = true)]
+		void LoonVerliesVerzekerenAdOnbekend(PersoonDetails details, string stamNummer, int werkJaar);	
+
 	}
 }
