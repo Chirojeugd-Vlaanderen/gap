@@ -18,7 +18,7 @@ CREATE TABLE verz.ExtraVerzekering(
 	Datum DATETIME NOT NULL,
 	RekeningID INT,
 	Wijze CHAR(1) NOT NULL,
-	Noot VARCHAR(320),
+	Noot VARCHAR(240),	-- niet meer dan 255, anders niet goed getoond op form (delphi brol)
 	Stempel DATETIME,
 	DoodInvaliditeit SMALLINT NULL,
 	LoonVerlies SMALLINT NOT NULL);

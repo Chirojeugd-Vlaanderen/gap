@@ -45,6 +45,7 @@ namespace Chiro.Kip.Services
 		private static readonly Object _persoonManipulerenToken = new object();
 		private static readonly Object _communicatieToken = new object();
 		private static readonly Object _abonnementenToken = new object();
+		private static readonly Object _verzekeringToken = new object();
 
 		private readonly IPersoonUpdater _persoonUpdater;
 
@@ -1132,14 +1133,123 @@ namespace Chiro.Kip.Services
 			DubbelpuntBestellen(adnr, stamNummer, werkJaar);
 		}
 
+		/// <summary>
+		/// Verzekert de persoon met AD-nummer <paramref name="adNummer"/> tegen loonverlies voor werkjaar
+		/// <paramref name="werkJaar"/>.  De groep met stamnummer <paramref name="stamNummer"/> betaalt.
+		/// </summary>
+		/// <param name="adNummer">AD-nummer van te verzekeren persoon</param>
+		/// <param name="stamNummer">Stamnummer van betalende groep</param>
+		/// <param name="werkJaar">Werkjaar waarin te verzekeren voor loonverlies</param>
+		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
 		public void LoonVerliesVerzekeren(int adNummer, string stamNummer, int werkJaar)
 		{
-			throw new NotImplementedException();
-		}
+			string feedback = String.Empty;
+			lock (_verzekeringToken)
+			{
+				using (var db = new kipadminEntities())
+				{
+					// TODO (#755): Nakijken of de persoon in kwestie nog niet verzekerd is.
 
+					// Haal groep op.
+
+					var groep = (from g in db.Groep.OfType<ChiroGroep>()
+						     where g.STAMNR == stamNummer
+						     select g).FirstOrDefault();
+					
+					int volgNummer = 1;
+
+					// Zoek eerst naar een geschikte lijn in ExtraVerzekering die we
+					// kunnen recupereren voor deze verzekering.
+
+					var extraVerzDitWerkjaar = (from v in db.ExtraVerzekering.Include(verz => verz.REKENING)
+					                            where v.WerkJaar == werkJaar
+					                                  && v.Groep.GroepID == groep.GroepID
+					                            select v).OrderByDescending(vv => vv.VolgNummer);
+
+					// Laatste opzoeken
+
+					var verzekering = extraVerzDitWerkjaar.FirstOrDefault();
+
+					// Als de laatste verzekering een niet-doorgeboekte rekening heeft,
+					// komt deze persoon er gewoon bij.  Is er nog geen laatste verzekering,
+					// of is de rekening al wel doorgeboekt, dan maken we er een nieuwe.
+
+					if (verzekering == null || verzekering.REKENING.DOORGEBOE != "N")
+					{
+						volgNummer = (verzekering == null ? 1 : verzekering.VolgNummer + 1);
+						// Bedragen rekening mogen leeg zijn; worden aangevuld bij factuur
+						// overzetten in Kipadmin.
+
+						var rekening = new Rekening
+						               	{
+						               		WERKJAAR = (short) werkJaar,
+						               		TYPE = "F",
+						               		REK_BRON = "U_VERZEK",
+						               		STAMNR = stamNummer,
+						               		VERWIJSNR = volgNummer,
+						               		FACTUUR = "N",
+						               		FACTUUR2 = "N",
+						               		DOORGEBOE = "N",
+						               		DAT_REK = DateTime.Now
+						               	};
+
+						verzekering = new ExtraVerzekering
+						              	{
+						              		Datum = DateTime.Now,
+						              		DoodInvaliditeit = null,
+						              		ExtraVerzekeringID = 0,
+						              		Groep = groep,
+						              		LoonVerlies = 0,
+						              		Noot = String.Empty,
+						              		REKENING = rekening,
+						              		VolgNummer = volgNummer,
+						              		WerkJaar = werkJaar
+						              	};
+
+						db.AddToRekeningSet(rekening);
+						db.AddToExtraVerzekering(verzekering);
+					}
+
+					// verzekering bevat nu het verzekeringsrecord waarbij de nieuwe
+					// persoon opgeteld kan worden.
+
+					// In de 'noot' van het verzekeringsrecord bewaren we
+					// comma-separated de AD-nummers van verzekerde personen.
+					// TODO (#755): Dat is natuurlijk niet zo goed.
+					verzekering.Noot = String.Format(
+						"{0},{1}",
+						verzekering.Noot,
+						adNummer);
+					verzekering.Stempel = DateTime.Now;
+					verzekering.Wijze = "G";
+					++verzekering.LoonVerlies;
+
+					db.SaveChanges();
+
+					feedback = String.Format(
+						"Persoon met AD-nr. {0} verzekerd tegen loonverlies voor {1} in {2}",
+						adNummer,
+						stamNummer,
+						werkJaar);
+				}
+			}
+			Console.WriteLine(feedback);
+		}
+		/// <summary>
+		/// Verzekert een persoon zonder AD-nummer tegen loonverlies voor werkjaar
+		/// <paramref name="werkJaar"/>.  De groep met stamnummer <paramref name="stamNummer"/> betaalt.
+		/// </summary>
+		/// <param name="details">details van te verzekeren persoon</param>
+		/// <param name="stamNummer">Stamnummer van betalende groep</param>
+		/// <param name="werkJaar">Werkjaar waarin te verzekeren voor loonverlies</param>
+		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
 		public void LoonVerliesVerzekerenAdOnbekend(PersoonDetails details, string stamNummer, int werkJaar)
 		{
-			throw new NotImplementedException();
+			// Als het AD-nummer al gekend is, moet (gewoon) 'LidBewaren' gebruikt worden.
+			Debug.Assert(details.Persoon.AdNummer == null);
+
+			int adnr = UpdatenOfMaken(details);
+			LoonVerliesVerzekeren(adnr, stamNummer, werkJaar);
 		}
 
 		/// <summary>
