@@ -23,9 +23,11 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_Abonnement_Persoon", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.Persoon), "Abonnement", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.Abonnement))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_Abonnement_Rekening", "Rekening", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Rekening), "Abonnement", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.Abonnement))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_Abonnement_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Groep), "Abonnement", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.Abonnement))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_ExtraVerzekering_Rekening", "Rekening", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Kip.Data.Rekening), "ExtraVerzekering", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.ExtraVerzekering))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_ExtraVerzekering_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.Groep), "ExtraVerzekering", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.ExtraVerzekering))]
 
 // Original file name:
-// Generation date: 7/09/2010 11:38:48
+// Generation date: 7/09/2010 17:21:46
 namespace Chiro.Kip.Data
 {
     
@@ -255,6 +257,21 @@ namespace Chiro.Kip.Data
         }
         private global::System.Data.Objects.ObjectQuery<Abonnement> _Abonnement;
         /// <summary>
+        /// There are no comments for ExtraVerzekering in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<ExtraVerzekering> ExtraVerzekering
+        {
+            get
+            {
+                if ((this._ExtraVerzekering == null))
+                {
+                    this._ExtraVerzekering = base.CreateQuery<ExtraVerzekering>("[ExtraVerzekering]");
+                }
+                return this._ExtraVerzekering;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<ExtraVerzekering> _ExtraVerzekering;
+        /// <summary>
         /// There are no comments for AdresSet in the schema.
         /// </summary>
         public void AddToAdresSet(Adres adres)
@@ -344,6 +361,13 @@ namespace Chiro.Kip.Data
         public void AddToAbonnement(Abonnement abonnement)
         {
             base.AddObject("Abonnement", abonnement);
+        }
+        /// <summary>
+        /// There are no comments for ExtraVerzekering in the schema.
+        /// </summary>
+        public void AddToExtraVerzekering(ExtraVerzekering extraVerzekering)
+        {
+            base.AddObject("ExtraVerzekering", extraVerzekering);
         }
     }
     /// <summary>
@@ -3065,6 +3089,27 @@ namespace Chiro.Kip.Data
                 }
             }
         }
+        /// <summary>
+        /// There are no comments for ExtraVerzekering in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_ExtraVerzekering_Groep", "ExtraVerzekering")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<ExtraVerzekering> ExtraVerzekering
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<ExtraVerzekering>("kipadminModel.FK_ExtraVerzekering_Groep", "ExtraVerzekering");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<ExtraVerzekering>("kipadminModel.FK_ExtraVerzekering_Groep", "ExtraVerzekering", value);
+                }
+            }
+        }
     }
     /// <summary>
     /// There are no comments for kipadminModel.Lid in the schema.
@@ -4798,6 +4843,27 @@ namespace Chiro.Kip.Data
                 }
             }
         }
+        /// <summary>
+        /// There are no comments for ExtraVerzekering in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_ExtraVerzekering_Rekening", "ExtraVerzekering")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<ExtraVerzekering> ExtraVerzekering
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<ExtraVerzekering>("kipadminModel.FK_ExtraVerzekering_Rekening", "ExtraVerzekering");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<ExtraVerzekering>("kipadminModel.FK_ExtraVerzekering_Rekening", "ExtraVerzekering", value);
+                }
+            }
+        }
     }
     /// <summary>
     /// There are no comments for kipadminModel.Aansluiting in the schema.
@@ -6348,6 +6414,319 @@ namespace Chiro.Kip.Data
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Groep>("kipadminModel.FK_Abonnement_Groep", "Groep", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for kipadminModel.ExtraVerzekering in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// ExtraVerzekeringID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="kipadminModel", Name="ExtraVerzekering")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class ExtraVerzekering : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new ExtraVerzekering object.
+        /// </summary>
+        /// <param name="extraVerzekeringID">Initial value of ExtraVerzekeringID.</param>
+        /// <param name="werkJaar">Initial value of WerkJaar.</param>
+        /// <param name="volgNummer">Initial value of VolgNummer.</param>
+        /// <param name="datum">Initial value of Datum.</param>
+        /// <param name="wijze">Initial value of Wijze.</param>
+        /// <param name="loonVerlies">Initial value of LoonVerlies.</param>
+        public static ExtraVerzekering CreateExtraVerzekering(int extraVerzekeringID, int werkJaar, int volgNummer, global::System.DateTime datum, string wijze, short loonVerlies)
+        {
+            ExtraVerzekering extraVerzekering = new ExtraVerzekering();
+            extraVerzekering.ExtraVerzekeringID = extraVerzekeringID;
+            extraVerzekering.WerkJaar = werkJaar;
+            extraVerzekering.VolgNummer = volgNummer;
+            extraVerzekering.Datum = datum;
+            extraVerzekering.Wijze = wijze;
+            extraVerzekering.LoonVerlies = loonVerlies;
+            return extraVerzekering;
+        }
+        /// <summary>
+        /// There are no comments for Property ExtraVerzekeringID in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int ExtraVerzekeringID
+        {
+            get
+            {
+                return this._ExtraVerzekeringID;
+            }
+            set
+            {
+                this.OnExtraVerzekeringIDChanging(value);
+                this.ReportPropertyChanging("ExtraVerzekeringID");
+                this._ExtraVerzekeringID = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ExtraVerzekeringID");
+                this.OnExtraVerzekeringIDChanged();
+            }
+        }
+        private int _ExtraVerzekeringID;
+        partial void OnExtraVerzekeringIDChanging(int value);
+        partial void OnExtraVerzekeringIDChanged();
+        /// <summary>
+        /// There are no comments for Property WerkJaar in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int WerkJaar
+        {
+            get
+            {
+                return this._WerkJaar;
+            }
+            set
+            {
+                this.OnWerkJaarChanging(value);
+                this.ReportPropertyChanging("WerkJaar");
+                this._WerkJaar = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("WerkJaar");
+                this.OnWerkJaarChanged();
+            }
+        }
+        private int _WerkJaar;
+        partial void OnWerkJaarChanging(int value);
+        partial void OnWerkJaarChanged();
+        /// <summary>
+        /// There are no comments for Property VolgNummer in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int VolgNummer
+        {
+            get
+            {
+                return this._VolgNummer;
+            }
+            set
+            {
+                this.OnVolgNummerChanging(value);
+                this.ReportPropertyChanging("VolgNummer");
+                this._VolgNummer = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("VolgNummer");
+                this.OnVolgNummerChanged();
+            }
+        }
+        private int _VolgNummer;
+        partial void OnVolgNummerChanging(int value);
+        partial void OnVolgNummerChanged();
+        /// <summary>
+        /// There are no comments for Property Datum in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.DateTime Datum
+        {
+            get
+            {
+                return this._Datum;
+            }
+            set
+            {
+                this.OnDatumChanging(value);
+                this.ReportPropertyChanging("Datum");
+                this._Datum = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Datum");
+                this.OnDatumChanged();
+            }
+        }
+        private global::System.DateTime _Datum;
+        partial void OnDatumChanging(global::System.DateTime value);
+        partial void OnDatumChanged();
+        /// <summary>
+        /// There are no comments for Property Wijze in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Wijze
+        {
+            get
+            {
+                return this._Wijze;
+            }
+            set
+            {
+                this.OnWijzeChanging(value);
+                this.ReportPropertyChanging("Wijze");
+                this._Wijze = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Wijze");
+                this.OnWijzeChanged();
+            }
+        }
+        private string _Wijze;
+        partial void OnWijzeChanging(string value);
+        partial void OnWijzeChanged();
+        /// <summary>
+        /// There are no comments for Property Noot in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string Noot
+        {
+            get
+            {
+                return this._Noot;
+            }
+            set
+            {
+                this.OnNootChanging(value);
+                this.ReportPropertyChanging("Noot");
+                this._Noot = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("Noot");
+                this.OnNootChanged();
+            }
+        }
+        private string _Noot;
+        partial void OnNootChanging(string value);
+        partial void OnNootChanged();
+        /// <summary>
+        /// There are no comments for Property Stempel in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<global::System.DateTime> Stempel
+        {
+            get
+            {
+                return this._Stempel;
+            }
+            set
+            {
+                this.OnStempelChanging(value);
+                this.ReportPropertyChanging("Stempel");
+                this._Stempel = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Stempel");
+                this.OnStempelChanged();
+            }
+        }
+        private global::System.Nullable<global::System.DateTime> _Stempel;
+        partial void OnStempelChanging(global::System.Nullable<global::System.DateTime> value);
+        partial void OnStempelChanged();
+        /// <summary>
+        /// There are no comments for Property DoodInvaliditeit in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<short> DoodInvaliditeit
+        {
+            get
+            {
+                return this._DoodInvaliditeit;
+            }
+            set
+            {
+                this.OnDoodInvaliditeitChanging(value);
+                this.ReportPropertyChanging("DoodInvaliditeit");
+                this._DoodInvaliditeit = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("DoodInvaliditeit");
+                this.OnDoodInvaliditeitChanged();
+            }
+        }
+        private global::System.Nullable<short> _DoodInvaliditeit;
+        partial void OnDoodInvaliditeitChanging(global::System.Nullable<short> value);
+        partial void OnDoodInvaliditeitChanged();
+        /// <summary>
+        /// There are no comments for Property LoonVerlies in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public short LoonVerlies
+        {
+            get
+            {
+                return this._LoonVerlies;
+            }
+            set
+            {
+                this.OnLoonVerliesChanging(value);
+                this.ReportPropertyChanging("LoonVerlies");
+                this._LoonVerlies = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("LoonVerlies");
+                this.OnLoonVerliesChanged();
+            }
+        }
+        private short _LoonVerlies;
+        partial void OnLoonVerliesChanging(short value);
+        partial void OnLoonVerliesChanged();
+        /// <summary>
+        /// There are no comments for REKENING in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_ExtraVerzekering_Rekening", "Rekening")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Rekening REKENING
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Rekening>("kipadminModel.FK_ExtraVerzekering_Rekening", "Rekening").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Rekening>("kipadminModel.FK_ExtraVerzekering_Rekening", "Rekening").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for REKENING in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Rekening> REKENINGReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Rekening>("kipadminModel.FK_ExtraVerzekering_Rekening", "Rekening");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Rekening>("kipadminModel.FK_ExtraVerzekering_Rekening", "Rekening", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("kipadminModel", "FK_ExtraVerzekering_Groep", "Groep")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Groep Groep
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_ExtraVerzekering_Groep", "Groep").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_ExtraVerzekering_Groep", "Groep").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Groep in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Groep> GroepReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("kipadminModel.FK_ExtraVerzekering_Groep", "Groep");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Groep>("kipadminModel.FK_ExtraVerzekering_Groep", "Groep", value);
                 }
             }
         }
