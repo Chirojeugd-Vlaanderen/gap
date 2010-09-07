@@ -88,7 +88,10 @@ namespace Chiro.Kip.Workers
 			}
 
 			// Poging 5
-			resultaat = naamgenoten.FirstOrDefault();
+			resultaat = (from ng in naamgenoten
+			             where ng.GeboorteDatum == zoekInfo.GeboorteDatum
+			             select ng).FirstOrDefault();
+
 			if (resultaat != null) return resultaat;
 
 			if (!maken) return null;

@@ -109,5 +109,14 @@ namespace Chiro.Kip.ServiceContracts
 		/// <param name="werkJaar">Werkjaar waarvoor Dubbelpuntabonnement</param>
 		[OperationContract(IsOneWay = true)]
 		void DubbelpuntBestellen(int adNummer, string stamNummer, int werkJaar);
+
+		/// <summary>
+		/// Bestelt dubbelpunt voor een 'onbekende' persoon in het gegeven groepswerkjaar
+		/// </summary>
+		/// <param name="details">details voor de persoon die Dubbelpunt wil bestellen</param>
+		/// <param name="stamNummer">Groep die Dubbelpunt betaalt</param>
+		/// <param name="werkJaar">Werkjaar waarvoor Dubbelpuntabonnement</param>
+		[OperationContract(IsOneWay = true)]
+		void DubbelpuntBestellenNieuwePersoon(PersoonDetails details, string stamNummer, int werkJaar);
 	}
 }

@@ -44,6 +44,7 @@ namespace Chiro.Kip.Services
 		private static readonly Object _adresManipulerenToken = new object();
 		private static readonly Object _persoonManipulerenToken = new object();
 		private static readonly Object _communicatieToken = new object();
+		private static readonly Object _abonnementenToken = new object();
 
 		private readonly IPersoonUpdater _persoonUpdater;
 
@@ -665,6 +666,7 @@ namespace Chiro.Kip.Services
 										REKENING = rekening,
 										SolidariteitsBijdrage = 0,
 										VolgNummer = volgNummer,
+										Datum = DateTime.Now,
 										WerkJaar = gedoe.WerkJaar
 									};
 
@@ -676,7 +678,9 @@ namespace Chiro.Kip.Services
 						// aansluiting bevat nu het aansluitingsrecord waaraan het lid
 						// toegevoegd kan worden.
 
-						aansluiting.Datum = DateTime.Now; // aansluitingsdatum is datum recentste lid.
+						// aansluitingsdatum is datum aansluiting eerste lid dat binnen komt.
+						// (De groep kan er niet aan doen dat er niet constant gefactureerd wordt)
+
 						aansluiting.Stempel = DateTime.Now;
 						aansluiting.Wijze = "G";
 
@@ -1079,7 +1083,108 @@ namespace Chiro.Kip.Services
 		/// <param name="adNummer">AD-nummer van persoon die Dubbelpunt wil</param>
 		/// <param name="stamNummer">Groep die Dubbelpunt betaalt</param>
 		/// <param name="werkJaar">Werkjaar waarvoor Dubbelpuntabonnement</param>
+		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
 		public void DubbelpuntBestellen(int adNummer, string stamNummer, int werkJaar)
+		{
+			string feedback = String.Empty;
+			lock (_abonnementenToken)
+			{
+				using (var db = new kipadminEntities())
+				{
+					// Heeft de persoon toevallig al een abonnement voor het gegeven werkjaar?
+
+					var abonnement = (from ab in db.Abonnement
+					                  where ab.kipPersoon.AdNummer == adNummer && ab.werkjaar == werkJaar
+					                  select ab).FirstOrDefault();
+
+					if (abonnement == null)
+					{
+						// We doen enkel verder als er nog geen abonnement is.
+
+						// Haal groep en persoon op.
+
+						var groep = (from g in db.Groep.OfType<ChiroGroep>()
+						             where g.STAMNR == stamNummer
+						             select g).FirstOrDefault();
+
+						var persoon = (from p in db.PersoonSet
+						               where p.AdNummer == adNummer
+						               select p).FirstOrDefault();
+
+						// Bestaat er al een niet-doorgeboekte rekening voor Dubbelpunt voor het gegeven
+						// groepswerkjaar?
+
+						var rekening = (from f in db.RekeningSet
+						                where f.WERKJAAR == werkJaar && f.REK_BRON == "DP" && f.DOORGEBOE == "N"
+						                select f).FirstOrDefault();
+
+						if (rekening == null)
+						{
+							// Nog geen rekening; maak er een nieuwe
+							rekening = new Rekening
+							               	{
+							               		WERKJAAR = (short) werkJaar,
+							               		TYPE = "F",
+							               		REK_BRON = "DP",
+							               		STAMNR = stamNummer,
+							               		VERWIJSNR = 0,
+							               		FACTUUR = "N",
+							               		FACTUUR2 = "N",
+							               		DOORGEBOE = "N",
+							               		DAT_REK = DateTime.Now,
+										STEMPEL = DateTime.Now
+							               	};
+							db.AddToRekeningSet(rekening);
+						}
+
+						abonnement = new Abonnement
+						             	{
+						             		werkjaar = werkJaar,
+						             		UITG_CODE = "DP",
+						             		Groep = groep,
+						             		GRATIS = "N",
+						             		REKENING = rekening,
+						             		AANVR_DAT = DateTime.Now,
+						             		STEMPEL = DateTime.Now,
+						             		kipPersoon = persoon,
+						             		EXEMPLAAR = 1,
+						             		AANT_EXEM = 1,
+						             		BESTELD1 = "J",
+						             		BESTELD2 = "J",
+						             		BESTELD3 = "J",
+						             		BESTELD4 = "J",
+						             		BESTELD5 = "J",
+						             		BESTELD6 = "J",
+						             		BESTELD7 = "J",
+						             		BESTELD8 = "J",
+						             		BESTELD9 = "J",
+						             		BESTELD10 = "J",
+						             		BESTELD11 = "J",
+						             		BESTELD12 = "J",
+						             		BESTELD13 = "J",
+						             		BESTELD14 = "J",
+						             		BESTELD15 = "J"
+						             	};
+
+						db.AddToAbonnement(abonnement);
+						db.SaveChanges();
+
+						feedback = String.Format(
+							"Dubbelpuntabonnement voor {0} {1} AD{2}, rekening {3}",
+							persoon.VoorNaam, persoon.Naam, persoon.AdNummer, rekening.NR);
+					}
+				}
+			}
+			Console.WriteLine(feedback);
+		}
+
+		/// <summary>
+		/// Bestelt dubbelpunt voor een 'onbekende' persoon in het gegeven groepswerkjaar
+		/// </summary>
+		/// <param name="details">details voor de persoon die Dubbelpunt wil bestellen</param>
+		/// <param name="stamNummer">Groep die Dubbelpunt betaalt</param>
+		/// <param name="werkJaar">Werkjaar waarvoor Dubbelpuntabonnement</param>
+		public void DubbelpuntBestellenNieuwePersoon(PersoonDetails details, string stamNummer, int werkJaar)
 		{
 			throw new NotImplementedException();
 		}

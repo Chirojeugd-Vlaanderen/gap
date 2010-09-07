@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 using AutoMapper;
 
@@ -10,8 +7,6 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Sync.SyncService;
-
-using Persoon = Chiro.Gap.Orm.Persoon;
 
 namespace Chiro.Gap.Sync
 {
@@ -23,6 +18,7 @@ namespace Chiro.Gap.Sync
 		private readonly ISyncPersoonService _svc;
 		private readonly IGroepsWerkJaarDao _groepsWerkJaarDao;
 		private readonly IPersonenDao _personenDao;
+		private readonly IGelieerdePersonenDao _gelieerdePersonenDao;
 
 		/// <summary>
 		/// Creeert een nieuwe DubbelpuntSync
@@ -30,14 +26,17 @@ namespace Chiro.Gap.Sync
 		/// <param name="groepsWerkJaarDao">Data access object voor groepsgerelateerde zaken</param>
 		/// <param name="service">Proxy naar de syncrhonisatieservice</param>
 		/// <param name="personenDao">Data access object voor persoonsgerelateerde zaken</param>
+		/// <param name="gelieerdePersonenDao">Data access object voor gelieerde personen</param>
 		public DubbelpuntSync(
 			ISyncPersoonService service, 
 			IGroepsWerkJaarDao groepsWerkJaarDao,
-			IPersonenDao personenDao)
+			IPersonenDao personenDao,
+			IGelieerdePersonenDao gelieerdePersonenDao)
 		{
 			_svc = service;
 			_groepsWerkJaarDao = groepsWerkJaarDao;
 			_personenDao = personenDao;
+			_gelieerdePersonenDao = gelieerdePersonenDao;
 		}
 
 		/// <summary>
@@ -65,16 +64,25 @@ namespace Chiro.Gap.Sync
 			}
 			else
 			{
-				throw new OutOfCoffeeException(
-					"Ik ga dat gelijkaardig doen aan het doorgeven van een nieuw lid.  Maar dat is dus nog niet in orde.");
 				// Geen AD-Nummer; dan moet er met het abonnementsverzoek meteen alle info meegestuurd
-				// worden om dat AD-nummer te maken.
+				// worden om dat AD-nummer te maken.  Markeer persoon als persoon met ad-nummer in aanvraag.
 
 				gp.Persoon.AdInAanvraag = true;
 				_personenDao.Bewaren(gp.Persoon);
 
-				// Haal extra info op, zodat we de persoon zo goed mogelijk kunnen identificeren
+				// Haal gelieerde persoon opnieuw op, met zo veel mogelijk info voor identificatie aan
+				// Kipadminkant.
 
+				var gpMetDetails = _gelieerdePersonenDao.Ophalen(
+					gp.ID,
+					gelp => gelp.PersoonsAdres.Adres.StraatNaam,
+					gelp => gelp.PersoonsAdres.Adres.WoonPlaats,
+					gelp => gelp.Communicatie.First().CommunicatieType);
+
+				_svc.DubbelpuntBestellenNieuwePersoon(
+					Mapper.Map<GelieerdePersoon, SyncService.PersoonDetails>(gpMetDetails),
+					huidigWj.Groep.Code,
+					huidigWj.WerkJaar);
 
 			}
 		}

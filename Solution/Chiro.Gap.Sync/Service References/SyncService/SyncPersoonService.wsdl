@@ -45,6 +45,9 @@
   <wsdl:message name="ISyncPersoonService_DubbelpuntBestellen_InputMessage">
     <wsdl:part name="parameters" element="tns:DubbelpuntBestellen" />
   </wsdl:message>
+  <wsdl:message name="ISyncPersoonService_DubbelpuntBestellenNieuwePersoon_InputMessage">
+    <wsdl:part name="parameters" element="tns:DubbelpuntBestellenNieuwePersoon" />
+  </wsdl:message>
   <wsdl:portType name="ISyncPersoonService">
     <wsdl:operation name="PersoonUpdaten">
       <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/PersoonUpdaten" message="tns:ISyncPersoonService_PersoonUpdaten_InputMessage" />
@@ -75,6 +78,9 @@
     </wsdl:operation>
     <wsdl:operation name="DubbelpuntBestellen">
       <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/DubbelpuntBestellen" message="tns:ISyncPersoonService_DubbelpuntBestellen_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DubbelpuntBestellenNieuwePersoon">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISyncPersoonService/DubbelpuntBestellenNieuwePersoon" message="tns:ISyncPersoonService_DubbelpuntBestellenNieuwePersoon_InputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="NetMsmqBinding_ISyncPersoonService" type="tns:ISyncPersoonService">
@@ -136,6 +142,12 @@
     </wsdl:operation>
     <wsdl:operation name="DubbelpuntBestellen">
       <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/DubbelpuntBestellen" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="DubbelpuntBestellenNieuwePersoon">
+      <soap12:operation soapAction="http://tempuri.org/ISyncPersoonService/DubbelpuntBestellenNieuwePersoon" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
