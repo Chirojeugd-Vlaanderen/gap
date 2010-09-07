@@ -831,73 +831,11 @@ namespace Chiro.Kip.Services
 			PersoonDetails details,
 			LidGedoe lidGedoe)
 		{
-			var persoon = details.Persoon;
-			var adres = details.Adres;
-			var adresType = details.AdresType;
-			var communicatieMiddelen = details.Communicatie;
-
-			Mapper.CreateMap<Persoon, PersoonZoekInfo>()
-			    .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int)src.Geslacht))
-			    .ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
-
-			Mapper.CreateMap<Persoon, KipPersoon>()
-			    .ForMember(dst => dst.AdNummer, opt => opt.Ignore())
-			    .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int)src.Geslacht))
-			    .ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
-
 			// Als het AD-nummer al gekend is, moet (gewoon) 'LidBewaren' gebruikt worden.
+			Debug.Assert(details.Persoon.AdNummer == null);
 
-			Debug.Assert(persoon.AdNummer == null);
-
-			Chiro.Kip.Data.Persoon gevonden; // poging om persoon al te vinden in database.
-
-			// Doe eigenlijk hetzelfde als bij PersoonUpdaten, maar in dit geval hebben we meer info
-			// om bestaande personen op te zoeken.
-
-			lock (_persoonManipulerenToken)
-			{
-				using (var db = new kipadminEntities())
-				{
-					var mgr = new PersonenManager();
-					var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(persoon);
-					if (communicatieMiddelen != null)
-					{
-						zoekInfo.Communicatie = (from cm in communicatieMiddelen select cm.Waarde).ToArray();
-					}
-				
-					if (adres != null)
-					{
-						zoekInfo.PostNr = adres.PostNr;
-					}
-
-					// Zoek of maak gevraagde persoon
-					gevonden = mgr.Zoeken(zoekInfo, true, db);
-
-					// Neem nieuwe gegevens over
-					Mapper.Map(persoon, gevonden);
-					db.SaveChanges();
-				}
-			}
-			string feedback = String.Format("Nieuw lid bewaard: ID{0} {1} {2} AD{3}", persoon.ID, persoon.VoorNaam, persoon.Naam, persoon.AdNummer);
-
-			// Als er geen AD-nummer was, dan heeft de SaveChanges er voor ons eentje gemaakt.
-			Debug.Assert(gevonden.AdNummer > 0);
-
-			// AD-nummer overnemen in persoon
-			persoon.AdNummer = gevonden.AdNummer;
-			_persoonUpdater.AdNummerZetten(persoon.ID, gevonden.AdNummer);
-
-			LidBewaren((int) persoon.AdNummer, lidGedoe);
-
-			if (adres != null)
-			{
-				StandaardAdresBewaren(
-					adres,
-					new Bewoner[] {new Bewoner {Persoon = persoon, AdresType = adresType}});
-			}
-
-			AlleCommunicatieBewaren(persoon, communicatieMiddelen);
-			Console.WriteLine(feedback);
+			int adnr = UpdatenOfMaken(details);
+			LidBewaren(adnr, lidGedoe);
 		}
 
 		/// <summary>
@@ -1184,9 +1122,95 @@ namespace Chiro.Kip.Services
 		/// <param name="details">details voor de persoon die Dubbelpunt wil bestellen</param>
 		/// <param name="stamNummer">Groep die Dubbelpunt betaalt</param>
 		/// <param name="werkJaar">Werkjaar waarvoor Dubbelpuntabonnement</param>
+		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
 		public void DubbelpuntBestellenNieuwePersoon(PersoonDetails details, string stamNummer, int werkJaar)
 		{
-			throw new NotImplementedException();
+			// Als het AD-nummer al gekend is, moet (gewoon) 'LidBewaren' gebruikt worden.
+			Debug.Assert(details.Persoon.AdNummer == null);
+
+			int adnr = UpdatenOfMaken(details);
+			DubbelpuntBestellen(adnr, stamNummer, werkJaar);
 		}
+
+		/// <summary>
+		/// Probeert een persoon te vinden op basis van persoonsgegevens, adressen en communicatie.
+		/// Als dat lukt, worden de meegegeven persoonsgegevens, adressen, communicatie overgenomen in de
+		/// database.  Als dat niet lukt, wordt een nieuwe persoon aangemaakt.
+		/// </summary>
+		/// <param name="details">Details van de te vinden persoon</param>
+		/// <returns>AD-nummer van gevonden/aangemaakte persoon.</returns>
+		private int UpdatenOfMaken(PersoonDetails details)
+		{
+			var persoon = details.Persoon;
+			var adres = details.Adres;
+			var adresType = details.AdresType;
+			var communicatieMiddelen = details.Communicatie;
+
+			Mapper.CreateMap<Persoon, PersoonZoekInfo>()
+			    .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int)src.Geslacht))
+			    .ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
+
+			Mapper.CreateMap<Persoon, KipPersoon>()
+			    .ForMember(dst => dst.AdNummer, opt => opt.Ignore())
+			    .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int)src.Geslacht))
+			    .ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
+
+			Chiro.Kip.Data.Persoon gevonden; 
+
+			// Doe eigenlijk hetzelfde als bij PersoonUpdaten, maar in dit geval hebben we meer info
+			// om bestaande personen op te zoeken.
+
+			lock (_persoonManipulerenToken)
+			{
+				using (var db = new kipadminEntities())
+				{
+					var mgr = new PersonenManager();
+					var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(persoon);
+					if (communicatieMiddelen != null)
+					{
+						zoekInfo.Communicatie = (from cm in communicatieMiddelen select cm.Waarde).ToArray();
+					}
+
+					if (adres != null)
+					{
+						zoekInfo.PostNr = adres.PostNr;
+					}
+
+					// Zoek of maak gevraagde persoon
+					gevonden = mgr.Zoeken(zoekInfo, true, db);
+
+					// Neem nieuwe gegevens over
+					Mapper.Map(persoon, gevonden);
+					db.SaveChanges();
+				}
+			}
+			// Als er geen AD-nummer was, dan heeft de SaveChanges er voor ons eentje gemaakt.
+			Debug.Assert(gevonden.AdNummer > 0);
+
+			string feedback = String.Format(
+				"Nieuwe persoon bewaard: ID{0} {1} {2} AD{3}", 
+				persoon.ID, 
+				persoon.VoorNaam, 
+				persoon.Naam, 
+				gevonden.AdNummer);
+
+			// AD-nummer overnemen in persoon en GAP
+			persoon.AdNummer = gevonden.AdNummer;
+			_persoonUpdater.AdNummerZetten(persoon.ID, gevonden.AdNummer);
+
+			if (adres != null)
+			{
+				StandaardAdresBewaren(
+					adres,
+					new Bewoner[] { new Bewoner { Persoon = persoon, AdresType = adresType } });
+			}
+
+			AlleCommunicatieBewaren(persoon, communicatieMiddelen);
+			Console.WriteLine(feedback);
+
+			return gevonden.AdNummer;
+		}
+	
+	
 	}
 }

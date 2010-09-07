@@ -75,6 +75,7 @@ namespace Chiro.Gap.Sync
 
 				var gpMetDetails = _gelieerdePersonenDao.Ophalen(
 					gp.ID,
+					gelp => gelp.Persoon,
 					gelp => gelp.PersoonsAdres.Adres.StraatNaam,
 					gelp => gelp.PersoonsAdres.Adres.WoonPlaats,
 					gelp => gelp.Communicatie.First().CommunicatieType);
