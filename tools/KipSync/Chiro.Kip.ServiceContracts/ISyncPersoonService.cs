@@ -72,17 +72,11 @@ namespace Chiro.Kip.ServiceContracts
 		/// <summary>
 		/// Maakt een persoon zonder ad-nummer lid.
 		/// </summary>
-		/// <param name="persoon">Persoonsgegevens van de lid te maken persoon</param>
-		/// <param name="adres">Voorkeursadres voor de persoon</param>
-		/// <param name="adresType">Adrestype van dat voorkeursadres</param>
-		/// <param name="communicatieMiddelen">Lijst met communicatiemiddelen van de persoon</param>
+		/// <param name="details">Details van de persoon die lid moet kunnen worden</param>
 		/// <param name="lidGedoe">nodige info om lid te kunnen maken</param>
 		[OperationContract(IsOneWay = true)]
 		void NieuwLidBewaren(
-			Persoon persoon,
-			Adres adres,
-			AdresTypeEnum adresType,
-			IEnumerable<CommunicatieMiddel> communicatieMiddelen,
+			PersoonDetails details,
 			LidGedoe lidGedoe);
 
 		/// <summary>

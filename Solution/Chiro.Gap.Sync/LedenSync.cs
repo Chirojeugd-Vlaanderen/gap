@@ -136,27 +136,8 @@ namespace Chiro.Gap.Sync
 
 				// Ook persoonsgegevens meesturen
 
-				var syncPersoon = Mapper.Map<Persoon, SyncService.Persoon>(l.GelieerdePersoon.Persoon);
-				SyncService.Adres syncAdres = null;
-				SyncService.AdresTypeEnum syncAdresType = AdresTypeEnum.ANDER;
-
-				// Laat ons hopen dat onze persoon een adres heeft.
-
-				if (l.GelieerdePersoon.PersoonsAdres != null)
-				{
-					syncAdres = Mapper.Map<Adres, SyncService.Adres>(l.GelieerdePersoon.PersoonsAdres.Adres);
-					syncAdresType = (SyncService.AdresTypeEnum) l.GelieerdePersoon.PersoonsAdres.AdresType;
-				}
-
-				// Communicatie
-
-				var syncCommunicatie = Mapper.Map<IEnumerable<CommunicatieVorm>, List<CommunicatieMiddel>>(_cVormDao.ZoekenOpPersoon(l.GelieerdePersoon.Persoon.ID));
-
 				_svc.NieuwLidBewaren(
-					syncPersoon,
-					syncAdres,
-					syncAdresType,
-					syncCommunicatie,
+					Mapper.Map<GelieerdePersoon, SyncService.PersoonDetails>(l.GelieerdePersoon),
 					lidGedoe);
 			}
 		}

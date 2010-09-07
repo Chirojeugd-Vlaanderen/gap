@@ -51,31 +51,28 @@
   <xs:element name="NieuwLidBewaren">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="persoon" nillable="true" type="q11:Persoon" />
-        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="adres" nillable="true" type="q12:Adres" />
-        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="adresType" type="q13:AdresTypeEnum" />
-        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="communicatieMiddelen" nillable="true" type="q14:ArrayOfCommunicatieMiddel" />
-        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="lidGedoe" nillable="true" type="q15:LidGedoe" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="details" nillable="true" type="q11:PersoonDetails" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="lidGedoe" nillable="true" type="q12:LidGedoe" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="FunctiesUpdaten">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="persoon" nillable="true" type="q16:Persoon" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="persoon" nillable="true" type="q13:Persoon" />
         <xs:element minOccurs="0" name="stamNummer" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="werkJaar" type="xs:int" />
-        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="functies" nillable="true" type="q17:ArrayOfFunctieEnum" />
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="functies" nillable="true" type="q14:ArrayOfFunctieEnum" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="AfdelingenUpdaten">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="persoon" nillable="true" type="q18:Persoon" />
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="persoon" nillable="true" type="q15:Persoon" />
         <xs:element minOccurs="0" name="stamNummer" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="werkJaar" type="xs:int" />
-        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="afdelingen" nillable="true" type="q19:ArrayOfAfdelingEnum" />
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" minOccurs="0" name="afdelingen" nillable="true" type="q16:ArrayOfAfdelingEnum" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

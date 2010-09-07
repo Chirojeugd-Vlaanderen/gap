@@ -23,13 +23,6 @@ namespace Chiro.Gap.Sync
 			Mapper.CreateMap<Persoon, SyncService.Persoon>()
 				.ForMember(dst => dst.ExtensionData, opt => opt.Ignore()); // Members met dezelfde naam mappen automatisch
 
-					//                        Bus = gp.PersoonsAdres.Adres.Bus,
-					//HuisNr = gp.PersoonsAdres.Adres.HuisNr,
-					//Land = string.Empty,
-					//PostNr = gp.PersoonsAdres.Adres.StraatNaam.PostNummer,
-					//Straat = gp.PersoonsAdres.Adres.StraatNaam.Naam,
-					//WoonPlaats = gp.PersoonsAdres.Adres.WoonPlaats.Naam
-
 			Mapper.CreateMap<Adres, SyncService.Adres>()
 				.ForMember(dst => dst.ExtensionData, opt => opt.Ignore())
 				.ForMember(dst => dst.Land, opt => opt.Ignore()) // TODO (#238): buitenlandse adressen
@@ -42,6 +35,19 @@ namespace Chiro.Gap.Sync
 				.ForMember(dst => dst.GeenMailings, opt => opt.MapFrom(src => !src.IsVoorOptIn))
 				.ForMember(dst => dst.Type, opt => opt.MapFrom(src => (SyncService.CommunicatieType) src.CommunicatieType.ID))
 				.ForMember(dst => dst.Waarde, opt => opt.MapFrom(src => src.Nummer));
+
+			Mapper.CreateMap<GelieerdePersoon, SyncService.PersoonDetails>()
+				.ForMember(dst => dst.Persoon, opt => opt.MapFrom(src => src.Persoon))
+				.ForMember(dst => dst.Adres, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres))
+				.ForMember(dst => dst.AdresType,
+				           opt =>
+				           opt.MapFrom(
+				           	src =>
+				           	src.PersoonsAdres == null
+				           		? AdresTypeEnum.ANDER
+				           		: (SyncService.AdresTypeEnum) src.PersoonsAdres.AdresType))
+				.ForMember(dst => dst.Communicatie, opt => opt.MapFrom(src => src.Communicatie))
+				.ForMember(dst => dst.ExtensionData, opt => opt.Ignore());
 
 			Mapper.AssertConfigurationIsValid();
 		}

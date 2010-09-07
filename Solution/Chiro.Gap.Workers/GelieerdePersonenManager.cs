@@ -190,11 +190,7 @@ namespace Chiro.Gap.Workers
 #endif
 						q = _gelieerdePersonenDao.Bewaren(gelieerdePersoon, ExtrasNaarLambdas(extras));
 
-						Debug.Assert(origineel != null);  // Hier zijn we zeker van, maar anders doet 
-						                                  // resharper lastig
-
-						Debug.Assert(origineel.Persoon != null);
-						if (!origineel.Persoon.DubbelPuntAbonnement && gelieerdePersoon.Persoon.DubbelPuntAbonnement)
+						if (origineel != null && !origineel.Persoon.DubbelPuntAbonnement && gelieerdePersoon.Persoon.DubbelPuntAbonnement)
 						{
 							// Dubbelpuntabonnement werd aangevinkt.
 							_dubbelpuntSync.Abonneren(gelieerdePersoon);

@@ -668,6 +668,99 @@ namespace Chiro.Gap.Sync.SyncService {
         Speciaal = 7,
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="PersoonDetails", Namespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts")]
+    [System.SerializableAttribute()]
+    public partial class PersoonDetails : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Chiro.Gap.Sync.SyncService.Adres AdresField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Chiro.Gap.Sync.SyncService.AdresTypeEnum AdresTypeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.CommunicatieMiddel> CommunicatieField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Chiro.Gap.Sync.SyncService.Persoon PersoonField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Chiro.Gap.Sync.SyncService.Adres Adres {
+            get {
+                return this.AdresField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AdresField, value) != true)) {
+                    this.AdresField = value;
+                    this.RaisePropertyChanged("Adres");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Chiro.Gap.Sync.SyncService.AdresTypeEnum AdresType {
+            get {
+                return this.AdresTypeField;
+            }
+            set {
+                if ((this.AdresTypeField.Equals(value) != true)) {
+                    this.AdresTypeField = value;
+                    this.RaisePropertyChanged("AdresType");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.CommunicatieMiddel> Communicatie {
+            get {
+                return this.CommunicatieField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CommunicatieField, value) != true)) {
+                    this.CommunicatieField = value;
+                    this.RaisePropertyChanged("Communicatie");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Chiro.Gap.Sync.SyncService.Persoon Persoon {
+            get {
+                return this.PersoonField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PersoonField, value) != true)) {
+                    this.PersoonField = value;
+                    this.RaisePropertyChanged("Persoon");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="SyncService.ISyncPersoonService")]
     public interface ISyncPersoonService {
@@ -691,7 +784,7 @@ namespace Chiro.Gap.Sync.SyncService {
         void LidBewaren(int adNummer, Chiro.Gap.Sync.SyncService.LidGedoe gedoe);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/NieuwLidBewaren")]
-        void NieuwLidBewaren(Chiro.Gap.Sync.SyncService.Persoon persoon, Chiro.Gap.Sync.SyncService.Adres adres, Chiro.Gap.Sync.SyncService.AdresTypeEnum adresType, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.CommunicatieMiddel> communicatieMiddelen, Chiro.Gap.Sync.SyncService.LidGedoe lidGedoe);
+        void NieuwLidBewaren(Chiro.Gap.Sync.SyncService.PersoonDetails details, Chiro.Gap.Sync.SyncService.LidGedoe lidGedoe);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/FunctiesUpdaten")]
         void FunctiesUpdaten(Chiro.Gap.Sync.SyncService.Persoon persoon, string stamNummer, int werkJaar, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.FunctieEnum> functies);
@@ -754,8 +847,8 @@ namespace Chiro.Gap.Sync.SyncService {
             base.Channel.LidBewaren(adNummer, gedoe);
         }
         
-        public void NieuwLidBewaren(Chiro.Gap.Sync.SyncService.Persoon persoon, Chiro.Gap.Sync.SyncService.Adres adres, Chiro.Gap.Sync.SyncService.AdresTypeEnum adresType, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.CommunicatieMiddel> communicatieMiddelen, Chiro.Gap.Sync.SyncService.LidGedoe lidGedoe) {
-            base.Channel.NieuwLidBewaren(persoon, adres, adresType, communicatieMiddelen, lidGedoe);
+        public void NieuwLidBewaren(Chiro.Gap.Sync.SyncService.PersoonDetails details, Chiro.Gap.Sync.SyncService.LidGedoe lidGedoe) {
+            base.Channel.NieuwLidBewaren(details, lidGedoe);
         }
         
         public void FunctiesUpdaten(Chiro.Gap.Sync.SyncService.Persoon persoon, string stamNummer, int werkJaar, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.FunctieEnum> functies) {

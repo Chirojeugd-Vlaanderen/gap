@@ -53,6 +53,7 @@
     <Compile Include="DataContracts\Enums.cs" />
     <Compile Include="DataContracts\LidGedoe.cs" />
     <Compile Include="DataContracts\Persoon.cs" />
+    <Compile Include="DataContracts\PersoonDetails.cs" />
     <Compile Include="ISyncPersoonService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

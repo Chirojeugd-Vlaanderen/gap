@@ -292,4 +292,13 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="AfdelingEnum" nillable="true" type="tns:AfdelingEnum" />
+  <xs:complexType name="PersoonDetails">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Adres" nillable="true" type="tns:Adres" />
+      <xs:element minOccurs="0" name="AdresType" type="tns:AdresTypeEnum" />
+      <xs:element minOccurs="0" name="Communicatie" nillable="true" type="tns:ArrayOfCommunicatieMiddel" />
+      <xs:element minOccurs="0" name="Persoon" nillable="true" type="tns:Persoon" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PersoonDetails" nillable="true" type="tns:PersoonDetails" />
 </xs:schema>
