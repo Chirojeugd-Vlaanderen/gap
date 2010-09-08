@@ -213,5 +213,15 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		int LidGeldToggle(int id);
+
+		/// <summary>
+		/// Verandert een kind in leiding of vice versa
+		/// </summary>
+		/// <param name="id">ID van lid met te togglen lidtype</param>
+		/// <returns>GelieerdePersoonID van lid</returns>
+		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
+		int TypeToggle(int id);
 	}
 }

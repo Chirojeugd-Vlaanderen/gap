@@ -520,5 +520,16 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			return RedirectToAction("EditRest", "Personen", new {groepID, id = gelieerdePersoonID});
 		}
+
+		/// <summary>
+		/// Verandert een kind in leiding of vice versa
+		/// </summary>
+		/// <returns>Opnieuw de persoonsfiche</returns>
+		[HandleError]
+		public ActionResult TypeToggle(int id, int groepID)
+		{
+			int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(svc => svc.TypeToggle(id));
+			return RedirectToAction("EditRest", "Personen", new { groepID, id = gelieerdePersoonID });
+		}
 	}
 }

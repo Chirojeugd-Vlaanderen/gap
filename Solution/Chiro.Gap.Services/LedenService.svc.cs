@@ -671,6 +671,16 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
+		/// Verandert een kind in leiding of vice versa
+		/// </summary>
+		/// <param name="id">ID van lid met te togglen lidtype</param>
+		/// <returns>GelieerdePersoonID van lid</returns>
+		public int TypeToggle(int id)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
 		/// Haalt de ID's van de groepswerkjaren van een lid op.
 		/// </summary>
 		/// <param name="lidID">ID van het lid waarin we geinteresseerd zijn</param>

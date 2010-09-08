@@ -137,9 +137,13 @@
    {
 
 	   // Lidgegevens worden enkel getoond voor actieve leden.
+	   
 	%>
-	<h3>Lidgegevens <%=Model.HuidigWerkJaar%>-<%=Model.HuidigWerkJaar+1%></h3>
+	<h3>Is aangesloten voor <%=Model.HuidigWerkJaar%>-<%=Model.HuidigWerkJaar+1%></h3>
 	<ul>
+		<li>Als <%= Model.PersoonLidInfo.LidInfo.Type == LidType.Kind ? "lid" : "leiding" %>.
+			<%=Html.ActionLink("[wissel lid/leiding]", "TypeToggle", new { Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID })%>
+		</li>
 		<li>Betaalde
 			<%= Model.PersoonLidInfo.LidInfo.LidgeldBetaald ? String.Empty : "nog geen" %>
 			lidgeld.
