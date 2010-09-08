@@ -176,7 +176,8 @@
 	 }
 	 else
 	 {
-		 if (Model.AlleAfdelingen.FirstOrDefault(s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)) != null)
+		 // TODO: Opkuis
+		 if (Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.Count > 0 && Model.AlleAfdelingen.FirstOrDefault(s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)) != null)
 		 {
 			 Response.Write(String.Format("Afdeling: {0} ",
 							Model.AlleAfdelingen.First(

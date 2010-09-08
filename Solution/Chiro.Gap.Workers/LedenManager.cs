@@ -78,6 +78,7 @@ namespace Chiro.Gap.Workers
 		/// Deze method test niet
 		/// of het groepswerkjaar wel het recentste is.  (Voor de unit tests moeten
 		/// we ook leden kunnen maken in oude groepswerkjaren.)
+		/// Roep deze method ook niet rechtstreeks aan, maar wel via KindMaken of LeidingMaken
 		/// </remarks>
 		/// <returns>Het aangepaste Lid-object</returns>
 		/// <throws>FoutNummerException</throws>
@@ -188,13 +189,24 @@ namespace Chiro.Gap.Workers
 			var geboortejaar = gp.LeefTijd.Value.Year;
 
 			// Relevante afdelingsjaren opzoeken.  Afdelingen met speciale officiele afdeling
-			// worden uitgesloten van de automatische verdeling.
+			// worden in eerste instantie uitgesloten van de automatische verdeling.
 
 			var afdelingsjaren =
 				(from a in gwj.AfdelingsJaar
 				 where a.GeboorteJaarVan <= geboortejaar && geboortejaar <= a.GeboorteJaarTot
 					   && a.OfficieleAfdeling.ID != (int)NationaleAfdeling.Speciaal
 				 select a).ToList();
+
+			if (afdelingsjaren.Count == 0)
+			{
+				// Is er geen geschikte 'normale' afdeling gevonden, probeer dan de speciale eens.
+
+				afdelingsjaren =
+					(from a in gwj.AfdelingsJaar
+					 where a.GeboorteJaarVan <= geboortejaar && geboortejaar <= a.GeboorteJaarTot
+					       && a.OfficieleAfdeling.ID == (int) NationaleAfdeling.Speciaal
+					 select a).ToList();
+			}
 
 			if (afdelingsjaren.Count == 0)
 			{
@@ -763,6 +775,7 @@ namespace Chiro.Gap.Workers
 			if ((extras & LidExtras.AlleAfdelingen) != 0)
 			{
 				paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().Afdeling.WithoutUpdate());
+				paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().OfficieleAfdeling.WithoutUpdate());
 			}
 			if ((extras & LidExtras.Verzekeringen) != 0)
 			{
@@ -799,6 +812,97 @@ namespace Chiro.Gap.Workers
 				}
 #endif
 			}
+		}
+
+		/// <summary>
+		/// Maakt van een kindlid een leid(st)er of omgekeerd.  Persisteert.
+		/// Functies gaan voor het gemak verloren.
+		/// Gekoppelde afdelingen gaan verloren; een lid krijgt meteen
+		/// een juiste afdeling.
+		/// </summary>
+		/// <param name="lid">Lid waarvan type moet worden veranderd</param>
+		public Lid TypeToggle(Lid lid)
+		{
+			if (!_autorisatieMgr.IsGavLid(lid.ID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+
+			var gelieerdePersoon = lid.GelieerdePersoon;
+			var groepsWerkJaar = lid.GroepsWerkJaar;
+			var nieuwType = LidType.Alles & (~lid.Type);
+
+			Lid nieuwLid;
+
+#if KIPDORP
+			using (var tx = new TransactionScope())
+			{
+#endif
+				// Voor 't gemak eerst verwijderen, en dan terug aanmaken.
+
+				foreach (var fn in lid.Functie)
+				{
+					fn.TeVerwijderen = true;
+				}
+
+                                if (lid is Kind)
+                                {
+                                	var kind = lid as Kind;
+					kind.TeVerwijderen = true;
+					_daos.KindDao.Bewaren(kind, knd => knd.AfdelingsJaar, knd => knd.Functie);	
+
+                                }
+                                else
+                                {
+                                	var leiding = lid as Leiding;
+
+                                	Debug.Assert(leiding != null);
+
+					foreach (var aj in leiding.AfdelingsJaar)
+					{
+						aj.TeVerwijderen = true;
+					}
+                                	leiding.TeVerwijderen = true;
+                                	_daos.LeidingDao.Bewaren(leiding, ld => ld.AfdelingsJaar, ld => ld.Functie);
+                                }
+				
+				// Met heel dat 'TeVerwijderen'-gedoe, is het domein typisch
+				// niet meer consistent na iets te verwijderen.
+
+				gelieerdePersoon.Lid.Clear();
+				groepsWerkJaar.Lid.Clear();
+				foreach (var aj in groepsWerkJaar.AfdelingsJaar)
+				{
+					aj.TeVerwijderen = false;
+				}
+
+				// Maak opnieuw lid
+
+				if (nieuwType == LidType.Kind)
+				{
+					nieuwLid = KindMaken(gelieerdePersoon, groepsWerkJaar, false);
+					nieuwLid = _daos.KindDao.Bewaren(
+						nieuwLid as Kind,
+						ld => ld.GroepsWerkJaar.WithoutUpdate(),
+						ld => ld.GelieerdePersoon.WithoutUpdate(),
+						ld => ld.AfdelingsJaar.WithoutUpdate());
+				}
+				else
+				{
+					nieuwLid = LeidingMaken(gelieerdePersoon, groepsWerkJaar, false);
+					nieuwLid = _daos.LeidingDao.Bewaren(
+						nieuwLid as Leiding,
+						ld => ld.GroepsWerkJaar.WithoutUpdate(),
+						ld => ld.GelieerdePersoon.WithoutUpdate());
+				}
+
+
+#if KIPDORP
+				tx.Complete();
+			}
+#endif
+			return nieuwLid;
+
 		}
 	}
 }

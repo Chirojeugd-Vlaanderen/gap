@@ -677,7 +677,29 @@ namespace Chiro.Gap.Services
 		/// <returns>GelieerdePersoonID van lid</returns>
 		public int TypeToggle(int id)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				Lid l = _ledenMgr.Ophalen(
+					id, 
+					LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Groep | LidExtras.Persoon | LidExtras.AlleAfdelingen);
+
+				int gpID = l.GelieerdePersoon.ID;
+
+				_ledenMgr.TypeToggle(l);
+
+				return gpID;
+
+			}
+			catch (GeenGavException ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return 0;
+			}
+			catch (Exception ex)
+			{
+				// even ter debugging.
+				throw;
+			}
 		}
 
 		/// <summary>
