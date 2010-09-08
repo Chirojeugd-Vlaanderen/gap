@@ -266,4 +266,7 @@
   <data name="FoutToggleNaarLeiding" xml:space="preserve">
     <value>Je kon van deze persoon geen leid(st)er maken.  Misschien is de persoon nog te jong? Controleer eventueel de geboortedatum en/of Chiroleeftijd.</value>
   </data>
+  <data name="IsLiveCacheKey" xml:space="preserve">
+    <value>IsLive</value>
+  </data>
 </root>

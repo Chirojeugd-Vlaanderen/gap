@@ -377,6 +377,27 @@ div#title
 	margin: 0 10px 10px 0;
 }
 
+#livetest
+{
+	right:0;
+	top:0;
+	position:fixed;
+	margin:0;
+	padding:0;
+}
+
+.liveomgeving
+{
+	background-color:Red;
+	color:White;
+}
+
+.testomgeving
+{
+	background-color:Blue;
+	color:White;
+}
+
 #acties h1
 {
 	font-size: small;

@@ -322,6 +322,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsLive.
+        /// </summary>
+        public static string IsLiveCacheKey {
+            get {
+                return ResourceManager.GetString("IsLiveCacheKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lid is opnieuw op actief gezet..
         /// </summary>
         public static string LidActiefGemaakt {

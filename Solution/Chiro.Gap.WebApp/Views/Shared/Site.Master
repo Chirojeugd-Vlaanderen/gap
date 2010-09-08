@@ -59,6 +59,9 @@
 	if (Model.Mededelingen != null && Model.Mededelingen.Count() > 0)
 	{
 		Html.RenderPartial("MededelingenControl");
-	}%>
+	}
+	Html.RenderPartial("LiveTestControl");
+		
+		%>
 	<asp:ContentPlaceHolder ID="MainContent" runat="server" />
 </asp:Content>

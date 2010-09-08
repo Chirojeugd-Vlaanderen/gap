@@ -20,15 +20,16 @@ namespace Chiro.Gap.WebApp.Models
 	/// </remarks>
 	public class GroepsInstellingenModel : IMasterViewModel
 	{
-        public GroepsInstellingenModel()
-        {
-            Detail = new GroepDetail();
-            NieuweCategorie = new CategorieInfo();
-            NieuweFunctie = new FunctieDetail();
-            Types = new List<LidType>();
-            Mededelingen = new List<Mededeling>();
-        }
+		public GroepsInstellingenModel()
+		{
+			Detail = new GroepDetail();
+			NieuweCategorie = new CategorieInfo();
+			NieuweFunctie = new FunctieDetail();
+			Types = new List<LidType>();
+			Mededelingen = new List<Mededeling>();
+		}
 
+		public bool IsLive { get; set; }
 		public GroepDetail Detail { get; set; }
 		public GroepInfo Info { get { return Detail; } }
 		public CategorieInfo NieuweCategorie { get; set; }
@@ -61,7 +62,7 @@ namespace Chiro.Gap.WebApp.Models
 		public string Titel { get; set; }
 
 		public bool? MeerdereGroepen { get; set; }
-		
+
 		public IList<Mededeling> Mededelingen { get; set; }
 
 		public int HuidigWerkJaar { get; set; }

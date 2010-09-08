@@ -447,5 +447,12 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		string WieBenIk();
+
+		/// <summary>
+		/// Deze method geeft weer of we op een liveomgeving werken (<c>true</c>) of niet (<c>false</c>)
+		/// </summary>
+		/// <returns><c>true</c> als we op een liveomgeving werken, <c>false</c> als we op een testomgeving werken</returns>
+		[OperationContract]
+		bool IsLive();
 	}
 }

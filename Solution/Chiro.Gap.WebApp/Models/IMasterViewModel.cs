@@ -13,6 +13,11 @@ namespace Chiro.Gap.WebApp.Models
 	public interface IMasterViewModel
 	{
 		/// <summary>
+		/// Bepaalt of we op een live- of een testdatabase aan het werken zijn
+		/// </summary>
+		bool IsLive { get; }
+
+		/// <summary>
 		/// ID van de Chirogroep
 		/// </summary>
 		int GroepID { get; }

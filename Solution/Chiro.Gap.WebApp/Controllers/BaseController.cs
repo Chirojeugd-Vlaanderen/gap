@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Web.Caching;
@@ -115,6 +116,20 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		protected void BaseModelInit(MasterViewModel model, int groepID)
 		{
+			var c = System.Web.HttpContext.Current.Cache;
+			string isLiveCacheKey = Properties.Resources.IsLiveCacheKey;
+
+			// Werken we op test of live?
+			bool? isLive = (bool?)c.Get(isLiveCacheKey);
+			if (isLive == null)
+			{
+				isLive = ServiceHelper.CallService<IGroepenService, bool>(svc => svc.IsLive());
+				c.Add(isLiveCacheKey, isLive, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.High, null);
+			}
+
+			Debug.Assert(isLive != null);
+			model.IsLive = (bool) isLive;
+
 			if (groepID == 0)
 			{
 				// De Gekozen groep is nog niet gekend, zet defaults
@@ -126,7 +141,6 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
-				var c = System.Web.HttpContext.Current.Cache;
 
 				#region gekozen groep en werkjaar
 

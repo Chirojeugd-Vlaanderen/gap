@@ -31,5 +31,14 @@ namespace Chiro.Gap.Services.Properties {
                 return ((int)(this["KleinAantal"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("gaplive")]
+        public string LiveConnSubstring {
+            get {
+                return ((string)(this["LiveConnSubstring"]));
+            }
+        }
     }
 }

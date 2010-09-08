@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.ServiceModel;
 #if KIPDORP
@@ -982,6 +983,18 @@ namespace Chiro.Gap.Services
 				FoutAfhandelaar.FoutAfhandelen(ex);
 				return null;
 			}
+		}
+
+		/// <summary>
+		/// Deze method geeft weer of we op een liveomgeving werken (<c>true</c>) of niet (<c>false</c>)
+		/// </summary>
+		/// <returns><c>true</c> als we op een liveomgeving werken, <c>false</c> als we op een testomgeving werken</returns>
+		public bool IsLive()
+		{
+			// We zoeken dit uit op basis van de connectionstring.
+
+			string connectionString = ConfigurationManager.ConnectionStrings["ChiroGroepEntities"].ConnectionString.ToUpper();
+			return connectionString.Contains(Properties.Settings.Default.LiveConnSubstring.ToUpper());
 		}
 
 		#endregion
