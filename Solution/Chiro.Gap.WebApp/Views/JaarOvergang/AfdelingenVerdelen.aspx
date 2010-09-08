@@ -17,16 +17,7 @@
 	<%=Html.ActionLink("Terug naar stap 1", "AfdelingenMaken", new { Controller = "JaarOvergang" }) %>
 	<br />
 	<br />
-	<!--<%
-		List<CheckBoxListInfo> info
-		   = (from pa in Model.Afdelingen
-			  select new CheckBoxListInfo(
-				 pa.AfdelingID.ToString()
-				 , ""
-				 , true)).ToList();
 
-		int j = 0;
-	%>-->
 	<%using (Html.BeginForm("VerdelingMaken", "JaarOvergang"))
    { %>
 	<table>
@@ -36,17 +27,11 @@
 			<th>Vanaf geboortejaar </th>
 			<th>Tot geboortejaar </th>
 			<th>Geslacht </th>
-			<!--<th><%=Html.CheckBox("checkall", true) %></th> 
-				TODO dit zou niet logisch zijn: je wilt geen afdeling uitsluiten waar je nu mensen insteekt, je wilt
-				een afdeling die je al had niet opnieuw verdelen, bvb akabe
-			-->
+
 		</tr>
 		<% foreach (var ai in Model.Afdelingen)
 	 { %>
 		<tr>
-			<!--<td>
-				<%=Html.CheckBoxList("GekozenAfdelingsIDs", info[j])%><% j++; %>
-			</td>-->
 			<td>
 				<%=Html.LabelFieldList("AfdelingsIDs", new TextFieldListInfo(ai.AfdelingID.ToString(), ai.AfdelingNaam))%>
 			</td>
@@ -67,7 +52,7 @@
 	</table>
 	<br />
 	<br />
-	<input id="volgende" type="submit" value="Verdeling bewaren en huidige leden herinschrijven" />
+	<input id="volgende" type="submit" value="Verdeling bewaren en huidige leden herinschrijven" /> <strong>Dit kan een paar minuutjes duren!</strong>
 	<%} %>
 	<p>
 		Ter informatie de &lsquo;standaardafdelingen&rsquo; voor dit werkjaar:
