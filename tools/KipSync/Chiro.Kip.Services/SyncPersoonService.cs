@@ -8,6 +8,7 @@ using Chiro.Cdf.Data.Entity;
 using Chiro.Gap.KipUpdate;
 using Chiro.Kip.Data;
 using System.Linq;
+using Chiro.Kip.Log;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Chiro.Kip.Workers;
@@ -48,6 +49,7 @@ namespace Chiro.Kip.Services
 		private static readonly Object _verzekeringToken = new object();
 
 		private readonly IPersoonUpdater _persoonUpdater;
+		private readonly IMiniLog _log;
 
 		/// <summary>
 		/// Standaardconstructor
@@ -56,6 +58,7 @@ namespace Chiro.Kip.Services
 		{
 			// TODO (#736): Inversion of control
 			_persoonUpdater = new PersoonUpdater();
+			_log = new MiniLog();
 		}
 
 		/// <summary>
@@ -108,7 +111,12 @@ namespace Chiro.Kip.Services
 				}
 			}
 
-			Console.WriteLine("Persoon geupdatet: ID{0} {1} {2} AD{3}", persoon.ID, persoon.VoorNaam, persoon.Naam, persoon.AdNummer);
+			_log.Log(0, String.Format(
+				"Persoon geupdatet: ID{0} {1} {2} AD{3}", 
+				persoon.ID, 
+				persoon.VoorNaam, 
+				persoon.Naam, 
+				persoon.AdNummer));
 		}
 
 		/// <summary>
@@ -266,7 +274,7 @@ namespace Chiro.Kip.Services
 					db.SaveChanges();
 				}
 			}
-			Console.WriteLine(feedback.ToString());
+			_log.Log(0, feedback.ToString());
 		}
 
 
@@ -364,7 +372,7 @@ namespace Chiro.Kip.Services
 
 				}
 			}
-			Console.WriteLine(feedback);
+			_log.Log(0, feedback);
 		}
 
 		/// <summary>
@@ -454,7 +462,7 @@ namespace Chiro.Kip.Services
 					
 				}
 			}
-			Console.WriteLine(feedback);
+			_log.Log(0, feedback);
 
 		}
 
@@ -497,7 +505,7 @@ namespace Chiro.Kip.Services
 				}
 			}
 
-			Console.WriteLine(feedback);
+			_log.Log(0, feedback);
 		}
 
 		/// <summary>
@@ -511,6 +519,8 @@ namespace Chiro.Kip.Services
 			LidGedoe gedoe)
 		{
 			string feedback;
+			ChiroGroep groep;
+
 			lock (_ledenToken)
 			{
 				// Aangezien 1 'savechanges' van entity framework ook een transaction is, moet ik geen
@@ -525,7 +535,7 @@ namespace Chiro.Kip.Services
 				{
 					// Vind de groep, zodat we met groepID kunnen werken ipv stamnummer.
 
-					Groep groep = (from g in db.Groep.OfType<ChiroGroep>()
+					groep = (from g in db.Groep.OfType<ChiroGroep>()
 						       where g.STAMNR == gedoe.StamNummer
 						       select g).FirstOrDefault();
 
@@ -816,7 +826,7 @@ namespace Chiro.Kip.Services
 				}
 
 			}
-			Console.WriteLine(feedback);
+			_log.Log(groep == null ? 0 : groep.GroepID, feedback);
 		}
 
 		/// <summary>
@@ -928,7 +938,7 @@ namespace Chiro.Kip.Services
 
 				}
 			}
-			Console.WriteLine(feedback);
+			_log.Log(0, feedback.ToString());
 		}
 
 		/// <summary>
@@ -990,7 +1000,7 @@ namespace Chiro.Kip.Services
 
 				db.SaveChanges();
 			}
-			Console.WriteLine(feedback);
+			_log.Log(0, feedback);
 		}
 
 		/// <summary>
@@ -1074,7 +1084,7 @@ namespace Chiro.Kip.Services
 				}
 
 			}
-			Console.WriteLine(feedback);
+			_log.Log(0, feedback.ToString());
 		}
 
 		/// <summary>
@@ -1087,6 +1097,7 @@ namespace Chiro.Kip.Services
 		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
 		public void DubbelpuntBestellen(int adNummer, string stamNummer, int werkJaar)
 		{
+			ChiroGroep groep = null;
 			string feedback = String.Empty;
 			lock (_abonnementenToken)
 			{
@@ -1104,7 +1115,7 @@ namespace Chiro.Kip.Services
 
 						// Haal groep en persoon op.
 
-						var groep = (from g in db.Groep.OfType<ChiroGroep>()
+						groep = (from g in db.Groep.OfType<ChiroGroep>()
 						             where g.STAMNR == stamNummer
 						             select g).FirstOrDefault();
 
@@ -1176,7 +1187,7 @@ namespace Chiro.Kip.Services
 					}
 				}
 			}
-			Console.WriteLine(feedback);
+			_log.Log((groep == null ? 0 : groep.GroepID), feedback);
 		}
 
 		/// <summary>
@@ -1205,6 +1216,7 @@ namespace Chiro.Kip.Services
 		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
 		public void LoonVerliesVerzekeren(int adNummer, string stamNummer, int werkJaar)
 		{
+			ChiroGroep groep = null;
 			string feedback = String.Empty;
 			lock (_verzekeringToken)
 			{
@@ -1214,7 +1226,7 @@ namespace Chiro.Kip.Services
 
 					// Haal groep op.
 
-					var groep = (from g in db.Groep.OfType<ChiroGroep>()
+					groep = (from g in db.Groep.OfType<ChiroGroep>()
 						     where g.STAMNR == stamNummer
 						     select g).FirstOrDefault();
 					
@@ -1295,7 +1307,7 @@ namespace Chiro.Kip.Services
 						werkJaar);
 				}
 			}
-			Console.WriteLine(feedback);
+			_log.Log(groep == null ? 0 : groep.GroepID, feedback);
 		}
 		/// <summary>
 		/// Verzekert een persoon zonder AD-nummer tegen loonverlies voor werkjaar
@@ -1388,7 +1400,7 @@ namespace Chiro.Kip.Services
 			}
 
 			AlleCommunicatieBewaren(persoon, communicatieMiddelen);
-			Console.WriteLine(feedback);
+			_log.Log(0, feedback);
 
 			return gevonden.AdNummer;
 		}

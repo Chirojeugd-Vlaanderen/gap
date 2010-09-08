@@ -27,7 +27,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_ExtraVerzekering_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.Groep), "ExtraVerzekering", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.ExtraVerzekering))]
 
 // Original file name:
-// Generation date: 7/09/2010 17:21:46
+// Generation date: 8/09/2010 15:04:53
 namespace Chiro.Kip.Data
 {
     
@@ -272,6 +272,21 @@ namespace Chiro.Kip.Data
         }
         private global::System.Data.Objects.ObjectQuery<ExtraVerzekering> _ExtraVerzekering;
         /// <summary>
+        /// There are no comments for BerichtSet in the schema.
+        /// </summary>
+        public global::System.Data.Objects.ObjectQuery<Bericht> BerichtSet
+        {
+            get
+            {
+                if ((this._BerichtSet == null))
+                {
+                    this._BerichtSet = base.CreateQuery<Bericht>("[BerichtSet]");
+                }
+                return this._BerichtSet;
+            }
+        }
+        private global::System.Data.Objects.ObjectQuery<Bericht> _BerichtSet;
+        /// <summary>
         /// There are no comments for AdresSet in the schema.
         /// </summary>
         public void AddToAdresSet(Adres adres)
@@ -368,6 +383,13 @@ namespace Chiro.Kip.Data
         public void AddToExtraVerzekering(ExtraVerzekering extraVerzekering)
         {
             base.AddObject("ExtraVerzekering", extraVerzekering);
+        }
+        /// <summary>
+        /// There are no comments for BerichtSet in the schema.
+        /// </summary>
+        public void AddToBerichtSet(Bericht bericht)
+        {
+            base.AddObject("BerichtSet", bericht);
         }
     }
     /// <summary>
@@ -6730,5 +6752,148 @@ namespace Chiro.Kip.Data
                 }
             }
         }
+    }
+    /// <summary>
+    /// There are no comments for kipadminModel.Bericht in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// id
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="kipadminModel", Name="Bericht")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class Bericht : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new Bericht object.
+        /// </summary>
+        /// <param name="id">Initial value of id.</param>
+        /// <param name="datum">Initial value of datum.</param>
+        /// <param name="gebruiker">Initial value of gebruiker.</param>
+        /// <param name="ernstig">Initial value of ernstig.</param>
+        public static Bericht CreateBericht(int id, global::System.DateTime datum, string gebruiker, bool ernstig)
+        {
+            Bericht bericht = new Bericht();
+            bericht.id = id;
+            bericht.datum = datum;
+            bericht.gebruiker = gebruiker;
+            bericht.ernstig = ernstig;
+            return bericht;
+        }
+        /// <summary>
+        /// There are no comments for Property id in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int id
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                this.OnidChanging(value);
+                this.ReportPropertyChanging("id");
+                this._id = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("id");
+                this.OnidChanged();
+            }
+        }
+        private int _id;
+        partial void OnidChanging(int value);
+        partial void OnidChanged();
+        /// <summary>
+        /// There are no comments for Property datum in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.DateTime datum
+        {
+            get
+            {
+                return this._datum;
+            }
+            set
+            {
+                this.OndatumChanging(value);
+                this.ReportPropertyChanging("datum");
+                this._datum = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("datum");
+                this.OndatumChanged();
+            }
+        }
+        private global::System.DateTime _datum;
+        partial void OndatumChanging(global::System.DateTime value);
+        partial void OndatumChanged();
+        /// <summary>
+        /// There are no comments for Property gebruiker in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string gebruiker
+        {
+            get
+            {
+                return this._gebruiker;
+            }
+            set
+            {
+                this.OngebruikerChanging(value);
+                this.ReportPropertyChanging("gebruiker");
+                this._gebruiker = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("gebruiker");
+                this.OngebruikerChanged();
+            }
+        }
+        private string _gebruiker;
+        partial void OngebruikerChanging(string value);
+        partial void OngebruikerChanged();
+        /// <summary>
+        /// There are no comments for Property bericht in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string bericht
+        {
+            get
+            {
+                return this._bericht;
+            }
+            set
+            {
+                this.OnberichtChanging(value);
+                this.ReportPropertyChanging("bericht");
+                this._bericht = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("bericht");
+                this.OnberichtChanged();
+            }
+        }
+        private string _bericht;
+        partial void OnberichtChanging(string value);
+        partial void OnberichtChanged();
+        /// <summary>
+        /// There are no comments for Property ernstig in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public bool ernstig
+        {
+            get
+            {
+                return this._ernstig;
+            }
+            set
+            {
+                this.OnernstigChanging(value);
+                this.ReportPropertyChanging("ernstig");
+                this._ernstig = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ernstig");
+                this.OnernstigChanged();
+            }
+        }
+        private bool _ernstig;
+        partial void OnernstigChanging(bool value);
+        partial void OnernstigChanged();
     }
 }
