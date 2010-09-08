@@ -29,10 +29,6 @@
 		<li>Klik op het tabblad 'Ingeschreven' of 'Iedereen'.</li>
 		<li>Klik daar op de naam van degene voor wie je de functies wilt aanpassen. Je komt
 			dan op de persoonsfiche.</li>
-	</ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/Link_Functies_aanpassen.png") %>"
-		alt="Iemands functies aanpassen vanop de persoonsfiche" />
-	<ul>
 		<li>Klik links onderaan, bij de lidgegevens op de link 'functies aanpassen'.</li>
 		<li>Je komt nu op het formulier met lidgegevens van de persoon in kwestie. Je vindt
 			er onder andere een lijstje met alle mogelijke functies: zowel de officiële
