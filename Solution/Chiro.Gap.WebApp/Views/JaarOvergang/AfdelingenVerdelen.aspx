@@ -1,6 +1,8 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<JaarOvergangAfdelingsJaarModel>" %>
 
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
+
+<%@ Import Namespace="Chiro.Gap.Domain" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 	<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" />
 	<script type="text/javascript">
@@ -72,7 +74,7 @@
 	</p>
 	<table>
 		<!--TODO exentsion method die gegeven een werkjaar, het standaard geboortejaar berekend. Nu is het niet correct. -->
-		<%  foreach (var oa in Model.OfficieleAfdelingen.OrderBy(ofaf => ofaf.LeefTijdTot))
+		<%  foreach (var oa in Model.OfficieleAfdelingen.Where(ofaf => ofaf.ID != (int)NationaleAfdeling.Speciaal).OrderBy(ofaf => ofaf.LeefTijdTot))
 	  {%>
 		<tr>
 			<td>
