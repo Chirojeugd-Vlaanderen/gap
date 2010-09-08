@@ -48,7 +48,7 @@
 			<input type="submit" name="action" value="Bewaren" /></li>
 	</ul>
 	<fieldset>
-		<legend>Adres </legend>
+		<legend>Toepassen op:</legend>
 		<%=Html.CheckBoxList("GelieerdePersoonIDs", Model.Bewoners)%>
 	</fieldset>
 	<fieldset>
