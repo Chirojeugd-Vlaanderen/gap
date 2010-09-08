@@ -110,8 +110,8 @@ namespace Chiro.Gap.Dummies
 			var unittestjes = gMgr.AfdelingToevoegen(_dummyGroep, "unittestjes", "ut");
 			var speelkwis = gMgr.AfdelingToevoegen(_dummyGroep, "speelkwi's", "sk");
 
-			afdMgr.Aanmaken(unittestjes, ribbels, _huidigGwj, 2001, 2003, GeslachtsType.Gemengd, false);
-			afdMgr.Aanmaken(speelkwis, rakwis, _huidigGwj, 1998, 2000, GeslachtsType.Gemengd, false);
+			afdMgr.Aanmaken(unittestjes, ribbels, _huidigGwj, 2001, 2003, GeslachtsType.Gemengd);
+			afdMgr.Aanmaken(speelkwis, rakwis, _huidigGwj, 1998, 2000, GeslachtsType.Gemengd);
 
 			// Gelieerde personen
 

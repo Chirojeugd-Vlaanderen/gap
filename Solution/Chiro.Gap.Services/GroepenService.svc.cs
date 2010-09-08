@@ -373,8 +373,7 @@ namespace Chiro.Gap.Services
 										huidigGwj,
 										detail.GeboorteJaarVan,
 										detail.GeboorteJaarTot,
-										detail.Geslacht,
-										detail.GeenAutoVerdeling);
+										detail.Geslacht);
 				}
 				else
 				{
@@ -397,8 +396,7 @@ namespace Chiro.Gap.Services
 						detail.GeboorteJaarVan,
 						detail.GeboorteJaarTot,
 						detail.Geslacht,
-						detail.VersieString,
-						detail.GeenAutoVerdeling);
+						detail.VersieString);
 				}
 
 				_afdelingsJaarMgr.Bewaren(afdelingsJaar);
@@ -1070,8 +1068,7 @@ namespace Chiro.Gap.Services
 											  gwj,
 											  afdinfo.GeboorteJaarVan,
 											  afdinfo.GeboorteJaarTot,
-											  afdinfo.Geslacht,
-											  afdinfo.GeenAutoVerdeling);
+											  afdinfo.Geslacht);
 
 					// De afdelingsjaren bewaren we straks allemaal tegelijk, samen met het
 					// groepswerkjaar.  Op die manier krijgen we in het resultaat meteen

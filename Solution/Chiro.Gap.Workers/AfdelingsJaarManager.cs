@@ -80,8 +80,7 @@ namespace Chiro.Gap.Workers
 			GroepsWerkJaar gwj,
 			int geboorteJaarBegin,
 			int geboorteJaarEind,
-			GeslachtsType geslacht,
-			bool geenAutomatischeVerdeling)
+			GeslachtsType geslacht)
 		{
 			if (!_autorisatieMgr.IsGavAfdeling(a.ID))
 			{
@@ -104,8 +103,7 @@ namespace Chiro.Gap.Workers
 			                    		GroepsWerkJaar = gwj,
 			                    		GeboorteJaarVan = geboorteJaarBegin,
 			                    		GeboorteJaarTot = geboorteJaarEind,
-			                    		Geslacht = geslacht,
-			                    		GeenAutoVerdeling = geenAutomatischeVerdeling
+			                    		Geslacht = geslacht
 			                    	};
 
 			// TODO check if no conflicts with existing afdelingsjaar
@@ -218,8 +216,6 @@ namespace Chiro.Gap.Workers
 		/// <param name="geboorteJaarTot">Bovengrens geboortejaar</param>
 		/// <param name="geslachtsType">Jongensafdeling, meisjesafdeling of gemengde afdeling</param>
 		/// <param name="versieString">Versiestring uit database voor concurrency controle</param>
-		/// <param name="geenAutomatischeVerdeling">Indien <c>true</c>, wordt dit afdelingsjaar genegeerd
-		/// bij de automatische afdelingsverdeling.</param>
 		/// <remarks>Groepswerkjaar en afdeling kunnen niet gewijzigd worden.  Verwijder hiervoor het
 		/// afdelingsjaar, en maak een nieuw.</remarks>
 		public void Wijzigen(
@@ -228,8 +224,7 @@ namespace Chiro.Gap.Workers
 			int geboorteJaarVan, 
 			int geboorteJaarTot, 
 			GeslachtsType geslachtsType, 
-			string versieString,
-			bool geenAutomatischeVerdeling)
+			string versieString)
 		{
 			if (_autorisatieMgr.IsGavAfdelingsJaar(afdelingsJaar.ID))
 			{
@@ -249,7 +244,6 @@ namespace Chiro.Gap.Workers
 				afdelingsJaar.GeboorteJaarTot = geboorteJaarTot;
 				afdelingsJaar.Geslacht = geslachtsType;
 				afdelingsJaar.VersieString = versieString;
-				afdelingsJaar.GeenAutoVerdeling = geenAutomatischeVerdeling;
 			}
 			else
 			{

@@ -51,7 +51,7 @@ namespace Chiro.Kip.ServiceContracts.DataContracts
 		[EnumMember] Titos = 4,
 		[EnumMember] Ketis = 5,
 		[EnumMember] Aspis = 6,
-		[EnumMember] Speciaal = 7
+		[EnumMember] Speciaal = 12
 	}
 
 	/// <summary>

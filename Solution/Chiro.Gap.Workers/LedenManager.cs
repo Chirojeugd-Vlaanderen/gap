@@ -187,11 +187,13 @@ namespace Chiro.Gap.Workers
 			// Om resharper blij te houden, is al gecontroleerd.
 			var geboortejaar = gp.LeefTijd.Value.Year;
 
-			// Relevante afdelingsjaren opzoeken
+			// Relevante afdelingsjaren opzoeken.  Afdelingen met speciale officiele afdeling
+			// worden uitgesloten van de automatische verdeling.
+
 			var afdelingsjaren =
 				(from a in gwj.AfdelingsJaar
 				 where a.GeboorteJaarVan <= geboortejaar && geboortejaar <= a.GeboorteJaarTot
-					   && !a.GeenAutoVerdeling
+					   && a.OfficieleAfdeling.ID != (int)NationaleAfdeling.Speciaal
 				 select a).ToList();
 
 			if (afdelingsjaren.Count == 0)
@@ -262,12 +264,13 @@ namespace Chiro.Gap.Workers
 				throw new OngeldigObjectException("De geboortedatum moet ingevuld zijn voor je iemand lid kunt maken.");
 			}
 
-			// Bepaal of het een kind of leiding wordt. 
+			// Bepaal of het een kind of leiding wordt.  Als de persoon qua leeftijd in een niet-speciale
+			// afdeling valt, wordt het een kind.
 
 			// Stop de geboortedatum in een lokale variabele [wiki:VeelVoorkomendeWaarschuwingen#PossibleInvalidOperationinLinq-statement]
 			var geboortejaar = gp.LeefTijd.Value.Year;
 			var afdelingsjaar = (from a in gwj.AfdelingsJaar
-								 where !a.GeenAutoVerdeling &&
+								 where (a.OfficieleAfdeling.ID != (int)NationaleAfdeling.Speciaal) &&
 									   (geboortejaar <= a.GeboorteJaarTot
 										&& a.GeboorteJaarVan <= geboortejaar)
 								 select a).FirstOrDefault();

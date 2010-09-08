@@ -10,3 +10,5 @@ INSERT INTO lid.OfficieleAfdeling (Naam, LeefTijdVan, LeefTijdTot) VALUES ('Keti
 GO
 INSERT INTO lid.OfficieleAfdeling (Naam, LeefTijdVan, LeefTijdTot) VALUES ('Aspi''s', 16, 17);
 GO
+INSERT INTO lid.OfficieleAfdeling (Naam, LeefTijdVan, LeefTijdTot) VALUES ('Speciaal', 0,0);
+GO

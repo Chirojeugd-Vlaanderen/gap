@@ -54,12 +54,5 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[DataMember]
 		[Verplicht]
 		public GeslachtsType Geslacht { get; set; }
-
-		/// <summary>
-		/// Indien <c>true</c>, wordt deze afdeling uitgesloten van de automatische afdelingsverdeling
-		/// </summary>
-		[DataMember]
-		[Verplicht]
-		public bool GeenAutoVerdeling { get; set; }
 	}
 }

@@ -60,7 +60,7 @@
 		Ter informatie de &lsquo;standaardafdelingen&rsquo; voor dit werkjaar:
 	</p>
 	<table>
-		<%  foreach (var oa in Model.OfficieleAfdelingen.OrderBy(ofaf => ofaf.LeefTijdTot)){%>
+		<%  foreach (var oa in Model.OfficieleAfdelingen.Where(ofaf=>ofaf.ID != (int)NationaleAfdeling.Speciaal).OrderBy(ofaf => ofaf.LeefTijdTot)){%>
 		<tr>
 			<td>
 				<%=oa.Naam %>

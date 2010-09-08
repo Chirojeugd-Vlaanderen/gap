@@ -169,7 +169,7 @@ namespace Chiro.Gap.Data.Test
 
 			// Het afdelingsjaar wordt gemaakt door een worker.
 
-			AfdelingsJaar aj = afdMgr.Aanmaken(afd, oa, gw, VAN, TOT, GeslachtsType.Gemengd, false);
+			AfdelingsJaar aj = afdMgr.Aanmaken(afd, oa, gw, VAN, TOT, GeslachtsType.Gemengd);
 
 			// Act
 

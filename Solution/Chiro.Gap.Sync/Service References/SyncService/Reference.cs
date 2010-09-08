@@ -665,7 +665,7 @@ namespace Chiro.Gap.Sync.SyncService {
         Aspis = 6,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Speciaal = 7,
+        Speciaal = 12,
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
