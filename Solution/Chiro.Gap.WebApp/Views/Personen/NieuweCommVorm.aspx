@@ -32,7 +32,7 @@
 				<td>
 					<%=Html.DropDownListFor(
 						mdl=>mdl.NieuweCommVorm.CommunicatieTypeID, 
-						new SelectList(Model.Types.Select(x => new { value = x.ID, text = string.Format("{0}  ({1})", x.Omschrijving, x.Voorbeeld)}), "value", "text"))%>:
+						new SelectList(Model.Types.Select(x => new { value = x.ID, text = string.Format("{0}", x.Omschrijving)}), "value", "text"))%>:
 				</td>
 				<td>
 					<%=Html.EditorFor(mdl => mdl.NieuweCommVorm.Nummer) %>
