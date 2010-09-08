@@ -75,7 +75,7 @@
 									lt == LidType.Kind ? "leden" : lt == LidType.Leiding ? "leiding" : "leden en leiding")
 							 };
 			%>
-			<%=Html.DropDownListFor( mdl => mdl.NieuweFunctie.Type, new SelectList(values, "value", "text")) %>
+			<%=Html.DropDownListFor( mdl => mdl.NieuweFunctie.Type, new SelectList(values.Reverse(), "value", "text")) %>
 		</p>
 	</fieldset>
 	<%}
