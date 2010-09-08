@@ -6,12 +6,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Web.Mvc;
 
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
@@ -528,7 +530,29 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public ActionResult TypeToggle(int id, int groepID)
 		{
-			int gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(svc => svc.TypeToggle(id));
+			int gelieerdePersoonID = 0;
+
+			try
+			{
+				gelieerdePersoonID = ServiceHelper.CallService<ILedenService, int>(svc => svc.TypeToggle(id));
+			}
+			catch (FaultException<FoutNummerFault> ex)
+			{
+				if (ex.Detail.FoutNummer == FoutNummer.AlgemeneKindFout)
+				{
+					TempData["fout"] = Properties.Resources.FoutToggleNaarKind;
+				}
+				else if (ex.Detail.FoutNummer == FoutNummer.AlgemeneLeidingFout)
+				{
+					TempData["fout"] = Properties.Resources.FoutToggleNaarLeiding;
+				}
+				else
+				{
+					throw;	
+				}
+				return TerugNaarVorigeFiche();
+			}
+			
 			return RedirectToAction("EditRest", "Personen", new { groepID, id = gelieerdePersoonID });
 		}
 	}

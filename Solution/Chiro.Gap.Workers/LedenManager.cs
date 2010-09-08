@@ -254,7 +254,19 @@ namespace Chiro.Gap.Workers
 		public Leiding LeidingMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarovergang)
 		{
 			// LidMaken doet de nodige checks ivm GAV-schap enz.
-			return LidMaken(gp, gwj, LidType.Leiding, isJaarovergang) as Leiding;
+			var resultaat = LidMaken(gp, gwj, LidType.Leiding, isJaarovergang) as Leiding;
+
+			Debug.Assert(gp.LeefTijd != null);  // Anders was er al wel een exception geworpen
+
+			if (gwj.WerkJaar - gp.LeefTijd.Value.Year < Properties.Settings.Default.MinLeidingLeefTijd)
+			{
+				// Throw hier een InvalidOperationException, niet omdat dat goed is, maar wel om
+				// consistent te blijven met KindMaken.
+				// TODO #761
+				throw new InvalidOperationException(Properties.Resources.TeJongVoorLeiding);
+			}
+
+			return resultaat;
 		}
 
 		/// <summary>
@@ -881,6 +893,8 @@ namespace Chiro.Gap.Workers
 				if (nieuwType == LidType.Kind)
 				{
 					nieuwLid = KindMaken(gelieerdePersoon, groepsWerkJaar, false);
+					nieuwLid.EindeInstapPeriode = lid.EindeInstapPeriode;
+					nieuwLid.IsOvergezet = lid.IsOvergezet;
 					nieuwLid = _daos.KindDao.Bewaren(
 						nieuwLid as Kind,
 						ld => ld.GroepsWerkJaar.WithoutUpdate(),
@@ -890,6 +904,8 @@ namespace Chiro.Gap.Workers
 				else
 				{
 					nieuwLid = LeidingMaken(gelieerdePersoon, groepsWerkJaar, false);
+					nieuwLid.EindeInstapPeriode = lid.EindeInstapPeriode;
+					nieuwLid.IsOvergezet = lid.IsOvergezet;
 					nieuwLid = _daos.LeidingDao.Bewaren(
 						nieuwLid as Leiding,
 						ld => ld.GroepsWerkJaar.WithoutUpdate(),

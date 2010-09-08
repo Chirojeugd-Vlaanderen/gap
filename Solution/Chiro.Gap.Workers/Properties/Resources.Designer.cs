@@ -376,6 +376,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deze persoon is nog te jong om leiding te worden.  Check eventueel geboortedatum en/of Chiroleeftijd..
+        /// </summary>
+        internal static string TeJongVoorLeiding {
+            get {
+                return ResourceManager.GetString("TeJongVoorLeiding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De begindatum van een verzekering kan niet in het verleden liggen..
         /// </summary>
         internal static string VerzekeringInVerleden {

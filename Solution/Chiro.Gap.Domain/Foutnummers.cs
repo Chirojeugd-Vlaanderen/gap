@@ -27,6 +27,12 @@ namespace Chiro.Gap.Domain
 		AdresOntbreekt,
 		#endregion
 
+		#region leden
+		AlgemeneLidFout,
+		AlgemeneKindFout,
+		AlgemeneLeidingFout,
+		#endregion
+
 		#region verkeerde groep
 		CategorieNietVanGroep,
 		FunctieNietVanGroep,

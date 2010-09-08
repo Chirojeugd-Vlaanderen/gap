@@ -260,4 +260,10 @@
   <data name="DubbelPuntZonderAdres" xml:space="preserve">
     <value>Je kan geen Dubbelpunt bestellen voor een persoon zonder voorkeursadres.</value>
   </data>
+  <data name="FoutToggleNaarKind" xml:space="preserve">
+    <value>Je kon van deze persoon geen lid maken.  Misschien is er geen geschikte afdeling? Controleer eventueel de geboortedatum en/of Chiroleeftijd.</value>
+  </data>
+  <data name="FoutToggleNaarLeiding" xml:space="preserve">
+    <value>Je kon van deze persoon geen leid(st)er maken.  Misschien is de persoon nog te jong? Controleer eventueel de geboortedatum en/of Chiroleeftijd.</value>
+  </data>
 </root>

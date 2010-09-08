@@ -677,12 +677,15 @@ namespace Chiro.Gap.Services
 		/// <returns>GelieerdePersoonID van lid</returns>
 		public int TypeToggle(int id)
 		{
+			LidType oorspronkelijkType = LidType.Alles;
+
 			try
 			{
 				Lid l = _ledenMgr.Ophalen(
 					id, 
 					LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Groep | LidExtras.Persoon | LidExtras.AlleAfdelingen);
 
+				oorspronkelijkType = l.Type;
 				int gpID = l.GelieerdePersoon.ID;
 
 				_ledenMgr.TypeToggle(l);
@@ -695,10 +698,30 @@ namespace Chiro.Gap.Services
 				FoutAfhandelaar.FoutAfhandelen(ex);
 				return 0;
 			}
-			catch (Exception ex)
+			catch (InvalidOperationException ex)
 			{
-				// even ter debugging.
-				throw;
+				// TODO (#761): Ervoor zorgen dat LidMaken/LeidingMaken duidelijkere exceptions throwen.
+				// Als workaround een andere exception laten afhandelen
+
+				FoutNummer nr;
+
+				switch(oorspronkelijkType)
+				{
+					case LidType.Kind:
+						// Fout bij omschakelen kind -> leiding: geef leidingfout
+						nr = FoutNummer.AlgemeneLeidingFout;
+						break;
+					case LidType.Leiding:
+						// Fout bij omschakelen leiding -> kind: geef kindfout
+						nr = FoutNummer.AlgemeneKindFout;
+						break;
+					default:
+						nr = FoutNummer.AlgemeneFout;
+						break;
+				}
+
+				FoutAfhandelaar.FoutAfhandelen(new FoutNummerException(nr, ex.Message));
+				return 0;
 			}
 		}
 

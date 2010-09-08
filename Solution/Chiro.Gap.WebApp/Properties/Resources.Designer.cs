@@ -169,6 +169,24 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je kon van deze persoon geen lid maken.  Misschien is er geen geschikte afdeling? Controleer eventueel de geboortedatum en/of Chiroleeftijd..
+        /// </summary>
+        public static string FoutToggleNaarKind {
+            get {
+                return ResourceManager.GetString("FoutToggleNaarKind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Je kon van deze persoon geen leid(st)er maken.  Misschien is de persoon nog te jong? Controleer eventueel de geboortedatum en/of Chiroleeftijd..
+        /// </summary>
+        public static string FoutToggleNaarLeiding {
+            get {
+                return ResourceManager.GetString("FoutToggleNaarLeiding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Je groep heeft al een functie met code &apos;{0}&apos;: &apos;{1}&apos;..
         /// </summary>
         public static string FunctieCodeBestaatAl {
