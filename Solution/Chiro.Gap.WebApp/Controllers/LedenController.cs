@@ -449,9 +449,8 @@ namespace Chiro.Gap.WebApp.Controllers
 				FunctiesOphalen(model);
 
 				model.Titel = String.Format(
-					"{0}: {1}",
-					model.HuidigLid.PersoonDetail.VolledigeNaam,
-					Properties.Resources.FunctiesVan);
+					Properties.Resources.FunctiesVan,
+					model.HuidigLid.PersoonDetail.VolledigeNaam);
 
 				return View("FunctiesToekennen", model);
 			}
