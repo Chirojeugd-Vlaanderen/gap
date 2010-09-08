@@ -45,6 +45,10 @@ namespace Chiro.Gap.Dummies
 		{
 		}
 
+		public void TypeUpdaten(Lid lid)
+		{
+		}
+
 		public void Abonneren(GelieerdePersoon gp)
 		{
 		}

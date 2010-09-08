@@ -911,6 +911,13 @@ namespace Chiro.Gap.Workers
 						ld => ld.GroepsWerkJaar.WithoutUpdate(),
 						ld => ld.GelieerdePersoon.WithoutUpdate());
 				}
+				if (lid.IsOvergezet)
+				{
+					// In 2 keer syncen; pragmatische aanpak voor TODO #762
+					_sync.TypeUpdaten(nieuwLid);
+					_sync.AfdelingenUpdaten(nieuwLid);
+				}
+
 
 
 #if KIPDORP

@@ -789,6 +789,9 @@ namespace Chiro.Gap.Sync.SyncService {
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/FunctiesUpdaten")]
         void FunctiesUpdaten(Chiro.Gap.Sync.SyncService.Persoon persoon, string stamNummer, int werkJaar, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.FunctieEnum> functies);
         
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/LidTypeUpdaten")]
+        void LidTypeUpdaten(Chiro.Gap.Sync.SyncService.Persoon persoon, string stamNummer, int werkJaar, Chiro.Gap.Sync.SyncService.LidTypeEnum lidType);
+        
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ISyncPersoonService/AfdelingenUpdaten")]
         void AfdelingenUpdaten(Chiro.Gap.Sync.SyncService.Persoon persoon, string stamNummer, int werkJaar, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.AfdelingEnum> afdelingen);
         
@@ -862,6 +865,10 @@ namespace Chiro.Gap.Sync.SyncService {
         
         public void FunctiesUpdaten(Chiro.Gap.Sync.SyncService.Persoon persoon, string stamNummer, int werkJaar, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.FunctieEnum> functies) {
             base.Channel.FunctiesUpdaten(persoon, stamNummer, werkJaar, functies);
+        }
+        
+        public void LidTypeUpdaten(Chiro.Gap.Sync.SyncService.Persoon persoon, string stamNummer, int werkJaar, Chiro.Gap.Sync.SyncService.LidTypeEnum lidType) {
+            base.Channel.LidTypeUpdaten(persoon, stamNummer, werkJaar, lidType);
         }
         
         public void AfdelingenUpdaten(Chiro.Gap.Sync.SyncService.Persoon persoon, string stamNummer, int werkJaar, System.Collections.Generic.List<Chiro.Gap.Sync.SyncService.AfdelingEnum> afdelingen) {

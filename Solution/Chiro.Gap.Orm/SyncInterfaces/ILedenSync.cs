@@ -30,5 +30,11 @@ namespace Chiro.Gap.Orm.SyncInterfaces
 		/// <remarks>*Alle* relevante gegevens van het lidobject worden hier sowieso opnieuw opgehaald, anders was het
 		/// te veel een gedoe.</remarks>
 		void AfdelingenUpdaten(Lid lid);
+
+		/// <summary>
+		/// Updatet het lidtype van <paramref name="lid"/> in Kipadmin
+		/// </summary>
+		/// <param name="lid">Lid waarvan het lidtype geupdatet moet worden</param>
+		void TypeUpdaten(Lid lid);
 	}
 }

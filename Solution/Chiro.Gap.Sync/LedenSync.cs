@@ -58,6 +58,13 @@ namespace Chiro.Gap.Sync
 					{NationaleAfdeling.Speciaal, AfdelingEnum.Speciaal}
 				};
 
+		private readonly Dictionary<LidType, LidTypeEnum> _lidTypeVertaling =
+			new Dictionary<LidType, LidTypeEnum>
+				{
+					{LidType.Kind, LidTypeEnum.Kind},
+					{LidType.Leiding, LidTypeEnum.Leiding}
+				};
+
 		/// <summary>
 		/// Creeert nieuwe klasse voor ledensynchronisatie, die met Kipadmin zal communiceren via
 		/// <paramref name="svc"/>
@@ -235,6 +242,30 @@ namespace Chiro.Gap.Sync
 					     chiroGroep.Code,
 					     l.GroepsWerkJaar.WerkJaar,
 					     kipAfdelingen);
+		}
+
+		/// <summary>
+		/// Updatet het lidtype van <paramref name="lid"/> in Kipadmin
+		/// </summary>
+		/// <param name="lid">Lid waarvan het lidtype geupdatet moet worden</param>
+		public void TypeUpdaten(Lid lid)
+		{
+			Lid l;
+			
+			if (lid.GelieerdePersoon == null || lid.GelieerdePersoon.Persoon == null || lid.GroepsWerkJaar == null || lid.GroepsWerkJaar.Groep == null)
+			{
+				l = _ledenDao.Ophalen(lid.ID, ld => ld.GelieerdePersoon.Persoon, ld => ld.GroepsWerkJaar.Groep);
+			}
+			else
+			{
+				l = lid;
+			}
+
+			_svc.LidTypeUpdaten(
+				Mapper.Map<Persoon, SyncService.Persoon>(l.GelieerdePersoon.Persoon),
+				l.GroepsWerkJaar.Groep.Code,
+				l.GroepsWerkJaar.WerkJaar,
+				_lidTypeVertaling[lid.Type]);
 		}
 	}
 }

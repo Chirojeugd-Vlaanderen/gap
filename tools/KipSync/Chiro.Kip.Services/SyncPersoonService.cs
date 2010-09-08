@@ -932,6 +932,68 @@ namespace Chiro.Kip.Services
 		}
 
 		/// <summary>
+		/// Stelt het lidtype van het lid in bepaald door <paramref name="persoon"/>, <paramref name="stamNummer"/>
+		/// en <paramref name="werkJaar"/>.
+		/// </summary>
+		/// <param name="persoon">Persoon waarvan het lidtype aangepast moet worden</param>
+		/// <param name="stamNummer">Stamnummer van groep waarin de persoon lid is</param>
+		/// <param name="werkJaar">Werkjaar waarvoor het lidtype moet aangepast worden</param>
+		/// <param name="lidType">nieuw lidtype</param>
+		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
+		public void LidTypeUpdaten(Persoon persoon, string stamNummer, int werkJaar, LidTypeEnum lidType)
+		{
+			string feedback = String.Empty;
+
+			Mapper.CreateMap<Persoon, PersoonZoekInfo>()
+			    .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int)src.Geslacht))
+			    .ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
+
+			using (var db = new kipadminEntities())
+			{
+				Lid lid;
+
+				// Eens kijken of we het lid waarvan sprake kunnen vinden.
+
+				var mgr = new PersonenManager();
+				var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(persoon);
+
+				// locking gebeurt niet helemaal juist.  Maar uiteindelijk ga ik toch geen
+				// meerdere threads gebruiken.
+
+				lock (_persoonManipulerenToken)
+				{
+					lid = mgr.LidZoeken(zoekInfo, stamNummer, werkJaar, db);
+				}
+
+				if (lid == null)
+				{
+					throw new InvalidOperationException(String.Format(
+						Properties.Resources.LidNietGevonden,
+						persoon.VoorNaam,
+						persoon.Naam,
+						stamNummer,
+						werkJaar));
+				}
+
+				lid.SOORT = lidType == LidTypeEnum.Kind ? "LI" : "LE";
+
+				// Niet helemaal juist, want in Kipadmin behouden we afelingen en functies, waar
+				// die in GAP verdwijnen.  #toobad
+
+				feedback = String.Format(
+					"Lidtype veranderd naar {0}: ID{1} {2} {3} AD{4}",
+					lid.SOORT,
+					persoon.ID,
+					persoon.VoorNaam,
+					persoon.Naam,
+					lid.Persoon.AdNummer);
+
+				db.SaveChanges();
+			}
+			Console.WriteLine(feedback);
+		}
+
+		/// <summary>
 		/// Updatet de afdelingen van een lid.
 		/// </summary>
 		/// <param name="pers">Persoon waarvan de afdelingen geupdatet moeten worden</param>
