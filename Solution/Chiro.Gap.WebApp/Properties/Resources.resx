@@ -175,7 +175,7 @@
     <value>inschrijvingsgegevens</value>
   </data>
   <data name="IngeschrevenFeedback" xml:space="preserve">
-    <value>De persoon is nu ingeschreven in je groep.</value>
+    <value>De persoon is nu ingeschreven in je groep.  Voor het einde van zijn/haar probeerperiode kan je hem/haar opnieuw uitschrijven zonder kosten.</value>
   </data>
   <data name="MultiIngeschrevenFeedback" xml:space="preserve">
     <value>De personen zijn nu ingeschreven in je groep.</value>

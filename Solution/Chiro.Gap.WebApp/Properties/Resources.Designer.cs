@@ -304,7 +304,7 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to De persoon is nu ingeschreven in je groep..
+        ///   Looks up a localized string similar to De persoon is nu ingeschreven in je groep.  Voor het einde van zijn/haar probeerperiode kan je hem/haar opnieuw uitschrijven zonder kosten..
         /// </summary>
         public static string IngeschrevenFeedback {
             get {
