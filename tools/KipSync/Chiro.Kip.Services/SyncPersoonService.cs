@@ -1128,6 +1128,7 @@ namespace Chiro.Kip.Services
 
 						var rekening = (from f in db.RekeningSet
 						                where f.WERKJAAR == werkJaar && f.REK_BRON == "DP" && f.DOORGEBOE == "N"
+								&& f.STAMNR == stamNummer
 						                select f).FirstOrDefault();
 
 						if (rekening == null)
