@@ -137,6 +137,7 @@
    {
 
 	   // Lidgegevens worden enkel getoond voor actieve leden.
+       // TODO: Het bestaan van non-actieve leden mag volgens mij niet geweten zijn aan de UI-kant
 	   
 	%>
 	<h3>Is aangesloten voor <%=Model.HuidigWerkJaar%>-<%=Model.HuidigWerkJaar+1%></h3>

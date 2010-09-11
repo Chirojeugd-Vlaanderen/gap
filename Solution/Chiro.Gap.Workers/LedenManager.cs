@@ -368,7 +368,7 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Haal een pagina op met leden van een groepswerkjaar.
+		/// Haal een pagina op met alle *actieve* leden van een groepswerkjaar.
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
 		/// <param name="extras">Bepaalt welke extra entiteiten mee opgevraagd worden</param>
@@ -391,12 +391,14 @@ namespace Chiro.Gap.Workers
 			// TODO: lijst sorteren, maar ik wacht hier nog mee tot Broes' sorteercode wat stabiliseert
 			// voorlopig sorteer ik gewoon op naam
 
-			return
-				list.OrderBy(ld => ld.GelieerdePersoon.Persoon.Naam).ThenBy(ld => ld.GelieerdePersoon.Persoon.VoorNaam).ToList();
+			return list
+				.Where(ld=>ld.NonActief==false)
+				.OrderBy(ld => ld.GelieerdePersoon.Persoon.Naam)
+				.ThenBy(ld => ld.GelieerdePersoon.Persoon.VoorNaam).ToList();
 		}
 
 		/// <summary>
-		/// Haalt een 'pagina' op met leden uit een bepaald GroepsWerkJaar
+		/// Haalt een 'pagina' op met *actieve* leden uit een bepaald GroepsWerkJaar
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
 		/// <param name="afdelingsID">ID gevraagde afdeling</param>
@@ -412,11 +414,11 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			return _daos.LedenDao.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID, sortering);
+			return _daos.LedenDao.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID, sortering).Where(ld=>ld.NonActief == false).ToList();
 		}
 
 		/// <summary>
-		/// Haalt een 'pagina' op met leden uit een bepaald GroepsWerkJaar
+		/// Haalt een 'pagina' op met alle *actieve* leden uit een bepaald GroepsWerkJaar
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
 		/// <param name="afdelingID">ID gevraagde afdeling</param>
@@ -440,8 +442,10 @@ namespace Chiro.Gap.Workers
 			// TODO: lijst sorteren, maar ik wacht hier nog mee tot Broes' sorteercode wat stabiliseert
 			// voorlopig sorteer ik gewoon op naam
 
-			return
-				list.OrderBy(ld => ld.GelieerdePersoon.Persoon.Naam).ThenBy(ld => ld.GelieerdePersoon.Persoon.VoorNaam).ToList();
+			return list
+				.Where(ld => ld.NonActief == false)
+				.OrderBy(ld => ld.GelieerdePersoon.Persoon.Naam)
+				.ThenBy(ld => ld.GelieerdePersoon.Persoon.VoorNaam).ToList();
 		}
 
 		/// <summary>

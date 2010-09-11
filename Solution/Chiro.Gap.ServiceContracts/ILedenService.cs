@@ -133,7 +133,7 @@ namespace Chiro.Gap.ServiceContracts
 		IList<PersoonLidInfo> PaginaOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering);
 
 		/// <summary>
-		/// Haalt een pagina met ledengegevens in een bepaald groepswerkjaar op, maar alleen leden uit de gegeven afdeling
+		/// Haalt een pagina met ledengegevens in een bepaald groepswerkjaar op, maar alleen *actieve* leden uit de gegeven afdeling
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het betreffende groepwerkjaar</param>
 		/// <param name="afdelingsID">ID van de betreffende afdeling</param>
@@ -168,7 +168,7 @@ namespace Chiro.Gap.ServiceContracts
 		PersoonLidInfo DetailsOphalen(int lidID);
 
 		/// <summary>
-		/// Haalt informatie op over alle leden uit het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
+		/// Haalt informatie op over alle *actieve* leden uit het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
 		/// die lid zijn in de afdeling bepaald door <paramref name="afdID"/>.
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waaruit de leden opgehaald moeten worden</param>
@@ -192,7 +192,7 @@ namespace Chiro.Gap.ServiceContracts
 		IList<LidOverzicht> OphalenUitFunctie(int groepsWerkJaarID, int functieID);
 
 		/// <summary>
-		/// Haalt informatie op over alle leden uit een gegeven groepswerkjaar
+		/// Haalt informatie op over alle *actieve* leden uit een gegeven groepswerkjaar
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waaruit de leden moeten worden opgehaald</param>
 		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>

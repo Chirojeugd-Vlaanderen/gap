@@ -504,7 +504,7 @@ namespace Chiro.Gap.Services
 
 		/// <summary>
 		/// Haalt relevante info op van personen die in het opgegeven GroepsWerkJaar
-		/// lid zijn/waren van de opgegeven afdeling, gesorteerd op de opgegeven parameter
+		/// *actief* lid zijn van de opgegeven afdeling, gesorteerd op de opgegeven parameter
 		/// </summary>
 		/// <param name="groepsWerkJaarID">De ID van het GroepsWerkJaar waarvan we info willen</param>
 		/// <param name="afdelingsID">De ID van de afdeling waarvan de personen lid moeten zijn</param>
@@ -574,7 +574,7 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
-		/// Haalt informatie op over alle leden uit het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
+		/// Haalt informatie op over alle *actieve* leden uit het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
 		/// die lid zijn in de afdeling bepaald door <paramref name="afdID"/>.
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waaruit de leden opgehaald moeten worden</param>
@@ -624,7 +624,7 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
-		/// Haalt informatie op over alle leden uit een gegeven groepswerkjaar
+		/// Haalt informatie op over alle *actieve* leden uit een gegeven groepswerkjaar
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waaruit de leden moeten worden opgehaald</param>
 		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
