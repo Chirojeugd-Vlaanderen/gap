@@ -28,11 +28,10 @@ namespace Chiro.Gap.WebApp
 		{
 			HttpContext context = HttpContext.Current;
 			context.Response.Clear();
-			context.Response.AddHeader("content-disposition", "attachment;filename=" + _fileName);
+			context.Response.AddHeader(@"content-disposition", @"attachment; filename=" + _fileName);
 			context.Response.Charset = string.Empty;
 			context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
-			context.Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-			// context.Response.Write(content);
+			context.Response.ContentType = @"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 			context.Response.BinaryWrite(_stream.ToArray());
 			context.Response.End();
 		}
