@@ -23,8 +23,6 @@ namespace Chiro.Gap.WebApp.Models
 		public int PageHuidig { get; set; }
 		public int PageTotaal { get; set; }
 
-		public int HuidigeAfdeling { get; set; }
-
 		public Dictionary<int, AfdelingDetail> AfdelingsInfoDictionary { get; set; }
 		public Dictionary<int, FunctieDetail> FunctieInfoDictionary { get; set; }
 

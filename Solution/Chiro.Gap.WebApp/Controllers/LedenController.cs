@@ -119,6 +119,15 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.GekozenID = id;
 			model.GekozenLijst = lijst;
 
+			if (groepsWerkJaarID == 0)
+			{
+				groepsWerkJaarID = ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID));
+			}
+
+			model.KanLedenBewerken = groepsWerkJaarID == (from wj in model.WerkJaarInfos
+														  orderby wj.WerkJaar descending
+														  select wj.ID).FirstOrDefault();
+
 			if (lijst == LijstEnum.Functie)
 			{
 				if (id == 0)
@@ -161,31 +170,23 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				model.Titel = "Ledenoverzicht van de " + af.AfdelingNaam.ToLower() + " van het werkjaar " + model.JaartalGetoondGroepsWerkJaar + "-" + (model.JaartalGetoondGroepsWerkJaar + 1);
 
-				model.HuidigeAfdeling = id;
 				model.GekozenAfdeling = id;  // OPM: kunnen die waarden verschillen? anders zou ik één van de twee gebruiken
+
+				// TODO check dat de gegeven afdeling id wel degelijk van de gegeven groep is
+				// @broes, welke gegeven afdeling? TODO het argument dat "id" heet
+
 				return View("Index", model);
 			}
-
-			if (groepsWerkJaarID == 0)
+			else
 			{
-				groepsWerkJaarID = ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID));
+				model.LidInfoLijst =
+					ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>
+					(lid => lid.PaginaOphalen(groepsWerkJaarID, sortering));
+
+				model.Titel = "Ledenoverzicht van het werkjaar " + model.JaartalGetoondGroepsWerkJaar + "-" + (model.JaartalGetoondGroepsWerkJaar + 1);
+
+				return View("Index", model);	
 			}
-
-			model.KanLedenBewerken = groepsWerkJaarID == (from wj in model.WerkJaarInfos
-														  orderby wj.WerkJaar descending
-														  select wj.ID).FirstOrDefault();
-
-
-			// TODO check dat de gegeven afdeling id wel degelijk van de gegeven groep is
-			// @broes, welke gegeven afdeling?
-
-			model.LidInfoLijst =
-				ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>
-				(lid => lid.PaginaOphalen(groepsWerkJaarID, sortering));
-
-			model.Titel = "Ledenoverzicht van het werkjaar " + model.JaartalGetoondGroepsWerkJaar + "-" + (model.JaartalGetoondGroepsWerkJaar + 1);
-
-			return View("Index", model);
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]

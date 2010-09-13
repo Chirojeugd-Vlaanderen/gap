@@ -72,5 +72,5 @@
 		<%}%>
 	</table>
 	<p>
-		<%=Html.ActionLink("Meer weten over afdelingen die een speciaal geval zijn?", "ViewTonen", new { controller = "Handleiding", helpBestand = "SpecialeAfdelingen" })%></p>
+		<%=Html.ActionLink("Meer weten over afdelingen die een speciaal geval zijn?", "ViewTonen", new { Controller = "Handleiding", helpBestand = "SpecialeAfdelingen" })%></p>
 </asp:Content>

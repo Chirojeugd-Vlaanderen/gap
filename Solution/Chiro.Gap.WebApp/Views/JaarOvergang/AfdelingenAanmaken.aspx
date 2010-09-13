@@ -2,11 +2,11 @@
 
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>" />
+<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#checkall").click(function() {
-		$("INPUT[@name=GekozenAfdelingsIDs][type='checkbox']").attr('checked', $("#checkall").is(':checked'));
+			$("INPUT[@name=GekozenAfdelingsIDs][type='checkbox']").attr('checked', $("#checkall").is(':checked'));
 		});
 	});
 </script>
