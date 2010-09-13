@@ -1110,19 +1110,8 @@ namespace Chiro.Gap.Services
 						{
 							_ledenMgr.Bewaren(l, LidExtras.Afdelingen | LidExtras.Persoon);
 						}
-					}// Catches zijn dubbele code met LedenService.AutomatischInschrijven
-					catch (InvalidOperationException ex)
-					{
-						foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
 					}
-					catch (GeenGavException ex)
-					{
-						foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
-					}
-					catch (FoutNummerException ex)
-					{
-						foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
-					}
+					// Catches zijn dubbele code met LedenService.AutomatischInschrijven
 					catch (BestaatAlException<Kind>)
 					{
 						foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLid, gp.Persoon.VolledigeNaam));
@@ -1130,6 +1119,10 @@ namespace Chiro.Gap.Services
 					catch (BestaatAlException<Leiding>)
 					{
 						foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLeiding, gp.Persoon.VolledigeNaam));
+					}
+					catch (GapException ex)
+					{
+						foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
 					}
 				}
 

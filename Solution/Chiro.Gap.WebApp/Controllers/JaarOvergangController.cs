@@ -135,7 +135,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				return View("AfdelingenVerdelen", model);
 			}
 
-			//Probleem: is er de garantie dat de volgorde bewaard blijft? (want we zijn per record de ID kwijt natuurlijk
+			//Probleem: is er de garantie dat de volgorde bewaard blijft? (want we zijn per record de ID kwijt natuurlijk)
 
 // ReSharper disable LoopCanBeConvertedToQuery
 			for (int i = 0; i < model.VanLijst.Count; i++)
