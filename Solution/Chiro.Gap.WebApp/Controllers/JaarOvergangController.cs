@@ -126,12 +126,18 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (model.AfdelingsIDs.Count != model.TotLijst.Count || model.TotLijst.Count != model.GeslLijst.Count || model.TotLijst.Count != model.VanLijst.Count)
 			{
 				TempData["fout"] = "Niet alle informatie is ingevuld, gelieve aan te vullen.";
+				/*model.OfficieleAfdelingen =
+				ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(
+					e => e.OfficieleAfdelingenOphalen(groepID));*/
 				return View("AfdelingenVerdelen", model);
 			}
 
 			if (model.TotLijst.Any(e => e.Equals("")) || model.VanLijst.Any(e => e.Equals("")))
 			{
 				TempData["fout"] = "Niet alle informatie is ingevuld, gelieve aan te vullen.";
+				/*model.OfficieleAfdelingen =
+				ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(
+					e => e.OfficieleAfdelingenOphalen(groepID));*/
 				return View("AfdelingenVerdelen", model);
 			}
 
@@ -154,7 +160,19 @@ namespace Chiro.Gap.WebApp.Controllers
 // ReSharper restore LoopCanBeConvertedToQuery
 
 			string foutberichten = String.Empty;
-			ServiceHelper.CallService<IGroepenService>(s => s.JaarovergangUitvoeren(teactiveren, groepID, out foutberichten));
+			try
+			{
+				ServiceHelper.CallService<IGroepenService>(s => s.JaarovergangUitvoeren(teactiveren, groepID, out foutberichten));
+			}
+			catch(FaultException<FoutNummerFault> ex)
+			{
+				TempData["fout"] = ex.Message;
+				/*model.OfficieleAfdelingen =
+				ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(
+					e => e.OfficieleAfdelingenOphalen(groepID));*/
+				return View("AfdelingenVerdelen", model);
+			}
+			
 
 			if(!String.IsNullOrEmpty(foutberichten))
 			{

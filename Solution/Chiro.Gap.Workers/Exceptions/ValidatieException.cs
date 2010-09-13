@@ -18,7 +18,7 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// <summary>
 		/// Enumwaarde die meer info geeft over de aard van de exceptie
 		/// </summary>
-		public FoutNummer Foutnummer { get; set; }
+		public FoutNummer FoutNummer { get; set; }
 
 		/// <summary>
 		/// Instantieert een lege ValidatieException
@@ -42,7 +42,7 @@ namespace Chiro.Gap.Workers.Exceptions
 		/// <param name="foutNummer">Het foutnummer</param>
 		public ValidatieException(string message, FoutNummer foutNummer) : base(message)
 		{
-			Foutnummer = foutNummer;
+			FoutNummer = foutNummer;
 		}
 
 		/// <summary>

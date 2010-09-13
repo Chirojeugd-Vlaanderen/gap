@@ -39,7 +39,7 @@ namespace Chiro.Gap.Services
 			}
 			else if (ex is OptimisticConcurrencyException)
 			{
-				throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.Concurrecncy }, new FaultReason(ex.Message));
+				throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = FoutNummer.Concurrency }, new FaultReason(ex.Message));
 			}
 			else if (ex is FoutNummerException)
 			{

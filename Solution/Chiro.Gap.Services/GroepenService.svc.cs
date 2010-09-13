@@ -404,7 +404,7 @@ namespace Chiro.Gap.Services
 			}
 			catch (ValidatieException ex)
 			{
-				throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = ex.Foutnummer, Bericht = ex.Message }, new FaultReason(ex.Message));
+				throw new FaultException<FoutNummerFault>(new FoutNummerFault { FoutNummer = ex.FoutNummer, Bericht = ex.Message }, new FaultReason(ex.Message));
 			}
 			catch (Exception ex)
 			{
@@ -1034,7 +1034,6 @@ namespace Chiro.Gap.Services
 			{
 #endif
 
-
 				// Groep ophalen
 				var g = _groepenMgr.Ophalen(groepID, GroepsExtras.AlleAfdelingen | GroepsExtras.GroepsWerkJaren);
 
@@ -1062,7 +1061,7 @@ namespace Chiro.Gap.Services
 
 					if (afd == null)
 					{
-						throw new OngeldigObjectException("Een van de gevraagde afdelingen is geen afdeling van de gegeven groep.");
+						throw new FoutNummerException(FoutNummer.ValidatieFout, "Een van de gevraagde afdelingen is geen afdeling van de gegeven groep.");
 					}
 
 					// Zoek de officiële afdeling met het gevraagde ID
@@ -1072,16 +1071,23 @@ namespace Chiro.Gap.Services
 
 					if (offafd == null)
 					{
-						throw new OngeldigObjectException("Een van de gevraagde afdelingen is geen bestaande officiële afdeling.");
+						throw new FoutNummerException(FoutNummer.ValidatieFout, "Een van de gevraagde afdelingen is geen bestaande officiële afdeling.");
 					}
 
 					// Maak het afdelingsjaar aan en bewaar het
-					_afdelingsJaarMgr.Aanmaken(afd,
-											  offafd,
-											  gwj,
-											  afdinfo.GeboorteJaarVan,
-											  afdinfo.GeboorteJaarTot,
-											  afdinfo.Geslacht);
+					try
+					{
+						_afdelingsJaarMgr.Aanmaken(afd,
+												  offafd,
+												  gwj,
+												  afdinfo.GeboorteJaarVan,
+												  afdinfo.GeboorteJaarTot,
+												  afdinfo.Geslacht);	
+					}
+					catch(ValidatieException ex)
+					{
+						throw new FoutNummerException(FoutNummer.ValidatieFout, String.Format("Fout voor {0}: {1}", afd.Naam, ex.Message));
+					}
 
 					// De afdelingsjaren bewaren we straks allemaal tegelijk, samen met het
 					// groepswerkjaar.  Op die manier krijgen we in het resultaat meteen

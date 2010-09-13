@@ -285,7 +285,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (!gp.LeefTijd.HasValue)
 			{
-				throw new OngeldigObjectException("De geboortedatum moet ingevuld zijn voor je iemand lid kunt maken.");
+				throw new GapException("De geboortedatum moet ingevuld zijn voor je iemand lid kunt maken.");
 			}
 
 			// Bepaal of het een kind of leiding wordt.  Als de persoon qua leeftijd in een niet-speciale
@@ -312,7 +312,7 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				throw new OngeldigObjectException("Je groep heeft geen afdeling voor die leeftijd en de persoon is te jong om leiding te worden.");
+				throw new GapException("Je groep heeft geen afdeling voor die leeftijd en de persoon is te jong om leiding te worden.");
 			}
 
 			return nieuwlid;
