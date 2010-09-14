@@ -148,3 +148,109 @@ GO
 ALTER TABLE znd.Abonnement ADD CONSTRAINT FK_Abonnement_Rekening FOREIGN KEY(R_Ref) REFERENCES Rekening(NR);
 GO
 
+------------------------------------------------------------
+------------------------------------------------------------
+---
+--- aanpassen dubbels verwijderen
+---
+USE [KipAdmin]
+GO
+/****** Object:  StoredProcedure [dbo].[verwijderDubbelePersoon]    Script Date: 09/14/2010 10:01:01 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER  PROCEDURE [dbo].[verwijderDubbelePersoon] 
+@oud ud_Adnr,
+@nieuw ud_Adnr
+AS
+update lokaal set adnr=@nieuw where adnr=@oud;
+update stage set adnr=@nieuw where adnr=@oud;
+update stage set begeleider=@nieuw where begeleider=@oud;
+update oud.stdag_cont set adnr=@nieuw where adnr=@oud;
+
+-- indien 2 adnrs tegelijkertijd lid: verwijder het oude --
+
+update project set adnr=@nieuw where adnr=@oud;
+update tent set adnr=@nieuw where adnr=@oud;
+
+-- indien 2 adnrs tegelijk leiding: verwijder oude --
+
+-- verwijder functies oud als ze ook aan nieuw gekoppeld zijn --
+
+delete from F1
+from kipHeeftFunctie F1 
+join kipLeidKad L1 on F1.leidkad = L1.id
+join kipLeidKad L2 on L1.stamnr=L2.stamnr and L1.werkjaar=L2.werkjaar
+join kipHeeftFunctie F2 on L2.id =F2.leidkad
+where L1.adnr=@oud and L2.adnr=@nieuw and F1.functie=F2.functie;
+
+-- zet oude functies over naar nieuwe
+
+update kipHeeftFunctie
+set kipHeeftFunctie.LeidKad = L2.id
+from kipHeeftFunctie 
+join kipLeidKad as L1 on kipHeeftFunctie.LeidKad = L1.id
+join kipLeidKad as L2 on L1.stamnr=L2.stamnr and L1.werkjaar=L2.werkjaar
+where L1.adnr=@oud and L2.adnr=@nieuw;
+
+-- verwijder dubbele leden, leiding, kader
+
+delete from L1
+from lid.lid as L1 join lid.lid as L2 on L1.GroepID=L2.GroepID and L1.werkjaar=L2.werkjaar
+where L1.adnr=@oud and L2.adnr=@nieuw;
+
+update lid.lid set adnr=@nieuw where adnr=@oud;
+
+
+
+delete from AP1
+from attest_persoon as AP1 join attest_persoon as AP2 on AP1.ap_attid = AP2.ap_attid
+where AP1.ap_adnr=@oud and AP2.ap_adnr=@nieuw;
+
+update attest_persoon set ap_adnr=@nieuw where ap_adnr=@oud;
+update cursus set c_hverantw=@nieuw where c_hverantw=@oud;
+update cursus set c_verantw=@nieuw where c_verantw=@oud;
+update cursus set c_finverantw=@nieuw where c_finverantw=@oud;
+
+-- mogelijke dubbele cursusinschrijving oplossen
+
+delete from PC1
+from pers_per_cur as PC1 join pers_per_cur as PC2 on PC1.pc_cid=Pc2.pc_cid
+where PC1.pc_adnr=@oud and PC2.pc_adnr=@nieuw;
+
+-- verwijder ook eventuele dubbele zendingsrecords
+
+delete from z1
+from znd.ZendingNaarPersoon as z1 join znd.ZendingNaarPersoon as z2 on z1.ZendingId=z2.ZendingId 
+where z1.AdNr=@oud and z2.AdNr=@nieuw;
+
+-- verwijder eventuele dubbele abonnementen
+
+delete from a1
+from znd.Abonnement as a1 
+join znd.Abonnement as a2 on a1.uitg_code=a2.uitg_code and a1.exemplaar=a2.exemplaar and a1.werkjaar=a2.werkjaar and a1.GroepID=a2.GroepID
+where a1.AdNr=@oud and a2.AdNr=@nieuw;
+
+
+update kipDeelnemer set persoon=@nieuw where persoon=@oud;
+update pers_per_cur set pc_adnr=@nieuw where pc_adnr=@oud;
+update kipInschrijving set verantwoordelijke = @nieuw where verantwoordelijke = @oud;
+update rekening set adnr=@nieuw where adnr=@oud;
+update oud.aspi_ho set adnr_cont=@nieuw where adnr_cont=@oud;
+update oud.aspitrant set adnr=@nieuw where adnr=@oud;
+update oud.krink_ho set adnr_cont=@nieuw where adnr_cont=@oud;
+update kipAbonnement set adnr=@nieuw where adnr=@oud;
+update kipPersoonlijkeInschrijving set factuurverantwoordelijke = @nieuw where factuurverantwoordelijke = @oud;
+update kipBivak set aspi_adnr=@nieuw where aspi_adnr=@oud;
+update kipBivak set veran_adnr=@nieuw where veran_adnr=@oud;
+update kipBivak set kampe_adnr=@nieuw where kampe_adnr=@oud;
+update gift set adnr=@nieuw where adnr=@oud;
+
+update znd.ZendingNaarPersoon set AdNr=@nieuw where adnr=@oud;
+
+delete from kipWoont where adnr=@oud;
+delete from kipContactInfo where adnr=@oud;
+delete from kipPersoon where adnr=@oud;
+

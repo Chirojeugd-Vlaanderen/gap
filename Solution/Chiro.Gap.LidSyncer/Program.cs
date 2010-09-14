@@ -29,11 +29,17 @@ namespace Chiro.Gap.LidSyncer
 			auMgrMock.Setup(mgr => mgr.IsSuperGav()).Returns(true);
 			Factory.InstantieRegistreren(auMgrMock.Object);
 
-			// Creëer nu de ledenmanager
 
-			var ledenMgr = Factory.Maak<LedenManager>();
+			var gpMgr = Factory.Maak<GelieerdePersonenManager>();
 
-			ledenMgr.OverZettenNaProbeerPeriode();
+			// Fixen dubbelpuntabonnementen die niet goed overgezet zijn
+
+			gpMgr.FixDubbelPunt();
+
+			// Overzetten leden na probeerperiode
+
+			// var ledenMgr = Factory.Maak<LedenManager>();
+			// ledenMgr.OverZettenNaProbeerPeriode();
 		}
 	}
 }

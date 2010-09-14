@@ -632,5 +632,22 @@ namespace Chiro.Gap.Data.Ef
 				}
 			}
 		}
+
+		/// <summary>
+		/// Haalt alle gelieerde personen zonder ad-nummer met een dubbelpuntabonnement op, inclusief
+		/// persoonsinfo.
+		/// </summary>
+		/// <returns>gelieerde personen zonder ad-nummer met een dubbelpuntabonnement</returns>
+		public IEnumerable<GelieerdePersoon> DubbelPuntZonderAdOphalen()
+		{
+			IEnumerable<GelieerdePersoon> resultaat;
+			using (var db = new ChiroGroepEntities())
+			{
+				resultaat = (from gp in db.GelieerdePersoon.Include(gelp => gelp.Persoon)
+				             where !gp.Persoon.AdNummer.HasValue && gp.Persoon.DubbelPuntAbonnement
+				             select gp).ToArray();
+			}
+			return Utility.DetachObjectGraph(resultaat);
+		}
 	}
 }

@@ -872,5 +872,19 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
+
+
+		/// <summary>
+		/// Fix de dubbelpuntabonnementen die niet goed zijn overgezet naar Kipadmin.
+		/// </summary>
+		public void FixDubbelPunt()
+		{
+			IEnumerable<GelieerdePersoon> gelieerdePersonen = _gelieerdePersonenDao.DubbelPuntZonderAdOphalen();
+
+			foreach (var gp in gelieerdePersonen)
+			{
+				_dubbelpuntSync.Abonneren(gp);
+			}
+		}
 	}
 }

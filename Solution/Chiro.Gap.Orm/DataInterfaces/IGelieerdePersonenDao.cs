@@ -152,5 +152,16 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <remarks>Als de persoon nergens woont, is hij toch zijn eigen
 		/// huisgenoot.  Enkel huisgenoten uit dezelfde groep als de gelieerde persoon worden opgeleverd.</remarks>
 		IList<GelieerdePersoon> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID);
+
+		/// <summary>
+		/// Haalt alle gelieerde personen op waarvan de persoon wel een dubbelpuntabonnement maar
+		/// geen AD-nummer heeft.  In theorie kan dit gebeuren tussen het zenden van de message en het
+		/// verwerken door kipsync.  In praktijk zijn er blijkbaar een aantal nieuwe dubbelpuntabonnementen
+		/// niet goed overgezet.
+		/// </summary>
+		/// <returns>Gelieerde personen zonder AD-nummer met dubbelpuntabonnement.  Als een persoon gelieerd
+		/// is aan meerdere groepen, dan zal die in deze lijst meerdere keren voorkomen.
+		/// Inclusief persoonsinfo</returns>
+		IEnumerable<GelieerdePersoon> DubbelPuntZonderAdOphalen();
 	}
 }
