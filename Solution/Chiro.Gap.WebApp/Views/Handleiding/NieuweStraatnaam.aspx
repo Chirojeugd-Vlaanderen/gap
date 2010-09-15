@@ -26,7 +26,7 @@
 		<li>Het postnummer en de naam van de gemeente</li>
 	</ul>
 	<p>
-		Stuur die gegevens door via het <a href="http://drupal.chiro.be/eloket/gap-straatnaam">
+		Stuur die gegevens door via het <a href="http://www.chiro.be/eloket/gap-straatnaam">
 			e-loket</a>.</p>
 	<p>
 		Het secretariaat brengt je op de hoogte zodra ze je verzoek behandeld hebben.</p>

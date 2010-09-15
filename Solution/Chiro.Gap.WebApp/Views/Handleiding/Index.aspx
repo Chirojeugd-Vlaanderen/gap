@@ -29,7 +29,7 @@
 		een externe website. Als er [?] staat, dan verwijst die link naar een trefwoord
 		dat uitgelegd wordt in de handleiding.</p>
 	<p>
-		Vragen of feedback? <a href="http://drupal.chiro.be/eloket/feedback-gap">Laat maar
+		Vragen of feedback? <a href="http://www.chiro.be/eloket/feedback-gap">Laat maar
 			komen!</a></p>
 	<p>
 		Je kunt discussiëren over hoe handig het systeem wel of niet is, en je
