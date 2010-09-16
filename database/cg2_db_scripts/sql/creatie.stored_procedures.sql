@@ -67,7 +67,7 @@ CREATE PROCEDURE pers.spAdNummerZetten @PersoonID int, @AdNummer INT AS
 UPDATE pers.Persoon SET AdNummer=@AdNummer, AdInAanvraag=0 WHERE PersoonID=@PersoonID
 GO
 
-GRANT EXECUTE ON pers.spZetAdNummer TO KipSyncRole
+GRANT EXECUTE ON pers.AdNummerZetten TO KipSyncRole
 GO
 
 

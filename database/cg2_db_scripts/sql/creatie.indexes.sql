@@ -19,11 +19,12 @@ GO
 CREATE INDEX IDX_GelieerdePersoon_GroepID ON pers.GelieerdePersoon(GroepID)
 GO
 
-CREATE INDEX IDX_GelieerdePersoon_PersoonID ON pers.GelieerdePersoon(PersoonID)
+CREATE UNIQUE INDEX IDX_GelieerdePersoon_PersoonID_GroepID ON pers.GelieerdePersoon(PersoonID, GroepID)
 GO
 
 CREATE INDEX IDX_GelieerdePersoon_VoorkeursAdresID ON pers.GelieerdePersoon(VoorkeursAdresID)
 GO
+
 
 CREATE UNIQUE INDEX IDX_GroepsWerkJaar_GroepID_WerkJaar ON grp.GroepsWerkJaar(GroepID, WerkJaar)
 GO
