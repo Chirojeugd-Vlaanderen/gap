@@ -504,8 +504,13 @@ namespace Chiro.Gap.Services
 				}
 
 				// Haal te verhuizen personen op, samen met hun adressen.
+				// Ik neem ook alle gelieerde personen mee.  Op die manier weten we welke
+				// adressen er ergens een voorkeuradres zijn; straks nodig voor syncen.
+				// (Dit is nogal een lelijke manier van werken)
 
-				IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalenViaGelieerdePersoon(gelieerdePersoonIDs, PersoonsExtras.Adressen);
+				IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalenViaGelieerdePersoon(
+					gelieerdePersoonIDs, 
+					PersoonsExtras.Adressen|PersoonsExtras.AlleGelieerdePersonen);
 
 				// Kijk na of het naar-adres toevallig mee opgehaald is.  Zo ja, werken we daarmee verder
 				// (iet of wat consistenter)

@@ -153,10 +153,11 @@ namespace Chiro.Gap.Workers
 				// maar voor een andere groep wel, dan gaat dat adres *toch* als standaardadres
 				// naar Kipadmin.  Maar dat is op zich geen probleem.
 
-				var teSyncen = from pa in adr.PersoonsAdres
-				               where pa.GelieerdePersoon.Count > 0 // voorkeursadres
-				                     && (pa.Persoon.AdNummer != null || pa.Persoon.AdInAanvraag)	// met ad-nummer
-				               select pa;
+				var teSyncen = (from pa in adr.PersoonsAdres
+				                where pa.GelieerdePersoon.Count > 0 // voorkeursadres
+				                      && (pa.Persoon.AdNummer != null || pa.Persoon.AdInAanvraag)
+				                // met ad-nummer
+				                select pa).ToArray();
 
 				// TODO (#238): Buitenlandse adressen!
 
