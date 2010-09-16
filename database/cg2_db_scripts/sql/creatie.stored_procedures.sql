@@ -22,6 +22,10 @@ GO
 GO
 :r ../dataconversie/GroepsWerkJaarVerwijderen.sql
 GO
+:r ./handigheidjes/gapfusie.sql
+GO
+:r ./handigheidjes/dubbelePersoon.sql
+GO
 
 CREATE FUNCTION core.ufnSoundEx
 (
