@@ -41,12 +41,6 @@ namespace Chiro.Kip.Services
 	/// </summary>
 	public class SyncPersoonService : ISyncPersoonService
 	{
-		private static readonly Object _ledenToken = new object();
-		private static readonly Object _adresManipulerenToken = new object();
-		private static readonly Object _persoonManipulerenToken = new object();
-		private static readonly Object _communicatieToken = new object();
-		private static readonly Object _abonnementenToken = new object();
-		private static readonly Object _verzekeringToken = new object();
 
 		private readonly IPersoonUpdater _persoonUpdater;
 		private readonly IMiniLog _log;
@@ -96,18 +90,14 @@ namespace Chiro.Kip.Services
 
 				var mgr = new PersonenManager();
 				var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(persoon);
-
-				lock (_persoonManipulerenToken)
-				{
-					kipPersoon = mgr.Zoeken(zoekInfo, true, db);
-					Mapper.Map(persoon, kipPersoon);
-					kipPersoon.Stempel = DateTime.Now;
-					db.SaveChanges();
-				}
+				kipPersoon = mgr.Zoeken(zoekInfo, true, db);
+				Mapper.Map(persoon, kipPersoon);
+				kipPersoon.Stempel = DateTime.Now;
+				db.SaveChanges();
 				if (persoon.AdNummer != kipPersoon.AdNummer)
 				{
 					persoon.AdNummer = kipPersoon.AdNummer;
-					_persoonUpdater.AdNummerZetten(persoon.ID, kipPersoon.AdNummer);				
+					_persoonUpdater.AdNummerZetten(persoon.ID, kipPersoon.AdNummer);
 				}
 			}
 
@@ -131,148 +121,144 @@ namespace Chiro.Kip.Services
 
 			var pMgr = new PersonenManager();
 
-			Debug.Assert(adres != null);	// We gaan niet belachelijk doen he
+			Debug.Assert(adres != null); // We gaan niet belachelijk doen he
 
 			Mapper.CreateMap<Persoon, PersoonZoekInfo>()
-			    .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int)src.Geslacht))
-			    .ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
+				.ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int) src.Geslacht))
+				.ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
 
 			// 1 keer tegelijk, anders krijgen we concurrencyproblemen als er 2 personen tegelijk hetzelfde
 			// adres krijgen.
 
-			lock (_adresManipulerenToken)
+			using (var db = new kipadminEntities())
 			{
-				using (var db = new kipadminEntities())
+				var personen = new List<KipPersoon>();
+
+				foreach (var b in bewoners)
 				{
-					var personen = new List<KipPersoon>();
+					var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(b.Persoon);
+					zoekInfo.PostNr = adres.PostNr;
 
-					foreach (var b in bewoners)
+					var gevonden = pMgr.Zoeken(zoekInfo, false, db);
+
+					if (gevonden == null)
 					{
-						var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(b.Persoon);
-						zoekInfo.PostNr = adres.PostNr;
-
-						var gevonden = pMgr.Zoeken(zoekInfo, false, db);
-						
-						if (gevonden == null)
-						{
-							throw new InvalidOperationException(String.Format(
-								Properties.Resources.PersoonNietGevonden,
-								b.Persoon.VoorNaam,
-								b.Persoon.Naam));
-						}
-				
-						personen.Add(gevonden);
-
-						// In bewoners ad-nummer aanpassen, zoda we straks het juiste adrestype kunnen vinden
-						b.Persoon.AdNummer = gevonden.AdNummer;
+						throw new InvalidOperationException(String.Format(
+							Properties.Resources.PersoonNietGevonden,
+							b.Persoon.VoorNaam,
+							b.Persoon.Naam));
 					}
 
+					personen.Add(gevonden);
 
-					// Vind of maak adres
-
-					// Als dat linq to sql is, dan gebeurt het zoeken sowieso hoofdletterongevoelig.
-
-					string huisNr = adres.HuisNr.ToString();
-					string postNr = adres.PostNr.ToString();
-
-					var adresInDb = (from adr in db.AdresSet.Include("kipWoont.kipPersoon").Include("kipWoont.kipAdresType")
-					                 where adr.Straat == adres.Straat
-					                       && adr.Nr == huisNr
-					                       && adr.PostNr == postNr
-					                       && adr.Gemeente == adres.WoonPlaats
-					                 select adr).FirstOrDefault();
-
-					if (adresInDb == null)
-					{
-						adresInDb = new Chiro.Kip.Data.Adres
-						            	{
-						            		ID = 0,
-						            		Straat = adres.Straat,
-						            		Nr = adres.HuisNr == null ? null : adres.HuisNr.ToString(),
-						            		PostNr = adres.PostNr.ToString(),
-						            		Gemeente = adres.WoonPlaats
-						            		// TODO (#238) Buitenlandse adressen.
-						            	};
-						db.AddToAdresSet(adresInDb);
-
-						// Bewaar hier de changes al eens, zodat het nieuwe adres een ID krijgt.
-						db.SaveChanges();
-
-					}
+					// In bewoners ad-nummer aanpassen, zoda we straks het juiste adrestype kunnen vinden
+					b.Persoon.AdNummer = gevonden.AdNummer;
+				}
 
 
-					// We zitten met het gedoe dat in Kipadmin de adressen een volgnummer hebben.  De voorkeurs-
-					// adressen moeten bewaard worden met volgnummer 1.
-					//
-					// We gaan dat pragmatisch oplossen :-)
-					//  - verwijder van alle personen het adres met volgnummer 1
-					//  - als er nog personen zijn die al aan het doeladres gekoppeld zijn, dan moeten die
-					//    adressen volgnummer 1 krijgen
-					//  - personen die het adres nog niet hebben moeten het krijgen met volgnummer 1
+				// Vind of maak adres
 
-					var eersteAdressen = personen.SelectMany(prs => prs.kipWoont).Where(kw => kw.VolgNr == 1);
+				// Als dat linq to sql is, dan gebeurt het zoeken sowieso hoofdletterongevoelig.
 
-					foreach (var wnt in eersteAdressen.ToArray())
-					{
-						db.DeleteObject(wnt);
-					}
+				string huisNr = adres.HuisNr.ToString();
+				string postNr = adres.PostNr.ToString();
 
-					// Oude objecten met volgnr 1 al verwijderen, om duplicates (adnr,volgnr) in woont
-					// te vermijden.
+				var adresInDb = (from adr in db.AdresSet.Include("kipWoont.kipPersoon").Include("kipWoont.kipAdresType")
+				                 where adr.Straat == adres.Straat
+				                       && adr.Nr == huisNr
+				                       && adr.PostNr == postNr
+				                       && adr.Gemeente == adres.WoonPlaats
+				                 select adr).FirstOrDefault();
 
-					db.SaveChanges();
+				if (adresInDb == null)
+				{
+					adresInDb = new Chiro.Kip.Data.Adres
+					            	{
+					            		ID = 0,
+					            		Straat = adres.Straat,
+					            		Nr = adres.HuisNr == null ? null : adres.HuisNr.ToString(),
+					            		PostNr = adres.PostNr.ToString(),
+					            		Gemeente = adres.WoonPlaats
+					            		// TODO (#238) Buitenlandse adressen.
+					            	};
+					db.AddToAdresSet(adresInDb);
 
-					// Dat ID hebben we nu hier nodig:
-
-					var goeieAdressen = personen.SelectMany(prs => prs.kipWoont).Where(kw => kw.kipAdres.ID == adresInDb.ID);
-
-					// TODO: Het adrestype bepalen is iedere keer een linq-expressie, en dus iedere
-					// keer een loop.  Kan dat niet efficienter?
-
-					foreach (var wnt in goeieAdressen)
-					{
-						wnt.VolgNr = 1;
-
-						int adresTypeID = (int) (from b in bewoners
-						                         where b.Persoon.AdNummer == wnt.kipPersoon.AdNummer
-						                         select b.AdresType).FirstOrDefault();
-
-						wnt.kipAdresType = (from at in db.AdresTypeSet
-						                    where at.ID == adresTypeID
-						                    select at).FirstOrDefault();
-
-						feedback.AppendLine(String.Format("Update voorkeuradres: AD{0}", wnt.kipPersoon.AdNummer));
-					}
-
-					var overigePersonen = from p in personen
-					                      where !goeieAdressen.Any(wnt => wnt.kipPersoon.AdNummer == p.AdNummer)
-					                      select p;
-
-					foreach (var p in overigePersonen)
-					{
-						int adresTypeID = (int) (from b in bewoners
-						                         where b.Persoon.AdNummer == p.AdNummer
-						                         select b.AdresType).FirstOrDefault();
-
-						var adresType = (from at in db.AdresTypeSet
-						                 where at.ID == adresTypeID
-						                 select at).FirstOrDefault();
-
-						db.AddToWoontSet(new Woont
-						                 	{
-						                 		kipAdres = adresInDb,
-						                 		kipPersoon = p,
-						                 		VolgNr = 1,
-						                 		kipAdresType = adresType,
-						                 		Geldig = true
-						                 	});
-						feedback.Append(String.Format("Update voorkeuradres: AD{0}", p.AdNummer));
-					}
-
-					// fingers crossed:
-
+					// Bewaar hier de changes al eens, zodat het nieuwe adres een ID krijgt.
 					db.SaveChanges();
 				}
+
+
+				// We zitten met het gedoe dat in Kipadmin de adressen een volgnummer hebben.  De voorkeurs-
+				// adressen moeten bewaard worden met volgnummer 1.
+				//
+				// We gaan dat pragmatisch oplossen :-)
+				//  - verwijder van alle personen het adres met volgnummer 1
+				//  - als er nog personen zijn die al aan het doeladres gekoppeld zijn, dan moeten die
+				//    adressen volgnummer 1 krijgen
+				//  - personen die het adres nog niet hebben moeten het krijgen met volgnummer 1
+
+				var eersteAdressen = personen.SelectMany(prs => prs.kipWoont).Where(kw => kw.VolgNr == 1);
+
+				foreach (var wnt in eersteAdressen.ToArray())
+				{
+					db.DeleteObject(wnt);
+				}
+
+				// Oude objecten met volgnr 1 al verwijderen, om duplicates (adnr,volgnr) in woont
+				// te vermijden.
+
+				db.SaveChanges();
+
+				// Dat ID hebben we nu hier nodig:
+
+				var goeieAdressen = personen.SelectMany(prs => prs.kipWoont).Where(kw => kw.kipAdres.ID == adresInDb.ID);
+
+				// TODO: Het adrestype bepalen is iedere keer een linq-expressie, en dus iedere
+				// keer een loop.  Kan dat niet efficienter?
+
+				foreach (var wnt in goeieAdressen)
+				{
+					wnt.VolgNr = 1;
+
+					int adresTypeID = (int) (from b in bewoners
+					                         where b.Persoon.AdNummer == wnt.kipPersoon.AdNummer
+					                         select b.AdresType).FirstOrDefault();
+
+					wnt.kipAdresType = (from at in db.AdresTypeSet
+					                    where at.ID == adresTypeID
+					                    select at).FirstOrDefault();
+
+					feedback.AppendLine(String.Format("Update voorkeuradres: AD{0}", wnt.kipPersoon.AdNummer));
+				}
+
+				var overigePersonen = from p in personen
+				                      where !goeieAdressen.Any(wnt => wnt.kipPersoon.AdNummer == p.AdNummer)
+				                      select p;
+
+				foreach (var p in overigePersonen)
+				{
+					int adresTypeID = (int) (from b in bewoners
+					                         where b.Persoon.AdNummer == p.AdNummer
+					                         select b.AdresType).FirstOrDefault();
+
+					var adresType = (from at in db.AdresTypeSet
+					                 where at.ID == adresTypeID
+					                 select at).FirstOrDefault();
+
+					db.AddToWoontSet(new Woont
+					                 	{
+					                 		kipAdres = adresInDb,
+					                 		kipPersoon = p,
+					                 		VolgNr = 1,
+					                 		kipAdresType = adresType,
+					                 		Geldig = true
+					                 	});
+					feedback.Append(String.Format("Update voorkeuradres: AD{0}", p.AdNummer));
+				}
+
+				// fingers crossed:
+
+				db.SaveChanges();
 			}
 			_log.Log(0, feedback.ToString());
 		}
@@ -305,11 +291,7 @@ namespace Chiro.Kip.Services
 				var mgr = new PersonenManager();
 				var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(pers);
 				zoekInfo.Communicatie = (from cm in communicatieMiddelen select cm.Waarde).ToArray();
-
-				lock (_persoonManipulerenToken)
-				{
-					persoon = mgr.Zoeken(zoekInfo, false, db);
-				}
+				persoon = mgr.Zoeken(zoekInfo, false, db);
 
 				if (persoon == null)
 				{
@@ -318,59 +300,54 @@ namespace Chiro.Kip.Services
 						pers.VoorNaam,
 						pers.Naam));
 				}
+				// Hieronder quick and dirty gepruts, 
+				// o.a. omdat de communicatievormen in kipadmin genummerd moeten zijn
+				// TODO: Toch wat properder proberen
 
+				// Verwijder gewoon alle bestaande communicatie
 
-				lock (_communicatieToken)
+				var teVerwijderen = (from cv in persoon.kipContactInfo
+				                     select cv).ToArray();
+
+				foreach (var cv in teVerwijderen)
 				{
-					// Hieronder quick and dirty gepruts, 
-					// o.a. omdat de communicatievormen in kipadmin genummerd moeten zijn
-					// TODO: Toch wat properder proberen
-
-					// Verwijder gewoon alle bestaande communicatie
-
-					var teVerwijderen = (from cv in persoon.kipContactInfo
-					                     select cv).ToArray();
-
-					foreach (var cv in teVerwijderen)
-					{
-						db.DeleteObject(cv);
-					}
-
-					// Bewaar tussentijds om key violations te vermijden
-					db.SaveChanges();
-
-					// Voeg nu de meegeleverde communicatie opnieuw toe.
-
-					var nieuweComm = (from cm in communicatieMiddelen.Distinct()
-					                  select new ContactInfo
-					                         	{
-					                         		ContactInfoId = 0,
-					                         		ContactTypeId = (int) cm.Type,
-					                         		GeenMailings = cm.GeenMailings,
-					                         		Info = cm.Waarde,
-					                         		kipPersoon = persoon
-					                         	}).OrderBy(nc => nc.ContactTypeId).ToList();
-
-					// Nummeren per type.
-
-					int teller = 0;
-					int vorigType = -1;
-
-					foreach (var comm in nieuweComm)
-					{
-						if (comm.ContactTypeId != vorigType)
-						{
-							teller = 0;
-							vorigType = comm.ContactTypeId;
-						}
-						comm.VolgNr = ++teller;
-						db.AddToContactInfoSet(comm);
-					}
-
-					db.SaveChanges();
-					feedback = String.Format("Communicatie bewaard voor ID{0} {1} {2} AD{3}", pers.ID, persoon.VoorNaam, persoon.Naam, persoon.AdNummer);
-
+					db.DeleteObject(cv);
 				}
+
+				// Bewaar tussentijds om key violations te vermijden
+				db.SaveChanges();
+
+				// Voeg nu de meegeleverde communicatie opnieuw toe.
+
+				var nieuweComm = (from cm in communicatieMiddelen.Distinct()
+				                  select new ContactInfo
+				                         	{
+				                         		ContactInfoId = 0,
+				                         		ContactTypeId = (int) cm.Type,
+				                         		GeenMailings = cm.GeenMailings,
+				                         		Info = cm.Waarde,
+				                         		kipPersoon = persoon
+				                         	}).OrderBy(nc => nc.ContactTypeId).ToList();
+
+				// Nummeren per type.
+
+				int teller = 0;
+				int vorigType = -1;
+
+				foreach (var comm in nieuweComm)
+				{
+					if (comm.ContactTypeId != vorigType)
+					{
+						teller = 0;
+						vorigType = comm.ContactTypeId;
+					}
+					comm.VolgNr = ++teller;
+					db.AddToContactInfoSet(comm);
+				}
+
+				db.SaveChanges();
+				feedback = String.Format("Communicatie bewaard voor ID{0} {1} {2} AD{3}", pers.ID, persoon.VoorNaam, persoon.Naam,
+				                         persoon.AdNummer);
 			}
 			_log.Log(0, feedback);
 		}
@@ -399,11 +376,7 @@ namespace Chiro.Kip.Services
 				var mgr = new PersonenManager();
 				var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(pers);
 				zoekInfo.Communicatie = new string[] {communicatie.Waarde};
-
-				lock (_persoonManipulerenToken)
-				{
-					persoon = mgr.Zoeken(zoekInfo, false, db);
-				}
+				persoon = mgr.Zoeken(zoekInfo, false, db);
 
 				if (persoon == null)
 				{
@@ -412,54 +385,48 @@ namespace Chiro.Kip.Services
 						pers.VoorNaam,
 						pers.Naam));
 				}
+				// Zoek bestaande communicatie van zelfde type op
 
-				lock (_communicatieToken)
+				var bestaande = from ci in persoon.kipContactInfo
+				                where ci.ContactTypeId == (int) communicatie.Type
+				                select ci;
+
+				// Voeg enkel toe als nog niet bestaat.
+
+				var gevonden = (from ci in bestaande
+				                where String.Compare(ci.Info, communicatie.Waarde, true) == 0
+				                select ci.ContactInfoId).FirstOrDefault();
+
+				if (gevonden == 0)
 				{
-					// Zoek bestaande communicatie van zelfde type op
+					// volgnummer bepalen
+					int volgnr;
 
-					var bestaande = from ci in persoon.kipContactInfo
-					                where ci.ContactTypeId == (int) communicatie.Type
-					                select ci;
-
-					// Voeg enkel toe als nog niet bestaat.
-
-					var gevonden = (from ci in bestaande
-					                where String.Compare(ci.Info, communicatie.Waarde, true) == 0
-					                select ci.ContactInfoId).FirstOrDefault();
-                                                                          
-					if (gevonden == 0)
+					if (bestaande.FirstOrDefault() == null)
 					{
-						// volgnummer bepalen
-						int volgnr;
-
-						if (bestaande.FirstOrDefault() == null)
-						{
-							// Er bestaan er nog geen: volgnr = 1
-							volgnr = 1;
-						}
-						else
-						{
-							volgnr = (from ci in bestaande select ci.VolgNr).Max() + 1;
-						}
-
-						var contactinfo = new ContactInfo
-						                  	{
-						                  		ContactInfoId = 0,
-						                  		ContactTypeId = (int) communicatie.Type,
-						                  		GeenMailings = communicatie.GeenMailings,
-						                  		Info = communicatie.Waarde,
-						                  		kipPersoon = persoon,
-						                  		VolgNr = volgnr
-						                  	};
-						db.AddToContactInfoSet(contactinfo);
-						db.SaveChanges();
-
-						feedback = String.Format(
-							"Communicate toegevoegd voor ID{0} {1} {2} AD{3}: {4}",
-							persoon.GapID, persoon.VoorNaam, persoon.Naam, persoon.AdNummer, communicatie.Waarde);
+						// Er bestaan er nog geen: volgnr = 1
+						volgnr = 1;
+					}
+					else
+					{
+						volgnr = (from ci in bestaande select ci.VolgNr).Max() + 1;
 					}
 
-					
+					var contactinfo = new ContactInfo
+					                  	{
+					                  		ContactInfoId = 0,
+					                  		ContactTypeId = (int) communicatie.Type,
+					                  		GeenMailings = communicatie.GeenMailings,
+					                  		Info = communicatie.Waarde,
+					                  		kipPersoon = persoon,
+					                  		VolgNr = volgnr
+					                  	};
+					db.AddToContactInfoSet(contactinfo);
+					db.SaveChanges();
+
+					feedback = String.Format(
+						"Communicate toegevoegd voor ID{0} {1} {2} AD{3}: {4}",
+						persoon.GapID, persoon.VoorNaam, persoon.Naam, persoon.AdNummer, communicatie.Waarde);
 				}
 			}
 			_log.Log(0, feedback);
@@ -520,311 +487,302 @@ namespace Chiro.Kip.Services
 		{
 			string feedback;
 			ChiroGroep groep;
+			// Aangezien 1 'savechanges' van entity framework ook een transaction is, moet ik geen
+			// distributed transaction opzetten.  Misschien... En de lock zorgt ervoor dat dit stuk
+			// code maar 1 keer tegelijk loopt.
 
-			lock (_ledenToken)
+			// TODO: Het gelockte stuk is aan de grote kant; waarschijnlijk volstaat het om een aantal
+			// kleinere stukken code te locken.
+
+
+			using (var db = new kipadminEntities())
 			{
-				// Aangezien 1 'savechanges' van entity framework ook een transaction is, moet ik geen
-				// distributed transaction opzetten.  Misschien... En de lock zorgt ervoor dat dit stuk
-				// code maar 1 keer tegelijk loopt.
+				// Vind de groep, zodat we met groepID kunnen werken ipv stamnummer.
 
-				// TODO: Het gelockte stuk is aan de grote kant; waarschijnlijk volstaat het om een aantal
-				// kleinere stukken code te locken.
+				groep = (from g in db.Groep.OfType<ChiroGroep>()
+				         where g.STAMNR == gedoe.StamNummer
+				         select g).FirstOrDefault();
 
+				// Bestaat het lid al?
+				// De moeilijkheid is dat bij het begin van het nieuwe werkjaar standaard
+				// alle leden van het vorige werkjaar in kipadmin zitten, met 'aansl_nr' = 0.
+				// Negeer dus die records.  Op het moment dat het eerste lid van het nieuwe
+				// werkjaar wordt overgezet, verdwijnen de leden met aansl_jr = 0
 
-				using (var db = new kipadminEntities())
+				Lid lid = (from l in db.Lid.Include(ld => ld.HeeftFunctie.First().Functie)
+				           where
+				           	l.AANSL_NR > 0 &&
+				           	l.Persoon.AdNummer == adNummer &&
+				           	l.Groep.GroepID == groep.GroepID &&
+				           	l.werkjaar == gedoe.WerkJaar
+				           select l).FirstOrDefault();
+
+				// Aan het hoeveelste jaar van dit lid zijn we?
+
+				int aantalJaren = (from l in db.Lid
+				                   where l.AANSL_NR > 0 &&
+				                         l.Persoon.AdNummer == adNummer &&
+				                         l.Groep.GroepID == groep.GroepID &&
+				                         l.werkjaar < gedoe.WerkJaar
+				                   select l.werkjaar).Distinct().Count() + 1;
+
+				if (lid != null)
 				{
-					// Vind de groep, zodat we met groepID kunnen werken ipv stamnummer.
+					// In praktijk zullen we nooit een bestaand lid met functies en afdelingen
+					// tegelijk updateten.  Dus het is niet erg dat dit stuk nog niet geimplementeerd
+					// is :-)
 
-					groep = (from g in db.Groep.OfType<ChiroGroep>()
-						       where g.STAMNR == gedoe.StamNummer
-						       select g).FirstOrDefault();
+					throw new NotImplementedException();
+				}
+				else
+				{
+					int volgNummer = 1;
 
-					// Bestaat het lid al?
-					// De moeilijkheid is dat bij het begin van het nieuwe werkjaar standaard
-					// alle leden van het vorige werkjaar in kipadmin zitten, met 'aansl_nr' = 0.
-					// Negeer dus die records.  Op het moment dat het eerste lid van het nieuwe
-					// werkjaar wordt overgezet, verdwijnen de leden met aansl_jr = 0
+					// Nieuw lid.
 
-					Lid lid = (from l in db.Lid.Include(ld => ld.HeeftFunctie.First().Functie)
-						   where
-							l.AANSL_NR > 0 &&
-							l.Persoon.AdNummer == adNummer &&
-							l.Groep.GroepID == groep.GroepID &&
-							l.werkjaar == gedoe.WerkJaar
-						   select l).FirstOrDefault();
+					// Zoek persoon op.
 
-					// Aan het hoeveelste jaar van dit lid zijn we?
+					var persoon = (from p in db.PersoonSet
+					               where p.AdNummer == adNummer
+					               select p).FirstOrDefault();
 
-					int aantalJaren = (from l in db.Lid
-							   where l.AANSL_NR > 0 &&
-					 l.Persoon.AdNummer == adNummer &&
-								 l.Groep.GroepID == groep.GroepID &&
-								 l.werkjaar < gedoe.WerkJaar
-							   select l.werkjaar).Distinct().Count() + 1;
+					// Zoek eerst naar een geschikte aansluiting om het lid aan
+					// toe te voegen.
 
-					if (lid != null)
+					// TODO: Als we kader gaan aansluiten, dan zijn er geen rekeningen
+					// gekoppeld aan de aansluiting!  Dan loopt het dus anders.
+
+					var aansluitingenDitWerkjaar = (from a in db.Aansluiting.Include(asl => asl.REKENING)
+					                                where a.WerkJaar == gedoe.WerkJaar
+					                                      && a.Groep.GroepID == groep.GroepID
+					                                select a).OrderByDescending(aa => aa.VolgNummer);
+
+					// Laatste aansluiting opzoeken
+
+					var aansluiting = aansluitingenDitWerkjaar.FirstOrDefault();
+
+					if (aansluiting == null)
 					{
-						// In praktijk zullen we nooit een bestaand lid met functies en afdelingen
-						// tegelijk updateten.  Dus het is niet erg dat dit stuk nog niet geimplementeerd
-						// is :-)
+						// Eerste lid voor dit werkjaar.  Verwijder alle huidige
+						// leden, die er nog in zitten als kopietje van vorig jaar.
 
-						throw new NotImplementedException();
-					}
-					else
-					{
-						int volgNummer = 1;
+						var teVerwijderenLeden = (from l in db.Lid.Include(ld => ld.HeeftFunctie)
+						                          where l.Groep.GroepID == groep.GroepID
+						                                && l.werkjaar == gedoe.WerkJaar
+						                          select l).ToList();
 
-						// Nieuw lid.
+						var teVerwijderenFuncties = teVerwijderenLeden.SelectMany(ld => ld.HeeftFunctie).ToList();
 
-						// Zoek persoon op.
-
-						var persoon = (from p in db.PersoonSet
-							       where p.AdNummer == adNummer
-							       select p).FirstOrDefault();
-
-						// Zoek eerst naar een geschikte aansluiting om het lid aan
-						// toe te voegen.
-
-						// TODO: Als we kader gaan aansluiten, dan zijn er geen rekeningen
-						// gekoppeld aan de aansluiting!  Dan loopt het dus anders.
-
-						var aansluitingenDitWerkjaar = (from a in db.Aansluiting.Include(asl => asl.REKENING)
-										where a.WerkJaar == gedoe.WerkJaar
-										      && a.Groep.GroepID == groep.GroepID
-										select a).OrderByDescending(aa => aa.VolgNummer);
-
-						// Laatste aansluiting opzoeken
-
-						var aansluiting = aansluitingenDitWerkjaar.FirstOrDefault();
-
-						if (aansluiting == null)
+						foreach (var hf in teVerwijderenFuncties)
 						{
-							// Eerste lid voor dit werkjaar.  Verwijder alle huidige
-							// leden, die er nog in zitten als kopietje van vorig jaar.
-
-							var teVerwijderenLeden = (from l in db.Lid.Include(ld => ld.HeeftFunctie)
-										  where l.Groep.GroepID == groep.GroepID
-											&& l.werkjaar == gedoe.WerkJaar
-										  select l).ToList();
-
-							var teVerwijderenFuncties = teVerwijderenLeden.SelectMany(ld => ld.HeeftFunctie).ToList();
-
-							foreach (var hf in teVerwijderenFuncties)
-							{
-								db.DeleteObject(hf);
-							}
-
-							foreach (var l in teVerwijderenLeden)
-							{
-								db.DeleteObject(l);
-							}
-
-							// Om zodadelijk geen conflicten te krijgen, gaan we dat
-							// al eens bewaren.
-
-							db.SaveChanges();
+							db.DeleteObject(hf);
 						}
 
-						// Als de laatste aansluiting nog niet doorgeboekt is, dan gaat het
-						// nieuwe lid gewoon bij die laatste aansluiting.
-
-						// Is er nog geen laatste aansluiting, of was de laatste wel
-						// doorgeboekt, dan maken we er een nieuwe.
-
-						if (aansluiting == null || aansluiting.REKENING.DOORGEBOE != "N")
+						foreach (var l in teVerwijderenLeden)
 						{
-							// Creeer nieuwe aansluiting, en meteen ook een rekening.
-							// Die rekening mag nog leeg zijn; kipadmin berekent de
-							// bedragen bij het overzetten van de factuur.
-
-							volgNummer = (aansluiting == null ? 1 : aansluiting.VolgNummer + 1);
-
-							var rekening = new Rekening
-									{
-										WERKJAAR = (short)gedoe.WerkJaar,
-										TYPE = "F",
-										REK_BRON = "AANSLUIT",
-										STAMNR = gedoe.StamNummer,
-										VERWIJSNR = volgNummer,
-										FACTUUR = "N",
-										FACTUUR2 = "N",
-										DOORGEBOE = "N",
-										DAT_REK = DateTime.Now
-									};
-
-							aansluiting = new Aansluiting
-									{
-										RibbelsJ = 0,
-										RibbelsM = 0,
-										SpeelClubJ = 0,
-										SpeelClubM = 0,
-										RakwisJ = 0,
-										RakwisM = 0,
-										TitosJ = 0,
-										TitosM = 0,
-										KetisJ = 0,
-										KetisM = 0,
-										AspisJ = 0,
-										AspisM = 0,
-										LeidingJ = 0,
-										LeidingM = 0,
-										Proost = 0,
-										Vb = 0,
-										Freelance = 0,
-										AansluitingID = 0,
-										Groep = groep,
-										Noot = null,
-										REKENING = rekening,
-										SolidariteitsBijdrage = 0,
-										VolgNummer = volgNummer,
-										Datum = DateTime.Now,
-										WerkJaar = gedoe.WerkJaar
-									};
-
-							db.AddToRekeningSet(rekening);
-							db.AddToAansluiting(aansluiting);
-
+							db.DeleteObject(l);
 						}
 
-						// aansluiting bevat nu het aansluitingsrecord waaraan het lid
-						// toegevoegd kan worden.
-
-						// aansluitingsdatum is datum aansluiting eerste lid dat binnen komt.
-						// (De groep kan er niet aan doen dat er niet constant gefactureerd wordt)
-
-						aansluiting.Stempel = DateTime.Now;
-						aansluiting.Wijze = "G";
-
-						lid = new Lid
-							{
-								AANSL_NR = (short)volgNummer,
-								AANTAL_JA = (short)aantalJaren,
-								ACTIEF = "J",
-								AFDELING1 = null,
-								AFDELING2 = null,
-								Groep = groep,
-								HeeftFunctie = null,
-								MAILING_TOEVOEG = null,
-								Persoon = persoon,
-								SOORT = gedoe.LidType == LidTypeEnum.Kind ? "LI" : "LE",
-								STATUS = null,
-								STEMPEL = DateTime.Now,
-								VERZ_NR = 0,
-								WEB_TOEVOEG = null,
-								werkjaar = gedoe.WerkJaar
-							};
-
-						// 2 afdelingen kunnen we overnemen.
-
-						if (gedoe.OfficieleAfdelingen.Count() >= 1)
-						{
-							int afdid = (int)gedoe.OfficieleAfdelingen.First();
-							lid.AFDELING1 = (from a in db.AfdelingSet
-									 where a.AFD_ID == afdid
-									 select a.AFD_NAAM).FirstOrDefault();
-						}
-
-						if (gedoe.OfficieleAfdelingen.Count() >= 2)
-						{
-							int afdid = (int)gedoe.OfficieleAfdelingen.Skip(1).First();
-							lid.AFDELING2 = (from a in db.AfdelingSet
-									 where a.AFD_ID == afdid
-									 select a.AFD_NAAM).FirstOrDefault();
-						}
-
-						// Functies
-
-						var toeTeKennen =
-							db.FunctieSet.Where(Utility.BuildContainsExpression<Functie, int>(
-								f => f.id,
-								gedoe.NationaleFuncties.Cast<int>()));
-
-						foreach (var functie in toeTeKennen)
-						{
-							var hf = new HeeftFunctie
-									{
-										Lid = lid,
-										Functie = functie
-									};
-							db.AddToHeeftFunctieSet(hf);
-						}
-
-						// Domme telling in aansluitingslijn
-
-						if (gedoe.LidType == LidTypeEnum.Kind && persoon.Geslacht == (int)GeslachtsEnum.Man)
-						{
-							switch (gedoe.OfficieleAfdelingen.First())
-							{
-								case AfdelingEnum.Ribbels:
-									++aansluiting.RibbelsJ;
-									break;
-								case AfdelingEnum.Speelclub:
-									++aansluiting.SpeelClubJ;
-									break;
-								case AfdelingEnum.Rakwis:
-									++aansluiting.RakwisJ;
-									break;
-								case AfdelingEnum.Titos:
-									++aansluiting.TitosJ;
-									break;
-								case AfdelingEnum.Ketis:
-									++aansluiting.KetisJ;
-									break;
-								case AfdelingEnum.Aspis:
-									++aansluiting.AspisJ;
-									break;
-								default:
-									break;
-							}
-
-						}
-						else if (gedoe.LidType == LidTypeEnum.Kind && persoon.Geslacht == (int)GeslachtsEnum.Vrouw)
-						{
-							switch (gedoe.OfficieleAfdelingen.First())
-							{
-								case AfdelingEnum.Ribbels:
-									++aansluiting.RibbelsM;
-									break;
-								case AfdelingEnum.Speelclub:
-									++aansluiting.SpeelClubM;
-									break;
-								case AfdelingEnum.Rakwis:
-									++aansluiting.RakwisM;
-									break;
-								case AfdelingEnum.Titos:
-									++aansluiting.TitosM;
-									break;
-								case AfdelingEnum.Ketis:
-									++aansluiting.KetisM;
-									break;
-								case AfdelingEnum.Aspis:
-									++aansluiting.AspisM;
-									break;
-								default:
-									break;
-							}
-
-						}
-						else if (gedoe.LidType == LidTypeEnum.Leiding)
-						{
-							if (gedoe.NationaleFuncties.Contains(FunctieEnum.Vb)) ++aansluiting.Vb;
-							else if (gedoe.NationaleFuncties.Contains(FunctieEnum.Proost)) ++aansluiting.Proost;
-							else if (persoon.Geslacht == (int)GeslachtsEnum.Man) ++aansluiting.LeidingJ;
-							else if (persoon.Geslacht == (int)GeslachtsEnum.Vrouw) ++aansluiting.LeidingM;
-						}
-
-						// Lid toevoegen aan datacontext, en bewaren.
-
-						db.AddToLid(lid);
+						// Om zodadelijk geen conflicten te krijgen, gaan we dat
+						// al eens bewaren.
 
 						db.SaveChanges();
-
-						feedback=String.Format("Persoon met AD-nr. {0} ingeschreven als lid voor {1} in {2}", adNummer,
-										gedoe.StamNummer, gedoe.WerkJaar);
 					}
 
-				}
+					// Als de laatste aansluiting nog niet doorgeboekt is, dan gaat het
+					// nieuwe lid gewoon bij die laatste aansluiting.
 
+					// Is er nog geen laatste aansluiting, of was de laatste wel
+					// doorgeboekt, dan maken we er een nieuwe.
+
+					if (aansluiting == null || aansluiting.REKENING.DOORGEBOE != "N")
+					{
+						// Creeer nieuwe aansluiting, en meteen ook een rekening.
+						// Die rekening mag nog leeg zijn; kipadmin berekent de
+						// bedragen bij het overzetten van de factuur.
+
+						volgNummer = (aansluiting == null ? 1 : aansluiting.VolgNummer + 1);
+
+						var rekening = new Rekening
+						               	{
+						               		WERKJAAR = (short) gedoe.WerkJaar,
+						               		TYPE = "F",
+						               		REK_BRON = "AANSLUIT",
+						               		STAMNR = gedoe.StamNummer,
+						               		VERWIJSNR = volgNummer,
+						               		FACTUUR = "N",
+						               		FACTUUR2 = "N",
+						               		DOORGEBOE = "N",
+						               		DAT_REK = DateTime.Now
+						               	};
+
+						aansluiting = new Aansluiting
+						              	{
+						              		RibbelsJ = 0,
+						              		RibbelsM = 0,
+						              		SpeelClubJ = 0,
+						              		SpeelClubM = 0,
+						              		RakwisJ = 0,
+						              		RakwisM = 0,
+						              		TitosJ = 0,
+						              		TitosM = 0,
+						              		KetisJ = 0,
+						              		KetisM = 0,
+						              		AspisJ = 0,
+						              		AspisM = 0,
+						              		LeidingJ = 0,
+						              		LeidingM = 0,
+						              		Proost = 0,
+						              		Vb = 0,
+						              		Freelance = 0,
+						              		AansluitingID = 0,
+						              		Groep = groep,
+						              		Noot = null,
+						              		REKENING = rekening,
+						              		SolidariteitsBijdrage = 0,
+						              		VolgNummer = volgNummer,
+						              		Datum = DateTime.Now,
+						              		WerkJaar = gedoe.WerkJaar
+						              	};
+
+						db.AddToRekeningSet(rekening);
+						db.AddToAansluiting(aansluiting);
+					}
+
+					// aansluiting bevat nu het aansluitingsrecord waaraan het lid
+					// toegevoegd kan worden.
+
+					// aansluitingsdatum is datum aansluiting eerste lid dat binnen komt.
+					// (De groep kan er niet aan doen dat er niet constant gefactureerd wordt)
+
+					aansluiting.Stempel = DateTime.Now;
+					aansluiting.Wijze = "G";
+
+					lid = new Lid
+					      	{
+					      		AANSL_NR = (short) volgNummer,
+					      		AANTAL_JA = (short) aantalJaren,
+					      		ACTIEF = "J",
+					      		AFDELING1 = null,
+					      		AFDELING2 = null,
+					      		Groep = groep,
+					      		HeeftFunctie = null,
+					      		MAILING_TOEVOEG = null,
+					      		Persoon = persoon,
+					      		SOORT = gedoe.LidType == LidTypeEnum.Kind ? "LI" : "LE",
+					      		STATUS = null,
+					      		STEMPEL = DateTime.Now,
+					      		VERZ_NR = 0,
+					      		WEB_TOEVOEG = null,
+					      		werkjaar = gedoe.WerkJaar
+					      	};
+
+					// 2 afdelingen kunnen we overnemen.
+
+					if (gedoe.OfficieleAfdelingen.Count() >= 1)
+					{
+						int afdid = (int) gedoe.OfficieleAfdelingen.First();
+						lid.AFDELING1 = (from a in db.AfdelingSet
+						                 where a.AFD_ID == afdid
+						                 select a.AFD_NAAM).FirstOrDefault();
+					}
+
+					if (gedoe.OfficieleAfdelingen.Count() >= 2)
+					{
+						int afdid = (int) gedoe.OfficieleAfdelingen.Skip(1).First();
+						lid.AFDELING2 = (from a in db.AfdelingSet
+						                 where a.AFD_ID == afdid
+						                 select a.AFD_NAAM).FirstOrDefault();
+					}
+
+					// Functies
+
+					var toeTeKennen =
+						db.FunctieSet.Where(Utility.BuildContainsExpression<Functie, int>(
+							f => f.id,
+							gedoe.NationaleFuncties.Cast<int>()));
+
+					foreach (var functie in toeTeKennen)
+					{
+						var hf = new HeeftFunctie
+						         	{
+						         		Lid = lid,
+						         		Functie = functie
+						         	};
+						db.AddToHeeftFunctieSet(hf);
+					}
+
+					// Domme telling in aansluitingslijn
+
+					if (gedoe.LidType == LidTypeEnum.Kind && persoon.Geslacht == (int) GeslachtsEnum.Man)
+					{
+						switch (gedoe.OfficieleAfdelingen.First())
+						{
+							case AfdelingEnum.Ribbels:
+								++aansluiting.RibbelsJ;
+								break;
+							case AfdelingEnum.Speelclub:
+								++aansluiting.SpeelClubJ;
+								break;
+							case AfdelingEnum.Rakwis:
+								++aansluiting.RakwisJ;
+								break;
+							case AfdelingEnum.Titos:
+								++aansluiting.TitosJ;
+								break;
+							case AfdelingEnum.Ketis:
+								++aansluiting.KetisJ;
+								break;
+							case AfdelingEnum.Aspis:
+								++aansluiting.AspisJ;
+								break;
+							default:
+								break;
+						}
+					}
+					else if (gedoe.LidType == LidTypeEnum.Kind && persoon.Geslacht == (int) GeslachtsEnum.Vrouw)
+					{
+						switch (gedoe.OfficieleAfdelingen.First())
+						{
+							case AfdelingEnum.Ribbels:
+								++aansluiting.RibbelsM;
+								break;
+							case AfdelingEnum.Speelclub:
+								++aansluiting.SpeelClubM;
+								break;
+							case AfdelingEnum.Rakwis:
+								++aansluiting.RakwisM;
+								break;
+							case AfdelingEnum.Titos:
+								++aansluiting.TitosM;
+								break;
+							case AfdelingEnum.Ketis:
+								++aansluiting.KetisM;
+								break;
+							case AfdelingEnum.Aspis:
+								++aansluiting.AspisM;
+								break;
+							default:
+								break;
+						}
+					}
+					else if (gedoe.LidType == LidTypeEnum.Leiding)
+					{
+						if (gedoe.NationaleFuncties.Contains(FunctieEnum.Vb)) ++aansluiting.Vb;
+						else if (gedoe.NationaleFuncties.Contains(FunctieEnum.Proost)) ++aansluiting.Proost;
+						else if (persoon.Geslacht == (int) GeslachtsEnum.Man) ++aansluiting.LeidingJ;
+						else if (persoon.Geslacht == (int) GeslachtsEnum.Vrouw) ++aansluiting.LeidingM;
+					}
+
+					// Lid toevoegen aan datacontext, en bewaren.
+
+					db.AddToLid(lid);
+
+					db.SaveChanges();
+
+					feedback = String.Format("Persoon met AD-nr. {0} ingeschreven als lid voor {1} in {2}", adNummer,
+					                         gedoe.StamNummer, gedoe.WerkJaar);
+				}
 			}
 			_log.Log(groep == null ? 0 : groep.GroepID, feedback);
 		}
@@ -882,10 +840,7 @@ namespace Chiro.Kip.Services
 				// locking gebeurt niet helemaal juist.  Maar uiteindelijk ga ik toch geen
 				// meerdere threads gebruiken.
 
-				lock (_persoonManipulerenToken)
-				{
-					lid = mgr.LidZoeken(zoekInfo, stamNummer, werkJaar, db);
-				}
+				lid = mgr.LidZoeken(zoekInfo, stamNummer, werkJaar, db);
 
 				if (lid == null)
 				{
@@ -896,47 +851,42 @@ namespace Chiro.Kip.Services
 						stamNummer,
 						werkJaar));
 				}
+				// pragmatisch: eerst bestaande functies verwijderen.
 
-				lock (_ledenToken)
+				foreach (var hf in lid.HeeftFunctie)
 				{
-					// pragmatisch: eerst bestaande functies verwijderen.
+					db.DeleteObject(hf);
+				}
+				db.SaveChanges();
+				feedback.AppendLine(String.Format(
+					"Functies verwijderd van ID{0} {1} {2} AD{3}",
+					lid.Persoon.GapID,
+					lid.Persoon.VoorNaam,
+					lid.Persoon.Naam,
+					lid.Persoon.AdNummer));
 
-					foreach (var hf in lid.HeeftFunctie)
-					{
-						db.DeleteObject(hf);
-					}
-					db.SaveChanges();
+
+				var toeTeKennen = db.FunctieSet.Where(Utility.BuildContainsExpression<Functie, int>(
+					f => f.id,
+					functies.Cast<int>()));
+
+				foreach (var functie in toeTeKennen)
+				{
+					var hf = new HeeftFunctie
+					         	{
+					         		Lid = lid,
+					         		Functie = functie
+					         	};
+					db.AddToHeeftFunctieSet(hf);
 					feedback.AppendLine(String.Format(
-						"Functies verwijderd van ID{0} {1} {2} AD{3}",
+						"Functie toegekend aan ID{0} {1} {2} AD{3}: {4}",
 						lid.Persoon.GapID,
 						lid.Persoon.VoorNaam,
 						lid.Persoon.Naam,
-						lid.Persoon.AdNummer));
-
-
-					var toeTeKennen = db.FunctieSet.Where(Utility.BuildContainsExpression<Functie, int>(
-						f => f.id,
-						functies.Cast<int>()));
-
-					foreach (var functie in toeTeKennen)
-					{
-						var hf = new HeeftFunctie
-						         	{
-						         		Lid = lid,
-						         		Functie = functie
-						         	};
-						db.AddToHeeftFunctieSet(hf);
-						feedback.AppendLine(String.Format(
-							"Functie toegekend aan ID{0} {1} {2} AD{3}: {4}",
-							lid.Persoon.GapID,
-							lid.Persoon.VoorNaam,
-							lid.Persoon.Naam,
-							lid.Persoon.AdNummer,
-							functie.CODE));
-					}
-					db.SaveChanges();
-
+						lid.Persoon.AdNummer,
+						functie.CODE));
 				}
+				db.SaveChanges();
 			}
 			_log.Log(0, feedback.ToString());
 		}
@@ -970,10 +920,7 @@ namespace Chiro.Kip.Services
 				// locking gebeurt niet helemaal juist.  Maar uiteindelijk ga ik toch geen
 				// meerdere threads gebruiken.
 
-				lock (_persoonManipulerenToken)
-				{
-					lid = mgr.LidZoeken(zoekInfo, stamNummer, werkJaar, db);
-				}
+				lid = mgr.LidZoeken(zoekInfo, stamNummer, werkJaar, db);
 
 				if (lid == null)
 				{
@@ -1032,10 +979,7 @@ namespace Chiro.Kip.Services
 				// locking gebeurt niet helemaal juist.  Maar uiteindelijk ga ik toch geen
 				// meerdere threads gebruiken.
 
-				lock (_persoonManipulerenToken)
-				{
-					lid = mgr.LidZoeken(zoekInfo, stamNummer, werkJaar, db);
-				}
+				lid = mgr.LidZoeken(zoekInfo, stamNummer, werkJaar, db);
 
 				if (lid == null)
 				{
@@ -1046,43 +990,37 @@ namespace Chiro.Kip.Services
 						stamNummer,
 						werkJaar));
 				}
-
-				lock (_ledenToken)
+				if (afdelingen.Count() >= 1)
 				{
-					if (afdelingen.Count() >= 1)
-					{
-						int afdid = (int) afdelingen.First();
-						lid.AFDELING1 = (from a in db.AfdelingSet
-						                 where a.AFD_ID == afdid
-						                 select a.AFD_NAAM).FirstOrDefault();
-					}
-					else
-					{
-						lid.AFDELING1 = null;
-					}
-
-					if (afdelingen.Count() >= 2)
-					{
-						int afdid = (int) afdelingen.Skip(1).First();
-						lid.AFDELING2 = (from a in db.AfdelingSet
-						                 where a.AFD_ID == afdid
-						                 select a.AFD_NAAM).FirstOrDefault();
-					}
-					else
-					{
-						lid.AFDELING2 = null;
-					}
-
-					db.SaveChanges();
-					feedback.AppendLine(String.Format(
-						"Afdelingen van ID{0} {1} {2} AD{3}: {4} {5}",
-						lid.Persoon.GapID,
-						lid.Persoon.VoorNaam,
-						lid.Persoon.Naam,
-						lid.Persoon.AdNummer, lid.AFDELING1, lid.AFDELING2));
-
+					int afdid = (int) afdelingen.First();
+					lid.AFDELING1 = (from a in db.AfdelingSet
+					                 where a.AFD_ID == afdid
+					                 select a.AFD_NAAM).FirstOrDefault();
+				}
+				else
+				{
+					lid.AFDELING1 = null;
 				}
 
+				if (afdelingen.Count() >= 2)
+				{
+					int afdid = (int) afdelingen.Skip(1).First();
+					lid.AFDELING2 = (from a in db.AfdelingSet
+					                 where a.AFD_ID == afdid
+					                 select a.AFD_NAAM).FirstOrDefault();
+				}
+				else
+				{
+					lid.AFDELING2 = null;
+				}
+
+				db.SaveChanges();
+				feedback.AppendLine(String.Format(
+					"Afdelingen van ID{0} {1} {2} AD{3}: {4} {5}",
+					lid.Persoon.GapID,
+					lid.Persoon.VoorNaam,
+					lid.Persoon.Naam,
+					lid.Persoon.AdNummer, lid.AFDELING1, lid.AFDELING2));
 			}
 			_log.Log(0, feedback.ToString());
 		}
@@ -1099,93 +1037,90 @@ namespace Chiro.Kip.Services
 		{
 			ChiroGroep groep = null;
 			string feedback = String.Empty;
-			lock (_abonnementenToken)
+			using (var db = new kipadminEntities())
 			{
-				using (var db = new kipadminEntities())
+				// Heeft de persoon toevallig al een abonnement voor het gegeven werkjaar?
+
+				var abonnement = (from ab in db.Abonnement
+				                  where ab.kipPersoon.AdNummer == adNummer && ab.werkjaar == werkJaar
+				                  select ab).FirstOrDefault();
+
+				if (abonnement == null)
 				{
-					// Heeft de persoon toevallig al een abonnement voor het gegeven werkjaar?
+					// We doen enkel verder als er nog geen abonnement is.
 
-					var abonnement = (from ab in db.Abonnement
-					                  where ab.kipPersoon.AdNummer == adNummer && ab.werkjaar == werkJaar
-					                  select ab).FirstOrDefault();
+					// Haal groep en persoon op.
 
-					if (abonnement == null)
+					groep = (from g in db.Groep.OfType<ChiroGroep>()
+					         where g.STAMNR == stamNummer
+					         select g).FirstOrDefault();
+
+					var persoon = (from p in db.PersoonSet
+					               where p.AdNummer == adNummer
+					               select p).FirstOrDefault();
+
+					// Bestaat er al een niet-doorgeboekte rekening voor Dubbelpunt voor het gegeven
+					// groepswerkjaar?
+
+					var rekening = (from f in db.RekeningSet
+					                where f.WERKJAAR == werkJaar && f.REK_BRON == "DP" && f.DOORGEBOE == "N"
+					                      && f.STAMNR == stamNummer
+					                select f).FirstOrDefault();
+
+					if (rekening == null)
 					{
-						// We doen enkel verder als er nog geen abonnement is.
-
-						// Haal groep en persoon op.
-
-						groep = (from g in db.Groep.OfType<ChiroGroep>()
-						             where g.STAMNR == stamNummer
-						             select g).FirstOrDefault();
-
-						var persoon = (from p in db.PersoonSet
-						               where p.AdNummer == adNummer
-						               select p).FirstOrDefault();
-
-						// Bestaat er al een niet-doorgeboekte rekening voor Dubbelpunt voor het gegeven
-						// groepswerkjaar?
-
-						var rekening = (from f in db.RekeningSet
-						                where f.WERKJAAR == werkJaar && f.REK_BRON == "DP" && f.DOORGEBOE == "N"
-								&& f.STAMNR == stamNummer
-						                select f).FirstOrDefault();
-
-						if (rekening == null)
-						{
-							// Nog geen rekening; maak er een nieuwe
-							rekening = new Rekening
-							               	{
-							               		WERKJAAR = (short) werkJaar,
-							               		TYPE = "F",
-							               		REK_BRON = "DP",
-							               		STAMNR = stamNummer,
-							               		VERWIJSNR = 0,
-							               		FACTUUR = "N",
-							               		FACTUUR2 = "N",
-							               		DOORGEBOE = "N",
-							               		DAT_REK = DateTime.Now,
-										STEMPEL = DateTime.Now
-							               	};
-							db.AddToRekeningSet(rekening);
-						}
-
-						abonnement = new Abonnement
-						             	{
-						             		werkjaar = werkJaar,
-						             		UITG_CODE = "DP",
-						             		Groep = groep,
-						             		GRATIS = "N",
-						             		REKENING = rekening,
-						             		AANVR_DAT = DateTime.Now,
-						             		STEMPEL = DateTime.Now,
-						             		kipPersoon = persoon,
-						             		EXEMPLAAR = 1,
-						             		AANT_EXEM = 1,
-						             		BESTELD1 = "J",
-						             		BESTELD2 = "J",
-						             		BESTELD3 = "J",
-						             		BESTELD4 = "J",
-						             		BESTELD5 = "J",
-						             		BESTELD6 = "J",
-						             		BESTELD7 = "J",
-						             		BESTELD8 = "J",
-						             		BESTELD9 = "J",
-						             		BESTELD10 = "J",
-						             		BESTELD11 = "J",
-						             		BESTELD12 = "J",
-						             		BESTELD13 = "J",
-						             		BESTELD14 = "J",
-						             		BESTELD15 = "J"
-						             	};
-
-						db.AddToAbonnement(abonnement);
-						db.SaveChanges();
-
-						feedback = String.Format(
-							"Dubbelpuntabonnement voor {0} {1} AD{2}, rekening {3}",
-							persoon.VoorNaam, persoon.Naam, persoon.AdNummer, rekening.NR);
+						// Nog geen rekening; maak er een nieuwe
+						rekening = new Rekening
+						           	{
+						           		WERKJAAR = (short) werkJaar,
+						           		TYPE = "F",
+						           		REK_BRON = "DP",
+						           		STAMNR = stamNummer,
+						           		VERWIJSNR = 0,
+						           		FACTUUR = "N",
+						           		FACTUUR2 = "N",
+						           		DOORGEBOE = "N",
+						           		DAT_REK = DateTime.Now,
+						           		STEMPEL = DateTime.Now
+						           	};
+						db.AddToRekeningSet(rekening);
 					}
+
+					abonnement = new Abonnement
+					             	{
+					             		werkjaar = werkJaar,
+					             		UITG_CODE = "DP",
+					             		Groep = groep,
+					             		GRATIS = "N",
+					             		REKENING = rekening,
+					             		AANVR_DAT = DateTime.Now,
+					             		STEMPEL = DateTime.Now,
+					             		kipPersoon = persoon,
+					             		EXEMPLAAR = 1,
+					             		AANT_EXEM = 1,
+					             		BESTELD1 = "J",
+					             		BESTELD2 = "J",
+					             		BESTELD3 = "J",
+					             		BESTELD4 = "J",
+					             		BESTELD5 = "J",
+					             		BESTELD6 = "J",
+					             		BESTELD7 = "J",
+					             		BESTELD8 = "J",
+					             		BESTELD9 = "J",
+					             		BESTELD10 = "J",
+					             		BESTELD11 = "J",
+					             		BESTELD12 = "J",
+					             		BESTELD13 = "J",
+					             		BESTELD14 = "J",
+					             		BESTELD15 = "J"
+					             	};
+
+					db.AddToAbonnement(abonnement);
+					db.SaveChanges();
+
+					feedback = String.Format(
+						"Dubbelpuntabonnement voor {0} {1} AD{2}, rekening {3}",
+						persoon.VoorNaam, persoon.Naam, persoon.AdNummer, rekening.NR);
 				}
 			}
 			_log.Log((groep == null ? 0 : groep.GroepID), feedback);
@@ -1219,97 +1154,95 @@ namespace Chiro.Kip.Services
 		{
 			ChiroGroep groep = null;
 			string feedback = String.Empty;
-			lock (_verzekeringToken)
+			using (var db = new kipadminEntities())
 			{
-				using (var db = new kipadminEntities())
+				// TODO (#755): Nakijken of de persoon in kwestie nog niet verzekerd is.
+
+				// Haal groep op.
+
+				groep = (from g in db.Groep.OfType<ChiroGroep>()
+				         where g.STAMNR == stamNummer
+				         select g).FirstOrDefault();
+
+				int volgNummer = 1;
+
+				// Zoek eerst naar een geschikte lijn in ExtraVerzekering die we
+				// kunnen recupereren voor deze verzekering.
+
+				var extraVerzDitWerkjaar = (from v in db.ExtraVerzekering.Include(verz => verz.REKENING)
+				                            where v.WerkJaar == werkJaar
+				                                  && v.Groep.GroepID == groep.GroepID
+				                            select v).OrderByDescending(vv => vv.VolgNummer);
+
+				// Laatste opzoeken
+
+				var verzekering = extraVerzDitWerkjaar.FirstOrDefault();
+
+				// Als de laatste verzekering een niet-doorgeboekte rekening heeft,
+				// komt deze persoon er gewoon bij.  Is er nog geen laatste verzekering,
+				// of is de rekening al wel doorgeboekt, dan maken we er een nieuwe.
+
+				if (verzekering == null || verzekering.REKENING.DOORGEBOE != "N")
 				{
-					// TODO (#755): Nakijken of de persoon in kwestie nog niet verzekerd is.
+					volgNummer = (verzekering == null ? 1 : verzekering.VolgNummer + 1);
+					// Bedragen rekening mogen leeg zijn; worden aangevuld bij factuur
+					// overzetten in Kipadmin.
 
-					// Haal groep op.
+					var rekening = new Rekening
+					               	{
+					               		WERKJAAR = (short) werkJaar,
+					               		TYPE = "F",
+					               		REK_BRON = "U_VERZEK",
+					               		STAMNR = stamNummer,
+					               		VERWIJSNR = volgNummer,
+					               		FACTUUR = "N",
+					               		FACTUUR2 = "N",
+					               		DOORGEBOE = "N",
+					               		DAT_REK = DateTime.Now
+					               	};
 
-					groep = (from g in db.Groep.OfType<ChiroGroep>()
-						     where g.STAMNR == stamNummer
-						     select g).FirstOrDefault();
-					
-					int volgNummer = 1;
+					verzekering = new ExtraVerzekering
+					              	{
+					              		Datum = DateTime.Now,
+					              		DoodInvaliditeit = null,
+					              		ExtraVerzekeringID = 0,
+					              		Groep = groep,
+					              		LoonVerlies = 0,
+					              		Noot = String.Empty,
+					              		REKENING = rekening,
+					              		VolgNummer = volgNummer,
+					              		WerkJaar = werkJaar
+					              	};
 
-					// Zoek eerst naar een geschikte lijn in ExtraVerzekering die we
-					// kunnen recupereren voor deze verzekering.
-
-					var extraVerzDitWerkjaar = (from v in db.ExtraVerzekering.Include(verz => verz.REKENING)
-					                            where v.WerkJaar == werkJaar
-					                                  && v.Groep.GroepID == groep.GroepID
-					                            select v).OrderByDescending(vv => vv.VolgNummer);
-
-					// Laatste opzoeken
-
-					var verzekering = extraVerzDitWerkjaar.FirstOrDefault();
-
-					// Als de laatste verzekering een niet-doorgeboekte rekening heeft,
-					// komt deze persoon er gewoon bij.  Is er nog geen laatste verzekering,
-					// of is de rekening al wel doorgeboekt, dan maken we er een nieuwe.
-
-					if (verzekering == null || verzekering.REKENING.DOORGEBOE != "N")
-					{
-						volgNummer = (verzekering == null ? 1 : verzekering.VolgNummer + 1);
-						// Bedragen rekening mogen leeg zijn; worden aangevuld bij factuur
-						// overzetten in Kipadmin.
-
-						var rekening = new Rekening
-						               	{
-						               		WERKJAAR = (short) werkJaar,
-						               		TYPE = "F",
-						               		REK_BRON = "U_VERZEK",
-						               		STAMNR = stamNummer,
-						               		VERWIJSNR = volgNummer,
-						               		FACTUUR = "N",
-						               		FACTUUR2 = "N",
-						               		DOORGEBOE = "N",
-						               		DAT_REK = DateTime.Now
-						               	};
-
-						verzekering = new ExtraVerzekering
-						              	{
-						              		Datum = DateTime.Now,
-						              		DoodInvaliditeit = null,
-						              		ExtraVerzekeringID = 0,
-						              		Groep = groep,
-						              		LoonVerlies = 0,
-						              		Noot = String.Empty,
-						              		REKENING = rekening,
-						              		VolgNummer = volgNummer,
-						              		WerkJaar = werkJaar
-						              	};
-
-						db.AddToRekeningSet(rekening);
-						db.AddToExtraVerzekering(verzekering);
-					}
-
-					// verzekering bevat nu het verzekeringsrecord waarbij de nieuwe
-					// persoon opgeteld kan worden.
-
-					// In de 'noot' van het verzekeringsrecord bewaren we
-					// comma-separated de AD-nummers van verzekerde personen.
-					// TODO (#755): Dat is natuurlijk niet zo goed.
-					verzekering.Noot = String.Format(
-						"{0},{1}",
-						verzekering.Noot,
-						adNummer);
-					verzekering.Stempel = DateTime.Now;
-					verzekering.Wijze = "G";
-					++verzekering.LoonVerlies;
-
-					db.SaveChanges();
-
-					feedback = String.Format(
-						"Persoon met AD-nr. {0} verzekerd tegen loonverlies voor {1} in {2}",
-						adNummer,
-						stamNummer,
-						werkJaar);
+					db.AddToRekeningSet(rekening);
+					db.AddToExtraVerzekering(verzekering);
 				}
+
+				// verzekering bevat nu het verzekeringsrecord waarbij de nieuwe
+				// persoon opgeteld kan worden.
+
+				// In de 'noot' van het verzekeringsrecord bewaren we
+				// comma-separated de AD-nummers van verzekerde personen.
+				// TODO (#755): Dat is natuurlijk niet zo goed.
+				verzekering.Noot = String.Format(
+					"{0},{1}",
+					verzekering.Noot,
+					adNummer);
+				verzekering.Stempel = DateTime.Now;
+				verzekering.Wijze = "G";
+				++verzekering.LoonVerlies;
+
+				db.SaveChanges();
+
+				feedback = String.Format(
+					"Persoon met AD-nr. {0} verzekerd tegen loonverlies voor {1} in {2}",
+					adNummer,
+					stamNummer,
+					werkJaar);
 			}
 			_log.Log(groep == null ? 0 : groep.GroepID, feedback);
 		}
+
 		/// <summary>
 		/// Verzekert een persoon zonder AD-nummer tegen loonverlies voor werkjaar
 		/// <paramref name="werkJaar"/>.  De groep met stamnummer <paramref name="stamNummer"/> betaalt.
@@ -1342,51 +1275,48 @@ namespace Chiro.Kip.Services
 			var communicatieMiddelen = details.Communicatie;
 
 			Mapper.CreateMap<Persoon, PersoonZoekInfo>()
-			    .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int)src.Geslacht))
-			    .ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
+				.ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int) src.Geslacht))
+				.ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
 
 			Mapper.CreateMap<Persoon, KipPersoon>()
-			    .ForMember(dst => dst.AdNummer, opt => opt.Ignore())
-			    .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int)src.Geslacht))
-			    .ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
+				.ForMember(dst => dst.AdNummer, opt => opt.Ignore())
+				.ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int) src.Geslacht))
+				.ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
 
-			Chiro.Kip.Data.Persoon gevonden; 
+			Chiro.Kip.Data.Persoon gevonden;
 
 			// Doe eigenlijk hetzelfde als bij PersoonUpdaten, maar in dit geval hebben we meer info
 			// om bestaande personen op te zoeken.
 
-			lock (_persoonManipulerenToken)
+			using (var db = new kipadminEntities())
 			{
-				using (var db = new kipadminEntities())
+				var mgr = new PersonenManager();
+				var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(persoon);
+				if (communicatieMiddelen != null)
 				{
-					var mgr = new PersonenManager();
-					var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(persoon);
-					if (communicatieMiddelen != null)
-					{
-						zoekInfo.Communicatie = (from cm in communicatieMiddelen select cm.Waarde).ToArray();
-					}
-
-					if (adres != null)
-					{
-						zoekInfo.PostNr = adres.PostNr;
-					}
-
-					// Zoek of maak gevraagde persoon
-					gevonden = mgr.Zoeken(zoekInfo, true, db);
-
-					// Neem nieuwe gegevens over
-					Mapper.Map(persoon, gevonden);
-					db.SaveChanges();
+					zoekInfo.Communicatie = (from cm in communicatieMiddelen select cm.Waarde).ToArray();
 				}
+
+				if (adres != null)
+				{
+					zoekInfo.PostNr = adres.PostNr;
+				}
+
+				// Zoek of maak gevraagde persoon
+				gevonden = mgr.Zoeken(zoekInfo, true, db);
+
+				// Neem nieuwe gegevens over
+				Mapper.Map(persoon, gevonden);
+				db.SaveChanges();
 			}
 			// Als er geen AD-nummer was, dan heeft de SaveChanges er voor ons eentje gemaakt.
 			Debug.Assert(gevonden.AdNummer > 0);
 
 			string feedback = String.Format(
-				"Nieuwe persoon bewaard: ID{0} {1} {2} AD{3}", 
-				persoon.ID, 
-				persoon.VoorNaam, 
-				persoon.Naam, 
+				"Nieuwe persoon bewaard: ID{0} {1} {2} AD{3}",
+				persoon.ID,
+				persoon.VoorNaam,
+				persoon.Naam,
 				gevonden.AdNummer);
 
 			// AD-nummer overnemen in persoon en GAP
@@ -1397,7 +1327,7 @@ namespace Chiro.Kip.Services
 			{
 				StandaardAdresBewaren(
 					adres,
-					new Bewoner[] { new Bewoner { Persoon = persoon, AdresType = adresType } });
+					new Bewoner[] {new Bewoner {Persoon = persoon, AdresType = adresType}});
 			}
 
 			AlleCommunicatieBewaren(persoon, communicatieMiddelen);
@@ -1405,7 +1335,5 @@ namespace Chiro.Kip.Services
 
 			return gevonden.AdNummer;
 		}
-	
-	
 	}
 }
