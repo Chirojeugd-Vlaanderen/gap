@@ -1,0 +1,212 @@
+\documentclass[chiro,pdf]{prosper}
+\usepackage{url}
+\usepackage{sfmath}  % sans serif in math mode.
+
+% Toegegeven, LaTeX is misschien niet de meest laagdrempelige manier
+% om slides te maken, maar het laat zich wel heel gemakkelijk
+% in versiecontrole gieten.
+
+
+\title{GroepsAdministratieProgramma}
+\author{Introductie, stand van zaken en demo}
+\email{informatica@chiro.be}
+\institution{
+	Chirojeugd Vlaanderen \\
+	Kipdorp 30 \\
+	2000 Antwerpen
+}
+
+\slideCaption{\textit{Introductie, stand van zaken en demo}}
+\Logo{\includegraphics[height=15mm]{images/logo.eps}}
+
+
+\begin{document}
+
+\maketitle
+
+%
+% OVERZICHT
+%
+
+\overlays{7}
+{
+\begin{slide}{Overzicht}
+
+\begin{itemstep}
+\item Afbakening project
+\item Demonstratie
+\item Wat verandert er in Kipadmin?
+\item Ondersteuning voor de groepen
+\item Een aantal cijfers
+\item `Hete' problemen
+\item Vragen
+\end{itemstep}
+
+\end{slide}
+}
+
+%
+% PROJECTAFBAKENING
+%
+
+\overlays{6}
+{
+\begin{slide}{Projectafbakening}
+
+De functionaliteit van het nieuwe programma wordt teruggebracht tot de essentie:
+\begin{itemstep}
+\item Beheer van leden voor de groep
+\item Aansluiten van leden en leiding
+\item Verzekering loonverlies
+\item Dubbelpuntabonnementen
+\item Bivakaangifte
+\item E-mailadressen in en uit maillijsten
+\end{itemstep}
+
+\end{slide}
+}
+
+%
+% DEMO
+%
+
+\overlays{12}
+{
+\begin{slide}{Demo}
+
+\begin{itemize}
+\item Webtoepassing: \url{https://gap.chiro.be}
+\onlySlide*{2}
+{
+\begin{itemize}
+\item geen installatie nodig
+\item meerdere personen kunnen tegelijk werken
+\item platformonafhankelijk (Windows, Linux, Mac, \ldots)
+\end{itemize}
+}
+\fromSlide{3}{\item Initi\"ele gegevens}
+\fromSlide{4}{\item Personen en ingeschreven leden en leiding}
+\fromSlide{5}{\item Automatische jaarovergang en afdelingensysteem}
+\fromSlide{6}{\item Personen in- en uitschrijven; probeerperiode}
+\fromSlide{7}{\item Lijsten en etiketten via Excel}
+\fromSlide{8}{\item Adressensysteem}
+\onlySlide*{9}{
+\begin{itemize}
+\item meerdere adressen per persoon
+\item ingebouwde stratenlijst
+\end{itemize}
+}
+\fromSlide{10}{\item Gezinnen beheren}
+\onlySlide*{11}{
+\begin{itemize}
+\item broertjes en zusjes maken
+\item een heel gezin tegelijk verhuizen
+\end{itemize}
+}
+\fromSlide{12}{\item Eigen categorie\"en en functies}
+\end{itemize}
+
+\end{slide}
+}
+
+
+%
+% WAT VERANDERT ER IN KIPADMIN
+%
+
+\overlays{7}
+{
+\begin{slide}{Wat verandert er in Kipadmin?}
+
+\begin{itemize}
+\fromSlide{2}{\item Automatische aanmaak van `aansluitingen' voor leden waarvan de probeerperiode voorbij is}
+\fromSlide{3}{\item Wijzigingen van naam, adres, geboortedatum, telefoonnummer, \ldots van personen met AD-nummer, komen (quasi) direct door}
+\fromSlide{4}{\item Dubbelpuntabonnementen en verzekering loonverlies komen (quasi) direct door}
+\fromSlide{5} {\item \'Alle leden in Kipadmin; niet enkel keti's en aspi's}
+\fromSlide{6} {\item Aansluitingen en verzekering loonverlies m\'oeten nu via GAP}
+\fromSlide{7} {\item Bijwerken van de stratenlijst zal op het secretariaat moeten gebeuren}
+\end{itemize}
+
+\end{slide}
+}
+
+%
+% ONDERSTEUNING
+%
+
+\overlays{4}
+{
+\begin{slide}{Ondersteuning voor de groepen}
+
+\begin{itemstep}
+\item Ingebouwde handleiding
+\item Chiroforum: \url{http://forum.chiro.be/forum/144}
+\item Helpdesk: {helpdesk@chiro.be}
+\item Telefoon: 03-231 07 95
+\end{itemstep}
+
+\end{slide}
+}
+
+
+%
+% EEN AANTAL CIJFERS
+%
+
+\overlays{4}
+{
+\begin{slide}{Cijfers september 2010}
+
+\begin{itemstep}
+\item Gemiddeld 671 hits op de webserver per uur
+\item Browsers
+\begin{itemize}
+\item Internet Explorer ($42.58 \%$)
+\item Firefox ($34.37 \%$)
+\item Chrome ($12.56 \%$)
+\item Safari ($9.12 \%$)
+\item Opera ($0.98 \%$)
+\end{itemize}
+\item Besturingssystemen
+\begin{itemize}
+\item Windows ($88.57 \%$)
+\item Mac ($9.47 \%$)
+\item Linux ($1.90 \%$)
+\end{itemize}
+\item{351 groepen die jaarovergang uitvoerden}
+\end{itemstep}
+
+\end{slide}
+}
+
+%
+% TODO
+%
+
+\overlays{10}
+{
+\begin{slide}{`Hete' problemen}
+\begin{itemize}
+\fromSlide{3}{\item Gefusioneerde groepen}
+\fromSlide{2}{\item Probleem met sync GAP $\rightarrow$ Kipadmin}
+\fromSlide{2}{\item Probleem met Dubbelpuntfactuur}
+\fromSlide{4}{\item Jaarovergang werkt niet voor sommige groepen}
+\fromSlide{5}{\item Mails tegen einde probeerperiode}
+\fromSlide{6}{\item Gewesten en verbonden}
+\fromSlide{7}{\item Inschrijvingen voor bivak}
+\fromSlide{8}{\item Interface om stratenlijst bij te werken}
+\fromSlide{9}{\item Buitenlandse adressen}
+\fromSlide{10}{\item GAV's bijmaken}
+\end{itemize}
+\end{slide}
+}
+
+
+%
+% VRAGEN
+%
+
+\begin{slide}{Vragen?}
+\end{slide}
+
+\end{document}

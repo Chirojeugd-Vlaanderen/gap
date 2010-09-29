@@ -1,0 +1,7 @@
+Gebruik 'make' om alle pdf's te maken.
+
+Nodige packages onder ubuntu lucid:
+  texlive-latex-base
+  prosper
+  texlive-fonts-recommended
+  texlive-latex-extra (nu ook om sans serif in math mode te kunnen hebben)

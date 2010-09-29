@@ -1,6 +1,6 @@
 # Generic make file for LaTeX: requires GNU make
 
-TEXFILE	= voorstelling.tex stavaza-2010-07.tex
+TEXFILE	= voorstelling.tex stavaza-2010-07.tex demo-2010-09.tex
 
 .PHONY: dvi ps pdf clean
 
