@@ -1,4 +1,4 @@
-create procedure data.spChiroGroepenFusioneren (@werkjaar as int, @stamnr1 as varchar(10), @stamnr2 as varchar(10), @fusiestamnr as varchar(10), @naam as varchar(160)) as
+alter procedure data.spChiroGroepenFusioneren (@werkjaar as int, @stamnr1 as varchar(10), @stamnr2 as varchar(10), @fusiestamnr as varchar(10), @naam as varchar(160)) as
 -- bedoeling: chirogroepen met stamnummers @stamnr1 en @stamnr2 samenvoegen 
 begin
 
@@ -43,6 +43,10 @@ BEGIN
 	SET @groepsWjID = (SELECT GroepsWerkJaarID FROM grp.GroepsWerkJaar gwj 
 					  WHERE gwj.GroepID = @groepID AND gwj.WerkJaar = @werkJaar)
 END
+
+-- Standaardafdelingsverdeling
+
+exec data.spStandaardAfdelingsVerdeling @groepsWjID
 
 -- Personen lieren aan nieuwe groep
 
