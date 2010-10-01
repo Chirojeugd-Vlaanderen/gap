@@ -1,4 +1,4 @@
-INSERT INTO [pers].[CommunicatieType] ([Omschrijving],[IsOptIn],[Validatie],[Voorbeeld]) VALUES ('Telefoonnummer', 0, '^0[1-9]{1,2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$|^04[0-9]{2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$', 'gebruik de vorm 03-123 45 67, 0474-12 34 56 of 070-12 34 56 (dus geen haakjes, puntjes of een schuine streep)');
+INSERT INTO [pers].[CommunicatieType] ([Omschrijving],[IsOptIn],[Validatie],[Voorbeeld]) VALUES ('Telefoonnummer', 0, '^0[0-9]{1,2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$|^04[0-9]{2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$', 'gebruik de vorm 03-123 45 67, 0474-12 34 56 of 070-12 34 56 (dus geen haakjes, puntjes of een schuine streep)');
 GO
 INSERT INTO [pers].[CommunicatieType] ([Omschrijving],[IsOptIn],[Validatie],[Voorbeeld]) VALUES ('Fax', 0, '^0[1-9]{1,2}\-[0-9]{2,3}\s?[0-9]{2}\s?[0-9]{2}$', 'gebruik de vorm 03-232 51 62 (dus geen haakjes, puntjes of een schuine streep)');
 GO
