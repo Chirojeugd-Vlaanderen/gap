@@ -194,14 +194,24 @@ namespace Chiro.Kip.Services
 
 
 				var teVerwijderen =
-					personen.SelectMany(prs => prs.kipWoont).Where(kw => kw.AdresId == adresInDb.ID && kw.VolgNr != 1);
+					personen.SelectMany(prs => prs.kipWoont).Where(kw => kw.kipAdres.ID == adresInDb.ID && kw.VolgNr != 1);
 
-				foreach (var wnt in teVerwijderen.ToArray())
+				if (teVerwijderen.Count() > 0)
 				{
-					db.DeleteObject(wnt);
+					foreach (var wnt in teVerwijderen.ToArray())
+					{
+						db.DeleteObject(wnt);
+					}
+
+					// Als het nieuwe adres al een adres was met een ander volgnummer,
+					// moet dat hier toch al verwijderd worden, om te vermijden dat een persoon
+					// bij het saven tussentijds 2 keer op hetzelfde adres woont
+					// (-> unique index violation)
+
+					db.SaveChanges();
 				}
 
-				// db.SaveChanges();
+
 
 				// TODO: Het adrestype bepalen is iedere keer een linq-expressie, en dus iedere
 				// keer een loop.  Kan dat niet efficienter?

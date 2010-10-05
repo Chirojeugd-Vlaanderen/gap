@@ -173,8 +173,7 @@
         </EntityType>
         <EntityType Name="kipWoont">
           <Key>
-            <PropertyRef Name="AdNr" />
-            <PropertyRef Name="AdresId" />
+            <PropertyRef Name="WoontID" />
           </Key>
           <Property Name="AdNr" Type="int" Nullable="false" />
           <Property Name="AdresId" Type="int" Nullable="false" />
@@ -182,6 +181,7 @@
           <Property Name="Geldig" Type="bit" Nullable="false" />
           <Property Name="GeenMailings" Type="bit" Nullable="false" />
           <Property Name="VolgNr" Type="int" Nullable="false" />
+          <Property Name="WoontID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="REKENING">
           <Key>
@@ -623,14 +623,6 @@
           <EntitySet Name="WoontSet" EntityType="kipadminModel.Woont" />
           <EntitySet Name="Groep" EntityType="kipadminModel.Groep" />
           <EntitySet Name="Lid" EntityType="kipadminModel.Lid" />
-          <AssociationSet Name="FK__kipWoont__AdresI__61915EA7" Association="kipadminModel.FK__kipWoont__AdresI__61915EA7">
-            <End Role="kipAdres" EntitySet="AdresSet" />
-            <End Role="kipWoont" EntitySet="WoontSet" />
-          </AssociationSet>
-          <AssociationSet Name="FK__kipWoont__AdresT__628582E0" Association="kipadminModel.FK__kipWoont__AdresT__628582E0">
-            <End Role="kipAdresType" EntitySet="AdresTypeSet" />
-            <End Role="kipWoont" EntitySet="WoontSet" />
-          </AssociationSet>
           <AssociationSet Name="FK__kipContact__AdNr__6A26A4A8" Association="kipadminModel.FK__kipContact__AdNr__6A26A4A8">
             <End Role="kipPersoon" EntitySet="PersoonSet" />
             <End Role="kipContactInfo" EntitySet="ContactInfoSet" />
@@ -642,10 +634,6 @@
           <AssociationSet Name="FK__kipHeeftF__leidk__424DBD78" Association="kipadminModel.FK__kipHeeftF__leidk__424DBD78">
             <End Role="Lid" EntitySet="Lid" />
             <End Role="kipHeeftFunctie" EntitySet="HeeftFunctieSet" />
-          </AssociationSet>
-          <AssociationSet Name="FK__kipWoont__AdNr__609D3A6E" Association="kipadminModel.FK__kipWoont__AdNr__609D3A6E">
-            <End Role="kipPersoon" EntitySet="PersoonSet" />
-            <End Role="kipWoont" EntitySet="WoontSet" />
           </AssociationSet>
           <AssociationSet Name="FK_Leid_Kad_Persoon" Association="kipadminModel.FK_Leid_Kad_Persoon">
             <End Role="kipPersoon" EntitySet="PersoonSet" />
@@ -684,7 +672,16 @@
           <AssociationSet Name="FK_ExtraVerzekering_Groep" Association="kipadminModel.FK_ExtraVerzekering_Groep">
             <End Role="Groep" EntitySet="Groep" />
             <End Role="ExtraVerzekering" EntitySet="ExtraVerzekering" /></AssociationSet>
-          <EntitySet Name="BerichtSet" EntityType="kipadminModel.Bericht" /></EntityContainer>
+          <EntitySet Name="BerichtSet" EntityType="kipadminModel.Bericht" />
+          <AssociationSet Name="FK__kipWoont__AdresI__61915EA71" Association="kipadminModel.FK__kipWoont__AdresI__61915EA71">
+            <End Role="Adres" EntitySet="AdresSet" />
+            <End Role="Woont" EntitySet="WoontSet" /></AssociationSet>
+          <AssociationSet Name="FK__kipWoont__AdresT__628582E01" Association="kipadminModel.FK__kipWoont__AdresT__628582E01">
+            <End Role="AdresType" EntitySet="AdresTypeSet" />
+            <End Role="Woont" EntitySet="WoontSet" /></AssociationSet>
+          <AssociationSet Name="FK__kipWoont__AdNr__609D3A6E1" Association="kipadminModel.FK__kipWoont__AdNr__609D3A6E1">
+            <End Role="Persoon" EntitySet="PersoonSet" />
+            <End Role="Woont" EntitySet="WoontSet" /></AssociationSet></EntityContainer>
         <EntityType Name="Adres">
           <Key>
             <PropertyRef Name="ID" />
@@ -695,8 +692,7 @@
           <Property Name="PostNr" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
           <Property Name="Gemeente" Type="String" MaxLength="40" Unicode="false" FixedLength="false" />
           <Property Name="Land" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
-          <NavigationProperty Name="kipWoont" Relationship="kipadminModel.FK__kipWoont__AdresI__61915EA7" FromRole="kipAdres" ToRole="kipWoont" />
-        </EntityType>
+          <NavigationProperty Name="kipWoont" Relationship="kipadminModel.FK__kipWoont__AdresI__61915EA71" FromRole="Adres" ToRole="Woont" /></EntityType>
         <EntityType Name="AdresType">
           <Key>
             <PropertyRef Name="ID" />
@@ -704,8 +700,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Omschrijving" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
           <Property Name="Code" Type="String" MaxLength="4" Unicode="false" FixedLength="true" />
-          <NavigationProperty Name="kipWoont" Relationship="kipadminModel.FK__kipWoont__AdresT__628582E0" FromRole="kipAdresType" ToRole="kipWoont" />
-        </EntityType>
+          <NavigationProperty Name="kipWoont" Relationship="kipadminModel.FK__kipWoont__AdresT__628582E01" FromRole="AdresType" ToRole="Woont" /></EntityType>
         <EntityType Name="ContactInfo">
           <Key>
             <PropertyRef Name="ContactInfoId" />
@@ -759,25 +754,21 @@
           <Property Name="GegevensBoekhoudingOvergezet" Type="Boolean" Nullable="false" />
           <Property Name="Stempel" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="kipContactInfo" Relationship="kipadminModel.FK__kipContact__AdNr__6A26A4A8" FromRole="kipPersoon" ToRole="kipContactInfo" />
-          <NavigationProperty Name="kipWoont" Relationship="kipadminModel.FK__kipWoont__AdNr__609D3A6E" FromRole="kipPersoon" ToRole="kipWoont" />
           <NavigationProperty Name="Lid" Relationship="kipadminModel.FK_Leid_Kad_Persoon" FromRole="kipPersoon" ToRole="Lid" />
           <Property Name="GapID" Type="Int32" Nullable="true" />
           <NavigationProperty Name="REKENING" Relationship="kipadminModel.FK_Rekening_Persoon" FromRole="Persoon" ToRole="REKENING" />
-          <NavigationProperty Name="Abonnement" Relationship="kipadminModel.FK_Abonnement_Persoon" FromRole="Persoon" ToRole="Abonnement" /></EntityType>
+          <NavigationProperty Name="Abonnement" Relationship="kipadminModel.FK_Abonnement_Persoon" FromRole="Persoon" ToRole="Abonnement" />
+          <NavigationProperty Name="kipWoont" Relationship="kipadminModel.FK__kipWoont__AdNr__609D3A6E1" FromRole="Persoon" ToRole="Woont" /></EntityType>
         <EntityType Name="Woont">
           <Key>
-            <PropertyRef Name="AdNr" />
-            <PropertyRef Name="AdresId" />
-          </Key>
-          <Property Name="AdNr" Type="Int32" Nullable="false" />
-          <Property Name="AdresId" Type="Int32" Nullable="false" />
+            <PropertyRef Name="WoontID" /></Key>
           <Property Name="Geldig" Type="Boolean" Nullable="false" />
           <Property Name="GeenMailings" Type="Boolean" Nullable="false" />
           <Property Name="VolgNr" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="kipAdres" Relationship="kipadminModel.FK__kipWoont__AdresI__61915EA7" FromRole="kipWoont" ToRole="kipAdres" />
-          <NavigationProperty Name="kipAdresType" Relationship="kipadminModel.FK__kipWoont__AdresT__628582E0" FromRole="kipWoont" ToRole="kipAdresType" />
-          <NavigationProperty Name="kipPersoon" Relationship="kipadminModel.FK__kipWoont__AdNr__609D3A6E" FromRole="kipWoont" ToRole="kipPersoon" />
-          </EntityType>
+          <Property Name="WoontID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="kipAdres" Relationship="kipadminModel.FK__kipWoont__AdresI__61915EA71" FromRole="Woont" ToRole="Adres" />
+          <NavigationProperty Name="kipAdresType" Relationship="kipadminModel.FK__kipWoont__AdresT__628582E01" FromRole="Woont" ToRole="AdresType" />
+          <NavigationProperty Name="kipPersoon" Relationship="kipadminModel.FK__kipWoont__AdNr__609D3A6E1" FromRole="Woont" ToRole="Persoon" /></EntityType>
         <EntityType Name="ChiroGroep" BaseType="kipadminModel.Groep">
           <Property Name="STAMNR" Type="String" Nullable="false" MaxLength="8" Unicode="false" FixedLength="false" />
           <Property Name="SOORT" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="false" />
@@ -857,18 +848,6 @@
           <NavigationProperty Name="Persoon" Relationship="kipadminModel.FK_Leid_Kad_Persoon" FromRole="Lid" ToRole="kipPersoon" />
           <NavigationProperty Name="Groep" Relationship="kipadminModel.fk_Lid_Groep" FromRole="Lid" ToRole="Groep" />
         </EntityType>
-        <Association Name="FK__kipWoont__AdresI__61915EA7">
-          <End Role="kipAdres" Type="kipadminModel.Adres" Multiplicity="1" />
-          <End Role="kipWoont" Type="kipadminModel.Woont" Multiplicity="*" />
-        <ReferentialConstraint>
-            <Principal Role="kipAdres">
-              <PropertyRef Name="ID" /></Principal>
-            <Dependent Role="kipWoont">
-              <PropertyRef Name="AdresId" /></Dependent></ReferentialConstraint></Association>
-        <Association Name="FK__kipWoont__AdresT__628582E0">
-          <End Role="kipAdresType" Type="kipadminModel.AdresType" Multiplicity="1" />
-          <End Role="kipWoont" Type="kipadminModel.Woont" Multiplicity="*" />
-        </Association>
         <Association Name="FK__kipContact__AdNr__6A26A4A8">
           <End Role="kipPersoon" Type="kipadminModel.Persoon" Multiplicity="1" />
           <End Role="kipContactInfo" Type="kipadminModel.ContactInfo" Multiplicity="*" />
@@ -881,14 +860,6 @@
           <End Role="Lid" Type="kipadminModel.Lid" Multiplicity="1" />
           <End Role="kipHeeftFunctie" Type="kipadminModel.HeeftFunctie" Multiplicity="*" />
         </Association>
-        <Association Name="FK__kipWoont__AdNr__609D3A6E">
-          <End Role="kipPersoon" Type="kipadminModel.Persoon" Multiplicity="1" />
-          <End Role="kipWoont" Type="kipadminModel.Woont" Multiplicity="*" />
-        <ReferentialConstraint>
-            <Principal Role="kipPersoon">
-              <PropertyRef Name="AdNummer" /></Principal>
-            <Dependent Role="kipWoont">
-              <PropertyRef Name="AdNr" /></Dependent></ReferentialConstraint></Association>
         <Association Name="FK_Leid_Kad_Persoon">
           <End Role="kipPersoon" Type="kipadminModel.Persoon" Multiplicity="1" />
           <End Role="Lid" Type="kipadminModel.Lid" Multiplicity="*" />
@@ -1062,7 +1033,18 @@
           <Property Name="datum" Type="DateTime" Nullable="false" />
           <Property Name="gebruiker" Type="String" Nullable="false" />
           <Property Name="bericht" Type="String" Nullable="true" />
-          <Property Name="ernstig" Type="Boolean" Nullable="false" /></EntityType></Schema>
+          <Property Name="ernstig" Type="Boolean" Nullable="false" /></EntityType>
+        <Association Name="FK__kipWoont__AdresI__61915EA71">
+          <End Type="kipadminModel.Adres" Role="Adres" Multiplicity="1" />
+          <End Type="kipadminModel.Woont" Role="Woont" Multiplicity="*" />
+          </Association>
+        <Association Name="FK__kipWoont__AdresT__628582E01">
+          <End Type="kipadminModel.AdresType" Role="AdresType" Multiplicity="1" />
+          <End Type="kipadminModel.Woont" Role="Woont" Multiplicity="*" /></Association>
+        <Association Name="FK__kipWoont__AdNr__609D3A6E1">
+          <End Type="kipadminModel.Persoon" Role="Persoon" Multiplicity="1" />
+          <End Type="kipadminModel.Woont" Role="Woont" Multiplicity="*" />
+          </Association></Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1146,8 +1128,7 @@
           <EntitySetMapping Name="WoontSet">
             <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Woont)">
               <MappingFragment StoreEntitySet="kipWoont">
-                <ScalarProperty Name="AdNr" ColumnName="AdNr" />
-                <ScalarProperty Name="AdresId" ColumnName="AdresId" />
+                <ScalarProperty Name="WoontID" ColumnName="WoontID" />
                 <ScalarProperty Name="Geldig" ColumnName="Geldig" />
                 <ScalarProperty Name="GeenMailings" ColumnName="GeenMailings" />
                 <ScalarProperty Name="VolgNr" ColumnName="VolgNr" />
@@ -1231,24 +1212,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="FK__kipWoont__AdresI__61915EA7" TypeName="kipadminModel.FK__kipWoont__AdresI__61915EA7" StoreEntitySet="kipWoont">
-            <EndProperty Name="kipAdres">
-              <ScalarProperty Name="ID" ColumnName="AdresId" />
-            </EndProperty>
-            <EndProperty Name="kipWoont">
-              <ScalarProperty Name="AdNr" ColumnName="AdNr" />
-              <ScalarProperty Name="AdresId" ColumnName="AdresId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__kipWoont__AdresT__628582E0" TypeName="kipadminModel.FK__kipWoont__AdresT__628582E0" StoreEntitySet="kipWoont">
-            <EndProperty Name="kipAdresType">
-              <ScalarProperty Name="ID" ColumnName="AdresTypeId" />
-            </EndProperty>
-            <EndProperty Name="kipWoont">
-              <ScalarProperty Name="AdNr" ColumnName="AdNr" />
-              <ScalarProperty Name="AdresId" ColumnName="AdresId" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="FK__kipContact__AdNr__6A26A4A8" TypeName="kipadminModel.FK__kipContact__AdNr__6A26A4A8" StoreEntitySet="kipContactInfo">
             <EndProperty Name="kipPersoon">
               <ScalarProperty Name="AdNummer" ColumnName="AdNr" />
@@ -1271,15 +1234,6 @@
             </EndProperty>
             <EndProperty Name="kipHeeftFunctie">
               <ScalarProperty Name="id" ColumnName="id" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__kipWoont__AdNr__609D3A6E" TypeName="kipadminModel.FK__kipWoont__AdNr__609D3A6E" StoreEntitySet="kipWoont">
-            <EndProperty Name="kipPersoon">
-              <ScalarProperty Name="AdNummer" ColumnName="AdNr" />
-            </EndProperty>
-            <EndProperty Name="kipWoont">
-              <ScalarProperty Name="AdNr" ColumnName="AdNr" />
-              <ScalarProperty Name="AdresId" ColumnName="AdresId" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="FK_Leid_Kad_Persoon" TypeName="kipadminModel.FK_Leid_Kad_Persoon" StoreEntitySet="Lid">
@@ -1473,7 +1427,22 @@
                 <ScalarProperty Name="bericht" ColumnName="bericht" />
                 <ScalarProperty Name="gebruiker" ColumnName="gebruiker" />
                 <ScalarProperty Name="datum" ColumnName="datum" />
-                <ScalarProperty Name="id" ColumnName="id" /></MappingFragment></EntityTypeMapping></EntitySetMapping></EntityContainerMapping>
+                <ScalarProperty Name="id" ColumnName="id" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <AssociationSetMapping Name="FK__kipWoont__AdresI__61915EA71" TypeName="kipadminModel.FK__kipWoont__AdresI__61915EA71" StoreEntitySet="kipWoont">
+            <EndProperty Name="Woont">
+              <ScalarProperty Name="WoontID" ColumnName="WoontID" /></EndProperty>
+            <EndProperty Name="Adres">
+              <ScalarProperty Name="ID" ColumnName="AdresId" /></EndProperty></AssociationSetMapping>
+          <AssociationSetMapping Name="FK__kipWoont__AdresT__628582E01" TypeName="kipadminModel.FK__kipWoont__AdresT__628582E01" StoreEntitySet="kipWoont">
+            <EndProperty Name="Woont">
+              <ScalarProperty Name="WoontID" ColumnName="WoontID" /></EndProperty>
+            <EndProperty Name="AdresType">
+              <ScalarProperty Name="ID" ColumnName="AdresTypeId" /></EndProperty></AssociationSetMapping>
+          <AssociationSetMapping Name="FK__kipWoont__AdNr__609D3A6E1" TypeName="kipadminModel.FK__kipWoont__AdNr__609D3A6E1" StoreEntitySet="kipWoont">
+            <EndProperty Name="Woont">
+              <ScalarProperty Name="WoontID" ColumnName="WoontID" /></EndProperty>
+            <EndProperty Name="Persoon">
+              <ScalarProperty Name="AdNummer" ColumnName="AdNr" /></EndProperty></AssociationSetMapping></EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
@@ -1492,124 +1461,136 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram Name="KipAdmin" ZoomLevel="67">
-        <EntityTypeShape EntityType="kipadminModel.Adres" Width="1.5" PointX="2.625" PointY="10.125" Height="2.0853483072916674" IsExpanded="true" />
-        <EntityTypeShape EntityType="kipadminModel.AdresType" Width="1.5" PointX="2.625" PointY="18.875" Height="1.5923063151041674" IsExpanded="true" />
-        <EntityTypeShape EntityType="kipadminModel.ContactInfo" Width="1.5" PointX="4.875" PointY="9.375" Height="1.9210009765624996" IsExpanded="true" />
-        <EntityTypeShape EntityType="kipadminModel.Functie" Width="1.5" PointX="10.875" PointY="19.125" Height="2.414042968749996" IsExpanded="true" />
-        <EntityTypeShape EntityType="kipadminModel.HeeftFunctie" Width="1.5" PointX="13.125" PointY="24.625" Height="1.5923063151041674" IsExpanded="true" />
-        <EntityTypeShape EntityType="kipadminModel.Persoon" Width="1.5" PointX="2.625" PointY="13.125" Height="4.2218636067708317" IsExpanded="true" />
-        <EntityTypeShape EntityType="kipadminModel.Woont" Width="1.5" PointX="4.875" PointY="14.125" Height="2.2496956380208353" IsExpanded="true" />
-        <EntityTypeShape EntityType="kipadminModel.ChiroGroep" Width="1.5" PointX="0.75" PointY="38.375" Height="6.6870735677083388" IsExpanded="true" />
-        <EntityTypeShape EntityType="kipadminModel.Groep" Width="1.5" PointX="0.75" PointY="34.875" Height="2.7427376302083388" IsExpanded="true" />
-        <EntityTypeShape EntityType="kipadminModel.Lid" Width="1.5" PointX="7.875" PointY="23.125" Height="4.5505582682291674" IsExpanded="true" />
-        <AssociationConnector Association="kipadminModel.FK__kipWoont__AdresI__61915EA7" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.125" PointY="11.167674153645834" />
-          <ConnectorPoint PointX="4.5" PointY="11.167674153645834" />
-          <ConnectorPoint PointX="4.5" PointY="15.00759320619045" />
-          <ConnectorPoint PointX="4.875" PointY="15.00759320619045" />
-          </AssociationConnector>
-        <AssociationConnector Association="kipadminModel.FK__kipWoont__AdresT__628582E0" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.125" PointY="19.671153157552084" />
-          <ConnectorPoint PointX="4.416666666666667" PointY="19.671153157552084" />
-          <ConnectorPoint PointX="4.583333333333333" PointY="19.671153157552084" />
-          <ConnectorPoint PointX="5.625" PointY="19.671153157552084" />
-          <ConnectorPoint PointX="5.625" PointY="16.374695638020835" /></AssociationConnector>
+        <EntityTypeShape EntityType="kipadminModel.Adres" Width="1.5" PointX="5.625" PointY="6" Height="2.2496956380208317" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.AdresType" Width="1.5" PointX="5.625" PointY="3" Height="1.7566536458333388" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.ContactInfo" Width="1.5" PointX="4.875" PointY="9.5" Height="1.9210009765624996" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.Functie" Width="1.5" PointX="4.875" PointY="31.875" Height="2.414042968749996" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.HeeftFunctie" Width="1.5" PointX="7.125" PointY="22.375" Height="1.5923063151041674" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.Persoon" Width="1.5" PointX="2.625" PointY="13.125" Height="4.3862109375000049" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.Woont" Width="1.5" PointX="7.875" PointY="14.125" Height="2.5783902994791674" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.ChiroGroep" Width="1.5" PointX="0.75" PointY="43.875" Height="6.6870735677083388" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.Groep" Width="1.5" PointX="0.75" PointY="40.375" Height="2.7427376302083388" IsExpanded="true" />
+        <EntityTypeShape EntityType="kipadminModel.Lid" Width="1.5" PointX="4.875" PointY="25.875" Height="4.5505582682291674" IsExpanded="true" />
         <AssociationConnector Association="kipadminModel.FK__kipContact__AdNr__6A26A4A8" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.125" PointY="14.066297103095224" />
-          <ConnectorPoint PointX="4.5625" PointY="14.066297103095224" />
-          <ConnectorPoint PointX="4.5625" PointY="10.271337576822916" />
-          <ConnectorPoint PointX="4.875" PointY="10.271337576822916" /></AssociationConnector>
-        <AssociationConnector Association="kipadminModel.FK__kipHeeftF__funct__4341E1B1" ManuallyRouted="false">
-          <ConnectorPoint PointX="12.375" PointY="20.332021484374998" />
-          <ConnectorPoint PointX="13.875" PointY="20.332021484374998" />
-          <ConnectorPoint PointX="13.875" PointY="24.625" />
+          <ConnectorPoint PointX="3.375" PointY="13.125" />
+          <ConnectorPoint PointX="3.375" PointY="10.46050048828125" />
+          <ConnectorPoint PointX="4.875" PointY="10.46050048828125" />
           </AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK__kipHeeftF__funct__4341E1B1" ManuallyRouted="false">
+          <ConnectorPoint PointX="6.375" PointY="33.082021484375" />
+          <ConnectorPoint PointX="6.75" PointY="33.082021484375" />
+          <ConnectorPoint PointX="6.75" PointY="23.171153157552084" />
+          <ConnectorPoint PointX="7.125" PointY="23.171153157552084" /></AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK__kipHeeftF__leidk__424DBD78" ManuallyRouted="false">
-          <ConnectorPoint PointX="8.625" PointY="23.125" />
-          <ConnectorPoint PointX="8.625" PointY="22.5" />
-          <ConnectorPoint PointX="10.385416666666666" PointY="22.5" />
-          <ConnectorPoint PointX="10.552083333333334" PointY="22.5" />
-          <ConnectorPoint PointX="12.75" PointY="22.5" />
-          <ConnectorPoint PointX="12.75" PointY="25.421153157552084" />
-          <ConnectorPoint PointX="13.125" PointY="25.421153157552084" /></AssociationConnector>
-        <AssociationConnector Association="kipadminModel.FK__kipWoont__AdNr__609D3A6E" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.125" PointY="15.753644422105642" />
-          <ConnectorPoint PointX="4.875" PointY="15.753644422105642" />
+          <ConnectorPoint PointX="6.375" PointY="28.150279134114584" />
+          <ConnectorPoint PointX="6.8125" PointY="28.150279134114584" />
+          <ConnectorPoint PointX="6.8125" PointY="23.600481736328128" />
+          <ConnectorPoint PointX="7.125" PointY="23.600481736328128" />
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Leid_Kad_Persoon" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.125" PointY="13.59375" />
-          <ConnectorPoint PointX="4.416666666666667" PointY="13.59375" />
-          <ConnectorPoint PointX="4.645833333333333" PointY="13.59375" />
-          <ConnectorPoint PointX="8.2187475" PointY="13.59375" />
-          <ConnectorPoint PointX="8.2187475" PointY="23.125" />
+          <ConnectorPoint PointX="3.375" PointY="17.511210937500003" />
+          <ConnectorPoint PointX="3.375" PointY="28.150279134114584" />
+          <ConnectorPoint PointX="3.6979191666666664" PointY="28.150279134114584" />
+          <ConnectorPoint PointX="3.8645858333333334" PointY="28.150279134114584" />
+          <ConnectorPoint PointX="4.875" PointY="28.150279134114584" />
           </AssociationConnector>
         <AssociationConnector Association="kipadminModel.fk_Lid_Groep" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="36.246368815104169" />
-          <ConnectorPoint PointX="9.03125" PointY="36.246368815104169" />
-          <ConnectorPoint PointX="9.03125" PointY="27.675558268229167" /></AssociationConnector>
+          <ConnectorPoint PointX="1.5" PointY="40.375" />
+          <ConnectorPoint PointX="1.5" PointY="29.319171201171876" />
+          <ConnectorPoint PointX="1.8229191666666667" PointY="29.319171201171876" />
+          <ConnectorPoint PointX="1.9895858333333332" PointY="29.319171201171876" />
+          <ConnectorPoint PointX="3.6979191666666664" PointY="29.319171201171876" />
+          <ConnectorPoint PointX="3.8645858333333334" PointY="29.319171201171876" />
+          <ConnectorPoint PointX="4.875" PointY="29.319171201171876" /></AssociationConnector>
         <InheritanceConnector EntityType="kipadminModel.ChiroGroep" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.5" PointY="37.617737630208339" />
-          <ConnectorPoint PointX="1.5" PointY="38.375" />
+          <ConnectorPoint PointX="1.5" PointY="43.117737630208339" />
+          <ConnectorPoint PointX="1.5" PointY="43.875" />
           </InheritanceConnector>
-        <EntityTypeShape EntityType="kipadminModel.Rekening" Width="1.5" PointX="4.875" PointY="20.5" Height="9.1522835286458317" />
-        <EntityTypeShape EntityType="kipadminModel.Aansluiting" Width="1.5" PointX="10.125" PointY="29.25" Height="5.5366422526041674" />
+        <EntityTypeShape EntityType="kipadminModel.Rekening" Width="1.5" PointX="4.875" PointY="15.5" Height="9.1522835286458317" />
+        <EntityTypeShape EntityType="kipadminModel.Aansluiting" Width="1.5" PointX="10.125" PointY="22.5" Height="5.5366422526041674" />
         <AssociationConnector Association="kipadminModel.FK_Rekening_Persoon" >
-          <ConnectorPoint PointX="4.125" PointY="16.581506014438236" />
-          <ConnectorPoint PointX="4.5" PointY="16.581506014438236" />
-          <ConnectorPoint PointX="4.5" PointY="25.076141764322916" />
-          <ConnectorPoint PointX="4.875" PointY="25.076141764322916" /></AssociationConnector>
+          <ConnectorPoint PointX="4.125" PointY="16.505605468638244" />
+          <ConnectorPoint PointX="4.875" PointY="16.505605468638244" />
+          </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Aansluiting_Rekening" >
-          <ConnectorPoint PointX="5.625" PointY="29.652283528645832" />
-          <ConnectorPoint PointX="5.625" PointY="33.108439941406246" />
-          <ConnectorPoint PointX="8.9479166666666661" PointY="33.108439941406246" />
-          <ConnectorPoint PointX="9.1145833333333339" PointY="33.108439941406246" />
-          <ConnectorPoint PointX="9.7916666666666661" PointY="33.108439941406246" />
-          <ConnectorPoint PointX="9.9583333333333339" PointY="33.108439941406246" />
-          <ConnectorPoint PointX="10.125" PointY="33.108439941406246" /></AssociationConnector>
+          <ConnectorPoint PointX="6.375" PointY="24.341044921875" />
+          <ConnectorPoint PointX="6.541666666666667" PointY="24.341044921875" />
+          <ConnectorPoint PointX="6.895833333333333" PointY="24.341044921875" />
+          <ConnectorPoint PointX="9.7916666666666661" PointY="24.341044921875" />
+          <ConnectorPoint PointX="9.9583333333333339" PointY="24.341044921875" />
+          <ConnectorPoint PointX="10.125" PointY="24.341044921875" />
+          </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Aansluiting_Groep" >
-          <ConnectorPoint PointX="2.25" PointY="35.52943190755208" />
-          <ConnectorPoint PointX="8.9479166666666661" PointY="35.52943190755208" />
-          <ConnectorPoint PointX="9.1145833333333339" PointY="35.52943190755208" />
-          <ConnectorPoint PointX="9.7916666666666661" PointY="35.52943190755208" />
-          <ConnectorPoint PointX="9.9583333333333339" PointY="35.52943190755208" />
-          <ConnectorPoint PointX="10.875" PointY="35.52943190755208" />
-          <ConnectorPoint PointX="10.875" PointY="34.786642252604167" /></AssociationConnector>
+          <ConnectorPoint PointX="1.9062525" PointY="40.375" />
+          <ConnectorPoint PointX="1.9062525" PointY="25.076141764322916" />
+          <ConnectorPoint PointX="3.2916666666666665" PointY="25.076141764322916" />
+          <ConnectorPoint PointX="3.4583333333333335" PointY="25.076141764322916" />
+          <ConnectorPoint PointX="3.6979191666666664" PointY="25.076141764322916" />
+          <ConnectorPoint PointX="3.8645858333333334" PointY="25.076141764322916" />
+          <ConnectorPoint PointX="6.541666666666667" PointY="25.076141764322916" />
+          <ConnectorPoint PointX="6.895833333333333" PointY="25.076141764322916" />
+          <ConnectorPoint PointX="9.7916666666666661" PointY="25.076141764322916" />
+          <ConnectorPoint PointX="9.9583333333333339" PointY="25.076141764322916" />
+          <ConnectorPoint PointX="10.125" PointY="25.076141764322916" /></AssociationConnector>
         <EntityTypeShape EntityType="kipadminModel.Afdeling" Width="1.5" PointX="2.625" PointY="0.75" Height="1.4279589843749996" />
-        <EntityTypeShape EntityType="kipadminModel.Abonnement" Width="1.5" PointX="10.125" PointY="22.75" Height="5.372294921874996" />
+        <EntityTypeShape EntityType="kipadminModel.Abonnement" Width="1.5" PointX="7.125" PointY="25.5" Height="5.372294921874996" />
         <AssociationConnector Association="kipadminModel.FK_Abonnement_Persoon" >
-          <ConnectorPoint PointX="4.125" PointY="16.995437310604537" />
-          <ConnectorPoint PointX="4.416666666666667" PointY="16.995437310604537" />
-          <ConnectorPoint PointX="4.583333333333333" PointY="16.995437310604537" />
-          <ConnectorPoint PointX="5.541666666666667" PointY="16.995437310604537" />
-          <ConnectorPoint PointX="5.708333333333333" PointY="16.995437310604537" />
-          <ConnectorPoint PointX="8.1354141666666653" PointY="16.995437310604537" />
-          <ConnectorPoint PointX="8.3020808333333331" PointY="16.995437310604537" />
-          <ConnectorPoint PointX="10.46875" PointY="16.995437310604537" />
-          <ConnectorPoint PointX="10.46875" PointY="22.75" /></AssociationConnector>
+          <ConnectorPoint PointX="3.7812525" PointY="17.511210937500003" />
+          <ConnectorPoint PointX="3.7812525" PointY="30.680176595052082" />
+          <ConnectorPoint PointX="6.666666666666667" PointY="30.680176595052082" />
+          <ConnectorPoint PointX="6.833333333333333" PointY="30.680176595052082" />
+          <ConnectorPoint PointX="7.125" PointY="30.680176595052082" />
+          </AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Abonnement_Rekening" >
-          <ConnectorPoint PointX="6.375" PointY="27.930176595052082" />
-          <ConnectorPoint PointX="8.9479166666666661" PointY="27.930176595052082" />
-          <ConnectorPoint PointX="9.1145833333333339" PointY="27.930176595052082" />
-          <ConnectorPoint PointX="10.125" PointY="27.930176595052082" />
-          </AssociationConnector>
+          <ConnectorPoint PointX="6.375" PointY="19.335577078776041" />
+          <ConnectorPoint PointX="6.625" PointY="19.335577078776041" />
+          <ConnectorPoint PointX="6.625" PointY="26.825140067057291" />
+          <ConnectorPoint PointX="6.666666666666667" PointY="26.825140067057291" />
+          <ConnectorPoint PointX="6.895833333333333" PointY="26.825140067057291" />
+          <ConnectorPoint PointX="7.125" PointY="26.825140067057291" /></AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_Abonnement_Groep" >
-          <ConnectorPoint PointX="2.25" PointY="36.96330522265626" />
-          <ConnectorPoint PointX="9.875" PointY="36.96330522265626" />
-          <ConnectorPoint PointX="9.875" PointY="28.497294921874996" />
-          <ConnectorPoint PointX="10.875" PointY="28.497294921874996" />
-          <ConnectorPoint PointX="10.875" PointY="28.122294921874996" />
-          </AssociationConnector>
-        <EntityTypeShape EntityType="kipadminModel.ExtraVerzekering" Width="1.5" PointX="7.125" PointY="28.625" Height="2.7427376302083317" />
+          <ConnectorPoint PointX="1.0937475" PointY="40.375" />
+          <ConnectorPoint PointX="1.0937475" PointY="25.65625" />
+          <ConnectorPoint PointX="1.8229191666666667" PointY="25.65625" />
+          <ConnectorPoint PointX="1.9895858333333332" PointY="25.65625" />
+          <ConnectorPoint PointX="3.2916666666666665" PointY="25.65625" />
+          <ConnectorPoint PointX="3.4583333333333335" PointY="25.65625" />
+          <ConnectorPoint PointX="3.6979191666666664" PointY="25.65625" />
+          <ConnectorPoint PointX="3.8645858333333334" PointY="25.65625" />
+          <ConnectorPoint PointX="6.541666666666667" PointY="25.65625" />
+          <ConnectorPoint PointX="6.895833333333333" PointY="25.65625" />
+          <ConnectorPoint PointX="7.125" PointY="25.65625" /></AssociationConnector>
+        <EntityTypeShape EntityType="kipadminModel.ExtraVerzekering" Width="1.5" PointX="10.125" PointY="28.875" Height="2.7427376302083317" />
         <AssociationConnector Association="kipadminModel.FK_ExtraVerzekering_Rekening" >
-          <ConnectorPoint PointX="6.375" PointY="29.138641764322916" />
-          <ConnectorPoint PointX="7.125" PointY="29.138641764322916" />
-          </AssociationConnector>
+          <ConnectorPoint PointX="6.375" PointY="20.855291039388021" />
+          <ConnectorPoint PointX="6.541666666666667" PointY="20.855291039388021" />
+          <ConnectorPoint PointX="6.708333333333333" PointY="20.855291039388021" />
+          <ConnectorPoint PointX="9.875" PointY="20.855291039388021" />
+          <ConnectorPoint PointX="9.875" PointY="28.5" />
+          <ConnectorPoint PointX="10.875" PointY="28.5" />
+          <ConnectorPoint PointX="10.875" PointY="28.875" /></AssociationConnector>
         <AssociationConnector Association="kipadminModel.FK_ExtraVerzekering_Groep" >
-          <ConnectorPoint PointX="1.5" PointY="34.875" />
-          <ConnectorPoint PointX="1.5" PointY="30.541260579427082" />
-          <ConnectorPoint PointX="5.541666666666667" PointY="30.541260579427082" />
-          <ConnectorPoint PointX="5.708333333333333" PointY="30.541260579427082" />
-          <ConnectorPoint PointX="7.125" PointY="30.541260579427082" /></AssociationConnector>
-        <EntityTypeShape EntityType="kipadminModel.Bericht" Width="1.5" PointX="0.75" PointY="3.75" Height="1.7566536458333335" /></Diagram></edmx:Diagrams>
+          <ConnectorPoint PointX="2.10937875" PointY="40.375" />
+          <ConnectorPoint PointX="2.10937875" PointY="31.276266276041664" />
+          <ConnectorPoint PointX="6.666666666666667" PointY="31.276266276041664" />
+          <ConnectorPoint PointX="6.833333333333333" PointY="31.276266276041664" />
+          <ConnectorPoint PointX="10.125" PointY="31.276266276041664" /></AssociationConnector>
+        <EntityTypeShape EntityType="kipadminModel.Bericht" Width="1.5" PointX="2.625" PointY="3.75" Height="1.7566536458333335" />
+        <AssociationConnector Association="kipadminModel.FK__kipWoont__AdresI__61915EA71" >
+          <ConnectorPoint PointX="6.9843775" PointY="8.2496956380208317" />
+          <ConnectorPoint PointX="6.9843775" PointY="14.4218725" />
+          <ConnectorPoint PointX="7.875" PointY="14.4218725" />
+          </AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK__kipWoont__AdresT__628582E01" >
+          <ConnectorPoint PointX="7.125" PointY="4.3487427343750049" />
+          <ConnectorPoint PointX="8.2187475" PointY="4.3487427343750049" />
+          <ConnectorPoint PointX="8.2187475" PointY="14.125" />
+          </AssociationConnector>
+        <AssociationConnector Association="kipadminModel.FK__kipWoont__AdNr__609D3A6E1" >
+          <ConnectorPoint PointX="4.125" PointY="14.21093625" />
+          <ConnectorPoint PointX="6.9010441666666669" PointY="14.21093625" />
+          <ConnectorPoint PointX="7.0677108333333329" PointY="14.21093625" />
+          <ConnectorPoint PointX="7.875" PointY="14.21093625" />
+          </AssociationConnector></Diagram></edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

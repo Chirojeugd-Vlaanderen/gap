@@ -30,14 +30,11 @@ namespace Chiro.Gap.InitieleImport
 			Factory.ContainerInit(); // Init IOC
 			_serviceHelper = Factory.Maak<IServiceHelper>();
 
-			//var alleStamNummers = Users.AlleStamNummers;
-
-			var alleStamNummers = new string[] {"oj /2306"};  // gewoon testen
+			var alleStamNummers = Users.AlleStamNummers;
 
 			foreach (string stamnr in alleStamNummers)
 			{
-				//ImporteerGroepsGegevens(stamnr);
-				FixLeden(stamnr);
+				ImporteerGroepsGegevens(stamnr);
 			}
 
 			//foreach (var loginInfo in Users.Lijst)
