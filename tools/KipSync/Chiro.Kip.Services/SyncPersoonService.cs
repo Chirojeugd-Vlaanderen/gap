@@ -110,7 +110,8 @@ namespace Chiro.Kip.Services
 		}
 
 		/// <summary>
-		/// Aan te roepen als een voorkeursadres gewijzigd moet worden.
+		/// Aan te roepen als een voorkeursadres gewijzigd moet worden.  Deze method vervangt in kipadmin
+		/// gewoon het adres met volgnummer 1.  De andere adressen blijven onaangeroerd.
 		/// </summary>
 		/// <param name="adres">Nieuw voorkeursadres</param>
 		/// <param name="bewoners">AD-nummers en adrestypes voor personen de dat adres moeten krijgen</param>
@@ -126,9 +127,6 @@ namespace Chiro.Kip.Services
 			Mapper.CreateMap<Persoon, PersoonZoekInfo>()
 				.ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int) src.Geslacht))
 				.ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
-
-			// 1 keer tegelijk, anders krijgen we concurrencyproblemen als er 2 personen tegelijk hetzelfde
-			// adres krijgen.
 
 			using (var db = new kipadminEntities())
 			{
@@ -158,7 +156,8 @@ namespace Chiro.Kip.Services
 
 				// Vind of maak adres
 
-				// Als dat linq to sql is, dan gebeurt het zoeken sowieso hoofdletterongevoelig.
+				// Als dat entities op sql server zijn, dan gebeurt het zoeken sowieso 
+				// hoofdletterongevoelig.
 
 				string huisNr = adres.HuisNr.ToString();
 				string postNr = adres.PostNr.ToString();
@@ -182,78 +181,66 @@ namespace Chiro.Kip.Services
 					            		// TODO (#238) Buitenlandse adressen.
 					            	};
 					db.AddToAdresSet(adresInDb);
-
-					// Bewaar hier de changes al eens, zodat het nieuwe adres een ID krijgt.
-					db.SaveChanges();
 				}
 
 
 				// We zitten met het gedoe dat in Kipadmin de adressen een volgnummer hebben.  De voorkeurs-
 				// adressen moeten bewaard worden met volgnummer 1.
 				//
-				// We gaan dat pragmatisch oplossen :-)
-				//  - verwijder van alle personen het adres met volgnummer 1
-				//  - als er nog personen zijn die al aan het doeladres gekoppeld zijn, dan moeten die
-				//    adressen volgnummer 1 krijgen
-				//  - personen die het adres nog niet hebben moeten het krijgen met volgnummer 1
+				// Strategie:
+				//	verwijder koppelingen met to-adres waar volgnummer verschilt van 1
+				//	vind of maak 'woont'-object met volgnummer 1
+				//	koppel 'woont'-object met volgnummer 1 aan to-adres 
 
-				var eersteAdressen = personen.SelectMany(prs => prs.kipWoont).Where(kw => kw.VolgNr == 1);
 
-				foreach (var wnt in eersteAdressen.ToArray())
+				var teVerwijderen =
+					personen.SelectMany(prs => prs.kipWoont).Where(kw => kw.AdresId == adresInDb.ID && kw.VolgNr != 1);
+
+				foreach (var wnt in teVerwijderen.ToArray())
 				{
 					db.DeleteObject(wnt);
 				}
 
-				// Oude objecten met volgnr 1 al verwijderen, om duplicates (adnr,volgnr) in woont
-				// te vermijden.
-
-				db.SaveChanges();
-
-				// Dat ID hebben we nu hier nodig:
-
-				var goeieAdressen = personen.SelectMany(prs => prs.kipWoont).Where(kw => kw.kipAdres.ID == adresInDb.ID);
+				// db.SaveChanges();
 
 				// TODO: Het adrestype bepalen is iedere keer een linq-expressie, en dus iedere
 				// keer een loop.  Kan dat niet efficienter?
 
-				foreach (var wnt in goeieAdressen)
+				foreach (var p in personen)
 				{
-					wnt.VolgNr = 1;
+					var eersteWnt = (from wnt in p.kipWoont
+					                 where wnt.VolgNr == 1
+					                 select wnt).FirstOrDefault();
 
-					int adresTypeID = (int) (from b in bewoners
-					                         where b.Persoon.AdNummer == wnt.kipPersoon.AdNummer
-					                         select b.AdresType).FirstOrDefault();
+					int adresTypeID = (int)(from b in bewoners
+								where b.Persoon.AdNummer == p.AdNummer
+								select b.AdresType).FirstOrDefault();
 
-					wnt.kipAdresType = (from at in db.AdresTypeSet
-					                    where at.ID == adresTypeID
-					                    select at).FirstOrDefault();
+					var kAdrType = (from at in db.AdresTypeSet
+							    where at.ID == adresTypeID
+							    select at).FirstOrDefault();
 
-					feedback.AppendLine(String.Format("Update voorkeuradres: AD{0}", wnt.kipPersoon.AdNummer));
-				}
+					if (eersteWnt == null)
+					{
+						eersteWnt = new Woont
+						            	{
+						            		kipPersoon = p,
+						            		kipAdres = adresInDb,
+						            		Geldig = true,
+						            		VolgNr = 1,
+						            		kipAdresType = kAdrType
+						            	};
+						db.AddToWoontSet(eersteWnt);
+					}
+					else
+					{
+						eersteWnt.kipAdres = adresInDb;
+						eersteWnt.kipAdresType = kAdrType;
+						eersteWnt.Geldig = true;
+					}
 
-				var overigePersonen = from p in personen
-				                      where !goeieAdressen.Any(wnt => wnt.kipPersoon.AdNummer == p.AdNummer)
-				                      select p;
 
-				foreach (var p in overigePersonen)
-				{
-					int adresTypeID = (int) (from b in bewoners
-					                         where b.Persoon.AdNummer == p.AdNummer
-					                         select b.AdresType).FirstOrDefault();
-
-					var adresType = (from at in db.AdresTypeSet
-					                 where at.ID == adresTypeID
-					                 select at).FirstOrDefault();
-
-					db.AddToWoontSet(new Woont
-					                 	{
-					                 		kipAdres = adresInDb,
-					                 		kipPersoon = p,
-					                 		VolgNr = 1,
-					                 		kipAdresType = adresType,
-					                 		Geldig = true
-					                 	});
-					feedback.Append(String.Format("Update voorkeuradres: AD{0}", p.AdNummer));
+					feedback.AppendLine(String.Format("Update voorkeuradres: AD{0}", p.AdNummer));
 				}
 
 				// fingers crossed:
