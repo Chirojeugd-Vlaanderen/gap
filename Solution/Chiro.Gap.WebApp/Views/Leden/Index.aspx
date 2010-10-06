@@ -24,7 +24,7 @@
 			Acties</h1>
 		<ul>
 			<li>
-				<%= Html.ActionLink("Lijst downloaden", "Download", new { id = Model.IDGetoondGroepsWerkJaar, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Download de geselecteerde gegevens in een Excel-bestand" })%></li></ul>
+				<%= Html.ActionLink("Lijst downloaden", "Download", new { id = Model.IDGetoondGroepsWerkJaar, afdelingID = Model.AfdelingID, functieID = Model.FunctieID, sortering = Model.GekozenSortering }, new { title = "Download de geselecteerde gegevens in een Excel-bestand" })%></li></ul>
 		<h1>
 			Filteren</h1>
 		<ul>

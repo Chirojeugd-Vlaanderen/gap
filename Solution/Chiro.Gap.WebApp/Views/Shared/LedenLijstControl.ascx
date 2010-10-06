@@ -32,41 +32,7 @@
 		<%=Model.KanLedenBewerken ? "<th>Acties</th>" : String.Empty %>
 	</tr>
 	<%
-     // In de vorige revisie was het zo dat steeds eerst de leiding getoond werd, en dan de leden.
-     // Ik ben er niet zeker van of dat een bug of een feature is.  Ik implementeer het alleszins
-     // opnieuw op deze manier.
-
-     IEnumerable<LidOverzicht> gesorteerd;
-	
-     switch (Model.GekozenSortering)
-     {
-     	case LidEigenschap.Naam:
-     		gesorteerd = ViewData.Model.LidInfoLijst
-     			.OrderByDescending(src => src.Type)
-     			.ThenBy(src => src.Naam)
-     			.ThenBy(src => src.VoorNaam);
-     		break;
-     	case LidEigenschap.Leeftijd:
-     		gesorteerd = ViewData.Model.LidInfoLijst
-			.OrderByDescending(src => src.Type)
-     			.ThenByDescending(src => src.GeboorteDatum)
-     			.ThenBy(src => src.Naam)
-     			.ThenBy(src => src.VoorNaam);
-     		break;
-     	case LidEigenschap.Afdeling:
-     		gesorteerd = ViewData.Model.LidInfoLijst
-			.OrderByDescending(src => src.Type)
-			.ThenBy(src => src.Afdelingen.Count() > 0 ? src.Afdelingen.First().Afkorting : String.Empty)
-     			.ThenBy(src => src.GeboorteDatum)
-     			.ThenBy(src => src.Naam)
-     			.ThenBy(src => src.VoorNaam);
-     		break;
-     	default:
-     		gesorteerd = ViewData.Model.LidInfoLijst;
-     		break;
-     }
-
-        foreach (LidOverzicht lidOverzicht in gesorteerd)
+     foreach (LidOverzicht lidOverzicht in ViewData.Model.LidInfoLijst)
 	{  %>
 	<tr>
 		<td>

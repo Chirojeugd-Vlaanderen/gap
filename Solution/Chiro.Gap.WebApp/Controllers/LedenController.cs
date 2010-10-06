@@ -23,6 +23,50 @@ namespace Chiro.Gap.WebApp.Controllers
 	{
 		public LedenController(IServiceHelper serviceHelper) : base(serviceHelper) { }
 
+		/// <summary>
+		/// Sorteert een rij records van type LidOverzicht
+		/// </summary>
+		/// <param name="rij">Te sorteren rij</param>
+		/// <param name="sortering">Lideigenschap waarop gesorteerd moet worden</param>
+		/// <returns>Gesorteerde rij</returns>
+		private IEnumerable<LidOverzicht> Sorteren (IEnumerable<LidOverzicht> rij, LidEigenschap sortering)
+		{
+			// In de vorige revisie was het zo dat steeds eerst de leiding getoond werd, en dan de leden.
+			// Ik ben er niet zeker van of dat een bug of een feature is.  Ik implementeer het alleszins
+			// opnieuw op deze manier.
+
+			IEnumerable<LidOverzicht> gesorteerd;
+
+			switch (sortering)
+			{
+				case LidEigenschap.Naam:
+					gesorteerd = rij
+						.OrderByDescending(src => src.Type)
+						.ThenBy(src => src.Naam)
+						.ThenBy(src => src.VoorNaam);
+					break;
+				case LidEigenschap.Leeftijd:
+					gesorteerd = rij
+						.OrderByDescending(src => src.Type)
+						.ThenByDescending(src => src.GeboorteDatum)
+						.ThenBy(src => src.Naam)
+						.ThenBy(src => src.VoorNaam);
+					break;
+				case LidEigenschap.Afdeling:
+					gesorteerd = rij
+						.OrderByDescending(src => src.Type)
+						.ThenBy(src => src.Afdelingen.Count() > 0 ? src.Afdelingen.First().Afkorting : String.Empty)
+						.ThenBy(src => src.GeboorteDatum)
+						.ThenBy(src => src.Naam)
+						.ThenBy(src => src.VoorNaam);
+					break;
+				default:
+					gesorteerd = rij;
+					break;
+			}
+			return gesorteerd;
+		}
+
 		// GET: /Leden/
 		[HandleError]
 		public override ActionResult Index(int groepID)
@@ -152,7 +196,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				                            model.JaartalGetoondGroepsWerkJaar,
 				                            model.JaartalGetoondGroepsWerkJaar + 1);
 
-				return View("Index", model);
+
 			}
  			else if (functieID != 0)
 			{
@@ -169,7 +213,6 @@ namespace Chiro.Gap.WebApp.Controllers
 							    model.JaartalGetoondGroepsWerkJaar,
 							    model.JaartalGetoondGroepsWerkJaar + 1);
 
-				return View("Index", model);
 			}
 			else
 			{
@@ -180,9 +223,9 @@ namespace Chiro.Gap.WebApp.Controllers
 				model.Titel = String.Format(Properties.Resources.LedenOverzicht,
 							    model.JaartalGetoondGroepsWerkJaar,
 							    model.JaartalGetoondGroepsWerkJaar + 1);
-
-				return View("Index", model);	
 			}
+			model.LidInfoLijst = Sorteren(model.LidInfoLijst, sortering).ToList();
+			return View("Index", model);
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
@@ -216,9 +259,10 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="functieID">Als verschillend van 0, worden enkel de leden met de functie bepaald door
 		/// dit ID getoond.</param>
 		/// <param name="groepID">ID van de groep (komt uit url)</param>
+		/// <param name="sortering">Eigenschap waarop gesorteerd moet worden</param>
 		/// <returns>Exceldocument met gevraagde ledenlijst</returns>
 		[HandleError]
-		public ActionResult Download(int id, int afdelingID, int functieID, int groepID)
+		public ActionResult Download(int id, int afdelingID, int functieID, int groepID, LidEigenschap sortering)
 		{
 			IEnumerable<LidOverzicht> lijst;
 			string bestandsnaam;
@@ -259,8 +303,9 @@ namespace Chiro.Gap.WebApp.Controllers
 				bestandsnaam = "Leden.xlsx";
 			}
 
+
 			var stream = (new ExcelManip()).ExcelTabel(
-				lijst,
+				Sorteren(lijst, sortering),
 				kolomkoppen,
 				it => it.Type,
 				it => it.AdNummer,
