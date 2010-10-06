@@ -8,11 +8,11 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#kiesAfdeling').hide();
-			$("#GekozenAfdeling").change(function() {
+			$("#AfdelingID").change(function() {
 				$('#kiesAfdeling').click();
 			});
 			$('#kiesFunctie').hide();
-			$("#GekozenFunctie").change(function() {
+			$("#FunctieID").change(function() {
 				$('#kiesFunctie').click();
 			});
 		});
@@ -24,44 +24,40 @@
 			Acties</h1>
 		<ul>
 			<li>
-				<%= Html.ActionLink("Lijst downloaden", "Download", new { id = Model.IDGetoondGroepsWerkJaar, afdelingID = Model.GekozenAfdeling, functieID = Model.GekozenFunctie }, new { title = "Download de geselecteerde gegevens in een Excel-bestand" })%></li></ul>
+				<%= Html.ActionLink("Lijst downloaden", "Download", new { id = Model.IDGetoondGroepsWerkJaar, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Download de geselecteerde gegevens in een Excel-bestand" })%></li></ul>
 		<h1>
 			Filteren</h1>
 		<ul>
 			<li>
-				<%=Html.ActionLink("Alle leden bekijken", "Lijst", new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, sortering = Model.GekozenSortering, lijst = LijstEnum.Alles })%>
+				<%=Html.ActionLink("Alle leden bekijken", "Lijst", new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, afdelingID = 0, functieID = 0, sortering = Model.GekozenSortering })%>
 			</li>
 			<li>
 				<%using (Html.BeginForm("AfdelingsLijst", "Leden"))
-	  { %>
-				<select id="GekozenAfdeling" name="GekozenAfdeling">
-					<option value="">Op afdeling</option>
-					<% foreach (var s in Model.AfdelingsInfoDictionary)
-		{%>
-					<option value="<%=s.Value.AfdelingID%>">
-						<%=s.Value.AfdelingNaam%></option>
-					<%}%>
-				</select>
+				{ 
+					var dummyItems = new SelectListItem[] {new SelectListItem {Text = "Op afdeling", Value = "0"}};%>
+  				<%=Html.DropDownListFor(
+					mdl=>mdl.AfdelingID,
+  						dummyItems.Union(
+					Model.AfdelingsInfoDictionary.Select(src => new SelectListItem {Text = src.Value.AfdelingNaam, Value = src.Value.AfdelingID.ToString()}))) %>
+
 				<input id="kiesAfdeling" type="submit" value="Afdeling bekijken" />
 				<%=Html.HiddenFor(s => s.IDGetoondGroepsWerkJaar)%>
 				<%=Html.HiddenFor(s => s.GekozenSortering)%>
 				<%} %>
 			</li>
 			<li>
-				<%using (Html.BeginForm("FunctieLijst", "Leden"))
-	  { %>
-				<select id="GekozenFunctie" name="GekozenFunctie">
-					<option value="">Op functie</option>
-					<% foreach (var s in Model.FunctieInfoDictionary)
-		{%>
-					<option value="<%=s.Value.ID%>">
-						<%=s.Value.Naam%></option>
-					<%}%>
-				</select>
+			    <%using (Html.BeginForm("FunctieLijst", "Leden"))
+			      {
+				var dummyItems = new SelectListItem[] {new SelectListItem {Text = "Op functie", Value = "0"}};%>
+				
+				<%=Html.DropDownListFor(
+					mdl=>mdl.FunctieID, 
+						dummyItems.Union(
+					Model.FunctieInfoDictionary.Select(src => new SelectListItem {Text = src.Value.Naam, Value = src.Value.ID.ToString()}))) %>
 				<input id="kiesFunctie" type="submit" value="Functie bekijken" />
 				<%=Html.HiddenFor(s => s.IDGetoondGroepsWerkJaar)%>
 				<%=Html.HiddenFor(s => s.GekozenSortering)%>
-				<%} %>
+			    <%} %>
 			</li>
 		</ul>
 		<h1>

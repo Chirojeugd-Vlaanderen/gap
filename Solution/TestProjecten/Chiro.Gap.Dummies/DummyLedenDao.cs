@@ -24,27 +24,27 @@ namespace Chiro.Gap.Dummies
 		{
 			return new List<Lid>();
 		}
-		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering)
+		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LidEigenschap sortering)
 		{
 			return new List<Lid>();
 		}
 
-		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LedenSorteringsEnum sortering)
+		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LidEigenschap sortering)
 		{
 			return new List<Lid>();
 		}
 
-		public IList<Lid> AllesOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
+		public IList<Lid> AllesOphalen(int groepsWerkJaarID, LidEigenschap sortering)
 		{
 			return new List<Lid>();
 		}
 
-		public IList<Lid> ActieveLedenOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
+		public IList<Lid> ActieveLedenOphalen(int groepsWerkJaarID, LidEigenschap sortering)
 		{
 			return new List<Lid>();
 		}
 
-		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal, LedenSorteringsEnum sortering)
+		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, int pagina, int paginaGrootte, out int aantalTotaal, LidEigenschap sortering)
 		{
 			aantalTotaal = 0;
 			return new List<Lid>();

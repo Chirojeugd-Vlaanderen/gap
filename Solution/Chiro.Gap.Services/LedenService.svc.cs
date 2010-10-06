@@ -471,80 +471,6 @@ namespace Chiro.Gap.Services
 		#region Ophalen
 
 		/// <summary>
-		/// Haalt relevante info op van personen die lid zijn in het opgegeven GroepsWerkJaar,
-		/// gesorteerd op de opgegeven parameter
-		/// </summary>
-		/// <param name="groepsWerkJaarID">De ID van het GroepsWerkJaar waarvan we info willen</param>
-		/// <param name="sortering">De parameter waarop het resultaat gesorteerd moet worden</param>
-		/// <returns>Een lijst met relevante gegevens over personen die lid zijn/waren in het
-		/// opgegeven GroepsWerkJaar</returns>
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonLidInfo> PaginaOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
-		{
-			try
-			{
-				var result = _ledenMgr.PaginaOphalen(groepsWerkJaarID, sortering);
-				return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
-			}
-			catch (Exception ex)
-			{
-				FoutAfhandelaar.FoutAfhandelen(ex);
-				return null;
-			}
-		}
-
-		/// <summary>
-		/// Haalt relevante info op van personen die in het opgegeven GroepsWerkJaar
-		/// *actief* lid zijn van de opgegeven afdeling, gesorteerd op de opgegeven parameter
-		/// </summary>
-		/// <param name="groepsWerkJaarID">De ID van het GroepsWerkJaar waarvan we info willen</param>
-		/// <param name="afdelingsID">De ID van de afdeling waarvan de personen lid moeten zijn</param>
-		/// <param name="sortering">De parameter waarop het resultaat gesorteerd moet worden</param>
-		/// <returns>Een lijst met relevante gegevens over personen die lid zijn/waren in het
-		/// opgegeven GroepsWerkJaar</returns>
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonLidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering)
-		{
-			try
-			{
-				IList<Lid> result = _ledenMgr.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID, sortering);
-				return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
-			}
-			catch (Exception ex)
-			{
-				FoutAfhandelaar.FoutAfhandelen(ex);
-				return null;
-			}
-		}
-
-		/// <summary>
-		/// Haalt relevante info op van personen die in het opgegeven GroepsWerkJaar
-		/// lid zijn/waren en de opgegeven functie hadden, gesorteerd op de opgegeven parameter
-		/// </summary>
-		/// <param name="groepsWerkJaarID">De ID van het GroepsWerkJaar waarvan we info willen</param>
-		/// <param name="functieID">De ID van de functie die de personen moeten hebben</param>
-		/// <param name="sortering">De parameter waarop het resultaat gesorteerd moet worden</param>
-		/// <returns>Een lijst met relevante gegevens over personen die lid zijn/waren in het
-		/// opgegeven GroepsWerkJaar</returns>
-		/* zie #273 */
-		// [PrincipalPermission(SecurityAction.Demand, Role = SecurityGroepen.Gebruikers)]
-		public IList<PersoonLidInfo> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LedenSorteringsEnum sortering)
-		{
-			try
-			{
-				IList<Lid> result = _ledenMgr.PaginaOphalenVolgensFunctie(groepsWerkJaarID, functieID, sortering);
-				return Mapper.Map<IList<Lid>, IList<PersoonLidInfo>>(result);
-			}
-			catch (Exception ex)
-			{
-				FoutAfhandelaar.FoutAfhandelen(ex);
-				return null;
-			}
-		}
-
-		/// <summary>
 		/// Haalt lid op, inclusief gelieerde persoon, persoon, groep, afdelingen en functies
 		/// </summary>
 		/// <param name="lidID">ID op te halen lid</param>
@@ -601,9 +527,9 @@ namespace Chiro.Gap.Services
 		{
 			try
 			{
-				var leden = _ledenMgr.Ophalen(
-					functieID,
+				var leden = _ledenMgr.PaginaOphalenVolgensFunctie(
 					groepsWerkJaarID,
+					functieID,
 					LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Adressen | LidExtras.Communicatie).ToList();
 
 				return Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(leden);

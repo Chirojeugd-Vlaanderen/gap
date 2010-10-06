@@ -141,9 +141,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 								: src.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats.Naam))
 				.ForMember(dst => dst.Functies, opt => opt.MapFrom(src => src.Functie))
 				.ForMember(dst => dst.Afdelingen, opt => opt.MapFrom(Afdelingen))
-				// .ForMember(dst => dst.Functies, opt => opt.Ignore())
-				// .ForMember(dst => dst.Afdelingen, opt => opt.Ignore())
-				.ForMember(dst => dst.ChiroLeefTijd, opt => opt.MapFrom(src => src.GelieerdePersoon.ChiroLeefTijd));
+				.ForMember(dst => dst.ChiroLeefTijd, opt => opt.MapFrom(src => src.GelieerdePersoon.ChiroLeefTijd))
+				.ForMember(dst => dst.LidID, opt => opt.MapFrom(src =>src.ID));
 
 			Mapper.CreateMap<Groep, GroepDetail>()
 				.ForMember(

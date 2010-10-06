@@ -26,5 +26,10 @@ namespace Chiro.Gap.Dummies
 		{
 			throw new NotImplementedException();
 		}
+
+		public IEnumerable<Leiding> OphalenUitFunctie(int groepsWerkJaarID, int functieID, Expression<Func<Leiding, object>>[] paths)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

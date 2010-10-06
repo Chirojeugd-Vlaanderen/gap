@@ -122,41 +122,6 @@ namespace Chiro.Gap.ServiceContracts
 		// Moeten ze dan expliciet gedeletet worden?...?
 
 		/// <summary>
-		/// Haalt een pagina met ledengegevens in een bepaald groepswerkjaar op
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waar het over gaat</param>
-		/// <param name="sortering">Het soort gegevens waarop er gesorteerd moet worden</param>
-		/// <returns>Lijst van leden met hun relevante informatie</returns>
-		[OperationContract]
-		[FaultContract(typeof(GapFault))]
-		[FaultContract(typeof(FoutNummerFault))]
-		IList<PersoonLidInfo> PaginaOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering);
-
-		/// <summary>
-		/// Haalt een pagina met ledengegevens in een bepaald groepswerkjaar op, maar alleen *actieve* leden uit de gegeven afdeling
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van het betreffende groepwerkjaar</param>
-		/// <param name="afdelingsID">ID van de betreffende afdeling</param>
-		/// <param name="sortering">Het soort gegevens waarop er gesorteerd moet worden</param>
-		/// <returns>Lijst van leen met hun relevante informatie</returns>
-		[OperationContract]
-		[FaultContract(typeof(GapFault))]
-		[FaultContract(typeof(FoutNummerFault))]
-		IList<PersoonLidInfo> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering);
-
-		/// <summary>
-		/// Haalt een pagina met ledengegevens in een bepaald groepswerkjaar op, maar alleen leden met de gegeven functie
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van het betreffende groepwerkjaar</param>
-		/// <param name="functieID">ID van de betreffende functie</param>
-		/// <param name="sortering">Het soort gegevens waarop er gesorteerd moet worden</param>
-		/// <returns>Lijst van leden met hun relevante informatie</returns>
-		[OperationContract]
-		[FaultContract(typeof(GapFault))]
-		[FaultContract(typeof(FoutNummerFault))]
-		IList<PersoonLidInfo> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LedenSorteringsEnum sortering);
-
-		/// <summary>
 		/// Haalt lid op, inclusief gelieerde persoon, persoon, groep, afdelingen en functies
 		/// </summary>
 		/// <param name="lidID">ID op te halen lid</param>

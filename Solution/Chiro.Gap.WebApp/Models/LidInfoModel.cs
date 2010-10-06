@@ -16,7 +16,7 @@ namespace Chiro.Gap.WebApp.Models
         public LidInfoModel()
         {
             WerkJaarInfos = new List<WerkJaarInfo>();
-            LidInfoLijst = new List<PersoonLidInfo>();
+            LidInfoLijst = new List<LidOverzicht>();
             AfdelingsInfoDictionary = new Dictionary<int, AfdelingDetail>();
         }
 
@@ -30,13 +30,11 @@ namespace Chiro.Gap.WebApp.Models
 		public int JaartalGetoondGroepsWerkJaar { get; set; }
 		public IEnumerable<WerkJaarInfo> WerkJaarInfos { get; set; }
 
-		public IList<PersoonLidInfo> LidInfoLijst { get; set; }
+		public IList<LidOverzicht> LidInfoLijst { get; set; }
 
-		public int GekozenAfdeling { get; set; }
-		public int GekozenFunctie { get; set; }
-		public int GekozenID { get; set; }
-		public LijstEnum GekozenLijst { get; set; }
-		public LedenSorteringsEnum GekozenSortering { get; set; }
+		public int AfdelingID { get; set; }
+		public int FunctieID { get; set; }
+		public LidEigenschap GekozenSortering { get; set; }
 
 		/// <summary>
 		/// Kunnen de gegevens van de leden gewijzigd worden?

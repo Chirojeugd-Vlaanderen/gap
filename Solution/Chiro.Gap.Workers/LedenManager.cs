@@ -348,26 +348,6 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Haal een pagina op met leden van een groepswerkjaar.
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
-		/// <param name="sortering">De parameter waarop de gegevens gesorteerd moeten worden</param>
-		/// <returns>Lijst met alle leden uit het gevraagde groepswerkjaar.</returns>
-		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
-		{
-			// TODO: deze functie mergen met PaginaOphalen(groepsWerkJaarID, extras).
-			// Ik wacht hier nog mee tot Broes' sorteercode op punt staat.
-
-			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-
-			var list = _daos.LedenDao.ActieveLedenOphalen(groepsWerkJaarID, sortering);
-			return list;
-		}
-
-		/// <summary>
 		/// Haal een pagina op met alle *actieve* leden van een groepswerkjaar.
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
@@ -388,33 +368,9 @@ namespace Chiro.Gap.Workers
 
 			var list = kindLijst.Union(leidingLijst);
 
-			// TODO: lijst sorteren, maar ik wacht hier nog mee tot Broes' sorteercode wat stabiliseert
-			// voorlopig sorteer ik gewoon op naam
+			// Sorteren is presentatie; daar houdt de backend zich niet mee bezig ;-P
 
-			return list
-				.Where(ld=>ld.NonActief==false)
-				.OrderBy(ld => ld.GelieerdePersoon.Persoon.Naam)
-				.ThenBy(ld => ld.GelieerdePersoon.Persoon.VoorNaam).ToList();
-		}
-
-		/// <summary>
-		/// Haalt een 'pagina' op met *actieve* leden uit een bepaald GroepsWerkJaar
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
-		/// <param name="afdelingsID">ID gevraagde afdeling</param>
-		/// <param name="sortering">De parameter waarop de gegevens gesorteerd moeten worden</param>
-		/// <returns>De 'pagina' (collectie) met leden</returns>
-		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering)
-		{
-			// TODO: Mergen met PaginaOphalenVolgensAfdelng(groepsWerkJaarID, afdelingsID, extras)
-			// (Ik wacht hier even mee tot Broes' sortering stabiel is)
-
-			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-
-			return _daos.LedenDao.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, afdelingsID, sortering).Where(ld=>ld.NonActief == false).ToList();
+			return list.Where(ld=>ld.NonActief==false).ToList();
 		}
 
 		/// <summary>
@@ -426,7 +382,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>De 'pagina' (collectie) met leden</returns>
 		public IEnumerable<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingID, LidExtras extras)
 		{
-			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
+			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID) || !_autorisatieMgr.IsGavAfdeling(afdelingID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
@@ -439,31 +395,39 @@ namespace Chiro.Gap.Workers
 
 			var list = kindLijst.Union(leidingLijst);
 
-			// TODO: lijst sorteren, maar ik wacht hier nog mee tot Broes' sorteercode wat stabiliseert
-			// voorlopig sorteer ik gewoon op naam
+			// Sorteren is presentatie; daar houdt de backend zich niet mee bezig ;-P
 
 			return list
-				.Where(ld => ld.NonActief == false)
-				.OrderBy(ld => ld.GelieerdePersoon.Persoon.Naam)
-				.ThenBy(ld => ld.GelieerdePersoon.Persoon.VoorNaam).ToList();
+				.Where(ld => ld.NonActief == false).ToList();
 		}
 
 		/// <summary>
-		/// Haalt een 'pagina' op met leden uit een bepaald GroepsWerkJaar
+		/// Haalt een 'pagina' op met leden uit een bepaald GroepsWerkJaar met gevraagde functie
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
 		/// <param name="functieID">ID gevraagde functie</param>
-		/// <param name="sortering">De parameter waarop de gegevens gesorteerd moeten worden</param>
+		/// <param name="extras">bepaalt welke extra entiteiten mee opgehaald moeten worden</param>
 		/// <returns>De lijst van leden die in het opgegeven GroepsWerkJaar de opgegeven functie hadden/hebben,
 		/// gesorteerd volgens de opgegeven parameter</returns>
-		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LedenSorteringsEnum sortering)
+		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LidExtras extras)
 		{
 			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			return _daos.LedenDao.PaginaOphalenVolgensFunctie(groepsWerkJaarID, functieID, sortering);
+			// Ik haal leden en leiding apart op, omdat de lambda-expressies verschillend zijn als er
+			// afdelingen bij in de 'extra's' zitten.
+
+			IEnumerable<Lid> kindLijst = _daos.KindDao.OphalenUitFunctie(groepsWerkJaarID, functieID, ExtrasNaarLambdasKind(extras)).Cast<Lid>();
+			IEnumerable<Lid> leidingLijst = _daos.LeidingDao.OphalenUitFunctie(groepsWerkJaarID, functieID, ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
+
+			var list = kindLijst.Union(leidingLijst);
+
+			// Sorteren is presentatie; daar houdt de backend zich niet mee bezig ;-P
+
+			return list
+				.Where(ld => ld.NonActief == false).ToList();
 		}
 
 		/// <summary>
@@ -546,33 +510,6 @@ namespace Chiro.Gap.Workers
 		public Lid Ophalen(int lidID)
 		{
 			return Ophalen(lidID, LidExtras.Geen);
-		}
-
-		/// <summary>
-		/// Haalt leden op uit een bepaald groepswerkjaar met een gegeven functie
-		/// </summary>
-		/// <param name="functieID">ID van de functie</param>
-		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
-		/// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden
-		/// met de leden</param>
-		/// <returns>Lijst leden uit het groepswerkjaar met de gegeven functie</returns>
-		/// <remarks>Persoonsgegevens worden standaard mee opgehaald met lid.</remarks>
-		public IList<Lid> Ophalen(int functieID, int groepsWerkJaarID, LidExtras extras)
-		{
-			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-			if (!_autorisatieMgr.IsGavFunctie(functieID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-			var paths = ExtrasNaarLambdasLid(extras);
-
-			return _daos.LedenDao.OphalenUitFunctie(
-				functieID,
-				groepsWerkJaarID,
-				paths.ToArray());
 		}
 
 		/// <summary>

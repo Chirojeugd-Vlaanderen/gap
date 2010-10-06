@@ -34,5 +34,17 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// </summary>
 		[DataMember]
 		public List<FunctieInfo> Functies { get; set; }
+
+		/// <summary>
+		/// Heeft deze persoon al lidgeld betaald?
+		/// </summary>
+		[DataMember]
+		public bool LidgeldBetaald { get; set; }
+
+		/// <summary>
+		/// LidID
+		/// </summary>
+		[DataMember]
+		public int LidID { get; set; }
 	}
 }

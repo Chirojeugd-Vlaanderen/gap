@@ -72,10 +72,11 @@ namespace Chiro.Gap.Domain
 	}
 
 	/// <summary>
-	/// Sorteringsopties van een lijst van leden
+	/// Enum voor (een aantal) eigenschappen relevant voor een lid.  In eerste instantie wordt deze enum
+	/// gebruikt om te bepalen op welke kolom gesorteerd moet worden.
 	/// </summary>
 	[DataContract]
-	public enum LedenSorteringsEnum
+	public enum LidEigenschap
 	{
 		[EnumMember]
 		Naam = 1,

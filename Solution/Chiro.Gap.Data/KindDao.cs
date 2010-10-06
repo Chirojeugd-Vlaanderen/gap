@@ -51,7 +51,6 @@ namespace Chiro.Gap.Data.Ef
 				var kinderen = (
 					from l in db.Lid.OfType<Kind>()
 					where l.GroepsWerkJaar.ID == groepsWerkJaarID
-					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 					select l) as ObjectQuery<Kind>;
 
 				lijst = IncludesToepassen(kinderen, paths).ToArray();
@@ -78,7 +77,32 @@ namespace Chiro.Gap.Data.Ef
 					from l in db.Lid.OfType<Kind>()
 					where l.GroepsWerkJaar.ID == groepsWerkJaarID
 					&& l.AfdelingsJaar.Afdeling.ID == afdelingID
-					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
+					select l) as ObjectQuery<Kind>;
+
+				lijst = IncludesToepassen(kinderen, paths).ToArray();
+			}
+
+			return lijst;
+		}
+
+		/// <summary>
+		/// Haalt alle kinderen op uit groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
+		/// met functie bepaald door <paramref name="functieID"/>.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van groepswerkjaar</param>
+		/// <param name="functieID">ID van functie</param>
+		/// <param name="paths">Bepaalt de mee op te halen entiteiten</param>
+		/// <returns>Alle kinderen van het gevraagde afdelngsjaar</returns>
+		public IEnumerable<Kind> OphalenUitFunctie(int groepsWerkJaarID, int functieID, Expression<Func<Kind, object>>[] paths)
+		{
+			Kind[] lijst;
+
+			using (var db = new ChiroGroepEntities())
+			{
+				var kinderen = (
+					from l in db.Lid.OfType<Kind>()
+					where l.GroepsWerkJaar.ID == groepsWerkJaarID
+					&& l.Functie.Any(fn=>fn.ID == functieID)
 					select l) as ObjectQuery<Kind>;
 
 				lijst = IncludesToepassen(kinderen, paths).ToArray();

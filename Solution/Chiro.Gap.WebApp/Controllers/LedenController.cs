@@ -18,13 +18,6 @@ using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
 {
-	public enum LijstEnum
-	{
-		Alles = 1,
-		Afdeling = 2,
-		Functie = 3
-	}
-
 	[HandleError]
 	public class LedenController : BaseController
 	{
@@ -35,7 +28,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		public override ActionResult Index(int groepID)
 		{
 			// Recentste groepswerkjaar ophalen, en leden tonen.
-			return Lijst(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), LijstEnum.Alles, 0, LedenSorteringsEnum.Naam, groepID);
+			return Lijst(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), 0, 0, LidEigenschap.Naam, groepID);
 		}
 
 		/// <summary>
@@ -47,7 +40,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="sortering">Enumwaarde die aangeeft op welke parameter de lijst gesorteerd moet worden</param>
 		/// <returns></returns>
 		[HandleError]
-		private LidInfoModel LijstModelInitialiseren(int groepsWerkJaarID, int groepID, LedenSorteringsEnum sortering)
+		private LidInfoModel LijstModelInitialiseren(int groepsWerkJaarID, int groepID, LidEigenschap sortering)
 		{
 			// TODO: deze code moet opgekuist worden
 
@@ -103,87 +96,90 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// Toont een lijst met alle leden uit een gevraagd groepswerkjaar.
+		/// Toont een gesorteerde ledenlijst
 		/// </summary>
-		/// <param name="groepsWerkJaarID">gevraagd groepswerkjaar.  Indien 0, het recentste groepswerkjaar van de groep
-		/// met ID <paramref name="groepID"/>.</param>
-		/// <param name="sortering">Enumwaarde die aangeeft op welke parameter de lijst gesorteerd moet worden</param>
+		/// <param name="id">ID van het groepswerkjaar waarvoor een ledenlijst wordt gevraagd.  
+		/// Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
+		/// <param name="sortering">Bepaalt op welke eigenschap de lijst gesorteerd moet worden</param>
 		/// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
-		/// <param name="lijst">Enumwaarde die aangeeft wat voor lijst we moeten tonen</param>
-		/// <param name="id">ID van de functie of de afdeling</param>
-		/// <returns></returns>
+		/// <param name="afdelingID">Als verschillend van 0, worden enkel de leden uit de afdeling met
+		/// dit AfdelingID getoond.</param>
+		/// <param name="functieID">Als verschillend van 0, worden enkel de leden met de functie met
+		/// dit FunctieID getoond.</param>
+		/// <returns>Een view met de gevraagde ledenlijst</returns>
 		[HandleError]
-		public ActionResult Lijst(int groepsWerkJaarID, LijstEnum lijst, int id, LedenSorteringsEnum sortering, int groepID)
+		public ActionResult Lijst(
+			int id, 
+			int afdelingID, 
+			int functieID, 
+			LidEigenschap sortering, 
+			int groepID)
 		{
-			LidInfoModel model = LijstModelInitialiseren(groepsWerkJaarID, groepID, sortering);
-			model.GekozenID = id;
-			model.GekozenLijst = lijst;
+			// Het sorteren gebeurt nu in de view.  Sorteren is immers presentatie, dus de service
+			// moet zich daar niet mee bezig houden.
+			//
+			// Voor de personenlijst ligt dat anders.  Als je daar een pagina opvraagt, dan is die
+			// pagina afhankelijk van de gekozen sortering.  Daarom moet het sorteren voor personen
+			// wel door de service gebeuren.  (Maar hier, bij de leden, is dat niet van toepassing.)
 
-			if (groepsWerkJaarID == 0)
-			{
-				groepsWerkJaarID = ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID));
-			}
+			LidInfoModel model = LijstModelInitialiseren(id, groepID, sortering);
+			model.AfdelingID = afdelingID;
+			model.FunctieID = functieID;
+
+			int groepsWerkJaarID = id == 0 ? ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)) : id;
+
 
 			model.KanLedenBewerken = groepsWerkJaarID == (from wj in model.WerkJaarInfos
-														  orderby wj.WerkJaar descending
-														  select wj.ID).FirstOrDefault();
+			                                              orderby wj.WerkJaar descending
+			                                              select wj.ID).FirstOrDefault();
 
-			if (lijst == LijstEnum.Functie)
+			if (afdelingID != 0 && functieID != 0)
 			{
-				if (id == 0)
-				{
-					return Lijst(groepsWerkJaarID, LijstEnum.Alles, 0, sortering, groepID);
-				}
-
-				// TODO check dat de gegeven functieID wel degelijk van de gegeven groep is
-
-				model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>(lid => lid.PaginaOphalenVolgensFunctie(groepsWerkJaarID, id, sortering));
-
-				// Naam van de functie opzoeken, zodat we ze kunnen invullen in de paginatitel
-				String functie = (from fi in model.FunctieInfoDictionary
-								  where fi.Key == id
-								  select fi).First().Value.Naam;
-
-				model.Titel = string.Format("Ledenoverzicht van leden met functie {0} in het werkjaar {1}-{2}",
-											functie,
-											model.JaartalGetoondGroepsWerkJaar,
-											(model.JaartalGetoondGroepsWerkJaar + 1));
-
-				// TODO naar volgend werkjaar kunnen gaan met behoud van functie
-				model.GekozenFunctie = id;
-				return View("Index", model);
+				// Filteren op zowel afdelingID als functieID is nog niet ondersteund.
+				throw new NotSupportedException();
 			}
-			else if (lijst == LijstEnum.Afdeling)
+			else if (afdelingID != 0)
 			{
-				if (id == 0)
-				{
-					return Lijst(groepsWerkJaarID, LijstEnum.Alles, 0, sortering, groepID);
-				}
-
-				// TODO check dat de gegeven afdelingID wel degelijk van de gegeven groep is
-
-				model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>(lid => lid.PaginaOphalenVolgensAfdeling(groepsWerkJaarID, id, sortering));
+				model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(
+					svc => svc.OphalenUitAfdelingsJaar(groepsWerkJaarID, afdelingID));
 
 				AfdelingDetail af = (from a in model.AfdelingsInfoDictionary.AsQueryable()
-									 where a.Value.AfdelingID == id
-									 select a.Value).FirstOrDefault();
+						     where a.Value.AfdelingID == afdelingID
+						     select a.Value).FirstOrDefault();
 
-				model.Titel = "Ledenoverzicht van de " + af.AfdelingNaam.ToLower() + " van het werkjaar " + model.JaartalGetoondGroepsWerkJaar + "-" + (model.JaartalGetoondGroepsWerkJaar + 1);
+				model.Titel = String.Format(Properties.Resources.AfdelingsLijstTitel,
+				                            af.AfdelingNaam,
+				                            model.JaartalGetoondGroepsWerkJaar,
+				                            model.JaartalGetoondGroepsWerkJaar + 1);
 
-				model.GekozenAfdeling = id;  // OPM: kunnen die waarden verschillen? anders zou ik één van de twee gebruiken
+				return View("Index", model);
+			}
+ 			else if (functieID != 0)
+			{
+				model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(
+					svc => svc.OphalenUitFunctie(groepsWerkJaarID, functieID));
 
-				// TODO check dat de gegeven afdeling id wel degelijk van de gegeven groep is
-				// @broes, welke gegeven afdeling? TODO het argument dat "id" heet
+				// Naam van de functie opzoeken, zodat we ze kunnen invullen in de paginatitel
+				string functieNaam = (from fi in model.FunctieInfoDictionary
+								  where fi.Key == functieID
+								  select fi).First().Value.Naam;
+
+				model.Titel = String.Format(Properties.Resources.AfdelingsLijstTitel,
+							    functieNaam,
+							    model.JaartalGetoondGroepsWerkJaar,
+							    model.JaartalGetoondGroepsWerkJaar + 1);
 
 				return View("Index", model);
 			}
 			else
 			{
 				model.LidInfoLijst =
-					ServiceHelper.CallService<ILedenService, IList<PersoonLidInfo>>
-					(lid => lid.PaginaOphalen(groepsWerkJaarID, sortering));
+					ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>
+					(lid => lid.OphalenUitGroepsWerkJaar(groepsWerkJaarID));
 
-				model.Titel = "Ledenoverzicht van het werkjaar " + model.JaartalGetoondGroepsWerkJaar + "-" + (model.JaartalGetoondGroepsWerkJaar + 1);
+				model.Titel = String.Format(Properties.Resources.LedenOverzicht,
+							    model.JaartalGetoondGroepsWerkJaar,
+							    model.JaartalGetoondGroepsWerkJaar + 1);
 
 				return View("Index", model);	
 			}
@@ -193,23 +189,21 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public ActionResult AfdelingsLijst(LidInfoModel model, int groepID)
 		{
-			return RedirectToAction("Lijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, groepID, sortering = model.GekozenSortering, lijst = LijstEnum.Afdeling, ID = model.GekozenAfdeling });
+			return RedirectToAction("Lijst", new { id = model.IDGetoondGroepsWerkJaar, groepID, sortering = model.GekozenSortering, afdelingID = model.AfdelingID, functieID = model.FunctieID });
 		}
 
 		[HandleError]
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult FunctieLijst(LidInfoModel model, int groepID)
 		{
-			return RedirectToAction("Lijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, groepID, sortering = model.GekozenSortering, lijst = LijstEnum.Functie, ID = model.GekozenFunctie });
+			return RedirectToAction("Lijst", new { id = model.IDGetoondGroepsWerkJaar, groepID, sortering = model.GekozenSortering, afdelingID = model.AfdelingID, functieID = model.FunctieID });
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
 		[HandleError]
 		public ActionResult Lijst(LidInfoModel model, int groepID)
 		{
-			return RedirectToAction("Lijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, groepID, sortering = model.GekozenSortering, lijst = LijstEnum.Alles, ID = model.GekozenID });
-
-			//return RedirectToAction("FunctieLijst", new { groepsWerkJaarID = model.IDGetoondGroepsWerkJaar, funcID = model.GekozenFunctie, groepID = groepID, sortering=model.GekozenSortering });
+			return RedirectToAction("Lijst", new { id = model.IDGetoondGroepsWerkJaar, groepID, sortering = model.GekozenSortering, afdelingID = model.AfdelingID, functieID = model.FunctieID });
 		}
 
 		/// <summary>

@@ -74,14 +74,40 @@ namespace Chiro.Gap.Data.Ef
 
 			using (var db = new ChiroGroepEntities())
 			{
-				var kinderen = (
+				var leiding = (
 					from l in db.Lid.OfType<Leiding>()
 					where l.GroepsWerkJaar.ID == groepsWerkJaarID
 					&& l.AfdelingsJaar.Any(aj => aj.Afdeling.ID == afdelingID)
 					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 					select l) as ObjectQuery<Leiding>;
 
-				lijst = IncludesToepassen(kinderen, paths).ToArray();
+				lijst = IncludesToepassen(leiding, paths).ToArray();
+			}
+
+			return lijst;
+		}
+
+		/// <summary>
+		/// Haalt alle leiding op uit groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
+		/// met functie bepaald door <paramref name="functieID"/>.
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van groepswerkjaar</param>
+		/// <param name="functieID">ID van functie</param>
+		/// <param name="paths">Bepaalt de mee op te halen entiteiten</param>
+		/// <returns>Alle leiding met gevraagde functie uit gevraagde groepswerkjaar</returns>
+		public IEnumerable<Leiding> OphalenUitFunctie(int groepsWerkJaarID, int functieID, Expression<Func<Leiding, object>>[] paths)
+		{
+			Leiding[] lijst;
+
+			using (var db = new ChiroGroepEntities())
+			{
+				var leiding = (
+					from l in db.Lid.OfType<Leiding>()
+					where l.GroepsWerkJaar.ID == groepsWerkJaarID
+					&& l.Functie.Any(fn => fn.ID == functieID)
+					select l) as ObjectQuery<Leiding>;
+
+				lijst = IncludesToepassen(leiding, paths).ToArray();
 			}
 
 			return lijst;

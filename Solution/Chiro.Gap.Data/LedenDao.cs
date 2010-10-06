@@ -81,18 +81,18 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="lijst">De te sorteren lijst</param>
 		/// <param name="sortering">Hoe te sorteren</param>
 		/// <returns>De gesorteerde lijst!!! In place sorteren lijkt niet mogelijk!!!</returns>
-		private static List<Leiding> SorteerLijst(IEnumerable<Leiding> lijst, LedenSorteringsEnum sortering)
+		private static List<Leiding> SorteerLijst(IEnumerable<Leiding> lijst, LidEigenschap sortering)
 		{
 			IEnumerable<Leiding> lijst2;
 			switch (sortering)
 			{
-				case LedenSorteringsEnum.Naam:
+				case LidEigenschap.Naam:
 					lijst2 = lijst.OrderBy(gp => String.Format(
 									"{0} {1}",
 									gp.GelieerdePersoon.Persoon.Naam,
 									gp.GelieerdePersoon.Persoon.VoorNaam));
 					break;
-				case LedenSorteringsEnum.Leeftijd:
+				case LidEigenschap.Leeftijd:
 					lijst2 = lijst
 						.OrderBy(gp => gp.GelieerdePersoon.LeefTijd == null)
 						.ThenByDescending(gp => gp.GelieerdePersoon.LeefTijd)
@@ -101,7 +101,7 @@ namespace Chiro.Gap.Data.Ef
 							gp.GelieerdePersoon.Persoon.Naam,
 							gp.GelieerdePersoon.Persoon.VoorNaam));
 					break;
-				case LedenSorteringsEnum.Afdeling:
+				case LidEigenschap.Afdeling:
 					lijst2 = lijst
 						.OrderBy(gp => gp.AfdelingsJaar.FirstOrDefault() == null)
 						.ThenBy(
@@ -133,18 +133,18 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="lijst">De te sorteren lijst</param>
 		/// <param name="sortering">Hoe te sorteren</param>
 		/// <returns>De gesorteerde lijst!!! In place sorteren lijkt niet mogelijk!!!</returns>
-		private static List<Kind> SorteerLijst(IEnumerable<Kind> lijst, LedenSorteringsEnum sortering)
+		private static List<Kind> SorteerLijst(IEnumerable<Kind> lijst, LidEigenschap sortering)
 		{
 			IEnumerable<Kind> lijst2;
 			switch (sortering)
 			{
-				case LedenSorteringsEnum.Naam:
+				case LidEigenschap.Naam:
 					lijst2 = lijst.OrderBy(gp => String.Format(
 									"{0} {1}",
 									gp.GelieerdePersoon.Persoon.Naam,
 									gp.GelieerdePersoon.Persoon.VoorNaam));
 					break;
-				case LedenSorteringsEnum.Leeftijd:
+				case LidEigenschap.Leeftijd:
 					lijst2 = lijst
 						.OrderBy(gp => gp.GelieerdePersoon.LeefTijd == null)
 						.ThenByDescending(gp => gp.GelieerdePersoon.LeefTijd)
@@ -153,7 +153,7 @@ namespace Chiro.Gap.Data.Ef
 							gp.GelieerdePersoon.Persoon.Naam,
 							gp.GelieerdePersoon.Persoon.VoorNaam));
 					break;
-				case LedenSorteringsEnum.Afdeling:
+				case LidEigenschap.Afdeling:
 					lijst2 = lijst
 						.OrderBy(gp => gp.AfdelingsJaar == null)
 						.ThenBy(gp => (gp.AfdelingsJaar.Afdeling.Naam))
@@ -177,7 +177,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="leiding">De lijst van leiders en/of leidsters</param>
 		/// <param name="sortering">De parameter waarop de samengestelde lijst gesorteerd moet worden</param>
 		/// <returns>De samengestelde en daarna gesorteerde lijst</returns>
-		private static List<Lid> MaakLedenLijst(List<Kind> kinderen, List<Leiding> leiding, LedenSorteringsEnum sortering)
+		private static List<Lid> MaakLedenLijst(List<Kind> kinderen, List<Leiding> leiding, LidEigenschap sortering)
 		{
 			kinderen = SorteerLijst(kinderen, sortering);
 			leiding = SorteerLijst(leiding, sortering);
@@ -195,7 +195,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
 		/// <param name="sortering">Parameter waarop de gegevens gesorteerd moeten worden</param>
 		/// <returns>Een lijst alle leden voor het opgegeven groepswerkjaar</returns>
-		public IList<Lid> AllesOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
+		public IList<Lid> AllesOphalen(int groepsWerkJaarID, LidEigenschap sortering)
 		{
 			using (var db = new ChiroGroepEntities())
 			{
@@ -223,7 +223,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
 		/// <param name="sortering">Parameter waarop de gegevens gesorteerd moeten worden</param>
 		/// <returns>Een lijst alle leden voor het opgegeven groepswerkjaar</returns>
-		public IList<Lid> ActieveLedenOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
+		public IList<Lid> ActieveLedenOphalen(int groepsWerkJaarID, LidEigenschap sortering)
 		{
 			using (var db = new ChiroGroepEntities())
 			{
@@ -257,7 +257,7 @@ namespace Chiro.Gap.Data.Ef
 		/// De parameters pagina, paginaGrootte en aantalTotaal zijn hier niet nodig
 		/// omdat alle leden van dat werkjaar samen getoond worden.
 		/// </remarks>
-		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering)
+		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, LidEigenschap sortering)
 		{
 			using (var db = new ChiroGroepEntities())
 			{
@@ -290,7 +290,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <remarks>
 		/// Pagineren gebeurt per werkjaar.
 		/// </remarks>
-		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering)
+		public IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LidEigenschap sortering)
 		{
 			using (var db = new ChiroGroepEntities())
 			{
@@ -330,7 +330,7 @@ namespace Chiro.Gap.Data.Ef
 		/// Pagineren gebeurt per werkjaar.
 		/// Haalt GEEN afdeling mee op (nakijken of dit ook effectief niet nodig is?)
 		/// </remarks>
-		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LedenSorteringsEnum sortering)
+		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LidEigenschap sortering)
 		{
 			using (var db = new ChiroGroepEntities())
 			{

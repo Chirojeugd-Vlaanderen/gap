@@ -159,11 +159,11 @@
 			<%=Html.ActionLink(f.Code, 
 				    "Lijst", 
 			        "Leden",
-				    new { groepsWerkJaarID = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID,
-							id = f.ID,
+				    new { id = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID,
+							functieID = f.ID,
 							groepID = Model.GroepID, 
-							sortering = LedenSorteringsEnum.Naam,
-							lijst = LijstEnum.Functie
+							afdelingID = 0,
+							sortering = LidEigenschap.Naam
 						},
 				    new { title= f.Naam })%>
 			<% }%>

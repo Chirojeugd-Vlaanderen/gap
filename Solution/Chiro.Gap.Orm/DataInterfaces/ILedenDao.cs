@@ -23,9 +23,9 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
 		/// <param name="sortering">Parameter waarop de gegevens gesorteerd moeten worden</param>
 		/// <returns>Een lijst alle leden voor het opgegeven groepswerkjaar</returns>
-		IList<Lid> AllesOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering);
+		IList<Lid> AllesOphalen(int groepsWerkJaarID, LidEigenschap sortering);
 
-		IList<Lid> ActieveLedenOphalen(int groepsWerkJaarID, LedenSorteringsEnum sortering);
+		IList<Lid> ActieveLedenOphalen(int groepsWerkJaarID, LidEigenschap sortering);
         
 		/// <summary>
 		/// Haalt een pagina op van de gevraagde gegevens:
@@ -38,7 +38,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <remarks>
 		/// Pagineren gebeurt per werkjaar.
 		/// </remarks>
-		IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LedenSorteringsEnum sortering);
+		IList<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingsID, LidEigenschap sortering);
 
 		/// <summary>
 		/// Haalt een pagina op van de gevraagde gegevens:
@@ -52,7 +52,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// Pagineren gebeurt per werkjaar.
 		/// Haalt GEEN afdeling mee op (nakijken of dit ook effectief niet nodig is?)
 		/// </remarks>
-		IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LedenSorteringsEnum sortering);
+		IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LidEigenschap sortering);
 
 		/// <summary>
 		/// Zoekt lid op op basis van GelieerdePersoonID en GroepsWerkJaarID
