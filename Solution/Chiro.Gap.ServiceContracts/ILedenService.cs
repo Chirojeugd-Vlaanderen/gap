@@ -188,5 +188,15 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		int TypeToggle(int id);
+
+		/// <summary>
+		/// Haalt alle probeerleden op van de groep met ID <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="groepID">ID van groep met op te halen probeerleden</param>
+		/// <returns>Lijst met info over de probeerleden</returns>
+		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]		
+		IList<LidOverzicht> ProbeerLedenOphalen(int groepID);
 	}
 }

@@ -11,7 +11,7 @@ using Chiro.Gap.WebApp.Controllers;
 
 namespace Chiro.Gap.WebApp.Models
 {
-	public class LidInfoModel : MasterViewModel
+	public class LidInfoModel : LedenLijstModel
 	{
         public LidInfoModel()
         {
@@ -30,15 +30,7 @@ namespace Chiro.Gap.WebApp.Models
 		public int JaartalGetoondGroepsWerkJaar { get; set; }
 		public IEnumerable<WerkJaarInfo> WerkJaarInfos { get; set; }
 
-		public IList<LidOverzicht> LidInfoLijst { get; set; }
-
 		public int AfdelingID { get; set; }
 		public int FunctieID { get; set; }
-		public LidEigenschap GekozenSortering { get; set; }
-
-		/// <summary>
-		/// Kunnen de gegevens van de leden gewijzigd worden?
-		/// </summary>
-		public bool KanLedenBewerken { get; set; }
 	}
 }

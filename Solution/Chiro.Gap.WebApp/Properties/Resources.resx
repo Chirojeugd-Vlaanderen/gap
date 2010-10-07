@@ -276,4 +276,7 @@
   <data name="LedenOverzicht" xml:space="preserve">
     <value>Ingeschreven personen {0}-{1}</value>
   </data>
+  <data name="ProbeerLeden" xml:space="preserve">
+    <value>Leden en leiding in probeerperiode</value>
+  </data>
 </root>

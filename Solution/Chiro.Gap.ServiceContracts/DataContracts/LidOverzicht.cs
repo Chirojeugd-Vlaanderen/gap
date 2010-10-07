@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -46,5 +47,11 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// </summary>
 		[DataMember]
 		public int LidID { get; set; }
+
+		/// <summary>
+		/// Einde instapperiode
+		/// </summary>
+		[DataMember]
+		public DateTime? EindeInstapPeriode { get; set; }
 	}
 }

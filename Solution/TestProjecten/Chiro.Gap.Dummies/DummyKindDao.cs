@@ -31,5 +31,10 @@ namespace Chiro.Gap.Dummies
 		{
 			throw new NotImplementedException();
 		}
+
+		public IEnumerable<Kind> ProbeerLedenOphalen(int groepID, Expression<Func<Kind, object>>[] paths)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

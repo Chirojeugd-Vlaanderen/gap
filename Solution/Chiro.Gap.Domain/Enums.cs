@@ -83,7 +83,11 @@ namespace Chiro.Gap.Domain
 		[EnumMember]
 		Leeftijd = 2,
 		[EnumMember]
-		Afdeling = 3
+		Afdeling = 3,
+		[EnumMember]
+		InstapPeriode = 4,
+		[EnumMember]
+		Adres = 5
 	}
 
 	/// <summary>

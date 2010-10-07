@@ -84,7 +84,7 @@ namespace Chiro.Gap.Data.Ef
 				lijst = IncludesToepassen(leiding, paths).ToArray();
 			}
 
-			return lijst;
+			return Utility.DetachObjectGraph<Leiding>(lijst);
 		}
 
 		/// <summary>
@@ -110,7 +110,31 @@ namespace Chiro.Gap.Data.Ef
 				lijst = IncludesToepassen(leiding, paths).ToArray();
 			}
 
-			return lijst;
+			return Utility.DetachObjectGraph<Leiding>(lijst);
+		}
+
+		/// <summary>
+		/// Haalt alle probeerleden (type Leiding) op van de groep met ID <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="groepID">ID van groep met op te halen probeerleden</param>
+		/// <param name="paths">bepaalt de op te halen gekoppelde entiteiten</param>
+		/// <returns>Lijst met info over de probeerleden</returns>
+		public IEnumerable<Leiding> ProbeerLedenOphalen(int groepID, Expression<Func<Leiding, object>>[] paths)
+		{
+			Leiding[] lijst;
+
+			using (var db = new ChiroGroepEntities())
+			{
+				var leiding = (
+					from l in db.Lid.OfType<Leiding>()
+					where l.GroepsWerkJaar.Groep.ID == groepID
+					&& l.EindeInstapPeriode >= DateTime.Now
+					select l) as ObjectQuery<Leiding>;
+
+				lijst = IncludesToepassen(leiding, paths).ToArray();
+			}
+
+			return Utility.DetachObjectGraph<Leiding>(lijst);	
 		}
 	}
 }

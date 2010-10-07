@@ -110,5 +110,29 @@ namespace Chiro.Gap.Data.Ef
 
 			return lijst;
 		}
+
+		/// <summary>
+		/// Haalt alle probeerleden (type Leiding) op van de groep met ID <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="groepID">ID van groep met op te halen probeerleden</param>
+		/// <param name="paths">bepaalt de op te halen gekoppelde entiteiten</param>
+		/// <returns>Lijst met info over de probeerleden</returns>
+		public IEnumerable<Kind> ProbeerLedenOphalen(int groepID, Expression<Func<Kind, object>>[] paths)
+		{
+			Kind[] lijst;
+
+			using (var db = new ChiroGroepEntities())
+			{
+				var kinderen = (
+					from l in db.Lid.OfType<Kind>()
+					where l.GroepsWerkJaar.Groep.ID == groepID
+					&& l.EindeInstapPeriode >= DateTime.Now
+					select l) as ObjectQuery<Kind>;
+
+				lijst = IncludesToepassen(kinderen, paths).ToArray();
+			}
+
+			return Utility.DetachObjectGraph<Kind>(lijst);		
+		}
 	}
 }

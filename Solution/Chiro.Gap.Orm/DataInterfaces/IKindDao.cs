@@ -43,5 +43,13 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="paths">Bepaalt de mee op te halen entiteiten</param>
 		/// <returns>Alle kinderen van het gevraagde afdelngsjaar</returns>
 		IEnumerable<Kind> OphalenUitFunctie(int groepsWerkJaarID, int functieID, Expression<Func<Kind, object>>[] paths);
+
+		/// <summary>
+		/// Haalt alle probeerleden (type Kind) op van de groep met ID <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="groepID">ID van groep met op te halen probeerleden</param>
+		/// <param name="paths">bepaalt de op te halen gekoppelde entiteiten</param>
+		/// <returns>Lijst met info over de probeerleden</returns>
+		IEnumerable<Kind> ProbeerLedenOphalen(int groepID, Expression<Func<Kind, object>>[] paths);
 	}
 }

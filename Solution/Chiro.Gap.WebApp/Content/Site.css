@@ -398,6 +398,24 @@ div#title
 	color:White;
 }
 
+#actiesmini form
+{
+	display: inline;
+}
+
+#actiesmini span
+{
+	margin-right: 10px;
+}
+
+div#actiesmini
+{
+	margin-bottom: 1ex;
+	text-align: right;
+	width: 100%;
+}
+
+
 #acties h1
 {
 	font-size: small;

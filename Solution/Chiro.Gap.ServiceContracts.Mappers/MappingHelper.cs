@@ -100,49 +100,51 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.CreateMap<Lid, LidOverzicht>()
 				.ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.AdNummer))
 				.ForMember(dst => dst.Bus,
-						   opt =>
-						   opt.MapFrom(
-							src => src.GelieerdePersoon.PersoonsAdres == null ? null : src.GelieerdePersoon.PersoonsAdres.Adres.Bus))
+				           opt =>
+				           opt.MapFrom(
+				           	src => src.GelieerdePersoon.PersoonsAdres == null ? null : src.GelieerdePersoon.PersoonsAdres.Adres.Bus))
 				.ForMember(dst => dst.Email,
-						   opt => opt.MapFrom(src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.Email)))
+				           opt => opt.MapFrom(src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.Email)))
 				.ForMember(dst => dst.GeboorteDatum, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.GeboorteDatum))
 				.ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => src.GelieerdePersoon.ID))
 				.ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Geslacht))
 				.ForMember(dst => dst.HuisNummer,
-						   opt =>
-						   opt.MapFrom(
-							src =>
-							src.GelieerdePersoon.PersoonsAdres == null ? null : src.GelieerdePersoon.PersoonsAdres.Adres.HuisNr))
+				           opt =>
+				           opt.MapFrom(
+				           	src =>
+				           	src.GelieerdePersoon.PersoonsAdres == null ? null : src.GelieerdePersoon.PersoonsAdres.Adres.HuisNr))
 				.ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.Naam))
 				.ForMember(dst => dst.PostNummer,
-						   opt =>
-						   opt.MapFrom(
-							src =>
-							src.GelieerdePersoon.PersoonsAdres == null
-								? null
-								: (int?)src.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats.PostNummer))
+				           opt =>
+				           opt.MapFrom(
+				           	src =>
+				           	src.GelieerdePersoon.PersoonsAdres == null
+				           		? null
+				           		: (int?) src.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats.PostNummer))
 				.ForMember(dst => dst.StraatNaam,
-						   opt =>
-						   opt.MapFrom(
-							src =>
-							src.GelieerdePersoon.PersoonsAdres == null
-								? null
-								: src.GelieerdePersoon.PersoonsAdres.Adres.StraatNaam.Naam))
+				           opt =>
+				           opt.MapFrom(
+				           	src =>
+				           	src.GelieerdePersoon.PersoonsAdres == null
+				           		? null
+				           		: src.GelieerdePersoon.PersoonsAdres.Adres.StraatNaam.Naam))
 				.ForMember(dst => dst.TelefoonNummer,
-						   opt =>
-						   opt.MapFrom(src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.TelefoonNummer)))
+				           opt =>
+				           opt.MapFrom(src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.TelefoonNummer)))
 				.ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.VoorNaam))
 				.ForMember(dst => dst.WoonPlaats,
-						   opt =>
-						   opt.MapFrom(
-							src =>
-							src.GelieerdePersoon.PersoonsAdres == null
-								? null
-								: src.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats.Naam))
+				           opt =>
+				           opt.MapFrom(
+				           	src =>
+				           	src.GelieerdePersoon.PersoonsAdres == null
+				           		? null
+				           		: src.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats.Naam))
 				.ForMember(dst => dst.Functies, opt => opt.MapFrom(src => src.Functie))
 				.ForMember(dst => dst.Afdelingen, opt => opt.MapFrom(Afdelingen))
 				.ForMember(dst => dst.ChiroLeefTijd, opt => opt.MapFrom(src => src.GelieerdePersoon.ChiroLeefTijd))
-				.ForMember(dst => dst.LidID, opt => opt.MapFrom(src =>src.ID));
+				.ForMember(dst => dst.LidID, opt => opt.MapFrom(src => src.ID))
+				.ForMember(dst => dst.EindeInstapPeriode,
+				           opt => opt.MapFrom(src => src.EindeInstapPeriode < DateTime.Now ? null : src.EindeInstapPeriode));
 
 			Mapper.CreateMap<Groep, GroepDetail>()
 				.ForMember(

@@ -56,10 +56,26 @@ namespace Chiro.Gap.WebApp.Controllers
 					gesorteerd = rij
 						.OrderByDescending(src => src.Type)
 						.ThenBy(src => src.Afdelingen.Count() > 0 ? src.Afdelingen.First().Afkorting : String.Empty)
-						.ThenBy(src => src.GeboorteDatum)
 						.ThenBy(src => src.Naam)
 						.ThenBy(src => src.VoorNaam);
 					break;
+				case LidEigenschap.InstapPeriode:
+					gesorteerd = rij
+						.OrderBy(src => src.EindeInstapPeriode == null) // eerst die met instapperiode
+						.ThenBy(src => src.EindeInstapPeriode)
+						.ThenBy(src => src.Naam)
+						.ThenBy(src => src.VoorNaam);
+					break;
+				case LidEigenschap.Adres:
+					gesorteerd = rij
+						.OrderBy(src => src.PostNummer)
+						.ThenBy(src => src.StraatNaam)
+						.ThenBy(src => src.HuisNummer)
+						.ThenBy(src => src.Bus)
+						.ThenBy(src => src.Naam)
+						.ThenBy(src => src.VoorNaam);
+					break;
+
 				default:
 					gesorteerd = rij;
 					break;
@@ -159,19 +175,18 @@ namespace Chiro.Gap.WebApp.Controllers
 			LidEigenschap sortering, 
 			int groepID)
 		{
-			// Het sorteren gebeurt nu in de view.  Sorteren is immers presentatie, dus de service
+			// Het sorteren gebeurt nu in de UI.  Sorteren is immers presentatie, dus de service
 			// moet zich daar niet mee bezig houden.
 			//
 			// Voor de personenlijst ligt dat anders.  Als je daar een pagina opvraagt, dan is die
 			// pagina afhankelijk van de gekozen sortering.  Daarom moet het sorteren voor personen
 			// wel door de service gebeuren.  (Maar hier, bij de leden, is dat niet van toepassing.)
 
-			LidInfoModel model = LijstModelInitialiseren(id, groepID, sortering);
-			model.AfdelingID = afdelingID;
-			model.FunctieID = functieID;
-
 			int groepsWerkJaarID = id == 0 ? ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)) : id;
 
+			LidInfoModel model = LijstModelInitialiseren(groepsWerkJaarID, groepID, sortering);
+			model.AfdelingID = afdelingID;
+			model.FunctieID = functieID;
 
 			model.KanLedenBewerken = groepsWerkJaarID == (from wj in model.WerkJaarInfos
 			                                              orderby wj.WerkJaar descending
@@ -593,6 +608,41 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			
 			return RedirectToAction("EditRest", "Personen", new { groepID, id = gelieerdePersoonID });
+		}
+
+		/// <summary>
+		/// Toont de lijst van de probeerleden
+		/// </summary>
+		/// <param name="groepID">Groep waarvoor de probeerleden getoond moeten worden</param>
+		/// <param name="sortering">Geeft aan waarop de lijst gesorteerd moet worden</param>
+		/// <returns>View voor de probeerleden</returns>
+		public ActionResult ProbeerLeden(int groepID, LidEigenschap sortering)
+		{
+			// Het sorteren gebeurt nu in de UI.  Sorteren is immers presentatie, dus de service
+			// moet zich daar niet mee bezig houden.
+			//
+			// Voor de personenlijst ligt dat anders.  Als je daar een pagina opvraagt, dan is die
+			// pagina afhankelijk van de gekozen sortering.  Daarom moet het sorteren voor personen
+			// wel door de service gebeuren.  (Maar hier, bij de leden, is dat niet van toepassing.)
+
+			ClientState.VorigeLijst = Request.Url.ToString();
+
+			var model = new ProbeerLedenModel();
+			
+			BaseModelInit(model, groepID);
+
+			model.GekozenSortering = sortering;
+			model.KanLedenBewerken = true; // probeerleden kunnen altijd bewerkt worden
+			model.AansluitingsPrijs = Properties.Settings.Default.PrijsAansluiting;
+
+			model.LidInfoLijst =
+				ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>
+					(svc => svc.ProbeerLedenOphalen(groepID));
+
+			model.Titel = String.Format(Properties.Resources.ProbeerLeden);
+
+			model.LidInfoLijst = Sorteren(model.LidInfoLijst, sortering).ToList();
+			return View("ProbeerLeden", model);
 		}
 	}
 }

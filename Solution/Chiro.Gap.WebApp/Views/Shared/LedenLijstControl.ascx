@@ -1,15 +1,7 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<LidInfoModel>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Chiro.Gap.WebApp.Models.LidInfoModel>" %>
 <%@ Import Namespace="Chiro.Gap.Domain" %>
-<%@ Import Namespace="Chiro.Gap.WebApp.Controllers" %>
-<%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.ServiceContracts.DataContracts" %>
-<div class="pager">
-	Pagina:
-	<%= Html.WerkJaarLinks(
-                ViewData.Model.IDGetoondGroepsWerkJaar, 
-                ViewData.Model.WerkJaarInfos,
-				wj => Url.Action("Lijst", new { Controller = "Leden", id = wj.ID, sortering = Model.GekozenSortering, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }))%>
-</div>
+
 <table class="overzicht">
 	<tr>
 		<th>Ad-nr. </th>
@@ -17,6 +9,9 @@
 		<th>
 			<%= Html.ActionLink("Naam", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Naam, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op naam" })%>
 		</th>
+		<th>
+			<%= Html.ActionLink("Adres", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Adres, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op naam" })%>
+		</th>	
 		<th>
 			<%= Html.ActionLink("Geboortedatum", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Leeftijd, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op geboortedatum" })%>
 		</th>
@@ -29,6 +24,10 @@
 			<%= Html.ActionLink("Afd.", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Afdeling, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op afdeling" })%>
 		</th>
 		<th>Func. </th>
+		<th>
+			<%= Html.ActionLink("Instap tot", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.InstapPeriode, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op afdeling" })%>
+		</th>
+		<th>Contact</th>
 		<%=Model.KanLedenBewerken ? "<th>Acties</th>" : String.Empty %>
 	</tr>
 	<%
@@ -44,6 +43,7 @@
 		<td>
 			<% Html.RenderPartial("LedenLinkControl", lidOverzicht); %>
 		</td>
+		<td><%=Html.Adres(lidOverzicht) %></td>
 		<td class="right">
 			<%=lidOverzicht.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)lidOverzicht.GeboorteDatum).ToString("d")%>
 		</td>
@@ -56,19 +56,24 @@
 		<td>
 			<% foreach (var a in lidOverzicht.Afdelingen)
 	  { %>
-			<%=Html.ActionLink(Html.Encode(a.Afkorting), "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = Model.GekozenSortering, afdelingID = a.ID, functieID = 0 }, new { title = ViewData.Model.AfdelingsInfoDictionary[a.ID].AfdelingNaam })%>
+			<%=Html.ActionLink(Html.Encode(a.Afkorting), "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = Model.GekozenSortering, afdelingID = a.ID, functieID = 0 }, new { title = a.Naam })%>
 			<% } %>
 		</td>
 		<td>
 			<% foreach (var functieInfo in lidOverzicht.Functies)
 	  { %>
-			<%=Html.ActionLink(Html.Encode(functieInfo.Code), "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = Model.GekozenSortering, afdelingID = 0, functieID = functieInfo.ID }, new { title = ViewData.Model.FunctieInfoDictionary[functieInfo.ID].Naam })%>
+			<%=Html.ActionLink(Html.Encode(functieInfo.Code), "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = Model.GekozenSortering, afdelingID = 0, functieID = functieInfo.ID }, new { title = functieInfo.Naam })%>
 			<% } %>
+		</td>
+		<td><%=lidOverzicht.EindeInstapPeriode == null ? String.Empty : ((DateTime)lidOverzicht.EindeInstapPeriode).ToString("d") %></td>
+		<td>
+			<%=lidOverzicht.TelefoonNummer %> <br />
+			<a href='mailto:<%=lidOverzicht.Email %>'><%=lidOverzicht.Email %></a>
 		</td>
 		<%if (Model.KanLedenBewerken)
 	{%>
 		<td>
-			<%=Html.ActionLink("uitschrijven", "DeActiveren", new { Controller = "Leden", id = lidOverzicht.GelieerdePersoonID }, new { title = "Op non-actief zetten, zodat de persoon niet meer in de ledenlijst verschijnt" })%>
+			<%=Html.ActionLink("uitschrijven", "DeActiveren", new { Controller = "Leden", id = lidOverzicht.GelieerdePersoonID }, new { title = "Deze persoon verwijderen uit de lijst met ingeschreven leden en leiding" })%>
 			<%=Html.ActionLink("afd.", "AfdelingBewerken", new { Controller = "Leden", lidID = lidOverzicht.LidID }, new { title = "Bij een (andere) afdeling zetten" })%>
 		</td>
 		<%

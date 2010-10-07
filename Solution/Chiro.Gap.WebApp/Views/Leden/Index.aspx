@@ -19,22 +19,22 @@
 	</script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-	<div id="acties">
-		<h1>
-			Acties</h1>
-		<ul>
-			<li>
-				<%= Html.ActionLink("Lijst downloaden", "Download", new { id = Model.IDGetoondGroepsWerkJaar, afdelingID = Model.AfdelingID, functieID = Model.FunctieID, sortering = Model.GekozenSortering }, new { title = "Download de geselecteerde gegevens in een Excel-bestand" })%></li></ul>
-		<h1>
-			Filteren</h1>
-		<ul>
-			<li>
-				<%=Html.ActionLink("Alle leden bekijken", "Lijst", new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, afdelingID = 0, functieID = 0, sortering = Model.GekozenSortering })%>
-			</li>
-			<li>
+	<div id="actiesmini">
+		<span><%= Html.ActionLink(
+		      	"Lijst downloaden", 
+		      	"Download", 
+		      	new { id = Model.IDGetoondGroepsWerkJaar, afdelingID = Model.AfdelingID, functieID = Model.FunctieID, sortering = Model.GekozenSortering }, 
+		      	new { title = "Download de geselecteerde gegevens in een Excel-bestand" })%></span>
+		<span><%=Html.ActionLink(
+		      	"In instapperiode", 
+		      	"ProbeerLeden",
+		      	new { groepID = Model.GroepID, sortering = Model.GekozenSortering }, 
+		      	new {title = "Leden en leiding tonen waarvan de instapperiode nog niet verlopen is"})%></span>
+
+		<span>
 				<%using (Html.BeginForm("AfdelingsLijst", "Leden"))
 				{ 
-					var dummyItems = new SelectListItem[] {new SelectListItem {Text = "Op afdeling", Value = "0"}};%>
+					var dummyItems = new SelectListItem[] {new SelectListItem {Text = "Filter op afdeling", Value = "0"}};%>
   				<%=Html.DropDownListFor(
 					mdl=>mdl.AfdelingID,
   						dummyItems.Union(
@@ -44,11 +44,11 @@
 				<%=Html.HiddenFor(s => s.IDGetoondGroepsWerkJaar)%>
 				<%=Html.HiddenFor(s => s.GekozenSortering)%>
 				<%} %>
-			</li>
-			<li>
+		</span>
+		<span>
 			    <%using (Html.BeginForm("FunctieLijst", "Leden"))
 			      {
-				var dummyItems = new SelectListItem[] {new SelectListItem {Text = "Op functie", Value = "0"}};%>
+				var dummyItems = new SelectListItem[] {new SelectListItem {Text = "Filter op functie", Value = "0"}};%>
 				
 				<%=Html.DropDownListFor(
 					mdl=>mdl.FunctieID, 
@@ -58,14 +58,23 @@
 				<%=Html.HiddenFor(s => s.IDGetoondGroepsWerkJaar)%>
 				<%=Html.HiddenFor(s => s.GekozenSortering)%>
 			    <%} %>
-			</li>
-		</ul>
-		<h1>
-			Uitleg</h1>
-		<ul>
-			<li>
-				<%= Html.ActionLink("Wat betekent 'uitschrijven'?", "ViewTonen", "Handleiding", null, null, "Uitschrijven", new { helpBestand = "Trefwoorden" }, new { title = "Lees in de handleiding wat de gevolgen zijn wanneer je iemand uitschrijft" })%></li>
-		</ul>
+		</span>
+		<span><%=Html.ActionLink(
+		      	"Filters opheffen",
+		      	"Lijst", 
+		      	new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, afdelingID = 0, functieID = 0, sortering = Model.GekozenSortering },
+			new { title ="Opnieuw alle ingeschreven leden en leiding van het gevraagde werkjaar tonen"}	)%></span>
+
+		<span><%= Html.ActionLink("Wat betekent 'uitschrijven'?", "ViewTonen", "Handleiding", null, null, "Uitschrijven", new { helpBestand = "Trefwoorden" }, new { title = "Lees in de handleiding wat de gevolgen zijn wanneer je iemand uitschrijft" })%></span>
 	</div>
+	
+	<div class="pager">
+	Pagina:
+	<%= Html.WerkJaarLinks(
+                ViewData.Model.IDGetoondGroepsWerkJaar, 
+                ViewData.Model.WerkJaarInfos,
+				wj => Url.Action("Lijst", new { Controller = "Leden", id = wj.ID, sortering = Model.GekozenSortering, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }))%>
+	</div>
+	
 	<% Html.RenderPartial("LedenLijstControl"); %>
 </asp:Content>

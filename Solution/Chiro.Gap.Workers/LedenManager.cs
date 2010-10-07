@@ -868,5 +868,31 @@ namespace Chiro.Gap.Workers
 			return nieuwLid;
 
 		}
+
+		/// <summary>
+		/// Haalt alle probeerleden op van de groep met ID <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="groepID">ID van groep met op te halen probeerleden</param>
+		/// <param name="lidExtras">bepaalt de op te halen gekoppelde entiteiten</param>
+		/// <returns>Lijst met info over de probeerleden</returns>
+		public IEnumerable<Lid> ProbeerLedenOphalen(int groepID, LidExtras lidExtras)
+		{
+			if (!_autorisatieMgr.IsGavGroep(groepID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+
+			// Ik haal leden en leiding apart op, omdat de lambda-expressies verschillend zijn als er
+			// afdelingen bij in de 'extra's' zitten.
+
+			IEnumerable<Lid> kindLijst = _daos.KindDao.ProbeerLedenOphalen(groepID, ExtrasNaarLambdasKind(lidExtras)).Cast<Lid>();
+			IEnumerable<Lid> leidingLijst = _daos.LeidingDao.ProbeerLedenOphalen(groepID, ExtrasNaarLambdasLeiding(lidExtras)).Cast<Lid>();
+
+			var list = kindLijst.Union(leidingLijst);
+
+			// Sorteren is presentatie; daar houdt de backend zich niet mee bezig ;-P
+
+			return list.Where(ld => ld.NonActief == false).ToList();
+		}
 	}
 }

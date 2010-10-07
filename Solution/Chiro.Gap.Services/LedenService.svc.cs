@@ -644,6 +644,29 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
+		/// Haalt alle probeerleden op van de groep met ID <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="groepID">ID van groep met op te halen probeerleden</param>
+		/// <returns>Lijst met info over de probeerleden</returns>
+		public IList<LidOverzicht> ProbeerLedenOphalen(int groepID)
+		{
+			try
+			{
+				var leden = _ledenMgr.ProbeerLedenOphalen(
+					groepID,
+					LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Adressen | LidExtras.Communicatie);
+				var resultaat = Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(leden);
+
+				return resultaat;
+			}
+			catch (GeenGavException ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			};
+		}
+
+		/// <summary>
 		/// Haalt de ID's van de groepswerkjaren van een lid op.
 		/// </summary>
 		/// <param name="lidID">ID van het lid waarin we geinteresseerd zijn</param>

@@ -457,6 +457,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Leden en leiding in probeerperiode.
+        /// </summary>
+        public static string ProbeerLeden {
+            get {
+                return ResourceManager.GetString("ProbeerLeden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Problemen.
         /// </summary>
         public static string ProblemenCacheKey {
