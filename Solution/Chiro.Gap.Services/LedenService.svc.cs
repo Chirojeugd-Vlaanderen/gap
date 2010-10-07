@@ -505,7 +505,7 @@ namespace Chiro.Gap.Services
 				var result = _ledenMgr.PaginaOphalenVolgensAfdeling(
 					groepsWerkJaarID,
 					afdID,
-					LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Adressen | LidExtras.Communicatie).ToList();
+					LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.VoorkeurAdres | LidExtras.Communicatie).ToList();
 				
 				return Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(result);
 			}
@@ -530,7 +530,7 @@ namespace Chiro.Gap.Services
 				var leden = _ledenMgr.PaginaOphalenVolgensFunctie(
 					groepsWerkJaarID,
 					functieID,
-					LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Adressen | LidExtras.Communicatie).ToList();
+					LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.VoorkeurAdres | LidExtras.Communicatie).ToList();
 
 				return Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(leden);
 			}
@@ -552,7 +552,7 @@ namespace Chiro.Gap.Services
 			{
 				var leden = _ledenMgr.PaginaOphalen(
 					groepsWerkJaarID,
-					LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Adressen | LidExtras.Communicatie);
+					LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies |LidExtras.VoorkeurAdres | LidExtras.Communicatie);
 				var resultaat = Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(leden);
 
 				return resultaat;
@@ -654,7 +654,7 @@ namespace Chiro.Gap.Services
 			{
 				var leden = _ledenMgr.ProbeerLedenOphalen(
 					groepID,
-					LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Adressen | LidExtras.Communicatie);
+					LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.VoorkeurAdres | LidExtras.Communicatie);
 				var resultaat = Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(leden);
 
 				return resultaat;

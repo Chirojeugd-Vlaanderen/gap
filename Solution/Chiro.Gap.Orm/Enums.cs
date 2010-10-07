@@ -81,16 +81,21 @@ namespace Chiro.Gap.Orm
 		Verzekeringen = 0x20,
 
 		/// <summary>
-		/// Haalt adressen van de personen mee op
+		/// Haalt alle adressen van de personen mee op
 		/// </summary>
 		Adressen = 0x40,
 
 		/// <summary>
+		/// Haalt alle adressen van de personen mee op
+		/// </summary>
+		VoorkeurAdres = 0x80,
+
+		/// <summary>
 		/// Communicatiemiddelen mee ophalen
 		/// </summary>
-		Communicatie = 0x80,
+		Communicatie = 0x100,
 		
-		Alles = Groep | Afdelingen | Functies | Persoon | Verzekeringen | Adressen | Communicatie
+		Alles = Groep | Afdelingen | Functies | Persoon | Verzekeringen | Adressen | VoorkeurAdres | Communicatie
 	}
 
 	/// <summary>

@@ -687,6 +687,13 @@ namespace Chiro.Gap.Workers
 		{
 			var paths = new List<Expression<Func<T, object>>> { ld => ld.GroepsWerkJaar.WithoutUpdate() };
 
+			if ((extras & LidExtras.VoorkeurAdres) != 0)
+			{
+				// enkel voorkeursadres
+				paths.Add(ld => ld.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats.WithoutUpdate());
+				paths.Add(ld => ld.GelieerdePersoon.PersoonsAdres.Adres.StraatNaam.WithoutUpdate());
+			}
+
 			if ((extras & LidExtras.Adressen) != 0)
 			{
 				// alle adressen
