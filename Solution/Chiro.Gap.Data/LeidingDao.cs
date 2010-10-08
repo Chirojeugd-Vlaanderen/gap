@@ -51,7 +51,6 @@ namespace Chiro.Gap.Data.Ef
 				var leiding = (
 					from l in db.Lid.OfType<Leiding>()
 					where l.GroepsWerkJaar.ID == groepsWerkJaarID
-					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
 					select l) as ObjectQuery<Leiding>;
 
 				lijst = IncludesToepassen(leiding, paths).ToArray();
@@ -74,12 +73,18 @@ namespace Chiro.Gap.Data.Ef
 
 			using (var db = new ChiroGroepEntities())
 			{
-				var leiding = (
-					from l in db.Lid.OfType<Leiding>()
-					where l.GroepsWerkJaar.ID == groepsWerkJaarID
-					&& l.AfdelingsJaar.Any(aj => aj.Afdeling.ID == afdelingID)
-					orderby l.GelieerdePersoon.Persoon.Naam, l.GelieerdePersoon.Persoon.VoorNaam
-					select l) as ObjectQuery<Leiding>;
+				// De query die ik graag had gedaan, is onderstaande.  Maar ik heb die
+				// geoptimaliseerd, om wat snelheid te winnen.
+
+				//var leiding = (
+				//        from l in db.Lid.OfType<Leiding>()
+				//        where l.GroepsWerkJaar.ID == groepsWerkJaarID
+				//        && l.AfdelingsJaar.Any(aj => aj.Afdeling.ID == afdelingID)
+				//        select l) as ObjectQuery<Leiding>;
+
+				var leiding = db.AfdelingsJaar
+				              	.Where(aj => aj.GroepsWerkJaar.ID == groepsWerkJaarID && aj.Afdeling.ID == afdelingID)
+				              	.SelectMany(aj => aj.Leiding) as ObjectQuery<Leiding>;
 
 				lijst = IncludesToepassen(leiding, paths).ToArray();
 			}
