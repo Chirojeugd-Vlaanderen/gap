@@ -16,6 +16,19 @@
 		Heb je geen programma waarmee je het bestand kunt openen? Calc kun je <a href="http://nl.openoffice.org/downloaden.html">
 			gratis downloaden</a>.</p>
 	<p>
+		De lijsten die je kunt downloaden, zijn opgemaakt in het formaat van Office
+		2007. Als je Office 2003 hebt en je krijgt het bestand niet open, dan moet je
+		eerst een <a href="http://www.microsoft.com/downloads/details.aspx?familyid=941b3470-3ae9-4aee-8f43-c6bb74cd1466&displaylang=nl"
+			title="Hulpprogramma om Office 2007-bestanden te kunnen openen in Office 2003">
+			extra programma</a> installeren. Zorg ook dat je <a href="http://update.microsoft.com">
+				de recentste updates van Office</a> geïnstalleerd hebt.</p>
+	<p>
+		<em>Internet Explorer geeft soms problemen. Je krijgt dan een venstertje met de
+			foutmelding "Kan bestand '208' niet downloaden". We weten nog niet wat het probleem
+			veroorzaakt, maar als je <a href="http://www.mozilla.com/firefox">Firefox</a>
+			of <a href="http://www.google.be/chrome">Chrome</a> gebruikt in plaats van Internet
+			Explorer lukt de download wél.</em></p>
+	<p>
 		Lijsten die je kunt downloaden:</p>
 	<ul>
 		<li>Alle personen

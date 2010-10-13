@@ -78,6 +78,19 @@
 			nadert. Is de einddatum verstreken, dan geldt die persoon als definitief ingeschreven.
 			Op dat moment wordt hij of zij aangesloten bij Chirojeugd Vlaanderen. Dat betekent
 			dat je groep een factuur zal krijgen voor zijn of haar lidgeld.</dd>
+		<dt><strong><a class="anchor" id="Jaarovergang">Jaarovergang</a></strong>:</dt>
+		<dd>Tijdens de jaarovergang geef je aan welke afdelingen je groep heeft. De leden
+			van vorig jaar worden automatisch in de juiste afdeling gezet en ingeschreven.
+			Voor die juiste afdeling kijkt het programma naar de leeftijd en de Chiroleeftijd
+			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Chiroleeftijd", new { helpBestand = "Trefwoorden" }, new { title = "Wat is je Chiroleeftijd?"})%>.
+			Bij die inschrijving krijgen al die leden een instapperiode
+			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Instapperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is een instapperiode?"})%>.
+			Als ze niet meer naar de Chiro willen komen, moet je ze uitschrijven voor het
+			einde van die instapperiode, anders krijg je toch een factuur voor hun lidgeld.
+			Werk je met een inschrijvingsdag die nogal laat valt? Voer de jaarovergang dan
+			kort voor de deadline uit: inschrijven op 14 oktober betekent een instapperiode
+			tot 4 november. Als dat nog te vroeg is, neem je onverantwoorde risico's en
+			pas je het beste je werking aan.</dd>
 		<dt><strong><a class="anchor" id="Ledenuitgave">Ledenuitgave</a></strong>:</dt>
 		<dd>Chirojeugd Vlaanderen maakt verschillende publicaties voor leden. Voor de jongste
 			afdelingen sturen we een boekje of een spel naar de afdelingsleiding, keti's

@@ -14,6 +14,7 @@
 	</script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+<p><em>Hou je muispijl boven een link in de tabel - zonder te klikken - voor iets meer uitleg over wat de link doet.</em></p>
 	<%using (Html.BeginForm("List", "Personen"))
    { %>
 	<div id="acties">
