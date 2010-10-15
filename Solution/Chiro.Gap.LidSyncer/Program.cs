@@ -47,14 +47,13 @@ namespace Chiro.Gap.LidSyncer
 			//// Fixen dubbelpuntabonnementen die niet goed overgezet zijn
 			// gpMgr.FixDubbelPunt();
 
-			// Manueel verloren dubbelpunt rechttrekken
+			//// Manueel verloren dubbelpunt rechttrekken
+			// HardCodedDubbelpunt();
 
-			HardCodedDubbelpunt();
+			// Overzetten leden na probeerperiode
 
-			//// Overzetten leden na probeerperiode
-
-			//var ledenMgr = Factory.Maak<LedenManager>();
-			//ledenMgr.OverZettenNaProbeerPeriode();
+			var ledenMgr = Factory.Maak<LedenManager>();
+			ledenMgr.OverZettenNaProbeerPeriode();
 		}
 
 		private static void HardCodedDubbelpunt()

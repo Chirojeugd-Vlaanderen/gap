@@ -755,22 +755,28 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			IEnumerable<Lid> teSyncen = _daos.LedenDao.OverTeZettenOphalen();
+			// Begrens het aantal op te halen leden, omdat in op 15 oktober naar schatting 75000 leden
+			// over te zetten zullen zijn.
 
-			foreach (Lid l in teSyncen)
+			IEnumerable<Lid> teSyncen = _daos.LedenDao.OverTeZettenOphalen(Properties.Settings.Default.AantalLedenOverzettenPerKeer);
+
+			while (teSyncen.FirstOrDefault() != null)
 			{
-#if KIPDORP
-				using (var tx = new TransactionScope())
+				foreach (Lid l in teSyncen)
 				{
-#endif
-				_sync.Bewaren(l);
-				l.IsOvergezet = true;
-				_daos.LedenDao.Bewaren(l);
 #if KIPDORP
-					tx.Complete();
-
-				}
+					using (var tx = new TransactionScope())
+					{
 #endif
+						_sync.Bewaren(l);
+						l.IsOvergezet = true;
+						_daos.LedenDao.Bewaren(l);
+#if KIPDORP
+						tx.Complete();
+					}
+#endif
+				}
+				teSyncen = _daos.LedenDao.OverTeZettenOphalen(Properties.Settings.Default.AantalLedenOverzettenPerKeer);
 			}
 		}
 

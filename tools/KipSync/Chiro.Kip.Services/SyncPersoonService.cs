@@ -101,7 +101,7 @@ namespace Chiro.Kip.Services
 				}
 			}
 
-			_log.Log(0, String.Format(
+			_log.BerichtLoggen(0, String.Format(
 				"Persoon geupdatet: ID{0} {1} {2} AD{3}", 
 				persoon.ID, 
 				persoon.VoorNaam, 
@@ -257,7 +257,7 @@ namespace Chiro.Kip.Services
 
 				db.SaveChanges();
 			}
-			_log.Log(0, feedback.ToString());
+			_log.BerichtLoggen(0, feedback.ToString());
 		}
 
 
@@ -346,7 +346,7 @@ namespace Chiro.Kip.Services
 				feedback = String.Format("Communicatie bewaard voor ID{0} {1} {2} AD{3}", pers.ID, persoon.VoorNaam, persoon.Naam,
 				                         persoon.AdNummer);
 			}
-			_log.Log(0, feedback);
+			_log.BerichtLoggen(0, feedback);
 		}
 
 		/// <summary>
@@ -426,7 +426,7 @@ namespace Chiro.Kip.Services
 						persoon.GapID, persoon.VoorNaam, persoon.Naam, persoon.AdNummer, communicatie.Waarde);
 				}
 			}
-			_log.Log(0, feedback);
+			_log.BerichtLoggen(0, feedback);
 
 		}
 
@@ -469,7 +469,7 @@ namespace Chiro.Kip.Services
 				}
 			}
 
-			_log.Log(0, feedback);
+			_log.BerichtLoggen(0, feedback);
 		}
 
 		/// <summary>
@@ -482,15 +482,8 @@ namespace Chiro.Kip.Services
 			int adNummer,
 			LidGedoe gedoe)
 		{
-			string feedback;
+			string feedback = String.Empty;
 			ChiroGroep groep;
-			// Aangezien 1 'savechanges' van entity framework ook een transaction is, moet ik geen
-			// distributed transaction opzetten.  Misschien... En de lock zorgt ervoor dat dit stuk
-			// code maar 1 keer tegelijk loopt.
-
-			// TODO: Het gelockte stuk is aan de grote kant; waarschijnlijk volstaat het om een aantal
-			// kleinere stukken code te locken.
-
 
 			using (var db = new kipadminEntities())
 			{
@@ -525,11 +518,21 @@ namespace Chiro.Kip.Services
 
 				if (lid != null)
 				{
-					// In praktijk zullen we nooit een bestaand lid met functies en afdelingen
-					// tegelijk updateten.  Dus het is niet erg dat dit stuk nog niet geimplementeerd
-					// is :-)
+					// TODO (#817): Updaten van lid mogelijk maken!
 
-					throw new NotImplementedException();
+					// In de huidige implementatie van GAP hebben we dit niet nodig.
+					// Dus NotImplemented throwen was een goede oplossing.  Maar we
+					// komen hier ook terecht als er per ongeluk iemand 2 keer lid 
+					// gemaakt wordt van dezelfde groep.  (Wat dan weer mogelijk is als
+					// een persoon dubbel in GAP zit.)
+
+					// Vandaar dat er hier niets gebeurt, en er enkel een fout gelogd
+					// wordt.
+
+					_log.FoutLoggen(groep.GroepID, String.Format(
+						"Dubbel toevoegen van lid genegeerd.  Ad-nr {0}",
+						adNummer));
+					// throw new NotImplementedException();
 				}
 				else
 				{
@@ -543,10 +546,21 @@ namespace Chiro.Kip.Services
 					               where p.AdNummer == adNummer
 					               select p).FirstOrDefault();
 
+					if (persoon == null)
+					{
+						_log.FoutLoggen(
+							groep == null ? 0 : groep.GroepID,
+							String.Format(
+								"genegeerd: Lid met onbekend AD-nr. {0}", 
+								adNummer));
+						return;
+					}
+
+
 					// Zoek eerst naar een geschikte aansluiting om het lid aan
 					// toe te voegen.
 
-					// TODO: Als we kader gaan aansluiten, dan zijn er geen rekeningen
+					// TODO (#561): Als we kader gaan aansluiten, dan zijn er geen rekeningen
 					// gekoppeld aan de aansluiting!  Dan loopt het dus anders.
 
 					var aansluitingenDitWerkjaar = (from a in db.Aansluiting.Include(asl => asl.REKENING)
@@ -781,13 +795,13 @@ namespace Chiro.Kip.Services
 					                         gedoe.StamNummer, gedoe.WerkJaar);
 				}
 			}
-			_log.Log(groep == null ? 0 : groep.GroepID, feedback);
+			_log.BerichtLoggen(groep == null ? 0 : groep.GroepID, feedback);
 		}
 
 		/// <summary>
-		/// Maakt een persoon zonder ad-nummer lid.  Dit is een dure operatie, omdat er gezocht zal worden of de persoon
-		/// al bestaat.  Zeker de eerste keer op 16 oktober, gaat dit zwaar zijn.  Vanaf volgend jaar, zal het merendeel
-		/// van de leden al een ad-nummer hebben.
+		/// Maakt een persoon zonder ad-nummer lid.  Dit is een dure operatie, omdat er gezocht zal 
+		/// worden of de persoon al bestaat.  Zeker de eerste keer op 16 oktober, gaat dit zwaar 
+		/// zijn.  Vanaf volgend jaar, zal het merendeel van de leden al een ad-nummer hebben.
 		/// </summary>
 		/// <param name="details">Details van de persoon die lid moet kunnen worden</param>
 		/// <param name="lidGedoe">nodige info om lid te kunnen maken</param>
@@ -800,7 +814,15 @@ namespace Chiro.Kip.Services
 			// Als het AD-nummer al gekend is, moet (gewoon) 'LidBewaren' gebruikt worden.
 			Debug.Assert(details.Persoon.AdNummer == null);
 
+			if (String.IsNullOrEmpty(details.Persoon.VoorNaam))
+			{
+				_log.FoutLoggen(0, String.Format(
+					"Lid zonder voornaam genegeerd; persoonID {0}", 
+					details.Persoon.ID));
+				return;
+			}
 			int adnr = UpdatenOfMaken(details);
+
 			LidBewaren(adnr, lidGedoe);
 		}
 
@@ -885,7 +907,7 @@ namespace Chiro.Kip.Services
 				}
 				db.SaveChanges();
 			}
-			_log.Log(0, feedback.ToString());
+			_log.BerichtLoggen(0, feedback.ToString());
 		}
 
 		/// <summary>
@@ -944,7 +966,7 @@ namespace Chiro.Kip.Services
 
 				db.SaveChanges();
 			}
-			_log.Log(0, feedback);
+			_log.BerichtLoggen(0, feedback);
 		}
 
 		/// <summary>
@@ -1019,7 +1041,7 @@ namespace Chiro.Kip.Services
 					lid.Persoon.Naam,
 					lid.Persoon.AdNummer, lid.AFDELING1, lid.AFDELING2));
 			}
-			_log.Log(0, feedback.ToString());
+			_log.BerichtLoggen(0, feedback.ToString());
 		}
 
 		/// <summary>
@@ -1120,7 +1142,7 @@ namespace Chiro.Kip.Services
 						persoon.VoorNaam, persoon.Naam, persoon.AdNummer, rekening.NR);
 				}
 			}
-			_log.Log((groep == null ? 0 : groep.GroepID), feedback);
+			_log.BerichtLoggen((groep == null ? 0 : groep.GroepID), feedback);
 		}
 
 		/// <summary>
@@ -1237,7 +1259,7 @@ namespace Chiro.Kip.Services
 					stamNummer,
 					werkJaar);
 			}
-			_log.Log(groep == null ? 0 : groep.GroepID, feedback);
+			_log.BerichtLoggen(groep == null ? 0 : groep.GroepID, feedback);
 		}
 
 		/// <summary>
@@ -1328,7 +1350,7 @@ namespace Chiro.Kip.Services
 			}
 
 			AlleCommunicatieBewaren(persoon, communicatieMiddelen);
-			_log.Log(0, feedback);
+			_log.BerichtLoggen(0, feedback);
 
 			return gevonden.AdNummer;
 		}

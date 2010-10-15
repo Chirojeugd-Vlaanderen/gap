@@ -80,12 +80,12 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public IEnumerable<Lid> OverTeZettenOphalen()
+		public Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID)
+		public IEnumerable<Lid> OverTeZettenOphalen(int maxAantal)
 		{
 			throw new NotImplementedException();
 		}

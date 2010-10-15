@@ -130,11 +130,12 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		Lid OphalenViaPersoon(int gelieerdePersoonID, int groepsWerkJaarID);
 
 		/// <summary>
-		/// Haalt alle leden op met probeerperiode die voorbij is, inclusief persoonsgegevens, adressen,
-		/// communicatie, functies, afdelingen
+		/// Haalt hoogstens <paramref name="maxAantal"/> leden op met probeerperiode die voorbij is, 
+		/// inclusief persoonsgegevens, adressen, communicatie, functies, afdelingen
 		/// </summary>
+		/// <param name="maxAantal">max aantal leden op te halen</param>
 		/// <returns>alle leden met probeerperiode die voorbij is, inclusief persoonsgegevens, adressen,
-		/// communicatie, functies, afdelingen.  Communicatie niet!</returns>
-		IEnumerable<Lid> OverTeZettenOphalen();
+		/// functies, afdelingen.  Communicatie niet!</returns>
+		IEnumerable<Lid> OverTeZettenOphalen(int maxAantal);
 	}
 }

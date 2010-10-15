@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Chiro.Gap.Services.Properties {
+namespace Chiro.Gap.Data.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -25,19 +25,10 @@ namespace Chiro.Gap.Services.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
-        public int KleinAantal {
+        [global::System.Configuration.DefaultSettingValueAttribute("2010")]
+        public int MinWerkJaarLidOverzetten {
             get {
-                return ((int)(this["KleinAantal"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("gaplive")]
-        public string LiveConnSubstring {
-            get {
-                return ((string)(this["LiveConnSubstring"]));
+                return ((int)(this["MinWerkJaarLidOverzetten"]));
             }
         }
     }

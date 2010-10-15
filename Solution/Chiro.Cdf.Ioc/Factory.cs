@@ -6,6 +6,7 @@
 using System;
 using System.Configuration;
 using System.Diagnostics;
+using System.Threading;
 
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
@@ -126,7 +127,15 @@ namespace Chiro.Cdf.Ioc
 			// http://unity.codeplex.com/WorkItem/View.aspx?WorkItemId=7019
 			// Maar ik ben daar toch niet zo zeker van :-/
 
-			Container.RegisterInstance(instantie);
+			try
+			{
+				Container.RegisterInstance(instantie);
+			}
+			catch (SynchronizationLockException)
+			{
+				// Doe niets. :-/
+			}
+			
 		}
 	}
 }

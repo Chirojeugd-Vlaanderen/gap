@@ -10,6 +10,14 @@ namespace Chiro.Kip.Log
 		/// </summary>
 		/// <param name="groepID">(Kipdorp)ID van groep waarop logbericht van toepassing</param>
 		/// <param name="bericht">Te loggen bericht</param>
-		void Log(int groepID, string bericht);
+		void BerichtLoggen(int groepID, string bericht);
+
+		/// <summary>
+		/// Logt een foutbericht mbt de groep met id <paramref name="groepID"/>.
+		/// </summary>
+		/// <param name="groepID">(Kipdorp)ID van groep waarop logbericht van toepassing</param>
+		/// <param name="bericht">Te loggen foutbericht</param>
+		void FoutLoggen(int groepID, string bericht);
+	
 	}
 }

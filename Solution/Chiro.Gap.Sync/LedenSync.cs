@@ -40,6 +40,7 @@ namespace Chiro.Gap.Sync
 				{
 					{NationaleFunctie.ContactPersoon, FunctieEnum.ContactPersoon},
 					{NationaleFunctie.FinancieelVerantwoordelijke, FunctieEnum.FinancieelVerantwoordelijke},
+					{NationaleFunctie.Vb, FunctieEnum.Vb},
 					{NationaleFunctie.GroepsLeiding, FunctieEnum.GroepsLeiding},
 					{NationaleFunctie.JeugdRaad, FunctieEnum.JeugdRaad},
 					{NationaleFunctie.KookPloeg, FunctieEnum.KookPloeg},

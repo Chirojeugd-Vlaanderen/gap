@@ -501,12 +501,13 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// Haalt alle leden op met probeerperiode die voorbij is, inclusief persoonsgegevens, adressen,
-		/// communicatie, functies, afdelingen
+		/// Haalt hoogstens <paramref name="maxAantal"/> leden op met probeerperiode die voorbij is, 
+		/// inclusief persoonsgegevens, adressen, communicatie, functies, afdelingen
 		/// </summary>
+		/// <param name="maxAantal">max aantal leden op te halen</param>
 		/// <returns>alle leden met probeerperiode die voorbij is, inclusief persoonsgegevens, adressen,
 		/// functies, afdelingen.  Communicatie niet!</returns>
-		public IEnumerable<Lid> OverTeZettenOphalen()
+		public IEnumerable<Lid> OverTeZettenOphalen(int maxAantal)
 		{
 			// We moeten dit apart doen voor leden en leiding, omdat de afdelingen anders geregeld zijn.
 
@@ -525,8 +526,10 @@ namespace Chiro.Gap.Data.Ef
 						.Include(lei => lei.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats)
 				               	.Include(lei => lei.Functie)
 				               	.Include(lei => lei.AfdelingsJaar.First().OfficieleAfdeling)
-				               where !l.NonActief && l.EindeInstapPeriode < DateTime.Now && !l.IsOvergezet
-				               select l).ToArray();
+				               where !l.NonActief && l.EindeInstapPeriode < DateTime.Now && !l.IsOvergezet && l.GroepsWerkJaar.WerkJaar >= Properties.Settings.Default.MinWerkJaarLidOverzetten
+				               select l).Take(maxAantal);
+
+				int resterend = maxAantal - leiding.Count();
 
 				var kinderen = (from l in db.Lid.OfType<Kind>()
 						.Include(kin => kin.GroepsWerkJaar.Groep)
@@ -535,10 +538,11 @@ namespace Chiro.Gap.Data.Ef
 						.Include(kin => kin.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats)
 				               	.Include(kin => kin.Functie)
 				               	.Include(kin => kin.AfdelingsJaar.OfficieleAfdeling)
-				               where !l.NonActief && l.EindeInstapPeriode < DateTime.Now && !l.IsOvergezet
-				               select l).ToArray();
+						where !l.NonActief && l.EindeInstapPeriode < DateTime.Now && !l.IsOvergezet && l.GroepsWerkJaar.WerkJaar >= Properties.Settings.Default.MinWerkJaarLidOverzetten
+				               select l).Take(resterend);
 
-				resultaat = leiding.Union<Lid>(kinderen).ToArray();
+
+				resultaat = leiding.ToArray().Union<Lid>(kinderen.ToArray()).ToArray();
 			}
 
 			return Utility.DetachObjectGraph<Lid>(resultaat);

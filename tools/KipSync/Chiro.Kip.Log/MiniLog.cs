@@ -16,7 +16,30 @@ namespace Chiro.Kip.Log
 		/// </summary>
 		/// <param name="groepID">(Kipdorp)ID van groep waarop logbericht van toepassing</param>
 		/// <param name="bericht">Te loggen bericht</param>
-		public void Log(int groepID, string bericht)
+		public void BerichtLoggen(int groepID, string bericht)
+		{
+			Loggen(groepID, bericht, false);
+		}
+
+		/// <summary>
+		/// Logt een foutbericht mbt de groep met id <paramref name="groepID"/>.
+		/// </summary>
+		/// <param name="groepID">(Kipdorp)ID van groep waarop logbericht van toepassing</param>
+		/// <param name="bericht">Te loggen foutbericht</param>
+		public void FoutLoggen(int groepID, string bericht)
+		{
+			Loggen(groepID, bericht, true);
+		}
+
+
+		/// <summary>
+		/// Logt een bericht of fout mbt de groep met id <paramref name="groepID"/>.
+		/// </summary>
+		/// <param name="groepID">(Kipdorp)ID van groep waarop logbericht van toepassing</param>
+		/// <param name="bericht">Te loggen bericht</param>
+		/// <param name="ernstig"><c>true</c> als het om een fout gaat, <c>false</c> voor
+		/// een 'gewoon' bericht</param>
+		public void Loggen(int groepID, string bericht, Boolean ernstig)
 		{
 			using (var db = new kipadminEntities())
 			{
@@ -24,7 +47,7 @@ namespace Chiro.Kip.Log
 				DateTime tijd = DateTime.Now;
 
 				var groep = db.Groep.Where(grp => grp.GroepID == groepID).FirstOrDefault();
-                                    
+
 				if (groep == null)
 				{
 					userDef = "KipSync";
@@ -40,11 +63,12 @@ namespace Chiro.Kip.Log
 
 				Console.WriteLine("{0}:{1}:{2}", tijd, userDef, bericht);
 
-				var b = new Bericht {bericht = bericht, datum = tijd, ernstig = false, gebruiker = userDef};
+				var b = new Bericht { bericht = bericht, datum = tijd, ernstig = ernstig, gebruiker = userDef };
 
 				db.AddToBerichtSet(b);
 				db.SaveChanges();
 			}
 		}
+
 	}
 }
