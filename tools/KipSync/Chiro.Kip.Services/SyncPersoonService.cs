@@ -75,6 +75,14 @@ namespace Chiro.Kip.Services
 		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
 		public void PersoonUpdaten(Persoon persoon)
 		{
+			if (String.IsNullOrEmpty(persoon.VoorNaam))
+			{
+				_log.FoutLoggen(0, String.Format(
+					"Persoon zonder voornaam niet geupdatet: {0}",
+					persoon.Naam));
+				return;
+			}
+
 			Mapper.CreateMap<Persoon, PersoonZoekInfo>()
 			    .ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => (int)src.Geslacht))
 			    .ForMember(dst => dst.GapID, opt => opt.MapFrom(src => src.ID));
@@ -141,16 +149,26 @@ namespace Chiro.Kip.Services
 
 					if (gevonden == null)
 					{
-						throw new InvalidOperationException(String.Format(
-							Properties.Resources.PersoonNietGevonden,
-							b.Persoon.VoorNaam,
-							b.Persoon.Naam));
+						// Er worden soms wel eens huisgenoten meegegeven die niet in kipadmin zitten.
+						// Als we ze tegen komen, negeren we het adres.
+
+						_log.BerichtLoggen(0, String.Format(
+						    "Adreswijziging: {0} {1} niet gevonden",
+						    b.Persoon.VoorNaam, b.Persoon.Naam));
+						return;
+
+						//throw new InvalidOperationException(String.Format(
+						//    Properties.Resources.PersoonNietGevonden,
+						//    b.Persoon.VoorNaam,
+						//    b.Persoon.Naam));
 					}
+					else
+					{
+						personen.Add(gevonden);
 
-					personen.Add(gevonden);
-
-					// In bewoners ad-nummer aanpassen, zoda we straks het juiste adrestype kunnen vinden
-					b.Persoon.AdNummer = gevonden.AdNummer;
+						// In bewoners ad-nummer aanpassen, zoda we straks het juiste adrestype kunnen vinden
+						b.Persoon.AdNummer = gevonden.AdNummer;
+					}
 				}
 
 
@@ -1078,6 +1096,13 @@ namespace Chiro.Kip.Services
 					               where p.AdNummer == adNummer
 					               select p).FirstOrDefault();
 
+                    if (persoon == null)
+                    {
+                        _log.FoutLoggen(groep.GroepID, String.Format(
+                            "Dubbelpunt voor onbestaand ad-nummer {0}", adNummer));
+                        return;
+                    }
+
 					// Bestaat er al een niet-doorgeboekte rekening voor Dubbelpunt voor het gegeven
 					// groepswerkjaar?
 
@@ -1156,6 +1181,14 @@ namespace Chiro.Kip.Services
 		{
 			// Als het AD-nummer al gekend is, moet (gewoon) 'LidBewaren' gebruikt worden.
 			Debug.Assert(details.Persoon.AdNummer == null);
+
+			if (String.IsNullOrEmpty(details.Persoon.VoorNaam))
+			{
+				_log.FoutLoggen(0, String.Format(
+					"Persoon zonder voornaam niet geupdatet: {0}",
+					details.Persoon.Naam));
+				return;
+			}
 
 			int adnr = UpdatenOfMaken(details);
 			DubbelpuntBestellen(adnr, stamNummer, werkJaar);
@@ -1274,6 +1307,14 @@ namespace Chiro.Kip.Services
 		{
 			// Als het AD-nummer al gekend is, moet (gewoon) 'LidBewaren' gebruikt worden.
 			Debug.Assert(details.Persoon.AdNummer == null);
+
+			if (String.IsNullOrEmpty(details.Persoon.VoorNaam))
+			{
+				_log.FoutLoggen(0, String.Format(
+					"Persoon zonder voornaam niet geupdatet: {0}",
+					details.Persoon.Naam));
+				return;
+			}
 
 			int adnr = UpdatenOfMaken(details);
 			LoonVerliesVerzekeren(adnr, stamNummer, werkJaar);
