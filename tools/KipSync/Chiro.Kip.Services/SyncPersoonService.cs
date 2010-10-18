@@ -890,7 +890,9 @@ namespace Chiro.Kip.Services
 				}
 				// pragmatisch: eerst bestaande functies verwijderen.
 
-				foreach (var hf in lid.HeeftFunctie)
+				var teVerwijderen = lid.HeeftFunctie.ToList();
+
+				foreach (var hf in teVerwijderen)
 				{
 					db.DeleteObject(hf);
 				}
