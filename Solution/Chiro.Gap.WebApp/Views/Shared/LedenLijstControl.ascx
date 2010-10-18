@@ -56,13 +56,13 @@
 		<td>
 			<% foreach (var a in lidOverzicht.Afdelingen)
 	  { %>
-			<%=Html.ActionLink(Html.Encode(a.Afkorting), "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = Model.GekozenSortering, afdelingID = a.ID, functieID = 0 }, new { title = a.Naam })%>
+			<%=Html.ActionLink(Html.Encode(a.Afkorting), "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = Model.GekozenSortering, afdelingID = a.ID, functieID = 0 }, new { title = "Toon alleen afdeling " + a.Naam })%>
 			<% } %>
 		</td>
 		<td>
 			<% foreach (var functieInfo in lidOverzicht.Functies)
 	  { %>
-			<%=Html.ActionLink(Html.Encode(functieInfo.Code), "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = Model.GekozenSortering, afdelingID = 0, functieID = functieInfo.ID }, new { title = functieInfo.Naam })%>
+			<%=Html.ActionLink(Html.Encode(functieInfo.Code), "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = Model.GekozenSortering, afdelingID = 0, functieID = functieInfo.ID }, new { title = "Toon alleen mensen met functie " + functieInfo.Naam })%>
 			<% } %>
 		</td>
 		<td><%=lidOverzicht.EindeInstapPeriode == null ? String.Empty : ((DateTime)lidOverzicht.EindeInstapPeriode).ToString("d") %></td>
