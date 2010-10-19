@@ -2,6 +2,7 @@
 
 <%@ Import Namespace="Chiro.Gap.WebApp.Models" %>
 <%@ Import Namespace="Chiro.Gap.WebApp.Controllers" %>
+<%@ Import Namespace="Chiro.Gap.Domain" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 	<% // OPGELET! script-tags *moeten* een excpliciete closing tag hebben! (zie oa #713) %>
 	<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/jquery-1.3.2.js")%>"></script>
@@ -30,7 +31,7 @@
 		      	"In instapperiode", 
 		      	"ProbeerLeden",
 		      	new { groepID = Model.GroepID, sortering = Model.GekozenSortering }, 
-		      	new {title = "Leden en leiding tonen waarvan de instapperiode nog niet verlopen is"})%></span>
+		      	new {title = "Leden en leiding tonen van wie de instapperiode nog niet verlopen is"})%></span>
 
 		<span>
 				<%using (Html.BeginForm("AfdelingsLijst", "Leden"))
@@ -60,12 +61,12 @@
 				<%=Html.HiddenFor(s => s.GekozenSortering)%>
 			    <%} %>
 		</span>
+		<span><%= Html.ActionLink("Sorteer op verjaardag", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Verjaardag, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op verjaardag" })%></span>
 		<span><%=Html.ActionLink(
 		      	"Filters opheffen",
 		      	"Lijst", 
 		      	new { groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, afdelingID = 0, functieID = 0, sortering = Model.GekozenSortering },
 			new { title ="Opnieuw alle ingeschreven leden en leiding van het gevraagde werkjaar tonen"}	)%></span>
-
 		<span><%= Html.ActionLink("Wat betekent 'uitschrijven'?", "ViewTonen", "Handleiding", null, null, "Uitschrijven", new { helpBestand = "Trefwoorden" }, new { title = "Lees in de handleiding wat de gevolgen zijn wanneer je iemand uitschrijft" })%></span>
 	</div>
 	

@@ -9,11 +9,11 @@
 	<h2>
 		Een verjaardagslijst maken in Excel</h2>
 	<p>
-		Sorteren op geboortedatum gaat wel, maar dan staan de mensen in volgorde van leeftijd,
-		niet in volgorde van verjaardag. Om dat laatste te kunnen, moet je twee kolommen
-		toevoegen: één voor de dag en één voor de maand. Met formules kunnen we die
-		uit de geboortedatum halen. Als we dan eerst op maand en dan op dag sorteren,
-		heb je een proper overzicht.</p>
+		Sorteren op geboortedatum gaat wel, maar dan staan de mensen in volgorde van
+		leeftijd, niet in volgorde van verjaardag. Om dat laatste te kunnen, moet je
+		twee kolommen toevoegen: één voor de dag en één voor de maand. Met formules
+		kunnen we die uit de geboortedatum halen. Als we dan eerst op maand en dan op
+		dag sorteren, heb je een proper overzicht.</p>
 	<p>
 		<em>Deze handleiding geldt voorlopig alleen voor Microsoft Excel. In OpenOffice.org
 			Calc worden de geboortedatums om een onverklaarbare reden niet getoond.</em></p>
@@ -52,10 +52,12 @@
 			moet komen en druk op Ctrl-V. Excel past automatisch de verwijzingen aan, zodat
 			ze overal juist staan.</li>
 		<li>Om te sorteren, selecteer je alle gegevens. Klik daarna op Gegevens &gt; Sorteren.
-			Vink daar zeker aan dat de tabel kolomtitels heeft. Laat eerst op maand sorteren
-			en daarna op dag. Dan krijg je iedereen in volgorde van verjaardag. In Excel
-			2007 moet je op de knop 'Niveau toevoegen' klikken om op meer dan één kolom
-			te selecteren.</li>
+			Vink daar zeker aan dat de tabel 'kopteksten' (Excel 2007) of een 'veldnamenrij'
+			(Excel 2003) heeft. Laat eerst op maand sorteren en daarna op dag. Dan krijg
+			je iedereen in volgorde van verjaardag. In Excel 2007 moet je op de knop 'Niveau
+			toevoegen' klikken om op meer dan één kolom te selecteren, in Excel 2003 kun
+			je direct de twee kolommen instellen.</li>
 	</ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/vjd_sorteren.png") %>" alt="Sorteren op maand en op dag" />
+	<img src="<%=ResolveUrl("~/Content/Screenshots/vjd_sorteren.png") %>" alt="In Excel 2007 sorteren op maand en op dag" /><br />
+	<img src="<%=ResolveUrl("~/Content/Screenshots/vjd_sorteren2003.png") %>" alt="In Excel 2003 sorteren op maand en op dag" />
 </asp:Content>

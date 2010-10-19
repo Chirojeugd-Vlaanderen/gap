@@ -87,7 +87,9 @@ namespace Chiro.Gap.Domain
 		[EnumMember]
 		InstapPeriode = 4,
 		[EnumMember]
-		Adres = 5
+		Adres = 5,
+		[EnumMember]
+		Verjaardag = 6
 	}
 
 	/// <summary>
@@ -162,5 +164,4 @@ namespace Chiro.Gap.Domain
 		Aspis = 6,
 		Speciaal = 7
 	}
-
 }

@@ -78,7 +78,7 @@
 		<li>
 			<%=Html.ActionLink("Etiketten maken", "ViewTonen", new { Controller = "Handleiding", helpBestand = "EtikettenMaken" })%></li>
 			<li>
-			<%=Html.ActionLink("Verjaardagslijst maken", "ViewTonen", new { Controller = "Handleiding", helpBestand = "ExcelVerjaardagslijst" })%></li>
+			<%=Html.ActionLink("Zelf een verjaardagslijst maken", "ViewTonen", new { Controller = "Handleiding", helpBestand = "ExcelVerjaardagslijst" })%></li>
 	</ul>
 	<h3>
 		Extra info:</h3>

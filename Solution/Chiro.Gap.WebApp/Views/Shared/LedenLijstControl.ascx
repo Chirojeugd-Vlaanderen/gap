@@ -10,7 +10,7 @@
 			<%= Html.ActionLink("Naam", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Naam, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op naam" })%>
 		</th>
 		<th>
-			<%= Html.ActionLink("Adres", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Adres, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op naam" })%>
+			<%= Html.ActionLink("Adres", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Adres, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op adres" })%>
 		</th>	
 		<th>
 			<%= Html.ActionLink("Geboortedatum", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Leeftijd, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op geboortedatum" })%>
@@ -25,7 +25,7 @@
 		</th>
 		<th>Func. </th>
 		<th>
-			<%= Html.ActionLink("Instap tot", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.InstapPeriode, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op afdeling" })%>
+			<%= Html.ActionLink("Instap tot", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.InstapPeriode, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op einde instapperiode" })%>
 		</th>
 		<th>Contact</th>
 		<%=Model.KanLedenBewerken ? "<th>Acties</th>" : String.Empty %>

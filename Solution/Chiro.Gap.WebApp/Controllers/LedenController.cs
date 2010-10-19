@@ -75,6 +75,13 @@ namespace Chiro.Gap.WebApp.Controllers
 						.ThenBy(src => src.Naam)
 						.ThenBy(src => src.VoorNaam);
 					break;
+				case LidEigenschap.Verjaardag:
+					gesorteerd = rij
+						.OrderBy(src => src.GeboorteDatum.HasValue ? src.GeboorteDatum.Value.Month : 0)
+						.ThenBy(src => src.GeboorteDatum.HasValue ? src.GeboorteDatum.Value.Day : 0)
+						.ThenBy(src => src.Naam)
+						.ThenBy(src => src.VoorNaam);
+					break;
 
 				default:
 					gesorteerd = rij;

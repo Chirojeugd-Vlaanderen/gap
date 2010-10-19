@@ -150,7 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
-      <Link>CustomDictionary.xml</Link>
+      <Link>Views\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
     <Content Include="Content\indicator.gif" />
     <Content Include="Content\jquery.autocomplete.css" />
@@ -296,6 +296,8 @@
     <Content Include="Content\Screenshots\Bevestiging_Dubbelpuntabonnement.png" />
     <Content Include="Content\Screenshots\Bevestiging_Loonverlies.png" />
     <Content Include="Content\Screenshots\Categoriseren_MeerdereMensen.png" />
+    <Content Include="Content\Screenshots\vjd_celeigenschappen_oproepen.png" />
+    <Content Include="Content\Screenshots\vjd_dagformule.png" />
     <Content Include="Content\Screenshots\EditRest_aanpassenlink.png" />
     <Content Include="Content\Screenshots\EditRest_abonnerenlink.png" />
     <Content Include="Content\Screenshots\EditRest_basis.png" />
@@ -306,6 +308,10 @@
     <Content Include="Content\Screenshots\Adresformulier_met_autosuggestie.png" />
     <Content Include="Content\Screenshots\EditRest_nieuwe_persoon.png" />
     <Content Include="Content\Screenshots\excel2003_Opslaan_als.png" />
+    <Content Include="Content\Screenshots\vjd_maandformule.png" />
+    <Content Include="Content\Screenshots\vjd_sorteren.png" />
+    <Content Include="Content\Screenshots\vjd_sorteren2003.png" />
+    <Content Include="Content\Screenshots\vjd_standaardcelopmaak.png" />
     <Content Include="Content\Screenshots\word2003_etiketten06.png" />
     <Content Include="Content\Screenshots\word2003_etiketten06b.png" />
     <Content Include="Content\Screenshots\word2003_etiketten07.png" />
@@ -378,6 +384,7 @@
     <Content Include="Views\Handleiding\EtikettenInWordMetRibbon.aspx" />
     <Content Include="Views\Handleiding\EtikettenInWriter.aspx" />
     <Content Include="Views\Handleiding\EtikettenMaken.aspx" />
+    <Content Include="Views\Handleiding\ExcelVerjaardagslijst.aspx" />
     <Content Include="Views\Handleiding\Feedback.aspx" />
     <Content Include="Views\Handleiding\Filteren.aspx" />
     <Content Include="Views\Handleiding\Fusioneren.aspx" />
