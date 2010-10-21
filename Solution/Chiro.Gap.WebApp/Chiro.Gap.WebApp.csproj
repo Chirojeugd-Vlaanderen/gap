@@ -272,6 +272,7 @@
     <Compile Include="ExcelResult.cs" />
     <Compile Include="HtmlHelpers\AdresHelper.cs" />
     <Compile Include="HtmlHelpers\DropDownListHelper.cs" />
+    <Compile Include="HtmlHelpers\TelefoonHelper.cs" />
     <Compile Include="HtmlHelpers\TextFieldListHelper.cs" />
     <Compile Include="HtmlHelpers\GeslachtHelper.cs" />
     <Compile Include="Models\BevestigingsModel.cs" />
@@ -414,7 +415,7 @@
     <Content Include="Views\Handleiding\Verhuizen.aspx" />
     <Content Include="Views\Handleiding\VerzekeringLoonverlies.aspx" />
     <Content Include="Views\Handleiding\ZusBroer.aspx" />
-    <Content Include="Views\Leden\ProbeerLeden.aspx" />
+    <Content Include="Views\Leden\GesorteerdeProbeerLeden.aspx" />
     <Content Include="Views\Shared\GeenToegangControl.ascx" />
     <Content Include="Views\Shared\GeenVerbindingControl.ascx" />
     <Content Include="Views\Functies\FunctieVerwijderen.aspx" />

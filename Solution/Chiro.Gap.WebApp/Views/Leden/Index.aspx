@@ -29,7 +29,7 @@
 		      	new { title = "Download de geselecteerde gegevens in een Excel-bestand" })%></span>
 		<span><%=Html.ActionLink(
 		      	"In instapperiode", 
-		      	"ProbeerLeden",
+		      	"GesorteerdeProbeerLeden",
 		      	new { groepID = Model.GroepID, sortering = Model.GekozenSortering }, 
 		      	new {title = "Leden en leiding tonen van wie de instapperiode nog niet verlopen is"})%></span>
 

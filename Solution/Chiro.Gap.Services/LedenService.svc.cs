@@ -497,15 +497,24 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waaruit de leden opgehaald moeten worden</param>
 		/// <param name="afdID">ID van de afdeling waaruit de leden opgehaald moeten worden.</param>
+		/// <param name="metAdressen">Indien false, worden geen adressen mee opgehaald, wat alles een pak
+		/// sneller maakt.</param>
 		/// <returns>Een rij 'LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
-		public IList<LidOverzicht> OphalenUitAfdelingsJaar(int groepsWerkJaarID, int afdID)
+		public IList<LidOverzicht> OphalenUitAfdelingsJaar(int groepsWerkJaarID, int afdID, bool metAdressen)
 		{
 			try
 			{
+				var extras = LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Communicatie;
+
+				if (metAdressen)
+				{
+					extras |= LidExtras.VoorkeurAdres;
+				}
+
 				var result = _ledenMgr.PaginaOphalenVolgensAfdeling(
 					groepsWerkJaarID,
 					afdID,
-					LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.VoorkeurAdres | LidExtras.Communicatie).ToList();
+					extras).ToList();
 				
 				return Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(result);
 			}
@@ -522,15 +531,24 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van groepswerkjaar waaruit leden moeten worden opgehaald</param>
 		/// <param name="functieID">ID van functie die opgehaalde leden moeten hebben</param>
+		/// <param name="metAdressen">Indien false, worden geen adressen mee opgehaald, wat
+		/// alles een pak sneller maakt.</param>
 		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
-		public IList<LidOverzicht> OphalenUitFunctie(int groepsWerkJaarID, int functieID)
+		public IList<LidOverzicht> OphalenUitFunctie(int groepsWerkJaarID, int functieID, bool metAdressen)
 		{
 			try
 			{
+				var extras = LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Communicatie;
+
+				if (metAdressen)
+				{
+					extras |= LidExtras.VoorkeurAdres;
+				}
+
 				var leden = _ledenMgr.PaginaOphalenVolgensFunctie(
 					groepsWerkJaarID,
 					functieID,
-					LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.VoorkeurAdres | LidExtras.Communicatie).ToList();
+					extras).ToList();
 
 				return Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(leden);
 			}
@@ -545,14 +563,22 @@ namespace Chiro.Gap.Services
 		/// Haalt informatie op over alle *actieve* leden uit een gegeven groepswerkjaar
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waaruit de leden moeten worden opgehaald</param>
+		/// <param name="metAdressen">Indien false, worden geen adressen mee opgehaald, wat het boeltje aanzienlijk
+		/// sneller maakt.</param>
 		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
-		public IList<LidOverzicht> OphalenUitGroepsWerkJaar(int groepsWerkJaarID)
+		public IList<LidOverzicht> OphalenUitWerkJaar(int groepsWerkJaarID, bool metAdressen)
 		{
 			try
 			{
+				var extras = LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Communicatie;
+
+				if (metAdressen)
+				{
+					extras |= LidExtras.VoorkeurAdres;
+				}
 				var leden = _ledenMgr.PaginaOphalen(
 					groepsWerkJaarID,
-					LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies |LidExtras.VoorkeurAdres | LidExtras.Communicatie);
+					extras);
 				var resultaat = Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(leden);
 
 				return resultaat;

@@ -37,14 +37,11 @@ het verstrijken van hun instapperiode.
 		<th>Ad-nr. </th>
 		<th>Type </th>
 		<th>
-			<%= Html.ActionLink("Naam", "ProbeerLeden", new { Controller = "Leden", sortering = LidEigenschap.Naam, groepID = Model.GroepID }, new { title = "Sorteren op naam" })%>
+			<%= Html.ActionLink("Naam", "GesorteerdeProbeerLeden", new { Controller = "Leden", sortering = LidEigenschap.Naam, groepID = Model.GroepID }, new { title = "Sorteren op naam" })%>
 		</th>
-		<th>
-			<%= Html.ActionLink("Adres", "ProbeerLeden", new { Controller = "Leden", sortering = LidEigenschap.Naam, groepID = Model.GroepID }, new { title = "Sorteren op adres" })%>
-		</th>	
 
 		<th>
-			<%= Html.ActionLink("Geboortedatum", "ProbeerLeden", new { Controller = "Leden", sortering = LidEigenschap.Leeftijd, groepID = Model.GroepID }, new { title = "Sorteren op geboortedatum" })%>
+			<%= Html.ActionLink("Geboortedatum", "GesorteerdeProbeerLeden", new { Controller = "Leden", sortering = LidEigenschap.Leeftijd, groepID = Model.GroepID }, new { title = "Sorteren op geboortedatum" })%>
 		</th>
 		<th>
 			<%=Html.Geslacht(GeslachtsType.Man) %>
@@ -52,13 +49,14 @@ het verstrijken van hun instapperiode.
 		</th>
 		<th>Betaald </th>
 		<th>
-			<%= Html.ActionLink("Afd.", "ProbeerLeden", new { Controller = "Leden", sortering = LidEigenschap.Afdeling, groepID = Model.GroepID }, new { title = "Sorteren op afdeling" })%>
+			<%= Html.ActionLink("Afd.", "GesorteerdeProbeerLeden", new { Controller = "Leden", sortering = LidEigenschap.Afdeling, groepID = Model.GroepID }, new { title = "Sorteren op afdeling" })%>
 		</th>
 		<th>Func. </th>
 		<th>
-			<%= Html.ActionLink("Instap tot", "ProbeerLeden", new { Controller = "Leden", sortering = LidEigenschap.InstapPeriode, groepID = Model.GroepID }, new { title = "Sorteren op afdeling" })%>
+			<%= Html.ActionLink("Instap tot", "GesorteerdeProbeerLeden", new { Controller = "Leden", sortering = LidEigenschap.InstapPeriode, groepID = Model.GroepID }, new { title = "Sorteren op afdeling" })%>
 		</th>
-		<th>Contact</th>
+		<th>Telefoon</th>
+		<th>E-mail</th>
 		<%=Model.KanLedenBewerken ? "<th>Acties</th>" : String.Empty %>
 	</tr>
 	<%
@@ -74,7 +72,6 @@ het verstrijken van hun instapperiode.
 		<td>
 			<% Html.RenderPartial("LedenLinkControl", lidOverzicht); %>
 		</td>
-		<td><%=Html.Adres(lidOverzicht) %></td>
 		<td class="right">
 			<%=lidOverzicht.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)lidOverzicht.GeboorteDatum).ToString("d")%>
 		</td>
@@ -98,7 +95,7 @@ het verstrijken van hun instapperiode.
 		</td>
 		<td><%=lidOverzicht.EindeInstapPeriode == null ? String.Empty : ((DateTime)lidOverzicht.EindeInstapPeriode).ToString("d") %></td>
 		<td>
-			<%=lidOverzicht.TelefoonNummer %> <br />
+			<%=Html.Telefoon(lidOverzicht.TelefoonNummer) %> </td><td>
 			<a href='mailto:<%=lidOverzicht.Email %>'><%=lidOverzicht.Email %></a>
 		</td>
 		

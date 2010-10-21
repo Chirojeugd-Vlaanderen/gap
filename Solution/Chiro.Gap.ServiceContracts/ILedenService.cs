@@ -138,11 +138,16 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waaruit de leden opgehaald moeten worden</param>
 		/// <param name="afdID">ID van de afdeling waaruit de leden opgehaald moeten worden.</param>
+		/// <param name="metAdressen">Indien false, worden geen adressen mee opgehaald, wat deze
+		/// method een stuk sneller maakt.</param>
 		/// <returns>Een rij 'LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<LidOverzicht> OphalenUitAfdelingsJaar(int groepsWerkJaarID, int afdID);
+		IList<LidOverzicht> OphalenUitAfdelingsJaar(
+			int groepsWerkJaarID, 
+			int afdID,
+			bool metAdressen);
 
 		/// <summary>
 		/// Haalt informatie op over alle leden uit het groepswerkjaar bepaald door 
@@ -150,21 +155,25 @@ namespace Chiro.Gap.ServiceContracts
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van groepswerkjaar waaruit leden moeten worden opgehaald</param>
 		/// <param name="functieID">ID van functie die opgehaalde leden moeten hebben</param>
+		/// <param name="metAdressen">Indien false, worden geen adressen mee opgehaald, wat deze
+		/// method een stuk sneller maakt.</param>
 		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<LidOverzicht> OphalenUitFunctie(int groepsWerkJaarID, int functieID);
+		IList<LidOverzicht> OphalenUitFunctie(int groepsWerkJaarID, int functieID, bool metAdressen);
 
 		/// <summary>
 		/// Haalt informatie op over alle *actieve* leden uit een gegeven groepswerkjaar
 		/// </summary>
 		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waaruit de leden moeten worden opgehaald</param>
+		/// <param name="metAdressen">Indien false, worden geen adressen mee opgehaald, wat deze
+		/// method een stuk sneller maakt.</param>
 		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<LidOverzicht> OphalenUitGroepsWerkJaar(int groepsWerkJaarID);
+		IList<LidOverzicht> OphalenUitWerkJaar(int groepsWerkJaarID, bool metAdressen);
 
 		#endregion
 

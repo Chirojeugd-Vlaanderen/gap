@@ -10,9 +10,6 @@
 			<%= Html.ActionLink("Naam", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Naam, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op naam" })%>
 		</th>
 		<th>
-			<%= Html.ActionLink("Adres", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Adres, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op adres" })%>
-		</th>	
-		<th>
 			<%= Html.ActionLink("Geboortedatum", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Leeftijd, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op geboortedatum" })%>
 		</th>
 		<th>
@@ -27,7 +24,8 @@
 		<th>
 			<%= Html.ActionLink("Instap tot", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.InstapPeriode, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op einde instapperiode" })%>
 		</th>
-		<th>Contact</th>
+		<th>Telefoon</th>
+		<th>E-mail</th>
 		<%=Model.KanLedenBewerken ? "<th>Acties</th>" : String.Empty %>
 	</tr>
 	<%
@@ -43,7 +41,6 @@
 		<td>
 			<% Html.RenderPartial("LedenLinkControl", lidOverzicht); %>
 		</td>
-		<td><%=Html.Adres(lidOverzicht) %></td>
 		<td class="right">
 			<%=lidOverzicht.GeboorteDatum == null ? "<span class=\"error\">onbekend</span>" : ((DateTime)lidOverzicht.GeboorteDatum).ToString("d")%>
 		</td>
@@ -67,7 +64,7 @@
 		</td>
 		<td><%=lidOverzicht.EindeInstapPeriode == null ? String.Empty : ((DateTime)lidOverzicht.EindeInstapPeriode).ToString("d") %></td>
 		<td>
-			<%=lidOverzicht.TelefoonNummer %> <br />
+			<%=Html.Telefoon(lidOverzicht.TelefoonNummer) %> </td><td>
 			<a href='mailto:<%=lidOverzicht.Email %>'><%=lidOverzicht.Email %></a>
 		</td>
 		<%if (Model.KanLedenBewerken)

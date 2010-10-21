@@ -207,7 +207,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			else if (afdelingID != 0)
 			{
 				model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(
-					svc => svc.OphalenUitAfdelingsJaar(groepsWerkJaarID, afdelingID));
+					svc => svc.OphalenUitAfdelingsJaar(groepsWerkJaarID, afdelingID, false));
 
 				AfdelingDetail af = (from a in model.AfdelingsInfoDictionary.AsQueryable()
 						     where a.Value.AfdelingID == afdelingID
@@ -223,7 +223,8 @@ namespace Chiro.Gap.WebApp.Controllers
  			else if (functieID != 0)
 			{
 				model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(
-					svc => svc.OphalenUitFunctie(groepsWerkJaarID, functieID));
+					svc => svc.OphalenUitFunctie(groepsWerkJaarID, functieID, false));
+				// Geen adressen ophalen, want dat is veel te traag (#824)
 
 				// Naam van de functie opzoeken, zodat we ze kunnen invullen in de paginatitel
 				string functieNaam = (from fi in model.FunctieInfoDictionary
@@ -240,7 +241,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				model.LidInfoLijst =
 					ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>
-					(lid => lid.OphalenUitGroepsWerkJaar(groepsWerkJaarID));
+					(lid => lid.OphalenUitWerkJaar(groepsWerkJaarID, false));
+				// Geen adressen ophalen, want dat is veel te traag (#824)
 
 				model.Titel = String.Format(Properties.Resources.LedenOverzicht,
 							    model.JaartalGetoondGroepsWerkJaar,
@@ -307,21 +309,21 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				lijst =
 					ServiceHelper.CallService<ILedenService, IEnumerable<LidOverzicht>>
-						(lid => lid.OphalenUitAfdelingsJaar(id, afdelingID));
+						(lid => lid.OphalenUitAfdelingsJaar(id, afdelingID, true));
 				bestandsnaam = "Afdelingslijst.xlsx";
 			}
 			else if (functieID != 0)
 			{
 				// TODO (#586): gegevens ophalen lukt, behalve voor de afdelingen
 				lijst = ServiceHelper.CallService<ILedenService, IEnumerable<LidOverzicht>>
-					(lid => lid.OphalenUitFunctie(id, functieID));
+					(lid => lid.OphalenUitFunctie(id, functieID, true));
 				bestandsnaam = "Functielijst.xlsx";
 			}
 			else
 			{
 				lijst =
 					ServiceHelper.CallService<ILedenService, IEnumerable<LidOverzicht>>
-						(lid => lid.OphalenUitGroepsWerkJaar(id));
+						(lid => lid.OphalenUitWerkJaar(id, true));
 				bestandsnaam = "Leden.xlsx";
 			}
 
@@ -621,9 +623,21 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// Toont de lijst van de probeerleden
 		/// </summary>
 		/// <param name="groepID">Groep waarvoor de probeerleden getoond moeten worden</param>
+		/// <returns>View voor de probeerleden</returns>
+		public ActionResult ProbeerLeden(int groepID)
+		{
+			return GesorteerdeProbeerLeden(groepID, LidEigenschap.InstapPeriode);
+		}
+
+		/// <summary>
+		/// Toont de gesorteerde lijst van de probeerleden
+		/// </summary>
+		/// <param name="groepID">Groep waarvoor de probeerleden getoond moeten worden</param>
 		/// <param name="sortering">Geeft aan waarop de lijst gesorteerd moet worden</param>
 		/// <returns>View voor de probeerleden</returns>
-		public ActionResult ProbeerLeden(int groepID, LidEigenschap sortering)
+		/// <remarks>Ik zou deze method ook 'ProbeerLeden' willen noemen, maar dat lukt
+		/// op een of andere manier niet.</remarks>
+		public ActionResult GesorteerdeProbeerLeden(int groepID, LidEigenschap sortering)
 		{
 			// Het sorteren gebeurt nu in de UI.  Sorteren is immers presentatie, dus de service
 			// moet zich daar niet mee bezig houden.
@@ -649,7 +663,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.Titel = String.Format(Properties.Resources.ProbeerLeden);
 
 			model.LidInfoLijst = Sorteren(model.LidInfoLijst, sortering).ToList();
-			return View("ProbeerLeden", model);
+			return View("GesorteerdeProbeerLeden", model);
 		}
 	}
 }
