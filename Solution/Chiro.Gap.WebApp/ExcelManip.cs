@@ -197,7 +197,10 @@ namespace Chiro.Gap.WebApp
 
 			cell.StyleIndex = 1U;
 			cell.CellValue = new CellValue(date.ToOADate().ToString());
-			cell.DataType = new EnumValue<CellValues>(CellValues.Date);
+			
+			// Onderstaande uitgecommentarieerd, zodat datums ook getoond worden in
+			// OpenOffice.org / LibreOffice (#768)
+			//cell.DataType = new EnumValue<CellValues>(CellValues.Date);
 
 			worksheetPart.Worksheet.Save();
 		}
