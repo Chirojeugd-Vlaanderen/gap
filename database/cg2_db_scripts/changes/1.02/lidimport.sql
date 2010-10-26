@@ -43,16 +43,16 @@ WHERE (kcg.Type='G' OR kcg.Type='V')
 AND NOT EXISTS (SELECT 1 FROM pers.GelieerdePersoon WHERE PersoonID = p.PersoonID AND GroepID = g.GroepID)
 GO
 
-
- Stap 3: Matchen van relevante adressen
-
- Adressen die matchen met onze officiele stratenlijst overnemen
- de andere adressen worden jammer genoeg genegeerd
-
- omdat het opvullen van de adressentabel nogal omslachtig is,
- en we moeten vermijden adressen dubbel toe te voegen, maak ik
- de adressen in een temporary table, en neem ik daarna de relevante
- (nog niet bestaande) gegevens over in de definitieve tabel.
+--
+-- Stap 3: Matchen van relevante adressen
+--
+-- Adressen die matchen met onze officiele stratenlijst overnemen
+-- de andere adressen worden jammer genoeg genegeerd
+--
+-- omdat het opvullen van de adressentabel nogal omslachtig is,
+-- en we moeten vermijden adressen dubbel toe te voegen, maak ik
+-- de adressen in een temporary table, en neem ik daarna de relevante
+-- (nog niet bestaande) gegevens over in de definitieve tabel.
 
 CREATE TABLE #Adres(
 	Bus VARCHAR(10) NULL,
@@ -208,7 +208,7 @@ FROM Kipadmin.lid.Lid kl
 JOIN Kipadmin.grp.ChiroGroep kcg ON kl.GroepID = kcg.GroepID
 JOIN grp.Groep g on kcg.StamNr = g.code COLLATE SQL_Latin1_General_CP1_CI_AS
 JOIN grp.KaderGroep kg on kg.KaderGroepID = g.GroepID
-WHERE kl.WerkJaar < 2010
+WHERE kl.WerkJaar < 2010 AND
 NOT EXISTS (SELECT 1 FROM grp.GroepsWerkJaar gwj WHERE gwj.GroepID = g.GroepID AND gwj.WerkJaar = kl.WerkJaar)
 GO
 
