@@ -13,6 +13,10 @@ CREATE TABLE grp.KaderGroep(
 	CONSTRAINT FK_KaderGroep_KaderGroep FOREIGN KEY (ParentID) REFERENCES grp.KaderGroep(KaderGroepID));
 GO
 
+GRANT SELECT ON grp.KaderGroep TO GapRole
+GO
+
+
 -- Chirogroep moet kadergroep als parent hebben.  Voorlopig echter nullable,
 -- omdat de kadergroepen nog niet geimporteerd zijn.
 
