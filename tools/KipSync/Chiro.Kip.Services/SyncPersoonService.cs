@@ -766,6 +766,7 @@ namespace Chiro.Kip.Services
 								++aansluiting.AspisJ;
 								break;
 							default:
+								++aansluiting.SpeciaalJ;
 								break;
 						}
 					}
@@ -792,6 +793,7 @@ namespace Chiro.Kip.Services
 								++aansluiting.AspisM;
 								break;
 							default:
+								++aansluiting.SpeciaalM;
 								break;
 						}
 					}
@@ -996,7 +998,12 @@ namespace Chiro.Kip.Services
 		/// <param name="stamNummer">Stamnummer van de groep waarin de persoon lid is</param>
 		/// <param name="werkJaar">Werkjaar waarin de persoon lid is</param>
 		/// <param name="afdelingen">Toe te kennen afdelingen.  Eventuele andere reeds toegekende functies worden verwijderd.</param>
-		/// <remarks>Er is in Kipadmin maar plaats voor 2 afdelingen/lid</remarks>
+		/// <remarks>
+		/// Er is in Kipadmin maar plaats voor 2 afdelingen/lid
+		/// <para/>
+		/// In theorie moet hier het aansluitingsrecord ook aangepast worden.  Maar voorlopig laten
+		/// we dat maar even zo.  (Als de aantallen al kloppen, is het voor mij ook al goed ;))
+		/// </remarks>
 		[OperationBehavior(TransactionScopeRequired = true, TransactionAutoComplete = true)]
 		public void AfdelingenUpdaten(Persoon pers, string stamNummer, int werkJaar, IEnumerable<AfdelingEnum> afdelingen)
 		{

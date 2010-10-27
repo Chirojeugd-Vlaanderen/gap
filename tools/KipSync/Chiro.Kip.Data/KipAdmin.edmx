@@ -320,6 +320,8 @@
           <Property Name="SolidariteitsBijdrage" Type="int" />
           <Property Name="Noot" Type="varchar" MaxLength="160" />
           <Property Name="Stempel" Type="datetime" />
+          <Property Name="SpeciaalJ" Type="int" Nullable="false" />
+          <Property Name="SpeciaalM" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Lid">
           <Key>
@@ -951,7 +953,9 @@
           <Property Name="Noot" Type="String" Nullable="true" />
           <Property Name="Stempel" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="REKENING" Relationship="kipadminModel.FK_Aansluiting_Rekening" FromRole="Aansluiting" ToRole="REKENING" />
-          <NavigationProperty Name="Groep" Relationship="kipadminModel.FK_Aansluiting_Groep" FromRole="Aansluiting" ToRole="Groep" /></EntityType>
+          <NavigationProperty Name="Groep" Relationship="kipadminModel.FK_Aansluiting_Groep" FromRole="Aansluiting" ToRole="Groep" />
+          <Property Name="SpeciaalJ" Type="Int32" Nullable="false" />
+          <Property Name="SpeciaalM" Type="Int32" Nullable="false" /></EntityType>
         <Association Name="FK_Rekening_Persoon">
           <End Type="kipadminModel.Persoon" Role="Persoon" Multiplicity="0..1" />
           <End Type="kipadminModel.Rekening" Role="REKENING" Multiplicity="*" /></Association>
@@ -1304,6 +1308,8 @@
           <EntitySetMapping Name="Aansluiting">
             <EntityTypeMapping TypeName="IsTypeOf(kipadminModel.Aansluiting)">
               <MappingFragment StoreEntitySet="Aansluiting">
+                <ScalarProperty Name="SpeciaalM" ColumnName="SpeciaalM" />
+                <ScalarProperty Name="SpeciaalJ" ColumnName="SpeciaalJ" />
                 <ScalarProperty Name="Stempel" ColumnName="Stempel" />
                 <ScalarProperty Name="Noot" ColumnName="Noot" />
                 <ScalarProperty Name="SolidariteitsBijdrage" ColumnName="SolidariteitsBijdrage" />

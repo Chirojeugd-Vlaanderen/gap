@@ -27,7 +27,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK__kipWoont__AdNr__609D3A6E1", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.Persoon), "Woont", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.Woont))]
 
 // Original file name:
-// Generation date: 5/10/2010 12:31:55
+// Generation date: 27/10/2010 12:56:41
 namespace Chiro.Kip.Data
 {
     
@@ -4863,7 +4863,9 @@ namespace Chiro.Kip.Data
         /// <param name="proost">Initial value of Proost.</param>
         /// <param name="freelance">Initial value of Freelance.</param>
         /// <param name="stempel">Initial value of Stempel.</param>
-        public static Aansluiting CreateAansluiting(int aansluitingID, int werkJaar, int volgNummer, global::System.DateTime datum, string wijze, int leidingJ, int leidingM, int vb, int proost, int freelance, global::System.DateTime stempel)
+        /// <param name="speciaalJ">Initial value of SpeciaalJ.</param>
+        /// <param name="speciaalM">Initial value of SpeciaalM.</param>
+        public static Aansluiting CreateAansluiting(int aansluitingID, int werkJaar, int volgNummer, global::System.DateTime datum, string wijze, int leidingJ, int leidingM, int vb, int proost, int freelance, global::System.DateTime stempel, int speciaalJ, int speciaalM)
         {
             Aansluiting aansluiting = new Aansluiting();
             aansluiting.AansluitingID = aansluitingID;
@@ -4877,6 +4879,8 @@ namespace Chiro.Kip.Data
             aansluiting.Proost = proost;
             aansluiting.Freelance = freelance;
             aansluiting.Stempel = stempel;
+            aansluiting.SpeciaalJ = speciaalJ;
+            aansluiting.SpeciaalM = speciaalM;
             return aansluiting;
         }
         /// <summary>
@@ -5477,6 +5481,52 @@ namespace Chiro.Kip.Data
         private global::System.DateTime _Stempel;
         partial void OnStempelChanging(global::System.DateTime value);
         partial void OnStempelChanged();
+        /// <summary>
+        /// There are no comments for Property SpeciaalJ in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int SpeciaalJ
+        {
+            get
+            {
+                return this._SpeciaalJ;
+            }
+            set
+            {
+                this.OnSpeciaalJChanging(value);
+                this.ReportPropertyChanging("SpeciaalJ");
+                this._SpeciaalJ = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("SpeciaalJ");
+                this.OnSpeciaalJChanged();
+            }
+        }
+        private int _SpeciaalJ;
+        partial void OnSpeciaalJChanging(int value);
+        partial void OnSpeciaalJChanged();
+        /// <summary>
+        /// There are no comments for Property SpeciaalM in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int SpeciaalM
+        {
+            get
+            {
+                return this._SpeciaalM;
+            }
+            set
+            {
+                this.OnSpeciaalMChanging(value);
+                this.ReportPropertyChanging("SpeciaalM");
+                this._SpeciaalM = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("SpeciaalM");
+                this.OnSpeciaalMChanged();
+            }
+        }
+        private int _SpeciaalM;
+        partial void OnSpeciaalMChanging(int value);
+        partial void OnSpeciaalMChanged();
         /// <summary>
         /// There are no comments for REKENING in the schema.
         /// </summary>
