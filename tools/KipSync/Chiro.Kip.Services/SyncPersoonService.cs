@@ -554,8 +554,6 @@ namespace Chiro.Kip.Services
 				}
 				else
 				{
-					int volgNummer = 1;
-
 					// Nieuw lid.
 
 					// Zoek persoon op.
@@ -630,7 +628,7 @@ namespace Chiro.Kip.Services
 						// Die rekening mag nog leeg zijn; kipadmin berekent de
 						// bedragen bij het overzetten van de factuur.
 
-						volgNummer = (aansluiting == null ? 1 : aansluiting.VolgNummer + 1);
+						int volgNummer = (aansluiting == null ? 1 : aansluiting.VolgNummer + 1);
 
 						var rekening = new Rekening
 						               	{
@@ -689,7 +687,7 @@ namespace Chiro.Kip.Services
 
 					lid = new Lid
 					      	{
-					      		AANSL_NR = (short) volgNummer,
+					      		AANSL_NR = (short) aansluiting.VolgNummer,
 					      		AANTAL_JA = (short) aantalJaren,
 					      		ACTIEF = "J",
 					      		AFDELING1 = null,
