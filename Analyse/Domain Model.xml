@@ -162,6 +162,46 @@
 										</UML:Attribute>
 									</UML:Classifier.feature>
 								</UML:Class>
+								<UML:Association xmi.id="EAID_9E1E7A79_35E6_4147_9AD4_22590339EF69" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+									<UML:ModelElement.taggedValue>
+										<UML:TaggedValue tag="style" value="3"/>
+										<UML:TaggedValue tag="ea_type" value="Association"/>
+										<UML:TaggedValue tag="direction" value="Unspecified"/>
+										<UML:TaggedValue tag="linemode" value="3"/>
+										<UML:TaggedValue tag="linecolor" value="-1"/>
+										<UML:TaggedValue tag="linewidth" value="1"/>
+										<UML:TaggedValue tag="seqno" value="0"/>
+										<UML:TaggedValue tag="headStyle" value="0"/>
+										<UML:TaggedValue tag="lineStyle" value="0"/>
+										<UML:TaggedValue tag="ea_localid" value="2276"/>
+										<UML:TaggedValue tag="ea_sourceName" value="Rol"/>
+										<UML:TaggedValue tag="ea_targetName" value="GebruikersRecht"/>
+										<UML:TaggedValue tag="ea_sourceType" value="Class"/>
+										<UML:TaggedValue tag="ea_targetType" value="Class"/>
+										<UML:TaggedValue tag="ea_sourceID" value="2473"/>
+										<UML:TaggedValue tag="ea_targetID" value="2413"/>
+										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={21E3185F-0ABA-46eb-B30D-C433CD3232B7}$XID;$NAM=CustomProperties$NAM;$TYP=connector property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isDerived@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={9E1E7A79-35E6-4147-9AD4-22590339EF69}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
+										<UML:TaggedValue tag="$ea_src_xref_property" value="$XREFPROP=$XID={81F5C750-B5B4-438b-9FAB-E998BCDA5574}$XID;$NAM=CustomProperties$NAM;$TYP=connectorSrcEnd property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isDerivedUnion@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=isDerived@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=default@ENDNAME;@TYPE=String@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=isReadOnly@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=isComposite@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=aggregation@ENDNAME;@TYPE=AggregationKind@ENDTYPE;@VALU=none@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={9E1E7A79-35E6-4147-9AD4-22590339EF69}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
+										<UML:TaggedValue tag="$ea_dst_xref_property" value="$XREFPROP=$XID={CD286AA1-0D4F-499c-BE42-741D9CD2E1C4}$XID;$NAM=CustomProperties$NAM;$TYP=connectorDestEnd property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isDerivedUnion@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=isDerived@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=default@ENDNAME;@TYPE=String@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=isReadOnly@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=isComposite@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;@PROP=@NAME=aggregation@ENDNAME;@TYPE=AggregationKind@ENDTYPE;@VALU=none@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={9E1E7A79-35E6-4147-9AD4-22590339EF69}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
+										<UML:TaggedValue tag="virtualInheritance" value="0"/>
+									</UML:ModelElement.taggedValue>
+									<UML:Association.connection>
+										<UML:AssociationEnd visibility="public" aggregation="none" isOrdered="false" targetScope="instance" changeable="none" isNavigable="true" type="EAID_6505FC28_D991_4137_B9D1_F1EB41361661">
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="containment" value="Unspecified"/>
+												<UML:TaggedValue tag="sourcestyle" value="Union=0;Derived=0;AllowDuplicates=0;Owned=0;Navigable=Unspecified;"/>
+												<UML:TaggedValue tag="ea_end" value="source"/>
+											</UML:ModelElement.taggedValue>
+										</UML:AssociationEnd>
+										<UML:AssociationEnd visibility="public" aggregation="none" isOrdered="false" targetScope="instance" changeable="none" isNavigable="true" type="EAID_01C1B5AA_4549_4255_8059_F73A9454E226">
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="containment" value="Unspecified"/>
+												<UML:TaggedValue tag="deststyle" value="Union=0;Derived=0;AllowDuplicates=0;Owned=0;Navigable=Unspecified;"/>
+												<UML:TaggedValue tag="ea_end" value="target"/>
+											</UML:ModelElement.taggedValue>
+										</UML:AssociationEnd>
+									</UML:Association.connection>
+								</UML:Association>
 								<UML:Class name="VerzekeringsType" xmi.id="EAID_02FFE5AB_3BC2_4d38_9B17_DACBD69819A5" visibility="public" namespace="EAPK_5C15E41F_34C0_45f6_8825_84A62770CD96" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 									<UML:ModelElement.taggedValue>
 										<UML:TaggedValue tag="documentation" value="Type verzekering dat men kan nemen, bijv. burgerlijke aansprakelijkheid, ongevallen, overlijden/invaliditeit, beperkte periode, auto-omnium,..."/>
@@ -2792,6 +2832,76 @@
 												<UML:TaggedValue tag="duplicates" value="0"/>
 												<UML:TaggedValue tag="ea_guid" value="{63527059-CC57-493b-B797-8CA68B606052}"/>
 												<UML:TaggedValue tag="ea_localid" value="3540"/>
+												<UML:TaggedValue tag="styleex" value="volatile=0;"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+									</UML:Classifier.feature>
+								</UML:Class>
+								<UML:Class name="Rol" xmi.id="EAID_6505FC28_D991_4137_B9D1_F1EB41361661" visibility="public" namespace="EAPK_5C15E41F_34C0_45f6_8825_84A62770CD96" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+									<UML:ModelElement.taggedValue>
+										<UML:TaggedValue tag="documentation" value="Bijv:&#xA;  - enkel lezen&#xA;  - lezen/schrijven&#xA;  - 1 persoon wijzigen"/>
+										<UML:TaggedValue tag="isSpecification" value="false"/>
+										<UML:TaggedValue tag="ea_stype" value="Class"/>
+										<UML:TaggedValue tag="ea_ntype" value="0"/>
+										<UML:TaggedValue tag="version" value="1.0"/>
+										<UML:TaggedValue tag="package" value="EAPK_5C15E41F_34C0_45f6_8825_84A62770CD96"/>
+										<UML:TaggedValue tag="date_created" value="2010-10-26 20:27:10"/>
+										<UML:TaggedValue tag="date_modified" value="2010-10-26 20:32:06"/>
+										<UML:TaggedValue tag="gentype" value="C#"/>
+										<UML:TaggedValue tag="tagged" value="0"/>
+										<UML:TaggedValue tag="package_name" value="Domain Objects"/>
+										<UML:TaggedValue tag="phase" value="1.0"/>
+										<UML:TaggedValue tag="author" value="johan"/>
+										<UML:TaggedValue tag="complexity" value="1"/>
+										<UML:TaggedValue tag="status" value="Proposed"/>
+										<UML:TaggedValue tag="tpos" value="0"/>
+										<UML:TaggedValue tag="ea_localid" value="2473"/>
+										<UML:TaggedValue tag="ea_eleType" value="element"/>
+										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={4B3C5569-2E2C-43ff-BA78-797D6FFF98A3}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={6505FC28-D991-4137-B9D1-F1EB41361661}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
+									</UML:ModelElement.taggedValue>
+									<UML:Classifier.feature>
+										<UML:Attribute name="KanBuitenGap" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<UML:Classifier xmi.idref="eaxmiid7"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="type" value="bool"/>
+												<UML:TaggedValue tag="derived" value="0"/>
+												<UML:TaggedValue tag="containment" value="Not Specified"/>
+												<UML:TaggedValue tag="ordered" value="0"/>
+												<UML:TaggedValue tag="collection" value="false"/>
+												<UML:TaggedValue tag="position" value="1"/>
+												<UML:TaggedValue tag="lowerBound" value="1"/>
+												<UML:TaggedValue tag="upperBound" value="1"/>
+												<UML:TaggedValue tag="duplicates" value="0"/>
+												<UML:TaggedValue tag="ea_guid" value="{F4B425D2-4D97-417b-A8E8-650E39C73F09}"/>
+												<UML:TaggedValue tag="ea_localid" value="3613"/>
+												<UML:TaggedValue tag="styleex" value="volatile=0;"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Attribute name="RolOmschrijving" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<UML:Classifier xmi.idref="eaxmiid5"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="type" value="string"/>
+												<UML:TaggedValue tag="derived" value="0"/>
+												<UML:TaggedValue tag="containment" value="Not Specified"/>
+												<UML:TaggedValue tag="ordered" value="0"/>
+												<UML:TaggedValue tag="collection" value="false"/>
+												<UML:TaggedValue tag="position" value="0"/>
+												<UML:TaggedValue tag="lowerBound" value="1"/>
+												<UML:TaggedValue tag="upperBound" value="1"/>
+												<UML:TaggedValue tag="duplicates" value="0"/>
+												<UML:TaggedValue tag="ea_guid" value="{A3D47147-EA42-4a34-B3A6-F1D7E5DEBFD3}"/>
+												<UML:TaggedValue tag="ea_localid" value="3612"/>
 												<UML:TaggedValue tag="styleex" value="volatile=0;"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
@@ -6812,26 +6922,27 @@
 				<UML:TaggedValue tag="version" value="1.0"/>
 				<UML:TaggedValue tag="author" value="VervlJo"/>
 				<UML:TaggedValue tag="created_date" value="2007-12-07 10:25:32"/>
-				<UML:TaggedValue tag="modified_date" value="2010-09-13 22:18:07"/>
+				<UML:TaggedValue tag="modified_date" value="2010-10-26 22:16:57"/>
 				<UML:TaggedValue tag="package" value="EAPK_5C15E41F_34C0_45f6_8825_84A62770CD96"/>
 				<UML:TaggedValue tag="type" value="Logical"/>
 				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;;cls=0;"/>
 				<UML:TaggedValue tag="matrixitems" value="locked=false;matrixactive=false;swimlanesactive=true;width=1;"/>
 				<UML:TaggedValue tag="ea_localid" value="257"/>
-				<UML:TaggedValue tag="EAStyle" value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=2;PPgs.cy=1;DocSize.cx=803;DocSize.cy=1134;ShowDetails=0;Orientation=P;Zoom=90;ShowTags=0;OpParams=1;VisibleAttributeDetail=0;ShowOpRetType=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=9;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=UML 2.1;ExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;ShowNotes=0;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;"/>
+				<UML:TaggedValue tag="EAStyle" value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=2;PPgs.cy=1;DocSize.cx=803;DocSize.cy=1134;ShowDetails=0;Orientation=P;Zoom=110;ShowTags=0;OpParams=1;VisibleAttributeDetail=0;ShowOpRetType=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=9;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=UML 2.1;ExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;ShowNotes=0;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;"/>
 				<UML:TaggedValue tag="styleex" value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=1;MatrixActive=0;SwimlanesActive=1;MatrixLineWidth=1;MatrixLocked=0;TConnectorNotation=UML 2.1;TExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;ProfileData=;MDGDgm=;STBLDgm=;ShowNotes=0;VisibleAttributeDetail=0;ShowOpRetType=1;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;"/>
 			</UML:ModelElement.taggedValue>
 			<UML:Diagram.element>
-				<UML:DiagramElement geometry="Left=472;Top=20;Right=629;Bottom=157;" subject="EAID_B7C4D1E9_E681_48a8_B0FD_2409F340F8FA" seqno="1" style="DUID=155DA162;"/>
-				<UML:DiagramElement geometry="Left=679;Top=114;Right=769;Bottom=184;" subject="EAID_4CB190C5_473C_4c7f_927E_B372487DE391" seqno="2" style="DUID=73004CE9;"/>
-				<UML:DiagramElement geometry="Left=333;Top=556;Right=439;Bottom=644;" subject="EAID_73B9C725_68C6_4375_9ECE_C482F03C7D3A" seqno="3" style="DUID=BF967B82;NSL=0;"/>
-				<UML:DiagramElement geometry="Left=291;Top=64;Right=426;Bottom=134;" subject="EAID_01C1B5AA_4549_4255_8059_F73A9454E226" seqno="4" style="DUID=3BC7CB16;NSL=0;"/>
-				<UML:DiagramElement geometry="Left=68;Top=233;Right=178;Bottom=277;" subject="EAID_694F9E67_B7E5_41d6_B271_83BDA77E2D25" seqno="5" style="DUID=19287665;NSL=0;"/>
-				<UML:DiagramElement geometry="Left=238;Top=210;Right=353;Bottom=293;" subject="EAID_E8C1F7F9_CE27_456b_B3F2_3437D0949CEE" seqno="6" style="DUID=21A1CCD3;NSL=0;"/>
-				<UML:DiagramElement geometry="Left=458;Top=214;Right=596;Bottom=328;" subject="EAID_853B942B_5C88_4427_AB73_4E8097DE76D4" seqno="7" style="DUID=D4FF5391;NSL=0;"/>
-				<UML:DiagramElement geometry="Left=528;Top=515;Right=676;Bottom=585;" subject="EAID_F44D8234_49DB_49ed_AA95_0FA3BB6749A6" seqno="8" style="DUID=0249F07E;NSL=0;"/>
-				<UML:DiagramElement geometry="Left=633;Top=306;Right=781;Bottom=376;" subject="EAID_F15FD72D_E23F_47f7_B616_F9820E8FBD85" seqno="9" style="ImageID=0;DUID=9EF64445;NSL=0;"/>
-				<UML:DiagramElement geometry="Left=132;Top=356;Right=303;Bottom=496;" subject="EAID_7B51900A_1EFB_400d_8BAD_BF5066BD1CE5" seqno="10" style="ImageID=0;DUID=C28215FF;NSL=0;"/>
+				<UML:DiagramElement geometry="Left=100;Top=72;Right=234;Bottom=149;" subject="EAID_6505FC28_D991_4137_B9D1_F1EB41361661" seqno="1" style="DUID=26F7E177;"/>
+				<UML:DiagramElement geometry="Left=472;Top=20;Right=629;Bottom=157;" subject="EAID_B7C4D1E9_E681_48a8_B0FD_2409F340F8FA" seqno="2" style="DUID=155DA162;"/>
+				<UML:DiagramElement geometry="Left=679;Top=114;Right=769;Bottom=184;" subject="EAID_4CB190C5_473C_4c7f_927E_B372487DE391" seqno="3" style="DUID=73004CE9;"/>
+				<UML:DiagramElement geometry="Left=333;Top=556;Right=439;Bottom=644;" subject="EAID_73B9C725_68C6_4375_9ECE_C482F03C7D3A" seqno="4" style="DUID=BF967B82;NSL=0;"/>
+				<UML:DiagramElement geometry="Left=291;Top=64;Right=426;Bottom=134;" subject="EAID_01C1B5AA_4549_4255_8059_F73A9454E226" seqno="5" style="DUID=3BC7CB16;NSL=0;"/>
+				<UML:DiagramElement geometry="Left=68;Top=233;Right=178;Bottom=277;" subject="EAID_694F9E67_B7E5_41d6_B271_83BDA77E2D25" seqno="6" style="DUID=19287665;NSL=0;"/>
+				<UML:DiagramElement geometry="Left=238;Top=210;Right=353;Bottom=293;" subject="EAID_E8C1F7F9_CE27_456b_B3F2_3437D0949CEE" seqno="7" style="DUID=21A1CCD3;NSL=0;"/>
+				<UML:DiagramElement geometry="Left=458;Top=214;Right=596;Bottom=328;" subject="EAID_853B942B_5C88_4427_AB73_4E8097DE76D4" seqno="8" style="DUID=D4FF5391;NSL=0;"/>
+				<UML:DiagramElement geometry="Left=528;Top=515;Right=676;Bottom=585;" subject="EAID_F44D8234_49DB_49ed_AA95_0FA3BB6749A6" seqno="9" style="DUID=0249F07E;NSL=0;"/>
+				<UML:DiagramElement geometry="Left=633;Top=306;Right=781;Bottom=376;" subject="EAID_F15FD72D_E23F_47f7_B616_F9820E8FBD85" seqno="10" style="ImageID=0;DUID=9EF64445;NSL=0;"/>
+				<UML:DiagramElement geometry="Left=132;Top=356;Right=303;Bottom=496;" subject="EAID_7B51900A_1EFB_400d_8BAD_BF5066BD1CE5" seqno="11" style="ImageID=0;DUID=C28215FF;NSL=0;"/>
 				<UML:DiagramElement geometry="EDGE=1;$LLB=CX=5:CY=14:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LLT=;LMT=;LMB=;LRT=;LRB=CX=5:CY=14:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;IRHS=;ILHS=;Path=;" subject="EAID_4FBE960B_ECB4_481f_ADF4_74CCA67A48FA" style="Mode=3;EOID=C28215FF;SOID=BF967B82;Color=-1;LWidth=1;Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=4;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_8B56015D_F024_4236_9B48_39B5943CF084" style="Mode=3;EOID=19287665;SOID=21A1CCD3;Color=-1;LWidth=1;Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=-25;EY=69;EDGE=3;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_26466BC6_8FBF_469c_9AF0_5F35396C64F6" style="Mode=3;EOID=C28215FF;SOID=21A1CCD3;Color=-1;LWidth=0;Hidden=0;"/>
@@ -6842,9 +6953,10 @@
 				<UML:DiagramElement geometry="SX=-7;SY=34;EX=0;EY=0;EDGE=1;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_5DC20087_614E_4914_97CE_4D04FEF02B77" style="Mode=3;EOID=D4FF5391;SOID=0249F07E;Color=-1;LWidth=0;Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=4;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_D74EA0FB_FEA4_472e_805A_E29CF9C31024" style="Mode=3;EOID=D4FF5391;SOID=9EF64445;Color=-1;LWidth=0;Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=1;$LLB=CX=17:CY=14:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LLT=;LMT=CX=52:CY=14:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LMB=;LRT=;LRB=CX=7:CY=14:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;IRHS=;ILHS=;Path=;" subject="EAID_014D7B3D_A689_434a_AA46_01D22707ED77" style="Mode=3;EOID=73004CE9;SOID=9EF64445;Color=-1;LWidth=1;Hidden=0;"/>
+				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_9E1E7A79_35E6_4147_9AD4_22590339EF69" style="Mode=3;EOID=3BC7CB16;SOID=26F7E177;Color=-1;LWidth=1;Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;SCME=1;SCTR=1;EDGE=2;SCTR.LEFT=768;SCTR.TOP=-172;SCTR.RIGHT=831;SCTR.BOTTOM=-125;$LLB=;LLT=CX=41:CY=14:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LMT=CX=32:CY=14:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LMB=;LRT=CX=80:CY=14:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LRB=;IRHS=;ILHS=;Path=769:-172$831:-172$831:-125$769:-125$;" subject="EAID_A468F145_EA92_416e_9DF1_4CDCC0F3C2AD" style="Mode=3;EOID=73004CE9;SOID=73004CE9;Color=-1;LWidth=1;Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=4;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_A7C0DE36_7790_4a43_83A4_6000606D92BD" style="Mode=3;EOID=D4FF5391;SOID=73004CE9;Color=-1;LWidth=1;Hidden=0;"/>
-				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=4;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_D17022D2_C612_4916_A1DB_DBC885FED6BF" style="Mode=3;EOID=155DA162;SOID=73004CE9;Color=-1;LWidth=1;Hidden=0;"/>
+				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=4;$LLB=;LLT=;LMT=;LMB=CX=81:CY=14:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_D17022D2_C612_4916_A1DB_DBC885FED6BF" style="Mode=3;EOID=155DA162;SOID=73004CE9;Color=-1;LWidth=1;Hidden=0;"/>
 			</UML:Diagram.element>
 		</UML:Diagram>
 		<UML:Diagram name="Adres" xmi.id="EAID_D60D6043_6A76_4c02_B9A1_5DBCF818B4EF" diagramType="ClassDiagram" owner="EAPK_5C15E41F_34C0_45f6_8825_84A62770CD96" toolName="Enterprise Architect 2.5">
