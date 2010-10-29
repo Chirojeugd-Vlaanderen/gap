@@ -20,21 +20,6 @@ namespace Chiro.Gap.ServiceContracts
 	[ServiceContract]
 	public interface ILedenService
 	{
-		
-		/// <summary>
-		/// Probeert de opgegeven gelieerde personen in te schrijven (aan te sluiten),
-		/// en geeft per geval feedback als dat niet gelukt is
-		/// </summary>
-		/// <param name="gelieerdePersoonIDs">Lijst van ID's van gelieerde personen die ingeschreven moeten worden</param>
-		/// <param name="type">Het type dat aangeeft of die gelieerde personen lid (kind) zijn of leiding</param>
-		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
-		/// string waarin wat uitleg staat. TODO: beter systeem vinden voor deze feedback.</param>
-		/// <returns>De LidIDs van de personen die lid zijn gemaakt</returns>
-		[OperationContract]
-		[FaultContract(typeof(GapFault))]
-		[FaultContract(typeof(FoutNummerFault))]
-		IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, LidType type, out string foutBerichten);
-
 		/// <summary>
 		/// Probeert de opgegeven gelieerde personen in te schrijven (aan te sluiten),
 		/// en geeft per geval feedback als dat niet gelukt is
@@ -46,7 +31,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof (GapFault))]
 		[FaultContract(typeof (FoutNummerFault))]
-		IEnumerable<int> AutomatischInschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten);
+		IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten);
 
 		/// <summary>
 		/// Maakt lid met gegeven ID nonactief
@@ -58,16 +43,6 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		void Uitschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten);
-
-		/// <summary>
-		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. Creëert of verwijdert geen leden, en leden
-		/// kunnen ook niet van werkjaar of van gelieerdepersoon veranderen.
-		/// </summary>
-		/// <param name="lid">Te bewaren lid</param>
-		[OperationContract]
-		[FaultContract(typeof(GapFault))]
-		[FaultContract(typeof(FoutNummerFault))]
-		void Bewaren(PersoonLidInfo lid);
 
 		/// <summary>
 		/// Vervangt de functies van het lid bepaald door <paramref name="lidID"/> door de functies

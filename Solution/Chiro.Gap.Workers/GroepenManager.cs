@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -22,34 +21,22 @@ namespace Chiro.Gap.Workers
 	public class GroepenManager
 	{
 		private readonly IGroepenDao _groepenDao;
-		private readonly IAfdelingsJarenDao _afdJrDao;
-		private readonly IAfdelingenDao _afdelingenDao;
 		private readonly IAutorisatieManager _autorisatieMgr;
-		private readonly ICategorieenDao _categorieenDao;
 		private readonly IGelieerdePersonenDao _gelPersDao;
 
 		/// <summary>
 		/// De standaardconstructor voor GroepenManagers
 		/// </summary>
 		/// <param name="grpDao">Repository voor groepen</param>
-		/// <param name="afjDao">Repository voor afdelingsjaren</param>
-		/// <param name="afdDao">Repository voor afdelingen</param>
-		/// <param name="categorieenDao">Repository voor categorieën</param>
 		/// <param name="gelPersDao">Repository voor gelieerde personen</param>
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 		public GroepenManager(
 			IGroepenDao grpDao,
-			IAfdelingsJarenDao afjDao,
-			IAfdelingenDao afdDao,
-			ICategorieenDao categorieenDao,
 			IGelieerdePersonenDao gelPersDao,
 			IAutorisatieManager autorisatieMgr)
 		{
 			_groepenDao = grpDao;
-			_afdJrDao = afjDao;
-			_afdelingenDao = afdDao;
 			_autorisatieMgr = autorisatieMgr;
-			_categorieenDao = categorieenDao;
 			_gelPersDao = gelPersDao;
 		}
 
@@ -100,46 +87,6 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Maakt een nieuwe afdeling voor een groep, zonder te persisteren
-		/// </summary>
-		/// <param name="groep">Groep waarvoor afdeling moet worden gemaakt, met daaraan gekoppeld
-		/// de bestaande afdelingen</param>
-		/// <param name="naam">Naam van de afdeling</param>
-		/// <param name="afkorting">Handige afkorting voor in schemaatjes</param>
-		/// <returns>De toegevoegde (maar nog niet gepersisteerde) afdeling</returns>
-		public Afdeling AfdelingToevoegen(Groep groep, string naam, string afkorting)
-		{
-			if (!_autorisatieMgr.IsGavGroep(groep.ID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-
-			// Controleren of de afdeling nog niet bestaat
-
-			var bestaand = from afd in groep.Afdeling
-						   where String.Compare(afd.Afkorting, afkorting, true) == 0
-						   || String.Compare(afd.Naam, naam, true) == 0
-						   select afd;
-
-			if (bestaand.FirstOrDefault() != null)
-			{
-				// TODO (#507): Check op bestaande afdeling door DB
-				throw new BestaatAlException<Afdeling>(bestaand.FirstOrDefault());
-			}
-
-			var a = new Afdeling
-			{
-				Afkorting = afkorting,
-				Naam = naam
-			};
-
-			a.Groep = groep;
-			groep.Afdeling.Add(a);
-
-			return a;
-		}
-
-		/// <summary>
 		/// Persisteert groep in de database
 		/// </summary>
 		/// <param name="g">Te persisteren groep</param>
@@ -168,27 +115,28 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Converteert lidextras <paramref name="extras"/> naar lambda-expresses voor een
-		/// KindDao
+		/// Converteert GroepsExtras <paramref name="extras"/> naar lambda-expresses voor een
+		/// GroepenDao
 		/// </summary>
-		/// <param name="extras">Te converteren lidextras</param>
-		/// <returns>Lambda-expresses voor een KindDao</returns>
+		/// <param name="extras">Te converteren GroepsExtras</param>
+		/// <returns>Lambda-expresses voor een GroepenDao</returns>
 		private static IEnumerable<Expression<Func<Groep, object>>> ExtrasNaarLambdas(GroepsExtras extras)
 		{
-			var paths = new List<Expression<Func<Groep, object>>> { ld => ld.GroepsWerkJaar };
+			var paths = new List<Expression<Func<Groep, object>>>();
 
-			if ((extras & GroepsExtras.AlleAfdelingen) != 0)
+			if ((extras & GroepsExtras.GroepsWerkJaren) != 0)
 			{
-				paths.Add(ld => ld.Afdeling);
+				paths.Add(gr => gr.GroepsWerkJaar);
 			}
+
 			if ((extras & GroepsExtras.Categorieen) != 0)
 			{
-				paths.Add(ld => ld.Categorie);
+				paths.Add(gr => gr.Categorie);
 			}
 
 			if ((extras & GroepsExtras.Functies) != 0)
 			{
-				paths.Add(ld => ld.Functie);
+				paths.Add(gr => gr.Functie);
 			}
 			return paths;
 		}
@@ -298,13 +246,26 @@ namespace Chiro.Gap.Workers
 
 			// Zonder problemen hier geraakt.  Dan kunnen we verder.
 
+			Niveau niveau = g.Niveau;
+			if ((g.Niveau & Niveau.Groep)!= 0)
+			{
+				if ((lidType & LidType.Leiding) == 0)
+				{
+					niveau &= ~(Niveau.LeidingInGroep);
+				}
+				if ((lidType & LidType.Kind) == 0)
+				{
+					niveau &= ~(Niveau.LidInGroep);
+				}
+			}
+
 			var f = new Functie
 			{
 				Code = code,
 				Groep = g,
 				MaxAantal = maxAantal,
 				MinAantal = minAantal,
-				Type = lidType,
+				Niveau = niveau,
 				Naam = naam,
 				WerkJaarTot = null,
 				WerkJaarVan = werkJaarVan,

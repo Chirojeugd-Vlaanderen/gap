@@ -5,6 +5,7 @@
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
+using Chiro.Gap.Domain;
 
 namespace Chiro.Gap.Orm
 {
@@ -16,6 +17,8 @@ namespace Chiro.Gap.Orm
 	public partial class Groep : IEfBasisEntiteit
 	{
 		private bool _teVerwijderen;
+
+		public abstract Niveau Niveau { get; }
 
 		/// <summary>
 		/// Wordt gebruikt om te verwijderen entiteiten mee te markeren

@@ -107,16 +107,16 @@ namespace Chiro.Gap.ServiceContracts
 		#region afdelingen
 
 		/// <summary>
-		/// Maakt een nieuwe afdeling voor een gegeven groep
+		/// Maakt een nieuwe afdeling voor een gegeven ChiroGroep
 		/// </summary>
-		/// <param name="groepID">ID van de groep</param>
+		/// <param name="chiroGroepID">ID van de groep</param>
 		/// <param name="naam">Naam van de afdeling</param>
 		/// <param name="afkorting">Afkorting van de afdeling (voor lijsten, overzichten,...)</param>
 		[OperationContract]
 		[FaultContract(typeof(BestaatAlFault<AfdelingInfo>))]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		void AfdelingAanmaken(int groepID, string naam, string afkorting);
+		void AfdelingAanmaken(int chiroGroepID, string naam, string afkorting);
 
 		/// <summary>
 		/// Bewaart een afdeling met de nieuwe informatie.

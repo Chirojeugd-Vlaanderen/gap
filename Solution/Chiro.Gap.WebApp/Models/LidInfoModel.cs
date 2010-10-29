@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 
 using Chiro.Gap.Domain;
@@ -13,12 +14,12 @@ namespace Chiro.Gap.WebApp.Models
 {
 	public class LidInfoModel : LedenLijstModel
 	{
-        public LidInfoModel()
-        {
-            WerkJaarInfos = new List<WerkJaarInfo>();
-            LidInfoLijst = new List<LidOverzicht>();
-            AfdelingsInfoDictionary = new Dictionary<int, AfdelingDetail>();
-        }
+		public LidInfoModel()
+		{
+			WerkJaarInfos = new List<WerkJaarInfo>();
+			LidInfoLijst = new List<LidOverzicht>();
+			AfdelingsInfoDictionary = new Dictionary<int, AfdelingDetail>();
+		}
 
 		public int PageHuidig { get; set; }
 		public int PageTotaal { get; set; }

@@ -19,7 +19,6 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Lid_GelieerdePersoon", "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.GelieerdePersoon), "Lid", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Lid))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GebruikersRecht_Gav", "Gav", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Gav), "GebruikersRecht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.GebruikersRecht))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GebruikersRecht_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Groep), "GebruikersRecht", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.GebruikersRecht))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Afdeling_Groep", "Groep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Groep), "Afdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Afdeling))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_AfdelingsJaar_GroepsWerkjaar", "GroepsWerkJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.GroepsWerkJaar), "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.AfdelingsJaar))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_AfdelingsJaar_Afdeling", "Afdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Afdeling), "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.AfdelingsJaar))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_AfdelingsJaar_OfficieleAfdeling", "OfficieleAfdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.OfficieleAfdeling), "AfdelingsJaar", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.AfdelingsJaar))]
@@ -35,9 +34,12 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_GelieerdePersoon_PersoonsAdres", "PersoonsAdres", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.PersoonsAdres), "GelieerdePersoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.GelieerdePersoon))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsVerzekering_Persoon", "Persoon", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Persoon), "PersoonsVerzekering", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.PersoonsVerzekering))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsVerzekering_VerzekeringsType", "VerzekeringsType", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.VerzekeringsType), "PersoonsVerzekering", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.PersoonsVerzekering))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_ChiroGroep_KaderGroep", "KaderGroep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.KaderGroep), "ChiroGroep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.ChiroGroep))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_KaderGroep_KaderGroep", "KaderGroep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.KaderGroep), "KaderGroep1", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.KaderGroep))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Afdeling_ChiroGroep", "ChiroGroep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.ChiroGroep), "Afdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Afdeling))]
 
 // Original file name:
-// Generation date: 9/16/2010 12:50:29
+// Generation date: 10/26/2010 20:42:10
 namespace Chiro.Gap.Orm
 {
     
@@ -558,6 +560,64 @@ namespace Chiro.Gap.Orm
         private string _Plaats;
         partial void OnPlaatsChanging(string value);
         partial void OnPlaatsChanged();
+        /// <summary>
+        /// There are no comments for KaderGroep in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_ChiroGroep_KaderGroep", "KaderGroep")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public KaderGroep KaderGroep
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<KaderGroep>("ChiroGroepModel.FK_ChiroGroep_KaderGroep", "KaderGroep").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<KaderGroep>("ChiroGroepModel.FK_ChiroGroep_KaderGroep", "KaderGroep").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for KaderGroep in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<KaderGroep> KaderGroepReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<KaderGroep>("ChiroGroepModel.FK_ChiroGroep_KaderGroep", "KaderGroep");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<KaderGroep>("ChiroGroepModel.FK_ChiroGroep_KaderGroep", "KaderGroep", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Afdeling in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Afdeling_ChiroGroep", "Afdeling")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Afdeling> Afdeling
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Afdeling>("ChiroGroepModel.FK_Afdeling_ChiroGroep", "Afdeling");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Afdeling>("ChiroGroepModel.FK_Afdeling_ChiroGroep", "Afdeling", value);
+                }
+            }
+        }
     }
     /// <summary>
     /// There are no comments for ChiroGroepModel.Groep in the schema.
@@ -568,21 +628,10 @@ namespace Chiro.Gap.Orm
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Groep")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
+    [global::System.Runtime.Serialization.KnownTypeAttribute(typeof(global::Chiro.Gap.Orm.KaderGroep))]
     [global::System.Runtime.Serialization.KnownTypeAttribute(typeof(global::Chiro.Gap.Orm.ChiroGroep))]
-    public partial class Groep : global::System.Data.Objects.DataClasses.EntityObject
+    public abstract partial class Groep : global::System.Data.Objects.DataClasses.EntityObject
     {
-        /// <summary>
-        /// Create a new Groep object.
-        /// </summary>
-        /// <param name="naam">Initial value of Naam.</param>
-        /// <param name="id">Initial value of ID.</param>
-        public static Groep CreateGroep(string naam, int id)
-        {
-            Groep groep = new Groep();
-            groep.Naam = naam;
-            groep.ID = id;
-            return groep;
-        }
         /// <summary>
         /// There are no comments for Property Naam in the schema.
         /// </summary>
@@ -804,27 +853,6 @@ namespace Chiro.Gap.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<GebruikersRecht>("ChiroGroepModel.FK_GebruikersRecht_Groep", "GebruikersRecht", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for Afdeling in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Afdeling_Groep", "Afdeling")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<Afdeling> Afdeling
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Afdeling>("ChiroGroepModel.FK_Afdeling_Groep", "Afdeling");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Afdeling>("ChiroGroepModel.FK_Afdeling_Groep", "Afdeling", value);
                 }
             }
         }
@@ -3049,43 +3077,6 @@ namespace Chiro.Gap.Orm
         partial void OnVersieChanging(byte[] value);
         partial void OnVersieChanged();
         /// <summary>
-        /// There are no comments for Groep in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Afdeling_Groep", "Groep")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Groep Groep
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_Afdeling_Groep", "Groep").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_Afdeling_Groep", "Groep").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for Groep in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Groep> GroepReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_Afdeling_Groep", "Groep");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Groep>("ChiroGroepModel.FK_Afdeling_Groep", "Groep", value);
-                }
-            }
-        }
-        /// <summary>
         /// There are no comments for AfdelingsJaar in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_AfdelingsJaar_Afdeling", "AfdelingsJaar")]
@@ -3103,6 +3094,43 @@ namespace Chiro.Gap.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<AfdelingsJaar>("ChiroGroepModel.FK_AfdelingsJaar_Afdeling", "AfdelingsJaar", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for ChiroGroep in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Afdeling_ChiroGroep", "ChiroGroep")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public ChiroGroep ChiroGroep
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ChiroGroep>("ChiroGroepModel.FK_Afdeling_ChiroGroep", "ChiroGroep").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ChiroGroep>("ChiroGroepModel.FK_Afdeling_ChiroGroep", "ChiroGroep").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for ChiroGroep in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<ChiroGroep> ChiroGroepReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<ChiroGroep>("ChiroGroepModel.FK_Afdeling_ChiroGroep", "ChiroGroep");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<ChiroGroep>("ChiroGroepModel.FK_Afdeling_ChiroGroep", "ChiroGroep", value);
                 }
             }
         }
@@ -4062,7 +4090,8 @@ namespace Chiro.Gap.Orm
         /// <param name="minAantal">Initial value of MinAantal.</param>
         /// <param name="isNationaal">Initial value of IsNationaal.</param>
         /// <param name="lidTypeInt">Initial value of LidTypeInt.</param>
-        public static Functie CreateFunctie(string naam, string code, int id, int minAantal, bool isNationaal, int lidTypeInt)
+        /// <param name="niveauInt">Initial value of NiveauInt.</param>
+        public static Functie CreateFunctie(string naam, string code, int id, int minAantal, bool isNationaal, int lidTypeInt, int niveauInt)
         {
             Functie functie = new Functie();
             functie.Naam = naam;
@@ -4071,6 +4100,7 @@ namespace Chiro.Gap.Orm
             functie.MinAantal = minAantal;
             functie.IsNationaal = isNationaal;
             functie.LidTypeInt = lidTypeInt;
+            functie.NiveauInt = niveauInt;
             return functie;
         }
         /// <summary>
@@ -4303,6 +4333,29 @@ namespace Chiro.Gap.Orm
         private int _LidTypeInt;
         partial void OnLidTypeIntChanging(int value);
         partial void OnLidTypeIntChanged();
+        /// <summary>
+        /// There are no comments for Property NiveauInt in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int NiveauInt
+        {
+            get
+            {
+                return this._NiveauInt;
+            }
+            set
+            {
+                this.OnNiveauIntChanging(value);
+                this.ReportPropertyChanging("NiveauInt");
+                this._NiveauInt = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("NiveauInt");
+                this.OnNiveauIntChanged();
+            }
+        }
+        private int _NiveauInt;
+        partial void OnNiveauIntChanging(int value);
+        partial void OnNiveauIntChanged();
         /// <summary>
         /// There are no comments for Groep in the schema.
         /// </summary>
@@ -5117,6 +5170,134 @@ namespace Chiro.Gap.Orm
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<PersoonsVerzekering>("ChiroGroepModel.FK_PersoonsVerzekering_VerzekeringsType", "PersoonsVerzekering", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ChiroGroepModel.KaderGroep in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// ID
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="KaderGroep")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class KaderGroep : Groep
+    {
+        /// <summary>
+        /// Create a new KaderGroep object.
+        /// </summary>
+        /// <param name="naam">Initial value of Naam.</param>
+        /// <param name="id">Initial value of ID.</param>
+        /// <param name="niveauInt">Initial value of NiveauInt.</param>
+        public static KaderGroep CreateKaderGroep(string naam, int id, int niveauInt)
+        {
+            KaderGroep kaderGroep = new KaderGroep();
+            kaderGroep.Naam = naam;
+            kaderGroep.ID = id;
+            kaderGroep.NiveauInt = niveauInt;
+            return kaderGroep;
+        }
+        /// <summary>
+        /// There are no comments for Property NiveauInt in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public int NiveauInt
+        {
+            get
+            {
+                return this._NiveauInt;
+            }
+            set
+            {
+                this.OnNiveauIntChanging(value);
+                this.ReportPropertyChanging("NiveauInt");
+                this._NiveauInt = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("NiveauInt");
+                this.OnNiveauIntChanged();
+            }
+        }
+        private int _NiveauInt;
+        partial void OnNiveauIntChanging(int value);
+        partial void OnNiveauIntChanged();
+        /// <summary>
+        /// There are no comments for ChiroGroep in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_ChiroGroep_KaderGroep", "ChiroGroep")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<ChiroGroep> ChiroGroep
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<ChiroGroep>("ChiroGroepModel.FK_ChiroGroep_KaderGroep", "ChiroGroep");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<ChiroGroep>("ChiroGroepModel.FK_ChiroGroep_KaderGroep", "ChiroGroep", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Children in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_KaderGroep_KaderGroep", "KaderGroep1")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<KaderGroep> Children
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<KaderGroep>("ChiroGroepModel.FK_KaderGroep_KaderGroep", "KaderGroep1");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<KaderGroep>("ChiroGroepModel.FK_KaderGroep_KaderGroep", "KaderGroep1", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Parent in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_KaderGroep_KaderGroep", "KaderGroep")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public KaderGroep Parent
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<KaderGroep>("ChiroGroepModel.FK_KaderGroep_KaderGroep", "KaderGroep").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<KaderGroep>("ChiroGroepModel.FK_KaderGroep_KaderGroep", "KaderGroep").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Parent in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<KaderGroep> ParentReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<KaderGroep>("ChiroGroepModel.FK_KaderGroep_KaderGroep", "KaderGroep");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<KaderGroep>("ChiroGroepModel.FK_KaderGroep_KaderGroep", "KaderGroep", value);
                 }
             }
         }

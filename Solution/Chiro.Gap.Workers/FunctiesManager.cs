@@ -156,28 +156,38 @@ namespace Chiro.Gap.Workers
 		/// </returns>
 		public IList<Functie> OphalenRelevant(int groepsWerkJaarID, LidType lidType)
 		{
-			if (_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
-			{
-				GroepsWerkJaar gwj = _groepsWjDao.Ophalen(groepsWerkJaarID, grwj => grwj.Groep.Functie);
-
-				// TODO (#103): ook groepsgebonden functies ophalen
-				return (from f in gwj.Groep.Functie.Union(NationaalBepaaldeFunctiesOphalen())
-						where (f.WerkJaarVan == null || f.WerkJaarVan <= gwj.WerkJaar)
-							&& (f.WerkJaarTot == null || f.WerkJaarTot >= gwj.WerkJaar)
-							&& ((f.Type & lidType) != 0)
-						select f).ToList();
-			}
-			else
+			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
+			GroepsWerkJaar gwj = _groepsWjDao.Ophalen(groepsWerkJaarID, grwj => grwj.Groep.Functie);
+
+			// bepaal het niveau van de nationale functies
+			Niveau niveau = gwj.Groep.Niveau;
+			if ((niveau & Niveau.Groep) != 0)
+			{
+				if (lidType != LidType.Leiding)
+				{
+					niveau &= ~Niveau.LeidingInGroep;
+				}
+				if (lidType != LidType.Kind)
+				{
+					niveau &= ~Niveau.LidInGroep;
+				}
+			}
+
+			return (from f in gwj.Groep.Functie.Union(NationaalBepaaldeFunctiesOphalen())
+			        where (f.WerkJaarVan == null || f.WerkJaarVan <= gwj.WerkJaar)
+			              && (f.WerkJaarTot == null || f.WerkJaarTot >= gwj.WerkJaar)
+			              && ((f.Niveau & niveau) != 0)
+			        select f).ToList();
 		}
 
 		/// <summary>
 		/// Kent de meegegeven <paramref name="functies"/> toe aan het gegeven <paramref name="lid"/>.
 		/// Als het lid al andere functies had, blijven die behouden.  Persisteert niet.
 		/// </summary>
-		/// <param name="lid">Lid dat de functies moet krijgen</param>
+		/// <param name="lid">Lid dat de functies moet krijgen, gekoppeld aan zijn groep</param>
 		/// <param name="functies">Rij toe te kennen functies</param>
 		/// <remarks>
 		/// Er wordt verondersteld dat er heel wat geladen is!
@@ -227,7 +237,7 @@ namespace Chiro.Gap.Workers
 						Properties.Resources.FoutiefGroepsWerkJaarFunctie);
 				}
 
-				if ((f.Type & lid.Type) == 0)
+				if ((f.Niveau & lid.Niveau) == 0)
 				{
 					throw new InvalidOperationException(Properties.Resources.FoutiefLidType);
 				}
@@ -312,11 +322,11 @@ namespace Chiro.Gap.Workers
 			// 'Toekennen' en 'Loskoppelen', dewelke door deze method worden aangeroepen.
 
 			IList<Functie> toeTeVoegen = (from fn in functies
-										  where !lid.Functie.Contains(fn)
-										  select fn).ToList();
+			                              where !lid.Functie.Contains(fn)
+			                              select fn).ToList();
 			IList<int> teVerwijderen = (from fn in lid.Functie
-										where !functies.Contains(fn)
-										select fn.ID).ToList();
+			                            where !functies.Contains(fn)
+			                            select fn.ID).ToList();
 
 #if KIPDORP
 			using (var tx = new TransactionScope())

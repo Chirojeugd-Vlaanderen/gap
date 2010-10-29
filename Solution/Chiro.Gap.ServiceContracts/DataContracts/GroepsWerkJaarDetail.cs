@@ -22,5 +22,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		public string GroepPlaats { get; set; }
 		[DataMember]
 		public string GroepCode { get; set; }
+		[DataMember]
+		public Niveau GroepNiveau { get; set; }
 	}
 }

@@ -210,12 +210,11 @@ namespace Chiro.Gap.WebApp.Controllers
 			switch (model.GekozenActie)
 			{
 				case 1:
-				case 2:
+				case 2:  // 2 is stiekem verdwenen, zie #625.
 					string foutBerichten = String.Empty;
 
 					ServiceHelper.CallService<ILedenService, IEnumerable<int>>(g => g.Inschrijven(
 						model.GekozenGelieerdePersoonIDs,
-						model.GekozenActie == 1 ? LidType.Kind : LidType.Leiding,
 						out foutBerichten));
 
 					if (String.IsNullOrEmpty(foutBerichten))
@@ -421,7 +420,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// (er wordt hier geredirect ipv de view te tonen,
 			// zodat je bij een 'refresh' niet de vraag krijgt
 			// of je de gegevens opnieuw wil posten.)
-			return TerugNaarVorigeFiche();
+			return RedirectToAction("EditRest", new {id = model.HuidigePersoon.GelieerdePersoonID, groepID});
 		}
 
 		// NEW CODE
@@ -479,14 +478,14 @@ namespace Chiro.Gap.WebApp.Controllers
 
 		#region leden
 
-		// GET: /Personen/AutomatischLidMaken/gelieerdepersoonID
+		// GET: /Personen/Inschrijven/gelieerdepersoonID
 		[HandleError]
-		public ActionResult AutomatischLidMaken(int gelieerdepersoonID, int groepID)
+		public ActionResult Inschrijven(int gelieerdepersoonID, int groepID)
 		{
 			IList<int> ids = new List<int> { gelieerdepersoonID };
 			string foutBerichten = String.Empty;
 
-			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.AutomatischInschrijven(ids, out foutBerichten));
+			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.Inschrijven(ids, out foutBerichten));
 			if (String.IsNullOrEmpty(foutBerichten))
 			{
 				TempData["succes"] = Properties.Resources.IngeschrevenFeedback;
@@ -497,46 +496,6 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 
 			return TerugNaarVorigeFiche();
-		}
-
-		// GET: /Personen/LidMaken/gelieerdepersoonID
-		[HandleError]
-		public ActionResult LidMaken(int gelieerdepersoonID, int groepID)
-		{
-			IList<int> ids = new List<int> { gelieerdepersoonID };
-			string foutBerichten = String.Empty;
-
-			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.Inschrijven(ids, LidType.Kind, out foutBerichten));
-			if (String.IsNullOrEmpty(foutBerichten))
-			{
-				TempData["succes"] = Properties.Resources.IngeschrevenFeedback;
-			}
-			else
-			{
-				TempData["fout"] = string.Concat(Properties.Resources.InschrijvenMisluktFout, Environment.NewLine, foutBerichten);
-			}
-
-			return RedirectToAction("EditRest", new {groepID, id = gelieerdepersoonID});
-		}
-
-		// GET: /Personen/LeidingMaken/gelieerdepersoonID
-		[HandleError]
-		public ActionResult LeidingMaken(int gelieerdepersoonID, int groepID)
-		{
-			IList<int> ids = new List<int> { gelieerdepersoonID };
-			string foutBerichten = String.Empty;
-
-			ServiceHelper.CallService<ILedenService, IEnumerable<int>>(l => l.Inschrijven(ids, LidType.Leiding, out foutBerichten));
-			if (String.IsNullOrEmpty(foutBerichten))
-			{
-				TempData["succes"] = Properties.Resources.IngeschrevenFeedback;
-			}
-			else
-			{
-				TempData["fout"] = string.Concat(Properties.Resources.InschrijvenMisluktFout, Environment.NewLine, foutBerichten);
-			}
-
-			return RedirectToAction("EditRest", new { groepID, id = gelieerdepersoonID });
 		}
 
 		#endregion leden

@@ -104,12 +104,28 @@
 			<%= Html.RadioButton("HuidigePersoon.Geslacht", GeslachtsType.Vrouw, Model.HuidigePersoon.Geslacht == GeslachtsType.Vrouw)%>
 			Vrouw
 		</p>
-		<p>
-			<%=Html.LabelFor(s => s.HuidigePersoon.ChiroLeefTijd)%>
-			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Chiroleeftijd", new { helpBestand = "Trefwoorden" }, new { title = "Wat is je Chiroleeftijd?" } ) %>
-			<%=Html.EditorFor(s => s.HuidigePersoon.ChiroLeefTijd)%>
-			<%=Html.ValidationMessageFor(s => s.HuidigePersoon.ChiroLeefTijd) %>
-		</p>
+	<%
+		if ((Model.GroepsNiveau & Niveau.Groep) != 0)
+		{
+			// Chiroleeftijd is enkel relevant voor plaatselijke groepen
+	%>		
+		
+			<p>
+				<%=Html.LabelFor(s => s.HuidigePersoon.ChiroLeefTijd)%>
+				<%=Html.ActionLink("[?]",
+							  "ViewTonen",
+							  "Handleiding",
+							  null,
+							  null,
+							  "Chiroleeftijd",
+							  new {helpBestand = "Trefwoorden"},
+							  new {title = "Wat is je Chiroleeftijd?"})%>
+				<%=Html.EditorFor(s => s.HuidigePersoon.ChiroLeefTijd)%>
+				<%=Html.ValidationMessageFor(s => s.HuidigePersoon.ChiroLeefTijd)%>
+			</p>
+	<%
+		}
+	%>
 		<%=Html.HiddenFor(s => s.HuidigePersoon.GelieerdePersoonID)%>
 		<%=Html.HiddenFor(s => s.BroerzusID)%>
 		<%=Html.HiddenFor(s => s.HuidigePersoon.VersieString)%>

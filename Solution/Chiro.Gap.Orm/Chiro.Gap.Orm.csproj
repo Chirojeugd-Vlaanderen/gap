@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Adres.cs" />
     <Compile Include="Categorie.cs" />
+    <Compile Include="ChiroGroep.cs" />
     <Compile Include="ChiroGroepModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -81,6 +82,7 @@
     <Compile Include="Functie.cs" />
     <Compile Include="Gav.cs" />
     <Compile Include="GroepsWerkJaar.cs" />
+    <Compile Include="KaderGroep.cs" />
     <Compile Include="OfficieleAfdeling.cs" />
     <Compile Include="DataInterfaces\IAdressenDao.cs" />
     <Compile Include="DataInterfaces\IAutorisatieDao.cs" />

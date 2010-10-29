@@ -43,25 +43,27 @@ namespace Chiro.Gap.Orm
 			get { return (this is Kind ? LidType.Kind : LidType.Leiding); }
 		}
 
-		///// <summary>
-		///// Een waarde waarmee we het object kunnen identificeren,
-		///// overgenomen van de ID
-		///// </summary>
-		///// <returns>Een int waarmee we het object kunnen identificeren</returns>
-		// public override int GetHashCode()
-		// {
-		//         return ID.GetHashCode();
-		// }
-
-		///// <summary>
-		///// Vergelijkt het huidige object met een ander om te zien of het over
-		///// twee instanties van hetzelfde object gaat
-		///// </summary>
-		///// <param name="obj">Het object waarmee we het huidige willen vergelijken</param>
-		///// <returns><c>True</c> als het schijnbaar om twee instanties van hetzelfde object gaat</returns>
-		// public override bool Equals(object obj)
-		// {
-		//         return this.ChiroEquals(obj);
-		// }
+		/// <summary>
+		/// Bepaalt het niveau van het lid.  Hiervoor moet wel de groep gekoppeld zijn.
+		/// </summary>
+		public Niveau Niveau
+		{
+			get
+			{
+				var resultaat = GroepsWerkJaar.Groep.Niveau;
+				if ((resultaat & Niveau.Groep) != 0)
+				{
+					if (!(this is Leiding))
+					{
+						resultaat &= ~Niveau.LeidingInGroep;
+					}
+					if (!(this is Kind))
+					{
+						resultaat &= ~Niveau.LidInGroep;
+					}
+				}
+				return resultaat;
+			}
+		}
 	}
 }

@@ -35,22 +35,35 @@
 			</tr>
 		</table>
 	</div>
-	<div class="kaderke">
-		<div class="kadertitel">
-			Actieve afdelingen dit werkjaar</div>
-		<ul>
-			<%
-				foreach (var afd in Model.Detail.Afdelingen.OrderByDescending(afd => afd.GeboorteJaarVan))
-				{
-			%>
-			<li>
-				<%=Html.Encode(String.Format("{0} ({1}) -- officiële variant: {2}", afd.AfdelingNaam, afd.AfdelingAfkorting, afd.OfficieleAfdelingNaam.ToLower())) %></li>
-			<%
-				}
-			%>
-		</ul>
-		[<%=Html.ActionLink("afdelingsverdeling aanpassen", "Index", "Afdelingen") %>]
-	</div>
+<% 
+		if ((Model.Detail.Niveau & Niveau.Groep) != 0)
+		{
+  			// Afdelingen enkel tonen voor Chirogroepen
+  			// (niet voor kadergroepen of satellieten)  	
+%>
+			<div class="kaderke">
+				<div class="kadertitel">
+					Actieve afdelingen dit werkjaar</div>
+				<ul>
+<%
+  				foreach (var afd in Model.Detail.Afdelingen.OrderByDescending(afd => afd.GeboorteJaarVan))
+  				{
+%>
+						<li>
+							<%=
+  						Html.Encode(String.Format("{0} ({1}) -- officiële variant: {2}",
+  									  afd.AfdelingNaam,
+  									  afd.AfdelingAfkorting,
+  									  afd.OfficieleAfdelingNaam.ToLower()))%></li>
+<%
+ 				}
+%>
+				</ul>
+				[<%=Html.ActionLink("afdelingsverdeling aanpassen", "Index", "Afdelingen")%>]
+			</div>
+<%
+		}
+%>
 	<div class="kaderke">
 		<div class="kadertitel">
 			Categorieën voor ingeschreven en niet-ingeschreven personen</div>

@@ -4,6 +4,7 @@
 // </copyright>
 
 using System.Data.Objects;
+using System.Diagnostics;
 using System.Linq;
 
 using Chiro.Cdf.Data.Entity;
@@ -21,9 +22,7 @@ namespace Chiro.Gap.Data.Ef
 		/// Ophalen van groep, groepswerkjaar, afdeling, afdelingsjaar en officiële afdelingen 
 		/// voor gegeven groepswerkjaar.
 		/// </summary>
-		/// <remarks>Deze functie haalde origineel de afdelingen op voor een groep in het
-		/// huidige werkjaar, maar 'huidige werkjaar' vind ik precies wat veel business
-		/// voor in de DAL.</remarks>
+		/// <remarks>Aan kadergroepen zullen sowieso geen afdelingen gekoppeld zijn.</remarks>
 		/// <param name="groepsWerkJaarID">ID van gevraagde groepswerkjaar</param>
 		/// <returns>Groep, afdelingsjaar, afdelingen en officiële afdelingen</returns>
 		public Groep OphalenMetAfdelingen(int groepsWerkJaarID)
@@ -44,17 +43,15 @@ namespace Chiro.Gap.Data.Ef
 					where aj.GroepsWerkJaar.ID == groepsWerkJaarID
 					select aj);
 
-				// In principe zouden we Afdeling.Groep kunnen includen, 
-				// maar aangezien we met NoTracking werken, zou dat resulteren
-				// in een kopie van de groep voor elke afdeling, ipv 1
-				// GroepsObject met daaraan gekoppeld de gewenste afdelingen.
+				// Afdelingen zijn gekoppeld aan Chirogroepen.  Omdat deze method ook
+				// moet werken voor kadergroepen, kan ik de groep niet benaderen via de\
+				// afdelingen.  (Bovendien zou dat problemen geven t.g.v.
+				// MergeOption.NoTracking)
 
 				// Ik selecteer dus de groep apart, en koppel daarna alle gevonden
 				// afdelingen.
 
 				// Een beetje prutsen om het originele groepswerkjaar aan de groep te koppelen.
-				// TODO: Kan dit niet in 1 keer? => Poging gedaan, nog uitgebreider te controleren
-				// Dit is een kortere versie van wat er eerst stond, maar het derde statement maakt duidelijk dat het inderdaad gepruts is :)
 
 				groepswj = (from gwj in db.GroepsWerkJaar
 							where gwj.ID == groepsWerkJaarID
@@ -69,8 +66,13 @@ namespace Chiro.Gap.Data.Ef
 				// Koppel gevonden afdelingsjaren aan groep en aan groepswerkjaar
 				foreach (AfdelingsJaar aj in ajQuery)
 				{
-					aj.Afdeling.Groep = groepswj.Groep;
-					groepswj.Groep.Afdeling.Add(aj.Afdeling);
+					// Als er afdelingsjaren zijn, dan MOET dit een Chirogroep zijn
+					// (en geen kadergroep)
+
+					Debug.Assert(groepswj.Groep is ChiroGroep);
+
+					aj.Afdeling.ChiroGroep = groepswj.Groep as ChiroGroep;
+					(groepswj.Groep as ChiroGroep).Afdeling.Add(aj.Afdeling);
 
 					aj.GroepsWerkJaar = groepswj.Groep.GroepsWerkJaar.First();
 					groepswj.Groep.GroepsWerkJaar.First().AfdelingsJaar.Add(aj);

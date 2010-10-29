@@ -27,12 +27,19 @@
 		      	"Download", 
 		      	new { id = Model.IDGetoondGroepsWerkJaar, afdelingID = Model.AfdelingID, functieID = Model.FunctieID, sortering = Model.GekozenSortering }, 
 		      	new { title = "Download de geselecteerde gegevens in een Excel-bestand" })%></span>
+<% if ((Model.GroepsNiveau & (Niveau.Gewest | Niveau.Verbond)) == 0)
+   {
+   	// geen gewest of verbond: toon link naar probeerleden
+%>		      	
 		<span><%=Html.ActionLink(
-		      	"In instapperiode", 
-		      	"GesorteerdeProbeerLeden",
-		      	new { groepID = Model.GroepID, sortering = Model.GekozenSortering }, 
-		      	new {title = "Leden en leiding tonen van wie de instapperiode nog niet verlopen is"})%></span>
+   		"In instapperiode",
+   		"GesorteerdeProbeerLeden",
+   		new {groepID = Model.GroepID, sortering = Model.GekozenSortering},
+   		new {title = "Leden en leiding tonen van wie de instapperiode nog niet verlopen is"})%></span>
 
+<%
+   }
+%>
 		<span>
 				<%using (Html.BeginForm("AfdelingsLijst", "Leden"))
 				{ 

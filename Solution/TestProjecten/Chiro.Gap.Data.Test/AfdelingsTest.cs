@@ -132,7 +132,7 @@ namespace Chiro.Gap.Data.Test
 
 			#region Assert
 			Assert.IsTrue(afd != null);
-			Assert.IsTrue(afd.Groep.ID == groepID);
+			Assert.IsTrue(afd.ChiroGroep.ID == groepID);
 			#endregion
 		}
 
@@ -207,7 +207,7 @@ namespace Chiro.Gap.Data.Test
 
 			// Act
 
-			Groep g = dao.OphalenMetAfdelingen(TestInfo.GROEPSWERKJAARID);
+			var g = dao.OphalenMetAfdelingen(TestInfo.GROEPSWERKJAARID) as ChiroGroep;
 
 			// Assert
 
@@ -232,7 +232,7 @@ namespace Chiro.Gap.Data.Test
 
 			// Act
 
-			Groep g = dao.OphalenMetAfdelingen(TestInfo.GROEPSWERKJAARID);
+			var g = dao.OphalenMetAfdelingen(TestInfo.GROEPSWERKJAARID) as ChiroGroep;
 
 			// Assert
 

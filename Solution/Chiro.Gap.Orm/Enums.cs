@@ -19,10 +19,22 @@ namespace Chiro.Gap.Orm
 	public enum GroepsExtras
 	{
 		Geen = 0x00,
-		AlleAfdelingen = 0x01,
-		Functies = 0x02,
-		Categorieen = 0x03,
+		Functies = 0x01,
+		Categorieen = 0x02,
 		GroepsWerkJaren = 0x04,
+	}
+
+	/// <summary>
+	/// Extra's voor een Chirogroep: dat zijn die voor een groep, met als surplus 'AlleAfdelingen'.
+	/// </summary>
+	[Flags]
+	public enum ChiroGroepsExtras
+	{
+		Geen = GroepsExtras.Geen,
+		Functies = GroepsExtras.Functies,
+		Categorieen = GroepsExtras.Categorieen,
+		GroepsWerkJaren = GroepsExtras.GroepsWerkJaren,
+		AlleAfdelingen = 0x10
 	}
 
 	/// <summary>

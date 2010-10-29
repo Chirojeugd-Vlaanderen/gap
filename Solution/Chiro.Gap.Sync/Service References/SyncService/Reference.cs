@@ -640,6 +640,51 @@ namespace Chiro.Gap.Sync.SyncService {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
         Proost = 172,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        GroepsLeidingsBijeenkomsten = 7,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        SomVerantwoordelijke = 214,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        IkVerantwoordelijke = 10,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        RibbelVerantwoordelijke = 3,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        SpeelclubVerantwoordelijke = 5,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        RakwiVerantwoordelijke = 4,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        TitoVerantwoordelijke = 6,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        KetiVerantwoordelijke = 2,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        AspiVerantwoordelijke = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        SomGewesten = 162,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        OpvolgingStadsGroepen = 167,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Verbondsraad = 166,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Verbondskern = 156,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        StartDagVerantwoordelijker = 160,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        SbVerantwoordelijke = 152,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]

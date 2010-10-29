@@ -6,6 +6,8 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
+using Chiro.Gap.Domain;
+
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
 	/// <summary>
@@ -31,5 +33,11 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// </summary>
 		[DataMember]
 		public List<FunctieDetail> Functies { get; set; }
+
+		/// <summary>
+		/// Niveau van de groep
+		/// </summary>
+		[DataMember]
+		public Niveau Niveau { get; set; }
 	}
 }

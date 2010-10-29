@@ -294,14 +294,14 @@ namespace Chiro.Gap.Data.Ef
 			{
 				using (var db = new ChiroGroepEntities())
 				{
-					var query =
-						from r in db.GebruikersRecht
-						where r.Gav.Login == login
-							  && r.Groep.Afdeling.Any(afd => afd.ID == afdelingsID)
-							  && (r.VervalDatum == null || r.VervalDatum > DateTime.Now)
-						select r;
+					var query = from a in db.Afdeling
+					             where a.ID == afdelingsID
+					                   && a.ChiroGroep.GebruikersRecht.Any(
+					                   	gr => gr.Gav.Login == login &&
+					                   	      (gr.VervalDatum == null || gr.VervalDatum > DateTime.Now))
+					             select a;
 
-					return query.Count() > 0;
+					return query.FirstOrDefault() != null;
 				}
 			}
 		}

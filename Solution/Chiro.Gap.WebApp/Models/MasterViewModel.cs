@@ -6,6 +6,8 @@
 using System;
 using System.Collections.Generic;
 
+using Chiro.Gap.Domain;
+
 namespace Chiro.Gap.WebApp.Models
 {
 	/// <summary>
@@ -75,5 +77,10 @@ namespace Chiro.Gap.WebApp.Models
 		/// Mededelingen die ergens getoond moeten worden
 		/// </summary>
 		public IList<Mededeling> Mededelingen { get; set; }
+
+		/// <summary>
+		/// Niveau van de groep (chirogroep of kadergroep)
+		/// </summary>
+		public Niveau GroepsNiveau { get; set; }
 	}
 }

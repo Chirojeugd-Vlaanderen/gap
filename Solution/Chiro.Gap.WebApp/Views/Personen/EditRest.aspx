@@ -82,9 +82,18 @@
 		<%=Html.LabelFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>:
 		<%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.GeboorteDatum)%>
 		<br />
-		Chiroleeftijd
-		<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Chiroleeftijd", new { helpBestand = "Trefwoorden" }, new { title = "Wat is je Chiroleeftijd?" } ) %>:
-		<%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeefTijd)%><br />
+<%
+		if ((Model.GroepsNiveau & Niveau.Groep) != 0)
+		 {
+ 			// Chiroleeftijd is enkel relevant voor plaatselijke groepen
+%>		
+			Chiroleeftijd
+			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Chiroleeftijd", new { helpBestand = "Trefwoorden" }, new { title = "Wat is je Chiroleeftijd?" } ) %>:
+			<%=Html.DisplayFor(s => s.PersoonLidInfo.PersoonDetail.ChiroLeefTijd)%><br />
+<%
+		 }
+%>
+	
 		<%=Html.ActionLink("[persoonlijke gegevens aanpassen]", "EditGegevens", new {id=Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %><br />
 	</p>
 	<p>
@@ -140,19 +149,8 @@
        // TODO: Het bestaan van non-actieve leden mag volgens mij niet geweten zijn aan de UI-kant
 	   
 	%>
-	<h3>Is aangesloten voor <%=Model.HuidigWerkJaar%>-<%=Model.HuidigWerkJaar+1%></h3>
+	<h3>Ingeschreven voor <%=Model.HuidigWerkJaar%>-<%=Model.HuidigWerkJaar+1%></h3>
 	<ul>
-		<li>Als <%= Model.PersoonLidInfo.LidInfo.Type == LidType.Kind ? "lid" : "leiding" %>.
-			<%=Html.ActionLink("[wissel lid/leiding]", "TypeToggle", new { Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID })%>
-		</li>
-		<li>Betaalde
-			<%= Model.PersoonLidInfo.LidInfo.LidgeldBetaald ? String.Empty : "nog geen" %>
-			lidgeld.
-			<%= Html.ActionLink("[aanpassen]", "LidGeldToggle", new{ Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %></li>
-		<li>Instapperiode
-			<%= String.Format(
-	                      Model.PersoonLidInfo.LidInfo.EindeInstapperiode < DateTime.Today ? "verliep op {0:d}" : "t/m {0:d}",
-	                                         Model.PersoonLidInfo.LidInfo.EindeInstapperiode)  %></li>
 		<li>Functies:
 			<%foreach (var f in Model.PersoonLidInfo.LidInfo.Functies)
 	 {%>
@@ -167,26 +165,76 @@
 						},
 				    new { title= f.Naam })%>
 			<% }%>
-			<%= Html.ActionLink("[functies aanpassen]", "FunctiesToekennen", new { Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID })%></li>
-		<li>
-			<%if (Model.PersoonLidInfo.LidInfo.Type == LidType.Leiding)
-	 {
-		 Response.Write(String.Format(
-			 "Afdeling(en): {0} ",
-			 Html.PrintLijst(Model.PersoonLidInfo.LidInfo.AfdelingIdLijst, Model.AlleAfdelingen)));
-	 }
-	 else
-	 {
-		 // TODO: Opkuis
-		 if (Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.Count > 0 && Model.AlleAfdelingen.FirstOrDefault(s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)) != null)
-		 {
-			 Response.Write(String.Format("Afdeling: {0} ",
-							Model.AlleAfdelingen.First(
-							 s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)).AfdelingNaam));
-		 }
-	 }%>
-			<%= Html.ActionLink("[aanpassen]", "AfdelingBewerken", new { Controller="Leden", groepsWerkJaarID = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID, lidID = Model.PersoonLidInfo.LidInfo.LidID })%>
+			<%= Html.ActionLink("[functies aanpassen]", "FunctiesToekennen", new { Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID })%>
 		</li>
+<%
+		if ((Model.GroepsNiveau & Niveau.Groep) != 0)
+		{
+			// Lid/Leiding en afdelingen zijn enkel relevant voor plaatselijke groepen.
+%>
+
+			<li>
+				Ingeschreven als <%=Model.PersoonLidInfo.LidInfo.Type == LidType.Kind ? "lid" : "leiding"%>.
+				<%=Html.ActionLink("[wissel lid/leiding]",
+			                                  "TypeToggle",
+			                                  new {Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID})%>
+			</li>
+			<li>
+<%
+				if (Model.PersoonLidInfo.LidInfo.Type == LidType.Leiding)
+				{
+					Response.Write(String.Format(
+						"Afdeling(en): {0} ",
+						Html.PrintLijst(Model.PersoonLidInfo.LidInfo.AfdelingIdLijst, Model.AlleAfdelingen)));
+				}
+				else
+				{
+					// TODO: Opkuis
+					if (Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.Count > 0 &&
+					    Model.AlleAfdelingen.FirstOrDefault(
+		    				s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)) != null)
+					{
+						Response.Write(String.Format("Afdeling: {0} ",
+									     Model.AlleAfdelingen.First(
+			                             				s => s.AfdelingID == Model.PersoonLidInfo.LidInfo.AfdelingIdLijst.ElementAt(0)).
+			                             				AfdelingNaam));
+					}
+				}
+%>
+				<%=Html.ActionLink("[aanpassen]",
+							  "AfdelingBewerken",
+							  new
+	                                  			{
+	                                  				Controller = "Leden",
+	                                  				groepsWerkJaarID = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID,
+	                                  				lidID = Model.PersoonLidInfo.LidInfo.LidID
+	                                  			})%>
+			</li>
+			
+<%
+		}
+		if ((Model.GroepsNiveau & (Niveau.Gewest|Niveau.Verbond|Niveau.Nationaal)) == 0)
+		{
+			// Lidgeld en instapperiode zijn niet van toepassing op kadergroepen.
+%>
+
+			<li>Betaalde
+				<%= Model.PersoonLidInfo.LidInfo.LidgeldBetaald ? String.Empty : "nog geen" %>
+				lidgeld.
+				<%= Html.ActionLink("[aanpassen]", "LidGeldToggle", new{ Controller = "Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %>
+			</li>
+
+			<li>
+				Instapperiode
+				<%= String.Format(
+				      Model.PersoonLidInfo.LidInfo.EindeInstapperiode < DateTime.Today ? "verliep op {0:d}" : "t/m {0:d}",
+							 Model.PersoonLidInfo.LidInfo.EindeInstapperiode)  %>
+			</li>
+
+<%
+		}
+%>
+
 		<% if (Model.PersoonLidInfo.LidInfo.VerzekeringLoonVerlies)
 	 {%>
 		<li>Verzekerd tegen loonverlies</li>
@@ -204,23 +252,24 @@
    {
 	   if (Model.PersoonLidInfo.PersoonDetail.KanLidWorden || Model.PersoonLidInfo.PersoonDetail.KanLeidingWorden)
 	   {
-	%>
-	<h3>
-		<%=Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %>
-		is niet ingeschreven</h3>
-	<%if (Model.PersoonLidInfo.PersoonDetail.KanLidWorden)
-   {%>
-	<p>
-		<%=Html.ActionLink("Inschrijven als lid", "LidMaken", new { Controller = "Personen", gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
-	</p>
-	<%}
-   if (Model.PersoonLidInfo.PersoonDetail.KanLeidingWorden)
-   {%>
-	<p>
-		<%=Html.ActionLink("Inschrijven als leiding","LeidingMaken",new{Controller = "Personen",gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID})%>
-	</p>
-	<%}
-	   }
-   }%>
+%>
+		<h3><%=Model.PersoonLidInfo.PersoonDetail.VolledigeNaam %> is niet ingeschreven</h3>
+<%
+%>
+		<p>
+		<%=Html.ActionLink(String.Format(
+			"inschrijven als {0}", 
+			Model.PersoonLidInfo.PersoonDetail.KanLidWorden ? "lid": "leiding"), 
+			"Inschrijven", 
+			new
+				{
+					Controller = "Personen", 
+					gelieerdepersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID
+				})%>
+		</p>
+<%
+	}
+   }
+%>
 	<% Html.RenderPartial("TerugNaarLijstLinkControl"); %>
 </asp:Content>

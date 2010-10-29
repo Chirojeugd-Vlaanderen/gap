@@ -75,6 +75,8 @@ namespace Chiro.Gap.Workers
 		/// <param name="isJaarOvergang">Als deze true is, is einde probeerperiode steeds 
 		/// 15 oktober als het nog geen 15 oktober is</param>
 		/// <remarks>
+		/// Private; andere lagen moeten via 'Inschrijven' gaan.
+		/// <para/>
 		/// Deze method test niet
 		/// of het groepswerkjaar wel het recentste is.  (Voor de unit tests moeten
 		/// we ook leden kunnen maken in oude groepswerkjaren.)
@@ -131,14 +133,26 @@ namespace Chiro.Gap.Workers
 
 			var stdProbeerPeriode = DateTime.Today.AddDays(Properties.Settings.Default.LengteProbeerPeriode);
 
-			if (!isJaarOvergang)
+			if ((gp.Groep.Niveau & (Niveau.Gewest|Niveau.Verbond)) != 0)
 			{
+				// Gewesten en verbonden: instapperiode enkel vandaag
+				// ! NIET RECHTSTREEKS SYNCEN, ZODAT DE GROEPN NOG EVEN TIJD HEEFT OM
+				// FOUT INGESCHREVEN LEDEN OPNIEUW UIT TE SCHRIJVEN.
+
+				lid.EindeInstapPeriode = DateTime.Today;
+			}
+			else if (!isJaarOvergang)
+			{
+				// Standaardinstapperiode indien niet in jaarovergang
+
 				lid.EindeInstapPeriode = gwj.GetEindeJaarovergang() >= stdProbeerPeriode
 				                         	? gwj.GetEindeJaarovergang()
 				                         	: stdProbeerPeriode;
 			}
 			else
 			{
+				// Voor jaarovergang: vaste deadline (gek idee, maar blijkbaar in de specs)
+
 				lid.EindeInstapPeriode = gwj.GetEindeJaarovergang() >= DateTime.Now
 								? gwj.GetEindeJaarovergang()
 								: stdProbeerPeriode;
@@ -160,7 +174,10 @@ namespace Chiro.Gap.Workers
 		///<param name="isJaarOvergang">Geeft aan of het lid gemaakt wordt voor de automatische jaarovergang; relevant
 		/// voor probeerperiode.</param>
 		///<returns>Nieuw kindobject, niet gepersisteerd</returns>
-		/// <remarks>De user zal nooit zelf mogen kiezen in welk groepswerkjaar een kind lid wordt.  Maar 
+		/// <remarks>
+		/// Private; andere lagen moeten via 'Inschrijven' gaan.
+		/// <para/>
+		/// De user zal nooit zelf mogen kiezen in welk groepswerkjaar een kind lid wordt.  Maar 
 		/// om testdata voor unit tests op te bouwen, hebben we deze functionaliteit wel nodig.
 		/// <para/>
 		/// Voorlopig gaan we ervan uit dat aan een gelieerde persoon al zijn vorige lidobjecten met
@@ -171,7 +188,7 @@ namespace Chiro.Gap.Workers
 		/// <throws>FoutNummerException</throws>
 		/// <throws>GeenGavException</throws>
 		/// <throws>InvalidOperationException</throws>
-		public Kind KindMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang)
+		private Kind KindMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang)
 		{
 			// LidMaken doet de nodige checks ivm GAV-schap, enz.
 			var k = LidMaken(gp, gwj, LidType.Kind, isJaarOvergang) as Kind;
@@ -239,7 +256,10 @@ namespace Chiro.Gap.Workers
 		/// <param name="isJaarovergang">geeft aan of het over de automatische jaarovergang gaat.
 		/// (relevant voor probeerperiode)</param>
 		/// <returns>Nieuw leidingsobject; niet gepersisteerd</returns>
-		/// <remarks>Deze method mag niet geexposed worden via de services, omdat
+		/// <remarks>
+		/// Private; andere lagen moeten via 'Inschrijven' gaan.
+		/// <para/>
+		/// Deze method mag niet geexposed worden via de services, omdat
 		/// een gebruiker uiteraard enkel in het huidige groepswerkjaar leden
 		/// kan maken.
 		/// <para/>
@@ -251,7 +271,7 @@ namespace Chiro.Gap.Workers
 		/// <throws>FoutNummerException</throws>
 		/// <throws>GeenGavException</throws>
 		/// <throws>InvalidOperationException</throws>
-		public Leiding LeidingMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarovergang)
+		private Leiding LeidingMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarovergang)
 		{
 			// LidMaken doet de nodige checks ivm GAV-schap enz.
 			var resultaat = LidMaken(gp, gwj, LidType.Leiding, isJaarovergang) as Leiding;
@@ -281,7 +301,7 @@ namespace Chiro.Gap.Workers
 		///<param name="isJaarOvergang">geeft aan of het over de automatische jaarovergang gaat; relevant voor de
 		/// probeerperiode</param>
 		///<returns>Het aangemaakte lid object</returns>
-		public Lid AutomatischLidMaken(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang)
+		public Lid Inschrijven(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang)
 		{
 			if (!gp.LeefTijd.HasValue)
 			{

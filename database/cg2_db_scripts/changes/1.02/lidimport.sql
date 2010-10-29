@@ -19,7 +19,7 @@ SELECT DISTINCT
 	CASE WHEN kp.GeboorteDatum > '01/01/1900' THEN kp.GeboorteDatum ELSE null END AS GeboorteDatum,
 	kp.Geslacht
 FROM Kipadmin.dbo.kipPersoon kp
-JOIN Kipadmin.lid.Lid kl ON kp.AdNr = kl.AdNr
+JOIN Kipadmin.lid.Lid kl ON kp.AdNr = kl.AdNr and werkjaar >= 2006
 JOIN Kipadmin.grp.ChiroGroep kcg ON kl.GroepID = kcg.GroepID
 WHERE 
 	(kcg.Type='G' OR kcg.Type='V') 
@@ -35,7 +35,7 @@ GO
 INSERT INTO pers.GelieerdePersoon(GroepID, PersoonID, ChiroLeeftijd)
 SELECT DISTINCT g.GroepID, p.PersoonID, 0 AS ChiroLeefTijd
 FROM Kipadmin.dbo.kipPersoon kp
-JOIN Kipadmin.lid.Lid kl ON kp.AdNr = kl.AdNr
+JOIN Kipadmin.lid.Lid kl ON kp.AdNr = kl.AdNr and werkjaar >= 2006
 JOIN Kipadmin.grp.ChiroGroep kcg ON kl.GroepID = kcg.GroepID
 JOIN grp.Groep g on kcg.StamNr = g.code COLLATE SQL_Latin1_General_CP1_CI_AS
 JOIN pers.Persoon p on kl.AdNr = p.AdNummer
@@ -78,7 +78,7 @@ INSERT INTO #Adres
 	JOIN adr.WoonPlaats sg ON Gemeente COLLATE SQL_Latin1_General_CP1_CI_AI = sg.Naam 
 					AND ka.PostNr COLLATE SQL_Latin1_General_CP1_CI_AI = cast(s.PostNummer as varchar(5))
 	JOIN kipAdmin.dbo.kipWoont kw ON kw.AdresId = ka.AdresId
-	JOIN Kipadmin.lid.Lid kl ON kw.AdNr = kl.AdNr
+	JOIN Kipadmin.lid.Lid kl ON kw.AdNr = kl.AdNr and werkjaar >= 2006
 	JOIN Kipadmin.grp.ChiroGroep kcg ON kl.GroepID = kcg.GroepID
 	WHERE (kcg.Type='G' OR kcg.Type='V') 
 GO
@@ -130,7 +130,7 @@ INSERT INTO #PersoonsAdres(Opmerking, PersoonId, AdresId, AdresTypeId)
 					AND CAST(core.ufnEnkelCijfers(ka.Nr) AS INT) = a.HuisNr
 	JOIN kipAdmin.dbo.kipAdresType kat ON kat.AdresTypeId = kw.AdresTypeID
 	JOIN pers.AdresType pat	ON pat.Omschrijving = kat.Omschrijving COLLATE SQL_Latin1_General_CP1_CI_AI
-	JOIN Kipadmin.lid.Lid kl ON kw.AdNr = kl.AdNr
+	JOIN Kipadmin.lid.Lid kl ON kw.AdNr = kl.AdNr and werkjaar >= 2006
 	JOIN Kipadmin.grp.ChiroGroep kcg ON kl.GroepID = kcg.GroepID
 	WHERE (kcg.Type='G' OR kcg.Type='V') 
 	GROUP BY p.PersoonId, a.AdresId -- blijkbaar heeft kipadmin personen met meermaals hetzelfde adres, maar dan met een ander type
@@ -208,7 +208,7 @@ FROM Kipadmin.lid.Lid kl
 JOIN Kipadmin.grp.ChiroGroep kcg ON kl.GroepID = kcg.GroepID
 JOIN grp.Groep g on kcg.StamNr = g.code COLLATE SQL_Latin1_General_CP1_CI_AS
 JOIN grp.KaderGroep kg on kg.KaderGroepID = g.GroepID
-WHERE kl.WerkJaar < 2010 AND
+WHERE kl.WerkJaar < 2010 and kl.Werkjaar >= 2006 AND
 NOT EXISTS (SELECT 1 FROM grp.GroepsWerkJaar gwj WHERE gwj.GroepID = g.GroepID AND gwj.WerkJaar = kl.WerkJaar)
 GO
 
@@ -217,7 +217,7 @@ GO
 INSERT INTO lid.Lid(GroepsWerkJaarID, GelieerdePersoonID, IsOvergezet, NonActief, Verwijderd, VolgendWerkJaar)
 SELECT DISTINCT gwj.GroepsWerkJaarID, gp.GelieerdePersoonID, 0 as IsOvergezet, 0 as NonActief, 0 as Verwijderd, 0 as VolgendWerkJaar
 FROM Kipadmin.dbo.kipPersoon kp
-JOIN Kipadmin.lid.Lid kl ON kp.AdNr = kl.AdNr
+JOIN Kipadmin.lid.Lid kl ON kp.AdNr = kl.AdNr and werkjaar >= 2006
 JOIN Kipadmin.grp.ChiroGroep kcg ON kl.GroepID = kcg.GroepID
 JOIN grp.Groep g on kcg.StamNr = g.code COLLATE SQL_Latin1_General_CP1_CI_AS
 JOIN grp.KaderGroep kg on g.GroepID = kg.KaderGroepID
@@ -229,7 +229,7 @@ WHERE NOT EXISTS (SELECT 1 FROM lid.Lid l WHERE l.GroepsWerkJaarID = gwj.GroepsW
 INSERT INTO lid.Leiding(LeidingID)
 SELECT DISTINCT l.LidID
 FROM Kipadmin.dbo.kipPersoon kp
-JOIN Kipadmin.lid.Lid kl ON kp.AdNr = kl.AdNr
+JOIN Kipadmin.lid.Lid kl ON kp.AdNr = kl.AdNr and werkjaar >= 2006
 JOIN Kipadmin.grp.ChiroGroep kcg ON kl.GroepID = kcg.GroepID
 JOIN grp.Groep g on kcg.StamNr = g.code COLLATE SQL_Latin1_General_CP1_CI_AS
 JOIN grp.KaderGroep kg on g.GroepID = kg.KaderGroepID

@@ -35,8 +35,7 @@
 	Maak een selectie en
 	<select id="GekozenActie" name="GekozenActie">
 		<option value="0">kies een actie</option>
-		<option value="1">Lid maken</option>
-		<option value="2">Leiding maken</option>
+		<option value="1">Inschrijven</option>
 		<option value="3">In dezelfde categorie stoppen</option>
 	</select>
 	<input id="kiesActie" type="submit" value="Uitvoeren" /></div>
@@ -85,8 +84,8 @@
 		<td>
 			<% if (!p.IsLid && !p.IsLeiding && (p.KanLidWorden || p.KanLeidingWorden)){ %>
 			<%=Html.ActionLink(
-				String.Format("inschrijven als {0}", p.KanLeidingWorden ? "leiding": "lid"), 
-				"AutomatischLidMaken", 
+				String.Format("inschrijven als {0}", p.KanLidWorden ? "lid": "leiding"), 
+				"Inschrijven", 
 				new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>
 			<% } %>
 			<%=Html.ActionLink("zus/broer maken", "Kloon", new { Controller = "Personen", gelieerdepersoonID = p.GelieerdePersoonID })%>

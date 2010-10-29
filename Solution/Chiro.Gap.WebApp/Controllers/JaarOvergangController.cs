@@ -34,6 +34,14 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new JaarOvergangAfdelingsModel();
 			BaseModelInit(model, groepID);
 
+			// Als we met een gewest/verbond te doen hebben, dan zijn de afdelingen niet relevant
+
+			if ((model.GroepsNiveau & Niveau.Groep) == 0)
+			{
+				return VerdelingMaken(new JaarOvergangAfdelingsJaarModel(), groepID);
+			}
+
+
 			IEnumerable<AfdelingInfo> lijst = ServiceHelper.CallService<IGroepenService, IEnumerable<AfdelingInfo>>(g => g.AlleAfdelingenOphalen(groepID));
 
 			model.Afdelingen = lijst;
@@ -126,18 +134,12 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (model.AfdelingsIDs.Count != model.TotLijst.Count || model.TotLijst.Count != model.GeslLijst.Count || model.TotLijst.Count != model.VanLijst.Count)
 			{
 				TempData["fout"] = "Niet alle informatie is ingevuld, gelieve aan te vullen.";
-				/*model.OfficieleAfdelingen =
-				ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(
-					e => e.OfficieleAfdelingenOphalen(groepID));*/
 				return View("AfdelingenVerdelen", model);
 			}
 
 			if (model.TotLijst.Any(e => e.Equals("")) || model.VanLijst.Any(e => e.Equals("")))
 			{
 				TempData["fout"] = "Niet alle informatie is ingevuld, gelieve aan te vullen.";
-				/*model.OfficieleAfdelingen =
-				ServiceHelper.CallService<IGroepenService, IEnumerable<OfficieleAfdelingDetail>>(
-					e => e.OfficieleAfdelingenOphalen(groepID));*/
 				return View("AfdelingenVerdelen", model);
 			}
 

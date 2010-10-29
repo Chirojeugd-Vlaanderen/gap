@@ -163,6 +163,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				}
 
 				model.GroepsNaam = gwjDetail.GroepNaam;
+				model.GroepsNiveau = gwjDetail.GroepNiveau;
 				model.Plaats = gwjDetail.GroepPlaats;
 				model.StamNummer = gwjDetail.GroepCode;
 				model.GroepID = gwjDetail.GroepID;

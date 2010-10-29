@@ -22,7 +22,7 @@ namespace Chiro.Gap.Data.Ef
 		/// Afdeling ophalen op basis van ID.
 		/// </summary>
 		/// <param name="afdelingID">ID van gewenste afdeling</param>
-		/// <returns>Afdeling en gekoppelde groep</returns>
+		/// <returns>Afdeling en gekoppelde Chirogroep</returns>
 		public override Afdeling Ophalen(int afdelingID)
 		{
 			Afdeling resultaat;
@@ -33,7 +33,7 @@ namespace Chiro.Gap.Data.Ef
 
 				resultaat = (
 					from Afdeling afd
-					in db.Afdeling.Include("Groep")
+					in db.Afdeling.Include(afd=>afd.ChiroGroep)
 					where afd.ID == afdelingID
 					select afd).FirstOrDefault();
 
@@ -43,7 +43,7 @@ namespace Chiro.Gap.Data.Ef
 					// meteen ook de groep ophaalt, maar dat blijkt
 					// niet het geval.
 
-					resultaat.GroepReference.Load();
+					resultaat.ChiroGroepReference.Load();
 				}
 				return resultaat;
 			}
@@ -63,7 +63,7 @@ namespace Chiro.Gap.Data.Ef
 				db.Afdeling.MergeOption = MergeOption.NoTracking;
 
 				return (from afdeling in db.Afdeling
-						where afdeling.Groep.GroepsWerkJaar.Any(gwj => gwj.ID == groepsWerkJaarID)
+						where afdeling.ChiroGroep.GroepsWerkJaar.Any(gwj => gwj.ID == groepsWerkJaarID)
 						&& !afdeling.AfdelingsJaar.Any(afdj => afdj.GroepsWerkJaar.ID == groepsWerkJaarID)
 						select afdeling).ToList();
 			}

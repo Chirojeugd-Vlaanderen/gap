@@ -86,5 +86,15 @@ namespace Chiro.Gap.Orm
 			get { return (LidType)LidTypeInt; }
 			set { LidTypeInt = (int)value; }
 		}
+
+		/// <summary>
+		/// Koppeling tussen enum Niveau en databaseveld NiveauInt
+		/// </summary>
+		public Niveau Niveau
+		{
+			get { return (Niveau) NiveauInt; }
+			set { NiveauInt = (int) value; }
+		}
+
 	}
 }

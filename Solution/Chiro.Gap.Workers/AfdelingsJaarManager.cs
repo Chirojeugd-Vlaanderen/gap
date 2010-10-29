@@ -43,6 +43,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="kindDao">Zorgt voor kindgerelateerde data-access</param>
 		/// <param name="leidingDao">Zorgt voor leidinggerelateerde data-access</param>
 		/// <param name="autorisatieMgr">Alternatieve autorisatiemanager</param>
+		/// <param name="ledenSync">Interface voor sync van lidgegevens</param>
 		public AfdelingsJaarManager(
 			IAfdelingsJarenDao ajDao, 
 			IAfdelingenDao afdDao,

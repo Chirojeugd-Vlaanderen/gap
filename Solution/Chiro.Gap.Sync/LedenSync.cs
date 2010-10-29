@@ -44,7 +44,22 @@ namespace Chiro.Gap.Sync
 					{NationaleFunctie.GroepsLeiding, FunctieEnum.GroepsLeiding},
 					{NationaleFunctie.JeugdRaad, FunctieEnum.JeugdRaad},
 					{NationaleFunctie.KookPloeg, FunctieEnum.KookPloeg},
-					{NationaleFunctie.Proost, FunctieEnum.Proost}
+					{NationaleFunctie.Proost, FunctieEnum.Proost},
+					{NationaleFunctie.GroepsLeidingsBijeenkomsten, FunctieEnum.GroepsLeidingsBijeenkomsten},
+					{NationaleFunctie.SomVerantwoordelijke, FunctieEnum.SomVerantwoordelijke},
+					{NationaleFunctie.IkVerantwoordelijke, FunctieEnum.IkVerantwoordelijke},
+					{NationaleFunctie.RibbelVerantwoordelijke, FunctieEnum.RibbelVerantwoordelijke},
+					{NationaleFunctie.SpeelclubVerantwoordelijke, FunctieEnum.SpeelclubVerantwoordelijke},
+					{NationaleFunctie.RakwiVerantwoordelijke, FunctieEnum.RakwiVerantwoordelijke},
+					{NationaleFunctie.TitoVerantwoordelijke, FunctieEnum.TitoVerantwoordelijke},
+					{NationaleFunctie.KetiVerantwoordelijke, FunctieEnum.KetiVerantwoordelijke},
+					{NationaleFunctie.AspiVerantwoordelijke, FunctieEnum.AspiVerantwoordelijke},
+					{NationaleFunctie.SomGewesten, FunctieEnum.SomGewesten},
+					{NationaleFunctie.OpvolgingStadsGroepen, FunctieEnum.OpvolgingStadsGroepen},
+					{NationaleFunctie.Verbondsraad, FunctieEnum.Verbondsraad},
+					{NationaleFunctie.Verbondskern, FunctieEnum.Verbondskern},
+					{NationaleFunctie.StartDagVerantwoordelijker, FunctieEnum.StartDagVerantwoordelijker},
+					{NationaleFunctie.SbVerantwoordelijke, FunctieEnum.SbVerantwoordelijke}
 				};
 
 		private readonly Dictionary<NationaleAfdeling, SyncService.AfdelingEnum> _afdelingVertaling =

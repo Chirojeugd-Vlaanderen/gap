@@ -42,6 +42,22 @@ namespace Chiro.Gap.Domain
 	}
 
 	/// <summary>
+	/// Niveau van een lid/groep/functie
+	/// </summary>
+	[DataContract]
+	[Flags]
+	public enum Niveau
+	{
+		[EnumMember] Satelliet = 0x01,
+		[EnumMember] LidInGroep = 0x02,
+		[EnumMember] LeidingInGroep = 0x04,
+		[EnumMember] Groep = LidInGroep | LeidingInGroep,
+		[EnumMember] Gewest = 0x08,
+		[EnumMember] Verbond = 0x20,
+		[EnumMember] Nationaal = 0x80
+	};
+
+	/// <summary>
 	/// Bepaalt de 'status' van het adres
 	/// </summary>
 	[DataContract]
@@ -136,6 +152,7 @@ namespace Chiro.Gap.Domain
 		InOvergang = 0x06	// bewust 0x06, omdat een werkjaar in overgang dan ook bezig is.
 	}
 
+	
 	/// <summary>
 	/// Sommige functies zijn gepredefinieerd, en hun codes moeten constant zijn.
 	/// (Dit is enkel van toepassing op nationaal gedefinieerde functies)
@@ -148,7 +165,22 @@ namespace Chiro.Gap.Domain
 		FinancieelVerantwoordelijke = 4,
 		JeugdRaad = 5,
 		KookPloeg = 6,
-		Proost = 7
+		Proost = 7,
+		GroepsLeidingsBijeenkomsten = 177 + 1,
+		SomVerantwoordelijke = 177 + 2,
+		IkVerantwoordelijke = 177 + 3,
+		RibbelVerantwoordelijke = 177 + 4,
+		SpeelclubVerantwoordelijke = 177 + 5,
+		RakwiVerantwoordelijke = 177 + 6,
+		TitoVerantwoordelijke = 177 + 7,
+		KetiVerantwoordelijke = 177 + 8,
+		AspiVerantwoordelijke = 177 + 9,
+		SomGewesten = 177 + 10,
+		OpvolgingStadsGroepen = 177 + 11,
+		Verbondsraad = 177 + 12,
+		Verbondskern = 177 + 13,
+		StartDagVerantwoordelijker = 177 + 14,
+		SbVerantwoordelijke = 177 + 15
 	};
 
 	/// <summary>

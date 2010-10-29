@@ -17,9 +17,28 @@
 			<%=Html.Geslacht(GeslachtsType.Vrouw) %>
 		</th>
 		<th>Betaald </th>
-		<th>
-			<%= Html.ActionLink("Afd.", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Afdeling, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op afdeling" })%>
-		</th>
+	<% 
+		if ((Model.GroepsNiveau & Niveau.Groep) != 0)
+		{
+ 			// Afdelingen enkel relevant voor plaatselijke groepen
+
+	%>		
+			<th>
+				<%=Html.ActionLink("Afd.",
+ 						  "Lijst",
+ 						  new
+ 	                                  		{
+ 	                                  			Controller = "Leden",
+ 	                                  			id = Model.IDGetoondGroepsWerkJaar,
+ 	                                  			sortering = LidEigenschap.Afdeling,
+ 	                                  			afdelingID = Model.AfdelingID,
+ 	                                  			functieID = Model.FunctieID
+ 	                                  		},
+ 						  new {title = "Sorteren op afdeling"})%>
+			</th>
+	<%
+		}
+	%>
 		<th>Func. </th>
 		<th>
 			<%= Html.ActionLink("Instap tot", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.InstapPeriode, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op einde instapperiode" })%>
@@ -50,12 +69,34 @@
 		<td>
 			<%= lidOverzicht.LidgeldBetaald?"Ja":"Nee"%>
 		</td>
-		<td>
-			<% foreach (var a in lidOverzicht.Afdelingen)
-	  { %>
-			<%=Html.ActionLink(Html.Encode(a.Afkorting), "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = Model.GekozenSortering, afdelingID = a.ID, functieID = 0 }, new { title = "Toon alleen afdeling " + a.Naam })%>
-			<% } %>
-		</td>
+<% 
+		if ((Model.GroepsNiveau & Niveau.Groep) != 0)
+		{
+			// Afdelingen enkel relevant voor plaatselijke groepen
+	%>		
+			<td>
+	<%
+			foreach (var a in lidOverzicht.Afdelingen)
+			{
+	%>	
+				<%=Html.ActionLink(Html.Encode(a.Afkorting),
+							  "Lijst",
+							  new
+		                                  		{
+		                                  			Controller = "Leden",
+		                                  			id = Model.IDGetoondGroepsWerkJaar,
+		                                  			sortering = Model.GekozenSortering,
+		                                  			afdelingID = a.ID,
+		                                  			functieID = 0
+		                                  		},
+							  new {title = "Toon alleen afdeling " + a.Naam})%>
+	<%
+			}
+	%>
+			</td>
+	<%
+		}
+%>
 		<td>
 			<% foreach (var functieInfo in lidOverzicht.Functies)
 	  { %>

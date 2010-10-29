@@ -15,7 +15,7 @@ namespace Chiro.Gap.Dummies
 		private const string NIEUWEFUNCODE = "DOM";
 		private const string NIEUWEFUNNAAM = "Domme functie";
 
-		private readonly Groep _dummyGroep;		// testgroep
+		private readonly ChiroGroep _dummyGroep;		// testgroep
 		private readonly GroepsWerkJaar _huidigGwj;	// testgroepswerkjaar
 		private readonly GelieerdePersoon _gelieerdeJos;	// gelieerdePersoon genaamd 'Jos' 
 		private readonly GelieerdePersoon _gelieerdeIrene; // gelieerdePersoon genaamd 'Irene'
@@ -84,6 +84,7 @@ namespace Chiro.Gap.Dummies
 			var wjMgr = Factory.Maak<GroepsWerkJaarManager>();
 			var gpMgr = Factory.Maak<GelieerdePersonenManager>();
 			var gMgr = Factory.Maak<GroepenManager>();
+			var cgMgr = Factory.Maak<ChiroGroepenManager>();
 			var lMgr = Factory.Maak<LedenManager>();
 			var cMgr = Factory.Maak<CategorieenManager>();
 			var afdMgr = Factory.Maak<AfdelingsJaarManager>();
@@ -91,8 +92,8 @@ namespace Chiro.Gap.Dummies
 
 			// Groep en groepswerkjaar
 
-			_dummyGroep = new Groep { Naam = "St.-Unittestius", Code = "tst/0001" };
-            _huidigGwj = gMgr.GroepsWerkJaarMaken(_dummyGroep, 2009);
+			_dummyGroep = new ChiroGroep { Naam = "St.-Unittestius", Code = "tst/0001" };
+			_huidigGwj = gMgr.GroepsWerkJaarMaken(_dummyGroep, 2009);
 
 			// Categorie
 
@@ -107,25 +108,29 @@ namespace Chiro.Gap.Dummies
 			var ribbels = new OfficieleAfdeling { Naam = "Ribbels" };
 			var rakwis = new OfficieleAfdeling { Naam = "Rakwi's" };
 
-			var unittestjes = gMgr.AfdelingToevoegen(_dummyGroep, "unittestjes", "ut");
-			var speelkwis = gMgr.AfdelingToevoegen(_dummyGroep, "speelkwi's", "sk");
+			var unittestjes = cgMgr.AfdelingToevoegen(_dummyGroep, "unittestjes", "ut");
+			var speelkwis = cgMgr.AfdelingToevoegen(_dummyGroep, "speelkwi's", "sk");
 
 			afdMgr.Aanmaken(unittestjes, ribbels, _huidigGwj, 2001, 2003, GeslachtsType.Gemengd);
 			afdMgr.Aanmaken(speelkwis, rakwis, _huidigGwj, 1998, 2000, GeslachtsType.Gemengd);
 
 			// Gelieerde personen
 
-			var jos = new Persoon { 
-				Naam = "Bosmans", 
-				VoorNaam = "Jos", 
+			var jos = new Persoon
+			{
+				Naam = "Bosmans",
+				VoorNaam = "Jos",
 				GeboorteDatum = new DateTime(2000, 6, 28),
-				AdNummer = 1};
+				AdNummer = 1
+			};
 
-			var irene = new Persoon {
+			var irene = new Persoon
+			{
 				Naam = "Bosmans",
 				VoorNaam = "Irène",
-				GeboorteDatum = new DateTime(1990, 3, 8) };
-			
+				GeboorteDatum = new DateTime(1990, 3, 8)
+			};
+
 			var yvonne = new Persoon
 			{
 				Naam = "Bosmans",
@@ -144,8 +149,8 @@ namespace Chiro.Gap.Dummies
 			// We moeten hier expliciet lid maken in _huidigGwj, anders werken een aantal
 			// unit tests niet meer.  (Zie #259)
 
-			_lidJos = lMgr.KindMaken(_gelieerdeJos, _huidigGwj, false);
-			_lidYvonne = lMgr.KindMaken(_gelieerdeYvonne, _huidigGwj, false);
+			_lidJos = lMgr.Inschrijven(_gelieerdeJos, _huidigGwj, false);
+			_lidYvonne = lMgr.Inschrijven(_gelieerdeYvonne, _huidigGwj, false);
 
 			// ID's worden niet toegekend als de DAO's gemockt zijn, dus delen we die manueel
 			// uit.

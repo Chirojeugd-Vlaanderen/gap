@@ -17,16 +17,26 @@
 		using (Html.BeginForm())
 		{%>
 	<ul>
-		<%
+<%
 			foreach (var fie in Model.Detail.Functies.OrderBy(fie => fie.Code))
 			{
-		%>
-		<li>[<%=Html.ActionLink("verwijderen", "FunctieVerwijderen", new {id = fie.ID }) %>]
-			<%=Html.Encode(String.Format(
-			    "{0} ({1}) - Kan toegekend worden aan ingeschreven {2}", 
-			    fie.Naam, 
-                fie.Code, 
-                fie.Type == LidType.Kind ? "leden" : fie.Type == LidType.Leiding ? "leiding" : "leden en leiding"))%>
+%>
+				<li>[<%=Html.ActionLink("verwijderen", "FunctieVerwijderen", new {id = fie.ID }) %>]
+		
+				<%=Html.Encode(String.Format(
+					"{0} ({1})", 
+					fie.Naam, 
+					fie.Code))%>
+<% 
+				if ((Model.Detail.Niveau & Niveau.Groep) != 0)
+				{
+%>							                
+					<%=Html.Encode(String.Format(
+					" - Kan toegekend worden aan ingeschreven {0}",
+					fie.Type == LidType.Kind ? "leden" : fie.Type == LidType.Leiding ? "leiding" : "leden en leiding"))%>                
+<%
+				}
+%>
 		</li>
 		<%
 			}
@@ -63,20 +73,29 @@
 			<%=Html.EditorFor(mdl => mdl.NieuweFunctie.WerkJaarVan) %><br />
 			(Mag leeg blijven als het er niet toe doet)
 		</p>
-		<p>
-			<%=Html.LabelFor(mdl => mdl.NieuweFunctie.Type ) %>
-			<%
-				var values = from LidType lt in Enum.GetValues(typeof(LidType))
-							 select new
-							 {
-								 value = lt,
-								 text = String.Format(
-									"Ingeschreven {0}",
-									lt == LidType.Kind ? "leden" : lt == LidType.Leiding ? "leiding" : "leden en leiding")
-							 };
-			%>
-			<%=Html.DropDownListFor( mdl => mdl.NieuweFunctie.Type, new SelectList(values.Reverse(), "value", "text")) %>
-		</p>
+<% 
+		if ((Model.Detail.Niveau & Niveau.Groep) != 0)
+		{
+%>							                
+			
+			<p>
+			<%=Html.LabelFor(mdl => mdl.NieuweFunctie.Type)%>
+<%
+			var values = from LidType lt in Enum.GetValues(typeof (LidType))
+			     select new
+	                    		{
+	                    			value = lt,
+	                    			text = String.Format(
+	                    				"Ingeschreven {0}",
+	                    				lt == LidType.Kind ? "leden" : lt == LidType.Leiding ? "leiding" : "leden en leiding")
+	                    		};
+%>
+			<%=Html.DropDownListFor(mdl => mdl.NieuweFunctie.Type,
+						       new SelectList(values.Reverse(), "value", "text"))%>
+			</p>
+<%
+		}
+%>
 	</fieldset>
 	<%}
 	%>

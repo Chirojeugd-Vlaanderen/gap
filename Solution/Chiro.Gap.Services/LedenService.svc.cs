@@ -67,128 +67,8 @@ namespace Chiro.Gap.Services
 
 		/// <summary>
 		/// Gegeven een lijst van IDs van gelieerde personen.
-		/// Haal al die gelieerde personen op en probeer ze in het huidige werkjaar in te schrijven als
-		/// <paramref name="type"/>.  (!Niet gebruiken voor automatische jaarovergang!)
-		/// <para />
-		/// Gaat een gelieerde persoon ophalen en maakt die lid in het huidige werkjaar.  Als het om kindleden gaat,
-		/// krjgen ze meteen een afdeling die overeenkomt met leeftijd en geslacht.
-		/// </summary>
-		/// <param name="gelieerdePersoonIDs">ID's van de gelieerde personen</param>
-		/// <param name="type">Bepaalt of de personen als kind of als leiding lid worden.</param>
-		/// <param name="foutBerichten">Als er sommige personen geen lid gemaakt werden, bevat foutBerichten een
-		/// string waarin wat uitleg staat. TODO: beter systeem vinden voor deze feedback.  Zie #463.</param>
-		/// <returns>De LidID's van de personen die lid zijn gemaakt</returns>
-		/// <remarks>
-		/// Iedereen die lid gemaakt kan worden, wordt lid - zelfs als dat voor andere personen niet lukt. 
-		/// Voor die anderen worden dan foutberichten teruggegeven.
-		/// </remarks>
-		/// <throws>NotSupportedException</throws> // TODO handle
-		public IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, LidType type, out string foutBerichten)
-		{
-			try
-			{
-				if (type != LidType.Kind && type != LidType.Leiding)
-				{
-					throw new NotSupportedException(Properties.Resources.OngeldigLidType);
-				}
-
-				var lidIDs = new List<int>();
-				var foutBerichtenBuilder = new StringBuilder();
-
-				// Haal meteen alle gelieerde personen op, gecombineerd met hun groep
-				var gelieerdePersonen = _gelieerdePersonenMgr.Ophalen(gelieerdePersoonIDs,PersoonsExtras.Groep);
-
-				// Mogelijk horen de gelieerde personen tot verschillende groepen.  Dat kan, als de GAV GAV is van
-				// al die groepen. Als hij geen GAV is van de IDs, dan werd er al een exception gethrowd natuurlijk.
-				var groepen = (from gp in gelieerdePersonen select gp.Groep).Distinct();
-
-				foreach (var g in groepen)
-				{
-					// Per groep lid maken.
-					// Zoek eerst recentste groepswerkjaar.
-					var gwj = _groepwsWjMgr.RecentsteOphalen(g.ID, GroepsWerkJaarExtras.Afdelingen | GroepsWerkJaarExtras.Groep);
-
-					foreach (var gp in g.GelieerdePersoon)
-					{
-						try
-						{
-							var l = _ledenMgr.OphalenViaPersoon(gp.ID, gwj.ID);
-
-							if (l != null) // al ingeschreven of non-actief
-							{
-								if (l.Type != type) // lid wordt als leiding ingeschreven of omgekeerd
-								{
-									// TODO (#616): maak ander lidobject aan (maak lid leiding of omgekeerd)
-									// Nu laten we gewoon weten dat de persoon al ingeschreven is
-									foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.AlAndersIngeschreven, gp.Persoon.VolledigeNaam, l.Type));
-									continue;
-								}
-								if (!l.NonActief)
-								{
-									foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.IsNogIngeschreven, gp.Persoon.VolledigeNaam));
-									continue;
-								}
-								l.NonActief = false;
-							}
-							else // nieuw lid
-							{
-								if (type == LidType.Kind)
-								{
-									l = _ledenMgr.KindMaken(gp, gwj, false);
-								}
-								else
-								{
-									l = _ledenMgr.LeidingMaken(gp, gwj, false);
-								}
-							}
-
-							// Bewaar leden 1 voor 1, en niet allemaal tegelijk, om te vermijden dat 1 dubbel lid
-							// verhindert dat de rest bewaard wordt.
-							if (l != null)
-							{
-								l = _ledenMgr.Bewaren(l, LidExtras.Persoon|LidExtras.Afdelingen);
-								lidIDs.Add(l.ID);
-							}
-						}
-						catch (InvalidOperationException ex)
-						{
-							foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
-						}
-						catch (GeenGavException ex)
-						{
-							foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
-						}
-						catch (FoutNummerException ex)
-						{
-							foutBerichtenBuilder.AppendLine(String.Format("Fout voor {0}: {1}", gp.Persoon.VolledigeNaam, ex.Message));
-						}
-						catch (BestaatAlException<Kind>)
-						{
-							foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLid, gp.Persoon.VolledigeNaam));
-						}
-						catch (BestaatAlException<Leiding>)
-						{
-							foutBerichtenBuilder.AppendLine(String.Format(Properties.Resources.WasAlLeiding, gp.Persoon.VolledigeNaam));
-						}
-					}
-				}
-
-				foutBerichten = foutBerichtenBuilder.ToString();
-
-				return lidIDs;
-			}
-			catch (Exception ex)
-			{
-				FoutAfhandelaar.FoutAfhandelen(ex);
-				foutBerichten = null;
-				return null;
-			}
-		}
-
-		/// <summary>
-		/// Gegeven een lijst van IDs van gelieerde personen.
-		/// Haal al die gelieerde personen op en probeer ze in het huidige werkjaar lid te maken in het gegeven lidtype.
-		/// !Niet gebruiken voor automatische jaarovergang!
+		/// Haal al die gelieerde personen op en probeer ze in het huidige werkjaar lid te maken.
+		/// !Niet gebruiken voor automatische jaarovergang, hiervoor is er 'JaarOvergang' in de groepenservice.
 		/// <para />
 		/// Gaat een gelieerde persoon ophalen en maakt die lid op de plaats die overeenkomt met hun leeftijd in het huidige werkjaar.
 		/// </summary>
@@ -201,7 +81,7 @@ namespace Chiro.Gap.Services
 		/// teruggegeven.
 		/// </remarks>
 		/// <throws>NotSupportedException</throws> // TODO handle
-		public IEnumerable<int> AutomatischInschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
+		public IEnumerable<int> Inschrijven(IEnumerable<int> gelieerdePersoonIDs, out string foutBerichten)
 		{
 			try
 			{
@@ -238,7 +118,7 @@ namespace Chiro.Gap.Services
 							}
 							else //nieuw lid
 							{
-								l = _ledenMgr.AutomatischLidMaken(gp, gwj, false);
+								l = _ledenMgr.Inschrijven(gp, gwj, false);
 							}
 
 							// Bewaar leden 1 voor 1, en niet allemaal tegelijk, om te vermijden dat 1 dubbel lid
@@ -327,30 +207,6 @@ namespace Chiro.Gap.Services
 			{
 				FoutAfhandelaar.FoutAfhandelen(ex);
 				foutBerichten = null;
-			}
-		}
-
-		#endregion
-
-		#region bewaren
-
-		/// <summary>
-		/// Slaat veranderingen op aan de eigenschappen van het lidobject zelf. 
-		/// Creëert of verwijdert geen leden, en leden kunnen ook niet van werkjaar of van gelieerdepersoon veranderen.
-		/// </summary>
-		/// <param name="lidinfo">Te bewaren lid</param>
-		public void Bewaren(PersoonLidInfo lidinfo)
-		{
-			try
-			{
-				Lid lid = _ledenMgr.Ophalen(lidinfo.LidInfo.LidID, LidExtras.Geen);
-
-				_ledenMgr.InfoOvernemen(lidinfo.LidInfo, lid);
-				_ledenMgr.Bewaren(lid, LidExtras.Geen);
-			}
-			catch (Exception ex)
-			{
-				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
 		}
 
