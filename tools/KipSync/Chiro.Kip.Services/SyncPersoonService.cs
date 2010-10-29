@@ -576,9 +576,6 @@ namespace Chiro.Kip.Services
 					// Zoek eerst naar een geschikte aansluiting om het lid aan
 					// toe te voegen.
 
-					// TODO (#561): Als we kader gaan aansluiten, dan zijn er geen rekeningen
-					// gekoppeld aan de aansluiting!  Dan loopt het dus anders.
-
 					var aansluitingenDitWerkjaar = (from a in db.Aansluiting.Include(asl => asl.REKENING)
 					                                where a.WerkJaar == gedoe.WerkJaar
 					                                      && a.Groep.GroepID == groep.GroepID
@@ -617,12 +614,14 @@ namespace Chiro.Kip.Services
 					}
 
 					// Als de laatste aansluiting nog niet doorgeboekt is, dan gaat het
-					// nieuwe lid gewoon bij die laatste aansluiting.
+					// nieuwe lid gewoon bij die laatste aansluiting.  (Voor kaderploegen
+					// is er geen factuur gekoppeld aan een aansluiting.  Daar gaat
+					// dus alles op aansluiting 1.)
 
 					// Is er nog geen laatste aansluiting, of was de laatste wel
 					// doorgeboekt, dan maken we er een nieuwe.
 
-					if (aansluiting == null || aansluiting.REKENING.DOORGEBOE != "N")
+					if (aansluiting == null || (aansluiting.REKENING != null && aansluiting.REKENING.DOORGEBOE != "N"))
 					{
 						// Creeer nieuwe aansluiting, en meteen ook een rekening.
 						// Die rekening mag nog leeg zijn; kipadmin berekent de
@@ -630,18 +629,28 @@ namespace Chiro.Kip.Services
 
 						int volgNummer = (aansluiting == null ? 1 : aansluiting.VolgNummer + 1);
 
-						var rekening = new Rekening
-						               	{
-						               		WERKJAAR = (short) gedoe.WerkJaar,
-						               		TYPE = "F",
-						               		REK_BRON = "AANSLUIT",
-						               		STAMNR = gedoe.StamNummer,
-						               		VERWIJSNR = volgNummer,
-						               		FACTUUR = "N",
-						               		FACTUUR2 = "N",
-						               		DOORGEBOE = "N",
-						               		DAT_REK = DateTime.Now
-						               	};
+						Rekening rekening = null;
+
+						if (String.Compare(groep.TYPE, "G", true) != 0 &&
+							String.Compare(groep.TYPE, "V", true) != 0)
+						{
+							// Factuur enkel maken als het geen gewest/verbond
+							// is.
+
+							rekening = new Rekening
+							           	{
+							           		WERKJAAR = (short) gedoe.WerkJaar,
+							           		TYPE = "F",
+							           		REK_BRON = "AANSLUIT",
+							           		STAMNR = gedoe.StamNummer,
+							           		VERWIJSNR = volgNummer,
+							           		FACTUUR = "N",
+							           		FACTUUR2 = "N",
+							           		DOORGEBOE = "N",
+							           		DAT_REK = DateTime.Now
+							           	};
+							db.AddToRekeningSet(rekening);
+						}
 
 						aansluiting = new Aansluiting
 						              	{
@@ -672,7 +681,6 @@ namespace Chiro.Kip.Services
 						              		WerkJaar = gedoe.WerkJaar
 						              	};
 
-						db.AddToRekeningSet(rekening);
 						db.AddToAansluiting(aansluiting);
 					}
 
