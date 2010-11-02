@@ -631,8 +631,7 @@ namespace Chiro.Kip.Services
 
 						Rekening rekening = null;
 
-						if (String.Compare(groep.TYPE, "G", true) != 0 &&
-							String.Compare(groep.TYPE, "V", true) != 0)
+						if (!groep.IsGewestVerbond)
 						{
 							// Factuur enkel maken als het geen gewest/verbond
 							// is.
@@ -704,7 +703,7 @@ namespace Chiro.Kip.Services
 					      		HeeftFunctie = null,
 					      		MAILING_TOEVOEG = null,
 					      		Persoon = persoon,
-					      		SOORT = gedoe.LidType == LidTypeEnum.Kind ? "LI" : "LE",
+					      		SOORT = groep.IsGewestVerbond ? "KA" : (gedoe.LidType == LidTypeEnum.Kind ? "LI" : "LE"),
 					      		STATUS = null,
 					      		STEMPEL = DateTime.Now,
 					      		VERZ_NR = 0,
