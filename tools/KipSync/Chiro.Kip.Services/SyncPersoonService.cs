@@ -395,10 +395,16 @@ namespace Chiro.Kip.Services
 
 				if (persoon == null)
 				{
-					throw new InvalidOperationException(String.Format(
-						Properties.Resources.PersoonNietGevonden,
+					//throw new InvalidOperationException(String.Format(
+					//        Properties.Resources.PersoonNietGevonden,
+					//        pers.VoorNaam,
+					//        pers.Naam));
+					_log.FoutLoggen(0, 
+						String.Format(Properties.Resources.CommunicatieOnbekendePersoon,
 						pers.VoorNaam,
-						pers.Naam));
+						pers.Naam,
+						communicatie.Waarde));
+					return;
 				}
 				// Zoek bestaande communicatie van zelfde type op
 
