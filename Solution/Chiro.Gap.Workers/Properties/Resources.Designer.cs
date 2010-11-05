@@ -268,6 +268,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je probeerde iemand in te schrijven van wie het geslacht niet bekend is..
+        /// </summary>
+        internal static string GeslachtVerplicht {
+            get {
+                return ResourceManager.GetString("GeslachtVerplicht", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Verkeerde groep..
         /// </summary>
         internal static string GroepsWerkJaarNietVanGroep {

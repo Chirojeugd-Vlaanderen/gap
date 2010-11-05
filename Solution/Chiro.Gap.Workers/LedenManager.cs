@@ -307,6 +307,14 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GapException("De geboortedatum moet ingevuld zijn voor je iemand lid kunt maken.");
 			}
+			if (gp.Persoon.Geslacht != GeslachtsType.Man && gp.Persoon.Geslacht != GeslachtsType.Vrouw)
+			{
+				// FIXME: (#530) De boodschap in onderstaande exception wordt getoond aan de user,
+				// terwijl dit eigenlijk een technische boodschap voor de developer moet zijn.
+
+				throw new FoutNummerException(
+					FoutNummer.OnbekendGeslachtFout, Properties.Resources.GeslachtVerplicht);
+			}
 
 			// Bepaal of het een kind of leiding wordt.  Als de persoon qua leeftijd in een niet-speciale
 			// afdeling valt, wordt het een kind.

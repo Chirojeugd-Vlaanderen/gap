@@ -237,4 +237,7 @@
   <data name="TeJongVoorLeiding" xml:space="preserve">
     <value>Deze persoon is nog te jong om leiding te worden.  Check eventueel geboortedatum en/of Chiroleeftijd.</value>
   </data>
+  <data name="GeslachtVerplicht" xml:space="preserve">
+    <value>Je probeerde iemand in te schrijven van wie het geslacht niet bekend is.</value>
+  </data>
 </root>
