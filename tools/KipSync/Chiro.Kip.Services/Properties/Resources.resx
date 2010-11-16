@@ -120,6 +120,9 @@
   <data name="CommunicatieOnbekendePersoon" xml:space="preserve">
     <value>Kan communicatie {2} van onbekend persoon {0} {1} niet bewaren.</value>
   </data>
+  <data name="CommVerwijderenOnbekendePersoon" xml:space="preserve">
+    <value>Kan communicatie {2} van onbekende persoon {0} {1} niet verwijderen.</value>
+  </data>
   <data name="LidNietGevonden" xml:space="preserve">
     <value>Lid {0} {1} niet gevonden voor werkjaar {3}, groep {2}</value>
   </data>

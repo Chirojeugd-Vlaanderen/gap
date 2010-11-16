@@ -310,10 +310,18 @@ namespace Chiro.Kip.Services
 
 				if (persoon == null)
 				{
-					throw new InvalidOperationException(String.Format(
-						Properties.Resources.PersoonNietGevonden,
-						pers.VoorNaam,
-						pers.Naam));
+					_log.FoutLoggen(0, String.Format(
+						Properties.Resources.CommunicatieOnbekendePersoon,
+						zoekInfo.VoorNaam,
+						zoekInfo.Naam,
+						String.Concat(
+							(from cm in communicatieMiddelen select cm.Waarde + ';').ToArray())));
+
+					//throw new InvalidOperationException(String.Format(
+					//        Properties.Resources.PersoonNietGevonden,
+					//        pers.VoorNaam,
+					//        pers.Naam));
+					return;
 				}
 				// Hieronder quick and dirty gepruts, 
 				// o.a. omdat de communicatievormen in kipadmin genummerd moeten zijn
@@ -473,6 +481,16 @@ namespace Chiro.Kip.Services
 				var mgr = new PersonenManager();
 				var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(pers);
 				var persoon = mgr.Zoeken(zoekInfo, false, db);
+
+				if (persoon == null)
+				{
+					_log.FoutLoggen(0, String.Format(
+						Properties.Resources.CommVerwijderenOnbekendePersoon,
+						pers.VoorNaam,
+						pers.Naam,
+						communicatie.Waarde));
+					return;
+				}
 
 				// We gaan ervan uit dat er geen dubbele communicatievormen in de database
 				// zitten; we verwijderen enkel de FirstOrDefault.

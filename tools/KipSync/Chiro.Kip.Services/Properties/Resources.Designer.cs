@@ -70,6 +70,15 @@ namespace Chiro.Kip.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kan communicatie {2} van onbekende persoon {0} {1} niet verwijderen..
+        /// </summary>
+        internal static string CommVerwijderenOnbekendePersoon {
+            get {
+                return ResourceManager.GetString("CommVerwijderenOnbekendePersoon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lid {0} {1} niet gevonden voor werkjaar {3}, groep {2}.
         /// </summary>
         internal static string LidNietGevonden {
