@@ -1030,9 +1030,13 @@ namespace Chiro.Gap.Services
 				// TODO check dat roll-back gebeurt
 				// TODO check of er meer voorwaarden gecontroleerd moeten worden
 				// TODO aangeven dat deze operatie wel wat tijd in beslag kan nemen
-				//		=> time-out exceptions mogelijk?
 #if KIPDORP
-				using (var scope = new TransactionScope())
+				// We proberen eens met een hogere timeout. (5 minuten ipv standaard 1)
+				// (refs #866)
+
+				using (var scope = new TransactionScope(
+					TransactionScopeOption.Required,
+					new TimeSpan(0,0,5,0)))
 				{
 #endif
 					Groep g;
