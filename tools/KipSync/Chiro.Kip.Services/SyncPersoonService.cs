@@ -955,6 +955,25 @@ namespace Chiro.Kip.Services
 						lid.Persoon.Naam,
 						lid.Persoon.AdNummer,
 						functie.CODE));
+
+					// Als functie fin. ver. is, pas dan ook betaler in groepsrecord
+					// aan.
+
+					if (functie.id == (int)FunctieEnum.FinancieelVerantwoordelijke)
+					{
+						lid.GroepReference.Load();
+
+						// FIXME (#555): oud-leidingsploegen! 
+
+						var cg = lid.Groep as ChiroGroep;
+
+						if (cg != null)
+						{
+							cg.BET_ADNR = lid.Persoon.AdNummer;
+						}
+
+						feedback.AppendLine("'BET_ADNR' bijgewerkt");
+					}
 				}
 				db.SaveChanges();
 			}
