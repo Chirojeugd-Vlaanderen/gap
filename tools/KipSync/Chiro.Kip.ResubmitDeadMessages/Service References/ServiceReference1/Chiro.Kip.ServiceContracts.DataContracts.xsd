@@ -1,0 +1,403 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Chiro.Kip.ServiceContracts.DataContracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="Persoon">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AdNummer" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="GeboorteDatum" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Geslacht" type="tns:GeslachtsEnum" />
+      <xs:element minOccurs="0" name="ID" type="xs:int" />
+      <xs:element minOccurs="0" name="Naam" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SterfDatum" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="VoorNaam" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Persoon" nillable="true" type="tns:Persoon" />
+  <xs:simpleType name="GeslachtsEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Onbekend" />
+      <xs:enumeration value="Man" />
+      <xs:enumeration value="Vrouw" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="GeslachtsEnum" nillable="true" type="tns:GeslachtsEnum" />
+  <xs:complexType name="Adres">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Bus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="HuisNr" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Land" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PostCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PostNr" type="xs:int" />
+      <xs:element minOccurs="0" name="Straat" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WoonPlaats" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Adres" nillable="true" type="tns:Adres" />
+  <xs:complexType name="ArrayOfBewoner">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Bewoner" nillable="true" type="tns:Bewoner" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBewoner" nillable="true" type="tns:ArrayOfBewoner" />
+  <xs:complexType name="Bewoner">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AdresType" type="tns:AdresTypeEnum" />
+      <xs:element minOccurs="0" name="Persoon" nillable="true" type="tns:Persoon" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Bewoner" nillable="true" type="tns:Bewoner" />
+  <xs:simpleType name="AdresTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="THUIS">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KOT">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WERK">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ANDER">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="AdresTypeEnum" nillable="true" type="tns:AdresTypeEnum" />
+  <xs:complexType name="CommunicatieMiddel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="GeenMailings" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Type" type="tns:CommunicatieType" />
+      <xs:element minOccurs="0" name="Waarde" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CommunicatieMiddel" nillable="true" type="tns:CommunicatieMiddel" />
+  <xs:simpleType name="CommunicatieType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TelefoonNummer">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Fax">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Email">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WebSite">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Msn">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">5</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Xmpp">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">6</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Twitter">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">7</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="StatusNet">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">8</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="CommunicatieType" nillable="true" type="tns:CommunicatieType" />
+  <xs:complexType name="ArrayOfCommunicatieMiddel">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommunicatieMiddel" nillable="true" type="tns:CommunicatieMiddel" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommunicatieMiddel" nillable="true" type="tns:ArrayOfCommunicatieMiddel" />
+  <xs:complexType name="LidGedoe">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="LidType" type="tns:LidTypeEnum" />
+      <xs:element minOccurs="0" name="NationaleFuncties" nillable="true" type="tns:ArrayOfFunctieEnum" />
+      <xs:element minOccurs="0" name="OfficieleAfdelingen" nillable="true" type="tns:ArrayOfAfdelingEnum" />
+      <xs:element minOccurs="0" name="StamNummer" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WerkJaar" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LidGedoe" nillable="true" type="tns:LidGedoe" />
+  <xs:simpleType name="LidTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Kind" />
+      <xs:enumeration value="Leiding" />
+      <xs:enumeration value="Kader" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="LidTypeEnum" nillable="true" type="tns:LidTypeEnum" />
+  <xs:complexType name="ArrayOfFunctieEnum">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FunctieEnum" type="tns:FunctieEnum" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFunctieEnum" nillable="true" type="tns:ArrayOfFunctieEnum" />
+  <xs:simpleType name="FunctieEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ContactPersoon">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">168</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GroepsLeiding">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">169</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Vb">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">170</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FinancieelVerantwoordelijke">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">153</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="JeugdRaad">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">17</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KookPloeg">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">185</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Proost">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">172</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GroepsLeidingsBijeenkomsten" />
+      <xs:enumeration value="SomVerantwoordelijke">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">214</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IkVerantwoordelijke">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RibbelVerantwoordelijke">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SpeelclubVerantwoordelijke">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">5</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RakwiVerantwoordelijke">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TitoVerantwoordelijke">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">6</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KetiVerantwoordelijke">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AspiVerantwoordelijke">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SomGewesten">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">162</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OpvolgingStadsGroepen">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">167</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Verbondsraad">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">166</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Verbondskern">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">156</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="StartDagVerantwoordelijker">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">160</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SbVerantwoordelijke">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">152</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="FunctieEnum" nillable="true" type="tns:FunctieEnum" />
+  <xs:complexType name="ArrayOfAfdelingEnum">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AfdelingEnum" type="tns:AfdelingEnum" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAfdelingEnum" nillable="true" type="tns:ArrayOfAfdelingEnum" />
+  <xs:simpleType name="AfdelingEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Ribbels">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Speelclub">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Rakwis">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Titos">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Ketis">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">5</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Aspis">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">6</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Speciaal">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">12</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="AfdelingEnum" nillable="true" type="tns:AfdelingEnum" />
+  <xs:complexType name="PersoonDetails">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Adres" nillable="true" type="tns:Adres" />
+      <xs:element minOccurs="0" name="AdresType" type="tns:AdresTypeEnum" />
+      <xs:element minOccurs="0" name="Communicatie" nillable="true" type="tns:ArrayOfCommunicatieMiddel" />
+      <xs:element minOccurs="0" name="Persoon" nillable="true" type="tns:Persoon" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PersoonDetails" nillable="true" type="tns:PersoonDetails" />
+</xs:schema>

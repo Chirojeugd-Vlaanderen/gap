@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="6b6d4cc2-1568-4a94-867c-72b2352ba6ab" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8731/Design_Time_Addresses/Chiro.Kip.Services/SyncPersoonService/mex" Protocol="mex" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="aa162097-b5cf-4850-908a-b9b2a876d15d" SourceId="1" SourceUrl="http://localhost:8731/Design_Time_Addresses/Chiro.Kip.Services/SyncPersoonService/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="0851fc6d-5e69-40ad-b853-dc7d6a86614b" SourceId="1" SourceUrl="http://localhost:8731/Design_Time_Addresses/Chiro.Kip.Services/SyncPersoonService/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="98a5c469-7a49-4299-80d9-bdf4feca779e" SourceId="1" SourceUrl="http://localhost:8731/Design_Time_Addresses/Chiro.Kip.Services/SyncPersoonService/mex" />
+    <MetadataFile FileName="Chiro.Kip.ServiceContracts.DataContracts.xsd" MetadataType="Schema" ID="63486b63-0ddb-4d0d-9c03-c472d303597b" SourceId="1" SourceUrl="http://localhost:8731/Design_Time_Addresses/Chiro.Kip.Services/SyncPersoonService/mex" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

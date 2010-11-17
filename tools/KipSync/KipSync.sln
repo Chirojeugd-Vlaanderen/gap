@@ -36,6 +36,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.ServiceContracts"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.Log", "Chiro.Kip.Log\Chiro.Kip.Log.csproj", "{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.ResubmitDeadMessages", "Chiro.Kip.ResubmitDeadMessages\Chiro.Kip.ResubmitDeadMessages.csproj", "{E9F46B15-1925-4FEF-AA2B-596E6C7BF5A7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EE6869D3-FA60-4DBA-9A0D-F459F8DC6E9B} = {EE6869D3-FA60-4DBA-9A0D-F459F8DC6E9B}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = KipSync.vsmdi
@@ -89,6 +94,10 @@ Global
 		{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9F46B15-1925-4FEF-AA2B-596E6C7BF5A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9F46B15-1925-4FEF-AA2B-596E6C7BF5A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9F46B15-1925-4FEF-AA2B-596E6C7BF5A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9F46B15-1925-4FEF-AA2B-596E6C7BF5A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
