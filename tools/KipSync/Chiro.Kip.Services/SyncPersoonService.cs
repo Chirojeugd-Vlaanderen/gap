@@ -1291,13 +1291,15 @@ namespace Chiro.Kip.Services
 				// komt deze persoon er gewoon bij.  Is er nog geen laatste verzekering,
 				// of is de rekening al wel doorgeboekt, dan maken we er een nieuwe.
 
-				if (verzekering == null || verzekering.REKENING.DOORGEBOE != "N")
+				if (verzekering == null || (verzekering.REKENING != null && verzekering.REKENING.DOORGEBOE != "N"))
 				{
 					volgNummer = (verzekering == null ? 1 : verzekering.VolgNummer + 1);
 					// Bedragen rekening mogen leeg zijn; worden aangevuld bij factuur
 					// overzetten in Kipadmin.
 
-					var rekening = new Rekening
+					// Kaderploegen krijgen geen factuur
+
+					var rekening = (groep.TYPE.ToUpper() != "L") ? null : new Rekening
 					               	{
 					               		WERKJAAR = (short) werkJaar,
 					               		TYPE = "F",
@@ -1323,7 +1325,10 @@ namespace Chiro.Kip.Services
 					              		WerkJaar = werkJaar
 					              	};
 
-					db.AddToRekeningSet(rekening);
+					if (rekening != null)
+					{
+						db.AddToRekeningSet(rekening);
+					}
 					db.AddToExtraVerzekering(verzekering);
 				}
 
