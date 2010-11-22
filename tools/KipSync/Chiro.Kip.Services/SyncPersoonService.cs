@@ -550,12 +550,21 @@ namespace Chiro.Kip.Services
 				           select l).FirstOrDefault();
 
 				// Aan het hoeveelste jaar van dit lid zijn we?
+				// Jaren worden geteld als 'aantal jaar als kind', 
+				// 'aantal jaar als leider' en 'aantal jaar als kadermedewerker'
+
+				string soort;
+
+				if (gedoe.LidType == LidTypeEnum.Kind) soort = "LI";
+				else if (gedoe.LidType == LidTypeEnum.Leiding) soort = "LE";
+				else if (gedoe.LidType == LidTypeEnum.Kader) soort = "KA";
+				else throw new NotSupportedException("Ongeldig lidtype");
 
 				int aantalJaren = (from l in db.Lid
 				                   where l.AANSL_NR > 0 &&
 				                         l.Persoon.AdNummer == adNummer &&
-				                         l.Groep.GroepID == groep.GroepID &&
-				                         l.werkjaar < gedoe.WerkJaar
+				                         l.werkjaar < gedoe.WerkJaar &&
+							 l.SOORT.ToUpper() == soort
 				                   select l.werkjaar).Distinct().Count() + 1;
 
 				if (lid != null)
