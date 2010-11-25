@@ -372,7 +372,7 @@ BEGIN
 END
 ELSE
 BEGIN
-	SET @testPersoon1ID = (SELECT PersoonID FROM pers.Persoon WHERE Naam = @testPersoon1Naam AND VoorNaam = @testPersoon1VoorNaam);
+	SET @testPersoon1ID = (SELECT Min(PersoonID) FROM pers.Persoon WHERE Naam = @testPersoon1Naam AND VoorNaam = @testPersoon1VoorNaam);
 END;
 
 IF NOT EXISTS (SELECT 1 FROM pers.Persoon WHERE Naam = @testPersoon2Naam AND VoorNaam = @testPersoon2VoorNaam)
