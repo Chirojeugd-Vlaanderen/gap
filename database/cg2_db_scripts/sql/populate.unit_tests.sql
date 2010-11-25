@@ -1,3 +1,5 @@
+use gap
+
 -- Creeer testgroep voor unittests, met deze testdata:
 -- @testHuidigWerkJaar en @testVorigWerkJaar
 --
@@ -29,6 +31,14 @@ SET DateFormat dmy;
 
 -- Dit script doet het volgende: 
 --
+
+-- 0  Creeren van een testgewest
+
+		DECLARE @testGewestID AS INT;
+		DECLARE @testGewestCode AS CHAR(10); 					SET @testGewestCode='tst/0000';
+		DECLARE @testGewestNaam AS VARCHAR(160);				SET @testGewestNaam='Gewest Test';
+
+
 -- 1°  Creatie van een ChiroGroep, 'St.-Unittestius' met als stamnummer 'tst/0001'
 		DECLARE @testGroepID AS INT;
 		DECLARE @testGroepCode AS CHAR(10); 					SET @testGroepCode='tst/0001';
@@ -204,6 +214,27 @@ DECLARE @testVorigAfdelingsJaarID AS INT;
 SET @testOfficieleAfdelingID1 = (SELECT officieleAfdelingID FROM lid.OfficieleAfdeling WHERE Naam=@testOfficieleAfdelingNaam1)
 SET @testOfficieleAfdelingID2 = (SELECT officieleAfdelingID FROM lid.OfficieleAfdeling WHERE Naam=@testOfficieleAfdelingNaam2)
 
+---
+--- 0  Testgewest maken
+---
+
+IF NOT EXISTS (SELECT 1 FROM grp.Groep WHERE Code=@testGewestCode)
+BEGIN
+	INSERT INTO grp.Groep(Naam, Code)
+	VALUES(@testGewestNaam, @testGewestCode);
+
+	SET @testGewestID = scope_identity();
+END
+ELSE
+BEGIN
+	SET @testGewestID = (SELECT GroepID FROM grp.Groep WHERE Code=@testGewestCode)
+END
+
+IF NOT EXISTS (SELECT 1 FROM grp.KaderGroep WHERE KaderGroepID = @testGewestID)
+BEGIN
+	INSERT INTO grp.KaderGroep(KaderGroepID, Niveau) VALUES(@testGewestID, 8);
+END
+
 
 ---
 --- 1°: Groep en Chirogroep creeren
@@ -222,7 +253,7 @@ END
 
 IF NOT EXISTS (SELECT 1 FROM grp.ChiroGroep WHERE ChiroGroepID = @testGroepID)
 BEGIN
-	INSERT INTO grp.ChiroGroep(ChiroGroepID) VALUES(@testGroepID);
+	INSERT INTO grp.ChiroGroep(ChiroGroepID, KaderGroepID) VALUES(@testGroepID, @testGewestID);
 END
 
 --- 
@@ -256,37 +287,37 @@ END
 ---
 --- 3° Afdelingen maken 
 ---
-IF NOT EXISTS (SELECT 1 FROM lid.Afdeling WHERE groepID = @testGroepID AND afkorting = @testAfdelingsAfkorting1)
+IF NOT EXISTS (SELECT 1 FROM lid.Afdeling WHERE ChiroGroepID = @testGroepID AND afkorting = @testAfdelingsAfkorting1)
 BEGIN
-	INSERT INTO lid.Afdeling(GroepID, AfdelingsNaam, Afkorting)
+	INSERT INTO lid.Afdeling(ChiroGroepID, AfdelingsNaam, Afkorting)
 	VALUES(@testGroepID, @testAfdelingsNaam1, @testAfdelingsAfkorting1);
 	SET @testAfdeling1ID = scope_identity();
 END
 ELSE
 BEGIN
-	SET @testAfdeling1ID = (SELECT AfdelingID FROM lid.Afdeling WHERE groepID = @testGroepID AND afkorting = @testAfdelingsAfkorting1)
+	SET @testAfdeling1ID = (SELECT AfdelingID FROM lid.Afdeling WHERE ChiroGroepID = @testGroepID AND afkorting = @testAfdelingsAfkorting1)
 END
 
-IF NOT EXISTS (SELECT 1 FROM lid.Afdeling WHERE groepID = @testGroepID AND afkorting = @testAfdelingsAfkorting2)
+IF NOT EXISTS (SELECT 1 FROM lid.Afdeling WHERE ChiroGroepID = @testGroepID AND afkorting = @testAfdelingsAfkorting2)
 BEGIN
-	INSERT INTO lid.Afdeling(GroepID, AfdelingsNaam, Afkorting)
+	INSERT INTO lid.Afdeling(ChiroGroepID, AfdelingsNaam, Afkorting)
 	VALUES(@testGroepID, @testAfdelingsNaam2, @testAfdelingsAfkorting2);
 	SET @testAfdeling2ID = scope_identity();
 END
 ELSE
 BEGIN
-	SET @testAfdeling2ID = (SELECT AfdelingID FROM lid.Afdeling WHERE groepID = @testGroepID AND afkorting = @testAfdelingsAfkorting2)
+	SET @testAfdeling2ID = (SELECT AfdelingID FROM lid.Afdeling WHERE ChiroGroepID = @testGroepID AND afkorting = @testAfdelingsAfkorting2)
 END
 
-IF NOT EXISTS (SELECT 1 FROM lid.Afdeling WHERE groepID = @testGroepID AND afkorting = @testAfdelingsAfkorting3)
+IF NOT EXISTS (SELECT 1 FROM lid.Afdeling WHERE ChiroGroepID = @testGroepID AND afkorting = @testAfdelingsAfkorting3)
 BEGIN
-	INSERT INTO lid.Afdeling(GroepID, AfdelingsNaam, Afkorting)
+	INSERT INTO lid.Afdeling(ChiroGroepID, AfdelingsNaam, Afkorting)
 	VALUES(@testGroepID, @testAfdelingsNaam3, @testAfdelingsAfkorting3);
 	SET @testAfdeling2ID = scope_identity();
 END
 ELSE
 BEGIN
-	SET @testAfdeling3ID = (SELECT AfdelingID FROM lid.Afdeling WHERE groepID = @testGroepID AND afkorting = @testAfdelingsAfkorting3)
+	SET @testAfdeling3ID = (SELECT AfdelingID FROM lid.Afdeling WHERE ChiroGroepID = @testGroepID AND afkorting = @testAfdelingsAfkorting3)
 END
 
 
@@ -577,8 +608,8 @@ END
 
 IF NOT EXISTS (SELECT 1 FROM lid.Functie WHERE Code=@testFunctieCode AND GroepID=@testGroepID)
 BEGIN
-	INSERT INTO lid.Functie(Naam, Code, GroepID, MaxAantal, MinAantal, LidType, WerkJaarVan, WerkJaarTot)
-	VALUES(@testFunctieNaam, @testFunctieCode, @testGroepID, @testFunctieMaxAantal, 0, 3, 0, 0)
+	INSERT INTO lid.Functie(Naam, Code, GroepID, MaxAantal, MinAantal, Niveau, WerkJaarVan, WerkJaarTot)
+	VALUES(@testFunctieNaam, @testFunctieCode, @testGroepID, @testFunctieMaxAantal, 0, 6, 0, 0)
 	SET @testFunctieID = scope_identity();
 END
 ELSE
