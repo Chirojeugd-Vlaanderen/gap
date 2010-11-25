@@ -64,7 +64,8 @@ namespace Chiro.Gap.Sync
 				new CommunicatieMiddel
 				{
 					Type = (CommunicatieType)communicatieVorm.CommunicatieType.ID,
-					Waarde = communicatieVorm.Nummer
+					Waarde = communicatieVorm.Nummer,
+					GeenMailings = !communicatieVorm.IsVoorOptIn
 				});
 		}
 	}
