@@ -1052,7 +1052,7 @@ namespace Chiro.Gap.Services
 					else
 					{
 						g = _chiroGroepenMgr.Ophalen(groepID, ChiroGroepsExtras.AlleAfdelingen | ChiroGroepsExtras.GroepsWerkJaren);
-					}					
+					}				
 
 					// Nieuw groepswerkjaarobject maken
 					var gwj = _groepsWerkJaarManager.VolgendGroepsWerkJaarMaken(g);

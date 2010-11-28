@@ -83,7 +83,7 @@ namespace Chiro.Gap.Workers
 			int geboorteJaarEind,
 			GeslachtsType geslacht)
 		{
-			if (!_autorisatieMgr.IsGavAfdeling(a.ID))
+			if (!_autorisatieMgr.IsGavAfdeling(a.ID) || !_autorisatieMgr.IsGavGroepsWerkJaar((gwj.ID)))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
