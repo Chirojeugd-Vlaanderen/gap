@@ -16,6 +16,11 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	[DataContract]
 	public class LidAfdelingInfo
 	{
+		public LidAfdelingInfo()
+		{
+			AfdelingsJaarIDs = new List<int>();
+		}
+
 		/// <summary>
 		/// Volledige naam van het lid
 		/// </summary>
