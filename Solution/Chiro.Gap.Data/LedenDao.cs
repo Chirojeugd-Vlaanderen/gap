@@ -94,8 +94,8 @@ namespace Chiro.Gap.Data.Ef
 					break;
 				case LidEigenschap.Leeftijd:
 					lijst2 = lijst
-						.OrderBy(gp => gp.GelieerdePersoon.LeefTijd == null)
-						.ThenByDescending(gp => gp.GelieerdePersoon.LeefTijd)
+						.OrderBy(gp => gp.GelieerdePersoon.GebDatumMetChiroLeefTijd == null)
+						.ThenByDescending(gp => gp.GelieerdePersoon.GebDatumMetChiroLeefTijd)
 						.ThenBy(gp => String.Format(
 							"{0} {1}",
 							gp.GelieerdePersoon.Persoon.Naam,
@@ -146,8 +146,8 @@ namespace Chiro.Gap.Data.Ef
 					break;
 				case LidEigenschap.Leeftijd:
 					lijst2 = lijst
-						.OrderBy(gp => gp.GelieerdePersoon.LeefTijd == null)
-						.ThenByDescending(gp => gp.GelieerdePersoon.LeefTijd)
+						.OrderBy(gp => gp.GelieerdePersoon.GebDatumMetChiroLeefTijd == null)
+						.ThenByDescending(gp => gp.GelieerdePersoon.GebDatumMetChiroLeefTijd)
 						.ThenBy(gp => String.Format(
 							"{0} {1}",
 							gp.GelieerdePersoon.Persoon.Naam,

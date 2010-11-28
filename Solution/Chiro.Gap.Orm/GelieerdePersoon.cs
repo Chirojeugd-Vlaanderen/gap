@@ -149,7 +149,7 @@ namespace Chiro.Gap.Orm
 		/// <summary>
 		/// Leeftijd van de persoon, rekening houdende met geboortedatum en chiroleeftijd
 		/// </summary>
-		public DateTime? LeefTijd
+		public DateTime? GebDatumMetChiroLeefTijd
 		{
 			get
 			{

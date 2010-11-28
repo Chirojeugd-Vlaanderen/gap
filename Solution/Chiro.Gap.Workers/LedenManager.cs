@@ -114,7 +114,7 @@ namespace Chiro.Gap.Workers
 			}
 
 			// Geboortedatum is verplicht als je lid wilt worden
-			if (!gp.LeefTijd.HasValue)
+			if (!gp.GebDatumMetChiroLeefTijd.HasValue)
 			{
 				throw new InvalidOperationException(Properties.Resources.GeboorteDatumOntbreekt);
 			}
@@ -201,9 +201,9 @@ namespace Chiro.Gap.Workers
 
 			// Afdeling automatisch bepalen
 
-			Debug.Assert(gp.LeefTijd != null);
+			Debug.Assert(gp.GebDatumMetChiroLeefTijd != null);
 			// Om resharper blij te houden, is al gecontroleerd.
-			var geboortejaar = gp.LeefTijd.Value.Year;
+			var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
 
 			// Relevante afdelingsjaren opzoeken.  Afdelingen met speciale officiele afdeling
 			// worden in eerste instantie uitgesloten van de automatische verdeling.
@@ -276,9 +276,9 @@ namespace Chiro.Gap.Workers
 			// LidMaken doet de nodige checks ivm GAV-schap enz.
 			var resultaat = LidMaken(gp, gwj, LidType.Leiding, isJaarovergang) as Leiding;
 
-			Debug.Assert(gp.LeefTijd != null);  // Anders was er al wel een exception geworpen
+			Debug.Assert(gp.GebDatumMetChiroLeefTijd != null);  // Anders was er al wel een exception geworpen
 
-			if (gwj.WerkJaar - gp.LeefTijd.Value.Year < Properties.Settings.Default.MinLeidingLeefTijd)
+			if (gwj.WerkJaar - gp.GebDatumMetChiroLeefTijd.Value.Year < Properties.Settings.Default.MinLeidingLeefTijd)
 			{
 				// Throw hier een InvalidOperationException, niet omdat dat goed is, maar wel om
 				// consistent te blijven met KindMaken.
@@ -303,7 +303,7 @@ namespace Chiro.Gap.Workers
 		///<returns>Het aangemaakte lid object</returns>
 		public Lid Inschrijven(GelieerdePersoon gp, GroepsWerkJaar gwj, bool isJaarOvergang)
 		{
-			if (!gp.LeefTijd.HasValue)
+			if (!gp.GebDatumMetChiroLeefTijd.HasValue)
 			{
 				throw new GapException("De geboortedatum moet ingevuld zijn voor je iemand lid kunt maken.");
 			}
@@ -320,7 +320,7 @@ namespace Chiro.Gap.Workers
 			// afdeling valt, wordt het een kind.
 
 			// Stop de geboortedatum in een lokale variabele [wiki:VeelVoorkomendeWaarschuwingen#PossibleInvalidOperationinLinq-statement]
-			var geboortejaar = gp.LeefTijd.Value.Year;
+			var geboortejaar = gp.GebDatumMetChiroLeefTijd.Value.Year;
 			var afdelingsjaar = (from a in gwj.AfdelingsJaar
 								 where (a.OfficieleAfdeling.ID != (int)NationaleAfdeling.Speciaal) &&
 									   (geboortejaar <= a.GeboorteJaarTot
@@ -334,7 +334,7 @@ namespace Chiro.Gap.Workers
 				nieuwlid = KindMaken(gp, gwj, isJaarOvergang);
 			}
 			// Kijk of de persoon oud genoeg is om leiding te worden
-			else if (gwj.WerkJaar - gp.LeefTijd.Value.Year >= Properties.Settings.Default.MinLeidingLeefTijd)
+			else if (gwj.WerkJaar - gp.GebDatumMetChiroLeefTijd.Value.Year >= Properties.Settings.Default.MinLeidingLeefTijd)
 			{
 				nieuwlid = LeidingMaken(gp, gwj, isJaarOvergang);
 			}
