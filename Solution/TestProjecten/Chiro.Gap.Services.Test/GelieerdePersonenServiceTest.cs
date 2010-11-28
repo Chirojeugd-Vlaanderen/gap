@@ -98,7 +98,7 @@ namespace Chiro.Gap.Services.Test
 
 			var gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
 
-			var commInfo = new CommunicatieInfo()
+			var commInfo = new CommunicatieDetail()
                             	{
                             		CommunicatieTypeID = 1,
                             		Nummer = TestInfo.ONGELDIGTELEFOONNR
@@ -118,7 +118,7 @@ namespace Chiro.Gap.Services.Test
 
 			var gelieerdePersoonID = TestInfo.GELIEERDEPERSOONID;
 
-			var commInfo = new CommunicatieInfo()
+			var commInfo = new CommunicatieDetail()
 			{
 				CommunicatieTypeID = 1,
 				Voorkeur = true,
@@ -141,7 +141,7 @@ namespace Chiro.Gap.Services.Test
 
 			var gelieerdePersoonID = TestInfo.ONBESTAANDEGELIEERDEPERSOONID;
 
-			var commInfo = new CommunicatieInfo()
+			var commInfo = new CommunicatieDetail()
 			{
 				CommunicatieTypeID = 1,
 				Voorkeur = true,

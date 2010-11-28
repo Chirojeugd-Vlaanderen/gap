@@ -269,7 +269,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.CreateMap<CommunicatieType, CommunicatieTypeInfo>();
 			Mapper.CreateMap<Categorie, CategorieInfo>();
 			Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo2>();
-			Mapper.CreateMap<CommunicatieVorm, CommunicatieInfo>();
+			Mapper.CreateMap<CommunicatieVorm, CommunicatieDetail>();
 
 			Mapper.CreateMap<Groep, GroepInfo>()
 				.ForMember(dst => dst.Plaats, opt => opt.MapFrom(
@@ -283,8 +283,16 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				           opt => opt.MapFrom(
 				           	src => src.Groep is ChiroGroep ? (src.Groep as ChiroGroep).Plaats : Properties.Resources.NietVanToepassing));
 
-
 			Mapper.CreateMap<CommunicatieInfo, CommunicatieVorm>()
+				.ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
+				.ForMember(dst => dst.Versie, opt => opt.Ignore())
+				.ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
+				.ForMember(dst => dst.GelieerdePersoonReference, opt => opt.Ignore())
+				.ForMember(dst => dst.CommunicatieType, opt => opt.Ignore())
+				.ForMember(dst => dst.CommunicatieTypeReference, opt => opt.Ignore())
+				.ForMember(dst => dst.EntityKey, opt => opt.Ignore());
+
+			Mapper.CreateMap<CommunicatieDetail, CommunicatieVorm>()
 				.ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
 				.ForMember(dst => dst.Versie, opt => opt.Ignore())
 				.ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())

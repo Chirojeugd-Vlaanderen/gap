@@ -15,7 +15,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	/// DataContract voor summiere info over communicatievormen
 	/// </summary>
 	[DataContract]
-	public class CommunicatieInfo : ICommunicatie
+	public class CommunicatieInfo
 	{
 		/// <summary>
 		/// Uniek identificatienummer
@@ -90,26 +90,5 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// <remarks>Overgenomen van geassocieerde CommunicatieType</remarks>
 		[DataMember]
 		public bool CommunicatieTypeIsOptIn { get; set; }
-
-		/// <summary>
-		/// De 'naam' van het communicatietype
-		/// </summary>
-		/// <remarks>Overgenomen van geassocieerde CommunicatieType</remarks>
-		[DataMember]
-		public string CommunicatieTypeOmschrijving { get; set; }
-
-		/// <summary>
-		/// Een regular expression die aangeeft welke vorm de waarde voor dat type moet hebben
-		/// </summary>
-		/// <remarks>Overgenomen van geassocieerde CommunicatieType</remarks>
-		[DataMember]
-		public string CommunicatieTypeValidatie { get; set; }
-
-		/// <summary>
-		/// Een voorbeeld van een communicatievorm die volgens de validatieregels gestructureerd is
-		/// </summary>
-		/// <remarks>Overgenomen van geassocieerde CommunicatieType</remarks>
-		[DataMember]
-		public string CommunicatieTypeVoorbeeld { get; set; }
 	}
 }

@@ -304,7 +304,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		void CommunicatieVormAanpassen(CommunicatieInfo c);
+		void CommunicatieVormAanpassen(CommunicatieDetail c);
 
 		/// <summary>
 		/// Haalt info over een bepaald communicatietype op, op basis van ID
@@ -333,7 +333,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		CommunicatieInfo CommunicatieVormOphalen(int commvormID);
+		CommunicatieDetail CommunicatieVormOphalen(int commvormID);
 
 		#endregion commvormen
 

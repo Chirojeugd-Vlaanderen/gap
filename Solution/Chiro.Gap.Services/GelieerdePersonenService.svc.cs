@@ -757,8 +757,8 @@ namespace Chiro.Gap.Services
 		/// Voegt een commvorm toe aan een gelieerde persoon
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID van de gelieerde persoon</param>
-		/// <param name="commInfo">De communicatievorm die aan die persoon gekoppeld moet worden</param>
-		public void CommunicatieVormToevoegen(int gelieerdePersoonID, CommunicatieInfo commInfo)
+		/// <param name="commDetail">De communicatievorm die aan die persoon gekoppeld moet worden</param>
+		public void CommunicatieVormToevoegen(int gelieerdePersoonID, CommunicatieInfo commDetail)
 		{
 			try
 			{
@@ -768,8 +768,8 @@ namespace Chiro.Gap.Services
 				// 3. Gebruik business om te koppelen
 				// 4. Bewaar
 
-				var communicatieVorm = Mapper.Map<CommunicatieInfo, CommunicatieVorm>(commInfo);
-				communicatieVorm.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(commInfo.CommunicatieTypeID);
+				var communicatieVorm = Mapper.Map<CommunicatieInfo, CommunicatieVorm>(commDetail);
+				communicatieVorm.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(commDetail.CommunicatieTypeID);
 
 				GelieerdePersoon gp = _gpMgr.OphalenMetCommVormen(gelieerdePersoonID);
 				_cvMgr.AanpassingenDoorvoeren(gp, communicatieVorm);
@@ -817,11 +817,11 @@ namespace Chiro.Gap.Services
 		/// Persisteert de wijzigingen aan een bestaande communicatievorm
 		/// </summary>
 		/// <param name="v">De aan te passen communicatievorm</param>
-		public void CommunicatieVormAanpassen(CommunicatieInfo v)
+		public void CommunicatieVormAanpassen(CommunicatieDetail v)
 		{
 			try
 			{
-				var communicatieVorm = Mapper.Map<CommunicatieInfo, CommunicatieVorm>(v);
+				var communicatieVorm = Mapper.Map<CommunicatieDetail, CommunicatieVorm>(v);
 				communicatieVorm.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(v.CommunicatieTypeID);
 
 				var cv = _cvMgr.OphalenMetGelieerdePersoon(v.ID);
@@ -845,11 +845,11 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		/// <param name="commvormID">ID van de communicatievorm waarover het gaat</param>
 		/// <returns>De communicatievorm met de opgegeven ID</returns>
-		public CommunicatieInfo CommunicatieVormOphalen(int commvormID)
+		public CommunicatieDetail CommunicatieVormOphalen(int commvormID)
 		{
 			try
 			{
-				return Mapper.Map<CommunicatieVorm, CommunicatieInfo>(_cvMgr.Ophalen(commvormID));
+				return Mapper.Map<CommunicatieVorm, CommunicatieDetail>(_cvMgr.Ophalen(commvormID));
 			}
 			catch (Exception ex)
 			{

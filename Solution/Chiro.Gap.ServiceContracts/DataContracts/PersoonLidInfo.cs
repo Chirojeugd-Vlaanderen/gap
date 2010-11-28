@@ -39,6 +39,6 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// De lijst van communicatievormen die de persoon gebruikt
 		/// </summary>
 		[DataMember]
-		public IEnumerable<CommunicatieInfo> CommunicatieInfo { get; set; }
+		public IEnumerable<CommunicatieDetail> CommunicatieInfo { get; set; }
 	}
 }

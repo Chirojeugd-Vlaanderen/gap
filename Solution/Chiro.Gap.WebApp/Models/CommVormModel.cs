@@ -18,10 +18,10 @@ namespace Chiro.Gap.WebApp.Models
         public CommVormModel()
         {
             Aanvrager = new PersoonDetail();
-            NieuweCommVorm = new CommunicatieInfo();
+            NieuweCommVorm = new CommunicatieDetail();
         }
 
-        public CommVormModel(PersoonDetail aanvrager, CommunicatieInfo v) : this()
+        public CommVormModel(PersoonDetail aanvrager, CommunicatieDetail v) : this()
         {
             Aanvrager = aanvrager;
             NieuweCommVorm = v;
@@ -36,7 +36,7 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Nieuwe input voor de communicatievorm voor de gegeven gelieerde personen
 		/// </summary>
-		public CommunicatieInfo NieuweCommVorm { get; set; }
+		public CommunicatieDetail NieuweCommVorm { get; set; }
 	}
 }
 
