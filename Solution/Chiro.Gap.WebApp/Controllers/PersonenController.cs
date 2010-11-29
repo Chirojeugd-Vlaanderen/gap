@@ -359,18 +359,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (voorkeursComm != null)
 			{
 				//vermijd bloat van teveel over de lijn te sturen
-				var comminfo = new CommunicatieInfo()
-				                            	{
-				                            		ID = voorkeursComm.ID,
-				                            		CommunicatieTypeID = voorkeursComm.CommunicatieTypeID,
-				                            		CommunicatieTypeIsOptIn = voorkeursComm.CommunicatieTypeIsOptIn,
-				                            		IsGezinsGebonden = voorkeursComm.IsGezinsGebonden,
-				                            		IsVoorOptIn = voorkeursComm.IsVoorOptIn,
-				                            		Nota = voorkeursComm.Nota,
-                                                    Nummer = voorkeursComm.Nummer,
-													VersieString = voorkeursComm.VersieString,
-                                                    Voorkeur = voorkeursComm.Voorkeur
-				                            	};
+				var comminfo = new CommunicatieInfo(voorkeursComm);
 				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(ids.GelieerdePersoonID, comminfo));
 			}
 
@@ -913,18 +902,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			else
 			{
 				//vermijd bloat van teveel over de lijn te sturen
-				var comminfo = new CommunicatieInfo()
-				{
-					ID = model.NieuweCommVorm.ID,
-					CommunicatieTypeID = model.NieuweCommVorm.CommunicatieTypeID,
-					CommunicatieTypeIsOptIn = model.NieuweCommVorm.CommunicatieTypeIsOptIn,
-					IsGezinsGebonden = model.NieuweCommVorm.IsGezinsGebonden,
-					IsVoorOptIn = model.NieuweCommVorm.IsVoorOptIn,
-					Nota = model.NieuweCommVorm.Nota,
-					Nummer = model.NieuweCommVorm.Nummer,
-					VersieString = model.NieuweCommVorm.VersieString,
-					Voorkeur = model.NieuweCommVorm.Voorkeur
-				};
+				var comminfo = new CommunicatieInfo(model.NieuweCommVorm);
 				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(gelieerdePersoonID, comminfo));
 				return TerugNaarVorigeFiche();
 			}
@@ -996,7 +974,9 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 			else
 			{
-				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(model.NieuweCommVorm));
+				//Om bloat over de lijn te vermijden: downgraden naar minimale info
+				var comminfo = new CommunicatieInfo(model.NieuweCommVorm);
+				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormAanpassen(comminfo));
 				return TerugNaarVorigeFiche();
 			}
 			// TODO catch exceptions overal
@@ -1028,7 +1008,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// Toont de view 'CategorieToevoegen', die toelaat om personen in een categorie onder te
 		/// brengen.  
 		/// De ID's van onder te brengen personen worden opgevist uit TempData["list"].
-		/// TODO: Kan dat niet properder?
+		/// TODO: Kan dat niet properder? Door een POST te doen ipv een GET?
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarin de gebruiker momenteel aan het werken is</param>
 		/// <returns>De view 'CategorieToevoegen'</returns>

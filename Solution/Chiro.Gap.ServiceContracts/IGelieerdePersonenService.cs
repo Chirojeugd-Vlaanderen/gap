@@ -304,7 +304,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		void CommunicatieVormAanpassen(CommunicatieDetail c);
+		void CommunicatieVormAanpassen(CommunicatieInfo c);
 
 		/// <summary>
 		/// Haalt info over een bepaald communicatietype op, op basis van ID

@@ -17,6 +17,24 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	[DataContract]
 	public class CommunicatieInfo
 	{
+		public CommunicatieInfo()
+		{
+			
+		}
+
+		public CommunicatieInfo(CommunicatieDetail detail)
+		{
+			ID = detail.ID;
+			CommunicatieTypeID = detail.CommunicatieTypeID;
+			CommunicatieTypeIsOptIn = detail.CommunicatieTypeIsOptIn;
+			IsGezinsGebonden = detail.IsGezinsGebonden;
+			IsVoorOptIn = detail.IsVoorOptIn;
+			Nota = detail.Nota;
+			Nummer = detail.Nummer;
+			VersieString = detail.VersieString;
+			Voorkeur = detail.Voorkeur;
+		}
+
 		/// <summary>
 		/// Uniek identificatienummer
 		/// </summary>

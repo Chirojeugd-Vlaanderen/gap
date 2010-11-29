@@ -817,11 +817,11 @@ namespace Chiro.Gap.Services
 		/// Persisteert de wijzigingen aan een bestaande communicatievorm
 		/// </summary>
 		/// <param name="v">De aan te passen communicatievorm</param>
-		public void CommunicatieVormAanpassen(CommunicatieDetail v)
+		public void CommunicatieVormAanpassen(CommunicatieInfo v)
 		{
 			try
 			{
-				var communicatieVorm = Mapper.Map<CommunicatieDetail, CommunicatieVorm>(v);
+				var communicatieVorm = Mapper.Map<CommunicatieInfo, CommunicatieVorm>(v);
 				communicatieVorm.CommunicatieType = _cvMgr.CommunicatieTypeOphalen(v.CommunicatieTypeID);
 
 				var cv = _cvMgr.OphalenMetGelieerdePersoon(v.ID);
