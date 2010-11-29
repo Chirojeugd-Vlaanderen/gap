@@ -22,6 +22,8 @@ namespace Chiro.Gap.Workers.Test
 	[TestClass]
 	public class AutorisatieTest
 	{
+		private static DummyData _testData;
+
 		#region Additional test attributes
 		//
 		// You can use the following additional attributes as you write your tests:
@@ -48,6 +50,8 @@ namespace Chiro.Gap.Workers.Test
 		static public void InitialiseerTests(TestContext tc)
 		{
 			Factory.ContainerInit();
+			_testData = new DummyData();
+
 		}
 
 		[ClassCleanup]
@@ -189,7 +193,10 @@ namespace Chiro.Gap.Workers.Test
 		{
 			// Arrange
 
-			var testData = new DummyData();
+			// Gebruik static member variable _testData, zodat die gemaakt wordt vooraleer er ergens wordt
+			// gemockt.  (=> Fouten vermijden bij het maken van testdata)
+			var testData = _testData;
+
 			var ledenDaoMock = new Mock<ILedenDao>();
 			var groepenDaoMock = new Mock<IGroepenDao>();
 			var autorisatieMgrMock = new Mock<IAutorisatieManager>();
@@ -198,6 +205,7 @@ namespace Chiro.Gap.Workers.Test
 			ledenDaoMock.Setup(foo => foo.ActieveLedenOphalen(testData.HuidigGwj.ID, LidEigenschap.Naam)).Returns(new List<Lid>());
 			//ledenDaoMock.Setup(foo => foo.AllesOphalen(It.IsAny<int>(), LidEigenschap.Naam)).Returns(new List<Lid>());
 			autorisatieMgrMock.Setup(foo => foo.IsGavGroepsWerkJaar(testData.HuidigGwj.ID)).Returns(true);
+			autorisatieMgrMock.Setup(foo => foo.IsGavGroep(testData.DummyGroep.ID)).Returns(true);
 
 			groepsWerkJaarDaoMock.Setup(foo => foo.Ophalen(testData.HuidigGwj.ID, It.IsAny<Expression<Func<GroepsWerkJaar, object>>>())).Returns(testData.HuidigGwj);
 			groepsWerkJaarDaoMock.Setup(foo => foo.IsRecentste(testData.HuidigGwj.ID)).Returns(true);
@@ -278,6 +286,35 @@ namespace Chiro.Gap.Workers.Test
 			auManMock.VerifyAll();
 
 			#endregion
+		}
+
+		/// <summary>
+		/// Probeer een afdelingsjaar van een eigen afdeling te maken in een groep waar je
+		/// geen GAV van bent
+		/// </summary>
+		[TestMethod]
+		[ExpectedException(typeof(GeenGavException))]
+		public void AfdelingsJaarMakenAndereGroep()
+		{
+			var gwj = new GroepsWerkJaar {ID = 1};
+			var afd = new Afdeling();
+			var oa = new OfficieleAfdeling();
+
+			// Creer een AutorisatieManagerMock die zegt dat de gebruiker geen GAV is
+			// van het gegeven groepswerkjaar.
+
+			var auMgrMock = new Mock<IAutorisatieManager>();
+			auMgrMock.Setup(mgr => mgr.IsGavGroepsWerkJaar(1)).Returns(false);
+
+			Factory.InstantieRegistreren(auMgrMock.Object);
+
+			var ajMgr = Factory.Maak<AfdelingsJaarManager>();
+
+			ajMgr.Aanmaken(afd, oa, gwj, 200, 2001, GeslachtsType.Gemengd);
+
+			// Als we hier nog komen, heeft de verwachte exception zich niet voorgedaan.
+
+			Assert.IsTrue(false);
 		}
 
 		/// <summary>

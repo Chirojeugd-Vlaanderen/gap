@@ -19,7 +19,7 @@ namespace Chiro.Gap.Dummies
 	{
 		public IEnumerable<Leiding> OphalenUitGroepsWerkJaar(int groepsWerkJaarID, Expression<Func<Leiding, object>>[] paths)
 		{
-			throw new NotImplementedException();
+			return new List<Leiding>();
 		}
 
 		public IEnumerable<Leiding> OphalenUitAfdelingsJaar(int groepsWerkJaarID, int afdelingID, Expression<Func<Leiding, object>>[] paths)

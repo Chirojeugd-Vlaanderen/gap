@@ -240,4 +240,7 @@
   <data name="GeslachtVerplicht" xml:space="preserve">
     <value>Je probeerde iemand in te schrijven van wie het geslacht niet bekend is.</value>
   </data>
+  <data name="AfdelingNietVanGroep" xml:space="preserve">
+    <value>Je probeert een afdeling te activeren in een groepswerkjaar van een andere groep.  Prutser!</value>
+  </data>
 </root>

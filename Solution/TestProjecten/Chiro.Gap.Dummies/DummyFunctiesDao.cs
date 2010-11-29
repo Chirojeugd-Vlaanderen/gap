@@ -40,12 +40,14 @@ namespace Chiro.Gap.Dummies
 					Code = "GG1",
 					MaxAantal = 1,
 					MinAantal = 1,
+					Niveau = Niveau.LeidingInGroep,
 					IsNationaal = true},
 				new Functie {
 					ID = (int)NationaleFunctie.FinancieelVerantwoordelijke,
 					Code = "FI",
 					MaxAantal = 1,
 					MinAantal = 1,
+					Niveau = Niveau.LeidingInGroep,
 					IsNationaal = true}
 			};
 		}

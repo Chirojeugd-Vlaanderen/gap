@@ -88,6 +88,13 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
+			if (gwj.Groep.ID != a.ChiroGroep.ID)
+			{
+				throw new FoutNummerException(
+					FoutNummer.AfdelingNietVanGroep,
+					Properties.Resources.AfdelingNietVanGroep);
+			}
+
 			// Leden moeten minstens in het 1ste leerjaar zitten voor we ze inschrijven.
 			// De maximumleeftijd is arbitrair nattevingerwerk. :-)
 			if (!(gwj.WerkJaar - geboorteJaarEind >= Properties.Settings.Default.MinLidLeefTijd)

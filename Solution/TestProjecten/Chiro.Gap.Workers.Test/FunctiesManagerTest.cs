@@ -78,7 +78,7 @@ namespace Chiro.Gap.Workers.Test
 
 			// Act
 
-			fm.Toekennen(testData.LidJos, functies);
+			fm.Toekennen(testData.LeiderJos, functies);
 			fm.Toekennen(testData.LidYvonne, functies);
 
 			// Assert
@@ -113,8 +113,8 @@ namespace Chiro.Gap.Workers.Test
 
 			// Act
 
-			fm.Toekennen(testData.LidJos, functies);
-			fm.Toekennen(testData.LidJos, functies);
+			fm.Toekennen(testData.LeiderJos, functies);
+			fm.Toekennen(testData.LeiderJos, functies);
 
 			// Assert
 
@@ -149,7 +149,7 @@ namespace Chiro.Gap.Workers.Test
 
 			// Act
 
-			fm.Toekennen(testData.LidJos, functies);
+			fm.Toekennen(testData.LeiderJos, functies);
 
 			// Assert
 			Assert.IsTrue(false);
@@ -160,7 +160,7 @@ namespace Chiro.Gap.Workers.Test
 		/// </summary>
 		[ExpectedException(typeof(InvalidOperationException))]
 		[TestMethod]
-		public void ToekennenLeidingsFunctieAanLid()
+		public void ToekennenLidFunctieAanLeiding()
 		{
 			// Arrange
 
@@ -174,13 +174,13 @@ namespace Chiro.Gap.Workers.Test
 				testData.NieuweFunctieNaam,
 				testData.NieuweFunctieCode,
 				1, 0,
-				LidType.Leiding,
+				LidType.Kind,
 				testData.HuidigGwj.WerkJaar);
 
 			IEnumerable<Functie> functies = new Functie[] { f };
 
 			// Act
-			fm.Toekennen(testData.LidJos, functies);
+			fm.Toekennen(testData.LeiderJos, functies);
 
 			// Assert
 			Assert.IsTrue(false);
@@ -215,7 +215,7 @@ namespace Chiro.Gap.Workers.Test
 
 			// Act
 
-			fm.Toekennen(testData.LidJos, functies);
+			fm.Toekennen(testData.LeiderJos, functies);
 			fm.Toekennen(testData.LidYvonne, functies);
 
 			// Assert
@@ -248,7 +248,7 @@ namespace Chiro.Gap.Workers.Test
 
 			// Jos krijgt alle nationaal bepaalde functies, zodat eventuele verplichte
 			// nationaal bepaalde functies OK zijn.
-			fm.Toekennen(testData.LidJos, fm.NationaalBepaaldeFunctiesOphalen());
+			fm.Toekennen(testData.LeiderJos, fm.NationaalBepaaldeFunctiesOphalen());
 
 			// Act
 
@@ -369,17 +369,17 @@ namespace Chiro.Gap.Workers.Test
 			var natBepFuncties = fm.NationaalBepaaldeFunctiesOphalen();
 			// we weten dat er minstens 2 nat. bepaalde functies zijn.
 			IEnumerable<Functie> functies = new Functie[] { f, natBepFuncties.First() };
-			fm.Toekennen(testData.LidJos, functies);
+			fm.Toekennen(testData.LeiderJos, functies);
 
 			// Act
 
-			fm.Vervangen(testData.LidJos, natBepFuncties);
+			fm.Vervangen(testData.LeiderJos, natBepFuncties);
 
 			// Assert
 
-			Assert.IsTrue(testData.LidJos.Functie.Contains(natBepFuncties.First()));
-			Assert.IsTrue(testData.LidJos.Functie.Contains(natBepFuncties.Last()));
-			Assert.IsFalse(testData.LidJos.Functie.Contains(f));
+			Assert.IsTrue(testData.LeiderJos.Functie.Contains(natBepFuncties.First()));
+			Assert.IsTrue(testData.LeiderJos.Functie.Contains(natBepFuncties.Last()));
+			Assert.IsFalse(testData.LeiderJos.Functie.Contains(f));
 		}
 	}
 }

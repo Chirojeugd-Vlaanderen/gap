@@ -22,7 +22,7 @@ namespace Chiro.Gap.Dummies
 		private readonly GelieerdePersoon _gelieerdeYvonne; // gelieerdePersoon genaamd 'Yvonne'
 		private readonly Categorie _vervelend;		// categorie voor vervelende mensen
 		private readonly Functie _redactie;		// functie voor 1 persoon
-		private readonly Lid _lidJos;			// lidobject Jos
+		private readonly Lid _leiderJos;			// lidobject Jos
 		private readonly Lid _lidYvonne;			// lidobject Yvonne
 
 		/// <summary>
@@ -53,7 +53,7 @@ namespace Chiro.Gap.Dummies
 		/// <summary>
 		/// Jos' lidobject
 		/// </summary>
-		public Lid LidJos { get { return _lidJos; } }
+		public Lid LeiderJos { get { return _leiderJos; } }
 
 		/// <summary>
 		/// Yvonnes lidobject
@@ -120,23 +120,25 @@ namespace Chiro.Gap.Dummies
 			{
 				Naam = "Bosmans",
 				VoorNaam = "Jos",
-				GeboorteDatum = new DateTime(2000, 6, 28),
-				AdNummer = 1
+				GeboorteDatum = new DateTime(1988, 6, 28),	// oud genoeg, zodat hij leider wordt :)
+				AdNummer = 1,
+				Geslacht = GeslachtsType.Man
 			};
 
 			var irene = new Persoon
 			{
 				Naam = "Bosmans",
 				VoorNaam = "Irène",
-				GeboorteDatum = new DateTime(1990, 3, 8)
+				GeboorteDatum = new DateTime(1990, 3, 8),
+				Geslacht = GeslachtsType.Vrouw
 			};
 
 			var yvonne = new Persoon
 			{
 				Naam = "Bosmans",
 				VoorNaam = "Yvonne",
-				GeboorteDatum = new DateTime(1999, 3, 8)
-
+				GeboorteDatum = new DateTime(1999, 3, 8),
+				Geslacht = GeslachtsType.Vrouw
 			};
 
 			_gelieerdeJos = gpMgr.Koppelen(jos, _dummyGroep, 0);
@@ -149,18 +151,18 @@ namespace Chiro.Gap.Dummies
 			// We moeten hier expliciet lid maken in _huidigGwj, anders werken een aantal
 			// unit tests niet meer.  (Zie #259)
 
-			_lidJos = lMgr.Inschrijven(_gelieerdeJos, _huidigGwj, false);
+			_leiderJos = lMgr.Inschrijven(_gelieerdeJos, _huidigGwj, false);
 			_lidYvonne = lMgr.Inschrijven(_gelieerdeYvonne, _huidigGwj, false);
 
 			// ID's worden niet toegekend als de DAO's gemockt zijn, dus delen we die manueel
 			// uit.
 
-			_lidJos.ID = 1;
+			_leiderJos.ID = 1;
 			_lidYvonne.ID = 2;
 
 			// Jos krijgt een functie
 
-			fMgr.Toekennen(_lidJos, new Functie[] { _redactie });
+			fMgr.Toekennen(_leiderJos, new Functie[] { _redactie });
 		}
 
 		/// <summary>

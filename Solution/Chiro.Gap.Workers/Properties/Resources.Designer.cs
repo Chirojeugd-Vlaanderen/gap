@@ -79,6 +79,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je probeert een afdeling te activeren in een groepswerkjaar van een andere groep.  Prutser!.
+        /// </summary>
+        internal static string AfdelingNietVanGroep {
+            get {
+                return ResourceManager.GetString("AfdelingNietVanGroep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AfdelingsJaar kan niet verwijderd worden omdat er nog leden of leiding in deze afdeling zitten..
         /// </summary>
         internal static string AfdelingsJaarBevatLeden {

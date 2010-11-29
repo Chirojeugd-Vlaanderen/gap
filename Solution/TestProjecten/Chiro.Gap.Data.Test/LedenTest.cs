@@ -64,7 +64,7 @@ namespace Chiro.Gap.Data.Test
 			var afdelingsJaarID = TestInfo.AFDELINGSJAAR1ID;
 
 			var ajdao = Factory.Maak<IDao<AfdelingsJaar>>();
-			var aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep);
+			var aj = ajdao.Ophalen(afdelingsJaarID, lmb => lmb.GroepsWerkJaar.Groep, afj => afj.OfficieleAfdeling);
 
 			// Voeg kind toe (GelieerdePersoonID2 in AfdelingsJaarID) om in test te kunnen verwijderen
 
