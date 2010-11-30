@@ -860,6 +860,9 @@ namespace Chiro.Gap.WebApp.Controllers
 				CommunicatieTypeInfo>(svc => svc.CommunicatieTypeOphalen(
 					model.NieuweCommVorm.CommunicatieTypeID));
 
+			// Ik begrijp onderstaande code niet.  Wordt automapper hier gebruikt om te klonen?
+			// En zo ja: wat is de meerwaarde?
+
 			Mapper.CreateMap<CommunicatieDetail, CommunicatieDetail>()
 				.ForMember(dst => dst.CommunicatieTypeValidatie, opt => opt.Ignore());
 

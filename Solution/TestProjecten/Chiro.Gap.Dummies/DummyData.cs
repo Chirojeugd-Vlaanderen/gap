@@ -16,14 +16,19 @@ namespace Chiro.Gap.Dummies
 		private const string NIEUWEFUNNAAM = "Domme functie";
 
 		private readonly ChiroGroep _dummyGroep;		// testgroep
-		private readonly GroepsWerkJaar _huidigGwj;	// testgroepswerkjaar
+		private readonly KaderGroep _dummyGewest;		// testgewest
+		private readonly GroepsWerkJaar _huidigGwj;		// testgroepswerkjaar
+		private readonly GroepsWerkJaar _gwjGewest;		// groepswerkjaar van het gewest
 		private readonly GelieerdePersoon _gelieerdeJos;	// gelieerdePersoon genaamd 'Jos' 
 		private readonly GelieerdePersoon _gelieerdeIrene; // gelieerdePersoon genaamd 'Irene'
 		private readonly GelieerdePersoon _gelieerdeYvonne; // gelieerdePersoon genaamd 'Yvonne'
+		private readonly GelieerdePersoon _gelieerdeKaderJos;	// Jos gekoppeld aan het gewest
 		private readonly Categorie _vervelend;		// categorie voor vervelende mensen
 		private readonly Functie _redactie;		// functie voor 1 persoon
+		private readonly Functie _algemeneFunctie;		// domme algemene functie
 		private readonly Lid _leiderJos;			// lidobject Jos
 		private readonly Lid _lidYvonne;			// lidobject Yvonne
+		private readonly Lid _kaderJos;				// lidobject Jos in het gewest
 
 		/// <summary>
 		/// Een groep met daaraan gekoppeld een aantal leden
@@ -31,9 +36,19 @@ namespace Chiro.Gap.Dummies
 		public Groep DummyGroep { get { return _dummyGroep; } }
 
 		/// <summary>
+		/// Een gewest
+		/// </summary>
+		public KaderGroep DummyGewest { get { return _dummyGewest;  } }
+
+		/// <summary>
 		/// Huidig groepswerkjaar voor de testgroep
 		/// </summary>
 		public GroepsWerkJaar HuidigGwj { get { return _huidigGwj; } }
+
+		/// <summary>
+		/// Huidig groepswerkjaar voor het testgewest
+		/// </summary>
+		public GroepsWerkJaar GwjGewest { get { return _gwjGewest; } }
 
 		/// <summary>
 		/// De gelieerde testpersoon 'Jos'
@@ -51,6 +66,11 @@ namespace Chiro.Gap.Dummies
 		public GelieerdePersoon GelieerdeYvonne { get { return _gelieerdeYvonne; } }
 
 		/// <summary>
+		/// Jos gekoppeld aan het gewest
+		/// </summary>
+		public GelieerdePersoon GelieerdeKaderJos { get { return _gelieerdeKaderJos; } }
+
+		/// <summary>
 		/// Jos' lidobject
 		/// </summary>
 		public Lid LeiderJos { get { return _leiderJos; } }
@@ -61,6 +81,11 @@ namespace Chiro.Gap.Dummies
 		public Lid LidYvonne { get { return _lidYvonne; } }
 
 		/// <summary>
+		/// Jos' lidobject in het kader
+		/// </summary>
+		public Lid KaderJos { get { return _kaderJos; } }
+
+		/// <summary>
 		/// De categorie voor vervelende mensen
 		/// </summary>
 		public Categorie Vervelend { get { return _vervelend; } }
@@ -69,6 +94,11 @@ namespace Chiro.Gap.Dummies
 		/// Functie voor 1 persoon
 		/// </summary>
 		public Functie UniekeFunctie { get { return _redactie; } }
+
+		/// <summary>
+		/// Algemene functie, van toepassing op eender welk lid
+		/// </summary>
+		public Functie AlgemeneFunctie { get { return _algemeneFunctie; } }
 
 
 		/// <summary>
@@ -92,8 +122,11 @@ namespace Chiro.Gap.Dummies
 
 			// Groep en groepswerkjaar
 
-			_dummyGroep = new ChiroGroep { Naam = "St.-Unittestius", Code = "tst/0001" };
+			_dummyGewest = new KaderGroep { Naam = "Gewest Test", Code = "tst/0000", NiveauInt = 8};
+
+			_dummyGroep = new ChiroGroep { Naam = "St.-Unittestius", Code = "tst/0001", KaderGroep = _dummyGewest};
 			_huidigGwj = gMgr.GroepsWerkJaarMaken(_dummyGroep, 2009);
+			_gwjGewest = gMgr.GroepsWerkJaarMaken(_dummyGewest, 2009);
 
 			// Categorie
 
@@ -102,6 +135,16 @@ namespace Chiro.Gap.Dummies
 			// Functie (nationaal bepaald, maar dit ter zijde)
 
 			_redactie = gMgr.FunctieToevoegen(_dummyGroep, "Hoofdredacteur boekje", "HRE", 1, 0, LidType.Alles, null);
+			_algemeneFunctie = new Functie
+			                   	{
+			                   		Code = "ALGF",
+			                   		Naam = "Algemene Functie",
+			                   		MinAantal = 0,
+			                   		MaxAantal = null,
+			                   		Niveau = Niveau.Alles,
+							IsNationaal = true,
+			                   		Groep = null		// 't is een nationale functie
+			                   	};
 
 			// Afdelingen gekoppeld aan officiële afdelingen in afdelingsjaren
 
@@ -144,6 +187,7 @@ namespace Chiro.Gap.Dummies
 			_gelieerdeJos = gpMgr.Koppelen(jos, _dummyGroep, 0);
 			_gelieerdeIrene = gpMgr.Koppelen(irene, _dummyGroep, 0);
 			_gelieerdeYvonne = gpMgr.Koppelen(yvonne, _dummyGroep, 0);
+			_gelieerdeKaderJos = gpMgr.Koppelen(jos, _dummyGewest, 0);
 
 			// Koppelingen allerhanden
 			gpMgr.CategorieKoppelen(new GelieerdePersoon[] { _gelieerdeJos }, _vervelend);
@@ -153,16 +197,19 @@ namespace Chiro.Gap.Dummies
 
 			_leiderJos = lMgr.Inschrijven(_gelieerdeJos, _huidigGwj, false);
 			_lidYvonne = lMgr.Inschrijven(_gelieerdeYvonne, _huidigGwj, false);
+			_kaderJos = lMgr.Inschrijven(_gelieerdeKaderJos, _gwjGewest, false);
 
 			// ID's worden niet toegekend als de DAO's gemockt zijn, dus delen we die manueel
 			// uit.
 
 			_leiderJos.ID = 1;
 			_lidYvonne.ID = 2;
+			_kaderJos.ID = 3;
 
 			// Jos krijgt een functie
 
 			fMgr.Toekennen(_leiderJos, new Functie[] { _redactie });
+			fMgr.Toekennen(_kaderJos, new Functie[] {_algemeneFunctie});
 		}
 
 		/// <summary>

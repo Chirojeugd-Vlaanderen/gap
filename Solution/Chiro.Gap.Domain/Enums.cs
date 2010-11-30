@@ -54,7 +54,8 @@ namespace Chiro.Gap.Domain
 		[EnumMember] Groep = LidInGroep | LeidingInGroep,
 		[EnumMember] Gewest = 0x08,
 		[EnumMember] Verbond = 0x20,
-		[EnumMember] Nationaal = 0x80
+		[EnumMember] Nationaal = 0x80,
+		[EnumMember] Alles = Satelliet|Groep|Gewest|Verbond|Nationaal
 	};
 
 	/// <summary>
