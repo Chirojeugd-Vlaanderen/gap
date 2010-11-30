@@ -77,7 +77,7 @@ namespace Chiro.Gap.Sync.Test
 		static public void InitialiseerTests(TestContext tc)
 		{
 			Factory.ContainerInit();
-
+			MappingHelper.MappingsDefinieren();
 		}
 
 		[ClassCleanup]

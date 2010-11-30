@@ -187,10 +187,7 @@ namespace Chiro.Gap.Sync
 			Debug.Assert(l.GroepsWerkJaar != null);
 			Debug.Assert(l.GroepsWerkJaar.Groep != null);
 
-			var chiroGroep = (l.GroepsWerkJaar.Groep as ChiroGroep);
 			// TODO (#555): Dit gaat problemen geven met oud-leidingsploegen
-
-			Debug.Assert(chiroGroep != null);
 
 			var kipFunctieIDs = (from f in l.Functie
 			                     where f.IsNationaal
@@ -198,7 +195,7 @@ namespace Chiro.Gap.Sync
 
 			_svc.FunctiesUpdaten(Mapper.Map<Persoon, SyncService.Persoon>(
 				l.GelieerdePersoon.Persoon),
-			                     chiroGroep.Code,
+			                     l.GroepsWerkJaar.Groep.Code,
 			                     l.GroepsWerkJaar.WerkJaar,
 			                     kipFunctieIDs);
 		}

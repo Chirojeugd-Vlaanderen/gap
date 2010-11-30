@@ -25,7 +25,7 @@ namespace Chiro.Gap.Dummies
 		private readonly GelieerdePersoon _gelieerdeKaderJos;	// Jos gekoppeld aan het gewest
 		private readonly Categorie _vervelend;		// categorie voor vervelende mensen
 		private readonly Functie _redactie;		// functie voor 1 persoon
-		private readonly Functie _algemeneFunctie;		// domme algemene functie
+		private readonly Functie _contactPersoonFunctie;		// domme algemene functie
 		private readonly Lid _leiderJos;			// lidobject Jos
 		private readonly Lid _lidYvonne;			// lidobject Yvonne
 		private readonly Lid _kaderJos;				// lidobject Jos in het gewest
@@ -98,7 +98,7 @@ namespace Chiro.Gap.Dummies
 		/// <summary>
 		/// Algemene functie, van toepassing op eender welk lid
 		/// </summary>
-		public Functie AlgemeneFunctie { get { return _algemeneFunctie; } }
+		public Functie ContactPersoonFunctie { get { return _contactPersoonFunctie; } }
 
 
 		/// <summary>
@@ -135,9 +135,10 @@ namespace Chiro.Gap.Dummies
 			// Functie (nationaal bepaald, maar dit ter zijde)
 
 			_redactie = gMgr.FunctieToevoegen(_dummyGroep, "Hoofdredacteur boekje", "HRE", 1, 0, LidType.Alles, null);
-			_algemeneFunctie = new Functie
+			_contactPersoonFunctie = new Functie
 			                   	{
-			                   		Code = "ALGF",
+							ID = (int)NationaleFunctie.ContactPersoon,
+			                   		Code = "CP",
 			                   		Naam = "Algemene Functie",
 			                   		MinAantal = 0,
 			                   		MaxAantal = null,
@@ -209,7 +210,7 @@ namespace Chiro.Gap.Dummies
 			// Jos krijgt een functie
 
 			fMgr.Toekennen(_leiderJos, new Functie[] { _redactie });
-			fMgr.Toekennen(_kaderJos, new Functie[] {_algemeneFunctie});
+			fMgr.Toekennen(_kaderJos, new Functie[] {_contactPersoonFunctie});
 		}
 
 		/// <summary>
