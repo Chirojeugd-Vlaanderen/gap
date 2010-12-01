@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.ResubmitDeadMessa
 		{EE6869D3-FA60-4DBA-9A0D-F459F8DC6E9B} = {EE6869D3-FA60-4DBA-9A0D-F459F8DC6E9B}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.SyncServiceHost", "Chiro.Kip.SyncService\Chiro.Kip.SyncServiceHost.csproj", "{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = KipSync.vsmdi
@@ -98,6 +100,10 @@ Global
 		{E9F46B15-1925-4FEF-AA2B-596E6C7BF5A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9F46B15-1925-4FEF-AA2B-596E6C7BF5A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9F46B15-1925-4FEF-AA2B-596E6C7BF5A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
