@@ -22,7 +22,7 @@ namespace Chiro.Kip.SyncService
 
 		protected override void OnStart(string[] args)
 		{
-			Trace.WriteLine("KipSync wordt gestart");
+			Trace.WriteLine("KipSync v. 2010-12-06 wordt gestart");
 
 			_host = new ServiceHost<SyncPersoonService>();
 
@@ -33,7 +33,7 @@ namespace Chiro.Kip.SyncService
 		{
 			if (_host != null)
 			{
-				Trace.WriteLine("KipSync wordt gestopt");
+				Trace.WriteLine("KipSync v. 2010-12-06 wordt gestopt");
 
 				_host.Close();
 				_host = null;

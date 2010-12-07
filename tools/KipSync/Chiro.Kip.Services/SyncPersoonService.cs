@@ -921,12 +921,13 @@ namespace Chiro.Kip.Services
 
 				if (lid == null)
 				{
-					throw new InvalidOperationException(String.Format(
+					_log.FoutLoggen(0,String.Format(
 						Properties.Resources.LidNietGevonden,
 						pers.VoorNaam,
 						pers.Naam,
 						stamNummer,
 						werkJaar));
+					return;
 				}
 				// pragmatisch: eerst bestaande functies verwijderen.
 
@@ -979,6 +980,7 @@ namespace Chiro.Kip.Services
 						if (cg != null)
 						{
 							cg.BET_ADNR = lid.Persoon.AdNummer;
+							cg.STEMPEL = DateTime.Now;
 						}
 
 						feedback.AppendLine("'BET_ADNR' bijgewerkt");
