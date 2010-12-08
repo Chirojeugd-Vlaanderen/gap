@@ -10,6 +10,7 @@ namespace Chiro.Voorbeeld.LambdaExpressies
 		static void Main(string[] args)
 		{
 			Voorbeeld1.Uitvoeren();
+			Voorbeeld2.Uitvoeren();
 
 			// Wacht op een ENTER van de gebruiker, om
 			// te vermijden dat Windows de terminal 

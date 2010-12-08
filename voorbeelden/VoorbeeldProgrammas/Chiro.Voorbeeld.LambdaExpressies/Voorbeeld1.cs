@@ -5,6 +5,8 @@ using System.Text;
 
 namespace Chiro.Voorbeeld.LambdaExpressies
 {
+	// Dit voorbeeld laat zien hoe je m.b.v. lambda-expressies op 
+	// eenvoudige manier een delegate kan maken.
 	public class Voorbeeld1
 	{
 		// Een eenvoudige functie die een gewicht in pounds omzet
@@ -54,7 +56,7 @@ namespace Chiro.Voorbeeld.LambdaExpressies
 			// Oproepen gebeurt op dezelfde manier:
 
 			Console.WriteLine(
-				"0 Fahrenheit komt overeen met {0} graden Celcius.",
+				"0 Fahrenheit komt overeen met {0} graden Celcius.\n\n",
 				conversie2(0));
 		}
 	}
