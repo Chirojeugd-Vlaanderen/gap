@@ -37,26 +37,67 @@ namespace Chiro.Gap.LidSyncer
 			auMgrMock.Setup(mgr => mgr.IsSuperGav()).Returns(true);
 			auMgrMock.Setup(mgr => mgr.IsGavGelieerdePersoon(It.IsAny<int>())).Returns(true);
 			auMgrMock.Setup(mgr => mgr.EnkelMijnGelieerdePersonen(It.IsAny<IEnumerable<int>>())).Returns<IEnumerable<int>>(bla => bla.ToList());
+			auMgrMock.Setup(mgr => mgr.IsGavLid(It.IsAny<int>())).Returns(true);
+
 			// nifty ;-P
 
 			Factory.InstantieRegistreren(auMgrMock.Object);
 
 
-			var gpMgr = Factory.Maak<GelieerdePersonenManager>();
 
 			//// Fixen dubbelpuntabonnementen die niet goed overgezet zijn
+			// var gpMgr = Factory.Maak<GelieerdePersonenManager>();
 			// gpMgr.FixDubbelPunt();
 
 			//// Manueel verloren dubbelpunt rechttrekken
-			// HardCodedDubbelpunt();
+			// DubbelpuntOpnieuwBestellen();
 
-			// Overzetten leden na probeerperiode
 
-			var ledenMgr = Factory.Maak<LedenManager>();
-			ledenMgr.OverZettenNaProbeerPeriode();
+			// Verloren contactpersonen opnieuw overzetten
+			FunctiesOpnieuwOverzetten();
+
+			
+			//// Overzetten leden na probeerperiode
+
+			//var ledenMgr = Factory.Maak<LedenManager>();
+			//ledenMgr.OverZettenNaProbeerPeriode();
 		}
 
-		private static void HardCodedDubbelpunt()
+		private static void FunctiesOpnieuwOverzetten()
+		{
+			int[] lidIdLijst = {
+			                   	197632, 197426, 207313, 216112, 260406, 222769, 274921, 238046, 256624,
+			                   	189647, 243777, 172845, 236622, 259345, 262772, 211268, 199815, 195680,
+			                   	188216, 245108, 187845, 175417, 186194, 234284, 252508, 244172, 175615,
+			                   	191639, 200744, 254182, 260274, 253738, 201582, 204603, 176995, 233172,
+			                   	252430, 286469, 180956, 189372, 209909, 213401, 172661, 213659, 171348,
+			                   	171444, 224243, 248080, 179503, 212532, 241254, 268307, 209988, 191447,
+			                   	215311, 188274, 183011, 289182, 212218, 212097, 182346, 278579, 177176,
+			                   	199476, 207851, 177838, 195913, 188129, 173697, 222518, 210559, 260640,
+			                   	208778, 248842, 191411, 227951, 257528, 198180, 241673, 255166
+			                   };
+
+			var ledenMgr = Factory.Maak<LedenManager>();
+			var functiesMgr = Factory.Maak<FunctiesManager>();
+
+			foreach (int lidID in lidIdLijst)
+			{
+				// Haal lid op, en vervang functies door huidige
+				// functies.
+				// (Wat op zich niets doet, maar wat wel de functies
+				// opnieuw over de lijn stuurt.)
+
+				var l = ledenMgr.Ophalen(lidID, LidExtras.Functies|LidExtras.Groep);
+
+				if (l != null)
+				{
+					functiesMgr.Vervangen(l, l.Functie);
+				}
+			}
+
+		}
+
+		private static void DubbelpuntOpnieuwBestellen()
 		{
 			int[] gpIdLijst = { 4350, 4352, 4353, 4354, 4356, 4357, 6760, 6762, 6766, 6787, 6791, 6797,
 						7552, 7556, 7580, 7586, 7595, 7634, 7644, 7651, 7658, 7663, 7691, 7703,
