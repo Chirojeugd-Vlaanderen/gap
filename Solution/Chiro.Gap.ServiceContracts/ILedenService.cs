@@ -108,47 +108,21 @@ namespace Chiro.Gap.ServiceContracts
 		PersoonLidInfo DetailsOphalen(int lidID);
 
 		/// <summary>
-		/// Haalt informatie op over alle *actieve* leden uit het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
-		/// die lid zijn in de afdeling bepaald door <paramref name="afdID"/>.
+		/// Zoekt leden op, op basis van de gegeven <paramref name="filter"/>.
 		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waaruit de leden opgehaald moeten worden</param>
-		/// <param name="afdID">ID van de afdeling waaruit de leden opgehaald moeten worden.</param>
-		/// <param name="metAdressen">Indien false, worden geen adressen mee opgehaald, wat deze
-		/// method een stuk sneller maakt.</param>
-		/// <returns>Een rij 'LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
+		/// <param name="filter">De niet-nulle properties van de filter
+		/// bepalen waarop gezocht moet worden</param>
+		/// <param name="metAdressen">Indien <c>true</c>, worden de
+		/// adressen mee opgehaald. (Adressen ophalen vertraagt aanzienlijk.)
+		/// </param>
+		/// <returns>Lijst met info over gevonden leden</returns>
+		/// <remarks>
+		/// Er worden enkel actieve leden opgehaald
+		/// </remarks>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<LidOverzicht> OphalenUitAfdelingsJaar(
-			int groepsWerkJaarID, 
-			int afdID,
-			bool metAdressen);
-
-		/// <summary>
-		/// Haalt informatie op over alle leden uit het groepswerkjaar bepaald door 
-		/// <paramref name="groepsWerkJaarID"/> die de functie bepaald door <paramref name="functieID"/> hebben.
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van groepswerkjaar waaruit leden moeten worden opgehaald</param>
-		/// <param name="functieID">ID van functie die opgehaalde leden moeten hebben</param>
-		/// <param name="metAdressen">Indien false, worden geen adressen mee opgehaald, wat deze
-		/// method een stuk sneller maakt.</param>
-		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
-		[OperationContract]
-		[FaultContract(typeof(GapFault))]
-		[FaultContract(typeof(FoutNummerFault))]
-		IList<LidOverzicht> OphalenUitFunctie(int groepsWerkJaarID, int functieID, bool metAdressen);
-
-		/// <summary>
-		/// Haalt informatie op over alle *actieve* leden uit een gegeven groepswerkjaar
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waaruit de leden moeten worden opgehaald</param>
-		/// <param name="metAdressen">Indien false, worden geen adressen mee opgehaald, wat deze
-		/// method een stuk sneller maakt.</param>
-		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
-		[OperationContract]
-		[FaultContract(typeof(GapFault))]
-		[FaultContract(typeof(FoutNummerFault))]
-		IList<LidOverzicht> OphalenUitWerkJaar(int groepsWerkJaarID, bool metAdressen);
+		IList<LidOverzicht> Zoeken(LidFilter filter, bool metAdressen);
 
 		#endregion
 
@@ -172,15 +146,5 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		int TypeToggle(int id);
-
-		/// <summary>
-		/// Haalt alle probeerleden op van de groep met ID <paramref name="groepID"/>
-		/// </summary>
-		/// <param name="groepID">ID van groep met op te halen probeerleden</param>
-		/// <returns>Lijst met info over de probeerleden</returns>
-		[OperationContract]
-		[FaultContract(typeof(GapFault))]
-		[FaultContract(typeof(FoutNummerFault))]		
-		IList<LidOverzicht> ProbeerLedenOphalen(int groepID);
 	}
 }

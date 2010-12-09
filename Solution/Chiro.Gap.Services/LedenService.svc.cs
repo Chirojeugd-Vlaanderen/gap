@@ -210,6 +210,86 @@ namespace Chiro.Gap.Services
 			}
 		}
 
+		/// <summary>
+		/// 'Togglet' het vlagje 'lidgeld betaald' van het lid met LidID <paramref name="id"/>.  Geeft als resultaat
+		/// het GelieerdePersoonID.  (Niet proper, maar wel interessant voor redirect.)
+		/// </summary>
+		/// <param name="id">ID van lid met te togglen lidgeld</param>
+		/// <returns>GelieerdePersoonID van lid</returns>
+		public int LidGeldToggle(int id)
+		{
+			try
+			{
+				var lid = _ledenMgr.Ophalen(id, LidExtras.Persoon);
+
+				// Eigenlijk heeft het weinig zin om dat nullable te maken...
+				lid.LidgeldBetaald = (lid.LidgeldBetaald == null || lid.LidgeldBetaald == false);
+				_ledenMgr.Bewaren(lid, LidExtras.Geen);
+				return lid.GelieerdePersoon.ID;
+			}
+			catch (GeenGavException ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return 0;
+			}
+		}
+
+		/// <summary>
+		/// Verandert een kind in leiding of vice versa
+		/// </summary>
+		/// <param name="id">ID van lid met te togglen lidtype</param>
+		/// <returns>GelieerdePersoonID van lid</returns>
+		public int TypeToggle(int id)
+		{
+			LidType oorspronkelijkType = LidType.Alles;
+
+			try
+			{
+				Lid l = _ledenMgr.Ophalen(
+					id,
+					LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Groep | LidExtras.Persoon | LidExtras.AlleAfdelingen);
+
+				oorspronkelijkType = l.Type;
+				int gpID = l.GelieerdePersoon.ID;
+
+				_ledenMgr.TypeToggle(l);
+
+				return gpID;
+
+			}
+			catch (GeenGavException ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return 0;
+			}
+			catch (InvalidOperationException ex)
+			{
+				// TODO (#761): Ervoor zorgen dat LidMaken/LeidingMaken duidelijkere exceptions throwen.
+				// Als workaround een andere exception laten afhandelen
+
+				FoutNummer nr;
+
+				switch (oorspronkelijkType)
+				{
+					case LidType.Kind:
+						// Fout bij omschakelen kind -> leiding: geef leidingfout
+						nr = FoutNummer.AlgemeneLeidingFout;
+						break;
+					case LidType.Leiding:
+						// Fout bij omschakelen leiding -> kind: geef kindfout
+						nr = FoutNummer.AlgemeneKindFout;
+						break;
+					default:
+						nr = FoutNummer.AlgemeneFout;
+						break;
+				}
+
+				FoutAfhandelaar.FoutAfhandelen(new FoutNummerException(nr, ex.Message));
+				return 0;
+			}
+		}
+
+
 		#endregion
 
 		#region verzekeren
@@ -348,208 +428,7 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
-		/// Haalt informatie op over alle *actieve* leden uit het groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
-		/// die lid zijn in de afdeling bepaald door <paramref name="afdID"/>.
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waaruit de leden opgehaald moeten worden</param>
-		/// <param name="afdID">ID van de afdeling waaruit de leden opgehaald moeten worden.</param>
-		/// <param name="metAdressen">Indien false, worden geen adressen mee opgehaald, wat alles een pak
-		/// sneller maakt.</param>
-		/// <returns>Een rij 'LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
-		public IList<LidOverzicht> OphalenUitAfdelingsJaar(int groepsWerkJaarID, int afdID, bool metAdressen)
-		{
-			try
-			{
-				var extras = LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Communicatie;
-
-				if (metAdressen)
-				{
-					extras |= LidExtras.VoorkeurAdres;
-				}
-
-				var result = _ledenMgr.PaginaOphalenVolgensAfdeling(
-					groepsWerkJaarID,
-					afdID,
-					extras).ToList();
-				
-				return Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(result);
-			}
-			catch (Exception ex)
-			{
-				FoutAfhandelaar.FoutAfhandelen(ex);
-				return null;
-			}
-		}
-
-		/// <summary>
-		/// Haalt informatie op over alle leden uit het groepswerkjaar bepaald door 
-		/// <paramref name="groepsWerkJaarID"/> die de functie bepaald door <paramref name="functieID"/> hebben.
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van groepswerkjaar waaruit leden moeten worden opgehaald</param>
-		/// <param name="functieID">ID van functie die opgehaalde leden moeten hebben</param>
-		/// <param name="metAdressen">Indien false, worden geen adressen mee opgehaald, wat
-		/// alles een pak sneller maakt.</param>
-		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
-		public IList<LidOverzicht> OphalenUitFunctie(int groepsWerkJaarID, int functieID, bool metAdressen)
-		{
-			try
-			{
-				var extras = LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Communicatie;
-
-				if (metAdressen)
-				{
-					extras |= LidExtras.VoorkeurAdres;
-				}
-
-				var leden = _ledenMgr.PaginaOphalenVolgensFunctie(
-					groepsWerkJaarID,
-					functieID,
-					extras).ToList();
-
-				return Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(leden);
-			}
-			catch (Exception ex)
-			{
-				FoutAfhandelaar.FoutAfhandelen(ex);
-				return null;
-			}
-		}
-
-		/// <summary>
-		/// Haalt informatie op over alle *actieve* leden uit een gegeven groepswerkjaar
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waaruit de leden moeten worden opgehaald</param>
-		/// <param name="metAdressen">Indien false, worden geen adressen mee opgehaald, wat het boeltje aanzienlijk
-		/// sneller maakt.</param>
-		/// <returns>Een rij `LidOverzicht'-objecten met informatie over de betreffende leden.</returns>
-		public IList<LidOverzicht> OphalenUitWerkJaar(int groepsWerkJaarID, bool metAdressen)
-		{
-			try
-			{
-				var extras = LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Communicatie;
-
-				if (metAdressen)
-				{
-					extras |= LidExtras.VoorkeurAdres;
-				}
-				var leden = _ledenMgr.PaginaOphalen(
-					groepsWerkJaarID,
-					extras);
-				var resultaat = Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(leden);
-
-				return resultaat;
-			}
-			catch (Exception ex)
-			{
-				FoutAfhandelaar.FoutAfhandelen(ex);
-				return null;
-			}
-		}
-
-		/// <summary>
-		/// 'Togglet' het vlagje 'lidgeld betaald' van het lid met LidID <paramref name="id"/>.  Geeft als resultaat
-		/// het GelieerdePersoonID.  (Niet proper, maar wel interessant voor redirect.)
-		/// </summary>
-		/// <param name="id">ID van lid met te togglen lidgeld</param>
-		/// <returns>GelieerdePersoonID van lid</returns>
-		public int LidGeldToggle(int id)
-		{
-			try
-			{
-				var lid = _ledenMgr.Ophalen(id, LidExtras.Persoon);
-
-				// Eigenlijk heeft het weinig zin om dat nullable te maken...
-				lid.LidgeldBetaald = (lid.LidgeldBetaald == null || lid.LidgeldBetaald == false);
-				_ledenMgr.Bewaren(lid, LidExtras.Geen);
-				return lid.GelieerdePersoon.ID;
-			}
-			catch (GeenGavException ex)
-			{
-				FoutAfhandelaar.FoutAfhandelen(ex);
-				return 0;
-			}
-		}
-
-		/// <summary>
-		/// Verandert een kind in leiding of vice versa
-		/// </summary>
-		/// <param name="id">ID van lid met te togglen lidtype</param>
-		/// <returns>GelieerdePersoonID van lid</returns>
-		public int TypeToggle(int id)
-		{
-			LidType oorspronkelijkType = LidType.Alles;
-
-			try
-			{
-				Lid l = _ledenMgr.Ophalen(
-					id, 
-					LidExtras.Afdelingen | LidExtras.Functies | LidExtras.Groep | LidExtras.Persoon | LidExtras.AlleAfdelingen);
-
-				oorspronkelijkType = l.Type;
-				int gpID = l.GelieerdePersoon.ID;
-
-				_ledenMgr.TypeToggle(l);
-
-				return gpID;
-
-			}
-			catch (GeenGavException ex)
-			{
-				FoutAfhandelaar.FoutAfhandelen(ex);
-				return 0;
-			}
-			catch (InvalidOperationException ex)
-			{
-				// TODO (#761): Ervoor zorgen dat LidMaken/LeidingMaken duidelijkere exceptions throwen.
-				// Als workaround een andere exception laten afhandelen
-
-				FoutNummer nr;
-
-				switch(oorspronkelijkType)
-				{
-					case LidType.Kind:
-						// Fout bij omschakelen kind -> leiding: geef leidingfout
-						nr = FoutNummer.AlgemeneLeidingFout;
-						break;
-					case LidType.Leiding:
-						// Fout bij omschakelen leiding -> kind: geef kindfout
-						nr = FoutNummer.AlgemeneKindFout;
-						break;
-					default:
-						nr = FoutNummer.AlgemeneFout;
-						break;
-				}
-
-				FoutAfhandelaar.FoutAfhandelen(new FoutNummerException(nr, ex.Message));
-				return 0;
-			}
-		}
-
-		/// <summary>
-		/// Haalt alle probeerleden op van de groep met ID <paramref name="groepID"/>
-		/// </summary>
-		/// <param name="groepID">ID van groep met op te halen probeerleden</param>
-		/// <returns>Lijst met info over de probeerleden</returns>
-		public IList<LidOverzicht> ProbeerLedenOphalen(int groepID)
-		{
-			try
-			{
-				var leden = _ledenMgr.ProbeerLedenOphalen(
-					groepID,
-					LidExtras.Persoon | LidExtras.Afdelingen | LidExtras.Functies | LidExtras.VoorkeurAdres | LidExtras.Communicatie);
-				var resultaat = Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(leden);
-
-				return resultaat;
-			}
-			catch (GeenGavException ex)
-			{
-				FoutAfhandelaar.FoutAfhandelen(ex);
-				return null;
-			};
-		}
-
-		/// <summary>
-		/// Haalt de ID's van de groepswerkjaren van een lid op.
+		/// Haalt de ID's van de groepswerkjaren van een lid op. (??)
 		/// </summary>
 		/// <param name="lidID">ID van het lid waarin we geinteresseerd zijn</param>
 		/// <returns>Een LidAfdelingInfo-object</returns>
@@ -568,12 +447,12 @@ namespace Chiro.Gap.Services
 
 				if (l is Kind)
 				{
-					resultaat.AfdelingsJaarIDs = new List<int> {(l as Kind).AfdelingsJaar.ID};
+					resultaat.AfdelingsJaarIDs = new List<int> { (l as Kind).AfdelingsJaar.ID };
 				}
 				else if (l is Leiding)
 				{
 					resultaat.AfdelingsJaarIDs = (from aj in (l as Leiding).AfdelingsJaar
-												  select aj.ID).ToList();
+								      select aj.ID).ToList();
 				}
 
 				return resultaat;
@@ -585,6 +464,109 @@ namespace Chiro.Gap.Services
 			}
 		}
 
+
+		/// <summary>
+		/// Zoekt leden op, op basis van de gegeven <paramref name="filter"/>.
+		/// </summary>
+		/// <param name="filter">De niet-nulle properties van de filter
+		/// bepalen waarop gezocht moet worden</param>
+		/// <param name="metAdressen">Indien <c>true</c>, worden de
+		/// adressen mee opgehaald. (Adressen ophalen vertraagt aanzienlijk.)
+		/// </param>
+		/// <returns>Lijst met info over gevonden leden</returns>
+		/// <remarks>
+		/// Er worden enkel actieve leden opgehaald
+		/// </remarks>
+		public IList<LidOverzicht> Zoeken(LidFilter filter, bool metAdressen)
+		{
+			// TODO: Nog lang niet alles is ondersteund qua filteren op leden.
+			// De bedoeling is dat de 'Ophalen'-functies in de manager
+			// ook met de LidFilter gaan werken.  Voorlopig is dit
+			// een rommeltje dat de bestaande methods van LedenManager
+			// aanroept.
+
+			// TODO: Tegen dat dat boeltje hier herwerkt is:
+			// Exception handling.
+
+			IEnumerable<Lid> gevonden = null;
+
+			LidExtras extras = LidExtras.Persoon |
+			                   LidExtras.Afdelingen |
+			                   LidExtras.Functies |
+			                   LidExtras.Communicatie;
+
+                        if (metAdressen)
+                        {
+                        	extras |= LidExtras.VoorkeurAdres;
+                        }
+
+			if (filter.HeeftEmailAdres != null ||
+				filter.HeeftTelefoonNummer != null ||
+				filter.HeeftVoorkeurAdres != null)
+			{
+				throw new NotImplementedException();
+			}
+
+			if (filter.ProbeerPeriodeNa != null)
+			{
+				if (filter.ProbeerPeriodeNa.Value.Date != DateTime.Now.Date ||
+					filter.AfdelingID != null || 
+					filter.FunctieID != null ||
+					filter.GroepID == null)
+                                {
+                                	throw new NotImplementedException();
+                                }
+
+				// Voor probeerperiode kunnen we enkel nog maar
+				// vergelijken met vandaag.
+
+				gevonden = _ledenMgr.ProbeerLedenOphalen(
+					filter.GroepID.Value,
+					extras);
+			}
+			else if (filter.AfdelingID != null && filter.FunctieID != null)
+			{
+				throw new NotImplementedException();
+			}
+			else if (filter.AfdelingID != null)
+			{
+				if (filter.GroepsWerkJaarID == null)
+				{
+					throw new NotImplementedException();
+				}
+
+				gevonden = _ledenMgr.PaginaOphalenVolgensAfdeling(
+					filter.GroepsWerkJaarID.Value,
+					filter.AfdelingID.Value,
+					extras);
+			}
+			else if (filter.FunctieID != null)
+			{
+				if (filter.GroepsWerkJaarID == null)
+				{
+					throw new NotImplementedException();
+				}
+
+				gevonden = _ledenMgr.PaginaOphalenVolgensFunctie(
+					filter.GroepsWerkJaarID.Value,
+					filter.FunctieID.Value,
+					extras);
+			}
+			else if (filter.GroepsWerkJaarID != null)
+			{
+				gevonden = _ledenMgr.PaginaOphalen(
+					filter.GroepsWerkJaarID.Value,
+					extras);
+			}
+			else
+			{
+				throw new NotImplementedException();
+			}
+
+			return Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(gevonden);
+		}
+
 		#endregion
+
 	}
 }

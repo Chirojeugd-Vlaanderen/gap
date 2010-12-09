@@ -199,15 +199,31 @@ namespace Chiro.Gap.WebApp.Controllers
 			                                              orderby wj.WerkJaar descending
 			                                              select wj.ID).FirstOrDefault();
 
-			if (afdelingID != 0 && functieID != 0)
+			model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(
+				svc => svc.Zoeken(
+					new LidFilter
+	                  		{
+						GroepsWerkJaarID =  groepsWerkJaarID,
+	                  			AfdelingID = (afdelingID == 0) ? null : (int?)afdelingID,
+						FunctieID = (functieID == 0) ? null: (int?)functieID,
+	                  		},
+					false));  // Zoek zonder adressen, voor snelheidswinst (zie #824)
+
+			if (functieID != 0)
 			{
-				// Filteren op zowel afdelingID als functieID is nog niet ondersteund.
-				throw new NotSupportedException();
+				// Naam van de functie opzoeken, zodat we ze kunnen invullen in de paginatitel
+				string functieNaam = (from fi in model.FunctieInfoDictionary
+						      where fi.Key == functieID
+						      select fi).First().Value.Naam;
+
+				model.Titel = String.Format(Properties.Resources.AfdelingsLijstTitel,
+							    functieNaam,
+							    model.JaartalGetoondGroepsWerkJaar,
+							    model.JaartalGetoondGroepsWerkJaar + 1);
+
 			}
 			else if (afdelingID != 0)
 			{
-				model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(
-					svc => svc.OphalenUitAfdelingsJaar(groepsWerkJaarID, afdelingID, false));
 
 				AfdelingDetail af = (from a in model.AfdelingsInfoDictionary.AsQueryable()
 						     where a.Value.AfdelingID == afdelingID
@@ -217,33 +233,9 @@ namespace Chiro.Gap.WebApp.Controllers
 				                            af.AfdelingNaam,
 				                            model.JaartalGetoondGroepsWerkJaar,
 				                            model.JaartalGetoondGroepsWerkJaar + 1);
-
-
-			}
- 			else if (functieID != 0)
-			{
-				model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(
-					svc => svc.OphalenUitFunctie(groepsWerkJaarID, functieID, false));
-				// Geen adressen ophalen, want dat is veel te traag (#824)
-
-				// Naam van de functie opzoeken, zodat we ze kunnen invullen in de paginatitel
-				string functieNaam = (from fi in model.FunctieInfoDictionary
-								  where fi.Key == functieID
-								  select fi).First().Value.Naam;
-
-				model.Titel = String.Format(Properties.Resources.AfdelingsLijstTitel,
-							    functieNaam,
-							    model.JaartalGetoondGroepsWerkJaar,
-							    model.JaartalGetoondGroepsWerkJaar + 1);
-
 			}
 			else
 			{
-				model.LidInfoLijst =
-					ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>
-					(lid => lid.OphalenUitWerkJaar(groepsWerkJaarID, false));
-				// Geen adressen ophalen, want dat is veel te traag (#824)
-
 				model.Titel = String.Format(Properties.Resources.LedenOverzicht,
 							    model.JaartalGetoondGroepsWerkJaar,
 							    model.JaartalGetoondGroepsWerkJaar + 1);
@@ -291,6 +283,9 @@ namespace Chiro.Gap.WebApp.Controllers
 			IEnumerable<LidOverzicht> lijst;
 			string bestandsnaam;
 
+			int groepsWerkJaarID = id == 0 ? ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)) : id;
+
+
 			// Als ExcelManip de kolomkoppen kan afleiden uit de (param)array, en dan liefst nog de DisplayName
 			// gebruikt van de PersoonOverzicht-velden, dan is de regel hieronder niet nodig.
 			string[] kolomkoppen = {
@@ -298,32 +293,29 @@ namespace Chiro.Gap.WebApp.Controllers
 			                       	"Straat", "Nr", "Bus", "Postcode", "Gemeente", "Tel", "Mail"
 			                       };
 
-			if (afdelingID != 0 && functieID != 0)
-			{
-				// Fiteren op zowel afdelingsID als functieID is (nog?) niet ondersteund.
-				// Bovendien is dat iets dat je niet kan als javascript aanstaat.
+			lijst = ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(
+				svc => svc.Zoeken(
+					new LidFilter
+					{
+						GroepsWerkJaarID = groepsWerkJaarID,
+						AfdelingID = (afdelingID == 0) ? null : (int?)afdelingID,
+						FunctieID = (functieID == 0) ? null : (int?)functieID,
+					},
+					true));  // Voor een Excelexport willen we *wel* adressen
 
-				throw new NotSupportedException();
-			}
+			// TODO: het zou leuk zijn moesten de lijsten zinvollere titels hebben,
+			// zoals rakwis-2010-2011.xlsx of leden-2010-2011.xlsx
+
 			if (afdelingID != 0)
 			{
-				lijst =
-					ServiceHelper.CallService<ILedenService, IEnumerable<LidOverzicht>>
-						(lid => lid.OphalenUitAfdelingsJaar(id, afdelingID, true));
 				bestandsnaam = "Afdelingslijst.xlsx";
 			}
 			else if (functieID != 0)
 			{
-				// TODO (#586): gegevens ophalen lukt, behalve voor de afdelingen
-				lijst = ServiceHelper.CallService<ILedenService, IEnumerable<LidOverzicht>>
-					(lid => lid.OphalenUitFunctie(id, functieID, true));
 				bestandsnaam = "Functielijst.xlsx";
 			}
 			else
 			{
-				lijst =
-					ServiceHelper.CallService<ILedenService, IEnumerable<LidOverzicht>>
-						(lid => lid.OphalenUitWerkJaar(id, true));
 				bestandsnaam = "Leden.xlsx";
 			}
 
@@ -658,7 +650,12 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			model.LidInfoLijst =
 				ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>
-					(svc => svc.ProbeerLedenOphalen(groepID));
+					(svc => svc.Zoeken(
+						new LidFilter
+							{
+								GroepID = groepID,
+								ProbeerPeriodeNa = DateTime.Now
+							}, false));
 
 			model.Titel = String.Format(Properties.Resources.ProbeerLeden);
 

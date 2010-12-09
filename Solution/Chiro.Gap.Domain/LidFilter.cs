@@ -1,0 +1,70 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+
+namespace Chiro.Gap.Domain
+{
+	/// <summary>
+	/// Filter die gebruikt kan worden om te zoeken op leden
+	/// </summary>
+	[DataContract]
+	public class LidFilter
+	{
+		/// <summary>
+		/// Indien niet <c>null</c>, zoek leden uit gegeven groep
+		/// </summary>
+		[DataMember]
+		public int? GroepID { get; set; }
+
+		/// <summary>
+		/// Indien niet <c>null</c>, zoek leden uit gegeven groepswerkjaar
+		/// </summary>
+		[DataMember]
+		public int? GroepsWerkJaarID { get; set; }
+
+		/// <summary>
+		/// Indien niet <c>null</c>, zoek leden uit gegeven afdeling
+		/// </summary>
+		[DataMember]
+		public int? AfdelingID { get; set; }
+
+		/// <summary>
+		/// Indien niet <c>null</c>, zoek leden met gegeven functie
+		/// </summary>
+		[DataMember]
+		public int? FunctieID { get; set; }
+
+		/// <summary>
+		/// Indien niet <c>null</c>, lever enkel leden op waarbij de
+		/// probeerperiode na de gegeven datum eindigt.
+		/// </summary>
+		[DataMember]
+		public DateTime? ProbeerPeriodeNa { get; set; }
+
+		/// <summary>
+		/// Indien <c>true</c>, lever enkel leden op met voorkeuradres,
+		/// indien <c>false</c>, lever enkel leden op zonder voorkeuradres,
+		/// indien <c>null</c>, negeer.
+		/// </summary>
+		[DataMember]
+		public bool? HeeftVoorkeurAdres { get; set; }
+
+		/// <summary>
+		/// Indien <c>true</c>, lever enkel leden op met telefoonnummer,
+		/// indien <c>false</c>, lever enkel leden op zonder telefoonnummer,
+		/// indien <c>null</c>, negeer.
+		/// </summary>
+		[DataMember]
+		public bool? HeeftTelefoonNummer { get; set; }
+
+		/// <summary>
+		/// Indien <c>true</c>, lever enkel leden op met e-mailadres,
+		/// indien <c>false</c>, lever enkel leden op zonder e-mailadres,
+		/// indien <c>null</c>, negeer.
+		/// </summary>
+		[DataMember]
+		public bool? HeeftEmailAdres { get; set; }
+	}
+}
