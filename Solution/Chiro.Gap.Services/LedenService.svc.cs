@@ -479,15 +479,6 @@ namespace Chiro.Gap.Services
 		/// </remarks>
 		public IList<LidOverzicht> Zoeken(LidFilter filter, bool metAdressen)
 		{
-			// TODO: Nog lang niet alles is ondersteund qua filteren op leden.
-			// De bedoeling is dat de 'Ophalen'-functies in de manager
-			// ook met de LidFilter gaan werken.  Voorlopig is dit
-			// een rommeltje dat de bestaande methods van LedenManager
-			// aanroept.
-
-			// TODO: Tegen dat dat boeltje hier herwerkt is:
-			// Exception handling.
-
 			IEnumerable<Lid> gevonden = null;
 
 			LidExtras extras = LidExtras.Persoon |
@@ -500,68 +491,17 @@ namespace Chiro.Gap.Services
                         	extras |= LidExtras.VoorkeurAdres;
                         }
 
-			if (filter.HeeftEmailAdres != null ||
-				filter.HeeftTelefoonNummer != null ||
-				filter.HeeftVoorkeurAdres != null)
+                        try
+                        {
+                        	gevonden = _ledenMgr.Zoeken(filter, extras);
+                        }
+			catch (GeenGavException ex)
 			{
-				throw new NotImplementedException();
+				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
 
-			if (filter.ProbeerPeriodeNa != null)
-			{
-				if (filter.ProbeerPeriodeNa.Value.Date != DateTime.Now.Date ||
-					filter.AfdelingID != null || 
-					filter.FunctieID != null ||
-					filter.GroepID == null)
-                                {
-                                	throw new NotImplementedException();
-                                }
-
-				// Voor probeerperiode kunnen we enkel nog maar
-				// vergelijken met vandaag.
-
-				gevonden = _ledenMgr.ProbeerLedenOphalen(
-					filter.GroepID.Value,
-					extras);
-			}
-			else if (filter.AfdelingID != null && filter.FunctieID != null)
-			{
-				throw new NotImplementedException();
-			}
-			else if (filter.AfdelingID != null)
-			{
-				if (filter.GroepsWerkJaarID == null)
-				{
-					throw new NotImplementedException();
-				}
-
-				gevonden = _ledenMgr.PaginaOphalenVolgensAfdeling(
-					filter.GroepsWerkJaarID.Value,
-					filter.AfdelingID.Value,
-					extras);
-			}
-			else if (filter.FunctieID != null)
-			{
-				if (filter.GroepsWerkJaarID == null)
-				{
-					throw new NotImplementedException();
-				}
-
-				gevonden = _ledenMgr.PaginaOphalenVolgensFunctie(
-					filter.GroepsWerkJaarID.Value,
-					filter.FunctieID.Value,
-					extras);
-			}
-			else if (filter.GroepsWerkJaarID != null)
-			{
-				gevonden = _ledenMgr.PaginaOphalen(
-					filter.GroepsWerkJaarID.Value,
-					extras);
-			}
-			else
-			{
-				throw new NotImplementedException();
-			}
+			// Onverwachte exceptions mogen gerust gethrowd worden, zo vallen ze op bij
+			// het debuggen.
 
 			return Mapper.Map<IEnumerable<Lid>, IList<LidOverzicht>>(gevonden);
 		}

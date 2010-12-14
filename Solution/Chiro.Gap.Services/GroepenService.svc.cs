@@ -1125,7 +1125,9 @@ namespace Chiro.Gap.Services
 					var foutBerichtenBuilder = new StringBuilder();
 
 					// Haal alle leden op uit het vorige werkjaar en maak die een voor een lid
-					var ledenlijst = _ledenMgr.PaginaOphalen(voriggwj.ID, LidExtras.Persoon | LidExtras.Groep | LidExtras.Functies);
+					var ledenlijst = _ledenMgr.Zoeken(
+						new LidFilter{GroepsWerkJaarID  = voriggwj.ID}, 
+						LidExtras.Persoon | LidExtras.Groep | LidExtras.Functies);
 
 					foreach (var lid in ledenlijst)
 					{

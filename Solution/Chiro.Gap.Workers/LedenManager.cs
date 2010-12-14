@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 #if KIPDORP
+using System.Threading;
 using System.Transactions;
 #endif
 
@@ -373,89 +374,6 @@ namespace Chiro.Gap.Workers
 			lid.NonActief = true;
 			// TODO (#683): functies afpakken
 			_daos.LedenDao.Bewaren(lid);
-		}
-
-		/// <summary>
-		/// Haal een pagina op met alle *actieve* leden van een groepswerkjaar.
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
-		/// <param name="extras">Bepaalt welke extra entiteiten mee opgevraagd worden</param>
-		/// <returns>Lijst met alle leden uit het gevraagde groepswerkjaar.</returns>
-		public IList<Lid> PaginaOphalen(int groepsWerkJaarID, LidExtras extras)
-		{
-			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-
-			// Ik haal leden en leiding apart op, omdat de lambda-expressies verschillend zijn als er
-			// afdelingen bij in de 'extra's' zitten.
-
-			IEnumerable<Lid> kindLijst = _daos.KindDao.OphalenUitGroepsWerkJaar(groepsWerkJaarID, ExtrasNaarLambdasKind(extras)).Cast<Lid>();
-			IEnumerable<Lid> leidingLijst = _daos.LeidingDao.OphalenUitGroepsWerkJaar(groepsWerkJaarID, ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
-
-			var list = kindLijst.Union(leidingLijst);
-
-			// Sorteren is presentatie; daar houdt de backend zich niet mee bezig ;-P
-
-			return list.Where(ld=>ld.NonActief==false).ToList();
-		}
-
-		/// <summary>
-		/// Haalt een 'pagina' op met alle *actieve* leden uit een bepaald GroepsWerkJaar
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
-		/// <param name="afdelingID">ID gevraagde afdeling</param>
-		/// <param name="extras">Beschrijving van de extra gegevens die opgehaald moeten worden</param>
-		/// <returns>De 'pagina' (collectie) met leden</returns>
-		public IEnumerable<Lid> PaginaOphalenVolgensAfdeling(int groepsWerkJaarID, int afdelingID, LidExtras extras)
-		{
-			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID) || !_autorisatieMgr.IsGavAfdeling(afdelingID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-
-			// Ik haal leden en leiding apart op, omdat de lambda-expressies verschillend zijn als er
-			// afdelingen bij in de 'extra's' zitten.
-
-			IEnumerable<Lid> kindLijst = _daos.KindDao.OphalenUitAfdelingsJaar(groepsWerkJaarID, afdelingID, ExtrasNaarLambdasKind(extras)).Cast<Lid>();
-			IEnumerable<Lid> leidingLijst = _daos.LeidingDao.OphalenUitAfdelingsJaar(groepsWerkJaarID, afdelingID, ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
-
-			var list = kindLijst.Union(leidingLijst);
-
-			// Sorteren is presentatie; daar houdt de backend zich niet mee bezig ;-P
-
-			return list
-				.Where(ld => ld.NonActief == false).ToList();
-		}
-
-		/// <summary>
-		/// Haalt een 'pagina' op met leden uit een bepaald GroepsWerkJaar met gevraagde functie
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID gevraagde GroepsWerkJaar</param>
-		/// <param name="functieID">ID gevraagde functie</param>
-		/// <param name="extras">bepaalt welke extra entiteiten mee opgehaald moeten worden</param>
-		/// <returns>De lijst van leden die in het opgegeven GroepsWerkJaar de opgegeven functie hadden/hebben,
-		/// gesorteerd volgens de opgegeven parameter</returns>
-		public IList<Lid> PaginaOphalenVolgensFunctie(int groepsWerkJaarID, int functieID, LidExtras extras)
-		{
-			if (!_autorisatieMgr.IsGavGroepsWerkJaar(groepsWerkJaarID))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-
-			// Ik haal leden en leiding apart op, omdat de lambda-expressies verschillend zijn als er
-			// afdelingen bij in de 'extra's' zitten.
-
-			IEnumerable<Lid> kindLijst = _daos.KindDao.OphalenUitFunctie(groepsWerkJaarID, functieID, ExtrasNaarLambdasKind(extras)).Cast<Lid>();
-			IEnumerable<Lid> leidingLijst = _daos.LeidingDao.OphalenUitFunctie(groepsWerkJaarID, functieID, ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
-
-			var list = kindLijst.Union(leidingLijst);
-
-			// Sorteren is presentatie; daar houdt de backend zich niet mee bezig ;-P
-
-			return list
-				.Where(ld => ld.NonActief == false).ToList();
 		}
 
 		/// <summary>
@@ -911,29 +829,114 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Haalt alle probeerleden op van de groep met ID <paramref name="groepID"/>
+		/// Zoekt leden op, op basis van de gegeven <paramref name="filter"/>.
 		/// </summary>
-		/// <param name="groepID">ID van groep met op te halen probeerleden</param>
-		/// <param name="lidExtras">bepaalt de op te halen gekoppelde entiteiten</param>
-		/// <returns>Lijst met info over de probeerleden</returns>
-		public IEnumerable<Lid> ProbeerLedenOphalen(int groepID, LidExtras lidExtras)
+		/// <param name="filter">De niet-nulle properties van de filter
+		/// bepalen waarop gezocht moet worden</param>
+		/// <param name="extras">Bepaalt de mee op te halen gekoppelde entiteiten. 
+		/// (Adressen ophalen vertraagt aanzienlijk.)
+		/// </param>
+		/// <returns>Lijst met info over gevonden leden</returns>
+		/// <remarks>
+		/// Er worden enkel actieve leden opgehaald
+		/// </remarks>
+		public IEnumerable<Lid> Zoeken(LidFilter filter, LidExtras extras)
 		{
-			if (!_autorisatieMgr.IsGavGroep(groepID))
+			if (filter.GroepID != null && !_autorisatieMgr.IsGavGroep(filter.GroepID.Value) ||
+				filter.GroepsWerkJaarID != null && !_autorisatieMgr.IsGavGroepsWerkJaar(filter.GroepsWerkJaarID.Value) ||
+				filter.AfdelingID != null && !_autorisatieMgr.IsGavAfdeling(filter.AfdelingID.Value) ||
+				filter.FunctieID != null && !_autorisatieMgr.IsGavFunctie(filter.FunctieID.Value))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			// Ik haal leden en leiding apart op, omdat de lambda-expressies verschillend zijn als er
-			// afdelingen bij in de 'extra's' zitten.
+			// TODO: Nog lang niet alles is ondersteund wat betreft ledenlijsten filteren.
+			// De bedoeling is dat er ook in de data-access een zoekfunctie komt die met LidFilter werkt.
+			// Voorlopig is deze method een rommeltje, dat de huidige methods van LedenDao gebruikt.
 
-			IEnumerable<Lid> kindLijst = _daos.KindDao.ProbeerLedenOphalen(groepID, ExtrasNaarLambdasKind(lidExtras)).Cast<Lid>();
-			IEnumerable<Lid> leidingLijst = _daos.LeidingDao.ProbeerLedenOphalen(groepID, ExtrasNaarLambdasLeiding(lidExtras)).Cast<Lid>();
+			IEnumerable<Lid> kinderen = null;
+			IEnumerable<Lid> leiding = null;
+			IEnumerable<Lid> alles = null;
 
-			var list = kindLijst.Union(leidingLijst);
+			if (filter.HeeftEmailAdres != null || 
+				filter.HeeftTelefoonNummer != null || 
+				filter.HeeftEmailAdres != null)
+			{
+				throw new NotImplementedException();
+			}
 
-			// Sorteren is presentatie; daar houdt de backend zich niet mee bezig ;-P
+			if (filter.ProbeerPeriodeNa != null)
+			{
+				if (filter.ProbeerPeriodeNa.Value.Date != DateTime.Now.Date ||
+					filter.AfdelingID != null ||
+					filter.FunctieID != null ||
+					filter.GroepID != null)
+				{
+					throw new NotImplementedException();
+				}
+				kinderen = _daos.KindDao.ProbeerLedenOphalen(
+					filter.GroepID.Value, 
+					ExtrasNaarLambdasKind(extras)).Cast<Lid>();
+				leiding = _daos.LeidingDao.ProbeerLedenOphalen(
+					filter.GroepID.Value, 
+					ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
+			}
+			else if (filter.AfdelingID != null && filter.FunctieID != null)
+			{
+				throw new NotImplementedException();
+			}
+			else if (filter.AfdelingID != null)
+			{
+				if (filter.GroepsWerkJaarID == null)
+				{
+					throw new NotImplementedException();
+				}
+				kinderen = _daos.KindDao.OphalenUitAfdelingsJaar(
+					filter.GroepsWerkJaarID.Value,
+					filter.AfdelingID.Value,
+					ExtrasNaarLambdasKind(extras)).Cast<Lid>();
+				leiding = _daos.LeidingDao.OphalenUitAfdelingsJaar(
+					filter.GroepsWerkJaarID.Value,
+					filter.AfdelingID.Value,
+					ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
+			}
+			else if (filter.FunctieID != null)
+			{
+				if (filter.GroepsWerkJaarID == null)
+				{
+					throw new NotImplementedException();
+				}
+				kinderen = _daos.KindDao.OphalenUitFunctie(
+					filter.GroepsWerkJaarID.Value,
+					filter.FunctieID.Value,
+					ExtrasNaarLambdasKind(extras)).Cast<Lid>();
+				leiding = _daos.LeidingDao.OphalenUitFunctie(
+					filter.GroepsWerkJaarID.Value,
+					filter.FunctieID.Value,
+					ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
+			}
+			else if (filter.GroepsWerkJaarID != null)
+			{
+				kinderen = _daos.KindDao.OphalenUitGroepsWerkJaar(
+					filter.GroepsWerkJaarID.Value,
+					ExtrasNaarLambdasKind(extras)).Cast<Lid>();
+				leiding = _daos.LeidingDao.OphalenUitGroepsWerkJaar(
+					filter.GroepsWerkJaarID.Value,
+					ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
+				
+			}
+			else
+			{
+				throw new NotImplementedException();
+			}
 
-			return list.Where(ld => ld.NonActief == false).ToList();
+			// Sorteren doen we hier niet; dat is presentatie :)
+
+			// Voeg kinderen en leiding samen, en haal de inactieve er uit
+
+			alles = kinderen.Union(leiding);
+
+			return alles.Where(ld => ld.NonActief == false).ToArray();
 		}
 	}
 }
