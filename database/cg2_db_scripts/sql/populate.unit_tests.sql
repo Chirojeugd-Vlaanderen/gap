@@ -21,6 +21,9 @@ use gap
 --   GelieerdePersoon4 is ook leiding, met functie 'eindredactie boekje'
 --   GelieerdePersoon5 is lid bij de 'unittestjes'.
 --
+-- GelieerdePersoon 3  heeft een voorkeurs(post)adres, e-mailadres, maar geen telefoonnummer
+-- GelieerdePersoon 4  heeft geen voorkeurs(post)adres, maar wel een e-mailadres en een telefoonnummer
+--
 -- 2 test-GAV's, en maakt de eerste GAV van testgroep1.
 --
 -- Datums worden in gegeven in het formaat DD/MM/YYYY
@@ -160,7 +163,7 @@ SET DateFormat dmy;
 --       testPersoon3ID									JA
 
 -- 9° Leden / Leiding aanmaken: 
---    GelieerdePersoon 3, 4 en 5 worden leiding
+--    GelieerdePersoon 3, 4 en 5 worden lid
 		DECLARE @testLid3ID AS INT;
 		DECLARE @testLid3NonActief AS BIT;						SET @testLid3NonActief = 0;
 		DECLARE	@testLid3Verwijderd	AS BIT;						SET @testLid3Verwijderd	= 0;
@@ -199,12 +202,15 @@ SET DateFormat dmy;
 --     Enkel Yvonne (Gav1ID) krijgt toegang tot Unittestjes ChiroGroep.
 
 
-
 DECLARE @testVorigAfdelingsJaarID AS INT;
 
 
+-- 12  toekennen van adressen en communicatievormen
 
-
+	DECLARE @testAdresID AS INT;		SET @testAdresID = 53;				-- gewoon een testadres
+	DECLARE @testPersoonsAdresID AS INT;
+	DECLARE @testTel AS VARCHAR(40);	SET @testTel = '03-231 07 95';		-- een testtelefoonnr
+	DECLARE @testMail AS VARCHAR(80);	SET @testMail = 'info@chiro.be';	-- een testmailadres
 
 --
 -- Ophalen van gegevens die standaard in de database zitten
@@ -665,6 +671,41 @@ END
 IF NOT EXISTS (SELECT 1 FROM auth.GebruikersRecht WHERE GavID=@testGav1ID AND GroepID=@testGroepID)
 BEGIN
 	INSERT INTO auth.GebruikersRecht(GavID, GroepID) VALUES(@testGav1ID, @testGroepID)
+END
+
+
+--
+-- 12 adressen enz
+--
+
+IF NOT EXISTS (SELECT 1 FROM pers.PersoonsAdres WHERE PersoonID=@testPersoon3ID AND AdresID=@testAdresID)
+BEGIN
+	INSERT INTO pers.PersoonsAdres(PersoonID, AdresID, AdresTypeID) VALUES(@testPersoon3ID, @testAdresID, 1);
+	SET @testPersoonsAdresID=SCOPE_IDENTITY()
+END
+ELSE
+BEGIN
+	SET @testPersoonsAdresID= (SELECT PersoonsAdresID FROM pers.PersoonsAdres WHERE PersoonID=@testPersoon3ID AND AdresID=@testAdresID)
+END
+
+UPDATE pers.GelieerdePersoon SET VoorkeursAdresID=@testPersoonsAdresID WHERE GelieerdePersoonID=@testGelieerdePersoon3ID;
+
+IF NOT EXISTS (SELECT 1 FROM pers.CommunicatieVorm WHERE GelieerdePersoonID=@testGelieerdePersoon4ID AND Nummer=@testTel)
+BEGIN
+	INSERT INTO pers.CommunicatieVorm(GelieerdePersoonID, CommunicatieTypeID, Nummer, IsVoorOptIn)
+	VALUES(@testGelieerdePersoon4ID, 1, @testTel, 0)
+END
+
+IF NOT EXISTS (SELECT 1 FROM pers.CommunicatieVorm WHERE GelieerdePersoonID=@testGelieerdePersoon3ID AND Nummer=@testMail)
+BEGIN
+	INSERT INTO pers.CommunicatieVorm(GelieerdePersoonID, CommunicatieTypeID, Nummer, IsVoorOptIn)
+	VALUES(@testGelieerdePersoon3ID, 2, @testMail, 0)
+END
+
+IF NOT EXISTS (SELECT 1 FROM pers.CommunicatieVorm WHERE GelieerdePersoonID=@testGelieerdePersoon4ID AND Nummer=@testMail)
+BEGIN
+	INSERT INTO pers.CommunicatieVorm(GelieerdePersoonID, CommunicatieTypeID, Nummer, IsVoorOptIn)
+	VALUES(@testGelieerdePersoon4ID, 2, @testMail, 0)
 END
 
 
