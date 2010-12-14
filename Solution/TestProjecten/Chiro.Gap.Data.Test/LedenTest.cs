@@ -277,6 +277,53 @@ namespace Chiro.Gap.Data.Test
 			Assert.IsTrue(opgehaaldeFunctie.Lid.Count() > 1);	// eigenlijke check
 		}
 
+		/// <summary>
+		/// Test voor het ophalen van leiding waarvoor geen voorkeursadres gekend is
+		/// </summary>
+		[TestMethod]
+		public void OphalenZonderAdres()
+		{
+			// Arrange
+
+			var dao = Factory.Maak<ILeidingDao>();
+
+			// Act
+
+			// Zoek leden zonder adres
+			var result = dao.Zoeken(new LidFilter {HeeftVoorkeurAdres = false, GroepsWerkJaarID = TestInfo.GROEPSWERKJAARID});
+
+			var ids = from ld in result
+			          select ld.ID;
+
+			// Assert
+
+			Assert.IsTrue(ids.Contains(TestInfo.LID4ID));	// We verwachten dat lid 4 een adres heeft
+			Assert.IsFalse(ids.Contains(TestInfo.LID3ID));	// ... en lid 3 niet
+		}
+
+		/// <summary>
+		/// Test voor het ophalen van de leiding waarvoor een telefoonnr gekend is
+		/// </summary>
+		[TestMethod]
+		public void OphalenMetTelefoonNr()
+		{
+			// Arrange
+
+			var dao = Factory.Maak<ILeidingDao>();
+
+			// Act
+
+			var result = dao.Zoeken(new LidFilter { HeeftTelefoonNummer = true, GroepsWerkJaarID = TestInfo.GROEPSWERKJAARID });
+
+			var ids = from ld in result
+				  select ld.ID;
+
+			// Assert
+
+			Assert.IsTrue(ids.Contains(TestInfo.LID4ID));	// We verwachten dat lid 4 een adres heeft
+			Assert.IsFalse(ids.Contains(TestInfo.LID3ID));	// ... en lid 3 niet
+		}
+
 	}
 
 }

@@ -855,7 +855,7 @@ namespace Chiro.Gap.Workers
 			// Voorlopig is deze method een rommeltje, dat de huidige methods van LedenDao gebruikt.
 
 			IEnumerable<Lid> kinderen = null;
-			IEnumerable<Lid> leiding = null;
+			IEnumerable<Lid> leiding = _daos.LeidingDao.Zoeken(filter, ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
 			IEnumerable<Lid> alles = null;
 
 			if (filter.HeeftEmailAdres != null || 
@@ -870,16 +870,13 @@ namespace Chiro.Gap.Workers
 				if (filter.ProbeerPeriodeNa.Value.Date != DateTime.Now.Date ||
 					filter.AfdelingID != null ||
 					filter.FunctieID != null ||
-					filter.GroepID != null)
+					filter.GroepsWerkJaarID != null)
 				{
 					throw new NotImplementedException();
 				}
 				kinderen = _daos.KindDao.ProbeerLedenOphalen(
 					filter.GroepID.Value, 
 					ExtrasNaarLambdasKind(extras)).Cast<Lid>();
-				leiding = _daos.LeidingDao.ProbeerLedenOphalen(
-					filter.GroepID.Value, 
-					ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
 			}
 			else if (filter.AfdelingID != null && filter.FunctieID != null)
 			{
@@ -895,10 +892,6 @@ namespace Chiro.Gap.Workers
 					filter.GroepsWerkJaarID.Value,
 					filter.AfdelingID.Value,
 					ExtrasNaarLambdasKind(extras)).Cast<Lid>();
-				leiding = _daos.LeidingDao.OphalenUitAfdelingsJaar(
-					filter.GroepsWerkJaarID.Value,
-					filter.AfdelingID.Value,
-					ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
 			}
 			else if (filter.FunctieID != null)
 			{
@@ -910,20 +903,12 @@ namespace Chiro.Gap.Workers
 					filter.GroepsWerkJaarID.Value,
 					filter.FunctieID.Value,
 					ExtrasNaarLambdasKind(extras)).Cast<Lid>();
-				leiding = _daos.LeidingDao.OphalenUitFunctie(
-					filter.GroepsWerkJaarID.Value,
-					filter.FunctieID.Value,
-					ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
 			}
 			else if (filter.GroepsWerkJaarID != null)
 			{
 				kinderen = _daos.KindDao.OphalenUitGroepsWerkJaar(
 					filter.GroepsWerkJaarID.Value,
-					ExtrasNaarLambdasKind(extras)).Cast<Lid>();
-				leiding = _daos.LeidingDao.OphalenUitGroepsWerkJaar(
-					filter.GroepsWerkJaarID.Value,
-					ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
-				
+					ExtrasNaarLambdasKind(extras)).Cast<Lid>();				
 			}
 			else
 			{

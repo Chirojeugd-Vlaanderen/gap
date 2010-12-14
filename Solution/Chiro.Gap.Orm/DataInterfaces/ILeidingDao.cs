@@ -17,39 +17,17 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	public interface ILeidingDao : IDao<Leiding>
 	{
 		/// <summary>
-		/// Haalt alle leiding op uit een gegeven groepswerkjaar
+		/// Zoekt leiding op, op basis van de gegeven <paramref name="filter"/>.
 		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
-		/// <param name="paths">Geeft aan welke entiteiten mee opgehaald moeten worden</param>
-		/// <returns>Rij opgehaalde leiding</returns>
-		IEnumerable<Leiding> OphalenUitGroepsWerkJaar(int groepsWerkJaarID, Expression<Func<Leiding, object>>[] paths);
-
-		/// <summary>
-		/// Haalt alle leiding op uit afdelingsjaar bepaald door <paramref name="groepsWerkJaarID"/>
-		/// en <paramref name="afdelingID"/>.
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van groepswerkjaar van afdelingsjaar</param>
-		/// <param name="afdelingID">ID van afdeling van afdelingsjaar</param>
-		/// <param name="paths">Bepaalt de mee op te halen entiteiten</param>
-		/// <returns>Alle kinderen van het gevraagde afdelngsjaar</returns>
-		IEnumerable<Leiding> OphalenUitAfdelingsJaar(int groepsWerkJaarID, int afdelingID, Expression<Func<Leiding, object>>[] paths);
-
-		/// <summary>
-		/// Haalt alle leiding op uit groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
-		/// met functie bepaald door <paramref name="functieID"/>.
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van groepswerkjaar</param>
-		/// <param name="functieID">ID van functie</param>
-		/// <param name="paths">Bepaalt de mee op te halen entiteiten</param>
-		/// <returns>Alle leiding met gevraagde functie uit gevraagde groepswerkjaar</returns>
-		IEnumerable<Leiding> OphalenUitFunctie(int groepsWerkJaarID, int functieID, Expression<Func<Leiding, object>>[] paths);
-
-		/// <summary>
-		/// Haalt alle probeerleden (type Leiding) op van de groep met ID <paramref name="groepID"/>
-		/// </summary>
-		/// <param name="groepID">ID van groep met op te halen probeerleden</param>
-		/// <param name="paths">bepaalt de op te halen gekoppelde entiteiten</param>
-		/// <returns>Lijst met info over de probeerleden</returns>
-		IEnumerable<Leiding> ProbeerLedenOphalen(int groepID, Expression<Func<Leiding, object>>[] paths);
+		/// <param name="filter">De niet-nulle properties van de filter
+		/// bepalen waarop gezocht moet worden</param>
+		/// <param name="paths">Bepaalt de mee op te halen gekoppelde entiteiten. 
+		/// (Adressen ophalen vertraagt aanzienlijk.)
+		/// </param>
+		/// <returns>Lijst met info over gevonden leiding</returns>
+		/// <remarks>
+		/// Er wordt enkel actieve leiding opgehaald
+		/// </remarks>
+		IEnumerable<Leiding> Zoeken(Chiro.Gap.Domain.LidFilter filter, params Expression<Func<Leiding, object>>[] paths);
 	}
 }
