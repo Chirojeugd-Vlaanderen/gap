@@ -323,7 +323,6 @@ namespace Chiro.Gap.Data.Test
 			Assert.IsTrue(ids.Contains(TestInfo.LID4ID));	// We verwachten dat lid 4 een adres heeft
 			Assert.IsFalse(ids.Contains(TestInfo.LID3ID));	// ... en lid 3 niet
 		}
-
 	}
 
 }

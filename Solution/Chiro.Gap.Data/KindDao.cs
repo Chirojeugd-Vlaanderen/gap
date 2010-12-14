@@ -11,6 +11,7 @@ using System.Linq.Expressions;
 
 using Chiro.Cdf.Data;
 using Chiro.Cdf.Data.Entity;
+using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
 
@@ -37,102 +38,111 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// Haalt alle kinderen op uit een gegeven groepswerkjaar
+		/// Zoekt ingeschreven kinderen op, op basis van de gegeven <paramref name="filter"/>.
 		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar</param>
-		/// <param name="paths">Geeft aan welke entiteiten mee opgehaald moeten worden</param>
-		/// <returns>Rij opgehaalde kinderen</returns>
-		public IEnumerable<Kind> OphalenUitGroepsWerkJaar(int groepsWerkJaarID, Expression<Func<Kind, object>>[] paths)
+		/// <param name="filter">De niet-nulle properties van de filter
+		/// bepalen waarop gezocht moet worden</param>
+		/// <param name="paths">Bepaalt de mee op te halen gekoppelde entiteiten. 
+		/// (Adressen ophalen vertraagt aanzienlijk.)
+		/// </param>
+		/// <returns>Lijst met info over gevonden kinderen</returns>
+		/// <remarks>
+		/// Er wordt enkel actieve leden opgehaald
+		/// </remarks>
+		public IEnumerable<Kind> Zoeken(LidFilter filter, params Expression<Func<Kind, object>>[] paths)
 		{
-			Kind[] lijst;
+			Kind[] resultaat;
 
 			using (var db = new ChiroGroepEntities())
 			{
-				var kinderen = (
-					from l in db.Lid.OfType<Kind>()
-					where l.GroepsWerkJaar.ID == groepsWerkJaarID
-					select l) as ObjectQuery<Kind>;
+				IQueryable<Kind> query;
 
-				lijst = IncludesToepassen(kinderen, paths).ToArray();
+				if (filter.AfdelingID != null)
+				{
+					if (filter.GroepsWerkJaarID != null)
+					{
+						// Er zal nogal vaak gefilterd worden op een afdeling en een groepswerkjaar.
+						// Daarom beginnen we in dit specifieke geval met een geoptimaliseerde
+						// query.
+
+						query = db.AfdelingsJaar
+							.Where(aj => aj.GroepsWerkJaar.ID == filter.GroepsWerkJaarID && aj.Afdeling.ID == filter.AfdelingID)
+							.SelectMany(aj => aj.Kind);
+					}
+					else
+					{
+						query = db.AfdelingsJaar
+							.Where(aj => aj.Afdeling.ID == filter.AfdelingID)
+							.SelectMany(aj => aj.Kind);
+					}
+				}
+				else
+				{
+					if (filter.GroepsWerkJaarID != null)
+					{
+						// Alle leden van een gegeven groepswerkjaar zal ook veel voorkomend zijn.
+
+						query = from l in db.Lid.OfType<Kind>()
+							where l.GroepsWerkJaar.ID == filter.GroepsWerkJaarID
+							select l;
+					}
+					else
+					{
+						// Als er geen groepswerkjaar of afdelingsjaar gegeven is, beginnen
+						// we vanuit een standaardquery met alle leiding
+
+						query = from ld in db.Lid.OfType<Kind>() select ld;
+
+					}
+				}
+
+				// Zo nodig zoekopdracht verfijnen
+
+				if (filter.FunctieID != null)
+				{
+					query = query.Where(ld => ld.Functie.Any(fn => fn.ID == filter.FunctieID));
+				}
+
+				if (filter.GroepID != null)
+				{
+					query = query.Where(ld => ld.GroepsWerkJaar.Groep.ID == filter.GroepID);
+				}
+
+				if (filter.ProbeerPeriodeNa != null)
+				{
+					query = query.Where(ld => ld.EindeInstapPeriode > filter.ProbeerPeriodeNa);
+				}
+
+				if (filter.HeeftVoorkeurAdres != null)
+				{
+					query = query.Where(ld => filter.HeeftVoorkeurAdres.Value ?
+						ld.GelieerdePersoon.PersoonsAdres != null :
+						ld.GelieerdePersoon.PersoonsAdres == null);
+				}
+
+				if (filter.HeeftTelefoonNummer != null)
+				{
+					query = query.Where(ld => filter.HeeftTelefoonNummer.Value
+									? ld.GelieerdePersoon.Communicatie.Any(
+										cm => cm.CommunicatieType.ID == (int)CommunicatieTypeEnum.TelefoonNummer)
+									: !ld.GelieerdePersoon.Communicatie.Any(
+										cm => cm.CommunicatieType.ID == (int)CommunicatieTypeEnum.TelefoonNummer));
+				}
+
+				if (filter.HeeftEmailAdres != null)
+				{
+					query = query.Where(ld => filter.HeeftEmailAdres.Value
+									? ld.GelieerdePersoon.Communicatie.Any(
+										cm => cm.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email)
+									: !ld.GelieerdePersoon.Communicatie.Any(
+										cm => cm.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email));
+				}
+
+				resultaat = IncludesToepassen(query as ObjectQuery<Kind>, paths).ToArray();
 			}
 
-			return Utility.DetachObjectGraph<Kind>(lijst);			
+			return Utility.DetachObjectGraph<Kind>(resultaat);
 		}
 
-		/// <summary>
-		/// Haalt alle kinderen op uit afdelingsjaar bepaald door <paramref name="groepsWerkJaarID"/>
-		/// en <paramref name="afdelingID"/>.
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van groepswerkjaar van afdelingsjaar</param>
-		/// <param name="afdelingID">ID van afdeling van afdelingsjaar</param>
-		/// <param name="paths">Bepaalt de mee op te halen entiteiten</param>
-		/// <returns>Alle kinderen van het gevraagde afdelngsjaar</returns>
-		public IEnumerable<Kind> OphalenUitAfdelingsJaar(int groepsWerkJaarID, int afdelingID, Expression<Func<Kind, object>>[] paths)
-		{
-			Kind[] lijst;
-
-			using (var db = new ChiroGroepEntities())
-			{
-				var kinderen = (
-					from l in db.Lid.OfType<Kind>()
-					where l.GroepsWerkJaar.ID == groepsWerkJaarID
-					&& l.AfdelingsJaar.Afdeling.ID == afdelingID
-					select l) as ObjectQuery<Kind>;
-
-				lijst = IncludesToepassen(kinderen, paths).ToArray();
-			}
-
-			return lijst;
-		}
-
-		/// <summary>
-		/// Haalt alle kinderen op uit groepswerkjaar bepaald door <paramref name="groepsWerkJaarID"/>
-		/// met functie bepaald door <paramref name="functieID"/>.
-		/// </summary>
-		/// <param name="groepsWerkJaarID">ID van groepswerkjaar</param>
-		/// <param name="functieID">ID van functie</param>
-		/// <param name="paths">Bepaalt de mee op te halen entiteiten</param>
-		/// <returns>Alle kinderen van het gevraagde afdelngsjaar</returns>
-		public IEnumerable<Kind> OphalenUitFunctie(int groepsWerkJaarID, int functieID, Expression<Func<Kind, object>>[] paths)
-		{
-			Kind[] lijst;
-
-			using (var db = new ChiroGroepEntities())
-			{
-				var kinderen = (
-					from l in db.Lid.OfType<Kind>()
-					where l.GroepsWerkJaar.ID == groepsWerkJaarID
-					&& l.Functie.Any(fn=>fn.ID == functieID)
-					select l) as ObjectQuery<Kind>;
-
-				lijst = IncludesToepassen(kinderen, paths).ToArray();
-			}
-
-			return lijst;
-		}
-
-		/// <summary>
-		/// Haalt alle probeerleden (type Leiding) op van de groep met ID <paramref name="groepID"/>
-		/// </summary>
-		/// <param name="groepID">ID van groep met op te halen probeerleden</param>
-		/// <param name="paths">bepaalt de op te halen gekoppelde entiteiten</param>
-		/// <returns>Lijst met info over de probeerleden</returns>
-		public IEnumerable<Kind> ProbeerLedenOphalen(int groepID, Expression<Func<Kind, object>>[] paths)
-		{
-			Kind[] lijst;
-
-			using (var db = new ChiroGroepEntities())
-			{
-				var kinderen = (
-					from l in db.Lid.OfType<Kind>()
-					where l.GroepsWerkJaar.Groep.ID == groepID
-					&& l.EindeInstapPeriode >= DateTime.Now
-					select l) as ObjectQuery<Kind>;
-
-				lijst = IncludesToepassen(kinderen, paths).ToArray();
-			}
-
-			return Utility.DetachObjectGraph<Kind>(lijst);		
-		}
 	}
 }

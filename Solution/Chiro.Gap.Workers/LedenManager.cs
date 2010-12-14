@@ -854,73 +854,13 @@ namespace Chiro.Gap.Workers
 			// De bedoeling is dat er ook in de data-access een zoekfunctie komt die met LidFilter werkt.
 			// Voorlopig is deze method een rommeltje, dat de huidige methods van LedenDao gebruikt.
 
-			IEnumerable<Lid> kinderen = null;
+			IEnumerable<Lid> kinderen = _daos.KindDao.Zoeken(filter, ExtrasNaarLambdasKind(extras)).Cast<Lid>();
 			IEnumerable<Lid> leiding = _daos.LeidingDao.Zoeken(filter, ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
-			IEnumerable<Lid> alles = null;
-
-			if (filter.HeeftEmailAdres != null || 
-				filter.HeeftTelefoonNummer != null || 
-				filter.HeeftEmailAdres != null)
-			{
-				throw new NotImplementedException();
-			}
-
-			if (filter.ProbeerPeriodeNa != null)
-			{
-				if (filter.ProbeerPeriodeNa.Value.Date != DateTime.Now.Date ||
-					filter.AfdelingID != null ||
-					filter.FunctieID != null ||
-					filter.GroepsWerkJaarID != null)
-				{
-					throw new NotImplementedException();
-				}
-				kinderen = _daos.KindDao.ProbeerLedenOphalen(
-					filter.GroepID.Value, 
-					ExtrasNaarLambdasKind(extras)).Cast<Lid>();
-			}
-			else if (filter.AfdelingID != null && filter.FunctieID != null)
-			{
-				throw new NotImplementedException();
-			}
-			else if (filter.AfdelingID != null)
-			{
-				if (filter.GroepsWerkJaarID == null)
-				{
-					throw new NotImplementedException();
-				}
-				kinderen = _daos.KindDao.OphalenUitAfdelingsJaar(
-					filter.GroepsWerkJaarID.Value,
-					filter.AfdelingID.Value,
-					ExtrasNaarLambdasKind(extras)).Cast<Lid>();
-			}
-			else if (filter.FunctieID != null)
-			{
-				if (filter.GroepsWerkJaarID == null)
-				{
-					throw new NotImplementedException();
-				}
-				kinderen = _daos.KindDao.OphalenUitFunctie(
-					filter.GroepsWerkJaarID.Value,
-					filter.FunctieID.Value,
-					ExtrasNaarLambdasKind(extras)).Cast<Lid>();
-			}
-			else if (filter.GroepsWerkJaarID != null)
-			{
-				kinderen = _daos.KindDao.OphalenUitGroepsWerkJaar(
-					filter.GroepsWerkJaarID.Value,
-					ExtrasNaarLambdasKind(extras)).Cast<Lid>();				
-			}
-			else
-			{
-				throw new NotImplementedException();
-			}
 
 			// Sorteren doen we hier niet; dat is presentatie :)
-
 			// Voeg kinderen en leiding samen, en haal de inactieve er uit
 
-			alles = kinderen.Union(leiding);
-
+			var alles = kinderen.Union(leiding);
 			return alles.Where(ld => ld.NonActief == false).ToArray();
 		}
 	}
