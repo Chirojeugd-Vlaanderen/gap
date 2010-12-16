@@ -14,6 +14,7 @@ using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.WebApp.ActionFilters;
 using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
@@ -90,12 +91,143 @@ namespace Chiro.Gap.WebApp.Controllers
 			return gesorteerd;
 		}
 
+		/// <summary>
+		/// Voert een zoekopdracht uit op de leden, en plaatst het resultaat in een LidInfoModel.
+		/// </summary>
+		/// <param name="gwjID">ID van het groepswerkjaar waarvoor een ledenlijst wordt gevraagd.  
+		///   Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
+		/// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
+		/// <param name="sortering">Bepaalt op welke eigenschap de lijst gesorteerd moet worden</param>
+		/// <param name="afdelingID">Als verschillend van 0, worden enkel de leden uit de afdeling met
+		///   dit AfdelingID getoond.</param>
+		/// <param name="functieID">Als verschillend van 0, worden enkel de leden met de functie met
+		///   dit FunctieID getoond.</param>
+		/// <param name="ledenLijst">Hiermee kan je speciale lijsten opzoeken</param>
+		/// <param name="metAdressen">Geeft aan of de adressen mee opgevraagd moeten worden
+		/// (!duurt lang!)</param>
+		/// <returns>een LidInfoModel, met in member LidInfoLijst de gevonden leden</returns>
+		private LidInfoModel Zoeken(
+			int gwjID,
+			int groepID,
+			LidEigenschap sortering,
+			int afdelingID,
+			int functieID,
+			LidInfoModel.SpecialeLedenLijst ledenLijst,
+			bool metAdressen)
+		{
+			// Het sorteren gebeurt nu in de webapp, en niet in de backend.  Sorteren is immers presentatie, dus de service
+			// moet zich daar niet mee bezig houden.
+			//
+			// Voor de personenlijst ligt dat anders.  Als je daar een pagina opvraagt, dan is die
+			// pagina afhankelijk van de gekozen sortering.  Daarom moet het sorteren voor personen
+			// wel door de service gebeuren.  (Maar hier, bij de leden, is dat niet van toepassing.)
+
+			// Als geen groepswerkjaar gegeven is: haal recentste op 
+			int groepsWerkJaarID = gwjID == 0 ? ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)) : gwjID;
+
+			LidInfoModel model = LijstModelInitialiseren(groepsWerkJaarID, groepID, sortering);
+			model.KanLedenBewerken = groepsWerkJaarID == (from wj in model.WerkJaarInfos
+								      orderby wj.WerkJaar descending
+								      select wj.ID).FirstOrDefault();
+
+			// Bewaar gekozen filters in model, zodat de juiste items in de dropdownlijsten geselecteerd 
+			// worden
+
+			model.AfdelingID = afdelingID;
+			model.FunctieID = functieID;
+			model.SpecialeLijst = ledenLijst;
+
+			// Bouw het lijstje met speciale lijsten op
+			if ((model.GroepsNiveau & (Niveau.Gewest | Niveau.Verbond)) == 0)
+			{
+				model.SpecialeLijsten.Add(
+					LidInfoModel.SpecialeLedenLijst.Probeerleden,
+					Properties.Resources.LijstProbeerLeden);
+			}
+			model.SpecialeLijsten.Add(
+				LidInfoModel.SpecialeLedenLijst.VerjaardagsLijst,
+				Properties.Resources.LijstVerjaardagen);
+			model.SpecialeLijsten.Add(
+				LidInfoModel.SpecialeLedenLijst.OntbrekendAdres,
+				Properties.Resources.LijstOntbrekendAdres);
+			model.SpecialeLijsten.Add(
+				LidInfoModel.SpecialeLedenLijst.OntbrekendTelefoonNummer,
+				Properties.Resources.LijstOntbrekendTelefoonNummer);
+			model.SpecialeLijsten.Add(
+				LidInfoModel.SpecialeLedenLijst.LeidingZonderEmail,
+				Properties.Resources.LijstLeidingZonderEmail);
+			model.SpecialeLijsten.Add(
+				LidInfoModel.SpecialeLedenLijst.Alles,
+				Properties.Resources.LijstAlles);
+
+			// Haal de op te lijsten leden op; de filter wordt bepaald uit de method parameters.
+			model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(
+				svc => svc.Zoeken(
+					new LidFilter
+					{
+						GroepsWerkJaarID = groepsWerkJaarID,
+						AfdelingID = (afdelingID == 0) ? null : (int?)afdelingID,
+						FunctieID = (functieID == 0) ? null : (int?)functieID,
+						ProbeerPeriodeNa = (ledenLijst == LidInfoModel.SpecialeLedenLijst.Probeerleden) ? (DateTime?)DateTime.Today : null,
+						HeeftVoorkeurAdres = (ledenLijst == LidInfoModel.SpecialeLedenLijst.OntbrekendAdres) ? (bool?)false : null,
+						HeeftTelefoonNummer = (ledenLijst == LidInfoModel.SpecialeLedenLijst.OntbrekendTelefoonNummer) ? (bool?)false : null
+					},
+					metAdressen));
+
+			if (functieID != 0)
+			{
+				// Naam van de functie opzoeken, zodat we ze kunnen invullen in de paginatitel
+				string functieNaam = (from fi in model.FunctieInfoDictionary
+						      where fi.Key == functieID
+						      select fi).First().Value.Naam;
+
+				model.Titel = String.Format(Properties.Resources.AfdelingsLijstTitel,
+							    functieNaam,
+							    model.JaartalGetoondGroepsWerkJaar,
+							    model.JaartalGetoondGroepsWerkJaar + 1);
+
+			}
+			else if (afdelingID != 0)
+			{
+
+				AfdelingDetail af = (from a in model.AfdelingsInfoDictionary.AsQueryable()
+						     where a.Value.AfdelingID == afdelingID
+						     select a.Value).FirstOrDefault();
+
+				if (af == null)
+				{
+					model.Titel = String.Format(
+						Properties.Resources.AfdelingBestondNiet,
+						model.JaartalGetoondGroepsWerkJaar,
+						model.JaartalGetoondGroepsWerkJaar + 1);
+
+				}
+				else
+				{
+					model.Titel = String.Format(Properties.Resources.AfdelingsLijstTitel,
+								    af.AfdelingNaam,
+								    model.JaartalGetoondGroepsWerkJaar,
+								    model.JaartalGetoondGroepsWerkJaar + 1);
+
+				}
+			}
+			else
+			{
+				model.Titel = String.Format(Properties.Resources.LedenOverzicht,
+							    model.JaartalGetoondGroepsWerkJaar,
+							    model.JaartalGetoondGroepsWerkJaar + 1);
+			}
+			model.LidInfoLijst = Sorteren(model.LidInfoLijst, sortering).ToList();
+			return model;
+		}
+
+
 		// GET: /Leden/
 		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
 			// Recentste groepswerkjaar ophalen, en leden tonen.
-			return Lijst(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), 0, 0, LidEigenschap.Naam, groepID);
+			return Lijst(ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)), 0, 0, LidInfoModel.SpecialeLedenLijst.Geen, LidEigenschap.Naam, groepID);
 		}
 
 		/// <summary>
@@ -166,104 +298,74 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// Toont een gesorteerde ledenlijst
 		/// </summary>
 		/// <param name="id">ID van het groepswerkjaar waarvoor een ledenlijst wordt gevraagd.  
-		/// Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
+		///   Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
+		/// <param name="afdelingID">Als verschillend van 0, worden enkel de leden uit de afdeling met
+		///   dit AfdelingID getoond.</param>
+		/// <param name="functieID">Als verschillend van 0, worden enkel de leden met de functie met
+		///   dit FunctieID getoond.</param>
+		/// <param name="ledenLijst"></param>
 		/// <param name="sortering">Bepaalt op welke eigenschap de lijst gesorteerd moet worden</param>
 		/// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
-		/// <param name="afdelingID">Als verschillend van 0, worden enkel de leden uit de afdeling met
-		/// dit AfdelingID getoond.</param>
-		/// <param name="functieID">Als verschillend van 0, worden enkel de leden met de functie met
-		/// dit FunctieID getoond.</param>
 		/// <returns>Een view met de gevraagde ledenlijst</returns>
-		[HandleError]
+		/// <remarks>De attributen RouteValue en QueryStringValue laten toe dat we deze method overloaden.
+		/// zie http://blog.abodit.com/2010/02/asp-net-mvc-ambiguous-match/ </remarks>
+		[ParametersMatch]
 		public ActionResult Lijst(
-			int id, 
-			int afdelingID, 
-			int functieID, 
-			LidEigenschap sortering, 
-			int groepID)
+			[RouteValue]int id,
+			[QueryStringValue]int afdelingID,
+			[QueryStringValue]int functieID,
+			[QueryStringValue]LidInfoModel.SpecialeLedenLijst ledenLijst,
+			[QueryStringValue]LidEigenschap sortering,
+			[RouteValue]int groepID)
 		{
-			// Het sorteren gebeurt nu in de UI.  Sorteren is immers presentatie, dus de service
-			// moet zich daar niet mee bezig houden.
-			//
-			// Voor de personenlijst ligt dat anders.  Als je daar een pagina opvraagt, dan is die
-			// pagina afhankelijk van de gekozen sortering.  Daarom moet het sorteren voor personen
-			// wel door de service gebeuren.  (Maar hier, bij de leden, is dat niet van toepassing.)
-
-			int groepsWerkJaarID = id == 0 ? ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)) : id;
-
-			LidInfoModel model = LijstModelInitialiseren(groepsWerkJaarID, groepID, sortering);
-			model.AfdelingID = afdelingID;
-			model.FunctieID = functieID;
-
-			model.KanLedenBewerken = groepsWerkJaarID == (from wj in model.WerkJaarInfos
-			                                              orderby wj.WerkJaar descending
-			                                              select wj.ID).FirstOrDefault();
-
-			model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(
-				svc => svc.Zoeken(
-					new LidFilter
-	                  		{
-						GroepsWerkJaarID =  groepsWerkJaarID,
-	                  			AfdelingID = (afdelingID == 0) ? null : (int?)afdelingID,
-						FunctieID = (functieID == 0) ? null: (int?)functieID,
-	                  		},
-					false));  // Zoek zonder adressen, voor snelheidswinst (zie #824)
-
-			if (functieID != 0)
-			{
-				// Naam van de functie opzoeken, zodat we ze kunnen invullen in de paginatitel
-				string functieNaam = (from fi in model.FunctieInfoDictionary
-						      where fi.Key == functieID
-						      select fi).First().Value.Naam;
-
-				model.Titel = String.Format(Properties.Resources.AfdelingsLijstTitel,
-							    functieNaam,
-							    model.JaartalGetoondGroepsWerkJaar,
-							    model.JaartalGetoondGroepsWerkJaar + 1);
-
-			}
-			else if (afdelingID != 0)
-			{
-
-				AfdelingDetail af = (from a in model.AfdelingsInfoDictionary.AsQueryable()
-						     where a.Value.AfdelingID == afdelingID
-						     select a.Value).FirstOrDefault();
-
-				model.Titel = String.Format(Properties.Resources.AfdelingsLijstTitel,
-				                            af.AfdelingNaam,
-				                            model.JaartalGetoondGroepsWerkJaar,
-				                            model.JaartalGetoondGroepsWerkJaar + 1);
-			}
-			else
-			{
-				model.Titel = String.Format(Properties.Resources.LedenOverzicht,
-							    model.JaartalGetoondGroepsWerkJaar,
-							    model.JaartalGetoondGroepsWerkJaar + 1);
-			}
-			model.LidInfoLijst = Sorteren(model.LidInfoLijst, sortering).ToList();
+			LidInfoModel model = Zoeken(id, groepID, sortering, afdelingID, functieID, ledenLijst, false);
 			return View("Index", model);
 		}
 
+
+		/// <summary>
+		/// Filtert een lijst op basis van de info in LidInfoModel
+		/// </summary>
+		/// <param name="id">ID van het groepswerkjaar.  Als dit 0 is, wordt het recentste groepswerkjaar gekozen</param>
+		/// <param name="groepID">ID van de groep.  Enkel nodig als geen groepswerkjaar gegeven is, maar sowieso
+		/// beschikbaar via URL.</param>
+		/// <param name="model">LidInfoModel, waaruit de informatie over de gewenste filters opgehaald moet worden.</param>
+		/// <returns>Deze method zal voornamelijk redirecten
+		/// </returns>
 		[AcceptVerbs(HttpVerbs.Post)]
-		[HandleError]
-		public ActionResult AfdelingsLijst(LidInfoModel model, int groepID)
+		public ActionResult Lijst(int id, int groepID, LidInfoModel model)
 		{
-			return RedirectToAction("Lijst", new { id = model.IDGetoondGroepsWerkJaar, groepID, sortering = model.GekozenSortering, afdelingID = model.AfdelingID, functieID = model.FunctieID });
+			switch (model.SpecialeLijst)
+			{
+				case LidInfoModel.SpecialeLedenLijst.Alles:
+					return RedirectToAction("Lijst", new { id, groepID });
+				case LidInfoModel.SpecialeLedenLijst.VerjaardagsLijst:
+					return RedirectToAction("Lijst",
+								new
+								{
+									id,
+									afdelingID = model.AfdelingID,
+									functieID = model.FunctieID,
+									ledenLijst = model.SpecialeLijst,
+									sortering = LidEigenschap.Verjaardag,
+									groepID
+								});
+				case LidInfoModel.SpecialeLedenLijst.LeidingZonderEmail:
+					throw new NotImplementedException();
+				default:
+					return RedirectToAction("Lijst",
+								new
+								{
+									id,
+									afdelingID = model.AfdelingID,
+									functieID = model.FunctieID,
+									ledenLijst = model.SpecialeLijst,
+									sortering = model.GekozenSortering,
+									groepID
+								});
+			}
 		}
 
-		[HandleError]
-		[AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult FunctieLijst(LidInfoModel model, int groepID)
-		{
-			return RedirectToAction("Lijst", new { id = model.IDGetoondGroepsWerkJaar, groepID, sortering = model.GekozenSortering, afdelingID = model.AfdelingID, functieID = model.FunctieID });
-		}
-
-		[AcceptVerbs(HttpVerbs.Post)]
-		[HandleError]
-		public ActionResult Lijst(LidInfoModel model, int groepID)
-		{
-			return RedirectToAction("Lijst", new { id = model.IDGetoondGroepsWerkJaar, groepID, sortering = model.GekozenSortering, afdelingID = model.AfdelingID, functieID = model.FunctieID });
-		}
 
 		/// <summary>
 		/// Downloadt de lijst van leden uit groepswerkjaar met GroepsWerkJaarID <paramref name="id"/> als
@@ -278,13 +380,10 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="sortering">Eigenschap waarop gesorteerd moet worden</param>
 		/// <returns>Exceldocument met gevraagde ledenlijst</returns>
 		[HandleError]
-		public ActionResult Download(int id, int afdelingID, int functieID, int groepID, LidEigenschap sortering)
+		public ActionResult Download(int id, int afdelingID, int functieID, int groepID, LidInfoModel.SpecialeLedenLijst ledenLijst, LidEigenschap sortering)
 		{
-			IEnumerable<LidOverzicht> lijst;
-			string bestandsnaam;
-
-			int groepsWerkJaarID = id == 0 ? ServiceHelper.CallService<IGroepenService, int>(svc => svc.RecentsteGroepsWerkJaarIDGet(groepID)) : id;
-
+			var model = Zoeken(id, groepID, sortering, afdelingID, functieID, ledenLijst, true);
+			string bestandsNaam;
 
 			// Als ExcelManip de kolomkoppen kan afleiden uit de (param)array, en dan liefst nog de DisplayName
 			// gebruikt van de PersoonOverzicht-velden, dan is de regel hieronder niet nodig.
@@ -293,35 +392,11 @@ namespace Chiro.Gap.WebApp.Controllers
 			                       	"Straat", "Nr", "Bus", "Postcode", "Gemeente", "Tel", "Mail"
 			                       };
 
-			lijst = ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(
-				svc => svc.Zoeken(
-					new LidFilter
-					{
-						GroepsWerkJaarID = groepsWerkJaarID,
-						AfdelingID = (afdelingID == 0) ? null : (int?)afdelingID,
-						FunctieID = (functieID == 0) ? null : (int?)functieID,
-					},
-					true));  // Voor een Excelexport willen we *wel* adressen
-
-			// TODO: het zou leuk zijn moesten de lijsten zinvollere titels hebben,
-			// zoals rakwis-2010-2011.xlsx of leden-2010-2011.xlsx
-
-			if (afdelingID != 0)
-			{
-				bestandsnaam = "Afdelingslijst.xlsx";
-			}
-			else if (functieID != 0)
-			{
-				bestandsnaam = "Functielijst.xlsx";
-			}
-			else
-			{
-				bestandsnaam = "Leden.xlsx";
-			}
+			bestandsNaam = String.Format("{0}.xlsx", model.Titel.Replace(" ", "-"));
 
 
 			var stream = (new ExcelManip()).ExcelTabel(
-				Sorteren(lijst, sortering),
+				model.LidInfoLijst,
 				kolomkoppen,
 				it => it.Type,
 				it => it.AdNummer,
@@ -339,7 +414,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				it => it.TelefoonNummer,
 				it => it.Email);
 
-			return new ExcelResult(stream, bestandsnaam);
+			return new ExcelResult(stream, bestandsNaam);
 		}
 
 		/// <summary>
@@ -611,56 +686,108 @@ namespace Chiro.Gap.WebApp.Controllers
 			return RedirectToAction("EditRest", "Personen", new { groepID, id = gelieerdePersoonID });
 		}
 
+		#region Verkorte url's, die eigenlijk gewoon Lijst aanroepen met de jusite parameters
+
+		/// <summary>
+		/// Toont een gesorteerde ledenlijst
+		/// </summary>
+		/// <param name="id">ID van het groepswerkjaar waarvoor een ledenlijst wordt gevraagd.  
+		/// Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
+		/// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
+		/// <returns>Een view met de gevraagde ledenlijst</returns>
+		/// <remarks>De attributen RouteValue en QueryStringValue laten toe dat we deze method overloaden.
+		/// zie http://blog.abodit.com/2010/02/asp-net-mvc-ambiguous-match/ </remarks>
+		[ParametersMatch]
+		public ActionResult Lijst(
+			[RouteValue]int id,
+			[RouteValue]int groepID)
+		{
+			return Lijst(id, 0, 0, LidInfoModel.SpecialeLedenLijst.Geen, LidEigenschap.Naam, groepID);
+		}
+
 		/// <summary>
 		/// Toont de lijst van de probeerleden
 		/// </summary>
 		/// <param name="groepID">Groep waarvoor de probeerleden getoond moeten worden</param>
 		/// <returns>View voor de probeerleden</returns>
+		/// <remarks>Deze actie wordt (nog) nergens gebruikt in de app, maar er wordt wel naar verwezen
+		/// in het mailtje ivm de probeerleden (gemakkelijke url).</remarks>
 		public ActionResult ProbeerLeden(int groepID)
 		{
-			return GesorteerdeProbeerLeden(groepID, LidEigenschap.InstapPeriode);
+			return Lijst(0, 0, 0, LidInfoModel.SpecialeLedenLijst.Probeerleden, LidEigenschap.Naam, groepID);
 		}
 
 		/// <summary>
-		/// Toont de gesorteerde lijst van de probeerleden
+		/// Toont de leden uit een bepaalde afdeling in het meest recente werkjaar
 		/// </summary>
-		/// <param name="groepID">Groep waarvoor de probeerleden getoond moeten worden</param>
-		/// <param name="sortering">Geeft aan waarop de lijst gesorteerd moet worden</param>
-		/// <returns>View voor de probeerleden</returns>
-		/// <remarks>Ik zou deze method ook 'ProbeerLeden' willen noemen, maar dat lukt
-		/// op een of andere manier niet.</remarks>
-		public ActionResult GesorteerdeProbeerLeden(int groepID, LidEigenschap sortering)
+		/// <param name="id">ID van de afdeling.</param>
+		/// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
+		/// <returns>Een view met de gevraagde ledenlijst</returns>
+		/// <remarks>De attributen RouteValue en QueryStringValue laten toe dat we deze method overloaden.
+		/// zie http://blog.abodit.com/2010/02/asp-net-mvc-ambiguous-match/ </remarks>
+		[ParametersMatch]
+		public ActionResult Afdeling(
+			[RouteValue]int id,
+			[RouteValue]int groepID)
 		{
-			// Het sorteren gebeurt nu in de UI.  Sorteren is immers presentatie, dus de service
-			// moet zich daar niet mee bezig houden.
-			//
-			// Voor de personenlijst ligt dat anders.  Als je daar een pagina opvraagt, dan is die
-			// pagina afhankelijk van de gekozen sortering.  Daarom moet het sorteren voor personen
-			// wel door de service gebeuren.  (Maar hier, bij de leden, is dat niet van toepassing.)
-
-			ClientState.VorigeLijst = Request.Url.ToString();
-
-			var model = new ProbeerLedenModel();
-			
-			BaseModelInit(model, groepID);
-
-			model.GekozenSortering = sortering;
-			model.KanLedenBewerken = true; // probeerleden kunnen altijd bewerkt worden
-			model.AansluitingsPrijs = Properties.Settings.Default.PrijsAansluiting;
-
-			model.LidInfoLijst =
-				ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>
-					(svc => svc.Zoeken(
-						new LidFilter
-							{
-								GroepID = groepID,
-								ProbeerPeriodeNa = DateTime.Now
-							}, false));
-
-			model.Titel = String.Format(Properties.Resources.ProbeerLeden);
-
-			model.LidInfoLijst = Sorteren(model.LidInfoLijst, sortering).ToList();
-			return View("GesorteerdeProbeerLeden", model);
+			return Lijst(0, id, 0, LidInfoModel.SpecialeLedenLijst.Geen, LidEigenschap.Naam, groepID);
 		}
+
+		/// <summary>
+		/// Toont de leden uit een bepaalde afdeling
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor een ledenlijst wordt gevraagd.  
+		///   Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
+		/// <param name="id">ID van de afdeling.</param>
+		/// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
+		/// <returns>Een view met de gevraagde ledenlijst</returns>
+		/// <remarks>De attributen RouteValue en QueryStringValue laten toe dat we deze method overloaden.
+		/// zie http://blog.abodit.com/2010/02/asp-net-mvc-ambiguous-match/ </remarks>
+		[ParametersMatch]
+		public ActionResult Afdeling(
+			[RouteValue]int id,
+			[QueryStringValue]int groepsWerkJaarID,
+			[RouteValue]int groepID)
+		{
+			return Lijst(groepsWerkJaarID, id, 0, LidInfoModel.SpecialeLedenLijst.Geen, LidEigenschap.Naam, groepID);
+		}
+
+
+		/// <summary>
+		/// Toont de leden uit een bepaalde functie in het meest recente werkjaar
+		/// </summary>
+		/// <param name="id">ID van de functie.</param>
+		/// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
+		/// <returns>Een view met de gevraagde ledenlijst</returns>
+		/// <remarks>De attributen RouteValue en QueryStringValue laten toe dat we deze method overloaden.
+		/// zie http://blog.abodit.com/2010/02/asp-net-mvc-ambiguous-match/ </remarks>
+		[ParametersMatch]
+		public ActionResult Functie(
+			[RouteValue]int id,
+			[RouteValue]int groepID)
+		{
+			return Lijst(0, 0, id, LidInfoModel.SpecialeLedenLijst.Geen, LidEigenschap.Naam, groepID);
+		}
+
+		/// <summary>
+		/// Toont de leden uit een bepaalde functie
+		/// </summary>
+		/// <param name="groepsWerkJaarID">ID van het groepswerkjaar waarvoor een functie wordt gevraagd.  
+		///   Indien 0, het recentste groepswerkjaar van de groep met ID <paramref name="groepID"/>.</param>
+		/// <param name="id">ID van de functie.</param>
+		/// <param name="groepID">Groep waaruit de leden opgehaald moeten worden.</param>
+		/// <returns>Een view met de gevraagde ledenlijst</returns>
+		/// <remarks>De attributen RouteValue en QueryStringValue laten toe dat we deze method overloaden.
+		/// zie http://blog.abodit.com/2010/02/asp-net-mvc-ambiguous-match/ </remarks>
+		[ParametersMatch]
+		public ActionResult Functie(
+			[RouteValue]int id,
+			[QueryStringValue]int groepsWerkJaarID,
+			[RouteValue]int groepID)
+		{
+			return Lijst(groepsWerkJaarID, 0, id, LidInfoModel.SpecialeLedenLijst.Geen, LidEigenschap.Naam, groepID);
+		}
+		#endregion
+
 	}
 }

@@ -7,10 +7,18 @@
 		<th>Ad-nr. </th>
 		<th>Type </th>
 		<th>
-			<%= Html.ActionLink("Naam", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Naam, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op naam" })%>
+			<%= Html.ActionLink(
+				"Naam", 
+				"Lijst", 
+				new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Naam, afdelingID = Model.AfdelingID, ledenLijst = Model.SpecialeLijst, functieID = Model.FunctieID }, 
+				new { title = "Sorteren op naam" })%>
 		</th>
 		<th>
-			<%= Html.ActionLink("Geboortedatum", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Leeftijd, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op geboortedatum" })%>
+			<%= Html.ActionLink(
+				"Geboortedatum", 
+				"Lijst", 
+				new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.Leeftijd, afdelingID = Model.AfdelingID, ledenLijst = Model.SpecialeLijst, functieID = Model.FunctieID }, 
+				new { title = "Sorteren op geboortedatum" })%>
 		</th>
 		<th>
 			<%=Html.Geslacht(GeslachtsType.Man) %>
@@ -30,9 +38,11 @@
  	                                  		{
  	                                  			Controller = "Leden",
  	                                  			id = Model.IDGetoondGroepsWerkJaar,
- 	                                  			sortering = LidEigenschap.Afdeling,
+								groepID = Model.GroepID,
  	                                  			afdelingID = Model.AfdelingID,
- 	                                  			functieID = Model.FunctieID
+								ledenLijst = Model.SpecialeLijst,
+ 	                                  			functieID = Model.FunctieID,
+								sortering = LidEigenschap.Afdeling
  	                                  		},
  						  new {title = "Sorteren op afdeling"})%>
 			</th>
@@ -41,7 +51,11 @@
 	%>
 		<th>Func. </th>
 		<th>
-			<%= Html.ActionLink("Instap tot", "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.InstapPeriode, afdelingID = Model.AfdelingID, functieID = Model.FunctieID }, new { title = "Sorteren op einde instapperiode" })%>
+			<%= Html.ActionLink(
+				"Instap tot",
+				"Lijst",
+				new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = LidEigenschap.InstapPeriode, afdelingID = Model.AfdelingID, ledenLijst = Model.SpecialeLijst, functieID = Model.FunctieID },
+				new { title = "Sorteren op einde instapperiode" })%>
 		</th>
 		<th>Telefoon</th>
 		<th>E-mail</th>
@@ -80,14 +94,13 @@
 			{
 	%>	
 				<%=Html.ActionLink(Html.Encode(a.Afkorting),
-							  "Lijst",
+							  "Afdeling",
 							  new
 		                                  		{
 		                                  			Controller = "Leden",
-		                                  			id = Model.IDGetoondGroepsWerkJaar,
-		                                  			sortering = Model.GekozenSortering,
-		                                  			afdelingID = a.ID,
-		                                  			functieID = 0
+		                                  			groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar,
+									groepID = Model.GroepID,
+		                                  			id = a.ID,
 		                                  		},
 							  new {title = "Toon alleen afdeling " + a.Naam})%>
 	<%
@@ -100,7 +113,11 @@
 		<td>
 			<% foreach (var functieInfo in lidOverzicht.Functies)
 	  { %>
-			<%=Html.ActionLink(Html.Encode(functieInfo.Code), "Lijst", new { Controller = "Leden", id = Model.IDGetoondGroepsWerkJaar, sortering = Model.GekozenSortering, afdelingID = 0, functieID = functieInfo.ID }, new { title = "Toon alleen mensen met functie " + functieInfo.Naam })%>
+			<%=Html.ActionLink(
+				Html.Encode(functieInfo.Code), 
+				"Functie", 
+				new { Controller = "Leden", groepsWerkJaarID = Model.IDGetoondGroepsWerkJaar, groepID = Model.GroepID, id = functieInfo.ID }, 
+				new { title = "Toon alleen mensen met functie " + functieInfo.Naam })%>
 			<% } %>
 		</td>
 		<td><%=lidOverzicht.EindeInstapPeriode == null ? String.Empty : ((DateTime)lidOverzicht.EindeInstapPeriode).ToString("d") %></td>

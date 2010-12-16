@@ -61,6 +61,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to De gevraagde afdeling bestond niet in het werkjaar {0}-{1}..
+        /// </summary>
+        public static string AfdelingBestondNiet {
+            get {
+                return ResourceManager.GetString("AfdelingBestondNiet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Afdelingen van {0} bewerken.
         /// </summary>
         public static string AfdelingenAanpassen {
@@ -372,6 +381,60 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string LidNonActiefGemaakt {
             get {
                 return ResourceManager.GetString("LidNonActiefGemaakt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alle filters opheffen.
+        /// </summary>
+        public static string LijstAlles {
+            get {
+                return ResourceManager.GetString("LijstAlles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leiding zonder e-mailadres.
+        /// </summary>
+        public static string LijstLeidingZonderEmail {
+            get {
+                return ResourceManager.GetString("LijstLeidingZonderEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ingeschreven zonder adres.
+        /// </summary>
+        public static string LijstOntbrekendAdres {
+            get {
+                return ResourceManager.GetString("LijstOntbrekendAdres", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ingeschreven zonder telefoonnummer.
+        /// </summary>
+        public static string LijstOntbrekendTelefoonNummer {
+            get {
+                return ResourceManager.GetString("LijstOntbrekendTelefoonNummer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leden en leiding in instapperiode.
+        /// </summary>
+        public static string LijstProbeerLeden {
+            get {
+                return ResourceManager.GetString("LijstProbeerLeden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verjaardagslijst.
+        /// </summary>
+        public static string LijstVerjaardagen {
+            get {
+                return ResourceManager.GetString("LijstVerjaardagen", resourceCulture);
             }
         }
         

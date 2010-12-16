@@ -155,13 +155,11 @@
 			<%foreach (var f in Model.PersoonLidInfo.LidInfo.Functies)
 	 {%>
 			<%=Html.ActionLink(f.Code, 
-				    "Lijst", 
+				    "Functie", 
 			        "Leden",
-				    new { id = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID,
-							functieID = f.ID,
+				    new { groepsWerkJaarID = Model.PersoonLidInfo.LidInfo.GroepsWerkJaarID,
+							id = f.ID,
 							groepID = Model.GroepID, 
-							afdelingID = 0,
-							sortering = LidEigenschap.Naam
 						},
 				    new { title= f.Naam })%>
 			<% }%>

@@ -17,6 +17,7 @@ using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 using Chiro.Gap.Validatie;
+using Chiro.Gap.WebApp.ActionFilters;
 using Chiro.Gap.WebApp.HtmlHelpers;
 using Chiro.Gap.WebApp.Models;
 

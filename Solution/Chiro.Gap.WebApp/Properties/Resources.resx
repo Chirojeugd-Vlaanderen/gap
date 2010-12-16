@@ -279,4 +279,25 @@
   <data name="ProbeerLeden" xml:space="preserve">
     <value>Leden en leiding in probeerperiode</value>
   </data>
+  <data name="LijstAlles" xml:space="preserve">
+    <value>Alle filters opheffen</value>
+  </data>
+  <data name="LijstLeidingZonderEmail" xml:space="preserve">
+    <value>Leiding zonder e-mailadres</value>
+  </data>
+  <data name="LijstOntbrekendAdres" xml:space="preserve">
+    <value>Ingeschreven zonder adres</value>
+  </data>
+  <data name="LijstOntbrekendTelefoonNummer" xml:space="preserve">
+    <value>Ingeschreven zonder telefoonnummer</value>
+  </data>
+  <data name="LijstProbeerLeden" xml:space="preserve">
+    <value>Leden en leiding in instapperiode</value>
+  </data>
+  <data name="LijstVerjaardagen" xml:space="preserve">
+    <value>Verjaardagslijst</value>
+  </data>
+  <data name="AfdelingBestondNiet" xml:space="preserve">
+    <value>De gevraagde afdeling bestond niet in het werkjaar {0}-{1}.</value>
+  </data>
 </root>

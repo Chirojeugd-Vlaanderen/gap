@@ -166,11 +166,11 @@ namespace Chiro.Gap.Workers
 			Niveau niveau = gwj.Groep.Niveau;
 			if ((niveau & Niveau.Groep) != 0)
 			{
-				if (lidType != LidType.Leiding)
+				if ((lidType & LidType.Leiding) == 0)
 				{
 					niveau &= ~Niveau.LeidingInGroep;
 				}
-				if (lidType != LidType.Kind)
+				if ((lidType & LidType.Kind) == 0)
 				{
 					niveau &= ~Niveau.LidInGroep;
 				}

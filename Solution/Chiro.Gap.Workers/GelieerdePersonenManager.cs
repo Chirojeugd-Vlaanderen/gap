@@ -783,7 +783,7 @@ namespace Chiro.Gap.Workers
 				// een transactie.)
 				// geef nieuwe voorkeursadressen van personen met ad-nummer door aan kipadmin
 				var voorKeursAdressen = (from gp in gelieerdePersonen
-							 where gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag
+							 where (gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag) && gp.PersoonsAdres != null
 				                         select gp.PersoonsAdres);
 
 				_adressenSync.StandaardAdressenBewaren(voorKeursAdressen);

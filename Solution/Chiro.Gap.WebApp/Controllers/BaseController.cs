@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Web.Caching;
 using System.Web.Mvc;
 
@@ -15,6 +14,7 @@ using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.WebApp.ActionFilters;
 using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers

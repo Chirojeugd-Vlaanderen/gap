@@ -14,18 +14,31 @@ namespace Chiro.Gap.WebApp.Models
 {
 	public class LidInfoModel : LedenLijstModel
 	{
+		public enum SpecialeLedenLijst
+		{
+			Geen, Alles, Probeerleden, VerjaardagsLijst, OntbrekendAdres, OntbrekendTelefoonNummer, LeidingZonderEmail
+		}
+
 		public LidInfoModel()
 		{
 			WerkJaarInfos = new List<WerkJaarInfo>();
 			LidInfoLijst = new List<LidOverzicht>();
 			AfdelingsInfoDictionary = new Dictionary<int, AfdelingDetail>();
+			SpecialeLijsten = new Dictionary<SpecialeLedenLijst, string>();
 		}
 
 		public int PageHuidig { get; set; }
 		public int PageTotaal { get; set; }
 
+		// TODO: Aangezien in AfdelingDetail en FunctieDetail ook de ID's zitten, 
+		// is het overbodig om hieronder dictionary's te gebruiken.
+
 		public Dictionary<int, AfdelingDetail> AfdelingsInfoDictionary { get; set; }
 		public Dictionary<int, FunctieDetail> FunctieInfoDictionary { get; set; }
+
+		// De dictionary hieronder is dan wel weer nuttig.
+
+		public Dictionary<SpecialeLedenLijst, string> SpecialeLijsten { get; set; }
 
 		public int IDGetoondGroepsWerkJaar { get; set; }
 		public int JaartalGetoondGroepsWerkJaar { get; set; }
@@ -33,5 +46,6 @@ namespace Chiro.Gap.WebApp.Models
 
 		public int AfdelingID { get; set; }
 		public int FunctieID { get; set; }
+		public SpecialeLedenLijst SpecialeLijst { get; set; }
 	}
 }

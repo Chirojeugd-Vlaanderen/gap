@@ -5,7 +5,7 @@
 
 using System.Web.Mvc;
 
-namespace Chiro.Gap.WebApp
+namespace Chiro.Gap.WebApp.ActionFilters
 {
 	/// <summary>
 	/// Eigen attribuut dat gebruikt kan worden in forms met meer dan 1 knop, om te detecteren op 
