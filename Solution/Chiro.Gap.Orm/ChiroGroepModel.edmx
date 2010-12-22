@@ -1301,7 +1301,7 @@
           <NavigationProperty Name="Persoon" Relationship="ChiroGroepModel.FK_PersoonsVerzekering_Persoon" FromRole="PersoonsVerzekering" ToRole="Persoon" />
           <NavigationProperty Name="VerzekeringsType" Relationship="ChiroGroepModel.FK_PersoonsVerzekering_VerzekeringsType" FromRole="PersoonsVerzekering" ToRole="VerzekeringsType" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="Fixed" /></EntityType>
+          <Property Name="Versie" Type="Binary" Nullable="true" ConcurrencyMode="None" /></EntityType>
         <EntityType Name="VerzekeringsType">
           <Key>
             <PropertyRef Name="ID" /></Key>

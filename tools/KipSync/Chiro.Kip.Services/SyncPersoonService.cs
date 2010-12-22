@@ -1276,15 +1276,41 @@ namespace Chiro.Kip.Services
 			string feedback = String.Empty;
 			using (var db = new kipadminEntities())
 			{
-				// TODO (#755): Nakijken of de persoon in kwestie nog niet verzekerd is.
-
 				// Haal groep op.
 
 				groep = (from g in db.Groep.OfType<ChiroGroep>()
-				         where g.STAMNR == stamNummer
-				         select g).FirstOrDefault();
+					 where g.STAMNR == stamNummer
+					 select g).FirstOrDefault();
 
-				int volgNummer = 1;
+				// Nakijken of de persoon in kwestie nog niet verzekerd is.
+
+				var bestaande = (from v in db.PersoonsVerzekering
+				                 where v.kipPersoon.AdNummer == adNummer && v.ExtraVerzekering.WerkJaar == werkJaar
+				                 select v).FirstOrDefault();
+
+				if (bestaande != null)
+				{
+					_log.BerichtLoggen(groep.GroepID, String.Format(
+						"Dubbele verzekering loonverlies van persoon genegeerd.  Ad-nr {0}",
+						adNummer));
+					return;
+				}
+
+				// Opzoeken persoon
+
+				var persoon = (from p in db.PersoonSet
+				               where p.AdNummer == adNummer
+				               select p).FirstOrDefault();
+
+				if (persoon == null)
+				{
+					_log.FoutLoggen(
+						groep == null ? 0 : groep.GroepID,
+						String.Format(
+							"genegeerd: loonverlies onbekend AD-nr. {0}", 
+							adNummer));
+					return;
+				}
 
 				// Zoek eerst naar een geschikte lijn in ExtraVerzekering die we
 				// kunnen recupereren voor deze verzekering.
@@ -1304,24 +1330,26 @@ namespace Chiro.Kip.Services
 
 				if (verzekering == null || (verzekering.REKENING != null && verzekering.REKENING.DOORGEBOE != "N"))
 				{
-					volgNummer = (verzekering == null ? 1 : verzekering.VolgNummer + 1);
+					int volgNummer = (verzekering == null ? 1 : verzekering.VolgNummer + 1);
 					// Bedragen rekening mogen leeg zijn; worden aangevuld bij factuur
 					// overzetten in Kipadmin.
 
 					// Kaderploegen krijgen geen factuur
 
-					var rekening = (groep.TYPE.ToUpper() != "L") ? null : new Rekening
-					               	{
-					               		WERKJAAR = (short) werkJaar,
-					               		TYPE = "F",
-					               		REK_BRON = "U_VERZEK",
-					               		STAMNR = stamNummer,
-					               		VERWIJSNR = volgNummer,
-					               		FACTUUR = "N",
-					               		FACTUUR2 = "N",
-					               		DOORGEBOE = "N",
-					               		DAT_REK = DateTime.Now
-					               	};
+					var rekening = (groep.TYPE.ToUpper() != "L")
+					               	? null
+					               	: new Rekening
+					               	  	{
+					               	  		WERKJAAR = (short) werkJaar,
+					               	  		TYPE = "F",
+					               	  		REK_BRON = "U_VERZEK",
+					               	  		STAMNR = stamNummer,
+					               	  		VERWIJSNR = volgNummer,
+					               	  		FACTUUR = "N",
+					               	  		FACTUUR2 = "N",
+					               	  		DOORGEBOE = "N",
+					               	  		DAT_REK = DateTime.Now
+					               	  	};
 
 					verzekering = new ExtraVerzekering
 					              	{
@@ -1348,7 +1376,17 @@ namespace Chiro.Kip.Services
 
 				// In de 'noot' van het verzekeringsrecord bewaren we
 				// comma-separated de AD-nummers van verzekerde personen.
-				// TODO (#755): Dat is natuurlijk niet zo goed.
+				// Dit is 'legacy'; we connecteren het verzekeringsrecord nu met
+				// de verzekerde persoon.
+
+				var persoonsVerzekering = new PersoonsVerzekering
+				                          	{
+				                          		ExtraVerzekering = verzekering,
+				                          		kipPersoon = persoon
+				                          	};
+
+				db.AddToPersoonsVerzekering(persoonsVerzekering);
+
 				verzekering.Noot = String.Format(
 					"{0},{1}",
 					verzekering.Noot,

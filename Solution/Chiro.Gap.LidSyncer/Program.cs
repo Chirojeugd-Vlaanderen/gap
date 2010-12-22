@@ -38,6 +38,8 @@ namespace Chiro.Gap.LidSyncer
 			auMgrMock.Setup(mgr => mgr.IsGavGelieerdePersoon(It.IsAny<int>())).Returns(true);
 			auMgrMock.Setup(mgr => mgr.EnkelMijnGelieerdePersonen(It.IsAny<IEnumerable<int>>())).Returns<IEnumerable<int>>(bla => bla.ToList());
 			auMgrMock.Setup(mgr => mgr.IsGavLid(It.IsAny<int>())).Returns(true);
+			auMgrMock.Setup(mgr => mgr.IsGavGroepsWerkJaar(It.IsAny<int>())).Returns(true);
+			auMgrMock.Setup(mgr => mgr.IsGavPersoon(It.IsAny<int>())).Returns(true);
 
 			// nifty ;-P
 
@@ -53,14 +55,14 @@ namespace Chiro.Gap.LidSyncer
 			// DubbelpuntOpnieuwBestellen();
 
 
-			// Verloren contactpersonen opnieuw overzetten
-			FunctiesOpnieuwOverzetten();
+			//// Verloren contactpersonen opnieuw overzetten
+			//OpnieuwVerzekerenLoonVerlies();
 
-			
-			//// Overzetten leden na probeerperiode
 
-			//var ledenMgr = Factory.Maak<LedenManager>();
-			//ledenMgr.OverZettenNaProbeerPeriode();
+			// Overzetten leden na probeerperiode
+
+			var ledenMgr = Factory.Maak<LedenManager>();
+			ledenMgr.OverZettenNaProbeerPeriode();
 		}
 
 		private static void FunctiesOpnieuwOverzetten()
@@ -95,6 +97,68 @@ namespace Chiro.Gap.LidSyncer
 				}
 			}
 
+		}
+
+		private struct IDs
+		{
+			public int PersoonsVerzekeringID;
+			public int GroepsWerkJaarID;
+		}
+
+		private static void OpnieuwVerzekerenLoonVerlies()
+		{
+
+			IDs[] ids = {
+			          	new IDs {PersoonsVerzekeringID = 439, GroepsWerkJaarID = 2892},
+			          	new IDs {PersoonsVerzekeringID = 872, GroepsWerkJaarID = 2677},
+			          	new IDs {PersoonsVerzekeringID = 871, GroepsWerkJaarID = 2058},
+			          	new IDs {PersoonsVerzekeringID = 870, GroepsWerkJaarID = 2058},
+			          	new IDs {PersoonsVerzekeringID = 958, GroepsWerkJaarID = 3690},
+			          	new IDs {PersoonsVerzekeringID = 956, GroepsWerkJaarID = 3690},
+			          	new IDs {PersoonsVerzekeringID = 957, GroepsWerkJaarID = 3690},
+			          	new IDs {PersoonsVerzekeringID = 954, GroepsWerkJaarID = 3690},
+			          	new IDs {PersoonsVerzekeringID = 955, GroepsWerkJaarID = 3690},
+			          	new IDs {PersoonsVerzekeringID = 856, GroepsWerkJaarID = 2129},
+			          	new IDs {PersoonsVerzekeringID = 859, GroepsWerkJaarID = 2788},
+			          	new IDs {PersoonsVerzekeringID = 861, GroepsWerkJaarID = 2788},
+			          	new IDs {PersoonsVerzekeringID = 864, GroepsWerkJaarID = 2788},
+			          	new IDs {PersoonsVerzekeringID = 865, GroepsWerkJaarID = 2788},
+			          	new IDs {PersoonsVerzekeringID = 867, GroepsWerkJaarID = 2788},
+			          	new IDs {PersoonsVerzekeringID = 869, GroepsWerkJaarID = 2788},
+			          	new IDs {PersoonsVerzekeringID = 862, GroepsWerkJaarID = 2788},
+			          	new IDs {PersoonsVerzekeringID = 857, GroepsWerkJaarID = 2788},
+			          	new IDs {PersoonsVerzekeringID = 858, GroepsWerkJaarID = 2788},
+			          	new IDs {PersoonsVerzekeringID = 868, GroepsWerkJaarID = 2788},
+			          	new IDs {PersoonsVerzekeringID = 863, GroepsWerkJaarID = 2788},
+			          	new IDs {PersoonsVerzekeringID = 860, GroepsWerkJaarID = 2788},
+			          	new IDs {PersoonsVerzekeringID = 866, GroepsWerkJaarID = 2788},
+			          	new IDs {PersoonsVerzekeringID = 874, GroepsWerkJaarID = 2299},
+			          	new IDs {PersoonsVerzekeringID = 877, GroepsWerkJaarID = 2615},
+			          	new IDs {PersoonsVerzekeringID = 876, GroepsWerkJaarID = 2615},
+			          	new IDs {PersoonsVerzekeringID = 875, GroepsWerkJaarID = 2615},
+			          	new IDs {PersoonsVerzekeringID = 959, GroepsWerkJaarID = 2073},
+			          	new IDs {PersoonsVerzekeringID = 961, GroepsWerkJaarID = 2073},
+			          	new IDs {PersoonsVerzekeringID = 962, GroepsWerkJaarID = 2073},
+			          	new IDs {PersoonsVerzekeringID = 960, GroepsWerkJaarID = 2073},
+			          	new IDs {PersoonsVerzekeringID = 852, GroepsWerkJaarID = 2821},
+			          	new IDs {PersoonsVerzekeringID = 853, GroepsWerkJaarID = 2821},
+			          	new IDs {PersoonsVerzekeringID = 855, GroepsWerkJaarID = 2821},
+			          	new IDs {PersoonsVerzekeringID = 873, GroepsWerkJaarID = 2695},
+			          	new IDs {PersoonsVerzekeringID = 953, GroepsWerkJaarID = 3713},
+			          	new IDs {PersoonsVerzekeringID = 952, GroepsWerkJaarID = 3713},
+			          	new IDs {PersoonsVerzekeringID = 854, GroepsWerkJaarID = 2821}
+			          };
+
+			var verzekeringenManager = Factory.Maak<VerzekeringenManager>();
+			var groepsWerkJaarManager = Factory.Maak<GroepsWerkJaarManager>();
+
+			foreach (var current in ids)
+			{
+				var pv = verzekeringenManager.PersoonsVerzekeringOphalen(current.PersoonsVerzekeringID);
+				var gwj = groepsWerkJaarManager.Ophalen(current.GroepsWerkJaarID, GroepsWerkJaarExtras.Groep);
+
+				verzekeringenManager.PersoonsVerzekeringBewaren(pv, gwj);
+			}
 		}
 
 		private static void DubbelpuntOpnieuwBestellen()

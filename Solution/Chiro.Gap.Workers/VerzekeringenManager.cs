@@ -136,9 +136,22 @@ namespace Chiro.Gap.Workers
 				using (var tx = new TransactionScope())
 				{
 #endif
-					resultaat = _persoonsVerzekeringenDao.Bewaren(verzekering,
-					                                              pv => pv.Persoon.WithoutUpdate(),
-					                                              pv => pv.VerzekeringsType.WithoutUpdate());
+					if (verzekering.ID == 0)
+					{
+						resultaat = _persoonsVerzekeringenDao.Bewaren(verzekering,
+						                                              pv => pv.Persoon.WithoutUpdate(),
+						                                              pv => pv.VerzekeringsType.WithoutUpdate());
+					}
+					else
+					{
+						// Verzekeringen mogen niet vervangen worden.
+						// TODO: Exception throwen
+						// Voorlopig throwen we die exception niet, opdat we via louche truken
+						// op gemakkelijke wijze 'verloren' verzekeringen opnieuw zouden kunnen 
+						// 'kipsyncen'.
+
+						resultaat = verzekering;
+					}
 
 					_sync.Bewaren(resultaat, gwj);
 #if KIPDORP
@@ -151,6 +164,16 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
+		}
+
+		/// <summary>
+		/// Haalt een persoonsverzekering op, op basis van zijn ID
+		/// </summary>
+		/// <param name="persoonsVerzekeringID">ID op te halen persoonsverzekering</param>
+		/// <returns></returns>
+		public PersoonsVerzekering PersoonsVerzekeringOphalen(int persoonsVerzekeringID)
+		{
+			return _persoonsVerzekeringenDao.Ophalen(persoonsVerzekeringID, pv => pv.Persoon, pv => pv.VerzekeringsType);
 		}
 	}
 }
