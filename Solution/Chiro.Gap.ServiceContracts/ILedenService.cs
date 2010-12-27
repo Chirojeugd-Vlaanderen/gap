@@ -117,7 +117,9 @@ namespace Chiro.Gap.ServiceContracts
 		/// </param>
 		/// <returns>Lijst met info over gevonden leden</returns>
 		/// <remarks>
-		/// Er worden enkel actieve leden opgehaald
+		/// Er worden enkel actieve leden opgehaald.
+		/// Let er ook op dat je in de filter iets opgeeft als LidType
+		/// (Kind, Leiding of Alles), want anders krijg je niets terug.
 		/// </remarks>
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]

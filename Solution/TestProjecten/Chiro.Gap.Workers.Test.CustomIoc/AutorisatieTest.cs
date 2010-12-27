@@ -85,7 +85,7 @@ namespace Chiro.Gap.Workers.Test
 
 			// Act
 
-			lm.Zoeken(new LidFilter{GroepsWerkJaarID = testData.HuidigGwj.ID}, LidExtras.Geen);
+			lm.Zoeken(new LidFilter { GroepsWerkJaarID = testData.HuidigGwj.ID, LidType = LidType.Alles }, LidExtras.Geen);
 
 			// Verwacht exception
 		}
@@ -122,7 +122,7 @@ namespace Chiro.Gap.Workers.Test
 			var lm = Factory.Maak<LedenManager>();
 
 			// Act
-			lm.Zoeken(new LidFilter{GroepsWerkJaarID  =  testData.HuidigGwj.ID}, LidExtras.Geen);
+			lm.Zoeken(new LidFilter { GroepsWerkJaarID = testData.HuidigGwj.ID, LidType = LidType.Alles }, LidExtras.Geen);
 
 			// Verwacht exception
 		}
@@ -231,7 +231,7 @@ namespace Chiro.Gap.Workers.Test
 
 			// Act
 			var lijst = lm.Zoeken(
-				new LidFilter{GroepsWerkJaarID  = testData.HuidigGwj.ID}, 
+				new LidFilter { GroepsWerkJaarID = testData.HuidigGwj.ID, LidType = LidType.Alles }, 
 				LidExtras.Geen);
 
 			// Assert

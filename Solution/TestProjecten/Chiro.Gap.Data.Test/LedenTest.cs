@@ -290,7 +290,7 @@ namespace Chiro.Gap.Data.Test
 			// Act
 
 			// Zoek leden zonder adres
-			var result = dao.Zoeken(new LidFilter {HeeftVoorkeurAdres = false, GroepsWerkJaarID = TestInfo.GROEPSWERKJAARID});
+			var result = dao.Zoeken(new LidFilter {HeeftVoorkeurAdres = false, GroepsWerkJaarID = TestInfo.GROEPSWERKJAARID, LidType = LidType.Alles});
 
 			var ids = from ld in result
 			          select ld.ID;
@@ -313,7 +313,7 @@ namespace Chiro.Gap.Data.Test
 
 			// Act
 
-			var result = dao.Zoeken(new LidFilter { HeeftTelefoonNummer = true, GroepsWerkJaarID = TestInfo.GROEPSWERKJAARID });
+			var result = dao.Zoeken(new LidFilter { HeeftTelefoonNummer = true, GroepsWerkJaarID = TestInfo.GROEPSWERKJAARID, LidType = LidType.Alles });
 
 			var ids = from ld in result
 				  select ld.ID;

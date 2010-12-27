@@ -1126,7 +1126,7 @@ namespace Chiro.Gap.Services
 
 					// Haal alle leden op uit het vorige werkjaar en maak die een voor een lid
 					var ledenlijst = _ledenMgr.Zoeken(
-						new LidFilter{GroepsWerkJaarID  = voriggwj.ID}, 
+						new LidFilter { GroepsWerkJaarID = voriggwj.ID, LidType = LidType.Alles }, 
 						LidExtras.Persoon | LidExtras.Groep | LidExtras.Functies);
 
 					foreach (var lid in ledenlijst)

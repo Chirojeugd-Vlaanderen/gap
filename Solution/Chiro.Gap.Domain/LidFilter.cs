@@ -66,5 +66,12 @@ namespace Chiro.Gap.Domain
 		/// </summary>
 		[DataMember]
 		public bool? HeeftEmailAdres { get; set; }
+
+		/// <summary>
+		/// Als <c>LidType.Kind</c> of <c>LidType.Leiding</c>, dan worden enkel leden van het gevraagde type
+		/// opgeleverd.
+		/// </summary>
+		[DataMember]
+		public LidType LidType { get; set; }
 	}
 }

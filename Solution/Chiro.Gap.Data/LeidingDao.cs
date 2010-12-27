@@ -53,6 +53,12 @@ namespace Chiro.Gap.Data.Ef
 		{
 			Leiding[] resultaat;
 
+			if ((filter.LidType & LidType.Leiding) == 0)
+			{
+				// Als er niet op kinderen gezocht wordt, lever dan niets op
+				return new Leiding[0];
+			}
+
 			using (var db = new ChiroGroepEntities())
 			{
 				IQueryable<Leiding> query;

@@ -850,10 +850,6 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			// TODO: Nog lang niet alles is ondersteund wat betreft ledenlijsten filteren.
-			// De bedoeling is dat er ook in de data-access een zoekfunctie komt die met LidFilter werkt.
-			// Voorlopig is deze method een rommeltje, dat de huidige methods van LedenDao gebruikt.
-
 			IEnumerable<Lid> kinderen = _daos.KindDao.Zoeken(filter, ExtrasNaarLambdasKind(extras)).Cast<Lid>();
 			IEnumerable<Lid> leiding = _daos.LeidingDao.Zoeken(filter, ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
 

@@ -164,13 +164,17 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.LidInfoLijst = ServiceHelper.CallService<ILedenService, IList<LidOverzicht>>(
 				svc => svc.Zoeken(
 					new LidFilter
-					{
-						GroepsWerkJaarID = groepsWerkJaarID,
-						AfdelingID = (afdelingID == 0) ? null : (int?)afdelingID,
-						FunctieID = (functieID == 0) ? null : (int?)functieID,
-						ProbeerPeriodeNa = (ledenLijst == LidInfoModel.SpecialeLedenLijst.Probeerleden) ? (DateTime?)DateTime.Today : null,
-						HeeftVoorkeurAdres = (ledenLijst == LidInfoModel.SpecialeLedenLijst.OntbrekendAdres) ? (bool?)false : null,
-						HeeftTelefoonNummer = (ledenLijst == LidInfoModel.SpecialeLedenLijst.OntbrekendTelefoonNummer) ? (bool?)false : null
+						{
+							GroepsWerkJaarID = groepsWerkJaarID,
+							AfdelingID = (afdelingID == 0) ? null : (int?) afdelingID,
+							FunctieID = (functieID == 0) ? null : (int?) functieID,
+							ProbeerPeriodeNa =
+								(ledenLijst == LidInfoModel.SpecialeLedenLijst.Probeerleden) ? (DateTime?) DateTime.Today : null,
+							HeeftVoorkeurAdres = (ledenLijst == LidInfoModel.SpecialeLedenLijst.OntbrekendAdres) ? (bool?) false : null,
+							HeeftTelefoonNummer =
+								(ledenLijst == LidInfoModel.SpecialeLedenLijst.OntbrekendTelefoonNummer) ? (bool?) false : null,
+							HeeftEmailAdres = (ledenLijst == LidInfoModel.SpecialeLedenLijst.LeidingZonderEmail) ? (bool?) false : null,
+							LidType = (ledenLijst == LidInfoModel.SpecialeLedenLijst.LeidingZonderEmail) ? LidType.Leiding : LidType.Alles
 					},
 					metAdressen));
 
@@ -350,8 +354,6 @@ namespace Chiro.Gap.WebApp.Controllers
 									sortering = LidEigenschap.Verjaardag,
 									groepID
 								});
-				case LidInfoModel.SpecialeLedenLijst.LeidingZonderEmail:
-					throw new NotImplementedException();
 				default:
 					return RedirectToAction("Lijst",
 								new
