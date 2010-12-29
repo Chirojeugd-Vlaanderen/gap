@@ -4,16 +4,10 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Web.Caching;
 using System.Web.Mvc;
 
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.Domain;
-using Chiro.Gap.ServiceContracts;
-using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.ActionFilters;
 using Chiro.Gap.WebApp.Models;
 
@@ -25,34 +19,35 @@ namespace Chiro.Gap.WebApp.Controllers
 	/// </summary>
 	/// <remarks>
 	/// MasterAttribute helpt de overerving regelen
-	/// Met dank aan http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
+	/// Met dank aan 
+	/// http://stackoverflow.com/questions/768236/how-to-create-a-strongly-typed-master-page-using-a-base-controller-in-asp-net-mvc
 	/// </remarks>
 	[Master]
 	[HandleError]
 	public abstract class BaseController : Controller
 	{
 		private readonly IServiceHelper _serviceHelper;
+		private readonly IVeelGebruikt _veelGebruikt;
 
-		protected IServiceHelper ServiceHelper
-		{
-			get
-			{
-				return _serviceHelper;
-			}
-		}
+		protected IServiceHelper ServiceHelper { get { return _serviceHelper; } }
+		protected IVeelGebruikt VeelGebruikt { get { return _veelGebruikt; } }
 
 		/// <summary>
-		/// Constructor voor de BaseController
+		/// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
+		/// best toegewezen via inversion of control.
 		/// </summary>
-		/// <param name="serviceHelper">De IServiceHelper die de service calls zal uitvoeren
-		/// (dependency injection)</param>
-		protected BaseController(IServiceHelper serviceHelper)
+		/// <param name="serviceHelper">wordt gebruikt om de webservices van de backend aan te spreken</param>
+		/// <param name="veelGebruikt">haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+		/// service</param>
+		protected BaseController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt)
 		{
 			_serviceHelper = serviceHelper;
+			_veelGebruikt = veelGebruikt;
 		}
 
 		/// <summary>
-		/// Een standaard index pagina die door elke controller geimplementeerd moet zijn om de "terug naar vorige" te kunnen implementeren.
+		/// Een standaard index pagina die door elke controller geimplementeerd moet zijn om de "terug naar 
+		/// vorige" te kunnen implementeren.
 		/// </summary>
 		/// <param name="groepID"></param>
 		/// <returns></returns>
@@ -60,7 +55,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		public abstract ActionResult Index(int groepID);
 
 		/// <summary>
-		/// Methode probeert terug te keren naar de vorige (in cookie) opgeslagen lijst. Als dit niet lukt gaat hij naar de indexpagina van de controller terug.
+		/// Methode probeert terug te keren naar de vorige (in cookie) opgeslagen lijst. Als dit niet lukt gaat 
+		/// hij naar de indexpagina van de controller terug.
 		/// </summary>
 		/// <returns></returns>
 		[HandleError]
@@ -84,8 +80,9 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// Methode probeert terug te keren naar de vorige (in cookie) opgeslagen fiche. In tweede instantie probeert hij de vorige lijst, 
-		/// in laatste instantie gaat hij naar de indexpagina van de controller terug.
+		/// Methode probeert terug te keren naar de vorige (in cookie) opgeslagen fiche. In tweede instantie 
+		/// probeert hij de vorige lijst, in laatste instantie gaat hij naar de indexpagina van de controller 
+		/// terug.
 		/// </summary>
 		/// <returns></returns>
 		[HandleError]
@@ -116,19 +113,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		protected void BaseModelInit(MasterViewModel model, int groepID)
 		{
-			var c = System.Web.HttpContext.Current.Cache;
-			string isLiveCacheKey = Properties.Resources.IsLiveCacheKey;
-
 			// Werken we op test of live?
-			bool? isLive = (bool?)c.Get(isLiveCacheKey);
-			if (isLive == null)
-			{
-				isLive = ServiceHelper.CallService<IGroepenService, bool>(svc => svc.IsLive());
-				c.Add(isLiveCacheKey, isLive, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.High, null);
-			}
-
-			Debug.Assert(isLive != null);
-			model.IsLive = (bool) isLive;
+			model.IsLive = VeelGebruikt.IsLive();
 
 			if (groepID == 0)
 			{
@@ -144,23 +130,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				#region gekozen groep en werkjaar
 
-				string groepCacheKey = "GI" + groepID;
-				string aantalProblemenCacheKey = Properties.Resources.ProblemenTellingCacheKey + groepID;
-				string problemenCacheKey = Properties.Resources.ProblemenCacheKey + groepID;
-				string meerdereGroepenCacheKey = Properties.Resources.MeerdereGroepenCacheKey + User.Identity.Name;
-
-				var gwjDetail = (GroepsWerkJaarDetail)c.Get(groepCacheKey);
-				if (gwjDetail == null)
-				{
-					gwjDetail = ServiceHelper.CallService<IGroepenService, GroepsWerkJaarDetail>(g => g.RecentsteGroepsWerkJaarOphalen(groepID));
-
-					// Als de gebruiker geen GAV is, krijgen we hier een FaultException. Die wordt niet opgevangen,
-					// maar als je in web.config <customErrors="On"> instelt (ipv "Off" of "RemoteOnly"), dan
-					// word je automatisch doorverwezen naar de foutpagina, waar de exception 'afgehandeld' wordt.
-
-					// OPM: kan gi nog null zijn? 
-					c.Add(groepCacheKey, gwjDetail, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.Normal, null);
-				}
+				var gwjDetail = VeelGebruikt.GroepsWerkJaarOphalen(groepID);
 
 				model.GroepsNaam = gwjDetail.GroepNaam;
 				model.GroepsNiveau = gwjDetail.GroepNiveau;
@@ -174,22 +144,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				#region GAV over meerdere groepen?
 
-				model.MeerdereGroepen = (bool?)c.Get(meerdereGroepenCacheKey);
-				if (model.MeerdereGroepen == null)
-				{
-					var aantal = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
-						(g => g.MijnGroepenOphalen()).Count();
-
-					model.MeerdereGroepen = aantal > 1;
-
-					c.Add(meerdereGroepenCacheKey,
-							  aantal > 1,
-							  null,
-							  Cache.NoAbsoluteExpiration,
-							  new TimeSpan(2, 0, 0),
-							  CacheItemPriority.Normal,
-							  null);
-				}
+				model.MeerdereGroepen = (VeelGebruikt.UniekeGroepGav(User.Identity.Name) != 0);
 
 				#endregion
 
@@ -212,53 +167,13 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				// Dan de zaken die als functieprobleem gerapporteerd worden door de service
 
-				// We werken met twee cache-items om te vermijden dat we te veel naar de databank moeten. Het is ook nodig omdat we 
-				// geen null kunnen cachen. Als er geen problemen zijn, moeten we dat dus op een andere manier opslaan:
-				// daarvoor dient de teller.
-				// Als de tellingcache leeg is (leeggemaakt na toekenning of 'ontslag'), of als de telling niet overeenkomt 
-				// met de problemencache, dan halen we de problemen opnieuw op. 
-				// Elke operatie waarbij functies toegekend of afgenomen worden, moet de tellingcache en de problemencache clearen.
-				var telling = (int?)c.Get(aantalProblemenCacheKey);
-				var problemen = (IEnumerable<FunctieProbleemInfo>)c.Get(problemenCacheKey);
+				var functieProblemen = VeelGebruikt.FunctieProblemenOphalen(gwjDetail.GroepID, ServiceHelper);
 
-				if (telling == null || telling != problemen.Count()) // er zit niets in de cache
+				#region foutmeldingen opnemen in model
+
+				if (functieProblemen != null)
 				{
-					// problemen ophalen
-					problemen =
-						ServiceHelper.CallService<IGroepenService, IEnumerable<FunctieProbleemInfo>>(svc => svc.FunctiesControleren(gwjDetail.GroepID));
-
-					// eventueel de problemen cachen
-					if (problemen == null)
-					{
-						telling = 0;
-						c.Remove(problemenCacheKey);
-					}
-					else
-					{
-						telling = problemen.Count();
-
-						c.Add(problemenCacheKey,
-							  problemen,
-							  null,
-							  Cache.NoAbsoluteExpiration,
-							  new TimeSpan(2, 0, 0),
-							  CacheItemPriority.NotRemovable,
-							  null);
-					}
-
-					// aantal problemen in cache steken
-					c.Add(aantalProblemenCacheKey,
-							telling,
-							null,
-							Cache.NoAbsoluteExpiration,
-							new TimeSpan(2, 0, 0),
-							CacheItemPriority.NotRemovable,
-							null);
-				}
-
-				if (problemen != null)
-				{
-					foreach (var p in problemen)
+					foreach (var p in functieProblemen)
 					{
 						// Eerst een paar specifieke en veelvoorkomende problemen apart behandelen.
 						

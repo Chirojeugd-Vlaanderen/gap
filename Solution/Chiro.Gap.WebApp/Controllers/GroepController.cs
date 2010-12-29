@@ -3,9 +3,6 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
-using System;
-using System.Diagnostics;
-using System.Web.Caching;
 using System.Web.Mvc;
 
 using Chiro.Cdf.ServiceHelper;
@@ -18,7 +15,14 @@ namespace Chiro.Gap.WebApp.Controllers
 	[HandleError]
 	public class GroepController : BaseController
 	{
-		public GroepController(IServiceHelper serviceHelper) : base(serviceHelper) { }
+		/// <summary>
+		/// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
+		/// best toegewezen via inversion of control.
+		/// </summary>
+		/// <param name="serviceHelper">wordt gebruikt om de webservices van de backend aan te spreken</param>
+		/// <param name="veelGebruikt">haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+		/// service</param>
+		public GroepController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt) : base(serviceHelper, veelGebruikt) { }
 
 		/// <summary>
 		/// Genereert een view met algemene gegevens over de groep
@@ -28,28 +32,15 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
-			var c = System.Web.HttpContext.Current.Cache;
-			string isLiveCacheKey = Properties.Resources.IsLiveCacheKey;
-
 			var model = new GroepsInstellingenModel
 							{
 								Titel = Properties.Resources.GroepsInstellingenTitel,
 								Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(
 									svc => svc.DetailOphalen(groepID))
 							};
+
 			// Ook hier nakijken of we live zijn.
-			// TODO: gedupliceerde code uit BaseController.BaseModelInit.  Op te kuisen.
-
-			// Werken we op test of live?
-			bool? isLive = (bool?)c.Get(isLiveCacheKey);
-			if (isLive == null)
-			{
-				isLive = ServiceHelper.CallService<IGroepenService, bool>(svc => svc.IsLive());
-				c.Add(isLiveCacheKey, isLive, null, Cache.NoAbsoluteExpiration, new TimeSpan(2, 0, 0), CacheItemPriority.High, null);
-			}
-
-			Debug.Assert(isLive != null);
-			model.IsLive = (bool)isLive;
+			model.IsLive = VeelGebruikt.IsLive();
 
 			return View(model);
 		}

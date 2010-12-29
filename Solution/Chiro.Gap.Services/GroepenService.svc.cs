@@ -628,7 +628,7 @@ namespace Chiro.Gap.Services
 		/// <returns>
 		/// Indien er problemen zijn, wordt een rij FunctieProbleemInfo opgeleverd.
 		/// </returns>
-		public IEnumerable<FunctieProbleemInfo> FunctiesControleren(int groepID)
+		public IEnumerable<FunctieProbleemInfo>  FunctiesControleren(int groepID)
 		{
 			try
 			{

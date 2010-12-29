@@ -16,13 +16,14 @@ namespace Chiro.Gap.WebApp.Controllers
 {
 	public class JaarOvergangController : BaseController
 	{
-		//
-		// GET: /JaarOvergang/
-
-		public JaarOvergangController(IServiceHelper serviceHelper)
-			: base(serviceHelper)
-		{
-		}
+		/// <summary>
+		/// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
+		/// best toegewezen via inversion of control.
+		/// </summary>
+		/// <param name="serviceHelper">wordt gebruikt om de webservices van de backend aan te spreken</param>
+		/// <param name="veelGebruikt">haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+		/// service</param>
+		public JaarOvergangController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt) : base(serviceHelper, veelGebruikt) { }
 
 		public override ActionResult Index(int groepID)
 		{
@@ -181,17 +182,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				TempData["fout"] = foutberichten;
 			}
 
-			// Invalidate cache dingen
-			// TODO: alles ivm cache ergens bij elkaar zetten, zodat zeker dezelfde keys gebruikt worden
-
-			var c = System.Web.HttpContext.Current.Cache;
-			string groepCacheKey = "GI" + groepID;
-			string aantalProblemenCacheKey = Properties.Resources.ProblemenTellingCacheKey + groepID;
-			string problemenCacheKey = Properties.Resources.ProblemenCacheKey + groepID;
-
-			c.Remove(groepCacheKey);
-			c.Remove(aantalProblemenCacheKey);
-			c.Remove(problemenCacheKey);
+			VeelGebruikt.FunctieProblemenResetten(groepID);
 			
 			return RedirectToAction("Index", "Leden");
 		}

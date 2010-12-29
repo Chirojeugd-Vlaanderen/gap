@@ -340,15 +340,6 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IsLive.
-        /// </summary>
-        public static string IsLiveCacheKey {
-            get {
-                return ResourceManager.GetString("IsLiveCacheKey", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Ingeschreven personen {0}-{1}.
         /// </summary>
         public static string LedenOverzicht {
@@ -439,15 +430,6 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MeerGroepen.
-        /// </summary>
-        public static string MeerdereGroepenCacheKey {
-            get {
-                return ResourceManager.GetString("MeerdereGroepenCacheKey", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to De personen zijn nu ingeschreven in je groep..
         /// </summary>
         public static string MultiIngeschrevenFeedback {
@@ -525,24 +507,6 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string ProbeerLeden {
             get {
                 return ResourceManager.GetString("ProbeerLeden", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Problemen.
-        /// </summary>
-        public static string ProblemenCacheKey {
-            get {
-                return ResourceManager.GetString("ProblemenCacheKey", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to AantalProblemen.
-        /// </summary>
-        public static string ProblemenTellingCacheKey {
-            get {
-                return ResourceManager.GetString("ProblemenTellingCacheKey", resourceCulture);
             }
         }
         

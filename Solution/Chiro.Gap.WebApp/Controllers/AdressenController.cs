@@ -20,15 +20,17 @@ namespace Chiro.Gap.WebApp.Controllers
 	[HandleError]
 	public class AdressenController : BaseController
 	{
-		private readonly AdressenHelper _adressenHelper;
-
 		/// <summary>
-		/// TODO (#190): Documenteren
+		/// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
+		/// best toegewezen via inversion of control.
 		/// </summary>
-		/// <param name="serviceHelper"></param>
-		public AdressenController(IServiceHelper serviceHelper) : base(serviceHelper)
+		/// <param name="serviceHelper">wordt gebruikt om de webservices van de backend aan te spreken</param>
+		/// <param name="veelGebruikt">haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+		/// service</param>
+		public AdressenController(
+			IServiceHelper serviceHelper, 
+			IVeelGebruikt veelGebruikt) : base(serviceHelper, veelGebruikt)
 		{
-			_adressenHelper = new AdressenHelper(serviceHelper);
 		}
 
 		/// <summary>
@@ -45,7 +47,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				limit = Properties.Settings.Default.AutoSuggestieStandaardLimiet;
 			}
 
-			var gemeenteLijst = _adressenHelper.WoonPlaatsenOphalen();
+			var gemeenteLijst = VeelGebruikt.WoonPlaatsenOphalen();
 
 			var tags = (from g in gemeenteLijst
 						orderby g.Naam
@@ -71,7 +73,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public ActionResult WoonPlaatsenOphalen(int postNummer)
 		{
-			var resultaat = (from g in _adressenHelper.WoonPlaatsenOphalen()
+			var resultaat = (from g in VeelGebruikt.WoonPlaatsenOphalen()
 							 where g.PostNummer == postNummer
 							 orderby g.Naam
 							 select g);
@@ -110,7 +112,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		[HandleError]
 		public ActionResult PostNrVoorstellen(String gemeente)
 		{
-			IEnumerable<WoonPlaatsInfo> tags = _adressenHelper.WoonPlaatsenOphalen().Where(x => x.Naam.Equals(gemeente, StringComparison.CurrentCultureIgnoreCase));
+			IEnumerable<WoonPlaatsInfo> tags = VeelGebruikt.WoonPlaatsenOphalen().Where(x => x.Naam.Equals(gemeente, StringComparison.CurrentCultureIgnoreCase));
 
 			// Select the tags that match the query, and get the 
 			// number or tags specified by the limit.

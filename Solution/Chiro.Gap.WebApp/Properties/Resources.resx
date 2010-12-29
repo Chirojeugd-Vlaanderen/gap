@@ -240,17 +240,6 @@
   <data name="StamNrDefault" xml:space="preserve">
     <value>---/----</value>
   </data>
-  <data name="ProblemenCacheKey" xml:space="preserve">
-    <value>Problemen</value>
-    <comment>aan te vullen met groepID</comment>
-  </data>
-  <data name="ProblemenTellingCacheKey" xml:space="preserve">
-    <value>AantalProblemen</value>
-    <comment>aan te vullen met groepID</comment>
-  </data>
-  <data name="MeerdereGroepenCacheKey" xml:space="preserve">
-    <value>MeerGroepen</value>
-  </data>
   <data name="WerkJaarInOvergang" xml:space="preserve">
     <value>De overgang naar werkjaar {0}-{1} moet nog gebeuren.</value>
   </data>
@@ -265,9 +254,6 @@
   </data>
   <data name="FoutToggleNaarLeiding" xml:space="preserve">
     <value>Je kon van deze persoon geen leid(st)er maken.  Misschien is de persoon nog te jong? Controleer eventueel de geboortedatum en/of Chiroleeftijd.</value>
-  </data>
-  <data name="IsLiveCacheKey" xml:space="preserve">
-    <value>IsLive</value>
   </data>
   <data name="AfdelingsLijstTitel" xml:space="preserve">
     <value>{0} {1}-{2}</value>

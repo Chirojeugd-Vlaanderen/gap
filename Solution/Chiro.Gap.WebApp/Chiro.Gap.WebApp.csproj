@@ -85,7 +85,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdressenHelper.cs" />
     <Compile Include="Controllers\AdressenController.cs" />
     <Compile Include="Controllers\AfdelingenController.cs" />
     <Compile Include="Controllers\CategorieenController.cs" />
@@ -276,6 +275,7 @@
     <Compile Include="HtmlHelpers\TelefoonHelper.cs" />
     <Compile Include="HtmlHelpers\TextFieldListHelper.cs" />
     <Compile Include="HtmlHelpers\GeslachtHelper.cs" />
+    <Compile Include="IVeelGebruikt.cs" />
     <Compile Include="Models\BevestigingsModel.cs" />
     <Compile Include="Models\GavTakenModel.cs" />
     <Compile Include="Models\HandleidingModel.cs" />
@@ -289,6 +289,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="VeelGebruikt.cs" />
     <Content Include="Content\MeerdereGroepen.css" />
     <Content Include="Content\Screenshots\Afdeling_activeren.png" />
     <Content Include="Content\Screenshots\assistent_database_01.png" />

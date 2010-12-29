@@ -5,10 +5,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.ServiceModel;
-using System.Web.Caching;
 using System.Web.Mvc;
 
 using Chiro.Cdf.ServiceHelper;
@@ -22,7 +20,14 @@ namespace Chiro.Gap.WebApp.Controllers
 	[HandleError]
 	public class GavController : BaseController
 	{
-		public GavController(IServiceHelper serviceHelper) : base(serviceHelper) { }
+		/// <summary>
+		/// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
+		/// best toegewezen via inversion of control.
+		/// </summary>
+		/// <param name="serviceHelper">wordt gebruikt om de webservices van de backend aan te spreken</param>
+		/// <param name="veelGebruikt">haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+		/// service</param>
+		public GavController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt) : base(serviceHelper, veelGebruikt) { }
 
 		//
 		// GET: /Gav/
@@ -30,27 +35,16 @@ namespace Chiro.Gap.WebApp.Controllers
 		public override ActionResult Index([DefaultParameterValue(0)]int dummyint)
 		{
 			ActionResult r;
-			var c = System.Web.HttpContext.Current.Cache;
-			string meerdereGroepenCacheKey = Properties.Resources.MeerdereGroepenCacheKey + User.Identity.Name;
 
 			// Als de gebruiker GAV is van 1 groep, dan wordt er doorgeschakeld naar de
 			// 'startpagina' van deze groep.  Zo niet krijgt de gebruiker de keuze.
 
 			try
 			{
-				var groepInfos = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>(g => g.MijnGroepenOphalen());
-				if (groepInfos.Count() == 1)
+				if (VeelGebruikt.UniekeGroepGav(User.Identity.Name) != 0)
 				{
 					// Redirect naar personenlijst van gevraagde groep;
-					r = RedirectToAction("Index", new { Controller = "Handleiding", groepID = groepInfos.First().ID });
-
-					c.Add(meerdereGroepenCacheKey,
-							  false,
-							  null,
-							  Cache.NoAbsoluteExpiration,
-							  new TimeSpan(2, 0, 0),
-							  CacheItemPriority.Normal,
-							  null);
+					r = RedirectToAction("Index", new { Controller = "Handleiding", groepID = VeelGebruikt.UniekeGroepGav(User.Identity.Name) });
 				}
 				else
 				{
@@ -61,14 +55,6 @@ namespace Chiro.Gap.WebApp.Controllers
 					model.GroepenLijst = ServiceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
 						(g => g.MijnGroepenOphalen());
 					
-					c.Add(meerdereGroepenCacheKey,
-							  model.GroepenLijst.Count() > 1,
-							  null,
-							  Cache.NoAbsoluteExpiration,
-							  new TimeSpan(2, 0, 0),
-							  CacheItemPriority.Normal,
-							  null);
-
 					r = View("Index", model);
 				}
 			}

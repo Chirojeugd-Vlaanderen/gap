@@ -22,7 +22,14 @@ namespace Chiro.Gap.WebApp.Controllers
 	[HandleError]
 	public class LedenController : BaseController
 	{
-		public LedenController(IServiceHelper serviceHelper) : base(serviceHelper) { }
+		/// <summary>
+		/// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
+		/// best toegewezen via inversion of control.
+		/// </summary>
+		/// <param name="serviceHelper">wordt gebruikt om de webservices van de backend aan te spreken</param>
+		/// <param name="veelGebruikt">haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+		/// service</param>
+		public LedenController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt) : base(serviceHelper, veelGebruikt) { }
 
 		/// <summary>
 		/// Sorteert een rij records van type LidOverzicht
@@ -439,7 +446,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				TempData["succes"] = Properties.Resources.LidNonActiefGemaakt;
 
-				ClientState.ProblemenCacheResetten(groepID, HttpContext.Cache);
+				VeelGebruikt.FunctieProblemenResetten(groepID);
 			}
 			else
 			{
@@ -610,7 +617,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				ServiceHelper.CallService<ILedenService>(l => l.FunctiesVervangen(id, model.FunctieIDs));
 
-				ClientState.ProblemenCacheResetten(groepID, HttpContext.Cache);
+				VeelGebruikt.FunctieProblemenResetten(groepID);
 
 				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
 				return RedirectToAction("EditRest", "Personen", new { groepID, id = model.HuidigLid.PersoonDetail.GelieerdePersoonID });

@@ -29,16 +29,19 @@ namespace Chiro.Gap.WebApp.Controllers
 	[HandleError]
 	public class PersonenController : BaseController
 	{
-		private readonly AdressenHelper _adressenHelper;
-
-		public PersonenController(IServiceHelper serviceHelper)
-			: base(serviceHelper)
+		/// <summary>
+		/// Standaardconstructor.  <paramref name="serviceHelper"/> en <paramref name="veelGebruikt"/> worden
+		/// best toegewezen via inversion of control.
+		/// </summary>
+		/// <param name="serviceHelper">wordt gebruikt om de webservices van de backend aan te spreken</param>
+		/// <param name="veelGebruikt">haalt veel gebruikte zaken op uit cache, of indien niet beschikbaar, via 
+		/// service</param>
+		public PersonenController(IServiceHelper serviceHelper, IVeelGebruikt veelGebruikt)
+			: base(serviceHelper, veelGebruikt)
 		{
-			_adressenHelper = new AdressenHelper(serviceHelper);
 		}
 		// TODO er moeten ook nog een laatst gebruikte "actie" worden toegevoegd, niet alleen actie id
 
-		// GET: /Personen/
 		[HandleError]
 		public override ActionResult Index(int groepID)
 		{
@@ -533,7 +536,7 @@ namespace Chiro.Gap.WebApp.Controllers
 												 where bewoner.GelieerdePersoonID == aanvragerID
 												 select bewoner.AdresType).FirstOrDefault();
 
-			model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(a.PostNr);
+			model.WoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(a.PostNr);
 
 			// Standaard verhuist iedereen mee.
 			model.GelieerdePersoonIDs = (from b in a.Bewoners
@@ -574,7 +577,7 @@ namespace Chiro.Gap.WebApp.Controllers
 								  p.PersoonVolledigeNaam,
 								  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
-			model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
+			model.WoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 
 			return View("AdresBewerken", model);
 		}
@@ -625,7 +628,7 @@ namespace Chiro.Gap.WebApp.Controllers
 									  p.PersoonVolledigeNaam,
 									  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
-				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
+				model.WoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 				return View("AdresBewerken", model);
 			}
 			catch (FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>> ex)
@@ -644,7 +647,7 @@ namespace Chiro.Gap.WebApp.Controllers
 									  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID),
 									  probleemPersIDs.Contains(p.PersoonID) ? Properties.Resources.WoontDaarAl : string.Empty)).ToArray();
 
-				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
+				model.WoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 				return View("AdresBewerken", model);
 			}
 		}
@@ -739,7 +742,7 @@ namespace Chiro.Gap.WebApp.Controllers
 								  p.PersoonVolledigeNaam,
 								  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
-			model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
+			model.WoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 
 			return View("AdresBewerken", model);
 		}
@@ -787,7 +790,7 @@ namespace Chiro.Gap.WebApp.Controllers
 									  p.PersoonVolledigeNaam,
 									  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
-				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
+				model.WoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 				return View("AdresBewerken", model);
 			}
 			catch (FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>> ex)
@@ -811,7 +814,7 @@ namespace Chiro.Gap.WebApp.Controllers
 									  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID),
 									  probleemPersIDs.Contains(p.PersoonID) ? Properties.Resources.WoontDaarAl : string.Empty)).ToArray();
 
-				model.WoonPlaatsen = _adressenHelper.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
+				model.WoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 
 				return View("AdresBewerken", model);
 			}

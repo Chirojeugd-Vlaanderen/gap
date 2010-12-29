@@ -153,6 +153,18 @@ namespace Chiro.Gap.Domain
 		InOvergang = 0x06	// bewust 0x06, omdat een werkjaar in overgang dan ook bezig is.
 	}
 
+	/// <summary>
+	/// Mogelijke problemen bij gegevens van leden
+	/// </summary>
+	[DataContract]
+	public enum LidProbleem
+	{
+		[EnumMember] Onbekend,
+		[EnumMember] AdresOntbreekt,
+		[EnumMember] TelefoonNummerOntbreekt,
+		[EnumMember] EmailOntbreekt
+	}
+
 	
 	/// <summary>
 	/// Sommige functies zijn gepredefinieerd, en hun codes moeten constant zijn.
