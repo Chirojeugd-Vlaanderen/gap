@@ -349,6 +349,33 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Je moet het adres nog aanvullen van &lt;a href=&apos;{1}&apos;&gt;{0} ingeschreven personen&lt;/a&gt;..
+        /// </summary>
+        public static string LedenZonderAdres {
+            get {
+                return ResourceManager.GetString("LedenZonderAdres", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Je moet het telefoonnummer nog invoeren van &lt;a href=&apos;{1}&apos;&gt;{0} ingeschreven personen&lt;/a&gt;..
+        /// </summary>
+        public static string LedenZonderTelefoonNummer {
+            get {
+                return ResourceManager.GetString("LedenZonderTelefoonNummer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Je moet het e-mailadres van &lt;a href=&apos;{1}&apos;&gt;{0} leid(st)ers&lt;/a&gt; nog invoeren..
+        /// </summary>
+        public static string LeidingZonderEmail {
+            get {
+                return ResourceManager.GetString("LeidingZonderEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lid is opnieuw op actief gezet..
         /// </summary>
         public static string LidActiefGemaakt {

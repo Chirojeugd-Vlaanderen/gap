@@ -727,6 +727,37 @@ namespace Chiro.Gap.WebApp.Controllers
 		}
 
 		/// <summary>
+		/// Toont de leden waarvan het adres onvolledig is
+		/// </summary>
+		/// <param name="groepID">ID van de groep</param>
+		/// <returns>De ledenlijst van leden zonder volledig adres</returns>
+		public ActionResult ZonderAdres(int groepID)
+		{
+			return Lijst(0, 0, 0, LidInfoModel.SpecialeLedenLijst.OntbrekendAdres, LidEigenschap.Naam, groepID);
+		}
+
+		/// <summary>
+		/// Toont de leid(st)ers zonder e-mailadres
+		/// </summary>
+		/// <param name="groepID">ID van de groep</param>
+		/// <returns>Een view met de leid(st)ers zonder e-mailadres</returns>
+		public ActionResult LeidingZonderMail(int groepID)
+		{
+			return Lijst(0, 0, 0, LidInfoModel.SpecialeLedenLijst.LeidingZonderEmail, LidEigenschap.Naam, groepID);
+		}
+
+
+		/// <summary>
+		/// Toont de leden uit groep met ID <paramref name="groepID"/> zonder telefoonnummer
+		/// </summary>
+		/// <param name="groepID">ID van de groep</param>
+		/// <returns>Leden uit groep met ID <paramref name="groepID"/> zonder telefoonnummer</returns>
+		public ActionResult ZonderTelefoon(int groepID)
+		{
+			return Lijst(0, 0, 0, LidInfoModel.SpecialeLedenLijst.OntbrekendTelefoonNummer, LidEigenschap.Naam, groepID);
+		}
+
+		/// <summary>
 		/// Toont de leden uit een bepaalde afdeling in het meest recente werkjaar
 		/// </summary>
 		/// <param name="id">ID van de afdeling.</param>
@@ -797,6 +828,5 @@ namespace Chiro.Gap.WebApp.Controllers
 			return Lijst(groepsWerkJaarID, 0, id, LidInfoModel.SpecialeLedenLijst.Geen, LidEigenschap.Naam, groepID);
 		}
 		#endregion
-
 	}
 }

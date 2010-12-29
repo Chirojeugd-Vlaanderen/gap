@@ -19,12 +19,8 @@ namespace Chiro.Gap.WebApp
 		/// aanwezig zijn, via de service.
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvan de functieproblemen opgehaald moeten worden</param>
-		/// <param name="cache">cache waarin gezocht moet worden</param>
-		/// <param name="serviceHelper">servicehelper waarmee de backend aangeroepen kan worden</param>
 		/// <returns>De rij functieproblemen</returns>
-		IEnumerable<FunctieProbleemInfo> FunctieProblemenOphalen(
-			int groepID,
-			IServiceHelper serviceHelper);
+		IEnumerable<FunctieProbleemInfo> FunctieProblemenOphalen(int groepID);
 
 		/// <summary>
 		/// Haalt WoonPlaatsInfo op voor woonplaatsen met gegeven <paramref name="postNummer"/>
@@ -68,5 +64,18 @@ namespace Chiro.Gap.WebApp
 		/// </summary>
 		/// <returns><c>true</c> als we live bezig zijn</returns>
 		bool IsLive();
+
+		/// <summary>
+		/// Haalt een lijstje op met informatie over ontbrekende gegevens bij leden.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvan we de problemen opvragen</param>
+		/// <returns>Een rij LedenProbleemInfo met info over de ontbrekende gegevens</returns>
+		IEnumerable<LedenProbleemInfo> LedenProblemenOphalen(int groepID);
+
+		/// <summary>
+		/// Verwijdert de gecachete ledenproblemen van een bepaalde groep
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvan de problemencache leeg te maken</param>
+		void LedenProblemenResetten(int groepID);
 	}
 }

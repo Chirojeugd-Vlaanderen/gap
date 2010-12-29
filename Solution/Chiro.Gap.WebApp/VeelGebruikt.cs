@@ -24,6 +24,8 @@ namespace Chiro.Gap.WebApp
 		private const string FUNCTIEPROBLEMENAANTALCACHEKEY = "aantalfunprob{0}";
 		private const string WOONPLAATSENCACHEKEY = "woonpl";
 		private const string ISLIVECACHEKEY = "live";
+		private const string LEDENPROBLEMENCACHEKEY = "lidprob{0}";
+		private const string LEDENPROBLEMENAANTALCACHEKEY = "aantallidprob{0}";
 		#endregion
 
 		private readonly IServiceHelper _serviceHelper;
@@ -86,13 +88,12 @@ namespace Chiro.Gap.WebApp
 
 		#endregion
 
-		#region Problemen met maximumaantal en minimumaantal van functies
+		#region Problemen
 
 		/// <summary>
 		/// Verwijdert de gecachete functieproblemen van een bepaalde groep
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvan de problemencache leeg te maken</param>
-		/// <param name="cache">cache die de problemen bevat</param>
 		public void FunctieProblemenResetten(int groepID)
 		{
 			// Problemen met functies moeten opgenieuw opgehaald worden na deze operatie. BaseController 
@@ -108,12 +109,8 @@ namespace Chiro.Gap.WebApp
 		/// aanwezig zijn, via de service.
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvan de functieproblemen opgehaald moeten worden</param>
-		/// <param name="cache">cache waarin gezocht moet worden</param>
-		/// <param name="serviceHelper">servicehelper waarmee de backend aangeroepen kan worden</param>
 		/// <returns>De rij functieproblemen</returns>
-		public IEnumerable<FunctieProbleemInfo> FunctieProblemenOphalen(
-			int groepID,
-			IServiceHelper serviceHelper)
+		public IEnumerable<FunctieProbleemInfo> FunctieProblemenOphalen(int groepID)
 		{
 			// We werken met twee cache-items om te vermijden dat we te veel naar de databank
 			// moeten. Het is ook nodig omdat we geen null kunnen cachen. Als er geen problemen 
@@ -134,7 +131,7 @@ namespace Chiro.Gap.WebApp
 
 				// problemen ophalen
 				functieProblemen =
-					serviceHelper.CallService<IGroepenService, IEnumerable<FunctieProbleemInfo>>(
+					_serviceHelper.CallService<IGroepenService, IEnumerable<FunctieProbleemInfo>>(
 						svc => svc.FunctiesControleren(groepID));
 
 				// eventueel de problemen cachen
@@ -167,6 +164,65 @@ namespace Chiro.Gap.WebApp
 			}
 
 			return functieProblemen;
+		}
+
+		/// <summary>
+		/// Haalt een lijstje op met informatie over ontbrekende gegevens bij leden.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvan we de problemen opvragen</param>
+		/// <returns>Een rij LedenProbleemInfo met info over de ontbrekende gegevens</returns>
+		public IEnumerable<LedenProbleemInfo> LedenProblemenOphalen(int groepID)
+		{
+			int? telling = (int?)_cache.Get(String.Format(LEDENPROBLEMENAANTALCACHEKEY, groepID));
+			var ledenProblemen = (IEnumerable<LedenProbleemInfo>)_cache.Get(
+				String.Format(LEDENPROBLEMENCACHEKEY, groepID));
+
+			if (telling == null || telling != (ledenProblemen == null ? 0 : ledenProblemen.Count()))
+			{
+				ledenProblemen = _serviceHelper.CallService<IGroepenService, IEnumerable<LedenProbleemInfo>>(
+					svc => svc.LedenControleren(groepID));
+
+				if (ledenProblemen == null)
+				{
+					telling = 0;
+					_cache.Remove(String.Format(LEDENPROBLEMENCACHEKEY, groepID));
+				}
+				else
+				{
+					telling = ledenProblemen.Count();
+					_cache.Add(String.Format(LEDENPROBLEMENCACHEKEY, groepID),
+						   ledenProblemen,
+						   null,
+						   Cache.NoAbsoluteExpiration,
+						   new TimeSpan(2, 0, 0),
+						   CacheItemPriority.NotRemovable,
+						   null);
+				}
+
+				_cache.Add(String.Format(LEDENPROBLEMENAANTALCACHEKEY, groepID),
+					telling,
+						   null,
+						   Cache.NoAbsoluteExpiration,
+						   new TimeSpan(2, 0, 0),
+						   CacheItemPriority.NotRemovable,
+						   null);
+			}
+			return ledenProblemen;
+		}
+
+
+		/// <summary>
+		/// Verwijdert de gecachete ledenproblemen van een bepaalde groep
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvan de problemencache leeg te maken</param>
+		public void LedenProblemenResetten(int groepID)
+		{
+			// Problemen met leden moeten opgenieuw opgehaald worden na deze operatie. BaseController 
+			// gaat na of dat nodig is door naar de telling te kijken, maar ook de gecachete problemen 
+			// moeten verwijderd worden. Als het nieuwe aantal problemen even groot is als het vorige, 
+			// worden ze anders niet vervangen.
+			_cache.Remove(String.Format(LEDENPROBLEMENCACHEKEY, groepID));
+			_cache.Remove(String.Format(LEDENPROBLEMENAANTALCACHEKEY, groepID));
 		}
 
 		#endregion
@@ -269,7 +325,6 @@ namespace Chiro.Gap.WebApp
 
 			return (bool) isLive;
 		}
-
 		#endregion
 	}
 }

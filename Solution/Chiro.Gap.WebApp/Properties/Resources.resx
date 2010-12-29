@@ -286,4 +286,13 @@
   <data name="AfdelingBestondNiet" xml:space="preserve">
     <value>De gevraagde afdeling bestond niet in het werkjaar {0}-{1}.</value>
   </data>
+  <data name="LedenZonderAdres" xml:space="preserve">
+    <value>Je moet het adres nog aanvullen van &lt;a href='{1}'&gt;{0} ingeschreven personen&lt;/a&gt;.</value>
+  </data>
+  <data name="LedenZonderTelefoonNummer" xml:space="preserve">
+    <value>Je moet het telefoonnummer nog invoeren van &lt;a href='{1}'&gt;{0} ingeschreven personen&lt;/a&gt;.</value>
+  </data>
+  <data name="LeidingZonderEmail" xml:space="preserve">
+    <value>Je moet het e-mailadres van &lt;a href='{1}'&gt;{0} leid(st)ers&lt;/a&gt; nog invoeren.</value>
+  </data>
 </root>

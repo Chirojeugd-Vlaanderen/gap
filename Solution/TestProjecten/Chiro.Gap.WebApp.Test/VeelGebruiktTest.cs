@@ -93,14 +93,13 @@ namespace Chiro.Gap.WebApp.Test
 		{
 			// Arrange
 
-			int groepID = 0; // TODO: Initialize to an appropriate value
 			var serviceHelper = new DummyServiceHelper();
 			var veelGebruikt = new VeelGebruikt(serviceHelper);
 			
 			// Act
 
-			var problemen1 = veelGebruikt.FunctieProblemenOphalen(groepID, serviceHelper);
-			var problemen2 = veelGebruikt.FunctieProblemenOphalen(groepID, serviceHelper);
+			var res1 = veelGebruikt.IsLive();
+			var res2 = veelGebruikt.IsLive();
 
 			// Assert
 

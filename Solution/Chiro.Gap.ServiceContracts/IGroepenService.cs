@@ -268,6 +268,17 @@ namespace Chiro.Gap.ServiceContracts
 		IEnumerable<FunctieProbleemInfo> FunctiesControleren(int groepID);
 
 		/// <summary>
+		/// Controleert de verplicht in te vullen lidgegevens.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvan de leden te controleren zijn</param>
+		/// <returns>Een rij LedenProbleemInfo.  Leeg bij gebrek aan problemen.</returns>
+		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
+		IEnumerable<LedenProbleemInfo> LedenControleren(int groepID);
+
+
+		/// <summary>
 		/// Voegt een functie toe aan de groep
 		/// </summary>
 		/// <param name="groepID">De groep waaraan het wordt toegevoegd</param>
@@ -454,5 +465,6 @@ namespace Chiro.Gap.ServiceContracts
 		/// <returns><c>true</c> als we op een liveomgeving werken, <c>false</c> als we op een testomgeving werken</returns>
 		[OperationContract]
 		bool IsLive();
+
 	}
 }

@@ -4,6 +4,7 @@
 // </copyright>
 
 using System;
+using System.Diagnostics;
 using System.Web.Mvc;
 
 using Chiro.Cdf.ServiceHelper;
@@ -165,11 +166,12 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				}
 
-				// Dan de zaken die als functieprobleem gerapporteerd worden door de service
+				// Problemen opvragen
 
-				var functieProblemen = VeelGebruikt.FunctieProblemenOphalen(gwjDetail.GroepID, ServiceHelper);
+				var functieProblemen = VeelGebruikt.FunctieProblemenOphalen(gwjDetail.GroepID);
+				var ledenProblemen = VeelGebruikt.LedenProblemenOphalen(gwjDetail.GroepID);
 
-				#region foutmeldingen opnemen in model
+				// Problemen vertalen naar model
 
 				if (functieProblemen != null)
 				{
@@ -214,10 +216,48 @@ namespace Chiro.Gap.WebApp.Controllers
 						}
 					}
 				}
-				#endregion
+
+				if (ledenProblemen != null)
+				{
+					foreach (var p in ledenProblemen)
+					{
+						string boodschap = String.Empty;
+						string url = String.Empty;
+
+						switch (p.Probleem)
+						{
+							case LidProbleem.AdresOntbreekt:
+								boodschap = Properties.Resources.LedenZonderAdres;
+								url=Url.Action("ZonderAdres", "Leden");
+								break;
+							case LidProbleem.EmailOntbreekt:
+								boodschap = Properties.Resources.LeidingZonderEmail;
+								url = Url.Action("LeidingZonderMail", "Leden");
+								break;
+							case LidProbleem.TelefoonNummerOntbreekt:
+								boodschap = Properties.Resources.LedenZonderTelefoonNummer;
+								url = Url.Action("ZonderTelefoon", "Leden");
+								break;
+							default:
+								Debug.Assert(false);
+								break;
+						}
+
+						model.Mededelingen.Add(new Mededeling
+						                       	{
+						                       		Type = MededelingsType.Probleem,
+						                       		Info = String.Format(boodschap, p.Aantal, url)
+						                       	});
+
+					}
+				}
 
 				// TODO (#637): ook vermelden dat het werkjaar nog geïnitieerd moet worden als dat nog 
 				// niet gebeurde!
+
+				#endregion
+
+
 			}
 		}
 

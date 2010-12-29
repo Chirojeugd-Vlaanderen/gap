@@ -690,6 +690,8 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			BaseModelInit(model, groepID);
 			ServiceHelper.CallService<IGelieerdePersonenService>(foo => foo.AdresVerwijderenVanPersonen(model.PersoonIDs, model.Adres.ID));
+			VeelGebruikt.LedenProblemenResetten(groepID);
+
 			return RedirectToAction("EditRest", new { id = model.AanvragerID });
 		}
 
@@ -766,8 +768,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				// gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
 
 				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.AdresToevoegenGelieerdePersonen(model.GelieerdePersoonIDs, model.PersoonsAdresInfo, model.Voorkeur));
-
-				// return TerugNaarVorigeFiche();
+				VeelGebruikt.LedenProblemenResetten(groepID);
 
 				// Door het AanvragerID te gebruiken ipv het tijdelijke cookie (uit TerugNaarVorigeFiche) werkt de
 				// redirect ook naar behoren als ondertussen in een andere tab een andere persoon bekeken is.
@@ -831,8 +832,12 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult VoorkeurAdresMaken(int persoonsAdresID, int gelieerdePersoonID, int groepID)
 		{
 			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.VoorkeursAdresMaken(persoonsAdresID, gelieerdePersoonID));
+			VeelGebruikt.LedenProblemenResetten(groepID);
 
-			return TerugNaarVorigeFiche();
+			// Door niet 'terug naar vorige fiche' te gebruiken, is de redirect ook correct als
+			// je ondertussen in een andere tab wat hebt gebladerd.
+
+			return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
 		}
 
 		#endregion adressen
@@ -911,7 +916,9 @@ namespace Chiro.Gap.WebApp.Controllers
 				//vermijd bloat van teveel over de lijn te sturen
 				var comminfo = new CommunicatieInfo(model.NieuweCommVorm);
 				ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormToevoegen(gelieerdePersoonID, comminfo));
-				return TerugNaarVorigeFiche();
+				VeelGebruikt.LedenProblemenResetten(groepID);
+
+				return RedirectToAction("EditRest", new { id = gelieerdePersoonID });
 			}
 		}
 
@@ -920,6 +927,9 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult VerwijderenCommVorm(int commvormID, int groepID)
 		{
 			ServiceHelper.CallService<IGelieerdePersonenService>(l => l.CommunicatieVormVerwijderenVanPersoon(commvormID));
+
+			VeelGebruikt.LedenProblemenResetten(groepID);
+
 			return TerugNaarVorigeFiche();
 		}
 

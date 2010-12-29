@@ -663,6 +663,72 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
+		/// Controleert de verplicht in te vullen lidgegevens.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarvan de leden te controleren zijn</param>
+		/// <returns>Een rij LedenProbleemInfo.  Leeg bij gebrek aan problemen.</returns>
+		public IEnumerable<LedenProbleemInfo> LedenControleren(int groepID)
+		{
+			var resultaat = new List<LedenProbleemInfo>();
+			int gwjid;
+
+			try
+			{
+				gwjid = _groepsWerkJaarManager.RecentsteGroepsWerkJaarIDGet(groepID);
+			}
+			catch (GeenGavException ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
+
+			int ledenZonderAdres = _ledenMgr.Zoeken(new LidFilter
+			                                        	{
+			                                        		GroepsWerkJaarID = gwjid,
+			                                        		GroepID = groepID,
+			                                        		HeeftVoorkeurAdres = false,
+										LidType = LidType.Alles
+			                                        	},
+			                                        LidExtras.Geen).Count();
+
+			int ledenZonderTelefoonNummer = _ledenMgr.Zoeken(new LidFilter
+									{
+										GroepsWerkJaarID = gwjid,
+										GroepID = groepID,
+										HeeftTelefoonNummer = false,
+										LidType = LidType.Alles
+									},
+								LidExtras.Geen).Count();
+
+			int leidingZonderEmail = _ledenMgr.Zoeken(new LidFilter
+			                                          	{
+			                                          		GroepsWerkJaarID = gwjid,
+			                                          		GroepID = groepID,
+			                                          		HeeftEmailAdres = false,
+			                                          		LidType = LidType.Leiding
+			                                          	},
+			                                          LidExtras.Geen).Count();
+
+			if (ledenZonderAdres > 0)
+			{
+				resultaat.Add(new LedenProbleemInfo {Probleem = LidProbleem.AdresOntbreekt, Aantal = ledenZonderAdres});
+			}
+
+			if (ledenZonderTelefoonNummer > 0)
+			{
+				resultaat.Add(new LedenProbleemInfo
+				              	{Probleem = LidProbleem.TelefoonNummerOntbreekt, Aantal = ledenZonderTelefoonNummer});
+			}
+
+			if (leidingZonderEmail > 0)
+			{
+				resultaat.Add(new LedenProbleemInfo {Probleem = LidProbleem.EmailOntbreekt, Aantal = leidingZonderEmail});
+			}
+
+			return resultaat;
+		}
+
+		/// <summary>
 		/// Maakt een nieuwe Functie voor de groep met ID <paramref name="groepID"/>
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvoor nieuwe functie wordt gemaakt</param>
