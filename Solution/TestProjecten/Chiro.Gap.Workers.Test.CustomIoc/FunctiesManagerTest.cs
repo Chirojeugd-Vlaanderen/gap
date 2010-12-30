@@ -117,5 +117,36 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 
 			Assert.IsNotNull(resultaat);
 		}
+
+		/// <summary>
+		/// Tweede probleem aan de basis van #890 
+		/// </summary>
+		[TestMethod]
+		public void FunctieLeegMakenTest()
+		{
+			// Arrange
+
+			var auMgrMock = new Mock<IAutorisatieManager>();
+
+			auMgrMock.Setup(mgr => mgr.IsGavCategorie(It.IsAny<int>())).Returns(false);
+			auMgrMock.Setup(mgr => mgr.IsGavFunctie(It.IsAny<int>())).Returns(true);
+
+			Factory.InstantieRegistreren<IAutorisatieManager>(auMgrMock.Object);
+
+			var funMgr = Factory.Maak<FunctiesManager>();
+
+			var f = new Functie();
+
+			// act
+
+			funMgr.LeegMaken(f);  // roep leegmaken aan
+
+			// assert
+
+			// Ik verwacht geen exception, aangezien de functie al leeg is,
+			// en aangezien auMgrMock ervoor zorgt dat de gebruiker rechten heeft.
+
+			Assert.IsTrue(true);
+		}
 	}
 }

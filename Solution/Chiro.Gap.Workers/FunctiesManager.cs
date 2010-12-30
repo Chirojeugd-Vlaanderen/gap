@@ -106,7 +106,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>De opgehaalde functie met de gekoppelde leden</returns>
 		public Functie Ophalen(int functieID, bool metLeden)
 		{
-			if (_autorisatieMgr.IsGavCategorie(functieID))
+			if (_autorisatieMgr.IsGavFunctie(functieID))
 			{
 				if (metLeden)
 				{
