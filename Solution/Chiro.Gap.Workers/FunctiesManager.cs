@@ -376,13 +376,13 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Verwijdert alle gelieerde personen uit de categorie <paramref name="f"/>, en persisteert
+		/// Verwijdert alle gelieerde personen uit de functie <paramref name="f"/>, en persisteert
 		/// </summary>
 		/// <param name="f">Leeg te maken functie</param>
 		/// <returns>De functie zonder leden</returns>
 		public Functie LeegMaken(Functie f)
 		{
-			if (_autorisatieMgr.IsGavCategorie(f.ID))
+			if (_autorisatieMgr.IsGavFunctie(f.ID))
 			{
 				foreach (Lid l in f.Lid)
 				{
