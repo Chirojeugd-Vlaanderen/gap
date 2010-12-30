@@ -56,8 +56,6 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 		{
 			#region Arrange
 
-			var aantalAanroepen = 0;
-
 			// Deze DAO's nog eens expliciet registreren, om te vermijden dat wijzigingen in
 			// andere tests een vertekend beeld opleveren.
 
@@ -67,11 +65,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 			// Mock voor IFunctieDao, die een lege lijst geeft als de nationaal bepaalde functies
 			// opgevraagd worden.  We willen gewoon tellen hoe dikwijls deze opgevraagd wordt.
 			var funDaoMock = new Mock<IFunctiesDao>();
-			funDaoMock.Setup(dao => dao.NationaalBepaaldeFunctiesOphalen()).Returns(() =>
-			{
-				++aantalAanroepen;
-				return new List<Functie>();
-			});
+			funDaoMock.Setup(dao => dao.NationaalBepaaldeFunctiesOphalen()).Returns(new List<Functie>());
 			Factory.InstantieRegistreren(funDaoMock.Object);
 
 			var target = Factory.Maak<FunctiesManager>();
@@ -85,8 +79,43 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 			#endregion
 
 			#region Assert
-			Assert.AreEqual(aantalAanroepen, 1);
+
+			funDaoMock.Verify(dao => dao.NationaalBepaaldeFunctiesOphalen(), Times.Exactly(1), "Nationale functies waren niet gecachet.");
+
 			#endregion
+		}
+
+		/// <summary>
+		/// Test voor ticket #890 
+		/// </summary>
+		[TestMethod]
+		public void FunctieOphalenTest()
+		{
+			// Arrange
+
+			var auMgrMock = new Mock<IAutorisatieManager>();
+			var funDaoMock = new Mock<IFunctiesDao>();
+
+			auMgrMock.Setup(mgr => mgr.IsGavCategorie(It.IsAny<int>())).Returns(false);
+			auMgrMock.Setup(mgr => mgr.IsGavFunctie(It.IsAny<int>())).Returns(true);
+
+			funDaoMock.Setup(mgr => mgr.Ophalen(It.IsAny<int>())).Returns(new Functie());
+
+			Factory.InstantieRegistreren<IAutorisatieManager>(auMgrMock.Object);
+			Factory.InstantieRegistreren<IFunctiesDao>(funDaoMock.Object);
+
+			var funMgr = Factory.Maak<FunctiesManager>();
+
+			// act
+
+			var resultaat = funMgr.Ophalen(100, false); // haal functie op zonder iets extra
+
+			// assert
+
+			// Aangezien ik de autorisatiemanager gemockt heb, zodat je rechten krijgt op iedere
+			// functie, moet er een functie opgehaald zijn.
+
+			Assert.IsNotNull(resultaat);
 		}
 	}
 }
