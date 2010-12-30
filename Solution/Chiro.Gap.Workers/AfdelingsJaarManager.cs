@@ -31,6 +31,7 @@ namespace Chiro.Gap.Workers
 		private readonly ILeidingDao _leidingDao;
 		private readonly ILedenSync _ledenSync;
 
+		private readonly IVeelGebruikt _veelGebruikt;
 		private readonly IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
@@ -42,6 +43,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="gwjDao">Zorgt voor groepswerkjaargerelateerde data-access</param>
 		/// <param name="kindDao">Zorgt voor kindgerelateerde data-access</param>
 		/// <param name="leidingDao">Zorgt voor leidinggerelateerde data-access</param>
+		/// <param name="veelGebruikt">Object om veelgebruikte zaken mee op te halen (via cache)</param>
 		/// <param name="autorisatieMgr">Alternatieve autorisatiemanager</param>
 		/// <param name="ledenSync">Interface voor sync van lidgegevens</param>
 		public AfdelingsJaarManager(
@@ -50,6 +52,7 @@ namespace Chiro.Gap.Workers
 			IGroepsWerkJaarDao gwjDao,
 			IKindDao kindDao,
 			ILeidingDao leidingDao,
+			IVeelGebruikt veelGebruikt,
 			IAutorisatieManager autorisatieMgr,
 			ILedenSync ledenSync)
 		{
@@ -58,6 +61,7 @@ namespace Chiro.Gap.Workers
 			_groepsWjDao = gwjDao;
 			_kindDao = kindDao;
 			_leidingDao = leidingDao;
+			_veelGebruikt = veelGebruikt;
 			_autorisatieMgr = autorisatieMgr;
 			_ledenSync = ledenSync;
 		}
@@ -317,7 +321,7 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
-			else if (l.GroepsWerkJaar.ID != _groepsWjDao.RecentsteOphalen(l.GroepsWerkJaar.Groep.ID).ID)
+			else if (l.GroepsWerkJaar.ID != _veelGebruikt.GroepsWerkJaarOphalen(l.GroepsWerkJaar.Groep.ID).ID)
 			{
 				throw new FoutNummerException(
 					FoutNummer.GroepsWerkJaarNietBeschikbaar,

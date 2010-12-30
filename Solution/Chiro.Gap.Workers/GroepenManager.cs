@@ -21,8 +21,9 @@ namespace Chiro.Gap.Workers
 	public class GroepenManager
 	{
 		private readonly IGroepenDao _groepenDao;
-		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly IGelieerdePersonenDao _gelPersDao;
+		private readonly IVeelGebruikt _veelGebruikt;
+		private readonly IAutorisatieManager _autorisatieMgr;
 
 		/// <summary>
 		/// De standaardconstructor voor GroepenManagers
@@ -33,11 +34,13 @@ namespace Chiro.Gap.Workers
 		public GroepenManager(
 			IGroepenDao grpDao,
 			IGelieerdePersonenDao gelPersDao,
+			IVeelGebruikt veelGebruikt,
 			IAutorisatieManager autorisatieMgr)
 		{
 			_groepenDao = grpDao;
 			_autorisatieMgr = autorisatieMgr;
 			_gelPersDao = gelPersDao;
+			_veelGebruikt = veelGebruikt;
 		}
 
 		/// <summary>
@@ -154,8 +157,18 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			var paths = ExtrasNaarLambdas(extras);
-			return _groepenDao.Ophalen(groepID, paths.ToArray());
+			if (extras == GroepsExtras.Geen)
+			{
+				// Als enkel de groep nodig is, kunnen we dat uit de cache
+				// halen.
+
+				return _veelGebruikt.GroepsWerkJaarOphalen(groepID).Groep;
+			}
+			else
+			{
+				var paths = ExtrasNaarLambdas(extras);
+				return _groepenDao.Ophalen(groepID, paths.ToArray());				
+			}
 		}
 
 		#region categorieën

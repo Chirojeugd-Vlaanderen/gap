@@ -48,6 +48,7 @@ namespace Chiro.Gap.Workers
 	public class LedenManager
 	{
 		private readonly LedenDaoCollectie _daos;
+		private readonly IVeelGebruikt _veelGebruikt;
 		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly ILedenSync _sync;
 
@@ -56,12 +57,14 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <param name="daos">Een hele reeks van IDao-objecten, nodig
 		/// voor data access.</param>
+		/// <param name="veelGebruikt">Object dat toelaat veel gebruikte items te cachen.</param>
 		/// <param name="autorisatie">Een IAuthorisatieManager, die
 		/// de GAV-permissies van de huidige user controleert.</param>
 		/// <param name="sync">Zorgt voor synchronisate van adressen naar KipAdmin</param>
-		public LedenManager(LedenDaoCollectie daos, IAutorisatieManager autorisatie, ILedenSync sync)
+		public LedenManager(LedenDaoCollectie daos, IVeelGebruikt veelGebruikt, IAutorisatieManager autorisatie, ILedenSync sync)
 		{
 			_daos = daos;
+			_veelGebruikt = veelGebruikt;
 			_autorisatieMgr = autorisatie;
 			_sync = sync;
 		}
@@ -364,7 +367,7 @@ namespace Chiro.Gap.Workers
 			}
 
 			// checks:
-			if (lid.GroepsWerkJaar.ID != _daos.GroepsWerkJaarDao.RecentsteOphalen(lid.GroepsWerkJaar.Groep.ID).ID)
+			if (lid.GroepsWerkJaar.ID != _veelGebruikt.GroepsWerkJaarOphalen(lid.GroepsWerkJaar.Groep.ID).ID)
 			{
 				throw new FoutNummerException(
 					FoutNummer.GroepsWerkJaarNietBeschikbaar,

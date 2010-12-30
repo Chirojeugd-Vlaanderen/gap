@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Transactions;
-using System.Web;
 
 using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
@@ -36,11 +35,10 @@ namespace Chiro.Gap.Workers
 	/// </summary>
 	public class FunctiesManager
 	{
-		private const string NATFUNCTIESCACHEKEY = "NatFunctiesCacheKey";
-
 		private readonly IFunctiesDao _funDao;
 		private readonly ILedenDao _ledenDao;
 		private readonly IGroepsWerkJaarDao _groepsWjDao;
+		private readonly IVeelGebruikt _veelGebruikt;
 		private readonly IAutorisatieManager _autorisatieMgr;
 
 		private readonly ILedenSync _ledenSync;
@@ -51,18 +49,21 @@ namespace Chiro.Gap.Workers
 		/// <param name="funDao">Een dao voor data access mbt functies</param>
 		/// <param name="ledenDao">Een dao voor data access mbt leden</param>
 		/// <param name="gwjDao">Data access object voor groepswerkjaren</param>
+		/// <param name="veelGebruikt">Object dat veel gebruikte item cachet</param>
 		/// <param name="auMgr">Een IAutorisatieManager voor de autorisatie</param>
 		/// <param name="ledenSync">Wordt gebruikt om lidinformatie te syncen naar kipadmin</param>
 		public FunctiesManager(
 			IFunctiesDao funDao, 
 			ILedenDao ledenDao, 
 			IGroepsWerkJaarDao gwjDao, 
+			IVeelGebruikt veelGebruikt,
 			IAutorisatieManager auMgr,
 			ILedenSync ledenSync)
 		{
 			_funDao = funDao;
 			_ledenDao = ledenDao;
 			_groepsWjDao = gwjDao;
+			_veelGebruikt = veelGebruikt;
 			_autorisatieMgr = auMgr;
 
 			_ledenSync = ledenSync;
@@ -351,7 +352,7 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Verwijdert een functie (PERSISTEERT!)
 		/// </summary>
-		/// <param name="functie">Te verwijderen functie, inclusief gelieerde personen</param>
+		/// <param name="functie">Te verwijderen functie, inclusief leden</param>
 		/// <param name="forceren">Indien <c>true</c> wordt de functie ook verwijderd als er
 		/// personen in de functie zitten.  Anders krijg je een exception.</param>
 		/// <remarks>Deze method gaat ervan uit dat de functie zijn leden bevat.</remarks>
@@ -500,21 +501,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>De rij nationaal bepaalde functies</returns>
 		public IEnumerable<Functie> NationaalBepaaldeFunctiesOphalen()
 		{
-			var cache = HttpRuntime.Cache;
-
-			if (cache[NATFUNCTIESCACHEKEY] == null)
-			{
-				cache.Add(
-					NATFUNCTIESCACHEKEY,
-					_funDao.NationaalBepaaldeFunctiesOphalen(),
-					null,
-					System.Web.Caching.Cache.NoAbsoluteExpiration,
-					new TimeSpan(1, 0, 0, 0) /* bewaar 1 dag */,
-					System.Web.Caching.CacheItemPriority.Low,
-					null);
-			}
-
-			return cache[NATFUNCTIESCACHEKEY] as IEnumerable<Functie>;
+			return _veelGebruikt.NationaleFunctiesOphalen();
 		}
 	}
 }

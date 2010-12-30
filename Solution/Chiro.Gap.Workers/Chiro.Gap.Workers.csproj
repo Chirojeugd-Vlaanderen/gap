@@ -78,6 +78,7 @@
     <Compile Include="FunctiesManager.cs" />
     <Compile Include="IAuthenticatieManager.cs" />
     <Compile Include="IAutorisatieManager.cs" />
+    <Compile Include="IVeelGebruikt.cs" />
     <Compile Include="PersonenManager.cs" />
     <Compile Include="GelieerdePersonenManager.cs" />
     <Compile Include="GroepenManager.cs" />
@@ -94,6 +95,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="GroepsWerkjaarManager.cs" />
+    <Compile Include="VeelGebruikt.cs" />
     <Compile Include="VerzekeringenManager.cs" />
   </ItemGroup>
   <ItemGroup>

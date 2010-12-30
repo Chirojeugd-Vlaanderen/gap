@@ -24,20 +24,25 @@ namespace Chiro.Gap.Workers
 		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly IAfdelingenDao _afdelingenDao;
 
+		private readonly IVeelGebruikt _veelGebruikt;
+
 		/// <summary>
 		/// Creëert een GroepsWerkJaarManager
 		/// </summary>
 		/// <param name="groepsWjDao">Repository voor groepswerkjaren</param>
 		/// <param name="afdelingenDao">Repository voor afdelingen</param>
+		/// <param name="veelGebruikt">Dit object probeert veel gebruikte zaken op te halen uit de cache</param>
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 		public GroepsWerkJaarManager(
 			IGroepsWerkJaarDao groepsWjDao,
 			IAfdelingenDao afdelingenDao,
+			IVeelGebruikt veelGebruikt,
 			IAutorisatieManager autorisatieMgr)
 		{
 			_groepsWjDao = groepsWjDao;
 			_autorisatieMgr = autorisatieMgr;
 			_afdelingenDao = afdelingenDao;
+			_veelGebruikt = veelGebruikt;
 		}
 
 		/// <summary>
@@ -95,8 +100,18 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			// TODO (#251): cachen, want dit gaan we veel nodig hebben
-			return _groepsWjDao.RecentsteOphalen(groepID, ExtrasNaarLambdas(extras));
+			if ((extras & ~GroepsWerkJaarExtras.Groep) == 0)
+			{
+				// Als er niets meer wordt opgevraagd dan het recentste groepswerkjaar
+				// en de groep, haal dan uit de cache ipv uit de db.
+
+				return _veelGebruikt.GroepsWerkJaarOphalen(groepID);
+			}
+			else
+			{
+				return _groepsWjDao.RecentsteOphalen(groepID, ExtrasNaarLambdas(extras));
+			}
+			
 		}
 
 		/// <summary>
@@ -112,8 +127,7 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			// TODO (#251): cachen, want dit gaan we veel nodig hebben
-			return _groepsWjDao.RecentsteOphalen(groepID).ID;
+			return _veelGebruikt.GroepsWerkJaarOphalen(groepID).ID;
 		}
 
 		/// <summary>
