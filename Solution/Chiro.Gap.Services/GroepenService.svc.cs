@@ -775,10 +775,10 @@ namespace Chiro.Gap.Services
 		/// <c>false</c> krijg je een exception als de functie niet leeg is.</param>
 		public void FunctieVerwijderen(int functieID, bool forceren)
 		{
-			// Personen moeten mee opgehaald worden; anders werkt 
-			// functieenManager.Verwijderen niet.
 			try
 			{
+				// Leden, groepswerkjaar en groep mee ophalen, anders werkt 
+				// FunctiesManager.Verwijderen niet.
 				Functie f = _functiesMgr.Ophalen(functieID, true);
 
 				_functiesMgr.Verwijderen(f, forceren);
@@ -790,10 +790,12 @@ namespace Chiro.Gap.Services
 
 				throw new FaultException<BlokkerendeObjectenFault<PersoonLidInfo>>(fault);
 			}
-			catch (Exception ex)
+			catch (GeenGavException ex)
 			{
 				FoutAfhandelaar.FoutAfhandelen(ex);
 			}
+
+			// onverwachte exception mag gewoon gethrowd worden.
 		}
 
 		#endregion

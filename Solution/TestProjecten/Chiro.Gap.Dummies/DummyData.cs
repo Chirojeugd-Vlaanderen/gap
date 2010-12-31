@@ -18,15 +18,19 @@ namespace Chiro.Gap.Dummies
 		private readonly ChiroGroep _dummyGroep;		// testgroep
 		private readonly KaderGroep _dummyGewest;		// testgewest
 		private readonly GroepsWerkJaar _huidigGwj;		// testgroepswerkjaar
+		private readonly GroepsWerkJaar _vorigGwj;		// vorig groepswerkjaar
 		private readonly GroepsWerkJaar _gwjGewest;		// groepswerkjaar van het gewest
 		private readonly GelieerdePersoon _gelieerdeJos;	// gelieerdePersoon genaamd 'Jos' 
-		private readonly GelieerdePersoon _gelieerdeIrene; // gelieerdePersoon genaamd 'Irene'
-		private readonly GelieerdePersoon _gelieerdeYvonne; // gelieerdePersoon genaamd 'Yvonne'
+		private readonly GelieerdePersoon _gelieerdeIrene;	// gelieerdePersoon genaamd 'Irene'
+		private readonly GelieerdePersoon _gelieerdeYvonne;	// gelieerdePersoon genaamd 'Yvonne'
 		private readonly GelieerdePersoon _gelieerdeKaderJos;	// Jos gekoppeld aan het gewest
-		private readonly Categorie _vervelend;		// categorie voor vervelende mensen
-		private readonly Functie _redactie;		// functie voor 1 persoon
-		private readonly Functie _contactPersoonFunctie;		// domme algemene functie
+		private readonly Categorie _vervelend;			// categorie voor vervelende mensen
+		private readonly Functie _redactie;			// functie voor 1 persoon
+		private readonly Functie _contactPersoonFunctie;	// domme algemene functie
+		private readonly Functie _feestcomite;			// nog een functie
+		private readonly Functie _wcmadam;			// en nog eentje; deze mag nergens toegekend zijn
 		private readonly Lid _leiderJos;			// lidobject Jos
+		private readonly Lid _leiderJosVorigJaar;		// lidobject Jos vorig jaar
 		private readonly Lid _lidYvonne;			// lidobject Yvonne
 		private readonly Lid _kaderJos;				// lidobject Jos in het gewest
 
@@ -96,6 +100,16 @@ namespace Chiro.Gap.Dummies
 		public Functie UniekeFunctie { get { return _redactie; } }
 
 		/// <summary>
+		/// Een functie die zowel vorig jaar als dit jaar gebruikt is.
+		/// </summary>
+		public Functie TraditieFunctie { get { return _feestcomite; } }
+
+		/// <summary>
+		/// Functie die nooit iemand gehad heeft
+		/// </summary>
+		public Functie OngebruikteFunctie { get { return _wcmadam; } }
+
+		/// <summary>
 		/// Algemene functie, van toepassing op eender welk lid
 		/// </summary>
 		public Functie ContactPersoonFunctie { get { return _contactPersoonFunctie; } }
@@ -127,6 +141,7 @@ namespace Chiro.Gap.Dummies
 			_dummyGroep = new ChiroGroep { Naam = "St.-Unittestius", Code = "tst/0001", KaderGroep = _dummyGewest};
 			_huidigGwj = gMgr.GroepsWerkJaarMaken(_dummyGroep, 2009);
 			_gwjGewest = gMgr.GroepsWerkJaarMaken(_dummyGewest, 2009);
+			_vorigGwj = gMgr.GroepsWerkJaarMaken(_dummyGroep, 2008);
 
 			// Categorie
 
@@ -135,6 +150,9 @@ namespace Chiro.Gap.Dummies
 			// Functie (nationaal bepaald, maar dit ter zijde)
 
 			_redactie = gMgr.FunctieToevoegen(_dummyGroep, "Hoofdredacteur boekje", "HRE", 1, 0, LidType.Alles, null);
+			_feestcomite = gMgr.FunctieToevoegen(_dummyGroep, "Feestcomite", "ZUIP", null, 0, LidType.Alles, null);
+			_wcmadam = gMgr.FunctieToevoegen(_dummyGroep, "WC-madam", "SHT", null, 0, LidType.Alles, null);
+
 			_contactPersoonFunctie = new Functie
 			                   	{
 							ID = (int)NationaleFunctie.ContactPersoon,
@@ -197,19 +215,28 @@ namespace Chiro.Gap.Dummies
 			// unit tests niet meer.  (Zie #259)
 
 			_leiderJos = lMgr.Inschrijven(_gelieerdeJos, _huidigGwj, false);
+			_leiderJosVorigJaar = lMgr.Inschrijven(_gelieerdeJos, _vorigGwj, false);
 			_lidYvonne = lMgr.Inschrijven(_gelieerdeYvonne, _huidigGwj, false);
 			_kaderJos = lMgr.Inschrijven(_gelieerdeKaderJos, _gwjGewest, false);
 
 			// ID's worden niet toegekend als de DAO's gemockt zijn, dus delen we die manueel
 			// uit.
 
+			_vorigGwj.ID = 1;
+			_huidigGwj.ID = 2;
+
 			_leiderJos.ID = 1;
 			_lidYvonne.ID = 2;
 			_kaderJos.ID = 3;
 
-			// Jos krijgt een functie
+			// Jos krijgt functies
 
-			fMgr.Toekennen(_leiderJos, new Functie[] { _redactie });
+			fMgr.Toekennen(_leiderJos, new Functie[] { _redactie, _feestcomite });
+
+			// Functie van vorig jaar kan ik niet toekennen via de workers, dus manueel gepruts
+			_leiderJosVorigJaar.Functie.Add(_feestcomite);
+			_feestcomite.Lid.Add(_leiderJosVorigJaar);
+
 			fMgr.Toekennen(_kaderJos, new Functie[] {_contactPersoonFunctie});
 		}
 

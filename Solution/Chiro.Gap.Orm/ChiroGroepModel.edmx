@@ -1252,7 +1252,10 @@
           <Property Name="MaxAantal" Type="Int32" Nullable="true" />
           <Property Name="MinAantal" Type="Int32" Nullable="false" />
           <Property Name="WerkJaarVan" Type="Int32" Nullable="true" />
-          <Property Name="WerkJaarTot" Type="Int32" Nullable="true" />
+          <Property Name="WerkJaarTot" Type="Int32" Nullable="true" >
+            <Documentation>
+              <Summary>Laatste werkjaar waarin deze functie geldig was</Summary>
+              <LongDescription>'Werkjaar tot en met' zou een betere naam zijn</LongDescription></Documentation></Property>
           <NavigationProperty Name="Groep" Relationship="ChiroGroepModel.FK_Functie_Groep" FromRole="Functie" ToRole="Groep" />
           <NavigationProperty Name="Lid" Relationship="ChiroGroepModel.LidFunctie" FromRole="Functie" ToRole="Lid" />
           <Property Name="IsNationaal" Type="Boolean" Nullable="false" />

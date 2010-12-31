@@ -39,7 +39,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("ChiroGroepModel", "FK_Afdeling_ChiroGroep", "ChiroGroep", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.ChiroGroep), "Afdeling", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Afdeling))]
 
 // Original file name:
-// Generation date: 20/12/10 13:49:39
+// Generation date: 30/12/10 15:04:29
 namespace Chiro.Gap.Orm
 {
     
@@ -4265,8 +4265,11 @@ namespace Chiro.Gap.Orm
         partial void OnWerkJaarVanChanging(global::System.Nullable<int> value);
         partial void OnWerkJaarVanChanged();
         /// <summary>
-        /// There are no comments for Property WerkJaarTot in the schema.
+        /// Laatste werkjaar waarin deze functie geldig was
         /// </summary>
+        /// <LongDescription>
+        /// &apos;Werkjaar tot en met&apos; zou een betere naam zijn
+        /// </LongDescription>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public global::System.Nullable<int> WerkJaarTot

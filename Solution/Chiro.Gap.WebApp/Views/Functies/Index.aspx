@@ -21,7 +21,7 @@
 			foreach (var fie in Model.Detail.Functies.OrderBy(fie => fie.Code))
 			{
 %>
-				<li>[<%=Html.ActionLink("verwijderen", "FunctieVerwijderen", new {id = fie.ID }) %>]
+				<li>[<%=Html.ActionLink("verwijderen", "Verwijderen", new {id = fie.ID }) %>]
 		
 				<%=Html.Encode(String.Format(
 					"{0} ({1})", 

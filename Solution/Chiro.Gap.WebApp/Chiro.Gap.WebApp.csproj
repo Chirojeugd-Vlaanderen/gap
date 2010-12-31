@@ -417,9 +417,10 @@
     <Content Include="Views\Handleiding\Verhuizen.aspx" />
     <Content Include="Views\Handleiding\VerzekeringLoonverlies.aspx" />
     <Content Include="Views\Handleiding\ZusBroer.aspx" />
+    <Content Include="Views\Shared\LedenLinksControl.ascx" />
     <Content Include="Views\Shared\GeenToegangControl.ascx" />
     <Content Include="Views\Shared\GeenVerbindingControl.ascx" />
-    <Content Include="Views\Functies\FunctieVerwijderen.aspx" />
+    <Content Include="Views\Functies\Verwijderen.aspx" />
     <Content Include="Views\Functies\Index.aspx" />
     <Content Include="Views\Categorieen\CategorieVerwijderen.aspx" />
     <Content Include="Views\GavTaken\Index.aspx" />

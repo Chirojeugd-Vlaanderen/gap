@@ -381,5 +381,7 @@ namespace Chiro.Gap.Workers.Test
 			Assert.IsTrue(testData.LeiderJos.Functie.Contains(natBepFuncties.Last()));
 			Assert.IsFalse(testData.LeiderJos.Functie.Contains(f));
 		}
+
 	}
+
 }

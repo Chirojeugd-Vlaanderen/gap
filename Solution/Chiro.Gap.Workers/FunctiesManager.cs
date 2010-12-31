@@ -103,15 +103,19 @@ namespace Chiro.Gap.Workers
 		/// Een functie ophalen op basis van de ID, samen met de gekoppelde leden
 		/// </summary>
 		/// <param name="functieID">ID op te halen functie</param>
-		/// <param name="metLeden">Bij <c>true</c> moeten de leden mee opgehaald worden die die functie hebben</param>
+		/// <param name="metHannekesNest">Bij <c>true</c> worden leden, personen, groepswerkjaar en groep mee opgehaald</param>
 		/// <returns>De opgehaalde functie met de gekoppelde leden</returns>
-		public Functie Ophalen(int functieID, bool metLeden)
+		public Functie Ophalen(int functieID, bool metHannekesNest)
 		{
 			if (_autorisatieMgr.IsGavFunctie(functieID))
 			{
-				if (metLeden)
+				if (metHannekesNest)
 				{
-					return _funDao.Ophalen(functieID, fnc => fnc.Groep, fie => fie.Lid);
+					return _funDao.Ophalen(
+						functieID, 
+						fnc => fnc.Groep, 
+						fie => fie.Lid.First().GroepsWerkJaar, 
+						fie => fie.Lid.First().GelieerdePersoon.Persoon);
 				}
 				else
 				{
@@ -352,50 +356,58 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Verwijdert een functie (PERSISTEERT!)
 		/// </summary>
-		/// <param name="functie">Te verwijderen functie, inclusief leden</param>
+		/// <param name="functie">Te verwijderen functie, 
+		///   inclusief groep, leden en groepswerkjaar leden</param>
 		/// <param name="forceren">Indien <c>true</c> wordt de functie ook verwijderd als er
-		/// personen in de functie zitten.  Anders krijg je een exception.</param>
-		/// <remarks>Deze method gaat ervan uit dat de functie zijn leden bevat.</remarks>
-		public void Verwijderen(Functie functie, bool forceren)
+		///   dit werkjaar personen met de gegeven functie zijn.  Anders krijg je een exception.</param>
+		/// <remarks>Als de functie geen leden meer bevat na verwijdering van die van het huidige werkjaar,
+		/// <returns><c>null</c> als de functie effectief verwijderd is, anders het functie-object met
+		/// aangepast 'werkjaartot'.</returns>
+		/// dan wordt ze verwijderd.  Zo niet, wordt er een stopdatum op geplakt</remarks>
+		public Functie Verwijderen(Functie functie, bool forceren)
 		{
+			if (!_autorisatieMgr.IsGavFunctie(functie.ID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+
 			// Leden moeten gekoppeld zijn
 			// (null verschilt hier expliciet van een lege lijst)
 			Debug.Assert(functie.Lid != null);
 
-			if (!forceren && functie.Lid.Count > 0)
+			int huidigGwjID = _veelGebruikt.GroepsWerkJaarOphalen(functie.Groep.ID).ID;
+
+			var metFunctieDitJaar = from ld in functie.Lid
+			                        where ld.GroepsWerkJaar.ID == huidigGwjID
+			                        select ld;
+
+			if (!forceren && metFunctieDitJaar.FirstOrDefault() != null)
 			{
 				throw new BlokkerendeObjectenException<Lid>(
-					functie.Lid,
-					functie.Lid.Count(),
+					metFunctieDitJaar,
+					metFunctieDitJaar.Count(),
 					Properties.Resources.FunctieNietLeeg);
 			}
 
-			LeegMaken(functie);  // verwijdert de functie bij alle leden, en persisteert
-
-			functie.TeVerwijderen = true;	// nu de functie zelf nog
-			Bewaren(functie);
-		}
-
-		/// <summary>
-		/// Verwijdert alle gelieerde personen uit de functie <paramref name="f"/>, en persisteert
-		/// </summary>
-		/// <param name="f">Leeg te maken functie</param>
-		/// <returns>De functie zonder leden</returns>
-		public Functie LeegMaken(Functie f)
-		{
-			if (_autorisatieMgr.IsGavFunctie(f.ID))
+			foreach (var ld in metFunctieDitJaar)
 			{
-				foreach (Lid l in f.Lid)
-				{
-					l.TeVerwijderen = true;
-					// dit verwijdert enkel de link naar het lid
-				}
-				return _funDao.Bewaren(f, fie => fie.Lid);
+				ld.TeVerwijderen = true;	// markeer link lid->functie als te verwdrn
+			}
+
+			var metFunctieVroeger = from ld in functie.Lid
+			                        where ld.GroepsWerkJaar.ID != huidigGwjID
+			                        select ld;
+
+			if (metFunctieVroeger.FirstOrDefault() == null)
+			{
+				functie.TeVerwijderen = true;
 			}
 			else
 			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
+				functie.WerkJaarTot = _veelGebruikt.GroepsWerkJaarOphalen(functie.Groep.ID).WerkJaar - 1;
 			}
+
+			return _funDao.Bewaren(functie, fn => fn.Lid);
 		}
 
 		/// <summary>

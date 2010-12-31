@@ -56,7 +56,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="id">De ID van de functie</param>
 		/// <returns></returns>
 		[HandleError]
-		public ActionResult FunctieVerwijderen(int groepID, int id)
+		public ActionResult Verwijderen(int groepID, int id)
 		{
 			try
 			{
@@ -73,7 +73,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				model.Leden = ex.Detail.Objecten;
 				model.FunctieID = id;
-				model.VolledigeLijstUrl = Url.Action("Lijst", "Leden", new RouteValueDictionary(new {id, groepID }));
+				model.VolledigeLijstUrl = Url.Action("Lijst", "Leden", new RouteValueDictionary(new { groepID, functieID = id }));
 				model.TotaalAantal = ex.Detail.Aantal;
 
 				// Vis functienaam op uit de gekoppelde functies van de leden.
@@ -84,7 +84,7 @@ namespace Chiro.Gap.WebApp.Controllers
 								   select f).First().Naam;
 				model.Titel = String.Format("Functie '{0}' verwijderen", functieNaam);
 
-				return View("FunctieVerwijderen", model);
+				return View("Verwijderen", model);
 			}
 		}
 
@@ -95,7 +95,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <returns>Een redirect naar de actie 'Index'</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
 		[HandleError]
-		public ActionResult FunctieVerwijderen(LedenLinksModel model)
+		public ActionResult Verwijderen(LedenLinksModel model)
 		{
 			ServiceHelper.CallService<IGroepenService>(svc => svc.FunctieVerwijderen(
 				model.FunctieID,

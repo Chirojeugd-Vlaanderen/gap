@@ -1,4 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Diagnostics;
+
+using Chiro.Gap.Workers.Exceptions;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Moq;
 
@@ -80,7 +84,7 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 
 			#region Assert
 
-			funDaoMock.Verify(dao => dao.NationaalBepaaldeFunctiesOphalen(), Times.Exactly(1), "Nationale functies waren niet gecachet.");
+			funDaoMock.Verify(dao => dao.NationaalBepaaldeFunctiesOphalen(), Times.AtMost(1), "Nationale functies waren niet gecachet.");
 
 			#endregion
 		}
@@ -119,34 +123,127 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 		}
 
 		/// <summary>
-		/// Tweede probleem aan de basis van #890 
+		/// Controleert of een ongebruikte functie probleemloos verwijderd kan worden
 		/// </summary>
 		[TestMethod]
-		public void FunctieLeegMakenTest()
+		public void OngebruikteFunctieVerwijderenTest()
 		{
-			// Arrange
+			// arrange
 
-			var auMgrMock = new Mock<IAutorisatieManager>();
+			var testData = new DummyData();
 
-			auMgrMock.Setup(mgr => mgr.IsGavCategorie(It.IsAny<int>())).Returns(false);
-			auMgrMock.Setup(mgr => mgr.IsGavFunctie(It.IsAny<int>())).Returns(true);
+			var veelGebruiktMock = new Mock<IVeelGebruikt>();
+			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj);
+			Factory.InstantieRegistreren<IVeelGebruikt>(veelGebruiktMock.Object);
 
-			Factory.InstantieRegistreren<IAutorisatieManager>(auMgrMock.Object);
-
-			var funMgr = Factory.Maak<FunctiesManager>();
-
-			var f = new Functie();
+			var mgr = Factory.Maak<FunctiesManager>();
 
 			// act
 
-			funMgr.LeegMaken(f);  // roep leegmaken aan
+			var result = mgr.Verwijderen(testData.OngebruikteFunctie, false);
 
 			// assert
 
-			// Ik verwacht geen exception, aangezien de functie al leeg is,
-			// en aangezien auMgrMock ervoor zorgt dat de gebruiker rechten heeft.
+			Assert.IsNull(result);
+		}
 
-			Assert.IsTrue(true);
+		/// <summary>
+		/// probeert een functie die dit jaar in gebruik is te verwijderen.  We verwachten een exception.
+		/// </summary>
+		[TestMethod]
+		[ExpectedException(typeof(BlokkerendeObjectenException<Lid>))]
+		public void FunctieDitJaarInGebruikVerwijderenTest()
+		{
+			// arrange
+
+			// Deze DAO nog eens expliciet registreren, om te vermijden dat wijzigingen in
+			// andere tests een vertekend beeld opleveren.
+			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
+
+			var testData = new DummyData();
+
+			var veelGebruiktMock = new Mock<IVeelGebruikt>();
+			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj);
+			Factory.InstantieRegistreren<IVeelGebruikt>(veelGebruiktMock.Object);
+
+			var mgr = Factory.Maak<FunctiesManager>();
+
+			// act
+
+			var result = mgr.Verwijderen(testData.UniekeFunctie, false);
+
+			// assert
+
+			// Als we hier toekomen zonder exception, dan ging er iets mis.
+			Assert.IsTrue(false);
+		}
+
+		/// <summary>
+		/// probeert een functie die enkel dit jaar in gebruik is, geforceerd te verwijderen. 
+		/// We verwachten dat ze definitief weg is.
+		/// </summary>
+		[TestMethod]
+		public void FunctieEnkelDitJaarInGebruikGeforceerdVerwijderenTest()
+		{
+			// arrange
+
+			// Deze DAO nog eens expliciet registreren, om te vermijden dat wijzigingen in
+			// andere tests een vertekend beeld opleveren.
+			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
+
+			var testData = new DummyData();
+
+			var veelGebruiktMock = new Mock<IVeelGebruikt>();
+			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj);
+			Factory.InstantieRegistreren<IVeelGebruikt>(veelGebruiktMock.Object);
+
+			var mgr = Factory.Maak<FunctiesManager>();
+
+			// act
+
+			var result = mgr.Verwijderen(testData.UniekeFunctie, true);
+
+			// assert
+
+			Assert.IsNull(result);
+		}
+
+		/// <summary>
+		/// probeert een functie die zowel dit jaar als vorig jaar gebruikt is, 
+		/// geforceerd te verwijderen.  We verwachten dat het 'werkjaar tot'  wordt
+		/// ingevuld.
+		/// </summary>
+		[TestMethod]
+		public void FunctieLangerInGebruikGeforceerdVerwijderenTest()
+		{
+			// arrange
+
+			// Deze DAO nog eens expliciet registreren, om te vermijden dat wijzigingen in
+			// andere tests een vertekend beeld opleveren.
+			Factory.InstantieRegistreren<IFunctiesDao>(new DummyFunctiesDao());
+
+			var testData = new DummyData();
+
+			Debug.Assert(testData.HuidigGwj != null);
+
+			var veelGebruiktMock = new Mock<IVeelGebruikt>();
+			veelGebruiktMock.Setup(vgb => vgb.GroepsWerkJaarOphalen(testData.DummyGroep.ID)).Returns(testData.HuidigGwj);
+			Factory.InstantieRegistreren<IVeelGebruikt>(veelGebruiktMock.Object);
+
+			var mgr = Factory.Maak<FunctiesManager>();
+
+			// act
+
+			var result = mgr.Verwijderen(testData.TraditieFunctie, true);
+
+			// assert
+
+			// functie niet meer geldig
+			Assert.IsNotNull(result);
+			Assert.AreEqual(result.WerkJaarTot, testData.HuidigGwj.WerkJaar - 1);
+
+			// enkel het lid van dit werkjaar blijft over
+			Assert.AreEqual(result.Lid.Count, 1);
 		}
 	}
 }
