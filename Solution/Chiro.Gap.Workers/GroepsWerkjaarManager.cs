@@ -255,6 +255,7 @@ namespace Chiro.Gap.Workers
 
 			try
 			{
+				_veelGebruikt.GroepsWerkJaarResetten(gwj.Groep.ID);
 				return _groepsWjDao.Bewaren(gwj, ExtrasNaarLambdas(groepsWerkJaarExtras));
 			}
 			catch (DubbeleEntiteitException<GroepsWerkJaar>)
