@@ -156,9 +156,10 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 		{
 			// arrange
 
-			// Deze DAO nog eens expliciet registreren, om te vermijden dat wijzigingen in
+			// Deze objecten nog eens expliciet registreren, om te vermijden dat wijzigingen in
 			// andere tests een vertekend beeld opleveren.
 			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
+			Factory.InstantieRegistreren<IGroepsWerkJaarDao>(new DummyGroepsWerkJaarDao());
 
 			var testData = new DummyData();
 
