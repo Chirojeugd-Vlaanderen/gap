@@ -283,7 +283,7 @@ namespace Chiro.Gap.WebApp
 		/// <returns>GroepID van unieke groep van gegeven GAV, anders <c>0</c></returns>
 		public int UniekeGroepGav(string login)
 		{
-			int? id = (int?)_cache.Get(UNIEKEGROEPCACHEKEY);
+			int? id = (int?)_cache.Get(String.Format(UNIEKEGROEPCACHEKEY, login));
 			if (id == null)
 			{
 				var mijnGroepen = _serviceHelper.CallService<IGroepenService, IEnumerable<GroepInfo>>
@@ -291,7 +291,7 @@ namespace Chiro.Gap.WebApp
 
 				id = mijnGroepen.Count() == 1 ? mijnGroepen.First().ID : 0;
 
-				_cache.Add(UNIEKEGROEPCACHEKEY,
+				_cache.Add(String.Format(UNIEKEGROEPCACHEKEY, login),
 						  id,
 						  null,
 						  Cache.NoAbsoluteExpiration,
