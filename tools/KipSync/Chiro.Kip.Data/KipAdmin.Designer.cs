@@ -29,7 +29,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("kipadminModel", "FK_PersoonsVerzekering_ExtraVerzekering", "ExtraVerzekering", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Kip.Data.ExtraVerzekering), "PersoonsVerzekering", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Kip.Data.PersoonsVerzekering))]
 
 // Original file name:
-// Generation date: 21/12/10 12:22:09
+// Generation date: 18/01/2011 15:21:29
 namespace Chiro.Kip.Data
 {
     
@@ -3297,7 +3297,7 @@ namespace Chiro.Kip.Data
         /// <summary>
         /// There are no comments for Property FREELANCE in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         public string FREELANCE
         {
@@ -3309,12 +3309,12 @@ namespace Chiro.Kip.Data
             {
                 this.OnFREELANCEChanging(value);
                 this.ReportPropertyChanging("FREELANCE");
-                this._FREELANCE = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this._FREELANCE = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
                 this.ReportPropertyChanged("FREELANCE");
                 this.OnFREELANCEChanged();
             }
         }
-        private string _FREELANCE;
+        private string _FREELANCE = "n";
         partial void OnFREELANCEChanging(string value);
         partial void OnFREELANCEChanged();
         /// <summary>

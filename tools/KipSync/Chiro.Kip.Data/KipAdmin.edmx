@@ -143,7 +143,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="CODE" Type="varchar" Nullable="false" MaxLength="3" />
-          <Property Name="NAAM" Type="varchar" Nullable="false" MaxLength="30" />
+          <Property Name="NAAM" Type="varchar" Nullable="false" MaxLength="40" />
           <Property Name="geldig" Type="int" Nullable="false" />
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="soort" Type="int" Nullable="false" />
@@ -343,7 +343,7 @@
           <Property Name="AANSL_NR" Type="smallint" />
           <Property Name="VERZ_NR" Type="smallint" />
           <Property Name="EXTRA_VERZ" Type="smallint" />
-          <Property Name="FREELANCE" Type="varchar" MaxLength="1" />
+          <Property Name="FREELANCE" Type="varchar" Nullable="false" MaxLength="1" />
           <Property Name="ACTIEF" Type="varchar" MaxLength="1" />
           <Property Name="LIDKAART" Type="varchar" MaxLength="1" />
           <Property Name="IK_SB" Type="varchar" MaxLength="2" />
@@ -882,7 +882,7 @@
           <Property Name="AANSL_NR" Type="Int16" />
           <Property Name="VERZ_NR" Type="Int16" />
           <Property Name="EXTRA_VERZ" Type="Int16" />
-          <Property Name="FREELANCE" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="FREELANCE" Type="String" MaxLength="1" Unicode="false" FixedLength="false" Nullable="false" DefaultValue="n" />
           <Property Name="ACTIEF" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
           <Property Name="LIDKAART" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
           <Property Name="IK_SB" Type="String" MaxLength="2" Unicode="false" FixedLength="false" />
@@ -1542,7 +1542,7 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram Name="KipAdmin" ZoomLevel="67">
+      <Diagram Name="KipAdmin" ZoomLevel="101">
         <EntityTypeShape EntityType="kipadminModel.Adres" Width="1.5" PointX="5.625" PointY="6.5" Height="2.0853483072916674" IsExpanded="true" />
         <EntityTypeShape EntityType="kipadminModel.AdresType" Width="1.5" PointX="5.625" PointY="12.125" Height="1.5923063151041674" IsExpanded="true" />
         <EntityTypeShape EntityType="kipadminModel.ContactInfo" Width="1.5" PointX="4.875" PointY="9.5" Height="1.9210009765624996" IsExpanded="true" />
