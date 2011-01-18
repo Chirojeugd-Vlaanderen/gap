@@ -1,4 +1,6 @@
 
+-- ! EERST DE GEGEVENS VOOR UNIT TESTS IMPORTEREN
+
 -- Dit script maakt alle Chiro groepen aan, en geeft de nodige GAV's de 
 -- nodige rechten.
 
