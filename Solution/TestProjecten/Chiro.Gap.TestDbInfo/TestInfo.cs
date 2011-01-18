@@ -9,37 +9,38 @@
 		// te plakken uit output van 
 		// cg2_database_action.sh -a creatie -t test
 
-		public const int GROEPID = 1054;
-		public const int GELIEERDEPERSOONID = 194331;
-		public const int GELIEERDEPERSOON2ID = 194326;
-		public const int GELIEERDEPERSOON3ID = 194327;
-		public const int GELIEERDEPERSOON4ID = 194328;
-		public const int GELIEERDEPERSOON5ID = 194329;
+		public const int GROEPID = 1058;
+		public const int GELIEERDEPERSOONID = 198472;
+		public const int GELIEERDEPERSOON2ID = 198473;
+		public const int GELIEERDEPERSOON3ID = 198474;
+		public const int GELIEERDEPERSOON4ID = 198475;
+		public const int GELIEERDEPERSOON5ID = 198476;
 		public const int MINAANTALGELPERS = 5;
-		public const int LID3ID = 283419;
-		public const int LID4ID = 283420;
-		public const int CATEGORIEID = 577;
+		public const int LID3ID = 296675;
+		public const int LID4ID = 296676;
+		public const int CATEGORIEID = 647;
 		public const string CATEGORIECODE = "last";
-		public const int CATEGORIE2ID = 578;
-		public const int CATEGORIE3ID = 579;
-		public const int FUNCTIEID = 230;
-		public const int AANTALINCATEGORIE = 3;
-		public const int AFDELING1ID = 5592;
+		public const int CATEGORIE2ID = 648;
+		public const int CATEGORIE3ID = 649;
+		public const int FUNCTIEID = 290;
+		public const int AANTALINCATEGORIE = 1;
+		public const int AFDELING1ID = 5648;
 		public const int OFFICIELEAFDELINGID = 1;
-		public const int AFDELINGSJAAR1ID = 17076;
+		public const int AFDELINGSJAAR1ID = 17630;
 		public const int AFDELING1VAN = 2003;
 		public const int AFDELING1TOT = 2004;
-		public const int AFDELING2ID = 5593;
-		public const int AFDELINGSJAAR2ID = 17079;
+		public const int AFDELING2ID = 5650;
+		public const int AFDELINGSJAAR2ID = 17631;
 		public const int AFDELING2VAN = 2003;
 		public const int AFDELING2TOT = 2004;
-		public const int AFDELING3ID = 5594;
-		public const int GROEPSWERKJAARID = 3821;
+		public const int AFDELING3ID = 5650;
+
+		public const int GROEPSWERKJAARID = 3963;
 		public const string ZOEKNAAM = "Bosmans";
 		public const string GAV1 = "Yvonne";
 		public const string GAV2 = "Yvette";
 
-		public const int WATINGROEPID = 1057;
+		public const int WATINGROEPID = 1056;
 		#endregion
 
 		
