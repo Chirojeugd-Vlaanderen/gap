@@ -233,7 +233,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					r = TerugNaarVorigeLijst();
 					break;
 				case 3:
-					TempData.Add("list", model.GekozenGelieerdePersoonIDs);
+					TempData["list"] = model.GekozenGelieerdePersoonIDs;
 					r = RedirectToAction("CategorieToevoegenAanLijst");
 					break;
 				default:
@@ -1017,7 +1017,7 @@ namespace Chiro.Gap.WebApp.Controllers
 		public ActionResult ToevoegenAanCategorie(int gelieerdePersoonID, int groepID)
 		{
 			IList<int> l = new List<int> { gelieerdePersoonID };
-			TempData.Add("list", l);
+			TempData["list"] = l;
 			return RedirectToAction("CategorieToevoegenAanLijst");
 		}
 
@@ -1040,7 +1040,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (model.Categorieen.Count() > 0)
 			{
 				object value;
-				TempData.TryGetValue("list", out value);
+                TempData.TryGetValue("list", out value);
 				model.GelieerdePersoonIDs = (List<int>)value;
 
 				return View("CategorieToevoegenAanLijst", model);
