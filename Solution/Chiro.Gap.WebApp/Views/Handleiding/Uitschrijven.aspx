@@ -11,13 +11,22 @@
 	<p>
 		Iemand uitschrijven is een drastische maatregel. In principe kan het ook niet
 		- toch niet voor het nationaal secretariaat. Wanneer je iemand aansluit, is
-		dat voor een heel werkjaar. Je kunt dus ook geen lidgeld terugvorderen, want
-		daar zijn al een hoop vaste kosten mee betaald, zoals de verzekering.
-	</p>
+		dat voor een heel werkjaar.</p>
 	<p>
 		In je groep kun je wel de beslissing nemen om iemand uit te schrijven. In het
 		programma heet dat: 'op non-actief zetten'. De persoon blijft wel in je gegevensbestand
-		zitten, maar hij of zij verschijnt niet meer bij de ingeschreven leden.</p>
+		zitten, maar hij of zij verschijnt niet meer bij de ingeschreven leden. Van
+		mensen die automatisch ingeschreven werden bij de jaarovergang en die geen lid
+		meer zijn, kun je zo vermijden dat je toch nog voor hun aansluiting betaalt.
+	</p>
+	<p>
+		<em>Terzijde: het administratieprogramma waarschuwt je wanneer de probeerperiode
+			van je leden verloopt, zodat je nog degenen kunt uitschrijven die geen lid willen
+			worden of van wie je het nog niet zeker bent. Als je na de probeerperiode ontdekt
+			dat je toch leden foutief aangesloten hebt, dan kunnen we dat nog rechtzetten,
+			maar dat kost wel wat werk. Je krijgt dan wel hun inschrijvingsgeld terug, maar
+			min 15 euro administratiekosten.</em>
+	</p>
 	<p>
 		Stappen in het proces:</p>
 	<ul>
