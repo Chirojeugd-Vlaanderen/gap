@@ -422,7 +422,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				it => it.WoonPlaats,
 				it => it.TelefoonNummer,
 				it => it.Email,
-				it => it.LidgeldBetaald);
+				it => it.LidgeldBetaald ? "Ja" : "Nee");
 
 			return new ExcelResult(stream, bestandsNaam);
 		}
