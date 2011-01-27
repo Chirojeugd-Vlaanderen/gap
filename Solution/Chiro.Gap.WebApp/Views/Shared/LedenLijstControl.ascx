@@ -4,6 +4,7 @@
 
 <table class="overzicht">
 	<tr>
+		<th />
 		<th>Ad-nr. </th>
 		<th>Type </th>
 		<th>
@@ -62,9 +63,22 @@
 		<%=Model.KanLedenBewerken ? "<th>Acties</th>" : String.Empty %>
 	</tr>
 	<%
+		var volgnr = 0;
      foreach (LidOverzicht lidOverzicht in ViewData.Model.LidInfoLijst)
-	{  %>
-	<tr>
+	{
+		volgnr++;
+		 
+		 if(volgnr%2==0)
+		 {%>
+<tr class="even">
+		 <%}
+		 else
+		 {%>
+<tr class="oneven">			 
+		 <%}
+
+%>
+		<td><%=volgnr.ToString() %></td>
 		<td>
 			<%= lidOverzicht.AdNummer %>
 		</td>

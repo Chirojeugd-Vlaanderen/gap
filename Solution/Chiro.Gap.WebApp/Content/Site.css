@@ -488,6 +488,21 @@ table.overzicht th
 	background-color: #A0A0A0;
 }
 
+table.overzicht tr:hover td
+{
+	background-color: #A0A0A0;
+}
+
+tr.even td
+{
+	background-color: #e8eef4;
+}
+
+tr.oneven td
+{
+	background-color: #FFFFFF;
+}
+
 info
 {
 	float: right;
