@@ -13,17 +13,26 @@
 		als je alle adres- en telefoongegevens dubbel moet invullen. Goed nieuws: dankzij
 		de link 'zus/broer maken' is dat niet meer nodig!</p>
 	<p>
+		Let wel: die procedure legt geen link tussen personen. Het kopieert alleen de
+		gezinsgebonden communicatievormen van een bestaande naar een nieuwe persoon.
+		De enige link die voor GAP bestaat tussen personen, is dat ze op hetzelfde adres
+		wonen. Het is dus niet nodig om van bestaande personen aan te geven dat ze broer
+		of zus zijn van elkaar - en dat is trouwens ook niet mogelijk.</p>
+	<p>
 		Stappen in het proces:</p>
 	<ul>
 		<li>Klik op het tabblad 'Iedereen'.</li>
-		<li>Zoek de persoon voor wie je een broer of zus wilt toevoegen. Ga eventueel nog na of het thuisadres en bijvoorbeeld het telefoonnummer van de ouders ingevuld is.</li>
+		<li>Zoek de persoon voor wie je een broer of zus wilt toevoegen. Ga eventueel nog
+			na of het thuisadres en bijvoorbeeld het telefoonnummer van de ouders ingevuld
+			is.</li>
 	</ul>
 	<img src="<%=ResolveUrl("~/Content/Screenshots/Link_Broer_of_zus.png") %>" alt="Gegevens voor een zus of broer toevoegen" />
 	<ul>
 		<li>Klik op de link 'zus/broer maken'. Je gaat dan naar het scherm waar je een nieuwe
 			persoon aanmaakt, en de familienaam is al ingevuld.</li>
 	</ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/Formulier_Broer_zus.png") %>" alt="Gegevens voor een zus of broer toevoegen" />
+	<img src="<%=ResolveUrl("~/Content/Screenshots/Formulier_Broer_zus.png") %>"
+		alt="Gegevens voor een zus of broer toevoegen" />
 	<ul>
 		<li>Vul de ontbrekende gegevens in (en pas eventueel de familienaam aan als het
 			over een nieuwsamengesteld gezin gaat). Klik op de knop 'Bewaren'.</li>
