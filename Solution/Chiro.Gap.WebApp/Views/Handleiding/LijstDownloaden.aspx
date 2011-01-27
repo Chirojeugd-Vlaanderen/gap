@@ -12,9 +12,12 @@
 		De gegevens van je groep worden natuurlijk pas echt bruikbaar als je er meer
 		mee kunt doen dan ze alleen online bekijken. Daarom kun je allerlei lijstjes
 		downloaden als Excel-bestand. Je kunt ze dan openen in Excel van Microsoft,
-		Calc van OpenOffice.org, en misschien ook nog in andere spreadsheetprogramma's.
-		Heb je geen programma waarmee je het bestand kunt openen? Calc kun je <a href="http://nl.openoffice.org/downloaden.html">
-			gratis downloaden</a>.</p>
+		Calc van OpenOffice.org of LibreOffice, en misschien ook nog in andere spreadsheetprogramma's.
+		Heb je geen programma waarmee je het bestand kunt openen? Calc is gratis,
+		zowel in de versie van <a href="http://nl.openoffice.org/downloaden.html">OpenOffice.org</a>
+		of als in die van <a href="http://www.libreoffice.org/download/">LibreOffice</a>.</p>
+	<p>
+		Microsoft Office voor Mac kan blijkbaar problemen hebben met de geboortedatums, daar moet je dus mee opletten.</p>
 	<p>
 		De lijsten die je kunt downloaden, zijn opgemaakt in het formaat van Office
 		2007. Als je Office 2003 hebt en je krijgt het bestand niet open, dan moet je
@@ -23,11 +26,9 @@
 			extra programma</a> installeren. Zorg ook dat je <a href="http://update.microsoft.com">
 				de recentste updates van Office</a> geïnstalleerd hebt.</p>
 	<p>
-		<em>Internet Explorer geeft soms problemen. Je krijgt dan een venstertje met de
-			foutmelding "Kan bestand '208' niet downloaden". We weten nog niet wat het probleem
-			veroorzaakt, maar als je <a href="http://www.mozilla.com/firefox">Firefox</a>
-			of <a href="http://www.google.be/chrome">Chrome</a> gebruikt in plaats van Internet
-			Explorer lukt de download wél.</em></p>
+		Als je in de kolom met geboortedata alleen ##### ziet staan, dan betekent 
+		dat gewoon dat de kolom te smal is. Er is dus niets foutgelopen. Maak de 
+		kolom wat breder om de data te zien.</p>
 	<p>
 		Lijsten die je kunt downloaden:</p>
 	<ul>
