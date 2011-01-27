@@ -9,8 +9,10 @@
 	<h2>
 		Speciale afdelingen</h2>
 	<p>
-		Elke afdeling in je groep moet gekoppeld zijn aan een officiële. Zo weet het
-		nationaal secretariaat welke ledenuitgave
+		Elke afdeling in je groep moet gekoppeld zijn aan een officiële. Dat is nodig
+		voor de website, omdat GAP iedereen die je inschrijft automatisch in de juiste
+		afdeling stopt. En het is nodig voor het nationaal secretariaat: zo weten wij
+		welke ledenuitgave
 		<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Ledenuitgave", new { helpBestand = "Trefwoorden" }, new{ title="Wat is een ledenuitgave?"}) %>
 		we moeten opsturen voor die leden.</p>
 	<p>
@@ -26,5 +28,8 @@
 	</blockquote>
 	<p>
 		Dat soort afdelingen heeft heel andere leeftijdsgrenzen: van 6 tot 20 jaar,
-		bijvoorbeeld. Daarvoor dient 'Speciaal geval'. Niet om </p>
+		bijvoorbeeld. We noemen dat 'speciaal' omdat die afdelingen niet meegerekend
+		worden wanneer het programma nagaat in welke afdeling een nieuw lid moet terechtkomen.
+		Dat dient dus niet om aan te geven dat bijvoorbeeld jouw speelclubafdeling andere
+		leeftijdsgrenzen heeft dan de officiële.</p>
 </asp:Content>
