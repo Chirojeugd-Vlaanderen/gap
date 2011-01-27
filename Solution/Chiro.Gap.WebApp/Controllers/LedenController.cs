@@ -398,7 +398,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			// gebruikt van de PersoonOverzicht-velden, dan is de regel hieronder niet nodig.
 			string[] kolomkoppen = {
 			                       	"Type", "AD-nr", "Voornaam", "Naam", "Afdelingen", "Functies", "Geboortedatum", "Geslacht",
-			                       	"Straat", "Nr", "Bus", "Postcode", "Gemeente", "Tel", "Mail"
+			                       	"Straat", "Nr", "Bus", "Postcode", "Gemeente", "Tel", "Mail", "Betaald"
 			                       };
 
 			bestandsNaam = String.Format("{0}.xlsx", model.Titel.Replace(" ", "-"));
@@ -421,7 +421,8 @@ namespace Chiro.Gap.WebApp.Controllers
 				it => it.PostNummer,
 				it => it.WoonPlaats,
 				it => it.TelefoonNummer,
-				it => it.Email);
+				it => it.Email,
+				it => it.LidgeldBetaald);
 
 			return new ExcelResult(stream, bestandsNaam);
 		}
