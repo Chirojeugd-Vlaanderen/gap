@@ -8,7 +8,8 @@
 		<li><a href="http://www.chiro.be/eloket/feedback-gap">Vragen of feedback?</a></li>
 		<li>
 			<%=Html.ActionLink("Trefwoorden", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Trefwoorden" }) %></li>
-			<li><%=Html.ActionLink("Veelgestelde vragen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "VeelgesteldeVragen" }) %></li>
+		<li>
+			<%=Html.ActionLink("Veelgestelde vragen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "VeelgesteldeVragen" }) %></li>
 	</ul>
 	<h3>
 		Info per tabblad:</h3>
@@ -59,6 +60,8 @@
 			<%=Html.ActionLink("Iemand uitschrijven", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Uitschrijven" })%></li>
 		<li>
 			<%=Html.ActionLink("Groepen fusioneren", "ViewTonen", new { Controller = "Handleiding", helpBestand = "Fusioneren" })%></li>
+		<li>
+			<%=Html.ActionLink("'Speciale' afdelingen", "ViewTonen", new { Controller = "Handleiding", helpBestand = "SpecialeAfdelingen" })%></li>
 	</ul>
 	<h3>
 		Aanvragen:</h3>
@@ -77,7 +80,7 @@
 			<%=Html.ActionLink("Lijsten downloaden", "ViewTonen", new { Controller = "Handleiding", helpBestand = "LijstDownloaden" })%></li>
 		<li>
 			<%=Html.ActionLink("Etiketten maken", "ViewTonen", new { Controller = "Handleiding", helpBestand = "EtikettenMaken" })%></li>
-			<li>
+		<li>
 			<%=Html.ActionLink("Zelf een verjaardagslijst maken", "ViewTonen", new { Controller = "Handleiding", helpBestand = "ExcelVerjaardagslijst" })%></li>
 	</ul>
 	<h3>
