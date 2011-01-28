@@ -63,7 +63,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				ServiceHelper.CallService<IGroepenService>(svc => svc.CategorieVerwijderen(id, false));
 				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
-				return RedirectToAction("Index", new {groepID });
+				return RedirectToAction("Index", new { groepID });
 			}
 			catch (FaultException<BlokkerendeObjectenFault<PersoonDetail>> ex)
 			{
@@ -74,7 +74,7 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				model.Personen = ex.Detail.Objecten;
 				model.CategorieID = id;
-				model.VolledigeLijstUrl = Url.Action("List", "Personen", new RouteValueDictionary(new {id, groepID }));
+				model.VolledigeLijstUrl = Url.Action("List", "Personen", new RouteValueDictionary(new { id, groepID }));
 				model.TotaalAantal = ex.Detail.Aantal;
 
 				// Vis categorienaam op uit de gekoppelde categorieen van de personen
@@ -122,7 +122,59 @@ namespace Chiro.Gap.WebApp.Controllers
 			// Zodra er wel constraints staan op de groepsinfo/afdelingsinfo/... moet
 			// het model toch op voorhand aangevuld worden.
 
-			if (!ModelState.IsValid)
+			if (ModelState.IsValid)
+			{
+				// Als de ModelState geldig is: categorie toevoegen
+				try
+				{
+					ServiceHelper.CallService<IGroepenService>(svc => svc.CategorieToevoegen(
+						groepID,
+						model.NieuweCategorie.Naam,
+						model.NieuweCategorie.Code));
+
+					return RedirectToAction("Index", new { groepID });
+				}
+				catch (FaultException<BestaatAlFault<CategorieInfo>> ex)
+				{
+					if (String.Compare(
+						model.NieuweCategorie.Code,
+						ex.Detail.Bestaande.Code,
+						true) == 0)
+					{
+						// Geef feedback aan de gebruiker: de naam of de code worden al gebruikt
+						ModelState.AddModelError(
+							"NieuweCategorie.Code",
+							String.Format(
+								Properties.Resources.CategorieCodeBestaatAl,
+								ex.Detail.Bestaande.Code,
+								ex.Detail.Bestaande.Naam));
+					}
+					else if (String.Compare(
+						model.NieuweCategorie.Naam,
+						ex.Detail.Bestaande.Naam,
+						true) == 0)
+					{
+						// Geef feedback aan de gebruiker: de naam of de code worden al gebruikt
+						ModelState.AddModelError(
+							"NieuweCategorie.Naam",
+							String.Format(
+								Properties.Resources.CategorieNaamBestaatAl,
+								ex.Detail.Bestaande.Code,
+								ex.Detail.Bestaande.Naam));
+					}
+					else
+					{
+						Debug.Assert(false);
+					}
+
+					model.Titel = Properties.Resources.GroepsInstellingenTitel;
+					model.Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(
+						svc => svc.DetailOphalen(groepID));
+
+					return View(model);
+				}
+			}
+			else
 			{
 				// ModelState bevat ongeldige waarden, dus toon de pagina opnieuw
 				model.Titel = Properties.Resources.GroepsInstellingenTitel;
@@ -131,55 +183,6 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				return View(model);
 			}
-
-			try
-			{
-				ServiceHelper.CallService<IGroepenService>(svc => svc.CategorieToevoegen(
-					groepID,
-					model.NieuweCategorie.Naam,
-					model.NieuweCategorie.Code));
-
-				return RedirectToAction("Index", new {groepID });
-			}
-			catch (FaultException<BestaatAlFault<CategorieInfo>> ex)
-			{
-				if (String.Compare(
-					model.NieuweCategorie.Code,
-					ex.Detail.Bestaande.Code,
-					true) == 0)
-				{
-					// Geef feedback aan de gebruiker: de naam of de code worden al gebruikt
-					ModelState.AddModelError(
-						"NieuweCategorie.Code",
-						String.Format(
-							Properties.Resources.CategorieCodeBestaatAl,
-							ex.Detail.Bestaande.Code,
-							ex.Detail.Bestaande.Naam));
-				}
-				else if (String.Compare(
-					model.NieuweCategorie.Naam,
-					ex.Detail.Bestaande.Naam,
-					true) == 0)
-				{
-					// Geef feedback aan de gebruiker: de naam of de code worden al gebruikt
-					ModelState.AddModelError(
-						"NieuweCategorie.Naam",
-						String.Format(
-							Properties.Resources.CategorieNaamBestaatAl,
-							ex.Detail.Bestaande.Code,
-							ex.Detail.Bestaande.Naam));
-				}
-				else
-				{
-					Debug.Assert(false);
-				}
-
-				model.Titel = Properties.Resources.GroepsInstellingenTitel;
-				model.Detail = ServiceHelper.CallService<IGroepenService, GroepDetail>(
-					svc => svc.DetailOphalen(groepID));
-
-				return View(model);
-			}
 		}
-    }
+	}
 }

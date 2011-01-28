@@ -62,7 +62,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				ServiceHelper.CallService<IGroepenService>(svc => svc.FunctieVerwijderen(id, false));
 				TempData["succes"] = Properties.Resources.WijzigingenOpgeslagenFeedback;
-				return RedirectToAction("Index", new {groepID });
+				return RedirectToAction("Index", new { groepID });
 			}
 			catch (FaultException<BlokkerendeObjectenFault<PersoonLidInfo>> ex)
 			{
@@ -159,7 +159,7 @@ namespace Chiro.Gap.WebApp.Controllers
 					{
 						// Geef feedback aan de gebruiker: de naam of de code worden al gebruikt
 						ModelState.AddModelError(
-							"NieuweFunctie.Code",
+							"NieuweFunctie.Naam",
 							String.Format(
 								Properties.Resources.FunctieNaamBestaatAl,
 								ex.Detail.Bestaande.Code,

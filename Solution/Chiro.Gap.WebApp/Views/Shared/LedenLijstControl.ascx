@@ -80,10 +80,10 @@
 %>
 		<td><%=volgnr.ToString() %></td>
 		<td>
-			<%= lidOverzicht.AdNummer %>
+			<%= lidOverzicht.Type == LidType.Kind ? "Lid" : "Leiding" %>
 		</td>
 		<td>
-			<%= lidOverzicht.Type == LidType.Kind ? "Lid" : "Leiding" %>
+			<%= lidOverzicht.AdNummer %>
 		</td>
 		<td>
 			<% Html.RenderPartial("LedenLinkControl", lidOverzicht); %>

@@ -199,6 +199,8 @@ namespace Chiro.Gap.Workers
 				if (bestaande != null)
 				{
 					// TODO (#507): Check op bestaande afdeling door DB
+					// OPM: we krijgen pas een DubbeleEntiteitException op het moment dat we bewaren,
+					// maar hier doen we alleen een .Add
 					throw new BestaatAlException<Categorie>(bestaande);
 				}
 				else
@@ -239,11 +241,11 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
-			// Controleer op dubbele code
 
+			// Controleer op dubbele code
 			var bestaande = (from fun in g.Functie
-							 where String.Compare(g.Code, code) == 0
-							 || String.Compare(g.Naam, naam) == 0
+							 where String.Compare(fun.Code, code) == 0
+							 || String.Compare(fun.Naam, naam) == 0
 							 select fun).FirstOrDefault();
 
 			if (bestaande != null && bestaande.TeVerwijderen)
@@ -254,6 +256,8 @@ namespace Chiro.Gap.Workers
 			if (bestaande != null)
 			{
 				// TODO (#507): Check op bestaande afdeling door DB
+				// OPM: we krijgen pas een DubbeleEntiteitException op het moment dat we bewaren,
+				// maar hier doen we alleen een .Add
 				throw new BestaatAlException<Functie>(bestaande);
 			}
 

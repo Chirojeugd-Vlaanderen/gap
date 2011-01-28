@@ -395,8 +395,10 @@
     <Content Include="Views\Handleiding\Iedereen.aspx" />
     <Content Include="Views\Handleiding\IemandsFunctiesAanpassen.aspx" />
     <Content Include="Views\Handleiding\Ingeschreven.aspx" />
+    <Content Include="Views\Handleiding\Inschrijven.aspx" />
     <Content Include="Views\Handleiding\Jaarovergang.aspx" />
     <Content Include="Views\Handleiding\JaarovergangUitvoeren.aspx" />
+    <Content Include="Views\Handleiding\KostenAansluiting.aspx" />
     <Content Include="Views\Handleiding\LijstDownloaden.aspx" />
     <Content Include="Views\Handleiding\NieuwAdres.aspx" />
     <Content Include="Views\Handleiding\NieuweAfdeling.aspx" />
