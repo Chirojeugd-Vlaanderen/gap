@@ -10,12 +10,13 @@
 		Veelgestelde vragen</h2>
 	<ul>
 		<li><a href="#JaarovergangFout">De jaarovergang lukt niet.</a></li>
+		<li><a href="#WieVerzekerd">Hoe kan ik zien wie er allemaal verzekerd is?</a></li>
+		<li><a href="#WieAangesloten">Hoe kan ik zien wie er allemaal aangesloten is?</a></li>
 		<li><a href="#Uitstel">Kunnen we uitstel krijgen voor de jaarovergang/inschrijving/aansluiting?</a></li>
 		<li><a href="#LateInschrijving">Onze inschrijvingsdag is kort voor/na de deadline
 			van 15 oktober. Wat nu?</a></li>
-		<li><a href="#Downloadfout">De download lukt niet.</a></li>
-		<li><a href="#Bestandsprobleem">Ik kan het bestand wel downloaden, maar ik krijg
-			het niet open.</a></li>
+		<li><a href="#Bestandsprobleem">Ik kan wel lijsten downloaden, maar ik krijg ze
+			niet open.</a></li>
 		<li><a href="#ExcelOpmaak">Kunnen er andere/meer kolommen in het gedownloade bestand?
 			Kan de opmaak anders?</a></li>
 		<li><a href="#Doorsturen">Ik vind geen knop om de gegevens door te sturen naar het
@@ -26,8 +27,25 @@
 	<p>
 		In de meeste gevallen heeft dat te maken met de leeftijdsgrenzen van je afdelingen.
 		Je mag geen afdeling hebben voor leden die jonger zijn dan 6 jaar (zie <a href="http://www.chiro.be/minimumleeftijd"
-			title="Uitleg over de minimumleeftijd voor Chiroleden">de Chirosite</a>). Als het daar niet
-			aan ligt, heb je waarschijnlijk leden die te jong zijn. Schrijf hen uit en probeer de jaarovergang opnieuw uit te voeren. Lukt het nog niet? Neem dan contact op met <a href="http://www.chiro.be/eloket/feedback-gap">de helpdesk</a>.</p>
+			title="Uitleg over de minimumleeftijd voor Chiroleden">de Chirosite</a>).
+		Als het daar niet aan ligt, heb je waarschijnlijk leden die te jong zijn. Schrijf
+		hen uit en probeer de jaarovergang opnieuw uit te voeren. Lukt het nog niet?
+		Neem dan contact op met <a href="http://www.chiro.be/eloket/feedback-gap">de helpdesk</a>.</p>
+	<h3>
+		<a class="anchor" id="WieVerzekerd">Hoe kan ik zien wie er allemaal verzekerd is?</a></h3>
+	<p>
+		Iedereen die op het tabblad 'Ingeschreven' staat, is verzekerd. Ook al is hun
+		instapperiode nog niet voorbij en zijn de gegevens dus nog niet doorgestuurd
+		naar het nationaal secretariaat.</p>
+	<h3>
+		<a class="anchor" id="WieAangesloten">Hoe kan ik zien wie er allemaal aangesloten
+			is?</a></h3>
+	<p>
+		Iedereen die op het tabblad 'Ingeschreven' staat en niet meer in hun instapperiode
+		zit, is aangesloten. De aansluiting geldt wel voor een heel werkjaar. Mensen
+		die je uitschrijft, staan niet meer op het tabblad 'Ingeschreven', maar ze blijven
+		wel aangesloten. Als je hen achteraf dus opnieuw inschrijft, krijg je geen nieuwe
+		factuur.</p>
 	<h3>
 		<a class="anchor" id="Uitstel">Kunnen we uitstel krijgen voor de jaarovergang/inschrijving/aansluiting?</a></h3>
 	<p>
@@ -50,14 +68,6 @@
 		tot 4 november. Je hebt dus tot 4 november de tijd om diegenen uit te schrijven
 		die niet meer komen. Nieuwe leden kun je het hele jaar door toevoegen en inschrijven.</p>
 	<h3>
-		<a class="anchor" id="Downloadfout">De download lukt niet.</a></h3>
-	<p>
-		Internet Explorer ondervindt inderdaad moeilijkheden met de download. Je krijgt
-		dan een apart venstertje met een foutmelding in de trant van "Kan bestand '208'
-		niet downloaden". We weten nog niet wat het probleem veroorzaakt, maar als je
-		<a href="http://www.mozilla.com/firefox">Firefox</a> of <a href="http://www.google.be/chrome">
-			Chrome</a> gebruikt in plaats van Internet Explorer lukt de download wél.</p>
-	<h3>
 		<a class="anchor" id="Bestandsprobleem">Ik kan het bestand wel downloaden, maar
 			ik krijg het niet open.</a></h3>
 	<p>
@@ -67,6 +77,13 @@
 			title="Hulpprogramma om Office 2007-bestanden te kunnen openen in Office 2003">
 			extra programma</a> installeren. Zorg ook dat je <a href="http://update.microsoft.com">
 				de recentste updates van Office</a> geïnstalleerd hebt.</p>
+	<p>
+		Heb je geen programma waarmee je het bestand kunt openen? Calc is gratis, zowel
+		in de versie van <a href="http://nl.openoffice.org/downloaden.html">OpenOffice.org</a>
+		of als in die van <a href="http://www.libreoffice.org/download/">LibreOffice</a>.</p>
+	<p>
+		Microsoft Office voor Mac kan blijkbaar problemen hebben met de geboortedatums,
+		daar moet je dus mee opletten.</p>
 	<h3>
 		<a class="anchor" id="ExcelOpmaak">Kunnen er andere/meer kolommen in het gedownloade
 			bestand? Kan de opmaak anders?</a></h3>

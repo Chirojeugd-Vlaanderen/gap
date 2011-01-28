@@ -18,8 +18,7 @@
 		alt="De link om de afdelingsverdeling aan te passen, vind je op het tabblad 'Groep'" />
 	<ul>
 		<li>Klik op de link 'Nieuwe afdeling'. Je komt dan op het formuliertje.</li></ul>
-	<img src="<%=ResolveUrl("~/Content/Screenshots/Nieuwe_afdeling.png") %>"
-		alt="Een nieuwe afdeling toevoegen" />
+	<img src="<%=ResolveUrl("~/Content/Screenshots/Nieuwe_afdeling.png") %>" alt="Een nieuwe afdeling toevoegen" />
 	<ul>
 		<li>Vul de naam en een afkorting in, en klik op de knop 'Bewaren'
 			<ul>
@@ -43,7 +42,12 @@
 			Eén van de keuzes die je moet maken, is wel met welke offici&euml;le afdeling
 			de jouwe overeenkomt. Zo weet het nationaal secretariaat welke ledenuitgave
 			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Ledenuitgave", new { helpBestand = "Trefwoorden" }, new{ title="Wat is een ledenuitgave?"}) %>
-			we moeten opsturen voor die leden.</li>
+			we moeten opsturen voor die leden. Er is ook een optie 'Speciaal'. Dat is niet
+			voor bv. een speelclubafdeling met andere leeftijdsgrenzen dan de officiële!
+			Met speciale afdelingen wordt geen rekening gehouden bij de automatische indeling
+			als je nieuwe leden inschrijft. Meer uitleg over speciale afdelingen vind je
+			op de pagina
+			<%=Html.ActionLink("Speciale afdelingen", "ViewTonen", new { controller = "Handleiding", helpBestand = "SpecialeAfdelingen" })%></li>
 		<li>Wanneer je de nodige gegevens ingevuld hebt, klik je op de knop 'Bewaren'.
 			<ul>
 				<li class="nietgoed">Als er iets foutliep, krijg je daar een foutmelding voor zodat

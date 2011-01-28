@@ -74,10 +74,15 @@
 				de Chirosite</a>.</dd>
 		<dt><strong><a class="anchor" id="Instapperiode">Instapperiode</a></strong>:</dt>
 		<dd>Iedereen die je inschrijft in je groep krijgt een instapperiode. De einddatum
-			vind je op de persoonsfiche. De GAV's krijgen een mailtje wanneer er zo'n einddatum
-			nadert. Is de einddatum verstreken, dan geldt die persoon als definitief ingeschreven.
-			Op dat moment wordt hij of zij aangesloten bij Chirojeugd Vlaanderen. Dat betekent
-			dat je groep een factuur zal krijgen voor zijn of haar lidgeld.</dd>
+			vind je op de persoonsfiche. Normaal duurt een instapperiode drie weken, maar
+			als je de jaarovergang al in augustus of begin september uitvoert, is de einddatum
+			15 oktober. Je hebt dus zeker tijd genoeg om je ledenlijst nog na te kijken,
+			ook als je inschrijvingen nog niet allemaal binnen zijn of als je bv. begin
+			oktober een inschrijvingsdag houdt.<br />
+			De GAV's krijgen een mailtje wanneer er zo'n einddatum nadert. Is de einddatum
+			verstreken, dan geldt die persoon als definitief ingeschreven. Op dat moment
+			wordt hij of zij aangesloten bij Chirojeugd Vlaanderen. Dat betekent dat je
+			groep een factuur zal krijgen voor zijn of haar lidgeld.</dd>
 		<dt><strong><a class="anchor" id="Jaarovergang">Jaarovergang</a></strong>:</dt>
 		<dd>Tijdens de jaarovergang geef je aan welke afdelingen je groep heeft. De leden
 			van vorig jaar worden automatisch in de juiste afdeling gezet en ingeschreven.

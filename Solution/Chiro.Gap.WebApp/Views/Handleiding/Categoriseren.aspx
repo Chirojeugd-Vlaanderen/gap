@@ -27,7 +27,7 @@
 	<img src="<%=ResolveUrl("~/Content/Screenshots/Categoriseren_MeerdereMensen.png") %>"
 		alt="Meerdere mensen tegelijk in een categorie stoppen" />
 	<ul>
-		<li>$$$ aan te vullen na bugfix $$$</li>
+		<li>Vink aan in welke categorie die mensen moeten terechtkomen.</li>
 	</ul>
 	<a class="anchor" id="Individueel" />
 	<h3>

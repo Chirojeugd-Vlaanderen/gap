@@ -15,7 +15,7 @@
 		en dan een tekstverwerkingsprogramma als Word van Microsoft of Writer van OpenOffice.org
 		gebruiken. Het gaat waarschijnlijk ook met andere programma's, maar de meeste
 		mensen hebben Word of Writer op hun computer. Writer kun je overigens gratis
-		<a href="http://nl.openoffice.org/downloaden.html">downloaden</a> - en je hebt
+		<a href="http://nl.openoffice.org/downloaden.html">downloaden</a> - je hebt wel
 		minstens versie 3.2 nodig.</p>
 	<p>
 		Stappen in het proces:</p>
