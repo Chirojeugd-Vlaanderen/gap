@@ -298,6 +298,7 @@
     <Content Include="Content\Screenshots\assistent_database_04_Opslaan.png" />
     <Content Include="Content\Screenshots\Bevestiging_Dubbelpuntabonnement.png" />
     <Content Include="Content\Screenshots\Bevestiging_Loonverlies.png" />
+    <Content Include="Content\Screenshots\Categorielijst_voor_categoriseren.png" />
     <Content Include="Content\Screenshots\Categoriseren_MeerdereMensen.png" />
     <Content Include="Content\Screenshots\vjd_celeigenschappen_oproepen.png" />
     <Content Include="Content\Screenshots\vjd_dagformule.png" />

@@ -27,8 +27,10 @@
 	<img src="<%=ResolveUrl("~/Content/Screenshots/Categoriseren_MeerdereMensen.png") %>"
 		alt="Meerdere mensen tegelijk in een categorie stoppen" />
 	<ul>
-		<li>Vink aan in welke categorie die mensen moeten terechtkomen.</li>
+		<li>Vink aan in welke categorie die mensen moeten terechtkomen en klik op de knop Bewaren.</li>
 	</ul>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/Categorielijst_voor_categoriseren.png") %>"
+		alt="De categorieën aanvinken waar de mensen in terecht moeten komen" />
 	<a class="anchor" id="Individueel" />
 	<h3>
 		Op de persoonsfiche</h3>
@@ -43,7 +45,8 @@
 		alt="Iemands categorieën aanpassen" />
 	<ul>
 		<li>Klik op de link 'toevoegen aan categorie'</li>
-		<% // TODO (#649): screenshot maken en toevoegen %>
-		<li>$$$ aan te vullen na bugfix $$$</li>
+		<li>Vink aan in welke categorie die persoon moet terechtkomen en klik op de knop Bewaren.</li>
 	</ul>
+	<img src="<%=ResolveUrl("~/Content/Screenshots/Categorielijst_voor_categoriseren.png") %>"
+		alt="De categorieën aanvinken waar de persoon in terecht moet komen" />
 </asp:Content>

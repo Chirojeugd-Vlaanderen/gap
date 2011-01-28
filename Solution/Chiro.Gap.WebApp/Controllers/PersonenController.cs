@@ -64,8 +64,11 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// geselecteerd.</param>
 		/// <param name="sortering">Geeft de sortering van de pagina en lijst aan</param>
 		/// <returns>De personenlijst in de view 'Index'</returns>
+        /// /// <remarks>De attributen RouteValue en QueryStringValue laten toe dat we deze method overloaden.
+        /// zie http://blog.abodit.com/2010/02/asp-net-mvc-ambiguous-match/ </remarks>
 		[HandleError]
-		public ActionResult List(int page, int groepID, int id, PersoonSorteringsEnum sortering)
+        [ParametersMatch]
+		public ActionResult List([QueryStringValue]int page, [RouteValue]int groepID, [RouteValue]int id, [QueryStringValue]PersoonSorteringsEnum sortering)
 		{
 			// Bijhouden welke lijst we laatst bekeken en op welke pagina we zaten
 			ClientState.VorigeLijst = Request.Url.ToString();
