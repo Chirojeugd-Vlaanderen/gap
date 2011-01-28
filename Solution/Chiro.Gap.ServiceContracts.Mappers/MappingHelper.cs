@@ -372,6 +372,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
 			Mapper.CreateMap<BestaatAlException<Categorie>,
 						BestaatAlFault<CategorieInfo>>();
+            Mapper.CreateMap<BestaatAlException<Functie>,
+                        BestaatAlFault<FunctieDetail>>();
 			Mapper.CreateMap<OngeldigObjectException, OngeldigObjectFault>();
 			Mapper.CreateMap<BlokkerendeObjectenException<GelieerdePersoon>,
 					BlokkerendeObjectenFault<PersoonDetail>>()

@@ -244,8 +244,8 @@ namespace Chiro.Gap.Workers
 
 			// Controleer op dubbele code
 			var bestaande = (from fun in g.Functie
-							 where String.Compare(fun.Code, code) == 0
-							 || String.Compare(fun.Naam, naam) == 0
+							 where String.Compare(fun.Code, code, true) == 0
+							 || String.Compare(fun.Naam, naam, true) == 0
 							 select fun).FirstOrDefault();
 
 			if (bestaande != null && bestaande.TeVerwijderen)
