@@ -281,5 +281,45 @@ namespace Chiro.Gap.Workers
 
 			return _dao.OphalenViaGelieerdePersoon(gelieerdePersoonIDs, paths.ToArray());
 		}
+
+		/// <summary>
+		/// Haalt persoon met gegeven <paramref name="persoonID"/> op
+		/// </summary>
+		/// <param name="persoonID">ID van op te halen persoon</param>
+		/// <returns>opgehaalde persoon</returns>
+		/// <remarks>
+		/// Voorlopig is dit enkel voor supergavs; de gewone users halen gelieerde personen op.
+		/// </remarks>
+		public Persoon Ophalen(int persoonID)
+		{
+			if (_autorisatieMgr.IsSuperGav())
+			{
+				return _dao.Ophalen(persoonID);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+		}
+
+		/// <summary>
+		/// Bewaart de gegeven persoon (voorlopig geen gerelateerde entiteiten)
+		/// </summary>
+		/// <param name="persoon">Te bewaren persoon</param>
+		/// <remarks>
+		/// Voorlopig enkel voor 'supergavs'.  In het algemeen worden persoonsmanipulaties via de gelieerde
+		/// persoon gedaan.
+		/// </remarks>
+		public Persoon Bewaren(Persoon persoon)
+		{
+			if (_autorisatieMgr.IsSuperGav())
+			{
+				return _dao.Bewaren(persoon);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+		}
 	}
 }

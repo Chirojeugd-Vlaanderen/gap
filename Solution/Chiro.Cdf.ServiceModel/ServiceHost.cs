@@ -3,65 +3,77 @@ using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.Messaging;
 
+using Microsoft.Practices.Unity;
+
 namespace Chiro.Cdf.ServiceModel
 {
-    /// <summary>
-    /// Generic ServiceHost with extra features 
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class ServiceHost<T> : ServiceHost
-    {
-        public ServiceHost() 
-            : base(typeof(T))
-        {
-        }
+	/// <summary>
+	/// Generic ServiceHost with extra features 
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	public class ServiceHost<T> : ServiceHost
+	{
+		public ServiceHost()
+			: base(typeof(T))
+		{
+		}
 
-        public ServiceHost(params string[] baseAdresses)
-            : base(typeof(T), Convert(baseAdresses))
-        {
-        }
+		/// <summary>
+		/// Constructor voor dependency injection.  Hier wordt DI gebruikt om de instantie
+		/// aan te maken.  (Hoop ik.)
+		/// </summary>
+		/// <param name="instantie"></param>
+		[InjectionConstructor]
+		public ServiceHost(T instantie):base(instantie)
+		{
+		}
 
-        public ServiceHost(params Uri[] baseAdresses)
-            : base(typeof(T), baseAdresses)
-        {
-        }
+		public ServiceHost(params string[] baseAdresses)
+			: base(typeof(T), Convert(baseAdresses))
+		{
+		}
 
-        static Uri[] Convert(string[] baseAddresses)
-        {
-            Converter<string, Uri> convert = (address) => new Uri(address);
-            return baseAddresses.ConvertAll(convert);
-        }
+		public ServiceHost(params Uri[] baseAdresses)
+			: base(typeof(T), baseAdresses)
+		{
+		}
 
-        protected override void OnOpening()
-        {
-            foreach (var endpoint in Description.Endpoints)
-            {
-                endpoint.VerifyQueue();
-            }
-            base.OnOpening();
-        }
-    }
+		static Uri[] Convert(string[] baseAddresses)
+		{
+			Converter<string, Uri> convert = (address) => new Uri(address);
+			return baseAddresses.ConvertAll(convert);
+		}
 
-    public static class QueuedServiceHelper
-    {
-        public static void VerifyQueue(this ServiceEndpoint endpoint)
-        {
-            if (endpoint.Binding is NetMsmqBinding)
-            {
-                string queue = GetQueueFromUri(endpoint.Address.Uri);
-                if (MessageQueue.Exists(queue) == false)
-                {
-                    MessageQueue.Create(queue, true);
-                }
-            }
-            
-        }
+		protected override void OnOpening()
+		{
+			foreach (var endpoint in Description.Endpoints)
+			{
+				endpoint.VerifyQueue();
+			}
+			base.OnOpening();
+		}
+	}
 
-        private static string GetQueueFromUri(Uri uri)
-        {
-            string path = uri.PathAndQuery;
-            string queue = "." + path.Replace(@"/", @"\").Replace("private", "private$");
-            return queue;
-        }
-    }
+	public static class QueuedServiceHelper
+	{
+		public static void VerifyQueue(this ServiceEndpoint endpoint)
+		{
+			if (endpoint.Binding is NetMsmqBinding)
+			{
+				string queue = GetQueueFromUri(endpoint.Address.Uri);
+				if (MessageQueue.Exists(queue) == false)
+				{
+					MessageQueue.Create(queue, true);
+				}
+			}
+
+		}
+
+		private static string GetQueueFromUri(Uri uri)
+		{
+			string path = uri.PathAndQuery;
+			string queue = "." + path.Replace(@"/", @"\").Replace("private", "private$");
+			return queue;
+		}
+	}
 }
