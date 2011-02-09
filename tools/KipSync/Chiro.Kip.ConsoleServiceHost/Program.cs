@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Messaging;
+using Chiro.Cdf.Ioc;
 using Chiro.Cdf.ServiceModel;
 
 namespace Chiro.Kip.ConsoleServiceHost
@@ -8,6 +9,8 @@ namespace Chiro.Kip.ConsoleServiceHost
 	{
 		static void Main(string[] args)
 		{
+			Factory.ContainerInit();
+
 			var host = new ServiceHost<Chiro.Kip.Services.SyncPersoonService>();
 
 			host.Open();

@@ -36,6 +36,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -63,7 +64,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Service References\UpdateService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="SyncPersoonService.cs" />
+    <Compile Include="UpdateService\UnityWorkAround.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -76,10 +83,6 @@
     <ProjectReference Include="..\Chiro.Cdf.Data\Chiro.Cdf.Data.csproj">
       <Project>{72F61656-2949-4763-9381-678B2D07AE0B}</Project>
       <Name>Chiro.Cdf.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chiro.Gap.KipUpdate\Chiro.Gap.KipUpdate.csproj">
-      <Project>{AE14C231-DAD5-41C6-898E-153328F42985}</Project>
-      <Name>Chiro.Gap.KipUpdate</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chiro.Kip.Data\Chiro.Kip.Data.csproj">
       <Project>{6E07BADE-3705-44AB-A77A-41189D14806F}</Project>
@@ -103,6 +106,30 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\UpdateService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\UpdateService\GapUpdateSvc.disco" />
+    <None Include="Service References\UpdateService\GapUpdateSvc.xsd" />
+    <None Include="Service References\UpdateService\GapUpdateSvc1.xsd" />
+    <None Include="Service References\UpdateService\UpdateService.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\UpdateService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\UpdateService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\UpdateService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

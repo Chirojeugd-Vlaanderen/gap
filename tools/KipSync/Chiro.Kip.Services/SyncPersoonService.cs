@@ -5,12 +5,12 @@ using System.ServiceModel;
 using System.Text;
 using AutoMapper;
 using Chiro.Cdf.Data.Entity;
-using Chiro.Gap.KipUpdate;
 using Chiro.Kip.Data;
 using System.Linq;
 using Chiro.Kip.Log;
 using Chiro.Kip.ServiceContracts;
 using Chiro.Kip.ServiceContracts.DataContracts;
+using Chiro.Kip.Services.UpdateService;
 using Chiro.Kip.Workers;
 using Adres = Chiro.Kip.ServiceContracts.DataContracts.Adres;
 using KipPersoon = Chiro.Kip.Data.Persoon;
@@ -42,27 +42,19 @@ namespace Chiro.Kip.Services
 	public class SyncPersoonService : ISyncPersoonService
 	{
 
-		private readonly IPersoonUpdater _persoonUpdater;
+		private readonly IUpdateService _svc;
 		private readonly IMiniLog _log;
 
 		/// <summary>
 		/// Standaardconstructor
 		/// </summary>
-		public SyncPersoonService()
+		/// <param name="updateService">Service die gebruikt moet worden om updates terug te sturen naar GAP</param>
+		public SyncPersoonService(IUpdateService updateService)
 		{
-			// TODO (#736): Inversion of control
-			_persoonUpdater = new PersoonUpdater();
+			_svc = updateService;
 			_log = new MiniLog();
 		}
 
-		/// <summary>
-		/// Constructor voor IOC (TODO #736)
-		/// </summary>
-		/// <param name="persoonUpdater">updater voor gap</param>
-		public SyncPersoonService(IPersoonUpdater persoonUpdater)
-		{
-			_persoonUpdater = persoonUpdater;
-		}
 
 		/// <summary>
 		/// Updatet een persoon in Kipadmin op basis van de gegevens in GAP.  Als er geen AD-nummer is, dan doen we
@@ -105,7 +97,7 @@ namespace Chiro.Kip.Services
 				if (persoon.AdNummer != kipPersoon.AdNummer)
 				{
 					persoon.AdNummer = kipPersoon.AdNummer;
-					_persoonUpdater.AdNummerZetten(persoon.ID, kipPersoon.AdNummer);
+					_svc.AdNummerToekennen(persoon.ID, kipPersoon.AdNummer);
 				}
 			}
 
@@ -1492,7 +1484,7 @@ namespace Chiro.Kip.Services
 
 			// AD-nummer overnemen in persoon en GAP
 			persoon.AdNummer = gevonden.AdNummer;
-			_persoonUpdater.AdNummerZetten(persoon.ID, gevonden.AdNummer);
+			_svc.AdNummerToekennen(persoon.ID, gevonden.AdNummer);
 
 			if (adres != null)
 			{

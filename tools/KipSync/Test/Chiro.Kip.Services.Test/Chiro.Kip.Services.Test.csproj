@@ -64,9 +64,9 @@
     <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Chiro.Gap.KipUpdate\Chiro.Gap.KipUpdate.csproj">
-      <Project>{AE14C231-DAD5-41C6-898E-153328F42985}</Project>
-      <Name>Chiro.Gap.KipUpdate</Name>
+    <ProjectReference Include="..\..\Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj">
+      <Project>{C100E957-CEE2-4707-BF13-C64553C28C7B}</Project>
+      <Name>Chiro.Cdf.Ioc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Chiro.Kip.Data\Chiro.Kip.Data.csproj">
       <Project>{6E07BADE-3705-44AB-A77A-41189D14806F}</Project>

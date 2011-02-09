@@ -15,10 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjecten", "TestProjecten", "{59077D46-383E-4E2D-A59C-81FFB5F9597A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.Services.Test", "Test\Chiro.Kip.Services.Test\Chiro.Kip.Services.Test.csproj", "{BD1B30CF-F53D-47DB-B429-EF6C7E65985E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Data.Entity", "Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj", "{F4145652-EF28-4F23-A11E-CD68D4AA2A05}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Data", "Chiro.Cdf.Data\Chiro.Cdf.Data.csproj", "{72F61656-2949-4763-9381-678B2D07AE0B}"
@@ -27,8 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", 
 	ProjectSection(SolutionItems) = preProject
 		References\AutoMapper.dll = References\AutoMapper.dll
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.KipUpdate", "Chiro.Gap.KipUpdate\Chiro.Gap.KipUpdate.csproj", "{AE14C231-DAD5-41C6-898E-153328F42985}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.Workers", "Chiro.Kip.Workers\Chiro.Kip.Workers.csproj", "{9DD68140-0958-4C53-A32F-518BC225B417}"
 EndProject
@@ -42,6 +36,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.ResubmitDeadMessa
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.SyncServiceHost", "Chiro.Kip.SyncService\Chiro.Kip.SyncServiceHost.csproj", "{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Ioc", "Chiro.Cdf.Ioc\Chiro.Cdf.Ioc.csproj", "{C100E957-CEE2-4707-BF13-C64553C28C7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.DependencyInjectionBehavior", "Chiro.Cdf.DependencyInjectionBehavior\Chiro.Cdf.DependencyInjectionBehavior.csproj", "{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -68,10 +66,6 @@ Global
 		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BD1B30CF-F53D-47DB-B429-EF6C7E65985E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BD1B30CF-F53D-47DB-B429-EF6C7E65985E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BD1B30CF-F53D-47DB-B429-EF6C7E65985E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BD1B30CF-F53D-47DB-B429-EF6C7E65985E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4145652-EF28-4F23-A11E-CD68D4AA2A05}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -80,10 +74,6 @@ Global
 		{72F61656-2949-4763-9381-678B2D07AE0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72F61656-2949-4763-9381-678B2D07AE0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72F61656-2949-4763-9381-678B2D07AE0B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AE14C231-DAD5-41C6-898E-153328F42985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE14C231-DAD5-41C6-898E-153328F42985}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE14C231-DAD5-41C6-898E-153328F42985}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE14C231-DAD5-41C6-898E-153328F42985}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9DD68140-0958-4C53-A32F-518BC225B417}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9DD68140-0958-4C53-A32F-518BC225B417}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DD68140-0958-4C53-A32F-518BC225B417}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -104,12 +94,17 @@ Global
 		{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C100E957-CEE2-4707-BF13-C64553C28C7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{BD1B30CF-F53D-47DB-B429-EF6C7E65985E} = {59077D46-383E-4E2D-A59C-81FFB5F9597A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		VisualSVNWorkingCopyRoot = .

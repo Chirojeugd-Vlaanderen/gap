@@ -1,4 +1,5 @@
 ﻿using System;
+using Chiro.Cdf.Ioc;
 using Chiro.Kip.ServiceContracts.DataContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
@@ -70,7 +71,7 @@ namespace Chiro.Kip.Services.Test
     	[TestMethod]
     	public void AdresUpdatedTest()
     	{
-    		var target = new SyncPersoonService(); // TODO: Initialize to an appropriate value
+    		var target = Factory.Maak<SyncPersoonService>();
 
     		var p1 = new Persoon {AdNummer = 39198};
     		var p2 = new Persoon {AdNummer = 85111};
@@ -94,7 +95,7 @@ namespace Chiro.Kip.Services.Test
 	[TestMethod()]
 	public void CommunicatieUpdatedTest()
 	{
-		var target = new SyncPersoonService(); // TODO: Initialize to an appropriate value
+		var target = Factory.Maak<SyncPersoonService>();
 		var persoon = new Persoon()
 		{
 			AdNummer = 17903,
