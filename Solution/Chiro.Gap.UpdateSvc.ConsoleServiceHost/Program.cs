@@ -1,9 +1,9 @@
 ﻿using System;
+using System.ServiceModel;
 
 using Chiro.Cdf.Ioc;
-using Chiro.Cdf.ServiceModel;
-using Chiro.Gap.UpdateSvc.Contracts;
 using Chiro.Gap.UpdateSvc.Service;
+using Chiro.Cdf.ServiceModel;
 
 namespace Chiro.Gap.UpdateSvc.ConsoleServiceHost
 {
@@ -19,7 +19,7 @@ namespace Chiro.Gap.UpdateSvc.ConsoleServiceHost
 			//
 			// TODO: Nakijken of die custom ServiceHost<T> wel de moeite is om te behouden.
 
-			var host = Factory.Maak<ServiceHost<UpdateService>>();
+			var host = new ServiceHost<UpdateService>();
 
 			host.Open();
 			Console.WriteLine("Hit enter to stop the service.");

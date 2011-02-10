@@ -11,13 +11,6 @@ using Chiro.Gap.Workers;
 
 namespace Chiro.Gap.UpdateSvc.Service
 {
-	// Onderstaand attribuut zorgt ervoor dat er steeds maar 1 instantie van de service actief is.
-	// Dat lijkt me niet echt nodig, maar ik doe dit als workaround om dependency injection in orde
-	// te krijgen.
-	//
-	// TODO: Misschien kan dit ook wel via de dependency injection service behavior
-	// (zie Chiro.Gap.Services)
-	[ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
 	public class UpdateService : IUpdateService
 	{
 		private readonly PersonenManager _personenMgr;
@@ -43,6 +36,8 @@ namespace Chiro.Gap.UpdateSvc.Service
 			Persoon p = _personenMgr.Ophalen(persoonID);
 			p.AdNummer = adNummer;
 			_personenMgr.Bewaren(p);
+
+			Console.WriteLine("Ad-nummer {0} toegekend aan {1}. (ID {2})", adNummer, p.VolledigeNaam, p.ID);
 		}
 	}
 }
