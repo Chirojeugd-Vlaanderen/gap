@@ -222,22 +222,6 @@ namespace Chiro.Gap.ServiceContracts
 		IList<BewonersInfo> HuisGenotenOphalenZelfdeGroep(int gelieerdePersoonID);
 
 		/// <summary>
-		/// Voegt een adres toe aan een verzameling personen
-		/// </summary>
-		/// <param name="personenIDs">ID's van Personen
-		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
-		/// <param name="adr">Toe te voegen adres</param>
-		/// <remarks>Als het adres het eerste adres van de persoon is, maakt deze code hier geen standaardadres van.
-		/// Gebruik liever 'AdresToevoegenGelieerdePersonen'.</remarks>
-		[OperationContract]
-		[Obsolete]
-		[FaultContract(typeof(OngeldigObjectFault))]
-		[FaultContract(typeof(BlokkerendeObjectenFault<PersoonsAdresInfo2>))]
-		[FaultContract(typeof(GapFault))]
-		[FaultContract(typeof(FoutNummerFault))]
-		void AdresToevoegenPersonen(List<int> personenIDs, PersoonsAdresInfo adr);
-
-		/// <summary>
 		/// Voegt een adres toe aan een verzameling *GELIEERDE* personen
 		/// </summary>
 		/// <param name="gelieerdePersonenIDs">ID's van de gelieerde personen

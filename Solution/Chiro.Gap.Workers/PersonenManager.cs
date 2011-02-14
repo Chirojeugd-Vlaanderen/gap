@@ -145,59 +145,6 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Koppelt het gegeven Adres via nieuwe PersoonsAdresObjecten
-		/// aan de gegeven Personen.  Persisteert niet.
-		/// </summary>
-		/// <param name="personen">Personen die er een adres bij krijgen, met daaraan gekoppeld hun huidige
-		/// adressen, en de gelieerde personen waarop de gebruiker GAV-rechten heeft.</param>
-		/// <param name="adres">Toe te voegen adres</param>
-		/// <param name="adrestype">Het adrestype (thuis, kot, enz.)</param>
-		/// <remarks>Gebruik GelieerdePersonenManager.AdresToevoegen, zodat bij een eerste adres het standaardadres
-		/// ook in orde komt voor gelieerde personen van andere groepen.</remarks>
-		[Obsolete]
-		public void AdresToevoegen(IEnumerable<Persoon> personen, Adres adres, AdresTypeEnum adrestype)
-		{
-			var persIDs = (from p in personen
-						   select p.ID).ToList();
-			var mijnPersIDs = _autorisatieMgr.EnkelMijnPersonen(persIDs);
-
-			if (persIDs.Count() != mijnPersIDs.Count())
-			{
-				// stiekem personen niet gelieerd aan eigen groep bij in lijst opgenomen.  Geen
-				// tijd aan verspillen; gewoon een GeenGavException.
-
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-
-			// Vind personen waaraan het adres al gekoppeld is.
-
-			var bestaand = personen.SelectMany(p => p.PersoonsAdres.Where(pa => pa.Adres.ID == adres.ID));
-
-			if (bestaand.FirstOrDefault() != null)
-			{
-				// Sommige personen hebben het adres al.  Geef een exception met daarin de
-				// betreffende persoonsadres-objecten.
-
-				var bestaandePersoonsAdressen = bestaand.ToList();
-
-				throw new BlokkerendeObjectenException<PersoonsAdres>(
-					bestaand,
-					bestaand.Count(),
-					Properties.Resources.WonenDaarAl);
-			}
-
-			// En dan nu het echte werk:
-			foreach (Persoon p in personen)
-			{
-				// Maak PersoonsAdres dat het adres aan de persoon koppelt.
-
-				var pa = new PersoonsAdres { Adres = adres, Persoon = p, AdresType = adrestype };
-				p.PersoonsAdres.Add(pa);
-				adres.PersoonsAdres.Add(pa);
-			}
-		}
-
-		/// <summary>
 		/// Een collectie personen ophalen van wie de ID's opgegeven zijn
 		/// </summary>
 		/// <param name="personenIDs">De ID's van de personen die in de collectie moeten zitten</param>

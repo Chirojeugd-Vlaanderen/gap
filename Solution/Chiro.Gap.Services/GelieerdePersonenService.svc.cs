@@ -617,59 +617,6 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
-		/// Voegt een adres toe aan een verzameling personen
-		/// </summary>
-		/// <param name="personenIDs">ID's van Personen
-		/// waaraan het nieuwe adres toegevoegd moet worden.</param>
-		/// <param name="adr">Toe te voegen adres</param>
-		/// <remarks>Als het adres het eerste adres van de persoon is, maakt deze code hier geen standaardadres van.
-		/// Gebruik liever 'AdresToevoegenGelieerdePersonen'.</remarks>
-		[Obsolete]
-		public void AdresToevoegenPersonen(List<int> personenIDs, PersoonsAdresInfo adr)
-		{
-			try
-			{
-				// Dit gaat sterk lijken op verhuizen.
-
-				// Adres opzoeken in database
-				Adres adres;
-				try
-				{
-					adres = _adrMgr.ZoekenOfMaken(adr.StraatNaamNaam, adr.HuisNr, adr.Bus, adr.WoonPlaatsNaam, adr.PostNr, null);
-				}
-				catch (OngeldigObjectException ex)
-				{
-					var fault = Mapper.Map<OngeldigObjectException, OngeldigObjectFault>(ex);
-
-					throw new FaultException<OngeldigObjectFault>(fault);
-				}
-
-				// Personen ophalen
-				IEnumerable<Persoon> personenLijst = _pMgr.LijstOphalen(personenIDs, PersoonsExtras.Adressen);
-
-				// Adres koppelen aan personen
-
-				try
-				{
-					_pMgr.AdresToevoegen(personenLijst, adres, adr.AdresType);
-				}
-				catch (BlokkerendeObjectenException<PersoonsAdres> ex)
-				{
-					var fault = Mapper.Map<BlokkerendeObjectenException<PersoonsAdres>, BlokkerendeObjectenFault<PersoonsAdresInfo2>>(ex);
-
-					throw new FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>>(fault);
-				}
-
-				// persisteren
-				_adrMgr.Bewaren(adres);
-			}
-			catch (Exception ex)
-			{
-				FoutAfhandelaar.FoutAfhandelen(ex);
-			}
-		}
-
-		/// <summary>
 		/// Verwijdert voor de personen met de opgegeven ID's de link met het adres met de opgegeven ID
 		/// </summary>
 		/// <param name="personenIDs">De ID's van de personen over wie het gaat</param>
@@ -687,7 +634,7 @@ namespace Chiro.Gap.Services
 													  where personenIDs.Contains(pa.Persoon.ID)
 													  select pa).ToList();
 
-				_gpMgr.AdresVerwijderen(teVerwijderen);
+				_gpMgr.AdressenVerwijderen(teVerwijderen);
 			}
 			catch (Exception ex)
 			{

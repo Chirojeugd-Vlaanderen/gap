@@ -712,7 +712,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="persoonsAdressen">Te verwijderen persoonsadressen</param>
 		/// <remarks>Deze method staat wat vreemd onder GelieerdePersonenManager, maar past wel voorkeursadressen
 		/// van gelieerde personen aan.</remarks>
-		public void AdresVerwijderen(IEnumerable<PersoonsAdres> persoonsAdressen)
+		public void AdressenVerwijderen(IEnumerable<PersoonsAdres> persoonsAdressen)
 		{
 			if (!_autorisatieMgr.IsGavPersoonsAdressen(from pa in persoonsAdressen select pa.ID))
 			{
