@@ -887,6 +887,10 @@
         <Function Name="ufnSoundEx" ReturnType="varchar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="core">
           <Parameter Name="tekst" Type="varchar(max)" Mode="In" />
         </Function>
+        <Function Name="spDubbelePersoonVerwijderen" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="data">
+          <Parameter Name="foutPID" Type="int" Mode="In" />
+          <Parameter Name="juistPID" Type="int" Mode="In" />
+        </Function>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>

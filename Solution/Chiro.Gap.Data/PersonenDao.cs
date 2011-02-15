@@ -5,7 +5,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.EntityClient;
 using System.Data.Objects;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -20,7 +23,6 @@ namespace Chiro.Gap.Data.Ef
 	/// </summary>
 	public class PersonenDao : Dao<Persoon, ChiroGroepEntities>, IPersonenDao
 	{
-		#region IPersonenDao Members
 
 		/// <summary>
 		/// Haalt alle Personen op die op een zelfde
@@ -125,7 +127,7 @@ namespace Chiro.Gap.Data.Ef
 
 				// Maar omdat die 'contains' op die manier niet 'out of the box' werkt, probeer ik
 				// het zo:
-
+				
 				var query =
 					(from gp in
 					 	db.GelieerdePersoon.Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.ID, gelieerdePersoonIDs))
@@ -139,6 +141,59 @@ namespace Chiro.Gap.Data.Ef
 			return result;
 		}
 
-		#endregion
+		/// <summary>
+		/// Verlegt alle referenties van <paramref name="dubbel"/> naar <paramref name="origineel"/>, en verwijdert vervolgens
+		/// <paramref name="dubbel"/>.
+		/// </summary>
+		/// <param name="origineel">Te behouden persoon</param>
+		/// <param name="dubbel">Te verwijderen persoon, die eigenlijk gewoon dezelfde is als <paramref name="origineel"/></param>
+		/// <remarks>Het is niet proper dit soort van logica in de data access te doen.  Anderzijds zou het een 
+		/// heel gedoe zijn om dit in de businesslaag te implementeren, omdat er heel wat relaties verlegd moeten worden.
+		/// Dat wil zeggen: relaties verwijderen en vervolgens nieuwe maken.  Dit zou een heel aantal 'TeVerwijderens' met zich
+		/// meebrengen, wat het allemaal zeer complex zou maken.  Vandaar dat we gewoon via een stored procedure werken.<para />
+		/// LET OP: na de aanroep van deze functie zijn 'origineel' en 'dubbel' niet meer bruikbaar.
+		/// </remarks>
+		public void DubbelVerwijderen(Persoon origineel, Persoon dubbel)
+		{
+			// Wilde gok op basis van http://ur1.ca/3915c
+
+			using (var db = new ChiroGroepEntities())
+			{
+				var entityConnection = (EntityConnection) db.Connection;
+				var storeConnection = entityConnection.StoreConnection;
+				var commando = storeConnection.CreateCommand();
+
+				commando.CommandText = "data.spDubbelePersoonVerwijderen";
+				commando.CommandType = CommandType.StoredProcedure;
+				commando.Parameters.Add(new SqlParameter("foutPID", dubbel.ID));
+				commando.Parameters.Add(new SqlParameter("juistPID", origineel.ID));
+
+				storeConnection.Open();
+				commando.ExecuteNonQuery();
+				storeConnection.Close();
+			}
+
+		}
+
+		/// <summary>
+		/// Personen opzoeken op (exacte) naam en voornaam.
+		/// Persoon en adressen worden opgehaald.
+		/// </summary>
+		/// <param name="naam">Exacte naam om op te zoeken</param>
+		/// <param name="voornaam">Exacte voornaam om op te zoeken</param>
+		/// <returns>Lijst met gevonden gelieerde personen</returns>
+		public IEnumerable<Persoon> ZoekenOpNaam(string naam, string voornaam)
+		{
+			using (var db = new ChiroGroepEntities())
+			{
+				db.Persoon.MergeOption = MergeOption.NoTracking;
+				return (
+					from p in db.Persoon
+						.Include(prs => prs.PersoonsAdres)
+					where String.Compare(p.Naam, naam, true) == 0
+					&& String.Compare(p.VoorNaam, voornaam, true) == 0
+					select p).ToArray();
+			}
+		}
 	}
 }

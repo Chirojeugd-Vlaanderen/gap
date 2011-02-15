@@ -86,6 +86,7 @@ namespace Chiro.Gap.Data.Test
 			// de worker.
 
 			gp = gpdao.Bewaren(gp);
+
 		}
 
 		/// <summary>
@@ -97,6 +98,7 @@ namespace Chiro.Gap.Data.Test
 			int groepID = TestInfo.GROEPID;
 			string naam = TestInfo.NIEUWEPERSOONNAAM;
 			string voornaam = TestInfo.NIEUWEPERSOONVOORNAAM;
+			string voornaam2 = TestInfo.DUBBELEPERSOONVOORNAAM;
 
 			var mgr = Factory.Maak<GelieerdePersonenManager>();
 
@@ -111,6 +113,17 @@ namespace Chiro.Gap.Data.Test
 			{
 				mgr.VolledigVerwijderen(gp);	// verwijderen persisteert direct
 			}
+
+			// Het is trouwens te verantwoorden rechtstreeks op de data access te werken,
+			// wanneer enkel de data access getest wordt.
+
+			var pdao = Factory.Maak<IPersonenDao>();
+			var gevonden2 = pdao.ZoekenOpNaam(naam, voornaam2);
+			foreach (var p in gevonden2)
+			{
+				p.TeVerwijderen = true;
+			}
+			pdao.Bewaren(gevonden2);
 		}
 
 		[TestMethod]
@@ -383,6 +396,39 @@ namespace Chiro.Gap.Data.Test
 			#region Assert
 			IList<GelieerdePersoon> gevonden2 = dao.ZoekenOpNaam(groepID, naam + ' ' + voornaam);
 			Assert.IsTrue(gevonden2.Count == 0);
+			#endregion
+
+		}
+
+		/// <summary>
+		/// Test op verwijderen dubbele persoon
+		/// </summary>
+		[TestMethod]
+		public void VerwijderDubbel()
+		{
+			#region Arrange
+
+			var pdao = Factory.Maak<IPersonenDao>();
+
+			// Een persoon dubbel in de database
+
+			var p1 = new Persoon { VoorNaam = TestInfo.NIEUWEPERSOONNAAM, Naam = TestInfo.DUBBELEPERSOONVOORNAAM };
+			var p2 = new Persoon { VoorNaam = TestInfo.NIEUWEPERSOONNAAM, Naam = TestInfo.DUBBELEPERSOONVOORNAAM };
+
+			var bewaard = pdao.Bewaren(new Persoon[] {p1, p2});
+
+			#endregion
+
+			#region Act
+			pdao.DubbelVerwijderen(bewaard.First(), bewaard.Last());
+			#endregion
+
+			#region Assert
+
+			var gevonden = pdao.Ophalen((from b in bewaard select b.ID).ToList());
+			Assert.IsTrue(gevonden.Count == 1);
+			Assert.IsTrue(gevonden.First().ID == bewaard.First().ID);
+
 			#endregion
 
 		}

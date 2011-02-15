@@ -44,6 +44,16 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		public void DubbelVerwijderen(Persoon origineel, Persoon dubbel)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IEnumerable<Persoon> ZoekenOpNaam(string naam, string voornaam)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 	}
 }

@@ -47,5 +47,26 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="paths">Bepaalt welke gekoppelde entiteiten mee opgehaald moeten worden.</param>
 		/// <returns>De gevraagde personen></returns>
 		IEnumerable<Persoon> OphalenViaGelieerdePersoon(IEnumerable<int> gelieerdePersoonIDs, params Expression<Func<Persoon, object>>[] paths);
+
+		/// <summary>
+		/// Verlegt alle referenties van <paramref name="dubbel"/> naar <paramref name="origineel"/>, en verwijdert vervolgens
+		/// <paramref name="dubbel"/>.
+		/// </summary>
+		/// <param name="origineel">Te behouden persoon</param>
+		/// <param name="dubbel">Te verwijderen persoon, die eigenlijk gewoon dezelfde is als <paramref name="origineel"/></param>
+		/// <remarks>Het is niet proper dit soort van logica in de data access te doen.  Anderzijds zou het een 
+		/// heel gedoe zijn om dit in de businesslaag te implementeren, omdat er heel wat relaties verlegd moeten worden.
+		/// Dat wil zeggen: relaties verwijderen en vervolgens nieuwe maken.  Dit zou een heel aantal 'TeVerwijderens' met zich
+		/// meebrengen, wat het allemaal zeer complex zou maken.  Vandaar dat we gewoon via een stored procedure werken.</remarks>
+		void DubbelVerwijderen(Persoon origineel, Persoon dubbel);
+
+		/// <summary>
+		/// Personen opzoeken op (exacte) naam en voornaam.
+		/// Persoon en adressen worden opgehaald.
+		/// </summary>
+		/// <param name="naam">Exacte naam om op te zoeken</param>
+		/// <param name="voornaam">Exacte voornaam om op te zoeken</param>
+		/// <returns>Lijst met gevonden gelieerde personen</returns>
+		IEnumerable<Persoon> ZoekenOpNaam(string naam, string voornaam);
 	}
 }

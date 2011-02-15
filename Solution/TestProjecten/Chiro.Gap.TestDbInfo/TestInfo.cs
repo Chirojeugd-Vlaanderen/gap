@@ -90,6 +90,11 @@
 		public const string TEVERWIJDERENVOORNAAM = "Sylvain";
 
 		/// <summary>
+		/// Voornaam voor persoon in DubbelePersonenTest
+		/// </summary>
+		public const string DUBBELEPERSOONVOORNAAM = "Dave";
+
+		/// <summary>
 		/// String voor autosuggestie straat mee te testen
 		/// (onregelmatigheid in casing is bewust)
 		/// </summary>
