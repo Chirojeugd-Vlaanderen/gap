@@ -1,6 +1,17 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F8A21DB2-33C9-4350-952D-12A2B85DFD90}"
+	ProjectSection(SolutionItems) = preProject
+		KipSync.vsmdi = KipSync.vsmdi
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{548BB87E-3E31-4340-8295-0A444668EBC6}"
+	ProjectSection(SolutionItems) = preProject
+		References\AutoMapper.dll = References\AutoMapper.dll
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.Data", "Chiro.Kip.Data\Chiro.Kip.Data.csproj", "{6E07BADE-3705-44AB-A77A-41189D14806F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.Services", "Chiro.Kip.Services\Chiro.Kip.Services.csproj", "{EE6869D3-FA60-4DBA-9A0D-F459F8DC6E9B}"
@@ -9,31 +20,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.ConsoleServiceHos
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.ServiceModel", "Chiro.Cdf.ServiceModel\Chiro.Cdf.ServiceModel.csproj", "{E25A11AB-B2EB-4579-9DF5-D1761C464BAE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F8A21DB2-33C9-4350-952D-12A2B85DFD90}"
-	ProjectSection(SolutionItems) = preProject
-		KipSync.vsmdi = KipSync.vsmdi
-		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Data.Entity", "Chiro.Cdf.Data.Entity\Chiro.Cdf.Data.Entity.csproj", "{F4145652-EF28-4F23-A11E-CD68D4AA2A05}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Data", "Chiro.Cdf.Data\Chiro.Cdf.Data.csproj", "{72F61656-2949-4763-9381-678B2D07AE0B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{548BB87E-3E31-4340-8295-0A444668EBC6}"
-	ProjectSection(SolutionItems) = preProject
-		References\AutoMapper.dll = References\AutoMapper.dll
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.Workers", "Chiro.Kip.Workers\Chiro.Kip.Workers.csproj", "{9DD68140-0958-4C53-A32F-518BC225B417}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.ServiceContracts", "Chiro.Kip.ServiceContracts\Chiro.Kip.ServiceContracts.csproj", "{6E81A10A-AD85-47A0-8B5D-70361F393CDD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.Log", "Chiro.Kip.Log\Chiro.Kip.Log.csproj", "{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.ResubmitDeadMessages", "Chiro.Kip.ResubmitDeadMessages\Chiro.Kip.ResubmitDeadMessages.csproj", "{E9F46B15-1925-4FEF-AA2B-596E6C7BF5A7}"
-	ProjectSection(ProjectDependencies) = postProject
-		{EE6869D3-FA60-4DBA-9A0D-F459F8DC6E9B} = {EE6869D3-FA60-4DBA-9A0D-F459F8DC6E9B}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Kip.SyncServiceHost", "Chiro.Kip.SyncService\Chiro.Kip.SyncServiceHost.csproj", "{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}"
 EndProject
@@ -86,10 +81,6 @@ Global
 		{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECD4D26A-3775-44AC-BF6B-1E4391C27FAB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E9F46B15-1925-4FEF-AA2B-596E6C7BF5A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E9F46B15-1925-4FEF-AA2B-596E6C7BF5A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E9F46B15-1925-4FEF-AA2B-596E6C7BF5A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E9F46B15-1925-4FEF-AA2B-596E6C7BF5A7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63CACA56-6D6E-4F6F-84BB-64FB52AA2595}.Release|Any CPU.ActiveCfg = Release|Any CPU
