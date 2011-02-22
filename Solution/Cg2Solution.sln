@@ -1,19 +1,31 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Workers", "Chiro.Gap.Workers\Chiro.Gap.Workers.csproj", "{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{994E80C0-DD18-417A-A51C-F781D3B012AB}"
 	ProjectSection(SolutionItems) = preProject
-		Cg2Solution2.vsmdi = Cg2Solution2.vsmdi
+		Cg2Solution3.vsmdi = Cg2Solution3.vsmdi
 		Cg2Solution5.vsmdi = Cg2Solution5.vsmdi
 		CustomDictionary.xml = CustomDictionary.xml
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Validatie", "Chiro.Gap.Validatie\Chiro.Gap.Validatie.csproj", "{853B7FDF-27B6-48BC-A220-F68CCE610B6B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjecten", "TestProjecten", "{0033E4C0-D1DB-45CA-B4D8-1BDFF49DDBAB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{BBABD468-99FA-43E6-8E64-DAA6C3CFF2BE}"
+	ProjectSection(SolutionItems) = preProject
+		References\AutoMapper.dll = References\AutoMapper.dll
+		References\DocumentFormat.OpenXml.dll = References\DocumentFormat.OpenXml.dll
+		References\Moq.dll = References\Moq.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WatiN", "WatiN", "{E883CD16-1749-43FA-B344-AD2928A8B00E}"
+	ProjectSection(SolutionItems) = preProject
+		References\WhatIn\WatiN.Core.dll = References\WhatIn\WatiN.Core.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Workers", "Chiro.Gap.Workers\Chiro.Gap.Workers.csproj", "{35E2AED7-7C0A-4B30-B7C8-24F9078AC32E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Validatie", "Chiro.Gap.Validatie\Chiro.Gap.Validatie.csproj", "{853B7FDF-27B6-48BC-A220-F68CCE610B6B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Services", "Chiro.Gap.Services\Chiro.Gap.Services.csproj", "{96D3E32A-0C40-4FDE-90CC-0EB0AC17E975}"
 EndProject
@@ -32,13 +44,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.DependencyInjectionBehavior", "Chiro.Cdf.DependencyInjectionBehavior\Chiro.Cdf.DependencyInjectionBehavior.csproj", "{10FD56AF-076F-4EFF-849A-A96C77E5DCA0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.ServiceContracts.Mappers", "Chiro.Gap.ServiceContracts.Mappers\Chiro.Gap.ServiceContracts.Mappers.csproj", "{08F94344-8414-4136-8314-4B7380B10CD7}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{BBABD468-99FA-43E6-8E64-DAA6C3CFF2BE}"
-	ProjectSection(SolutionItems) = preProject
-		References\AutoMapper.dll = References\AutoMapper.dll
-		References\DocumentFormat.OpenXml.dll = References\DocumentFormat.OpenXml.dll
-		References\Moq.dll = References\Moq.dll
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Data.Test", "TestProjecten\Chiro.Gap.Data.Test\Chiro.Gap.Data.Test.csproj", "{CC7F4606-886C-459A-8D3F-4CF4F316DA35}"
 EndProject
@@ -62,11 +67,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.ServiceContracts.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Services.Test", "TestProjecten\Chiro.Gap.Services.Test\Chiro.Gap.Services.Test.csproj", "{61D5AD6B-55A2-4EEC-9F4B-DAD0FF7F7C01}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WatiN", "WatiN", "{E883CD16-1749-43FA-B344-AD2928A8B00E}"
-	ProjectSection(SolutionItems) = preProject
-		References\WhatIn\WatiN.Core.dll = References\WhatIn\WatiN.Core.dll
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.WatiN.Test", "TestProjecten\Chiro.WatiN.Test\Chiro.WatiN.Test.csproj", "{9BFC33C8-238D-421C-B19B-D5FAC50CB15C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.Validation", "Chiro.Cdf.Validation\Chiro.Cdf.Validation.csproj", "{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}"
@@ -87,8 +87,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Sync", "Chiro.Gap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.LidSyncer", "Chiro.Gap.LidSyncer\Chiro.Gap.LidSyncer.csproj", "{068671FF-8317-4AA3-90B6-97EDD4BE7945}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.KipUpdate", "Chiro.Gap.KipUpdate\Chiro.Gap.KipUpdate.csproj", "{AE14C231-DAD5-41C6-898E-153328F42985}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.Sync.Test", "TestProjecten\Chiro.Gap.Sync.Test\Chiro.Gap.Sync.Test.csproj", "{FB1B9BDC-EF8B-4AA1-882F-BF5AC3912D3F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Gap.UpdateSvc.Contracts", "Chiro.Gap.UpdateSvc.Contracts\Chiro.Gap.UpdateSvc.Contracts.csproj", "{EFA70FDE-2295-4A91-9553-847C272E7FA4}"
@@ -101,7 +99,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chiro.Cdf.ServiceModel", "C
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Cg2Solution2.vsmdi
+		CategoryFile = Cg2Solution3.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -432,16 +430,6 @@ Global
 		{068671FF-8317-4AA3-90B6-97EDD4BE7945}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{068671FF-8317-4AA3-90B6-97EDD4BE7945}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{068671FF-8317-4AA3-90B6-97EDD4BE7945}.Release|Win32.ActiveCfg = Release|Any CPU
-		{AE14C231-DAD5-41C6-898E-153328F42985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE14C231-DAD5-41C6-898E-153328F42985}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE14C231-DAD5-41C6-898E-153328F42985}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{AE14C231-DAD5-41C6-898E-153328F42985}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{AE14C231-DAD5-41C6-898E-153328F42985}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{AE14C231-DAD5-41C6-898E-153328F42985}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE14C231-DAD5-41C6-898E-153328F42985}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AE14C231-DAD5-41C6-898E-153328F42985}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{AE14C231-DAD5-41C6-898E-153328F42985}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{AE14C231-DAD5-41C6-898E-153328F42985}.Release|Win32.ActiveCfg = Release|Any CPU
 		{FB1B9BDC-EF8B-4AA1-882F-BF5AC3912D3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FB1B9BDC-EF8B-4AA1-882F-BF5AC3912D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB1B9BDC-EF8B-4AA1-882F-BF5AC3912D3F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

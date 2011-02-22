@@ -15,7 +15,10 @@
 	%>
 	<ul>
 		<%
-			foreach (var item in ViewData.Model.GroepenLijst)
+			// Ik weet niet precies hoe het komt, maar soms krijg ik null-items
+			// in mijn groepenlijst.  Via de where hieronder, omzeil ik dat probleem.
+	    
+			foreach (var item in ViewData.Model.GroepenLijst.Where(it=>it != null))
 			{
            
 		%>

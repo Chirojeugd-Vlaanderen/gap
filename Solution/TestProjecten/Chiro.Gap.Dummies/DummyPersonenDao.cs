@@ -44,7 +44,12 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public void DubbelVerwijderen(Persoon origineel, Persoon dubbel)
+		public void DubbelVerwijderen(int origineelID, int dubbelID)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IEnumerable<TweeInts> DubbelsZoekenOpBasisVanAd()
 		{
 			throw new NotImplementedException();
 		}

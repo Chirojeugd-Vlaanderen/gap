@@ -23,7 +23,6 @@ namespace Chiro.Gap.Data.Ef
 	/// </summary>
 	public class PersonenDao : Dao<Persoon, ChiroGroepEntities>, IPersonenDao
 	{
-
 		/// <summary>
 		/// Haalt alle Personen op die op een zelfde
 		/// adres wonen als de gelieerde persoon met het gegeven ID.
@@ -142,18 +141,18 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// Verlegt alle referenties van <paramref name="dubbel"/> naar <paramref name="origineel"/>, en verwijdert vervolgens
-		/// <paramref name="dubbel"/>.
+		/// Verlegt alle referenties van de persoon met ID <paramref name="dubbelID"/> naar de persoon met ID
+		/// <paramref name="origineelID"/>, en verwijdert vervolgens de dubbele persoon.
 		/// </summary>
-		/// <param name="origineel">Te behouden persoon</param>
-		/// <param name="dubbel">Te verwijderen persoon, die eigenlijk gewoon dezelfde is als <paramref name="origineel"/></param>
+		/// <param name="origineelID">ID van de te behouden persoon</param>
+		/// <param name="dubbelID">ID van de te verwijderen persoon, die eigenlijk gewoon dezelfde is de te
+		/// behouden.</param>
 		/// <remarks>Het is niet proper dit soort van logica in de data access te doen.  Anderzijds zou het een 
 		/// heel gedoe zijn om dit in de businesslaag te implementeren, omdat er heel wat relaties verlegd moeten worden.
 		/// Dat wil zeggen: relaties verwijderen en vervolgens nieuwe maken.  Dit zou een heel aantal 'TeVerwijderens' met zich
 		/// meebrengen, wat het allemaal zeer complex zou maken.  Vandaar dat we gewoon via een stored procedure werken.<para />
-		/// LET OP: na de aanroep van deze functie zijn 'origineel' en 'dubbel' niet meer bruikbaar.
 		/// </remarks>
-		public void DubbelVerwijderen(Persoon origineel, Persoon dubbel)
+		public void DubbelVerwijderen(int origineelID, int dubbelID)
 		{
 			// Wilde gok op basis van http://ur1.ca/3915c
 
@@ -165,14 +164,32 @@ namespace Chiro.Gap.Data.Ef
 
 				commando.CommandText = "data.spDubbelePersoonVerwijderen";
 				commando.CommandType = CommandType.StoredProcedure;
-				commando.Parameters.Add(new SqlParameter("foutPID", dubbel.ID));
-				commando.Parameters.Add(new SqlParameter("juistPID", origineel.ID));
+				commando.Parameters.Add(new SqlParameter("foutPID", dubbelID));
+				commando.Parameters.Add(new SqlParameter("juistPID", origineelID));
 
 				storeConnection.Open();
 				commando.ExecuteNonQuery();
 				storeConnection.Close();
 			}
 
+		}
+
+		/// <summary>
+		/// Zoekt alle mogelijke duo's van personen die hetzelfde AD-nummer hebben, en geeft een lijstje van koppels met 
+		/// de persoonID's van die personen.
+		/// </summary>
+		/// <returns>Lijst met koppels AD-nummers</returns>
+		public IEnumerable<TweeInts> DubbelsZoekenOpBasisVanAd()
+		{
+			using (var db = new ChiroGroepEntities())
+			{
+				var query = from p1 in db.Persoon
+				            join p2 in db.Persoon on p1.AdNummer equals p2.AdNummer
+				            where p1.AdNummer != null && p1.ID < p2.ID
+				            select new TweeInts {I1 = p1.ID, I2 = p2.ID};
+
+				return query.ToArray();
+			}
 		}
 
 		/// <summary>

@@ -37,14 +37,9 @@ namespace Chiro.Gap.Data.Ef
 					where afd.ID == afdelingID
 					select afd).FirstOrDefault();
 
-				if (resultaat != null)
-				{
-					// Je zou verwachten dat de Include hierboven
-					// meteen ook de groep ophaalt, maar dat blijkt
-					// niet het geval.
+				// Die hack om ook de Chirogroep op te halen, is niet meer nodig sinds
+				// .NET 4
 
-					resultaat.ChiroGroepReference.Load();
-				}
 				return resultaat;
 			}
 		}

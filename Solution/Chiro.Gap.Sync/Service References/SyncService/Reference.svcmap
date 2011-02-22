@@ -13,6 +13,7 @@
     </CollectionMappings>
     <GenerateSerializableTypes>true</GenerateSerializableTypes>
     <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
     <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
     <ReferencedAssemblies />
     <ReferencedDataContractTypes />
@@ -22,11 +23,11 @@
     <MetadataSource Address="http://localhost:8000/KipSyncService" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
+    <MetadataFile FileName="KipSyncService.disco" MetadataType="Disco" ID="b13d2eba-06cd-4e70-8c5a-cc0bdfce5613" SourceId="1" SourceUrl="http://localhost:8000/KipSyncService?disco" />
+    <MetadataFile FileName="KipSyncService2.xsd" MetadataType="Schema" ID="7bca8730-c2b7-410c-b3ab-a1080aa919a3" SourceId="1" SourceUrl="http://localhost:8000/KipSyncService?xsd=xsd2" />
+    <MetadataFile FileName="SyncPersoonService.wsdl" MetadataType="Wsdl" ID="48444bf9-93c9-4acf-b0bd-952f0c1adfd3" SourceId="1" SourceUrl="http://localhost:8000/KipSyncService?wsdl" />
     <MetadataFile FileName="KipSyncService.xsd" MetadataType="Schema" ID="ef4e6dd4-5940-4de8-98ba-ba5307e90941" SourceId="1" SourceUrl="http://localhost:8000/KipSyncService?xsd=xsd1" />
     <MetadataFile FileName="KipSyncService1.xsd" MetadataType="Schema" ID="7cd7409e-44a5-41b5-bdc2-610320c7bd7b" SourceId="1" SourceUrl="http://localhost:8000/KipSyncService?xsd=xsd0" />
-    <MetadataFile FileName="KipSyncService2.xsd" MetadataType="Schema" ID="7bca8730-c2b7-410c-b3ab-a1080aa919a3" SourceId="1" SourceUrl="http://localhost:8000/KipSyncService?xsd=xsd2" />
-    <MetadataFile FileName="KipSyncService.disco" MetadataType="Disco" ID="b13d2eba-06cd-4e70-8c5a-cc0bdfce5613" SourceId="1" SourceUrl="http://localhost:8000/KipSyncService?disco" />
-    <MetadataFile FileName="SyncPersoonService.wsdl" MetadataType="Wsdl" ID="48444bf9-93c9-4acf-b0bd-952f0c1adfd3" SourceId="1" SourceUrl="http://localhost:8000/KipSyncService?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

@@ -83,6 +83,9 @@ namespace Chiro.Gap.Services.Test
 
 			foreach (var cv in gp.CommunicatieInfo)
 			{
+                // Unit tests crashen hier als DTC niet geënabled is.
+                // Zie https://develop.chiro.be/trac/cg2/wiki/DistributedTransactions
+
 				svc.CommunicatieVormVerwijderenVanPersoon(cv.ID);
 			}
 		}

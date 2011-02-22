@@ -95,6 +95,17 @@
 		public const string DUBBELEPERSOONVOORNAAM = "Dave";
 
 		/// <summary>
+		/// Nog een voornaam voor persoon in DubbelePersonenTest
+		/// </summary>
+		public const string DUBBELEPERSOONVOORNAAM2 = "Eddy";
+
+		/// <summary>
+		/// Een willekeurig AD-nummer
+		/// </summary>
+		public const int DUBBELEPERSOONAD = 123456;
+
+
+		/// <summary>
 		/// String voor autosuggestie straat mee te testen
 		/// (onregelmatigheid in casing is bewust)
 		/// </summary>

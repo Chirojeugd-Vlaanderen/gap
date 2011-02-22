@@ -244,6 +244,8 @@ namespace Chiro.Cdf.Data.Entity
 
 				try
 				{
+                    // Unit tests crashen hier als DTC niet geënabled is.
+                    // Zie https://develop.chiro.be/trac/cg2/wiki/DistributedTransactions
 					db.SaveChanges();
 				}
 				catch (UpdateException ex)

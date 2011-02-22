@@ -99,6 +99,7 @@ namespace Chiro.Gap.Data.Test
 			string naam = TestInfo.NIEUWEPERSOONNAAM;
 			string voornaam = TestInfo.NIEUWEPERSOONVOORNAAM;
 			string voornaam2 = TestInfo.DUBBELEPERSOONVOORNAAM;
+			string voornaam3 = TestInfo.DUBBELEPERSOONVOORNAAM2;
 
 			var mgr = Factory.Maak<GelieerdePersonenManager>();
 
@@ -118,7 +119,7 @@ namespace Chiro.Gap.Data.Test
 			// wanneer enkel de data access getest wordt.
 
 			var pdao = Factory.Maak<IPersonenDao>();
-			var gevonden2 = pdao.ZoekenOpNaam(naam, voornaam2);
+			var gevonden2 = pdao.ZoekenOpNaam(naam, voornaam2).Concat(pdao.ZoekenOpNaam(naam, voornaam3));
 			foreach (var p in gevonden2)
 			{
 				p.TeVerwijderen = true;
@@ -244,7 +245,7 @@ namespace Chiro.Gap.Data.Test
 			Assert.IsTrue(true);
 		}
 
-/*		/// <summary>
+		/// <summary>
 		/// Test voor het ophalen van een persoon, inclusief lidinfo en afdelingen.  De persoon in kwestie
 		/// is een kind.
 		/// </summary>
@@ -255,10 +256,7 @@ namespace Chiro.Gap.Data.Test
 			var dao = Factory.Maak<IGelieerdePersonenDao>();
 
 			// Act
-			GelieerdePersoon resultaat = dao.OphalenMetAfdelingen(
-				TestInfo.GELIEERDEPERSOON5ID, 
-				TestInfo.GROEPSWERKJAARID, 
-				gp => gp.Persoon);
+			GelieerdePersoon resultaat = dao.DetailsOphalen(TestInfo.GELIEERDEPERSOON5ID);
 
 			
 			// Assert
@@ -279,10 +277,7 @@ namespace Chiro.Gap.Data.Test
 			var dao = Factory.Maak<IGelieerdePersonenDao>();
 
 			// Act
-			GelieerdePersoon resultaat = dao.OphalenMetAfdelingen(
-				TestInfo.GELIEERDEPERSOON3ID,
-				TestInfo.GROEPSWERKJAARID,
-				gp => gp.Persoon);
+			GelieerdePersoon resultaat = dao.DetailsOphalen(TestInfo.GELIEERDEPERSOON3ID);
 
 
 			// Assert
@@ -306,16 +301,13 @@ namespace Chiro.Gap.Data.Test
 			var dao = Factory.Maak<IGelieerdePersonenDao>();
 
 			// Act
-			GelieerdePersoon resultaat = dao.OphalenMetAfdelingen(
-				TestInfo.GELIEERDEPERSOON5ID,
-				TestInfo.GROEPSWERKJAARID,
-				gp => gp.Persoon);
+			GelieerdePersoon resultaat = dao.DetailsOphalen(TestInfo.GELIEERDEPERSOON5ID);
 
 
 			// Assert
 
 			Assert.IsTrue(resultaat.Persoon != null);
-		}*/
+		}
 
 		/// <summary>
 		/// Nieuwe (gelieerde) persoon bewaren via GelieerdePersonenDAO.
@@ -404,6 +396,41 @@ namespace Chiro.Gap.Data.Test
 		/// Test op verwijderen dubbele persoon
 		/// </summary>
 		[TestMethod]
+		public void VindDubbels()
+		{
+			#region Arrange
+
+			var pdao = Factory.Maak<IPersonenDao>();
+
+			// Een persoon dubbel in de database
+
+			var p1 = new Persoon { VoorNaam = TestInfo.NIEUWEPERSOONNAAM, Naam = TestInfo.DUBBELEPERSOONVOORNAAM2, AdNummer = TestInfo.DUBBELEPERSOONAD };
+			var p2 = new Persoon { VoorNaam = TestInfo.NIEUWEPERSOONNAAM, Naam = TestInfo.DUBBELEPERSOONVOORNAAM2, AdNummer = TestInfo.DUBBELEPERSOONAD };
+
+			var bewaard = pdao.Bewaren(new Persoon[] { p1, p2 });
+
+			#endregion
+
+			#region Act
+			var resultaat = pdao.DubbelsZoekenOpBasisVanAd();
+			#endregion
+
+			#region Assert
+
+			var gevonden = from tupel in resultaat
+			               where tupel.I1 == bewaard.First().ID || tupel.I2 == bewaard.First().ID
+			               select tupel;
+
+			Assert.IsTrue(gevonden.Count() > 0);
+
+			#endregion
+
+		}
+
+		/// <summary>
+		/// Test op verwijderen dubbele persoon
+		/// </summary>
+		[TestMethod]
 		public void VerwijderDubbel()
 		{
 			#region Arrange
@@ -420,7 +447,7 @@ namespace Chiro.Gap.Data.Test
 			#endregion
 
 			#region Act
-			pdao.DubbelVerwijderen(bewaard.First(), bewaard.Last());
+			pdao.DubbelVerwijderen(bewaard.First().ID, bewaard.Last().ID);
 			#endregion
 
 			#region Assert

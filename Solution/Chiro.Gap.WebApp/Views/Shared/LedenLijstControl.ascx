@@ -5,8 +5,8 @@
 <table class="overzicht">
 	<tr>
 		<th />
-		<th>Ad-nr. </th>
-		<th>Type </th>
+		<th>Type</th>
+		<th>Ad-nr.</th>
 		<th>
 			<%= Html.ActionLink(
 				"Naam", 

@@ -49,16 +49,25 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		IEnumerable<Persoon> OphalenViaGelieerdePersoon(IEnumerable<int> gelieerdePersoonIDs, params Expression<Func<Persoon, object>>[] paths);
 
 		/// <summary>
-		/// Verlegt alle referenties van <paramref name="dubbel"/> naar <paramref name="origineel"/>, en verwijdert vervolgens
-		/// <paramref name="dubbel"/>.
+		/// Verlegt alle referenties van de persoon met ID <paramref name="dubbelID"/> naar de persoon met ID
+		/// <paramref name="origineelID"/>, en verwijdert vervolgens de dubbele persoon.
 		/// </summary>
-		/// <param name="origineel">Te behouden persoon</param>
-		/// <param name="dubbel">Te verwijderen persoon, die eigenlijk gewoon dezelfde is als <paramref name="origineel"/></param>
+		/// <param name="origineelID">ID van de te behouden persoon</param>
+		/// <param name="dubbelID">ID van de te verwijderen persoon, die eigenlijk gewoon dezelfde is de te
+		/// behouden.</param>
 		/// <remarks>Het is niet proper dit soort van logica in de data access te doen.  Anderzijds zou het een 
 		/// heel gedoe zijn om dit in de businesslaag te implementeren, omdat er heel wat relaties verlegd moeten worden.
 		/// Dat wil zeggen: relaties verwijderen en vervolgens nieuwe maken.  Dit zou een heel aantal 'TeVerwijderens' met zich
-		/// meebrengen, wat het allemaal zeer complex zou maken.  Vandaar dat we gewoon via een stored procedure werken.</remarks>
-		void DubbelVerwijderen(Persoon origineel, Persoon dubbel);
+		/// meebrengen, wat het allemaal zeer complex zou maken.  Vandaar dat we gewoon via een stored procedure werken.<para />
+		/// </remarks>
+		void DubbelVerwijderen(int origineelID, int dubbelID);
+
+		/// <summary>
+		/// Zoekt alle mogelijke duo's van personen die hetzelfde AD-nummer hebben, en geeft een lijstje van koppels met 
+		/// de persoonID's van die personen.
+		/// </summary>
+		/// <returns>Lijst met koppels AD-nummers</returns>
+		IEnumerable<TweeInts> DubbelsZoekenOpBasisVanAd();
 
 		/// <summary>
 		/// Personen opzoeken op (exacte) naam en voornaam.
@@ -69,4 +78,14 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <returns>Lijst met gevonden gelieerde personen</returns>
 		IEnumerable<Persoon> ZoekenOpNaam(string naam, string voornaam);
 	}
+
+	/// <summary>
+	/// Domme klasse die 2 ints bevat.
+	/// </summary>
+	public class TweeInts
+	{
+		public int I1 { get; set; }
+		public int I2 { get; set; }
+	}
+
 }
