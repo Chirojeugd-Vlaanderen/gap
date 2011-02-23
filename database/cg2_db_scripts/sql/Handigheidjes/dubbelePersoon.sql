@@ -1,4 +1,4 @@
-create procedure data.spDubbelePersoonVerwijderen (@foutPID as int, @juistPID as int) as
+alter procedure data.spDubbelePersoonVerwijderen (@foutPID as int, @juistPID as int) as
 -- alle referenties van persoon met @foutPID veranderen naar die van persoon met @juistPID
 begin
 
@@ -99,6 +99,16 @@ AND pa.AdresID = foutPa.AdresID)
 
 -- De adressen die al aan de goede persoon gekoppeld waren, mogen weg van de
 -- foute persoon.  We verliezen wel de opmerking
+
+-- eerst nog eens kijken of het te verwijderen persoonsadres geen voorkeursadres
+-- is van een gelieerde persoon.  Zo ja: wijzigen
+
+UPDATE gp
+SET gp.VoorkeursAdresID = juistePa.PersoonsAdresID
+FROM pers.PersoonsAdres foutePa 
+JOIN pers.GelieerdePersoon gp on gp.VoorkeursAdresID = foutePa.PersoonsAdresID
+JOIN pers.PersoonsAdres juistePa on juistePa.AdresID = foutePa.AdresID
+WHERE foutePa.PersoonID=@foutPID AND juistePa.PersoonID = @juistPID 
 
 DELETE FROM pers.PersoonsAdres WHERE PersoonID=@foutPID
 
