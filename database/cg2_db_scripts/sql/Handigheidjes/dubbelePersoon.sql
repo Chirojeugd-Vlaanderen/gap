@@ -4,8 +4,8 @@ begin
 
 BEGIN TRAN
 
--- probeer in eerste instantie alle gelieerde personen van de
--- foute persoon naar de juiste persoon te laten wijzen
+-- probeer de gelieerde personen gekoppeld aan de 'verkeerde' persoon
+-- te koppelen aan de juiste
 
 UPDATE gp1
 SET gp1.PersoonID = @juistPID
@@ -16,6 +16,9 @@ AND NOT EXISTS
 WHERE gp2.PersoonID = @juistPID
 AND gp2.GroepID = gp1.GroepID)
 
+-- als dat niet overal gelukt is, dan was 
+
+
 -- voor de gelieerde personen waar dat niet lukt, verleggen we
 -- de lidobjecten naar een bestaande gelieerde persoon van de
 -- juiste persoon
@@ -24,7 +27,7 @@ UPDATE foutLid
 SET foutLid.GelieerdePersoonID = JuisteGp.GelieerdePersoonID
 FROM pers.GelieerdePersoon fouteGp
 JOIN lid.Lid foutLID on fouteGp.GelieerdePersoonID = foutLid.GelieerdePersoonID
-JOIN pers.GelieerdePersoon juisteGp ON fouteGp.PersoonID = juisteGp.PersoonID
+JOIN pers.GelieerdePersoon juisteGp ON fouteGp.GroepID = juisteGp.GroepID
 WHERE fouteGP.PersoonID = @foutPID AND juisteGP.PersoonID = @juistPID
 AND NOT EXISTS
 (SELECT 1 FROM lid.Lid l2 
@@ -59,8 +62,21 @@ FROM pers.GelieerdePersoon fouteGp
 JOIN lid.Lid foutLID on fouteGp.GelieerdePersoonID = foutLid.GelieerdePersoonID
 WHERE fouteGP.PersoonID = @foutPID
 
--- We gaan ervan uit dat de juiste communicatievormen aan de juiste
--- persoon hangen.
+-- Probeer eerst communicatievormen te verleggen naar juiste persoon
+
+UPDATE fouteCv
+SET fouteCv.GelieerdePersoonID=juisteGp.GelieerdePersoonID
+FROM pers.GelieerdePersoon fouteGp
+JOIN pers.CommunicatieVorm fouteCv on fouteCv.GelieerdePersoonID = fouteGp.GelieerdePersoonID
+JOIN pers.GelieerdePersoon juisteGp on fouteGp.GroepID = juisteGp.GroepID
+WHERE fouteGp.PersoonID=@foutPID AND juisteGp.PersoonID=@juistPID
+AND NOT EXISTS
+(SELECT 1 FROM pers.CommunicatieVorm cv
+WHERE cv.GelieerdePersoonID = juisteGp.GelieerdePersoonID
+AND cv.Nummer = fouteCv.Nummer)
+
+-- Diegene die niet verlegd kunnen worden (omdat nummer al bestaat bij juiste GP)
+-- worden verwijderd.  Voorkeur, gezinsgebonden,... gaan verloren.
 
 DELETE cv
 FROM pers.GelieerdePersoon fouteGp
@@ -70,8 +86,20 @@ WHERE fouteGp.PersoonID = @foutPID
 DELETE FROM pers.GelieerdePersoon
 WHERE PersoonID = @foutPID
 
--- We gaan ervan uit dat de goeie adressen aan de juiste persoon
--- gekoppeld zijn.
+-- Probeer de adressen te verleggen naar de goede persoon
+
+UPDATE foutPa
+SET foutPa.PersoonID = @juistPID
+FROM pers.PersoonsAdres foutPa
+WHERE foutPa.PersoonID = @foutPID
+AND NOT EXISTS
+(SELECT 1 FROM pers.PersoonsAdres pa
+WHERE pa.PersoonID = @juistPID
+AND pa.AdresID = foutPa.AdresID)
+
+-- De adressen die al aan de goede persoon gekoppeld waren, mogen weg van de
+-- foute persoon.  We verliezen wel de opmerking
+
 DELETE FROM pers.PersoonsAdres WHERE PersoonID=@foutPID
 
 -- We gaan ervan uit dat de goeie informatie in het juiste
