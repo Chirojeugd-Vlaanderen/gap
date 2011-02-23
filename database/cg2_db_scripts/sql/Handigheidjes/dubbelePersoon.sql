@@ -1,4 +1,4 @@
-alter procedure data.spDubbelePersoonVerwijderen (@foutPID as int, @juistPID as int) as
+create procedure data.spDubbelePersoonVerwijderen (@foutPID as int, @juistPID as int) as
 -- alle referenties van persoon met @foutPID veranderen naar die van persoon met @juistPID
 begin
 
@@ -82,6 +82,28 @@ DELETE cv
 FROM pers.GelieerdePersoon fouteGp
 JOIN pers.CommunicatieVorm cv on fouteGp.GelieerdePersoonID=cv.GelieerdePersoonID
 WHERE fouteGp.PersoonID = @foutPID
+
+-- Probeer categorieen te verleggen naar juiste persoon
+
+UPDATE foutePc
+SET foutePc.GelieerdePersoonID=juisteGp.GelieerdePersoonID
+FROM pers.GelieerdePersoon fouteGp
+JOIN pers.PersoonsCategorie foutePc on foutePc.GelieerdePersoonID = fouteGp.GelieerdePersoonID
+JOIN pers.GelieerdePersoon juisteGp on fouteGp.GroepID = juisteGp.GroepID
+WHERE fouteGp.PersoonID=@foutPID AND juisteGp.PersoonID=@juistPID
+AND NOT EXISTS
+(SELECT 1 FROM pers.PersoonsCategorie pc
+WHERE pc.GelieerdePersoonID = juisteGp.GelieerdePersoonID
+AND pc.CategorieID = foutePc.CategorieID)
+
+-- verwijder overgebleven categorieen van foute gelieerde persoon
+
+DELETE pc
+FROM pers.GelieerdePersoon fouteGp
+JOIN pers.PersoonsCategorie pc on fouteGp.GelieerdePersoonID=pc.GelieerdePersoonID
+WHERE fouteGp.PersoonID = @foutPID
+
+-- op dit moment kunnen de foute gelieerde personen verdwijnen
 
 DELETE FROM pers.GelieerdePersoon
 WHERE PersoonID = @foutPID
