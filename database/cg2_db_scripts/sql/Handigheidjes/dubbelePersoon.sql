@@ -1,4 +1,4 @@
-create procedure data.spDubbelePersoonVerwijderen (@foutPID as int, @juistPID as int) as
+alter procedure data.spDubbelePersoonVerwijderen (@foutPID as int, @juistPID as int) as
 -- alle referenties van persoon met @foutPID veranderen naar die van persoon met @juistPID
 begin
 
@@ -83,28 +83,6 @@ FROM pers.GelieerdePersoon fouteGp
 JOIN pers.CommunicatieVorm cv on fouteGp.GelieerdePersoonID=cv.GelieerdePersoonID
 WHERE fouteGp.PersoonID = @foutPID
 
--- Probeer categorieen te verleggen naar juiste persoon
-
-UPDATE foutePc
-SET foutePc.GelieerdePersoonID=juisteGp.GelieerdePersoonID
-FROM pers.GelieerdePersoon fouteGp
-JOIN pers.PersoonsCategorie foutePc on foutePc.GelieerdePersoonID = fouteGp.GelieerdePersoonID
-JOIN pers.GelieerdePersoon juisteGp on fouteGp.GroepID = juisteGp.GroepID
-WHERE fouteGp.PersoonID=@foutPID AND juisteGp.PersoonID=@juistPID
-AND NOT EXISTS
-(SELECT 1 FROM pers.PersoonsCategorie pc
-WHERE pc.GelieerdePersoonID = juisteGp.GelieerdePersoonID
-AND pc.CategorieID = foutePc.CategorieID)
-
--- verwijder overgebleven categorieen van foute gelieerde persoon
-
-DELETE pc
-FROM pers.GelieerdePersoon fouteGp
-JOIN pers.PersoonsCategorie pc on fouteGp.GelieerdePersoonID=pc.GelieerdePersoonID
-WHERE fouteGp.PersoonID = @foutPID
-
--- op dit moment kunnen de foute gelieerde personen verdwijnen
-
 DELETE FROM pers.GelieerdePersoon
 WHERE PersoonID = @foutPID
 
@@ -122,17 +100,16 @@ AND pa.AdresID = foutPa.AdresID)
 -- De adressen die al aan de goede persoon gekoppeld waren, mogen weg van de
 -- foute persoon.  We verliezen wel de opmerking
 
--- eerst nog eens kijken of het te verwijderen persoonsadres geen voorkeursadres
--- is van een gelieerde persoon.  Zo ja: wijzigen
-
-UPDATE gp
-SET gp.VoorkeursAdresID = juistePa.PersoonsAdresID
-FROM pers.PersoonsAdres foutePa 
-JOIN pers.GelieerdePersoon gp on gp.VoorkeursAdresID = foutePa.PersoonsAdresID
-JOIN pers.PersoonsAdres juistePa on juistePa.AdresID = foutePa.AdresID
-WHERE foutePa.PersoonID=@foutPID AND juistePa.PersoonID = @juistPID 
-
 DELETE FROM pers.PersoonsAdres WHERE PersoonID=@foutPID
+
+-- Persoonsverzekeringen verleggen
+-- (Dit gaat al zeker problemen geven als we op termijn de verzekeringen aan
+-- gelieerde personen gaan koppelen)
+
+UPDATE pv
+SET pv.PersoonID = @juistPID
+FROM verz.PersoonsVerzekering pv
+WHERE pv.PersoonID = @foutPID
 
 -- We gaan ervan uit dat de goeie informatie in het juiste
 -- persoonsrecord zit
