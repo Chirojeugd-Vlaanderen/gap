@@ -16,12 +16,55 @@ AND NOT EXISTS
 WHERE gp2.PersoonID = @juistPID
 AND gp2.GroepID = gp1.GroepID)
 
--- als dat niet overal gelukt is, dan was 
-
 
 -- voor de gelieerde personen waar dat niet lukt, verleggen we
 -- de lidobjecten naar een bestaande gelieerde persoon van de
 -- juiste persoon
+
+-- om te vermijden dat we straks actieve leden gaan verwijderen,
+-- en inactieve leden gaan behouden, verwijderen we eerst alle
+-- inactieve leden gekoppeld aan de 'juiste' persoon.
+-- (op die manier worden straks eventuele lidobjecten van de foute
+-- persoon proper overgezet naar de juiste)
+
+-- (het nadeel is dat gemergede personen die inactief lid waren,
+-- mogelijk een nieuwe probeerperiode krijgen als ze opnieuw lid 
+-- worden.)
+
+DELETE lf
+FROM pers.GelieerdePersoon gp
+JOIN lid.Lid l on gp.GelieerdePersoonID = l.GelieerdePersoonID
+JOIN lid.LidFunctie lf on l.LidID = lf.LidID
+WHERE gp.PersoonID = @juistPID AND l.NonActief = 1
+
+DELETE k
+FROM pers.GelieerdePersoon gp
+JOIN lid.Lid l on gp.GelieerdePersoonID = l.GelieerdePersoonID
+JOIN lid.Kind k on l.LidID = k.KindID
+WHERE gp.PersoonID = @juistPID AND l.NonActief = 1
+
+DELETE lia
+FROM pers.GelieerdePersoon gp
+JOIN lid.Lid l on gp.GelieerdePersoonID = l.GelieerdePersoonID
+JOIN lid.Leiding ld on l.LidID = ld.LeidingID
+JOIN lid.LeidingInAfdelingsJaar lia on ld.LeidingID = lia.LeidingID
+WHERE gp.PersoonID = @juistPID AND l.NonActief = 1
+
+DELETE ld
+FROM pers.GelieerdePersoon gp
+JOIN lid.Lid l on gp.GelieerdePersoonID = l.GelieerdePersoonID
+JOIN lid.Leiding ld on l.LidID = ld.LeidingID
+WHERE gp.PersoonID = @juistPID AND l.NonActief = 1
+
+DELETE l
+FROM pers.GelieerdePersoon gp
+JOIN lid.Lid l on gp.GelieerdePersoonID = l.GelieerdePersoonID
+WHERE gp.PersoonID = @juistPID AND l.NonActief = 1
+
+-- nu proberen we bestaande lidobjecten van de dubbele
+-- persoon over te zetten naar de originele.  Eventuele
+-- inactieve lidobjecten voor de originele staan hiervoor
+-- nu niet meer in de weg.
 
 UPDATE foutLid
 SET foutLid.GelieerdePersoonID = JuisteGp.GelieerdePersoonID
@@ -34,33 +77,44 @@ AND NOT EXISTS
 WHERE l2.GelieerdePersoonID = juisteGp.GelieerdePersoonID
 AND l2.GroepsWerkJaarID = foutLid.GroepsWerkJaarID)
 
--- Als een persoon dubbel in de database zat, en gedurende
--- een bepaald werkjaar dubbel lid was van dezelfde groep,
--- dan is dat heel spijtig, maar gaan de functies van het foute
--- lid verloren.
+-- Het zou kunnen dat zowel de dubbele als de originele persoon
+-- actieve lidobjecten heeft.  In dat geval zijn die van de dubbele
+-- nog steeds aan de dubbele gekoppeld.  Heel jammer, maar die
+-- van de dubbele worden dan verwijderd.  (incl. afdelingen en functies)
 
-DELETE fouteFunc
-FROM pers.GelieerdePersoon fouteGp
-JOIN lid.Lid foutLID on fouteGp.GelieerdePersoonID = foutLid.GelieerdePersoonID
-JOIN lid.LidFunctie fouteFunc on foutLid.LidID = fouteFunc.LidID
-WHERE fouteGP.PersoonID = @foutPID
+-- Dit stuk code lijkt zeer hard op wat we hierboven doen voor de
+-- inactieve leden van de originele persoon.
 
-DELETE foutKind
-FROM pers.GelieerdePersoon fouteGp
-JOIN lid.Lid foutLID on fouteGp.GelieerdePersoonID = foutLid.GelieerdePersoonID
-JOIN lid.Kind foutKind on foutLid.LidID = foutKind.KindID
-WHERE fouteGP.PersoonID = @foutPID
+DELETE lf
+FROM pers.GelieerdePersoon gp
+JOIN lid.Lid l on gp.GelieerdePersoonID = l.GelieerdePersoonID
+JOIN lid.LidFunctie lf on l.LidID = lf.LidID
+WHERE gp.PersoonID = @foutPID
 
-DELETE foutLeid
-FROM pers.GelieerdePersoon fouteGp
-JOIN lid.Lid foutLID on fouteGp.GelieerdePersoonID = foutLid.GelieerdePersoonID
-JOIN lid.Leiding foutLeid on foutLid.LidID = foutLeid.LeidingID
-WHERE fouteGP.PersoonID = @foutPID
+DELETE k
+FROM pers.GelieerdePersoon gp
+JOIN lid.Lid l on gp.GelieerdePersoonID = l.GelieerdePersoonID
+JOIN lid.Kind k on l.LidID = k.KindID
+WHERE gp.PersoonID = @foutPID
 
-DELETE foutLid
-FROM pers.GelieerdePersoon fouteGp
-JOIN lid.Lid foutLID on fouteGp.GelieerdePersoonID = foutLid.GelieerdePersoonID
-WHERE fouteGP.PersoonID = @foutPID
+DELETE lia
+FROM pers.GelieerdePersoon gp
+JOIN lid.Lid l on gp.GelieerdePersoonID = l.GelieerdePersoonID
+JOIN lid.Leiding ld on l.LidID = ld.LeidingID
+JOIN lid.LeidingInAfdelingsJaar lia on ld.LeidingID = lia.LeidingID
+WHERE gp.PersoonID = @foutPID
+
+DELETE ld
+FROM pers.GelieerdePersoon gp
+JOIN lid.Lid l on gp.GelieerdePersoonID = l.GelieerdePersoonID
+JOIN lid.Leiding ld on l.LidID = ld.LeidingID
+WHERE gp.PersoonID = @foutPID
+
+DELETE l
+FROM pers.GelieerdePersoon gp
+JOIN lid.Lid l on gp.GelieerdePersoonID = l.GelieerdePersoonID
+WHERE gp.PersoonID = @foutPID
+
 
 -- Probeer eerst communicatievormen te verleggen naar juiste persoon
 
