@@ -34,8 +34,8 @@ namespace Chiro.Gap.UpdateSvc.Service
 		public void AdNummerToekennen(int persoonID, int adNummer)
 		{
 			Persoon p = _personenMgr.Ophalen(persoonID);
-			p.AdNummer = adNummer;
-			_personenMgr.Bewaren(p);
+
+			_personenMgr.AdNummerToekennen(p, adNummer);
 
 			Console.WriteLine("Ad-nummer {0} toegekend aan {1}. (ID {2})", adNummer, p.VolledigeNaam, p.ID);
 		}

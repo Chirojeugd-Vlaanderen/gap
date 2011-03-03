@@ -58,6 +58,9 @@ namespace Chiro.Gap.LidSyncer
 			//// Verloren contactpersonen opnieuw overzetten
 			//OpnieuwVerzekerenLoonVerlies();
 
+			//// Verwijder dubbels op basis van ad-nummer
+			//var personenMgr = Factory.Maak<PersonenManager>();
+			//personenMgr.FixGedeeldeAds();
 
 			// Overzetten leden na probeerperiode
 

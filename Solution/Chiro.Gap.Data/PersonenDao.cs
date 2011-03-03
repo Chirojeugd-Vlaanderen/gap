@@ -212,5 +212,22 @@ namespace Chiro.Gap.Data.Ef
 					select p).ToArray();
 			}
 		}
+
+		/// <summary>
+		/// Haalt alle personen op met een gegeven AD-nummer
+		/// </summary>
+		/// <param name="adNummer">AD-nummer</param>
+		/// <returns>Een lijstje van personen met een gegeven AD-nummer</returns>
+		/// <remarks>Normaalgesproken bevat het resultaat hoogstens 1 persoon</remarks>
+		public IEnumerable<Persoon> ZoekenOpAd(int adNummer)
+		{
+			using (var db = new ChiroGroepEntities())
+			{
+				db.Persoon.MergeOption = MergeOption.NoTracking;
+				return (from p in db.Persoon
+				        where p.AdNummer == adNummer
+				        select p).ToArray();
+			}
+		}
 	}
 }

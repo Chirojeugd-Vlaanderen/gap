@@ -59,6 +59,11 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		public IEnumerable<Persoon> ZoekenOpAd(int adNummer)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 	}
 }

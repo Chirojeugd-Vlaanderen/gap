@@ -77,6 +77,14 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="voornaam">Exacte voornaam om op te zoeken</param>
 		/// <returns>Lijst met gevonden gelieerde personen</returns>
 		IEnumerable<Persoon> ZoekenOpNaam(string naam, string voornaam);
+
+		/// <summary>
+		/// Haalt alle personen op met een gegeven AD-nummer
+		/// </summary>
+		/// <param name="adNummer">AD-nummer</param>
+		/// <returns>Een lijstje van personen met een gegeven AD-nummer</returns>
+		/// <remarks>Normaalgesproken bevat het resultaat hoogstens 1 persoon</remarks>
+		IEnumerable<Persoon> ZoekenOpAd(int adNummer);
 	}
 
 	/// <summary>

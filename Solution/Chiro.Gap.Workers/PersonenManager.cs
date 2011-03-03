@@ -60,8 +60,8 @@ namespace Chiro.Gap.Workers
 				// Enkel de geselecteerde personen afleveren.
 
 				var resultaat = from p in allen
-								where selectie.Contains(p.ID)
-								select p;
+						where selectie.Contains(p.ID)
+						select p;
 
 				return resultaat.ToList();
 			}
@@ -97,7 +97,7 @@ namespace Chiro.Gap.Workers
 		public void Verhuizen(IEnumerable<Persoon> verhuizers, Adres oudAdres, Adres nieuwAdres, AdresTypeEnum adresType)
 		{
 			var persIDs = (from p in verhuizers
-						   select p.ID).ToArray();
+				       select p.ID).ToArray();
 			var mijnPersIDs = _autorisatieMgr.EnkelMijnPersonen(persIDs);
 
 			if (persIDs.Count() == mijnPersIDs.Count())
@@ -314,7 +314,42 @@ namespace Chiro.Gap.Workers
 			else
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
-			}	
+			}
+		}
+
+		/// <summary>
+		/// Kent een AD-nummer toe aan een persoon, en persisteert.  Als er al een persoon bestond met
+		/// het gegeven AD-nummer, worden de personen gemerged.
+		/// </summary>
+		/// <param name="persoon">Persoon met toe te kennen AD-nummer</param>
+		/// <param name="adNummer">Toe te kennen AD-nummer</param>
+		public void AdNummerToekennen(Persoon persoon, int adNummer)
+		{
+			if (_autorisatieMgr.IsSuperGav())
+			{
+				// Wie heeft het gegeven AD-nummer al?
+				var gevonden = _dao.ZoekenOpAd(adNummer);
+
+				foreach (var p in gevonden.Where(prs=>prs.ID != persoon.ID))
+				{
+					// Als er andere personen zijn met hetzelfde AD-nummer, 
+					// merge dan met deze persoon.
+
+					// Door 'persoon.ID' als origineel te kiezen, vermijden
+					// we dat persoon van ID verandert.
+
+					_dao.DubbelVerwijderen(persoon.ID, p.ID);
+				}
+
+				// Tenslotte het echte werk.
+
+				persoon.AdNummer = adNummer;
+				_dao.Bewaren(persoon);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
 		}
 	}
 }
