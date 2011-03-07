@@ -351,5 +351,24 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 		}
+
+		/// <summary>
+		/// Zoekt personen op basis van <paramref name="adNummer"/>.
+		/// </summary>
+		/// <param name="adNummer">AD-nummer te zoeken personen</param>
+		/// <returns>De gevonden persoon, zonder gekoppelde entiteiten</returns>
+		/// <remarks>Normaalgezien is er per AD-nummer maar 1 persoon.  Maar voor de zekerheid leveren we toch
+		/// een IEnumerable op, voor uitzonderlijke gevallen.</remarks>
+		public IEnumerable<Persoon> ZoekenOpAd(int adNummer)
+		{
+			if (_autorisatieMgr.IsSuperGav())
+			{
+				return _dao.ZoekenOpAd(adNummer);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+		}
 	}
 }
