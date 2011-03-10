@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
 using System.Text;
+using Chiro.Cdf.Ioc;
 using Chiro.Cdf.ServiceModel;
 using Chiro.Kip.Services;
 
@@ -22,6 +23,7 @@ namespace Chiro.Kip.SyncService
 
 		protected override void OnStart(string[] args)
 		{
+		    Factory.ContainerInit();
 			Trace.WriteLine("KipSync v. 2010-12-06 wordt gestart");
 
 			_host = new ServiceHost<SyncPersoonService>();
