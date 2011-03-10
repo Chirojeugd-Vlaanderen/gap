@@ -187,7 +187,9 @@
     <Content Include="Views\Shared\PersonenLijstControl.ascx" />
     <Content Include="Views\Shared\PersoonsLinkControl.ascx" />
     <Content Include="Views\Shared\TerugNaarLijstLinkControl.ascx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\MicrosoftAjax.js" />
     <Content Include="Scripts\MicrosoftAjax.debug.js" />

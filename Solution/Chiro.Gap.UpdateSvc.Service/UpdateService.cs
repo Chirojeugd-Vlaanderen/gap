@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Text;
 
 using Chiro.Gap.Orm;
 using Chiro.Gap.UpdateSvc.Contracts;

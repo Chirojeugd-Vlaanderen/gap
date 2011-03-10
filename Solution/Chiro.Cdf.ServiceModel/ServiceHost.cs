@@ -46,10 +46,15 @@ namespace Chiro.Cdf.ServiceModel
 
 		protected override void OnOpening()
 		{
-			foreach (var endpoint in Description.Endpoints)
-			{
-				endpoint.VerifyQueue();
-			}
+			// Onderstaande truuk, die de queues aanmaakt als ze nog niet bestaan, werkt enkel
+			// als de queue in hetzelfde domein zit als de user die de queue leest.  Voor ons is
+			// dit typisch niet het geval.  (het al dan niet bestaan van de queues in chiro.wereld
+			// wordt niet opgemerkt door de user in chiro.lokaal.)
+
+			//foreach (var endpoint in Description.Endpoints)
+			//{
+			//        endpoint.VerifyQueue();
+			//}
 			base.OnOpening();
 		}
 	}
