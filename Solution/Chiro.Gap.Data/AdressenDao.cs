@@ -202,21 +202,8 @@ namespace Chiro.Gap.Data.Ef
 				// Gekke constructie voor huisnummer, bus en postcode, omdat null anders niet goed
 				// opgevangen wordt.  (je krijgt bijv. where PostCode == null in de SQL query, wat niet werkt)
 
-				// 'Eager loading' van straatnaam en woonplaats zou niet werken...
-				// Voorlopig gaat het zo:
+				// Eager loading lukt blijkbaar wel sinds .net 4, dus de workaround die hieronder stond, mag weg.
 
-				if (resultaat != null)
-				{
-					// Dit is uiteraard enkel zinvol als er iets gevonden is.
-
-					resultaat.StraatNaamReference.Load();
-					resultaat.WoonPlaatsReference.Load();
-
-					if (metBewoners)
-					{
-						resultaat.PersoonsAdres.Load();
-					}
-				}
 			}
 
 			return resultaat;
