@@ -746,6 +746,7 @@ PRINT 'public const int AFDELINGSJAAR2ID = ' + CAST(@testAfdelingsJaar2ID AS VAR
 PRINT 'public const int AFDELING2VAN = ' + CAST(@testHuidigGeboorteJaarVanAfdelingID2 AS VARCHAR(10)) + ' ;'
 PRINT 'public const int AFDELING2TOT = ' + CAST(@testHuidigGeboorteJaarTotAfdelingID2 AS VARCHAR(10)) + ' ;'
 PRINT 'public const int AFDELING3ID = ' + CAST(@testAfdeling3ID AS VARCHAR(10)) + ';';
+PRINT 'public const int ADRESID = ' + CAST(@testAdresID AS VARCHAR(10)) + ';';
 PRINT 'public const int GROEPSWERKJAARID = ' + CAST(@testGroepsHuidigWerkJaarID AS VARCHAR(10)) + ';';
 PRINT 'public const string ZOEKNAAM = "' + CAST(@testPersoon1Naam AS VARCHAR(10)) + '";'; 
 PRINT 'public const string GAV1 = "' + CAST(@testGav1Login AS VARCHAR(10)) + '";';
