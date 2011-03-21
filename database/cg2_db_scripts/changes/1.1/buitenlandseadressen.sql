@@ -90,6 +90,7 @@ INSERT INTO adr.Land(Naam) VALUES('Zwitserland')
 CREATE TABLE adr.BuitenLandsAdres(
 	BuitenlandsAdresID INT NOT NULL PRIMARY KEY,
 	PostCode VARCHAR(10),
+	PostNummer INT,
 	Straat VARCHAR(80) NOT NULL,
 	WoonPlaats VARCHAR(80) NOT NULL,
 	LandID INT NOT NULL)
