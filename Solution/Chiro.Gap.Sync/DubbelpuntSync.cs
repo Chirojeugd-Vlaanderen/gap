@@ -74,10 +74,10 @@ namespace Chiro.Gap.Sync
 				// Kipadminkant.
 
 				var gpMetDetails = _gelieerdePersonenDao.Ophalen(
-					gp.ID,
+					gp.Persoon.ID,
+					huidigWj.Groep.ID,
+					true,
 					gelp => gelp.Persoon,
-					gelp => gelp.PersoonsAdres.Adres.StraatNaam,
-					gelp => gelp.PersoonsAdres.Adres.WoonPlaats,
 					gelp => gelp.Communicatie.First().CommunicatieType);
 
 				_svc.DubbelpuntBestellenNieuwePersoon(

@@ -22,5 +22,20 @@ namespace Chiro.Gap.Dummies
 		{
 			throw new NotImplementedException();
 		}
+
+		public IEnumerable<Kind> Zoeken(LidFilter filter, LidExtras extras)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Kind Bewaren(Kind kind, LidExtras extras)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Kind Ophalen(int lidID, LidExtras extras)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

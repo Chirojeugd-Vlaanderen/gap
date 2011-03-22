@@ -70,9 +70,8 @@ namespace Chiro.Gap.Sync
 				var gp = _gelieerdePersonenDao.Ophalen(
 					persoonsVerzekering.Persoon.ID,
 					gwj.Groep.ID,
+					true,
 					gelp => gelp.Persoon,
-					gelp => gelp.PersoonsAdres.Adres.StraatNaam,
-					gelp => gelp.PersoonsAdres.Adres.WoonPlaats,
 					gelp => gelp.Communicatie.First().CommunicatieType);
 
 				_svc.LoonVerliesVerzekerenAdOnbekend(

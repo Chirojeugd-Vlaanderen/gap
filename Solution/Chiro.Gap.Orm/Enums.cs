@@ -129,7 +129,7 @@ namespace Chiro.Gap.Orm
 		/// <summary>
 		/// Haal de groep(en) op waar de (gelieerde) personen mee geleerd zijn
 		/// </summary>
-        Groep = 0x02,
+		Groep = 0x02,
 
 		/// <summary>
 		/// Haal alle communicatievormen van de gelieerde persoon mee op, met gekoppeld
@@ -152,7 +152,12 @@ namespace Chiro.Gap.Orm
 		/// <summary>
 		/// Haalt alle lidobjecten van de gelieerde persoon op, incl. groepswerkjaren
 		/// </summary>
-		GroepsWerkJaren = 0x20
+		GroepsWerkJaren = 0x20,
+
+		/// <summary>
+		/// De lidobjecten van een gelieerde persoon
+		/// </summary>
+		Leden = 0x40
 	}
 
 	/// <summary>

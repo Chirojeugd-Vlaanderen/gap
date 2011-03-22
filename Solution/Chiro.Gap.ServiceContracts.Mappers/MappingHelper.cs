@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using AutoMapper;
@@ -24,6 +25,93 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 	public static class MappingHelper
 	{
 		#region Mappings voor service
+
+		// Een paar private extension methods om gemakkelijker adressen te mappen.
+		
+		/// <summary>
+		/// Bepaalt de straatnaam van een Adres
+		/// </summary>
+		/// <param name="a">Adres</param>
+		/// <returns>Straatnaam</returns>
+		private static string StraatGet(this Adres a)
+		{
+			if (a is BelgischAdres)
+			{
+				var ba = a as BelgischAdres;
+
+				if (ba.StraatNaam != null)
+				{
+					return ba.StraatNaam.Naam;
+				}
+				else
+				{
+					return null;
+				}
+				
+			}
+			else
+			{
+				Debug.Assert(a is BuitenLandsAdres);
+				return ((BuitenLandsAdres)a).Straat;
+			}
+		}
+
+		/// <summary>
+		/// Bepaalt de woonplaats van een adres.
+		/// </summary>
+		/// <param name="a">Adres</param>
+		/// <returns>Naam van de woonplaats</returns>
+		private static string WoonPlaatsGet(this Adres a)
+		{
+			if (a is BelgischAdres)
+			{
+				var ba = (a as BelgischAdres);
+				if (ba.WoonPlaats != null)
+				{
+					return ba.WoonPlaats.Naam;
+				}
+				else
+				{
+					return null;
+				}
+			}
+			else
+			{
+				Debug.Assert(a is BuitenLandsAdres);
+				return ((BuitenLandsAdres)a).WoonPlaats;
+			}
+		}
+
+		/// <summary>
+		/// Bepaalt het postnummer van een adres.
+		/// </summary>
+		/// <param name="a">Adres</param>
+		/// <returns>Postnummer</returns>
+		private static int? PostNummerGet(this Adres a)
+		{
+			if (a is BelgischAdres)
+			{
+				var ba = a as BelgischAdres;
+				if (ba.WoonPlaats != null)
+				{
+					return ba.WoonPlaats.PostNummer;
+				}
+				else if (ba.StraatNaam != null)
+				{
+					return ba.StraatNaam.PostNummer;
+				}
+				else
+				{
+					return null;
+				}
+			}
+			else
+			{
+				Debug.Assert(a is BuitenLandsAdres);
+				return ((BuitenLandsAdres)a).PostNummer;
+			}
+		}
+
 
 		/// <summary>
 		/// Definieert meteen alle nodige mappings.
@@ -90,12 +178,12 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst => dst.Geslacht, opt => opt.MapFrom(src => src.Persoon.Geslacht))
 				.ForMember(dst => dst.HuisNummer, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.HuisNr))
 				.ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Persoon.Naam))
-				.ForMember(dst => dst.PostNummer, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : (int?)src.PersoonsAdres.Adres.WoonPlaats.PostNummer))
-				.ForMember(dst => dst.StraatNaam, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.StraatNaam.Naam))
+				.ForMember(dst => dst.PostNummer, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : (int?)src.PersoonsAdres.Adres.PostNummerGet()))
+				.ForMember(dst => dst.StraatNaam, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.StraatGet()))
 				.ForMember(dst => dst.TelefoonNummer,
 						   opt => opt.MapFrom(src => VoorkeurCommunicatie(src, CommunicatieTypeEnum.TelefoonNummer)))
 				.ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam))
-				.ForMember(dst => dst.WoonPlaats, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.WoonPlaats.Naam));
+				.ForMember(dst => dst.WoonPlaats, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.WoonPlaatsGet()));
 
 			Mapper.CreateMap<Lid, LidOverzicht>()
 				.ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.AdNummer))
@@ -120,14 +208,14 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				           	src =>
 				           	src.GelieerdePersoon.PersoonsAdres == null
 				           		? null
-				           		: (int?) src.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats.PostNummer))
+				           		: src.GelieerdePersoon.PersoonsAdres.Adres.PostNummerGet()))
 				.ForMember(dst => dst.StraatNaam,
 				           opt =>
 				           opt.MapFrom(
 				           	src =>
 				           	src.GelieerdePersoon.PersoonsAdres == null
 				           		? null
-				           		: src.GelieerdePersoon.PersoonsAdres.Adres.StraatNaam.Naam))
+				           		: src.GelieerdePersoon.PersoonsAdres.Adres.StraatGet()))
 				.ForMember(dst => dst.TelefoonNummer,
 				           opt =>
 				           opt.MapFrom(src => VoorkeurCommunicatie(src.GelieerdePersoon, CommunicatieTypeEnum.TelefoonNummer)))
@@ -138,7 +226,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				           	src =>
 				           	src.GelieerdePersoon.PersoonsAdres == null
 				           		? null
-				           		: src.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats.Naam))
+				           		: src.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaatsGet()))
 				.ForMember(dst => dst.Functies, opt => opt.MapFrom(src => src.Functie))
 				.ForMember(dst => dst.Afdelingen, opt => opt.MapFrom(Afdelingen))
 				.ForMember(dst => dst.ChiroLeefTijd, opt => opt.MapFrom(src => src.GelieerdePersoon.ChiroLeefTijd))
@@ -214,19 +302,29 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.CommunicatieInfo,
 					opt => opt.MapFrom(null));
 
-			// Zo veel mogelijk automatisch mappen
+			// De bedoeling was om zo veel mogelijk automatisch te kunnen mappen.  Vandaar ook properties
+			// zoals StraatNaamNaam en WoonPlaatsNaam.  Maar met de invoering van de buitenlandse adressen,
+			// lukt dat niet meer, omdat er een verschil is voor de mapping van een Belgisch en een
+			// niet-Belgisch adres.  We werken daarrond via de extension methods StraatGet en
+			// WoonPlaatsGet.
+
 			Mapper.CreateMap<Adres, AdresInfo>()
 				.ForMember(
 					dst => dst.PostNr,
-					opt => opt.MapFrom(src => src.WoonPlaats.PostNummer));
+					opt => opt.MapFrom(src => src.PostNummerGet())
+					)
+				.ForMember(dst => dst.StraatNaamNaam, opt => opt.MapFrom(src => src.StraatGet()))
+				.ForMember(dst => dst.WoonPlaatsNaam, opt => opt.MapFrom(src => src.WoonPlaatsGet()));
 
 			Mapper.CreateMap<Adres, GezinInfo>()
 				.ForMember(
 					dst => dst.PostNr,
-					opt => opt.MapFrom(src => src.WoonPlaats.PostNummer))
+					opt => opt.MapFrom(src => src.PostNummerGet()))
 				.ForMember(
 					dst => dst.Bewoners,
-					opt => opt.MapFrom(src => src.PersoonsAdres.ToList()));
+					opt => opt.MapFrom(src => src.PersoonsAdres.ToList()))
+				.ForMember(dst => dst.StraatNaamNaam, opt => opt.MapFrom(src => src.StraatGet()))
+				.ForMember(dst => dst.WoonPlaatsNaam, opt => opt.MapFrom(src => src.WoonPlaatsGet()));
 
 			// Domme mapping
 			Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo>()
@@ -244,13 +342,13 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.ID))
 				.ForMember(
 					dst => dst.PostNr,
-					opt => opt.MapFrom(src => src.Adres.StraatNaam.PostNummer))
+					opt => opt.MapFrom(src => src.Adres.PostNummerGet()))
 				.ForMember(
 					dst => dst.StraatNaamNaam,
-					opt => opt.MapFrom(src => src.Adres.StraatNaam.Naam))
+					opt => opt.MapFrom(src => src.Adres.StraatGet()))
 				.ForMember(
 					dst => dst.WoonPlaatsNaam,
-					opt => opt.MapFrom(src => src.Adres.WoonPlaats.Naam));
+					opt => opt.MapFrom(src => src.Adres.WoonPlaatsGet()));
 
 			Mapper.CreateMap<GelieerdePersoon, BewonersInfo>()
 				.ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => src.ID))

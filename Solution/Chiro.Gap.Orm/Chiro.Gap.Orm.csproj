@@ -89,7 +89,7 @@
     <Compile Include="GroepsWerkJaar.cs" />
     <Compile Include="KaderGroep.cs" />
     <Compile Include="OfficieleAfdeling.cs" />
-    <Compile Include="DataInterfaces\IAdressenDao.cs" />
+    <Compile Include="DataInterfaces\IBelgischeAdressenDao.cs" />
     <Compile Include="DataInterfaces\IAutorisatieDao.cs" />
     <Compile Include="DataInterfaces\IGelieerdePersonenDao.cs" />
     <Compile Include="DataInterfaces\IGroepenDao.cs" />

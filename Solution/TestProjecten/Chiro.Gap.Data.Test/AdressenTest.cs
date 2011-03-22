@@ -1,4 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+
+using Chiro.Gap.Orm;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Chiro.Cdf.Ioc;
 using Chiro.Gap.Orm.DataInterfaces;
 using Chiro.Gap.TestDbInfo;
@@ -62,6 +66,52 @@ namespace Chiro.Gap.Data.Test
 			// Assert
 
 			Assert.IsTrue(gevonden.Count == 1);
+		}
+
+		/// <summary>
+		/// Test die nakijkt of het ophalen van een adres met bewoners, ook de info bevat
+		/// over de straat en gemeente
+		/// </summary>
+		[TestMethod]
+		public void BewonersOphalen()
+		{
+			// Arrange
+
+			var dao = Factory.Maak<IBelgischeAdressenDao>();
+
+			// Act
+
+			var gevonden = dao.BewonersOphalen(TestInfo.ADRESID, new[] {TestInfo.GROEPID}, false);
+
+			// Assert
+
+			Assert.IsNotNull(gevonden);
+			Assert.IsNotNull(gevonden.StraatNaam);
+		}
+
+		/// <summary>
+		/// Test die nakijkt of alle adressen van de opgehaalde
+		/// bewoners in orde zijn.
+		/// </summary>
+		[TestMethod]
+		public void AndereAdressenOpgehaaldeBewoners()
+		{
+			// Arrange
+
+			var dao = Factory.Maak<IBelgischeAdressenDao>();
+
+			// Act
+
+			var gevonden = dao.BewonersOphalen(TestInfo.ADRESID, new[] { TestInfo.GROEPID }, false);
+
+			// Assert
+
+			foreach (var pa in gevonden.PersoonsAdres.SelectMany(pa => pa.Persoon.PersoonsAdres))
+			{
+				Assert.IsNotNull(pa.Adres as BelgischAdres);
+				Assert.IsNotNull(((BelgischAdres) pa.Adres).StraatNaam);
+			}
+
 		}
 	}
 }

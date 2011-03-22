@@ -207,9 +207,9 @@ namespace Chiro.Gap.Workers.Test
 			// We mocken de dao's dat het zoeken naar leden/leiding een lege lijst oplevert
 
 			ledenDaoMock.Setup(foo => foo.ActieveLedenOphalen(testData.HuidigGwj.ID, LidEigenschap.Naam)).Returns(new List<Lid>());
-			leidingDaoMock.Setup(foo => foo.Zoeken(It.IsAny<LidFilter>(), It.IsAny<Expression<Func<Leiding, object>>[]>())).
+			leidingDaoMock.Setup(foo => foo.Zoeken(It.IsAny<LidFilter>(), It.IsAny<LidExtras>())).
 				Returns(new List<Leiding>());
-			kindDaoMock.Setup(foo => foo.Zoeken(It.IsAny<LidFilter>(), It.IsAny<Expression<Func<Kind, object>>[]>())).
+			kindDaoMock.Setup(foo => foo.Zoeken(It.IsAny<LidFilter>(), It.IsAny<LidExtras>())).
 				Returns(new List<Kind>());
 
 			
@@ -417,9 +417,9 @@ namespace Chiro.Gap.Workers.Test
 
 			gpDaoMock.Setup(foo => foo.Bewaren(
 				It.IsAny<GelieerdePersoon>(), 
-				It.IsAny<Expression<Func<GelieerdePersoon, object>>[]>())).Returns((
+				It.IsAny<PersoonsExtras>())).Returns((
 					GelieerdePersoon foo, 
-					Expression<Func<GelieerdePersoon, object>>[] bar) => foo);
+					PersoonsExtras bar) => foo);
 
 			// Het stuk It.IsAny<Expression<Func<GelieerdePersoon, Object>>>()
 			// zorgt ervoor dat de Mock de linq-expressies in 'Ophalen' negeert.

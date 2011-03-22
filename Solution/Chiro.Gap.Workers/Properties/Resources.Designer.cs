@@ -97,6 +97,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to België.
+        /// </summary>
+        internal static string Belgie {
+            get {
+                return ResourceManager.GetString("Belgie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Er bestaat al een categorie met code &apos;{0}&apos;..
         /// </summary>
         internal static string CategorieBestaatAl {

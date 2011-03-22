@@ -72,9 +72,27 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// </summary>
 		/// <param name="groepID">ID van de groep</param>
 		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
-		/// <param name="paths">Expressies die aangeven welke dependencies mee opgehaald moeten worden</param>
+		/// <param name="extras">Bepaalt welke dependencies mee opgehaald moeten worden</param>
 		/// <returns>Lijst van gelieerde personen</returns>
-		IList<GelieerdePersoon> AllenOphalen(int groepID, PersoonSorteringsEnum sortering, params Expression<Func<GelieerdePersoon, object>>[] paths);
+		IList<GelieerdePersoon> AllenOphalen(int groepID, PersoonSorteringsEnum sortering, PersoonsExtras extras);
+
+		/// <summary>
+		/// Haalt een gelieerde persoon op op basis van <paramref name="persoonID"/> en <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="persoonID">ID van de *persoon* waarvoor de gelieerde persoon opgehaald moet worden</param>
+		/// <param name="groepID">ID van de groep waaraan de gelieerde persoon gelieerd moet zijn</param>
+		/// <param name="metVoorkeurAdres">Indien <c>true</c>, wordt ook het voorkeursadres opgehaald.</param>
+		/// <param name="paths">bepaalt op te halen gekoppelde entiteiten</param>
+		/// <returns>De gevraagde gelieerde persoon</returns>
+		/// <remarks>Het ophalen van adressen kan niet beschreven worden met de lambda-
+		/// expressies in <paramref name="paths"/>, o.w.v. de verschillen tussen Belgische en buitenlandse
+		/// adressen.</remarks>
+		GelieerdePersoon Ophalen(
+			int persoonID, 
+			int groepID, 
+			bool metVoorkeurAdres, 
+			params Expression<Func<GelieerdePersoon, object>>[] paths);
+
 
 		/// <summary>
 		/// Haalt een gelieerde persoon op op basis van <paramref name="persoonID"/> en <paramref name="groepID"/>
@@ -83,7 +101,19 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="groepID">ID van de groep waaraan de gelieerde persoon gelieerd moet zijn</param>
 		/// <param name="paths">bepaalt op te halen gekoppelde entiteiten</param>
 		/// <returns>De gevraagde gelieerde persoon</returns>
+		/// <remarks>Adressen worden niet opgehaald, want adressen kunnen niet beschreven worden met de lambda-
+		/// expressies in <paramref name="paths"/>.</remarks>
 		GelieerdePersoon Ophalen(int persoonID, int groepID, params Expression<Func<GelieerdePersoon, object>>[] paths);
+
+		/// <summary>
+		/// Haalt een aantal gelieerde personen op, samen met de gekoppelde entiteiten bepaald door
+		/// <paramref name="extras"/>
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">ID's op te halen gelieerde personen</param>
+		/// <param name="extras">bepaalt de extra op te halen entiteiten</param>
+		/// <returns>De gevraagde gelieerde personen.</returns>
+		IEnumerable<GelieerdePersoon> Ophalen(IList<int> gelieerdePersoonIDs, PersoonsExtras extras);
+
 
 		/// <summary>
 		/// Haalt een 'pagina' persoonsgegevens van de gelieerde personen van een groep op, inclusief
@@ -106,12 +136,12 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <param name="pagina">Paginanummer (1 of groter)</param>
 		/// <param name="paginaGrootte">Aantal records op een pagina</param>
 		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
-		/// <param name="paths">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+		/// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
 		/// <param name="metHuidigLidInfo">Als <c>true</c> worden ook eventuele lidobjecten *van dit werkjaar* 
 		/// mee opgehaald.</param>
 		/// <param name="aantalTotaal">Outputparameter die het totaal aantal personen in de categorie weergeeft</param>
 		/// <returns>Lijst gelieerde personen</returns>
-		IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, bool metHuidigLidInfo, out int aantalTotaal, params Expression<Func<GelieerdePersoon, object>>[] paths);
+		IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, bool metHuidigLidInfo, out int aantalTotaal, PersoonsExtras extras);
 
 
 		/// <summary>
@@ -163,5 +193,13 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// is aan meerdere groepen, dan zal die in deze lijst meerdere keren voorkomen.
 		/// Inclusief persoonsinfo</returns>
 		IEnumerable<GelieerdePersoon> DubbelPuntZonderAdOphalen();
+
+		/// <summary>
+		/// Bewaart een gelieerde persoon samen met eventueel gekoppelde entiteiten
+		/// </summary>
+		/// <param name="gelieerdePersoon">Te bewaren gelieerde persoon</param>
+		/// <param name="extras">bepaalt de gekoppelde entiteiten</param>
+		/// <returns>de bewaarde gelieerde persoon</returns>
+		GelieerdePersoon Bewaren(GelieerdePersoon gelieerdePersoon, PersoonsExtras extras);
 	}
 }

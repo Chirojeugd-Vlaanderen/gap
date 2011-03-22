@@ -24,7 +24,7 @@ namespace Chiro.Gap.Workers
 	/// </summary>
 	public class AdressenManager
 	{
-		private readonly IAdressenDao _dao;
+		private readonly IBelgischeAdressenDao _dao;
 		private readonly IStratenDao _stratenDao;
 		private readonly ISubgemeenteDao _subgemeenteDao;
 		private readonly IAutorisatieManager _autorisatieMgr;
@@ -39,7 +39,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 		/// <param name="sync">Zorgt voor synchronisate van adressen naar KipAdmin</param>
 		public AdressenManager(
-			IAdressenDao dao, 
+			IBelgischeAdressenDao dao, 
 			IStratenDao stratenDao, 
 			ISubgemeenteDao subgemeenteDao, 
 			IAutorisatieManager autorisatieMgr,
@@ -53,22 +53,6 @@ namespace Chiro.Gap.Workers
 		}
 
 		#region proxy naar data acces
-
-		/// <summary>
-		/// Haalt een adres op, inclusief bewoners waar de ingelogde
-		/// user gebruikersrechten op heeft.
-		/// </summary>
-		/// <param name="adresID">ID van het gevraagde adres</param>
-		/// <returns>Adres met daaraan gekoppeld de bewoners</returns>
-		public Adres AdresMetBewonersOphalen(int adresID)
-		{
-			// Adressen zitten vast in de database, en daar is niets
-			// interessants over te zeggen.  Voorlopig mag iedereen elk
-			// adres opzoeken.  Voor de bewonersgegevens worden de
-			// rechten uiteraard wel gecontroleerd.
-
-			return _dao.BewonersOphalen(adresID, _autorisatieMgr.GebruikersNaamGet());
-		}
 
 		/// <summary>
 		/// Haalt het adres met ID <paramref name="adresID"/> op, inclusief de bewoners (gelieerde personen) uit de groep met ID
@@ -159,11 +143,18 @@ namespace Chiro.Gap.Workers
 				                // met ad-nummer
 				                select pa).ToArray();
 
-				// TODO (#238): Buitenlandse adressen!
-
 				_sync.StandaardAdressenBewaren(teSyncen);
 
-				resultaat = _dao.Bewaren(adr);
+				if (adr is BelgischAdres)
+				{
+					resultaat = _dao.Bewaren(adr as BelgischAdres);
+				}
+				else
+				{
+					throw new NotImplementedException();
+					// TODO (#238): Buitenlandse adressen!
+				}
+				
 #if KIPDORP
 				tx.Complete();
 			}
@@ -174,13 +165,27 @@ namespace Chiro.Gap.Workers
 		#endregion
 
 		/// <summary>
-		/// Zoekt adres (incl. straat en subgemeente), op basis
-		/// van
-		///  - straat.naam
-		///  - huisnummer
-		///  - straat.postnr
-		///  - woonplaats.id
-		/// <para />
+		/// Zoekt een Belgisch adres op, op basis van de parameters.
+		/// Als er zo geen adres bestaat, wordt het aangemaakt, op
+		/// voorwaarde dat de straat en subgemeente geidentificeerd
+		/// kunnen worden.  Als ook dat laatste niet het geval is,
+		/// wordt een exception gethrowd.
+		/// </summary>
+		/// <param name="straatNaam">De naam van de straat</param>
+		/// <param name="huisNr">Het huisnummer</param>
+		/// <param name="bus">Het eventuele busnummer</param>
+		/// <param name="woonPlaatsNaam">De naam van de woonplaats</param>
+		/// <param name="postNr">Het postnummer van straat en woonplaats</param>
+		/// <returns>Gevonden adres</returns>
+		/// <remarks>Ieder heeft het recht adressen op te zoeken</remarks>
+		public Adres ZoekenOfMaken(String straatNaam, int? huisNr, string bus, string woonPlaatsNaam, int postNr)
+		{
+			return ZoekenOfMaken(straatNaam, huisNr, bus, woonPlaatsNaam, postNr, String.Empty, Properties.Resources.Belgie);
+		}
+
+
+		/// <summary>
+		/// Zoekt adres op, op basis van de parameters.
 		/// Als er zo geen adres bestaat, wordt het aangemaakt, op
 		/// voorwaarde dat de straat en subgemeente geidentificeerd
 		/// kunnen worden.  Als ook dat laatste niet het geval is,
@@ -192,10 +197,16 @@ namespace Chiro.Gap.Workers
 		/// <param name="woonPlaatsNaam">De naam van de woonplaats</param>
 		/// <param name="postNr">Het postnummer van straat en woonplaats</param>
 		/// <param name="postCode">Tekst die in het buitenland volgt op postnummers</param>
+		/// <param name="land">Land van het adres</param>
 		/// <returns>Gevonden adres</returns>
 		/// <remarks>Ieder heeft het recht adressen op te zoeken</remarks>
-		public Adres ZoekenOfMaken(String straatNaam, int? huisNr, string bus, string woonPlaatsNaam, int postNr, string postCode)
+		public Adres ZoekenOfMaken(String straatNaam, int? huisNr, string bus, string woonPlaatsNaam, int postNr, string postCode, string land)
 		{
+			if (!String.IsNullOrEmpty(land) && String.Compare(land, Properties.Resources.Belgie, true) != 0)
+			{
+				// TODO: (#238) Buitenlandse adressen
+				throw new NotImplementedException();
+			}
 			var problemen = new Dictionary<string, FoutBericht>();
 
 			// Al maar preventief een collectie fouten verzamelen.  Als daar uiteindelijk
@@ -247,7 +258,7 @@ namespace Chiro.Gap.Workers
 
 			var adresInDb = _dao.Ophalen(straatNaam, huisNr, bus, postNr, postCode, woonPlaatsNaam, false);
 
-			var adr = new Adres();
+			var adr = new BelgischAdres();
 
 			if (adresInDb == null)
 			{
@@ -259,7 +270,7 @@ namespace Chiro.Gap.Workers
 					// Straat gevonden: aan adres koppelen
 
 					adr.StraatNaam = s;
-					s.Adres.Add(adr);
+					s.BelgischAdres.Add(adr);
 				}
 				else
 				{
@@ -285,7 +296,7 @@ namespace Chiro.Gap.Workers
 					// Gemeente gevonden: aan adres koppelen
 
 					adr.WoonPlaats = sg;
-					sg.Adres.Add(adr);
+					sg.BelgischAdres.Add(adr);
 				}
 				else
 				{
@@ -305,10 +316,6 @@ namespace Chiro.Gap.Workers
 					throw new OngeldigObjectException(problemen);
 				}
 
-				if (postCode != null && !postCode.Equals(String.Empty))
-				{
-					adr.PostCode = postCode;
-				}
 				adr.HuisNr = huisNr;
 				adr.Bus = bus;
 

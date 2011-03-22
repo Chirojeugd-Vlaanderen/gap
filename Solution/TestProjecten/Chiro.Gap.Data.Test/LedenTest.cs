@@ -290,7 +290,7 @@ namespace Chiro.Gap.Data.Test
 			// Act
 
 			// Zoek leden zonder adres
-			var result = dao.Zoeken(new LidFilter {HeeftVoorkeurAdres = false, GroepsWerkJaarID = TestInfo.GROEPSWERKJAARID, LidType = LidType.Alles});
+			var result = dao.Zoeken(new LidFilter {HeeftVoorkeurAdres = false, GroepsWerkJaarID = TestInfo.GROEPSWERKJAARID, LidType = LidType.Alles}, LidExtras.Geen);
 
 			var ids = from ld in result
 			          select ld.ID;
@@ -300,6 +300,33 @@ namespace Chiro.Gap.Data.Test
 			Assert.IsTrue(ids.Contains(TestInfo.LID4ID));	// We verwachten dat lid 4 een adres heeft
 			Assert.IsFalse(ids.Contains(TestInfo.LID3ID));	// ... en lid 3 niet
 		}
+
+		/// <summary>
+		/// Test voor het ophalen van leiding waarvoor geen voorkeursadres gekend is, waarbij
+		/// toch expliciet gevraagd wordt het voorkeursadres op te halen.  In dit geval mag de test
+		/// uiteraard niet crashen.
+		/// </summary>
+		[TestMethod]
+		public void OphalenZonderAdresMetAdres()
+		{
+			// Arrange
+
+			var dao = Factory.Maak<ILeidingDao>();
+
+			// Act
+
+			// Zoek leden zonder adres
+			var result = dao.Zoeken(new LidFilter { HeeftVoorkeurAdres = false, GroepsWerkJaarID = TestInfo.GROEPSWERKJAARID, LidType = LidType.Alles }, LidExtras.VoorkeurAdres);
+
+			var ids = from ld in result
+				  select ld.ID;
+
+			// Assert
+
+			Assert.IsTrue(ids.Contains(TestInfo.LID4ID));	// We verwachten dat lid 4 een adres heeft
+			Assert.IsFalse(ids.Contains(TestInfo.LID3ID));	// ... en lid 3 niet
+		}
+
 
 		/// <summary>
 		/// Test voor het ophalen van de leiding waarvoor een telefoonnr gekend is
@@ -313,7 +340,7 @@ namespace Chiro.Gap.Data.Test
 
 			// Act
 
-			var result = dao.Zoeken(new LidFilter { HeeftTelefoonNummer = true, GroepsWerkJaarID = TestInfo.GROEPSWERKJAARID, LidType = LidType.Alles });
+			var result = dao.Zoeken(new LidFilter { HeeftTelefoonNummer = true, GroepsWerkJaarID = TestInfo.GROEPSWERKJAARID, LidType = LidType.Alles }, LidExtras.Geen);
 
 			var ids = from ld in result
 				  select ld.ID;
@@ -322,6 +349,26 @@ namespace Chiro.Gap.Data.Test
 
 			Assert.IsTrue(ids.Contains(TestInfo.LID4ID));	// We verwachten dat lid 4 een adres heeft
 			Assert.IsFalse(ids.Contains(TestInfo.LID3ID));	// ... en lid 3 niet
+		}
+
+		/// <summary>
+		/// Test of voorkeursadres van een leider mee wordt opgehaald.
+		/// </summary>
+		[TestMethod]
+		public void OphalenMetAdres()
+		{
+			// Arrange
+
+			var dao = Factory.Maak<ILeidingDao>();
+
+			// Act
+
+			var result = dao.Ophalen(TestInfo.LID3ID, LidExtras.VoorkeurAdres);
+
+			// Assert
+
+			Assert.IsTrue(result.GelieerdePersoon.PersoonsAdres.Adres is BelgischAdres);
+			Assert.IsNotNull(((BelgischAdres)result.GelieerdePersoon.PersoonsAdres.Adres).StraatNaam);
 		}
 	}
 

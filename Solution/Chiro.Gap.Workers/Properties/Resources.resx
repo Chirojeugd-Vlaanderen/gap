@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AdNummerNietWijzigen" xml:space="preserve">
     <value>Enkel het nationaal secretariaat mag AD-nummers wijzigen.</value>
@@ -242,5 +242,8 @@
   </data>
   <data name="AfdelingNietVanGroep" xml:space="preserve">
     <value>Je probeert een afdeling te activeren in een groepswerkjaar van een andere groep.  Prutser!</value>
+  </data>
+  <data name="Belgie" xml:space="preserve">
+    <value>België</value>
   </data>
 </root>

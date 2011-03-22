@@ -9,6 +9,7 @@ using System.Data;
 using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -91,17 +92,37 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>Persoon inclusief adresinfo</returns>
 		public Persoon CorresponderendePersoonOphalen(int gelieerdePersoonID)
 		{
+			Persoon result;
+
 			using (var db = new ChiroGroepEntities())
 			{
-				db.Persoon.MergeOption = MergeOption.NoTracking;
-
-				return
-					(from foo in
-					 	db.Persoon.Include(p => p.PersoonsAdres.First().Adres.StraatNaam).Include(
-					 		p => p.PersoonsAdres.First().Adres.WoonPlaats)
+				result = (from foo in
+					 	db.Persoon.Include(p => p.PersoonsAdres.First().Adres)
 					 where foo.GelieerdePersoon.Any(bar => bar.ID == gelieerdePersoonID)
 					 select foo).FirstOrDefault();
+
+				// Instantieer ook adressen met adresgegevens (zowel Belgisch als buitenlands), 
+				// zodat entity framework de adresgegevens mee aan het resultaat koppelt.  
+				// (We kunnen dit niet uitdrukken met lambda-expressies, o.w.v. de verschillen
+				// tussen Belgische en buitenlandse adressen.)
+
+				var alleAdressen = from pa in result.PersoonsAdres select pa.Adres;
+				foreach (var adr in alleAdressen)
+				{
+					if (adr is BelgischAdres)
+					{
+						(adr as BelgischAdres).StraatNaamReference.Load();
+						(adr as BelgischAdres).WoonPlaatsReference.Load();
+					}
+					else
+					{
+						Debug.Assert(adr is BuitenLandsAdres);
+						((BuitenLandsAdres)adr).LandReference.Load();
+					}
+				}
 			}
+
+			return Utility.DetachObjectGraph(result);
 		}
 
 		/// <summary>

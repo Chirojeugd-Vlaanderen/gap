@@ -30,7 +30,17 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
+		public GelieerdePersoon Ophalen(int persoonID, int groepID, bool metVoorkeurAdres, params Expression<Func<GelieerdePersoon, object>>[] paths)
+		{
+			throw new NotImplementedException();
+		}
+
 		public GelieerdePersoon Ophalen(int persoonID, int groepID, params Expression<Func<GelieerdePersoon, object>>[] paths)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IEnumerable<GelieerdePersoon> Ophalen(IList<int> gelieerdePersoonIDs, PersoonsExtras extras)
 		{
 			throw new NotImplementedException();
 		}
@@ -40,7 +50,7 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, bool metHuidigLidInfo, out int aantalTotaal, params Expression<Func<GelieerdePersoon, object>>[] paths)
+		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, bool metHuidigLidInfo, out int aantalTotaal, PersoonsExtras extras)
 		{
 			throw new NotImplementedException();
 		}
@@ -75,7 +85,7 @@ namespace Chiro.Gap.Dummies
 			throw new NotImplementedException();
 		}
 
-		public IList<GelieerdePersoon> AllenOphalen(int GroepID, PersoonSorteringsEnum sortering, params Expression<Func<GelieerdePersoon, object>>[] paths)
+		public IList<GelieerdePersoon> AllenOphalen(int GroepID, PersoonSorteringsEnum sortering, PersoonsExtras extras)
 		{
 			throw new NotImplementedException();
 		}
@@ -86,6 +96,11 @@ namespace Chiro.Gap.Dummies
 		}
 
 		public IEnumerable<GelieerdePersoon> DubbelPuntZonderAdOphalen()
+		{
+			throw new NotImplementedException();
+		}
+
+		public GelieerdePersoon Bewaren(GelieerdePersoon gelieerdePersoon, PersoonsExtras extras)
 		{
 			throw new NotImplementedException();
 		}

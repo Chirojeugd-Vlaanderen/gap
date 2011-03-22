@@ -50,9 +50,9 @@ namespace Chiro.Gap.Workers
 		/// <param name="personenSync">Zorgt voor synchronisate van personen naar Kipadmin</param>
 		/// <param name="adressenSync">Zorgt voor synchronisate van adressen naar Kipadmin</param>
 		public GelieerdePersonenManager(
-			IGelieerdePersonenDao gelieerdePersonenDao, 
-			ICategorieenDao categorieenDao, 
-			IPersonenDao pDao, 
+			IGelieerdePersonenDao gelieerdePersonenDao,
+			ICategorieenDao categorieenDao,
+			IPersonenDao pDao,
 			ICommunicatieVormDao cvDao,
 			IAutorisatieManager autorisatieMgr,
 			IPersonenSync personenSync,
@@ -182,28 +182,28 @@ namespace Chiro.Gap.Workers
 				if (origineel == null || origineel.Persoon.AdNummer == gelieerdePersoon.Persoon.AdNummer)
 				{
 					GelieerdePersoon q; // hier komt de bewaarde persoon, met eventuele
-							    // nieuwe ID's
+					// nieuwe ID's
 
 #if KIPDORP
 					using (var tx = new TransactionScope())
 					{
 #endif
-						q = _gelieerdePersonenDao.Bewaren(gelieerdePersoon, ExtrasNaarLambdas(extras));
+					q = _gelieerdePersonenDao.Bewaren(gelieerdePersoon, extras);
 
-						if (origineel != null && !origineel.Persoon.DubbelPuntAbonnement && gelieerdePersoon.Persoon.DubbelPuntAbonnement)
-						{
-							// Dubbelpuntabonnement werd aangevinkt.
-							_dubbelpuntSync.Abonneren(gelieerdePersoon);
-	
-						}
+					if (origineel != null && !origineel.Persoon.DubbelPuntAbonnement && gelieerdePersoon.Persoon.DubbelPuntAbonnement)
+					{
+						// Dubbelpuntabonnement werd aangevinkt.
+						_dubbelpuntSync.Abonneren(gelieerdePersoon);
 
-						if (gelieerdePersoon.Persoon.AdNummer != null || gelieerdePersoon.Persoon.AdInAanvraag)
-						{
-							_personenSync.Bewaren(
-								gelieerdePersoon,
-								(extras & PersoonsExtras.Adressen) != 0,
-								(extras & PersoonsExtras.Communicatie) != 0);
-						}
+					}
+
+					if (gelieerdePersoon.Persoon.AdNummer != null || gelieerdePersoon.Persoon.AdInAanvraag)
+					{
+						_personenSync.Bewaren(
+							gelieerdePersoon,
+							(extras & PersoonsExtras.Adressen) != 0,
+							(extras & PersoonsExtras.Communicatie) != 0);
+					}
 #if KIPDORP
 						tx.Complete();
 					}
@@ -236,7 +236,7 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			return _gelieerdePersonenDao.AllenOphalen(groepID, sortering, ExtrasNaarLambdas(extras));
+			return _gelieerdePersonenDao.AllenOphalen(groepID, sortering, extras);
 		}
 
 		/// <summary>
@@ -305,7 +305,7 @@ namespace Chiro.Gap.Workers
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
-			return _gelieerdePersonenDao.PaginaOphalenUitCategorie(categorieID, pagina, paginaGrootte, sortering, metHuidigLidInfo, out aantalTotaal, ExtrasNaarLambdas(extras));
+			return _gelieerdePersonenDao.PaginaOphalenUitCategorie(categorieID, pagina, paginaGrootte, sortering, metHuidigLidInfo, out aantalTotaal, extras);
 		}
 
 		/// <summary>
@@ -546,7 +546,7 @@ namespace Chiro.Gap.Workers
 		/// <returns>De gevraagde rij gelieerde personen.  De personen komen sowieso mee.</returns>
 		public IEnumerable<GelieerdePersoon> Ophalen(IEnumerable<int> gelieerdePersoonIDs, PersoonsExtras extras)
 		{
-			return _gelieerdePersonenDao.Ophalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersoonIDs), ExtrasNaarLambdas(extras));
+			return _gelieerdePersonenDao.Ophalen(_autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersoonIDs), extras);
 		}
 
 		/// <summary>
@@ -623,7 +623,7 @@ namespace Chiro.Gap.Workers
 			// TODO: Dit lijkt nog te hard op AdresToevoegen in PersonenManager
 
 			var gpersIDs = (from p in gelieerdePersonen
-							select p.ID).ToList();
+					select p.ID).ToList();
 			var mijngPersIDs = _autorisatieMgr.EnkelMijnGelieerdePersonen(gpersIDs);
 
 			if (gpersIDs.Count() != mijngPersIDs.Count())
@@ -722,6 +722,11 @@ namespace Chiro.Gap.Workers
 			var personen = from pa in persoonsAdressen select pa.Persoon;
 			var gelieerdePersonen = personen.SelectMany(p => p.GelieerdePersoon);
 
+			foreach (var pa in gelieerdePersonen.SelectMany(gp => gp.Persoon.PersoonsAdres))
+			{
+				Debug.Assert(!(pa.Adres is BelgischAdres) || ((BelgischAdres)pa.Adres).StraatNaam != null);
+			}
+
 			// overloop te verwijderen persoonsadressen
 
 			foreach (PersoonsAdres pa in persoonsAdressen)
@@ -779,73 +784,32 @@ namespace Chiro.Gap.Workers
 			using (var tx = new TransactionScope())
 			{
 #endif
-				// eerst syncen naar kipadmin (gewoon om debugtechnische redenen; we zitten toch in
-				// een transactie.)
-				// geef nieuwe voorkeursadressen van personen met ad-nummer door aan kipadmin
-				var voorKeursAdressen = (from gp in gelieerdePersonen
-							 where (gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag) && gp.PersoonsAdres != null
-				                         select gp.PersoonsAdres);
 
-				_adressenSync.StandaardAdressenBewaren(voorKeursAdressen);
+			foreach (var gp in gelieerdePersonen)
+			{
+				Debug.Assert(gp.PersoonsAdres == null || !(gp.PersoonsAdres.Adres is BelgischAdres) || ((BelgischAdres)gp.PersoonsAdres.Adres).StraatNaam != null);
+			}
 
-				// dan bewaren in GAP
-				// bewaar al dan niet aangepaste voorkeursadres
-				_gelieerdePersonenDao.Bewaren(gelieerdePersonen, gp => gp.PersoonsAdres);
+			// eerst syncen naar kipadmin (gewoon om debugtechnische redenen; we zitten toch in
+			// een transactie.)
+			// geef nieuwe voorkeursadressen van personen met ad-nummer door aan kipadmin
+			var voorKeursAdressen = (from gp in gelieerdePersonen
+						 where (gp.Persoon.AdNummer != null || gp.Persoon.AdInAanvraag) && gp.PersoonsAdres != null
+						 select gp.PersoonsAdres);
 
-				// verwijder te verwijderen persoonsadres
-				_personenDao.Bewaren(personen, p => p.PersoonsAdres.First().GelieerdePersoon);
+			_adressenSync.StandaardAdressenBewaren(voorKeursAdressen);
+
+			// dan bewaren in GAP
+			// bewaar al dan niet aangepaste voorkeursadres
+			_gelieerdePersonenDao.Bewaren(gelieerdePersonen, gp => gp.PersoonsAdres);
+
+			// verwijder te verwijderen persoonsadres
+			_personenDao.Bewaren(personen, p => p.PersoonsAdres.First().GelieerdePersoon);
 
 #if KIPDORP
 				tx.Complete();
 			}
 #endif
-		}
-
-		/// <summary>
-		/// Converteert de PersoonsExtras <paramref name="extras"/> naar lambda-expressies die mee naar 
-		/// de data access moeten om de extra's daadwerkelijk op te halen.
-		/// </summary>
-		/// <param name="extras">Te converteren PersoonsExtra's</param>
-		/// <returns>Lambda-expressies geschikt voor onze DAO's</returns>
-		/// <remarks>
-		/// Het gekoppeld persoonsobject wordt *altijd* mee opgehaald.  (Dit is min of meer
-		/// historisch gegroeid)
-		/// </remarks>
-		private static Expression<Func<GelieerdePersoon, object>>[] ExtrasNaarLambdas(PersoonsExtras extras)
-		{
-			var paths = new List<Expression<Func<GelieerdePersoon, object>>> { gp => gp.Persoon };
-
-			if ((extras & PersoonsExtras.Adressen) != 0)
-			{
-				// alle adressen
-				paths.Add(gp => gp.Persoon.PersoonsAdres.First().Adres.StraatNaam.WithoutUpdate());
-				paths.Add(gp => gp.Persoon.PersoonsAdres.First().Adres.WoonPlaats.WithoutUpdate());
-
-				// standaardadres
-				paths.Add(gp => gp.PersoonsAdres.Adres);
-			}
-
-			if ((extras & PersoonsExtras.Groep) != 0)
-			{
-				paths.Add(gp => gp.Groep.WithoutUpdate());
-			}
-
-			if ((extras & PersoonsExtras.Communicatie) != 0)
-			{
-				paths.Add(gp => gp.Communicatie.First().CommunicatieType.WithoutUpdate());
-			}
-
-			if ((extras & PersoonsExtras.Categorieen) != 0)
-			{
-				paths.Add(gp => gp.Categorie.First().WithoutUpdate());
-			}
-
-			if ((extras & PersoonsExtras.GroepsWerkJaren) != 0)
-			{
-				paths.Add(gp => gp.Lid.First().GroepsWerkJaar.WithoutUpdate());
-			}
-
-			return paths.ToArray();
 		}
 
 		/// <summary>
@@ -860,7 +824,7 @@ namespace Chiro.Gap.Workers
 				if (gp.PersoonsAdres == null)
 				{
 					throw new FoutNummerException(
-						FoutNummer.AdresOntbreekt, 
+						FoutNummer.AdresOntbreekt,
 						String.Format(
 							Properties.Resources.DubbelPuntZonderAdres,
 							gp.Persoon.VolledigeNaam));

@@ -18,7 +18,17 @@ namespace Chiro.Gap.Dummies
 	/// </summary>
 	public class DummyLeidingDao : DummyDao<Leiding>, ILeidingDao
 	{
-		public IEnumerable<Leiding> Zoeken(LidFilter filter, Expression<Func<Leiding, object>>[] paths)
+		public IEnumerable<Leiding> Zoeken(LidFilter filter, LidExtras extras)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Leiding Bewaren(Leiding entiteit, LidExtras extras)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Leiding Ophalen(int lidID, LidExtras extras)
 		{
 			throw new NotImplementedException();
 		}

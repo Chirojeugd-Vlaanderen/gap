@@ -141,7 +141,7 @@ namespace Chiro.Gap.Data.Test
 				1, 10, PersoonSorteringsEnum.Naam,
 				false,
 				out aantalTotaal,
-				gp => gp.Persoon);
+				PersoonsExtras.Geen);
 
 			// assert
 			Assert.IsTrue(aantalTotaal == TestInfo.AANTALINCATEGORIE);
@@ -162,7 +162,7 @@ namespace Chiro.Gap.Data.Test
 				1, 10, PersoonSorteringsEnum.Naam,
 				false,
 				out aantalTotaal,
-				gp => gp.Lid, gp => gp.Persoon);
+				PersoonsExtras.Leden);
 
 			// assert
 			GelieerdePersoon lid = (from gp in pagina

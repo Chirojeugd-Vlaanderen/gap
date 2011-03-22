@@ -35,6 +35,8 @@
 		public const int AFDELING2TOT = 2004;
 		public const int AFDELING3ID = 5650;
 
+		public const int ADRESID = 53;
+
 		public const int GROEPSWERKJAARID = 3963;
 		public const string ZOEKNAAM = "Bosmans";
 		public const string GAV1 = "Yvonne";

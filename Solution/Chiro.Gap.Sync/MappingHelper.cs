@@ -26,9 +26,28 @@ namespace Chiro.Gap.Sync
 			Mapper.CreateMap<Adres, SyncService.Adres>()
 				.ForMember(dst => dst.ExtensionData, opt => opt.Ignore())
 				.ForMember(dst => dst.Land, opt => opt.Ignore()) // TODO (#238): buitenlandse adressen
-				.ForMember(dst => dst.PostNr, opt => opt.MapFrom(src => src.StraatNaam.PostNummer))
-				.ForMember(dst => dst.Straat, opt => opt.MapFrom(src => src.StraatNaam.Naam))
-				.ForMember(dst => dst.WoonPlaats, opt => opt.MapFrom(src => src.WoonPlaats.Naam));
+				.ForMember(dst => dst.PostCode, opt => opt.Ignore()) // TODO (#238): buitenlandse adressen
+				.ForMember(dst => dst.PostNr,
+				           opt =>
+				           opt.MapFrom(
+				           	src =>
+				           	src is BelgischAdres
+				           		? (src as BelgischAdres).StraatNaam.PostNummer
+				           		: src is BuitenLandsAdres ? (src as BuitenLandsAdres).PostNummer : 0))
+				.ForMember(dst => dst.Straat,
+				           opt =>
+				           opt.MapFrom(
+				           	src =>
+				           	src is BelgischAdres
+				           		? (src as BelgischAdres).StraatNaam.Naam
+				           		: src is BuitenLandsAdres ? (src as BuitenLandsAdres).Straat : String.Empty))
+				.ForMember(dst => dst.WoonPlaats,
+				           opt =>
+				           opt.MapFrom(
+				           	src =>
+				           	src is BelgischAdres
+				           		? (src as BelgischAdres).WoonPlaats.Naam
+				           		: src is BuitenLandsAdres ? (src as BuitenLandsAdres).WoonPlaats : String.Empty));
 
 			Mapper.CreateMap<CommunicatieVorm, CommunicatieMiddel>()
 				.ForMember(dst => dst.ExtensionData, opt => opt.Ignore())

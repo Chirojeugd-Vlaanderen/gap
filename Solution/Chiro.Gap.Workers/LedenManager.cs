@@ -387,7 +387,8 @@ namespace Chiro.Gap.Workers
 		/// <returns>Een kloon van het lid en de extra's, met eventuele nieuwe ID's ingevuld</returns>
 		/// <remarks>BELANGRIJK! Een nieuw lid mag niet direct gesynct worden naar Kipadmin! Dit gebeurt
 		/// pas bij het verstrijken van de probeerperiode, zie de method 'OverZettenNaProbeerPeriode'.  Enkel wijzigingen
-		/// van reeds bestaande leden mogen hier naar de queue geduwd worden.</remarks>
+		/// van reeds bestaande leden mogen hier naar de queue geduwd worden.
+		/// </remarks>
 		public Lid Bewaren(Lid lid, LidExtras extras)
 		{
 			if (!_autorisatieMgr.IsGavLid(lid.ID))
@@ -400,7 +401,7 @@ namespace Chiro.Gap.Workers
 			{
 				try
 				{
-					nieuwlid = _daos.KindDao.Bewaren((Kind)lid, ExtrasNaarLambdasKind(extras));
+					nieuwlid = _daos.KindDao.Bewaren((Kind)lid, extras);
 				}
 				catch (DubbeleEntiteitException<Kind>)
 				{
@@ -411,7 +412,7 @@ namespace Chiro.Gap.Workers
 			{
 				try
 				{
-					nieuwlid = _daos.LeidingDao.Bewaren((Leiding)lid, ExtrasNaarLambdasLeiding(extras));
+					nieuwlid = _daos.LeidingDao.Bewaren((Leiding)lid, extras);
 				}
 				catch (Exception)
 				{
@@ -442,11 +443,11 @@ namespace Chiro.Gap.Workers
 			Lid lid;
 			if (_daos.LedenDao.IsLeiding(lidID))
 			{
-				lid = _daos.LeidingDao.Ophalen(lidID, ExtrasNaarLambdasLeiding(extras));
+				lid = _daos.LeidingDao.Ophalen(lidID, extras);
 			}
 			else
 			{
-				lid = _daos.KindDao.Ophalen(lidID, ExtrasNaarLambdasKind(extras));
+				lid = _daos.KindDao.Ophalen(lidID, extras);
 			}
 			return lid;
 		}
@@ -579,119 +580,6 @@ namespace Chiro.Gap.Workers
 			return werkJaarStart <= dateTime && dateTime <= werkJaarStop;
 		}
 
-		/// <summary>
-		/// Converteert lidextras <paramref name="extras"/> naar lambda-expresses voor een
-		/// KindDao
-		/// </summary>
-		/// <param name="extras">Te converteren lidextras</param>
-		/// <returns>Lambda-expresses voor een KindDao</returns>
-		private static Expression<Func<Kind, object>>[] ExtrasNaarLambdasKind(LidExtras extras)
-		{
-			var paths = ExtrasNaarLambdas<Kind>(extras & ~LidExtras.Afdelingen);
-
-			if ((extras & LidExtras.Afdelingen) != 0)
-			{
-				paths.Add(ld => ld.AfdelingsJaar.Afdeling.WithoutUpdate());
-			}
-
-			return paths.ToArray();
-		}
-
-		/// <summary>
-		/// Converteert lidextras <paramref name="extras"/> naar lambda-expresses voor een
-		/// LeidingDao.
-		/// </summary>
-		/// <param name="extras">Te converteren lidextras</param>
-		/// <returns>Lambda-expresses voor een LeidingDao</returns>
-		private static Expression<Func<Leiding, object>>[] ExtrasNaarLambdasLeiding(LidExtras extras)
-		{
-			var paths = ExtrasNaarLambdas<Leiding>(extras & ~LidExtras.Afdelingen);
-
-			if ((extras & LidExtras.Afdelingen) != 0)
-			{
-				paths.Add(ld => ld.AfdelingsJaar.First().Afdeling.WithoutUpdate());
-			}
-
-			return paths.ToArray();
-		}
-
-		/// <summary>
-		/// Converteert lidextras <paramref name="extras"/> naar lambda-expresses voor een
-		/// LedenDao.
-		/// </summary>
-		/// <param name="extras">Te converteren lidextras</param>
-		/// <returns>Lambda-expresses voor een LedenDao</returns>
-		private static IEnumerable<Expression<Func<Lid, object>>> ExtrasNaarLambdasLid(LidExtras extras)
-		{
-			return ExtrasNaarLambdas<Lid>(extras & ~LidExtras.Afdelingen).ToArray();
-		}
-
-		/// <summary>
-		/// Converteert LidExtra's naar lambda-expressies voor de data-access
-		/// </summary>
-		/// <param name="extras">Te converteren lidextra's</param>
-		/// <typeparam name="T"></typeparam>
-		/// <returns>Lijst lambda-expressies geschikt voor de LedenDAO</returns>
-		private static IList<Expression<Func<T, object>>> ExtrasNaarLambdas<T>(LidExtras extras) where T : Lid
-		{
-			var paths = new List<Expression<Func<T, object>>> { ld => ld.GroepsWerkJaar.WithoutUpdate() };
-
-			if ((extras & LidExtras.VoorkeurAdres) != 0)
-			{
-				// enkel voorkeursadres
-				paths.Add(ld => ld.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats.WithoutUpdate());
-				paths.Add(ld => ld.GelieerdePersoon.PersoonsAdres.Adres.StraatNaam.WithoutUpdate());
-			}
-
-			if ((extras & LidExtras.Adressen) != 0)
-			{
-				// alle adressen
-				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsAdres.First().Adres.WoonPlaats.WithoutUpdate());
-				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsAdres.First().Adres.StraatNaam.WithoutUpdate());
-
-				// link naar standaardadres
-				paths.Add(ld => ld.GelieerdePersoon.PersoonsAdres.Adres.WithoutUpdate());
-			}
-			else if ((extras & LidExtras.Persoon) != 0)
-			{
-				paths.Add(ld => ld.GelieerdePersoon.Persoon);
-			}
-
-			if ((extras & LidExtras.Communicatie) != 0)
-			{
-				paths.Add(ld => ld.GelieerdePersoon.Communicatie.First().CommunicatieType.WithoutUpdate());
-			}
-
-			if ((extras & LidExtras.Groep) != 0)
-			{
-				paths.Add(ld => ld.GroepsWerkJaar.Groep.WithoutUpdate());
-			}
-			if ((extras & LidExtras.Afdelingen) != 0)
-			{
-				//// Onderstaande had cool geweest; dan hadden we de generieke <T> niet nodig. 
-				//// Maar helaas lukt dat (nog??) niet met AttachObjectGraph:
-
-				// paths.Add(ld => ld is Kind ? (ld as Kind).AfdelingsJaar.Afdeling : ld is Leiding ? (ld as Leiding).AfdelingsJaar.First().Afdeling : null);
-
-				//// Dus:
-				throw new NotSupportedException();
-			}
-			if ((extras & LidExtras.Functies) != 0)
-			{
-				// FIXME (#116): Hieronder zou 'WithoutUpdate' gebruikt moeten worden, maar owv #116 kan dat nog niet.
-				paths.Add(ld => ld.Functie.First());
-			}
-			if ((extras & LidExtras.AlleAfdelingen) != 0)
-			{
-				paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().Afdeling.WithoutUpdate());
-				paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().OfficieleAfdeling.WithoutUpdate());
-			}
-			if ((extras & LidExtras.Verzekeringen) != 0)
-			{
-				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsVerzekering.First().VerzekeringsType.WithoutUpdate());
-			}
-			return paths;
-		}
 
 		/// <summary>
 		/// Zoekt de niet-overgezette leden op wier probeerperiode voorbij is, en stuurt diens gegevens
@@ -853,8 +741,8 @@ namespace Chiro.Gap.Workers
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 
-			IEnumerable<Lid> kinderen = _daos.KindDao.Zoeken(filter, ExtrasNaarLambdasKind(extras)).Cast<Lid>();
-			IEnumerable<Lid> leiding = _daos.LeidingDao.Zoeken(filter, ExtrasNaarLambdasLeiding(extras)).Cast<Lid>();
+			IEnumerable<Lid> kinderen = _daos.KindDao.Zoeken(filter, extras).Cast<Lid>();
+			IEnumerable<Lid> leiding = _daos.LeidingDao.Zoeken(filter, extras).Cast<Lid>();
 
 			// Sorteren doen we hier niet; dat is presentatie :)
 			// Voeg kinderen en leiding samen, en haal de inactieve er uit

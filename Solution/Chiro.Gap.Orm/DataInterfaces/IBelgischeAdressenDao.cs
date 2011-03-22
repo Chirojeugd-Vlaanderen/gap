@@ -14,19 +14,8 @@ namespace Chiro.Gap.Orm.DataInterfaces
 	/// <summary>
 	/// Interface voor een data access object voor adressen
 	/// </summary>
-	public interface IAdressenDao : IDao<Adres>
+	public interface IBelgischeAdressenDao : IDao<BelgischAdres>
 	{
-		/// <summary>
-		/// Haalt een adres op, samen met de gekoppelde personen
-		/// </summary>
-		/// <param name="adresID">ID op te halen adres</param>
-		/// <param name="user">Als user gegeven, worden enkel de
-		/// personen gekoppeld waar die user bekijkrechten op heeft.
-		/// Als user de lege string is, worden alle bewoners meegeleverd.
-		/// </param>
-		/// <returns>Adresobject met gekoppelde personen</returns>
-		Adres BewonersOphalen(int adresID, string user);
-
 		/// <summary>
 		/// Haalt het adres met ID <paramref name="adresID"/> op, inclusief de bewoners uit de groepen met ID
 		/// in <paramref name="groepIDs"/>
@@ -37,7 +26,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// ze gelieerd aan een andere groep dan de jouwe.</param>
 		/// <remarks>ALLE ANDERE ADRESSEN VAN DE GEKOPPELDE BEWONERS WORDEN OOK MEE OPGEHAALD</remarks>
 		/// <returns>Het gevraagde adres met de relevante bewoners.</returns>
-		Adres BewonersOphalen(int adresID, IEnumerable<int> groepIDs, bool metAlleGelieerdePersonen);
+		BelgischAdres BewonersOphalen(int adresID, IEnumerable<int> groepIDs, bool metAlleGelieerdePersonen);
 
 		/// <summary>
 		/// Haalt adres op, op basis van de adresgegevens
@@ -52,7 +41,7 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// opgehaald.  (ALLE persoonsadressen gekoppeld aan het adres; niet
 		/// zomaar over de lijn sturen dus)</param>
 		/// <returns>Gevraagd adresobject</returns>
-		Adres Ophalen(
+		BelgischAdres Ophalen(
 			string straatNaam, int? huisNr, string bus, 
 			int postNr, string postCode, string woonPlaatsNaam, 
 			bool metBewoners);

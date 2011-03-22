@@ -42,14 +42,14 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		/// <param name="filter">De niet-nulle properties van de filter
 		/// bepalen waarop gezocht moet worden</param>
-		/// <param name="paths">Bepaalt de mee op te halen gekoppelde entiteiten. 
+		/// <param name="extras">Bepaalt de mee op te halen gekoppelde entiteiten. 
 		/// (Adressen ophalen vertraagt aanzienlijk.)
 		/// </param>
 		/// <returns>Lijst met info over gevonden kinderen</returns>
 		/// <remarks>
-		/// Er wordt enkel actieve leden opgehaald
+		/// Er worden enkel actieve leden opgehaald
 		/// </remarks>
-		public IEnumerable<Kind> Zoeken(LidFilter filter, params Expression<Func<Kind, object>>[] paths)
+		public IEnumerable<Kind> Zoeken(LidFilter filter, LidExtras extras)
 		{
 			Kind[] resultaat;
 
@@ -145,11 +145,61 @@ namespace Chiro.Gap.Data.Ef
 										cm => cm.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email));
 				}
 
+				var paths = LedenDao.ExtrasNaarLambdasKind(extras);
 				resultaat = IncludesToepassen(query as ObjectQuery<Kind>, paths).ToArray();
+
+				if ((extras & LidExtras.Adressen) != 0)
+				{
+					GelieerdePersonenDao.AlleAdressenKoppelen(db, from l in resultaat select l.GelieerdePersoon);
+				}
+				else if ((extras & LidExtras.VoorkeurAdres) != 0)
+				{
+					GelieerdePersonenDao.VoorkeursAdresKoppelen(db, from l in resultaat select l.GelieerdePersoon);
+				}
 			}
 
 			return Utility.DetachObjectGraph<Kind>(resultaat);
 		}
 
+		/// <summary>
+		/// Bewaart een kind, inclusief de extras gegeven in <paramref name="extras"/>
+		/// </summary>
+		/// <param name="extras">Bepaalt de gekoppelde entiteiten die mee bewaard moeten worden</param>
+		/// <returns>Kopie van het bewaarde kind</returns>
+		public Kind Bewaren(Kind kind, LidExtras extras)
+		{
+			return Bewaren(kind, LedenDao.ExtrasNaarLambdasKind(extras));
+		}
+
+		/// <summary>
+		/// Haalt een kind op, samen met de gekoppelde entiteiten bepaald door <paramref name="extras"/>.
+		/// </summary>
+		/// <param name="lidID">ID van op te halen kind</param>
+		/// <param name="extras">bepaalt de mee op te halen gekoppelde entiteiten</param>
+		/// <returns>Het gevraagde kind</returns>
+		public Kind Ophalen(int lidID, LidExtras extras)
+		{
+			Kind resultaat;
+
+			using (var db = new ChiroGroepEntities())
+			{
+				var lambdas = LedenDao.ExtrasNaarLambdasKind(extras);
+				var query = from l in db.Lid.OfType<Kind>()
+					    where l.ID == lidID
+					    select l;
+				resultaat = IncludesToepassen(query as ObjectQuery<Kind>, lambdas).FirstOrDefault();
+
+				if ((extras & LidExtras.Adressen) != 0)
+				{
+					GelieerdePersonenDao.AlleAdressenKoppelen(db, resultaat.GelieerdePersoon);
+				}
+				else if ((extras & LidExtras.VoorkeurAdres) != 0)
+				{
+					GelieerdePersonenDao.VoorkeursAdresKoppelen(db, resultaat.GelieerdePersoon);
+				}
+			}
+
+			return Utility.DetachObjectGraph(resultaat);
+		}
 	}
 }

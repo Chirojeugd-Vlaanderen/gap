@@ -42,14 +42,14 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		/// <param name="filter">De niet-nulle properties van de filter
 		/// bepalen waarop gezocht moet worden</param>
-		/// <param name="paths">Bepaalt de mee op te halen gekoppelde entiteiten. 
+		/// <param name="extras">Bepaalt de mee op te halen gekoppelde entiteiten. 
 		/// (Adressen ophalen vertraagt aanzienlijk.)
 		/// </param>
 		/// <returns>Lijst met info over gevonden leiding</returns>
 		/// <remarks>
 		/// Er wordt enkel actieve leiding opgehaald
 		/// </remarks>
-		public IEnumerable<Leiding> Zoeken(LidFilter filter, params Expression<Func<Leiding, object>>[] paths)
+		public IEnumerable<Leiding> Zoeken(LidFilter filter,LidExtras extras)
 		{
 			Leiding[] resultaat;
 
@@ -144,10 +144,62 @@ namespace Chiro.Gap.Data.Ef
 										cm => cm.CommunicatieType.ID == (int)CommunicatieTypeEnum.Email));
 				}
 
+				var paths = LedenDao.ExtrasNaarLambdasLeiding(extras);
 				resultaat = IncludesToepassen(query as ObjectQuery<Leiding>, paths).ToArray();
+
+				if ((extras & LidExtras.Adressen) != 0)
+				{
+					GelieerdePersonenDao.AlleAdressenKoppelen(db, from l in resultaat select l.GelieerdePersoon);
+				}
+				else if ((extras & LidExtras.VoorkeurAdres) != 0)
+				{
+					GelieerdePersonenDao.VoorkeursAdresKoppelen(db, from l in resultaat select l.GelieerdePersoon);
+				}
 			}
 
 			return Utility.DetachObjectGraph<Leiding>(resultaat);
+		}
+
+		/// <summary>
+		/// Bewaart een leid(st)er, inclusief de extras gegeven in <paramref name="extras"/>
+		/// </summary>
+		/// <param name="entiteit">Te bewaren leid(st)er</param>
+		/// <param name="extras">Bepaalt de gekoppelde entiteiten die mee bewaard moeten worden</param>
+		/// <returns>Kopie van de bewaarde leid(st)er</returns>
+		public Leiding Bewaren(Leiding entiteit, LidExtras extras)
+		{
+			return Bewaren(entiteit, LedenDao.ExtrasNaarLambdasLeiding(extras));
+		}
+
+		/// <summary>
+		/// Haalt een leid(st)er op, samen met de gekoppelde entiteiten bepaald door <paramref name="extras"/>.
+		/// </summary>
+		/// <param name="lidID">ID van op te halen leid(st)er</param>
+		/// <param name="extras">bepaalt de mee op te halen gekoppelde entiteiten</param>
+		/// <returns>De gevraagde leid(st)er</returns>
+		public Leiding Ophalen(int lidID, LidExtras extras)
+		{
+			Leiding resultaat;
+
+			using (var db = new ChiroGroepEntities())
+			{
+				var lambdas = LedenDao.ExtrasNaarLambdasLeiding(extras);
+				var query = from l in db.Lid.OfType<Leiding>()
+				            where l.ID == lidID
+				            select l;
+				resultaat = IncludesToepassen(query as ObjectQuery<Leiding>, lambdas).FirstOrDefault();
+
+				if ((extras & LidExtras.Adressen) != 0)
+				{
+					GelieerdePersonenDao.AlleAdressenKoppelen(db, resultaat.GelieerdePersoon);
+				}
+				else if ((extras & LidExtras.VoorkeurAdres) != 0)
+				{
+					GelieerdePersonenDao.VoorkeursAdresKoppelen(db, resultaat.GelieerdePersoon);
+				}
+			}
+
+			return Utility.DetachObjectGraph(resultaat);
 		}
 	}
 }

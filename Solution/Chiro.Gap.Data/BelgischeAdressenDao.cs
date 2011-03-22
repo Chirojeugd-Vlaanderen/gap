@@ -20,19 +20,19 @@ namespace Chiro.Gap.Data.Ef
 	/// <summary>
 	/// Gegevenstoegangsobject voor adressen
 	/// </summary>
-	public class AdressenDao : Dao<Adres, ChiroGroepEntities>, IAdressenDao
+	public class BelgischeAdressenDao : Dao<BelgischAdres, ChiroGroepEntities>, IBelgischeAdressenDao
 	{
 		/// <summary>
 		/// Instantieert een gegevenstoegangsobject voor adressen
 		/// </summary>
-		public AdressenDao()
+		public BelgischeAdressenDao()
 		{
-			ConnectedEntities = new Expression<Func<Adres, object>>[3] 
-            { 
-				e => e.StraatNaam.WithoutUpdate(),
-				e => e.WoonPlaats.WithoutUpdate(),
-				e => e.PersoonsAdres.First().Persoon.WithoutUpdate() 
-            };
+			ConnectedEntities = new Expression<Func<BelgischAdres, object>>[3] 
+			    { 
+						e => e.StraatNaam.WithoutUpdate(),
+						e => e.WoonPlaats.WithoutUpdate(),
+						e => e.PersoonsAdres.First().Persoon.WithoutUpdate() 
+			    };
 		}
 
 		// TODO (#655): kan deze methode ook vervangen worden door de generische 'bewaren met lambda expressies'??
@@ -46,7 +46,7 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>Referentie naar het bewaarde adres</returns>
 		/// <opmerking>ID en Versie worden aangepast in Adres, eventuele
 		/// gewijzigde velden in gerelateerde entity's niet!</opmerking>
-		public override Adres Bewaren(Adres adr)
+		public override BelgischAdres Bewaren(BelgischAdres adr)
 		{
 			// Deze assertions moeten eigenlijk afgedwongen worden
 			// door de businesslaag.  En eigenlijk moet deze method ook
@@ -88,79 +88,6 @@ namespace Chiro.Gap.Data.Ef
 		}
 
 		/// <summary>
-		/// Haalt een adres op, samen met de gekoppelde personen
-		/// </summary>
-		/// <param name="adresID">ID op te halen adres</param>
-		/// <param name="user">Als user gegeven, worden enkel de
-		/// personen gekoppeld waar die user bekijkrechten op heeft.
-		/// Als user de lege string is, worden alle bewoners meegeleverd.
-		/// </param>
-		/// <returns>Adresobject met gekoppelde personen</returns>
-		public Adres BewonersOphalen(int adresID, string user)
-		{
-			// TODO: Code na te kijken
-
-			Adres resultaat = null;
-			IList<PersoonsAdres> lijst = null;
-
-			using (var db = new ChiroGroepEntities())
-			{
-				db.PersoonsAdres.MergeOption = MergeOption.NoTracking;
-
-				// NoTracking schakelt object tracking uit.  Op die manier
-				// moet het resultaat niet gedetachet worden.  Detachen
-				// deed blijkbaar de navigation properties verdwijnen.
-				// (Voor entity framework moeten alle objecten in een
-				// graaf ofwel aan dezelfde context hangen, ofwel aan
-				// geen context hangen.  Het adres detachen, koppelt het
-				// los van al de rest.)
-
-				var query
-					= db.PersoonsAdres.Include(pa => pa.Adres.StraatNaam)
-					.Include(pa => pa.Adres.WoonPlaats)
-					.Include("Persoon")
-					.Where(pera => pera.Adres.ID == adresID);
-
-				if (user != String.Empty)
-				{
-					// Controleer op niet-vervallen gebruikersrecht
-
-					query = query
-						.Where(pera => pera.Persoon.GelieerdePersoon.Any(
-						gp => gp.Groep.GebruikersRecht.Any(
-							gr => gr.Gav.Login == user && (gr.VervalDatum == null
-							|| gr.VervalDatum > DateTime.Now))));
-				}
-				query = query.Select(pera => pera);
-
-				// Nadeel van de NoTracking is dat aan elk persoonsadres
-				// een identieke kopie van hetzelfde adres zal hangen.
-				// Dat moet sebiet manueel gefixt worden.
-
-				lijst = query.ToList();
-			}
-
-			// FIXME: Voor het gemak ga ik ervan uit dat er steeds minstens iemand op het gezochte adres woont.
-			// Dat is uiteraard niet noodzakelijk het geval.
-
-			// Als deze assert failt, dan zou het ook kunnen dat het adres niet bestaat!
-			Debug.Assert(lijst.Count > 0);
-
-			// Koppel nu alle PersoonsAdressen aan dezelfde instantie van Adres.
-			// (lijst[0].Adres, vandaar dat we lijst[0] zelf niet moeten updaten)
-
-			for (int i = 1; i < lijst.Count; ++i)
-			{
-				lijst[i].Adres = lijst[0].Adres;
-				lijst[0].Adres.PersoonsAdres.Add(lijst[i]);
-			}
-
-			resultaat = lijst[0].Adres;
-
-			return resultaat;
-		}
-
-		/// <summary>
 		/// Haalt adres op op basis van criteria
 		/// </summary>
 		/// <param name="straatNaam">De naam van de straat</param>
@@ -172,18 +99,18 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="metBewoners">Bij <c>true</c> worden ook de
 		/// persoonsadressen en gelieerde personen opgehaald</param>
 		/// <returns>Een adres als gevonden, anders null</returns>
-		public Adres Ophalen(
+		public BelgischAdres Ophalen(
 			string straatNaam, int? huisNr, string bus,
 			int postNr, string postCode, string woonPlaatsNaam,
 			bool metBewoners)
 		{
-			Adres resultaat;
+			BelgischAdres resultaat;
 
 			using (var db = new ChiroGroepEntities())
 			{
 				db.Adres.MergeOption = MergeOption.NoTracking;
 
-				var adressentabel = db.Adres.Include(adr => adr.StraatNaam).Include(adr => adr.WoonPlaats);
+				var adressentabel = db.Adres.OfType<BelgischAdres>().Include(adr => adr.StraatNaam).Include(adr => adr.WoonPlaats);
 
 				if (metBewoners)
 				{
@@ -191,12 +118,11 @@ namespace Chiro.Gap.Data.Ef
 				}
 
 				resultaat = (
-					from Adres a in adressentabel
+					from a in adressentabel
 					where (a.StraatNaam.Naam == straatNaam && a.StraatNaam.PostNummer == postNr
 					&& a.WoonPlaats.Naam == woonPlaatsNaam && a.WoonPlaats.PostNummer == postNr
 					&& (a.HuisNr == null && huisNr == null || a.HuisNr == huisNr)
-					&& (a.Bus == null && bus == null || a.Bus == bus)
-					&& (a.PostCode == null && postCode == null || a.PostCode == postCode))
+					&& (a.Bus == null && bus == null || a.Bus == bus))
 					select a).FirstOrDefault();
 
 				// Gekke constructie voor huisnummer, bus en postcode, omdat null anders niet goed
@@ -219,9 +145,10 @@ namespace Chiro.Gap.Data.Ef
 		/// inclusief de gelieerde personen die tot een andere groep behoren.</param>
 		/// <returns>Het gevraagde adres met de relevante bewoners.</returns>
 		/// <remarks>ALLE ANDERE ADRESSEN VAN DE GEKOPPELDE BEWONERS WORDEN OOK MEE OPGEHAALD</remarks>
-		public Adres BewonersOphalen(int adresID, IEnumerable<int> groepIDs, bool alleGelieerdePersonen)
+		public BelgischAdres BewonersOphalen(int adresID, IEnumerable<int> groepIDs, bool alleGelieerdePersonen)
 		{
-			Adres adres;
+			// TODO (#238): Dit moet weg uit een BelgischeAdressenDao, naar een algemene AdressenDao.
+			BelgischAdres adres;
 
 			using (var db = new ChiroGroepEntities())
 			{
@@ -232,11 +159,10 @@ namespace Chiro.Gap.Data.Ef
 					// alle gelieerde personen gelieerd aan groep, en wonend op adres
 
 					gps = (from gp in db.GelieerdePersoon
-							.Include(gp2 => gp2.Persoon.PersoonsAdres.First().Adres.StraatNaam)
-							.Include(gp2 => gp2.Persoon.PersoonsAdres.First().Adres.WoonPlaats)
+							.Include(gp2 => gp2.Persoon.PersoonsAdres.First().Adres)
 							.Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.Groep.ID, groepIDs))
-						   where gp.Persoon.PersoonsAdres.Any(pa => pa.Adres.ID == adresID)
-						   select gp).ToArray();
+					       where gp.Persoon.PersoonsAdres.Any(pa => pa.Adres.ID == adresID)
+					       select gp).ToArray();
 				}
 				else
 				{
@@ -245,25 +171,40 @@ namespace Chiro.Gap.Data.Ef
 
 					var pers = (from gp in db.GelieerdePersoon
 							.Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.Groep.ID, groepIDs))
-								where gp.Persoon.PersoonsAdres.Any(pa => pa.Adres.ID == adresID)
-								select gp.Persoon);
+						    where gp.Persoon.PersoonsAdres.Any(pa => pa.Adres.ID == adresID)
+						    select gp.Persoon);
 
 					// selecteer nu alle gelieerde personen gekoppeld aan de personen
 
 					var query = (from gp in pers.SelectMany(p => p.GelieerdePersoon) select gp) as ObjectQuery<GelieerdePersoon>;
 
 					gps = query
-						.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.StraatNaam)
-						.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.WoonPlaats)
+						.Include(gp => gp.Persoon.PersoonsAdres.First().Adres)
 						.ToArray();
 				}
 
-				// Ik heb nu alle gelieerde personen die ik nodig heb, wel met veel te veel adressen, maar soit.
+				// Ik heb nu alle gelieerde personen die ik nodig heb, met al hun adressen.
+				// Eerst moeten straten en woonplaatsen van die adressen mee opgehaald worden.
+
+				foreach (var pa in gps.SelectMany(gp => gp.Persoon.PersoonsAdres))
+				{
+					if (pa.Adres is BelgischAdres)
+					{
+						((BelgischAdres)pa.Adres).StraatNaamReference.Load();
+						((BelgischAdres)pa.Adres).WoonPlaatsReference.Load();
+					}
+					else if (pa.Adres is BuitenLandsAdres)
+					{
+						((BuitenLandsAdres)pa.Adres).LandReference.Load();
+					}
+				}
+
+
 				// Ik kies uit de eerste het goeie adres, en dan heb ik normaalgezien alles wat ik nodg heb.
 
 				adres = (from pa in gps.First().Persoon.PersoonsAdres
-						 where pa.Adres.ID == adresID
-						 select pa.Adres).FirstOrDefault();
+					 where pa.Adres.ID == adresID
+					 select pa.Adres).FirstOrDefault() as BelgischAdres;
 
 				if (adres != null)
 				{

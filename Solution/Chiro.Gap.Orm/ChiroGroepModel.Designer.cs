@@ -38,14 +38,15 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_CommunicatieVorm_CommunicatieType", "CommunicatieType", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.CommunicatieType), "CommunicatieVorm", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.CommunicatieVorm))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Functie_Groep", "Groep", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.Groep), "Functie", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Functie))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "LidFunctie", "Functie", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Functie), "Lid", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Lid))]
-[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_StraatNaam", "StraatNaam", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.StraatNaam), "Adres", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Adres))]
-[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Adres_WoonPlaats", "WoonPlaats", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.WoonPlaats), "Adres", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Adres))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_GelieerdePersoon_PersoonsAdres", "PersoonsAdres", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.PersoonsAdres), "GelieerdePersoon", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.GelieerdePersoon))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsVerzekering_Persoon", "Persoon", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Persoon), "PersoonsVerzekering", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.PersoonsVerzekering))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_PersoonsVerzekering_VerzekeringsType", "VerzekeringsType", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.VerzekeringsType), "PersoonsVerzekering", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.PersoonsVerzekering))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_ChiroGroep_KaderGroep", "KaderGroep", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.KaderGroep), "ChiroGroep", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.ChiroGroep))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_KaderGroep_KaderGroep", "KaderGroep", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.KaderGroep), "KaderGroep1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.KaderGroep))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Afdeling_ChiroGroep", "ChiroGroep", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.ChiroGroep), "Afdeling", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Afdeling))]
+[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_BelgischAdres_StraatNaam", "StraatNaam", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.StraatNaam), "BelgischAdres", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.BelgischAdres))]
+[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_BelgischAdres_WoonPlaats", "WoonPlaats", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.WoonPlaats), "BelgischAdres", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.BelgischAdres))]
+[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_BuitenlandsAdres_Land", "Land", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Land), "BuitenLandsAdres", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.BuitenLandsAdres))]
 
 #endregion
 
@@ -413,6 +414,22 @@ namespace Chiro.Gap.Orm
             }
         }
         private ObjectSet<VerzekeringsType> _VerzekeringsType;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Land> Land
+        {
+            get
+            {
+                if ((_Land == null))
+                {
+                    _Land = base.CreateObjectSet<Land>("Land");
+                }
+                return _Land;
+            }
+        }
+        private ObjectSet<Land> _Land;
 
         #endregion
         #region AddTo Methods
@@ -576,6 +593,14 @@ namespace Chiro.Gap.Orm
         {
             base.AddObject("VerzekeringsType", verzekeringsType);
         }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Land EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToLand(Land land)
+        {
+            base.AddObject("Land", land);
+        }
 
         #endregion
     }
@@ -591,22 +616,10 @@ namespace Chiro.Gap.Orm
     [EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Adres")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class Adres : EntityObject
+    [KnownTypeAttribute(typeof(BelgischAdres))]
+    [KnownTypeAttribute(typeof(BuitenLandsAdres))]
+    public abstract partial class Adres : EntityObject
     {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new Adres object.
-        /// </summary>
-        /// <param name="id">Initial value of the ID property.</param>
-        public static Adres CreateAdres(global::System.Int32 id)
-        {
-            Adres adres = new Adres();
-            adres.ID = id;
-            return adres;
-        }
-
-        #endregion
         #region Primitive Properties
     
         /// <summary>
@@ -656,30 +669,6 @@ namespace Chiro.Gap.Orm
         private Nullable<global::System.Int32> _HuisNr;
         partial void OnHuisNrChanging(Nullable<global::System.Int32> value);
         partial void OnHuisNrChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String PostCode
-        {
-            get
-            {
-                return _PostCode;
-            }
-            set
-            {
-                OnPostCodeChanging(value);
-                ReportPropertyChanging("PostCode");
-                _PostCode = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("PostCode");
-                OnPostCodeChanged();
-            }
-        }
-        private global::System.String _PostCode;
-        partial void OnPostCodeChanging(global::System.String value);
-        partial void OnPostCodeChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -754,82 +743,6 @@ namespace Chiro.Gap.Orm
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PersoonsAdres>("ChiroGroepModel.FK_PersoonsAdres_Adres", "PersoonsAdres", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Adres_StraatNaam", "StraatNaam")]
-        public StraatNaam StraatNaam
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<StraatNaam>("ChiroGroepModel.FK_Adres_StraatNaam", "StraatNaam").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<StraatNaam>("ChiroGroepModel.FK_Adres_StraatNaam", "StraatNaam").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<StraatNaam> StraatNaamReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<StraatNaam>("ChiroGroepModel.FK_Adres_StraatNaam", "StraatNaam");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<StraatNaam>("ChiroGroepModel.FK_Adres_StraatNaam", "StraatNaam", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Adres_WoonPlaats", "WoonPlaats")]
-        public WoonPlaats WoonPlaats
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<WoonPlaats>("ChiroGroepModel.FK_Adres_WoonPlaats", "WoonPlaats").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<WoonPlaats>("ChiroGroepModel.FK_Adres_WoonPlaats", "WoonPlaats").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<WoonPlaats> WoonPlaatsReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<WoonPlaats>("ChiroGroepModel.FK_Adres_WoonPlaats", "WoonPlaats");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<WoonPlaats>("ChiroGroepModel.FK_Adres_WoonPlaats", "WoonPlaats", value);
                 }
             }
         }
@@ -1340,6 +1253,279 @@ namespace Chiro.Gap.Orm
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Kind>("ChiroGroepModel.FK_Kind_AfdelingsJaar", "Kind", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="BelgischAdres")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class BelgischAdres : Adres
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new BelgischAdres object.
+        /// </summary>
+        /// <param name="id">Initial value of the ID property.</param>
+        public static BelgischAdres CreateBelgischAdres(global::System.Int32 id)
+        {
+            BelgischAdres belgischAdres = new BelgischAdres();
+            belgischAdres.ID = id;
+            return belgischAdres;
+        }
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_BelgischAdres_StraatNaam", "StraatNaam")]
+        public StraatNaam StraatNaam
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<StraatNaam>("ChiroGroepModel.FK_BelgischAdres_StraatNaam", "StraatNaam").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<StraatNaam>("ChiroGroepModel.FK_BelgischAdres_StraatNaam", "StraatNaam").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<StraatNaam> StraatNaamReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<StraatNaam>("ChiroGroepModel.FK_BelgischAdres_StraatNaam", "StraatNaam");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<StraatNaam>("ChiroGroepModel.FK_BelgischAdres_StraatNaam", "StraatNaam", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_BelgischAdres_WoonPlaats", "WoonPlaats")]
+        public WoonPlaats WoonPlaats
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<WoonPlaats>("ChiroGroepModel.FK_BelgischAdres_WoonPlaats", "WoonPlaats").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<WoonPlaats>("ChiroGroepModel.FK_BelgischAdres_WoonPlaats", "WoonPlaats").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<WoonPlaats> WoonPlaatsReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<WoonPlaats>("ChiroGroepModel.FK_BelgischAdres_WoonPlaats", "WoonPlaats");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<WoonPlaats>("ChiroGroepModel.FK_BelgischAdres_WoonPlaats", "WoonPlaats", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="BuitenLandsAdres")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class BuitenLandsAdres : Adres
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new BuitenLandsAdres object.
+        /// </summary>
+        /// <param name="id">Initial value of the ID property.</param>
+        /// <param name="straat">Initial value of the Straat property.</param>
+        /// <param name="woonPlaats">Initial value of the WoonPlaats property.</param>
+        public static BuitenLandsAdres CreateBuitenLandsAdres(global::System.Int32 id, global::System.String straat, global::System.String woonPlaats)
+        {
+            BuitenLandsAdres buitenLandsAdres = new BuitenLandsAdres();
+            buitenLandsAdres.ID = id;
+            buitenLandsAdres.Straat = straat;
+            buitenLandsAdres.WoonPlaats = woonPlaats;
+            return buitenLandsAdres;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String PostCode
+        {
+            get
+            {
+                return _PostCode;
+            }
+            set
+            {
+                OnPostCodeChanging(value);
+                ReportPropertyChanging("PostCode");
+                _PostCode = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("PostCode");
+                OnPostCodeChanged();
+            }
+        }
+        private global::System.String _PostCode;
+        partial void OnPostCodeChanging(global::System.String value);
+        partial void OnPostCodeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Straat
+        {
+            get
+            {
+                return _Straat;
+            }
+            set
+            {
+                OnStraatChanging(value);
+                ReportPropertyChanging("Straat");
+                _Straat = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Straat");
+                OnStraatChanged();
+            }
+        }
+        private global::System.String _Straat;
+        partial void OnStraatChanging(global::System.String value);
+        partial void OnStraatChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String WoonPlaats
+        {
+            get
+            {
+                return _WoonPlaats;
+            }
+            set
+            {
+                OnWoonPlaatsChanging(value);
+                ReportPropertyChanging("WoonPlaats");
+                _WoonPlaats = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("WoonPlaats");
+                OnWoonPlaatsChanged();
+            }
+        }
+        private global::System.String _WoonPlaats;
+        partial void OnWoonPlaatsChanging(global::System.String value);
+        partial void OnWoonPlaatsChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> PostNummer
+        {
+            get
+            {
+                return _PostNummer;
+            }
+            set
+            {
+                OnPostNummerChanging(value);
+                ReportPropertyChanging("PostNummer");
+                _PostNummer = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PostNummer");
+                OnPostNummerChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _PostNummer;
+        partial void OnPostNummerChanging(Nullable<global::System.Int32> value);
+        partial void OnPostNummerChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_BuitenlandsAdres_Land", "Land")]
+        public Land Land
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Land>("ChiroGroepModel.FK_BuitenlandsAdres_Land", "Land").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Land>("ChiroGroepModel.FK_BuitenlandsAdres_Land", "Land").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Land> LandReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Land>("ChiroGroepModel.FK_BuitenlandsAdres_Land", "Land");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Land>("ChiroGroepModel.FK_BuitenlandsAdres_Land", "Land", value);
                 }
             }
         }
@@ -3827,6 +4013,112 @@ namespace Chiro.Gap.Orm
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Land")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Land : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Land object.
+        /// </summary>
+        /// <param name="id">Initial value of the ID property.</param>
+        /// <param name="naam">Initial value of the Naam property.</param>
+        public static Land CreateLand(global::System.Int32 id, global::System.String naam)
+        {
+            Land land = new Land();
+            land.ID = id;
+            land.Naam = naam;
+            return land;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ID
+        {
+            get
+            {
+                return _ID;
+            }
+            set
+            {
+                if (_ID != value)
+                {
+                    OnIDChanging(value);
+                    ReportPropertyChanging("ID");
+                    _ID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ID");
+                    OnIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ID;
+        partial void OnIDChanging(global::System.Int32 value);
+        partial void OnIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Naam
+        {
+            get
+            {
+                return _Naam;
+            }
+            set
+            {
+                OnNaamChanging(value);
+                ReportPropertyChanging("Naam");
+                _Naam = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Naam");
+                OnNaamChanged();
+            }
+        }
+        private global::System.String _Naam;
+        partial void OnNaamChanging(global::System.String value);
+        partial void OnNaamChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_BuitenlandsAdres_Land", "BuitenLandsAdres")]
+        public EntityCollection<BuitenLandsAdres> BuitenLandsAdres
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<BuitenLandsAdres>("ChiroGroepModel.FK_BuitenlandsAdres_Land", "BuitenLandsAdres");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<BuitenLandsAdres>("ChiroGroepModel.FK_BuitenlandsAdres_Land", "BuitenLandsAdres", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Leiding")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -5375,18 +5667,18 @@ namespace Chiro.Gap.Orm
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Adres_StraatNaam", "Adres")]
-        public EntityCollection<Adres> Adres
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_BelgischAdres_StraatNaam", "BelgischAdres")]
+        public EntityCollection<BelgischAdres> BelgischAdres
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Adres>("ChiroGroepModel.FK_Adres_StraatNaam", "Adres");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<BelgischAdres>("ChiroGroepModel.FK_BelgischAdres_StraatNaam", "BelgischAdres");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Adres>("ChiroGroepModel.FK_Adres_StraatNaam", "Adres", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<BelgischAdres>("ChiroGroepModel.FK_BelgischAdres_StraatNaam", "BelgischAdres", value);
                 }
             }
         }
@@ -5791,18 +6083,18 @@ namespace Chiro.Gap.Orm
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Adres_WoonPlaats", "Adres")]
-        public EntityCollection<Adres> Adres
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_BelgischAdres_WoonPlaats", "BelgischAdres")]
+        public EntityCollection<BelgischAdres> BelgischAdres
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Adres>("ChiroGroepModel.FK_Adres_WoonPlaats", "Adres");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<BelgischAdres>("ChiroGroepModel.FK_BelgischAdres_WoonPlaats", "BelgischAdres");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Adres>("ChiroGroepModel.FK_Adres_WoonPlaats", "Adres", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<BelgischAdres>("ChiroGroepModel.FK_BelgischAdres_WoonPlaats", "BelgischAdres", value);
                 }
             }
         }

@@ -132,10 +132,12 @@ namespace Chiro.Gap.Data.Ef
 			{
 				using (var db = new ChiroGroepEntities())
 				{
+					DateTime nu = DateTime.Now;
+
 					var query
 						= from GebruikersRecht r in db.GebruikersRecht
 						  where r.Gav.Login == login && r.Groep.GelieerdePersoon.Any(gp => gp.ID == gelieerdePersoonID)
-						  && (r.VervalDatum == null || r.VervalDatum >= DateTime.Now)
+						  && (r.VervalDatum == null || r.VervalDatum >= nu)
 						  select r;
 
 					return query.Count() > 0;

@@ -303,10 +303,79 @@ namespace Chiro.Gap.Data.Test
 			// Act
 			GelieerdePersoon resultaat = dao.DetailsOphalen(TestInfo.GELIEERDEPERSOON5ID);
 
+			// Assert
+			Assert.IsTrue(resultaat.Persoon != null);
+		}
+
+		/// <summary>
+		/// We halen details van een persoon op met twee adressen.  Het eerste is het voorkeursadres.
+		/// De bedoeling is dat van beide adressen de straatnaam meekomt.
+		/// </summary>
+		[TestMethod]
+		public void OphalenPersoonMetAdressen()
+		{
+			// Arrange
+			var dao = Factory.Maak<IGelieerdePersonenDao>();
+
+			// Act
+			GelieerdePersoon resultaat = dao.DetailsOphalen(TestInfo.GELIEERDEPERSOON3ID);
 
 			// Assert
+			Assert.IsTrue(resultaat.Persoon.PersoonsAdres.First().Adres is BelgischAdres);
+			Assert.IsTrue(((BelgischAdres)resultaat.Persoon.PersoonsAdres.First().Adres).StraatNaam != null);
 
-			Assert.IsTrue(resultaat.Persoon != null);
+			Assert.IsTrue(resultaat.Persoon.PersoonsAdres.Last().Adres is BelgischAdres);
+			Assert.IsTrue(((BelgischAdres)resultaat.Persoon.PersoonsAdres.Last().Adres).StraatNaam != null);
+
+		}
+
+		/// <summary>
+		/// Ook een persoon zonder adressen moet opgehaald kunnen worden.
+		/// </summary>
+		[TestMethod]
+		public void OphalenPersoonZonderAdresMetAdressen()
+		{
+			// Arrange
+			var dao = Factory.Maak<IGelieerdePersonenDao>();
+
+			// Act
+			GelieerdePersoon resultaat = dao.DetailsOphalen(TestInfo.GELIEERDEPERSOON4ID);
+
+			// Assert
+			Assert.IsTrue(resultaat.Persoon.PersoonsAdres.Count() == 0);
+		}
+
+		/// <summary>
+		/// Test op het ophalen van 2 gelieerde personen.
+		/// </summary>
+		[TestMethod]
+		public void TweeOphalen()
+		{
+			// Arrange
+			var dao = Factory.Maak<IGelieerdePersonenDao>();
+
+			// Act
+			var resultaat = dao.Ophalen(new List<int> {TestInfo.GELIEERDEPERSOON3ID, TestInfo.GELIEERDEPERSOON4ID}, PersoonsExtras.Adressen);
+
+			// Assert
+			Assert.IsTrue(resultaat.Count() == 2);
+		}
+
+		/// <summary>
+		/// Test die nakijkt of ook de straatnaam van een Belgisch adres mee opgehaald wordt
+		/// met de details van een gelieerde persoon.
+		/// </summary>
+		public void AdresPersoonViaGelieerdePersoon()
+		{
+			// Arrange
+			var dao = Factory.Maak<IPersonenDao>();
+
+			// Act
+			var resultaat = dao.CorresponderendePersoonOphalen(TestInfo.GELIEERDEPERSOON3ID);
+
+			// Assert
+			Assert.IsTrue(resultaat.PersoonsAdres.First().Adres is BelgischAdres);
+			Assert.IsTrue(((BelgischAdres)resultaat.PersoonsAdres.First().Adres).StraatNaam != null);
 		}
 
 		/// <summary>

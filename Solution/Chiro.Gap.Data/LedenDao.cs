@@ -505,7 +505,7 @@ namespace Chiro.Gap.Data.Ef
 		/// inclusief persoonsgegevens, adressen, communicatie, functies, afdelingen
 		/// </summary>
 		/// <param name="maxAantal">max aantal leden op te halen</param>
-		/// <returns>alle leden met probeerperiode die voorbij is, inclusief persoonsgegevens, adressen,
+		/// <returns>alle leden met probeerperiode die voorbij is, inclusief persoonsgegevens, voorkeursadressen,
 		/// functies, afdelingen.  Communicatie niet!</returns>
 		public IEnumerable<Lid> OverTeZettenOphalen(int maxAantal)
 		{
@@ -522,8 +522,7 @@ namespace Chiro.Gap.Data.Ef
 				var leiding = (from l in db.Lid.OfType<Leiding>()
 					        .Include(lei => lei.GroepsWerkJaar.Groep)
 				               	.Include(lei => lei.GelieerdePersoon.Persoon)
-						.Include(lei => lei.GelieerdePersoon.PersoonsAdres.Adres.StraatNaam)
-						.Include(lei => lei.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats)
+						.Include(lei => lei.GelieerdePersoon.PersoonsAdres.Adres)
 				               	.Include(lei => lei.Functie)
 				               	.Include(lei => lei.AfdelingsJaar.First().OfficieleAfdeling)
 				               where !l.NonActief && l.EindeInstapPeriode < DateTime.Now && !l.IsOvergezet && l.GroepsWerkJaar.WerkJaar >= Properties.Settings.Default.MinWerkJaarLidOverzetten
@@ -534,8 +533,7 @@ namespace Chiro.Gap.Data.Ef
 				var kinderen = (from l in db.Lid.OfType<Kind>()
 						.Include(kin => kin.GroepsWerkJaar.Groep)
 						.Include(kin => kin.GelieerdePersoon.Persoon)
-						.Include(kin => kin.GelieerdePersoon.PersoonsAdres.Adres.StraatNaam)
-						.Include(kin => kin.GelieerdePersoon.PersoonsAdres.Adres.WoonPlaats)
+						.Include(kin => kin.GelieerdePersoon.PersoonsAdres.Adres)
 				               	.Include(kin => kin.Functie)
 				               	.Include(kin => kin.AfdelingsJaar.OfficieleAfdeling)
 						where !l.NonActief && l.EindeInstapPeriode < DateTime.Now && !l.IsOvergezet && l.GroepsWerkJaar.WerkJaar >= Properties.Settings.Default.MinWerkJaarLidOverzetten
@@ -543,9 +541,122 @@ namespace Chiro.Gap.Data.Ef
 
 
 				resultaat = leiding.ToArray().Union<Lid>(kinderen.ToArray()).ToArray();
+
+				GelieerdePersonenDao.VoorkeursAdresKoppelen(db, from l in resultaat select l.GelieerdePersoon);
 			}
 
 			return Utility.DetachObjectGraph<Lid>(resultaat);
 		}
+
+		/// <summary>
+		/// Converteert lidextras <paramref name="extras"/> naar lambda-expresses voor een
+		/// KindDao
+		/// </summary>
+		/// <param name="extras">Te converteren lidextras</param>
+		/// <returns>Lambda-expresses voor een KindDao</returns>
+		/// <remarks>Van de adressen kunnen straten/gemeentes niet als lambda-expressie worden uitgedrukt,
+		/// om wille van het verschil tussen Belgische en buitenlandse adressen.  Om adressen mee op te halen,
+		/// is dus altijd extra werk nodig!</remarks>
+		internal static Expression<Func<Kind, object>>[] ExtrasNaarLambdasKind(LidExtras extras)
+		{
+			var paths = ExtrasNaarLambdas<Kind>(extras & ~LidExtras.Afdelingen);
+
+			if ((extras & LidExtras.Afdelingen) != 0)
+			{
+				paths.Add(ld => ld.AfdelingsJaar.Afdeling.WithoutUpdate());
+			}
+
+			return paths.ToArray();
+		}
+
+		/// <summary>
+		/// Converteert lidextras <paramref name="extras"/> naar lambda-expresses voor een
+		/// LeidingDao.
+		/// </summary>
+		/// <param name="extras">Te converteren lidextras</param>
+		/// <returns>Lambda-expresses voor een LeidingDao</returns>
+		/// <remarks>Van de adressen kunnen straten/gemeentes niet als lambda-expressie worden uitgedrukt,
+		/// om wille van het verschil tussen Belgische en buitenlandse adressen.  Om adressen mee op te halen,
+		/// is dus altijd extra werk nodig!</remarks>
+		internal static Expression<Func<Leiding, object>>[] ExtrasNaarLambdasLeiding(LidExtras extras)
+		{
+			var paths = ExtrasNaarLambdas<Leiding>(extras & ~LidExtras.Afdelingen);
+
+			if ((extras & LidExtras.Afdelingen) != 0)
+			{
+				paths.Add(ld => ld.AfdelingsJaar.First().Afdeling.WithoutUpdate());
+			}
+
+			return paths.ToArray();
+		}
+
+		/// <summary>
+		/// Converteert LidExtra's naar lambda-expressies voor de data-access
+		/// </summary>
+		/// <param name="extras">Te converteren lidextra's</param>
+		/// <typeparam name="T"></typeparam>
+		/// <returns>Lijst lambda-expressies geschikt voor de LedenDAO</returns>
+		/// <remarks>Van de adressen kunnen straten/gemeentes niet als lambda-expressie worden uitgedrukt,
+		/// om wille van het verschil tussen Belgische en buitenlandse adressen.  Om adressen mee op te halen,
+		/// is dus altijd extra werk nodig!</remarks>
+		internal static IList<Expression<Func<T, object>>> ExtrasNaarLambdas<T>(LidExtras extras) where T : Lid
+		{
+			var paths = new List<Expression<Func<T, object>>> { ld => ld.GroepsWerkJaar.WithoutUpdate() };
+
+			if ((extras & LidExtras.VoorkeurAdres) != 0)
+			{
+				// enkel voorkeursadres
+				paths.Add(ld => ld.GelieerdePersoon.PersoonsAdres.Adres);
+			}
+
+			if ((extras & LidExtras.Adressen) != 0)
+			{
+				// alle adressen
+				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsAdres.First().Adres);
+
+				// link naar standaardadres
+				paths.Add(ld => ld.GelieerdePersoon.PersoonsAdres.Adres.WithoutUpdate());
+			}
+			else if ((extras & LidExtras.Persoon) != 0)
+			{
+				paths.Add(ld => ld.GelieerdePersoon.Persoon);
+			}
+
+			if ((extras & LidExtras.Communicatie) != 0)
+			{
+				paths.Add(ld => ld.GelieerdePersoon.Communicatie.First().CommunicatieType.WithoutUpdate());
+			}
+
+			if ((extras & LidExtras.Groep) != 0)
+			{
+				paths.Add(ld => ld.GroepsWerkJaar.Groep.WithoutUpdate());
+			}
+			if ((extras & LidExtras.Afdelingen) != 0)
+			{
+				//// Onderstaande had cool geweest; dan hadden we de generieke <T> niet nodig. 
+				//// Maar helaas lukt dat (nog??) niet met AttachObjectGraph:
+
+				// paths.Add(ld => ld is Kind ? (ld as Kind).AfdelingsJaar.Afdeling : ld is Leiding ? (ld as Leiding).AfdelingsJaar.First().Afdeling : null);
+
+				//// Dus:
+				throw new NotSupportedException();
+			}
+			if ((extras & LidExtras.Functies) != 0)
+			{
+				// FIXME (#116): Hieronder zou 'WithoutUpdate' gebruikt moeten worden, maar owv #116 kan dat nog niet.
+				paths.Add(ld => ld.Functie.First());
+			}
+			if ((extras & LidExtras.AlleAfdelingen) != 0)
+			{
+				paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().Afdeling.WithoutUpdate());
+				paths.Add(ld => ld.GroepsWerkJaar.AfdelingsJaar.First().OfficieleAfdeling.WithoutUpdate());
+			}
+			if ((extras & LidExtras.Verzekeringen) != 0)
+			{
+				paths.Add(ld => ld.GelieerdePersoon.Persoon.PersoonsVerzekering.First().VerzekeringsType.WithoutUpdate());
+			}
+			return paths;
+		}
+
 	}
 }

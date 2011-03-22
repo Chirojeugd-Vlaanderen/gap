@@ -12,7 +12,6 @@ using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.SyncInterfaces;
 using Chiro.Gap.Sync.SyncService;
 
-using Adres = Chiro.Gap.Sync.SyncService.Adres;
 using Persoon = Chiro.Gap.Orm.Persoon;
 
 namespace Chiro.Gap.Sync
@@ -53,15 +52,7 @@ namespace Chiro.Gap.Sync
 
 				// TODO (#238): Buitenlandse adressen!
 
-				var adres = new Adres
-				{
-					Bus = adr.Bus,
-					HuisNr = adr.HuisNr,
-					Land = string.Empty,
-					PostNr = adr.StraatNaam.PostNummer,
-					Straat = adr.StraatNaam.Naam,
-					WoonPlaats = adr.WoonPlaats.Naam
-				};
+				var adres = Mapper.Map<Chiro.Gap.Orm.Adres, Chiro.Gap.Sync.SyncService.Adres>(adr);
 
 				_svc.StandaardAdresBewaren(adres, bewoners.ToList());
 			}

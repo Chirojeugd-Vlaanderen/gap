@@ -37,17 +37,16 @@ namespace Chiro.Gap.Data.Ef
 
 		/// <summary>
 		/// Haalt alle gelieerde personen van een groep op, inclusief de gerelateerde entity's gegeven
-		/// in <paramref name="paths"/>
+		/// in <paramref name="extras"/>
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvan we de gelieerde personen willen opvragen</param>
 		/// <param name="sortering">Geeft aan hoe de pagina gesorteerd moet worden</param>
-		/// <param name="paths">Een array van lambda-expressions die de mee op te halen gerelateerde entity's
-		/// bepaalt</param>
+		/// <param name="extras">bepaalt op te halen gerelateerde entity's</param>
 		/// <returns>De gevraagde lijst gelieerde personen</returns>
 		public IList<GelieerdePersoon> AllenOphalen(
 			int groepID,
 			PersoonSorteringsEnum sortering,
-			params Expression<Func<GelieerdePersoon, object>>[] paths)
+			PersoonsExtras extras)
 		{
 			IList<GelieerdePersoon> result;
 
@@ -60,7 +59,12 @@ namespace Chiro.Gap.Data.Ef
 							 where gp.Groep.ID == groepID
 							 select gp) as ObjectQuery<GelieerdePersoon>;
 
+				var paths = ExtrasNaarLambdas(extras);
 				result = Sorteren(IncludesToepassen(query, paths), sortering).ToList();
+				if ((extras & PersoonsExtras.Adressen) != 0)
+				{
+					AlleAdressenKoppelen(db, result);
+				}
 			}
 
 			// Dan detachen
@@ -75,21 +79,84 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		/// <param name="persoonID">ID van de *persoon* waarvoor de gelieerde persoon opgehaald moet worden</param>
 		/// <param name="groepID">ID van de groep waaraan de gelieerde persoon gelieerd moet zijn</param>
+		/// <param name="metVoorkeurAdres">Indien <c>true</c>, worden ook het voorkeursadres mee opgehaald.</param>
 		/// <param name="paths">bepaalt op te halen gekoppelde entiteiten</param>
 		/// <returns>De gevraagde gelieerde persoon</returns>
-		public GelieerdePersoon Ophalen(int persoonID, int groepID, params Expression<Func<GelieerdePersoon, object>>[] paths)
+		/// <remarks>Het ophalen van adressen kan niet beschreven worden met de lambda-
+		/// expressies in <paramref name="paths"/>, o.w.v. de verschillen tussen Belgische en buitenlandse
+		/// adressen.</remarks>
+		public GelieerdePersoon Ophalen(int persoonID, int groepID, bool metVoorkeurAdres, params Expression<Func<GelieerdePersoon, object>>[] paths)
 		{
 			GelieerdePersoon result;
 
 			using (var db = new ChiroGroepEntities())
-			{
-				var query = (from gp in db.GelieerdePersoon
-				             where gp.Persoon.ID == persoonID && gp.Groep.ID == groepID
-				             select gp) as ObjectQuery<GelieerdePersoon>;
+			{			
+				var query = (from gp in (metVoorkeurAdres ? db.GelieerdePersoon.Include(gp=>gp.PersoonsAdres.Adres) : db.GelieerdePersoon)
+					     where gp.Persoon.ID == persoonID && gp.Groep.ID == groepID
+					     select gp) as ObjectQuery<GelieerdePersoon>;
 				result = IncludesToepassen(query, paths).FirstOrDefault();
+
+				if (metVoorkeurAdres && result.PersoonsAdres != null)
+				{
+					// Zoek naar Belgisch adres met gegeven AdresID.  Als er een gevonden is,
+					// instantieert FirstOrDefault dit, en koppelt Entity Framework de
+					// adresgegevens magischerwijze aan resultaat.
+
+					(from adr in db.Adres.OfType<BelgischAdres>().Include(ba => ba.StraatNaam).Include(ba => ba.WoonPlaats)
+					 where adr.ID == result.PersoonsAdres.Adres.ID
+					 select adr).FirstOrDefault();
+
+					// Instantieer Buitenlands adres.  Ook hier instantiëren om te koppelen
+					// aan result.
+
+					(from adr in db.Adres.OfType<BuitenLandsAdres>().Include(ba => ba.Land)
+					 where adr.ID == result.PersoonsAdres.Adres.ID
+					 select adr).FirstOrDefault();
+				}
 			}
 
 			return Utility.DetachObjectGraph(result);
+		}
+
+		/// <summary>
+		/// Haalt een gelieerde persoon op op basis van <paramref name="persoonID"/> en <paramref name="groepID"/>
+		/// </summary>
+		/// <param name="persoonID">ID van de *persoon* waarvoor de gelieerde persoon opgehaald moet worden</param>
+		/// <param name="groepID">ID van de groep waaraan de gelieerde persoon gelieerd moet zijn</param>
+		/// <param name="paths">bepaalt op te halen gekoppelde entiteiten</param>
+		/// <returns>De gevraagde gelieerde persoon</returns>
+		/// <remarks>Adressen worden niet opgehaald, want adressen kunnen niet beschreven worden met de lambda-
+		/// expressies in <paramref name="paths"/>.</remarks>
+		public GelieerdePersoon Ophalen(int persoonID, int groepID, params Expression<Func<GelieerdePersoon, object>>[] paths)
+		{
+			return Ophalen(persoonID, groepID, false, paths);
+		}
+
+		/// <summary>
+		/// Haalt een aantal gelieerde personen op, samen met de gekoppelde entiteiten bepaald door
+		/// <paramref name="extras"/>
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">ID's op te halen gelieerde personen</param>
+		/// <param name="extras">bepaalt de extra op te halen entiteiten</param>
+		/// <returns>De gevraagde gelieerde personen.</returns>
+		public IEnumerable<GelieerdePersoon> Ophalen(IList<int> gelieerdePersoonIDs, PersoonsExtras extras)
+		{
+			IEnumerable<GelieerdePersoon> resultaat;
+
+			using (var db = new ChiroGroepEntities())
+			{
+				resultaat =
+					db.GelieerdePersoon.Where(Utility.BuildContainsExpression<GelieerdePersoon, int>(gp => gp.ID, gelieerdePersoonIDs));
+
+				resultaat = IncludesToepassen(resultaat as ObjectQuery<GelieerdePersoon>, ExtrasNaarLambdas(extras)).ToArray();
+
+				if ((extras & PersoonsExtras.Adressen) != 0)
+				{
+					AlleAdressenKoppelen(db, resultaat);
+				}
+			}
+
+			return Utility.DetachObjectGraph(resultaat);
 		}
 
 		/// <summary>
@@ -233,12 +300,12 @@ namespace Chiro.Gap.Data.Ef
 		/// <param name="pagina">Gevraagde pagina</param>
 		/// <param name="paginaGrootte">Grootte van de pagina</param>
 		/// <param name="sortering">Sortering van de lijst</param>
-		/// <param name="paths">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
+		/// <param name="extras">Geeft aan welke gekoppelde entiteiten mee opgehaald moeten worden</param>
 		/// <param name="metHuidigLidInfo">Als <c>true</c> worden ook eventuele lidobjecten *van dit werkjaar* 
 		/// mee opgehaald.</param>
 		/// <param name="aantalTotaal">Outputparameter die het totaal aantal personen in de categorie weergeeft</param>
 		/// <returns>Lijst gelieerde personen</returns>
-		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, bool metHuidigLidInfo, out int aantalTotaal, params Expression<Func<GelieerdePersoon, object>>[] paths)
+		public IList<GelieerdePersoon> PaginaOphalenUitCategorie(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, bool metHuidigLidInfo, out int aantalTotaal, PersoonsExtras extras)
 		{
 			Groep g;
 			IList<GelieerdePersoon> lijst;
@@ -257,16 +324,21 @@ namespace Chiro.Gap.Data.Ef
 							where gp.Categorie.Any(cat => cat.ID == categorieID)
 							select gp;
 
+				var paths = ExtrasNaarLambdas(extras);
+
 				var queryMetExtras = IncludesToepassen(
 					query as ObjectQuery<GelieerdePersoon>,
 					paths);
-
-				// Pas Extra's toe
 
 				// Sorteer ze en bepaal totaal aantal personen
 				lijst = Sorteren(queryMetExtras, sortering).PaginaSelecteren(pagina, paginaGrootte).ToList();
 
 				aantalTotaal = query.Count();
+
+				if ((extras & PersoonsExtras.Adressen) != 0)
+				{
+					AlleAdressenKoppelen(db, lijst);
+				}
 
 				// haal indien gevraagd huidige lidobjecten mee op
 
@@ -328,7 +400,7 @@ namespace Chiro.Gap.Data.Ef
 		/// Haalt een gelieerde persoon op, inclusief
 		///   - persoon
 		///   - communicatievormen
-		///   - adressen
+		///   - (alle!) adressen
 		///   - groepen
 		///   - categorieen
 		///   - lidobjecten in het huidige werkjaar
@@ -347,13 +419,14 @@ namespace Chiro.Gap.Data.Ef
 				          		.Include(gp => gp.Persoon)
 				          		.Include(gp => gp.Communicatie.First().CommunicatieType)
 				          		.Include(gp => gp.PersoonsAdres)
-				          		.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.StraatNaam)
-				          		.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.WoonPlaats)
+				          		.Include(gp => gp.Persoon.PersoonsAdres.First().Adres)
 				          		.Include(gp => gp.Groep)
 				          		.Include(gp => gp.Categorie)
 				          		.Include(gp => gp.Persoon.PersoonsVerzekering.First().VerzekeringsType)
 				          	where gp.ID == gelieerdePersoonID
 				          	select gp).FirstOrDefault();
+
+				AlleAdressenKoppelen(db, gelpers);
 
 				var gwj = (from g in db.GroepsWerkJaar
 				           where g.Groep.ID == gelpers.Groep.ID
@@ -457,19 +530,24 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>Een lijst van gelieerde personen die aan de voorwaarden voldoen</returns>
 		public IList<GelieerdePersoon> ZoekenOpNaam(int groepID, string zoekStringNaam)
 		{
+			IList<GelieerdePersoon> result;
+
 			using (var db = new ChiroGroepEntities())
 			{
-				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
-				return (
+				result = (
 					from gp in db.GelieerdePersoon
 						.Include(gp => gp.Persoon)
 						.Include(gp => gp.Communicatie)
 						.Include(gp => gp.PersoonsAdres)
-						.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.StraatNaam)
+						.Include(gp => gp.Persoon.PersoonsAdres.First().Adres)
 					where (gp.Persoon.VoorNaam + " " + gp.Persoon.Naam + " " + gp.Persoon.VoorNaam).Contains(zoekStringNaam)
 					&& gp.Groep.ID == groepID
 					select gp).ToList();
+
+				AlleAdressenKoppelen(db, result);
 			}
+
+			return Utility.DetachObjectGraph(result);
 		}
 
 		/// <summary>
@@ -483,19 +561,26 @@ namespace Chiro.Gap.Data.Ef
 		/// <returns>Lijst met gevonden gelieerde personen</returns>
 		public IEnumerable<GelieerdePersoon> ZoekenOpNaam(int groepID, string naam, string voornaam)
 		{
+			IEnumerable<GelieerdePersoon> resultaat;
+
 			using (var db = new ChiroGroepEntities())
 			{
-				db.GelieerdePersoon.MergeOption = MergeOption.NoTracking;
-				return (
+				resultaat = (
 					from gp in db.GelieerdePersoon
 						.Include(gp => gp.Persoon)
 						.Include(gp => gp.Communicatie)
 						.Include(gp => gp.PersoonsAdres)
-						.Include(gp => gp.Persoon.PersoonsAdres.First().Adres.StraatNaam)
+						.Include(gp => gp.Persoon.PersoonsAdres.First().Adres)
 					where gp.Groep.ID == groepID && String.Compare(gp.Persoon.Naam, naam, true) == 0
 					&& String.Compare(gp.Persoon.VoorNaam, voornaam, true) ==0
 					select gp).ToList();
+
+				// Instantieer zowel Belgische als buitenlandse adressen.
+
+				AlleAdressenKoppelen(db, resultaat);
+
 			}
+			return Utility.DetachObjectGraph(resultaat);
 		}
 
 		/// <summary>
@@ -649,5 +734,169 @@ namespace Chiro.Gap.Data.Ef
 			}
 			return Utility.DetachObjectGraph(resultaat);
 		}
+
+		/// <summary>
+		/// Bewaart een gelieerde persoon samen met eventueel gekoppelde entiteiten
+		/// </summary>
+		/// <param name="gelieerdePersoon">Te bewaren gelieerde persoon</param>
+		/// <param name="extras">bepaalt de gekoppelde entiteiten</param>
+		/// <returns>de bewaarde gelieerde persoon</returns>
+		public GelieerdePersoon Bewaren(GelieerdePersoon gelieerdePersoon, PersoonsExtras extras)
+		{
+			return Bewaren(gelieerdePersoon, ExtrasNaarLambdas(extras));
+		}
+
+		/// <summary>
+		/// Koppelt de straat/gemeente/land van de voorkeursadressen aan een (geattachte!) gelieerde personen.
+		/// </summary>
+		/// <param name="db">Objectcontext waaraan de personen gekoppeld zijn</param>
+		/// <param name="gelieerdePersoon">gelieerde persoon</param>
+		/// <returns>Dezelfde gelieerde persoon, maar met voorkeursadressen</returns>
+		/// <remarks>Het adresobject van het voorkeursadres moeten al gekoppeld zijn; 
+		/// deze method instantieert enkel nog straat, gemeente en land.</remarks>
+		public static GelieerdePersoon VoorkeursAdresKoppelen(ObjectContext db, GelieerdePersoon gelieerdePersoon)
+		{
+			if (gelieerdePersoon == null || gelieerdePersoon.PersoonsAdres == null)
+			{
+				return gelieerdePersoon;
+			}
+			else
+			{
+				return VoorkeursAdresKoppelen(db, new GelieerdePersoon[] {gelieerdePersoon}).First();
+			}
+		}
+
+
+		/// <summary>
+		/// Koppelt de straat/gemeente/land van de voorkeursadressen aan een lijst (geattachte!) gelieerde personen.
+		/// </summary>
+		/// <param name="db">Objectcontext waaraan de personen gekoppeld zijn</param>
+		/// <param name="gelieerdePersonen">gelieerde personen</param>
+		/// <returns>Dezelfde gelieerde personen, maar met voorkeursadressen</returns>
+		/// <remarks>De adresobjecten moeten al gekoppeld zijn; deze method instantieert enkel nog straat, gemeente en land.</remarks>
+		public static IEnumerable<GelieerdePersoon> VoorkeursAdresKoppelen(ObjectContext db, IEnumerable<GelieerdePersoon> gelieerdePersonen)
+		{
+			var alleAdressen = from gp in gelieerdePersonen
+					   where gp.PersoonsAdres != null
+			                   select gp.PersoonsAdres.Adres;
+
+			// De truuk is gewoon de informatie van de adressen te instantiëren: eerst die van de 
+			// Belgische, dan die van de buitenlandse.
+			// Entity framework zal ervoor zorgen dat de extra info aan de reeds geladen adresobjecten
+			// wordt gekoppeld.
+
+			foreach (var adr in alleAdressen)
+			{
+				if (adr is BelgischAdres)
+				{
+					(adr as BelgischAdres).StraatNaamReference.Load();
+					(adr as BelgischAdres).WoonPlaatsReference.Load();
+				}
+				else
+				{
+					Debug.Assert(adr is BuitenLandsAdres);
+					((BuitenLandsAdres)adr).LandReference.Load();
+				}
+			}
+
+			return gelieerdePersonen;
+		}
+
+		/// <summary>
+		/// Koppelt de straat/gemeente/land van de adressen aan een (geattachte!) gelieerde personen.
+		/// </summary>
+		/// <param name="db">Objectcontext waaraan de personen gekoppeld zijn</param>
+		/// <param name="gelieerdePersoon">gelieerde persoon</param>
+		/// <returns>Dezelfde gelieerde persoon, maar met alle adressen gekoppeld</returns>
+		/// <remarks>Het adresobject van het voorkeursadres moeten al gekoppeld zijn; 
+		/// deze method instantieert enkel nog straat, gemeente en land.</remarks>
+		public static GelieerdePersoon AlleAdressenKoppelen(ObjectContext db, GelieerdePersoon gelieerdePersoon)
+		{
+			return AlleAdressenKoppelen(db, new GelieerdePersoon[] { gelieerdePersoon }).First();
+		}
+
+		/// <summary>
+		/// Koppelt straat/gemeente/land van alle adressen aan een lijst (geattachte!) gelieerde personen.
+		/// </summary>
+		/// <param name="db">Objectcontext waaraan de personen gekoppeld zijn</param>
+		/// <param name="gelieerdePersonen">gelieerde personen</param>
+		/// <returns>Dezelfde gelieerde personen, maar met alle adressen</returns>
+		/// <remarks>De adresobjecten moeten al gekoppeld zijn; deze method instantieert enkel nog straat, gemeente en land.</remarks>
+		public static IEnumerable<GelieerdePersoon> AlleAdressenKoppelen(ObjectContext db, IEnumerable<GelieerdePersoon> gelieerdePersonen)
+		{
+			// De truuk is gewoon de informatie van de adressen te instantiëren: eerst die van de 
+			// Belgische, dan die van de buitenlandse.
+			// Entity framework zal ervoor zorgen dat de extra info aan de reeds geladen adresobjecten
+			// wordt gekoppeld.
+
+			var alleAdressen = gelieerdePersonen.SelectMany(gp => gp.Persoon.PersoonsAdres).Select(pa => pa.Adres);
+
+			foreach (var adr in alleAdressen)
+			{
+				if (adr is BelgischAdres)
+				{
+					(adr as BelgischAdres).StraatNaamReference.Load();
+					(adr as BelgischAdres).WoonPlaatsReference.Load();
+				}
+				else
+				{
+					Debug.Assert(adr is BuitenLandsAdres);
+					((BuitenLandsAdres)adr).LandReference.Load();
+				}
+			}
+			return gelieerdePersonen;
+		}
+
+		/// <summary>
+		/// Converteert de PersoonsExtras <paramref name="extras"/> naar lambda-expressies die mee naar 
+		/// de data access moeten om de extra's daadwerkelijk op te halen.
+		/// </summary>
+		/// <param name="extras">Te converteren PersoonsExtra's</param>
+		/// <returns>Lambda-expressies geschikt voor onze DAO's</returns>
+		/// <remarks>
+		/// Het gekoppeld persoonsobject wordt *altijd* mee opgehaald.  (Dit is min of meer
+		/// historisch gegroeid)
+		/// </remarks>
+		private static Expression<Func<GelieerdePersoon, object>>[] ExtrasNaarLambdas(PersoonsExtras extras)
+		{
+			var paths = new List<Expression<Func<GelieerdePersoon, object>>> { gp => gp.Persoon };
+
+			if ((extras & PersoonsExtras.Adressen) != 0)
+			{
+				// alle adressen
+				paths.Add(gp => gp.Persoon.PersoonsAdres.First().Adres);
+
+				// standaardadres
+				paths.Add(gp => gp.PersoonsAdres.Adres);
+			}
+
+			if ((extras & PersoonsExtras.Groep) != 0)
+			{
+				paths.Add(gp => gp.Groep.WithoutUpdate());
+			}
+
+			if ((extras & PersoonsExtras.Communicatie) != 0)
+			{
+				paths.Add(gp => gp.Communicatie.First().CommunicatieType.WithoutUpdate());
+			}
+
+			if ((extras & PersoonsExtras.Categorieen) != 0)
+			{
+				paths.Add(gp => gp.Categorie.First().WithoutUpdate());
+			}
+
+			if ((extras & PersoonsExtras.GroepsWerkJaren) != 0)
+			{
+				paths.Add(gp => gp.Lid.First().GroepsWerkJaar.WithoutUpdate());
+			}
+			else if ((extras & PersoonsExtras.Leden) != 0)
+			{
+				paths.Add(gp => gp.Lid);
+			}
+
+			return paths.ToArray();
+		}
+
+
 	}
 }
