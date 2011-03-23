@@ -7,7 +7,7 @@
 	<%=Html.Encode(ViewData.Model.GroepsNaam) %>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="HeadContent" runat="server">
-	<% if (Model.MeerdereGroepen != false)
+	<% if (Model.MeerdereGroepen == true)
 	{ %>
 	<link href="<%=ResolveUrl("~/Content/MeerdereGroepen.css")%>" rel="stylesheet"
 		type="text/css" />

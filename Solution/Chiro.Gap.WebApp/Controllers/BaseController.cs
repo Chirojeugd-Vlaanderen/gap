@@ -145,7 +145,8 @@ namespace Chiro.Gap.WebApp.Controllers
 
 				#region GAV over meerdere groepen?
 
-				model.MeerdereGroepen = (VeelGebruikt.UniekeGroepGav(User.Identity.Name) != 0);
+                // Als UniekeGroepGav een waarde heeft, is er maar één groep. Bij 0 zijn er meerdere.
+				model.MeerdereGroepen = (VeelGebruikt.UniekeGroepGav(User.Identity.Name) == 0);
 
 				#endregion
 
