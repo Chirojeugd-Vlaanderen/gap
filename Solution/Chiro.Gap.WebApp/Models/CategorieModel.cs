@@ -18,6 +18,7 @@ namespace Chiro.Gap.WebApp.Models
         public CategorieModel()
         {
             GeselecteerdeCategorieIDs = new List<int>();
+			GelieerdePersoonNamen = new List<string>();
             GelieerdePersoonIDs = new List<int>();
             Categorieen = new List<CategorieInfo>();
         }
@@ -29,5 +30,6 @@ namespace Chiro.Gap.WebApp.Models
 		public List<int> GeselecteerdeCategorieIDs { get; set; }
 
 		public IList<int> GelieerdePersoonIDs { get; set; }
+		public IList<string> GelieerdePersoonNamen { get; set; }
 	}
 }

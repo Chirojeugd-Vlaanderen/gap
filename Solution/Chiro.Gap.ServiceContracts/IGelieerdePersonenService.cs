@@ -54,6 +54,16 @@ namespace Chiro.Gap.ServiceContracts
 		IList<PersoonDetail> PaginaOphalenUitCategorieMetLidInfo(int categorieID, int pagina, int paginaGrootte, PersoonSorteringsEnum sortering, out int aantalTotaal);
 
 		/// <summary>
+		/// Haalt persoonsgegevens op voor alle gegeven gelieerde personen.
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">GelieerdePersoonIDs van op te halen personen</param>
+		/// <returns>List van PersoonInfo overeenkomend met die IDs</returns>
+		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
+		IList<PersoonInfo> MinimaleDetailsOphalen(IList<int> gelieerdePersoonIDs);
+
+		/// <summary>
 		/// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>

@@ -118,6 +118,23 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 		/// </summary>
 		public static void MappingsDefinieren()
 		{
+			Mapper.CreateMap<Persoon, PersoonInfo>()
+				.ForMember(
+					dst => dst.AdNummer,
+					opt => opt.MapFrom(src => src.AdNummer))
+				.ForMember(
+					dst => dst.GeboorteDatum,
+					opt => opt.MapFrom(src => src.GeboorteDatum))
+				.ForMember(
+					dst => dst.Naam,
+					opt => opt.MapFrom(src => src.Naam))
+				.ForMember(
+					dst => dst.VoorNaam,
+					opt => opt.MapFrom(src => src.VoorNaam))
+				.ForMember(
+					dst => dst.Geslacht,
+					opt => opt.MapFrom(src => src.Geslacht));
+
 			Mapper.CreateMap<GelieerdePersoon, PersoonDetail>()
 				.ForMember(
 					dst => dst.GelieerdePersoonID,

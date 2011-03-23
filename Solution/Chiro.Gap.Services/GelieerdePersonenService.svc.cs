@@ -297,6 +297,24 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
+		/// Haalt persoonsgegevens op voor alle gegeven gelieerde personen.
+		/// </summary>
+		/// <param name="gelieerdePersoonIDs">GelieerdePersoonIDs van op te halen personen</param>
+		/// <returns>List van PersoonInfo overeenkomend met die IDs</returns>
+		public IList<PersoonInfo> MinimaleDetailsOphalen(IList<int> gelieerdePersoonIDs)
+		{
+			try
+			{
+				return Mapper.Map<IList<Persoon>, IList<PersoonInfo>>(_gpMgr.MinimaleDetailsOphalen(gelieerdePersoonIDs));
+			}
+			catch (Exception ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				return null;
+			}
+		}
+
+		/// <summary>
 		/// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen
 		/// </summary>
 		/// <param name="gelieerdePersoonID">ID op te halen GelieerdePersoon</param>

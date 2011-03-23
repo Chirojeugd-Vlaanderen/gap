@@ -24,6 +24,14 @@
 		<legend>Aan welke categorieën wil je
 			<%= Model.GelieerdePersoonIDs.Count == 1 ? "hem/haar" : "hen" %>
 			toevoegen?</legend>
+		
+		Personen om aan de categorie toe te voegen:<br />
+		<ul>
+		<%foreach (var p in Model.GelieerdePersoonNamen){ %>	
+			<li><%=p %><br/></li>
+		<%} %>
+		</ul>
+		
 		<%
 			List<CheckBoxListInfo> info
 			   = (from pa in Model.Categorieen
