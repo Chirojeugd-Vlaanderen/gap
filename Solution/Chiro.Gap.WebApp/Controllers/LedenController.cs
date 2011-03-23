@@ -254,9 +254,6 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			// TODO: deze code moet opgekuist worden
 
-			// Er wordt een nieuwe lijst opgevraagd, dus wordt deze vanaf hier bijgehouden als de lijst om terug naar te springen
-			ClientState.VorigeLijst = Request.Url.ToString();
-
 			var model = new LidInfoModel();
 			BaseModelInit(model, groepID);
 
@@ -329,6 +326,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			[QueryStringValue]LidEigenschap sortering,
 			[RouteValue]int groepID)
 		{
+			// Er wordt een nieuwe lijst opgevraagd, dus wordt deze vanaf hier bijgehouden als de lijst om terug naar te springen
+			ClientState.VorigeLijst = Request.Url.ToString();
 			LidInfoModel model = Zoeken(id, groepID, sortering, afdelingID, functieID, ledenLijst, false);
 			return View("Index", model);
 		}
