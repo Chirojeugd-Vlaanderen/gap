@@ -27,7 +27,7 @@
 
 %>
 	Hiervoor zal <strong>&euro;
-		<%=Model.Prijs%></strong> aangerekend worden. Klik op &lsquo;bevestigen&rsquo;
+		<%=Model.Prijs.ToString() %></strong> aangerekend worden. Klik op &lsquo;bevestigen&rsquo;
 	om Dubbelpunt te bestellen.
 	<%
             	}

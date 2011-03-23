@@ -110,7 +110,7 @@
 		Geen <a href="http://www.chiro.be/dubbelpunt">Dubbelpuntabonnement</a>.
 		<%=Html.ActionLink("[abonneren]", "DubbelPuntAanvragen", new {Controller="Abonnementen", id = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID}) %>
 		(Kostprijs: &euro;
-		<%=Model.PrijsDubbelPunt %>)
+		<%=Model.PrijsDubbelPunt.ToString() %>)
 		<%
 			}
 		%>
@@ -242,7 +242,7 @@
 		<li>Niet extra verzekerd tegen loonverlies.
 			<%=Html.ActionLink("[verzekeren tegen loonverlies]", "LoonVerliesVerzekeren", new {Controller="Leden", id = Model.PersoonLidInfo.LidInfo.LidID}) %>
 			(Kostprijs: &euro;
-			<%=Model.PrijsVerzekeringLoonVerlies %>) </li>
+			<%=Model.PrijsVerzekeringLoonVerlies.ToString() %>) </li>
 		<%}%>
 	</ul>
 	<%}

@@ -16,7 +16,7 @@
 	<%=Html.ActionLink(Model.VolledigeNaam, "EditRest", new { Controller="Personen", id = Model.GelieerdePersoonID }) %>
 	te <a href="http://info.chiro.be/loonverlies">verzekeren tegen loonverlies</a>.
 	Hiervoor zal &euro;
-	<%=Model.Prijs %>
+	<%=Model.Prijs.ToString() %>
 	aangerekend worden. Klik op &lsquo;bevestigen&rsquo; om de verzekering af te
 	sluiten.
 	<%} %>
