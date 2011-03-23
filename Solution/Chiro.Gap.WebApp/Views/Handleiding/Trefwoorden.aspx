@@ -76,7 +76,7 @@
 		<dd>Iedereen die je inschrijft in je groep krijgt een instapperiode. De einddatum
 			vind je op de persoonsfiche. Normaal duurt een instapperiode drie weken, maar
 			als je de jaarovergang al in augustus of begin september uitvoert, is de einddatum
-			15 oktober. Je hebt dus zeker tijd genoeg om je ledenlijst nog na te kijken,
+			15 oktober: de deadline voor de jaarovergang. Je hebt dus zeker tijd genoeg om je ledenlijst nog na te kijken,
 			ook als je inschrijvingen nog niet allemaal binnen zijn of als je bv. begin
 			oktober een inschrijvingsdag houdt.<br />
 			De GAV's krijgen een mailtje wanneer er zo'n einddatum nadert. Is de einddatum

@@ -54,11 +54,13 @@
 	<br />
 	<input id="volgende" type="submit" value="Verdeling bewaren en huidige leden herinschrijven" /> <strong>Dit kan een paar minuutjes duren!</strong>
 	<%} %>
+    <p>De leden en de leiding van vorig jaar wordt automatisch opnieuw ingeschreven. Ze krijgen daarbij opnieuw een instapperiode
+			<%= Html.ActionLink("[?]", "ViewTonen", "Handleiding", null, null, "Instapperiode", new { helpBestand = "Trefwoorden" }, new { title = "Wat is die instapperiode?" } ) %>. Je hebt dus drie weken (of tot 15 oktober) de tijd om de nodige mensen uit te schrijven, zodat je geen factuur krijgt voor hun aansluiting. Achteraf kun je nog inschrijven wie je wilt, het hele jaar door.</p>
 	<p>
 		Ter informatie de &lsquo;standaardafdelingen&rsquo; voor dit werkjaar:
 	</p>
 	<table>
-		<!--TODO exentsion method die gegeven een werkjaar, het standaard geboortejaar berekend. Nu is het niet correct. -->
+		<!--TODO exentsion method die gegeven een werkjaar, het standaardgeboortejaar berekend. Nu is het niet correct. -->
 		<%  foreach (var oa in Model.OfficieleAfdelingen.Where(ofaf => ofaf.ID != (int)NationaleAfdeling.Speciaal).OrderBy(ofaf => ofaf.LeefTijdTot))
 	  {%>
 		<tr>

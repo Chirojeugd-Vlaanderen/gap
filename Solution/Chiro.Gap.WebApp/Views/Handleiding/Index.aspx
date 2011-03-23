@@ -6,7 +6,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="helpContent" runat="server">
 	<% 
 		// Van augustus tot en met november tonen we bovenaan welke stappen er nodig zijn voor het nieuwe werkjaar
-		if (DateTime.Now.Month > 7 || DateTime.Now.Month <= 11)
+		if (DateTime.Now.Month > 7 && DateTime.Now.Month <= 11)
 		{ %>
 	<p>
 		De GAV's van jouw groep moeten de volgende zaken uitvoeren om je aansluiting
