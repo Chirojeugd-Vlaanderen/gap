@@ -88,15 +88,6 @@ namespace Chiro.Kip.Services.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}.{1}.
-        /// </summary>
-        internal static string NrEnBus {
-            get {
-                return ResourceManager.GetString("NrEnBus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Persoon niet gevonden: {0} {1}.
         /// </summary>
         internal static string PersoonNietGevonden {

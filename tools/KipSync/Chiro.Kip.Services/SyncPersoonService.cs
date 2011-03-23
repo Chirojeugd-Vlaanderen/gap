@@ -169,7 +169,29 @@ namespace Chiro.Kip.Services
 				// Als dat entities op sql server zijn, dan gebeurt het zoeken sowieso 
 				// hoofdletterongevoelig.
 
-				string huisNr = adres.HuisNr == null ? null : String.IsNullOrEmpty(adres.Bus) ? adres.HuisNr.ToString() : String.Format(Properties.Resources.NrEnBus, adres.HuisNr, adres.Bus);
+				string huisNr = null;
+				
+				if (adres.HuisNr != null)
+				{
+					if (String.IsNullOrEmpty(adres.Bus))
+					{
+						huisNr = adres.HuisNr.ToString();
+					}
+					else if (adres.Bus[0] >= '0' && adres.Bus[0] <= '9')
+					{
+						// Als de bus numeriek is, dan zetten we 'bus' tussen
+						// huisnummer en bus
+
+						huisNr = String.Format("{0} bus {1}", adres.HuisNr, adres.Bus);
+					}
+					else
+					{
+						// zo niet: een spatie
+
+						huisNr = String.Format("{0} {1}", adres.HuisNr, adres.Bus);
+					}
+				}
+
 				string postNr = adres.PostNr.ToString();
 
 				var adresInDb = (from adr in db.AdresSet.Include("kipWoont.kipPersoon").Include("kipWoont.kipAdresType")
