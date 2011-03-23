@@ -129,4 +129,8 @@
   <data name="PersoonNietGevonden" xml:space="preserve">
     <value>Persoon niet gevonden: {0} {1}</value>
   </data>
+  <data name="NrEnBus" xml:space="preserve">
+    <value>{0}.{1}</value>
+    <comment>combineert nummer en bus (GAP) tot nr (kipadmin)</comment>
+  </data>
 </root>

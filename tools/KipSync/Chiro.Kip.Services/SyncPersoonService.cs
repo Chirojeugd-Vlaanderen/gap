@@ -169,7 +169,7 @@ namespace Chiro.Kip.Services
 				// Als dat entities op sql server zijn, dan gebeurt het zoeken sowieso 
 				// hoofdletterongevoelig.
 
-				string huisNr = adres.HuisNr.ToString();
+				string huisNr = adres.HuisNr == null ? null : String.Format(Properties.Resources.NrEnBus, adres.HuisNr, adres.Bus);
 				string postNr = adres.PostNr.ToString();
 
 				var adresInDb = (from adr in db.AdresSet.Include("kipWoont.kipPersoon").Include("kipWoont.kipAdresType")
@@ -185,7 +185,7 @@ namespace Chiro.Kip.Services
 					            	{
 					            		ID = 0,
 					            		Straat = adres.Straat,
-					            		Nr = adres.HuisNr == null ? null : adres.HuisNr.ToString(),
+					            		Nr = huisNr,
 					            		PostNr = adres.PostNr.ToString(),
 					            		Gemeente = adres.WoonPlaats
 					            		// TODO (#238) Buitenlandse adressen.
