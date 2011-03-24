@@ -134,32 +134,43 @@ namespace Chiro.Kip.Services
 
 				foreach (var b in bewoners)
 				{
-					var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(b.Persoon);
-					zoekInfo.PostNr = adres.PostNr;
-
-					var gevonden = pMgr.Zoeken(zoekInfo, false, db);
-
-					if (gevonden == null)
+					if (b.Persoon == null)
 					{
-						// Er worden soms wel eens huisgenoten meegegeven die niet in kipadmin zitten.
-						// Als we ze tegen komen, negeren we het adres.
-
-						_log.BerichtLoggen(0, String.Format(
-						    "Adreswijziging: {0} {1} niet gevonden",
-						    b.Persoon.VoorNaam, b.Persoon.Naam));
-						return;
-
-						//throw new InvalidOperationException(String.Format(
-						//    Properties.Resources.PersoonNietGevonden,
-						//    b.Persoon.VoorNaam,
-						//    b.Persoon.Naam));
+						_log.FoutLoggen(0, String.Format(Properties.Resources.AdresZonderPersoon, adres.Straat, adres.HuisNr, adres.Bus, adres.PostNr, adres.WoonPlaats));
+					}
+					else if (b.Persoon.AdNummer == null)
+					{
+						_log.BerichtLoggen(0, String.Format(Properties.Resources.NegeerPersoonZonderAD, b.Persoon.VoorNaam, b.Persoon.Naam));
 					}
 					else
 					{
-						personen.Add(gevonden);
+						var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(b.Persoon);
+						zoekInfo.PostNr = adres.PostNr;
 
-						// In bewoners ad-nummer aanpassen, zoda we straks het juiste adrestype kunnen vinden
-						b.Persoon.AdNummer = gevonden.AdNummer;
+						var gevonden = pMgr.Zoeken(zoekInfo, false, db);
+
+						if (gevonden == null)
+						{
+							// Er worden soms wel eens huisgenoten meegegeven die niet in kipadmin zitten.
+							// Als we ze tegen komen, negeren we het adres.
+
+							_log.BerichtLoggen(0, String.Format(
+								"Adreswijziging: {0} {1} niet gevonden",
+								b.Persoon.VoorNaam, b.Persoon.Naam));
+							return;
+
+							//throw new InvalidOperationException(String.Format(
+							//    Properties.Resources.PersoonNietGevonden,
+							//    b.Persoon.VoorNaam,
+							//    b.Persoon.Naam));
+						}
+						else
+						{
+							personen.Add(gevonden);
+
+							// In bewoners ad-nummer aanpassen, zoda we straks het juiste adrestype kunnen vinden
+							b.Persoon.AdNummer = gevonden.AdNummer;
+						}
 					}
 				}
 
@@ -255,7 +266,7 @@ namespace Chiro.Kip.Services
 					                 select wnt).FirstOrDefault();
 
 					int adresTypeID = (int)(from b in bewoners
-								where b.Persoon.AdNummer == p.AdNummer
+								where b.Persoon != null && b.Persoon.AdNummer == p.AdNummer
 								select b.AdresType).FirstOrDefault();
 
 					var kAdrType = (from at in db.AdresTypeSet

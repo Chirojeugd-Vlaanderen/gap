@@ -61,6 +61,15 @@ namespace Chiro.Kip.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Geen bewoner op adres {0} {1} {2}, {3} {4}.
+        /// </summary>
+        internal static string AdresZonderPersoon {
+            get {
+                return ResourceManager.GetString("AdresZonderPersoon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kan communicatie {2} van onbekend persoon {0} {1} niet bewaren..
         /// </summary>
         internal static string CommunicatieOnbekendePersoon {
@@ -84,6 +93,15 @@ namespace Chiro.Kip.Services.Properties {
         internal static string LidNietGevonden {
             get {
                 return ResourceManager.GetString("LidNietGevonden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adres van persoon zonder AD-nummer niet bewaard. {0} {1}.
+        /// </summary>
+        internal static string NegeerPersoonZonderAD {
+            get {
+                return ResourceManager.GetString("NegeerPersoonZonderAD", resourceCulture);
             }
         }
         

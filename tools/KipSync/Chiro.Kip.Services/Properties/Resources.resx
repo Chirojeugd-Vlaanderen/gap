@@ -129,4 +129,10 @@
   <data name="PersoonNietGevonden" xml:space="preserve">
     <value>Persoon niet gevonden: {0} {1}</value>
   </data>
+  <data name="AdresZonderPersoon" xml:space="preserve">
+    <value>Geen bewoner op adres {0} {1} {2}, {3} {4}</value>
+  </data>
+  <data name="NegeerPersoonZonderAD" xml:space="preserve">
+    <value>Adres van persoon zonder AD-nummer niet bewaard. {0} {1}</value>
+  </data>
 </root>
