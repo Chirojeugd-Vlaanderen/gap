@@ -119,21 +119,11 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 		public static void MappingsDefinieren()
 		{
 			Mapper.CreateMap<Persoon, PersoonInfo>()
-				.ForMember(
-					dst => dst.AdNummer,
-					opt => opt.MapFrom(src => src.AdNummer))
-				.ForMember(
-					dst => dst.GeboorteDatum,
-					opt => opt.MapFrom(src => src.GeboorteDatum))
-				.ForMember(
-					dst => dst.Naam,
-					opt => opt.MapFrom(src => src.Naam))
-				.ForMember(
-					dst => dst.VoorNaam,
-					opt => opt.MapFrom(src => src.VoorNaam))
-				.ForMember(
-					dst => dst.Geslacht,
-					opt => opt.MapFrom(src => src.Geslacht));
+				// de members die in src en dst hetzelfde heten, laat ik voor het gemak weg.
+				// de members die genegeerd moeten worden, vermeld ik wel expliciet, anders
+				// crasht de assert helemaal onderaan.
+				.ForMember(dst=>dst.GelieerdePersoonID,opt=>opt.Ignore())
+				.ForMember(dst=>dst.ChiroLeefTijd,opt=>opt.Ignore());
 
 			Mapper.CreateMap<GelieerdePersoon, PersoonDetail>()
 				.ForMember(
