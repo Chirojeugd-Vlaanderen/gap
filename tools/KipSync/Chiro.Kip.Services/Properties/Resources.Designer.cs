@@ -97,6 +97,15 @@ namespace Chiro.Kip.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Naam van persoon onvolledig: {0} {1} ({2}).
+        /// </summary>
+        internal static string NegeerPersoonOnvolledigeNaam {
+            get {
+                return ResourceManager.GetString("NegeerPersoonOnvolledigeNaam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adres van persoon zonder AD-nummer niet bewaard. {0} {1}.
         /// </summary>
         internal static string NegeerPersoonZonderAD {

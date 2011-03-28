@@ -135,4 +135,7 @@
   <data name="NegeerPersoonZonderAD" xml:space="preserve">
     <value>Adres van persoon zonder AD-nummer niet bewaard. {0} {1}</value>
   </data>
+  <data name="NegeerPersoonOnvolledigeNaam" xml:space="preserve">
+    <value>Naam van persoon onvolledig: {0} {1} ({2})</value>
+  </data>
 </root>

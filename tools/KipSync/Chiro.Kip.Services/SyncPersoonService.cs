@@ -134,13 +134,17 @@ namespace Chiro.Kip.Services
 
 				foreach (var b in bewoners)
 				{
+					// Adressen van bewoners zonder AD-nummer mogen wel bewaard worden.  Het
+					// kan namelijk zijn dat een persoon al wel aangesloten is, maar dat
+					// zijn AD-nummer nog niet teruggesynct is.
+
 					if (b.Persoon == null)
 					{
 						_log.FoutLoggen(0, String.Format(Properties.Resources.AdresZonderPersoon, adres.Straat, adres.HuisNr, adres.Bus, adres.PostNr, adres.WoonPlaats));
 					}
-					else if (b.Persoon.AdNummer == null)
+					else if (b.Persoon.Naam == null || b.Persoon.VoorNaam == null)
 					{
-						_log.BerichtLoggen(0, String.Format(Properties.Resources.NegeerPersoonZonderAD, b.Persoon.VoorNaam, b.Persoon.Naam));
+						_log.FoutLoggen(0, String.Format(Properties.Resources.NegeerPersoonOnvolledigeNaam, b.Persoon.VoorNaam, b.Persoon.Naam, b.Persoon.AdNummer));
 					}
 					else
 					{
