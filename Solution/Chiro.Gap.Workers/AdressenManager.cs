@@ -55,6 +55,29 @@ namespace Chiro.Gap.Workers
 		#region proxy naar data acces
 
 		/// <summary>
+		/// Haalt een adres op, samen met alle personen die hun voorkeursadres
+		/// daar hebben.
+		/// </summary>
+		/// <param name="adresID">ID van het gevraagde adres</param>
+		/// <returns>Het adres met de bewoners die daar hun voorkeursadres hebben</returns>
+		/// <remarks>Voorlopig enkel voor supergav</remarks>
+		public Adres OphalenMetVoorkeurBewoners(int adresID)
+		{
+			if (_autorisatieMgr.IsSuperGav())
+			{
+				return _dao.Ophalen(
+					adresID, 
+					adr => adr.PersoonsAdres.First().GelieerdePersoon.First().Persoon,
+					adr => adr.StraatNaam,
+					adr => adr.WoonPlaats);
+			}
+			else
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+		}
+
+		/// <summary>
 		/// Haalt het adres met ID <paramref name="adresID"/> op, inclusief de bewoners (gelieerde personen) uit de groep met ID
 		/// <paramref name="groepID"/>
 		/// </summary>
