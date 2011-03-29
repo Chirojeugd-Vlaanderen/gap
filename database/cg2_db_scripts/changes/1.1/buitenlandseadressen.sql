@@ -104,3 +104,7 @@ FOREIGN KEY(LandID) REFERENCES adr.Land(LandID);
 CREATE INDEX IDX_BuitenLandsAdres_Straat_WoonPlaats_LandID 
 ON adr.BuitenLandsAdres(Straat, WoonPlaats, LandID)
 
+GO
+
+GRANT INSERT ON adr.BelgischAdres TO GapRole
+GRANT INSERT ON adr.BuitenLandsAdres TO GapRole
