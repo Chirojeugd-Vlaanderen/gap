@@ -339,10 +339,6 @@ namespace Chiro.Gap.Workers.Test
 		{
 			#region Arrange
 
-			// testData aanmaken.  Voor de zekerheid eerst de AutMgrAltijdGav registreren als
-			// IAutorisatieManager, want het kan goed zijn dat een vorige test dat wijzigde.
-
-			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
 			var testData = new DummyData();
 
 			// GelieerdePersonenDao mocken.  Van een Dao verwachten
@@ -397,12 +393,6 @@ namespace Chiro.Gap.Workers.Test
 		{
 			#region Arrange
 
-			// testData aanmaken.  Voor de zekerheid eerst de AutMgrAltijdGav registreren als
-			// IAutorisatieManager, want het kan goed zijn dat een vorige test dat wijzigde.
-
-			var autMgr = new AutMgrAltijdGav();
-
-			Factory.InstantieRegistreren<IAutorisatieManager>(autMgr);
 			var testData = new DummyData();
 
 			// GelieerdePersonenDao mocken.  Van een Dao verwachten

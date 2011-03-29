@@ -118,8 +118,12 @@ namespace Chiro.Gap.Dummies
 		/// <summary>
 		/// Herstelt de dummydata naar de oorspronkelijke toestand
 		/// </summary>
+		/// <remarks>Deze method reset de unity configuratie, om te vermijden dat de werking beïnvloed
+		/// wordt door vorige tests die met de IOC-container hebben 'gemoost'.</remarks>
 		public DummyData()
 		{
+			Factory.ContainerInit();
+
 			// TODO: Door de objecten te bewaren krijgen ze ID's, waardoor de tests betrouwbaarder
 			// worden.  Op het einden zou er dus ergens 
 			// GroepenDao.Bewaren(_dummyGroep, lambda-expressie-die-alles-meeneemt)

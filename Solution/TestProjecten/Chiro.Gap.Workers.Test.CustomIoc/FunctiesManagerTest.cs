@@ -156,11 +156,6 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 		{
 			// arrange
 
-			// Deze objecten nog eens expliciet registreren, om te vermijden dat wijzigingen in
-			// andere tests een vertekend beeld opleveren.
-			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
-			Factory.InstantieRegistreren<IGroepsWerkJaarDao>(new DummyGroepsWerkJaarDao());
-
 			var testData = new DummyData();
 
 			var veelGebruiktMock = new Mock<IVeelGebruikt>();
@@ -188,10 +183,6 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 		{
 			// arrange
 
-			// Deze DAO nog eens expliciet registreren, om te vermijden dat wijzigingen in
-			// andere tests een vertekend beeld opleveren.
-			Factory.InstantieRegistreren<IAutorisatieManager>(new AutMgrAltijdGav());
-
 			var testData = new DummyData();
 
 			var veelGebruiktMock = new Mock<IVeelGebruikt>();
@@ -218,10 +209,6 @@ namespace Chiro.Gap.Workers.Test.CustomIoc
 		public void FunctieLangerInGebruikGeforceerdVerwijderenTest()
 		{
 			// arrange
-
-			// Deze DAO nog eens expliciet registreren, om te vermijden dat wijzigingen in
-			// andere tests een vertekend beeld opleveren.
-			Factory.InstantieRegistreren<IFunctiesDao>(new DummyFunctiesDao());
 
 			var testData = new DummyData();
 
