@@ -385,6 +385,9 @@ namespace Chiro.Gap.ServiceContracts
 
 		#region adressen
 
+		// Dat adressengedoe staat een beetje verloren in de groepenservice.
+		// Maar bij gebrek aan adressenservice, staat het hier wel goed.
+
 		/// <summary>
 		/// Maakt een lijst met alle deelgemeentes uit de database; nuttig voor autocompletion
 		/// in de ui.
@@ -394,6 +397,14 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		IEnumerable<WoonPlaatsInfo> GemeentesOphalen();
+
+		/// <summary>
+		/// Maakt een lijst met alle landen uit de database.
+		/// </summary>
+		/// <returns>Lijst met alle beschikbare landen</returns>
+		[OperationContract]
+		IEnumerable<LandInfo> LandenOphalen();
+
 
 		/// <summary>
 		/// Haalt alle straten op uit een gegeven <paramref name="postNr"/>, waarvan de naam begint
@@ -465,6 +476,5 @@ namespace Chiro.Gap.ServiceContracts
 		/// <returns><c>true</c> als we op een liveomgeving werken, <c>false</c> als we op een testomgeving werken</returns>
 		[OperationContract]
 		bool IsLive();
-
 	}
 }

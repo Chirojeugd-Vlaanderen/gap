@@ -70,6 +70,7 @@
     <Compile Include="DataContracts\CommunicatieTypeInfo.cs" />
     <Compile Include="DataContracts\CommunicatieInfo.cs" />
     <Compile Include="DataContracts\GroepsWerkJaarDetail.cs" />
+    <Compile Include="DataContracts\LandInfo.cs" />
     <Compile Include="DataContracts\LedenProbleemInfo.cs" />
     <Compile Include="DataContracts\TeActiverenAfdelingInfo.cs" />
     <Compile Include="DataContracts\FunctieInfo.cs" />

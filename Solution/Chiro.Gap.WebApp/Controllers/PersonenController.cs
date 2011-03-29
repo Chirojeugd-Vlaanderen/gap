@@ -536,10 +536,11 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			model.OudAdresID = id;
 			model.PersoonsAdresInfo.AdresType = (from bewoner in a.Bewoners
-												 where bewoner.GelieerdePersoonID == aanvragerID
-												 select bewoner.AdresType).FirstOrDefault();
+							     where bewoner.GelieerdePersoonID == aanvragerID
+							     select bewoner.AdresType).FirstOrDefault();
 
 			model.WoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(a.PostNr);
+			model.Landen = VeelGebruikt.LandenOphalen();
 
 			// Standaard verhuist iedereen mee.
 			model.GelieerdePersoonIDs = (from b in a.Bewoners
@@ -632,6 +633,8 @@ namespace Chiro.Gap.WebApp.Controllers
 									  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
 				model.WoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
+				model.Landen = VeelGebruikt.LandenOphalen();
+
 				return View("AdresBewerken", model);
 			}
 			catch (FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>> ex)
@@ -711,6 +714,9 @@ namespace Chiro.Gap.WebApp.Controllers
 			BaseModelInit(model, groepID);
 
 			model.AanvragerID = id;
+			model.Landen = VeelGebruikt.LandenOphalen();
+			model.PersoonsAdresInfo.LandNaam = Properties.Resources.Belgie;
+
 			var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(l => l.HuisGenotenOphalenZelfdeGroep(id));
 
 			model.Bewoners = (from p in bewoners
@@ -795,6 +801,8 @@ namespace Chiro.Gap.WebApp.Controllers
 									  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
 				model.WoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
+				model.Landen = VeelGebruikt.LandenOphalen();
+
 				return View("AdresBewerken", model);
 			}
 			catch (FaultException<BlokkerendeObjectenFault<PersoonsAdresInfo2>> ex)

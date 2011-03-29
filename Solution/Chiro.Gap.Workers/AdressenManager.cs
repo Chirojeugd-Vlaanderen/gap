@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Transactions;
 
+using Chiro.Cdf.Data;
 using Chiro.Gap.Domain;
 using Chiro.Gap.Orm;
 using Chiro.Gap.Orm.DataInterfaces;
@@ -27,6 +28,7 @@ namespace Chiro.Gap.Workers
 		private readonly IBelgischeAdressenDao _dao;
 		private readonly IStratenDao _stratenDao;
 		private readonly ISubgemeenteDao _subgemeenteDao;
+		private readonly IDao<Land> _landenDao;
 		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly IAdressenSync _sync;
 
@@ -36,18 +38,21 @@ namespace Chiro.Gap.Workers
 		/// <param name="dao">Repository voor adressen</param>
 		/// <param name="stratenDao">Repository voor straten</param>
 		/// <param name="subgemeenteDao">Repository voor 'subgemeentes'</param>
+		/// <param name="landenDao">Repository voor landen</param>
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 		/// <param name="sync">Zorgt voor synchronisate van adressen naar KipAdmin</param>
 		public AdressenManager(
 			IBelgischeAdressenDao dao, 
 			IStratenDao stratenDao, 
 			ISubgemeenteDao subgemeenteDao, 
+			IDao<Land> landenDao,
 			IAutorisatieManager autorisatieMgr,
 			IAdressenSync sync)
 		{
 			_dao = dao;
 			_stratenDao = stratenDao;
 			_subgemeenteDao = subgemeenteDao;
+			_landenDao = landenDao;
 			_autorisatieMgr = autorisatieMgr;
 			_sync = sync;
 		}
@@ -356,7 +361,7 @@ namespace Chiro.Gap.Workers
 			}
 		}
 
-		#region crab-ophalen
+		#region adressen ophalen
 
 		/// <summary>
 		/// Een lijst van subgemeenten ophalen
@@ -366,6 +371,16 @@ namespace Chiro.Gap.Workers
 		{
 			return _subgemeenteDao.AllesOphalen();
 		}
+
+		/// <summary>
+		/// De lijst van beschikbare landen ophalen
+		/// </summary>
+		/// <returns>De lijst van beschikbare landen</returns>
+		public IEnumerable<Land> LandenOphalen()
+		{
+			return _landenDao.AllesOphalen();
+		}
+
 
 		/// <summary>
 		/// Haalt alle straten op uit een gegeven <paramref name="postNr"/>, waarvan de naam begint

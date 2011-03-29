@@ -65,6 +65,12 @@
 			<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.AdresType) %>
 			<%=Html.DropDownListFor(mdl => mdl.PersoonsAdresInfo.AdresType, new SelectList(values, "value", "text"))%>
 		</p>
+        
+        <p>
+            <%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.LandNaam) %>
+            <%=Html.DropDownListFor(mdl => mdl.PersoonsAdresInfo.LandNaam, new SelectList(Model.Landen, "Naam", "Naam")) %>
+        </p>
+
 		<p>
 			<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.PostNr) %>
 			<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.PostNr)%>

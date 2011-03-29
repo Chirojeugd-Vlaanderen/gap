@@ -82,6 +82,19 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			}
 		}
 
+		private static string LandGet(this Adres a)
+		{
+			if (a is BelgischAdres)
+			{
+				return Properties.Resources.Belgie;
+			}
+			else
+			{
+				Debug.Assert(a is BuitenLandsAdres);
+				return ((BuitenLandsAdres) a).Land.Naam;
+			}
+		}
+
 		/// <summary>
 		/// Bepaalt het postnummer van een adres.
 		/// </summary>
@@ -321,7 +334,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.PostNummerGet())
 					)
 				.ForMember(dst => dst.StraatNaamNaam, opt => opt.MapFrom(src => src.StraatGet()))
-				.ForMember(dst => dst.WoonPlaatsNaam, opt => opt.MapFrom(src => src.WoonPlaatsGet()));
+				.ForMember(dst => dst.WoonPlaatsNaam, opt => opt.MapFrom(src => src.WoonPlaatsGet()))
+				.ForMember(dst => dst.LandNaam, opt => opt.MapFrom(src => src.LandGet()));
 
 			Mapper.CreateMap<Adres, GezinInfo>()
 				.ForMember(
@@ -331,7 +345,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					dst => dst.Bewoners,
 					opt => opt.MapFrom(src => src.PersoonsAdres.ToList()))
 				.ForMember(dst => dst.StraatNaamNaam, opt => opt.MapFrom(src => src.StraatGet()))
-				.ForMember(dst => dst.WoonPlaatsNaam, opt => opt.MapFrom(src => src.WoonPlaatsGet()));
+				.ForMember(dst => dst.WoonPlaatsNaam, opt => opt.MapFrom(src => src.WoonPlaatsGet()))
+				.ForMember(dst => dst.LandNaam, opt => opt.MapFrom(src => src.LandGet()));
 
 			// Domme mapping
 			Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo>()
@@ -355,7 +370,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.Adres.StraatGet()))
 				.ForMember(
 					dst => dst.WoonPlaatsNaam,
-					opt => opt.MapFrom(src => src.Adres.WoonPlaatsGet()));
+					opt => opt.MapFrom(src => src.Adres.WoonPlaatsGet()))
+				.ForMember(dst => dst.LandNaam, opt => opt.MapFrom(src => src.Adres.LandGet()));
 
 			Mapper.CreateMap<GelieerdePersoon, BewonersInfo>()
 				.ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => src.ID))
@@ -371,6 +387,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 
 			Mapper.CreateMap<StraatNaam, StraatInfo>();
 			Mapper.CreateMap<WoonPlaats, WoonPlaatsInfo>();
+			Mapper.CreateMap<Land, LandInfo>();
 			Mapper.CreateMap<CommunicatieType, CommunicatieTypeInfo>();
 			Mapper.CreateMap<Categorie, CategorieInfo>();
 			Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo2>();

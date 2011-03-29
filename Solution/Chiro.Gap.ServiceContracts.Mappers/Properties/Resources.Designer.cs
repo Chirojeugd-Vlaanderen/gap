@@ -61,6 +61,15 @@ namespace Chiro.Gap.ServiceContracts.Mappers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to België.
+        /// </summary>
+        internal static string Belgie {
+            get {
+                return ResourceManager.GetString("Belgie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to nvt.
         /// </summary>
         internal static string NietVanToepassing {

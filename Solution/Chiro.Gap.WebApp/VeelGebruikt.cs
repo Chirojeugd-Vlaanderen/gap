@@ -23,6 +23,7 @@ namespace Chiro.Gap.WebApp
 		private const string FUNCTIEPROBLEMENCACHEKEY = "funprob{0}";
 		private const string FUNCTIEPROBLEMENAANTALCACHEKEY = "aantalfunprob{0}";
 		private const string WOONPLAATSENCACHEKEY = "woonpl";
+		private const string LANDENCACHEKEY = "landen";
 		private const string ISLIVECACHEKEY = "live";
 		private const string LEDENPROBLEMENCACHEKEY = "lidprob{0}";
 		private const string LEDENPROBLEMENAANTALCACHEKEY = "aantallidprob{0}";
@@ -248,8 +249,7 @@ namespace Chiro.Gap.WebApp
 		/// <returns>Een lijst met alle beschikbare woonplaatsen</returns>
 		public IEnumerable<WoonPlaatsInfo> WoonPlaatsenOphalen()
 		{
-			var cache = System.Web.HttpContext.Current.Cache;
-			var result = (IEnumerable<WoonPlaatsInfo>)cache.Get(WOONPLAATSENCACHEKEY);
+			var result = (IEnumerable<WoonPlaatsInfo>)_cache.Get(WOONPLAATSENCACHEKEY);
 
 			if (result == null)
 			{
@@ -258,7 +258,7 @@ namespace Chiro.Gap.WebApp
 				result = _serviceHelper.CallService<IGroepenService,
 					IEnumerable<WoonPlaatsInfo>>(g => g.GemeentesOphalen());
 
-				cache.Add(
+				_cache.Add(
 					WOONPLAATSENCACHEKEY,
 					result,
 					null,
@@ -269,6 +269,34 @@ namespace Chiro.Gap.WebApp
 			}
 			return result;
 		}
+
+		/// <summary>
+		/// Haalt alle landen op van de backend
+		/// </summary>
+		/// <returns>De landinfo van alle gekende landen</returns>
+		public IEnumerable<LandInfo> LandenOphalen()
+		{
+			var result = (IEnumerable<LandInfo>) _cache.Get(LANDENCACHEKEY);
+
+			if (result == null)
+			{
+				// Cache geëxpired; opnieuw ophalen en cachen.
+
+				result = _serviceHelper.CallService<IGroepenService, IEnumerable<LandInfo>>(g => g.LandenOphalen());
+
+				_cache.Add(
+					LANDENCACHEKEY,
+					result,
+					null,
+					System.Web.Caching.Cache.NoAbsoluteExpiration,
+					new TimeSpan(1, 0, 0, 0) /* bewaar 1 dag */,
+					System.Web.Caching.CacheItemPriority.High /* niet te gauw wissen; grote kost */,
+					null);
+
+			}
+			return result;
+		}
+
 
 		#endregion
 

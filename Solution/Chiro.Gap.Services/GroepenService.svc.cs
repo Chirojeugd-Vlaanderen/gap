@@ -990,6 +990,15 @@ namespace Chiro.Gap.Services
 		}
 
 		/// <summary>
+		/// Maakt een lijst met alle landen uit de database
+		/// </summary>
+		/// <returns>Lijst met alle beschikbare landen</returns>
+		public IEnumerable<LandInfo> LandenOphalen()
+		{
+			return Mapper.Map<IEnumerable<Land>, IList<LandInfo>>(_adresMgr.LandenOphalen());
+		}
+
+		/// <summary>
 		/// Haalt alle straten op uit een gegeven <paramref name="postNr"/>, waarvan de naam begint
 		/// met het gegeven <paramref name="straatBegin"/>.
 		/// </summary>

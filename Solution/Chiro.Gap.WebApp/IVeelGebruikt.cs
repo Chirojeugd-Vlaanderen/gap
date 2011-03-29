@@ -77,5 +77,11 @@ namespace Chiro.Gap.WebApp
 		/// </summary>
 		/// <param name="groepID">ID van de groep waarvan de problemencache leeg te maken</param>
 		void LedenProblemenResetten(int groepID);
+
+		/// <summary>
+		/// Haalt alle landen op van de backend
+		/// </summary>
+		/// <returns>De landinfo van alle gekende landen</returns>
+		IEnumerable<LandInfo> LandenOphalen();
 	}
 }

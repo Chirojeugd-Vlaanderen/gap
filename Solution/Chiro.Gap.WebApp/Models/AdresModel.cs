@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -19,16 +20,17 @@ namespace Chiro.Gap.WebApp.Models
 	/// </summary>
 	public class AdresModel : MasterViewModel
 	{
-        /// <summary>
-        /// De standaardconstructor voor AdresModel
-        /// </summary>
-        public AdresModel()
-        {
-            Bewoners = new List<CheckBoxListInfo>();
-            GelieerdePersoonIDs = new List<int>();
-            PersoonsAdresInfo = new PersoonsAdresInfo();
-            WoonPlaatsen = new List<WoonPlaatsInfo>();
-        }
+		/// <summary>
+		/// De standaardconstructor voor AdresModel
+		/// </summary>
+		public AdresModel()
+		{
+			Bewoners = new List<CheckBoxListInfo>();	// mensen die nu op dit adres wonen
+			GelieerdePersoonIDs = new List<int>();		// ID's van de geselecteerde bewoners
+			PersoonsAdresInfo = new PersoonsAdresInfo();	// het adres zelf, in combinatie met het type
+			WoonPlaatsen = new List<WoonPlaatsInfo>();	// woonplaatsen met het postnummer van het adres
+			Landen = new List<LandInfo>();			// alle gekende landen
+		}
 
 		/// <summary>
 		/// ID van GelieerdePersoon die graag zou verhuizen.
@@ -67,5 +69,10 @@ namespace Chiro.Gap.WebApp.Models
 		/// Lijstje woonplaatsen dat overeenkomt met Adres.PostNr
 		/// </summary>
 		public IEnumerable<WoonPlaatsInfo> WoonPlaatsen { get; set; }
+
+		/// <summary>
+		/// Lijstje beschikbare landen
+		/// </summary>
+		public IEnumerable<LandInfo> Landen { get; set; }
 	}
 }

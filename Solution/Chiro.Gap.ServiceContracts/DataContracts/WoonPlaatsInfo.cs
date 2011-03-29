@@ -27,7 +27,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		public int PostNummer { get; set; }
 
 		/// <summary>
-		/// De straatnaam
+		/// Naam van de woonplaats: (deel)gemeente/gehucht/...
 		/// </summary>
 		[DataMember]
 		public String Naam { get; set; }

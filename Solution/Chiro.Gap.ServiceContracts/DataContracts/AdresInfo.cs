@@ -63,5 +63,11 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		[Verplicht]
 		[StringLengte(80)]
 		public String WoonPlaatsNaam { get; set; }
+
+		[DataMember]
+		[DisplayName(@"Land")]
+		[Verplicht]
+		[StringLengte(80)]
+		public String LandNaam { get; set; }
 	}
 }
