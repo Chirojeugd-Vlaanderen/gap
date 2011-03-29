@@ -1046,7 +1046,7 @@ namespace Chiro.Gap.WebApp.Controllers
 				object value;
                 TempData.TryGetValue("list", out value);
 				model.GelieerdePersoonIDs = (List<int>)value;
-				var persoonsnamen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(l => l.MinimaleDetailsOphalen(model.GelieerdePersoonIDs));
+				var persoonsnamen = ServiceHelper.CallService<IGelieerdePersonenService, IEnumerable<PersoonInfo>>(l => l.PersoonInfoOphalen(model.GelieerdePersoonIDs));
 				model.GelieerdePersoonNamen = persoonsnamen.Select(e => e.VoorNaam + " " + e.Naam).ToList();
 				return View("CategorieToevoegenAanLijst", model);
 			}

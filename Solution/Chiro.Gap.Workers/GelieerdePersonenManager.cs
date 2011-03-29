@@ -145,21 +145,6 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
-		/// Haalt persoonsgegevens op voor alle gegeven gelieerde personen.
-		/// </summary>
-		/// <param name="gelieerdePersoonIDs">GelieerdePersoonIDs van op te halen personen</param>
-		/// <returns>List van PersoonInfo overeenkomend met die IDs</returns>
-		public IList<Persoon> MinimaleDetailsOphalen(IList<int> gelieerdePersoonIDs)
-		{
-			if (gelieerdePersoonIDs.Any(id => !_autorisatieMgr.IsGavGelieerdePersoon(id)))
-			{
-				throw new GeenGavException(Properties.Resources.GeenGav);
-			}
-
-			return gelieerdePersoonIDs.Select(id => _gelieerdePersonenDao.DetailsOphalen(id).Persoon).ToList();
-		}
-
-		/// <summary>
 		/// Haalt gelieerde persoon op met persoonsgegevens, adressen en
 		/// communicatievormen.
 		/// </summary>

@@ -301,11 +301,12 @@ namespace Chiro.Gap.Services
 		/// </summary>
 		/// <param name="gelieerdePersoonIDs">GelieerdePersoonIDs van op te halen personen</param>
 		/// <returns>List van PersoonInfo overeenkomend met die IDs</returns>
-		public IList<PersoonInfo> MinimaleDetailsOphalen(IList<int> gelieerdePersoonIDs)
+		public IList<PersoonInfo> PersoonInfoOphalen(IList<int> gelieerdePersoonIDs)
 		{
 			try
 			{
-				return Mapper.Map<IList<Persoon>, IList<PersoonInfo>>(_gpMgr.MinimaleDetailsOphalen(gelieerdePersoonIDs));
+				return Mapper.Map<IEnumerable<Persoon>, IList<PersoonInfo>>(
+					_pMgr.LijstOphalenViaGelieerdePersoon(gelieerdePersoonIDs, PersoonsExtras.Geen));
 			}
 			catch (Exception ex)
 			{

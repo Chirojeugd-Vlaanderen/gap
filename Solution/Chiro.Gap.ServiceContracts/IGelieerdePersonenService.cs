@@ -61,7 +61,7 @@ namespace Chiro.Gap.ServiceContracts
 		[OperationContract]
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
-		IList<PersoonInfo> MinimaleDetailsOphalen(IList<int> gelieerdePersoonIDs);
+		IList<PersoonInfo> PersoonInfoOphalen(IList<int> gelieerdePersoonIDs);
 
 		/// <summary>
 		/// Haalt gelieerd persoon op, incl. persoonsgegevens, communicatievormen en adressen

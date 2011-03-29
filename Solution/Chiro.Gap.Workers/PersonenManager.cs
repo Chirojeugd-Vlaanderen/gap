@@ -198,6 +198,8 @@ namespace Chiro.Gap.Workers
 		/// <returns>De gevraagde personen</returns>
 		public IEnumerable<Persoon> LijstOphalenViaGelieerdePersoon(IEnumerable<int> gelieerdePersoonIDs, PersoonsExtras extras)
 		{
+			var mijnGelieerdePersonen = _autorisatieMgr.EnkelMijnGelieerdePersonen(gelieerdePersoonIDs);
+
 			var paths = new List<Expression<Func<Persoon, object>>>();
 
 			if ((extras & (PersoonsExtras.Communicatie | PersoonsExtras.Categorieen)) != 0)
@@ -226,7 +228,7 @@ namespace Chiro.Gap.Workers
 				paths.Add(p => p.GelieerdePersoon);
 			}
 
-			return _dao.OphalenViaGelieerdePersoon(gelieerdePersoonIDs, paths.ToArray());
+			return _dao.OphalenViaGelieerdePersoon(mijnGelieerdePersonen, paths.ToArray());
 		}
 
 		/// <summary>
