@@ -42,11 +42,19 @@ namespace Chiro.Gap.WebApp.Test
 			{
 				++_aantalCalls;
 
-				// Ik wil vermijden dat het resultaat null is.  Daarom
-				// misbruik ik de IoC container om een resultaat te genereren,
-				// ipv. gewoon Default(T) op te leveren.
+				if (typeof(T) == typeof(bool))
+				{
+					return default(T);
+				}
+				else
+				{
 
-				return Factory.Maak<T>();
+
+					// Ik wil vermijden dat het resultaat null is.  Daarom
+					// misbruik ik de IoC container om een resultaat te genereren.
+
+					return Factory.Maak<T>();
+				}
 			}
 
 			public void CallService<I>(Action<I> operation) where I : class
