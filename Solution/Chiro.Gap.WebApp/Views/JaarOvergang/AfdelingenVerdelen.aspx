@@ -60,7 +60,7 @@
 		Ter informatie de &lsquo;standaardafdelingen&rsquo; voor dit werkjaar:
 	</p>
 	<table>
-		<!--TODO exentsion method die gegeven een werkjaar, het standaardgeboortejaar berekend. Nu is het niet correct. -->
+		<!--TODO exentsion method die gegeven een werkjaar, het standaardgeboortejaar berekent. Nu is het niet correct. -->
 		<%  foreach (var oa in Model.OfficieleAfdelingen.Where(ofaf => ofaf.ID != (int)NationaleAfdeling.Speciaal).OrderBy(ofaf => ofaf.LeefTijdTot))
 	  {%>
 		<tr>
