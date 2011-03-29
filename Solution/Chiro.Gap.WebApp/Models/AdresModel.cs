@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.HtmlHelpers;
@@ -74,5 +75,12 @@ namespace Chiro.Gap.WebApp.Models
 		/// Lijstje beschikbare landen
 		/// </summary>
 		public IEnumerable<LandInfo> Landen { get; set; }
+
+		/// <summary>
+		/// Apart invulveld voor woonplaats in het buitenland
+		/// </summary>
+		[DisplayName(@"Woonplaats")]
+		[StringLengte(80)]
+		public string WoonPlaatsBuitenLand { get; set; }
 	}
 }

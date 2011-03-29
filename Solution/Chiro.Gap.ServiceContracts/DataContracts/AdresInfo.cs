@@ -40,6 +40,14 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		public int PostNr { get; set; }
 
 		/// <summary>
+		/// Postcode, voor buitenlandse adressen.
+		/// (dit gaan de gebruikers weer langs geen kanten snappen)
+		/// </summary>
+		[DataMember]
+		[StringLengte(10)]
+		public string PostCode { get; set; }
+
+		/// <summary>
 		/// Het huisnummer
 		/// </summary>
 		[DataMember]

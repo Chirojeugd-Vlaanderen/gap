@@ -3,6 +3,7 @@
 // Mail naar informatica@chiro.be voor alle info over deze broncode
 // </copyright>
 
+using System;
 using System.Runtime.Serialization;
 
 using Chiro.Gap.Domain;

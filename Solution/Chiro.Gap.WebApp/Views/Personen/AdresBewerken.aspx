@@ -14,25 +14,50 @@
 	<link href="<%= ResolveUrl("~/Content/jquery.autocomplete.css")%>" rel="stylesheet"
 		type="text/css" />
 	<script type="text/javascript">
-		// Automatisch invullen gemeentes na keuze postnummer
-		$(function() {
-			$("input#PersoonsAdresInfo_PostNr").change(function() {
-				$.getJSON('<%=Url.Action("WoonPlaatsenOphalen", "Adressen")%>', { postNummer: $(this).val() }, function(j) {
-					var options = '';
-					for (var i = 0; i < j.length; i++) {
-						options += '<option value="' + j[i].Naam + '">' + j[i].Naam + '</option>';
-					}
-					$("select#PersoonsAdresInfo_WoonPlaatsNaam").html(options);
-				})
-			})
-		});
+	    $(function () {
+	        // Automatisch invullen gemeentes na keuze postnummer
+	        $("input#PersoonsAdresInfo_PostNr").change(function () {
+	            $.getJSON('<%=Url.Action("WoonPlaatsenOphalen", "Adressen")%>', { postNummer: $(this).val() }, function (j) {
+	                var options = '';
+	                for (var i = 0; i < j.length; i++) {
+	                    options += '<option value="' + j[i].Naam + '">' + j[i].Naam + '</option>';
+	                }
+	                $("select#PersoonsAdresInfo_WoonPlaatsNaam").html(options);
+	            })
+	        });
 
-		// Autocomplete straten
-		$(document).ready(function() {
-			$("input#PersoonsAdresInfo_StraatNaamNaam").autocomplete(
-        '<%= Url.Action("StratenVoorstellen", "Adressen") %>',
-        { extraParams: { "postNummer": function() { return $("input#PersoonsAdresInfo_PostNr").val(); } } });
-		}); 
+	        // Autocomplete straten
+	        $("input#PersoonsAdresInfo_StraatNaamNaam").autocomplete(
+                '<%= Url.Action("StratenVoorstellen", "Adressen") %>',
+                { extraParams: { "postNummer": function () { return $("input#PersoonsAdresInfo_PostNr").val(); } } });
+
+	        // Tonen en verbergen van internationale velden
+
+	        // We doen dat 1 keer initieel, en daarna iedere keer een ander land
+	        // wordt gekozen.
+
+	        if ($("#PersoonsAdresInfo_LandNaam").val() != "België") {
+	            $(".binnenland").hide();
+	            $(".buitenland").show();
+	        }
+	        else {
+	            $(".binnenland").show();
+	            $(".buitenland").hide();
+	        };
+
+	        // valt het op dat mijn jquery skills niet zo geweldig zijn? :)
+
+	        $("#PersoonsAdresInfo_LandNaam").change(function () {
+	            if ($("#PersoonsAdresInfo_LandNaam").val() != "België") {
+	                $(".binnenland").hide();
+	                $(".buitenland").show();
+	            }
+	            else {
+	                $(".binnenland").show();
+	                $(".buitenland").hide();
+	            }
+	        });
+	    }); 
 	</script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -75,7 +100,14 @@
 			<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.PostNr) %>
 			<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.PostNr)%>
 			<%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.PostNr)%>
-		</p>
+        </p>
+
+        <p class="buitenland" style="display:none">
+			<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.PostCode) %>
+			<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.PostCode)%>
+			<%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.PostCode)%>            
+        </p>
+
 		<noscript>
 			<input type="submit" name="action" value="Woonplaatsen ophalen" />
 		</noscript>
@@ -94,10 +126,15 @@
 			<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.Bus)%>
 			<%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.Bus)%>
 		</p>
-		<p>
+		<p class="binnenland">
 			<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.WoonPlaatsNaam)%>
 			<%=Html.DropDownListFor(mdl => mdl.PersoonsAdresInfo.WoonPlaatsNaam, new SelectList(Model.WoonPlaatsen, "Naam", "Naam"))%>
 			<%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.WoonPlaatsNaam)%>
+        </p>
+        <p class="buitenland">
+			<%=Html.LabelFor(mdl => mdl.WoonPlaatsBuitenLand)%>
+			<%=Html.EditorFor(mdl => mdl.WoonPlaatsBuitenLand)%>
+			<%=Html.ValidationMessageFor(mdl => mdl.WoonPlaatsBuitenLand)%>
 		</p>
 		<%
 			if (Model.OudAdresID == 0)

@@ -26,7 +26,7 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 	{
 		#region Mappings voor service
 
-		// Een paar private extension methods om gemakkelijker adressen te mappen.
+		#region Private extension methods om gemakkelijker adressen te mappen.
 		
 		/// <summary>
 		/// Bepaalt de straatnaam van een Adres
@@ -82,6 +82,11 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			}
 		}
 
+		/// <summary>
+		/// Bepaalt naam van het land van een adres
+		/// </summary>
+		/// <param name="a">adres</param>
+		/// <returns>Naam van het land van het adres</returns>
 		private static string LandGet(this Adres a)
 		{
 			if (a is BelgischAdres)
@@ -94,6 +99,27 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				return ((BuitenLandsAdres) a).Land.Naam;
 			}
 		}
+
+		/// <summary>
+		/// Geeft postcode voor een buitenlands adres, of <c>null</c> voor een Belgisch adres.
+		/// </summary>
+		/// <param name="a">Adres</param>
+		/// <returns>Als <paramref name="a"/> een buitenlands adres is, de postcode, 
+		/// anders <c>null</c>.</returns>
+		private static string PostCodeGet(this Adres a)
+		{
+			if (a is BelgischAdres)
+			{
+				return null;
+			}
+			else
+			{
+				Debug.Assert(a is BuitenLandsAdres);
+				return ((BuitenLandsAdres) a).PostCode;
+			}
+		}
+
+		#endregion
 
 		/// <summary>
 		/// Bepaalt het postnummer van een adres.
@@ -335,7 +361,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					)
 				.ForMember(dst => dst.StraatNaamNaam, opt => opt.MapFrom(src => src.StraatGet()))
 				.ForMember(dst => dst.WoonPlaatsNaam, opt => opt.MapFrom(src => src.WoonPlaatsGet()))
-				.ForMember(dst => dst.LandNaam, opt => opt.MapFrom(src => src.LandGet()));
+				.ForMember(dst => dst.LandNaam, opt => opt.MapFrom(src => src.LandGet()))
+				.ForMember(dst => dst.PostCode, opt=>opt.MapFrom(src => src.PostCodeGet()));
 
 			Mapper.CreateMap<Adres, GezinInfo>()
 				.ForMember(
@@ -346,7 +373,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 					opt => opt.MapFrom(src => src.PersoonsAdres.ToList()))
 				.ForMember(dst => dst.StraatNaamNaam, opt => opt.MapFrom(src => src.StraatGet()))
 				.ForMember(dst => dst.WoonPlaatsNaam, opt => opt.MapFrom(src => src.WoonPlaatsGet()))
-				.ForMember(dst => dst.LandNaam, opt => opt.MapFrom(src => src.LandGet()));
+				.ForMember(dst => dst.LandNaam, opt => opt.MapFrom(src => src.LandGet()))
+				.ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.PostCodeGet()));
 
 			// Domme mapping
 			Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo>()
@@ -371,7 +399,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(
 					dst => dst.WoonPlaatsNaam,
 					opt => opt.MapFrom(src => src.Adres.WoonPlaatsGet()))
-				.ForMember(dst => dst.LandNaam, opt => opt.MapFrom(src => src.Adres.LandGet()));
+				.ForMember(dst => dst.LandNaam, opt => opt.MapFrom(src => src.Adres.LandGet()))
+				.ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.Adres.PostCodeGet()));
 
 			Mapper.CreateMap<GelieerdePersoon, BewonersInfo>()
 				.ForMember(dst => dst.GelieerdePersoonID, opt => opt.MapFrom(src => src.ID))
