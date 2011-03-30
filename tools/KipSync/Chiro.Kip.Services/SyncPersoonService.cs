@@ -142,7 +142,7 @@ namespace Chiro.Kip.Services
 					{
 						_log.FoutLoggen(0, String.Format(Properties.Resources.AdresZonderPersoon, adres.Straat, adres.HuisNr, adres.Bus, adres.PostNr, adres.WoonPlaats));
 					}
-					else if (b.Persoon.Naam == null || b.Persoon.VoorNaam == null)
+					else if (String.IsNullOrEmpty(b.Persoon.Naam) || String.IsNullOrEmpty(b.Persoon.VoorNaam))
 					{
 						_log.FoutLoggen(0, String.Format(Properties.Resources.NegeerPersoonOnvolledigeNaam, b.Persoon.VoorNaam, b.Persoon.Naam, b.Persoon.AdNummer));
 					}
@@ -1110,20 +1110,19 @@ namespace Chiro.Kip.Services
 				var mgr = new PersonenManager();
 				var zoekInfo = Mapper.Map<Persoon, PersoonZoekInfo>(pers);
 
-				// locking gebeurt niet helemaal juist.  Maar uiteindelijk ga ik toch geen
-				// meerdere threads gebruiken.
-
 				lid = mgr.LidZoeken(zoekInfo, stamNummer, werkJaar, db);
 
 				if (lid == null)
 				{
-					throw new InvalidOperationException(String.Format(
-						Properties.Resources.LidNietGevonden,
-						pers.VoorNaam,
-						pers.Naam,
-						stamNummer,
-						werkJaar));
+                    _log.FoutLoggen(0, String.Format(
+                        Properties.Resources.LidNietGevonden,
+                        pers.VoorNaam,
+                        pers.Naam,
+                        stamNummer,
+                        werkJaar));
+				    return;
 				}
+
 				if (afdelingen.Count() >= 1)
 				{
 					int afdid = (int) afdelingen.First();
