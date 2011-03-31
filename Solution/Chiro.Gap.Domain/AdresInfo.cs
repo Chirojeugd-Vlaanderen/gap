@@ -9,10 +9,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Properties;
 using System.Runtime.Serialization;
 
-namespace Chiro.Gap.ServiceContracts.DataContracts
+namespace Chiro.Gap.Domain
 {
 	/// <summary>
-	/// Datacontract voor een adres.  Het ID wordt enkel gebruikt bij het ophalen van een adres.
+	/// Generieke adresgegevens.  Wordt gebruikt om adressen op te zoeken, maar ook als 
+	/// datacontract.  Omdat de workers deze klasse gebruiken, heb ik ze verplaatst van
+	/// Chiro.Gap.ServiceContracts naar Chiro.Gap.Domain.
+	/// 
+	/// Het ID wordt enkel gebruikt bij het ophalen van een adres.
 	/// Voor de rest zijn alle members strings (geen straatIDs of woonplaatsIDs), zodat hetzelfde
 	/// contract gebruikt kan worden voor binnenlandse en buitenlandse adressen.
 	/// </summary>
@@ -36,7 +40,9 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// </summary>
 		[Verplicht]
 		[DataMember]
-		[Range(1000, 9999, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RangeError")]
+		// De upper limit is verhoogd van 9999 naar 99999, om dit datacontract ook te kunnen gebruiken voor
+		// buitenlandse adressen.  Een beetje een hack dus.
+		[Range(1000, 99999, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RangeError")]
 		public int PostNr { get; set; }
 
 		/// <summary>
@@ -68,7 +74,12 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		/// </summary>
 		[DataMember]
 		[DisplayName(@"Woonplaats")]
-		[Verplicht]
+		// Woonplaats is eigenlijk wel verplicht, maar ik zet dat hier toch af,
+		// omdat ik anders problemen krijg in de UI bij het ingeven van een
+		// buitenlands adres.  Daar wordt de drop down voor woonplaats dan 
+		// niet gebruikt, waardoor bij een verplichte woonplaats het formulier niet 
+		// gepost kan worden.  (hack)
+		//[Verplicht]
 		[StringLengte(80)]
 		public String WoonPlaatsNaam { get; set; }
 

@@ -27,9 +27,13 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 		
 		[DataMember]
 		public int? PostNummer;
+
+		[DataMember] public string PostCode;
 		
 		[DataMember]
 		public string WoonPlaats;
+
+		[DataMember] public string Land;
 		
 		[DataMember]
 		public string TelefoonNummer;

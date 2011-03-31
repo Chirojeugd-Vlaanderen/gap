@@ -62,7 +62,6 @@
   <ItemGroup>
     <Compile Include="DataContracts\ActieveAfdelingInfo.cs" />
     <Compile Include="DataContracts\AfdelingDetail.cs" />
-    <Compile Include="DataContracts\AdresInfo.cs" />
     <Compile Include="DataContracts\AfdelingInfo.cs" />
     <Compile Include="DataContracts\AfdelingsJaarDetail.cs" />
     <Compile Include="DataContracts\CategorieInfo.cs" />

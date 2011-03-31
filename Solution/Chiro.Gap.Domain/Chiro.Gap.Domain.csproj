@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -53,12 +54,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdresInfo.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="FoutBericht.cs" />
     <Compile Include="Foutnummers.cs" />
     <Compile Include="ICommunicatie.cs" />
     <Compile Include="LidFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Chiro.Cdf.Validation\Chiro.Cdf.Validation.csproj">
+      <Project>{B55EDF1F-DE3F-4E00-A359-0D56BE67E197}</Project>
+      <Name>Chiro.Cdf.Validation</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

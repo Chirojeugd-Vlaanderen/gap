@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Chiro.Gap.Orm.Properties {
+namespace Chiro.Gap.Data.Properties {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace Chiro.Gap.Orm.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resources {
+    internal class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace Chiro.Gap.Orm.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Chiro.Gap.Orm.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Chiro.Gap.Data.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace Chiro.Gap.Orm.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,36 +63,9 @@ namespace Chiro.Gap.Orm.Properties {
         /// <summary>
         ///   Looks up a localized string similar to België.
         /// </summary>
-        public static string Belgie {
+        internal static string Belgie {
             get {
                 return ResourceManager.GetString("Belgie", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to geen.
-        /// </summary>
-        public static string Geen {
-            get {
-                return ResourceManager.GetString("Geen", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} is beperkt van {1} tot {2}..
-        /// </summary>
-        public static string RangeError {
-            get {
-                return ResourceManager.GetString("RangeError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} is een verplicht veld..
-        /// </summary>
-        public static string RequiredAttribute_ValidationError {
-            get {
-                return ResourceManager.GetString("RequiredAttribute_ValidationError", resourceCulture);
             }
         }
     }

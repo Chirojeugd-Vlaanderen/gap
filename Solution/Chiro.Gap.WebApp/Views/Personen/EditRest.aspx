@@ -125,13 +125,13 @@
 			<%{%>
 			<b>post:
 				<%=Html.Encode(String.Format("{0} {1} {2}", pa.StraatNaamNaam, pa.HuisNr, pa.Bus))%>,
-				<%=Html.Encode(String.Format("{0} {1} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType))%>
+				<%=Html.Encode(String.Format("{0} {3} {1} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType, pa.PostCode))%>
 			</b>
 			<%}
 	 else
 	 {%>
 			<%=Html.Encode(String.Format("{0} {1} {2}", pa.StraatNaamNaam, pa.HuisNr, pa.Bus))%>,
-			<%=Html.Encode(String.Format("{0} {1} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType))%>
+			<%=Html.Encode(String.Format("{0} {3} {1} ({2}) ", pa.PostNr, pa.WoonPlaatsNaam, pa.AdresType, pa.PostCode))%>
 			<%=Html.ActionLink("[Voorkeursadres maken]", "VoorkeurAdresMaken", new { persoonsAdresID = pa.PersoonsAdresID, gelieerdePersoonID = Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>
 			<%} %>
 			<%=Html.ActionLink("[verhuizen]", "Verhuizen", new { id = pa.ID, aanvragerID = ViewData.Model.PersoonLidInfo.PersoonDetail.GelieerdePersoonID })%>

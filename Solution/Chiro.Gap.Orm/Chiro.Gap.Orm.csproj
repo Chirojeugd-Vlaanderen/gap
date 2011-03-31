@@ -69,6 +69,7 @@
       <DependentUpon>ChiroGroepModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="CommunicatieType.cs" />
+    <Compile Include="DataInterfaces\IAdressenDao.cs" />
     <Compile Include="DataInterfaces\IAfdelingenDao.cs" />
     <Compile Include="DataInterfaces\IAfdelingsJarenDao.cs" />
     <Compile Include="DataInterfaces\ICategorieenDao.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="DataInterfaces\IGavDao.cs" />
     <Compile Include="DataInterfaces\IGroepsWerkJaarDao.cs" />
     <Compile Include="DataInterfaces\IKindDao.cs" />
+    <Compile Include="DataInterfaces\ILandenDao.cs" />
     <Compile Include="DataInterfaces\ILeidingDao.cs" />
     <Compile Include="DataInterfaces\IPersonenDao.cs" />
     <Compile Include="AfdelingsJaar.cs" />
@@ -90,7 +92,6 @@
     <Compile Include="KaderGroep.cs" />
     <Compile Include="Land.cs" />
     <Compile Include="OfficieleAfdeling.cs" />
-    <Compile Include="DataInterfaces\IBelgischeAdressenDao.cs" />
     <Compile Include="DataInterfaces\IAutorisatieDao.cs" />
     <Compile Include="DataInterfaces\IGelieerdePersonenDao.cs" />
     <Compile Include="DataInterfaces\IGroepenDao.cs" />

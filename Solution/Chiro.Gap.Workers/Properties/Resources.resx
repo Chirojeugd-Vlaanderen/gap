@@ -246,4 +246,7 @@
   <data name="Belgie" xml:space="preserve">
     <value>België</value>
   </data>
+  <data name="LandNietGevonden" xml:space="preserve">
+    <value>Het land {0} werd niet gevonden.</value>
+  </data>
 </root>

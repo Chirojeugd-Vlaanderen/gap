@@ -77,7 +77,7 @@ namespace Chiro.Gap.Data.Test
 		{
 			// Arrange
 
-			var dao = Factory.Maak<IBelgischeAdressenDao>();
+			var dao = Factory.Maak<IAdressenDao>();
 
 			// Act
 
@@ -86,7 +86,8 @@ namespace Chiro.Gap.Data.Test
 			// Assert
 
 			Assert.IsNotNull(gevonden);
-			Assert.IsNotNull(gevonden.StraatNaam);
+			Assert.IsTrue(gevonden is BelgischAdres);
+			Assert.IsNotNull(((BelgischAdres)gevonden).StraatNaam);
 		}
 
 		/// <summary>
@@ -98,7 +99,7 @@ namespace Chiro.Gap.Data.Test
 		{
 			// Arrange
 
-			var dao = Factory.Maak<IBelgischeAdressenDao>();
+			var dao = Factory.Maak<IAdressenDao>();
 
 			// Act
 

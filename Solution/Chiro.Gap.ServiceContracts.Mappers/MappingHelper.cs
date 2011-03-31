@@ -229,7 +229,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst => dst.TelefoonNummer,
 						   opt => opt.MapFrom(src => VoorkeurCommunicatie(src, CommunicatieTypeEnum.TelefoonNummer)))
 				.ForMember(dst => dst.VoorNaam, opt => opt.MapFrom(src => src.Persoon.VoorNaam))
-				.ForMember(dst => dst.WoonPlaats, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.WoonPlaatsGet()));
+				.ForMember(dst => dst.WoonPlaats, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.WoonPlaatsGet()))
+				.ForMember(dst => dst.PostCode, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.PostCodeGet()))
+				.ForMember(dst => dst.Land, opt => opt.MapFrom(src => src.PersoonsAdres == null ? null : src.PersoonsAdres.Adres.LandGet()));
 
 			Mapper.CreateMap<Lid, LidOverzicht>()
 				.ForMember(dst => dst.AdNummer, opt => opt.MapFrom(src => src.GelieerdePersoon.Persoon.AdNummer))
@@ -278,7 +280,11 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst => dst.ChiroLeefTijd, opt => opt.MapFrom(src => src.GelieerdePersoon.ChiroLeefTijd))
 				.ForMember(dst => dst.LidID, opt => opt.MapFrom(src => src.ID))
 				.ForMember(dst => dst.EindeInstapPeriode,
-				           opt => opt.MapFrom(src => src.EindeInstapPeriode < DateTime.Now ? null : src.EindeInstapPeriode));
+				           opt => opt.MapFrom(src => src.EindeInstapPeriode < DateTime.Now ? null : src.EindeInstapPeriode))
+				.ForMember(dst => dst.PostCode,
+					   opt => opt.MapFrom(src => src.GelieerdePersoon.PersoonsAdres == null ? null : src.GelieerdePersoon.PersoonsAdres.Adres.PostCodeGet()))
+				.ForMember(dst => dst.Land,
+					   opt => opt.MapFrom(src => src.GelieerdePersoon.PersoonsAdres == null ? null : src.GelieerdePersoon.PersoonsAdres.Adres.LandGet()));
 
 			Mapper.CreateMap<Groep, GroepDetail>()
 				.ForMember(

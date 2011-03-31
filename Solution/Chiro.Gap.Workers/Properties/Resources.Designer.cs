@@ -322,6 +322,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Het land {0} werd niet gevonden..
+        /// </summary>
+        internal static string LandNietGevonden {
+            get {
+                return ResourceManager.GetString("LandNietGevonden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De einddatum is niet geldig voor dit type verzekering..
         /// </summary>
         internal static string OngeldigeEindDatumVerzekering {

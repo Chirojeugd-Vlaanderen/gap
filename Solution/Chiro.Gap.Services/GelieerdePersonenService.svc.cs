@@ -496,8 +496,8 @@ namespace Chiro.Gap.Services
 		/// opnieuw opgezocht in de bestaande adressen.  Bestaat het adres nog niet,
 		/// dan krijgt het adres een nieuw ID.</remarks>
 		public void GelieerdePersonenVerhuizen(IEnumerable<int> gelieerdePersoonIDs,
-												PersoonsAdresInfo naarAdres,
-												int oudAdresID)
+			PersoonsAdresInfo naarAdres,
+			int oudAdresID)
 		{
 			try
 			{
@@ -507,12 +507,7 @@ namespace Chiro.Gap.Services
 
 				try
 				{
-					nieuwAdres = _adrMgr.ZoekenOfMaken(
-						naarAdres.StraatNaamNaam,
-						naarAdres.HuisNr,
-						naarAdres.Bus,
-						naarAdres.WoonPlaatsNaam,
-						naarAdres.PostNr);	// TODO (#238): buitenlandse adressen 
+					nieuwAdres = _adrMgr.ZoekenOfMaken(naarAdres);
 				}
 				catch (OngeldigObjectException ex)
 				{
@@ -591,7 +586,7 @@ namespace Chiro.Gap.Services
 				Adres adres;
 				try
 				{
-					adres = _adrMgr.ZoekenOfMaken(adr.StraatNaamNaam, adr.HuisNr, adr.Bus, adr.WoonPlaatsNaam, adr.PostNr);
+					adres = _adrMgr.ZoekenOfMaken(adr);
 				}
 				catch (OngeldigObjectException ex)
 				{

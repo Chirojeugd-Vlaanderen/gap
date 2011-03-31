@@ -25,31 +25,31 @@ namespace Chiro.Gap.Workers
 	/// </summary>
 	public class AdressenManager
 	{
-		private readonly IBelgischeAdressenDao _dao;
+		private readonly IAdressenDao _adressenDao;
 		private readonly IStratenDao _stratenDao;
 		private readonly ISubgemeenteDao _subgemeenteDao;
-		private readonly IDao<Land> _landenDao;
+		private readonly ILandenDao _landenDao;
 		private readonly IAutorisatieManager _autorisatieMgr;
 		private readonly IAdressenSync _sync;
 
 		/// <summary>
 		/// Creëert nieuwe adressenmanager
 		/// </summary>
-		/// <param name="dao">Repository voor adressen</param>
+		/// <param name="adressenDao">Repository voor adressen</param>
 		/// <param name="stratenDao">Repository voor straten</param>
 		/// <param name="subgemeenteDao">Repository voor 'subgemeentes'</param>
 		/// <param name="landenDao">Repository voor landen</param>
 		/// <param name="autorisatieMgr">Worker die autorisatie regelt</param>
 		/// <param name="sync">Zorgt voor synchronisate van adressen naar KipAdmin</param>
 		public AdressenManager(
-			IBelgischeAdressenDao dao, 
+			IAdressenDao adressenDao,
 			IStratenDao stratenDao, 
 			ISubgemeenteDao subgemeenteDao, 
-			IDao<Land> landenDao,
+			ILandenDao landenDao,
 			IAutorisatieManager autorisatieMgr,
 			IAdressenSync sync)
 		{
-			_dao = dao;
+			_adressenDao = adressenDao;
 			_stratenDao = stratenDao;
 			_subgemeenteDao = subgemeenteDao;
 			_landenDao = landenDao;
@@ -70,11 +70,8 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsSuperGav())
 			{
-				return _dao.Ophalen(
-					adresID, 
-					adr => adr.PersoonsAdres.First().GelieerdePersoon.First().Persoon,
-					adr => adr.StraatNaam,
-					adr => adr.WoonPlaats);
+				return _adressenDao.Ophalen(
+					adresID, adr => adr.PersoonsAdres.First().GelieerdePersoon.First().Persoon);
 			}
 			else
 			{
@@ -108,7 +105,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroep(groepID))
 			{
-				return _dao.BewonersOphalen(adresID, new[] { groepID }, alleGelieerdePersonen);
+				return _adressenDao.BewonersOphalen(adresID, new[] { groepID }, alleGelieerdePersonen);
 			}
 			else
 			{
@@ -130,7 +127,7 @@ namespace Chiro.Gap.Workers
 		{
 			if (_autorisatieMgr.IsGavGroepen(groepIDs))
 			{
-				return _dao.BewonersOphalen(adresID, groepIDs, alleGelieerdePersonen);
+				return _adressenDao.BewonersOphalen(adresID, groepIDs, alleGelieerdePersonen);
 			}
 			else
 			{
@@ -173,15 +170,7 @@ namespace Chiro.Gap.Workers
 
 				_sync.StandaardAdressenBewaren(teSyncen);
 
-				if (adr is BelgischAdres)
-				{
-					resultaat = _dao.Bewaren(adr as BelgischAdres);
-				}
-				else
-				{
-					throw new NotImplementedException();
-					// TODO (#238): Buitenlandse adressen!
-				}
+				resultaat = _adressenDao.Bewaren(adr);
 				
 #if KIPDORP
 				tx.Complete();
@@ -193,24 +182,110 @@ namespace Chiro.Gap.Workers
 		#endregion
 
 		/// <summary>
-		/// Zoekt een Belgisch adres op, op basis van de parameters.
-		/// Als er zo geen adres bestaat, wordt het aangemaakt, op
-		/// voorwaarde dat de straat en subgemeente geidentificeerd
-		/// kunnen worden.  Als ook dat laatste niet het geval is,
-		/// wordt een exception gethrowd.
+		/// Maakt een nieuw adres op basis van de info in <paramref name="adresInfo"/>, en persisteert
 		/// </summary>
-		/// <param name="straatNaam">De naam van de straat</param>
-		/// <param name="huisNr">Het huisnummer</param>
-		/// <param name="bus">Het eventuele busnummer</param>
-		/// <param name="woonPlaatsNaam">De naam van de woonplaats</param>
-		/// <param name="postNr">Het postnummer van straat en woonplaats</param>
-		/// <returns>Gevonden adres</returns>
-		/// <remarks>Ieder heeft het recht adressen op te zoeken</remarks>
-		public Adres ZoekenOfMaken(String straatNaam, int? huisNr, string bus, string woonPlaatsNaam, int postNr)
+		/// <param name="adresInfo">gegevens voor het nieuwe adres</param>
+		/// <returns>Het nieuw gemaakte adres</returns>
+		private Adres Maken(AdresInfo adresInfo)
 		{
-			return ZoekenOfMaken(straatNaam, huisNr, bus, woonPlaatsNaam, postNr, String.Empty, Properties.Resources.Belgie);
-		}
+			var problemen = new Dictionary<string, FoutBericht>();
+			Adres adr;
 
+			if (String.IsNullOrEmpty(adresInfo.LandNaam) || String.Compare(adresInfo.LandNaam, Properties.Resources.Belgie, true) == 0)
+			{
+				// Belgisch adres.  Zoek en koppel straat en gemeente
+
+				adr = new BelgischAdres();
+
+				var s = _stratenDao.Ophalen(adresInfo.StraatNaamNaam, adresInfo.PostNr);
+				if (s != null)
+				{
+					// Straat gevonden: aan adres koppelen
+
+					((BelgischAdres)adr).StraatNaam = s;
+					s.BelgischAdres.Add((BelgischAdres)adr);
+				}
+				else
+				{
+					// Straat niet gevonden: foutbericht toevoegen
+
+					problemen.Add("StraatNaamNaam", new FoutBericht
+					{
+						FoutNummer = FoutNummer.StraatNietGevonden,
+						Bericht = String.Format(
+							Properties.Resources.StraatNietGevonden,
+							adresInfo.StraatNaamNaam,
+							adresInfo.PostNr)
+					});
+				}
+
+				var sg = _subgemeenteDao.Ophalen(adresInfo.WoonPlaatsNaam, adresInfo.PostNr);
+				if (sg != null)
+				{
+					// Gemeente gevonden: aan adres koppelen
+
+					((BelgischAdres)adr).WoonPlaats = sg;
+					sg.BelgischAdres.Add((BelgischAdres)adr);
+				}
+				else
+				{
+					// Gemeente niet gevonden: foutbericht toevoegen
+
+					problemen.Add("WoonPlaatsNaam", new FoutBericht
+					{
+						FoutNummer = FoutNummer.WoonPlaatsNietGevonden,
+						Bericht = Properties.Resources.GemeenteNietGevonden
+					});
+				}
+			}
+			else
+			{
+				// Buitenlands adres.  Straat en gemeente zijn gewone strings.
+				// Zoek en koppel land.
+
+				adr = new BuitenLandsAdres();
+
+				((BuitenLandsAdres) adr).Straat = adresInfo.StraatNaamNaam;
+				((BuitenLandsAdres) adr).WoonPlaats = adresInfo.WoonPlaatsNaam;
+				((BuitenLandsAdres) adr).PostCode = adresInfo.PostCode;
+				((BuitenLandsAdres) adr).PostNummer = adresInfo.PostNr;
+
+				Land l = _landenDao.Ophalen(adresInfo.LandNaam);
+
+				if (l != null)
+				{
+					// Gemeente gevonden: aan adres koppelen
+
+					((BuitenLandsAdres) adr).Land = l;
+					l.BuitenLandsAdres.Add((BuitenLandsAdres)adr);
+				}
+				else
+				{
+					// Gemeente niet gevonden: foutbericht toevoegen
+
+					problemen.Add("LandNaam", new FoutBericht
+					{
+						FoutNummer = FoutNummer.LandNietGevonden,
+						Bericht = Properties.Resources.LandNietGevonden
+					});
+				}
+			}
+
+
+			if (problemen.Count != 0)
+			{
+				throw new OngeldigObjectException(problemen);
+			}
+
+			adr.HuisNr = adresInfo.HuisNr;
+			adr.Bus = adresInfo.Bus;
+
+			adr = _adressenDao.Bewaren(adr);
+			// bewaren brengt Versie en ID automatisch in orde.
+
+			return adr;
+
+		}
 
 		/// <summary>
 		/// Zoekt adres op, op basis van de parameters.
@@ -219,61 +294,52 @@ namespace Chiro.Gap.Workers
 		/// kunnen worden.  Als ook dat laatste niet het geval is,
 		/// wordt een exception gethrowd.
 		/// </summary>
-		/// <param name="straatNaam">De naam van de straat</param>
-		/// <param name="huisNr">Het huisnummer</param>
-		/// <param name="bus">Het eventuele busnummer</param>
-		/// <param name="woonPlaatsNaam">De naam van de woonplaats</param>
-		/// <param name="postNr">Het postnummer van straat en woonplaats</param>
-		/// <param name="postCode">Tekst die in het buitenland volgt op postnummers</param>
-		/// <param name="land">Land van het adres</param>
+		/// <param name="adresInfo">bevat de gegevens van het te zoeken/maken adres</param>
 		/// <returns>Gevonden adres</returns>
 		/// <remarks>Ieder heeft het recht adressen op te zoeken</remarks>
-		public Adres ZoekenOfMaken(String straatNaam, int? huisNr, string bus, string woonPlaatsNaam, int postNr, string postCode, string land)
+		public Adres ZoekenOfMaken(AdresInfo adresInfo)
 		{
-			if (!String.IsNullOrEmpty(land) && String.Compare(land, Properties.Resources.Belgie, true) != 0)
-			{
-				// TODO: (#238) Buitenlandse adressen
-				throw new NotImplementedException();
-			}
 			var problemen = new Dictionary<string, FoutBericht>();
 
 			// Al maar preventief een collectie fouten verzamelen.  Als daar uiteindelijk
 			// geen foutberichten inzitten, dan is er geen probleem.  Anders
-			// creëer ik een exception met de verhuisfault daarin.
+			// creëer ik een exception.
 
-			if (straatNaam == String.Empty)
+			if (adresInfo.StraatNaamNaam == String.Empty)
 			{
 				problemen.Add("StraatNaamNaam", new FoutBericht
 				{
 					FoutNummer = FoutNummer.StraatOntbreekt,
 					Bericht = String.Format(
 						Properties.Resources.StraatOntbreekt,
-						straatNaam,
-						postNr)
+						adresInfo.StraatNaamNaam,
+						adresInfo.PostNr)
 				});
 			}
 
-			if (postNr < 1000 || postNr > 9999)
+			// Controle formaat postnummer enkel voor belgische adressen.
+			if ((String.IsNullOrEmpty(adresInfo.LandNaam) || String.Compare(adresInfo.LandNaam, Properties.Resources.Belgie, true) == 0) && 
+				(adresInfo.PostNr < 1000 || adresInfo.PostNr > 9999))
 			{
 				problemen.Add("PostNr", new FoutBericht
 				{
 					FoutNummer = FoutNummer.OngeldigPostNummer,
 					Bericht = String.Format(
 						Properties.Resources.OngeldigPostNummer,
-						straatNaam,
-						postNr)
+						adresInfo.StraatNaamNaam,
+						adresInfo.PostNr)
 				});
 			}
 
-			if (woonPlaatsNaam == String.Empty)
+			if (adresInfo.WoonPlaatsNaam == String.Empty)
 			{
 				problemen.Add("WoonPlaatsNaam", new FoutBericht
 				{
 					FoutNummer = FoutNummer.WoonPlaatsOntbreekt,
 					Bericht = String.Format(
 						Properties.Resources.WoonPlaatsOntbreekt,
-						straatNaam,
-						postNr)
+						adresInfo.StraatNaamNaam,
+						adresInfo.PostNr)
 				});
 			}
 
@@ -284,78 +350,19 @@ namespace Chiro.Gap.Workers
 				throw new OngeldigObjectException(problemen);
 			}
 
-			var adresInDb = _dao.Ophalen(straatNaam, huisNr, bus, postNr, postCode, woonPlaatsNaam, false);
-
-			var adr = new BelgischAdres();
+			var adresInDb = _adressenDao.Ophalen(adresInfo, false);
 
 			if (adresInDb == null)
 			{
-				// Adres niet gevonden.  Probeer straat en gemeente te vinden
-
-				var s = _stratenDao.Ophalen(straatNaam, postNr);
-				if (s != null)
-				{
-					// Straat gevonden: aan adres koppelen
-
-					adr.StraatNaam = s;
-					s.BelgischAdres.Add(adr);
-				}
-				else
-				{
-					// Straat niet gevonden: foutbericht toevoegen
-
-					// FIXME: Dit is geen propere manier van werken.  Die component 'Straat'
-					// heeft betrekking op het datacontract 'AdresInfo', wat helemaal niet
-					// van belang is in deze layer
-
-					problemen.Add("StraatNaamNaam", new FoutBericht
-					{
-						FoutNummer = FoutNummer.StraatNietGevonden,
-						Bericht = String.Format(
-							Properties.Resources.StraatNietGevonden,
-							straatNaam,
-							postNr)
-					});
-				}
-
-				var sg = _subgemeenteDao.Ophalen(woonPlaatsNaam, postNr);
-				if (sg != null)
-				{
-					// Gemeente gevonden: aan adres koppelen
-
-					adr.WoonPlaats = sg;
-					sg.BelgischAdres.Add(adr);
-				}
-				else
-				{
-					// Gemeente niet gevonden: foutbericht toevoegen
-
-					// FIXME: hier idem.
-
-					problemen.Add("WoonPlaatsNaam", new FoutBericht
-					{
-						FoutNummer = FoutNummer.WoonPlaatsNietGevonden,
-						Bericht = Properties.Resources.GemeenteNietGevonden
-					});
-				}
-
-				if (problemen.Count != 0)
-				{
-					throw new OngeldigObjectException(problemen);
-				}
-
-				adr.HuisNr = huisNr;
-				adr.Bus = bus;
-
-				adr = _dao.Bewaren(adr);
-				// bewaren brengt Versie en ID automatisch in orde.
-
-				return adr;
+				return Maken(adresInfo);
 			}
 			else
 			{
-				Debug.Assert(adresInDb.StraatNaam != null);
-				Debug.Assert(adresInDb.WoonPlaats != null);
+				if (adresInDb is BelgischAdres)
+				{
+					Debug.Assert(((BelgischAdres)adresInDb).StraatNaam != null);
+					Debug.Assert(((BelgischAdres)adresInDb).WoonPlaats != null);
+				}
 
 				return adresInDb;
 			}

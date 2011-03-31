@@ -102,7 +102,7 @@
 			<%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.PostNr)%>
         </p>
 
-        <p class="buitenland" style="display:none">
+        <p class="buitenland">
 			<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.PostCode) %>
 			<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.PostCode)%>
 			<%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.PostCode)%>            

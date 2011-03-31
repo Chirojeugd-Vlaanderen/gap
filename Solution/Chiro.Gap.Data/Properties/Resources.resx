@@ -117,18 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Geen" xml:space="preserve">
-    <value>geen</value>
-    <comment>'none,' zoals ze zeggen.</comment>
-  </data>
-  <data name="RequiredAttribute_ValidationError" xml:space="preserve">
-    <value>{0} is een verplicht veld.</value>
-  </data>
-  <data name="RangeError" xml:space="preserve">
-    <value>{0} is beperkt van {1} tot {2}.</value>
-  </data>
   <data name="Belgie" xml:space="preserve">
     <value>België</value>
-    <comment>om onderscheid te maken tussen binnenlands en buitenlands adres</comment>
+    <comment>om Belgische adressen te herkennen</comment>
   </data>
 </root>

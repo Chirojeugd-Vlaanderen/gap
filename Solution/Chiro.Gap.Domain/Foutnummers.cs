@@ -18,6 +18,7 @@ namespace Chiro.Gap.Domain
 		ChronologieFout,		// fout ivm volgorde datums
 
 		#region adressen
+		LandNietGevonden,
 		WoonPlaatsNietGevonden,
 		StraatNietGevonden,
 		StraatOntbreekt,
