@@ -28,7 +28,10 @@ namespace Chiro.Kip.Workers
 		/// <returns>De gevonden persoon, met adres en communicatie..  
 		/// Indien niemand gevonden: <c>null</c> of de aangemaakte persoon, alnaargelang <paramref name="maken"/>.</returns>
 		/// <remarks>Als de gevraagde persoon aangemaakt wordt, dan wordt die nog niet bewaard! Roep achteraf zelf SaveChanges aan!
-		/// Er mag gerust een deel van de info in <paramref name="zoekInfo"/> ontbreken</remarks>
+		/// Er mag gerust een deel van de info in <paramref name="zoekInfo"/> ontbreken.
+		/// 
+		/// TODO: 
+		/// </remarks>
 		public Persoon Zoeken(PersoonZoekInfo zoekInfo, bool maken, kipadminEntities db)
 		{
 			Persoon resultaat;
@@ -64,14 +67,22 @@ namespace Chiro.Kip.Workers
 						.Include(prs => prs.kipWoont.First().kipAdres)
 					   where p.Naam == zoekInfo.Naam && p.VoorNaam == zoekInfo.VoorNaam
 						 && p.Geslacht == zoekInfo.Geslacht
-					   select p);
+					   select p).ToArray();  // ToArray lijkt nodig te zijn om communicatie te behouden.
 
 			// Poging 3
 			if (zoekInfo.Communicatie != null)
 			{
-				resultaat = naamgenoten.SelectMany(ng => ng.kipContactInfo)
-					.Where(Utility.BuildContainsExpression<ContactInfo, string>(ci => ci.Info, zoekInfo.Communicatie))
-					.Select(ci => ci.kipPersoon).FirstOrDefault();
+                // zoek in de communicatiemiddelen van alle naamgenoten naar
+                // overeenkomstige communicatiemiddelen uit zoekInfo.Communicatie.
+                // De eerste persoon die gekoppeld is aan zo'n gevonden
+                // communicatiemiddel, kan dienen als resultaat.
+
+                // TODO: Dit is niet fatsoenlijk getest!
+
+			    resultaat = (from ci in naamgenoten.SelectMany(ng => ng.kipContactInfo)
+			                 where zoekInfo.Communicatie.Contains(ci.Info)
+			                 select ci.kipPersoon).FirstOrDefault();
+
 				if (resultaat != null) return resultaat;
 			}
 
