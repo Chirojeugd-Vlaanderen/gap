@@ -47,6 +47,10 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_BelgischAdres_StraatNaam", "StraatNaam", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.StraatNaam), "BelgischAdres", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.BelgischAdres))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_BelgischAdres_WoonPlaats", "WoonPlaats", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.WoonPlaats), "BelgischAdres", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.BelgischAdres))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_BuitenlandsAdres_Land", "Land", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Land), "BuitenLandsAdres", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.BuitenLandsAdres))]
+[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Plaats_Adres", "Adres", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Adres), "Plaats", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Plaats), true)]
+[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Plaats_GelieerdePersoon_Contact", "GelieerdePersoon", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.GelieerdePersoon), "Plaats", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Plaats), true)]
+[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Uitstap_Plaats", "Plaats", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.Plaats), "Uitstap", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Uitstap), true)]
+[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Uitstap_GroepsWerkJaar", "GroepsWerkJaar", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.GroepsWerkJaar), "Uitstap", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Uitstap), true)]
 
 #endregion
 
@@ -430,6 +434,38 @@ namespace Chiro.Gap.Orm
             }
         }
         private ObjectSet<Land> _Land;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Plaats> Plaats
+        {
+            get
+            {
+                if ((_Plaats == null))
+                {
+                    _Plaats = base.CreateObjectSet<Plaats>("Plaats");
+                }
+                return _Plaats;
+            }
+        }
+        private ObjectSet<Plaats> _Plaats;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Uitstap> Uitstap
+        {
+            get
+            {
+                if ((_Uitstap == null))
+                {
+                    _Uitstap = base.CreateObjectSet<Uitstap>("Uitstap");
+                }
+                return _Uitstap;
+            }
+        }
+        private ObjectSet<Uitstap> _Uitstap;
 
         #endregion
         #region AddTo Methods
@@ -601,6 +637,22 @@ namespace Chiro.Gap.Orm
         {
             base.AddObject("Land", land);
         }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Plaats EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToPlaats(Plaats plaats)
+        {
+            base.AddObject("Plaats", plaats);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Uitstap EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToUitstap(Uitstap uitstap)
+        {
+            base.AddObject("Uitstap", uitstap);
+        }
 
         #endregion
     }
@@ -743,6 +795,28 @@ namespace Chiro.Gap.Orm
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PersoonsAdres>("ChiroGroepModel.FK_PersoonsAdres_Adres", "PersoonsAdres", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Plaats_Adres", "Plaats")]
+        public EntityCollection<Plaats> Plaats
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Plaats>("ChiroGroepModel.FK_Plaats_Adres", "Plaats");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Plaats>("ChiroGroepModel.FK_Plaats_Adres", "Plaats", value);
                 }
             }
         }
@@ -3301,6 +3375,28 @@ namespace Chiro.Gap.Orm
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Plaats_GelieerdePersoon_Contact", "Plaats")]
+        public EntityCollection<Plaats> Plaats
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Plaats>("ChiroGroepModel.FK_Plaats_GelieerdePersoon_Contact", "Plaats");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Plaats>("ChiroGroepModel.FK_Plaats_GelieerdePersoon_Contact", "Plaats", value);
+                }
+            }
+        }
 
         #endregion
     }
@@ -3788,6 +3884,28 @@ namespace Chiro.Gap.Orm
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<AfdelingsJaar>("ChiroGroepModel.FK_AfdelingsJaar_GroepsWerkjaar", "AfdelingsJaar", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Uitstap_GroepsWerkJaar", "Uitstap")]
+        public EntityCollection<Uitstap> Uitstap
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Uitstap>("ChiroGroepModel.FK_Uitstap_GroepsWerkJaar", "Uitstap");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Uitstap>("ChiroGroepModel.FK_Uitstap_GroepsWerkJaar", "Uitstap", value);
                 }
             }
         }
@@ -5481,6 +5599,266 @@ namespace Chiro.Gap.Orm
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Plaats")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Plaats : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Plaats object.
+        /// </summary>
+        /// <param name="id">Initial value of the ID property.</param>
+        /// <param name="naam">Initial value of the Naam property.</param>
+        /// <param name="adresID">Initial value of the AdresID property.</param>
+        /// <param name="gelieerdePersoonID">Initial value of the GelieerdePersoonID property.</param>
+        /// <param name="versie">Initial value of the Versie property.</param>
+        public static Plaats CreatePlaats(global::System.Int32 id, global::System.String naam, global::System.Int32 adresID, global::System.Int32 gelieerdePersoonID, global::System.Byte[] versie)
+        {
+            Plaats plaats = new Plaats();
+            plaats.ID = id;
+            plaats.Naam = naam;
+            plaats.AdresID = adresID;
+            plaats.GelieerdePersoonID = gelieerdePersoonID;
+            plaats.Versie = versie;
+            return plaats;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ID
+        {
+            get
+            {
+                return _ID;
+            }
+            set
+            {
+                if (_ID != value)
+                {
+                    OnIDChanging(value);
+                    ReportPropertyChanging("ID");
+                    _ID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ID");
+                    OnIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ID;
+        partial void OnIDChanging(global::System.Int32 value);
+        partial void OnIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Naam
+        {
+            get
+            {
+                return _Naam;
+            }
+            set
+            {
+                OnNaamChanging(value);
+                ReportPropertyChanging("Naam");
+                _Naam = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Naam");
+                OnNaamChanged();
+            }
+        }
+        private global::System.String _Naam;
+        partial void OnNaamChanging(global::System.String value);
+        partial void OnNaamChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 AdresID
+        {
+            get
+            {
+                return _AdresID;
+            }
+            set
+            {
+                OnAdresIDChanging(value);
+                ReportPropertyChanging("AdresID");
+                _AdresID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("AdresID");
+                OnAdresIDChanged();
+            }
+        }
+        private global::System.Int32 _AdresID;
+        partial void OnAdresIDChanging(global::System.Int32 value);
+        partial void OnAdresIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 GelieerdePersoonID
+        {
+            get
+            {
+                return _GelieerdePersoonID;
+            }
+            set
+            {
+                OnGelieerdePersoonIDChanging(value);
+                ReportPropertyChanging("GelieerdePersoonID");
+                _GelieerdePersoonID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("GelieerdePersoonID");
+                OnGelieerdePersoonIDChanged();
+            }
+        }
+        private global::System.Int32 _GelieerdePersoonID;
+        partial void OnGelieerdePersoonIDChanging(global::System.Int32 value);
+        partial void OnGelieerdePersoonIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Byte[] Versie
+        {
+            get
+            {
+                return StructuralObject.GetValidValue(_Versie);
+            }
+            set
+            {
+                OnVersieChanging(value);
+                ReportPropertyChanging("Versie");
+                _Versie = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Versie");
+                OnVersieChanged();
+            }
+        }
+        private global::System.Byte[] _Versie;
+        partial void OnVersieChanging(global::System.Byte[] value);
+        partial void OnVersieChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Plaats_Adres", "Adres")]
+        public Adres Adres
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Adres>("ChiroGroepModel.FK_Plaats_Adres", "Adres").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Adres>("ChiroGroepModel.FK_Plaats_Adres", "Adres").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Adres> AdresReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Adres>("ChiroGroepModel.FK_Plaats_Adres", "Adres");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Adres>("ChiroGroepModel.FK_Plaats_Adres", "Adres", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Plaats_GelieerdePersoon_Contact", "GelieerdePersoon")]
+        public GelieerdePersoon GelieerdePersoon
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_Plaats_GelieerdePersoon_Contact", "GelieerdePersoon").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_Plaats_GelieerdePersoon_Contact", "GelieerdePersoon").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<GelieerdePersoon> GelieerdePersoonReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_Plaats_GelieerdePersoon_Contact", "GelieerdePersoon");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<GelieerdePersoon>("ChiroGroepModel.FK_Plaats_GelieerdePersoon_Contact", "GelieerdePersoon", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Uitstap_Plaats", "Uitstap")]
+        public EntityCollection<Uitstap> Uitstap
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Uitstap>("ChiroGroepModel.FK_Uitstap_Plaats", "Uitstap");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Uitstap>("ChiroGroepModel.FK_Uitstap_Plaats", "Uitstap", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="StraatNaam")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -5679,6 +6057,316 @@ namespace Chiro.Gap.Orm
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<BelgischAdres>("ChiroGroepModel.FK_BelgischAdres_StraatNaam", "BelgischAdres", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ChiroGroepModel", Name="Uitstap")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Uitstap : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Uitstap object.
+        /// </summary>
+        /// <param name="id">Initial value of the ID property.</param>
+        /// <param name="naam">Initial value of the Naam property.</param>
+        /// <param name="datumVan">Initial value of the DatumVan property.</param>
+        /// <param name="datumTot">Initial value of the DatumTot property.</param>
+        /// <param name="versie">Initial value of the Versie property.</param>
+        public static Uitstap CreateUitstap(global::System.Int32 id, global::System.String naam, global::System.DateTime datumVan, global::System.DateTime datumTot, global::System.Byte[] versie)
+        {
+            Uitstap uitstap = new Uitstap();
+            uitstap.ID = id;
+            uitstap.Naam = naam;
+            uitstap.DatumVan = datumVan;
+            uitstap.DatumTot = datumTot;
+            uitstap.Versie = versie;
+            return uitstap;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ID
+        {
+            get
+            {
+                return _ID;
+            }
+            set
+            {
+                if (_ID != value)
+                {
+                    OnIDChanging(value);
+                    ReportPropertyChanging("ID");
+                    _ID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ID");
+                    OnIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ID;
+        partial void OnIDChanging(global::System.Int32 value);
+        partial void OnIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Naam
+        {
+            get
+            {
+                return _Naam;
+            }
+            set
+            {
+                OnNaamChanging(value);
+                ReportPropertyChanging("Naam");
+                _Naam = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Naam");
+                OnNaamChanged();
+            }
+        }
+        private global::System.String _Naam;
+        partial void OnNaamChanging(global::System.String value);
+        partial void OnNaamChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime DatumVan
+        {
+            get
+            {
+                return _DatumVan;
+            }
+            set
+            {
+                OnDatumVanChanging(value);
+                ReportPropertyChanging("DatumVan");
+                _DatumVan = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DatumVan");
+                OnDatumVanChanged();
+            }
+        }
+        private global::System.DateTime _DatumVan;
+        partial void OnDatumVanChanging(global::System.DateTime value);
+        partial void OnDatumVanChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime DatumTot
+        {
+            get
+            {
+                return _DatumTot;
+            }
+            set
+            {
+                OnDatumTotChanging(value);
+                ReportPropertyChanging("DatumTot");
+                _DatumTot = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DatumTot");
+                OnDatumTotChanged();
+            }
+        }
+        private global::System.DateTime _DatumTot;
+        partial void OnDatumTotChanging(global::System.DateTime value);
+        partial void OnDatumTotChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Opmerkingen
+        {
+            get
+            {
+                return _Opmerkingen;
+            }
+            set
+            {
+                OnOpmerkingenChanging(value);
+                ReportPropertyChanging("Opmerkingen");
+                _Opmerkingen = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Opmerkingen");
+                OnOpmerkingenChanged();
+            }
+        }
+        private global::System.String _Opmerkingen;
+        partial void OnOpmerkingenChanging(global::System.String value);
+        partial void OnOpmerkingenChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> PlaatsID
+        {
+            get
+            {
+                return _PlaatsID;
+            }
+            set
+            {
+                OnPlaatsIDChanging(value);
+                ReportPropertyChanging("PlaatsID");
+                _PlaatsID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PlaatsID");
+                OnPlaatsIDChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _PlaatsID;
+        partial void OnPlaatsIDChanging(Nullable<global::System.Int32> value);
+        partial void OnPlaatsIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> GroepsWerkJaarID
+        {
+            get
+            {
+                return _GroepsWerkJaarID;
+            }
+            set
+            {
+                OnGroepsWerkJaarIDChanging(value);
+                ReportPropertyChanging("GroepsWerkJaarID");
+                _GroepsWerkJaarID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("GroepsWerkJaarID");
+                OnGroepsWerkJaarIDChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _GroepsWerkJaarID;
+        partial void OnGroepsWerkJaarIDChanging(Nullable<global::System.Int32> value);
+        partial void OnGroepsWerkJaarIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Byte[] Versie
+        {
+            get
+            {
+                return StructuralObject.GetValidValue(_Versie);
+            }
+            set
+            {
+                OnVersieChanging(value);
+                ReportPropertyChanging("Versie");
+                _Versie = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Versie");
+                OnVersieChanged();
+            }
+        }
+        private global::System.Byte[] _Versie;
+        partial void OnVersieChanging(global::System.Byte[] value);
+        partial void OnVersieChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Uitstap_Plaats", "Plaats")]
+        public Plaats Plaats
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Plaats>("ChiroGroepModel.FK_Uitstap_Plaats", "Plaats").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Plaats>("ChiroGroepModel.FK_Uitstap_Plaats", "Plaats").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Plaats> PlaatsReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Plaats>("ChiroGroepModel.FK_Uitstap_Plaats", "Plaats");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Plaats>("ChiroGroepModel.FK_Uitstap_Plaats", "Plaats", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Uitstap_GroepsWerkJaar", "GroepsWerkJaar")]
+        public GroepsWerkJaar GroepsWerkJaar
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<GroepsWerkJaar>("ChiroGroepModel.FK_Uitstap_GroepsWerkJaar", "GroepsWerkJaar").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<GroepsWerkJaar>("ChiroGroepModel.FK_Uitstap_GroepsWerkJaar", "GroepsWerkJaar").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<GroepsWerkJaar> GroepsWerkJaarReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<GroepsWerkJaar>("ChiroGroepModel.FK_Uitstap_GroepsWerkJaar", "GroepsWerkJaar");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<GroepsWerkJaar>("ChiroGroepModel.FK_Uitstap_GroepsWerkJaar", "GroepsWerkJaar", value);
                 }
             }
         }
