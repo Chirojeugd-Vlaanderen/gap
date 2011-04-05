@@ -3,6 +3,8 @@
 		<li>
 			<%= Html.ActionLink("Handleiding", "Index", "Handleiding") %></li>
 		<li>
+			<%= Html.ActionLink("Uitstappen/bivak", "Index", "Uitstappen") %></li>
+		<li>
 			<%= Html.ActionLink("Persoon toevoegen", "Nieuw", "Personen") %></li>
 		<li>
 			<%= Html.ActionLink("Groep", "Index", "Groep")%></li>

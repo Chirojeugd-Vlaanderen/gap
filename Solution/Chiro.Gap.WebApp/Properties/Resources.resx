@@ -299,4 +299,10 @@
     <value>België</value>
     <comment>Standaardland voor adressen</comment>
   </data>
+  <data name="NieuweUitstap" xml:space="preserve">
+    <value>Nieuwe uitstap</value>
+  </data>
+  <data name="Uitstappen" xml:space="preserve">
+    <value>Uitstappen</value>
+  </data>
 </root>

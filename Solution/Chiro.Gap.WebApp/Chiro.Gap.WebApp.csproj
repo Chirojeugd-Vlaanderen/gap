@@ -105,6 +105,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MyResources.nl.resx</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\UitstappenController.cs" />
     <Compile Include="HtmlHelpers\CheckBoxListHelper.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\GavController.cs" />
@@ -142,6 +143,8 @@
     <Compile Include="Models\PersoonInfoModel.cs" />
     <Compile Include="Models\AdresModel.cs" />
     <Compile Include="ActionFilters\ParameterAccepterenAttribute.cs" />
+    <Compile Include="Models\UitstapModel.cs" />
+    <Compile Include="Models\UitstapOverzichtModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -187,6 +190,8 @@
     <Content Include="Views\Shared\PersonenLijstControl.ascx" />
     <Content Include="Views\Shared\PersoonsLinkControl.ascx" />
     <Content Include="Views\Shared\TerugNaarLijstLinkControl.ascx" />
+    <Content Include="Views\Uitstappen\Index.aspx" />
+    <Content Include="Views\Uitstappen\Nieuw.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

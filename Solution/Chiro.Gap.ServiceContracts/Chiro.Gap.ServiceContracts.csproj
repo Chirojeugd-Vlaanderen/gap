@@ -86,6 +86,7 @@
     <Compile Include="DataContracts\PersoonOverzicht.cs" />
     <Compile Include="DataContracts\PersoonsAdresInfo.cs" />
     <Compile Include="DataContracts\StraatInfo.cs" />
+    <Compile Include="DataContracts\UitstapDetail.cs" />
     <Compile Include="DataContracts\WerkJaarInfo.cs" />
     <Compile Include="DataContracts\WoonPlaatsInfo.cs" />
     <Compile Include="DataContracts\BewonersInfo.cs" />

@@ -511,6 +511,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nieuwe uitstap.
+        /// </summary>
+        public static string NieuweUitstap {
+            get {
+                return ResourceManager.GetString("NieuweUitstap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Er bestaat zo geen actie om uit te voeren op een selectie personen..
         /// </summary>
         public static string OnbestaandeActieFeedback {
@@ -552,6 +561,15 @@ namespace Chiro.Gap.WebApp.Properties {
         public static string StamNrDefault {
             get {
                 return ResourceManager.GetString("StamNrDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uitstappen.
+        /// </summary>
+        public static string Uitstappen {
+            get {
+                return ResourceManager.GetString("Uitstappen", resourceCulture);
             }
         }
         
