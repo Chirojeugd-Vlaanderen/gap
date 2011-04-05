@@ -72,6 +72,7 @@
     <Content Include="Global.asax" />
     <Content Include="GroepenService.svc" />
     <Content Include="LedenService.svc" />
+    <Content Include="UitstappenService.svc" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -103,6 +104,9 @@
     </Compile>
     <Compile Include="SecurityGroepen.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="UitstappenService.svc.cs">
+      <DependentUpon>UitstappenService.svc</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chiro.Adf\Chiro.Adf.csproj">
