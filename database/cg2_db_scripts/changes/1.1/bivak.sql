@@ -24,6 +24,7 @@ create table biv.Uitstap
 (
 	UitstapID int not null identity(1,1),
 	Naam varchar(120) not null,
+	IsBivak bit not null,
 	DatumVan datetime not null,
 	DatumTot datetime not null,
 	Opmerkingen text,
