@@ -94,6 +94,11 @@ namespace Chiro.Gap.UpdateSvc.Service
 			throw new NotImplementedException();
 		}
 
+		public bool IsGavUitstap(int uitstapID)
+		{
+			throw new NotImplementedException();
+		}
+
 		public bool IsSuperGav()
 		{
 			return true;

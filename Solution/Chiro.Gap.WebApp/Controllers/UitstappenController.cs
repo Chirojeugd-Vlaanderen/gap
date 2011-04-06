@@ -3,6 +3,7 @@ using System.Web.Mvc;
 
 using Chiro.Cdf.ServiceHelper;
 using Chiro.Gap.ServiceContracts;
+using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
@@ -27,21 +28,25 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new UitstapModel();
 			BaseModelInit(model, groepID);
 			model.Titel = Properties.Resources.NieuweUitstap;
-			return View(model);
+			model.Uitstap = new UitstapDetail();
+
+			return View("Bewerken", model);
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Nieuw(UitstapModel model, int groepID)
 		{
+			BaseModelInit(model, groepID);
+			model.Titel = Properties.Resources.NieuweUitstap;
+
 			if (ModelState.IsValid)
 			{
-				int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Nieuw(groepID, model.Uitstap));
+				int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
 				return RedirectToAction("Bewerken", new {groepID, id = uitstapID});
 			}
 			else
 			{
-				BaseModelInit(model, groepID);
-				return View(model);
+				return View("Bewerken", model);
 			}
 		}
 

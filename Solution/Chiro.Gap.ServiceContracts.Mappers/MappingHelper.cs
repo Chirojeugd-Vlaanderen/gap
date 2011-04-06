@@ -119,8 +119,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			}
 		}
 
-		#endregion
-
 		/// <summary>
 		/// Bepaalt het postnummer van een adres.
 		/// </summary>
@@ -150,6 +148,8 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				return ((BuitenLandsAdres)a).PostNummer;
 			}
 		}
+
+		#endregion
 
 
 		/// <summary>
@@ -489,21 +489,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(dst => dst.Naam, opt => opt.MapFrom(src => src.Naam))
 				;
 
-			// Alwat hieronder ignore krijgt, wordt niet meegenomen van een teruggestuurde
-			// PersoonInfo.
-
-			Mapper.CreateMap<PersoonInfo, Persoon>()
-				.ForMember(dst => dst.ID, opt => opt.Ignore())
-				.ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
-				.ForMember(dst => dst.VolledigeNaam, opt => opt.Ignore())
-				.ForMember(dst => dst.SterfDatum, opt => opt.Ignore())
-				.ForMember(dst => dst.Versie, opt => opt.Ignore())
-				.ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
-				.ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
-				.ForMember(dst => dst.EntityKey, opt => opt.Ignore())
-				.ForMember(dst => dst.PersoonsVerzekering, opt => opt.Ignore())
-				.ForMember(dst => dst.DubbelPuntAbonnement, opt => opt.Ignore())
-				.ForMember(dst => dst.AdInAanvraag, opt => opt.Ignore());
 
 			// Important: als er een lid is, dan is er altijd een gelieerdepersoon, maar niet omgekeerd, 
 			// dus passen we de link aan in de andere richting!
@@ -523,6 +508,39 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 				.ForMember(
 					dst => dst.LidInfo,
 					opt => opt.MapFrom(src => src.Lid.FirstOrDefault())); // omdat je altijd maar 1 lid mag opvragen
+
+			#region mapping van datacontracts naar entity's
+
+			// Alwat hieronder ignore krijgt, wordt niet meegenomen van een teruggestuurde
+			// PersoonInfo.
+
+			Mapper.CreateMap<PersoonInfo, Persoon>()
+				.ForMember(dst => dst.ID, opt => opt.Ignore())
+				.ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
+				.ForMember(dst => dst.VolledigeNaam, opt => opt.Ignore())
+				.ForMember(dst => dst.SterfDatum, opt => opt.Ignore())
+				.ForMember(dst => dst.Versie, opt => opt.Ignore())
+				.ForMember(dst => dst.GelieerdePersoon, opt => opt.Ignore())
+				.ForMember(dst => dst.PersoonsAdres, opt => opt.Ignore())
+				.ForMember(dst => dst.EntityKey, opt => opt.Ignore())
+				.ForMember(dst => dst.PersoonsVerzekering, opt => opt.Ignore())
+				.ForMember(dst => dst.DubbelPuntAbonnement, opt => opt.Ignore())
+				.ForMember(dst => dst.AdInAanvraag, opt => opt.Ignore());
+
+			Mapper.CreateMap<UitstapDetail, Uitstap>()
+				.ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
+				.ForMember(dst => dst.EntityKey, opt => opt.Ignore())
+				.ForMember(dst => dst.PlaatsID, opt => opt.Ignore())
+				.ForMember(dst => dst.GroepsWerkJaarID, opt => opt.Ignore())
+				.ForMember(dst => dst.PlaatsReference, opt => opt.Ignore())
+				.ForMember(dst => dst.GroepsWerkJaar, opt => opt.Ignore())
+				.ForMember(dst => dst.GroepsWerkJaarReference, opt => opt.Ignore())
+				.ForMember(dst => dst.Versie, opt => opt.Ignore())
+				.ForMember(dst => dst.Plaats, opt => opt.Ignore());
+
+
+
+			#endregion
 
 			#region Mapping van Exceptions naar Faults
 			// TODO: Kan het mappen van die generics niet efficienter?

@@ -102,6 +102,11 @@ namespace Chiro.Gap.Dummies
 			return true;
 		}
 
+		public bool IsGavUitstap(int uitstapID, string login)
+		{
+			return true;
+		}
+
 		#endregion
 	}
 }

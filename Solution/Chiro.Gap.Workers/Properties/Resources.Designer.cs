@@ -421,6 +421,15 @@ namespace Chiro.Gap.Workers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to De uitstap is al gekoppeld aan een ander werkjaar..
+        /// </summary>
+        internal static string UitstapAlGekoppeld {
+            get {
+                return ResourceManager.GetString("UitstapAlGekoppeld", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to De begindatum van een verzekering kan niet in het verleden liggen..
         /// </summary>
         internal static string VerzekeringInVerleden {

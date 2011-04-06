@@ -224,6 +224,16 @@ namespace Chiro.Gap.Workers
 			return persoonsAdresIDs.All(id => _autorisatieDao.IsGavPersoonsAdres(id, GebruikersNaamGet()));			
 		}
 
+		/// <summary>
+		/// Controleert of de aangelogde gebruiker GAV-rechten heeft op de uitstap
+		/// met id <paramref name="uitstapID"/>.
+		/// </summary>
+		/// <param name="uitstapID">ID van een uitstap</param>
+		public bool IsGavUitstap(int uitstapID)
+		{
+			return _autorisatieDao.IsGavUitstap(uitstapID, GebruikersNaamGet());
+		}
+
 		#endregion
 
 		#region Ophalen/uitfilteren

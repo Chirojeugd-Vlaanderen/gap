@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adres.cs" />
+    <Compile Include="Uitstap.cs" />
     <Compile Include="Categorie.cs" />
     <Compile Include="ChiroGroep.cs" />
     <Compile Include="ChiroGroepModel.Designer.cs">

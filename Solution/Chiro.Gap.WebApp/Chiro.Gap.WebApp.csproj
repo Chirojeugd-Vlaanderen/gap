@@ -191,7 +191,7 @@
     <Content Include="Views\Shared\PersoonsLinkControl.ascx" />
     <Content Include="Views\Shared\TerugNaarLijstLinkControl.ascx" />
     <Content Include="Views\Uitstappen\Index.aspx" />
-    <Content Include="Views\Uitstappen\Nieuw.aspx" />
+    <Content Include="Views\Uitstappen\Bewerken.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

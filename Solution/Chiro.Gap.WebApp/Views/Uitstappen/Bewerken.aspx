@@ -3,6 +3,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
 	<% 
+        // Deze view kan zowel gebruikt worden voor het aanmaken van nieuwe uitstappen, als voor het bewerken
+        // van bestaande
+        
 		Html.EnableClientValidation(); // Deze instructie moet (enkel) voor de BeginForm komen
         using (Html.BeginForm())
                 {%>
@@ -13,6 +16,9 @@
 
                     <fieldset>
                     <legend>Info over uitstap of bivak</legend>
+                    
+                    <%=Html.HiddenFor(mdl=>mdl.Uitstap.ID) %>
+                    <%=Html.HiddenFor(mdl=>mdl.Uitstap.VersieString) %>
 
                     <%=Html.LabelFor(mdl=>mdl.Uitstap.Naam) %>
                     <%=Html.EditorFor(mdl => mdl.Uitstap.Naam) %>

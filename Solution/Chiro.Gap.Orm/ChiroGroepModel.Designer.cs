@@ -6082,7 +6082,8 @@ namespace Chiro.Gap.Orm
         /// <param name="datumVan">Initial value of the DatumVan property.</param>
         /// <param name="datumTot">Initial value of the DatumTot property.</param>
         /// <param name="versie">Initial value of the Versie property.</param>
-        public static Uitstap CreateUitstap(global::System.Int32 id, global::System.String naam, global::System.DateTime datumVan, global::System.DateTime datumTot, global::System.Byte[] versie)
+        /// <param name="isBivak">Initial value of the IsBivak property.</param>
+        public static Uitstap CreateUitstap(global::System.Int32 id, global::System.String naam, global::System.DateTime datumVan, global::System.DateTime datumTot, global::System.Byte[] versie, global::System.Boolean isBivak)
         {
             Uitstap uitstap = new Uitstap();
             uitstap.ID = id;
@@ -6090,6 +6091,7 @@ namespace Chiro.Gap.Orm
             uitstap.DatumVan = datumVan;
             uitstap.DatumTot = datumTot;
             uitstap.Versie = versie;
+            uitstap.IsBivak = isBivak;
             return uitstap;
         }
 
@@ -6290,6 +6292,30 @@ namespace Chiro.Gap.Orm
         private global::System.Byte[] _Versie;
         partial void OnVersieChanging(global::System.Byte[] value);
         partial void OnVersieChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsBivak
+        {
+            get
+            {
+                return _IsBivak;
+            }
+            set
+            {
+                OnIsBivakChanging(value);
+                ReportPropertyChanging("IsBivak");
+                _IsBivak = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsBivak");
+                OnIsBivakChanged();
+            }
+        }
+        private global::System.Boolean _IsBivak;
+        partial void OnIsBivakChanging(global::System.Boolean value);
+        partial void OnIsBivakChanged();
 
         #endregion
     

@@ -299,6 +299,7 @@
           </Key>
           <Property Name="UitstapID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Naam" Type="varchar" Nullable="false" MaxLength="120" />
+          <Property Name="IsBivak" Type="bit" Nullable="false" />
           <Property Name="DatumVan" Type="datetime" Nullable="false" />
           <Property Name="DatumTot" Type="datetime" Nullable="false" />
           <Property Name="Opmerkingen" Type="text" />
@@ -1565,7 +1566,7 @@
           <Property Type="String" Name="Naam" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="AdresID" Nullable="false" />
           <Property Type="Int32" Name="GelieerdePersoonID" Nullable="false" />
-          <Property Type="Binary" Name="Versie" Nullable="false" MaxLength="8" FixedLength="true" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="Binary" Name="Versie" Nullable="false" MaxLength="8" FixedLength="true" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="Adres" Relationship="ChiroGroepModel.FK_Plaats_Adres" FromRole="Plaats" ToRole="Adres" />
           <NavigationProperty Name="GelieerdePersoon" Relationship="ChiroGroepModel.FK_Plaats_GelieerdePersoon_Contact" FromRole="Plaats" ToRole="GelieerdePersoon" />
           <NavigationProperty Name="Uitstap" Relationship="ChiroGroepModel.FK_Uitstap_Plaats" FromRole="Plaats" ToRole="Uitstap" />
@@ -1581,9 +1582,10 @@
           <Property Type="String" Name="Opmerkingen" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="PlaatsID" />
           <Property Type="Int32" Name="GroepsWerkJaarID" />
-          <Property Type="Binary" Name="Versie" Nullable="false" MaxLength="8" FixedLength="true" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="Binary" Name="Versie" Nullable="false" MaxLength="8" FixedLength="true" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="Plaats" Relationship="ChiroGroepModel.FK_Uitstap_Plaats" FromRole="Uitstap" ToRole="Plaats" />
           <NavigationProperty Name="GroepsWerkJaar" Relationship="ChiroGroepModel.FK_Uitstap_GroepsWerkJaar" FromRole="Uitstap" ToRole="GroepsWerkJaar" />
+          <Property Type="Boolean" Name="IsBivak" Nullable="false" />
         </EntityType>
         <Association Name="FK_Plaats_Adres">
           <End Type="ChiroGroepModel.Adres" Role="Adres" Multiplicity="1" />
@@ -2059,6 +2061,7 @@
           <EntitySetMapping Name="Uitstap">
             <EntityTypeMapping TypeName="ChiroGroepModel.Uitstap">
               <MappingFragment StoreEntitySet="Uitstap">
+                <ScalarProperty Name="IsBivak" ColumnName="IsBivak" />
                 <ScalarProperty Name="Versie" ColumnName="Versie" />
                 <ScalarProperty Name="GroepsWerkJaarID" ColumnName="GroepsWerkJaarID" />
                 <ScalarProperty Name="PlaatsID" ColumnName="PlaatsID" />

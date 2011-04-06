@@ -8,19 +8,38 @@ using System.Text;
 
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
+	/// <summary>
+	/// Details van een uitstap
+	/// </summary>
+	/// <remarks>Startdatum en einddatum zijn <c>DateTime?</c>, opdat we dit
+	/// datacontract ook als model zouden kunnen gebruiken in de webappl.  Als
+	/// Startdatum en einddatum nullable zijn, dan zijn ze bij het aanmaken
+	/// van een nieuwe uitstap gewoon leeg, ipv een nietszeggende datum in het
+	/// jaar 1 als ze niet nullable zijn.</remarks>
 	[DataContract]
 	public class UitstapDetail
 	{
+		[DataMember]
+		public int ID { get; set; }
+		[DataMember]
 		[DisplayName(@"Omschrijving van de uitstap")]
 		public string Naam { get; set; }
+		[DataMember]
 		[DisplayName(@"Deze uitstap is ons jaarlijks bivak")]
 		public bool IsBivak { get; set; }
+		[DataMember]
 		[DisplayName(@"Begindatum")]
-		public DateTime DatumVan { get; set; }
+		[DataType(DataType.Date)]
+		public DateTime? DatumVan { get; set; }
+		[DataMember]
 		[DisplayName(@"Einddatum")]
-		public DateTime DatumTot { get; set; }
+		[DataType(DataType.Date)]
+		public DateTime? DatumTot { get; set; }
+		[DataMember]
 		[DataType(DataType.MultilineText)]
 		[DisplayName(@"Opmerkingen")]
 		public string Opmerkingen { get; set; }
+		[DataMember]
+		public string VersieString { get; set; }
 	}
 }

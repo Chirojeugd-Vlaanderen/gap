@@ -81,6 +81,11 @@ namespace Chiro.Gap.Dummies
 			return true;
 		}
 
+		public bool IsGavUitstap(int uitstapID)
+		{
+			return true;
+		}
+
 		public bool IsSuperGav()
 		{
 			return true;

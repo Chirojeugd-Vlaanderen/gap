@@ -15,12 +15,14 @@ namespace Chiro.Gap.ServiceContracts
 	public interface IUitstappenService
 	{
 		/// <summary>
-		/// Maakt een nieuwe uitstap aan voor de groep met gegeven <paramref name="groepID"/>
+		/// Bewaart een uitstap aan voor de groep met gegeven <paramref name="groepID"/>
 		/// </summary>
-		/// <param name="groepID">ID van de groep waarvoor een uitstap moet worden aangemaakt</param>
-		/// <param name="uitstap">Details over de nieuwe uitstap</param>
-		/// <returns>ID van de nieuw gemaakte uitstap</returns>
+		/// <param name="groepID">ID van de groep horende bij de uitstap.
+		/// Is eigenlijk enkel relevant als het om een nieuwe uitstap gaat.</param>
+		/// <param name="detail">Details over de uitstap.  Als <c>uitstap.ID</c> <c>0</c> is,
+		/// dan wordt een nieuwe uitstap gemaakt.  Anders wordt de bestaande overschreven.</param>
+		/// <returns>ID van de uitstap</returns>
 		[OperationContract]
-		int Nieuw(int groepID, UitstapDetail uitstap);
+		int Bewaren(int groepID, UitstapDetail detail);
 	}
 }

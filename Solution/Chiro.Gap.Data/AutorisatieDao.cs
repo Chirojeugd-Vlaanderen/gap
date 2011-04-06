@@ -445,10 +445,41 @@ namespace Chiro.Gap.Data.Ef
 				using (var db = new ChiroGroepEntities())
 				{
 					var query = from gp in db.GelieerdePersoon
-								where gp.Persoon.PersoonsAdres.Any(pa => pa.ID == persoonsAdresID) &&
-									  gp.Groep.GebruikersRecht.Any(
-										r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
-								select gp;
+					            where gp.Persoon.PersoonsAdres.Any(pa => pa.ID == persoonsAdresID) &&
+					                  gp.Groep.GebruikersRecht.Any(
+					                  	r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
+					            select gp;
+
+					return query.Count() > 0;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Geeft <c>true</c> als de uitstap met ID <paramref name="uitstapID"/> gekoppeld is aan een 
+		/// groepswerkjaar waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten heeft.  Anders
+		/// <c>false</c>.
+		/// </summary>
+		/// <param name="uitstapID">ID van de uitstap</param>
+		/// <param name="login">De gebruikersnaam</param>
+		/// <returns><c>true</c> als het persoonsAdres met ID <paramref name="uitstapID"/> gekoppeld is aan een 
+		/// groepswerkjaar waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten heeft.  Anders
+		/// <c>false</c>.</returns>
+		public bool IsGavUitstap(int uitstapID, string login)
+		{
+			if (uitstapID == 0) // is het geval bij een nieuwe uitstap
+			{
+				return true;
+			}
+			else
+			{
+				using (var db = new ChiroGroepEntities())
+				{
+					var query = from u in db.Uitstap
+					            where u.ID == uitstapID &&
+					                  u.GroepsWerkJaar.Groep.GebruikersRecht.Any(
+					                  	r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
+					            select u;
 
 					return query.Count() > 0;
 				}

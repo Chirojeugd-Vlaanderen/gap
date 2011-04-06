@@ -154,6 +154,14 @@ namespace Chiro.Gap.Workers
 		bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs);
 
 		/// <summary>
+		/// Controleert of de aangelogde gebruiker GAV-rechten heeft op de uitstap
+		/// met id <paramref name="uitstapID"/>.
+		/// </summary>
+		/// <param name="uitstapID">ID van een uitstap</param>
+		/// <returns><c>true</c> als de aangemelde user GAV is voor de uitstap, anders <c>false</c>. </returns>
+		bool IsGavUitstap(int uitstapID);
+
+		/// <summary>
 		/// Geeft true als de aangelogde user
 		/// 'superrechten' heeft
 		/// (zoals het verwijderen van leden uit vorig werkjaar, het 

@@ -249,4 +249,7 @@
   <data name="LandNietGevonden" xml:space="preserve">
     <value>Het land {0} werd niet gevonden.</value>
   </data>
+  <data name="UitstapAlGekoppeld" xml:space="preserve">
+    <value>De uitstap is al gekoppeld aan een ander werkjaar.</value>
+  </data>
 </root>

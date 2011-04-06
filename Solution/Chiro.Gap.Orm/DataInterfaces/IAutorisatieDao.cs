@@ -169,6 +169,20 @@ namespace Chiro.Gap.Orm.DataInterfaces
 		/// <c>false</c>.</returns>
 		bool IsGavPersoonsAdres(int persoonsAdresID, string login);
 
+
+		/// <summary>
+		/// Geeft <c>true</c> als de uitstap met ID <paramref name="uitstapID"/> gekoppeld is aan een 
+		/// groepswerkjaar waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten heeft.  Anders
+		/// <c>false</c>.
+		/// </summary>
+		/// <param name="uitstapID">ID van de uitstap</param>
+		/// <param name="login">De gebruikersnaam</param>
+		/// <returns><c>true</c> als het persoonsAdres met ID <paramref name="uitstapID"/> gekoppeld is aan een 
+		/// groepswerkjaar waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten heeft.  Anders
+		/// <c>false</c>.</returns>
+		bool IsGavUitstap(int uitstapID, string login);
+
 		#endregion
+
 	}
 }
