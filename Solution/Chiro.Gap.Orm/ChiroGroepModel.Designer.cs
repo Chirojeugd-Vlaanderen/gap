@@ -47,10 +47,10 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_BelgischAdres_StraatNaam", "StraatNaam", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.StraatNaam), "BelgischAdres", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.BelgischAdres))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_BelgischAdres_WoonPlaats", "WoonPlaats", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.WoonPlaats), "BelgischAdres", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.BelgischAdres))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_BuitenlandsAdres_Land", "Land", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Land), "BuitenLandsAdres", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.BuitenLandsAdres))]
-[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Plaats_Adres", "Adres", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Adres), "Plaats", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Plaats), true)]
-[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Plaats_GelieerdePersoon_Contact", "GelieerdePersoon", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.GelieerdePersoon), "Plaats", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Plaats), true)]
-[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Uitstap_Plaats", "Plaats", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.Plaats), "Uitstap", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Uitstap), true)]
-[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Uitstap_GroepsWerkJaar", "GroepsWerkJaar", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.GroepsWerkJaar), "Uitstap", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Uitstap), true)]
+[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Plaats_Adres", "Adres", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Adres), "Plaats", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Plaats))]
+[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Plaats_GelieerdePersoon_Contact", "GelieerdePersoon", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.GelieerdePersoon), "Plaats", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Plaats))]
+[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Uitstap_Plaats", "Plaats", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.Plaats), "Uitstap", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Uitstap))]
+[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Uitstap_GroepsWerkJaar", "GroepsWerkJaar", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.GroepsWerkJaar), "Uitstap", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Uitstap))]
 
 #endregion
 
@@ -5611,16 +5611,12 @@ namespace Chiro.Gap.Orm
         /// </summary>
         /// <param name="id">Initial value of the ID property.</param>
         /// <param name="naam">Initial value of the Naam property.</param>
-        /// <param name="adresID">Initial value of the AdresID property.</param>
-        /// <param name="gelieerdePersoonID">Initial value of the GelieerdePersoonID property.</param>
         /// <param name="versie">Initial value of the Versie property.</param>
-        public static Plaats CreatePlaats(global::System.Int32 id, global::System.String naam, global::System.Int32 adresID, global::System.Int32 gelieerdePersoonID, global::System.Byte[] versie)
+        public static Plaats CreatePlaats(global::System.Int32 id, global::System.String naam, global::System.Byte[] versie)
         {
             Plaats plaats = new Plaats();
             plaats.ID = id;
             plaats.Naam = naam;
-            plaats.AdresID = adresID;
-            plaats.GelieerdePersoonID = gelieerdePersoonID;
             plaats.Versie = versie;
             return plaats;
         }
@@ -5678,54 +5674,6 @@ namespace Chiro.Gap.Orm
         private global::System.String _Naam;
         partial void OnNaamChanging(global::System.String value);
         partial void OnNaamChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 AdresID
-        {
-            get
-            {
-                return _AdresID;
-            }
-            set
-            {
-                OnAdresIDChanging(value);
-                ReportPropertyChanging("AdresID");
-                _AdresID = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("AdresID");
-                OnAdresIDChanged();
-            }
-        }
-        private global::System.Int32 _AdresID;
-        partial void OnAdresIDChanging(global::System.Int32 value);
-        partial void OnAdresIDChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 GelieerdePersoonID
-        {
-            get
-            {
-                return _GelieerdePersoonID;
-            }
-            set
-            {
-                OnGelieerdePersoonIDChanging(value);
-                ReportPropertyChanging("GelieerdePersoonID");
-                _GelieerdePersoonID = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("GelieerdePersoonID");
-                OnGelieerdePersoonIDChanged();
-            }
-        }
-        private global::System.Int32 _GelieerdePersoonID;
-        partial void OnGelieerdePersoonIDChanging(global::System.Int32 value);
-        partial void OnGelieerdePersoonIDChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -6079,19 +6027,19 @@ namespace Chiro.Gap.Orm
         /// </summary>
         /// <param name="id">Initial value of the ID property.</param>
         /// <param name="naam">Initial value of the Naam property.</param>
+        /// <param name="isBivak">Initial value of the IsBivak property.</param>
         /// <param name="datumVan">Initial value of the DatumVan property.</param>
         /// <param name="datumTot">Initial value of the DatumTot property.</param>
         /// <param name="versie">Initial value of the Versie property.</param>
-        /// <param name="isBivak">Initial value of the IsBivak property.</param>
-        public static Uitstap CreateUitstap(global::System.Int32 id, global::System.String naam, global::System.DateTime datumVan, global::System.DateTime datumTot, global::System.Byte[] versie, global::System.Boolean isBivak)
+        public static Uitstap CreateUitstap(global::System.Int32 id, global::System.String naam, global::System.Boolean isBivak, global::System.DateTime datumVan, global::System.DateTime datumTot, global::System.Byte[] versie)
         {
             Uitstap uitstap = new Uitstap();
             uitstap.ID = id;
             uitstap.Naam = naam;
+            uitstap.IsBivak = isBivak;
             uitstap.DatumVan = datumVan;
             uitstap.DatumTot = datumTot;
             uitstap.Versie = versie;
-            uitstap.IsBivak = isBivak;
             return uitstap;
         }
 
@@ -6148,6 +6096,30 @@ namespace Chiro.Gap.Orm
         private global::System.String _Naam;
         partial void OnNaamChanging(global::System.String value);
         partial void OnNaamChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsBivak
+        {
+            get
+            {
+                return _IsBivak;
+            }
+            set
+            {
+                OnIsBivakChanging(value);
+                ReportPropertyChanging("IsBivak");
+                _IsBivak = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsBivak");
+                OnIsBivakChanged();
+            }
+        }
+        private global::System.Boolean _IsBivak;
+        partial void OnIsBivakChanging(global::System.Boolean value);
+        partial void OnIsBivakChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -6224,54 +6196,6 @@ namespace Chiro.Gap.Orm
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Int32> PlaatsID
-        {
-            get
-            {
-                return _PlaatsID;
-            }
-            set
-            {
-                OnPlaatsIDChanging(value);
-                ReportPropertyChanging("PlaatsID");
-                _PlaatsID = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("PlaatsID");
-                OnPlaatsIDChanged();
-            }
-        }
-        private Nullable<global::System.Int32> _PlaatsID;
-        partial void OnPlaatsIDChanging(Nullable<global::System.Int32> value);
-        partial void OnPlaatsIDChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Int32> GroepsWerkJaarID
-        {
-            get
-            {
-                return _GroepsWerkJaarID;
-            }
-            set
-            {
-                OnGroepsWerkJaarIDChanging(value);
-                ReportPropertyChanging("GroepsWerkJaarID");
-                _GroepsWerkJaarID = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("GroepsWerkJaarID");
-                OnGroepsWerkJaarIDChanged();
-            }
-        }
-        private Nullable<global::System.Int32> _GroepsWerkJaarID;
-        partial void OnGroepsWerkJaarIDChanging(Nullable<global::System.Int32> value);
-        partial void OnGroepsWerkJaarIDChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.Byte[] Versie
@@ -6292,30 +6216,6 @@ namespace Chiro.Gap.Orm
         private global::System.Byte[] _Versie;
         partial void OnVersieChanging(global::System.Byte[] value);
         partial void OnVersieChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Boolean IsBivak
-        {
-            get
-            {
-                return _IsBivak;
-            }
-            set
-            {
-                OnIsBivakChanging(value);
-                ReportPropertyChanging("IsBivak");
-                _IsBivak = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("IsBivak");
-                OnIsBivakChanged();
-            }
-        }
-        private global::System.Boolean _IsBivak;
-        partial void OnIsBivakChanging(global::System.Boolean value);
-        partial void OnIsBivakChanged();
 
         #endregion
     

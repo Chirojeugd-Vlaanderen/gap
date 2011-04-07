@@ -244,8 +244,16 @@ namespace Chiro.Cdf.Data.Entity
 
 				try
 				{
+					// Hier kan wel een en ander mislopen:
+					//
 					// Unit tests crashen hier als DTC niet geënabled is.
 					// Zie https://develop.chiro.be/trac/cg2/wiki/DistributedTransactions
+					//
+					// Als je een foutmelding krijgt omdat je geen updatepermissies hebt
+					// op een bepaalde tabel, terwijl je die updatepermissie helemaal niet nodig
+					// hebt, dan komt dat omdat je entiteiten hebt toegevoegd met foreign key
+					// properties.  
+					// Zie https://develop.chiro.be/trac/cg2/wiki/EntityFrameworkEnForeignKeyColumns
 					db.SaveChanges();
 				}
 				catch (UpdateException ex)

@@ -530,8 +530,6 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.CreateMap<UitstapDetail, Uitstap>()
 				.ForMember(dst => dst.TeVerwijderen, opt => opt.Ignore())
 				.ForMember(dst => dst.EntityKey, opt => opt.Ignore())
-				.ForMember(dst => dst.PlaatsID, opt => opt.Ignore())
-				.ForMember(dst => dst.GroepsWerkJaarID, opt => opt.Ignore())
 				.ForMember(dst => dst.PlaatsReference, opt => opt.Ignore())
 				.ForMember(dst => dst.GroepsWerkJaar, opt => opt.Ignore())
 				.ForMember(dst => dst.GroepsWerkJaarReference, opt => opt.Ignore())
