@@ -5,6 +5,7 @@ using System.ServiceModel;
 using System.Text;
 
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
 
 namespace Chiro.Gap.ServiceContracts
 {
@@ -23,6 +24,18 @@ namespace Chiro.Gap.ServiceContracts
 		/// dan wordt een nieuwe uitstap gemaakt.  Anders wordt de bestaande overschreven.</param>
 		/// <returns>ID van de uitstap</returns>
 		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
 		int Bewaren(int groepID, UitstapDetail detail);
+
+		/// <summary>
+		/// Haalt alle uitstappen van een gegeven groep op.
+		/// </summary>
+		/// <param name="groepID">ID van de groep</param>
+		/// <returns>Details van uitstappen</returns>
+		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
+		IEnumerable<UitstapInfo> OphalenVanGroep(int groepID);
 	}
 }

@@ -88,5 +88,23 @@ namespace Chiro.Gap.Services
 				throw;
 			}
 		}
+
+		/// <summary>
+		/// Haalt alle uitstappen van een gegeven groep op.
+		/// </summary>
+		/// <param name="groepID">ID van de groep</param>
+		/// <returns>Details van uitstappen</returns>
+		public IEnumerable<UitstapInfo> OphalenVanGroep(int groepID)
+		{
+			try
+			{
+				return Mapper.Map<IEnumerable<Uitstap>, IEnumerable<UitstapInfo>>(_uitstappenMgr.OphalenVanGroep(groepID));
+			}
+			catch (GeenGavException ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				throw;
+			}
+		}
 	}
 }

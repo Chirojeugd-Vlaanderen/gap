@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 using Chiro.Cdf.ServiceHelper;
@@ -19,6 +20,8 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new UitstapOverzichtModel();
 			BaseModelInit(model, groepID);
 			model.Titel = Properties.Resources.Uitstappen;
+			model.Uitstappen =
+				ServiceHelper.CallService<IUitstappenService, IEnumerable<UitstapInfo>>(svc => svc.OphalenVanGroep(groepID));
 			return View(model);
 		}
 

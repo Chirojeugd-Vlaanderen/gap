@@ -18,7 +18,7 @@ namespace Chiro.Gap.Workers
 	{
 		private readonly IGroepsWerkJaarDao _groepsWerkJaarDao;
 		private readonly IAutorisatieManager _autorisatieManager;
-		private readonly IDao<Uitstap> _uitstappenDao;
+		private readonly IUitstappenDao _uitstappenDao;
 
 
 		/// <summary>
@@ -27,7 +27,7 @@ namespace Chiro.Gap.Workers
 		/// <param name="groepsWerkJaarDao">Data access voor groepswerkjaren</param>
 		/// <param name="autorisatieManager">Businesslogica voor autorisatie</param>
 		public UitstappenManager(
-			IDao<Uitstap> uitstappenDao, 
+			IUitstappenDao uitstappenDao, 
 			IGroepsWerkJaarDao groepsWerkJaarDao, 
 			IAutorisatieManager autorisatieManager)
 		{
@@ -103,6 +103,24 @@ namespace Chiro.Gap.Workers
 			else
 			{
 				return _uitstappenDao.Bewaren(uitstap, u => u.GroepsWerkJaar.WithoutUpdate());
+			}
+		}
+
+		/// <summary>
+		/// Haalt alle uitstappen van een gegeven groep op.
+		/// </summary>
+		/// <param name="groepID">ID van de groep</param>
+		/// <returns>Details van uitstappen</returns>
+		/// <remarks>Om maar iets te doen, ordenen we voorlopig op einddatum</remarks>
+		public IEnumerable<Uitstap> OphalenVanGroep(int groepID)
+		{
+			if (!_autorisatieManager.IsGavGroep(groepID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+			else
+			{
+				return _uitstappenDao.OphalenVanGroep(groepID).OrderByDescending(u => u.DatumTot);
 			}
 		}
 	}

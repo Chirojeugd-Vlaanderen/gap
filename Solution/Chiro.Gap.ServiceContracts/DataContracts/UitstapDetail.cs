@@ -17,29 +17,11 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	/// van een nieuwe uitstap gewoon leeg, ipv een nietszeggende datum in het
 	/// jaar 1 als ze niet nullable zijn.</remarks>
 	[DataContract]
-	public class UitstapDetail
+	public class UitstapDetail: UitstapInfo
 	{
+		// Momenteel nog geen extra's tov UitstapInfo, maar op termijn komt 
+		// hier o.m. de plaats.
 		[DataMember]
-		public int ID { get; set; }
-		[DataMember]
-		[DisplayName(@"Omschrijving van de uitstap")]
-		public string Naam { get; set; }
-		[DataMember]
-		[DisplayName(@"Deze uitstap is ons jaarlijks bivak")]
-		public bool IsBivak { get; set; }
-		[DataMember]
-		[DisplayName(@"Begindatum")]
-		[DataType(DataType.Date)]
-		public DateTime? DatumVan { get; set; }
-		[DataMember]
-		[DisplayName(@"Einddatum")]
-		[DataType(DataType.Date)]
-		public DateTime? DatumTot { get; set; }
-		[DataMember]
-		[DataType(DataType.MultilineText)]
-		[DisplayName(@"Opmerkingen")]
-		public string Opmerkingen { get; set; }
-		[DataMember]
-		public string VersieString { get; set; }
+		public string Dummy { get; set; }
 	}
 }
