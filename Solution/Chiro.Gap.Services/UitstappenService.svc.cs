@@ -106,5 +106,23 @@ namespace Chiro.Gap.Services
 				throw;
 			}
 		}
+
+		/// <summary>
+		/// Haalt details over uitstap met gegeven <paramref name="uitstapID"/> op.
+		/// </summary>
+		/// <param name="uitstapID">ID van de uitstap</param>
+		/// <returns>Details over de uitstap</returns>
+		public UitstapDetail DetailsOphalen(int uitstapID)
+		{
+			try
+			{
+				return Mapper.Map<Uitstap, UitstapDetail>(_uitstappenMgr.Ophalen(uitstapID));
+			}
+			catch (GeenGavException ex)
+			{
+				FoutAfhandelaar.FoutAfhandelen(ex);
+				throw;
+			}
+		}
 	}
 }

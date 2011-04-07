@@ -15,6 +15,11 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 		}
 
+		/// <summary>
+		/// Overzicht val alle uitstappen (ever) van een groep
+		/// </summary>
+		/// <param name="groepID">ID van de groep</param>
+		/// <returns>View met uistapoverzicht</returns>
 		public override ActionResult Index(int groepID)
 		{
 			var model = new UitstapOverzichtModel();
@@ -25,6 +30,11 @@ namespace Chiro.Gap.WebApp.Controllers
 			return View(model);
 		}
 
+		/// <summary>
+		/// Formulier om nieuwe uitstap te registreren
+		/// </summary>
+		/// <param name="groepID">ID van groep waarvoor uitstap moet worden geregistreerd</param>
+		/// <returns>Het formulier</returns>
 		[AcceptVerbs(HttpVerbs.Get)]
 		public ActionResult Nieuw(int groepID)
 		{
@@ -36,6 +46,13 @@ namespace Chiro.Gap.WebApp.Controllers
 			return View("Bewerken", model);
 		}
 
+		/// <summary>
+		/// Verwerkt de gegevens uit het nieuwe-uitstapformulier
+		/// </summary>
+		/// <param name="model">Ingevlude gegevens</param>
+		/// <param name="groepID">Groep waarvoor uitstap moet worden bewaard</param>
+		/// <returns>Als alles gelukt is, de details van de toegevoegde uitstap.  Anders 
+		/// opnieuw het formulier met feedback over de problemen.</returns>
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Nieuw(UitstapModel model, int groepID)
 		{
@@ -45,7 +62,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			if (ModelState.IsValid)
 			{
 				int uitstapID = ServiceHelper.CallService<IUitstappenService, int>(svc => svc.Bewaren(groepID, model.Uitstap));
-				return RedirectToAction("Bewerken", new {groepID, id = uitstapID});
+				return RedirectToAction("Bekijken", new {groepID, id = uitstapID});
 			}
 			else
 			{
@@ -53,6 +70,27 @@ namespace Chiro.Gap.WebApp.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Toont de details van een gegeven uitstap
+		/// </summary>
+		/// <param name="groepID">ID van de groep die momenteel geselecteerd is</param>
+		/// <param name="id">ID van de uitstap waarin we geïnteresseerd zijn</param>
+		/// <returns>De details van de gegeven uitstap</returns>
+		public ActionResult Bekijken(int groepID, int id)
+		{
+			var model = new UitstapModel();
+			BaseModelInit(model, groepID);
+			model.Titel = model.Uitstap.Naam;
+			model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(svc => svc.DetailsOphalen(id));
+
+			return View(model);
+		}
+
+		/// <summary>
+		/// Formulier om bestaande uitstap mee te bewerken
+		/// </summary>
+		/// <returns></returns>
+		[AcceptVerbs(HttpVerbs.Get)]
 		public ActionResult Bewerken()
 		{
 			throw new NotImplementedException();

@@ -21,7 +21,5 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	{
 		// Momenteel nog geen extra's tov UitstapInfo, maar op termijn komt 
 		// hier o.m. de plaats.
-		[DataMember]
-		public string Dummy { get; set; }
 	}
 }

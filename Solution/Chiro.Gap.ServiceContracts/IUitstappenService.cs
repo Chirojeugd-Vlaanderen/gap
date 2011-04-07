@@ -37,5 +37,15 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		IEnumerable<UitstapInfo> OphalenVanGroep(int groepID);
+
+		/// <summary>
+		/// Haalt details over uitstap met gegeven <paramref name="uitstapID"/> op.
+		/// </summary>
+		/// <param name="uitstapID">ID van de uitstap</param>
+		/// <returns>Details over de uitstap</returns>
+		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
+		UitstapDetail DetailsOphalen(int uitstapID);
 	}
 }
