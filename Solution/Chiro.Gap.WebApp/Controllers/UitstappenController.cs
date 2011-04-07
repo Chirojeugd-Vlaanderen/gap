@@ -80,8 +80,9 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			var model = new UitstapModel();
 			BaseModelInit(model, groepID);
-			model.Titel = model.Uitstap.Naam;
 			model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(svc => svc.DetailsOphalen(id));
+			model.Titel = model.Uitstap.Naam;
+
 
 			return View(model);
 		}
