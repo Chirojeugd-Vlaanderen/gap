@@ -188,6 +188,7 @@
     <Content Include="Views\Personen\Index.aspx" />
     <Content Include="Views\Personen\AdresBewerken.aspx" />
     <Content Include="Views\Shared\AdresBewerkenControl.ascx" />
+    <Content Include="Views\Shared\AdresBewerkenScriptsControl.ascx" />
     <Content Include="Views\Shared\LedenLijstControl.ascx" />
     <Content Include="Views\Shared\PersonenLijstControl.ascx" />
     <Content Include="Views\Shared\PersoonsLinkControl.ascx" />
