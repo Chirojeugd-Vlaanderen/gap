@@ -16,27 +16,27 @@
 	<script type="text/javascript">
 	    $(function () {
 	        // Automatisch invullen gemeentes na keuze postnummer
-	        $("input#PersoonsAdresInfo_PostNr").change(function () {
+	        $("input#PostNr").change(function () {
 	            $.getJSON('<%=Url.Action("WoonPlaatsenOphalen", "Adressen")%>', { postNummer: $(this).val() }, function (j) {
 	                var options = '';
 	                for (var i = 0; i < j.length; i++) {
 	                    options += '<option value="' + j[i].Naam + '">' + j[i].Naam + '</option>';
 	                }
-	                $("select#PersoonsAdresInfo_WoonPlaatsNaam").html(options);
+	                $("select#WoonPlaats").html(options);
 	            })
 	        });
 
 	        // Autocomplete straten
-	        $("input#PersoonsAdresInfo_StraatNaamNaam").autocomplete(
+	        $("input#Straat").autocomplete(
                 '<%= Url.Action("StratenVoorstellen", "Adressen") %>',
-                { extraParams: { "postNummer": function () { return $("input#PersoonsAdresInfo_PostNr").val(); } } });
+                { extraParams: { "postNummer": function () { return $("input#PostNr").val(); } } });
 
 	        // Tonen en verbergen van internationale velden
 
 	        // We doen dat 1 keer initieel, en daarna iedere keer een ander land
 	        // wordt gekozen.
 
-	        if ($("#PersoonsAdresInfo_LandNaam").val() != "België") {
+	        if ($("#Land").val() != "België") {
 	            $(".binnenland").hide();
 	            $(".buitenland").show();
 	        }
@@ -47,8 +47,8 @@
 
 	        // valt het op dat mijn jquery skills niet zo geweldig zijn? :)
 
-	        $("#PersoonsAdresInfo_LandNaam").change(function () {
-	            if ($("#PersoonsAdresInfo_LandNaam").val() != "België") {
+	        $("#Land").change(function () {
+	            if ($("#Land").val() != "België") {
 	                $(".binnenland").hide();
 	                $(".buitenland").show();
 	            }
@@ -90,52 +90,13 @@
 			<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.AdresType) %>
 			<%=Html.DropDownListFor(mdl => mdl.PersoonsAdresInfo.AdresType, new SelectList(values, "value", "text"))%>
 		</p>
+
+        <%
+			Html.RenderPartial("AdresBewerkenControl", Model);
+         %>
         
-        <p>
-            <%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.LandNaam) %>
-            <%=Html.DropDownListFor(mdl => mdl.PersoonsAdresInfo.LandNaam, new SelectList(Model.Landen, "Naam", "Naam")) %>
-        </p>
+        <!-- Rap hier iets tussen zetten, om te vermijden dat resharper vervelend doet -->
 
-		<p>
-			<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.PostNr) %>
-			<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.PostNr)%>
-			<%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.PostNr)%>
-        </p>
-
-        <p class="buitenland">
-			<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.PostCode) %>
-			<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.PostCode)%>
-			<%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.PostCode)%>            
-        </p>
-
-		<noscript>
-			<input type="submit" name="action" value="Woonplaatsen ophalen" />
-		</noscript>
-		<p>
-			<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.StraatNaamNaam)%>
-			<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.StraatNaamNaam)%>
-			<%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.StraatNaamNaam)%>
-		</p>
-		<p>
-			<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.HuisNr)%>
-			<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.HuisNr)%>
-			<%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.HuisNr)%>
-		</p>
-		<p>
-			<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.Bus)%>
-			<%=Html.EditorFor(mdl => mdl.PersoonsAdresInfo.Bus)%>
-			<%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.Bus)%>
-		</p>
-		<p class="binnenland">
-			<%=Html.LabelFor(mdl => mdl.PersoonsAdresInfo.WoonPlaatsNaam)%>
-			<%=Html.DropDownListFor(mdl => mdl.PersoonsAdresInfo.WoonPlaatsNaam, new SelectList(Model.WoonPlaatsen, "Naam", "Naam"))%>
-			<%=Html.ValidationMessageFor(mdl => mdl.PersoonsAdresInfo.WoonPlaatsNaam)%>
-        </p>
-        <p class="buitenland">
-			<%=Html.LabelFor(mdl => mdl.WoonPlaatsBuitenLand)%>
-			<%=Html.EditorFor(mdl => mdl.WoonPlaatsBuitenLand)%>
-			<%=Html.ValidationMessageFor(mdl => mdl.WoonPlaatsBuitenLand)%>
-		</p>
 		<%
 			if (Model.OudAdresID == 0)
 			{

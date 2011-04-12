@@ -127,6 +127,7 @@
     <Compile Include="Models\CategorieModel.cs" />
     <Compile Include="Models\CommVormModel.cs" />
     <Compile Include="Models\AfdelingsJaarModel.cs" />
+    <Compile Include="Models\IAdresBewerkenModel.cs" />
     <Compile Include="Models\LidAfdelingenModel.cs" />
     <Compile Include="Models\Mededeling.cs" />
     <Compile Include="Models\PersonenLedenModel.cs" />
@@ -186,6 +187,7 @@
     <Content Include="Views\Personen\EditGegevens.aspx" />
     <Content Include="Views\Personen\Index.aspx" />
     <Content Include="Views\Personen\AdresBewerken.aspx" />
+    <Content Include="Views\Shared\AdresBewerkenControl.ascx" />
     <Content Include="Views\Shared\LedenLijstControl.ascx" />
     <Content Include="Views\Shared\PersonenLijstControl.ascx" />
     <Content Include="Views\Shared\PersoonsLinkControl.ascx" />
@@ -193,6 +195,7 @@
     <Content Include="Views\Uitstappen\Bekijken.aspx" />
     <Content Include="Views\Uitstappen\Index.aspx" />
     <Content Include="Views\Uitstappen\Bewerken.aspx" />
+    <Content Include="Views\Uitstappen\PlaatsBewerken.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

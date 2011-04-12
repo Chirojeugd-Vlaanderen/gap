@@ -539,8 +539,8 @@ namespace Chiro.Gap.WebApp.Controllers
 							     where bewoner.GelieerdePersoonID == aanvragerID
 							     select bewoner.AdresType).FirstOrDefault();
 
-			model.WoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(a.PostNr);
-			model.Landen = VeelGebruikt.LandenOphalen();
+			model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(a.PostNr);
+			model.AlleLanden = VeelGebruikt.LandenOphalen();
 
 			// Standaard verhuist iedereen mee.
 			model.GelieerdePersoonIDs = (from b in a.Bewoners
@@ -581,7 +581,7 @@ namespace Chiro.Gap.WebApp.Controllers
 								  p.PersoonVolledigeNaam,
 								  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
-			model.WoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
+			model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 
 			return View("AdresBewerken", model);
 		}
@@ -640,8 +640,8 @@ namespace Chiro.Gap.WebApp.Controllers
 									  p.PersoonVolledigeNaam,
 									  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
-				model.WoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
-				model.Landen = VeelGebruikt.LandenOphalen();
+				model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
+				model.AlleLanden = VeelGebruikt.LandenOphalen();
 
 				return View("AdresBewerken", model);
 			}
@@ -661,7 +661,7 @@ namespace Chiro.Gap.WebApp.Controllers
 									  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID),
 									  probleemPersIDs.Contains(p.PersoonID) ? Properties.Resources.WoontDaarAl : string.Empty)).ToArray();
 
-				model.WoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
+				model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 				return View("AdresBewerken", model);
 			}
 		}
@@ -722,7 +722,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			BaseModelInit(model, groepID);
 
 			model.AanvragerID = id;
-			model.Landen = VeelGebruikt.LandenOphalen();
+			model.AlleLanden = VeelGebruikt.LandenOphalen();
 			model.PersoonsAdresInfo.LandNaam = Properties.Resources.Belgie;
 
 			var bewoners = ServiceHelper.CallService<IGelieerdePersonenService, IList<BewonersInfo>>(l => l.HuisGenotenOphalenZelfdeGroep(id));
@@ -761,7 +761,7 @@ namespace Chiro.Gap.WebApp.Controllers
 								  p.PersoonVolledigeNaam,
 								  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
-			model.WoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
+			model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 
 			return View("AdresBewerken", model);
 		}
@@ -816,8 +816,8 @@ namespace Chiro.Gap.WebApp.Controllers
 									  p.PersoonVolledigeNaam,
 									  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
-				model.WoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
-				model.Landen = VeelGebruikt.LandenOphalen();
+				model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
+				model.AlleLanden = VeelGebruikt.LandenOphalen();
 
 				return View("AdresBewerken", model);
 			}
@@ -842,7 +842,7 @@ namespace Chiro.Gap.WebApp.Controllers
 									  model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID),
 									  probleemPersIDs.Contains(p.PersoonID) ? Properties.Resources.WoontDaarAl : string.Empty)).ToArray();
 
-				model.WoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
+				model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PersoonsAdresInfo.PostNr);
 
 				return View("AdresBewerken", model);
 			}

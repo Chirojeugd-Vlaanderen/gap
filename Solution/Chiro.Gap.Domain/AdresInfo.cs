@@ -38,11 +38,8 @@ namespace Chiro.Gap.Domain
 		/// <summary>
 		/// Het postnummer
 		/// </summary>
-		[Verplicht]
 		[DataMember]
-		// De upper limit is verhoogd van 9999 naar 99999, om dit datacontract ook te kunnen gebruiken voor
-		// buitenlandse adressen.  Een beetje een hack dus.
-		[Range(1000, 99999, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RangeError")]
+
 		public int PostNr { get; set; }
 
 		/// <summary>
@@ -50,43 +47,33 @@ namespace Chiro.Gap.Domain
 		/// (dit gaan de gebruikers weer langs geen kanten snappen)
 		/// </summary>
 		[DataMember]
-		[StringLengte(10)]
 		public string PostCode { get; set; }
 
 		/// <summary>
 		/// Het huisnummer
 		/// </summary>
 		[DataMember]
-		[Range(0, 2147483647, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RangeError")]
 		public int? HuisNr { get; set; }
 
 		/// <summary>
 		/// Naam van de straat
 		/// </summary>
 		[DataMember]
-		[DisplayName(@"Straat")]
-		[Verplicht]
-		[StringLengte(80)]
 		public String StraatNaamNaam { get; set; }
 
 		/// <summary>
 		/// Naam van de stad of gemeente
 		/// </summary>
 		[DataMember]
-		[DisplayName(@"Woonplaats")]
 		// Woonplaats is eigenlijk wel verplicht, maar ik zet dat hier toch af,
 		// omdat ik anders problemen krijg in de UI bij het ingeven van een
 		// buitenlands adres.  Daar wordt de drop down voor woonplaats dan 
 		// niet gebruikt, waardoor bij een verplichte woonplaats het formulier niet 
 		// gepost kan worden.  (hack)
 		//[Verplicht]
-		[StringLengte(80)]
 		public String WoonPlaatsNaam { get; set; }
 
 		[DataMember]
-		[DisplayName(@"Land")]
-		[Verplicht]
-		[StringLengte(80)]
 		public String LandNaam { get; set; }
 	}
 }

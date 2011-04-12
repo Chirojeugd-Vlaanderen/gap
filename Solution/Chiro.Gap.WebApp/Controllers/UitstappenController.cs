@@ -96,5 +96,21 @@ namespace Chiro.Gap.WebApp.Controllers
 		{
 			throw new NotImplementedException();
 		}
+
+		/// <summary>
+		/// Laat de user de bivakplaats voor een uitstap bewerken.
+		/// </summary>
+		/// <param name="groepID">ID van de groep waarmee we werken</param>
+		/// <param name="id">ID van het bivak waarvoor de plaats moet worden ingegeven.</param>
+		/// <returns>Het formulier voor het ingeven van een bivakplaats</returns>
+		public ActionResult PlaatsBewerken(int groepID, int id)
+		{
+			var model = new UitstapModel();
+			BaseModelInit(model, groepID);
+			model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(svc => svc.DetailsOphalen(id));
+			model.Titel = model.Uitstap.Naam;
+
+			return View(model);
+		}
 	}
 }

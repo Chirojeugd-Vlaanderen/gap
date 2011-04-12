@@ -18,14 +18,14 @@
     </p>
 
     <p>
-    <%if (string.IsNullOrEmpty(Model.Uitstap.PlaatsNaam))
-      {
-    %>
-        [<%=Html.ActionLink("Bivakplaats ingeven", "PlaatsBewerken", new {id = Model.Uitstap.ID}) %>]
-    <%
-      }
-    %>
+    <%=Html.LabelFor(mdl=>mdl.Uitstap.PlaatsNaam) %> 
+    <%=Html.EditorFor(mdl=>mdl.Uitstap.PlaatsNaam) %>
+    <%=Html.ValidationMessageFor(mdl=>mdl.Uitstap.PlaatsNaam) %>
     </p>
+
+    <!-- En nu voor dat adres... -->
+
+
 
     </div>
                     

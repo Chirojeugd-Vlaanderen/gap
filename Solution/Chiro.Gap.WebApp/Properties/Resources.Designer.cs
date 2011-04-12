@@ -556,6 +556,15 @@ namespace Chiro.Gap.WebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} is beperkt van {1} tot {2}..
+        /// </summary>
+        public static string RangeError {
+            get {
+                return ResourceManager.GetString("RangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ---/----.
         /// </summary>
         public static string StamNrDefault {

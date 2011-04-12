@@ -19,7 +19,7 @@ namespace Chiro.Gap.WebApp.Models
 	///   . een aantal van die personen verhuizen naar een nieuw adres B
 	/// Model voor een nieuw adres
 	/// </summary>
-	public class AdresModel : MasterViewModel
+	public class AdresModel : MasterViewModel, IAdresBewerkenModel
 	{
 		/// <summary>
 		/// De standaardconstructor voor AdresModel
@@ -29,8 +29,8 @@ namespace Chiro.Gap.WebApp.Models
 			Bewoners = new List<CheckBoxListInfo>();	// mensen die nu op dit adres wonen
 			GelieerdePersoonIDs = new List<int>();		// ID's van de geselecteerde bewoners
 			PersoonsAdresInfo = new PersoonsAdresInfo();	// het adres zelf, in combinatie met het type
-			WoonPlaatsen = new List<WoonPlaatsInfo>();	// woonplaatsen met het postnummer van het adres
-			Landen = new List<LandInfo>();			// alle gekende landen
+			BeschikbareWoonPlaatsen = new List<WoonPlaatsInfo>();	// woonplaatsen met het postnummer van het adres
+			AlleLanden = new List<LandInfo>();			// alle gekende landen
 		}
 
 		/// <summary>
@@ -69,12 +69,12 @@ namespace Chiro.Gap.WebApp.Models
 		/// <summary>
 		/// Lijstje woonplaatsen dat overeenkomt met Adres.PostNr
 		/// </summary>
-		public IEnumerable<WoonPlaatsInfo> WoonPlaatsen { get; set; }
+		public IEnumerable<WoonPlaatsInfo> BeschikbareWoonPlaatsen { get; set; }
 
 		/// <summary>
 		/// Lijstje beschikbare landen
 		/// </summary>
-		public IEnumerable<LandInfo> Landen { get; set; }
+		public IEnumerable<LandInfo> AlleLanden { get; set; }
 
 		/// <summary>
 		/// Apart invulveld voor woonplaats in het buitenland
@@ -82,5 +82,60 @@ namespace Chiro.Gap.WebApp.Models
 		[DisplayName(@"Woonplaats")]
 		[StringLengte(80)]
 		public string WoonPlaatsBuitenLand { get; set; }
+
+
+		#region Implementatie IAdresBewerkenModel
+
+		// Dit mapt gewoon de velden van IAdresBewerkenModel naar de goeie
+		// velden van dit model.  Op die manierhoop ik een partial view
+		// te kunnen gebruiken om adressen op te vragen.
+
+		// Ik had deze interface liever expliciet geïmplementeerd, maar
+		// dat werkt blijkbaar niet goed samen met de model binding.
+
+		public string Land
+		{
+			get { return PersoonsAdresInfo.LandNaam; }
+			set { PersoonsAdresInfo.LandNaam = value; }
+		}
+
+		public int PostNr
+		{
+			get { return PersoonsAdresInfo.PostNr; }
+			set { PersoonsAdresInfo.PostNr = value; }
+		}
+
+		public string PostCode
+		{
+			get { return PersoonsAdresInfo.PostCode; }
+			set { PersoonsAdresInfo.PostCode = value; }
+		}
+
+		public string Straat
+		{
+			get { return PersoonsAdresInfo.StraatNaamNaam; }
+			set { PersoonsAdresInfo.StraatNaamNaam = value; }
+		}
+
+		public int? HuisNr
+		{
+			get { return PersoonsAdresInfo.HuisNr; }
+			set { PersoonsAdresInfo.HuisNr = value; }
+		}
+
+		public string Bus
+		{
+			get { return PersoonsAdresInfo.Bus; }
+			set { PersoonsAdresInfo.Bus = value; }
+		}
+
+		public string WoonPlaats
+		{
+			get { return PersoonsAdresInfo.WoonPlaatsNaam; }
+			set { PersoonsAdresInfo.WoonPlaatsNaam = value; }
+		}
+
+		#endregion
+
 	}
 }

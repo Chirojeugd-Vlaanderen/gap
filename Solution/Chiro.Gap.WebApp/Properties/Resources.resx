@@ -305,4 +305,7 @@
   <data name="Uitstappen" xml:space="preserve">
     <value>Uitstappen</value>
   </data>
+  <data name="RangeError" xml:space="preserve">
+    <value>{0} is beperkt van {1} tot {2}.</value>
+  </data>
 </root>

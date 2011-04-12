@@ -6,6 +6,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
+using Chiro.Gap.Domain;
+
 namespace Chiro.Gap.ServiceContracts.DataContracts
 {
 	/// <summary>
@@ -19,7 +21,12 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	[DataContract]
 	public class UitstapDetail: UitstapInfo
 	{
-		// Momenteel nog geen extra's tov UitstapInfo, maar op termijn komt 
-		// hier o.m. de plaats.
+		[DataMember]
+		public string PlaatsNaam { get; set; }
+
+		// Een datacontract moet normaalgezien 'plat' zijn.  Maar het lijkt me
+		// zo raar om hier gewoon over te tikken wat er al in AdresInfo staat.
+		[DataMember]
+		public AdresInfo Adres { get; set; }
 	}
 }

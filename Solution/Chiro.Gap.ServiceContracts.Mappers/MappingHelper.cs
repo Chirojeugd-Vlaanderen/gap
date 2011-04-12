@@ -428,7 +428,9 @@ namespace Chiro.Gap.ServiceContracts.Mappers
 			Mapper.CreateMap<PersoonsAdres, PersoonsAdresInfo2>();
 			Mapper.CreateMap<CommunicatieVorm, CommunicatieDetail>();
 			Mapper.CreateMap<Uitstap, UitstapInfo>();
-			Mapper.CreateMap<Uitstap, UitstapDetail>();
+
+			Mapper.CreateMap<Uitstap, UitstapDetail>()
+				.ForMember(dst => dst.Adres, opt => opt.MapFrom(src => src.Plaats == null ? null : src.Plaats.Adres));
 
 			Mapper.CreateMap<Groep, GroepInfo>()
 				.ForMember(dst => dst.Plaats, opt => opt.MapFrom(
