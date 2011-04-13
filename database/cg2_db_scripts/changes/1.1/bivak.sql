@@ -10,12 +10,14 @@ create table biv.Plaats
 	Naam varchar(80) not null,
 	AdresID int not null,
 	GelieerdePersoonID int not null,	-- contactpersoon
+	GroepID int not null,				-- ingevende groep
 	Versie timestamp
 );
 
 alter table biv.Plaats add constraint PK_Plaats primary key(PlaatsID);
 alter table biv.Plaats add constraint FK_Plaats_Adres foreign key(AdresID) references adr.Adres(AdresID);
 alter table biv.Plaats add constraint FK_Plaats_GelieerdePersoon_Contact foreign key (GelieerdePersoonID) references pers.GelieerdePersoon(GelieerdePersoonID);
+alter table biv.Plaats add constraint FK_Plaats_Groep foreign key(GroepID) references grp.Groep(GroepID);
 
 grant select,insert,update,delete on biv.Plaats to GapRole;
 

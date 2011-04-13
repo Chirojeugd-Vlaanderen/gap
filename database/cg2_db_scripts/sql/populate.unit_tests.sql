@@ -22,6 +22,8 @@ use gap
 --   GelieerdePersoon5 is lid bij de 'unittestjes'.
 --
 -- GelieerdePersoon 3  heeft een voorkeurs(post)adres, e-mailadres, maar geen telefoonnummer
+--					   en nog een ander postadres, maar dan zonder voorkeur
+--
 -- GelieerdePersoon 4  heeft geen voorkeurs(post)adres, maar wel een e-mailadres en een telefoonnummer
 --
 -- 2 test-GAV's, en maakt de eerste GAV van testgroep1.
@@ -208,6 +210,7 @@ DECLARE @testVorigAfdelingsJaarID AS INT;
 -- 12  toekennen van adressen en communicatievormen
 
 	DECLARE @testAdresID AS INT;		SET @testAdresID = 53;				-- gewoon een testadres
+	DECLARE @testAdres2ID AS INT;		SET @testAdres2ID = 55;
 	DECLARE @testPersoonsAdresID AS INT;
 	DECLARE @testTel AS VARCHAR(40);	SET @testTel = '03-231 07 95';		-- een testtelefoonnr
 	DECLARE @testMail AS VARCHAR(80);	SET @testMail = 'info@chiro.be';	-- een testmailadres
@@ -688,6 +691,11 @@ BEGIN
 	SET @testPersoonsAdresID= (SELECT PersoonsAdresID FROM pers.PersoonsAdres WHERE PersoonID=@testPersoon3ID AND AdresID=@testAdresID)
 END
 
+IF NOT EXISTS (SELECT 1 FROM pers.PersoonsAdres WHERE PersoonID=@testPersoon3ID AND AdresID=@testAdres2ID)
+BEGIN
+	INSERT INTO pers.PersoonsAdres(PersoonID, AdresID, AdresTypeID) VALUES(@testPersoon3ID, @testAdres2ID, 1);
+END
+
 UPDATE pers.GelieerdePersoon SET VoorkeursAdresID=@testPersoonsAdresID WHERE GelieerdePersoonID=@testGelieerdePersoon3ID;
 
 IF NOT EXISTS (SELECT 1 FROM pers.CommunicatieVorm WHERE GelieerdePersoonID=@testGelieerdePersoon4ID AND Nummer=@testTel)
@@ -759,7 +767,8 @@ PRINT 'TestVorigAdfelingsJaarID: ' + CAST(@testVorigAfdelingsJaarID AS VARCHAR(1
 PRINT 'TestPersoonID: ' + CAST(@testPersoon1ID AS VARCHAR(10)) + ';';
 PRINT 'TestPersoon2ID: ' + CAST(@testPersoon3ID AS VARCHAR(10)) + ';';
 PRINT 'TestPersoon3ID: ' + CAST(@testPersoon3ID AS VARCHAR(10)) + ';';
-PRINT 'TestPersoon4ID: ' + CAST(@testPersoon3ID AS VARCHAR(10)) + ';';
+PRINT 'TestPersoon4ID: ' + CAST(@testPersoon4ID AS VARCHAR(10)) + ';';
+PRINT 'TestPersoon5ID: ' + CAST(@testPersoon5ID AS VARCHAR(10)) + ';';
 PRINT 'TestGav1ID: ' + CAST(@testGav1ID AS VARCHAR(10)) + ';';
 
 
