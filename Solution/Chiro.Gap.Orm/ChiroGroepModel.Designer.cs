@@ -51,6 +51,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Plaats_GelieerdePersoon_Contact", "GelieerdePersoon", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.GelieerdePersoon), "Plaats", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Plaats))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Uitstap_Plaats", "Plaats", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.Plaats), "Uitstap", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Uitstap))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Uitstap_GroepsWerkJaar", "GroepsWerkJaar", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.GroepsWerkJaar), "Uitstap", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Uitstap))]
+[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Plaats_Groep", "Groep", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Groep), "Plaats", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Plaats))]
 
 #endregion
 
@@ -3697,6 +3698,28 @@ namespace Chiro.Gap.Orm
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Plaats_Groep", "Plaats")]
+        public EntityCollection<Plaats> Plaats_1
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Plaats>("ChiroGroepModel.FK_Plaats_Groep", "Plaats");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Plaats>("ChiroGroepModel.FK_Plaats_Groep", "Plaats", value);
+                }
+            }
+        }
 
         #endregion
     }
@@ -5797,6 +5820,44 @@ namespace Chiro.Gap.Orm
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Uitstap>("ChiroGroepModel.FK_Uitstap_Plaats", "Uitstap", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Plaats_Groep", "Groep")]
+        public Groep Groep
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_Plaats_Groep", "Groep").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_Plaats_Groep", "Groep").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Groep> GroepReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Groep>("ChiroGroepModel.FK_Plaats_Groep", "Groep");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Groep>("ChiroGroepModel.FK_Plaats_Groep", "Groep", value);
                 }
             }
         }
