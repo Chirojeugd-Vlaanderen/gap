@@ -1,10 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.ServiceModel;
 using System.Web.Mvc;
 
+using AutoMapper;
+
 using Chiro.Cdf.ServiceHelper;
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts;
 using Chiro.Gap.ServiceContracts.DataContracts;
+using Chiro.Gap.ServiceContracts.FaultContracts;
+using Chiro.Gap.Validatie;
 using Chiro.Gap.WebApp.Models;
 
 namespace Chiro.Gap.WebApp.Controllers
@@ -103,14 +109,68 @@ namespace Chiro.Gap.WebApp.Controllers
 		/// <param name="groepID">ID van de groep waarmee we werken</param>
 		/// <param name="id">ID van het bivak waarvoor de plaats moet worden ingegeven.</param>
 		/// <returns>Het formulier voor het ingeven van een bivakplaats</returns>
+		[AcceptVerbs(HttpVerbs.Get)]
 		public ActionResult PlaatsBewerken(int groepID, int id)
 		{
-			var model = new UitstapModel();
+			var model = new UitstapPlaatsBewerekenModel();
 			BaseModelInit(model, groepID);
 			model.Uitstap = ServiceHelper.CallService<IUitstappenService, UitstapDetail>(svc => svc.DetailsOphalen(id));
+
+			if (model.Uitstap.Adres == null)
+			{
+				model.Uitstap.Adres = new AdresInfo {LandNaam = Properties.Resources.Belgie};
+			}
+
 			model.Titel = model.Uitstap.Naam;
+			model.AlleLanden = VeelGebruikt.LandenOphalen();
+			model.BeschikbareWoonPlaatsen = new List<WoonPlaatsInfo>();
 
 			return View(model);
+		}
+
+		/// <summary>
+		/// Als <paramref name="model"/> geen fouten bevat, stuurt deze controller action de geüpdatete plaats
+		/// naar de backend om te persisteren.
+		/// </summary>
+		/// <param name="groepID">Huidige groep</param>
+		/// <param name="model">Bevat de nieuwe plaats voor de uitstap</param>
+		/// <param name="id">ID van de uitstap waarvoor de plaats moet aangepast worden</param>
+		/// <returns>Als alles goed liep, wordt geredirect naar de details van de uitstap.  Anders
+		/// opnieuw de view voor het aanpassen van de uitstap, met de nodige feedback</returns>
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult PlaatsBewerken(int groepID, int id, UitstapPlaatsBewerekenModel model)
+		{
+			// Als het adres buitenlands is, neem dan de woonplaats over uit het
+			// vrij in te vullen veld.
+
+			if (String.Compare(model.Land, Properties.Resources.Belgie, true) != 0)
+			{
+				model.WoonPlaats = model.WoonPlaatsBuitenLand;
+			}
+
+			try
+			{
+				// De service zal model.NieuwAdres.ID negeren; dit wordt
+				// steeds opnieuw opgezocht.  Adressen worden nooit
+				// gewijzigd, enkel bijgemaakt (en eventueel verwijderd.)
+
+				ServiceHelper.CallService<IUitstappenService>(l => l.PlaatsBewaren(id, model.Uitstap.PlaatsNaam, model.Uitstap.Adres));
+				// TODO (#950): problemen ontbrekende plaats resetten.
+				// (maar die worden nog niet getoond)
+
+				return RedirectToAction("Bekijken", new { groepID, id });
+			}
+			catch (FaultException<OngeldigObjectFault> ex)
+			{
+				BaseModelInit(model, groepID);
+
+				new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, String.Empty);
+
+				model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(model.PostNr);
+				model.AlleLanden = VeelGebruikt.LandenOphalen();
+
+				return View(model);
+			}			
 		}
 	}
 }

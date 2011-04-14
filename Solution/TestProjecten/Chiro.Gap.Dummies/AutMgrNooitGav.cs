@@ -116,6 +116,11 @@ namespace Chiro.Gap.Dummies
 			return new List<int>();
 		}
 
+		public bool IsGavPlaats(int plaatsID)
+		{
+			return false;
+		}
+
 		public bool IsGavPersoonsAdressen(IEnumerable<int> persoonsAdresIDs)
 		{
 			return false;

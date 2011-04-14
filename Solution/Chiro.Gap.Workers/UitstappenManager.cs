@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 using Chiro.Cdf.Data;
@@ -72,16 +73,32 @@ namespace Chiro.Gap.Workers
 		/// het gekoppelde groepswerkjaar.
 		/// </summary>
 		/// <param name="uitstapID">ID op te halen uitstap</param>
+		/// <param name="extras"></param>
 		/// <returns>De uitstap, met daaraan gekoppeld het groepswerkjaar.</returns>
-		public Uitstap Ophalen(int uitstapID)
+		public Uitstap Ophalen(int uitstapID, UitstapExtras extras)
 		{
+			var paths = new List<Expression<Func<Uitstap, object>>>();
+
 			if (!_autorisatieManager.IsGavUitstap(uitstapID))
 			{
 				throw new GeenGavException(Properties.Resources.GeenGav);
 			}
 			else
 			{
-				return _uitstappenDao.Ophalen(uitstapID, u => u.GroepsWerkJaar);
+				if ((extras & UitstapExtras.Groep) != 0)
+				{
+					paths.Add(u => u.GroepsWerkJaar.Groep);
+				}
+				else if ((extras & UitstapExtras.GroepsWerkJaar) != 0)
+				{
+					paths.Add(u => u.GroepsWerkJaar);
+				}
+
+				if ((extras & UitstapExtras.Plaats) != 0)
+				{
+					paths.Add(u => u.Plaats.Adres);
+				}
+				return _uitstappenDao.Ophalen(uitstapID, paths.ToArray());
 			}
 
 		}
@@ -89,8 +106,9 @@ namespace Chiro.Gap.Workers
 		/// <summary>
 		/// Bewaart de uitstap met het gekoppelde groepswerkjaar
 		/// </summary>
-		/// <param name="uitstap"></param>
-		public Uitstap Bewaren(Uitstap uitstap)
+		/// <param name="uitstap">te bewaren uitstap</param>
+		/// <param name="extras">Bepaalt de mee te bewaren koppelingen</param>
+		public Uitstap Bewaren(Uitstap uitstap, UitstapExtras extras)
 		{
 			if (!_autorisatieManager.IsGavUitstap(uitstap.ID))
 			{
@@ -102,7 +120,18 @@ namespace Chiro.Gap.Workers
 			}
 			else
 			{
-				return _uitstappenDao.Bewaren(uitstap, u => u.GroepsWerkJaar.WithoutUpdate());
+				var koppelingen = new List<Expression<Func<Uitstap, object>>>();
+
+				if ((extras & UitstapExtras.GroepsWerkJaar) != 0)
+				{
+					koppelingen.Add(u => u.GroepsWerkJaar.WithoutUpdate());
+				}
+				if ((extras & UitstapExtras.Plaats) != 0)
+				{
+					koppelingen.Add(u => u.Plaats);
+				}
+
+				return _uitstappenDao.Bewaren(uitstap, koppelingen.ToArray());
 			}
 		}
 
@@ -121,6 +150,27 @@ namespace Chiro.Gap.Workers
 			else
 			{
 				return _uitstappenDao.OphalenVanGroep(groepID).OrderByDescending(u => u.DatumTot);
+			}
+		}
+
+		/// <summary>
+		/// Koppelt een plaats aan een uitstap
+		/// </summary>
+		/// <param name="uitstap">te koppelen uitstap</param>
+		/// <param name="plaats">te koppelen plaats</param>
+		/// <returns>uitstap, met plaats gekoppeld.  Persisteert niet</returns>
+		public Uitstap Koppelen(Uitstap uitstap, Plaats plaats)
+		{
+			if (!_autorisatieManager.IsGavUitstap(uitstap.ID) || !_autorisatieManager.IsGavPlaats(plaats.ID))
+			{
+				throw new GeenGavException(Properties.Resources.GeenGav);
+			}
+			else
+			{
+				plaats.Uitstap.Add(uitstap);
+				uitstap.Plaats = plaats;
+
+				return uitstap;
 			}
 		}
 	}

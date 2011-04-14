@@ -182,5 +182,13 @@ namespace Chiro.Gap.Workers
 		/// </summary>
 		/// <returns>GroepID's van de goepen waarvoor de gebruiker GAV is.</returns>
 		IEnumerable<int> MijnGroepIDsOphalen();
+
+		/// <summary>
+		/// Controleert of de aangelogde gebruiker op dit moment GAV-rechten heeft op de plaats
+		/// met id <paramref name="plaatsID"/>.
+		/// </summary>
+		/// <param name="plaatsID">ID van een bivakplaats</param>
+		/// <returns><c>true</c> als de aangemelde user nu GAV is voor de plaats, anders <c>false</c>. </returns>
+		bool IsGavPlaats(int plaatsID);
 	}
 }

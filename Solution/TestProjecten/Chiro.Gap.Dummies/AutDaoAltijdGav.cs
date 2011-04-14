@@ -107,6 +107,11 @@ namespace Chiro.Gap.Dummies
 			return true;
 		}
 
+		public bool IsGavPlaats(int plaatsID, string login)
+		{
+			return true;
+		}
+
 		#endregion
 	}
 }

@@ -70,6 +70,7 @@
     <Compile Include="GavDao.cs" />
     <Compile Include="GroepsWerkJaarDao.cs" />
     <Compile Include="LandenDao.cs" />
+    <Compile Include="PlaatsenDao.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

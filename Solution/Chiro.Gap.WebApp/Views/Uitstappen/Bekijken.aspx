@@ -24,6 +24,19 @@
         [<%=Html.ActionLink("Bivakplaats ingeven", "PlaatsBewerken", new {id = Model.Uitstap.ID}) %>]
     <%
       }
+      else
+      {
+          %>
+          
+          <em>Plaats:</em> 
+          <%=Model.Uitstap.PlaatsNaam %>, 
+          <%=Model.Uitstap.Adres.StraatNaamNaam %> <%=Model.Uitstap.Adres.HuisNr %> <%=Model.Uitstap.Adres.Bus %>,
+          <%=Model.Uitstap.Adres.PostNr %> <%=Model.Uitstap.Adres.PostCode %> <%=Model.Uitstap.Adres.WoonPlaatsNaam %>
+          (<%=Model.Uitstap.Adres.LandNaam%>)
+          <br />
+          [<%=Html.ActionLink("Bivakplaats wijzigen", "PlaatsBewerken", new {id = Model.Uitstap.ID}) %>]
+          <%
+      }
     %>
     </p>
 

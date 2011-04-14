@@ -462,7 +462,7 @@ namespace Chiro.Gap.Data.Ef
 		/// </summary>
 		/// <param name="uitstapID">ID van de uitstap</param>
 		/// <param name="login">De gebruikersnaam</param>
-		/// <returns><c>true</c> als het persoonsAdres met ID <paramref name="uitstapID"/> gekoppeld is aan een 
+		/// <returns><c>true</c> als de uitstap met ID <paramref name="uitstapID"/> gekoppeld is aan een 
 		/// groepswerkjaar waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten heeft.  Anders
 		/// <c>false</c>.</returns>
 		public bool IsGavUitstap(int uitstapID, string login)
@@ -480,6 +480,37 @@ namespace Chiro.Gap.Data.Ef
 					                  u.GroepsWerkJaar.Groep.GebruikersRecht.Any(
 					                  	r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
 					            select u;
+
+					return query.Count() > 0;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Geeft <c>true</c> als de plaats met ID <paramref name="plaatsID"/> gekoppeld is aan een 
+		/// groep waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten heeft.  Anders
+		/// <c>false</c>.
+		/// </summary>
+		/// <param name="plaatsID">ID van de plaats</param>
+		/// <param name="login">De gebruikersnaam</param>
+		/// <returns><c>true</c> als de plaats met ID <paramref name="plaatsID"/> gekoppeld is aan een 
+		/// groep waarop de gebruiker met login <paramref name="login"/> momenteel GAV-rechten heeft.  Anders
+		/// <c>false</c>.</returns>
+		public bool IsGavPlaats(int plaatsID, string login)
+		{
+			if (plaatsID == 0) // is het geval bij een nieuwe plaats
+			{
+				return true;
+			}
+			else
+			{
+				using (var db = new ChiroGroepEntities())
+				{
+					var query = from p in db.Plaats
+						    where p.ID == plaatsID &&
+							  p.Groep.GebruikersRecht.Any(
+								r => r.Gav.Login == login && (r.VervalDatum == null || r.VervalDatum > DateTime.Now))
+						    select p;
 
 					return query.Count() > 0;
 				}

@@ -61,7 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adres.cs" />
+    <Compile Include="DataInterfaces\IPlaatsenDao.cs" />
     <Compile Include="DataInterfaces\IUitstappenDao.cs" />
+    <Compile Include="Plaats.cs" />
     <Compile Include="Uitstap.cs" />
     <Compile Include="Categorie.cs" />
     <Compile Include="ChiroGroep.cs" />

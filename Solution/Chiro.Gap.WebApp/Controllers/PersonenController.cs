@@ -624,7 +624,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				BaseModelInit(model, groepID);
 
-				new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "PersoonsAdresInfo.");
+				new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, String.Empty);
 
 				// Als ik de bewoners van het 'Van-adres' niet had getoond in
 				// de view, dan had ik de view meteen kunnen aanroepen met het
@@ -804,7 +804,7 @@ namespace Chiro.Gap.WebApp.Controllers
 			{
 				BaseModelInit(model, groepID);
 
-				new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, "PersoonsAdresInfo.");
+				new ModelStateWrapper(ModelState).BerichtenToevoegen(ex.Detail, String.Empty);
 
 				// De mogelijke bewoners zijn op dit moment vergeten, en moeten dus
 				// terug opgevraagd worden.

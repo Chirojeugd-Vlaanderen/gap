@@ -194,4 +194,25 @@ namespace Chiro.Gap.Orm
 		/// </summary>
 		GroepsFuncties = 0x10
 	}
+
+	/// <summary>
+	/// Zaken die mee kunnen worden opgehaald met uitstappen.
+	/// </summary>
+	[Flags]
+	public enum UitstapExtras
+	{
+		Geen = 0x00,
+		/// <summary>
+		/// Haalt groepswerkjaar mee op
+		/// </summary>
+		GroepsWerkJaar = 0x01,
+		/// <summary>
+		/// Haalt groepswerkjaar en groep mee op 
+		/// </summary>
+		Groep = 0x03,		// Aangezien de groep altijd meekomt met groepswerkjaar: 0x03 ipv 0x02. (mss ook elders te doen)
+		/// <summary>
+		/// Haalt plaats op, inclusief adres
+		/// </summary>
+		Plaats = 0x04
+	}
 }

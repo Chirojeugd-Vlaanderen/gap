@@ -48,7 +48,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_BelgischAdres_WoonPlaats", "WoonPlaats", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.WoonPlaats), "BelgischAdres", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.BelgischAdres))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_BuitenlandsAdres_Land", "Land", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Land), "BuitenLandsAdres", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.BuitenLandsAdres))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Plaats_Adres", "Adres", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Adres), "Plaats", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Plaats))]
-[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Plaats_GelieerdePersoon_Contact", "GelieerdePersoon", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.GelieerdePersoon), "Plaats", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Plaats))]
+[assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Plaats_GelieerdePersoon_Contact", "GelieerdePersoon", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.GelieerdePersoon), "Plaats", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Plaats))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Uitstap_Plaats", "Plaats", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.Plaats), "Uitstap", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Uitstap))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Uitstap_GroepsWerkJaar", "GroepsWerkJaar", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Chiro.Gap.Orm.GroepsWerkJaar), "Uitstap", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Uitstap))]
 [assembly: EdmRelationshipAttribute("ChiroGroepModel", "FK_Plaats_Groep", "Groep", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Chiro.Gap.Orm.Groep), "Plaats", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Chiro.Gap.Orm.Plaats))]
@@ -807,7 +807,7 @@ namespace Chiro.Gap.Orm
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Plaats_Adres", "Plaats")]
-        public EntityCollection<Plaats> Plaats
+        public EntityCollection<Plaats> BivakPlaats
         {
             get
             {
@@ -3706,7 +3706,7 @@ namespace Chiro.Gap.Orm
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("ChiroGroepModel", "FK_Plaats_Groep", "Plaats")]
-        public EntityCollection<Plaats> Plaats_1
+        public EntityCollection<Plaats> BivakPlaats
         {
             get
             {

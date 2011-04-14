@@ -256,6 +256,18 @@ namespace Chiro.Gap.Workers
 		}
 
 		/// <summary>
+		/// Controleert of de aangelogde gebruiker op dit moment GAV-rechten heeft op de plaats
+		/// met id <paramref name="plaatsID"/>.
+		/// </summary>
+		/// <param name="plaatsID">ID van een bivakplaats</param>
+		/// <returns><c>true</c> als de aangemelde user nu GAV is voor de plaats, anders <c>false</c>. </returns>
+		public bool IsGavPlaats(int plaatsID)
+		{
+			return _autorisatieDao.IsGavPlaats(plaatsID, GebruikersNaamGet());
+
+		}
+
+		/// <summary>
 		/// Verwijdert uit een lijst van GelieerdePersoonID's de ID's
 		/// van GelieerdePersonen voor wie de aangemelde gebruiker geen GAV is
 		/// </summary>

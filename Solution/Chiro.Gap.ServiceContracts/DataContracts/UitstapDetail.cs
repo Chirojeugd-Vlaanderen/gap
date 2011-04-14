@@ -22,6 +22,7 @@ namespace Chiro.Gap.ServiceContracts.DataContracts
 	public class UitstapDetail: UitstapInfo
 	{
 		[DataMember]
+		[DisplayName(@"Naam van de bivakplaats")]
 		public string PlaatsNaam { get; set; }
 
 		// Een datacontract moet normaalgezien 'plat' zijn.  Maar het lijkt me

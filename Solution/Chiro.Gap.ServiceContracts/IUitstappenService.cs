@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 
+using Chiro.Gap.Domain;
 using Chiro.Gap.ServiceContracts.DataContracts;
 using Chiro.Gap.ServiceContracts.FaultContracts;
 
@@ -47,5 +48,16 @@ namespace Chiro.Gap.ServiceContracts
 		[FaultContract(typeof(GapFault))]
 		[FaultContract(typeof(FoutNummerFault))]
 		UitstapDetail DetailsOphalen(int uitstapID);
+
+		/// <summary>
+		/// Bewaart de plaats voor een uitstap
+		/// </summary>
+		/// <param name="id">ID van de uitstap</param>
+		/// <param name="plaatsNaam">naam van de plaats</param>
+		/// <param name="adres">adres van de plaats</param>
+		[OperationContract]
+		[FaultContract(typeof(GapFault))]
+		[FaultContract(typeof(FoutNummerFault))]
+		void PlaatsBewaren(int id, string plaatsNaam, AdresInfo adres);
 	}
 }

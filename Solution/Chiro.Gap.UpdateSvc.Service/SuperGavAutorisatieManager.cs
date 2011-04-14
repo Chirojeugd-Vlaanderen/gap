@@ -113,5 +113,10 @@ namespace Chiro.Gap.UpdateSvc.Service
 		{
 			throw new NotImplementedException();
 		}
+
+		public bool IsGavPlaats(int plaatsID)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
