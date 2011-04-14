@@ -33,7 +33,12 @@ namespace Chiro.Gap.Data.Ef
 
 				// Haal basisadres op
 
-				resultaat = base.Ophalen(id, paths);
+				var query = (from a in db.Adres
+				             where a.ID == id
+				             select a) as ObjectQuery<Adres>;
+
+				query = IncludesToepassen(query, paths);
+				resultaat = query.FirstOrDefault();
 
 				// Koppel nu de relevante gekoppelde entiteiten.
 
