@@ -114,5 +114,24 @@ namespace Chiro.Gap.Data.Test
 			}
 
 		}
+
+		/// <summary>
+		/// Test die nakijkt of met een belgisch adres de straten mee komen
+		/// </summary>
+		[TestMethod]
+		public void BelgischAdresOphalen()
+		{
+			// Arrange
+
+			var dao = Factory.Maak<IAdressenDao>();
+
+			// Act
+
+			var gevonden = dao.Ophalen(TestInfo.ADRESID);
+
+			// Assert
+
+			Assert.IsNotNull(((BelgischAdres)gevonden).StraatNaam);
+		}
 	}
 }
