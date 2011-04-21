@@ -524,9 +524,15 @@ namespace Chiro.Gap.WebApp.Controllers
 			var model = new AdresModel();
 			BaseModelInit(model, groepID);
 
+			// AanvragerID: de gelieerde persoon die wil verhuizen.  Dit is enkel nodig om achteraf
+			// terug te kunnen keren naar de detailfiche van deze persoon.
 			model.AanvragerID = aanvragerID;
+
+			// Haal info op over het gezin
 			var a = ServiceHelper.CallService<IGelieerdePersonenService, GezinInfo>(l => l.GezinOphalen(id, groepID));
 
+			// Onderstaande mapping mapt het gezin naar PersoonsAdresInfo, waarin enkel
+			// informatie van het adres zit.  (De andere gezinsleden worden nu nog genegeerd.)
 			Mapper.CreateMap<GezinInfo, PersoonsAdresInfo>()
 				.ForMember(
 					dst => dst.AdresType,
@@ -534,7 +540,19 @@ namespace Chiro.Gap.WebApp.Controllers
 
 			model.PersoonsAdresInfo = Mapper.Map<GezinInfo, PersoonsAdresInfo>(a);
 
+			// Als het adres buitenlands is, dan moeten we de woonplaats nog eens overnemen in
+			// WoonPlaatsBuitenland.  Dat is nodig voor de AdresBewerkenControl, die een beetje
+			// raar ineen zit.
+
+			if (String.Compare(model.PersoonsAdresInfo.LandNaam, Properties.Resources.Belgie, true) != 0)
+			{
+				model.WoonPlaatsBuitenLand = model.PersoonsAdresInfo.WoonPlaatsNaam;
+			}
+
+			// Het ID van het oude adres hebben we nodig om de verhuis door te geven aan de service
 			model.OudAdresID = id;
+
+			// Als adrestype kiezen we het adrestype van de verhuizende persoon op het oude adres.
 			model.PersoonsAdresInfo.AdresType = (from bewoner in a.Bewoners
 							     where bewoner.GelieerdePersoonID == aanvragerID
 							     select bewoner.AdresType).FirstOrDefault();
@@ -542,15 +560,18 @@ namespace Chiro.Gap.WebApp.Controllers
 			model.BeschikbareWoonPlaatsen = VeelGebruikt.WoonPlaatsenOphalen(a.PostNr);
 			model.AlleLanden = VeelGebruikt.LandenOphalen();
 
-			// Standaard verhuist iedereen mee.
+			// GelieerdePersoonIDs bepaalt de personen die aangevinkt zijn als 'verhuizen mee'.
+			// Standaard is dat iedereen die op het oude adres woont.
 			model.GelieerdePersoonIDs = (from b in a.Bewoners
-										 select b.GelieerdePersoonID).ToList();
+			                             select b.GelieerdePersoonID).ToList();
 
+			// Tenslotte hebben we de  namen van de bewoners nodig in het model, zodat die
+			// getoond kunnen worden.
 			model.Bewoners = (from p in a.Bewoners
-							  select new CheckBoxListInfo(
-								p.GelieerdePersoonID.ToString(),
-								p.PersoonVolledigeNaam,
-								model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
+			                  select new CheckBoxListInfo(
+			                  	p.GelieerdePersoonID.ToString(),
+			                  	p.PersoonVolledigeNaam,
+			                  	model.GelieerdePersoonIDs.Contains(p.GelieerdePersoonID))).ToArray();
 
 			model.Titel = "Personen verhuizen";
 			return View("AdresBewerken", model);
